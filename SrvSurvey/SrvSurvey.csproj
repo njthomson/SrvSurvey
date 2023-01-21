@@ -1,0 +1,156 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{84BA22DC-8E5F-46DB-B510-2E715A8904B7}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>SrvSurvey</RootNamespace>
+    <AssemblyName>SrvSurvey</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Text.Json, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="FormGroundTarget.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormGroundTarget.Designer.cs">
+      <DependentUpon>FormGroundTarget.cs</DependentUpon>
+    </Compile>
+    <Compile Include="game\game-types.cs" />
+    <Compile Include="game\Game.cs" />
+    <Compile Include="game\JournalWatcher.cs" />
+    <Compile Include="game\JournalEntry.cs" />
+    <Compile Include="game\LandableBody.cs" />
+    <Compile Include="JUNK.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="JUNK.Designer.cs">
+      <DependentUpon>JUNK.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LatLong.cs" />
+    <Compile Include="Main.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Main.Designer.cs">
+      <DependentUpon>Main.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Overlay.cs" />
+    <Compile Include="PlotGroundTarget.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PlotGroundTarget.Designer.cs">
+      <DependentUpon>PlotGroundTarget.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PlotSrv.cs" />
+    <Compile Include="Settings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Settings.Designer.cs">
+      <DependentUpon>Settings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SiteTemplate.cs" />
+    <Compile Include="SrvSurvey.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SrvSurvey.Designer.cs">
+      <DependentUpon>SrvSurvey.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="game\Status.cs" />
+    <Compile Include="SurveyingSrv.cs" />
+    <Compile Include="units\Angle.cs" />
+    <Compile Include="units\Latitude.cs" />
+    <Compile Include="units\LatLong2.cs" />
+    <Compile Include="units\Longitude.cs" />
+    <Compile Include="units\TrackingDelta.cs" />
+    <Compile Include="Util.cs" />
+    <Compile Include="ViewLogs.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ViewLogs.Designer.cs">
+      <DependentUpon>ViewLogs.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="FormGroundTarget.resx">
+      <DependentUpon>FormGroundTarget.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="JUNK.resx">
+      <DependentUpon>JUNK.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Main.resx">
+      <DependentUpon>Main.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlotGroundTarget.resx">
+      <DependentUpon>PlotGroundTarget.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="Settings.resx">
+      <DependentUpon>Settings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SrvSurvey.resx">
+      <DependentUpon>SrvSurvey.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ViewLogs.resx">
+      <DependentUpon>ViewLogs.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
