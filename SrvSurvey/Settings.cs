@@ -1,20 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace SrvSurvey
 {
-    public partial class Settings : Form
+    class Settings
     {
-        public Settings()
-        {
-            InitializeComponent();
-        }
+        public Color GameOrange = Color.FromArgb(255, 255, 113, 00); // #FF7100
     }
 }

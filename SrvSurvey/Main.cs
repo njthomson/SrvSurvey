@@ -118,7 +118,7 @@ namespace SrvSurvey
 
         private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            new Settings().ShowDialog(this);
+            new FormSettings().ShowDialog(this);
         }
 
         private void btnGroundTarget_Click(object sender, EventArgs e)
@@ -128,7 +128,7 @@ namespace SrvSurvey
 
         private void btnSettings_Click(object sender, EventArgs e)
         {
-            new Settings().ShowDialog(this);
+            new FormSettings().ShowDialog(this);
         }
     }
 }

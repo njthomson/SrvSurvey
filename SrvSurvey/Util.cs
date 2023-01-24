@@ -33,5 +33,16 @@ namespace SrvSurvey
             return m.ToString("#.##") + " mm";
 
         }
+
+        public static string timeSpanToString(TimeSpan ago)
+        {
+            if (ago.TotalSeconds < 60)
+                return "just now";
+            if (ago.TotalMinutes < 120)
+                return ago.TotalMinutes.ToString("#") + " minutes ago";
+            if (ago.TotalHours < 24)
+                return ago.TotalHours.ToString("#") + " hours ago";
+            return ago.TotalDays.ToString("#") + " days ago";
+        }
     }
 }

@@ -1,7 +1,7 @@
 ﻿
 namespace SrvSurvey
 {
-    partial class Settings
+    partial class FormSettings
     {
         /// <summary>
         /// Required designer variable.

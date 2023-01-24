@@ -12,6 +12,8 @@ namespace SrvSurvey
 {
     class Overlay
     {
+        public static int WindowTitleHeight = 31;
+
         /// <summary>
         /// Toggle if the target form is in overlay mode or not.
         /// </summary>

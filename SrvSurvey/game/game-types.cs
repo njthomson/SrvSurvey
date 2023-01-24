@@ -62,6 +62,9 @@ namespace SrvSurvey.game
 
         // At a landing pad or on foot within some enclosed space
         Docked,
+
+        MainMenu,
+        FSDJumping,
     }
 
     delegate void GameModeChanged(GameMode newMode);

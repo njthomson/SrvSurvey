@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Drawing;
+using System.Windows.Forms;
+using SrvSurvey.game;
 
 namespace SrvSurvey
 {
@@ -19,9 +21,16 @@ namespace SrvSurvey
 
         private StreamReader reader;
         private FileSystemWatcher watcher;
+        public readonly string filepath;
+        public readonly DateTime timestamp;
 
         public JournalWatcher(string filepath, bool watch = true)
         {
+            Game.log($"Reading journal: {Path.GetFileName(filepath)}");
+
+            this.filepath = filepath;
+            this.timestamp = File.GetLastWriteTime(filepath);
+
             this.reader = new StreamReader(new FileStream(filepath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite));
 
             this.readEntries();
@@ -31,14 +40,17 @@ namespace SrvSurvey
                 var folder = Path.GetDirectoryName(filepath);
                 var filename = Path.GetFileName(filepath);
                 this.watcher = new FileSystemWatcher(folder, filename);
-                this.watcher.Changed += StatusWatcher_Changed;
+                this.watcher.Changed += JournalWatcher_Changed;
                 this.watcher.NotifyFilter = NotifyFilters.LastWrite;
                 this.watcher.EnableRaisingEvents = true;
             }
         }
 
-        private void StatusWatcher_Changed(object sender, FileSystemEventArgs e)
+        private void JournalWatcher_Changed(object sender, FileSystemEventArgs e)
         {
+            Game.log($"!?-->");
+
+            PlotPulse.LastChanged = DateTime.Now;
             this.readEntries();
         }
 
@@ -59,6 +71,7 @@ namespace SrvSurvey
         //    return journal;
         //}
 
+        public int Count { get => this.Entries.Count;  }
 
         public void readEntries()
         {
@@ -78,7 +91,10 @@ namespace SrvSurvey
 
             if (this.onJournalEntry != null)
             {
-                this.onJournalEntry(entry, this.Entries.Count - 1);
+                Program.control.Invoke((MethodInvoker)delegate
+                {
+                    this.onJournalEntry(entry, this.Entries.Count - 1);
+                });
             }
         }
 
@@ -102,6 +118,8 @@ namespace SrvSurvey
                 case nameof(SupercruiseExit): return entry.ToObject<SupercruiseExit>();
                 case nameof(SupercruiseEntry): return entry.ToObject<SupercruiseEntry>();
                 case nameof(Music): return entry.ToObject<Music>();
+                case nameof(StartJump): return entry.ToObject<StartJump>();
+                case nameof(FSDJump): return entry.ToObject<FSDJump>();
 
                 default:
                     // ignore anything else

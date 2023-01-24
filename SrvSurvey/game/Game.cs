@@ -14,10 +14,14 @@ namespace SrvSurvey.game
     /// </summary>
     class Game
     {
+        public static Game activeGame { get; private set; }
+        public static Settings settings { get; private set; } = new Settings();
+
         /// <summary>
         /// The Commander actively playing the game
         /// </summary>
         public string Commander { get; private set; }
+        public bool odyssey { get; private set; }
         public StringBuilder logs = new StringBuilder();
 
         private JournalWatcher journals;
@@ -30,23 +34,31 @@ namespace SrvSurvey.game
 
             log($"Game is running", this.isRunning);
 
-            // initialize from a journal file
-            var filepath = this.getLastJournal(cmdr);
-            this.initializeFromJournal(filepath);
-
             // track status file changes and force an immediate read
             this.status = new Status(true);
+
+            // initialize from a journal file
+            var filepath = this.getLastJournalBefore(cmdr, DateTime.MaxValue);
+            this.initializeFromJournal(filepath);
+
+            // now listen for changes
+            this.journals.onJournalEntry += Journals_onJournalEntry;
             this.status.StatusChanged += Status_StatusChanged;
+
             Status_StatusChanged();
         }
 
-        private void Status_StatusChanged()
+        #region modes
+
+        private LatLong2 touchdownLocation;
+        public LatLong2 location { get; private set; }
+        private bool atMainMenu = false;
+        private bool fsdEngaged = false;
+        private bool fsdJumping = false;
+        public LandableBody nearBody;
+
+        private void checkModeChange()
         {
-            log("status changed");
-
-            // update the easy things
-            this.location = new LatLong2(this.status);
-
             // check various things we actively need to know have changed
             if (this._mode != this.mode)
             {
@@ -56,6 +68,17 @@ namespace SrvSurvey.game
                 if (modeChanged != null) modeChanged(this._mode);
                 // fire event!
             }
+
+        }
+
+        private void Status_StatusChanged()
+        {
+            log("status changed");
+
+            // update the easy things
+            this.location = new LatLong2(this.status);
+
+            this.checkModeChange();
 
             // are we near a body?
             if ((this.status.Flags & StatusFlags.HasLatLong) > 0)
@@ -82,12 +105,18 @@ namespace SrvSurvey.game
         {
             get
             {
+                if (this.atMainMenu)
+                    return GameMode.MainMenu;
+
                 if (!this.isRunning)
                     return GameMode.Offline;
-                
+
                 // use GuiFocus if it is interesting
                 if (this.status.GuiFocus != GuiFocus.NoFocus)
                     return (GameMode)(int)this.status.GuiFocus;
+
+                if (this.fsdJumping)
+                    return GameMode.FSDJumping;
 
                 // otherwise use the type of vehicle we are in
                 if (this.vehicle == ActiveVehicle.Fighter)
@@ -138,13 +167,9 @@ namespace SrvSurvey.game
             }
         }
 
-        public LandableBody nearBody;
-
-        public LatLong2 location { get; private set; }
+        #endregion
 
         #region logging
-
-        public static Game activeGame { get; private set; }
 
         public static void log(object msg, object o1 = null)
         {
@@ -181,7 +206,7 @@ namespace SrvSurvey.game
             get
             {
                 var procED = Process.GetProcessesByName("EliteDangerous64");
-                return procED.Length > 0 && this.Commander != null && !this.atMainMenu;
+                return procED.Length > 0 && this.Commander != null;
             }
         }
 
@@ -199,15 +224,18 @@ namespace SrvSurvey.game
 
         #endregion
 
-        #region journal reading stuff
+        #region start-up / initialization from journals
 
         public static string journalFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), @"Saved Games\Frontier Developments\Elite Dangerous\");
 
-        private string getLastJournal(string cmdr)
+        private string getLastJournalBefore(string cmdr, DateTime timestamp)
         {
-            var journalFiles = new DirectoryInfo(SrvSurvey.journalFolder)
+            var manyFiles = new DirectoryInfo(SrvSurvey.journalFolder)
                 .EnumerateFiles("*.log", SearchOption.TopDirectoryOnly)
-                .OrderByDescending(_ => _.LastWriteTimeUtc)
+                .OrderByDescending(_ => _.LastWriteTimeUtc);
+
+            var journalFiles = manyFiles
+                .Where(_ => _.LastWriteTime < timestamp)
                 .Select(_ => _.FullName);
 
             if (cmdr == null)
@@ -217,7 +245,9 @@ namespace SrvSurvey.game
             }
 
             var CMDR = cmdr.ToUpper();
-            var filename = journalFiles.First((filepath) =>
+            //var filename = journalFiles.First((filepath) => isJournalForCmdr(cmdr, filepath));
+
+            var filename = journalFiles.FirstOrDefault((filepath) =>
             {
                 // TODO: Use some streaming reader to save reading the whole file up front?
                 using (var reader = new StreamReader(new FileStream(filepath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)))
@@ -225,6 +255,11 @@ namespace SrvSurvey.game
                     while (!reader.EndOfStream)
                     {
                         var line = reader.ReadLine();
+
+                        // TODO: allow for non-Odyssey
+                        if (line.Contains("\"event\":\"Fileheader\"") && line.Contains("\"Odyssey\":false"))
+                            return false;
+
                         if (line.Contains("\"event\":\"Commander\""))
                             // no need to process further lines
                             return line.ToUpper().Contains($"\"NAME\":\"{CMDR}\"");
@@ -238,42 +273,159 @@ namespace SrvSurvey.game
             return filename;
         }
 
+        //private bool isJournalForCmdr(string cmdr, string filepath)
+        //{
+        //    var CMDR = cmdr.ToUpper();
+        //    using (var reader = new StreamReader(new FileStream(filepath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)))
+        //    {
+        //        while (!reader.EndOfStream)
+        //        {
+        //            var line = reader.ReadLine();
+        //            if (line.Contains("\"event\":\"Commander\""))
+        //                // no need to process further lines
+        //                return line.ToUpper().Contains($"\"NAME\":\"{CMDR}\"");
+        //        }
+        //        return false;
+        //    }
+        //}
+
+        //private string getJournalBefore(string cmdr, DateTime timestamp)
+        //{
+        //    var journalFiles = new DirectoryInfo(SrvSurvey.journalFolder)
+        //        .EnumerateFiles("*.log", SearchOption.TopDirectoryOnly)
+        //        .OrderByDescending(_ => _.LastWriteTimeUtc)
+        //        .Where(_ => _.LastWriteTime < timestamp)
+        //        .Select(_ => _.FullName);
+
+        //    return "";
+
+        //}
+
         private void initializeFromJournal(string filepath)
         {
             this.journals = new JournalWatcher(filepath, true);
             var cmdrEntry = this.journals.FindEntryByType<Commander>(0, false);
 
-            this.journals.onJournalEntry += Journals_onJournalEntry;
-
             // exit early if this journal file has no Commander entry yet
             if (cmdrEntry == null) return;
 
-            onJournalEntry(cmdrEntry, journals.Entries.IndexOf(cmdrEntry));
+            // read cmdr info
+            this.Commander = cmdrEntry.Name;
+            //onJournalEntry(cmdrEntry);
+
+            // if journals MainMenu music - we know we're not actively playing
+            var lastMusic = journals.FindEntryByType<Music>(-1, true);
+            if (lastMusic != null) onJournalEntry(lastMusic);
+
+            // if we are landed, we need to find the last Touchdown location
+            if ((this.status.Flags & StatusFlags.Landed) > 0)
+            {
+                var lastTouchdown = this.findLastJournalOf<Touchdown>();
+                if (lastTouchdown == null)
+                    throw new Exception($"ERROR! Journal parsing failure! Failed to find any last Touchdown events.");
+
+                if (lastTouchdown.Body != status.BodyName)
+                {
+                    throw new Exception($"ERROR! Journal parsing failure! Last found Touchdown was for body: {lastTouchdown.Body}, but we are currently on: {status.BodyName}");
+                }
+
+                onJournalEntry(lastTouchdown);
+            }
+
+            log($"Initialized Commander", this.Commander);
+
+            if (this.isRunning)
+            {
+                PlotPulse.show();
+            }
         }
+
+        //private Touchdown findLastTouchdown()
+        //{
+        //    log($"Finding last Touchdown event... {journals.Count}");
+        //    // do we have one recently in the active journal?
+        //    var lastTouchdown = journals.FindEntryByType<Touchdown>(-1, true);
+
+        //    if (lastTouchdown != null)
+        //    {
+        //        // yes, phew
+        //        return lastTouchdown;
+        //    }
+
+        //    // otherwise, we need to dig into prior journal files
+        //    do
+        //    {
+        //        var priorFilepath = this.getLastJournalBefore(this.Commander, journals.timestamp);
+        //        if (priorFilepath == null) return null;
+        //        var oldJournal = new JournalWatcher(priorFilepath, false);
+
+        //        lastTouchdown = oldJournal.FindEntryByType<Touchdown>(-1, true);
+        //    } while (lastTouchdown == null);
+
+        //    if (lastTouchdown.Body != status.BodyName)
+        //    {
+        //        throw new Exception($"ERROR! Journal parsing failure! Last found Touchdown was for body: {lastTouchdown.Body}, but we are currently on: {status.BodyName}");
+        //    }
+
+        //    return lastTouchdown;
+        //}
+
+        private T findLastJournalOf<T>() where T : JournalEntry
+        {
+            log($"Finding last Touchdown event... {journals.Count}");
+            // do we have one recently in the active journal?
+            var lastEntry= journals.FindEntryByType<T>(-1, true);
+
+            if (lastEntry != null)
+            {
+                // yes, phew
+                return lastEntry;
+            }
+
+            // otherwise, we need to dig into prior journal files
+            var timestamp = journals.timestamp;
+            do
+            {
+                var priorFilepath = this.getLastJournalBefore(this.Commander, timestamp);
+                if (priorFilepath == null) return null;
+                var oldJournal = new JournalWatcher(priorFilepath, false);
+
+                lastEntry = oldJournal.FindEntryByType<T>(-1, true);
+                timestamp = oldJournal.timestamp;
+            } while (lastEntry == null);
+
+            return lastEntry;
+        }
+
+
+        #endregion
+
+        #region journal tracking for game state and modes
+
 
         private void Journals_onJournalEntry(JournalEntry entry, int index)
         {
-            this.onJournalEntry((dynamic)entry, index);
+            Game.log($"!--> {entry.@event}");
+            this.onJournalEntry((dynamic)entry);
         }
 
-        private void onJournalEntry(JournalEntry entry, int index)
+        private void onJournalEntry(JournalEntry entry)
         {
             // ignore
         }
 
-        private void onJournalEntry(Commander entry, int index)
+        private void onJournalEntry(Commander entry)
         {
-            this.Commander = entry.Name;
-
-            log($"Initialized Commander", this.Commander);
-
+            if (this.Commander == null)
+            {
+                initializeFromJournal(this.journals.filepath);
+            }
         }
 
-        private bool atMainMenu = false;
 
-        private void onJournalEntry(Music entry, int index)
+        private void onJournalEntry(Music entry)
         {
-            Game.log(">>"+ entry.MusicTrack);
+            Game.log(">>" + entry.MusicTrack);
 
             var newMainMenu = entry.MusicTrack == "MainMenu";
             if (this.atMainMenu != newMainMenu)
@@ -282,7 +434,52 @@ namespace SrvSurvey.game
                 this.atMainMenu = newMainMenu;
                 this.Status_StatusChanged();
             }
+
+            if (this.fsdEngaged && entry.MusicTrack == "NoTrack")
+            {
+                // If FSD is charging and we get MusicTrack:NoTrackFSD - countdown just finished
+                this.fsdJumping = true;
+                this.checkModeChange();
+            }
         }
+
+
+        private void onJournalEntry(StartJump entry)
+        {
+            // FSD charged - either for Jump or SuperCruise
+            this.fsdEngaged = true;
+        }
+
+        private void onJournalEntry(FSDJump entry)
+        {
+            // FSD Jump completed
+            this.fsdJumping = false;
+            this.checkModeChange();
+        }
+
+        private void onJournalEntry(SupercruiseEntry entry)
+        {
+            // SuperCruising began
+            this.fsdEngaged = false;
+        }
+
+        #endregion
+
+        #region journal tracking for ground ops
+
+        private void onJournalEntry(Touchdown entry)
+        {
+            this.touchdownLocation = new LatLong2(entry);
+            var ago= Util.timeSpanToString(DateTime.UtcNow - entry.timestamp);
+            log($"Touchdown {ago}, at: {touchdownLocation}");
+        }
+
+        private void onJournalEntry(Liftoff entry)
+        {
+            this.touchdownLocation = null;
+            log($"Liftoff!");
+        }
+
 
         #endregion
     }

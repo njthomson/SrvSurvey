@@ -13,6 +13,7 @@ namespace SrvSurvey
 
     class Status : ILocation
     {
+
         public static readonly string Filename = "Status.json";
         public static string Filepath { get => Path.Combine(SrvSurvey.journalFolder, Status.Filename); }
 
@@ -62,6 +63,7 @@ namespace SrvSurvey
 
         private void fileWatcher_Changed(object sender, FileSystemEventArgs e)
         {
+            PlotPulse.LastChanged = DateTime.Now;
             this.parseStatusFile();
         }
 

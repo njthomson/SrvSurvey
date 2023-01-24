@@ -25,7 +25,16 @@ namespace SrvSurvey
                 double.Parse(txtLat.Text),
                 double.Parse(txtLong.Text));
 
-            new PlotGroundTarget(Game.activeGame.nearBody, latLong).Show();
+            if (Game.activeGame.nearBody != null)
+            {
+                // if near a body
+                new PlotGroundTarget(Game.activeGame.nearBody, latLong).Show();
+            }
+            else
+            {
+                // not near a body
+                Game.log("Cannot show GroundTarget plotter - not near any body.");
+            }
         }
     }
 }
