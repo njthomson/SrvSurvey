@@ -102,21 +102,19 @@ namespace SrvSurvey
             // 
             this.toolRight.AutoSize = false;
             this.toolRight.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.toolRight.Dock = System.Windows.Forms.DockStyle.Left;
             this.toolRight.Font = new System.Drawing.Font("Lucida Sans Typewriter", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.toolRight.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.lblCommander,
             this.lblMode,
             this.toolStripDropDownButton1});
             this.toolRight.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
-            this.toolRight.Location = new System.Drawing.Point(0, 0);
+            this.toolRight.Location = new System.Drawing.Point(0, 203);
             this.toolRight.Name = "toolRight";
             this.toolRight.Padding = new System.Windows.Forms.Padding(1, 0, 19, 0);
             this.toolRight.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.toolRight.Size = new System.Drawing.Size(30, 229);
+            this.toolRight.Size = new System.Drawing.Size(362, 26);
             this.toolRight.TabIndex = 7;
             this.toolRight.Text = "statusStrip1";
-            this.toolRight.TextDirection = System.Windows.Forms.ToolStripTextDirection.Vertical270;
             // 
             // lblCommander
             // 
@@ -128,7 +126,7 @@ namespace SrvSurvey
             this.lblCommander.Font = new System.Drawing.Font("Lucida Sans Typewriter", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblCommander.Name = "lblCommander";
             this.lblCommander.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
-            this.lblCommander.Size = new System.Drawing.Size(16, 93);
+            this.lblCommander.Size = new System.Drawing.Size(93, 16);
             this.lblCommander.Text = "Grinning2001";
             // 
             // lblMode
@@ -141,7 +139,7 @@ namespace SrvSurvey
             this.lblMode.Font = new System.Drawing.Font("Lucida Sans Typewriter", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblMode.Name = "lblMode";
             this.lblMode.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
-            this.lblMode.Size = new System.Drawing.Size(16, 58);
+            this.lblMode.Size = new System.Drawing.Size(58, 16);
             this.lblMode.Text = "Offline";
             // 
             // toolStripDropDownButton1
@@ -156,7 +154,7 @@ namespace SrvSurvey
             this.toolStripDropDownButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripDropDownButton1.Image")));
             this.toolStripDropDownButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripDropDownButton1.Name = "toolStripDropDownButton1";
-            this.toolStripDropDownButton1.Size = new System.Drawing.Size(16, 37);
+            this.toolStripDropDownButton1.Size = new System.Drawing.Size(39, 16);
             this.toolStripDropDownButton1.Text = "...";
             this.toolStripDropDownButton1.ToolTipText = "More logs";
             // 
@@ -185,7 +183,7 @@ namespace SrvSurvey
             // 
             this.btnQuit2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnQuit2.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnQuit2.Location = new System.Drawing.Point(275, 194);
+            this.btnQuit2.Location = new System.Drawing.Point(275, 12);
             this.btnQuit2.Name = "btnQuit2";
             this.btnQuit2.Size = new System.Drawing.Size(75, 23);
             this.btnQuit2.TabIndex = 8;

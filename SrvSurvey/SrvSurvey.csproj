@@ -56,15 +56,10 @@
     </Compile>
     <Compile Include="game\game-types.cs" />
     <Compile Include="game\Game.cs" />
+    <Compile Include="game\GameGraphics.cs" />
     <Compile Include="game\JournalWatcher.cs" />
     <Compile Include="game\JournalEntry.cs" />
     <Compile Include="game\LandableBody.cs" />
-    <Compile Include="JUNK.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="JUNK.Designer.cs">
-      <DependentUpon>JUNK.cs</DependentUpon>
-    </Compile>
     <Compile Include="LatLong.cs" />
     <Compile Include="Main.cs">
       <SubType>Form</SubType>
@@ -73,11 +68,17 @@
       <DependentUpon>Main.cs</DependentUpon>
     </Compile>
     <Compile Include="Overlay.cs" />
-    <Compile Include="PlotGroundTarget.cs">
+    <Compile Include="PlotGrounded.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PlotGroundTarget.Designer.cs">
-      <DependentUpon>PlotGroundTarget.cs</DependentUpon>
+    <Compile Include="PlotGrounded.Designer.cs">
+      <DependentUpon>PlotGrounded.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PlotTrackTarget.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PlotTrackTarget.Designer.cs">
+      <DependentUpon>PlotTrackTarget.cs</DependentUpon>
     </Compile>
     <Compile Include="PlotPulse.cs">
       <SubType>Form</SubType>
@@ -119,14 +120,14 @@
     <EmbeddedResource Include="FormGroundTarget.resx">
       <DependentUpon>FormGroundTarget.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="JUNK.resx">
-      <DependentUpon>JUNK.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="PlotGroundTarget.resx">
-      <DependentUpon>PlotGroundTarget.cs</DependentUpon>
+    <EmbeddedResource Include="PlotGrounded.resx">
+      <DependentUpon>PlotGrounded.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlotTrackTarget.resx">
+      <DependentUpon>PlotTrackTarget.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PlotPulse.resx">
       <DependentUpon>PlotPulse.cs</DependentUpon>

@@ -13,7 +13,7 @@ using System.Windows.Forms;
 
 namespace SrvSurvey
 {
-    partial class PlotGroundTarget : Form
+    partial class PlotTrackTarget : Form
     {
         LandableBody targetBody;
         LatLong2 targetLocation;
@@ -21,7 +21,7 @@ namespace SrvSurvey
 
         private TrackingDelta td;
 
-        public PlotGroundTarget(LandableBody targetBody, LatLong2 targetLocation)
+        public PlotTrackTarget(LandableBody targetBody, LatLong2 targetLocation)
         {
             this.targetBody = targetBody;
             this.targetLocation = targetLocation;

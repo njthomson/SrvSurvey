@@ -32,7 +32,7 @@ namespace SrvSurvey.game
             // track this instance as the active one
             Game.activeGame = this;
 
-            log($"Game is running", this.isRunning);
+            log($"Game is running: {this.isRunning}, cmdr loaded: ${this.Commander != null}");
 
             // track status file changes and force an immediate read
             this.status = new Status(true);
@@ -105,11 +105,11 @@ namespace SrvSurvey.game
         {
             get
             {
-                if (this.atMainMenu)
-                    return GameMode.MainMenu;
-
                 if (!this.isRunning)
                     return GameMode.Offline;
+
+                if (this.atMainMenu || this.Commander == null)
+                    return GameMode.MainMenu;
 
                 // use GuiFocus if it is interesting
                 if (this.status.GuiFocus != GuiFocus.NoFocus)
@@ -206,7 +206,7 @@ namespace SrvSurvey.game
             get
             {
                 var procED = Process.GetProcessesByName("EliteDangerous64");
-                return procED.Length > 0 && this.Commander != null;
+                return procED.Length > 0;
             }
         }
 
@@ -313,9 +313,16 @@ namespace SrvSurvey.game
             this.Commander = cmdrEntry.Name;
             //onJournalEntry(cmdrEntry);
 
-            // if journals MainMenu music - we know we're not actively playing
-            var lastMusic = journals.FindEntryByType<Music>(-1, true);
-            if (lastMusic != null) onJournalEntry(lastMusic);
+            // if we are not shutdown ...
+            var lastShutdown = journals.FindEntryByType<Shutdown>(-1, true);
+            if (lastShutdown == null)
+            {
+
+                // ... and we have MainMenu music - we know we're not actively playing
+                var lastMusic = journals.FindEntryByType<Music>(-1, true);
+                if (lastMusic != null)
+                    onJournalEntry(lastMusic);
+            }
 
             // if we are landed, we need to find the last Touchdown location
             if ((this.status.Flags & StatusFlags.Landed) > 0)
@@ -334,10 +341,6 @@ namespace SrvSurvey.game
 
             log($"Initialized Commander", this.Commander);
 
-            if (this.isRunning)
-            {
-                PlotPulse.show();
-            }
         }
 
         //private Touchdown findLastTouchdown()
@@ -374,7 +377,7 @@ namespace SrvSurvey.game
         {
             log($"Finding last Touchdown event... {journals.Count}");
             // do we have one recently in the active journal?
-            var lastEntry= journals.FindEntryByType<T>(-1, true);
+            var lastEntry = journals.FindEntryByType<T>(-1, true);
 
             if (lastEntry != null)
             {
@@ -418,6 +421,7 @@ namespace SrvSurvey.game
         {
             if (this.Commander == null)
             {
+                // this isn't right - needs reworking
                 initializeFromJournal(this.journals.filepath);
             }
         }
@@ -434,20 +438,23 @@ namespace SrvSurvey.game
                 this.atMainMenu = newMainMenu;
                 this.Status_StatusChanged();
             }
+        }
 
-            if (this.fsdEngaged && entry.MusicTrack == "NoTrack")
-            {
-                // If FSD is charging and we get MusicTrack:NoTrackFSD - countdown just finished
-                this.fsdJumping = true;
-                this.checkModeChange();
-            }
+        private void onJournalEntry(Shutdown entry)
+        {
+            this.atMainMenu = false;
+            this.Status_StatusChanged();
         }
 
 
         private void onJournalEntry(StartJump entry)
         {
             // FSD charged - either for Jump or SuperCruise
-            this.fsdEngaged = true;
+            if (entry.JumpType == "Hyperspace")
+            {
+                this.fsdJumping = true;
+                this.checkModeChange();
+            }
         }
 
         private void onJournalEntry(FSDJump entry)
@@ -470,7 +477,7 @@ namespace SrvSurvey.game
         private void onJournalEntry(Touchdown entry)
         {
             this.touchdownLocation = new LatLong2(entry);
-            var ago= Util.timeSpanToString(DateTime.UtcNow - entry.timestamp);
+            var ago = Util.timeSpanToString(DateTime.UtcNow - entry.timestamp);
             log($"Touchdown {ago}, at: {touchdownLocation}");
         }
 

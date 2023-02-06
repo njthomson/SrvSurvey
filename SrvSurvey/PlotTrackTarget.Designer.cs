@@ -1,7 +1,7 @@
 ﻿
 namespace SrvSurvey
 {
-    partial class PlotGroundTarget
+    partial class PlotTrackTarget
     {
         /// <summary>
         /// Required designer variable.

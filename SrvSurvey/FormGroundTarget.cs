@@ -28,7 +28,7 @@ namespace SrvSurvey
             if (Game.activeGame.nearBody != null)
             {
                 // if near a body
-                new PlotGroundTarget(Game.activeGame.nearBody, latLong).Show();
+                new PlotTrackTarget(Game.activeGame.nearBody, latLong).Show();
             }
             else
             {

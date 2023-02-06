@@ -42,7 +42,7 @@ namespace SrvSurvey
             var rect = Overlay.getEDWindowRect();
 
             this.Left = rect.Left + 12;
-            this.Top = rect.Bottom + Overlay.WindowTitleHeight - this.Height - 4;
+            this.Top = rect.Bottom - this.Height - 8;
         }
 
         private void timer_Tick(object sender, EventArgs e)

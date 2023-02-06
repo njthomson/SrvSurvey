@@ -71,7 +71,7 @@ namespace SrvSurvey
         //    return journal;
         //}
 
-        public int Count { get => this.Entries.Count;  }
+        public int Count { get => this.Entries.Count; }
 
         public void readEntries()
         {
@@ -120,6 +120,7 @@ namespace SrvSurvey
                 case nameof(Music): return entry.ToObject<Music>();
                 case nameof(StartJump): return entry.ToObject<StartJump>();
                 case nameof(FSDJump): return entry.ToObject<FSDJump>();
+                case nameof(Shutdown): return entry.ToObject<Shutdown>();
 
                 default:
                     // ignore anything else

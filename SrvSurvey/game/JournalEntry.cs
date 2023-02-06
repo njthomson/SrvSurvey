@@ -180,7 +180,7 @@ namespace SrvSurvey
     class StartJump : JournalEntry
     {
         // { "timestamp":"2023-01-24T05:06:43Z", "event":"StartJump", "JumpType":"Hyperspace", "StarSystem":"Maridwyn", "SystemAddress":13866167838129, "StarClass":"M" }
-        
+
         public string JumpType { get; set; }
         public string StarSystem { get; set; }
         public string SystemAddress { get; set; }
@@ -196,5 +196,11 @@ namespace SrvSurvey
         public string Body { get; set; }
 
         // TODO: Lots more!
+    }
+
+    class Shutdown : JournalEntry
+    {
+        // { "timestamp":"2023-01-24T06:58:26Z", "event":"Shutdown" }
+
     }
 }

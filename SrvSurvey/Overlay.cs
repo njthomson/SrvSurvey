@@ -12,8 +12,6 @@ namespace SrvSurvey
 {
     class Overlay
     {
-        public static int WindowTitleHeight = 31;
-
         /// <summary>
         /// Toggle if the target form is in overlay mode or not.
         /// </summary>
@@ -67,9 +65,17 @@ namespace SrvSurvey
 
             var r1 = new RECT();
             Overlay.GetWindowRect(handleED, ref r1);
+
             var r2 = new RECT();
             Overlay.GetClientRect(handleED, ref r2);
-            return new Rectangle(r1.Left, r1.Top, r2.Right, r2.Bottom );
+
+            var windowTitleHeight = r1.Bottom - r1.Top - r2.Bottom;
+
+            return new Rectangle(
+                // use the Window rect for the top left corder
+                r1.Left, r1.Top + windowTitleHeight,
+                // use the Client rect for the width/height
+                r2.Right, r2.Bottom );
         }
 
         private static IntPtr getEDWindowHandle()

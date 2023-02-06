@@ -25,7 +25,14 @@ namespace SrvSurvey
         {
             this.newGame();
 
+            if (this.game.isRunning)
+            {
+                PlotPulse.show();
+            }
             //new PlotGroundTarget(Game.activeGame.nearBody, new LatLong2(10.0, 40.0)).ShowDialog();
+
+            // TMP!
+            new PlotGrounded().Show(this);
         }
 
         private void newGame()
@@ -82,8 +89,13 @@ namespace SrvSurvey
 
         private void btnSurvey_Click(object sender, EventArgs e)
         {
-            if (Game.activeGame.nearBody != null)
-                new PlotGroundTarget(Game.activeGame.nearBody, new LatLong2(10.0, 40.0)).ShowDialog();
+            // TMP!
+            new PlotGrounded().Show(this);
+
+            //if (Game.activeGame.mode == GameMode.Landed)
+
+            //if (Game.activeGame.nearBody != null)
+            //    new PlotTrackTarget(Game.activeGame.nearBody, new LatLong2(10.0, 40.0)).ShowDialog();
 
             //var mm = new TrackingDelta(1000, new LatLong2(10, 10), new LatLong2(10 + 30, 10+40));
             //var mm = new TrackingDelta(1000, new LatLong2(-10, -10), new LatLong2(20, 30));
