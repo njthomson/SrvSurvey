@@ -37,7 +37,7 @@ namespace SrvSurvey
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoValidate = System.Windows.Forms.AutoValidate.Disable;
             this.BackColor = System.Drawing.Color.Black;
-            this.ClientSize = new System.Drawing.Size(200, 300);
+            this.ClientSize = new System.Drawing.Size(400, 400);
             this.ControlBox = false;
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -50,7 +50,10 @@ namespace SrvSurvey
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "PlotGrounded";
             this.TopMost = true;
+            this.Load += new System.EventHandler(this.PlotGrounded_Load);
+            this.Click += new System.EventHandler(this.PlotGrounded_Click);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.PlotGrounded_Paint);
+            this.DoubleClick += new System.EventHandler(this.PlotGrounded_DoubleClick);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.PlotGrounded_KeyDown);
             this.ResumeLayout(false);
 

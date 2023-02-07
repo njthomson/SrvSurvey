@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SrvSurvey.units;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,29 +9,49 @@ namespace SrvSurvey
 {
     static class Util
     {
+        public static double degToRad(int heading)
+        {
+            return heading / Angle.ratioDegreesToRadians;
+        }
+
         /// <summary>
         /// Returns a count of meters to a string with 4 significant digits, adjusting the units accordinly between: m, km, mm
         /// </summary>
         /// <param name="m"></param>
         /// <returns></returns>
-        public static string metersToString(double m)
+        public static string metersToString(double m, bool asDelta = false)
         {
+            var prefix = "";
+            if (asDelta)
+            {
+                prefix = m < 0 ? "-" : "+";
+            }
+
+            // make number positive
+            if (m < 0) m = -m;
+
+            if (m == 0)
+            {
+                // less than 1 thousand
+                return "+0 m";
+            }
+
             if (m < 1000)
             {
                 // less than 1 thousand
-                return m.ToString("#") + " m";
+                return prefix + m.ToString("#") + " m";
             }
 
             m = m / 1000;
             if (m < 1000)
             {
                 // less than 1 thousand
-                return m.ToString("###.#") + " km";
+                return prefix + m.ToString("###.#") + " km";
             }
 
             m = m / 1000;
             // over one 1 million
-            return m.ToString("#.##") + " mm";
+            return prefix + m.ToString("#.##") + " mm";
 
         }
 

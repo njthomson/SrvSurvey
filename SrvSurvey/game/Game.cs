@@ -21,10 +21,10 @@ namespace SrvSurvey.game
         /// The Commander actively playing the game
         /// </summary>
         public string Commander { get; private set; }
-        public bool odyssey { get; private set; }
+        public bool isOdyssey { get; private set; }
         public StringBuilder logs = new StringBuilder();
 
-        private JournalWatcher journals;
+        public JournalWatcher journals;
         public Status status { get; private set; }
 
         public Game(string cmdr)
@@ -50,7 +50,6 @@ namespace SrvSurvey.game
 
         #region modes
 
-        private LatLong2 touchdownLocation;
         public LatLong2 location { get; private set; }
         private bool atMainMenu = false;
         private bool fsdEngaged = false;
@@ -165,6 +164,11 @@ namespace SrvSurvey.game
 
                 // TODO: do we care about telepresence?
             }
+        }
+
+        public bool isLanded
+        {
+            get => this.mode == GameMode.InSrv || this.mode == GameMode.OnFoot || this.mode == GameMode.Landed;
         }
 
         #endregion
@@ -474,16 +478,47 @@ namespace SrvSurvey.game
 
         #region journal tracking for ground ops
 
+        private LatLong2 _touchdownLocation;
+
+        public LatLong2 touchdownLocation
+        {
+            get
+            {
+                if (_touchdownLocation == null)
+                {
+                    var lastTouchdown = journals.FindEntryByType<Touchdown>(-1, true);
+                    var lastLiftoff= journals.FindEntryByType<Liftoff>(-1, true);
+                    if (lastTouchdown != null)
+                    {
+                        if (lastLiftoff == null || lastTouchdown.timestamp > lastLiftoff.timestamp)
+                        {
+                            _touchdownLocation = new LatLong2(lastLiftoff);
+                        } 
+                        else
+                        {
+                            _touchdownLocation = new LatLong2(lastLiftoff);
+                        }
+                    }
+                }
+                return _touchdownLocation;
+            }
+        }
+
+        public Angle touchdownHeading;
+
+
         private void onJournalEntry(Touchdown entry)
         {
-            this.touchdownLocation = new LatLong2(entry);
+            this._touchdownLocation = new LatLong2(entry);
+            this.touchdownHeading = this.status.Heading;
+
             var ago = Util.timeSpanToString(DateTime.UtcNow - entry.timestamp);
-            log($"Touchdown {ago}, at: {touchdownLocation}");
+            log($"Touchdown {ago}, at: {touchdownLocation}, heading: {touchdownHeading}");
         }
 
         private void onJournalEntry(Liftoff entry)
         {
-            this.touchdownLocation = null;
+            this._touchdownLocation = null;
             log($"Liftoff!");
         }
 
