@@ -1,8 +1,12 @@
-﻿using System;
+﻿using SrvSurvey.units;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Tab;
 
 namespace SrvSurvey
 {
@@ -201,6 +205,155 @@ namespace SrvSurvey
     class Shutdown : JournalEntry
     {
         // { "timestamp":"2023-01-24T06:58:26Z", "event":"Shutdown" }
-
     }
+
+    enum ScanType
+    {
+        Log,
+        Sample,
+        Analyse
+    }
+    class ScanOrganic : JournalEntry
+    {
+        // { "timestamp":"2023-02-07T05:31:03Z", "event":"ScanOrganic", "ScanType":"Log", "Genus":"$Codex_Ent_Brancae_Name;", "Genus_Localised":"Brain Trees", "Species":"$Codex_Ent_Seed_Name;", "Species_Localised":"Roseum Brain Tree", "SystemAddress":682228131193, "Body":16 }
+        public ScanType ScanType { get; set; }
+
+        public string Genus { get; set; }
+        public string Genus_Localized { get; set; }
+        public string Species { get; set; }
+        public string Species_Localised { get; set; }
+        public long SystemAddress { get; set; }
+        public int Body { get; set; }
+    }
+
+    static class SignalType
+    {
+        public static string Biological = "$SAA_SignalType_Biological;";
+        public static string Geological = "$SAA_SignalType_Geological;";
+        public static string Human = "$SAA_SignalType_Human;";
+    }
+
+    class ScanSignal
+    {
+        public string Type { get; set; }
+        public string Type_Localised { get; set; }
+        public string Count { get; set; }
+    }
+
+    class ScanGenus
+    {
+        public string Genus { get; set; }
+        public string Genus_Localised { get; set; }
+    }
+
+    class SAASignalsFound : JournalEntry
+    {
+        // { "timestamp":"2023-02-07T06:12:43Z", "event":"SAASignalsFound", "BodyName":"Synuefe TP-F b44-0 AB 7", "SystemAddress":682228131193, "BodyID":14, "Signals":[ { "Type":"$SAA_SignalType_Biological;", "Type_Localised":"Biological", "Count":6 } ], "Genuses":[ { "Genus":"$Codex_Ent_Bacterial_Genus_Name;", "Genus_Localised":"Bacterium" }, { "Genus":"$Codex_Ent_Cactoid_Genus_Name;", "Genus_Localised":"Cactoida" }, { "Genus":"$Codex_Ent_Fungoids_Genus_Name;", "Genus_Localised":"Fungoida" }, { "Genus":"$Codex_Ent_Stratum_Genus_Name;", "Genus_Localised":"Stratum" }, { "Genus":"$Codex_Ent_Shrubs_Genus_Name;", "Genus_Localised":"Frutexa" }, { "Genus":"$Codex_Ent_Tussocks_Genus_Name;", "Genus_Localised":"Tussock" } ] }
+
+        public string BodyName { get; set; }
+        public long SystemAddress { get; set; }
+        public int BodyID { get; set; }
+        public List<ScanSignal> Signals { get; set; }
+        public List<ScanGenus> Genuses { get; set; }
+    }
+
+    class ApproachBody : JournalEntry
+    {
+        // { "timestamp":"2023-02-07T06:27:26Z", "event":"ApproachBody", "StarSystem":"Synuefe TP-F b44-0", "SystemAddress":682228131193, "Body":"Synuefe TP-F b44-0 AB 7", "BodyID":14 }
+
+        public string StarSystem { get; set; }
+        public long SystemAddress { get; set; }
+        public string Body { get; set; }
+        public int BodyID { get; set; }
+    }
+
+    class LeaveBody : JournalEntry
+    {
+        // { "timestamp":"2023-02-07T06:29:32Z", "event":"LeaveBody", "StarSystem":"Synuefe TP-F b44-0", "SystemAddress":682228131193, "Body":"Synuefe TP-F b44-0 AB 7", "BodyID":14 }
+        public string StarSystem { get; set; }
+        public long SystemAddress { get; set; }
+        public string Body { get; set; }
+        public int BodyID { get; set; }
+    }
+
+    class Scan : JournalEntry
+    {
+        // See: https://elite-journal.readthedocs.io/en/latest/Exploration/#scan
+        // { "timestamp":"2023-02-07T06:12:44Z", "event":"Scan", "ScanType":"Detailed", "BodyName":"Synuefe TP-F b44-0 AB 7", "BodyID":14, "Parents":[ {"Null":1}, {"Null":0} ], "StarSystem":"Synuefe TP-F b44-0", "SystemAddress":682228131193, "DistanceFromArrivalLS":163.640473, "TidalLock":false, "TerraformState":"", "PlanetClass":"High metal content body", "Atmosphere":"thin ammonia atmosphere", "AtmosphereType":"Ammonia", "AtmosphereComposition":[ { "Name":"Ammonia", "Percent":100.000000 } ], "Volcanism":"", "MassEM":0.012165, "Radius":1506425.250000, "SurfaceGravity":2.136633, "SurfaceTemperature":171.117615, "SurfacePressure":218.443268, "Landable":true, "Materials":[ { "Name":"iron", "Percent":22.081503 }, { "Name":"nickel", "Percent":16.701525 }, { "Name":"sulphur", "Percent":15.735665 }, { "Name":"carbon", "Percent":13.232062 }, { "Name":"manganese", "Percent":9.119436 }, { "Name":"phosphorus", "Percent":8.471395 }, { "Name":"zinc", "Percent":6.000926 }, { "Name":"germanium", "Percent":4.639404 }, { "Name":"molybdenum", "Percent":1.441909 }, { "Name":"ruthenium", "Percent":1.363674 }, { "Name":"tungsten", "Percent":1.212496 } ], "Composition":{ "Ice":0.000000, "Rock":0.672827, "Metal":0.327173 }, "SemiMajorAxis":51394448280.334473, "Eccentricity":0.173554, "OrbitalInclination":-164.752899, "Periapsis":243.912489, "OrbitalPeriod":9480342.149734, "AscendingNode":-98.783954, "MeanAnomaly":62.655478, "RotationPeriod":127770.138485, "AxialTilt":-0.440350, "WasDiscovered":true, "WasMapped":true }
+
+        /*
+         * A basic scan on a planet will include body name, planet class, orbital data, rotation period, mass, radius, surface gravity; 
+         * but will exclude tidal lock, terraform state, atmosphere, volcanism, surface pressure and temperature, available materials, and details of rings.
+         * The info for a star will be largely the same whether a basic scanner or detailed scanner is used.
+         */
+
+        // Star specific ...
+
+        public string ScanType { get; set; }
+        public string StarSystem { get; set; } // name
+        public long SystemAddress { get; set; }
+        public string Bodyname { get; set; }
+        public int BodyID { get; set; }
+        public long DistanceFromArrivalLS { get; set; }
+
+
+        public string StarType { get; set; } // Stellar classification (for a star) – see §15.2
+        public int Subclass { get; set; } // Star's heat classification 0..9
+        public double StellarMass { get; set; } //  mass as multiple of Sol's mass
+        public double Radius { get; set; }
+        public double AbsoluteMagnitude { get; set; }
+        public double RotationPeriod { get; set; } // (seconds)
+        public double SurfaceTemperature { get; set; }
+        public string Luminosity { get; set; } //  see §15.9
+        public double Age_MY { get; set; } // age in millions of years
+
+        // TODO: Rings: [ array ] – if present
+        public bool WasDiscovered { get; set; }
+        public bool WasMapped { get; set; }
+
+
+        // Planet specific ...
+
+        // TODO: Parents: Array of BodyType:BodyID pairs
+
+        public bool TidalLock { get; set; } // 1 if tidally locked
+        public string TerraformState { get; set; } // Terraformable, Terraforming, Terraformed, or null
+        public string PlanetClass { get; set; } // see §15.3
+        public string Atmosphere { get; set; } // see §15.4
+        public string AtmosphereType { get; set; }
+        // TODO: AtmosphereComposition: [array of info]
+        public string Volcanism { get; set; } // see §15.5
+        public double SurfaceGravity { get; set; }
+        public double SurfacePressure { get; set; }
+        public bool Landable { get; set; } // : true (if landable)
+
+        /* TODO: Materials: JSON array with objects with material names and percentage occurrence
+        Composition: structure containing info on solid composition
+        Ice
+        Rock
+        Metal
+        */
+
+        /* TODO: Rings: [array of info] – if rings present
+        ReserveLevel: (Pristine/Major/Common/Low/Depleted) – if rings present
+
+        Rings properties
+            Name
+            RingClass
+            MassMT – ie in megatons
+            InnerRad
+            OuterRad
+        */
+
+        public double Axial { get; set; } // tilt If rotating:
+
+        // Orbital Parameters for any Star/Planet/Moon(except main star of single-star system)
+
+        public double SemiMajorAxis { get; set; }
+        public double Eccentricity { get; set; }
+        public double OrbitalInclination { get; set; }
+        public double Periapsis { get; set; }
+        public double OrbitalPeriod { get; set; }
+    }
+
 }

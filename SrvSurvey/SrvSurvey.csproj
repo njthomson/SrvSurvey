@@ -48,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BioScanning.cs" />
     <Compile Include="FormGroundTarget.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -57,6 +58,7 @@
     <Compile Include="game\game-types.cs" />
     <Compile Include="game\Game.cs" />
     <Compile Include="game\GameGraphics.cs" />
+    <Compile Include="game\GeneticSampler.cs" />
     <Compile Include="game\JournalWatcher.cs" />
     <Compile Include="game\JournalEntry.cs" />
     <Compile Include="game\LandableBody.cs" />
@@ -68,6 +70,12 @@
       <DependentUpon>Main.cs</DependentUpon>
     </Compile>
     <Compile Include="Overlay.cs" />
+    <Compile Include="PlotBioStatus.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PlotBioStatus.Designer.cs">
+      <DependentUpon>PlotBioStatus.cs</DependentUpon>
+    </Compile>
     <Compile Include="PlotGrounded.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -122,6 +130,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlotBioStatus.resx">
+      <DependentUpon>PlotBioStatus.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PlotGrounded.resx">
       <DependentUpon>PlotGrounded.cs</DependentUpon>

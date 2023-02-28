@@ -72,7 +72,7 @@ namespace SrvSurvey.game
 
         private void Status_StatusChanged()
         {
-            log("status changed");
+            //log("status changed");
 
             // update the easy things
             this.location = new LatLong2(this.status);
@@ -80,22 +80,29 @@ namespace SrvSurvey.game
             this.checkModeChange();
 
             // are we near a body?
-            if ((this.status.Flags & StatusFlags.HasLatLong) > 0)
-            {
-                if (this.nearBody == null)
-                    this.nearBody = new LandableBody()
-                    {
-                        name = status.BodyName,
-                        radius = status.PlanetRadius,
-                    };
-            }
-            else if (this.nearBody != null)
-            {
-                // remove old one we are far away from
-                this.nearBody = null;
-            }
+            //if ((this.status.Flags & StatusFlags.HasLatLong) > 0)
+            //{
+            //    if (this.nearBody == null)
+            //    {
+            //        this.nearBody = new LandableBody()
+            //        {
+            //            bodyName = status.BodyName,
+            //            radius = status.PlanetRadius,
+            //        };
 
-
+            //        if (status.BodyName == status.Destination.Name)
+            //        {
+            //            // extract these from destination if they happen to match
+            //            this.nearBody.bodyID = status.Destination.Body;
+            //            this.nearBody.systemAddress = status.Destination.System;
+            //        }
+            //    }
+            //}
+            //else if (this.nearBody != null)
+            //{
+            //    // remove old one we are far away from
+            //    this.nearBody = null;
+            //}
         }
 
         public event GameModeChanged modeChanged;
@@ -329,7 +336,8 @@ namespace SrvSurvey.game
             }
 
             // if we are landed, we need to find the last Touchdown location
-            if ((this.status.Flags & StatusFlags.Landed) > 0)
+            //if ((this.status.Flags & StatusFlags.Landed) > 0)
+            if (this.isLanded)
             {
                 var lastTouchdown = this.findLastJournalOf<Touchdown>();
                 if (lastTouchdown == null)
@@ -343,8 +351,29 @@ namespace SrvSurvey.game
                 onJournalEntry(lastTouchdown);
             }
 
+            // if we are near a planet
+            if ((status.Flags & StatusFlags.HasLatLong) > 0)
+            {
+                this.nearBody = new LandableBody(status.BodyName)
+                {
+                    //bodyName = status.BodyName,
+                    radius = status.PlanetRadius,
+                };
+
+                //if (status.Destination != null && status.BodyName == status.Destination.Name)
+                //{
+                //    // extract these from destination if they happen to match
+                //    this.nearBody.bodyID = status.Destination.Body;
+                //    this.nearBody.systemAddress = status.Destination.System;
+                //}
+
+            }
+
             log($"Initialized Commander", this.Commander);
 
+            if (this.nearBody?.Genuses != null) {
+                log($"Genuses", string.Join(",", this.nearBody.Genuses.Select(_ => _.Genus_Localised)));
+            }
         }
 
         //private Touchdown findLastTouchdown()
@@ -377,7 +406,7 @@ namespace SrvSurvey.game
         //    return lastTouchdown;
         //}
 
-        private T findLastJournalOf<T>() where T : JournalEntry
+        public T findLastJournalOf<T>() where T : JournalEntry
         {
             log($"Finding last Touchdown event... {journals.Count}");
             // do we have one recently in the active journal?
@@ -412,7 +441,7 @@ namespace SrvSurvey.game
 
         private void Journals_onJournalEntry(JournalEntry entry, int index)
         {
-            Game.log($"!--> {entry.@event}");
+            //Game.log($"!--> {entry.@event}");
             this.onJournalEntry((dynamic)entry);
         }
 
@@ -487,13 +516,13 @@ namespace SrvSurvey.game
                 if (_touchdownLocation == null)
                 {
                     var lastTouchdown = journals.FindEntryByType<Touchdown>(-1, true);
-                    var lastLiftoff= journals.FindEntryByType<Liftoff>(-1, true);
+                    var lastLiftoff = journals.FindEntryByType<Liftoff>(-1, true);
                     if (lastTouchdown != null)
                     {
                         if (lastLiftoff == null || lastTouchdown.timestamp > lastLiftoff.timestamp)
                         {
                             _touchdownLocation = new LatLong2(lastLiftoff);
-                        } 
+                        }
                         else
                         {
                             _touchdownLocation = new LatLong2(lastLiftoff);
@@ -505,7 +534,6 @@ namespace SrvSurvey.game
         }
 
         public Angle touchdownHeading;
-
 
         private void onJournalEntry(Touchdown entry)
         {
@@ -522,7 +550,65 @@ namespace SrvSurvey.game
             log($"Liftoff!");
         }
 
+        private void onJournalEntry(ApproachBody entry)
+        {
+            this.nearBody = new LandableBody(entry.Body);
+            if (status.BodyName == entry.Body && status.PlanetRadius > 0)
+            {
+                // see if we can radius from status already
+                this.nearBody.radius = status.PlanetRadius;
+            }
 
+            // can we get radius from a recent Scan event?
+            var radius = this.findPlanetaryRadius(this.nearBody.bodyName);
+            if (radius > 0)
+            {
+                this.nearBody.radius = radius;
+            }
+            else
+            {
+                // nope
+                throw new Exception("Cannot find planet radius");
+            }
+
+            // TODO: fire some event?
+        }
+
+        private double findPlanetaryRadius(string bodyName)
+        {
+            // see if we can radius from status
+            if (status.BodyName == bodyName && status.PlanetRadius > 0)
+            {
+                return status.PlanetRadius;
+            }
+
+            // see if we can find it in the current journal
+            int idx = journals.Entries.Count - 1;
+            do
+            {
+                var last = journals.FindEntryByType<Scan>(idx, true);
+                if (last == null)
+                {
+                    // no more Scan entries in this file
+                    break;
+                }
+                else if (last.Bodyname == this.nearBody.bodyName)
+                {
+                    return last.Radius;
+                }
+
+                idx = journals.Entries.IndexOf(last);
+            } while (idx >= 0);
+
+            // TODO: scan across previous journal files?
+            throw new Exception("Failed in findPlanetaryRadius");
+        }
+
+        private void onJournalEntry(LeaveBody entry)
+        {
+            this.nearBody = null;
+            // TODO: fire some event?
+        }
         #endregion
     }
 }

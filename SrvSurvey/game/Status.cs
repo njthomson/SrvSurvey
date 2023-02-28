@@ -35,7 +35,7 @@ namespace SrvSurvey
         public int Heading { get; set; }
         public int Altitude{ get; set; }
 
-    public string BodyName { get; set; }
+        public string BodyName { get; set; }
         public Destination Destination { get; set; }
         public double PlanetRadius { get; set; }
 

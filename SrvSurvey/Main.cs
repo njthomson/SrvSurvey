@@ -17,10 +17,22 @@ namespace SrvSurvey
     {
         private Game game;
 
+        // various game modes that can be active
+        private PlotBioStatus plotBioStatus;
+        private bool bioScanning = false;
+
+        // targetting an explicit lat/long
+        private bool explicitGroundTarget = false;
+
+        // targetting the current destination's lat/long
+        private bool implicitGroundTarget = false;
+
+
         public Main()
         {
             InitializeComponent();
         }
+
         private void Main_Load(object sender, EventArgs e)
         {
             this.newGame();
@@ -29,10 +41,20 @@ namespace SrvSurvey
             {
                 PlotPulse.show();
             }
-            //new PlotGroundTarget(Game.activeGame.nearBody, new LatLong2(10.0, 40.0)).ShowDialog();
+
+            // is there a game mode/tool we should highlight?
+            if (game.nearBody?.Genuses?.Count > 0)
+            {
+                Game.log("Bio signals near!");
+                btnBioScan.Text += $" ({game.nearBody.Genuses.Count})";
+                btnBioScan.BackColor = Game.settings.GameOrange; // GameColors.Orange;
+            }
+
 
             // TMP!
+            //new PlotGroundTarget(Game.activeGame.nearBody, new LatLong2(10.0, 40.0)).ShowDialog();
             new PlotGrounded().Show(this);
+            //btnBioScan_Click(sender, e);
         }
 
         private void newGame()
@@ -79,12 +101,18 @@ namespace SrvSurvey
 
         private void btnBioScan_Click(object sender, EventArgs e)
         {
-            //new JUNK().Show();
-            //this.TopMost = true;
-            //this.Opacity = 0.5;
-            //Overlay.setOverlay(this);
-            var a = 20 - new Angle(45);
-            Game.log(a);
+            if (this.plotBioStatus == null)
+            {
+                this.plotBioStatus = new PlotBioStatus();
+                this.plotBioStatus.FormClosed += PlotBioStatus_FormClosed;
+                this.plotBioStatus.Show(this);
+            }
+
+        }
+
+        private void PlotBioStatus_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            this.plotBioStatus = null;
         }
 
         private void btnSurvey_Click(object sender, EventArgs e)
@@ -108,7 +136,7 @@ namespace SrvSurvey
             //Overlay.setFormMinimal(this);
             //LatLong2 ll2 = new LatLong2(-100, -40);
             //a += 140;
-            this.Text = $"{ game.isRunning } / {game.Commander} / {game.mode}";
+            this.Text = $"{game.isRunning} / {game.Commander} / {game.mode}";
         }
 
         private void btnQuit_Click(object sender, EventArgs e)
@@ -136,11 +164,6 @@ namespace SrvSurvey
         private void btnGroundTarget_Click(object sender, EventArgs e)
         {
             new FormGroundTarget().ShowDialog();
-        }
-
-        private void btnSettings_Click(object sender, EventArgs e)
-        {
-            new FormSettings().ShowDialog(this);
         }
     }
 }

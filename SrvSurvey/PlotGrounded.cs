@@ -21,6 +21,7 @@ namespace SrvSurvey
         private LatLong2 touchdownLocation;
         private Angle touchdownHeading;
         private TrackingDelta td;
+        private List<BioScan> bioScans = new List<BioScan>();
 
 
         public PlotGrounded()
@@ -30,20 +31,19 @@ namespace SrvSurvey
             game.status.StatusChanged += Status_StatusChanged;
             game.modeChanged += Game_modeChanged;
 
+            //this.Height = 200;
+            //this.Width = 200;
         }
 
         private void PlotGrounded_Load(object sender, EventArgs e)
         {
-            this.initialize();
-
+            // force a mode switch, that will initialize
             this.Game_modeChanged(game.mode);
             this.Status_StatusChanged();
-
 
             //this.Opacity = 1;
             game.journals.onJournalEntry += Journals_onJournalEntry;
         }
-
 
         #region journal events
 
@@ -70,25 +70,103 @@ namespace SrvSurvey
             Game.log($"re-liftoff");
             this.Invalidate();
         }
+        private void onJournalEntry(ScanOrganic entry)
+        {
+            Game.log($"ScanOrganic: {entry.ScanType}: {entry.Genus} / {entry.Species}");
+            this.addBioScan(entry);
+        }
+
+        private void onJournalEntry(SendText entry)
+        {
+            switch (entry.Message)
+            {
+                case "11":
+                    addBioScan(new ScanOrganic
+                    {
+                        ScanType = ScanType.Log,
+                        Genus = "$Codex_Ent_Anemone_Genus_Name;",
+                        Species = "Anemone Foo"
+                    });
+                    return;
+                case "12":
+                    addBioScan(new ScanOrganic
+                    {
+                        ScanType = ScanType.Sample,
+                        Genus = "$Codex_Ent_Anemone_Genus_Name;",
+                        Species = "Anemone Foo"
+                    });
+                    return;
+                case "13":
+                    addBioScan(new ScanOrganic
+                    {
+                        ScanType = ScanType.Analyse,
+                        Genus = "$Codex_Ent_Anemone_Genus_Name;",
+                        Species = "Anemone Foo"
+                    });
+                    return;
+
+                case "21":
+                    addBioScan(new ScanOrganic
+                    {
+                        ScanType = ScanType.Log,
+                        Genus = "$Codex_Ent_Stratum_Genus_Name;",
+                        Species = "Stratum Tectonicas"
+                    });
+                    return;
+                case "22":
+                    addBioScan(new ScanOrganic
+                    {
+                        ScanType = ScanType.Sample,
+                        Genus = "$Codex_Ent_Stratum_Genus_Name;",
+                        Species = "Stratum Tectonicas"
+                    });
+                    return;
+                case "23":
+                    addBioScan(new ScanOrganic
+                    {
+                        ScanType = ScanType.Analyse,
+                        Genus = "$Codex_Ent_Stratum_Genus_Name;",
+                        Species = "Stratum Tectonicas"
+                    });
+                    return;
+            }
+            //}
+            //var newScan = new BioScan()
+            //{
+            //    location = new LatLong2(game.status),
+            //    radius = BioScan.ranges[fakeGenus],
+            //    genus = fakeGenus,
+            //};
+            //this.bioScans.Add(newScan);
+            //Game.log($"Fake scan: {newScan}");
+            this.Invalidate();
+
+
+            if (entry.Message == "==")
+            {
+                // mark all as completed
+                foreach (var scan in this.bioScans)
+                    scan.scanType = ScanType.Analyse;
+
+                this.Invalidate();
+            }
+
+        }
 
         #endregion
 
-        private Boolean isSuitableMode
-        {
-            get
-            {
-                return //true || // <== tmp!
-                    game.isLanded;
-            }
-        }
-
         private void Game_modeChanged(GameMode newMode)
         {
-            if (this.isSuitableMode)
+            if (game.isLanded)
             {
-                this.Opacity = 0.5;
+                if (this.td == null)
+                {
+                    this.initialize();
+                }
 
-                this.floatLeftMiddle();
+                this.Opacity = 0.5;
+                Overlay.floatTopRight(this, 160, 20);
+                //this.floatLeftMiddle();
             }
             else
             {
@@ -109,7 +187,11 @@ namespace SrvSurvey
         {
             //throw new NotImplementedException();
             //this.currentLocation = new LatLong2(game.status);
-            this.td.Point1 = new LatLong2(game.status);
+            if (this.td != null)
+            {
+                this.td.Point1 = new LatLong2(game.status);
+            }
+
             this.Invalidate();
         }
 
@@ -157,7 +239,13 @@ namespace SrvSurvey
             this.touchdownHeading = game.touchdownHeading;
             Game.log($"touchdownLocation: {this.touchdownLocation}, heading {this.touchdownHeading}");
 
-            this.td = new TrackingDelta(game.nearBody.radius, new LatLong2(game.status), this.touchdownLocation);
+            if (this.touchdownLocation != null)
+            {
+                this.td = new TrackingDelta(
+                    game.nearBody.radius,
+                    new LatLong2(game.status),
+                    this.touchdownLocation);
+            }
         }
 
         private GraphicsPath ship;
@@ -170,7 +258,7 @@ namespace SrvSurvey
 
             var g = e.Graphics;
 
-            Game.log(td);
+            //Game.log(td);
 
             // draw basic compass cross hairs centered in the window
             g.ResetTransform();
@@ -179,7 +267,7 @@ namespace SrvSurvey
             float w = this.Width / 2;
             float h = this.Height / 2;
             //var r = new RectangleF(-w, -h + 8, w * 2, +h * 2);
-            var r = new RectangleF(0, pad, this.Width, this.Height- pad * 2);
+            var r = new RectangleF(0, pad, this.Width, this.Height - pad * 2);
             g.Clip = new Region(r);
             //g.FillRectangle(Brushes.Cyan, r);
             g.TranslateTransform(w, h);
@@ -190,6 +278,7 @@ namespace SrvSurvey
             g.DrawLine(Pens.DarkRed, 0, 0, 0, +this.Height);
             g.DrawLine(Pens.Red, 0, -this.Height, 0, 0);
 
+            this.drawBioScans(g, scale);
 
             // draw touchdown marker
             if (game.isLanded)
@@ -207,7 +296,6 @@ namespace SrvSurvey
 
                 //g.RotateTransform(this.touchdownHeading);
                 //g.FillPath(Brushes.RoyalBlue, this.ship);
-
             }
 
             // draw current location pointer (always at center of plot + unscaled)
@@ -221,9 +309,41 @@ namespace SrvSurvey
             var dy = (float)Math.Cos(Util.degToRad(game.status.Heading)) * 10F;
             g.DrawLine(GameColors.Lime2, 0, 0, +dx, -dy);
 
-            drawFromTouchdownText(g);
+            if (this.td != null)
+                drawDistancesText(g);
 
             drawScale(g, scale);
+        }
+
+
+        private void drawBioScans(Graphics g, float scale)
+        {
+            float w = this.Width / 2;
+            float h = this.Height / 2;
+
+            // delta to ship
+            g.ResetTransform();
+            g.TranslateTransform(w, h);
+            g.ScaleTransform(scale, scale);
+            var fudge = 10;
+
+            // use the same Tracking delta for all bioScans against the same currentLocation
+            var currentLocation = new LatLong2(this.game.status);
+            var d = new TrackingDelta(game.nearBody.radius, currentLocation, currentLocation);
+            foreach (var scan in this.bioScans)
+            {
+                d.Point2 = scan.location;
+                var rect = new RectangleF((float)-d.dx - scan.radius, (float)d.dy - scan.radius, scan.radius * 2, scan.radius * 2);
+                Game.log($"d.dx: {rect.X}, d.dy: {rect.Y}");
+
+                var complete = scan.scanType == ScanType.Analyse;
+                g.FillEllipse(complete ? GameColors.brushExclusionComplete : GameColors.brushExclusionActive, rect);
+                rect.Inflate(fudge, fudge);
+                g.DrawEllipse(complete ? GameColors.penExclusionComplete : GameColors.penExclusionActive, rect);
+                rect.Inflate(fudge, fudge);
+                g.DrawEllipse(complete ? GameColors.penExclusionComplete : GameColors.penExclusionActive, rect);
+            }
+
         }
 
         private void drawScale(Graphics g, float scale)
@@ -260,19 +380,18 @@ namespace SrvSurvey
 
             g.DrawLine(GameColors.penGameOrange2, x, y, x - dist, y);
             g.DrawLine(GameColors.penGameOrange2, x, y - 4, x, y + 4);
-            g.DrawLine(GameColors.penGameOrange2, x - dist, y - 4, x - dist, y + 4); ;
-
-
+            g.DrawLine(GameColors.penGameOrange2, x - dist, y - 4, x - dist, y + 4);
         }
 
-        private void drawFromTouchdownText(Graphics g)
+        private void drawDistancesText(Graphics g)
         {
             // distance from ship
             g.ResetTransform();
-            var txt = $"Touchdown dist: "
-                + Util.metersToString(this.td.distance)
-                + " heading: "
-                + this.td.angle.ToString();
+            var txt = $"Distances: "
+                + Util.metersToString(this.td.distance);
+            //+ " heading: "
+            //+ this.td.angle.ToString();
+
             //Util. .metersToString(this.td.dx, true)
             //+ ", " + Util.metersToString(this.td.dy, true)
             //+ ")"
@@ -294,6 +413,62 @@ namespace SrvSurvey
         {
             Overlay.setFocusED();
         }
+
+    }
+
+    class BioScan0
+    {
+        public long radius;
+        public string genus;
+        public string species;
+
+        public static Dictionary<string, int> ranges = new Dictionary<string, int>()
+        {
+            { "Aleoida",            150 },
+            { "Anemone",            100 },
+            { "Bacterium",          500 },
+            { "Bark Mound",         100 },
+            { "Brain Tree",         100 },
+            { "Cactoida",           300 },
+            { "Clypeus",            150 },
+            { "Concha",             150 },
+            { "Crystalline Shard",  100 },
+            { "Electricae",        1000 },
+            { "Fonticulua",         500 },
+            { "Frutexa",            150 },
+            { "Fumerola",           100 },
+            { "Fungoida",           300 },
+            { "Osseus",             800 },
+            { "Recepta",            150 },
+            { "Sinuous Tuber",      100 },
+            { "Stratum",            500 },
+            { "Tubus",              800 },
+            { "Tussock",            200 },
+
+        };
+        /*
+                Species Range
+        Aleoida 	150m 
+        Anemone 	100m 
+        Bacterium 	500m 
+        Bark Mound	100m 
+        Brain Tree 	100m 
+        Cactoida 	300m 
+        Clypeus 	150m 
+        Concha 	150m 
+        Crystalline Shard 	100m 
+        Electricae 	1000m 
+        Fonticulua 	500m 
+        Frutexa 	150m 
+        Fumerola 	100m 
+        Fungoida 	300m 
+        Osseus 	800m 
+        Recepta 	150m 
+        Sinuous Tuber 	100m 
+        Stratum 	500m 
+        Tubus 	800m 
+        Tussock 	200m 
+        */
 
     }
 }

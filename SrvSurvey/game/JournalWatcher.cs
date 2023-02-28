@@ -48,7 +48,7 @@ namespace SrvSurvey
 
         private void JournalWatcher_Changed(object sender, FileSystemEventArgs e)
         {
-            Game.log($"!?-->");
+            //Game.log($"!?-->");
 
             PlotPulse.LastChanged = DateTime.Now;
             this.readEntries();
@@ -121,6 +121,11 @@ namespace SrvSurvey
                 case nameof(StartJump): return entry.ToObject<StartJump>();
                 case nameof(FSDJump): return entry.ToObject<FSDJump>();
                 case nameof(Shutdown): return entry.ToObject<Shutdown>();
+                case nameof(ScanOrganic): return entry.ToObject<ScanOrganic>();
+                case nameof(SAASignalsFound): return entry.ToObject<SAASignalsFound>();
+                case nameof(ApproachBody): return entry.ToObject<ApproachBody>();
+                case nameof(LeaveBody): return entry.ToObject<LeaveBody>();
+                case nameof(Scan): return entry.ToObject<Scan>();
 
                 default:
                     // ignore anything else

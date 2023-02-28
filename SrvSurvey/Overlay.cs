@@ -41,7 +41,7 @@ namespace SrvSurvey
             SetForegroundWindow(hwnd);
         }
 
-        public static void setFormMinimal (Form form)
+        public static void setFormMinimal(Form form)
         {
             if (form.ControlBox == false)
             {
@@ -75,7 +75,7 @@ namespace SrvSurvey
                 // use the Window rect for the top left corder
                 r1.Left, r1.Top + windowTitleHeight,
                 // use the Client rect for the width/height
-                r2.Right, r2.Bottom );
+                r2.Right, r2.Bottom);
         }
 
         private static IntPtr getEDWindowHandle()
@@ -86,6 +86,44 @@ namespace SrvSurvey
 
             return handleED;
         }
+
+        public static void floatLeftMiddle(Form form)
+        {
+            // position form top center above the heading
+            var rect = Overlay.getEDWindowRect();
+
+            form.Left = rect.Left + 40;
+            form.Top = rect.Top + (rect.Height / 2) - (form.Height / 2);
+        }
+
+        //private void floatCenterMiddle(Form form)
+        //{
+        //    // position form top center above the heading
+        //    var rect = Overlay.getEDWindowRect();
+
+        //    form.Left = rect.Left + 40;
+        //    form.Top = rect.Top + (rect.Height / 2) - (form.Height / 2);
+        //}
+
+        public static void floatCenterTop(Form form, int fromTop)
+        {
+            // position form top center above the heading
+            var rect = Overlay.getEDWindowRect();
+
+            form.Left = rect.Left + (rect.Width / 2) - (form.Width / 2);
+            form.Top = rect.Top + fromTop;
+        }
+
+        public static void floatTopRight(Form form, int fromTop, int fromRight)
+        {
+            // position form top center above the heading
+            var rect = Overlay.getEDWindowRect();
+
+            form.Left = rect.Right - form.Width - fromRight;
+            form.Top = rect.Top + fromTop;
+        }
+
+
 
         [DllImport("User32.dll")]
         static extern bool GetWindowRect(IntPtr hWnd, ref RECT lpRect);

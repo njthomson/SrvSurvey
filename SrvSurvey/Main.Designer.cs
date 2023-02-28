@@ -33,7 +33,6 @@ namespace SrvSurvey
             this.btnSurvey = new System.Windows.Forms.Button();
             this.btnBioScan = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.btnSettings = new System.Windows.Forms.Button();
             this.btnGroundTarget = new System.Windows.Forms.Button();
             this.toolRight = new System.Windows.Forms.StatusStrip();
             this.lblCommander = new System.Windows.Forms.ToolStripStatusLabel();
@@ -49,27 +48,30 @@ namespace SrvSurvey
             // 
             // btnSurvey
             // 
+            this.btnSurvey.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.btnSurvey.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnSurvey.Location = new System.Drawing.Point(3, 3);
             this.btnSurvey.Name = "btnSurvey";
             this.btnSurvey.Size = new System.Drawing.Size(164, 21);
             this.btnSurvey.TabIndex = 0;
             this.btnSurvey.Text = "Survey Ruins";
-            this.btnSurvey.UseVisualStyleBackColor = true;
+            this.btnSurvey.UseVisualStyleBackColor = false;
             this.btnSurvey.Click += new System.EventHandler(this.btnSurvey_Click);
             // 
             // btnBioScan
             // 
+            this.btnBioScan.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.btnBioScan.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnBioScan.Location = new System.Drawing.Point(3, 30);
             this.btnBioScan.Name = "btnBioScan";
             this.btnBioScan.Size = new System.Drawing.Size(164, 21);
             this.btnBioScan.TabIndex = 1;
             this.btnBioScan.Text = "Bio Scanning";
-            this.btnBioScan.UseVisualStyleBackColor = true;
+            this.btnBioScan.UseVisualStyleBackColor = false;
             this.btnBioScan.Click += new System.EventHandler(this.btnBioScan_Click);
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.btnSettings);
             this.panel1.Controls.Add(this.btnGroundTarget);
             this.panel1.Controls.Add(this.btnSurvey);
             this.panel1.Controls.Add(this.btnBioScan);
@@ -78,24 +80,16 @@ namespace SrvSurvey
             this.panel1.Size = new System.Drawing.Size(173, 190);
             this.panel1.TabIndex = 6;
             // 
-            // btnSettings
-            // 
-            this.btnSettings.Location = new System.Drawing.Point(3, 84);
-            this.btnSettings.Name = "btnSettings";
-            this.btnSettings.Size = new System.Drawing.Size(164, 21);
-            this.btnSettings.TabIndex = 4;
-            this.btnSettings.Text = "Settings";
-            this.btnSettings.UseVisualStyleBackColor = true;
-            this.btnSettings.Click += new System.EventHandler(this.btnSettings_Click);
-            // 
             // btnGroundTarget
             // 
+            this.btnGroundTarget.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.btnGroundTarget.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnGroundTarget.Location = new System.Drawing.Point(3, 57);
             this.btnGroundTarget.Name = "btnGroundTarget";
             this.btnGroundTarget.Size = new System.Drawing.Size(164, 21);
             this.btnGroundTarget.TabIndex = 3;
             this.btnGroundTarget.Text = "Ground Target";
-            this.btnGroundTarget.UseVisualStyleBackColor = true;
+            this.btnGroundTarget.UseVisualStyleBackColor = false;
             this.btnGroundTarget.Click += new System.EventHandler(this.btnGroundTarget_Click);
             // 
             // toolRight
@@ -115,6 +109,7 @@ namespace SrvSurvey
             this.toolRight.Size = new System.Drawing.Size(362, 26);
             this.toolRight.TabIndex = 7;
             this.toolRight.Text = "statusStrip1";
+            this.toolRight.DoubleClick += new System.EventHandler(this.btnViewLogs_Click);
             // 
             // lblCommander
             // 
@@ -161,21 +156,21 @@ namespace SrvSurvey
             // btnViewLogs
             // 
             this.btnViewLogs.Name = "btnViewLogs";
-            this.btnViewLogs.Size = new System.Drawing.Size(133, 22);
+            this.btnViewLogs.Size = new System.Drawing.Size(180, 22);
             this.btnViewLogs.Text = "View logs";
             this.btnViewLogs.Click += new System.EventHandler(this.btnViewLogs_Click);
             // 
             // btnQuit
             // 
             this.btnQuit.Name = "btnQuit";
-            this.btnQuit.Size = new System.Drawing.Size(133, 22);
+            this.btnQuit.Size = new System.Drawing.Size(180, 22);
             this.btnQuit.Text = "Quit";
             this.btnQuit.Click += new System.EventHandler(this.btnQuit_Click);
             // 
             // settingsToolStripMenuItem
             // 
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.settingsToolStripMenuItem.Text = "Settings";
             this.settingsToolStripMenuItem.Click += new System.EventHandler(this.settingsToolStripMenuItem_Click);
             // 
@@ -183,6 +178,7 @@ namespace SrvSurvey
             // 
             this.btnQuit2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnQuit2.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnQuit2.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnQuit2.Location = new System.Drawing.Point(275, 12);
             this.btnQuit2.Name = "btnQuit2";
             this.btnQuit2.Size = new System.Drawing.Size(75, 23);
@@ -202,12 +198,11 @@ namespace SrvSurvey
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.toolRight);
             this.Font = new System.Drawing.Font("Lucida Sans Typewriter", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "Main";
-            this.ShowIcon = false;
-            this.Text = "SrvSurvey";
+            this.Text = "Srv Survey";
             this.Load += new System.EventHandler(this.Main_Load);
             this.DoubleClick += new System.EventHandler(this.Main_DoubleClick);
             this.panel1.ResumeLayout(false);
@@ -228,7 +223,6 @@ namespace SrvSurvey
         private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButton1;
         private System.Windows.Forms.ToolStripMenuItem btnViewLogs;
         private System.Windows.Forms.ToolStripMenuItem btnQuit;
-        private System.Windows.Forms.Button btnSettings;
         private System.Windows.Forms.Button btnGroundTarget;
         private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
         private System.Windows.Forms.Button btnQuit2;
