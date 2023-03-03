@@ -1,5 +1,5 @@
 name: Bug Report2
-description: File a bug report
+description: File a new bug or crash or try (going here)[https://github.com/njthomson/SrvSurvey/issues] for more
 title: "bug"
 labels: ["bug", "triage"]
 body:
