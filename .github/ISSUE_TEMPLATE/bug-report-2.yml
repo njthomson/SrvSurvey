@@ -1,12 +1,7 @@
-name: Bug Report2
-description: File a new bug or crash or try (going here)[https://github.com/njthomson/SrvSurvey/issues] for more
-title: "bug"
-labels: ["bug", "triage"]
+name: Crash Report
+description: File a crashing bug.
+labels: ["bug", "crash", "triage"]
 body:
-  - type: markdown
-    attributes:
-      value: |
-        Thank you for filling out this bug report!
   - type: textarea
     id: what-happened
     attributes:
@@ -24,11 +19,17 @@ body:
     validations:
       required: true
   - type: textarea
-    id: exception
+    id: exception-message
     attributes:
-      label: Exception message and stack
+      label: Exception message:
     validations:
-      required: false
+      required: true
+  - type: textarea
+    id: exception-stack
+    attributes:
+      label: Exception stack:
+    validations:
+      required: true
   - type: input
     id: contact
     attributes:
