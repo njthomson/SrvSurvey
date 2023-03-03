@@ -42,28 +42,24 @@ namespace SrvSurvey
             GameColors.penOrangeStripe3 = new Pen(GameColors.brushOrangeStripe, 3);
 
             // prepare brush for bio-scan exclusion circles: red cross-hatch
-            bm = new Bitmap(5, 5);
-            using (var g = Graphics.FromImage(bm))
-            {
-                g.DrawLine(Pens.DarkRed, 0, 0, bm.Width, bm.Height);
-                g.DrawLine(Pens.DarkRed, bm.Width, 0, 0, bm.Height);
-            }
-            GameColors.brushExclusionActive = new TextureBrush(bm, WrapMode.Tile);
+            GameColors.brushExclusionActive = new HatchBrush(HatchStyle.ZigZag, Color.DarkRed, Color.Transparent);
+            //new TextureBrush(bm, WrapMode.TileFlipXY);
             GameColors.penExclusionActive = new Pen(Color.FromArgb(96, Color.Red), 20);
 
             // prepare brush for bio-scan exclusion circles: red cross-hatch
-            bm = new Bitmap(5, 5);
-            using (var g = Graphics.FromImage(bm))
-            {
-                g.DrawLine(Pens.DarkGreen, 0, 0, bm.Width, bm.Height);
-                g.DrawLine(Pens.DarkGreen, bm.Width, 0, 0, bm.Height);
-            }
-            GameColors.brushExclusionComplete = new TextureBrush(bm, WrapMode.Tile);
+            GameColors.brushExclusionComplete = new HatchBrush(HatchStyle.Divot, Color.DarkGreen, Color.Transparent);
             GameColors.penExclusionComplete = new Pen(Color.FromArgb(96, Color.Green), 20);
+
+            // prepare brush for ship location
+            GameColors.brushShipLocation = new HatchBrush(HatchStyle.SmallCheckerBoard, Cyan, Color.Transparent);
+            GameColors.brushSrvLocation = new HatchBrush(HatchStyle.SmallCheckerBoard, Orange, Color.Transparent);
+
+            
         }
 
         public static Color LimeIsh = Color.FromArgb(200, Color.Lime);
         public static Color Orange = Color.FromArgb(255, 186, 113, 4);
+        public static Color Cyan = Color.FromArgb(255, 84, 223, 237);
 
         public static Pen penBackgroundStripe = new Pen(Color.FromArgb(255, 12, 12, 12));
         public static Pen penGameOrange1 = new Pen(Orange, 1); //255, 113, 00), 2);
@@ -80,6 +76,10 @@ namespace SrvSurvey
         public static Pen penExclusionActive;
         public static Brush brushExclusionComplete;
         public static Pen penExclusionComplete;
+
+        public static Brush brushShipLocation;
+        public static Brush brushSrvLocation;
+
 
         public static Brush brushBackgroundStripe;
         public static Brush brushOrangeStripe;

@@ -354,11 +354,15 @@ namespace SrvSurvey.game
             // if we are near a planet
             if ((status.Flags & StatusFlags.HasLatLong) > 0)
             {
-                this.nearBody = new LandableBody(status.BodyName)
+                var locationEntry = journals.FindEntryByType<Location>(-1, true);
+                if (locationEntry != null && status.BodyName == locationEntry.Body)
                 {
-                    //bodyName = status.BodyName,
-                    radius = status.PlanetRadius,
-                };
+                    this.nearBody = new LandableBody(locationEntry.Body, locationEntry.BodyID)
+                    {
+                        //bodyName = status.BodyName,
+                        radius = status.PlanetRadius,
+                    };
+                }
 
                 //if (status.Destination != null && status.BodyName == status.Destination.Name)
                 //{
@@ -552,8 +556,9 @@ namespace SrvSurvey.game
 
         private void onJournalEntry(ApproachBody entry)
         {
-            this.nearBody = new LandableBody(entry.Body);
-            if (status.BodyName == entry.Body && status.PlanetRadius > 0)
+            
+            this.nearBody = new LandableBody(entry.Body, entry.BodyID);
+            if (status.BodyName == entry.Body && this.nearBody.radius == 0 && status.PlanetRadius > 0)
             {
                 // see if we can radius from status already
                 this.nearBody.radius = status.PlanetRadius;
@@ -561,11 +566,11 @@ namespace SrvSurvey.game
 
             // can we get radius from a recent Scan event?
             var radius = this.findPlanetaryRadius(this.nearBody.bodyName);
-            if (radius > 0)
+            if (this.nearBody.radius == 0 && radius > 0)
             {
                 this.nearBody.radius = radius;
             }
-            else
+            else if (this.nearBody.radius == 0)
             {
                 // nope
                 throw new Exception("Cannot find planet radius");

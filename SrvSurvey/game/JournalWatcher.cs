@@ -126,6 +126,8 @@ namespace SrvSurvey
                 case nameof(ApproachBody): return entry.ToObject<ApproachBody>();
                 case nameof(LeaveBody): return entry.ToObject<LeaveBody>();
                 case nameof(Scan): return entry.ToObject<Scan>();
+                case nameof(Embark): return entry.ToObject<Embark>();
+                case nameof(Disembark): return entry.ToObject<Disembark>();
 
                 default:
                     // ignore anything else

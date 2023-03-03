@@ -19,6 +19,8 @@ namespace SrvSurvey
         private Game game = Game.activeGame;
 
         private LatLong2 touchdownLocation;
+        private TrackingDelta srvLocation;
+
         private Angle touchdownHeading;
         private TrackingDelta td;
         private List<BioScan> bioScans = new List<BioScan>();
@@ -28,21 +30,27 @@ namespace SrvSurvey
         {
             InitializeComponent();
 
-            game.status.StatusChanged += Status_StatusChanged;
-            game.modeChanged += Game_modeChanged;
-
             //this.Height = 200;
             //this.Width = 200;
         }
 
         private void PlotGrounded_Load(object sender, EventArgs e)
         {
+            game.status.StatusChanged += Status_StatusChanged;
+            game.modeChanged += Game_modeChanged;
+
             // force a mode switch, that will initialize
             this.Game_modeChanged(game.mode);
             this.Status_StatusChanged();
 
             //this.Opacity = 1;
             game.journals.onJournalEntry += Journals_onJournalEntry;
+            game.nearBody.bioScanEvent += NearBody_bioScanEvent;
+        }
+
+        private void NearBody_bioScanEvent()
+        {
+            this.Invalidate();
         }
 
         #region journal events
@@ -70,43 +78,44 @@ namespace SrvSurvey
             Game.log($"re-liftoff");
             this.Invalidate();
         }
-        private void onJournalEntry(ScanOrganic entry)
-        {
-            Game.log($"ScanOrganic: {entry.ScanType}: {entry.Genus} / {entry.Species}");
-            this.addBioScan(entry);
-        }
+        //private void onJournalEntry(ScanOrganic entry)
+        //{
+        //    Game.log($"ScanOrganic: {entry.ScanType}: {entry.Genus} / {entry.Species}");
+        //    this.addBioScan(entry);
+        //}
 
         private void onJournalEntry(SendText entry)
         {
             switch (entry.Message)
             {
                 case "11":
-                    addBioScan(new ScanOrganic
+
+                    game.nearBody.addBioScan(new ScanOrganic
                     {
                         ScanType = ScanType.Log,
-                        Genus = "$Codex_Ent_Anemone_Genus_Name;",
+                        Genus = "$Codex_Ent_Sphere_Name;",
                         Species = "Anemone Foo"
                     });
                     return;
                 case "12":
-                    addBioScan(new ScanOrganic
+                    game.nearBody.addBioScan(new ScanOrganic
                     {
                         ScanType = ScanType.Sample,
-                        Genus = "$Codex_Ent_Anemone_Genus_Name;",
+                        Genus = "$Codex_Ent_Sphere_Name;",
                         Species = "Anemone Foo"
                     });
                     return;
                 case "13":
-                    addBioScan(new ScanOrganic
+                    game.nearBody.addBioScan(new ScanOrganic
                     {
                         ScanType = ScanType.Analyse,
-                        Genus = "$Codex_Ent_Anemone_Genus_Name;",
+                        Genus = "$Codex_Ent_Sphere_Name;",
                         Species = "Anemone Foo"
                     });
                     return;
 
                 case "21":
-                    addBioScan(new ScanOrganic
+                    game.nearBody.addBioScan(new ScanOrganic
                     {
                         ScanType = ScanType.Log,
                         Genus = "$Codex_Ent_Stratum_Genus_Name;",
@@ -114,7 +123,7 @@ namespace SrvSurvey
                     });
                     return;
                 case "22":
-                    addBioScan(new ScanOrganic
+                    game.nearBody.addBioScan(new ScanOrganic
                     {
                         ScanType = ScanType.Sample,
                         Genus = "$Codex_Ent_Stratum_Genus_Name;",
@@ -122,7 +131,7 @@ namespace SrvSurvey
                     });
                     return;
                 case "23":
-                    addBioScan(new ScanOrganic
+                    game.nearBody.addBioScan(new ScanOrganic
                     {
                         ScanType = ScanType.Analyse,
                         Genus = "$Codex_Ent_Stratum_Genus_Name;",
@@ -152,6 +161,26 @@ namespace SrvSurvey
             }
 
         }
+
+        private void onJournalEntry(Disembark entry)
+        {
+            Game.log($"Disembark");
+            if (entry.SRV)
+            {
+                this.srvLocation = new TrackingDelta(game.nearBody.radius, new LatLong2(game.status), new LatLong2(game.status));
+            }
+            this.Invalidate();
+        }
+        private void onJournalEntry(Embark entry)
+        {
+            Game.log($"Embark");
+            if (entry.SRV)
+            {
+                this.srvLocation = null;
+            }
+            this.Invalidate();
+        }
+
 
         #endregion
 
@@ -190,6 +219,10 @@ namespace SrvSurvey
             if (this.td != null)
             {
                 this.td.Point1 = new LatLong2(game.status);
+            }
+            if (this.srvLocation != null)
+            {
+                this.srvLocation.Point1 = new LatLong2(game.status);
             }
 
             this.Invalidate();
@@ -254,70 +287,83 @@ namespace SrvSurvey
 
         private void PlotGrounded_Paint(object sender, PaintEventArgs e)
         {
-            const float scale = 0.25f;
-
             var g = e.Graphics;
 
-            //Game.log(td);
+            const float scale = 0.25f;
 
             // draw basic compass cross hairs centered in the window
-            g.ResetTransform();
-            const float pad = 8;
-
             float w = this.Width / 2;
             float h = this.Height / 2;
-            //var r = new RectangleF(-w, -h + 8, w * 2, +h * 2);
-            var r = new RectangleF(0, pad, this.Width, this.Height - pad * 2);
-            g.Clip = new Region(r);
-            //g.FillRectangle(Brushes.Cyan, r);
-            g.TranslateTransform(w, h);
 
-            // think about this ...
-            //g.RotateTransform(360 - game.status.Heading);
-            g.DrawLine(Pens.DarkRed, -this.Width, 0, +this.Width, 0);
-            g.DrawLine(Pens.DarkRed, 0, 0, 0, +this.Height);
-            g.DrawLine(Pens.Red, 0, -this.Height, 0, 0);
+            this.drawCompassLines(g);
 
             this.drawBioScans(g, scale);
 
             // draw touchdown marker
-            if (game.isLanded)
+            if (game.isLanded && td != null)
             {
                 // delta to ship
                 g.ResetTransform();
                 g.TranslateTransform(w, h);
                 g.ScaleTransform(scale, scale);
+                g.RotateTransform(360 - game.status.Heading);
 
-                //g.ScaleTransform(scale, scale);
-                g.TranslateTransform((float)td.dx, -(float)td.dy);
-
-                const float touchdownSize = 32f;
-                g.FillEllipse(GameColors.brushOrangeStripe, -touchdownSize, -touchdownSize, touchdownSize, touchdownSize);
-
-                //g.RotateTransform(this.touchdownHeading);
-                //g.FillPath(Brushes.RoyalBlue, this.ship);
+                const float touchdownSize = 64f;
+                var rect = new RectangleF((float)td.dx - touchdownSize, (float)-td.dy - touchdownSize, touchdownSize * 2, touchdownSize * 2);
+                g.FillEllipse(GameColors.brushShipLocation, rect);
             }
 
-            // draw current location pointer (always at center of plot + unscaled)
-            var locSz = 5f;
+            // draw SRV marker
+            if (game.isLanded && this.srvLocation != null)
+            {
+                // delta to ship
+                g.ResetTransform();
+                g.TranslateTransform(w, h);
+                g.ScaleTransform(scale, scale);
+                g.RotateTransform(360 - game.status.Heading);
 
+                const float srvSize = 32f;
+                var rect = new RectangleF((float)srvLocation.dx - srvSize, (float)-srvLocation.dy - srvSize, srvSize * 2, srvSize * 2);
+                g.FillRectangle(GameColors.brushSrvLocation, rect);
+            }
+
+
+            // draw current location pointer (always at center of plot + unscaled)
             g.ResetTransform();
             g.TranslateTransform(w, h);
-            //g.ScaleTransform(scale, scale);
+            g.RotateTransform(360 - game.status.Heading);
+
+            var locSz = 5f;
             g.DrawEllipse(GameColors.Lime2, -locSz, -locSz, locSz * 2, locSz * 2);
             var dx = (float)Math.Sin(Util.degToRad(game.status.Heading)) * 10F;
             var dy = (float)Math.Cos(Util.degToRad(game.status.Heading)) * 10F;
             g.DrawLine(GameColors.Lime2, 0, 0, +dx, -dy);
 
-            if (this.td != null)
-                drawDistancesText(g);
-
             drawScale(g, scale);
         }
 
+        private void drawCompassLines(Graphics g)
+        {
+            g.ResetTransform();
+            const float pad = 8;
+
+            float w = this.Width / 2;
+            float h = this.Height / 2;
+            var r = new RectangleF(0, pad, this.Width, this.Height - pad * 2);
+            g.Clip = new Region(r);
+            g.TranslateTransform(w, h);
+
+            // draw compass rose lines
+            g.RotateTransform(360 - game.status.Heading);
+            g.DrawLine(Pens.DarkRed, -this.Width, 0, +this.Width, 0);
+            g.DrawLine(Pens.DarkRed, 0, 0, 0, +this.Height);
+            g.DrawLine(Pens.Red, 0, -this.Height, 0, 0);
+        }
 
         private void drawBioScans(Graphics g, float scale)
         {
+            if (game.nearBody == null || this.td == null) return;
+
             float w = this.Width / 2;
             float h = this.Height / 2;
 
@@ -325,26 +371,52 @@ namespace SrvSurvey
             g.ResetTransform();
             g.TranslateTransform(w, h);
             g.ScaleTransform(scale, scale);
-            var fudge = 10;
+            g.RotateTransform(360 - game.status.Heading);
 
             // use the same Tracking delta for all bioScans against the same currentLocation
             var currentLocation = new LatLong2(this.game.status);
             var d = new TrackingDelta(game.nearBody.radius, currentLocation, currentLocation);
-            foreach (var scan in this.bioScans)
+            foreach (var scan in game.nearBody.completedScans)
             {
-                d.Point2 = scan.location;
-                var rect = new RectangleF((float)-d.dx - scan.radius, (float)d.dy - scan.radius, scan.radius * 2, scan.radius * 2);
-                Game.log($"d.dx: {rect.X}, d.dy: {rect.Y}");
-
-                var complete = scan.scanType == ScanType.Analyse;
-                g.FillEllipse(complete ? GameColors.brushExclusionComplete : GameColors.brushExclusionActive, rect);
-                rect.Inflate(fudge, fudge);
-                g.DrawEllipse(complete ? GameColors.penExclusionComplete : GameColors.penExclusionActive, rect);
-                rect.Inflate(fudge, fudge);
-                g.DrawEllipse(complete ? GameColors.penExclusionComplete : GameColors.penExclusionActive, rect);
+                drawBioScan(g, d, scan);
             }
 
+            var txt = $"Distances: {Util.metersToString(this.td.distance)}";
+
+            if (game.nearBody.scanOne != null)
+            {
+                drawBioScan(g, d, game.nearBody.scanOne);
+                txt += $" / { Util.metersToString(d.distance)}";
+            }
+            if (game.nearBody.scanTwo != null)
+            {
+                drawBioScan(g, d, game.nearBody.scanTwo);
+                txt += $" / {Util.metersToString(d.distance)}";
+            }
+
+            // draw distances along the top
+            g.ResetTransform();
+            var txtSz = g.MeasureString(txt, this.font);
+            var r = new RectangleF(8, 8, this.Width - 20, txtSz.Height);
+            g.DrawString(txt, this.font, GameColors.brushGameOrange, r, StringFormat.GenericTypographic);;
         }
+
+        private void drawBioScan(Graphics g, TrackingDelta d, BioScan scan)
+        {
+            var fudge = 10;
+
+            d.Point2 = scan.location;
+            var rect = new RectangleF((float)-d.dx - scan.radius, (float)d.dy - scan.radius, scan.radius * 2, scan.radius * 2);
+            Game.log($"d.dx: {rect.X}, d.dy: {rect.Y}");
+
+            var complete = scan.scanType == ScanType.Analyse;
+            g.FillEllipse(complete ? GameColors.brushExclusionComplete : GameColors.brushExclusionActive, rect);
+            rect.Inflate(fudge, fudge);
+            g.DrawEllipse(complete ? GameColors.penExclusionComplete : GameColors.penExclusionActive, rect);
+            rect.Inflate(fudge, fudge);
+            g.DrawEllipse(complete ? GameColors.penExclusionComplete : GameColors.penExclusionActive, rect);
+        }
+
 
         private void drawScale(Graphics g, float scale)
         {
@@ -352,7 +424,7 @@ namespace SrvSurvey
 
             g.ResetTransform();
 
-            var dist = 100f;
+            float dist = game.nearBody.scanOne?.radius ?? 100;
 
             var txt = Util.metersToString(dist);
             var txtSz = g.MeasureString(txt, this.font);
@@ -381,27 +453,6 @@ namespace SrvSurvey
             g.DrawLine(GameColors.penGameOrange2, x, y, x - dist, y);
             g.DrawLine(GameColors.penGameOrange2, x, y - 4, x, y + 4);
             g.DrawLine(GameColors.penGameOrange2, x - dist, y - 4, x - dist, y + 4);
-        }
-
-        private void drawDistancesText(Graphics g)
-        {
-            // distance from ship
-            g.ResetTransform();
-            var txt = $"Distances: "
-                + Util.metersToString(this.td.distance);
-            //+ " heading: "
-            //+ this.td.angle.ToString();
-
-            //Util. .metersToString(this.td.dx, true)
-            //+ ", " + Util.metersToString(this.td.dy, true)
-            //+ ")"
-            //;
-
-            var txtSz = g.MeasureString(txt, this.font);
-
-            var foo = new StringFormat(); // StringFormatFlags);
-            var r = new RectangleF(8, 8, this.Width - 20, txtSz.Height);
-            g.DrawString(txt, this.font, GameColors.brushGameOrange, r, foo); // this.Height - 20);
         }
 
         private void PlotGrounded_DoubleClick(object sender, EventArgs e)

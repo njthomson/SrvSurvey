@@ -54,7 +54,7 @@ namespace SrvSurvey
             // TMP!
             //new PlotGroundTarget(Game.activeGame.nearBody, new LatLong2(10.0, 40.0)).ShowDialog();
             new PlotGrounded().Show(this);
-            //btnBioScan_Click(sender, e);
+            btnBioScan_Click(sender, e);
         }
 
         private void newGame()

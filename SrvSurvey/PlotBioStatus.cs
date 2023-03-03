@@ -46,6 +46,12 @@ namespace SrvSurvey
 
             //this.Opacity = 1;
             game.journals.onJournalEntry += Journals_onJournalEntry;
+            game.nearBody.bioScanEvent += NearBody_bioScanEvent;
+        }
+
+        private void NearBody_bioScanEvent()
+        {
+            this.Invalidate();
         }
 
         #region journal events
@@ -176,7 +182,7 @@ namespace SrvSurvey
 
         private GraphicsPath ship;
         private Font font = new Font(Game.settings.font2.FontFamily, 8f);
-        private Font fontBig = new Font(Game.settings.font2.FontFamily, 24f);
+        private Font fontBig = new Font(Game.settings.font2.FontFamily, 22f);
         private Font fontSmall = new Font(Game.settings.font2.FontFamily, 6f);
 
 
@@ -191,11 +197,13 @@ namespace SrvSurvey
                 this.font, GameColors.brushGameOrange, 4, 4);
 
             g.DrawString(
-                $"0 of {game.nearBody.Genuses.Count}",
+                $"{game.nearBody.analysedSpecies.Count} of {game.nearBody.Genuses.Count}",
                 this.fontBig, GameColors.brushGameOrange, 4, 21);
 
-            this.showAllGenus(g);
-            //this.showCurrentGenus(g);
+            if (game.nearBody.scanOne == null)
+                this.showAllGenus(g);
+            else 
+                this.showCurrentGenus(g);
 
         }
 
@@ -206,12 +214,12 @@ namespace SrvSurvey
             float y = 16;
 
             g.DrawString(
-                $"{this.currentGenus}",
+                $"{game.nearBody.scanOne.speciesLocalized}",
                 this.fontBig, GameColors.brushGameOrange,
                 x, y);
 
 
-            this.drawScale(g, (float)BioScan.ranges[this.currentGenus], 0.25f);
+            this.drawScale(g, game.nearBody.scanOne.radius, 0.25f);
 
         }
 
@@ -256,9 +264,9 @@ namespace SrvSurvey
             float x = 110;
             float y = 16;
             //foreach (var name in BioScan2.ranges.Keys)
-            foreach (var name in game.nearBody.Genuses.Select(_ => _.Genus_Localised))
+            foreach (var genus in game.nearBody.Genuses)
             {
-                var sz = g.MeasureString(name, this.font);
+                var sz = g.MeasureString(genus.Genus_Localised, this.font);
 
                 if (x + sz.Width > this.Width - 16)
                 {
@@ -266,9 +274,12 @@ namespace SrvSurvey
                     y += sz.Height;
                 }
 
+                var analysed = game.nearBody.analysedSpecies.ContainsKey(genus.Genus);
+
                 g.DrawString(
-                    name,
-                    this.font, GameColors.brushGameOrange,
+                    genus.Genus_Localised,
+                    this.font,
+                    analysed ? Brushes.Green : GameColors.brushGameOrange,
                     x, y);
 
                 x += sz.Width + 8;

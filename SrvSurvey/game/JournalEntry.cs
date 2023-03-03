@@ -10,6 +10,9 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.Tab;
 
 namespace SrvSurvey
 {
+    // See details from:
+    // https://elite-journal.readthedocs.io/en/latest/
+
     class JournalEntry
     {
         public DateTime timestamp { get; set; }
@@ -356,4 +359,24 @@ namespace SrvSurvey
         public double OrbitalPeriod { get; set; }
     }
 
+    class Disembark : JournalEntry
+    {
+        // { "timestamp":"2023-03-03T06:20:22Z", "event":"Disembark", "SRV":true, "Taxi":false, "Multicrew":false, "ID":26, "StarSystem":"Synuefe TP-F b44-0", "SystemAddress":682228131193, "Body":"Synuefe TP-F b44-0 AB 7", "BodyID":14, "OnStation":false, "OnPlanet":true }
+        public bool SRV { get; set; }
+        public bool Taxi { get; set; }
+        public bool Multicrew { get; set; }
+
+        public string StarSystem { get; set; }
+        public long SystemAddress { get; set; }
+        public string Body { get; set; }
+        public int BodyID { get; set; }
+
+        public bool OnStation { get; set; }
+        public bool OnPlanet { get; set; }
+    }
+
+    class Embark : Disembark
+    {
+        // { "timestamp":"2023-03-03T06:21:00Z", "event":"Embark", "SRV":true, "Taxi":false, "Multicrew":false, "ID":26, "StarSystem":"Synuefe TP-F b44-0", "SystemAddress":682228131193, "Body":"Synuefe TP-F b44-0 AB 7", "BodyID":14, "OnStation":false, "OnPlanet":true }
+    }
 }
