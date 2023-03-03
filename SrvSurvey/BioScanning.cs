@@ -9,8 +9,6 @@ using System.Threading.Tasks;
 
 namespace SrvSurvey
 {
-    delegate void BioScanEvent();
-
     /// <summary>
     /// Represents a single sampling using the BioScanner
     /// </summary>
@@ -54,7 +52,7 @@ namespace SrvSurvey
 
         };
         /*
-                Species Range
+        Species Range
         Aleoida 	150m 
         Anemone 	100m 
         Bacterium 	500m 
@@ -62,82 +60,19 @@ namespace SrvSurvey
         Brain Tree 	100m 
         Cactoida 	300m 
         Clypeus 	150m 
-        Concha 	150m 
+        Concha 	    150m 
         Crystalline Shard 	100m 
         Electricae 	1000m 
         Fonticulua 	500m 
         Frutexa 	150m 
         Fumerola 	100m 
         Fungoida 	300m 
-        Osseus 	800m 
+        Osseus 	    800m 
         Recepta 	150m 
         Sinuous Tuber 	100m 
         Stratum 	500m 
-        Tubus 	800m 
+        Tubus 	    800m 
         Tussock 	200m 
         */
-    }
-
-    class Genus : ScanGenus
-    {
-        public float credits;
-
-    }
-
-    internal class BioScanning
-    {
-        public List<ScanGenus> genuses;
-        public List<BioScan> completed = new List<BioScan>();
-        public BioScan scanOne;
-        public BioScan scanTwo;
-        public event BioScanEvent bioScanEvent;
-
-        private Game game;
-
-        BioScanning(Game game, List<ScanGenus> genuses)
-        {
-            this.game = game;
-            this.genuses = genuses;
-        }
-
-        private void addBioScan(ScanOrganic entry)
-        {
-            var newScan = new BioScan()
-            {
-                location = new LatLong2(game.status),
-                radius = BioScan.ranges[entry.Genus],
-                genus = entry.Genus,
-                species = entry.Species,
-            };
-            Game.log($"Scan: {newScan}");
-
-            if (entry.ScanType == ScanType.Log)
-            {
-                // replace 1st, clear 2nd
-                this.scanOne = newScan;
-                this.scanTwo = null;
-            }
-            else if (entry.ScanType == ScanType.Sample)
-            {
-                this.scanTwo = newScan;
-            }
-            else if (entry.ScanType == ScanType.Analyse)
-            {
-                this.completed.Add(scanOne);
-                this.completed.Add(scanTwo);
-                this.completed.Add(newScan);
-            }
-            else
-            {
-                throw new Exception($"Unexpected ScanType: {entry.ScanType}");
-            }
-
-            if (this.bioScanEvent != null)
-            {
-                this.bioScanEvent();
-            }
-        }
-
-
     }
 }

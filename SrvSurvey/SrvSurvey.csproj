@@ -36,7 +36,10 @@
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Net.Http.WebRequest" />
     <Reference Include="System.Text.Json, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -49,6 +52,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BioScanning.cs" />
+    <Compile Include="FormErrorSubmit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormErrorSubmit.Designer.cs">
+      <DependentUpon>FormErrorSubmit.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormGroundTarget.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -125,6 +134,9 @@
     <Compile Include="ViewLogs.Designer.cs">
       <DependentUpon>ViewLogs.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="FormErrorSubmit.resx">
+      <DependentUpon>FormErrorSubmit.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormGroundTarget.resx">
       <DependentUpon>FormGroundTarget.cs</DependentUpon>
     </EmbeddedResource>

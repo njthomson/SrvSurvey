@@ -14,15 +14,16 @@ namespace SrvSurvey.game
     /// </summary>
     class Game
     {
+        public static readonly StringBuilder logs = new StringBuilder();
+
         public static Game activeGame { get; private set; }
-        public static Settings settings { get; private set; } = new Settings();
+        public static Settings settings { get; private set; } = Settings.Load();
 
         /// <summary>
         /// The Commander actively playing the game
         /// </summary>
         public string Commander { get; private set; }
         public bool isOdyssey { get; private set; }
-        public StringBuilder logs = new StringBuilder();
 
         public JournalWatcher journals;
         public Status status { get; private set; }
@@ -32,7 +33,7 @@ namespace SrvSurvey.game
             // track this instance as the active one
             Game.activeGame = this;
 
-            log($"Game is running: {this.isRunning}, cmdr loaded: ${this.Commander != null}");
+            log($"Game is running: {this.isRunning}");
 
             // track status file changes and force an immediate read
             this.status = new Status(true);
@@ -40,6 +41,8 @@ namespace SrvSurvey.game
             // initialize from a journal file
             var filepath = this.getLastJournalBefore(cmdr, DateTime.MaxValue);
             this.initializeFromJournal(filepath);
+
+            log($"Cmdr loaded: {this.Commander != null}");
 
             // now listen for changes
             this.journals.onJournalEntry += Journals_onJournalEntry;
@@ -167,7 +170,8 @@ namespace SrvSurvey.game
                 else if ((this.status.Flags2 & StatusFlags2.InTaxi) > 0)
                     return ActiveVehicle.Taxi;
                 else
-                    return ActiveVehicle.Docked;
+                    //return ActiveVehicle.Docked;
+                    return ActiveVehicle.Unknown;
 
                 // TODO: do we care about telepresence?
             }
@@ -184,14 +188,14 @@ namespace SrvSurvey.game
 
         public static void log(object msg, object o1 = null)
         {
-            var txt = DateTime.Now.ToString("HH:mm:ss") + ": " + msg.ToString();
+            var txt = DateTime.Now.ToString("HH:mm:ss") + ": " + msg?.ToString();
 
             if (o1 != null)
             {
                 txt += ": " + o1.ToString();
             }
 
-            Game.activeGame.logs.AppendLine(txt);
+            Game.logs.AppendLine(txt);
             Debug.WriteLine(txt);
         }
 
@@ -460,6 +464,8 @@ namespace SrvSurvey.game
             {
                 // this isn't right - needs reworking
                 initializeFromJournal(this.journals.filepath);
+
+                if (modeChanged != null) modeChanged(this._mode);
             }
         }
 

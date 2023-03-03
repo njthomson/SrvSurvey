@@ -54,23 +54,6 @@ namespace SrvSurvey
             this.readEntries();
         }
 
-        //private Journal parseJournal()
-        //{
-        //    //var xx = File.OpenRead(SrvBuddy.LastJournal);
-        //    //log(xx);
-        //    var r = new FileStream(SrvBuddy.LastJournal, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-        //    var sr = new StreamReader(r);
-        //    var txt = sr.ReadLine();
-        //    log(txt);
-        //    //    StringReader
-        //    //File.OpenRead()
-        //    //new StringReader()
-        //    var lines = File.ReadAllLines(SrvBuddy.LastJournal);
-        //    var json = "[" + String.Join(",", lines) + "]";
-        //    var journal = JsonConvert.DeserializeObject<Journal>(json);
-        //    return journal;
-        //}
-
         public int Count { get => this.Entries.Count; }
 
         public void readEntries()
@@ -185,56 +168,6 @@ namespace SrvSurvey
             return -1;
 
         }
-
-
-        #region static stuff
-
-        static IOrderedEnumerable<FileInfo> getRecentJournals()
-        {
-            var entries = new DirectoryInfo(SrvSurvey.journalFolder).EnumerateFiles("*.log", SearchOption.TopDirectoryOnly);
-            return entries.OrderBy(_ => _.LastWriteTimeUtc);
-        }
-
-        static string LastJournal
-        {
-            get
-            {
-
-                //var lastOne = JournalWatcher.getRecentJournals().Last();
-                //return lastOne.FullName;
-                //return @"C:\Users\grinn\Saved Games\Frontier Developments\Elite Dangerous\Journal.2023-01-05T153911.01.log";
-                //return @"C:\Users\grinn\Saved Games\Frontier Developments\Elite Dangerous\Journal.2023-01-06T205220.01.log";
-                return @"C:\Users\grinn\Saved Games\Frontier Developments\Elite Dangerous\Journal.2023-01-07T204647.01.log";
-            }
-        }
-
-        /// <summary>
-        /// Searches back through journal files for the last occurance of ApproachSettlement for the Commander and site in question
-        /// </summary>
-        /// <param name="commanderName"></param>
-        public static LatLong FindPriorApproachSettlementForCommander(string commanderName, string settltmentName, DateTime timestamp)
-        {
-            var journalFiles = JournalWatcher.getRecentJournals();
-            foreach (var fileInfo in journalFiles)
-            {
-                var watcher = new JournalWatcher(fileInfo.FullName);
-                watcher.readEntries();
-                // skip if journal is after given event
-                if (watcher.Entries[0].timestamp > timestamp) continue;
-
-                for (int n = watcher.Entries.Count; n >= 0; n++)
-                {
-                    if (watcher.Entries[n].timestamp > timestamp) continue;
-                    if (watcher.Entries[n].@event != nameof(ApproachSettlement)) continue;
-
-                    System.Diagnostics.Debug.WriteLine(watcher.Entries[n].@event);
-                }
-            }
-
-            return new LatLong(0, 0);
-        }
-
-        #endregion
     }
 
 

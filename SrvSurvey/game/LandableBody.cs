@@ -101,6 +101,7 @@ namespace SrvSurvey.game
             } while (idx < game.journals.Count);
 
             // TODO: scan across previous journal files?
+            // Yes, but only as far as we see "ApproachBody" to our current location.
         }
 
         public void addBioScan(ScanOrganic entry)

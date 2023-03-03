@@ -1,15 +1,45 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using Newtonsoft.Json;
+using SrvSurvey.game;
+using SrvSurvey.units;
+using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Globalization;
+using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace SrvSurvey
 {
     class Settings
     {
+        static readonly string settingsPath = Path.Combine(Application.UserAppDataPath, "settings.json");
+
+        public static Settings Load()
+        {
+            if (!File.Exists(settingsPath)) return new Settings();
+
+            // read and parse file contents into tmp object
+            var json = File.ReadAllText(settingsPath);
+            var settings = JsonConvert.DeserializeObject<Settings>(json);
+
+            Game.log(settings);
+            //Application.UserAppDataPath
+            return settings;
+        }
+
+        public void Save()
+        {
+            var json = JsonConvert.SerializeObject(this, Formatting.Indented);
+            File.WriteAllText(settingsPath, json);
+        }
+
+        public LatLong2 targetLatLong;
+
         public float Opacity = 0.5f;
 
         public Color GameOrange = Color.FromArgb(255, 255, 113, 00); // #FF7100

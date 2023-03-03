@@ -12,8 +12,10 @@ using System.Windows.Forms;
 
 namespace SrvSurvey
 {
-    public partial class FormGroundTarget : Form
+    internal partial class FormGroundTarget : Form
     {
+        public LatLong2 targetLatLong;
+
         public FormGroundTarget()
         {
             InitializeComponent();
@@ -25,16 +27,19 @@ namespace SrvSurvey
                 double.Parse(txtLat.Text),
                 double.Parse(txtLong.Text));
 
-            if (Game.activeGame.nearBody != null)
+            try
             {
-                // if near a body
-                new PlotTrackTarget(Game.activeGame.nearBody, latLong).Show();
+                this.targetLatLong = new LatLong2(
+                    double.Parse(txtLat.Text),
+                    double.Parse(txtLong.Text)
+                    );
             }
-            else
+            catch (Exception ex)
             {
-                // not near a body
-                Game.log("Cannot show GroundTarget plotter - not near any body.");
+                Game.log("Parse error: " + ex.Message);
             }
+
+            this.DialogResult = DialogResult.OK;
         }
     }
 }

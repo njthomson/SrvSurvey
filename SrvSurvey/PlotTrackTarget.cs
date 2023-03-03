@@ -23,10 +23,13 @@ namespace SrvSurvey
 
         public PlotTrackTarget(LandableBody targetBody, LatLong2 targetLocation)
         {
+            Program.activePlotters.Add(this);
+
             this.targetBody = targetBody;
             this.targetLocation = targetLocation;
 
             InitializeComponent();
+            this.Name = nameof(PlotTrackTarget);
 
 
             this.td = new TrackingDelta(targetBody.radius, game.location, targetLocation);

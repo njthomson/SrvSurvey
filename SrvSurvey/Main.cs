@@ -13,20 +13,13 @@ using System.Windows.Forms;
 
 namespace SrvSurvey
 {
-    public partial class Main : Form
+    internal partial class Main : Form
     {
         private Game game;
 
         // various game modes that can be active
         private PlotBioStatus plotBioStatus;
         private bool bioScanning = false;
-
-        // targetting an explicit lat/long
-        private bool explicitGroundTarget = false;
-
-        // targetting the current destination's lat/long
-        private bool implicitGroundTarget = false;
-
 
         public Main()
         {
@@ -37,6 +30,10 @@ namespace SrvSurvey
         {
             this.newGame();
 
+            // do we have a targetLatLong to hydrate?
+            if (Game.settings.targetLatLong != null)
+                this.setTargetLatLong(Game.settings.targetLatLong);
+
             if (this.game.isRunning)
             {
                 PlotPulse.show();
@@ -46,15 +43,13 @@ namespace SrvSurvey
             if (game.nearBody?.Genuses?.Count > 0)
             {
                 Game.log("Bio signals near!");
-                btnBioScan.Text += $" ({game.nearBody.Genuses.Count})";
-                btnBioScan.BackColor = Game.settings.GameOrange; // GameColors.Orange;
+                this.updateBioTexts();
             }
-
 
             // TMP!
             //new PlotGroundTarget(Game.activeGame.nearBody, new LatLong2(10.0, 40.0)).ShowDialog();
-            new PlotGrounded().Show(this);
-            btnBioScan_Click(sender, e);
+            //new PlotGrounded().Show(this);
+            //btnBioScan_Click(sender, e);
         }
 
         private void newGame()
@@ -62,28 +57,57 @@ namespace SrvSurvey
             this.game = new Game(null);
             this.game.modeChanged += Game_modeChanged;
 
-            this.lblCommander.Text = game.Commander;
-            this.lblMode.Text = game.mode.ToString();
+            this.txtCommander.Text = game.Commander;
+
+            this.Game_modeChanged(this.game.mode);
         }
 
         private void Game_modeChanged(GameMode newMode)
         {
             this.lblMode.Text = game.mode.ToString();
+            this.updateCommanderTexts();
         }
 
-        private int wideWidth = 0;
-
-        private void goNarrow()
+        private void updateCommanderTexts()
         {
-            this.wideWidth = this.Width;
-            this.Width = 80;
-            this.panel1.Hide();
+            var gameIsActive = game.isRunning && game.Commander != null;
+
+            if (!gameIsActive)
+            {
+                this.txtVehicle.Text = "";
+                this.txtLocation.Text = "";
+                return;
+            }
+
+            this.txtCommander.Text = game.Commander;
+            this.txtVehicle.Text = game.vehicle.ToString();
+
+            if (game.nearBody != null)
+                this.txtLocation.Text = game.nearBody.bodyName;
+            else
+                this.txtLocation.Text = "Unknown";
         }
 
-        private void goWide()
+        private void updateBioTexts()
         {
-            this.Width = this.wideWidth;
-            this.panel1.Show();
+            if (game.nearBody == null)
+            {
+                lblBioSignalCount.Text = "";
+                lblAnalyzedCount.Text = "";
+                txtGenuses.Text = "";
+                return;
+            }
+
+            lblBioSignalCount.Text = game.nearBody.Genuses.Count.ToString();
+            lblAnalyzedCount.Text = game.nearBody.analysedSpecies.Count.ToString();
+
+            txtGenuses.Text = string.Join(
+                ", ",
+                game.nearBody.Genuses.Select(_ => _.Genus_Localised)
+                );
+
+            // still ?
+            btnBioScan.BackColor = Game.settings.GameOrange; // GameColors.Orange;
         }
 
 
@@ -115,30 +139,6 @@ namespace SrvSurvey
             this.plotBioStatus = null;
         }
 
-        private void btnSurvey_Click(object sender, EventArgs e)
-        {
-            // TMP!
-            new PlotGrounded().Show(this);
-
-            //if (Game.activeGame.mode == GameMode.Landed)
-
-            //if (Game.activeGame.nearBody != null)
-            //    new PlotTrackTarget(Game.activeGame.nearBody, new LatLong2(10.0, 40.0)).ShowDialog();
-
-            //var mm = new TrackingDelta(1000, new LatLong2(10, 10), new LatLong2(10 + 30, 10+40));
-            //var mm = new TrackingDelta(1000, new LatLong2(-10, -10), new LatLong2(20, 30));
-            //Game.log(mm.MetersToString(123.45678));
-
-
-            //game.status
-            //Overlay.setFocusED();
-            //lblMode.Text = "Foot";
-            //Overlay.setFormMinimal(this);
-            //LatLong2 ll2 = new LatLong2(-100, -40);
-            //a += 140;
-            this.Text = $"{game.isRunning} / {game.Commander} / {game.mode}";
-        }
-
         private void btnQuit_Click(object sender, EventArgs e)
         {
             Application.Exit();
@@ -146,14 +146,12 @@ namespace SrvSurvey
 
         private void Main_DoubleClick(object sender, EventArgs e)
         {
-            //Overlay.setFormMinimal(this);
-            this.goNarrow();
         }
 
 
         private void btnViewLogs_Click(object sender, EventArgs e)
         {
-            ViewLogs.show(game.logs);
+            ViewLogs.show(Game.logs);
         }
 
         private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -161,9 +159,47 @@ namespace SrvSurvey
             new FormSettings().ShowDialog(this);
         }
 
+        private void setTargetLatLong(LatLong2 targetLatLong)
+        {
+            // update settings
+            Game.settings.targetLatLong = targetLatLong;
+            Game.settings.Save();
+
+            // update our UX
+            txtTargetLatLong.Text = Game.settings.targetLatLong.ToString();
+            Game.log($"New target lat/long: {Game.settings.targetLatLong}, near body: {game.nearBody != null}");
+
+            // show plotter if near a body
+            if (game.nearBody != null)
+            {
+                new PlotTrackTarget(Game.activeGame.nearBody, Game.settings.targetLatLong).Show();
+            }
+        }
+
         private void btnGroundTarget_Click(object sender, EventArgs e)
         {
-            new FormGroundTarget().ShowDialog();
+            var form = new FormGroundTarget();
+            var rslt = form.ShowDialog(this);
+
+            if (rslt == DialogResult.OK)
+            {
+                setTargetLatLong(form.targetLatLong);
+            }
+        }
+
+        private void btnClearTarget_Click(object sender, EventArgs e)
+        {
+            txtTargetLatLong.Text = "<none>";
+            Game.settings.targetLatLong = null;
+            Game.settings.Save();
+
+            var plotter = Program.activePlotters.FirstOrDefault(_ => _.Name == nameof(PlotTrackTarget));
+            Game.log($"Clearing lat/long. Active plotter: {plotter != null}");
+            if (plotter != null)
+            {
+                plotter.Close();
+                Program.activePlotters.Remove(plotter);
+            }
         }
     }
 }

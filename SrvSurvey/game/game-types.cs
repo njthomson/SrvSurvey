@@ -12,6 +12,7 @@ namespace SrvSurvey.game
     /// </summary>
     enum ActiveVehicle
     {
+        Unknown,
         MainShip,
         Fighter,
         SRV,
