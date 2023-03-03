@@ -13,7 +13,6 @@ body:
       label: What happened?
       description: What did you expect to happen? What were you doing just before?
       placeholder: Tell us what what happened
-      value: ""
     validations:
       required: true
   - type: input
@@ -28,7 +27,6 @@ body:
     id: exception
     attributes:
       label: Exception message and stack
-      value: ""
     validations:
       required: false
   - type: input
