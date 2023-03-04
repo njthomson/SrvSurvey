@@ -9,6 +9,7 @@ using Newtonsoft.Json.Linq;
 using System.Drawing;
 using System.Windows.Forms;
 using SrvSurvey.game;
+using System.Reflection;
 
 namespace SrvSurvey
 {
@@ -16,6 +17,21 @@ namespace SrvSurvey
 
     class JournalFile
     {
+        private static readonly Dictionary<string, Type> typeMap;
+        static JournalFile()
+        {
+            // build a map of all types derived from JournalEntry
+            typeMap = new Dictionary<string, Type>();
+
+            var journalEntryType = typeof(JournalEntry);
+            var journalDerivedTypes = Assembly.GetExecutingAssembly()
+                .GetTypes()
+                .Where(_ => journalEntryType.IsAssignableFrom(_));
+
+            foreach (var journalType in journalDerivedTypes)
+                typeMap.Add(journalType.Name, journalType);
+        }
+
         public List<JournalEntry> Entries { get; } = new List<JournalEntry>();
 
         protected StreamReader reader;
@@ -64,36 +80,14 @@ namespace SrvSurvey
             var json = reader.ReadLine();
             JToken entry = JsonConvert.DeserializeObject<JToken>(json);
 
-            switch (entry["event"].ToString())
+            var eventName = entry["event"].Value<string>();
+            if (typeMap.ContainsKey(eventName))
             {
-                case nameof(Fileheader): return entry.ToObject<Fileheader>();
-                case nameof(Commander): return entry.ToObject<Commander>();
-                case nameof(Location): return entry.ToObject<Location>();
-                case nameof(ApproachSettlement): return entry.ToObject<ApproachSettlement>();
-                case nameof(Touchdown): return entry.ToObject<Touchdown>();
-                case nameof(Liftoff): return entry.ToObject<Liftoff>();
-                case nameof(LaunchSRV): return entry.ToObject<LaunchSRV>();
-                case nameof(DockSRV): return entry.ToObject<DockSRV>();
-                case nameof(SendText): return entry.ToObject<SendText>();
-                case nameof(CodexEntry): return entry.ToObject<CodexEntry>();
-                case nameof(SupercruiseExit): return entry.ToObject<SupercruiseExit>();
-                case nameof(SupercruiseEntry): return entry.ToObject<SupercruiseEntry>();
-                case nameof(Music): return entry.ToObject<Music>();
-                case nameof(StartJump): return entry.ToObject<StartJump>();
-                case nameof(FSDJump): return entry.ToObject<FSDJump>();
-                case nameof(Shutdown): return entry.ToObject<Shutdown>();
-                case nameof(ScanOrganic): return entry.ToObject<ScanOrganic>();
-                case nameof(SAASignalsFound): return entry.ToObject<SAASignalsFound>();
-                case nameof(ApproachBody): return entry.ToObject<ApproachBody>();
-                case nameof(LeaveBody): return entry.ToObject<LeaveBody>();
-                case nameof(Scan): return entry.ToObject<Scan>();
-                case nameof(Embark): return entry.ToObject<Embark>();
-                case nameof(Disembark): return entry.ToObject<Disembark>();
-
-                default:
-                    // ignore anything else
-                    return null;
+                return entry.ToObject(typeMap[eventName]) as JournalEntry;
             }
+
+            // ignore anything else
+            return null;
         }
 
         public T FindEntryByType<T>(int index, bool searchUp) where T : JournalEntry
@@ -138,10 +132,7 @@ namespace SrvSurvey
             return false;
         }
 
-        public void searchDeep<T>(
-        Func<T, bool> func,
-        Func<JournalFile, bool> finishWhen = null
-    ) where T : JournalEntry
+        public void searchDeep<T>(Func<T, bool> func, Func<JournalFile, bool> finishWhen = null) where T : JournalEntry
         {
             var count = 0;
             var journals = this;
