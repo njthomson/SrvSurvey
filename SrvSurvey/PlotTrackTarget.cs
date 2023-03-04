@@ -21,15 +21,17 @@ namespace SrvSurvey
 
         private TrackingDelta td;
 
-        public PlotTrackTarget(LandableBody targetBody, LatLong2 targetLocation)
+        private PlotTrackTarget()
         {
-            Program.activePlotters.Add(this);
+            InitializeComponent();
 
+        }
+
+        public void setTarget(LandableBody targetBody, LatLong2 targetLocation)
+        {
             this.targetBody = targetBody;
             this.targetLocation = targetLocation;
 
-            InitializeComponent();
-            this.Name = nameof(PlotTrackTarget);
 
 
             this.td = new TrackingDelta(targetBody.radius, game.location, targetLocation);
@@ -42,6 +44,17 @@ namespace SrvSurvey
 
             // force immediate calculation
             this.calculate();
+        }
+
+        private void PlotGroundTarget_Load(object sender, EventArgs e)
+        {
+            this.TopMost = true;
+            this.Opacity = 0.5;
+
+            if (game.mode == GameMode.OnFoot)
+                this.floatTopRight();
+            else
+                this.floatCenterTop();
         }
 
         private void Game_modeChanged(GameMode newMode)
@@ -147,17 +160,6 @@ namespace SrvSurvey
             // draw teh rest unclipped
             g.Clip = new Region();
             g.DrawPath(pen1, pp);
-        }
-
-        private void PlotGroundTarget_Load(object sender, EventArgs e)
-        {
-            this.TopMost = true;
-            this.Opacity = 0.5;
-
-            if (game.mode == GameMode.OnFoot)
-                this.floatTopRight();
-            else
-                this.floatCenterTop();
         }
 
         private void floatCenterTop()

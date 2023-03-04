@@ -26,9 +26,10 @@ namespace SrvSurvey
         private int scanCount;
 
 
-        public PlotBioStatus()
+        private PlotBioStatus()
         {
             InitializeComponent();
+            var foo = typeof(PlotBioStatus);
 
             this.Height = 80;
             this.Width = 400;

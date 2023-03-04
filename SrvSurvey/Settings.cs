@@ -17,6 +17,23 @@ namespace SrvSurvey
 {
     class Settings
     {
+        public LatLong2 targetLatLong;
+
+        public bool autoShowBioSummary;
+        public bool autoShowBioPlot;
+
+        public float Opacity = 0.5f;
+
+        public string junk;
+
+
+        public Color GameOrange = Color.FromArgb(255, 255, 113, 00); // #FF7100
+
+        public Font font1 = new System.Drawing.Font("Lucida Sans Typewriter", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+        public Font font2 = new System.Drawing.Font("Century Gothic", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+
+        #region loading /saving
+
         static readonly string settingsPath = Path.Combine(Application.UserAppDataPath, "settings.json");
 
         public static Settings Load()
@@ -38,14 +55,7 @@ namespace SrvSurvey
             File.WriteAllText(settingsPath, json);
         }
 
-        public LatLong2 targetLatLong;
-
-        public float Opacity = 0.5f;
-
-        public Color GameOrange = Color.FromArgb(255, 255, 113, 00); // #FF7100
-
-        public Font font1 = new System.Drawing.Font("Lucida Sans Typewriter", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-        public Font font2 = new System.Drawing.Font("Century Gothic", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+        #endregion
     }
 
     static class GameColors

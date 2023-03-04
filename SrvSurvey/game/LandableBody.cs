@@ -23,10 +23,6 @@ namespace SrvSurvey.game
         public BioScan scanTwo;
         public Dictionary<string, string> analysedSpecies = new Dictionary<string, string>();
 
-        //public string starSystem;
-        //public long systemAddress;
-        //public int bodyID;
-
         public LandableBody(string bodyName, int bodyId)
         {
             this.bodyName = bodyName;
@@ -69,7 +65,6 @@ namespace SrvSurvey.game
 
         public List<ScanSignal> Signals { get; set; }
         public List<ScanGenus> Genuses { get; set; }
-        //public List<ScanGenus> Genuses { get; set; }
 
         public void readSAASignalsFound()
         {
@@ -81,27 +76,26 @@ namespace SrvSurvey.game
                 this.Genuses = new List<ScanGenus>(signalsEntry.Genuses);
             }
 
-            // see if we can find recent BioScans
-            int idx = 0;
-            do
-            {
-                var scan = game.journals.FindEntryByType<ScanOrganic>(idx, false);
-                if (scan == null)
+            // see if we can find recent BioScans, traversing prior journal files if needed
+            game.journals.searchDeep(
+                (ScanOrganic scan) =>
                 {
-                    // no more entries in this file
-                    break;
-                }
+                    // look for Analyze ScanOrganics.
+                    // TODO: only on current body!
+                    if (scan.ScanType == ScanType.Analyse && !this.analysedSpecies.ContainsKey(scan.Genus))
+                    {
+                        this.analysedSpecies.Add(scan.Genus, scan.Species_Localised);
+                    }
 
-                if (scan.ScanType == ScanType.Analyse && !this.analysedSpecies.ContainsKey(scan.Genus))
+                    // stop if we've scanned everything
+                    return this.analysedSpecies.Count == this.Genuses.Count;
+                },
+                (JournalFile journals) =>
                 {
-                    this.analysedSpecies.Add(scan.Genus, scan.Species_Localised);
+                    // stop searching older journal files if we see we approached this body
+                    return journals.search((ApproachBody _) => _.Body == this.bodyName);
                 }
-
-                idx = game.journals.Entries.IndexOf(scan) + 1;
-            } while (idx < game.journals.Count);
-
-            // TODO: scan across previous journal files?
-            // Yes, but only as far as we see "ApproachBody" to our current location.
+            );
         }
 
         public void addBioScan(ScanOrganic entry)

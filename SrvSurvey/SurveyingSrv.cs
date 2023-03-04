@@ -128,7 +128,7 @@ namespace SrvSurvey
                 }
 
                 // disregard journal entries after this point
-                this.settlementStartIndex = watcher.GetSettlementStartIndexBefore(index);
+                //this.settlementStartIndex = watcher.GetSettlementStartIndexBefore(index);
             }
 
             // TODO: get planetRadius from scan event

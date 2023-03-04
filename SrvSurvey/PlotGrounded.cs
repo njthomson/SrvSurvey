@@ -26,7 +26,7 @@ namespace SrvSurvey
         private List<BioScan> bioScans = new List<BioScan>();
 
 
-        public PlotGrounded()
+        private PlotGrounded()
         {
             InitializeComponent();
 
@@ -165,7 +165,7 @@ namespace SrvSurvey
         private void onJournalEntry(Disembark entry)
         {
             Game.log($"Disembark");
-            if (entry.SRV)
+            if (entry.SRV && this.srvLocation == null)
             {
                 this.srvLocation = new TrackingDelta(game.nearBody.radius, new LatLong2(game.status), new LatLong2(game.status));
             }
@@ -174,7 +174,7 @@ namespace SrvSurvey
         private void onJournalEntry(Embark entry)
         {
             Game.log($"Embark");
-            if (entry.SRV)
+            if (entry.SRV && this.srvLocation != null)
             {
                 this.srvLocation = null;
             }

@@ -39,7 +39,7 @@ namespace SrvSurvey.game
             this.status = new Status(true);
 
             // initialize from a journal file
-            var filepath = this.getLastJournalBefore(cmdr, DateTime.MaxValue);
+            var filepath = JournalFile.getCommanderJournalBefore(cmdr, DateTime.MaxValue);
             this.initializeFromJournal(filepath);
 
             log($"Cmdr loaded: {this.Commander != null}");
@@ -55,7 +55,6 @@ namespace SrvSurvey.game
 
         public LatLong2 location { get; private set; }
         private bool atMainMenu = false;
-        private bool fsdEngaged = false;
         private bool fsdJumping = false;
         public LandableBody nearBody;
 
@@ -128,11 +127,12 @@ namespace SrvSurvey.game
                     return GameMode.FSDJumping;
 
                 // otherwise use the type of vehicle we are in
-                if (this.vehicle == ActiveVehicle.Fighter)
+                var activeVehicle = this.vehicle;
+                if (activeVehicle == ActiveVehicle.Fighter)
                     return GameMode.InFighter;
-                if (this.vehicle == ActiveVehicle.SRV)
+                if (activeVehicle == ActiveVehicle.SRV)
                     return GameMode.InSrv;
-                if (this.vehicle == ActiveVehicle.Taxi)
+                if (activeVehicle == ActiveVehicle.Taxi)
                     return GameMode.InTaxi;
                 if ((this.status.Flags2 & StatusFlags2.OnFootExterior) > 0)
                     return GameMode.OnFoot;
@@ -150,8 +150,11 @@ namespace SrvSurvey.game
                 if ((this.status.Flags & StatusFlags.Docked) > 0)
                     return GameMode.Docked;
 
-                // if all else fails, we must simply be...
-                return GameMode.Flying;
+                // otherwise we must be ...
+                if (activeVehicle == ActiveVehicle.MainShip)
+                    return GameMode.Flying;
+
+                throw new Exception("Unknown game mode!");
             }
         }
 
@@ -243,7 +246,7 @@ namespace SrvSurvey.game
 
         public static string journalFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), @"Saved Games\Frontier Developments\Elite Dangerous\");
 
-        private string getLastJournalBefore(string cmdr, DateTime timestamp)
+        public string getLastJournalBefore(string cmdr, DateTime timestamp)
         {
             var manyFiles = new DirectoryInfo(SrvSurvey.journalFolder)
                 .EnumerateFiles("*.log", SearchOption.TopDirectoryOnly)
@@ -318,15 +321,14 @@ namespace SrvSurvey.game
 
         private void initializeFromJournal(string filepath)
         {
-            this.journals = new JournalWatcher(filepath, true);
+            this.journals = new JournalWatcher(filepath);
             var cmdrEntry = this.journals.FindEntryByType<Commander>(0, false);
 
             // exit early if this journal file has no Commander entry yet
-            if (cmdrEntry == null) return;
+            if (this.journals.CommanderName == null) return;
 
             // read cmdr info
-            this.Commander = cmdrEntry.Name;
-            //onJournalEntry(cmdrEntry);
+            this.Commander = this.journals.CommanderName;
 
             // if we are not shutdown ...
             var lastShutdown = journals.FindEntryByType<Shutdown>(-1, true);
@@ -339,20 +341,27 @@ namespace SrvSurvey.game
                     onJournalEntry(lastMusic);
             }
 
-            // if we are landed, we need to find the last Touchdown location
-            //if ((this.status.Flags & StatusFlags.Landed) > 0)
+            // if we have landed, we need to find the last Touchdown location
             if (this.isLanded)
             {
-                var lastTouchdown = this.findLastJournalOf<Touchdown>();
-                if (lastTouchdown == null)
-                    throw new Exception($"ERROR! Journal parsing failure! Failed to find any last Touchdown events.");
+                journals.searchDeep(
+                    (Touchdown lastTouchdown) =>
+                    {
+                        if (lastTouchdown.Body != status.BodyName)
+                            throw new Exception($"ERROR! Journal parsing failure! Last found Touchdown was for body: {lastTouchdown.Body}, but we are currently on: {status.BodyName}");
 
-                if (lastTouchdown.Body != status.BodyName)
-                {
-                    throw new Exception($"ERROR! Journal parsing failure! Last found Touchdown was for body: {lastTouchdown.Body}, but we are currently on: {status.BodyName}");
-                }
+                        onJournalEntry(lastTouchdown);
+                        return true;
+                    }
+                );
+                //var lastTouchdown = this.findLastJournalOf<Touchdown>();
+                //if (lastTouchdown == null)
+                //    throw new Exception($"ERROR! Journal parsing failure! Failed to find any last Touchdown events.");
 
-                onJournalEntry(lastTouchdown);
+                //if (lastTouchdown.Body != status.BodyName)
+                //{
+                //    throw new Exception($"ERROR! Journal parsing failure! Last found Touchdown was for body: {lastTouchdown.Body}, but we are currently on: {status.BodyName}");
+                //}
             }
 
             // if we are near a planet
@@ -379,7 +388,8 @@ namespace SrvSurvey.game
 
             log($"Initialized Commander", this.Commander);
 
-            if (this.nearBody?.Genuses != null) {
+            if (this.nearBody?.Genuses != null)
+            {
                 log($"Genuses", string.Join(",", this.nearBody.Genuses.Select(_ => _.Genus_Localised)));
             }
         }
@@ -416,7 +426,7 @@ namespace SrvSurvey.game
 
         public T findLastJournalOf<T>() where T : JournalEntry
         {
-            log($"Finding last Touchdown event... {journals.Count}");
+            log($"Finding last {typeof(T).Name} event... {journals.Count}");
             // do we have one recently in the active journal?
             var lastEntry = journals.FindEntryByType<T>(-1, true);
 
@@ -432,7 +442,7 @@ namespace SrvSurvey.game
             {
                 var priorFilepath = this.getLastJournalBefore(this.Commander, timestamp);
                 if (priorFilepath == null) return null;
-                var oldJournal = new JournalWatcher(priorFilepath, false);
+                var oldJournal = new JournalFile(priorFilepath);
 
                 lastEntry = oldJournal.FindEntryByType<T>(-1, true);
                 timestamp = oldJournal.timestamp;
@@ -507,12 +517,6 @@ namespace SrvSurvey.game
             this.checkModeChange();
         }
 
-        private void onJournalEntry(SupercruiseEntry entry)
-        {
-            // SuperCruising began
-            this.fsdEngaged = false;
-        }
-
         #endregion
 
         #region journal tracking for ground ops
@@ -562,7 +566,7 @@ namespace SrvSurvey.game
 
         private void onJournalEntry(ApproachBody entry)
         {
-            
+
             this.nearBody = new LandableBody(entry.Body, entry.BodyID);
             if (status.BodyName == entry.Body && this.nearBody.radius == 0 && status.PlanetRadius > 0)
             {

@@ -17,8 +17,6 @@ namespace SrvSurvey
     {
         private Game game;
 
-        // various game modes that can be active
-        private PlotBioStatus plotBioStatus;
         private bool bioScanning = false;
 
         public Main()
@@ -29,6 +27,18 @@ namespace SrvSurvey
         private void Main_Load(object sender, EventArgs e)
         {
             this.newGame();
+        }
+
+        private void newGame()
+        {
+            // TODO: use a local instance until we know the commander, then call newGame again
+            this.game = new Game(null);
+            this.game.modeChanged += Game_modeChanged;
+            this.game.journals.onJournalEntry += Journals_onJournalEntry;
+
+            this.txtCommander.Text = game.Commander;
+
+            this.Game_modeChanged(this.game.mode);
 
             // do we have a targetLatLong to hydrate?
             if (Game.settings.targetLatLong != null)
@@ -36,30 +46,21 @@ namespace SrvSurvey
 
             if (this.game.isRunning)
             {
-                PlotPulse.show();
+                Program.showPlotter<PlotPulse>(this);
             }
 
-            // is there a game mode/tool we should highlight?
+            // are there already bio signals?
             if (game.nearBody?.Genuses?.Count > 0)
             {
                 Game.log("Bio signals near!");
                 this.updateBioTexts();
+
+                if (Game.settings.autoShowBioSummary)
+                    Program.showPlotter<PlotBioStatus>(this);
+
+                if (Game.settings.autoShowBioPlot && (game.vehicle == ActiveVehicle.SRV || game.vehicle == ActiveVehicle.Foot))
+                    Program.showPlotter<PlotGrounded>(this);
             }
-
-            // TMP!
-            //new PlotGroundTarget(Game.activeGame.nearBody, new LatLong2(10.0, 40.0)).ShowDialog();
-            //new PlotGrounded().Show(this);
-            //btnBioScan_Click(sender, e);
-        }
-
-        private void newGame()
-        {
-            this.game = new Game(null);
-            this.game.modeChanged += Game_modeChanged;
-
-            this.txtCommander.Text = game.Commander;
-
-            this.Game_modeChanged(this.game.mode);
         }
 
         private void Game_modeChanged(GameMode newMode)
@@ -111,6 +112,37 @@ namespace SrvSurvey
         }
 
 
+        private void Journals_onJournalEntry(JournalEntry entry, int index)
+        {
+            this.onJournalEntry((dynamic)entry);
+        }
+
+        private void onJournalEntry(JournalEntry entry) { /* ignore */ }
+
+        private void onJournalEntry(Disembark entry)
+        {
+            if (Game.settings.autoShowBioPlot)
+                Program.showPlotter<PlotGrounded>(this);
+        }
+
+        private void onJournalEntry(Embark entry)
+        {
+            //Program.closePlotter(nameof(PlotGrounded));
+        }
+
+        private void onJournalEntry(LaunchSRV entry)
+        {
+            if (Game.settings.autoShowBioPlot)
+                Program.showPlotter<PlotGrounded>(this);
+        }
+
+        private void onJournalEntry(DockSRV entry)
+        {
+            Program.closePlotter(nameof(PlotGrounded));
+        }
+
+
+
         private void btnOverlay_Click(object sender, EventArgs e)
         {
             //var handleED = Overlaying.getEDWindowHandle();
@@ -125,18 +157,7 @@ namespace SrvSurvey
 
         private void btnBioScan_Click(object sender, EventArgs e)
         {
-            if (this.plotBioStatus == null)
-            {
-                this.plotBioStatus = new PlotBioStatus();
-                this.plotBioStatus.FormClosed += PlotBioStatus_FormClosed;
-                this.plotBioStatus.Show(this);
-            }
-
-        }
-
-        private void PlotBioStatus_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            this.plotBioStatus = null;
+            Program.showPlotter<PlotBioStatus>(this);
         }
 
         private void btnQuit_Click(object sender, EventArgs e)
@@ -172,7 +193,9 @@ namespace SrvSurvey
             // show plotter if near a body
             if (game.nearBody != null)
             {
-                new PlotTrackTarget(Game.activeGame.nearBody, Game.settings.targetLatLong).Show();
+                var plotter = Program.showPlotter<PlotTrackTarget>(this);
+                plotter.setTarget(Game.activeGame.nearBody, Game.settings.targetLatLong);
+                //new PlotTrackTarget().Show();
             }
         }
 
@@ -193,13 +216,7 @@ namespace SrvSurvey
             Game.settings.targetLatLong = null;
             Game.settings.Save();
 
-            var plotter = Program.activePlotters.FirstOrDefault(_ => _.Name == nameof(PlotTrackTarget));
-            Game.log($"Clearing lat/long. Active plotter: {plotter != null}");
-            if (plotter != null)
-            {
-                plotter.Close();
-                Program.activePlotters.Remove(plotter);
-            }
+            Program.closePlotter(nameof(PlotTrackTarget));
         }
     }
 }

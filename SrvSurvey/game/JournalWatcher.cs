@@ -14,17 +14,16 @@ namespace SrvSurvey
 {
     delegate void OnJournalEntry(JournalEntry entry, int index);
 
-    class JournalWatcher
+    class JournalFile
     {
         public List<JournalEntry> Entries { get; } = new List<JournalEntry>();
-        public event OnJournalEntry onJournalEntry;
 
-        private StreamReader reader;
-        private FileSystemWatcher watcher;
+        protected StreamReader reader;
         public readonly string filepath;
         public readonly DateTime timestamp;
+        public readonly string CommanderName;
 
-        public JournalWatcher(string filepath, bool watch = true)
+        public JournalFile(string filepath)
         {
             Game.log($"Reading journal: {Path.GetFileName(filepath)}");
 
@@ -35,23 +34,8 @@ namespace SrvSurvey
 
             this.readEntries();
 
-            if (watch)
-            {
-                var folder = Path.GetDirectoryName(filepath);
-                var filename = Path.GetFileName(filepath);
-                this.watcher = new FileSystemWatcher(folder, filename);
-                this.watcher.Changed += JournalWatcher_Changed;
-                this.watcher.NotifyFilter = NotifyFilters.LastWrite;
-                this.watcher.EnableRaisingEvents = true;
-            }
-        }
-
-        private void JournalWatcher_Changed(object sender, FileSystemEventArgs e)
-        {
-            //Game.log($"!?-->");
-
-            PlotPulse.LastChanged = DateTime.Now;
-            this.readEntries();
+            var entry = this.FindEntryByType<Commander>(0, false);
+            this.CommanderName = entry.Name;
         }
 
         public int Count { get => this.Entries.Count; }
@@ -64,21 +48,15 @@ namespace SrvSurvey
             }
         }
 
-        public void readEntry()
+        protected virtual JournalEntry readEntry()
         {
             // read next entry, add to list or skip if it's blank
             var entry = this.parseNextEntry();
-            if (entry == null) return;
 
-            this.Entries.Add(entry);
+            if (entry != null)
+                this.Entries.Add(entry);
 
-            if (this.onJournalEntry != null)
-            {
-                Program.control.Invoke((MethodInvoker)delegate
-                {
-                    this.onJournalEntry(entry, this.Entries.Count - 1);
-                });
-            }
+            return entry;
         }
 
         private JournalEntry parseNextEntry()
@@ -135,40 +113,141 @@ namespace SrvSurvey
             return null;
         }
 
-        public int GetSettlementStartIndexBefore(int fromIndex)
+        public bool search<T>(Func<T, bool> func) where T : JournalEntry
         {
-            // search back from TouchDown
-            for (int n = fromIndex; n >= 0; n--)
+            // see if we can find recent BioScans
+            int idx = 0;
+            do
             {
-                if (this.Entries[n].@event == nameof(SupercruiseExit))
+                var entry = this.FindEntryByType<T>(idx, false);
+                if (entry == null)
                 {
-                    return n;
+                    // no more entries in this file
+                    break;
                 }
-                var sendText = this.Entries[n] as SendText;
-                if (sendText != null && sendText.Message == "start survey")
+
+                // do something with the entry, exit if finished
+                var finished = func(entry);
+                if (finished) return finished;
+
+                // otherwise keep going
+                idx = this.Entries.IndexOf(entry) + 1;
+            } while (idx < this.Count);
+
+            // if we run out of entries, we don't know if we're necessarily finished
+            return false;
+        }
+
+        public void searchDeep<T>(
+        Func<T, bool> func,
+        Func<JournalFile, bool> finishWhen = null
+    ) where T : JournalEntry
+        {
+            var count = 0;
+            var journals = this;
+
+            // search older journals
+            while (journals != null)
+            {
+                ++count;
+                // search journals
+                var finished = journals.search(func);
+                if (finished) break;
+
+                if (finishWhen != null)
                 {
-                    return n;
+                    finished = finishWhen(journals);
+                    if (finished) break;
                 }
+
+                var priorFilepath = JournalFile.getCommanderJournalBefore(this.CommanderName, journals.timestamp);
+                journals = priorFilepath == null ? null : new JournalFile(priorFilepath);
+            };
+
+            Game.log($"searchJournalsDeep: count: {count}");
+        }
+
+        public static string getCommanderJournalBefore(string cmdr, DateTime timestamp)
+        {
+            var manyFiles = new DirectoryInfo(SrvSurvey.journalFolder)
+                .EnumerateFiles("*.log", SearchOption.TopDirectoryOnly)
+                .OrderByDescending(_ => _.LastWriteTimeUtc);
+
+            var journalFiles = manyFiles
+                .Where(_ => _.LastWriteTime < timestamp)
+                .Select(_ => _.FullName);
+
+            if (journalFiles.Count() == 0) return null;
+
+            if (cmdr == null)
+            {
+                // use the most recent journal file
+                return journalFiles.First();
             }
 
-            // if nothing found, search forwards until next Liftoff
-            for (int n = fromIndex; n < this.Entries.Count; n++)
+            var CMDR = cmdr.ToUpper();
+
+            var filename = journalFiles.FirstOrDefault((filepath) =>
             {
-                if (this.Entries[n].@event == nameof(Liftoff))
+                // TODO: Use some streaming reader to save reading the whole file up front?
+                using (var reader = new StreamReader(new FileStream(filepath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)))
                 {
-                    return -1;
-                }
-                var sendText = this.Entries[n] as SendText;
-                if (sendText != null && sendText.Message == "start survey")
-                {
-                    return n;
-                }
-            }
+                    while (!reader.EndOfStream)
+                    {
+                        var line = reader.ReadLine();
 
-            return -1;
+                        // TODO: allow for non-Odyssey
+                        if (line.Contains("\"event\":\"Fileheader\"") && line.Contains("\"Odyssey\":false"))
+                            return false;
 
+                        if (line.Contains("\"event\":\"Commander\""))
+                            // no need to process further lines
+                            return line.ToUpper().Contains($"\"NAME\":\"{CMDR}\"");
+                    }
+                    return false;
+                }
+            });
+
+            // TODO: As we already loaded the journal into memory, it would be nice to use that rather than reload it again from JournalWatcher
+            return filename;
         }
     }
 
+    class JournalWatcher : JournalFile
+    {
+        private FileSystemWatcher watcher;
 
+        public event OnJournalEntry onJournalEntry;
+
+        public JournalWatcher(string filepath) : base(filepath)
+        {
+            var folder = Path.GetDirectoryName(filepath);
+            var filename = Path.GetFileName(filepath);
+            this.watcher = new FileSystemWatcher(folder, filename);
+            this.watcher.Changed += JournalWatcher_Changed;
+            this.watcher.NotifyFilter = NotifyFilters.LastWrite;
+            this.watcher.EnableRaisingEvents = true;
+        }
+
+        private void JournalWatcher_Changed(object sender, FileSystemEventArgs e)
+        {
+            PlotPulse.LastChanged = DateTime.Now;
+            this.readEntries();
+        }
+
+        protected override JournalEntry readEntry()
+        {
+            var entry = base.readEntry();
+
+            if (entry != null && this.onJournalEntry != null)
+            {
+                Program.control.Invoke((MethodInvoker)delegate
+                {
+                    this.onJournalEntry(entry, this.Entries.Count - 1);
+                });
+            }
+
+            return entry;
+        }
+    }
 }
