@@ -29,6 +29,7 @@ namespace SrvSurvey
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             this.btnBioScan = new System.Windows.Forms.Button();
             this.btnGroundTarget = new System.Windows.Forms.Button();
@@ -53,6 +54,7 @@ namespace SrvSurvey
             this.txtGenuses = new System.Windows.Forms.TextBox();
             this.lblBioSignalCount = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.toolRight.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -317,6 +319,11 @@ namespace SrvSurvey
             this.label1.TabIndex = 0;
             this.label1.Text = "Detected:";
             // 
+            // timer1
+            // 
+            this.timer1.Interval = 1000;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
@@ -375,5 +382,6 @@ namespace SrvSurvey
         private System.Windows.Forms.TextBox txtLocation;
         private System.Windows.Forms.Label lblAnalyzedCount;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Timer timer1;
     }
 }

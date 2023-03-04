@@ -13,7 +13,7 @@ using System.Windows.Forms;
 
 namespace SrvSurvey
 {
-    partial class PlotTrackTarget : Form
+    partial class PlotTrackTarget : Form, PlotterForm
     {
         LandableBody targetBody;
         LatLong2 targetLocation;
@@ -24,15 +24,34 @@ namespace SrvSurvey
         private PlotTrackTarget()
         {
             InitializeComponent();
+        }
 
+        public void reposition(Rectangle gameRect)
+        {
+            if (gameRect == Rectangle.Empty)
+            {
+                this.Opacity = 0;
+                return;
+            }
+
+            this.Opacity = Game.settings.Opacity;
+
+            if (game.mode == GameMode.OnFoot)
+            {
+                this.Left = gameRect.Right - this.Width;
+                this.Top = gameRect.Top + 60;
+            }
+            else
+            {
+                this.Left = gameRect.Left + (gameRect.Width / 2) - (this.Width / 2);
+                this.Top = gameRect.Top + 160;
+            }
         }
 
         public void setTarget(LandableBody targetBody, LatLong2 targetLocation)
         {
             this.targetBody = targetBody;
             this.targetLocation = targetLocation;
-
-
 
             this.td = new TrackingDelta(targetBody.radius, game.location, targetLocation);
             //this.textBox1.Text = targetBody.name + " / " + targetLocation.ToString();
@@ -49,12 +68,9 @@ namespace SrvSurvey
         private void PlotGroundTarget_Load(object sender, EventArgs e)
         {
             this.TopMost = true;
-            this.Opacity = 0.5;
+            //this.Opacity = Game.settings.Opacity;
 
-            if (game.mode == GameMode.OnFoot)
-                this.floatTopRight();
-            else
-                this.floatCenterTop();
+            this.reposition(Overlay.getEDWindowRect());
         }
 
         private void Game_modeChanged(GameMode newMode)
@@ -62,14 +78,7 @@ namespace SrvSurvey
             if (game.nearBody != null && game.mode != GameMode.SuperCruising && game.mode != GameMode.Flying && game.mode != GameMode.Landed && game.mode != GameMode.InSrv && game.mode != GameMode.OnFoot && game.mode != GameMode.GlideMode)
                 this.Opacity = 0;
             else
-            {
-                this.Opacity = 0.5;
-
-                if (game.mode == GameMode.OnFoot)
-                    this.floatTopRight();
-                else
-                    this.floatCenterTop();
-            }
+                this.reposition(Overlay.getEDWindowRect());
         }
 
         private void Status_StatusChanged()
@@ -81,7 +90,7 @@ namespace SrvSurvey
         private void calculate()
         {
             // exit early if we're not in the right mode
-            if (game.nearBody != null && game.mode != GameMode.SuperCruising && game.mode != GameMode.Flying && game.mode != GameMode.Landed && game.mode != GameMode.InSrv && game.mode != GameMode.OnFoot && game.mode != GameMode.GlideMode) 
+            if (game.nearBody != null && game.mode != GameMode.SuperCruising && game.mode != GameMode.Flying && game.mode != GameMode.Landed && game.mode != GameMode.InSrv && game.mode != GameMode.OnFoot && game.mode != GameMode.GlideMode)
                 return;
 
 
@@ -162,24 +171,22 @@ namespace SrvSurvey
             g.DrawPath(pen1, pp);
         }
 
-        private void floatCenterTop()
-        {
-            // position form top center above the heading
-            var rect = Overlay.getEDWindowRect();
+        //private void floatCenterTop()
+        //{
+        //    // position form top center above the heading
+        //    var rect = Overlay.getEDWindowRect();
 
-            this.Left = rect.Left + (rect.Width / 2) - (this.Width / 2);
-            this.Top = rect.Top + 160;
-        }
+        //    this.Left = rect.Left + (rect.Width / 2) - (this.Width / 2);
+        //    this.Top = rect.Top + 160;
+        //}
 
+        //private void floatTopRight()
+        //{
+        //    // position form top center above the heading
+        //    var rect = Overlay.getEDWindowRect();
 
-        private void floatTopRight()
-        {
-            // position form top center above the heading
-            var rect = Overlay.getEDWindowRect();
-
-            this.Left = rect.Right - this.Width;
-            this.Top = rect.Top + 60;
-        }
-
+        //    this.Left = rect.Right - this.Width;
+        //    this.Top = rect.Top + 60;
+        //}
     }
 }

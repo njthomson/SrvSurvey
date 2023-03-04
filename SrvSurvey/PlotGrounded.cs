@@ -14,7 +14,7 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace SrvSurvey
 {
-    public partial class PlotGrounded : Form
+    public partial class PlotGrounded : Form, PlotterForm
     {
         private Game game = Game.activeGame;
 
@@ -34,6 +34,18 @@ namespace SrvSurvey
             //this.Width = 200;
         }
 
+        public void reposition(Rectangle gameRect)
+        {
+            if (gameRect == Rectangle.Empty)
+            {
+                this.Opacity = 0;
+                return;
+            }
+
+            this.Opacity = Game.settings.Opacity;
+            Overlay.floatTopRight(this, 160, 20);
+        }
+
         private void PlotGrounded_Load(object sender, EventArgs e)
         {
             game.status.StatusChanged += Status_StatusChanged;
@@ -46,6 +58,8 @@ namespace SrvSurvey
             //this.Opacity = 1;
             game.journals.onJournalEntry += Journals_onJournalEntry;
             game.nearBody.bioScanEvent += NearBody_bioScanEvent;
+
+            this.reposition(Overlay.getEDWindowRect());
         }
 
         private void NearBody_bioScanEvent()
@@ -193,24 +207,24 @@ namespace SrvSurvey
                     this.initialize();
                 }
 
-                this.Opacity = 0.5;
-                Overlay.floatTopRight(this, 160, 20);
-                //this.floatLeftMiddle();
+                //this.Opacity = 0.5;
+                //Overlay.floatTopRight(this, 160, 20);
+                ////this.floatLeftMiddle();
             }
-            else
-            {
-                this.Opacity = 0;
-            }
+            //else
+            //{
+            //    this.Opacity = 0;
+            //}
         }
 
-        private void floatLeftMiddle()
-        {
-            // position form top center above the heading
-            var rect = Overlay.getEDWindowRect();
+        //private void floatLeftMiddle()
+        //{
+        //    // position form top center above the heading
+        //    var rect = Overlay.getEDWindowRect();
 
-            this.Left = rect.Left + 40;
-            this.Top = rect.Top + (rect.Height / 2) - (this.Height / 2);
-        }
+        //    this.Left = rect.Left + 40;
+        //    this.Top = rect.Top + (rect.Height / 2) - (this.Height / 2);
+        //}
 
         private void Status_StatusChanged()
         {

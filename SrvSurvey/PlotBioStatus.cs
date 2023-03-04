@@ -14,7 +14,7 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace SrvSurvey
 {
-    public partial class PlotBioStatus : Form
+    public partial class PlotBioStatus : Form, PlotterForm
     {
         private Game game;
 
@@ -33,6 +33,18 @@ namespace SrvSurvey
 
             this.Height = 80;
             this.Width = 400;
+        }
+
+        public void reposition(Rectangle gameRect)
+        {
+            if (gameRect == Rectangle.Empty)
+            {
+                this.Opacity = 0;
+                return;
+            }
+
+            this.Opacity = Game.settings.Opacity;
+            Overlay.floatCenterTop(this, 0);
         }
 
         private void PlotBioStatus_Load(object sender, EventArgs e)
@@ -98,24 +110,24 @@ namespace SrvSurvey
                     this.initialize();
                 }
 
-                this.Opacity = 0.5;
-                Overlay.floatCenterTop(this, 0);
+                //this.Opacity = 0.5;
+                //Overlay.floatCenterTop(this, 0);
                 //this.floatLeftMiddle();
             }
             else
             {
-                this.Opacity = 0;
+                //this.Opacity = 0;
             }
         }
 
-        private void floatLeftMiddle()
-        {
-            // position form top center above the heading
-            var rect = Overlay.getEDWindowRect();
+        //private void floatLeftMiddle()
+        //{
+        //    // position form top center above the heading
+        //    var rect = Overlay.getEDWindowRect();
 
-            this.Left = rect.Left + 40;
-            this.Top = rect.Top + (rect.Height / 2) - (this.Height / 2);
-        }
+        //    this.Left = rect.Left + 40;
+        //    this.Top = rect.Top + (rect.Height / 2) - (this.Height / 2);
+        //}
 
         private void Status_StatusChanged()
         {
@@ -203,7 +215,7 @@ namespace SrvSurvey
 
             if (game.nearBody.scanOne == null)
                 this.showAllGenus(g);
-            else 
+            else
                 this.showCurrentGenus(g);
 
         }

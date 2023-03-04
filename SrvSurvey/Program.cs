@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -95,6 +96,22 @@ namespace SrvSurvey
             }
         }
 
+        public static void repositionPlotters()
+        {
+            var rect = Overlay.getEDWindowRect();
+
+            foreach(PlotterForm form in activePlotters.Values)
+            {
+                form.reposition(rect);
+            }
+        }
+
+
         #endregion
+    }
+
+    interface PlotterForm
+    {
+        void reposition(Rectangle gameRect);
     }
 }

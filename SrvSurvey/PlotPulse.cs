@@ -11,7 +11,7 @@ using System.Windows.Forms;
 
 namespace SrvSurvey
 {
-    public partial class PlotPulse : Form
+    public partial class PlotPulse : Form, PlotterForm
     {
         public static DateTime LastChanged;
 
@@ -29,8 +29,7 @@ namespace SrvSurvey
         {
             InitializeComponent();
             this.TopMost = true;
-            this.Opacity = 0.2;
-
+            //this.Opacity = Game.settings.Opacity; // not 0.2?
         }
 
         private void PlotPulse_Load(object sender, EventArgs e)
@@ -39,10 +38,20 @@ namespace SrvSurvey
             this.Height = 32;
 
             // position ourselves in the bottom left corner of the ED window
-            var rect = Overlay.getEDWindowRect();
+            this.reposition(Overlay.getEDWindowRect());
+        }
 
-            this.Left = rect.Left + 12;
-            this.Top = rect.Bottom - this.Height - 8;
+        public void reposition(Rectangle gameRect)
+        {
+            if (gameRect == Rectangle.Empty)
+            {
+                this.Opacity = 0;
+                return;
+            }
+
+            this.Opacity = Game.settings.Opacity;
+            this.Left = gameRect.Left + 12;
+            this.Top = gameRect.Bottom - this.Height - 8;
         }
 
         private void timer_Tick(object sender, EventArgs e)
@@ -68,6 +77,11 @@ namespace SrvSurvey
             g.FillRectangle(this.brush,
                 10, 27 - count,
                 10, count);
+        }
+
+        private void PlotPulse_MouseClick(object sender, MouseEventArgs e)
+        {
+            Overlay.setFocusED();
         }
     }
 }

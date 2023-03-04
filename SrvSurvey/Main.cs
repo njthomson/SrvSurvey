@@ -18,6 +18,7 @@ namespace SrvSurvey
         private Game game;
 
         private bool bioScanning = false;
+        private Rectangle lastWindowRect;
 
         public Main()
         {
@@ -27,6 +28,8 @@ namespace SrvSurvey
         private void Main_Load(object sender, EventArgs e)
         {
             this.newGame();
+            this.lastWindowRect = Overlay.getEDWindowRect();
+            this.timer1.Start();
         }
 
         private void newGame()
@@ -66,7 +69,11 @@ namespace SrvSurvey
         private void Game_modeChanged(GameMode newMode)
         {
             this.lblMode.Text = game.mode.ToString();
+            Game.log($"!!>> {newMode}");
             this.updateCommanderTexts();
+
+            // DockSRV seems to be really stale :/
+            // Maybe we can do something here to judge the same?
         }
 
         private void updateCommanderTexts()
@@ -141,8 +148,6 @@ namespace SrvSurvey
             Program.closePlotter(nameof(PlotGrounded));
         }
 
-
-
         private void btnOverlay_Click(object sender, EventArgs e)
         {
             //var handleED = Overlaying.getEDWindowHandle();
@@ -168,7 +173,6 @@ namespace SrvSurvey
         private void Main_DoubleClick(object sender, EventArgs e)
         {
         }
-
 
         private void btnViewLogs_Click(object sender, EventArgs e)
         {
@@ -217,6 +221,20 @@ namespace SrvSurvey
             Game.settings.Save();
 
             Program.closePlotter(nameof(PlotTrackTarget));
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            // slow timer to check the location of the game window, repositioning plotters if needed
+            var rect = Overlay.getEDWindowRect();
+
+            if (rect != lastWindowRect)
+            {
+                Game.log("moved!");
+                this.lastWindowRect = rect;
+
+                Program.repositionPlotters();
+            }
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SrvSurvey.game;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -12,26 +13,6 @@ namespace SrvSurvey
 {
     class Overlay
     {
-        /// <summary>
-        /// Toggle if the target form is in overlay mode or not.
-        /// </summary>
-        public static void setOverlay(Form form)
-        {
-            form.TopMost = true;
-            form.Opacity = 0.5;
-
-            // position form just in from the left edge, half way down
-            var rect = Overlay.getEDWindowRect();
-
-            form.Left = rect.Left + 40;
-            form.Top = rect.Top + (rect.Height / 2) - (form.Height / 2);
-
-            setFormMinimal(form);
-
-            // and put focus onto ED
-            setFocusED();
-        }
-
         /// <summary>
         /// Set focus on Elite Dangerous
         /// </summary>
@@ -62,6 +43,16 @@ namespace SrvSurvey
         public static Rectangle getEDWindowRect()
         {
             var handleED = Overlay.getEDWindowHandle();
+
+            var activeWindow = Overlay.GetForegroundWindow();
+
+            // Game.log($"handleED: {handleED}, activeWindow: {activeWindow}");
+
+            if (handleED != activeWindow)
+            {
+                Game.log("Not active!");
+                return Rectangle.Empty;
+            }
 
             var r1 = new RECT();
             Overlay.GetWindowRect(handleED, ref r1);
@@ -131,7 +122,8 @@ namespace SrvSurvey
         static extern bool GetClientRect(IntPtr hWnd, ref RECT lpRect);
         [DllImport("user32.dll")]
         static extern bool SetForegroundWindow(IntPtr hWnd);
-
+        [DllImport("user32.dll")]
+        static extern IntPtr GetForegroundWindow();
     }
 
     [StructLayout(LayoutKind.Sequential)]
