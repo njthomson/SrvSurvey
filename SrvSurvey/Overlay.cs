@@ -42,23 +42,19 @@ namespace SrvSurvey
 
         public static Rectangle getEDWindowRect()
         {
-            var handleED = Overlay.getEDWindowHandle();
+            var hwndED = Overlay.getEDWindowHandle();
+            var hwndActive = Overlay.GetForegroundWindow();
 
-            var activeWindow = Overlay.GetForegroundWindow();
-
-            // Game.log($"handleED: {handleED}, activeWindow: {activeWindow}");
-
-            if (handleED != activeWindow)
-            {
-                Game.log("Not active!");
-                return Rectangle.Empty;
-            }
+            //if (hwndED != hwndActive || hwndED == IntPtr.Zero)
+            //{
+            //    return Rectangle.Empty;
+            //}
 
             var r1 = new RECT();
-            Overlay.GetWindowRect(handleED, ref r1);
+            Overlay.GetWindowRect(hwndED, ref r1);
 
             var r2 = new RECT();
-            Overlay.GetClientRect(handleED, ref r2);
+            Overlay.GetClientRect(hwndED, ref r2);
 
             var windowTitleHeight = r1.Bottom - r1.Top - r2.Bottom;
 
@@ -73,9 +69,10 @@ namespace SrvSurvey
         {
             //this.TopMost = !this.TopMost;
             var procED = Process.GetProcessesByName("EliteDangerous64");
-            var handleED = procED[0].MainWindowHandle;
-
-            return handleED;
+            if (procED.Length == 0)
+                return IntPtr.Zero;
+            else
+                return procED[0].MainWindowHandle;
         }
 
         public static void floatLeftMiddle(Form form)

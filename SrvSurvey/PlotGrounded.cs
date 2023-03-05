@@ -18,13 +18,10 @@ namespace SrvSurvey
     {
         private Game game = Game.activeGame;
 
-        private LatLong2 touchdownLocation;
         private TrackingDelta srvLocation;
 
-        private Angle touchdownHeading;
         private TrackingDelta td;
         private List<BioScan> bioScans = new List<BioScan>();
-
 
         private PlotGrounded()
         {
@@ -81,9 +78,12 @@ namespace SrvSurvey
 
         private void onJournalEntry(Touchdown entry)
         {
-            this.touchdownLocation = game.touchdownLocation;
-            this.touchdownHeading = game.touchdownHeading;
-            Game.log($"re-touchdownLocation: {this.touchdownLocation}, heading {this.touchdownHeading}");
+            if (this.td == null) return;
+
+            this.td.Point1 = new LatLong2(game.status);
+            this.td.Point2 = new LatLong2(game.status);
+
+            Game.log($"re-touchdownLocation: {game.status.here}");
             this.Invalidate();
         }
 
@@ -97,84 +97,6 @@ namespace SrvSurvey
         //    Game.log($"ScanOrganic: {entry.ScanType}: {entry.Genus} / {entry.Species}");
         //    this.addBioScan(entry);
         //}
-
-        private void onJournalEntry(SendText entry)
-        {
-            switch (entry.Message)
-            {
-                case "11":
-
-                    game.nearBody.addBioScan(new ScanOrganic
-                    {
-                        ScanType = ScanType.Log,
-                        Genus = "$Codex_Ent_Sphere_Name;",
-                        Species = "Anemone Foo"
-                    });
-                    return;
-                case "12":
-                    game.nearBody.addBioScan(new ScanOrganic
-                    {
-                        ScanType = ScanType.Sample,
-                        Genus = "$Codex_Ent_Sphere_Name;",
-                        Species = "Anemone Foo"
-                    });
-                    return;
-                case "13":
-                    game.nearBody.addBioScan(new ScanOrganic
-                    {
-                        ScanType = ScanType.Analyse,
-                        Genus = "$Codex_Ent_Sphere_Name;",
-                        Species = "Anemone Foo"
-                    });
-                    return;
-
-                case "21":
-                    game.nearBody.addBioScan(new ScanOrganic
-                    {
-                        ScanType = ScanType.Log,
-                        Genus = "$Codex_Ent_Stratum_Genus_Name;",
-                        Species = "Stratum Tectonicas"
-                    });
-                    return;
-                case "22":
-                    game.nearBody.addBioScan(new ScanOrganic
-                    {
-                        ScanType = ScanType.Sample,
-                        Genus = "$Codex_Ent_Stratum_Genus_Name;",
-                        Species = "Stratum Tectonicas"
-                    });
-                    return;
-                case "23":
-                    game.nearBody.addBioScan(new ScanOrganic
-                    {
-                        ScanType = ScanType.Analyse,
-                        Genus = "$Codex_Ent_Stratum_Genus_Name;",
-                        Species = "Stratum Tectonicas"
-                    });
-                    return;
-            }
-            //}
-            //var newScan = new BioScan()
-            //{
-            //    location = new LatLong2(game.status),
-            //    radius = BioScan.ranges[fakeGenus],
-            //    genus = fakeGenus,
-            //};
-            //this.bioScans.Add(newScan);
-            //Game.log($"Fake scan: {newScan}");
-            this.Invalidate();
-
-
-            if (entry.Message == "==")
-            {
-                // mark all as completed
-                foreach (var scan in this.bioScans)
-                    scan.scanType = ScanType.Analyse;
-
-                this.Invalidate();
-            }
-
-        }
 
         private void onJournalEntry(Disembark entry)
         {
@@ -194,7 +116,6 @@ namespace SrvSurvey
             }
             this.Invalidate();
         }
-
 
         #endregion
 
@@ -282,16 +203,14 @@ namespace SrvSurvey
             // TODO: ...
 
             // get landing location
-            this.touchdownLocation = game.touchdownLocation;
-            this.touchdownHeading = game.touchdownHeading;
-            Game.log($"touchdownLocation: {this.touchdownLocation}, heading {this.touchdownHeading}");
+            Game.log($"touchdownLocation: {game.touchdownLocation}");
 
-            if (this.touchdownLocation != null)
+            if (game.touchdownLocation != null)
             {
                 this.td = new TrackingDelta(
                     game.nearBody.radius,
-                    new LatLong2(game.status),
-                    this.touchdownLocation);
+                    game.status.here,
+                    game.touchdownLocation);
             }
         }
 
@@ -341,7 +260,6 @@ namespace SrvSurvey
                 g.FillRectangle(GameColors.brushSrvLocation, rect);
             }
 
-
             // draw current location pointer (always at center of plot + unscaled)
             g.ResetTransform();
             g.TranslateTransform(w, h);
@@ -353,7 +271,46 @@ namespace SrvSurvey
             var dy = (float)Math.Cos(Util.degToRad(game.status.Heading)) * 10F;
             g.DrawLine(GameColors.Lime2, 0, 0, +dx, -dy);
 
-            drawScale(g, scale);
+            //drawScale(g, scale);
+            g.ResetTransform();
+
+            if (game.touchdownLocation != null)
+                this.drawBearingTo(g, 10, 8, "Touchdown:", game.touchdownLocation);
+
+            if (this.srvLocation != null)
+                this.drawBearingTo(g, 10 + w, 8, "SRV:", this.srvLocation.Point2);
+
+            float y = this.Height - 24;
+            if (game.nearBody.scanOne != null)
+                this.drawBearingTo(g, 10, y, "Scan one:", game.nearBody.scanOne.location);
+
+            if (game.nearBody.scanTwo != null)
+                this.drawBearingTo(g, 10 + w, y, "Scan two:", game.nearBody.scanTwo.location);
+        }
+
+        private void drawBearingTo(Graphics g, float x, float y, string txt, LatLong2 location)
+        {
+            //var txt = scan == game.nearBody.scanOne ? "Scan one:" : "Scan two:";
+            g.DrawString(txt, this.font, GameColors.brushGameOrange, x, y);
+
+            var txtSz = g.MeasureString(txt, this.font);
+
+
+            var sz = 6;
+            x += txtSz.Width + 8;
+            var r = new RectangleF(x, y, sz*2, sz*2);
+            g.DrawEllipse(GameColors.penGameOrange2, r);
+
+            var dd = new TrackingDelta(game.nearBody.radius, game.status.here, location);
+
+            Angle deg = dd.angle - game.status.Heading;
+            var dx = (float)Math.Sin(Util.degToRad(deg)) * 10F;
+            var dy = (float)Math.Cos(Util.degToRad(deg)) * 10F;
+            g.DrawLine(GameColors.penGameOrange2, x + sz, y+sz, x + sz +dx, y + sz -dy);
+
+            x += sz * 3;
+            g.DrawString(Util.metersToString(dd.distance), this.font, GameColors.brushGameOrange, x, y);
+
         }
 
         private void drawCompassLines(Graphics g)
@@ -408,11 +365,11 @@ namespace SrvSurvey
                 txt += $" / {Util.metersToString(d.distance)}";
             }
 
-            // draw distances along the top
-            g.ResetTransform();
-            var txtSz = g.MeasureString(txt, this.font);
-            var r = new RectangleF(8, 8, this.Width - 20, txtSz.Height);
-            g.DrawString(txt, this.font, GameColors.brushGameOrange, r, StringFormat.GenericTypographic);;
+            //// draw distances along the top
+            //g.ResetTransform();
+            //var txtSz = g.MeasureString(txt, this.font);
+            //var r = new RectangleF(8, 8, this.Width - 20, txtSz.Height);
+            //g.DrawString(txt, this.font, GameColors.brushGameOrange, r, StringFormat.GenericTypographic);;
         }
 
         private void drawBioScan(Graphics g, TrackingDelta d, BioScan scan)
@@ -421,7 +378,7 @@ namespace SrvSurvey
 
             d.Point2 = scan.location;
             var rect = new RectangleF((float)-d.dx - scan.radius, (float)d.dy - scan.radius, scan.radius * 2, scan.radius * 2);
-            Game.log($"d.dx: {rect.X}, d.dy: {rect.Y}");
+            //Game.log($"d.dx: {rect.X}, d.dy: {rect.Y}");
 
             var complete = scan.scanType == ScanType.Analyse;
             g.FillEllipse(complete ? GameColors.brushExclusionComplete : GameColors.brushExclusionActive, rect);
@@ -430,7 +387,6 @@ namespace SrvSurvey
             rect.Inflate(fudge, fudge);
             g.DrawEllipse(complete ? GameColors.penExclusionComplete : GameColors.penExclusionActive, rect);
         }
-
 
         private void drawScale(Graphics g, float scale)
         {

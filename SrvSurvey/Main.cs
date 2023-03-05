@@ -51,6 +51,11 @@ namespace SrvSurvey
             {
                 Program.showPlotter<PlotPulse>(this);
             }
+            else
+            {
+                // not much to do if game is not running
+                return;
+            }
 
             // are there already bio signals?
             if (game.nearBody?.Genuses?.Count > 0)
@@ -61,7 +66,7 @@ namespace SrvSurvey
                 if (Game.settings.autoShowBioSummary)
                     Program.showPlotter<PlotBioStatus>(this);
 
-                if (Game.settings.autoShowBioPlot && (game.vehicle == ActiveVehicle.SRV || game.vehicle == ActiveVehicle.Foot))
+                if (Game.settings.autoShowBioPlot) // && (game.vehicle == ActiveVehicle.SRV || game.vehicle == ActiveVehicle.Foot))
                     Program.showPlotter<PlotGrounded>(this);
             }
         }
@@ -111,13 +116,9 @@ namespace SrvSurvey
 
             txtGenuses.Text = string.Join(
                 ", ",
-                game.nearBody.Genuses.Select(_ => _.Genus_Localised)
+                game.nearBody.Genuses.Select(_ => $"{_.Genus_Localised}:{ game.nearBody.analysedSpecies.ContainsKey(_.Genus) }")
                 );
-
-            // still ?
-            btnBioScan.BackColor = Game.settings.GameOrange; // GameColors.Orange;
         }
-
 
         private void Journals_onJournalEntry(JournalEntry entry, int index)
         {
@@ -128,6 +129,8 @@ namespace SrvSurvey
 
         private void onJournalEntry(Disembark entry)
         {
+            if (Game.settings.autoShowBioSummary)
+                Program.showPlotter<PlotBioStatus>(this);
             if (Game.settings.autoShowBioPlot)
                 Program.showPlotter<PlotGrounded>(this);
         }
@@ -145,25 +148,113 @@ namespace SrvSurvey
 
         private void onJournalEntry(DockSRV entry)
         {
+            //Program.closePlotter(nameof(PlotGrounded));
+        }
+
+        private void onJournalEntry(SupercruiseEntry entry)
+        {
+            Game.log("SupercruiseEntry");
+
+            // close these plotters upon super-cruise
             Program.closePlotter(nameof(PlotGrounded));
         }
 
-        private void btnOverlay_Click(object sender, EventArgs e)
+        private void onJournalEntry(ApproachBody entry)
         {
-            //var handleED = Overlaying.getEDWindowHandle();
+            Game.log("ApproachBody");
 
-            //var rect = new RECT();
-            //var rslt = Overlaying.GetWindowRect(handleED, ref rect);
+            if (Game.settings.autoShowBioSummary)
+                Program.showPlotter<PlotBioStatus>(this);
 
-            this.Text = Overlay.getEDWindowRect().ToString();
-
-            //return procED[0].MainWindowHandle;
+            // close these plotters upon super-cruise
+            //Program.closePlotter(nameof(PlotBioStatus));
         }
 
-        private void btnBioScan_Click(object sender, EventArgs e)
+        private void onJournalEntry(SendText entry)
         {
-            Program.showPlotter<PlotBioStatus>(this);
+            switch (entry.Message)
+            {
+                case "11":
+
+                    game.nearBody.addBioScan(new ScanOrganic
+                    {
+                        ScanType = ScanType.Log,
+                        Genus = "$Codex_Ent_Shrubs_Genus_Name;",
+                        Species = "Anemone Foo",
+                        Species_Localised = "Tussock Cultro",
+                        Body = game.nearBody.bodyId,
+                        SystemAddress = game.nearBody.systemAddress,
+                    });
+                    return;
+                case "12":
+                    game.nearBody.addBioScan(new ScanOrganic
+                    {
+                        ScanType = ScanType.Sample,
+                        Genus = "$Codex_Ent_Shrubs_Genus_Name;",
+                        Species = "Anemone Foo",
+                        Species_Localised = "Tussock Cultro",
+                        Body = game.nearBody.bodyId,
+                        SystemAddress = game.nearBody.systemAddress,
+                    });
+                    return;
+                case "13":
+                    game.nearBody.addBioScan(new ScanOrganic
+                    {
+                        ScanType = ScanType.Analyse,
+                        Genus = "$Codex_Ent_Shrubs_Genus_Name;",
+                        Species = "Anemone Foo",
+                        Species_Localised = "Tussock Cultro",
+                        Body = game.nearBody.bodyId,
+                        SystemAddress = game.nearBody.systemAddress,
+                    });
+                    return;
+
+                case "21":
+                    game.nearBody.addBioScan(new ScanOrganic
+                    {
+                        ScanType = ScanType.Log,
+                        Genus = "$Codex_Ent_Stratum_Genus_Name;",
+                        Species = "Stratum Tectonicas",
+                        Species_Localised = "Stratum Tectonicas",
+                        Body = game.nearBody.bodyId,
+                        SystemAddress = game.nearBody.systemAddress,
+                    });
+                    return;
+                case "22":
+                    game.nearBody.addBioScan(new ScanOrganic
+                    {
+                        ScanType = ScanType.Sample,
+                        Genus = "$Codex_Ent_Stratum_Genus_Name;",
+                        Species = "Stratum Tectonicas",
+                        Species_Localised = "Stratum Tectonicas",
+                        Body = game.nearBody.bodyId,
+                        SystemAddress = game.nearBody.systemAddress,
+                    });
+                    return;
+                case "23":
+                    game.nearBody.addBioScan(new ScanOrganic
+                    {
+                        ScanType = ScanType.Analyse,
+                        Genus = "$Codex_Ent_Stratum_Genus_Name;",
+                        Species = "Stratum Tectonicas",
+                        Species_Localised = "Stratum Tectonicas",
+                        Body = game.nearBody.bodyId,
+                        SystemAddress = game.nearBody.systemAddress,
+                    });
+                    return;
+            }
+            //}
+            //var newScan = new BioScan()
+            //{
+            //    location = new LatLong2(game.status),
+            //    radius = BioScan.ranges[fakeGenus],
+            //    genus = fakeGenus,
+            //};
+            //this.bioScans.Add(newScan);
+            //Game.log($"Fake scan: {newScan}");
+            this.Invalidate();
         }
+
 
         private void btnQuit_Click(object sender, EventArgs e)
         {
@@ -225,10 +316,16 @@ namespace SrvSurvey
 
         private void timer1_Tick(object sender, EventArgs e)
         {
+            if (game.isShutdown && game.isRunning)
+            {
+                this.newGame();
+                return;
+            }
+
             // slow timer to check the location of the game window, repositioning plotters if needed
             var rect = Overlay.getEDWindowRect();
 
-            if (rect != lastWindowRect)
+            if (rect != lastWindowRect) // TMP!
             {
                 Game.log("moved!");
                 this.lastWindowRect = rect;

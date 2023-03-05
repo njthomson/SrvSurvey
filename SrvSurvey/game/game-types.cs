@@ -66,6 +66,8 @@ namespace SrvSurvey.game
 
         MainMenu,
         FSDJumping,
+
+        Unknown,
     }
 
     delegate void GameModeChanged(GameMode newMode);

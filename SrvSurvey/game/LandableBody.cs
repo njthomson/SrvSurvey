@@ -15,6 +15,7 @@ namespace SrvSurvey.game
 
         public readonly string bodyName;
         public readonly int bodyId;
+        public long systemAddress;
         public double radius;
 
         public event BioScanEvent bioScanEvent;
@@ -23,10 +24,11 @@ namespace SrvSurvey.game
         public BioScan scanTwo;
         public Dictionary<string, string> analysedSpecies = new Dictionary<string, string>();
 
-        public LandableBody(string bodyName, int bodyId)
+        public LandableBody(string bodyName, int bodyId, long systemAddress)
         {
             this.bodyName = bodyName;
             this.bodyId = bodyId;
+            this.systemAddress = systemAddress;
 
             // see if we can get signals for this body
             this.readSAASignalsFound();
@@ -82,7 +84,7 @@ namespace SrvSurvey.game
                 {
                     // look for Analyze ScanOrganics.
                     // TODO: only on current body!
-                    if (scan.ScanType == ScanType.Analyse && !this.analysedSpecies.ContainsKey(scan.Genus))
+                    if (scan.SystemAddress == this.systemAddress && scan.Body == this.bodyId && scan.ScanType == ScanType.Analyse && !this.analysedSpecies.ContainsKey(scan.Genus))
                     {
                         this.analysedSpecies.Add(scan.Genus, scan.Species_Localised);
                     }
@@ -93,13 +95,14 @@ namespace SrvSurvey.game
                 (JournalFile journals) =>
                 {
                     // stop searching older journal files if we see we approached this body
-                    return journals.search((ApproachBody _) => _.Body == this.bodyName);
+                    return journals.search((FSDJump _) => true);
                 }
             );
         }
 
         public void addBioScan(ScanOrganic entry)
         {
+            
             if (this.scanOne != null && this.scanOne.genus != entry.Genus)
             {
                 // we are changing Genus before the 3rd scan ... start over
@@ -117,6 +120,8 @@ namespace SrvSurvey.game
                 speciesLocalized = entry.Species_Localised,
                 scanType = entry.ScanType,
             };
+            //newScan.location.Lat += 0.1;
+            //newScan.location.Long -= 0.2;
 
             Game.log($"Scan: {newScan}");
 
@@ -142,7 +147,10 @@ namespace SrvSurvey.game
 
                 this.completedScans.Add(newScan);
 
-                this.analysedSpecies.Add(entry.Genus, entry.Species_Localised);
+                if (!this.analysedSpecies.ContainsKey(entry.Genus))
+                {
+                    this.analysedSpecies.Add(entry.Genus, entry.Species_Localised);
+                }
             }
 
             if (this.bioScanEvent != null) this.bioScanEvent();

@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using SrvSurvey.units;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -89,6 +90,8 @@ namespace SrvSurvey
                 }
             }
 
+            this.here = new LatLong2(this);
+
             // fire the event for external code on the UI thread
             if (this.StatusChanged != null)
             {
@@ -100,6 +103,10 @@ namespace SrvSurvey
         }
 
         #endregion
+
+        [JsonIgnore]
+        public LatLong2 here { get; private set; }
+
 
         [JsonIgnore]
         public bool OnFoot { get => (this.Flags2 & StatusFlags2.OnFoot) > 0; }

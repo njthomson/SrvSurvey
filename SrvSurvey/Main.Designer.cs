@@ -31,7 +31,6 @@ namespace SrvSurvey
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
-            this.btnBioScan = new System.Windows.Forms.Button();
             this.btnGroundTarget = new System.Windows.Forms.Button();
             this.toolRight = new System.Windows.Forms.StatusStrip();
             this.lblMode = new System.Windows.Forms.ToolStripStatusLabel();
@@ -60,17 +59,6 @@ namespace SrvSurvey
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // btnBioScan
-            // 
-            this.btnBioScan.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnBioScan.Location = new System.Drawing.Point(52, 412);
-            this.btnBioScan.Name = "btnBioScan";
-            this.btnBioScan.Size = new System.Drawing.Size(164, 21);
-            this.btnBioScan.TabIndex = 1;
-            this.btnBioScan.Text = "Bio Scanning";
-            this.btnBioScan.UseVisualStyleBackColor = false;
-            this.btnBioScan.Click += new System.EventHandler(this.btnBioScan_Click);
             // 
             // btnGroundTarget
             // 
@@ -334,7 +322,6 @@ namespace SrvSurvey
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.btnBioScan);
             this.Controls.Add(this.btnQuit2);
             this.Controls.Add(this.toolRight);
             this.Font = new System.Drawing.Font("Lucida Sans Typewriter", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -359,7 +346,6 @@ namespace SrvSurvey
         }
 
         #endregion
-        private System.Windows.Forms.Button btnBioScan;
         private System.Windows.Forms.StatusStrip toolRight;
         private System.Windows.Forms.ToolStripStatusLabel lblMode;
         private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButton1;

@@ -16,7 +16,7 @@ namespace SrvSurvey
 {
     public partial class PlotBioStatus : Form, PlotterForm
     {
-        private Game game;
+        private Game game = Game.activeGame;
 
         private LatLong2 touchdownLocation;
         private Angle touchdownHeading;
@@ -49,7 +49,12 @@ namespace SrvSurvey
 
         private void PlotBioStatus_Load(object sender, EventArgs e)
         {
-            game = Game.activeGame;
+            if (game.nearBody == null)
+            {
+                Game.log("PlotBioStatus_Load bad!");
+                return;
+            }
+
             game.status.StatusChanged += Status_StatusChanged;
             game.modeChanged += Game_modeChanged;
 
@@ -60,6 +65,8 @@ namespace SrvSurvey
             //this.Opacity = 1;
             game.journals.onJournalEntry += Journals_onJournalEntry;
             game.nearBody.bioScanEvent += NearBody_bioScanEvent;
+
+            this.reposition(Overlay.getEDWindowRect());
         }
 
         private void NearBody_bioScanEvent()
@@ -198,20 +205,15 @@ namespace SrvSurvey
         private Font fontBig = new Font(Game.settings.font2.FontFamily, 22f);
         private Font fontSmall = new Font(Game.settings.font2.FontFamily, 6f);
 
-
         private void PlotBioStatus_Paint(object sender, PaintEventArgs e)
         {
-            if (game.nearBody.Genuses == null) return;
+            if (game?.nearBody?.Genuses == null) return;
 
             var g = e.Graphics;
 
             g.DrawString(
-                "Biological signals:",
+                $"Biological signals: {game.nearBody.Genuses.Count} Analyzed: {game.nearBody.analysedSpecies.Count}",
                 this.font, GameColors.brushGameOrange, 4, 4);
-
-            g.DrawString(
-                $"{game.nearBody.analysedSpecies.Count} of {game.nearBody.Genuses.Count}",
-                this.fontBig, GameColors.brushGameOrange, 4, 21);
 
             if (game.nearBody.scanOne == null)
                 this.showAllGenus(g);
@@ -224,16 +226,32 @@ namespace SrvSurvey
         {
             // all the Genus names
             float x = 110;
-            float y = 16;
+            float y = 28;
+
+            var r = new RectangleF(8, y, 24, 24);
+            g.FillEllipse(Brushes.DarkGreen, r);
+            g.DrawEllipse(GameColors.penGreen2, r);
+
+            r = new RectangleF(40, y, 24, 24);
+            if (game.nearBody.scanTwo != null)
+            {
+                g.FillEllipse(Brushes.DarkGreen, r);
+                g.DrawEllipse(GameColors.penGreen2, r);
+            }
+            else
+            {
+                g.DrawEllipse(GameColors.penGameOrange2, r);
+            }
+
+            r = new RectangleF(72, y, 24, 24);
+            g.DrawEllipse(GameColors.penGameOrange2, r);
 
             g.DrawString(
                 $"{game.nearBody.scanOne.speciesLocalized}",
                 this.fontBig, GameColors.brushGameOrange,
-                x, y);
-
+                104, y-8);
 
             this.drawScale(g, game.nearBody.scanOne.radius, 0.25f);
-
         }
 
         private void drawScale(Graphics g, float dist, float scale)
@@ -273,9 +291,13 @@ namespace SrvSurvey
 
         private void showAllGenus(Graphics g)
         {
+            g.DrawString(
+                $"{game.nearBody.analysedSpecies.Count}",
+                this.fontBig, Brushes.Green, 4, 21);
+
             // all the Genus names
-            float x = 110;
-            float y = 16;
+            float x = 32;
+            float y = 24;
             //foreach (var name in BioScan2.ranges.Keys)
             foreach (var genus in game.nearBody.Genuses)
             {

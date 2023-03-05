@@ -51,7 +51,7 @@ namespace SrvSurvey
             this.readEntries();
 
             var entry = this.FindEntryByType<Commander>(0, false);
-            this.CommanderName = entry.Name;
+            this.CommanderName = entry?.Name;
         }
 
         public int Count { get => this.Entries.Count; }
@@ -97,7 +97,7 @@ namespace SrvSurvey
             int n = index;
             while (n >= 0 && n < this.Entries.Count)
             {
-                if (this.Entries[n] is T)
+                if (this.Entries[n].GetType() == typeof(T))
                 {
                     return this.Entries[n] as T;
                 }

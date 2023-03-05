@@ -220,7 +220,6 @@ namespace SrvSurvey
     {
         // { "timestamp":"2023-02-07T05:31:03Z", "event":"ScanOrganic", "ScanType":"Log", "Genus":"$Codex_Ent_Brancae_Name;", "Genus_Localised":"Brain Trees", "Species":"$Codex_Ent_Seed_Name;", "Species_Localised":"Roseum Brain Tree", "SystemAddress":682228131193, "Body":16 }
         public ScanType ScanType { get; set; }
-
         public string Genus { get; set; }
         public string Genus_Localized { get; set; }
         public string Species { get; set; }

@@ -56,6 +56,7 @@ namespace SrvSurvey.game
         public LatLong2 location { get; private set; }
         private bool atMainMenu = false;
         private bool fsdJumping = false;
+        public bool isShutdown = false;
         public LandableBody nearBody;
 
         private void checkModeChange()
@@ -154,7 +155,9 @@ namespace SrvSurvey.game
                 if (activeVehicle == ActiveVehicle.MainShip)
                     return GameMode.Flying;
 
-                throw new Exception("Unknown game mode!");
+                Game.log("BAD unknown game mode?");
+                return GameMode.Unknown;
+                //throw new Exception("Unknown game mode!");
             }
         }
 
@@ -334,19 +337,28 @@ namespace SrvSurvey.game
             var lastShutdown = journals.FindEntryByType<Shutdown>(-1, true);
             if (lastShutdown == null)
             {
-
                 // ... and we have MainMenu music - we know we're not actively playing
                 var lastMusic = journals.FindEntryByType<Music>(-1, true);
                 if (lastMusic != null)
                     onJournalEntry(lastMusic);
+            } 
+            else
+            {
+                this.isShutdown = true;
+                return;
             }
 
+            var foo = this.touchdownLocation;
+            Game.log(foo);
+
             // if we have landed, we need to find the last Touchdown location
-            if (this.isLanded)
+            if (this.isLanded && this._touchdownLocation == null) // || (status.Flags & StatusFlags.HasLatLong) > 0)
             {
                 journals.searchDeep(
                     (Touchdown lastTouchdown) =>
                     {
+                        Game.log(lastTouchdown);
+
                         if (lastTouchdown.Body != status.BodyName)
                             throw new Exception($"ERROR! Journal parsing failure! Last found Touchdown was for body: {lastTouchdown.Body}, but we are currently on: {status.BodyName}");
 
@@ -370,7 +382,7 @@ namespace SrvSurvey.game
                 var locationEntry = journals.FindEntryByType<Location>(-1, true);
                 if (locationEntry != null && status.BodyName == locationEntry.Body)
                 {
-                    this.nearBody = new LandableBody(locationEntry.Body, locationEntry.BodyID)
+                    this.nearBody = new LandableBody(locationEntry.Body, locationEntry.BodyID, locationEntry.SystemAddress)
                     {
                         //bodyName = status.BodyName,
                         radius = status.PlanetRadius,
@@ -383,7 +395,6 @@ namespace SrvSurvey.game
                 //    this.nearBody.bodyID = status.Destination.Body;
                 //    this.nearBody.systemAddress = status.Destination.System;
                 //}
-
             }
 
             log($"Initialized Commander", this.Commander);
@@ -482,7 +493,7 @@ namespace SrvSurvey.game
 
         private void onJournalEntry(Music entry)
         {
-            Game.log(">>" + entry.MusicTrack);
+            Game.log("track >>" + entry.MusicTrack);
 
             var newMainMenu = entry.MusicTrack == "MainMenu";
             if (this.atMainMenu != newMainMenu)
@@ -535,12 +546,12 @@ namespace SrvSurvey.game
                     {
                         if (lastLiftoff == null || lastTouchdown.timestamp > lastLiftoff.timestamp)
                         {
-                            _touchdownLocation = new LatLong2(lastLiftoff);
+                            _touchdownLocation = new LatLong2(lastTouchdown);
                         }
-                        else
-                        {
-                            _touchdownLocation = new LatLong2(lastLiftoff);
-                        }
+                        //else
+                        //{
+                        //    _touchdownLocation = new LatLong2(lastTouchdown);
+                        //}
                     }
                 }
                 return _touchdownLocation;
@@ -567,7 +578,7 @@ namespace SrvSurvey.game
         private void onJournalEntry(ApproachBody entry)
         {
 
-            this.nearBody = new LandableBody(entry.Body, entry.BodyID);
+            this.nearBody = new LandableBody(entry.Body, entry.BodyID, entry.SystemAddress);
             if (status.BodyName == entry.Body && this.nearBody.radius == 0 && status.PlanetRadius > 0)
             {
                 // see if we can radius from status already

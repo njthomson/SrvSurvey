@@ -24,7 +24,6 @@ namespace SrvSurvey
             // build a map of fields on the setting objects by name
             foreach (var fieldInfo in typeof(Settings).GetRuntimeFields())
                 this.map.Add(fieldInfo.Name, fieldInfo);
-
         }
 
         private void FormSettings_Load(object sender, EventArgs e)
@@ -56,6 +55,12 @@ namespace SrvSurvey
                             ((TextBox)ctrl).Text = (string)map[name].GetValue(Game.settings);
                             break;
 
+                        case nameof(NumericUpDown):
+                            ((NumericUpDown)ctrl).Value = (decimal)((double)map[name].GetValue(Game.settings) * 100.0);
+                            break;
+
+                        default:
+                            throw new Exception($"Unexpected control type: {ctrl.GetType().Name}");
                     }
                 }
 
@@ -84,6 +89,12 @@ namespace SrvSurvey
                             val = ((TextBox)ctrl).Text;
                             break;
 
+                        case nameof(NumericUpDown):
+                            val = (double)((NumericUpDown)ctrl).Value / 100;
+                            break;
+
+                        default:
+                            throw new Exception($"Unexpected control type: {ctrl.GetType().Name}");
                     }
 
                     // Game.log($"Write setting: {name} => {val}");
@@ -105,5 +116,17 @@ namespace SrvSurvey
             this.DialogResult = DialogResult.OK;
         }
 
+        private void trackOpacity_Scroll(object sender, EventArgs e)
+        {
+            if (numOpacity.Value != trackOpacity.Value)
+                numOpacity.Value = trackOpacity.Value;
+        }
+
+        private void numOpacity_ValueChanged(object sender, EventArgs e)
+        {
+            if (numOpacity.Value != trackOpacity.Value)
+                trackOpacity.Value = (int)numOpacity.Value;
+
+        }
     }
 }

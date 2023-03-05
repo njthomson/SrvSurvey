@@ -22,7 +22,7 @@ namespace SrvSurvey
         public bool autoShowBioSummary;
         public bool autoShowBioPlot;
 
-        public float Opacity = 0.5f;
+        public double Opacity = 0.5;
 
         public string junk;
 
@@ -106,6 +106,8 @@ namespace SrvSurvey
         public static Pen penGameOrange2 = new Pen(Orange, 2); //255, 113, 00), 2);
         public static Pen penGameOrange4 = new Pen(Orange, 8); //255, 113, 00), 2);
         public static Pen penGameOrangeDim1 = new Pen(Color.FromArgb(255, 95, 48, 3), 1);
+        public static Pen penGreen2 = new Pen(Color.Green, 2); //255, 113, 00), 2);
+
 
         public static Pen Lime2 = new Pen(LimeIsh, 2);
 
