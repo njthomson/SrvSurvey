@@ -98,10 +98,10 @@ namespace SrvSurvey
             this.checkBox1.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBox1.Location = new System.Drawing.Point(6, 42);
             this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(132, 17);
+            this.checkBox1.Size = new System.Drawing.Size(193, 17);
             this.checkBox1.TabIndex = 1;
             this.checkBox1.Tag = "autoShowBioPlot";
-            this.checkBox1.Text = "Auto show ground plot";
+            this.checkBox1.Text = "Show sample scan exclusion zones";
             this.checkBox1.UseVisualStyleBackColor = true;
             // 
             // checkBioStatusAutoShow
@@ -111,10 +111,10 @@ namespace SrvSurvey
             this.checkBioStatusAutoShow.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBioStatusAutoShow.Location = new System.Drawing.Point(6, 19);
             this.checkBioStatusAutoShow.Name = "checkBioStatusAutoShow";
-            this.checkBioStatusAutoShow.Size = new System.Drawing.Size(120, 17);
+            this.checkBioStatusAutoShow.Size = new System.Drawing.Size(174, 17);
             this.checkBioStatusAutoShow.TabIndex = 0;
             this.checkBioStatusAutoShow.Tag = "autoShowBioSummary";
-            this.checkBioStatusAutoShow.Text = "Auto show summary";
+            this.checkBioStatusAutoShow.Text = "Show biological signal summary";
             this.checkBioStatusAutoShow.UseVisualStyleBackColor = true;
             // 
             // txtCommander

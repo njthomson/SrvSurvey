@@ -49,7 +49,7 @@ namespace SrvSurvey
 
         private static Dictionary<string, Form> activePlotters = new Dictionary<string, Form>();
 
-        public static T showPlotter<T>(Form parent = null) where T : Form
+        public static T showPlotter<T>() where T : Form
         {
             var formType = typeof(T);
 
@@ -77,7 +77,7 @@ namespace SrvSurvey
 
             // show form if not visible
             if (!form.Visible)
-                form.Show(parent);
+                form.Show();
 
             return form;
         }

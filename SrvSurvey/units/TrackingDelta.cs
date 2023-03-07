@@ -42,6 +42,10 @@ namespace SrvSurvey.units
         private LatLong2 current;
         private LatLong2 target;
 
+        public TrackingDelta(double bodyRadius, LatLong2 targetLocation) : this(bodyRadius, Game.activeGame.status.here, targetLocation)
+        {
+        }
+
         public TrackingDelta(double bodyRadius, LatLong2 currentLocation, LatLong2 targetLocation)
         {
             this.mpd = bodyRadius * Math.PI* 2 / 360;

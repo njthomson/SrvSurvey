@@ -327,10 +327,10 @@ namespace SrvSurvey
             this.Font = new System.Drawing.Font("Lucida Sans Typewriter", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
-            this.MinimizeBox = false;
             this.Name = "Main";
             this.Text = "Srv Survey";
             this.Load += new System.EventHandler(this.Main_Load);
+            this.LocationChanged += new System.EventHandler(this.Main_LocationChanged);
             this.DoubleClick += new System.EventHandler(this.Main_DoubleClick);
             this.toolRight.ResumeLayout(false);
             this.toolRight.PerformLayout();

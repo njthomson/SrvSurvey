@@ -15,15 +15,18 @@ namespace SrvSurvey
 {
     partial class PlotTrackTarget : Form, PlotterForm
     {
-        LandableBody targetBody;
-        LatLong2 targetLocation;
         private Game game = Game.activeGame;
 
         private TrackingDelta td;
+        private TrackingDelta td2;
 
         private PlotTrackTarget()
         {
             InitializeComponent();
+            this.TopMost = true;
+
+            this.Height = 100;
+            this.Width = 100;
         }
 
         public void reposition(Rectangle gameRect)
@@ -38,21 +41,18 @@ namespace SrvSurvey
 
             if (game.mode == GameMode.OnFoot)
             {
-                this.Left = gameRect.Right - this.Width;
-                this.Top = gameRect.Top + 60;
+                // roughly above the helmet lat/long indicator
+                Overlay.floatCenterTop(this, 0, 440);
             }
             else
             {
-                this.Left = gameRect.Left + (gameRect.Width / 2) - (this.Width / 2);
-                this.Top = gameRect.Top + 160;
+                // roughly above the game heading indicator
+                Overlay.floatCenterTop(this, 160);
             }
         }
 
         public void setTarget(LandableBody targetBody, LatLong2 targetLocation)
         {
-            this.targetBody = targetBody;
-            this.targetLocation = targetLocation;
-
             this.td = new TrackingDelta(targetBody.radius, game.location, targetLocation);
             //this.textBox1.Text = targetBody.name + " / " + targetLocation.ToString();
 
@@ -67,18 +67,35 @@ namespace SrvSurvey
 
         private void PlotGroundTarget_Load(object sender, EventArgs e)
         {
-            this.TopMost = true;
-            //this.Opacity = Game.settings.Opacity;
-
+            this.initialize();
             this.reposition(Overlay.getEDWindowRect());
+        }
+
+        private void initialize()
+        {
+            this.BackgroundImage = GameGraphics.getBackgroundForForm(this);
+            this.td2 = new TrackingDelta(game.nearBody.radius, Game.settings.targetLatLong);
         }
 
         private void Game_modeChanged(GameMode newMode)
         {
-            if (game.nearBody != null && game.mode != GameMode.SuperCruising && game.mode != GameMode.Flying && game.mode != GameMode.Landed && game.mode != GameMode.InSrv && game.mode != GameMode.OnFoot && game.mode != GameMode.GlideMode)
-                this.Opacity = 0;
-            else
+            Game.log($"?? {game.vehicle} / {newMode} / {game.isMode(GameMode.SuperCruising, GameMode.Flying, GameMode.Landed, GameMode.InSrv, GameMode.OnFoot, GameMode.GlideMode)}");
+            // Landed / OnFoot / InSrv
+
+            if (this.Opacity == 0 && game.isMode(GameMode.SuperCruising, GameMode.Flying, GameMode.Landed, GameMode.InSrv, GameMode.OnFoot, GameMode.GlideMode))
+            {
                 this.reposition(Overlay.getEDWindowRect());
+            }
+            else
+            {
+                this.Opacity = 0;
+            }
+
+
+            //if (game.nearBody != null && game.mode != GameMode.SuperCruising && game.mode != GameMode.Flying && game.mode != GameMode.Landed && game.mode != GameMode.InSrv && game.mode != GameMode.OnFoot && game.mode != GameMode.GlideMode)
+            //    this.Opacity = 0;
+            //else
+            //    this.reposition(Overlay.getEDWindowRect());
         }
 
         private void Status_StatusChanged()
@@ -111,8 +128,6 @@ namespace SrvSurvey
             var p1 = new Point(0, -50);
 
             pp = new GraphicsPath(FillMode.Alternate);
-            //pp.AddLine(p1, new Point(30, 0));
-            //pp.AddLine(p1, new Point(-30, 0));
             pp.AddLine(p1, new Point(20, 30));
             pp.AddLine(p1, new Point(-20, 30));
 
@@ -123,52 +138,57 @@ namespace SrvSurvey
                 new Point(-18,  30),
             });
             tt.PathPoints[1].X += 20;
-            //tt.AddLine(p1, new Point(12, 48));
-            //tt.AddLine(p1, new Point(-12, 48));
-            //tt.AddLine(p1, new Point(-12, 48));
-
         }
 
         GraphicsPath pp;
         GraphicsPath tt;
-
-        Font font1 = new System.Drawing.Font("Lucida Sans Typewriter", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 
         private static Pen pen1 = new Pen(Color.FromArgb(255, 249, 165, 0), 3);
         private void plotPanel_Paint(object sender, PaintEventArgs e)
         {
             var g = e.Graphics;
             g.SmoothingMode = SmoothingMode.HighQuality;
+            float w = this.Width / 2;
+            float h = this.Height / 2;
+
+            // draw heading text (center bottom)
+            var headingTxt = ((int)this.td2.angle).ToString();
+            var sz = g.MeasureString(headingTxt, Game.settings.fontSmall);
+            var tx = w - (sz.Width / 2);
+            var ty = this.Height - sz.Height - 6;
+            g.DrawString(this.td.angle.ToString(), Game.settings.fontSmall, Brushes.Orange, tx, ty);
+
+            // draw distance text (top left corner
+            var txt = "Distance: " + Util.metersToString(td.distance + game.status.Altitude);
+            g.DrawString(txt, Game.settings.fontSmall, Brushes.Orange, 4, 10);
+
             // assuming panel is 200 x 200
-            //g.Clear(Color.Black);
-
-            g.TranslateTransform(100, 60);
-            //g.DrawLine(Pens.Red, 0, -100, 0, 100);
-
-            var sz = g.MeasureString(((int)this.td.angle).ToString(), font1);
-            var tx = 0 - (sz.Width / 2);
-            var ty = 55; // - (sz.Height / 2);
-            g.DrawString(this.td.angle.ToString(), this.font1, Brushes.Orange, tx, ty);
-
-            var txt = Util.metersToString(td.distance + game.status.Altitude);
-            sz = g.MeasureString(txt, font1);
-            tx = 0 - (sz.Width / 2);
-            ty = 75;
-            g.DrawString(txt, this.font1, Brushes.Orange, tx, ty);
+            g.TranslateTransform(w, h);
 
             // rotate so the arrow aligns "up" is forwards/infront of us
             var da = (int)td.angle - game.status.Heading;
             g.RotateTransform(da);
+            g.ScaleTransform(0.3F, 0.3F);
 
             // clip to prevent filling
-            float h = (float)(td.complete);
-            var clipR = new RectangleF(-100, -60, 200, 100 - h);
+            float fill = (float)(td.complete);
+            var clipR = new RectangleF(-100, -60, 200, 100 - fill);
             g.Clip = new Region(clipR);
             g.FillPath(Brushes.Yellow, tt);
 
-            // draw teh rest unclipped
+            // draw thd rest unclipped
             g.Clip = new Region();
-            g.DrawPath(pen1, pp);
+            g.DrawPath(GameColors.penGameOrange4, pp);
+        }
+
+        private void PlotTrackTarget_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            this.Invalidate();
+        }
+
+        private void PlotTrackTarget_MouseClick(object sender, MouseEventArgs e)
+        {
+            Overlay.setFocusED();
         }
 
         //private void floatCenterTop()

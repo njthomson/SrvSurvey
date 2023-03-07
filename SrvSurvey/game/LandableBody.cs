@@ -31,9 +31,17 @@ namespace SrvSurvey.game
             this.systemAddress = systemAddress;
 
             // see if we can get signals for this body
-            this.readSAASignalsFound();
+            var signalsEntry = Game.activeGame.journals.FindEntryByType<SAASignalsFound>(-1, true);
+            if (signalsEntry != null)
+                this.readSAASignalsFound(signalsEntry);
 
-            game.journals.onJournalEntry += Journals_onJournalEntry; ;
+            game.journals.onJournalEntry += Journals_onJournalEntry;
+
+            if (Game.settings.scanOne?.systemAddress == this.systemAddress && Game.settings.scanOne?.bodyId == this.bodyId)
+            {
+                this.scanOne = Game.settings.scanOne;
+                this.scanTwo = Game.settings.scanTwo;
+            }
         }
 
         private void Journals_onJournalEntry(JournalEntry entry, int index)
@@ -52,6 +60,13 @@ namespace SrvSurvey.game
             this.addBioScan(entry);
         }
 
+        private void onJournalEntry(CodexEntry entry)
+        {
+            Game.log($"CodexEntry: {entry.Name_Localised}");
+            //  CodexEntry - to get the full name of a species
+            // TODO: fire some event?
+        }
+
         /// <summary>
         /// Meters per 1° of Latitude or Longitude
         /// </summary>
@@ -68,36 +83,38 @@ namespace SrvSurvey.game
         public List<ScanSignal> Signals { get; set; }
         public List<ScanGenus> Genuses { get; set; }
 
-        public void readSAASignalsFound()
+        public void readSAASignalsFound(SAASignalsFound signalsEntry)
         {
             // find the signals
-            var signalsEntry = Game.activeGame.journals.FindEntryByType<SAASignalsFound>(-1, true);
-            if (signalsEntry != null)
+            if (signalsEntry != null && signalsEntry.SystemAddress == this.systemAddress && signalsEntry.BodyID == this.bodyId)
             {
                 this.Signals = new List<ScanSignal>(signalsEntry.Signals);
                 this.Genuses = new List<ScanGenus>(signalsEntry.Genuses);
             }
 
-            // see if we can find recent BioScans, traversing prior journal files if needed
-            game.journals.searchDeep(
-                (ScanOrganic scan) =>
-                {
-                    // look for Analyze ScanOrganics.
-                    // TODO: only on current body!
-                    if (scan.SystemAddress == this.systemAddress && scan.Body == this.bodyId && scan.ScanType == ScanType.Analyse && !this.analysedSpecies.ContainsKey(scan.Genus))
+            if (this.Genuses?.Count > 0)
+            {
+                // see if we can find recent BioScans, traversing prior journal files if needed
+                game.journals.searchDeep(
+                    (ScanOrganic scan) =>
                     {
-                        this.analysedSpecies.Add(scan.Genus, scan.Species_Localised);
-                    }
+                        // look for Analyze ScanOrganics.
+                        // TODO: only on current body!
+                        if (scan.SystemAddress == this.systemAddress && scan.Body == this.bodyId && scan.ScanType == ScanType.Analyse && !this.analysedSpecies.ContainsKey(scan.Genus))
+                        {
+                            this.analysedSpecies.Add(scan.Genus, scan.Species_Localised);
+                        }
 
-                    // stop if we've scanned everything
-                    return this.analysedSpecies.Count == this.Genuses.Count;
-                },
-                (JournalFile journals) =>
-                {
-                    // stop searching older journal files if we see we approached this body
-                    return journals.search((FSDJump _) => true);
-                }
-            );
+                        // stop if we've scanned everything
+                        return this.analysedSpecies.Count == this.Genuses.Count;
+                    },
+                    (JournalFile journals) =>
+                    {
+                        // stop searching older journal files if we see we approached this body
+                        return journals.search((FSDJump _) => true);
+                    }
+                );
+            }
         }
 
         public void addBioScan(ScanOrganic entry)
@@ -119,11 +136,11 @@ namespace SrvSurvey.game
                 species = entry.Species,
                 speciesLocalized = entry.Species_Localised,
                 scanType = entry.ScanType,
+                systemAddress = this.systemAddress,
+                bodyId = this.bodyId,
             };
-            //newScan.location.Lat += 0.1;
-            //newScan.location.Long -= 0.2;
 
-            Game.log($"Scan: {newScan}");
+            Game.log($"addBioScan: {newScan}");
 
             if (entry.ScanType == ScanType.Log)
             {
@@ -137,13 +154,19 @@ namespace SrvSurvey.game
             }
             else if (entry.ScanType == ScanType.Analyse)
             {
-                this.scanOne.scanType = ScanType.Analyse;
-                this.completedScans.Add(this.scanOne);
-                this.scanOne = null;
+                if (this.scanOne != null)
+                {
+                    this.scanOne.scanType = ScanType.Analyse;
+                    this.completedScans.Add(this.scanOne);
+                    this.scanOne = null;
+                }
 
-                this.scanTwo.scanType = ScanType.Analyse;
-                this.completedScans.Add(this.scanTwo);
-                this.scanTwo = null;
+                if (this.scanTwo != null)
+                {
+                    this.scanTwo.scanType = ScanType.Analyse;
+                    this.completedScans.Add(this.scanTwo);
+                    this.scanTwo = null;
+                }
 
                 this.completedScans.Add(newScan);
 
@@ -152,6 +175,9 @@ namespace SrvSurvey.game
                     this.analysedSpecies.Add(entry.Genus, entry.Species_Localised);
                 }
             }
+
+            Game.settings.scanOne = this.scanOne;
+            Game.settings.scanTwo = this.scanTwo;
 
             if (this.bioScanEvent != null) this.bioScanEvent();
         }

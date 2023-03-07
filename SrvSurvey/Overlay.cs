@@ -45,10 +45,14 @@ namespace SrvSurvey
             var hwndED = Overlay.getEDWindowHandle();
             var hwndActive = Overlay.GetForegroundWindow();
 
-            //if (hwndED != hwndActive || hwndED == IntPtr.Zero)
-            //{
-            //    return Rectangle.Empty;
-            //}
+            // hide plotters when game is not active
+            if (Game.settings.hidePlotterIfNotActive)
+            {
+                if (hwndED != hwndActive || hwndED == IntPtr.Zero)
+                {
+                    return Rectangle.Empty;
+                }
+            }
 
             var r1 = new RECT();
             Overlay.GetWindowRect(hwndED, ref r1);
@@ -84,6 +88,15 @@ namespace SrvSurvey
             form.Top = rect.Top + (rect.Height / 2) - (form.Height / 2);
         }
 
+        public static void floatRightMiddle(Form form, int fromRight, int aboveMiddle = 0)
+        {
+            // position form top center above the heading
+            var rect = Overlay.getEDWindowRect();
+
+            form.Left = rect.Right - form.Width - fromRight;
+            form.Top = rect.Top + (rect.Height / 2) - (form.Height / 2) + aboveMiddle;
+        }
+
         //private void floatCenterMiddle(Form form)
         //{
         //    // position form top center above the heading
@@ -93,12 +106,12 @@ namespace SrvSurvey
         //    form.Top = rect.Top + (rect.Height / 2) - (form.Height / 2);
         //}
 
-        public static void floatCenterTop(Form form, int fromTop)
+        public static void floatCenterTop(Form form, int fromTop, int rightOfCenter = 0)
         {
             // position form top center above the heading
             var rect = Overlay.getEDWindowRect();
 
-            form.Left = rect.Left + (rect.Width / 2) - (form.Width / 2);
+            form.Left = rect.Left + (rect.Width / 2) - (form.Width / 2) + rightOfCenter;
             form.Top = rect.Top + fromTop;
         }
 
@@ -110,7 +123,6 @@ namespace SrvSurvey
             form.Left = rect.Right - form.Width - fromRight;
             form.Top = rect.Top + fromTop;
         }
-
 
 
         [DllImport("User32.dll")]

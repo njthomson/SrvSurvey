@@ -18,19 +18,25 @@ namespace SrvSurvey
     class Settings
     {
         public LatLong2 targetLatLong;
+        public bool targetLatLongActive;
 
         public bool autoShowBioSummary;
         public bool autoShowBioPlot;
 
         public double Opacity = 0.5;
 
-        public string junk;
+        public bool hidePlotterIfNotActive = false;
 
+        public Point mainLocation;
 
         public Color GameOrange = Color.FromArgb(255, 255, 113, 00); // #FF7100
 
         public Font font1 = new System.Drawing.Font("Lucida Sans Typewriter", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+        public Font fontSmall = new System.Drawing.Font("Lucida Sans Typewriter", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
         public Font font2 = new System.Drawing.Font("Century Gothic", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+
+        public BioScan scanOne;
+        public BioScan scanTwo;
 
         #region loading /saving
 
@@ -99,14 +105,17 @@ namespace SrvSurvey
 
         public static Color LimeIsh = Color.FromArgb(200, Color.Lime);
         public static Color Orange = Color.FromArgb(255, 186, 113, 4);
+        public static Color OrangeDim = Color.FromArgb(255, 95, 48, 3);
         public static Color Cyan = Color.FromArgb(255, 84, 223, 237);
 
         public static Pen penBackgroundStripe = new Pen(Color.FromArgb(255, 12, 12, 12));
         public static Pen penGameOrange1 = new Pen(Orange, 1); //255, 113, 00), 2);
         public static Pen penGameOrange2 = new Pen(Orange, 2); //255, 113, 00), 2);
+        public static Pen penGameOrange3 = new Pen(Orange, 3); //255, 113, 00), 2);
         public static Pen penGameOrange4 = new Pen(Orange, 8); //255, 113, 00), 2);
-        public static Pen penGameOrangeDim1 = new Pen(Color.FromArgb(255, 95, 48, 3), 1);
+        public static Pen penGameOrangeDim1 = new Pen(OrangeDim, 1);
         public static Pen penGreen2 = new Pen(Color.Green, 2); //255, 113, 00), 2);
+        public static Pen penCyan2 = new Pen(Cyan, 2); //255, 113, 00), 2);
 
 
         public static Pen Lime2 = new Pen(LimeIsh, 2);
@@ -126,6 +135,9 @@ namespace SrvSurvey
         public static Brush brushBackgroundStripe;
         public static Brush brushOrangeStripe;
         public static Brush brushGameOrange = new SolidBrush(Orange); //  Color.FromArgb(255, 255, 113, 00));
+        public static Brush brushGameOrangeDim = new SolidBrush(OrangeDim); //  Color.FromArgb(255, 255, 113, 00));
+
+        public static Brush brushCyan = new SolidBrush(Cyan); //  Color.FromArgb(255, 255, 113, 00));
 
 
     }

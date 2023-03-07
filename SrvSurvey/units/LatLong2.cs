@@ -17,7 +17,7 @@ namespace SrvSurvey.units
     [JsonConverter(typeof(LatLong2.JsonConverter))]
     class LatLong2
     {
-        public static readonly LatLong Empty = new LatLong(0, 0);
+        public static readonly LatLong2 Empty = new LatLong2(0, 0);
 
         public Latitude Lat;
         public Longitude Long;

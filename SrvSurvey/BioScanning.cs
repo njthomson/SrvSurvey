@@ -21,6 +21,8 @@ namespace SrvSurvey
         public string species;
         public string speciesLocalized;
         public ScanType scanType;
+        public double systemAddress;
+        public int bodyId;
 
         public override string ToString()
         {

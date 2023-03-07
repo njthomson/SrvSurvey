@@ -37,6 +37,7 @@ namespace SrvSurvey
             this.btnBegin = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label2
@@ -80,7 +81,7 @@ namespace SrvSurvey
             this.btnBegin.Name = "btnBegin";
             this.btnBegin.Size = new System.Drawing.Size(75, 23);
             this.btnBegin.TabIndex = 8;
-            this.btnBegin.Text = "&Begin";
+            this.btnBegin.Text = "&Set target";
             this.btnBegin.UseVisualStyleBackColor = true;
             this.btnBegin.Click += new System.EventHandler(this.btnBegin_Click);
             // 
@@ -92,7 +93,7 @@ namespace SrvSurvey
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 11;
-            this.btnCancel.Text = "&Cancel";
+            this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             // 
             // label6
@@ -108,6 +109,17 @@ namespace SrvSurvey
     "n?\r\n\r\nEnter some Lat/Long position and guidance will appear when you approach.\r\n" +
     "\r\n";
             // 
+            // button1
+            // 
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.button1.Location = new System.Drawing.Point(15, 143);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 13;
+            this.button1.Text = "&Clear target";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // FormGroundTarget
             // 
             this.AcceptButton = this.btnBegin;
@@ -115,6 +127,7 @@ namespace SrvSurvey
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(435, 178);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnBegin);
@@ -125,7 +138,9 @@ namespace SrvSurvey
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FormGroundTarget";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Select ground target";
+            this.Load += new System.EventHandler(this.FormGroundTarget_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -139,5 +154,6 @@ namespace SrvSurvey
         private System.Windows.Forms.Button btnBegin;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Button button1;
     }
 }

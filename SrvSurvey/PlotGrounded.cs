@@ -21,12 +21,12 @@ namespace SrvSurvey
         private TrackingDelta srvLocation;
 
         private TrackingDelta td;
-        private List<BioScan> bioScans = new List<BioScan>();
 
         private PlotGrounded()
         {
             InitializeComponent();
 
+            // TODO: use a size from some setting?
             //this.Height = 200;
             //this.Width = 200;
         }
@@ -40,7 +40,7 @@ namespace SrvSurvey
             }
 
             this.Opacity = Game.settings.Opacity;
-            Overlay.floatTopRight(this, 160, 20);
+            Overlay.floatRightMiddle(this, 20);
         }
 
         private void PlotGrounded_Load(object sender, EventArgs e)
@@ -57,6 +57,8 @@ namespace SrvSurvey
             game.nearBody.bioScanEvent += NearBody_bioScanEvent;
 
             this.reposition(Overlay.getEDWindowRect());
+
+            this.initialize();
         }
 
         private void NearBody_bioScanEvent()
@@ -121,20 +123,20 @@ namespace SrvSurvey
 
         private void Game_modeChanged(GameMode newMode)
         {
-            if (game.isLanded)
+            if (this.Opacity > 0 && !game.showBodyPlotters)
             {
-                if (this.td == null)
-                {
-                    this.initialize();
-                }
-
-                //this.Opacity = 0.5;
-                //Overlay.floatTopRight(this, 160, 20);
-                ////this.floatLeftMiddle();
+                this.Opacity = 0;
             }
-            //else
+            else if (this.Opacity == 0 && game.showBodyPlotters)
+            {
+                this.reposition(Overlay.getEDWindowRect());
+            }
+            //if (game.isLanded)
             //{
-            //    this.Opacity = 0;
+            //    if (this.td == null)
+            //    {
+            //        this.initialize();
+            //    }
             //}
         }
 
@@ -149,8 +151,6 @@ namespace SrvSurvey
 
         private void Status_StatusChanged()
         {
-            //throw new NotImplementedException();
-            //this.currentLocation = new LatLong2(game.status);
             if (this.td != null)
             {
                 this.td.Point1 = new LatLong2(game.status);
@@ -175,48 +175,19 @@ namespace SrvSurvey
         {
             this.BackgroundImage = GameGraphics.getBackgroundForForm(this);
 
-            // prepare ship graphic
-            var gp = new GraphicsPath(FillMode.Winding);
-
-            gp.AddPolygon(new Point[] {
-                // nose
-                new Point(4-6, 0 -10),
-                new Point(8-6, 0-10),
-                // right side
-                new Point(12-6, 8-10),
-                new Point(12-6, 12-10),
-                new Point(8-6, 12-10),
-                //new Point(10, 20),
-                new Point(12-6, 20-10),
-                // bottom horiz
-                new Point(0-6, 20-10),
-                // left side
-                new Point(4-6, 12-10),
-                //new Point(5, 15),
-                new Point(0-6, 12-10),
-                new Point(0-6, 8-10),
-                new Point(4-6, 0-10),
-            });
-            this.ship = gp;
-
-            // prepare SRV graphic
-            // TODO: ...
-
             // get landing location
             Game.log($"touchdownLocation: {game.touchdownLocation}");
 
-            if (game.touchdownLocation != null)
+            if (game.touchdownLocation == null)
             {
-                this.td = new TrackingDelta(
-                    game.nearBody.radius,
-                    game.status.here,
-                    game.touchdownLocation);
+                Game.log("Why no touchdownLocation?");
+                return;
             }
+            this.td = new TrackingDelta(
+                game.nearBody.radius,
+                game.status.here,
+                game.touchdownLocation);
         }
-
-        private GraphicsPath ship;
-        private Font font = new Font(Game.settings.font1.FontFamily, 8f);
-
 
         private void PlotGrounded_Paint(object sender, PaintEventArgs e)
         {
@@ -275,10 +246,10 @@ namespace SrvSurvey
             g.ResetTransform();
 
             if (game.touchdownLocation != null)
-                this.drawBearingTo(g, 10, 8, "Touchdown:", game.touchdownLocation);
+                this.drawBearingTo(g, 4, 8, "Touchdown:", game.touchdownLocation);
 
             if (this.srvLocation != null)
-                this.drawBearingTo(g, 10 + w, 8, "SRV:", this.srvLocation.Point2);
+                this.drawBearingTo(g, 4 + w, 8, "SRV:", this.srvLocation.Point2);
 
             float y = this.Height - 24;
             if (game.nearBody.scanOne != null)
@@ -291,14 +262,14 @@ namespace SrvSurvey
         private void drawBearingTo(Graphics g, float x, float y, string txt, LatLong2 location)
         {
             //var txt = scan == game.nearBody.scanOne ? "Scan one:" : "Scan two:";
-            g.DrawString(txt, this.font, GameColors.brushGameOrange, x, y);
+            g.DrawString(txt, Game.settings.fontSmall, GameColors.brushGameOrange, x, y);
 
-            var txtSz = g.MeasureString(txt, this.font);
+            var txtSz = g.MeasureString(txt, Game.settings.fontSmall);
 
 
             var sz = 6;
             x += txtSz.Width + 8;
-            var r = new RectangleF(x, y, sz*2, sz*2);
+            var r = new RectangleF(x, y, sz * 2, sz * 2);
             g.DrawEllipse(GameColors.penGameOrange2, r);
 
             var dd = new TrackingDelta(game.nearBody.radius, game.status.here, location);
@@ -306,10 +277,10 @@ namespace SrvSurvey
             Angle deg = dd.angle - game.status.Heading;
             var dx = (float)Math.Sin(Util.degToRad(deg)) * 10F;
             var dy = (float)Math.Cos(Util.degToRad(deg)) * 10F;
-            g.DrawLine(GameColors.penGameOrange2, x + sz, y+sz, x + sz +dx, y + sz -dy);
+            g.DrawLine(GameColors.penGameOrange2, x + sz, y + sz, x + sz + dx, y + sz - dy);
 
             x += sz * 3;
-            g.DrawString(Util.metersToString(dd.distance), this.font, GameColors.brushGameOrange, x, y);
+            g.DrawString(Util.metersToString(dd.distance), Game.settings.fontSmall, GameColors.brushGameOrange, x, y);
 
         }
 
@@ -357,7 +328,7 @@ namespace SrvSurvey
             if (game.nearBody.scanOne != null)
             {
                 drawBioScan(g, d, game.nearBody.scanOne);
-                txt += $" / { Util.metersToString(d.distance)}";
+                txt += $" / {Util.metersToString(d.distance)}";
             }
             if (game.nearBody.scanTwo != null)
             {
@@ -397,13 +368,13 @@ namespace SrvSurvey
             float dist = game.nearBody.scanOne?.radius ?? 100;
 
             var txt = Util.metersToString(dist);
-            var txtSz = g.MeasureString(txt, this.font);
+            var txtSz = g.MeasureString(txt, Game.settings.fontSmall);
             float w = this.Width / 2;
             //var r = new RectangleF(8, this.Height - 8 - txtSz.Height, w, txtSz.Height);
             var x = this.Width - pad - txtSz.Width;
             var y = this.Height - pad - txtSz.Height;
 
-            g.DrawString(txt, this.font, GameColors.brushGameOrange,
+            g.DrawString(txt, Game.settings.fontSmall, GameColors.brushGameOrange,
                 x, //this.Width - pad - txtSz.Width, // x
                 y, //this.Height - pad - txtSz.Height, // y
                    //2 * x + dist, y + 1 - txtSz.Height / 2, 

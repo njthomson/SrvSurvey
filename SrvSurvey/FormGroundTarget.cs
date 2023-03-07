@@ -23,22 +23,33 @@ namespace SrvSurvey
 
         private void btnBegin_Click(object sender, EventArgs e)
         {
-            var latLong = new LatLong2(
-                double.Parse(txtLat.Text),
-                double.Parse(txtLong.Text));
-
             try
             {
-                this.targetLatLong = new LatLong2(
+                Game.settings.targetLatLong = new LatLong2(
                     double.Parse(txtLat.Text),
                     double.Parse(txtLong.Text)
                     );
+                Game.settings.targetLatLongActive = true;
+                Game.settings.Save();
             }
             catch (Exception ex)
             {
                 Game.log("Parse error: " + ex.Message);
             }
 
+            this.DialogResult = DialogResult.OK;
+        }
+
+        private void FormGroundTarget_Load(object sender, EventArgs e)
+        {
+            txtLat.Text = Game.settings.targetLatLong.Lat.ToString();
+            txtLong.Text = Game.settings.targetLatLong.Long.ToString();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Game.settings.targetLatLongActive = false;
+            Game.settings.Save();
             this.DialogResult = DialogResult.OK;
         }
     }

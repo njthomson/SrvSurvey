@@ -43,7 +43,7 @@ namespace SrvSurvey
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // PlotGroundTarget
+            // PlotTrackTarget
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -57,9 +57,11 @@ namespace SrvSurvey
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "PlotGroundTarget";
+            this.Name = "PlotTrackTarget";
             this.Load += new System.EventHandler(this.PlotGroundTarget_Load);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.plotPanel_Paint);
+            this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.PlotTrackTarget_MouseClick);
+            this.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.PlotTrackTarget_MouseDoubleClick);
             this.ResumeLayout(false);
 
         }

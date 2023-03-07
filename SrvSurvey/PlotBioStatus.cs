@@ -19,17 +19,10 @@ namespace SrvSurvey
         private Game game = Game.activeGame;
 
         private LatLong2 touchdownLocation;
-        private Angle touchdownHeading;
-        private TrackingDelta td;
-
-        private string currentGenus;
-        private int scanCount;
-
 
         private PlotBioStatus()
         {
             InitializeComponent();
-            var foo = typeof(PlotBioStatus);
 
             this.Height = 80;
             this.Width = 400;
@@ -49,6 +42,8 @@ namespace SrvSurvey
 
         private void PlotBioStatus_Load(object sender, EventArgs e)
         {
+            this.initialize();
+
             if (game.nearBody == null)
             {
                 Game.log("PlotBioStatus_Load bad!");
@@ -89,8 +84,7 @@ namespace SrvSurvey
         private void onJournalEntry(Touchdown entry)
         {
             this.touchdownLocation = game.touchdownLocation;
-            this.touchdownHeading = game.touchdownHeading;
-            Game.log($"re-touchdownLocation: {this.touchdownLocation}, heading {this.touchdownHeading}");
+            Game.log($"re-touchdownLocation: {this.touchdownLocation}");
             this.Invalidate();
         }
 
@@ -110,41 +104,19 @@ namespace SrvSurvey
 
         private void Game_modeChanged(GameMode newMode)
         {
-            if (game.isLanded)
+            var plotterMode = game.showBodyPlotters || game.mode == GameMode.SAA;
+            if (this.Opacity > 0 && !plotterMode)
             {
-                if (this.td == null)
-                {
-                    this.initialize();
-                }
-
-                //this.Opacity = 0.5;
-                //Overlay.floatCenterTop(this, 0);
-                //this.floatLeftMiddle();
+                this.Opacity = 0;
             }
-            else
+            else if (this.Opacity == 0 && plotterMode)
             {
-                //this.Opacity = 0;
+                this.reposition(Overlay.getEDWindowRect());
             }
         }
 
-        //private void floatLeftMiddle()
-        //{
-        //    // position form top center above the heading
-        //    var rect = Overlay.getEDWindowRect();
-
-        //    this.Left = rect.Left + 40;
-        //    this.Top = rect.Top + (rect.Height / 2) - (this.Height / 2);
-        //}
-
         private void Status_StatusChanged()
         {
-            //throw new NotImplementedException();
-            //this.currentLocation = new LatLong2(game.status);
-            if (this.td != null)
-            {
-                this.td.Point1 = new LatLong2(game.status);
-                this.Invalidate();
-            }
         }
 
         private void PlotBioStatus_KeyDown(object sender, KeyEventArgs e)
@@ -168,36 +140,6 @@ namespace SrvSurvey
         private void initialize()
         {
             this.BackgroundImage = GameGraphics.getBackgroundForForm(this);
-
-            //// prepare ship graphic
-            //var gp = new GraphicsPath(FillMode.Winding);
-
-            //gp.AddPolygon(new Point[] {
-            //    // nose
-            //    new Point(4-6, 0 -10),
-            //    new Point(8-6, 0-10),
-            //    // right side
-            //    new Point(12-6, 8-10),
-            //    new Point(12-6, 12-10),
-            //    new Point(8-6, 12-10),
-            //    //new Point(10, 20),
-            //    new Point(12-6, 20-10),
-            //    // bottom horiz
-            //    new Point(0-6, 20-10),
-            //    // left side
-            //    new Point(4-6, 12-10),
-            //    //new Point(5, 15),
-            //    new Point(0-6, 12-10),
-            //    new Point(0-6, 8-10),
-            //    new Point(4-6, 0-10),
-            //});
-            //this.ship = gp;
-
-            // prepare SRV graphic
-            // TODO: ...
-
-            this.currentGenus = "Crystalline Shard";
-            this.scanCount = 1;
         }
 
         private GraphicsPath ship;
@@ -212,8 +154,8 @@ namespace SrvSurvey
             var g = e.Graphics;
 
             g.DrawString(
-                $"Biological signals: {game.nearBody.Genuses.Count} Analyzed: {game.nearBody.analysedSpecies.Count}",
-                this.font, GameColors.brushGameOrange, 4, 4);
+                $"Biological signals: {game.nearBody.Genuses.Count} | Analyzed: {game.nearBody.analysedSpecies.Count}",
+                this.font, GameColors.brushGameOrange, 4, 6);
 
             if (game.nearBody.scanOne == null)
                 this.showAllGenus(g);
@@ -229,14 +171,14 @@ namespace SrvSurvey
             float y = 28;
 
             var r = new RectangleF(8, y, 24, 24);
-            g.FillEllipse(Brushes.DarkGreen, r);
-            g.DrawEllipse(GameColors.penGreen2, r);
+            g.FillEllipse(GameColors.brushGameOrangeDim, r);
+            g.DrawEllipse(GameColors.penGameOrange2, r);
 
             r = new RectangleF(40, y, 24, 24);
             if (game.nearBody.scanTwo != null)
             {
-                g.FillEllipse(Brushes.DarkGreen, r);
-                g.DrawEllipse(GameColors.penGreen2, r);
+                g.FillEllipse(GameColors.brushGameOrangeDim, r);
+                g.DrawEllipse(GameColors.penGameOrange2, r);
             }
             else
             {
@@ -248,7 +190,7 @@ namespace SrvSurvey
 
             g.DrawString(
                 $"{game.nearBody.scanOne.speciesLocalized}",
-                this.fontBig, GameColors.brushGameOrange,
+                this.fontBig, GameColors.brushCyan,
                 104, y-8);
 
             this.drawScale(g, game.nearBody.scanOne.radius, 0.25f);
@@ -267,7 +209,7 @@ namespace SrvSurvey
             var x = this.Width - pad - txtSz.Width;
             var y = this.Height - pad - txtSz.Height;
 
-            g.DrawString(txt, this.font, GameColors.brushGameOrange,
+            g.DrawString(txt, this.font, GameColors.brushCyan,
                 x, //this.Width - pad - txtSz.Width, // x
                 y, //this.Height - pad - txtSz.Height, // y
                    //2 * x + dist, y + 1 - txtSz.Height / 2, 
@@ -284,16 +226,16 @@ namespace SrvSurvey
             dist *= scale;
             //g.ScaleTransform(scale, scale);
 
-            g.DrawLine(GameColors.penGameOrange2, x, y, x - dist, y);
-            g.DrawLine(GameColors.penGameOrange2, x, y - 4, x, y + 4);
-            g.DrawLine(GameColors.penGameOrange2, x - dist, y - 4, x - dist, y + 4);
+            g.DrawLine(GameColors.penCyan2, x, y, x - dist, y);
+            g.DrawLine(GameColors.penCyan2, x, y - 4, x, y + 4);
+            g.DrawLine(GameColors.penCyan2, x - dist, y - 4, x - dist, y + 4);
         }
 
         private void showAllGenus(Graphics g)
         {
-            g.DrawString(
-                $"{game.nearBody.analysedSpecies.Count}",
-                this.fontBig, Brushes.Green, 4, 21);
+            //g.DrawString(
+            //    $"{game.nearBody.analysedSpecies.Count}",
+            //    this.fontBig, GameColors.brushCyan, 4, 21);
 
             // all the Genus names
             float x = 32;
@@ -314,7 +256,7 @@ namespace SrvSurvey
                 g.DrawString(
                     genus.Genus_Localised,
                     this.font,
-                    analysed ? Brushes.Green : GameColors.brushGameOrange,
+                    analysed ? GameColors.brushGameOrange : GameColors.brushCyan,
                     x, y);
 
                 x += sz.Width + 8;
