@@ -1,0 +1,48 @@
+name: Crash Report
+description: File a crashing bug.
+labels: ["bug", "crash", "triage"]
+body:
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: What did you expect to happen? What were you doing just before?
+      placeholder: Tell us what what happened
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: What version are you running?
+      placeholder: 1.0.0.1
+    validations:
+      required: true
+  - type: textarea
+    id: exception-message
+    attributes:
+      label: Exception message
+    validations:
+      required: true
+  - type: textarea
+    id: exception-stack
+    attributes:
+      label: Exception stack
+    validations:
+      required: true
+  - type: input
+    id: contact
+    attributes:
+      label: Contact Details
+      description: How can we get in touch with you if we need more info?
+      placeholder: ex. email@example.com
+    validations:
+      required: false
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant log output
+      description: Please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks.
+      render: shell
+    validations:
+      required: false
