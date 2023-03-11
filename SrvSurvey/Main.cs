@@ -89,11 +89,13 @@ namespace SrvSurvey
                 if (game.showBodyPlotters && Game.settings.autoShowBioPlot)
                     Program.showPlotter<PlotGrounded>();
             }
+
+            // figure out where we are
         }
 
         private void Game_modeChanged(GameMode newMode)
         {
-            this.lblMode.Text = game.mode.ToString();
+            this.txtMode.Text = game.mode.ToString();
             //Game.log($"!!>> {newMode}");
             this.updateCommanderTexts();
 
@@ -115,8 +117,8 @@ namespace SrvSurvey
             this.txtCommander.Text = game.Commander;
             this.txtVehicle.Text = game.vehicle.ToString();
 
-            if (game.nearBody != null)
-                this.txtLocation.Text = game.nearBody.bodyName;
+            if (!string.IsNullOrEmpty(game.systemLocation))
+                this.txtLocation.Text = game.systemLocation;
             else
                 this.txtLocation.Text = "Unknown";
         }
@@ -146,46 +148,72 @@ namespace SrvSurvey
         }
 
         private void onJournalEntry(JournalEntry entry) { /* ignore */ }
-        
+
+
+        private void onJournalEntry(Commander entry)
+        {
+            Game.log($"Commander {entry.Name} / {entry.FID} / {game.Commander}");
+
+            // call new-game?
+        }
+
         private void onJournalEntry(Disembark entry)
         {
-            //var goodEntry = entry.OnPlanet && !entry.OnStation && game.nearBody.Genuses?.Count > 0;
-            //if (goodEntry && Game.settings.autoShowBioSummary)
-            //    Program.showPlotter<PlotBioStatus>();
-            //if (goodEntry && Game.settings.autoShowBioPlot)
-            //    Program.showPlotter<PlotGrounded>();
+            Game.log($"Disembark {entry.Body}");
+
+            if (entry.OnPlanet && !entry.OnStation && game.nearBody.Genuses?.Count > 0)
+            {
+                if (Game.settings.autoShowBioSummary)
+                    Program.showPlotter<PlotBioStatus>();
+                if (Game.settings.autoShowBioPlot)
+                    Program.showPlotter<PlotGrounded>();
+            }
         }
 
         private void onJournalEntry(LaunchSRV entry)
         {
-            //if (game.showBodyPlotters && Game.settings.autoShowBioPlot)
-            //    Program.showPlotter<PlotGrounded>();
-        }
+            Game.log($"LaunchSRV {game.status.BodyName}");
 
-        private void onJournalEntry(SupercruiseEntry entry)
-        {
-            Game.log("SupercruiseEntry");
-            // close these plotters upon super-cruise
-            Program.closePlotter(nameof(PlotGrounded));
+            if (game.showBodyPlotters && game.nearBody.Genuses?.Count > 0)
+            {
+                if (Game.settings.autoShowBioSummary)
+                    Program.showPlotter<PlotBioStatus>();
+                if (Game.settings.autoShowBioPlot)
+                    Program.showPlotter<PlotGrounded>();
+            }
         }
-
         private void onJournalEntry(ApproachBody entry)
         {
-            Game.log("ApproachBody");
-            if (game.nearBody.Genuses?.Count > 0 && Game.settings.autoShowBioSummary)
-                Program.showPlotter<PlotBioStatus>();
+            Game.log($"ApproachBody {entry.Body}");
+
+            if (game.showBodyPlotters && game.nearBody.Genuses?.Count > 0)
+            {
+                if (Game.settings.autoShowBioSummary)
+                    Program.showPlotter<PlotBioStatus>();
+            }
         }
 
         private void onJournalEntry(SAASignalsFound entry)
         {
-            Game.log("SAASignalsFound");
-            if (entry.Genuses.Count > 0 && Game.settings.autoShowBioSummary)
-                Program.showPlotter<PlotBioStatus>();
+            Game.log($"SAASignalsFound {entry.BodyName}");
+            if (entry.Genuses.Count > 0)
+            {
+                if (Game.settings.autoShowBioSummary)
+                    Program.showPlotter<PlotBioStatus>();
+            }
+        }
+
+        private void onJournalEntry(SupercruiseEntry entry)
+        {
+            Game.log($"SupercruiseEntry {entry.Starsystem}");
+
+            // close these plotters upon super-cruise
+            Program.closePlotter(nameof(PlotGrounded));
         }
 
         private void onJournalEntry(LeaveBody entry)
         {
-            Game.log("LeaveBody");
+            Game.log($"LeaveBody {entry.Body}");
 
             // close these plotters upon leaving a body
             Program.closePlotter(nameof(PlotBioStatus));
@@ -308,11 +336,8 @@ namespace SrvSurvey
 
             // show plotter if near a body
             if (game.nearBody != null)
-            {
-                var plotter = Program.showPlotter<PlotTrackTarget>();
-                plotter.setTarget(Game.activeGame.nearBody, Game.settings.targetLatLong);
-                //new PlotTrackTarget().Show();
-            }
+                Program.showPlotter<PlotTrackTarget>();
+
         }
 
         private void btnGroundTarget_Click(object sender, EventArgs e)
@@ -321,13 +346,9 @@ namespace SrvSurvey
             form.ShowDialog(this);
 
             if (Game.settings.targetLatLongActive)
-            {
                 setTargetLatLong();
-            }
             else
-            {
                 Program.closePlotter(nameof(PlotTrackTarget));
-            }
         }
 
         private void btnClearTarget_Click(object sender, EventArgs e)
@@ -370,6 +391,11 @@ namespace SrvSurvey
         {
             if (Game.settings.mainLocation != this.Location)
                 this.saveSettingsOnNextTick = true;
+        }
+
+        private void btnSettings_Click(object sender, EventArgs e)
+        {
+            new FormSettings().ShowDialog(this);
         }
     }
 }

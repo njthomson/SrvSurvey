@@ -45,6 +45,13 @@ namespace SrvSurvey
 
         private void PlotGrounded_Load(object sender, EventArgs e)
         {
+            this.initialize();
+        }
+
+        private void initialize()
+        {
+            this.BackgroundImage = GameGraphics.getBackgroundForForm(this);
+
             game.status.StatusChanged += Status_StatusChanged;
             game.modeChanged += Game_modeChanged;
 
@@ -58,7 +65,18 @@ namespace SrvSurvey
 
             this.reposition(Overlay.getEDWindowRect());
 
-            this.initialize();
+            // get landing location
+            Game.log($"touchdownLocation: {game.touchdownLocation}");
+
+            if (game.touchdownLocation == null)
+            {
+                Game.log("Why no touchdownLocation?");
+                return;
+            }
+            this.td = new TrackingDelta(
+                game.nearBody.radius,
+                game.status.here,
+                game.touchdownLocation);
         }
 
         private void NearBody_bioScanEvent()
@@ -73,19 +91,17 @@ namespace SrvSurvey
             this.onJournalEntry((dynamic)entry);
         }
 
-        private void onJournalEntry(JournalEntry entry)
-        {
-            // ignore
-        }
+        private void onJournalEntry(JournalEntry entry) { /* ignore */ }
 
         private void onJournalEntry(Touchdown entry)
         {
+            Game.log($"re-touchdownLocation: {game.status.here}");
+
             if (this.td == null) return;
 
             this.td.Point1 = new LatLong2(game.status);
             this.td.Point2 = new LatLong2(game.status);
 
-            Game.log($"re-touchdownLocation: {game.status.here}");
             this.Invalidate();
         }
 
@@ -94,29 +110,25 @@ namespace SrvSurvey
             Game.log($"re-liftoff");
             this.Invalidate();
         }
-        //private void onJournalEntry(ScanOrganic entry)
-        //{
-        //    Game.log($"ScanOrganic: {entry.ScanType}: {entry.Genus} / {entry.Species}");
-        //    this.addBioScan(entry);
-        //}
 
         private void onJournalEntry(Disembark entry)
         {
-            Game.log($"Disembark");
+            Game.log($"Disembark srvLocation {game.status.here}");
             if (entry.SRV && this.srvLocation == null)
             {
-                this.srvLocation = new TrackingDelta(game.nearBody.radius, new LatLong2(game.status), new LatLong2(game.status));
+                this.srvLocation = new TrackingDelta(game.nearBody.radius, game.status.here, new LatLong2(game.status));
+                this.Invalidate();
             }
-            this.Invalidate();
         }
+
         private void onJournalEntry(Embark entry)
         {
-            Game.log($"Embark");
+            Game.log($"Embark {game.status.here}");
             if (entry.SRV && this.srvLocation != null)
             {
                 this.srvLocation = null;
+                this.Invalidate();
             }
-            this.Invalidate();
         }
 
         #endregion
@@ -131,34 +143,15 @@ namespace SrvSurvey
             {
                 this.reposition(Overlay.getEDWindowRect());
             }
-            //if (game.isLanded)
-            //{
-            //    if (this.td == null)
-            //    {
-            //        this.initialize();
-            //    }
-            //}
         }
-
-        //private void floatLeftMiddle()
-        //{
-        //    // position form top center above the heading
-        //    var rect = Overlay.getEDWindowRect();
-
-        //    this.Left = rect.Left + 40;
-        //    this.Top = rect.Top + (rect.Height / 2) - (this.Height / 2);
-        //}
 
         private void Status_StatusChanged()
         {
             if (this.td != null)
-            {
                 this.td.Point1 = new LatLong2(game.status);
-            }
+
             if (this.srvLocation != null)
-            {
                 this.srvLocation.Point1 = new LatLong2(game.status);
-            }
 
             this.Invalidate();
         }
@@ -171,22 +164,14 @@ namespace SrvSurvey
             }
         }
 
-        private void initialize()
+        private void PlotGrounded_DoubleClick(object sender, EventArgs e)
         {
-            this.BackgroundImage = GameGraphics.getBackgroundForForm(this);
+            this.Invalidate();
+        }
 
-            // get landing location
-            Game.log($"touchdownLocation: {game.touchdownLocation}");
-
-            if (game.touchdownLocation == null)
-            {
-                Game.log("Why no touchdownLocation?");
-                return;
-            }
-            this.td = new TrackingDelta(
-                game.nearBody.radius,
-                game.status.here,
-                game.touchdownLocation);
+        private void PlotGrounded_Click(object sender, EventArgs e)
+        {
+            Overlay.setFocusED();
         }
 
         private void PlotGrounded_Paint(object sender, PaintEventArgs e)
@@ -369,43 +354,25 @@ namespace SrvSurvey
 
             var txt = Util.metersToString(dist);
             var txtSz = g.MeasureString(txt, Game.settings.fontSmall);
-            float w = this.Width / 2;
-            //var r = new RectangleF(8, this.Height - 8 - txtSz.Height, w, txtSz.Height);
+
             var x = this.Width - pad - txtSz.Width;
             var y = this.Height - pad - txtSz.Height;
 
-            g.DrawString(txt, Game.settings.fontSmall, GameColors.brushGameOrange,
+            g.DrawString(
+                txt, 
+                Game.settings.fontSmall,
+                GameColors.brushGameOrange,
                 x, //this.Width - pad - txtSz.Width, // x
                 y, //this.Height - pad - txtSz.Height, // y
-                   //2 * x + dist, y + 1 - txtSz.Height / 2, 
                 StringFormat.GenericTypographic);
-
-
-
-            //x = 8;
-            //y = this.Height - 16;
 
             x -= pad;
             y += pad - 2;
-
             dist *= scale;
-            //g.ScaleTransform(scale, scale);
-
             g.DrawLine(GameColors.penGameOrange2, x, y, x - dist, y);
             g.DrawLine(GameColors.penGameOrange2, x, y - 4, x, y + 4);
             g.DrawLine(GameColors.penGameOrange2, x - dist, y - 4, x - dist, y + 4);
         }
-
-        private void PlotGrounded_DoubleClick(object sender, EventArgs e)
-        {
-            this.Invalidate();
-        }
-
-        private void PlotGrounded_Click(object sender, EventArgs e)
-        {
-            Overlay.setFocusED();
-        }
-
     }
 
     class BioScan0

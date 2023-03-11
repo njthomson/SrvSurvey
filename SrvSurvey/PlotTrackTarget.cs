@@ -18,7 +18,6 @@ namespace SrvSurvey
         private Game game = Game.activeGame;
 
         private TrackingDelta td;
-        private TrackingDelta td2;
 
         private PlotTrackTarget()
         {
@@ -51,20 +50,6 @@ namespace SrvSurvey
             }
         }
 
-        public void setTarget(LandableBody targetBody, LatLong2 targetLocation)
-        {
-            this.td = new TrackingDelta(targetBody.radius, game.location, targetLocation);
-            //this.textBox1.Text = targetBody.name + " / " + targetLocation.ToString();
-
-            game.status.StatusChanged += Status_StatusChanged;
-            game.modeChanged += Game_modeChanged;
-
-            this.plotPrep();
-
-            // force immediate calculation
-            this.calculate();
-        }
-
         private void PlotGroundTarget_Load(object sender, EventArgs e)
         {
             this.initialize();
@@ -74,7 +59,14 @@ namespace SrvSurvey
         private void initialize()
         {
             this.BackgroundImage = GameGraphics.getBackgroundForForm(this);
-            this.td2 = new TrackingDelta(game.nearBody.radius, Game.settings.targetLatLong);
+            this.td = new TrackingDelta(game.nearBody.radius, Game.settings.targetLatLong);
+
+            game.status.StatusChanged += Status_StatusChanged;
+            game.modeChanged += Game_modeChanged;
+
+            this.plotPrep();
+
+            this.calculate();
         }
 
         private void Game_modeChanged(GameMode newMode)
@@ -152,7 +144,7 @@ namespace SrvSurvey
             float h = this.Height / 2;
 
             // draw heading text (center bottom)
-            var headingTxt = ((int)this.td2.angle).ToString();
+            var headingTxt = ((int)this.td.angle).ToString();
             var sz = g.MeasureString(headingTxt, Game.settings.fontSmall);
             var tx = w - (sz.Width / 2);
             var ty = this.Height - sz.Height - 6;

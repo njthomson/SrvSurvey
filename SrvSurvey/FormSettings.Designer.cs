@@ -29,122 +29,26 @@ namespace SrvSurvey
         /// </summary>
         private void InitializeComponent()
         {
-            this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.checkBioStatusAutoShow = new System.Windows.Forms.CheckBox();
-            this.txtCommander = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
             this.panel1 = new System.Windows.Forms.Panel();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.label1 = new System.Windows.Forms.Label();
+            this.txtCommander = new System.Windows.Forms.TextBox();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.checkBioStatusAutoShow = new System.Windows.Forms.CheckBox();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.trackOpacity = new System.Windows.Forms.TrackBar();
             this.label2 = new System.Windows.Forms.Label();
             this.numOpacity = new System.Windows.Forms.NumericUpDown();
-            this.tabControl1.SuspendLayout();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.panel1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackOpacity)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numOpacity)).BeginInit();
+            this.tabControl1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // tabControl1
-            // 
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl1.Location = new System.Drawing.Point(0, 0);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(394, 450);
-            this.tabControl1.TabIndex = 0;
-            // 
-            // tabPage1
-            // 
-            this.tabPage1.BackColor = System.Drawing.SystemColors.Control;
-            this.tabPage1.Controls.Add(this.numOpacity);
-            this.tabPage1.Controls.Add(this.label2);
-            this.tabPage1.Controls.Add(this.trackOpacity);
-            this.tabPage1.Controls.Add(this.groupBox1);
-            this.tabPage1.Controls.Add(this.txtCommander);
-            this.tabPage1.Controls.Add(this.label1);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(386, 424);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "General";
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox1.Controls.Add(this.checkBox1);
-            this.groupBox1.Controls.Add(this.checkBioStatusAutoShow);
-            this.groupBox1.Location = new System.Drawing.Point(11, 75);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(367, 72);
-            this.groupBox1.TabIndex = 3;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Bio scanning";
-            // 
-            // checkBox1
-            // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Checked = true;
-            this.checkBox1.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox1.Location = new System.Drawing.Point(6, 42);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(193, 17);
-            this.checkBox1.TabIndex = 1;
-            this.checkBox1.Tag = "autoShowBioPlot";
-            this.checkBox1.Text = "Show sample scan exclusion zones";
-            this.checkBox1.UseVisualStyleBackColor = true;
-            // 
-            // checkBioStatusAutoShow
-            // 
-            this.checkBioStatusAutoShow.AutoSize = true;
-            this.checkBioStatusAutoShow.Checked = true;
-            this.checkBioStatusAutoShow.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBioStatusAutoShow.Location = new System.Drawing.Point(6, 19);
-            this.checkBioStatusAutoShow.Name = "checkBioStatusAutoShow";
-            this.checkBioStatusAutoShow.Size = new System.Drawing.Size(174, 17);
-            this.checkBioStatusAutoShow.TabIndex = 0;
-            this.checkBioStatusAutoShow.Tag = "autoShowBioSummary";
-            this.checkBioStatusAutoShow.Text = "Show biological signal summary";
-            this.checkBioStatusAutoShow.UseVisualStyleBackColor = true;
-            // 
-            // txtCommander
-            // 
-            this.txtCommander.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtCommander.Location = new System.Drawing.Point(126, 30);
-            this.txtCommander.Name = "txtCommander";
-            this.txtCommander.Size = new System.Drawing.Size(252, 20);
-            this.txtCommander.TabIndex = 1;
-            this.txtCommander.Tag = "";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(8, 33);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(112, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Preferred Commander:";
-            // 
-            // tabPage2
-            // 
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(386, 424);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Appearance";
-            this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // panel1
             // 
@@ -178,6 +82,80 @@ namespace SrvSurvey
             this.btnCancel.Text = "&Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             // 
+            // tabPage1
+            // 
+            this.tabPage1.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPage1.Controls.Add(this.numOpacity);
+            this.tabPage1.Controls.Add(this.label2);
+            this.tabPage1.Controls.Add(this.trackOpacity);
+            this.tabPage1.Controls.Add(this.groupBox1);
+            this.tabPage1.Controls.Add(this.txtCommander);
+            this.tabPage1.Controls.Add(this.label1);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(386, 424);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "General";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(14, 13);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(112, 13);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Preferred Commander:";
+            // 
+            // txtCommander
+            // 
+            this.txtCommander.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtCommander.Location = new System.Drawing.Point(17, 29);
+            this.txtCommander.Name = "txtCommander";
+            this.txtCommander.Size = new System.Drawing.Size(361, 20);
+            this.txtCommander.TabIndex = 1;
+            this.txtCommander.Tag = "";
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.checkBox1);
+            this.groupBox1.Controls.Add(this.checkBioStatusAutoShow);
+            this.groupBox1.Location = new System.Drawing.Point(11, 75);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(367, 72);
+            this.groupBox1.TabIndex = 3;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Bio scanning";
+            // 
+            // checkBioStatusAutoShow
+            // 
+            this.checkBioStatusAutoShow.AutoSize = true;
+            this.checkBioStatusAutoShow.Checked = true;
+            this.checkBioStatusAutoShow.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBioStatusAutoShow.Location = new System.Drawing.Point(6, 19);
+            this.checkBioStatusAutoShow.Name = "checkBioStatusAutoShow";
+            this.checkBioStatusAutoShow.Size = new System.Drawing.Size(174, 17);
+            this.checkBioStatusAutoShow.TabIndex = 0;
+            this.checkBioStatusAutoShow.Tag = "autoShowBioSummary";
+            this.checkBioStatusAutoShow.Text = "Show biological signal summary";
+            this.checkBioStatusAutoShow.UseVisualStyleBackColor = true;
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Checked = true;
+            this.checkBox1.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox1.Location = new System.Drawing.Point(6, 42);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(193, 17);
+            this.checkBox1.TabIndex = 1;
+            this.checkBox1.Tag = "autoShowBioPlot";
+            this.checkBox1.Text = "Show sample scan exclusion zones";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            // 
             // trackOpacity
             // 
             this.trackOpacity.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -210,6 +188,16 @@ namespace SrvSurvey
             this.numOpacity.Tag = "Opacity";
             this.numOpacity.ValueChanged += new System.EventHandler(this.numOpacity_ValueChanged);
             // 
+            // tabControl1
+            // 
+            this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl1.Location = new System.Drawing.Point(0, 0);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(394, 450);
+            this.tabControl1.TabIndex = 0;
+            // 
             // FormSettings
             // 
             this.AcceptButton = this.btnSave;
@@ -221,35 +209,34 @@ namespace SrvSurvey
             this.Controls.Add(this.tabControl1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "FormSettings";
+            this.ShowIcon = false;
             this.Text = "SrvSurvey Settings";
             this.Load += new System.EventHandler(this.FormSettings_Load);
-            this.tabControl1.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.trackOpacity)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numOpacity)).EndInit();
+            this.tabControl1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
-        private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button btnCancel;
-        private System.Windows.Forms.TextBox txtCommander;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.CheckBox checkBioStatusAutoShow;
-        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.NumericUpDown numOpacity;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TrackBar trackOpacity;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox checkBioStatusAutoShow;
+        private System.Windows.Forms.TextBox txtCommander;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TabControl tabControl1;
     }
 }

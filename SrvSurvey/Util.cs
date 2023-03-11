@@ -65,5 +65,20 @@ namespace SrvSurvey
                 return ago.TotalHours.ToString("#") + " hours ago";
             return ago.TotalDays.ToString("#") + " days ago";
         }
+
+        public static string getLocationString(string starSystem, string body)
+        {
+            if (string.IsNullOrEmpty(body))
+                return starSystem;
+
+
+            // for cases like: "StarSystem":"Adenets" .. "Body":"Adenets 8 c"
+            if (body.Contains(starSystem))
+                return body;
+
+            // for cases like: "StarSystem":"Enki" .. "Body":"Ponce de Leon Vision",
+            return $"{starSystem}, {body}";
+
+        }
     }
 }

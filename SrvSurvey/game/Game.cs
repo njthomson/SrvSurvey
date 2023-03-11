@@ -28,6 +28,11 @@ namespace SrvSurvey.game
         public JournalWatcher journals;
         public Status status { get; private set; }
 
+        /// <summary>
+        /// The name of the current start system, or body if we are close to one.
+        /// </summary>
+        public string systemLocation { get; private set; }
+
         public Game(string cmdr)
         {
             // track this instance as the active one
@@ -291,7 +296,7 @@ namespace SrvSurvey.game
 
                         // TODO: allow for non-Odyssey
                         if (line.Contains("\"event\":\"Fileheader\"") && line.Contains("\"Odyssey\":false"))
-                            return false;
+                            Game.log($"Reading non-Odyssey journal!");
 
                         if (line.Contains("\"event\":\"Commander\""))
                             // no need to process further lines
@@ -360,9 +365,6 @@ namespace SrvSurvey.game
                 return;
             }
 
-            var foo = this.touchdownLocation;
-            Game.log(foo);
-
             // if we have landed, we need to find the last Touchdown location
             if (this.isLanded && this._touchdownLocation == null) // || (status.Flags & StatusFlags.HasLatLong) > 0)
             {
@@ -393,59 +395,17 @@ namespace SrvSurvey.game
             if ((status.Flags & StatusFlags.HasLatLong) > 0)
             {
                 this.createNearBody(status.BodyName);
-                //var approachBodyEntry = journals.FindEntryByType<ApproachBody>(-1, true);
-                //if (approachBodyEntry != null && status.BodyName == approachBodyEntry.Body)
-                //{
-                //    this.nearBody = new LandableBody(approachBodyEntry.Body, approachBodyEntry.BodyID, approachBodyEntry.SystemAddress)
-                //    {
-                //        radius = status.PlanetRadius,
-                //    };
-                //}
-                //else
-                //{
-                //    var locationEntry = journals.FindEntryByType<Location>(-1, true);
-                //    if (locationEntry != null && status.BodyName == locationEntry.Body)
-                //    {
-                //        this.nearBody = new LandableBody(locationEntry.Body, locationEntry.BodyID, locationEntry.SystemAddress)
-                //        {
-                //            radius = status.PlanetRadius,
-                //        };
-                //    }
-                //}
+            }
+
+            if (this.systemLocation == null)
+            {
+                var locationEntry = journals.FindEntryByType<Location>(-1, true);
+                if (locationEntry != null)
+                    this.systemLocation = Util.getLocationString(locationEntry.StarSystem, locationEntry.Body);
             }
 
             log($"Initialized Commander: {this.Commander}, nearBody: {this.nearBody}");
         }
-
-        //private Touchdown findLastTouchdown()
-        //{
-        //    log($"Finding last Touchdown event... {journals.Count}");
-        //    // do we have one recently in the active journal?
-        //    var lastTouchdown = journals.FindEntryByType<Touchdown>(-1, true);
-
-        //    if (lastTouchdown != null)
-        //    {
-        //        // yes, phew
-        //        return lastTouchdown;
-        //    }
-
-        //    // otherwise, we need to dig into prior journal files
-        //    do
-        //    {
-        //        var priorFilepath = this.getLastJournalBefore(this.Commander, journals.timestamp);
-        //        if (priorFilepath == null) return null;
-        //        var oldJournal = new JournalWatcher(priorFilepath, false);
-
-        //        lastTouchdown = oldJournal.FindEntryByType<Touchdown>(-1, true);
-        //    } while (lastTouchdown == null);
-
-        //    if (lastTouchdown.Body != status.BodyName)
-        //    {
-        //        throw new Exception($"ERROR! Journal parsing failure! Last found Touchdown was for body: {lastTouchdown.Body}, but we are currently on: {status.BodyName}");
-        //    }
-
-        //    return lastTouchdown;
-        //}
 
         public T findLastJournalOf<T>() where T : JournalEntry
         {
@@ -474,32 +434,33 @@ namespace SrvSurvey.game
             return lastEntry;
         }
 
-
         #endregion
 
         private void createNearBody(string bodyName)
         {
-            if (this.nearBody != null) return;
-
-            // look for a recent scan event
-            journals.search((Scan scan) =>
-            {
-                if (scan.Bodyname == bodyName)
-                {
-                    this.nearBody = new LandableBody(
-                        scan.Bodyname,
-                        scan.BodyID,
-                        scan.SystemAddress)
-                    {
-                        radius = scan.Radius,
-                    };
-                    return true;
-                }
-                return false;
-            });
             if (this.nearBody == null)
             {
 
+                // look for a recent scan event
+                journals.search((Scan scan) =>
+                {
+                    if (scan.Bodyname == bodyName)
+                    {
+                        this.nearBody = new LandableBody(
+                            scan.Bodyname,
+                            scan.BodyID,
+                            scan.SystemAddress)
+                        {
+                            radius = scan.Radius,
+                        };
+                        return true;
+                    }
+                    return false;
+                });
+            }
+
+            if (this.nearBody == null)
+            {
                 // look for a recent ApproachBody event?
                 journals.search((ApproachBody approachBody) =>
                 {
@@ -542,10 +503,15 @@ namespace SrvSurvey.game
             {
                 log($"Genuses", string.Join(",", this.nearBody.Genuses.Select(_ => _.Genus_Localised)));
             }
+
+            if (this.systemLocation == null && this.nearBody != null)
+            {
+                Game.log("needed here?");
+                //this.systemLocation = Util.getLocationString(nearBody..StarSystem, entry.Body) this.nearBody?.bodyName;
+            }
         }
 
         #region journal tracking for game state and modes
-
 
         private void Journals_onJournalEntry(JournalEntry entry, int index)
         {
@@ -553,12 +519,9 @@ namespace SrvSurvey.game
             this.onJournalEntry((dynamic)entry);
         }
 
-        private void onJournalEntry(JournalEntry entry)
-        {
-            // ignore
-        }
+        private void onJournalEntry(JournalEntry entry) { /* ignore */ }
 
-        private void onJournalEntry(Commander entry)
+        private void onJournalEntry(LoadGame entry)
         {
             if (this.Commander == null)
             {
@@ -568,7 +531,6 @@ namespace SrvSurvey.game
                 if (modeChanged != null) modeChanged(this._mode);
             }
         }
-
 
         private void onJournalEntry(Music entry)
         {
@@ -589,7 +551,6 @@ namespace SrvSurvey.game
             this.Status_StatusChanged();
         }
 
-
         private void onJournalEntry(StartJump entry)
         {
             // FSD charged - either for Jump or SuperCruise
@@ -604,7 +565,13 @@ namespace SrvSurvey.game
         {
             // FSD Jump completed
             this.fsdJumping = false;
+            this.systemLocation = Util.getLocationString(entry.StarSystem, entry.Body);
             this.checkModeChange();
+        }
+
+        private void onJournalEntry(SupercruiseExit entry)
+        {
+            this.systemLocation = Util.getLocationString(entry.Starsystem, entry.Body);
         }
 
         #endregion
@@ -663,12 +630,18 @@ namespace SrvSurvey.game
 
         private void onJournalEntry(SAASignalsFound entry)
         {
+            // who owns getting nearBVody started? Here or in main.cs???
+            //Game.log($"SAASignalsFound {entry.BodyName}");
+            //if (entry.Genuses.Count > 0)
+            //{
+            //    if (Game.settings.autoShowBioSummary)
+            //        Program.showPlotter<PlotBioStatus>();
+            //}
+
             if (this.nearBody == null)
             {
                 this.createNearBody(entry.BodyName);
             }
-
-            // TODO: fire some event?
         }
 
         private double findPlanetaryRadius(string bodyName)
