@@ -1,9 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.33130.400
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SrvSurvey", "SrvSurvey\SrvSurvey.csproj", "{84BA22DC-8E5F-46DB-B510-2E715A8904B7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{24930DE3-46FC-4CFF-83B0-6399FF0CCEA6}"
+	ProjectSection(SolutionItems) = preProject
+		docs\page2.html = docs\page2.html
+		docs\readme.md = docs\readme.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
