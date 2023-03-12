@@ -22,6 +22,7 @@ namespace SrvSurvey
 
         public bool autoShowBioSummary;
         public bool autoShowBioPlot;
+        public bool focusGameOnMinimize;
 
         public double Opacity = 0.5;
 

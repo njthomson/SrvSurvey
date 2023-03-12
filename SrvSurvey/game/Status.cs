@@ -12,7 +12,7 @@ namespace SrvSurvey
 {
     delegate void OnStatusChange();
 
-    class Status : ILocation
+    class Status : ILocation, IDisposable
     {
 
         public static readonly string Filename = "Status.json";
@@ -61,6 +61,21 @@ namespace SrvSurvey
                 this.parseStatusFile();
             }
         }
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                this.fileWatcher.Changed -= fileWatcher_Changed;
+                this.fileWatcher = null;
+            }
+        }
+
 
         private void fileWatcher_Changed(object sender, FileSystemEventArgs e)
         {

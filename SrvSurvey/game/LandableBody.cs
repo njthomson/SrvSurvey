@@ -31,9 +31,16 @@ namespace SrvSurvey.game
             this.systemAddress = systemAddress;
 
             // see if we can get signals for this body
-            var signalsEntry = Game.activeGame.journals.FindEntryByType<SAASignalsFound>(-1, true);
-            if (signalsEntry != null)
-                this.readSAASignalsFound(signalsEntry);
+            Game.activeGame.journals.search((SAASignalsFound signalsEntry) =>
+            {
+                if (signalsEntry.BodyName == this.bodyName)
+                {
+                    this.readSAASignalsFound(signalsEntry);
+                    return true;
+                }
+
+                return false;
+            });
 
             game.journals.onJournalEntry += Journals_onJournalEntry;
 
@@ -49,11 +56,7 @@ namespace SrvSurvey.game
             this.onJournalEntry((dynamic)entry);
         }
 
-        private void onJournalEntry(JournalEntry entry)
-        {
-            // ignore
-        }
-
+        private void onJournalEntry(JournalEntry entry) { /* ignore */ }
         private void onJournalEntry(ScanOrganic entry)
         {
             Game.log($"ScanOrganic: {entry.ScanType}: {entry.Genus} / {entry.Species}");
@@ -64,7 +67,8 @@ namespace SrvSurvey.game
         {
             Game.log($"CodexEntry: {entry.Name_Localised}");
             //  CodexEntry - to get the full name of a species
-            // TODO: fire some event?
+
+            if (this.bioScanEvent != null) this.bioScanEvent();
         }
 
         /// <summary>
@@ -89,11 +93,12 @@ namespace SrvSurvey.game
             if (signalsEntry != null && signalsEntry.SystemAddress == this.systemAddress && signalsEntry.BodyID == this.bodyId)
             {
                 this.Signals = new List<ScanSignal>(signalsEntry.Signals);
-                this.Genuses = new List<ScanGenus>(signalsEntry.Genuses);
             }
 
-            if (this.Genuses?.Count > 0)
+            if (signalsEntry.Genuses?.Count > 0)
             {
+                this.Genuses = new List<ScanGenus>(signalsEntry.Genuses);
+
                 // see if we can find recent BioScans, traversing prior journal files if needed
                 game.journals.searchDeep(
                     (ScanOrganic scan) =>
@@ -119,7 +124,7 @@ namespace SrvSurvey.game
 
         public void addBioScan(ScanOrganic entry)
         {
-            
+
             if (this.scanOne != null && this.scanOne.genus != entry.Genus)
             {
                 // we are changing Genus before the 3rd scan ... start over

@@ -37,6 +37,7 @@ namespace SrvSurvey
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoValidate = System.Windows.Forms.AutoValidate.Disable;
             this.BackColor = System.Drawing.Color.Black;
+            this.CausesValidation = false;
             this.ClientSize = new System.Drawing.Size(400, 80);
             this.ControlBox = false;
             this.DoubleBuffered = true;

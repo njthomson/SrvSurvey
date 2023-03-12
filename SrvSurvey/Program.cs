@@ -7,6 +7,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml.Linq;
 
 namespace SrvSurvey
 {
@@ -57,6 +58,7 @@ namespace SrvSurvey
             T form;
             if (!activePlotters.ContainsKey(formType.Name))
             {
+                Game.log($"Creating plotter: {formType.Name}");
 
                 // Get the public instance constructor that takes zero parameters
                 var ctor = formType.GetConstructor(
@@ -77,7 +79,10 @@ namespace SrvSurvey
 
             // show form if not visible
             if (!form.Visible)
+            {
+                Game.log($"Showing plotter: {formType.Name}");
                 form.Show();
+            }
 
             return form;
         }
@@ -85,14 +90,26 @@ namespace SrvSurvey
         public static void closePlotter(string name)
         {
             var isActive = Program.activePlotters.ContainsKey(name);
-            Game.log($"Clearing lat/long. Active plotter: {isActive}");
 
             if (isActive)
             {
+                Game.log($"Closing plotter: {name}");
+
                 var plotter = Program.activePlotters[name];
                 plotter.Close();
                 plotter.Dispose();
                 Program.activePlotters.Remove(plotter.Name);
+            }
+        }
+
+        public static void closeAllPlotters()
+        {
+            Game.log($"closeAllPlotters");
+
+            var names = Program.activePlotters.Keys.ToArray();
+            foreach (string name in names)
+            {
+                Program.closePlotter(name);
             }
         }
 
@@ -105,7 +122,6 @@ namespace SrvSurvey
                 form.reposition(rect);
             }
         }
-
 
         #endregion
     }

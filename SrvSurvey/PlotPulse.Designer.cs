@@ -51,6 +51,8 @@ namespace SrvSurvey
             this.ControlBox = false;
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "PlotPulse";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;

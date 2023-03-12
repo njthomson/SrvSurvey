@@ -19,25 +19,8 @@ namespace SrvSurvey
         public static void setFocusED()
         {
             var hwnd = getEDWindowHandle();
-            SetForegroundWindow(hwnd);
-        }
-
-        public static void setFormMinimal(Form form)
-        {
-            if (form.ControlBox == false)
-            {
-                form.Text = "Srv Survey";
-                form.ControlBox = true;
-                form.FormBorderStyle = FormBorderStyle.SizableToolWindow;
-                form.SizeGripStyle = SizeGripStyle.Show;
-            }
-            else
-            {
-                form.Text = "";
-                form.ControlBox = false;
-                form.FormBorderStyle = FormBorderStyle.FixedToolWindow;
-                form.SizeGripStyle = SizeGripStyle.Hide;
-            }
+            if (hwnd != IntPtr.Zero)
+                SetForegroundWindow(hwnd);
         }
 
         public static Rectangle getEDWindowRect()
@@ -71,7 +54,6 @@ namespace SrvSurvey
 
         private static IntPtr getEDWindowHandle()
         {
-            //this.TopMost = !this.TopMost;
             var procED = Process.GetProcessesByName("EliteDangerous64");
             if (procED.Length == 0)
                 return IntPtr.Zero;

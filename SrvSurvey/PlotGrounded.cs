@@ -230,7 +230,7 @@ namespace SrvSurvey
             //drawScale(g, scale);
             g.ResetTransform();
 
-            if (game.touchdownLocation != null)
+            if (game.touchdownLocation != null && game.touchdownLocation != LatLong2.Empty)
                 this.drawBearingTo(g, 4, 8, "Touchdown:", game.touchdownLocation);
 
             if (this.srvLocation != null)

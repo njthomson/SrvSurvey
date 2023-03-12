@@ -20,7 +20,6 @@ namespace SrvSurvey
         private Rectangle lastWindowRect;
         private bool saveSettingsOnNextTick = false;
 
-
         public Main()
         {
             InitializeComponent();
@@ -52,69 +51,131 @@ namespace SrvSurvey
             this.timer1.Start();
         }
 
+        private void removeGame()
+        {
+            Game.log($"Main.removeGame, has old game: {this.game != null}");
+            if (this.game != null)
+            {
+                this.game.modeChanged -= Game_modeChanged;
+                this.game.nearingBody -= Game_nearingBody;
+                this.game.departingBody -= Game_departingBody;
+                if (this.game.journals != null)
+                    this.game.journals.onJournalEntry -= Journals_onJournalEntry;
+                this.game.Dispose();
+            }
+            this.game = null;
+
+            Program.closeAllPlotters();
+
+            this.updateCommanderTexts();
+            this.updateBioTexts();
+            this.updateTrackTargetTexts();
+        }
+
         private void newGame()
         {
-            // TODO: use a local instance until we know the commander, then call newGame again
+            if (this.game != null)
+                this.removeGame();
+
+            Game.log($"Main.newGame!");
+
             this.game = new Game(null);
+            if (this.game.isShutdown || !this.game.isRunning)
+            {
+                Game.log($"Main.Game is shutdown.");
+                this.removeGame();
+                return;
+            }
+
             this.game.modeChanged += Game_modeChanged;
+            this.game.nearingBody += Game_nearingBody;
+            this.game.departingBody += Game_departingBody;
             this.game.journals.onJournalEntry += Journals_onJournalEntry;
-
-            this.txtCommander.Text = game.Commander;
-
-            this.Game_modeChanged(this.game.mode);
 
             // do we have a targetLatLong to hydrate?
             if (Game.settings.targetLatLongActive)
                 this.setTargetLatLong();
 
-            if (this.game.isRunning)
-            {
-                Program.showPlotter<PlotPulse>();
-            }
-            else
-            {
-                // not much to do if game is not running
-                return;
-            }
+            Program.showPlotter<PlotPulse>();
 
             // are there already bio signals?
+            this.updateBioTexts();
             if (game.nearBody?.Genuses?.Count > 0)
             {
-                Game.log("Bio signals near!");
-                this.updateBioTexts();
-
+                Game.log("Main.Bio signals near!");
                 if (game.showBodyPlotters && Game.settings.autoShowBioSummary)
                     Program.showPlotter<PlotBioStatus>();
 
-                if (game.showBodyPlotters && Game.settings.autoShowBioPlot)
+                if (game.showBodyPlotters && game.isLanded && Game.settings.autoShowBioPlot)
                     Program.showPlotter<PlotGrounded>();
             }
 
-            // figure out where we are
+            // should we show the track-target plotter?
+            this.updateTrackTargetTexts();
+            this.updateCommanderTexts();
+        }
+
+        private void Game_departingBody()
+        {
+            this.updateCommanderTexts();
+            this.updateBioTexts();
+            this.updateTrackTargetTexts();
+        }
+
+        private void Game_nearingBody(LandableBody nearBody)
+        {
+            this.updateCommanderTexts();
+            this.updateBioTexts();
+            this.updateTrackTargetTexts();
         }
 
         private void Game_modeChanged(GameMode newMode)
         {
-            this.txtMode.Text = game.mode.ToString();
-            //Game.log($"!!>> {newMode}");
-            this.updateCommanderTexts();
+            if (this.txtMode.Text != newMode.ToString())
+            {
+                this.updateCommanderTexts();
 
+                if (this.game.nearBody != null)
+                {
+                    this.updateBioTexts();
+                    this.updateTrackTargetTexts();
+                }
+            }
+
+            //if (newMode == GameMode.MainMenu)
+            //{
+            //    this.updateCommanderTexts();
+            //    this.updateBioTexts();
+            //    this.updateTrackTargetTexts();
+            //}
             // DockSRV seems to be really stale :/
             // Maybe we can do something here to judge the same?
         }
 
         private void updateCommanderTexts()
         {
-            var gameIsActive = game.isRunning && game.Commander != null;
+            var gameIsActive = game != null && game.isRunning && game.Commander != null;
 
             if (!gameIsActive)
             {
+                this.txtCommander.Text = "";
+                this.txtMode.Text = "Game is not active";
                 this.txtVehicle.Text = "";
                 this.txtLocation.Text = "";
                 return;
             }
 
             this.txtCommander.Text = game.Commander;
+            this.txtMode.Text = game.mode.ToString();
+
+            Game.log($"Main.updateCommanderTexts: game.atMainMenu: {game.atMainMenu}");
+            if (game.atMainMenu)
+            {
+                this.txtLocation.Text = "";
+                this.txtVehicle.Text = "";
+                return;
+            }
+
             this.txtVehicle.Text = game.vehicle.ToString();
 
             if (!string.IsNullOrEmpty(game.systemLocation))
@@ -125,21 +186,61 @@ namespace SrvSurvey
 
         private void updateBioTexts()
         {
-            if (game.nearBody == null)
+            if (game == null || game.atMainMenu)
             {
-                lblBioSignalCount.Text = "";
-                lblAnalyzedCount.Text = "";
+                lblBioSignalCount.Text = "-";
+                lblAnalyzedCount.Text = "-";
                 txtGenuses.Text = "";
+            }
+            else if (game?.nearBody == null)
+            {
+                lblBioSignalCount.Text = "-";
+                lblAnalyzedCount.Text = "-";
+                txtGenuses.Text = "No body close enough";
+                Program.closePlotter(nameof(PlotBioStatus));
+                Program.closePlotter(nameof(PlotGrounded));
+            }
+            else if (game?.nearBody.Genuses == null)
+            {
+                lblBioSignalCount.Text = "-";
+                lblAnalyzedCount.Text = "-";
+                txtGenuses.Text = "No biological signals detected";
+                Program.closePlotter(nameof(PlotBioStatus));
+                Program.closePlotter(nameof(PlotGrounded));
                 return;
             }
+            else
+            {
+                lblBioSignalCount.Text = game.nearBody.Genuses.Count.ToString();
+                lblAnalyzedCount.Text = game.nearBody.analysedSpecies.Count.ToString();
 
-            lblBioSignalCount.Text = game.nearBody.Genuses.Count.ToString();
-            lblAnalyzedCount.Text = game.nearBody.analysedSpecies.Count.ToString();
-
-            txtGenuses.Text = string.Join(
-                ", ",
-                game.nearBody.Genuses.Select(_ => $"{_.Genus_Localised}:{game.nearBody.analysedSpecies.ContainsKey(_.Genus)}")
+                txtGenuses.Text = string.Join(
+                    ", ",
+                    game.nearBody.Genuses.Select(_ => $"{_.Genus_Localised}:{game.nearBody.analysedSpecies.ContainsKey(_.Genus)}")
                 );
+            }
+        }
+
+        private void updateTrackTargetTexts()
+        {
+            if (!Game.settings.targetLatLongActive || game == null || game.atMainMenu)
+            {
+                txtTargetLatLong.Text = "<none>";
+                lblTrackTargetStatus.Text = "Inactive";
+                Program.closePlotter(nameof(PlotTrackTarget));
+            }
+            else if (game.showBodyPlotters && (game.status.Flags & StatusFlags.HasLatLong) > 0)
+            {
+                txtTargetLatLong.Text = Game.settings.targetLatLong.ToString();
+                lblTrackTargetStatus.Text = "Active";
+                Program.showPlotter<PlotTrackTarget>();
+            }
+            else
+            {
+                txtTargetLatLong.Text = Game.settings.targetLatLong.ToString();
+                lblTrackTargetStatus.Text = "Ready";
+                Program.closePlotter(nameof(PlotTrackTarget));
+            }
         }
 
         private void Journals_onJournalEntry(JournalEntry entry, int index)
@@ -149,17 +250,34 @@ namespace SrvSurvey
 
         private void onJournalEntry(JournalEntry entry) { /* ignore */ }
 
-
-        private void onJournalEntry(Commander entry)
+        private void onJournalEntry(LoadGame entry)
         {
-            Game.log($"Commander {entry.Name} / {entry.FID} / {game.Commander}");
+            Game.log($"Main.LoadGame: Commander {entry.Commander} / {entry.FID} / {entry.GameMode}");
+            Program.closeAllPlotters();
 
-            // call new-game?
+            // kill any existing plotters, then start over
+            this.newGame();
+        }
+
+        private void onJournalEntry(Music entry)
+        {
+            var atMainMenu = entry.MusicTrack == "MainMenu";
+            if (atMainMenu)
+            {
+                Game.log($"Main.MusicTrack == MainMenu, Commander:{this.game?.Commander}");
+                this.removeGame();
+            }
+        }
+
+        private void onJournalEntry(Shutdown entry)
+        {
+            Game.log($"Main.Shutdown: Commander:{this.game?.Commander}");
+            this.removeGame();
         }
 
         private void onJournalEntry(Disembark entry)
         {
-            Game.log($"Disembark {entry.Body}");
+            Game.log($"Main.Disembark {entry.Body}");
 
             if (entry.OnPlanet && !entry.OnStation && game.nearBody.Genuses?.Count > 0)
             {
@@ -172,7 +290,7 @@ namespace SrvSurvey
 
         private void onJournalEntry(LaunchSRV entry)
         {
-            Game.log($"LaunchSRV {game.status.BodyName}");
+            Game.log($"Main.LaunchSRV {game.status.BodyName}");
 
             if (game.showBodyPlotters && game.nearBody.Genuses?.Count > 0)
             {
@@ -182,21 +300,27 @@ namespace SrvSurvey
                     Program.showPlotter<PlotGrounded>();
             }
         }
+
         private void onJournalEntry(ApproachBody entry)
         {
-            Game.log($"ApproachBody {entry.Body}");
+            Game.log($"Main.ApproachBody {entry.Body}");
 
             if (game.showBodyPlotters && game.nearBody.Genuses?.Count > 0)
             {
                 if (Game.settings.autoShowBioSummary)
                     Program.showPlotter<PlotBioStatus>();
             }
+
+            if (Game.settings.targetLatLongActive && game.showBodyPlotters)
+            {
+                Program.showPlotter<PlotTrackTarget>();
+            }
         }
 
         private void onJournalEntry(SAASignalsFound entry)
         {
-            Game.log($"SAASignalsFound {entry.BodyName}");
-            if (entry.Genuses.Count > 0)
+            Game.log($"Main.SAASignalsFound {entry.BodyName}");
+            if (entry.Genuses?.Count > 0)
             {
                 if (Game.settings.autoShowBioSummary)
                     Program.showPlotter<PlotBioStatus>();
@@ -205,21 +329,21 @@ namespace SrvSurvey
 
         private void onJournalEntry(SupercruiseEntry entry)
         {
-            Game.log($"SupercruiseEntry {entry.Starsystem}");
+            Game.log($"Main.SupercruiseEntry {entry.Starsystem}");
 
             // close these plotters upon super-cruise
             Program.closePlotter(nameof(PlotGrounded));
         }
 
-        private void onJournalEntry(LeaveBody entry)
-        {
-            Game.log($"LeaveBody {entry.Body}");
+        //private void onJournalEntry(LeaveBody entry)
+        //{
+        //    Game.log($"LeaveBody {entry.Body}");
 
-            // close these plotters upon leaving a body
-            Program.closePlotter(nameof(PlotBioStatus));
-            Program.closePlotter(nameof(PlotGrounded));
-            Program.closePlotter(nameof(PlotTrackTarget));
-        }
+        //    // close these plotters upon leaving a body
+        //    Program.closePlotter(nameof(PlotBioStatus));
+        //    Program.closePlotter(nameof(PlotGrounded));
+        //    Program.closePlotter(nameof(PlotTrackTarget));
+        //}
 
         private void onJournalEntry(SendText entry)
         {
@@ -331,13 +455,11 @@ namespace SrvSurvey
         private void setTargetLatLong()
         {
             // update our UX
-            txtTargetLatLong.Text = Game.settings.targetLatLong.ToString();
-            Game.log($"New target lat/long: {Game.settings.targetLatLong}, near body: {game.nearBody != null}");
+            this.updateTrackTargetTexts();
 
             // show plotter if near a body
-            if (game.nearBody != null)
+            if (game.nearBody != null && game.showBodyPlotters)
                 Program.showPlotter<PlotTrackTarget>();
-
         }
 
         private void btnGroundTarget_Click(object sender, EventArgs e)
@@ -346,24 +468,28 @@ namespace SrvSurvey
             form.ShowDialog(this);
 
             if (Game.settings.targetLatLongActive)
+            {
+                Game.log($"Main.Set target lat/long: {Game.settings.targetLatLong}, near: {game.systemLocation}");
                 setTargetLatLong();
+            }
             else
                 Program.closePlotter(nameof(PlotTrackTarget));
         }
 
         private void btnClearTarget_Click(object sender, EventArgs e)
         {
-            txtTargetLatLong.Text = "<none>";
             Game.settings.targetLatLongActive = false;
             Game.settings.Save();
 
-            Program.closePlotter(nameof(PlotTrackTarget));
+            this.updateTrackTargetTexts();
         }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            if (game.isShutdown && game.isRunning)
+            if (game == null || game.isShutdown && game.isRunning)
             {
+                Game.log($"Main.timer newGame!");
+
                 this.newGame();
                 return;
             }
@@ -371,9 +497,9 @@ namespace SrvSurvey
             // slow timer to check the location of the game window, repositioning plotters if needed
             var rect = Overlay.getEDWindowRect();
 
-            if (rect != lastWindowRect) // TMP!
+            if (rect != lastWindowRect)
             {
-                Game.log("moved!");
+                Game.log($"Main.ED window changed, active: {rect != Rectangle.Empty}");
                 this.lastWindowRect = rect;
 
                 Program.repositionPlotters();
@@ -391,11 +517,26 @@ namespace SrvSurvey
         {
             if (Game.settings.mainLocation != this.Location)
                 this.saveSettingsOnNextTick = true;
+
         }
 
         private void btnSettings_Click(object sender, EventArgs e)
         {
             new FormSettings().ShowDialog(this);
+        }
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start("https://njthomson.github.io/SrvSurvey/");
+        }
+
+        private void Main_SizeChanged(object sender, EventArgs e)
+        {
+            if (this.WindowState == FormWindowState.Minimized && Game.settings.focusGameOnMinimize)
+            {
+                Game.log($"Main.Minimized, focusing on game...");
+                Overlay.setFocusED();
+            }
         }
     }
 }

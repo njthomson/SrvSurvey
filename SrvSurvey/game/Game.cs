@@ -1,4 +1,5 @@
-﻿using SrvSurvey.units;
+﻿using SrvSurvey.Properties;
+using SrvSurvey.units;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -12,7 +13,7 @@ namespace SrvSurvey.game
     /// <summary>
     /// Represents live state of the game Elite Dangerous
     /// </summary>
-    class Game
+    class Game : IDisposable
     {
         public static readonly StringBuilder logs = new StringBuilder();
 
@@ -39,6 +40,7 @@ namespace SrvSurvey.game
             Game.activeGame = this;
 
             log($"Game is running: {this.isRunning}");
+            if (!this.isRunning) return;
 
             // track status file changes and force an immediate read
             this.status = new Status(true);
@@ -46,6 +48,7 @@ namespace SrvSurvey.game
             // initialize from a journal file
             var filepath = JournalFile.getCommanderJournalBefore(cmdr, DateTime.MaxValue);
             this.initializeFromJournal(filepath);
+            if (this.isShutdown) return;
 
             log($"Cmdr loaded: {this.Commander != null}");
 
@@ -56,13 +59,39 @@ namespace SrvSurvey.game
             Status_StatusChanged();
         }
 
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                this.journals.onJournalEntry -= Journals_onJournalEntry;
+                this.journals = null;
+
+                this.status.StatusChanged -= Status_StatusChanged;
+                this.status = null;
+            }
+        }
+
         #region modes
 
         public LatLong2 location { get; private set; }
-        private bool atMainMenu = false;
+        public bool atMainMenu = false;
         private bool fsdJumping = false;
         public bool isShutdown = false;
         public LandableBody nearBody;
+        /// <summary>
+        /// Tracks if we status had Lat/Long last time we knew
+        /// </summary>
+        private bool statusHasLatLong = false;
+        /// <summary>
+        /// Tracks BodyName from status - attempting to detect when multiple running games clobber the same file in error
+        /// </summary>
+        private string statusBodyName;
 
         private void checkModeChange()
         {
@@ -81,9 +110,45 @@ namespace SrvSurvey.game
         private void Status_StatusChanged()
         {
             //log("status changed");
+            if (this.statusBodyName != null && status.BodyName != this.statusBodyName)
+            {
+                // exit early if the body suddenly switches to something different without being NULL first
+                Game.log($"Multiple running games? this.statusBodyName: ${this.statusBodyName} vs status.BodyName: {status.BodyName}");
+                // TODO: some planet/moons are close enough together to trigger this - maybe compare the first word from each?
+                return;
+            }
 
             // update the easy things
             this.location = new LatLong2(this.status);
+
+            // track if status HasLatLong, toggling behaviours when it changes
+            var newHasLatLong = (this.status.Flags & StatusFlags.HasLatLong) > 0;
+            if (this.statusHasLatLong != newHasLatLong)
+            {
+                Game.log($"Changed hasLatLong: {newHasLatLong}, has nearBody: {this.nearBody != null}, nearBody matches: {status.BodyName == this.nearBody?.bodyName}");
+                this.statusHasLatLong = newHasLatLong;
+
+                if (!newHasLatLong)
+                {
+                    // we are departing
+                    var fireDepartingEvent = this.nearBody != null;
+                    if (fireDepartingEvent)
+                        Game.log($"fire departingBody, from {this.nearBody.bodyName}");
+
+                    // clear the reference before raising the event
+                    this.nearBody = null;
+                    if (fireDepartingEvent && this.departingBody != null)
+                        this.departingBody();
+                }
+                else
+                {
+                    if (this.nearBody == null)
+                    {
+                        // we are approaching - create and fire event
+                        this.createNearBody(status.BodyName);
+                    }
+                }
+            }
 
             this.checkModeChange();
 
@@ -113,13 +178,18 @@ namespace SrvSurvey.game
             //}
         }
 
+        //private n
+
+        public event GameNearingBody nearingBody;
+        public event GameDepartingBody departingBody;
+
         public event GameModeChanged modeChanged;
         private GameMode _mode;
         public GameMode mode
         {
             get
             {
-                if (!this.isRunning)
+                if (!this.isRunning || this.isShutdown)
                     return GameMode.Offline;
 
                 if (this.atMainMenu || this.Commander == null)
@@ -162,7 +232,7 @@ namespace SrvSurvey.game
                 if (activeVehicle == ActiveVehicle.MainShip)
                     return GameMode.Flying;
 
-                Game.log("BAD unknown game mode?");
+                Game.log($"BAD unknown game mode? status.Flags: {status.Flags}, status.Flags2: {status.Flags2}");
                 return GameMode.Unknown;
                 //throw new Exception("Unknown game mode!");
             }
@@ -202,7 +272,9 @@ namespace SrvSurvey.game
 
         public bool showBodyPlotters
         {
-            get => this.isMode(GameMode.SuperCruising, GameMode.Flying, GameMode.Landed, GameMode.InSrv, GameMode.OnFoot, GameMode.GlideMode);
+            get => !this.isShutdown
+                && !this.atMainMenu
+                && this.isMode(GameMode.SuperCruising, GameMode.Flying, GameMode.Landed, GameMode.InSrv, GameMode.OnFoot, GameMode.GlideMode);
         }
 
         #endregion
@@ -371,7 +443,7 @@ namespace SrvSurvey.game
                 journals.searchDeep(
                     (Touchdown lastTouchdown) =>
                     {
-                        Game.log(lastTouchdown);
+                        Game.log($"lastTouchdown: {lastTouchdown}");
 
                         if (lastTouchdown.Body == status.BodyName)
                         {
@@ -404,7 +476,7 @@ namespace SrvSurvey.game
                     this.systemLocation = Util.getLocationString(locationEntry.StarSystem, locationEntry.Body);
             }
 
-            log($"Initialized Commander: {this.Commander}, nearBody: {this.nearBody}");
+            log($"initializeFromJournal: {this.Commander}, systemLocation: {this.systemLocation}, nearBody: {this.nearBody}");
         }
 
         public T findLastJournalOf<T>() where T : JournalEntry
@@ -438,9 +510,11 @@ namespace SrvSurvey.game
 
         private void createNearBody(string bodyName)
         {
+            // exit early if we already have that body
+            if (this.nearBody != null && this.nearBody.bodyName == bodyName) return;
+
             if (this.nearBody == null)
             {
-
                 // look for a recent scan event
                 journals.search((Scan scan) =>
                 {
@@ -453,6 +527,7 @@ namespace SrvSurvey.game
                         {
                             radius = scan.Radius,
                         };
+                        this.systemLocation = Util.getLocationString(scan.StarSystem, scan.Bodyname);
                         return true;
                     }
                     return false;
@@ -473,6 +548,7 @@ namespace SrvSurvey.game
                         {
                             radius = status.PlanetRadius,
                         };
+                        this.systemLocation = Util.getLocationString(approachBody.StarSystem, approachBody.Body);
                         return true;
                     }
                     return false;
@@ -483,20 +559,42 @@ namespace SrvSurvey.game
             if (this.nearBody == null)
             {
                 journals.search((Location locationEntry) =>
-            {
-                if (locationEntry.Body == bodyName && status.BodyName == locationEntry.Body && status.PlanetRadius > 0)
                 {
-                    this.nearBody = new LandableBody(
-                        locationEntry.Body,
-                        locationEntry.BodyID,
-                        locationEntry.SystemAddress)
+                    if (locationEntry.Body == bodyName && status.BodyName == locationEntry.Body && status.PlanetRadius > 0)
                     {
-                        radius = status.PlanetRadius,
-                    };
-                    return true;
-                }
-                return false;
-            });
+                        this.nearBody = new LandableBody(
+                            locationEntry.Body,
+                            locationEntry.BodyID,
+                            locationEntry.SystemAddress)
+                        {
+                            radius = status.PlanetRadius,
+                        };
+                        this.systemLocation = Util.getLocationString(locationEntry.StarSystem, locationEntry.Body);
+                        return true;
+                    }
+                    return false;
+                });
+            }
+
+            // look for recent SupercruiseExit event?
+            if (this.nearBody == null)
+            {
+                journals.search((SupercruiseExit exitEvent) =>
+                {
+                    if (exitEvent.Body == bodyName && status.BodyName == exitEvent.Body && status.PlanetRadius > 0)
+                    {
+                        this.nearBody = new LandableBody(
+                            exitEvent.Body,
+                            exitEvent.BodyID,
+                            exitEvent.SystemAddress)
+                        {
+                            radius = status.PlanetRadius,
+                        };
+                        this.systemLocation = Util.getLocationString(exitEvent.Starsystem, exitEvent.Body);
+                        return true;
+                    }
+                    return false;
+                });
             }
 
             if (this.nearBody?.Genuses != null)
@@ -504,10 +602,18 @@ namespace SrvSurvey.game
                 log($"Genuses", string.Join(",", this.nearBody.Genuses.Select(_ => _.Genus_Localised)));
             }
 
-            if (this.systemLocation == null && this.nearBody != null)
+            if (this.systemLocation == null && this.nearBody != null && status.BodyName == this.nearBody.bodyName)
             {
                 Game.log("needed here?");
-                //this.systemLocation = Util.getLocationString(nearBody..StarSystem, entry.Body) this.nearBody?.bodyName;
+                //this.systemLocation = Util.getLocationString( nearBody.systemAddress, entry.Body) this.nearBody?.bodyName;
+            }
+
+            if (this.nearBody != null)
+            {
+                Game.log($"fire nearingBody, at {this.nearBody?.bodyName}");
+
+                if (this.nearingBody != null)
+                    this.nearingBody(this.nearBody);
             }
         }
 
@@ -515,7 +621,7 @@ namespace SrvSurvey.game
 
         private void Journals_onJournalEntry(JournalEntry entry, int index)
         {
-            //Game.log($"!--> {entry.@event}");
+            Game.log($"!--> {entry.@event}");
             this.onJournalEntry((dynamic)entry);
         }
 
@@ -548,6 +654,8 @@ namespace SrvSurvey.game
         private void onJournalEntry(Shutdown entry)
         {
             this.atMainMenu = false;
+            this.isShutdown = true;
+            this.checkModeChange();
             this.Status_StatusChanged();
         }
 
@@ -621,27 +729,15 @@ namespace SrvSurvey.game
         private void onJournalEntry(ApproachBody entry)
         {
             if (this.nearBody == null)
-            {
                 this.createNearBody(entry.Body);
-            }
-
-            // TODO: fire some event?
         }
 
         private void onJournalEntry(SAASignalsFound entry)
         {
-            // who owns getting nearBVody started? Here or in main.cs???
-            //Game.log($"SAASignalsFound {entry.BodyName}");
-            //if (entry.Genuses.Count > 0)
-            //{
-            //    if (Game.settings.autoShowBioSummary)
-            //        Program.showPlotter<PlotBioStatus>();
-            //}
-
             if (this.nearBody == null)
-            {
                 this.createNearBody(entry.BodyName);
-            }
+            else if (this.nearBody.Genuses == null)
+                this.nearBody.readSAASignalsFound(entry);
         }
 
         private double findPlanetaryRadius(string bodyName)
@@ -672,13 +768,6 @@ namespace SrvSurvey.game
 
             // TODO: scan across previous journal files?
             throw new Exception("Failed in findPlanetaryRadius");
-        }
-
-        private void onJournalEntry(LeaveBody entry)
-        {
-            this.nearBody = null;
-
-            // TODO: fire some event?
         }
 
         #endregion

@@ -49,6 +49,7 @@ namespace SrvSurvey
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
             this.CancelButton = this.button1;
+            this.CausesValidation = false;
             this.ClientSize = new System.Drawing.Size(200, 160);
             this.ControlBox = false;
             this.Controls.Add(this.button1);
@@ -58,6 +59,10 @@ namespace SrvSurvey
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "PlotTrackTarget";
+            this.ShowIcon = false;
+            this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
+            this.TopMost = true;
             this.Load += new System.EventHandler(this.PlotGroundTarget_Load);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.plotPanel_Paint);
             this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.PlotTrackTarget_MouseClick);

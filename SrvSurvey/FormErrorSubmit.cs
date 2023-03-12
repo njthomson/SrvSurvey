@@ -34,7 +34,7 @@ namespace SrvSurvey
 
         private void ErrorSubmit_Load(object sender, EventArgs e)
         {
-            txtStack.Text = ex.Message + "\r\n\r\n" + ex.StackTrace;
+            txtStack.Text = ex.GetType().Name + ":" +ex.Message + "\r\n\r\n" + ex.StackTrace;
             var lineCount = Game.logs.ToString().Split('\n').Length;
             checkIncludeLogs.Text += $" ({lineCount} lines)";
         }
@@ -43,7 +43,7 @@ namespace SrvSurvey
         {
 
             var form = new Dictionary<string, string>();
-            form.Add("title", $"Exception \"{ex.Message}\" at {DateTimeOffset.Now}");
+            form.Add("title", $"{ex.GetType().Name} \"{ex.Message}\" at {DateTimeOffset.Now}");
             form.Add("what-happened", txtSteps.Text);
             form.Add("version", Application.ProductVersion);
             form.Add("exception-message", ex.Message);
@@ -67,15 +67,11 @@ namespace SrvSurvey
             };
 
             Process.Start(url.ToString());
-
-
-
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Process.Start("https://github.com/njthomson/SrvSurvey/issues");
-            //njthProcess.Start("https://github.com/njthomson/SrvSurvey/issues/new?template=crash-report.yml");
         }
 
         private void btnLogs_Click(object sender, EventArgs e)

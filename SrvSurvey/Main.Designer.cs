@@ -36,6 +36,7 @@ namespace SrvSurvey
             this.label2 = new System.Windows.Forms.Label();
             this.btnClearTarget = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.lblTrackTargetStatus = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.txtMode = new System.Windows.Forms.TextBox();
             this.txtLocation = new System.Windows.Forms.TextBox();
@@ -50,6 +51,7 @@ namespace SrvSurvey
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.btnLogs = new System.Windows.Forms.Button();
             this.btnSettings = new System.Windows.Forms.Button();
+            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -117,6 +119,7 @@ namespace SrvSurvey
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.lblTrackTargetStatus);
             this.groupBox1.Controls.Add(this.btnClearTarget);
             this.groupBox1.Controls.Add(this.btnGroundTarget);
             this.groupBox1.Controls.Add(this.txtTargetLatLong);
@@ -126,6 +129,16 @@ namespace SrvSurvey
             this.groupBox1.TabIndex = 14;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Target lat/Long:";
+            // 
+            // lblTrackTargetStatus
+            // 
+            this.lblTrackTargetStatus.AutoSize = true;
+            this.lblTrackTargetStatus.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblTrackTargetStatus.Location = new System.Drawing.Point(14, 49);
+            this.lblTrackTargetStatus.Name = "lblTrackTargetStatus";
+            this.lblTrackTargetStatus.Size = new System.Drawing.Size(63, 14);
+            this.lblTrackTargetStatus.TabIndex = 18;
+            this.lblTrackTargetStatus.Text = "<status>";
             // 
             // groupBox2
             // 
@@ -281,12 +294,28 @@ namespace SrvSurvey
             this.btnSettings.UseVisualStyleBackColor = true;
             this.btnSettings.Click += new System.EventHandler(this.btnSettings_Click);
             // 
+            // linkLabel1
+            // 
+            this.linkLabel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.linkLabel1.Font = new System.Drawing.Font("Lucida Sans Typewriter", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.linkLabel1.LinkArea = new System.Windows.Forms.LinkArea(16, 38);
+            this.linkLabel1.Location = new System.Drawing.Point(10, 355);
+            this.linkLabel1.Name = "linkLabel1";
+            this.linkLabel1.Size = new System.Drawing.Size(373, 39);
+            this.linkLabel1.TabIndex = 17;
+            this.linkLabel1.TabStop = true;
+            this.linkLabel1.Text = "See guidance at https://njthomson.github.io/SrvSurvey/";
+            this.linkLabel1.UseCompatibleTextRendering = true;
+            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnQuit2;
             this.ClientSize = new System.Drawing.Size(395, 432);
+            this.Controls.Add(this.linkLabel1);
             this.Controls.Add(this.btnSettings);
             this.Controls.Add(this.btnLogs);
             this.Controls.Add(this.groupBox3);
@@ -301,6 +330,7 @@ namespace SrvSurvey
             this.Text = "Srv Survey";
             this.Load += new System.EventHandler(this.Main_Load);
             this.LocationChanged += new System.EventHandler(this.Main_LocationChanged);
+            this.SizeChanged += new System.EventHandler(this.Main_SizeChanged);
             this.DoubleClick += new System.EventHandler(this.Main_DoubleClick);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -334,5 +364,7 @@ namespace SrvSurvey
         private System.Windows.Forms.TextBox txtMode;
         private System.Windows.Forms.Button btnLogs;
         private System.Windows.Forms.Button btnSettings;
+        private System.Windows.Forms.LinkLabel linkLabel1;
+        private System.Windows.Forms.Label lblTrackTargetStatus;
     }
 }

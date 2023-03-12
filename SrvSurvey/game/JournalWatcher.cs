@@ -79,6 +79,7 @@ namespace SrvSurvey
         {
             var json = reader.ReadLine();
             JToken entry = JsonConvert.DeserializeObject<JToken>(json);
+            if (entry == null) return null;
 
             var eventName = entry["event"].Value<string>();
             if (typeMap.ContainsKey(eventName))
@@ -204,7 +205,7 @@ namespace SrvSurvey
         }
     }
 
-    class JournalWatcher : JournalFile
+    class JournalWatcher : JournalFile, IDisposable
     {
         private FileSystemWatcher watcher;
 
@@ -216,8 +217,23 @@ namespace SrvSurvey
             var filename = Path.GetFileName(filepath);
             this.watcher = new FileSystemWatcher(folder, filename);
             this.watcher.Changed += JournalWatcher_Changed;
-            this.watcher.NotifyFilter = NotifyFilters.LastWrite;
+            this.watcher.NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.Size;
             this.watcher.EnableRaisingEvents = true;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                this.watcher.Changed -= JournalWatcher_Changed;
+                this.watcher = null;
+            }
         }
 
         private void JournalWatcher_Changed(object sender, FileSystemEventArgs e)

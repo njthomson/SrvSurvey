@@ -42,6 +42,7 @@ namespace SrvSurvey
             this.label2 = new System.Windows.Forms.Label();
             this.numOpacity = new System.Windows.Forms.NumericUpDown();
             this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.checkFocusOnMinimize = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -85,6 +86,7 @@ namespace SrvSurvey
             // tabPage1
             // 
             this.tabPage1.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPage1.Controls.Add(this.checkFocusOnMinimize);
             this.tabPage1.Controls.Add(this.numOpacity);
             this.tabPage1.Controls.Add(this.label2);
             this.tabPage1.Controls.Add(this.trackOpacity);
@@ -198,6 +200,19 @@ namespace SrvSurvey
             this.tabControl1.Size = new System.Drawing.Size(394, 450);
             this.tabControl1.TabIndex = 0;
             // 
+            // checkFocusOnMinimize
+            // 
+            this.checkFocusOnMinimize.AutoSize = true;
+            this.checkFocusOnMinimize.Checked = true;
+            this.checkFocusOnMinimize.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkFocusOnMinimize.Location = new System.Drawing.Point(17, 204);
+            this.checkFocusOnMinimize.Name = "checkFocusOnMinimize";
+            this.checkFocusOnMinimize.Size = new System.Drawing.Size(304, 17);
+            this.checkFocusOnMinimize.TabIndex = 2;
+            this.checkFocusOnMinimize.Tag = "focusGameOnMinimize";
+            this.checkFocusOnMinimize.Text = "Set focus on Elite Dangerous when minimizing SRVSurvey.";
+            this.checkFocusOnMinimize.UseVisualStyleBackColor = true;
+            // 
             // FormSettings
             // 
             this.AcceptButton = this.btnSave;
@@ -210,6 +225,8 @@ namespace SrvSurvey
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "FormSettings";
             this.ShowIcon = false;
+            this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "SrvSurvey Settings";
             this.Load += new System.EventHandler(this.FormSettings_Load);
             this.panel1.ResumeLayout(false);
@@ -238,5 +255,6 @@ namespace SrvSurvey
         private System.Windows.Forms.TextBox txtCommander;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.CheckBox checkFocusOnMinimize;
     }
 }
