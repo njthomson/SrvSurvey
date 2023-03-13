@@ -52,6 +52,7 @@ namespace SrvSurvey
             this.btnLogs = new System.Windows.Forms.Button();
             this.btnSettings = new System.Windows.Forms.Button();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.txtNearBody = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -144,6 +145,7 @@ namespace SrvSurvey
             // 
             this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox2.Controls.Add(this.txtNearBody);
             this.groupBox2.Controls.Add(this.txtMode);
             this.groupBox2.Controls.Add(this.txtLocation);
             this.groupBox2.Controls.Add(this.txtVehicle);
@@ -173,7 +175,7 @@ namespace SrvSurvey
             this.txtLocation.Location = new System.Drawing.Point(16, 43);
             this.txtLocation.Name = "txtLocation";
             this.txtLocation.ReadOnly = true;
-            this.txtLocation.Size = new System.Drawing.Size(348, 20);
+            this.txtLocation.Size = new System.Drawing.Size(256, 20);
             this.txtLocation.TabIndex = 12;
             this.txtLocation.Text = "<location>";
             // 
@@ -309,6 +311,16 @@ namespace SrvSurvey
             this.linkLabel1.UseCompatibleTextRendering = true;
             this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
+            // txtNearBody
+            // 
+            this.txtNearBody.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtNearBody.Location = new System.Drawing.Point(278, 43);
+            this.txtNearBody.Name = "txtNearBody";
+            this.txtNearBody.ReadOnly = true;
+            this.txtNearBody.Size = new System.Drawing.Size(86, 20);
+            this.txtNearBody.TabIndex = 14;
+            this.txtNearBody.Text = "<near/far>";
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
@@ -366,5 +378,6 @@ namespace SrvSurvey
         private System.Windows.Forms.Button btnSettings;
         private System.Windows.Forms.LinkLabel linkLabel1;
         private System.Windows.Forms.Label lblTrackTargetStatus;
+        private System.Windows.Forms.TextBox txtNearBody;
     }
 }

@@ -77,38 +77,26 @@ namespace SrvSurvey
             if (this.game != null)
                 this.removeGame();
 
-            Game.log($"Main.newGame!");
-
-            this.game = new Game(null);
-            if (this.game.isShutdown || !this.game.isRunning)
+            var newGame = new Game(null);
+            if (newGame.isShutdown || !newGame.isRunning)
             {
-                Game.log($"Main.Game is shutdown.");
-                this.removeGame();
+                Game.log($"Main newGame is shutdown.");
+                newGame.Dispose();
                 return;
             }
+
+            Game.log($"Main.newGame!");
+            this.game = newGame;
 
             this.game.modeChanged += Game_modeChanged;
             this.game.nearingBody += Game_nearingBody;
             this.game.departingBody += Game_departingBody;
             this.game.journals.onJournalEntry += Journals_onJournalEntry;
 
-            // do we have a targetLatLong to hydrate?
-            if (Game.settings.targetLatLongActive)
-                this.setTargetLatLong();
-
             Program.showPlotter<PlotPulse>();
 
             // are there already bio signals?
             this.updateBioTexts();
-            if (game.nearBody?.Genuses?.Count > 0)
-            {
-                Game.log("Main.Bio signals near!");
-                if (game.showBodyPlotters && Game.settings.autoShowBioSummary)
-                    Program.showPlotter<PlotBioStatus>();
-
-                if (game.showBodyPlotters && game.isLanded && Game.settings.autoShowBioPlot)
-                    Program.showPlotter<PlotGrounded>();
-            }
 
             // should we show the track-target plotter?
             this.updateTrackTargetTexts();
@@ -162,6 +150,7 @@ namespace SrvSurvey
                 this.txtMode.Text = "Game is not active";
                 this.txtVehicle.Text = "";
                 this.txtLocation.Text = "";
+                this.txtNearBody.Text = "";
                 return;
             }
 
@@ -173,6 +162,7 @@ namespace SrvSurvey
             {
                 this.txtLocation.Text = "";
                 this.txtVehicle.Text = "";
+                this.txtNearBody.Text = "";
                 return;
             }
 
@@ -180,8 +170,15 @@ namespace SrvSurvey
 
             if (!string.IsNullOrEmpty(game.systemLocation))
                 this.txtLocation.Text = game.systemLocation;
+            else if (!string.IsNullOrEmpty(game.starSystem))
+                this.txtLocation.Text = game.starSystem;
             else
                 this.txtLocation.Text = "Unknown";
+
+            if (game.nearBody != null)
+                this.txtNearBody.Text = "Near body";
+            else
+                this.txtNearBody.Text = "Deep space";
         }
 
         private void updateBioTexts()
@@ -192,7 +189,7 @@ namespace SrvSurvey
                 lblAnalyzedCount.Text = "-";
                 txtGenuses.Text = "";
             }
-            else if (game?.nearBody == null)
+            else if (game.nearBody == null)
             {
                 lblBioSignalCount.Text = "-";
                 lblAnalyzedCount.Text = "-";
@@ -200,7 +197,7 @@ namespace SrvSurvey
                 Program.closePlotter(nameof(PlotBioStatus));
                 Program.closePlotter(nameof(PlotGrounded));
             }
-            else if (game?.nearBody.Genuses == null)
+            else if (game.nearBody.Genuses == null || game.nearBody.Genuses.Count == 0)
             {
                 lblBioSignalCount.Text = "-";
                 lblAnalyzedCount.Text = "-";
@@ -211,13 +208,24 @@ namespace SrvSurvey
             }
             else
             {
+                Game.log("Main.Bio signals near!");
+
                 lblBioSignalCount.Text = game.nearBody.Genuses.Count.ToString();
                 lblAnalyzedCount.Text = game.nearBody.analysedSpecies.Count.ToString();
 
                 txtGenuses.Text = string.Join(
-                    ", ",
+                    "\r\n",
                     game.nearBody.Genuses.Select(_ => $"{_.Genus_Localised}:{game.nearBody.analysedSpecies.ContainsKey(_.Genus)}")
                 );
+
+                if (game.showBodyPlotters)
+                {
+                    if (Game.settings.autoShowBioSummary)
+                        Program.showPlotter<PlotBioStatus>();
+                    
+                    if (game.isLanded && Game.settings.autoShowBioPlot)
+                        Program.showPlotter<PlotGrounded>();
+                }
             }
         }
 

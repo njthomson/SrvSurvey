@@ -204,7 +204,13 @@ namespace SrvSurvey
             //foreach (var name in BioScan2.ranges.Keys)
             foreach (var genus in game.nearBody.Genuses)
             {
-                var sz = g.MeasureString(genus.Genus_Localised, Game.settings.fontSmall);
+                var analysed = game.nearBody.analysedSpecies.ContainsKey(genus.Genus);
+
+                var txt = genus.Genus_Localised;
+                // TODO: show distance?
+                //if (!analysed) txt += " (50m)";
+
+                var sz = g.MeasureString(txt, Game.settings.fontSmall);
 
                 if (x + sz.Width > this.Width - 16)
                 {
@@ -212,10 +218,8 @@ namespace SrvSurvey
                     y += sz.Height;
                 }
 
-                var analysed = game.nearBody.analysedSpecies.ContainsKey(genus.Genus);
-
                 g.DrawString(
-                    genus.Genus_Localised,
+                    txt,
                     Game.settings.fontSmall,
                     analysed ? GameColors.brushGameOrange : GameColors.brushCyan,
                     x, y);

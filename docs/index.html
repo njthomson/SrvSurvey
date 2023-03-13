@@ -4,8 +4,86 @@
 <head>
     <meta charset="utf-8" />
     <title>SrvSurvey</title>
+    <style>
+        body {
+            background-color: #242424;
+            max-width: 1600px;
+            color: #a4a4a4;
+            font-family: "Segoe UI","Noto Sans",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
+        }
+
+        .footer {
+            position: relative;
+            padding: 0;
+            margin: 0;
+            width: 99%;
+            bottom: 4px;
+            text-align: center;
+            font-size: 10px;
+        }
+
+        a {
+            color: white;
+        }
+    </style>
 </head>
 <body>
-    <h1>This is all about SrvSurvey</h1>
+    <h1>What is SrvSurvey?</h1>
+    <div style="height: 270px;">
+        <img src="./game-snapshot-1.png" style="float:right; margin:12px; position: relative; right:4px;" />
+        SrvSurvey is an independent third-party application for use with "<a href="https://www.elitedangerous2.com" target="frontier">Elite Dangerous</a>" by <a href="https://frontier.co.uk" target="frontier">Frontier Developments</a>. It provides on-screen assistance when a player is near a planet in the SRV, on foot or in ships. It has 3 main functions:
+        <ul>
+            <li><b>Organic scans:</b> Track the location of organic scans and the distance required for the next scan.</li>
+            <li><b>Ground target tracking:</b> Aiming guidance towards latitude/longitude co-ordinates.</li>
+            <li><b>Guardian sites</b>: Track visited areas and the locations of items within Guardin ruins and structures.</li>
+        </ul>
+        <div>The application works by analyzing journal files written by the game when played on a PC, tracking the location of the player at the time of various events. It uses this information to render overlay windows atop the game, updated in real-time as the player moves about. For the most part the application is fully automatic, players need to start the application and then just play the game. It will remain hidden until triggered by events from the game.</div>
+    </div>
+
+    <div style="position: relative; height: 740px;">
+        <h2>Organic Scans:</h2>
+        <img src="./bio-summary.png" style="float:left; margin:12px;" />
+        <img src="./bio-summary-2.png" style="float:right; margin:12px;" />
+        <div>When approaching a planet or moon with biological signals, a summary panel will appear top center. This shows the count, the names of biological organisms detected and how many have been analyzed. Items in orange have been scanned, items in blue have not been scanned.</div>
+        <br />
+        <div>Upon the first scan with the Genetic Sampler tool, the summary changes to show the name of the current biological signal, filled circles for how many scans have been completed and most importantly, how far a player needs to travel for the next sample with sufficient genetic diversity. Upon landing, disembarking or launching the SRV a second panel will appear on the right side. This shows:</div>
+        <img src="./ground-display.png" style="margin:12px; position: absolute; left: 10px;" />
+    </div>
+
+    <div style="position: relative; height: 340px;">
+        <h2>Ground target tracking:</h2>
+        <img src="./target-track-1.png" style="float:left; margin:12px;" />
+        <img src="./set-target.png" style="float:right; margin:12px;" />
+        <div>Tracks a players location whilst flying above a planet towards given target location by latitude/longitude co-ordinates.</div>
+        <br />
+        <div>Shows the approximate distance and heading towards the target.</div>
+        <br />
+        <div>The arrow points relative to the current ship heading: up is straight ahead, turn left if the arrow is to the left, etc.</div>
+        <br />
+        <div>The arrow fills with yellow as you approach your target, suggesting when to engage orbital glide.</div>
+    </div>
+
+    <div>
+        <h2>Guardian sites:</h2>
+        <div>Coming soon ...</div>
+    </div>
+
+    <div style="position: relative; height: 240px;">
+        <h2>The Main Window:</h2>
+        <img src="./main-window.png" style="float: left; margin:12px;" />
+        <div>The main window of SrvSurvey is not the interesting part.</div>
+        <div>It shows a summary of data tracked from the game and is designed to be ignored whilst playing the game.</div>
+        <div>From here you can see settings and view diagnostic logs for the application.</div>
+    </div>
+
+
+    <div style="position: relative; height: 100px;">
+        <h2>Feedback:</h2>
+        <div>Please use the <a href="https://github.com/njthomson/SrvSurvey" target="_blank">SrvSurvey GitHub</a> to log <a href="https://github.com/njthomson/SrvSurvey/issues/new?template=crash-report.yml" target="_blank">crashing bugs</a> or <a href="https://github.com/njthomson/SrvSurvey/issues/new" target="_blank">make suggestions</a>.</div>
+    </div>
+
+    <div class="footer">
+        SrvSurvey is not an official tool for <a href="https://www.elitedangerous.com" target="frontier">Elite Dangerous</a> and is not affiliated with <a href="https://frontier.co.uk" target="frontier">Frontier Developments</a>. All trademarks and copyright are acknowledged as the property of their respective owners.
+    </div>
 </body>
 </html>

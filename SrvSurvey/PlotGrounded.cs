@@ -189,7 +189,7 @@ namespace SrvSurvey
             this.drawBioScans(g, scale);
 
             // draw touchdown marker
-            if (game.isLanded && td != null)
+            if (game.touchdownLocation != null && td != null)
             {
                 // delta to ship
                 g.ResetTransform();
@@ -203,7 +203,7 @@ namespace SrvSurvey
             }
 
             // draw SRV marker
-            if (game.isLanded && this.srvLocation != null)
+            if (game.touchdownLocation != null && this.srvLocation != null)
             {
                 // delta to ship
                 g.ResetTransform();

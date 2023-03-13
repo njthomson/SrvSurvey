@@ -9,10 +9,9 @@ namespace SrvSurvey.game
 {
     delegate void BioScanEvent();
 
-    class LandableBody
+    class LandableBody : IDisposable
     {
-        private Game game = Game.activeGame;
-
+        private readonly Game game;
         public readonly string bodyName;
         public readonly int bodyId;
         public long systemAddress;
@@ -24,8 +23,9 @@ namespace SrvSurvey.game
         public BioScan scanTwo;
         public Dictionary<string, string> analysedSpecies = new Dictionary<string, string>();
 
-        public LandableBody(string bodyName, int bodyId, long systemAddress)
+        public LandableBody(Game game, string bodyName, int bodyId, long systemAddress)
         {
+            this.game = game;
             this.bodyName = bodyName;
             this.bodyId = bodyId;
             this.systemAddress = systemAddress;
@@ -48,6 +48,23 @@ namespace SrvSurvey.game
             {
                 this.scanOne = Game.settings.scanOne;
                 this.scanTwo = Game.settings.scanTwo;
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (this.game.journals != null)
+                {
+                    this.game.journals.onJournalEntry -= Journals_onJournalEntry;
+                }
             }
         }
 
