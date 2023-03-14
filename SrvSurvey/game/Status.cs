@@ -122,7 +122,6 @@ namespace SrvSurvey
         [JsonIgnore]
         public LatLong2 here { get; private set; }
 
-
         [JsonIgnore]
         public bool OnFoot { get => (this.Flags2 & StatusFlags2.OnFoot) > 0; }
         [JsonIgnore]

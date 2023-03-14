@@ -30,10 +30,10 @@ namespace SrvSurvey
             // make number positive
             if (m < 0) m = -m;
 
-            if (m == 0)
+            if (m < 1)
             {
                 // less than 1 thousand
-                return "+0 m";
+                return "0 m";
             }
 
             if (m < 1000)

@@ -111,10 +111,10 @@ namespace SrvSurvey
         public bool search<T>(Func<T, bool> func) where T : JournalEntry
         {
             // see if we can find recent BioScans
-            int idx = 0;
+            int idx = this.Count-1;
             do
             {
-                var entry = this.FindEntryByType<T>(idx, false);
+                var entry = this.FindEntryByType<T>(idx, true);
                 if (entry == null)
                 {
                     // no more entries in this file
@@ -126,8 +126,8 @@ namespace SrvSurvey
                 if (finished) return finished;
 
                 // otherwise keep going
-                idx = this.Entries.IndexOf(entry) + 1;
-            } while (idx < this.Count);
+                idx = this.Entries.IndexOf(entry) - 1;
+            } while (idx >= 0);
 
             // if we run out of entries, we don't know if we're necessarily finished
             return false;
@@ -208,6 +208,7 @@ namespace SrvSurvey
     class JournalWatcher : JournalFile, IDisposable
     {
         private FileSystemWatcher watcher;
+        private bool disposed = false;
 
         public event OnJournalEntry onJournalEntry;
 
@@ -225,6 +226,7 @@ namespace SrvSurvey
         {
             Dispose(true);
             GC.SuppressFinalize(this);
+            this.disposed = true;
         }
 
         protected virtual void Dispose(bool disposing)
@@ -238,6 +240,8 @@ namespace SrvSurvey
 
         private void JournalWatcher_Changed(object sender, FileSystemEventArgs e)
         {
+            if (this.disposed) return;
+
             PlotPulse.LastChanged = DateTime.Now;
             this.readEntries();
         }
@@ -246,7 +250,7 @@ namespace SrvSurvey
         {
             var entry = base.readEntry();
 
-            if (entry != null && this.onJournalEntry != null)
+            if (entry != null && this.onJournalEntry != null && !this.disposed)
             {
                 Program.control.Invoke((MethodInvoker)delegate
                 {

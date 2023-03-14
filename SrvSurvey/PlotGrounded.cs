@@ -59,20 +59,20 @@ namespace SrvSurvey
             this.Game_modeChanged(game.mode);
             this.Status_StatusChanged();
 
-            //this.Opacity = 1;
             game.journals.onJournalEntry += Journals_onJournalEntry;
             game.nearBody.bioScanEvent += NearBody_bioScanEvent;
 
             this.reposition(Overlay.getEDWindowRect());
 
             // get landing location
-            Game.log($"touchdownLocation: {game.touchdownLocation}");
+            Game.log($"initialize here: {game.status.here}, touchdownLocation: {game.touchdownLocation}");
 
             if (game.touchdownLocation == null)
             {
                 Game.log("Why no touchdownLocation?");
                 return;
             }
+
             this.td = new TrackingDelta(
                 game.nearBody.radius,
                 game.status.here,
@@ -95,19 +95,14 @@ namespace SrvSurvey
 
         private void onJournalEntry(Touchdown entry)
         {
-            Game.log($"re-touchdownLocation: {game.status.here}");
+            var newLocation = new LatLong2(entry);
+            Game.log($"re-touchdownLocation: {newLocation}");
 
             if (this.td == null) return;
 
-            this.td.Point1 = new LatLong2(game.status);
-            this.td.Point2 = new LatLong2(game.status);
+            this.td.Point1 = newLocation;
+            this.td.Point2 = newLocation;
 
-            this.Invalidate();
-        }
-
-        private void onJournalEntry(Liftoff entry)
-        {
-            Game.log($"re-liftoff");
             this.Invalidate();
         }
 
@@ -148,10 +143,10 @@ namespace SrvSurvey
         private void Status_StatusChanged()
         {
             if (this.td != null)
-                this.td.Point1 = new LatLong2(game.status);
+                this.td.Point1 = game.status.here;
 
             if (this.srvLocation != null)
-                this.srvLocation.Point1 = new LatLong2(game.status);
+                this.srvLocation.Point1 = game.status.here;
 
             this.Invalidate();
         }
@@ -189,7 +184,7 @@ namespace SrvSurvey
             this.drawBioScans(g, scale);
 
             // draw touchdown marker
-            if (game.touchdownLocation != null && td != null)
+            if (this.td != null)
             {
                 // delta to ship
                 g.ResetTransform();
@@ -199,11 +194,12 @@ namespace SrvSurvey
 
                 const float touchdownSize = 64f;
                 var rect = new RectangleF((float)td.dx - touchdownSize, (float)-td.dy - touchdownSize, touchdownSize * 2, touchdownSize * 2);
-                g.FillEllipse(GameColors.brushShipLocation, rect);
+                var b = game.touchdownLocation == null ? GameColors.brushShipFormerLocation : GameColors.brushShipLocation;
+                g.FillEllipse(b, rect);
             }
 
             // draw SRV marker
-            if (game.touchdownLocation != null && this.srvLocation != null)
+            if (this.srvLocation != null)
             {
                 // delta to ship
                 g.ResetTransform();
@@ -230,8 +226,8 @@ namespace SrvSurvey
             //drawScale(g, scale);
             g.ResetTransform();
 
-            if (game.touchdownLocation != null && game.touchdownLocation != LatLong2.Empty)
-                this.drawBearingTo(g, 4, 8, "Touchdown:", game.touchdownLocation);
+            if (this.td != null)
+                this.drawBearingTo(g, 4, 8, "Touchdown:", this.td.Point2);
 
             if (this.srvLocation != null)
                 this.drawBearingTo(g, 4 + w, 8, "SRV:", this.srvLocation.Point2);
@@ -266,7 +262,6 @@ namespace SrvSurvey
 
             x += sz * 3;
             g.DrawString(Util.metersToString(dd.distance), Game.settings.fontSmall, GameColors.brushGameOrange, x, y);
-
         }
 
         private void drawCompassLines(Graphics g)

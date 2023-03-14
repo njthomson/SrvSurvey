@@ -630,29 +630,6 @@ namespace SrvSurvey.game
                 });
             }
 
-            // look for recent SAASignalsFound event?
-            //if (this.nearBody == null)
-            //{
-            //    journals.search((SAASignalsFound signalsEvent) =>
-            //    {
-            //        if (signalsEvent.BodyName == bodyName && status.BodyName == signalsEvent.BodyName && status.PlanetRadius > 0)
-            //        {
-            //            this.nearBody = new LandableBody(
-            //                this,
-            //                signalsEvent.BodyName,
-            //                signalsEvent.BodyID,
-            //                signalsEvent.SystemAddress)
-            //            {
-            //                radius = status.PlanetRadius,
-            //            };
-            //            this.starSystem = signalsEvent.StarSystem;
-            //            this.systemLocation = Util.getLocationString(signalsEvent.StarSystem, signalsEvent.Body);
-            //            return true;
-            //        }
-            //        return false;
-            //    });
-            //}
-
             if (this.nearBody?.Genuses != null)
             {
                 log($"Genuses", string.Join(",", this.nearBody.Genuses.Select(_ => _.Genus_Localised)));
@@ -782,7 +759,7 @@ namespace SrvSurvey.game
 
         private void onJournalEntry(Liftoff entry)
         {
-            this._touchdownLocation = LatLong2.Empty;
+            this._touchdownLocation = null; // LatLong2.Empty;
             log($"Liftoff!");
         }
 

@@ -94,7 +94,6 @@ namespace SrvSurvey
 
             // prepare brush for bio-scan exclusion circles: red cross-hatch
             GameColors.brushExclusionActive = new HatchBrush(HatchStyle.ZigZag, Color.DarkRed, Color.Transparent);
-            //new TextureBrush(bm, WrapMode.TileFlipXY);
             GameColors.penExclusionActive = new Pen(Color.FromArgb(96, Color.Red), 20);
 
             // prepare brush for bio-scan exclusion circles: red cross-hatch
@@ -103,9 +102,8 @@ namespace SrvSurvey
 
             // prepare brush for ship location
             GameColors.brushShipLocation = new HatchBrush(HatchStyle.SmallCheckerBoard, Cyan, Color.Transparent);
+            GameColors.brushShipFormerLocation = new HatchBrush(HatchStyle.Divot, Cyan, Color.Transparent);
             GameColors.brushSrvLocation = new HatchBrush(HatchStyle.SmallCheckerBoard, Orange, Color.Transparent);
-
-            
         }
 
         public static Color LimeIsh = Color.FromArgb(200, Color.Lime);
@@ -134,6 +132,7 @@ namespace SrvSurvey
         public static Pen penExclusionComplete;
 
         public static Brush brushShipLocation;
+        public static Brush brushShipFormerLocation;
         public static Brush brushSrvLocation;
 
 

@@ -90,7 +90,7 @@ namespace SrvSurvey.units
             get => this.target;
             set
             {
-                this.current = value;
+                this.target = value;
                 this.calc();
             }
         }
