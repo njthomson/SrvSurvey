@@ -50,7 +50,7 @@ jobs:
   
     strategy:
       matrix:
-        configuration: [Debug, Release]
+        configuration: [Release]
 
     runs-on: windows-latest  # For a list of available runner types, refer to
                              # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
@@ -81,8 +81,8 @@ jobs:
         Configuration: ${{ matrix.configuration }}
 
     # Create the app package by building and packaging the Windows Application ClickOnce publish profile
-    - name: Create the app package      
-      run: msbuild $env:Solution_Name -t:Publish -p:Configuration=$env:Configuration -restore:true  -p:PublishProfile=ClickOnceProfile -p:PublishSingleFile=true -p:PublishReadyToRun=false -p:RuntimeIdentifier=win-x64 -p:PublishDir=bin/published
+    - name: Create ClickOnce package
+      run: msbuild SrvSurvey.sln -t:Publish -p:Configuration=$env:Configuration -restore:true -p:PublishProfile=ClickOnceProfile -p:PublishDir=bin/published
       env:
         Configuration: ${{ matrix.configuration }}
 
@@ -90,5 +90,5 @@ jobs:
     - name: Upload build artifacts
       uses: actions/upload-artifact@v3
       with:
-        name: ClickOnce
-        path: SrvSurvey\bin\published
+        name: SrvSurvey
+        path: SrvSurvey/bin/published/
