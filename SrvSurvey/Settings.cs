@@ -17,16 +17,14 @@ namespace SrvSurvey
 {
     class Settings
     {
-        public LatLong2 targetLatLong;
-        public bool targetLatLongActive;
+        public LatLong2 targetLatLong = LatLong2.Empty;
+        public bool targetLatLongActive = false;
 
-        public bool autoShowBioSummary;
-        public bool autoShowBioPlot;
-        public bool focusGameOnMinimize;
+        public bool autoShowBioSummary = true;
+        public bool autoShowBioPlot = true;
+        public bool focusGameOnMinimize = true;
 
         public double Opacity = 0.5;
-
-        public bool hidePlotterIfNotActive = false;
 
         public Point mainLocation;
 
@@ -46,14 +44,19 @@ namespace SrvSurvey
 
         public static Settings Load()
         {
-            if (!File.Exists(settingsPath)) return new Settings();
+
+            if (!File.Exists(settingsPath))
+            {
+                Game.log($"Creating new settings file: {settingsPath}");
+                var newSettings = new Settings();
+                newSettings.Save();
+            }
 
             // read and parse file contents into tmp object
             var json = File.ReadAllText(settingsPath);
             var settings = JsonConvert.DeserializeObject<Settings>(json);
 
-            Game.log(settings);
-            //Application.UserAppDataPath
+            Game.log($"Loaded settings: {json}");
             return settings;
         }
 
@@ -140,7 +143,5 @@ namespace SrvSurvey
         public static Brush brushGameOrangeDim = new SolidBrush(OrangeDim); //  Color.FromArgb(255, 255, 113, 00));
 
         public static Brush brushCyan = new SolidBrush(Cyan); //  Color.FromArgb(255, 255, 113, 00));
-
-
     }
 }

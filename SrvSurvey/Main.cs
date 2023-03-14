@@ -334,15 +334,15 @@ namespace SrvSurvey
             }
         }
 
-        private void onJournalEntry(SAASignalsFound entry)
-        {
-            Game.log($"Main.SAASignalsFound {entry.BodyName}");
-            if (entry.Genuses?.Count > 0)
-            {
-                if (Game.settings.autoShowBioSummary)
-                    Program.showPlotter<PlotBioStatus>();
-            }
-        }
+        //private void onJournalEntry(SAASignalsFound entry)
+        //{
+        //    Game.log($"Main.SAASignalsFound {entry.BodyName}");
+        //    if (entry.Genuses?.Count > 0)
+        //    {
+        //        if (Game.settings.autoShowBioSummary)
+        //            Program.showPlotter<PlotBioStatus>();
+        //    }
+        //}
 
         private void onJournalEntry(SupercruiseEntry entry)
         {
@@ -503,6 +503,14 @@ namespace SrvSurvey
 
         private void timer1_Tick(object sender, EventArgs e)
         {
+
+            if (this.saveSettingsOnNextTick && this.Location.X > -32000 && this.Location.Y > -32000 && Game.settings.mainLocation != this.Location)
+            {
+                Game.settings.mainLocation = this.Location;
+                Game.settings.Save();
+                this.saveSettingsOnNextTick = false;
+            }
+
             if (game == null || game.isShutdown && game.isRunning)
             {
                 this.newGame();
@@ -519,20 +527,12 @@ namespace SrvSurvey
 
                 Program.repositionPlotters();
             }
-
-            if (this.saveSettingsOnNextTick && this.Location.X > -32000 && this.Location.Y > -32000 && Game.settings.mainLocation != this.Location)
-            {
-                Game.settings.mainLocation = this.Location;
-                Game.settings.Save();
-                this.saveSettingsOnNextTick = false;
-            }
         }
 
         private void Main_LocationChanged(object sender, EventArgs e)
         {
             if (Game.settings.mainLocation != this.Location)
                 this.saveSettingsOnNextTick = true;
-
         }
 
         private void btnSettings_Click(object sender, EventArgs e)
@@ -552,6 +552,11 @@ namespace SrvSurvey
                 Game.log($"Main.Minimized, focusing on game...");
                 Overlay.setFocusED();
             }
+        }
+
+        private void Main_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Game.settings.Save();
         }
     }
 }

@@ -29,7 +29,7 @@ namespace SrvSurvey
             var hwndActive = Overlay.GetForegroundWindow();
 
             // hide plotters when game is not active
-            if (Game.settings.hidePlotterIfNotActive)
+            if (System.Diagnostics.Debugger.IsAttached)
             {
                 if (hwndED != hwndActive || hwndED == IntPtr.Zero)
                 {

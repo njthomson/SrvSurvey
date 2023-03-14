@@ -38,6 +38,7 @@ namespace SrvSurvey
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.lblTrackTargetStatus = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.txtNearBody = new System.Windows.Forms.TextBox();
             this.txtMode = new System.Windows.Forms.TextBox();
             this.txtLocation = new System.Windows.Forms.TextBox();
             this.txtVehicle = new System.Windows.Forms.TextBox();
@@ -52,7 +53,6 @@ namespace SrvSurvey
             this.btnLogs = new System.Windows.Forms.Button();
             this.btnSettings = new System.Windows.Forms.Button();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
-            this.txtNearBody = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -75,7 +75,7 @@ namespace SrvSurvey
             // 
             this.btnQuit2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnQuit2.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnQuit2.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnQuit2.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.btnQuit2.Location = new System.Drawing.Point(308, 397);
             this.btnQuit2.Name = "btnQuit2";
             this.btnQuit2.Size = new System.Drawing.Size(75, 23);
@@ -156,6 +156,16 @@ namespace SrvSurvey
             this.groupBox2.TabIndex = 14;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Commander:";
+            // 
+            // txtNearBody
+            // 
+            this.txtNearBody.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtNearBody.Location = new System.Drawing.Point(278, 43);
+            this.txtNearBody.Name = "txtNearBody";
+            this.txtNearBody.ReadOnly = true;
+            this.txtNearBody.Size = new System.Drawing.Size(86, 20);
+            this.txtNearBody.TabIndex = 14;
+            this.txtNearBody.Text = "<near/far>";
             // 
             // txtMode
             // 
@@ -274,7 +284,7 @@ namespace SrvSurvey
             // 
             this.btnLogs.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnLogs.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnLogs.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnLogs.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.btnLogs.Location = new System.Drawing.Point(93, 397);
             this.btnLogs.Name = "btnLogs";
             this.btnLogs.Size = new System.Drawing.Size(75, 23);
@@ -287,7 +297,7 @@ namespace SrvSurvey
             // 
             this.btnSettings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSettings.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnSettings.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSettings.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.btnSettings.Location = new System.Drawing.Point(12, 397);
             this.btnSettings.Name = "btnSettings";
             this.btnSettings.Size = new System.Drawing.Size(75, 23);
@@ -300,7 +310,7 @@ namespace SrvSurvey
             // 
             this.linkLabel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.linkLabel1.Font = new System.Drawing.Font("Lucida Sans Typewriter", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.linkLabel1.Font = new System.Drawing.Font("Lucida Sans Typewriter", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.linkLabel1.LinkArea = new System.Windows.Forms.LinkArea(16, 38);
             this.linkLabel1.Location = new System.Drawing.Point(10, 355);
             this.linkLabel1.Name = "linkLabel1";
@@ -310,16 +320,6 @@ namespace SrvSurvey
             this.linkLabel1.Text = "See guidance at https://njthomson.github.io/SrvSurvey/";
             this.linkLabel1.UseCompatibleTextRendering = true;
             this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
-            // 
-            // txtNearBody
-            // 
-            this.txtNearBody.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtNearBody.Location = new System.Drawing.Point(278, 43);
-            this.txtNearBody.Name = "txtNearBody";
-            this.txtNearBody.ReadOnly = true;
-            this.txtNearBody.Size = new System.Drawing.Size(86, 20);
-            this.txtNearBody.TabIndex = 14;
-            this.txtNearBody.Text = "<near/far>";
             // 
             // Main
             // 
@@ -335,11 +335,13 @@ namespace SrvSurvey
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.btnQuit2);
-            this.Font = new System.Drawing.Font("Lucida Sans Typewriter", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Font = new System.Drawing.Font("Lucida Sans Typewriter", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.Name = "Main";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Srv Survey";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Main_FormClosed);
             this.Load += new System.EventHandler(this.Main_Load);
             this.LocationChanged += new System.EventHandler(this.Main_LocationChanged);
             this.SizeChanged += new System.EventHandler(this.Main_SizeChanged);
