@@ -1,5 +1,4 @@
-﻿using SrvSurvey.Properties;
-using SrvSurvey.units;
+﻿using SrvSurvey.units;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

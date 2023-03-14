@@ -1,4 +1,7 @@
-﻿using SrvSurvey.game;
+using SrvSurvey.game;
+using System.Reflection;
+
+using SrvSurvey.game;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -27,9 +30,13 @@ namespace SrvSurvey
         [STAThread]
         static void Main()
         {
-            Application.EnableVisualStyles();
-            Application.SetHighDpiMode(HighDpiMode.SystemAware);
-            Application.SetCompatibleTextRenderingDefault(false);
+            // To customize application configuration such as set high DPI settings or default font,
+            // see https://aka.ms/applicationconfiguration.
+            ApplicationConfiguration.Initialize();
+
+            //Application.EnableVisualStyles();
+            //Application.SetHighDpiMode(HighDpiMode.SystemAware);
+            //Application.SetCompatibleTextRenderingDefault(false);
             Application.ThreadException += Application_ThreadException;
 
             // create some control for invoking back onto the UI thread
@@ -118,7 +125,7 @@ namespace SrvSurvey
         {
             var rect = Overlay.getEDWindowRect();
 
-            foreach(PlotterForm form in activePlotters.Values)
+            foreach (PlotterForm form in activePlotters.Values)
             {
                 form.reposition(rect);
             }
