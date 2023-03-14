@@ -82,7 +82,7 @@ jobs:
 
     # Create the app package by building and packaging the Windows Application ClickOnce publish profile
     - name: Create the app package      
-      run: msbuild $env:Solution_Name -t:Publish -p:Configuration=$env:Configuration -restore:true  -p:PublishProfile=ClickOnceProfile -p:DeployOnBuild=true -p:PublishSingleFile=true -p:PublishReadyToRun=true -p:PublishDir=bin/published
+      run: msbuild $env:Solution_Name -t:Publish -p:Configuration=$env:Configuration -restore:true  -p:PublishProfile=ClickOnceProfile -p:PublishSingleFile=true -p:PublishReadyToRun=false -p:RuntimeIdentifier=win-x64 -p:PublishDir=bin/published
       env:
         Configuration: ${{ matrix.configuration }}
 
