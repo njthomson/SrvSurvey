@@ -46,6 +46,10 @@ namespace SrvSurvey
 
         private void Main_Load(object sender, EventArgs e)
         {
+            this.updateCommanderTexts();
+            this.updateBioTexts();
+            this.updateTrackTargetTexts();
+
             this.newGame();
             this.lastWindowRect = Overlay.getEDWindowRect();
             this.timer1.Start();
@@ -80,7 +84,6 @@ namespace SrvSurvey
             var newGame = new Game(null);
             if (newGame.isShutdown || !newGame.isRunning)
             {
-                Game.log($"Main newGame is shutdown.");
                 newGame.Dispose();
                 return;
             }
@@ -183,7 +186,7 @@ namespace SrvSurvey
 
         private void updateBioTexts()
         {
-            if (game == null || game.atMainMenu)
+            if (game == null || game.atMainMenu || !game.isRunning)
             {
                 lblBioSignalCount.Text = "-";
                 lblAnalyzedCount.Text = "-";
@@ -231,7 +234,13 @@ namespace SrvSurvey
 
         private void updateTrackTargetTexts()
         {
-            if (!Game.settings.targetLatLongActive || game == null || game.atMainMenu)
+            if (game == null || game.atMainMenu || !game.isRunning)
+            {
+                txtTargetLatLong.Text = "";
+                lblTrackTargetStatus.Text = "-";
+                Program.closePlotter(nameof(PlotTrackTarget));
+            }
+            else if (!Game.settings.targetLatLongActive || game == null || game.atMainMenu)
             {
                 txtTargetLatLong.Text = "<none>";
                 lblTrackTargetStatus.Text = "Inactive";
@@ -496,8 +505,6 @@ namespace SrvSurvey
         {
             if (game == null || game.isShutdown && game.isRunning)
             {
-                Game.log($"Main.timer newGame!");
-
                 this.newGame();
                 return;
             }

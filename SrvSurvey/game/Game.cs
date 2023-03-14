@@ -40,7 +40,6 @@ namespace SrvSurvey.game
             // track this instance as the active one
             Game.activeGame = this;
 
-            log($"Game is running: {this.isRunning}");
             if (!this.isRunning) return;
 
             // track status file changes and force an immediate read

@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("SrvSurvey")]
 [assembly: AssemblyDescription("SrvSurvey is an independent third-party application for use with Elite Dangerous by Frontier Developments. It provides on-screen assistance when a player is near a planet in the SRV, on foot or in ships.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("SrvSurvey")]
 [assembly: AssemblyProduct("SrvSurvey")]
 [assembly: AssemblyCopyright("Copyright ©  2023")]
 [assembly: AssemblyTrademark("")]
