@@ -268,25 +268,6 @@ namespace SrvSurvey
 
         private void onJournalEntry(JournalEntry entry) { /* ignore */ }
 
-        //private void onJournalEntry(LoadGame entry)
-        //{
-        //    Game.log($"Main.LoadGame: Commander {entry.Commander} / {entry.FID} / {entry.GameMode}");
-        //    Program.closeAllPlotters();
-
-        //    // kill any existing plotters, then start over
-        //    this.newGame();
-        //}
-
-        private void onJournalEntry(Music entry)
-        {
-            var atMainMenu = entry.MusicTrack == "MainMenu";
-            if (atMainMenu)
-            {
-                Game.log($"Main.MusicTrack == MainMenu, Commander:{this.game?.Commander}");
-                //this.removeGame();
-            }
-        }
-
         private void onJournalEntry(Shutdown entry)
         {
             Game.log($"Main.Shutdown: Commander:{this.game?.Commander}");
