@@ -66,7 +66,7 @@ namespace SrvSurvey
             T form;
             if (!activePlotters.ContainsKey(formType.Name))
             {
-                Game.log($"Creating plotter: {formType.Name}");
+                Game.log($"Program.Creating plotter: {formType.Name}");
 
                 // Get the public instance constructor that takes zero parameters
                 var ctor = formType.GetConstructor(
@@ -88,7 +88,7 @@ namespace SrvSurvey
             // show form if not visible
             if (!form.Visible)
             {
-                Game.log($"Showing plotter: {formType.Name}");
+                Game.log($"Program.Showing plotter: {formType.Name}");
                 form.Show();
             }
 
@@ -101,7 +101,7 @@ namespace SrvSurvey
 
             if (isActive)
             {
-                Game.log($"Closing plotter: {name}");
+                Game.log($"Program.Closing plotter: {name}");
 
                 var plotter = Program.activePlotters[name];
                 plotter.Close();
@@ -112,7 +112,7 @@ namespace SrvSurvey
 
         public static void closeAllPlotters()
         {
-            Game.log($"closeAllPlotters");
+            Game.log($"Program.CloseAllPlotters");
 
             var names = Program.activePlotters.Keys.ToArray();
             foreach (string name in names)

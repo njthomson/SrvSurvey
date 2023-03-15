@@ -13,6 +13,15 @@ namespace SrvSurvey
 {
     class Overlay
     {
+        public static bool isGameRunning
+        {
+            get
+            {
+                var procED = Process.GetProcessesByName("EliteDangerous64");
+                return procED.Length > 0;
+            }
+        }
+
         /// <summary>
         /// Set focus on Elite Dangerous
         /// </summary>

@@ -247,7 +247,6 @@ namespace SrvSurvey
 
             var txtSz = g.MeasureString(txt, Game.settings.fontSmall);
 
-
             var sz = 6;
             x += txtSz.Width + 8;
             var r = new RectangleF(x, y, sz * 2, sz * 2);
@@ -328,7 +327,7 @@ namespace SrvSurvey
             var fudge = 10;
 
             d.Point2 = scan.location;
-            var rect = new RectangleF((float)-d.dx - scan.radius, (float)d.dy - scan.radius, scan.radius * 2, scan.radius * 2);
+            var rect = new RectangleF((float)d.dx - scan.radius, (float)-d.dy - scan.radius, scan.radius * 2, scan.radius * 2);
             //Game.log($"d.dx: {rect.X}, d.dy: {rect.Y}");
 
             var complete = scan.scanType == ScanType.Analyse;

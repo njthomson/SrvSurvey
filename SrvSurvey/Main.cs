@@ -1,21 +1,13 @@
 ﻿using SrvSurvey.game;
-using SrvSurvey.units;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace SrvSurvey
 {
     internal partial class Main : Form
     {
         private Game game;
+        private FileSystemWatcher folderWatcher;
 
         private Rectangle lastWindowRect;
         private bool saveSettingsOnNextTick = false;
@@ -50,9 +42,31 @@ namespace SrvSurvey
             this.updateBioTexts();
             this.updateTrackTargetTexts();
 
-            this.newGame();
             this.lastWindowRect = Overlay.getEDWindowRect();
+
+            if (Overlay.isGameRunning)
+            {
+                this.newGame();
+            }
+
+            this.folderWatcher = new FileSystemWatcher(SrvSurvey.journalFolder, "*.log");
+            this.folderWatcher.Created += FolderWatcher_Created;
+            this.folderWatcher.EnableRaisingEvents = true;
+            Game.log($"Watching folder: {SrvSurvey.journalFolder}");
+
             this.timer1.Start();
+        }
+
+        private void FolderWatcher_Created(object sender, FileSystemEventArgs e)
+        {
+            Game.log($"New journal file created: {e.Name}");
+            if (this.game == null)
+            {
+                this.Invoke((MethodInvoker)delegate
+                {
+                    this.newGame();
+                });
+            }
         }
 
         private void removeGame()
@@ -78,6 +92,8 @@ namespace SrvSurvey
 
         private void newGame()
         {
+            Game.log($"Main.newGame: has old game:{this.game != null} ");
+
             if (this.game != null)
                 this.removeGame();
 
@@ -88,7 +104,6 @@ namespace SrvSurvey
                 return;
             }
 
-            Game.log($"Main.newGame!");
             this.game = newGame;
 
             this.game.modeChanged += Game_modeChanged;
@@ -125,22 +140,9 @@ namespace SrvSurvey
             if (this.txtMode.Text != newMode.ToString())
             {
                 this.updateCommanderTexts();
-
-                if (this.game.nearBody != null)
-                {
-                    this.updateBioTexts();
-                    this.updateTrackTargetTexts();
-                }
+                this.updateBioTexts();
+                this.updateTrackTargetTexts();
             }
-
-            //if (newMode == GameMode.MainMenu)
-            //{
-            //    this.updateCommanderTexts();
-            //    this.updateBioTexts();
-            //    this.updateTrackTargetTexts();
-            //}
-            // DockSRV seems to be really stale :/
-            // Maybe we can do something here to judge the same?
         }
 
         private void updateCommanderTexts()
@@ -150,7 +152,7 @@ namespace SrvSurvey
             if (!gameIsActive)
             {
                 this.txtCommander.Text = "";
-                this.txtMode.Text = "Game is not active";
+                this.txtMode.Text = game?.mode == GameMode.MainMenu ? "MainMenu" : "Game is not active";
                 this.txtVehicle.Text = "";
                 this.txtLocation.Text = "";
                 this.txtNearBody.Text = "";
@@ -186,7 +188,7 @@ namespace SrvSurvey
 
         private void updateBioTexts()
         {
-            if (game == null || game.atMainMenu || !game.isRunning)
+            if (game == null || game.atMainMenu || !game.isRunning || !game.initialized)
             {
                 lblBioSignalCount.Text = "-";
                 lblAnalyzedCount.Text = "-";
@@ -207,7 +209,6 @@ namespace SrvSurvey
                 txtGenuses.Text = "No biological signals detected";
                 Program.closePlotter(nameof(PlotBioStatus));
                 Program.closePlotter(nameof(PlotGrounded));
-                return;
             }
             else
             {
@@ -225,7 +226,7 @@ namespace SrvSurvey
                 {
                     if (Game.settings.autoShowBioSummary)
                         Program.showPlotter<PlotBioStatus>();
-                    
+
                     if (game.isLanded && Game.settings.autoShowBioPlot)
                         Program.showPlotter<PlotGrounded>();
                 }
@@ -234,7 +235,7 @@ namespace SrvSurvey
 
         private void updateTrackTargetTexts()
         {
-            if (game == null || game.atMainMenu || !game.isRunning)
+            if (game == null || game.atMainMenu || !game.isRunning || !game.initialized)
             {
                 txtTargetLatLong.Text = "";
                 lblTrackTargetStatus.Text = "-";
@@ -267,14 +268,14 @@ namespace SrvSurvey
 
         private void onJournalEntry(JournalEntry entry) { /* ignore */ }
 
-        private void onJournalEntry(LoadGame entry)
-        {
-            Game.log($"Main.LoadGame: Commander {entry.Commander} / {entry.FID} / {entry.GameMode}");
-            Program.closeAllPlotters();
+        //private void onJournalEntry(LoadGame entry)
+        //{
+        //    Game.log($"Main.LoadGame: Commander {entry.Commander} / {entry.FID} / {entry.GameMode}");
+        //    Program.closeAllPlotters();
 
-            // kill any existing plotters, then start over
-            this.newGame();
-        }
+        //    // kill any existing plotters, then start over
+        //    this.newGame();
+        //}
 
         private void onJournalEntry(Music entry)
         {
@@ -282,7 +283,7 @@ namespace SrvSurvey
             if (atMainMenu)
             {
                 Game.log($"Main.MusicTrack == MainMenu, Commander:{this.game?.Commander}");
-                this.removeGame();
+                //this.removeGame();
             }
         }
 
@@ -509,12 +510,6 @@ namespace SrvSurvey
                 Game.settings.mainLocation = this.Location;
                 Game.settings.Save();
                 this.saveSettingsOnNextTick = false;
-            }
-
-            if (game == null || game.isShutdown && game.isRunning)
-            {
-                this.newGame();
-                return;
             }
 
             // slow timer to check the location of the game window, repositioning plotters if needed

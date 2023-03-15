@@ -1,11 +1,6 @@
 ﻿using SrvSurvey.units;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace SrvSurvey.game
 {
@@ -18,6 +13,7 @@ namespace SrvSurvey.game
 
         public static Game activeGame { get; private set; }
         public static Settings settings { get; private set; } = Settings.Load();
+        public bool initialized { get; private set; }
 
         /// <summary>
         /// The Commander actively playing the game
@@ -36,6 +32,8 @@ namespace SrvSurvey.game
 
         public Game(string cmdr)
         {
+            log($"Game .ctor");
+
             // track this instance as the active one
             Game.activeGame = this;
 
@@ -46,7 +44,8 @@ namespace SrvSurvey.game
 
             // initialize from a journal file
             var filepath = JournalFile.getCommanderJournalBefore(cmdr, DateTime.MaxValue);
-            this.initializeFromJournal(filepath);
+            this.journals = new JournalWatcher(filepath);
+            this.initializeFromJournal();
             if (this.isShutdown) return;
 
             log($"Cmdr loaded: {this.Commander != null}");
@@ -112,13 +111,12 @@ namespace SrvSurvey.game
             // check various things we actively need to know have changed
             if (this._mode != this.mode)
             {
-                log($"mode old: {this._mode}, new: {this.mode}");
+                log($"Mode change {this._mode} => {this.mode}");
                 this._mode = this.mode;
 
                 if (modeChanged != null) modeChanged(this._mode);
                 // fire event!
             }
-
         }
 
         private void Status_StatusChanged()
@@ -148,7 +146,7 @@ namespace SrvSurvey.game
                     var fireDepartingEvent = this.nearBody != null;
                     if (fireDepartingEvent)
                     {
-                        Game.log($"fire departingBody, from {this.nearBody.bodyName}");
+                        Game.log($"EVENT:departingBody, from {this.nearBody.bodyName}");
                         // change systemLocation to be just system (not the body)
                         this.systemLocation = this.starSystem;
                     }
@@ -172,33 +170,7 @@ namespace SrvSurvey.game
 
             this.checkModeChange();
 
-            // are we near a body?
-            //if ((this.status.Flags & StatusFlags.HasLatLong) > 0)
-            //{
-            //    if (this.nearBody == null)
-            //    {
-            //        this.nearBody = new LandableBody()
-            //        {
-            //            bodyName = status.BodyName,
-            //            radius = status.PlanetRadius,
-            //        };
-
-            //        if (status.BodyName == status.Destination.Name)
-            //        {
-            //            // extract these from destination if they happen to match
-            //            this.nearBody.bodyID = status.Destination.Body;
-            //            this.nearBody.systemAddress = status.Destination.System;
-            //        }
-            //    }
-            //}
-            //else if (this.nearBody != null)
-            //{
-            //    // remove old one we are far away from
-            //    this.nearBody = null;
-            //}
         }
-
-        //private n
 
         public event GameNearingBody nearingBody;
         public event GameDepartingBody departingBody;
@@ -252,9 +224,8 @@ namespace SrvSurvey.game
                 if (activeVehicle == ActiveVehicle.MainShip)
                     return GameMode.Flying;
 
-                Game.log($"BAD unknown game mode? status.Flags: {status.Flags}, status.Flags2: {status.Flags2}");
+                Game.log($"Unknown game mode? status.Flags: {status.Flags}, status.Flags2: {status.Flags2}");
                 return GameMode.Unknown;
-                //throw new Exception("Unknown game mode!");
             }
         }
 
@@ -287,7 +258,6 @@ namespace SrvSurvey.game
 
         public bool isLanded
         {
-            //get => (this.status.Flags & StatusFlags.Landed) > 0;
             get => this.mode == GameMode.InSrv || this.mode == GameMode.OnFoot || this.mode == GameMode.Landed;
         }
 
@@ -404,44 +374,16 @@ namespace SrvSurvey.game
             return filename;
         }
 
-        //private bool isJournalForCmdr(string cmdr, string filepath)
-        //{
-        //    var CMDR = cmdr.ToUpper();
-        //    using (var reader = new StreamReader(new FileStream(filepath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)))
-        //    {
-        //        while (!reader.EndOfStream)
-        //        {
-        //            var line = reader.ReadLine();
-        //            if (line.Contains("\"event\":\"Commander\""))
-        //                // no need to process further lines
-        //                return line.ToUpper().Contains($"\"NAME\":\"{CMDR}\"");
-        //        }
-        //        return false;
-        //    }
-        //}
 
-        //private string getJournalBefore(string cmdr, DateTime timestamp)
-        //{
-        //    var journalFiles = new DirectoryInfo(SrvSurvey.journalFolder)
-        //        .EnumerateFiles("*.log", SearchOption.TopDirectoryOnly)
-        //        .OrderByDescending(_ => _.LastWriteTimeUtc)
-        //        .Where(_ => _.LastWriteTime < timestamp)
-        //        .Select(_ => _.FullName);
-
-        //    return "";
-
-        //}
-
-        private void initializeFromJournal(string filepath)
+        private void initializeFromJournal()
         {
-            this.journals = new JournalWatcher(filepath);
-            var cmdrEntry = this.journals.FindEntryByType<Commander>(0, false);
+            log($"initializeFromJournal: BEGIN {this.Commander}, starSystem:{this.starSystem}, systemLocation:{this.systemLocation}, nearBody:{this.nearBody}, journals.Count:{journals.Count}");
 
-            // exit early if this journal file has no Commander entry yet
-            if (this.journals.CommanderName == null) return;
+            var loadEntry = this.journals.FindEntryByType<LoadGame>(0, false);
 
             // read cmdr info
-            this.Commander = this.journals.CommanderName;
+            if (this.Commander == null && loadEntry != null)
+                this.Commander = loadEntry.Commander;
 
             // if we are not shutdown ...
             var lastShutdown = journals.FindEntryByType<Shutdown>(-1, true);
@@ -454,6 +396,7 @@ namespace SrvSurvey.game
             }
             else
             {
+                log($"initializeFromJournal: EXIT isShutdown! ({Game.activeGame == this})");
                 this.isShutdown = true;
                 return;
             }
@@ -474,18 +417,10 @@ namespace SrvSurvey.game
                         return false;
                     }
                 );
-                //var lastTouchdown = this.findLastJournalOf<Touchdown>();
-                //if (lastTouchdown == null)
-                //    throw new Exception($"ERROR! Journal parsing failure! Failed to find any last Touchdown events.");
-
-                //if (lastTouchdown.Body != status.BodyName)
-                //{
-                //    throw new Exception($"ERROR! Journal parsing failure! Last found Touchdown was for body: {lastTouchdown.Body}, but we are currently on: {status.BodyName}");
-                //}
             }
 
             // if we are near a planet
-            if ((status.Flags & StatusFlags.HasLatLong) > 0)
+            if (this.nearBody == null && (status.Flags & StatusFlags.HasLatLong) > 0)
             {
                 this.createNearBody(status.BodyName);
             }
@@ -499,36 +434,12 @@ namespace SrvSurvey.game
                     this.systemLocation = Util.getLocationString(locationEntry.StarSystem, locationEntry.Body);
                 }
             }
+            log($"initializeFromJournal: END Commander:{this.Commander}, starSystem:{this.starSystem}, systemLocation:{this.systemLocation}, nearBody:{this.nearBody}, journals.Count:{journals.Count}");
 
-            log($"initializeFromJournal: {this.Commander}, starSystem: ${this.starSystem}, systemLocation: {this.systemLocation}, nearBody: {this.nearBody}");
+            this.initialized = Game.activeGame == this && this.Commander != null;
+            this.checkModeChange();
         }
 
-        //public T findLastJournalOf<T>() where T : JournalEntry
-        //{
-        //    log($"Finding last {typeof(T).Name} event... {journals.Count}");
-        //    // do we have one recently in the active journal?
-        //    var lastEntry = journals.FindEntryByType<T>(-1, true);
-
-        //    if (lastEntry != null)
-        //    {
-        //        // yes, phew
-        //        return lastEntry;
-        //    }
-
-        //    // otherwise, we need to dig into prior journal files
-        //    var timestamp = journals.timestamp;
-        //    do
-        //    {
-        //        var priorFilepath = this.getLastJournalBefore(this.Commander, timestamp);
-        //        if (priorFilepath == null) return null;
-        //        var oldJournal = new JournalFile(priorFilepath);
-
-        //        lastEntry = oldJournal.FindEntryByType<T>(-1, true);
-        //        timestamp = oldJournal.timestamp;
-        //    } while (lastEntry == null);
-
-        //    return lastEntry;
-        //}
 
         #endregion
 
@@ -642,7 +553,7 @@ namespace SrvSurvey.game
 
             if (this.nearBody != null)
             {
-                Game.log($"fire nearingBody, at {this.nearBody?.bodyName}");
+                Game.log($"EVENT:nearingBody, at {this.nearBody?.bodyName}");
 
                 if (this.nearingBody != null)
                     this.nearingBody(this.nearBody);
@@ -662,12 +573,9 @@ namespace SrvSurvey.game
         private void onJournalEntry(LoadGame entry)
         {
             if (this.Commander == null)
-            {
-                // this isn't right - needs reworking
-                initializeFromJournal(this.journals.filepath);
+                this.initializeFromJournal();
 
-                if (modeChanged != null) modeChanged(this._mode);
-            }
+            this.checkModeChange();
         }
 
         private void onJournalEntry(Location entry)
@@ -730,6 +638,7 @@ namespace SrvSurvey.game
             {
                 if (_touchdownLocation == null)
                 {
+                    Game.log($"Searching journals for last touchdown location...");
                     var lastTouchdown = journals.FindEntryByType<Touchdown>(-1, true);
                     var lastLiftoff = journals.FindEntryByType<Liftoff>(-1, true);
                     if (lastTouchdown != null)
@@ -758,7 +667,7 @@ namespace SrvSurvey.game
 
         private void onJournalEntry(Liftoff entry)
         {
-            this._touchdownLocation = null; // LatLong2.Empty;
+            this._touchdownLocation = null;
             log($"Liftoff!");
         }
 
@@ -774,36 +683,6 @@ namespace SrvSurvey.game
                 this.createNearBody(entry.BodyName);
             else if (this.nearBody.Genuses == null)
                 this.nearBody.readSAASignalsFound(entry);
-        }
-
-        private double findPlanetaryRadius(string bodyName)
-        {
-            // see if we can radius from status
-            if (status.BodyName == bodyName && status.PlanetRadius > 0)
-            {
-                return status.PlanetRadius;
-            }
-
-            // see if we can find it in the current journal
-            int idx = journals.Entries.Count - 1;
-            do
-            {
-                var last = journals.FindEntryByType<Scan>(idx, true);
-                if (last == null)
-                {
-                    // no more Scan entries in this file
-                    break;
-                }
-                else if (last.Bodyname == this.nearBody.bodyName)
-                {
-                    return last.Radius;
-                }
-
-                idx = journals.Entries.IndexOf(last);
-            } while (idx >= 0);
-
-            // TODO: scan across previous journal files?
-            throw new Exception("Failed in findPlanetaryRadius");
         }
 
         #endregion
