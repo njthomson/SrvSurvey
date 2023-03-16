@@ -41,19 +41,19 @@ namespace SrvSurvey
             if (game.mode == GameMode.OnFoot)
             {
                 // roughly above the helmet lat/long indicator
-                Overlay.floatCenterTop(this, 0, 440);
+                Elite.floatCenterTop(this, 0, 440);
             }
             else
             {
                 // roughly above the game heading indicator
-                Overlay.floatCenterTop(this, 160);
+                Elite.floatCenterTop(this, 160);
             }
         }
 
         private void PlotGroundTarget_Load(object sender, EventArgs e)
         {
             this.initialize();
-            this.reposition(Overlay.getEDWindowRect());
+            this.reposition(Elite.getWindowRect());
         }
 
         private void initialize()
@@ -76,7 +76,7 @@ namespace SrvSurvey
 
             if (this.Opacity == 0 && game.isMode(GameMode.SuperCruising, GameMode.Flying, GameMode.Landed, GameMode.InSrv, GameMode.OnFoot, GameMode.GlideMode))
             {
-                this.reposition(Overlay.getEDWindowRect());
+                this.reposition(Elite.getWindowRect());
             }
             else
             {
@@ -180,7 +180,7 @@ namespace SrvSurvey
 
         private void PlotTrackTarget_MouseClick(object sender, MouseEventArgs e)
         {
-            Overlay.setFocusED();
+            Elite.setFocusED();
         }
 
         //private void floatCenterTop()

@@ -1,19 +1,9 @@
 using SrvSurvey.game;
 using System.Reflection;
 
-using SrvSurvey.game;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Drawing;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Xml.Linq;
-
 namespace SrvSurvey
 {
+
     static class Program
     {
         public static Control control { get; private set; }
@@ -116,19 +106,31 @@ namespace SrvSurvey
 
             var names = Program.activePlotters.Keys.ToArray();
             foreach (string name in names)
-            {
                 Program.closePlotter(name);
-            }
         }
 
-        public static void repositionPlotters()
+        public static void repositionPlotters(Rectangle rect)
         {
-            var rect = Overlay.getEDWindowRect();
+            Game.log($"Program.repositionPlotters: rect{rect}");
 
             foreach (PlotterForm form in activePlotters.Values)
-            {
                 form.reposition(rect);
-            }
+        }
+
+        public static void hideActivePlotters()
+        {
+            Game.log($"Program.hideActivePlotters");
+
+            foreach (PlotterForm form in activePlotters.Values)
+                form.Opacity = 0;
+        }
+
+        public static void showActivePlotters()
+        {
+            Game.log($"Program.showActivePlotters");
+
+            foreach (PlotterForm form in activePlotters.Values)
+                form.Opacity = Game.settings.Opacity;
         }
 
         #endregion
@@ -137,5 +139,6 @@ namespace SrvSurvey
     interface PlotterForm
     {
         void reposition(Rectangle gameRect);
+        double Opacity { get; set; }
     }
 }

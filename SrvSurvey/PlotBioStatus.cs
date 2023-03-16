@@ -37,7 +37,7 @@ namespace SrvSurvey
             }
 
             this.Opacity = Game.settings.Opacity;
-            Overlay.floatCenterTop(this, 0);
+            Elite.floatCenterTop(this, 0);
         }
 
         private void PlotBioStatus_Load(object sender, EventArgs e)
@@ -64,7 +64,7 @@ namespace SrvSurvey
             game.journals.onJournalEntry += Journals_onJournalEntry;
             game.nearBody.bioScanEvent += NearBody_bioScanEvent;
 
-            this.reposition(Overlay.getEDWindowRect());
+            this.reposition(Elite.getWindowRect());
         }
 
         private void NearBody_bioScanEvent()
@@ -92,7 +92,7 @@ namespace SrvSurvey
             }
             else if (this.Opacity == 0 && plotterMode)
             {
-                this.reposition(Overlay.getEDWindowRect());
+                this.reposition(Elite.getWindowRect());
             }
         }
 
@@ -111,7 +111,7 @@ namespace SrvSurvey
 
         private void PlotBioStatus_Click(object sender, EventArgs e)
         {
-            Overlay.setFocusED();
+            Elite.setFocusED();
         }
 
         private void PlotBioStatus_Paint(object sender, PaintEventArgs e)

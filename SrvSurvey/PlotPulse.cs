@@ -38,7 +38,7 @@ namespace SrvSurvey
             this.Height = 32;
 
             // position ourselves in the bottom left corner of the ED window
-            this.reposition(Overlay.getEDWindowRect());
+            this.reposition(Elite.getWindowRect());
         }
 
         public void reposition(Rectangle gameRect)
@@ -81,7 +81,7 @@ namespace SrvSurvey
 
         private void PlotPulse_MouseClick(object sender, MouseEventArgs e)
         {
-            Overlay.setFocusED();
+            Elite.setFocusED();
         }
     }
 }

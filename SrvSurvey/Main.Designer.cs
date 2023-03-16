@@ -343,7 +343,7 @@ namespace SrvSurvey
             this.Text = "Srv Survey";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Main_FormClosed);
             this.Load += new System.EventHandler(this.Main_Load);
-            this.LocationChanged += new System.EventHandler(this.Main_LocationChanged);
+            this.ResizeEnd += new System.EventHandler(this.Main_ResizeEnd);
             this.SizeChanged += new System.EventHandler(this.Main_SizeChanged);
             this.DoubleClick += new System.EventHandler(this.Main_DoubleClick);
             this.groupBox1.ResumeLayout(false);

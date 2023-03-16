@@ -31,7 +31,7 @@ namespace SrvSurvey
 
         public JournalFile(string filepath)
         {
-            Game.log($"Opening journal: {Path.GetFileName(filepath)}");
+            Game.log($"Reading: {Path.GetFileName(filepath)}");
 
             this.filepath = filepath;
             this.timestamp = File.GetLastWriteTime(filepath);

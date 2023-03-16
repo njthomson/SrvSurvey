@@ -1,6 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <!-- Version impacts the settings files, meaning DON'T CHANGE IT -->
+    <Version>1.0.0.0</Version>
+    <!-- FileVersion SHOULD be changed with each release -->
+    <FileVersion>1.0.0.1</FileVersion>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net7.0-windows</TargetFramework>
     <Nullable>enable</Nullable>

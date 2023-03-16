@@ -27,6 +27,7 @@ namespace SrvSurvey
         public double Opacity = 0.5;
 
         public Point mainLocation;
+        public Rectangle logsLocation;
 
         public Color GameOrange = Color.FromArgb(255, 255, 113, 00); // #FF7100
 
@@ -44,20 +45,30 @@ namespace SrvSurvey
 
         public static Settings Load()
         {
-
-            if (!File.Exists(settingsPath))
+            // read and parse file contents into tmp object
+            if (File.Exists(settingsPath))
             {
-                Game.log($"Creating new settings file: {settingsPath}");
-                var newSettings = new Settings();
-                newSettings.Save();
+                var json = File.ReadAllText(settingsPath);
+                try
+                {
+                    var settings = JsonConvert.DeserializeObject<Settings>(json);
+
+                    Game.log($"Loaded settings: {json}");
+                    return settings;
+                }
+                catch (Exception ex)
+                {
+                    Game.log($"Failed to read settings: {ex.Message}");
+                    Game.log(json);
+                }
             }
 
-            // read and parse file contents into tmp object
-            var json = File.ReadAllText(settingsPath);
-            var settings = JsonConvert.DeserializeObject<Settings>(json);
+            // we reach here if the file is missing or corrupt
+            Game.log($"Creating new settings file: {settingsPath}");
+            var newSettings = new Settings();
+            newSettings.Save();
 
-            Game.log($"Loaded settings: {json}");
-            return settings;
+            return newSettings;
         }
 
         public void Save()

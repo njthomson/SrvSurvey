@@ -1,5 +1,6 @@
 ﻿using SrvSurvey.units;
 using System.Diagnostics;
+using System.Reflection;
 using System.Text;
 
 namespace SrvSurvey.game
@@ -9,10 +10,33 @@ namespace SrvSurvey.game
     /// </summary>
     class Game : IDisposable
     {
-        public static readonly StringBuilder logs = new StringBuilder();
+        static Game()
+        {
+            Game.logs = new StringBuilder();
+            var releaseVersion = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyFileVersionAttribute>().Version;
+            Game.log($"SrvSurvey version: {releaseVersion}");
+
+            settings = Settings.Load();
+        }
+
+        #region logging
+
+        public static void log(object msg)
+        {
+            var txt = DateTime.Now.ToString("HH:mm:ss") + ": " + msg?.ToString();
+
+            Debug.WriteLine(txt);
+
+            Game.logs.AppendLine(txt);
+            ViewLogs.append(txt);
+        }
+
+        public static readonly StringBuilder logs;
+
+        #endregion
 
         public static Game activeGame { get; private set; }
-        public static Settings settings { get; private set; } = Settings.Load();
+        public static Settings settings { get; private set; }
         public bool initialized { get; private set; }
 
         /// <summary>
@@ -270,23 +294,6 @@ namespace SrvSurvey.game
 
         #endregion
 
-        #region logging
-
-        public static void log(object msg, object o1 = null)
-        {
-            var txt = DateTime.Now.ToString("HH:mm:ss") + ": " + msg?.ToString();
-
-            if (o1 != null)
-            {
-                txt += ": " + o1.ToString();
-            }
-
-            Game.logs.AppendLine(txt);
-            Debug.WriteLine(txt);
-        }
-
-        #endregion
-
         #region Process and window handle stuff
 
         private static IntPtr getGameWindowHandle()
@@ -377,7 +384,7 @@ namespace SrvSurvey.game
 
         private void initializeFromJournal()
         {
-            log($"initializeFromJournal: BEGIN {this.Commander}, starSystem:{this.starSystem}, systemLocation:{this.systemLocation}, nearBody:{this.nearBody}, journals.Count:{journals.Count}");
+            log($"Game.initializeFromJournal: BEGIN {this.Commander}, starSystem:{this.starSystem}, systemLocation:{this.systemLocation}, nearBody:{this.nearBody}, journals.Count:{journals.Count}");
 
             var loadEntry = this.journals.FindEntryByType<LoadGame>(0, false);
 
@@ -396,7 +403,7 @@ namespace SrvSurvey.game
             }
             else
             {
-                log($"initializeFromJournal: EXIT isShutdown! ({Game.activeGame == this})");
+                log($"Game.initializeFromJournal: EXIT isShutdown! ({Game.activeGame == this})");
                 this.isShutdown = true;
                 return;
             }
@@ -407,7 +414,7 @@ namespace SrvSurvey.game
                 journals.searchDeep(
                     (Touchdown lastTouchdown) =>
                     {
-                        Game.log($"lastTouchdown: {lastTouchdown}");
+                        Game.log($"LastTouchdown: {lastTouchdown}");
 
                         if (lastTouchdown.Body == status.BodyName)
                         {
@@ -434,7 +441,7 @@ namespace SrvSurvey.game
                     this.systemLocation = Util.getLocationString(locationEntry.StarSystem, locationEntry.Body);
                 }
             }
-            log($"initializeFromJournal: END Commander:{this.Commander}, starSystem:{this.starSystem}, systemLocation:{this.systemLocation}, nearBody:{this.nearBody}, journals.Count:{journals.Count}");
+            log($"Game.initializeFromJournal: END Commander:{this.Commander}, starSystem:{this.starSystem}, systemLocation:{this.systemLocation}, nearBody:{this.nearBody}, journals.Count:{journals.Count}");
 
             this.initialized = Game.activeGame == this && this.Commander != null;
             this.checkModeChange();
@@ -542,7 +549,7 @@ namespace SrvSurvey.game
 
             if (this.nearBody?.Genuses != null)
             {
-                log($"Genuses", string.Join(",", this.nearBody.Genuses.Select(_ => _.Genus_Localised)));
+                log($"Genuses" + string.Join(",", this.nearBody.Genuses.Select(_ => _.Genus_Localised)));
             }
 
             if (this.systemLocation == null && this.nearBody != null && status.BodyName == this.nearBody.bodyName)

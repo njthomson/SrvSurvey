@@ -40,7 +40,7 @@ namespace SrvSurvey
             }
 
             this.Opacity = Game.settings.Opacity;
-            Overlay.floatRightMiddle(this, 20);
+            Elite.floatRightMiddle(this, 20);
         }
 
         private void PlotGrounded_Load(object sender, EventArgs e)
@@ -62,7 +62,7 @@ namespace SrvSurvey
             game.journals.onJournalEntry += Journals_onJournalEntry;
             game.nearBody.bioScanEvent += NearBody_bioScanEvent;
 
-            this.reposition(Overlay.getEDWindowRect());
+            this.reposition(Elite.getWindowRect());
 
             // get landing location
             Game.log($"initialize here: {game.status.here}, touchdownLocation: {game.touchdownLocation}");
@@ -136,7 +136,7 @@ namespace SrvSurvey
             }
             else if (this.Opacity == 0 && game.showBodyPlotters)
             {
-                this.reposition(Overlay.getEDWindowRect());
+                this.reposition(Elite.getWindowRect());
             }
         }
 
@@ -166,7 +166,7 @@ namespace SrvSurvey
 
         private void PlotGrounded_Click(object sender, EventArgs e)
         {
-            Overlay.setFocusED();
+            Elite.setFocusED();
         }
 
         private void PlotGrounded_Paint(object sender, PaintEventArgs e)

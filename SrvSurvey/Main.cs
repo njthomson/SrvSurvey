@@ -10,7 +10,7 @@ namespace SrvSurvey
         private FileSystemWatcher folderWatcher;
 
         private Rectangle lastWindowRect;
-        private bool saveSettingsOnNextTick = false;
+        private bool lastWindowHasFocus;
 
         public Main()
         {
@@ -42,9 +42,9 @@ namespace SrvSurvey
             this.updateBioTexts();
             this.updateTrackTargetTexts();
 
-            this.lastWindowRect = Overlay.getEDWindowRect();
+            this.lastWindowRect = Elite.getWindowRect();
 
-            if (Overlay.isGameRunning)
+            if (Elite.isGameRunning)
             {
                 this.newGame();
             }
@@ -162,7 +162,6 @@ namespace SrvSurvey
             this.txtCommander.Text = game.Commander;
             this.txtMode.Text = game.mode.ToString();
 
-            Game.log($"Main.updateCommanderTexts: game.atMainMenu: {game.atMainMenu}");
             if (game.atMainMenu)
             {
                 this.txtLocation.Text = "";
@@ -485,30 +484,36 @@ namespace SrvSurvey
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-
-            if (this.saveSettingsOnNextTick && this.Location.X > -32000 && this.Location.Y > -32000 && Game.settings.mainLocation != this.Location)
-            {
-                Game.settings.mainLocation = this.Location;
-                Game.settings.Save();
-                this.saveSettingsOnNextTick = false;
-            }
-
             // slow timer to check the location of the game window, repositioning plotters if needed
-            var rect = Overlay.getEDWindowRect();
+            var rect = Elite.getWindowRect();
+            var hasFocus = rect != Rectangle.Empty;
 
-            if (rect != lastWindowRect)
+            if (this.lastWindowHasFocus != hasFocus)
             {
-                Game.log($"Main.ED window changed, active: {rect != Rectangle.Empty}");
-                this.lastWindowRect = rect;
+                Game.log($"EliteDangerous window focus changed: {hasFocus}");
 
-                Program.repositionPlotters();
+                if (hasFocus)
+                    Program.showActivePlotters();
+                else
+                    Program.hideActivePlotters();
+
+                this.lastWindowHasFocus = hasFocus;
+            }
+            else if (rect != lastWindowRect && hasFocus)
+            {
+                Game.log($"EliteDangerous window reposition: {this.lastWindowRect} => {rect}");
+                this.lastWindowRect = rect;
+                Program.repositionPlotters(rect);
             }
         }
 
-        private void Main_LocationChanged(object sender, EventArgs e)
+        private void Main_ResizeEnd(object sender, EventArgs e)
         {
             if (Game.settings.mainLocation != this.Location)
-                this.saveSettingsOnNextTick = true;
+            {
+                Game.settings.mainLocation = this.Location;
+                Game.settings.Save();
+            }
         }
 
         private void btnSettings_Click(object sender, EventArgs e)
@@ -526,7 +531,7 @@ namespace SrvSurvey
             if (this.WindowState == FormWindowState.Minimized && Game.settings.focusGameOnMinimize)
             {
                 Game.log($"Main.Minimized, focusing on game...");
-                Overlay.setFocusED();
+                Elite.setFocusED();
             }
         }
 
