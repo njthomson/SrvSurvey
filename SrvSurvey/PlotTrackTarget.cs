@@ -73,12 +73,12 @@ namespace SrvSurvey
         {
             Game.log($"?? {game.vehicle} / {newMode} / {game.isMode(GameMode.SuperCruising, GameMode.Flying, GameMode.Landed, GameMode.InSrv, GameMode.OnFoot, GameMode.GlideMode)}");
             // Landed / OnFoot / InSrv
-
-            if (this.Opacity == 0 && game.isMode(GameMode.SuperCruising, GameMode.Flying, GameMode.Landed, GameMode.InSrv, GameMode.OnFoot, GameMode.GlideMode))
+            
+            if (this.Opacity == 0 && game.showBodyPlotters)
             {
                 this.reposition(Elite.getWindowRect());
             }
-            else
+            else if (this.Opacity != 0 && !game.showBodyPlotters)
             {
                 this.Opacity = 0;
             }
