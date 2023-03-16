@@ -56,13 +56,25 @@ jobs:
                              # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
 
     env:
-      Solution_Name: SrvSurvey.sln                              # Replace with your solution name, i.e. MyWpfApp.sln.
+      Solution_Name: SrvSurvey.sln
 
     steps:
     - name: Checkout
       uses: actions/checkout@v3
       with:
-        fetch-depth: 0
+        fetch-depth: 0 # avoid shallow clone so nbgv can do its work.
+
+    # Use Nerdbank.GitVersioning to set version variables: https://github.com/AArnott/nbgv
+    - name: Use Nerdbank.GitVersioning to set version variables
+      uses: aarnott/nbgv@v0.3
+      with:
+        setAllVars: true
+
+    - run: echo "NBGV_Version $NBGV_Version"
+    - run: echo "NBGV_BuildNumber $NBGV_BuildNumber"
+    - run: echo "NBGV_VersionHeight $NBGV_VersionHeight"
+    - run: echo "NBGV_AssemblyVersion $NBGV_AssemblyVersion"
+    - run: echo "NBGV_AssemblyFileVersion $NBGV_AssemblyFileVersion"
 
     # Install the .NET Core workload
     - name: Install .NET Core
@@ -82,7 +94,7 @@ jobs:
 
     # Create the app package by building and packaging the Windows Application ClickOnce publish profile
     - name: Create ClickOnce package
-      run: msbuild SrvSurvey.sln -t:Publish -p:Configuration=$env:Configuration -restore:true -p:PublishProfile=ClickOnceProfile -p:PublishDir=bin/published
+      run: msbuild SrvSurvey.sln -t:Publish -p:Configuration=$env:Configuration -restore:true -p:PublishProfile=ClickOnceProfile -p:PublishDir=bin/published -p:ApplicationVersion=$env:NBGV_AssemblyFileVersion
       env:
         Configuration: ${{ matrix.configuration }}
 
