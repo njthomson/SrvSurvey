@@ -96,5 +96,5 @@ jobs:
     - name: Upload build artifacts
       uses: actions/upload-artifact@v3
       with:
-        name: SrvSurvey
+        name: SrvSurvey-${{ env.NBGV_AssemblyFileVersion }}
         path: SrvSurvey/bin/published/
