@@ -17,6 +17,8 @@ namespace SrvSurvey
 {
     class Settings
     {
+        public string preferredCommander = null;
+
         public LatLong2 targetLatLong = LatLong2.Empty;
         public bool targetLatLongActive = false;
 
@@ -36,8 +38,8 @@ namespace SrvSurvey
         public Font font2 = new System.Drawing.Font("Century Gothic", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
         public Font fontBig = new System.Drawing.Font("Century Gothic", 22F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
 
-        public BioScan scanOne;
-        public BioScan scanTwo;
+        public BioScan? scanOne;
+        public BioScan? scanTwo;
 
         #region loading /saving
 

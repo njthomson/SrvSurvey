@@ -12,7 +12,7 @@ namespace SrvSurvey.game
     {
         static Game()
         {
-            Game.logs = new StringBuilder();
+            Game.logs = new List<string>();
             var releaseVersion = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyFileVersionAttribute>().Version;
             Game.log($"SrvSurvey version: {releaseVersion}");
 
@@ -27,11 +27,12 @@ namespace SrvSurvey.game
 
             Debug.WriteLine(txt);
 
-            Game.logs.AppendLine(txt);
+            Game.logs.Add(txt);
+
             ViewLogs.append(txt);
         }
 
-        public static readonly StringBuilder logs;
+        public static readonly List<string> logs;
 
         #endregion
 
@@ -68,6 +69,13 @@ namespace SrvSurvey.game
 
             // initialize from a journal file
             var filepath = JournalFile.getCommanderJournalBefore(cmdr, DateTime.MaxValue);
+            if (filepath == null)
+            {
+                Game.log($"No journal files found for: {cmdr}");
+                this.isShutdown = true;
+                return;
+            }
+
             this.journals = new JournalWatcher(filepath);
             this.initializeFromJournal();
             if (this.isShutdown) return;

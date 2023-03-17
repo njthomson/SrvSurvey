@@ -161,7 +161,7 @@ namespace SrvSurvey
 
             if (journalFiles.Count() == 0) return null;
 
-            if (cmdr == null)
+            if (string.IsNullOrWhiteSpace(cmdr))
             {
                 // use the most recent journal file
                 return journalFiles.First();

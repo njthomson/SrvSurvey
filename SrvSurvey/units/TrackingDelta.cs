@@ -48,7 +48,7 @@ namespace SrvSurvey.units
 
         public TrackingDelta(double bodyRadius, LatLong2 currentLocation, LatLong2 targetLocation)
         {
-            this.mpd = bodyRadius * Math.PI* 2 / 360;
+            this.mpd = bodyRadius * Math.PI * 2 / 360;
             this.halfCirc = bodyRadius; // * this.mpd;
             this.current = currentLocation;
             this.target = targetLocation;

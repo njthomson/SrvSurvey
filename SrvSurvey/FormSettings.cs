@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
@@ -109,11 +110,23 @@ namespace SrvSurvey
 
         private void btnSave_Click(object sender, EventArgs e)
         {
+            // restart the app if these are different:
+            var restartApp = txtCommander.Text != Game.settings.preferredCommander;
+
+
             updateSettingsFromForm(this);
-
             Game.settings.Save();
-
             this.DialogResult = DialogResult.OK;
+
+            // kill current process and reload
+            if (restartApp)
+            {
+                Application.DoEvents();
+                Process.Start(Application.ExecutablePath);
+
+                Application.DoEvents();
+                Application.Exit();
+            }
         }
 
         private void trackOpacity_Scroll(object sender, EventArgs e)

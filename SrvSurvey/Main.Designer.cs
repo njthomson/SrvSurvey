@@ -62,7 +62,7 @@ namespace SrvSurvey
             // 
             this.btnGroundTarget.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnGroundTarget.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.btnGroundTarget.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnGroundTarget.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.btnGroundTarget.Location = new System.Drawing.Point(150, 45);
             this.btnGroundTarget.Name = "btnGroundTarget";
             this.btnGroundTarget.Size = new System.Drawing.Size(119, 21);
@@ -75,6 +75,7 @@ namespace SrvSurvey
             // 
             this.btnQuit2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnQuit2.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnQuit2.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.btnQuit2.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.btnQuit2.Location = new System.Drawing.Point(308, 397);
             this.btnQuit2.Name = "btnQuit2";
@@ -107,7 +108,7 @@ namespace SrvSurvey
             // 
             this.btnClearTarget.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnClearTarget.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.btnClearTarget.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnClearTarget.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.btnClearTarget.Location = new System.Drawing.Point(275, 45);
             this.btnClearTarget.Name = "btnClearTarget";
             this.btnClearTarget.Size = new System.Drawing.Size(90, 21);
@@ -284,6 +285,7 @@ namespace SrvSurvey
             // 
             this.btnLogs.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnLogs.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnLogs.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.btnLogs.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.btnLogs.Location = new System.Drawing.Point(93, 397);
             this.btnLogs.Name = "btnLogs";
@@ -297,6 +299,7 @@ namespace SrvSurvey
             // 
             this.btnSettings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSettings.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnSettings.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.btnSettings.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.btnSettings.Location = new System.Drawing.Point(12, 397);
             this.btnSettings.Name = "btnSettings";

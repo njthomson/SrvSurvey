@@ -34,14 +34,15 @@ namespace SrvSurvey
 
         private void ErrorSubmit_Load(object sender, EventArgs e)
         {
+            // show stack information on the form
             txtStack.Text = ex.GetType().Name + ":" +ex.Message + "\r\n\r\n" + ex.StackTrace;
-            var lineCount = Game.logs.ToString().Split('\n').Length;
-            checkIncludeLogs.Text += $" ({lineCount} lines)";
+
+            var lineCount = Math.Min(Game.logs.Count, 10);
+            checkIncludeLogs.Text += $" (last {lineCount})";
         }
 
         private void btnSubmit_Click(object sender, EventArgs e)
         {
-
             var form = new Dictionary<string, string>();
             form.Add("title", $"{ex.GetType().Name} \"{ex.Message}\" at {DateTimeOffset.Now}");
             form.Add("what-happened", txtSteps.Text);
@@ -51,7 +52,8 @@ namespace SrvSurvey
 
             if (checkIncludeLogs.Checked)
             {
-                form.Add("logs", Game.logs.ToString());
+                var lines = String.Join('\n', Game.logs.TakeLast(10));
+                form.Add("logs", lines);
             }
 
             var query = "template=crash-report.yml&" + String.Join(
@@ -66,17 +68,25 @@ namespace SrvSurvey
                 Query = query,
             };
 
-            Process.Start(url.ToString());
+            Util.openLink(url.ToString());
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start("https://github.com/njthomson/SrvSurvey/issues");
+            Util.openLink("https://github.com/njthomson/SrvSurvey/issues");
         }
 
         private void btnLogs_Click(object sender, EventArgs e)
         {
             ViewLogs.show(Game.logs);
+        }
+
+        private void FormErrorSubmit_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape)
+            {
+                btnClose.Focus();
+            }
         }
     }
 }

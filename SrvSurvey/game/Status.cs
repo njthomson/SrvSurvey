@@ -34,7 +34,7 @@ namespace SrvSurvey
         public double Latitude { get; set; }
         public double Longitude { get; set; }
         public int Heading { get; set; }
-        public int Altitude{ get; set; }
+        public int Altitude { get; set; }
 
         public string BodyName { get; set; }
         public Destination Destination { get; set; }
@@ -108,13 +108,13 @@ namespace SrvSurvey
             this.here = new LatLong2(this);
 
             // fire the event for external code on the UI thread
-            if (this.StatusChanged != null)
+            Program.control.Invoke((MethodInvoker)delegate
             {
-                Program.control.Invoke((MethodInvoker)delegate
+                if (this.StatusChanged != null)
                 {
                     this.StatusChanged();
-                });
-            }
+                }
+            });
         }
 
         #endregion
@@ -125,7 +125,7 @@ namespace SrvSurvey
         [JsonIgnore]
         public bool OnFoot { get => (this.Flags2 & StatusFlags2.OnFoot) > 0; }
         [JsonIgnore]
-        public bool InSrv{ get => (this.Flags & StatusFlags.InSRV) > 0; }
+        public bool InSrv { get => (this.Flags & StatusFlags.InSRV) > 0; }
         [JsonIgnore]
         public bool InFighter { get => (this.Flags & StatusFlags.InFighter) > 0; }
         [JsonIgnore]

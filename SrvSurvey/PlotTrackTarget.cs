@@ -92,7 +92,7 @@ namespace SrvSurvey
 
         private void Status_StatusChanged()
         {
-            this.td.Point2 = game.location;
+            this.td.Point1 = game.status.here;
             this.calculate();
         }
 
@@ -158,7 +158,7 @@ namespace SrvSurvey
             g.TranslateTransform(w, h);
 
             // rotate so the arrow aligns "up" is forwards/infront of us
-            var da = (int)td.angle - game.status.Heading;
+            var da =  (int)td.angle - game.status.Heading;
             g.RotateTransform(da);
             g.ScaleTransform(0.3F, 0.3F);
 

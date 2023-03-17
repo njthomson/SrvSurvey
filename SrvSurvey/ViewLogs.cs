@@ -15,8 +15,11 @@ namespace SrvSurvey
     {
         private static ViewLogs? activeForm;
 
-        public static void show(StringBuilder logs)
+        public static void show(List<string> logs)
         {
+            if (activeForm != null)
+                ViewLogs.activeForm.Close();
+
             ViewLogs.activeForm = new ViewLogs(logs);
             ViewLogs.activeForm.Show();
         }
@@ -28,14 +31,14 @@ namespace SrvSurvey
         {
             if (ViewLogs.activeForm != null)
             {
-                ViewLogs.activeForm.txtLogs.Text += txt + "\r\n";
+                ViewLogs.activeForm.txtLogs.Text += "\r\n" + txt;
                 ViewLogs.activeForm.scrollToEnd();
             }
         }
 
-        public StringBuilder logs;
+        public List<string> logs;
 
-        private ViewLogs(StringBuilder logs)
+        private ViewLogs(List<string> logs)
         {
             this.logs = logs;
             InitializeComponent();
@@ -77,7 +80,7 @@ namespace SrvSurvey
 
         private void ViewLogs_Load(object sender, EventArgs e)
         {
-            txtLogs.Text = this.logs.ToString();
+            txtLogs.Text = String.Join("\r\n", this.logs);
             txtLogs.SelectionStart = txtLogs.Text.Length;
         }
 

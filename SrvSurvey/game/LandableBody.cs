@@ -19,8 +19,8 @@ namespace SrvSurvey.game
 
         public event BioScanEvent bioScanEvent;
         public List<BioScan> completedScans = new List<BioScan>();
-        public BioScan scanOne;
-        public BioScan scanTwo;
+        public BioScan? scanOne;
+        public BioScan? scanTwo;
         public Dictionary<string, string> analysedSpecies = new Dictionary<string, string>();
 
         public LandableBody(Game game, string bodyName, int bodyId, long systemAddress)
@@ -197,9 +197,15 @@ namespace SrvSurvey.game
                     this.analysedSpecies.Add(entry.Genus, entry.Species_Localised);
                 }
             }
+            else if (this.scanOne == null && this.scanTwo == null)
+            {
+                this.scanOne = newScan;
+                this.scanTwo = newScan;
+            }
 
             Game.settings.scanOne = this.scanOne;
             Game.settings.scanTwo = this.scanTwo;
+            Game.settings.Save();
 
             if (this.bioScanEvent != null) this.bioScanEvent();
         }

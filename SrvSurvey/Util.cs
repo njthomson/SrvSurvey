@@ -1,6 +1,7 @@
 ﻿using SrvSurvey.units;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -79,6 +80,13 @@ namespace SrvSurvey
             // for cases like: "StarSystem":"Enki" .. "Body":"Ponce de Leon Vision",
             return $"{starSystem}, {body}";
 
+        }
+
+        public static void openLink(string link)
+        {
+            var info = new ProcessStartInfo(link);
+            info.UseShellExecute = true;
+            Process.Start(info);
         }
     }
 }

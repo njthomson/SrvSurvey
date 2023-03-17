@@ -97,7 +97,7 @@ namespace SrvSurvey
             if (this.game != null)
                 this.removeGame();
 
-            var newGame = new Game(null);
+            var newGame = new Game(Game.settings.preferredCommander);
             if (newGame.isShutdown || !newGame.isRunning)
             {
                 newGame.Dispose();
@@ -151,7 +151,7 @@ namespace SrvSurvey
 
             if (!gameIsActive)
             {
-                this.txtCommander.Text = "";
+                this.txtCommander.Text = game?.Commander ?? Game.settings.preferredCommander;
                 this.txtMode.Text = game?.mode == GameMode.MainMenu ? "MainMenu" : "Game is not active";
                 this.txtVehicle.Text = "";
                 this.txtLocation.Text = "";
@@ -345,79 +345,95 @@ namespace SrvSurvey
 
         private void onJournalEntry(SendText entry)
         {
-            /*
             switch (entry.Message)
             {
-                case "11":
+                case ".target here":
+                    Game.settings.targetLatLong = game.status.here;
+                    Game.settings.targetLatLongActive = true;
+                    Game.settings.Save();
+                    this.updateTrackTargetTexts();
+                    break;
+                case ".target off":
+                    Game.settings.targetLatLongActive = false;
+                    Game.settings.Save();
+                    this.updateTrackTargetTexts();
+                    break;
+                case ".target on":
+                    Game.settings.targetLatLongActive = true;
+                    Game.settings.Save();
+                    this.updateTrackTargetTexts();
+                    break;
+                    /*
+                        case "11":
 
-                    game.nearBody.addBioScan(new ScanOrganic
-                    {
-                        ScanType = ScanType.Log,
-                        Genus = "$Codex_Ent_Shrubs_Genus_Name;",
-                        Species = "Anemone Foo",
-                        Species_Localised = "Tussock Cultro",
-                        Body = game.nearBody.bodyId,
-                        SystemAddress = game.nearBody.systemAddress,
-                    });
-                    return;
-                case "12":
-                    game.nearBody.addBioScan(new ScanOrganic
-                    {
-                        ScanType = ScanType.Sample,
-                        Genus = "$Codex_Ent_Shrubs_Genus_Name;",
-                        Species = "Anemone Foo",
-                        Species_Localised = "Tussock Cultro",
-                        Body = game.nearBody.bodyId,
-                        SystemAddress = game.nearBody.systemAddress,
-                    });
-                    return;
-                case "13":
-                    game.nearBody.addBioScan(new ScanOrganic
-                    {
-                        ScanType = ScanType.Analyse,
-                        Genus = "$Codex_Ent_Shrubs_Genus_Name;",
-                        Species = "Anemone Foo",
-                        Species_Localised = "Tussock Cultro",
-                        Body = game.nearBody.bodyId,
-                        SystemAddress = game.nearBody.systemAddress,
-                    });
-                    return;
+                            game.nearBody.addBioScan(new ScanOrganic
+                            {
+                                ScanType = ScanType.Log,
+                                Genus = "$Codex_Ent_Shrubs_Genus_Name;",
+                                Species = "Anemone Foo",
+                                Species_Localised = "Tussock Cultro",
+                                Body = game.nearBody.bodyId,
+                                SystemAddress = game.nearBody.systemAddress,
+                            });
+                            return;
+                        case "12":
+                            game.nearBody.addBioScan(new ScanOrganic
+                            {
+                                ScanType = ScanType.Sample,
+                                Genus = "$Codex_Ent_Shrubs_Genus_Name;",
+                                Species = "Anemone Foo",
+                                Species_Localised = "Tussock Cultro",
+                                Body = game.nearBody.bodyId,
+                                SystemAddress = game.nearBody.systemAddress,
+                            });
+                            return;
+                        case "13":
+                            game.nearBody.addBioScan(new ScanOrganic
+                            {
+                                ScanType = ScanType.Analyse,
+                                Genus = "$Codex_Ent_Shrubs_Genus_Name;",
+                                Species = "Anemone Foo",
+                                Species_Localised = "Tussock Cultro",
+                                Body = game.nearBody.bodyId,
+                                SystemAddress = game.nearBody.systemAddress,
+                            });
+                            return;
 
-                case "21":
-                    game.nearBody.addBioScan(new ScanOrganic
-                    {
-                        ScanType = ScanType.Log,
-                        Genus = "$Codex_Ent_Stratum_Genus_Name;",
-                        Species = "Stratum Tectonicas",
-                        Species_Localised = "Stratum Tectonicas",
-                        Body = game.nearBody.bodyId,
-                        SystemAddress = game.nearBody.systemAddress,
-                    });
-                    return;
-                case "22":
-                    game.nearBody.addBioScan(new ScanOrganic
-                    {
-                        ScanType = ScanType.Sample,
-                        Genus = "$Codex_Ent_Stratum_Genus_Name;",
-                        Species = "Stratum Tectonicas",
-                        Species_Localised = "Stratum Tectonicas",
-                        Body = game.nearBody.bodyId,
-                        SystemAddress = game.nearBody.systemAddress,
-                    });
-                    return;
-                case "23":
-                    game.nearBody.addBioScan(new ScanOrganic
-                    {
-                        ScanType = ScanType.Analyse,
-                        Genus = "$Codex_Ent_Stratum_Genus_Name;",
-                        Species = "Stratum Tectonicas",
-                        Species_Localised = "Stratum Tectonicas",
-                        Body = game.nearBody.bodyId,
-                        SystemAddress = game.nearBody.systemAddress,
-                    });
-                    return;
+                        case "21":
+                            game.nearBody.addBioScan(new ScanOrganic
+                            {
+                                ScanType = ScanType.Log,
+                                Genus = "$Codex_Ent_Stratum_Genus_Name;",
+                                Species = "Stratum Tectonicas",
+                                Species_Localised = "Stratum Tectonicas",
+                                Body = game.nearBody.bodyId,
+                                SystemAddress = game.nearBody.systemAddress,
+                            });
+                            return;
+                        case "22":
+                            game.nearBody.addBioScan(new ScanOrganic
+                            {
+                                ScanType = ScanType.Sample,
+                                Genus = "$Codex_Ent_Stratum_Genus_Name;",
+                                Species = "Stratum Tectonicas",
+                                Species_Localised = "Stratum Tectonicas",
+                                Body = game.nearBody.bodyId,
+                                SystemAddress = game.nearBody.systemAddress,
+                            });
+                            return;
+                        case "23":
+                            game.nearBody.addBioScan(new ScanOrganic
+                            {
+                                ScanType = ScanType.Analyse,
+                                Genus = "$Codex_Ent_Stratum_Genus_Name;",
+                                Species = "Stratum Tectonicas",
+                                Species_Localised = "Stratum Tectonicas",
+                                Body = game.nearBody.bodyId,
+                                SystemAddress = game.nearBody.systemAddress,
+                            });
+                            return;
+                    // */
             }
-            // */
 
             //}
             //var newScan = new BioScan()
@@ -523,7 +539,7 @@ namespace SrvSurvey
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start("https://njthomson.github.io/SrvSurvey/");
+            Util.openLink("https://njthomson.github.io/SrvSurvey/");
         }
 
         private void Main_SizeChanged(object sender, EventArgs e)
