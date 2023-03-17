@@ -13,7 +13,7 @@ namespace SrvSurvey.game
         static Game()
         {
             Game.logs = new List<string>();
-            var releaseVersion = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyFileVersionAttribute>().Version;
+            var releaseVersion = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyFileVersionAttribute>()?.Version;
             Game.log($"SrvSurvey version: {releaseVersion}");
 
             settings = Settings.Load();
@@ -43,17 +43,17 @@ namespace SrvSurvey.game
         /// <summary>
         /// The Commander actively playing the game
         /// </summary>
-        public string Commander { get; private set; }
+        public string? Commander { get; private set; }
         public bool isOdyssey { get; private set; }
-        public string starSystem { get; private set; }
+        public string? starSystem { get; private set; }
 
-        public JournalWatcher journals;
-        public Status status { get; private set; }
+        public JournalWatcher? journals;
+        public Status? status { get; private set; }
 
         /// <summary>
         /// The name of the current start system, or body if we are close to one.
         /// </summary>
-        public string systemLocation { get; private set; }
+        public string? systemLocation { get; private set; }
 
         public Game(string cmdr)
         {
@@ -124,11 +124,10 @@ namespace SrvSurvey.game
 
         #region modes
 
-        public LatLong2 location { get; private set; }
         public bool atMainMenu = false;
         private bool fsdJumping = false;
         public bool isShutdown = false;
-        public LandableBody nearBody;
+        public LandableBody? nearBody;
         /// <summary>
         /// Tracks if we status had Lat/Long last time we knew
         /// </summary>
@@ -136,7 +135,7 @@ namespace SrvSurvey.game
         /// <summary>
         /// Tracks BodyName from status - attempting to detect when multiple running games clobber the same file in error
         /// </summary>
-        private string statusBodyName;
+        private string? statusBodyName;
 
         private void checkModeChange()
         {
@@ -161,9 +160,7 @@ namespace SrvSurvey.game
                 // TODO: some planet/moons are close enough together to trigger this - maybe compare the first word from each?
                 return;
             }
-
-            // update the easy things
-            this.location = new LatLong2(this.status);
+            this.statusBodyName = status.BodyName;
 
             // track if status HasLatLong, toggling behaviours when it changes
             var newHasLatLong = (this.status.Flags & StatusFlags.HasLatLong) > 0;

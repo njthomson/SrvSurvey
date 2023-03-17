@@ -20,7 +20,11 @@ namespace SrvSurvey
     // "imageOffset": "361,464"/ 14000.0,-3
     // 394,526 //  -4
 
+#pragma warning disable CS0660 // Type defines operator == or operator != but does not override Object.Equals(object o)
+#pragma warning disable CS0661 // Type defines operator == or operator != but does not override Object.GetHashCode()
     public struct LatLong
+#pragma warning restore CS0661 // Type defines operator == or operator != but does not override Object.GetHashCode()
+#pragma warning restore CS0660 // Type defines operator == or operator != but does not override Object.Equals(object o)
     {
         public static readonly LatLong Empty = new LatLong(0, 0);
 

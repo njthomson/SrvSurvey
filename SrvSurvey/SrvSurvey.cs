@@ -11,6 +11,10 @@ using System.Windows.Forms;
 using Newtonsoft.Json;
 //using System.Text.Json.Serialization;
 
+#pragma warning disable CS8625
+#pragma warning disable CS8601
+#pragma warning disable CS8602
+
 namespace SrvSurvey
 {
     public partial class SrvSurvey : Form
@@ -48,7 +52,9 @@ namespace SrvSurvey
 
         int cx, cy;
 
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         public SrvSurvey()
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         {
             this.status = new Status(true);
             this.status.StatusChanged += onStatusChange;
@@ -291,7 +297,7 @@ namespace SrvSurvey
                 this.siteTemplate = null;
                 this.survey.setSettlementType(null);
                 this.siteBackground = null;
-                //this.plotSrv = null;
+                              //this.plotSrv = null;
                 this.pictureBox1.BackgroundImage = null;
                 log("Site: unknown");
             }
@@ -928,3 +934,7 @@ namespace SrvSurvey
 
     }
 }
+
+#pragma warning restore CS8625
+#pragma warning restore CS8601
+#pragma warning restore CS8602

@@ -74,7 +74,7 @@ namespace SrvSurvey.units
                 return false;
             }
 
-            public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+            public override object ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
             {
                 
                 var obj = serializer.Deserialize<JToken>(reader);
@@ -89,7 +89,7 @@ namespace SrvSurvey.units
                 return latlong;
             }
 
-            public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+            public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
             {
                 var latLong = value as LatLong2;
 

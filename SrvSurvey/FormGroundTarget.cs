@@ -14,8 +14,6 @@ namespace SrvSurvey
 {
     internal partial class FormGroundTarget : Form
     {
-        public LatLong2 targetLatLong;
-
         public FormGroundTarget()
         {
             InitializeComponent();

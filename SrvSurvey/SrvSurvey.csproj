@@ -12,7 +12,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <StartupObject>SrvSurvey.Program</StartupObject>
     <SignAssembly>True</SignAssembly>
-    <DelaySign>True</DelaySign>
+    <DelaySign>False</DelaySign>
     <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
 

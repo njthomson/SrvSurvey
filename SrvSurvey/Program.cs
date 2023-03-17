@@ -6,6 +6,13 @@ namespace SrvSurvey
 
     static class Program
     {
+        static Program()
+        {
+            // create some control for invoking back onto the UI thread
+            Program.control = new Control();
+            Program.control.CreateControl();
+        }
+
         public static Control control { get; private set; }
 
         public static readonly BindingFlags InstanceProps =
@@ -29,9 +36,6 @@ namespace SrvSurvey
             //Application.SetCompatibleTextRenderingDefault(false);
             Application.ThreadException += Application_ThreadException;
 
-            // create some control for invoking back onto the UI thread
-            Program.control = new Control();
-            Program.control.CreateControl();
 
             Application.Run(new Main());
         }

@@ -81,7 +81,7 @@ namespace SrvSurvey
             return null;
         }
 
-        public T FindEntryByType<T>(int index, bool searchUp) where T : JournalEntry
+        public T? FindEntryByType<T>(int index, bool searchUp) where T : JournalEntry
         {
             if (index == -1) index = this.Entries.Count - 1;
 
@@ -123,7 +123,7 @@ namespace SrvSurvey
             return false;
         }
 
-        public void searchDeep<T>(Func<T, bool> func, Func<JournalFile, bool> finishWhen = null) where T : JournalEntry
+        public void searchDeep<T>(Func<T, bool> func, Func<JournalFile, bool>? finishWhen = null) where T : JournalEntry
         {
             var count = 0;
             var journals = this;

@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Tab;
 
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+
 namespace SrvSurvey
 {
     // See details from:
@@ -408,3 +410,4 @@ namespace SrvSurvey
         // { "timestamp":"2023-03-03T06:21:00Z", "event":"Embark", "SRV":true, "Taxi":false, "Multicrew":false, "ID":26, "StarSystem":"Synuefe TP-F b44-0", "SystemAddress":682228131193, "Body":"Synuefe TP-F b44-0 AB 7", "BodyID":14, "OnStation":false, "OnPlanet":true }
     }
 }
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.

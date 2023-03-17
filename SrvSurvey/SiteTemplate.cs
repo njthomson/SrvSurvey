@@ -61,7 +61,7 @@ namespace SrvSurvey
         public Dictionary<string, LatLong> relicTowers;
         public Dictionary<string, LatLong> puddles;
 
-        public string getNearestRelicTower(LatLong dp, double siteHeading)
+        public string? getNearestRelicTower(LatLong dp, double siteHeading)
         {
             var match = this.getNearestFrom(dp, siteHeading, this.relicTowers);
 
@@ -72,7 +72,7 @@ namespace SrvSurvey
 
         }
 
-        public string getNearestPuddle(LatLong dp, double siteHeading)
+        public string? getNearestPuddle(LatLong dp, double siteHeading)
         {
             var match = this.getNearestFrom(dp, siteHeading, this.puddles);
 
@@ -87,7 +87,7 @@ namespace SrvSurvey
             return getNearestPoi(dp, LatLong.degToRad(siteHeading));
         }
 
-        public Tuple<string, double> getNearestPoi(LatLong dp, double siteHeading)
+        public Tuple<string, double>? getNearestPoi(LatLong dp, double siteHeading)
         {
             var relic = this.getNearestFrom(dp, siteHeading, this.relicTowers);
             var puddle = this.getNearestFrom(dp, siteHeading, this.puddles);
@@ -113,10 +113,10 @@ namespace SrvSurvey
             }
         }
 
-        private Tuple<string, double> getNearestFrom(LatLong dp, double siteHeading, Dictionary<string, LatLong> dictionary)
+        private Tuple<string, double>? getNearestFrom(LatLong dp, double siteHeading, Dictionary<string, LatLong> dictionary)
         {
             // find the closest known tower
-            string minKeyName = null; ;
+            string minKeyName = null;
             double minDist = 100;
             foreach (var tower in dictionary)
             {

@@ -17,18 +17,16 @@ namespace SrvSurvey
     {
         public static void Show(Exception ex)
         {
-            var form = new FormErrorSubmit()
-            {
-                ex = ex
-            };
+            var form = new FormErrorSubmit(ex);
 
             form.ShowDialog();
         }
 
         public Exception ex;
 
-        private FormErrorSubmit()
+        private FormErrorSubmit(Exception ex)
         {
+            this.ex = ex;
             InitializeComponent();
         }
 
@@ -48,7 +46,7 @@ namespace SrvSurvey
             form.Add("what-happened", txtSteps.Text);
             form.Add("version", Application.ProductVersion);
             form.Add("exception-message", ex.Message);
-            form.Add("exception-stack", ex.StackTrace);
+            form.Add("exception-stack", ex.StackTrace!);
 
             if (checkIncludeLogs.Checked)
             {

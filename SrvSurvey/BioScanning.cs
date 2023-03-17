@@ -14,12 +14,12 @@ namespace SrvSurvey
     /// </summary>
     class BioScan
     {
-        public LatLong2 location;
+        public LatLong2? location;
         public long radius;
-        public string genus;
-        public string genusLocalized;
-        public string species;
-        public string speciesLocalized;
+        public string? genus;
+        public string? genusLocalized;
+        public string? species;
+        public string? speciesLocalized;
         public ScanType scanType;
         public double systemAddress;
         public int bodyId;

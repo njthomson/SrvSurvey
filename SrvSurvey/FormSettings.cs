@@ -38,7 +38,7 @@ namespace SrvSurvey
             {
                 if (!string.IsNullOrWhiteSpace(ctrl.Tag?.ToString()))
                 {
-                    if (!map.ContainsKey(ctrl.Tag.ToString()))
+                    if (!map.ContainsKey(ctrl.Tag.ToString()!))
                     {
                         throw new Exception($"Missing setting: {ctrl.Tag}");
                     }

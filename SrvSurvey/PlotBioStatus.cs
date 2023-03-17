@@ -18,8 +18,6 @@ namespace SrvSurvey
     {
         private Game game = Game.activeGame;
 
-        private LatLong2 touchdownLocation;
-
         private PlotBioStatus()
         {
             InitializeComponent();
