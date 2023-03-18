@@ -1,21 +1,15 @@
 ﻿using SrvSurvey.game;
 using SrvSurvey.units;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
 
 namespace SrvSurvey
 {
     partial class PlotTrackTarget : Form, PlotterForm
     {
-        private Game game = Game.activeGame;
+        private Game game = Game.activeGame!;
 
         private TrackingDelta td;
 
@@ -202,3 +196,6 @@ namespace SrvSurvey
         //}
     }
 }
+
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+#pragma warning restore CS8602 // Dereference of a possibly null reference.

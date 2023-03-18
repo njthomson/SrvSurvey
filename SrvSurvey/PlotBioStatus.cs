@@ -16,7 +16,7 @@ namespace SrvSurvey
 {
     public partial class PlotBioStatus : Form, PlotterForm
     {
-        private Game game = Game.activeGame;
+        private Game game = Game.activeGame!;
 
         private PlotBioStatus()
         {
@@ -59,8 +59,8 @@ namespace SrvSurvey
             this.Game_modeChanged(game.mode);
 
             //this.Opacity = 1;
-            game.journals.onJournalEntry += Journals_onJournalEntry;
-            game.nearBody.bioScanEvent += NearBody_bioScanEvent;
+            game.journals!.onJournalEntry += Journals_onJournalEntry;
+            game.nearBody!.bioScanEvent += NearBody_bioScanEvent;
 
             this.reposition(Elite.getWindowRect());
         }
@@ -132,7 +132,7 @@ namespace SrvSurvey
         private void showCurrentGenus(Graphics g)
         {
             // all the Genus names
-            float x = 110;
+            //float x = 110;
             float y = 28;
 
             var r = new RectangleF(8, y, 24, 24);
@@ -140,7 +140,7 @@ namespace SrvSurvey
             g.DrawEllipse(GameColors.penGameOrange2, r);
 
             r = new RectangleF(40, y, 24, 24);
-            if (game.nearBody.scanTwo != null)
+            if (game.nearBody!.scanTwo != null)
             {
                 g.FillEllipse(GameColors.brushGameOrangeDim, r);
                 g.DrawEllipse(GameColors.penGameOrange2, r);
@@ -154,7 +154,7 @@ namespace SrvSurvey
             g.DrawEllipse(GameColors.penGameOrange2, r);
 
             g.DrawString(
-                $"{game.nearBody.scanOne.speciesLocalized}",
+                $"{game.nearBody!.scanOne!.speciesLocalized}",
                 Game.settings.fontBig, GameColors.brushCyan,
                 104, y - 8);
 
@@ -200,7 +200,7 @@ namespace SrvSurvey
             float x = 32;
             float y = 24;
             //foreach (var name in BioScan2.ranges.Keys)
-            foreach (var genus in game.nearBody.Genuses)
+            foreach (var genus in game.nearBody!.Genuses!)
             {
                 var analysed = game.nearBody.analysedSpecies.ContainsKey(genus.Genus);
 

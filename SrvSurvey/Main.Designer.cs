@@ -53,6 +53,7 @@ namespace SrvSurvey
             this.btnLogs = new System.Windows.Forms.Button();
             this.btnSettings = new System.Windows.Forms.Button();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.lblFullScreen = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -324,12 +325,29 @@ namespace SrvSurvey
             this.linkLabel1.UseCompatibleTextRendering = true;
             this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
+            // lblFullScreen
+            // 
+            this.lblFullScreen.BackColor = System.Drawing.Color.DarkRed;
+            this.lblFullScreen.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lblFullScreen.ForeColor = System.Drawing.Color.White;
+            this.lblFullScreen.Location = new System.Drawing.Point(0, 0);
+            this.lblFullScreen.Name = "lblFullScreen";
+            this.lblFullScreen.Padding = new System.Windows.Forms.Padding(10);
+            this.lblFullScreen.Size = new System.Drawing.Size(395, 86);
+            this.lblFullScreen.TabIndex = 18;
+            this.lblFullScreen.Text = "SrvSurvey cannot be used when Elite Dangerous is in Full Screen mode.\r\n\r\nPlease g" +
+    "o to Options > Graphics > Display and change setting FULLSCREEN to either BORDER" +
+    "LESS or WINDOWED.";
+            this.lblFullScreen.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.lblFullScreen.Visible = false;
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnQuit2;
             this.ClientSize = new System.Drawing.Size(395, 432);
+            this.Controls.Add(this.lblFullScreen);
             this.Controls.Add(this.linkLabel1);
             this.Controls.Add(this.btnSettings);
             this.Controls.Add(this.btnLogs);
@@ -384,5 +402,6 @@ namespace SrvSurvey
         private System.Windows.Forms.LinkLabel linkLabel1;
         private System.Windows.Forms.Label lblTrackTargetStatus;
         private System.Windows.Forms.TextBox txtNearBody;
+        private Label lblFullScreen;
     }
 }

@@ -6,14 +6,14 @@ namespace SrvSurvey
 
     class JournalWatcher : JournalFile, IDisposable
     {
-        private FileSystemWatcher watcher;
+        private FileSystemWatcher? watcher;
         private bool disposed = false;
 
-        public event OnJournalEntry onJournalEntry;
+        public event OnJournalEntry? onJournalEntry;
 
         public JournalWatcher(string filepath) : base(filepath)
         {
-            var folder = Path.GetDirectoryName(filepath);
+            var folder = Path.GetDirectoryName(filepath)!;
             var filename = Path.GetFileName(filepath);
             this.watcher = new FileSystemWatcher(folder, filename);
             this.watcher.Changed += JournalWatcher_Changed;
@@ -32,8 +32,11 @@ namespace SrvSurvey
         {
             if (disposing)
             {
-                this.watcher.Changed -= JournalWatcher_Changed;
-                this.watcher = null;
+                if (this.watcher != null)
+                {
+                    this.watcher.Changed -= JournalWatcher_Changed;
+                    this.watcher = null;
+                }
             }
         }
 
@@ -45,13 +48,13 @@ namespace SrvSurvey
             this.readEntries();
         }
 
-        protected override JournalEntry readEntry()
+        protected override JournalEntry? readEntry()
         {
             var entry = base.readEntry();
 
             if (entry != null && this.onJournalEntry != null && !this.disposed)
             {
-                Program.control.Invoke((MethodInvoker)delegate
+                Program.control!.Invoke((MethodInvoker)delegate
                 {
                     this.onJournalEntry(entry, this.Entries.Count - 1);
                 });

@@ -17,7 +17,7 @@ namespace SrvSurvey
 {
     class Settings
     {
-        public string preferredCommander = null;
+        public string? preferredCommander = null;
 
         public LatLong2 targetLatLong = LatLong2.Empty;
         public bool targetLatLongActive = false;
@@ -53,7 +53,7 @@ namespace SrvSurvey
                 var json = File.ReadAllText(settingsPath);
                 try
                 {
-                    var settings = JsonConvert.DeserializeObject<Settings>(json);
+                    var settings = JsonConvert.DeserializeObject<Settings>(json)!;
 
                     Game.log($"Loaded settings: {json}");
                     return settings;

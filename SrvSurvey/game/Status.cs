@@ -1,15 +1,11 @@
 ﻿using Newtonsoft.Json;
 using SrvSurvey.units;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
 namespace SrvSurvey
 {
+
     delegate void OnStatusChange();
 
     class Status : ILocation, IDisposable
@@ -46,7 +42,7 @@ namespace SrvSurvey
 
         public event OnSurveyChange StatusChanged;
 
-        private FileSystemWatcher fileWatcher;
+        private FileSystemWatcher? fileWatcher;
 
         public Status(bool watch)
         {
@@ -71,8 +67,11 @@ namespace SrvSurvey
         {
             if (disposing)
             {
-                this.fileWatcher.Changed -= fileWatcher_Changed;
-                this.fileWatcher = null;
+                if (this.fileWatcher != null)
+                {
+                    this.fileWatcher.Changed -= fileWatcher_Changed;
+                    this.fileWatcher = null;
+                }
             }
         }
 
@@ -108,7 +107,7 @@ namespace SrvSurvey
             this.here = new LatLong2(this);
 
             // fire the event for external code on the UI thread
-            Program.control.Invoke((MethodInvoker)delegate
+            Program.control!.Invoke((MethodInvoker)delegate
             {
                 if (this.StatusChanged != null)
                 {
@@ -131,7 +130,6 @@ namespace SrvSurvey
         [JsonIgnore]
         public bool InMainShip { get => (this.Flags & StatusFlags.InMainShip) > 0; }
     }
-
 
     class FuelStatus
     {
@@ -233,4 +231,7 @@ namespace SrvSurvey
         SAA,
         Codex,
     }
+
 }
+
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.

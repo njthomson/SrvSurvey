@@ -17,7 +17,7 @@ namespace SrvSurvey.game
         public long systemAddress;
         public double radius;
 
-        public event BioScanEvent bioScanEvent;
+        public event BioScanEvent? bioScanEvent;
         public List<BioScan> completedScans = new List<BioScan>();
         public BioScan? scanOne;
         public BioScan? scanTwo;
@@ -31,7 +31,7 @@ namespace SrvSurvey.game
             this.systemAddress = systemAddress;
 
             // see if we can get signals for this body
-            Game.activeGame.journals.search((SAASignalsFound signalsEntry) =>
+            this.game.journals!.search((SAASignalsFound signalsEntry) =>
             {
                 if (signalsEntry.BodyName == this.bodyName)
                 {
@@ -42,7 +42,7 @@ namespace SrvSurvey.game
                 return false;
             });
 
-            game.journals.onJournalEntry += Journals_onJournalEntry;
+            game.journals!.onJournalEntry += Journals_onJournalEntry;
 
             if (Game.settings.scanOne?.systemAddress == this.systemAddress && Game.settings.scanOne?.bodyId == this.bodyId)
             {
@@ -101,13 +101,15 @@ namespace SrvSurvey.game
             }
         }
 
-        public List<ScanSignal> Signals { get; set; }
-        public List<ScanGenus> Genuses { get; set; }
+        public List<ScanSignal>? Signals { get; set; }
+        public List<ScanGenus>? Genuses { get; set; }
 
         public void readSAASignalsFound(SAASignalsFound signalsEntry)
         {
+            if (signalsEntry == null) return;
+
             // find the signals
-            if (signalsEntry != null && signalsEntry.SystemAddress == this.systemAddress && signalsEntry.BodyID == this.bodyId)
+            if (signalsEntry.SystemAddress == this.systemAddress && signalsEntry.BodyID == this.bodyId)
             {
                 this.Signals = new List<ScanSignal>(signalsEntry.Signals);
             }
@@ -117,7 +119,7 @@ namespace SrvSurvey.game
                 this.Genuses = new List<ScanGenus>(signalsEntry.Genuses);
 
                 // see if we can find recent BioScans, traversing prior journal files if needed
-                game.journals.searchDeep(
+                game.journals!.searchDeep(
                     (ScanOrganic scan) =>
                     {
                         // look for Analyze ScanOrganics.
@@ -151,7 +153,7 @@ namespace SrvSurvey.game
 
             var newScan = new BioScan()
             {
-                location = new LatLong2(game.status),
+                location = game.status!.here,
                 radius = BioScan.ranges[entry.Genus],
                 genus = entry.Genus,
                 genusLocalized = entry.Genus_Localized,

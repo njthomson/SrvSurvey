@@ -6,7 +6,7 @@ namespace SrvSurvey
 {
     internal partial class Main : Form
     {
-        private Game game;
+        private Game? game;
         private FileSystemWatcher folderWatcher;
 
         private Rectangle lastWindowRect;
@@ -15,6 +15,19 @@ namespace SrvSurvey
         public Main()
         {
             InitializeComponent();
+
+
+            // watch for creation of new log files
+            this.folderWatcher = new FileSystemWatcher(SrvSurvey.journalFolder, "*.log");
+            this.folderWatcher.Created += FolderWatcher_Created;
+            this.folderWatcher.EnableRaisingEvents = true;
+            Game.log($"Watching folder: {SrvSurvey.journalFolder}");
+
+            // watch for changes in DisplaySettings.xml 
+            this.folderWatcher = new FileSystemWatcher(Path.GetDirectoryName(Elite.displaySettingsXml)!, "DisplaySettings.xml");
+            this.folderWatcher.Changed += FolderWatcher_Changed;
+            this.folderWatcher.EnableRaisingEvents = true;
+            Game.log($"Watching file: {Elite.displaySettingsXml}");
 
             // can we fit in our last location
             if (Game.settings.mainLocation != Point.Empty)
@@ -38,6 +51,8 @@ namespace SrvSurvey
 
         private void Main_Load(object sender, EventArgs e)
         {
+            this.checkFullScreenGraphics();
+
             this.updateCommanderTexts();
             this.updateBioTexts();
             this.updateTrackTargetTexts();
@@ -49,12 +64,17 @@ namespace SrvSurvey
                 this.newGame();
             }
 
-            this.folderWatcher = new FileSystemWatcher(SrvSurvey.journalFolder, "*.log");
-            this.folderWatcher.Created += FolderWatcher_Created;
-            this.folderWatcher.EnableRaisingEvents = true;
-            Game.log($"Watching folder: {SrvSurvey.journalFolder}");
 
             this.timer1.Start();
+        }
+
+        private void FolderWatcher_Changed(object sender, FileSystemEventArgs e)
+        {
+            this.Invoke((MethodInvoker)delegate
+            {
+                Application.DoEvents();
+                this.checkFullScreenGraphics();
+            });
         }
 
         private void FolderWatcher_Created(object sender, FileSystemEventArgs e)
@@ -109,7 +129,7 @@ namespace SrvSurvey
             this.game.modeChanged += Game_modeChanged;
             this.game.nearingBody += Game_nearingBody;
             this.game.departingBody += Game_departingBody;
-            this.game.journals.onJournalEntry += Journals_onJournalEntry;
+            this.game.journals!.onJournalEntry += Journals_onJournalEntry;
 
             Program.showPlotter<PlotPulse>();
 
@@ -149,7 +169,7 @@ namespace SrvSurvey
         {
             var gameIsActive = game != null && game.isRunning && game.Commander != null;
 
-            if (!gameIsActive)
+            if (!gameIsActive || game == null)
             {
                 this.txtCommander.Text = game?.Commander ?? Game.settings.preferredCommander;
                 this.txtMode.Text = game?.mode == GameMode.MainMenu ? "MainMenu" : "Game is not active";
@@ -246,7 +266,7 @@ namespace SrvSurvey
                 lblTrackTargetStatus.Text = "Inactive";
                 Program.closePlotter(nameof(PlotTrackTarget));
             }
-            else if (game.showBodyPlotters && (game.status.Flags & StatusFlags.HasLatLong) > 0)
+            else if (game.showBodyPlotters && (game.status!.Flags & StatusFlags.HasLatLong) > 0)
             {
                 txtTargetLatLong.Text = Game.settings.targetLatLong.ToString();
                 lblTrackTargetStatus.Text = "Active";
@@ -277,7 +297,7 @@ namespace SrvSurvey
         {
             Game.log($"Main.Disembark {entry.Body}");
 
-            if (entry.OnPlanet && !entry.OnStation && game.nearBody.Genuses?.Count > 0)
+            if (entry.OnPlanet && !entry.OnStation && game?.nearBody?.Genuses?.Count > 0)
             {
                 if (Game.settings.autoShowBioSummary)
                     Program.showPlotter<PlotBioStatus>();
@@ -288,9 +308,9 @@ namespace SrvSurvey
 
         private void onJournalEntry(LaunchSRV entry)
         {
-            Game.log($"Main.LaunchSRV {game.status.BodyName}");
+            Game.log($"Main.LaunchSRV {game?.status?.BodyName}");
 
-            if (game.showBodyPlotters && game.nearBody.Genuses?.Count > 0)
+            if (game!.showBodyPlotters && game.nearBody?.Genuses?.Count > 0)
             {
                 if (Game.settings.autoShowBioSummary)
                     Program.showPlotter<PlotBioStatus>();
@@ -303,7 +323,7 @@ namespace SrvSurvey
         {
             Game.log($"Main.ApproachBody {entry.Body}");
 
-            if (game.showBodyPlotters && game.nearBody.Genuses?.Count > 0)
+            if (game!.showBodyPlotters && game.nearBody?.Genuses?.Count > 0)
             {
                 if (Game.settings.autoShowBioSummary)
                     Program.showPlotter<PlotBioStatus>();
@@ -345,10 +365,12 @@ namespace SrvSurvey
 
         private void onJournalEntry(SendText entry)
         {
+            if (game == null) return;
+
             switch (entry.Message)
             {
                 case ".target here":
-                    Game.settings.targetLatLong = game.status.here;
+                    Game.settings.targetLatLong = game.status!.here;
                     Game.settings.targetLatLongActive = true;
                     Game.settings.Save();
                     this.updateTrackTargetTexts();
@@ -472,7 +494,7 @@ namespace SrvSurvey
             this.updateTrackTargetTexts();
 
             // show plotter if near a body
-            if (game.nearBody != null && game.showBodyPlotters)
+            if (game?.nearBody != null && game.showBodyPlotters)
                 Program.showPlotter<PlotTrackTarget>();
         }
 
@@ -483,7 +505,7 @@ namespace SrvSurvey
 
             if (Game.settings.targetLatLongActive)
             {
-                Game.log($"Main.Set target lat/long: {Game.settings.targetLatLong}, near: {game.systemLocation}");
+                Game.log($"Main.Set target lat/long: {Game.settings.targetLatLong}, near: {game?.systemLocation}");
                 setTargetLatLong();
             }
             else
@@ -554,6 +576,13 @@ namespace SrvSurvey
         private void Main_FormClosed(object sender, FormClosedEventArgs e)
         {
             Game.settings.Save();
+        }
+
+        private void checkFullScreenGraphics()
+        {
+            var fullScreen = Elite.getGraphicsMode();
+            // 0: Windows / 1: FullScreen / 2: Borderless
+            lblFullScreen.Visible = fullScreen == 1;
         }
     }
 }

@@ -1,18 +1,17 @@
 ﻿using SrvSurvey.game;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+using System.Xml.Linq;
 
 namespace SrvSurvey
 {
     class Elite
     {
+        public static readonly string displaySettingsXml = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                "Frontier Developments\\Elite Dangerous\\Options\\Graphics",
+                "DisplaySettings.xml");
+
         public static bool isGameRunning
         {
             get
@@ -65,6 +64,17 @@ namespace SrvSurvey
                 return IntPtr.Zero;
             else
                 return procED[0].MainWindowHandle;
+        }
+
+        public static int getGraphicsMode()
+        {
+            using (var sr = new StreamReader(new FileStream(displaySettingsXml, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)))
+            {
+                var doc = XDocument.Load(sr);
+                var element = doc.Element("DisplayConfig")!.Element("FullScreen")!;
+                Game.log(element);
+                return int.Parse(element.Value);
+            }
         }
 
         public static void floatLeftMiddle(Form form)

@@ -1,9 +1,6 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
-using System.IO;
+
 
 namespace SrvSurvey
 {
@@ -33,13 +30,17 @@ namespace SrvSurvey
         public static readonly double MaxMatchDistance = 0.0015;
 
         public POIType poiType { get; set; }
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         public string name { get; set; }
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         public LatLong location { get; set; }
     }
 
     class PoiVector
     {
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         public SitePOI poi;
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         public LatLong fromLocation;
         public double distance;
     }
@@ -52,23 +53,33 @@ namespace SrvSurvey
         /// <summary>
         /// The class/type name of this Guardian site. Eg: Alpha, Beta, Fistbump, etc
         /// </summary>
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         public string name;
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         public string backgroundImage;
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         public Point imageOffset;
         public double scaleFactor;
         public SortedDictionary<string, SitePOI> poi = new SortedDictionary<string, SitePOI>();
 
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         public Dictionary<string, LatLong> relicTowers;
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         public Dictionary<string, LatLong> puddles;
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
         public string? getNearestRelicTower(LatLong dp, double siteHeading)
         {
             var match = this.getNearestFrom(dp, siteHeading, this.relicTowers);
 
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
             if (match.Item2 > 0.0015)
                 return null;
             else
                 return match.Item1;
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
 
         }
 
@@ -76,15 +87,19 @@ namespace SrvSurvey
         {
             var match = this.getNearestFrom(dp, siteHeading, this.puddles);
 
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
             if (match.Item2 > 0.0015)
                 return null;
             else
                 return match.Item1;
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
         }
 
         public Tuple<string, double> getNearestPoi(LatLong dp, int siteHeading)
         {
+#pragma warning disable CS8603 // Possible null reference return.
             return getNearestPoi(dp, LatLong.degToRad(siteHeading));
+#pragma warning restore CS8603 // Possible null reference return.
         }
 
         public Tuple<string, double>? getNearestPoi(LatLong dp, double siteHeading)
@@ -116,7 +131,9 @@ namespace SrvSurvey
         private Tuple<string, double>? getNearestFrom(LatLong dp, double siteHeading, Dictionary<string, LatLong> dictionary)
         {
             // find the closest known tower
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
             string minKeyName = null;
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
             double minDist = 100;
             foreach (var tower in dictionary)
             {
@@ -134,7 +151,9 @@ namespace SrvSurvey
             }
 
             // enforce a minimum distance of 0.015
+#pragma warning disable CS8604 // Possible null reference argument.
             return new Tuple<string, double>(minKeyName, minDist);
+#pragma warning restore CS8604 // Possible null reference argument.
         }
 
         public PoiVector getNearestPoi2(LatLong location, int siteHeading, POIType poiType)
@@ -278,7 +297,9 @@ namespace SrvSurvey
             if (File.Exists(filepath))
             {
                 var json = File.ReadAllText(filepath);
+#pragma warning disable CS8601 // Possible null reference assignment.
                 SiteTemplate.sites = JsonConvert.DeserializeObject<Dictionary<string, SiteTemplate>>(json);
+#pragma warning restore CS8601 // Possible null reference assignment.
             }
 
             /* migrate

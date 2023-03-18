@@ -14,7 +14,7 @@ namespace SrvSurvey
 {
     public partial class FormSettings : Form
     {
-        private Game game = Game.activeGame;
+        private Game game = Game.activeGame!;
         private readonly Dictionary<string, FieldInfo> map = new Dictionary<string, FieldInfo>();
 
 
@@ -43,21 +43,21 @@ namespace SrvSurvey
                         throw new Exception($"Missing setting: {ctrl.Tag}");
                     }
 
-                    var name = ctrl.Tag.ToString();
+                    var name = ctrl.Tag.ToString()!;
                     // Game.log($"Read setting: {name} => {map[name].GetValue(Game.settings)}");
 
                     switch (ctrl.GetType().Name)
                     {
                         case nameof(CheckBox):
-                            ((CheckBox)ctrl).Checked = (bool)map[name].GetValue(Game.settings);
+                            ((CheckBox)ctrl).Checked = (bool)map[name].GetValue(Game.settings)!;
                             break;
 
                         case nameof(TextBox):
-                            ((TextBox)ctrl).Text = (string)map[name].GetValue(Game.settings);
+                            ((TextBox)ctrl).Text = (string)map[name].GetValue(Game.settings)!;
                             break;
 
                         case nameof(NumericUpDown):
-                            ((NumericUpDown)ctrl).Value = (decimal)((double)map[name].GetValue(Game.settings) * 100.0);
+                            ((NumericUpDown)ctrl).Value = (decimal)((double)map[name].GetValue(Game.settings)! * 100.0);
                             break;
 
                         default:
@@ -75,11 +75,11 @@ namespace SrvSurvey
         {
             foreach (Control ctrl in parentControl.Controls)
             {
-                if (ctrl.Tag != null && map.ContainsKey(ctrl.Tag.ToString()))
+                if (ctrl.Tag != null && map.ContainsKey(ctrl.Tag.ToString()!))
                 {
-                    var name = ctrl.Tag.ToString();
+                    var name = ctrl.Tag.ToString()!;
 
-                    object val = null;
+                    object? val = null;
                     switch (ctrl.GetType().Name)
                     {
                         case nameof(CheckBox):

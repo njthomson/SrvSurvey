@@ -27,7 +27,7 @@ namespace SrvSurvey
         protected StreamReader reader;
         public readonly string filepath;
         public readonly DateTime timestamp;
-        public readonly string CommanderName;
+        public readonly string? CommanderName;
 
         public JournalFile(string filepath)
         {
@@ -54,7 +54,7 @@ namespace SrvSurvey
             }
         }
 
-        protected virtual JournalEntry readEntry()
+        protected virtual JournalEntry? readEntry()
         {
             // read next entry, add to list or skip if it's blank
             var entry = this.parseNextEntry();
@@ -65,13 +65,13 @@ namespace SrvSurvey
             return entry;
         }
 
-        private JournalEntry parseNextEntry()
+        private JournalEntry? parseNextEntry()
         {
-            var json = reader.ReadLine();
-            JToken entry = JsonConvert.DeserializeObject<JToken>(json);
+            var json = reader.ReadLine()!;
+            JToken entry = JsonConvert.DeserializeObject<JToken>(json)!;
             if (entry == null) return null;
 
-            var eventName = entry["event"].Value<string>();
+            var eventName = entry["event"]!.Value<string>()!;
             if (typeMap.ContainsKey(eventName))
             {
                 return entry.ToObject(typeMap[eventName]) as JournalEntry;
@@ -149,7 +149,7 @@ namespace SrvSurvey
             Game.log($"searchJournalsDeep: count: {count}");
         }
 
-        public static string getCommanderJournalBefore(string cmdr, DateTime timestamp)
+        public static string? getCommanderJournalBefore(string? cmdr, DateTime timestamp)
         {
             var manyFiles = new DirectoryInfo(SrvSurvey.journalFolder)
                 .EnumerateFiles("*.log", SearchOption.TopDirectoryOnly)
@@ -177,6 +177,8 @@ namespace SrvSurvey
                     while (!reader.EndOfStream)
                     {
                         var line = reader.ReadLine();
+
+                        if (line == null) break;
 
                         // TODO: allow for non-Odyssey
                         if (line.Contains("\"event\":\"Fileheader\"") && line.Contains("\"Odyssey\":false"))

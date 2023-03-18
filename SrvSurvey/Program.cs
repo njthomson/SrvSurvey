@@ -59,12 +59,12 @@ namespace SrvSurvey
                 Game.log($"Program.Creating plotter: {formType.Name}");
 
                 // Get the public instance constructor that takes zero parameters
-                var ctor = formType.GetConstructor(
+                ConstructorInfo ctor = formType.GetConstructor(
                     BindingFlags.Instance | BindingFlags.NonPublic, null,
-                    CallingConventions.HasThis, new Type[0], null);
+                    CallingConventions.HasThis, new Type[0], null)!;
 
                 // create and force form.Name to match class name
-                form = ctor.Invoke(null) as T;
+                form = (T)ctor.Invoke(null);
                 form.Name = formType.Name;
 
                 // add to list, then show
@@ -72,7 +72,7 @@ namespace SrvSurvey
             }
             else
             {
-                form = activePlotters[formType.Name] as T;
+                form = (T)activePlotters[formType.Name];
             }
 
             // show form if not visible

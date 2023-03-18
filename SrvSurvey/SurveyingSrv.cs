@@ -17,7 +17,7 @@ namespace SrvSurvey
     class SurveyingSrv
     {
         public event OnSurveyChange SurveyChange;
-        private JournalWatcher watcher;
+        private readonly JournalWatcher watcher;
         [JsonIgnore]
         public SiteTemplate siteTemplate;
         [JsonIgnore]
@@ -79,7 +79,9 @@ namespace SrvSurvey
 
             // get Cmdr name
             var cmdr = watcher.FindEntryByType<Commander>(lastEntry, true);
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
             this.cmdrName = cmdr.Name;
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
 
             var lastTouchdown = watcher.FindEntryByType<Touchdown>(lastEntry, true);
             if (lastTouchdown != null && lastTouchdown.Latitude == 0 && lastTouchdown.Longitude == 0)
@@ -153,7 +155,11 @@ namespace SrvSurvey
             this.settlementStartIndex = 0;
             var location = watcher.FindEntryByType<Location>(-1, true);
 
+#pragma warning disable CS8604 // Possible null reference argument.
+#pragma warning disable CS8604 // Possible null reference argument.
             onJournalEntry(location, watcher.Entries.IndexOf(location));
+#pragma warning restore CS8604 // Possible null reference argument.
+#pragma warning restore CS8604 // Possible null reference argument.
             Debug.WriteLine("!");
 
             // sadly, we don't have location.NearestDestination_Localised;
@@ -175,7 +181,9 @@ namespace SrvSurvey
             }
             else
             {
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
                 this.siteTemplate = null;
+#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
             }
         }
         public void Export()
@@ -256,7 +264,9 @@ namespace SrvSurvey
             {
                 this.bodyName = entry.Body;
             }
+#pragma warning disable CS8601 // Possible null reference assignment.
             this.settlementName = entry.NearestDestination_Localised;
+#pragma warning restore CS8601 // Possible null reference assignment.
         }
 
         private void onJournalEntry(Location entry, int index)
@@ -286,7 +296,9 @@ namespace SrvSurvey
         {
             this.AtSettlement = false;
             this.pointTouchdown = new LatLong();
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
             this.settlementName = null;
+#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
         }
 
         private void onJournalEntry(CodexEntry entry, int index)

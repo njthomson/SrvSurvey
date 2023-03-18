@@ -74,18 +74,16 @@ namespace SrvSurvey.units
                 return false;
             }
 
-            public override object ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
+            public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
             {
                 
                 var obj = serializer.Deserialize<JToken>(reader);
-                if (!obj.HasValues)
-                {
+                if (obj == null || !obj.HasValues)
                     return null;
-                }
 
                 var latlong = new LatLong2(
-                    obj["lat"].Value<double>(),
-                    obj["long"].Value<double>());
+                    obj["lat"]!.Value<double>(),
+                    obj["long"]!.Value<double>());
                 return latlong;
             }
 
@@ -93,7 +91,10 @@ namespace SrvSurvey.units
             {
                 var latLong = value as LatLong2;
 
-                var obj = new JObject();
+                if (latLong == null)
+                    throw new Exception($"Unexpected value: {value?.GetType().Name}");
+
+                    var obj = new JObject();
                 obj.Add("lat", (double)latLong.Lat);
                 obj.Add("long", (double)latLong.Long);
 

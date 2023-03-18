@@ -36,7 +36,7 @@ namespace SrvSurvey.game
 
         #endregion
 
-        public static Game activeGame { get; private set; }
+        public static Game? activeGame { get; private set; }
         public static Settings settings { get; private set; }
         public bool initialized { get; private set; }
 
@@ -55,7 +55,7 @@ namespace SrvSurvey.game
         /// </summary>
         public string? systemLocation { get; private set; }
 
-        public Game(string cmdr)
+        public Game(string? cmdr)
         {
             log($"Game .ctor");
 
@@ -153,14 +153,14 @@ namespace SrvSurvey.game
         private void Status_StatusChanged()
         {
             //log("status changed");
-            if (this.statusBodyName != null && status.BodyName != this.statusBodyName)
+            if (this.statusBodyName != null && status!.BodyName != this.statusBodyName)
             {
                 // exit early if the body suddenly switches to something different without being NULL first
                 Game.log($"Multiple running games? this.statusBodyName: ${this.statusBodyName} vs status.BodyName: {status.BodyName}");
                 // TODO: some planet/moons are close enough together to trigger this - maybe compare the first word from each?
                 return;
             }
-            this.statusBodyName = status.BodyName;
+            this.statusBodyName = status!.BodyName;
 
             // track if status HasLatLong, toggling behaviours when it changes
             var newHasLatLong = (this.status.Flags & StatusFlags.HasLatLong) > 0;
@@ -175,7 +175,7 @@ namespace SrvSurvey.game
                     var fireDepartingEvent = this.nearBody != null;
                     if (fireDepartingEvent)
                     {
-                        Game.log($"EVENT:departingBody, from {this.nearBody.bodyName}");
+                        Game.log($"EVENT:departingBody, from {this.nearBody?.bodyName}");
                         // change systemLocation to be just system (not the body)
                         this.systemLocation = this.starSystem;
                     }
@@ -201,10 +201,10 @@ namespace SrvSurvey.game
 
         }
 
-        public event GameNearingBody nearingBody;
-        public event GameDepartingBody departingBody;
+        public event GameNearingBody? nearingBody;
+        public event GameDepartingBody? departingBody;
 
-        public event GameModeChanged modeChanged;
+        public event GameModeChanged? modeChanged;
         private GameMode _mode;
         public GameMode mode
         {
@@ -217,8 +217,8 @@ namespace SrvSurvey.game
                     return GameMode.MainMenu;
 
                 // use GuiFocus if it is interesting
-                if (this.status.GuiFocus != GuiFocus.NoFocus)
-                    return (GameMode)(int)this.status.GuiFocus;
+                if (this.status?.GuiFocus != GuiFocus.NoFocus)
+                    return (GameMode)(int)this.status!.GuiFocus;
 
                 if (this.fsdJumping)
                     return GameMode.FSDJumping;
@@ -267,7 +267,9 @@ namespace SrvSurvey.game
         {
             get
             {
-                if ((this.status.Flags & StatusFlags.InMainShip) > 0)
+                if (this.status == null)
+                    return ActiveVehicle.Unknown;
+                else if ((this.status.Flags & StatusFlags.InMainShip) > 0)
                     return ActiveVehicle.MainShip;
                 else if ((this.status.Flags & StatusFlags.InFighter) > 0)
                     return ActiveVehicle.Fighter;
@@ -341,7 +343,7 @@ namespace SrvSurvey.game
 
         public static string journalFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), @"Saved Games\Frontier Developments\Elite Dangerous\");
 
-        public string getLastJournalBefore(string cmdr, DateTime timestamp)
+        public string? getLastJournalBefore(string cmdr, DateTime timestamp)
         {
             var manyFiles = new DirectoryInfo(SrvSurvey.journalFolder)
                 .EnumerateFiles("*.log", SearchOption.TopDirectoryOnly)
@@ -367,7 +369,7 @@ namespace SrvSurvey.game
                 {
                     while (!reader.EndOfStream)
                     {
-                        var line = reader.ReadLine();
+                        var line = reader.ReadLine()!;
 
                         // TODO: allow for non-Odyssey
                         if (line.Contains("\"event\":\"Fileheader\"") && line.Contains("\"Odyssey\":false"))
@@ -389,9 +391,9 @@ namespace SrvSurvey.game
 
         private void initializeFromJournal()
         {
-            log($"Game.initializeFromJournal: BEGIN {this.Commander}, starSystem:{this.starSystem}, systemLocation:{this.systemLocation}, nearBody:{this.nearBody}, journals.Count:{journals.Count}");
+            log($"Game.initializeFromJournal: BEGIN {this.Commander}, starSystem:{this.starSystem}, systemLocation:{this.systemLocation}, nearBody:{this.nearBody}, journals.Count:{journals?.Count}");
 
-            var loadEntry = this.journals.FindEntryByType<LoadGame>(0, false);
+            var loadEntry = this.journals!.FindEntryByType<LoadGame>(0, false);
 
             // read cmdr info
             if (this.Commander == null && loadEntry != null)
@@ -421,7 +423,7 @@ namespace SrvSurvey.game
                     {
                         Game.log($"LastTouchdown: {lastTouchdown}");
 
-                        if (lastTouchdown.Body == status.BodyName)
+                        if (lastTouchdown.Body == status!.BodyName)
                         {
                             onJournalEntry(lastTouchdown);
                             return true;
@@ -432,7 +434,7 @@ namespace SrvSurvey.game
             }
 
             // if we are near a planet
-            if (this.nearBody == null && (status.Flags & StatusFlags.HasLatLong) > 0)
+            if (this.nearBody == null && (status!.Flags & StatusFlags.HasLatLong) > 0)
             {
                 this.createNearBody(status.BodyName);
             }
@@ -463,7 +465,7 @@ namespace SrvSurvey.game
             if (this.nearBody == null)
             {
                 // look for a recent scan event
-                journals.search((Scan scan) =>
+                journals!.search((Scan scan) =>
                 {
                     if (scan.Bodyname == bodyName)
                     {
@@ -486,9 +488,9 @@ namespace SrvSurvey.game
             if (this.nearBody == null)
             {
                 // look for a recent ApproachBody event?
-                journals.search((ApproachBody approachBody) =>
+                journals!.search((ApproachBody approachBody) =>
                 {
-                    if (approachBody.Body == bodyName && status.BodyName == approachBody.Body && status.PlanetRadius > 0)
+                    if (approachBody.Body == bodyName && status!.BodyName == approachBody.Body && status.PlanetRadius > 0)
                     {
                         this.nearBody = new LandableBody(
                             this,
@@ -509,9 +511,9 @@ namespace SrvSurvey.game
             // look for recent Location event?
             if (this.nearBody == null)
             {
-                journals.search((Location locationEntry) =>
+                journals!.search((Location locationEntry) =>
                 {
-                    if (locationEntry.Body == bodyName && status.BodyName == locationEntry.Body && status.PlanetRadius > 0)
+                    if (locationEntry.Body == bodyName && status!.BodyName == locationEntry.Body && status.PlanetRadius > 0)
                     {
                         this.nearBody = new LandableBody(
                             this,
@@ -532,9 +534,9 @@ namespace SrvSurvey.game
             // look for recent SupercruiseExit event?
             if (this.nearBody == null)
             {
-                journals.search((SupercruiseExit exitEvent) =>
+                journals!.search((SupercruiseExit exitEvent) =>
                 {
-                    if (exitEvent.Body == bodyName && status.BodyName == exitEvent.Body && status.PlanetRadius > 0)
+                    if (exitEvent.Body == bodyName && status!.BodyName == exitEvent.Body && status.PlanetRadius > 0)
                     {
                         this.nearBody = new LandableBody(
                             this,
@@ -557,7 +559,7 @@ namespace SrvSurvey.game
                 log($"Genuses" + string.Join(",", this.nearBody.Genuses.Select(_ => _.Genus_Localised)));
             }
 
-            if (this.systemLocation == null && this.nearBody != null && status.BodyName == this.nearBody.bodyName)
+            if (this.systemLocation == null && this.nearBody != null && status!.BodyName == this.nearBody.bodyName)
             {
                 Game.log("createNearBody: add systemLocation needed here?");
                 //this.systemLocation = Util.getLocationString( nearBody.systemAddress, entry.Body) this.nearBody?.bodyName;
@@ -567,7 +569,7 @@ namespace SrvSurvey.game
             {
                 Game.log($"EVENT:nearingBody, at {this.nearBody?.bodyName}");
 
-                if (this.nearingBody != null)
+                if (this.nearingBody != null && this.nearBody != null)
                     this.nearingBody(this.nearBody);
             }
         }
@@ -642,7 +644,7 @@ namespace SrvSurvey.game
 
         #region journal tracking for ground ops
 
-        private LatLong2 _touchdownLocation;
+        private LatLong2? _touchdownLocation;
 
         public LatLong2 touchdownLocation
         {
@@ -651,7 +653,7 @@ namespace SrvSurvey.game
                 if (_touchdownLocation == null)
                 {
                     Game.log($"Searching journals for last touchdown location...");
-                    var lastTouchdown = journals.FindEntryByType<Touchdown>(-1, true);
+                    var lastTouchdown = journals!.FindEntryByType<Touchdown>(-1, true);
                     var lastLiftoff = journals.FindEntryByType<Liftoff>(-1, true);
                     if (lastTouchdown != null)
                     {
@@ -665,7 +667,7 @@ namespace SrvSurvey.game
                         //}
                     }
                 }
-                return _touchdownLocation;
+                return _touchdownLocation!;
             }
         }
 

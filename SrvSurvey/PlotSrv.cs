@@ -1,9 +1,12 @@
-﻿using System;
+﻿using SrvSurvey;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
+#pragma warning disable CS8604 // Possible null reference argument.
 
 namespace SrvSurvey
 {
@@ -25,7 +28,9 @@ namespace SrvSurvey
 
         public Image plotSrv { get; private set; }
 
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         public PlotSrv(JournalWatcher watcher)
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         {
             this.watcher = watcher;
             watcher.onJournalEntry += Watcher_onJournalEntry;
@@ -112,3 +117,5 @@ namespace SrvSurvey
         }
     }
 }
+
+#pragma warning restore CS8604 // Possible null reference argument.

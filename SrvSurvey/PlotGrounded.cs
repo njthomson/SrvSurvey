@@ -16,11 +16,11 @@ namespace SrvSurvey
 {
     public partial class PlotGrounded : Form, PlotterForm
     {
-        private Game game = Game.activeGame;
+        private Game game = Game.activeGame!;
 
-        private TrackingDelta srvLocation;
+        private TrackingDelta? srvLocation;
 
-        private TrackingDelta td;
+        private TrackingDelta? td;
 
         private PlotGrounded()
         {
@@ -52,15 +52,15 @@ namespace SrvSurvey
         {
             this.BackgroundImage = GameGraphics.getBackgroundForForm(this);
 
-            game.status.StatusChanged += Status_StatusChanged;
+            game.status!.StatusChanged += Status_StatusChanged;
             game.modeChanged += Game_modeChanged;
 
             // force a mode switch, that will initialize
             this.Game_modeChanged(game.mode);
             this.Status_StatusChanged();
 
-            game.journals.onJournalEntry += Journals_onJournalEntry;
-            game.nearBody.bioScanEvent += NearBody_bioScanEvent;
+            game.journals!.onJournalEntry += Journals_onJournalEntry;
+            game.nearBody!.bioScanEvent += NearBody_bioScanEvent;
 
             this.reposition(Elite.getWindowRect());
 
@@ -108,17 +108,17 @@ namespace SrvSurvey
 
         private void onJournalEntry(Disembark entry)
         {
-            Game.log($"Disembark srvLocation {game.status.here}");
+            Game.log($"Disembark srvLocation {game.status!.here}");
             if (entry.SRV && this.srvLocation == null)
             {
-                this.srvLocation = new TrackingDelta(game.nearBody.radius, game.status.here, new LatLong2(game.status));
+                this.srvLocation = new TrackingDelta(game.nearBody!.radius, game.status.here, new LatLong2(game.status));
                 this.Invalidate();
             }
         }
 
         private void onJournalEntry(Embark entry)
         {
-            Game.log($"Embark {game.status.here}");
+            Game.log($"Embark {game.status!.here}");
             if (entry.SRV && this.srvLocation != null)
             {
                 this.srvLocation = null;
@@ -143,10 +143,10 @@ namespace SrvSurvey
         private void Status_StatusChanged()
         {
             if (this.td != null)
-                this.td.Point1 = game.status.here;
+                this.td.Point1 = game.status!.here;
 
             if (this.srvLocation != null)
-                this.srvLocation.Point1 = game.status.here;
+                this.srvLocation.Point1 = game.status!.here;
 
             this.Invalidate();
         }
@@ -190,7 +190,7 @@ namespace SrvSurvey
                 g.ResetTransform();
                 g.TranslateTransform(w, h);
                 g.ScaleTransform(scale, scale);
-                g.RotateTransform(360 - game.status.Heading);
+                g.RotateTransform(360 - game.status!.Heading);
 
                 const float touchdownSize = 64f;
                 var rect = new RectangleF((float)td.dx - touchdownSize, (float)-td.dy - touchdownSize, touchdownSize * 2, touchdownSize * 2);
@@ -205,7 +205,7 @@ namespace SrvSurvey
                 g.ResetTransform();
                 g.TranslateTransform(w, h);
                 g.ScaleTransform(scale, scale);
-                g.RotateTransform(360 - game.status.Heading);
+                g.RotateTransform(360 - game.status!.Heading);
 
                 const float srvSize = 32f;
                 var rect = new RectangleF((float)srvLocation.dx - srvSize, (float)-srvLocation.dy - srvSize, srvSize * 2, srvSize * 2);
@@ -215,7 +215,7 @@ namespace SrvSurvey
             // draw current location pointer (always at center of plot + unscaled)
             g.ResetTransform();
             g.TranslateTransform(w, h);
-            g.RotateTransform(360 - game.status.Heading);
+            g.RotateTransform(360 - game.status!.Heading);
 
             var locSz = 5f;
             g.DrawEllipse(GameColors.Lime2, -locSz, -locSz, locSz * 2, locSz * 2);
@@ -233,11 +233,11 @@ namespace SrvSurvey
                 this.drawBearingTo(g, 4 + w, 8, "SRV:", this.srvLocation.Point2);
 
             float y = this.Height - 24;
-            if (game.nearBody.scanOne != null)
-                this.drawBearingTo(g, 10, y, "Scan one:", game.nearBody.scanOne.location);
+            if (game.nearBody!.scanOne != null)
+                this.drawBearingTo(g, 10, y, "Scan one:", game.nearBody.scanOne.location!);
 
             if (game.nearBody.scanTwo != null)
-                this.drawBearingTo(g, 10 + w, y, "Scan two:", game.nearBody.scanTwo.location);
+                this.drawBearingTo(g, 10 + w, y, "Scan two:", game.nearBody.scanTwo.location!);
         }
 
         private void drawBearingTo(Graphics g, float x, float y, string txt, LatLong2 location)
@@ -252,7 +252,7 @@ namespace SrvSurvey
             var r = new RectangleF(x, y, sz * 2, sz * 2);
             g.DrawEllipse(GameColors.penGameOrange2, r);
 
-            var dd = new TrackingDelta(game.nearBody.radius, game.status.here, location);
+            var dd = new TrackingDelta(game.nearBody!.radius, game.status!.here, location);
 
             Angle deg = dd.angle - game.status.Heading;
             var dx = (float)Math.Sin(Util.degToRad(deg)) * 10F;
@@ -275,7 +275,7 @@ namespace SrvSurvey
             g.TranslateTransform(w, h);
 
             // draw compass rose lines
-            g.RotateTransform(360 - game.status.Heading);
+            g.RotateTransform(360 - game.status!.Heading);
             g.DrawLine(Pens.DarkRed, -this.Width, 0, +this.Width, 0);
             g.DrawLine(Pens.DarkRed, 0, 0, 0, +this.Height);
             g.DrawLine(Pens.Red, 0, -this.Height, 0, 0);
@@ -292,7 +292,7 @@ namespace SrvSurvey
             g.ResetTransform();
             g.TranslateTransform(w, h);
             g.ScaleTransform(scale, scale);
-            g.RotateTransform(360 - game.status.Heading);
+            g.RotateTransform(360 - game.status!.Heading);
 
             // use the same Tracking delta for all bioScans against the same currentLocation
             var currentLocation = new LatLong2(this.game.status);
@@ -326,7 +326,7 @@ namespace SrvSurvey
         {
             var fudge = 10;
 
-            d.Point2 = scan.location;
+            d.Point2 = scan.location!;
             var rect = new RectangleF((float)d.dx - scan.radius, (float)-d.dy - scan.radius, scan.radius * 2, scan.radius * 2);
             //Game.log($"d.dx: {rect.X}, d.dy: {rect.Y}");
 
@@ -344,7 +344,7 @@ namespace SrvSurvey
 
             g.ResetTransform();
 
-            float dist = game.nearBody.scanOne?.radius ?? 100;
+            float dist = game.nearBody?.scanOne?.radius ?? 100;
 
             var txt = Util.metersToString(dist);
             var txtSz = g.MeasureString(txt, Game.settings.fontSmall);
