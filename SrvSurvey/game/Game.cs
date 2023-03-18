@@ -632,6 +632,7 @@ namespace SrvSurvey.game
             this.fsdJumping = false;
             this.starSystem = entry.StarSystem;
             this.systemLocation = Util.getLocationString(entry.StarSystem, entry.Body);
+            this.statusBodyName = null;
             this.checkModeChange();
         }
 
