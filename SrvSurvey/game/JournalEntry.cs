@@ -270,7 +270,7 @@ namespace SrvSurvey
     {
         public string Type { get; set; }
         public string Type_Localised { get; set; }
-        public string Count { get; set; }
+        public int Count { get; set; }
     }
 
     class ScanGenus

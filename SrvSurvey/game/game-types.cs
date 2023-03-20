@@ -72,7 +72,7 @@ namespace SrvSurvey.game
 
     delegate void GameModeChanged(GameMode newMode);
     delegate void GameNearingBody(LandableBody nearBody);
-    delegate void GameDepartingBody();
+    delegate void GameDepartingBody(LandableBody nearBody);
 
     public interface ILocation
     {

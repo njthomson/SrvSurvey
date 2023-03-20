@@ -30,6 +30,7 @@ namespace SrvSurvey
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             this.btnGroundTarget = new System.Windows.Forms.Button();
             this.btnQuit2 = new System.Windows.Forms.Button();
             this.txtTargetLatLong = new System.Windows.Forms.TextBox();
@@ -54,9 +55,14 @@ namespace SrvSurvey
             this.btnSettings = new System.Windows.Forms.Button();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.lblFullScreen = new System.Windows.Forms.Label();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.txtGuardianSite = new System.Windows.Forms.TextBox();
+            this.lblGuardianCount = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
+            this.groupBox4.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnGroundTarget
@@ -78,7 +84,7 @@ namespace SrvSurvey
             this.btnQuit2.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnQuit2.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.btnQuit2.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnQuit2.Location = new System.Drawing.Point(308, 397);
+            this.btnQuit2.Location = new System.Drawing.Point(308, 483);
             this.btnQuit2.Name = "btnQuit2";
             this.btnQuit2.Size = new System.Drawing.Size(75, 23);
             this.btnQuit2.TabIndex = 8;
@@ -126,7 +132,7 @@ namespace SrvSurvey
             this.groupBox1.Controls.Add(this.btnClearTarget);
             this.groupBox1.Controls.Add(this.btnGroundTarget);
             this.groupBox1.Controls.Add(this.txtTargetLatLong);
-            this.groupBox1.Location = new System.Drawing.Point(12, 274);
+            this.groupBox1.Location = new System.Drawing.Point(12, 352);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(371, 78);
             this.groupBox1.TabIndex = 14;
@@ -288,7 +294,7 @@ namespace SrvSurvey
             this.btnLogs.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnLogs.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.btnLogs.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnLogs.Location = new System.Drawing.Point(93, 397);
+            this.btnLogs.Location = new System.Drawing.Point(93, 483);
             this.btnLogs.Name = "btnLogs";
             this.btnLogs.Size = new System.Drawing.Size(75, 23);
             this.btnLogs.TabIndex = 15;
@@ -302,7 +308,7 @@ namespace SrvSurvey
             this.btnSettings.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnSettings.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.btnSettings.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnSettings.Location = new System.Drawing.Point(12, 397);
+            this.btnSettings.Location = new System.Drawing.Point(12, 483);
             this.btnSettings.Name = "btnSettings";
             this.btnSettings.Size = new System.Drawing.Size(75, 23);
             this.btnSettings.TabIndex = 16;
@@ -312,11 +318,11 @@ namespace SrvSurvey
             // 
             // linkLabel1
             // 
-            this.linkLabel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.linkLabel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.linkLabel1.Font = new System.Drawing.Font("Lucida Sans Typewriter", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.linkLabel1.LinkArea = new System.Windows.Forms.LinkArea(16, 38);
-            this.linkLabel1.Location = new System.Drawing.Point(10, 355);
+            this.linkLabel1.Location = new System.Drawing.Point(10, 441);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(373, 39);
             this.linkLabel1.TabIndex = 17;
@@ -341,12 +347,57 @@ namespace SrvSurvey
             this.lblFullScreen.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.lblFullScreen.Visible = false;
             // 
+            // groupBox4
+            // 
+            this.groupBox4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox4.Controls.Add(this.txtGuardianSite);
+            this.groupBox4.Controls.Add(this.lblGuardianCount);
+            this.groupBox4.Controls.Add(this.label5);
+            this.groupBox4.Location = new System.Drawing.Point(12, 268);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(371, 78);
+            this.groupBox4.TabIndex = 19;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Guardian sites: (work in progress)";
+            this.groupBox4.Visible = false;
+            // 
+            // txtGuardianSite
+            // 
+            this.txtGuardianSite.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtGuardianSite.Location = new System.Drawing.Point(16, 31);
+            this.txtGuardianSite.Name = "txtGuardianSite";
+            this.txtGuardianSite.ReadOnly = true;
+            this.txtGuardianSite.Size = new System.Drawing.Size(348, 20);
+            this.txtGuardianSite.TabIndex = 14;
+            this.txtGuardianSite.Text = "<Guardian site>";
+            // 
+            // lblGuardianCount
+            // 
+            this.lblGuardianCount.AutoSize = true;
+            this.lblGuardianCount.Location = new System.Drawing.Point(88, 16);
+            this.lblGuardianCount.Name = "lblGuardianCount";
+            this.lblGuardianCount.Size = new System.Drawing.Size(12, 12);
+            this.lblGuardianCount.TabIndex = 3;
+            this.lblGuardianCount.Text = "N";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(14, 16);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(68, 12);
+            this.label5.TabIndex = 2;
+            this.label5.Text = "Detected:";
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnQuit2;
-            this.ClientSize = new System.Drawing.Size(395, 432);
+            this.ClientSize = new System.Drawing.Size(395, 518);
+            this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.lblFullScreen);
             this.Controls.Add(this.linkLabel1);
             this.Controls.Add(this.btnSettings);
@@ -357,7 +408,8 @@ namespace SrvSurvey
             this.Controls.Add(this.label2);
             this.Controls.Add(this.btnQuit2);
             this.Font = new System.Drawing.Font("Lucida Sans Typewriter", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "Main";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
@@ -373,6 +425,8 @@ namespace SrvSurvey
             this.groupBox2.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -403,5 +457,9 @@ namespace SrvSurvey
         private System.Windows.Forms.Label lblTrackTargetStatus;
         private System.Windows.Forms.TextBox txtNearBody;
         private Label lblFullScreen;
+        private GroupBox groupBox4;
+        private Label lblGuardianCount;
+        private Label label5;
+        private TextBox txtGuardianSite;
     }
 }

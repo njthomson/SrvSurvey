@@ -172,19 +172,14 @@ namespace SrvSurvey.game
                 if (!newHasLatLong)
                 {
                     // we are departing
-                    var fireDepartingEvent = this.nearBody != null;
-                    if (fireDepartingEvent)
+                    if (this.departingBody != null && this.nearBody != null)
                     {
-                        Game.log($"EVENT:departingBody, from {this.nearBody?.bodyName}");
+                        Game.log($"EVENT:departingBody, from {this.nearBody.bodyName}");
                         // change systemLocation to be just system (not the body)
                         this.systemLocation = this.starSystem;
-                    }
 
-                    // clear the reference before raising the event
-                    this.nearBody = null;
-                    if (fireDepartingEvent && this.departingBody != null)
-                    {
-                        this.departingBody();
+                        this.departingBody(this.nearBody);
+                        this.nearBody = null;
                     }
                 }
                 else
@@ -563,6 +558,26 @@ namespace SrvSurvey.game
             {
                 Game.log("createNearBody: add systemLocation needed here?");
                 //this.systemLocation = Util.getLocationString( nearBody.systemAddress, entry.Body) this.nearBody?.bodyName;
+            }
+
+            if (this.nearBody?.guardianSiteCount > 0)
+            {
+                // do we have an ApproachSettlement for this site?
+                this.journals!.searchDeep<ApproachSettlement>(
+                    (ApproachSettlement _) =>
+                    {
+                        if (_.BodyName == status?.BodyName)
+                        {
+                            this.nearBody.onJournalEntry(_);
+                            return true;
+                        }
+                        return false;
+                    },
+                    (JournalFile journals) =>
+                    {
+                        // stop searching older journal files if we see we approached this body
+                        return journals.search((ApproachBody _) => true);
+                    });
             }
 
             if (this.nearBody != null)

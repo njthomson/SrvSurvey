@@ -70,6 +70,8 @@ namespace SrvSurvey
         {
             using (var sr = new StreamReader(new FileStream(displaySettingsXml, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)))
             {
+                if (sr == null) return 0;
+
                 var doc = XDocument.Load(sr);
                 var element = doc.Element("DisplayConfig")!.Element("FullScreen")!;
                 Game.log(element);

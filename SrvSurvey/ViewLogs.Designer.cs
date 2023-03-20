@@ -29,6 +29,7 @@ namespace SrvSurvey
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ViewLogs));
             this.txtLogs = new System.Windows.Forms.TextBox();
             this.btnClose = new System.Windows.Forms.Button();
             this.btnClear = new System.Windows.Forms.Button();
@@ -96,10 +97,12 @@ namespace SrvSurvey
             this.Controls.Add(this.txtLogs);
             this.Controls.Add(this.panel1);
             this.DoubleBuffered = true;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.Name = "ViewLogs";
+            this.ShowInTaskbar = false;
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
-            this.Text = "Survey Logs";
+            this.Text = "SrvSurvey Logs";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ViewLogs_FormClosed);
             this.Load += new System.EventHandler(this.ViewLogs_Load);
             this.Shown += new System.EventHandler(this.ViewLogs_Shown);

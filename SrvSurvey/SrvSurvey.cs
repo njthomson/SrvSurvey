@@ -673,15 +673,15 @@ namespace SrvSurvey
 
         private void comboType_TextChanged(object sender, EventArgs e)
         {
-            var name = comboType.Text.ToLower();
-            if (SiteTemplate.sites.ContainsKey(name))
-            {
-                this.setSiteTemplate(SiteTemplate.sites[name]);
-            }
-            else
-            {
-                this.setSiteTemplate(null);
-            }
+            //var name = comboType.Text.ToLower();
+            //if (SiteTemplate.sites.ContainsKey(name))
+            //{
+            //    this.setSiteTemplate(SiteTemplate.sites[name]);
+            //}
+            //else
+            //{
+            //    this.setSiteTemplate(null);
+            //}
         }
 
         private void btnSave_Click(object sender, EventArgs e)

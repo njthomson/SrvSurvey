@@ -4,6 +4,13 @@ using System.Diagnostics;
 
 namespace SrvSurvey
 {
+    enum SiteType
+    {
+        alpha,
+        beta,
+        gamma
+    }
+
     enum POIType
     {
         Unknown = 0,
@@ -61,6 +68,7 @@ namespace SrvSurvey
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         public Point imageOffset;
         public double scaleFactor;
+        public float mapScale = 0.4f;
         public SortedDictionary<string, SitePOI> poi = new SortedDictionary<string, SitePOI>();
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
@@ -195,7 +203,7 @@ namespace SrvSurvey
         }
 
 
-        public static Dictionary<string, SiteTemplate> sites = new Dictionary<string, SiteTemplate>();
+        public static Dictionary<SiteType, SiteTemplate> sites = new Dictionary<SiteType, SiteTemplate>();
         /*{
             { "alpha", new SiteTemplate()
                 {
@@ -297,9 +305,7 @@ namespace SrvSurvey
             if (File.Exists(filepath))
             {
                 var json = File.ReadAllText(filepath);
-#pragma warning disable CS8601 // Possible null reference assignment.
-                SiteTemplate.sites = JsonConvert.DeserializeObject<Dictionary<string, SiteTemplate>>(json);
-#pragma warning restore CS8601 // Possible null reference assignment.
+                SiteTemplate.sites = JsonConvert.DeserializeObject<Dictionary<SiteType, SiteTemplate>>(json)!;
             }
 
             /* migrate

@@ -53,9 +53,7 @@ namespace SrvSurvey
         {
             this.checkFullScreenGraphics();
 
-            this.updateCommanderTexts();
-            this.updateBioTexts();
-            this.updateTrackTargetTexts();
+            this.updateAllControls();
 
             this.lastWindowRect = Elite.getWindowRect();
 
@@ -64,8 +62,15 @@ namespace SrvSurvey
                 this.newGame();
             }
 
-
             this.timer1.Start();
+        }
+
+        private void updateAllControls()
+        {
+            this.updateCommanderTexts();
+            this.updateBioTexts();
+            this.updateTrackTargetTexts();
+            this.updateGuardianTexts();
         }
 
         private void FolderWatcher_Changed(object sender, FileSystemEventArgs e)
@@ -105,9 +110,7 @@ namespace SrvSurvey
 
             Program.closeAllPlotters();
 
-            this.updateCommanderTexts();
-            this.updateBioTexts();
-            this.updateTrackTargetTexts();
+            this.updateAllControls();
         }
 
         private void newGame()
@@ -133,35 +136,31 @@ namespace SrvSurvey
 
             Program.showPlotter<PlotPulse>();
 
-            // are there already bio signals?
-            this.updateBioTexts();
-
-            // should we show the track-target plotter?
-            this.updateTrackTargetTexts();
-            this.updateCommanderTexts();
+            this.updateAllControls();
         }
 
-        private void Game_departingBody()
+        private void Game_departingBody(LandableBody nearBody)
         {
-            this.updateCommanderTexts();
-            this.updateBioTexts();
-            this.updateTrackTargetTexts();
+            nearBody.bioScanEvent -= NearBody_bioScanEvent;
+            this.NearBody_bioScanEvent();
         }
 
         private void Game_nearingBody(LandableBody nearBody)
         {
-            this.updateCommanderTexts();
-            this.updateBioTexts();
-            this.updateTrackTargetTexts();
+            this.NearBody_bioScanEvent();
+            nearBody.bioScanEvent += NearBody_bioScanEvent;
+        }
+
+        private void NearBody_bioScanEvent()
+        {
+            this.updateAllControls();
         }
 
         private void Game_modeChanged(GameMode newMode)
         {
             if (this.txtMode.Text != newMode.ToString())
             {
-                this.updateCommanderTexts();
-                this.updateBioTexts();
-                this.updateTrackTargetTexts();
+                this.updateAllControls();
             }
         }
 
@@ -260,7 +259,7 @@ namespace SrvSurvey
                 lblTrackTargetStatus.Text = "-";
                 Program.closePlotter(nameof(PlotTrackTarget));
             }
-            else if (!Game.settings.targetLatLongActive || game == null || game.atMainMenu)
+            else if (!Game.settings.targetLatLongActive)
             {
                 txtTargetLatLong.Text = "<none>";
                 lblTrackTargetStatus.Text = "Inactive";
@@ -277,6 +276,30 @@ namespace SrvSurvey
                 txtTargetLatLong.Text = Game.settings.targetLatLong.ToString();
                 lblTrackTargetStatus.Text = "Ready";
                 Program.closePlotter(nameof(PlotTrackTarget));
+            }
+        }
+
+        private void updateGuardianTexts()
+        {
+            if (true || game == null || game.atMainMenu || !game.isRunning || !game.initialized)
+            {
+                lblGuardianCount.Text = "";
+                txtGuardianSite.Text = "";
+                Program.closePlotter(nameof(PlotGuardians));
+            }
+            else if (game.nearBody == null || game.nearBody.guardianSiteCount == 0)
+            {
+                lblGuardianCount.Text = "0";
+                txtGuardianSite.Text = "";
+                Program.closePlotter(nameof(PlotGuardians));
+            }
+            else
+            {
+                lblGuardianCount.Text = game.nearBody.guardianSiteCount.ToString();
+                txtGuardianSite.Text = this.game.nearBody.guardianSiteName + " " + this.game.nearBody.guardianSiteLocation;
+
+                if (game.showBodyPlotters && !string.IsNullOrEmpty(this.game.nearBody.guardianSiteName) && game.touchdownLocation != null)
+                    Program.showPlotter<PlotGuardians>();
             }
         }
 
@@ -335,15 +358,6 @@ namespace SrvSurvey
             }
         }
 
-        //private void onJournalEntry(SAASignalsFound entry)
-        //{
-        //    Game.log($"Main.SAASignalsFound {entry.BodyName}");
-        //    if (entry.Genuses?.Count > 0)
-        //    {
-        //        if (Game.settings.autoShowBioSummary)
-        //            Program.showPlotter<PlotBioStatus>();
-        //    }
-        //}
 
         private void onJournalEntry(SupercruiseEntry entry)
         {
@@ -352,16 +366,6 @@ namespace SrvSurvey
             // close these plotters upon super-cruise
             Program.closePlotter(nameof(PlotGrounded));
         }
-
-        //private void onJournalEntry(LeaveBody entry)
-        //{
-        //    Game.log($"LeaveBody {entry.Body}");
-
-        //    // close these plotters upon leaving a body
-        //    Program.closePlotter(nameof(PlotBioStatus));
-        //    Program.closePlotter(nameof(PlotGrounded));
-        //    Program.closePlotter(nameof(PlotTrackTarget));
-        //}
 
         private void onJournalEntry(SendText entry)
         {

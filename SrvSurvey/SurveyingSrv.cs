@@ -173,18 +173,18 @@ namespace SrvSurvey
 
         public void setSettlementType(string newSettlementType)
         {
-            this.settlementType = newSettlementType;
-            if (this.settlementType != null && SiteTemplate.sites.ContainsKey(this.settlementType))
-            {
-                this.siteTemplate = SiteTemplate.sites[this.settlementType];
-                LatLong.Scale = this.siteTemplate.scaleFactor;
-            }
-            else
-            {
-#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
-                this.siteTemplate = null;
-#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
-            }
+//            this.settlementType = newSettlementType;
+//            if (this.settlementType != null && SiteTemplate.sites.ContainsKey(this.settlementType))
+//            {
+//                this.siteTemplate = SiteTemplate.sites[this.settlementType];
+//                LatLong.Scale = this.siteTemplate.scaleFactor;
+//            }
+//            else
+//            {
+//#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
+//                this.siteTemplate = null;
+//#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
+//            }
         }
         public void Export()
         {

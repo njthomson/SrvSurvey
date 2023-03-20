@@ -1,9 +1,5 @@
 ﻿using SrvSurvey.units;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SrvSurvey.game
 {
@@ -22,6 +18,9 @@ namespace SrvSurvey.game
         public BioScan? scanOne;
         public BioScan? scanTwo;
         public Dictionary<string, string> analysedSpecies = new Dictionary<string, string>();
+        public int guardianSiteCount;
+        public string? guardianSiteName;
+        public LatLong2? guardianSiteLocation;
 
         public LandableBody(Game game, string bodyName, int bodyId, long systemAddress)
         {
@@ -88,6 +87,18 @@ namespace SrvSurvey.game
             if (this.bioScanEvent != null) this.bioScanEvent();
         }
 
+        public void onJournalEntry(ApproachSettlement entry)
+        {
+            // we only care about Guardian settlements
+            if (!entry.Name.StartsWith("$Ancient:")) return;
+
+            Game.log($"ApproachSettlement: {entry.Name_Localised}");
+            this.guardianSiteName = entry.Name_Localised;
+            this.guardianSiteLocation = new LatLong2(entry);
+
+            if (this.bioScanEvent != null) this.bioScanEvent();
+        }
+
         /// <summary>
         /// Meters per 1° of Latitude or Longitude
         /// </summary>
@@ -108,36 +119,40 @@ namespace SrvSurvey.game
         {
             if (signalsEntry == null) return;
 
-            // find the signals
+            // clear signals if we're at a different body
             if (signalsEntry.SystemAddress == this.systemAddress && signalsEntry.BodyID == this.bodyId)
             {
                 this.Signals = new List<ScanSignal>(signalsEntry.Signals);
-            }
+                if (signalsEntry.Signals?.Count > 0)
+                {
+                    this.guardianSiteCount = this.Signals.Find(_ => _.Type == "$SAA_SignalType_Guardian;")?.Count ?? 0;
+                }
 
-            if (signalsEntry.Genuses?.Count > 0)
-            {
-                this.Genuses = new List<ScanGenus>(signalsEntry.Genuses);
+                if (signalsEntry.Genuses?.Count > 0)
+                {
+                    this.Genuses = new List<ScanGenus>(signalsEntry.Genuses);
 
-                // see if we can find recent BioScans, traversing prior journal files if needed
-                game.journals!.searchDeep(
-                    (ScanOrganic scan) =>
-                    {
-                        // look for Analyze ScanOrganics.
-                        // TODO: only on current body!
-                        if (scan.SystemAddress == this.systemAddress && scan.Body == this.bodyId && scan.ScanType == ScanType.Analyse && !this.analysedSpecies.ContainsKey(scan.Genus))
+                    // see if we can find recent BioScans, traversing prior journal files if needed
+                    game.journals!.searchDeep(
+                        (ScanOrganic scan) =>
                         {
-                            this.analysedSpecies.Add(scan.Genus, scan.Species_Localised);
-                        }
+                            // look for Analyze ScanOrganics.
+                            // TODO: only on current body!
+                            if (scan.SystemAddress == this.systemAddress && scan.Body == this.bodyId && scan.ScanType == ScanType.Analyse && !this.analysedSpecies.ContainsKey(scan.Genus))
+                            {
+                                this.analysedSpecies.Add(scan.Genus, scan.Species_Localised);
+                            }
 
-                        // stop if we've scanned everything
-                        return this.analysedSpecies.Count == this.Genuses.Count;
-                    },
-                    (JournalFile journals) =>
-                    {
-                        // stop searching older journal files if we see we approached this body
-                        return journals.search((FSDJump _) => true);
-                    }
-                );
+                            // stop if we've scanned everything
+                            return this.analysedSpecies.Count == this.Genuses.Count;
+                        },
+                        (JournalFile journals) =>
+                        {
+                            // stop searching older journal files if we see we reached this system
+                            return journals.search((FSDJump _) => true);
+                        }
+                    );
+                }
             }
         }
 
