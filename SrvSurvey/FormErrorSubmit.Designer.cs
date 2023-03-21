@@ -119,8 +119,6 @@
             // 
             this.checkIncludeLogs.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkIncludeLogs.AutoSize = true;
-            this.checkIncludeLogs.Checked = true;
-            this.checkIncludeLogs.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkIncludeLogs.Location = new System.Drawing.Point(14, 363);
             this.checkIncludeLogs.Name = "checkIncludeLogs";
             this.checkIncludeLogs.Size = new System.Drawing.Size(164, 16);

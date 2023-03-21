@@ -28,6 +28,9 @@ namespace SrvSurvey
         {
             this.ex = ex;
             InitializeComponent();
+
+            // for privacy reasons, this must be unchecked by default
+            checkIncludeLogs.Checked = false;
         }
 
         private void ErrorSubmit_Load(object sender, EventArgs e)
