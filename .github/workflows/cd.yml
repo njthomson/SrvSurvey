@@ -47,6 +47,7 @@ jobs:
             MsixPackageId: SrvSurvey.Dev
             MsixPublisherId: CN=751EEF47-F0CD-49C5-B803-2D61CC0B95D6
             MsixPackageDisplayName: SrvSurvey (Dev)
+            MsixPackagePathSuffix: Debug_Test
 
           # includes the following variables for the matrix leg matching Prod_Sideload
           - channel: Prod_Sideload
@@ -56,6 +57,7 @@ jobs:
             MsixPackageId: SrvSurvey.ProdSideload
             MsixPublisherId: CN=751EEF47-F0CD-49C5-B803-2D61CC0B95D6
             MsixPackageDisplayName: SrvSurvey (ProdSideload)
+            MsixPackagePathSuffix: Test
 
     runs-on: windows-latest
 
@@ -147,13 +149,14 @@ jobs:
       run: Remove-Item -path $env:Wap_Project_Directory\$env:SigningCertificate
       if: matrix.ChannelName != 'Prod_Store'
 
-    # Archive the package
-    - name: Create archive
-      run: Compress-Archive -Path $env:Wap_Project_Directory\$env:App_Packages_Directory\* -DestinationPath $env:Wap_Project_Directory\$env:App_Packages_Directory\$env:App_Packages_Archive
-
     # Upload the package: https://github.com/marketplace/actions/upload-a-build-artifact
     - name: Upload build artifacts
       uses: actions/upload-artifact@v3
       with:
-        name: SrvSurvey-${{ env.NBGV_AssemblyFileVersion }}
-        path: ${{ env.Wap_Project_Directory }}/${{ env.App_Packages_Directory }}/
+        name: SrvSurvey_${{ steps.nbgv.outputs.AssemblyFileVersion }}_${{ env.RuntimeIdentifier }}_${{ env.Configuration }}
+        path: ${{ env.Wap_Project_Directory }}/${{ env.App_Packages_Directory }}/${{ env.Wap_Project_Directory }}_${{ steps.nbgv.outputs.AssemblyFileVersion }}_${{ env.RuntimeIdentifier }}_${{ env.MsixPackagePathSuffix }}/
+      env:
+        Configuration: ${{ matrix.Configuration }}
+        RuntimeIdentifier: win-${{ matrix.targetplatform }}
+        MsixPackagePathSuffix: ${{ matrix.MsixPackagePathSuffix }}
+
