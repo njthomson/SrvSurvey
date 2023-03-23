@@ -35,9 +35,7 @@ jobs:
     # development, production for sideload applications and production for the Microsoft store.
     # For more information, see https://help.github.com/en/actions/configuring-and-managing-workflows/configuring-a-workflow#configuring-a-build-matrix
       matrix:
-        # channel: [Dev, Prod_Sideload, Prod_Store]
         channel: [Dev, Prod_Sideload]
-        # targetPlatform: [x86, x64]
         targetPlatform: [x64]
         include:
 
@@ -58,15 +56,6 @@ jobs:
             MsixPackageId: SrvSurvey.ProdSideload
             MsixPublisherId: CN=751EEF47-F0CD-49C5-B803-2D61CC0B95D6
             MsixPackageDisplayName: SrvSurvey (ProdSideload)
-
-          # includes the following variables for the matrix leg matching Prod_Store
-          - channel: Prod_Store
-            Configuration: Release
-            ChannelName: Prod_Store
-            DistributionUrl:
-            MsixPackageId: SrvSurvey.ProdStore
-            MsixPublisherId: CN=751EEF47-F0CD-49C5-B803-2D61CC0B95D6
-            MsixPackageDisplayName: SrvSurvey (ProdStore)
 
     runs-on: windows-latest
 
@@ -94,7 +83,7 @@ jobs:
     - name: Install .NET Core
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: '6.0.x'
+        dotnet-version: '7.0.x'
 
     # Add  MsBuild to the PATH: https://github.com/microsoft/setup-msbuild
     - name: Setup MSBuild.exe
