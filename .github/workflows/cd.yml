@@ -153,10 +153,10 @@ jobs:
     - name: Upload build artifacts
       uses: actions/upload-artifact@v3
       with:
-        name: SrvSurvey_${{ steps.nbgv.outputs.AssemblyFileVersion }}_${{ env.RuntimeIdentifier }}_${{ env.Configuration }}
-        path: ${{ env.Wap_Project_Directory }}/${{ env.App_Packages_Directory }}/${{ env.Wap_Project_Directory }}_${{ steps.nbgv.outputs.AssemblyFileVersion }}_${{ env.RuntimeIdentifier }}_${{ env.MsixPackagePathSuffix }}/
+        name: SrvSurvey_${{ steps.nbgv.outputs.AssemblyFileVersion }}_${{ env.TargetPlatform }}_${{ env.Configuration }}
+        path: ${{ env.Wap_Project_Directory }}/${{ env.App_Packages_Directory }}/${{ env.Wap_Project_Directory }}_${{ steps.nbgv.outputs.AssemblyFileVersion }}_${{ env.TargetPlatform }}_${{ env.MsixPackagePathSuffix }}/
       env:
         Configuration: ${{ matrix.Configuration }}
-        RuntimeIdentifier: win-${{ matrix.targetplatform }}
+        TargetPlatform: ${{ matrix.targetplatform }}
         MsixPackagePathSuffix: ${{ matrix.MsixPackagePathSuffix }}
 
