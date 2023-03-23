@@ -26,7 +26,6 @@
   <ItemGroup>
     <Content Include="images\planet.ico" />
     <Content Include="images\surface.png" />
-    <Content Include="logo.ico" />
   </ItemGroup>
 
   <ItemGroup>
