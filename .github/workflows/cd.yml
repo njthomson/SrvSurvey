@@ -130,6 +130,7 @@ jobs:
         Configuration: ${{ matrix.Configuration }}
         GenerateAppInstallerFile: True
         TargetPlatform: ${{ matrix.targetplatform }}
+        NBGV_AssemblyFileVersion: ${{ steps.nbgv.outputs.AssemblyFileVersion }}
 
     # Build the Windows Application Packaging project for Prod_Store
     - name: Build the Windows Application Packaging Project (wapproj) for ${{ matrix.ChannelName }}
