@@ -61,7 +61,7 @@
   <data name="pictureBox2.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAT8AAAGQCAIAAABXjvDHAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        vgAADr4B6kKxwAAA/7JJREFUeF6s/QmXI8eVpYvqT1SJzExmZgRmIAKIOXJgkqJElTiPEimJM0WJo6qr
+        vAAADrwBlbxySQAA/7JJREFUeF6s/QmXI8eVpYvqT1SJzExmZgRmIAKIOXJgkqJElTiPEimJM0WJo6qr
         Wyqphq6+3ff1eu9vv/3tfczgiMhkUX3vWmf5On78mLkB8G17+4HB8aNb44Xs9nR1Z3YQ/6Yt/q3x8tZk
         YC0BZ3LVnpksf7g5v9uVoz0iZ2XbBnVqjVYDu9a2dp/Ys5pMvS3HR+3rpbU0BXW63YZlObS83W26ekbv
         23QpUye3Y5MFNl3ena325oe3ZyvGM13cnShTdqBtZVbbxNktm2AJ3pmt1ENPo4kizYkpgRzSDu7OD+/O
@@ -2755,7 +2755,7 @@
   <data name="pictureBox1.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAQgAAABQCAIAAABqPnyGAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        vgAADr4B6kKxwAAAM+FJREFUeF7VfduOXMeVpT5hMLZIUaRYJEVWZWZdWXSLN2GsIkXRItXixYZJSlQ3
+        vAAADrwBlbxySQAAM+FJREFUeF7VfduOXMeVpT5hMLZIUaRYJEVWZWZdWXSLN2GsIkXRItXixYZJSlQ3
         GtOeIQ0MrHFRNjAX2FY/zNOY/gH5cd7mk+ZfZq299t6xT+TJuvBqAwuBFSt2nDznZETsdS5Z9c6Jc+tD
         rBlEqrIRgIKS4vFzGx+cWz9OQn783PoHKJfXAJDoHlg2VA6cXT+xMhfzd4UP5pQDIjuS4NQlAVY2COPH
         zs5Wtz8+f/HG8bOrFryxCMeX8V1svH9u/X2c/D0jAweJORgmc0qHlY0TdlAnhmLjqSgsSKd/sIKTE+en
@@ -2977,6 +2977,18 @@
         y+sBdJFagItslXG1zQvNuLAWQcmHFWq1AHK/8vYtK+wNojuc5Kb7NbfH8OrZkCSruPzVhbWO2q47S6u4
         rpWlVF4vxHWHSrqJ6HWGP/d7l5tiDC9PcWWsUtfKqkrRVTUuvmMjvMDNeLXuBV09o6PfTcqXXgH7dAbE
         PiPS9bxLtvhSO2G7JP7hsBrIS2qkApX1OltQolDA+x9O/z9M1MfG3VpvwgAAAABJRU5ErkJggg==
+</value>
+  </data>
+  <data name="linkLabel1.Text" xml:space="preserve">
+    <value>SrvSurvey is an independent third-party application for use with Elite Dangerous.
+
+It provides on-screen assistance when a player is near a planet in the SRV, on foot or in ships. It has 3 main functions:
+- Organic scans:** Track the location of organic scans and the distance required for the next scan.
+- Ground target tracking:** Aiming guidance towards latitude/longitude co-ordinates.
+- Guardian sites:** Track visited areas and the locations of items within Guardian ruins and structures.
+
+The application works by analyzing journal files written by the game when played on a PC, tracking the location of the player at the time of various events. It uses this information to render overlay windows atop the game, updated in real-time as the player moves about. For the most part the application is fully automatic, players need to start the application and then just play the game. It will remain hidden until triggered by events from the game.
+
 </value>
   </data>
 </root>

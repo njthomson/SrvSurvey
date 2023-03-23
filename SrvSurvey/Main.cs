@@ -16,18 +16,27 @@ namespace SrvSurvey
         {
             InitializeComponent();
 
+            if (Path.Exists(SrvSurvey.journalFolder))
+            {
+                // watch for creation of new log files
+                this.folderWatcher = new FileSystemWatcher(SrvSurvey.journalFolder, "*.log");
+                this.folderWatcher.Created += FolderWatcher_Created;
+                this.folderWatcher.EnableRaisingEvents = true;
+                Game.log($"Watching folder: {SrvSurvey.journalFolder}");
+            }
 
-            // watch for creation of new log files
-            this.folderWatcher = new FileSystemWatcher(SrvSurvey.journalFolder, "*.log");
-            this.folderWatcher.Created += FolderWatcher_Created;
-            this.folderWatcher.EnableRaisingEvents = true;
-            Game.log($"Watching folder: {SrvSurvey.journalFolder}");
-
-            // watch for changes in DisplaySettings.xml 
-            this.folderWatcher = new FileSystemWatcher(Path.GetDirectoryName(Elite.displaySettingsXml)!, "DisplaySettings.xml");
-            this.folderWatcher.Changed += FolderWatcher_Changed;
-            this.folderWatcher.EnableRaisingEvents = true;
-            Game.log($"Watching file: {Elite.displaySettingsXml}");
+            if (Path.Exists(Elite.displaySettingsFolder))
+            {
+                // watch for changes in DisplaySettings.xml 
+                this.folderWatcher = new FileSystemWatcher(Elite.displaySettingsFolder, "DisplaySettings.xml");
+                this.folderWatcher.Changed += FolderWatcher_Changed;
+                this.folderWatcher.EnableRaisingEvents = true;
+                Game.log($"Watching file: {Elite.displaySettingsXml}");
+            }
+            else
+            {
+                lblNotInstalled.Visible = true;
+            }
 
             // can we fit in our last location
             if (Game.settings.mainLocation != Point.Empty)
@@ -51,9 +60,15 @@ namespace SrvSurvey
 
         private void Main_Load(object sender, EventArgs e)
         {
+            this.updateAllControls();
+
+            if (!Path.Exists(Elite.displaySettingsFolder))
+            {
+                return;
+            }
+
             this.checkFullScreenGraphics();
 
-            this.updateAllControls();
 
             this.lastWindowRect = Elite.getWindowRect();
 
@@ -587,6 +602,11 @@ namespace SrvSurvey
             var fullScreen = Elite.getGraphicsMode();
             // 0: Windows / 1: FullScreen / 2: Borderless
             lblFullScreen.Visible = fullScreen == 1;
+        }
+
+        private void lblNotInstalled_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Util.openLink("https://www.elitedangerous.com");
         }
     }
 }

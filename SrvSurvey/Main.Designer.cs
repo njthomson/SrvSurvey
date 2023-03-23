@@ -59,6 +59,7 @@ namespace SrvSurvey
             this.txtGuardianSite = new System.Windows.Forms.TextBox();
             this.lblGuardianCount = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
+            this.lblNotInstalled = new System.Windows.Forms.LinkLabel();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -391,12 +392,34 @@ namespace SrvSurvey
             this.label5.TabIndex = 2;
             this.label5.Text = "Detected:";
             // 
+            // lblNotInstalled
+            // 
+            this.lblNotInstalled.BackColor = System.Drawing.Color.DarkRed;
+            this.lblNotInstalled.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lblNotInstalled.Font = new System.Drawing.Font("Lucida Sans Typewriter", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblNotInstalled.ForeColor = System.Drawing.Color.White;
+            this.lblNotInstalled.LinkArea = new System.Windows.Forms.LinkArea(57, 15);
+            this.lblNotInstalled.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.lblNotInstalled.Location = new System.Drawing.Point(0, 86);
+            this.lblNotInstalled.Name = "lblNotInstalled";
+            this.lblNotInstalled.Padding = new System.Windows.Forms.Padding(10);
+            this.lblNotInstalled.Size = new System.Drawing.Size(395, 102);
+            this.lblNotInstalled.TabIndex = 21;
+            this.lblNotInstalled.TabStop = true;
+            this.lblNotInstalled.Text = "This application is intended for use only with the game \"Elite Dangerous\" by Fron" +
+    "tier Developments.\r\n\r\nIt does not appear the game is installed.";
+            this.lblNotInstalled.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.lblNotInstalled.UseCompatibleTextRendering = true;
+            this.lblNotInstalled.Visible = false;
+            this.lblNotInstalled.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lblNotInstalled_LinkClicked);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnQuit2;
             this.ClientSize = new System.Drawing.Size(395, 518);
+            this.Controls.Add(this.lblNotInstalled);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.lblFullScreen);
             this.Controls.Add(this.linkLabel1);
@@ -461,5 +484,6 @@ namespace SrvSurvey
         private Label lblGuardianCount;
         private Label label5;
         private TextBox txtGuardianSite;
+        private LinkLabel lblNotInstalled;
     }
 }
