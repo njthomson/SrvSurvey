@@ -60,23 +60,15 @@ namespace SrvSurvey
         /// <summary>
         /// The class/type name of this Guardian site. Eg: Alpha, Beta, Fistbump, etc
         /// </summary>
-#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-        public string name;
-#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-        public string backgroundImage;
-#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-        public Point imageOffset;
-        public double scaleFactor;
+        public string name = "";
+        public string backgroundImage="";
+        public Point imageOffset = Point.Empty;
+        public double scaleFactor = 0;
         public float mapScale = 0.4f;
         public SortedDictionary<string, SitePOI> poi = new SortedDictionary<string, SitePOI>();
 
-#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-        public Dictionary<string, LatLong> relicTowers;
-#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-        public Dictionary<string, LatLong> puddles;
-#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+        public Dictionary<string, LatLong> relicTowers = new Dictionary<string, LatLong>();
+        public Dictionary<string, LatLong> puddles = new Dictionary<string, LatLong>();
 
         public string? getNearestRelicTower(LatLong dp, double siteHeading)
         {

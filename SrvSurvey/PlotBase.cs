@@ -100,6 +100,8 @@ namespace SrvSurvey
 
         protected void drawCommander()
         {
+            if (g == null) return;
+
             // draw current location pointer (always at center of plot + unscaled)
             g.ResetTransform();
             g.TranslateTransform(mid.Width, mid.Height);
@@ -114,12 +116,16 @@ namespace SrvSurvey
 
         protected void clipToMiddle(float left, float top, float right, float bottom)
         {
+            if (g == null) return;
+
             var r = new RectangleF(left, top, this.Width - left - right, this.Height - top - bottom);
             g.Clip = new Region(r);
         }
 
         protected void drawCompassLines()
         {
+            if (g == null) return;
+
             g.ResetTransform();
             this.clipToMiddle(0, 8, 0, 8);
             g.TranslateTransform(mid.Width, mid.Height);
@@ -133,7 +139,7 @@ namespace SrvSurvey
 
         protected void drawTouchdownAndSrvLocation(float dx = 0, float dy = 0)
         {
-            if (this.touchdownLocation == null && this.srvLocation == null) return;
+            if (g==null || (this.touchdownLocation == null && this.srvLocation == null)) return;
 
             g.ResetTransform();
             g.TranslateTransform(mid.Width + dx, mid.Height + dy);
@@ -178,6 +184,8 @@ namespace SrvSurvey
 
         protected void drawBearingTo(float x, float y, string txt, LatLong2 location)
         {
+            if (g == null) return;
+
             //var txt = scan == game.nearBody.scanOne ? "Scan one:" : "Scan two:";
             g.DrawString(txt, Game.settings.fontSmall, GameColors.brushGameOrange, x, y);
 

@@ -125,7 +125,7 @@ jobs:
       if: matrix.ChannelName != 'Prod_Store'
       env:
         AppxBundle: Never
-        AppxPackageSigningEnabled: True
+        AppxPackageSigningEnabled: False
         BuildMode: SideloadOnly
         Configuration: ${{ matrix.Configuration }}
         GenerateAppInstallerFile: True

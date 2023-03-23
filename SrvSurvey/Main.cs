@@ -7,7 +7,7 @@ namespace SrvSurvey
     internal partial class Main : Form
     {
         private Game? game;
-        private FileSystemWatcher folderWatcher;
+        private FileSystemWatcher? folderWatcher;
 
         private Rectangle lastWindowRect;
         private bool lastWindowHasFocus;

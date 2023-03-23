@@ -48,7 +48,6 @@ namespace SrvSurvey
         private SiteTemplate siteTemplate;
         private Bitmap siteBackground;
         private Image plotSmudge;
-        private Image plotSrv;
 
         int cx, cy;
 

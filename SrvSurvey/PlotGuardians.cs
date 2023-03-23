@@ -18,7 +18,13 @@ namespace SrvSurvey
     {
         private SiteTemplate? template;
         private Image? siteMap;
+#pragma warning disable IDE0044 // Add readonly modifier
+#pragma warning disable IDE0051 // Remove unused private members
+#pragma warning disable CS0169
         private Image? trails;
+#pragma warning restore CS0169
+#pragma warning restore IDE0051 // Remove unused private members
+#pragma warning restore IDE0044 // Add readonly modifier
         private Image? underlay;
         private float ux;
         private float uy;
@@ -133,6 +139,8 @@ namespace SrvSurvey
 
         private void drawSiteMap()
         {
+            if (g == null) return;
+
             float mapScale = this.template!.mapScale;
 
             // prepare underlay image
@@ -161,9 +169,9 @@ namespace SrvSurvey
             g.ResetTransform();
             this.clipToMiddle(4, 24, 4, 24);
             g.TranslateTransform(mid.Width, mid.Height);
-            g.RotateTransform(-game.status.Heading);
+            g.RotateTransform(-game.status!.Heading);
             g.ScaleTransform(mapScale, mapScale);
-            g.DrawImageUnscaled(this.underlay, -(int)(ux - x), -(int)(uy - y));
+            g.DrawImageUnscaled(this.underlay!, -(int)(ux - x), -(int)(uy - y));
 
             // draw compass rose lines centered on underlay
             //g.ResetTransform();
@@ -179,6 +187,8 @@ namespace SrvSurvey
 
         private void drawSiteSummaryFooter()
         {
+            if (g == null) return;
+
             // draw heading text (center bottom)
             g.ResetTransform();
             g.ResetClip();
