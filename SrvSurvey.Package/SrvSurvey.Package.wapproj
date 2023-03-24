@@ -111,7 +111,7 @@
   <Import Project="$(WapProjPath)\Microsoft.DesktopBridge.targets" />
   <ItemGroup>
     <ProjectReference Include="..\SrvSurvey\SrvSurvey.csproj">
-      <PublishProfile Condition="'$(Configuration)|$(Platform)'=='ReleaseOnce|x64'" />
+      <PublishProfile Condition="'$(Configuration)|$(Platform)'=='ReleaseOnce|x64'">Properties\PublishProfiles\ClickOnceProfile.pubxml</PublishProfile>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
