@@ -38,7 +38,6 @@ jobs:
           - channel: Prod_Store
             Configuration: Release
             ChannelName: Prod_Store
-            MsixPackagePathSuffix: Test
 
     runs-on: windows-latest
 
@@ -111,15 +110,9 @@ jobs:
 
     # Build the Windows Application Packaging project for Prod_Store
     - name: Build the Windows Application Packaging Project (Prod_Store) for ${{ matrix.channel }}
-      run: msbuild $env:Solution_Path -p:Platform=$env:TargetPlatform -p:Configuration=$env:Configuration -p:UapAppxPackageBuildMode=$env:BuildMode -p:AppxBundle=$env:AppxBundle -p:GenerateAppInstallerFile=$env:GenerateAppInstallerFile -p:AppxPackageSigningEnabled=$env:AppxPackageSigningEnabled -p:FileVersion=$env:NBGV_AssemblyFileVersion 
+      run: msbuild $env:Solution_Path -p:Platform=x64 -p:Configuration=Release -p:UapAppxPackageBuildMode=SideloadOnly -p:AppxBundle=Always -p:FileVersion=$env:NBGV_AssemblyFileVersion -p:AppxPackageSigningEnabled=True -p:PackageCertificateKeyFile=$env:SigningCertificate -p:PackageCertificatePassword="${{ secrets.PFX_KEY }}"
       if: matrix.ChannelName == 'Prod_Store'
       env:
-        AppxBundle: Never
-        AppxPackageSigningEnabled: False
-        BuildMode: StoreUpload
-        Configuration: ${{ matrix.Configuration }}
-        GenerateAppInstallerFile: False
-        TargetPlatform: ${{ matrix.targetplatform }}
         NBGV_AssemblyFileVersion: ${{ steps.nbgv.outputs.AssemblyFileVersion }}
 
     # Remove the .pfx
@@ -131,9 +124,8 @@ jobs:
     - name: Upload build artifacts
       uses: actions/upload-artifact@v3
       with:
-        name: SrvSurvey_${{ steps.nbgv.outputs.SimpleVersion }}.0_${{ env.TargetPlatform }}_${{ env.Configuration }}
-        path: ${{ env.Wap_Project_Directory }}/${{ env.App_Packages_Directory }}/${{ env.Wap_Project_Directory }}_${{ steps.nbgv.outputs.SimpleVersion }}.0_${{ env.TargetPlatform }}_${{ env.MsixPackagePathSuffix }}/
+        name: SrvSurvey_${{ steps.nbgv.outputs.AssemblyFileVersion }}_Release_Bundle
+        path: ${{ env.Wap_Project_Directory }}/${{ env.App_Packages_Directory }}/
       env:
         Configuration: ${{ matrix.Configuration }}
         TargetPlatform: ${{ matrix.targetplatform }}
-        MsixPackagePathSuffix: ${{ matrix.MsixPackagePathSuffix }}
