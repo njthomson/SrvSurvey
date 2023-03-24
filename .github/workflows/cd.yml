@@ -35,7 +35,7 @@ jobs:
     # development, production for sideload applications and production for the Microsoft store.
     # For more information, see https://help.github.com/en/actions/configuring-and-managing-workflows/configuring-a-workflow#configuring-a-build-matrix
       matrix:
-        channel: [Dev, Prod_Sideload, Prod_Store]
+        channel: [Dev, Prod_Sideload]
         targetPlatform: [x64]
         include:
 
@@ -57,16 +57,6 @@ jobs:
             MsixPackageId: SrvSurvey.ProdSideload
             MsixPublisherId: CN=751EEF47-F0CD-49C5-B803-2D61CC0B95D6
             MsixPackageDisplayName: SrvSurvey (ProdSideload)
-            MsixPackagePathSuffix: Test
-
-          # includes the following variables for the matrix leg matching Prod_Store
-          - channel: Prod_Store
-            Configuration: Release
-            ChannelName: Prod_Store
-            DistributionUrl: https://njthomson.github.io/SrvSurvey/
-            MsixPackageId: SrvSurvey.ProdStore
-            MsixPublisherId: CN=751EEF47-F0CD-49C5-B803-2D61CC0B95D6
-            MsixPackageDisplayName: SrvSurvey (ProdStore)
             MsixPackagePathSuffix: Test
 
     runs-on: windows-latest
@@ -164,7 +154,7 @@ jobs:
     - name: Upload build artifacts
       uses: actions/upload-artifact@v3
       with:
-        name: SrvSurvey_${{ steps.nbgv.outputs.AssemblyFileVersion }}_${{ env.TargetPlatform }}_${{ env.Configuration }}
+        name: SrvSurvey_${{ steps.nbgv.outputs.AssemblyFileVersion }}_${{ env.TargetPlatform }}_${{ env.Configuration }}.msix
         path: ${{ env.Wap_Project_Directory }}/${{ env.App_Packages_Directory }}/${{ env.Wap_Project_Directory }}_${{ steps.nbgv.outputs.AssemblyFileVersion }}_${{ env.TargetPlatform }}_${{ env.MsixPackagePathSuffix }}/${{ env.App_Packages_Directory }}_${{ steps.nbgv.outputs.AssemblyFileVersion }}_${{ env.TargetPlatform }}.msix
       env:
         Configuration: ${{ matrix.Configuration }}
