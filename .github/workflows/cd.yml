@@ -38,9 +38,6 @@ jobs:
           - channel: Prod_Sideload
             Configuration: Release
             ChannelName: Prod_Sideload
-            MsixPackageId: SrvSurvey.ProdSideload
-            MsixPublisherId: CN=751EEF47-F0CD-49C5-B803-2D61CC0B95D6
-            MsixPackageDisplayName: SrvSurvey (ProdSideload)
             MsixPackagePathSuffix: Test
 
     runs-on: windows-latest
@@ -81,10 +78,6 @@ jobs:
       run: |
         [xml]$manifest = get-content ".\$env:Wap_Project_Directory\Package.appxmanifest"
         $manifest.Package.Identity.Version = "${{ steps.nbgv.outputs.SimpleVersion }}.0"
-        $manifest.Package.Identity.Name = "${{ matrix.MsixPackageId }}"
-        $manifest.Package.Identity.Publisher = "${{ matrix.MsixPublisherId }}"
-        $manifest.Package.Properties.DisplayName = "${{ matrix.MsixPackageDisplayName }}"
-        $manifest.Package.Applications.Application.VisualElements.DisplayName = "${{ matrix.MsixPackageDisplayName }}"
         $manifest.save(".\$env:Wap_Project_Directory\Package.appxmanifest")
 
     # Decode the Base64 encoded Pfx
@@ -110,7 +103,7 @@ jobs:
       env:
         AppxBundle: Never
         AppxPackageSigningEnabled: True
-        BuildMode: SideloadOnly
+        BuildMode: StoreUpload #SideloadOnly
         Configuration: ${{ matrix.Configuration }}
         GenerateAppInstallerFile: True
         TargetPlatform: ${{ matrix.targetplatform }}
