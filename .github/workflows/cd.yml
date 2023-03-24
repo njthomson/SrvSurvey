@@ -59,6 +59,16 @@ jobs:
             MsixPackageDisplayName: SrvSurvey (ProdSideload)
             MsixPackagePathSuffix: Test
 
+          # includes the following variables for the matrix leg matching Prod_Store
+          - channel: Prod_Store
+            Configuration: Release
+            ChannelName: Prod_Store
+            DistributionUrl: https://njthomson.github.io/SrvSurvey/
+            MsixPackageId: SrvSurvey.ProdStore
+            MsixPublisherId: CN=751EEF47-F0CD-49C5-B803-2D61CC0B95D6
+            MsixPackageDisplayName: SrvSurvey (ProdStore)
+            MsixPackagePathSuffix: Test
+
     runs-on: windows-latest
 
     env:
@@ -134,7 +144,7 @@ jobs:
 
     # Build the Windows Application Packaging project for Prod_Store
     - name: Build the Windows Application Packaging Project (wapproj) for ${{ matrix.channel }}
-      run: msbuild $env:Solution_Path -p:Platform=$env:TargetPlatform -p:Configuration=$env:Configuration -p:UapAppxPackageBuildMode=$env:BuildMode -p:AppxBundle=$env:AppxBundle -p:GenerateAppInstallerFile=$env:GenerateAppInstallerFile -p:AppxPackageSigningEnabled=$env:AppxPackageSigningEnabled
+      run: msbuild $env:Solution_Path -p:Platform=$env:TargetPlatform -p:Configuration=$env:Configuration -p:UapAppxPackageBuildMode=$env:BuildMode -p:AppxBundle=$env:AppxBundle -p:GenerateAppInstallerFile=$env:GenerateAppInstallerFile -p:AppxPackageSigningEnabled=$env:AppxPackageSigningEnabled -p:PackageCertificateKeyFile=$env:SigningCertificate -p:PackageCertificatePassword=$PFX_KEY -p:FileVersion=$env:NBGV_AssemblyFileVersion 
       if: matrix.ChannelName == 'Prod_Store'
       env:
         AppxBundle: Never
@@ -154,7 +164,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: SrvSurvey_${{ steps.nbgv.outputs.AssemblyFileVersion }}_${{ env.TargetPlatform }}_${{ env.Configuration }}
-        path: ${{ env.Wap_Project_Directory }}/${{ env.App_Packages_Directory }}/${{ env.Wap_Project_Directory }}_${{ steps.nbgv.outputs.AssemblyFileVersion }}_${{ env.TargetPlatform }}_${{ env.MsixPackagePathSuffix }}/
+        path: ${{ env.Wap_Project_Directory }}/${{ env.App_Packages_Directory }}/${{ env.Wap_Project_Directory }}_${{ steps.nbgv.outputs.AssemblyFileVersion }}_${{ env.TargetPlatform }}_${{ env.MsixPackagePathSuffix }}/${{ env.App_Packages_Directory }}_${{ steps.nbgv.outputs.AssemblyFileVersion }}_${{ env.TargetPlatform }}.msix
       env:
         Configuration: ${{ matrix.Configuration }}
         TargetPlatform: ${{ matrix.targetplatform }}
