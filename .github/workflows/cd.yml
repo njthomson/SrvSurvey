@@ -64,7 +64,7 @@ jobs:
     env:
       App_Packages_Archive: AppPackages.zip
       App_Packages_Directory: AppPackages
-      SigningCertificate: GitHubActionsDemo.pfx
+      SigningCertificate: SigningCertificate.pfx
       Solution_Path: SrvSurvey.sln
       Wap_Project_Directory: SrvSurvey.Package
       Wap_Project_Name: SrvSurvey.Package.wapproj
@@ -102,6 +102,7 @@ jobs:
         $manifest.Package.Properties.DisplayName = "${{ matrix.MsixPackageDisplayName }}"
         $manifest.Package.Applications.Application.VisualElements.DisplayName = "${{ matrix.MsixPackageDisplayName }}"
         $manifest.save(".\$env:Wap_Project_Directory\Package.appxmanifest")
+
     # Decode the Base64 encoded Pfx
     - name: Decode the Pfx
       run: |
@@ -119,17 +120,17 @@ jobs:
         RuntimeIdentifier: win-${{ matrix.targetplatform }}
 
     # Build the Windows Application Packaging project for Dev and Prod_Sideload
-    - name: Build the Windows Application Packaging Project (wapproj) for ${{ matrix.channel}}
-      run: msbuild "$env:Solution_Path" -p:Platform=$env:TargetPlatform -p:Configuration=$env:Configuration -p:FileVersion=$env:NBGV_AssemblyFileVersion -p:UapAppxPackageBuildMode=$env:BuildMode -p:AppxBundle=$env:AppxBundle -p:PackageCertificateKeyFile=$env:SigningCertificate -p:PackageCertificatePassword=${{ secrets.Pfx_Key }} -p:AppxPackageSigningEnabled=$env:AppxPackageSigningEnabled
+    - name: Build the Windows Application Packaging Project (wapproj) for ${{ matrix.channel }}
+      run: msbuild $env:Solution_Path -p:Platform=$env:TargetPlatform -p:Configuration=$env:Configuration -p:FileVersion=$env:NBGV_AssemblyFileVersion -p:UapAppxPackageBuildMode=$env:BuildMode -p:AppxBundle=$env:AppxBundle -p:PackageCertificateKeyFile=$env:SigningCertificate -p:PackageCertificatePassword="${{ secrets.PFX_KEY }}" -p:AppxPackageSigningEnabled=$env:AppxPackageSigningEnabled
       if: matrix.ChannelName != 'Prod_Store'
       env:
         AppxBundle: Never
-        AppxPackageSigningEnabled: False
-        AppInstallerUri: ${{ matrix.DistributionUrl }}
+        AppxPackageSigningEnabled: True
         BuildMode: SideloadOnly
         Configuration: ${{ matrix.Configuration }}
         GenerateAppInstallerFile: True
         TargetPlatform: ${{ matrix.targetplatform }}
+        NBGV_AssemblyFileVersion: ${{ steps.nbgv.outputs.AssemblyFileVersion }}
 
     # Build the Windows Application Packaging project for Prod_Store
     - name: Build the Windows Application Packaging Project (wapproj) for ${{ matrix.channel }}
