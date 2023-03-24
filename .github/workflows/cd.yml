@@ -102,10 +102,10 @@ jobs:
       if: matrix.ChannelName != 'Prod_Store'
       env:
         AppxBundle: Never
-        AppxPackageSigningEnabled: True
+        AppxPackageSigningEnabled: False #True
         BuildMode: StoreUpload #SideloadOnly
         Configuration: ${{ matrix.Configuration }}
-        GenerateAppInstallerFile: True
+        GenerateAppInstallerFile: False #True
         TargetPlatform: ${{ matrix.targetplatform }}
         NBGV_AssemblyFileVersion: ${{ steps.nbgv.outputs.AssemblyFileVersion }}
 
