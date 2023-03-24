@@ -155,7 +155,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: SrvSurvey_${{ steps.nbgv.outputs.AssemblyFileVersion }}_${{ env.TargetPlatform }}_${{ env.Configuration }}.msix
-        path: ${{ env.Wap_Project_Directory }}/${{ env.App_Packages_Directory }}/${{ env.Wap_Project_Directory }}_${{ steps.nbgv.outputs.AssemblyFileVersion }}_${{ env.TargetPlatform }}_${{ env.MsixPackagePathSuffix }}/${{ env.App_Packages_Directory }}_${{ steps.nbgv.outputs.AssemblyFileVersion }}_${{ env.TargetPlatform }}.msix
+        path: ${{ env.Wap_Project_Directory }}/${{ env.App_Packages_Directory }}/${{ env.Wap_Project_Directory }}_${{ steps.nbgv.outputs.AssemblyFileVersion }}_${{ env.TargetPlatform }}_${{ env.MsixPackagePathSuffix }}/${{ env.Wap_Project_Directory }}_${{ steps.nbgv.outputs.AssemblyFileVersion }}_${{ env.TargetPlatform }}.msix
       env:
         Configuration: ${{ matrix.Configuration }}
         TargetPlatform: ${{ matrix.targetplatform }}
