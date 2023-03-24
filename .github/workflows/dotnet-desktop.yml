@@ -80,6 +80,14 @@ jobs:
     - name: Setup MSBuild.exe
       uses: microsoft/setup-msbuild@v1.1
 
+    # Decode the Base64 encoded Pfx
+    - name: Decode the Pfx
+      run: |
+        $pfx_cert_byte = [System.Convert]::FromBase64String("${{ secrets.BASE64_ENCODED_PFX }}")
+        $currentDirectory = Get-Location
+        $certificatePath = Join-Path -Path $currentDirectory -ChildPath $env:Wap_Project_Directory -AdditionalChildPath $env:SigningCertificate
+        [IO.File]::WriteAllBytes("$certificatePath", $pfx_cert_byte)
+
     # Restore the application to populate the obj folder with RuntimeIdentifiers
     - name: Restore the application
       run: msbuild $env:Solution_Name /t:Restore /p:Configuration=$env:Configuration
@@ -88,9 +96,13 @@ jobs:
 
     # Create the app package by building and packaging the Windows Application ClickOnce publish profile
     - name: Create ClickOnce package
-      run: msbuild SrvSurvey.sln -t:Publish -p:Configuration=$env:Configuration -restore:true -p:PublishProfile=ClickOnceProfile -p:PublishDir=bin/published -p:ApplicationVersion=$env:NBGV_AssemblyFileVersion  -p:FileVersion=$env:NBGV_AssemblyFileVersion -p:PackageCertificateThumbprint=""
+      run: msbuild SrvSurvey.sln -t:Publish -p:Configuration=$env:Configuration -restore:true -p:PublishProfile=ClickOnceProfile -p:PublishDir=bin/published -p:ApplicationVersion=$env:NBGV_AssemblyFileVersion -p:FileVersion=$env:NBGV_AssemblyFileVersion -p:PackageCertificateThumbprint="372aae3d0259e10ee7c41c8dc1375f6e14a80195" -p:AssemblyOriginatorKeyFile=$env:SigningCertificate -p:PackageCertificatePassword=="${{ secrets.PFX_KEY }}"
       env:
         Configuration: ${{ matrix.configuration }}
+
+    # Remove the .pfx
+    - name: Remove the .pfx
+      run: Remove-Item -path $env:Wap_Project_Directory\$env:SigningCertificate
 
     # Upload the MSIX package: https://github.com/marketplace/actions/upload-a-build-artifact
     - name: Upload build artifacts
