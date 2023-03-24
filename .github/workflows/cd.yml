@@ -15,15 +15,10 @@ name: Continuous Delivery
 # To create a git tag, run the following commands on the branch you wish to release:
 #   git tag 1.0.0.0
 #   git push origin --tags
-#on:
-#  push:
-#    tags:
-#      - '*'
-
-# tmp?
 on:
-  push:
-    branches: [ "main" ]
+ push:
+   tags:
+     - '*'
 
 jobs:
 
@@ -96,7 +91,7 @@ jobs:
     - name: Update manifest version
       run: |
         [xml]$manifest = get-content ".\$env:Wap_Project_Directory\Package.appxmanifest"
-        $manifest.Package.Identity.Version = "${{ steps.nbgv.outputs.AssemblyFileVersion }}"
+        $manifest.Package.Identity.Version = "${{ steps.nbgv.outputs.SimpleVersion }}.0"
         $manifest.Package.Identity.Name = "${{ matrix.MsixPackageId }}"
         $manifest.Package.Identity.Publisher = "${{ matrix.MsixPublisherId }}"
         $manifest.Package.Properties.DisplayName = "${{ matrix.MsixPackageDisplayName }}"
