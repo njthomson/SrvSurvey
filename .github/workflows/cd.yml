@@ -35,7 +35,7 @@ jobs:
     # development, production for sideload applications and production for the Microsoft store.
     # For more information, see https://help.github.com/en/actions/configuring-and-managing-workflows/configuring-a-workflow#configuring-a-build-matrix
       matrix:
-        channel: [Dev, Prod_Sideload]
+        channel: [Dev, Prod_Sideload, Prod_Store]
         targetPlatform: [x64]
         include:
 
@@ -144,15 +144,16 @@ jobs:
 
     # Build the Windows Application Packaging project for Prod_Store
     - name: Build the Windows Application Packaging Project (wapproj) for ${{ matrix.channel }}
-      run: msbuild $env:Solution_Path -p:Platform=$env:TargetPlatform -p:Configuration=$env:Configuration -p:UapAppxPackageBuildMode=$env:BuildMode -p:AppxBundle=$env:AppxBundle -p:GenerateAppInstallerFile=$env:GenerateAppInstallerFile -p:AppxPackageSigningEnabled=$env:AppxPackageSigningEnabled -p:PackageCertificateKeyFile=$env:SigningCertificate -p:PackageCertificatePassword=$PFX_KEY -p:FileVersion=$env:NBGV_AssemblyFileVersion 
+      run: msbuild $env:Solution_Path -p:Platform=$env:TargetPlatform -p:Configuration=$env:Configuration -p:UapAppxPackageBuildMode=$env:BuildMode -p:AppxBundle=$env:AppxBundle -p:GenerateAppInstallerFile=$env:GenerateAppInstallerFile -p:AppxPackageSigningEnabled=$env:AppxPackageSigningEnabled -p:PackageCertificateKeyFile=$env:SigningCertificate -p:PackageCertificatePassword="${{ secrets.PFX_KEY }}" -p:FileVersion=$env:NBGV_AssemblyFileVersion 
       if: matrix.ChannelName == 'Prod_Store'
       env:
         AppxBundle: Never
-        AppxPackageSigningEnabled: False
+        AppxPackageSigningEnabled: True
         BuildMode: StoreUpload
         Configuration: ${{ matrix.Configuration }}
         GenerateAppInstallerFile: False
         TargetPlatform: ${{ matrix.targetplatform }}
+        NBGV_AssemblyFileVersion: ${{ steps.nbgv.outputs.AssemblyFileVersion }}
 
     # Remove the .pfx
     - name: Remove the .pfx
