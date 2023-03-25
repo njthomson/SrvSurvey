@@ -86,7 +86,7 @@ jobs:
       run: |
         $pfx_cert_byte = [System.Convert]::FromBase64String("${{ secrets.BASE64_ENCODED_PFX }}")
         $currentDirectory = Get-Location
-        $certificatePath = Join-Path -Path $currentDirectory -ChildPath $env:SigningCertificate
+        $certificatePath = Join-Path -Path $currentDirectory -ChildPath SrvSurvey -AdditionalChildPath $env:SigningCertificate
         [IO.File]::WriteAllBytes("$certificatePath", $pfx_cert_byte)
 
     # Restore the application to populate the obj folder with RuntimeIdentifiers
@@ -105,7 +105,8 @@ jobs:
     - name: Remove the .pfx
       run: |
         $currentDirectory = Get-Location
-        Remove-Item -path $currentDirectory\$env:SigningCertificate
+        $certificatePath = Join-Path -Path $currentDirectory -ChildPath SrvSurvey -AdditionalChildPath  $env:SigningCertificate
+        Remove-Item -path $certificatePath
 
     # Upload the MSIX package: https://github.com/marketplace/actions/upload-a-build-artifact
     - name: Upload build artifacts
