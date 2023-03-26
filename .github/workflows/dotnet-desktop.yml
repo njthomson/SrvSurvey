@@ -95,7 +95,7 @@ jobs:
 
     # Create the app package by building and packaging the Windows Application ClickOnce publish profile
     - name: Create ClickOnce package
-      run: msbuild SrvSurvey.sln -t:Publish -p:Configuration=$env:Configuration -restore:true -p:PublishProfile=ClickOnceProfile -p:PublishDir=bin/published -p:ApplicationVersion=$env:NBGV_AssemblyFileVersion -p:FileVersion=$env:NBGV_AssemblyFileVersion -p:AssemblyOriginatorKeyFile=$env:SigningCertificate -p:PackageCertificatePassword=="${{ secrets.PFX_KEY }}"
+      run: msbuild SrvSurvey.sln -t:Publish -p:Configuration=$env:Configuration -restore:true -p:PublishProfile=ClickOnceProfile -p:PublishDir=bin/published -p:ApplicationVersion=$env:NBGV_AssemblyFileVersion -p:FileVersion=$env:NBGV_AssemblyFileVersion -p:ManifestKeyFile=$env:SigningCertificate -p:AssemblyOriginatorKeyFile=$env:SigningCertificate -p:PackageCertificatePassword=="${{ secrets.PFX_KEY }}"
       env:
         Configuration: ${{ matrix.configuration }}
 
