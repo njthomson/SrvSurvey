@@ -57,7 +57,7 @@ jobs:
 
     env:
       Solution_Name: SrvSurvey.sln
-      SigningCertificate: SrvSurvey/SigningCertificate.pfx
+      SigningCertificate: SigningCertificate.pfx
 
     steps:
     - name: Checkout
