@@ -85,7 +85,7 @@ jobs:
     - name: Decode the Pfx
       run: |
         $pfx_cert_byte = [System.Convert]::FromBase64String("${{ secrets.BASE64_ENCODED_PFX }}")
-        [IO.File]::WriteAllBytes($env:SigningCertificate, $pfx_cert_byte)
+        [IO.File]::WriteAllBytes("SrvSurvey\"+$env:SigningCertificate, $pfx_cert_byte)
 
     # Restore the application to populate the obj folder with RuntimeIdentifiers
     - name: Restore the application
@@ -101,7 +101,7 @@ jobs:
 
     # Remove the .pfx
     - name: Remove the .pfx
-      run: Remove-Item -path $env:SigningCertificate
+      run: Remove-Item -path "SrvSurvey\"+$env:SigningCertificate
 
     # Upload the MSIX package: https://github.com/marketplace/actions/upload-a-build-artifact
     - name: Upload build artifacts
