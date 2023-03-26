@@ -57,14 +57,13 @@ namespace SrvSurvey
     /// </summary>
     class SiteTemplate
     {
-        /// <summary>
-        /// The class/type name of this Guardian site. Eg: Alpha, Beta, Fistbump, etc
-        /// </summary>
+        /// <summary> The class/type name of this Guardian site. Eg: Alpha, Beta, Fistbump, etc </summary>
         public string name = "";
         public string backgroundImage="";
+        /// <summary> Offset applied to bring the site origin location to the center of the image </summary>
         public Point imageOffset = Point.Empty;
         public double scaleFactor = 0;
-        public float mapScale = 0.4f;
+        public float mapScale = 0.8f;
         public SortedDictionary<string, SitePOI> poi = new SortedDictionary<string, SitePOI>();
 
         public Dictionary<string, LatLong> relicTowers = new Dictionary<string, LatLong>();
@@ -280,19 +279,19 @@ namespace SrvSurvey
             },
         };*/
 
-        public static void Export()
-        {
-            string filepath = Path.Combine(SrvSurvey.journalFolder, "survey", "settlementTemplates2.json");
+        //public static void Export()
+        //{
+        //    string filepath = Path.Combine(SrvSurvey.journalFolder, "survey", "settlementTemplates2.json");
 
-            Directory.CreateDirectory(Path.Combine(SrvSurvey.journalFolder, "survey"));
+        //    Directory.CreateDirectory(Path.Combine(SrvSurvey.journalFolder, "survey"));
 
-            var json = JsonConvert.SerializeObject(SiteTemplate.sites, Formatting.Indented);
-            File.WriteAllText(filepath, json);
-        }
+        //    var json = JsonConvert.SerializeObject(SiteTemplate.sites, Formatting.Indented);
+        //    File.WriteAllText(filepath, json);
+        //}
 
         public static void Import()
         {
-            string filepath = Path.Combine(SrvSurvey.journalFolder, "survey", "settlementTemplates2.json");
+            string filepath = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "settlementTemplates.json");
 
             if (File.Exists(filepath))
             {

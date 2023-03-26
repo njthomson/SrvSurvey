@@ -100,8 +100,8 @@ namespace SrvSurvey
 
             if (this.td == null) return;
 
-            this.td.Point1 = newLocation;
-            this.td.Point2 = newLocation;
+            this.td.Current = newLocation;
+            this.td.Target = newLocation;
 
             this.Invalidate();
         }
@@ -143,10 +143,10 @@ namespace SrvSurvey
         private void Status_StatusChanged()
         {
             if (this.td != null)
-                this.td.Point1 = game.status!.here;
+                this.td.Current = game.status!.here;
 
             if (this.srvLocation != null)
-                this.srvLocation.Point1 = game.status!.here;
+                this.srvLocation.Current = game.status!.here;
 
             this.Invalidate();
         }
@@ -227,10 +227,10 @@ namespace SrvSurvey
             g.ResetTransform();
 
             if (this.td != null)
-                this.drawBearingTo(g, 4, 8, "Touchdown:", this.td.Point2);
+                this.drawBearingTo(g, 4, 8, "Touchdown:", this.td.Target);
 
             if (this.srvLocation != null)
-                this.drawBearingTo(g, 4 + w, 8, "SRV:", this.srvLocation.Point2);
+                this.drawBearingTo(g, 4 + w, 8, "SRV:", this.srvLocation.Target);
 
             float y = this.Height - 24;
             if (game.nearBody!.scanOne != null)
@@ -326,7 +326,7 @@ namespace SrvSurvey
         {
             var fudge = 10;
 
-            d.Point2 = scan.location!;
+            d.Target = scan.location!;
             var rect = new RectangleF((float)d.dx - scan.radius, (float)-d.dy - scan.radius, scan.radius * 2, scan.radius * 2);
             //Game.log($"d.dx: {rect.X}, d.dy: {rect.Y}");
 

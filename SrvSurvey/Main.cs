@@ -40,10 +40,13 @@ namespace SrvSurvey
 
             // can we fit in our last location
             if (Game.settings.mainLocation != Point.Empty)
-                this.useLastLocation();
+                this.useLastWindowLocation();
+
+            if (Debugger.IsAttached)
+                groupBox4.Visible = true;
         }
 
-        private void useLastLocation()
+        private void useLastWindowLocation()
         {
             // position ourself within the bound of which ever screen is chosen
             var pt = Game.settings.mainLocation;
@@ -78,6 +81,9 @@ namespace SrvSurvey
             }
 
             this.timer1.Start();
+
+            if (Debugger.IsAttached)
+                Elite.setFocusED();
         }
 
         private void updateAllControls()
@@ -260,7 +266,7 @@ namespace SrvSurvey
                     if (Game.settings.autoShowBioSummary)
                         Program.showPlotter<PlotBioStatus>();
 
-                    if (game.isLanded && Game.settings.autoShowBioPlot)
+                    if (game.isLanded && Game.settings.autoShowBioPlot && !this.game.showGuardianPlotters)
                         Program.showPlotter<PlotGrounded>();
                 }
             }
@@ -296,7 +302,7 @@ namespace SrvSurvey
 
         private void updateGuardianTexts()
         {
-            if (true || game == null || game.atMainMenu || !game.isRunning || !game.initialized)
+            if (!groupBox4.Visible || game == null || game.atMainMenu || !game.isRunning || !game.initialized)
             {
                 lblGuardianCount.Text = "";
                 txtGuardianSite.Text = "";
@@ -313,8 +319,11 @@ namespace SrvSurvey
                 lblGuardianCount.Text = game.nearBody.guardianSiteCount.ToString();
                 txtGuardianSite.Text = this.game.nearBody.guardianSiteName + " " + this.game.nearBody.guardianSiteLocation;
 
-                if (game.showBodyPlotters && !string.IsNullOrEmpty(this.game.nearBody.guardianSiteName) && game.touchdownLocation != null)
+                if (game.showBodyPlotters && this.game.showGuardianPlotters)
+                {
                     Program.showPlotter<PlotGuardians>();
+                    Program.closePlotter(nameof(PlotGrounded));
+                }
             }
         }
 
@@ -339,7 +348,7 @@ namespace SrvSurvey
             {
                 if (Game.settings.autoShowBioSummary)
                     Program.showPlotter<PlotBioStatus>();
-                if (Game.settings.autoShowBioPlot)
+                if (Game.settings.autoShowBioPlot && !this.game.showGuardianPlotters)
                     Program.showPlotter<PlotGrounded>();
             }
         }
@@ -352,7 +361,7 @@ namespace SrvSurvey
             {
                 if (Game.settings.autoShowBioSummary)
                     Program.showPlotter<PlotBioStatus>();
-                if (Game.settings.autoShowBioPlot)
+                if (Game.settings.autoShowBioPlot && !this.game.showGuardianPlotters)
                     Program.showPlotter<PlotGrounded>();
             }
         }
@@ -576,6 +585,9 @@ namespace SrvSurvey
         private void btnSettings_Click(object sender, EventArgs e)
         {
             new FormSettings().ShowDialog(this);
+
+            // force opacity changes to take immediate effect
+            Program.showActivePlotters();
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

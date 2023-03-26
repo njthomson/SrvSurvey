@@ -67,6 +67,12 @@ namespace SrvSurvey.units
             return new LatLong2(a.Lat - b.Lat, a.Long - b.Long);
         }
 
+
+        public static implicit operator LatLong2(LocationEntry location)
+        {
+            return new LatLong2(location);
+        }
+
         class JsonConverter : Newtonsoft.Json.JsonConverter
         {
             public override bool CanConvert(Type objectType)

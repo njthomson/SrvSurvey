@@ -294,6 +294,14 @@ namespace SrvSurvey.game
                 && this.isMode(GameMode.SuperCruising, GameMode.Flying, GameMode.Landed, GameMode.InSrv, GameMode.OnFoot, GameMode.GlideMode);
         }
 
+        public bool showGuardianPlotters
+        {
+            get => showBodyPlotters
+                && this.nearBody != null
+                && this.touchdownLocation != null
+                && !string.IsNullOrEmpty(this.nearBody.guardianSiteName);
+        }
+
         #endregion
 
         #region Process and window handle stuff

@@ -58,7 +58,7 @@ namespace SrvSurvey.units
         private void calc()
         {
             // delta in LatLong degrees
-            var dll = this.Point2 - this.Point1;
+            var dll = this.Target - this.Current;
 
             this.dx = dll.Long * this.mpd;
             this.dy = dll.Lat * this.mpd;
@@ -73,7 +73,7 @@ namespace SrvSurvey.units
         }
 
 
-        public LatLong2 Point1
+        public LatLong2 Current
 
         {
             get => this.current;
@@ -84,7 +84,7 @@ namespace SrvSurvey.units
             }
         }
 
-        public LatLong2 Point2
+        public LatLong2 Target
 
         {
             get => this.target;

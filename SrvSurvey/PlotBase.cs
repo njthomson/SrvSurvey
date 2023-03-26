@@ -15,7 +15,7 @@ namespace SrvSurvey
         protected TrackingDelta? srvLocation;
         protected Size mid;
         protected Graphics? g;
-        protected float scale = 0.25f;
+        protected float scale = 1.0f;
 
         protected PlotBase()
         {
@@ -58,10 +58,10 @@ namespace SrvSurvey
 
         protected virtual void Status_StatusChanged()
         {
-            this.touchdownLocation.Point1 = game.status!.here;
+            this.touchdownLocation.Current = game.status!.here;
 
             if (this.srvLocation != null)
-                this.srvLocation.Point1 = game.status!.here;
+                this.srvLocation.Current = game.status!.here;
 
             this.Invalidate();
         }
@@ -73,12 +73,21 @@ namespace SrvSurvey
 
         protected void onJournalEntry(JournalEntry entry) { /* ignore */ }
 
+
+        protected void onJournalEntry(Touchdown entry)
+        {
+            this.touchdownLocation.Target = entry;
+            this.Invalidate();
+        }
+
         protected void onJournalEntry(Disembark entry)
         {
             Game.log($"Disembark srvLocation {game.status!.here}");
             if (entry.SRV && this.srvLocation == null)
             {
-                this.srvLocation = new TrackingDelta(game.nearBody!.radius, game.status.here, new LatLong2(game.status));
+                this.srvLocation = new TrackingDelta(
+                    game.nearBody!.radius,
+                    game.status.here);
                 this.Invalidate();
             }
         }
@@ -95,7 +104,14 @@ namespace SrvSurvey
 
         protected virtual void onJournalEntry(SendText entry)
         {
-            // overridden
+            Game.log($"SendText {entry.Message}");
+
+            if (entry.Message.StartsWith("z"))
+            {
+                float zoomFactor;
+                if (float.TryParse(entry.Message.Substring(1), out zoomFactor))
+                    this.scale = zoomFactor;
+            }
         }
 
         protected void drawCommander()
@@ -135,14 +151,15 @@ namespace SrvSurvey
             g.DrawLine(Pens.DarkRed, -this.Width, 0, +this.Width, 0);
             g.DrawLine(Pens.DarkRed, 0, 0, 0, +this.Height);
             g.DrawLine(Pens.Red, 0, -this.Height, 0, 0);
+            g.ResetClip();
         }
 
-        protected void drawTouchdownAndSrvLocation(float dx = 0, float dy = 0)
+        protected void drawTouchdownAndSrvLocation()
         {
             if (g==null || (this.touchdownLocation == null && this.srvLocation == null)) return;
 
             g.ResetTransform();
-            g.TranslateTransform(mid.Width + dx, mid.Height + dy);
+            g.TranslateTransform(mid.Width, mid.Height);
             g.ScaleTransform(scale, scale);
             g.RotateTransform(360 - game.status!.Heading);
 
@@ -163,23 +180,23 @@ namespace SrvSurvey
             // draw SRV marker
             if (this.srvLocation != null)
             {
-                const float srvSize = 32f;
+                const float srvSize = 16f; // 32f;
                 var rect = new RectangleF(
                     (float)srvLocation.dx - srvSize,
                     (float)-srvLocation.dy - srvSize,
                     srvSize * 2,
                     srvSize * 2);
 
-                g.FillRectangle(GameColors.brushSrvLocation, rect);
+                g.FillRectangle(GameColors.brushShipLocation, rect);
             }
 
             g.ResetTransform();
 
             if (this.touchdownLocation != null)
-                this.drawBearingTo(4, 8, "Touchdown:", this.touchdownLocation.Point2);
+                this.drawBearingTo(4, 10, "Touchdown:", this.touchdownLocation.Target);
 
             if (this.srvLocation != null)
-                this.drawBearingTo(4 + mid.Width, 8, "SRV:", this.srvLocation.Point2);
+                this.drawBearingTo(4 + mid.Width, 10, "SRV:", this.srvLocation.Target);
         }
 
         protected void drawBearingTo(float x, float y, string txt, LatLong2 location)
@@ -191,7 +208,7 @@ namespace SrvSurvey
 
             var txtSz = g.MeasureString(txt, Game.settings.fontSmall);
 
-            var sz = 6;
+            var sz = 5;
             x += txtSz.Width + 8;
             var r = new RectangleF(x, y, sz * 2, sz * 2);
             g.DrawEllipse(GameColors.penGameOrange2, r);
@@ -199,8 +216,8 @@ namespace SrvSurvey
             var dd = new TrackingDelta(game.nearBody!.radius, game.status!.here, location);
 
             Angle deg = dd.angle - game.status.Heading;
-            var dx = (float)Math.Sin(Util.degToRad(deg)) * 10F;
-            var dy = (float)Math.Cos(Util.degToRad(deg)) * 10F;
+            var dx = (float)Math.Sin(Util.degToRad(deg)) * 9F;
+            var dy = (float)Math.Cos(Util.degToRad(deg)) * 9F;
             g.DrawLine(GameColors.penGameOrange2, x + sz, y + sz, x + sz + dx, y + sz - dy);
 
             x += sz * 3;
