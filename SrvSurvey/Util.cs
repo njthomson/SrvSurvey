@@ -88,5 +88,12 @@ namespace SrvSurvey
             info.UseShellExecute = true;
             Process.Start(info);
         }
+
+        public static string credits(long credits)
+        {
+            var millions = credits / 1000000.0D;
+
+            return millions.ToString("#.##") + " M CR";
+        }
     }
 }

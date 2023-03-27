@@ -38,39 +38,21 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="FormErrorSubmit.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="FormGroundTarget.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="FormSettings.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Update="FormErrorSubmit.cs" />
+    <Compile Update="FormGroundTarget.cs" />
+    <Compile Update="FormSettings.cs" />
     <Compile Update="Main.cs" />
-    <Compile Update="PlotBioStatus.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="PlotGrounded.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="PlotPulse.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="PlotTrackTarget.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Update="PlotBioStatus.cs" />
+    <Compile Update="PlotGrounded.cs" />
+    <Compile Update="PlotPulse.cs" />
+    <Compile Update="PlotTrackTarget.cs" />
     <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Update="SrvSurvey.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="ViewLogs.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Update="SrvSurvey.cs" />
+    <Compile Update="ViewLogs.cs" />
   </ItemGroup>
 
   <ItemGroup>

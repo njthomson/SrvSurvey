@@ -290,6 +290,16 @@ namespace SrvSurvey
         public List<ScanGenus> Genuses { get; set; }
     }
 
+    class SAAScanComplete : JournalEntry
+    {
+        // { "timestamp":"2023-03-26T22:34:35Z", "event":"SAAScanComplete", "BodyName":"Col 173 Sector PF-E b28-3 B 7", "SystemAddress":7279566464385, "BodyID":17, "ProbesUsed":4, "EfficiencyTarget":4 }
+        public string BodyName { get; set; }
+        public long SystemAddress { get; set; }
+        public int BodyID { get; set; }
+        public int ProbesUsed { get; set; }
+        public int EfficiencyTarget { get; set; }
+    }
+
     class ApproachBody : JournalEntry
     {
         // { "timestamp":"2023-02-07T06:27:26Z", "event":"ApproachBody", "StarSystem":"Synuefe TP-F b44-0", "SystemAddress":682228131193, "Body":"Synuefe TP-F b44-0 AB 7", "BodyID":14 }

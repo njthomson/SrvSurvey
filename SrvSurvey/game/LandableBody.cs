@@ -108,12 +108,11 @@ namespace SrvSurvey.game
             {
                 var bodyCircumferance = this.radius * Math.PI * 2F;
                 return bodyCircumferance / 360D;
-
             }
         }
 
         public List<ScanSignal>? Signals { get; set; }
-        public List<ScanGenus>? Genuses { get; set; }
+        public List<OrganicSummary>? Genuses { get; set; }
 
         public void readSAASignalsFound(SAASignalsFound signalsEntry)
         {
@@ -130,14 +129,19 @@ namespace SrvSurvey.game
 
                 if (signalsEntry.Genuses?.Count > 0)
                 {
-                    this.Genuses = new List<ScanGenus>(signalsEntry.Genuses);
+                    this.Genuses = new List<OrganicSummary>();
+                    foreach (var _ in signalsEntry.Genuses)
+                    {
+                        var newSummary = new OrganicSummary { Genus = _.Genus, Genus_Localised = _.Genus_Localised, Range = BioScan.ranges[_.Genus] };
+                        // Rewards are by Species and we only know the Genus at this point
+                        this.Genuses.Add(newSummary);
+                    }
 
                     // see if we can find recent BioScans, traversing prior journal files if needed
                     game.journals!.searchDeep(
                         (ScanOrganic scan) =>
                         {
                             // look for Analyze ScanOrganics.
-                            // TODO: only on current body!
                             if (scan.SystemAddress == this.systemAddress && scan.Body == this.bodyId && scan.ScanType == ScanType.Analyse && !this.analysedSpecies.ContainsKey(scan.Genus))
                             {
                                 this.analysedSpecies.Add(scan.Genus, scan.Species_Localised);
@@ -154,11 +158,12 @@ namespace SrvSurvey.game
                     );
                 }
             }
+
+            if (this.bioScanEvent != null) this.bioScanEvent();
         }
 
         public void addBioScan(ScanOrganic entry)
         {
-
             if (this.scanOne != null && this.scanOne.genus != entry.Genus)
             {
                 // we are changing Genus before the 3rd scan ... start over
@@ -177,8 +182,8 @@ namespace SrvSurvey.game
                 scanType = entry.ScanType,
                 systemAddress = this.systemAddress,
                 bodyId = this.bodyId,
+                reward = -1,
             };
-
             Game.log($"addBioScan: {newScan}");
 
             if (entry.ScanType == ScanType.Log)
@@ -220,12 +225,24 @@ namespace SrvSurvey.game
                 this.scanTwo = newScan;
             }
 
+            if (this.scanOne?.reward > 0)
+            {
+                newScan.reward = (long)this.scanOne?.reward!;
+
+                var summary = this.Genuses!.FirstOrDefault(_ => _.Species == newScan.species);
+                if (summary != null)
+                    summary.Reward = newScan.reward;
+            }
+            else
+            {
+                newScan.reward = Game.codexRef.getRewardForSpecies(entry.Species);
+            }
+
             Game.settings.scanOne = this.scanOne;
             Game.settings.scanTwo = this.scanTwo;
             Game.settings.Save();
 
             if (this.bioScanEvent != null) this.bioScanEvent();
         }
-
     }
 }

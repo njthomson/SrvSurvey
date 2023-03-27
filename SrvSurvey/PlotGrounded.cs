@@ -194,7 +194,7 @@ namespace SrvSurvey
 
                 const float touchdownSize = 64f;
                 var rect = new RectangleF((float)td.dx - touchdownSize, (float)-td.dy - touchdownSize, touchdownSize * 2, touchdownSize * 2);
-                var b = game.touchdownLocation == null ? GameColors.brushShipFormerLocation : GameColors.brushShipLocation;
+                var b = (game.touchdownLocation == null || game.touchdownLocation == LatLong2.Empty) ? GameColors.brushShipFormerLocation : GameColors.brushShipLocation;
                 g.FillEllipse(b, rect);
             }
 

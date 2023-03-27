@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+#pragma warning disable CS0649
+
 namespace SrvSurvey
 {
     /// <summary>
@@ -23,6 +25,7 @@ namespace SrvSurvey
         public ScanType scanType;
         public double systemAddress;
         public int bodyId;
+        public long reward;
 
         public override string ToString()
         {
@@ -77,4 +80,13 @@ namespace SrvSurvey
         Tussock 	200m 
         */
     }
+
+    class OrganicSummary : ScanGenus
+    {
+        public string? Species;
+        public long? Reward;
+        public int Range;
+    }
 }
+
+#pragma warning restore CS0649

@@ -120,7 +120,7 @@ namespace SrvSurvey
 
             g.DrawString(
                 $"Biological signals: {game.nearBody.Genuses.Count} | Analyzed: {game.nearBody.analysedSpecies.Count}",
-                Game.settings.fontSmall, GameColors.brushGameOrange, 4, 6);
+                Game.settings.fontSmall, GameColors.brushGameOrange, 4, 8);
 
             if (game.nearBody.scanOne == null)
                 this.showAllGenus(g);
@@ -131,14 +131,14 @@ namespace SrvSurvey
 
         private void showCurrentGenus(Graphics g)
         {
-            // all the Genus names
-            //float x = 110;
             float y = 28;
 
+            // left circle - always filled
             var r = new RectangleF(8, y, 24, 24);
             g.FillEllipse(GameColors.brushGameOrangeDim, r);
             g.DrawEllipse(GameColors.penGameOrange2, r);
 
+            // middle circle - filled after scan two
             r = new RectangleF(40, y, 24, 24);
             if (game.nearBody!.scanTwo != null)
             {
@@ -150,13 +150,24 @@ namespace SrvSurvey
                 g.DrawEllipse(GameColors.penGameOrange2, r);
             }
 
+            // right circle - always empty
             r = new RectangleF(72, y, 24, 24);
             g.DrawEllipse(GameColors.penGameOrange2, r);
 
+            // Species name
             g.DrawString(
                 $"{game.nearBody!.scanOne!.speciesLocalized}",
                 Game.settings.fontBig, GameColors.brushCyan,
                 104, y - 8);
+
+            // Reward
+            if (game.nearBody!.scanOne.reward > 0)
+            {
+                g.DrawString(
+                    Util.credits(game.nearBody!.scanOne.reward),
+                    Game.settings.fontSmall, GameColors.brushCyan,
+                    4, 62);
+            }
 
             this.drawScale(g, game.nearBody.scanOne.radius, 0.25f);
         }
@@ -169,15 +180,11 @@ namespace SrvSurvey
 
             var txt = Util.metersToString(dist);
             var txtSz = g.MeasureString(txt, Game.settings.fontSmall);
-            float w = this.Width / 2;
-            //var r = new RectangleF(8, this.Height - 8 - txtSz.Height, w, txtSz.Height);
             var x = this.Width - pad - txtSz.Width;
-            var y = this.Height - pad - txtSz.Height;
+            var y = this.Height - pad - txtSz.Height + 2;
 
             g.DrawString(txt, Game.settings.fontSmall, GameColors.brushCyan,
-                x, //this.Width - pad - txtSz.Width, // x
-                y, //this.Height - pad - txtSz.Height, // y
-                   //2 * x + dist, y + 1 - txtSz.Height / 2, 
+                x, y,
                 StringFormat.GenericTypographic);
 
             x -= pad;
@@ -192,27 +199,36 @@ namespace SrvSurvey
 
         private void showAllGenus(Graphics g)
         {
-            //g.DrawString(
-            //    $"{game.nearBody.analysedSpecies.Count}",
-            //    this.fontBig, GameColors.brushCyan, 4, 21);
-
             // all the Genus names
-            float x = 32;
-            float y = 24;
-            //foreach (var name in BioScan2.ranges.Keys)
+            float x = 24;
+            float y = 22;
+
             foreach (var genus in game.nearBody!.Genuses!)
             {
                 var analysed = game.nearBody.analysedSpecies.ContainsKey(genus.Genus);
-
                 var txt = genus.Genus_Localised;
-                // TODO: show distance?
-                //if (!analysed) txt += " (50m)";
+
+                if (genus.Range > 0 && !analysed)
+                {
+                    txt += $"|{BioScan.ranges[genus.Genus]}m";
+                }
+
+                /* TODO: show rewards here another time - it will require network calls to get the species name before we've visited it directly
+                if (genus.Reward > 0)
+                {
+                    var credits = Util.credits(1234567); // (long)genus.Reward);
+                    txt += $"|{credits}";
+                }
+                //else
+                //{
+                //    txt += $"|? CR";
+                //}
+                // */
 
                 var sz = g.MeasureString(txt, Game.settings.fontSmall);
-
                 if (x + sz.Width > this.Width - 16)
                 {
-                    x = 110;
+                    x = 24;
                     y += sz.Height;
                 }
 

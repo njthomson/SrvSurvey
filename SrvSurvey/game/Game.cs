@@ -1,7 +1,9 @@
-﻿using SrvSurvey.units;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using SrvSurvey.game.canonn;
+using SrvSurvey.units;
 using System.Diagnostics;
 using System.Reflection;
-using System.Text;
 
 namespace SrvSurvey.game
 {
@@ -17,6 +19,7 @@ namespace SrvSurvey.game
             Game.log($"SrvSurvey version: {releaseVersion}");
 
             settings = Settings.Load();
+            codexRef = new CodexRef();
         }
 
         #region logging
@@ -38,6 +41,7 @@ namespace SrvSurvey.game
 
         public static Game? activeGame { get; private set; }
         public static Settings settings { get; private set; }
+        public static CodexRef codexRef { get; private set; }
         public bool initialized { get; private set; }
 
         /// <summary>
@@ -54,6 +58,7 @@ namespace SrvSurvey.game
         /// The name of the current start system, or body if we are close to one.
         /// </summary>
         public string? systemLocation { get; private set; }
+        public SystemPoi systemPoi;
 
         public Game(string? cmdr)
         {
@@ -153,7 +158,7 @@ namespace SrvSurvey.game
         private void Status_StatusChanged()
         {
             //log("status changed");
-            if (this.statusBodyName != null && status!.BodyName != this.statusBodyName)
+            if (this.statusBodyName != null && status!.BodyName != null && status!.BodyName != this.statusBodyName)
             {
                 // exit early if the body suddenly switches to something different without being NULL first
                 Game.log($"Multiple running games? this.statusBodyName: ${this.statusBodyName} vs status.BodyName: {status.BodyName}");
@@ -178,8 +183,9 @@ namespace SrvSurvey.game
                         // change systemLocation to be just system (not the body)
                         this.systemLocation = this.starSystem;
 
-                        this.departingBody(this.nearBody);
+                        var leftBody = this.nearBody;
                         this.nearBody = null;
+                        this.departingBody(leftBody);
                     }
                 }
                 else
@@ -296,7 +302,7 @@ namespace SrvSurvey.game
 
         public bool showGuardianPlotters
         {
-            get => showBodyPlotters
+            get => showBodyPlotters && false
                 && this.nearBody != null
                 && this.touchdownLocation != null
                 && !string.IsNullOrEmpty(this.nearBody.guardianSiteName);
@@ -705,7 +711,7 @@ namespace SrvSurvey.game
 
         private void onJournalEntry(Liftoff entry)
         {
-            this._touchdownLocation = null;
+            this._touchdownLocation = LatLong2.Empty;
             log($"Liftoff!");
         }
 
@@ -722,6 +728,35 @@ namespace SrvSurvey.game
             else if (this.nearBody.Genuses == null)
                 this.nearBody.readSAASignalsFound(entry);
         }
+
+        #endregion
+
+        #region Canonn
+
+        public async void biostats(long systemAddress, int bodyId)
+        {
+            var json = await new HttpClient().GetStringAsync($"https://us-central1-canonn-api-236217.cloudfunctions.net/query/codex/biostats?id={systemAddress}");
+
+            JToken biostats = JsonConvert.DeserializeObject<JToken>(json)!;
+
+            var bodies= biostats["system"]["bodies"]!.Value<JArray>()!;
+
+            var body = bodies[bodyId-1].ToObject<canonn.Planet>();
+
+            Game.log(body);
+        }
+
+        public async void getSystemPoi(string systemName)
+        {
+            if (this.systemPoi != null)
+            {
+                var json = await new HttpClient().GetStringAsync($"https://us-central1-canonn-api-236217.cloudfunctions.net/query/getSystemPoi?system={systemName}");
+                this.systemPoi = JsonConvert.DeserializeObject<SystemPoi>(json)!;
+            }
+
+            Game.log(this.systemPoi);
+        }
+
 
         #endregion
     }

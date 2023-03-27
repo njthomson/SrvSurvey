@@ -50,6 +50,8 @@ namespace SrvSurvey
             Elite.GetClientRect(hwndED, ref clientRect);
 
             var windowTitleHeight = windowRect.Bottom - windowRect.Top - clientRect.Bottom;
+            if (windowTitleHeight == 0)
+                windowTitleHeight = 4;
 
             return new Rectangle(
                 // use the Window rect for the top left corder

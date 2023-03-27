@@ -84,6 +84,8 @@ namespace SrvSurvey
 
             if (Debugger.IsAttached)
                 Elite.setFocusED();
+
+            Game.codexRef.init();
         }
 
         private void updateAllControls()
@@ -261,14 +263,11 @@ namespace SrvSurvey
                     game.nearBody.Genuses.Select(_ => $"{_.Genus_Localised}:{game.nearBody.analysedSpecies.ContainsKey(_.Genus)}")
                 );
 
-                if (game.showBodyPlotters)
-                {
-                    if (Game.settings.autoShowBioSummary)
-                        Program.showPlotter<PlotBioStatus>();
+                if (Game.settings.autoShowBioSummary && (game.showBodyPlotters || game.mode == GameMode.SAA))
+                    Program.showPlotter<PlotBioStatus>();
 
-                    if (game.isLanded && Game.settings.autoShowBioPlot && !this.game.showGuardianPlotters)
-                        Program.showPlotter<PlotGrounded>();
-                }
+                if (game.showBodyPlotters && game.isLanded && Game.settings.autoShowBioPlot && !this.game.showGuardianPlotters)
+                    Program.showPlotter<PlotGrounded>();
             }
         }
 
