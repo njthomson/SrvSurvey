@@ -58,7 +58,7 @@ namespace SrvSurvey.game
         /// The name of the current start system, or body if we are close to one.
         /// </summary>
         public string? systemLocation { get; private set; }
-        public SystemPoi systemPoi;
+        public SystemPoi? systemPoi;
 
         public Game(string? cmdr)
         {
@@ -190,7 +190,7 @@ namespace SrvSurvey.game
                 }
                 else
                 {
-                    if (this.nearBody == null)
+                    if (this.nearBody == null && status.BodyName != null)
                     {
                         // we are approaching - create and fire event
                         this.createNearBody(status.BodyName);
@@ -739,9 +739,9 @@ namespace SrvSurvey.game
 
             JToken biostats = JsonConvert.DeserializeObject<JToken>(json)!;
 
-            var bodies= biostats["system"]["bodies"]!.Value<JArray>()!;
+            var bodies= biostats["system"]!["bodies"]!.Value<JArray>()!;
 
-            var body = bodies[bodyId-1].ToObject<canonn.Planet>();
+            var body = bodies[bodyId-1].ToObject<canonn.Planet>()!;
 
             Game.log(body);
         }
@@ -754,7 +754,7 @@ namespace SrvSurvey.game
                 this.systemPoi = JsonConvert.DeserializeObject<SystemPoi>(json)!;
             }
 
-            Game.log(this.systemPoi);
+            Game.log(this.systemPoi!);
         }
 
 

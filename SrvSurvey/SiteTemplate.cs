@@ -291,7 +291,7 @@ namespace SrvSurvey
 
         public static void Import()
         {
-            string filepath = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "settlementTemplates.json");
+            string filepath = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "settlementTemplates.json");
 
             if (File.Exists(filepath))
             {
