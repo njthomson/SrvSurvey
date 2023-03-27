@@ -86,7 +86,6 @@ jobs:
         $currentDirectory = Get-Location
         $certificatePath = Join-Path -Path $currentDirectory -ChildPath $env:Wap_Project_Directory -AdditionalChildPath $env:SigningCertificate
         [IO.File]::WriteAllBytes("$certificatePath", $pfx_cert_byte)
-      if: matrix.ChannelName != 'Prod_Store'
 
     # Restore the application
     - name: Restore the Wpf application to populate the obj folder
@@ -118,7 +117,6 @@ jobs:
     # Remove the .pfx
     - name: Remove the .pfx
       run: Remove-Item -path $env:Wap_Project_Directory\$env:SigningCertificate
-      if: matrix.ChannelName != 'Prod_Store'
 
     # Upload the package: https://github.com/marketplace/actions/upload-a-build-artifact
     - name: Upload build artifacts
