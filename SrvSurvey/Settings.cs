@@ -1,17 +1,7 @@
-﻿using Microsoft.Win32;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using SrvSurvey.game;
 using SrvSurvey.units;
-using System;
-using System.CodeDom;
-using System.Collections.Generic;
-using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace SrvSurvey
 {
@@ -25,6 +15,7 @@ namespace SrvSurvey
         public bool autoShowBioSummary = true;
         public bool autoShowBioPlot = true;
         public bool focusGameOnMinimize = true;
+        public bool enableGuardianSites = false;
 
         public double Opacity = 0.5;
 

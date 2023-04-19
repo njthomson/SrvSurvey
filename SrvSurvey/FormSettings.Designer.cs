@@ -46,6 +46,9 @@ namespace SrvSurvey
             this.txtCommander = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.label3 = new System.Windows.Forms.Label();
+            this.checkEnableGuardianFeatures = new System.Windows.Forms.CheckBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.linkLabel2 = new System.Windows.Forms.LinkLabel();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
@@ -57,6 +60,7 @@ namespace SrvSurvey
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tabControl1.SuspendLayout();
+            this.tabPage3.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -98,6 +102,7 @@ namespace SrvSurvey
             // tabPage1
             // 
             this.tabPage1.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPage1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.tabPage1.Controls.Add(this.checkFocusOnMinimize);
             this.tabPage1.Controls.Add(this.numOpacity);
             this.tabPage1.Controls.Add(this.label2);
@@ -155,7 +160,7 @@ namespace SrvSurvey
             this.trackOpacity.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.trackOpacity.Maximum = 100;
             this.trackOpacity.Name = "trackOpacity";
-            this.trackOpacity.Size = new System.Drawing.Size(262, 45);
+            this.trackOpacity.Size = new System.Drawing.Size(258, 45);
             this.trackOpacity.SmallChange = 5;
             this.trackOpacity.TabIndex = 4;
             this.trackOpacity.TickFrequency = 10;
@@ -173,7 +178,7 @@ namespace SrvSurvey
             this.groupBox1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.groupBox1.Size = new System.Drawing.Size(431, 234);
+            this.groupBox1.Size = new System.Drawing.Size(427, 234);
             this.groupBox1.TabIndex = 3;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Bio scanning";
@@ -233,7 +238,7 @@ namespace SrvSurvey
             this.txtCommander.Location = new System.Drawing.Point(9, 33);
             this.txtCommander.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.txtCommander.Name = "txtCommander";
-            this.txtCommander.Size = new System.Drawing.Size(431, 23);
+            this.txtCommander.Size = new System.Drawing.Size(427, 23);
             this.txtCommander.TabIndex = 1;
             this.txtCommander.Tag = "preferredCommander";
             // 
@@ -249,6 +254,7 @@ namespace SrvSurvey
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
@@ -258,8 +264,47 @@ namespace SrvSurvey
             this.tabControl1.Size = new System.Drawing.Size(460, 405);
             this.tabControl1.TabIndex = 0;
             // 
+            // tabPage3
+            // 
+            this.tabPage3.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPage3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.tabPage3.Controls.Add(this.label3);
+            this.tabPage3.Controls.Add(this.checkEnableGuardianFeatures);
+            this.tabPage3.Location = new System.Drawing.Point(4, 24);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(452, 377);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "Guardian sites";
+            // 
+            // label3
+            // 
+            this.label3.Location = new System.Drawing.Point(8, 12);
+            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(430, 33);
+            this.label3.TabIndex = 2;
+            this.label3.Text = "Guardian site features are still extremely experimental and likely to have issues" +
+    ".";
+            // 
+            // checkEnableGuardianFeatures
+            // 
+            this.checkEnableGuardianFeatures.AutoSize = true;
+            this.checkEnableGuardianFeatures.Checked = true;
+            this.checkEnableGuardianFeatures.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkEnableGuardianFeatures.Location = new System.Drawing.Point(9, 48);
+            this.checkEnableGuardianFeatures.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.checkEnableGuardianFeatures.Name = "checkEnableGuardianFeatures";
+            this.checkEnableGuardianFeatures.Size = new System.Drawing.Size(178, 19);
+            this.checkEnableGuardianFeatures.TabIndex = 1;
+            this.checkEnableGuardianFeatures.Tag = "enableGuardianSites";
+            this.checkEnableGuardianFeatures.Text = "Enable experimental features";
+            this.checkEnableGuardianFeatures.UseVisualStyleBackColor = true;
+            // 
             // tabPage2
             // 
+            this.tabPage2.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPage2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.tabPage2.Controls.Add(this.linkLabel2);
             this.tabPage2.Controls.Add(this.linkLabel1);
             this.tabPage2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
@@ -269,15 +314,14 @@ namespace SrvSurvey
             this.tabPage2.Size = new System.Drawing.Size(452, 377);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "About";
-            this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // linkLabel2
             // 
             this.linkLabel2.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.linkLabel2.LinkArea = new System.Windows.Forms.LinkArea(83, 21);
-            this.linkLabel2.Location = new System.Drawing.Point(3, 314);
+            this.linkLabel2.Location = new System.Drawing.Point(3, 310);
             this.linkLabel2.Name = "linkLabel2";
-            this.linkLabel2.Size = new System.Drawing.Size(446, 60);
+            this.linkLabel2.Size = new System.Drawing.Size(442, 60);
             this.linkLabel2.TabIndex = 2;
             this.linkLabel2.TabStop = true;
             this.linkLabel2.Text = "SrvSurvey is not an official tool for \"Elite Dangerous\" and is not affiliated wit" +
@@ -292,7 +336,7 @@ namespace SrvSurvey
             this.linkLabel1.LinkArea = new System.Windows.Forms.LinkArea(65, 15);
             this.linkLabel1.Location = new System.Drawing.Point(3, 3);
             this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(446, 286);
+            this.linkLabel1.Size = new System.Drawing.Size(442, 286);
             this.linkLabel1.TabIndex = 1;
             this.linkLabel1.TabStop = true;
             this.linkLabel1.Text = resources.GetString("linkLabel1.Text");
@@ -325,6 +369,8 @@ namespace SrvSurvey
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.tabControl1.ResumeLayout(false);
+            this.tabPage3.ResumeLayout(false);
+            this.tabPage3.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -350,5 +396,8 @@ namespace SrvSurvey
         private TabPage tabPage2;
         private LinkLabel linkLabel1;
         private LinkLabel linkLabel2;
+        private TabPage tabPage3;
+        private Label label3;
+        private CheckBox checkEnableGuardianFeatures;
     }
 }

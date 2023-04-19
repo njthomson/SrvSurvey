@@ -111,7 +111,8 @@ namespace SrvSurvey
         private void btnSave_Click(object sender, EventArgs e)
         {
             // restart the app if these are different:
-            var restartApp = txtCommander.Text != Game.settings.preferredCommander;
+            var restartApp = txtCommander.Text != Game.settings.preferredCommander
+                || checkEnableGuardianFeatures.Checked != Game.settings.enableGuardianSites;
 
 
             updateSettingsFromForm(this);

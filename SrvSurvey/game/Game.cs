@@ -290,7 +290,7 @@ namespace SrvSurvey.game
 
         public bool isLanded
         {
-            get => this.mode == GameMode.InSrv || this.mode == GameMode.OnFoot || this.mode == GameMode.Landed;
+            get => this.isMode(GameMode.InSrv, GameMode.OnFoot, GameMode.Landed);
         }
 
         public bool showBodyPlotters
@@ -302,9 +302,10 @@ namespace SrvSurvey.game
 
         public bool showGuardianPlotters
         {
-            get => showBodyPlotters && false
+            get => Game.settings.enableGuardianSites
                 && this.nearBody != null
                 && this.touchdownLocation != null
+                && this.isMode(GameMode.InSrv, GameMode.OnFoot, GameMode.Landed, GameMode.Flying)
                 && !string.IsNullOrEmpty(this.nearBody.guardianSiteName);
         }
 
@@ -739,9 +740,9 @@ namespace SrvSurvey.game
 
             JToken biostats = JsonConvert.DeserializeObject<JToken>(json)!;
 
-            var bodies= biostats["system"]!["bodies"]!.Value<JArray>()!;
+            var bodies = biostats["system"]!["bodies"]!.Value<JArray>()!;
 
-            var body = bodies[bodyId-1].ToObject<canonn.Planet>()!;
+            var body = bodies[bodyId - 1].ToObject<canonn.Planet>()!;
 
             Game.log(body);
         }

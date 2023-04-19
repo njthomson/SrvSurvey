@@ -42,8 +42,8 @@ namespace SrvSurvey
             if (Game.settings.mainLocation != Point.Empty)
                 this.useLastWindowLocation();
 
-            if (Debugger.IsAttached)
-                groupBox4.Visible = true;
+            // Only show Guardian site UX is the setting allows
+            groupBox4.Visible = Game.settings.enableGuardianSites;
         }
 
         private void useLastWindowLocation()
@@ -551,7 +551,8 @@ namespace SrvSurvey
         {
             // slow timer to check the location of the game window, repositioning plotters if needed
             var rect = Elite.getWindowRect();
-            var hasFocus = rect != Rectangle.Empty;
+            var hasFocus = rect != Rectangle.Empty && rect.X != -32000;
+            Game.log($"hasFocus: {hasFocus}, lastWindowHasFocus: {lastWindowHasFocus}, rect: {rect}, lastWindowRect: {lastWindowRect}");
 
             if (this.lastWindowHasFocus != hasFocus)
             {

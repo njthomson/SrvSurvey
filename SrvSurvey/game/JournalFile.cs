@@ -8,6 +8,7 @@ namespace SrvSurvey
     class JournalFile
     {
         private static readonly Dictionary<string, Type> typeMap;
+
         static JournalFile()
         {
             // build a map of all types derived from JournalEntry
