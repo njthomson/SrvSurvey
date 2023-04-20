@@ -199,7 +199,6 @@ namespace SrvSurvey.game
             }
 
             this.checkModeChange();
-
         }
 
         public event GameNearingBody? nearingBody;
@@ -681,7 +680,7 @@ namespace SrvSurvey.game
         {
             get
             {
-                if (_touchdownLocation == null)
+                if (this._touchdownLocation == null)
                 {
                     Game.log($"Searching journals for last touchdown location...");
                     var lastTouchdown = journals!.FindEntryByType<Touchdown>(-1, true);

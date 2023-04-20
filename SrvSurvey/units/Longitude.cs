@@ -68,6 +68,11 @@ namespace SrvSurvey.units
             return a.n;
         }
 
+        public static explicit operator decimal(Longitude a)
+        {
+            return (decimal)a.n;
+        }
+
         public static implicit operator Longitude(double n)
         {
             return new Longitude(n);

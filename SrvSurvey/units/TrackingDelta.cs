@@ -39,15 +39,17 @@ namespace SrvSurvey.units
 
         private readonly double halfCirc;
         private readonly double mpd;
+        private readonly double radius;
         private LatLong2 current;
         private LatLong2 target;
 
-        public TrackingDelta(double bodyRadius, LatLong2 targetLocation) : this(bodyRadius, Game.activeGame!.status!.here, targetLocation)
+        public TrackingDelta(double bodyRadius, LatLong2 targetLocation) : this(bodyRadius, Status.here, targetLocation)
         {
         }
 
         public TrackingDelta(double bodyRadius, LatLong2 currentLocation, LatLong2 targetLocation)
         {
+            this.radius = bodyRadius;
             this.mpd = bodyRadius * Math.PI * 2 / 360;
             this.halfCirc = bodyRadius; // * this.mpd;
             this.current = currentLocation;
@@ -63,15 +65,12 @@ namespace SrvSurvey.units
             this.dx = dll.Long * this.mpd;
             this.dy = dll.Lat * this.mpd;
 
-            this.distance = dll.getDistance(true) * this.mpd;
+            this.distance = (double)Util.getDistance(this.current, this.target, this.radius);
 
             this.complete = 100.0 / this.halfCirc * this.distance;
             //Game.log($"ccomplete: {this.halfCirc} / {this.distance} / {this.complete}");
-            // calculate the angle, adjusting for negatives
-            var a = Math.Atan(/*opp*/dll.Long / /*adj*/dll.Lat) * Angle.ratioDegreesToRadians;
-            this.angle = dll.Lat < 0 ? 180 + a : a;
+            this.angle = Util.getBearing(this.current, this.target);
         }
-
 
         public LatLong2 Current
 

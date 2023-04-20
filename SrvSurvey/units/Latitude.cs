@@ -68,6 +68,11 @@ namespace SrvSurvey.units
             return a.n;
         }
 
+        public static explicit operator decimal(Latitude a)
+        {
+            return (decimal)a.n;
+        }
+
         public static implicit operator Latitude(double n)
         {
             return new Latitude(n);

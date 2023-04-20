@@ -23,7 +23,7 @@ namespace SrvSurvey
 
             this.touchdownLocation = new TrackingDelta(
                 game.nearBody!.radius,
-                game.status!.here,
+                Status.here,
                 game.touchdownLocation);
         }
         public abstract void reposition(Rectangle gameRect);
@@ -58,10 +58,10 @@ namespace SrvSurvey
 
         protected virtual void Status_StatusChanged()
         {
-            this.touchdownLocation.Current = game.status!.here;
+            this.touchdownLocation.Current = Status.here;
 
             if (this.srvLocation != null)
-                this.srvLocation.Current = game.status!.here;
+                this.srvLocation.Current = Status.here;
 
             this.Invalidate();
         }
@@ -82,19 +82,19 @@ namespace SrvSurvey
 
         protected void onJournalEntry(Disembark entry)
         {
-            Game.log($"Disembark srvLocation {game.status!.here}");
+            Game.log($"Disembark srvLocation {Status.here}");
             if (entry.SRV && this.srvLocation == null)
             {
                 this.srvLocation = new TrackingDelta(
                     game.nearBody!.radius,
-                    game.status.here);
+                    Status.here);
                 this.Invalidate();
             }
         }
 
         protected void onJournalEntry(Embark entry)
         {
-            Game.log($"Embark {game.status!.here}");
+            Game.log($"Embark {Status.here}");
             if (entry.SRV && this.srvLocation != null)
             {
                 this.srvLocation = null;
@@ -213,9 +213,9 @@ namespace SrvSurvey
             var r = new RectangleF(x, y, sz * 2, sz * 2);
             g.DrawEllipse(GameColors.penGameOrange2, r);
 
-            var dd = new TrackingDelta(game.nearBody!.radius, game.status!.here, location);
+            var dd = new TrackingDelta(game.nearBody!.radius, Status.here, location);
 
-            Angle deg = dd.angle - game.status.Heading;
+            Angle deg = dd.angle - game.status!.Heading;
             var dx = (float)Math.Sin(Util.degToRad(deg)) * 9F;
             var dy = (float)Math.Cos(Util.degToRad(deg)) * 9F;
             g.DrawLine(GameColors.penGameOrange2, x + sz, y + sz, x + sz + dx, y + sz - dy);

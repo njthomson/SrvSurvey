@@ -397,7 +397,7 @@ namespace SrvSurvey
             switch (entry.Message)
             {
                 case ".target here":
-                    Game.settings.targetLatLong = game.status!.here;
+                    Game.settings.targetLatLong = Status.here;
                     Game.settings.targetLatLongActive = true;
                     Game.settings.Save();
                     this.updateTrackTargetTexts();
@@ -552,7 +552,6 @@ namespace SrvSurvey
             // slow timer to check the location of the game window, repositioning plotters if needed
             var rect = Elite.getWindowRect();
             var hasFocus = rect != Rectangle.Empty && rect.X != -32000;
-            Game.log($"hasFocus: {hasFocus}, lastWindowHasFocus: {lastWindowHasFocus}, rect: {rect}, lastWindowRect: {lastWindowRect}");
 
             if (this.lastWindowHasFocus != hasFocus)
             {

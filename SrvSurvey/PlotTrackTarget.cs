@@ -86,7 +86,7 @@ namespace SrvSurvey
 
         private void Status_StatusChanged()
         {
-            this.td.Current = game.status.here;
+            this.td.Current = Status.here;
             this.calculate();
         }
 

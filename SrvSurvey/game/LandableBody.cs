@@ -173,7 +173,7 @@ namespace SrvSurvey.game
 
             var newScan = new BioScan()
             {
-                location = game.status!.here,
+                location = Status.here,
                 radius = BioScan.ranges[entry.Genus],
                 genus = entry.Genus,
                 genusLocalized = entry.Genus_Localized,

@@ -104,7 +104,9 @@ namespace SrvSurvey
                 }
             }
 
-            this.here = new LatLong2(this);
+            // update singleton location
+            Status.here.Lat = this.Latitude;
+            Status.here.Long = this.Longitude;
 
             // fire the event for external code on the UI thread
             Program.control!.Invoke((MethodInvoker)delegate
@@ -119,7 +121,7 @@ namespace SrvSurvey
         #endregion
 
         [JsonIgnore]
-        public LatLong2 here { get; private set; }
+        public static readonly LatLong2 here = new LatLong2(0, 0);
 
         [JsonIgnore]
         public bool OnFoot { get => (this.Flags2 & StatusFlags2.OnFoot) > 0; }

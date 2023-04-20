@@ -65,7 +65,7 @@ namespace SrvSurvey
             this.reposition(Elite.getWindowRect());
 
             // get landing location
-            Game.log($"initialize here: {game.status.here}, touchdownLocation: {game.touchdownLocation}");
+            Game.log($"initialize here: {Status.here}, touchdownLocation: {game.touchdownLocation}");
 
             if (game.touchdownLocation == null)
             {
@@ -75,7 +75,7 @@ namespace SrvSurvey
 
             this.td = new TrackingDelta(
                 game.nearBody.radius,
-                game.status.here,
+                Status.here,
                 game.touchdownLocation);
         }
 
@@ -108,17 +108,17 @@ namespace SrvSurvey
 
         private void onJournalEntry(Disembark entry)
         {
-            Game.log($"Disembark srvLocation {game.status!.here}");
+            Game.log($"Disembark srvLocation {Status.here}");
             if (entry.SRV && this.srvLocation == null)
             {
-                this.srvLocation = new TrackingDelta(game.nearBody!.radius, game.status.here, new LatLong2(game.status));
+                this.srvLocation = new TrackingDelta(game.nearBody!.radius, Status.here, new LatLong2(game.status!));
                 this.Invalidate();
             }
         }
 
         private void onJournalEntry(Embark entry)
         {
-            Game.log($"Embark {game.status!.here}");
+            Game.log($"Embark {Status.here}");
             if (entry.SRV && this.srvLocation != null)
             {
                 this.srvLocation = null;
@@ -143,10 +143,10 @@ namespace SrvSurvey
         private void Status_StatusChanged()
         {
             if (this.td != null)
-                this.td.Current = game.status!.here;
+                this.td.Current = Status.here;
 
             if (this.srvLocation != null)
-                this.srvLocation.Current = game.status!.here;
+                this.srvLocation.Current = Status.here;
 
             this.Invalidate();
         }
@@ -252,9 +252,9 @@ namespace SrvSurvey
             var r = new RectangleF(x, y, sz * 2, sz * 2);
             g.DrawEllipse(GameColors.penGameOrange2, r);
 
-            var dd = new TrackingDelta(game.nearBody!.radius, game.status!.here, location);
+            var dd = new TrackingDelta(game.nearBody!.radius, Status.here, location);
 
-            Angle deg = dd.angle - game.status.Heading;
+            Angle deg = dd.angle - game.status!.Heading;
             var dx = (float)Math.Sin(Util.degToRad(deg)) * 10F;
             var dy = (float)Math.Cos(Util.degToRad(deg)) * 10F;
             g.DrawLine(GameColors.penGameOrange2, x + sz, y + sz, x + sz + dx, y + sz - dy);

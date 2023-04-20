@@ -1,16 +1,4 @@
 ﻿using SrvSurvey.game;
-using SrvSurvey.units;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace SrvSurvey
 {
@@ -150,7 +138,7 @@ namespace SrvSurvey
             // prepare other stuff
             if (template != null)
             {
-                var offset = game.nearBody!.guardianSiteLocation! - game.status!.here;
+                var offset = game.nearBody!.guardianSiteLocation! - Status.here;
                 this.commanderOffset = new PointF(
                     (float)(offset.Long * template.scaleFactor),
                     (float)(offset.Lat * -template.scaleFactor));
