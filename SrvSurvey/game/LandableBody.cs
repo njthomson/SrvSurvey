@@ -112,7 +112,7 @@ namespace SrvSurvey.game
         }
 
         public List<ScanSignal>? Signals { get; set; }
-        public List<OrganicSummary>? Genuses { get; set; }
+        public readonly List<OrganicSummary> Genuses = new List<OrganicSummary>();
 
         public void readSAASignalsFound(SAASignalsFound signalsEntry)
         {
@@ -129,7 +129,7 @@ namespace SrvSurvey.game
 
                 if (signalsEntry.Genuses?.Count > 0)
                 {
-                    this.Genuses = new List<OrganicSummary>();
+                    this.Genuses.Clear();
                     foreach (var _ in signalsEntry.Genuses)
                     {
                         var newSummary = new OrganicSummary { Genus = _.Genus, Genus_Localised = _.Genus_Localised, Range = BioScan.ranges[_.Genus] };
@@ -173,7 +173,7 @@ namespace SrvSurvey.game
 
             var newScan = new BioScan()
             {
-                location = Status.here,
+                location = Status.here.clone(),
                 radius = BioScan.ranges[entry.Genus],
                 genus = entry.Genus,
                 genusLocalized = entry.Genus_Localized,

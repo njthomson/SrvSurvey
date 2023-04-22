@@ -65,7 +65,7 @@ namespace SrvSurvey
 
         private void Game_modeChanged(GameMode newMode)
         {
-            Game.log($"?? {game.vehicle} / {newMode} / {game.isMode(GameMode.SuperCruising, GameMode.Flying, GameMode.Landed, GameMode.InSrv, GameMode.OnFoot, GameMode.GlideMode)}");
+            //Game.log($"?? {game.vehicle} / {newMode} / {game.isMode(GameMode.SuperCruising, GameMode.Flying, GameMode.Landed, GameMode.InSrv, GameMode.OnFoot, GameMode.GlideMode)}");
             // Landed / OnFoot / InSrv
             
             if (this.Opacity == 0 && game.showBodyPlotters)
@@ -75,6 +75,11 @@ namespace SrvSurvey
             else if (this.Opacity != 0 && !game.showBodyPlotters)
             {
                 this.Opacity = 0;
+            }
+            else if (game.isMode(GameMode.InSrv, GameMode.OnFoot))
+            {
+                // force plotter to reposition when switching between SRV and foot.
+                this.reposition(Elite.getWindowRect());
             }
 
 

@@ -96,13 +96,17 @@ namespace SrvSurvey
             GameColors.brushOrangeStripe = new TextureBrush(bm, WrapMode.TileFlipX);
             GameColors.penOrangeStripe3 = new Pen(GameColors.brushOrangeStripe, 3);
 
+            // prepare brush for bio-scan exclusion circles: green cross-hatch
+            GameColors.brushExclusionActive = new HatchBrush(HatchStyle.ZigZag, Color.DarkGreen, Color.Transparent);
+            GameColors.penExclusionActive = new Pen(Color.FromArgb(96, Color.Green), 20);
+            
             // prepare brush for bio-scan exclusion circles: red cross-hatch
-            GameColors.brushExclusionActive = new HatchBrush(HatchStyle.ZigZag, Color.DarkRed, Color.Transparent);
-            GameColors.penExclusionActive = new Pen(Color.FromArgb(96, Color.Red), 20);
+            GameColors.brushExclusionDenied = new HatchBrush(HatchStyle.ZigZag, Color.DarkRed, Color.Transparent);
+            GameColors.penExclusionDenied = new Pen(Color.FromArgb(96, Color.Red), 20);
 
-            // prepare brush for bio-scan exclusion circles: red cross-hatch
-            GameColors.brushExclusionComplete = new HatchBrush(HatchStyle.Divot, Color.DarkGreen, Color.Transparent);
-            GameColors.penExclusionComplete = new Pen(Color.FromArgb(96, Color.Green), 20);
+            // prepare brush for bio-scan exclusion circles: dark blue/grey cross-hatch
+            GameColors.brushExclusionComplete = new HatchBrush(HatchStyle.Divot, Color.SlateBlue, Color.Transparent);
+            GameColors.penExclusionComplete = new Pen(Color.FromArgb(96, Color.DarkSlateBlue), 20);
 
             // prepare brush for ship location
             GameColors.brushShipLocation = new HatchBrush(HatchStyle.SmallCheckerBoard, Cyan, Color.Transparent);
@@ -133,6 +137,8 @@ namespace SrvSurvey
 
         public static Brush brushExclusionActive;
         public static Pen penExclusionActive;
+        public static Brush brushExclusionDenied;
+        public static Pen penExclusionDenied;
         public static Brush brushExclusionComplete;
         public static Pen penExclusionComplete;
 

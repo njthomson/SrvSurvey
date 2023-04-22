@@ -50,6 +50,11 @@ namespace SrvSurvey.units
                 return dist;
         }
 
+        public LatLong2 clone()
+        {
+            return new LatLong2(this.Lat, this.Long);
+        }
+
         public static LatLong2 operator +(LatLong2 a, LatLong2 b)
         {
             return new LatLong2(a.Lat + b.Lat, a.Long + b.Long);

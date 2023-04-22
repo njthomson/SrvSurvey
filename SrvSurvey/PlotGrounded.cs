@@ -75,7 +75,6 @@ namespace SrvSurvey
 
             this.td = new TrackingDelta(
                 game.nearBody.radius,
-                Status.here,
                 game.touchdownLocation);
         }
 
@@ -111,7 +110,7 @@ namespace SrvSurvey
             Game.log($"Disembark srvLocation {Status.here}");
             if (entry.SRV && this.srvLocation == null)
             {
-                this.srvLocation = new TrackingDelta(game.nearBody!.radius, Status.here, new LatLong2(game.status!));
+                this.srvLocation = new TrackingDelta(game.nearBody!.radius, Status.here.clone());
                 this.Invalidate();
             }
         }
@@ -252,7 +251,7 @@ namespace SrvSurvey
             var r = new RectangleF(x, y, sz * 2, sz * 2);
             g.DrawEllipse(GameColors.penGameOrange2, r);
 
-            var dd = new TrackingDelta(game.nearBody!.radius, Status.here, location);
+            var dd = new TrackingDelta(game.nearBody!.radius, location);
 
             Angle deg = dd.angle - game.status!.Heading;
             var dx = (float)Math.Sin(Util.degToRad(deg)) * 10F;
@@ -296,7 +295,7 @@ namespace SrvSurvey
 
             // use the same Tracking delta for all bioScans against the same currentLocation
             var currentLocation = new LatLong2(this.game.status);
-            var d = new TrackingDelta(game.nearBody.radius, currentLocation, currentLocation);
+            var d = new TrackingDelta(game.nearBody.radius, currentLocation.clone());
             foreach (var scan in game.nearBody.completedScans)
             {
                 drawBioScan(g, d, scan);
@@ -330,12 +329,32 @@ namespace SrvSurvey
             var rect = new RectangleF((float)d.dx - scan.radius, (float)-d.dy - scan.radius, scan.radius * 2, scan.radius * 2);
             //Game.log($"d.dx: {rect.X}, d.dy: {rect.Y}");
 
-            var complete = scan.scanType == ScanType.Analyse;
-            g.FillEllipse(complete ? GameColors.brushExclusionComplete : GameColors.brushExclusionActive, rect);
+            Brush b;
+            Pen p;
+            if (scan.scanType == ScanType.Analyse)
+            {
+                // grey colours
+                b = GameColors.brushExclusionComplete;
+                p = GameColors.penExclusionComplete;
+            }
+            else if (d.distance < scan.radius)
+            {
+                // red colours
+                b = GameColors.brushExclusionDenied;
+                p = GameColors.penExclusionDenied;
+            }
+            else
+            {
+                // green colours
+                b = GameColors.brushExclusionActive;
+                p = GameColors.penExclusionActive;
+            }
+
+            g.FillEllipse(b, rect);
             rect.Inflate(fudge, fudge);
-            g.DrawEllipse(complete ? GameColors.penExclusionComplete : GameColors.penExclusionActive, rect);
+            g.DrawEllipse(p, rect);
             rect.Inflate(fudge, fudge);
-            g.DrawEllipse(complete ? GameColors.penExclusionComplete : GameColors.penExclusionActive, rect);
+            g.DrawEllipse(p, rect);
         }
 
         private void drawScale(Graphics g, float scale)

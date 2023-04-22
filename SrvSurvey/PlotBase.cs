@@ -23,7 +23,6 @@ namespace SrvSurvey
 
             this.touchdownLocation = new TrackingDelta(
                 game.nearBody!.radius,
-                Status.here,
                 game.touchdownLocation);
         }
         public abstract void reposition(Rectangle gameRect);
@@ -87,7 +86,7 @@ namespace SrvSurvey
             {
                 this.srvLocation = new TrackingDelta(
                     game.nearBody!.radius,
-                    Status.here);
+                    Status.here.clone());
                 this.Invalidate();
             }
         }
@@ -213,7 +212,7 @@ namespace SrvSurvey
             var r = new RectangleF(x, y, sz * 2, sz * 2);
             g.DrawEllipse(GameColors.penGameOrange2, r);
 
-            var dd = new TrackingDelta(game.nearBody!.radius, Status.here, location);
+            var dd = new TrackingDelta(game.nearBody!.radius, location);
 
             Angle deg = dd.angle - game.status!.Heading;
             var dx = (float)Math.Sin(Util.degToRad(deg)) * 9F;

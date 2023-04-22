@@ -112,7 +112,8 @@ namespace SrvSurvey
         public static decimal getDistance(LatLong2 p1, LatLong2 p2, double r)
         {
             // don't bother calculating if positions are identical
-            if (p1.Lat == p2.Lat && p1.Long == p2.Long) return 0;
+            if (p1.Lat == p2.Lat && p1.Long == p2.Long)
+                return 0;
 
             var lat1 = degToRad((decimal)p1.Lat);
             var lat2 = degToRad((decimal)p2.Lat);

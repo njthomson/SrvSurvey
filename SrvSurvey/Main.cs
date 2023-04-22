@@ -397,7 +397,7 @@ namespace SrvSurvey
             switch (entry.Message)
             {
                 case ".target here":
-                    Game.settings.targetLatLong = Status.here;
+                    Game.settings.targetLatLong = Status.here.clone();
                     Game.settings.targetLatLongActive = true;
                     Game.settings.Save();
                     this.updateTrackTargetTexts();
