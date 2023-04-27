@@ -446,6 +446,15 @@ namespace SrvSurvey.game
             if (this.nearBody == null && (status!.Flags & StatusFlags.HasLatLong) > 0)
             {
                 this.createNearBody(status.BodyName);
+
+                // are we near a guardian site?
+                var lastApproachSettlement = journals.FindEntryByType<ApproachSettlement>(-1, true);
+                if (lastApproachSettlement != null && lastApproachSettlement.SystemAddress == this.nearBody.systemAddress)
+                {
+                    this.nearBody.guardianSiteLocation = new LatLong2(lastApproachSettlement);
+                    this.nearBody.guardianSiteName = lastApproachSettlement.Name_Localised;
+                    this.nearBody.guardianSiteCount++;
+                }
             }
 
             if (this.systemLocation == null)
@@ -457,8 +466,8 @@ namespace SrvSurvey.game
                     this.systemLocation = Util.getLocationString(locationEntry.StarSystem, locationEntry.Body);
                 }
             }
-            log($"Game.initializeFromJournal: END Commander:{this.Commander}, starSystem:{this.starSystem}, systemLocation:{this.systemLocation}, nearBody:{this.nearBody}, journals.Count:{journals.Count}");
 
+            log($"Game.initializeFromJournal: END Commander:{this.Commander}, starSystem:{this.starSystem}, systemLocation:{this.systemLocation}, nearBody:{this.nearBody}, journals.Count:{journals.Count}");
             this.initialized = Game.activeGame == this && this.Commander != null;
             this.checkModeChange();
         }
@@ -727,6 +736,14 @@ namespace SrvSurvey.game
                 this.createNearBody(entry.BodyName);
             else if (this.nearBody.Genuses == null)
                 this.nearBody.readSAASignalsFound(entry);
+        }
+
+        private void onJournalEntry(ApproachSettlement entry)
+        {
+            if (this.nearBody == null)
+                this.createNearBody(entry.BodyName);
+
+            this.nearBody.onJournalEntry(entry);
         }
 
         #endregion
