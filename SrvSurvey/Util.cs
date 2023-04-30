@@ -1,5 +1,7 @@
 ﻿using DecimalMath;
 using Microsoft.VisualBasic.Devices;
+using Newtonsoft.Json;
+using SrvSurvey.game;
 using SrvSurvey.units;
 using System;
 using System.Diagnostics;
@@ -23,6 +25,11 @@ namespace SrvSurvey
         public static double radToDeg(double angle)
         {
             return angle * Angle.ratioDegreesToRadians;
+        }
+
+        public static string metersToString(decimal m, bool asDelta = false)
+        {
+            return metersToString((double)m, asDelta);
         }
 
         /// <summary>
@@ -54,7 +61,12 @@ namespace SrvSurvey
             }
 
             m = m / 1000;
-            if (m < 1000)
+            if (m < 10)
+            {
+                // less than 1 ten
+                return prefix + m.ToString("##.##") + " km";
+            }
+            else if (m < 1000)
             {
                 // less than 1 thousand
                 return prefix + m.ToString("###.#") + " km";
@@ -102,14 +114,16 @@ namespace SrvSurvey
         public static string credits(long credits)
         {
             var millions = credits / 1000000.0D;
-
-            return millions.ToString("#.##") + " M CR";
+            if (millions == 0)
+                return "0 M CR";
+            else
+                return millions.ToString("#.##") + " M CR";
         }
 
         /// <summary>
         /// Returns the distance between two lat/long points on body with radius r.
         /// </summary>
-        public static decimal getDistance(LatLong2 p1, LatLong2 p2, double r)
+        public static decimal getDistance(LatLong2 p1, LatLong2 p2, decimal r)
         {
             // don't bother calculating if positions are identical
             if (p1.Lat == p2.Lat && p1.Long == p2.Long)
@@ -122,7 +136,7 @@ namespace SrvSurvey
                 DecimalEx.Sin(lat1) * DecimalEx.Sin(lat2) +
                 DecimalEx.Cos(lat1) * DecimalEx.Cos(lat2) * DecimalEx.Cos(Util.degToRad((decimal)p2.Long - (decimal)p1.Long))
             );
-            var dist = angleDelta * (decimal)r;
+            var dist = angleDelta * r;
 
             return dist;
         }
@@ -130,8 +144,16 @@ namespace SrvSurvey
         /// <summary>
         /// Returns the bearing between two lat/long points on a body.
         /// </summary>
-        public static double getBearing(LatLong2 p1, LatLong2 p2)
+        public static decimal getBearing(LatLong2 p1, LatLong2 p2)
         {
+            var deg = DecimalEx.ToDeg(getBearingRad(p1, p2));
+            if (deg < 0) deg += 360;
+
+            return deg;
+        }
+
+        public static decimal getBearingRad(LatLong2 p1, LatLong2 p2)
+        { 
             var lat1 = Util.degToRad((decimal)p1.Lat);
             var lon1 = Util.degToRad((decimal)p1.Long);
             var lat2 = Util.degToRad((decimal)p2.Lat);
@@ -141,10 +163,10 @@ namespace SrvSurvey
             var y = DecimalEx.Cos(lat1) * DecimalEx.Sin(lat2) - DecimalEx.Sin(lat1) * DecimalEx.Cos(lat2) * DecimalEx.Cos(lon2 - lon1);
 
             var rad = DecimalEx.ATan2(x, y);
-            var deg = Util.radToDeg((double)rad);
-            if (deg < 0) deg += 360;
+            if (rad < 0)
+                rad += DecimalEx.TwoPi;
 
-            return deg;
+            return rad;
         }
     }
 }

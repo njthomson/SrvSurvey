@@ -12,11 +12,12 @@ namespace SrvSurvey.game
         public readonly int bodyId;
         public long systemAddress;
         public double radius;
+        public BodyData data;
 
         public event BioScanEvent? bioScanEvent;
         public List<BioScan> completedScans = new List<BioScan>();
-        public BioScan? scanOne;
-        public BioScan? scanTwo;
+        public BioScan? scanOne { get => game.cmdr.scanOne; }
+        public BioScan? scanTwo { get => game.cmdr.scanTwo; }
         public Dictionary<string, string> analysedSpecies = new Dictionary<string, string>();
         public int guardianSiteCount;
         public string? guardianSiteName;
@@ -28,6 +29,7 @@ namespace SrvSurvey.game
             this.bodyName = bodyName;
             this.bodyId = bodyId;
             this.systemAddress = systemAddress;
+            this.data = BodyData.Load(systemAddress, bodyId);
 
             // see if we can get signals for this body
             this.game.journals!.search((SAASignalsFound signalsEntry) =>
@@ -42,12 +44,6 @@ namespace SrvSurvey.game
             });
 
             game.journals!.onJournalEntry += Journals_onJournalEntry;
-
-            if (Game.settings.scanOne?.systemAddress == this.systemAddress && Game.settings.scanOne?.bodyId == this.bodyId)
-            {
-                this.scanOne = Game.settings.scanOne;
-                this.scanTwo = Game.settings.scanTwo;
-            }
         }
 
         public void Dispose()
@@ -112,7 +108,6 @@ namespace SrvSurvey.game
         }
 
         public List<ScanSignal>? Signals { get; set; }
-        public readonly List<OrganicSummary> Genuses = new List<OrganicSummary>();
 
         public void readSAASignalsFound(SAASignalsFound signalsEntry)
         {
@@ -129,12 +124,10 @@ namespace SrvSurvey.game
 
                 if (signalsEntry.Genuses?.Count > 0)
                 {
-                    this.Genuses.Clear();
-                    foreach (var _ in signalsEntry.Genuses)
+                    foreach (var genus in signalsEntry.Genuses)
                     {
-                        var newSummary = new OrganicSummary { Genus = _.Genus, Genus_Localised = _.Genus_Localised, Range = BioScan.ranges[_.Genus] };
                         // Rewards are by Species and we only know the Genus at this point
-                        this.Genuses.Add(newSummary);
+                        this.data.addScanGenus(genus);
                     }
 
                     // see if we can find recent BioScans, traversing prior journal files if needed
@@ -142,13 +135,13 @@ namespace SrvSurvey.game
                         (ScanOrganic scan) =>
                         {
                             // look for Analyze ScanOrganics.
-                            if (scan.SystemAddress == this.systemAddress && scan.Body == this.bodyId && scan.ScanType == ScanType.Analyse && !this.analysedSpecies.ContainsKey(scan.Genus))
+                            if (scan.SystemAddress == this.systemAddress && scan.Body == this.bodyId)
                             {
-                                this.analysedSpecies.Add(scan.Genus, scan.Species_Localised);
+                                this.data.addScanOrganic(scan);
                             }
 
                             // stop if we've scanned everything
-                            return this.analysedSpecies.Count == this.Genuses.Count;
+                            return this.data.countAnalyzed == this.data.countOrganisms;
                         },
                         (JournalFile journals) =>
                         {
@@ -164,85 +157,98 @@ namespace SrvSurvey.game
 
         public void addBioScan(ScanOrganic entry)
         {
-            if (this.scanOne != null && this.scanOne.genus != entry.Genus)
+            // are we changing organism before the 3rd scan?
+            var hash = $"{entry.SystemAddress}|{entry.Body}|{entry.Species}";
+            if (game.cmdr.lastOrganicScan != null && hash != game.cmdr.lastOrganicScan)
             {
-                // we are changing Genus before the 3rd scan ... start over
-                this.scanOne = null;
-                this.scanTwo = null;
-            }
+                // yes - mark current scans as abandoned and start over
+                if (game.cmdr.scanOne != null)
+                {
+                    game.cmdr.scanOne.status = BioScan.Status.Abandoned;
+                    data.bioScans.Add(game.cmdr.scanOne);
+                }
+                if (game.cmdr.scanTwo != null)
+                {
+                    game.cmdr.scanTwo.status = BioScan.Status.Abandoned;
+                    data.bioScans.Add(game.cmdr.scanTwo);
+                }
 
-            var newScan = new BioScan()
+                game.cmdr.scanOne = null;
+                game.cmdr.scanTwo = null;
+            }
+            game.cmdr.lastOrganicScan = hash;
+
+            // add/track organism data
+            var organism = this.data.addScanOrganic(entry);
+
+            // add a new bio-scan - assuming we don't have one at this position already
+            var bioScan = new BioScan
             {
                 location = Status.here.clone(),
-                radius = BioScan.ranges[entry.Genus],
                 genus = entry.Genus,
-                genusLocalized = entry.Genus_Localized,
                 species = entry.Species,
-                speciesLocalized = entry.Species_Localised,
-                scanType = entry.ScanType,
-                systemAddress = this.systemAddress,
-                bodyId = this.bodyId,
-                reward = -1,
+                radius = organism.range,
+                status = BioScan.Status.Active,
             };
-            Game.log($"addBioScan: {newScan}");
+            Game.log($"new bio scan: {bioScan}");
 
             if (entry.ScanType == ScanType.Log)
             {
                 // replace 1st, clear 2nd
-                this.scanOne = newScan;
-                this.scanTwo = null;
+                game.cmdr.scanOne = bioScan;
+                game.cmdr.scanTwo = null;
             }
-            else if (this.scanOne != null && this.scanTwo == null)
+            else if (game.cmdr.scanOne != null && game.cmdr.scanTwo == null)
             {
-                this.scanTwo = newScan;
+                // populate 2nd
+                game.cmdr.scanTwo = bioScan;
             }
             else if (entry.ScanType == ScanType.Analyse)
             {
-                if (this.scanOne != null)
+                // track rewards successful scan 
+                game.cmdr.organicRewards += organism.reward;
+                var scanned = new ScannedOrganic
                 {
-                    this.scanOne.scanType = ScanType.Analyse;
-                    this.completedScans.Add(this.scanOne);
-                    this.scanOne = null;
-                }
+                    reward = this.currentOrganism.reward,
+                    genus = entry.Genus,
+                    genusLocalized = entry.Genus_Localized,
+                    species = entry.Species,
+                    speciesLocalized = entry.Species_Localised,
+                    bodyName = this.bodyName,
+                    bodyId = this.bodyId,
+                    system = game.starSystem!,
+                    systemAddress = this.systemAddress,
+                };
+                game.cmdr.scannedOrganics.Add(scanned);
 
-                if (this.scanTwo != null)
-                {
-                    this.scanTwo.scanType = ScanType.Analyse;
-                    this.completedScans.Add(this.scanTwo);
-                    this.scanTwo = null;
-                }
+                // track scans as completed
+                game.cmdr.scanOne!.status = BioScan.Status.Complete;
+                data.bioScans.Add(game.cmdr.scanOne);
+                game.cmdr.scanTwo!.status = BioScan.Status.Complete;
+                data.bioScans.Add(game.cmdr.scanTwo);
+                bioScan.status = BioScan.Status.Complete;
+                data.bioScans.Add(bioScan);
 
-                this.completedScans.Add(newScan);
-
-                if (!this.analysedSpecies.ContainsKey(entry.Genus))
-                {
-                    this.analysedSpecies.Add(entry.Genus, entry.Species_Localised);
-                }
-            }
-            else if (this.scanOne == null && this.scanTwo == null)
-            {
-                this.scanOne = newScan;
-                this.scanTwo = newScan;
-            }
-
-            if (this.scanOne?.reward > 0)
-            {
-                newScan.reward = (long)this.scanOne?.reward!;
-
-                var summary = this.Genuses!.FirstOrDefault(_ => _.Species == newScan.species);
-                if (summary != null)
-                    summary.Reward = newScan.reward;
-            }
-            else
-            {
-                newScan.reward = Game.codexRef.getRewardForSpecies(entry.Species);
+                // and clear state
+                game.cmdr.lastOrganicScan = null;
+                game.cmdr.scanOne = null;
+                game.cmdr.scanTwo = null;
             }
 
-            Game.settings.scanOne = this.scanOne;
-            Game.settings.scanTwo = this.scanTwo;
-            Game.settings.Save();
-
+            this.data.Save();
+            this.game.cmdr.Save();
             if (this.bioScanEvent != null) this.bioScanEvent();
+        }
+
+        public OrganicSummary? currentOrganism
+        {
+            get
+            {
+                if (game.cmdr.scanOne == null)
+                    return null;
+
+                return data.organisms[game.cmdr.scanOne.genus!];
+            }
         }
     }
 }

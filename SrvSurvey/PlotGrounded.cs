@@ -1,4 +1,5 @@
-﻿using SrvSurvey.game;
+﻿using DecimalMath;
+using SrvSurvey.game;
 using SrvSurvey.units;
 using System;
 using System.Collections.Generic;
@@ -22,6 +23,10 @@ namespace SrvSurvey
 
         private TrackingDelta? td;
 
+        private float scale;
+        private float mw;
+        private float mh;
+
         private PlotGrounded()
         {
             InitializeComponent();
@@ -29,6 +34,10 @@ namespace SrvSurvey
             // TODO: use a size from some setting?
             //this.Height = 200;
             //this.Width = 200;
+
+            this.scale = 0.25f;
+            this.mw = this.Width / 2;
+            this.mh = this.Height / 2;
         }
 
         public void reposition(Rectangle gameRect)
@@ -170,24 +179,21 @@ namespace SrvSurvey
 
         private void PlotGrounded_Paint(object sender, PaintEventArgs e)
         {
+            if (game.nearBody == null) return;
+
             var g = e.Graphics;
 
-            const float scale = 0.25f;
-
             // draw basic compass cross hairs centered in the window
-            float w = this.Width / 2;
-            float h = this.Height / 2;
-
             this.drawCompassLines(g);
 
-            this.drawBioScans(g, scale);
+            this.drawBioScans(g);
 
             // draw touchdown marker
             if (this.td != null)
             {
                 // delta to ship
                 g.ResetTransform();
-                g.TranslateTransform(w, h);
+                g.TranslateTransform(mw, mh);
                 g.ScaleTransform(scale, scale);
                 g.RotateTransform(360 - game.status!.Heading);
 
@@ -202,7 +208,7 @@ namespace SrvSurvey
             {
                 // delta to ship
                 g.ResetTransform();
-                g.TranslateTransform(w, h);
+                g.TranslateTransform(mw, mh);
                 g.ScaleTransform(scale, scale);
                 g.RotateTransform(360 - game.status!.Heading);
 
@@ -213,7 +219,7 @@ namespace SrvSurvey
 
             // draw current location pointer (always at center of plot + unscaled)
             g.ResetTransform();
-            g.TranslateTransform(w, h);
+            g.TranslateTransform(mw, mh);
             g.RotateTransform(360 - game.status!.Heading);
 
             var locSz = 5f;
@@ -222,21 +228,109 @@ namespace SrvSurvey
             var dy = (float)Math.Cos(Util.degToRad(game.status.Heading)) * 10F;
             g.DrawLine(GameColors.Lime2, 0, 0, +dx, -dy);
 
-            //drawScale(g, scale);
             g.ResetTransform();
 
             if (this.td != null)
                 this.drawBearingTo(g, 4, 8, "Touchdown:", this.td.Target);
 
             if (this.srvLocation != null)
-                this.drawBearingTo(g, 4 + w, 8, "SRV:", this.srvLocation.Target);
+                this.drawBearingTo(g, 4 + mw, 8, "SRV:", this.srvLocation.Target);
 
             float y = this.Height - 24;
             if (game.nearBody!.scanOne != null)
                 this.drawBearingTo(g, 10, y, "Scan one:", game.nearBody.scanOne.location!);
 
             if (game.nearBody.scanTwo != null)
-                this.drawBearingTo(g, 10 + w, y, "Scan two:", game.nearBody.scanTwo.location!);
+                this.drawBearingTo(g, 10 + mw, y, "Scan two:", game.nearBody.scanTwo.location!);
+        }
+
+        private void drawCompassLines(Graphics g)
+        {
+            const float pad = 8;
+
+            g.ResetTransform();
+
+            var r = new RectangleF(0, pad, this.Width, this.Height - pad * 2);
+            g.Clip = new Region(r);
+            g.TranslateTransform(mw, mh);
+
+            // draw compass rose lines
+            g.RotateTransform(360 - game.status!.Heading);
+            g.DrawLine(Pens.DarkRed, -this.Width, 0, +this.Width, 0);
+            g.DrawLine(Pens.DarkRed, 0, 0, 0, +this.Height);
+            g.DrawLine(Pens.Red, 0, -this.Height, 0, 0);
+        }
+
+        private void drawBioScans(Graphics g)
+        {
+            if (game.nearBody == null || this.td == null) return;
+
+
+            // delta to ship
+            g.ResetTransform();
+            g.TranslateTransform(mw, mh);
+            g.ScaleTransform(scale, scale);
+            g.RotateTransform(360 - game.status!.Heading);
+
+            // use the same Tracking delta for all bioScans against the same currentLocation
+            var currentLocation = new LatLong2(this.game.status);
+            var d = new TrackingDelta(game.nearBody.radius, currentLocation.clone());
+            foreach (var scan in game.nearBody.data.bioScans)
+            {
+                drawBioScan(g, d, scan);
+            }
+
+            if (game.nearBody.scanOne != null)
+            {
+                drawBioScan(g, d, game.nearBody.scanOne);
+            }
+            if (game.nearBody.scanTwo != null)
+            {
+                drawBioScan(g, d, game.nearBody.scanTwo);
+            }
+        }
+
+        private void drawBioScan(Graphics g, TrackingDelta d, BioScan scan)
+        {
+            d.Target = scan.location!;
+
+            Brush b;
+            Pen p;
+            if (scan.status == BioScan.Status.Complete)
+            {
+                // grey colours for completed scans
+                b = GameColors.brushExclusionComplete;
+                p = GameColors.penExclusionComplete;
+            }
+            else if (scan.status == BioScan.Status.Abandoned)
+            {
+                // blue colors for abandoned scans
+                b = GameColors.brushExclusionAbandoned;
+                p = GameColors.penExclusionAbandoned;
+            }
+            else if (d.distance < (decimal)scan.radius)
+            {
+                // red colours
+                b = GameColors.brushExclusionDenied;
+                p = GameColors.penExclusionDenied;
+            }
+            else
+            {
+                // green colours
+                b = GameColors.brushExclusionActive;
+                p = GameColors.penExclusionActive;
+            }
+
+            var fudge = 10;
+            var radius = scan.radius * 1f;
+            var rect = new RectangleF((float)d.dx - radius, (float)-d.dy - radius, radius * 2f, radius * 2f);
+
+            rect.Inflate(-(fudge * 2), -(fudge * 2));
+            g.FillEllipse(b, rect);
+            rect.Inflate(fudge, fudge);
+            g.DrawEllipse(p, rect);
+            rect.Inflate(fudge, fudge);
+            g.DrawEllipse(p, rect);
         }
 
         private void drawBearingTo(Graphics g, float x, float y, string txt, LatLong2 location)
@@ -260,131 +354,6 @@ namespace SrvSurvey
 
             x += sz * 3;
             g.DrawString(Util.metersToString(dd.distance), Game.settings.fontSmall, GameColors.brushGameOrange, x, y);
-        }
-
-        private void drawCompassLines(Graphics g)
-        {
-            g.ResetTransform();
-            const float pad = 8;
-
-            float w = this.Width / 2;
-            float h = this.Height / 2;
-            var r = new RectangleF(0, pad, this.Width, this.Height - pad * 2);
-            g.Clip = new Region(r);
-            g.TranslateTransform(w, h);
-
-            // draw compass rose lines
-            g.RotateTransform(360 - game.status!.Heading);
-            g.DrawLine(Pens.DarkRed, -this.Width, 0, +this.Width, 0);
-            g.DrawLine(Pens.DarkRed, 0, 0, 0, +this.Height);
-            g.DrawLine(Pens.Red, 0, -this.Height, 0, 0);
-        }
-
-        private void drawBioScans(Graphics g, float scale)
-        {
-            if (game.nearBody == null || this.td == null) return;
-
-            float w = this.Width / 2;
-            float h = this.Height / 2;
-
-            // delta to ship
-            g.ResetTransform();
-            g.TranslateTransform(w, h);
-            g.ScaleTransform(scale, scale);
-            g.RotateTransform(360 - game.status!.Heading);
-
-            // use the same Tracking delta for all bioScans against the same currentLocation
-            var currentLocation = new LatLong2(this.game.status);
-            var d = new TrackingDelta(game.nearBody.radius, currentLocation.clone());
-            foreach (var scan in game.nearBody.completedScans)
-            {
-                drawBioScan(g, d, scan);
-            }
-
-            var txt = $"Distances: {Util.metersToString(this.td.distance)}";
-
-            if (game.nearBody.scanOne != null)
-            {
-                drawBioScan(g, d, game.nearBody.scanOne);
-                txt += $" / {Util.metersToString(d.distance)}";
-            }
-            if (game.nearBody.scanTwo != null)
-            {
-                drawBioScan(g, d, game.nearBody.scanTwo);
-                txt += $" / {Util.metersToString(d.distance)}";
-            }
-
-            //// draw distances along the top
-            //g.ResetTransform();
-            //var txtSz = g.MeasureString(txt, this.font);
-            //var r = new RectangleF(8, 8, this.Width - 20, txtSz.Height);
-            //g.DrawString(txt, this.font, GameColors.brushGameOrange, r, StringFormat.GenericTypographic);;
-        }
-
-        private void drawBioScan(Graphics g, TrackingDelta d, BioScan scan)
-        {
-            var fudge = 10;
-
-            d.Target = scan.location!;
-            var rect = new RectangleF((float)d.dx - scan.radius, (float)-d.dy - scan.radius, scan.radius * 2, scan.radius * 2);
-            //Game.log($"d.dx: {rect.X}, d.dy: {rect.Y}");
-
-            Brush b;
-            Pen p;
-            if (scan.scanType == ScanType.Analyse)
-            {
-                // grey colours
-                b = GameColors.brushExclusionComplete;
-                p = GameColors.penExclusionComplete;
-            }
-            else if (d.distance < scan.radius)
-            {
-                // red colours
-                b = GameColors.brushExclusionDenied;
-                p = GameColors.penExclusionDenied;
-            }
-            else
-            {
-                // green colours
-                b = GameColors.brushExclusionActive;
-                p = GameColors.penExclusionActive;
-            }
-
-            g.FillEllipse(b, rect);
-            rect.Inflate(fudge, fudge);
-            g.DrawEllipse(p, rect);
-            rect.Inflate(fudge, fudge);
-            g.DrawEllipse(p, rect);
-        }
-
-        private void drawScale(Graphics g, float scale)
-        {
-            const float pad = 8;
-
-            g.ResetTransform();
-
-            float dist = game.nearBody?.scanOne?.radius ?? 100;
-
-            var txt = Util.metersToString(dist);
-            var txtSz = g.MeasureString(txt, Game.settings.fontSmall);
-
-            var x = this.Width - pad - txtSz.Width;
-            var y = this.Height - pad - txtSz.Height;
-
-            g.DrawString(
-                txt, 
-                Game.settings.fontSmall,
-                GameColors.brushGameOrange,
-                x, //this.Width - pad - txtSz.Width, // x
-                y, //this.Height - pad - txtSz.Height, // y
-                StringFormat.GenericTypographic);
-
-            x -= pad;
-            y += pad - 2;
-            dist *= scale;
-            g.DrawLine(GameColors.penGameOrange2, x, y, x - dist, y);
-            g.DrawLine(GameColors.penGameOrange2, x, y - 4, x, y + 4);
-            g.DrawLine(GameColors.penGameOrange2, x - dist, y - 4, x - dist, y + 4);
         }
     }
 }

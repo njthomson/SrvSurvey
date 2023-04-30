@@ -243,7 +243,7 @@ namespace SrvSurvey
                 Program.closePlotter(nameof(PlotBioStatus));
                 Program.closePlotter(nameof(PlotGrounded));
             }
-            else if (game.nearBody.Genuses == null || game.nearBody.Genuses.Count == 0)
+            else if (game.nearBody.data.countOrganisms == 0)
             {
                 lblBioSignalCount.Text = "-";
                 lblAnalyzedCount.Text = "-";
@@ -255,13 +255,20 @@ namespace SrvSurvey
             {
                 Game.log("Main.Bio signals near!");
 
-                lblBioSignalCount.Text = game.nearBody.Genuses.Count.ToString();
-                lblAnalyzedCount.Text = game.nearBody.analysedSpecies.Count.ToString();
+                lblBioSignalCount.Text = game.nearBody.data.countOrganisms.ToString();
+                lblAnalyzedCount.Text = game.nearBody.data.countAnalyzed.ToString();
 
-                txtGenuses.Text = string.Join(
-                    "\r\n",
-                    game.nearBody.Genuses.Select(_ => $"{_.Genus_Localised}:{game.nearBody.analysedSpecies.ContainsKey(_.Genus)}")
-                );
+                var pendingCredits = Util.credits(game.cmdr.organicRewards);
+                var bodyCurrentCredits = Util.credits(game.nearBody.data.sumOrganicScannedValue);
+                var bodyPotentialCredits = Util.credits(game.nearBody.data.sumOrganicPotentialValue);
+                txtGenuses.Text = $@"Pending scan value: {pendingCredits}
+Body scanned: {bodyCurrentCredits}
+Body potential: {bodyPotentialCredits}
+";
+                //txtGenuses.Text = string.Join(
+                //    "\r\n",
+                //    game.nearBody.data.organisms.Values.Select(_ => $"{_.speciesLocalized ?? _.genusLocalized}:{_.analyzed}")
+                //);
 
                 if (Game.settings.autoShowBioSummary && (game.showBodyPlotters || game.mode == GameMode.SAA))
                     Program.showPlotter<PlotBioStatus>();
@@ -343,7 +350,7 @@ namespace SrvSurvey
         {
             Game.log($"Main.Disembark {entry.Body}");
 
-            if (entry.OnPlanet && !entry.OnStation && game?.nearBody?.Genuses?.Count > 0)
+            if (entry.OnPlanet && !entry.OnStation && game?.nearBody?.data.countOrganisms > 0)
             {
                 if (Game.settings.autoShowBioSummary)
                     Program.showPlotter<PlotBioStatus>();
@@ -356,7 +363,7 @@ namespace SrvSurvey
         {
             Game.log($"Main.LaunchSRV {game?.status?.BodyName}");
 
-            if (game!.showBodyPlotters && game.nearBody?.Genuses?.Count > 0)
+            if (game!.showBodyPlotters && game.nearBody?.data.countOrganisms > 0)
             {
                 if (Game.settings.autoShowBioSummary)
                     Program.showPlotter<PlotBioStatus>();
@@ -369,7 +376,7 @@ namespace SrvSurvey
         {
             Game.log($"Main.ApproachBody {entry.Body}");
 
-            if (game!.showBodyPlotters && game.nearBody?.Genuses?.Count > 0)
+            if (game!.showBodyPlotters && game.nearBody?.data.countOrganisms > 0)
             {
                 if (Game.settings.autoShowBioSummary)
                     Program.showPlotter<PlotBioStatus>();
@@ -605,6 +612,7 @@ namespace SrvSurvey
 
         private void Main_FormClosed(object sender, FormClosedEventArgs e)
         {
+            this.game?.cmdr.Save();
             Game.settings.Save();
         }
 

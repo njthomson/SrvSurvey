@@ -55,9 +55,24 @@ namespace SrvSurvey.game
         public Status? status { get; private set; }
 
         /// <summary>
+        /// Distinct settings for the current commander
+        /// </summary>
+        public CommanderSettings cmdr;
+
+        /// <summary>
         /// The name of the current start system, or body if we are close to one.
         /// </summary>
-        public string? systemLocation { get; private set; }
+        public string? systemLocation
+        {
+            get => this._systemLocation;
+            private set
+            {
+                this._systemLocation = value!;
+                this.cmdr.lastSystemLocation = value!;
+                this.cmdr.Save();
+            }
+        }
+        private string _systemLocation;
         public SystemPoi? systemPoi;
 
         public Game(string? cmdr)
@@ -408,39 +423,24 @@ namespace SrvSurvey.game
             if (this.Commander == null && loadEntry != null)
                 this.Commander = loadEntry.Commander;
 
-            // if we are not shutdown ...
+            // exit early if we are shutdown
             var lastShutdown = journals.FindEntryByType<Shutdown>(-1, true);
-            if (lastShutdown == null)
-            {
-                // ... and we have MainMenu music - we know we're not actively playing
-                var lastMusic = journals.FindEntryByType<Music>(-1, true);
-                if (lastMusic != null)
-                    onJournalEntry(lastMusic);
-            }
-            else
+            if (lastShutdown != null)
             {
                 log($"Game.initializeFromJournal: EXIT isShutdown! ({Game.activeGame == this})");
                 this.isShutdown = true;
                 return;
             }
 
-            // if we have landed, we need to find the last Touchdown location
-            if (this.isLanded && this._touchdownLocation == null) // || (status.Flags & StatusFlags.HasLatLong) > 0)
+            if (loadEntry != null)
             {
-                journals.searchDeep(
-                    (Touchdown lastTouchdown) =>
-                    {
-                        Game.log($"LastTouchdown: {lastTouchdown}");
-
-                        if (lastTouchdown.Body == status!.BodyName)
-                        {
-                            onJournalEntry(lastTouchdown);
-                            return true;
-                        }
-                        return false;
-                    }
-                );
+                this.cmdr = CommanderSettings.Load(loadEntry.FID, loadEntry.Odyssey, loadEntry.Commander);
             }
+
+            // if we have MainMenu music - we know we're not actively playing
+            var lastMusic = journals.FindEntryByType<Music>(-1, true);
+            if (lastMusic != null)
+                onJournalEntry(lastMusic);
 
             // if we are near a planet
             if (this.nearBody == null && (status!.Flags & StatusFlags.HasLatLong) > 0)
@@ -467,11 +467,52 @@ namespace SrvSurvey.game
                 }
             }
 
+            // if we have landed, we need to find the last Touchdown location
+            if (this.isLanded && this._touchdownLocation == null) // || (status.Flags & StatusFlags.HasLatLong) > 0)
+            {
+                if (this.nearBody == null)
+                {
+                    Game.log("Why is nearBody null?");
+                    return;
+                }
+
+                if (this.mode == GameMode.Landed)
+                {
+                    var location = journals.FindEntryByType<Location>(-1, true);
+                    if (location != null && location.SystemAddress == this.nearBody.systemAddress && location.BodyID == this.nearBody.bodyId)
+                    {
+                        Game.log($"LastTouchdown from Location: {location}");
+                        this.touchdownLocation = location;
+                    }
+                }
+
+                if (this.touchdownLocation == null)
+                {
+                    journals.searchDeep(
+                        (Touchdown lastTouchdown) =>
+                        {
+                            Game.log($"LastTouchdown from deep search: {lastTouchdown}");
+
+                            if (lastTouchdown.Body == status!.BodyName)
+                            {
+                                onJournalEntry(lastTouchdown);
+                                return true;
+                            }
+                            return false;
+                        },
+                        (JournalFile journals) =>
+                        {
+                            // stop searching older journal files if we see FSDJump
+                            return journals.search((FSDJump _) => true);
+                        }
+                    );
+                }
+            }
+
             log($"Game.initializeFromJournal: END Commander:{this.Commander}, starSystem:{this.starSystem}, systemLocation:{this.systemLocation}, nearBody:{this.nearBody}, journals.Count:{journals.Count}");
             this.initialized = Game.activeGame == this && this.Commander != null;
             this.checkModeChange();
         }
-
 
         #endregion
 
@@ -482,25 +523,35 @@ namespace SrvSurvey.game
 
             if (this.nearBody == null)
             {
-                // look for a recent scan event
-                journals!.search((Scan scan) =>
-                {
-                    if (scan.Bodyname == bodyName)
+                // look for a recent Scan event
+                journals!.searchDeep(
+                    (Scan scan) =>
                     {
-                        this.nearBody = new LandableBody(
-                            this,
-                            scan.Bodyname,
-                            scan.BodyID,
-                            scan.SystemAddress)
+                        if (scan.Bodyname == bodyName)
                         {
-                            radius = scan.Radius,
-                        };
-                        this.starSystem = scan.StarSystem;
-                        this.systemLocation = Util.getLocationString(scan.StarSystem, scan.Bodyname);
-                        return true;
+                            this.nearBody = new LandableBody(
+                                this,
+                                scan.Bodyname,
+                                scan.BodyID,
+                                scan.SystemAddress)
+                            {
+                                radius = scan.Radius,
+                            };
+                            this.starSystem = scan.StarSystem;
+                            this.systemLocation = Util.getLocationString(scan.StarSystem, scan.Bodyname);
+                            return true;
+                        }
+                        return false;
+                    },
+                    (JournalFile journals) =>
+                    {
+                        // stop searching older journal files if we see FSDJump
+                        return journals.search((FSDJump _) =>
+                        {
+                            return true;
+                        });
                     }
-                    return false;
-                });
+                );
             }
 
             if (this.nearBody == null)
@@ -572,9 +623,9 @@ namespace SrvSurvey.game
                 });
             }
 
-            if (this.nearBody?.Genuses != null)
+            if (this.nearBody?.data.countOrganisms > 0)
             {
-                log($"Genuses" + string.Join(",", this.nearBody.Genuses.Select(_ => _.Genus_Localised)));
+                log($"Genuses" + string.Join(",", this.nearBody.data.organisms.Values.Select(_ => _.genusLocalized)));
             }
 
             if (this.systemLocation == null && this.nearBody != null && status!.BodyName == this.nearBody.bodyName)
@@ -708,11 +759,18 @@ namespace SrvSurvey.game
                 }
                 return _touchdownLocation!;
             }
+            set
+            {
+                this._touchdownLocation = value;
+                if (this.nearBody != null)
+                    this.nearBody.data.lastTouchdown = value;
+
+            }
         }
 
         private void onJournalEntry(Touchdown entry)
         {
-            this._touchdownLocation = new LatLong2(entry);
+            this.touchdownLocation = entry;
 
             var ago = Util.timeSpanToString(DateTime.UtcNow - entry.timestamp);
             log($"Touchdown {ago}, at: {touchdownLocation}");
@@ -734,7 +792,7 @@ namespace SrvSurvey.game
         {
             if (this.nearBody == null)
                 this.createNearBody(entry.BodyName);
-            else if (this.nearBody.Genuses == null)
+            else
                 this.nearBody.readSAASignalsFound(entry);
         }
 

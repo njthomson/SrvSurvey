@@ -224,6 +224,7 @@ namespace SrvSurvey.game.canonn
         public string odyssey;
         public string system;
     }
+
     internal class OrganicRewards
     {
         public long entryid; //         2100201

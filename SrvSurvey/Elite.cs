@@ -10,7 +10,7 @@ namespace SrvSurvey
         public static readonly string displaySettingsFolder = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
             "Frontier Developments\\Elite Dangerous\\Options\\Graphics");
-        
+
         public static readonly string displaySettingsXml = Path.Combine(displaySettingsFolder, "DisplaySettings.xml");
 
         public static bool isGameRunning
@@ -65,8 +65,11 @@ namespace SrvSurvey
             var procED = Process.GetProcessesByName("EliteDangerous64");
             if (procED.Length == 0)
                 return IntPtr.Zero;
-            else
-                return procED[0].MainWindowHandle;
+
+            if (Game.settings.processIdx > procED.Length - 1)
+                Game.settings.processIdx = 0;
+
+            return procED[Game.settings.processIdx].MainWindowHandle;
         }
 
         public static int getGraphicsMode()

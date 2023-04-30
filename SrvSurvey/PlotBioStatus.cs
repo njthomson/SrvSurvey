@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
@@ -114,23 +115,26 @@ namespace SrvSurvey
 
         private void PlotBioStatus_Paint(object sender, PaintEventArgs e)
         {
-            if (game?.nearBody?.Genuses == null) return;
+            if (game?.nearBody?.data?.organisms == null) return;
 
             var g = e.Graphics;
 
             g.DrawString(
-                $"Biological signals: {game.nearBody.Genuses.Count} | Analyzed: {game.nearBody.analysedSpecies.Count}",
+                $"Biological signals: {game.nearBody.data.countOrganisms} | Analyzed: {game.nearBody.data.countAnalyzed}", // | {Util.credits(game.cmdr.organicRewards)}",
                 Game.settings.fontSmall, GameColors.brushGameOrange, 4, 8);
 
-            if (game.nearBody.scanOne == null)
+            if (game.nearBody.currentOrganism == null)
                 this.showAllGenus(g);
             else
                 this.showCurrentGenus(g);
 
+            this.drawValueCompletion(g);
         }
 
         private void showCurrentGenus(Graphics g)
         {
+            var organism = game.nearBody!.currentOrganism!;
+
             float y = 28;
 
             // left circle - always filled
@@ -156,20 +160,20 @@ namespace SrvSurvey
 
             // Species name
             g.DrawString(
-                $"{game.nearBody!.scanOne!.speciesLocalized}",
+                $"{organism.speciesLocalized}",
                 Game.settings.fontBig, GameColors.brushCyan,
                 104, y - 8);
 
             // Reward
-            if (game.nearBody!.scanOne.reward > 0)
+            if (organism.reward > 0)
             {
                 g.DrawString(
-                    Util.credits(game.nearBody!.scanOne.reward),
+                    Util.credits(organism.reward),
                     Game.settings.fontSmall, GameColors.brushCyan,
                     4, 62);
             }
 
-            this.drawScale(g, game.nearBody.scanOne.radius, 0.25f);
+            this.drawScale(g, organism.range, 0.25f);
         }
 
         private void drawScale(Graphics g, float dist, float scale)
@@ -192,9 +196,66 @@ namespace SrvSurvey
 
             dist *= scale;
 
-            g.DrawLine(GameColors.penCyan2, x, y, x - dist, y);
-            g.DrawLine(GameColors.penCyan2, x, y - 4, x, y + 4);
-            g.DrawLine(GameColors.penCyan2, x - dist, y - 4, x - dist, y + 4);
+            g.DrawLine(GameColors.penCyan2, x, y, x - dist, y); // bar
+            g.DrawLine(GameColors.penCyan2, x, y - 4, x, y + 4); // right edge
+            g.DrawLine(GameColors.penCyan2, x - dist, y - 4, x - dist, y + 4); // left edge
+        }
+
+        private void drawValueCompletion(Graphics g)
+        {
+            const float pad = 8;
+
+            g.ResetTransform();
+
+            var scanProgress = game.nearBody.data.bodyScanValueProgress;
+            var fullValueKnown = game.nearBody.data.isFullPotentialKnown;
+
+            var percent = Math.Round(scanProgress * 100);
+            var txt = $"{percent}%";
+            var handicap = 0;
+            var barPen =  GameColors.penGameOrange2;
+
+            // change things if we don't know the full potential value of the body
+            if (!fullValueKnown)
+            {
+                handicap = 15;
+                txt = $"? {percent}%";
+                barPen = GameColors.penGameOrange2Dotted;
+
+                if (percent == 100)
+                    txt = $"?~100%";
+            }
+
+            var txtSz = g.MeasureString(txt, Game.settings.fontSmall);
+            var x = this.Width - pad - txtSz.Width;
+            var y = pad;
+
+            var b = scanProgress < 1 || !fullValueKnown ? GameColors.brushCyan : GameColors.brushGameOrange;
+            g.DrawString(txt, Game.settings.fontSmall, b,
+                x, y,
+                StringFormat.GenericTypographic);
+
+            x = this.Width - 50;
+            y += pad - 2;
+
+            var length = 80f; // bar length in pixels
+            var remaining = length * scanProgress;
+
+            // orange lines
+            var l = x - length;
+            g.DrawLine(barPen, l, y, x, y); // bar
+            g.DrawLine(GameColors.penGameOrange2, x - handicap, y - 4, x - handicap, y + 4); // right edge
+            g.DrawLine(GameColors.penGameOrange2, l, y - 4, l, y + 4); // left edge
+
+            // blue lines
+            if (scanProgress < 1 || !fullValueKnown)
+            {
+                var r = x - length + remaining - handicap;
+                if (r < l) r += handicap; // don't right edge go before left
+                g.DrawLine(GameColors.penCyan2, l, y, r, y); // bar
+                g.DrawLine(GameColors.penCyan2, r, y - 4, r, y + 4); // right edge
+                g.DrawLine(GameColors.penCyan2, l, y - 4, l, y + 4); // left edge
+            }
         }
 
         private void showAllGenus(Graphics g)
@@ -203,20 +264,18 @@ namespace SrvSurvey
             float x = 24;
             float y = 22;
 
-            foreach (var genus in game.nearBody!.Genuses!)
+            foreach (var organism in game.nearBody!.data.organisms.Values)
             {
-                var analysed = game.nearBody.analysedSpecies.ContainsKey(genus.Genus);
-                var txt = genus.Genus_Localised;
-
-                if (genus.Range > 0 && !analysed)
+                var txt = organism.genusLocalized;
+                if (organism.range > 0 && !organism.analyzed)
                 {
-                    txt += $"|{BioScan.ranges[genus.Genus]}m";
+                    txt += $"|{organism.range}m";
                 }
 
                 /* TODO: show rewards here another time - it will require network calls to get the species name before we've visited it directly
-                if (genus.Reward > 0)
+                if (organism.Reward > 0)
                 {
-                    var credits = Util.credits(1234567); // (long)genus.Reward);
+                    var credits = Util.credits(1234567); // (long)organism.Reward);
                     txt += $"|{credits}";
                 }
                 //else
@@ -235,7 +294,7 @@ namespace SrvSurvey
                 g.DrawString(
                     txt,
                     Game.settings.fontSmall,
-                    analysed ? GameColors.brushGameOrange : GameColors.brushCyan,
+                    organism.analyzed ? GameColors.brushGameOrange : GameColors.brushCyan,
                     x, y);
 
                 x += sz.Width + 8;

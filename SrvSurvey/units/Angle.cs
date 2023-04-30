@@ -34,9 +34,10 @@ namespace SrvSurvey.units
 
         public Angle(int n) : this((double)n)
         {
+        }
 
-            //this.((double)n);
-            //this.n = n;
+        public Angle(decimal n) : this((double)n)
+        {
         }
 
         public override string ToString()
@@ -112,5 +113,9 @@ namespace SrvSurvey.units
             return new Angle(n);
         }
 
+        public static implicit operator Angle(decimal n)
+        {
+            return new Angle(n);
+        }
     }
 }

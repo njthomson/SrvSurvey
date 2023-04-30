@@ -17,7 +17,6 @@ namespace SrvSurvey
         private Game game = Game.activeGame!;
         private readonly Dictionary<string, FieldInfo> map = new Dictionary<string, FieldInfo>();
 
-
         public FormSettings()
         {
             InitializeComponent();
@@ -25,6 +24,10 @@ namespace SrvSurvey
             // build a map of fields on the setting objects by name
             foreach (var fieldInfo in typeof(Settings).GetRuntimeFields())
                 this.map.Add(fieldInfo.Name, fieldInfo);
+
+            // only show this button if there are multiple copies of EliteDengerous running at the same time
+            var procED = Process.GetProcessesByName("EliteDangerous64");
+            btnNextProc.Visible = procED.Length > 1;
         }
 
         private void FormSettings_Load(object sender, EventArgs e)
@@ -128,6 +131,12 @@ namespace SrvSurvey
                 Application.DoEvents();
                 Application.Exit();
             }
+            else
+            {
+                // force all plotters to reposition themselves
+                var rect = Elite.getWindowRect();
+                Program.repositionPlotters(rect);
+            }
         }
 
         private void trackOpacity_Scroll(object sender, EventArgs e)
@@ -141,6 +150,16 @@ namespace SrvSurvey
             if (numOpacity.Value != trackOpacity.Value)
                 trackOpacity.Value = (int)numOpacity.Value;
 
+        }
+
+        private void btnNextProc_Click(object sender, EventArgs e)
+        {
+            Program.hideActivePlotters();
+
+            // increment process idx and make plotters adjust
+            Game.settings.processIdx++;
+            Application.DoEvents();
+            Elite.setFocusED();
         }
     }
 }

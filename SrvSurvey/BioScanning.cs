@@ -1,11 +1,4 @@
-﻿using SrvSurvey.game;
-using SrvSurvey.units;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SrvSurvey.units;
 
 #pragma warning disable CS0649
 
@@ -17,19 +10,14 @@ namespace SrvSurvey
     class BioScan
     {
         public LatLong2? location;
-        public long radius;
+        public float radius;
         public string? genus;
-        public string? genusLocalized;
         public string? species;
-        public string? speciesLocalized;
-        public ScanType scanType;
-        public double systemAddress;
-        public int bodyId;
-        public long reward;
+        public Status status;
 
         public override string ToString()
         {
-            return $"{species} ({radius}m): {scanType} @{location}";
+            return $"{species} ({radius}m): @{location}";
         }
 
         public static Dictionary<string, int> ranges = new Dictionary<string, int>()
@@ -61,13 +49,37 @@ namespace SrvSurvey
             { "$Codex_Ent_Sphere_Name;",                   100 }, // Anemone
             { "$Codex_Ent_Cone_Name;",                     100 }, // Bark Mounds
         };
+
+        public enum Status
+        {
+            Complete,
+            Active,
+            Abandoned,
+        }
     }
 
-    class OrganicSummary : ScanGenus
+    class OrganicSummary
     {
-        public string? Species;
-        public long? Reward;
-        public int Range;
+        public string? genus;
+        public string? genusLocalized;
+        public string? species;
+        public string? speciesLocalized;
+        public long reward;
+        public int range;
+        public bool analyzed;
+    }
+
+    class ScannedOrganic
+    {
+        public string? genus;
+        public string? genusLocalized;
+        public string? species;
+        public string? speciesLocalized;
+        public long reward;
+        public string system;
+        public long systemAddress;
+        public int bodyId;
+        public string bodyName;
     }
 }
 

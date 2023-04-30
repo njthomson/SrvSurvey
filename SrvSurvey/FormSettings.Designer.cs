@@ -31,6 +31,7 @@ namespace SrvSurvey
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormSettings));
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btnNextProc = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.tabPage1 = new System.Windows.Forms.TabPage();
@@ -66,6 +67,7 @@ namespace SrvSurvey
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.btnNextProc);
             this.panel1.Controls.Add(this.btnSave);
             this.panel1.Controls.Add(this.btnCancel);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
@@ -74,6 +76,17 @@ namespace SrvSurvey
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(460, 48);
             this.panel1.TabIndex = 1;
+            // 
+            // btnNextProc
+            // 
+            this.btnNextProc.Location = new System.Drawing.Point(4, 16);
+            this.btnNextProc.Name = "btnNextProc";
+            this.btnNextProc.Size = new System.Drawing.Size(243, 23);
+            this.btnNextProc.TabIndex = 2;
+            this.btnNextProc.Text = "Use alternate EliteDangerous window";
+            this.btnNextProc.UseVisualStyleBackColor = true;
+            this.btnNextProc.Visible = false;
+            this.btnNextProc.Click += new System.EventHandler(this.btnNextProc_Click);
             // 
             // btnSave
             // 
@@ -399,5 +412,6 @@ namespace SrvSurvey
         private TabPage tabPage3;
         private Label label3;
         private CheckBox checkEnableGuardianFeatures;
+        private Button btnNextProc;
     }
 }
