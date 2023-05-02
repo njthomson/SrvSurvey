@@ -419,5 +419,24 @@ namespace SrvSurvey
     {
         // { "timestamp":"2023-03-03T06:21:00Z", "event":"Embark", "SRV":true, "Taxi":false, "Multicrew":false, "ID":26, "StarSystem":"Synuefe TP-F b44-0", "SystemAddress":682228131193, "Body":"Synuefe TP-F b44-0 AB 7", "BodyID":14, "OnStation":false, "OnPlanet":true }
     }
+
+    class BioData
+    {
+        public string Genus { get; set; } // "$Codex_Ent_Electricae_Genus_Name;"
+        public string Genus_Localised { get; set; }  // "Electricae"
+        public string Species { get; set; }  // "$Codex_Ent_Electricae_02_Name;"
+        public string Species_Localised { get; set; } // "Electricae Radialem"
+        public long Value { get; set; } // 6284600
+        public long Bonus { get; set; } // 0
+
+    }
+
+    class SellOrganicData : JournalEntry
+    {
+        // { "timestamp":"2023-04-17T17:42:30Z", "event":"SellOrganicData", "MarketID":3708733696, "BioData":[ { "Genus":"$Codex_Ent_Cone_Name;", "Genus_Localised":"Bark Mounds", "Species":"$Codex_Ent_Cone_Name;", "Species_Localised":"Bark Mounds", "Value":1471900, "Bonus":5887600 }, { "Genus":"$Codex_Ent_Electricae_Genus_Name;", "Genus_Localised":"Electricae", "Species":"$Codex_Ent_Electricae_02_Name;", "Species_Localised":"Electricae Radialem", "Value":6284600, "Bonus":0 }, { "Genus":"$Codex_Ent_Fumerolas_Genus_Name;", "Genus_Localised":"Fumerola", "Species":"$Codex_Ent_Fumerolas_04_Name;", "Species_Localised":"Fumerola Aquatis", "Value":6284600, "Bonus":0 }, { "Genus":"$Codex_Ent_Fonticulus_Genus_Name;", "Genus_Localised":"Fonticulua", "Species":"$Codex_Ent_Fonticulus_02_Name;", "Species_Localised":"Fonticulua Campestris", "Value":1000000, "Bonus":0 } ] }
+
+        public long MarketID { get; set; }
+        public List<BioData> BioData { get; set; }
+    }
 }
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.

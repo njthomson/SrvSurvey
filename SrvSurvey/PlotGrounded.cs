@@ -170,6 +170,7 @@ namespace SrvSurvey
         private void PlotGrounded_DoubleClick(object sender, EventArgs e)
         {
             this.Invalidate();
+            Elite.setFocusED();
         }
 
         private void PlotGrounded_Click(object sender, EventArgs e)
@@ -264,7 +265,6 @@ namespace SrvSurvey
         private void drawBioScans(Graphics g)
         {
             if (game.nearBody == null || this.td == null) return;
-
 
             // delta to ship
             g.ResetTransform();

@@ -54,6 +54,12 @@ namespace SrvSurvey.game
 
         protected virtual void Dispose(bool disposing)
         {
+            if (this.data != null)
+            {
+                this.data.Save();
+                this.data = null;
+            }
+
             if (disposing)
             {
                 if (this.game.journals != null)
@@ -209,7 +215,7 @@ namespace SrvSurvey.game
                 game.cmdr.organicRewards += organism.reward;
                 var scanned = new ScannedOrganic
                 {
-                    reward = this.currentOrganism.reward,
+                    reward = organism.reward,
                     genus = entry.Genus,
                     genusLocalized = entry.Genus_Localized,
                     species = entry.Species,
@@ -222,10 +228,14 @@ namespace SrvSurvey.game
                 game.cmdr.scannedOrganics.Add(scanned);
 
                 // track scans as completed
-                game.cmdr.scanOne!.status = BioScan.Status.Complete;
-                data.bioScans.Add(game.cmdr.scanOne);
-                game.cmdr.scanTwo!.status = BioScan.Status.Complete;
-                data.bioScans.Add(game.cmdr.scanTwo);
+                if (game.cmdr.scanOne != null)
+                {
+                    // (this can happen if there are 2 copies of Elite running at the same time)
+                    game.cmdr.scanOne!.status = BioScan.Status.Complete;
+                    data.bioScans.Add(game.cmdr.scanOne);
+                    game.cmdr.scanTwo!.status = BioScan.Status.Complete;
+                    data.bioScans.Add(game.cmdr.scanTwo);
+                }
                 bioScan.status = BioScan.Status.Complete;
                 data.bioScans.Add(bioScan);
 

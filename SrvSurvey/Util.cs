@@ -111,13 +111,19 @@ namespace SrvSurvey
             Process.Start(info);
         }
 
-        public static string credits(long credits)
+        public static string credits(long credits, bool hideUnits = false)
         {
+            string txt;
+
             var millions = credits / 1000000.0D;
             if (millions == 0)
-                return "0 M CR";
+                txt = "0 M";
             else
-                return millions.ToString("#.##") + " M CR";
+                txt = millions.ToString("#.## M");
+
+            if (!hideUnits)
+                txt += " CR";
+            return txt;
         }
 
         /// <summary>
@@ -153,7 +159,7 @@ namespace SrvSurvey
         }
 
         public static decimal getBearingRad(LatLong2 p1, LatLong2 p2)
-        { 
+        {
             var lat1 = Util.degToRad((decimal)p1.Lat);
             var lon1 = Util.degToRad((decimal)p1.Long);
             var lat2 = Util.degToRad((decimal)p2.Lat);

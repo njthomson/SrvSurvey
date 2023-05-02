@@ -38,6 +38,7 @@ namespace SrvSurvey
             this.btnCancel = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
+            this.btnTargetCurrent = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label2
@@ -128,6 +129,18 @@ namespace SrvSurvey
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // btnTargetCurrent
+            // 
+            this.btnTargetCurrent.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnTargetCurrent.Location = new System.Drawing.Point(114, 165);
+            this.btnTargetCurrent.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.btnTargetCurrent.Name = "btnTargetCurrent";
+            this.btnTargetCurrent.Size = new System.Drawing.Size(160, 27);
+            this.btnTargetCurrent.TabIndex = 8;
+            this.btnTargetCurrent.Text = "&Target current location";
+            this.btnTargetCurrent.UseVisualStyleBackColor = true;
+            this.btnTargetCurrent.Click += new System.EventHandler(this.btnTargetCurrent_Click);
+            // 
             // FormGroundTarget
             // 
             this.AcceptButton = this.btnBegin;
@@ -135,6 +148,7 @@ namespace SrvSurvey
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(507, 205);
+            this.Controls.Add(this.btnTargetCurrent);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.btnCancel);
@@ -167,5 +181,6 @@ namespace SrvSurvey
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Button button1;
+        private Button btnTargetCurrent;
     }
 }

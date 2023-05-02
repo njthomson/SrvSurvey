@@ -11,6 +11,7 @@ namespace SrvSurvey
 
         private Rectangle lastWindowRect;
         private bool lastWindowHasFocus;
+        private List<Control> bioCtrls;
 
         public Main()
         {
@@ -44,6 +45,16 @@ namespace SrvSurvey
 
             // Only show Guardian site UX is the setting allows
             groupBox4.Visible = Game.settings.enableGuardianSites;
+
+            this.bioCtrls = new List<Control>()
+            {
+                txtSystemBioSignals,
+                txtSystemBioScanned,
+                txtSystemBioValues,
+                txtBodyBioSignals,
+                txtBodyBioScanned,
+                txtBodyBioValues,
+            };
         }
 
         private void useLastWindowLocation()
@@ -229,25 +240,20 @@ namespace SrvSurvey
 
         private void updateBioTexts()
         {
+
             if (game == null || game.atMainMenu || !game.isRunning || !game.initialized)
             {
-                lblBioSignalCount.Text = "-";
-                lblAnalyzedCount.Text = "-";
-                txtGenuses.Text = "";
+                foreach (var ctrl in this.bioCtrls) ctrl.Text = "-";
             }
             else if (game.nearBody == null)
             {
-                lblBioSignalCount.Text = "-";
-                lblAnalyzedCount.Text = "-";
-                txtGenuses.Text = "No body close enough";
+                foreach (var ctrl in this.bioCtrls) ctrl.Text = "-";
                 Program.closePlotter(nameof(PlotBioStatus));
                 Program.closePlotter(nameof(PlotGrounded));
             }
             else if (game.nearBody.data.countOrganisms == 0)
             {
-                lblBioSignalCount.Text = "-";
-                lblAnalyzedCount.Text = "-";
-                txtGenuses.Text = "No biological signals detected";
+                foreach (var ctrl in this.bioCtrls) ctrl.Text = "-";
                 Program.closePlotter(nameof(PlotBioStatus));
                 Program.closePlotter(nameof(PlotGrounded));
             }
@@ -255,20 +261,14 @@ namespace SrvSurvey
             {
                 Game.log("Main.Bio signals near!");
 
-                lblBioSignalCount.Text = game.nearBody.data.countOrganisms.ToString();
-                lblAnalyzedCount.Text = game.nearBody.data.countAnalyzed.ToString();
-
-                var pendingCredits = Util.credits(game.cmdr.organicRewards);
                 var bodyCurrentCredits = Util.credits(game.nearBody.data.sumOrganicScannedValue);
                 var bodyPotentialCredits = Util.credits(game.nearBody.data.sumOrganicPotentialValue);
-                txtGenuses.Text = $@"Pending scan value: {pendingCredits}
-Body scanned: {bodyCurrentCredits}
-Body potential: {bodyPotentialCredits}
-";
-                //txtGenuses.Text = string.Join(
-                //    "\r\n",
-                //    game.nearBody.data.organisms.Values.Select(_ => $"{_.speciesLocalized ?? _.genusLocalized}:{_.analyzed}")
-                //);
+
+                txtBioRewards.Text = Util.credits(game.cmdr.organicRewards);
+
+                txtBodyBioSignals.Text = game.nearBody.data.countOrganisms.ToString();
+                txtBodyBioScanned.Text = game.nearBody.data.countAnalyzed.ToString();
+                txtBodyBioValues.Text = Util.credits(game.nearBody.data.sumOrganicPotentialValue, true) + " / " + Util.credits(game.nearBody.data.sumOrganicScannedValue);
 
                 if (Game.settings.autoShowBioSummary && (game.showBodyPlotters || game.mode == GameMode.SAA))
                     Program.showPlotter<PlotBioStatus>();

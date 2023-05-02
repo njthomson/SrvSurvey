@@ -45,11 +45,19 @@ namespace SrvSurvey
             this.txtVehicle = new System.Windows.Forms.TextBox();
             this.txtCommander = new System.Windows.Forms.TextBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.lblAnalyzedCount = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.txtGenuses = new System.Windows.Forms.TextBox();
-            this.lblBioSignalCount = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
+            this.txtBodyBioValues = new System.Windows.Forms.TextBox();
+            this.txtBodyBioScanned = new System.Windows.Forms.TextBox();
+            this.txtBodyBioSignals = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.txtSystemBioValues = new System.Windows.Forms.TextBox();
+            this.txtSystemBioScanned = new System.Windows.Forms.TextBox();
+            this.txtSystemBioSignals = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.txtBioRewards = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.btnLogs = new System.Windows.Forms.Button();
             this.btnSettings = new System.Windows.Forms.Button();
@@ -121,7 +129,7 @@ namespace SrvSurvey
             this.btnClearTarget.Name = "btnClearTarget";
             this.btnClearTarget.Size = new System.Drawing.Size(90, 21);
             this.btnClearTarget.TabIndex = 13;
-            this.btnClearTarget.Text = "Clear";
+            this.btnClearTarget.Text = "Hide";
             this.btnClearTarget.UseVisualStyleBackColor = false;
             this.btnClearTarget.Click += new System.EventHandler(this.btnClearTarget_Click);
             // 
@@ -222,67 +230,149 @@ namespace SrvSurvey
             // 
             this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox3.Controls.Add(this.lblAnalyzedCount);
-            this.groupBox3.Controls.Add(this.label3);
-            this.groupBox3.Controls.Add(this.txtGenuses);
-            this.groupBox3.Controls.Add(this.lblBioSignalCount);
-            this.groupBox3.Controls.Add(this.label1);
+            this.groupBox3.Controls.Add(this.txtBodyBioValues);
+            this.groupBox3.Controls.Add(this.txtBodyBioScanned);
+            this.groupBox3.Controls.Add(this.txtBodyBioSignals);
+            this.groupBox3.Controls.Add(this.label10);
+            this.groupBox3.Controls.Add(this.txtSystemBioValues);
+            this.groupBox3.Controls.Add(this.txtSystemBioScanned);
+            this.groupBox3.Controls.Add(this.txtSystemBioSignals);
+            this.groupBox3.Controls.Add(this.label9);
+            this.groupBox3.Controls.Add(this.label8);
+            this.groupBox3.Controls.Add(this.label7);
+            this.groupBox3.Controls.Add(this.label6);
+            this.groupBox3.Controls.Add(this.txtBioRewards);
+            this.groupBox3.Controls.Add(this.label4);
             this.groupBox3.Location = new System.Drawing.Point(12, 116);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(371, 152);
+            this.groupBox3.Size = new System.Drawing.Size(371, 130);
             this.groupBox3.TabIndex = 14;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Bio scanning";
             // 
-            // lblAnalyzedCount
+            // txtBodyBioValues
             // 
-            this.lblAnalyzedCount.AutoSize = true;
-            this.lblAnalyzedCount.Location = new System.Drawing.Point(208, 25);
-            this.lblAnalyzedCount.Name = "lblAnalyzedCount";
-            this.lblAnalyzedCount.Size = new System.Drawing.Size(12, 12);
-            this.lblAnalyzedCount.TabIndex = 13;
-            this.lblAnalyzedCount.Text = "N";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(134, 25);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(68, 12);
-            this.label3.TabIndex = 12;
-            this.label3.Text = "Analyzed:";
-            // 
-            // txtGenuses
-            // 
-            this.txtGenuses.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.txtBodyBioValues.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtGenuses.Location = new System.Drawing.Point(15, 49);
-            this.txtGenuses.Margin = new System.Windows.Forms.Padding(12);
-            this.txtGenuses.Multiline = true;
-            this.txtGenuses.Name = "txtGenuses";
-            this.txtGenuses.ReadOnly = true;
-            this.txtGenuses.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtGenuses.Size = new System.Drawing.Size(349, 88);
-            this.txtGenuses.TabIndex = 11;
-            this.txtGenuses.Text = "<genuses 1>\r\n<genuses 2>\r\n<genuses 3>\r\n<genuses 4>\r\n<genuses 5>\r\n<genuses 6>";
+            this.txtBodyBioValues.Location = new System.Drawing.Point(208, 91);
+            this.txtBodyBioValues.Name = "txtBodyBioValues";
+            this.txtBodyBioValues.ReadOnly = true;
+            this.txtBodyBioValues.Size = new System.Drawing.Size(156, 20);
+            this.txtBodyBioValues.TabIndex = 26;
             // 
-            // lblBioSignalCount
+            // txtBodyBioScanned
             // 
-            this.lblBioSignalCount.AutoSize = true;
-            this.lblBioSignalCount.Location = new System.Drawing.Point(88, 25);
-            this.lblBioSignalCount.Name = "lblBioSignalCount";
-            this.lblBioSignalCount.Size = new System.Drawing.Size(12, 12);
-            this.lblBioSignalCount.TabIndex = 1;
-            this.lblBioSignalCount.Text = "N";
+            this.txtBodyBioScanned.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtBodyBioScanned.Location = new System.Drawing.Point(148, 91);
+            this.txtBodyBioScanned.Name = "txtBodyBioScanned";
+            this.txtBodyBioScanned.ReadOnly = true;
+            this.txtBodyBioScanned.Size = new System.Drawing.Size(54, 20);
+            this.txtBodyBioScanned.TabIndex = 25;
             // 
-            // label1
+            // txtBodyBioSignals
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(14, 25);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(68, 12);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Detected:";
+            this.txtBodyBioSignals.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtBodyBioSignals.Location = new System.Drawing.Point(88, 91);
+            this.txtBodyBioSignals.Name = "txtBodyBioSignals";
+            this.txtBodyBioSignals.ReadOnly = true;
+            this.txtBodyBioSignals.Size = new System.Drawing.Size(54, 20);
+            this.txtBodyBioSignals.TabIndex = 24;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(15, 68);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(54, 12);
+            this.label10.TabIndex = 23;
+            this.label10.Text = "System:";
+            // 
+            // txtSystemBioValues
+            // 
+            this.txtSystemBioValues.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtSystemBioValues.Location = new System.Drawing.Point(208, 65);
+            this.txtSystemBioValues.Name = "txtSystemBioValues";
+            this.txtSystemBioValues.ReadOnly = true;
+            this.txtSystemBioValues.Size = new System.Drawing.Size(156, 20);
+            this.txtSystemBioValues.TabIndex = 22;
+            // 
+            // txtSystemBioScanned
+            // 
+            this.txtSystemBioScanned.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtSystemBioScanned.Location = new System.Drawing.Point(148, 65);
+            this.txtSystemBioScanned.Name = "txtSystemBioScanned";
+            this.txtSystemBioScanned.ReadOnly = true;
+            this.txtSystemBioScanned.Size = new System.Drawing.Size(54, 20);
+            this.txtSystemBioScanned.TabIndex = 21;
+            // 
+            // txtSystemBioSignals
+            // 
+            this.txtSystemBioSignals.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtSystemBioSignals.Location = new System.Drawing.Point(88, 65);
+            this.txtSystemBioSignals.Name = "txtSystemBioSignals";
+            this.txtSystemBioSignals.ReadOnly = true;
+            this.txtSystemBioSignals.Size = new System.Drawing.Size(54, 20);
+            this.txtSystemBioSignals.TabIndex = 20;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(205, 50);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(159, 12);
+            this.label9.TabIndex = 19;
+            this.label9.Text = "Total / scanned value:";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(148, 50);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(54, 12);
+            this.label8.TabIndex = 18;
+            this.label8.Text = "Scanned";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(88, 50);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(54, 12);
+            this.label7.TabIndex = 17;
+            this.label7.Text = "Signals";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(16, 94);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(40, 12);
+            this.label6.TabIndex = 16;
+            this.label6.Text = "Body:";
+            // 
+            // txtBioRewards
+            // 
+            this.txtBioRewards.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtBioRewards.Location = new System.Drawing.Point(143, 13);
+            this.txtBioRewards.Name = "txtBioRewards";
+            this.txtBioRewards.ReadOnly = true;
+            this.txtBioRewards.Size = new System.Drawing.Size(221, 20);
+            this.txtBioRewards.TabIndex = 15;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(6, 16);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(131, 12);
+            this.label4.TabIndex = 14;
+            this.label4.Text = "Unclaimed rewards:";
             // 
             // timer1
             // 
@@ -420,12 +510,12 @@ namespace SrvSurvey
             this.CancelButton = this.btnQuit2;
             this.ClientSize = new System.Drawing.Size(395, 518);
             this.Controls.Add(this.lblNotInstalled);
+            this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.lblFullScreen);
             this.Controls.Add(this.linkLabel1);
             this.Controls.Add(this.btnSettings);
             this.Controls.Add(this.btnLogs);
-            this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.label2);
@@ -465,13 +555,8 @@ namespace SrvSurvey
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.TextBox txtCommander;
         private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox txtGenuses;
-        private System.Windows.Forms.Label lblBioSignalCount;
         private System.Windows.Forms.TextBox txtVehicle;
         private System.Windows.Forms.TextBox txtLocation;
-        private System.Windows.Forms.Label lblAnalyzedCount;
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.TextBox txtMode;
         private System.Windows.Forms.Button btnLogs;
@@ -485,5 +570,18 @@ namespace SrvSurvey
         private Label label5;
         private TextBox txtGuardianSite;
         private LinkLabel lblNotInstalled;
+        private TextBox txtBioRewards;
+        private Label label4;
+        private TextBox txtBodyBioValues;
+        private TextBox txtBodyBioScanned;
+        private TextBox txtBodyBioSignals;
+        private Label label10;
+        private TextBox txtSystemBioValues;
+        private TextBox txtSystemBioScanned;
+        private TextBox txtSystemBioSignals;
+        private Label label9;
+        private Label label8;
+        private Label label7;
+        private Label label6;
     }
 }

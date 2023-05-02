@@ -175,6 +175,7 @@ namespace SrvSurvey
         private void PlotTrackTarget_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             this.Invalidate();
+            Elite.setFocusED();
         }
 
         private void PlotTrackTarget_MouseClick(object sender, MouseEventArgs e)

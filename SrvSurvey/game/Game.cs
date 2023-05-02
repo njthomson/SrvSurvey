@@ -557,24 +557,34 @@ namespace SrvSurvey.game
             if (this.nearBody == null)
             {
                 // look for a recent ApproachBody event?
-                journals!.search((ApproachBody approachBody) =>
-                {
-                    if (approachBody.Body == bodyName && status!.BodyName == approachBody.Body && status.PlanetRadius > 0)
+                journals!.searchDeep(
+                    (ApproachBody approachBody) =>
                     {
-                        this.nearBody = new LandableBody(
-                            this,
-                            approachBody.Body,
-                            approachBody.BodyID,
-                            approachBody.SystemAddress)
+                        if (approachBody.Body == bodyName && status!.BodyName == approachBody.Body && status.PlanetRadius > 0)
                         {
-                            radius = status.PlanetRadius,
-                        };
-                        this.starSystem = approachBody.StarSystem;
-                        this.systemLocation = Util.getLocationString(approachBody.StarSystem, approachBody.Body);
-                        return true;
+                            this.nearBody = new LandableBody(
+                                this,
+                                approachBody.Body,
+                                approachBody.BodyID,
+                                approachBody.SystemAddress)
+                            {
+                                radius = status.PlanetRadius,
+                            };
+                            this.starSystem = approachBody.StarSystem;
+                            this.systemLocation = Util.getLocationString(approachBody.StarSystem, approachBody.Body);
+                            return true;
+                        }
+                        return false;
+                    },
+                    (JournalFile journals) =>
+                    {
+                        // stop searching older journal files if we see FSDJump
+                        return journals.search((FSDJump _) =>
+                        {
+                            return true;
+                        });
                     }
-                    return false;
-                });
+                    );
             }
 
             // look for recent Location event?
@@ -625,7 +635,7 @@ namespace SrvSurvey.game
 
             if (this.nearBody?.data.countOrganisms > 0)
             {
-                log($"Genuses" + string.Join(",", this.nearBody.data.organisms.Values.Select(_ => _.genusLocalized)));
+                log($"Genuses ({this.nearBody.data.countOrganisms}): " + string.Join(",", this.nearBody.data.organisms.Values.Select(_ => _.genusLocalized)));
             }
 
             if (this.systemLocation == null && this.nearBody != null && status!.BodyName == this.nearBody.bodyName)
@@ -788,20 +798,45 @@ namespace SrvSurvey.game
                 this.createNearBody(entry.Body);
         }
 
-        private void onJournalEntry(SAASignalsFound entry)
-        {
-            if (this.nearBody == null)
-                this.createNearBody(entry.BodyName);
-            else
-                this.nearBody.readSAASignalsFound(entry);
-        }
-
         private void onJournalEntry(ApproachSettlement entry)
         {
             if (this.nearBody == null)
                 this.createNearBody(entry.BodyName);
 
             this.nearBody.onJournalEntry(entry);
+        }
+
+        private void onJournalEntry(SAASignalsFound entry)
+        {
+            if (this.nearBody == null)
+                this.createNearBody(entry.BodyName);
+            else
+                this.nearBody.readSAASignalsFound(entry);
+
+            // force a mode change to update ux
+            if (modeChanged != null) modeChanged(this._mode);
+        }
+
+        private void onJournalEntry(SellOrganicData entry)
+        {
+            // match and remove sold items from running totals
+            Game.log($"SellOrganicData: removing {entry.BioData.Count} scans");
+            foreach (var data in entry.BioData)
+            {
+                var match = cmdr.scannedOrganics.Find(_ => _.species == data.Species && _.reward == data.Value);
+                if (match == null)
+                {
+                    Game.log($"No match found when selling: {data.Species_Localised} for {data.Value} Cr");
+                    continue;
+                }
+
+                cmdr.organicRewards -= data.Value;
+                cmdr.scannedOrganics.Remove(match);
+            }
+
+            cmdr.Save();
+            // force a mode change to update ux
+            if (modeChanged != null) modeChanged(this._mode);
         }
 
         #endregion

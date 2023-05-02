@@ -106,6 +106,7 @@ namespace SrvSurvey
         private void PlotBioStatus_DoubleClick(object sender, EventArgs e)
         {
             this.Invalidate();
+            Elite.setFocusED();
         }
 
         private void PlotBioStatus_Click(object sender, EventArgs e)

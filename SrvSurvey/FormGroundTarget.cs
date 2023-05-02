@@ -50,5 +50,11 @@ namespace SrvSurvey
             Game.settings.Save();
             this.DialogResult = DialogResult.OK;
         }
+
+        private void btnTargetCurrent_Click(object sender, EventArgs e)
+        {
+            txtLat.Text = Status.here.Lat.ToString();
+            txtLong.Text = Status.here.Long.ToString();
+        }
     }
 }
