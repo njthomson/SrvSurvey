@@ -20,8 +20,7 @@ namespace SrvSurvey.game
         public BioScan? scanTwo { get => game.cmdr.scanTwo; }
         public Dictionary<string, string> analysedSpecies = new Dictionary<string, string>();
         public int guardianSiteCount;
-        public string? guardianSiteName;
-        public LatLong2? guardianSiteLocation;
+        public GuardianSiteData siteData;
 
         public LandableBody(Game game, string bodyName, int bodyId, long systemAddress)
         {
@@ -95,8 +94,13 @@ namespace SrvSurvey.game
             if (!entry.Name.StartsWith("$Ancient:")) return;
 
             Game.log($"ApproachSettlement: {entry.Name_Localised}");
-            this.guardianSiteName = entry.Name_Localised;
-            this.guardianSiteLocation = new LatLong2(entry);
+            this.siteData = GuardianSiteData.Load(entry);
+            if (this.siteData.location.Lat == 0)
+            {
+                // Legacy mode bug - lat/long is occasionally missing
+                this.siteData.location = Status.here.clone();
+                this.siteData.Save();
+            }
 
             if (this.bioScanEvent != null) this.bioScanEvent();
         }
@@ -222,7 +226,7 @@ namespace SrvSurvey.game
                     speciesLocalized = entry.Species_Localised,
                     bodyName = this.bodyName,
                     bodyId = this.bodyId,
-                    system = game.starSystem!,
+                    system = game.cmdr.currentSystem,
                     systemAddress = this.systemAddress,
                 };
                 game.cmdr.scannedOrganics.Add(scanned);

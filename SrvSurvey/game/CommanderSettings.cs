@@ -20,7 +20,15 @@
         public string fid;
         public string commander;
         public bool isOdyssey;
+
         public string lastSystemLocation;
+
+        public string currentSystem;
+        public long currentSystemAddress;
+        public string? currentBody;
+        public int currentBodyId;
+        public double currentBodyRadius;
+
         public string? lastOrganicScan;
         public BioScan? scanOne;
         public BioScan? scanTwo;

@@ -57,11 +57,14 @@ namespace SrvSurvey
         public static Pen penGameOrange1 = new Pen(Orange, 1); //255, 113, 00), 2);
         public static Pen penGameOrange2 = new Pen(Orange, 2); //255, 113, 00), 2);
         public static Pen penGameOrange3 = new Pen(Orange, 3); //255, 113, 00), 2);
-        public static Pen penGameOrange4 = new Pen(Orange, 8); //255, 113, 00), 2);
+        public static Pen penGameOrange8 = new Pen(Orange, 8); //255, 113, 00), 2);
         public static Pen penGameOrangeDim1 = new Pen(OrangeDim, 1);
+        public static Pen penGameOrangeDim2 = new Pen(OrangeDim, 2);
         public static Pen penGreen2 = new Pen(Color.Green, 2); //255, 113, 00), 2);
-        public static Pen penCyan2 = new Pen(Cyan, 2); //255, 113, 00), 2);
-        public static Pen penCyan8 = new Pen(Cyan, 8); //255, 113, 00), 2);
+        public static Pen penLightGreen2 = new Pen(Color.LightGreen, 2); //255, 113, 00), 2);
+        public static Pen penCyan2 = new Pen(Cyan, 2);
+        public static Pen penCyan4 = new Pen(Cyan, 4);
+        public static Pen penCyan8 = new Pen(Cyan, 8);
 
         public static Pen penGameOrange2Dotted = new Pen(Orange, 2)
         {
@@ -92,5 +95,7 @@ namespace SrvSurvey
         public static Brush brushGameOrangeDim = new SolidBrush(OrangeDim); //  Color.FromArgb(255, 255, 113, 00));
 
         public static Brush brushCyan = new SolidBrush(Cyan); //  Color.FromArgb(255, 255, 113, 00));
+        public static Brush brushOnTarget = new HatchBrush(HatchStyle.Percent50, OrangeDim, Color.Transparent);
+        public static Brush brushOffTarget = new HatchBrush(HatchStyle.Percent25, OrangeDim, Color.Transparent);
     }
 }

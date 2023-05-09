@@ -63,7 +63,7 @@ namespace SrvSurvey
             this.calculate();
         }
 
-        private void Game_modeChanged(GameMode newMode)
+        private void Game_modeChanged(GameMode newMode, bool force)
         {
             //Game.log($"?? {game.vehicle} / {newMode} / {game.isMode(GameMode.SuperCruising, GameMode.Flying, GameMode.Landed, GameMode.InSrv, GameMode.OnFoot, GameMode.GlideMode)}");
             // Landed / OnFoot / InSrv
@@ -81,7 +81,6 @@ namespace SrvSurvey
                 // force plotter to reposition when switching between SRV and foot.
                 this.reposition(Elite.getWindowRect());
             }
-
 
             //if (game.nearBody != null && game.mode != GameMode.SuperCruising && game.mode != GameMode.Flying && game.mode != GameMode.Landed && game.mode != GameMode.InSrv && game.mode != GameMode.OnFoot && game.mode != GameMode.GlideMode)
             //    this.Opacity = 0;
@@ -169,7 +168,7 @@ namespace SrvSurvey
 
             // draw thd rest unclipped
             g.Clip = new Region();
-            g.DrawPath(GameColors.penGameOrange4, pp);
+            g.DrawPath(GameColors.penGameOrange8, pp);
         }
 
         private void PlotTrackTarget_MouseDoubleClick(object sender, MouseEventArgs e)

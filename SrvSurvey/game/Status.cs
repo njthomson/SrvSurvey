@@ -131,6 +131,8 @@ namespace SrvSurvey
         public bool InFighter { get => (this.Flags & StatusFlags.InFighter) > 0; }
         [JsonIgnore]
         public bool InMainShip { get => (this.Flags & StatusFlags.InMainShip) > 0; }
+        [JsonIgnore]
+        public bool hasLatLong { get => (this.Flags & StatusFlags.HasLatLong) > 0; }
     }
 
     class FuelStatus

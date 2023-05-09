@@ -55,6 +55,9 @@ namespace SrvSurvey
                 txtBodyBioScanned,
                 txtBodyBioValues,
             };
+
+            // TODO: Remove once system signals are implemented
+            lblSysBio.Enabled = txtSystemBioScanned.Enabled = txtSystemBioSignals.Enabled = txtSystemBioValues.Enabled = false;
         }
 
         private void useLastWindowLocation()
@@ -190,9 +193,9 @@ namespace SrvSurvey
             this.updateAllControls();
         }
 
-        private void Game_modeChanged(GameMode newMode)
+        private void Game_modeChanged(GameMode newMode, bool force)
         {
-            if (this.txtMode.Text != newMode.ToString())
+            if (force || this.txtMode.Text != newMode.ToString())
             {
                 this.updateAllControls();
             }
@@ -212,7 +215,7 @@ namespace SrvSurvey
                 return;
             }
 
-            this.txtCommander.Text = game.Commander;
+            this.txtCommander.Text = game.Commander + (game.cmdr.isOdyssey ? " (live)" : " (legacy)");
             this.txtMode.Text = game.mode.ToString();
 
             if (game.atMainMenu)
@@ -227,11 +230,10 @@ namespace SrvSurvey
 
             if (!string.IsNullOrEmpty(game.systemLocation))
                 this.txtLocation.Text = game.systemLocation;
-            else if (!string.IsNullOrEmpty(game.starSystem))
-                this.txtLocation.Text = game.starSystem;
             else
                 this.txtLocation.Text = "Unknown";
 
+            // TODO: use "game.cmdr.lastBody" instead??
             if (game.nearBody != null)
                 this.txtNearBody.Text = "Near body";
             else
@@ -240,6 +242,8 @@ namespace SrvSurvey
 
         private void updateBioTexts()
         {
+            if (game?.cmdr != null)
+                txtBioRewards.Text = Util.credits(game.cmdr.organicRewards);
 
             if (game == null || game.atMainMenu || !game.isRunning || !game.initialized)
             {
@@ -263,8 +267,6 @@ namespace SrvSurvey
 
                 var bodyCurrentCredits = Util.credits(game.nearBody.data.sumOrganicScannedValue);
                 var bodyPotentialCredits = Util.credits(game.nearBody.data.sumOrganicPotentialValue);
-
-                txtBioRewards.Text = Util.credits(game.cmdr.organicRewards);
 
                 txtBodyBioSignals.Text = game.nearBody.data.countOrganisms.ToString();
                 txtBodyBioScanned.Text = game.nearBody.data.countAnalyzed.ToString();
@@ -323,7 +325,7 @@ namespace SrvSurvey
             else
             {
                 lblGuardianCount.Text = game.nearBody.guardianSiteCount.ToString();
-                txtGuardianSite.Text = this.game.nearBody.guardianSiteName + " " + this.game.nearBody.guardianSiteLocation;
+                txtGuardianSite.Text = this.game.nearBody.siteData.name + " " + this.game.nearBody.siteData.location;
 
                 if (game.showBodyPlotters && this.game.showGuardianPlotters)
                 {
@@ -387,7 +389,13 @@ namespace SrvSurvey
                 Program.showPlotter<PlotTrackTarget>();
             }
         }
+        
 
+        private void onJournalEntry(SAASignalsFound entry)
+        {
+            Application.DoEvents();
+            this.updateAllControls();
+        }
 
         private void onJournalEntry(SupercruiseEntry entry)
         {
@@ -591,6 +599,9 @@ namespace SrvSurvey
         private void btnSettings_Click(object sender, EventArgs e)
         {
             new FormSettings().ShowDialog(this);
+
+            // force update form controls
+            this.updateAllControls();
 
             // force opacity changes to take immediate effect
             Program.showActivePlotters();

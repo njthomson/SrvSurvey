@@ -89,7 +89,7 @@ namespace SrvSurvey.units
 
         public override string ToString()
         {
-            return $"x: {this.dx}, y: {this.dy}, d: {Util.metersToString(this.distance)}, a: {this.angle}";
+            return $"x: {Math.Round(this.dx)}, y: {Math.Round(this.dy)}, d: {Util.metersToString(this.distance)}, a: {this.angle}";
         }
     }
 }

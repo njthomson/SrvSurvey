@@ -48,7 +48,7 @@ namespace SrvSurvey
             this.txtBodyBioValues = new System.Windows.Forms.TextBox();
             this.txtBodyBioScanned = new System.Windows.Forms.TextBox();
             this.txtBodyBioSignals = new System.Windows.Forms.TextBox();
-            this.label10 = new System.Windows.Forms.Label();
+            this.lblSysBio = new System.Windows.Forms.Label();
             this.txtSystemBioValues = new System.Windows.Forms.TextBox();
             this.txtSystemBioScanned = new System.Windows.Forms.TextBox();
             this.txtSystemBioSignals = new System.Windows.Forms.TextBox();
@@ -233,7 +233,7 @@ namespace SrvSurvey
             this.groupBox3.Controls.Add(this.txtBodyBioValues);
             this.groupBox3.Controls.Add(this.txtBodyBioScanned);
             this.groupBox3.Controls.Add(this.txtBodyBioSignals);
-            this.groupBox3.Controls.Add(this.label10);
+            this.groupBox3.Controls.Add(this.lblSysBio);
             this.groupBox3.Controls.Add(this.txtSystemBioValues);
             this.groupBox3.Controls.Add(this.txtSystemBioScanned);
             this.groupBox3.Controls.Add(this.txtSystemBioSignals);
@@ -280,14 +280,14 @@ namespace SrvSurvey
             this.txtBodyBioSignals.Size = new System.Drawing.Size(54, 20);
             this.txtBodyBioSignals.TabIndex = 24;
             // 
-            // label10
+            // lblSysBio
             // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(15, 68);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(54, 12);
-            this.label10.TabIndex = 23;
-            this.label10.Text = "System:";
+            this.lblSysBio.AutoSize = true;
+            this.lblSysBio.Location = new System.Drawing.Point(15, 68);
+            this.lblSysBio.Name = "lblSysBio";
+            this.lblSysBio.Size = new System.Drawing.Size(54, 12);
+            this.lblSysBio.TabIndex = 23;
+            this.lblSysBio.Text = "System:";
             // 
             // txtSystemBioValues
             // 
@@ -575,7 +575,7 @@ namespace SrvSurvey
         private TextBox txtBodyBioValues;
         private TextBox txtBodyBioScanned;
         private TextBox txtBodyBioSignals;
-        private Label label10;
+        private Label lblSysBio;
         private TextBox txtSystemBioValues;
         private TextBox txtSystemBioScanned;
         private TextBox txtSystemBioSignals;

@@ -57,7 +57,7 @@ namespace SrvSurvey
             game.modeChanged += Game_modeChanged;
 
             // force a mode switch, that will initialize
-            this.Game_modeChanged(game.mode);
+            this.Game_modeChanged(game.mode, true);
 
             //this.Opacity = 1;
             game.journals!.onJournalEntry += Journals_onJournalEntry;
@@ -82,7 +82,7 @@ namespace SrvSurvey
 
         #endregion
 
-        private void Game_modeChanged(GameMode newMode)
+        private void Game_modeChanged(GameMode newMode, bool force)
         {
             var plotterMode = newMode == GameMode.SAA || game.showBodyPlotters;
             if (this.Opacity > 0 && !plotterMode)

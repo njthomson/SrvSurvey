@@ -174,5 +174,14 @@ namespace SrvSurvey
 
             return rad;
         }
+
+        public static SizeF rotateLine(float angle, float length)
+        {
+            var heading= new Angle(angle);
+            var dx = (float)Math.Sin(heading.radians) * length;
+            var dy = (float)Math.Cos(heading.radians) * length;
+
+            return new SizeF(dx, dy);
+        }
     }
 }

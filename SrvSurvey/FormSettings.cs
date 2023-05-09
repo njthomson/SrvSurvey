@@ -161,5 +161,17 @@ namespace SrvSurvey
             Application.DoEvents();
             Elite.setFocusED();
         }
+
+        private void btnClearUnclaimed_Click(object sender, EventArgs e)
+        {
+            var rslt = MessageBox.Show($"Are you sure you want to clear {Util.credits(game.cmdr.organicRewards)} from {game.cmdr.scannedOrganics.Count} organisms?", "Clear unclaimed rewards", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            if (rslt == DialogResult.Yes)
+            {
+                Game.log($"Clearing in {game.cmdr.organicRewards} unclaimed rewards.");
+                game.cmdr.organicRewards = 0;
+                game.cmdr.scannedOrganics.Clear();
+                game.cmdr.Save();
+            }
+        }
     }
 }

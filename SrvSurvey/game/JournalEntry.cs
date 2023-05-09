@@ -79,7 +79,7 @@ namespace SrvSurvey
         public bool InSrv { get; set; }
         public string StarSystem { get; set; }
         public long SystemAddress { get; set; }
-        // public xyz StarPos
+        public double[] StarPos { get; set; }
         public string SystemAllegiance { get; set; }
         public string SystemEconomy { get; set; }
         public string SystemEconomy_Localised { get; set; }
@@ -228,11 +228,41 @@ namespace SrvSurvey
     {
         // { "timestamp":"2023-01-24T05:07:01Z", "event":"FSDJump", "Taxi":false, "Multicrew":false, "StarSystem":"Maridwyn", "SystemAddress":13866167838129, "StarPos":[90.46875,16.40625,21.62500], "SystemAllegiance":"Federation", "SystemEconomy":"$economy_Agri;", "SystemEconomy_Localised":"Agriculture", "SystemSecondEconomy":"$economy_Refinery;", "SystemSecondEconomy_Localised":"Refinery", "SystemGovernment":"$government_Corporate;", "SystemGovernment_Localised":"Corporate", "SystemSecurity":"$SYSTEM_SECURITY_high;", "SystemSecurity_Localised":"High Security", "Population":4058074576, "Body":"Maridwyn A", "BodyID":1, "BodyType":"Star", "Powers":[ "Felicia Winters" ], "PowerplayState":"Exploited", "JumpDist":8.278, "FuelUsed":0.091548, "FuelLevel":13.458453, "Factions":[ { "Name":"Social Maridwyn Green Party", "FactionState":"None", "Government":"Democracy", "Influence":0.027559, "Allegiance":"Independent", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":0.000000 }, { "Name":"p Velorum Crimson Creative Int", "FactionState":"None", "Government":"Corporate", "Influence":0.059055, "Allegiance":"Federation", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":4.187500 }, { "Name":"Maridwyn Co", "FactionState":"None", "Government":"Corporate", "Influence":0.487205, "Allegiance":"Federation", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":0.000000, "RecoveringStates":[ { "State":"Boom", "Trend":0 } ] }, { "Name":"Maridwyn Constitution Party", "FactionState":"None", "Government":"Dictatorship", "Influence":0.041339, "Allegiance":"Independent", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":0.000000 }, { "Name":"Maridwyn Gold Electronics Ltd", "FactionState":"None", "Government":"Corporate", "Influence":0.021654, "Allegiance":"Independent", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":0.000000 }, { "Name":"United Maridwyn Law Party", "FactionState":"None", "Government":"Dictatorship", "Influence":0.040354, "Allegiance":"Independent", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":0.000000 }, { "Name":"Federal Reclamation Co", "FactionState":"Expansion", "Government":"Corporate", "Influence":0.322835, "Allegiance":"Federation", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":97.425003, "ActiveStates":[ { "State":"Expansion" } ] } ], "SystemFaction":{ "Name":"Maridwyn Co" } }
 
+        public bool Taxi { get; set; }
+        public bool Multicrew { get; set; }
         public string StarSystem { get; set; }
         public long SystemAddress { get; set; }
-        public string Body { get; set; }
+        public double[] StarPos { get; set; } // [90.46875,16.40625,21.62500]
+        public string SystemAllegiance { get; set; } // Federation"
+        public string SystemEconomy { get; set; } //$economy_Agri;
+        public string SystemEconomy_Localised { get; set; } // "Agriculture"
+        public string SystemSecondEconomy { get; set; } // $economy_Refinery;
+                                                        // public string SystemSecondEconomy_Localised { get; set; } // Refinery
+        public string SystemGovernment { get; set; }// $government_Corporate;
+        public string SystemGovernment_Localised { get; set; } // Corporate
+        public string SystemSecurity { get; set; } // $SYSTEM_SECURITY_high;
+        public string SystemSecurity_Localised { get; set; } // High Security
+        public long Population { get; set; }// 4058074576,
+        public string Body { get; set; } // "Maridwyn A",
+        public int BodyID { get; set; } // 1,
+        public string BodyType { get; set; }  // "Star"
 
-        // TODO: Lots more!
+        public List<string> Powers { get; set; } // [ "Felicia Winters" ]
+        public string PowerplayState { get; set; } // Exploited
+        public float JumpDist { get; set; }// 8.278
+        public float FuelUsed { get; set; } // 0.091548
+        public float FuelLevel { get; set; } // 13.458453
+        // "Factions":[
+        //      { "Name":"Social Maridwyn Green Party", "FactionState":"None", "Government":"Democracy", "Influence":0.027559, "Allegiance":"Independent", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":0.000000 },
+        //      { "Name":"p Velorum Crimson Creative Int", "FactionState":"None", "Government":"Corporate", "Influence":0.059055, "Allegiance":"Federation", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":4.187500 },
+        //      { "Name":"Maridwyn Co", "FactionState":"None", "Government":"Corporate", "Influence":0.487205, "Allegiance":"Federation", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":0.000000, "RecoveringStates":[ { "State":"Boom", "Trend":0 } ] },
+        //      { "Name":"Maridwyn Constitution Party", "FactionState":"None", "Government":"Dictatorship", "Influence":0.041339, "Allegiance":"Independent", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":0.000000 },
+        //      { "Name":"Maridwyn Gold Electronics Ltd", "FactionState":"None", "Government":"Corporate", "Influence":0.021654, "Allegiance":"Independent", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":0.000000 },
+        //      { "Name":"United Maridwyn Law Party", "FactionState":"None", "Government":"Dictatorship", "Influence":0.040354, "Allegiance":"Independent", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":0.000000 },
+        //      { "Name":"Federal Reclamation Co", "FactionState":"Expansion", "Government":"Corporate", "Influence":0.322835, "Allegiance":"Federation", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":97.425003, "ActiveStates":[ { "State":"Expansion" } ] }
+        //  ],
+        // "SystemFaction":{ "Name":"Maridwyn Co" } }
+
     }
 
     class Shutdown : JournalEntry

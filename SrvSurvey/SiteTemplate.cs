@@ -1,16 +1,10 @@
 ﻿using Newtonsoft.Json;
+using SrvSurvey.game;
 using System.Diagnostics;
 
 
 namespace SrvSurvey
 {
-    enum SiteType
-    {
-        alpha,
-        beta,
-        gamma
-    }
-
     enum POIType
     {
         Unknown = 0,
@@ -62,8 +56,7 @@ namespace SrvSurvey
         public string backgroundImage="";
         /// <summary> Offset applied to bring the site origin location to the center of the image </summary>
         public Point imageOffset = Point.Empty;
-        public double scaleFactor = 0;
-        public float mapScale = 0.8f;
+        public float scaleFactor = 1;
         public SortedDictionary<string, SitePOI> poi = new SortedDictionary<string, SitePOI>();
 
         public Dictionary<string, LatLong> relicTowers = new Dictionary<string, LatLong>();
@@ -194,7 +187,7 @@ namespace SrvSurvey
         }
 
 
-        public static Dictionary<SiteType, SiteTemplate> sites = new Dictionary<SiteType, SiteTemplate>();
+        public static Dictionary<GuardianSiteData.SiteType, SiteTemplate> sites = new Dictionary<GuardianSiteData.SiteType, SiteTemplate>();
         /*{
             { "alpha", new SiteTemplate()
                 {
@@ -296,7 +289,7 @@ namespace SrvSurvey
             if (File.Exists(filepath))
             {
                 var json = File.ReadAllText(filepath);
-                SiteTemplate.sites = JsonConvert.DeserializeObject<Dictionary<SiteType, SiteTemplate>>(json)!;
+                SiteTemplate.sites = JsonConvert.DeserializeObject<Dictionary<GuardianSiteData.SiteType, SiteTemplate>>(json)!;
             }
 
             /* migrate

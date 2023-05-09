@@ -64,13 +64,16 @@ namespace SrvSurvey.game
         // At a landing pad or on foot within some enclosed space
         Docked,
 
+        // At a landing pad or on foot within some enclosed space
+        Social,
+
         MainMenu,
         FSDJumping,
 
         Unknown,
     }
 
-    delegate void GameModeChanged(GameMode newMode);
+    delegate void GameModeChanged(GameMode newMode, bool force);
     delegate void GameNearingBody(LandableBody nearBody);
     delegate void GameDepartingBody(LandableBody nearBody);
 

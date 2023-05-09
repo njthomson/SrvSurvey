@@ -53,6 +53,7 @@ namespace SrvSurvey
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.linkLabel2 = new System.Windows.Forms.LinkLabel();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.btnClearUnclaimed = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numOpacity)).BeginInit();
@@ -183,6 +184,7 @@ namespace SrvSurvey
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.btnClearUnclaimed);
             this.groupBox1.Controls.Add(this.pictureBox2);
             this.groupBox1.Controls.Add(this.pictureBox1);
             this.groupBox1.Controls.Add(this.checkBox1);
@@ -355,6 +357,16 @@ namespace SrvSurvey
             this.linkLabel1.Text = resources.GetString("linkLabel1.Text");
             this.linkLabel1.UseCompatibleTextRendering = true;
             // 
+            // btnClearUnclaimed
+            // 
+            this.btnClearUnclaimed.Location = new System.Drawing.Point(7, 205);
+            this.btnClearUnclaimed.Name = "btnClearUnclaimed";
+            this.btnClearUnclaimed.Size = new System.Drawing.Size(154, 23);
+            this.btnClearUnclaimed.TabIndex = 2;
+            this.btnClearUnclaimed.Text = "Clear unclaimed rewards";
+            this.btnClearUnclaimed.UseVisualStyleBackColor = true;
+            this.btnClearUnclaimed.Click += new System.EventHandler(this.btnClearUnclaimed_Click);
+            // 
             // FormSettings
             // 
             this.AcceptButton = this.btnSave;
@@ -413,5 +425,6 @@ namespace SrvSurvey
         private Label label3;
         private CheckBox checkEnableGuardianFeatures;
         private Button btnNextProc;
+        private Button btnClearUnclaimed;
     }
 }

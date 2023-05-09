@@ -1,9 +1,10 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using SrvSurvey.game.canonn;
+using SrvSurvey.canonn;
 using SrvSurvey.units;
 using System.Diagnostics;
 using System.Reflection;
+using System.Text;
 
 namespace SrvSurvey.game
 {
@@ -49,31 +50,15 @@ namespace SrvSurvey.game
         /// </summary>
         public string? Commander { get; private set; }
         public bool isOdyssey { get; private set; }
-        public string? starSystem { get; private set; }
+        public string musicTrack { get; private set; }
 
         public JournalWatcher? journals;
-        public Status? status { get; private set; }
+        public Status status { get; private set; }
 
         /// <summary>
         /// Distinct settings for the current commander
         /// </summary>
         public CommanderSettings cmdr;
-
-        /// <summary>
-        /// The name of the current start system, or body if we are close to one.
-        /// </summary>
-        public string? systemLocation
-        {
-            get => this._systemLocation;
-            private set
-            {
-                this._systemLocation = value!;
-                this.cmdr.lastSystemLocation = value!;
-                this.cmdr.Save();
-            }
-        }
-        private string _systemLocation;
-        public SystemPoi? systemPoi;
 
         public Game(string? cmdr)
         {
@@ -88,7 +73,7 @@ namespace SrvSurvey.game
             this.status = new Status(true);
 
             // initialize from a journal file
-            var filepath = JournalFile.getCommanderJournalBefore(cmdr, DateTime.MaxValue);
+            var filepath = JournalFile.getCommanderJournalBefore(cmdr, false, DateTime.MaxValue);
             if (filepath == null)
             {
                 Game.log($"No journal files found for: {cmdr}");
@@ -165,7 +150,7 @@ namespace SrvSurvey.game
                 log($"Mode change {this._mode} => {this.mode}");
                 this._mode = this.mode;
 
-                if (modeChanged != null) modeChanged(this._mode);
+                if (modeChanged != null) modeChanged(this._mode, false);
                 // fire event!
             }
         }
@@ -183,7 +168,7 @@ namespace SrvSurvey.game
             this.statusBodyName = status!.BodyName;
 
             // track if status HasLatLong, toggling behaviours when it changes
-            var newHasLatLong = (this.status.Flags & StatusFlags.HasLatLong) > 0;
+            var newHasLatLong = status.hasLatLong;
             if (this.statusHasLatLong != newHasLatLong)
             {
                 Game.log($"Changed hasLatLong: {newHasLatLong}, has nearBody: {this.nearBody != null}, nearBody matches: {status.BodyName == this.nearBody?.bodyName}");
@@ -195,9 +180,14 @@ namespace SrvSurvey.game
                     if (this.departingBody != null && this.nearBody != null)
                     {
                         Game.log($"EVENT:departingBody, from {this.nearBody.bodyName}");
-                        // change systemLocation to be just system (not the body)
-                        this.systemLocation = this.starSystem;
 
+                        // change system locations to be just system (not the body)
+                        cmdr.currentBody = null;
+                        cmdr.currentBodyId = -1;
+                        cmdr.currentBodyRadius = -1;
+                        cmdr.Save();
+
+                        // fire event
                         var leftBody = this.nearBody;
                         this.nearBody = null;
                         this.departingBody(leftBody);
@@ -263,6 +253,8 @@ namespace SrvSurvey.game
                     return GameMode.Docked;
                 if ((this.status.Flags2 & StatusFlags2.OnFootInStation) > 0)
                     return GameMode.Docked;
+                if ((this.status.Flags2 & StatusFlags2.OnFootSocialSpace) > 0)
+                    return GameMode.Social;
 
                 // otherwise we must be ...
                 if (activeVehicle == ActiveVehicle.MainShip)
@@ -317,10 +309,8 @@ namespace SrvSurvey.game
         public bool showGuardianPlotters
         {
             get => Game.settings.enableGuardianSites
-                && this.nearBody != null
-                && this.touchdownLocation != null
-                && this.isMode(GameMode.InSrv, GameMode.OnFoot, GameMode.Landed, GameMode.Flying)
-                && !string.IsNullOrEmpty(this.nearBody.guardianSiteName);
+                && this.nearBody?.siteData != null
+                && this.isMode(GameMode.InSrv, GameMode.OnFoot, GameMode.Landed, GameMode.Flying);
         }
 
         #endregion
@@ -365,57 +355,9 @@ namespace SrvSurvey.game
 
         #region start-up / initialization from journals
 
-        public static string journalFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), @"Saved Games\Frontier Developments\Elite Dangerous\");
-
-        public string? getLastJournalBefore(string cmdr, DateTime timestamp)
-        {
-            var manyFiles = new DirectoryInfo(SrvSurvey.journalFolder)
-                .EnumerateFiles("*.log", SearchOption.TopDirectoryOnly)
-                .OrderByDescending(_ => _.LastWriteTimeUtc);
-
-            var journalFiles = manyFiles
-                .Where(_ => _.LastWriteTime < timestamp)
-                .Select(_ => _.FullName);
-
-            if (cmdr == null)
-            {
-                // use the most recent journal file
-                return journalFiles.First();
-            }
-
-            var CMDR = cmdr.ToUpper();
-            //var filename = journalFiles.First((filepath) => isJournalForCmdr(cmdr, filepath));
-
-            var filename = journalFiles.FirstOrDefault((filepath) =>
-            {
-                // TODO: Use some streaming reader to save reading the whole file up front?
-                using (var reader = new StreamReader(new FileStream(filepath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)))
-                {
-                    while (!reader.EndOfStream)
-                    {
-                        var line = reader.ReadLine()!;
-
-                        // TODO: allow for non-Odyssey
-                        if (line.Contains("\"event\":\"Fileheader\"") && line.Contains("\"Odyssey\":false"))
-                            Game.log($"Reading non-Odyssey journal!");
-
-                        if (line.Contains("\"event\":\"Commander\""))
-                            // no need to process further lines
-                            return line.ToUpper().Contains($"\"NAME\":\"{CMDR}\"");
-                    }
-                    return false;
-                }
-            });
-
-            // TODO: As we already loaded the journal into memory, it would be nice to use that rather than reload it again from JournalWatcher
-
-            return filename;
-        }
-
-
         private void initializeFromJournal()
         {
-            log($"Game.initializeFromJournal: BEGIN {this.Commander}, starSystem:{this.starSystem}, systemLocation:{this.systemLocation}, nearBody:{this.nearBody}, journals.Count:{journals?.Count}");
+            log($"Game.initializeFromJournal: BEGIN {this.Commander}, journals.Count:{journals?.Count}");
 
             var loadEntry = this.journals!.FindEntryByType<LoadGame>(0, false);
 
@@ -433,37 +375,72 @@ namespace SrvSurvey.game
             }
 
             if (loadEntry != null)
-            {
                 this.cmdr = CommanderSettings.Load(loadEntry.FID, loadEntry.Odyssey, loadEntry.Commander);
-            }
 
             // if we have MainMenu music - we know we're not actively playing
             var lastMusic = journals.FindEntryByType<Music>(-1, true);
             if (lastMusic != null)
                 onJournalEntry(lastMusic);
 
-            // if we are near a planet
-            if (this.nearBody == null && (status!.Flags & StatusFlags.HasLatLong) > 0)
+            // try to find a location from recent journal items
+            if (cmdr != null)
             {
-                this.createNearBody(status.BodyName);
-
-                // are we near a guardian site?
-                var lastApproachSettlement = journals.FindEntryByType<ApproachSettlement>(-1, true);
-                if (lastApproachSettlement != null && lastApproachSettlement.SystemAddress == this.nearBody.systemAddress)
+                journals.walk(-1, true, (entry) =>
                 {
-                    this.nearBody.guardianSiteLocation = new LatLong2(lastApproachSettlement);
-                    this.nearBody.guardianSiteName = lastApproachSettlement.Name_Localised;
-                    this.nearBody.guardianSiteCount++;
-                }
+                    var locationEvent = entry as Location;
+                    if (locationEvent != null)
+                    {
+                        this.setLocations(locationEvent);
+                        return true;
+                    }
+
+                    var jumpEvent = entry as FSDJump;
+                    if (jumpEvent != null)
+                    {
+                        this.setLocations(jumpEvent);
+                        return true;
+                    }
+
+                    var superCruiseExitEvent = entry as SupercruiseExit;
+                    if (superCruiseExitEvent != null)
+                    {
+                        this.setLocations(superCruiseExitEvent);
+                        return true;
+                    }
+                    return false;
+                });
+                log($"Game.initializeFromJournal: system: '{cmdr.currentSystem}' (id:{cmdr.currentSystemAddress}), body: '{cmdr.currentBody}' (id:{cmdr.currentBodyId}, r: {Util.metersToString(cmdr.currentBodyRadius)})");
             }
 
-            if (this.systemLocation == null)
+            // if we are near a planet
+            if (this.nearBody == null && status.hasLatLong)
             {
-                var locationEntry = journals.FindEntryByType<Location>(-1, true);
-                if (locationEntry != null)
+                this.createNearBody(status.BodyName);
+                // do lat/long check
+                // are we near a guardian site?
+                journals.searchDeep<ApproachSettlement>((entry) =>
                 {
-                    this.starSystem = locationEntry.StarSystem;
-                    this.systemLocation = Util.getLocationString(locationEntry.StarSystem, locationEntry.Body);
+                    if (entry != null && entry.SystemAddress == this.nearBody.systemAddress)
+                    {
+                        this.nearBody.onJournalEntry(entry);
+                        this.nearBody.guardianSiteCount++;
+                        return true;
+                    }
+
+                    return false;
+                },
+                // search only as far as the FSDJump arrival
+                (JournalFile journals) => journals.search((FSDJump _) => true));
+
+                if (this.nearBody.siteData?.location != null && this.nearBody.siteData.location.Lat == 0)
+                {
+                    // no longer needed?
+                    var lastApproachSettlement = journals.FindEntryByType<ApproachSettlement>(-1, true);
+                    if (lastApproachSettlement != null && lastApproachSettlement.SystemAddress == this.nearBody.systemAddress)
+                    {
+                        this.nearBody.onJournalEntry(lastApproachSettlement);
+                        this.nearBody.guardianSiteCount++;
+                    }
                 }
             }
 
@@ -509,7 +486,7 @@ namespace SrvSurvey.game
                 }
             }
 
-            log($"Game.initializeFromJournal: END Commander:{this.Commander}, starSystem:{this.starSystem}, systemLocation:{this.systemLocation}, nearBody:{this.nearBody}, journals.Count:{journals.Count}");
+            log($"Game.initializeFromJournal: END Commander:{this.Commander}, starSystem:{cmdr?.currentSystem}, systemLocation:{cmdr?.lastSystemLocation}, nearBody:{this.nearBody}, journals.Count:{journals.Count}");
             this.initialized = Game.activeGame == this && this.Commander != null;
             this.checkModeChange();
         }
@@ -518,9 +495,12 @@ namespace SrvSurvey.game
 
         private void createNearBody(string bodyName)
         {
+            Game.log($"in createNearBody: {bodyName}");
+
             // exit early if we already have that body
             if (this.nearBody != null && this.nearBody.bodyName == bodyName) return;
 
+            // from Scan
             if (this.nearBody == null)
             {
                 // look for a recent Scan event
@@ -537,8 +517,6 @@ namespace SrvSurvey.game
                             {
                                 radius = scan.Radius,
                             };
-                            this.starSystem = scan.StarSystem;
-                            this.systemLocation = Util.getLocationString(scan.StarSystem, scan.Bodyname);
                             return true;
                         }
                         return false;
@@ -554,6 +532,7 @@ namespace SrvSurvey.game
                 );
             }
 
+            // from ApproachBody
             if (this.nearBody == null)
             {
                 // look for a recent ApproachBody event?
@@ -570,8 +549,6 @@ namespace SrvSurvey.game
                             {
                                 radius = status.PlanetRadius,
                             };
-                            this.starSystem = approachBody.StarSystem;
-                            this.systemLocation = Util.getLocationString(approachBody.StarSystem, approachBody.Body);
                             return true;
                         }
                         return false;
@@ -602,8 +579,6 @@ namespace SrvSurvey.game
                         {
                             radius = status.PlanetRadius,
                         };
-                        this.starSystem = locationEntry.StarSystem;
-                        this.systemLocation = Util.getLocationString(locationEntry.StarSystem, locationEntry.Body);
                         return true;
                     }
                     return false;
@@ -625,8 +600,6 @@ namespace SrvSurvey.game
                         {
                             radius = status.PlanetRadius,
                         };
-                        this.starSystem = exitEvent.Starsystem;
-                        this.systemLocation = Util.getLocationString(exitEvent.Starsystem, exitEvent.Body);
                         return true;
                     }
                     return false;
@@ -648,20 +621,17 @@ namespace SrvSurvey.game
             {
                 // do we have an ApproachSettlement for this site?
                 this.journals!.searchDeep<ApproachSettlement>(
-                    (ApproachSettlement _) =>
+                (ApproachSettlement _) =>
+                {
+                    if (_.BodyName == nearBody?.bodyName && _.Name.StartsWith("$Ancient:") && _.Latitude != 0)
                     {
-                        if (_.BodyName == status?.BodyName)
-                        {
-                            this.nearBody.onJournalEntry(_);
-                            return true;
-                        }
-                        return false;
-                    },
-                    (JournalFile journals) =>
-                    {
-                        // stop searching older journal files if we see we approached this body
-                        return journals.search((ApproachBody _) => true);
-                    });
+                        this.nearBody.onJournalEntry(_);
+                        return true;
+                    }
+                    return false;
+                },
+                // search only as far as the FSDJump arrival
+                (JournalFile journals) => journals.search((FSDJump _) => true));
             }
 
             if (this.nearBody != null)
@@ -687,17 +657,28 @@ namespace SrvSurvey.game
         {
             if (this.Commander == null)
                 this.initializeFromJournal();
-
-            this.checkModeChange();
         }
 
         private void onJournalEntry(Location entry)
         {
-            this.starSystem = entry.StarSystem;
+            // Happens when has loaded after being at the main menu
+            // Or player resurrects at a station
+
+            //this.starSystem = entry.StarSystem;
+            //this.systemLocation = Util.getLocationString(entry.StarSystem, entry.Body);
+
+            // rely on previously tracked locations?
+            Game.log($"Create nearBody now? For: {entry.Body}, has nearBody: {this.nearBody != null}, cmdr.lastBody: {cmdr.currentBody}");
+            if (this.nearBody == null && status.hasLatLong && cmdr.currentBody != null)
+            {
+                this.createNearBody(cmdr.currentBody);
+            }
         }
 
         private void onJournalEntry(Music entry)
         {
+            this.musicTrack = entry.MusicTrack;
+
             var newMainMenu = entry.MusicTrack == "MainMenu";
             if (this.atMainMenu != newMainMenu)
             {
@@ -729,15 +710,165 @@ namespace SrvSurvey.game
         {
             // FSD Jump completed
             this.fsdJumping = false;
-            this.starSystem = entry.StarSystem;
-            this.systemLocation = Util.getLocationString(entry.StarSystem, entry.Body);
             this.statusBodyName = null;
+
+            this.setLocations(entry);
             this.checkModeChange();
         }
 
         private void onJournalEntry(SupercruiseExit entry)
         {
+            this.setLocations(entry);
+        }
+
+        #endregion
+
+        #region location tracking
+
+        /// <summary>
+        /// The name of the current star system, or body if we are close to one.
+        /// </summary>
+        public string systemLocation { get; private set; }
+
+        public void setLocations(FSDJump entry)
+        {
+            Game.log($"setLocations: from FSDJump: {entry.StarSystem} / {entry.Body} ({entry.BodyType})");
+
+            cmdr.currentSystem = entry.StarSystem;
+            cmdr.currentSystemAddress = entry.SystemAddress;
+
+            if (entry.BodyType == "Planet")
+            {
+                // would this ever happen?
+                Game.log($"setLocations: FSDJump is a planet?!");
+
+                cmdr.currentBody = entry.Body;
+                cmdr.currentBodyId = entry.BodyID;
+
+                // steal radius from status?
+                if (Game.activeGame!.status.BodyName == entry.Body)
+                    cmdr.currentBodyRadius = Game.activeGame.status.PlanetRadius;
+                else
+                {
+                    Game.log($"Cannot find PlanetRadius from status file! Searching for last Scan event.");
+                    cmdr.currentBodyRadius = this.findLastRadius(entry.Body);
+                }
+            }
+            else
+            {
+                cmdr.currentBody = null;
+                cmdr.currentBodyId = -1;
+                cmdr.currentBodyRadius = -1;
+            }
+
+            this.systemLocation = Util.getLocationString(entry.StarSystem, entry.Body);
+            cmdr.Save();
+        }
+
+        public void setLocations(ApproachBody entry)
+        {
+            Game.log($"setLocations: from ApproachBody: {entry.StarSystem} / {entry.Body}");
+
+            cmdr.currentSystem = entry.StarSystem;
+            cmdr.currentSystemAddress = entry.SystemAddress;
+
+            cmdr.currentBody = entry.Body;
+            cmdr.currentBodyId = entry.BodyID;
+
+            // steal radius from status?
+            if (Game.activeGame!.status.BodyName == entry.Body)
+                cmdr.currentBodyRadius = Game.activeGame.status.PlanetRadius;
+            else
+            {
+                Game.log($"Cannot find PlanetRadius from status file! Searching for last Scan event.");
+                cmdr.currentBodyRadius = this.findLastRadius(entry.Body);
+            }
+
+            this.systemLocation = Util.getLocationString(entry.StarSystem, entry.Body);
+            cmdr.Save();
+        }
+
+        public void setLocations(SupercruiseExit entry)
+        {
+            Game.log($"setLocations: from SupercruiseExit: {entry.Starsystem} / {entry.Body} ({entry.BodyType})");
+
+            cmdr.currentSystem = entry.Starsystem;
+            cmdr.currentSystemAddress = entry.SystemAddress;
+            if (entry.BodyType == "Planet")
+            {
+                cmdr.currentBody = entry.Body;
+                cmdr.currentBodyId = entry.BodyID;
+
+                // steal radius from status?
+                if (Game.activeGame!.status.BodyName == entry.Body)
+                    cmdr.currentBodyRadius = Game.activeGame.status.PlanetRadius;
+                else
+                {
+                    Game.log($"Cannot find PlanetRadius from status file! Searching for last Scan event.");
+                    cmdr.currentBodyRadius = this.findLastRadius(entry.Body);
+                }
+            }
+            else
+            {
+                cmdr.currentBody = null;
+                cmdr.currentBodyId = -1;
+                cmdr.currentBodyRadius = -1;
+            }
+
             this.systemLocation = Util.getLocationString(entry.Starsystem, entry.Body);
+            cmdr.Save();
+        }
+
+        public void setLocations(Location entry)
+        {
+            Game.log($"setLocations: from SupercruiseExit: {entry.StarSystem} / {entry.Body} ({entry.BodyType})");
+
+            cmdr.currentSystem = entry.StarSystem;
+            cmdr.currentSystemAddress = entry.SystemAddress;
+            if (entry.BodyType == "Planet")
+            {
+                cmdr.currentBody = entry.Body;
+                cmdr.currentBodyId = entry.BodyID;
+
+                // steal radius from status?
+                if (Game.activeGame!.status.BodyName == entry.Body)
+                    cmdr.currentBodyRadius = Game.activeGame.status.PlanetRadius;
+                else
+                {
+                    Game.log($"Cannot find PlanetRadius from status file! Searching for last Scan event.");
+                    cmdr.currentBodyRadius = this.findLastRadius(entry.Body);
+                }
+            }
+            else
+            {
+                cmdr.currentBody = null;
+                cmdr.currentBodyId = -1;
+                cmdr.currentBodyRadius = -1;
+            }
+
+            this.systemLocation = Util.getLocationString(entry.StarSystem, entry.Body);
+            cmdr.Save();
+        }
+
+        private double findLastRadius(string bodyName)
+        {
+            double planetRadius = -1;
+
+            journals!.searchDeep(
+                (Scan scan) =>
+                {
+                    if (scan.Bodyname == bodyName)
+                    {
+                        planetRadius = scan.Radius;
+                        return true;
+                    }
+                    return false;
+                },
+                // search only as far as the FSDJump arrival
+                (JournalFile journals) => journals.search((FSDJump _) => true)
+            );
+
+            return planetRadius;
         }
 
         #endregion
@@ -794,6 +925,8 @@ namespace SrvSurvey.game
 
         private void onJournalEntry(ApproachBody entry)
         {
+            this.setLocations(entry);
+
             if (this.nearBody == null)
                 this.createNearBody(entry.Body);
         }
@@ -803,7 +936,8 @@ namespace SrvSurvey.game
             if (this.nearBody == null)
                 this.createNearBody(entry.BodyName);
 
-            this.nearBody.onJournalEntry(entry);
+            if (this.nearBody != null)
+                this.nearBody.onJournalEntry(entry);
         }
 
         private void onJournalEntry(SAASignalsFound entry)
@@ -814,13 +948,13 @@ namespace SrvSurvey.game
                 this.nearBody.readSAASignalsFound(entry);
 
             // force a mode change to update ux
-            if (modeChanged != null) modeChanged(this._mode);
+            if (modeChanged != null) modeChanged(this._mode, true);
         }
 
         private void onJournalEntry(SellOrganicData entry)
         {
             // match and remove sold items from running totals
-            Game.log($"SellOrganicData: removing {entry.BioData.Count} scans");
+            Game.log($"SellOrganicData: removing {entry.BioData.Count} scans, worth: {Util.credits(entry.BioData.Sum(_ => _.Value))} + bonus: {Util.credits(entry.BioData.Sum(_ => _.Bonus))}");
             foreach (var data in entry.BioData)
             {
                 var match = cmdr.scannedOrganics.Find(_ => _.species == data.Species && _.reward == data.Value);
@@ -836,37 +970,8 @@ namespace SrvSurvey.game
 
             cmdr.Save();
             // force a mode change to update ux
-            if (modeChanged != null) modeChanged(this._mode);
+            if (modeChanged != null) modeChanged(this._mode, true);
         }
-
-        #endregion
-
-        #region Canonn
-
-        public async void biostats(long systemAddress, int bodyId)
-        {
-            var json = await new HttpClient().GetStringAsync($"https://us-central1-canonn-api-236217.cloudfunctions.net/query/codex/biostats?id={systemAddress}");
-
-            JToken biostats = JsonConvert.DeserializeObject<JToken>(json)!;
-
-            var bodies = biostats["system"]!["bodies"]!.Value<JArray>()!;
-
-            var body = bodies[bodyId - 1].ToObject<canonn.Planet>()!;
-
-            Game.log(body);
-        }
-
-        public async void getSystemPoi(string systemName)
-        {
-            if (this.systemPoi != null)
-            {
-                var json = await new HttpClient().GetStringAsync($"https://us-central1-canonn-api-236217.cloudfunctions.net/query/getSystemPoi?system={systemName}");
-                this.systemPoi = JsonConvert.DeserializeObject<SystemPoi>(json)!;
-            }
-
-            Game.log(this.systemPoi!);
-        }
-
 
         #endregion
     }

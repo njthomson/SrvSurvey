@@ -13,6 +13,7 @@ namespace SrvSurvey
         protected Game game = Game.activeGame!;
         protected TrackingDelta touchdownLocation;
         protected TrackingDelta? srvLocation;
+        /// <summary> The center point on this plotter. </summary>
         protected Size mid;
         protected Graphics? g;
         protected float scale = 1.0f;
@@ -23,8 +24,9 @@ namespace SrvSurvey
 
             this.touchdownLocation = new TrackingDelta(
                 game.nearBody!.radius,
-                game.touchdownLocation);
+                game.touchdownLocation ?? LatLong2.Empty);
         }
+
         public abstract void reposition(Rectangle gameRect);
 
         protected virtual void initialize()
@@ -39,11 +41,11 @@ namespace SrvSurvey
             //game.nearBody!.bioScanEvent += NearBody_bioScanEvent;
 
             // force a mode switch, that will initialize
-            this.Game_modeChanged(game.mode);
+            this.Game_modeChanged(game.mode, true);
             this.Status_StatusChanged();
         }
 
-        protected virtual void Game_modeChanged(GameMode newMode)
+        protected virtual void Game_modeChanged(GameMode newMode, bool force)
         {
             if (this.Opacity > 0 && !game.showBodyPlotters)
             {
@@ -103,7 +105,7 @@ namespace SrvSurvey
 
         protected virtual void onJournalEntry(SendText entry)
         {
-            Game.log($"SendText {entry.Message}");
+            Game.log($"SendText: {entry.Message}");
 
             if (entry.Message.StartsWith("z"))
             {
@@ -134,19 +136,23 @@ namespace SrvSurvey
             if (g == null) return;
 
             var r = new RectangleF(left, top, this.Width - left - right, this.Height - top - bottom);
+            g.ResetClip();
             g.Clip = new Region(r);
         }
 
-        protected void drawCompassLines()
+        protected void drawCompassLines(int heading = -1)
         {
             if (g == null) return;
 
+            if (heading == -1) heading = game.status!.Heading;
+
             g.ResetTransform();
-            this.clipToMiddle(0, 8, 0, 8);
+            this.clipToMiddle(4, 26, 4, 24);
+
             g.TranslateTransform(mid.Width, mid.Height);
 
             // draw compass rose lines
-            g.RotateTransform(360 - game.status!.Heading);
+            g.RotateTransform(360 - heading);
             g.DrawLine(Pens.DarkRed, -this.Width, 0, +this.Width, 0);
             g.DrawLine(Pens.DarkRed, 0, 0, 0, +this.Height);
             g.DrawLine(Pens.Red, 0, -this.Height, 0, 0);
@@ -155,7 +161,7 @@ namespace SrvSurvey
 
         protected void drawTouchdownAndSrvLocation()
         {
-            if (g==null || (this.touchdownLocation == null && this.srvLocation == null)) return;
+            if (g == null || (this.touchdownLocation == null && this.srvLocation == null)) return;
 
             g.ResetTransform();
             g.TranslateTransform(mid.Width, mid.Height);
@@ -223,5 +229,30 @@ namespace SrvSurvey
             g.DrawString(Util.metersToString(dd.distance), Game.settings.fontSmall, GameColors.brushGameOrange, x, y);
         }
 
+        protected void drawHeaderText(string msg)
+        {
+            if (g == null) return;
+
+            // draw heading text (center bottom)
+            g.ResetTransform();
+            g.ResetClip();
+            var sz = g.MeasureString(msg, Game.settings.fontSmall);
+            var tx = mid.Width - (sz.Width / 2);
+            var ty = 6;
+            g.DrawString(msg, Game.settings.fontSmall, GameColors.brushGameOrange, tx, ty);
+        }
+
+        protected void drawFooterText(string msg)
+        {
+            if (g == null) return;
+
+            // draw heading text (center bottom)
+            g.ResetTransform();
+            g.ResetClip();
+            var sz = g.MeasureString(msg, Game.settings.fontSmall);
+            var tx = mid.Width - (sz.Width / 2);
+            var ty = this.Height - sz.Height - 6;
+            g.DrawString(msg, Game.settings.fontSmall, GameColors.brushGameOrange, tx, ty);
+        }
     }
 }

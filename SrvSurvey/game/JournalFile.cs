@@ -29,6 +29,7 @@ namespace SrvSurvey
         public readonly string filepath;
         public readonly DateTime timestamp;
         public readonly string? CommanderName;
+        public readonly bool isOdyssey;
 
         public JournalFile(string filepath)
         {
@@ -43,6 +44,8 @@ namespace SrvSurvey
 
             var entry = this.FindEntryByType<Commander>(0, false);
             this.CommanderName = entry?.Name;
+
+            this.isOdyssey = ((Fileheader)this.Entries[0]).Odyssey;
         }
 
         public int Count { get => this.Entries.Count; }
@@ -101,7 +104,6 @@ namespace SrvSurvey
 
         public bool search<T>(Func<T, bool> func) where T : JournalEntry
         {
-            // see if we can find recent BioScans
             int idx = this.Count - 1;
             do
             {
@@ -143,14 +145,36 @@ namespace SrvSurvey
                     if (finished) break;
                 }
 
-                var priorFilepath = JournalFile.getCommanderJournalBefore(this.CommanderName, journals.timestamp);
+                var priorFilepath = JournalFile.getCommanderJournalBefore(this.CommanderName, this.isOdyssey, journals.timestamp);
                 journals = priorFilepath == null ? null : new JournalFile(priorFilepath);
             };
 
             Game.log($"searchJournalsDeep: count: {count}");
         }
 
-        public static string? getCommanderJournalBefore(string? cmdr, DateTime timestamp)
+        public void walk(int index, bool searchUp, Func<JournalEntry, bool> func)
+        {
+            int idx = index;
+            if (idx == -1)
+                idx = this.Count - 1;
+
+            // the end is either the first or last element
+            var endIdx = searchUp ? 0 : this.Count - 1;
+            
+            while (idx != endIdx)
+            {
+                var finished = func(this.Entries[idx]);
+                if (finished) return;
+
+                // increment index and go round again
+                if (searchUp)
+                    idx--;
+                else
+                    idx++;
+            } 
+        }
+
+        public static string? getCommanderJournalBefore(string? cmdr, bool isOdyssey, DateTime timestamp)
         {
             var manyFiles = new DirectoryInfo(SrvSurvey.journalFolder)
                 .EnumerateFiles("*.log", SearchOption.TopDirectoryOnly)
@@ -182,7 +206,7 @@ namespace SrvSurvey
                         if (line == null) break;
 
                         // TODO: allow for non-Odyssey
-                        if (line.Contains("\"event\":\"Fileheader\"") && line.Contains("\"Odyssey\":false"))
+                        if (line.Contains("\"event\":\"Fileheader\"") && line.Contains($"\"Odyssey\":{isOdyssey}"))
                             return false;
 
                         if (line.Contains("\"event\":\"Commander\""))
