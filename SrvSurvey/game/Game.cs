@@ -51,6 +51,7 @@ namespace SrvSurvey.game
         public string? Commander { get; private set; }
         public bool isOdyssey { get; private set; }
         public string musicTrack { get; private set; }
+        public SuitType currentSuitType { get; private set; }
 
         public JournalWatcher? journals;
         public Status status { get; private set; }
@@ -299,18 +300,27 @@ namespace SrvSurvey.game
             get => this.isMode(GameMode.InSrv, GameMode.OnFoot, GameMode.Landed);
         }
 
+        public bool hidePlottersFromCombatSuits
+        {
+            get => Game.settings.hidePlottersFromCombatSuits 
+                && (this.status.Flags2 & StatusFlags2.OnFoot) > 0
+                && (this.currentSuitType == SuitType.dominator || this.currentSuitType == SuitType.maverick);
+        }
+
         public bool showBodyPlotters
         {
             get => !this.isShutdown
                 && !this.atMainMenu
-                && this.isMode(GameMode.SuperCruising, GameMode.Flying, GameMode.Landed, GameMode.InSrv, GameMode.OnFoot, GameMode.GlideMode);
+                && this.isMode(GameMode.SuperCruising, GameMode.Flying, GameMode.Landed, GameMode.InSrv, GameMode.OnFoot, GameMode.GlideMode)
+                && !this.hidePlottersFromCombatSuits;
         }
 
         public bool showGuardianPlotters
         {
             get => Game.settings.enableGuardianSites
                 && this.nearBody?.siteData != null
-                && this.isMode(GameMode.InSrv, GameMode.OnFoot, GameMode.Landed, GameMode.Flying);
+                && this.isMode(GameMode.InSrv, GameMode.OnFoot, GameMode.Landed, GameMode.Flying)
+                && !this.hidePlottersFromCombatSuits;
         }
 
         #endregion
@@ -968,6 +978,33 @@ namespace SrvSurvey.game
             cmdr.Save();
             // force a mode change to update ux
             if (modeChanged != null) modeChanged(this._mode, true);
+        }
+
+        private void setSuitType(SuitLoadout entry)
+        {
+
+            if (entry.SuitName.StartsWith("flightsuit"))
+                this.currentSuitType = SuitType.flightSuite;
+            else if (entry.SuitName.StartsWith("explorationsuit"))
+                this.currentSuitType = SuitType.artiemis;
+            else if (entry.SuitName.StartsWith("utilitysuit"))
+                this.currentSuitType = SuitType.maverick;
+            else if (entry.SuitName.StartsWith("tacticalsuit"))
+                this.currentSuitType = SuitType.dominator;
+            else
+                Game.log($"Unexpected suit type: {entry.SuitName}");
+
+            Game.log($"setSuitType: '{entry.SuitName}' => {this.currentSuitType}");
+        }
+
+        private void onJournalEntry(SuitLoadout entry)
+        {
+            this.setSuitType(entry);
+        }
+
+        private void onJournalEntry(SwitchSuitLoadout entry)
+        {
+            this.setSuitType(entry);
         }
 
         #endregion

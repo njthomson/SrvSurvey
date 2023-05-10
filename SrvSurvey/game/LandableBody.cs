@@ -119,30 +119,36 @@ namespace SrvSurvey.game
             ApproachSettlement? nearestSettlement = null;
 
             // look for ApproachSettlements against this body in this journal
-            game.journals!.search<ApproachSettlement>(_ =>
-            {
-                if (_.BodyName == this.bodyName && _.Name.StartsWith("$Ancient:") && _.Latitude != 0)
+            game.journals!.searchDeep(
+                (ApproachSettlement _) =>
                 {
-                    var filename = GuardianSiteData.getFilename(_);
-                    this.settlements.Add(filename);
-
-                    // if site is within 20km - make it the active site
-                    var td = new TrackingDelta(this.radius, _);
-                    if (td.distance < 20000 && td.distance < dist)
+                    if (_.BodyName == this.bodyName && _.Name.StartsWith("$Ancient:") && _.Latitude != 0)
                     {
-                        dist = td.distance;
-                        nearestSettlement = _;
-                    }
-                }
+                        var filename = GuardianSiteData.getFilename(_);
+                        this.settlements.Add(filename);
 
-                return false;
-            });
+                        // if site is within 20km - make it the active site
+                        var td = new TrackingDelta(this.radius, _);
+                        if (td.distance < 20000 && td.distance < dist)
+                        {
+                            dist = td.distance;
+                            nearestSettlement = _;
+                        }
+                    }
+
+                    return false;
+                },
+                // stop searching older journal files if we see we reached this system
+                (JournalFile journals) => journals.search((FSDJump _) => true));
             Game.log($"Found {this.settlements.Count} Guardian sites on: {this.bodyName} / " + string.Join(",", this.settlements));
 
             if (nearestSettlement != null)
             {
                 Game.log($"Nearest site '{nearestSettlement.Name_Localised}' is {Util.metersToString(dist)} away, location: {new LatLong2(nearestSettlement)} vs Here: {Status.here}");
                 this.siteData = GuardianSiteData.Load(nearestSettlement);
+
+                this.siteData.lastVisited = DateTimeOffset.UtcNow;
+                this.siteData.Save();
             }
         }
 

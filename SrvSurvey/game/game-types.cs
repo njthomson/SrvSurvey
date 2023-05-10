@@ -84,5 +84,12 @@ namespace SrvSurvey.game
 
     }
 
+    public enum SuitType
+    {
+        flightSuite,
+        artiemis,
+        maverick,
+        dominator,
+    }
 
 }

@@ -35,33 +35,35 @@ namespace SrvSurvey
             this.btnSave = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.checkHidePlottersFromWeapons = new System.Windows.Forms.CheckBox();
             this.checkFocusOnMinimize = new System.Windows.Forms.CheckBox();
             this.numOpacity = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
             this.trackOpacity = new System.Windows.Forms.TrackBar();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.txtCommander = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.btnClearUnclaimed = new System.Windows.Forms.Button();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.checkBioStatusAutoShow = new System.Windows.Forms.CheckBox();
-            this.txtCommander = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.checkRuinsMeasurementGrid = new System.Windows.Forms.CheckBox();
             this.label3 = new System.Windows.Forms.Label();
             this.checkEnableGuardianFeatures = new System.Windows.Forms.CheckBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.linkLabel2 = new System.Windows.Forms.LinkLabel();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
-            this.btnClearUnclaimed = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numOpacity)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackOpacity)).BeginInit();
-            this.groupBox1.SuspendLayout();
+            this.tabControl1.SuspendLayout();
+            this.tabPage4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            this.tabControl1.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.SuspendLayout();
@@ -117,11 +119,11 @@ namespace SrvSurvey
             // 
             this.tabPage1.BackColor = System.Drawing.SystemColors.Control;
             this.tabPage1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.tabPage1.Controls.Add(this.checkHidePlottersFromWeapons);
             this.tabPage1.Controls.Add(this.checkFocusOnMinimize);
             this.tabPage1.Controls.Add(this.numOpacity);
             this.tabPage1.Controls.Add(this.label2);
             this.tabPage1.Controls.Add(this.trackOpacity);
-            this.tabPage1.Controls.Add(this.groupBox1);
             this.tabPage1.Controls.Add(this.txtCommander);
             this.tabPage1.Controls.Add(this.label1);
             this.tabPage1.Location = new System.Drawing.Point(4, 24);
@@ -132,11 +134,25 @@ namespace SrvSurvey
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "General";
             // 
+            // checkHidePlottersFromWeapons
+            // 
+            this.checkHidePlottersFromWeapons.Checked = true;
+            this.checkHidePlottersFromWeapons.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkHidePlottersFromWeapons.Location = new System.Drawing.Point(7, 153);
+            this.checkHidePlottersFromWeapons.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.checkHidePlottersFromWeapons.Name = "checkHidePlottersFromWeapons";
+            this.checkHidePlottersFromWeapons.Size = new System.Drawing.Size(431, 46);
+            this.checkHidePlottersFromWeapons.TabIndex = 7;
+            this.checkHidePlottersFromWeapons.Tag = "hidePlottersFromCombatSuits";
+            this.checkHidePlottersFromWeapons.Text = "Disable overlays when on foot in Maverick and Dominator suits. Avoids mouse/windo" +
+    "w issues during combat.";
+            this.checkHidePlottersFromWeapons.UseVisualStyleBackColor = true;
+            // 
             // checkFocusOnMinimize
             // 
             this.checkFocusOnMinimize.Checked = true;
             this.checkFocusOnMinimize.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkFocusOnMinimize.Location = new System.Drawing.Point(9, 62);
+            this.checkFocusOnMinimize.Location = new System.Drawing.Point(7, 128);
             this.checkFocusOnMinimize.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.checkFocusOnMinimize.Name = "checkFocusOnMinimize";
             this.checkFocusOnMinimize.Size = new System.Drawing.Size(431, 19);
@@ -147,7 +163,7 @@ namespace SrvSurvey
             // 
             // numOpacity
             // 
-            this.numOpacity.Location = new System.Drawing.Point(109, 87);
+            this.numOpacity.Location = new System.Drawing.Point(109, 68);
             this.numOpacity.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.numOpacity.Name = "numOpacity";
             this.numOpacity.Size = new System.Drawing.Size(61, 23);
@@ -158,7 +174,7 @@ namespace SrvSurvey
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(9, 89);
+            this.label2.Location = new System.Drawing.Point(9, 70);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(92, 15);
@@ -170,7 +186,7 @@ namespace SrvSurvey
             this.trackOpacity.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.trackOpacity.LargeChange = 10;
-            this.trackOpacity.Location = new System.Drawing.Point(178, 87);
+            this.trackOpacity.Location = new System.Drawing.Point(178, 68);
             this.trackOpacity.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.trackOpacity.Maximum = 100;
             this.trackOpacity.Name = "trackOpacity";
@@ -179,72 +195,6 @@ namespace SrvSurvey
             this.trackOpacity.TabIndex = 4;
             this.trackOpacity.TickFrequency = 10;
             this.trackOpacity.Scroll += new System.EventHandler(this.trackOpacity_Scroll);
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox1.Controls.Add(this.btnClearUnclaimed);
-            this.groupBox1.Controls.Add(this.pictureBox2);
-            this.groupBox1.Controls.Add(this.pictureBox1);
-            this.groupBox1.Controls.Add(this.checkBox1);
-            this.groupBox1.Controls.Add(this.checkBioStatusAutoShow);
-            this.groupBox1.Location = new System.Drawing.Point(9, 138);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.groupBox1.Size = new System.Drawing.Size(427, 234);
-            this.groupBox1.TabIndex = 3;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Bio scanning";
-            // 
-            // pictureBox2
-            // 
-            this.pictureBox2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox2.BackgroundImage")));
-            this.pictureBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.pictureBox2.Location = new System.Drawing.Point(224, 87);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(109, 132);
-            this.pictureBox2.TabIndex = 3;
-            this.pictureBox2.TabStop = false;
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox1.BackgroundImage")));
-            this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.pictureBox1.Location = new System.Drawing.Point(211, 31);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(154, 50);
-            this.pictureBox1.TabIndex = 2;
-            this.pictureBox1.TabStop = false;
-            // 
-            // checkBox1
-            // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Checked = true;
-            this.checkBox1.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox1.Location = new System.Drawing.Point(8, 143);
-            this.checkBox1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(209, 19);
-            this.checkBox1.TabIndex = 1;
-            this.checkBox1.Tag = "autoShowBioPlot";
-            this.checkBox1.Text = "Show sample scan exclusion zones";
-            this.checkBox1.UseVisualStyleBackColor = true;
-            // 
-            // checkBioStatusAutoShow
-            // 
-            this.checkBioStatusAutoShow.AutoSize = true;
-            this.checkBioStatusAutoShow.Checked = true;
-            this.checkBioStatusAutoShow.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBioStatusAutoShow.Location = new System.Drawing.Point(7, 44);
-            this.checkBioStatusAutoShow.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.checkBioStatusAutoShow.Name = "checkBioStatusAutoShow";
-            this.checkBioStatusAutoShow.Size = new System.Drawing.Size(197, 19);
-            this.checkBioStatusAutoShow.TabIndex = 0;
-            this.checkBioStatusAutoShow.Tag = "autoShowBioSummary";
-            this.checkBioStatusAutoShow.Text = "Show biological signal summary";
-            this.checkBioStatusAutoShow.UseVisualStyleBackColor = true;
             // 
             // txtCommander
             // 
@@ -269,6 +219,7 @@ namespace SrvSurvey
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Controls.Add(this.tabPage4);
             this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -279,10 +230,84 @@ namespace SrvSurvey
             this.tabControl1.Size = new System.Drawing.Size(460, 405);
             this.tabControl1.TabIndex = 0;
             // 
+            // tabPage4
+            // 
+            this.tabPage4.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPage4.Controls.Add(this.btnClearUnclaimed);
+            this.tabPage4.Controls.Add(this.pictureBox2);
+            this.tabPage4.Controls.Add(this.pictureBox1);
+            this.tabPage4.Controls.Add(this.checkBox1);
+            this.tabPage4.Controls.Add(this.checkBioStatusAutoShow);
+            this.tabPage4.Location = new System.Drawing.Point(4, 24);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage4.Size = new System.Drawing.Size(452, 377);
+            this.tabPage4.TabIndex = 3;
+            this.tabPage4.Text = "Bio Scanning";
+            // 
+            // btnClearUnclaimed
+            // 
+            this.btnClearUnclaimed.Location = new System.Drawing.Point(10, 348);
+            this.btnClearUnclaimed.Name = "btnClearUnclaimed";
+            this.btnClearUnclaimed.Size = new System.Drawing.Size(154, 23);
+            this.btnClearUnclaimed.TabIndex = 6;
+            this.btnClearUnclaimed.Text = "Clear unclaimed rewards";
+            this.btnClearUnclaimed.UseVisualStyleBackColor = true;
+            this.btnClearUnclaimed.Click += new System.EventHandler(this.btnClearUnclaimed_Click);
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox2.BackgroundImage")));
+            this.pictureBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.pictureBox2.Location = new System.Drawing.Point(226, 67);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(109, 132);
+            this.pictureBox2.TabIndex = 8;
+            this.pictureBox2.TabStop = false;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox1.BackgroundImage")));
+            this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.pictureBox1.Location = new System.Drawing.Point(212, 11);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(154, 50);
+            this.pictureBox1.TabIndex = 7;
+            this.pictureBox1.TabStop = false;
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Checked = true;
+            this.checkBox1.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox1.Location = new System.Drawing.Point(10, 67);
+            this.checkBox1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(209, 19);
+            this.checkBox1.TabIndex = 5;
+            this.checkBox1.Tag = "autoShowBioPlot";
+            this.checkBox1.Text = "Show sample scan exclusion zones";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            // 
+            // checkBioStatusAutoShow
+            // 
+            this.checkBioStatusAutoShow.AutoSize = true;
+            this.checkBioStatusAutoShow.Checked = true;
+            this.checkBioStatusAutoShow.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBioStatusAutoShow.Location = new System.Drawing.Point(10, 11);
+            this.checkBioStatusAutoShow.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.checkBioStatusAutoShow.Name = "checkBioStatusAutoShow";
+            this.checkBioStatusAutoShow.Size = new System.Drawing.Size(197, 19);
+            this.checkBioStatusAutoShow.TabIndex = 4;
+            this.checkBioStatusAutoShow.Tag = "autoShowBioSummary";
+            this.checkBioStatusAutoShow.Text = "Show biological signal summary";
+            this.checkBioStatusAutoShow.UseVisualStyleBackColor = true;
+            // 
             // tabPage3
             // 
             this.tabPage3.BackColor = System.Drawing.SystemColors.Control;
             this.tabPage3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.tabPage3.Controls.Add(this.checkRuinsMeasurementGrid);
             this.tabPage3.Controls.Add(this.label3);
             this.tabPage3.Controls.Add(this.checkEnableGuardianFeatures);
             this.tabPage3.Location = new System.Drawing.Point(4, 24);
@@ -292,9 +317,23 @@ namespace SrvSurvey
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Guardian sites";
             // 
+            // checkRuinsMeasurementGrid
+            // 
+            this.checkRuinsMeasurementGrid.AutoSize = true;
+            this.checkRuinsMeasurementGrid.Checked = true;
+            this.checkRuinsMeasurementGrid.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkRuinsMeasurementGrid.Location = new System.Drawing.Point(10, 64);
+            this.checkRuinsMeasurementGrid.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.checkRuinsMeasurementGrid.Name = "checkRuinsMeasurementGrid";
+            this.checkRuinsMeasurementGrid.Size = new System.Drawing.Size(231, 19);
+            this.checkRuinsMeasurementGrid.TabIndex = 3;
+            this.checkRuinsMeasurementGrid.Tag = "disableRuinsMeasurementGrid";
+            this.checkRuinsMeasurementGrid.Text = "Disable site heading measurement grid";
+            this.checkRuinsMeasurementGrid.UseVisualStyleBackColor = true;
+            // 
             // label3
             // 
-            this.label3.Location = new System.Drawing.Point(8, 12);
+            this.label3.Location = new System.Drawing.Point(7, 28);
             this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(430, 33);
@@ -307,7 +346,7 @@ namespace SrvSurvey
             this.checkEnableGuardianFeatures.AutoSize = true;
             this.checkEnableGuardianFeatures.Checked = true;
             this.checkEnableGuardianFeatures.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkEnableGuardianFeatures.Location = new System.Drawing.Point(9, 48);
+            this.checkEnableGuardianFeatures.Location = new System.Drawing.Point(10, 6);
             this.checkEnableGuardianFeatures.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.checkEnableGuardianFeatures.Name = "checkEnableGuardianFeatures";
             this.checkEnableGuardianFeatures.Size = new System.Drawing.Size(178, 19);
@@ -357,16 +396,6 @@ namespace SrvSurvey
             this.linkLabel1.Text = resources.GetString("linkLabel1.Text");
             this.linkLabel1.UseCompatibleTextRendering = true;
             // 
-            // btnClearUnclaimed
-            // 
-            this.btnClearUnclaimed.Location = new System.Drawing.Point(7, 205);
-            this.btnClearUnclaimed.Name = "btnClearUnclaimed";
-            this.btnClearUnclaimed.Size = new System.Drawing.Size(154, 23);
-            this.btnClearUnclaimed.TabIndex = 2;
-            this.btnClearUnclaimed.Text = "Clear unclaimed rewards";
-            this.btnClearUnclaimed.UseVisualStyleBackColor = true;
-            this.btnClearUnclaimed.Click += new System.EventHandler(this.btnClearUnclaimed_Click);
-            // 
             // FormSettings
             // 
             this.AcceptButton = this.btnSave;
@@ -389,11 +418,11 @@ namespace SrvSurvey
             this.tabPage1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numOpacity)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackOpacity)).EndInit();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.tabControl1.ResumeLayout(false);
+            this.tabPage4.ResumeLayout(false);
+            this.tabPage4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            this.tabControl1.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
             this.tabPage2.ResumeLayout(false);
@@ -409,15 +438,10 @@ namespace SrvSurvey
         private System.Windows.Forms.NumericUpDown numOpacity;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TrackBar trackOpacity;
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.CheckBox checkBox1;
-        private System.Windows.Forms.CheckBox checkBioStatusAutoShow;
         private System.Windows.Forms.TextBox txtCommander;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.CheckBox checkFocusOnMinimize;
-        private PictureBox pictureBox2;
-        private PictureBox pictureBox1;
         private TabPage tabPage2;
         private LinkLabel linkLabel1;
         private LinkLabel linkLabel2;
@@ -425,6 +449,13 @@ namespace SrvSurvey
         private Label label3;
         private CheckBox checkEnableGuardianFeatures;
         private Button btnNextProc;
+        private CheckBox checkRuinsMeasurementGrid;
+        private CheckBox checkHidePlottersFromWeapons;
+        private TabPage tabPage4;
         private Button btnClearUnclaimed;
+        private PictureBox pictureBox2;
+        private PictureBox pictureBox1;
+        private CheckBox checkBox1;
+        private CheckBox checkBioStatusAutoShow;
     }
 }

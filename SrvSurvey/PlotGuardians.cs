@@ -34,6 +34,7 @@ namespace SrvSurvey
 
         private PlotGuardians() : base()
         {
+            PlotGuardians.instance = this;
             InitializeComponent();
 
             //this.Width = 500;
@@ -44,6 +45,13 @@ namespace SrvSurvey
             this.scale = 0.3f;
 
             this.nextMode();
+        }
+
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            base.OnFormClosing(e);
+
+            PlotGuardians.instance = null;
         }
 
         public override void reposition(Rectangle gameRect)
@@ -71,17 +79,6 @@ namespace SrvSurvey
             this.nextMode();
         }
 
-        private void PlotGuardians_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-            this.Invalidate();
-        }
-
-        private void PlotGuardians_MouseClick(object sender, MouseEventArgs e)
-        {
-            this.Invalidate();
-            Elite.setFocusED();
-        }
-
         private void nextMode()
         {
             /*************************************************************
@@ -94,35 +91,60 @@ namespace SrvSurvey
             if (siteData.type == GuardianSiteData.SiteType.unknown)
             {
                 // we need to know the site type before anything else
-                this.mode = Mode.siteType;
+                this.setMode(Mode.siteType);
             }
             else if (siteData.siteHeading == -1 || siteData.siteHeading == 0)
             {
                 // then we need to know the site heading
-                this.mode = Mode.heading;
+                this.setMode(Mode.heading);
             }
             else
             {
                 // we can show the map after that
-                this.mode = Mode.map;
                 this.loadSiteTemplate();
+                this.setMode(Mode.map);
+            }
+        }
+
+        private void setMode(Mode newMode)
+        {
+            Game.log($"PlotGuardians: changing mode from: {this.mode} to: {newMode}");
+
+            // do not allow some modes before we know others
+            if (siteData.type == GuardianSiteData.SiteType.unknown)
+            {
+                Game.log($"PlotGuardians: site type must be known first");
+                newMode = Mode.siteType;
             }
 
-            Game.log($"Guardian site: nextMode: {this.mode}");
+            if (siteData.siteHeading == -1 && (newMode != Mode.siteType && newMode != Mode.heading))
+            {
+                Game.log($"PlotGuardians: heading must be known first");
+                newMode = Mode.heading;
+            }
+
+            this.mode = newMode;
             this.Invalidate();
 
             // show or hide the heading vertical stripe helper
+            if (!Game.settings.disableRuinsMeasurementGrid)
+            {
+                if (this.mode == Mode.heading)
+                    Program.showPlotter<PlotVertialStripe>();
+                else
+                    Program.closePlotter(nameof(PlotVertialStripe));
+            }
+
+            // load heading guidance image if that is the next mode
             if (this.mode == Mode.heading)
-                Program.showPlotter<PlotVertialStripe>();
-            else
-                Program.closePlotter(nameof(PlotVertialStripe));
+                this.loadHeadingGuidance();
         }
 
         protected override void onJournalEntry(SendText entry)
         {
             base.onJournalEntry(entry);
-            var msg = entry.Message.ToLowerInvariant();
 
+            var msg = entry.Message.ToLowerInvariant();
             if (siteData == null)
             {
                 Game.log($"Why no game.nearBody?.siteData?");
@@ -131,59 +153,88 @@ namespace SrvSurvey
 
 
             // switch to/from offset/screenshot mode
-            if (msg == ".site offset" && this.mode == Mode.map)
+            if (msg == MsgCmd.align)
             {
-                Game.log($"Changing site origin mode");
-                this.mode = Mode.origin;
-                this.Invalidate();
+                this.setMode(Mode.origin);
                 return;
             }
-            if (msg == ".site map" && this.mode == Mode.origin)
+            if (msg == MsgCmd.map)
             {
-                Game.log($"Changing site map mode");
-                this.mode = Mode.map;
-                this.Invalidate();
+                this.setMode(Mode.map);
                 return;
             }
 
-            // try parsing the text as site type?
-            GuardianSiteData.SiteType parsedType;
-            if (siteData.type == GuardianSiteData.SiteType.unknown && Enum.TryParse<GuardianSiteData.SiteType>(msg, out parsedType))
+            // try parsing the raw text as site type?
+            GuardianSiteData.SiteType parsedType = GuardianSiteData.SiteType.unknown;
+            if (siteData.type == GuardianSiteData.SiteType.unknown)
             {
-                Game.log($"Changing site type from '{siteData.type}' to '{parsedType}'");
+                // try matching to the enum?
+                if (!Enum.TryParse<GuardianSiteData.SiteType>(msg, out parsedType))
+                {
+                    // try matching to other strings?
+                    switch (msg)
+                    {
+                        case "a":
+                            parsedType = GuardianSiteData.SiteType.alpha;
+                            break;
+                        case "b":
+                            parsedType = GuardianSiteData.SiteType.beta;
+                            break;
+                        case "g":
+                            parsedType = GuardianSiteData.SiteType.gamma;
+                            break;
+                    }
+                }
+            }
+            else if (msg.StartsWith(MsgCmd.site))
+            {
+                // '.site <alpha>'
+                Enum.TryParse<GuardianSiteData.SiteType>(msg.Substring(MsgCmd.site.Length), out parsedType);
+            }
+
+            if (parsedType != GuardianSiteData.SiteType.unknown)
+            {
+                Game.log($"Changing site type from: '{siteData.type}' to: '{parsedType}'");
                 siteData.type = parsedType;
                 siteData.Save();
 
-                this.loadSiteTemplate();
                 this.nextMode();
                 return;
             }
 
-            // try parsing the site heading
+            // heading stuff...
+
             var changeHeading = false;
             int newHeading = -1;
+            // try parsing some number as the site heading
             if (this.mode == Mode.heading)
                 changeHeading = int.TryParse(msg, out newHeading);
-            if ((this.mode == Mode.heading && msg == "heading") || msg == "/set heading")
+
+            // msg is just '.heading'
+            if (msg == MsgCmd.heading)
             {
-                if (this.mode != Mode.heading)
+                if (this.mode == Mode.heading)
+                {
+                    // take the current cmdr's heading
+                    newHeading = game.status.Heading;
+                    changeHeading = true;
+                }
+                else
                 {
                     // move into heading mode
-                    this.mode = Mode.heading;
-                    this.Invalidate();
-                    Program.showPlotter<PlotVertialStripe>();
+                    this.setMode(Mode.heading);
                     return;
                 }
-                // use current ship heading
-                newHeading = game.status.Heading;
-                changeHeading = true;
             }
-            if (msg.StartsWith("/set heading "))
+            else if (msg.StartsWith(MsgCmd.heading))
+            {
+                // try parsing a number after '.heading'
                 changeHeading = int.TryParse(msg.Substring(14), out newHeading);
+            }
 
             if (changeHeading)
             {
-                Game.log($"Changing site heading from '{siteData.siteHeading}' to '{newHeading}'");
+                Game.log($"Changing site heading from: '{siteData.siteHeading}' to: '{newHeading}'");
                 siteData.siteHeading = (int)newHeading;
                 siteData.Save();
 
@@ -191,15 +242,7 @@ namespace SrvSurvey
                 return;
             }
 
-            if (this.template != null && entry.Message.StartsWith(".s"))
-            {
-                // temporary
-                float heading;
-                if (float.TryParse(entry.Message.Substring(2), out heading))
-                {
-                    this.template.scaleFactor = heading;
-                }
-            }
+            // temporary stuff after here
 
             if (this.template != null && entry.Message.StartsWith("sf"))
             {
@@ -212,8 +255,6 @@ namespace SrvSurvey
                     this.Status_StatusChanged();
                 }
             }
-
-            this.Invalidate();
         }
 
         private void loadSiteTemplate()
@@ -371,7 +412,7 @@ namespace SrvSurvey
         private void drawTrackOrigin()
         {
             g.ResetTransform();
-            this.clipToMiddle(4, 26, 4, 24);
+            this.clipToMiddle();
             g.TranslateTransform(mid.Width, mid.Height);
             g.RotateTransform(360 - siteData.siteHeading);
             var sI = 10;
@@ -512,6 +553,9 @@ namespace SrvSurvey
         private void drawSiteMap()
         {
             if (g == null) return;
+            this.drawHeaderText($"{siteData.name} | {siteData.type} | {siteData.siteHeading}°");
+            this.drawFooterText($"{game.nearBody!.bodyName}");
+
             if (this.underlay == null)
             {
                 Game.log("WHy no underlay?");
@@ -560,61 +604,16 @@ namespace SrvSurvey
 
             this.drawCommander();
 
-            if (siteData.siteHeading != -1)
-            {
-                //this.drawSiteSummaryFooter($"Site heading: {siteHeading}°");
-                //var m = Util.getDistance(Status.here, siteData.location, (decimal)game.nearBody.radius);
-                //var a = Util.getBearing(Status.here, siteData.location);
-                //this.drawSiteSummaryFooter($"{Math.Round(m)}m / {Math.Round(a)}°");
+            //if (siteData.siteHeading != -1)
+            //{
+            //    //this.drawSiteSummaryFooter($"Site heading: {siteHeading}°");
+            //    //var m = Util.getDistance(Status.here, siteData.location, (decimal)game.nearBody.radius);
+            //    //var a = Util.getBearing(Status.here, siteData.location);
+            //    //this.drawSiteSummaryFooter($"{Math.Round(m)}m / {Math.Round(a)}°");
 
-                var ttd = new TrackingDelta(game.nearBody.radius, siteData.location);
-                this.drawSiteSummaryFooter($"{ttd}");
-            }
-        }
-
-        private void drawSiteTypeHelper()
-        {
-            if (g == null) return;
-            g.ResetTransform();
-            g.ResetClip();
-            string msg;
-            SizeF sz;
-            var tx = 10f;
-            var ty = 10f;
-
-            this.drawSiteSummaryFooter($"{game.nearBody!.bodyName}\r\n{siteData.name}");
-
-            // if we don't know the site type yet ...
-            msg = $"Site type unknown!\r\n\r\nSend message:\r\n  alpha\r\n  beta\r\n  gamma";
-            sz = g.MeasureString(msg, Game.settings.font1, this.Width);
-            g.DrawString(msg, Game.settings.font1, GameColors.brushCyan, tx, ty, StringFormat.GenericTypographic);
-        }
-
-        private void drawSiteHeadingHelper()
-        {
-            if (g == null) return;
-            g.ResetTransform();
-            g.ResetClip();
-            string msg;
-            var tx = 10f;
-            var ty = 10f;
-
-            //this.drawSiteSummaryFooter($"{game.nearBody!.bodyName}\r\n{siteData.name}");
-
-            var isRuins = siteData.type == GuardianSiteData.SiteType.alpha || siteData.type == GuardianSiteData.SiteType.beta || siteData.type == GuardianSiteData.SiteType.gamma;
-            msg = $"Need site heading. Send message:\r\n\r\n  <degrees>\r\n\r\nTo use current ship heading send:\r\n\r\n  heading\r\n\r\n";
-            if (isRuins)
-                msg += $"For {siteData.type} sites, align with this buttress:";
-            var sz = g.MeasureString(msg, Game.settings.fontMiddle, this.Width);
-
-            g.DrawString(msg, Game.settings.fontMiddle, GameColors.brushCyan, tx, ty, StringFormat.GenericTypographic);
-
-            // show location of helpful buttress
-            if (this.headingGuidance == null)
-                this.loadHeadingGuidance();
-
-            if (isRuins && this.headingGuidance != null)
-                g.DrawImage(this.headingGuidance, 40, 20 + sz.Height); //, 200, 200);
+            //    var ttd = new TrackingDelta(game.nearBody.radius, siteData.location);
+            //    this.drawSiteSummaryFooter($"{ttd}");
+            //}
         }
 
         private void drawSiteSummaryFooter(string msg)
@@ -629,5 +628,69 @@ namespace SrvSurvey
             var ty = this.Height - sz.Height - 6;
             g.DrawString(msg, Game.settings.fontSmall, GameColors.brushGameOrange, tx, ty);
         }
+
+        private void drawSiteTypeHelper()
+        {
+            if (g == null) return;
+
+            this.drawHeaderText($"{siteData.name} | {siteData.type} | ???°");
+            this.drawFooterText($"{game.nearBody!.bodyName}");
+            g.ResetTransform();
+            this.clipToMiddle();
+
+            string msg;
+            SizeF sz;
+            var tx = 10f;
+            var ty = 16f;
+
+            this.drawFooterText($"{game.nearBody!.bodyName}");
+
+            // if we don't know the site type yet ...
+            msg = $"Site type unknown!\r\n\r\nSend message:\r\n\r\n 'a' for Alpha\r\n\r\n 'b' for Beta\r\n\r\n 'g' for Gamma";
+            sz = g.MeasureString(msg, Game.settings.font1, this.Width);
+            g.DrawString(msg, Game.settings.font1, GameColors.brushCyan, tx, ty, StringFormat.GenericTypographic);
+        }
+
+        private void drawSiteHeadingHelper()
+        {
+            if (g == null) return;
+
+            this.drawHeaderText($"{siteData.name} | {siteData.type} | ???°");
+            this.drawFooterText($"{game.nearBody!.bodyName}");
+            g.ResetTransform();
+            this.clipToMiddle();
+
+            string msg;
+            var tx = 10f;
+            var ty = 16f;
+
+
+            var isRuins = siteData.type == GuardianSiteData.SiteType.alpha || siteData.type == GuardianSiteData.SiteType.beta || siteData.type == GuardianSiteData.SiteType.gamma;
+            msg = $"Need site heading. Send message:\r\n\r\n  <degrees>\r\n\r\nTo use current ship heading send:\r\n\r\n  .heading\r\n\r\n";
+            if (isRuins)
+                msg += $"For {siteData.type} sites, align with this buttress:";
+            var sz = g.MeasureString(msg, Game.settings.fontMiddle, this.Width);
+
+            g.DrawString(msg, Game.settings.fontMiddle, GameColors.brushCyan, tx, ty, StringFormat.GenericTypographic);
+
+            // show location of helpful buttress
+            if (isRuins && this.headingGuidance != null)
+                g.DrawImage(this.headingGuidance, 40, 20 + sz.Height); //, 200, 200);
+        }
+
+        #region static accessing stuff
+
+        private static PlotGuardians? instance;
+
+        public static void switchMode(Mode newMode)
+        {
+            if (PlotGuardians.instance != null)
+            {
+                PlotGuardians.instance.setMode(newMode);
+                Elite.setFocusED();
+            }
+        }
+
+        #endregion
     }
 }

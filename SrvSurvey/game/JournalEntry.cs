@@ -468,5 +468,26 @@ namespace SrvSurvey
         public long MarketID { get; set; }
         public List<BioData> BioData { get; set; }
     }
+
+    class SuitLoadout : JournalEntry
+    {
+        // { "timestamp":"2023-05-10T18:16:37Z", "event":"SuitLoadout", "SuitID":1722825297017949, "SuitName":"explorationsuit_class5", "SuitName_Localised":"$ExplorationSuit_Class1_Name;", "SuitMods":[ "suit_increasedsprintduration", "suit_improvedjumpassist", "suit_nightvision", "suit_increasedbatterycapacity" ], "LoadoutID":4293000005, "LoadoutName":"Green!", "Modules":[ { "SlotName":"PrimaryWeapon1", "SuitModuleID":1723805638978815, "ModuleName":"wpn_m_assaultrifle_plasma_fauto", "ModuleName_Localised":"Manticore Oppressor", "Class":3, "WeaponMods":[ "weapon_accuracy" ] }, { "SlotName":"SecondaryWeapon", "SuitModuleID":1723541854154251, "ModuleName":"wpn_s_pistol_plasma_charged", "ModuleName_Localised":"Manticore Tormentor", "Class":5, "WeaponMods":[ "weapon_suppression_pressurised", "weapon_handling", "weapon_stability", "weapon_backpackreloading" ] } ] }
+
+        public long SuitID;
+        public string SuitName;
+        public string SuitName_Localised;
+        public List<string> SuitMods;
+        public long LoadoutID;
+        public string LoadoutName;
+
+        // TODO: Modules
+    }
+
+    class SwitchSuitLoadout : SuitLoadout
+    {
+        // { "timestamp":"2023-05-10T18:28:28Z", "event":"SwitchSuitLoadout", "SuitID":1723541811099765, "SuitName":"tacticalsuit_class5", "SuitName_Localised":"$TacticalSuit_Class1_Name;", "SuitMods":[ "suit_increasedsprintduration", "suit_improvedarmourrating", "suit_increasedammoreserves", "suit_increasedshieldregen" ], "LoadoutID":4293000000, "LoadoutName":"solder / general", "Modules":[ { "SlotName":"PrimaryWeapon1", "SuitModuleID":1704060320072893, "ModuleName":"wpn_m_assaultrifle_laser_fauto", "ModuleName_Localised":"TK Aphelion", "Class":5, "WeaponMods":[ "weapon_clipsize", "weapon_backpackreloading", "weapon_handling" ] }, { "SlotName":"PrimaryWeapon2", "SuitModuleID":1722824106905372, "ModuleName":"wpn_m_assaultrifle_kinetic_fauto", "ModuleName_Localised":"Karma AR-50", "Class":5, "WeaponMods":[ "weapon_stability", "weapon_handling", "weapon_clipsize", "weapon_headshotdamage" ] }, { "SlotName":"SecondaryWeapon", "SuitModuleID":1723541854154251, "ModuleName":"wpn_s_pistol_plasma_charged", "ModuleName_Localised":"Manticore Tormentor", "Class":5, "WeaponMods":[ "weapon_suppression_pressurised", "weapon_handling", "weapon_stability", "weapon_backpackreloading" ] } ] }
+
+    }
 }
+
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.

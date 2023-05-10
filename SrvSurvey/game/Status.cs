@@ -35,6 +35,8 @@ namespace SrvSurvey
         public string BodyName { get; set; }
         public Destination Destination { get; set; }
         public double PlanetRadius { get; set; }
+        public string SelectedWeapon { get; set; }
+        public string SelectedWeapon_Localised { get; set; }
 
         #endregion
 
@@ -196,6 +198,7 @@ namespace SrvSurvey
         srvHighBeam = unchecked((int)0x_8000_0000),
     }
 
+    [Flags]
     enum StatusFlags2
     {
         // See https://elite-journal.readthedocs.io/en/latest/Status%20File/#status-file

@@ -2,6 +2,7 @@
 using SrvSurvey.units;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -46,6 +47,52 @@ namespace SrvSurvey
                 }
             }
         }
+
+        #region mouse handlers
+
+        protected override void OnMouseEnter(EventArgs e)
+        {
+            base.OnMouseEnter(e);
+
+            if (Debugger.IsAttached)
+                // use a different cursor if debugging
+                this.Cursor = Cursors.No;
+            else
+                // otherwise hide the cursor entirely
+                Cursor.Hide();
+        }
+
+        protected override void OnMouseLeave(EventArgs e)
+        {
+            // restore the cursor when it leaves
+            Cursor.Show();
+        }
+
+        protected override void OnMouseHover(EventArgs e)
+        {
+            base.OnMouseHover(e);
+
+            this.Invalidate();
+            Elite.setFocusED();
+        }
+
+        protected override void OnClick(EventArgs e)
+        {
+            base.OnClick(e);
+
+            this.Invalidate();
+            Elite.setFocusED();
+        }
+
+        protected override void OnMouseDoubleClick(MouseEventArgs e)
+        {
+            base.OnMouseDoubleClick(e);
+
+            this.Invalidate();
+            Elite.setFocusED();
+        }
+
+        #endregion
 
         public abstract void reposition(Rectangle gameRect);
 
@@ -125,15 +172,19 @@ namespace SrvSurvey
 
         protected virtual void onJournalEntry(SendText entry)
         {
-            Game.log($"SendText: {entry.Message}");
+            Game.log($"PlotBase: SendText: {entry.Message}");
+            var msg = entry.Message.ToLowerInvariant();
 
-            if (entry.Message.StartsWith("z"))
+            // adjust the zoom factor 'z <number>'
+            if (msg.StartsWith(MsgCmd.z))
             {
                 float zoomFactor;
                 if (float.TryParse(entry.Message.Substring(1), out zoomFactor))
                 {
-                    Game.log($"Change zoom scale from: {this.scale}, to: {zoomFactor}");
+                    Game.log($"Change zoom scale from: '{this.scale}' to: '{zoomFactor}'");
                     this.scale = zoomFactor;
+                    this.Invalidate();
+                    return;
                 }
             }
         }
@@ -152,6 +203,11 @@ namespace SrvSurvey
             var dx = (float)Math.Sin(Util.degToRad(game.status.Heading)) * 10F;
             var dy = (float)Math.Cos(Util.degToRad(game.status.Heading)) * 10F;
             g.DrawLine(GameColors.Lime2, 0, 0, +dx, -dy);
+        }
+
+        protected void clipToMiddle()
+        {
+            this.clipToMiddle(4, 20, 4, 24);
         }
 
         protected void clipToMiddle(float left, float top, float right, float bottom)

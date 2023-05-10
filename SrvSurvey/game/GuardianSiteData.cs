@@ -35,6 +35,7 @@ namespace SrvSurvey.game
                     location = entry,
                     systemAddress = entry.SystemAddress,
                     bodyId = entry.BodyID,
+                    firstVisited = DateTimeOffset.UtcNow,
                 };
                 data.Save();
             }
@@ -44,6 +45,9 @@ namespace SrvSurvey.game
         #region data members
 
         public string name;
+
+        public DateTimeOffset firstVisited;
+        public DateTimeOffset lastVisited;
 
         public SiteType type;
 

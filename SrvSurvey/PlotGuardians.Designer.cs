@@ -49,8 +49,6 @@
             this.TopMost = true;
             this.Load += new System.EventHandler(this.PlotGuardians_Load);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.PlotGuardians_Paint);
-            this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.PlotGuardians_MouseClick);
-            this.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.PlotGuardians_MouseDoubleClick);
             this.ResumeLayout(false);
 
         }

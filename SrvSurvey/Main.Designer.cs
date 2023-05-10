@@ -64,6 +64,8 @@ namespace SrvSurvey
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.lblFullScreen = new System.Windows.Forms.Label();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.btnRuinsMap = new System.Windows.Forms.Button();
+            this.btnRuinsOrigin = new System.Windows.Forms.Button();
             this.txtGuardianSite = new System.Windows.Forms.TextBox();
             this.lblGuardianCount = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
@@ -442,16 +444,44 @@ namespace SrvSurvey
             // 
             this.groupBox4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox4.Controls.Add(this.btnRuinsMap);
+            this.groupBox4.Controls.Add(this.btnRuinsOrigin);
             this.groupBox4.Controls.Add(this.txtGuardianSite);
             this.groupBox4.Controls.Add(this.lblGuardianCount);
             this.groupBox4.Controls.Add(this.label5);
-            this.groupBox4.Location = new System.Drawing.Point(12, 268);
+            this.groupBox4.Location = new System.Drawing.Point(12, 252);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(371, 78);
+            this.groupBox4.Size = new System.Drawing.Size(371, 94);
             this.groupBox4.TabIndex = 19;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Guardian sites: (work in progress)";
             this.groupBox4.Visible = false;
+            // 
+            // btnRuinsMap
+            // 
+            this.btnRuinsMap.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnRuinsMap.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.btnRuinsMap.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.btnRuinsMap.Location = new System.Drawing.Point(16, 57);
+            this.btnRuinsMap.Name = "btnRuinsMap";
+            this.btnRuinsMap.Size = new System.Drawing.Size(119, 21);
+            this.btnRuinsMap.TabIndex = 16;
+            this.btnRuinsMap.Text = "Show map";
+            this.btnRuinsMap.UseVisualStyleBackColor = false;
+            this.btnRuinsMap.Click += new System.EventHandler(this.btnRuinsMap_Click);
+            // 
+            // btnRuinsOrigin
+            // 
+            this.btnRuinsOrigin.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnRuinsOrigin.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.btnRuinsOrigin.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.btnRuinsOrigin.Location = new System.Drawing.Point(141, 57);
+            this.btnRuinsOrigin.Name = "btnRuinsOrigin";
+            this.btnRuinsOrigin.Size = new System.Drawing.Size(119, 21);
+            this.btnRuinsOrigin.TabIndex = 15;
+            this.btnRuinsOrigin.Text = "Align origin";
+            this.btnRuinsOrigin.UseVisualStyleBackColor = false;
+            this.btnRuinsOrigin.Click += new System.EventHandler(this.btnRuinsOrigin_Click);
             // 
             // txtGuardianSite
             // 
@@ -583,5 +613,7 @@ namespace SrvSurvey
         private Label label8;
         private Label label7;
         private Label label6;
+        private Button btnRuinsMap;
+        private Button btnRuinsOrigin;
     }
 }

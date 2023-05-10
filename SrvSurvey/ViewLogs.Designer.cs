@@ -100,9 +100,8 @@ namespace SrvSurvey
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.Name = "ViewLogs";
-            this.ShowInTaskbar = false;
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
-            this.Text = "SrvSurvey Logs";
+            this.Text = "Srv Survey Logs";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ViewLogs_FormClosed);
             this.Load += new System.EventHandler(this.ViewLogs_Load);
             this.Shown += new System.EventHandler(this.ViewLogs_Shown);

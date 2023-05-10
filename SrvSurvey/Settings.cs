@@ -14,10 +14,12 @@ namespace SrvSurvey
         public bool autoShowBioSummary = true;
         public bool autoShowBioPlot = true;
         public bool focusGameOnMinimize = true;
+
         public bool enableGuardianSites = false;
+        public bool disableRuinsMeasurementGrid = false;
+        public bool hidePlottersFromCombatSuits = false;
 
         public double Opacity = 0.5;
-
         public Point mainLocation;
         public Rectangle logsLocation;
 
