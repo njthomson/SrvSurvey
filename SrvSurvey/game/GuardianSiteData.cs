@@ -10,22 +10,27 @@ namespace SrvSurvey.game
 {
     internal class GuardianSiteData : Data
     {
-        public static GuardianSiteData Load(ApproachSettlement entry) // string bodyName, string siteName, LatLong2 location)
+        public static string getFilename(ApproachSettlement entry)
         {
             var idx = parseSettlementIdx(entry.Name);
             var namePart = "ruins"; // TODO: structures?
-            string filepath = Path.Combine(Application.UserAppDataPath, "guardian", $"{entry.BodyName}-{namePart}-{idx}.json");
+            return $"{entry.BodyName}-{namePart}-{idx}.json";
+        }
+
+        public static GuardianSiteData Load(ApproachSettlement entry)
+        {
+            string filepath = Path.Combine(Application.UserAppDataPath, "guardian", getFilename(entry));
 
             Directory.CreateDirectory(Path.Combine(Application.UserAppDataPath, "guardian"));
 
             var data = Data.Load<GuardianSiteData>(filepath);
-                if (data == null)
+            if (data == null)
             {
                 data = new GuardianSiteData()
                 {
                     name = entry.Name_Localised,
                     type = SiteType.unknown,
-                    index = idx,
+                    index = parseSettlementIdx(entry.Name),
                     filepath = filepath,
                     location = entry,
                     systemAddress = entry.SystemAddress,
@@ -50,7 +55,7 @@ namespace SrvSurvey.game
 
         public int bodyId;
 
-        public int siteHeading;
+        public int siteHeading = -1;
 
         #endregion
 

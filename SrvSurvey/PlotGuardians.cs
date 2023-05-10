@@ -226,11 +226,6 @@ namespace SrvSurvey
             this.siteMap = Bitmap.FromFile(Path.Combine(this.template.backgroundImage));
             this.trails = new Bitmap(this.siteMap.Width, this.siteMap.Height);
 
-            var filepath = Path.Combine("images", $"gamma-heading-guide.png");// $"{siteData.type}-heading-guide.png");
-            if (File.Exists(filepath))
-                using (var img = Bitmap.FromFile(filepath))
-                    this.headingGuidance = new Bitmap(img);
-
             // Temporary until trail tracking works
             using (var gg = Graphics.FromImage(this.trails))
             {
@@ -259,6 +254,22 @@ namespace SrvSurvey
             this.Status_StatusChanged();
         }
 
+        private void loadHeadingGuidance()
+        {
+            if (this.headingGuidance != null)
+            {
+                this.headingGuidance.Dispose();
+                this.headingGuidance = null;
+            }
+
+            var filepath = Path.Combine("images", $"{siteData.type}-heading-guide.png");
+            if (File.Exists(filepath))
+            {
+                using (var img = Bitmap.FromFile(filepath))
+                    this.headingGuidance = new Bitmap(img);
+            }
+        }
+
         protected override void Status_StatusChanged()
         {
             base.Status_StatusChanged();
@@ -277,7 +288,7 @@ namespace SrvSurvey
                 this.commanderOffset = new PointF(
                     (float)td.dx * ss,
                     -(float)td.dy * ss);
-                Game.log($"commanderOffset: {commanderOffset}");
+                //Game.log($"commanderOffset: {commanderOffset}");
 
 
                 /* TODO: get trail tacking working
@@ -500,7 +511,19 @@ namespace SrvSurvey
 
         private void drawSiteMap()
         {
-            if (g == null || this.underlay == null) return;
+            if (g == null) return;
+            if (this.underlay == null)
+            {
+                Game.log("WHy no underlay?");
+                return;
+            }
+
+            g.ResetTransform();
+            this.clipToMiddle(4, 26, 4, 24);
+            g.TranslateTransform(mid.Width, mid.Height);
+            g.ScaleTransform(this.scale, this.scale);
+            g.RotateTransform(-game.status.Heading);
+
 
             // prepare underlay image
             using (var gg = Graphics.FromImage(this.underlay!))
@@ -525,8 +548,6 @@ namespace SrvSurvey
             float x = commanderOffset.X;
             float y = commanderOffset.Y;
 
-            this.clipToMiddle(4, 26, 4, 24);
-
             g.DrawImageUnscaled(this.underlay!, -(int)(ux - x), -(int)(uy - y));
 
             // draw compass rose lines centered on underlay
@@ -542,12 +563,12 @@ namespace SrvSurvey
             if (siteData.siteHeading != -1)
             {
                 //this.drawSiteSummaryFooter($"Site heading: {siteHeading}°");
-                var m = Util.getDistance(Status.here, siteData.location!, (decimal)game.nearBody.radius);
-                //var a = Util.getBearing(Status.here, game.nearBody!.guardianSiteLocation!);
+                //var m = Util.getDistance(Status.here, siteData.location, (decimal)game.nearBody.radius);
+                //var a = Util.getBearing(Status.here, siteData.location);
                 //this.drawSiteSummaryFooter($"{Math.Round(m)}m / {Math.Round(a)}°");
 
                 var ttd = new TrackingDelta(game.nearBody.radius, siteData.location);
-                this.drawSiteSummaryFooter($"{Math.Round(m)}m / {ttd}");
+                this.drawSiteSummaryFooter($"{ttd}");
             }
         }
 
@@ -589,7 +610,10 @@ namespace SrvSurvey
             g.DrawString(msg, Game.settings.fontMiddle, GameColors.brushCyan, tx, ty, StringFormat.GenericTypographic);
 
             // show location of helpful buttress
-            if (isRuins)
+            if (this.headingGuidance == null)
+                this.loadHeadingGuidance();
+
+            if (isRuins && this.headingGuidance != null)
                 g.DrawImage(this.headingGuidance, 40, 20 + sz.Height); //, 200, 200);
         }
 

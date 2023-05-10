@@ -1,18 +1,17 @@
 {
   "alpha": {
     "name": "Alpha",
-    "backgroundImage": "ruins-alpha-4.png",
-    "imageOffset": "390,520",
+    "backgroundImage": "ruins-alpha-5.png",
+    "imageOffset": "737,885",
     "mapScale": 1.55,
-    "scaleFactor": 1.65,
-    "XscaleFactor": 15200.0,
+    "scaleFactor": 1.0,
     "poi": {
     }
   },
   "beta": {
     "name": "Beta",
-    "backgroundImage": "ruins-beta-2.png",
-    "imageOffset": "664,725",
+    "backgroundImage": "ruins-beta-3.png",
+    "imageOffset": "638,752",
     "scaleFactor": 1.3,
     "poi": {
       "RTB01": {
@@ -295,6 +294,15 @@
         "Lat": -0.003233,
         "Long": 0.001591
       }
+    }
+  },
+  "gamma": {
+    "name": "Gamma",
+    "backgroundImage": "ruins-alpha-4.png",
+    "imageOffset": "390,520",
+    "mapScale": 1.55,
+    "scaleFactor": 1.65,
+    "poi": {
     }
   }
 }

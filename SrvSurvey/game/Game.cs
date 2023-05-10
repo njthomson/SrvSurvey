@@ -416,32 +416,32 @@ namespace SrvSurvey.game
             if (this.nearBody == null && status.hasLatLong)
             {
                 this.createNearBody(status.BodyName);
-                // do lat/long check
-                // are we near a guardian site?
-                journals.searchDeep<ApproachSettlement>((entry) =>
-                {
-                    if (entry != null && entry.SystemAddress == this.nearBody.systemAddress)
-                    {
-                        this.nearBody.onJournalEntry(entry);
-                        this.nearBody.guardianSiteCount++;
-                        return true;
-                    }
+                //// do lat/long check
+                //// are we near a guardian site?
+                //journals.searchDeep<ApproachSettlement>((entry) =>
+                //{
+                //    if (entry != null && entry.SystemAddress == this.nearBody.systemAddress)
+                //    {
+                //        this.nearBody.onJournalEntry(entry);
+                //        this.nearBody.settlements.Count;
+                //        return true;
+                //    }
 
-                    return false;
-                },
-                // search only as far as the FSDJump arrival
-                (JournalFile journals) => journals.search((FSDJump _) => true));
+                //    return false;
+                //},
+                //// search only as far as the FSDJump arrival
+                //(JournalFile journals) => journals.search((FSDJump _) => true));
 
-                if (this.nearBody.siteData?.location != null && this.nearBody.siteData.location.Lat == 0)
-                {
-                    // no longer needed?
-                    var lastApproachSettlement = journals.FindEntryByType<ApproachSettlement>(-1, true);
-                    if (lastApproachSettlement != null && lastApproachSettlement.SystemAddress == this.nearBody.systemAddress)
-                    {
-                        this.nearBody.onJournalEntry(lastApproachSettlement);
-                        this.nearBody.guardianSiteCount++;
-                    }
-                }
+                //if (this.nearBody.siteData?.location != null && this.nearBody.siteData.location.Lat == 0)
+                //{
+                //    // no longer needed?
+                //    var lastApproachSettlement = journals.FindEntryByType<ApproachSettlement>(-1, true);
+                //    if (lastApproachSettlement != null && lastApproachSettlement.SystemAddress == this.nearBody.systemAddress)
+                //    {
+                //        this.nearBody.onJournalEntry(lastApproachSettlement);
+                //        this.nearBody.guardianSiteCount++;
+                //    }
+                //}
             }
 
             // if we have landed, we need to find the last Touchdown location
@@ -513,10 +513,8 @@ namespace SrvSurvey.game
                                 this,
                                 scan.Bodyname,
                                 scan.BodyID,
-                                scan.SystemAddress)
-                            {
-                                radius = scan.Radius,
-                            };
+                                scan.SystemAddress,
+                                scan.Radius);
                             return true;
                         }
                         return false;
@@ -545,10 +543,8 @@ namespace SrvSurvey.game
                                 this,
                                 approachBody.Body,
                                 approachBody.BodyID,
-                                approachBody.SystemAddress)
-                            {
-                                radius = status.PlanetRadius,
-                            };
+                                approachBody.SystemAddress,
+                                status.PlanetRadius);
                             return true;
                         }
                         return false;
@@ -575,10 +571,8 @@ namespace SrvSurvey.game
                             this,
                             locationEntry.Body,
                             locationEntry.BodyID,
-                            locationEntry.SystemAddress)
-                        {
-                            radius = status.PlanetRadius,
-                        };
+                            locationEntry.SystemAddress,
+                            status.PlanetRadius);
                         return true;
                     }
                     return false;
@@ -596,10 +590,8 @@ namespace SrvSurvey.game
                             this,
                             exitEvent.Body,
                             exitEvent.BodyID,
-                            exitEvent.SystemAddress)
-                        {
-                            radius = status.PlanetRadius,
-                        };
+                            exitEvent.SystemAddress,
+                            status.PlanetRadius);
                         return true;
                     }
                     return false;
@@ -617,22 +609,22 @@ namespace SrvSurvey.game
                 //this.systemLocation = Util.getLocationString( nearBody.systemAddress, entry.Body) this.nearBody?.bodyName;
             }
 
-            if (this.nearBody?.guardianSiteCount > 0)
-            {
-                // do we have an ApproachSettlement for this site?
-                this.journals!.searchDeep<ApproachSettlement>(
-                (ApproachSettlement _) =>
-                {
-                    if (_.BodyName == nearBody?.bodyName && _.Name.StartsWith("$Ancient:") && _.Latitude != 0)
-                    {
-                        this.nearBody.onJournalEntry(_);
-                        return true;
-                    }
-                    return false;
-                },
-                // search only as far as the FSDJump arrival
-                (JournalFile journals) => journals.search((FSDJump _) => true));
-            }
+            //if (this.nearBody?.guardianSiteCount > 0)
+            //{
+            //    // do we have an ApproachSettlement for this site?
+            //    this.journals!.searchDeep<ApproachSettlement>(
+            //    (ApproachSettlement _) =>
+            //    {
+            //        if (_.BodyName == nearBody?.bodyName && _.Name.StartsWith("$Ancient:") && _.Latitude != 0)
+            //        {
+            //            this.nearBody.onJournalEntry(_);
+            //            return true;
+            //        }
+            //        return false;
+            //    },
+            //    // search only as far as the FSDJump arrival
+            //    (JournalFile journals) => journals.search((FSDJump _) => true));
+            //}
 
             if (this.nearBody != null)
             {
@@ -714,6 +706,11 @@ namespace SrvSurvey.game
 
             this.setLocations(entry);
             this.checkModeChange();
+        }
+
+        private void onJournalEntry(SupercruiseEntry entry)
+        {
+            Program.closePlotter(nameof(PlotGuardians));
         }
 
         private void onJournalEntry(SupercruiseExit entry)

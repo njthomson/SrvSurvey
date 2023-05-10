@@ -19,15 +19,18 @@ namespace SrvSurvey.game
         public BioScan? scanOne { get => game.cmdr.scanOne; }
         public BioScan? scanTwo { get => game.cmdr.scanTwo; }
         public Dictionary<string, string> analysedSpecies = new Dictionary<string, string>();
-        public int guardianSiteCount;
         public GuardianSiteData siteData;
+        public HashSet<string> settlements = new HashSet<string>();
 
-        public LandableBody(Game game, string bodyName, int bodyId, long systemAddress)
+        public LandableBody(Game game, string bodyName, int bodyId, long systemAddress, double radius)
         {
+            if (radius == 0) throw new Exception("Bad radius!");
+
             this.game = game;
             this.bodyName = bodyName;
             this.bodyId = bodyId;
             this.systemAddress = systemAddress;
+            this.radius = radius;
             this.data = BodyData.Load(systemAddress, bodyId);
 
             // see if we can get signals for this body
@@ -41,6 +44,9 @@ namespace SrvSurvey.game
 
                 return false;
             });
+
+            // see if we can find Guardian sites?
+            this.findGuardianSites();
 
             game.journals!.onJournalEntry += Journals_onJournalEntry;
         }
@@ -105,6 +111,41 @@ namespace SrvSurvey.game
             if (this.bioScanEvent != null) this.bioScanEvent();
         }
 
+        public void findGuardianSites()
+        {
+            this.settlements.Clear();
+
+            decimal dist = decimal.MaxValue;
+            ApproachSettlement? nearestSettlement = null;
+
+            // look for ApproachSettlements against this body in this journal
+            game.journals!.search<ApproachSettlement>(_ =>
+            {
+                if (_.BodyName == this.bodyName && _.Name.StartsWith("$Ancient:") && _.Latitude != 0)
+                {
+                    var filename = GuardianSiteData.getFilename(_);
+                    this.settlements.Add(filename);
+
+                    // if site is within 20km - make it the active site
+                    var td = new TrackingDelta(this.radius, _);
+                    if (td.distance < 20000 && td.distance < dist)
+                    {
+                        dist = td.distance;
+                        nearestSettlement = _;
+                    }
+                }
+
+                return false;
+            });
+            Game.log($"Found {this.settlements.Count} Guardian sites on: {this.bodyName} / " + string.Join(",", this.settlements));
+
+            if (nearestSettlement != null)
+            {
+                Game.log($"Nearest site '{nearestSettlement.Name_Localised}' is {Util.metersToString(dist)} away, location: {new LatLong2(nearestSettlement)} vs Here: {Status.here}");
+                this.siteData = GuardianSiteData.Load(nearestSettlement);
+            }
+        }
+
         /// <summary>
         /// Meters per 1° of Latitude or Longitude
         /// </summary>
@@ -129,7 +170,9 @@ namespace SrvSurvey.game
                 this.Signals = new List<ScanSignal>(signalsEntry.Signals);
                 if (signalsEntry.Signals?.Count > 0)
                 {
-                    this.guardianSiteCount = this.Signals.Find(_ => _.Type == "$SAA_SignalType_Guardian;")?.Count ?? 0;
+                    // TODO: !!
+                    var count = this.Signals.Find(_ => _.Type == "$SAA_SignalType_Guardian;")?.Count ?? 0;
+                    Game.log($"What to do with {count} guardian sites?");
                 }
 
                 if (signalsEntry.Genuses?.Count > 0)

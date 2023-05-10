@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SrvSurvey
 {
-    internal abstract class PlotBase : Form, PlotterForm
+    internal abstract class PlotBase : Form, PlotterForm, IDisposable
     {
         protected Game game = Game.activeGame!;
         protected TrackingDelta touchdownLocation;
@@ -25,6 +25,26 @@ namespace SrvSurvey
             this.touchdownLocation = new TrackingDelta(
                 game.nearBody!.radius,
                 game.touchdownLocation ?? LatLong2.Empty);
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (game != null)
+                {
+                    game.modeChanged -= Game_modeChanged;
+                    game.status!.StatusChanged -= Status_StatusChanged;
+                    game.journals!.onJournalEntry -= Journals_onJournalEntry;
+                    game = null;
+                }
+            }
         }
 
         public abstract void reposition(Rectangle gameRect);
@@ -111,7 +131,10 @@ namespace SrvSurvey
             {
                 float zoomFactor;
                 if (float.TryParse(entry.Message.Substring(1), out zoomFactor))
+                {
+                    Game.log($"Change zoom scale from: {this.scale}, to: {zoomFactor}");
                     this.scale = zoomFactor;
+                }
             }
         }
 

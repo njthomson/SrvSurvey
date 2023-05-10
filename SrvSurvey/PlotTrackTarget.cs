@@ -149,7 +149,10 @@ namespace SrvSurvey
             g.DrawString(this.td.angle.ToString(), Game.settings.fontSmall, Brushes.Orange, tx, ty);
 
             // draw distance text (top left corner
-            var txt = "Distance: " + Util.metersToString(td.distance + game.status.Altitude);
+            var dist = td.distance;
+            if ((game.status.Flags & StatusFlags.AltitudeFromAverageRadius) > 0)
+                dist += td.distance + game.status.Altitude;
+            var txt = "Distance: " + Util.metersToString(dist);
             g.DrawString(txt, Game.settings.fontSmall, Brushes.Orange, 4, 10);
 
             // assuming panel is 200 x 200

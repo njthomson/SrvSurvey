@@ -316,7 +316,7 @@ namespace SrvSurvey
                 txtGuardianSite.Text = "";
                 Program.closePlotter(nameof(PlotGuardians));
             }
-            else if (game.nearBody == null || game.nearBody.guardianSiteCount == 0)
+            else if (game.nearBody == null || game.nearBody.settlements.Count == 0)
             {
                 lblGuardianCount.Text = "0";
                 txtGuardianSite.Text = "";
@@ -324,8 +324,9 @@ namespace SrvSurvey
             }
             else
             {
-                lblGuardianCount.Text = game.nearBody.guardianSiteCount.ToString();
-                txtGuardianSite.Text = this.game.nearBody.siteData.name + " " + this.game.nearBody.siteData.location;
+                lblGuardianCount.Text = game.nearBody.settlements.Count.ToString();
+                if (this.game.nearBody.siteData != null)
+                    txtGuardianSite.Text = this.game.nearBody.siteData.name + " " + this.game.nearBody.siteData.location;
 
                 if (game.showBodyPlotters && this.game.showGuardianPlotters)
                 {
@@ -389,7 +390,7 @@ namespace SrvSurvey
                 Program.showPlotter<PlotTrackTarget>();
             }
         }
-        
+
 
         private void onJournalEntry(SAASignalsFound entry)
         {
