@@ -49,18 +49,11 @@ namespace SrvSurvey.canonn
                 foreach (var _ in foo)
                 {
                     // extract the species prefix from the name, without the color variant part
-                    var species = _.name.Replace("$Codex_Ent_", "").Replace("_Name;", "");
-                    var idx = species.LastIndexOf('_');
-                    if (species.IndexOf('_') != idx)
-                        species = species.Substring(0, idx);
-
-                    species = $"$Codex_Ent_{species}_";
+                    var species = Util.getSpeciesPrefix(_.name);
 
                     if (!rewards.ContainsKey(species))
                     {
-                        rewards.Add(
-                            species,
-                            (long)_.reward!);
+                        rewards.Add(species, (long)_.reward!);
                     }
                     else if (rewards[species] != (long)_.reward!)
                     {

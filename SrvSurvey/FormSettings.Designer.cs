@@ -141,11 +141,10 @@ namespace SrvSurvey
             this.checkHidePlottersFromWeapons.Location = new System.Drawing.Point(7, 153);
             this.checkHidePlottersFromWeapons.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.checkHidePlottersFromWeapons.Name = "checkHidePlottersFromWeapons";
-            this.checkHidePlottersFromWeapons.Size = new System.Drawing.Size(431, 46);
+            this.checkHidePlottersFromWeapons.Size = new System.Drawing.Size(431, 19);
             this.checkHidePlottersFromWeapons.TabIndex = 7;
             this.checkHidePlottersFromWeapons.Tag = "hidePlottersFromCombatSuits";
-            this.checkHidePlottersFromWeapons.Text = "Disable overlays when on foot in Maverick and Dominator suits. Avoids mouse/windo" +
-    "w issues during combat.";
+            this.checkHidePlottersFromWeapons.Text = "Disable overlays when on foot in Maverick and Dominator suits.";
             this.checkHidePlottersFromWeapons.UseVisualStyleBackColor = true;
             // 
             // checkFocusOnMinimize

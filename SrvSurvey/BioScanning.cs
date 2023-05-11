@@ -64,6 +64,8 @@ namespace SrvSurvey
         public string? genusLocalized;
         public string? species;
         public string? speciesLocalized;
+        public string? variant;
+        public string? variantLocalized;
         public long reward;
         public int range;
         public bool analyzed;

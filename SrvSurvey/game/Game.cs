@@ -521,6 +521,7 @@ namespace SrvSurvey.game
                         {
                             this.nearBody = new LandableBody(
                                 this,
+                                scan.StarSystem,
                                 scan.Bodyname,
                                 scan.BodyID,
                                 scan.SystemAddress,
@@ -551,6 +552,7 @@ namespace SrvSurvey.game
                         {
                             this.nearBody = new LandableBody(
                                 this,
+                                approachBody.StarSystem,
                                 approachBody.Body,
                                 approachBody.BodyID,
                                 approachBody.SystemAddress,
@@ -579,6 +581,7 @@ namespace SrvSurvey.game
                     {
                         this.nearBody = new LandableBody(
                             this,
+                            locationEntry.StarSystem,
                             locationEntry.Body,
                             locationEntry.BodyID,
                             locationEntry.SystemAddress,
@@ -598,6 +601,7 @@ namespace SrvSurvey.game
                     {
                         this.nearBody = new LandableBody(
                             this,
+                            exitEvent.Starsystem,
                             exitEvent.Body,
                             exitEvent.BodyID,
                             exitEvent.SystemAddress,

@@ -1,4 +1,5 @@
-﻿using SrvSurvey.units;
+﻿using Newtonsoft.Json;
+using SrvSurvey.units;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,30 +11,40 @@ namespace SrvSurvey.game
 {
     internal class BodyData : Data
     {
-        public static BodyData Load(long systemAddress, int bodyId)
+        public static BodyData Load(LandableBody nearBody)
         {
-            var filepath = Path.Combine(Application.UserAppDataPath, $"{systemAddress}-{bodyId}.json");
+            var path = Path.Combine(Application.UserAppDataPath, "organic");
+            Directory.CreateDirectory(path);
 
+            var filepath = Path.Combine(path, $"{nearBody.bodyName}.json");
             return Data.Load<BodyData>(filepath)
                 ?? new BodyData()
                 {
                     filepath = filepath,
+                    firstVisited = DateTimeOffset.UtcNow,
+                    systemName = nearBody.systemName,
+                    systemAddress = nearBody.systemAddress,
+                    bodyName = nearBody.bodyName,
+                    bodyId = nearBody.bodyId,
                 };
         }
 
         #region data members
 
-        /// <summary>
-        /// All the scans performed on this body
-        /// </summary>
+        public string systemName;
+        public string bodyName;
+        public int bodyId;
+        public long systemAddress;
+
+        /// <summary> All the scans performed on this body </summary>
         public List<BioScan> bioScans = new List<BioScan>();
 
-        /// <summary>
-        /// All the organisms for this body
-        /// </summary>
+        /// <summary> All the organisms for this body </summary>
         public Dictionary<string, OrganicSummary> organisms = new Dictionary<string, OrganicSummary>();
 
         public LatLong2 lastTouchdown;
+        public DateTimeOffset firstVisited;
+        public DateTimeOffset lastVisited;
 
         #endregion
 
@@ -94,12 +105,18 @@ namespace SrvSurvey.game
             return organism;
         }
 
+        [JsonIgnore]
         public int countOrganisms { get => this.organisms.Count; }
+        [JsonIgnore]
         public int countAnalyzed { get => this.organisms.Values.Where(_ => _.analyzed).Count(); }
+        [JsonIgnore]
         public long sumOrganicPotentialValue { get => this.organisms.Values.Sum(_ => _.reward); }
+        [JsonIgnore]
         public long sumOrganicScannedValue { get => this.organisms.Values.Sum(_ => _.analyzed ? _.reward : 0); }
+        [JsonIgnore]
         public bool isFullPotentialKnown { get => !this.organisms.Values.Any(_ => _.reward == 0); }
 
+        [JsonIgnore]
         public float bodyScanValueProgress
         {
             get

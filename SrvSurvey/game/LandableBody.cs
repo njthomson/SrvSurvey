@@ -1,4 +1,5 @@
-﻿using SrvSurvey.units;
+﻿using SrvSurvey.canonn;
+using SrvSurvey.units;
 using System;
 
 namespace SrvSurvey.game
@@ -8,6 +9,7 @@ namespace SrvSurvey.game
     class LandableBody : IDisposable
     {
         private readonly Game game;
+        public readonly string systemName;
         public readonly string bodyName;
         public readonly int bodyId;
         public long systemAddress;
@@ -22,16 +24,18 @@ namespace SrvSurvey.game
         public GuardianSiteData siteData;
         public HashSet<string> settlements = new HashSet<string>();
 
-        public LandableBody(Game game, string bodyName, int bodyId, long systemAddress, double radius)
+        public LandableBody(Game game, string systemName, string bodyName, int bodyId, long systemAddress, double radius)
         {
             if (radius == 0) throw new Exception("Bad radius!");
 
             this.game = game;
+            this.systemName = systemName;
             this.bodyName = bodyName;
             this.bodyId = bodyId;
             this.systemAddress = systemAddress;
             this.radius = radius;
-            this.data = BodyData.Load(systemAddress, bodyId);
+            this.data = BodyData.Load(this);
+            this.data.lastVisited = DateTimeOffset.UtcNow;
 
             // see if we can get signals for this body
             this.game.journals!.search((SAASignalsFound signalsEntry) =>
@@ -88,8 +92,37 @@ namespace SrvSurvey.game
 
         private void onJournalEntry(CodexEntry entry)
         {
-            Game.log($"CodexEntry: {entry.Name_Localised}");
+            Game.log($"CodexEntry: {entry.Name_Localised}, lat/long: {entry.Latitude},{entry.Longitude}");
             //  CodexEntry - to get the full name of a species
+            foreach(var genusName in data.organisms.Keys)
+            {
+                if (entry.Name.StartsWith(genusName.Replace("_Genus_Name;", "")))
+                {
+                    var organism = data.organisms[genusName];
+                    var speciesName = Util.getSpeciesPrefix(entry.Name);
+                    var reward = Game.codexRef.getRewardForSpecies(entry.Name);
+                    Game.log($"Matched Codex to Organism: {genusName} ({speciesName}: {Util.credits(reward)})");
+
+                    if (organism.reward == 0)
+                        organism.reward = reward;
+
+                    if (string.IsNullOrEmpty(organism.variant))
+                    {
+                        organism.variant = entry.Name;
+                        organism.variantLocalized = entry.Name_Localised;
+                    }
+
+                    var idx = entry.Name_Localised.LastIndexOf(" - ");
+                    if (string.IsNullOrEmpty(organism.species) && idx > 0)
+                    {
+                        organism.species = speciesName + "Name;";
+                        organism.speciesLocalized = entry.Name_Localised.Substring(0, idx);
+                    }
+
+                    data.Save();
+                    break;
+                }
+            }
 
             if (this.bioScanEvent != null) this.bioScanEvent();
         }

@@ -45,7 +45,8 @@ namespace SrvSurvey
             var entry = this.FindEntryByType<Commander>(0, false);
             this.CommanderName = entry?.Name;
 
-            this.isOdyssey = ((Fileheader)this.Entries[0]).Odyssey;
+            if (this.Entries.Count > 0)
+                this.isOdyssey = ((Fileheader)this.Entries[0]).Odyssey;
         }
 
         public int Count { get => this.Entries.Count; }

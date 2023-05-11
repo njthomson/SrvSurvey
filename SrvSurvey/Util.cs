@@ -183,5 +183,17 @@ namespace SrvSurvey
 
             return new SizeF(dx, dy);
         }
+
+        public static string getSpeciesPrefix(string name)
+        {
+            // extract the species prefix from the name, without the color variant part
+            var species = name.Replace("$Codex_Ent_", "").Replace("_Name;", "");
+            var idx = species.LastIndexOf('_');
+            if (species.IndexOf('_') != idx)
+                species = species.Substring(0, idx);
+
+            species = $"$Codex_Ent_{species}_";
+            return species;
+        }
     }
 }
