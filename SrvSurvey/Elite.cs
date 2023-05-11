@@ -38,7 +38,7 @@ namespace SrvSurvey
             var hwndActive = Elite.GetForegroundWindow();
 
             // hide plotters when game is not active (unless we are debugging)
-            if ((hwndED != hwndActive || hwndED == IntPtr.Zero) && !System.Diagnostics.Debugger.IsAttached)
+            if ((hwndED != hwndActive || hwndED == IntPtr.Zero)) // && !System.Diagnostics.Debugger.IsAttached)
             {
                 return Rectangle.Empty;
             }

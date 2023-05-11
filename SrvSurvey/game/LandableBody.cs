@@ -35,6 +35,7 @@ namespace SrvSurvey.game
             this.systemAddress = systemAddress;
             this.radius = radius;
             this.data = BodyData.Load(this);
+            this.data.updateScanProgress();
             this.data.lastVisited = DateTimeOffset.UtcNow;
 
             // see if we can get signals for this body

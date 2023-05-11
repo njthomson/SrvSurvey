@@ -242,7 +242,6 @@ namespace SrvSurvey
             var scannedLength = ratio * data.sumAnalyzed;
             var activeLength = game.nearBody!.currentOrganism == null ? 0 : ratio * game.nearBody!.currentOrganism!.reward;
 
-            // orange lines - known
             x = this.Width - pad - txtSz.Width - length;
             y += pad - 2;
 

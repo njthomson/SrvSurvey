@@ -89,6 +89,8 @@ namespace SrvSurvey.game
                     genusLocalized = scan.Genus_Localized,
                     species = scan.Species,
                     speciesLocalized = scan.Species_Localised,
+                    variant = scan.Variant,
+                    variantLocalized = scan.Variant_Localised,
                     analyzed = scan.ScanType == ScanType.Analyse,
                     reward = Game.codexRef.getRewardForSpecies(scan.Species),
                 };

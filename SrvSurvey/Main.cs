@@ -77,6 +77,9 @@ namespace SrvSurvey
 
         private void Main_Load(object sender, EventArgs e)
         {
+            if (Elite.isGameRunning)
+                Elite.setFocusED();
+
             this.updateAllControls();
 
             if (!Path.Exists(Elite.displaySettingsFolder))
@@ -85,7 +88,6 @@ namespace SrvSurvey
             }
 
             this.checkFullScreenGraphics();
-
 
             this.lastWindowRect = Elite.getWindowRect();
 
@@ -243,7 +245,10 @@ namespace SrvSurvey
         private void updateBioTexts()
         {
             if (game?.cmdr != null)
-                txtBioRewards.Text = Util.credits(game.cmdr.organicRewards);
+            {
+                txtBioRewards.Text = Util.credits(game.cmdr.organicRewards)
+                    + $", organisms: {game.cmdr.scannedOrganics.Count}";
+            }
 
             if (game == null || game.atMainMenu || !game.isRunning || !game.initialized)
             {
