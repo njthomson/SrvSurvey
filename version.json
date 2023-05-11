@@ -6,5 +6,5 @@
     "^refs/heads/rel/v\\d+\\.\\d+"
   ],
   
-  "version": "1.0.3"
+  "version": "1.0.4"
 }
