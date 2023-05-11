@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
@@ -38,6 +39,7 @@ namespace SrvSurvey
             this.scale = 0.25f;
             this.mw = this.Width / 2;
             this.mh = this.Height / 2;
+            this.Cursor = Cursors.Cross;
         }
 
         public void reposition(Rectangle gameRect)
@@ -167,14 +169,16 @@ namespace SrvSurvey
             }
         }
 
+        protected override void OnMouseDown(MouseEventArgs e)
+        {
+            base.OnMouseDown(e);
+            if (!Debugger.IsAttached)
+                Elite.setFocusED();
+        }
+
         private void PlotGrounded_DoubleClick(object sender, EventArgs e)
         {
             this.Invalidate();
-            Elite.setFocusED();
-        }
-
-        private void PlotGrounded_Click(object sender, EventArgs e)
-        {
             Elite.setFocusED();
         }
 

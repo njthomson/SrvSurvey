@@ -52,7 +52,6 @@ namespace SrvSurvey
             this.Text = "PlotGrounded";
             this.TopMost = true;
             this.Load += new System.EventHandler(this.PlotGrounded_Load);
-            this.Click += new System.EventHandler(this.PlotGrounded_Click);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.PlotGrounded_Paint);
             this.DoubleClick += new System.EventHandler(this.PlotGrounded_DoubleClick);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.PlotGrounded_KeyDown);

@@ -65,7 +65,6 @@ namespace SrvSurvey
             this.TopMost = true;
             this.Load += new System.EventHandler(this.PlotGroundTarget_Load);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.plotPanel_Paint);
-            this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.PlotTrackTarget_MouseClick);
             this.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.PlotTrackTarget_MouseDoubleClick);
             this.ResumeLayout(false);
 

@@ -25,6 +25,7 @@ namespace SrvSurvey
 
             this.Height = 80;
             this.Width = 400;
+            this.Cursor = Cursors.Cross;
         }
 
         public void reposition(Rectangle gameRect)
@@ -109,9 +110,11 @@ namespace SrvSurvey
             Elite.setFocusED();
         }
 
-        private void PlotBioStatus_Click(object sender, EventArgs e)
+        protected override void OnMouseDown(MouseEventArgs e)
         {
-            Elite.setFocusED();
+            base.OnMouseDown(e);
+            if (!Debugger.IsAttached)
+                Elite.setFocusED();
         }
 
         private void PlotBioStatus_Paint(object sender, PaintEventArgs e)

@@ -1,5 +1,6 @@
 ﻿using SrvSurvey.game;
 using SrvSurvey.units;
+using System.Diagnostics;
 using System.Drawing.Drawing2D;
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
@@ -20,6 +21,8 @@ namespace SrvSurvey
 
             this.Height = 100;
             this.Width = 100;
+
+            this.Cursor = Cursors.Cross;
         }
 
         public void reposition(Rectangle gameRect)
@@ -180,9 +183,11 @@ namespace SrvSurvey
             Elite.setFocusED();
         }
 
-        private void PlotTrackTarget_MouseClick(object sender, MouseEventArgs e)
+        protected override void OnMouseDown(MouseEventArgs e)
         {
-            Elite.setFocusED();
+            base.OnMouseDown(e);
+            if (!Debugger.IsAttached)
+                Elite.setFocusED();
         }
 
         //private void floatCenterTop()

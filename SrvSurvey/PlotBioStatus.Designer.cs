@@ -52,7 +52,6 @@ namespace SrvSurvey
             this.Text = "PlotBioStatus";
             this.TopMost = true;
             this.Load += new System.EventHandler(this.PlotBioStatus_Load);
-            this.Click += new System.EventHandler(this.PlotBioStatus_Click);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.PlotBioStatus_Paint);
             this.DoubleClick += new System.EventHandler(this.PlotBioStatus_DoubleClick);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.PlotBioStatus_KeyDown);
