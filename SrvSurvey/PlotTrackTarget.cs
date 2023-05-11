@@ -88,7 +88,7 @@ namespace SrvSurvey
             //    this.reposition(Overlay.getEDWindowRect());
         }
 
-        private void Status_StatusChanged()
+        private void Status_StatusChanged(bool blink)
         {
             this.td.Current = Status.here;
             this.calculate();

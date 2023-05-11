@@ -92,7 +92,7 @@ namespace SrvSurvey.game
             this.journals.onJournalEntry += Journals_onJournalEntry;
             this.status.StatusChanged += Status_StatusChanged;
 
-            Status_StatusChanged();
+            Status_StatusChanged(false);
         }
 
         public void Dispose()
@@ -156,7 +156,7 @@ namespace SrvSurvey.game
             }
         }
 
-        private void Status_StatusChanged()
+        private void Status_StatusChanged(bool blink)
         {
             //log("status changed");
             if (this.statusBodyName != null && status!.BodyName != null && status!.BodyName != this.statusBodyName)
@@ -302,7 +302,7 @@ namespace SrvSurvey.game
 
         public bool hidePlottersFromCombatSuits
         {
-            get => Game.settings.hidePlottersFromCombatSuits 
+            get => Game.settings.hidePlottersFromCombatSuits
                 && (this.status.Flags2 & StatusFlags2.OnFoot) > 0
                 && (this.currentSuitType == SuitType.dominator || this.currentSuitType == SuitType.maverick);
         }
@@ -686,7 +686,7 @@ namespace SrvSurvey.game
             {
                 // if atMainMenu has changed - force a status change event
                 this.atMainMenu = newMainMenu;
-                this.Status_StatusChanged();
+                this.Status_StatusChanged(false);
             }
         }
 
@@ -695,7 +695,7 @@ namespace SrvSurvey.game
             this.atMainMenu = false;
             this.isShutdown = true;
             this.checkModeChange();
-            this.Status_StatusChanged();
+            this.Status_StatusChanged(false);
         }
 
         private void onJournalEntry(StartJump entry)

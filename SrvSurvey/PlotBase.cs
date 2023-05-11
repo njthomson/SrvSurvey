@@ -109,7 +109,7 @@ namespace SrvSurvey
 
             // force a mode switch, that will initialize
             this.Game_modeChanged(game.mode, true);
-            this.Status_StatusChanged();
+            this.Status_StatusChanged(false);
         }
 
         protected virtual void Game_modeChanged(GameMode newMode, bool force)
@@ -124,7 +124,7 @@ namespace SrvSurvey
             }
         }
 
-        protected virtual void Status_StatusChanged()
+        protected virtual void Status_StatusChanged(bool blink)
         {
             this.touchdownLocation.Current = Status.here;
 

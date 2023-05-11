@@ -298,8 +298,8 @@
   },
   "gamma": {
     "name": "Gamma",
-    "backgroundImage": "ruins-alpha-4.png",
-    "imageOffset": "390,520",
+    "backgroundImage": "ruins-alpha-5.png",
+    "imageOffset": "737,885",
     "mapScale": 1.55,
     "scaleFactor": 1.65,
     "poi": {

@@ -107,7 +107,7 @@ namespace SrvSurvey
         private void SrvBuddy_Load(object sender, EventArgs e)
         {
             this.initializeFromJournal(SrvSurvey.LastJournal);
-            this.onStatusChange();
+            this.onStatusChange(false);
         }
 
         private bool atSettlement
@@ -234,7 +234,7 @@ namespace SrvSurvey
             lblMeters.Text = $"{meters}m";
         }
 
-        private void onStatusChange()
+        private void onStatusChange(bool blink)
         {
             if (status == null || survey == null || siteTemplate == null) return;
 

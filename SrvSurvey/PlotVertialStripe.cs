@@ -82,7 +82,7 @@ namespace SrvSurvey
             }
         }
 
-        private void Status_StatusChanged()
+        private void Status_StatusChanged(bool blink)
         {
             this.Opacity = getOpacity() * Game.settings.Opacity;
             this.Invalidate();
@@ -90,12 +90,13 @@ namespace SrvSurvey
 
         private double getOpacity()
         {
-            if (game.status.Altitude > 200)
+            const float limit = 200;
+            if (game.status.Altitude > limit + 100)
                 return 0;
             else if (game.status.Altitude < 100)
                 return 1;
             else
-                return 1f - ((game.status.Altitude - 100) / 100f);
+                return 1f - ((game.status.Altitude - 100) / limit);
         }
 
         protected override void OnShown(EventArgs e)
@@ -152,8 +153,6 @@ namespace SrvSurvey
 
         #endregion
 
-
-
         protected override void OnPaint(PaintEventArgs e)
         {
             var g = e.Graphics;
@@ -163,23 +162,23 @@ namespace SrvSurvey
             var t = this.Height / 2f;
             var h = (this.Height - t) * 0.8f;
 
-            var nightVision = (game.status.Flags & StatusFlags.NightVision) > 0;
-            var pen = nightVision ? GameColors.penGameOrange8 : GameColors.penCyan8;
+            var nightVision = true; // (game.status.Flags & StatusFlags.NightVision) == 0;
+
             // central thick line
-            g.DrawLine(pen, 100, t, 100, t + h);
+            g.DrawLine(nightVision ? GameColors.penYellow8 : GameColors.penCyan8, 100, t, 100, t + h);
 
             // thinner lines
             var w1 = 40; // width one
-            g.DrawLine(GameColors.penGameOrange3, 100 - w1, t+40, 100 - w1, t + 220);
-            g.DrawLine(GameColors.penGameOrange3, 100 + w1, t+40, 100 + w1, t + 220);
+            g.DrawLine(nightVision ? GameColors.penYellow4 : GameColors.penCyan4, 100 - w1, t + 40, 100 - w1, t + 220);
+            g.DrawLine(nightVision ? GameColors.penYellow4 : GameColors.penCyan4, 100 + w1, t + 40, 100 + w1, t + 220);
 
             var w2 = 70; // width two
-            g.DrawLine(GameColors.penGameOrange2, 100 - w2, t + 60, 100 - w2, t + 200);
-            g.DrawLine(GameColors.penGameOrange2, 100 + w2, t + 60, 100 + w2, t + 200);
+            g.DrawLine(nightVision ? GameColors.penYellow2 : GameColors.penCyan2, 100 - w2, t + 60, 100 - w2, t + 200);
+            g.DrawLine(nightVision ? GameColors.penYellow2 : GameColors.penCyan2, 100 + w2, t + 60, 100 + w2, t + 200);
 
-            var ch = 80; // cross height
-            g.DrawLine(GameColors.penGameOrange2, 100 - w2, t + ch, 100 + w2, t + ch);
-            g.DrawLine(GameColors.penGameOrange2, 100 - w2, t + ch + ch, 100 + w2, t + ch + ch);
+            g.DrawLine(nightVision ? GameColors.penYellow2 : GameColors.penCyan2, 100 - w2, t + 80, 100 + w2, t + 80);
+            g.DrawLine(nightVision ? GameColors.penYellow2 : GameColors.penCyan2, 100 - w2 - 50, t + 130, 200 + w2, t + 130);
+            g.DrawLine(nightVision ? GameColors.penYellow2 : GameColors.penCyan2, 100 - w2, t + 180, 100 + w2, t + 180);
         }
     }
 }

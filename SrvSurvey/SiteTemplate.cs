@@ -291,6 +291,10 @@ namespace SrvSurvey
                 var json = File.ReadAllText(filepath);
                 SiteTemplate.sites = JsonConvert.DeserializeObject<Dictionary<GuardianSiteData.SiteType, SiteTemplate>>(json)!;
             }
+            else
+            {
+                Game.log($"Missing file: {filepath}");
+            }
 
             /* migrate
             foreach (var site in sites.Values)

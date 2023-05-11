@@ -234,11 +234,7 @@ namespace SrvSurvey
 
             if (changeHeading)
             {
-                Game.log($"Changing site heading from: '{siteData.siteHeading}' to: '{newHeading}'");
-                siteData.siteHeading = (int)newHeading;
-                siteData.Save();
-
-                this.nextMode();
+                this.setSiteHeading(newHeading);
                 return;
             }
 
@@ -252,9 +248,19 @@ namespace SrvSurvey
                 {
                     Game.log($"scaleFactor: {this.template.scaleFactor} => {newScale}");
                     this.template.scaleFactor = newScale;
-                    this.Status_StatusChanged();
+                    this.Status_StatusChanged(false);
                 }
             }
+        }
+
+        private void setSiteHeading(int newHeading)
+        {
+            Game.log($"Changing site heading from: '{siteData.siteHeading}' to: '{newHeading}'");
+            siteData.siteHeading = (int)newHeading;
+            siteData.Save();
+
+            this.nextMode();
+            this.Invalidate();
         }
 
         private void loadSiteTemplate()
@@ -265,16 +271,17 @@ namespace SrvSurvey
 
             //this.siteMap = Bitmap.FromFile(Path.Combine("images", this.template.backgroundImage));
             this.siteMap = Bitmap.FromFile(Path.Combine(this.template.backgroundImage));
-            this.trails = new Bitmap(this.siteMap.Width, this.siteMap.Height);
+            this.trails = new Bitmap(this.siteMap.Width * 2, this.siteMap.Height * 2);
 
             // Temporary until trail tracking works
             using (var gg = Graphics.FromImage(this.trails))
             {
-                //gg.Clear(Color.Blue);
+                gg.Clear(Color.FromArgb(128, Color.Navy));
                 //gg.FillRectangle(Brushes.Blue, -400, -400, 800, 800);
-                gg.DrawRectangle(GameColors.penCyan8, 0, 0, this.trails.Width, this.trails.Height);
-                gg.DrawLine(Pens.Blue, 0, 0, trails.Width, trails.Height);
-                gg.DrawLine(Pens.Blue, trails.Width, 0, 0, trails.Height);
+                gg.DrawRectangle(GameColors.penGameOrange8, 0, 0, this.trails.Width, this.trails.Height);
+                gg.DrawLine(GameColors.penCyan8, 0, 0, trails.Width, trails.Height);
+                gg.DrawLine(GameColors.penCyan8, trails.Width, 0, 0, trails.Height);
+                gg.DrawLine(GameColors.penYellow8, 0, 0, trails.Height, 0);
                 //gg.FillRectangle(Brushes.Red, (this.trails.Width / 2), (this.trails.Height / 2), 40, 40);
             }
 
@@ -292,7 +299,7 @@ namespace SrvSurvey
             //Game.log(siteTouchdownOffset);
             //Game.log($"siteTouchdownOffset: {siteTouchdownOffset}");
 
-            this.Status_StatusChanged();
+            this.Status_StatusChanged(false);
         }
 
         private void loadHeadingGuidance()
@@ -311,14 +318,19 @@ namespace SrvSurvey
             }
         }
 
-        protected override void Status_StatusChanged()
+        protected override void Status_StatusChanged(bool blink)
         {
-            base.Status_StatusChanged();
+            base.Status_StatusChanged(blink);
+
+            // take current heading if blink detected whilst waiting for a heading
+            if (this.mode == Mode.heading && blink)
+            {
+                this.setSiteHeading(game.status.Heading);
+            }
 
             // prepare other stuff
             if (template != null && siteData != null)
             {
-
                 //var offset = game.nearBody!.guardianSiteLocation! - Status.here;
                 //this.commanderOffset = new PointF(
                 //    (float)(offset.Long * template.scaleFactor),
@@ -641,12 +653,12 @@ namespace SrvSurvey
             string msg;
             SizeF sz;
             var tx = 10f;
-            var ty = 16f;
+            var ty = 20f;
 
             this.drawFooterText($"{game.nearBody!.bodyName}");
 
             // if we don't know the site type yet ...
-            msg = $"Site type unknown!\r\n\r\nSend message:\r\n\r\n 'a' for Alpha\r\n\r\n 'b' for Beta\r\n\r\n 'g' for Gamma";
+            msg = $"Need site type\r\n\r\nSend message:\r\n\r\n 'a' for Alpha\r\n\r\n 'b' for Beta\r\n\r\n 'g' for Gamma";
             sz = g.MeasureString(msg, Game.settings.font1, this.Width);
             g.DrawString(msg, Game.settings.font1, GameColors.brushCyan, tx, ty, StringFormat.GenericTypographic);
         }
@@ -662,13 +674,13 @@ namespace SrvSurvey
 
             string msg;
             var tx = 10f;
-            var ty = 16f;
+            var ty = 20f;
 
 
             var isRuins = siteData.type == GuardianSiteData.SiteType.alpha || siteData.type == GuardianSiteData.SiteType.beta || siteData.type == GuardianSiteData.SiteType.gamma;
-            msg = $"Need site heading. Send message:\r\n\r\n  <degrees>\r\n\r\nTo use current ship heading send:\r\n\r\n  .heading\r\n\r\n";
+            msg = $"Need site heading\r\n\r\n■ To use current heading either:\r\n    - Toggle lights twice, 1 sec apart\r\n    - Send message:   .heading\r\n\r\n■ Or send message: <degrees>";
             if (isRuins)
-                msg += $"For {siteData.type} sites, align with this buttress:";
+                msg += $"\r\n\r\nAlign with this buttress:";
             var sz = g.MeasureString(msg, Game.settings.fontMiddle, this.Width);
 
             g.DrawString(msg, Game.settings.fontMiddle, GameColors.brushCyan, tx, ty, StringFormat.GenericTypographic);

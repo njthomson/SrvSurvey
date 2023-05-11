@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using SrvSurvey.game;
 using SrvSurvey.units;
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
@@ -15,7 +16,6 @@ namespace SrvSurvey
         public static string Filepath { get => Path.Combine(SrvSurvey.journalFolder, Status.Filename); }
 
         #region properties from file
-        // members from file
 
         public DateTime timestamp { get; set; }
         public string @event { get; set; }
@@ -42,7 +42,7 @@ namespace SrvSurvey
 
         #region deserializing + file watching
 
-        public event OnSurveyChange StatusChanged;
+        public event StatusFileChanged StatusChanged;
 
         private FileSystemWatcher? fileWatcher;
 
@@ -77,7 +77,6 @@ namespace SrvSurvey
             }
         }
 
-
         private void fileWatcher_Changed(object sender, FileSystemEventArgs e)
         {
             PlotPulse.LastChanged = DateTime.Now;
@@ -110,17 +109,45 @@ namespace SrvSurvey
             Status.here.Lat = this.Latitude;
             Status.here.Long = this.Longitude;
 
+            var blink = this.trackBlinks();
+
             // fire the event for external code on the UI thread
             Program.control!.Invoke((MethodInvoker)delegate
             {
                 if (this.StatusChanged != null)
                 {
-                    this.StatusChanged();
+                    this.StatusChanged(blink);
                 }
             });
         }
 
         #endregion
+
+        private bool trackBlinks()
+        {
+            var newLightsOn = (this.Flags & StatusFlags.LightsOn) > 0;
+            var duration = DateTime.Now - this.lightsOnChange;
+
+            //Game.log($"newLightsOn: {newLightsOn}, this.lightsOn: {this.lightsOn}, this.lightsOnChange: {this.lightsOnChange}, duration: {DateTime.Now - this.lightsOnChange}");
+            if (newLightsOn != this.lightsOn)
+            {
+                this.lightsOn = newLightsOn;
+                this.lightsOnChange = DateTime.Now;
+            }
+
+            if (duration.TotalSeconds < 2)
+            {
+                Game.log($"Lights blinked!");
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        private bool lightsOn = false;
+        private DateTime lightsOnChange = DateTime.Now;
 
         [JsonIgnore]
         public static readonly LatLong2 here = new LatLong2(0, 0);

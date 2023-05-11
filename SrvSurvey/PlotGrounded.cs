@@ -66,7 +66,7 @@ namespace SrvSurvey
 
             // force a mode switch, that will initialize
             this.Game_modeChanged(game.mode, true);
-            this.Status_StatusChanged();
+            this.Status_StatusChanged(false);
 
             game.journals!.onJournalEntry += Journals_onJournalEntry;
             game.nearBody!.bioScanEvent += NearBody_bioScanEvent;
@@ -148,7 +148,7 @@ namespace SrvSurvey
             }
         }
 
-        private void Status_StatusChanged()
+        private void Status_StatusChanged(bool blink)
         {
             if (this.td != null)
                 this.td.Current = Status.here;

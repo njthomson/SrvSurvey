@@ -166,7 +166,7 @@ namespace SrvSurvey
             // but we do have ApproachSettlement entries - so we just need to decide which of those is closest.
         }
 
-        private void onStatusChange()
+        private void onStatusChange(bool blink)
         {
             // ??
         }
