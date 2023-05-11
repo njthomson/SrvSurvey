@@ -1,11 +1,5 @@
 ﻿using Newtonsoft.Json;
 using SrvSurvey.units;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Tab;
 
 namespace SrvSurvey.game
 {
@@ -61,6 +55,7 @@ namespace SrvSurvey.game
                 };
 
                 this.organisms.Add(scan.Genus, newSummary);
+                this.updateScanProgress();
                 this.Save();
 
                 return newSummary;
@@ -101,36 +96,59 @@ namespace SrvSurvey.game
                 this.organisms.Add(scan.Genus, organism);
             }
 
+            this.updateScanProgress();
             this.Save();
             return organism;
         }
 
         [JsonIgnore]
-        public int countOrganisms { get => this.organisms.Count; }
-        [JsonIgnore]
-        public int countAnalyzed { get => this.organisms.Values.Where(_ => _.analyzed).Count(); }
-        [JsonIgnore]
-        public long sumOrganicPotentialValue { get => this.organisms.Values.Sum(_ => _.reward); }
-        [JsonIgnore]
-        public long sumOrganicScannedValue { get => this.organisms.Values.Sum(_ => _.analyzed ? _.reward : 0); }
-        [JsonIgnore]
-        public bool isFullPotentialKnown { get => !this.organisms.Values.Any(_ => _.reward == 0); }
+        public int countOrganisms;
 
         [JsonIgnore]
-        public float bodyScanValueProgress
+        public long sumPotentialKnown;
+        [JsonIgnore]
+        public long sumPotentialEstimate;
+        [JsonIgnore]
+        public long sumAnalyzed;
+        [JsonIgnore]
+        public int countAnalyzed;
+        [JsonIgnore]
+        public float scanProgress;
+
+        public void updateScanProgress()
         {
-            get
+            sumPotentialKnown = 0;
+            sumPotentialEstimate = 0;
+            sumAnalyzed = 0;
+            scanProgress = 0;
+            countAnalyzed = 0;
+            countOrganisms = 0;
+
+            foreach (var organism in this.organisms.Values)
             {
-                // todo: make this single-pass, rather than iterating of the same array 3 times
-                var total = sumOrganicPotentialValue;
-                var scanned = sumOrganicScannedValue * 1f;
+                countOrganisms++;
 
-                var progress = 0f;
-                if (total != 0 && scanned != 0)
-                    progress = 1f / total * scanned;
+                // sum known rewards
+                if (organism.reward > 0 )
+                {
+                    sumPotentialKnown += organism.reward;
+                    sumPotentialEstimate += organism.reward;
+                }
+                else
+                {
+                    // substituting 1M if not known
+                    sumPotentialEstimate += 1000000;
+                }
 
-                return progress;
+                // sum analyzed rewards
+                if (organism.analyzed)
+                {
+                    countAnalyzed++;
+                    sumAnalyzed += organism.reward;
+                }
             }
+
+            scanProgress = 1f / sumPotentialEstimate * sumAnalyzed;
         }
     }
 }

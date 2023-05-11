@@ -72,6 +72,7 @@ namespace SrvSurvey
         public static Pen penLightGreen2 = new Pen(Color.LightGreen, 2);
 
         public static Pen penCyan2 = new Pen(Cyan, 2);
+        public static Pen penCyan2Dotted = new Pen(Cyan, 2) { DashStyle = DashStyle.Dot };
         public static Pen penCyan4 = new Pen(Cyan, 4);
         public static Pen penCyan8 = new Pen(Cyan, 8);
 

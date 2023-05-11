@@ -265,12 +265,12 @@ namespace SrvSurvey
             {
                 Game.log("Main.Bio signals near!");
 
-                var bodyCurrentCredits = Util.credits(game.nearBody.data.sumOrganicScannedValue);
-                var bodyPotentialCredits = Util.credits(game.nearBody.data.sumOrganicPotentialValue);
+                var bodyCurrentCredits = Util.credits(game.nearBody.data.sumAnalyzed);
+                var bodyPotentialCredits = Util.credits(game.nearBody.data.sumPotentialEstimate);
 
                 txtBodyBioSignals.Text = game.nearBody.data.countOrganisms.ToString();
                 txtBodyBioScanned.Text = game.nearBody.data.countAnalyzed.ToString();
-                txtBodyBioValues.Text = Util.credits(game.nearBody.data.sumOrganicPotentialValue, true) + " / " + Util.credits(game.nearBody.data.sumOrganicScannedValue);
+                txtBodyBioValues.Text = Util.credits(game.nearBody.data.sumPotentialEstimate, true) + " / " + Util.credits(game.nearBody.data.sumAnalyzed);
 
                 if (Game.settings.autoShowBioSummary && (game.showBodyPlotters || game.mode == GameMode.SAA))
                     Program.showPlotter<PlotBioStatus>();

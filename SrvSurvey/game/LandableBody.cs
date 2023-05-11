@@ -119,7 +119,8 @@ namespace SrvSurvey.game
                         organism.speciesLocalized = entry.Name_Localised.Substring(0, idx);
                     }
 
-                    data.Save();
+                    data.updateScanProgress();
+                    this.data.Save();
                     break;
                 }
             }
@@ -331,6 +332,7 @@ namespace SrvSurvey.game
                 game.cmdr.scanTwo = null;
             }
 
+            data.updateScanProgress();
             this.data.Save();
             this.game.cmdr.Save();
             if (this.bioScanEvent != null) this.bioScanEvent();

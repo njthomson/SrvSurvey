@@ -208,21 +208,19 @@ namespace SrvSurvey
 
             g.ResetTransform();
 
-            var scanProgress = game.nearBody.data.bodyScanValueProgress;
-            var fullValueKnown = game.nearBody.data.isFullPotentialKnown;
+            var data = game.nearBody!.data;
+            data.updateScanProgress();
 
-            var percent = Math.Round(scanProgress * 100);
-            var txt = $"{percent}%";
-            var handicap = 0;
-            var barPen =  GameColors.penGameOrange2;
+
+            //var scanProgress = game.nearBody!.data.bodyScanValueProgress;
+            var fullValueKnown = data.sumPotentialEstimate == data.sumPotentialKnown;
+            var percent = Math.Round(data.scanProgress * 100);
+            var txt = $"  {percent}%";
 
             // change things if we don't know the full potential value of the body
             if (!fullValueKnown)
             {
-                handicap = 15;
                 txt = $"? {percent}%";
-                barPen = GameColors.penGameOrange2Dotted;
-
                 if (percent == 100)
                     txt = $"?~100%";
             }
@@ -231,32 +229,42 @@ namespace SrvSurvey
             var x = this.Width - pad - txtSz.Width;
             var y = pad;
 
-            var b = scanProgress < 1 || !fullValueKnown ? GameColors.brushCyan : GameColors.brushGameOrange;
+            var b = data.scanProgress < 1 || !fullValueKnown ? GameColors.brushCyan : GameColors.brushGameOrange;
             g.DrawString(txt, Game.settings.fontSmall, b,
                 x, y,
                 StringFormat.GenericTypographic);
 
-            x = this.Width - 50;
+            const float length = 80f;
+            var ratio = length / data.sumPotentialEstimate;
+
+            var knownLength = ratio * data.sumPotentialKnown;
+            var estimateLength = ratio * (data.sumPotentialEstimate - data.sumPotentialKnown);
+            var scannedLength = ratio * data.sumAnalyzed;
+            var activeLength = game.nearBody!.currentOrganism == null ? 0 : ratio * game.nearBody!.currentOrganism!.reward;
+
+            // orange lines - known
+            x = this.Width - pad - txtSz.Width - length;
             y += pad - 2;
 
-            var length = 80f; // bar length in pixels
-            var remaining = length * scanProgress;
+            // known unscanned - solid blue line
+            var l = x;
+            var r = x + knownLength;
+            g.DrawLine(GameColors.penCyan4, l, y, r, y);
 
-            // orange lines
-            var l = x - length;
-            g.DrawLine(barPen, l, y, x, y); // bar
-            g.DrawLine(GameColors.penGameOrange2, x - handicap, y - 4, x - handicap, y + 4); // right edge
-            g.DrawLine(GameColors.penGameOrange2, l, y - 4, l, y + 4); // left edge
+            // estimate unscanned - dotted blue line
+            l = x + knownLength;
+            r = l + estimateLength;
+            g.DrawLine(GameColors.penCyan2Dotted, l, y, r, y);
 
-            // blue lines
-            if (scanProgress < 1 || !fullValueKnown)
-            {
-                var r = x - length + remaining - handicap;
-                if (r < l) r += handicap; // don't right edge go before left
-                g.DrawLine(GameColors.penCyan2, l, y, r, y); // bar
-                g.DrawLine(GameColors.penCyan2, r, y - 4, r, y + 4); // right edge
-                g.DrawLine(GameColors.penCyan2, l, y - 4, l, y + 4); // left edge
-            }
+            // already scanned value - orange bar
+            l = x;
+            r = l + scannedLength;
+            g.FillRectangle(GameColors.brushGameOrange, l, 8, r - l, 12);
+
+            // active scan organism value - solid blue bar
+            l = r;
+            r = l + activeLength;
+            g.FillRectangle(GameColors.brushCyan, l, 10, r - l, 8);
         }
 
         private void showAllGenus(Graphics g)
