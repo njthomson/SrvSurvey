@@ -19,7 +19,7 @@ namespace SrvSurvey.game
 
         public static GuardianSiteData Load(ApproachSettlement entry)
         {
-            string filepath = Path.Combine(Application.UserAppDataPath, "guardian", getFilename(entry));
+            string filepath = Path.Combine(Application.UserAppDataPath, "guardian", Game.activeGame!.fid!, getFilename(entry));
 
             Directory.CreateDirectory(Path.Combine(Application.UserAppDataPath, "guardian"));
 
@@ -29,6 +29,7 @@ namespace SrvSurvey.game
                 data = new GuardianSiteData()
                 {
                     name = entry.Name_Localised,
+                    commander = Game.activeGame.Commander!,
                     type = SiteType.unknown,
                     index = parseSettlementIdx(entry.Name),
                     filepath = filepath,
@@ -45,20 +46,14 @@ namespace SrvSurvey.game
         #region data members
 
         public string name;
-
+        public string commander;
         public DateTimeOffset firstVisited;
         public DateTimeOffset lastVisited;
-
         public SiteType type;
-
         public int index;
-
         public LatLong2 location;
-
         public long systemAddress;
-
         public int bodyId;
-
         public int siteHeading = -1;
 
         #endregion

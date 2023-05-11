@@ -217,7 +217,8 @@ namespace SrvSurvey
                 return;
             }
 
-            this.txtCommander.Text = game.Commander + (game.cmdr.isOdyssey ? " (live)" : " (legacy)");
+            var gameMode = game.cmdr.isOdyssey ? "live" : "legacy";
+            this.txtCommander.Text = $"{game.Commander} (FID:{game.fid}, mode:{gameMode})";
             this.txtMode.Text = game.mode.ToString();
 
             if (game.atMainMenu)
@@ -253,6 +254,8 @@ namespace SrvSurvey
             if (game == null || game.atMainMenu || !game.isRunning || !game.initialized)
             {
                 foreach (var ctrl in this.bioCtrls) ctrl.Text = "-";
+                Program.closePlotter(nameof(PlotBioStatus));
+                Program.closePlotter(nameof(PlotGrounded));
             }
             else if (game.nearBody == null)
             {
@@ -563,7 +566,7 @@ namespace SrvSurvey
 
         private void Main_FormClosed(object sender, FormClosedEventArgs e)
         {
-            this.game?.cmdr.Save();
+            this.game?.cmdr?.Save();
             Game.settings.Save();
         }
 

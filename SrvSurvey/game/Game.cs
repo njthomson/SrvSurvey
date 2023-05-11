@@ -49,6 +49,7 @@ namespace SrvSurvey.game
         /// The Commander actively playing the game
         /// </summary>
         public string? Commander { get; private set; }
+        public string? fid { get; private set; }
         public bool isOdyssey { get; private set; }
         public string musicTrack { get; private set; }
         public SuitType currentSuitType { get; private set; }
@@ -365,18 +366,22 @@ namespace SrvSurvey.game
 
         #region start-up / initialization from journals
 
-        private void initializeFromJournal()
+        private void initializeFromJournal(LoadGame? loadEntry = null)
         {
-            log($"Game.initializeFromJournal: BEGIN {this.Commander}, journals.Count:{journals?.Count}");
+            log($"Game.initializeFromJournal: BEGIN {this.Commander} (FID:{this.fid}), journals.Count:{journals?.Count}");
 
-            var loadEntry = this.journals!.FindEntryByType<LoadGame>(0, false);
+            if (loadEntry == null)
+                loadEntry = this.journals!.FindEntryByType<LoadGame>(-1, true);
 
             // read cmdr info
-            if (this.Commander == null && loadEntry != null)
-                this.Commander = loadEntry.Commander;
+            if (loadEntry != null)
+            {
+                if (this.Commander == null) this.Commander = loadEntry.Commander;
+                if (this.fid == null) this.fid = loadEntry.FID;
+            }
 
             // exit early if we are shutdown
-            var lastShutdown = journals.FindEntryByType<Shutdown>(-1, true);
+            var lastShutdown = journals!.FindEntryByType<Shutdown>(-1, true);
             if (lastShutdown != null)
             {
                 log($"Game.initializeFromJournal: EXIT isShutdown! ({Game.activeGame == this})");
