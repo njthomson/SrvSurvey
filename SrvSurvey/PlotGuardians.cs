@@ -34,6 +34,14 @@ namespace SrvSurvey
 
         private PlotGuardians() : base()
         {
+            if (PlotGuardians.instance != null)
+            {
+                Game.log("Why are there multiple PlotGuardians?");
+                PlotGuardians.instance.Close();
+                Application.DoEvents();
+                PlotGuardians.instance.Dispose();
+            }
+
             PlotGuardians.instance = this;
             InitializeComponent();
 

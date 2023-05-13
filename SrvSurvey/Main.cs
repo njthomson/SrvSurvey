@@ -668,7 +668,9 @@ namespace SrvSurvey
              * {body name} Ruins{1} {UTC time}.png
              * {body name} Ruins{1} {Alpha} {UTC time}.png
              */
-            var filename = $"{entry.Body}";
+            var timestamp = DateTimeOffset.UtcNow.ToString("yyyy-MM-dd HHmmss");
+            var filename = $"{entry.Body} ({timestamp})";
+
             var extraTxt = "";
             var isAerialScreenshot = false;
             var siteType = GuardianSiteData.SiteType.unknown;
@@ -697,8 +699,7 @@ namespace SrvSurvey
                 }
             }
 
-            // add time stamp, maybe HighRes, and file type
-            filename += $" (" + DateTimeOffset.UtcNow.ToString("yyyy-MM-dd HHmmss") + ")";
+            // maybe HighRes? and file type
             if (entry.Width > Screen.PrimaryScreen!.WorkingArea.Width) filename += " (HighRes)";
             filename += ".png";
 

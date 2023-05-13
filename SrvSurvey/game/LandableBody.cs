@@ -136,12 +136,14 @@ namespace SrvSurvey.game
 
             Game.log($"ApproachSettlement: {entry.Name_Localised}");
             this.siteData = GuardianSiteData.Load(entry);
+            this.siteData.lastVisited = DateTimeOffset.UtcNow;
+
             if (this.siteData.location.Lat == 0)
             {
                 // Legacy mode bug - lat/long is occasionally missing
                 this.siteData.location = Status.here.clone();
-                this.siteData.Save();
             }
+            this.siteData.Save();
 
             if (this.bioScanEvent != null) this.bioScanEvent();
         }
