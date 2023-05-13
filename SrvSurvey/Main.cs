@@ -1,6 +1,7 @@
 ﻿using SrvSurvey.game;
-using System.Data;
+using SrvSurvey.units;
 using System.Diagnostics;
+using System.Drawing.Imaging;
 
 namespace SrvSurvey
 {
@@ -8,10 +9,12 @@ namespace SrvSurvey
     {
         private Game? game;
         private FileSystemWatcher? folderWatcher;
+        private FileSystemWatcher? screenshotWatcher;
 
         private Rectangle lastWindowRect;
         private bool lastWindowHasFocus;
         private List<Control> bioCtrls;
+        private Dictionary<string, Screenshot> pendingScreenshots = new Dictionary<string, Screenshot>();
 
         public Main()
         {
@@ -38,6 +41,9 @@ namespace SrvSurvey
             {
                 lblNotInstalled.Visible = true;
             }
+
+            if (Game.settings.processScreenshots)
+                this.startWatchingScreenshots();
 
             // can we fit in our last location
             if (Game.settings.mainLocation != Point.Empty)
@@ -77,7 +83,7 @@ namespace SrvSurvey
 
         private void Main_Load(object sender, EventArgs e)
         {
-            if (Elite.isGameRunning)
+            if (Debugger.IsAttached)
                 Elite.setFocusED();
 
             this.updateAllControls();
@@ -92,15 +98,9 @@ namespace SrvSurvey
             this.lastWindowRect = Elite.getWindowRect();
 
             if (Elite.isGameRunning)
-            {
                 this.newGame();
-            }
 
             this.timer1.Start();
-
-            if (Debugger.IsAttached)
-                Elite.setFocusED();
-
             Game.codexRef.init();
         }
 
@@ -271,8 +271,6 @@ namespace SrvSurvey
             }
             else
             {
-                Game.log("Main.Bio signals near!");
-
                 var bodyCurrentCredits = Util.credits(game.nearBody.data.sumAnalyzed);
                 var bodyPotentialCredits = Util.credits(game.nearBody.data.sumPotentialEstimate);
 
@@ -591,6 +589,197 @@ namespace SrvSurvey
         {
             PlotGuardians.switchMode(Mode.origin);
         }
+
+        #region screenshot manipulations
+
+        private void stopWatchingScreenshots()
+        {
+            if (this.screenshotWatcher != null)
+            {
+                Game.log($"Stop watching screenshot folder: {this.screenshotWatcher.Path}");
+                this.screenshotWatcher.EnableRaisingEvents = false;
+                this.screenshotWatcher.Created -= ScreenshotWatcher_Created;
+                this.screenshotWatcher.Dispose();
+                this.screenshotWatcher = null;
+            }
+        }
+
+        private void startWatchingScreenshots()
+        {
+            this.stopWatchingScreenshots();
+
+            // watch for creation of new log files
+            var folder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), "Frontier Developments\\Elite Dangerous");
+            this.screenshotWatcher = new FileSystemWatcher(folder, "*.bmp");
+            this.screenshotWatcher.Created += ScreenshotWatcher_Created;
+            this.screenshotWatcher.EnableRaisingEvents = true;
+            Game.log($"Start watching screenshot folder: {folder}");
+        }
+
+        public void onJournalEntry(Screenshot entry)
+        {
+            if (!Game.settings.processScreenshots || string.IsNullOrEmpty(Game.settings.screenshotTargetFolder))
+                return;
+
+            // prepare source image filename
+            var imgSourceFolder = Game.settings.screenshotSourceFolder ?? Elite.defaultScreenshotFolder;
+            var imageFilename = entry.Filename.Replace("\\ED_Pictures", imgSourceFolder);
+
+            // process the image if it already exists, otherwise add to the queue
+            if (File.Exists(imageFilename))
+                this.processScreenshot(entry, imageFilename);
+            else
+            {
+                Game.log($"Waiting for: {imageFilename}");
+                this.pendingScreenshots.Add(imageFilename, entry);
+            }
+        }
+
+        private void ScreenshotWatcher_Created(object sender, FileSystemEventArgs e)
+        {
+            var matchFound = this.pendingScreenshots.ContainsKey(e.FullPath);
+            Game.log($"Screenshot created: {e.FullPath}, matchFound: {matchFound}");
+
+            if (matchFound)
+                this.processScreenshot(this.pendingScreenshots[e.FullPath], e.FullPath);
+        }
+
+        private void processScreenshot(Screenshot entry, string imageFilename)
+        {
+            if (!Game.settings.processScreenshots || this.game == null)
+                return;
+
+            if (!File.Exists(imageFilename))
+            {
+                Game.log($"Cannot find expected picture: {imageFilename}");
+                return;
+            }
+
+            if (string.IsNullOrEmpty(entry.System))
+                entry.System = "unknown";
+            if (string.IsNullOrEmpty(entry.Body))
+                entry.Body = "unknown";
+
+            /**
+             * File names are formatted as one of:
+             * 
+             * {body name} {UTC time}.png
+             * {body name} {UTC time} (HighRes).png
+             * {body name} Ruins{1} {UTC time}.png
+             * {body name} Ruins{1} {Alpha} {UTC time}.png
+             */
+            var filename = $"{entry.Body}";
+            var extraTxt = "";
+            var isAerialScreenshot = false;
+            var siteType = GuardianSiteData.SiteType.unknown;
+
+            if (game!.nearBody?.siteData != null)
+            {
+                var siteData = game!.nearBody?.siteData!;
+
+                var majorType = siteData.isRuins ? "Ruins" : "Structure";
+                filename += $", {majorType}{siteData.index} {siteData.type}";
+
+                extraTxt = $"\r\n  {siteData.nameLocalised}";
+                siteType = siteData.type;
+                if (siteType != GuardianSiteData.SiteType.unknown)
+                {
+                    extraTxt += $" - {siteData.type}";
+
+                    // measure distance from site origin (from the entry lat/long if possible)
+                    var td = new TrackingDelta(game.nearBody!.radius, siteData.location);
+                    if (!string.IsNullOrEmpty(entry.Latitude) && !string.IsNullOrEmpty(entry.Longitude))
+                        td.Current = new LatLong2(double.Parse(entry.Latitude), double.Parse(entry.Longitude));
+
+                    // if we are within 50m of the origin, and altitude is between 500m and 2000 - this qualifies as an aerial screenshot
+                    if (td.distance < 50 && game.status.Altitude > 500 && game.status.Altitude < 2000)
+                        isAerialScreenshot = true;
+                }
+            }
+
+            // add time stamp, maybe HighRes, and file type
+            filename += $" (" + DateTimeOffset.UtcNow.ToString("yyyy-MM-dd HHmmss") + ")";
+            if (entry.Width > Screen.PrimaryScreen!.WorkingArea.Width) filename += " (HighRes)";
+            filename += ".png";
+
+
+            // load the image - quickly, so as not to lock the file
+            Image sourceImage;
+            using (var img = Bitmap.FromFile(imageFilename))
+                sourceImage = new Bitmap(img);
+
+            // optionally - add image banner, only if image was created in the past 10 seconds
+            if (Game.settings.addBannerToScreenshots)
+            {
+                var latitude = entry.Latitude ?? game.status.Latitude.ToString();
+                var longitude = entry.Longitude ?? game.status.Longitude.ToString();
+                var heading = entry.Heading ?? game.status.Heading.ToString();
+
+                var duration = DateTime.Now - entry.timestamp;
+                if (duration.TotalSeconds < 10 && game.status.hasLatLong)
+                    extraTxt += $"\r\n  Lat: {latitude}° Long: {longitude}°  Heading: {heading}°";
+
+                this.addBannerToScreenshot(entry, sourceImage, extraTxt);
+            }
+
+            // bucket all screenshots into 1 folder per system
+            var folder = Path.Combine(Game.settings.screenshotTargetFolder!, entry.System);
+
+            // save the final image
+            Game.log($"Writing screenshot '{filename}' in: {folder}");
+            Directory.CreateDirectory(folder);
+            sourceImage.Save(Path.Combine(folder, filename), ImageFormat.Png);
+
+            // also save the image in Ruins specific folders, if we are aligned with the site origin
+            if (isAerialScreenshot && Game.settings.useGuardianAerialScreenshotsFolder)
+            {
+                folder = Path.Combine(Game.settings.screenshotTargetFolder!, $"Aerial {siteType}");
+                Game.log($"Writing screenshot '{filename}' in: {folder}");
+                Directory.CreateDirectory(folder);
+                sourceImage.Save(Path.Combine(folder, filename), ImageFormat.Png);
+            }
+
+            // finally, remove the original file?
+            if (Game.settings.deleteScreenshotOriginal)
+            {
+                Game.log($"Removing original file: {imageFilename}");
+                File.Delete(imageFilename);
+            }
+        }
+
+        private void addBannerToScreenshot(Screenshot entry, Image img, string extra)
+        {
+            using (var g = Graphics.FromImage(img))
+            {
+                // main details
+                var txtBig = $"Body: {entry.Body}";
+                var txt = $"System: {entry.System}\r\nCmdr: {game!.Commander}  -  " + new DateTimeOffset(entry.timestamp).ToString("u") + extra;
+
+                /* fake details - for creating sample image in settings
+                var txtBig = $"Body: <Nearest body name>";
+                var txt = $"System: <Current system name>\r\nCmdr: <Commander name>  -  <time stamp>"
+                    + "\r\n  Ancient Ruins <N> - <site type>\r\n  Lat: +123.456789° Long: -12.345678°  Heading: 123°";
+                // */
+
+                var fontBig = GameColors.fontScreenshotBannerBig;
+                var fontSmall = GameColors.fontScreenshotBannerSmall;
+
+                var szBig = g.MeasureString(txtBig, fontBig);
+                var szSmall = g.MeasureString(txt, fontSmall);
+
+                g.FillRectangle(
+                    Brushes.Black,
+                    10f, 10f,
+                    Math.Max(szBig.Width, szSmall.Width) + 10,
+                    szBig.Height + szSmall.Height + 10
+                );
+                g.DrawString(txtBig, fontBig, Brushes.Yellow, 15, 15);
+                g.DrawString(txt, fontSmall, Brushes.Yellow, 15, 15 + szBig.Height);
+            }
+        }
+
+        #endregion
+
     }
 }
 

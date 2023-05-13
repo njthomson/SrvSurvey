@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -23,13 +24,11 @@ namespace SrvSurvey
         private int count = 20;
         private DateTime lastchanged;
 
-        private Brush brush = new SolidBrush(Game.settings.GameOrange);
-
         private PlotPulse()
         {
             InitializeComponent();
             this.TopMost = true;
-            //this.Opacity = Game.settings.Opacity; // not 0.2?
+            this.Cursor = Cursors.Cross;
         }
 
         private void PlotPulse_Load(object sender, EventArgs e)
@@ -38,7 +37,7 @@ namespace SrvSurvey
             this.Height = 32;
 
             // position ourselves in the bottom left corner of the ED window
-            this.reposition(Elite.getWindowRect());
+            this.reposition(Elite.getWindowRect(true));
         }
 
         public void reposition(Rectangle gameRect)
@@ -70,18 +69,42 @@ namespace SrvSurvey
 
         }
 
+        #region mouse handlers
+
+        protected override void OnMouseDown(MouseEventArgs e)
+        {
+            base.OnMouseDown(e);
+            if (!Debugger.IsAttached)
+                Elite.setFocusED();
+        }
+
+        protected override void OnMouseEnter(EventArgs e)
+        {
+            base.OnMouseEnter(e);
+
+            if (Debugger.IsAttached)
+                // use a different cursor if debugging
+                this.Cursor = Cursors.No;
+            else
+                // otherwise hide the cursor entirely
+                Cursor.Hide();
+        }
+
+        protected override void OnMouseLeave(EventArgs e)
+        {
+            // restore the cursor when it leaves
+            Cursor.Show();
+        }
+
+        #endregion
+
         private void PlotPulse_Paint(object sender, PaintEventArgs e)
         {
             var g = e.Graphics;
 
-            g.FillRectangle(this.brush,
+            g.FillRectangle(GameColors.brushGameOrange,
                 10, 27 - count,
                 10, count);
-        }
-
-        private void PlotPulse_MouseClick(object sender, MouseEventArgs e)
-        {
-            Elite.setFocusED();
         }
     }
 }

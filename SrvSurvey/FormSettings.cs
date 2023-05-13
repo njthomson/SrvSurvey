@@ -1,14 +1,6 @@
 ﻿using SrvSurvey.game;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
-using System.Drawing;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Windows.Forms;
 
 namespace SrvSurvey
 {
@@ -54,12 +46,13 @@ namespace SrvSurvey
 
                     switch (ctrl.GetType().Name)
                     {
-                        case nameof(CheckBox):
-                            ((CheckBox)ctrl).Checked = (bool)map[name].GetValue(Game.settings)!;
+                        case nameof(LinkLabel):
+                        case nameof(TextBox):
+                            ctrl.Text = (string)map[name].GetValue(Game.settings)!;
                             break;
 
-                        case nameof(TextBox):
-                            ((TextBox)ctrl).Text = (string)map[name].GetValue(Game.settings)!;
+                        case nameof(CheckBox):
+                            ((CheckBox)ctrl).Checked = (bool)map[name].GetValue(Game.settings)!;
                             break;
 
                         case nameof(NumericUpDown):
@@ -88,12 +81,13 @@ namespace SrvSurvey
                     object? val = null;
                     switch (ctrl.GetType().Name)
                     {
-                        case nameof(CheckBox):
-                            val = ((CheckBox)ctrl).Checked;
+                        case nameof(LinkLabel):
+                        case nameof(TextBox):
+                            val = ctrl.Text;
                             break;
 
-                        case nameof(TextBox):
-                            val = ((TextBox)ctrl).Text;
+                        case nameof(CheckBox):
+                            val = ((CheckBox)ctrl).Checked;
                             break;
 
                         case nameof(NumericUpDown):
@@ -176,5 +170,43 @@ namespace SrvSurvey
                 game.cmdr.Save();
             }
         }
+
+        private void checkProcessSAcreenshots_CheckedChanged(object sender, EventArgs e)
+        {
+            foreach(Control ctrl in this.checkProcessScreenshots.Parent.Controls)
+                if (ctrl != checkProcessScreenshots)
+                    ctrl.Enabled = checkProcessScreenshots.Checked;
+        }
+
+        private void chooseScreenshotFolder(LinkLabel linkLabel)
+        {
+            var dialog = new FolderBrowserDialog()
+            {
+                SelectedPath = Game.settings.screenshotSourceFolder ?? Elite.defaultScreenshotFolder,
+            };
+
+            var rslt = dialog.ShowDialog(this);
+            if (rslt == DialogResult.OK)
+                linkLabel.Text = dialog.SelectedPath;
+
+        }
+
+        private void btnChooseScreenshotSourceFolder_Click(object sender, EventArgs e)
+        {
+            this.chooseScreenshotFolder(linkScreenshotSourceFolder);
+        }
+
+        private void btnChooseScreenshotTargetFolder_Click(object sender, EventArgs e)
+        {
+            this.chooseScreenshotFolder(linkTargetScreenshotFolder);
+        }
+
+        private void linkScreenshotFolder_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            var linkLabel = (LinkLabel)sender;
+            Game.log($"Opening screenshot folder:\r\n{linkLabel.Text}");
+            Util.openLink(linkLabel.Text);
+        }
+
     }
 }

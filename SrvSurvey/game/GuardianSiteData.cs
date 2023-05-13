@@ -1,4 +1,5 @@
-﻿using SrvSurvey.units;
+﻿using Newtonsoft.Json;
+using SrvSurvey.units;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,7 +29,8 @@ namespace SrvSurvey.game
             {
                 data = new GuardianSiteData()
                 {
-                    name = entry.Name_Localised,
+                    name = entry.Name,
+                    nameLocalised = entry.Name_Localised,
                     commander = Game.activeGame.Commander!,
                     type = SiteType.unknown,
                     index = parseSettlementIdx(entry.Name),
@@ -46,6 +48,7 @@ namespace SrvSurvey.game
         #region data members
 
         public string name;
+        public string nameLocalised;
         public string commander;
         public DateTimeOffset firstVisited;
         public DateTimeOffset lastVisited;
@@ -55,8 +58,12 @@ namespace SrvSurvey.game
         public long systemAddress;
         public int bodyId;
         public int siteHeading = -1;
+        public int relicTowerHeading = -1;
 
         #endregion
+
+        [JsonIgnore]
+        public bool isRuins { get => this.name.StartsWith("$Ancient:"); }
 
         public static int parseSettlementIdx(string name)
         {

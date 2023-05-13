@@ -54,7 +54,6 @@ namespace SrvSurvey
             this.Load += new System.EventHandler(this.PlotGrounded_Load);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.PlotGrounded_Paint);
             this.DoubleClick += new System.EventHandler(this.PlotGrounded_DoubleClick);
-            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.PlotGrounded_KeyDown);
             this.ResumeLayout(false);
 
         }

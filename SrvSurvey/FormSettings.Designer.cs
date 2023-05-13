@@ -53,9 +53,21 @@ namespace SrvSurvey
             this.checkRuinsMeasurementGrid = new System.Windows.Forms.CheckBox();
             this.label3 = new System.Windows.Forms.Label();
             this.checkEnableGuardianFeatures = new System.Windows.Forms.CheckBox();
+            this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.checkDeleteScreenshotOriginal = new System.Windows.Forms.CheckBox();
+            this.pictureBox3 = new System.Windows.Forms.PictureBox();
+            this.checkUseGuardianAerialScreenshotsFolder = new System.Windows.Forms.CheckBox();
+            this.linkTargetScreenshotFolder = new System.Windows.Forms.LinkLabel();
+            this.btnChooseScreenshotSourceFolder = new System.Windows.Forms.Button();
+            this.btnChooseScreenshotTargetFolder = new System.Windows.Forms.Button();
+            this.lblScreenshotSource = new System.Windows.Forms.Label();
+            this.lblScreenshotTarget = new System.Windows.Forms.Label();
+            this.linkScreenshotSourceFolder = new System.Windows.Forms.LinkLabel();
+            this.checkAddBanner = new System.Windows.Forms.CheckBox();
+            this.checkProcessScreenshots = new System.Windows.Forms.CheckBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.linkLabel2 = new System.Windows.Forms.LinkLabel();
-            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.linkAboutTwo = new System.Windows.Forms.LinkLabel();
+            this.linkAboutOne = new System.Windows.Forms.LinkLabel();
             this.panel1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numOpacity)).BeginInit();
@@ -65,6 +77,8 @@ namespace SrvSurvey
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tabPage3.SuspendLayout();
+            this.tabPage5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             this.tabPage2.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -117,7 +131,6 @@ namespace SrvSurvey
             // 
             // tabPage1
             // 
-            this.tabPage1.BackColor = System.Drawing.SystemColors.Control;
             this.tabPage1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.tabPage1.Controls.Add(this.checkHidePlottersFromWeapons);
             this.tabPage1.Controls.Add(this.checkFocusOnMinimize);
@@ -138,7 +151,7 @@ namespace SrvSurvey
             // 
             this.checkHidePlottersFromWeapons.Checked = true;
             this.checkHidePlottersFromWeapons.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkHidePlottersFromWeapons.Location = new System.Drawing.Point(7, 153);
+            this.checkHidePlottersFromWeapons.Location = new System.Drawing.Point(8, 132);
             this.checkHidePlottersFromWeapons.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.checkHidePlottersFromWeapons.Name = "checkHidePlottersFromWeapons";
             this.checkHidePlottersFromWeapons.Size = new System.Drawing.Size(431, 19);
@@ -151,7 +164,7 @@ namespace SrvSurvey
             // 
             this.checkFocusOnMinimize.Checked = true;
             this.checkFocusOnMinimize.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkFocusOnMinimize.Location = new System.Drawing.Point(7, 128);
+            this.checkFocusOnMinimize.Location = new System.Drawing.Point(8, 107);
             this.checkFocusOnMinimize.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.checkFocusOnMinimize.Name = "checkFocusOnMinimize";
             this.checkFocusOnMinimize.Size = new System.Drawing.Size(431, 19);
@@ -220,6 +233,7 @@ namespace SrvSurvey
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage4);
             this.tabControl1.Controls.Add(this.tabPage3);
+            this.tabControl1.Controls.Add(this.tabPage5);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
@@ -231,7 +245,6 @@ namespace SrvSurvey
             // 
             // tabPage4
             // 
-            this.tabPage4.BackColor = System.Drawing.SystemColors.Control;
             this.tabPage4.Controls.Add(this.btnClearUnclaimed);
             this.tabPage4.Controls.Add(this.pictureBox2);
             this.tabPage4.Controls.Add(this.pictureBox1);
@@ -304,7 +317,6 @@ namespace SrvSurvey
             // 
             // tabPage3
             // 
-            this.tabPage3.BackColor = System.Drawing.SystemColors.Control;
             this.tabPage3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.tabPage3.Controls.Add(this.checkRuinsMeasurementGrid);
             this.tabPage3.Controls.Add(this.label3);
@@ -354,12 +366,168 @@ namespace SrvSurvey
             this.checkEnableGuardianFeatures.Text = "Enable experimental features";
             this.checkEnableGuardianFeatures.UseVisualStyleBackColor = true;
             // 
+            // tabPage5
+            // 
+            this.tabPage5.Controls.Add(this.checkDeleteScreenshotOriginal);
+            this.tabPage5.Controls.Add(this.pictureBox3);
+            this.tabPage5.Controls.Add(this.checkUseGuardianAerialScreenshotsFolder);
+            this.tabPage5.Controls.Add(this.linkTargetScreenshotFolder);
+            this.tabPage5.Controls.Add(this.btnChooseScreenshotSourceFolder);
+            this.tabPage5.Controls.Add(this.btnChooseScreenshotTargetFolder);
+            this.tabPage5.Controls.Add(this.lblScreenshotSource);
+            this.tabPage5.Controls.Add(this.lblScreenshotTarget);
+            this.tabPage5.Controls.Add(this.linkScreenshotSourceFolder);
+            this.tabPage5.Controls.Add(this.checkAddBanner);
+            this.tabPage5.Controls.Add(this.checkProcessScreenshots);
+            this.tabPage5.Location = new System.Drawing.Point(4, 24);
+            this.tabPage5.Name = "tabPage5";
+            this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage5.Size = new System.Drawing.Size(452, 377);
+            this.tabPage5.TabIndex = 4;
+            this.tabPage5.Text = "Screenshots";
+            // 
+            // checkDeleteScreenshotOriginal
+            // 
+            this.checkDeleteScreenshotOriginal.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.checkDeleteScreenshotOriginal.CheckAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.checkDeleteScreenshotOriginal.Checked = true;
+            this.checkDeleteScreenshotOriginal.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkDeleteScreenshotOriginal.Location = new System.Drawing.Point(7, 145);
+            this.checkDeleteScreenshotOriginal.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.checkDeleteScreenshotOriginal.Name = "checkDeleteScreenshotOriginal";
+            this.checkDeleteScreenshotOriginal.Size = new System.Drawing.Size(435, 19);
+            this.checkDeleteScreenshotOriginal.TabIndex = 23;
+            this.checkDeleteScreenshotOriginal.Tag = "deleteScreenshotOriginal";
+            this.checkDeleteScreenshotOriginal.Text = "Remove original files after conversion";
+            this.checkDeleteScreenshotOriginal.UseVisualStyleBackColor = true;
+            // 
+            // pictureBox3
+            // 
+            this.pictureBox3.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox3.BackgroundImage")));
+            this.pictureBox3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.pictureBox3.Location = new System.Drawing.Point(65, 192);
+            this.pictureBox3.Name = "pictureBox3";
+            this.pictureBox3.Size = new System.Drawing.Size(364, 104);
+            this.pictureBox3.TabIndex = 22;
+            this.pictureBox3.TabStop = false;
+            // 
+            // checkUseGuardianAerialScreenshotsFolder
+            // 
+            this.checkUseGuardianAerialScreenshotsFolder.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.checkUseGuardianAerialScreenshotsFolder.CheckAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.checkUseGuardianAerialScreenshotsFolder.Checked = true;
+            this.checkUseGuardianAerialScreenshotsFolder.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkUseGuardianAerialScreenshotsFolder.Location = new System.Drawing.Point(7, 305);
+            this.checkUseGuardianAerialScreenshotsFolder.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.checkUseGuardianAerialScreenshotsFolder.Name = "checkUseGuardianAerialScreenshotsFolder";
+            this.checkUseGuardianAerialScreenshotsFolder.Size = new System.Drawing.Size(419, 66);
+            this.checkUseGuardianAerialScreenshotsFolder.TabIndex = 21;
+            this.checkUseGuardianAerialScreenshotsFolder.Tag = "useGuardianAerialScreenshotsFolder";
+            this.checkUseGuardianAerialScreenshotsFolder.Text = resources.GetString("checkUseGuardianAerialScreenshotsFolder.Text");
+            this.checkUseGuardianAerialScreenshotsFolder.UseVisualStyleBackColor = true;
+            // 
+            // linkTargetScreenshotFolder
+            // 
+            this.linkTargetScreenshotFolder.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.linkTargetScreenshotFolder.Location = new System.Drawing.Point(42, 104);
+            this.linkTargetScreenshotFolder.Name = "linkTargetScreenshotFolder";
+            this.linkTargetScreenshotFolder.Size = new System.Drawing.Size(387, 35);
+            this.linkTargetScreenshotFolder.TabIndex = 20;
+            this.linkTargetScreenshotFolder.TabStop = true;
+            this.linkTargetScreenshotFolder.Tag = "screenshotTargetFolder";
+            this.linkTargetScreenshotFolder.Text = "C:\\xxx\\Pictures\\Frontier Developments\\Elite Dangerous\\";
+            this.linkTargetScreenshotFolder.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkScreenshotFolder_LinkClicked);
+            // 
+            // btnChooseScreenshotSourceFolder
+            // 
+            this.btnChooseScreenshotSourceFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnChooseScreenshotSourceFolder.Location = new System.Drawing.Point(10, 47);
+            this.btnChooseScreenshotSourceFolder.Name = "btnChooseScreenshotSourceFolder";
+            this.btnChooseScreenshotSourceFolder.Size = new System.Drawing.Size(26, 35);
+            this.btnChooseScreenshotSourceFolder.TabIndex = 19;
+            this.btnChooseScreenshotSourceFolder.Text = "...";
+            this.btnChooseScreenshotSourceFolder.UseVisualStyleBackColor = true;
+            this.btnChooseScreenshotSourceFolder.Click += new System.EventHandler(this.btnChooseScreenshotSourceFolder_Click);
+            // 
+            // btnChooseScreenshotTargetFolder
+            // 
+            this.btnChooseScreenshotTargetFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnChooseScreenshotTargetFolder.Location = new System.Drawing.Point(10, 104);
+            this.btnChooseScreenshotTargetFolder.Name = "btnChooseScreenshotTargetFolder";
+            this.btnChooseScreenshotTargetFolder.Size = new System.Drawing.Size(26, 35);
+            this.btnChooseScreenshotTargetFolder.TabIndex = 18;
+            this.btnChooseScreenshotTargetFolder.Text = "...";
+            this.btnChooseScreenshotTargetFolder.UseVisualStyleBackColor = true;
+            this.btnChooseScreenshotTargetFolder.Click += new System.EventHandler(this.btnChooseScreenshotTargetFolder_Click);
+            // 
+            // lblScreenshotSource
+            // 
+            this.lblScreenshotSource.AutoSize = true;
+            this.lblScreenshotSource.Location = new System.Drawing.Point(7, 31);
+            this.lblScreenshotSource.Name = "lblScreenshotSource";
+            this.lblScreenshotSource.Size = new System.Drawing.Size(164, 15);
+            this.lblScreenshotSource.TabIndex = 17;
+            this.lblScreenshotSource.Text = "Read screenshots from folder:";
+            // 
+            // lblScreenshotTarget
+            // 
+            this.lblScreenshotTarget.AutoSize = true;
+            this.lblScreenshotTarget.Location = new System.Drawing.Point(10, 86);
+            this.lblScreenshotTarget.Name = "lblScreenshotTarget";
+            this.lblScreenshotTarget.Size = new System.Drawing.Size(202, 15);
+            this.lblScreenshotTarget.TabIndex = 16;
+            this.lblScreenshotTarget.Text = "Save converted screenshots in folder:";
+            // 
+            // linkScreenshotSourceFolder
+            // 
+            this.linkScreenshotSourceFolder.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.linkScreenshotSourceFolder.Location = new System.Drawing.Point(41, 47);
+            this.linkScreenshotSourceFolder.Name = "linkScreenshotSourceFolder";
+            this.linkScreenshotSourceFolder.Size = new System.Drawing.Size(387, 35);
+            this.linkScreenshotSourceFolder.TabIndex = 15;
+            this.linkScreenshotSourceFolder.TabStop = true;
+            this.linkScreenshotSourceFolder.Tag = "screenshotSourceFolder";
+            this.linkScreenshotSourceFolder.Text = "C:\\xxx\\Pictures\\Frontier Developments\\Elite Dangerous\\";
+            this.linkScreenshotSourceFolder.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkScreenshotFolder_LinkClicked);
+            // 
+            // checkAddBanner
+            // 
+            this.checkAddBanner.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.checkAddBanner.CheckAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.checkAddBanner.Checked = true;
+            this.checkAddBanner.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkAddBanner.Location = new System.Drawing.Point(7, 170);
+            this.checkAddBanner.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.checkAddBanner.Name = "checkAddBanner";
+            this.checkAddBanner.Size = new System.Drawing.Size(435, 19);
+            this.checkAddBanner.TabIndex = 14;
+            this.checkAddBanner.Tag = "addBannerToScreenshots";
+            this.checkAddBanner.Text = "Embed locations details within image, if known. Eg:";
+            this.checkAddBanner.UseVisualStyleBackColor = true;
+            // 
+            // checkProcessScreenshots
+            // 
+            this.checkProcessScreenshots.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.checkProcessScreenshots.CheckAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.checkProcessScreenshots.Checked = true;
+            this.checkProcessScreenshots.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkProcessScreenshots.Location = new System.Drawing.Point(7, 6);
+            this.checkProcessScreenshots.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.checkProcessScreenshots.Name = "checkProcessScreenshots";
+            this.checkProcessScreenshots.Size = new System.Drawing.Size(435, 19);
+            this.checkProcessScreenshots.TabIndex = 13;
+            this.checkProcessScreenshots.Tag = "processScreenshots";
+            this.checkProcessScreenshots.Text = "Convert .bmp screenshots into .png files";
+            this.checkProcessScreenshots.UseVisualStyleBackColor = true;
+            // 
             // tabPage2
             // 
-            this.tabPage2.BackColor = System.Drawing.SystemColors.Control;
             this.tabPage2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.tabPage2.Controls.Add(this.linkLabel2);
-            this.tabPage2.Controls.Add(this.linkLabel1);
+            this.tabPage2.Controls.Add(this.linkAboutTwo);
+            this.tabPage2.Controls.Add(this.linkAboutOne);
             this.tabPage2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.tabPage2.Location = new System.Drawing.Point(4, 24);
             this.tabPage2.Name = "tabPage2";
@@ -368,32 +536,32 @@ namespace SrvSurvey
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "About";
             // 
-            // linkLabel2
+            // linkAboutTwo
             // 
-            this.linkLabel2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.linkLabel2.LinkArea = new System.Windows.Forms.LinkArea(83, 21);
-            this.linkLabel2.Location = new System.Drawing.Point(3, 310);
-            this.linkLabel2.Name = "linkLabel2";
-            this.linkLabel2.Size = new System.Drawing.Size(442, 60);
-            this.linkLabel2.TabIndex = 2;
-            this.linkLabel2.TabStop = true;
-            this.linkLabel2.Text = "SrvSurvey is not an official tool for \"Elite Dangerous\" and is not affiliated wit" +
+            this.linkAboutTwo.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.linkAboutTwo.LinkArea = new System.Windows.Forms.LinkArea(83, 21);
+            this.linkAboutTwo.Location = new System.Drawing.Point(3, 310);
+            this.linkAboutTwo.Name = "linkAboutTwo";
+            this.linkAboutTwo.Size = new System.Drawing.Size(442, 60);
+            this.linkAboutTwo.TabIndex = 2;
+            this.linkAboutTwo.TabStop = true;
+            this.linkAboutTwo.Text = "SrvSurvey is not an official tool for \"Elite Dangerous\" and is not affiliated wit" +
     "h Frontier Developments. All trademarks and copyright are acknowledged as the pr" +
     "operty of their respective owners.\r\n";
-            this.linkLabel2.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.linkLabel2.UseCompatibleTextRendering = true;
+            this.linkAboutTwo.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.linkAboutTwo.UseCompatibleTextRendering = true;
             // 
-            // linkLabel1
+            // linkAboutOne
             // 
-            this.linkLabel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.linkLabel1.LinkArea = new System.Windows.Forms.LinkArea(65, 15);
-            this.linkLabel1.Location = new System.Drawing.Point(3, 3);
-            this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(442, 286);
-            this.linkLabel1.TabIndex = 1;
-            this.linkLabel1.TabStop = true;
-            this.linkLabel1.Text = resources.GetString("linkLabel1.Text");
-            this.linkLabel1.UseCompatibleTextRendering = true;
+            this.linkAboutOne.Dock = System.Windows.Forms.DockStyle.Top;
+            this.linkAboutOne.LinkArea = new System.Windows.Forms.LinkArea(65, 15);
+            this.linkAboutOne.Location = new System.Drawing.Point(3, 3);
+            this.linkAboutOne.Name = "linkAboutOne";
+            this.linkAboutOne.Size = new System.Drawing.Size(442, 286);
+            this.linkAboutOne.TabIndex = 1;
+            this.linkAboutOne.TabStop = true;
+            this.linkAboutOne.Text = resources.GetString("linkAboutOne.Text");
+            this.linkAboutOne.UseCompatibleTextRendering = true;
             // 
             // FormSettings
             // 
@@ -424,6 +592,9 @@ namespace SrvSurvey
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
+            this.tabPage5.ResumeLayout(false);
+            this.tabPage5.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
             this.tabPage2.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -442,8 +613,8 @@ namespace SrvSurvey
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.CheckBox checkFocusOnMinimize;
         private TabPage tabPage2;
-        private LinkLabel linkLabel1;
-        private LinkLabel linkLabel2;
+        private LinkLabel linkAboutOne;
+        private LinkLabel linkAboutTwo;
         private TabPage tabPage3;
         private Label label3;
         private CheckBox checkEnableGuardianFeatures;
@@ -456,5 +627,17 @@ namespace SrvSurvey
         private PictureBox pictureBox1;
         private CheckBox checkBox1;
         private CheckBox checkBioStatusAutoShow;
+        private TabPage tabPage5;
+        private CheckBox checkUseGuardianAerialScreenshotsFolder;
+        private LinkLabel linkTargetScreenshotFolder;
+        private Button btnChooseScreenshotSourceFolder;
+        private Button btnChooseScreenshotTargetFolder;
+        private Label lblScreenshotSource;
+        private Label lblScreenshotTarget;
+        private LinkLabel linkScreenshotSourceFolder;
+        private CheckBox checkAddBanner;
+        private CheckBox checkProcessScreenshots;
+        private PictureBox pictureBox3;
+        private CheckBox checkDeleteScreenshotOriginal;
     }
 }

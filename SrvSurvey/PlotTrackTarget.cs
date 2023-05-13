@@ -38,19 +38,19 @@ namespace SrvSurvey
             if (game.mode == GameMode.OnFoot)
             {
                 // roughly above the helmet lat/long indicator
-                Elite.floatCenterTop(this, 0, 440);
+                Elite.floatCenterTop(this, gameRect, 0, 440);
             }
             else
             {
                 // roughly above the game heading indicator
-                Elite.floatCenterTop(this, 160);
+                Elite.floatCenterTop(this, gameRect, 160);
             }
         }
 
         private void PlotGroundTarget_Load(object sender, EventArgs e)
         {
             this.initialize();
-            this.reposition(Elite.getWindowRect());
+            this.reposition(Elite.getWindowRect(true));
         }
 
         private void initialize()
@@ -65,6 +65,42 @@ namespace SrvSurvey
 
             this.calculate();
         }
+
+
+        #region mouse handlers
+
+        protected override void OnMouseEnter(EventArgs e)
+        {
+            base.OnMouseEnter(e);
+
+            if (Debugger.IsAttached)
+                // use a different cursor if debugging
+                this.Cursor = Cursors.No;
+            else
+                // otherwise hide the cursor entirely
+                Cursor.Hide();
+        }
+
+        protected override void OnMouseLeave(EventArgs e)
+        {
+            // restore the cursor when it leaves
+            Cursor.Show();
+        }
+
+        private void PlotTrackTarget_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            this.Invalidate();
+            Elite.setFocusED();
+        }
+
+        protected override void OnMouseDown(MouseEventArgs e)
+        {
+            base.OnMouseDown(e);
+            if (!Debugger.IsAttached)
+                Elite.setFocusED();
+        }
+
+        #endregion
 
         private void Game_modeChanged(GameMode newMode, bool force)
         {
@@ -108,11 +144,6 @@ namespace SrvSurvey
             //textBox2.Text = td.angle.ToString() + " / " + td.MetersToString(td.distance);
             //Game.log(td);
             this.Invalidate();
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            this.Close();
         }
 
         private void plotPrep()
@@ -176,37 +207,6 @@ namespace SrvSurvey
             g.Clip = new Region();
             g.DrawPath(GameColors.penGameOrange8, pp);
         }
-
-        private void PlotTrackTarget_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-            this.Invalidate();
-            Elite.setFocusED();
-        }
-
-        protected override void OnMouseDown(MouseEventArgs e)
-        {
-            base.OnMouseDown(e);
-            if (!Debugger.IsAttached)
-                Elite.setFocusED();
-        }
-
-        //private void floatCenterTop()
-        //{
-        //    // position form top center above the heading
-        //    var rect = Overlay.getEDWindowRect();
-
-        //    this.Left = rect.Left + (rect.Width / 2) - (this.Width / 2);
-        //    this.Top = rect.Top + 160;
-        //}
-
-        //private void floatTopRight()
-        //{
-        //    // position form top center above the heading
-        //    var rect = Overlay.getEDWindowRect();
-
-        //    this.Left = rect.Right - this.Width;
-        //    this.Top = rect.Top + 60;
-        //}
     }
 }
 

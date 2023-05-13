@@ -19,6 +19,8 @@
         public const string heading = ".heading";
         /// <summary> PlotGuardians : set site  type '.site alpha' </summary>
         public const string site = ".site";
+        /// <summary> PlotGuardians : set relic tower heading </summary>
+        public const string tower = ".tower";
 
         /// <summary> Main : set current location as trackign target </summary>
         public const string targetHere = ".target here";

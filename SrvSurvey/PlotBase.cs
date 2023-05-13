@@ -21,7 +21,9 @@ namespace SrvSurvey
 
         protected PlotBase()
         {
+            this.Opacity = 0;
             this.TopMost = true;
+            this.Cursor = Cursors.Cross;
 
             this.touchdownLocation = new TrackingDelta(
                 game.nearBody!.radius,
@@ -43,7 +45,7 @@ namespace SrvSurvey
                     game.modeChanged -= Game_modeChanged;
                     game.status!.StatusChanged -= Status_StatusChanged;
                     game.journals!.onJournalEntry -= Journals_onJournalEntry;
-                    game = null;
+                    game = null!;
                 }
             }
         }
@@ -66,14 +68,6 @@ namespace SrvSurvey
         {
             // restore the cursor when it leaves
             Cursor.Show();
-        }
-
-        protected override void OnMouseHover(EventArgs e)
-        {
-            base.OnMouseHover(e);
-
-            this.Invalidate();
-            Elite.setFocusED();
         }
 
         protected override void OnClick(EventArgs e)

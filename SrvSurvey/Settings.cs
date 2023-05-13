@@ -23,6 +23,15 @@ namespace SrvSurvey
         public Point mainLocation;
         public Rectangle logsLocation;
 
+        // screenshot processing
+        public bool processScreenshots = true;
+        public bool addBannerToScreenshots = true;
+        public bool deleteScreenshotOriginal = false;
+        public bool useGuardianAerialScreenshotsFolder = true;
+        public string screenshotSourceFolder = Elite.defaultScreenshotFolder;
+        public string screenshotTargetFolder = Path.Combine(Elite.defaultScreenshotFolder, "converted");
+
+        // configurable colours and fonts
         public Color GameOrange = Color.FromArgb(255, 255, 113, 00); // #FF7100
 
         public Font font1 = new System.Drawing.Font("Lucida Sans Typewriter", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);

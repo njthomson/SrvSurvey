@@ -62,7 +62,6 @@ namespace SrvSurvey
             this.TransparencyKey = System.Drawing.Color.Red;
             this.Load += new System.EventHandler(this.PlotPulse_Load);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.PlotPulse_Paint);
-            this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.PlotPulse_MouseClick);
             this.ResumeLayout(false);
 
         }

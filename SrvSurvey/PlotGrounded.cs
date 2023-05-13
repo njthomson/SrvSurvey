@@ -51,12 +51,13 @@ namespace SrvSurvey
             }
 
             this.Opacity = Game.settings.Opacity;
-            Elite.floatRightMiddle(this, 20);
+            Elite.floatRightMiddle(this, gameRect, 20);
         }
 
         private void PlotGrounded_Load(object sender, EventArgs e)
         {
             this.initialize();
+            this.reposition(Elite.getWindowRect(true));
         }
 
         private void initialize()
@@ -72,8 +73,6 @@ namespace SrvSurvey
 
             game.journals!.onJournalEntry += Journals_onJournalEntry;
             game.nearBody!.bioScanEvent += NearBody_bioScanEvent;
-
-            this.reposition(Elite.getWindowRect());
 
             // get landing location
             Game.log($"initialize here: {Status.here}, touchdownLocation: {game.touchdownLocation}");
@@ -161,12 +160,24 @@ namespace SrvSurvey
             this.Invalidate();
         }
 
-        private void PlotGrounded_KeyDown(object sender, KeyEventArgs e)
+        #region mouse handlers
+
+        protected override void OnMouseEnter(EventArgs e)
         {
-            if (e.KeyCode == Keys.Escape)
-            {
-                this.Close();
-            }
+            base.OnMouseEnter(e);
+
+            if (Debugger.IsAttached)
+                // use a different cursor if debugging
+                this.Cursor = Cursors.No;
+            else
+                // otherwise hide the cursor entirely
+                Cursor.Hide();
+        }
+
+        protected override void OnMouseLeave(EventArgs e)
+        {
+            // restore the cursor when it leaves
+            Cursor.Show();
         }
 
         protected override void OnMouseDown(MouseEventArgs e)
@@ -181,6 +192,8 @@ namespace SrvSurvey
             this.Invalidate();
             Elite.setFocusED();
         }
+
+        #endregion
 
         private void PlotGrounded_Paint(object sender, PaintEventArgs e)
         {

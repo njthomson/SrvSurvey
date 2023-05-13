@@ -37,12 +37,13 @@ namespace SrvSurvey
             }
 
             this.Opacity = Game.settings.Opacity;
-            Elite.floatCenterTop(this, 0);
+            Elite.floatCenterTop(this, gameRect, 0);
         }
 
         private void PlotBioStatus_Load(object sender, EventArgs e)
         {
             this.initialize();
+            this.reposition(Elite.getWindowRect(true));
         }
 
         private void initialize()
@@ -63,8 +64,6 @@ namespace SrvSurvey
             //this.Opacity = 1;
             game.journals!.onJournalEntry += Journals_onJournalEntry;
             game.nearBody!.bioScanEvent += NearBody_bioScanEvent;
-
-            this.reposition(Elite.getWindowRect());
         }
 
         private void NearBody_bioScanEvent()
@@ -96,18 +95,31 @@ namespace SrvSurvey
             }
         }
 
-        private void PlotBioStatus_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Escape)
-            {
-                this.Close();
-            }
-        }
 
         private void PlotBioStatus_DoubleClick(object sender, EventArgs e)
         {
             this.Invalidate();
             Elite.setFocusED();
+        }
+
+        #region mouse handlers
+
+        protected override void OnMouseEnter(EventArgs e)
+        {
+            base.OnMouseEnter(e);
+
+            if (Debugger.IsAttached)
+                // use a different cursor if debugging
+                this.Cursor = Cursors.No;
+            else
+                // otherwise hide the cursor entirely
+                Cursor.Hide();
+        }
+
+        protected override void OnMouseLeave(EventArgs e)
+        {
+            // restore the cursor when it leaves
+            Cursor.Show();
         }
 
         protected override void OnMouseDown(MouseEventArgs e)
@@ -116,6 +128,8 @@ namespace SrvSurvey
             if (!Debugger.IsAttached)
                 Elite.setFocusED();
         }
+
+        #endregion
 
         private void PlotBioStatus_Paint(object sender, PaintEventArgs e)
         {

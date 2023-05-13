@@ -1,10 +1,7 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using SrvSurvey.canonn;
+﻿using SrvSurvey.canonn;
 using SrvSurvey.units;
 using System.Diagnostics;
 using System.Reflection;
-using System.Text;
 
 namespace SrvSurvey.game
 {
@@ -735,6 +732,10 @@ namespace SrvSurvey.game
         private void onJournalEntry(SupercruiseExit entry)
         {
             this.setLocations(entry);
+
+            // check there are any Guardian sites nearby
+            if (this.status.hasLatLong && this.nearBody != null)
+                this.nearBody.findGuardianSites();
         }
 
         #endregion

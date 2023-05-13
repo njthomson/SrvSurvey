@@ -160,6 +160,9 @@ namespace SrvSurvey.game
                     if (_.BodyName == this.bodyName && _.Name.StartsWith("$Ancient:") && _.Latitude != 0)
                     {
                         var filename = GuardianSiteData.getFilename(_);
+                        if (this.settlements.Contains(filename))
+                            return false;
+
                         this.settlements.Add(filename);
 
                         // if site is within 20km - make it the active site

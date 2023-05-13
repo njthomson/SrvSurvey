@@ -13,6 +13,10 @@ namespace SrvSurvey
 
         public static readonly string displaySettingsXml = Path.Combine(displaySettingsFolder, "DisplaySettings.xml");
 
+        public static readonly string defaultScreenshotFolder = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), 
+            "Frontier Developments", "Elite Dangerous");
+
         public static bool isGameRunning
         {
             get
@@ -32,13 +36,13 @@ namespace SrvSurvey
                 SetForegroundWindow(hwnd);
         }
 
-        public static Rectangle getWindowRect()
+        public static Rectangle getWindowRect(bool force = false)
         {
             var hwndED = Elite.getWindowHandle();
             var hwndActive = Elite.GetForegroundWindow();
 
-            // hide plotters when game is not active (unless we are debugging)
-            if ((hwndED != hwndActive || hwndED == IntPtr.Zero)) // && !System.Diagnostics.Debugger.IsAttached)
+            // hide plotters when game is not active (unless we are debugging or forced)
+            if (!force && (hwndED != hwndActive || hwndED == IntPtr.Zero) && !System.Diagnostics.Debugger.IsAttached)
             {
                 return Rectangle.Empty;
             }
@@ -90,19 +94,21 @@ namespace SrvSurvey
             }
         }
 
-        public static void floatLeftMiddle(Form form)
+        public static void floatLeftMiddle(Form form, Rectangle rect)
         {
             // position form top center above the heading
-            var rect = Elite.getWindowRect();
+            if (rect == Rectangle.Empty)
+                rect = Elite.getWindowRect();
 
             form.Left = rect.Left + 40;
             form.Top = rect.Top + (rect.Height / 2) - (form.Height / 2);
         }
 
-        public static void floatRightMiddle(Form form, int fromRight, int aboveMiddle = 0)
+        public static void floatRightMiddle(Form form, Rectangle rect, int fromRight, int aboveMiddle = 0)
         {
             // position form top center above the heading
-            var rect = Elite.getWindowRect();
+            if (rect == Rectangle.Empty)
+                rect = Elite.getWindowRect();
 
             form.Left = rect.Right - form.Width - fromRight;
             form.Top = rect.Top + (rect.Height / 2) - (form.Height / 2) + aboveMiddle;
@@ -117,10 +123,11 @@ namespace SrvSurvey
         //    form.Top = rect.Top + (rect.Height / 2) - (form.Height / 2);
         //}
 
-        public static void floatCenterTop(Form form, int fromTop, int rightOfCenter = 0)
+        public static void floatCenterTop(Form form, Rectangle rect, int fromTop, int rightOfCenter = 0)
         {
             // position form top center above the heading
-            var rect = Elite.getWindowRect();
+            if (rect == Rectangle.Empty)
+                rect = Elite.getWindowRect();
 
             form.Left = rect.Left + (rect.Width / 2) - (form.Width / 2) + rightOfCenter;
             form.Top = rect.Top + fromTop;

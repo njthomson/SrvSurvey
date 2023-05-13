@@ -63,13 +63,13 @@ namespace SrvSurvey
             }
 
             this.Opacity = Game.settings.Opacity;
-            Elite.floatLeftMiddle(this);
+            Elite.floatLeftMiddle(this, gameRect);
         }
 
         private void PlotGuardians_Load(object sender, EventArgs e)
         {
             this.initialize();
-            this.reposition(Elite.getWindowRect());
+            this.reposition(Elite.getWindowRect(true));
         }
 
         protected override void initialize()
@@ -229,7 +229,27 @@ namespace SrvSurvey
             else if (msg.StartsWith(MsgCmd.heading))
             {
                 // try parsing a number after '.heading'
-                changeHeading = int.TryParse(msg.Substring(14), out newHeading);
+                changeHeading = int.TryParse(msg.Substring(MsgCmd.heading.Length), out newHeading);
+            }
+
+            if (changeHeading)
+            {
+                this.setSiteHeading(newHeading);
+                return;
+            }
+
+            // set Relic Tower heading
+            if (msg == MsgCmd.tower)
+            {
+                Game.log($"Changing Relic Tower heading from: '{siteData.relicTowerHeading}' to: '{game.status.Heading}'");
+                siteData.relicTowerHeading = new Angle(game.status.Heading);
+                siteData.Save();
+            }
+            else if (msg.StartsWith(MsgCmd.heading) && int.TryParse(msg.Substring(MsgCmd.heading.Length), out newHeading))
+            {
+                Game.log($"Changing Relic Tower heading from: '{siteData.relicTowerHeading}' to: '{newHeading}'");
+                siteData.relicTowerHeading = newHeading;
+                siteData.Save();
             }
 
             if (changeHeading)
@@ -565,7 +585,7 @@ namespace SrvSurvey
         private void drawSiteMap()
         {
             if (g == null) return;
-            this.drawHeaderText($"{siteData.name} | {siteData.type} | {siteData.siteHeading}°");
+            this.drawHeaderText($"{siteData.nameLocalised} | {siteData.type} | {siteData.siteHeading}°");
             this.drawFooterText($"{game.nearBody!.bodyName}");
 
             if (this.underlay == null)
@@ -645,7 +665,7 @@ namespace SrvSurvey
         {
             if (g == null) return;
 
-            this.drawHeaderText($"{siteData.name} | {siteData.type} | ???°");
+            this.drawHeaderText($"{siteData.nameLocalised} | {siteData.type} | ???°");
             this.drawFooterText($"{game.nearBody!.bodyName}");
             g.ResetTransform();
             this.clipToMiddle();
@@ -667,7 +687,7 @@ namespace SrvSurvey
         {
             if (g == null) return;
 
-            this.drawHeaderText($"{siteData.name} | {siteData.type} | ???°");
+            this.drawHeaderText($"{siteData.nameLocalised} | {siteData.type} | ???°");
             this.drawFooterText($"{game.nearBody!.bodyName}");
             g.ResetTransform();
             this.clipToMiddle();
@@ -677,7 +697,7 @@ namespace SrvSurvey
             var ty = 20f;
 
 
-            var isRuins = siteData.type == GuardianSiteData.SiteType.alpha || siteData.type == GuardianSiteData.SiteType.beta || siteData.type == GuardianSiteData.SiteType.gamma;
+            var isRuins = siteData.isRuins;
             msg = $"Need site heading\r\n\r\n■ To use current heading either:\r\n    - Toggle lights twice, 1 sec apart\r\n    - Send message:   .heading\r\n\r\n■ Or send message: <degrees>";
             if (isRuins)
                 msg += $"\r\n\r\nAlign with this buttress:";

@@ -127,20 +127,11 @@ namespace SrvSurvey
             Cursor.Show();
         }
 
-        protected override void OnMouseHover(EventArgs e)
+        protected override void OnMouseDown(MouseEventArgs e)
         {
-            base.OnMouseHover(e);
-
-            this.Invalidate();
-            Elite.setFocusED();
-        }
-
-        protected override void OnClick(EventArgs e)
-        {
-            base.OnClick(e);
-
-            this.Invalidate();
-            Elite.setFocusED();
+            base.OnMouseDown(e);
+            if (!Debugger.IsAttached)
+                Elite.setFocusED();
         }
 
         protected override void OnMouseDoubleClick(MouseEventArgs e)

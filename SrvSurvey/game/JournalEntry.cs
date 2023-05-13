@@ -491,6 +491,24 @@ namespace SrvSurvey
         // { "timestamp":"2023-05-10T18:28:28Z", "event":"SwitchSuitLoadout", "SuitID":1723541811099765, "SuitName":"tacticalsuit_class5", "SuitName_Localised":"$TacticalSuit_Class1_Name;", "SuitMods":[ "suit_increasedsprintduration", "suit_improvedarmourrating", "suit_increasedammoreserves", "suit_increasedshieldregen" ], "LoadoutID":4293000000, "LoadoutName":"solder / general", "Modules":[ { "SlotName":"PrimaryWeapon1", "SuitModuleID":1704060320072893, "ModuleName":"wpn_m_assaultrifle_laser_fauto", "ModuleName_Localised":"TK Aphelion", "Class":5, "WeaponMods":[ "weapon_clipsize", "weapon_backpackreloading", "weapon_handling" ] }, { "SlotName":"PrimaryWeapon2", "SuitModuleID":1722824106905372, "ModuleName":"wpn_m_assaultrifle_kinetic_fauto", "ModuleName_Localised":"Karma AR-50", "Class":5, "WeaponMods":[ "weapon_stability", "weapon_handling", "weapon_clipsize", "weapon_headshotdamage" ] }, { "SlotName":"SecondaryWeapon", "SuitModuleID":1723541854154251, "ModuleName":"wpn_s_pistol_plasma_charged", "ModuleName_Localised":"Manticore Tormentor", "Class":5, "WeaponMods":[ "weapon_suppression_pressurised", "weapon_handling", "weapon_stability", "weapon_backpackreloading" ] } ] }
 
     }
+
+    class Screenshot : JournalEntry
+    {
+        // { "timestamp":"2023-05-11T05:25:31Z", "event":"Screenshot", "Filename":"\\ED_Pictures\\Screenshot_0465.bmp", "Width":1920, "Height":1080, "System":"Bleethuae LN-B d1172", "Body":"Bleethuae LN-B d1172 4 b" }
+        // { "timestamp":"2023-05-13T02:35:48Z", "event":"Screenshot", "Filename":"\\ED_Pictures\\Screenshot_0522.bmp", "Width":3440, "Height":1440, "System":"IC 2391 Sector YE-A d103", "Body":"IC 2391 Sector YE-A d103 B 1", "Latitude":-54.580612, "Longitude":25.089542, "Heading":187, "Altitude":1612.171509 }
+
+        public string Filename;
+        public int Width;
+        public int Height;
+        public string System;
+        public string Body;
+
+        // keeping these as simple strings, so it is easier to detect if they are missing, from legacy mode
+        public string Latitude;
+        public string Longitude;
+        public string Heading;
+        public string Altitude;
+    }
 }
 
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.

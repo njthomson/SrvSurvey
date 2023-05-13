@@ -40,6 +40,9 @@ namespace SrvSurvey.game
 
         public void Save()
         {
+            var folder = Path.GetDirectoryName(this.filepath);
+            Directory.CreateDirectory(folder);
+
             var json = JsonConvert.SerializeObject(this, Formatting.Indented);
             File.WriteAllText(this.filepath, json);
         }
