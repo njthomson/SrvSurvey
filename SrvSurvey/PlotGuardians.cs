@@ -116,7 +116,7 @@ namespace SrvSurvey
 
         private void setMode(Mode newMode)
         {
-            Game.log($"PlotGuardians: changing mode from: {this.mode} to: {newMode}");
+            Game.log($"* * *> PlotGuardians: changing mode from: {this.mode} to: {newMode}");
 
             // do not allow some modes before we know others
             if (siteData.type == GuardianSiteData.SiteType.unknown)
@@ -426,8 +426,33 @@ namespace SrvSurvey
             this.Invalidate();
         }
 
-        private void PlotGuardians_Paint(object sender, PaintEventArgs e)
+        protected override void OnPaintBackground(PaintEventArgs e)
         {
+            Game.log($"-- -- --> PlotGuardians: OnPaintBackground {this.template?.imageOffset} / {this.template?.scaleFactor}");
+            if (this.template != null)
+            {
+                //this.template.scaleFactor = 1.15f;
+                //this.template.scaleFactor = 1.3f;
+
+                //this.template.imageOffset.X = 652;
+                //this.template.imageOffset.Y = 714;
+
+                //this.template.imageOffset.X = 638;
+                //this.template.imageOffset.Y = 752;
+
+                //this.template.imageOffset.X = 644;
+                //this.template.imageOffset.Y = 795;
+
+                //this.template.imageOffset.X = 652;
+                //this.template.imageOffset.Y = 714;
+
+                /*
+    "imageOffset": "638,752",
+    "imageOffset": "652,714",
+                */
+            }
+
+            base.OnPaintBackground(e);
             this.g = e.Graphics;
             switch (this.mode)
             {
@@ -640,7 +665,7 @@ namespace SrvSurvey
             g.DrawLine(Pens.Red, x, -this.Height * 2, x, y);
             g.ResetClip();
 
-            //this.drawTouchdownAndSrvLocation();
+            // this.drawTouchdownAndSrvLocation(true);
 
             this.drawCommander();
 

@@ -56,42 +56,31 @@ namespace SrvSurvey
         {
             base.OnMouseEnter(e);
 
-            if (Debugger.IsAttached)
-                // use a different cursor if debugging
-                this.Cursor = Cursors.No;
-            else
-                // otherwise hide the cursor entirely
-                Cursor.Hide();
+            // TODO: restore
+            //if (Debugger.IsAttached)
+            //    // use a different cursor if debugging
+            //    this.Cursor = Cursors.No;
+            //else
+            //    // otherwise hide the cursor entirely
+            //Cursor.Hide();
         }
 
         protected override void OnMouseLeave(EventArgs e)
         {
             // restore the cursor when it leaves
-            Cursor.Show();
+            // TODO: restore
+            //Cursor.Show();
         }
 
         protected override void OnMouseDown(MouseEventArgs e)
         {
             base.OnMouseDown(e);
+
+            Game.log("OnMouseDown");
+            this.Invalidate();
+
             if (!Debugger.IsAttached)
                 Elite.setFocusED();
-        }
-
-        protected override void OnClick(EventArgs e)
-        {
-            base.OnClick(e);
-
-            this.Invalidate();
-            if (!Debugger.IsAttached)
-                Elite.setFocusED();
-        }
-
-        protected override void OnMouseDoubleClick(MouseEventArgs e)
-        {
-            base.OnMouseDoubleClick(e);
-
-            this.Invalidate();
-            Elite.setFocusED();
         }
 
         #endregion
@@ -240,7 +229,7 @@ namespace SrvSurvey
             g.ResetClip();
         }
 
-        protected void drawTouchdownAndSrvLocation()
+        protected void drawTouchdownAndSrvLocation(bool hideHeader = false)
         {
             if (g == null || (this.touchdownLocation == null && this.srvLocation == null)) return;
 
@@ -273,16 +262,19 @@ namespace SrvSurvey
                     srvSize * 2,
                     srvSize * 2);
 
-                g.FillRectangle(GameColors.brushShipLocation, rect);
+                g.FillRectangle(GameColors.brushGameOrange, rect);
             }
 
             g.ResetTransform();
 
-            if (this.touchdownLocation != null)
-                this.drawBearingTo(4, 10, "Touchdown:", this.touchdownLocation.Target);
+            if (!hideHeader)
+            {
+                if (this.touchdownLocation != null)
+                    this.drawBearingTo(4, 10, "Touchdown:", this.touchdownLocation.Target);
 
-            if (this.srvLocation != null)
-                this.drawBearingTo(4 + mid.Width, 10, "SRV:", this.srvLocation.Target);
+                if (this.srvLocation != null)
+                    this.drawBearingTo(4 + mid.Width, 10, "SRV:", this.srvLocation.Target);
+            }
         }
 
         protected void drawBearingTo(float x, float y, string txt, LatLong2 location)

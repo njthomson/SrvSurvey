@@ -33,6 +33,7 @@
     <None Remove="images\gamma-heading-guide.png" />
     <None Remove="ruins-alpha-5.png" />
     <None Remove="ruins-beta-3.png" />
+    <None Remove="ruins-gamma-1.png" />
     <None Remove="settlementTemplates.json" />
   </ItemGroup>
 
@@ -51,6 +52,9 @@
     </Content>
     <Content Include="ruins-beta-3.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ruins-gamma-1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="settlementTemplates.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

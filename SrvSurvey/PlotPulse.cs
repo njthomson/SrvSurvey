@@ -74,6 +74,10 @@ namespace SrvSurvey
         protected override void OnMouseDown(MouseEventArgs e)
         {
             base.OnMouseDown(e);
+
+            Game.log("OnMouseDown");
+            this.Invalidate();
+
             if (!Debugger.IsAttached)
                 Elite.setFocusED();
         }
@@ -82,18 +86,20 @@ namespace SrvSurvey
         {
             base.OnMouseEnter(e);
 
-            if (Debugger.IsAttached)
-                // use a different cursor if debugging
-                this.Cursor = Cursors.No;
-            else
-                // otherwise hide the cursor entirely
-                Cursor.Hide();
+            // TODO: restore
+            //if (Debugger.IsAttached)
+            //    // use a different cursor if debugging
+            //    this.Cursor = Cursors.No;
+            //else
+            //    // otherwise hide the cursor entirely
+            //    Cursor.Hide();
         }
 
         protected override void OnMouseLeave(EventArgs e)
         {
             // restore the cursor when it leaves
-            Cursor.Show();
+            // TODO: restore
+            //Cursor.Show();
         }
 
         #endregion

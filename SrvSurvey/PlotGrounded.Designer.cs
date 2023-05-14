@@ -53,7 +53,6 @@ namespace SrvSurvey
             this.TopMost = true;
             this.Load += new System.EventHandler(this.PlotGrounded_Load);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.PlotGrounded_Paint);
-            this.DoubleClick += new System.EventHandler(this.PlotGrounded_DoubleClick);
             this.ResumeLayout(false);
 
         }

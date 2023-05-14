@@ -48,7 +48,6 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.TopMost = true;
             this.Load += new System.EventHandler(this.PlotGuardians_Load);
-            this.Paint += new System.Windows.Forms.PaintEventHandler(this.PlotGuardians_Paint);
             this.ResumeLayout(false);
 
         }

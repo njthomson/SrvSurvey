@@ -106,6 +106,7 @@ namespace SrvSurvey
 
         private void updateAllControls()
         {
+            Game.log("** ** ** updateAllControls ** ** **");
             this.updateCommanderTexts();
             this.updateBioTexts();
             this.updateTrackTargetTexts();

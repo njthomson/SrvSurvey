@@ -34,6 +34,8 @@ namespace SrvSurvey
             var hwnd = getWindowHandle();
             if (hwnd != IntPtr.Zero)
                 SetForegroundWindow(hwnd);
+            else
+                Game.log("setFocusED: got Zero!");
         }
 
         public static Rectangle getWindowRect(bool force = false)

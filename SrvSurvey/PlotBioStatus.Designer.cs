@@ -53,7 +53,6 @@ namespace SrvSurvey
             this.TopMost = true;
             this.Load += new System.EventHandler(this.PlotBioStatus_Load);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.PlotBioStatus_Paint);
-            this.DoubleClick += new System.EventHandler(this.PlotBioStatus_DoubleClick);
             this.ResumeLayout(false);
 
         }
