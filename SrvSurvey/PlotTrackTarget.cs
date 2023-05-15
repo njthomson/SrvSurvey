@@ -74,30 +74,23 @@ namespace SrvSurvey
             base.OnMouseEnter(e);
 
             if (Debugger.IsAttached)
+            {
                 // use a different cursor if debugging
                 this.Cursor = Cursors.No;
-            else
-                // otherwise hide the cursor entirely
-                Cursor.Hide();
-        }
-
-        protected override void OnMouseLeave(EventArgs e)
-        {
-            // restore the cursor when it leaves
-            Cursor.Show();
-        }
-
-        private void PlotTrackTarget_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-            this.Invalidate();
-            Elite.setFocusED();
+            }
+            else if (Game.settings.hideOverlaysFromMouse)
+            {
+                // move the mouse outside the overlay
+                System.Windows.Forms.Cursor.Position = Elite.gameCenter;
+            }
         }
 
         protected override void OnMouseDown(MouseEventArgs e)
         {
             base.OnMouseDown(e);
-            if (!Debugger.IsAttached)
-                Elite.setFocusED();
+
+            this.Invalidate();
+            Elite.setFocusED();
         }
 
         #endregion

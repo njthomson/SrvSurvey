@@ -13,18 +13,20 @@ namespace SrvSurvey
 
         public bool autoShowBioSummary = true;
         public bool autoShowBioPlot = true;
+        public bool focusGameOnStart = true;
         public bool focusGameOnMinimize = true;
 
         public bool enableGuardianSites = false;
         public bool disableRuinsMeasurementGrid = false;
         public bool hidePlottersFromCombatSuits = false;
+        public bool hideOverlaysFromMouse = true;
 
         public double Opacity = 0.5;
         public Point mainLocation;
         public Rectangle logsLocation;
 
         // screenshot processing
-        public bool processScreenshots = true;
+        public bool processScreenshots = false;
         public bool addBannerToScreenshots = true;
         public bool deleteScreenshotOriginal = false;
         public bool useGuardianAerialScreenshotsFolder = true;

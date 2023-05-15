@@ -125,19 +125,20 @@ namespace SrvSurvey
 
         private bool trackBlinks()
         {
-            var newLightsOn = (this.Flags & StatusFlags.LightsOn) > 0;
-            var duration = DateTime.Now - this.lightsOnChange;
+            const StatusFlags blinkSignal = StatusFlags.CargoScoopDeployed; // StatusFlags.LightsOn;
+            var newBlinkState = (this.Flags & blinkSignal) > 0;
+            var duration = DateTime.Now - this.lastblinkChange;
 
-            //Game.log($"newLightsOn: {newLightsOn}, this.lightsOn: {this.lightsOn}, this.lightsOnChange: {this.lightsOnChange}, duration: {DateTime.Now - this.lightsOnChange}");
-            if (newLightsOn != this.lightsOn)
+            //Game.log($"newBlinkState: {newBlinkState}, this.blinkState: {this.blinkState}, this.lastblinkChange: {this.lastblinkChange}, duration: {DateTime.Now - this.lastblinkChange}");
+            if (newBlinkState != this.blinkState)
             {
-                this.lightsOn = newLightsOn;
-                this.lightsOnChange = DateTime.Now;
+                this.blinkState = newBlinkState;
+                this.lastblinkChange = DateTime.Now;
             }
 
             if (duration.TotalSeconds < 2)
             {
-                Game.log($"Lights blinked!");
+                Game.log($"Blink detected blinked!");
                 return true;
             }
             else
@@ -146,8 +147,8 @@ namespace SrvSurvey
             }
         }
 
-        private bool lightsOn = false;
-        private DateTime lightsOnChange = DateTime.Now;
+        private bool blinkState = false;
+        private DateTime lastblinkChange = DateTime.Now;
 
         [JsonIgnore]
         public static readonly LatLong2 here = new LatLong2(0, 0);

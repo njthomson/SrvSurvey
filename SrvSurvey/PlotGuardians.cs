@@ -51,6 +51,7 @@ namespace SrvSurvey
             SiteTemplate.Import();
 
             this.scale = 0.3f;
+            //this.scale = 1f;
 
             this.nextMode();
         }
@@ -119,7 +120,7 @@ namespace SrvSurvey
             Game.log($"* * *> PlotGuardians: changing mode from: {this.mode} to: {newMode}");
 
             // do not allow some modes before we know others
-            if (siteData.type == GuardianSiteData.SiteType.unknown)
+            if (siteData.type == GuardianSiteData.SiteType.unknown && newMode != Mode.siteType)
             {
                 Game.log($"PlotGuardians: site type must be known first");
                 newMode = Mode.siteType;
@@ -431,6 +432,12 @@ namespace SrvSurvey
             Game.log($"-- -- --> PlotGuardians: OnPaintBackground {this.template?.imageOffset} / {this.template?.scaleFactor}");
             if (this.template != null)
             {
+                // alpha
+                //this.template.scaleFactor = 0.75f;
+                //this.template.imageOffset.X = 730;
+                //this.template.imageOffset.Y = 885;
+
+                // beta
                 //this.template.scaleFactor = 1.15f;
                 //this.template.scaleFactor = 1.3f;
 
@@ -633,7 +640,6 @@ namespace SrvSurvey
             g.ScaleTransform(this.scale, this.scale);
             g.RotateTransform(-game.status.Heading);
 
-
             // prepare underlay image
             using (var gg = Graphics.FromImage(this.underlay!))
             {
@@ -649,6 +655,10 @@ namespace SrvSurvey
 
                 // draw the site bitmap and trails(?)
                 gg.DrawImageUnscaled(this.siteMap!, -this.template!.imageOffset.X, -this.template.imageOffset.Y);
+
+                //var ix = -(double)this.template!.imageOffset.X * (double)this.template!.scaleFactor;
+                //var iy = -(double)this.template.imageOffset.Y * (double)this.template!.scaleFactor;
+                //gg.DrawImageUnscaled(this.siteMap!, (int)ix, (int)iy); // -this.template!.imageOffset.X * this.template!.scaleFactor, -this.template.imageOffset.Y * this.template!.scaleFactor);
                 //int xx = 0; // -this.trails!.Width;
                 //int yy = 0; // -this.trails!.Height / 2;
                 //gg.DrawImageUnscaled(this.trails!, -this.template!.imageOffset.X, -this.template.imageOffset.Y);
@@ -667,6 +677,8 @@ namespace SrvSurvey
 
             // this.drawTouchdownAndSrvLocation(true);
 
+            //this.drawArtifacts();
+
             this.drawCommander();
 
             //if (siteData.siteHeading != -1)
@@ -679,6 +691,68 @@ namespace SrvSurvey
             //    var ttd = new TrackingDelta(game.nearBody.radius, siteData.location);
             //    this.drawSiteSummaryFooter($"{ttd}");
             //}
+        }
+
+        private void drawArtifacts()
+        {
+            g.ResetTransform();
+            //this.clipToMiddle(4, 26, 4, 24);
+            //g.TranslateTransform(50, 150);
+            g.TranslateTransform(mid.Width, mid.Height);
+            //g.TranslateTransform(commanderOffset.X, -commanderOffset.Y);
+            g.ScaleTransform(this.scale, this.scale);
+            //g.RotateTransform(360-game.status.Heading);
+
+            Game.log(this.commanderOffset);
+            var z = 5;
+
+            var aa = new Angle(game.status.Heading - siteData.siteHeading);
+            var zz = Util.rotateLine(aa, +50);
+
+            var tx = commanderOffset.X - zz.Width;
+            var ty = commanderOffset.Y - zz.Height;
+
+
+            g.FillRectangle(Brushes.Blue, tx - z, ty - z, z * 2, z * 2);
+
+            Point[] pps = { new Point((int)tx, (int)ty) };
+            g.TransformPoints(CoordinateSpace.Page, CoordinateSpace.World, pps);
+
+            // -- -- -- --
+            tx = -150; // + template.imageOffset.X;
+            ty = -250; // + template.imageOffset.Y;
+
+            var length = (float)Math.Sqrt(Math.Pow(tx, 2) + Math.Pow(ty, 2));
+            if (ty < 0)
+                length *= -1;
+            
+            var rad = Math.Atan(tx / ty);
+            var a = Angle.FromRadians(rad);
+            a += siteData.siteHeading;
+
+            var dx = (float)Math.Sin(a.radians) * length;
+            var dy = (float)Math.Cos(a.radians) * length;
+
+            //var zz = Util.rotateLine(aa, +50);
+
+            a += game.status.Heading;
+
+            //dx = commanderOffset.X - dx;
+            //dy = commanderOffset.Y + dy;
+
+            //g.DrawLine(GameColors.penCyan4, mid.Width - template.imageOffset.X, mid.Height + template.imageOffset.Y, 0, 0); // dx, dy);
+            var ss = this.scale * 0.9f;
+            g.DrawLine(GameColors.penCyan4, 0, 0, dx, dy); // dx, dy);
+            // --
+
+            var pp = pps[0];
+            //pp.Offset((int)tx, (int)ty);
+            pp.Offset(-mid.Width, -mid.Height);
+            var td = new TrackingDelta(game.nearBody.radius, siteData.location);
+            this.drawHeaderText($"?? {td}"); // / {(int)length} / {(int)dx},{(int)dy}");
+            this.drawFooterText($"?? {(int)length} / {(int)dx},{(int)dy}");
+
+
         }
 
         private void drawSiteSummaryFooter(string msg)
@@ -731,7 +805,7 @@ namespace SrvSurvey
 
 
             var isRuins = siteData.isRuins;
-            msg = $"Need site heading\r\n\r\n■ To use current heading either:\r\n    - Toggle lights twice, 1 sec apart\r\n    - Send message:   .heading\r\n\r\n■ Or send message: <degrees>";
+            msg = $"Need site heading\r\n\r\n■ To use current heading either:\r\n    - Toggle Cargo scoop twice\r\n    - Send message:   .heading\r\n\r\n■ Or send message: <degrees>";
             if (isRuins)
                 msg += $"\r\n\r\nAlign with this buttress:";
             var sz = g.MeasureString(msg, Game.settings.fontMiddle, this.Width);

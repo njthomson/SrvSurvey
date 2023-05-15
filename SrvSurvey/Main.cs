@@ -84,6 +84,9 @@ namespace SrvSurvey
         private void Main_Load(object sender, EventArgs e)
         {
             if (Debugger.IsAttached)
+                this.Text += " (dbg)";
+
+            if (Game.settings.focusGameOnStart)
                 Elite.setFocusED();
 
             this.updateAllControls();
@@ -100,6 +103,7 @@ namespace SrvSurvey
             if (Elite.isGameRunning)
                 this.newGame();
 
+            this.timer1.Interval = 200;
             this.timer1.Start();
             Game.codexRef.init();
         }
@@ -233,7 +237,7 @@ namespace SrvSurvey
             this.txtVehicle.Text = game.vehicle.ToString();
 
             if (!string.IsNullOrEmpty(game.systemLocation))
-                this.txtLocation.Text = game.systemLocation;
+                this.txtLocation.Text = game.cmdr?.lastSystemLocation ?? game.systemLocation;
             else
                 this.txtLocation.Text = "Unknown";
 
@@ -336,8 +340,8 @@ namespace SrvSurvey
             else
             {
                 lblGuardianCount.Text = game.nearBody.settlements.Count.ToString();
-                if (this.game.nearBody.siteData != null)
-                    txtGuardianSite.Text = this.game.nearBody.siteData.name + " " + this.game.nearBody.siteData.location;
+                if (this.game.nearBody.siteData != null && this.game.nearBody.siteData.isRuins)
+                    txtGuardianSite.Text = $"Ruins #{this.game.nearBody.siteData.index} - {this.game.nearBody.siteData.type}, {this.game.nearBody.siteData.siteHeading}°";
 
                 if (game.showBodyPlotters && this.game.showGuardianPlotters)
                 {

@@ -184,6 +184,13 @@ namespace SrvSurvey
             return new SizeF(dx, dy);
         }
 
+        public static double ToAngle(double opp, double adj)
+        {
+            //var opp = this.Lat; //< 0 ? -this.Lat : this.Lat;
+            //var adj = this.Long; //< 0 ? -this.Long : this.Long;
+            return Math.Atan(opp / adj);
+        }
+
         public static string getSpeciesPrefix(string name)
         {
             // extract the species prefix from the name, without the color variant part

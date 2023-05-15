@@ -35,6 +35,9 @@ namespace SrvSurvey
             this.btnSave = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.checkMinimizeOnStart = new System.Windows.Forms.CheckBox();
+            this.checkHideOverlayOnMouseOver = new System.Windows.Forms.CheckBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.checkHidePlottersFromWeapons = new System.Windows.Forms.CheckBox();
             this.checkFocusOnMinimize = new System.Windows.Forms.CheckBox();
             this.numOpacity = new System.Windows.Forms.NumericUpDown();
@@ -132,6 +135,9 @@ namespace SrvSurvey
             // tabPage1
             // 
             this.tabPage1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.tabPage1.Controls.Add(this.checkMinimizeOnStart);
+            this.tabPage1.Controls.Add(this.checkHideOverlayOnMouseOver);
+            this.tabPage1.Controls.Add(this.label4);
             this.tabPage1.Controls.Add(this.checkHidePlottersFromWeapons);
             this.tabPage1.Controls.Add(this.checkFocusOnMinimize);
             this.tabPage1.Controls.Add(this.numOpacity);
@@ -147,11 +153,44 @@ namespace SrvSurvey
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "General";
             // 
+            // checkMinimizeOnStart
+            // 
+            this.checkMinimizeOnStart.Checked = true;
+            this.checkMinimizeOnStart.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkMinimizeOnStart.Location = new System.Drawing.Point(8, 108);
+            this.checkMinimizeOnStart.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.checkMinimizeOnStart.Name = "checkMinimizeOnStart";
+            this.checkMinimizeOnStart.Size = new System.Drawing.Size(431, 19);
+            this.checkMinimizeOnStart.TabIndex = 10;
+            this.checkMinimizeOnStart.Tag = "focusGameOnStart";
+            this.checkMinimizeOnStart.Text = "Set focus on Elite Dangerous when starting Srv Survey.";
+            this.checkMinimizeOnStart.UseVisualStyleBackColor = true;
+            // 
+            // checkHideOverlayOnMouseOver
+            // 
+            this.checkHideOverlayOnMouseOver.AutoSize = true;
+            this.checkHideOverlayOnMouseOver.Location = new System.Drawing.Point(7, 348);
+            this.checkHideOverlayOnMouseOver.Name = "checkHideOverlayOnMouseOver";
+            this.checkHideOverlayOnMouseOver.Size = new System.Drawing.Size(246, 19);
+            this.checkHideOverlayOnMouseOver.TabIndex = 9;
+            this.checkHideOverlayOnMouseOver.Tag = "hideOverlaysFromMouse";
+            this.checkHideOverlayOnMouseOver.Text = "Prevent mouse entering overlay windows.";
+            this.checkHideOverlayOnMouseOver.UseVisualStyleBackColor = true;
+            // 
+            // label4
+            // 
+            this.label4.Location = new System.Drawing.Point(7, 286);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(427, 34);
+            this.label4.TabIndex = 8;
+            this.label4.Text = "Players using mouse and keyboard have reported some issues with overlay windows t" +
+    "rapping focus from the game.";
+            // 
             // checkHidePlottersFromWeapons
             // 
             this.checkHidePlottersFromWeapons.Checked = true;
             this.checkHidePlottersFromWeapons.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkHidePlottersFromWeapons.Location = new System.Drawing.Point(8, 132);
+            this.checkHidePlottersFromWeapons.Location = new System.Drawing.Point(7, 323);
             this.checkHidePlottersFromWeapons.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.checkHidePlottersFromWeapons.Name = "checkHidePlottersFromWeapons";
             this.checkHidePlottersFromWeapons.Size = new System.Drawing.Size(431, 19);
@@ -164,13 +203,13 @@ namespace SrvSurvey
             // 
             this.checkFocusOnMinimize.Checked = true;
             this.checkFocusOnMinimize.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkFocusOnMinimize.Location = new System.Drawing.Point(8, 107);
+            this.checkFocusOnMinimize.Location = new System.Drawing.Point(8, 133);
             this.checkFocusOnMinimize.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.checkFocusOnMinimize.Name = "checkFocusOnMinimize";
             this.checkFocusOnMinimize.Size = new System.Drawing.Size(431, 19);
             this.checkFocusOnMinimize.TabIndex = 2;
             this.checkFocusOnMinimize.Tag = "focusGameOnMinimize";
-            this.checkFocusOnMinimize.Text = "Set focus on Elite Dangerous when minimizing SrvSurvey.";
+            this.checkFocusOnMinimize.Text = "Set focus on Elite Dangerous when minimizing Srv Survey.";
             this.checkFocusOnMinimize.UseVisualStyleBackColor = true;
             // 
             // numOpacity
@@ -186,7 +225,7 @@ namespace SrvSurvey
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(9, 70);
+            this.label2.Location = new System.Drawing.Point(8, 70);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(92, 15);
@@ -212,10 +251,10 @@ namespace SrvSurvey
             // 
             this.txtCommander.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtCommander.Location = new System.Drawing.Point(9, 33);
+            this.txtCommander.Location = new System.Drawing.Point(8, 33);
             this.txtCommander.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.txtCommander.Name = "txtCommander";
-            this.txtCommander.Size = new System.Drawing.Size(427, 23);
+            this.txtCommander.Size = new System.Drawing.Size(432, 23);
             this.txtCommander.TabIndex = 1;
             this.txtCommander.Tag = "preferredCommander";
             // 
@@ -522,6 +561,7 @@ namespace SrvSurvey
             this.checkProcessScreenshots.Tag = "processScreenshots";
             this.checkProcessScreenshots.Text = "Convert .bmp screenshots into .png files";
             this.checkProcessScreenshots.UseVisualStyleBackColor = true;
+            this.checkProcessScreenshots.CheckedChanged += new System.EventHandler(this.checkProcessSAcreenshots_CheckedChanged);
             // 
             // tabPage2
             // 
@@ -639,5 +679,8 @@ namespace SrvSurvey
         private CheckBox checkProcessScreenshots;
         private PictureBox pictureBox3;
         private CheckBox checkDeleteScreenshotOriginal;
+        private CheckBox checkHideOverlayOnMouseOver;
+        private Label label4;
+        private CheckBox checkMinimizeOnStart;
     }
 }

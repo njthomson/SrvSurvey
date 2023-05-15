@@ -17,6 +17,8 @@ namespace SrvSurvey
             Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), 
             "Frontier Developments", "Elite Dangerous");
 
+        public static Point gameCenter = Point.Empty;
+
         public static bool isGameRunning
         {
             get
@@ -58,12 +60,18 @@ namespace SrvSurvey
             var windowTitleHeight = windowRect.Bottom - windowRect.Top - clientRect.Bottom;
             if (windowTitleHeight == 0)
                 windowTitleHeight = 4;
-
-            return new Rectangle(
+            
+            var rect = new Rectangle(
                 // use the Window rect for the top left corder
                 windowRect.Left, windowRect.Top + windowTitleHeight,
                 // use the Client rect for the width/height
                 clientRect.Right, clientRect.Bottom);
+
+            Elite.gameCenter = new Point(
+                rect.Left + (int)((float)rect.Width / 2f),
+                rect.Top + (int)((float)rect.Height / 2f));
+
+            return rect;
         }
 
         private static IntPtr getWindowHandle()
