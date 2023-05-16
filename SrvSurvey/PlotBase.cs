@@ -36,8 +36,10 @@ namespace SrvSurvey
             GC.SuppressFinalize(this);
         }
 
-        protected virtual void Dispose(bool disposing)
+        protected override void Dispose(bool disposing)
         {
+            base.Dispose(disposing);
+
             if (disposing)
             {
                 if (game != null)
@@ -99,6 +101,8 @@ namespace SrvSurvey
 
         protected virtual void Game_modeChanged(GameMode newMode, bool force)
         {
+            if (this.IsDisposed) return;
+
             if (this.Opacity > 0 && !game.showBodyPlotters)
             {
                 this.Opacity = 0;
@@ -111,6 +115,8 @@ namespace SrvSurvey
 
         protected virtual void Status_StatusChanged(bool blink)
         {
+            if (this.IsDisposed) return;
+
             this.touchdownLocation.Current = Status.here;
 
             if (this.srvLocation != null)
@@ -121,6 +127,8 @@ namespace SrvSurvey
 
         protected void Journals_onJournalEntry(JournalEntry entry, int index)
         {
+            if (this.IsDisposed) return;
+
             this.onJournalEntry((dynamic)entry);
         }
 

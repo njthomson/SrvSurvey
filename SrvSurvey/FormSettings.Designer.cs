@@ -35,6 +35,7 @@ namespace SrvSurvey
             this.btnSave = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.linkDataFiles = new System.Windows.Forms.LinkLabel();
             this.checkMinimizeOnStart = new System.Windows.Forms.CheckBox();
             this.checkHideOverlayOnMouseOver = new System.Windows.Forms.CheckBox();
             this.label4 = new System.Windows.Forms.Label();
@@ -135,6 +136,7 @@ namespace SrvSurvey
             // tabPage1
             // 
             this.tabPage1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.tabPage1.Controls.Add(this.linkDataFiles);
             this.tabPage1.Controls.Add(this.checkMinimizeOnStart);
             this.tabPage1.Controls.Add(this.checkHideOverlayOnMouseOver);
             this.tabPage1.Controls.Add(this.label4);
@@ -153,6 +155,18 @@ namespace SrvSurvey
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "General";
             // 
+            // linkDataFiles
+            // 
+            this.linkDataFiles.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.linkDataFiles.AutoSize = true;
+            this.linkDataFiles.Location = new System.Drawing.Point(417, 12);
+            this.linkDataFiles.Name = "linkDataFiles";
+            this.linkDataFiles.Size = new System.Drawing.Size(30, 15);
+            this.linkDataFiles.TabIndex = 12;
+            this.linkDataFiles.TabStop = true;
+            this.linkDataFiles.Text = "data";
+            this.linkDataFiles.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkDataFiles_LinkClicked);
+            // 
             // checkMinimizeOnStart
             // 
             this.checkMinimizeOnStart.Checked = true;
@@ -169,7 +183,7 @@ namespace SrvSurvey
             // checkHideOverlayOnMouseOver
             // 
             this.checkHideOverlayOnMouseOver.AutoSize = true;
-            this.checkHideOverlayOnMouseOver.Location = new System.Drawing.Point(7, 348);
+            this.checkHideOverlayOnMouseOver.Location = new System.Drawing.Point(8, 255);
             this.checkHideOverlayOnMouseOver.Name = "checkHideOverlayOnMouseOver";
             this.checkHideOverlayOnMouseOver.Size = new System.Drawing.Size(246, 19);
             this.checkHideOverlayOnMouseOver.TabIndex = 9;
@@ -179,7 +193,7 @@ namespace SrvSurvey
             // 
             // label4
             // 
-            this.label4.Location = new System.Drawing.Point(7, 286);
+            this.label4.Location = new System.Drawing.Point(8, 193);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(427, 34);
             this.label4.TabIndex = 8;
@@ -190,7 +204,7 @@ namespace SrvSurvey
             // 
             this.checkHidePlottersFromWeapons.Checked = true;
             this.checkHidePlottersFromWeapons.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkHidePlottersFromWeapons.Location = new System.Drawing.Point(7, 323);
+            this.checkHidePlottersFromWeapons.Location = new System.Drawing.Point(8, 230);
             this.checkHidePlottersFromWeapons.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.checkHidePlottersFromWeapons.Name = "checkHidePlottersFromWeapons";
             this.checkHidePlottersFromWeapons.Size = new System.Drawing.Size(431, 19);
@@ -682,5 +696,6 @@ namespace SrvSurvey
         private CheckBox checkHideOverlayOnMouseOver;
         private Label label4;
         private CheckBox checkMinimizeOnStart;
+        private LinkLabel linkDataFiles;
     }
 }

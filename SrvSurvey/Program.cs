@@ -95,7 +95,6 @@ namespace SrvSurvey
 
                 var plotter = Program.activePlotters[name];
                 plotter.Close();
-                plotter.Dispose();
                 Program.activePlotters.Remove(plotter.Name);
             }
         }
@@ -111,7 +110,7 @@ namespace SrvSurvey
 
         public static void repositionPlotters(Rectangle rect)
         {
-            Game.log($"Program.repositionPlotters: rect{rect}");
+            Game.log($"Program.repositionPlotters: {activePlotters.Count}, rect{rect}");
 
             foreach (PlotterForm form in activePlotters.Values)
                 form.reposition(rect);
@@ -119,7 +118,7 @@ namespace SrvSurvey
 
         public static void hideActivePlotters()
         {
-            Game.log($"Program.hideActivePlotters");
+            Game.log($"Program.hideActivePlotters: {activePlotters.Count}");
 
             foreach (PlotterForm form in activePlotters.Values)
                 form.Opacity = 0;
@@ -127,7 +126,7 @@ namespace SrvSurvey
 
         public static void showActivePlotters()
         {
-            Game.log($"Program.showActivePlotters");
+            Game.log($"Program.showActivePlotters: {activePlotters.Count}");
 
             foreach (PlotterForm form in activePlotters.Values)
                 form.Opacity = Game.settings.Opacity;

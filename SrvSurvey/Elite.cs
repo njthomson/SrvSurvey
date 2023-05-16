@@ -94,7 +94,6 @@ namespace SrvSurvey
                 {
                     var doc = XDocument.Load(sr);
                     var element = doc.Element("DisplayConfig")!.Element("FullScreen")!;
-                    Game.log(element);
                     return int.Parse(element.Value);
                 }
                 catch

@@ -8,7 +8,8 @@ namespace SrvSurvey
     internal partial class Main : Form
     {
         private Game? game;
-        private FileSystemWatcher? folderWatcher;
+        private FileSystemWatcher? logFolderWatcher;
+        private FileSystemWatcher? settingsFolderWatcher;
         private FileSystemWatcher? screenshotWatcher;
 
         private Rectangle lastWindowRect;
@@ -23,18 +24,18 @@ namespace SrvSurvey
             if (Path.Exists(SrvSurvey.journalFolder))
             {
                 // watch for creation of new log files
-                this.folderWatcher = new FileSystemWatcher(SrvSurvey.journalFolder, "*.log");
-                this.folderWatcher.Created += FolderWatcher_Created;
-                this.folderWatcher.EnableRaisingEvents = true;
+                this.logFolderWatcher = new FileSystemWatcher(SrvSurvey.journalFolder, "*.log");
+                this.logFolderWatcher.Created += logFolderWatcher_Created;
+                this.logFolderWatcher.EnableRaisingEvents = true;
                 Game.log($"Watching folder: {SrvSurvey.journalFolder}");
             }
 
             if (Path.Exists(Elite.displaySettingsFolder))
             {
                 // watch for changes in DisplaySettings.xml 
-                this.folderWatcher = new FileSystemWatcher(Elite.displaySettingsFolder, "DisplaySettings.xml");
-                this.folderWatcher.Changed += FolderWatcher_Changed;
-                this.folderWatcher.EnableRaisingEvents = true;
+                this.settingsFolderWatcher = new FileSystemWatcher(Elite.displaySettingsFolder, "DisplaySettings.xml");
+                this.settingsFolderWatcher.Changed += settingsFolderWatcher_Changed;
+                this.settingsFolderWatcher.EnableRaisingEvents = true;
                 Game.log($"Watching file: {Elite.displaySettingsXml}");
             }
             else
@@ -117,7 +118,7 @@ namespace SrvSurvey
             this.updateGuardianTexts();
         }
 
-        private void FolderWatcher_Changed(object sender, FileSystemEventArgs e)
+        private void settingsFolderWatcher_Changed(object sender, FileSystemEventArgs e)
         {
             this.Invoke((MethodInvoker)delegate
             {
@@ -126,16 +127,16 @@ namespace SrvSurvey
             });
         }
 
-        private void FolderWatcher_Created(object sender, FileSystemEventArgs e)
+        private void logFolderWatcher_Created(object sender, FileSystemEventArgs e)
         {
-            Game.log($"New journal file created: {e.Name}");
-            if (this.game == null)
+            this.Invoke((MethodInvoker)delegate
             {
-                this.Invoke((MethodInvoker)delegate
+                Game.log($"New journal file created: {e.Name}");
+                if (this.game == null)
                 {
                     this.newGame();
-                });
-            }
+                }
+            });
         }
 
         private void removeGame()

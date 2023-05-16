@@ -1,6 +1,5 @@
 ﻿using SrvSurvey.game;
 using SrvSurvey.units;
-using System.Diagnostics;
 using System.Drawing.Drawing2D;
 
 namespace SrvSurvey
@@ -13,7 +12,7 @@ namespace SrvSurvey
         origin,     // show alignment to site origin
     }
 
-    internal partial class PlotGuardians : PlotBase
+    internal partial class PlotGuardians : PlotBase, IDisposable
     {
         private SiteTemplate? template;
         private Image? siteMap;
@@ -175,7 +174,7 @@ namespace SrvSurvey
 
             // try parsing the raw text as site type?
             GuardianSiteData.SiteType parsedType = GuardianSiteData.SiteType.unknown;
-            if (siteData.type == GuardianSiteData.SiteType.unknown)
+            if (siteData.type == GuardianSiteData.SiteType.unknown || this.mode == Mode.siteType)
             {
                 // try matching to the enum?
                 if (!Enum.TryParse<GuardianSiteData.SiteType>(msg, out parsedType))
@@ -433,6 +432,11 @@ namespace SrvSurvey
             if (this.template != null)
             {
                 // alpha
+                //this.template.scaleFactor = 0.88f;
+                //this.template.imageOffset.X = 737;
+                //this.template.imageOffset.Y = 885;
+
+
                 //this.template.scaleFactor = 0.75f;
                 //this.template.imageOffset.X = 730;
                 //this.template.imageOffset.Y = 885;
@@ -452,6 +456,12 @@ namespace SrvSurvey
 
                 //this.template.imageOffset.X = 652;
                 //this.template.imageOffset.Y = 714;
+
+                // gamma
+                //this.template.scaleFactor = 1.15f;
+
+                //this.template.imageOffset.X = 915;
+                //this.template.imageOffset.Y = 685;
 
                 /*
     "imageOffset": "638,752",

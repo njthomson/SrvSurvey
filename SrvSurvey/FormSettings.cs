@@ -208,5 +208,9 @@ namespace SrvSurvey
             Util.openLink(linkLabel.Text);
         }
 
+        private void linkDataFiles_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Util.openLink(Application.UserAppDataPath);
+        }
     }
 }
