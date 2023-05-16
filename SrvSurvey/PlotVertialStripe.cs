@@ -50,7 +50,7 @@ namespace SrvSurvey
         {
             if (disposing)
             {
-                if (game != null)
+                if (game?.status != null)
                 {
                     game.status!.StatusChanged -= Status_StatusChanged;
                 }

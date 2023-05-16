@@ -45,8 +45,10 @@ namespace SrvSurvey
                 if (game != null)
                 {
                     game.modeChanged -= Game_modeChanged;
-                    game.status!.StatusChanged -= Status_StatusChanged;
-                    game.journals!.onJournalEntry -= Journals_onJournalEntry;
+                    if (game.status != null)
+                        game.status.StatusChanged -= Status_StatusChanged;
+                    if (game.journals != null)
+                        game.journals.onJournalEntry -= Journals_onJournalEntry;
                     game = null!;
                 }
             }

@@ -21,6 +21,9 @@
         public string commander;
         public bool isOdyssey;
 
+        /// <summary>
+        /// The name of the current star system, or body if we are close to one.
+        /// </summary>
         public string lastSystemLocation;
 
         public string currentSystem;

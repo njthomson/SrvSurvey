@@ -619,12 +619,6 @@ namespace SrvSurvey.game
                 log($"Genuses ({this.nearBody.data.countOrganisms}): " + string.Join(",", this.nearBody.data.organisms.Values.Select(_ => _.genusLocalized)));
             }
 
-            if (this.systemLocation == null && this.nearBody != null && status!.BodyName == this.nearBody.bodyName)
-            {
-                Game.log("createNearBody: add systemLocation needed here?");
-                //this.systemLocation = Util.getLocationString( nearBody.systemAddress, entry.Body) this.nearBody?.bodyName;
-            }
-
             //if (this.nearBody?.guardianSiteCount > 0)
             //{
             //    // do we have an ApproachSettlement for this site?
@@ -742,11 +736,6 @@ namespace SrvSurvey.game
 
         #region location tracking
 
-        /// <summary>
-        /// The name of the current star system, or body if we are close to one.
-        /// </summary>
-        public string systemLocation { get; private set; }
-
         public void setLocations(FSDJump entry)
         {
             Game.log($"setLocations: from FSDJump: {entry.StarSystem} / {entry.Body} ({entry.BodyType})");
@@ -778,7 +767,7 @@ namespace SrvSurvey.game
                 cmdr.currentBodyRadius = -1;
             }
 
-            this.systemLocation = Util.getLocationString(entry.StarSystem, entry.Body);
+            cmdr.lastSystemLocation = Util.getLocationString(entry.StarSystem, entry.Body);
             cmdr.Save();
         }
 
@@ -801,7 +790,7 @@ namespace SrvSurvey.game
                 cmdr.currentBodyRadius = this.findLastRadius(entry.Body);
             }
 
-            this.systemLocation = Util.getLocationString(entry.StarSystem, entry.Body);
+            cmdr.lastSystemLocation = Util.getLocationString(entry.StarSystem, entry.Body);
             cmdr.Save();
         }
 
@@ -832,7 +821,7 @@ namespace SrvSurvey.game
                 cmdr.currentBodyRadius = -1;
             }
 
-            this.systemLocation = Util.getLocationString(entry.Starsystem, entry.Body);
+            cmdr.lastSystemLocation = Util.getLocationString(entry.Starsystem, entry.Body);
             cmdr.Save();
         }
 
@@ -863,7 +852,7 @@ namespace SrvSurvey.game
                 cmdr.currentBodyRadius = -1;
             }
 
-            this.systemLocation = Util.getLocationString(entry.StarSystem, entry.Body);
+            cmdr.lastSystemLocation = Util.getLocationString(entry.StarSystem, entry.Body);
             cmdr.Save();
         }
 

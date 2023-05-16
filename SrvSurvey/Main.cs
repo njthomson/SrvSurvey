@@ -237,10 +237,8 @@ namespace SrvSurvey
 
             this.txtVehicle.Text = game.vehicle.ToString();
 
-            if (!string.IsNullOrEmpty(game.systemLocation))
-                this.txtLocation.Text = game.cmdr?.lastSystemLocation ?? game.systemLocation;
-            else
-                this.txtLocation.Text = "Unknown";
+            this.txtLocation.Text = game.cmdr?.lastSystemLocation
+                ?? "Unknown";
 
             // TODO: use "game.cmdr.lastBody" instead??
             if (game.nearBody != null)
@@ -494,7 +492,7 @@ namespace SrvSurvey
 
             if (Game.settings.targetLatLongActive)
             {
-                Game.log($"Main.Set target lat/long: {Game.settings.targetLatLong}, near: {game?.systemLocation}");
+                Game.log($"Main.Set target lat/long: {Game.settings.targetLatLong}, near: {game?.cmdr.lastSystemLocation}");
                 setTargetLatLong();
             }
             else
@@ -724,7 +722,7 @@ namespace SrvSurvey
 
                 var duration = DateTime.Now - entry.timestamp;
                 if (duration.TotalSeconds < 10 && game.status.hasLatLong)
-                    extraTxt += $"\r\n  Lat: {latitude}° Long: {longitude}°  Heading: {heading}°";
+                    extraTxt += $"\r\n  Lat: {latitude}° Long: {longitude}°\r\n  Heading: {heading}°  Altitude: {int.Parse(entry.Altitude)}m";
 
                 this.addBannerToScreenshot(entry, sourceImage, extraTxt);
             }
@@ -765,7 +763,7 @@ namespace SrvSurvey
                 /* fake details - for creating sample image in settings
                 var txtBig = $"Body: <Nearest body name>";
                 var txt = $"System: <Current system name>\r\nCmdr: <Commander name>  -  <time stamp>"
-                    + "\r\n  Ancient Ruins <N> - <site type>\r\n  Lat: +123.456789° Long: -12.345678°  Heading: 123°";
+                    + "\r\n  Ancient Ruins <N> - <site type>\r\n  Lat: +123.456789° Long: -12.345678°\r\n  Heading: 123°  Altitute: 123m";
                 // */
 
                 var fontBig = GameColors.fontScreenshotBannerBig;
