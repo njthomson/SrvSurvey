@@ -56,7 +56,7 @@ namespace SrvSurvey
                             break;
 
                         case nameof(NumericUpDown):
-                            ((NumericUpDown)ctrl).Value = (decimal)((double)map[name].GetValue(Game.settings)! * 100.0);
+                            ((NumericUpDown)ctrl).Value = Convert.ToDecimal(map[name].GetValue(Game.settings));
                             break;
 
                         default:
@@ -91,7 +91,7 @@ namespace SrvSurvey
                             break;
 
                         case nameof(NumericUpDown):
-                            val = (double)((NumericUpDown)ctrl).Value / 100;
+                            val = Convert.ToInt32( ((NumericUpDown)ctrl).Value );
                             break;
 
                         default:

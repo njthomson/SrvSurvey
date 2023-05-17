@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,6 +11,9 @@ namespace SrvSurvey
 {
     internal class PlotVertialStripe : Form, PlotterForm, IDisposable
     {
+        // TODO: use an enum!
+        public static bool mode = false;
+
         protected Game game = Game.activeGame!;
 
         private PlotVertialStripe()
@@ -90,6 +94,9 @@ namespace SrvSurvey
 
         private double getOpacity()
         {
+            if (mode)
+                return 1;
+
             const float limit = 200;
             if (game.status.Altitude > limit + 100)
                 return 0;
@@ -142,7 +149,40 @@ namespace SrvSurvey
             var g = e.Graphics;
             g.Clear(Color.Red);
 
-            // top . height
+            if (PlotVertialStripe.mode)
+                this.drawBetaSiteTarget(g);
+            else
+                this.drawButtressTarget(g);
+
+        }
+
+        private void drawBetaSiteTarget(Graphics g)
+        {
+            var pp = new Pen(Color.Black, 4)
+            {
+                DashStyle = DashStyle.Dot
+            };
+
+            var w = (this.Width / 2f);
+
+            var d = 120f;
+            var x = w - (d / 2f);
+            var y = this.Height * 0.255f;
+            var rect = new RectangleF(x, y, d, d);
+            g.FillEllipse(Brushes.Yellow, rect);
+            g.FillRectangle(Brushes.Yellow, w - 5, y, 10, 460);
+
+            rect.Inflate(-10, -10);
+            g.DrawEllipse(pp, rect);
+
+            //g.FillRectangle(Brushes.Yellow, w - 5, y, 10, 460);
+            g.DrawLine(pp, w, y + d, w, y + 456);
+        }
+
+        private void drawButtressTarget(Graphics g)
+        {
+
+            // top / height
             var t = this.Height / 2f;
             var h = (this.Height - t) * 0.8f;
 

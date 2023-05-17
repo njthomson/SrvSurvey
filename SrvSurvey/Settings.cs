@@ -21,7 +21,10 @@ namespace SrvSurvey
         public bool hidePlottersFromCombatSuits = false;
         public bool hideOverlaysFromMouse = true;
 
-        public double Opacity = 0.5;
+        [JsonIgnore]
+        public float Opacity { get => plotterOpacity / 100f; }
+        public float plotterOpacity = 50;
+
         public Point mainLocation;
         public Rectangle logsLocation;
 
@@ -32,6 +35,10 @@ namespace SrvSurvey
         public bool useGuardianAerialScreenshotsFolder = true;
         public string screenshotSourceFolder = Elite.defaultScreenshotFolder;
         public string screenshotTargetFolder = Path.Combine(Elite.defaultScreenshotFolder, "converted");
+
+        public double aerialAltAlpha = 1200; // confirm this
+        public double aerialAltBeta = 1550;
+        public double aerialAltGamma = 1600;
 
         // configurable colours and fonts
         public Color GameOrange = Color.FromArgb(255, 255, 113, 00); // #FF7100

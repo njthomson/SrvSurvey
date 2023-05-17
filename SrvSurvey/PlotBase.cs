@@ -319,7 +319,7 @@ namespace SrvSurvey
             g.DrawString(msg, Game.settings.fontSmall, GameColors.brushGameOrange, tx, ty);
         }
 
-        protected void drawFooterText(string msg)
+        protected void drawFooterText(string msg, Brush? brush = null)
         {
             if (g == null) return;
 
@@ -329,7 +329,7 @@ namespace SrvSurvey
             var sz = g.MeasureString(msg, Game.settings.fontSmall);
             var tx = mid.Width - (sz.Width / 2);
             var ty = this.Height - sz.Height - 6;
-            g.DrawString(msg, Game.settings.fontSmall, GameColors.brushGameOrange, tx, ty);
+            g.DrawString(msg, Game.settings.fontSmall, brush ?? GameColors.brushGameOrange, tx, ty);
         }
     }
 }

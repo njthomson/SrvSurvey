@@ -318,7 +318,8 @@ namespace SrvSurvey.game
             get => Game.settings.enableGuardianSites
                 && this.nearBody?.siteData != null
                 && this.isMode(GameMode.InSrv, GameMode.OnFoot, GameMode.Landed, GameMode.Flying)
-                && !this.hidePlottersFromCombatSuits;
+                && !this.hidePlottersFromCombatSuits
+                && this.status.Altitude < 4000;
         }
 
         #endregion

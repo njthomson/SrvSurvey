@@ -1,4 +1,5 @@
-﻿using SrvSurvey.game;
+﻿using DecimalMath;
+using SrvSurvey.game;
 using SrvSurvey.units;
 using System.Drawing.Drawing2D;
 
@@ -29,7 +30,7 @@ namespace SrvSurvey
         private PointF siteTouchdownOffset;
         private PointF commanderOffset;
 
-        private GuardianSiteData siteData { get => game.nearBody?.siteData; }
+        private GuardianSiteData siteData { get => game?.nearBody?.siteData; }
 
         private PlotGuardians() : base()
         {
@@ -44,8 +45,8 @@ namespace SrvSurvey
             PlotGuardians.instance = this;
             InitializeComponent();
 
-            //this.Width = 500;
-            //this.Height = 500;
+            this.Width = 500;
+            this.Height = 500;
 
             SiteTemplate.Import();
 
@@ -268,16 +269,24 @@ namespace SrvSurvey
 
             // temporary stuff after here
 
-            if (this.template != null && entry.Message.StartsWith("sf"))
+            if (this.template != null && msg.StartsWith("sf"))
             {
                 // temporary
                 float newScale;
-                if (float.TryParse(entry.Message.Substring(3), out newScale))
+                if (float.TryParse(msg.Substring(3), out newScale))
                 {
                     Game.log($"scaleFactor: {this.template.scaleFactor} => {newScale}");
                     this.template.scaleFactor = newScale;
                     this.Status_StatusChanged(false);
                 }
+            }
+
+            if (msg == "..")
+            {
+                var dist = Util.getDistance(Status.here, siteData.location, (decimal)game.nearBody!.radius);
+                // get angle relative to North, then adjust by siteHeading
+                Angle angle = Util.getBearing(Status.here, siteData.location) - siteData.siteHeading;
+                Game.log($"!! angle: {angle}, dist: {Math.Round(dist)}");
             }
         }
 
@@ -428,7 +437,7 @@ namespace SrvSurvey
 
         protected override void OnPaintBackground(PaintEventArgs e)
         {
-            Game.log($"-- -- --> PlotGuardians: OnPaintBackground {this.template?.imageOffset} / {this.template?.scaleFactor}");
+            //Game.log($"-- -- --> PlotGuardians: OnPaintBackground {this.template?.imageOffset} / {this.template?.scaleFactor}");
             if (this.template != null)
             {
                 // alpha
@@ -516,7 +525,7 @@ namespace SrvSurvey
                 sf = 0.5f;
             g.ScaleTransform(sf, sf);
 
-            var siteBrush = GameColors.brushOffTarget; // brushOffTarget;
+            var siteBrush = GameColors.brushOffTarget;
             var sitePenI = GameColors.penGameOrangeDim2;
             var sitePenO = GameColors.penGameOrangeDim2;
             var shipPen = GameColors.penGreen2;
@@ -592,12 +601,30 @@ namespace SrvSurvey
             }
 
             var alt = game.status.Altitude.ToString("N0");
-            var footerTxt = $"Offset: {pp.X}m, {pp.Y}m  | Alt: {alt}m";
+            var targetAlt = 0d;
+            switch (siteData.type)
+            {
+                case GuardianSiteData.SiteType.alpha:
+                    targetAlt = Game.settings.aerialAltAlpha;
+                    break;
+                case GuardianSiteData.SiteType.beta:
+                    targetAlt = Game.settings.aerialAltBeta;
+                    break;
+                case GuardianSiteData.SiteType.gamma:
+                    targetAlt = Game.settings.aerialAltGamma;
+                    break;
+            }
+            //var footerTxt = $"Offset: {pp.X}m, {pp.Y}m  | Alt: {alt}m | Target: {targetAlt}m";
+            var footerTxt = $"Altitude: {alt}m | Target: {targetAlt}m";
 
             // header text and rotation arrows
             this.drawOriginRotationGuide();
-            this.drawFooterText(footerTxt);
 
+            var footerBrush = Math.Abs(targetAlt - (int)game.status.Altitude) < 50
+                ? GameColors.brushCyan
+                : GameColors.brushGameOrange;
+
+            this.drawFooterText(footerTxt, footerBrush);
         }
 
         private void drawOriginRotationGuide()
@@ -706,61 +733,97 @@ namespace SrvSurvey
         private void drawArtifacts()
         {
             g.ResetTransform();
-            //this.clipToMiddle(4, 26, 4, 24);
-            //g.TranslateTransform(50, 150);
             g.TranslateTransform(mid.Width, mid.Height);
-            //g.TranslateTransform(commanderOffset.X, -commanderOffset.Y);
             g.ScaleTransform(this.scale, this.scale);
-            //g.RotateTransform(360-game.status.Heading);
+            g.RotateTransform(-game.status.Heading);
+            float x = commanderOffset.X;
+            float y = commanderOffset.Y;
 
-            Game.log(this.commanderOffset);
-            var z = 5;
-
-            var aa = new Angle(game.status.Heading - siteData.siteHeading);
-            var zz = Util.rotateLine(aa, +50);
-
-            var tx = commanderOffset.X - zz.Width;
-            var ty = commanderOffset.Y - zz.Height;
-
-
-            g.FillRectangle(Brushes.Blue, tx - z, ty - z, z * 2, z * 2);
-
-            Point[] pps = { new Point((int)tx, (int)ty) };
+            //var pp = new PointF(
+            //    commanderOffset.X,// / this.scale,
+            //    commanderOffset.Y// / this.scale
+            //);
+            PointF[] pps = { new PointF(commanderOffset.X, commanderOffset.Y) };
             g.TransformPoints(CoordinateSpace.Page, CoordinateSpace.World, pps);
+            var pp = pps[0];
+
+            //var td = new TrackingDelta(game.nearBody.radius, siteData.location);
+
+            //pp.X *= this.scale;
+            //pp.Y *= this.scale;
+
+            this.drawHeaderText($"?d? {pp}");
+
+            // ** ** ** **
+            g.ResetTransform();
+            g.TranslateTransform(pp.X, pp.Y);
+            g.ScaleTransform(this.scale, this.scale);
+            g.RotateTransform(360 - game.status.Heading);
+
+            // Synuefe TP-F b44-0 CD 1-ruins-2:
+            this.drawSitePoi(151, 120, "casket");
+            this.drawSitePoi(134f, 196, "tablet");
+            this.drawSitePoi(122, 534, "totem");
+            this.drawSitePoi(125.6f, 606, "urn");
+            this.drawSitePoi(104f, 421, "tablet");
+            this.drawSitePoi(90.6f, 241, "casket");
+            this.drawSitePoi(141.4f, 538, "urn");
+            this.drawSitePoi(111.9f, 560, "urn");
+            this.drawSitePoi(26.5f, 367, "casket");
+            this.drawSitePoi(5.5f, 549, "orb");
+            this.drawSitePoi(357.8f, 496, "urn");
+            this.drawSitePoi(286.7f, 285, "urn");
+            this.drawSitePoi(258.1f, 544, "totem");
+            this.drawSitePoi(193.3f, 226, "casket");
+            this.drawSitePoi(181.7f, 499, "tablet");
+            this.drawSitePoi(298.7f, 625, "urn");
+
+            // Synuefe LY-I b42-2 C 2-ruins-3:
+            this.drawSitePoi(215.4f, 565, "totem");
+            this.drawSitePoi(200.7f, 485, "orb");
+            this.drawSitePoi(208.1f, 415, "tablet");
+            this.drawSitePoi(179.3f, 394, "casket");
+            this.drawSitePoi(169.2f, 276, "orb");
+            this.drawSitePoi(337f, 126, "orb");
+            this.drawSitePoi(300f, 183, "totem");
+
+
+            // relics ...
+
+            // Synuefe TP-F b44-0 CD 1-ruins-2:
+            this.drawSitePoi(80.8f, 408, "relic");
+            this.drawSitePoi(236.8f, 612, "relic"); // leaning
+            this.drawSitePoi(151, 358, "relic");
+            this.drawSitePoi(35.5f, 515, "relic");
+            this.drawSitePoi(292.3f, 413, "relic"); // leaning
+            // this.drawSitePoi(292, 378, "relic"); // ? ish
+
+            // Synuefe LY-I b42-2 C 2-ruins-3:
+            this.drawSitePoi(196.3f, 378, "relic");
+            this.drawSitePoi(328.8f, 358, "relic");
+
+
+
 
             // -- -- -- --
-            tx = -150; // + template.imageOffset.X;
-            ty = -250; // + template.imageOffset.Y;
+            this.drawFooterText($"?c? {(int)pp.X},{(int)pp.Y}");
+            //this.drawHeaderText($"?d? {commanderOffset}");
 
-            var length = (float)Math.Sqrt(Math.Pow(tx, 2) + Math.Pow(ty, 2));
-            if (ty < 0)
-                length *= -1;
-            
-            var rad = Math.Atan(tx / ty);
-            var a = Angle.FromRadians(rad);
-            a += siteData.siteHeading;
+        }
 
-            var dx = (float)Math.Sin(a.radians) * length;
-            var dy = (float)Math.Cos(a.radians) * length;
+        private void drawSitePoi(float angle, float dist, string type)
+        {
+            var d = type == "relic" ? 16f : 10f;
+            var dd = d / 2;
 
-            //var zz = Util.rotateLine(aa, +50);
+            var p = type == "relic"
+                ? new Pen(Color.CornflowerBlue, 4) { DashStyle = DashStyle.Dash, }
+                : new Pen(Color.PeachPuff, 2) { DashStyle = DashStyle.Dot, };
 
-            a += game.status.Heading;
-
-            //dx = commanderOffset.X - dx;
-            //dy = commanderOffset.Y + dy;
-
-            //g.DrawLine(GameColors.penCyan4, mid.Width - template.imageOffset.X, mid.Height + template.imageOffset.Y, 0, 0); // dx, dy);
-            var ss = this.scale * 0.9f;
-            g.DrawLine(GameColors.penCyan4, 0, 0, dx, dy); // dx, dy);
-            // --
-
-            var pp = pps[0];
-            //pp.Offset((int)tx, (int)ty);
-            pp.Offset(-mid.Width, -mid.Height);
-            var td = new TrackingDelta(game.nearBody.radius, siteData.location);
-            this.drawHeaderText($"?? {td}"); // / {(int)length} / {(int)dx},{(int)dy}");
-            this.drawFooterText($"?? {(int)length} / {(int)dx},{(int)dy}");
+            var sz = Util.rotateLine(
+                180 - siteData.siteHeading - angle,
+                dist);
+            g.DrawEllipse(p, -sz.Width - dd, -sz.Height - dd, d, d);
 
 
         }

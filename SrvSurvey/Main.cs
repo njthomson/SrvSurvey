@@ -592,6 +592,8 @@ namespace SrvSurvey
         private void btnRuinsOrigin_Click(object sender, EventArgs e)
         {
             PlotGuardians.switchMode(Mode.origin);
+            //PlotVertialStripe.mode = true;
+            //Program.showPlotter<PlotVertialStripe>();
         }
 
         #region screenshot manipulations
@@ -722,7 +724,7 @@ namespace SrvSurvey
 
                 var duration = DateTime.Now - entry.timestamp;
                 if (duration.TotalSeconds < 10 && game.status.hasLatLong)
-                    extraTxt += $"\r\n  Lat: {latitude}° Long: {longitude}°\r\n  Heading: {heading}°  Altitude: {int.Parse(entry.Altitude)}m";
+                    extraTxt += $"\r\n  Lat: {latitude}° Long: {longitude}°\r\n  Heading: {heading}°  Altitude: {(int)float.Parse(entry.Altitude)}m";
 
                 this.addBannerToScreenshot(entry, sourceImage, extraTxt);
             }
