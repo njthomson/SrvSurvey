@@ -31,6 +31,7 @@
         public string? currentBody;
         public int currentBodyId;
         public double currentBodyRadius;
+        public double[] starPos;
 
         public string? lastOrganicScan;
         public BioScan? scanOne;

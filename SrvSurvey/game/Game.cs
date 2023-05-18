@@ -18,6 +18,7 @@ namespace SrvSurvey.game
 
             settings = Settings.Load();
             codexRef = new CodexRef();
+            canonn = new Canonn();
         }
 
         #region logging
@@ -40,6 +41,7 @@ namespace SrvSurvey.game
         public static Game? activeGame { get; private set; }
         public static Settings settings { get; private set; }
         public static CodexRef codexRef { get; private set; }
+        public static Canonn canonn { get; private set; }
         public bool initialized { get; private set; }
 
         /// <summary>
@@ -121,7 +123,7 @@ namespace SrvSurvey.game
                 {
                     this.status.StatusChanged -= Status_StatusChanged;
                     this.status.Dispose();
-                    this.status = null;
+                    this.status = null!;
                 }
             }
         }
@@ -743,6 +745,7 @@ namespace SrvSurvey.game
 
             cmdr.currentSystem = entry.StarSystem;
             cmdr.currentSystemAddress = entry.SystemAddress;
+            cmdr.starPos = entry.StarPos;
 
             if (entry.BodyType == "Planet")
             {
@@ -801,6 +804,7 @@ namespace SrvSurvey.game
 
             cmdr.currentSystem = entry.Starsystem;
             cmdr.currentSystemAddress = entry.SystemAddress;
+
             if (entry.BodyType == "Planet")
             {
                 cmdr.currentBody = entry.Body;
@@ -832,6 +836,8 @@ namespace SrvSurvey.game
 
             cmdr.currentSystem = entry.StarSystem;
             cmdr.currentSystemAddress = entry.SystemAddress;
+            cmdr.starPos = entry.StarPos;
+
             if (entry.BodyType == "Planet")
             {
                 cmdr.currentBody = entry.Body;

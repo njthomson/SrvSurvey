@@ -7,6 +7,9 @@ namespace SrvSurvey
 {
     class JournalFile
     {
+
+        public static string journalFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), @"Saved Games\Frontier Developments\Elite Dangerous\");
+
         private static readonly Dictionary<string, Type> typeMap;
 
         static JournalFile()
@@ -177,7 +180,7 @@ namespace SrvSurvey
 
         public static string? getCommanderJournalBefore(string? cmdr, bool isOdyssey, DateTime timestamp)
         {
-            var manyFiles = new DirectoryInfo(SrvSurvey.journalFolder)
+            var manyFiles = new DirectoryInfo(JournalFile.journalFolder)
                 .EnumerateFiles("*.log", SearchOption.TopDirectoryOnly)
                 .OrderByDescending(_ => _.LastWriteTimeUtc);
 

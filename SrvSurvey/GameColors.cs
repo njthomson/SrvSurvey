@@ -80,7 +80,7 @@ namespace SrvSurvey
             DashStyle = DashStyle.Dot
         };
 
-        public static Pen Lime2 = new Pen(LimeIsh, 2);
+        public static Pen penLime2 = new Pen(LimeIsh, 2);
 
         public static Pen penOrangeStripe3;
 
@@ -109,5 +109,8 @@ namespace SrvSurvey
 
         public static Font fontScreenshotBannerBig = new Font("Century Gothic", 14F, FontStyle.Bold, GraphicsUnit.Point);
         public static Font fontScreenshotBannerSmall = new Font("Century Gothic", 10F, FontStyle.Regular, GraphicsUnit.Point);
+
+        public static Pen penPoiRelic = new Pen(Color.CornflowerBlue, 4) { DashStyle = DashStyle.Dash, };
+        public static Pen penPoiPuddle = new Pen(Color.PeachPuff, 2) { DashStyle = DashStyle.Dot, };
     }
 }

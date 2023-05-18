@@ -23,7 +23,7 @@ namespace SrvSurvey
 
         static SrvSurvey()
         {
-            SrvSurvey.journalFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), @"Saved Games\Frontier Developments\Elite Dangerous\");
+            JournalFile.journalFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), @"Saved Games\Frontier Developments\Elite Dangerous\");
             SiteTemplate.Import();
         }
 
@@ -31,7 +31,7 @@ namespace SrvSurvey
         {
             get
             {
-                var entries = new DirectoryInfo(SrvSurvey.journalFolder).EnumerateFiles("*.log", SearchOption.TopDirectoryOnly);
+                var entries = new DirectoryInfo(JournalFile.journalFolder).EnumerateFiles("*.log", SearchOption.TopDirectoryOnly);
                 var lastOne = entries.OrderBy(_ => _.LastWriteTimeUtc).Last();
                 //return @"C:\Users\grinn\Saved Games\Frontier Developments\Elite Dangerous\Journal.2023-01-11T185238.01.log";
                 return lastOne.FullName;
@@ -62,7 +62,7 @@ namespace SrvSurvey
             //this.Opacity = 0.5;
 
 
-            //statusWatcher = new FileSystemWatcher(SrvSurvey.journalFolder, "Status.json"); // !!!
+            //statusWatcher = new FileSystemWatcher(JournalFile.journalFolder, "Status.json"); // !!!
             //statusWatcher.Changed += StatusWatcher_Changed;
             //statusWatcher.NotifyFilter = NotifyFilters.LastWrite;
             //statusWatcher.EnableRaisingEvents = true;
@@ -188,7 +188,7 @@ namespace SrvSurvey
         {
             // load old tracks image if found
             string filename = $"{this.survey.bodyName} - {this.survey.settlementName}.tracks.png";
-            string filepath = Path.Combine(SrvSurvey.journalFolder, "survey", filename);
+            string filepath = Path.Combine(JournalFile.journalFolder, "survey", filename);
             if (File.Exists(filepath))
             {
                 using (var i = Bitmap.FromFile(filepath))
@@ -498,7 +498,7 @@ namespace SrvSurvey
             {
                 // save the tracks
                 string filename = $"{this.survey.bodyName} - {this.survey.settlementName}.tracks.png";
-                string filepath = Path.Combine(SrvSurvey.journalFolder, "survey", filename);
+                string filepath = Path.Combine(JournalFile.journalFolder, "survey", filename);
                 this.plotSmudge.Save(filepath, System.Drawing.Imaging.ImageFormat.Png);
             }
         }
@@ -858,7 +858,7 @@ namespace SrvSurvey
         private void drawItemHighlight(Graphics g)
         {
             var txt = this.highlightPoi.poi.name;
-            if (this.highlightPoi.poi.poiType == POIType.Puddle && survey.puddles.ContainsKey(this.highlightPoi.poi.name))
+            if (this.highlightPoi.poi.type == POIType.Puddle && survey.puddles.ContainsKey(this.highlightPoi.poi.name))
             {
                 // for puddles - show the contained item
                 txt += $": " + survey.puddles[this.highlightPoi.poi.name].ToUpper();

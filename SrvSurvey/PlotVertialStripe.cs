@@ -44,13 +44,7 @@ namespace SrvSurvey
             game.status.StatusChanged += Status_StatusChanged;
         }
 
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
+        protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
@@ -59,6 +53,8 @@ namespace SrvSurvey
                     game.status!.StatusChanged -= Status_StatusChanged;
                 }
             }
+
+            base.Dispose(disposing);
         }
 
         public void reposition(Rectangle gameRect)

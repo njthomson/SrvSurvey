@@ -17,10 +17,9 @@ namespace SrvSurvey
 
         public static void show(List<string> logs)
         {
-            if (activeForm != null)
-                ViewLogs.activeForm.Close();
+            if (activeForm == null)
+                ViewLogs.activeForm = new ViewLogs(logs);
 
-            ViewLogs.activeForm = new ViewLogs(logs);
             ViewLogs.activeForm.Show();
         }
 

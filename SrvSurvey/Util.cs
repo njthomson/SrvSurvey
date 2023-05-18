@@ -175,13 +175,13 @@ namespace SrvSurvey
             return rad;
         }
 
-        public static SizeF rotateLine(float angle, float length)
+        public static PointF rotateLine(float angle, float length)
         {
-            var heading= new Angle(angle);
+            var heading = new Angle(angle);
             var dx = (float)Math.Sin(heading.radians) * length;
             var dy = (float)Math.Cos(heading.radians) * length;
 
-            return new SizeF(dx, dy);
+            return new PointF(dx, dy);
         }
 
         public static double ToAngle(double opp, double adj)
@@ -201,6 +201,17 @@ namespace SrvSurvey
 
             species = $"$Codex_Ent_{species}_";
             return species;
+        }
+
+        public static double getSystemDistance(double[] here, double[] there)
+        {
+            // math.sqrt(sum(tuple([math.pow(p[i] - g[i], 2) for i in range(3)])))
+            var dist = Math.Sqrt(
+                Math.Pow(here[0] - there[0], 2)
+                + Math.Pow(here[1] - there[1], 2)
+                + Math.Pow(here[2] - there[2], 2)
+            );
+            return dist;
         }
     }
 }

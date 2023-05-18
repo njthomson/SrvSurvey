@@ -13,7 +13,7 @@ namespace SrvSurvey
     {
 
         public static readonly string Filename = "Status.json";
-        public static string Filepath { get => Path.Combine(SrvSurvey.journalFolder, Status.Filename); }
+        public static string Filepath { get => Path.Combine(JournalFile.journalFolder, Status.Filename); }
 
         #region properties from file
 
@@ -51,7 +51,7 @@ namespace SrvSurvey
             if (watch)
             {
                 // start watching the status file
-                this.fileWatcher = new FileSystemWatcher(SrvSurvey.journalFolder, Status.Filename);
+                this.fileWatcher = new FileSystemWatcher(JournalFile.journalFolder, Status.Filename);
                 this.fileWatcher.NotifyFilter = NotifyFilters.LastWrite;
                 this.fileWatcher.Changed += fileWatcher_Changed;
                 this.fileWatcher.EnableRaisingEvents = true;

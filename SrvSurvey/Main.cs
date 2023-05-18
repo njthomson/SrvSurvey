@@ -1,4 +1,5 @@
-﻿using SrvSurvey.game;
+﻿using Newtonsoft.Json.Serialization;
+using SrvSurvey.game;
 using SrvSurvey.units;
 using System.Diagnostics;
 using System.Drawing.Imaging;
@@ -21,13 +22,13 @@ namespace SrvSurvey
         {
             InitializeComponent();
 
-            if (Path.Exists(SrvSurvey.journalFolder))
+            if (Path.Exists(JournalFile.journalFolder))
             {
                 // watch for creation of new log files
-                this.logFolderWatcher = new FileSystemWatcher(SrvSurvey.journalFolder, "*.log");
+                this.logFolderWatcher = new FileSystemWatcher(JournalFile.journalFolder, "*.log");
                 this.logFolderWatcher.Created += logFolderWatcher_Created;
                 this.logFolderWatcher.EnableRaisingEvents = true;
-                Game.log($"Watching folder: {SrvSurvey.journalFolder}");
+                Game.log($"Watching folder: {JournalFile.journalFolder}");
             }
 
             if (Path.Exists(Elite.displaySettingsFolder))
@@ -106,7 +107,10 @@ namespace SrvSurvey
 
             this.timer1.Interval = 200;
             this.timer1.Start();
+
             Game.codexRef.init();
+            Game.canonn.init();
+            SiteTemplate.Import();
         }
 
         private void updateAllControls()
@@ -787,6 +791,10 @@ namespace SrvSurvey
 
         #endregion
 
+        private void btnAllRuins_Click(object sender, EventArgs e)
+        {
+            FormAllRuins.show();
+        }
     }
 }
 

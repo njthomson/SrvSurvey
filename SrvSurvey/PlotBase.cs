@@ -16,7 +16,7 @@ namespace SrvSurvey
         protected TrackingDelta? srvLocation;
         /// <summary> The center point on this plotter. </summary>
         protected Size mid;
-        protected Graphics? g;
+        protected Graphics g;
         protected float scale = 1.0f;
 
         protected PlotBase()
@@ -28,12 +28,6 @@ namespace SrvSurvey
             this.touchdownLocation = new TrackingDelta(
                 game.nearBody!.radius,
                 game.touchdownLocation ?? LatLong2.Empty);
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
         }
 
         protected override void Dispose(bool disposing)
@@ -194,10 +188,10 @@ namespace SrvSurvey
             g.RotateTransform(360 - game.status!.Heading);
 
             var locSz = 5f;
-            g.DrawEllipse(GameColors.Lime2, -locSz, -locSz, locSz * 2, locSz * 2);
+            g.DrawEllipse(GameColors.penLime2, -locSz, -locSz, locSz * 2, locSz * 2);
             var dx = (float)Math.Sin(Util.degToRad(game.status.Heading)) * 10F;
             var dy = (float)Math.Cos(Util.degToRad(game.status.Heading)) * 10F;
-            g.DrawLine(GameColors.Lime2, 0, 0, +dx, -dy);
+            g.DrawLine(GameColors.penLime2, 0, 0, +dx, -dy);
         }
 
         protected void clipToMiddle()

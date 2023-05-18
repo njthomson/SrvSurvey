@@ -191,7 +191,7 @@ namespace SrvSurvey
             if (this.initializing) return;
 
             string filename = $"{this.bodyName} - {this.settlementName}.json";
-            string filepath = Path.Combine(SrvSurvey.journalFolder, "survey", filename);
+            string filepath = Path.Combine(JournalFile.journalFolder, "survey", filename);
 
             // alpha sort these before saving
             this.relicTowers = this.relicTowers.OrderBy(_ => _).ToHashSet();
@@ -204,7 +204,7 @@ namespace SrvSurvey
             this.timeStamp = DateTime.UtcNow;
             var json = JsonConvert.SerializeObject(this, Formatting.Indented);
 
-            Directory.CreateDirectory(Path.Combine(SrvSurvey.journalFolder, "survey"));
+            Directory.CreateDirectory(Path.Combine(JournalFile.journalFolder, "survey"));
             File.WriteAllText(filepath, json);
         }
 
@@ -213,7 +213,7 @@ namespace SrvSurvey
             if (this.bodyName != null && this.settlementHeading >= 0) return;
 
             string filename = $"{this.bodyName} - {this.settlementName}.json";
-            string filepath = Path.Combine(SrvSurvey.journalFolder, "survey", filename);
+            string filepath = Path.Combine(JournalFile.journalFolder, "survey", filename);
             if (!File.Exists(filepath)) return;
 
             // read and parse file contents into tmp object

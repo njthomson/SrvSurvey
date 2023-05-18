@@ -70,6 +70,7 @@ namespace SrvSurvey
             this.lblGuardianCount = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.lblNotInstalled = new System.Windows.Forms.LinkLabel();
+            this.btnAllRuins = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -444,6 +445,7 @@ namespace SrvSurvey
             // 
             this.groupBox4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox4.Controls.Add(this.btnAllRuins);
             this.groupBox4.Controls.Add(this.btnRuinsMap);
             this.groupBox4.Controls.Add(this.btnRuinsOrigin);
             this.groupBox4.Controls.Add(this.txtGuardianSite);
@@ -533,6 +535,19 @@ namespace SrvSurvey
             this.lblNotInstalled.Visible = false;
             this.lblNotInstalled.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lblNotInstalled_LinkClicked);
             // 
+            // btnAllRuins
+            // 
+            this.btnAllRuins.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnAllRuins.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.btnAllRuins.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.btnAllRuins.Location = new System.Drawing.Point(266, 57);
+            this.btnAllRuins.Name = "btnAllRuins";
+            this.btnAllRuins.Size = new System.Drawing.Size(98, 21);
+            this.btnAllRuins.TabIndex = 17;
+            this.btnAllRuins.Text = "All ruins";
+            this.btnAllRuins.UseVisualStyleBackColor = false;
+            this.btnAllRuins.Click += new System.EventHandler(this.btnAllRuins_Click);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
@@ -615,5 +630,6 @@ namespace SrvSurvey
         private Label label6;
         private Button btnRuinsMap;
         private Button btnRuinsOrigin;
+        private Button btnAllRuins;
     }
 }

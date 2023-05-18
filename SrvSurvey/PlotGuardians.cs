@@ -1,7 +1,9 @@
-﻿using DecimalMath;
-using SrvSurvey.game;
+﻿using SrvSurvey.game;
 using SrvSurvey.units;
+using System.Collections.Generic;
+using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Security.Permissions;
 
 namespace SrvSurvey
 {
@@ -27,10 +29,9 @@ namespace SrvSurvey
         private float uy;
 
         private Mode mode;
-        private PointF siteTouchdownOffset;
         private PointF commanderOffset;
 
-        private GuardianSiteData siteData { get => game?.nearBody?.siteData; }
+        private GuardianSiteData siteData { get => game?.nearBody?.siteData!; }
 
         private PlotGuardians() : base()
         {
@@ -50,8 +51,7 @@ namespace SrvSurvey
 
             SiteTemplate.Import();
 
-            this.scale = 0.3f;
-            //this.scale = 1f;
+            this.scale = 0.65f;
 
             this.nextMode();
         }
@@ -268,7 +268,11 @@ namespace SrvSurvey
             }
 
             // temporary stuff after here
+            this.xtraCmds(msg);
+        }
 
+        private void xtraCmds(string msg)
+        {
             if (this.template != null && msg.StartsWith("sf"))
             {
                 // temporary
@@ -288,7 +292,25 @@ namespace SrvSurvey
                 Angle angle = Util.getBearing(Status.here, siteData.location) - siteData.siteHeading;
                 Game.log($"!! angle: {angle}, dist: {Math.Round(dist)}");
             }
+
+            if (msg == "ll")
+            {
+                Game.log("Reloading site template");
+                SiteTemplate.Import(true);
+                this.loadSiteTemplate();
+                this.Invalidate();
+            }
+
+
+            if (msg.StartsWith(">>"))
+            {
+                this.highlightPoi = msg.Substring(2).Trim();
+                Game.log($"Highlighting POI: '{this.highlightPoi}'");
+                this.Invalidate();
+            }
         }
+
+        private string highlightPoi; // tmp
 
         private void setSiteHeading(int newHeading)
         {
@@ -373,7 +395,7 @@ namespace SrvSurvey
                 //    (float)(offset.Long * template.scaleFactor),
                 //    (float)(offset.Lat * -template.scaleFactor));
                 //Game.log($"commanderOffset old: {commanderOffset}");
-                var td = new TrackingDelta(game.nearBody.radius, siteData.location);
+                var td = new TrackingDelta(game.nearBody!.radius, siteData.location);
                 var ss = 1f;
                 this.commanderOffset = new PointF(
                     (float)td.dx * ss,
@@ -663,7 +685,7 @@ namespace SrvSurvey
         {
             if (g == null) return;
             this.drawHeaderText($"{siteData.nameLocalised} | {siteData.type} | {siteData.siteHeading}°");
-            this.drawFooterText($"{game.nearBody!.bodyName}");
+            //this.drawFooterText($"{game.nearBody!.bodyName}");
 
             if (this.underlay == null)
             {
@@ -714,7 +736,7 @@ namespace SrvSurvey
 
             // this.drawTouchdownAndSrvLocation(true);
 
-            //this.drawArtifacts();
+            this.drawArtifacts();
 
             this.drawCommander();
 
@@ -731,6 +753,104 @@ namespace SrvSurvey
         }
 
         private void drawArtifacts()
+        {
+            if (this.template == null) return;
+
+            // get pixel location of site origin relative to overlay window
+            g.ResetTransform();
+            g.TranslateTransform(mid.Width, mid.Height);
+            g.ScaleTransform(this.scale, this.scale);
+            g.RotateTransform(-game.status.Heading);
+
+            PointF[] pts = { new PointF(commanderOffset.X, commanderOffset.Y) };
+            g.TransformPoints(CoordinateSpace.Page, CoordinateSpace.World, pts);
+            var siteOrigin = pts[0];
+
+            // reset transform with origin at that point, scaled and rotated to match the commander
+            g.ResetTransform();
+            this.clipToMiddle();
+            g.TranslateTransform(siteOrigin.X, siteOrigin.Y);
+            g.ScaleTransform(this.scale, this.scale);
+            g.RotateTransform(360 - game.status.Heading);
+
+            var nearestDist = double.MaxValue;
+            var nearestPt = PointF.Empty;
+            SitePOI nearestPoi = null!;
+
+            // and draw all the POIs
+            foreach (var poi in this.template.poi)
+            {
+                // calculate render point for POI
+                var pt = Util.rotateLine(
+                    180 - siteData.siteHeading - poi.angle,
+                    poi.dist);
+
+                // render it
+                this.drawSitePoi(poi, pt);
+
+                // is this the closest POI?
+                var x = pt.X - commanderOffset.X;
+                var y = pt.Y - commanderOffset.Y;
+                var d = Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
+
+                if (d < nearestDist)
+                {
+                    nearestDist = d;
+                    nearestPoi = poi;
+                    nearestPt = pt;
+                }
+            }
+
+            // draw highlight over closest POI
+            g.DrawEllipse(GameColors.penCyan4, -nearestPt.X - 12, -nearestPt.Y - 12, 24, 24);
+            this.drawFooterText($"{nearestPoi.type} {nearestPoi.name}: UNCONFIRMED");
+        }
+
+        private PointF drawSitePoi(SitePOI poi, PointF pt)
+        {
+            // skip unknown types ?
+            //if (poi.type == POIType.unknown) return;
+
+            // diameters: relics are bigger then puddles
+            var d = poi.type == POIType.relic ? 16f : 10f;
+            var dd = d / 2;
+
+            var pen = this.getPoiPen(poi);
+
+            // temporary highlight a particular POI
+            var highlight = poi.name.StartsWith("?") || string.Compare(poi.name, this.highlightPoi, true) == 0;
+            if (highlight)
+            {
+                pen = GameColors.penCyan8;
+                //g.DrawLine(GameColors.penCyan2Dotted, 0, 0, -sz.Width, -sz.Height);
+            }
+
+            g.DrawEllipse(pen, -pt.X - dd, -pt.Y - dd, d, d);
+
+            // and return distance from 
+            return pt;
+        }
+
+        private Pen getPoiPen(SitePOI poi)
+        {
+            switch (poi.type)
+            {
+                case POIType.relic:
+                    return GameColors.penPoiRelic;
+
+                case POIType.orb:
+                case POIType.casket:
+                case POIType.tablet:
+                case POIType.totem:
+                case POIType.urn:
+                    return GameColors.penPoiPuddle;
+
+                default:
+                    return Pens.Yellow;
+            }
+        }
+
+        private void drawArtifactsOLD()
         {
             g.ResetTransform();
             g.TranslateTransform(mid.Width, mid.Height);
@@ -752,7 +872,7 @@ namespace SrvSurvey
             //pp.X *= this.scale;
             //pp.Y *= this.scale;
 
-            this.drawHeaderText($"?d? {pp}");
+            //this.drawHeaderText($"?d? {pp}");
 
             // ** ** ** **
             g.ResetTransform();
@@ -760,58 +880,82 @@ namespace SrvSurvey
             g.ScaleTransform(this.scale, this.scale);
             g.RotateTransform(360 - game.status.Heading);
 
-            // Synuefe TP-F b44-0 CD 1-ruins-2:
-            this.drawSitePoi(151, 120, "casket");
-            this.drawSitePoi(134f, 196, "tablet");
-            this.drawSitePoi(122, 534, "totem");
-            this.drawSitePoi(125.6f, 606, "urn");
-            this.drawSitePoi(104f, 421, "tablet");
-            this.drawSitePoi(90.6f, 241, "casket");
-            this.drawSitePoi(141.4f, 538, "urn");
-            this.drawSitePoi(111.9f, 560, "urn");
-            this.drawSitePoi(26.5f, 367, "casket");
-            this.drawSitePoi(5.5f, 549, "orb");
-            this.drawSitePoi(357.8f, 496, "urn");
-            this.drawSitePoi(286.7f, 285, "urn");
-            this.drawSitePoi(258.1f, 544, "totem");
-            this.drawSitePoi(193.3f, 226, "casket");
-            this.drawSitePoi(181.7f, 499, "tablet");
-            this.drawSitePoi(298.7f, 625, "urn");
+            //* BETA
 
-            // Synuefe LY-I b42-2 C 2-ruins-3:
-            this.drawSitePoi(215.4f, 565, "totem");
-            this.drawSitePoi(200.7f, 485, "orb");
-            this.drawSitePoi(208.1f, 415, "tablet");
-            this.drawSitePoi(179.3f, 394, "casket");
-            this.drawSitePoi(169.2f, 276, "orb");
-            this.drawSitePoi(337f, 126, "orb");
-            this.drawSitePoi(300f, 183, "totem");
+            //// Synuefe TP-F b44-0 CD 1-ruins-2:
+            //this.drawSitePoiOLD(151, 120, "casket");
+            //this.drawSitePoiOLD(134f, 196, "tablet");
+            //this.drawSitePoiOLD(122, 534, "totem");
+            //this.drawSitePoiOLD(125.6f, 606, "urn");
+            //this.drawSitePoiOLD(104f, 421, "tablet");
+            //this.drawSitePoiOLD(90.6f, 241, "casket");
+            //this.drawSitePoiOLD(141.4f, 538, "urn");
+            //this.drawSitePoiOLD(111.9f, 560, "urn");
+            //this.drawSitePoiOLD(26.5f, 367, "casket");
+            //this.drawSitePoiOLD(5.5f, 549, "orb");
+            //this.drawSitePoiOLD(357.8f, 496, "urn");
+            //this.drawSitePoiOLD(286.7f, 285, "urn");
+            //this.drawSitePoiOLD(258.1f, 544, "totem");
+            //this.drawSitePoiOLD(193.3f, 226, "casket");
+            //this.drawSitePoiOLD(181.7f, 499, "tablet");
+            //this.drawSitePoiOLD(298.7f, 625, "urn");
+
+            //// Synuefe LY-I b42-2 C 2-ruins-3:
+            //this.drawSitePoiOLD(215.4f, 565, "totem");
+            //this.drawSitePoiOLD(200.7f, 485, "orb");
+            //this.drawSitePoiOLD(208.1f, 415, "tablet");
+            //this.drawSitePoiOLD(179.3f, 394, "casket");
+            //this.drawSitePoiOLD(169.2f, 276, "orb");
+            //this.drawSitePoiOLD(337f, 126, "orb");
+            //this.drawSitePoiOLD(300f, 183, "totem");
+
+            //// Col 173 Sector PF-E b28-3 B 1, Ruins #2
+            //this.drawSitePoiOLD(214.7f, 258, "totem");
+            //this.drawSitePoiOLD(230.8f, 506, "casket");
+            //this.drawSitePoiOLD(193.7f, 617, "urn");
+            //this.drawSitePoiOLD(276.8f, 436, "urn");
 
 
             // relics ...
 
-            // Synuefe TP-F b44-0 CD 1-ruins-2:
-            this.drawSitePoi(80.8f, 408, "relic");
-            this.drawSitePoi(236.8f, 612, "relic"); // leaning
-            this.drawSitePoi(151, 358, "relic");
-            this.drawSitePoi(35.5f, 515, "relic");
-            this.drawSitePoi(292.3f, 413, "relic"); // leaning
-            // this.drawSitePoi(292, 378, "relic"); // ? ish
+            //// Synuefe TP-F b44-0 CD 1-ruins-2:
+            //this.drawSitePoiOLD(80.8f, 408, "relic");
+            //this.drawSitePoiOLD(236.8f, 612, "relic"); // leaning
+            //this.drawSitePoiOLD(151, 358, "relic");
+            //this.drawSitePoiOLD(35.5f, 515, "relic");
+            //this.drawSitePoiOLD(292.3f, 413, "relic"); // leaning
+            //// this.drawSitePoi(292, 378, "relic"); // ? ish
 
-            // Synuefe LY-I b42-2 C 2-ruins-3:
-            this.drawSitePoi(196.3f, 378, "relic");
-            this.drawSitePoi(328.8f, 358, "relic");
+            //// Synuefe LY-I b42-2 C 2-ruins-3:
+            //this.drawSitePoiOLD(196.3f, 378, "relic");
+            //this.drawSitePoiOLD(328.8f, 358, "relic");
 
+            //// Col 173 Sector PF-E b28-3 B 1, Ruins #2
+            //this.drawSitePoiOLD(253.2f, 390, "relic");
+
+            // */
+
+            /* ALPHA 
+
+            // relics ...
+            this.scale = 2f;
+            // 
+            this.drawSitePoi(32f, 80, "relic");
+            this.drawSitePoi(160f, 250, "relic");
+            this.drawSitePoi(176f, 147, "relic");
+            this.drawSitePoi(351.6f, 502, "relic");
+
+            // */
 
 
 
             // -- -- -- --
-            this.drawFooterText($"?c? {(int)pp.X},{(int)pp.Y}");
+            //this.drawFooterText($"?c? {(int)pp.X},{(int)pp.Y}");
             //this.drawHeaderText($"?d? {commanderOffset}");
 
         }
 
-        private void drawSitePoi(float angle, float dist, string type)
+        private void drawSitePoiOLD(float angle, float dist, string type)
         {
             var d = type == "relic" ? 16f : 10f;
             var dd = d / 2;
@@ -823,9 +967,7 @@ namespace SrvSurvey
             var sz = Util.rotateLine(
                 180 - siteData.siteHeading - angle,
                 dist);
-            g.DrawEllipse(p, -sz.Width - dd, -sz.Height - dd, d, d);
-
-
+            g.DrawEllipse(p, -sz.X - dd, -sz.Y - dd, d, d);
         }
 
         private void drawSiteSummaryFooter(string msg)

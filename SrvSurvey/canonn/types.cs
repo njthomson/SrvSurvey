@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SrvSurvey.game;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -253,6 +254,137 @@ namespace SrvSurvey.canonn
         public string sub_category; // "$Codex_SubCategory_Organic_Structures;"
         public string sub_class; //    "Brain Tree"
     }
+
+    internal class GRSitesData
+    {
+        public GRSites data;
+    }
+
+    internal class GRSites
+    {
+        public List<GRSite> grsites;
+    }
+
+    internal class GRSite
+    {
+        // { "siteID": 62, "latitude": 2.4, "longitude": 132.05, "frontierID": null, "system": { "id": "826", "systemName": "COL 173 SECTOR OE-P D6-11", "edsmID": 9822862}, "body": { "bodyName": "COL 173 SECTOR OE-P D6-11 C 2", "edsmID": 2237539 }, "type": { "type": "Gamma"} },
+
+        public string id;
+        public int siteID;
+        public DateTimeOffset updated_at;
+        public DateTimeOffset created_at;
+        public double latitude;
+        public double longitude;
+        public int? frontierID;
+        public System system;
+        public Body body;
+        public Type type;
+        public string visible;
+        public string verified;
+
+
+        public class System
+        {
+            public string id;
+            public long id64;
+            public string systemName;
+            public long edsmID;
+            public double edsmCoordX;
+            public double edsmCoordY;
+            public double edsmCoordZ;
+        }
+
+        public class Body
+        {
+            public string bodyName;
+            public int bodyID;
+            public long edsmID;
+            public double distanceToArrival;
+        }
+
+        public class Type
+        {
+            public string type;
+        }
+    }
+
+    /// <summary>
+    /// Data pulled from runinSummaries.json
+    /// </summary>
+    internal class GuardianRuinSummary
+    {
+        public int siteID;
+        public string systemName;
+        public long systemAddress;
+        public string bodyName;
+        public int bodyId;
+        public string siteType;
+        public int idx;
+        public DateTimeOffset lastUpdated;
+        public double distanceToArrival;
+        public double[] starPos;
+
+        public static GuardianRuinSummary from(GRSite _)
+        {
+            return new GuardianRuinSummary
+            {
+                siteID = _.siteID,
+                systemName = _.system.systemName,
+                systemAddress = _.system.id64,
+                bodyName = _.body.bodyName.Replace(_.system.systemName, "").Trim(),
+                bodyId = _.body.bodyID,
+                siteType = _.type.type,
+                idx = _.frontierID ?? 0,
+                distanceToArrival = _.body.distanceToArrival,
+                starPos = new double[] {
+                    _.system.edsmCoordX, 
+                    _.system.edsmCoordY, 
+                    _.system.edsmCoordZ 
+                },
+            };
+        }
+    }
+
+    /// <summary>
+    /// Summaries augmented from own data
+    /// </summary>
+    internal class GuardianRuinEntry : GuardianRuinSummary
+    {
+        public double latitude;
+        public double longitude;
+        public int siteHeading = -1;
+        public int relicTowerHeading = -1;
+        public DateTimeOffset lastVisited;
+        public double systemDistance;
+
+        public GuardianRuinEntry(GuardianRuinSummary summary)
+        {
+            base.siteID = summary.siteID;
+            base.systemName = summary.systemName;
+            base.systemAddress = summary.systemAddress;
+            base.bodyName = summary.bodyName;
+            base.bodyId = summary.bodyId;
+            base.siteType = summary.siteType;
+            base.idx = summary.idx;
+            base.distanceToArrival = summary.distanceToArrival;
+            base.starPos = summary.starPos;
+        }
+
+        public string name
+        {
+            get => $"{this.systemName} {this.bodyName} {this.idx}";
+        }
+
+        public void merge(GuardianSiteData data)
+        {
+            this.latitude = data.location.Lat;
+            this.longitude = data.location.Long;
+            this.siteHeading = data.siteHeading;
+            this.relicTowerHeading = data.relicTowerHeading;
+            this.lastVisited = data.lastVisited;
+        }
+    }
+
 }
 
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.

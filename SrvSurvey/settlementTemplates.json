@@ -4,23 +4,67 @@
     "backgroundImage": "ruins-alpha-5.png",
     "imageOffset": "737,885",
     "scaleFactor": 0.88,
-    "poi": {
-    }
+    "poi": [
+      { "type": "relic", "name": "t1", "angle": 32.0, "dist": 80 },
+      { "type": "relic", "name": "t2", "angle": 160.0, "dist": 250 },
+      { "type": "relic", "name": "t3", "angle": 176.0, "dist": 147 },
+      { "type": "relic", "name": "t4", "angle": 351.6, "dist": 502 }
+    ]
   },
   "beta": {
     "name": "Beta",
     "backgroundImage": "ruins-beta-3.png",
     "imageOffset": "638,752",
     "scaleFactor": 1.15,
-    "poi": {
-    }
+    "poi": [
+      { "type": "relic", "name": "t1", "angle": 196.3, "dist": 378 },
+      { "type": "relic", "name": "t2", "angle": 151.0, "dist": 358 },
+      { "type": "relic", "name": "t3", "angle": 80.8, "dist": 408 },
+      { "type": "relic", "name": "t4", "angle": 35.5, "dist": 515 },
+      { "type": "relic", "name": "t5", "angle": 328.8, "dist": 408 },
+      { "type": "relic", "name": "t6", "angle": 292.3, "dist": 413 },
+      { "type": "relic", "name": "t7", "angle": 253.2, "dist": 390 },
+      { "type": "relic", "name": "t8", "angle": 236.8, "dist": 612 },
+
+      { "type": "casket", "name": "xx", "angle": 151, "dist": 120 },
+      { "type": "tablet", "name": "xx", "angle": 134, "dist": 196 },
+      { "type": "totem", "name": "xx", "angle": 122, "dist": 534 },
+      { "type": "urn", "name": "xx", "angle": 125.6, "dist": 606 },
+      { "type": "tablet", "name": "xx", "angle": 104.0, "dist": 421 },
+      { "type": "casket", "name": "xx", "angle": 90.6, "dist": 241 },
+      { "type": "urn", "name": "xx", "angle": 141.4, "dist": 538 },
+      { "type": "urn", "name": "xx", "angle": 111.9, "dist": 560 },
+      { "type": "casket", "name": "xx", "angle": 26.5, "dist": 367 },
+      { "type": "orb", "name": "xx", "angle": 5.5, "dist": 549 },
+      { "type": "urn", "name": "xx", "angle": 357.8, "dist": 496 },
+      { "type": "urn", "name": "xx", "angle": 286.7, "dist": 285 },
+      { "type": "totem", "name": "xx", "angle": 258.1, "dist": 544 },
+      { "type": "casket", "name": "xx", "angle": 193.3, "dist": 226 },
+      { "type": "tablet", "name": "xx", "angle": 181.7, "dist": 499 },
+      { "type": "urn", "name": "xx", "angle": 298.7, "dist": 625 },
+
+      { "type": "totem", "name": "xx", "angle": 215.4, "dist": 565 },
+      { "type": "orb", "name": "xx", "angle": 200.7, "dist": 485 },
+      { "type": "tablet", "name": "xx", "angle": 208.1, "dist": 415 },
+      { "type": "casket", "name": "xx", "angle": 179.3, "dist": 394 },
+      { "type": "orb", "name": "xx", "angle": 337, "dist": 126 },
+      { "type": "totem", "name": "xx", "angle": 214.7, "dist": 258 },
+
+      { "type": "totem", "name": "xx", "angle": 214.7, "dist": 258 },
+      { "type": "casket", "name": "xx", "angle": 230.8, "dist": 506 },
+      { "type": "urn", "name": "xx", "angle": 193.7, "dist": 617 },
+      { "type": "urn", "name": "xx", "angle": 276.8, "dist": 436 }
+
+      // { "type": "xxx", "name": "xx", "angle": 999, "dist": 999 },
+
+    ]
   },
   "gamma": {
     "name": "Gamma",
     "backgroundImage": "ruins-gamma-1.png",
     "imageOffset": "915,685",
     "scaleFactor": 1.15,
-    "poi": {
-    }
+    "poi": [
+    ]
   }
 }

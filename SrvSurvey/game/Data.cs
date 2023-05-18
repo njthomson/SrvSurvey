@@ -15,7 +15,7 @@ namespace SrvSurvey.game
     {
         protected string filepath;
 
-        protected static T? Load<T>(string filepath) where T : Data
+        public static T? Load<T>(string filepath) where T : Data
         {
             // read and parse file contents into tmp object
             if (File.Exists(filepath))
@@ -40,7 +40,7 @@ namespace SrvSurvey.game
 
         public void Save()
         {
-            var folder = Path.GetDirectoryName(this.filepath);
+            var folder = Path.GetDirectoryName(this.filepath)!;
             Directory.CreateDirectory(folder);
 
             var json = JsonConvert.SerializeObject(this, Formatting.Indented);

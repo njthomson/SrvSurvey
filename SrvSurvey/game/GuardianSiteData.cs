@@ -1,4 +1,6 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using SrvSurvey.canonn;
 using SrvSurvey.units;
 using System;
 using System.Collections.Generic;
@@ -42,6 +44,14 @@ namespace SrvSurvey.game
                 };
                 data.Save();
             }
+
+            //if (data.type == SiteType.unknown)
+            //{
+            //    var grSite = Canonn.matchRuins(entry.BodyName);
+            //    Game.log($"Matched grSite: #GR{grSite?.siteID}");
+
+            //}
+
             return data;
         }
 
@@ -52,6 +62,7 @@ namespace SrvSurvey.game
         public string commander;
         public DateTimeOffset firstVisited;
         public DateTimeOffset lastVisited;
+        [JsonProperty(ItemConverterType = typeof(StringEnumConverter))]
         public SiteType type;
         public int index;
         public LatLong2 location;
@@ -74,8 +85,8 @@ namespace SrvSurvey.game
                 return int.Parse(name.Substring(ruinsPrefix.Length, 1));
             }
             throw new Exception("Unkown site type");
-            return -1;
         }
+
         public enum SiteType
         {
             unknown,

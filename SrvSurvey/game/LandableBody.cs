@@ -1,6 +1,5 @@
 ﻿using SrvSurvey.canonn;
 using SrvSurvey.units;
-using System;
 
 namespace SrvSurvey.game
 {
@@ -67,7 +66,7 @@ namespace SrvSurvey.game
             if (this.data != null)
             {
                 this.data.Save();
-                this.data = null;
+                this.data = null!;
             }
 
             if (disposing)
@@ -95,7 +94,7 @@ namespace SrvSurvey.game
         {
             Game.log($"CodexEntry: {entry.Name_Localised}, lat/long: {entry.Latitude},{entry.Longitude}");
             //  CodexEntry - to get the full name of a species
-            foreach(var genusName in data.organisms.Keys)
+            foreach (var genusName in data.organisms.Keys)
             {
                 if (entry.Name.StartsWith(genusName.Replace("_Genus_Name;", "")))
                 {
@@ -134,9 +133,11 @@ namespace SrvSurvey.game
             // we only care about Guardian settlements
             if (!entry.Name.StartsWith("$Ancient:")) return;
 
-            Game.log($"ApproachSettlement: {entry.Name_Localised}");
+            Game.log($"ApproachSettlement: {entry.Name_Localised} ({this.siteData == null})");
             this.siteData = GuardianSiteData.Load(entry);
             this.siteData.lastVisited = DateTimeOffset.UtcNow;
+
+            this.matchGRSite(entry.BodyName);
 
             if (this.siteData.location.Lat == 0)
             {
@@ -153,7 +154,7 @@ namespace SrvSurvey.game
             this.settlements.Clear();
 
             decimal dist = decimal.MaxValue;
-            ApproachSettlement? nearestSettlement = null;
+            ApproachSettlement? nearest = null;
 
             // look for ApproachSettlements against this body in this journal
             game.journals!.searchDeep(
@@ -172,7 +173,7 @@ namespace SrvSurvey.game
                         if (td.distance < 20000 && td.distance < dist)
                         {
                             dist = td.distance;
-                            nearestSettlement = _;
+                            nearest = _;
                         }
                     }
 
@@ -182,26 +183,43 @@ namespace SrvSurvey.game
                 (JournalFile journals) => journals.search((FSDJump _) => true));
             Game.log($"Found {this.settlements.Count} Guardian sites on: {this.bodyName} / " + string.Join(",", this.settlements));
 
-            if (nearestSettlement != null)
+            if (nearest != null)
             {
-                Game.log($"Nearest site '{nearestSettlement.Name_Localised}' is {Util.metersToString(dist)} away, location: {new LatLong2(nearestSettlement)} vs Here: {Status.here}");
-                this.siteData = GuardianSiteData.Load(nearestSettlement);
+                Game.log($"Nearest site '{nearest.Name_Localised}' is {Util.metersToString(dist)} away, location: {new LatLong2(nearest)} vs Here: {Status.here}");
+                this.siteData = GuardianSiteData.Load(nearest);
+                
+                this.matchGRSite(nearest.BodyName);
 
                 this.siteData.lastVisited = DateTimeOffset.UtcNow;
                 this.siteData.Save();
             }
         }
 
-        /// <summary>
-        /// Meters per 1° of Latitude or Longitude
-        /// </summary>
-        public double mpd
+        private void matchGRSite(string bodyName)
         {
-            get
+            /*
+            var grSites = Canonn.matchRuins(bodyName);
+
+            decimal dist = decimal.MaxValue;
+            GRSite nearest = null!;
+
+            foreach (var grSite in grSites)
             {
-                var bodyCircumferance = this.radius * Math.PI * 2F;
-                return bodyCircumferance / 360D;
+                var td = new TrackingDelta(this.radius, new LatLong2(grSite.latitude, grSite.longitude));
+                if (td.distance < 20000 && td.distance < dist)
+                {
+                    dist = td.distance;
+                    nearest = grSite;
+                }
             }
+
+            Game.log($"matchGRSite: match found {nearest != null}");
+
+            if (nearest != null)
+            {
+                TODO ...!
+            }
+            */
         }
 
         public List<ScanSignal>? Signals { get; set; }

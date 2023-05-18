@@ -6,7 +6,7 @@ namespace SrvSurvey
 {
     public partial class FormSettings : Form
     {
-        private static string releaseVersion = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyFileVersionAttribute>()?.Version;
+        private static string releaseVersion = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyFileVersionAttribute>()?.Version!;
 
         private Game game = Game.activeGame!;
         private readonly Dictionary<string, FieldInfo> map = new Dictionary<string, FieldInfo>();
@@ -173,7 +173,7 @@ namespace SrvSurvey
 
         private void checkProcessSAcreenshots_CheckedChanged(object sender, EventArgs e)
         {
-            foreach(Control ctrl in this.checkProcessScreenshots.Parent.Controls)
+            foreach(Control ctrl in this.checkProcessScreenshots.Parent!.Controls)
                 if (ctrl != checkProcessScreenshots)
                     ctrl.Enabled = checkProcessScreenshots.Checked;
         }

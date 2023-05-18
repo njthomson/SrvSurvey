@@ -21,11 +21,39 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseOnce|AnyCPU'">
     <Optimize>True</Optimize>
+    <NoWarn>1701;1702;CS8618;CS0649</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseOnce|x64'">
     <Optimize>True</Optimize>
+    <NoWarn>1701;1702;CS8618;CS0649</NoWarn>
   </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <NoWarn>1701;1702;CS8618;CS0649</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <NoWarn>1701;1702;CS8618;CS0649</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <NoWarn>1701;1702;CS8618;CS0649</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <NoWarn>1701;1702;CS8618;CS0649</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="SrvSurvey.cs" />
+    <Compile Remove="SrvSurvey.Designer.cs" />
+    <Compile Remove="SurveyingSrv.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Remove="SrvSurvey.resx" />
+  </ItemGroup>
 
   <ItemGroup>
     <None Remove="images\alpha-heading-guide.png" />
@@ -63,6 +91,10 @@
 
   <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />
+    <None Include="SrvSurvey.cs" />
+    <None Include="SrvSurvey.Designer.cs" />
+    <None Include="SrvSurvey.resx" />
+    <None Include="SurveyingSrv.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -84,7 +116,6 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Update="SrvSurvey.cs" />
     <Compile Update="ViewLogs.cs" />
   </ItemGroup>
 
