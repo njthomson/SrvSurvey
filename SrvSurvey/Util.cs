@@ -213,5 +213,23 @@ namespace SrvSurvey
             );
             return dist;
         }
+
+        public static void useLastLocation(Form form, Rectangle rect)
+        {
+            form.Width= Math.Max(rect.Width, form.MinimumSize.Width);
+            form.Height= Math.Max(rect.Height, form.MinimumSize.Width);
+
+            // position ourself within the bound of which ever screen is chosen
+            var pt = rect.Location;
+            var r = Screen.GetBounds(pt);
+            if (pt.X < r.Left) pt.X = r.Left;
+            if (pt.X + form.Width > r.Right) pt.X = r.Right - form.Width;
+
+            if (pt.Y < r.Top) pt.Y = r.Top;
+            if (pt.Y + form.Height > r.Bottom) pt.Y = r.Bottom - form.Height;
+
+            form.StartPosition = FormStartPosition.Manual;
+            form.Location = pt;
+        }
     }
 }

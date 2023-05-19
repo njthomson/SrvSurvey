@@ -207,7 +207,7 @@ namespace SrvSurvey
     /// <summary> Some item or location expected within a Guardian site. </summary>
     class SitePOI
     {
-        [JsonProperty(ItemConverterType = typeof(StringEnumConverter))]
+        [JsonConverter(typeof(StringEnumConverter))]
         public POIType type;
         public string name;
         public float angle;

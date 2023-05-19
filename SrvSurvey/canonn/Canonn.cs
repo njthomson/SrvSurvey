@@ -144,25 +144,39 @@ namespace SrvSurvey.canonn
             var summaries = await createRuinSummaries();
 
             var allRuins = summaries.Select(_ => new GuardianRuinEntry(_)).ToList();
-
-            var folder = Path.Combine(Application.UserAppDataPath, "guardian", "F6985613"); // Game.activeGame!.fid!);
-            var files = Directory.GetFiles(folder);
-
-            Game.log($"Reading {files.Length} ruins files from disk");
-            foreach (var filename in files)
+            var folder = Path.Combine(Application.UserAppDataPath, "guardian", Game.settings.lastFid!);
+            if (Directory.Exists(folder))
             {
-                var data = Data.Load<GuardianSiteData>(filename)!;
-                //Game.log(data);
+                var files = Directory.GetFiles(folder);
 
-                // match type (or not) AND Ruins #
-                var entry = allRuins.Find(_ => _.systemAddress == data.systemAddress);
-                if (entry == null)
+                Game.log($"Reading {files.Length} ruins files from disk");
+                foreach (var filename in files)
                 {
-                    Game.log($"Why no matcing entry for: {data.systemAddress} ?");
-                    continue;
-                }
+                    var data = Data.Load<GuardianSiteData>(filename)!;
 
-                entry.merge(data);
+                    var matches = allRuins.Where(_ => _.systemAddress == data.systemAddress
+                        && _.bodyId == data.bodyId
+                        && string.Equals(_.siteType.ToString(), data.type.ToString(), StringComparison.OrdinalIgnoreCase)
+                    ).ToList();
+
+                    var entry = matches.FirstOrDefault();
+                    if (matches.Count > 1)
+                    {
+                        entry = matches.Find(_ => _.idx == data.index);
+                        if (entry == null)
+                        {
+                            // TODO: compare lat/long? or ... just pick the first one?
+                        }
+                    }
+
+                    if (entry == null)
+                    {
+                        Game.log($"Why no matcing entry for: {data.systemAddress} ?");
+                        continue;
+                    }
+
+                    entry.merge(data);
+                }
             }
 
             return allRuins;

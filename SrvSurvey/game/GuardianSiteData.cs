@@ -15,9 +15,9 @@ namespace SrvSurvey.game
     {
         public static string getFilename(ApproachSettlement entry)
         {
-            var idx = parseSettlementIdx(entry.Name);
+            var index = parseSettlementIdx(entry.Name);
             var namePart = "ruins"; // TODO: structures?
-            return $"{entry.BodyName}-{namePart}-{idx}.json";
+            return $"{entry.BodyName}-{namePart}-{index}.json";
         }
 
         public static GuardianSiteData Load(ApproachSettlement entry)
@@ -62,7 +62,7 @@ namespace SrvSurvey.game
         public string commander;
         public DateTimeOffset firstVisited;
         public DateTimeOffset lastVisited;
-        [JsonProperty(ItemConverterType = typeof(StringEnumConverter))]
+        [JsonConverter(typeof(StringEnumConverter))]
         public SiteType type;
         public int index;
         public LatLong2 location;

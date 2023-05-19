@@ -7,6 +7,8 @@ namespace SrvSurvey
     class Settings
     {
         public string? preferredCommander = null;
+        public string? lastCommander = null;
+        public string? lastFid= null;
 
         public LatLong2 targetLatLong = LatLong2.Empty;
         public bool targetLatLongActive = false;
@@ -18,6 +20,7 @@ namespace SrvSurvey
 
         public bool enableGuardianSites = false;
         public bool disableRuinsMeasurementGrid = false;
+        public bool disableAerialAlignmentGrid = false;
         public bool hidePlottersFromCombatSuits = false;
         public bool hideOverlaysFromMouse = true;
 
@@ -27,6 +30,7 @@ namespace SrvSurvey
 
         public Point mainLocation;
         public Rectangle logsLocation;
+        public Rectangle allRuinsLocation;
 
         // screenshot processing
         public bool processScreenshots = false;

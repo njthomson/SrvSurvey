@@ -64,13 +64,13 @@ namespace SrvSurvey
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.lblFullScreen = new System.Windows.Forms.Label();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.btnAllRuins = new System.Windows.Forms.Button();
             this.btnRuinsMap = new System.Windows.Forms.Button();
             this.btnRuinsOrigin = new System.Windows.Forms.Button();
             this.txtGuardianSite = new System.Windows.Forms.TextBox();
             this.lblGuardianCount = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.lblNotInstalled = new System.Windows.Forms.LinkLabel();
-            this.btnAllRuins = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -456,8 +456,21 @@ namespace SrvSurvey
             this.groupBox4.Size = new System.Drawing.Size(371, 94);
             this.groupBox4.TabIndex = 19;
             this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Guardian sites: (work in progress)";
+            this.groupBox4.Text = "Guardian sites: (experimental)";
             this.groupBox4.Visible = false;
+            // 
+            // btnAllRuins
+            // 
+            this.btnAllRuins.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnAllRuins.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.btnAllRuins.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.btnAllRuins.Location = new System.Drawing.Point(296, 31);
+            this.btnAllRuins.Name = "btnAllRuins";
+            this.btnAllRuins.Size = new System.Drawing.Size(68, 47);
+            this.btnAllRuins.TabIndex = 17;
+            this.btnAllRuins.Text = "All Guardian Ruins";
+            this.btnAllRuins.UseVisualStyleBackColor = false;
+            this.btnAllRuins.Click += new System.EventHandler(this.btnAllRuins_Click);
             // 
             // btnRuinsMap
             // 
@@ -466,7 +479,7 @@ namespace SrvSurvey
             this.btnRuinsMap.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.btnRuinsMap.Location = new System.Drawing.Point(16, 57);
             this.btnRuinsMap.Name = "btnRuinsMap";
-            this.btnRuinsMap.Size = new System.Drawing.Size(119, 21);
+            this.btnRuinsMap.Size = new System.Drawing.Size(86, 21);
             this.btnRuinsMap.TabIndex = 16;
             this.btnRuinsMap.Text = "Show map";
             this.btnRuinsMap.UseVisualStyleBackColor = false;
@@ -477,11 +490,11 @@ namespace SrvSurvey
             this.btnRuinsOrigin.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnRuinsOrigin.BackColor = System.Drawing.SystemColors.ControlLight;
             this.btnRuinsOrigin.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.btnRuinsOrigin.Location = new System.Drawing.Point(141, 57);
+            this.btnRuinsOrigin.Location = new System.Drawing.Point(108, 57);
             this.btnRuinsOrigin.Name = "btnRuinsOrigin";
-            this.btnRuinsOrigin.Size = new System.Drawing.Size(119, 21);
+            this.btnRuinsOrigin.Size = new System.Drawing.Size(182, 21);
             this.btnRuinsOrigin.TabIndex = 15;
-            this.btnRuinsOrigin.Text = "Align origin";
+            this.btnRuinsOrigin.Text = "Aerial screenshot assist";
             this.btnRuinsOrigin.UseVisualStyleBackColor = false;
             this.btnRuinsOrigin.Click += new System.EventHandler(this.btnRuinsOrigin_Click);
             // 
@@ -492,7 +505,7 @@ namespace SrvSurvey
             this.txtGuardianSite.Location = new System.Drawing.Point(16, 31);
             this.txtGuardianSite.Name = "txtGuardianSite";
             this.txtGuardianSite.ReadOnly = true;
-            this.txtGuardianSite.Size = new System.Drawing.Size(348, 20);
+            this.txtGuardianSite.Size = new System.Drawing.Size(274, 20);
             this.txtGuardianSite.TabIndex = 14;
             this.txtGuardianSite.Text = "<Guardian site>";
             // 
@@ -534,19 +547,6 @@ namespace SrvSurvey
             this.lblNotInstalled.UseCompatibleTextRendering = true;
             this.lblNotInstalled.Visible = false;
             this.lblNotInstalled.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lblNotInstalled_LinkClicked);
-            // 
-            // btnAllRuins
-            // 
-            this.btnAllRuins.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAllRuins.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.btnAllRuins.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.btnAllRuins.Location = new System.Drawing.Point(266, 57);
-            this.btnAllRuins.Name = "btnAllRuins";
-            this.btnAllRuins.Size = new System.Drawing.Size(98, 21);
-            this.btnAllRuins.TabIndex = 17;
-            this.btnAllRuins.Text = "All ruins";
-            this.btnAllRuins.UseVisualStyleBackColor = false;
-            this.btnAllRuins.Click += new System.EventHandler(this.btnAllRuins_Click);
             // 
             // Main
             // 

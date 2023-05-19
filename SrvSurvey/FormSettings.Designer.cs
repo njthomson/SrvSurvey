@@ -79,6 +79,7 @@ namespace SrvSurvey
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.linkAboutTwo = new System.Windows.Forms.LinkLabel();
             this.linkAboutOne = new System.Windows.Forms.LinkLabel();
+            this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numOpacity)).BeginInit();
@@ -175,6 +176,7 @@ namespace SrvSurvey
             this.linkDataFiles.TabIndex = 12;
             this.linkDataFiles.TabStop = true;
             this.linkDataFiles.Text = "data";
+            this.linkDataFiles.Visible = false;
             this.linkDataFiles.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkDataFiles_LinkClicked);
             // 
             // checkMinimizeOnStart
@@ -381,6 +383,7 @@ namespace SrvSurvey
             // tabPage3
             // 
             this.tabPage3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.tabPage3.Controls.Add(this.checkBox2);
             this.tabPage3.Controls.Add(this.numAltGamma);
             this.tabPage3.Controls.Add(this.numAltBeta);
             this.tabPage3.Controls.Add(this.numAltAlpha);
@@ -405,7 +408,7 @@ namespace SrvSurvey
             0,
             0,
             0});
-            this.numAltGamma.Location = new System.Drawing.Point(290, 110);
+            this.numAltGamma.Location = new System.Drawing.Point(293, 144);
             this.numAltGamma.Maximum = new decimal(new int[] {
             5000,
             0,
@@ -428,7 +431,7 @@ namespace SrvSurvey
             0,
             0,
             0});
-            this.numAltBeta.Location = new System.Drawing.Point(175, 110);
+            this.numAltBeta.Location = new System.Drawing.Point(178, 144);
             this.numAltBeta.Maximum = new decimal(new int[] {
             5000,
             0,
@@ -446,7 +449,7 @@ namespace SrvSurvey
             // 
             // numAltAlpha
             // 
-            this.numAltAlpha.Location = new System.Drawing.Point(79, 110);
+            this.numAltAlpha.Location = new System.Drawing.Point(82, 144);
             this.numAltAlpha.Maximum = new decimal(new int[] {
             5000,
             0,
@@ -465,7 +468,7 @@ namespace SrvSurvey
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(232, 112);
+            this.label8.Location = new System.Drawing.Point(235, 146);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(52, 15);
             this.label8.TabIndex = 7;
@@ -474,7 +477,7 @@ namespace SrvSurvey
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(136, 112);
+            this.label7.Location = new System.Drawing.Point(139, 146);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(33, 15);
             this.label7.TabIndex = 6;
@@ -484,7 +487,7 @@ namespace SrvSurvey
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(32, 112);
+            this.label6.Location = new System.Drawing.Point(35, 146);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(41, 15);
             this.label6.TabIndex = 5;
@@ -493,7 +496,7 @@ namespace SrvSurvey
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(7, 86);
+            this.label5.Location = new System.Drawing.Point(10, 120);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(218, 15);
             this.label5.TabIndex = 4;
@@ -504,38 +507,38 @@ namespace SrvSurvey
             this.checkRuinsMeasurementGrid.AutoSize = true;
             this.checkRuinsMeasurementGrid.Checked = true;
             this.checkRuinsMeasurementGrid.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkRuinsMeasurementGrid.Location = new System.Drawing.Point(7, 64);
+            this.checkRuinsMeasurementGrid.Location = new System.Drawing.Point(10, 173);
             this.checkRuinsMeasurementGrid.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.checkRuinsMeasurementGrid.Name = "checkRuinsMeasurementGrid";
             this.checkRuinsMeasurementGrid.Size = new System.Drawing.Size(231, 19);
             this.checkRuinsMeasurementGrid.TabIndex = 3;
             this.checkRuinsMeasurementGrid.Tag = "disableRuinsMeasurementGrid";
-            this.checkRuinsMeasurementGrid.Text = "Disable site heading measurement grid";
+            this.checkRuinsMeasurementGrid.Text = "Disable site heading assistance overlay.";
             this.checkRuinsMeasurementGrid.UseVisualStyleBackColor = true;
             // 
             // label3
             // 
-            this.label3.Location = new System.Drawing.Point(2, 3);
+            this.label3.Location = new System.Drawing.Point(11, 28);
             this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(430, 33);
+            this.label3.Size = new System.Drawing.Size(430, 83);
             this.label3.TabIndex = 2;
-            this.label3.Text = "Guardian site features are still extremely experimental and likely to have issues" +
-    ".";
+            this.label3.Text = resources.GetString("label3.Text");
             // 
             // checkEnableGuardianFeatures
             // 
             this.checkEnableGuardianFeatures.AutoSize = true;
             this.checkEnableGuardianFeatures.Checked = true;
             this.checkEnableGuardianFeatures.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkEnableGuardianFeatures.Location = new System.Drawing.Point(7, 39);
+            this.checkEnableGuardianFeatures.Location = new System.Drawing.Point(10, 6);
             this.checkEnableGuardianFeatures.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.checkEnableGuardianFeatures.Name = "checkEnableGuardianFeatures";
-            this.checkEnableGuardianFeatures.Size = new System.Drawing.Size(178, 19);
+            this.checkEnableGuardianFeatures.Size = new System.Drawing.Size(189, 19);
             this.checkEnableGuardianFeatures.TabIndex = 1;
             this.checkEnableGuardianFeatures.Tag = "enableGuardianSites";
-            this.checkEnableGuardianFeatures.Text = "Enable experimental features";
+            this.checkEnableGuardianFeatures.Text = "Enable Guardian Ruins features";
             this.checkEnableGuardianFeatures.UseVisualStyleBackColor = true;
+            this.checkEnableGuardianFeatures.CheckedChanged += new System.EventHandler(this.disableEverythingElse_CheckedChanged);
             // 
             // tabPage5
             // 
@@ -693,7 +696,7 @@ namespace SrvSurvey
             this.checkProcessScreenshots.Tag = "processScreenshots";
             this.checkProcessScreenshots.Text = "Convert .bmp screenshots into .png files";
             this.checkProcessScreenshots.UseVisualStyleBackColor = true;
-            this.checkProcessScreenshots.CheckedChanged += new System.EventHandler(this.checkProcessSAcreenshots_CheckedChanged);
+            this.checkProcessScreenshots.CheckedChanged += new System.EventHandler(this.disableEverythingElse_CheckedChanged);
             // 
             // tabPage2
             // 
@@ -734,6 +737,20 @@ namespace SrvSurvey
             this.linkAboutOne.TabStop = true;
             this.linkAboutOne.Text = resources.GetString("linkAboutOne.Text");
             this.linkAboutOne.UseCompatibleTextRendering = true;
+            // 
+            // checkBox2
+            // 
+            this.checkBox2.AutoSize = true;
+            this.checkBox2.Checked = true;
+            this.checkBox2.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox2.Location = new System.Drawing.Point(10, 198);
+            this.checkBox2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.checkBox2.Name = "checkBox2";
+            this.checkBox2.Size = new System.Drawing.Size(256, 19);
+            this.checkBox2.TabIndex = 11;
+            this.checkBox2.Tag = "disableAerialAlignmentGrid";
+            this.checkBox2.Text = "Disable aerial screenshot alignment overlay.";
+            this.checkBox2.UseVisualStyleBackColor = true;
             // 
             // FormSettings
             // 
@@ -825,5 +842,6 @@ namespace SrvSurvey
         private Label label7;
         private Label label6;
         private Label label5;
+        private CheckBox checkBox2;
     }
 }

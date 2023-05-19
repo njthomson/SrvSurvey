@@ -56,32 +56,32 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="images\alpha-background.png" />
     <None Remove="images\alpha-heading-guide.png" />
+    <None Remove="images\beta-background.png" />
     <None Remove="images\beta-heading-guide.png" />
+    <None Remove="images\gamma-background.png" />
     <None Remove="images\gamma-heading-guide.png" />
-    <None Remove="ruins-alpha-5.png" />
-    <None Remove="ruins-beta-3.png" />
-    <None Remove="ruins-gamma-1.png" />
     <None Remove="settlementTemplates.json" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="images\alpha-background.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="images\alpha-heading-guide.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\beta-background.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="images\beta-heading-guide.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\gamma-background.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="images\gamma-heading-guide.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ruins-alpha-5.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ruins-beta-3.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ruins-gamma-1.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="settlementTemplates.json">

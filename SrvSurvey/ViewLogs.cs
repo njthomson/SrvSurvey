@@ -30,8 +30,11 @@ namespace SrvSurvey
         {
             if (ViewLogs.activeForm != null)
             {
-                ViewLogs.activeForm.txtLogs.Text += "\r\n" + txt;
-                ViewLogs.activeForm.scrollToEnd();
+                Program.control!.Invoke((MethodInvoker)delegate
+                {
+                    ViewLogs.activeForm.txtLogs.Text += "\r\n" + txt;
+                    ViewLogs.activeForm.scrollToEnd();
+                });
             }
         }
 
@@ -44,24 +47,7 @@ namespace SrvSurvey
 
             // can we fit in our last location
             if (Game.settings.logsLocation != Rectangle.Empty)
-                this.useLastLocation();
-        }
-
-        private void useLastLocation()
-        {
-            // position ourself within the bound of which ever screen is chosen
-            var rect = Game.settings.logsLocation;
-            var pt = rect.Location;
-            var r = Screen.GetBounds(pt);
-            if (pt.X < r.Left) pt.X = r.Left;
-            if (pt.X + this.Width > r.Right) pt.X = r.Right - this.Width;
-
-            if (pt.Y < r.Top) pt.Y = r.Top;
-            if (pt.Y + this.Height > r.Bottom) pt.Y = r.Bottom - this.Height;
-
-            this.StartPosition = FormStartPosition.Manual;
-            this.Location = pt;
-            this.Size = rect.Size;
+                Util.useLastLocation(this, Game.settings.logsLocation);
         }
 
         private void btnClose_Click(object sender, EventArgs e)

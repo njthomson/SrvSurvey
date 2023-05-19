@@ -17,6 +17,8 @@ namespace SrvSurvey
     {
         private static FormAllRuins? activeForm;
 
+        private double[] here;
+
         public static void show()
         {
             if (activeForm == null)
@@ -30,11 +32,20 @@ namespace SrvSurvey
 
         private List<ListViewItem> rows = new List<ListViewItem>();
         private int sortColumn;
+        private bool sortUp = false;
 
         public FormAllRuins()
         {
             InitializeComponent();
             comboSiteType.SelectedIndex = 0;
+
+            // default sort by system distance
+            this.sortColumn = 2;
+
+
+            // can we fit in our last location
+            if (Game.settings.logsLocation != Rectangle.Empty)
+                Util.useLastLocation(this, Game.settings.allRuinsLocation);
         }
 
         protected override void OnClosing(CancelEventArgs e)
@@ -46,17 +57,39 @@ namespace SrvSurvey
 
         private void FormAllRuins_Load(object sender, EventArgs e)
         {
-            Game.log("FormAllRuins_Load");
+            if (Game.activeGame?.cmdr != null)
+            {
+                lblCurrentSystem.Text = Game.activeGame.cmdr.currentSystem;
+                here = Game.activeGame?.cmdr?.starPos;
+            }
+            else
+            {
+                lblCurrentSystem.Text = "Sol (current unknown)";
+                here = new double[3];
+            }
+
+            this.prepareAllRuins();
+        }
+
+        protected override void OnResizeEnd(EventArgs e)
+        {
+            base.OnResizeEnd(e);
+
+            var rect = new Rectangle(this.Location, this.Size);
+            if (Game.settings.allRuinsLocation != rect)
+            {
+                Game.settings.allRuinsLocation = rect;
+                Game.settings.Save();
+            }
+        }
+
+        private void prepareAllRuins()
+        {
+            Game.log("prepareAllRuins");
 
             Game.canonn.loadAllRuins().ContinueWith(stuff =>
             {
                 Game.log($"Rendering {stuff.Result.Count} ruins");
-                var here = new double[]
-                {
-                    838.75,
-                    -197.84375,
-                    -111.84375,
-                };
 
                 foreach (var entry in stuff.Result)
                 {
@@ -87,7 +120,6 @@ namespace SrvSurvey
                     this.rows.Add(row);
                 }
 
-
                 Program.control!.Invoke((MethodInvoker)delegate
                 {
                     this.addRows();
@@ -99,6 +131,7 @@ namespace SrvSurvey
         {
             this.grid.Items.Clear();
 
+            // apply filter
             var filteredRows = this.rows.Where(row =>
             {
                 var entry = (GuardianRuinEntry)row.Tag;
@@ -115,9 +148,11 @@ namespace SrvSurvey
                 return true;
             });
 
-
-
+            // apply sort
             var sortedRows = this.sortRows(filteredRows);
+
+            if (this.sortUp)
+                sortedRows = sortedRows.Reverse();
 
             this.grid.Items.AddRange(sortedRows.ToArray());
             this.grid.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
@@ -162,9 +197,13 @@ namespace SrvSurvey
         private void grid_ColumnClick(object sender, ColumnClickEventArgs e)
         {
             if (this.sortColumn == e.Column)
-                this.sortColumn = -1;
+            {
+                this.sortUp = !this.sortUp;
+            }
             else
+            {
                 this.sortColumn = e.Column;
+            }
 
             this.addRows();
         }

@@ -2979,6 +2979,13 @@
         PiPS9bxLtvhSO2G7JP7hsBrIS2qkApX1OltQolDA+x9O/z9M1MfG3VpvwgAAAABJRU5ErkJggg==
 </value>
   </data>
+  <data name="label3.Text" xml:space="preserve">
+    <value>Guardian site features are still experimental and may not function properly.
+Known issues:
+- Site background images do not correctly align with cmdr's position.
+- Only some Relic Towers and puddle locations are known.
+- The table of Guardian Ruins is under active development.</value>
+  </data>
   <data name="pictureBox3.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAWkAAABpCAYAAAD4DNL6AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO

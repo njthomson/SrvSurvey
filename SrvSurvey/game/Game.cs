@@ -378,6 +378,9 @@ namespace SrvSurvey.game
             {
                 if (this.Commander == null) this.Commander = loadEntry.Commander;
                 if (this.fid == null) this.fid = loadEntry.FID;
+
+                Game.settings.lastCommander = this.Commander;
+                Game.settings.lastFid = this.fid;
             }
 
             // exit early if we are shutdown

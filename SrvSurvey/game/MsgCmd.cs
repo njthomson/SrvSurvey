@@ -12,7 +12,7 @@
         public const string z = "z";
 
         /// <summary> PlotGuardians : invoke origin alignment mode </summary>
-        public const string align = ".align";
+        public const string aerial = ".aerial";
         /// <summary> PlotGuardians : invoke map mode </summary>
         public const string map = ".map";
         /// <summary> PlotGuardians : invoke site heading mode </summary>

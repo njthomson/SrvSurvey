@@ -596,8 +596,6 @@ namespace SrvSurvey
         private void btnRuinsOrigin_Click(object sender, EventArgs e)
         {
             PlotGuardians.switchMode(Mode.origin);
-            //PlotVertialStripe.mode = true;
-            //Program.showPlotter<PlotVertialStripe>();
         }
 
         #region screenshot manipulations

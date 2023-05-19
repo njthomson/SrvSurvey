@@ -46,8 +46,8 @@ namespace SrvSurvey
             PlotGuardians.instance = this;
             InitializeComponent();
 
-            this.Width = 500;
-            this.Height = 500;
+            //this.Width = 500;
+            //this.Height = 500;
 
             SiteTemplate.Import();
 
@@ -147,6 +147,25 @@ namespace SrvSurvey
             // load heading guidance image if that is the next mode
             if (this.mode == Mode.heading)
                 this.loadHeadingGuidance();
+
+            if (this.mode == Mode.origin)
+            {
+                if (!Game.settings.disableAerialAlignmentGrid)
+                {
+                    // TODO: implement more for other site types
+                    if (this.siteData.type == GuardianSiteData.SiteType.beta)
+                    {
+                        PlotVertialStripe.mode = true;
+                        Program.showPlotter<PlotVertialStripe>();
+                    }
+                }
+            }
+            else if (this.mode != Mode.heading)
+            {
+                // close potential plotter
+                PlotVertialStripe.mode = false;
+                Program.closePlotter(nameof(PlotVertialStripe));
+            }
         }
 
         protected override void onJournalEntry(SendText entry)
@@ -162,7 +181,7 @@ namespace SrvSurvey
 
 
             // switch to/from offset/screenshot mode
-            if (msg == MsgCmd.align)
+            if (msg == MsgCmd.aerial)
             {
                 this.setMode(Mode.origin);
                 return;
@@ -328,8 +347,9 @@ namespace SrvSurvey
 
             this.template = SiteTemplate.sites[siteData.type];
 
-            //this.siteMap = Bitmap.FromFile(Path.Combine("images", this.template.backgroundImage));
-            this.siteMap = Bitmap.FromFile(Path.Combine(this.template.backgroundImage));
+            var imageFilename = $"{siteData.type}-background.png".ToLowerInvariant();
+            this.siteMap = Bitmap.FromFile(Path.Combine("images", imageFilename));
+
             this.trails = new Bitmap(this.siteMap.Width * 2, this.siteMap.Height * 2);
 
             // Temporary until trail tracking works
@@ -637,14 +657,20 @@ namespace SrvSurvey
                     break;
             }
             //var footerTxt = $"Offset: {pp.X}m, {pp.Y}m  | Alt: {alt}m | Target: {targetAlt}m";
-            var footerTxt = $"Altitude: {alt}m | Target: {targetAlt}m";
+            var footerTxt = $"Altitude: {alt}m | Target altitude: {targetAlt}m";
 
             // header text and rotation arrows
             this.drawOriginRotationGuide();
 
-            var footerBrush = Math.Abs(targetAlt - (int)game.status.Altitude) < 50
-                ? GameColors.brushCyan
-                : GameColors.brushGameOrange;
+            // choose a font color: too low: blue, too high: red, otherwise orange
+            Brush footerBrush;
+            var altDiff = (int)game.status.Altitude - targetAlt;
+            if (altDiff < -50)
+                footerBrush = GameColors.brushCyan;
+            else if (altDiff > 50)
+                footerBrush = Brushes.Red;
+            else
+                footerBrush = GameColors.brushGameOrange;
 
             this.drawFooterText(footerTxt, footerBrush);
         }
@@ -656,8 +682,10 @@ namespace SrvSurvey
 
             var adjustAngle = siteData.siteHeading - game.status.Heading;
 
-            if (Math.Abs(adjustAngle) > 1)
+            Brush brush = GameColors.brushGameOrange;
+            if (Math.Abs(adjustAngle) > 2)
             {
+                brush = GameColors.brushCyan;
                 var ax = 30f;
                 var ay = -mid.Height * 0.8f;
                 var ad = 80;
@@ -677,8 +705,8 @@ namespace SrvSurvey
             var headerTxt = $"Site heading: {siteData.siteHeading}° | Rotate ship ";
             headerTxt += adjustAngle > 0 ? "right" : "left";
             headerTxt += $" {adjustAngle}°";
-
-            this.drawHeaderText(headerTxt);
+            
+            this.drawHeaderText(headerTxt, brush);
         }
 
         private void drawSiteMap()
@@ -802,8 +830,8 @@ namespace SrvSurvey
             }
 
             // draw highlight over closest POI
-            g.DrawEllipse(GameColors.penCyan4, -nearestPt.X - 12, -nearestPt.Y - 12, 24, 24);
-            this.drawFooterText($"{nearestPoi.type} {nearestPoi.name}: UNCONFIRMED");
+            g.DrawEllipse(GameColors.penYellow4, -nearestPt.X - 14, -nearestPt.Y - 14, 28, 28);
+            this.drawFooterText($"{nearestPoi.type} {nearestPoi.name}: unconfirmed");
         }
 
         private PointF drawSitePoi(SitePOI poi, PointF pt)

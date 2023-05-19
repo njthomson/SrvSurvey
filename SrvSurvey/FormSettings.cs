@@ -23,6 +23,8 @@ namespace SrvSurvey
             var procED = Process.GetProcessesByName("EliteDangerous64");
             btnNextProc.Visible = procED.Length > 1;
             this.Text += $" ({releaseVersion})";
+
+            this.linkDataFiles.Visible = Debugger.IsAttached;
         }
 
         private void FormSettings_Load(object sender, EventArgs e)
@@ -171,11 +173,14 @@ namespace SrvSurvey
             }
         }
 
-        private void checkProcessSAcreenshots_CheckedChanged(object sender, EventArgs e)
+        private void disableEverythingElse_CheckedChanged(object sender, EventArgs e)
         {
-            foreach(Control ctrl in this.checkProcessScreenshots.Parent!.Controls)
-                if (ctrl != checkProcessScreenshots)
-                    ctrl.Enabled = checkProcessScreenshots.Checked;
+            var senderCheckbox = sender as CheckBox;
+            if (senderCheckbox?.Parent == null) return;
+
+            foreach(Control ctrl in senderCheckbox.Parent!.Controls)
+                if (ctrl != senderCheckbox)
+                    ctrl.Enabled = senderCheckbox.Checked;
         }
 
         private void chooseScreenshotFolder(LinkLabel linkLabel)
@@ -212,5 +217,6 @@ namespace SrvSurvey
         {
             Util.openLink(Application.UserAppDataPath);
         }
+
     }
 }
