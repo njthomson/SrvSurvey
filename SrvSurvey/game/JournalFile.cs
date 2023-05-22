@@ -200,7 +200,6 @@ namespace SrvSurvey
 
             var filename = journalFiles.FirstOrDefault((filepath) =>
             {
-                // TODO: Use some streaming reader to save reading the whole file up front?
                 using (var reader = new StreamReader(new FileStream(filepath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)))
                 {
                     while (!reader.EndOfStream)
@@ -209,9 +208,8 @@ namespace SrvSurvey
 
                         if (line == null) break;
 
-                        // TODO: allow for non-Odyssey
-                        if (line.Contains("\"event\":\"Fileheader\"") && line.Contains($"\"Odyssey\":{isOdyssey}"))
-                            return false;
+                        if (line.Contains("\"event\":\"Fileheader\"") && !line.ToUpperInvariant().Contains($"\"Odyssey\":{isOdyssey}".ToUpperInvariant()))
+                                return false;
 
                         if (line.Contains("\"event\":\"Commander\""))
                             // no need to process further lines

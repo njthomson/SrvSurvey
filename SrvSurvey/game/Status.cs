@@ -125,7 +125,7 @@ namespace SrvSurvey
 
         private bool trackBlinks()
         {
-            const StatusFlags blinkSignal = StatusFlags.CargoScoopDeployed; // StatusFlags.LightsOn;
+            const StatusFlags blinkSignal = StatusFlags.HudInAnalysisMode; // CargoScoopDeployed; // StatusFlags.LightsOn;
             var newBlinkState = (this.Flags & blinkSignal) > 0;
             var duration = DateTime.Now - this.lastblinkChange;
 

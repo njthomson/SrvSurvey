@@ -382,6 +382,7 @@ namespace SrvSurvey.canonn
             this.siteHeading = data.siteHeading;
             this.relicTowerHeading = data.relicTowerHeading;
             this.lastVisited = data.lastVisited;
+            this.idx = data.index;
         }
     }
 

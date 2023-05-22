@@ -96,7 +96,9 @@ namespace SrvSurvey
                     var lastVisited = entry.lastVisited == DateTimeOffset.MinValue ? "" : entry.lastVisited.ToString("d")!;
                     var siteHeading = entry.siteHeading == -1 ? "" : $"{entry.siteHeading}°";
                     var relicTowerHeading = entry.relicTowerHeading == -1 ? "" : $"{entry.relicTowerHeading}°";
-                    var hasImages = Directory.Exists(Path.Combine(Game.settings.screenshotTargetFolder!, entry.systemName));
+
+                    // confirm there are images specific to this Ruins
+                    var hasImages = ruinsHasImages(entry);
 
                     var distanceToArrival = entry.distanceToArrival.ToString("N0");
 
@@ -122,12 +124,25 @@ namespace SrvSurvey
 
                 Program.control!.Invoke((MethodInvoker)delegate
                 {
-                    this.addRows();
+                    this.showAllRows();
                 });
             });
         }
 
-        private void addRows()
+        private bool ruinsHasImages(GuardianRuinEntry entry)
+        {
+            var imageFilenamePrefix = $"{entry.systemName.ToUpper()} {entry.bodyName}".ToUpperInvariant();
+            var imageFilenameSuffix = $", Ruins{entry.idx}".ToUpperInvariant();
+
+            var folder = Path.Combine(Game.settings.screenshotTargetFolder!, entry.systemName);
+            if (!Directory.Exists(folder)) return false;
+
+            var files = Directory.GetFiles(folder, "*.png");
+            var match = files.FirstOrDefault(_ => _.ToUpperInvariant().Contains(imageFilenamePrefix) && _.ToUpperInvariant().Contains(imageFilenameSuffix));
+            return match != null;
+        }
+
+        private void showAllRows()
         {
             this.grid.Items.Clear();
 
@@ -181,17 +196,17 @@ namespace SrvSurvey
 
         private void checkVisited_CheckedChanged(object sender, EventArgs e)
         {
-            this.addRows();
+            this.showAllRows();
         }
 
         private void comboSiteType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            this.addRows();
+            this.showAllRows();
         }
 
         private void btnFilter_Click(object sender, EventArgs e)
         {
-            this.addRows();
+            this.showAllRows();
         }
 
         private void grid_ColumnClick(object sender, ColumnClickEventArgs e)
@@ -205,7 +220,7 @@ namespace SrvSurvey
                 this.sortColumn = e.Column;
             }
 
-            this.addRows();
+            this.showAllRows();
         }
 
         private void grid_MouseClick(object sender, MouseEventArgs e)

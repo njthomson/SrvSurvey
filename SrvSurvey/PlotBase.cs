@@ -130,7 +130,6 @@ namespace SrvSurvey
 
         protected void onJournalEntry(JournalEntry entry) { /* ignore */ }
 
-
         protected void onJournalEntry(Touchdown entry)
         {
             this.touchdownLocation.Target = entry;
@@ -177,6 +176,12 @@ namespace SrvSurvey
                 }
             }
         }
+
+        protected virtual void onJournalEntry(CodexEntry entry)
+        {
+            // overriden as necessary
+        }
+
 
         protected void drawCommander()
         {

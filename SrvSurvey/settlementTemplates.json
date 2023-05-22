@@ -11,16 +11,53 @@
       { "type": "relic", "name": "t5", "angle": 264.7, "dist": 461 },
       { "type": "relic", "name": "t6", "angle": 187.5, "dist": 738 },
       { "type": "relic", "name": "t7", "angle": 134.4, "dist": 622 }, // leaning?
-
+      { "type": "relic", "name": "t8", "angle": 53.1, "dist": 388 }, // leaning?
       { "type": "relic", "name": "t9", "angle": 53.8, "dist": 582 },
       { "type": "relic", "name": "t10", "angle": 351.6, "dist": 502 },
-      { "type": "relic", "name": "t11", "angle": 3.0, "dist": 668 },
+      { "type": "relic", "name": "t11", "angle": 3.1, "dist": 668 },
+      { "type": "relic", "name": "t12", "angle": 310.5, "dist": 473 }, // estimated location!
 
-      { "type": "casket", "name": "p1?", "angle": 351.8, "dist": 688 },
+
+      { "type": "urn", "name": "p1", "angle": 198, "dist": 101 }, // unknown type, estimated location!
+      { "type": "urn", "name": "p2", "angle": 131.2, "dist": 79.8 },
       { "type": "urn", "name": "p3", "angle": 209, "dist": 47 },
+      { "type": "orb", "name": "p4", "angle": 222, "dist": 53 },
+      { "type": "tablet", "name": "p5", "angle": 67.9, "dist": 114 }, // looks like p6 but was alone
+      { "type": "urn", "name": "p6", "angle": 82.2, "dist": 134 },
+      { "type": "totem", "name": "p7", "angle": 195, "dist": 257 },
+      { "type": "totem", "name": "p8", "angle": 109, "dist": 313 }, // unknown type, estimated location!
+      { "type": "tablet", "name": "p9", "angle": 125.2, "dist": 667 },
       { "type": "casket", "name": "p10", "angle": 137.8, "dist": 586 },
       { "type": "urn", "name": "p11", "angle": 140.9, "dist": 409 },
-      { "type": "casket", "name": "p24", "angle": 45.9, "dist": 376 }
+      { "type": "tablet", "name": "p12", "angle": 159, "dist": 364 },
+      { "type": "totem", "name": "p13", "angle": 168.7, "dist": 523 },
+      { "type": "totem", "name": "p14", "angle": 161, "dist": 584 }, // unknown type, estimated location!
+      { "type": "totem", "name": "p15", "angle": 182.7, "dist": 703 },
+      { "type": "totem", "name": "p16", "angle": 193, "dist": 600 }, // unknown type, estimated location!
+      { "type": "tablet", "name": "p17", "angle": 218.5, "dist": 642 },
+      { "type": "tablet", "name": "p18", "angle": 217, "dist": 660 }, // unknown type, estimated location!
+      { "type": "tablet", "name": "p19", "angle": 208.8, "dist": 787 }, // measured in legacy mode. Should be URN?
+      { "type": "casket", "name": "p20", "angle": 246.9, "dist": 438 },
+      { "type": "totem", "name": "p21", "angle": 312.4, "dist": 363 },
+      { "type": "orb", "name": "p22", "angle": 339, "dist": 575 },
+      { "type": "casket", "name": "p23", "angle": 3.2, "dist": 381 }, // measured in legacy mode
+      { "type": "casket", "name": "p24", "angle": 45.9, "dist": 376 },
+      { "type": "tablet", "name": "p25", "angle": 49.8, "dist": 549 },
+      { "type": "totem", "name": "p26", "angle": 60.1, "dist": 609 },
+      { "type": "casket", "name": "p27", "angle": 68.3, "dist": 421 },
+      { "type": "totem", "name": "p28", "angle": 79.8, "dist": 373 },
+      { "type": "casket", "name": "p29", "angle": 351.8, "dist": 688 },
+      { "type": "urn", "name": "p30", "angle": 240.6, "dist": 631 },
+      { "type": "orb", "name": "p31", "angle": 278.0, "dist": 355 },
+      { "type": "urn", "name": "p32", "angle": 297.7, "dist": 466 },
+      { "type": "urn", "name": "p33", "angle": 157, "dist": 366 },
+      { "type": "urn", "name": "p34", "angle": 212.4, "dist": 814 },
+      { "type": "urn", "name": "p35", "angle": 329.7, "dist": 222 },
+      { "type": "orb", "name": "p36", "angle": 172.8, "dist": 507 },
+      { "type": "urn", "name": "p37", "angle": 127, "dist": 696 }, // measured in legacy mode
+      { "type": "orb", "name": "p38", "angle": 19, "dist": 646 }, // unknown type, estimated location!
+      { "type": "orb", "name": "p39", "angle": 117, "dist": 471 }, // unknown type, estimated location!
+
     ]
   },
   "beta": {
@@ -41,14 +78,16 @@
       { "type": "orb", "name": "p4", "angle": 5.5, "dist": 549 },
       { "type": "urn", "name": "p5", "angle": 357.8, "dist": 496 },
       { "type": "urn", "name": "p7", "angle": 298.7, "dist": 625 },
-      { "type": "urn", "name": "p8", "angle": 301.8, "dist": 481 },
+      { "type": "casket", "name": "p8", "angle": 301.8, "dist": 481 }, // not urn?
       { "type": "urn", "name": "p9", "angle": 286.7, "dist": 285 },
       { "type": "urn", "name": "p10", "angle": 276.8, "dist": 436 },
-      { "type": "totem", "name": "p12", "angle": 258.1, "dist": 544 },
+      { "type": "totem", "name": "p11", "angle": 276.8, "dist": 436 },
+      { "type": "totem", "name": "p12", "angle": 298, "dist": 183 },
       { "type": "totem", "name": "p13", "angle": 214.7, "dist": 258 },
       { "type": "tablet", "name": "p14", "angle": 235, "dist": 467 }, // alpha?
       { "type": "casket", "name": "p15", "angle": 230.8, "dist": 506 },
       { "type": "totem", "name": "p17", "angle": 215.4, "dist": 565 }, // double check
+      { "type": "tablet", "name": "p19", "angle": 203, "dist": 612 },
       { "type": "urn", "name": "p20", "angle": 193.7, "dist": 617 },
       { "type": "tablet", "name": "p22", "angle": 208.1, "dist": 415 },
       { "type": "orb", "name": "p23", "angle": 200.7, "dist": 485 },
@@ -59,9 +98,11 @@
       { "type": "urn", "name": "p29", "angle": 125.6, "dist": 606 },
       { "type": "totem", "name": "p30", "angle": 122, "dist": 534 },
       { "type": "urn", "name": "p31", "angle": 111.9, "dist": 560 },
+      { "type": "orb", "name": "p32", "angle": 140.6, "dist": 334 },
       { "type": "tablet", "name": "p34", "angle": 104.0, "dist": 421 },
       { "type": "tablet", "name": "p36", "angle": 134, "dist": 196 },
       { "type": "casket", "name": "p37", "angle": 151, "dist": 120 },
+      { "type": "totem", "name": "p39", "angle": 152, "dist": 65 },
       { "type": "casket", "name": "p40", "angle": 90.6, "dist": 241 },
       { "type": "orb", "name": "p41", "angle": 337, "dist": 126 }
 
@@ -77,6 +118,13 @@
     "imageOffset": "915,685",
     "scaleFactor": 1.15,
     "poi": [
+      { "type": "relic", "name": "t1", "angle": 92.4, "dist": 199 },
+      { "type": "relic", "name": "t2", "angle": 171.4, "dist": 360 },
+      { "type": "relic", "name": "t3", "angle": 201.7, "dist": 466 }, // leaning
+
+
+      { "type": "urn", "name": "p1", "angle": 211.2, "dist": 241 }
+
     ]
   }
 }

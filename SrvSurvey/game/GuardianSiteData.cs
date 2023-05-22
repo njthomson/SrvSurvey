@@ -1,13 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using SrvSurvey.canonn;
 using SrvSurvey.units;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Tab;
 
 namespace SrvSurvey.game
 {
@@ -41,8 +34,15 @@ namespace SrvSurvey.game
                     systemAddress = entry.SystemAddress,
                     bodyId = entry.BodyID,
                     firstVisited = DateTimeOffset.UtcNow,
+                    confirmedPOI = new Dictionary<string, bool>(),
                 };
                 data.Save();
+            }
+            else
+            {
+                if (data.confirmedPOI == null)
+                    data.confirmedPOI = new Dictionary<string, bool>();
+
             }
 
             //if (data.type == SiteType.unknown)
@@ -70,6 +70,8 @@ namespace SrvSurvey.game
         public int bodyId;
         public int siteHeading = -1;
         public int relicTowerHeading = -1;
+
+        public Dictionary<string, bool> confirmedPOI = new Dictionary<string, bool>();
 
         #endregion
 

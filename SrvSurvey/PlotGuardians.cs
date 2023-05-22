@@ -1,9 +1,7 @@
 ﻿using SrvSurvey.game;
 using SrvSurvey.units;
-using System.Collections.Generic;
-using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Security.Permissions;
+using static SrvSurvey.game.GuardianSiteData;
 
 namespace SrvSurvey
 {
@@ -22,6 +20,8 @@ namespace SrvSurvey
         private Image? trails;
         private Image? underlay;
         public Image? headingGuidance;
+        private string highlightPoi; // tmp
+        private SitePOI nearestPoi;
 
         /// <summary> Site map width </summary>
         private float ux;
@@ -51,7 +51,7 @@ namespace SrvSurvey
 
             SiteTemplate.Import();
 
-            this.scale = 0.65f;
+            this.scale = 0.55f;
 
             this.nextMode();
         }
@@ -139,7 +139,10 @@ namespace SrvSurvey
             if (!Game.settings.disableRuinsMeasurementGrid)
             {
                 if (this.mode == Mode.heading)
+                {
+                    PlotVertialStripe.mode = PlotVertialStripe.mode = PlotVertialStripe.Mode.Buttress;
                     Program.showPlotter<PlotVertialStripe>();
+                }
                 else
                     Program.closePlotter(nameof(PlotVertialStripe));
             }
@@ -152,18 +155,29 @@ namespace SrvSurvey
             {
                 if (!Game.settings.disableAerialAlignmentGrid)
                 {
-                    // TODO: implement more for other site types
-                    if (this.siteData.type == GuardianSiteData.SiteType.beta)
+                    switch (this.siteData.type)
                     {
-                        PlotVertialStripe.mode = true;
-                        Program.showPlotter<PlotVertialStripe>();
+                        case SiteType.alpha:
+                            PlotVertialStripe.mode = PlotVertialStripe.Mode.Alpha;
+                            break;
+                        case SiteType.beta:
+                            PlotVertialStripe.mode = PlotVertialStripe.Mode.Beta;
+                            break;
+                        case SiteType.gamma:
+                            PlotVertialStripe.mode = PlotVertialStripe.Mode.Gamma;
+                            break;
+
+                        // TODO: implement more for other site types
+
+                        default:
+                            return;
                     }
+                    Program.showPlotter<PlotVertialStripe>();
                 }
             }
             else if (this.mode != Mode.heading)
             {
                 // close potential plotter
-                PlotVertialStripe.mode = false;
                 Program.closePlotter(nameof(PlotVertialStripe));
             }
         }
@@ -329,7 +343,21 @@ namespace SrvSurvey
             }
         }
 
-        private string highlightPoi; // tmp
+        protected override void onJournalEntry(CodexEntry entry)
+        {
+            // exit if we have no selected POI or it isn't a relic
+            if (this.nearestPoi == null || this.nearestPoi.type != POIType.relic) return;
+
+            // add POI to confirmed
+            if (!siteData.confirmedPOI.ContainsKey(this.nearestPoi.name))
+            {
+                // use combat/exploration mode to know if item is present or missing
+                Game.log($"POI confirmed: '{this.nearestPoi.name}' ({this.nearestPoi.type})");
+                siteData.confirmedPOI.Add(this.nearestPoi.name, true);
+                siteData.Save();
+                this.Invalidate();
+            }
+        }
 
         private void setSiteHeading(int newHeading)
         {
@@ -405,6 +433,17 @@ namespace SrvSurvey
             if (this.mode == Mode.heading && blink)
             {
                 this.setSiteHeading(game.status.Heading);
+            }
+            else if (this.nearestPoi != null && this.mode == Mode.map && blink)
+            {
+                // confirm POI is missing
+                var poiPresent = (game.status.Flags & StatusFlags.CargoScoopDeployed) > 0;
+                var poiStatus = poiPresent ? "present" : "missing";
+
+                Game.log($"Confirming POI {poiStatus}: '{this.nearestPoi.name}' ({this.nearestPoi.type})");
+                siteData.confirmedPOI[this.nearestPoi.name] = poiPresent;
+                siteData.Save();
+                this.Invalidate();
             }
 
             // prepare other stuff
@@ -705,7 +744,7 @@ namespace SrvSurvey
             var headerTxt = $"Site heading: {siteData.siteHeading}° | Rotate ship ";
             headerTxt += adjustAngle > 0 ? "right" : "left";
             headerTxt += $" {adjustAngle}°";
-            
+
             this.drawHeaderText(headerTxt, brush);
         }
 
@@ -782,7 +821,7 @@ namespace SrvSurvey
 
         private void drawArtifacts()
         {
-            if (this.template == null) return;
+            if (this.template == null || this.template.poi.Count == 0) return;
 
             // get pixel location of site origin relative to overlay window
             g.ResetTransform();
@@ -803,11 +842,26 @@ namespace SrvSurvey
 
             var nearestDist = double.MaxValue;
             var nearestPt = PointF.Empty;
-            SitePOI nearestPoi = null!;
+
+            int countRelics=0, confirmedRelics = 0, countPuddles = 0, confirmedPuddles = 0;
 
             // and draw all the POIs
             foreach (var poi in this.template.poi)
             {
+                if (poi.type == POIType.relic)
+                {
+                    countRelics++;
+                    if (siteData.confirmedPOI.ContainsKey(poi.name))
+                        confirmedRelics++;
+                }
+                else
+                {
+                    countPuddles++;
+                    if (siteData.confirmedPOI.ContainsKey(poi.name))
+                        confirmedPuddles++;
+                }
+
+
                 // calculate render point for POI
                 var pt = Util.rotateLine(
                     180 - siteData.siteHeading - poi.angle,
@@ -824,14 +878,28 @@ namespace SrvSurvey
                 if (d < nearestDist)
                 {
                     nearestDist = d;
-                    nearestPoi = poi;
+                    this.nearestPoi = poi;
                     nearestPt = pt;
                 }
             }
 
-            // draw highlight over closest POI
-            g.DrawEllipse(GameColors.penYellow4, -nearestPt.X - 14, -nearestPt.Y - 14, 28, 28);
-            this.drawFooterText($"{nearestPoi.type} {nearestPoi.name}: unconfirmed");
+            if (nearestDist > 75)
+            {
+                // make sure we're relatively close before selecting the item
+                this.nearestPoi = null;
+                this.drawFooterText($"Confirmed: {confirmedRelics}/{countRelics} relics, {confirmedPuddles}/{countPuddles} puddles");
+
+            }
+            else
+            {
+                // draw highlight over closest POI
+                g.DrawEllipse(GameColors.penCyan4, -nearestPt.X - 14, -nearestPt.Y - 14, 28, 28);
+
+                var poiStatus = "unconfirmed";
+                if (siteData.confirmedPOI.ContainsKey(this.nearestPoi.name))
+                    poiStatus = siteData.confirmedPOI[this.nearestPoi.name] ? "confirmed" : "not present";
+                this.drawFooterText($"{this.nearestPoi.type} {this.nearestPoi.name}: {poiStatus}");
+            }
         }
 
         private PointF drawSitePoi(SitePOI poi, PointF pt)
@@ -861,17 +929,29 @@ namespace SrvSurvey
 
         private Pen getPoiPen(SitePOI poi)
         {
+            bool? status = null;
+            if (siteData.confirmedPOI.ContainsKey(poi.name))
+                status = siteData.confirmedPOI.GetValueOrDefault(poi.name);
+
             switch (poi.type)
             {
                 case POIType.relic:
-                    return GameColors.penPoiRelic;
+                    return status == null
+                        ? GameColors.penPoiRelicUnconfirmed
+                        : status == true
+                            ? GameColors.penPoiRelicPresent
+                            : GameColors.penPoiRelicMissing;
 
                 case POIType.orb:
                 case POIType.casket:
                 case POIType.tablet:
                 case POIType.totem:
                 case POIType.urn:
-                    return GameColors.penPoiPuddle;
+                    return status == null
+                        ? GameColors.penPoiPuddleUnconfirmed
+                        : status == true
+                            ? GameColors.penPoiPuddlePresent
+                            : GameColors.penPoiPuddleMissing;
 
                 default:
                     return Pens.Yellow;

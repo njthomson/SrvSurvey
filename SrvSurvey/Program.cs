@@ -34,6 +34,7 @@ namespace SrvSurvey
             Program.control.CreateControl();
 
             Application.Run(new Main());
+            //Application.Run(new FormRuins()); // tmp!
         }
 
         private static void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)

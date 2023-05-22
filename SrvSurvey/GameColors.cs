@@ -110,7 +110,14 @@ namespace SrvSurvey
         public static Font fontScreenshotBannerBig = new Font("Century Gothic", 14F, FontStyle.Bold, GraphicsUnit.Point);
         public static Font fontScreenshotBannerSmall = new Font("Century Gothic", 10F, FontStyle.Regular, GraphicsUnit.Point);
 
-        public static Pen penPoiRelic = new Pen(Color.CornflowerBlue, 4) { DashStyle = DashStyle.Dash, };
-        public static Pen penPoiPuddle = new Pen(Color.PeachPuff, 2) { DashStyle = DashStyle.Dot, };
+
+        public static Pen penPoiRelicUnconfirmed = new Pen(Color.Cyan, 4) { DashStyle = DashStyle.Dash, }; // CornflowerBlue ?
+        public static Pen penPoiRelicPresent = new Pen(Color.Orange, 4) { DashStyle = DashStyle.Dash, };
+        public static Pen penPoiRelicMissing = new Pen(Color.DarkRed, 4) { DashStyle = DashStyle.Dash, };
+
+        public static Pen penPoiPuddleUnconfirmed = new Pen(Color.Cyan, 2) { DashStyle = DashStyle.Dot, }; // PeachPuff ?
+        public static Pen penPoiPuddlePresent= new Pen(Color.Orange, 2) { DashStyle = DashStyle.Solid, };
+        public static Pen penPoiPuddleMissing = new Pen(Color.DarkRed, 2) { DashStyle = DashStyle.Solid, };
+
     }
 }

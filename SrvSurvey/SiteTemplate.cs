@@ -212,5 +212,10 @@ namespace SrvSurvey
         public string name;
         public float angle;
         public float dist;
+
+        public override string ToString()
+        {
+            return $"{type} {name} {angle}° {dist}m";
+        }
     }
 }
