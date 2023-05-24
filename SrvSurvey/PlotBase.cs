@@ -282,10 +282,21 @@ namespace SrvSurvey
 
         protected void drawBearingTo(float x, float y, string txt, LatLong2 location)
         {
+            var dd = new TrackingDelta(game.nearBody!.radius, location);
+            Angle deg = dd.angle - game.status!.Heading;
+           
+            drawBearingTo(x, y, txt, (double)dd.distance, (double)deg);
+        }
+
+        protected void drawBearingTo(float x, float y, string txt, double dist, double deg)
+        {
             if (g == null) return;
 
-            //var txt = scan == game.nearBody.scanOne ? "Scan one:" : "Scan two:";
-            g.DrawString(txt, Game.settings.fontSmall, GameColors.brushGameOrange, x, y);
+            if (!string.IsNullOrEmpty(txt))
+            {
+                //var txt = scan == game.nearBody.scanOne ? "Scan one:" : "Scan two:";
+                g.DrawString(txt, Game.settings.fontSmall, GameColors.brushGameOrange, x, y);
+            }
 
             var txtSz = g.MeasureString(txt, Game.settings.fontSmall);
 
@@ -294,15 +305,13 @@ namespace SrvSurvey
             var r = new RectangleF(x, y, sz * 2, sz * 2);
             g.DrawEllipse(GameColors.penGameOrange2, r);
 
-            var dd = new TrackingDelta(game.nearBody!.radius, location);
 
-            Angle deg = dd.angle - game.status!.Heading;
             var dx = (float)Math.Sin(Util.degToRad(deg)) * 9F;
             var dy = (float)Math.Cos(Util.degToRad(deg)) * 9F;
             g.DrawLine(GameColors.penGameOrange2, x + sz, y + sz, x + sz + dx, y + sz - dy);
 
             x += sz * 3;
-            g.DrawString(Util.metersToString(dd.distance), Game.settings.fontSmall, GameColors.brushGameOrange, x, y);
+            g.DrawString(Util.metersToString(dist), Game.settings.fontSmall, GameColors.brushGameOrange, x, y);
         }
 
         protected void drawHeaderText(string msg, Brush? brush = null)
@@ -314,8 +323,8 @@ namespace SrvSurvey
             g.ResetClip();
             var sz = g.MeasureString(msg, Game.settings.fontSmall);
             var tx = mid.Width - (sz.Width / 2);
-            var ty = 6;
-            g.DrawString(msg, Game.settings.fontSmall, brush ?? GameColors.brushGameOrange, tx, ty);
+            var ty = 4;
+            g.DrawString(msg, Game.settings.fontMiddle, brush ?? GameColors.brushGameOrange, tx, ty);
         }
 
         protected void drawFooterText(string msg, Brush? brush = null)
@@ -327,8 +336,8 @@ namespace SrvSurvey
             g.ResetClip();
             var sz = g.MeasureString(msg, Game.settings.fontSmall);
             var tx = mid.Width - (sz.Width / 2);
-            var ty = this.Height - sz.Height - 6;
-            g.DrawString(msg, Game.settings.fontSmall, brush ?? GameColors.brushGameOrange, tx, ty);
+            var ty = this.Height - sz.Height - 12; // 6;
+            g.DrawString(msg, Game.settings.fontMiddle, brush ?? GameColors.brushGameOrange, tx, ty);
         }
     }
 }

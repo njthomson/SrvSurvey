@@ -87,45 +87,44 @@ namespace SrvSurvey
         {
             Game.log("prepareAllRuins");
 
-            Game.canonn.loadAllRuins().ContinueWith(stuff =>
+            var allRuins = Game.canonn.loadAllRuins();
+
+            Game.log($"Rendering {allRuins.Count} ruins");
+
+            foreach (var entry in allRuins)
             {
-                Game.log($"Rendering {stuff.Result.Count} ruins");
+                var lastVisited = entry.lastVisited == DateTimeOffset.MinValue ? "" : entry.lastVisited.ToString("d")!;
+                var siteHeading = entry.siteHeading == -1 ? "" : $"{entry.siteHeading}°";
+                var relicTowerHeading = entry.relicTowerHeading == -1 ? "" : $"{entry.relicTowerHeading}°";
 
-                foreach (var entry in stuff.Result)
-                {
-                    var lastVisited = entry.lastVisited == DateTimeOffset.MinValue ? "" : entry.lastVisited.ToString("d")!;
-                    var siteHeading = entry.siteHeading == -1 ? "" : $"{entry.siteHeading}°";
-                    var relicTowerHeading = entry.relicTowerHeading == -1 ? "" : $"{entry.relicTowerHeading}°";
+                // confirm there are images specific to this Ruins
+                var hasImages = ruinsHasImages(entry);
 
-                    // confirm there are images specific to this Ruins
-                    var hasImages = ruinsHasImages(entry);
+                var distanceToArrival = entry.distanceToArrival.ToString("N0");
 
-                    var distanceToArrival = entry.distanceToArrival.ToString("N0");
+                entry.systemDistance = Util.getSystemDistance(here, entry.starPos);
+                var distanceToSystem = entry.systemDistance.ToString("N0");
 
-                    entry.systemDistance = Util.getSystemDistance(here, entry.starPos);
-                    var distanceToSystem = entry.systemDistance.ToString("N0");
+                var row = new ListViewItem(entry.systemName);
+                row.Tag = entry;
 
-                    var row = new ListViewItem(entry.systemName);
-                    row.Tag = entry;
+                // ordering here needs to manually match columns
+                row.SubItems.Add(entry.bodyName);
+                row.SubItems.Add($"{distanceToSystem} ly");
+                row.SubItems.Add($"{distanceToArrival} ls");
+                row.SubItems.Add(entry.siteType);
+                row.SubItems.Add(entry.idx > 0 ? $"#{entry.idx}" : "");
+                row.SubItems.Add(lastVisited);
+                row.SubItems.Add(hasImages ? "yes" : "");
+                row.SubItems.Add(siteHeading);
+                row.SubItems.Add(relicTowerHeading);
 
-                    // ordering here needs to manually match columns
-                    row.SubItems.Add(entry.bodyName);
-                    row.SubItems.Add($"{distanceToSystem} ly");
-                    row.SubItems.Add($"{distanceToArrival} ls");
-                    row.SubItems.Add(entry.siteType);
-                    row.SubItems.Add(entry.idx > 0 ? $"#{entry.idx}" : "");
-                    row.SubItems.Add(lastVisited);
-                    row.SubItems.Add(hasImages ? "yes" : "");
-                    row.SubItems.Add(siteHeading);
-                    row.SubItems.Add(relicTowerHeading);
+                this.rows.Add(row);
+            }
 
-                    this.rows.Add(row);
-                }
-
-                Program.control!.Invoke((MethodInvoker)delegate
-                {
-                    this.showAllRows();
-                });
+            Program.control!.Invoke((MethodInvoker)delegate
+            {
+                this.showAllRows();
             });
         }
 

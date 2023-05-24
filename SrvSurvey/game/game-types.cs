@@ -82,7 +82,6 @@ namespace SrvSurvey.game
     {
         double Longitude { get; set; }
         double Latitude { get; set; }
-
     }
 
     public enum SuitType

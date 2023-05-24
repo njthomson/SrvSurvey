@@ -6,6 +6,7 @@ namespace SrvSurvey
     public partial class PlotBioStatus : Form, PlotterForm
     {
         private Game game = Game.activeGame!;
+        private bool guardianMode = false;
 
         private PlotBioStatus()
         {
@@ -37,6 +38,8 @@ namespace SrvSurvey
         private void initialize()
         {
             this.BackgroundImage = GameGraphics.getBackgroundForForm(this);
+
+            this.guardianMode = game.showGuardianPlotters;
 
             if (game.nearBody == null)
             {
@@ -94,7 +97,7 @@ namespace SrvSurvey
                 // use a different cursor if debugging
                 this.Cursor = Cursors.No;
             }
-            else if (Game.settings.hideOverlaysFromMouse) 
+            else if (Game.settings.hideOverlaysFromMouse)
             {
                 // move the mouse outside the overlay
                 System.Windows.Forms.Cursor.Position = Elite.gameCenter;
@@ -113,9 +116,14 @@ namespace SrvSurvey
 
         private void PlotBioStatus_Paint(object sender, PaintEventArgs e)
         {
-            if (game?.nearBody?.data?.organisms == null) return;
-
             var g = e.Graphics;
+            if (this.guardianMode)
+            {
+                drawGuardianStatus(g);
+                return;
+            }
+
+            if (game?.nearBody?.data?.organisms == null) return;
 
             g.DrawString(
                 $"Biological signals: {game.nearBody.data.countOrganisms} | Analyzed: {game.nearBody.data.countAnalyzed}", // | {Util.credits(game.cmdr.organicRewards)}",
@@ -305,5 +313,13 @@ namespace SrvSurvey
                 x += sz.Width + 8;
             }
         }
+
+        private void drawGuardianStatus(Graphics g)
+        {
+            g.DrawString(
+                $"Guardian stuff!",
+                Game.settings.fontMiddle, GameColors.brushGameOrange, 4, 8);
+        }
+
     }
 }

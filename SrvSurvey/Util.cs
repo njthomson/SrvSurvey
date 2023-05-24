@@ -10,6 +10,10 @@ namespace SrvSurvey
 {
     static class Util
     {
+        public static double degToRad(double angle)
+        {
+            return angle / Angle.ratioDegreesToRadians;
+        }
         public static double degToRad(int angle)
         {
             return angle / Angle.ratioDegreesToRadians;
@@ -188,7 +192,9 @@ namespace SrvSurvey
         {
             //var opp = this.Lat; //< 0 ? -this.Lat : this.Lat;
             //var adj = this.Long; //< 0 ? -this.Long : this.Long;
-            return Math.Atan(opp / adj);
+            //if (opp < 0) opp = -opp;
+            //if (adj < 0) adj = -adj;
+            return Util.radToDeg(Math.Atan(opp / adj));
         }
 
         public static string getSpeciesPrefix(string name)
@@ -216,8 +222,8 @@ namespace SrvSurvey
 
         public static void useLastLocation(Form form, Rectangle rect)
         {
-            form.Width= Math.Max(rect.Width, form.MinimumSize.Width);
-            form.Height= Math.Max(rect.Height, form.MinimumSize.Width);
+            form.Width = Math.Max(rect.Width, form.MinimumSize.Width);
+            form.Height = Math.Max(rect.Height, form.MinimumSize.Width);
 
             // position ourself within the bound of which ever screen is chosen
             var pt = rect.Location;

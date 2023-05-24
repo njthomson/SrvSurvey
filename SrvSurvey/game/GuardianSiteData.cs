@@ -16,10 +16,10 @@ namespace SrvSurvey.game
         public static GuardianSiteData Load(ApproachSettlement entry)
         {
             string filepath = Path.Combine(Application.UserAppDataPath, "guardian", Game.activeGame!.fid!, getFilename(entry));
-
             Directory.CreateDirectory(Path.Combine(Application.UserAppDataPath, "guardian"));
-
             var data = Data.Load<GuardianSiteData>(filepath);
+
+            // create new if needed
             if (data == null)
             {
                 data = new GuardianSiteData()
@@ -34,23 +34,56 @@ namespace SrvSurvey.game
                     systemAddress = entry.SystemAddress,
                     bodyId = entry.BodyID,
                     firstVisited = DateTimeOffset.UtcNow,
-                    confirmedPOI = new Dictionary<string, bool>(),
+                    poiStatus = new Dictionary<string, SitePoiStatus>(),
                 };
                 data.Save();
+                return data;
             }
-            else
+
+            // for existing files ... migrate/adjust data as needed
+            if (data.poiStatus == null)
+                data.poiStatus = new Dictionary<string, SitePoiStatus>();
+
+            // Migrate old data
+            if (data.poiStatus.Count == 0 && data.confirmedPOI != null && data.confirmedPOI.Count > 0)
             {
-                if (data.confirmedPOI == null)
-                    data.confirmedPOI = new Dictionary<string, bool>();
-
+                // populate new dictionary, then remove the old one
+                foreach (var poi in data.confirmedPOI)
+                {
+                    data.poiStatus.Add(
+                        poi.Key,
+                        poi.Value ? SitePoiStatus.present : SitePoiStatus.absent
+                    );
+                }
+                data.confirmedPOI = null!;
+                data.Save();
             }
 
-            //if (data.type == SiteType.unknown)
-            //{
-            //    var grSite = Canonn.matchRuins(entry.BodyName);
-            //    Game.log($"Matched grSite: #GR{grSite?.siteID}");
+            if (Game.canonn.ruinSummaries != null && data.type == SiteType.unknown)
+            {
+                var grSites = Game.canonn.ruinSummaries.Where(_ => _.bodyId == entry.BodyID && _.systemAddress == entry.SystemAddress);
+                if (grSites.Any())
+                {
+                    var grSite = grSites.FirstOrDefault(_ => _.idx == data.index);
+                    if (grSite != null )
+                    {
+                        Game.log($"Matched grSite: #GR{grSite?.siteID} on index (type: {grSite!.siteType})");
+                    }
+                    else
+                    {
+                        // TODO: match by lat/long?
+                    }
 
-            //}
+                    //var grSite = Game.canonn.ruinSummaries.FirstOrDefault(_ => _.bodyId == entry.BodyID && _.systemAddress == entry.SystemAddress);
+                    if (grSite != null)
+                    {
+                        // can we use site type from it?
+                        if (!string.IsNullOrEmpty(grSite.siteType))
+                            if (Enum.TryParse<SiteType>(grSite.siteType, true, out data.type))
+                                data.Save();
+                    }
+                }
+            }
 
             return data;
         }
@@ -72,6 +105,7 @@ namespace SrvSurvey.game
         public int relicTowerHeading = -1;
 
         public Dictionary<string, bool> confirmedPOI = new Dictionary<string, bool>();
+        public Dictionary<string, SitePoiStatus> poiStatus = new Dictionary<string, SitePoiStatus>();
 
         #endregion
 

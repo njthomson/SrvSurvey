@@ -21,6 +21,8 @@
         public const string site = ".site";
         /// <summary> PlotGuardians : set relic tower heading </summary>
         public const string tower = ".tower";
+        /// <summary> Signal an empty puddle </summary>
+        public const string empty = ".empty";
 
         /// <summary> Main : set current location as trackign target </summary>
         public const string targetHere = ".target here";

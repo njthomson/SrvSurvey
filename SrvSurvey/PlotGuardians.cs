@@ -300,6 +300,13 @@ namespace SrvSurvey
                 return;
             }
 
+            // empty puddle?
+            if (msg == MsgCmd.empty && this.nearestPoi != null)
+            {
+                siteData.poiStatus[this.nearestPoi.name] = SitePoiStatus.empty;
+                siteData.Save();
+            }
+
             // temporary stuff after here
             this.xtraCmds(msg);
         }
@@ -349,11 +356,11 @@ namespace SrvSurvey
             if (this.nearestPoi == null || this.nearestPoi.type != POIType.relic) return;
 
             // add POI to confirmed
-            if (!siteData.confirmedPOI.ContainsKey(this.nearestPoi.name))
+            if (!siteData.poiStatus.ContainsKey(this.nearestPoi.name))
             {
                 // use combat/exploration mode to know if item is present or missing
                 Game.log($"POI confirmed: '{this.nearestPoi.name}' ({this.nearestPoi.type})");
-                siteData.confirmedPOI.Add(this.nearestPoi.name, true);
+                siteData.poiStatus.Add(this.nearestPoi.name, SitePoiStatus.present);
                 siteData.Save();
                 this.Invalidate();
             }
@@ -438,10 +445,10 @@ namespace SrvSurvey
             {
                 // confirm POI is missing
                 var poiPresent = (game.status.Flags & StatusFlags.CargoScoopDeployed) > 0;
-                var poiStatus = poiPresent ? "present" : "missing";
+                var poiStatus = poiPresent ? SitePoiStatus.present : SitePoiStatus.absent;
 
                 Game.log($"Confirming POI {poiStatus}: '{this.nearestPoi.name}' ({this.nearestPoi.type})");
-                siteData.confirmedPOI[this.nearestPoi.name] = poiPresent;
+                siteData.poiStatus[this.nearestPoi.name] = poiStatus;
                 siteData.Save();
                 this.Invalidate();
             }
@@ -751,7 +758,7 @@ namespace SrvSurvey
         private void drawSiteMap()
         {
             if (g == null) return;
-            this.drawHeaderText($"{siteData.nameLocalised} | {siteData.type} | {siteData.siteHeading}°");
+            //this.drawHeaderText($"{siteData.nameLocalised} | {siteData.type} | {siteData.siteHeading}°");
             //this.drawFooterText($"{game.nearBody!.bodyName}");
 
             if (this.underlay == null)
@@ -842,29 +849,31 @@ namespace SrvSurvey
 
             var nearestDist = double.MaxValue;
             var nearestPt = PointF.Empty;
+            var nearestDeg = 0f;
 
-            int countRelics=0, confirmedRelics = 0, countPuddles = 0, confirmedPuddles = 0;
-
+            int countRelics = 0, confirmedRelics = 0, countPuddles = 0, confirmedPuddles = 0;
+            Angle aa = 0;
+            var tt = "";
             // and draw all the POIs
             foreach (var poi in this.template.poi)
             {
                 if (poi.type == POIType.relic)
                 {
                     countRelics++;
-                    if (siteData.confirmedPOI.ContainsKey(poi.name))
+                    if (siteData.poiStatus.ContainsKey(poi.name))
                         confirmedRelics++;
                 }
                 else
                 {
                     countPuddles++;
-                    if (siteData.confirmedPOI.ContainsKey(poi.name))
+                    if (siteData.poiStatus.ContainsKey(poi.name))
                         confirmedPuddles++;
                 }
 
-
                 // calculate render point for POI
+                var deg = 180 - siteData.siteHeading - poi.angle;
                 var pt = Util.rotateLine(
-                    180 - siteData.siteHeading - poi.angle,
+                    deg,
                     poi.dist);
 
                 // render it
@@ -875,8 +884,14 @@ namespace SrvSurvey
                 var y = pt.Y - commanderOffset.Y;
                 var d = Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
 
+                //var foo = siteData.poiStatus.GetValueOrDefault(poi.name);
+                //if (foo == SitePoiStatus.unknown)
                 if (d < nearestDist)
                 {
+                    aa = Util.ToAngle(x, y) - siteData.siteHeading; //  - game.status.Heading;
+                    if (y < 0) aa += 180;
+                    tt = $"{aa} | {x}, {y}";
+                    nearestDeg = deg;
                     nearestDist = d;
                     this.nearestPoi = poi;
                     nearestPt = pt;
@@ -887,19 +902,29 @@ namespace SrvSurvey
             {
                 // make sure we're relatively close before selecting the item
                 this.nearestPoi = null;
-                this.drawFooterText($"Confirmed: {confirmedRelics}/{countRelics} relics, {confirmedPuddles}/{countPuddles} puddles");
-
             }
             else
             {
                 // draw highlight over closest POI
                 g.DrawEllipse(GameColors.penCyan4, -nearestPt.X - 14, -nearestPt.Y - 14, 28, 28);
+                var poiStatus = siteData.poiStatus.GetValueOrDefault(this.nearestPoi.name);
 
-                var poiStatus = "unconfirmed";
-                if (siteData.confirmedPOI.ContainsKey(this.nearestPoi.name))
-                    poiStatus = siteData.confirmedPOI[this.nearestPoi.name] ? "confirmed" : "not present";
-                this.drawFooterText($"{this.nearestPoi.type} {this.nearestPoi.name}: {poiStatus}");
+                var nextStatus = (game.status.Flags & StatusFlags.CargoScoopDeployed) > 0 ? SitePoiStatus.present : SitePoiStatus.absent; // ? "(set present)" : "(set absent)";
+                var nextStatusDifferent = nextStatus != siteData.poiStatus.GetValueOrDefault(nearestPoi.name);
+                var action = nextStatusDifferent ? $"(set {nextStatus})" : "";
+
+                var footerBrush = poiStatus == SitePoiStatus.unknown || nextStatusDifferent ? GameColors.brushCyan : GameColors.brushGameOrange;
+                this.drawFooterText($"{this.nearestPoi.type} {this.nearestPoi.name}: {poiStatus} {action}", footerBrush);
             }
+
+            var headerBrush = confirmedRelics + confirmedPuddles < countRelics + countPuddles
+                ? GameColors.brushCyan
+                : GameColors.brushGameOrange;
+            this.drawHeaderText($"Confirmed: {confirmedRelics}/{countRelics} relics, {confirmedPuddles}/{countPuddles} puddles", headerBrush);
+
+            g.ResetTransform();
+            //var aa = new Angle(180 - game.status.Heading - nearestDeg);
+            //this.drawBearingTo(0, this.Height - 20, tt, nearestDist, aa);
         }
 
         private PointF drawSitePoi(SitePOI poi, PointF pt)
@@ -929,32 +954,35 @@ namespace SrvSurvey
 
         private Pen getPoiPen(SitePOI poi)
         {
-            bool? status = null;
-            if (siteData.confirmedPOI.ContainsKey(poi.name))
-                status = siteData.confirmedPOI.GetValueOrDefault(poi.name);
+            SitePoiStatus status = SitePoiStatus.unknown;
+            if (siteData.poiStatus.ContainsKey(poi.name))
+                status = siteData.poiStatus[poi.name];
 
             switch (poi.type)
             {
                 case POIType.relic:
-                    return status == null
-                        ? GameColors.penPoiRelicUnconfirmed
-                        : status == true
-                            ? GameColors.penPoiRelicPresent
-                            : GameColors.penPoiRelicMissing;
+                    return status == SitePoiStatus.present
+                        ? GameColors.penPoiRelicPresent
+                        : status == SitePoiStatus.absent
+                            ? GameColors.penPoiRelicMissing
+                            : GameColors.penPoiRelicUnconfirmed;
 
                 case POIType.orb:
                 case POIType.casket:
                 case POIType.tablet:
                 case POIType.totem:
                 case POIType.urn:
-                    return status == null
-                        ? GameColors.penPoiPuddleUnconfirmed
-                        : status == true
-                            ? GameColors.penPoiPuddlePresent
-                            : GameColors.penPoiPuddleMissing;
+                    switch (status)
+                    {
+                        case SitePoiStatus.present: return GameColors.penPoiPuddlePresent; 
+                        case SitePoiStatus.absent: return GameColors.penPoiPuddleMissing; 
+                        case SitePoiStatus.unknown: return GameColors.penPoiPuddleUnconfirmed; 
+                        case SitePoiStatus.empty: return GameColors.penYellow4;
+                        default: return Pens.Azure;
+                    }
 
                 default:
-                    return Pens.Yellow;
+                    return Pens.Azure;
             }
         }
 

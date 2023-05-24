@@ -59,7 +59,7 @@ namespace SrvSurvey.canonn
 
         private static string allRuinsRefPath = Path.Combine(Application.UserAppDataPath, "allRuins.json");
         private static string ruinSummariesPath = Path.Combine(Application.UserAppDataPath, "ruinSummaries.json");
-        private static IEnumerable<GuardianRuinSummary> ruinSummaries;
+        public IEnumerable<GuardianRuinSummary> ruinSummaries { get; private set; }
 
         /// <summary>
         /// Read raw GRSites data either from file or from a network request.
@@ -139,11 +139,15 @@ namespace SrvSurvey.canonn
             return summaries;
         }
 
-        public async Task<List<GuardianRuinEntry>> loadAllRuins()
+        public List<GuardianRuinEntry> loadAllRuins()
         {
-            var summaries = await createRuinSummaries();
+            if (ruinSummaries == null)
+            {
+                Game.log("Why no ruinSummaries?");
+                return new List<GuardianRuinEntry>();
+            }
 
-            var allRuins = summaries.Select(_ => new GuardianRuinEntry(_)).ToList();
+            var allRuins = ruinSummaries.Select(_ => new GuardianRuinEntry(_)).ToList();
             var folder = Path.Combine(Application.UserAppDataPath, "guardian", Game.settings.lastFid!);
             if (Directory.Exists(folder))
             {

@@ -311,7 +311,7 @@ namespace SrvSurvey.game
         {
             get => !this.isShutdown
                 && !this.atMainMenu
-                && this.isMode(GameMode.SuperCruising, GameMode.Flying, GameMode.Landed, GameMode.InSrv, GameMode.OnFoot, GameMode.GlideMode)
+                && this.isMode(GameMode.SuperCruising, GameMode.Flying, GameMode.Landed, GameMode.InSrv, GameMode.OnFoot, GameMode.GlideMode, GameMode.InFighter)
                 && !this.hidePlottersFromCombatSuits;
         }
 
@@ -319,7 +319,7 @@ namespace SrvSurvey.game
         {
             get => Game.settings.enableGuardianSites
                 && this.nearBody?.siteData != null
-                && this.isMode(GameMode.InSrv, GameMode.OnFoot, GameMode.Landed, GameMode.Flying)
+                && this.isMode(GameMode.InSrv, GameMode.OnFoot, GameMode.Landed, GameMode.Flying, GameMode.InFighter)
                 && !this.hidePlottersFromCombatSuits
                 && this.status.Altitude < 4000;
         }
