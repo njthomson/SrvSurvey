@@ -44,15 +44,17 @@ namespace SrvSurvey
         public double aerialAltBeta = 1550;
         public double aerialAltGamma = 1600;
 
+        public int idxGuardianPlotter = 0;
+
         // configurable colours and fonts
         public Color GameOrange = Color.FromArgb(255, 255, 113, 00); // #FF7100
 
-        public Font font1 = new System.Drawing.Font("Lucida Sans Typewriter", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-        public Font fontSmall = new System.Drawing.Font("Lucida Sans Typewriter", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-        public Font fontSmall2 = new System.Drawing.Font("Century Gothic", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-        public Font fontMiddle = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-        public Font font2 = new System.Drawing.Font("Century Gothic", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-        public Font fontBig = new System.Drawing.Font("Century Gothic", 22F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+        public Font font1 = new Font("Lucida Sans Typewriter", 16F, FontStyle.Regular, GraphicsUnit.Point);
+        public Font fontSmall = new Font("Lucida Sans Typewriter", 8F, FontStyle.Regular, GraphicsUnit.Point);
+        public Font fontSmall2 = new Font("Century Gothic", 8F, FontStyle.Regular, GraphicsUnit.Point);
+        public Font fontMiddle = new Font("Century Gothic", 12F, FontStyle.Regular, GraphicsUnit.Point);
+        public Font font2 = new Font("Century Gothic", 16F, FontStyle.Regular, GraphicsUnit.Point);
+        public Font fontBig = new Font("Century Gothic", 22F, FontStyle.Regular, GraphicsUnit.Point);
 
         public int processIdx = 0;
 

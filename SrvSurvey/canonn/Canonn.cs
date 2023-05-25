@@ -196,7 +196,7 @@ namespace SrvSurvey.canonn
                         && string.Equals(_.siteType.ToString(), data.type.ToString(), StringComparison.OrdinalIgnoreCase)
                     ).ToList();
 
-                    GuardianRuinEntry entry = null!;
+                    GuardianRuinEntry? entry = null;
 
                     // take the first, assiming only 1 ruin on the body
                     if (matches.Count == 1)

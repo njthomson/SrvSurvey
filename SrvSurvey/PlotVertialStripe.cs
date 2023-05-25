@@ -285,9 +285,9 @@ namespace SrvSurvey
             var w = (this.Width / 2f);
             var h = (this.Height / 2f);
 
-            var d = 60f;
-            var x = w + 90;
-            var y = h - 385;
+            //var d = 60f;
+            //var x = w + 90;
+            //var y = h - 385;
             //var rect = new RectangleF(x, y, d, d);
             //g.DrawEllipse(GameColors.penYellow8, rect);
             //g.DrawEllipse(pp, rect);
@@ -304,8 +304,8 @@ namespace SrvSurvey
             //g.DrawLine(GameColors.penYellow8, x, y, x - 160, y);
             //g.DrawLine(pp, x, y, x - 160, y);
 
-            x = w + 60;
-            y = h - 234;
+            var x = w + 60;
+            var y = h - 234;
             g.DrawLine(GameColors.penYellow8, x, y, x - 120, y + 140);
             g.DrawLine(pp, x, y, x - 120, y + 140);
 

@@ -46,12 +46,17 @@ namespace SrvSurvey
             PlotGuardians.instance = this;
             InitializeComponent();
 
-            this.Width = 600;
-            this.Height = 600;
-
             SiteTemplate.Import();
 
-            this.scale = 0.55f;
+            // set window size based on setting
+            switch (Game.settings.idxGuardianPlotter)
+            {
+                case 0: this.Width = 300; this.Height = 400; break;
+                case 1: this.Width = 500; this.Height = 500; break;
+                case 2: this.Width = 600; this.Height = 700; break;
+            }
+
+            this.scale = 0.65f;
 
             this.nextMode();
         }
@@ -73,6 +78,8 @@ namespace SrvSurvey
 
             this.Opacity = Game.settings.Opacity;
             Elite.floatLeftMiddle(this, gameRect);
+
+            this.Invalidate();
         }
 
         private void PlotGuardians_Load(object sender, EventArgs e)
@@ -768,7 +775,7 @@ namespace SrvSurvey
             }
 
             g.ResetTransform();
-            this.clipToMiddle(4, 26, 4, 24);
+            this.clipToMiddle(8, 26, 8, 24);
             g.TranslateTransform(mid.Width, mid.Height);
             g.ScaleTransform(this.scale, this.scale);
             g.RotateTransform(-game.status.Heading);
@@ -927,11 +934,8 @@ namespace SrvSurvey
             //this.drawBearingTo(0, this.Height - 20, tt, nearestDist, aa);
         }
 
-        private PointF drawSitePoi(SitePOI poi, PointF pt)
+        private void drawSitePoi(SitePOI poi, PointF pt)
         {
-            // skip unknown types ?
-            //if (poi.type == POIType.unknown) return;
-
             // diameters: relics are bigger then puddles
             var d = poi.type == POIType.relic ? 16f : 10f;
             var dd = d / 2;
@@ -947,9 +951,6 @@ namespace SrvSurvey
             }
 
             g.DrawEllipse(pen, -pt.X - dd, -pt.Y - dd, d, d);
-
-            // and return distance from 
-            return pt;
         }
 
         private Pen getPoiPen(SitePOI poi)
@@ -974,9 +975,9 @@ namespace SrvSurvey
                 case POIType.urn:
                     switch (status)
                     {
-                        case SitePoiStatus.present: return GameColors.penPoiPuddlePresent; 
-                        case SitePoiStatus.absent: return GameColors.penPoiPuddleMissing; 
-                        case SitePoiStatus.unknown: return GameColors.penPoiPuddleUnconfirmed; 
+                        case SitePoiStatus.present: return GameColors.penPoiPuddlePresent;
+                        case SitePoiStatus.absent: return GameColors.penPoiPuddleMissing;
+                        case SitePoiStatus.unknown: return GameColors.penPoiPuddleUnconfirmed;
                         case SitePoiStatus.empty: return GameColors.penYellow4;
                         default: return Pens.Azure;
                     }

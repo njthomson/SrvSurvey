@@ -151,6 +151,7 @@ namespace SrvSurvey.game
 
         public void findGuardianSites()
         {
+            Game.log($"Finding guardian sites for: {this.bodyName}");
             this.settlements.Clear();
 
             decimal dist = decimal.MaxValue;

@@ -129,9 +129,11 @@
       { "type": "relic", "name": "t1", "angle": 92.4, "dist": 199 },
       { "type": "relic", "name": "t2", "angle": 171.4, "dist": 360 },
       { "type": "relic", "name": "t3", "angle": 201.7, "dist": 466 }, // leaning
+      { "type": "relic", "name": "t4", "angle": 77, "dist": 662 }, // leaning
 
 
-      { "type": "urn", "name": "p1", "angle": 211.2, "dist": 241 }
+      { "type": "urn", "name": "p1", "angle": 211.2, "dist": 241 },
+      { "type": "tablet", "name": "p2", "angle": 70.5, "dist": 722 }
 
     ]
   }

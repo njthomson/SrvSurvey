@@ -54,6 +54,9 @@ namespace SrvSurvey
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.checkBioStatusAutoShow = new System.Windows.Forms.CheckBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.label9 = new System.Windows.Forms.Label();
+            this.comboGuardianWindowSize = new System.Windows.Forms.ComboBox();
+            this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.numAltGamma = new System.Windows.Forms.NumericUpDown();
             this.numAltBeta = new System.Windows.Forms.NumericUpDown();
             this.numAltAlpha = new System.Windows.Forms.NumericUpDown();
@@ -79,7 +82,6 @@ namespace SrvSurvey
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.linkAboutTwo = new System.Windows.Forms.LinkLabel();
             this.linkAboutOne = new System.Windows.Forms.LinkLabel();
-            this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numOpacity)).BeginInit();
@@ -383,6 +385,8 @@ namespace SrvSurvey
             // tabPage3
             // 
             this.tabPage3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.tabPage3.Controls.Add(this.label9);
+            this.tabPage3.Controls.Add(this.comboGuardianWindowSize);
             this.tabPage3.Controls.Add(this.checkBox2);
             this.tabPage3.Controls.Add(this.numAltGamma);
             this.tabPage3.Controls.Add(this.numAltBeta);
@@ -400,6 +404,43 @@ namespace SrvSurvey
             this.tabPage3.Size = new System.Drawing.Size(452, 377);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Guardian sites";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(11, 226);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(72, 15);
+            this.label9.TabIndex = 13;
+            this.label9.Text = "Overlay size:";
+            // 
+            // comboGuardianWindowSize
+            // 
+            this.comboGuardianWindowSize.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboGuardianWindowSize.FormattingEnabled = true;
+            this.comboGuardianWindowSize.Items.AddRange(new object[] {
+            "Small - 300 x 400",
+            "Medium - 500 x 500",
+            "Large - 600 x 700"});
+            this.comboGuardianWindowSize.Location = new System.Drawing.Point(89, 223);
+            this.comboGuardianWindowSize.Name = "comboGuardianWindowSize";
+            this.comboGuardianWindowSize.Size = new System.Drawing.Size(177, 23);
+            this.comboGuardianWindowSize.TabIndex = 12;
+            this.comboGuardianWindowSize.Tag = "idxGuardianPlotter";
+            // 
+            // checkBox2
+            // 
+            this.checkBox2.AutoSize = true;
+            this.checkBox2.Checked = true;
+            this.checkBox2.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox2.Location = new System.Drawing.Point(10, 198);
+            this.checkBox2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.checkBox2.Name = "checkBox2";
+            this.checkBox2.Size = new System.Drawing.Size(256, 19);
+            this.checkBox2.TabIndex = 11;
+            this.checkBox2.Tag = "disableAerialAlignmentGrid";
+            this.checkBox2.Text = "Disable aerial screenshot alignment overlay.";
+            this.checkBox2.UseVisualStyleBackColor = true;
             // 
             // numAltGamma
             // 
@@ -738,20 +779,6 @@ namespace SrvSurvey
             this.linkAboutOne.Text = resources.GetString("linkAboutOne.Text");
             this.linkAboutOne.UseCompatibleTextRendering = true;
             // 
-            // checkBox2
-            // 
-            this.checkBox2.AutoSize = true;
-            this.checkBox2.Checked = true;
-            this.checkBox2.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox2.Location = new System.Drawing.Point(10, 198);
-            this.checkBox2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(256, 19);
-            this.checkBox2.TabIndex = 11;
-            this.checkBox2.Tag = "disableAerialAlignmentGrid";
-            this.checkBox2.Text = "Disable aerial screenshot alignment overlay.";
-            this.checkBox2.UseVisualStyleBackColor = true;
-            // 
             // FormSettings
             // 
             this.AcceptButton = this.btnSave;
@@ -843,5 +870,7 @@ namespace SrvSurvey
         private Label label6;
         private Label label5;
         private CheckBox checkBox2;
+        private Label label9;
+        private ComboBox comboGuardianWindowSize;
     }
 }

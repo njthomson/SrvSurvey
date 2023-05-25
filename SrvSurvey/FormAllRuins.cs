@@ -60,7 +60,7 @@ namespace SrvSurvey
             if (Game.activeGame?.cmdr != null)
             {
                 lblCurrentSystem.Text = Game.activeGame.cmdr.currentSystem;
-                here = Game.activeGame?.cmdr?.starPos;
+                here = Game.activeGame.cmdr.starPos;
             }
             else
             {

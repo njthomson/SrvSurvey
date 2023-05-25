@@ -61,6 +61,10 @@ namespace SrvSurvey
                             ((NumericUpDown)ctrl).Value = Convert.ToDecimal(map[name].GetValue(Game.settings));
                             break;
 
+                        case nameof(ComboBox):
+                            ((ComboBox)ctrl).SelectedIndex = Convert.ToInt32(map[name].GetValue(Game.settings));
+                            break;
+
                         default:
                             throw new Exception($"Unexpected control type: {ctrl.GetType().Name}");
                     }
@@ -94,6 +98,10 @@ namespace SrvSurvey
 
                         case nameof(NumericUpDown):
                             val = Convert.ToInt32( ((NumericUpDown)ctrl).Value );
+                            break;
+
+                        case nameof(ComboBox):
+                            val = Convert.ToInt32(((ComboBox)ctrl).SelectedIndex);
                             break;
 
                         default:
@@ -132,9 +140,8 @@ namespace SrvSurvey
             }
             else
             {
-                // force all plotters to reposition themselves
-                var rect = Elite.getWindowRect();
-                Program.repositionPlotters(rect);
+                // close all plotters
+                Program.closeAllPlotters();
             }
         }
 
@@ -217,6 +224,5 @@ namespace SrvSurvey
         {
             Util.openLink(Application.UserAppDataPath);
         }
-
     }
 }

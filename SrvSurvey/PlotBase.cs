@@ -81,6 +81,7 @@ namespace SrvSurvey
 
         protected virtual void initialize()
         {
+            this.reposition(Elite.getWindowRect());
             this.mid = this.Size / 2;
 
             this.BackgroundImage = GameGraphics.getBackgroundForForm(this);
@@ -321,10 +322,13 @@ namespace SrvSurvey
             // draw heading text (center bottom)
             g.ResetTransform();
             g.ResetClip();
-            var sz = g.MeasureString(msg, Game.settings.fontSmall);
+
+            var font = Game.settings.fontMiddle;
+            var sz = g.MeasureString(msg, font);
             var tx = mid.Width - (sz.Width / 2);
             var ty = 4;
-            g.DrawString(msg, Game.settings.fontMiddle, brush ?? GameColors.brushGameOrange, tx, ty);
+            
+            g.DrawString(msg, font, brush ?? GameColors.brushGameOrange, tx, ty);
         }
 
         protected void drawFooterText(string msg, Brush? brush = null)
@@ -334,10 +338,13 @@ namespace SrvSurvey
             // draw heading text (center bottom)
             g.ResetTransform();
             g.ResetClip();
-            var sz = g.MeasureString(msg, Game.settings.fontSmall);
+
+            var font = Game.settings.fontMiddle;
+            var sz = g.MeasureString(msg, font);
             var tx = mid.Width - (sz.Width / 2);
-            var ty = this.Height - sz.Height - 12; // 6;
-            g.DrawString(msg, Game.settings.fontMiddle, brush ?? GameColors.brushGameOrange, tx, ty);
+            var ty = this.Height - sz.Height - 5;
+
+            g.DrawString(msg, font, brush ?? GameColors.brushGameOrange, tx, ty);
         }
     }
 }
