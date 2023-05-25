@@ -22,6 +22,12 @@ namespace SrvSurvey.game
             // create new if needed
             if (data == null)
             {
+                // system name is missing on ApproachSettlement, so take the current system - assuming it's a match
+                var cmdr = Game.activeGame.cmdr;
+                var systemName = "";
+                if (entry.SystemAddress == cmdr.currentSystemAddress && entry.BodyID == cmdr.currentBodyId)
+                    systemName = cmdr.currentSystem;
+
                 data = new GuardianSiteData()
                 {
                     name = entry.Name,
@@ -32,7 +38,9 @@ namespace SrvSurvey.game
                     filepath = filepath,
                     location = entry,
                     systemAddress = entry.SystemAddress,
+                    systemName = systemName,
                     bodyId = entry.BodyID,
+                    bodyName = entry.BodyName,
                     firstVisited = DateTimeOffset.UtcNow,
                     poiStatus = new Dictionary<string, SitePoiStatus>(),
                 };
@@ -40,9 +48,14 @@ namespace SrvSurvey.game
                 return data;
             }
 
+            var save = false;
+
             // for existing files ... migrate/adjust data as needed
             if (data.poiStatus == null)
+            {
                 data.poiStatus = new Dictionary<string, SitePoiStatus>();
+                save = true;
+            }
 
             // Migrate old data
             if (data.poiStatus.Count == 0 && data.confirmedPOI != null && data.confirmedPOI.Count > 0)
@@ -56,12 +69,13 @@ namespace SrvSurvey.game
                     );
                 }
                 data.confirmedPOI = null!;
-                data.Save();
+                save = true;
             }
 
             if (Game.canonn.ruinSummaries != null && data.type == SiteType.unknown)
             {
                 var grSites = Game.canonn.ruinSummaries.Where(_ => _.bodyId == entry.BodyID && _.systemAddress == entry.SystemAddress);
+
                 if (grSites.Any())
                 {
                     var grSite = grSites.FirstOrDefault(_ => _.idx == data.index);
@@ -72,6 +86,7 @@ namespace SrvSurvey.game
                     else
                     {
                         // TODO: match by lat/long?
+                        Game.log($"TODO: match by lat/long?");
                     }
 
                     //var grSite = Game.canonn.ruinSummaries.FirstOrDefault(_ => _.bodyId == entry.BodyID && _.systemAddress == entry.SystemAddress);
@@ -80,11 +95,15 @@ namespace SrvSurvey.game
                         // can we use site type from it?
                         if (!string.IsNullOrEmpty(grSite.siteType))
                             if (Enum.TryParse<SiteType>(grSite.siteType, true, out data.type))
-                                data.Save();
+                                save = true;
                     }
                 }
             }
 
+            if (save)
+            {
+                data.Save();
+            }
             return data;
         }
 
@@ -100,7 +119,9 @@ namespace SrvSurvey.game
         public int index;
         public LatLong2 location;
         public long systemAddress;
+        public string systemName;
         public int bodyId;
+        public string bodyName;
         public int siteHeading = -1;
         public int relicTowerHeading = -1;
 

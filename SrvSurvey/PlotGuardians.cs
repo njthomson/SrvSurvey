@@ -46,8 +46,8 @@ namespace SrvSurvey
             PlotGuardians.instance = this;
             InitializeComponent();
 
-            //this.Width = 500;
-            //this.Height = 500;
+            this.Width = 600;
+            this.Height = 600;
 
             SiteTemplate.Import();
 
@@ -808,7 +808,7 @@ namespace SrvSurvey
             g.DrawLine(Pens.Red, x, -this.Height * 2, x, y);
             g.ResetClip();
 
-            // this.drawTouchdownAndSrvLocation(true);
+            this.drawTouchdownAndSrvLocation(true);
 
             this.drawArtifacts();
 
@@ -901,7 +901,7 @@ namespace SrvSurvey
             if (nearestDist > 75)
             {
                 // make sure we're relatively close before selecting the item
-                this.nearestPoi = null;
+                this.nearestPoi = null!;
             }
             else
             {

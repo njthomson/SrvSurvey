@@ -251,7 +251,7 @@ namespace SrvSurvey
                     touchdownSize * 2,
                     touchdownSize * 2);
 
-                var brush = game.touchdownLocation == null ? GameColors.brushShipFormerLocation : GameColors.brushShipLocation;
+                var brush = (game.touchdownLocation == null || game.touchdownLocation == LatLong2.Empty) ? GameColors.brushShipFormerLocation : GameColors.brushShipLocation;
                 g.FillEllipse(brush, rect);
             }
 

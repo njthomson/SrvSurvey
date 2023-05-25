@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.grid = new System.Windows.Forms.ListView();
+            this.colSiteId = new System.Windows.Forms.ColumnHeader();
             this.colSystem = new System.Windows.Forms.ColumnHeader();
             this.colBody = new System.Windows.Forms.ColumnHeader();
             this.colDistance = new System.Windows.Forms.ColumnHeader();
@@ -53,6 +54,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.grid.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.colSiteId,
             this.colSystem,
             this.colBody,
             this.colDistance,
@@ -74,6 +76,11 @@
             this.grid.View = System.Windows.Forms.View.Details;
             this.grid.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.grid_ColumnClick);
             this.grid.MouseClick += new System.Windows.Forms.MouseEventHandler(this.grid_MouseClick);
+            // 
+            // colSiteId
+            // 
+            this.colSiteId.Text = "ID";
+            this.colSiteId.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // colSystem
             // 
@@ -234,5 +241,6 @@
         private ColumnHeader colIndex;
         private Label label1;
         private Label lblCurrentSystem;
+        private ColumnHeader colSiteId;
     }
 }

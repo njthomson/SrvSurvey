@@ -2,13 +2,7 @@
 using Newtonsoft.Json.Linq;
 using SrvSurvey.game;
 using SrvSurvey.units;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http.Headers;
-using System.Net.Http.Json;
 using System.Text;
-using System.Threading.Tasks;
 
 
 namespace SrvSurvey.canonn
@@ -113,6 +107,42 @@ namespace SrvSurvey.canonn
             return obj.data.grsites;
         }
 
+        private void postProcessAndFixRuinsData(IEnumerable<GuardianRuinSummary> summaries)
+        {
+            var foo = summaries.GroupBy(_ => $"{_.systemAddress} {_.bodyId}");
+            var nn = 0;
+
+            foreach (var grp in foo)
+            {
+                var unTyped = grp.Where(_ => _.idx == 0);
+                if (unTyped.Count() == 1)
+                {
+                    if (grp.Count() == 1)
+                    {
+                        // only a single Ruins - safe to call it #1!
+                        grp.First().idx = 1;
+                        nn++;
+                    }
+                    else if (grp.Count() > 1)
+                    {
+                        // other ruins are numbered, assign the 1 missing number
+                        var idx = 0;
+                        while (++idx <= grp.Count())
+                        {
+                            var ugh = grp.FirstOrDefault(_ => _.idx == idx);
+                            if (ugh == null)
+                            {
+                                unTyped.First().idx = idx;
+                                nn++;
+                            }
+                        }
+                    }
+                }
+            }
+
+            Game.log($"Fixed: {nn} ruins!");
+        }
+
         /// <summary>
         /// Create summaries of ruins from raw data.
         /// </summary>
@@ -135,6 +165,7 @@ namespace SrvSurvey.canonn
                 var json = File.ReadAllText(ruinSummariesPath);
                 summaries = JsonConvert.DeserializeObject<IEnumerable<GuardianRuinSummary>>(json)!;
             }
+            postProcessAndFixRuinsData(summaries);
 
             return summaries;
         }
@@ -146,6 +177,8 @@ namespace SrvSurvey.canonn
                 Game.log("Why no ruinSummaries?");
                 return new List<GuardianRuinEntry>();
             }
+
+            var newEntries = new List<GuardianRuinEntry>();
 
             var allRuins = ruinSummaries.Select(_ => new GuardianRuinEntry(_)).ToList();
             var folder = Path.Combine(Application.UserAppDataPath, "guardian", Game.settings.lastFid!);
@@ -163,23 +196,67 @@ namespace SrvSurvey.canonn
                         && string.Equals(_.siteType.ToString(), data.type.ToString(), StringComparison.OrdinalIgnoreCase)
                     ).ToList();
 
-                    var entry = matches.FirstOrDefault();
-                    if (matches.Count > 1)
+                    GuardianRuinEntry entry = null!;
+
+                    // take the first, assiming only 1 ruin on the body
+                    if (matches.Count == 1)
+                        entry = matches.First();
+
+                    // if more than 1, take the one matching the Ruins #
+                    if (entry == null)
+                        entry = matches.FirstOrDefault(_ => _.idx == data.index);
+
+                    // try matching if there's only 1 unmatched entry of this type
+                    if (entry == null)
                     {
-                        entry = matches.Find(_ => _.idx == data.index);
-                        if (entry == null)
+                        var match = matches.Where(_ => _.idx == 0 && string.Compare(_.siteType, data.type.ToString(), true) == 0);
+                        if (match.Count() == 1)
+                            entry = match.First();
+                    }
+
+                    // if still no match, take the one that is really close by lat/long
+                    if (entry == null)
+                    {
+                        foreach (var match in matches)
                         {
-                            // TODO: compare lat/long? or ... just pick the first one?
+                            if (match.latitude == 0 && match.longitude == 0) continue;
+
+                            var dist = Util.getDistance(data.location, new LatLong2(match.latitude, match.longitude), 1);
+                            Game.log(dist);
+                            if (dist < 0.0005M)
+                            {
+                                entry = match;
+                                //Game.log($"Matched {data.name} on distance!");
+                                break;
+                            }
                         }
                     }
 
-                    if (entry == null)
+                    if (string.IsNullOrEmpty(data.systemName) && matches.Any())
                     {
-                        Game.log($"Why no matcing entry for: {data.systemAddress} ?");
-                        continue;
+                        data.systemName = matches.First().systemName;
+                        data.bodyName = data.systemName + " " + matches.First().bodyName;
                     }
 
-                    entry.merge(data);
+                    if (entry != null)
+                    {
+                        entry.merge(data);
+                    }
+                    else
+                    {
+                        // create an entry to represent our own data
+                        Game.log($"No matcing entry for: {data.bodyName} {data.name} ?");
+                        var newEntry = GuardianRuinEntry.from(data, matches.First());
+                        newEntries.Add(newEntry);
+                    }
+                }
+
+                // remove an unmatchable entry for each new one
+                foreach (var newEntry in newEntries)
+                {
+                    var victim = allRuins.First(_ => _.systemAddress == newEntry.systemAddress && _.bodyId == newEntry.bodyId && string.Compare(_.siteType, newEntry.siteType, true) == 0);
+                    allRuins.Remove(victim);
+                    allRuins.Add(newEntry);
                 }
             }
 

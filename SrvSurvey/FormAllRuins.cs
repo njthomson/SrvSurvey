@@ -40,7 +40,7 @@ namespace SrvSurvey
             comboSiteType.SelectedIndex = 0;
 
             // default sort by system distance
-            this.sortColumn = 2;
+            this.sortColumn = 3;
 
 
             // can we fit in our last location
@@ -105,10 +105,12 @@ namespace SrvSurvey
                 entry.systemDistance = Util.getSystemDistance(here, entry.starPos);
                 var distanceToSystem = entry.systemDistance.ToString("N0");
 
-                var row = new ListViewItem(entry.systemName);
+                var siteID = entry.siteID == -1 ? "?" : entry.siteID.ToString();
+                var row = new ListViewItem(siteID);
                 row.Tag = entry;
 
                 // ordering here needs to manually match columns
+                row.SubItems.Add(entry.systemName);
                 row.SubItems.Add(entry.bodyName);
                 row.SubItems.Add($"{distanceToSystem} ly");
                 row.SubItems.Add($"{distanceToArrival} ls");
@@ -176,19 +178,32 @@ namespace SrvSurvey
         {
             switch (this.sortColumn)
             {
-                case 0: // system name
-                default:
+                case 0: // siteID
+                    return rows.OrderBy(row => ((GuardianRuinEntry)row.Tag).siteID);
+                case 1: // system name
+                    return rows.OrderBy(row => ((GuardianRuinEntry)row.Tag).systemName);
+                case 2: // bodyName
                     return rows.OrderBy(row => ((GuardianRuinEntry)row.Tag).bodyName);
-                case 1: // bodyName
-                    return rows.OrderBy(row => ((GuardianRuinEntry)row.Tag).bodyName);
-                case 2: //systemDistance
+                case 3: //systemDistance
                     return rows.OrderBy(row => ((GuardianRuinEntry)row.Tag).systemDistance);
-                case 3: // distanceToArrival;
+                case 4: // distanceToArrival;
                     return rows.OrderBy(row => ((GuardianRuinEntry)row.Tag).distanceToArrival);
-                case 4: // site type
+                case 5: // site type
                     return rows.OrderBy(row => ((GuardianRuinEntry)row.Tag).siteType);
-                case 5: // last visited
+                case 6: // Ruins #
+                    return rows.OrderBy(row => ((GuardianRuinEntry)row.Tag).idx);
+                case 7: // last visited
                     return rows.OrderBy(row => ((GuardianRuinEntry)row.Tag).lastVisited);
+                case 8: // has images
+                    return rows.OrderBy(row => row.SubItems[8].Text);
+                case 9: // site heading
+                    return rows.OrderBy(row => ((GuardianRuinEntry)row.Tag).siteHeading);
+                case 10: // relic tower heading
+                    return rows.OrderBy(row => ((GuardianRuinEntry)row.Tag).relicTowerHeading);
+
+                default:
+                    Game.log($"Unexpected sort column: {this.sortColumn}");
+                    return rows.OrderBy(row => ((GuardianRuinEntry)row.Tag).systemName);
             }
 
         }
@@ -226,7 +241,7 @@ namespace SrvSurvey
         {
             if (e.Button == MouseButtons.Right && grid.SelectedItems.Count > 0)
             {
-                Clipboard.SetText(grid.SelectedItems[0].Text);
+                Clipboard.SetText(grid.SelectedItems[0].SubItems[1].Text);
             }
         }
     }

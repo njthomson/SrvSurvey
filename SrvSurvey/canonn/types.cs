@@ -1,12 +1,4 @@
 ﻿using SrvSurvey.game;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-#pragma warning disable CS0649
 
 namespace SrvSurvey.canonn
 {
@@ -323,6 +315,8 @@ namespace SrvSurvey.canonn
         public DateTimeOffset lastUpdated;
         public double distanceToArrival;
         public double[] starPos;
+        public double latitude;
+        public double longitude;
 
         public static GuardianRuinSummary from(GRSite _)
         {
@@ -341,6 +335,8 @@ namespace SrvSurvey.canonn
                     _.system.edsmCoordY, 
                     _.system.edsmCoordZ 
                 },
+                latitude = _.latitude,
+                longitude = _.longitude,
             };
         }
     }
@@ -350,8 +346,6 @@ namespace SrvSurvey.canonn
     /// </summary>
     internal class GuardianRuinEntry : GuardianRuinSummary
     {
-        public double latitude;
-        public double longitude;
         public int siteHeading = -1;
         public int relicTowerHeading = -1;
         public DateTimeOffset lastVisited;
@@ -368,6 +362,8 @@ namespace SrvSurvey.canonn
             base.idx = summary.idx;
             base.distanceToArrival = summary.distanceToArrival;
             base.starPos = summary.starPos;
+            base.latitude = summary.latitude;
+            base.longitude = summary.longitude;
         }
 
         public string name
@@ -384,9 +380,25 @@ namespace SrvSurvey.canonn
             this.lastVisited = data.lastVisited;
             this.idx = data.index;
         }
+
+        public static GuardianRuinEntry from(GuardianSiteData _, GuardianRuinEntry similar)
+        {
+            var entry = new GuardianRuinEntry(similar)
+            {
+                siteID = -1,
+                systemName = _.systemName,
+                systemAddress = _.systemAddress,
+                bodyName = _.bodyName.Replace(_.systemName, "").Trim(),
+                bodyId = _.bodyId,
+                siteType = _.type.ToString(),
+                idx = _.index,
+                latitude = _.location.Lat,
+                longitude = _.location.Long,
+            };
+            entry.merge(_);
+            return entry;
+        }
+
     }
 
 }
-
-#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-#pragma warning restore CS0649
