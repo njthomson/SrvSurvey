@@ -25,6 +25,24 @@ namespace SrvSurvey
             this.Cursor = Cursors.Cross;
         }
 
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+
+            if (disposing)
+            {
+                if (game != null)
+                {
+                    if (game?.status != null)
+                        game.status.StatusChanged -= Status_StatusChanged;
+
+                    Game.update -= Game_modeChanged;
+
+                    game = null!;
+                }
+            }
+        }
+
         public void reposition(Rectangle gameRect)
         {
             if (gameRect == Rectangle.Empty)
@@ -59,7 +77,7 @@ namespace SrvSurvey
             this.td = new TrackingDelta(game.nearBody.radius, Game.settings.targetLatLong);
 
             game.status.StatusChanged += Status_StatusChanged;
-            game.modeChanged += Game_modeChanged;
+            Game.update += Game_modeChanged;
 
             this.plotPrep();
 

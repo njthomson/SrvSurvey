@@ -1,4 +1,6 @@
 ﻿
+using SrvSurvey.game;
+
 namespace SrvSurvey
 {
     partial class PlotGrounded
@@ -18,6 +20,11 @@ namespace SrvSurvey
             {
                 components.Dispose();
             }
+
+            Game.update -= Game_modeChanged;
+            if (game?.status != null)
+                game.status.StatusChanged -= Status_StatusChanged;
+
             base.Dispose(disposing);
         }
 

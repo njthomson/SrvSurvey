@@ -38,7 +38,7 @@ namespace SrvSurvey
             if (PlotGuardians.instance != null)
             {
                 Game.log("Why are there multiple PlotGuardians?");
-                PlotGuardians.instance.Close();
+                Program.closePlotter(nameof(PlotGuardians));
                 Application.DoEvents();
                 PlotGuardians.instance.Dispose();
             }
@@ -442,6 +442,13 @@ namespace SrvSurvey
         protected override void Status_StatusChanged(bool blink)
         {
             base.Status_StatusChanged(blink);
+
+            if (game.status.Altitude > 4000)
+            {
+                Game.log("Too high, closing PlotGuardians");
+                game.fireUpdate(true);
+                Program.closePlotter(nameof(PlotGuardians));
+            }
 
             // take current heading if blink detected whilst waiting for a heading
             if (this.mode == Mode.heading && blink)

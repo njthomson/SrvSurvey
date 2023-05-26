@@ -124,6 +124,8 @@ namespace SrvSurvey
 
         private void settingsFolderWatcher_Changed(object sender, FileSystemEventArgs e)
         {
+            if (!this.IsHandleCreated) return;
+
             this.Invoke((MethodInvoker)delegate
             {
                 Application.DoEvents();
@@ -148,7 +150,7 @@ namespace SrvSurvey
             Game.log($"Main.removeGame, has old game: {this.game != null}");
             if (this.game != null)
             {
-                this.game.modeChanged -= Game_modeChanged;
+                Game.update -= Game_modeChanged;
                 this.game.nearingBody -= Game_nearingBody;
                 this.game.departingBody -= Game_departingBody;
                 if (this.game.journals != null)
@@ -178,7 +180,7 @@ namespace SrvSurvey
 
             this.game = newGame;
 
-            this.game.modeChanged += Game_modeChanged;
+            Game.update += Game_modeChanged;
             this.game.nearingBody += Game_nearingBody;
             this.game.departingBody += Game_departingBody;
             this.game.journals!.onJournalEntry += Journals_onJournalEntry;
@@ -344,17 +346,17 @@ namespace SrvSurvey
             {
                 lblGuardianCount.Text = game.nearBody.settlements.Count.ToString();
                 if (this.game.nearBody.siteData != null && this.game.nearBody.siteData.isRuins)
+                {
                     txtGuardianSite.Text = $"Ruins #{this.game.nearBody.siteData.index} - {this.game.nearBody.siteData.type}, {this.game.nearBody.siteData.siteHeading}°";
 
-                if (game.showBodyPlotters && this.game.showGuardianPlotters)
-                {
-                    Program.showPlotter<PlotGuardians>();
-                    Program.closePlotter(nameof(PlotGrounded));
-                    if (game.nearBody?.siteData != null)
+                    if (game.showBodyPlotters && this.game.showGuardianPlotters)
                     {
-                        btnRuinsMap.Enabled = game.nearBody.siteData.siteHeading != -1;
-                        btnRuinsOrigin.Enabled = game.nearBody.siteData.siteHeading != -1;
+                        Program.showPlotter<PlotGuardians>();
+                        Program.closePlotter(nameof(PlotGrounded));
                     }
+
+                    btnRuinsMap.Enabled = game.nearBody.siteData.siteHeading != -1 && this.game.showGuardianPlotters;
+                    btnRuinsOrigin.Enabled = game.nearBody.siteData.siteHeading != -1 && this.game.showGuardianPlotters;
                 }
             }
         }

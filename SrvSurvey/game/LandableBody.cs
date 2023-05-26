@@ -193,6 +193,7 @@ namespace SrvSurvey.game
 
                 this.siteData.lastVisited = DateTimeOffset.UtcNow;
                 this.siteData.Save();
+                game.fireUpdate(true);
             }
         }
 

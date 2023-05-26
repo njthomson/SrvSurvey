@@ -65,7 +65,7 @@ namespace SrvSurvey
             this.BackgroundImage = GameGraphics.getBackgroundForForm(this);
 
             game.status!.StatusChanged += Status_StatusChanged;
-            game.modeChanged += Game_modeChanged;
+            Game.update += Game_modeChanged;
 
             // force a mode switch, that will initialize
             this.Game_modeChanged(game.mode, true);

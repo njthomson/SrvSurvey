@@ -42,6 +42,7 @@ namespace SrvSurvey.game
         public static Settings settings { get; private set; }
         public static CodexRef codexRef { get; private set; }
         public static Canonn canonn { get; private set; }
+
         public bool initialized { get; private set; }
 
         /// <summary>
@@ -130,6 +131,20 @@ namespace SrvSurvey.game
 
         #region modes
 
+        public void fireUpdate(bool force = false)
+        {
+            this.fireUpdate(this.mode, force);
+        }
+
+        public void fireUpdate(GameMode newMode, bool force)
+        {
+            if (Game.update != null) Game.update(newMode, force);
+        }
+
+        public event GameNearingBody? nearingBody;
+        public event GameDepartingBody? departingBody;
+        public static event GameModeChanged? update;
+
         public bool atMainMenu = false;
         private bool fsdJumping = false;
         public bool isShutdown = false;
@@ -151,8 +166,8 @@ namespace SrvSurvey.game
                 log($"Mode change {this._mode} => {this.mode}");
                 this._mode = this.mode;
 
-                if (modeChanged != null) modeChanged(this._mode, false);
                 // fire event!
+                fireUpdate(this._mode, false);
             }
         }
 
@@ -207,10 +222,6 @@ namespace SrvSurvey.game
             this.checkModeChange();
         }
 
-        public event GameNearingBody? nearingBody;
-        public event GameDepartingBody? departingBody;
-
-        public event GameModeChanged? modeChanged;
         private GameMode _mode;
         public GameMode mode
         {
@@ -694,6 +705,16 @@ namespace SrvSurvey.game
                 this.atMainMenu = newMainMenu;
                 this.Status_StatusChanged(false);
             }
+
+            if (entry.MusicTrack == "GuardianSites" && this.nearBody != null)
+            {
+                // Are we at a Guardian site without realizing?
+                if (this.nearBody.siteData == null)
+                    nearBody.findGuardianSites();
+
+                if (this.showGuardianPlotters)
+                    this.fireUpdate(true);
+            }
         }
 
         private void onJournalEntry(Shutdown entry)
@@ -964,7 +985,7 @@ namespace SrvSurvey.game
                 this.nearBody.readSAASignalsFound(entry);
 
             // force a mode change to update ux
-            if (modeChanged != null) modeChanged(this._mode, true);
+            fireUpdate(this._mode, true);
         }
 
         private void onJournalEntry(SellOrganicData entry)
@@ -986,7 +1007,7 @@ namespace SrvSurvey.game
 
             cmdr.Save();
             // force a mode change to update ux
-            if (modeChanged != null) modeChanged(this._mode, true);
+            fireUpdate(this._mode, true);
         }
 
         private void setSuitType(SuitLoadout entry)

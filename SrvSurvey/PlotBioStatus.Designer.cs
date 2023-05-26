@@ -1,4 +1,6 @@
 ﻿
+using SrvSurvey.game;
+
 namespace SrvSurvey
 {
     partial class PlotBioStatus
@@ -18,6 +20,10 @@ namespace SrvSurvey
             {
                 components.Dispose();
             }
+            
+            Game.update -= Game_modeChanged;
+            this.game = null;
+
             base.Dispose(disposing);
         }
 

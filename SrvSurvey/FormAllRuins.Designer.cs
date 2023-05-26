@@ -94,7 +94,7 @@
             // 
             // colDistance
             // 
-            this.colDistance.Text = "System Distance";
+            this.colDistance.Text = "System distance";
             this.colDistance.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // colArrival
