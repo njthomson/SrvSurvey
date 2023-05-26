@@ -55,8 +55,8 @@
       { "type": "orb", "name": "p36", "angle": 172.8, "dist": 507 },
       { "type": "urn", "name": "p37", "angle": 127, "dist": 696 }, // measured in legacy mode
       { "type": "orb", "name": "p38", "angle": 17, "dist": 672 }, 
-      { "type": "orb", "name": "p39", "angle": 117, "dist": 471 } // unknown type, estimated location!
-      // p40
+      { "type": "orb", "name": "p39", "angle": 117, "dist": 471 }, // unknown type, estimated location!
+      { "type": "orb", "name": "p40", "angle": 283, "dist": 624 } // unknown type
       // p41
       // p42
 
@@ -76,7 +76,7 @@
       { "type": "relic", "name": "t7", "angle": 253.2, "dist": 390 },
       { "type": "relic", "name": "t8", "angle": 236.8, "dist": 612 },
 
-      // p1
+      { "type": "tablet", "name": "p1", "angle": 30.7, "dist": 642 },
       // p2
       { "type": "casket", "name": "p3", "angle": 26.5, "dist": 367 },
       { "type": "orb", "name": "p4", "angle": 5.5, "dist": 549 },
@@ -87,7 +87,7 @@
       { "type": "urn", "name": "p9", "angle": 286.7, "dist": 285 },
       { "type": "urn", "name": "p10", "angle": 276.8, "dist": 436 },
       { "type": "totem", "name": "p11", "angle": 298, "dist": 183 },
-      //{ "type": "totem", "name": "p12", "angle": 276.8, "dist": 436 },
+      { "type": "totem", "name": "p12", "angle": 256.8, "dist": 543 },
       { "type": "totem", "name": "p13", "angle": 214.7, "dist": 258 },
       { "type": "tablet", "name": "p14", "angle": 235, "dist": 467 }, // alpha?
       { "type": "casket", "name": "p15", "angle": 230.8, "dist": 506 },

@@ -53,7 +53,7 @@ namespace SrvSurvey
             InitializeComponent();
             map.MouseWheel += Map_MouseWheel;
 
-            this.data = this.loadMap(@"D:\grinn\OneDrive\Pictures-x220\Frontier Developments\Elite Dangerous\foo\puddle-alpha-4.png");
+            this.data = this.loadMap(@"D:\grinn\OneDrive\Pictures-x220\Frontier Developments\Elite Dangerous\foo\puddle-alpha-5.png");
 
             SiteTemplate.Import();
             this.template = SiteTemplate.sites[GuardianSiteData.SiteType.alpha];

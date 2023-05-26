@@ -1,4 +1,6 @@
 ﻿
+using SrvSurvey.game;
+
 namespace SrvSurvey
 {
     partial class PlotTrackTarget
@@ -17,6 +19,16 @@ namespace SrvSurvey
             if (disposing && (components != null))
             {
                 components.Dispose();
+
+                if (game != null)
+                {
+                    if (game?.status != null)
+                        game.status.StatusChanged -= Status_StatusChanged;
+
+                    Game.update -= Game_modeChanged;
+
+                    game = null;
+                }
             }
             base.Dispose(disposing);
         }
