@@ -766,7 +766,7 @@ namespace SrvSurvey
                     }
                     sourceImage = truncated;
                     sourceImage.RotateFlip(RotateFlipType.Rotate90FlipNone);
-                    this.addBannerToScreenshot(entry, sourceImage, extraTxt, true);
+                    this.addBannerToScreenshot(entry, sourceImage, extraTxt);
                 }
 
                 folder = Path.Combine(Game.settings.screenshotTargetFolder!, $"Aerial {siteType}");
