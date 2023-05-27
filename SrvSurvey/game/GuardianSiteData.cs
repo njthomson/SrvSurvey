@@ -6,6 +6,7 @@ namespace SrvSurvey.game
 {
     internal class GuardianSiteData : Data
     {
+        private static string rootFolder = Path.Combine(Application.UserAppDataPath, "guardian");
         public static string getFilename(ApproachSettlement entry)
         {
             var index = parseSettlementIdx(entry.Name);
@@ -15,8 +16,8 @@ namespace SrvSurvey.game
 
         public static GuardianSiteData Load(ApproachSettlement entry)
         {
-            string filepath = Path.Combine(Application.UserAppDataPath, "guardian", Game.activeGame!.fid!, getFilename(entry));
-            Directory.CreateDirectory(Path.Combine(Application.UserAppDataPath, "guardian"));
+            string filepath = Path.Combine(rootFolder, Game.activeGame!.fid!, getFilename(entry));
+            Directory.CreateDirectory(rootFolder);
             var data = Data.Load<GuardianSiteData>(filepath);
 
             // create new if needed
@@ -79,7 +80,7 @@ namespace SrvSurvey.game
                 if (grSites.Any())
                 {
                     var grSite = grSites.FirstOrDefault(_ => _.idx == data.index);
-                    if (grSite != null )
+                    if (grSite != null)
                     {
                         Game.log($"Matched grSite: #GR{grSite?.siteID} on index (type: {grSite!.siteType})");
                     }
@@ -151,6 +152,33 @@ namespace SrvSurvey.game
             beta,
             gamma,
             // structures ... ?
+        }
+
+        public static void migrateAlphaSites()
+        {
+            if (!Directory.Exists(rootFolder)) return;
+
+            Game.log("Migrating alpha site data - inverting the headings");
+
+            var folders = Directory.GetDirectories(rootFolder);
+            foreach (var folder in folders)
+            {
+                var files = Directory.GetFiles(Path.Combine(rootFolder, folder));
+                foreach (var file in files)
+                {
+                    string filepath = Path.Combine(rootFolder, folder, file);
+                    var data = Data.Load<GuardianSiteData>(filepath)!;
+
+                    if (data.type == SiteType.alpha)
+                    {
+                        data.siteHeading = new Angle(data.siteHeading - 180);
+                        data.Save();
+                    }
+                }
+            }
+
+            Game.settings.migratedAlphaSiteHeading = true;
+            Game.settings.Save();
         }
     }
 }

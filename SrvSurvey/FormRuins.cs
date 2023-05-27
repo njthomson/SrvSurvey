@@ -1,4 +1,5 @@
 ﻿using SrvSurvey.game;
+using SrvSurvey.units;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -53,10 +54,21 @@ namespace SrvSurvey
             InitializeComponent();
             map.MouseWheel += Map_MouseWheel;
 
-            this.data = this.loadMap(@"D:\grinn\OneDrive\Pictures-x220\Frontier Developments\Elite Dangerous\foo\puddle-alpha-5.png");
+            //this.data = this.loadMap(@"D:\grinn\OneDrive\Pictures-x220\Frontier Developments\Elite Dangerous\foo\puddle-alpha-5.png");
+            // this.template = SiteTemplate.sites[GuardianSiteData.SiteType.alpha];
+            loadTemplates();
 
-            SiteTemplate.Import();
-            this.template = SiteTemplate.sites[GuardianSiteData.SiteType.alpha];
+            this.data = this.loadMap(@"D:\grinn\OneDrive\Pictures-x220\Frontier Developments\Elite Dangerous\foo\beta.png");
+            this.template = SiteTemplate.sites[GuardianSiteData.SiteType.beta];
+        }
+
+        private void loadTemplates()
+        {
+            SiteTemplate.Import(true);
+            // ??
+            foreach (var poi in SiteTemplate.sites[GuardianSiteData.SiteType.beta].poi)
+                poi.angle = new Angle(poi.angle + 180);
+
         }
 
         private MapViewData loadMap(string filepath)
@@ -131,6 +143,10 @@ namespace SrvSurvey
 
         private void btnUpdate_Click(object sender, EventArgs e)
         {
+            loadTemplates();
+            this.template = SiteTemplate.sites[GuardianSiteData.SiteType.beta];
+
+
             this.parseOriginText();
             this.windowCalculations();
         }
@@ -197,8 +213,23 @@ namespace SrvSurvey
 
         private void showStatus()
         {
-            lblStatus.Text = $"x: {mousePos.X}, y: {mousePos.Y}, scale: {this.scale}, rotation: {data.rotation}°";
-            lblSelectedItem.Text = $"{this.nearestPoi?.name} ({this.nearestPoi?.type})";
+            var poi = this.nearestPoi!;
+            if (poi != null)
+                lblSelectedItem.Text = $"{poi.name} ({poi.type}) d: {poi.dist}, a: {poi.angle}° / " + new Angle(poi.angle + 180);
+            else
+                lblSelectedItem.Text = "";
+
+            var x = (mousePos.X + dragOffset.X) / this.scale;
+            var y = (mousePos.Y + dragOffset.Y) / this.scale;
+
+            var dist = Math.Sqrt(x * x + y * y).ToString("N1");
+
+            var a1 = Util.ToAngle(x, -y);
+            var a2 = new Angle(a1 + 180);
+            var a3 = ((double)a2).ToString("N2");
+
+
+            lblStatus.Text = $"x: {x}, y: {y}, scale: {this.scale}, rotation: {data.rotation}° / dist: {dist} / angle: {a3}°";
         }
 
         private void map_Paint(object sender, PaintEventArgs e)

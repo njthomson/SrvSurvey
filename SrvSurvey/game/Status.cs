@@ -136,7 +136,7 @@ namespace SrvSurvey
                 this.lastblinkChange = DateTime.Now;
             }
 
-            if (duration.TotalSeconds < 2)
+            if (duration.TotalSeconds < 3)
             {
                 Game.log($"Blink detected blinked!");
                 return true;

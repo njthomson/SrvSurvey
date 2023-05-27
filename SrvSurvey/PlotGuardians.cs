@@ -17,7 +17,7 @@ namespace SrvSurvey
     {
         private SiteTemplate? template;
         private Image? siteMap;
-        private Image? trails;
+        //private Image? trails;
         private Image? underlay;
         public Image? headingGuidance;
         private string highlightPoi; // tmp
@@ -38,7 +38,7 @@ namespace SrvSurvey
             if (PlotGuardians.instance != null)
             {
                 Game.log("Why are there multiple PlotGuardians?");
-                Program.closePlotter(nameof(PlotGuardians));
+                Program.closePlotter<PlotGuardians>();
                 Application.DoEvents();
                 PlotGuardians.instance.Dispose();
             }
@@ -151,7 +151,7 @@ namespace SrvSurvey
                     Program.showPlotter<PlotVertialStripe>();
                 }
                 else
-                    Program.closePlotter(nameof(PlotVertialStripe));
+                    Program.closePlotter<PlotVertialStripe>();
             }
 
             // load heading guidance image if that is the next mode
@@ -162,31 +162,53 @@ namespace SrvSurvey
             {
                 if (!Game.settings.disableAerialAlignmentGrid)
                 {
-                    switch (this.siteData.type)
-                    {
-                        case SiteType.alpha:
-                            PlotVertialStripe.mode = PlotVertialStripe.Mode.Alpha;
-                            break;
-                        case SiteType.beta:
-                            PlotVertialStripe.mode = PlotVertialStripe.Mode.Beta;
-                            break;
-                        case SiteType.gamma:
-                            PlotVertialStripe.mode = PlotVertialStripe.Mode.Gamma;
-                            break;
-
-                        // TODO: implement more for other site types
-
-                        default:
-                            return;
-                    }
-                    Program.showPlotter<PlotVertialStripe>();
+                    showAiming();
                 }
             }
             else if (this.mode != Mode.heading)
             {
                 // close potential plotter
-                Program.closePlotter(nameof(PlotVertialStripe));
+                Program.closePlotter<PlotVertialStripe>();
             }
+        }
+
+        private void showAiming()
+        {
+            // close existing
+            Program.closePlotter<PlotVertialStripe>();
+            if (Game.settings.disableAerialAlignmentGrid) return;
+
+            if (game.vehicle == ActiveVehicle.SRV)
+            {
+                Game.log("showAiming: not in SRV");
+                return;
+            }
+
+            switch (this.siteData.type)
+            {
+                case SiteType.alpha:
+                    PlotVertialStripe.mode = PlotVertialStripe.Mode.Alpha;
+                    PlotVertialStripe.targetAltitude = Game.settings.aerialAltAlpha;
+                    break;
+                case SiteType.beta:
+                    PlotVertialStripe.mode = PlotVertialStripe.Mode.Beta;
+                    PlotVertialStripe.targetAltitude = Game.settings.aerialAltBeta;
+                    break;
+                case SiteType.gamma:
+                    PlotVertialStripe.mode = PlotVertialStripe.Mode.Gamma;
+                    PlotVertialStripe.targetAltitude = Game.settings.aerialAltGamma;
+                    break;
+            }
+
+            // assume onFoot only means Relic Towers
+            if (game.vehicle == ActiveVehicle.Foot)
+            {
+                PlotVertialStripe.mode = PlotVertialStripe.Mode.RelicTower;
+                PlotVertialStripe.targetAltitude = 0;
+            }
+
+            Game.log($"showAiming: {PlotVertialStripe.mode}");
+            Program.showPlotter<PlotVertialStripe>();
         }
 
         protected override void onJournalEntry(SendText entry)
@@ -200,7 +222,6 @@ namespace SrvSurvey
                 return;
             }
 
-
             // switch to/from offset/screenshot mode
             if (msg == MsgCmd.aerial)
             {
@@ -210,6 +231,14 @@ namespace SrvSurvey
             if (msg == MsgCmd.map)
             {
                 this.setMode(Mode.map);
+                return;
+            }
+            if (msg == MsgCmd.aim)
+            {
+                if (Program.isPlotter<PlotVertialStripe>())
+                    Program.closePlotter<PlotVertialStripe>();
+                else
+                    this.showAiming();
                 return;
             }
 
@@ -293,6 +322,7 @@ namespace SrvSurvey
                 Game.log($"Changing Relic Tower heading from: '{siteData.relicTowerHeading}' to: '{game.status.Heading}'");
                 siteData.relicTowerHeading = new Angle(game.status.Heading);
                 siteData.Save();
+                Program.closePlotter<PlotVertialStripe>();
             }
             else if (msg.StartsWith(MsgCmd.heading) && int.TryParse(msg.Substring(MsgCmd.heading.Length), out newHeading))
             {
@@ -389,27 +419,28 @@ namespace SrvSurvey
 
             this.template = SiteTemplate.sites[siteData.type];
 
+
             var imageFilename = $"{siteData.type}-background.png".ToLowerInvariant();
             this.siteMap = Bitmap.FromFile(Path.Combine("images", imageFilename));
 
-            this.trails = new Bitmap(this.siteMap.Width * 2, this.siteMap.Height * 2);
+            //this.trails = new Bitmap(this.siteMap.Width * 2, this.siteMap.Height * 2);
 
             // Temporary until trail tracking works
-            using (var gg = Graphics.FromImage(this.trails))
-            {
-                gg.Clear(Color.FromArgb(128, Color.Navy));
-                //gg.FillRectangle(Brushes.Blue, -400, -400, 800, 800);
-                gg.DrawRectangle(GameColors.penGameOrange8, 0, 0, this.trails.Width, this.trails.Height);
-                gg.DrawLine(GameColors.penCyan8, 0, 0, trails.Width, trails.Height);
-                gg.DrawLine(GameColors.penCyan8, trails.Width, 0, 0, trails.Height);
-                gg.DrawLine(GameColors.penYellow8, 0, 0, trails.Height, 0);
-                //gg.FillRectangle(Brushes.Red, (this.trails.Width / 2), (this.trails.Height / 2), 40, 40);
-            }
+            //using (var gg = Graphics.FromImage(this.trails))
+            //{
+            //    gg.Clear(Color.FromArgb(128, Color.Navy));
+            //    //gg.FillRectangle(Brushes.Blue, -400, -400, 800, 800);
+            //    gg.DrawRectangle(GameColors.penGameOrange8, 0, 0, this.trails.Width, this.trails.Height);
+            //    gg.DrawLine(GameColors.penCyan8, 0, 0, trails.Width, trails.Height);
+            //    gg.DrawLine(GameColors.penCyan8, trails.Width, 0, 0, trails.Height);
+            //    gg.DrawLine(GameColors.penYellow8, 0, 0, trails.Height, 0);
+            //    //gg.FillRectangle(Brushes.Red, (this.trails.Width / 2), (this.trails.Height / 2), 40, 40);
+            //}
 
             // prepare underlay
-            this.underlay = new Bitmap(this.siteMap.Width * 2, this.siteMap.Height * 2);
-            this.ux = this.siteMap.Width;
-            this.uy = this.siteMap.Height;
+            this.underlay = new Bitmap(this.siteMap.Width * 3, this.siteMap.Height * 3);
+            this.ux = this.underlay.Width / 2;
+            this.uy = this.underlay.Height / 2;
 
             //// prepare other stuff
             //var offset = game.nearBody!.guardianSiteLocation! - touchdownLocation.Target;
@@ -441,13 +472,15 @@ namespace SrvSurvey
 
         protected override void Status_StatusChanged(bool blink)
         {
+            if (game?.status == null) return;
+
             base.Status_StatusChanged(blink);
 
             if (game.status.Altitude > 4000)
             {
                 Game.log("Too high, closing PlotGuardians");
                 game.fireUpdate(true);
-                Program.closePlotter(nameof(PlotGuardians));
+                Program.closePlotter<PlotGuardians>();
             }
 
             // take current heading if blink detected whilst waiting for a heading
@@ -788,7 +821,7 @@ namespace SrvSurvey
             g.RotateTransform(-game.status.Heading);
 
             // prepare underlay image
-            using (var gg = Graphics.FromImage(this.underlay!))
+            using (var gg = Graphics.FromImage(this.underlay))
             {
                 gg.ResetTransform();
                 //gg.Clear(Color.Black);
@@ -809,6 +842,9 @@ namespace SrvSurvey
                 //int xx = 0; // -this.trails!.Width;
                 //int yy = 0; // -this.trails!.Height / 2;
                 //gg.DrawImageUnscaled(this.trails!, -this.template!.imageOffset.X, -this.template.imageOffset.Y);
+
+                //gg.ResetTransform();
+                //gg.DrawRectangle(Pens.Red, 0, 0, underlay.Width, underlay.Height);
             }
 
             float x = commanderOffset.X;
@@ -990,7 +1026,7 @@ namespace SrvSurvey
                     }
 
                 default:
-                    return Pens.Azure;
+                    return Pens.Red;
             }
         }
 

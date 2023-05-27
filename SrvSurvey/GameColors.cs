@@ -1,4 +1,5 @@
 ﻿using System.Drawing.Drawing2D;
+using System.Net.NetworkInformation;
 
 namespace SrvSurvey
 {
@@ -115,9 +116,20 @@ namespace SrvSurvey
         public static Pen penPoiRelicPresent = new Pen(Color.Orange, 4) { DashStyle = DashStyle.Dash, };
         public static Pen penPoiRelicMissing = new Pen(Color.DarkRed, 4) { DashStyle = DashStyle.Dash, };
 
-        public static Pen penPoiPuddleUnconfirmed = new Pen(Color.Cyan, 2) { DashStyle = DashStyle.Dot, }; // PeachPuff ?
-        public static Pen penPoiPuddlePresent= new Pen(Color.Orange, 2) { DashStyle = DashStyle.Solid, };
-        public static Pen penPoiPuddleMissing = new Pen(Color.DarkRed, 2) { DashStyle = DashStyle.Solid, };
+        public static Pen penPoiPuddleUnconfirmed = new Pen(Color.Cyan, 3) { DashStyle = DashStyle.Dot, }; // PeachPuff ?
+        public static Pen penPoiPuddlePresent= new Pen(Color.Orange, 3) { DashStyle = DashStyle.Solid, };
+        public static Pen penPoiPuddleMissing = new Pen(Color.DarkRed, 3) { DashStyle = DashStyle.Solid, };
 
+        //public static void resetTheme()
+        //{
+        //    themeLoaded = false;
+        //}
+
+        //private static bool foreColor = Color.Black;
+        /*
+        foreColor
+        window
+        control
+        // */
     }
 }

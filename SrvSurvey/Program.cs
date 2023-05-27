@@ -86,7 +86,12 @@ namespace SrvSurvey
             return form;
         }
 
-        public static void closePlotter(string name)
+        public static void closePlotter<T>() where T : Form
+        {
+            closePlotter(typeof(T).Name);
+        }
+
+        private static void closePlotter(string name)
         {
             var isActive = Program.activePlotters.ContainsKey(name);
 
@@ -98,6 +103,14 @@ namespace SrvSurvey
                 plotter.Close();
                 Program.activePlotters.Remove(plotter.Name);
             }
+        }
+
+        /// <summary>
+        /// Returns True if the plotter type is active
+        /// </summary>
+        public static bool isPlotter<T>() where T : Form
+        {
+            return activePlotters.ContainsKey(typeof(T).Name);
         }
 
         public static void closeAllPlotters()

@@ -1,4 +1,5 @@
 ﻿using SrvSurvey.game;
+using SrvSurvey.units;
 using System.Diagnostics;
 using System.Drawing.Drawing2D;
 
@@ -12,10 +13,11 @@ namespace SrvSurvey
             Alpha,
             Beta,
             Gamma,
+            RelicTower,
         }
 
-        // TODO: use an enum!
         public static Mode mode;
+        public static double targetAltitude;
 
         protected Game game = Game.activeGame!;
 
@@ -87,22 +89,34 @@ namespace SrvSurvey
 
         private void Status_StatusChanged(bool blink)
         {
-            this.Opacity = getOpacity() * Game.settings.Opacity;
+            //if (this.Opacity > 0)
+                this.Opacity = getOpacity() * Game.settings.Opacity;
+
             this.Invalidate();
         }
 
         private double getOpacity()
         {
-            if (mode != Mode.Buttress)
+            if (targetAltitude == 0)
                 return 1;
 
-            const float limit = 200;
-            if (game.status.Altitude > limit + 100)
+
+            var delta = Math.Abs(game.status.Altitude - targetAltitude);
+            if (delta > 220)
                 return 0;
-            else if (game.status.Altitude < 100)
+            else if (delta < 20)
                 return 1;
             else
-                return 1f - ((game.status.Altitude - 100) / limit);
+                return (220 - (delta)) / 200f;
+
+
+            //const float limit = 200;
+            //if (game.status.Altitude > limit + 100)
+            //    return 0;
+            //else if (game.status.Altitude < 100)
+            //    return 1;
+            //else
+            //    return 1f - ((game.status.Altitude - 100) / limit);
         }
 
         protected override void OnShown(EventArgs e)
@@ -148,6 +162,8 @@ namespace SrvSurvey
             var g = e.Graphics;
             g.Clear(Color.Red);
 
+            drawAngleString(g);
+
             switch (mode)
             {
                 case Mode.Alpha:
@@ -159,6 +175,9 @@ namespace SrvSurvey
                 case Mode.Gamma:
                     this.drawGammaSiteTarget(g);
                     break;
+                case Mode.RelicTower:
+                    this.drawRelicTowerTarget(g);
+                    break;
 
                 case Mode.Buttress:
                 default:
@@ -167,13 +186,37 @@ namespace SrvSurvey
             }
         }
 
+        private void drawAngleString(Graphics g)
+        {
+            var w = (this.Width / 2f);
+
+            g.FillRectangle(Brushes.Black, w - 45, 15, 85, 30);
+
+            var txt = $"{new Angle(game.status.Heading)}";
+            var sz = g.MeasureString(txt, Game.settings.fontBig);
+
+            var x = (this.Width / 2f) - (sz.Width / 2);
+            var y = 10f;
+            g.DrawString(txt, Game.settings.fontBig, Brushes.Yellow, x, y);
+        }
+
         private void drawLine(Graphics g, float x1, float y1, float x2, float y2)
         {
-            var p1 = GameColors.penYellow8;
+            var p1 = GameColors.penYellow4;
             var p2 = new Pen(Color.Black, 2) { DashStyle = DashStyle.Dash };
 
             g.DrawLine(p1, x1, y1, x2, y2);
             g.DrawLine(p2, x1, y1, x2, y2);
+        }
+
+        private void drawCircle(Graphics g, float x, float y, float r)
+        {
+            var p1 = GameColors.penYellow4;
+            var p2 = new Pen(Color.Black, 2) { DashStyle = DashStyle.Dash };
+
+            var rect = new RectangleF(x - r, y - r, r * 2, r * 2);
+            g.DrawEllipse(p1, rect);
+            g.DrawEllipse(p2, rect);
         }
 
         private void drawAlphaSiteTarget(Graphics g)
@@ -183,79 +226,29 @@ namespace SrvSurvey
             var w = (this.Width / 2f);
             var h = (this.Height / 2f);
 
-            //drawLine(g, w, 0, w, 2 * h);
-
-            //drawLine(g, 0, h, 2 * w, h);
-
-            //var dy = h * 0.65f;
-            //drawLine(g, 0, h+dy, 2 * w, h+dy);
-            //drawLine(g, 0, h-dy, 2 * w, h-dy);
-
-            //return;
-
+            // pit circles
+            var x = w;
+            var y = h - (h * 0.05f);
+            drawCircle(g, x, y, h * 0.10f);
+            drawCircle(g, x, y, h * 0.22f);
+            drawCircle(g, x, y, h * 0.30f);
 
             // pit spike
-            var d = h * 0.50f; //300f;
+            var d = h * 0.20f;
 
-            var x = w + d / 2f;
-            var y = h + d / 3f;
-            g.DrawLine(GameColors.penYellow8, x, y, x + 120, y);
-            g.DrawLine(pp, x, y, x + 120, y);
+            x += d;
+            y += d * 0.8f;
+            drawLine(g, x, y, this.Width-5, y);
 
-            /*
-            g.DrawLine(GameColors.penYellow8, x, y, x - 45, y + 20);
-            g.DrawLine(pp, x, y, x - 45, y + 20);
-
-            g.DrawLine(GameColors.penYellow8, x, y, x + 70, y + 15);
-            g.DrawLine(pp, x, y, x + 70, y + 15);
-            x += 10;
-            y -= 20;
-            g.DrawLine(GameColors.penYellow8, x, y, x - 45, y - 40);
-            g.DrawLine(pp, x, y, x - 45, y - 40);
-            g.DrawLine(GameColors.penYellow8, x, y, x + 70, y + 15);
-            g.DrawLine(pp, x, y, x + 70, y + 15);
-            g.DrawLine(GameColors.penYellow8, x - 10 + 70, y + 20 + 15, x + 70, y + 15);
-            g.DrawLine(pp, x - 10 + 70, y + 20 + 15, x + 70, y + 15);
-            */
-
-            // pit circles
-            x = w - (d / 2f);
-            y = h - (d / 2f);
-            var rect = new RectangleF(x, y, d, d);
-            g.DrawEllipse(GameColors.penYellow8, rect);
-            g.DrawEllipse(pp, rect);
-
-            rect.Inflate(40, 40);
-            g.DrawEllipse(GameColors.penYellow8, rect);
-            g.DrawEllipse(pp, rect);
-
-            rect.Inflate(-d * 0.4f, -d * 0.4f);
-            g.DrawEllipse(GameColors.penYellow8, rect);
-            g.DrawEllipse(pp, rect);
-
-            //// orbs
-            //d = 100;
-            //rect = new RectangleF(w + 150, h + 240, d, d);
+            return;
+            //rect.Inflate(40, 40);
             //g.DrawEllipse(GameColors.penYellow8, rect);
             //g.DrawEllipse(pp, rect);
 
-            //d = 70;
-            //rect = new RectangleF(w - 250, h + 125, d, d);
+            //rect.Inflate(-d * 0.4f, -d * 0.4f);
             //g.DrawEllipse(GameColors.penYellow8, rect);
             //g.DrawEllipse(pp, rect);
 
-            //rect = new RectangleF(w - 270, h - 160, d, d);
-            //g.DrawEllipse(GameColors.penYellow8, rect);
-            //g.DrawEllipse(pp, rect);
-
-
-            //g.FillRectangle(Brushes.Yellow, w - 5, y, 10, 460);
-
-            //rect.Inflate(-10, -10);
-            //g.DrawEllipse(pp, rect);
-
-            ////g.FillRectangle(Brushes.Yellow, w - 5, y, 10, 460);
-            //g.DrawLine(pp, w, y + d, w, y + 456);
         }
 
         private void drawBetaSiteTarget(Graphics g)
@@ -276,6 +269,146 @@ namespace SrvSurvey
 
             //g.FillRectangle(Brushes.Yellow, w - 5, y, 10, 460);
             g.DrawLine(pp, w, y + d, w, y + 456);
+        }
+
+        private void drawRelicTowerTarget(Graphics g)
+        {
+            var er = Elite.getWindowRect();
+            var r = (float)er.Width / (float)er.Height;
+            var ew = er.Width * 0.01f;
+            var eh = er.Height * 0.01f;
+            var pp = new Pen(Color.Black, 4) { DashStyle = DashStyle.Dash };
+
+            var d = 0f;
+            var x = 0f;
+            var y = 0f;
+            var w = (this.Width / 2f);
+            var h = (this.Height / 2f);
+
+            // rock marker
+            x = w;
+            y = this.Height * 0.65f;
+            //drawLine(g, w, y, w, y + 100); // h - eh*12);
+
+            // tops
+            //*
+            d = eh * 1.5f;
+            x = w - d;
+            y = h - eh * 4;
+            drawLine(g, x, y, x - eh * 1f, y);
+            drawLine(g, x, y + 100, x, y + 100 + eh * 20); // h - eh*12);
+
+            x = w + d;
+            drawLine(g, x, y, x + eh * 1f, y);
+            drawLine(g, x, y + 100, x, y + 100 + eh * 20); // h - eh*12);
+
+
+            //drawLine(g, w, 4, w, 500); // h - eh*12);
+            //drawLine(g, 0, h, 1000, h);
+
+            // rock marker
+            //x = w - ew*7;
+            //y = this.Height * 0.8f;
+            //drawLine(g, x, this.Height * 0.7f, x, this.Height - 20);
+
+            //x = w + ew * 5;
+            //drawLine(g, x, h, x, h + eh * 20);
+
+            //x = w - ew * 5;
+            //y = this.Height * 0.6f;
+            //drawCircle(g, x, y, 80);
+
+            //x = w + ew * 1;
+            //y = eh * 24;
+            //drawCircle(g, x, y, 60);
+        }
+
+        private void drawRelicTowerTarget2(Graphics g)
+        {
+            var er = Elite.getWindowRect();
+            var r = (float)er.Width / (float)er.Height;
+            var ew = er.Width * 0.01f;
+            var eh = er.Height * 0.01f;
+
+            var d = 0f;
+            var x = 0f;
+            var y = 0f;
+
+            var w = (this.Width / 2f);
+            var h = (this.Height / 2f);
+            //drawLine(g, w, 4, w, 500); // h - eh*12);
+            //drawLine(g, 0, h, 1000, h);
+
+            // rock marker
+            x = w;
+            y = this.Height * 0.8f;
+            drawLine(g, w, this.Height * 0.7f, w, this.Height - 20); // h - eh*12);
+
+            // horiz
+            x = w;
+            y = h + eh * 5;
+            drawLine(g, x - 200, y, x + 200, y);
+
+            // knob
+            /*
+            var d = eh * 1.9f;
+            x = w - d;
+            y = h;
+            drawLine(g, x, y, x - eh * 0.9f, y + eh * 5);
+            x = w + d + ew * 0.01f;
+            drawLine(g, x, y, x + eh * 0.9f, y + eh * 5);
+            */
+
+            // tops
+            /*
+            d = eh * 2;
+            x = w - d;
+            drawLine(g, x, eh, x - eh * 0.2f, eh * 7);
+            x = w + d;
+            drawLine(g, x, eh, x + eh * 0.2f, eh * 7);
+            // */
+
+
+            // tops
+            //*
+            d = eh * 2;
+            x = w - d;
+            y = h - eh * 24;
+            drawLine(g, x, y, x - eh * 2f, y);
+            x = w + d;
+            drawLine(g, x, y, x + eh * 2f, y);
+            // */
+
+            //x = w + d + eh * 10.5f;
+            //drawLine(g, x, y, x - 8, y + eh * 5);
+
+
+            //// upper
+            //d = 122;
+            //x = w - d;
+            //y = h - 350;
+            //drawLine(g, x, y, x-22, y + 420);
+            //x = w + d;
+            //drawLine(g, x, y, x+22, y + 420);
+
+            //// lower
+            //d = 192;
+            //x = w - d;
+            //y = h + 120;
+            //drawLine(g, x, y, x - 16, y + 500);
+            //x = w + d;
+            //drawLine(g, x, y, x + 16, y + 500);
+
+            // triangle
+            //x = w - r * 54f;             y = h + r * 188f; // ratio
+            //x = w - eh * 8f; y = h + eh * 23f; // eh only
+            //x = w - eh * 6f; y = h + ew * 15f; // inverse
+            x = w - ew * 3f; y = h + eh * 23f; // matching
+            drawLine(g, x, y, x + eh * 10, y - eh * 5);
+            drawLine(g, x, y, x + eh * 4f, y + eh * 2.8f);
+            //x = w + 152;
+            //drawLine(g, x, h + 40, x + 16, h + 440);
+
         }
 
         private void drawGammaSiteTarget(Graphics g)

@@ -23,6 +23,8 @@
         public const string tower = ".tower";
         /// <summary> Signal an empty puddle </summary>
         public const string empty = ".empty";
+        /// <summary> Toggle aiming assistance overlay </summary>
+        public const string aim = ".aim";
 
         /// <summary> Main : set current location as trackign target </summary>
         public const string targetHere = ".target here";

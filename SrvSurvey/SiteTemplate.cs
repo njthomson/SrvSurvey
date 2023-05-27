@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using SrvSurvey.game;
-
+using SrvSurvey.units;
 
 namespace SrvSurvey
 {
@@ -25,6 +25,16 @@ namespace SrvSurvey
             {
                 var json = File.ReadAllText(filepath);
                 SiteTemplate.sites = JsonConvert.DeserializeObject<Dictionary<GuardianSiteData.SiteType, SiteTemplate>>(json)!;
+
+                // -- tmp --
+                //*
+                foreach (var poi in SiteTemplate.sites[GuardianSiteData.SiteType.alpha].poi)
+                    poi.angle = new Angle(poi.angle + 180);
+                //foreach (var poi in SiteTemplate.sites[GuardianSiteData.SiteType.beta].poi)
+                //    poi.angle = new Angle(poi.angle + 180);
+                // */
+                // -- tmp --
+
             }
             else
             {

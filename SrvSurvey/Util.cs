@@ -190,11 +190,13 @@ namespace SrvSurvey
 
         public static double ToAngle(double opp, double adj)
         {
-            //var opp = this.Lat; //< 0 ? -this.Lat : this.Lat;
-            //var adj = this.Long; //< 0 ? -this.Long : this.Long;
-            //if (opp < 0) opp = -opp;
-            //if (adj < 0) adj = -adj;
-            return Util.radToDeg(Math.Atan(opp / adj));
+            var flip = adj < 0;
+
+            var angle = Util.radToDeg(Math.Atan(opp / adj));
+
+            if (flip) angle = angle - 180;
+
+            return angle;
         }
 
         public static string getSpeciesPrefix(string name)

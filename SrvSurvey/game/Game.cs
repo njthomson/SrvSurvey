@@ -23,7 +23,7 @@ namespace SrvSurvey.game
 
         #region logging
 
-        public static void log(object msg)
+        public static void log(object? msg)
         {
             var txt = DateTime.Now.ToString("HH:mm:ss") + ": " + msg?.ToString();
 
@@ -75,7 +75,7 @@ namespace SrvSurvey.game
             this.status = new Status(true);
 
             // initialize from a journal file
-            var filepath = JournalFile.getCommanderJournalBefore(cmdr, false, DateTime.MaxValue);
+            var filepath = JournalFile.getCommanderJournalBefore(cmdr, true, DateTime.MaxValue);
             if (filepath == null)
             {
                 Game.log($"No journal files found for: {cmdr}");
@@ -747,7 +747,7 @@ namespace SrvSurvey.game
 
         private void onJournalEntry(SupercruiseEntry entry)
         {
-            Program.closePlotter(nameof(PlotGuardians));
+            Program.closePlotter<PlotGuardians>();
         }
 
         private void onJournalEntry(SupercruiseExit entry)

@@ -245,9 +245,17 @@ namespace SrvSurvey.canonn
                     else
                     {
                         // create an entry to represent our own data
-                        Game.log($"No matcing entry for: {data.bodyName} {data.name} ?");
-                        var newEntry = GuardianRuinEntry.from(data, matches.First());
-                        newEntries.Add(newEntry);
+                        if (matches.Count == 0)
+                        {
+                            Game.log($"Unknown Guardian body: {data.bodyName} {data.name}");
+                            // TODO: fabricate an entry from logs?
+                        }
+                        else
+                        {
+                            Game.log($"No exact match for: {data.bodyName} {data.name}");
+                            var newEntry = GuardianRuinEntry.from(data, matches.First());
+                            newEntries.Add(newEntry);
+                        }
                     }
                 }
 

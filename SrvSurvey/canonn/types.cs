@@ -353,17 +353,20 @@ namespace SrvSurvey.canonn
 
         public GuardianRuinEntry(GuardianRuinSummary summary)
         {
-            base.siteID = summary.siteID;
-            base.systemName = summary.systemName;
-            base.systemAddress = summary.systemAddress;
-            base.bodyName = summary.bodyName;
-            base.bodyId = summary.bodyId;
-            base.siteType = summary.siteType;
-            base.idx = summary.idx;
-            base.distanceToArrival = summary.distanceToArrival;
-            base.starPos = summary.starPos;
-            base.latitude = summary.latitude;
-            base.longitude = summary.longitude;
+            if (summary != null)
+            {
+                base.siteID = summary.siteID;
+                base.systemName = summary.systemName;
+                base.systemAddress = summary.systemAddress;
+                base.bodyName = summary.bodyName;
+                base.bodyId = summary.bodyId;
+                base.siteType = summary.siteType;
+                base.idx = summary.idx;
+                base.distanceToArrival = summary.distanceToArrival;
+                base.starPos = summary.starPos;
+                base.latitude = summary.latitude;
+                base.longitude = summary.longitude;
+            }
         }
 
         public string name

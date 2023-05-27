@@ -142,6 +142,7 @@ namespace SrvSurvey
             {
                 // close all plotters
                 Program.closeAllPlotters();
+                Program.showPlotter<PlotPulse>();
             }
         }
 

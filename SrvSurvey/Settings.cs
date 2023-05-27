@@ -39,12 +39,15 @@ namespace SrvSurvey
         public bool useGuardianAerialScreenshotsFolder = true;
         public string screenshotSourceFolder = Elite.defaultScreenshotFolder;
         public string screenshotTargetFolder = Path.Combine(Elite.defaultScreenshotFolder, "converted");
+        public bool rotateAndTruncateAlphaAerialScreenshots = true;
 
         public double aerialAltAlpha = 1200; // confirm this
         public double aerialAltBeta = 1550;
         public double aerialAltGamma = 1600;
 
         public int idxGuardianPlotter = 0;
+
+        public bool migratedAlphaSiteHeading = false;
 
         // configurable colours and fonts
         public Color GameOrange = Color.FromArgb(255, 255, 113, 00); // #FF7100

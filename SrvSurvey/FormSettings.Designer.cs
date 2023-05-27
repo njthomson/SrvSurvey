@@ -82,6 +82,7 @@ namespace SrvSurvey
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.linkAboutTwo = new System.Windows.Forms.LinkLabel();
             this.linkAboutOne = new System.Windows.Forms.LinkLabel();
+            this.checkBox3 = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numOpacity)).BeginInit();
@@ -385,6 +386,7 @@ namespace SrvSurvey
             // tabPage3
             // 
             this.tabPage3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.tabPage3.Controls.Add(this.checkBox3);
             this.tabPage3.Controls.Add(this.label9);
             this.tabPage3.Controls.Add(this.comboGuardianWindowSize);
             this.tabPage3.Controls.Add(this.checkBox2);
@@ -779,6 +781,20 @@ namespace SrvSurvey
             this.linkAboutOne.Text = resources.GetString("linkAboutOne.Text");
             this.linkAboutOne.UseCompatibleTextRendering = true;
             // 
+            // checkBox3
+            // 
+            this.checkBox3.AutoSize = true;
+            this.checkBox3.Checked = true;
+            this.checkBox3.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox3.Location = new System.Drawing.Point(11, 252);
+            this.checkBox3.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.checkBox3.Name = "checkBox3";
+            this.checkBox3.Size = new System.Drawing.Size(260, 19);
+            this.checkBox3.TabIndex = 14;
+            this.checkBox3.Tag = "rotateAndTruncateAlphaAerialScreenshots";
+            this.checkBox3.Text = "Rotate and truncate Alpha aerial screenshots";
+            this.checkBox3.UseVisualStyleBackColor = true;
+            // 
             // FormSettings
             // 
             this.AcceptButton = this.btnSave;
@@ -872,5 +888,6 @@ namespace SrvSurvey
         private CheckBox checkBox2;
         private Label label9;
         private ComboBox comboGuardianWindowSize;
+        private CheckBox checkBox3;
     }
 }

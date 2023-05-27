@@ -39,6 +39,17 @@ namespace SrvSurvey
             else
                 Game.log("setFocusED: got Zero!");
         }
+        public static RectangleF getClientRect()
+        {
+            var hwndED = Elite.getWindowHandle();
+            var rect = new RECT();
+            Elite.GetClientRect(hwndED, ref rect);
+
+            return new RectangleF(
+                rect.Left, rect.Top, 
+                rect.Bottom - rect.Top, rect.Right - rect.Left
+);
+        }
 
         public static Rectangle getWindowRect(bool force = false)
         {

@@ -111,6 +111,9 @@ namespace SrvSurvey
             Game.codexRef.init();
             Game.canonn.init();
             SiteTemplate.Import();
+
+            if (!Game.settings.migratedAlphaSiteHeading)
+                GuardianSiteData.migrateAlphaSites();
         }
 
         private void updateAllControls()
@@ -264,20 +267,20 @@ namespace SrvSurvey
             if (game == null || game.atMainMenu || !game.isRunning || !game.initialized)
             {
                 foreach (var ctrl in this.bioCtrls) ctrl.Text = "-";
-                Program.closePlotter(nameof(PlotBioStatus));
-                Program.closePlotter(nameof(PlotGrounded));
+                Program.closePlotter<PlotBioStatus>();
+                Program.closePlotter<PlotGrounded>();
             }
             else if (game.nearBody == null)
             {
                 foreach (var ctrl in this.bioCtrls) ctrl.Text = "-";
-                Program.closePlotter(nameof(PlotBioStatus));
-                Program.closePlotter(nameof(PlotGrounded));
+                Program.closePlotter<PlotBioStatus>();
+                Program.closePlotter<PlotGrounded>();
             }
             else if (game.nearBody.data.countOrganisms == 0)
             {
                 foreach (var ctrl in this.bioCtrls) ctrl.Text = "-";
-                Program.closePlotter(nameof(PlotBioStatus));
-                Program.closePlotter(nameof(PlotGrounded));
+                Program.closePlotter<PlotBioStatus>();
+                Program.closePlotter<PlotGrounded>();
             }
             else
             {
@@ -302,13 +305,13 @@ namespace SrvSurvey
             {
                 txtTargetLatLong.Text = "";
                 lblTrackTargetStatus.Text = "-";
-                Program.closePlotter(nameof(PlotTrackTarget));
+                Program.closePlotter<PlotTrackTarget>();
             }
             else if (!Game.settings.targetLatLongActive)
             {
                 txtTargetLatLong.Text = "<none>";
                 lblTrackTargetStatus.Text = "Inactive";
-                Program.closePlotter(nameof(PlotTrackTarget));
+                Program.closePlotter<PlotTrackTarget>();
             }
             else if (game.showBodyPlotters && (game.status!.Flags & StatusFlags.HasLatLong) > 0 && game.nearBody != null)
             {
@@ -320,7 +323,7 @@ namespace SrvSurvey
             {
                 txtTargetLatLong.Text = Game.settings.targetLatLong.ToString();
                 lblTrackTargetStatus.Text = "Ready";
-                Program.closePlotter(nameof(PlotTrackTarget));
+                Program.closePlotter<PlotTrackTarget>();
             }
         }
 
@@ -330,7 +333,7 @@ namespace SrvSurvey
             {
                 lblGuardianCount.Text = "";
                 txtGuardianSite.Text = "";
-                Program.closePlotter(nameof(PlotGuardians));
+                Program.closePlotter<PlotGuardians>();
                 btnRuinsMap.Enabled = false;
                 btnRuinsOrigin.Enabled = false;
             }
@@ -338,7 +341,7 @@ namespace SrvSurvey
             {
                 lblGuardianCount.Text = "0";
                 txtGuardianSite.Text = "";
-                Program.closePlotter(nameof(PlotGuardians));
+                Program.closePlotter<PlotGuardians>();
                 btnRuinsMap.Enabled = false;
                 btnRuinsOrigin.Enabled = false;
             }
@@ -352,7 +355,7 @@ namespace SrvSurvey
                     if (game.showBodyPlotters && this.game.showGuardianPlotters)
                     {
                         Program.showPlotter<PlotGuardians>();
-                        Program.closePlotter(nameof(PlotGrounded));
+                        Program.closePlotter<PlotGrounded>();
                     }
 
                     btnRuinsMap.Enabled = game.nearBody.siteData.siteHeading != -1 && this.game.showGuardianPlotters;
@@ -428,7 +431,7 @@ namespace SrvSurvey
             Game.log($"Main.SupercruiseEntry {entry.Starsystem}");
 
             // close these plotters upon super-cruise
-            Program.closePlotter(nameof(PlotGrounded));
+            Program.closePlotter<PlotGrounded>();
         }
 
         private void onJournalEntry(SendText entry)
@@ -502,7 +505,7 @@ namespace SrvSurvey
                 setTargetLatLong();
             }
             else
-                Program.closePlotter(nameof(PlotTrackTarget));
+                Program.closePlotter<PlotTrackTarget>();
         }
 
         private void btnClearTarget_Click(object sender, EventArgs e)
@@ -719,6 +722,12 @@ namespace SrvSurvey
             using (var img = Bitmap.FromFile(imageFilename))
                 sourceImage = new Bitmap(img);
 
+            // bucket all screenshots into 1 folder per system
+            var folder = Path.Combine(Game.settings.screenshotTargetFolder!, entry.System);
+
+            // save final image
+            var saveImage = new Bitmap(sourceImage);
+
             // optionally - add image banner, only if image was created in the past 10 seconds
             if (Game.settings.addBannerToScreenshots)
             {
@@ -735,20 +744,31 @@ namespace SrvSurvey
                         extraTxt += $"  Altitude: {(int)float.Parse(entry.Altitude)}m";
                 }
 
-                this.addBannerToScreenshot(entry, sourceImage, extraTxt);
+                this.addBannerToScreenshot(entry, saveImage, extraTxt);
             }
 
-            // bucket all screenshots into 1 folder per system
-            var folder = Path.Combine(Game.settings.screenshotTargetFolder!, entry.System);
-
-            // save the final image
             Game.log($"Writing screenshot '{filename}' in: {folder}");
             Directory.CreateDirectory(folder);
-            sourceImage.Save(Path.Combine(folder, filename), ImageFormat.Png);
+            saveImage.Save(Path.Combine(folder, filename), ImageFormat.Png);
 
             // also save the image in Ruins specific folders, if we are aligned with the site origin
             if (isAerialScreenshot && Game.settings.useGuardianAerialScreenshotsFolder)
             {
+                // if it's an alpha site - truncate and rotate
+                if (siteType == GuardianSiteData.SiteType.alpha && Game.settings.rotateAndTruncateAlphaAerialScreenshots)
+                {
+                    var truncated = new Bitmap((int)(sourceImage.Height * 1.3f), sourceImage.Height);
+                    using (var g = Graphics.FromImage(truncated))
+                    {
+                        g.Clear(Color.Red);
+                        var x = (sourceImage.Width / 2) - (truncated.Width / 2);
+                        g.DrawImage(sourceImage, -x, 0);
+                    }
+                    sourceImage = truncated;
+                    sourceImage.RotateFlip(RotateFlipType.Rotate90FlipNone);
+                    this.addBannerToScreenshot(entry, sourceImage, extraTxt, true);
+                }
+
                 folder = Path.Combine(Game.settings.screenshotTargetFolder!, $"Aerial {siteType}");
                 Game.log($"Writing screenshot '{filename}' in: {folder}");
                 Directory.CreateDirectory(folder);
@@ -783,14 +803,17 @@ namespace SrvSurvey
                 var szBig = g.MeasureString(txtBig, fontBig);
                 var szSmall = g.MeasureString(txt, fontSmall);
 
+                var y = 10f;
+                var h = szBig.Height + szSmall.Height + 10;
+
                 g.FillRectangle(
                     Brushes.Black,
-                    10f, 10f,
+                    10f, y,
                     Math.Max(szBig.Width, szSmall.Width) + 10,
-                    szBig.Height + szSmall.Height + 10
+                    h
                 );
-                g.DrawString(txtBig, fontBig, Brushes.Yellow, 15, 15);
-                g.DrawString(txt, fontSmall, Brushes.Yellow, 15, 15 + szBig.Height);
+                g.DrawString(txtBig, fontBig, Brushes.Yellow, 15, y + 5);
+                g.DrawString(txt, fontSmall, Brushes.Yellow, 15, y + 5 + szBig.Height);
             }
         }
 
