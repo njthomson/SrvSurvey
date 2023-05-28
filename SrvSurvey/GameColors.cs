@@ -1,4 +1,5 @@
-﻿using System.Drawing.Drawing2D;
+﻿using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Net.NetworkInformation;
 
 namespace SrvSurvey
@@ -117,19 +118,103 @@ namespace SrvSurvey
         public static Pen penPoiRelicMissing = new Pen(Color.DarkRed, 4) { DashStyle = DashStyle.Dash, };
 
         public static Pen penPoiPuddleUnconfirmed = new Pen(Color.Cyan, 3) { DashStyle = DashStyle.Dot, }; // PeachPuff ?
-        public static Pen penPoiPuddlePresent= new Pen(Color.Orange, 3) { DashStyle = DashStyle.Solid, };
+        public static Pen penPoiPuddlePresent = new Pen(Color.Orange, 3) { DashStyle = DashStyle.Solid, };
         public static Pen penPoiPuddleMissing = new Pen(Color.DarkRed, 3) { DashStyle = DashStyle.Solid, };
 
-        //public static void resetTheme()
-        //{
-        //    themeLoaded = false;
-        //}
+        internal static class Map
+        {
+            internal static class Legend
+            {
+                public static Pen pen = new Pen(Color.DarkGray, 4);
+                public static Brush brush = Brushes.LightGray;
+            }
 
-        //private static bool foreColor = Color.Black;
-        /*
-        foreColor
-        window
-        control
-        // */
+            private static Pen penUnknown = new Pen(Color.LightSlateGray, 3);
+            private static Pen penAbsent = new Pen(Color.DarkSlateGray, 3); // new Pen(Color.DarkRed, 3);
+            private static Pen penEmpty= new Pen(Color.Yellow, 3);
+            public static Dictionary<POIType, Dictionary<SitePoiStatus, Pen>> pens = new Dictionary<POIType, Dictionary<SitePoiStatus, Pen>>
+            {
+                { POIType.relic, new Dictionary<SitePoiStatus, Pen> {
+                    { SitePoiStatus.unknown, penUnknown },
+                    { SitePoiStatus.present, new Pen(Color.CadetBlue, 4) { DashStyle = DashStyle.Solid, StartCap = LineCap.Triangle, EndCap = LineCap.Triangle, } },
+                    { SitePoiStatus.absent, penAbsent },
+                    { SitePoiStatus.empty, penEmpty } } },
+
+                { POIType.orb, new Dictionary<SitePoiStatus, Pen> {
+                    { SitePoiStatus.unknown, penUnknown },
+                    { SitePoiStatus.present, new Pen(Color.FromArgb(255, 147, 58, 0) /* orange */, 3) },
+                    { SitePoiStatus.absent, penAbsent },
+                    { SitePoiStatus.empty, penEmpty } } },
+                { POIType.casket, new Dictionary<SitePoiStatus, Pen> {
+                    { SitePoiStatus.unknown, penUnknown },
+                    { SitePoiStatus.present, new Pen(Color.FromArgb(255, 17, 87, 38) /* green */, 3) },
+                    { SitePoiStatus.absent, penAbsent },
+                    { SitePoiStatus.empty, penEmpty } } },
+                { POIType.tablet, new Dictionary<SitePoiStatus, Pen> {
+                    { SitePoiStatus.unknown, penUnknown },
+                    { SitePoiStatus.present, new Pen(Color.FromArgb(255, 33, 135, 160) /* blue */, 3) },
+                    { SitePoiStatus.absent, penAbsent },
+                    { SitePoiStatus.empty, penEmpty } } },
+                { POIType.totem, new Dictionary<SitePoiStatus, Pen> {
+                    { SitePoiStatus.unknown, penUnknown },
+                    { SitePoiStatus.present, new Pen(Color.FromArgb(255, 29, 34, 105) /* purple-ish */, 3) },
+                    { SitePoiStatus.absent, penAbsent },
+                    { SitePoiStatus.empty, penEmpty } } },
+                { POIType.urn, new Dictionary<SitePoiStatus, Pen> {
+                    { SitePoiStatus.unknown, penUnknown },
+                    { SitePoiStatus.present, new Pen(Color.FromArgb(255, 84, 37, 84) /* pink-ish */, 3) },
+                    { SitePoiStatus.absent, penAbsent },
+                    { SitePoiStatus.empty, penEmpty } } },
+            };
+
+            private static Brush brushUnknown = new SolidBrush(Color.DarkSlateGray);
+            private static Brush brushAbsent = new SolidBrush(Color.Black);
+            private static Brush brushEmpty = new SolidBrush(Color.Gold);
+            public static Dictionary<POIType, Dictionary<SitePoiStatus, Brush>> brushes = new Dictionary<POIType, Dictionary<SitePoiStatus, Brush>>
+            {
+                { POIType.relic, new Dictionary<SitePoiStatus, Brush> {
+                    { SitePoiStatus.unknown, brushUnknown },
+                    { SitePoiStatus.present, new SolidBrush(Color.Cyan) },
+                    { SitePoiStatus.absent, brushAbsent },
+                    { SitePoiStatus.empty, brushEmpty } } },
+
+                { POIType.orb, new Dictionary<SitePoiStatus, Brush> {
+                    { SitePoiStatus.unknown, brushUnknown },
+                    { SitePoiStatus.present, new SolidBrush(Color.FromArgb(255, 255, 127, 39) /* orange */) },
+                    { SitePoiStatus.absent, brushAbsent },
+                    { SitePoiStatus.empty, brushEmpty } } },
+                { POIType.casket, new Dictionary<SitePoiStatus, Brush> {
+                    { SitePoiStatus.unknown, brushUnknown },
+                    { SitePoiStatus.present, new SolidBrush(Color.FromArgb(255, 34, 177, 76) /* green */) },
+                    { SitePoiStatus.absent, brushAbsent },
+                    { SitePoiStatus.empty, brushEmpty } } },
+                { POIType.tablet, new Dictionary<SitePoiStatus, Brush> {
+                    { SitePoiStatus.unknown, brushUnknown },
+                    { SitePoiStatus.present, new SolidBrush(Color.FromArgb(255, 153, 217, 234) /* blue */) },
+                    { SitePoiStatus.absent, brushAbsent },
+                    { SitePoiStatus.empty, brushEmpty } } },
+                { POIType.totem, new Dictionary<SitePoiStatus, Brush> {
+                    { SitePoiStatus.unknown, brushUnknown },
+                    { SitePoiStatus.present, new SolidBrush(Color.FromArgb(255, 63, 72, 204) /* purple-ish */) },
+                    { SitePoiStatus.absent, brushAbsent },
+                    { SitePoiStatus.empty, brushEmpty } } },
+                { POIType.urn, new Dictionary<SitePoiStatus, Brush> {
+                    { SitePoiStatus.unknown, brushUnknown },
+                    { SitePoiStatus.present, new SolidBrush(Color.FromArgb(255, 163, 73, 164) /* pink-ish */) },
+                    { SitePoiStatus.absent, brushAbsent },
+                    { SitePoiStatus.empty, brushEmpty } } },
+            };
+        }
+
+        internal static class Theme
+        {
+            /*
+            ForeColor
+            Window
+            Control
+             
+             */
+
+        }
     }
 }

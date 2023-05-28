@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using SrvSurvey.canonn;
 using SrvSurvey.units;
 
 namespace SrvSurvey.game
@@ -7,11 +8,23 @@ namespace SrvSurvey.game
     internal class GuardianSiteData : Data
     {
         private static string rootFolder = Path.Combine(Application.UserAppDataPath, "guardian");
+
         public static string getFilename(ApproachSettlement entry)
         {
             var index = parseSettlementIdx(entry.Name);
+            return getFilename(entry.BodyName, index);
+        }
+
+        public static string getFilename(string bodyName, int index)
+        {
             var namePart = "ruins"; // TODO: structures?
-            return $"{entry.BodyName}-{namePart}-{index}.json";
+            return $"{bodyName}-{namePart}-{index}.json";
+        }
+
+        public static GuardianSiteData Load(string bodyName, int index)
+        {
+            string filepath = Path.Combine(rootFolder, Game.activeGame!.fid!, getFilename(bodyName, index));
+            return Data.Load<GuardianSiteData>(filepath);
         }
 
         public static GuardianSiteData Load(ApproachSettlement entry)
@@ -26,6 +39,8 @@ namespace SrvSurvey.game
                 // system name is missing on ApproachSettlement, so take the current system - assuming it's a match
                 var cmdr = Game.activeGame.cmdr;
                 var systemName = "";
+
+                // might be bad idea?
                 if (entry.SystemAddress == cmdr.currentSystemAddress && entry.BodyID == cmdr.currentBodyId)
                     systemName = cmdr.currentSystem;
 
@@ -34,7 +49,7 @@ namespace SrvSurvey.game
                     name = entry.Name,
                     nameLocalised = entry.Name_Localised,
                     commander = Game.activeGame.Commander!,
-                    type = SiteType.unknown,
+                    type = SiteType.Unknown,
                     index = parseSettlementIdx(entry.Name),
                     filepath = filepath,
                     location = entry,
@@ -73,7 +88,7 @@ namespace SrvSurvey.game
                 save = true;
             }
 
-            if (Game.canonn.ruinSummaries != null && data.type == SiteType.unknown)
+            if (Game.canonn.ruinSummaries != null && data.type == SiteType.Unknown)
             {
                 var grSites = Game.canonn.ruinSummaries.Where(_ => _.bodyId == entry.BodyID && _.systemAddress == entry.SystemAddress);
 
@@ -125,6 +140,7 @@ namespace SrvSurvey.game
         public string bodyName;
         public int siteHeading = -1;
         public int relicTowerHeading = -1;
+        public string notes;
 
         public Dictionary<string, bool> confirmedPOI = new Dictionary<string, bool>();
         public Dictionary<string, SitePoiStatus> poiStatus = new Dictionary<string, SitePoiStatus>();
@@ -147,10 +163,10 @@ namespace SrvSurvey.game
 
         public enum SiteType
         {
-            unknown,
-            alpha,
-            beta,
-            gamma,
+            Unknown,
+            Alpha,
+            Beta,
+            Gamma,
             // structures ... ?
         }
 
@@ -169,7 +185,7 @@ namespace SrvSurvey.game
                     string filepath = Path.Combine(rootFolder, folder, file);
                     var data = Data.Load<GuardianSiteData>(filepath)!;
 
-                    if (data.type == SiteType.alpha)
+                    if (data.type == SiteType.Alpha)
                     {
                         data.siteHeading = new Angle(data.siteHeading - 180);
                         data.Save();
@@ -180,5 +196,21 @@ namespace SrvSurvey.game
             Game.settings.migratedAlphaSiteHeading = true;
             Game.settings.Save();
         }
+
+        public static List<GuardianSiteData> loadAllSites()
+        {
+            var folder = Path.Combine(rootFolder, Game.settings.lastFid!);
+            if (!Directory.Exists(folder))
+                return new List<GuardianSiteData>();
+
+            var files = Directory.GetFiles(folder);
+
+            Game.log($"Reading {files.Length} ruins files from disk");
+            return files
+                .Select(filename => Data.Load<GuardianSiteData>(filename))
+                .ToList()!;
+        }
+
     }
 }
+

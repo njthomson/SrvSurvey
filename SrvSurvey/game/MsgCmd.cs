@@ -25,6 +25,8 @@
         public const string empty = ".empty";
         /// <summary> Toggle aiming assistance overlay </summary>
         public const string aim = ".aim";
+        /// <summary> Append message to site notes </summary>
+        public const string note = ".note";
 
         /// <summary> Main : set current location as trackign target </summary>
         public const string targetHere = ".target here";

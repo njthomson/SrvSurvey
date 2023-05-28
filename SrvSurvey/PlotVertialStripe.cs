@@ -98,14 +98,14 @@ namespace SrvSurvey
         private double getOpacity()
         {
             if (targetAltitude == 0)
-                return 1;
+                return 0.8;
 
 
             var delta = Math.Abs(game.status.Altitude - targetAltitude);
             if (delta > 220)
                 return 0;
             else if (delta < 20)
-                return 1;
+                return 0.8;
             else
                 return (220 - (delta)) / 200f;
 
@@ -256,19 +256,36 @@ namespace SrvSurvey
             var pp = new Pen(Color.Black, 4) { DashStyle = DashStyle.Dot };
 
             var w = (this.Width / 2f);
+            var h = (this.Height / 2f);
 
-            var d = 120f;
-            var x = w - (d / 2f);
-            var y = this.Height * 0.255f;
-            var rect = new RectangleF(x, y, d, d);
-            g.FillEllipse(Brushes.Yellow, rect);
-            g.FillRectangle(Brushes.Yellow, w - 5, y, 10, 460);
+            //var d = 120f;
+            //var x = w - (d / 2f);
+            //var y = this.Height * 0.255f;
+            //var rect = new RectangleF(x, y, d, d);
+            //g.FillEllipse(Brushes.Yellow, rect);
+            //g.FillRectangle(Brushes.Yellow, w - 5, y, 10, 460);
 
-            rect.Inflate(-10, -10);
-            g.DrawEllipse(pp, rect);
+            //rect.Inflate(-10, -10);
+            //g.DrawEllipse(pp, rect);
+            var er = Elite.getWindowRect();
+            var ew = er.Width * 0.01f;
+            var eh = er.Height * 0.01f;
+
+            var x = w;
+            var y = this.Height * 0.33f;
+            drawCircle(g, x, y, 50);
+            //drawCircle(g, x, y, 90);
+            //drawCircle(g, x, y, 150);
+
+            y += eh * 2.0f;
+            drawLine(g, 10, y, w - 140, y);
+            drawLine(g, w + 140, y, this.Width - 10, y);
+
+            y += 20;
+            drawLine(g, w, y, w, y + 240);
 
             //g.FillRectangle(Brushes.Yellow, w - 5, y, 10, 460);
-            g.DrawLine(pp, w, y + d, w, y + 456);
+            //g.DrawLine(pp, w, y + d, w, y + 456);
         }
 
         private void drawRelicTowerTarget(Graphics g)

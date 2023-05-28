@@ -137,6 +137,12 @@ namespace SrvSurvey.game
             this.siteData = GuardianSiteData.Load(entry);
             this.siteData.lastVisited = DateTimeOffset.UtcNow;
 
+            if (string.IsNullOrEmpty(this.siteData.systemName))
+            {
+                this.siteData.systemName = this.systemName;
+                this.siteData.bodyName = this.bodyName;
+            }
+
             this.matchGRSite(entry.BodyName);
 
             if (this.siteData.location.Lat == 0)
@@ -188,6 +194,12 @@ namespace SrvSurvey.game
             {
                 Game.log($"Nearest site '{nearest.Name_Localised}' is {Util.metersToString(dist)} away, location: {new LatLong2(nearest)} vs Here: {Status.here}");
                 this.siteData = GuardianSiteData.Load(nearest);
+
+                if (string.IsNullOrEmpty(this.siteData.systemName))
+                {
+                    this.siteData.systemName = this.systemName;
+                    this.siteData.bodyName = this.bodyName;
+                }
                 
                 this.matchGRSite(nearest.BodyName);
 

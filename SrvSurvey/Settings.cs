@@ -28,9 +28,12 @@ namespace SrvSurvey
         public float Opacity { get => plotterOpacity / 100f; }
         public float plotterOpacity = 50;
 
-        public Point mainLocation;
-        public Rectangle logsLocation;
-        public Rectangle allRuinsLocation;
+        public Point formMainLocation;
+        public Rectangle formLogsLocation;
+        public Rectangle formAllRuinsLocation;
+        public Rectangle formRuinsLocation;
+
+        public bool mapShowNotes = true;
 
         // screenshot processing
         public bool processScreenshots = false;

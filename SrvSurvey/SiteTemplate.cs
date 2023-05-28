@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Converters;
 using SrvSurvey.game;
 using SrvSurvey.units;
+using System.Text;
 
 namespace SrvSurvey
 {
@@ -26,22 +27,29 @@ namespace SrvSurvey
                 var json = File.ReadAllText(filepath);
                 SiteTemplate.sites = JsonConvert.DeserializeObject<Dictionary<GuardianSiteData.SiteType, SiteTemplate>>(json)!;
 
-                // -- tmp --
-                //*
+                /* Temp: Reformat POIs json 
+                var txt = new StringBuilder("\r\n");
+                txt.AppendLine("Alpha:");
                 foreach (var poi in SiteTemplate.sites[GuardianSiteData.SiteType.alpha].poi)
-                    poi.angle = new Angle(poi.angle + 180);
-                //foreach (var poi in SiteTemplate.sites[GuardianSiteData.SiteType.beta].poi)
-                //    poi.angle = new Angle(poi.angle + 180);
-                // */
-                // -- tmp --
+                    txt.AppendFormat("  {{ \"name\": \"{0}\", \"dist\": {1}, \"angle\": {2}, \"type\": \"{3}\" }},\r\n", poi.name, poi.dist, poi.angle, poi.type);
 
+                txt.AppendLine("Beta:");
+                foreach (var poi in SiteTemplate.sites[GuardianSiteData.SiteType.beta].poi)
+                    txt.AppendFormat("  {{ \"name\": \"{0}\", \"dist\": {1}, \"angle\": {2}, \"type\": \"{3}\" }},\r\n", poi.name, poi.dist, poi.angle, poi.type);
+
+                txt.AppendLine("Gamma:");
+                foreach (var poi in SiteTemplate.sites[GuardianSiteData.SiteType.gamma].poi)
+                    txt.AppendFormat("  {{ \"name\": \"{0}\", \"dist\": {2}, \"angle\": {1}, \"type\": \"{3}\" }},\r\n", poi.name, poi.dist, poi.angle, poi.type);
+
+                Game.log(txt);
+                // End temp */
             }
             else
             {
                 Game.log($"Missing file: {filepath}");
             }
 
-            Game.log($"SiteTemplate.Import: {sites[GuardianSiteData.SiteType.beta].poi}");
+            Game.log($"SiteTemplate.Import: {sites[GuardianSiteData.SiteType.Beta].poi}");
         }
 
         #endregion

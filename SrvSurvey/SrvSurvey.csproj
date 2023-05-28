@@ -67,7 +67,7 @@
 
   <ItemGroup>
     <Content Include="images\alpha-background.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="images\alpha-heading-guide.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

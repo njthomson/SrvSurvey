@@ -29,586 +29,580 @@ namespace SrvSurvey
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
-            this.btnGroundTarget = new System.Windows.Forms.Button();
-            this.btnQuit2 = new System.Windows.Forms.Button();
-            this.txtTargetLatLong = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.btnClearTarget = new System.Windows.Forms.Button();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.lblTrackTargetStatus = new System.Windows.Forms.Label();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.txtNearBody = new System.Windows.Forms.TextBox();
-            this.txtMode = new System.Windows.Forms.TextBox();
-            this.txtLocation = new System.Windows.Forms.TextBox();
-            this.txtVehicle = new System.Windows.Forms.TextBox();
-            this.txtCommander = new System.Windows.Forms.TextBox();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.txtBodyBioValues = new System.Windows.Forms.TextBox();
-            this.txtBodyBioScanned = new System.Windows.Forms.TextBox();
-            this.txtBodyBioSignals = new System.Windows.Forms.TextBox();
-            this.lblSysBio = new System.Windows.Forms.Label();
-            this.txtSystemBioValues = new System.Windows.Forms.TextBox();
-            this.txtSystemBioScanned = new System.Windows.Forms.TextBox();
-            this.txtSystemBioSignals = new System.Windows.Forms.TextBox();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.txtBioRewards = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.btnLogs = new System.Windows.Forms.Button();
-            this.btnSettings = new System.Windows.Forms.Button();
-            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
-            this.lblFullScreen = new System.Windows.Forms.Label();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.btnAllRuins = new System.Windows.Forms.Button();
-            this.btnRuinsMap = new System.Windows.Forms.Button();
-            this.btnRuinsOrigin = new System.Windows.Forms.Button();
-            this.txtGuardianSite = new System.Windows.Forms.TextBox();
-            this.lblGuardianCount = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.lblNotInstalled = new System.Windows.Forms.LinkLabel();
-            this.groupBox1.SuspendLayout();
-            this.groupBox2.SuspendLayout();
-            this.groupBox3.SuspendLayout();
-            this.groupBox4.SuspendLayout();
-            this.SuspendLayout();
+            btnGroundTarget = new Button();
+            btnQuit2 = new Button();
+            txtTargetLatLong = new TextBox();
+            label2 = new Label();
+            btnClearTarget = new Button();
+            groupBox1 = new GroupBox();
+            lblTrackTargetStatus = new Label();
+            groupBox2 = new GroupBox();
+            txtNearBody = new TextBox();
+            txtMode = new TextBox();
+            txtLocation = new TextBox();
+            txtVehicle = new TextBox();
+            txtCommander = new TextBox();
+            groupBox3 = new GroupBox();
+            txtBodyBioValues = new TextBox();
+            txtBodyBioScanned = new TextBox();
+            txtBodyBioSignals = new TextBox();
+            lblSysBio = new Label();
+            txtSystemBioValues = new TextBox();
+            txtSystemBioScanned = new TextBox();
+            txtSystemBioSignals = new TextBox();
+            label9 = new Label();
+            label8 = new Label();
+            label7 = new Label();
+            label6 = new Label();
+            txtBioRewards = new TextBox();
+            label4 = new Label();
+            timer1 = new System.Windows.Forms.Timer(components);
+            btnLogs = new Button();
+            btnSettings = new Button();
+            linkLabel1 = new LinkLabel();
+            lblFullScreen = new Label();
+            groupBox4 = new GroupBox();
+            btnAllRuins = new Button();
+            btnRuinsMap = new Button();
+            btnRuinsOrigin = new Button();
+            txtGuardianSite = new TextBox();
+            lblGuardianCount = new Label();
+            label5 = new Label();
+            lblNotInstalled = new LinkLabel();
+            btnRuins = new Button();
+            groupBox1.SuspendLayout();
+            groupBox2.SuspendLayout();
+            groupBox3.SuspendLayout();
+            groupBox4.SuspendLayout();
+            SuspendLayout();
             // 
             // btnGroundTarget
             // 
-            this.btnGroundTarget.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnGroundTarget.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.btnGroundTarget.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.btnGroundTarget.Location = new System.Drawing.Point(150, 45);
-            this.btnGroundTarget.Name = "btnGroundTarget";
-            this.btnGroundTarget.Size = new System.Drawing.Size(119, 21);
-            this.btnGroundTarget.TabIndex = 3;
-            this.btnGroundTarget.Text = "Set target";
-            this.btnGroundTarget.UseVisualStyleBackColor = false;
-            this.btnGroundTarget.Click += new System.EventHandler(this.btnGroundTarget_Click);
+            btnGroundTarget.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnGroundTarget.BackColor = SystemColors.ControlLight;
+            btnGroundTarget.FlatStyle = FlatStyle.System;
+            btnGroundTarget.Location = new Point(150, 45);
+            btnGroundTarget.Name = "btnGroundTarget";
+            btnGroundTarget.Size = new Size(119, 21);
+            btnGroundTarget.TabIndex = 3;
+            btnGroundTarget.Text = "Set target";
+            btnGroundTarget.UseVisualStyleBackColor = false;
+            btnGroundTarget.Click += btnGroundTarget_Click;
             // 
             // btnQuit2
             // 
-            this.btnQuit2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnQuit2.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnQuit2.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.btnQuit2.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnQuit2.Location = new System.Drawing.Point(308, 483);
-            this.btnQuit2.Name = "btnQuit2";
-            this.btnQuit2.Size = new System.Drawing.Size(75, 23);
-            this.btnQuit2.TabIndex = 8;
-            this.btnQuit2.Text = "&Quit";
-            this.btnQuit2.UseVisualStyleBackColor = true;
-            this.btnQuit2.Click += new System.EventHandler(this.btnQuit_Click);
+            btnQuit2.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnQuit2.DialogResult = DialogResult.Cancel;
+            btnQuit2.FlatStyle = FlatStyle.System;
+            btnQuit2.Font = new Font("Century Gothic", 8.25F, FontStyle.Regular, GraphicsUnit.Point);
+            btnQuit2.Location = new Point(308, 483);
+            btnQuit2.Name = "btnQuit2";
+            btnQuit2.Size = new Size(75, 23);
+            btnQuit2.TabIndex = 8;
+            btnQuit2.Text = "&Quit";
+            btnQuit2.UseVisualStyleBackColor = true;
+            btnQuit2.Click += btnQuit_Click;
             // 
             // txtTargetLatLong
             // 
-            this.txtTargetLatLong.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtTargetLatLong.Location = new System.Drawing.Point(16, 19);
-            this.txtTargetLatLong.Name = "txtTargetLatLong";
-            this.txtTargetLatLong.ReadOnly = true;
-            this.txtTargetLatLong.Size = new System.Drawing.Size(349, 20);
-            this.txtTargetLatLong.TabIndex = 11;
-            this.txtTargetLatLong.Text = "<none>";
+            txtTargetLatLong.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            txtTargetLatLong.Location = new Point(16, 19);
+            txtTargetLatLong.Name = "txtTargetLatLong";
+            txtTargetLatLong.ReadOnly = true;
+            txtTargetLatLong.Size = new Size(349, 20);
+            txtTargetLatLong.TabIndex = 11;
+            txtTargetLatLong.Text = "<none>";
             // 
             // label2
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 45);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(0, 12);
-            this.label2.TabIndex = 12;
+            label2.AutoSize = true;
+            label2.Location = new Point(12, 45);
+            label2.Name = "label2";
+            label2.Size = new Size(0, 12);
+            label2.TabIndex = 12;
             // 
             // btnClearTarget
             // 
-            this.btnClearTarget.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnClearTarget.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.btnClearTarget.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.btnClearTarget.Location = new System.Drawing.Point(275, 45);
-            this.btnClearTarget.Name = "btnClearTarget";
-            this.btnClearTarget.Size = new System.Drawing.Size(90, 21);
-            this.btnClearTarget.TabIndex = 13;
-            this.btnClearTarget.Text = "Hide";
-            this.btnClearTarget.UseVisualStyleBackColor = false;
-            this.btnClearTarget.Click += new System.EventHandler(this.btnClearTarget_Click);
+            btnClearTarget.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnClearTarget.BackColor = SystemColors.ControlLight;
+            btnClearTarget.FlatStyle = FlatStyle.System;
+            btnClearTarget.Location = new Point(275, 45);
+            btnClearTarget.Name = "btnClearTarget";
+            btnClearTarget.Size = new Size(90, 21);
+            btnClearTarget.TabIndex = 13;
+            btnClearTarget.Text = "Hide";
+            btnClearTarget.UseVisualStyleBackColor = false;
+            btnClearTarget.Click += btnClearTarget_Click;
             // 
             // groupBox1
             // 
-            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox1.Controls.Add(this.lblTrackTargetStatus);
-            this.groupBox1.Controls.Add(this.btnClearTarget);
-            this.groupBox1.Controls.Add(this.btnGroundTarget);
-            this.groupBox1.Controls.Add(this.txtTargetLatLong);
-            this.groupBox1.Location = new System.Drawing.Point(12, 352);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(371, 78);
-            this.groupBox1.TabIndex = 14;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Target lat/Long:";
+            groupBox1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            groupBox1.Controls.Add(lblTrackTargetStatus);
+            groupBox1.Controls.Add(btnClearTarget);
+            groupBox1.Controls.Add(btnGroundTarget);
+            groupBox1.Controls.Add(txtTargetLatLong);
+            groupBox1.Location = new Point(12, 352);
+            groupBox1.Name = "groupBox1";
+            groupBox1.Size = new Size(371, 78);
+            groupBox1.TabIndex = 14;
+            groupBox1.TabStop = false;
+            groupBox1.Text = "Target lat/Long:";
             // 
             // lblTrackTargetStatus
             // 
-            this.lblTrackTargetStatus.AutoSize = true;
-            this.lblTrackTargetStatus.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblTrackTargetStatus.Location = new System.Drawing.Point(14, 49);
-            this.lblTrackTargetStatus.Name = "lblTrackTargetStatus";
-            this.lblTrackTargetStatus.Size = new System.Drawing.Size(63, 14);
-            this.lblTrackTargetStatus.TabIndex = 18;
-            this.lblTrackTargetStatus.Text = "<status>";
+            lblTrackTargetStatus.AutoSize = true;
+            lblTrackTargetStatus.BorderStyle = BorderStyle.Fixed3D;
+            lblTrackTargetStatus.Location = new Point(14, 49);
+            lblTrackTargetStatus.Name = "lblTrackTargetStatus";
+            lblTrackTargetStatus.Size = new Size(63, 14);
+            lblTrackTargetStatus.TabIndex = 18;
+            lblTrackTargetStatus.Text = "<status>";
             // 
             // groupBox2
             // 
-            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox2.Controls.Add(this.txtNearBody);
-            this.groupBox2.Controls.Add(this.txtMode);
-            this.groupBox2.Controls.Add(this.txtLocation);
-            this.groupBox2.Controls.Add(this.txtVehicle);
-            this.groupBox2.Controls.Add(this.txtCommander);
-            this.groupBox2.Location = new System.Drawing.Point(12, 12);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(371, 98);
-            this.groupBox2.TabIndex = 14;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Commander:";
+            groupBox2.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            groupBox2.Controls.Add(txtNearBody);
+            groupBox2.Controls.Add(txtMode);
+            groupBox2.Controls.Add(txtLocation);
+            groupBox2.Controls.Add(txtVehicle);
+            groupBox2.Controls.Add(txtCommander);
+            groupBox2.Location = new Point(12, 12);
+            groupBox2.Name = "groupBox2";
+            groupBox2.Size = new Size(371, 98);
+            groupBox2.TabIndex = 14;
+            groupBox2.TabStop = false;
+            groupBox2.Text = "Commander:";
             // 
             // txtNearBody
             // 
-            this.txtNearBody.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtNearBody.Location = new System.Drawing.Point(278, 43);
-            this.txtNearBody.Name = "txtNearBody";
-            this.txtNearBody.ReadOnly = true;
-            this.txtNearBody.Size = new System.Drawing.Size(86, 20);
-            this.txtNearBody.TabIndex = 14;
-            this.txtNearBody.Text = "<near/far>";
+            txtNearBody.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            txtNearBody.Location = new Point(278, 43);
+            txtNearBody.Name = "txtNearBody";
+            txtNearBody.ReadOnly = true;
+            txtNearBody.Size = new Size(86, 20);
+            txtNearBody.TabIndex = 14;
+            txtNearBody.Text = "<near/far>";
             // 
             // txtMode
             // 
-            this.txtMode.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtMode.Location = new System.Drawing.Point(108, 69);
-            this.txtMode.Name = "txtMode";
-            this.txtMode.ReadOnly = true;
-            this.txtMode.Size = new System.Drawing.Size(256, 20);
-            this.txtMode.TabIndex = 13;
-            this.txtMode.Text = "<mode>";
+            txtMode.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            txtMode.Location = new Point(108, 69);
+            txtMode.Name = "txtMode";
+            txtMode.ReadOnly = true;
+            txtMode.Size = new Size(256, 20);
+            txtMode.TabIndex = 13;
+            txtMode.Text = "<mode>";
             // 
             // txtLocation
             // 
-            this.txtLocation.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtLocation.Location = new System.Drawing.Point(16, 43);
-            this.txtLocation.Name = "txtLocation";
-            this.txtLocation.ReadOnly = true;
-            this.txtLocation.Size = new System.Drawing.Size(256, 20);
-            this.txtLocation.TabIndex = 12;
-            this.txtLocation.Text = "<location>";
+            txtLocation.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            txtLocation.Location = new Point(16, 43);
+            txtLocation.Name = "txtLocation";
+            txtLocation.ReadOnly = true;
+            txtLocation.Size = new Size(256, 20);
+            txtLocation.TabIndex = 12;
+            txtLocation.Text = "<location>";
             // 
             // txtVehicle
             // 
-            this.txtVehicle.Location = new System.Drawing.Point(16, 69);
-            this.txtVehicle.Name = "txtVehicle";
-            this.txtVehicle.ReadOnly = true;
-            this.txtVehicle.Size = new System.Drawing.Size(86, 20);
-            this.txtVehicle.TabIndex = 11;
-            this.txtVehicle.Text = "<vehicle>";
+            txtVehicle.Location = new Point(16, 69);
+            txtVehicle.Name = "txtVehicle";
+            txtVehicle.ReadOnly = true;
+            txtVehicle.Size = new Size(86, 20);
+            txtVehicle.TabIndex = 11;
+            txtVehicle.Text = "<vehicle>";
             // 
             // txtCommander
             // 
-            this.txtCommander.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtCommander.Location = new System.Drawing.Point(16, 19);
-            this.txtCommander.Name = "txtCommander";
-            this.txtCommander.ReadOnly = true;
-            this.txtCommander.Size = new System.Drawing.Size(348, 20);
-            this.txtCommander.TabIndex = 10;
-            this.txtCommander.Text = "<cmdr name>";
+            txtCommander.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            txtCommander.Location = new Point(16, 19);
+            txtCommander.Name = "txtCommander";
+            txtCommander.ReadOnly = true;
+            txtCommander.Size = new Size(348, 20);
+            txtCommander.TabIndex = 10;
+            txtCommander.Text = "<cmdr name>";
             // 
             // groupBox3
             // 
-            this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox3.Controls.Add(this.txtBodyBioValues);
-            this.groupBox3.Controls.Add(this.txtBodyBioScanned);
-            this.groupBox3.Controls.Add(this.txtBodyBioSignals);
-            this.groupBox3.Controls.Add(this.lblSysBio);
-            this.groupBox3.Controls.Add(this.txtSystemBioValues);
-            this.groupBox3.Controls.Add(this.txtSystemBioScanned);
-            this.groupBox3.Controls.Add(this.txtSystemBioSignals);
-            this.groupBox3.Controls.Add(this.label9);
-            this.groupBox3.Controls.Add(this.label8);
-            this.groupBox3.Controls.Add(this.label7);
-            this.groupBox3.Controls.Add(this.label6);
-            this.groupBox3.Controls.Add(this.txtBioRewards);
-            this.groupBox3.Controls.Add(this.label4);
-            this.groupBox3.Location = new System.Drawing.Point(12, 116);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(371, 130);
-            this.groupBox3.TabIndex = 14;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Bio scanning";
+            groupBox3.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            groupBox3.Controls.Add(txtBodyBioValues);
+            groupBox3.Controls.Add(txtBodyBioScanned);
+            groupBox3.Controls.Add(txtBodyBioSignals);
+            groupBox3.Controls.Add(lblSysBio);
+            groupBox3.Controls.Add(txtSystemBioValues);
+            groupBox3.Controls.Add(txtSystemBioScanned);
+            groupBox3.Controls.Add(txtSystemBioSignals);
+            groupBox3.Controls.Add(label9);
+            groupBox3.Controls.Add(label8);
+            groupBox3.Controls.Add(label7);
+            groupBox3.Controls.Add(label6);
+            groupBox3.Controls.Add(txtBioRewards);
+            groupBox3.Controls.Add(label4);
+            groupBox3.Location = new Point(12, 116);
+            groupBox3.Name = "groupBox3";
+            groupBox3.Size = new Size(371, 130);
+            groupBox3.TabIndex = 14;
+            groupBox3.TabStop = false;
+            groupBox3.Text = "Bio scanning";
             // 
             // txtBodyBioValues
             // 
-            this.txtBodyBioValues.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtBodyBioValues.Location = new System.Drawing.Point(208, 91);
-            this.txtBodyBioValues.Name = "txtBodyBioValues";
-            this.txtBodyBioValues.ReadOnly = true;
-            this.txtBodyBioValues.Size = new System.Drawing.Size(156, 20);
-            this.txtBodyBioValues.TabIndex = 26;
+            txtBodyBioValues.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            txtBodyBioValues.Location = new Point(208, 91);
+            txtBodyBioValues.Name = "txtBodyBioValues";
+            txtBodyBioValues.ReadOnly = true;
+            txtBodyBioValues.Size = new Size(156, 20);
+            txtBodyBioValues.TabIndex = 26;
             // 
             // txtBodyBioScanned
             // 
-            this.txtBodyBioScanned.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtBodyBioScanned.Location = new System.Drawing.Point(148, 91);
-            this.txtBodyBioScanned.Name = "txtBodyBioScanned";
-            this.txtBodyBioScanned.ReadOnly = true;
-            this.txtBodyBioScanned.Size = new System.Drawing.Size(54, 20);
-            this.txtBodyBioScanned.TabIndex = 25;
+            txtBodyBioScanned.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            txtBodyBioScanned.Location = new Point(148, 91);
+            txtBodyBioScanned.Name = "txtBodyBioScanned";
+            txtBodyBioScanned.ReadOnly = true;
+            txtBodyBioScanned.Size = new Size(54, 20);
+            txtBodyBioScanned.TabIndex = 25;
             // 
             // txtBodyBioSignals
             // 
-            this.txtBodyBioSignals.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtBodyBioSignals.Location = new System.Drawing.Point(88, 91);
-            this.txtBodyBioSignals.Name = "txtBodyBioSignals";
-            this.txtBodyBioSignals.ReadOnly = true;
-            this.txtBodyBioSignals.Size = new System.Drawing.Size(54, 20);
-            this.txtBodyBioSignals.TabIndex = 24;
+            txtBodyBioSignals.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            txtBodyBioSignals.Location = new Point(88, 91);
+            txtBodyBioSignals.Name = "txtBodyBioSignals";
+            txtBodyBioSignals.ReadOnly = true;
+            txtBodyBioSignals.Size = new Size(54, 20);
+            txtBodyBioSignals.TabIndex = 24;
             // 
             // lblSysBio
             // 
-            this.lblSysBio.AutoSize = true;
-            this.lblSysBio.Location = new System.Drawing.Point(15, 68);
-            this.lblSysBio.Name = "lblSysBio";
-            this.lblSysBio.Size = new System.Drawing.Size(54, 12);
-            this.lblSysBio.TabIndex = 23;
-            this.lblSysBio.Text = "System:";
+            lblSysBio.AutoSize = true;
+            lblSysBio.Location = new Point(15, 68);
+            lblSysBio.Name = "lblSysBio";
+            lblSysBio.Size = new Size(54, 12);
+            lblSysBio.TabIndex = 23;
+            lblSysBio.Text = "System:";
             // 
             // txtSystemBioValues
             // 
-            this.txtSystemBioValues.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtSystemBioValues.Location = new System.Drawing.Point(208, 65);
-            this.txtSystemBioValues.Name = "txtSystemBioValues";
-            this.txtSystemBioValues.ReadOnly = true;
-            this.txtSystemBioValues.Size = new System.Drawing.Size(156, 20);
-            this.txtSystemBioValues.TabIndex = 22;
+            txtSystemBioValues.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            txtSystemBioValues.Location = new Point(208, 65);
+            txtSystemBioValues.Name = "txtSystemBioValues";
+            txtSystemBioValues.ReadOnly = true;
+            txtSystemBioValues.Size = new Size(156, 20);
+            txtSystemBioValues.TabIndex = 22;
             // 
             // txtSystemBioScanned
             // 
-            this.txtSystemBioScanned.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtSystemBioScanned.Location = new System.Drawing.Point(148, 65);
-            this.txtSystemBioScanned.Name = "txtSystemBioScanned";
-            this.txtSystemBioScanned.ReadOnly = true;
-            this.txtSystemBioScanned.Size = new System.Drawing.Size(54, 20);
-            this.txtSystemBioScanned.TabIndex = 21;
+            txtSystemBioScanned.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            txtSystemBioScanned.Location = new Point(148, 65);
+            txtSystemBioScanned.Name = "txtSystemBioScanned";
+            txtSystemBioScanned.ReadOnly = true;
+            txtSystemBioScanned.Size = new Size(54, 20);
+            txtSystemBioScanned.TabIndex = 21;
             // 
             // txtSystemBioSignals
             // 
-            this.txtSystemBioSignals.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtSystemBioSignals.Location = new System.Drawing.Point(88, 65);
-            this.txtSystemBioSignals.Name = "txtSystemBioSignals";
-            this.txtSystemBioSignals.ReadOnly = true;
-            this.txtSystemBioSignals.Size = new System.Drawing.Size(54, 20);
-            this.txtSystemBioSignals.TabIndex = 20;
+            txtSystemBioSignals.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            txtSystemBioSignals.Location = new Point(88, 65);
+            txtSystemBioSignals.Name = "txtSystemBioSignals";
+            txtSystemBioSignals.ReadOnly = true;
+            txtSystemBioSignals.Size = new Size(54, 20);
+            txtSystemBioSignals.TabIndex = 20;
             // 
             // label9
             // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(205, 50);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(159, 12);
-            this.label9.TabIndex = 19;
-            this.label9.Text = "Total / scanned value:";
+            label9.AutoSize = true;
+            label9.Location = new Point(205, 50);
+            label9.Name = "label9";
+            label9.Size = new Size(159, 12);
+            label9.TabIndex = 19;
+            label9.Text = "Total / scanned value:";
             // 
             // label8
             // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(148, 50);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(54, 12);
-            this.label8.TabIndex = 18;
-            this.label8.Text = "Scanned";
+            label8.AutoSize = true;
+            label8.Location = new Point(148, 50);
+            label8.Name = "label8";
+            label8.Size = new Size(54, 12);
+            label8.TabIndex = 18;
+            label8.Text = "Scanned";
             // 
             // label7
             // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(88, 50);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(54, 12);
-            this.label7.TabIndex = 17;
-            this.label7.Text = "Signals";
+            label7.AutoSize = true;
+            label7.Location = new Point(88, 50);
+            label7.Name = "label7";
+            label7.Size = new Size(54, 12);
+            label7.TabIndex = 17;
+            label7.Text = "Signals";
             // 
             // label6
             // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(16, 94);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(40, 12);
-            this.label6.TabIndex = 16;
-            this.label6.Text = "Body:";
+            label6.AutoSize = true;
+            label6.Location = new Point(16, 94);
+            label6.Name = "label6";
+            label6.Size = new Size(40, 12);
+            label6.TabIndex = 16;
+            label6.Text = "Body:";
             // 
             // txtBioRewards
             // 
-            this.txtBioRewards.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtBioRewards.Location = new System.Drawing.Point(143, 13);
-            this.txtBioRewards.Name = "txtBioRewards";
-            this.txtBioRewards.ReadOnly = true;
-            this.txtBioRewards.Size = new System.Drawing.Size(221, 20);
-            this.txtBioRewards.TabIndex = 15;
+            txtBioRewards.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            txtBioRewards.Location = new Point(143, 13);
+            txtBioRewards.Name = "txtBioRewards";
+            txtBioRewards.ReadOnly = true;
+            txtBioRewards.Size = new Size(221, 20);
+            txtBioRewards.TabIndex = 15;
             // 
             // label4
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(6, 16);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(131, 12);
-            this.label4.TabIndex = 14;
-            this.label4.Text = "Unclaimed rewards:";
+            label4.AutoSize = true;
+            label4.Location = new Point(6, 16);
+            label4.Name = "label4";
+            label4.Size = new Size(131, 12);
+            label4.TabIndex = 14;
+            label4.Text = "Unclaimed rewards:";
             // 
             // timer1
             // 
-            this.timer1.Interval = 1000;
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            timer1.Interval = 1000;
+            timer1.Tick += timer1_Tick;
             // 
             // btnLogs
             // 
-            this.btnLogs.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnLogs.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnLogs.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.btnLogs.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnLogs.Location = new System.Drawing.Point(93, 483);
-            this.btnLogs.Name = "btnLogs";
-            this.btnLogs.Size = new System.Drawing.Size(75, 23);
-            this.btnLogs.TabIndex = 15;
-            this.btnLogs.Text = "&Logs";
-            this.btnLogs.UseVisualStyleBackColor = true;
-            this.btnLogs.Click += new System.EventHandler(this.btnViewLogs_Click);
+            btnLogs.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnLogs.DialogResult = DialogResult.Cancel;
+            btnLogs.FlatStyle = FlatStyle.System;
+            btnLogs.Font = new Font("Century Gothic", 8.25F, FontStyle.Regular, GraphicsUnit.Point);
+            btnLogs.Location = new Point(93, 483);
+            btnLogs.Name = "btnLogs";
+            btnLogs.Size = new Size(75, 23);
+            btnLogs.TabIndex = 15;
+            btnLogs.Text = "&Logs";
+            btnLogs.UseVisualStyleBackColor = true;
+            btnLogs.Click += btnViewLogs_Click;
             // 
             // btnSettings
             // 
-            this.btnSettings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSettings.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnSettings.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.btnSettings.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnSettings.Location = new System.Drawing.Point(12, 483);
-            this.btnSettings.Name = "btnSettings";
-            this.btnSettings.Size = new System.Drawing.Size(75, 23);
-            this.btnSettings.TabIndex = 16;
-            this.btnSettings.Text = "&Settings";
-            this.btnSettings.UseVisualStyleBackColor = true;
-            this.btnSettings.Click += new System.EventHandler(this.btnSettings_Click);
+            btnSettings.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnSettings.DialogResult = DialogResult.Cancel;
+            btnSettings.FlatStyle = FlatStyle.System;
+            btnSettings.Font = new Font("Century Gothic", 8.25F, FontStyle.Regular, GraphicsUnit.Point);
+            btnSettings.Location = new Point(12, 483);
+            btnSettings.Name = "btnSettings";
+            btnSettings.Size = new Size(75, 23);
+            btnSettings.TabIndex = 16;
+            btnSettings.Text = "&Settings";
+            btnSettings.UseVisualStyleBackColor = true;
+            btnSettings.Click += btnSettings_Click;
             // 
             // linkLabel1
             // 
-            this.linkLabel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.linkLabel1.Font = new System.Drawing.Font("Lucida Sans Typewriter", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.linkLabel1.LinkArea = new System.Windows.Forms.LinkArea(16, 38);
-            this.linkLabel1.Location = new System.Drawing.Point(10, 441);
-            this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(373, 39);
-            this.linkLabel1.TabIndex = 17;
-            this.linkLabel1.TabStop = true;
-            this.linkLabel1.Text = "See guidance at https://njthomson.github.io/SrvSurvey/";
-            this.linkLabel1.UseCompatibleTextRendering = true;
-            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
+            linkLabel1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            linkLabel1.Font = new Font("Lucida Sans Typewriter", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            linkLabel1.LinkArea = new LinkArea(16, 38);
+            linkLabel1.Location = new Point(10, 441);
+            linkLabel1.Name = "linkLabel1";
+            linkLabel1.Size = new Size(373, 39);
+            linkLabel1.TabIndex = 17;
+            linkLabel1.TabStop = true;
+            linkLabel1.Text = "See guidance at https://njthomson.github.io/SrvSurvey/";
+            linkLabel1.UseCompatibleTextRendering = true;
+            linkLabel1.LinkClicked += linkLabel1_LinkClicked;
             // 
             // lblFullScreen
             // 
-            this.lblFullScreen.BackColor = System.Drawing.Color.DarkRed;
-            this.lblFullScreen.Dock = System.Windows.Forms.DockStyle.Top;
-            this.lblFullScreen.ForeColor = System.Drawing.Color.White;
-            this.lblFullScreen.Location = new System.Drawing.Point(0, 0);
-            this.lblFullScreen.Name = "lblFullScreen";
-            this.lblFullScreen.Padding = new System.Windows.Forms.Padding(10);
-            this.lblFullScreen.Size = new System.Drawing.Size(395, 86);
-            this.lblFullScreen.TabIndex = 18;
-            this.lblFullScreen.Text = "SrvSurvey cannot be used when Elite Dangerous is in Full Screen mode.\r\n\r\nPlease g" +
-    "o to Options > Graphics > Display and change setting FULLSCREEN to either BORDER" +
-    "LESS or WINDOWED.";
-            this.lblFullScreen.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.lblFullScreen.Visible = false;
+            lblFullScreen.BackColor = Color.DarkRed;
+            lblFullScreen.Dock = DockStyle.Top;
+            lblFullScreen.ForeColor = Color.White;
+            lblFullScreen.Location = new Point(0, 0);
+            lblFullScreen.Name = "lblFullScreen";
+            lblFullScreen.Padding = new Padding(10);
+            lblFullScreen.Size = new Size(395, 86);
+            lblFullScreen.TabIndex = 18;
+            lblFullScreen.Text = "SrvSurvey cannot be used when Elite Dangerous is in Full Screen mode.\r\n\r\nPlease go to Options > Graphics > Display and change setting FULLSCREEN to either BORDERLESS or WINDOWED.";
+            lblFullScreen.TextAlign = ContentAlignment.TopCenter;
+            lblFullScreen.Visible = false;
             // 
             // groupBox4
             // 
-            this.groupBox4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox4.Controls.Add(this.btnAllRuins);
-            this.groupBox4.Controls.Add(this.btnRuinsMap);
-            this.groupBox4.Controls.Add(this.btnRuinsOrigin);
-            this.groupBox4.Controls.Add(this.txtGuardianSite);
-            this.groupBox4.Controls.Add(this.lblGuardianCount);
-            this.groupBox4.Controls.Add(this.label5);
-            this.groupBox4.Location = new System.Drawing.Point(12, 252);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(371, 94);
-            this.groupBox4.TabIndex = 19;
-            this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Guardian sites: (experimental)";
-            this.groupBox4.Visible = false;
+            groupBox4.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            groupBox4.Controls.Add(btnRuins);
+            groupBox4.Controls.Add(btnAllRuins);
+            groupBox4.Controls.Add(btnRuinsMap);
+            groupBox4.Controls.Add(btnRuinsOrigin);
+            groupBox4.Controls.Add(txtGuardianSite);
+            groupBox4.Controls.Add(lblGuardianCount);
+            groupBox4.Controls.Add(label5);
+            groupBox4.Location = new Point(12, 252);
+            groupBox4.Name = "groupBox4";
+            groupBox4.Size = new Size(371, 94);
+            groupBox4.TabIndex = 19;
+            groupBox4.TabStop = false;
+            groupBox4.Text = "Guardian sites: (experimental)";
+            groupBox4.Visible = false;
             // 
             // btnAllRuins
             // 
-            this.btnAllRuins.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAllRuins.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.btnAllRuins.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.btnAllRuins.Location = new System.Drawing.Point(296, 31);
-            this.btnAllRuins.Name = "btnAllRuins";
-            this.btnAllRuins.Size = new System.Drawing.Size(68, 47);
-            this.btnAllRuins.TabIndex = 17;
-            this.btnAllRuins.Text = "All Guardian Ruins";
-            this.btnAllRuins.UseVisualStyleBackColor = false;
-            this.btnAllRuins.Click += new System.EventHandler(this.btnAllRuins_Click);
+            btnAllRuins.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnAllRuins.BackColor = SystemColors.ControlLight;
+            btnAllRuins.FlatStyle = FlatStyle.System;
+            btnAllRuins.Location = new Point(296, 31);
+            btnAllRuins.Name = "btnAllRuins";
+            btnAllRuins.Size = new Size(68, 47);
+            btnAllRuins.TabIndex = 17;
+            btnAllRuins.Text = "All Guardian Ruins";
+            btnAllRuins.UseVisualStyleBackColor = false;
+            btnAllRuins.Click += btnAllRuins_Click;
             // 
             // btnRuinsMap
             // 
-            this.btnRuinsMap.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnRuinsMap.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.btnRuinsMap.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.btnRuinsMap.Location = new System.Drawing.Point(16, 57);
-            this.btnRuinsMap.Name = "btnRuinsMap";
-            this.btnRuinsMap.Size = new System.Drawing.Size(86, 21);
-            this.btnRuinsMap.TabIndex = 16;
-            this.btnRuinsMap.Text = "Show map";
-            this.btnRuinsMap.UseVisualStyleBackColor = false;
-            this.btnRuinsMap.Click += new System.EventHandler(this.btnRuinsMap_Click);
+            btnRuinsMap.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnRuinsMap.BackColor = SystemColors.ControlLight;
+            btnRuinsMap.FlatStyle = FlatStyle.System;
+            btnRuinsMap.Location = new Point(16, 57);
+            btnRuinsMap.Name = "btnRuinsMap";
+            btnRuinsMap.Size = new Size(86, 21);
+            btnRuinsMap.TabIndex = 16;
+            btnRuinsMap.Text = "Show map";
+            btnRuinsMap.UseVisualStyleBackColor = false;
+            btnRuinsMap.Click += btnRuinsMap_Click;
             // 
             // btnRuinsOrigin
             // 
-            this.btnRuinsOrigin.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnRuinsOrigin.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.btnRuinsOrigin.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.btnRuinsOrigin.Location = new System.Drawing.Point(108, 57);
-            this.btnRuinsOrigin.Name = "btnRuinsOrigin";
-            this.btnRuinsOrigin.Size = new System.Drawing.Size(182, 21);
-            this.btnRuinsOrigin.TabIndex = 15;
-            this.btnRuinsOrigin.Text = "Aerial screenshot assist";
-            this.btnRuinsOrigin.UseVisualStyleBackColor = false;
-            this.btnRuinsOrigin.Click += new System.EventHandler(this.btnRuinsOrigin_Click);
+            btnRuinsOrigin.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnRuinsOrigin.BackColor = SystemColors.ControlLight;
+            btnRuinsOrigin.FlatStyle = FlatStyle.System;
+            btnRuinsOrigin.Location = new Point(108, 57);
+            btnRuinsOrigin.Name = "btnRuinsOrigin";
+            btnRuinsOrigin.Size = new Size(126, 21);
+            btnRuinsOrigin.TabIndex = 15;
+            btnRuinsOrigin.Text = "Aerial assist";
+            btnRuinsOrigin.UseVisualStyleBackColor = false;
+            btnRuinsOrigin.Click += btnRuinsOrigin_Click;
             // 
             // txtGuardianSite
             // 
-            this.txtGuardianSite.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtGuardianSite.Location = new System.Drawing.Point(16, 31);
-            this.txtGuardianSite.Name = "txtGuardianSite";
-            this.txtGuardianSite.ReadOnly = true;
-            this.txtGuardianSite.Size = new System.Drawing.Size(274, 20);
-            this.txtGuardianSite.TabIndex = 14;
-            this.txtGuardianSite.Text = "<Guardian site>";
+            txtGuardianSite.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            txtGuardianSite.Location = new Point(16, 31);
+            txtGuardianSite.Name = "txtGuardianSite";
+            txtGuardianSite.ReadOnly = true;
+            txtGuardianSite.Size = new Size(218, 20);
+            txtGuardianSite.TabIndex = 14;
+            txtGuardianSite.Text = "<Guardian site>";
             // 
             // lblGuardianCount
             // 
-            this.lblGuardianCount.AutoSize = true;
-            this.lblGuardianCount.Location = new System.Drawing.Point(88, 16);
-            this.lblGuardianCount.Name = "lblGuardianCount";
-            this.lblGuardianCount.Size = new System.Drawing.Size(12, 12);
-            this.lblGuardianCount.TabIndex = 3;
-            this.lblGuardianCount.Text = "N";
+            lblGuardianCount.AutoSize = true;
+            lblGuardianCount.Location = new Point(88, 16);
+            lblGuardianCount.Name = "lblGuardianCount";
+            lblGuardianCount.Size = new Size(12, 12);
+            lblGuardianCount.TabIndex = 3;
+            lblGuardianCount.Text = "N";
             // 
             // label5
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(14, 16);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(68, 12);
-            this.label5.TabIndex = 2;
-            this.label5.Text = "Detected:";
+            label5.AutoSize = true;
+            label5.Location = new Point(14, 16);
+            label5.Name = "label5";
+            label5.Size = new Size(68, 12);
+            label5.TabIndex = 2;
+            label5.Text = "Detected:";
             // 
             // lblNotInstalled
             // 
-            this.lblNotInstalled.BackColor = System.Drawing.Color.DarkRed;
-            this.lblNotInstalled.Dock = System.Windows.Forms.DockStyle.Top;
-            this.lblNotInstalled.Font = new System.Drawing.Font("Lucida Sans Typewriter", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.lblNotInstalled.ForeColor = System.Drawing.Color.White;
-            this.lblNotInstalled.LinkArea = new System.Windows.Forms.LinkArea(57, 15);
-            this.lblNotInstalled.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.lblNotInstalled.Location = new System.Drawing.Point(0, 86);
-            this.lblNotInstalled.Name = "lblNotInstalled";
-            this.lblNotInstalled.Padding = new System.Windows.Forms.Padding(10);
-            this.lblNotInstalled.Size = new System.Drawing.Size(395, 102);
-            this.lblNotInstalled.TabIndex = 21;
-            this.lblNotInstalled.TabStop = true;
-            this.lblNotInstalled.Text = "This application is intended for use only with the game \"Elite Dangerous\" by Fron" +
-    "tier Developments.\r\n\r\nIt does not appear the game is installed.";
-            this.lblNotInstalled.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.lblNotInstalled.UseCompatibleTextRendering = true;
-            this.lblNotInstalled.Visible = false;
-            this.lblNotInstalled.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lblNotInstalled_LinkClicked);
+            lblNotInstalled.BackColor = Color.DarkRed;
+            lblNotInstalled.Dock = DockStyle.Top;
+            lblNotInstalled.Font = new Font("Lucida Sans Typewriter", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            lblNotInstalled.ForeColor = Color.White;
+            lblNotInstalled.LinkArea = new LinkArea(57, 15);
+            lblNotInstalled.LinkColor = Color.FromArgb(128, 255, 255);
+            lblNotInstalled.Location = new Point(0, 86);
+            lblNotInstalled.Name = "lblNotInstalled";
+            lblNotInstalled.Padding = new Padding(10);
+            lblNotInstalled.Size = new Size(395, 102);
+            lblNotInstalled.TabIndex = 21;
+            lblNotInstalled.TabStop = true;
+            lblNotInstalled.Text = "This application is intended for use only with the game \"Elite Dangerous\" by Frontier Developments.\r\n\r\nIt does not appear the game is installed.";
+            lblNotInstalled.TextAlign = ContentAlignment.TopCenter;
+            lblNotInstalled.UseCompatibleTextRendering = true;
+            lblNotInstalled.Visible = false;
+            lblNotInstalled.LinkClicked += lblNotInstalled_LinkClicked;
+            // 
+            // btnRuins
+            // 
+            btnRuins.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnRuins.BackColor = SystemColors.ControlLight;
+            btnRuins.FlatStyle = FlatStyle.System;
+            btnRuins.Location = new Point(240, 31);
+            btnRuins.Name = "btnRuins";
+            btnRuins.Size = new Size(50, 47);
+            btnRuins.TabIndex = 18;
+            btnRuins.Text = "Ruins Map";
+            btnRuins.UseVisualStyleBackColor = false;
+            btnRuins.Click += btnRuins_Click;
             // 
             // Main
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.CancelButton = this.btnQuit2;
-            this.ClientSize = new System.Drawing.Size(395, 518);
-            this.Controls.Add(this.lblNotInstalled);
-            this.Controls.Add(this.groupBox3);
-            this.Controls.Add(this.groupBox4);
-            this.Controls.Add(this.lblFullScreen);
-            this.Controls.Add(this.linkLabel1);
-            this.Controls.Add(this.btnSettings);
-            this.Controls.Add(this.btnLogs);
-            this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.btnQuit2);
-            this.Font = new System.Drawing.Font("Lucida Sans Typewriter", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MaximizeBox = false;
-            this.Name = "Main";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Srv Survey";
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Main_FormClosed);
-            this.Load += new System.EventHandler(this.Main_Load);
-            this.ResizeEnd += new System.EventHandler(this.Main_ResizeEnd);
-            this.SizeChanged += new System.EventHandler(this.Main_SizeChanged);
-            this.DoubleClick += new System.EventHandler(this.Main_DoubleClick);
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
-            this.groupBox3.ResumeLayout(false);
-            this.groupBox3.PerformLayout();
-            this.groupBox4.ResumeLayout(false);
-            this.groupBox4.PerformLayout();
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
+            AutoScaleDimensions = new SizeF(7F, 12F);
+            AutoScaleMode = AutoScaleMode.Font;
+            CancelButton = btnQuit2;
+            ClientSize = new Size(395, 518);
+            Controls.Add(lblNotInstalled);
+            Controls.Add(groupBox3);
+            Controls.Add(groupBox4);
+            Controls.Add(lblFullScreen);
+            Controls.Add(linkLabel1);
+            Controls.Add(btnSettings);
+            Controls.Add(btnLogs);
+            Controls.Add(groupBox2);
+            Controls.Add(groupBox1);
+            Controls.Add(label2);
+            Controls.Add(btnQuit2);
+            Font = new Font("Lucida Sans Typewriter", 8.25F, FontStyle.Regular, GraphicsUnit.Point);
+            FormBorderStyle = FormBorderStyle.Fixed3D;
+            Icon = (Icon)resources.GetObject("$this.Icon");
+            MaximizeBox = false;
+            Name = "Main";
+            StartPosition = FormStartPosition.CenterParent;
+            Text = "Srv Survey";
+            FormClosed += Main_FormClosed;
+            Load += Main_Load;
+            ResizeEnd += Main_ResizeEnd;
+            SizeChanged += Main_SizeChanged;
+            DoubleClick += Main_DoubleClick;
+            groupBox1.ResumeLayout(false);
+            groupBox1.PerformLayout();
+            groupBox2.ResumeLayout(false);
+            groupBox2.PerformLayout();
+            groupBox3.ResumeLayout(false);
+            groupBox3.PerformLayout();
+            groupBox4.ResumeLayout(false);
+            groupBox4.PerformLayout();
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
-        private System.Windows.Forms.Button btnGroundTarget;
-        private System.Windows.Forms.Button btnQuit2;
-        private System.Windows.Forms.TextBox txtTargetLatLong;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button btnClearTarget;
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.TextBox txtCommander;
-        private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.TextBox txtVehicle;
-        private System.Windows.Forms.TextBox txtLocation;
+        private Button btnGroundTarget;
+        private Button btnQuit2;
+        private TextBox txtTargetLatLong;
+        private Label label2;
+        private Button btnClearTarget;
+        private GroupBox groupBox1;
+        private GroupBox groupBox2;
+        private TextBox txtCommander;
+        private GroupBox groupBox3;
+        private TextBox txtVehicle;
+        private TextBox txtLocation;
         private System.Windows.Forms.Timer timer1;
-        private System.Windows.Forms.TextBox txtMode;
-        private System.Windows.Forms.Button btnLogs;
-        private System.Windows.Forms.Button btnSettings;
-        private System.Windows.Forms.LinkLabel linkLabel1;
-        private System.Windows.Forms.Label lblTrackTargetStatus;
-        private System.Windows.Forms.TextBox txtNearBody;
+        private TextBox txtMode;
+        private Button btnLogs;
+        private Button btnSettings;
+        private LinkLabel linkLabel1;
+        private Label lblTrackTargetStatus;
+        private TextBox txtNearBody;
         private Label lblFullScreen;
         private GroupBox groupBox4;
         private Label lblGuardianCount;
@@ -631,5 +625,6 @@ namespace SrvSurvey
         private Button btnRuinsMap;
         private Button btnRuinsOrigin;
         private Button btnAllRuins;
+        private Button btnRuins;
     }
 }

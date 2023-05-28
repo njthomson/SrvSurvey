@@ -24,9 +24,9 @@ namespace SrvSurvey
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
 
-            //Application.EnableVisualStyles();
-            //Application.SetHighDpiMode(HighDpiMode.SystemAware);
-            //Application.SetCompatibleTextRenderingDefault(false);
+            Application.EnableVisualStyles();
+            Application.SetHighDpiMode(HighDpiMode.SystemAware);
+            Application.SetCompatibleTextRenderingDefault(false);
             Application.ThreadException += Application_ThreadException;
 
             // create some control for invoking back onto the UI thread

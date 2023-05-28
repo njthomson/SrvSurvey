@@ -46,8 +46,7 @@ namespace SrvSurvey
             InitializeComponent();
 
             // can we fit in our last location
-            if (Game.settings.logsLocation != Rectangle.Empty)
-                Util.useLastLocation(this, Game.settings.logsLocation);
+            Util.useLastLocation(this, Game.settings.formLogsLocation);
         }
 
         private void btnClose_Click(object sender, EventArgs e)
@@ -89,9 +88,9 @@ namespace SrvSurvey
         private void ViewLogs_ResizeEnd(object sender, EventArgs e)
         {
             var rect = new Rectangle(this.Location, this.Size);
-            if (Game.settings.logsLocation != rect)
+            if (Game.settings.formLogsLocation != rect)
             {
-                Game.settings.logsLocation = rect;
+                Game.settings.formLogsLocation = rect;
                 Game.settings.Save();
             }
         }

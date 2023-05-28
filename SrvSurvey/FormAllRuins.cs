@@ -42,10 +42,8 @@ namespace SrvSurvey
             // default sort by system distance
             this.sortColumn = 3;
 
-
             // can we fit in our last location
-            if (Game.settings.logsLocation != Rectangle.Empty)
-                Util.useLastLocation(this, Game.settings.allRuinsLocation);
+            Util.useLastLocation(this, Game.settings.formAllRuinsLocation);
         }
 
         protected override void OnClosing(CancelEventArgs e)
@@ -76,9 +74,9 @@ namespace SrvSurvey
             base.OnResizeEnd(e);
 
             var rect = new Rectangle(this.Location, this.Size);
-            if (Game.settings.allRuinsLocation != rect)
+            if (Game.settings.formAllRuinsLocation != rect)
             {
-                Game.settings.allRuinsLocation = rect;
+                Game.settings.formAllRuinsLocation = rect;
                 Game.settings.Save();
             }
         }

@@ -1,20 +1,49 @@
 ﻿using SrvSurvey.game;
 using SrvSurvey.units;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace SrvSurvey
 {
     internal partial class FormRuins : Form
     {
+        #region showing and position tracking 
+
+        private static FormRuins? activeForm;
+
+        public static void show()
+        {
+            if (activeForm == null)
+                FormRuins.activeForm = new FormRuins();
+
+            if (FormRuins.activeForm.Visible == false)
+                FormRuins.activeForm.Show();
+            else
+                FormRuins.activeForm.Activate();
+        }
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            base.OnClosing(e);
+
+            FormRuins.activeForm = null;
+        }
+
+        protected override void OnResizeEnd(EventArgs e)
+        {
+            base.OnResizeEnd(e);
+
+            var rect = new Rectangle(this.Location, this.Size);
+            if (Game.settings.formRuinsLocation != rect)
+            {
+                Game.settings.formRuinsLocation = rect;
+                Game.settings.Save();
+            }
+        }
+
+        #endregion
+
+        protected Game game = Game.activeGame!;
+
         /// <summary>
         /// The background map image
         /// </summary>
@@ -24,8 +53,6 @@ namespace SrvSurvey
         /// </summary>
         private PointF mousePos = new PointF();
 
-        public MapViewData data;
-
         /// <summary>
         /// The center of the map image control
         /// </summary>
@@ -34,14 +61,16 @@ namespace SrvSurvey
         /// <summary>
         /// Offset from dragging the map around
         /// </summary>
-        public Point dragOffset = new Point();
+        public PointF dragOffset = new Point();
         private bool dragging = false;
         private Point mouseDownPoint;
 
         /// <summary>
         /// The scale factor for rendering
         /// </summary>
-        private float scale = 1f;
+        private float scale = 0.5f;
+
+        private GuardianSiteData.SiteType siteType = GuardianSiteData.SiteType.Unknown;
 
         private SiteTemplate template;
 
@@ -49,46 +78,146 @@ namespace SrvSurvey
 
         private SitePOI nearestPoi;
 
+        private List<GuardianSiteData> surveyedSites;
+        private Dictionary<string, GuardianSiteData?> filteredSites = new Dictionary<string, GuardianSiteData?>();
+        private GuardianSiteData? siteData;
+
         public FormRuins()
         {
             InitializeComponent();
             map.MouseWheel += Map_MouseWheel;
 
-            //this.data = this.loadMap(@"D:\grinn\OneDrive\Pictures-x220\Frontier Developments\Elite Dangerous\foo\puddle-alpha-5.png");
-            // this.template = SiteTemplate.sites[GuardianSiteData.SiteType.alpha];
-            loadTemplates();
+            // can we fit in our last location
+            Util.useLastLocation(this, Game.settings.formRuinsLocation);
 
-            this.data = this.loadMap(@"D:\grinn\OneDrive\Pictures-x220\Frontier Developments\Elite Dangerous\foo\beta.png");
-            this.template = SiteTemplate.sites[GuardianSiteData.SiteType.beta];
+            this.getAllSurveyedRuins();
+
+            comboSiteType.SelectedIndex = 0;
+            comboSite.SelectedIndex = 0;
+            this.showFilteredSites();
+
+            checkNotes.Checked = Game.settings.mapShowNotes;
+            splitter.Panel2Collapsed = this.siteData == null || !Game.settings.mapShowNotes;
         }
 
-        private void loadTemplates()
+        private void loadMap(string name)
         {
-            SiteTemplate.Import(true);
-            // ??
-            foreach (var poi in SiteTemplate.sites[GuardianSiteData.SiteType.beta].poi)
-                poi.angle = new Angle(poi.angle + 180);
+            if (string.IsNullOrEmpty(name)) return;
 
+            var newSite = filteredSites.GetValueOrDefault(name);
+            this.loadMap(newSite);
         }
 
-        private MapViewData loadMap(string filepath)
+        private void loadMap(GuardianSiteData? newSite)
         {
-            this.data = MapViewData.Load(filepath);
+            this.siteData = newSite;
 
-            using (var img = Image.FromFile(filepath))
-                this.img = new Bitmap(img);
+            this.siteType = this.siteData?.type ?? GuardianSiteData.SiteType.Unknown;
 
-            this.numImgRotation.Value = (decimal)data.rotation;
-            this.numImgScale.Value = (decimal)data.scaleFactor;
-            this.txtSiteOrigin.Text = $"{data.siteOrigin.X},{data.siteOrigin.Y}";
 
-            return this.data;
+            // are we loading a template?
+            switch (comboSite.Text)
+            {
+                case "Alpha Template": siteType = GuardianSiteData.SiteType.Alpha; break;
+                case "Beta Template": siteType = GuardianSiteData.SiteType.Beta; break;
+                case "Gamma Template": siteType = GuardianSiteData.SiteType.Gamma; break;
+            }
+
+            if (siteType != GuardianSiteData.SiteType.Unknown)
+            {
+                var filepath = $"{siteType}-background.png".ToLowerInvariant();
+                using (var img = Bitmap.FromFile(Path.Combine("images", filepath)))
+                    this.img = new Bitmap(img);
+
+                // load template
+                this.template = SiteTemplate.sites[siteType];
+            }
+            else
+            {
+                this.img = new Bitmap(10, 10);
+            }
+
+            // reset some numbers
+            //this.dragOffset.X = -map.Width / 2f;
+            //this.dragOffset.Y = -map.Height / 2f;
+            //scale = 0.5f;
+            splitter.Panel2Collapsed = this.siteData == null || !Game.settings.mapShowNotes;
+            txtNotes.Text = this.siteData?.notes;
+
+            showStatus();
+            map.Invalidate();
+        }
+
+        private void getAllSurveyedRuins()
+        {
+            this.surveyedSites = GuardianSiteData.loadAllSites();
+
+            //foreach (var survey in this.surveyedSites)
+            //{
+            //    var name = $"{survey.bodyName}, ruins #{survey.index} - {survey.type}";
+            //    comboSite.Items.Add(name);
+            //}
+        }
+
+        private void showFilteredSites()
+        {
+            if (string.IsNullOrEmpty(comboSiteType.Text)) return;
+
+            GuardianSiteData.SiteType targetType;
+            Enum.TryParse<GuardianSiteData.SiteType>(comboSiteType.Text, true, out targetType);
+
+            filteredSites.Clear();
+            if (targetType == GuardianSiteData.SiteType.Unknown)
+            {
+                filteredSites.Add("Alpha Template", null);
+                filteredSites.Add("Beta Template", null);
+                filteredSites.Add("Gamma Template", null);
+            }
+
+            filteredSites.Add($"{targetType} Template", null);
+            foreach (var survey in this.surveyedSites)
+            {
+                if (targetType == GuardianSiteData.SiteType.Unknown || survey.type == targetType)
+                {
+                    var prefix = $"{survey.systemAddress} {survey.bodyId}";
+                    var name = $"{survey.bodyName ?? prefix}, ruins #{survey.index} - {survey.type}";
+
+                    if (filteredSites.ContainsKey(name))
+                        Game.log($"Why? {name}");
+                    else
+                        filteredSites.Add(name, survey);
+                }
+            }
+
+            comboSite.DataSource = filteredSites.Keys.ToList();
+
+            // pre-load current site, if we're in one
+            if (game.nearBody?.siteData != null)
+            {
+                //this.loadMap(game.nearBody?.siteData);
+                var match = this.filteredSites.FirstOrDefault(_ => _.Value != null && _.Value.systemAddress == game.nearBody?.siteData.systemAddress && _.Value.bodyId == game.nearBody?.siteData.bodyId && _.Value.index == game.nearBody?.siteData.index);
+
+                comboSite.Text = match.Key;
+            }
+
+            if (string.IsNullOrEmpty(comboSite.Text))
+                comboSite.SelectedIndex = 0;
+        }
+
+        private void comboSite_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            this.loadMap(comboSite.Text);
+        }
+
+        private void comboSiteType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            this.showFilteredSites();
         }
 
         private void FormRuins_Load(object sender, EventArgs e)
         {
-            this.parseOriginText();
-            this.windowCalculations();
+            this.dragOffset.X = -map.Width / 2f;
+            this.dragOffset.Y = -map.Height / 2f;
         }
 
         private void Map_MouseWheel(object? sender, MouseEventArgs e)
@@ -98,7 +227,7 @@ namespace SrvSurvey
             else
                 this.scale *= 0.9f;
 
-            if (this.scale < 0.1) this.scale = 0.1f;
+            if (this.scale < 0.3) this.scale = 0.3f;
             if (this.scale > 10) this.scale = 10f;
 
             showStatus();
@@ -112,43 +241,7 @@ namespace SrvSurvey
 
         private void FormRuins_ResizeEnd(object sender, EventArgs e)
         {
-            // recalculate things once resizing stops
-            this.windowCalculations();
-        }
-
-        private void windowCalculations()
-        {
-            this.mapCenter.X = map.Width / 2f;
-            this.mapCenter.Y = map.Height / 2f;
-
-            map.Invalidate();
-        }
-
-        private void parseOriginText()
-        {
-            if (string.IsNullOrEmpty(txtSiteOrigin.Text)) return;
-            var idx = txtSiteOrigin.Text.IndexOf(",");
-            if (idx < 0) return;
-
-            var parts = txtSiteOrigin.Text.Split(",", StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
-            if (parts.Length != 2) return;
-
-            int x, y;
-            if (int.TryParse(parts[0], out x) && int.TryParse(parts[1], out y))
-            {
-                this.data.siteOrigin = new Point(x, y);
-                this.data.Save();
-            }
-        }
-
-        private void btnUpdate_Click(object sender, EventArgs e)
-        {
-            loadTemplates();
-            this.template = SiteTemplate.sites[GuardianSiteData.SiteType.beta];
-
-
-            this.parseOriginText();
-            this.windowCalculations();
+            // recalculate things once resizing stops?
         }
 
         private void map_MouseMove(object sender, MouseEventArgs e)
@@ -186,30 +279,60 @@ namespace SrvSurvey
         private void map_MouseUp(object sender, MouseEventArgs e)
         {
             dragging = false;
-            map.Cursor = Cursors.Cross;
+            map.Cursor = Cursors.Hand;
             showStatus();
+        }
+
+        #region image dev - no longer needed?
+
+        private void btnUpdate_Click(object sender, EventArgs e)
+        {
+            //loadTemplates();
+            //this.template = SiteTemplate.sites[GuardianSiteData.SiteType.beta];
+
+            //this.parseOriginText();
+            //this.windowCalculations();
         }
 
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
         {
-            if (numImgRotation.Value < 0) numImgRotation.Value += 360;
-            if (numImgRotation.Value > 360) numImgRotation.Value -= 360;
+            //if (numImgRotation.Value < 0) numImgRotation.Value += 360;
+            //if (numImgRotation.Value > 360) numImgRotation.Value -= 360;
 
-            this.data.rotation = (float)numImgRotation.Value;
-            this.data.Save();
+            //this.data.rotation = (float)numImgRotation.Value;
+            //this.data.Save();
 
-            map.Invalidate();
-            showStatus();
+            //map.Invalidate();
+            //showStatus();
         }
 
         private void numImgScale_ValueChanged(object sender, EventArgs e)
         {
-            data.scaleFactor = (float)numImgScale.Value;
-            this.data.Save();
+            //data.scaleFactor = (float)numImgScale.Value;
+            //this.data.Save();
 
-            map.Invalidate();
-            showStatus();
+            //map.Invalidate();
+            //showStatus();
         }
+
+        private void parseOriginText()
+        {
+            //if (string.IsNullOrEmpty(txtSiteOrigin.Text)) return;
+            //var idx = txtSiteOrigin.Text.IndexOf(",");
+            //if (idx < 0) return;
+
+            //var parts = txtSiteOrigin.Text.Split(",", StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+            //if (parts.Length != 2) return;
+
+            //int x, y;
+            //if (int.TryParse(parts[0], out x) && int.TryParse(parts[1], out y))
+            //{
+            //    this.data.siteOrigin = new Point(x, y);
+            //    this.data.Save();
+            //}
+        }
+
+        #endregion
 
         private void showStatus()
         {
@@ -225,30 +348,33 @@ namespace SrvSurvey
             var dist = Math.Sqrt(x * x + y * y).ToString("N1");
 
             var a1 = Util.ToAngle(x, -y);
-            var a2 = new Angle(a1 + 180);
-            var a3 = ((double)a2).ToString("N2");
+            var a2 = new Angle(a1);
 
-
-            lblStatus.Text = $"x: {x}, y: {y}, scale: {this.scale}, rotation: {data.rotation}° / dist: {dist} / angle: {a3}°";
+            lblDist.Text = $"Dist: {dist}";
+            lblAngle.Text = $"Angle: " + a2.ToString();
+            lblMouseX.Text = "X: " + x.ToString("N1");
+            lblMouseY.Text = "Y: " + (-y).ToString("N1");
+            lblZoom.Text = "Zoom: " + this.scale.ToString("N1");
         }
 
         private void map_Paint(object sender, PaintEventArgs e)
         {
+            if (this.template == null) return;
+
             var g = e.Graphics;
+            g.SmoothingMode = SmoothingMode.HighQuality;
+            g.InterpolationMode = InterpolationMode.Bicubic;
+            g.CompositingQuality = CompositingQuality.HighQuality;
+
             g.TranslateTransform(mapCenter.X - dragOffset.X, mapCenter.Y - dragOffset.Y);
             g.ScaleTransform(this.scale, this.scale);
 
-            // apply rotation only to background image
-            g.RotateTransform(data.rotation);
-
             var imgRect = new RectangleF(
-                -data.siteOrigin.X * data.scaleFactor,
-                -data.siteOrigin.Y * data.scaleFactor,
-                img.Width * data.scaleFactor,
-                img.Height * data.scaleFactor);
+                -template.imageOffset.X * template.scaleFactor,
+                -template.imageOffset.Y * template.scaleFactor,
+                img.Width * template.scaleFactor,
+                img.Height * template.scaleFactor);
             g.DrawImage(this.img, imgRect);
-
-            g.RotateTransform(-data.rotation);
 
             var compass = new Pen(Color.FromArgb(100, Color.Red)) { DashStyle = System.Drawing.Drawing2D.DashStyle.Solid };
             g.DrawLine(compass, -map.Width, 0, map.Width, 0);
@@ -261,6 +387,11 @@ namespace SrvSurvey
 
         private void drawArtifacts(Graphics g)
         {
+            g.ResetTransform();
+            g.TranslateTransform(mapCenter.X - dragOffset.X, mapCenter.Y - dragOffset.Y);
+            g.ScaleTransform(this.scale, this.scale);
+            g.RotateTransform(180);
+
             var nearestDist = double.MaxValue;
             var nearestPt = PointF.Empty;
             nearestPoi = null!;
@@ -273,77 +404,56 @@ namespace SrvSurvey
                     poi.dist);
 
                 // is this the closest POI?
-                var x = pt.X * this.scale - mousePos.X - dragOffset.X;
-                var y = pt.Y * this.scale - mousePos.Y - dragOffset.Y;
+                var x = -pt.X * this.scale - mousePos.X - dragOffset.X;
+                var y = -pt.Y * this.scale - mousePos.Y - dragOffset.Y;
                 var d = Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
 
-                if (d < nearestDist)
+                if (!this.dragging && d < nearestDist)
                 {
                     nearestDist = d;
                     this.nearestPoi = poi;
                     nearestPt = new PointF(pt.X, pt.Y);
                 }
 
+                //var drawItem = this.siteData == null || this.siteData.poiStatus.GetValueOrDefault(poi.name) != SitePoiStatus.unknown;
+                var poiStatus = this.siteData?.poiStatus.GetValueOrDefault(poi.name);
                 if (poi.type == POIType.relic)
-                    drawRelicTower(g, pt);
+                    drawRelicTower(g, pt, poiStatus);
                 else
-                    drawPuddle(g, pt, poi.type);
+                    drawPuddle(g, pt, poi.type, poiStatus);
             }
 
             // draw highlight over closest POI
-            g.DrawEllipse(GameColors.penCyan4, nearestPt.X - 14, nearestPt.Y - 14, 28, 28);
-
+            if (this.nearestPoi != null)
+                g.DrawEllipse(GameColors.penCyan4, nearestPt.X - 14, nearestPt.Y - 14, 28, 28);
         }
 
-        private void drawPuddle(Graphics g, PointF pt, POIType poiType)
+        private void drawPuddle(Graphics g, PointF pt, POIType poiType, SitePoiStatus? poiStatus = SitePoiStatus.present)
         {
-            var brush = new SolidBrush(Color.Orange);
-            switch (poiType)
-            {
-                case POIType.orb: brush.Color = Color.FromArgb(255, 255, 127, 39); break; // orange
-                case POIType.casket: brush.Color = Color.FromArgb(255, 34, 177, 76); break; // green
-                case POIType.tablet: brush.Color = Color.FromArgb(255, 153, 217, 234); break; // blue
-                case POIType.totem: brush.Color = Color.FromArgb(255, 63, 72, 204); break; // purple-ish
-                case POIType.urn: brush.Color = Color.FromArgb(255, 163, 73, 164); break;
-            }
+            var brush = GameColors.Map.brushes[poiType][poiStatus ?? SitePoiStatus.present];
+            var pen = GameColors.Map.pens[poiType][poiStatus ?? SitePoiStatus.present];
 
             var d = 8;
             var rect = new RectangleF(pt.X - d, pt.Y - d, d * 2, d * 2);
             g.FillEllipse(brush, rect);
 
-            var pen = new Pen(brush.Color, 3);
-            switch (poiType)
-            {
-                case POIType.orb: pen.Color = Color.FromArgb(255, 147, 58, 0); break; // orange
-                case POIType.casket: pen.Color = Color.FromArgb(255, 17, 87, 38); break; // green
-                case POIType.tablet: pen.Color = Color.FromArgb(255, 33, 135, 160); break; // blue
-                case POIType.totem: pen.Color = Color.FromArgb(255, 29, 34, 105); break; // purple-ish
-                case POIType.urn: pen.Color = Color.FromArgb(255, 84, 37, 84); break; // pink-ish
-            }
-
             g.DrawEllipse(pen, rect);
-
         }
 
-        private void drawRelicTower(Graphics g, PointF pt)
+        private void drawRelicTower(Graphics g, PointF pt, SitePoiStatus? poiStatus = SitePoiStatus.present)
         {
             PointF[] points =
             {
-            new PointF(pt.X, pt.Y - 8),
-            new PointF(pt.X + 8, pt.Y + 8),
-            new PointF(pt.X - 8, pt.Y + 8),
-            new PointF(pt.X, pt.Y - 8),
+            new PointF(pt.X, pt.Y + 8),
+            new PointF(pt.X + 8, pt.Y - 8),
+            new PointF(pt.X - 8, pt.Y - 8),
+            new PointF(pt.X, pt.Y + 8),
             };
 
-            var brush = new SolidBrush(Color.Cyan);
+            var brush = GameColors.Map.brushes[POIType.relic][poiStatus ?? SitePoiStatus.present];
+            var pen = GameColors.Map.pens[POIType.relic][poiStatus ?? SitePoiStatus.present];
+
             g.FillPolygon(brush, points);
-
-            var pen = new Pen(Color.CadetBlue, 4)
-            {
-                DashStyle = DashStyle.Solid,
-                StartCap = LineCap.Triangle,
-                EndCap = LineCap.Triangle,
-            };
             g.DrawLines(pen, points);
         }
 
@@ -354,10 +464,8 @@ namespace SrvSurvey
             g.ResetTransform();
             var rect = new RectangleF(tp.X - 5, tp.Y - 5, 100, 140);
 
-            g.FillRectangle(Brushes.LightGray, rect);
-            var pen = new Pen(Color.DarkGray, 4);
-            g.DrawRectangle(pen, rect);
-
+            g.FillRectangle(GameColors.Map.Legend.brush, rect);
+            g.DrawRectangle(GameColors.Map.Legend.pen, rect);
 
             drawString(g, "Legend:");
             tp.X += 20;
@@ -387,32 +495,24 @@ namespace SrvSurvey
             g.DrawString(msg, this.Font, Brushes.Black, tp);
             tp.Y += sz.Height + 1;
         }
-    }
 
-    internal class MapViewData : Data
-    {
-        public static MapViewData Load(string filename)
+        private void checkNotes_CheckedChanged(object sender, EventArgs e)
         {
-            var filepath = Path.Combine(Application.UserAppDataPath, "mapViewer", Path.GetFileNameWithoutExtension(filename) + ".json");
+            Game.settings.mapShowNotes = checkNotes.Checked;
+            Game.settings.Save();
 
-            return Data.Load<MapViewData>(filepath)
-                ?? new MapViewData()
-                {
-                    filepath = filepath,
-                };
+            splitter.Panel2Collapsed = this.siteData == null || !Game.settings.mapShowNotes;
         }
 
-        /// <summary>
-        /// The origin point in the image
-        /// </summary>
-        public Point siteOrigin = new Point();
-        /// <summary>
-        /// The scale factor for rendering
-        /// </summary>
-        public float rotation = 0f;
-        /// <summary>
-        /// The scale factor to apply to the image
-        /// </summary>
-        public float scaleFactor = 1f;
+        private void btnSaveNotes_Click(object sender, EventArgs e)
+        {
+            if (this.siteData != null)
+            {
+                // reload before saving, to avoid clobbering updates during survey
+                this.siteData = GuardianSiteData.Load(this.siteData.bodyName, this.siteData.index);
+                this.siteData.notes = txtNotes.Text;
+                this.siteData.Save();
+            }
+        }
     }
 }

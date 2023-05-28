@@ -190,6 +190,8 @@ namespace SrvSurvey
 
         public static double ToAngle(double opp, double adj)
         {
+            if (opp == 0 && adj == 0) return 0;
+
             var flip = adj < 0;
 
             var angle = Util.radToDeg(Math.Atan(opp / adj));
@@ -224,6 +226,12 @@ namespace SrvSurvey
 
         public static void useLastLocation(Form form, Rectangle rect)
         {
+            if (rect == Rectangle.Empty)
+            {
+                form.StartPosition = FormStartPosition.CenterScreen;
+                return;
+            }
+
             form.Width = Math.Max(rect.Width, form.MinimumSize.Width);
             form.Height = Math.Max(rect.Height, form.MinimumSize.Width);
 

@@ -104,7 +104,7 @@ namespace SrvSurvey
              * C) Show the map
              */
 
-            if (siteData.type == GuardianSiteData.SiteType.unknown)
+            if (siteData.type == GuardianSiteData.SiteType.Unknown)
             {
                 // we need to know the site type before anything else
                 this.setMode(Mode.siteType);
@@ -127,7 +127,7 @@ namespace SrvSurvey
             Game.log($"* * *> PlotGuardians: changing mode from: {this.mode} to: {newMode}");
 
             // do not allow some modes before we know others
-            if (siteData.type == GuardianSiteData.SiteType.unknown && newMode != Mode.siteType)
+            if (siteData.type == GuardianSiteData.SiteType.Unknown && newMode != Mode.siteType)
             {
                 Game.log($"PlotGuardians: site type must be known first");
                 newMode = Mode.siteType;
@@ -147,6 +147,7 @@ namespace SrvSurvey
             {
                 if (this.mode == Mode.heading)
                 {
+                    PlotVertialStripe.targetAltitude = 20;
                     PlotVertialStripe.mode = PlotVertialStripe.mode = PlotVertialStripe.Mode.Buttress;
                     Program.showPlotter<PlotVertialStripe>();
                 }
@@ -162,6 +163,7 @@ namespace SrvSurvey
             {
                 if (!Game.settings.disableAerialAlignmentGrid)
                 {
+                    PlotVertialStripe.targetAltitude = 20;
                     showAiming();
                 }
             }
@@ -186,15 +188,15 @@ namespace SrvSurvey
 
             switch (this.siteData.type)
             {
-                case SiteType.alpha:
+                case SiteType.Alpha:
                     PlotVertialStripe.mode = PlotVertialStripe.Mode.Alpha;
                     PlotVertialStripe.targetAltitude = Game.settings.aerialAltAlpha;
                     break;
-                case SiteType.beta:
+                case SiteType.Beta:
                     PlotVertialStripe.mode = PlotVertialStripe.Mode.Beta;
                     PlotVertialStripe.targetAltitude = Game.settings.aerialAltBeta;
                     break;
-                case SiteType.gamma:
+                case SiteType.Gamma:
                     PlotVertialStripe.mode = PlotVertialStripe.Mode.Gamma;
                     PlotVertialStripe.targetAltitude = Game.settings.aerialAltGamma;
                     break;
@@ -241,10 +243,16 @@ namespace SrvSurvey
                     this.showAiming();
                 return;
             }
+            if (msg.StartsWith(MsgCmd.note, StringComparison.InvariantCultureIgnoreCase))
+            {
+                var note = msg.Substring(MsgCmd.note.Length);
+                this.siteData.notes += $"\r\n{note}\r\n";
+                this.siteData.Save();
+            }
 
             // try parsing the raw text as site type?
-            GuardianSiteData.SiteType parsedType = GuardianSiteData.SiteType.unknown;
-            if (siteData.type == GuardianSiteData.SiteType.unknown || this.mode == Mode.siteType)
+            GuardianSiteData.SiteType parsedType = GuardianSiteData.SiteType.Unknown;
+            if (siteData.type == GuardianSiteData.SiteType.Unknown || this.mode == Mode.siteType)
             {
                 // try matching to the enum?
                 if (!Enum.TryParse<GuardianSiteData.SiteType>(msg, out parsedType))
@@ -253,13 +261,13 @@ namespace SrvSurvey
                     switch (msg)
                     {
                         case "a":
-                            parsedType = GuardianSiteData.SiteType.alpha;
+                            parsedType = GuardianSiteData.SiteType.Alpha;
                             break;
                         case "b":
-                            parsedType = GuardianSiteData.SiteType.beta;
+                            parsedType = GuardianSiteData.SiteType.Beta;
                             break;
                         case "g":
-                            parsedType = GuardianSiteData.SiteType.gamma;
+                            parsedType = GuardianSiteData.SiteType.Gamma;
                             break;
                     }
                 }
@@ -270,7 +278,7 @@ namespace SrvSurvey
                 Enum.TryParse<GuardianSiteData.SiteType>(msg.Substring(MsgCmd.site.Length), out parsedType);
             }
 
-            if (parsedType != GuardianSiteData.SiteType.unknown)
+            if (parsedType != GuardianSiteData.SiteType.Unknown)
             {
                 Game.log($"Changing site type from: '{siteData.type}' to: '{parsedType}'");
                 siteData.type = parsedType;
@@ -319,15 +327,17 @@ namespace SrvSurvey
             // set Relic Tower heading
             if (msg == MsgCmd.tower)
             {
-                Game.log($"Changing Relic Tower heading from: '{siteData.relicTowerHeading}' to: '{game.status.Heading}'");
-                siteData.relicTowerHeading = new Angle(game.status.Heading);
+                var newAngle = new Angle(game.status.Heading);
+                Game.log($"Changing Relic Tower heading from: {siteData.relicTowerHeading}° to: {newAngle}");
+                siteData.relicTowerHeading = newAngle;
                 siteData.Save();
                 Program.closePlotter<PlotVertialStripe>();
             }
             else if (msg.StartsWith(MsgCmd.heading) && int.TryParse(msg.Substring(MsgCmd.heading.Length), out newHeading))
             {
-                Game.log($"Changing Relic Tower heading from: '{siteData.relicTowerHeading}' to: '{newHeading}'");
-                siteData.relicTowerHeading = newHeading;
+                var newAngle = new Angle(newHeading);
+                Game.log($"Changing Relic Tower heading from: {siteData.relicTowerHeading}° to: {newAngle}");
+                siteData.relicTowerHeading = newAngle;
                 siteData.Save();
             }
 
@@ -415,13 +425,13 @@ namespace SrvSurvey
 
         private void loadSiteTemplate()
         {
-            if (siteData.type == GuardianSiteData.SiteType.unknown) return;
+            if (siteData.type == GuardianSiteData.SiteType.Unknown) return;
 
             this.template = SiteTemplate.sites[siteData.type];
 
 
-            var imageFilename = $"{siteData.type}-background.png".ToLowerInvariant();
-            this.siteMap = Bitmap.FromFile(Path.Combine("images", imageFilename));
+            var filepath = $"{siteData.type}-background.png".ToLowerInvariant();
+            this.siteMap = Bitmap.FromFile(Path.Combine("images", filepath));
 
             //this.trails = new Bitmap(this.siteMap.Width * 2, this.siteMap.Height * 2);
 
@@ -739,13 +749,13 @@ namespace SrvSurvey
             var targetAlt = 0d;
             switch (siteData.type)
             {
-                case GuardianSiteData.SiteType.alpha:
+                case GuardianSiteData.SiteType.Alpha:
                     targetAlt = Game.settings.aerialAltAlpha;
                     break;
-                case GuardianSiteData.SiteType.beta:
+                case GuardianSiteData.SiteType.Beta:
                     targetAlt = Game.settings.aerialAltBeta;
                     break;
-                case GuardianSiteData.SiteType.gamma:
+                case GuardianSiteData.SiteType.Gamma:
                     targetAlt = Game.settings.aerialAltGamma;
                     break;
             }

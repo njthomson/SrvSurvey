@@ -48,7 +48,7 @@ namespace SrvSurvey
                 this.startWatchingScreenshots();
 
             // can we fit in our last location
-            if (Game.settings.mainLocation != Point.Empty)
+            if (Game.settings.formMainLocation != Point.Empty)
                 this.useLastWindowLocation();
 
             // Only show Guardian site UX is the setting allows
@@ -71,7 +71,7 @@ namespace SrvSurvey
         private void useLastWindowLocation()
         {
             // position ourself within the bound of which ever screen is chosen
-            var pt = Game.settings.mainLocation;
+            var pt = Game.settings.formMainLocation;
             var r = Screen.GetBounds(pt);
             if (pt.X < r.Left) pt.X = r.Left;
             if (pt.X + this.Width > r.Right) pt.X = r.Right - this.Width;
@@ -543,9 +543,9 @@ namespace SrvSurvey
 
         private void Main_ResizeEnd(object sender, EventArgs e)
         {
-            if (Game.settings.mainLocation != this.Location)
+            if (Game.settings.formMainLocation != this.Location)
             {
-                Game.settings.mainLocation = this.Location;
+                Game.settings.formMainLocation = this.Location;
                 Game.settings.Save();
             }
         }
@@ -686,7 +686,7 @@ namespace SrvSurvey
 
             var extraTxt = "";
             var isAerialScreenshot = false;
-            var siteType = GuardianSiteData.SiteType.unknown;
+            var siteType = GuardianSiteData.SiteType.Unknown;
 
             if (game!.nearBody?.siteData != null)
             {
@@ -697,7 +697,7 @@ namespace SrvSurvey
 
                 extraTxt = $"\r\n  {siteData.nameLocalised}";
                 siteType = siteData.type;
-                if (siteType != GuardianSiteData.SiteType.unknown)
+                if (siteType != GuardianSiteData.SiteType.Unknown)
                 {
                     extraTxt += $" - {siteData.type}";
 
@@ -755,7 +755,7 @@ namespace SrvSurvey
             if (isAerialScreenshot && Game.settings.useGuardianAerialScreenshotsFolder)
             {
                 // if it's an alpha site - truncate and rotate
-                if (siteType == GuardianSiteData.SiteType.alpha && Game.settings.rotateAndTruncateAlphaAerialScreenshots)
+                if (siteType == GuardianSiteData.SiteType.Alpha && Game.settings.rotateAndTruncateAlphaAerialScreenshots)
                 {
                     var truncated = new Bitmap((int)(sourceImage.Height * 1.3f), sourceImage.Height);
                     using (var g = Graphics.FromImage(truncated))
@@ -822,6 +822,11 @@ namespace SrvSurvey
         private void btnAllRuins_Click(object sender, EventArgs e)
         {
             FormAllRuins.show();
+        }
+
+        private void btnRuins_Click(object sender, EventArgs e)
+        {
+            FormRuins.show();
         }
     }
 }
