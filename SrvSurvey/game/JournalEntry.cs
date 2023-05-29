@@ -509,6 +509,16 @@ namespace SrvSurvey
         public string Heading;
         public string Altitude;
     }
+
+    class FSDTarget : JournalEntry
+    {
+        // { "timestamp":"2023-05-29T06:09:58Z", "event":"FSDTarget", "Name":"Col 173 Sector MC-T b20-3", "SystemAddress":7282519516481, "StarClass":"M", "RemainingJumpsInRoute":1 }
+
+        public string Name;
+        public long SystemAddress;
+        public string StarClass;
+        public int RemainingJumpsInRoute;
+    }
 }
 
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.

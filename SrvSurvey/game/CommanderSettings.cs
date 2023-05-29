@@ -38,5 +38,17 @@
         public BioScan? scanTwo;
         public long organicRewards;
         public List<ScannedOrganic> scannedOrganics = new List<ScannedOrganic>();
+
+        // spherical searching
+        public SphereLimit sphereLimit = new SphereLimit();
     }
+
+    internal class SphereLimit
+    {
+        public bool active = false;
+        public string centerSystemName = null!;
+        public double[] centerStarPos = null!;
+        public double radius = 100;
+    }
+
 }

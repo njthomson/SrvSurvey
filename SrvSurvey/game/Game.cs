@@ -1,4 +1,6 @@
 ﻿using SrvSurvey.canonn;
+using SrvSurvey.net;
+using SrvSurvey.net.EDSM;
 using SrvSurvey.units;
 using System.Diagnostics;
 using System.Reflection;
@@ -19,6 +21,8 @@ namespace SrvSurvey.game
             settings = Settings.Load();
             codexRef = new CodexRef();
             canonn = new Canonn();
+            spansh = new Spansh();
+            edsm = new EDSM();
         }
 
         #region logging
@@ -42,6 +46,8 @@ namespace SrvSurvey.game
         public static Settings settings { get; private set; }
         public static CodexRef codexRef { get; private set; }
         public static Canonn canonn { get; private set; }
+        public static Spansh spansh { get; private set; }
+        public static EDSM edsm{ get; private set; }
 
         public bool initialized { get; private set; }
 

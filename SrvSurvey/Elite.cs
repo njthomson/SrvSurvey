@@ -39,6 +39,7 @@ namespace SrvSurvey
             else
                 Game.log("setFocusED: got Zero!");
         }
+
         public static RectangleF getClientRect()
         {
             var hwndED = Elite.getWindowHandle();
@@ -134,15 +135,6 @@ namespace SrvSurvey
             form.Top = rect.Top + (rect.Height / 2) - (form.Height / 2) + aboveMiddle;
         }
 
-        //private void floatCenterMiddle(Form form)
-        //{
-        //    // position form top center above the heading
-        //    var rect = Overlay.getEDWindowRect();
-
-        //    form.Left = rect.Left + 40;
-        //    form.Top = rect.Top + (rect.Height / 2) - (form.Height / 2);
-        //}
-
         public static void floatCenterTop(Form form, Rectangle rect, int fromTop, int rightOfCenter = 0)
         {
             // position form top center above the heading
@@ -153,15 +145,25 @@ namespace SrvSurvey
             form.Top = rect.Top + fromTop;
         }
 
-        public static void floatTopRight(Form form, int fromTop, int fromRight)
+        public static void floatLeftTop(Form form, Rectangle rect, int fromLeft = 40, int fromTop = 40)
         {
             // position form top center above the heading
-            var rect = Elite.getWindowRect();
+            if (rect == Rectangle.Empty)
+                rect = Elite.getWindowRect();
+
+            form.Left = rect.Left + fromLeft;
+            form.Top = rect.Top + fromTop;
+        }
+
+        public static void floatRightTop(Form form, Rectangle rect, int fromTop = 20, int fromRight = 20)
+        {
+            // position form top center above the heading
+            if (rect == Rectangle.Empty)
+                rect = Elite.getWindowRect();
 
             form.Left = rect.Right - form.Width - fromRight;
             form.Top = rect.Top + fromTop;
         }
-
 
         [DllImport("User32.dll")]
         static extern bool GetWindowRect(IntPtr hWnd, ref RECT lpRect);

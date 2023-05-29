@@ -12,7 +12,7 @@ namespace SrvSurvey
     internal abstract class PlotBase : Form, PlotterForm, IDisposable
     {
         protected Game game = Game.activeGame!;
-        protected TrackingDelta touchdownLocation;
+        protected TrackingDelta? touchdownLocation;
         protected TrackingDelta? srvLocation;
         /// <summary> The center point on this plotter. </summary>
         protected Size mid;
@@ -25,9 +25,10 @@ namespace SrvSurvey
             this.TopMost = true;
             this.Cursor = Cursors.Cross;
 
-            this.touchdownLocation = new TrackingDelta(
-                game.nearBody!.radius,
-                game.touchdownLocation ?? LatLong2.Empty);
+            if (game.nearBody != null)
+                this.touchdownLocation = new TrackingDelta(
+                    game.nearBody!.radius,
+                    game.touchdownLocation ?? LatLong2.Empty);
         }
 
         protected override void Dispose(bool disposing)
@@ -114,7 +115,8 @@ namespace SrvSurvey
         {
             if (this.IsDisposed) return;
 
-            this.touchdownLocation.Current = Status.here;
+            // I think not needed
+            //this.touchdownLocation.Current = Status.here;
 
             if (this.srvLocation != null)
                 this.srvLocation.Current = Status.here;
@@ -183,6 +185,10 @@ namespace SrvSurvey
             // overriden as necessary
         }
 
+        protected virtual void onJournalEntry(FSDTarget entry)
+        {
+            // overriden as necessary
+        }
 
         protected void drawCommander()
         {

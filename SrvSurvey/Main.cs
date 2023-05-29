@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json.Serialization;
-using SrvSurvey.game;
+﻿using SrvSurvey.game;
 using SrvSurvey.units;
 using System.Diagnostics;
 using System.Drawing.Imaging;
@@ -119,10 +118,12 @@ namespace SrvSurvey
         private void updateAllControls()
         {
             Game.log("** ** ** updateAllControls ** ** **");
+
             this.updateCommanderTexts();
             this.updateBioTexts();
             this.updateTrackTargetTexts();
             this.updateGuardianTexts();
+            this.updateSphereLimit();
         }
 
         private void settingsFolderWatcher_Changed(object sender, FileSystemEventArgs e)
@@ -362,6 +363,17 @@ namespace SrvSurvey
                     btnRuinsOrigin.Enabled = game.nearBody.siteData.siteHeading != -1 && this.game.showGuardianPlotters;
                 }
             }
+        }
+
+        private void updateSphereLimit()
+        {
+            btnSphereLimit.Enabled = game?.cmdr != null;
+
+            // show/hide the sphere limit plotter
+            if (game?.mode == GameMode.GalaxyMap && game.cmdr.sphereLimit.active)
+                Program.showPlotter<PlotSphericalSearch>();
+            else
+                Program.closePlotter<PlotSphericalSearch>();
         }
 
         private void Journals_onJournalEntry(JournalEntry entry, int index)
@@ -827,6 +839,16 @@ namespace SrvSurvey
         private void btnRuins_Click(object sender, EventArgs e)
         {
             FormRuins.show();
+        }
+
+        private void btnSphereLimit_Click(object sender, EventArgs e)
+        {
+            Program.closePlotter<PlotSphericalSearch>();
+
+            var form = new FormSphereLimit();
+            form.ShowDialog(this);
+
+            this.updateSphereLimit();
         }
     }
 }
