@@ -46,8 +46,8 @@
     internal class SphereLimit
     {
         public bool active = false;
-        public string centerSystemName = null!;
-        public double[] centerStarPos = null!;
+        public string? centerSystemName = null!;
+        public double[]? centerStarPos = null!;
         public double radius = 100;
     }
 

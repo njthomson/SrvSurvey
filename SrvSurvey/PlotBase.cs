@@ -135,7 +135,17 @@ namespace SrvSurvey
 
         protected void onJournalEntry(Touchdown entry)
         {
-            this.touchdownLocation.Target = entry;
+            if (this.touchdownLocation == null)
+            {
+                this.touchdownLocation = new TrackingDelta(
+                    game.nearBody!.radius,
+                    game.touchdownLocation ?? LatLong2.Empty);
+            }
+            else
+            {
+                this.touchdownLocation.Target = entry;
+            }
+
             this.Invalidate();
         }
 

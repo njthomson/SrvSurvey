@@ -508,8 +508,8 @@ namespace SrvSurvey
         {
             if (this.siteData != null)
             {
-                // reload before saving, to avoid clobbering updates during survey
-                this.siteData = GuardianSiteData.Load(this.siteData.bodyName, this.siteData.index);
+                // reload from file before saving - to avoid clobbering updates during survey
+                this.siteData = GuardianSiteData.Load(this.siteData.bodyName, this.siteData.index)!;
                 this.siteData.notes = txtNotes.Text;
                 this.siteData.Save();
             }

@@ -73,14 +73,10 @@ namespace SrvSurvey
                 if (rslt.IsCompletedSuccessfully)
                 {
                     var targetSystem = rslt.Result.FirstOrDefault();
-                    if (targetSystem != null)
-                    {
+                    if (targetSystem != null && game.cmdr.sphereLimit.centerStarPos != null)
                         this.distance = Util.getSystemDistance(game.cmdr.sphereLimit.centerStarPos, targetSystem.coords.starPos);
-                    }
                     else
-                    {
                         this.distance = -2;
-                    }
                 }
                 this.reqInProgress = false;
                 this.Invalidate();

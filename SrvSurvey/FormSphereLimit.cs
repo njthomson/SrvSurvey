@@ -10,10 +10,8 @@ namespace SrvSurvey
         protected Game game = Game.activeGame!;
 
         private Dictionary<string, StarSystem> matchedSystems = new Dictionary<string, StarSystem>();
-        private double[] targetStarPos;
+        private double[]? targetStarPos;
         private string lastSearch = "";
-        private bool requesting = false;
-        private Task? pending;
         private int interruptCount;
 
         public FormSphereLimit()
@@ -58,7 +56,6 @@ namespace SrvSurvey
 
                 // no hits - make a network request
                 btnDisable.Enabled = btnAccept.Enabled = txtStarPos.Enabled = false;
-                this.requesting = true;
 
                 comboSystemName.Items.Clear();
                 comboSystemName.Items.Add("Searching ...");
@@ -66,7 +63,6 @@ namespace SrvSurvey
                 comboSystemName.SelectionStart = searchName.Length;
                 comboSystemName.SelectionLength = comboSystemName.Text.Length;
 
-                this.requesting = true;
                 var results = await Game.edsm.getSystems(searchName);
                 Game.log($"Found {results.Length} systems from: {searchName}");
 
@@ -88,7 +84,6 @@ namespace SrvSurvey
                     // some systems found
                     processResults(searchName, results);
                 }
-                this.requesting = false;
 
                 Program.control!.Invoke((MethodInvoker)delegate
                 {
@@ -100,7 +95,6 @@ namespace SrvSurvey
                 var runAgain = this.interruptCount > 1;
                 Game.log($"run again? {runAgain}");
                 this.interruptCount = 0;
-                this.pending = null;
                 if (runAgain)
                 {
                     // lookpu again if text has changed?
@@ -108,49 +102,6 @@ namespace SrvSurvey
                     _ = this.lookupSystem(comboSystemName.Text);
                 }
             }
-            /*
-                        Game.spansh.getSystem(systemName).ContinueWith(t =>
-                        {
-                            GetSystemResponse rslt = null;
-                            if (t.IsCompletedSuccessfully)
-                            {
-                                Game.log($"Got {t.Result.min_max.Count} systems");
-
-                                rslt = t.Result;
-                            }
-
-                            Program.control!.Invoke((MethodInvoker)delegate
-                            {
-                                if (rslt != null && rslt.min_max.Count > 0)
-                                {
-                                    var targets = rslt.min_max.Where(_ => _.name.StartsWith(systemName, StringComparison.OrdinalIgnoreCase)).ToList();
-
-                                    //var target = rslt.min_max.FirstOrDefault(_ => string.Equals(_.name, systemName, StringComparison.OrdinalIgnoreCase));
-                                    if (targets.Count > 0)
-                                    {
-                                        // we have an exact match
-                                        targetStarPos = new double[] { targets[0].x, targets[0].y, targets[0].z };
-                                        txtStarPos.Text = $"[ {targets[0].x} , {targets[0].y} , {targets[0].z} ]";
-                                    }
-
-                                    if (targets.Count < 2)
-                                        comboSystemName.DroppedDown = false;
-                                    else
-                                    {
-                                        var top = rslt.min_max.Take(4).Select(_ => _.name).ToArray();
-                                        comboSystemName.Items.Clear();
-                                        comboSystemName.Items.AddRange(top);
-                                        comboSystemName.DroppedDown = true;
-                                        //comboSystemName.SelectionLength = 0;
-                                        comboSystemName.SelectionStart = systemName.Length;
-                                    }
-                                }
-
-
-                                btnDisable.Enabled = btnAccept.Enabled = txtStarPos.Enabled = true;
-                            });
-                        });
-            */
         }
 
         private void processResults(string searchName, IEnumerable<StarSystem> matches)
@@ -212,8 +163,8 @@ namespace SrvSurvey
             {
                 // no match - do a lookup
                 txtStarPos.Text = "";
-                targetStarPos = null;
-                this.pending = lookupSystem(comboSystemName.Text);
+                targetStarPos = null!;
+                _ = lookupSystem(comboSystemName.Text);
             }
         }
 

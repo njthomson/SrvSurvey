@@ -21,7 +21,7 @@ namespace SrvSurvey.game
             return $"{bodyName}-{namePart}-{index}.json";
         }
 
-        public static GuardianSiteData Load(string bodyName, int index)
+        public static GuardianSiteData? Load(string bodyName, int index)
         {
             string filepath = Path.Combine(rootFolder, Game.activeGame!.fid!, getFilename(bodyName, index));
             return Data.Load<GuardianSiteData>(filepath);
