@@ -17,6 +17,10 @@
             {
                 components.Dispose();
             }
+
+            if (game.status != null)
+                game.status.StatusChanged -= Status_StatusChanged;
+
             base.Dispose(disposing);
         }
 

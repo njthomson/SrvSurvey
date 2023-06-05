@@ -21,14 +21,14 @@ namespace SrvSurvey
         private Image? underlay;
         public Image? headingGuidance;
         private string highlightPoi; // tmp
-        private SitePOI nearestPoi;
+        public SitePOI nearestPoi;
 
         /// <summary> Site map width </summary>
         private float ux;
         /// <summary> Site map height </summary>
         private float uy;
 
-        private Mode mode;
+        public Mode mode;
         private PointF commanderOffset;
 
         private GuardianSiteData siteData { get => game?.nearBody?.siteData!; }
@@ -141,6 +141,7 @@ namespace SrvSurvey
 
             this.mode = newMode;
             this.Invalidate();
+            game.fireUpdate();
 
             // show or hide the heading vertical stripe helper
             if (!Game.settings.disableRuinsMeasurementGrid)
@@ -403,14 +404,11 @@ namespace SrvSurvey
             if (this.nearestPoi == null || this.nearestPoi.type != POIType.relic) return;
 
             // add POI to confirmed
-            if (!siteData.poiStatus.ContainsKey(this.nearestPoi.name))
-            {
-                // use combat/exploration mode to know if item is present or missing
-                Game.log($"POI confirmed: '{this.nearestPoi.name}' ({this.nearestPoi.type})");
-                siteData.poiStatus.Add(this.nearestPoi.name, SitePoiStatus.present);
-                siteData.Save();
-                this.Invalidate();
-            }
+            // use combat/exploration mode to know if item is present or missing
+            Game.log($"POI confirmed: '{this.nearestPoi.name}' ({this.nearestPoi.type})");
+            siteData.poiStatus[this.nearestPoi.name] = SitePoiStatus.present;
+            siteData.Save();
+            this.Invalidate();
         }
 
         private void setSiteHeading(int newHeading)
@@ -421,6 +419,7 @@ namespace SrvSurvey
 
             this.nextMode();
             this.Invalidate();
+            game.fireUpdate();
         }
 
         private void loadSiteTemplate()
@@ -491,23 +490,59 @@ namespace SrvSurvey
                 Game.log("Too high, closing PlotGuardians");
                 game.fireUpdate(true);
                 Program.closePlotter<PlotGuardians>();
+                Program.closePlotter<PlotGuardianStatus>();
             }
 
-            // take current heading if blink detected whilst waiting for a heading
-            if (this.mode == Mode.heading && blink)
+            // show Relic Tower aiming assistance when on foot and using this tool
+            if (this.nearestPoi?.type == POIType.relic)
             {
-                this.setSiteHeading(game.status.Heading);
+                var isVerticalVisible = Program.isPlotter<PlotVertialStripe>();
+                if (game.status.SelectedWeapon == "$humanoid_companalyser_name;")
+                {
+                    if (!isVerticalVisible)
+                    {
+                        PlotVertialStripe.mode = PlotVertialStripe.Mode.RelicTower;
+                        Program.showPlotter<PlotVertialStripe>();
+                    }
+                }
+                else if (isVerticalVisible)
+                {
+                    Program.closePlotter<PlotVertialStripe>();
+                }
             }
-            else if (this.nearestPoi != null && this.mode == Mode.map && blink)
-            {
-                // confirm POI is missing
-                var poiPresent = (game.status.Flags & StatusFlags.CargoScoopDeployed) > 0;
-                var poiStatus = poiPresent ? SitePoiStatus.present : SitePoiStatus.absent;
 
-                Game.log($"Confirming POI {poiStatus}: '{this.nearestPoi.name}' ({this.nearestPoi.type})");
-                siteData.poiStatus[this.nearestPoi.name] = poiStatus;
-                siteData.Save();
-                this.Invalidate();
+            // if blink is detected and we're in the right mode
+            if (blink && game.isMode(GameMode.InSrv, GameMode.InFighter, GameMode.Flying))
+            {
+                if (this.mode == Mode.siteType)
+                {
+                    // select site type
+                    var newType = (SiteType)(game.status.FireGroup % 3) + 1;
+                    Game.log($"Selecting site type from: '{siteData.type}' to: '{newType}'");
+                    siteData.type = newType;
+                    siteData.Save();
+
+                    this.nextMode();
+                }
+                else if (this.mode == Mode.heading)
+                {
+                    // take current heading
+                    this.setSiteHeading(game.status.Heading);
+                }
+                else if (this.nearestPoi != null && this.mode == Mode.map)
+                {
+                    // confirm POI is missing
+                    var poiStatus = (SitePoiStatus)(game.status.FireGroup % 3) + 1;
+
+                    // (don't let Relic's get a status of Empty)
+                    if (!(nearestPoi.type == POIType.relic && poiStatus == SitePoiStatus.empty))
+                    {
+                        Game.log($"Confirming POI {poiStatus}: '{this.nearestPoi.name}' ({this.nearestPoi.type})");
+                        siteData.poiStatus[this.nearestPoi.name] = poiStatus;
+                        siteData.Save();
+                        this.Invalidate();
+                    }
+                }
             }
 
             // prepare other stuff
@@ -746,20 +781,7 @@ namespace SrvSurvey
             }
 
             var alt = game.status.Altitude.ToString("N0");
-            var targetAlt = 0d;
-            switch (siteData.type)
-            {
-                case GuardianSiteData.SiteType.Alpha:
-                    targetAlt = Game.settings.aerialAltAlpha;
-                    break;
-                case GuardianSiteData.SiteType.Beta:
-                    targetAlt = Game.settings.aerialAltBeta;
-                    break;
-                case GuardianSiteData.SiteType.Gamma:
-                    targetAlt = Game.settings.aerialAltGamma;
-                    break;
-            }
-            //var footerTxt = $"Offset: {pp.X}m, {pp.Y}m  | Alt: {alt}m | Target: {targetAlt}m";
+            var targetAlt = Util.targetAltitudeForSite(siteData.type);
             var footerTxt = $"Altitude: {alt}m | Target altitude: {targetAlt}m";
 
             // header text and rotation arrows
@@ -807,7 +829,7 @@ namespace SrvSurvey
 
             var headerTxt = $"Site heading: {siteData.siteHeading}° | Rotate ship ";
             headerTxt += adjustAngle > 0 ? "right" : "left";
-            headerTxt += $" {adjustAngle}°";
+            headerTxt += $" {Math.Abs(adjustAngle)}°";
 
             this.drawHeaderText(headerTxt, brush);
         }
@@ -969,7 +991,8 @@ namespace SrvSurvey
                 g.DrawEllipse(GameColors.penCyan4, -nearestPt.X - 14, -nearestPt.Y - 14, 28, 28);
                 var poiStatus = siteData.poiStatus.GetValueOrDefault(this.nearestPoi.name);
 
-                var nextStatus = (game.status.Flags & StatusFlags.CargoScoopDeployed) > 0 ? SitePoiStatus.present : SitePoiStatus.absent; // ? "(set present)" : "(set absent)";
+                var nextStatus = (SitePoiStatus)(game.status.FireGroup % 3) + 1;
+
                 var nextStatusDifferent = nextStatus != siteData.poiStatus.GetValueOrDefault(nearestPoi.name);
                 var action = nextStatusDifferent ? $"(set {nextStatus})" : "";
 
@@ -1190,7 +1213,7 @@ namespace SrvSurvey
             this.drawFooterText($"{game.nearBody!.bodyName}");
 
             // if we don't know the site type yet ...
-            msg = $"Need site type\r\n\r\nSend message:\r\n\r\n 'a' for Alpha\r\n\r\n 'b' for Beta\r\n\r\n 'g' for Gamma";
+            msg = $"\r\nSelect site type with \r\nfire group or send\r\nmessage:\r\n\r\n 'a' for Alpha\r\n\r\n 'b' for Beta\r\n\r\n 'g' for Gamma";
             sz = g.MeasureString(msg, Game.settings.font1, this.Width);
             g.DrawString(msg, Game.settings.font1, GameColors.brushCyan, tx, ty, StringFormat.GenericTypographic);
         }
@@ -1224,7 +1247,7 @@ namespace SrvSurvey
 
         #region static accessing stuff
 
-        private static PlotGuardians? instance;
+        public static PlotGuardians? instance;
 
         public static void switchMode(Mode newMode)
         {
@@ -1232,6 +1255,8 @@ namespace SrvSurvey
             {
                 PlotGuardians.instance.setMode(newMode);
                 Elite.setFocusED();
+                if (Game.activeGame != null)
+                    Game.activeGame.fireUpdate(false);
             }
         }
 

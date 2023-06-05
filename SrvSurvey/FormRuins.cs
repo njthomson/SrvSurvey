@@ -1,4 +1,5 @@
-﻿using SrvSurvey.game;
+﻿using DecimalMath;
+using SrvSurvey.game;
 using SrvSurvey.units;
 using System.ComponentModel;
 using System.Drawing.Drawing2D;
@@ -11,10 +12,10 @@ namespace SrvSurvey
 
         private static FormRuins? activeForm;
 
-        public static void show()
+        public static void show(GuardianSiteData? siteData = null)
         {
             if (activeForm == null)
-                FormRuins.activeForm = new FormRuins();
+                FormRuins.activeForm = new FormRuins(siteData);
 
             if (FormRuins.activeForm.Visible == false)
                 FormRuins.activeForm.Show();
@@ -82,7 +83,7 @@ namespace SrvSurvey
         private Dictionary<string, GuardianSiteData?> filteredSites = new Dictionary<string, GuardianSiteData?>();
         private GuardianSiteData? siteData;
 
-        public FormRuins()
+        public FormRuins(GuardianSiteData? siteData)
         {
             InitializeComponent();
             map.MouseWheel += Map_MouseWheel;
@@ -94,10 +95,17 @@ namespace SrvSurvey
 
             comboSiteType.SelectedIndex = 0;
             comboSite.SelectedIndex = 0;
-            this.showFilteredSites();
+            this.showFilteredSites(siteData ?? game.nearBody?.siteData);
 
             checkNotes.Checked = Game.settings.mapShowNotes;
             splitter.Panel2Collapsed = this.siteData == null || !Game.settings.mapShowNotes;
+
+            game.status.StatusChanged += Status_StatusChanged;
+        }
+
+        private void Status_StatusChanged(bool blink)
+        {
+            map.Invalidate();
         }
 
         private void loadMap(string name)
@@ -159,7 +167,7 @@ namespace SrvSurvey
             //}
         }
 
-        private void showFilteredSites()
+        private void showFilteredSites(GuardianSiteData? siteData = null)
         {
             if (string.IsNullOrEmpty(comboSiteType.Text)) return;
 
@@ -192,10 +200,10 @@ namespace SrvSurvey
             comboSite.DataSource = filteredSites.Keys.ToList();
 
             // pre-load current site, if we're in one
-            if (game.nearBody?.siteData != null)
+            if (siteData != null)
             {
                 //this.loadMap(game.nearBody?.siteData);
-                var match = this.filteredSites.FirstOrDefault(_ => _.Value != null && _.Value.systemAddress == game.nearBody?.siteData.systemAddress && _.Value.bodyId == game.nearBody?.siteData.bodyId && _.Value.index == game.nearBody?.siteData.index);
+                var match = this.filteredSites.FirstOrDefault(_ => _.Value != null && _.Value.systemAddress == siteData.systemAddress && _.Value.bodyId == siteData.bodyId && _.Value.index == siteData.index);
 
                 comboSite.Text = match.Key;
             }
@@ -383,6 +391,56 @@ namespace SrvSurvey
             drawArtifacts(g);
 
             drawLegend(g);
+
+            if (game.nearBody?.siteData != null && game.nearBody.siteData.type == this.siteType)
+                drawCommander(g);
+        }
+
+        private void drawCommander(Graphics g)
+        {
+            if (game.nearBody?.siteData == null) return;
+
+            g.ResetTransform();
+            g.TranslateTransform(mapCenter.X - dragOffset.X, mapCenter.Y - dragOffset.Y);
+            g.ScaleTransform(this.scale, this.scale);
+            g.RotateTransform(180);
+
+            var siteData = game.nearBody.siteData;
+            var cd = Util.getDistance(Status.here, siteData.location, (decimal)game.nearBody.radius);
+            var cA = DecimalEx.PiHalf + Util.getBearingRad(siteData.location, Status.here) - (decimal)Util.degToRad(siteData.siteHeading);
+
+            var cx = (float)(DecimalEx.Cos(cA) * cd);
+            var cy = (float)(DecimalEx.Sin(cA) * cd);
+
+            var cp = calcCmdrToSite();
+            if (cp != null)
+            drawCommander(g, (PointF)cp, 10f);
+        }
+
+        public static PointF? calcCmdrToSite()
+        {
+            if (Game.activeGame?.nearBody?.siteData == null) return null;
+
+            var siteData = Game.activeGame.nearBody.siteData;
+
+            var cd = Util.getDistance(Status.here, siteData.location, (decimal)Game.activeGame.nearBody.radius);
+            var cA = DecimalEx.PiHalf + Util.getBearingRad(siteData.location, Status.here) - (decimal)Util.degToRad(siteData.siteHeading);
+
+            return new PointF(
+                (float)(DecimalEx.Cos(cA) * cd),
+                (float)(DecimalEx.Sin(cA) * cd)
+            );
+        }
+
+        private void drawCommander(Graphics g, PointF cp, float r)
+        {
+            var p1 = GameColors.penLime4;
+            var rect = new RectangleF(cp.X - r, cp.Y - r, r * 2, r * 2);
+            g.DrawEllipse(p1, rect);
+
+            
+            var pt = Util.rotateLine( game.status.Heading - game.nearBody.siteData.siteHeading - 180, 20);
+            g.DrawLine(GameColors.penLime4, cp.X, cp.Y, cp.X + pt.X, cp.Y - pt.Y);
         }
 
         private void drawArtifacts(Graphics g)

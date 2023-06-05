@@ -247,5 +247,24 @@ namespace SrvSurvey
             form.StartPosition = FormStartPosition.Manual;
             form.Location = pt;
         }
+
+        public static double targetAltitudeForSite(GuardianSiteData.SiteType siteType)
+        {
+            var targetAlt = 0d;
+            switch (siteType)
+            {
+                case GuardianSiteData.SiteType.Alpha:
+                    targetAlt = Game.settings.aerialAltAlpha;
+                    break;
+                case GuardianSiteData.SiteType.Beta:
+                    targetAlt = Game.settings.aerialAltBeta;
+                    break;
+                case GuardianSiteData.SiteType.Gamma:
+                    targetAlt = Game.settings.aerialAltGamma;
+                    break;
+            }
+
+            return targetAlt;
+        }
     }
 }

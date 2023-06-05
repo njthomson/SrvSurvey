@@ -356,7 +356,9 @@ namespace SrvSurvey
                     if (game.showBodyPlotters && this.game.showGuardianPlotters)
                     {
                         Program.showPlotter<PlotGuardians>();
+                        Program.showPlotter<PlotGuardianStatus>();
                         Program.closePlotter<PlotGrounded>();
+                        Program.closePlotter<PlotBioStatus>();
                     }
 
                     btnRuinsMap.Enabled = game.nearBody.siteData.siteHeading != -1 && this.game.showGuardianPlotters;
@@ -778,8 +780,8 @@ namespace SrvSurvey
                     }
                     sourceImage = truncated;
                     sourceImage.RotateFlip(RotateFlipType.Rotate90FlipNone);
-                    this.addBannerToScreenshot(entry, sourceImage, extraTxt);
                 }
+                this.addBannerToScreenshot(entry, sourceImage, extraTxt);
 
                 folder = Path.Combine(Game.settings.screenshotTargetFolder!, $"Aerial {siteType}");
                 Game.log($"Writing screenshot '{filename}' in: {folder}");

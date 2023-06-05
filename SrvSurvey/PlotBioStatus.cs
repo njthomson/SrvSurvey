@@ -6,7 +6,6 @@ namespace SrvSurvey
     public partial class PlotBioStatus : Form, PlotterForm
     {
         private Game game = Game.activeGame!;
-        private bool guardianMode = false;
 
         private PlotBioStatus()
         {
@@ -39,7 +38,6 @@ namespace SrvSurvey
         {
             this.BackgroundImage = GameGraphics.getBackgroundForForm(this);
 
-            this.guardianMode = game.showGuardianPlotters;
 
             if (game.nearBody == null)
             {
@@ -75,6 +73,8 @@ namespace SrvSurvey
 
         private void Game_modeChanged(GameMode newMode, bool force)
         {
+            if (this.IsDisposed) return;
+
             var plotterMode = newMode == GameMode.SAA || game.showBodyPlotters;
             if (this.Opacity > 0 && !plotterMode)
             {
@@ -117,11 +117,6 @@ namespace SrvSurvey
         private void PlotBioStatus_Paint(object sender, PaintEventArgs e)
         {
             var g = e.Graphics;
-            if (this.guardianMode)
-            {
-                drawGuardianStatus(g);
-                return;
-            }
 
             if (game?.nearBody?.data?.organisms == null) return;
 
@@ -312,13 +307,6 @@ namespace SrvSurvey
 
                 x += sz.Width + 8;
             }
-        }
-
-        private void drawGuardianStatus(Graphics g)
-        {
-            g.DrawString(
-                $"Guardian stuff!",
-                Game.settings.fontMiddle, GameColors.brushGameOrange, 4, 8);
         }
 
     }

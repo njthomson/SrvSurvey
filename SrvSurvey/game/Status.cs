@@ -125,7 +125,7 @@ namespace SrvSurvey
 
         private bool trackBlinks()
         {
-            const StatusFlags blinkSignal = StatusFlags.HudInAnalysisMode; // CargoScoopDeployed; // StatusFlags.LightsOn;
+            var blinkSignal = Game.settings.blinkTigger; // StatusFlags.HudInAnalysisMode; // CargoScoopDeployed; // StatusFlags.LightsOn;
             var newBlinkState = (this.Flags & blinkSignal) > 0;
             var duration = DateTime.Now - this.lastblinkChange;
 
@@ -134,21 +134,19 @@ namespace SrvSurvey
             {
                 this.blinkState = newBlinkState;
                 this.lastblinkChange = DateTime.Now;
+
+                if (duration.TotalMilliseconds < Game.settings.blinkDuration)
+                {
+                    Game.log($"Blink detected blinked!");
+                    return true;
+                }
             }
 
-            if (duration.TotalSeconds < 3)
-            {
-                Game.log($"Blink detected blinked!");
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return false;
         }
 
         private bool blinkState = false;
-        private DateTime lastblinkChange = DateTime.Now;
+        public DateTime lastblinkChange = DateTime.Now;
 
         [JsonIgnore]
         public static readonly LatLong2 here = new LatLong2(0, 0);

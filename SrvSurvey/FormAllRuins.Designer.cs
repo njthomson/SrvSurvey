@@ -28,198 +28,178 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.grid = new System.Windows.Forms.ListView();
-            this.colSiteId = new System.Windows.Forms.ColumnHeader();
-            this.colSystem = new System.Windows.Forms.ColumnHeader();
-            this.colBody = new System.Windows.Forms.ColumnHeader();
-            this.colDistance = new System.Windows.Forms.ColumnHeader();
-            this.colArrival = new System.Windows.Forms.ColumnHeader();
-            this.colSiteType = new System.Windows.Forms.ColumnHeader();
-            this.colIndex = new System.Windows.Forms.ColumnHeader();
-            this.colLastVisited = new System.Windows.Forms.ColumnHeader();
-            this.colHasImages = new System.Windows.Forms.ColumnHeader();
-            this.colSiteHeading = new System.Windows.Forms.ColumnHeader();
-            this.colRelicTowerHeading = new System.Windows.Forms.ColumnHeader();
-            this.btnFilter = new System.Windows.Forms.Button();
-            this.txtFilter = new System.Windows.Forms.TextBox();
-            this.checkVisited = new System.Windows.Forms.CheckBox();
-            this.comboSiteType = new System.Windows.Forms.ComboBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.lblCurrentSystem = new System.Windows.Forms.Label();
-            this.SuspendLayout();
+            grid = new ListView();
+            colSiteId = new ColumnHeader();
+            colSystem = new ColumnHeader();
+            colBody = new ColumnHeader();
+            colDistance = new ColumnHeader();
+            colArrival = new ColumnHeader();
+            colSiteType = new ColumnHeader();
+            colIndex = new ColumnHeader();
+            colLastVisited = new ColumnHeader();
+            colHasImages = new ColumnHeader();
+            colSiteHeading = new ColumnHeader();
+            colRelicTowerHeading = new ColumnHeader();
+            btnFilter = new Button();
+            txtFilter = new TextBox();
+            checkVisited = new CheckBox();
+            comboSiteType = new ComboBox();
+            label1 = new Label();
+            comboCurrentSystem = new ComboBox();
+            SuspendLayout();
             // 
             // grid
             // 
-            this.grid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.grid.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.colSiteId,
-            this.colSystem,
-            this.colBody,
-            this.colDistance,
-            this.colArrival,
-            this.colSiteType,
-            this.colIndex,
-            this.colLastVisited,
-            this.colHasImages,
-            this.colSiteHeading,
-            this.colRelicTowerHeading});
-            this.grid.FullRowSelect = true;
-            this.grid.GridLines = true;
-            this.grid.Location = new System.Drawing.Point(12, 40);
-            this.grid.Name = "grid";
-            this.grid.ShowGroups = false;
-            this.grid.Size = new System.Drawing.Size(889, 356);
-            this.grid.TabIndex = 0;
-            this.grid.UseCompatibleStateImageBehavior = false;
-            this.grid.View = System.Windows.Forms.View.Details;
-            this.grid.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.grid_ColumnClick);
-            this.grid.MouseClick += new System.Windows.Forms.MouseEventHandler(this.grid_MouseClick);
+            grid.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            grid.Columns.AddRange(new ColumnHeader[] { colSiteId, colSystem, colBody, colDistance, colArrival, colSiteType, colIndex, colLastVisited, colHasImages, colSiteHeading, colRelicTowerHeading });
+            grid.FullRowSelect = true;
+            grid.GridLines = true;
+            grid.Location = new Point(12, 40);
+            grid.Name = "grid";
+            grid.ShowGroups = false;
+            grid.Size = new Size(860, 377);
+            grid.TabIndex = 0;
+            grid.UseCompatibleStateImageBehavior = false;
+            grid.View = View.Details;
+            grid.ColumnClick += grid_ColumnClick;
+            grid.DoubleClick += grid_DoubleClick;
+            grid.MouseClick += grid_MouseClick;
             // 
             // colSiteId
             // 
-            this.colSiteId.Text = "ID";
-            this.colSiteId.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            colSiteId.Text = "ID";
+            colSiteId.TextAlign = HorizontalAlignment.Right;
             // 
             // colSystem
             // 
-            this.colSystem.Text = "System";
-            this.colSystem.Width = 110;
+            colSystem.Text = "System";
+            colSystem.Width = 110;
             // 
             // colBody
             // 
-            this.colBody.Text = "Body";
-            this.colBody.Width = 110;
+            colBody.Text = "Body";
+            colBody.Width = 110;
             // 
             // colDistance
             // 
-            this.colDistance.Text = "System distance";
-            this.colDistance.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            colDistance.Text = "System distance";
+            colDistance.TextAlign = HorizontalAlignment.Right;
             // 
             // colArrival
             // 
-            this.colArrival.Text = "Arrival distance:";
-            this.colArrival.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            colArrival.Text = "Arrival distance:";
+            colArrival.TextAlign = HorizontalAlignment.Right;
             // 
             // colSiteType
             // 
-            this.colSiteType.Text = "Site type";
-            this.colSiteType.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.colSiteType.Width = 90;
+            colSiteType.Text = "Site type";
+            colSiteType.TextAlign = HorizontalAlignment.Center;
+            colSiteType.Width = 90;
             // 
             // colIndex
             // 
-            this.colIndex.Text = "Ruins #";
-            this.colIndex.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            colIndex.Text = "Ruins #";
+            colIndex.TextAlign = HorizontalAlignment.Center;
             // 
             // colLastVisited
             // 
-            this.colLastVisited.Text = "Last visited";
-            this.colLastVisited.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.colLastVisited.Width = 90;
+            colLastVisited.Text = "Last visited";
+            colLastVisited.TextAlign = HorizontalAlignment.Center;
+            colLastVisited.Width = 90;
             // 
             // colHasImages
             // 
-            this.colHasImages.Text = "Has images";
-            this.colHasImages.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.colHasImages.Width = 80;
+            colHasImages.Text = "Has images";
+            colHasImages.TextAlign = HorizontalAlignment.Center;
+            colHasImages.Width = 80;
             // 
             // colSiteHeading
             // 
-            this.colSiteHeading.Text = "Site heading";
-            this.colSiteHeading.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.colSiteHeading.Width = 90;
+            colSiteHeading.Text = "Site heading";
+            colSiteHeading.TextAlign = HorizontalAlignment.Center;
+            colSiteHeading.Width = 90;
             // 
             // colRelicTowerHeading
             // 
-            this.colRelicTowerHeading.Text = "Relic tower heading";
-            this.colRelicTowerHeading.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.colRelicTowerHeading.Width = 130;
+            colRelicTowerHeading.Text = "Relic tower heading";
+            colRelicTowerHeading.TextAlign = HorizontalAlignment.Center;
+            colRelicTowerHeading.Width = 130;
             // 
             // btnFilter
             // 
-            this.btnFilter.Location = new System.Drawing.Point(12, 11);
-            this.btnFilter.Name = "btnFilter";
-            this.btnFilter.Size = new System.Drawing.Size(50, 23);
-            this.btnFilter.TabIndex = 1;
-            this.btnFilter.Text = "Filter";
-            this.btnFilter.UseVisualStyleBackColor = true;
-            this.btnFilter.Click += new System.EventHandler(this.btnFilter_Click);
+            btnFilter.Location = new Point(12, 12);
+            btnFilter.Name = "btnFilter";
+            btnFilter.Size = new Size(50, 23);
+            btnFilter.TabIndex = 1;
+            btnFilter.Text = "Filter";
+            btnFilter.UseVisualStyleBackColor = true;
+            btnFilter.Click += btnFilter_Click;
             // 
             // txtFilter
             // 
-            this.txtFilter.Location = new System.Drawing.Point(68, 12);
-            this.txtFilter.Name = "txtFilter";
-            this.txtFilter.Size = new System.Drawing.Size(254, 23);
-            this.txtFilter.TabIndex = 2;
+            txtFilter.Location = new Point(68, 12);
+            txtFilter.Name = "txtFilter";
+            txtFilter.Size = new Size(254, 23);
+            txtFilter.TabIndex = 2;
             // 
             // checkVisited
             // 
-            this.checkVisited.AutoSize = true;
-            this.checkVisited.Location = new System.Drawing.Point(328, 14);
-            this.checkVisited.Name = "checkVisited";
-            this.checkVisited.Size = new System.Drawing.Size(88, 19);
-            this.checkVisited.TabIndex = 3;
-            this.checkVisited.Text = "Only visited";
-            this.checkVisited.UseVisualStyleBackColor = true;
-            this.checkVisited.CheckedChanged += new System.EventHandler(this.checkVisited_CheckedChanged);
+            checkVisited.AutoSize = true;
+            checkVisited.Location = new Point(328, 14);
+            checkVisited.Name = "checkVisited";
+            checkVisited.Size = new Size(88, 19);
+            checkVisited.TabIndex = 3;
+            checkVisited.Text = "Only visited";
+            checkVisited.UseVisualStyleBackColor = true;
+            checkVisited.CheckedChanged += checkVisited_CheckedChanged;
             // 
             // comboSiteType
             // 
-            this.comboSiteType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboSiteType.FormattingEnabled = true;
-            this.comboSiteType.Items.AddRange(new object[] {
-            "All types",
-            "Alpha",
-            "Beta",
-            "Gamma"});
-            this.comboSiteType.Location = new System.Drawing.Point(422, 12);
-            this.comboSiteType.Name = "comboSiteType";
-            this.comboSiteType.Size = new System.Drawing.Size(121, 23);
-            this.comboSiteType.TabIndex = 4;
-            this.comboSiteType.SelectedIndexChanged += new System.EventHandler(this.comboSiteType_SelectedIndexChanged);
+            comboSiteType.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboSiteType.FormattingEnabled = true;
+            comboSiteType.Items.AddRange(new object[] { "All types", "Alpha", "Beta", "Gamma" });
+            comboSiteType.Location = new Point(422, 12);
+            comboSiteType.Name = "comboSiteType";
+            comboSiteType.Size = new Size(121, 23);
+            comboSiteType.TabIndex = 4;
+            comboSiteType.SelectedIndexChanged += comboSiteType_SelectedIndexChanged;
             // 
             // label1
             // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 405);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(170, 15);
-            this.label1.TabIndex = 5;
-            this.label1.Text = "System distances are based on:";
+            label1.AutoSize = true;
+            label1.Location = new Point(549, 15);
+            label1.Name = "label1";
+            label1.Size = new Size(136, 15);
+            label1.TabIndex = 5;
+            label1.Text = "Measure distances from:";
             // 
-            // lblCurrentSystem
+            // comboCurrentSystem
             // 
-            this.lblCurrentSystem.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.lblCurrentSystem.AutoSize = true;
-            this.lblCurrentSystem.Location = new System.Drawing.Point(188, 405);
-            this.lblCurrentSystem.Name = "lblCurrentSystem";
-            this.lblCurrentSystem.Size = new System.Drawing.Size(101, 15);
-            this.lblCurrentSystem.TabIndex = 6;
-            this.lblCurrentSystem.Text = "<current system>";
+            comboCurrentSystem.FormattingEnabled = true;
+            comboCurrentSystem.Location = new Point(691, 11);
+            comboCurrentSystem.Name = "comboCurrentSystem";
+            comboCurrentSystem.Size = new Size(181, 23);
+            comboCurrentSystem.TabIndex = 7;
             // 
             // FormAllRuins
             // 
-            this.AcceptButton = this.btnFilter;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(913, 429);
-            this.Controls.Add(this.lblCurrentSystem);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.comboSiteType);
-            this.Controls.Add(this.checkVisited);
-            this.Controls.Add(this.txtFilter);
-            this.Controls.Add(this.btnFilter);
-            this.Controls.Add(this.grid);
-            this.MinimumSize = new System.Drawing.Size(800, 400);
-            this.Name = "FormAllRuins";
-            this.Text = "Guardian Ruins";
-            this.Load += new System.EventHandler(this.FormAllRuins_Load);
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
+            AcceptButton = btnFilter;
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(884, 429);
+            Controls.Add(comboCurrentSystem);
+            Controls.Add(label1);
+            Controls.Add(comboSiteType);
+            Controls.Add(checkVisited);
+            Controls.Add(txtFilter);
+            Controls.Add(btnFilter);
+            Controls.Add(grid);
+            MinimumSize = new Size(900, 400);
+            Name = "FormAllRuins";
+            Text = "Guardian Ruins";
+            Load += FormAllRuins_Load;
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -240,7 +220,7 @@
         private ComboBox comboSiteType;
         private ColumnHeader colIndex;
         private Label label1;
-        private Label lblCurrentSystem;
         private ColumnHeader colSiteId;
+        private ComboBox comboCurrentSystem;
     }
 }

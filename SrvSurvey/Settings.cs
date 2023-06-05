@@ -35,6 +35,9 @@ namespace SrvSurvey
 
         public bool mapShowNotes = true;
 
+        public StatusFlags blinkTigger = StatusFlags.HudInAnalysisMode;
+        public int blinkDuration = 3000;
+
         // screenshot processing
         public bool processScreenshots = false;
         public bool addBannerToScreenshots = true;

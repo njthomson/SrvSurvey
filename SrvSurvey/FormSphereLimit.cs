@@ -1,6 +1,5 @@
 ﻿using SrvSurvey.game;
 using SrvSurvey.net.EDSM;
-using System.Collections.Generic;
 using System.Data;
 
 namespace SrvSurvey

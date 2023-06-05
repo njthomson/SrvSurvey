@@ -83,6 +83,7 @@ namespace SrvSurvey
         };
 
         public static Pen penLime2 = new Pen(LimeIsh, 2);
+        public static Pen penLime4 = new Pen(LimeIsh, 4);
 
         public static Pen penOrangeStripe3;
 
@@ -131,7 +132,7 @@ namespace SrvSurvey
 
             private static Pen penUnknown = new Pen(Color.LightSlateGray, 3);
             private static Pen penAbsent = new Pen(Color.DarkSlateGray, 3); // new Pen(Color.DarkRed, 3);
-            private static Pen penEmpty= new Pen(Color.Yellow, 3);
+            private static Pen penEmpty = new Pen(Color.Yellow, 3);
             public static Dictionary<POIType, Dictionary<SitePoiStatus, Pen>> pens = new Dictionary<POIType, Dictionary<SitePoiStatus, Pen>>
             {
                 { POIType.relic, new Dictionary<SitePoiStatus, Pen> {

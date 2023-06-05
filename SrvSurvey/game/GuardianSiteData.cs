@@ -23,7 +23,8 @@ namespace SrvSurvey.game
 
         public static GuardianSiteData? Load(string bodyName, int index)
         {
-            string filepath = Path.Combine(rootFolder, Game.activeGame!.fid!, getFilename(bodyName, index));
+            var fid = Game.activeGame?.fid ?? Game.settings.lastFid;
+            string filepath = Path.Combine(rootFolder, fid!, getFilename(bodyName, index));
             return Data.Load<GuardianSiteData>(filepath);
         }
 

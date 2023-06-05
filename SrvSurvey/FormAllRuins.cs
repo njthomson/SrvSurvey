@@ -1,5 +1,6 @@
 ﻿using SrvSurvey.canonn;
 using SrvSurvey.game;
+using SrvSurvey.net;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -17,7 +18,7 @@ namespace SrvSurvey
     {
         private static FormAllRuins? activeForm;
 
-        private double[] here;
+        private double[] currentSystem;
 
         public static void show()
         {
@@ -34,6 +35,8 @@ namespace SrvSurvey
         private int sortColumn;
         private bool sortUp = false;
 
+        private readonly LookupStarSystem starSystemLookup;
+
         public FormAllRuins()
         {
             InitializeComponent();
@@ -44,6 +47,9 @@ namespace SrvSurvey
 
             // can we fit in our last location
             Util.useLastLocation(this, Game.settings.formAllRuinsLocation);
+
+            starSystemLookup = new LookupStarSystem(comboCurrentSystem);
+            starSystemLookup.onSystemMatch += StarSystemLookup_starSystemMatch;
         }
 
         protected override void OnClosing(CancelEventArgs e)
@@ -55,18 +61,23 @@ namespace SrvSurvey
 
         private void FormAllRuins_Load(object sender, EventArgs e)
         {
-            if (Game.activeGame?.cmdr != null)
+            var cmdr = Game.activeGame?.cmdr;
+            if (cmdr == null && Game.settings.lastFid != null)
+                cmdr = CommanderSettings.Load(Game.settings.lastFid, true, Game.settings.lastCommander!);
+
+            if (cmdr != null)
             {
-                lblCurrentSystem.Text = Game.activeGame.cmdr.currentSystem;
-                here = Game.activeGame.cmdr.starPos;
+                comboCurrentSystem.Text = cmdr.currentSystem;
+                currentSystem = cmdr.starPos;
             }
             else
             {
-                lblCurrentSystem.Text = "Sol (current unknown)";
-                here = new double[3];
+                comboCurrentSystem.Text = "Sol";
+                currentSystem = new double[3] { 0, 0, 0 };
             }
 
             this.prepareAllRuins();
+            this.grid.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
         }
 
         protected override void OnResizeEnd(EventArgs e)
@@ -78,6 +89,35 @@ namespace SrvSurvey
             {
                 Game.settings.formAllRuinsLocation = rect;
                 Game.settings.Save();
+            }
+        }
+
+        private void StarSystemLookup_starSystemMatch(net.EDSM.StarSystem? starSystem)
+        {
+            if (starSystem == null)
+            {
+                comboCurrentSystem.Text = "Sol";
+                currentSystem = new double[3] { 0, 0, 0 };
+            }
+            else
+            {
+                // update currentSystem
+                this.currentSystem = starSystem.coords.starPos;
+            }
+
+            // and recalculate distances
+            calculateDistances();
+
+            showAllRows();
+        }
+
+        private void calculateDistances()
+        {
+            foreach (var row in this.rows)
+            {
+                var entry = (GuardianRuinEntry)row.Tag;
+                entry.systemDistance = Util.getSystemDistance(currentSystem, entry.starPos);
+                row.SubItems["distanceToSystem"]!.Text = entry.systemDistance.ToString("N0") + " ly";
             }
         }
 
@@ -100,7 +140,7 @@ namespace SrvSurvey
 
                 var distanceToArrival = entry.distanceToArrival.ToString("N0");
 
-                entry.systemDistance = Util.getSystemDistance(here, entry.starPos);
+                entry.systemDistance = Util.getSystemDistance(currentSystem, entry.starPos);
                 var distanceToSystem = entry.systemDistance.ToString("N0");
 
                 var siteID = entry.siteID == -1 ? "?" : entry.siteID.ToString();
@@ -108,9 +148,9 @@ namespace SrvSurvey
                 row.Tag = entry;
 
                 // ordering here needs to manually match columns
-                row.SubItems.Add(entry.systemName);
+                row.SubItems.Add(new ListViewItem.ListViewSubItem(row, entry.systemName) { Name = "systemName" });
                 row.SubItems.Add(entry.bodyName);
-                row.SubItems.Add($"{distanceToSystem} ly");
+                row.SubItems.Add(new ListViewItem.ListViewSubItem(row, "x ly") { Name = "distanceToSystem" });
                 row.SubItems.Add($"{distanceToArrival} ls");
                 row.SubItems.Add(entry.siteType);
                 row.SubItems.Add(entry.idx > 0 ? $"#{entry.idx}" : "");
@@ -121,6 +161,8 @@ namespace SrvSurvey
 
                 this.rows.Add(row);
             }
+
+            calculateDistances();
 
             Program.control!.Invoke((MethodInvoker)delegate
             {
@@ -169,7 +211,6 @@ namespace SrvSurvey
                 sortedRows = sortedRows.Reverse();
 
             this.grid.Items.AddRange(sortedRows.ToArray());
-            this.grid.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
         }
 
         private IEnumerable<ListViewItem> sortRows(IEnumerable<ListViewItem> rows)
@@ -240,6 +281,17 @@ namespace SrvSurvey
             if (e.Button == MouseButtons.Right && grid.SelectedItems.Count > 0)
             {
                 Clipboard.SetText(grid.SelectedItems[0].SubItems[1].Text);
+            }
+        }
+
+        private void grid_DoubleClick(object sender, EventArgs e)
+        {
+            // open the form for this row?
+            if (grid.SelectedItems.Count > 0)
+            {
+                var entry = (GuardianRuinEntry)grid.SelectedItems[0].Tag;
+                var siteData = GuardianSiteData.Load($"{entry.systemName} {entry.bodyName}", entry.idx);
+                FormRuins.show(siteData);
             }
         }
     }

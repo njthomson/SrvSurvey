@@ -21,14 +21,25 @@ namespace SrvSurvey
 
         protected PlotBase()
         {
-            this.Opacity = 0;
+            this.BackColor = Color.Black;
+            this.ShowIcon = false;
+            this.ShowInTaskbar = false;
+            this.StartPosition = FormStartPosition.Manual;
+            this.MinimizeBox = false;
+            this.MaximizeBox = false;
+            this.FormBorderStyle = FormBorderStyle.None;
+            this.Opacity = Game.settings.Opacity;
+            this.DoubleBuffered = true;
+
             this.TopMost = true;
             this.Cursor = Cursors.Cross;
 
             if (game.nearBody != null)
+            {
                 this.touchdownLocation = new TrackingDelta(
                     game.nearBody!.radius,
                     game.touchdownLocation ?? LatLong2.Empty);
+            }
         }
 
         protected override void Dispose(bool disposing)
@@ -109,14 +120,15 @@ namespace SrvSurvey
             {
                 this.reposition(Elite.getWindowRect());
             }
+            this.Invalidate();
         }
 
         protected virtual void Status_StatusChanged(bool blink)
         {
             if (this.IsDisposed) return;
 
-            // I think not needed
-            //this.touchdownLocation.Current = Status.here;
+            if (this.touchdownLocation != null)
+                this.touchdownLocation.Current = Status.here;
 
             if (this.srvLocation != null)
                 this.srvLocation.Current = Status.here;

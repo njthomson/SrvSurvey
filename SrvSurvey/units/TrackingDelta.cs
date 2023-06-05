@@ -47,7 +47,6 @@ namespace SrvSurvey.units
         {
             this.radius = (decimal)bodyRadius;
             this.mpd = this.radius * DecimalEx.TwoPi / 360M;
-            // this.halfCirc = bodyRadius; // * this.mpd;
             this.current = Status.here;
             this.target = targetLocation;
             this.calc();

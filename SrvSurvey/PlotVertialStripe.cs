@@ -189,14 +189,13 @@ namespace SrvSurvey
         private void drawAngleString(Graphics g)
         {
             var w = (this.Width / 2f);
-
-            g.FillRectangle(Brushes.Black, w - 45, 15, 85, 30);
+            var y = 1;
+            g.FillRectangle(Brushes.Black, w - 45, 5 + y, 85, 30);
 
             var txt = $"{new Angle(game.status.Heading)}";
             var sz = g.MeasureString(txt, Game.settings.fontBig);
 
             var x = (this.Width / 2f) - (sz.Width / 2);
-            var y = 10f;
             g.DrawString(txt, Game.settings.fontBig, Brushes.Yellow, x, y);
         }
 
