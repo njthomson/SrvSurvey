@@ -211,6 +211,7 @@ namespace SrvSurvey.game
 
                         // fire event
                         var leftBody = this.nearBody;
+                        this.nearBody.Dispose();
                         this.nearBody = null;
                         this.departingBody(leftBody);
                     }
@@ -530,6 +531,7 @@ namespace SrvSurvey.game
 
         private void createNearBody(string bodyName)
         {
+            if (string.IsNullOrEmpty(this.fid)) return;
             Game.log($"in createNearBody: {bodyName}");
 
             // exit early if we already have that body

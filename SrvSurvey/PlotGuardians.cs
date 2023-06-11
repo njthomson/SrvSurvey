@@ -256,7 +256,7 @@ namespace SrvSurvey
             if (siteData.type == GuardianSiteData.SiteType.Unknown || this.mode == Mode.siteType)
             {
                 // try matching to the enum?
-                if (!Enum.TryParse<GuardianSiteData.SiteType>(msg, out parsedType))
+                if (!Enum.TryParse<GuardianSiteData.SiteType>(msg, true, out parsedType))
                 {
                     // try matching to other strings?
                     switch (msg)
@@ -276,7 +276,7 @@ namespace SrvSurvey
             else if (msg.StartsWith(MsgCmd.site))
             {
                 // '.site <alpha>'
-                Enum.TryParse<GuardianSiteData.SiteType>(msg.Substring(MsgCmd.site.Length), out parsedType);
+                Enum.TryParse<GuardianSiteData.SiteType>(msg.Substring(MsgCmd.site.Length), true, out parsedType);
             }
 
             if (parsedType != GuardianSiteData.SiteType.Unknown)
@@ -481,7 +481,7 @@ namespace SrvSurvey
 
         protected override void Status_StatusChanged(bool blink)
         {
-            if (game?.status == null) return;
+            if (game?.status == null || this.IsDisposed) return;
 
             base.Status_StatusChanged(blink);
 

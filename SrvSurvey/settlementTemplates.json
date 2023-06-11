@@ -59,7 +59,7 @@
       { "name": "p39", "dist": 489, "angle": 297, "type": "orb" }, // unknown type, estimated location!
       { "name": "p40", "dist": 624, "angle": 103, "type": "orb" },
       { "name": "p41", "dist": 629, "angle": 250.7, "type": "orb" }
-      // { "name": "p41", "dist": 000, "angle": 000, "type": "???" },
+      // { "name": "p42", "dist": 000, "angle": 000, "type": "???" },
     ]
   },
   "beta": {
@@ -78,7 +78,7 @@
       { "name": "t8", "dist": 612, "angle": 236.8, "type": "relic" },
 
       { "name": "p1", "dist": 642, "angle": 30.7, "type": "tablet" },
-      { "name": "p2", "dist": 540, "angle": 28.3, "type": "orb" }, // estimated position!
+      { "name": "p2", "dist": 540, "angle": 28.3, "type": "orb" },
       { "name": "p3", "dist": 367, "angle": 26.5, "type": "casket" },
       { "name": "p4", "dist": 549, "angle": 5.5, "type": "orb" },
       { "name": "p5", "dist": 496, "angle": 357.8, "type": "urn" },
@@ -90,7 +90,7 @@
       { "name": "p11", "dist": 183, "angle": 298, "type": "totem" },
       { "name": "p12", "dist": 543, "angle": 256.8, "type": "totem" },
       { "name": "p13", "dist": 258, "angle": 214.7, "type": "totem" },
-      { "name": "p14", "dist": 467, "angle": 235, "type": "tablet" }, // alpha?
+      { "name": "p14", "dist": 467, "angle": 235, "type": "tablet" },
       { "name": "p15", "dist": 506, "angle": 230.8, "type": "casket" },
       { "name": "p16", "dist": 536, "angle": 220, "type": "totem" }, // estimated position!
       { "name": "p17", "dist": 565, "angle": 215.4, "type": "totem" }, // double check
@@ -112,13 +112,13 @@
       { "name": "p33", "dist": 390, "angle": 115, "type": "tablet" }, // estimated position!
       { "name": "p34", "dist": 421, "angle": 104, "type": "tablet" },
       { "name": "p35", "dist": 196, "angle": 132, "type": "tablet" },
-      { "name": "p36", "dist": 191, "angle": 148, "type": "casket" }, // was p35 my mistake
+      { "name": "p36", "dist": 191, "angle": 148, "type": "casket" }, // was p35 by mistake
       { "name": "p37", "dist": 120, "angle": 151, "type": "casket" },
       { "name": "p38", "dist": 118, "angle": 212.4, "type": "tablet" },
       { "name": "p39", "dist": 65, "angle": 152, "type": "totem" },
       { "name": "p40", "dist": 241, "angle": 90.6, "type": "casket" },
-      { "name": "p41", "dist": 126, "angle": 337, "type": "orb" }, // confirm!
-      { "name": "p42", "dist": 305.5, "angle": 23.8, "type": "tablet" } // confirm!
+      { "name": "p41", "dist": 126, "angle": 337, "type": "orb" },
+      { "name": "p42", "dist": 305.5, "angle": 23.8, "type": "tablet" }
     ]
   },
   "gamma": {
@@ -142,7 +142,8 @@
       { "name": "p8", "dist": 376, "angle": 153.6, "type": "urn" },
       { "name": "p9", "dist": 408, "angle": 57.2, "type": "totem" },
       { "name": "p10", "dist": 386, "angle": 199.3, "type": "orb" },
-      { "name": "p10", "dist": 467, "angle": 146.4, "type": "urn" }
+      { "name": "p11", "dist": 467, "angle": 146.4, "type": "urn" },
+      { "name": "p12", "dist": 257, "angle": 32.2, "type": "casket" }
     ]
   }
 }

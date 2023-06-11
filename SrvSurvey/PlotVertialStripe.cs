@@ -90,14 +90,14 @@ namespace SrvSurvey
         private void Status_StatusChanged(bool blink)
         {
             //if (this.Opacity > 0)
-                this.Opacity = getOpacity() * Game.settings.Opacity;
+            this.Opacity = getOpacity() * Game.settings.Opacity;
 
             this.Invalidate();
         }
 
         private double getOpacity()
         {
-            if (targetAltitude == 0)
+            if (PlotVertialStripe.mode == Mode.RelicTower)
                 return 0.8;
 
 
@@ -237,7 +237,7 @@ namespace SrvSurvey
 
             x += d;
             y += d * 0.8f;
-            drawLine(g, x, y, this.Width-5, y);
+            drawLine(g, x, y, this.Width - 5, y);
 
             return;
             //rect.Inflate(40, 40);
@@ -434,9 +434,17 @@ namespace SrvSurvey
             var w = (this.Width / 2f);
             var h = (this.Height / 2f);
 
-            //var d = 60f;
-            //var x = w + 90;
-            //var y = h - 385;
+            var x = w * 1.4f;
+            var y = h * 0.535f;
+            drawCircle(g, x, y, 30);
+
+            drawLine(g, x - 30, y, x - w * 0.50f, y);
+            drawLine(g, x + 22, y-4, x + 30, y-4);
+
+            drawLine(g, x, y + 30, x, y + 50);
+            drawLine(g, x - 19, y + 25, x - 30, y + 42);
+            drawLine(g, x - 26, y + 12, x - 45, y + 25);
+
             //var rect = new RectangleF(x, y, d, d);
             //g.DrawEllipse(GameColors.penYellow8, rect);
             //g.DrawEllipse(pp, rect);
@@ -453,10 +461,11 @@ namespace SrvSurvey
             //g.DrawLine(GameColors.penYellow8, x, y, x - 160, y);
             //g.DrawLine(pp, x, y, x - 160, y);
 
-            var x = w + 60;
-            var y = h - 234;
-            g.DrawLine(GameColors.penYellow8, x, y, x - 120, y + 140);
-            g.DrawLine(pp, x, y, x - 120, y + 140);
+            //x = w * 1.23f;
+            //y = h * 0.675f;
+            //drawLine(g, x, y, x - w * 0.22f, y + h * 0.150f);
+
+            //drawLine(g, x, y, x - 120, y + 140);
 
             //x = w + 60;
             //y = h - 734;

@@ -8,6 +8,7 @@ namespace SrvSurvey.game
     class LandableBody : IDisposable
     {
         private readonly Game game;
+        private bool isDisposed = false;
         public readonly string systemName;
         public readonly string bodyName;
         public readonly int bodyId;
@@ -63,6 +64,8 @@ namespace SrvSurvey.game
 
         protected virtual void Dispose(bool disposing)
         {
+            this.isDisposed = true;
+
             if (this.data != null)
             {
                 this.data.Save();
@@ -80,6 +83,8 @@ namespace SrvSurvey.game
 
         private void Journals_onJournalEntry(JournalEntry entry, int index)
         {
+            if (this.isDisposed) return;
+
             this.onJournalEntry((dynamic)entry);
         }
 
@@ -200,7 +205,7 @@ namespace SrvSurvey.game
                     this.siteData.systemName = this.systemName;
                     this.siteData.bodyName = this.bodyName;
                 }
-                
+
                 this.matchGRSite(nearest.BodyName);
 
                 this.siteData.lastVisited = DateTimeOffset.UtcNow;

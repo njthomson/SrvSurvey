@@ -190,7 +190,8 @@ namespace SrvSurvey
             // show cue to select
             var triggerTxt = "cockpit mode";
             var b = this.highlightBlink ? GameColors.brushCyan : GameColors.brushGameOrange;
-            drawFooterText($"(toggle {triggerTxt} twice to set)", b);
+            var times = this.highlightBlink ? "twice" : "once";
+            drawFooterText($"(toggle {triggerTxt} {times} to set)", b);
         }
 
         private void drawCenterMessage(string msg)
