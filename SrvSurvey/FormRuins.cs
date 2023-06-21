@@ -95,12 +95,13 @@ namespace SrvSurvey
 
             comboSiteType.SelectedIndex = 0;
             comboSite.SelectedIndex = 0;
-            this.showFilteredSites(siteData ?? game.nearBody?.siteData);
+            this.showFilteredSites(siteData ?? game?.nearBody?.siteData);
 
             checkNotes.Checked = Game.settings.mapShowNotes;
             splitter.Panel2Collapsed = this.siteData == null || !Game.settings.mapShowNotes;
 
-            game.status.StatusChanged += Status_StatusChanged;
+            if (game?.status != null)
+                game.status.StatusChanged += Status_StatusChanged;
         }
 
         private void Status_StatusChanged(bool blink)
@@ -154,6 +155,15 @@ namespace SrvSurvey
 
             showStatus();
             map.Invalidate();
+
+            var countTowers = newSite == null
+                ? template.poi.Count(_ => _.type == POIType.relic)
+                : newSite.poiStatus.Count(_ => _.Key.StartsWith("t") && _.Value == SitePoiStatus.present);
+            var countItems = newSite == null
+                ? template.poi.Count(_ => _.type != POIType.relic)
+                : newSite.poiStatus.Count(_ => !_.Key.StartsWith("t") && (_.Value == SitePoiStatus.present || _.Value == SitePoiStatus.empty));
+
+            lblStatus.Text = $"Relic Towers: {countTowers}, puddles: {countItems}";
         }
 
         private void getAllSurveyedRuins()
@@ -392,7 +402,7 @@ namespace SrvSurvey
 
             drawLegend(g);
 
-            if (game.nearBody?.siteData != null && game.nearBody.siteData.type == this.siteType)
+            if (game?.nearBody?.siteData != null && game.nearBody.siteData.type == this.siteType)
                 drawCommander(g);
         }
 
@@ -414,7 +424,7 @@ namespace SrvSurvey
 
             var cp = calcCmdrToSite();
             if (cp != null)
-            drawCommander(g, (PointF)cp, 10f);
+                drawCommander(g, (PointF)cp, 10f);
         }
 
         public static PointF? calcCmdrToSite()
@@ -434,12 +444,14 @@ namespace SrvSurvey
 
         private void drawCommander(Graphics g, PointF cp, float r)
         {
+            if (game?.nearBody?.siteData == null) return;
+
             var p1 = GameColors.penLime4;
             var rect = new RectangleF(cp.X - r, cp.Y - r, r * 2, r * 2);
             g.DrawEllipse(p1, rect);
 
-            
-            var pt = Util.rotateLine( game.status.Heading - game.nearBody.siteData.siteHeading - 180, 20);
+
+            var pt = Util.rotateLine(game.status.Heading - game.nearBody.siteData.siteHeading - 180, 20);
             g.DrawLine(GameColors.penLime4, cp.X, cp.Y, cp.X + pt.X, cp.Y - pt.Y);
         }
 
@@ -448,7 +460,6 @@ namespace SrvSurvey
             g.ResetTransform();
             g.TranslateTransform(mapCenter.X - dragOffset.X, mapCenter.Y - dragOffset.Y);
             g.ScaleTransform(this.scale, this.scale);
-            g.RotateTransform(180);
 
             var nearestDist = double.MaxValue;
             var nearestPt = PointF.Empty;
@@ -458,12 +469,12 @@ namespace SrvSurvey
             {
                 // calculate render point for POI
                 var pt = Util.rotateLine(
-                    180 - poi.angle,
+                    360-poi.angle,
                     poi.dist);
 
                 // is this the closest POI?
-                var x = -pt.X * this.scale - mousePos.X - dragOffset.X;
-                var y = -pt.Y * this.scale - mousePos.Y - dragOffset.Y;
+                var x = pt.X * this.scale - mousePos.X - dragOffset.X;
+                var y = pt.Y * this.scale - mousePos.Y - dragOffset.Y;
                 var d = Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
 
                 if (!this.dragging && d < nearestDist)
@@ -502,10 +513,10 @@ namespace SrvSurvey
         {
             PointF[] points =
             {
-            new PointF(pt.X, pt.Y + 8),
-            new PointF(pt.X + 8, pt.Y - 8),
-            new PointF(pt.X - 8, pt.Y - 8),
-            new PointF(pt.X, pt.Y + 8),
+                new PointF(pt.X, pt.Y - 8),
+                new PointF(pt.X + 8, pt.Y + 8),
+                new PointF(pt.X - 8, pt.Y + 8),
+                new PointF(pt.X, pt.Y - 8),
             };
 
             var brush = GameColors.Map.brushes[POIType.relic][poiStatus ?? SitePoiStatus.present];
@@ -520,7 +531,7 @@ namespace SrvSurvey
             tp.X = 20;
             tp.Y = 20;
             g.ResetTransform();
-            var rect = new RectangleF(tp.X - 5, tp.Y - 5, 100, 140);
+            var rect = new RectangleF(tp.X - 5, tp.Y - 5, 108, 174);
 
             g.FillRectangle(GameColors.Map.Legend.brush, rect);
             g.DrawRectangle(GameColors.Map.Legend.pen, rect);
@@ -531,7 +542,7 @@ namespace SrvSurvey
             drawString(g, "Relic Tower");
             drawRelicTower(g, new PointF(tp.X - 10, tp.Y - 10));
 
-            drawString(g, "Orb");
+            drawString(g, "\r\nOrb");
             drawPuddle(g, new PointF(tp.X - 10, tp.Y - 10), POIType.orb);
 
             drawString(g, "Casket");
@@ -545,6 +556,9 @@ namespace SrvSurvey
 
             drawString(g, "Urn");
             drawPuddle(g, new PointF(tp.X - 10, tp.Y - 10), POIType.urn);
+
+            drawString(g, "Empty puddle");
+            drawPuddle(g, new PointF(tp.X - 10, tp.Y - 10), POIType.totem, SitePoiStatus.empty);
         }
 
         private void drawString(Graphics g, string msg)

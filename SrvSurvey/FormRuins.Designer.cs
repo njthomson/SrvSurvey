@@ -18,7 +18,7 @@
                 components.Dispose();
             }
 
-            if (game.status != null)
+            if (game?.status != null)
                 game.status.StatusChanged -= Status_StatusChanged;
 
             base.Dispose(disposing);
@@ -100,7 +100,8 @@
             lblStatus.Name = "lblStatus";
             lblStatus.Size = new Size(536, 19);
             lblStatus.Spring = true;
-            lblStatus.Text = "toolStripStatusLabel1";
+            lblStatus.Text = "...";
+            lblStatus.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // lblDist
             // 
@@ -149,13 +150,14 @@
             // 
             // comboSite
             // 
+            comboSite.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             comboSite.DropDownStyle = ComboBoxStyle.DropDownList;
             comboSite.DropDownWidth = 404;
             comboSite.FormattingEnabled = true;
             comboSite.Items.AddRange(new object[] { "Alpha template", "Beta template", "Gamma template", "----------------" });
             comboSite.Location = new Point(239, 10);
             comboSite.Name = "comboSite";
-            comboSite.Size = new Size(242, 23);
+            comboSite.Size = new Size(420, 23);
             comboSite.TabIndex = 2;
             comboSite.SelectedIndexChanged += comboSite_SelectedIndexChanged;
             // 
