@@ -1,13 +1,13 @@
 [
   {
-    "siteID": -1,
+    "siteID": 1,
     "systemName": "Synuefe XR-H d11-102",
     "systemAddress": 3515254557027,
     "bodyName": "1 b",
     "bodyId": 13,
     "siteType": "Beta",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:35:04.053417+00:00",
+    "lastUpdated": "2023-07-14T19:02:49.8981728+00:00",
     "distanceToArrival": 798.0,
     "starPos": [
       357.34375,
@@ -24,22 +24,22 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 141,
     "systemName": "IC 2391 Sector YE-A d103",
     "systemAddress": 3549631072611,
     "bodyName": "B 1",
     "bodyId": 15,
     "siteType": "Gamma",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:35:04.9522819+00:00",
+    "lastUpdated": "2023-07-14T19:02:49.9368357+00:00",
     "distanceToArrival": 22384.0,
     "starPos": [
       489.03125,
       -98.09375,
       -34.96875
     ],
-    "latitude": "NaN",
-    "longitude": "NaN",
+    "latitude": -54.580582,
+    "longitude": 25.089531,
     "siteHeading": -1,
     "relicTowerHeading": -1,
     "legacyLatitude": -54.580582,
@@ -48,14 +48,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 3,
     "systemName": "IC 2391 Sector ZE-A d101",
     "systemAddress": 3480928373091,
     "bodyName": "C 3",
     "bodyId": 33,
     "siteType": "Alpha",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:35:05.8830429+00:00",
+    "lastUpdated": "2023-07-14T19:02:49.9478112+00:00",
     "distanceToArrival": 337488.0,
     "starPos": [
       526.5,
@@ -72,14 +72,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 4,
     "systemName": "Synuefe XO-P c22-17",
     "systemAddress": 4757716439746,
     "bodyName": "C 1",
     "bodyId": 12,
     "siteType": "Beta",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:35:06.8283443+00:00",
+    "lastUpdated": "2023-07-14T19:02:49.9577319+00:00",
     "distanceToArrival": 1483.0,
     "starPos": [
       546.90625,
@@ -96,14 +96,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 2,
     "systemName": "IC 2391 Sector GW-V b2-4",
     "systemAddress": 9474831951257,
     "bodyName": "B 1",
     "bodyId": 15,
     "siteType": "Beta",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:35:07.7031999+00:00",
+    "lastUpdated": "2023-07-14T19:02:49.9676833+00:00",
     "distanceToArrival": 3026.0,
     "starPos": [
       587.9375,
@@ -120,14 +120,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 140,
     "systemName": "Synuefe YY-Q c21-19",
     "systemAddress": 5307539296954,
     "bodyName": "2 a",
     "bodyId": 24,
     "siteType": "Beta",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:35:08.6037537+00:00",
+    "lastUpdated": "2023-07-14T19:02:49.9813579+00:00",
     "distanceToArrival": 731.0,
     "starPos": [
       589.15625,
@@ -144,22 +144,22 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 47,
     "systemName": "IC 2391 Sector FL-X b1-7",
     "systemAddress": 16072170087825,
     "bodyName": "A 2",
     "bodyId": 14,
     "siteType": "Alpha",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:35:09.5208982+00:00",
+    "lastUpdated": "2023-07-14T19:02:49.9924076+00:00",
     "distanceToArrival": 53.0,
     "starPos": [
       611.34375,
       -78.40625,
       -51.6875
     ],
-    "latitude": "NaN",
-    "longitude": "NaN",
+    "latitude": 9.200873,
+    "longitude": -130.064285,
     "siteHeading": -1,
     "relicTowerHeading": -1,
     "legacyLatitude": 9.200872,
@@ -168,14 +168,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 272,
     "systemName": "Synuefe CN-H d11-63",
     "systemAddress": 2175275075939,
     "bodyName": "A 2 b",
     "bodyId": 25,
     "siteType": "Gamma",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:35:10.444021+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.0012594+00:00",
     "distanceToArrival": 1483.0,
     "starPos": [
       610.96875,
@@ -192,14 +192,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 291,
     "systemName": "Synuefe DK-D b46-4",
     "systemAddress": 9475637257609,
     "bodyName": "C 1",
     "bodyId": 53,
     "siteType": "Beta",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:35:11.7575589+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.0129509+00:00",
     "distanceToArrival": 80604.0,
     "starPos": [
       652.9375,
@@ -216,14 +216,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 45,
     "systemName": "Synuefe ZR-I b43-10",
     "systemAddress": 22671924274545,
     "bodyName": "D 2",
     "bodyId": 46,
     "siteType": "Beta",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:35:12.8607865+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.0262723+00:00",
     "distanceToArrival": 69433.0,
     "starPos": [
       811.40625,
@@ -240,14 +240,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 46,
     "systemName": "Synuefe ZR-I b43-10",
     "systemAddress": 22671924274545,
     "bodyName": "D 2",
     "bodyId": 46,
     "siteType": "Alpha",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:35:12.8640153+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.0360733+00:00",
     "distanceToArrival": 69433.0,
     "starPos": [
       811.40625,
@@ -264,14 +264,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 44,
     "systemName": "Synuefe ZR-I b43-10",
     "systemAddress": 22671924274545,
     "bodyName": "D 2",
     "bodyId": 46,
     "siteType": "Alpha",
     "idx": 3,
-    "lastUpdated": "2023-07-12T18:35:12.8707769+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.0464429+00:00",
     "distanceToArrival": 69433.0,
     "starPos": [
       811.40625,
@@ -288,14 +288,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 43,
     "systemName": "Synuefe CE-R c21-6",
     "systemAddress": 1734529192634,
     "bodyName": "C 1",
     "bodyId": 53,
     "siteType": "Alpha",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:35:14.0612341+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.0567476+00:00",
     "distanceToArrival": 72645.0,
     "starPos": [
       828.1875,
@@ -312,14 +312,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 41,
     "systemName": "Synuefe CE-R c21-6",
     "systemAddress": 1734529192634,
     "bodyName": "C 1",
     "bodyId": 53,
     "siteType": "Beta",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:35:14.0641216+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.0674874+00:00",
     "distanceToArrival": 72645.0,
     "starPos": [
       828.1875,
@@ -336,14 +336,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 42,
     "systemName": "Synuefe CE-R c21-6",
     "systemAddress": 1734529192634,
     "bodyName": "C 1",
     "bodyId": 53,
     "siteType": "Alpha",
     "idx": 3,
-    "lastUpdated": "2023-07-12T18:35:14.0711662+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.0789242+00:00",
     "distanceToArrival": 72645.0,
     "starPos": [
       828.1875,
@@ -360,14 +360,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 5,
     "systemName": "Synuefe ZL-J d10-119",
     "systemAddress": 4099470772571,
     "bodyName": "9 b",
     "bodyId": 28,
     "siteType": "Alpha",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:35:15.164836+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.087834+00:00",
     "distanceToArrival": 1073.0,
     "starPos": [
       834.21875,
@@ -384,14 +384,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 16,
     "systemName": "Synuefe LY-I b42-2",
     "systemAddress": 5079737705833,
     "bodyName": "C 2",
     "bodyId": 25,
     "siteType": "Gamma",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:35:16.0842853+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.0984707+00:00",
     "distanceToArrival": 1713.0,
     "starPos": [
       814.71875,
@@ -408,14 +408,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 15,
     "systemName": "Synuefe LY-I b42-2",
     "systemAddress": 5079737705833,
     "bodyName": "C 2",
     "bodyId": 25,
     "siteType": "Gamma",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:35:16.0871823+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.1089411+00:00",
     "distanceToArrival": 1713.0,
     "starPos": [
       814.71875,
@@ -432,14 +432,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 17,
     "systemName": "Synuefe LY-I b42-2",
     "systemAddress": 5079737705833,
     "bodyName": "C 2",
     "bodyId": 25,
     "siteType": "Beta",
     "idx": 3,
-    "lastUpdated": "2023-07-12T18:35:16.0937287+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.1211072+00:00",
     "distanceToArrival": 1713.0,
     "starPos": [
       814.71875,
@@ -456,14 +456,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 91,
     "systemName": "Synuefe ZL-J d10-109",
     "systemAddress": 3755873388891,
     "bodyName": "E 3",
     "bodyId": 75,
     "siteType": "Beta",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:35:17.2859545+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.1316213+00:00",
     "distanceToArrival": 88767.0,
     "starPos": [
       852.65625,
@@ -480,14 +480,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 89,
     "systemName": "Synuefe ZL-J d10-109",
     "systemAddress": 3755873388891,
     "bodyName": "E 3",
     "bodyId": 75,
     "siteType": "Beta",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:35:17.2888586+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.1424496+00:00",
     "distanceToArrival": 88767.0,
     "starPos": [
       852.65625,
@@ -504,14 +504,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 90,
     "systemName": "Synuefe ZL-J d10-109",
     "systemAddress": 3755873388891,
     "bodyName": "E 3",
     "bodyId": 75,
     "siteType": "Alpha",
     "idx": 3,
-    "lastUpdated": "2023-07-12T18:35:17.2959481+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.1522078+00:00",
     "distanceToArrival": 88767.0,
     "starPos": [
       852.65625,
@@ -528,14 +528,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 11,
     "systemName": "Synuefe TP-F b44-0",
     "systemAddress": 682228131193,
     "bodyName": "CD 1",
     "bodyId": 16,
     "siteType": "Alpha",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:35:18.2264981+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.1613976+00:00",
     "distanceToArrival": 1275.0,
     "starPos": [
       838.75,
@@ -552,14 +552,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 10,
     "systemName": "Synuefe TP-F b44-0",
     "systemAddress": 682228131193,
     "bodyName": "CD 1",
     "bodyId": 16,
     "siteType": "Beta",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:35:18.2292773+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.1695198+00:00",
     "distanceToArrival": 1275.0,
     "starPos": [
       838.75,
@@ -576,22 +576,22 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 9,
     "systemName": "Synuefe TP-F b44-0",
     "systemAddress": 682228131193,
     "bodyName": "CD 1",
     "bodyId": 16,
     "siteType": "Gamma",
     "idx": 3,
-    "lastUpdated": "2023-07-12T18:35:18.235856+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.1776205+00:00",
     "distanceToArrival": 1275.0,
     "starPos": [
       838.75,
       -197.84375,
       -111.84375
     ],
-    "latitude": "NaN",
-    "longitude": "NaN",
+    "latitude": 59.331982,
+    "longitude": 15.105295,
     "siteHeading": -1,
     "relicTowerHeading": -1,
     "legacyLatitude": 59.331997,
@@ -600,14 +600,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 64,
     "systemName": "Synuefe NL-N c23-4",
     "systemAddress": 1184840454858,
     "bodyName": "B 3",
     "bodyId": 18,
     "siteType": "Gamma",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:35:19.4313918+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.1882769+00:00",
     "distanceToArrival": 1971.0,
     "starPos": [
       860.125,
@@ -624,14 +624,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 13,
     "systemName": "Synuefe NL-N c23-4",
     "systemAddress": 1184840454858,
     "bodyName": "B 3",
     "bodyId": 18,
     "siteType": "Alpha",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:35:19.4343216+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.197075+00:00",
     "distanceToArrival": 1971.0,
     "starPos": [
       860.125,
@@ -648,14 +648,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 22,
     "systemName": "Synuefe NL-N c23-4",
     "systemAddress": 1184840454858,
     "bodyName": "B 3",
     "bodyId": 18,
     "siteType": "Alpha",
     "idx": 3,
-    "lastUpdated": "2023-07-12T18:35:19.4409985+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.2047382+00:00",
     "distanceToArrival": 1971.0,
     "starPos": [
       860.125,
@@ -672,14 +672,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 8,
     "systemName": "HIP 39768",
     "systemAddress": 8219259477,
     "bodyName": "A 14 f",
     "bodyId": 48,
     "siteType": "Beta",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:35:20.6345222+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.2136248+00:00",
     "distanceToArrival": 7106.0,
     "starPos": [
       866.59375,
@@ -696,14 +696,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 25,
     "systemName": "HIP 39768",
     "systemAddress": 8219259477,
     "bodyName": "A 14 f",
     "bodyId": 48,
     "siteType": "Beta",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:35:20.6373151+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.2232636+00:00",
     "distanceToArrival": 7106.0,
     "starPos": [
       866.59375,
@@ -720,14 +720,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 271,
     "systemName": "Col 173 Sector PF-E b28-3",
     "systemAddress": 7279566464385,
     "bodyName": "B 1",
     "bodyId": 9,
     "siteType": "Alpha",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:35:21.5092644+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.2324334+00:00",
     "distanceToArrival": 1535.0,
     "starPos": [
       870.34375,
@@ -744,14 +744,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 270,
     "systemName": "Col 173 Sector PF-E b28-3",
     "systemAddress": 7279566464385,
     "bodyName": "B 1",
     "bodyId": 9,
     "siteType": "Beta",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:35:21.5120795+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.242308+00:00",
     "distanceToArrival": 1535.0,
     "starPos": [
       870.34375,
@@ -768,14 +768,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 265,
     "systemName": "Col 173 Sector QU-O d6-25",
     "systemAddress": 869655333211,
     "bodyName": "5 b",
     "bodyId": 29,
     "siteType": "Beta",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:35:22.4921757+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.2521871+00:00",
     "distanceToArrival": 1285.0,
     "starPos": [
       878.84375,
@@ -792,14 +792,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 255,
     "systemName": "Col 173 Sector QU-O d6-25",
     "systemAddress": 869655333211,
     "bodyName": "5 b",
     "bodyId": 29,
     "siteType": "Alpha",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:35:22.4950796+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.2603379+00:00",
     "distanceToArrival": 1285.0,
     "starPos": [
       878.84375,
@@ -816,14 +816,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 57,
     "systemName": "Vela Dark Region EL-Y d32",
     "systemAddress": 1110207072611,
     "bodyName": "B 1",
     "bodyId": 8,
     "siteType": "Gamma",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:35:23.3869505+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.2677497+00:00",
     "distanceToArrival": 57912.0,
     "starPos": [
       1000.65625,
@@ -840,14 +840,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 55,
     "systemName": "Vela Dark Region EL-Y d32",
     "systemAddress": 1110207072611,
     "bodyName": "B 1",
     "bodyId": 8,
     "siteType": "Alpha",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:35:23.3902443+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.2766285+00:00",
     "distanceToArrival": 57912.0,
     "starPos": [
       1000.65625,
@@ -864,14 +864,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 56,
     "systemName": "Vela Dark Region EL-Y d32",
     "systemAddress": 1110207072611,
     "bodyName": "B 1",
     "bodyId": 8,
     "siteType": "Beta",
     "idx": 3,
-    "lastUpdated": "2023-07-12T18:35:23.3972474+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.2864701+00:00",
     "distanceToArrival": 57912.0,
     "starPos": [
       1000.65625,
@@ -888,14 +888,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 171,
     "systemName": "Col 173 Sector JX-K b24-0",
     "systemAddress": 684107179361,
     "bodyName": "B 2",
     "bodyId": 23,
     "siteType": "Gamma",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:35:24.3371713+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.2962511+00:00",
     "distanceToArrival": 560.0,
     "starPos": [
       993.0625,
@@ -912,14 +912,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 172,
     "systemName": "Col 173 Sector JX-K b24-0",
     "systemAddress": 684107179361,
     "bodyName": "B 2",
     "bodyId": 23,
     "siteType": "Alpha",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:35:24.3400216+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.3064328+00:00",
     "distanceToArrival": 560.0,
     "starPos": [
       993.0625,
@@ -936,14 +936,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 170,
     "systemName": "Col 173 Sector JX-K b24-0",
     "systemAddress": 684107179361,
     "bodyName": "B 4",
     "bodyId": 26,
     "siteType": "Beta",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:35:25.1894086+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.3148869+00:00",
     "distanceToArrival": 543.0,
     "starPos": [
       993.0625,
@@ -960,14 +960,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 94,
     "systemName": "Col 173 Sector KN-J b25-5",
     "systemAddress": 11679492023657,
     "bodyName": "C 3",
     "bodyId": 44,
     "siteType": "Beta",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:35:26.0969144+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.3241176+00:00",
     "distanceToArrival": 11052.0,
     "starPos": [
       1002.90625,
@@ -984,14 +984,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 93,
     "systemName": "Col 173 Sector KN-J b25-5",
     "systemAddress": 11679492023657,
     "bodyName": "C 3",
     "bodyId": 44,
     "siteType": "Gamma",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:35:26.1001446+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.3348365+00:00",
     "distanceToArrival": 11052.0,
     "starPos": [
       1002.90625,
@@ -1008,14 +1008,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 95,
     "systemName": "Col 173 Sector KN-J b25-5",
     "systemAddress": 11679492023657,
     "bodyName": "C 3",
     "bodyId": 44,
     "siteType": "Beta",
     "idx": 3,
-    "lastUpdated": "2023-07-12T18:35:26.1065338+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.3440049+00:00",
     "distanceToArrival": 11052.0,
     "starPos": [
       1002.90625,
@@ -1032,14 +1032,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 290,
     "systemName": "Col 173 Sector AI-H c11-22",
     "systemAddress": 6132844073642,
     "bodyName": "B 1",
     "bodyId": 14,
     "siteType": "Gamma",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:35:27.0061982+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.3511867+00:00",
     "distanceToArrival": 17614.0,
     "starPos": [
       992.6875,
@@ -1056,14 +1056,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 288,
     "systemName": "Col 173 Sector AI-H c11-22",
     "systemAddress": 6132844073642,
     "bodyName": "B 1",
     "bodyId": 14,
     "siteType": "Gamma",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:35:27.0089394+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.3590305+00:00",
     "distanceToArrival": 17614.0,
     "starPos": [
       992.6875,
@@ -1080,14 +1080,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 289,
     "systemName": "Col 173 Sector AI-H c11-22",
     "systemAddress": 6132844073642,
     "bodyName": "B 1",
     "bodyId": 14,
     "siteType": "Alpha",
     "idx": 3,
-    "lastUpdated": "2023-07-12T18:35:27.0153647+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.3667868+00:00",
     "distanceToArrival": 17614.0,
     "starPos": [
       992.6875,
@@ -1104,14 +1104,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 65,
     "systemName": "Col 173 Sector OE-P d6-11",
     "systemAddress": 388652583259,
     "bodyName": "B 3",
     "bodyId": 24,
     "siteType": "Alpha",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:35:27.9412619+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.3734741+00:00",
     "distanceToArrival": 34417.0,
     "starPos": [
       1014.34375,
@@ -1128,14 +1128,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 66,
     "systemName": "Col 173 Sector OE-P d6-11",
     "systemAddress": 388652583259,
     "bodyName": "B 3",
     "bodyId": 24,
     "siteType": "Alpha",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:35:27.9445263+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.3804863+00:00",
     "distanceToArrival": 34417.0,
     "starPos": [
       1014.34375,
@@ -1152,14 +1152,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 67,
     "systemName": "Col 173 Sector OE-P d6-11",
     "systemAddress": 388652583259,
     "bodyName": "B 3",
     "bodyId": 24,
     "siteType": "Beta",
     "idx": 3,
-    "lastUpdated": "2023-07-12T18:35:27.9511171+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.3881584+00:00",
     "distanceToArrival": 34417.0,
     "starPos": [
       1014.34375,
@@ -1176,14 +1176,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 63,
     "systemName": "Col 173 Sector OE-P d6-11",
     "systemAddress": 388652583259,
     "bodyName": "C 2",
     "bodyId": 28,
     "siteType": "Alpha",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:35:28.8065494+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.3952494+00:00",
     "distanceToArrival": 34939.0,
     "starPos": [
       1014.34375,
@@ -1200,14 +1200,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 62,
     "systemName": "Col 173 Sector OE-P d6-11",
     "systemAddress": 388652583259,
     "bodyName": "C 2",
     "bodyId": 28,
     "siteType": "Gamma",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:35:28.8094308+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.402374+00:00",
     "distanceToArrival": 34939.0,
     "starPos": [
       1014.34375,
@@ -1224,14 +1224,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 110,
     "systemName": "Col 173 Sector WZ-O b22-4",
     "systemAddress": 9480468833617,
     "bodyName": "C 5",
     "bodyId": 41,
     "siteType": "Gamma",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:35:29.9408236+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.4114965+00:00",
     "distanceToArrival": 299584.0,
     "starPos": [
       1011.0625,
@@ -1248,14 +1248,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 108,
     "systemName": "Col 173 Sector WZ-O b22-4",
     "systemAddress": 9480468833617,
     "bodyName": "C 5",
     "bodyId": 41,
     "siteType": "Alpha",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:35:29.9435942+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.4201216+00:00",
     "distanceToArrival": 299584.0,
     "starPos": [
       1011.0625,
@@ -1272,14 +1272,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 109,
     "systemName": "Col 173 Sector WZ-O b22-4",
     "systemAddress": 9480468833617,
     "bodyName": "C 5",
     "bodyId": 41,
     "siteType": "Alpha",
     "idx": 3,
-    "lastUpdated": "2023-07-12T18:35:29.9502245+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.427484+00:00",
     "distanceToArrival": 299584.0,
     "starPos": [
       1011.0625,
@@ -1296,14 +1296,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 107,
     "systemName": "Col 173 Sector WZ-O b22-4",
     "systemAddress": 9480468833617,
     "bodyName": "C 6",
     "bodyId": 42,
     "siteType": "Gamma",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:35:30.9805681+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.4362275+00:00",
     "distanceToArrival": 299608.0,
     "starPos": [
       1011.0625,
@@ -1392,14 +1392,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 73,
     "systemName": "Col 173 Sector DH-K b25-2",
     "systemAddress": 5082690954601,
     "bodyName": "A 5",
     "bodyId": 10,
     "siteType": "Alpha",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:35:32.7917863+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.444831+00:00",
     "distanceToArrival": 88.0,
     "starPos": [
       1027.09375,
@@ -1416,14 +1416,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 74,
     "systemName": "Col 173 Sector DH-K b25-2",
     "systemAddress": 5082690954601,
     "bodyName": "A 5",
     "bodyId": 10,
     "siteType": "Beta",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:35:32.7946138+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.4514491+00:00",
     "distanceToArrival": 88.0,
     "starPos": [
       1027.09375,
@@ -1440,14 +1440,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 75,
     "systemName": "Col 173 Sector DH-K b25-2",
     "systemAddress": 5082690954601,
     "bodyName": "A 7",
     "bodyId": 13,
     "siteType": "Beta",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:35:33.6364285+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.4602585+00:00",
     "distanceToArrival": 166.0,
     "starPos": [
       1027.09375,
@@ -1536,14 +1536,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 102,
     "systemName": "Col 173 Sector YV-M d7-23",
     "systemAddress": 800969394531,
     "bodyName": "A 7 a",
     "bodyId": 11,
     "siteType": "Beta",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:35:36.5024773+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.4681114+00:00",
     "distanceToArrival": 1419.0,
     "starPos": [
       1005.46875,
@@ -1560,14 +1560,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 103,
     "systemName": "Col 173 Sector YV-M d7-23",
     "systemAddress": 800969394531,
     "bodyName": "A 7 a",
     "bodyId": 11,
     "siteType": "Alpha",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:35:36.5051917+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.4756015+00:00",
     "distanceToArrival": 1419.0,
     "starPos": [
       1005.46875,
@@ -1584,14 +1584,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 84,
     "systemName": "Col 173 Sector PV-B c14-1",
     "systemAddress": 360475103938,
     "bodyName": "D 2",
     "bodyId": 35,
     "siteType": "Gamma",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:35:37.4163492+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.4834744+00:00",
     "distanceToArrival": 132999.0,
     "starPos": [
       1023.65625,
@@ -1608,14 +1608,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 83,
     "systemName": "Col 173 Sector PV-B c14-1",
     "systemAddress": 360475103938,
     "bodyName": "D 2",
     "bodyId": 35,
     "siteType": "Gamma",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:35:37.4191392+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.4906071+00:00",
     "distanceToArrival": 132999.0,
     "starPos": [
       1023.65625,
@@ -1632,14 +1632,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 82,
     "systemName": "Col 173 Sector PV-B c14-1",
     "systemAddress": 360475103938,
     "bodyName": "D 2",
     "bodyId": 35,
     "siteType": "Gamma",
     "idx": 3,
-    "lastUpdated": "2023-07-12T18:35:37.4255656+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.4972039+00:00",
     "distanceToArrival": 132999.0,
     "starPos": [
       1023.65625,
@@ -1656,14 +1656,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 54,
     "systemName": "Vela Dark Region KR-W c1-24",
     "systemAddress": 6682666996418,
     "bodyName": "7 a",
     "bodyId": 17,
     "siteType": "Alpha",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:35:38.5994608+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.5043623+00:00",
     "distanceToArrival": 638.0,
     "starPos": [
       1036.875,
@@ -1680,14 +1680,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 52,
     "systemName": "Vela Dark Region KR-W c1-24",
     "systemAddress": 6682666996418,
     "bodyName": "7 a",
     "bodyId": 17,
     "siteType": "Alpha",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:35:38.6022524+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.511513+00:00",
     "distanceToArrival": 638.0,
     "starPos": [
       1036.875,
@@ -1704,14 +1704,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 49,
     "systemName": "Vela Dark Region KR-W c1-24",
     "systemAddress": 6682666996418,
     "bodyName": "7 c",
     "bodyId": 20,
     "siteType": "Beta",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:35:39.6435757+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.5191112+00:00",
     "distanceToArrival": 635.0,
     "starPos": [
       1036.875,
@@ -1728,14 +1728,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 148,
     "systemName": "Vela Dark Region WT-R b4-3",
     "systemAddress": 7281982383505,
     "bodyName": "B 1",
     "bodyId": 15,
     "siteType": "Gamma",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:35:40.5258662+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.5259924+00:00",
     "distanceToArrival": 965.0,
     "starPos": [
       1044.6875,
@@ -1752,14 +1752,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 149,
     "systemName": "Vela Dark Region WT-R b4-3",
     "systemAddress": 7281982383505,
     "bodyName": "B 2",
     "bodyId": 16,
     "siteType": "Gamma",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:35:41.3617298+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.5330661+00:00",
     "distanceToArrival": 971.0,
     "starPos": [
       1044.6875,
@@ -1776,14 +1776,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 150,
     "systemName": "Vela Dark Region WT-R b4-3",
     "systemAddress": 7281982383505,
     "bodyName": "B 2",
     "bodyId": 16,
     "siteType": "Beta",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:35:41.3646422+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.5415255+00:00",
     "distanceToArrival": 971.0,
     "starPos": [
       1044.6875,
@@ -1800,14 +1800,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 112,
     "systemName": "Col 173 Sector HR-M b23-3",
     "systemAddress": 7281713816921,
     "bodyName": "B 7",
     "bodyId": 28,
     "siteType": "Alpha",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:35:42.2181622+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.5483485+00:00",
     "distanceToArrival": 2652.0,
     "starPos": [
       1024.28125,
@@ -1824,14 +1824,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 111,
     "systemName": "Col 173 Sector HR-M b23-3",
     "systemAddress": 7281713816921,
     "bodyName": "B 7",
     "bodyId": 28,
     "siteType": "Alpha",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:35:42.2209659+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.5552774+00:00",
     "distanceToArrival": 2652.0,
     "starPos": [
       1024.28125,
@@ -1848,14 +1848,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 113,
     "systemName": "Col 173 Sector HR-M b23-3",
     "systemAddress": 7281713816921,
     "bodyName": "C 5",
     "bodyId": 37,
     "siteType": "Beta",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:35:43.0798996+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.5629297+00:00",
     "distanceToArrival": 2941.0,
     "starPos": [
       1024.28125,
@@ -1872,14 +1872,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 263,
     "systemName": "Vela Dark Region YO-R b4-1",
     "systemAddress": 2883935806865,
     "bodyName": "B 4",
     "bodyId": 15,
     "siteType": "Beta",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:35:44.1940036+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.5704628+00:00",
     "distanceToArrival": 849.0,
     "starPos": [
       1045.625,
@@ -1903,7 +1903,7 @@
     "bodyId": 15,
     "siteType": "Gamma",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:35:44.1973627+00:00",
+    "lastUpdated": "2023-07-13T01:20:24.4176335+00:00",
     "distanceToArrival": 849.0,
     "starPos": [
       1045.625,
@@ -1920,14 +1920,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 266,
     "systemName": "Vela Dark Region YO-R b4-1",
     "systemAddress": 2883935806865,
     "bodyName": "D 2",
     "bodyId": 53,
     "siteType": "Gamma",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:35:45.228386+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.5787202+00:00",
     "distanceToArrival": 13880.0,
     "starPos": [
       1045.625,
@@ -2136,14 +2136,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 143,
     "systemName": "Vela Dark Region VO-Q b5-1",
     "systemAddress": 2884204504473,
     "bodyName": "B 6",
     "bodyId": 27,
     "siteType": "Beta",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:35:50.1124222+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.5869405+00:00",
     "distanceToArrival": 6813.0,
     "starPos": [
       1062.03125,
@@ -2160,14 +2160,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 142,
     "systemName": "Vela Dark Region VO-Q b5-1",
     "systemAddress": 2884204504473,
     "bodyName": "B 6",
     "bodyId": 27,
     "siteType": "Gamma",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:35:50.1151914+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.5944952+00:00",
     "distanceToArrival": 6813.0,
     "starPos": [
       1062.03125,
@@ -2191,7 +2191,7 @@
     "bodyId": 38,
     "siteType": "Gamma",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:35:50.9422318+00:00",
+    "lastUpdated": "2023-07-13T01:37:24.0541838+00:00",
     "distanceToArrival": 8001.0,
     "starPos": [
       1062.03125,
@@ -2208,14 +2208,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 201,
     "systemName": "Col 173 Sector UG-B c14-0",
     "systemAddress": 85529989826,
     "bodyName": "C 1",
     "bodyId": 15,
     "siteType": "Beta",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:35:51.8309895+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.6011297+00:00",
     "distanceToArrival": 77668.0,
     "starPos": [
       1012.8125,
@@ -2232,14 +2232,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 200,
     "systemName": "Col 173 Sector UG-B c14-0",
     "systemAddress": 85529989826,
     "bodyName": "C 1",
     "bodyId": 15,
     "siteType": "Gamma",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:35:51.833777+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.6070534+00:00",
     "distanceToArrival": 77668.0,
     "starPos": [
       1012.8125,
@@ -2328,14 +2328,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 7,
     "systemName": "Col 173 Sector KY-Q d5-47",
     "systemAddress": 1625603164499,
     "bodyName": "8 c",
     "bodyId": 24,
     "siteType": "Alpha",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:35:55.1893573+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.6149497+00:00",
     "distanceToArrival": 1013.0,
     "starPos": [
       1043.875,
@@ -2352,14 +2352,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 6,
     "systemName": "Col 173 Sector KY-Q d5-47",
     "systemAddress": 1625603164499,
     "bodyName": "8 c",
     "bodyId": 24,
     "siteType": "Beta",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:35:55.1921915+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.6210378+00:00",
     "distanceToArrival": 1013.0,
     "starPos": [
       1043.875,
@@ -2376,14 +2376,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 14,
     "systemName": "Col 173 Sector KY-Q d5-47",
     "systemAddress": 1625603164499,
     "bodyName": "9 a",
     "bodyId": 33,
     "siteType": "Gamma",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:35:56.2748625+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.6277578+00:00",
     "distanceToArrival": 1439.0,
     "starPos": [
       1043.875,
@@ -2400,14 +2400,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 12,
     "systemName": "Col 173 Sector KY-Q d5-47",
     "systemAddress": 1625603164499,
     "bodyName": "9 a",
     "bodyId": 33,
     "siteType": "Alpha",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:35:56.2775532+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.6342143+00:00",
     "distanceToArrival": 1439.0,
     "starPos": [
       1043.875,
@@ -2424,14 +2424,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 21,
     "systemName": "Col 173 Sector KY-Q d5-47",
     "systemAddress": 1625603164499,
     "bodyName": "9 d",
     "bodyId": 36,
     "siteType": "Beta",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:35:57.3684119+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.6411521+00:00",
     "distanceToArrival": 1437.0,
     "starPos": [
       1043.875,
@@ -2448,14 +2448,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 136,
     "systemName": "Vela Dark Region FL-Y d63",
     "systemAddress": 2175375739235,
     "bodyName": "A 5",
     "bodyId": 14,
     "siteType": "Beta",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:35:58.2541421+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.6493738+00:00",
     "distanceToArrival": 278.0,
     "starPos": [
       1064.5,
@@ -2472,14 +2472,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 137,
     "systemName": "Vela Dark Region FL-Y d63",
     "systemAddress": 2175375739235,
     "bodyName": "A 5",
     "bodyId": 14,
     "siteType": "Alpha",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:35:58.2582151+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.6571194+00:00",
     "distanceToArrival": 278.0,
     "starPos": [
       1064.5,
@@ -2503,7 +2503,7 @@
     "bodyId": 23,
     "siteType": "Beta",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:35:59.1219551+00:00",
+    "lastUpdated": "2023-07-13T01:32:02.5962449+00:00",
     "distanceToArrival": 6653.0,
     "starPos": [
       1064.5,
@@ -2527,7 +2527,7 @@
     "bodyId": 23,
     "siteType": "Gamma",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:35:59.1247664+00:00",
+    "lastUpdated": "2023-07-13T01:32:02.602635+00:00",
     "distanceToArrival": 6653.0,
     "starPos": [
       1064.5,
@@ -2640,14 +2640,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 86,
     "systemName": "Vela Dark Region HB-X c1-28",
     "systemAddress": 7782245798594,
     "bodyName": "E 2",
     "bodyId": 39,
     "siteType": "Alpha",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:36:01.7706897+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.663763+00:00",
     "distanceToArrival": 368939.0,
     "starPos": [
       1073.0625,
@@ -2664,14 +2664,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 85,
     "systemName": "Vela Dark Region HB-X c1-28",
     "systemAddress": 7782245798594,
     "bodyName": "E 2",
     "bodyId": 39,
     "siteType": "Gamma",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:36:01.773489+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.6690361+00:00",
     "distanceToArrival": 368939.0,
     "starPos": [
       1073.0625,
@@ -2695,7 +2695,7 @@
     "bodyId": 41,
     "siteType": "Gamma",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:36:02.6062903+00:00",
+    "lastUpdated": "2023-07-13T01:20:24.5894228+00:00",
     "distanceToArrival": 368949.0,
     "starPos": [
       1073.0625,
@@ -2712,14 +2712,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 88,
     "systemName": "Vela Dark Region HB-X c1-28",
     "systemAddress": 7782245798594,
     "bodyName": "E 3",
     "bodyId": 41,
     "siteType": "Alpha",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:36:02.6090525+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.6766332+00:00",
     "distanceToArrival": 368949.0,
     "starPos": [
       1073.0625,
@@ -2736,14 +2736,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 106,
     "systemName": "Col 173 Sector OG-Z c15-35",
     "systemAddress": 9706391212754,
     "bodyName": "B 1",
     "bodyId": 16,
     "siteType": "Alpha",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:36:03.4953196+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.6850293+00:00",
     "distanceToArrival": 4771.0,
     "starPos": [
       1084.125,
@@ -2760,14 +2760,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 104,
     "systemName": "Col 173 Sector OG-Z c15-35",
     "systemAddress": 9706391212754,
     "bodyName": "B 1",
     "bodyId": 16,
     "siteType": "Alpha",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:36:03.4982946+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.6941714+00:00",
     "distanceToArrival": 4771.0,
     "starPos": [
       1084.125,
@@ -2784,14 +2784,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 105,
     "systemName": "Col 173 Sector OG-Z c15-35",
     "systemAddress": 9706391212754,
     "bodyName": "B 1",
     "bodyId": 16,
     "siteType": "Gamma",
     "idx": 3,
-    "lastUpdated": "2023-07-12T18:36:03.5045987+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.7024295+00:00",
     "distanceToArrival": 4771.0,
     "starPos": [
       1084.125,
@@ -2808,14 +2808,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 114,
     "systemName": "Col 173 Sector KP-T b34-8",
     "systemAddress": 18277636122041,
     "bodyName": "B 2",
     "bodyId": 12,
     "siteType": "Gamma",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:36:04.3883472+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.7102044+00:00",
     "distanceToArrival": 345.0,
     "starPos": [
       1086.09375,
@@ -2832,14 +2832,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 115,
     "systemName": "Col 173 Sector KP-T b34-8",
     "systemAddress": 18277636122041,
     "bodyName": "B 2",
     "bodyId": 12,
     "siteType": "Beta",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:36:04.3910478+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.7166664+00:00",
     "distanceToArrival": 345.0,
     "starPos": [
       1086.09375,
@@ -2856,14 +2856,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 48,
     "systemName": "Vela Dark Region RC-V b2-5",
     "systemAddress": 11680297264513,
     "bodyName": "C 3",
     "bodyId": 33,
     "siteType": "Alpha",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:36:05.2927224+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.7223964+00:00",
     "distanceToArrival": 59687.0,
     "starPos": [
       1072.75,
@@ -2880,14 +2880,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 50,
     "systemName": "Vela Dark Region RC-V b2-5",
     "systemAddress": 11680297264513,
     "bodyName": "C 3",
     "bodyId": 33,
     "siteType": "Alpha",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:36:05.2954771+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.727961+00:00",
     "distanceToArrival": 59687.0,
     "starPos": [
       1072.75,
@@ -2904,14 +2904,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 51,
     "systemName": "Vela Dark Region RC-V b2-5",
     "systemAddress": 11680297264513,
     "bodyName": "C 3",
     "bodyId": 33,
     "siteType": "Alpha",
     "idx": 3,
-    "lastUpdated": "2023-07-12T18:36:05.3018811+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.7339696+00:00",
     "distanceToArrival": 59687.0,
     "starPos": [
       1072.75,
@@ -2928,14 +2928,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 53,
     "systemName": "Vela Dark Region RC-V b2-5",
     "systemAddress": 11680297264513,
     "bodyName": "C 4",
     "bodyId": 34,
     "siteType": "Beta",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:36:06.1555708+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.7441269+00:00",
     "distanceToArrival": 59653.0,
     "starPos": [
       1072.75,
@@ -3096,14 +3096,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 277,
     "systemName": "Col 173 Sector WG-J c10-16",
     "systemAddress": 4483710882466,
     "bodyName": "B 1",
     "bodyId": 14,
     "siteType": "Gamma",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:36:09.0427224+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.7523105+00:00",
     "distanceToArrival": 85113.0,
     "starPos": [
       1067.28125,
@@ -3120,14 +3120,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 277,
     "systemName": "Col 173 Sector WG-J c10-16",
     "systemAddress": 4483710882466,
     "bodyName": "B 1",
     "bodyId": 14,
     "siteType": "Gamma",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:36:09.0454912+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.7600825+00:00",
     "distanceToArrival": 85113.0,
     "starPos": [
       1067.28125,
@@ -3144,14 +3144,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 279,
     "systemName": "Col 173 Sector WG-J c10-16",
     "systemAddress": 4483710882466,
     "bodyName": "B 1",
     "bodyId": 14,
     "siteType": "Beta",
     "idx": 3,
-    "lastUpdated": "2023-07-12T18:36:09.0516208+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.7681925+00:00",
     "distanceToArrival": 85113.0,
     "starPos": [
       1067.28125,
@@ -3168,14 +3168,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 29,
     "systemName": "Col 173 Sector LY-Q d5-59",
     "systemAddress": 2037936802131,
     "bodyName": "8 a",
     "bodyId": 31,
     "siteType": "Alpha",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:36:10.1715629+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.7756926+00:00",
     "distanceToArrival": 1172.0,
     "starPos": [
       1078.09375,
@@ -3192,14 +3192,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 34,
     "systemName": "Col 173 Sector LY-Q d5-59",
     "systemAddress": 2037936802131,
     "bodyName": "8 a",
     "bodyId": 31,
     "siteType": "Gamma",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:36:10.1745728+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.7815575+00:00",
     "distanceToArrival": 1172.0,
     "starPos": [
       1078.09375,
@@ -3216,14 +3216,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 33,
     "systemName": "Col 173 Sector LY-Q d5-59",
     "systemAddress": 2037936802131,
     "bodyName": "8 a",
     "bodyId": 31,
     "siteType": "Beta",
     "idx": 3,
-    "lastUpdated": "2023-07-12T18:36:10.1809713+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.7891956+00:00",
     "distanceToArrival": 1172.0,
     "starPos": [
       1078.09375,
@@ -3240,22 +3240,22 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 35,
     "systemName": "Col 173 Sector LY-Q d5-59",
     "systemAddress": 2037936802131,
     "bodyName": "8 b",
     "bodyId": 32,
     "siteType": "Alpha",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:36:11.2065508+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.7973007+00:00",
     "distanceToArrival": 1169.0,
     "starPos": [
       1078.09375,
       -86.5625,
       -249.46875
     ],
-    "latitude": "NaN",
-    "longitude": "NaN",
+    "latitude": -6.347799,
+    "longitude": 130.667557,
     "siteHeading": -1,
     "relicTowerHeading": -1,
     "legacyLatitude": -6.347799,
@@ -3264,14 +3264,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 134,
     "systemName": "Col 173 Sector WK-A a48-4",
     "systemAddress": 75853954042552,
     "bodyName": "A 3",
     "bodyId": 11,
     "siteType": "Beta",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:36:12.0840512+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.8056315+00:00",
     "distanceToArrival": 24.0,
     "starPos": [
       1098.15625,
@@ -3288,14 +3288,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 133,
     "systemName": "Col 173 Sector WK-A a48-4",
     "systemAddress": 75853954042552,
     "bodyName": "A 3",
     "bodyId": 11,
     "siteType": "Alpha",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:36:12.0869863+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.8137015+00:00",
     "distanceToArrival": 24.0,
     "starPos": [
       1098.15625,
@@ -3312,14 +3312,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 135,
     "systemName": "Col 173 Sector WK-A a48-4",
     "systemAddress": 75853954042552,
     "bodyName": "A 3",
     "bodyId": 11,
     "siteType": "Gamma",
     "idx": 3,
-    "lastUpdated": "2023-07-12T18:36:12.093203+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.8220522+00:00",
     "distanceToArrival": 24.0,
     "starPos": [
       1098.15625,
@@ -3576,14 +3576,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 28,
     "systemName": "Col 173 Sector XG-J c10-17",
     "systemAddress": 4758655898274,
     "bodyName": "A 2",
     "bodyId": 7,
     "siteType": "Beta",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:36:16.644287+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.8295575+00:00",
     "distanceToArrival": 291.0,
     "starPos": [
       1095.25,
@@ -3600,14 +3600,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 40,
     "systemName": "Col 173 Sector XG-J c10-17",
     "systemAddress": 4758655898274,
     "bodyName": "B 4",
     "bodyId": 17,
     "siteType": "Beta",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:36:17.5422601+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.8367425+00:00",
     "distanceToArrival": 3994.0,
     "starPos": [
       1095.25,
@@ -3624,14 +3624,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 39,
     "systemName": "Col 173 Sector XG-J c10-17",
     "systemAddress": 4758655898274,
     "bodyName": "B 4",
     "bodyId": 17,
     "siteType": "Beta",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:36:17.5452233+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.8431256+00:00",
     "distanceToArrival": 3994.0,
     "starPos": [
       1095.25,
@@ -3648,14 +3648,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 18,
     "systemName": "Col 173 Sector AV-N b23-5",
     "systemAddress": 11681102898521,
     "bodyName": "A 2",
     "bodyId": 6,
     "siteType": "Beta",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:36:18.4110358+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.8501382+00:00",
     "distanceToArrival": 55.0,
     "starPos": [
       1117.03125,
@@ -3672,14 +3672,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 19,
     "systemName": "Col 173 Sector AV-N b23-5",
     "systemAddress": 11681102898521,
     "bodyName": "A 2",
     "bodyId": 6,
     "siteType": "Beta",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:36:18.4163314+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.8558307+00:00",
     "distanceToArrival": 55.0,
     "starPos": [
       1117.03125,
@@ -3696,14 +3696,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 20,
     "systemName": "Col 173 Sector AV-N b23-5",
     "systemAddress": 11681102898521,
     "bodyName": "A 2",
     "bodyId": 6,
     "siteType": "Gamma",
     "idx": 3,
-    "lastUpdated": "2023-07-12T18:36:18.4212491+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.8621411+00:00",
     "distanceToArrival": 55.0,
     "starPos": [
       1117.03125,
@@ -3720,14 +3720,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 31,
     "systemName": "Col 173 Sector CG-M b24-8",
     "systemAddress": 18278172730721,
     "bodyName": "A 4",
     "bodyId": 10,
     "siteType": "Gamma",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:36:19.2977222+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.8686255+00:00",
     "distanceToArrival": 80.0,
     "starPos": [
       1127.9375,
@@ -3744,14 +3744,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 30,
     "systemName": "Col 173 Sector CG-M b24-8",
     "systemAddress": 18278172730721,
     "bodyName": "A 4",
     "bodyId": 10,
     "siteType": "Gamma",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:36:19.3006437+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.874367+00:00",
     "distanceToArrival": 80.0,
     "starPos": [
       1127.9375,
@@ -3768,14 +3768,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 32,
     "systemName": "Col 173 Sector CG-M b24-8",
     "systemAddress": 18278172730721,
     "bodyName": "A 5",
     "bodyId": 11,
     "siteType": "Gamma",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:36:20.1302562+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.8805155+00:00",
     "distanceToArrival": 80.0,
     "starPos": [
       1127.9375,
@@ -3792,14 +3792,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 24,
     "systemName": "Col 173 Sector LY-Q d5-13",
     "systemAddress": 457388837203,
     "bodyName": "AB 9 a",
     "bodyId": 40,
     "siteType": "Beta",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:36:21.3241964+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.8865762+00:00",
     "distanceToArrival": 4692.0,
     "starPos": [
       1120.34375,
@@ -3816,14 +3816,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 23,
     "systemName": "Col 173 Sector LY-Q d5-13",
     "systemAddress": 457388837203,
     "bodyName": "AB 9 a",
     "bodyId": 40,
     "siteType": "Alpha",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:36:21.3270498+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.8936144+00:00",
     "distanceToArrival": 4692.0,
     "starPos": [
       1120.34375,
@@ -3840,14 +3840,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 26,
     "systemName": "Col 173 Sector LY-Q d5-13",
     "systemAddress": 457388837203,
     "bodyName": "AB 9 a",
     "bodyId": 40,
     "siteType": "Beta",
     "idx": 3,
-    "lastUpdated": "2023-07-12T18:36:21.3336539+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.8993621+00:00",
     "distanceToArrival": 4692.0,
     "starPos": [
       1120.34375,
@@ -3864,14 +3864,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 27,
     "systemName": "Col 173 Sector LY-Q d5-13",
     "systemAddress": 457388837203,
     "bodyName": "AB 9 b",
     "bodyId": 41,
     "siteType": "Gamma",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:36:22.4030415+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.9069692+00:00",
     "distanceToArrival": 4722.0,
     "starPos": [
       1120.34375,
@@ -3888,14 +3888,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 312,
     "systemName": "Col 173 Sector RF-D c13-12",
     "systemAddress": 3384266232506,
     "bodyName": "C 3",
     "bodyId": 44,
     "siteType": "Gamma",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:36:23.3172486+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.9132618+00:00",
     "distanceToArrival": 128544.0,
     "starPos": [
       1108.5,
@@ -3912,14 +3912,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 310,
     "systemName": "Col 173 Sector RF-D c13-12",
     "systemAddress": 3384266232506,
     "bodyName": "C 3",
     "bodyId": 44,
     "siteType": "Gamma",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:36:23.3203326+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.9192388+00:00",
     "distanceToArrival": 128544.0,
     "starPos": [
       1108.5,
@@ -3936,14 +3936,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 311,
     "systemName": "Col 173 Sector RF-D c13-12",
     "systemAddress": 3384266232506,
     "bodyName": "C 3",
     "bodyId": 44,
     "siteType": "Alpha",
     "idx": 3,
-    "lastUpdated": "2023-07-12T18:36:23.3266586+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.9249694+00:00",
     "distanceToArrival": 128544.0,
     "starPos": [
       1108.5,
@@ -3960,14 +3960,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 293,
     "systemName": "Col 173 Sector HI-M a55-0",
     "systemAddress": 5490578574072,
     "bodyName": "A 2",
     "bodyId": 10,
     "siteType": "Gamma",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:36:24.2418962+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.930286+00:00",
     "distanceToArrival": 16.0,
     "starPos": [
       1147.4375,
@@ -3984,14 +3984,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 294,
     "systemName": "Col 173 Sector HI-M a55-0",
     "systemAddress": 5490578574072,
     "bodyName": "A 2",
     "bodyId": 10,
     "siteType": "Alpha",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:36:24.2447888+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.9364103+00:00",
     "distanceToArrival": 16.0,
     "starPos": [
       1147.4375,
@@ -4008,14 +4008,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 292,
     "systemName": "Col 173 Sector HI-M a55-0",
     "systemAddress": 5490578574072,
     "bodyName": "A 3",
     "bodyId": 12,
     "siteType": "Gamma",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:36:25.1033945+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.9428429+00:00",
     "distanceToArrival": 21.0,
     "starPos": [
       1147.4375,
@@ -4032,14 +4032,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 281,
     "systemName": "Col 173 Sector CH-L d8-14",
     "systemAddress": 491765320043,
     "bodyName": "D 1",
     "bodyId": 48,
     "siteType": "Alpha",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:36:26.036524+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.9482345+00:00",
     "distanceToArrival": 80843.0,
     "starPos": [
       1137.96875,
@@ -4056,14 +4056,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 280,
     "systemName": "Col 173 Sector CH-L d8-14",
     "systemAddress": 491765320043,
     "bodyName": "D 1",
     "bodyId": 48,
     "siteType": "Gamma",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:36:26.0393933+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.9548595+00:00",
     "distanceToArrival": 80843.0,
     "starPos": [
       1137.96875,
@@ -4080,14 +4080,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 282,
     "systemName": "Col 173 Sector CH-L d8-14",
     "systemAddress": 491765320043,
     "bodyName": "D 3",
     "bodyId": 51,
     "siteType": "Alpha",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:36:26.9185845+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.9619853+00:00",
     "distanceToArrival": 80827.0,
     "starPos": [
       1137.96875,
@@ -4176,14 +4176,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 283,
     "systemName": "Col 173 Sector BX-I c10-7",
     "systemAddress": 2009876763298,
     "bodyName": "B 2",
     "bodyId": 19,
     "siteType": "Alpha",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:36:28.7191776+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.9682895+00:00",
     "distanceToArrival": 24706.0,
     "starPos": [
       1110.40625,
@@ -4200,14 +4200,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 285,
     "systemName": "Col 173 Sector BX-I c10-7",
     "systemAddress": 2009876763298,
     "bodyName": "B 2",
     "bodyId": 19,
     "siteType": "Gamma",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:36:28.7220641+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.9743652+00:00",
     "distanceToArrival": 24706.0,
     "starPos": [
       1110.40625,
@@ -4224,14 +4224,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 284,
     "systemName": "Col 173 Sector BX-I c10-7",
     "systemAddress": 2009876763298,
     "bodyName": "B 2",
     "bodyId": 19,
     "siteType": "Beta",
     "idx": 3,
-    "lastUpdated": "2023-07-12T18:36:28.7287401+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.9796202+00:00",
     "distanceToArrival": 24706.0,
     "starPos": [
       1110.40625,
@@ -4248,14 +4248,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 287,
     "systemName": "Col 173 Sector BX-I c10-7",
     "systemAddress": 2009876763298,
     "bodyName": "B 3",
     "bodyId": 20,
     "siteType": "Gamma",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:36:29.5732859+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.9847871+00:00",
     "distanceToArrival": 24706.0,
     "starPos": [
       1110.40625,
@@ -4272,14 +4272,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 286,
     "systemName": "Col 173 Sector BX-I c10-7",
     "systemAddress": 2009876763298,
     "bodyName": "B 3",
     "bodyId": 20,
     "siteType": "Gamma",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:36:29.5785072+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.9910303+00:00",
     "distanceToArrival": 24706.0,
     "starPos": [
       1110.40625,
@@ -4416,14 +4416,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 125,
     "systemName": "Col 173 Sector OZ-U b33-6",
     "systemAddress": 13880663221681,
     "bodyName": "A 1",
     "bodyId": 3,
     "siteType": "Alpha",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:36:32.2069632+00:00",
+    "lastUpdated": "2023-07-14T19:02:50.9966775+00:00",
     "distanceToArrival": 31.0,
     "starPos": [
       1160.90625,
@@ -4440,14 +4440,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 126,
     "systemName": "Col 173 Sector OZ-U b33-6",
     "systemAddress": 13880663221681,
     "bodyName": "A 1",
     "bodyId": 3,
     "siteType": "Alpha",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:36:32.2098683+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.0020073+00:00",
     "distanceToArrival": 31.0,
     "starPos": [
       1160.90625,
@@ -4464,14 +4464,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 127,
     "systemName": "Col 173 Sector OZ-U b33-6",
     "systemAddress": 13880663221681,
     "bodyName": "A 1",
     "bodyId": 3,
     "siteType": "Gamma",
     "idx": 3,
-    "lastUpdated": "2023-07-12T18:36:32.216408+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.0085249+00:00",
     "distanceToArrival": 31.0,
     "starPos": [
       1160.90625,
@@ -4488,14 +4488,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 58,
     "systemName": "Col 173 Sector AP-Q b21-2",
     "systemAddress": 5084032869705,
     "bodyName": "A 8",
     "bodyId": 22,
     "siteType": "Beta",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:36:33.3257342+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.0140646+00:00",
     "distanceToArrival": 93.0,
     "starPos": [
       1127.3125,
@@ -4512,14 +4512,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 59,
     "systemName": "Col 173 Sector AP-Q b21-2",
     "systemAddress": 5084032869705,
     "bodyName": "B 4",
     "bodyId": 27,
     "siteType": "Gamma",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:36:34.3762816+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.0213284+00:00",
     "distanceToArrival": 659.0,
     "starPos": [
       1127.3125,
@@ -4536,14 +4536,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 60,
     "systemName": "Col 173 Sector AP-Q b21-2",
     "systemAddress": 5084032869705,
     "bodyName": "B 4",
     "bodyId": 27,
     "siteType": "Alpha",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:36:34.3790993+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.0281533+00:00",
     "distanceToArrival": 659.0,
     "starPos": [
       1127.3125,
@@ -4560,14 +4560,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 61,
     "systemName": "Col 173 Sector AP-Q b21-2",
     "systemAddress": 5084032869705,
     "bodyName": "B 4",
     "bodyId": 27,
     "siteType": "Beta",
     "idx": 3,
-    "lastUpdated": "2023-07-12T18:36:34.3858487+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.0341309+00:00",
     "distanceToArrival": 659.0,
     "starPos": [
       1127.3125,
@@ -4632,14 +4632,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 267,
     "systemName": "Col 173 Sector YA-N d7-17",
     "systemAddress": 594844535139,
     "bodyName": "A 2",
     "bodyId": 5,
     "siteType": "Alpha",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:36:36.4356793+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.0396454+00:00",
     "distanceToArrival": 537.0,
     "starPos": [
       1145.09375,
@@ -4656,14 +4656,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 268,
     "systemName": "Col 173 Sector YA-N d7-17",
     "systemAddress": 594844535139,
     "bodyName": "A 2",
     "bodyId": 5,
     "siteType": "Alpha",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:36:36.4385811+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.0454626+00:00",
     "distanceToArrival": 537.0,
     "starPos": [
       1145.09375,
@@ -4680,14 +4680,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 269,
     "systemName": "Col 173 Sector YA-N d7-17",
     "systemAddress": 594844535139,
     "bodyName": "B 2",
     "bodyId": 23,
     "siteType": "Gamma",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:36:37.2935262+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.0526039+00:00",
     "distanceToArrival": 96896.0,
     "starPos": [
       1145.09375,
@@ -4776,14 +4776,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 36,
     "systemName": "Col 173 Sector OT-Q d5-18",
     "systemAddress": 629204289875,
     "bodyName": "D 2",
     "bodyId": 96,
     "siteType": "Gamma",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:36:39.5549727+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.0596863+00:00",
     "distanceToArrival": 31223.0,
     "starPos": [
       1150.75,
@@ -4800,14 +4800,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 37,
     "systemName": "Col 173 Sector OT-Q d5-18",
     "systemAddress": 629204289875,
     "bodyName": "D 2",
     "bodyId": 96,
     "siteType": "Alpha",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:36:39.557978+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.0655095+00:00",
     "distanceToArrival": 31223.0,
     "starPos": [
       1150.75,
@@ -4824,14 +4824,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 38,
     "systemName": "Col 173 Sector OT-Q d5-18",
     "systemAddress": 629204289875,
     "bodyName": "D 2",
     "bodyId": 96,
     "siteType": "Alpha",
     "idx": 3,
-    "lastUpdated": "2023-07-12T18:36:39.5652325+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.0707818+00:00",
     "distanceToArrival": 31223.0,
     "starPos": [
       1150.75,
@@ -4896,14 +4896,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 79,
     "systemName": "Col 173 Sector UU-O d6-42",
     "systemAddress": 1453837994331,
     "bodyName": "A 1 c",
     "bodyId": 12,
     "siteType": "Beta",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:36:41.8650809+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.0769374+00:00",
     "distanceToArrival": 642.0,
     "starPos": [
       1147.09375,
@@ -4920,14 +4920,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 81,
     "systemName": "Col 173 Sector UU-O d6-42",
     "systemAddress": 1453837994331,
     "bodyName": "A 1 c",
     "bodyId": 12,
     "siteType": "Gamma",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:36:41.867963+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.0825914+00:00",
     "distanceToArrival": 642.0,
     "starPos": [
       1147.09375,
@@ -4944,14 +4944,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 80,
     "systemName": "Col 173 Sector UU-O d6-42",
     "systemAddress": 1453837994331,
     "bodyName": "A 1 c",
     "bodyId": 12,
     "siteType": "Gamma",
     "idx": 3,
-    "lastUpdated": "2023-07-12T18:36:41.8748357+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.0882555+00:00",
     "distanceToArrival": 642.0,
     "starPos": [
       1147.09375,
@@ -4968,14 +4968,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 129,
     "systemName": "Col 173 Sector JB-F b27-1",
     "systemAddress": 2885277721977,
     "bodyName": "A 4",
     "bodyId": 8,
     "siteType": "Beta",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:36:42.7437509+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.0940326+00:00",
     "distanceToArrival": 107.0,
     "starPos": [
       1154.96875,
@@ -4992,14 +4992,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 128,
     "systemName": "Col 173 Sector JB-F b27-1",
     "systemAddress": 2885277721977,
     "bodyName": "A 4",
     "bodyId": 8,
     "siteType": "Gamma",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:36:42.7466634+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.1004644+00:00",
     "distanceToArrival": 107.0,
     "starPos": [
       1154.96875,
@@ -5016,14 +5016,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 130,
     "systemName": "Col 173 Sector JB-F b27-1",
     "systemAddress": 2885277721977,
     "bodyName": "BC 3",
     "bodyId": 14,
     "siteType": "Beta",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:36:43.5866635+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.1057939+00:00",
     "distanceToArrival": 1406.0,
     "starPos": [
       1154.96875,
@@ -5040,14 +5040,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 72,
     "systemName": "Col 173 Sector WF-N d7-52",
     "systemAddress": 1797435394403,
     "bodyName": "B 2",
     "bodyId": 15,
     "siteType": "Gamma",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:36:44.4841043+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.1114655+00:00",
     "distanceToArrival": 11147.0,
     "starPos": [
       1186.6875,
@@ -5064,14 +5064,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 71,
     "systemName": "Col 173 Sector WF-N d7-52",
     "systemAddress": 1797435394403,
     "bodyName": "B 2",
     "bodyId": 15,
     "siteType": "Gamma",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:36:44.4868845+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.1180012+00:00",
     "distanceToArrival": 11147.0,
     "starPos": [
       1186.6875,
@@ -5088,14 +5088,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 70,
     "systemName": "Col 173 Sector WF-N d7-52",
     "systemAddress": 1797435394403,
     "bodyName": "B 2",
     "bodyId": 15,
     "siteType": "Beta",
     "idx": 3,
-    "lastUpdated": "2023-07-12T18:36:44.4934462+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.1244015+00:00",
     "distanceToArrival": 11147.0,
     "starPos": [
       1186.6875,
@@ -5112,14 +5112,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 273,
     "systemName": "Col 173 Sector YF-N c7-5",
     "systemAddress": 1460053676682,
     "bodyName": "B 2",
     "bodyId": 23,
     "siteType": "Alpha",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:36:45.3661645+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.1311408+00:00",
     "distanceToArrival": 1988.0,
     "starPos": [
       1073.21875,
@@ -5136,14 +5136,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 274,
     "systemName": "Col 173 Sector YF-N c7-5",
     "systemAddress": 1460053676682,
     "bodyName": "B 2",
     "bodyId": 23,
     "siteType": "Alpha",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:36:45.3689729+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.1373414+00:00",
     "distanceToArrival": 1988.0,
     "starPos": [
       1073.21875,
@@ -5184,14 +5184,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 276,
     "systemName": "Col 173 Sector YF-N c7-5",
     "systemAddress": 1460053676682,
     "bodyName": "B 3",
     "bodyId": 24,
     "siteType": "Beta",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:36:46.2463056+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.1448436+00:00",
     "distanceToArrival": 1988.0,
     "starPos": [
       1073.21875,
@@ -5208,14 +5208,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 275,
     "systemName": "Col 173 Sector YF-N c7-5",
     "systemAddress": 1460053676682,
     "bodyName": "B 3",
     "bodyId": 24,
     "siteType": "Alpha",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:36:46.2490314+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.150532+00:00",
     "distanceToArrival": 1988.0,
     "starPos": [
       1073.21875,
@@ -5232,14 +5232,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 206,
     "systemName": "Col 173 Sector KT-G b40-2",
     "systemAddress": 5084569544169,
     "bodyName": "A 3",
     "bodyId": 7,
     "siteType": "Alpha",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:36:47.1290197+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.155723+00:00",
     "distanceToArrival": 24.0,
     "starPos": [
       1172.03125,
@@ -5256,14 +5256,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 205,
     "systemName": "Col 173 Sector KT-G b40-2",
     "systemAddress": 5084569544169,
     "bodyName": "A 3",
     "bodyId": 7,
     "siteType": "Alpha",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:36:47.1319473+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.1614659+00:00",
     "distanceToArrival": 24.0,
     "starPos": [
       1172.03125,
@@ -5280,14 +5280,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 207,
     "systemName": "Col 173 Sector KT-G b40-2",
     "systemAddress": 5084569544169,
     "bodyName": "A 3",
     "bodyId": 7,
     "siteType": "Alpha",
     "idx": 3,
-    "lastUpdated": "2023-07-12T18:36:47.1390101+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.1668472+00:00",
     "distanceToArrival": 24.0,
     "starPos": [
       1172.03125,
@@ -5304,14 +5304,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 97,
     "systemName": "Col 173 Sector EC-L d8-54",
     "systemAddress": 1866154838379,
     "bodyName": "1 c",
     "bodyId": 6,
     "siteType": "Alpha",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:36:48.2618506+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.1720253+00:00",
     "distanceToArrival": 645.0,
     "starPos": [
       1180.5625,
@@ -5328,14 +5328,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 98,
     "systemName": "Col 173 Sector EC-L d8-54",
     "systemAddress": 1866154838379,
     "bodyName": "1 c",
     "bodyId": 6,
     "siteType": "Alpha",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:36:48.2650443+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.1777262+00:00",
     "distanceToArrival": 645.0,
     "starPos": [
       1180.5625,
@@ -5352,14 +5352,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 96,
     "systemName": "Col 173 Sector EC-L d8-54",
     "systemAddress": 1866154838379,
     "bodyName": "1 c",
     "bodyId": 6,
     "siteType": "Beta",
     "idx": 3,
-    "lastUpdated": "2023-07-12T18:36:48.2719838+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.1829135+00:00",
     "distanceToArrival": 645.0,
     "starPos": [
       1180.5625,
@@ -5448,14 +5448,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 119,
     "systemName": "Col 173 Sector OC-C b29-1",
     "systemAddress": 2886083224969,
     "bodyName": "A 4",
     "bodyId": 9,
     "siteType": "Gamma",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:36:50.0625692+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.1897773+00:00",
     "distanceToArrival": 96.0,
     "starPos": [
       1206.46875,
@@ -5472,14 +5472,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 120,
     "systemName": "Col 173 Sector OC-C b29-1",
     "systemAddress": 2886083224969,
     "bodyName": "A 4",
     "bodyId": 9,
     "siteType": "Beta",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:36:50.065928+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.196148+00:00",
     "distanceToArrival": 96.0,
     "starPos": [
       1206.46875,
@@ -5496,14 +5496,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 121,
     "systemName": "Col 173 Sector OC-C b29-1",
     "systemAddress": 2886083224969,
     "bodyName": "A 4",
     "bodyId": 9,
     "siteType": "Gamma",
     "idx": 3,
-    "lastUpdated": "2023-07-12T18:36:50.0720769+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.2016759+00:00",
     "distanceToArrival": 96.0,
     "starPos": [
       1206.46875,
@@ -5520,14 +5520,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 161,
     "systemName": "Col 173 Sector UU-O d6-20",
     "systemAddress": 697923750235,
     "bodyName": "6 c",
     "bodyId": 24,
     "siteType": "Alpha",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:36:51.1897987+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.2077267+00:00",
     "distanceToArrival": 799.0,
     "starPos": [
       1192.09375,
@@ -5544,14 +5544,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 160,
     "systemName": "Col 173 Sector UU-O d6-20",
     "systemAddress": 697923750235,
     "bodyName": "6 c",
     "bodyId": 24,
     "siteType": "Beta",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:36:51.1929956+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.2142487+00:00",
     "distanceToArrival": 799.0,
     "starPos": [
       1192.09375,
@@ -5568,22 +5568,22 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 159,
     "systemName": "Col 173 Sector UU-O d6-20",
     "systemAddress": 697923750235,
     "bodyName": "6 d",
     "bodyId": 25,
     "siteType": "Alpha",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:36:52.2183616+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.219772+00:00",
     "distanceToArrival": 795.0,
     "starPos": [
       1192.09375,
       -209.15625,
       -184.65625
     ],
-    "latitude": "NaN",
-    "longitude": "NaN",
+    "latitude": -17.390844,
+    "longitude": -104.857132,
     "siteHeading": -1,
     "relicTowerHeading": -1,
     "legacyLatitude": -17.390842,
@@ -5688,14 +5688,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 122,
     "systemName": "Col 173 Sector UU-O d6-30",
     "systemAddress": 1041521133915,
     "bodyName": "4 d",
     "bodyId": 20,
     "siteType": "Alpha",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:36:55.0548555+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.2267378+00:00",
     "distanceToArrival": 927.0,
     "starPos": [
       1196.6875,
@@ -5712,22 +5712,22 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 123,
     "systemName": "Col 173 Sector UU-O d6-30",
     "systemAddress": 1041521133915,
     "bodyName": "4 d",
     "bodyId": 20,
     "siteType": "Gamma",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:36:55.0575998+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.2322118+00:00",
     "distanceToArrival": 927.0,
     "starPos": [
       1196.6875,
       -225.84375,
       -161.5
     ],
-    "latitude": "NaN",
-    "longitude": "NaN",
+    "latitude": 24.72402,
+    "longitude": -133.209122,
     "siteHeading": -1,
     "relicTowerHeading": -1,
     "legacyLatitude": 24.72402,
@@ -5736,14 +5736,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 313,
     "systemName": "Col 173 Sector UU-O d6-30",
     "systemAddress": 1041521133915,
     "bodyName": "4 f",
     "bodyId": 24,
     "siteType": "Gamma",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:36:56.0968789+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.2397163+00:00",
     "distanceToArrival": 923.0,
     "starPos": [
       1196.6875,
@@ -5760,14 +5760,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 162,
     "systemName": "Col 173 Sector LJ-F c12-0",
     "systemAddress": 85865632434,
     "bodyName": "B 6",
     "bodyId": 47,
     "siteType": "Beta",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:36:57.0085301+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.2460875+00:00",
     "distanceToArrival": 159136.0,
     "starPos": [
       1202.125,
@@ -5784,14 +5784,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 163,
     "systemName": "Col 173 Sector LJ-F c12-0",
     "systemAddress": 85865632434,
     "bodyName": "B 6",
     "bodyId": 47,
     "siteType": "Beta",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:36:57.0137266+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.2515826+00:00",
     "distanceToArrival": 159136.0,
     "starPos": [
       1202.125,
@@ -5808,14 +5808,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 164,
     "systemName": "Col 173 Sector LJ-F c12-0",
     "systemAddress": 85865632434,
     "bodyName": "B 6",
     "bodyId": 47,
     "siteType": "Beta",
     "idx": 3,
-    "lastUpdated": "2023-07-12T18:36:57.0202468+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.2572671+00:00",
     "distanceToArrival": 159136.0,
     "starPos": [
       1202.125,
@@ -5832,14 +5832,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 165,
     "systemName": "Col 173 Sector LJ-F c12-0",
     "systemAddress": 85865632434,
     "bodyName": "B 7",
     "bodyId": 49,
     "siteType": "Alpha",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:36:57.8989673+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.262888+00:00",
     "distanceToArrival": 159042.0,
     "starPos": [
       1202.125,
@@ -5856,14 +5856,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 166,
     "systemName": "Col 173 Sector LJ-F c12-0",
     "systemAddress": 85865632434,
     "bodyName": "B 7",
     "bodyId": 49,
     "siteType": "Gamma",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:36:57.901883+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.2682143+00:00",
     "distanceToArrival": 159042.0,
     "starPos": [
       1202.125,
@@ -5952,14 +5952,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 321,
     "systemName": "Col 132 Sector GS-K d8-33",
     "systemAddress": 1144583539011,
     "bodyName": "D 4",
     "bodyId": 82,
     "siteType": "Alpha",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:37:00.7420162+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.2736517+00:00",
     "distanceToArrival": 136748.0,
     "starPos": [
       1111.5,
@@ -5976,14 +5976,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 322,
     "systemName": "Col 132 Sector GS-K d8-33",
     "systemAddress": 1144583539011,
     "bodyName": "D 4",
     "bodyId": 82,
     "siteType": "Gamma",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:37:00.7447719+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.2792431+00:00",
     "distanceToArrival": 136748.0,
     "starPos": [
       1111.5,
@@ -6000,14 +6000,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 320,
     "systemName": "Col 132 Sector GS-K d8-33",
     "systemAddress": 1144583539011,
     "bodyName": "D 4",
     "bodyId": 82,
     "siteType": "Beta",
     "idx": 3,
-    "lastUpdated": "2023-07-12T18:37:00.7512064+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.285422+00:00",
     "distanceToArrival": 136748.0,
     "starPos": [
       1111.5,
@@ -6024,14 +6024,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 76,
     "systemName": "Col 173 Sector WN-B b29-1",
     "systemAddress": 2886619899273,
     "bodyName": "D 1",
     "bodyId": 17,
     "siteType": "Gamma",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:37:01.6250106+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.2908599+00:00",
     "distanceToArrival": 182632.0,
     "starPos": [
       1237.75,
@@ -6048,14 +6048,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 77,
     "systemName": "Col 173 Sector WN-B b29-1",
     "systemAddress": 2886619899273,
     "bodyName": "D 1",
     "bodyId": 17,
     "siteType": "Beta",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:37:01.6277082+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.2958401+00:00",
     "distanceToArrival": 182632.0,
     "starPos": [
       1237.75,
@@ -6072,14 +6072,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 78,
     "systemName": "Col 173 Sector WN-B b29-1",
     "systemAddress": 2886619899273,
     "bodyName": "D 1",
     "bodyId": 17,
     "siteType": "Beta",
     "idx": 3,
-    "lastUpdated": "2023-07-12T18:37:01.634464+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.3012576+00:00",
     "distanceToArrival": 182632.0,
     "starPos": [
       1237.75,
@@ -6096,14 +6096,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 100,
     "systemName": "Col 173 Sector FC-L d8-28",
     "systemAddress": 972818418027,
     "bodyName": "14 c",
     "bodyId": 28,
     "siteType": "Beta",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:37:02.7362071+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.3064263+00:00",
     "distanceToArrival": 971.0,
     "starPos": [
       1231.09375,
@@ -6120,14 +6120,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 101,
     "systemName": "Col 173 Sector FC-L d8-28",
     "systemAddress": 972818418027,
     "bodyName": "14 c",
     "bodyId": 28,
     "siteType": "Alpha",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:37:02.7391093+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.3114315+00:00",
     "distanceToArrival": 971.0,
     "starPos": [
       1231.09375,
@@ -6144,14 +6144,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 99,
     "systemName": "Col 173 Sector FC-L d8-28",
     "systemAddress": 972818418027,
     "bodyName": "14 c",
     "bodyId": 28,
     "siteType": "Beta",
     "idx": 3,
-    "lastUpdated": "2023-07-12T18:37:02.7454041+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.3174781+00:00",
     "distanceToArrival": 971.0,
     "starPos": [
       1231.09375,
@@ -6168,14 +6168,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 118,
     "systemName": "Col 173 Sector LB-W b31-0",
     "systemAddress": 687865013665,
     "bodyName": "C 1",
     "bodyId": 40,
     "siteType": "Beta",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:37:03.6232001+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.3238538+00:00",
     "distanceToArrival": 225403.0,
     "starPos": [
       1258.5,
@@ -6192,14 +6192,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 117,
     "systemName": "Col 173 Sector LB-W b31-0",
     "systemAddress": 687865013665,
     "bodyName": "C 1",
     "bodyId": 40,
     "siteType": "Beta",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:37:03.6259295+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.3303955+00:00",
     "distanceToArrival": 225403.0,
     "starPos": [
       1258.5,
@@ -6216,14 +6216,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 116,
     "systemName": "Col 173 Sector LB-W b31-0",
     "systemAddress": 687865013665,
     "bodyName": "C 1",
     "bodyId": 40,
     "siteType": "Gamma",
     "idx": 3,
-    "lastUpdated": "2023-07-12T18:37:03.6321934+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.3359062+00:00",
     "distanceToArrival": 225403.0,
     "starPos": [
       1258.5,
@@ -6288,14 +6288,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 215,
     "systemName": "Col 173 Sector XF-N d7-105",
     "systemAddress": 3618518305123,
     "bodyName": "A 4 a",
     "bodyId": 19,
     "siteType": "Alpha",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:37:05.6209887+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.3417555+00:00",
     "distanceToArrival": 2029.0,
     "starPos": [
       1293.5625,
@@ -6312,14 +6312,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 216,
     "systemName": "Col 173 Sector XF-N d7-105",
     "systemAddress": 3618518305123,
     "bodyName": "A 4 a",
     "bodyId": 19,
     "siteType": "Gamma",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:37:05.6237173+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.3470498+00:00",
     "distanceToArrival": 2029.0,
     "starPos": [
       1293.5625,
@@ -6336,14 +6336,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 217,
     "systemName": "Col 173 Sector XF-N d7-105",
     "systemAddress": 3618518305123,
     "bodyName": "A 4 a",
     "bodyId": 19,
     "siteType": "Gamma",
     "idx": 3,
-    "lastUpdated": "2023-07-12T18:37:05.6302443+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.3522418+00:00",
     "distanceToArrival": 2029.0,
     "starPos": [
       1293.5625,
@@ -6360,14 +6360,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 226,
     "systemName": "Col 173 Sector YG-A c15-12",
     "systemAddress": 3384601875146,
     "bodyName": "B 1",
     "bodyId": 19,
     "siteType": "Gamma",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:37:06.4860179+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.3582682+00:00",
     "distanceToArrival": 3070.0,
     "starPos": [
       1301.71875,
@@ -6384,14 +6384,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 225,
     "systemName": "Col 173 Sector YG-A c15-12",
     "systemAddress": 3384601875146,
     "bodyName": "B 1",
     "bodyId": 19,
     "siteType": "Gamma",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:37:06.4911355+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.3645814+00:00",
     "distanceToArrival": 3070.0,
     "starPos": [
       1301.71875,
@@ -6408,14 +6408,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 190,
     "systemName": "Col 173 Sector VN-A b30-1",
     "systemAddress": 2887425467793,
     "bodyName": "C 3",
     "bodyId": 15,
     "siteType": "Gamma",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:37:07.3582503+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.3700422+00:00",
     "distanceToArrival": 2361.0,
     "starPos": [
       1305.1875,
@@ -6432,14 +6432,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 191,
     "systemName": "Col 173 Sector VN-A b30-1",
     "systemAddress": 2887425467793,
     "bodyName": "C 3",
     "bodyId": 15,
     "siteType": "Alpha",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:37:07.3610825+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.3749636+00:00",
     "distanceToArrival": 2361.0,
     "starPos": [
       1305.1875,
@@ -6456,14 +6456,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 189,
     "systemName": "Col 173 Sector VN-A b30-1",
     "systemAddress": 2887425467793,
     "bodyName": "C 3",
     "bodyId": 15,
     "siteType": "Gamma",
     "idx": 3,
-    "lastUpdated": "2023-07-12T18:37:07.368415+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.380448+00:00",
     "distanceToArrival": 2361.0,
     "starPos": [
       1305.1875,
@@ -6552,14 +6552,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 251,
     "systemName": "Col 173 Sector XY-Y b30-1",
     "systemAddress": 2887425533337,
     "bodyName": "B 2",
     "bodyId": 19,
     "siteType": "Gamma",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:37:09.3699588+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.3854957+00:00",
     "distanceToArrival": 643.0,
     "starPos": [
       1310.53125,
@@ -6576,14 +6576,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 250,
     "systemName": "Col 173 Sector XY-Y b30-1",
     "systemAddress": 2887425533337,
     "bodyName": "B 2",
     "bodyId": 19,
     "siteType": "Alpha",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:37:09.3727985+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.390467+00:00",
     "distanceToArrival": 643.0,
     "starPos": [
       1310.53125,
@@ -6600,14 +6600,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 208,
     "systemName": "Col 173 Sector RH-C b29-1",
     "systemAddress": 2887425467785,
     "bodyName": "B 3",
     "bodyId": 22,
     "siteType": "Alpha",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:37:10.2814115+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.3964885+00:00",
     "distanceToArrival": 1952.0,
     "starPos": [
       1306.15625,
@@ -6624,14 +6624,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 209,
     "systemName": "Col 173 Sector RH-C b29-1",
     "systemAddress": 2887425467785,
     "bodyName": "B 3",
     "bodyId": 22,
     "siteType": "Beta",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:37:10.2867757+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.4015665+00:00",
     "distanceToArrival": 1952.0,
     "starPos": [
       1306.15625,
@@ -6648,14 +6648,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 210,
     "systemName": "Col 173 Sector RH-C b29-1",
     "systemAddress": 2887425467785,
     "bodyName": "B 3",
     "bodyId": 22,
     "siteType": "Beta",
     "idx": 3,
-    "lastUpdated": "2023-07-12T18:37:10.2930001+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.4065655+00:00",
     "distanceToArrival": 1952.0,
     "starPos": [
       1306.15625,
@@ -6672,14 +6672,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 132,
     "systemName": "Col 173 Sector YG-A c15-20",
     "systemAddress": 5583625130698,
     "bodyName": "A 1",
     "bodyId": 5,
     "siteType": "Beta",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:37:11.1511442+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.4132098+00:00",
     "distanceToArrival": 249.0,
     "starPos": [
       1315.1875,
@@ -6696,14 +6696,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 131,
     "systemName": "Col 173 Sector YG-A c15-20",
     "systemAddress": 5583625130698,
     "bodyName": "A 1",
     "bodyId": 5,
     "siteType": "Gamma",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:37:11.1540789+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.4194794+00:00",
     "distanceToArrival": 249.0,
     "starPos": [
       1315.1875,
@@ -6720,14 +6720,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 178,
     "systemName": "Col 173 Sector YF-N d7-74",
     "systemAddress": 2553383192931,
     "bodyName": "C 4",
     "bodyId": 42,
     "siteType": "Alpha",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:37:12.0320686+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.4252076+00:00",
     "distanceToArrival": 4825.0,
     "starPos": [
       1315.75,
@@ -6751,7 +6751,7 @@
     "bodyId": 42,
     "siteType": "Beta",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:37:12.0372863+00:00",
+    "lastUpdated": "2023-07-13T01:37:25.0214884+00:00",
     "distanceToArrival": 4825.0,
     "starPos": [
       1315.75,
@@ -6775,7 +6775,7 @@
     "bodyId": 42,
     "siteType": "Alpha",
     "idx": 3,
-    "lastUpdated": "2023-07-12T18:37:12.0435287+00:00",
+    "lastUpdated": "2023-07-13T01:32:03.4715073+00:00",
     "distanceToArrival": 4825.0,
     "starPos": [
       1315.75,
@@ -6840,14 +6840,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 236,
     "systemName": "Col 173 Sector AU-Y b30-2",
     "systemAddress": 5086717158809,
     "bodyName": "B 4",
     "bodyId": 28,
     "siteType": "Gamma",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:37:13.8360817+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.4312741+00:00",
     "distanceToArrival": 1633.0,
     "starPos": [
       1329.46875,
@@ -6864,14 +6864,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 237,
     "systemName": "Col 173 Sector AU-Y b30-2",
     "systemAddress": 5086717158809,
     "bodyName": "B 4",
     "bodyId": 28,
     "siteType": "Beta",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:37:13.8413045+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.436799+00:00",
     "distanceToArrival": 1633.0,
     "starPos": [
       1329.46875,
@@ -7032,14 +7032,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 301,
     "systemName": "Col 173 Sector EM-L d8-27",
     "systemAddress": 938509044075,
     "bodyName": "4 a",
     "bodyId": 17,
     "siteType": "Alpha",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:37:17.2450325+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.4435001+00:00",
     "distanceToArrival": 1758.0,
     "starPos": [
       1480.5,
@@ -7056,14 +7056,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 302,
     "systemName": "Col 173 Sector EM-L d8-27",
     "systemAddress": 938509044075,
     "bodyName": "4 a",
     "bodyId": 17,
     "siteType": "Gamma",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:37:17.2479636+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.4487078+00:00",
     "distanceToArrival": 1758.0,
     "starPos": [
       1480.5,
@@ -7080,14 +7080,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 300,
     "systemName": "Col 173 Sector EM-L d8-60",
     "systemAddress": 2072380410219,
     "bodyName": "8 a",
     "bodyId": 48,
     "siteType": "Gamma",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:37:18.3953755+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.4536588+00:00",
     "distanceToArrival": 1105.0,
     "starPos": [
       1511.21875,
@@ -7104,14 +7104,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 299,
     "systemName": "Col 173 Sector EM-L d8-60",
     "systemAddress": 2072380410219,
     "bodyName": "8 a",
     "bodyId": 48,
     "siteType": "Alpha",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:37:18.3984932+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.4595484+00:00",
     "distanceToArrival": 1105.0,
     "starPos": [
       1511.21875,
@@ -7176,14 +7176,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 303,
     "systemName": "Col 173 Sector KN-J d9-22",
     "systemAddress": 766710335859,
     "bodyName": "5 a",
     "bodyId": 26,
     "siteType": "Beta",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:37:20.2437709+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.4661791+00:00",
     "distanceToArrival": 2022.0,
     "starPos": [
       1514.8125,
@@ -7200,14 +7200,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 304,
     "systemName": "Col 173 Sector KN-J d9-22",
     "systemAddress": 766710335859,
     "bodyName": "5 a",
     "bodyId": 26,
     "siteType": "Alpha",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:37:20.2466282+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.4717985+00:00",
     "distanceToArrival": 2022.0,
     "starPos": [
       1514.8125,
@@ -7296,14 +7296,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 305,
     "systemName": "Col 173 Sector IE-R b34-3",
     "systemAddress": 7288961443257,
     "bodyName": "B 2",
     "bodyId": 28,
     "siteType": "Alpha",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:37:23.290457+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.4771785+00:00",
     "distanceToArrival": 4456.0,
     "starPos": [
       1563.8125,
@@ -7320,14 +7320,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 306,
     "systemName": "Col 173 Sector IE-R b34-3",
     "systemAddress": 7288961443257,
     "bodyName": "B 2",
     "bodyId": 28,
     "siteType": "Alpha",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:37:23.29354+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.4822664+00:00",
     "distanceToArrival": 4456.0,
     "starPos": [
       1563.8125,
@@ -7344,14 +7344,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 146,
     "systemName": "Blae Eork QU-D d13-3",
     "systemAddress": 115368479347,
     "bodyName": "3",
     "bodyId": 4,
     "siteType": "Gamma",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:37:23.9720015+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.487783+00:00",
     "distanceToArrival": 629.0,
     "starPos": [
       8602.75,
@@ -7368,14 +7368,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 147,
     "systemName": "Blae Eork QU-D d13-3",
     "systemAddress": 115368479347,
     "bodyName": "3",
     "bodyId": 4,
     "siteType": "Gamma",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:37:23.9748312+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.4931321+00:00",
     "distanceToArrival": 629.0,
     "starPos": [
       8602.75,
@@ -7392,14 +7392,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 145,
     "systemName": "Blae Eork QU-D d13-3",
     "systemAddress": 115368479347,
     "bodyName": "3",
     "bodyId": 4,
     "siteType": "Beta",
     "idx": 3,
-    "lastUpdated": "2023-07-12T18:37:23.9811702+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.4981732+00:00",
     "distanceToArrival": 629.0,
     "starPos": [
       8602.75,
@@ -7416,14 +7416,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 158,
     "systemName": "2MASS J10444160-5947046",
     "systemAddress": 115368495739,
     "bodyName": "1 b",
     "bodyId": 13,
     "siteType": "Alpha",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:37:24.8753319+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.5034663+00:00",
     "distanceToArrival": 1536.0,
     "starPos": [
       8614.1875,
@@ -7440,14 +7440,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 157,
     "systemName": "2MASS J10444160-5947046",
     "systemAddress": 115368495739,
     "bodyName": "1 b",
     "bodyId": 13,
     "siteType": "Gamma",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:37:24.8782761+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.5090058+00:00",
     "distanceToArrival": 1536.0,
     "starPos": [
       8614.1875,
@@ -7464,14 +7464,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 156,
     "systemName": "Eta Carina Sector IM-V c2-4",
     "systemAddress": 1197859607794,
     "bodyName": "A 2",
     "bodyId": 5,
     "siteType": "Alpha",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:37:25.7588026+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.5145053+00:00",
     "distanceToArrival": 447.0,
     "starPos": [
       8629.1875,
@@ -7488,14 +7488,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 154,
     "systemName": "Eta Carina Sector IM-V c2-4",
     "systemAddress": 1197859607794,
     "bodyName": "A 2",
     "bodyId": 5,
     "siteType": "Alpha",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:37:25.7617084+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.5203779+00:00",
     "distanceToArrival": 447.0,
     "starPos": [
       8629.1875,
@@ -7512,14 +7512,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 155,
     "systemName": "Eta Carina Sector IM-V c2-4",
     "systemAddress": 1197859607794,
     "bodyName": "A 2",
     "bodyId": 5,
     "siteType": "Gamma",
     "idx": 3,
-    "lastUpdated": "2023-07-12T18:37:25.7684622+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.5258652+00:00",
     "distanceToArrival": 447.0,
     "starPos": [
       8629.1875,
@@ -7536,14 +7536,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 153,
     "systemName": "Eta Carina Sector EL-Y d16",
     "systemAddress": 562045094515,
     "bodyName": "ABC 4 a",
     "bodyId": 40,
     "siteType": "Gamma",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:37:26.6810691+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.5310266+00:00",
     "distanceToArrival": 1984.0,
     "starPos": [
       8636.59375,
@@ -7560,14 +7560,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 152,
     "systemName": "Eta Carina Sector EL-Y d16",
     "systemAddress": 562045094515,
     "bodyName": "ABC 4 a",
     "bodyId": 40,
     "siteType": "Beta",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:37:26.6839362+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.5361038+00:00",
     "distanceToArrival": 1984.0,
     "starPos": [
       8636.59375,
@@ -7584,14 +7584,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 151,
     "systemName": "Eta Carina Sector EL-Y d16",
     "systemAddress": 562045094515,
     "bodyName": "ABC 4 a",
     "bodyId": 40,
     "siteType": "Gamma",
     "idx": 3,
-    "lastUpdated": "2023-07-12T18:37:26.6903498+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.541424+00:00",
     "distanceToArrival": 1984.0,
     "starPos": [
       8636.59375,
@@ -7608,14 +7608,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 169,
     "systemName": "Blae Eork IF-G c27-13",
     "systemAddress": 3671827813610,
     "bodyName": "A 1",
     "bodyId": 5,
     "siteType": "Gamma",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:37:27.5790107+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.5464605+00:00",
     "distanceToArrival": 296.0,
     "starPos": [
       8668.1875,
@@ -7632,14 +7632,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 168,
     "systemName": "Blae Eork IF-G c27-13",
     "systemAddress": 3671827813610,
     "bodyName": "A 1",
     "bodyId": 5,
     "siteType": "Beta",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:37:27.5819167+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.5514187+00:00",
     "distanceToArrival": 296.0,
     "starPos": [
       8668.1875,
@@ -7656,14 +7656,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 167,
     "systemName": "Blae Eork IF-G c27-13",
     "systemAddress": 3671827813610,
     "bodyName": "A 1",
     "bodyId": 5,
     "siteType": "Beta",
     "idx": 3,
-    "lastUpdated": "2023-07-12T18:37:27.5881483+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.5565594+00:00",
     "distanceToArrival": 296.0,
     "starPos": [
       8668.1875,
@@ -7687,7 +7687,7 @@
     "bodyId": 25,
     "siteType": "Beta",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:37:28.4493515+00:00",
+    "lastUpdated": "2023-07-13T01:34:34.5798136+00:00",
     "distanceToArrival": 10423.0,
     "starPos": [
       8670.0625,
@@ -7711,7 +7711,7 @@
     "bodyId": 25,
     "siteType": "Alpha",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:37:28.4546809+00:00",
+    "lastUpdated": "2023-07-13T01:20:25.7313882+00:00",
     "distanceToArrival": 10423.0,
     "starPos": [
       8670.0625,
@@ -7728,14 +7728,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 298,
     "systemName": "Blae Eork NE-E d13-25",
     "systemAddress": 871299533427,
     "bodyName": "B 2",
     "bodyId": 25,
     "siteType": "Alpha",
     "idx": 3,
-    "lastUpdated": "2023-07-12T18:37:28.4615801+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.563352+00:00",
     "distanceToArrival": 10423.0,
     "starPos": [
       8670.0625,
@@ -7752,14 +7752,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 197,
     "systemName": "Blae Eork RU-D d13-17",
     "systemAddress": 596421593715,
     "bodyName": "1 a",
     "bodyId": 3,
     "siteType": "Alpha",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:37:29.5539989+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.5674756+00:00",
     "distanceToArrival": 869.0,
     "starPos": [
       8675.5,
@@ -7776,14 +7776,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 199,
     "systemName": "Blae Eork RU-D d13-17",
     "systemAddress": 596421593715,
     "bodyName": "1 a",
     "bodyId": 3,
     "siteType": "Alpha",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:37:29.5569217+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.5726282+00:00",
     "distanceToArrival": 869.0,
     "starPos": [
       8675.5,
@@ -7800,14 +7800,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 198,
     "systemName": "Blae Eork RU-D d13-17",
     "systemAddress": 596421593715,
     "bodyName": "1 a",
     "bodyId": 3,
     "siteType": "Beta",
     "idx": 3,
-    "lastUpdated": "2023-07-12T18:37:29.563989+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.5775752+00:00",
     "distanceToArrival": 869.0,
     "starPos": [
       8675.5,
@@ -7824,14 +7824,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 203,
     "systemName": "Blae Eork RU-D d13-20",
     "systemAddress": 699500808819,
     "bodyName": "5 d",
     "bodyId": 27,
     "siteType": "Beta",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:37:30.65164+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.5827084+00:00",
     "distanceToArrival": 944.0,
     "starPos": [
       8675.25,
@@ -7848,14 +7848,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 202,
     "systemName": "Blae Eork RU-D d13-20",
     "systemAddress": 699500808819,
     "bodyName": "5 d",
     "bodyId": 27,
     "siteType": "Alpha",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:37:30.6545114+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.5879019+00:00",
     "distanceToArrival": 944.0,
     "starPos": [
       8675.25,
@@ -7872,14 +7872,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 204,
     "systemName": "Blae Eork RU-D d13-20",
     "systemAddress": 699500808819,
     "bodyName": "5 d",
     "bodyId": 27,
     "siteType": "Gamma",
     "idx": 3,
-    "lastUpdated": "2023-07-12T18:37:30.6612464+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.5933735+00:00",
     "distanceToArrival": 944.0,
     "starPos": [
       8675.25,
@@ -7896,14 +7896,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 241,
     "systemName": "Blae Eork UL-J b56-1",
     "systemAddress": 2986746784225,
     "bodyName": "A 3",
     "bodyId": 8,
     "siteType": "Alpha",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:37:31.5404633+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.598852+00:00",
     "distanceToArrival": 62.0,
     "starPos": [
       8710.15625,
@@ -7920,14 +7920,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 242,
     "systemName": "Blae Eork UL-J b56-1",
     "systemAddress": 2986746784225,
     "bodyName": "A 3",
     "bodyId": 8,
     "siteType": "Alpha",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:37:31.5433715+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.6040204+00:00",
     "distanceToArrival": 62.0,
     "starPos": [
       8710.15625,
@@ -7944,14 +7944,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 240,
     "systemName": "Blae Eork UL-J b56-1",
     "systemAddress": 2986746784225,
     "bodyName": "A 3",
     "bodyId": 8,
     "siteType": "Beta",
     "idx": 3,
-    "lastUpdated": "2023-07-12T18:37:31.5498797+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.6091269+00:00",
     "distanceToArrival": 62.0,
     "starPos": [
       8710.15625,
@@ -7968,14 +7968,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 68,
     "systemName": "Skaudai AM-B d14-138",
     "systemAddress": 4750980320635,
     "bodyName": "AB 7 a",
     "bodyId": 36,
     "siteType": "Beta",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:37:32.7897962+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.6144815+00:00",
     "distanceToArrival": 2643.0,
     "starPos": [
       -5477.59375,
@@ -7992,14 +7992,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 92,
     "systemName": "Skaudai AM-B d14-138",
     "systemAddress": 4750980320635,
     "bodyName": "AB 7 a",
     "bodyId": 36,
     "siteType": "Gamma",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:37:32.7926366+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.6197215+00:00",
     "distanceToArrival": 2643.0,
     "starPos": [
       -5477.59375,
@@ -8016,14 +8016,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 69,
     "systemName": "Skaudai AM-B d14-138",
     "systemAddress": 4750980320635,
     "bodyName": "AB 7 a",
     "bodyId": 36,
     "siteType": "Gamma",
     "idx": 3,
-    "lastUpdated": "2023-07-12T18:37:32.7990059+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.6247965+00:00",
     "distanceToArrival": 2643.0,
     "starPos": [
       -5477.59375,
@@ -8047,7 +8047,7 @@
     "bodyId": 95,
     "siteType": "Beta",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:37:33.9184502+00:00",
+    "lastUpdated": "2023-07-13T01:20:25.8239609+00:00",
     "distanceToArrival": 31613.0,
     "starPos": [
       -5476.6875,
@@ -8064,14 +8064,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 192,
     "systemName": "Prua Phoe US-B d86",
     "systemAddress": 2964273909123,
     "bodyName": "C 2",
     "bodyId": 95,
     "siteType": "Gamma",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:37:33.9215249+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.6306071+00:00",
     "distanceToArrival": 31613.0,
     "starPos": [
       -5476.6875,
@@ -8119,7 +8119,7 @@
     "bodyId": 96,
     "siteType": "Gamma",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:37:34.9869116+00:00",
+    "lastUpdated": "2023-07-13T01:20:25.837394+00:00",
     "distanceToArrival": 31613.0,
     "starPos": [
       -5476.6875,
@@ -8143,7 +8143,7 @@
     "bodyId": 96,
     "siteType": "Alpha",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:37:34.9896903+00:00",
+    "lastUpdated": "2023-07-13T01:20:25.8447311+00:00",
     "distanceToArrival": 31613.0,
     "starPos": [
       -5476.6875,
@@ -8160,14 +8160,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 173,
     "systemName": "Prua Phoe TS-B d252",
     "systemAddress": 8667973700995,
     "bodyName": "C 6",
     "bodyId": 68,
     "siteType": "Beta",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:37:36.1085643+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.6364962+00:00",
     "distanceToArrival": 505685.0,
     "starPos": [
       -5541.84375,
@@ -8184,14 +8184,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 176,
     "systemName": "Prua Phoe TS-B d252",
     "systemAddress": 8667973700995,
     "bodyName": "D 1",
     "bodyId": 74,
     "siteType": "Beta",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:37:37.1905722+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.6417502+00:00",
     "distanceToArrival": 505701.0,
     "starPos": [
       -5541.84375,
@@ -8208,14 +8208,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 175,
     "systemName": "Prua Phoe TS-B d252",
     "systemAddress": 8667973700995,
     "bodyName": "D 1",
     "bodyId": 74,
     "siteType": "Beta",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:37:37.1933899+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.6471961+00:00",
     "distanceToArrival": 505701.0,
     "starPos": [
       -5541.84375,
@@ -8232,14 +8232,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 174,
     "systemName": "Prua Phoe TS-B d252",
     "systemAddress": 8667973700995,
     "bodyName": "D 1",
     "bodyId": 74,
     "siteType": "Gamma",
     "idx": 3,
-    "lastUpdated": "2023-07-12T18:37:37.1998376+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.6536668+00:00",
     "distanceToArrival": 505701.0,
     "starPos": [
       -5541.84375,
@@ -8256,14 +8256,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 185,
     "systemName": "Prua Phoe XY-Z d114",
     "systemAddress": 3926329806219,
     "bodyName": "4 d",
     "bodyId": 19,
     "siteType": "Gamma",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:37:38.3115383+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.6593861+00:00",
     "distanceToArrival": 837.0,
     "starPos": [
       -5517.78125,
@@ -8280,14 +8280,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 187,
     "systemName": "Prua Phoe XY-Z d114",
     "systemAddress": 3926329806219,
     "bodyName": "4 f",
     "bodyId": 22,
     "siteType": "Gamma",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:37:39.3764551+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.665243+00:00",
     "distanceToArrival": 839.0,
     "starPos": [
       -5517.78125,
@@ -8304,14 +8304,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 186,
     "systemName": "Prua Phoe XY-Z d114",
     "systemAddress": 3926329806219,
     "bodyName": "4 f",
     "bodyId": 22,
     "siteType": "Alpha",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:37:39.3800289+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.6711163+00:00",
     "distanceToArrival": 839.0,
     "starPos": [
       -5517.78125,
@@ -8328,14 +8328,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 188,
     "systemName": "Prua Phoe XY-Z d114",
     "systemAddress": 3926329806219,
     "bodyName": "4 f",
     "bodyId": 22,
     "siteType": "Gamma",
     "idx": 3,
-    "lastUpdated": "2023-07-12T18:37:39.3867192+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.6780204+00:00",
     "distanceToArrival": 839.0,
     "starPos": [
       -5517.78125,
@@ -8352,14 +8352,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 180,
     "systemName": "Prua Phoe XY-Z d42",
     "systemAddress": 1452428643723,
     "bodyName": "7 a",
     "bodyId": 34,
     "siteType": "Alpha",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:37:40.4546458+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.6839618+00:00",
     "distanceToArrival": 1129.0,
     "starPos": [
       -5525.5625,
@@ -8376,14 +8376,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 182,
     "systemName": "Prua Phoe XY-Z d42",
     "systemAddress": 1452428643723,
     "bodyName": "7 a",
     "bodyId": 34,
     "siteType": "Beta",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:37:40.4574077+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.689141+00:00",
     "distanceToArrival": 1129.0,
     "starPos": [
       -5525.5625,
@@ -8400,14 +8400,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 181,
     "systemName": "Prua Phoe XY-Z d42",
     "systemAddress": 1452428643723,
     "bodyName": "7 a",
     "bodyId": 34,
     "siteType": "Gamma",
     "idx": 3,
-    "lastUpdated": "2023-07-12T18:37:40.4641128+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.6947741+00:00",
     "distanceToArrival": 1129.0,
     "starPos": [
       -5525.5625,
@@ -8424,14 +8424,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 183,
     "systemName": "Prua Phoe XY-Z d42",
     "systemAddress": 1452428643723,
     "bodyName": "8 a",
     "bodyId": 52,
     "siteType": "Alpha",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:37:41.5327254+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.6997992+00:00",
     "distanceToArrival": 1617.0,
     "starPos": [
       -5525.5625,
@@ -8448,14 +8448,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 184,
     "systemName": "Prua Phoe XY-Z d42",
     "systemAddress": 1452428643723,
     "bodyName": "8 a",
     "bodyId": 52,
     "siteType": "Alpha",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:37:41.5354316+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.7049807+00:00",
     "distanceToArrival": 1617.0,
     "starPos": [
       -5525.5625,
@@ -8568,14 +8568,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 212,
     "systemName": "Prai Hypoo GF-E c10",
     "systemAddress": 2816994908418,
     "bodyName": "B 4",
     "bodyId": 22,
     "siteType": "Gamma",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:37:44.3649779+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.7107064+00:00",
     "distanceToArrival": 1386.0,
     "starPos": [
       -9308.09375,
@@ -8592,14 +8592,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 213,
     "systemName": "Prai Hypoo GF-E c10",
     "systemAddress": 2816994908418,
     "bodyName": "B 4",
     "bodyId": 22,
     "siteType": "Gamma",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:37:44.3677042+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.7157919+00:00",
     "distanceToArrival": 1386.0,
     "starPos": [
       -9308.09375,
@@ -8616,14 +8616,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 211,
     "systemName": "Prai Hypoo GF-E c10",
     "systemAddress": 2816994908418,
     "bodyName": "B 4",
     "bodyId": 22,
     "siteType": "Gamma",
     "idx": 3,
-    "lastUpdated": "2023-07-12T18:37:44.374047+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.7208158+00:00",
     "distanceToArrival": 1386.0,
     "starPos": [
       -9308.09375,
@@ -8640,14 +8640,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 224,
     "systemName": "Prai Hypoo QC-C d31",
     "systemAddress": 1073683025027,
     "bodyName": "2 a",
     "bodyId": 24,
     "siteType": "Alpha",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:37:45.2464091+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.7264631+00:00",
     "distanceToArrival": 698.0,
     "starPos": [
       -9294.75,
@@ -8664,14 +8664,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 223,
     "systemName": "Prai Hypoo QC-C d31",
     "systemAddress": 1073683025027,
     "bodyName": "2 a",
     "bodyId": 24,
     "siteType": "Alpha",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:37:45.2496977+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.7314712+00:00",
     "distanceToArrival": 698.0,
     "starPos": [
       -9294.75,
@@ -8688,14 +8688,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 309,
     "systemName": "Prai Hypoo NQ-F b2-3",
     "systemAddress": 7142932230673,
     "bodyName": "C 1",
     "bodyId": 95,
     "siteType": "Gamma",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:37:46.4547645+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.7368514+00:00",
     "distanceToArrival": 204885.0,
     "starPos": [
       -9324.5625,
@@ -8712,14 +8712,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 307,
     "systemName": "Prai Hypoo NQ-F b2-3",
     "systemAddress": 7142932230673,
     "bodyName": "C 1",
     "bodyId": 95,
     "siteType": "Gamma",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:37:46.4577531+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.743573+00:00",
     "distanceToArrival": 204885.0,
     "starPos": [
       -9324.5625,
@@ -8736,14 +8736,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 308,
     "systemName": "Prai Hypoo NQ-F b2-3",
     "systemAddress": 7142932230673,
     "bodyName": "C 1",
     "bodyId": 95,
     "siteType": "Beta",
     "idx": 3,
-    "lastUpdated": "2023-07-12T18:37:46.4644491+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.7495047+00:00",
     "distanceToArrival": 204885.0,
     "starPos": [
       -9324.5625,
@@ -8760,14 +8760,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 297,
     "systemName": "Prai Hypoo PC-C d50",
     "systemAddress": 1726501276803,
     "bodyName": "C 1",
     "bodyId": 24,
     "siteType": "Gamma",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:37:47.4723197+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.7554427+00:00",
     "distanceToArrival": 476037.0,
     "starPos": [
       -9371.3125,
@@ -8784,14 +8784,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 295,
     "systemName": "Prai Hypoo PC-C d50",
     "systemAddress": 1726501276803,
     "bodyName": "C 1",
     "bodyId": 24,
     "siteType": "Gamma",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:37:47.4751274+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.7606331+00:00",
     "distanceToArrival": 476037.0,
     "starPos": [
       -9371.3125,
@@ -8808,14 +8808,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 296,
     "systemName": "Prai Hypoo PC-C d50",
     "systemAddress": 1726501276803,
     "bodyName": "C 1",
     "bodyId": 24,
     "siteType": "Gamma",
     "idx": 3,
-    "lastUpdated": "2023-07-12T18:37:47.4817656+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.7655271+00:00",
     "distanceToArrival": 476037.0,
     "starPos": [
       -9371.3125,
@@ -8832,14 +8832,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 257,
     "systemName": "Prai Hypoo WD-A d1-6",
     "systemAddress": 214689549451,
     "bodyName": "10 a",
     "bodyId": 48,
     "siteType": "Alpha",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:37:48.3728938+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.7705992+00:00",
     "distanceToArrival": 3231.0,
     "starPos": [
       -9302.25,
@@ -8880,14 +8880,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 258,
     "systemName": "Prai Hypoo WD-A d1-6",
     "systemAddress": 214689549451,
     "bodyName": "10 a",
     "bodyId": 48,
     "siteType": "Beta",
     "idx": 3,
-    "lastUpdated": "2023-07-12T18:37:48.3822202+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.7755954+00:00",
     "distanceToArrival": 3231.0,
     "starPos": [
       -9302.25,
@@ -8904,14 +8904,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 259,
     "systemName": "Prai Hypoo WD-A d1-41",
     "systemAddress": 1417280392331,
     "bodyName": "5 c",
     "bodyId": 17,
     "siteType": "Gamma",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:37:49.2809332+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.7810155+00:00",
     "distanceToArrival": 2337.0,
     "starPos": [
       -9326.09375,
@@ -8928,14 +8928,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 248,
     "systemName": "Blaa Hypai XR-I b26-0",
     "systemAddress": 687595337953,
     "bodyName": "A 3",
     "bodyId": 9,
     "siteType": "Alpha",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:37:50.1566216+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.7865037+00:00",
     "distanceToArrival": 62.0,
     "starPos": [
       1238.59375,
@@ -8952,14 +8952,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 249,
     "systemName": "Blaa Hypai XR-I b26-0",
     "systemAddress": 687595337953,
     "bodyName": "A 3",
     "bodyId": 9,
     "siteType": "Beta",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:37:50.1599696+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.7914982+00:00",
     "distanceToArrival": 62.0,
     "starPos": [
       1238.59375,
@@ -8976,14 +8976,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 247,
     "systemName": "Blaa Hypai XR-I b26-0",
     "systemAddress": 687595337953,
     "bodyName": "A 3",
     "bodyId": 9,
     "siteType": "Alpha",
     "idx": 3,
-    "lastUpdated": "2023-07-12T18:37:50.1668345+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.7964562+00:00",
     "distanceToArrival": 62.0,
     "starPos": [
       1238.59375,
@@ -9024,14 +9024,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 253,
     "systemName": "Blaa Hypai EU-D c13-0",
     "systemAddress": 85932285042,
     "bodyName": "B 4",
     "bodyId": 19,
     "siteType": "Gamma",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:37:51.9342649+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.8026139+00:00",
     "distanceToArrival": 414092.0,
     "starPos": [
       1244.25,
@@ -9048,14 +9048,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 252,
     "systemName": "Blaa Hypai EU-D c13-0",
     "systemAddress": 85932285042,
     "bodyName": "B 4",
     "bodyId": 19,
     "siteType": "Gamma",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:37:51.9369863+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.8078899+00:00",
     "distanceToArrival": 414092.0,
     "starPos": [
       1244.25,
@@ -9072,14 +9072,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 254,
     "systemName": "Blaa Hypai EU-D c13-0",
     "systemAddress": 85932285042,
     "bodyName": "B 4",
     "bodyId": 19,
     "siteType": "Alpha",
     "idx": 3,
-    "lastUpdated": "2023-07-12T18:37:51.9435234+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.81274+00:00",
     "distanceToArrival": 414092.0,
     "starPos": [
       1244.25,
@@ -9096,14 +9096,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 232,
     "systemName": "Blaa Hypai OZ-O d6-16",
     "systemAddress": 560501476923,
     "bodyName": "4 c",
     "bodyId": 22,
     "siteType": "Beta",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:37:53.0458791+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.817846+00:00",
     "distanceToArrival": 1002.0,
     "starPos": [
       1285.5,
@@ -9120,14 +9120,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 230,
     "systemName": "Blaa Hypai OZ-O d6-16",
     "systemAddress": 560501476923,
     "bodyName": "4 c",
     "bodyId": 22,
     "siteType": "Gamma",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:37:53.0497386+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.8232635+00:00",
     "distanceToArrival": 1002.0,
     "starPos": [
       1285.5,
@@ -9144,14 +9144,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 230,
     "systemName": "Blaa Hypai OZ-O d6-16",
     "systemAddress": 560501476923,
     "bodyName": "4 c",
     "bodyId": 22,
     "siteType": "Gamma",
     "idx": 3,
-    "lastUpdated": "2023-07-12T18:37:53.0561736+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.8288142+00:00",
     "distanceToArrival": 1002.0,
     "starPos": [
       1285.5,
@@ -9168,14 +9168,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 227,
     "systemName": "Blaa Hypai LZ-F b27-0",
     "systemAddress": 687595010281,
     "bodyName": "A 5",
     "bodyId": 15,
     "siteType": "Gamma",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:37:53.9723581+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.8360786+00:00",
     "distanceToArrival": 56.0,
     "starPos": [
       1251.4375,
@@ -9192,14 +9192,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 228,
     "systemName": "Blaa Hypai LZ-F b27-0",
     "systemAddress": 687595010281,
     "bodyName": "A 5",
     "bodyId": 15,
     "siteType": "Alpha",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:37:53.9752029+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.842746+00:00",
     "distanceToArrival": 56.0,
     "starPos": [
       1251.4375,
@@ -9216,14 +9216,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 229,
     "systemName": "Blaa Hypai LZ-F b27-0",
     "systemAddress": 687595010281,
     "bodyName": "A 5",
     "bodyId": 15,
     "siteType": "Gamma",
     "idx": 3,
-    "lastUpdated": "2023-07-12T18:37:53.9816031+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.8482314+00:00",
     "distanceToArrival": 56.0,
     "starPos": [
       1251.4375,
@@ -10680,14 +10680,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 323,
     "systemName": "Graea Hypue LS-S d4-81",
     "systemAddress": 2793465056939,
     "bodyName": "AB 5 a",
     "bodyId": 50,
     "siteType": "Alpha",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:38:29.8598852+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.8535375+00:00",
     "distanceToArrival": 2362.0,
     "starPos": [
       -760.8125,
@@ -10704,14 +10704,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 324,
     "systemName": "Graea Hypue LS-S d4-81",
     "systemAddress": 2793465056939,
     "bodyName": "AB 5 a",
     "bodyId": 50,
     "siteType": "Alpha",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:38:29.8626732+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.8588249+00:00",
     "distanceToArrival": 2362.0,
     "starPos": [
       -760.8125,
@@ -10752,14 +10752,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 330,
     "systemName": "Graea Hypue LS-S d4-81",
     "systemAddress": 2793465056939,
     "bodyName": "AB 6 b",
     "bodyId": 61,
     "siteType": "Gamma",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:38:30.7170807+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.8643806+00:00",
     "distanceToArrival": 3539.0,
     "starPos": [
       -760.8125,
@@ -10776,14 +10776,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 325,
     "systemName": "Graea Hypue LS-S d4-81",
     "systemAddress": 2793465056939,
     "bodyName": "AB 6 c",
     "bodyId": 62,
     "siteType": "Gamma",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:38:31.561716+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.8695381+00:00",
     "distanceToArrival": 3535.0,
     "starPos": [
       -760.8125,
@@ -10800,14 +10800,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 326,
     "systemName": "Graea Hypue LS-S d4-81",
     "systemAddress": 2793465056939,
     "bodyName": "AB 6 c",
     "bodyId": 62,
     "siteType": "Beta",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:38:31.5653273+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.8744436+00:00",
     "distanceToArrival": 3535.0,
     "starPos": [
       -760.8125,
@@ -10824,14 +10824,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 329,
     "systemName": "Graea Hypue LS-S d4-3",
     "systemAddress": 113405464235,
     "bodyName": "4 a",
     "bodyId": 46,
     "siteType": "Gamma",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:38:32.681037+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.8794613+00:00",
     "distanceToArrival": 1647.0,
     "starPos": [
       -726.96875,
@@ -10848,14 +10848,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 327,
     "systemName": "Graea Hypue LS-S d4-3",
     "systemAddress": 113405464235,
     "bodyName": "6 a",
     "bodyId": 57,
     "siteType": "Gamma",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:38:33.7301842+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.8848124+00:00",
     "distanceToArrival": 2238.0,
     "starPos": [
       -726.96875,
@@ -10872,14 +10872,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 328,
     "systemName": "Graea Hypue LS-S d4-3",
     "systemAddress": 113405464235,
     "bodyName": "6 a",
     "bodyId": 57,
     "siteType": "Beta",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:38:33.7329211+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.8901996+00:00",
     "distanceToArrival": 2238.0,
     "starPos": [
       -726.96875,
@@ -10896,14 +10896,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 314,
     "systemName": "Graea Hypue QL-V b19-15",
     "systemAddress": 33645295450793,
     "bodyName": "C 3",
     "bodyId": 35,
     "siteType": "Alpha",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:38:34.6163824+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.8954462+00:00",
     "distanceToArrival": 77761.0,
     "starPos": [
       -819.125,
@@ -10920,14 +10920,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 315,
     "systemName": "Graea Hypue QL-V b19-15",
     "systemAddress": 33645295450793,
     "bodyName": "C 3",
     "bodyId": 35,
     "siteType": "Gamma",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:38:34.6193082+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.9014993+00:00",
     "distanceToArrival": 77761.0,
     "starPos": [
       -819.125,
@@ -10944,14 +10944,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 317,
     "systemName": "Graea Hypue QL-V b19-15",
     "systemAddress": 33645295450793,
     "bodyName": "C 4",
     "bodyId": 36,
     "siteType": "Gamma",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:38:35.4839674+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.9084319+00:00",
     "distanceToArrival": 77761.0,
     "starPos": [
       -819.125,
@@ -10968,14 +10968,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 316,
     "systemName": "Graea Hypue QL-V b19-15",
     "systemAddress": 33645295450793,
     "bodyName": "C 4",
     "bodyId": 36,
     "siteType": "Alpha",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:38:35.4867424+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.9142843+00:00",
     "distanceToArrival": 77761.0,
     "starPos": [
       -819.125,
@@ -10992,14 +10992,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 318,
     "systemName": "Graea Hypue QL-V b19-15",
     "systemAddress": 33645295450793,
     "bodyName": "D 2",
     "bodyId": 44,
     "siteType": "Alpha",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:38:36.3298001+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.9192975+00:00",
     "distanceToArrival": 77640.0,
     "starPos": [
       -819.125,
@@ -11016,14 +11016,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 319,
     "systemName": "Graea Hypue QL-V b19-15",
     "systemAddress": 33645295450793,
     "bodyName": "D 2",
     "bodyId": 44,
     "siteType": "Gamma",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:38:36.332588+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.9242946+00:00",
     "distanceToArrival": 77640.0,
     "starPos": [
       -819.125,
@@ -11328,14 +11328,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 334,
     "systemName": "NGC 3199 Sector XJ-A d10",
     "systemAddress": 357128161987,
     "bodyName": "11 a",
     "bodyId": 46,
     "siteType": "Beta",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:38:45.6585514+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.9296839+00:00",
     "distanceToArrival": 1875.0,
     "starPos": [
       14544.0625,
@@ -11352,14 +11352,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 333,
     "systemName": "NGC 3199 Sector XJ-A d10",
     "systemAddress": 357128161987,
     "bodyName": "11 a",
     "bodyId": 46,
     "siteType": "Alpha",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:38:45.6619232+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.934767+00:00",
     "distanceToArrival": 1875.0,
     "starPos": [
       14544.0625,
@@ -11376,14 +11376,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 335,
     "systemName": "NGC 3199 Sector XJ-A d10",
     "systemAddress": 357128161987,
     "bodyName": "13 b",
     "bodyId": 64,
     "siteType": "Gamma",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:38:46.7017559+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.940224+00:00",
     "distanceToArrival": 2445.0,
     "starPos": [
       14544.0625,
@@ -11400,14 +11400,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 244,
     "systemName": "NGC 3199 Sector DL-Y d12",
     "systemAddress": 425847622347,
     "bodyName": "1 a",
     "bodyId": 3,
     "siteType": "Alpha",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:38:47.5811436+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.9456638+00:00",
     "distanceToArrival": 854.0,
     "starPos": [
       14563.875,
@@ -11424,14 +11424,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 243,
     "systemName": "NGC 3199 Sector DL-Y d12",
     "systemAddress": 425847622347,
     "bodyName": "1 a",
     "bodyId": 3,
     "siteType": "Beta",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:38:47.5845441+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.9506159+00:00",
     "distanceToArrival": 854.0,
     "starPos": [
       14563.875,
@@ -11520,14 +11520,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 245,
     "systemName": "NGC 3199 Sector BV-Y c2",
     "systemAddress": 658102883722,
     "bodyName": "B 1",
     "bodyId": 17,
     "siteType": "Gamma",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:38:50.1726538+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.9555116+00:00",
     "distanceToArrival": 5444.0,
     "starPos": [
       14595.53125,
@@ -11544,14 +11544,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 246,
     "systemName": "NGC 3199 Sector BV-Y c2",
     "systemAddress": 658102883722,
     "bodyName": "B 1",
     "bodyId": 17,
     "siteType": "Gamma",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:38:50.1754837+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.9615881+00:00",
     "distanceToArrival": 5444.0,
     "starPos": [
       14595.53125,
@@ -11568,14 +11568,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 331,
     "systemName": "NGC 3199 Sector CQ-Y d6",
     "systemAddress": 219705985739,
     "bodyName": "B 4",
     "bodyId": 23,
     "siteType": "Gamma",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:38:51.0520651+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.9670161+00:00",
     "distanceToArrival": 6694.0,
     "starPos": [
       14596.96875,
@@ -11592,14 +11592,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 332,
     "systemName": "NGC 3199 Sector CQ-Y d6",
     "systemAddress": 219705985739,
     "bodyName": "B 4",
     "bodyId": 23,
     "siteType": "Beta",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:38:51.0548719+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.9720528+00:00",
     "distanceToArrival": 6694.0,
     "starPos": [
       14596.96875,
@@ -11712,14 +11712,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 235,
     "systemName": "NGC 3199 Sector IM-V c2-5",
     "systemAddress": 1482803746202,
     "bodyName": "B 3",
     "bodyId": 23,
     "siteType": "Beta",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:38:53.6668586+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.9774379+00:00",
     "distanceToArrival": 231520.0,
     "starPos": [
       14619.96875,
@@ -11736,14 +11736,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 234,
     "systemName": "NGC 3199 Sector IM-V c2-5",
     "systemAddress": 1482803746202,
     "bodyName": "B 3",
     "bodyId": 23,
     "siteType": "Beta",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:38:53.6701971+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.9828131+00:00",
     "distanceToArrival": 231520.0,
     "starPos": [
       14619.96875,
@@ -11760,14 +11760,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 233,
     "systemName": "NGC 3199 Sector IM-V c2-5",
     "systemAddress": 1482803746202,
     "bodyName": "B 4",
     "bodyId": 24,
     "siteType": "Alpha",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:38:54.5228618+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.9894954+00:00",
     "distanceToArrival": 231520.0,
     "starPos": [
       14619.96875,
@@ -11784,14 +11784,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 239,
     "systemName": "NGC 3199 Sector MC-V c2-8",
     "systemAddress": 2307437401498,
     "bodyName": "A 5",
     "bodyId": 11,
     "siteType": "Alpha",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:38:55.3805305+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.9949107+00:00",
     "distanceToArrival": 93.0,
     "starPos": [
       14619.8125,
@@ -11808,14 +11808,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 238,
     "systemName": "NGC 3199 Sector MC-V c2-8",
     "systemAddress": 2307437401498,
     "bodyName": "A 5",
     "bodyId": 11,
     "siteType": "Beta",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:38:55.3832794+00:00",
+    "lastUpdated": "2023-07-14T19:02:51.9998085+00:00",
     "distanceToArrival": 93.0,
     "starPos": [
       14619.8125,
@@ -11832,14 +11832,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 262,
     "systemName": "Eorl Auwsy YF-Y b56-16",
     "systemAddress": 35921630676457,
     "bodyName": "B 3",
     "bodyId": 11,
     "siteType": "Gamma",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:38:56.2891006+00:00",
+    "lastUpdated": "2023-07-14T19:02:52.0048081+00:00",
     "distanceToArrival": 279360.0,
     "starPos": [
       4953.46875,
@@ -11856,14 +11856,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 261,
     "systemName": "Eorl Auwsy YF-Y b56-16",
     "systemAddress": 35921630676457,
     "bodyName": "B 3",
     "bodyId": 11,
     "siteType": "Alpha",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:38:56.2918876+00:00",
+    "lastUpdated": "2023-07-14T19:02:52.0101795+00:00",
     "distanceToArrival": 279360.0,
     "starPos": [
       4953.46875,
@@ -11880,14 +11880,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 260,
     "systemName": "Eorl Auwsy YF-Y b56-16",
     "systemAddress": 35921630676457,
     "bodyName": "C 3",
     "bodyId": 18,
     "siteType": "Gamma",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:38:57.1336633+00:00",
+    "lastUpdated": "2023-07-14T19:02:52.0150862+00:00",
     "distanceToArrival": 279477.0,
     "starPos": [
       4953.46875,
@@ -12024,22 +12024,22 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 218,
     "systemName": "Eorl Auwsy SY-Z d13-3861",
     "systemAddress": 132674467434875,
     "bodyName": "3 c",
     "bodyId": 22,
     "siteType": "Gamma",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:39:00.6179485+00:00",
+    "lastUpdated": "2023-07-14T19:02:52.020057+00:00",
     "distanceToArrival": 1187.0,
     "starPos": [
       4950.3125,
       166.8125,
       20641.59375
     ],
-    "latitude": "NaN",
-    "longitude": "NaN",
+    "latitude": -2.456378,
+    "longitude": 101.12336,
     "siteHeading": -1,
     "relicTowerHeading": -1,
     "legacyLatitude": -2.456377,
@@ -12048,14 +12048,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 219,
     "systemName": "Eorl Auwsy SY-Z d13-3861",
     "systemAddress": 132674467434875,
     "bodyName": "3 c",
     "bodyId": 22,
     "siteType": "Beta",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:39:00.6209411+00:00",
+    "lastUpdated": "2023-07-14T19:02:52.0251443+00:00",
     "distanceToArrival": 1187.0,
     "starPos": [
       4950.3125,
@@ -12072,14 +12072,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 220,
     "systemName": "Eorl Auwsy SY-Z d13-3861",
     "systemAddress": 132674467434875,
     "bodyName": "4 c",
     "bodyId": 32,
     "siteType": "Alpha",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:39:01.4659217+00:00",
+    "lastUpdated": "2023-07-14T19:02:52.0300226+00:00",
     "distanceToArrival": 1778.0,
     "starPos": [
       4950.3125,
@@ -12096,14 +12096,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 214,
     "systemName": "Eorl Auwsy SY-Z d13-3468",
     "systemAddress": 119171090256251,
     "bodyName": "ABC 1 h",
     "bodyId": 21,
     "siteType": "Alpha",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:39:02.5593333+00:00",
+    "lastUpdated": "2023-07-14T19:02:52.0352495+00:00",
     "distanceToArrival": 1310.0,
     "starPos": [
       4948.46875,
@@ -12120,22 +12120,22 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 222,
     "systemName": "Eorl Auwsy SY-Z d13-3468",
     "systemAddress": 119171090256251,
     "bodyName": "ABC 3 c",
     "bodyId": 40,
     "siteType": "Beta",
     "idx": 1,
-    "lastUpdated": "2023-07-12T18:39:03.5854818+00:00",
+    "lastUpdated": "2023-07-14T19:02:52.0417555+00:00",
     "distanceToArrival": 3772.0,
     "starPos": [
       4948.46875,
       165.0625,
       20654.53125
     ],
-    "latitude": "NaN",
-    "longitude": "NaN",
+    "latitude": 40.928864,
+    "longitude": 68.960686,
     "siteHeading": -1,
     "relicTowerHeading": -1,
     "legacyLatitude": 40.928864,
@@ -12144,14 +12144,14 @@
     "legacyRelicTowerHeading": -1
   },
   {
-    "siteID": -1,
+    "siteID": 221,
     "systemName": "Eorl Auwsy SY-Z d13-3468",
     "systemAddress": 119171090256251,
     "bodyName": "ABC 3 c",
     "bodyId": 40,
     "siteType": "Gamma",
     "idx": 2,
-    "lastUpdated": "2023-07-12T18:39:03.5882608+00:00",
+    "lastUpdated": "2023-07-14T19:02:52.0471853+00:00",
     "distanceToArrival": 3772.0,
     "starPos": [
       4948.46875,
