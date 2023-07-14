@@ -1,5 +1,5 @@
-﻿using SrvSurvey.game;
-using System.Diagnostics.Eventing.Reader;
+﻿using Newtonsoft.Json;
+using SrvSurvey.game;
 
 namespace SrvSurvey.canonn
 {
@@ -301,23 +301,66 @@ namespace SrvSurvey.canonn
         }
     }
 
+    internal class GRReportsData
+    {
+        public GRReports data;
+    }
+
+    internal class GRReports
+    {
+        public List<GRReport> grreports;
+    }
+
+
+    internal class GRReport
+    {
+        public DateTimeOffset updated_at;
+        public string type;
+        public double latitude;
+        public double longitude;
+        public string cmdrName;
+        public string bodyName;
+        public int frontierID;
+    }
+
     /// <summary>
     /// Data pulled from runinSummaries.json
     /// </summary>
     internal class GuardianRuinSummary
     {
+        /// <summary> The ID number used by Canonn in GRSites. </summary>
         public int siteID;
         public string systemName;
         public long systemAddress;
         public string bodyName;
         public int bodyId;
         public string siteType;
+        /// <summary> The site number, 1 based. </summary>
         public int idx;
         public DateTimeOffset lastUpdated;
         public double distanceToArrival;
         public double[] starPos;
-        public double latitude;
-        public double longitude;
+        public double latitude = double.NaN;
+        public double longitude = double.NaN;
+        public int siteHeading = -1;
+        public int relicTowerHeading = -1;
+
+        // properties whose values differ live from legacy
+        public double legacyLatitude = double.NaN;
+        public double legacyLongitude = double.NaN;
+        public int legacySiteHeading = -1;
+        public int legacyRelicTowerHeading = -1;
+
+        [JsonIgnore]
+        public string fullBodyName { get => $"{this.systemName} {this.bodyName}"; }
+
+        [JsonIgnore]
+        public string fullBodyNameWithIdx { get => $"{this.systemName} {this.bodyName}, Ruins #{this.idx}"; }
+
+        [JsonIgnore]
+        public bool missingLiveLatLong { get => Double.IsNaN(this.latitude) || Double.IsNaN(this.longitude) || (this.latitude == 0 && this.longitude == 0); }
+        [JsonIgnore]
+        public bool missingLegacyLatLong { get => Double.IsNaN(this.legacyLatitude) || Double.IsNaN(this.legacyLongitude) || (this.legacyLatitude == 0 && this.legacyLongitude == 0); }
 
         public static GuardianRuinSummary from(GRSite _)
         {
@@ -347,10 +390,9 @@ namespace SrvSurvey.canonn
     /// </summary>
     internal class GuardianRuinEntry : GuardianRuinSummary
     {
-        public int siteHeading = -1;
-        public int relicTowerHeading = -1;
         public DateTimeOffset lastVisited;
         public double systemDistance;
+        public string notes = "";
 
         public GuardianRuinEntry(GuardianRuinSummary summary)
         {
@@ -377,12 +419,18 @@ namespace SrvSurvey.canonn
 
         public void merge(GuardianSiteData data)
         {
+            if (this.missingLiveLatLong)
+            {
+                this.notes += $"{data.systemName}\r\n\"latitude\": \"{data.location.Lat}\",\r\n    \"longitude\": \"{data.location.Long}\",\r\n  ** has missing lat/long - please share **";
+            }
+
             this.latitude = data.location.Lat;
             this.longitude = data.location.Long;
             this.siteHeading = data.siteHeading;
             this.relicTowerHeading = data.relicTowerHeading;
             this.lastVisited = data.lastVisited;
             this.idx = data.index;
+            this.notes += data.notes;
         }
 
         public static GuardianRuinEntry from(GuardianSiteData _, GuardianRuinEntry similar)
@@ -398,8 +446,10 @@ namespace SrvSurvey.canonn
                 idx = _.index,
                 latitude = _.location.Lat,
                 longitude = _.location.Long,
+                notes = _.notes,
             };
             entry.merge(_);
+
             return entry;
         }
 

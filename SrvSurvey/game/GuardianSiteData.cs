@@ -1,13 +1,15 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using SrvSurvey.canonn;
 using SrvSurvey.units;
+using System.Security.Cryptography;
 
 namespace SrvSurvey.game
 {
     internal class GuardianSiteData : Data
     {
         private static string rootFolder = Path.Combine(Application.UserAppDataPath, "guardian");
+
+        private static bool isOdyssey = Game.activeGame?.journals == null || Game.activeGame.journals.isOdyssey;
 
         public static string getFilename(ApproachSettlement entry)
         {
@@ -24,13 +26,21 @@ namespace SrvSurvey.game
         public static GuardianSiteData? Load(string bodyName, int index)
         {
             var fid = Game.activeGame?.fid ?? Game.settings.lastFid;
-            string filepath = Path.Combine(rootFolder, fid!, getFilename(bodyName, index));
+            var filename = getFilename(bodyName, index);
+            if (!isOdyssey)
+                filename = Path.Combine("legacy", filename);
+            string filepath = Path.Combine(rootFolder, fid!, filename);
+
             return Data.Load<GuardianSiteData>(filepath);
         }
 
         public static GuardianSiteData Load(ApproachSettlement entry)
         {
-            string filepath = Path.Combine(rootFolder, Game.activeGame!.fid!, getFilename(entry));
+            var filename = getFilename(entry);
+            if (!isOdyssey)
+                filename = Path.Combine("legacy", filename);
+            string filepath = Path.Combine(rootFolder, Game.activeGame!.fid!, filename);
+
             Directory.CreateDirectory(rootFolder);
             var data = Data.Load<GuardianSiteData>(filepath);
 
@@ -60,6 +70,7 @@ namespace SrvSurvey.game
                     bodyName = entry.BodyName,
                     firstVisited = DateTimeOffset.UtcNow,
                     poiStatus = new Dictionary<string, SitePoiStatus>(),
+                    legacy = !isOdyssey,
                 };
                 data.Save();
                 return data;
@@ -142,6 +153,7 @@ namespace SrvSurvey.game
         public int siteHeading = -1;
         public int relicTowerHeading = -1;
         public string notes;
+        public bool legacy = false;
 
         public Dictionary<string, bool> confirmedPOI = new Dictionary<string, bool>();
         public Dictionary<string, SitePoiStatus> poiStatus = new Dictionary<string, SitePoiStatus>();
@@ -197,6 +209,31 @@ namespace SrvSurvey.game
             Game.settings.migratedAlphaSiteHeading = true;
             Game.settings.Save();
         }
+
+
+        //public static void migrateLiveLegacyLocations()
+        //{
+        //    if (!Directory.Exists(rootFolder)) return;
+
+        //    Game.log("Migrating site location data - using liveLocation and legacyLocation");
+
+        //    var folders = Directory.GetDirectories(rootFolder);
+        //    foreach (var folder in folders)
+        //    {
+        //        var files = Directory.GetFiles(Path.Combine(rootFolder, folder));
+        //        foreach (var file in files)
+        //        {
+        //            string filepath = Path.Combine(rootFolder, folder, file);
+        //            var txt = File.ReadAllText(filepath);
+        //            var newTxt = txt.Replace("\"location\":", "\"liveLocation\":");
+
+        //            //File.WriteAllText(filepath, newTxt);
+        //        }
+        //    }
+
+        //    //Game.settings.migratedLiveAndLegacyLocations = true;
+        //    Game.settings.Save();
+        //}
 
         public static List<GuardianSiteData> loadAllSites()
         {

@@ -54,6 +54,7 @@ namespace SrvSurvey
         public int idxGuardianPlotter = 0;
 
         public bool migratedAlphaSiteHeading = false;
+        public bool migratedLiveAndLegacyLocations = false;
 
         // configurable colours and fonts
         public Color GameOrange = Color.FromArgb(255, 255, 113, 00); // #FF7100

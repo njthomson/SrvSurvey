@@ -147,6 +147,10 @@ namespace SrvSurvey
                 var row = new ListViewItem(siteID);
                 row.Tag = entry;
 
+                var notes = entry.notes ?? "";
+                if (entry.missingLiveLatLong)
+                    notes = "(missing live lat/long co-ordinates) " + notes;
+
                 // ordering here needs to manually match columns
                 row.SubItems.Add(new ListViewItem.ListViewSubItem(row, entry.systemName) { Name = "systemName" });
                 row.SubItems.Add(entry.bodyName);
@@ -158,6 +162,7 @@ namespace SrvSurvey
                 row.SubItems.Add(hasImages ? "yes" : "");
                 row.SubItems.Add(siteHeading);
                 row.SubItems.Add(relicTowerHeading);
+                row.SubItems.Add(notes);
 
                 this.rows.Add(row);
             }
@@ -198,8 +203,13 @@ namespace SrvSurvey
                 if (comboSiteType.SelectedIndex != 0 && comboSiteType.Text != entry.siteType)
                     return false;
 
-                if (!string.IsNullOrEmpty(txtFilter.Text) && !entry.systemName.Contains(txtFilter.Text, StringComparison.OrdinalIgnoreCase))
-                    return false;
+                if (!string.IsNullOrEmpty(txtFilter.Text))
+                {
+                    // if the system name, bodyName or Notes contains or systemAddress ...
+                    return entry.fullBodyNameWithIdx.Contains(txtFilter.Text, StringComparison.OrdinalIgnoreCase)
+                        || row.SubItems[row.SubItems.Count-1].Text.Contains(txtFilter.Text, StringComparison.OrdinalIgnoreCase)
+                        || entry.systemAddress.ToString() == txtFilter.Text;
+                }
 
                 return true;
             });
@@ -211,6 +221,7 @@ namespace SrvSurvey
                 sortedRows = sortedRows.Reverse();
 
             this.grid.Items.AddRange(sortedRows.ToArray());
+            this.lblStatus.Text = $"{this.grid.Items.Count} rows";
         }
 
         private IEnumerable<ListViewItem> sortRows(IEnumerable<ListViewItem> rows)
@@ -239,6 +250,8 @@ namespace SrvSurvey
                     return rows.OrderBy(row => ((GuardianRuinEntry)row.Tag).siteHeading);
                 case 10: // relic tower heading
                     return rows.OrderBy(row => ((GuardianRuinEntry)row.Tag).relicTowerHeading);
+                case 11: // notes
+                    return rows.OrderBy(row => ((GuardianRuinEntry)row.Tag).notes);
 
                 default:
                     Game.log($"Unexpected sort column: {this.sortColumn}");

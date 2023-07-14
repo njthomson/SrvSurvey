@@ -40,6 +40,9 @@ namespace SrvSurvey.game
 
         public void Save()
         {
+            if (Game.activeGame?.journals == null)
+                throw new Exception("Why no journals here?");
+
             var folder = Path.GetDirectoryName(this.filepath)!;
             Directory.CreateDirectory(folder);
 

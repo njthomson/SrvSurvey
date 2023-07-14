@@ -56,6 +56,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="allRuins.json" />
     <None Remove="images\alpha-background.png" />
     <None Remove="images\alpha-heading-guide.png" />
     <None Remove="images\beta-background.png" />
@@ -66,6 +67,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="allRuins.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="images\alpha-background.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -85,7 +89,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="settlementTemplates.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
 

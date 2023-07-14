@@ -113,6 +113,8 @@ namespace SrvSurvey
 
             if (!Game.settings.migratedAlphaSiteHeading)
                 GuardianSiteData.migrateAlphaSites();
+            //if (!Game.settings.migratedLiveAndLegacyLocations)
+            //    GuardianSiteData.migrateLiveLegacyLocations();
         }
 
         private void updateAllControls()
@@ -226,6 +228,8 @@ namespace SrvSurvey
             if (!gameIsActive || game == null)
             {
                 this.txtCommander.Text = game?.Commander ?? Game.settings.preferredCommander;
+                if (string.IsNullOrWhiteSpace(this.txtCommander.Text))
+                    this.txtCommander.Text = Game.settings.lastCommander + " ?";
                 this.txtMode.Text = game?.mode == GameMode.MainMenu ? "MainMenu" : "Game is not active";
                 this.txtVehicle.Text = "";
                 this.txtLocation.Text = "";

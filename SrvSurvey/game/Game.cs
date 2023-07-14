@@ -337,6 +337,7 @@ namespace SrvSurvey.game
         {
             get => Game.settings.enableGuardianSites
                 && this.nearBody?.siteData != null
+                && this.nearBody?.siteData.location != null // ??
                 && this.isMode(GameMode.InSrv, GameMode.OnFoot, GameMode.Landed, GameMode.Flying, GameMode.InFighter)
                 && !this.hidePlottersFromCombatSuits
                 && this.status.Altitude < 4000;
