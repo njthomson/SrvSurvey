@@ -126,6 +126,11 @@ namespace SrvSurvey
         private bool trackBlinks()
         {
             var blinkSignal = Game.settings.blinkTigger; // StatusFlags.HudInAnalysisMode; // CargoScoopDeployed; // StatusFlags.LightsOn;
+
+            // when on foot, use shield toggling instead
+            if ((this.Flags2 & StatusFlags2.OnFootExterior) > 0)
+                blinkSignal = StatusFlags.ShieldsUp;
+
             var newBlinkState = (this.Flags & blinkSignal) > 0;
             var duration = DateTime.Now - this.lastblinkChange;
 

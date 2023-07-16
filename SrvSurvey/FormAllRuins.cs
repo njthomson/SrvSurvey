@@ -130,7 +130,7 @@ namespace SrvSurvey
 
             var allRuins = Game.canonn.loadAllRuins();
 
-            Game.log($"Rendering {allRuins.Count} ruins");
+            Game.log($"Rendering {allRuins.Count} ruins.");
 
             foreach (var entry in allRuins)
             {
@@ -224,7 +224,7 @@ namespace SrvSurvey
                 sortedRows = sortedRows.Reverse();
 
             this.grid.Items.AddRange(sortedRows.ToArray());
-            this.lblStatus.Text = $"{this.grid.Items.Count} rows";
+            this.lblStatus.Text = $"{this.grid.Items.Count} rows. Right click a row to copy system name to clipboard.";
         }
 
         private IEnumerable<ListViewItem> sortRows(IEnumerable<ListViewItem> rows)

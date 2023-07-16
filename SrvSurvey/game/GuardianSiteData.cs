@@ -100,9 +100,9 @@ namespace SrvSurvey.game
                 save = true;
             }
 
-            if (Game.canonn.ruinSummaries != null && data.type == SiteType.Unknown)
+            if (Game.canonn.allRuins != null && data.type == SiteType.Unknown)
             {
-                var grSites = Game.canonn.ruinSummaries.Where(_ => _.bodyId == entry.BodyID && _.systemAddress == entry.SystemAddress);
+                var grSites = Game.canonn.allRuins.Where(_ => _.bodyId == entry.BodyID && _.systemAddress == entry.SystemAddress);
 
                 if (grSites.Any())
                 {

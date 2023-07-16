@@ -545,6 +545,14 @@ namespace SrvSurvey
                 }
             }
 
+            if (blink && game.isMode(GameMode.OnFoot) && game.status.SelectedWeapon == "$humanoid_companalyser_name;")
+            {
+                var newAngle = game.status.Heading;
+                Game.log($"Changing Relic Tower heading from: {siteData.relicTowerHeading}° to: {newAngle}");
+                siteData.relicTowerHeading = newAngle;
+                siteData.Save();
+            }
+
             // prepare other stuff
             if (template != null && siteData != null)
             {

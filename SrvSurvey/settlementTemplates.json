@@ -143,7 +143,9 @@
       { "name": "p9", "dist": 408, "angle": 57.2, "type": "totem" },
       { "name": "p10", "dist": 386, "angle": 199.3, "type": "orb" },
       { "name": "p11", "dist": 467, "angle": 146.4, "type": "urn" },
-      { "name": "p12", "dist": 257, "angle": 32.2, "type": "casket" }
+      { "name": "p12", "dist": 257, "angle": 32.2, "type": "casket" },
+      { "name": "p13", "dist": 27, "angle": 202, "type": "tablet" },
+      { "name": "p14", "dist": 132, "angle": 145.6, "type": "tablet" }
     ]
   }
 }

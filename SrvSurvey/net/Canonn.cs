@@ -14,6 +14,10 @@ namespace SrvSurvey.canonn
     {
         public void init()
         {
+            // load static ruins summaries
+            var json = File.ReadAllText(Canonn.allRuinsStaticPath);
+            this.allRuins = JsonConvert.DeserializeObject<List<GuardianRuinSummary>>(json)!;
+
             createRuinSummaries().ContinueWith(async (stuff) =>
             {
                 if (stuff.IsCompletedSuccessfully)
@@ -21,12 +25,11 @@ namespace SrvSurvey.canonn
                 else
                     Game.log($"Something bad happened in Canonn.init? {stuff.Exception}");
 
-                // load static ruins summaries
-                var json = File.ReadAllText(Canonn.allRuinsStaticPath);
-                this.allRuins = JsonConvert.DeserializeObject<List<GuardianRuinSummary>>(json)!;
 
-                //if (Debugger.IsAttached)
-                //    await Game.canonn.prepareNewSummaries();
+                /*
+                if (Debugger.IsAttached)
+                    await Game.canonn.prepareNewSummaries();
+                // */
             });
         }
 
@@ -348,27 +351,27 @@ namespace SrvSurvey.canonn
 
         #region parse Excel sheet of Ruins
 
-        private static string allRuinsStaticPath = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "allRuins.json");
+        private static string allRuinsStaticPathDbg = "D:\\code\\SrvSurvey\\SrvSurvey\\allRuins.json";
+        private static string allRuinsStaticPath = Debugger.IsAttached ? allRuinsStaticPathDbg : Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "allRuins.json");
         public List<GuardianRuinSummary> allRuins { get; private set; }
 
         private List<GuardianRuinSummary> newSummaries;
 
         public async Task prepareNewSummaries()
         {
-            var filepath = @"d:\code\newSummaries.json";
+            if (!File.Exists(allRuinsStaticPathDbg)) return;
 
             // re-read XML if no partial progress
-            if (!File.Exists(filepath))
+            if (!File.Exists(allRuinsStaticPathDbg))
             {
-                readXmlSheet(filepath);
+                readXmlSheet(allRuinsStaticPathDbg);
                 this.showSummaryCounts();
             }
             else
             {
-                var json = File.ReadAllText(filepath);
+                var json = File.ReadAllText(allRuinsStaticPathDbg);
                 this.newSummaries = JsonConvert.DeserializeObject<List<GuardianRuinSummary>>(json)!;
             }
-
 
             await this.matchSystemAddresses();
             await this.matchBodyIds();
@@ -377,19 +380,17 @@ namespace SrvSurvey.canonn
             // match against known Canonn ruins?
             this.matchKnownCanonnRuins();
 
-
             //await this.matchSystemNameToGRReports();
             //await this.matchBodyNameToGRReports();
 
-
             /*
-            //await this.matchLatLongsByCmdr("Yure"); // no ruins
-            //await this.matchLatLongsByCmdr("hurix"); // 3 ruins
-            //await this.matchLatLongsByCmdr("lilaclight"); // 27 ruins
-            //await this.matchLatLongsByCmdr("Alton Davies"); // 4 ruins
-            //await this.matchLatLongsByCmdr("ThArGosu"); // 4 ruins
-            //await this.matchLatLongsByCmdr("grinning2002"); // 3 ruins
-            //await this.matchLatLongsByCmdr("Jasper_Lit"); // 13 ruins
+            await this.matchLatLongsByCmdr("Yure"); // no ruins
+            await this.matchLatLongsByCmdr("Alton Davies"); // 4 ruins
+            await this.matchLatLongsByCmdr("ThArGosu"); // 4 ruins
+            await this.matchLatLongsByCmdr("Jasper_Lit"); // 13 ruins
+
+            // await this.matchLatLongsByCmdr("lilaclight"); // has legacy mode reports? 27 ruins
+            // await this.matchLatLongsByCmdr("grinning2002"); // has legacy mode reports? 3 ruins
 
             this.saveNewSummaries();
             // */
@@ -442,8 +443,8 @@ namespace SrvSurvey.canonn
             Game.log($"-=-=-=-=- VisitedAfterOdysseyReleased: {visitedAfterOdysseyReleased.Count}"); //:\r\n {string.Join("\r\n", sorted)}\r\n");
 
             sorted = missingLiveLatLong.ToList(); sorted.Sort();
-            //Game.log($"-=-=-=-=-missingLiveLatLong: {missingLiveLatLong.Count}");
-            Game.log($"-=-=-=-=-\r\n\r\nGuardian Ruins missing live lat/long co-ordinates: {missingLiveLatLong.Count}\r\n\r\n{string.Join("\r\n", sorted)}\r\n");
+            Game.log($"-=-=-=-=-\r\n\r\nGuardian Ruins missing live lat/long co-ordinates: {missingLiveLatLong.Count}");
+            //Game.log($"-=-=-=-=-\r\n\r\nGuardian Ruins missing live lat/long co-ordinates: {missingLiveLatLong.Count}\r\n\r\n{string.Join("\r\n", sorted)}\r\n");
 
             var unmatchedSiteIds = this.ruinSummaries.Where(_ => newSummaries.Find(ruins => ruins.siteID == _.siteHeading) == null).Select(_ => $"#{_.idx}").ToList();
             sorted = unmatchedSiteIds.ToList(); sorted.Sort();
@@ -455,7 +456,7 @@ namespace SrvSurvey.canonn
         {
             // save new summaries
             var json = JsonConvert.SerializeObject(newSummaries, Formatting.Indented);
-            File.WriteAllText(@"d:\code\newSummaries.json", json);
+            File.WriteAllText(allRuinsStaticPathDbg, json);
         }
 
         public void readXmlSheet(string filepath)
@@ -874,7 +875,7 @@ namespace SrvSurvey.canonn
         private async Task matchLatLongsByCmdr(string cmdrName)
         {
             var stuff = await this.getRuinsReportsByCmdr(cmdrName);
-            Game.log($"Found {stuff.Count} reports by: {cmdrName}");
+            Game.log($"\r\nFound {stuff.Count} reports by: {cmdrName}");
 
             var count = 0;
             foreach (var report in stuff)
@@ -886,10 +887,10 @@ namespace SrvSurvey.canonn
                 ruins.latitude = report.latitude;
                 ruins.longitude = report.longitude;
                 count++;
-                Game.log($"{report.bodyName} Ruins #{report.frontierID}");
+                Game.log($"  {report.bodyName} Ruins #{report.frontierID}");
             }
 
-            Game.log($"Updated {count} ruins from reports by: {cmdrName}");
+            Game.log($"Updated {count} ruins from reports by: {cmdrName}\r\n");
 
             //foreach (var ruins in newSummaries)
             //{

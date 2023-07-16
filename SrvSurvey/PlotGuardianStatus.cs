@@ -103,7 +103,19 @@ namespace SrvSurvey
 
             if (game.vehicle == ActiveVehicle.Foot)
             {
-                drawCenterMessage("Use Profile Analyser near Relic Towers aiming assistance");
+                if (game.status.SelectedWeapon == "$humanoid_companalyser_name;")
+                {
+                    var msg = "Toggle shields to set Relic Tower heading.";
+                    if (game.nearBody!.siteData.relicTowerHeading != -1)
+                        msg += $"\r\nRecorded heading: {game.nearBody.siteData.relicTowerHeading}°";
+
+                    drawCenterMessage(msg);
+                }
+                else
+                {
+                    drawCenterMessage("Use Profile Analyser near Relic Towers for aiming assistance");
+                }
+
                 drawFooterText("(toggle lights to force update)");
                 return;
             }
@@ -132,8 +144,15 @@ namespace SrvSurvey
             }
             else
             {
-                drawCenterMessage("Move within ~75m to select an item");
+                drawHeaderText("Move within ~75m to select an item");
                 drawFooterText("(toggle lights to force update)");
+                drawOptions(
+                    "Present",
+                    "Absent",
+                    "Empty",
+                    -2
+                );
+
             }
         }
 
@@ -161,16 +180,19 @@ namespace SrvSurvey
         private void drawOptions(string msg1, string msg2, string? msg3, int highlightIdx)
         {
             var c = highlightIdx == 0 ? GameColors.Cyan : GameColors.Orange;
+            if (highlightIdx == -2) c = Color.Gray;
             TextRenderer.DrawText(g, "A:", Game.settings.fontSmall, ptLetter[0], c);
             TextRenderer.DrawText(g, msg1, Game.settings.fontMiddle, ptMain[0], c);
 
             c = highlightIdx == 1 ? GameColors.Cyan : GameColors.Orange;
+            if (highlightIdx == -2) c = Color.Gray;
             TextRenderer.DrawText(g, "B:", Game.settings.fontSmall, ptLetter[1], c);
             TextRenderer.DrawText(g, msg2, Game.settings.fontMiddle, ptMain[1], c);
 
             if (msg3 != null)
             {
                 c = highlightIdx == 2 ? GameColors.Cyan : GameColors.Orange;
+                if (highlightIdx == -2) c = Color.Gray;
                 TextRenderer.DrawText(g, "C:", Game.settings.fontSmall, ptLetter[2], c);
                 TextRenderer.DrawText(g, msg3, Game.settings.fontMiddle, ptMain[2], c);
             }
@@ -180,9 +202,11 @@ namespace SrvSurvey
             rect.Location = ptMain[selectedIndex];
             rect.Offset(-12, -12);
             var p = highlightIdx == selectedIndex ? Pens.Cyan : GameColors.penGameOrange1;
+            if (highlightIdx == -2 || (msg3 == null && highlightIdx == 2)) p = Pens.Gray;
             g.DrawRectangle(p, rect);
 
-            showSelectionCue();
+            if (highlightIdx != -2)
+                showSelectionCue();
         }
 
         private void showSelectionCue()
