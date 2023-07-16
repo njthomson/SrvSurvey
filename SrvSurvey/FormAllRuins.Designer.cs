@@ -49,6 +49,7 @@
             comboCurrentSystem = new ComboBox();
             statusStrip1 = new StatusStrip();
             lblStatus = new ToolStripStatusLabel();
+            btnShare = new Button();
             statusStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -61,7 +62,7 @@
             grid.Location = new Point(0, 40);
             grid.Name = "grid";
             grid.ShowGroups = false;
-            grid.Size = new Size(884, 362);
+            grid.Size = new Size(1339, 362);
             grid.TabIndex = 0;
             grid.UseCompatibleStateImageBehavior = false;
             grid.View = View.Details;
@@ -194,7 +195,7 @@
             statusStrip1.Items.AddRange(new ToolStripItem[] { lblStatus });
             statusStrip1.Location = new Point(0, 405);
             statusStrip1.Name = "statusStrip1";
-            statusStrip1.Size = new Size(884, 24);
+            statusStrip1.Size = new Size(1339, 24);
             statusStrip1.TabIndex = 8;
             statusStrip1.Text = "statusStrip1";
             // 
@@ -203,17 +204,29 @@
             lblStatus.BorderSides = ToolStripStatusLabelBorderSides.Left | ToolStripStatusLabelBorderSides.Top | ToolStripStatusLabelBorderSides.Right | ToolStripStatusLabelBorderSides.Bottom;
             lblStatus.DisplayStyle = ToolStripItemDisplayStyle.Text;
             lblStatus.Name = "lblStatus";
-            lblStatus.Size = new Size(838, 19);
+            lblStatus.Size = new Size(1324, 19);
             lblStatus.Spring = true;
             lblStatus.Text = "...";
             lblStatus.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // btnShare
+            // 
+            btnShare.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            btnShare.Location = new Point(878, 12);
+            btnShare.Name = "btnShare";
+            btnShare.Size = new Size(196, 23);
+            btnShare.TabIndex = 9;
+            btnShare.Text = "Share your discovered data";
+            btnShare.UseVisualStyleBackColor = true;
+            btnShare.Click += btnShare_Click;
             // 
             // FormAllRuins
             // 
             AcceptButton = btnFilter;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(884, 429);
+            ClientSize = new Size(1339, 429);
+            Controls.Add(btnShare);
             Controls.Add(statusStrip1);
             Controls.Add(comboCurrentSystem);
             Controls.Add(label1);
@@ -255,5 +268,6 @@
         private ColumnHeader colNotes;
         private StatusStrip statusStrip1;
         private ToolStripStatusLabel lblStatus;
+        private Button btnShare;
     }
 }

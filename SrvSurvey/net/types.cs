@@ -390,6 +390,8 @@ namespace SrvSurvey.canonn
     /// </summary>
     internal class GuardianRuinEntry : GuardianRuinSummary
     {
+        public static string PleaseShareMessage = "** discovered data - please share **\r\n";
+
         public DateTimeOffset lastVisited;
         public double systemDistance;
         public string notes = "";
@@ -409,6 +411,12 @@ namespace SrvSurvey.canonn
                 base.starPos = summary.starPos;
                 base.latitude = summary.latitude;
                 base.longitude = summary.longitude;
+                base.siteHeading = summary.siteHeading;
+                base.relicTowerHeading = summary.relicTowerHeading;
+                base.legacyLatitude = summary.legacyLatitude;
+                base.legacyLongitude = summary.legacyLongitude;
+                base.legacySiteHeading = summary.legacySiteHeading;
+                base.legacyRelicTowerHeading = summary.legacyRelicTowerHeading;
             }
         }
 
@@ -419,10 +427,8 @@ namespace SrvSurvey.canonn
 
         public void merge(GuardianSiteData data)
         {
-            if (this.missingLiveLatLong)
-            {
-                this.notes += $"{data.systemName}\r\n\"latitude\": \"{data.location.Lat}\",\r\n    \"longitude\": \"{data.location.Long}\",\r\n  ** has missing lat/long - please share **";
-            }
+            if (this.missingLiveLatLong || (this.siteHeading < 0 && data.siteHeading >= 0) || (this.relicTowerHeading < 0 && data.relicTowerHeading >= 0))
+                this.notes += PleaseShareMessage;
 
             this.latitude = data.location.Lat;
             this.longitude = data.location.Long;

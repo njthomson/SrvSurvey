@@ -65,7 +65,7 @@ namespace SrvSurvey.canonn
         private static string ruinSummariesPath = Path.Combine(Application.UserAppDataPath, "ruinSummaries.json");
         public IEnumerable<GuardianRuinSummary> ruinSummaries { get; private set; }
 
-        public async Task<List<GRReport>> getRuinsReports(string bodyName, int idx, bool descending, string cmdr = null)
+        public async Task<List<GRReport>> getRuinsReports(string bodyName, int idx, bool descending, string? cmdr = null)
         {
             var fields = "updated_at\\n type\\n latitude\\n longitude\\n";
             var filter = $"bodyName:\\\"{bodyName}\\\", frontierID:{idx}";
@@ -237,8 +237,8 @@ namespace SrvSurvey.canonn
 
         public List<GuardianRuinEntry> loadAllRuins()
         {
-            var summaries = this.allRuins; // this.ruinSummaries;
-            //var summaries = this.ruinSummaries;
+            var summaries = this.allRuins; // new
+            //var summaries = this.ruinSummaries; // old
             if (summaries == null)
             {
                 Game.log("Why no ruinSummaries?");
@@ -305,7 +305,7 @@ namespace SrvSurvey.canonn
                         data.bodyName = firstMatch.fullBodyName;
                         data.Save();
                     }
-                    if (string.IsNullOrEmpty(data.commander) && !string.IsNullOrEmpty(Game.activeGame.Commander))
+                    if (string.IsNullOrEmpty(data.commander) && !string.IsNullOrEmpty(Game.activeGame?.Commander))
                     {
                         data.commander = Game.activeGame.Commander;
                         data.Save();
@@ -386,9 +386,11 @@ namespace SrvSurvey.canonn
             //await this.matchLatLongsByCmdr("Yure"); // no ruins
             //await this.matchLatLongsByCmdr("hurix"); // 3 ruins
             //await this.matchLatLongsByCmdr("lilaclight"); // 27 ruins
-            await this.matchLatLongsByCmdr("Alton Davies"); // 4 ruins
-            await this.matchLatLongsByCmdr("ThArGosu"); // 4 ruins
+            //await this.matchLatLongsByCmdr("Alton Davies"); // 4 ruins
+            //await this.matchLatLongsByCmdr("ThArGosu"); // 4 ruins
             //await this.matchLatLongsByCmdr("grinning2002"); // 3 ruins
+            //await this.matchLatLongsByCmdr("Jasper_Lit"); // 13 ruins
+
             this.saveNewSummaries();
             // */
 
@@ -537,7 +539,7 @@ namespace SrvSurvey.canonn
         {
             foreach (var ruins in newSummaries)
             {
-                ruins.siteID = -1; // reset!
+                // ruins.siteID = -1; // reset?
                 var dirty = false;
 
                 var onBody = this.ruinSummaries
@@ -635,7 +637,7 @@ namespace SrvSurvey.canonn
 
                 // do we have an existing match already?
                 var existingSystem = newSummaries.Find(_ => _.systemName.Equals(ruins.systemName, StringComparison.OrdinalIgnoreCase) && _.systemAddress > 0);
-                if (existingSystem != null)
+                if (ruins.systemAddress <= 0 && existingSystem != null)
                 {
                     ruins.systemAddress = existingSystem.systemAddress;
                     ruins.lastUpdated = DateTimeOffset.UtcNow;

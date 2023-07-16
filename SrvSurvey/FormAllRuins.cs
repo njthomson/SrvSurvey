@@ -78,6 +78,9 @@ namespace SrvSurvey
 
             this.prepareAllRuins();
             this.grid.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+
+            // do we have any lat/long's worth sharing?
+            btnShare.Visible = this.getLatLongsToShare().Count > 0;
         }
 
         protected override void OnResizeEnd(EventArgs e)
@@ -207,7 +210,7 @@ namespace SrvSurvey
                 {
                     // if the system name, bodyName or Notes contains or systemAddress ...
                     return entry.fullBodyNameWithIdx.Contains(txtFilter.Text, StringComparison.OrdinalIgnoreCase)
-                        || row.SubItems[row.SubItems.Count-1].Text.Contains(txtFilter.Text, StringComparison.OrdinalIgnoreCase)
+                        || row.SubItems[row.SubItems.Count - 1].Text.Contains(txtFilter.Text, StringComparison.OrdinalIgnoreCase)
                         || entry.systemAddress.ToString() == txtFilter.Text;
                 }
 
@@ -305,6 +308,30 @@ namespace SrvSurvey
                 var entry = (GuardianRuinEntry)grid.SelectedItems[0].Tag;
                 var siteData = GuardianSiteData.Load($"{entry.systemName} {entry.bodyName}", entry.idx);
                 FormRuins.show(siteData);
+            }
+        }
+
+        private List<string> getLatLongsToShare()
+        {
+            var lines = new List<string>();
+            foreach (ListViewItem item in this.grid.Items)
+            {
+                var entry = (GuardianRuinEntry)item.Tag;
+
+                if (entry.notes.Contains(GuardianRuinEntry.PleaseShareMessage))
+                    lines.Add($"{entry.systemName}, {entry.bodyName}, #{entry.idx} - {entry.siteType}\r\n  \"latitude\": {entry.latitude},\r\n  \"longitude\": {entry.longitude},\r\n  \"siteHeading\": {entry.siteHeading},\r\n  \"relicTowerHeading\": {entry.relicTowerHeading},\r\n");
+            }
+
+            return lines;
+        }
+
+        private void btnShare_Click(object sender, EventArgs e)
+        {
+            var lines = getLatLongsToShare();
+            var rslt = MessageBox.Show(this, $"You have visited {lines.Count} ruins with missing data in public records. Are you willing to share your discoveries?\r\n\r\nClick Yes to have put them in your clipboard.\r\n\r\nPlease share them with grinning2000 on Discord, thank you.", "Share discovered data?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (rslt == DialogResult.Yes)
+            {
+                Clipboard.SetText($"Discovered data for {lines.Count} Guardian Ruins:\r\n\r\n" + string.Join("\r\n", lines));
             }
         }
     }
