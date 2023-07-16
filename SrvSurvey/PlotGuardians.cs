@@ -548,6 +548,7 @@ namespace SrvSurvey
             if (blink && game.isMode(GameMode.OnFoot) && game.status.SelectedWeapon == "$humanoid_companalyser_name;")
             {
                 var newAngle = game.status.Heading;
+                if (newAngle < 0) newAngle += 360;
                 Game.log($"Changing Relic Tower heading from: {siteData.relicTowerHeading}° to: {newAngle}");
                 siteData.relicTowerHeading = newAngle;
                 siteData.Save();
