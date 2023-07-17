@@ -101,6 +101,8 @@ namespace SrvSurvey
 
             this.lastWindowRect = Elite.getWindowRect();
 
+            Game.canonn.init();
+
             if (Elite.isGameRunning)
                 this.newGame();
 
@@ -108,7 +110,6 @@ namespace SrvSurvey
             this.timer1.Start();
 
             Game.codexRef.init();
-            Game.canonn.init();
             SiteTemplate.Import();
 
             if (!Game.settings.migratedAlphaSiteHeading)

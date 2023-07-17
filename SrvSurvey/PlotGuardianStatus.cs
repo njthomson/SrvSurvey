@@ -108,12 +108,13 @@ namespace SrvSurvey
                     var msg = "Toggle shields to set Relic Tower heading.";
                     if (game.nearBody!.siteData.relicTowerHeading != -1)
                         msg += $"\r\nRecorded heading: {game.nearBody.siteData.relicTowerHeading}°";
-
+                    else
+                        msg += "Face the side with a single large left facing triangle.";
                     drawCenterMessage(msg);
                 }
                 else
                 {
-                    drawCenterMessage("Use Profile Analyser near Relic Towers for aiming assistance");
+                    drawCenterMessage("Use Profile Analyser near Relic Towers for aiming assistance.\r\nFace the side with a single large left facing triangle.");
                 }
 
                 drawFooterText("(toggle lights to force update)");

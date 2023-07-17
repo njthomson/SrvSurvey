@@ -26,7 +26,7 @@ namespace SrvSurvey.canonn
                     Game.log($"Something bad happened in Canonn.init? {stuff.Exception}");
 
 
-                /*
+               /*
                 if (Debugger.IsAttached)
                     await Game.canonn.prepareNewSummaries();
                 // */
@@ -449,7 +449,6 @@ namespace SrvSurvey.canonn
             var unmatchedSiteIds = this.ruinSummaries.Where(_ => newSummaries.Find(ruins => ruins.siteID == _.siteHeading) == null).Select(_ => $"#{_.idx}").ToList();
             sorted = unmatchedSiteIds.ToList(); sorted.Sort();
             Game.log($"-=-=-=-=- unmatchedSiteIds: {unmatchedSiteIds.Count}:\r\n{string.Join("\r\n", sorted)}\r\n");
-
         }
 
         private void saveNewSummaries()
