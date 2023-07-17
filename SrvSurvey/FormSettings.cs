@@ -97,7 +97,7 @@ namespace SrvSurvey
                             break;
 
                         case nameof(NumericUpDown):
-                            val = Convert.ToInt32( ((NumericUpDown)ctrl).Value );
+                            val = Convert.ToInt32(((NumericUpDown)ctrl).Value);
                             break;
 
                         case nameof(ComboBox):
@@ -186,7 +186,7 @@ namespace SrvSurvey
             var senderCheckbox = sender as CheckBox;
             if (senderCheckbox?.Parent == null) return;
 
-            foreach(Control ctrl in senderCheckbox.Parent!.Controls)
+            foreach (Control ctrl in senderCheckbox.Parent!.Controls)
                 if (ctrl != senderCheckbox)
                     ctrl.Enabled = senderCheckbox.Checked;
         }

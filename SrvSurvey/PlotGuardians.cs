@@ -481,7 +481,7 @@ namespace SrvSurvey
 
         protected override void Status_StatusChanged(bool blink)
         {
-            if (game?.status == null || this.IsDisposed) return;
+            if (this.IsDisposed || game?.status == null || this.IsDisposed) return;
 
             base.Status_StatusChanged(blink);
 

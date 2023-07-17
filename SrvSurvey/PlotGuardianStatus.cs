@@ -109,7 +109,7 @@ namespace SrvSurvey
                     if (game.nearBody!.siteData.relicTowerHeading != -1)
                         msg += $"\r\nRecorded heading: {game.nearBody.siteData.relicTowerHeading}°";
                     else
-                        msg += "Face the side with a single large left facing triangle.";
+                        msg += "\r\nFace the side with a single large left facing triangle.";
                     drawCenterMessage(msg);
                 }
                 else
