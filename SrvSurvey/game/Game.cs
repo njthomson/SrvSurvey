@@ -701,6 +701,8 @@ namespace SrvSurvey.game
             {
                 this.createNearBody(cmdr.currentBody);
             }
+
+            this.setLocations(entry);
         }
 
         private void onJournalEntry(Music entry)
@@ -865,7 +867,7 @@ namespace SrvSurvey.game
 
         public void setLocations(Location entry)
         {
-            Game.log($"setLocations: from SupercruiseExit: {entry.StarSystem} / {entry.Body} ({entry.BodyType})");
+            Game.log($"setLocations: from Location: {entry.StarSystem} / {entry.Body} ({entry.BodyType})");
 
             cmdr.currentSystem = entry.StarSystem;
             cmdr.currentSystemAddress = entry.SystemAddress;

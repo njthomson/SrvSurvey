@@ -65,7 +65,7 @@ namespace SrvSurvey
             if (cmdr == null && Game.settings.lastFid != null)
                 cmdr = CommanderSettings.Load(Game.settings.lastFid, true, Game.settings.lastCommander!);
 
-            if (cmdr != null)
+            if (!string.IsNullOrEmpty(cmdr?.currentSystem))
             {
                 comboCurrentSystem.Text = cmdr.currentSystem;
                 currentSystem = cmdr.starPos;
