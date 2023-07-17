@@ -62,7 +62,7 @@
             grid.Location = new Point(0, 40);
             grid.Name = "grid";
             grid.ShowGroups = false;
-            grid.Size = new Size(1339, 362);
+            grid.Size = new Size(1339, 365);
             grid.TabIndex = 0;
             grid.UseCompatibleStateImageBehavior = false;
             grid.View = View.Details;
@@ -193,18 +193,17 @@
             // statusStrip1
             // 
             statusStrip1.Items.AddRange(new ToolStripItem[] { lblStatus });
-            statusStrip1.Location = new Point(0, 405);
+            statusStrip1.Location = new Point(0, 407);
             statusStrip1.Name = "statusStrip1";
-            statusStrip1.Size = new Size(1339, 24);
+            statusStrip1.Size = new Size(1339, 22);
             statusStrip1.TabIndex = 8;
             statusStrip1.Text = "statusStrip1";
             // 
             // lblStatus
             // 
-            lblStatus.BorderSides = ToolStripStatusLabelBorderSides.Left | ToolStripStatusLabelBorderSides.Top | ToolStripStatusLabelBorderSides.Right | ToolStripStatusLabelBorderSides.Bottom;
             lblStatus.DisplayStyle = ToolStripItemDisplayStyle.Text;
             lblStatus.Name = "lblStatus";
-            lblStatus.Size = new Size(1324, 19);
+            lblStatus.Size = new Size(1293, 17);
             lblStatus.Spring = true;
             lblStatus.Text = "...";
             lblStatus.TextAlign = ContentAlignment.MiddleLeft;

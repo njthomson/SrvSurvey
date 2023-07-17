@@ -224,7 +224,7 @@ namespace SrvSurvey
                 sortedRows = sortedRows.Reverse();
 
             this.grid.Items.AddRange(sortedRows.ToArray());
-            this.lblStatus.Text = $"{this.grid.Items.Count} rows. Right click a row to copy system name to clipboard.";
+            this.lblStatus.Text = $"{this.grid.Items.Count} rows. Right click a row to copy the system name to the clipboard. Double click a row to open that specific ruins map.";
         }
 
         private IEnumerable<ListViewItem> sortRows(IEnumerable<ListViewItem> rows)
