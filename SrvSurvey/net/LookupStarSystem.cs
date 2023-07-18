@@ -27,6 +27,8 @@ namespace SrvSurvey.net
             combo.TextUpdate += Combo_TextUpdate;
             combo.SelectedIndexChanged += Combo_SelectedIndexChanged;
             combo.KeyDown += Combo_KeyDown;
+            combo.Items.Clear();
+            combo.Items.Add("(type a system name begin)");
         }
 
         private void Combo_KeyDown(object? sender, KeyEventArgs e)
@@ -49,6 +51,8 @@ namespace SrvSurvey.net
 
         private void Combo_TextUpdate(object? sender, EventArgs e)
         {
+            if (combo.Text == "(type a system name begin)") return;
+
             this.interruptCount++;
             if (this.interruptCount > 1) return;
 

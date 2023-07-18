@@ -26,9 +26,16 @@ namespace SrvSurvey
                 FormAllRuins.activeForm = new FormAllRuins();
 
             if (FormAllRuins.activeForm.Visible == false)
+            {
                 FormAllRuins.activeForm.Show();
+            }
             else
+            {
+                if (FormAllRuins.activeForm.WindowState == FormWindowState.Minimized)
+                    FormAllRuins.activeForm.WindowState = FormWindowState.Normal;
+
                 FormAllRuins.activeForm.Activate();
+            }
         }
 
         private List<ListViewItem> rows = new List<ListViewItem>();
