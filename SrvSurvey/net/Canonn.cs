@@ -5,6 +5,7 @@ using SrvSurvey.net.EDSM;
 using SrvSurvey.units;
 using System.ComponentModel.Design;
 using System.Diagnostics;
+using System.Globalization;
 using System.Text;
 using System.Xml.Linq;
 
@@ -17,20 +18,20 @@ namespace SrvSurvey.canonn
             // load static ruins summaries
             var json = File.ReadAllText(Canonn.allRuinsStaticPath);
             this.allRuins = JsonConvert.DeserializeObject<List<GuardianRuinSummary>>(json)!;
+            Game.log($"Loaded {this.allRuins.Count} ruins.");
 
-            createRuinSummaries().ContinueWith(async (stuff) =>
-            {
-                if (stuff.IsCompletedSuccessfully)
-                    ruinSummaries = stuff.Result;
-                else
-                    Game.log($"Something bad happened in Canonn.init? {stuff.Exception}");
+            /*
+             if (Debugger.IsAttached)
+                 await Game.canonn.prepareNewSummaries();
+             // */
 
-
-               /*
-                if (Debugger.IsAttached)
-                    await Game.canonn.prepareNewSummaries();
-                // */
-            });
+            //createRuinSummaries().ContinueWith((stuff) =>
+            //{
+            //    if (stuff.IsCompletedSuccessfully)
+            //        ruinSummaries = stuff.Result;
+            //    else
+            //        Game.log($"Something bad happened in Canonn.init? {stuff.Exception}");
+            //});
         }
 
         #region getSystemPoi
@@ -66,7 +67,7 @@ namespace SrvSurvey.canonn
 
         private static string allRuinsRefPath = Path.Combine(Application.UserAppDataPath, "allRuins.json");
         private static string ruinSummariesPath = Path.Combine(Application.UserAppDataPath, "ruinSummaries.json");
-        public IEnumerable<GuardianRuinSummary> ruinSummaries { get; private set; }
+        //public IEnumerable<GuardianRuinSummary> ruinSummaries { get; private set; }
 
         public async Task<List<GRReport>> getRuinsReports(string bodyName, int idx, bool descending, string? cmdr = null)
         {
@@ -378,7 +379,7 @@ namespace SrvSurvey.canonn
             await this.matchLatLongs();
 
             // match against known Canonn ruins?
-            this.matchKnownCanonnRuins();
+            await this.matchKnownCanonnRuins();
 
             //await this.matchSystemNameToGRReports();
             //await this.matchBodyNameToGRReports();
@@ -445,10 +446,6 @@ namespace SrvSurvey.canonn
             sorted = missingLiveLatLong.ToList(); sorted.Sort();
             Game.log($"-=-=-=-=-\r\n\r\nGuardian Ruins missing live lat/long co-ordinates: {missingLiveLatLong.Count}");
             //Game.log($"-=-=-=-=-\r\n\r\nGuardian Ruins missing live lat/long co-ordinates: {missingLiveLatLong.Count}\r\n\r\n{string.Join("\r\n", sorted)}\r\n");
-
-            var unmatchedSiteIds = this.ruinSummaries.Where(_ => newSummaries.Find(ruins => ruins.siteID == _.siteHeading) == null).Select(_ => $"#{_.idx}").ToList();
-            sorted = unmatchedSiteIds.ToList(); sorted.Sort();
-            Game.log($"-=-=-=-=- unmatchedSiteIds: {unmatchedSiteIds.Count}:\r\n{string.Join("\r\n", sorted)}\r\n");
         }
 
         private void saveNewSummaries()
@@ -535,14 +532,16 @@ namespace SrvSurvey.canonn
             }
         }
 
-        private void matchKnownCanonnRuins()
+        private async Task matchKnownCanonnRuins()
         {
+            var ruinSummaries = await this.createRuinSummaries();
+
             foreach (var ruins in newSummaries)
             {
                 // ruins.siteID = -1; // reset?
                 var dirty = false;
 
-                var onBody = this.ruinSummaries
+                var onBody = ruinSummaries
                     .Where(_ => _.systemName.Equals(ruins.systemName, StringComparison.OrdinalIgnoreCase) && _.bodyName.Equals(ruins.bodyName, StringComparison.OrdinalIgnoreCase))
                     .ToList();
 
@@ -625,6 +624,9 @@ namespace SrvSurvey.canonn
                     this.saveNewSummaries();
             }
 
+            var unmatchedSiteIds = ruinSummaries.Where(_ => newSummaries.Find(ruins => ruins.siteID == _.siteHeading) == null).Select(_ => $"#{_.idx}").ToList();
+            var sorted = unmatchedSiteIds.ToList(); sorted.Sort();
+            Game.log($"-=-=-=-=- unmatchedSiteIds: {unmatchedSiteIds.Count}:\r\n{string.Join("\r\n", sorted)}\r\n");
         }
 
         private async Task matchSystemAddresses()

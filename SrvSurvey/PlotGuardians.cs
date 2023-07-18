@@ -428,9 +428,10 @@ namespace SrvSurvey
 
             this.template = SiteTemplate.sites[siteData.type];
 
-
-            var filepath = $"{siteData.type}-background.png".ToLowerInvariant();
-            this.siteMap = Bitmap.FromFile(Path.Combine("images", filepath));
+            var folder = Path.GetDirectoryName(Application.ExecutablePath)!;
+            var filepath = Path.Combine(folder, "images", $"{siteData.type}-background.png".ToLowerInvariant());
+            Game.log($"Loading image: {filepath}");
+            this.siteMap = Bitmap.FromFile(filepath);
 
             //this.trails = new Bitmap(this.siteMap.Width * 2, this.siteMap.Height * 2);
 

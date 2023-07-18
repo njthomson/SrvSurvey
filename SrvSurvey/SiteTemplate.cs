@@ -26,6 +26,7 @@ namespace SrvSurvey
             {
                 var json = File.ReadAllText(filepath);
                 SiteTemplate.sites = JsonConvert.DeserializeObject<Dictionary<GuardianSiteData.SiteType, SiteTemplate>>(json)!;
+                Game.log($"SiteTemplate.Imported {SiteTemplate.sites.Count} templates");
 
                 /* Temp: Reformat POIs json 
                 var txt = new StringBuilder("\r\n");
@@ -49,7 +50,6 @@ namespace SrvSurvey
                 Game.log($"Missing file: {filepath}");
             }
 
-            Game.log($"SiteTemplate.Import: {sites[GuardianSiteData.SiteType.Beta].poi}");
         }
 
         #endregion

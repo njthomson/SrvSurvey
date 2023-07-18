@@ -40,6 +40,7 @@ namespace SrvSurvey
         private static void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
         {
             game.Game.log("Exception: " + e.Exception.Message);
+            game.Game.log("Inner exception: " + e.Exception.InnerException?.Message);
             game.Game.log("Stack: " + e.Exception.StackTrace);
 
             FormErrorSubmit.Show(e.Exception);
