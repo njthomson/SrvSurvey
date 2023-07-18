@@ -1241,7 +1241,6 @@ namespace SrvSurvey
             var tx = 10f;
             var ty = 20f;
 
-
             var isRuins = siteData.isRuins;
             msg = $"Need site heading\r\n\r\n■ To use current heading either:\r\n    - Toggle Cargo scoop twice\r\n    - Send message:   .heading\r\n\r\n■ Or send message: <degrees>";
             if (isRuins)
