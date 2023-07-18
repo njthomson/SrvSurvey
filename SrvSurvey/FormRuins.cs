@@ -395,8 +395,8 @@ namespace SrvSurvey
             g.DrawImage(this.img, imgRect);
 
             var compass = new Pen(Color.FromArgb(100, Color.Red)) { DashStyle = System.Drawing.Drawing2D.DashStyle.Solid };
-            g.DrawLine(compass, -map.Width, 0, map.Width, 0);
-            g.DrawLine(compass, 0, -map.Height, 0, map.Height);
+            g.DrawLine(compass, -map.Width * 2, 0, map.Width * 2, 0);
+            g.DrawLine(compass, 0, -map.Height * 2, 0, map.Height * 2);
 
             drawArtifacts(g);
 
@@ -469,7 +469,7 @@ namespace SrvSurvey
             {
                 // calculate render point for POI
                 var pt = Util.rotateLine(
-                    360-poi.angle,
+                    360 - poi.angle,
                     poi.dist);
 
                 // is this the closest POI?

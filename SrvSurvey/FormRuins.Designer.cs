@@ -32,6 +32,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormRuins));
             map = new PictureBox();
             statusStrip1 = new StatusStrip();
             lblSelectedItem = new ToolStripStatusLabel();
@@ -256,10 +257,11 @@
             Controls.Add(splitter);
             Controls.Add(panel1);
             Controls.Add(statusStrip1);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             MinimumSize = new Size(400, 400);
             Name = "FormRuins";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "FormRuins";
+            Text = "Ruins Map";
             Load += FormRuins_Load;
             ResizeEnd += FormRuins_ResizeEnd;
             ((System.ComponentModel.ISupportInitialize)map).EndInit();

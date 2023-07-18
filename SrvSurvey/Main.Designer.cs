@@ -442,7 +442,6 @@ namespace SrvSurvey
             groupBox4.TabIndex = 19;
             groupBox4.TabStop = false;
             groupBox4.Text = "Guardian sites: (experimental)";
-            groupBox4.Visible = false;
             // 
             // btnRuins
             // 

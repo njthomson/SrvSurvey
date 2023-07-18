@@ -50,9 +50,6 @@ namespace SrvSurvey
             if (Game.settings.formMainLocation != Point.Empty)
                 this.useLastWindowLocation();
 
-            // Only show Guardian site UX is the setting allows
-            groupBox4.Visible = Game.settings.enableGuardianSites;
-
             this.bioCtrls = new List<Control>()
             {
                 txtSystemBioSignals,
@@ -120,7 +117,7 @@ namespace SrvSurvey
 
         private void updateAllControls()
         {
-            Game.log("** ** ** updateAllControls ** ** **");
+            //Game.log("** ** ** updateAllControls ** ** **");
 
             this.updateCommanderTexts();
             this.updateBioTexts();
@@ -351,7 +348,7 @@ namespace SrvSurvey
                 btnRuinsMap.Enabled = false;
                 btnRuinsOrigin.Enabled = false;
             }
-            else
+            else if (Game.settings.enableGuardianSites)
             {
                 lblGuardianCount.Text = game.nearBody.settlements.Count.ToString();
                 if (this.game.nearBody.siteData != null && this.game.nearBody.siteData.isRuins)

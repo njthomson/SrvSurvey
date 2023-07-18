@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormAllRuins));
             grid = new ListView();
             colSiteId = new ColumnHeader();
             colSystem = new ColumnHeader();
@@ -203,7 +204,7 @@
             // 
             lblStatus.DisplayStyle = ToolStripItemDisplayStyle.Text;
             lblStatus.Name = "lblStatus";
-            lblStatus.Size = new Size(1293, 17);
+            lblStatus.Size = new Size(1324, 17);
             lblStatus.Spring = true;
             lblStatus.Text = "...";
             lblStatus.TextAlign = ContentAlignment.MiddleLeft;
@@ -234,6 +235,7 @@
             Controls.Add(txtFilter);
             Controls.Add(btnFilter);
             Controls.Add(grid);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             MinimumSize = new Size(900, 400);
             Name = "FormAllRuins";
             Text = "Guardian Ruins";
