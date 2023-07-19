@@ -146,7 +146,6 @@ When you are close to a landable body an overlay will appear showing distance an
 ![image](https://github.com/njthomson/SrvSurvey/assets/3903773/bcdbb7e5-bcc5-4528-966f-4dd7240f4459)
 
 
-
 # Spherical searching
 
 On occasion there is need or desire to visit all systems within soem distance of a given system. Use the button `Sphere limit` on the main window to establish a central system and distance:
@@ -157,8 +156,8 @@ Once active an overlay will appear top right in the Gal Map measuring distances 
 
 ![image](https://github.com/njthomson/SrvSurvey/assets/3903773/56e7ee83-d9af-4d16-a57b-86601b5b2787)
 
-
 Note: Elite Dangerous only writes the **next** system to journal files, hence Srv Survey can only measure distance to 1st system in a route. If you target a system 2 or more jumps away, Srv Survey will only know about the 1st jump.
+
 
 # Screenshot conversions:
 
@@ -179,3 +178,45 @@ Whilst similar abilities are available in other companion apps for Elite Dangero
 ![image](https://github.com/njthomson/SrvSurvey/assets/3903773/2cad70af-b0d4-4b08-9352-5c46baeab051)
 
 
+# Message commands
+
+Some aspects of Srv Survey can be controlled by sending a local message in game, with a few abilities only possible through such commands. This is the complete list of all commands and when they can be used:
+
+### Valid on any planet or moon:
+
+`.target here` Use your current location lat/long as the target location. Target lat/long guidance overlay will appear. See [more info above](README.md#Targetting-lat/long-co-ordinates).
+
+`.target off` Hide the target lat/long guidance overlay.
+
+`.target on` Show the target lat/long guidance overlay.
+
+### Valid at Guardian Ruins
+
+`.note <stuff>` Append "stuff" to your notes for this site. Notes can be seen in the table of all ruins and edited in the map viewer.
+
+`z <number>` Change the map zoom level to the given number, there is no dot prefix. Valid ranges are "0.2" through "4.0". Best values are zoom out:"0.5", zoom in: "2", zoom middle: "1".
+
+`.site [ alpha | beta | gamma ]` Set the current site type as given.
+
+`.heading` **Either:** Invoke site heading mode with the aiming grid. **Or if already in site heading mode:** sets your current heading as the site heading.
+
+`.heading <number>` Set site heading with the given number.
+
+`.tower` Set Relic Tower heading using your current heading.
+
+`.tower <number>` Set Relic Tower heading with the given number.
+
+`.empty` Record the currently selected Item location as an empty puddle.
+
+`.aerial` Invoke aerial assistance mode, for when taking aerial screenshots of the whole site.
+
+`.map` Restore map mode, after using aerial assistance.
+
+`.aim` Show the aiming assistance overlay depending on ...
+- Relic Tower heading - if on foot.
+- Aerial assistance for Alpha, Beta or Gamma sites - requires you reach target altitude to become visible.
+- Aiming assistance is not shown when in the SRV.
+
+### Valid at any time
+
+`.kill` Immediately closes Srv Survey.
