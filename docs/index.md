@@ -138,19 +138,25 @@ Double click a row to view the map for that specific site. Right click a row to 
 # Targetting lat/long co-ordinates
 
 Use the `Set target` on the main window to set target lat/long co-ordinates:
-`pic`
+
+![image](https://github.com/njthomson/SrvSurvey/assets/3903773/4f33e507-5c4d-42ef-9c39-63e95ea8d865)
 
 When you are close to a landable body an overlay will appear showing distance and the heading to that target location. The arrow points relative to the current ship heading: up is straight ahead, turn left if the arrow is to the left, etc. The arrow fills with yellow as you approach your target, suggesting when to engage orbital glide.
-`pic`
+
+![image](https://github.com/njthomson/SrvSurvey/assets/3903773/bcdbb7e5-bcc5-4528-966f-4dd7240f4459)
+
 
 
 # Spherical searching
 
 On occasion there is need or desire to visit all systems within soem distance of a given system. Use the button `Sphere limit` on the main window to establish a central system and distance:
-`pic`
+
+![image](https://github.com/njthomson/SrvSurvey/assets/3903773/25884008-1345-44c0-aee9-58b7de58f0ff)
 
 Once active an overlay will appear top right in the Gal Map measuring distances from that central system to the targetted system, green if within the distance or red if not:
-`pic`
+
+![image](https://github.com/njthomson/SrvSurvey/assets/3903773/56e7ee83-d9af-4d16-a57b-86601b5b2787)
+
 
 Note: Elite Dangerous only writes the **next** system to journal files, hence Srv Survey can only measure distance to 1st system in a route. If you target a system 2 or more jumps away, Srv Survey will only know about the 1st jump.
 
