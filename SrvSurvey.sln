@@ -6,8 +6,8 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{24930DE3-46FC-4CFF-83B0-6399FF0CCEA6}"
 	ProjectSection(SolutionItems) = preProject
 		docs\index.html = docs\index.html
-		docs\more.md = docs\more.md
 		docs\privacy.html = docs\privacy.html
+		docs\index.md = docs\index.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{44FA8D78-0938-418E-B00C-0EAAC90E9936}"
