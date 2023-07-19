@@ -38,6 +38,8 @@ On the main window:
 
 - Switch between showing ruins maps or aerial screenshot assistance.
 
+- In settings, Screenshot conversions, [see details below](README.md#screenshot-conversions).
+
 # Organic scanning:
 
 When approaching a planet or moon with biological signals, a summary panel will appear top center. This shows the count, the names of biological organisms detected and how many have been analyzed. Items in orange have been scanned, items in blue have not been scanned.
@@ -51,9 +53,11 @@ Upon landing, disembarking or launching the SRV a second panel will appear on th
 
 # Surveying Guardian Ruins
 
-The goal for surveying Guardian Ruins is to measure site and relic tower headings, plus record which specific items and relic towers are present or missing. Srv Survey triggers from in-game actions to capture survey data so you do not need to put down your game controller, hotas, etc. This works by toggling cockpit mode or switching between fire-groups, requiring that 3 fire-groups be created for your Ship for SRV. It does not matter what those fire-groups do.
+The goal for surveying Guardian Ruins is to measure site and Relic Tower headings, plus record which specific Items and Relic Towers are present or missing. Srv Survey triggers from in-game actions to capture survey data so you do not need to put down your game controller, hotas, etc. This works by toggling cockpit mode or switching between fire-groups.
 
-**IMPORTANT WARNING**: It is highly recommended to keep the landing gear **down** whilst surveying. Accidentally hitting boost so close the ground is usually a terminal and expensive mistake.
+**IMPORTANT**: It is necessary that you have **3 fire-groups** defined for your Ship or SRV. It does not matter what devices they control, simply that they exist.
+
+**WARNING**: It is highly recommended to keep the landing gear **down** whilst surveying. Accidentally hitting boost so close the ground is usually a terminal and expensive mistake.
 
 ## Measuring Site headings:
 
@@ -65,12 +69,10 @@ To help align your ship with precision Srv Survey will overlay an aiming grid in
 Once in position toggle cockpit mode twice, one second apart, and Srv Survey will record the current heading and remove the aiming grid.
 ![image](https://github.com/njthomson/SrvSurvey/assets/3903773/14396ed9-e269-4833-9f41-b6aeffe4b3fc)
 
-## Measuring Relic Tower headings:
-`coming soon`
   
 ## Surveying which items are present or missing:
 
-To record which items or Relic towers are present or missing move your ship or SRV (always the green circle in the center of the map) close to each **blue** icon, getting close enough for a blue circle to appear around it. The expected type and name will be shown at the bottom of the map. Some items are quite close together requiring care to ensure you're recording the right one.
+To record which Items or Relic towers are present or missing move your ship or SRV (always the green circle in the center of the map) close to each **blue** icon, getting close enough for a blue circle to appear around it. The expected type and name will be shown at the bottom of the map. Some items are quite close together requiring care to ensure you're recording the right one.
 ![image](https://github.com/njthomson/SrvSurvey/assets/3903773/4c691e21-50ff-41a1-a739-83601cff1bf3)
 
 Srv Survey knows the location from journal files only as fast as Elite Dangerous updates them, which can be slow according to documentation ...
@@ -84,9 +86,9 @@ Switch fire-group depending on if the Relic Tower or Item is present, missing or
 
 Change the fire-group as follows.
 
-- Fire-group A : Item or Relic Tower is **present** at this Ruins.
-- Fire-group B : Item or Relic Tower is **missing** at this Ruins.
-- Fire-group C : Choose this if the Item is missing but there is a glowing "puddle" on the ground where it would have been. (This is not a valid option for Relic Towers)
+- Fire-group **A** : Item or Relic Tower is **present** at this Ruins.
+- Fire-group **B** : Item or Relic Tower is **missing** at this Ruins.
+- Fire-group **C** : Choose this if the Item is missing but there is a glowing "puddle" on the ground where it would have been. (This is not a valid option for Relic Towers)
 
 When choosing fire-group C it is highly recommended to relog at that location to confirm the Item really is missing. Empty puddles are uncommon and it is common for the item in question simply to roll off before you arrive. If there is no Item immediately visible after logging back in - the puddle really is empty.
 
@@ -98,9 +100,26 @@ The map icons change color based on their status. Relic Towers icons are larger,
 
 The top of the map shows the count of how many Relic Towers and Item locations still need to be surveyed, which will change to orange when the survey is complete.
 
-As the game allows us to scan Relic Towers with a Composition Scanner, a Relic Tower will be marked as **present** if it is scanned.
+As the game allows us to scan Relic Towers with a Composition Scanner, a Relic Tower will be marked as **present** if scanned this way.
 
 ![image](https://github.com/njthomson/SrvSurvey/assets/3903773/f320aef2-fd63-44d5-a713-d5ccfef5554f)
+
+You can load past surveys in the `Ruins map` off of the main window.
+
+## Measuring Relic Tower headings:
+
+The heading of a Relic Tower is the directon both **double** large triangle sides are pointing, hence we can measure that heading by directly facing the side with a **single** large left facing triangle:
+![image](https://github.com/njthomson/SrvSurvey/assets/3903773/0637cb6f-5435-45a7-8442-c93cc9d33634)
+
+Srv Survey will show an aiming assitance overlay if you switch to the Profile Analyser.
+- Use the short horizontal bars near the Ancient Relic, lining them up equally with the vertical grooves. You will need to move left or right and re-aim to make them equaly spaced:
+  ![image](https://github.com/njthomson/SrvSurvey/assets/3903773/9b317f94-364f-46ea-8656-2464197c459a)
+
+- Use the long vertical bars against the vertical grooves to gauge if the Relic Tower is leaning, which would be an inaccurate measurement. If in doubt, aiming where these rocks join is equivalent to the Relic Tower center and does not change when they lean. It is important **not** to move your feet whilst changing your aim.
+![image](https://github.com/njthomson/SrvSurvey/assets/3903773/b412a785-56e5-4956-b482-5880329c437d)
+
+When you are satisfied you are aiming correctly - toggle **suit shields** twice, one second apart, to record your current heading as the Relic Tower heading. Your current heading will be visible this whole time in the top overlay and the recorded heading will be shown once it is known:
+![image](https://github.com/njthomson/SrvSurvey/assets/3903773/7c1a016f-6d3b-4b32-a500-fb2364adcdb1)
 
 
 # Screenshot conversions:
