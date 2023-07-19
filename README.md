@@ -70,7 +70,7 @@ Once in position toggle cockpit mode twice, one second apart, and Srv Survey wil
 ![image](https://github.com/njthomson/SrvSurvey/assets/3903773/14396ed9-e269-4833-9f41-b6aeffe4b3fc)
 
   
-## Surveying which items are present or missing:
+## Surveying which Items are present or missing:
 
 To record which Items or Relic towers are present or missing move your ship or SRV (always the green circle in the center of the map) close to each **blue** icon, getting close enough for a blue circle to appear around it. The expected type and name will be shown at the bottom of the map. Some items are quite close together requiring care to ensure you're recording the right one.
 ![image](https://github.com/njthomson/SrvSurvey/assets/3903773/4c691e21-50ff-41a1-a739-83601cff1bf3)
@@ -120,6 +120,17 @@ Srv Survey will show an aiming assitance overlay if you switch to the Profile An
 
 When you are satisfied you are aiming correctly - toggle **suit shields** twice, one second apart, to record your current heading as the Relic Tower heading. Your current heading will be visible this whole time in the top overlay and the recorded heading will be shown once it is known:
 ![image](https://github.com/njthomson/SrvSurvey/assets/3903773/7c1a016f-6d3b-4b32-a500-fb2364adcdb1)
+
+
+# Finding ruins and reviewing surveys
+
+From the main window `Ruins map` button you can view any of your previous surveys, or see the template of all items for each type of ruins.
+![image](https://github.com/njthomson/SrvSurvey/assets/3903773/f870fd65-3cbf-4a28-aeb7-0d5e73e30c71)
+
+From the button `All Guardian Ruins` you can see a table of all 507 known Guardian Ruins, sorted by distance from your current location or any other known star system.
+
+The table can be sorted by clicking column headers, and filtered by arbitrary text, site types or which sites you have visited:
+![image](https://github.com/njthomson/SrvSurvey/assets/3903773/a9e9bf63-30b5-4ff1-96a4-3d4e28105e90)
 
 
 # Screenshot conversions:
