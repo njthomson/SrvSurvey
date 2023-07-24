@@ -241,4 +241,120 @@ namespace SrvSurvey
             );
         }
     }
+
+    internal class PlotGuardianBeaconStatus : PlotBaseSelectable, PlotterForm
+    {
+        private string relatedStructure;
+        private bool dataLinkScanned;
+        private bool confirmed;
+        private bool different;
+
+        private PlotGuardianBeaconStatus() : base()
+        {
+            this.relatedStructure = Game.canonn.allBeacons.Find(_ => _.systemAddress == game.cmdr.currentSystemAddress)?.relatedStructure!;
+        }
+
+        protected override void Game_modeChanged(GameMode newMode, bool force)
+        {
+            if (this.IsDisposed) return;
+
+            var targetMode = game.isMode(GameMode.Flying, GameMode.CommsPanel);
+            if (this.Opacity > 0 && !targetMode)
+                this.Opacity = 0;
+            else if (this.Opacity == 0 && targetMode)
+                this.reposition(Elite.getWindowRect());
+
+            this.Invalidate();
+        }
+
+        protected override void Status_StatusChanged(bool blink)
+        {
+            if (this.IsDisposed) return;
+
+            if (blink && !this.confirmed)
+            {
+                this.confirmed = !this.confirmed;
+                this.different = this.selectedIndex == 1;
+
+                // add a note that it changed (even though we cannot tell directly what it changed to)
+                var data = GuardianBeaconData.Load(game.cmdr.currentSystem);
+                if (data != null)
+                {
+                    data.notes += $"Different: {this.different}, date: {DateTimeOffset.UtcNow}\r\n";
+                    data.Save();
+                }
+            }
+
+            base.Status_StatusChanged(blink);
+        }
+
+        protected override void onJournalEntry(DataScanned entry)
+        {
+            if (entry.Type == "$Datascan_AncientPylon;")
+            {
+                // A Guardian Beacon
+                Game.log($"Scanned data from Guardian Beacon in: {game.cmdr.currentSystem}");
+                this.dataLinkScanned = true;
+                this.Invalidate();
+            }
+        }
+
+        protected override void onJournalEntry(SupercruiseEntry entry)
+        {
+            Program.closePlotter<PlotGuardianBeaconStatus>();
+        }
+
+        protected override void onJournalEntry(FSDJump entry)
+        {
+            Program.closePlotter<PlotGuardianBeaconStatus>();
+        }
+
+        protected override void OnPaintBackground(PaintEventArgs e)
+        {
+            if (this.IsDisposed) return;
+
+            base.OnPaintBackground(e);
+            this.g = e.Graphics;
+
+            if (!this.dataLinkScanned)
+            {
+                drawHeaderText("Guardian Beacon");
+                drawCenterMessage($"Please activate and scan with Data Link Scanner", GameColors.brushCyan);
+            }
+            else if (this.different)
+            {
+                drawHeaderText($"Target body changed!", GameColors.brushCyan);
+                drawCenterMessage("Please share a screenshot of your inbox message!", GameColors.brushCyan);
+            }
+            else if (game.mode == GameMode.CommsPanel)
+            {
+                if (!this.confirmed)
+                {
+                    drawHeaderText($"Confirm: {this.relatedStructure} ?", GameColors.brushCyan);
+                    drawOptions("Yes", "No", null, game.status.FireGroup
+                    );
+                }
+                else if (!this.different)
+                {
+                    drawHeaderText($"Confirm: {this.relatedStructure}");
+                    drawCenterMessage($"Confirmed");
+                    drawFooterText("(thank you)");
+                }
+            }
+            else
+            {
+                drawHeaderText("Guardian Beacon scanned");
+
+                if (!this.confirmed)
+                {
+                    drawCenterMessage($"Please confirm target body:\r\n{this.relatedStructure}");
+                    drawFooterText("(check your inbox)", GameColors.brushCyan);
+                }
+                else if (!this.different)
+                {
+                    drawCenterMessage($"Confirmed target body:\r\n{this.relatedStructure}");
+                }
+            }
+        }
+    }
 }

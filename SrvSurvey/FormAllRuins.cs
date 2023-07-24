@@ -25,21 +25,12 @@ namespace SrvSurvey
             if (activeForm == null)
                 FormAllRuins.activeForm = new FormAllRuins();
 
-            if (FormAllRuins.activeForm.Visible == false)
-            {
-                FormAllRuins.activeForm.Show();
-            }
-            else
-            {
-                if (FormAllRuins.activeForm.WindowState == FormWindowState.Minimized)
-                    FormAllRuins.activeForm.WindowState = FormWindowState.Normal;
-
-                FormAllRuins.activeForm.Activate();
-            }
+            Util.showForm(FormAllRuins.activeForm);
         }
 
         private List<ListViewItem> rows = new List<ListViewItem>();
-        private int sortColumn;
+        // default sort by system distance
+        private int sortColumn = 3;
         private bool sortUp = false;
 
         private readonly LookupStarSystem starSystemLookup;
@@ -49,41 +40,26 @@ namespace SrvSurvey
             InitializeComponent();
             comboSiteType.SelectedIndex = 0;
 
-            // default sort by system distance
-            this.sortColumn = 3;
-
             // can we fit in our last location
             Util.useLastLocation(this, Game.settings.formAllRuinsLocation);
 
-            starSystemLookup = new LookupStarSystem(comboCurrentSystem);
-            starSystemLookup.onSystemMatch += StarSystemLookup_starSystemMatch;
+            this.starSystemLookup = new LookupStarSystem(comboCurrentSystem);
+            this.starSystemLookup.onSystemMatch += StarSystemLookup_starSystemMatch;
         }
 
         protected override void OnClosing(CancelEventArgs e)
         {
             base.OnClosing(e);
-
             FormAllRuins.activeForm = null;
         }
 
         private void FormAllRuins_Load(object sender, EventArgs e)
         {
-            var cmdr = Game.activeGame?.cmdr;
-            if (cmdr == null && Game.settings.lastFid != null)
-                cmdr = CommanderSettings.Load(Game.settings.lastFid, true, Game.settings.lastCommander!);
+            var star = Util.getRecentStarSystem();
+            comboCurrentSystem.Text = star.systemName;
+            currentSystem = star.pos;
 
-            if (!string.IsNullOrEmpty(cmdr?.currentSystem))
-            {
-                comboCurrentSystem.Text = cmdr.currentSystem;
-                currentSystem = cmdr.starPos;
-            }
-            else
-            {
-                comboCurrentSystem.Text = "Sol";
-                currentSystem = new double[3] { 0, 0, 0 };
-            }
-
-            this.prepareAllRuins();
+            this.prepareAllRows();
             this.grid.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
 
             // do we have any lat/long's worth sharing?
@@ -102,9 +78,9 @@ namespace SrvSurvey
             }
         }
 
-        private void StarSystemLookup_starSystemMatch(net.EDSM.StarSystem? starSystem)
+        private void StarSystemLookup_starSystemMatch(net.EDSM.StarSystem? match)
         {
-            if (starSystem == null)
+            if (match == null)
             {
                 comboCurrentSystem.Text = "Sol";
                 currentSystem = new double[3] { 0, 0, 0 };
@@ -112,7 +88,7 @@ namespace SrvSurvey
             else
             {
                 // update currentSystem
-                this.currentSystem = starSystem.coords.starPos;
+                this.currentSystem = match.coords.starPos;
             }
 
             // and recalculate distances
@@ -131,10 +107,8 @@ namespace SrvSurvey
             }
         }
 
-        private void prepareAllRuins()
+        private void prepareAllRows()
         {
-            Game.log("prepareAllRuins");
-
             var allRuins = Game.canonn.loadAllRuins();
 
             Game.log($"Rendering {allRuins.Count} ruins.");
@@ -154,26 +128,29 @@ namespace SrvSurvey
                 var distanceToSystem = entry.systemDistance.ToString("N0");
 
                 var siteID = entry.siteID == -1 ? "?" : entry.siteID.ToString();
-                var row = new ListViewItem(siteID);
-                row.Tag = entry;
 
                 var notes = entry.notes ?? "";
                 if (entry.missingLiveLatLong)
                     notes = "(missing live lat/long co-ordinates) " + notes;
 
-                // ordering here needs to manually match columns
-                row.SubItems.Add(new ListViewItem.ListViewSubItem(row, entry.systemName) { Name = "systemName" });
-                row.SubItems.Add(entry.bodyName);
-                row.SubItems.Add(new ListViewItem.ListViewSubItem(row, "x ly") { Name = "distanceToSystem" });
-                row.SubItems.Add($"{distanceToArrival} ls");
-                row.SubItems.Add(entry.siteType);
-                row.SubItems.Add(entry.idx > 0 ? $"#{entry.idx}" : "");
-                row.SubItems.Add(lastVisited);
-                row.SubItems.Add(hasImages ? "yes" : "");
-                row.SubItems.Add(siteHeading);
-                row.SubItems.Add(relicTowerHeading);
-                row.SubItems.Add(notes);
+                var subItems = new ListViewItem.ListViewSubItem[]
+                {
+                    // ordering here needs to manually match columns
+                    new ListViewItem.ListViewSubItem { Text = siteID },
+                    new ListViewItem.ListViewSubItem { Text = entry.systemName, Name = "systemName" },
+                    new ListViewItem.ListViewSubItem { Text = entry.bodyName },
+                    new ListViewItem.ListViewSubItem { Text = "x ly", Name = "distanceToSystem" },
+                    new ListViewItem.ListViewSubItem { Text = $"{distanceToArrival} ls" },
+                    new ListViewItem.ListViewSubItem { Text = entry.siteType },
+                    new ListViewItem.ListViewSubItem { Text = entry.idx > 0 ? $"#{entry.idx}" : "" },
+                    new ListViewItem.ListViewSubItem { Text = lastVisited },
+                    new ListViewItem.ListViewSubItem { Text = hasImages ? "yes" : "" },
+                    new ListViewItem.ListViewSubItem { Text = siteHeading },
+                    new ListViewItem.ListViewSubItem { Text = relicTowerHeading },
+                    new ListViewItem.ListViewSubItem { Text = notes },
+                };
 
+                var row = new ListViewItem(subItems, 0) { Tag = entry, };
                 this.rows.Add(row);
             }
 
@@ -288,13 +265,9 @@ namespace SrvSurvey
         private void grid_ColumnClick(object sender, ColumnClickEventArgs e)
         {
             if (this.sortColumn == e.Column)
-            {
                 this.sortUp = !this.sortUp;
-            }
             else
-            {
                 this.sortColumn = e.Column;
-            }
 
             this.showAllRows();
         }

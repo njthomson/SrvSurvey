@@ -169,12 +169,6 @@ namespace SrvSurvey
         private void getAllSurveyedRuins()
         {
             this.surveyedSites = GuardianSiteData.loadAllSites();
-
-            //foreach (var survey in this.surveyedSites)
-            //{
-            //    var name = $"{survey.bodyName}, ruins #{survey.index} - {survey.type}";
-            //    comboSite.Items.Add(name);
-            //}
         }
 
         private void showFilteredSites(GuardianSiteData? siteData = null)

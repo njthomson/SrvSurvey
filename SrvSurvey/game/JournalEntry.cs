@@ -179,6 +179,12 @@ namespace SrvSurvey
         public int VoucherAmount { get; set; }
     }
 
+    class DataScanned : JournalEntry
+    {
+        // { "timestamp":"2023-07-19T05:57:28Z", "event":"DataScanned", "Type":"$Datascan_AncientPylon;" }
+        public string Type;
+    }
+
     class SendText : JournalEntry
     {
         // { "timestamp":"2023-01-07T05:44:32Z", "event":"SendText", "To":"local", "Message":"totem", "Sent":true }
@@ -518,6 +524,16 @@ namespace SrvSurvey
         public long SystemAddress;
         public string StarClass;
         public int RemainingJumpsInRoute;
+    }
+
+    class SupercruiseDestinationDrop : JournalEntry
+    {
+        // { "timestamp":"2023-06-07T00:52:52Z", "event":"SupercruiseDestinationDrop", "Type":"Chiao Enterprise", "Threat":0, "MarketID":3223505152 }
+        // { "timestamp":"2023-07-19T05:48:03Z", "event":"SupercruiseDestinationDrop", "Type":"Guardian Beacon", "Threat":0 }
+
+        public string Type;
+        public int Threat;
+        public string? MarketID;
     }
 }
 

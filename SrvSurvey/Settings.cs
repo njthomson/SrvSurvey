@@ -32,6 +32,7 @@ namespace SrvSurvey
         public Rectangle formLogsLocation;
         public Rectangle formAllRuinsLocation;
         public Rectangle formRuinsLocation;
+        public Rectangle formBeaconsLocation;
 
         public bool mapShowNotes = true;
 

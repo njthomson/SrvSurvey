@@ -1,0 +1,297 @@
+[
+  {
+    "systemName": "IC 2391 Sector CQ-Y c16",
+    "systemAddress": 4482838500042,
+    "bodyName": "2",
+    "bodyId": 8,
+    "distanceToArrival": 1362,
+    "starPos": [ 559.875, -87.15625, -33.15625 ],
+    "relatedStructure": "IC 2391 Sector CA-A d43 12 a"
+  },
+  {
+    "systemName": "IC 2391 Sector FG-X b1-9",
+    "systemAddress": 20469679662481,
+    "bodyName": "8",
+    "bodyId": 16,
+    "distanceToArrival": 1040,
+    "starPos": [ 563.75, -100.03125, -59.3125 ],
+    "relatedStructure": "IC 2391 Sector HG-X b1-8 C 2"
+  },
+  {
+    "systemName": "IC 2391 Sector MX-T b3-6",
+    "systemAddress": 13872878396833,
+    "bodyName": "A 1",
+    "bodyId": 7,
+    "distanceToArrival": 210,
+    "starPos": [
+      582.9375,
+      -72.28125,
+      -19.40625
+    ],
+    "relatedStructure": "IC 2391 Sector FL-X b1-7 A 3"
+  },
+  {
+    "systemName": "IC 2391 Sector HG-X b1-7",
+    "systemAddress": 16072170022289,
+    "bodyName": "4",
+    "bodyId": 8,
+    "distanceToArrival": 33,
+    "starPos": [ 604.5625, -101.78125, -58.65625 ],
+    "relatedStructure": "Synuefe NB-B b47-10 B 2"
+  },
+  {
+    "systemName": "Synuefe AS-H d11-9",
+    "systemAddress": 319849220451,
+    "bodyName": "A 2",
+    "bodyId": 5,
+    "distanceToArrival": 492,
+    "starPos": [
+      610.3125,
+      -65.125,
+      -101.84375
+    ],
+    "relatedStructure": "Synuefe DK-D b46-4 C 1"
+  },
+  {
+    "systemName": "Synuefe DK-D b46-12",
+    "systemAddress": 27067823302025,
+    "bodyName": "2",
+    "bodyId": 13,
+    "distanceToArrival": 14,
+    "starPos": [ 636.3125, -53.65625, -68.8125 ],
+    "relatedStructure": "Synuefe GQ-N c23-21 B 3"
+  },
+  {
+    "systemName": "Synuefe HL-N c23-4",
+    "systemAddress": 1184437801674,
+    "bodyName": "1 a + 1 b",
+    "bodyId": 20,
+    "distanceToArrival": 1585,
+    "starPos": [
+      649.9375,
+      -114.78125,
+      -57.0625
+    ],
+    "relatedStructure": "Synuefe HF-E b45-8 D 3"
+  },
+  {
+    "systemName": "HIP 36823",
+    "systemAddress": 84926173882,
+    "bodyName": "1",
+    "bodyId": 14,
+    "distanceToArrival": 908,
+    "starPos": [
+      640.4375,
+      -143.90625,
+      -118.3125
+    ],
+    "relatedStructure": "HIP 36781 A 6 b"
+  },
+  {
+    "systemName": "Synuefe WL-J d10-113",
+    "systemAddress": 3893262010715,
+    "bodyName": "3",
+    "bodyId": 5,
+    "distanceToArrival": 1134,
+    "starPos": [ 645.0625, -95.46875, -142.4375 ],
+    "relatedStructure": "Synuefe DJ-G b44-3 A 5"
+  },
+  {
+    "systemName": "Synuefe IL-N c23-15",
+    "systemAddress": 4208161886922,
+    "bodyName": "2 a",
+    "bodyId": 3,
+    "distanceToArrival": 581,
+    "starPos": [ 658.28125, -117.96875, -46.3125 ],
+    "relatedStructure": "Synuefe IL-N c23-19 B 2"
+  },
+  {
+    "systemName": "Synuefe HP-E b45-4",
+    "systemAddress": 9476173931905,
+    "bodyName": "4",
+    "bodyId": 4,
+    "distanceToArrival": 562,
+    "starPos": [ 678.59375, -118.75, -94.78125 ],
+    "relatedStructure": "Synuefe HE-G b44-5 B 2"
+  },
+  {
+    "systemName": "Synuefe FU-E b45-5",
+    "systemAddress": 11675197252993,
+    "bodyName": "A 3",
+    "bodyId": 10,
+    "distanceToArrival": 54,
+    "starPos": [
+      682.28125,
+      -102.59375,
+      -104.5625
+    ],
+    "relatedStructure": "Synuefe BZ-Q c21-11 B 5"
+  },
+  {
+    "systemName": "Synuefe BO-G b44-6",
+    "systemAddress": 13874220508537,
+    "bodyName": "1",
+    "bodyId": 18,
+    "distanceToArrival": 637,
+    "starPos": [ 687.3125, -96.75, -112.125 ],
+    "relatedStructure": "Synuefe JP-E b45-4 C 1"
+  },
+  {
+    "systemName": "Synuefe FF-P c22-35",
+    "systemAddress": 9705787134658,
+    "bodyName": "4 a",
+    "bodyId": 6,
+    "distanceToArrival": 1039,
+    "starPos": [ 700.03125, -129.5, -96.375 ],
+    "relatedStructure": "Synuefe IE-G b44-2 A 4"
+  },
+  {
+    "systemName": "Synuefe DK-P c22-35",
+    "systemAddress": 9705787167426,
+    "bodyName": "3",
+    "bodyId": 9,
+    "distanceToArrival": 1110,
+    "starPos": [ 711.46875, -102.6875, -89.53125 ],
+    "relatedStructure": "Synuefe EN-H d11-29 6 b"
+  },
+  {
+    "systemName": "Synuefe HA-P c22-22",
+    "systemAddress": 6132374311618,
+    "bodyName": "2",
+    "bodyId": 15,
+    "distanceToArrival": 1737,
+    "starPos": [ 701.5, -168.125, -104.40625 ],
+    "relatedStructure": "Synuefe AH-J d10-46 C 1"
+  },
+  {
+    "systemName": "Synuefe KU-F b44-4",
+    "systemAddress": 9476442170745,
+    "bodyName": "4",
+    "bodyId": 12,
+    "distanceToArrival": 466,
+    "starPos": [ 714.34375, -173.84375, -113.59375 ],
+    "relatedStructure": "Synuefe EU-Q c21-15 A 1"
+  },
+  {
+    "systemName": "Synuefe JZ-F b44-8",
+    "systemAddress": 18272803693945,
+    "bodyName": "8",
+    "bodyId": 20,
+    "distanceToArrival": 1315,
+    "starPos": [ 720.625, -163.59375, -112.90625 ],
+    "relatedStructure": "Synuefe KZ-F b44-5 A 1"
+  },
+  {
+    "systemName": "Synuefe RL-C b46-6",
+    "systemAddress": 13874757182857,
+    "bodyName": "3",
+    "bodyId": 8,
+    "distanceToArrival": 205,
+    "starPos": [ 727.90625, -157.1875, -67.1875 ],
+    "relatedStructure": "Synuefe EN-H d11-96 7 a"
+  },
+  {
+    "systemName": "Synuefe IT-F d12-5",
+    "systemAddress": 182443805035,
+    "bodyName": "A 2",
+    "bodyId": 5,
+    "distanceToArrival": 196,
+    "starPos": [ 739.46875, -140.53125, -13.375 ],
+    "relatedStructure": "Synuefe EN-H d11-28 8 b"
+  },
+  {
+    "systemName": "Synuefe ZG-J d10-49",
+    "systemAddress": 1694255515995,
+    "bodyName": "2 a",
+    "bodyId": 3,
+    "distanceToArrival": 707,
+    "starPos": [ 723.8125, -156.71875, -152.3125 ],
+    "relatedStructure": "Synuefe AH-J d10-20 A 3"
+  },
+  {
+    "systemName": "Synuefe CS-H d11-121",
+    "systemAddress": 4168173472099,
+    "bodyName": "3",
+    "bodyId": 3,
+    "distanceToArrival": 795,
+    "starPos": [ 746.09375, -100.78125, -86.625 ],
+    "relatedStructure": "Synuefe ZG-J d10-79 B 1"
+  },
+  {
+    "systemName": "NGC 2451A Sector LX-U d2-25",
+    "systemAddress": 869621795163,
+    "bodyName": "3",
+    "bodyId": 13,
+    "distanceToArrival": 105,
+    "starPos": [ 726.0625, -163.5625, -171.78125 ],
+    "relatedStructure": "NGC 2451A Sector VJ-R c4-22 A 1    "
+  },
+  {
+    "systemName": "Synuefe QA-E b45-4",
+    "systemAddress": 9476979041665,
+    "bodyName": "3",
+    "bodyId": 8,
+    "distanceToArrival": 348,
+    "starPos": [
+      738.0625,
+      -174.375,
+      -103.25
+    ],
+    "relatedStructure": "Synuefe PF-E b45-5 B 2"
+  },
+  {
+    "systemName": "Synuefe GJ-G b44-9",
+    "systemAddress": 20472095516025,
+    "bodyName": "3 c",
+    "bodyId": 25,
+    "distanceToArrival": 571,
+    "starPos": [ 747.84375, -109.28125, -121.65625 ],
+    "relatedStructure": "Synuefe ED-I b43-8 A 2"
+  },
+  {
+    "systemName": "NGC 2451A Sector TO-R c4-3",
+    "systemAddress": 909761221298,
+    "bodyName": "3",
+    "bodyId": 11,
+    "distanceToArrival": 380,
+    "starPos": [ 739.46875, -127.875, -156.1875 ],
+    "relatedStructure": "NGC 2451A Sector TO-R c4-10 B 1"
+  },
+  {
+    "systemName": "Synuefe OF-E b45-4",
+    "systemAddress": 9476979107201,
+    "bodyName": "1 b",
+    "bodyId": 10,
+    "distanceToArrival": 254,
+    "starPos": [ 751.0625, -157.71875, -86.09375 ],
+    "relatedStructure": "Synuefe AH-J d10-103 B 1"
+  },
+  {
+    "systemName": "NGC 2451A Sector RT-R c4-19",
+    "systemAddress": 5307807765170,
+    "bodyName": "2",
+    "bodyId": 3,
+    "distanceToArrival": 470,
+    "starPos": [ 753.03125, -84.03125, -153.75 ],
+    "relatedStructure": "Synuefe BE-R c21-35 E 2"
+  },
+  {
+    "systemName": "Synuefe RA-E b45-5",
+    "systemAddress": 11676270732673,
+    "bodyName": "2",
+    "bodyId": 2,
+    "distanceToArrival": 3388,
+    "starPos": [ 755.53125, -169.125, -88.28125 ],
+    "relatedStructure": "Synuefe NU-F b44-5 B 1"
+  },
+  {
+    "systemName": "Synuefe IJ-G b44-5",
+    "systemAddress": 11676539364729,
+    "bodyName": "3",
+    "bodyId": 22,
+    "lastUpdated": "2023-07-14T22:23:52.3823066+00:00",
+    "distanceToArrival": 15.32,
+    "starPos": [ 790.0625, -124.8125, -120.40625 ],
+    "relatedStructure": "Synuefe DZ-Q c21-14 10 a"
+  }
+]

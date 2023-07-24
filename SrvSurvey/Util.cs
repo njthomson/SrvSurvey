@@ -1,9 +1,7 @@
 ﻿using DecimalMath;
-using Microsoft.VisualBasic.Devices;
-using Newtonsoft.Json;
+using SrvSurvey.canonn;
 using SrvSurvey.game;
 using SrvSurvey.units;
-using System;
 using System.Diagnostics;
 
 namespace SrvSurvey
@@ -266,5 +264,42 @@ namespace SrvSurvey
 
             return targetAlt;
         }
+
+        public static StarSystem getRecentStarSystem()
+        {
+            var cmdr = Game.activeGame?.cmdr;
+            if (cmdr == null && Game.settings.lastFid != null)
+                cmdr = CommanderSettings.Load(Game.settings.lastFid, true, Game.settings.lastCommander!);
+
+            if (!string.IsNullOrEmpty(cmdr?.currentSystem))
+            {
+                return new StarSystem
+                {
+                    systemName = cmdr.currentSystem,
+                    pos = cmdr.starPos,
+                };
+            }
+            else
+            {
+                return StarSystem.Sol;
+            }
+        }
+
+        public static void showForm(Form form)
+        {
+            if (form.Visible == false)
+            {
+                form.Show();
+            }
+            else
+            {
+                if (form.WindowState == FormWindowState.Minimized)
+                    form.WindowState = FormWindowState.Normal;
+
+                form.Activate();
+            }
+        }
+
+        public static bool isOdyssey = Game.activeGame?.journals == null || Game.activeGame.journals.isOdyssey;
     }
 }

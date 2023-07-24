@@ -34,6 +34,10 @@ namespace SrvSurvey.game
                     Game.log(json);
                 }
             }
+            else
+            {
+                Game.log($"Data file not found: {filepath}");
+            }
 
             return null;
         }

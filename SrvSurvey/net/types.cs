@@ -3,6 +3,18 @@ using SrvSurvey.game;
 
 namespace SrvSurvey.canonn
 {
+    internal class StarSystem
+    {
+        public string systemName;
+        public double[] pos;
+
+        public static StarSystem Sol = new StarSystem
+        {
+            systemName = "Sol",
+            pos = new double[3] { 0, 0, 0 },
+        };
+    }
+
     internal class Coords
     {
         public double x;
@@ -375,9 +387,9 @@ namespace SrvSurvey.canonn
                 idx = _.frontierID ?? 0,
                 distanceToArrival = _.body.distanceToArrival,
                 starPos = new double[] {
-                    _.system.edsmCoordX, 
-                    _.system.edsmCoordY, 
-                    _.system.edsmCoordZ 
+                    _.system.edsmCoordX,
+                    _.system.edsmCoordY,
+                    _.system.edsmCoordZ
                 },
                 latitude = _.latitude,
                 longitude = _.longitude,
@@ -458,27 +470,63 @@ namespace SrvSurvey.canonn
 
             return entry;
         }
+    }
 
-        #region spansh types
+    #region spansh types
 
-        internal class GetSystemResponse
+    internal class GetSystemResponse
+    {
+        // {"min_max":[{"id64":10477373803,"name":"Sol","x":0.0,"y":0.0,"z":0.0},{"id64":1458376315610,"name":"Solati","x":66.53125,"y":29.1875,"z":34.6875},{"id64":5059379007779,"name":"Solitude","x":-9497.65625,"y":-911.0,"z":19807.625},{"id64":5267550898539,"name":"Solibamba","x":99.5625,"y":40.125,"z":26.8125},{"id64":11538024121505,"name":"Sollaro","x":-9528.625,"y":-885.59375,"z":19815.4375}],"values":["Sol","Solati","Solitude","Solibamba","Sollaro"]}
+
+        public List<GetSystemMinMax> min_max;
+        public List<string> values;
+    }
+
+    internal class GetSystemMinMax
+    {
+        public long id64;
+        public string name;
+        public double x;
+        public double y;
+        public double z;
+    }
+
+    #endregion
+
+    internal class GuardianBeaconSummary
+    {
+        public string systemName;
+        public long systemAddress;
+        public string bodyName;
+        public int bodyId;
+        public DateTimeOffset lastUpdated;
+        public double distanceToArrival;
+        public double[] starPos;
+        public string relatedStructure;
+    }
+
+    internal class GuardianBeaconEntry : GuardianBeaconSummary
+    {
+        public DateTimeOffset lastVisited;
+        public double systemDistance;
+        public string notes = "";
+
+        public GuardianBeaconEntry(GuardianBeaconSummary summary)
         {
-            // {"min_max":[{"id64":10477373803,"name":"Sol","x":0.0,"y":0.0,"z":0.0},{"id64":1458376315610,"name":"Solati","x":66.53125,"y":29.1875,"z":34.6875},{"id64":5059379007779,"name":"Solitude","x":-9497.65625,"y":-911.0,"z":19807.625},{"id64":5267550898539,"name":"Solibamba","x":99.5625,"y":40.125,"z":26.8125},{"id64":11538024121505,"name":"Sollaro","x":-9528.625,"y":-885.59375,"z":19815.4375}],"values":["Sol","Solati","Solitude","Solibamba","Sollaro"]}
+            if (summary != null)
+            {
+                base.systemName = summary.systemName;
+                base.systemAddress = summary.systemAddress;
+                base.bodyName = summary.bodyName;
+                base.bodyId = summary.bodyId;
+                base.distanceToArrival = summary.distanceToArrival;
+                base.starPos = summary.starPos;
+                base.relatedStructure = summary.relatedStructure;
+                //base.latitude = summary.latitude;
+                //base.longitude = summary.longitude;
+            }
 
-            public List<GetSystemMinMax> min_max;
-            public List<string> values;
         }
-
-        internal class GetSystemMinMax
-        {
-            public long id64;
-            public string name;
-            public double x;
-            public double y;
-            public double z;
-        }
-
-        #endregion
     }
 
 }

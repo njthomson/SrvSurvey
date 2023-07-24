@@ -131,6 +131,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="allBeacons.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="images\alpha.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>

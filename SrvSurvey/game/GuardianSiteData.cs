@@ -9,8 +9,6 @@ namespace SrvSurvey.game
     {
         private static string rootFolder = Path.Combine(Application.UserAppDataPath, "guardian");
 
-        private static bool isOdyssey = Game.activeGame?.journals == null || Game.activeGame.journals.isOdyssey;
-
         public static string getFilename(ApproachSettlement entry)
         {
             var index = parseSettlementIdx(entry.Name);
@@ -25,30 +23,32 @@ namespace SrvSurvey.game
 
         public static GuardianSiteData? Load(string bodyName, int index)
         {
-            var fid = Game.activeGame?.fid ?? Game.settings.lastFid;
-            var filename = getFilename(bodyName, index);
-            if (!isOdyssey)
-                filename = Path.Combine("legacy", filename);
-            string filepath = Path.Combine(rootFolder, fid!, filename);
+            var fid = Game.activeGame?.fid ?? Game.settings.lastFid!;
+            var folder = Path.Combine(rootFolder, fid!);
+            if (!Util.isOdyssey) folder = Path.Combine(folder, "legacy");
 
+            var filename = getFilename(bodyName, index);
+            var filepath = Path.Combine(folder, filename);
             return Data.Load<GuardianSiteData>(filepath);
         }
 
         public static GuardianSiteData Load(ApproachSettlement entry)
         {
-            var filename = getFilename(entry);
-            if (!isOdyssey)
-                filename = Path.Combine("legacy", filename);
-            string filepath = Path.Combine(rootFolder, Game.activeGame!.fid!, filename);
+            var fid = Game.activeGame?.fid ?? Game.settings.lastFid!;
+            var folder = Path.Combine(rootFolder, fid!);
+            if (!Util.isOdyssey) folder = Path.Combine(folder, "legacy");
 
-            Directory.CreateDirectory(rootFolder);
+            var filename = getFilename(entry);
+            var filepath = Path.Combine(folder, filename);
+
+            Directory.CreateDirectory(folder);
             var data = Data.Load<GuardianSiteData>(filepath);
 
             // create new if needed
             if (data == null)
             {
                 // system name is missing on ApproachSettlement, so take the current system - assuming it's a match
-                var cmdr = Game.activeGame.cmdr;
+                var cmdr = Game.activeGame?.cmdr!;
                 var systemName = "";
 
                 // might be bad idea?
@@ -59,7 +59,7 @@ namespace SrvSurvey.game
                 {
                     name = entry.Name,
                     nameLocalised = entry.Name_Localised,
-                    commander = Game.activeGame.Commander!,
+                    commander = cmdr.commander,
                     type = SiteType.Unknown,
                     index = parseSettlementIdx(entry.Name),
                     filepath = filepath,
@@ -70,8 +70,9 @@ namespace SrvSurvey.game
                     bodyName = entry.BodyName,
                     firstVisited = DateTimeOffset.UtcNow,
                     poiStatus = new Dictionary<string, SitePoiStatus>(),
-                    legacy = !isOdyssey,
+                    legacy = !Util.isOdyssey,
                 };
+
                 data.Save();
                 return data;
             }
@@ -161,7 +162,7 @@ namespace SrvSurvey.game
         #endregion
 
         [JsonIgnore]
-        public bool isRuins { get => this.name.StartsWith("$Ancient:"); }
+        public bool isRuins { get => this.name != null && this.name.StartsWith("$Ancient:"); }
 
         public static int parseSettlementIdx(string name)
         {

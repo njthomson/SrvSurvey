@@ -13,12 +13,19 @@ namespace SrvSurvey.canonn
 {
     internal class Canonn
     {
+        private static string allRuinsStaticPathDbg = "D:\\code\\SrvSurvey\\SrvSurvey\\allRuins.json";
+        private static string allRuinsStaticPath = Debugger.IsAttached ? allRuinsStaticPathDbg : Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "allRuins.json");
+        private static string allBeaconsStaticPath = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "allBeacons.json");
+        public List<GuardianRuinSummary> allRuins { get; private set; }
+        public List<GuardianBeaconSummary> allBeacons { get; private set; }
+
         public void init()
         {
             // load static ruins summaries
-            var json = File.ReadAllText(Canonn.allRuinsStaticPath);
-            this.allRuins = JsonConvert.DeserializeObject<List<GuardianRuinSummary>>(json)!;
-            Game.log($"Loaded {this.allRuins.Count} ruins.");
+            this.allRuins = JsonConvert.DeserializeObject<List<GuardianRuinSummary>>(File.ReadAllText(Canonn.allRuinsStaticPath))!;
+            var json = File.ReadAllText(Canonn.allBeaconsStaticPath);
+            this.allBeacons = JsonConvert.DeserializeObject<List<GuardianBeaconSummary>>(json)!;
+            Game.log($"Loaded {this.allRuins.Count} ruins, {this.allBeacons.Count} beacons");
 
             /*
              if (Debugger.IsAttached)
@@ -255,7 +262,7 @@ namespace SrvSurvey.canonn
             var folder = Path.Combine(Application.UserAppDataPath, "guardian", Game.settings.lastFid!);
             if (Directory.Exists(folder))
             {
-                var files = Directory.GetFiles(folder);
+                var files = Directory.GetFiles(folder, "*-ruins-*.json");
 
                 Game.log($"Reading {files.Length} ruins files from disk");
                 foreach (var filename in files)
@@ -351,10 +358,6 @@ namespace SrvSurvey.canonn
         #endregion
 
         #region parse Excel sheet of Ruins
-
-        private static string allRuinsStaticPathDbg = "D:\\code\\SrvSurvey\\SrvSurvey\\allRuins.json";
-        private static string allRuinsStaticPath = Debugger.IsAttached ? allRuinsStaticPathDbg : Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "allRuins.json");
-        public List<GuardianRuinSummary> allRuins { get; private set; }
 
         private List<GuardianRuinSummary> newSummaries;
 

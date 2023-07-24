@@ -988,6 +988,21 @@ namespace SrvSurvey.game
                 this.nearBody.onJournalEntry(entry);
         }
 
+        private void onJournalEntry(CodexEntry entry)
+        {
+            if (entry.Name == "$Codex_Ent_Guardian_Beacons_Name;")
+            {
+                // A Guardian Beacon
+                Game.log($"Scanned Guardian Beacon in: {entry.System}");
+                var data = GuardianBeaconData.Load(entry);
+
+                // add the lat/long co-ordinates
+                data.scannedLocations[DateTime.UtcNow] = entry;
+                data.lastVisited = DateTime.UtcNow;
+                data.Save();
+            }
+        }
+
         private void onJournalEntry(SAASignalsFound entry)
         {
             if (this.nearBody == null)

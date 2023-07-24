@@ -246,7 +246,7 @@ namespace SrvSurvey
             }
             if (msg.StartsWith(MsgCmd.note, StringComparison.InvariantCultureIgnoreCase))
             {
-                var note = msg.Substring(MsgCmd.note.Length);
+                var note = msg.Substring(MsgCmd.note.Length).Trim();
                 this.siteData.notes += $"\r\n{note}\r\n";
                 this.siteData.Save();
             }
@@ -334,7 +334,7 @@ namespace SrvSurvey
                 siteData.Save();
                 Program.closePlotter<PlotVertialStripe>();
             }
-            else if (msg.StartsWith(MsgCmd.heading) && int.TryParse(msg.Substring(MsgCmd.heading.Length), out newHeading))
+            else if (msg.StartsWith(MsgCmd.tower) && int.TryParse(msg.Substring(MsgCmd.tower.Length), out newHeading))
             {
                 var newAngle = new Angle(newHeading);
                 Game.log($"Changing Relic Tower heading from: {siteData.relicTowerHeading}° to: {newAngle}");
@@ -419,7 +419,7 @@ namespace SrvSurvey
 
             this.nextMode();
             this.Invalidate();
-            game.fireUpdate();
+            game.fireUpdate(true);
         }
 
         private void loadSiteTemplate()

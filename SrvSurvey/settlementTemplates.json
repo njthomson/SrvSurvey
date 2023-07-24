@@ -132,6 +132,8 @@
       { "name": "t4", "dist": 662, "angle": 77, "type": "relic" }, // leaning
       { "name": "t5", "dist": 708, "angle": 236.1, "type": "relic" },
       { "name": "t6", "dist": 176, "angle": 202, "type": "relic" },
+      { "name": "t7", "dist": 601, "angle": 10.4, "type": "relic" },
+      { "name": "t8", "dist": 456, "angle": 323.8, "type": "relic" },
       
       { "name": "p1", "dist": 241, "angle": 211.2, "type": "urn" },
       { "name": "p2", "dist": 722, "angle": 70.5, "type": "tablet" },
@@ -153,7 +155,13 @@
       { "name": "p18", "dist": 536, "angle": 122, "type": "casket" },
       { "name": "p19", "dist": 226, "angle": 170.8, "type": "tablet" },
       { "name": "p20", "dist": 309, "angle": 243.4, "type": "casket" },
-      { "name": "p21", "dist": 397, "angle": 313, "type": "urn" }
+      { "name": "p21", "dist": 397, "angle": 313, "type": "urn" },
+      { "name": "p22", "dist": 642, "angle": 25.7, "type": "urn" },
+      { "name": "p23", "dist": 458, "angle": 357.2, "type": "casket" },
+      { "name": "p24", "dist": 440, "angle": 1.8, "type": "urn" },
+      { "name": "p25", "dist": 746, "angle": 82.7, "type": "orb" },
+      { "name": "p26", "dist": 515, "angle": 179.9, "type": "tablet" },
+      { "name": "p27", "dist": 499, "angle": 131.4, "type": "totem" }
     ]
   }
 }

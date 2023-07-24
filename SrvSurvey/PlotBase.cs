@@ -112,14 +112,12 @@ namespace SrvSurvey
         {
             if (this.IsDisposed) return;
 
-            if (this.Opacity > 0 && !game.showBodyPlotters)
-            {
+            var targetMode = game.showBodyPlotters;
+            if (this.Opacity > 0 && !targetMode)
                 this.Opacity = 0;
-            }
-            else if (this.Opacity == 0 && game.showBodyPlotters)
-            {
+            else if (this.Opacity == 0 && targetMode)
                 this.reposition(Elite.getWindowRect());
-            }
+
             this.Invalidate();
         }
 
@@ -195,6 +193,8 @@ namespace SrvSurvey
                 if (float.TryParse(entry.Message.Substring(1), out zoomFactor))
                 {
                     Game.log($"Change zoom scale from: '{this.scale}' to: '{zoomFactor}'");
+                    zoomFactor = (float)Math.Max(zoomFactor, 0.2);
+                    zoomFactor = (float)Math.Min(zoomFactor, 4);
                     this.scale = zoomFactor;
                     this.Invalidate();
                     return;
@@ -208,6 +208,26 @@ namespace SrvSurvey
         }
 
         protected virtual void onJournalEntry(FSDTarget entry)
+        {
+            // overriden as necessary
+        }
+
+        protected virtual void onJournalEntry(Screenshot entry)
+        {
+            // overriden as necessary
+        }
+
+        protected virtual void onJournalEntry(DataScanned entry)
+        {
+            // overriden as necessary
+        }
+
+        protected virtual void onJournalEntry(SupercruiseEntry entry)
+        {
+            // overriden as necessary
+        }
+
+        protected virtual void onJournalEntry(FSDJump entry)
         {
             // overriden as necessary
         }
@@ -313,7 +333,7 @@ namespace SrvSurvey
         {
             var dd = new TrackingDelta(game.nearBody!.radius, location);
             Angle deg = dd.angle - game.status!.Heading;
-           
+
             drawBearingTo(x, y, txt, (double)dd.distance, (double)deg);
         }
 
@@ -355,7 +375,7 @@ namespace SrvSurvey
             var sz = g.MeasureString(msg, font);
             var tx = mid.Width - (sz.Width / 2);
             var ty = 4;
-            
+
             g.DrawString(msg, font, brush ?? GameColors.brushGameOrange, tx, ty);
         }
 
@@ -371,6 +391,150 @@ namespace SrvSurvey
             var sz = g.MeasureString(msg, font);
             var tx = mid.Width - (sz.Width / 2);
             var ty = this.Height - sz.Height - 5;
+
+            g.DrawString(msg, font, brush ?? GameColors.brushGameOrange, tx, ty);
+        }
+    }
+
+    internal class PlotBaseSelectable : PlotBase, PlotterForm
+    {
+        protected int selectedIndex = 0;
+        private Point[] ptMain;
+        private Point[] ptLetter;
+        private System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
+        private bool highlightBlink = false;
+
+        protected PlotBaseSelectable() : base()
+        {
+            this.Width = 500;
+            this.Height = 108;
+
+            timer.Tick += Timer_Tick;
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                timer.Tick -= Timer_Tick;
+            }
+
+            base.Dispose(disposing);
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+
+            this.initialize();
+            this.reposition(Elite.getWindowRect(true));
+
+            const int blockWidth = 100;
+            const int blockTop = 45;
+            const int letterOffset = 10;
+            ptMain = new Point[]
+            {
+                new Point((int)(this.mid.Width - (blockWidth * 1.5f)) , blockTop ),
+                new Point((int)(this.mid.Width - (blockWidth * 0.5f)), blockTop ),
+                new Point((int)(this.mid.Width + (blockWidth * 0.5f)) , blockTop )
+            };
+            ptLetter = new Point[]
+            {
+                new Point((int)(this.mid.Width - (blockWidth * 1.5f) - letterOffset) , blockTop - letterOffset),
+                new Point((int)(this.mid.Width - (blockWidth * 0.5f)) - letterOffset, blockTop - letterOffset),
+                new Point((int)(this.mid.Width + (blockWidth * 0.5f)) - letterOffset, blockTop - letterOffset)
+            };
+        }
+
+        public override void reposition(Rectangle gameRect)
+        {
+            if (gameRect == Rectangle.Empty)
+            {
+                this.Opacity = 0;
+                return;
+            }
+
+            this.Opacity = Game.settings.Opacity;
+            Elite.floatCenterTop(this, gameRect, 0);
+
+            this.Invalidate();
+        }
+
+        protected override void Status_StatusChanged(bool blink)
+        {
+            if (this.IsDisposed) return;
+
+            this.selectedIndex = game.status.FireGroup % 3;
+
+            if (!blink && timer.Enabled == false)
+            {
+                // if we are within a blink detection window - highlight the footer
+                var duration = DateTime.Now - game.status.lastblinkChange;
+                if (duration.TotalMilliseconds < Game.settings.blinkDuration)
+                {
+                    this.highlightBlink = true;
+                    timer.Interval = Game.settings.blinkDuration;
+                    timer.Start();
+                }
+            }
+
+            base.Status_StatusChanged(blink);
+        }
+
+        protected void Timer_Tick(object? sender, EventArgs e)
+        {
+            timer.Stop();
+            this.highlightBlink = false;
+            this.Invalidate();
+        }
+
+        protected void drawOptions(string msg1, string msg2, string? msg3, int highlightIdx)
+        {
+            var c = highlightIdx == 0 ? GameColors.Cyan : GameColors.Orange;
+            if (highlightIdx == -2) c = Color.Gray;
+            TextRenderer.DrawText(g, "A:", Game.settings.fontSmall, ptLetter[0], c);
+            TextRenderer.DrawText(g, msg1, Game.settings.fontMiddle, ptMain[0], c);
+
+            c = highlightIdx == 1 ? GameColors.Cyan : GameColors.Orange;
+            if (highlightIdx == -2) c = Color.Gray;
+            TextRenderer.DrawText(g, "B:", Game.settings.fontSmall, ptLetter[1], c);
+            TextRenderer.DrawText(g, msg2, Game.settings.fontMiddle, ptMain[1], c);
+
+            if (msg3 != null)
+            {
+                c = highlightIdx == 2 ? GameColors.Cyan : GameColors.Orange;
+                if (highlightIdx == -2) c = Color.Gray;
+                TextRenderer.DrawText(g, "C:", Game.settings.fontSmall, ptLetter[2], c);
+                TextRenderer.DrawText(g, msg3, Game.settings.fontMiddle, ptMain[2], c);
+            }
+
+            // show selection rectangle
+            var rect = new Rectangle(0, 0, 86, 44);
+            rect.Location = ptMain[selectedIndex];
+            rect.Offset(-12, -12);
+            var p = highlightIdx == selectedIndex ? Pens.Cyan : GameColors.penGameOrange1;
+            if (highlightIdx == -2 || (msg3 == null && highlightIdx == 2)) p = Pens.Gray;
+            g.DrawRectangle(p, rect);
+
+            if (highlightIdx != -2)
+                showSelectionCue();
+        }
+
+        protected void showSelectionCue()
+        {
+            // show cue to select
+            var triggerTxt = "cockpit mode";
+            var b = this.highlightBlink ? GameColors.brushCyan : GameColors.brushGameOrange;
+            var times = this.highlightBlink ? "again" : "once";
+            drawFooterText($"(toggle {triggerTxt} {times} to set)", b);
+        }
+
+        protected void drawCenterMessage(string msg, Brush? brush = null)
+        {
+            var font = Game.settings.fontMiddle;
+            var sz = g.MeasureString(msg, font);
+            var tx = mid.Width - (sz.Width / 2);
+            var ty = 34;
 
             g.DrawString(msg, font, brush ?? GameColors.brushGameOrange, tx, ty);
         }
