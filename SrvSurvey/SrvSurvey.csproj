@@ -56,6 +56,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="allBeacons.json" />
     <None Remove="allRuins.json" />
     <None Remove="images\alpha-background.png" />
     <None Remove="images\alpha-heading-guide.png" />
@@ -67,6 +68,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="allBeacons.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="allRuins.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -131,9 +135,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="allBeacons.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Update="images\alpha.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
