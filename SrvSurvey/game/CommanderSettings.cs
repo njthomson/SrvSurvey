@@ -44,7 +44,7 @@ namespace SrvSurvey.game
         // spherical searching
         public SphereLimit sphereLimit = new SphereLimit();
 
-        public TrackTargets? trackTargets;
+        public Dictionary<string, LatLong2>? trackTargets;
     }
 
     internal class SphereLimit

@@ -114,6 +114,14 @@ namespace SrvSurvey
             return activePlotters.ContainsKey(typeof(T).Name);
         }
 
+        /// <summary>
+        /// Returns True if the plotter type is active
+        /// </summary>
+        public static Form? getPlotter<T>() where T : Form
+        {
+            return activePlotters.ContainsKey(typeof(T).Name) ? activePlotters[typeof(T).Name] : null;
+        }
+
         public static void closeAllPlotters()
         {
             Game.log($"Program.CloseAllPlotters");

@@ -1,13 +1,6 @@
 ﻿using SrvSurvey.game;
 using SrvSurvey.units;
-using System;
-using System.Collections.Generic;
-using System.DirectoryServices.ActiveDirectory;
 using System.Drawing.Drawing2D;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace SrvSurvey
 {
@@ -25,7 +18,7 @@ namespace SrvSurvey
             var verb = parts.Length == 2 ? parts[1] : "here";
 
             // stop showing target tracking
-            if (name == "off" || name == "reset")
+            if (name == "off")
             {
                 Program.closePlotter<PlotTrackers>();
                 Game.activeGame.cmdr.trackTargets = null;
@@ -34,19 +27,14 @@ namespace SrvSurvey
             }
 
             // create tracker if needed
-            var targets = Game.activeGame.cmdr.trackTargets?.targets;
-            if (targets == null)
-            {
-                Game.activeGame.cmdr.trackTargets = new TrackTargets();
-                targets = Game.activeGame.cmdr.trackTargets?.targets!;
-            }
-            var showPlotter = targets.Count > 0;
+            if (Game.activeGame.cmdr.trackTargets == null)
+                Game.activeGame.cmdr.trackTargets = new Dictionary<string, LatLong2>();
 
-            //var targets = Game.activeGame.cmdr.trackTargets?.targets;
+            var targets = Game.activeGame.cmdr.trackTargets;
+
             if (verb == "here")
             {
                 targets[name] = Status.here.clone();
-                showPlotter = true;
             }
             else if (verb == "off")
             {
@@ -57,12 +45,12 @@ namespace SrvSurvey
                 // TODO: split pasted lat/long co-ordinates?
             }
 
-            if (showPlotter)
+            if (targets.Count > 0)
             {
                 var form = Program.showPlotter<PlotTrackers>();
 
                 // adjust height if needed
-                var formHeight = 52 + (targets.Count * rowHeight);
+                var formHeight = 42 + (targets.Count * rowHeight);
                 if (form.Height != formHeight)
                 {
                     form.Height = formHeight;
@@ -71,11 +59,15 @@ namespace SrvSurvey
                     form.Invalidate();
                 }
             }
+            else
+            {
+                Program.closePlotter<PlotTrackers>();
+            }
         }
 
         private PlotTrackers() : base()
         {
-            this.Width = 300;
+            this.Width = 360;
             this.Height = 100;
         }
 
@@ -97,10 +89,13 @@ namespace SrvSurvey
             this.reposition(Elite.getWindowRect(true));
         }
 
+        protected override void Game_modeChanged(GameMode newMode, bool force)
+        {
+            base.Game_modeChanged(newMode, force);
+        }
+
         public override void reposition(Rectangle gameRect)
         {
-            gameRect = new Rectangle(400, 400, 400, 400);
-
             if (gameRect == Rectangle.Empty)
             {
                 this.Opacity = 0;
@@ -108,7 +103,18 @@ namespace SrvSurvey
             }
 
             this.Opacity = Game.settings.Opacity;
-            Elite.floatRightBottom(this, gameRect);
+
+            var plotGrounded = Program.getPlotter<PlotGrounded>();
+            if (plotGrounded != null)
+            {
+                this.Width = plotGrounded.Width;
+                this.Left = gameRect.Right - this.Width - 20;
+                this.Top = plotGrounded.Bottom + 4;
+            }
+            else
+            {
+                Elite.floatRightMiddle(this, gameRect, 20);
+            }
 
             this.Invalidate();
         }
@@ -124,18 +130,18 @@ namespace SrvSurvey
 
         protected override void OnPaintBackground(PaintEventArgs e)
         {
-            if (this.IsDisposed) return;
-            this.Opacity = 1;
+            if (this.IsDisposed || game.nearBody == null) return;
 
             this.g = e.Graphics;
             this.g.SmoothingMode = SmoothingMode.HighQuality;
             base.OnPaintBackground(e);
 
-            this.drawHeaderText($"Tracking {game.cmdr.trackTargets?.targets?.Count} targets:");
-            if (game.cmdr.trackTargets?.targets == null) return;
+            g.DrawString($"Tracking {game.cmdr.trackTargets?.Count} targets:", Game.settings.fontSmall, GameColors.brushGameOrange, 4, 8);
 
-            var y = 24;
-            foreach (var target in game.cmdr.trackTargets.targets)
+            if (game.cmdr.trackTargets == null) return;
+
+            var y = 12;
+            foreach (var target in game.cmdr.trackTargets)
             {
                 y += rowHeight;
 

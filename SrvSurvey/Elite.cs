@@ -172,7 +172,7 @@ namespace SrvSurvey
                 rect = Elite.getWindowRect();
 
             form.Left = rect.Right - form.Width - fromRight;
-            form.Top = rect.Top - rect.Height + fromBottom;
+            form.Top = rect.Bottom - form.Height - fromBottom;
         }
 
         [DllImport("User32.dll")]
