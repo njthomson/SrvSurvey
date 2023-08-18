@@ -232,6 +232,16 @@ namespace SrvSurvey
             // overriden as necessary
         }
 
+        protected virtual void onJournalEntry(NavRoute entry)
+        {
+            // overriden as necessary
+        }
+
+        protected virtual void onJournalEntry(NavRouteClear entry)
+        {
+            // overriden as necessary
+        }
+
         protected void drawCommander()
         {
             if (g == null) return;

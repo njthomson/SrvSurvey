@@ -62,6 +62,7 @@ namespace SrvSurvey.game
 
         public JournalWatcher? journals;
         public Status status { get; private set; }
+        public NavRouteFile navRoute { get; private set; }
 
         /// <summary>
         /// Distinct settings for the current commander
@@ -79,6 +80,7 @@ namespace SrvSurvey.game
 
             // track status file changes and force an immediate read
             this.status = new Status(true);
+            this.navRoute = NavRouteFile.load(true);
 
             // initialize from a journal file
             var filepath = JournalFile.getCommanderJournalBefore(cmdr, true, DateTime.MaxValue);
@@ -131,6 +133,12 @@ namespace SrvSurvey.game
                     this.status.StatusChanged -= Status_StatusChanged;
                     this.status.Dispose();
                     this.status = null!;
+                }
+
+                if (this.navRoute != null)
+                {
+                    this.navRoute.Dispose();
+                    this.navRoute = null!;
                 }
             }
         }

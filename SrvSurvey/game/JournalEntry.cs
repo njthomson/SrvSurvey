@@ -526,6 +526,16 @@ namespace SrvSurvey
         public int RemainingJumpsInRoute;
     }
 
+    class NavRoute : JournalEntry
+    {
+        // { "timestamp":"2023-08-18T13:34:53Z", "event":"NavRoute" }
+    }
+
+    class NavRouteClear : JournalEntry
+    {
+        // { "timestamp":"2023-08-18T17:59:50Z", "event":"NavRouteClear" }
+    }
+
     class SupercruiseDestinationDrop : JournalEntry
     {
         // { "timestamp":"2023-06-07T00:52:52Z", "event":"SupercruiseDestinationDrop", "Type":"Chiao Enterprise", "Threat":0, "MarketID":3223505152 }

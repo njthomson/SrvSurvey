@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormBeacons));
             btnShare = new Button();
             statusStrip1 = new StatusStrip();
             lblStatus = new ToolStripStatusLabel();
@@ -183,8 +184,9 @@
             Controls.Add(txtFilter);
             Controls.Add(btnFilter);
             Controls.Add(grid);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "FormBeacons";
-            Text = "FormBeacons";
+            Text = "Guardian Beacons";
             Load += FormBeacons_Load;
             statusStrip1.ResumeLayout(false);
             statusStrip1.PerformLayout();

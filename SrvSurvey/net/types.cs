@@ -499,10 +499,10 @@ namespace SrvSurvey.canonn
         public long systemAddress;
         public string bodyName;
         public int bodyId;
-        public DateTimeOffset lastUpdated;
         public double distanceToArrival;
         public double[] starPos;
         public string relatedStructure;
+        public double relatedStructureDist;
     }
 
     internal class GuardianBeaconEntry : GuardianBeaconSummary
@@ -522,8 +522,8 @@ namespace SrvSurvey.canonn
                 base.distanceToArrival = summary.distanceToArrival;
                 base.starPos = summary.starPos;
                 base.relatedStructure = summary.relatedStructure;
-                //base.latitude = summary.latitude;
-                //base.longitude = summary.longitude;
+                base.relatedStructureDist = summary.relatedStructureDist;
+                this.notes = this.relatedStructureDist.ToString("N2") + " ly";
             }
 
         }

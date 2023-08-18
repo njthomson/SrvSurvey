@@ -1,12 +1,10 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SrvSurvey.game;
-using SrvSurvey.net.EDSM;
 using SrvSurvey.units;
-using System.ComponentModel.Design;
 using System.Diagnostics;
-using System.Globalization;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Xml.Linq;
 
 namespace SrvSurvey.canonn
@@ -29,8 +27,11 @@ namespace SrvSurvey.canonn
 
             /*
              if (Debugger.IsAttached)
-                 await Game.canonn.prepareNewSummaries();
+                 Game.canonn.prepareNewSummaries();
              // */
+
+            // to calculate average distance from Beacon to related structure.
+            //this.getDistancesFromBeaconToStructure().ContinueWith((stuff) => { Game.log($"Done"); });
 
             //createRuinSummaries().ContinueWith((stuff) =>
             //{
@@ -361,7 +362,7 @@ namespace SrvSurvey.canonn
 
         private List<GuardianRuinSummary> newSummaries;
 
-        public async Task prepareNewSummaries()
+        public async void prepareNewSummaries()
         {
             if (!File.Exists(allRuinsStaticPathDbg)) return;
 
@@ -916,6 +917,47 @@ namespace SrvSurvey.canonn
             //        dirty = false;
             //    }
             //}
+        }
+
+        private async Task getDistancesFromBeaconToStructure()
+        {
+            if (this.allBeacons == null) return;
+
+            double sum = 0;
+            foreach (var beacon in this.allBeacons)
+            {
+                if (!(beacon.relatedStructureDist > 0))
+                {
+                    var beaconPos = beacon.starPos;
+
+                    var structureBody = beacon.relatedStructure;
+                    var match = Regex.Match(structureBody, "(.*)\\s.*?\\s.*?$");
+                    var structureSystem = match.Groups[1].Value;
+                    if (string.IsNullOrEmpty(structureSystem))
+                        return;
+
+                    var rslt = await Game.edsm.getSystems(structureSystem);
+                    var structPos = rslt.FirstOrDefault()?.coords.starPos;
+
+                    if (structPos == null || structPos.Length == 0)
+                        return;
+
+                    var dist = Util.getSystemDistance(beaconPos, structPos);
+                    Game.log($"{beacon.systemName} to {beacon.relatedStructure} => {dist}");
+
+                    beacon.relatedStructureDist = dist;
+                }
+
+                sum += beacon.relatedStructureDist;
+            }
+
+            var avg = sum / this.allBeacons.Count;
+            Game.log($"Average distance: {avg} ly");
+
+            /* update needed?
+            var json = JsonConvert.SerializeObject(this.allBeacons, Formatting.Indented);
+            File.WriteAllText(allBeaconsStaticPath, json);
+            // */
         }
 
         #endregion

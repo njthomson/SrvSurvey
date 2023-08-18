@@ -59,6 +59,7 @@ namespace SrvSurvey
                 this.parseStatusFile();
             }
         }
+
         public void Dispose()
         {
             Dispose(true);

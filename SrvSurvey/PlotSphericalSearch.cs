@@ -1,16 +1,9 @@
 ﻿using SrvSurvey.game;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.Pkcs;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SrvSurvey
 {
     internal class PlotSphericalSearch : PlotBase, PlotterForm
     {
-        private bool reqInProgress = false;
         private double distance = -1;
         private string targetSystemName;
 
@@ -37,9 +30,7 @@ namespace SrvSurvey
             this.initialize();
             this.reposition(Elite.getWindowRect(true));
 
-            // do lookup on existing target if there is one
-            if (!string.IsNullOrEmpty(game.status.Destination?.Name))
-                measureDistanceToSystem(game.status.Destination.Name);
+            measureDistanceToSystem();
         }
 
         public override void reposition(Rectangle gameRect)
@@ -56,31 +47,33 @@ namespace SrvSurvey
             this.Invalidate();
         }
 
-        protected override void onJournalEntry(FSDTarget entry)
+        protected override void onJournalEntry(NavRoute entry)
         {
-            measureDistanceToSystem(entry.Name);
+            if (this.IsDisposed || game.cmdr.sphereLimit.centerStarPos == null) return;
+
+            measureDistanceToSystem();
         }
 
-        private void measureDistanceToSystem(string systemName)
+        protected override void onJournalEntry(NavRouteClear entry)
         {
-            this.targetSystemName = systemName;
+            if (this.IsDisposed || game.cmdr.sphereLimit.centerStarPos == null) return;
+
             this.distance = -1;
-            this.reqInProgress = true;
+            this.targetSystemName = "N/A";
+            this.Invalidate();
+        }
+
+        private void measureDistanceToSystem()
+        {
+            var lastSystem = game.navRoute.Route.LastOrDefault();
+            if (lastSystem?.StarSystem == null || game.cmdr.sphereLimit.centerStarPos == null) return;
+
+            Game.log($"Measuring distance to: {lastSystem.StarSystem}");
+            this.targetSystemName = lastSystem.StarSystem;
+            this.distance = Util.getSystemDistance(game.cmdr.sphereLimit.centerStarPos, lastSystem.StarPos);
+
             this.Invalidate();
 
-            Game.edsm.getSystems(systemName).ContinueWith(rslt =>
-            {
-                if (rslt.IsCompletedSuccessfully)
-                {
-                    var targetSystem = rslt.Result.FirstOrDefault();
-                    if (targetSystem != null && game.cmdr.sphereLimit.centerStarPos != null)
-                        this.distance = Util.getSystemDistance(game.cmdr.sphereLimit.centerStarPos, targetSystem.coords.starPos);
-                    else
-                        this.distance = -2;
-                }
-                this.reqInProgress = false;
-                this.Invalidate();
-            });
         }
 
         private static Point p1 = new Point(10, 10);
@@ -101,32 +94,21 @@ namespace SrvSurvey
             TextRenderer.DrawText(g, $"To: {this.targetSystemName}", font, pt, GameColors.Orange, TextFormatFlags.Left);
             pt.Y += sz.Height;
 
-            if (this.reqInProgress)
-            {
-                TextRenderer.DrawText(g, $"Distance: ...", font, pt, GameColors.Orange, TextFormatFlags.Left);
-            }
-            else if (this.distance >= 0)
+            if (this.distance >= 0)
             {
                 var td = this.distance.ToString("N2");
+                var limitDist = game.cmdr.sphereLimit.radius.ToString("N2");
                 var tc = this.distance < game.cmdr.sphereLimit.radius ? GameColors.Cyan : Color.Red;
+                var verb = this.distance < game.cmdr.sphereLimit.radius ? "within" : "exceeds";
                 TextRenderer.DrawText(
                     g,
-                    $"Distance: {td}ly",
+                    $"Distance: {td}ly - {verb} {limitDist} ly",
                     font,
                     pt,
                     tc,
                     TextFormatFlags.Left);
             }
-            else if (this.distance  == -2)
-            {
-                TextRenderer.DrawText(
-                    g,
-                    $"Distance: (unknown system)",
-                    font,
-                    pt,
-                    Color.DarkRed,
-                    TextFormatFlags.Left);
-            }
         }
     }
+
 }
