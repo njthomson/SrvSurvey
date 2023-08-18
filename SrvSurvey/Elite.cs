@@ -165,6 +165,16 @@ namespace SrvSurvey
             form.Top = rect.Top + fromTop;
         }
 
+        public static void floatRightBottom(Form form, Rectangle rect, int fromBottom = 20, int fromRight = 20)
+        {
+            // position form top center above the heading
+            if (rect == Rectangle.Empty)
+                rect = Elite.getWindowRect();
+
+            form.Left = rect.Right - form.Width - fromRight;
+            form.Top = rect.Top - rect.Height + fromBottom;
+        }
+
         [DllImport("User32.dll")]
         static extern bool GetWindowRect(IntPtr hWnd, ref RECT lpRect);
         [DllImport("User32.dll")]

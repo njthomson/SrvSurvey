@@ -1,4 +1,6 @@
-﻿namespace SrvSurvey.game
+﻿using SrvSurvey.units;
+
+namespace SrvSurvey.game
 {
     class CommanderSettings : Data
     {
@@ -41,6 +43,8 @@
 
         // spherical searching
         public SphereLimit sphereLimit = new SphereLimit();
+
+        public TrackTargets? trackTargets;
     }
 
     internal class SphereLimit
@@ -51,4 +55,9 @@
         public double radius = 100;
     }
 
+    internal class TrackTargets
+    {
+        public string bodyName;
+        public Dictionary<string, LatLong2> targets = new Dictionary<string, LatLong2>();
+    }
 }
