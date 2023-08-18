@@ -7,6 +7,7 @@ namespace SrvSurvey
     internal class PlotTrackers : PlotBase, PlotterForm
     {
         const int rowHeight = 20;
+        const int highlightDistance = 250;
 
         public static void processCommand(string msg)
         {
@@ -18,7 +19,7 @@ namespace SrvSurvey
             var verb = parts.Length == 2 ? parts[1] : "here";
 
             // stop showing target tracking
-            if (name == "off")
+            if (name == "reset")
             {
                 Program.closePlotter<PlotTrackers>();
                 Game.activeGame.cmdr.trackTargets = null;
@@ -47,21 +48,28 @@ namespace SrvSurvey
 
             if (targets.Count > 0)
             {
-                var form = Program.showPlotter<PlotTrackers>();
-
                 // adjust height if needed
-                var formHeight = 42 + (targets.Count * rowHeight);
-                if (form.Height != formHeight)
-                {
-                    form.Height = formHeight;
-                    form.BackgroundImage = GameGraphics.getBackgroundForForm(form);
-
-                    form.Invalidate();
-                }
+                var form = Program.showPlotter<PlotTrackers>();
+                form.setNewHeight();
             }
             else
             {
                 Program.closePlotter<PlotTrackers>();
+            }
+        }
+
+        private void setNewHeight()
+        {
+            if (game.cmdr.trackTargets == null) return;
+
+            // adjust height if needed
+            var formHeight = 42 + (game.cmdr.trackTargets.Count * rowHeight);
+            if (this.Height != formHeight)
+            {
+                this.Height = formHeight;
+                this.BackgroundImage = GameGraphics.getBackgroundForForm(this);
+
+                this.Invalidate();
             }
         }
 
@@ -85,6 +93,7 @@ namespace SrvSurvey
         {
             base.OnLoad(e);
 
+            this.setNewHeight();
             this.initialize();
             this.reposition(Elite.getWindowRect(true));
         }
@@ -151,8 +160,8 @@ namespace SrvSurvey
                 var dd = new TrackingDelta(game.nearBody!.radius, target.Value);
                 Angle deg = dd.angle - game.status!.Heading;
 
-                var brush = dd.distance < 100 ? GameColors.brushCyan : null;
-                var pen = dd.distance < 100 ? GameColors.penCyan2 : null;
+                var brush = dd.distance < highlightDistance ? GameColors.brushCyan : null;
+                var pen = dd.distance < highlightDistance ? GameColors.penCyan2 : null;
 
                 this.drawBearingTo(x, y, target.Key, (double)dd.distance, (double)deg, brush, pen);
             }
