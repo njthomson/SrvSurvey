@@ -466,7 +466,7 @@ namespace SrvSurvey
             if (entry.Type == "$Datascan_AncientPylon;")
             {
                 // A Guardian Beacon
-                Game.log($"Scanned data from Guardian Beacon in: {game.cmdr.currentSystem}");
+                Game.log($"Scanned data from Guardian Beacon in: {game?.cmdr.currentSystem}");
                 Program.showPlotter<PlotGuardianBeaconStatus>();
             }
         }
@@ -508,6 +508,9 @@ namespace SrvSurvey
                     Application.Exit();
                     return;
             }
+
+            if (msg.StartsWith(MsgCmd.track))
+                PlotTrackers.processCommand(msg);
         }
 
         private void btnQuit_Click(object sender, EventArgs e)

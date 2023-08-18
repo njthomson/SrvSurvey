@@ -34,5 +34,7 @@
         public const string targetOff = ".target off";
         /// <summary> Main : show tracking target plotter </summary>
         public const string targetOn = ".target on";
+        /// <summary> Main : prefix for various track XXX commands </summary>
+        public const string track = ".track";
     }
 }
