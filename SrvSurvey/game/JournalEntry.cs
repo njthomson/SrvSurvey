@@ -401,6 +401,7 @@ namespace SrvSurvey
         public bool TidalLock { get; set; } // 1 if tidally locked
         public string TerraformState { get; set; } // Terraformable, Terraforming, Terraformed, or null
         public string PlanetClass { get; set; } // see §15.3
+        public double MassEM { get; set; }
         public string Atmosphere { get; set; } // see §15.4
         public string AtmosphereType { get; set; }
         // TODO: AtmosphereComposition: [array of info]
@@ -436,6 +437,15 @@ namespace SrvSurvey
         public double OrbitalInclination { get; set; }
         public double Periapsis { get; set; }
         public double OrbitalPeriod { get; set; }
+    }
+
+    class FSSBodySignals : JournalEntry
+    {
+        // { "timestamp":"2023-08-18T23:10:13Z", "event":"FSSBodySignals", "BodyName":"Wregoe LH-T b5-0 1", "BodyID":5, "SystemAddress":684377515057, "Signals":[ { "Type":"$SAA_SignalType_Biological;", "Type_Localised":"Biological", "Count":1 } ] }
+        public long SystemAddress { get; set; }
+        public string Bodyname { get; set; }
+        public int BodyID { get; set; }
+        public List<ScanSignal> Signals { get; set; }
     }
 
     class Disembark : JournalEntry

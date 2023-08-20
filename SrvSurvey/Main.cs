@@ -115,7 +115,7 @@ namespace SrvSurvey
             //    GuardianSiteData.migrateLiveLegacyLocations();
         }
 
-        private void updateAllControls()
+        private void updateAllControls(GameMode? newMode = null)
         {
             //Game.log("** ** ** updateAllControls ** ** **");
 
@@ -124,6 +124,11 @@ namespace SrvSurvey
             this.updateTrackTargetTexts();
             this.updateGuardianTexts();
             this.updateSphereLimit();
+
+            if (newMode == GameMode.FSS || game?.mode == GameMode.FSS)
+                Program.showPlotter<PlotFSS>();
+            else
+                Program.closePlotter<PlotFSS>();
         }
 
         private void settingsFolderWatcher_Changed(object sender, FileSystemEventArgs e)
@@ -215,7 +220,7 @@ namespace SrvSurvey
         {
             if (force || this.txtMode.Text != newMode.ToString())
             {
-                this.updateAllControls();
+                this.updateAllControls(newMode);
             }
         }
 
@@ -514,7 +519,7 @@ namespace SrvSurvey
                     return;
             }
 
-            if (msg.StartsWith(MsgCmd.track))
+            if (msg.StartsWith(MsgCmd.trackAdd) || msg.StartsWith(MsgCmd.trackRemove))
                 PlotTrackers.processCommand(msg);
         }
 

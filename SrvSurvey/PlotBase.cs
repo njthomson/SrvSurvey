@@ -242,6 +242,16 @@ namespace SrvSurvey
             // overriden as necessary
         }
 
+        protected virtual void onJournalEntry(Scan entry)
+        {
+            // overriden as necessary
+        }
+
+        protected virtual void onJournalEntry(FSSBodySignals entry)
+        {
+            // overriden as necessary
+        }
+
         protected void drawCommander()
         {
             if (g == null) return;
@@ -363,7 +373,7 @@ namespace SrvSurvey
 
             var sz = 5;
             x += txtSz.Width + 8;
-            y += 4;
+            //y += 4;
             var r = new RectangleF(x, y, sz * 2, sz * 2);
             g.DrawEllipse(pen, r);
 
@@ -373,7 +383,7 @@ namespace SrvSurvey
             g.DrawLine(pen, x + sz, y + sz, x + sz + dx, y + sz - dy);
 
             x += 2 + sz * 3;
-            g.DrawString(Util.metersToString(dist), Game.settings.fontSmall, brush, x, y-4);
+            g.DrawString(Util.metersToString(dist), Game.settings.fontSmall, brush, x, y);
         }
 
         protected void drawHeaderText(string msg, Brush? brush = null)

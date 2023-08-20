@@ -301,5 +301,69 @@ namespace SrvSurvey
         }
 
         public static bool isOdyssey = Game.activeGame?.journals == null || Game.activeGame.journals.isOdyssey;
+
+        public static int GetBodyValue(Scan scan, bool ifMapped)
+        {
+            var mass = scan.MassEM > 0 ? scan.MassEM : scan.StellarMass;
+            var isFirstDiscoverer = !scan.WasDiscovered;
+            var isMapped = ifMapped;
+            var isFirstMapped = !scan.WasMapped;
+            var isOdyssey = Util.isOdyssey;
+            var withEfficiencyBonus = true;
+            var isFleetCarrierSale = false;
+            var isTerraformable = scan.TerraformState == "Terraformable";
+
+            // determine base value
+            var k = 300;
+
+            if (scan.PlanetClass == "Metal rich body") // MR
+                k = 21790;
+            else if (scan.PlanetClass == "Ammonia World") // AW
+                k = 96932;
+            else if (scan.PlanetClass == "Sudarsky class I gas giant") // GG1
+                k = 1656;
+            else if (scan.PlanetClass == "Sudarsky class II gas giant" // GG2
+                || scan.PlanetClass == "High metal content body") // HMC
+                k = isTerraformable ? 100677 : 9654;
+            else if (scan.PlanetClass == "Water world" // WW
+                || scan.PlanetClass == "Earth Level World") // ELW
+                k = isTerraformable ? 116295 : 64831;
+
+            // public static int GetBodyValue(int k, double mass, bool isFirstDiscoverer, bool isMapped, bool isFirstMapped, bool withEfficiencyBonus, bool isOdyssey, bool isFleetCarrierSale)
+            // based on code from https://forums.frontier.co.uk/threads/exploration-value-formulae.232000/
+            const double q = 0.56591828;
+            double mappingMultiplier = 1;
+            if (isMapped)
+            {
+                if (isFirstDiscoverer && isFirstMapped)
+                {
+                    mappingMultiplier = 3.699622554;
+                }
+                else if (isFirstMapped)
+                {
+                    mappingMultiplier = 8.0956;
+                }
+                else
+                {
+                    mappingMultiplier = 3.3333333333;
+                }
+            }
+            double value = (k + k * q * Math.Pow(mass, 0.2)) * mappingMultiplier;
+            if (isMapped)
+            {
+                if (isOdyssey)
+                {
+                    value += ((value * 0.3) > 555) ? value * 0.3 : 555;
+                }
+                if (withEfficiencyBonus)
+                {
+                    value *= 1.25;
+                }
+            }
+            value = Math.Max(500, value);
+            value *= (isFirstDiscoverer) ? 2.6 : 1;
+            value *= (isFleetCarrierSale) ? 0.75 : 1;
+            return (int)Math.Round(value);
+        }
     }
 }

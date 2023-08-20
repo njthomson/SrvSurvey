@@ -385,7 +385,7 @@ namespace SrvSurvey.game
         {
             get
             {
-                if (game.cmdr.scanOne == null)
+                if (game.cmdr.scanOne == null || game.cmdr.scanOne.genus == null || !data.organisms.ContainsKey(game.cmdr.scanOne.genus))
                     return null;
 
                 return data.organisms[game.cmdr.scanOne.genus!];
