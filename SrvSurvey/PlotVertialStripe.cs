@@ -160,6 +160,7 @@ namespace SrvSurvey
         protected override void OnPaint(PaintEventArgs e)
         {
             var g = e.Graphics;
+            g.SmoothingMode = SmoothingMode.HighQuality;
             g.Clear(Color.Red);
 
             drawAngleString(g);

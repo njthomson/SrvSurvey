@@ -47,7 +47,7 @@ namespace SrvSurvey.game
         public static CodexRef codexRef { get; private set; }
         public static Canonn canonn { get; private set; }
         public static Spansh spansh { get; private set; }
-        public static EDSM edsm{ get; private set; }
+        public static EDSM edsm { get; private set; }
 
         public bool initialized { get; private set; }
 
@@ -510,30 +510,40 @@ namespace SrvSurvey.game
 
                 if (this.touchdownLocation == null)
                 {
-                    journals.searchDeep(
-                        (Touchdown lastTouchdown) =>
-                        {
-                            Game.log($"LastTouchdown from deep search: {lastTouchdown}");
-
-                            if (lastTouchdown.Body == status!.BodyName)
-                            {
-                                onJournalEntry(lastTouchdown);
-                                return true;
-                            }
-                            return false;
-                        },
-                        (JournalFile journals) =>
-                        {
-                            // stop searching older journal files if we see FSDJump
-                            return journals.search((FSDJump _) => true);
-                        }
-                    );
+                    this.getLastTouchdownDeep();
                 }
             }
 
             log($"Game.initializeFromJournal: END Commander:{this.Commander}, starSystem:{cmdr?.currentSystem}, systemLocation:{cmdr?.lastSystemLocation}, nearBody:{this.nearBody}, journals.Count:{journals.Count}");
             this.initialized = Game.activeGame == this && this.Commander != null;
             this.checkModeChange();
+        }
+
+        private void getLastTouchdownDeep()
+        {
+            Game.log($"getLastTouchdownDeep");
+
+            if (this.touchdownLocation == null && journals != null)
+            {
+                journals.searchDeep(
+                    (Touchdown lastTouchdown) =>
+                    {
+                        Game.log($"LastTouchdown from deep search: {lastTouchdown}");
+
+                        if (lastTouchdown.Body == status!.BodyName)
+                        {
+                            onJournalEntry(lastTouchdown);
+                            return true;
+                        }
+                        return false;
+                    },
+                    (JournalFile journals) =>
+                    {
+                        // stop searching older journal files if we see FSDJump
+                        return journals.search((FSDJump _) => true);
+                    }
+                );
+            }
         }
 
         #endregion
@@ -697,7 +707,7 @@ namespace SrvSurvey.game
 
         private void onJournalEntry(Location entry)
         {
-            // Happens when has loaded after being at the main menu
+            // Happens when game has loaded after being at the main menu
             // Or player resurrects at a station
 
             //this.starSystem = entry.StarSystem;
@@ -711,6 +721,12 @@ namespace SrvSurvey.game
             }
 
             this.setLocations(entry);
+
+            if (this._touchdownLocation == null && this.nearBody != null && this.isMode((GameMode.Landed | GameMode.InSrv | GameMode.OnFoot)))
+            {
+                // find the last touchdown location if needed
+                this.getLastTouchdownDeep();
+            }
         }
 
         private void onJournalEntry(Music entry)
@@ -939,7 +955,7 @@ namespace SrvSurvey.game
             {
                 if (this._touchdownLocation == null)
                 {
-                    Game.log($"Searching journals for last touchdown location...");
+                    Game.log($"Searching journals for last touchdown location... (mode: {this.mode})");
                     var lastTouchdown = journals!.FindEntryByType<Touchdown>(-1, true);
                     var lastLiftoff = journals.FindEntryByType<Liftoff>(-1, true);
                     if (lastTouchdown != null)
@@ -947,11 +963,19 @@ namespace SrvSurvey.game
                         if (lastLiftoff == null || lastTouchdown.timestamp > lastLiftoff.timestamp)
                         {
                             _touchdownLocation = new LatLong2(lastTouchdown);
+                            Game.log($"Found last touchdown location: {_touchdownLocation}");
                         }
-                        //else
-                        //{
-                        //    _touchdownLocation = new LatLong2(lastTouchdown);
-                        //}
+                        else
+                        {
+                            // TODO: search deep for landing in prior journal file.
+                            Game.log($"Last touchdown location: NOT FOUND");
+                            //    _touchdownLocation = new LatLong2(lastTouchdown);
+                        }
+                    }
+                    else if (this.mode == GameMode.Landed)
+                    {
+                        _touchdownLocation = Status.here.clone();
+                        Game.log($"Last touchdown location: NOT FOUND but we're landed so using current location: {_touchdownLocation}");
                     }
                 }
                 return _touchdownLocation!;

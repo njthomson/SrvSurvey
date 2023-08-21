@@ -720,6 +720,7 @@ namespace SrvSurvey
             try
             {
                 var g = e.Graphics;
+                g.SmoothingMode = SmoothingMode.HighQuality;
                 g.Clear(Color.Navy);
 
                 // apply offset

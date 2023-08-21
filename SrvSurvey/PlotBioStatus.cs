@@ -1,5 +1,6 @@
 ﻿using SrvSurvey.game;
 using System.Diagnostics;
+using System.Drawing.Drawing2D;
 
 namespace SrvSurvey
 {
@@ -117,6 +118,7 @@ namespace SrvSurvey
         private void PlotBioStatus_Paint(object sender, PaintEventArgs e)
         {
             var g = e.Graphics;
+            g.SmoothingMode = SmoothingMode.HighQuality;
 
             if (game?.nearBody?.data?.organisms == null) return;
 
@@ -272,11 +274,14 @@ namespace SrvSurvey
             float x = 24;
             float y = 22;
 
+            var allScanned = true;
             foreach (var organism in game.nearBody!.data.organisms.Values)
             {
+                allScanned &= organism.analyzed;
                 var txt = organism.genusLocalized;
                 if (organism.range > 0 && !organism.analyzed)
                 {
+                    allScanned &= false;
                     txt += $"|{organism.range}m";
                 }
 
@@ -307,6 +312,26 @@ namespace SrvSurvey
 
                 x += sz.Width + 8;
             }
+
+            if (allScanned)
+                this.drawFooterText(g, "All signals scanned", GameColors.brushGameOrange);
+        }
+
+        protected void drawFooterText(Graphics g, string msg, Brush? brush = null)
+        {
+            if (g == null) return;
+
+            // draw heading text (center bottom)
+            g.ResetTransform();
+            g.ResetClip();
+
+            var mid = this.Size / 2;
+            var font = Game.settings.fontSmall;
+            var sz = g.MeasureString(msg, font);
+            var tx = mid.Width - (sz.Width / 2);
+            var ty = this.Height - sz.Height - 5;
+
+            g.DrawString(msg, font, brush ?? GameColors.brushGameOrange, tx, ty);
         }
 
     }

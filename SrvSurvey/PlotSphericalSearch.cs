@@ -1,4 +1,5 @@
 ﻿using SrvSurvey.game;
+using System.Drawing.Drawing2D;
 
 namespace SrvSurvey
 {
@@ -83,6 +84,7 @@ namespace SrvSurvey
         {
             base.OnPaintBackground(e);
             var g = e.Graphics;
+            g.SmoothingMode = SmoothingMode.HighQuality;
             var font = Game.settings.fontMiddle;
 
             string txt = $"From: {game.cmdr.sphereLimit.centerSystemName}";

@@ -670,6 +670,7 @@ namespace SrvSurvey
 
             base.OnPaintBackground(e);
             this.g = e.Graphics;
+            g.SmoothingMode = SmoothingMode.HighQuality;
             switch (this.mode)
             {
                 case Mode.siteType:

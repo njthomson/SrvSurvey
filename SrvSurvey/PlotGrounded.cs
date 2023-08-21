@@ -57,7 +57,15 @@ namespace SrvSurvey
         private void PlotGrounded_Load(object sender, EventArgs e)
         {
             this.initialize();
-            this.reposition(Elite.getWindowRect(true));
+            var gameRect = Elite.getWindowRect(true);
+            this.reposition(gameRect);
+
+            // reposition trackers if it already exists
+            var plotTrackers = Program.getPlotter<PlotTrackers>();
+            if (plotTrackers != null)
+            {
+                plotTrackers.reposition(gameRect);
+            }
         }
 
         private void initialize()
@@ -193,6 +201,7 @@ namespace SrvSurvey
             if (game.nearBody == null) return;
 
             var g = e.Graphics;
+            g.SmoothingMode = SmoothingMode.HighQuality;
 
             // draw basic compass cross hairs centered in the window
             this.drawCompassLines(g);

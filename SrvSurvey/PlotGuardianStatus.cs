@@ -1,4 +1,5 @@
 ﻿using SrvSurvey.game;
+using System.Drawing.Drawing2D;
 
 namespace SrvSurvey
 {
@@ -100,6 +101,7 @@ namespace SrvSurvey
 
             base.OnPaintBackground(e);
             this.g = e.Graphics;
+            g.SmoothingMode = SmoothingMode.HighQuality;
 
             if (game.vehicle == ActiveVehicle.Foot)
             {
@@ -315,6 +317,7 @@ namespace SrvSurvey
 
             base.OnPaintBackground(e);
             this.g = e.Graphics;
+            g.SmoothingMode = SmoothingMode.HighQuality;
 
             if (!this.dataLinkScanned)
             {
