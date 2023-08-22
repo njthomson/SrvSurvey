@@ -53,30 +53,30 @@ namespace SrvSurvey
             if (m < 1)
             {
                 // less than 1 thousand
-                return "0 m";
+                return "0m";
             }
 
             if (m < 1000)
             {
                 // less than 1 thousand
-                return prefix + m.ToString("#") + " m";
+                return prefix + m.ToString("#") + "m";
             }
 
             m = m / 1000;
             if (m < 10)
             {
                 // less than 1 ten
-                return prefix + m.ToString("##.##") + " km";
+                return prefix + m.ToString("##.##") + "km";
             }
             else if (m < 1000)
             {
                 // less than 1 thousand
-                return prefix + m.ToString("###.#") + " km";
+                return prefix + m.ToString("###.#") + "km";
             }
 
             m = m / 1000;
             // over one 1 million
-            return prefix + m.ToString("#.##") + " mm";
+            return prefix + m.ToString("#.##") + "mm";
 
         }
 

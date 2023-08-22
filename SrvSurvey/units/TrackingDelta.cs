@@ -43,16 +43,16 @@ namespace SrvSurvey.units
         private LatLong2 current;
         private LatLong2 target;
 
-        public TrackingDelta(double bodyRadius, LatLong2 targetLocation)
+        public TrackingDelta(double bodyRadius, LatLong2 targetLocation, LatLong2 current = null!)
         {
             this.radius = (decimal)bodyRadius;
             this.mpd = this.radius * DecimalEx.TwoPi / 360M;
-            this.current = Status.here;
+            this.current = current ?? Status.here;
             this.target = targetLocation;
             this.calc();
         }
 
-        private void calc()
+        public void calc()
         {
             this.distance = Util.getDistance(this.current, this.target, this.radius);
 

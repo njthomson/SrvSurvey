@@ -15,6 +15,7 @@ namespace SrvSurvey
 
         public bool autoShowBioSummary = true;
         public bool autoShowBioPlot = true;
+        public bool autoShowPlotFSS = true;
         public bool focusGameOnStart = true;
         public bool focusGameOnMinimize = true;
 

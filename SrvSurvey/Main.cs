@@ -125,7 +125,7 @@ namespace SrvSurvey
             this.updateGuardianTexts();
             this.updateSphereLimit();
 
-            if (newMode == GameMode.FSS || game?.mode == GameMode.FSS)
+            if (Game.settings.autoShowPlotFSS && (newMode == GameMode.FSS || game?.mode == GameMode.FSS))
                 Program.showPlotter<PlotFSS>();
             else
                 Program.closePlotter<PlotFSS>();

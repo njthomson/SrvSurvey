@@ -1,8 +1,6 @@
 ﻿using SrvSurvey.game;
 using SrvSurvey.units;
-using System.CodeDom.Compiler;
 using System.Drawing.Drawing2D;
-using System.Runtime.CompilerServices;
 
 namespace SrvSurvey
 {
@@ -10,17 +8,19 @@ namespace SrvSurvey
     {
         const int rowHeight = 20;
         const int highlightDistance = 250;
+        private Dictionary<string, List<TrackingDelta>> trackers = new Dictionary<string, List<TrackingDelta>>();
 
         public static void processCommand(string msg)
         {
             if (Game.activeGame == null || !(msg.StartsWith(MsgCmd.trackAdd) || msg.StartsWith(MsgCmd.trackRemove))) return;
+            var cmdr = Game.activeGame.cmdr;
 
             if (msg.StartsWith("---"))
             {
                 // stop showing target tracking
                 Program.closePlotter<PlotTrackers>();
-                Game.activeGame.cmdr.trackTargets = null;
-                Game.activeGame.cmdr.Save();
+                cmdr.trackTargets = null;
+                cmdr.Save();
                 return;
             }
 
@@ -36,32 +36,46 @@ namespace SrvSurvey
             var name = parts[0];
 
             // create tracker if needed
-            if (Game.activeGame.cmdr.trackTargets == null)
-                Game.activeGame.cmdr.trackTargets = new Dictionary<string, List<LatLong2>>();
-            var targets = Game.activeGame.cmdr.trackTargets;
+            if (cmdr.trackTargets == null)
+                cmdr.trackTargets = new Dictionary<string, List<LatLong2>>();
+
+            var form = Program.getPlotter<PlotTrackers>();
 
             if (verb == "add")
             {
-                if (!targets.ContainsKey(name))
-                    targets[name] = new List<LatLong2>();
+                if (!cmdr.trackTargets.ContainsKey(name))
+                    cmdr.trackTargets[name] = new List<LatLong2>();
 
                 // only add if less than 4 entries
-                if (targets[name].Count < 4)
+                if (cmdr.trackTargets[name].Count < 4)
                 {
                     Game.log($"Add to group '{name}': {Status.here}");
-                    targets[name].Add(Status.here.clone());
+
+                    var pos = Status.here.clone();
+                    cmdr.trackTargets[name].Add(pos);
+                    cmdr.Save();
+
+                    if (form != null)
+                    {
+                        if (!form.trackers.ContainsKey(name)) form.trackers[name] = new List<TrackingDelta>();
+                        form.trackers[name].Add(new TrackingDelta(Game.activeGame.nearBody!.radius, pos));
+                    }
                 }
                 else
                 {
                     Game.log($"Group '{name}' has too many entries");
                 }
             }
-            else if (targets.ContainsKey(name))
+            else if (cmdr.trackTargets.ContainsKey(name))
             {
-                if (verb == "clear" || (verb == "remove" && targets[name].Count == 1))
+                if (verb == "clear" || (verb == "remove" && cmdr.trackTargets[name].Count == 1))
                 {
                     // remove the whole group
-                    targets.Remove(name);
+                    cmdr.trackTargets.Remove(name);
+                    cmdr.Save();
+
+                    if (form != null) form.trackers.Remove(name);
+
                     Game.log($"Removing group '{name}'");
                 }
                 else if (verb == "remove")
@@ -70,7 +84,7 @@ namespace SrvSurvey
                     var radius = (decimal)Game.activeGame.nearBody!.radius;
                     decimal minDist = decimal.MaxValue;
                     LatLong2 minEntry = null!;
-                    foreach (var _ in targets[name])
+                    foreach (var _ in cmdr.trackTargets[name])
                     {
                         var dist = Util.getDistance(_, Status.here, radius);
                         if (dist < minDist)
@@ -80,7 +94,10 @@ namespace SrvSurvey
                         }
                     }
                     Game.log($"Removing closest entry from group '{name}': {minEntry}");
-                    targets[name].Remove(minEntry);
+                    cmdr.trackTargets[name].Remove(minEntry);
+                    cmdr.Save();
+
+                    if (form != null) form.trackers[name].RemoveAt(0);
                 }
             }
             else
@@ -88,16 +105,22 @@ namespace SrvSurvey
                 Game.log($"Group not found: '{name}'");
             }
 
-            if (targets.Count > 0)
+            if (cmdr.trackTargets.Count > 0)
             {
                 // show and adjust height if needed
-                var form = Program.showPlotter<PlotTrackers>();
+                form = Program.showPlotter<PlotTrackers>();
                 form.setNewHeight();
             }
             else
             {
                 Program.closePlotter<PlotTrackers>();
             }
+        }
+
+        private PlotTrackers() : base()
+        {
+            this.Width = 360;
+            this.Height = 100;
         }
 
         private void setNewHeight()
@@ -110,15 +133,9 @@ namespace SrvSurvey
             {
                 this.Height = formHeight;
                 this.BackgroundImage = GameGraphics.getBackgroundForForm(this);
-
-                this.Invalidate();
             }
-        }
 
-        private PlotTrackers() : base()
-        {
-            this.Width = 360;
-            this.Height = 100;
+            this.Invalidate();
         }
 
         protected override void Dispose(bool disposing)
@@ -135,14 +152,27 @@ namespace SrvSurvey
         {
             base.OnLoad(e);
 
+            this.prepTrackers();
             this.setNewHeight();
             this.initialize();
             this.reposition(Elite.getWindowRect(true));
         }
 
-        protected override void Game_modeChanged(GameMode newMode, bool force)
+        private void prepTrackers()
         {
-            base.Game_modeChanged(newMode, force);
+            if (game.cmdr.trackTargets == null) return;
+
+            foreach (var name in game.cmdr.trackTargets.Keys)
+            {
+                if (!this.trackers.ContainsKey(name))
+                {
+                    // create group and TrackingDelta's for each location
+                    this.trackers.Add(name, new List<TrackingDelta>());
+
+                    foreach (var pos in game.cmdr.trackTargets[name])
+                        this.trackers[name].Add(new TrackingDelta(game.nearBody!.radius, pos));
+                }
+            }
         }
 
         public override void reposition(Rectangle gameRect)
@@ -174,7 +204,12 @@ namespace SrvSurvey
         {
             if (this.IsDisposed) return;
 
-            // ?
+            // re-calc distances and re-order TrackingDeltas
+            foreach (var name in this.trackers.Keys)
+            {
+                this.trackers[name].ForEach(_ => _.calc());
+                this.trackers[name].Sort((a, b) => a.distance.CompareTo(b.distance));
+            }
 
             base.Status_StatusChanged(blink);
         }
@@ -191,54 +226,34 @@ namespace SrvSurvey
 
             if (game.cmdr.trackTargets == null) return;
 
-            int indent = 225 + 80;
-
+            var indent = 225 + 80;
             var y = 12;
-            foreach (var target in game.cmdr.trackTargets)
+            foreach (var name in this.trackers.Keys)
             {
                 y += rowHeight;
 
-                var sz = g.MeasureString(target.Key, Game.settings.fontSmall);
-                var x = (float)this.Width - indent; // - sz.Width;
-
-
-                var dd = new TrackingDelta(game.nearBody!.radius, target.Value[0]);
-                Angle deg = dd.angle - game.status!.Heading;
-
-                var brush = dd.distance < highlightDistance ? GameColors.brushCyan : GameColors.brushGameOrange;
-                var pen = dd.distance < highlightDistance ? GameColors.penCyan2 : null;
-
-                //g.DrawString(target.Key, Game.settings.fontSmall, brush, x, y);
+                var x = (float)this.Width - indent;
 
                 var isClose = false;
-                var xx = 75;
-                foreach (var pos in target.Value)
+                var bearingWidth = 75;
+                foreach (var dd in this.trackers[name])
                 {
-                    dd = new TrackingDelta(game.nearBody!.radius, pos);
-                    deg = dd.angle - game.status!.Heading;
+                    var deg = dd.angle - game.status!.Heading;
 
                     isClose |= dd.distance < highlightDistance;
-                    brush = dd.distance < highlightDistance ? GameColors.brushCyan : GameColors.brushGameOrange;
-                    pen = dd.distance < highlightDistance ? GameColors.penCyan2 : null;
+                    var brush = dd.distance < highlightDistance ? GameColors.brushCyan : GameColors.brushGameOrange;
+                    var pen = dd.distance < highlightDistance ? GameColors.penCyan2 : null;
 
                     this.drawBearingTo(x, y, "", (double)dd.distance, (double)deg, brush, pen);
-                    x += xx;
+                    x += bearingWidth;
                 }
 
-                x = this.Width - indent - sz.Width;
-                brush = isClose ? GameColors.brushCyan : GameColors.brushGameOrange;
-                g.DrawString(target.Key, Game.settings.fontSmall, brush, x, y);
-
-
-
-                //this.drawBearingTo(x, y, "", (double)dd.distance, (double)deg, brush, pen);
-                //x += sz.Width;
-                //x += xx;
-                //this.drawBearingTo(x, y, "", (double)dd.distance, (double)deg, brush, pen);
-                //x += xx;
-                //this.drawBearingTo(x, y, "", (double)dd.distance, (double)deg, brush, pen);
-                //x += xx;
-                //this.drawBearingTo(x, y, "", (double)dd.distance, (double)deg, brush, pen);
+                var sz = g.MeasureString(name, Game.settings.fontSmall);
+                g.DrawString(
+                    name,
+                    Game.settings.fontSmall,
+                    isClose ? GameColors.brushCyan : GameColors.brushGameOrange,
+                    this.Width - indent - sz.Width + 3, y);
             }
         }
     }
