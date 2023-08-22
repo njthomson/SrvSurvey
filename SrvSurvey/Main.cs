@@ -277,12 +277,14 @@ namespace SrvSurvey
                 foreach (var ctrl in this.bioCtrls) ctrl.Text = "-";
                 Program.closePlotter<PlotBioStatus>();
                 Program.closePlotter<PlotGrounded>();
+                Program.closePlotter<PlotTrackers>();
             }
             else if (game.nearBody == null)
             {
                 foreach (var ctrl in this.bioCtrls) ctrl.Text = "-";
                 Program.closePlotter<PlotBioStatus>();
                 Program.closePlotter<PlotGrounded>();
+                Program.closePlotter<PlotTrackers>();
             }
             else if (game.nearBody.data.countOrganisms == 0)
             {
@@ -292,9 +294,6 @@ namespace SrvSurvey
             }
             else
             {
-                var bodyCurrentCredits = Util.credits(game.nearBody.data.sumAnalyzed);
-                var bodyPotentialCredits = Util.credits(game.nearBody.data.sumPotentialEstimate);
-
                 txtBodyBioSignals.Text = game.nearBody.data.countOrganisms.ToString();
                 txtBodyBioScanned.Text = game.nearBody.data.countAnalyzed.ToString();
                 txtBodyBioValues.Text = Util.credits(game.nearBody.data.sumPotentialEstimate, true) + " / " + Util.credits(game.nearBody.data.sumAnalyzed);
