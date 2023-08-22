@@ -34,7 +34,7 @@ namespace SrvSurvey
 
             // TODO: use a size from some setting?
             //this.Height = 200;
-            //this.Width = 200;
+            //this.Width = 400;
 
             this.scale = 0.25f;
             this.mw = this.Width / 2;

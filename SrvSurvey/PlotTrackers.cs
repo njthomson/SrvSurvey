@@ -35,6 +35,27 @@ namespace SrvSurvey
             if (verb == null || parts.Length == 0) return;
             var name = parts[0];
 
+            // auto-expand 3 letter genus into their full names
+            switch (name.ToLowerInvariant())
+            {
+                case "ale": name = "Aleoida"; break;
+                case "bac": name = "Bacterium"; break;
+                case "bra": name = "Brain Tree"; break;
+                case "cac": name = "Cactoida"; break;
+                case "cly": name = "Clypeus"; break;
+                case "con": name = "Concha"; break;
+                case "ele": name = "Electricae"; break;
+                case "fon": name = "Fonticulua"; break;
+                case "fru": name = "Frutexa"; break;
+                case "fum": name = "Fumerola"; break;
+                case "fun": name = "Fungoida"; break;
+                case "oss": name = "Osseus"; break;
+                case "rec": name = "Recepta"; break;
+                case "str": name = "Stratum"; break;
+                case "tub": name = "Tubus"; break;
+                case "tus": name = "Tussock"; break;
+            }
+
             // create tracker if needed
             if (cmdr.trackTargets == null)
                 cmdr.trackTargets = new Dictionary<string, List<LatLong2>>();
@@ -226,7 +247,7 @@ namespace SrvSurvey
 
             if (game.cmdr.trackTargets == null) return;
 
-            var indent = 225 + 80;
+            var indent = 220 + 80;
             var y = 12;
             foreach (var name in this.trackers.Keys)
             {
