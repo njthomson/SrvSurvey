@@ -301,9 +301,10 @@ namespace SrvSurvey
                 if (Game.settings.autoShowBioSummary && (game.showBodyPlotters || game.mode == GameMode.SAA))
                     Program.showPlotter<PlotBioStatus>();
 
-                if (game.showBodyPlotters && game.isLanded && Game.settings.autoShowBioPlot && !this.game.showGuardianPlotters)
+                if (game.showBodyPlotters && Game.settings.autoShowBioPlot && !this.game.showGuardianPlotters)
                 {
-                    Program.showPlotter<PlotGrounded>();
+                    if (game.isLanded)
+                        Program.showPlotter<PlotGrounded>();
 
                     if (game.cmdr.trackTargets?.Count > 0)
                         Program.showPlotter<PlotTrackers>();

@@ -140,7 +140,7 @@ namespace SrvSurvey
 
         private PlotTrackers() : base()
         {
-            this.Width = 360;
+            this.Width = 380;
             this.Height = 100;
         }
 
