@@ -48,6 +48,7 @@ namespace SrvSurvey
             label1 = new Label();
             tabControl1 = new TabControl();
             tabPage4 = new TabPage();
+            checkBox5 = new CheckBox();
             pictureBox4 = new PictureBox();
             checkBox4 = new CheckBox();
             btnClearUnclaimed = new Button();
@@ -313,6 +314,7 @@ namespace SrvSurvey
             // 
             // tabPage4
             // 
+            tabPage4.Controls.Add(checkBox5);
             tabPage4.Controls.Add(pictureBox4);
             tabPage4.Controls.Add(checkBox4);
             tabPage4.Controls.Add(btnClearUnclaimed);
@@ -326,6 +328,20 @@ namespace SrvSurvey
             tabPage4.Size = new Size(452, 377);
             tabPage4.TabIndex = 3;
             tabPage4.Text = "Bio Scanning";
+            // 
+            // checkBox5
+            // 
+            checkBox5.AutoSize = true;
+            checkBox5.Checked = true;
+            checkBox5.CheckState = CheckState.Checked;
+            checkBox5.Location = new Point(10, 301);
+            checkBox5.Margin = new Padding(4, 3, 4, 3);
+            checkBox5.Name = "checkBox5";
+            checkBox5.Size = new Size(376, 19);
+            checkBox5.TabIndex = 11;
+            checkBox5.Tag = "autoTrackCompBioScans";
+            checkBox5.Text = "Auto add tracker location when Composition scanning organisms.";
+            checkBox5.UseVisualStyleBackColor = true;
             // 
             // pictureBox4
             // 
@@ -877,5 +893,6 @@ namespace SrvSurvey
         private CheckBox checkBox3;
         private PictureBox pictureBox4;
         private CheckBox checkBox4;
+        private CheckBox checkBox5;
     }
 }

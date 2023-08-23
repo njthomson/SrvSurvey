@@ -27,7 +27,6 @@ namespace SrvSurvey
             // From Odyssey
             { "$Codex_Ent_Aleoids_Genus_Name;",            150 }, // Aleoida
             { "$Codex_Ent_Bacterial_Genus_Name;",          500 }, // Bacterium
-            { "$Codex_Ent_Brancae_Name;",                  100 }, // Brain Tree
             { "$Codex_Ent_Cactoid_Genus_Name;",            300 }, // Cactoida
             { "$Codex_Ent_Clypeus_Genus_Name;",            150 }, // Clypeus
             { "$Codex_Ent_Conchas_Genus_Name;",            150 }, // Concha
@@ -44,10 +43,11 @@ namespace SrvSurvey
 
             // From Horizons
             { "$Codex_Ent_Vents_Name;",                    100 }, // Amphora Plant
-            { "$Codex_Ent_Tube_Name;",                     100 }, // Sinuous Tubers
-            { "$Codex_Ent_Ground_Struct_Ice_Name;",        100 }, // Crystalline Shards
             { "$Codex_Ent_Sphere_Name;",                   100 }, // Anemone
             { "$Codex_Ent_Cone_Name;",                     100 }, // Bark Mounds
+            { "$Codex_Ent_Brancae_Name;",                  100 }, // Brain Tree
+            { "$Codex_Ent_Ground_Struct_Ice_Name;",        100 }, // Crystalline Shards
+            { "$Codex_Ent_Tube_Name;",                     100 }, // Sinuous Tubers
         };
 
         public enum Status
@@ -56,6 +56,34 @@ namespace SrvSurvey
             Active,
             Abandoned,
         }
+
+        public static Dictionary<string, string> genusNames = new Dictionary<string, string>()
+        {
+            // From Odyssey
+            { "Aleoids",            "Aleoida" },
+            { "Bacterial",          "Bacterium" },
+            { "Cactoid",            "Cactoida" },
+            { "Clypeus",            "Clypeus" },
+            { "Conchas",            "Concha" },
+            { "Electricae",         "Electricae" },
+            { "Fonticulus",         "Fonticulua" },
+            { "Shrubs",             "Frutexa" },
+            { "Fumerolas",          "Fumerola" },
+            { "Fungoids",           "Fungoida" },
+            { "Osseus",             "Osseus" },
+            { "Recepta",            "Recepta" },
+            { "Stratum",            "Stratum" },
+            { "Tubus",              "Tubus" },
+            { "Tussocks",           "Tussock" },
+
+            // From Horizons
+            { "Vents;",             "Amphora Plant"},
+            { "Sphere",             "Anemone"},
+            { "Cone",               "Bark Mounds"},
+            { "Brancae",            "Brain Tree" },
+            { "Ground",             "Crystalline Shards"},
+            { "Tube",               "Sinuous Tubers"},
+        };
     }
 
     class OrganicSummary

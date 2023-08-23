@@ -38,23 +38,34 @@ namespace SrvSurvey
             // auto-expand 3 letter genus into their full names
             switch (name.ToLowerInvariant())
             {
-                case "ale": name = "Aleoida"; break;
-                case "bac": name = "Bacterium"; break;
-                case "bra": name = "Brain Tree"; break;
-                case "cac": name = "Cactoida"; break;
-                case "cly": name = "Clypeus"; break;
-                case "con": name = "Concha"; break;
-                case "ele": name = "Electricae"; break;
-                case "fon": name = "Fonticulua"; break;
-                case "fru": name = "Frutexa"; break;
-                case "fum": name = "Fumerola"; break;
-                case "fun": name = "Fungoida"; break;
-                case "oss": name = "Osseus"; break;
-                case "rec": name = "Recepta"; break;
-                case "str": name = "Stratum"; break;
-                case "tub": name = "Tubus"; break;
-                case "tus": name = "Tussock"; break;
+                // From Odyssey
+                case "ale": name = "Aleoids"; break; // Aleoida
+                case "bac": name = "Bacterial"; break; // Bacterium
+                case "cac": name = "Cactoid"; break; // Cactoida
+                case "cly": name = "Clypeus"; break; // Clypeus
+                case "con": name = "Clypeus"; break; // Concha
+                case "ele": name = "Conchas"; break; // Electricae
+                case "fon": name = "Electricae"; break; // Fonticulua
+                case "fru": name = "Shrubs"; break; // Frutexa
+                case "fum": name = "Fumerolas"; break; // Fumerola
+                case "fun": name = "Fungoids"; break; // Fungoida
+                case "oss": name = "Osseus"; break; // Osseus
+                case "rec": name = "Recepta"; break; // Recepta
+                case "str": name = "Stratum"; break; // Stratum
+                case "tub": name = "Tubus"; break; // Tubus
+                case "tus": name = "Tussocks"; break; // Tussock
+
+                // From Horizons
+                case "amp": name = "Vents"; break; // Amphora Plant
+                case "bra": name = "Brancae"; break; // Brain Tree
+                case "sin": name = "Tube"; break; // Sinuous Tubers
+                case "cry": name = "Ground"; break; // Crystalline Shards
+                case "ane": name = "Sphere"; break; // Anemone
+                case "bar": name = "Cone"; break; // Bark Mounds
+
             }
+
+            if (BioScan.genusNames.ContainsKey(name)) name = BioScan.genusNames[name].ToLowerInvariant();
 
             // create tracker if needed
             if (cmdr.trackTargets == null)
