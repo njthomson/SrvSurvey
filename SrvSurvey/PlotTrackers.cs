@@ -7,7 +7,8 @@ namespace SrvSurvey
     internal class PlotTrackers : PlotBase, PlotterForm
     {
         const int rowHeight = 20;
-        const int highlightDistance = 250;
+        const int highlightDistance = 100;
+
         private Dictionary<string, List<TrackingDelta>> trackers = new Dictionary<string, List<TrackingDelta>>();
 
         public static void processCommand(string msg)
@@ -244,6 +245,24 @@ namespace SrvSurvey
             }
 
             base.Status_StatusChanged(blink);
+        }
+
+        protected override void onJournalEntry(ScanOrganic entry)
+        {
+            // if we are close enough to a tracker ... auto remove it
+            string? name;
+            if (BioScan.genusNames.TryGetValue(entry.Genus.Split('_')[2], out name))
+            {
+                name = name.ToLowerInvariant();
+                var td = this.trackers[name].First();
+                Game.log($"Distance to nearest '{name}' tracker: {Util.metersToString(td.distance)}");
+
+                if (td.distance < highlightDistance)
+                {
+                    Game.log($"Auto removing tracker for: '{name}'/'{entry.Genus}'");
+                    processCommand($"-{name}");
+                }
+            }
         }
 
         protected override void OnPaintBackground(PaintEventArgs e)

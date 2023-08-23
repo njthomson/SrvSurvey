@@ -252,6 +252,11 @@ namespace SrvSurvey
             // overriden as necessary
         }
 
+        protected virtual void onJournalEntry(ScanOrganic entry)
+        {
+            // overriden as necessary
+        }
+
         protected void drawCommander()
         {
             if (g == null) return;

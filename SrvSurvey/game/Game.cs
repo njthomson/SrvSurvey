@@ -1037,13 +1037,12 @@ namespace SrvSurvey.game
             {
                 // auto add CodexScans as a tracker location
                 string? name;
-                BioScan.genusNames.TryGetValue(entry.Name.Split('_')[2], out name);
-                if (!string.IsNullOrEmpty(name))
+                if (BioScan.genusNames.TryGetValue(entry.Name.Split('_')[2], out name))
                 {
                     // whilst CodexEntry has a lat/long ... it's further away than the cmdr's current location
                     name = name.ToLowerInvariant();
                     PlotTrackers.processCommand($"+{name}");
-                    Game.log($"Auto-adding tracker from CodexEntry: {name} ({entry.Name_Localised})");
+                    Game.log($"Auto-adding tracker from CodexEntry: {name}");
                 }
                 else
                 {
