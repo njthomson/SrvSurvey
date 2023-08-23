@@ -48,6 +48,7 @@ namespace SrvSurvey
             label1 = new Label();
             tabControl1 = new TabControl();
             tabPage4 = new TabPage();
+            checkBox6 = new CheckBox();
             checkBox5 = new CheckBox();
             pictureBox4 = new PictureBox();
             checkBox4 = new CheckBox();
@@ -314,6 +315,7 @@ namespace SrvSurvey
             // 
             // tabPage4
             // 
+            tabPage4.Controls.Add(checkBox6);
             tabPage4.Controls.Add(checkBox5);
             tabPage4.Controls.Add(pictureBox4);
             tabPage4.Controls.Add(checkBox4);
@@ -328,6 +330,20 @@ namespace SrvSurvey
             tabPage4.Size = new Size(452, 377);
             tabPage4.TabIndex = 3;
             tabPage4.Text = "Bio Scanning";
+            // 
+            // checkBox6
+            // 
+            checkBox6.AutoSize = true;
+            checkBox6.Checked = true;
+            checkBox6.CheckState = CheckState.Checked;
+            checkBox6.Location = new Point(40, 323);
+            checkBox6.Margin = new Padding(4, 3, 4, 3);
+            checkBox6.Name = "checkBox6";
+            checkBox6.Size = new Size(295, 19);
+            checkBox6.TabIndex = 12;
+            checkBox6.Tag = "skipAnalyzedCompBioScans";
+            checkBox6.Text = "But not if that organism has already been analyzed.";
+            checkBox6.UseVisualStyleBackColor = true;
             // 
             // checkBox5
             // 
@@ -894,5 +910,6 @@ namespace SrvSurvey
         private PictureBox pictureBox4;
         private CheckBox checkBox4;
         private CheckBox checkBox5;
+        private CheckBox checkBox6;
     }
 }

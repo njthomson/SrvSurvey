@@ -7,7 +7,7 @@ namespace SrvSurvey
     internal class PlotTrackers : PlotBase, PlotterForm
     {
         const int rowHeight = 20;
-        const int highlightDistance = 100;
+        const int highlightDistance = 250;
 
         private Dictionary<string, List<TrackingDelta>> trackers = new Dictionary<string, List<TrackingDelta>>();
 
@@ -66,7 +66,7 @@ namespace SrvSurvey
 
             }
 
-            if (BioScan.genusNames.ContainsKey(name)) name = BioScan.genusNames[name].ToLowerInvariant();
+            if (BioScan.genusNames.ContainsKey(name)) name = BioScan.genusNames[name];
 
             // create tracker if needed
             if (cmdr.trackTargets == null)
@@ -91,7 +91,7 @@ namespace SrvSurvey
                     if (form != null)
                     {
                         if (!form.trackers.ContainsKey(name)) form.trackers[name] = new List<TrackingDelta>();
-                        form.trackers[name].Add(new TrackingDelta(Game.activeGame.nearBody!.radius, pos));
+                        form.trackers[name].Insert(0, new TrackingDelta(Game.activeGame.nearBody!.radius, pos));
                     }
                 }
                 else
@@ -251,16 +251,18 @@ namespace SrvSurvey
         {
             // if we are close enough to a tracker ... auto remove it
             string? name;
-            if (BioScan.genusNames.TryGetValue(entry.Genus.Split('_')[2], out name))
+            if (BioScan.genusNames.TryGetValue(entry.Genus.Split('_')[2], out name) && this.trackers.ContainsKey(name))
             {
-                name = name.ToLowerInvariant();
-                var td = this.trackers[name].First();
-                Game.log($"Distance to nearest '{name}' tracker: {Util.metersToString(td.distance)}");
-
-                if (td.distance < highlightDistance)
+                var td = this.trackers[name].FirstOrDefault();
+                if (td != null)
                 {
-                    Game.log($"Auto removing tracker for: '{name}'/'{entry.Genus}'");
-                    processCommand($"-{name}");
+                    Game.log($"Distance to nearest '{name}' tracker: {Util.metersToString(td.distance)}");
+
+                    if (td.distance < highlightDistance)
+                    {
+                        Game.log($"Auto removing tracker for: '{name}'/'{entry.Genus}'");
+                        processCommand($"-{name}");
+                    }
                 }
             }
         }

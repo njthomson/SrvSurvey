@@ -1037,12 +1037,25 @@ namespace SrvSurvey.game
             {
                 // auto add CodexScans as a tracker location
                 string? name;
-                if (BioScan.genusNames.TryGetValue(entry.Name.Split('_')[2], out name))
+                if (BioScan.genusNames.TryGetValue(entry.Name.Split('_')[2], out name) && this.nearBody?.data.organisms != null)
                 {
-                    // whilst CodexEntry has a lat/long ... it's further away than the cmdr's current location
-                    name = name.ToLowerInvariant();
-                    PlotTrackers.processCommand($"+{name}");
-                    Game.log($"Auto-adding tracker from CodexEntry: {name}");
+                    foreach (var genusName in this.nearBody.data.organisms.Keys)
+                    {
+                        if (entry.Name.StartsWith(genusName.Replace("_Genus_Name;", "")))
+                        {
+                            var organism = this.nearBody.data.organisms[genusName];
+                            if (organism.analyzed && Game.settings.skipAnalyzedCompBioScans)
+                            {
+                                Game.log($"Already analyzed, NOT auto-adding tracker for: {name}");
+                            }
+                            else
+                            {
+                                // whilst CodexEntry has a lat/long ... it's further away than the cmdr's current location
+                                PlotTrackers.processCommand($"+{name}");
+                                Game.log($"Auto-adding tracker from CodexEntry: {name} ({entry.Name})");
+                            }
+                        }
+                    }
                 }
                 else
                 {
