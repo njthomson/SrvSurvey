@@ -303,7 +303,7 @@ namespace SrvSurvey
 
                 if (game.showBodyPlotters && Game.settings.autoShowBioPlot && !this.game.showGuardianPlotters)
                 {
-                    if (game.isLanded)
+                    if (game.isLanded || true)
                         Program.showPlotter<PlotGrounded>();
 
                     if (game.cmdr.trackTargets?.Count > 0)

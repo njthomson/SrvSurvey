@@ -9,7 +9,7 @@ namespace SrvSurvey
         const int rowHeight = 20;
         const int highlightDistance = 250;
 
-        private Dictionary<string, List<TrackingDelta>> trackers = new Dictionary<string, List<TrackingDelta>>();
+        public Dictionary<string, List<TrackingDelta>> trackers = new Dictionary<string, List<TrackingDelta>>();
 
         public static void processCommand(string msg)
         {

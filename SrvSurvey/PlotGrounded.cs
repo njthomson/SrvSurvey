@@ -1,18 +1,8 @@
-﻿using DecimalMath;
-using SrvSurvey.game;
+﻿using SrvSurvey.game;
 using SrvSurvey.units;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
-using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace SrvSurvey
 {
@@ -299,6 +289,11 @@ namespace SrvSurvey
                 drawBioScan(g, d, scan);
             }
 
+            // ---
+            if (game.cmdr.trackTargets?.Count > 0)
+                drawTrackers(g);
+            // ---
+
             if (game.nearBody.scanOne != null)
             {
                 drawBioScan(g, d, game.nearBody.scanOne);
@@ -306,6 +301,44 @@ namespace SrvSurvey
             if (game.nearBody.scanTwo != null)
             {
                 drawBioScan(g, d, game.nearBody.scanTwo);
+            }
+        }
+
+        private void drawTrackers(Graphics g)
+        {
+            var form = Program.getPlotter<PlotTrackers>();
+            if (game.cmdr.trackTargets == null || game.nearBody == null || form == null) return;
+
+            var bb = new SolidBrush(Color.FromArgb(32, Color.Gray));
+            var pp = new Pen(Color.FromArgb(64, Color.SlateGray)) { Width = 12 };
+            
+            foreach (var name in form.trackers.Keys)
+            {
+                // default range to 50m unless name matches a Genus
+                var radius = 50f;
+                var key = BioScan.genusNames.FirstOrDefault(_ => _.Value == name).Key;
+                if (key != null)
+                {
+                    var rangeKey = BioScan.ranges.Keys.FirstOrDefault(_ => _.StartsWith($"$Codex_Ent_{key}"));
+                    if (rangeKey != null && BioScan.ranges.ContainsKey(rangeKey))
+                        radius = BioScan.ranges[rangeKey];
+                }
+
+                // draw radar circles for this group, and lines
+                PointF lastP = PointF.Empty;
+                foreach (var d in form.trackers[name])
+                {
+                    var rect = new RectangleF((float)d.dx - radius, (float)-d.dy - radius, radius * 2f, radius * 2f);
+                    this.drawRadarCircle(g, rect, bb, pp);
+
+                    var thisP = new PointF((float)d.dx, -(float)d.dy);
+                    //if (lastP != PointF.Empty)
+                    //    g.DrawLine(pp, lastP, thisP);
+
+                    lastP = thisP;
+                }
+
+                // draw lines between them?
             }
         }
 
@@ -340,9 +373,15 @@ namespace SrvSurvey
                 p = GameColors.penExclusionActive;
             }
 
-            var fudge = 10;
             var radius = scan.radius * 1f;
             var rect = new RectangleF((float)d.dx - radius, (float)-d.dy - radius, radius * 2f, radius * 2f);
+
+            this.drawRadarCircle(g, rect, b, p);
+        }
+
+        private void drawRadarCircle(Graphics g, RectangleF rect, Brush b, Pen p)
+        {
+            var fudge = 10;
 
             rect.Inflate(-(fudge * 2), -(fudge * 2));
             g.FillEllipse(b, rect);
@@ -350,6 +389,7 @@ namespace SrvSurvey
             g.DrawEllipse(p, rect);
             rect.Inflate(fudge, fudge);
             g.DrawEllipse(p, rect);
+
         }
 
         private void drawBearingTo(Graphics g, float x, float y, string txt, LatLong2 location)
