@@ -34,39 +34,10 @@ namespace SrvSurvey
             var parts = msg.Substring(offset).Split(' ', 2, StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
 
             if (verb == null || parts.Length == 0) return;
-            var name = parts[0];
+            var name = parts[0]?.ToLowerInvariant()!;
 
-            // auto-expand 3 letter genus into their full names
-            switch (name.ToLowerInvariant())
-            {
-                // From Odyssey
-                case "ale": name = "Aleoids"; break; // Aleoida
-                case "bac": name = "Bacterial"; break; // Bacterium
-                case "cac": name = "Cactoid"; break; // Cactoida
-                case "cly": name = "Clypeus"; break; // Clypeus
-                case "con": name = "Clypeus"; break; // Concha
-                case "ele": name = "Conchas"; break; // Electricae
-                case "fon": name = "Electricae"; break; // Fonticulua
-                case "fru": name = "Shrubs"; break; // Frutexa
-                case "fum": name = "Fumerolas"; break; // Fumerola
-                case "fun": name = "Fungoids"; break; // Fungoida
-                case "oss": name = "Osseus"; break; // Osseus
-                case "rec": name = "Recepta"; break; // Recepta
-                case "str": name = "Stratum"; break; // Stratum
-                case "tub": name = "Tubus"; break; // Tubus
-                case "tus": name = "Tussocks"; break; // Tussock
-
-                // From Horizons
-                case "amp": name = "Vents"; break; // Amphora Plant
-                case "bra": name = "Brancae"; break; // Brain Tree
-                case "sin": name = "Tube"; break; // Sinuous Tubers
-                case "cry": name = "Ground"; break; // Crystalline Shards
-                case "ane": name = "Sphere"; break; // Anemone
-                case "bar": name = "Cone"; break; // Bark Mounds
-
-            }
-
-            if (BioScan.genusNames.ContainsKey(name)) name = BioScan.genusNames[name];
+            if (BioScan.prefixes.ContainsKey(name))
+                name = BioScan.prefixes[name]; // name is now the full Genus name, eg: $Codex_Ent_Bacterial_Genus_Name;
 
             // create tracker if needed
             if (cmdr.trackTargets == null)
@@ -143,6 +114,7 @@ namespace SrvSurvey
                 // show and adjust height if needed
                 form = Program.showPlotter<PlotTrackers>();
                 form.setNewHeight();
+                Program.showPlotter<PlotGrounded>();
             }
             else
             {
@@ -250,18 +222,18 @@ namespace SrvSurvey
         protected override void onJournalEntry(ScanOrganic entry)
         {
             // if we are close enough to a tracker ... auto remove it
-            string? name;
-            if (BioScan.genusNames.TryGetValue(entry.Genus.Split('_')[2], out name) && this.trackers.ContainsKey(name))
+            if (this.trackers.ContainsKey(entry.Genus))
             {
-                var td = this.trackers[name].FirstOrDefault();
+                var td = this.trackers[entry.Genus].FirstOrDefault();
                 if (td != null)
                 {
-                    Game.log($"Distance to nearest '{name}' tracker: {Util.metersToString(td.distance)}");
+                    Game.log($"Distance to nearest '{entry.Genus}' tracker: {Util.metersToString(td.distance)}");
 
-                    if (td.distance < highlightDistance)
+                    if (td.distance < highlightDistance && Game.settings.autoRemoveTrackerOnSampling)
                     {
-                        Game.log($"Auto removing tracker for: '{name}'/'{entry.Genus}'");
-                        processCommand($"-{name}");
+                        Game.log($"Auto removing tracker for: '{BioScan.genusNames[entry.Genus]}'/'{entry.Genus}'");
+                        var prefix = BioScan.prefixes.First(_ => _.Value.Contains(entry.Genus)).Key;
+                        processCommand($"-{prefix}");
                     }
                 }
             }
@@ -287,25 +259,38 @@ namespace SrvSurvey
 
                 var x = (float)this.Width - indent;
 
+                var isActive = game.cmdr.scanOne?.genus == null || game.cmdr.scanOne?.genus == name;
                 var isClose = false;
                 var bearingWidth = 75;
+                Brush brush;
                 foreach (var dd in this.trackers[name])
                 {
                     var deg = dd.angle - game.status!.Heading;
+                    var radius = BioScan.ranges.ContainsKey(name) ? BioScan.ranges[name] : highlightDistance;
 
-                    isClose |= dd.distance < highlightDistance;
-                    var brush = dd.distance < highlightDistance ? GameColors.brushCyan : GameColors.brushGameOrange;
-                    var pen = dd.distance < highlightDistance ? GameColors.penCyan2 : null;
+                    isClose |= dd.distance < radius;
+                    brush = isActive ? GameColors.brushGameOrange : GameColors.brushGameOrangeDim;
+                    if (dd.distance < radius) brush = isActive ? GameColors.brushCyan : Brushes.DarkCyan;
+
+                    var pen = isActive ? GameColors.penGameOrange2 : GameColors.penGameOrangeDim2;
+                    if (dd.distance < radius) pen = isActive ? GameColors.penCyan2 : Pens.DarkCyan;
 
                     this.drawBearingTo(x, y, "", (double)dd.distance, (double)deg, brush, pen);
                     x += bearingWidth;
                 }
 
-                var sz = g.MeasureString(name, Game.settings.fontSmall);
+                string? displayName;
+                if (!BioScan.genusNames.TryGetValue(name, out displayName))
+                    displayName = name;
+
+                var sz = g.MeasureString(displayName, Game.settings.fontSmall);
+                brush = isActive ? GameColors.brushGameOrange : GameColors.brushGameOrangeDim;
+                if (isClose) brush = isActive ? GameColors.brushCyan : Brushes.DarkCyan;
+
                 g.DrawString(
-                    name,
+                    displayName,
                     Game.settings.fontSmall,
-                    isClose ? GameColors.brushCyan : GameColors.brushGameOrange,
+                    brush,
                     this.Width - indent - sz.Width + 3, y);
             }
         }

@@ -22,6 +22,9 @@ namespace SrvSurvey
             }
             
             Game.update -= Game_modeChanged;
+            game.journals.onJournalEntry -= Journals_onJournalEntry;
+            game.nearBody.bioScanEvent -= NearBody_bioScanEvent;
+
             this.game = null;
 
             base.Dispose(disposing);

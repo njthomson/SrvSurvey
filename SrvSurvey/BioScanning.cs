@@ -40,7 +40,6 @@ namespace SrvSurvey
             { "$Codex_Ent_Stratum_Genus_Name;",            500 }, // Stratum
             { "$Codex_Ent_Tubus_Genus_Name;",              800 }, // Tubus
             { "$Codex_Ent_Tussocks_Genus_Name;",           200 }, // Tussock
-
             // From Horizons
             { "$Codex_Ent_Vents_Name;",                    100 }, // Amphora Plant
             { "$Codex_Ent_Sphere_Name;",                   100 }, // Anemone
@@ -50,40 +49,66 @@ namespace SrvSurvey
             { "$Codex_Ent_Tube_Name;",                     100 }, // Sinuous Tubers
         };
 
+        public static Dictionary<string, string> prefixes = new Dictionary<string, string>()
+        {
+            // From Odyssey
+            { "ale", "$Codex_Ent_Aleoids_Genus_Name;"   }, // Aleoida
+            { "bac", "$Codex_Ent_Bacterial_Genus_Name;" }, // Bacterium
+            { "cac", "$Codex_Ent_Cactoid_Genus_Name;"   }, // Cactoida
+            { "cly", "$Codex_Ent_Clypeus_Genus_Name;"}, // Clypeus
+            { "con", "$Codex_Ent_Conchas_Genus_Name;"}, // Concha
+            { "ele", "$Codex_Ent_Electricae_Genus_Name;"}, // Electricae
+            { "fon", "$Codex_Ent_Fonticulus_Genus_Name;"}, // Fonticulua
+            { "fru", "$Codex_Ent_Shrubs_Genus_Name;"}, // Frutexa
+            { "fum", "$Codex_Ent_Fumerolas_Genus_Name;"}, // Fumerola
+            { "fun", "$Codex_Ent_Fungoids_Genus_Name;"}, // Fungoida
+            { "oss", "$Codex_Ent_Osseus_Genus_Name;"}, // Osseus
+            { "rec", "$Codex_Ent_Recepta_Genus_Name;"}, // Recepta
+            { "str", "$Codex_Ent_Stratum_Genus_Name;"}, // Stratum
+            { "tub", "$Codex_Ent_Tubus_Genus_Name;"}, // Tubus
+            { "tus", "$Codex_Ent_Tussocks_Genus_Name;" }, // Tussock
+            // From Horizons
+            { "amp", "$Codex_Ent_Vents_Name;"}, // Amphora Plant
+            { "ane", "$Codex_Ent_Sphere_Name;"}, // Anemone
+            { "bar", "$Codex_Ent_Cone_Name;"}, // Bark Mounds
+            { "bra", "$Codex_Ent_Brancae_Name;"}, // Brain Tree
+            { "cry", "$Codex_Ent_Ground_Struct_Ice_Name;"}, // Crystalline Shards
+            { "sin", "$Codex_Ent_Tube_Name;"}, // Sinuous Tubers
+        };
+
+        public static Dictionary<string, string> genusNames = new Dictionary<string, string>()
+        {
+            // From Odyssey
+            { "$Codex_Ent_Aleoids_Genus_Name;",            "Aleoida" },
+            { "$Codex_Ent_Bacterial_Genus_Name;",          "Bacterium" },
+            { "$Codex_Ent_Cactoid_Genus_Name;",            "Cactoida" },
+            { "$Codex_Ent_Clypeus_Genus_Name;",            "Clypeus" },
+            { "$Codex_Ent_Conchas_Genus_Name;",            "Concha" },
+            { "$Codex_Ent_Electricae_Genus_Name;",         "Electricae" },
+            { "$Codex_Ent_Fonticulus_Genus_Name;",         "Fonticulua" },
+            { "$Codex_Ent_Shrubs_Genus_Name;",             "Frutexa" },
+            { "$Codex_Ent_Fumerolas_Genus_Name;",          "Fumerola" },
+            { "$Codex_Ent_Fungoids_Genus_Name;",           "Fungoida" },
+            { "$Codex_Ent_Osseus_Genus_Name;",             "Osseus" },
+            { "$Codex_Ent_Recepta_Genus_Name;",            "Recepta" },
+            { "$Codex_Ent_Stratum_Genus_Name;",            "Stratum" },
+            { "$Codex_Ent_Tubus_Genus_Name;",              "Tubus" },
+            { "$Codex_Ent_Tussocks_Genus_Name;",           "Tussock" },
+            // From Horizons
+            { "$Codex_Ent_Vents_Name;",                    "Amphora Plant"},
+            { "$Codex_Ent_Sphere_Name;",                   "Anemone"},
+            { "$Codex_Ent_Cone_Name;",                     "Bark Mounds"},
+            { "$Codex_Ent_Brancae_Name;",                  "Brain Tree" },
+            { "$Codex_Ent_Ground_Struct_Ice_Name;",        "Crystalline Shards"},
+            { "$Codex_Ent_Tube_Name;",                     "Sinuous Tubers"},
+        };
+
         public enum Status
         {
             Complete,
             Active,
             Abandoned,
         }
-
-        public static Dictionary<string, string> genusNames = new Dictionary<string, string>()
-        {
-            // From Odyssey
-            { "Aleoids",            "Aleoida" },
-            { "Bacterial",          "Bacterium" },
-            { "Cactoid",            "Cactoida" },
-            { "Clypeus",            "Clypeus" },
-            { "Conchas",            "Concha" },
-            { "Electricae",         "Electricae" },
-            { "Fonticulus",         "Fonticulua" },
-            { "Shrubs",             "Frutexa" },
-            { "Fumerolas",          "Fumerola" },
-            { "Fungoids",           "Fungoida" },
-            { "Osseus",             "Osseus" },
-            { "Recepta",            "Recepta" },
-            { "Stratum",            "Stratum" },
-            { "Tubus",              "Tubus" },
-            { "Tussocks",           "Tussock" },
-
-            // From Horizons
-            { "Vents;",             "Amphora Plant"},
-            { "Sphere",             "Anemone"},
-            { "Cone",               "Bark Mounds"},
-            { "Brancae",            "Brain Tree" },
-            { "Ground",             "Crystalline Shards"},
-            { "Tube",               "Sinuous Tubers"},
-        };
     }
 
     class OrganicSummary

@@ -1036,25 +1036,22 @@ namespace SrvSurvey.game
             else if (entry.Category == "$Codex_Category_Biology;" && Game.settings.autoTrackCompBioScans)
             {
                 // auto add CodexScans as a tracker location
-                string? name;
-                if (BioScan.genusNames.TryGetValue(entry.Name.Split('_')[2], out name) && this.nearBody?.data.organisms != null)
+                var namePart = entry.Name.Split('_')[2];
+                var match = BioScan.prefixes.FirstOrDefault(_ => _.Value.Contains(namePart, StringComparison.OrdinalIgnoreCase));
+                var prefix = match.Key;
+                var genusName = match.Value;
+                if (prefix != null && this.nearBody?.data.organisms != null)
                 {
-                    foreach (var genusName in this.nearBody.data.organisms.Keys)
+                    var organism = this.nearBody.data.organisms[genusName];
+                    if (organism.analyzed && Game.settings.skipAnalyzedCompBioScans)
                     {
-                        if (entry.Name.StartsWith(genusName.Replace("_Genus_Name;", "")))
-                        {
-                            var organism = this.nearBody.data.organisms[genusName];
-                            if (organism.analyzed && Game.settings.skipAnalyzedCompBioScans)
-                            {
-                                Game.log($"Already analyzed, NOT auto-adding tracker for: {name}");
-                            }
-                            else
-                            {
-                                // whilst CodexEntry has a lat/long ... it's further away than the cmdr's current location
-                                PlotTrackers.processCommand($"+{name}");
-                                Game.log($"Auto-adding tracker from CodexEntry: {name} ({entry.Name})");
-                            }
-                        }
+                        Game.log($"Already analyzed, NOT auto-adding tracker for: {genusName}");
+                    }
+                    else
+                    {
+                        // whilst CodexEntry has a lat/long ... it's further away than the cmdr's current location
+                        PlotTrackers.processCommand($"+{prefix}");
+                        Game.log($"Auto-adding tracker from CodexEntry: {genusName} ({entry.Name})");
                     }
                 }
                 else

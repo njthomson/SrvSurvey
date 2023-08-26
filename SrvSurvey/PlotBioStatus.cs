@@ -7,6 +7,7 @@ namespace SrvSurvey
     public partial class PlotBioStatus : Form, PlotterForm
     {
         private Game game = Game.activeGame!;
+        private string? lastCodexScan;
 
         private PlotBioStatus()
         {
@@ -65,10 +66,34 @@ namespace SrvSurvey
 
         private void Journals_onJournalEntry(JournalEntry entry, int index)
         {
+            if (this.IsDisposed) return;
+
             this.onJournalEntry((dynamic)entry);
         }
 
         private void onJournalEntry(JournalEntry entry) { /* ignore */ }
+
+        private void onJournalEntry(CodexEntry entry)
+        {
+            if (entry.Category == "$Codex_Category_Biology;")
+            {
+                // prepare summary with value of last thing scanned
+                var namePart = entry.Name.Split('_')[2];
+                var genusName = BioScan.ranges.Keys.FirstOrDefault(_ => _.Contains(namePart, StringComparison.OrdinalIgnoreCase));
+                if (genusName != null && game.nearBody?.data.organisms != null)
+                {
+                    var organism = game.nearBody.data.organisms[genusName];
+                    this.lastCodexScan = $"{entry.Name_Localised} {Util.credits(organism.reward)}";
+                    this.Invalidate();
+                }
+            }
+        }
+
+        private void onJournalEntry(ScanOrganic entry)
+        {
+            this.lastCodexScan = null;
+            this.Invalidate();
+        }
 
         #endregion
 
@@ -315,6 +340,8 @@ namespace SrvSurvey
 
             if (allScanned)
                 this.drawFooterText(g, "All signals scanned", GameColors.brushGameOrange);
+            else if (this.lastCodexScan != null)
+                this.drawFooterText(g, this.lastCodexScan);
         }
 
         protected void drawFooterText(Graphics g, string msg, Brush? brush = null)

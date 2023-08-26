@@ -18,6 +18,7 @@ namespace SrvSurvey
         public bool autoShowPlotFSS = true;
         public bool autoTrackCompBioScans = true;
         public bool skipAnalyzedCompBioScans = true;
+        public bool autoRemoveTrackerOnSampling = true;
         public bool focusGameOnStart = true;
         public bool focusGameOnMinimize = true;
 

@@ -50,8 +50,6 @@ namespace SrvSurvey
             tabPage4 = new TabPage();
             checkBox6 = new CheckBox();
             checkBox5 = new CheckBox();
-            pictureBox4 = new PictureBox();
-            checkBox4 = new CheckBox();
             btnClearUnclaimed = new Button();
             pictureBox2 = new PictureBox();
             pictureBox1 = new PictureBox();
@@ -87,13 +85,16 @@ namespace SrvSurvey
             tabPage2 = new TabPage();
             linkAboutTwo = new LinkLabel();
             linkAboutOne = new LinkLabel();
+            tabPage6 = new TabPage();
+            pictureBox4 = new PictureBox();
+            checkBox4 = new CheckBox();
+            checkBox7 = new CheckBox();
             panel1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numOpacity).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackOpacity).BeginInit();
             tabControl1.SuspendLayout();
             tabPage4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox4).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             tabPage3.SuspendLayout();
@@ -103,6 +104,8 @@ namespace SrvSurvey
             tabPage5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
             tabPage2.SuspendLayout();
+            tabPage6.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox4).BeginInit();
             SuspendLayout();
             // 
             // panel1
@@ -304,6 +307,7 @@ namespace SrvSurvey
             tabControl1.Controls.Add(tabPage4);
             tabControl1.Controls.Add(tabPage3);
             tabControl1.Controls.Add(tabPage5);
+            tabControl1.Controls.Add(tabPage6);
             tabControl1.Controls.Add(tabPage2);
             tabControl1.Dock = DockStyle.Fill;
             tabControl1.Location = new Point(0, 0);
@@ -315,10 +319,9 @@ namespace SrvSurvey
             // 
             // tabPage4
             // 
+            tabPage4.Controls.Add(checkBox7);
             tabPage4.Controls.Add(checkBox6);
             tabPage4.Controls.Add(checkBox5);
-            tabPage4.Controls.Add(pictureBox4);
-            tabPage4.Controls.Add(checkBox4);
             tabPage4.Controls.Add(btnClearUnclaimed);
             tabPage4.Controls.Add(pictureBox2);
             tabPage4.Controls.Add(pictureBox1);
@@ -336,7 +339,7 @@ namespace SrvSurvey
             checkBox6.AutoSize = true;
             checkBox6.Checked = true;
             checkBox6.CheckState = CheckState.Checked;
-            checkBox6.Location = new Point(40, 323);
+            checkBox6.Location = new Point(40, 239);
             checkBox6.Margin = new Padding(4, 3, 4, 3);
             checkBox6.Name = "checkBox6";
             checkBox6.Size = new Size(295, 19);
@@ -350,7 +353,7 @@ namespace SrvSurvey
             checkBox5.AutoSize = true;
             checkBox5.Checked = true;
             checkBox5.CheckState = CheckState.Checked;
-            checkBox5.Location = new Point(10, 301);
+            checkBox5.Location = new Point(10, 217);
             checkBox5.Margin = new Padding(4, 3, 4, 3);
             checkBox5.Name = "checkBox5";
             checkBox5.Size = new Size(376, 19);
@@ -358,30 +361,6 @@ namespace SrvSurvey
             checkBox5.Tag = "autoTrackCompBioScans";
             checkBox5.Text = "Auto add tracker location when Composition scanning organisms.";
             checkBox5.UseVisualStyleBackColor = true;
-            // 
-            // pictureBox4
-            // 
-            pictureBox4.BackgroundImage = (Image)resources.GetObject("pictureBox4.BackgroundImage");
-            pictureBox4.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureBox4.Location = new Point(212, 205);
-            pictureBox4.Name = "pictureBox4";
-            pictureBox4.Size = new Size(198, 84);
-            pictureBox4.TabIndex = 10;
-            pictureBox4.TabStop = false;
-            // 
-            // checkBox4
-            // 
-            checkBox4.AutoSize = true;
-            checkBox4.Checked = true;
-            checkBox4.CheckState = CheckState.Checked;
-            checkBox4.Location = new Point(10, 205);
-            checkBox4.Margin = new Padding(4, 3, 4, 3);
-            checkBox4.Name = "checkBox4";
-            checkBox4.Size = new Size(188, 19);
-            checkBox4.TabIndex = 9;
-            checkBox4.Tag = "autoShowPlotFSS";
-            checkBox4.Text = "Show exploration values in FSS";
-            checkBox4.UseVisualStyleBackColor = true;
             // 
             // btnClearUnclaimed
             // 
@@ -813,6 +792,56 @@ namespace SrvSurvey
             linkAboutOne.Text = resources.GetString("linkAboutOne.Text");
             linkAboutOne.UseCompatibleTextRendering = true;
             // 
+            // tabPage6
+            // 
+            tabPage6.BackColor = SystemColors.Control;
+            tabPage6.Controls.Add(pictureBox4);
+            tabPage6.Controls.Add(checkBox4);
+            tabPage6.Location = new Point(4, 24);
+            tabPage6.Name = "tabPage6";
+            tabPage6.Padding = new Padding(3);
+            tabPage6.Size = new Size(452, 377);
+            tabPage6.TabIndex = 5;
+            tabPage6.Text = "Exploration";
+            // 
+            // pictureBox4
+            // 
+            pictureBox4.BackgroundImage = (Image)resources.GetObject("pictureBox4.BackgroundImage");
+            pictureBox4.BackgroundImageLayout = ImageLayout.Zoom;
+            pictureBox4.Location = new Point(212, 6);
+            pictureBox4.Name = "pictureBox4";
+            pictureBox4.Size = new Size(198, 84);
+            pictureBox4.TabIndex = 12;
+            pictureBox4.TabStop = false;
+            // 
+            // checkBox4
+            // 
+            checkBox4.AutoSize = true;
+            checkBox4.Checked = true;
+            checkBox4.CheckState = CheckState.Checked;
+            checkBox4.Location = new Point(10, 6);
+            checkBox4.Margin = new Padding(4, 3, 4, 3);
+            checkBox4.Name = "checkBox4";
+            checkBox4.Size = new Size(188, 19);
+            checkBox4.TabIndex = 11;
+            checkBox4.Tag = "autoShowPlotFSS";
+            checkBox4.Text = "Show exploration values in FSS";
+            checkBox4.UseVisualStyleBackColor = true;
+            // 
+            // checkBox7
+            // 
+            checkBox7.AutoSize = true;
+            checkBox7.Checked = true;
+            checkBox7.CheckState = CheckState.Checked;
+            checkBox7.Location = new Point(10, 264);
+            checkBox7.Margin = new Padding(4, 3, 4, 3);
+            checkBox7.Name = "checkBox7";
+            checkBox7.Size = new Size(372, 19);
+            checkBox7.TabIndex = 13;
+            checkBox7.Tag = "autoRemoveTrackerOnSampling";
+            checkBox7.Text = "Auto remove tracker location sampling an organism within 250m.";
+            checkBox7.UseVisualStyleBackColor = true;
+            // 
             // FormSettings
             // 
             AcceptButton = btnSave;
@@ -838,7 +867,6 @@ namespace SrvSurvey
             tabControl1.ResumeLayout(false);
             tabPage4.ResumeLayout(false);
             tabPage4.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox4).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             tabPage3.ResumeLayout(false);
@@ -850,6 +878,9 @@ namespace SrvSurvey
             tabPage5.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox3).EndInit();
             tabPage2.ResumeLayout(false);
+            tabPage6.ResumeLayout(false);
+            tabPage6.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox4).EndInit();
             ResumeLayout(false);
         }
 
@@ -907,9 +938,11 @@ namespace SrvSurvey
         private Label label9;
         private ComboBox comboGuardianWindowSize;
         private CheckBox checkBox3;
-        private PictureBox pictureBox4;
-        private CheckBox checkBox4;
         private CheckBox checkBox5;
         private CheckBox checkBox6;
+        private TabPage tabPage6;
+        private PictureBox pictureBox4;
+        private CheckBox checkBox4;
+        private CheckBox checkBox7;
     }
 }

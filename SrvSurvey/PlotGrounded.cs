@@ -199,8 +199,11 @@ namespace SrvSurvey
             this.drawBioScans(g);
 
             // draw touchdown marker
-            if (this.td != null)
+            if (game.touchdownLocation != null)
             {
+                if (this.td == null)
+                    this.td = new TrackingDelta(game.nearBody.radius, game.touchdownLocation);
+
                 // delta to ship
                 g.ResetTransform();
                 g.TranslateTransform(mw, mh);
@@ -273,7 +276,7 @@ namespace SrvSurvey
 
         private void drawBioScans(Graphics g)
         {
-            if (game.nearBody == null || this.td == null) return;
+            if (game.nearBody == null) return;
 
             // delta to ship
             g.ResetTransform();
@@ -310,35 +313,23 @@ namespace SrvSurvey
             if (game.cmdr.trackTargets == null || game.nearBody == null || form == null) return;
 
             var bb = new SolidBrush(Color.FromArgb(32, Color.Gray));
+            var bb2 = new SolidBrush(Color.FromArgb(24, Color.Cyan));
             var pp = new Pen(Color.FromArgb(64, Color.SlateGray)) { Width = 12 };
-            
+            var pp2 = new Pen(Color.FromArgb(48, Color.Cyan)) { Width = 12 };
+
             foreach (var name in form.trackers.Keys)
             {
+                var isActive = game.cmdr.scanOne?.genus == name;
+
                 // default range to 50m unless name matches a Genus
-                var radius = 50f;
-                var key = BioScan.genusNames.FirstOrDefault(_ => _.Value == name).Key;
-                if (key != null)
-                {
-                    var rangeKey = BioScan.ranges.Keys.FirstOrDefault(_ => _.StartsWith($"$Codex_Ent_{key}"));
-                    if (rangeKey != null && BioScan.ranges.ContainsKey(rangeKey))
-                        radius = BioScan.ranges[rangeKey];
-                }
+                var radius = BioScan.ranges.ContainsKey(name) ? BioScan.ranges[name] : 50;
 
                 // draw radar circles for this group, and lines
-                PointF lastP = PointF.Empty;
-                foreach (var d in form.trackers[name])
+                foreach (var tt in form.trackers[name])
                 {
-                    var rect = new RectangleF((float)d.dx - radius, (float)-d.dy - radius, radius * 2f, radius * 2f);
-                    this.drawRadarCircle(g, rect, bb, pp);
-
-                    var thisP = new PointF((float)d.dx, -(float)d.dy);
-                    //if (lastP != PointF.Empty)
-                    //    g.DrawLine(pp, lastP, thisP);
-
-                    lastP = thisP;
+                    var rect = new RectangleF((float)tt.dx - radius, (float)-tt.dy - radius, radius * 2f, radius * 2f);
+                    this.drawRadarCircle(g, rect, isActive ? bb2 : bb, isActive ? pp2 : pp);
                 }
-
-                // draw lines between them?
             }
         }
 
