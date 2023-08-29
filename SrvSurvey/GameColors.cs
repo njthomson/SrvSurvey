@@ -96,6 +96,15 @@ namespace SrvSurvey
         public static Brush brushExclusionComplete;
         public static Pen penExclusionComplete;
 
+        public static Brush brushTrackInactive = new SolidBrush(Color.FromArgb(32, Color.Gray));
+        public static Pen penTrackInactive = new Pen(Color.FromArgb(64, Color.SlateGray)) { Width = 12 };
+
+        public static Brush brushTracker = new SolidBrush(Color.FromArgb(24, GameColors.Orange));
+        public static Pen penTracker = new Pen(Color.FromArgb(48, GameColors.Orange)) { Width = 12 };
+
+        public static Brush brushTrackerClose = new SolidBrush(Color.FromArgb(32, Color.DarkCyan));
+        public static Pen penTrackerClose = new Pen(Color.FromArgb(64, Color.LightCyan)) { Width = 12 };
+
         public static Brush brushShipLocation;
         public static Brush brushShipFormerLocation;
         public static Brush brushSrvLocation;

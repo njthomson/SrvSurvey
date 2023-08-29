@@ -22,8 +22,10 @@ namespace SrvSurvey
             }
             
             Game.update -= Game_modeChanged;
-            game.journals.onJournalEntry -= Journals_onJournalEntry;
-            game.nearBody.bioScanEvent -= NearBody_bioScanEvent;
+            if (game?.journals != null)
+                game.journals.onJournalEntry -= Journals_onJournalEntry;
+            if (game?.nearBody != null)
+                game.nearBody.bioScanEvent -= NearBody_bioScanEvent;
 
             this.game = null;
 

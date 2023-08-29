@@ -25,6 +25,11 @@ namespace SrvSurvey
             if (game?.status != null)
                 game.status.StatusChanged -= Status_StatusChanged;
 
+            if (game?.journals != null)
+                game.journals.onJournalEntry -= Journals_onJournalEntry;
+            if (game?.nearBody != null)
+                game.nearBody.bioScanEvent -= NearBody_bioScanEvent;
+
             base.Dispose(disposing);
         }
 

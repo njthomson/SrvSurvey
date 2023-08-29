@@ -7,7 +7,7 @@ namespace SrvSurvey
     internal class PlotTrackers : PlotBase, PlotterForm
     {
         const int rowHeight = 20;
-        const int highlightDistance = 250;
+        const int highlightDistance = 75;
 
         public Dictionary<string, List<TrackingDelta>> trackers = new Dictionary<string, List<TrackingDelta>>();
 
@@ -229,6 +229,7 @@ namespace SrvSurvey
                 {
                     Game.log($"Distance to nearest '{entry.Genus}' tracker: {Util.metersToString(td.distance)}");
 
+                    //var radius = BioScan.ranges.ContainsKey(entry.Genus) ? BioScan.ranges[entry.Genus] : highlightDistance;
                     if (td.distance < highlightDistance && Game.settings.autoRemoveTrackerOnSampling)
                     {
                         Game.log($"Auto removing tracker for: '{BioScan.genusNames[entry.Genus]}'/'{entry.Genus}'");
@@ -266,14 +267,14 @@ namespace SrvSurvey
                 foreach (var dd in this.trackers[name])
                 {
                     var deg = dd.angle - game.status!.Heading;
-                    var radius = BioScan.ranges.ContainsKey(name) ? BioScan.ranges[name] : highlightDistance;
+                    //var radius = BioScan.ranges.ContainsKey(name) ? BioScan.ranges[name] : highlightDistance;
 
-                    isClose |= dd.distance < radius;
+                    isClose |= dd.distance < highlightDistance;
                     brush = isActive ? GameColors.brushGameOrange : GameColors.brushGameOrangeDim;
-                    if (dd.distance < radius) brush = isActive ? GameColors.brushCyan : Brushes.DarkCyan;
+                    if (dd.distance < highlightDistance) brush = isActive ? GameColors.brushCyan : Brushes.DarkCyan;
 
                     var pen = isActive ? GameColors.penGameOrange2 : GameColors.penGameOrangeDim2;
-                    if (dd.distance < radius) pen = isActive ? GameColors.penCyan2 : Pens.DarkCyan;
+                    if (dd.distance < highlightDistance) pen = isActive ? GameColors.penCyan2 : Pens.DarkCyan;
 
                     this.drawBearingTo(x, y, "", (double)dd.distance, (double)deg, brush, pen);
                     x += bearingWidth;

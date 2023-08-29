@@ -88,6 +88,8 @@ namespace SrvSurvey
 
         private void NearBody_bioScanEvent()
         {
+            if (this.IsDisposed) return;
+
             this.Invalidate();
         }
 
@@ -95,6 +97,8 @@ namespace SrvSurvey
 
         private void Journals_onJournalEntry(JournalEntry entry, int index)
         {
+            if (this.IsDisposed) return;
+
             this.onJournalEntry((dynamic)entry);
         }
 
@@ -312,14 +316,9 @@ namespace SrvSurvey
             var form = Program.getPlotter<PlotTrackers>();
             if (game.cmdr.trackTargets == null || game.nearBody == null || form == null) return;
 
-            var bb = new SolidBrush(Color.FromArgb(32, Color.Gray));
-            var bb2 = new SolidBrush(Color.FromArgb(24, Color.Cyan));
-            var pp = new Pen(Color.FromArgb(64, Color.SlateGray)) { Width = 12 };
-            var pp2 = new Pen(Color.FromArgb(48, Color.Cyan)) { Width = 12 };
-
             foreach (var name in form.trackers.Keys)
             {
-                var isActive = game.cmdr.scanOne?.genus == name;
+                var isActive = game.cmdr.scanOne?.genus == null || game.cmdr.scanOne?.genus == name;
 
                 // default range to 50m unless name matches a Genus
                 var radius = BioScan.ranges.ContainsKey(name) ? BioScan.ranges[name] : 50;
@@ -327,8 +326,16 @@ namespace SrvSurvey
                 // draw radar circles for this group, and lines
                 foreach (var tt in form.trackers[name])
                 {
+                    var b = isActive ? GameColors.brushTracker : GameColors.brushTrackInactive;
+                    var p = isActive ? GameColors.penTracker : GameColors.penTrackInactive;
+                    if (isActive && tt.distance < 75)
+                    {
+                        b = GameColors.brushTrackerClose;
+                        p = GameColors.penTrackerClose;
+                    }
+
                     var rect = new RectangleF((float)tt.dx - radius, (float)-tt.dy - radius, radius * 2f, radius * 2f);
-                    this.drawRadarCircle(g, rect, isActive ? bb2 : bb, isActive ? pp2 : pp);
+                    this.drawRadarCircle(g, rect, b, p);
                 }
             }
         }

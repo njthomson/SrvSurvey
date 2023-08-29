@@ -767,6 +767,7 @@ namespace SrvSurvey.game
             {
                 this.fsdJumping = true;
                 this.checkModeChange();
+                this.Status_StatusChanged(false);
             }
         }
 
@@ -832,6 +833,7 @@ namespace SrvSurvey.game
 
             cmdr.lastSystemLocation = Util.getLocationString(entry.StarSystem, entry.Body);
             cmdr.Save();
+            this.fireUpdate();
         }
 
         public void setLocations(ApproachBody entry)

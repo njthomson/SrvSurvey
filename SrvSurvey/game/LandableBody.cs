@@ -300,11 +300,14 @@ namespace SrvSurvey.game
                 // yes - mark current scans as abandoned and start over
                 if (game.cmdr.scanOne != null)
                 {
+                    // TODO: make this a regular tracked locations
+                    //game.cmdr.trackTargets.Add(game.cmdr.scanOne.genus, )
                     game.cmdr.scanOne.status = BioScan.Status.Abandoned;
                     data.bioScans.Add(game.cmdr.scanOne);
                 }
                 if (game.cmdr.scanTwo != null)
                 {
+                    // TODO: make this a regular tracked locations
                     game.cmdr.scanTwo.status = BioScan.Status.Abandoned;
                     data.bioScans.Add(game.cmdr.scanTwo);
                 }
