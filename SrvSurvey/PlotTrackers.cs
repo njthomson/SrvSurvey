@@ -7,7 +7,7 @@ namespace SrvSurvey
     internal class PlotTrackers : PlotBase, PlotterForm
     {
         const int rowHeight = 20;
-        const int highlightDistance = 75;
+        public const int highlightDistance = 150;
 
         public Dictionary<string, List<TrackingDelta>> trackers = new Dictionary<string, List<TrackingDelta>>();
 

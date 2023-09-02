@@ -103,7 +103,7 @@ namespace SrvSurvey
         public static Pen penTracker = new Pen(Color.FromArgb(48, GameColors.Orange)) { Width = 12 };
 
         public static Brush brushTrackerClose = new SolidBrush(Color.FromArgb(32, Color.DarkCyan));
-        public static Pen penTrackerClose = new Pen(Color.FromArgb(64, Color.LightCyan)) { Width = 12 };
+        public static Pen penTrackerClose = new Pen(Color.FromArgb(36, Color.Cyan)) { Width = 12 };
 
         public static Brush brushShipLocation;
         public static Brush brushShipFormerLocation;

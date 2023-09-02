@@ -318,7 +318,7 @@ namespace SrvSurvey
 
             foreach (var name in form.trackers.Keys)
             {
-                var isActive = game.cmdr.scanOne?.genus == null || game.cmdr.scanOne?.genus == name;
+                var isActive = /* game.cmdr.scanOne?.genus == null || */ game.cmdr.scanOne?.genus == name;
 
                 // default range to 50m unless name matches a Genus
                 var radius = BioScan.ranges.ContainsKey(name) ? BioScan.ranges[name] : 50;
@@ -328,7 +328,7 @@ namespace SrvSurvey
                 {
                     var b = isActive ? GameColors.brushTracker : GameColors.brushTrackInactive;
                     var p = isActive ? GameColors.penTracker : GameColors.penTrackInactive;
-                    if (isActive && tt.distance < 75)
+                    if (isActive && tt.distance < PlotTrackers.highlightDistance)
                     {
                         b = GameColors.brushTrackerClose;
                         p = GameColors.penTrackerClose;
@@ -336,6 +336,14 @@ namespace SrvSurvey
 
                     var rect = new RectangleF((float)tt.dx - radius, (float)-tt.dy - radius, radius * 2f, radius * 2f);
                     this.drawRadarCircle(g, rect, b, p);
+
+                    // draw an inner circle if really close
+                    if (tt.distance < PlotTrackers.highlightDistance)
+                    {
+                        var innerRadius = 50;
+                        rect = new RectangleF((float)tt.dx - innerRadius, (float)-tt.dy - innerRadius, innerRadius * 2f, innerRadius * 2f);
+                        this.drawRadarCircle(g, rect, b, GameColors.penExclusionActive);
+                    }
                 }
             }
         }
@@ -355,8 +363,11 @@ namespace SrvSurvey
             else if (scan.status == BioScan.Status.Abandoned)
             {
                 // blue colors for abandoned scans
-                b = GameColors.brushExclusionAbandoned;
-                p = GameColors.penExclusionAbandoned;
+                //b = GameColors.brushExclusionAbandoned;
+                //p = GameColors.penExclusionAbandoned;
+                b = GameColors.brushTrackInactive;
+                p = GameColors.penTrackInactive;
+
             }
             else if (d.distance < (decimal)scan.radius)
             {
