@@ -64,6 +64,8 @@ namespace SrvSurvey.game
         public Status status { get; private set; }
         public NavRouteFile navRoute { get; private set; }
 
+        public SystemStatus systemStatus;
+
         /// <summary>
         /// Distinct settings for the current commander
         /// </summary>
@@ -455,6 +457,9 @@ namespace SrvSurvey.game
                     return false;
                 });
                 log($"Game.initializeFromJournal: system: '{cmdr.currentSystem}' (id:{cmdr.currentSystemAddress}), body: '{cmdr.currentBody}' (id:{cmdr.currentBodyId}, r: {Util.metersToString(cmdr.currentBodyRadius)})");
+
+                this.systemStatus = new SystemStatus(cmdr.currentSystem, cmdr.currentSystemAddress);
+                this.systemStatus.initFromJournal(this);
             }
 
             // if we are near a planet
@@ -727,6 +732,10 @@ namespace SrvSurvey.game
                 // find the last touchdown location if needed
                 this.getLastTouchdownDeep();
             }
+
+            // start a new SystemStatus
+            this.systemStatus = SystemStatus.from(entry);
+            this.systemStatus.initFromJournal(this);
         }
 
         private void onJournalEntry(Music entry)
@@ -778,6 +787,11 @@ namespace SrvSurvey.game
             this.statusBodyName = null;
 
             this.setLocations(entry);
+
+            // start a new SystemStatus
+            this.systemStatus = SystemStatus.from(entry);
+            this.systemStatus.initFromJournal(this);
+
             this.checkModeChange();
         }
 
@@ -793,6 +807,31 @@ namespace SrvSurvey.game
             // check there are any Guardian sites nearby
             if (this.status.hasLatLong && this.nearBody != null)
                 this.nearBody.findGuardianSites();
+        }
+
+        private void onJournalEntry(FSSDiscoveryScan entry)
+        {
+            this.systemStatus.onJournalEntry(entry);
+        }
+
+        private void onJournalEntry(Scan entry)
+        {
+            this.systemStatus.onJournalEntry(entry);
+        }
+
+        private void onJournalEntry(SAAScanComplete entry)
+        {
+            this.systemStatus.onJournalEntry(entry);
+        }
+
+        private void onJournalEntry(FSSAllBodiesFound entry)
+        {
+            this.systemStatus.onJournalEntry(entry);
+        }
+
+        private void onJournalEntry(FSSBodySignals entry)
+        {
+            this.systemStatus.onJournalEntry(entry);
         }
 
         #endregion
@@ -830,7 +869,6 @@ namespace SrvSurvey.game
                 cmdr.currentBodyId = -1;
                 cmdr.currentBodyRadius = -1;
             }
-
             cmdr.lastSystemLocation = Util.getLocationString(entry.StarSystem, entry.Body);
             cmdr.Save();
             this.fireUpdate();
@@ -1069,6 +1107,16 @@ namespace SrvSurvey.game
                 this.createNearBody(entry.BodyName);
             else
                 this.nearBody.readSAASignalsFound(entry);
+
+            this.systemStatus.onJournalEntry(entry);
+
+            // force a mode change to update ux
+            fireUpdate(this._mode, true);
+        }
+
+        private void onJournalEntry(ScanOrganic entry)
+        {
+            this.systemStatus.onJournalEntry(entry);
 
             // force a mode change to update ux
             fireUpdate(this._mode, true);

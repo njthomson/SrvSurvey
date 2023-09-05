@@ -48,6 +48,7 @@ namespace SrvSurvey
             label1 = new Label();
             tabControl1 = new TabControl();
             tabPage4 = new TabPage();
+            checkBox7 = new CheckBox();
             checkBox6 = new CheckBox();
             checkBox5 = new CheckBox();
             btnClearUnclaimed = new Button();
@@ -82,13 +83,15 @@ namespace SrvSurvey
             linkScreenshotSourceFolder = new LinkLabel();
             checkAddBanner = new CheckBox();
             checkProcessScreenshots = new CheckBox();
+            tabPage6 = new TabPage();
+            checkBox9 = new CheckBox();
+            pictureBox5 = new PictureBox();
+            checkBox8 = new CheckBox();
+            pictureBox4 = new PictureBox();
+            checkBox4 = new CheckBox();
             tabPage2 = new TabPage();
             linkAboutTwo = new LinkLabel();
             linkAboutOne = new LinkLabel();
-            tabPage6 = new TabPage();
-            pictureBox4 = new PictureBox();
-            checkBox4 = new CheckBox();
-            checkBox7 = new CheckBox();
             panel1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numOpacity).BeginInit();
@@ -103,9 +106,10 @@ namespace SrvSurvey
             ((System.ComponentModel.ISupportInitialize)numAltAlpha).BeginInit();
             tabPage5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
-            tabPage2.SuspendLayout();
             tabPage6.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox5).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox4).BeginInit();
+            tabPage2.SuspendLayout();
             SuspendLayout();
             // 
             // panel1
@@ -333,6 +337,20 @@ namespace SrvSurvey
             tabPage4.Size = new Size(452, 377);
             tabPage4.TabIndex = 3;
             tabPage4.Text = "Bio Scanning";
+            // 
+            // checkBox7
+            // 
+            checkBox7.AutoSize = true;
+            checkBox7.Checked = true;
+            checkBox7.CheckState = CheckState.Checked;
+            checkBox7.Location = new Point(10, 264);
+            checkBox7.Margin = new Padding(4, 3, 4, 3);
+            checkBox7.Name = "checkBox7";
+            checkBox7.Size = new Size(372, 19);
+            checkBox7.TabIndex = 13;
+            checkBox7.Tag = "autoRemoveTrackerOnSampling";
+            checkBox7.Text = "Auto remove tracker location sampling an organism within 250m.";
+            checkBox7.UseVisualStyleBackColor = true;
             // 
             // checkBox6
             // 
@@ -754,6 +772,83 @@ namespace SrvSurvey
             checkProcessScreenshots.UseVisualStyleBackColor = true;
             checkProcessScreenshots.CheckedChanged += disableEverythingElse_CheckedChanged;
             // 
+            // tabPage6
+            // 
+            tabPage6.BackColor = SystemColors.Control;
+            tabPage6.Controls.Add(checkBox9);
+            tabPage6.Controls.Add(pictureBox5);
+            tabPage6.Controls.Add(checkBox8);
+            tabPage6.Controls.Add(pictureBox4);
+            tabPage6.Controls.Add(checkBox4);
+            tabPage6.Location = new Point(4, 24);
+            tabPage6.Name = "tabPage6";
+            tabPage6.Padding = new Padding(3);
+            tabPage6.Size = new Size(452, 377);
+            tabPage6.TabIndex = 5;
+            tabPage6.Text = "Exploration";
+            // 
+            // checkBox9
+            // 
+            checkBox9.AutoSize = true;
+            checkBox9.Checked = true;
+            checkBox9.CheckState = CheckState.Checked;
+            checkBox9.Location = new Point(31, 134);
+            checkBox9.Margin = new Padding(4, 3, 4, 3);
+            checkBox9.Name = "checkBox9";
+            checkBox9.Size = new Size(192, 19);
+            checkBox9.TabIndex = 15;
+            checkBox9.Tag = "skipGasGiantDSS";
+            checkBox9.Text = "Skip requiring DSS of gas giants";
+            checkBox9.UseVisualStyleBackColor = true;
+            // 
+            // pictureBox5
+            // 
+            pictureBox5.BackgroundImage = (Image)resources.GetObject("pictureBox5.BackgroundImage");
+            pictureBox5.BackgroundImageLayout = ImageLayout.Zoom;
+            pictureBox5.Location = new Point(216, 107);
+            pictureBox5.Name = "pictureBox5";
+            pictureBox5.Size = new Size(233, 29);
+            pictureBox5.TabIndex = 14;
+            pictureBox5.TabStop = false;
+            // 
+            // checkBox8
+            // 
+            checkBox8.AutoSize = true;
+            checkBox8.Checked = true;
+            checkBox8.CheckState = CheckState.Checked;
+            checkBox8.Location = new Point(10, 109);
+            checkBox8.Margin = new Padding(4, 3, 4, 3);
+            checkBox8.Name = "checkBox8";
+            checkBox8.Size = new Size(209, 19);
+            checkBox8.TabIndex = 13;
+            checkBox8.Tag = "autoShowPlotSysStatus";
+            checkBox8.Text = "Show FSS and body DSS remaining";
+            checkBox8.UseVisualStyleBackColor = true;
+            // 
+            // pictureBox4
+            // 
+            pictureBox4.BackgroundImage = (Image)resources.GetObject("pictureBox4.BackgroundImage");
+            pictureBox4.BackgroundImageLayout = ImageLayout.Zoom;
+            pictureBox4.Location = new Point(212, 6);
+            pictureBox4.Name = "pictureBox4";
+            pictureBox4.Size = new Size(198, 84);
+            pictureBox4.TabIndex = 12;
+            pictureBox4.TabStop = false;
+            // 
+            // checkBox4
+            // 
+            checkBox4.AutoSize = true;
+            checkBox4.Checked = true;
+            checkBox4.CheckState = CheckState.Checked;
+            checkBox4.Location = new Point(10, 6);
+            checkBox4.Margin = new Padding(4, 3, 4, 3);
+            checkBox4.Name = "checkBox4";
+            checkBox4.Size = new Size(188, 19);
+            checkBox4.TabIndex = 11;
+            checkBox4.Tag = "autoShowPlotFSS";
+            checkBox4.Text = "Show exploration values in FSS";
+            checkBox4.UseVisualStyleBackColor = true;
+            // 
             // tabPage2
             // 
             tabPage2.BorderStyle = BorderStyle.Fixed3D;
@@ -792,56 +887,6 @@ namespace SrvSurvey
             linkAboutOne.Text = resources.GetString("linkAboutOne.Text");
             linkAboutOne.UseCompatibleTextRendering = true;
             // 
-            // tabPage6
-            // 
-            tabPage6.BackColor = SystemColors.Control;
-            tabPage6.Controls.Add(pictureBox4);
-            tabPage6.Controls.Add(checkBox4);
-            tabPage6.Location = new Point(4, 24);
-            tabPage6.Name = "tabPage6";
-            tabPage6.Padding = new Padding(3);
-            tabPage6.Size = new Size(452, 377);
-            tabPage6.TabIndex = 5;
-            tabPage6.Text = "Exploration";
-            // 
-            // pictureBox4
-            // 
-            pictureBox4.BackgroundImage = (Image)resources.GetObject("pictureBox4.BackgroundImage");
-            pictureBox4.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureBox4.Location = new Point(212, 6);
-            pictureBox4.Name = "pictureBox4";
-            pictureBox4.Size = new Size(198, 84);
-            pictureBox4.TabIndex = 12;
-            pictureBox4.TabStop = false;
-            // 
-            // checkBox4
-            // 
-            checkBox4.AutoSize = true;
-            checkBox4.Checked = true;
-            checkBox4.CheckState = CheckState.Checked;
-            checkBox4.Location = new Point(10, 6);
-            checkBox4.Margin = new Padding(4, 3, 4, 3);
-            checkBox4.Name = "checkBox4";
-            checkBox4.Size = new Size(188, 19);
-            checkBox4.TabIndex = 11;
-            checkBox4.Tag = "autoShowPlotFSS";
-            checkBox4.Text = "Show exploration values in FSS";
-            checkBox4.UseVisualStyleBackColor = true;
-            // 
-            // checkBox7
-            // 
-            checkBox7.AutoSize = true;
-            checkBox7.Checked = true;
-            checkBox7.CheckState = CheckState.Checked;
-            checkBox7.Location = new Point(10, 264);
-            checkBox7.Margin = new Padding(4, 3, 4, 3);
-            checkBox7.Name = "checkBox7";
-            checkBox7.Size = new Size(372, 19);
-            checkBox7.TabIndex = 13;
-            checkBox7.Tag = "autoRemoveTrackerOnSampling";
-            checkBox7.Text = "Auto remove tracker location sampling an organism within 250m.";
-            checkBox7.UseVisualStyleBackColor = true;
-            // 
             // FormSettings
             // 
             AcceptButton = btnSave;
@@ -877,10 +922,11 @@ namespace SrvSurvey
             tabPage5.ResumeLayout(false);
             tabPage5.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox3).EndInit();
-            tabPage2.ResumeLayout(false);
             tabPage6.ResumeLayout(false);
             tabPage6.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox5).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox4).EndInit();
+            tabPage2.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -944,5 +990,8 @@ namespace SrvSurvey
         private PictureBox pictureBox4;
         private CheckBox checkBox4;
         private CheckBox checkBox7;
+        private PictureBox pictureBox5;
+        private CheckBox checkBox8;
+        private CheckBox checkBox9;
     }
 }

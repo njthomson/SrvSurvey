@@ -117,7 +117,6 @@ namespace SrvSurvey
 
         public static void floatLeftMiddle(Form form, Rectangle rect)
         {
-            // position form top center above the heading
             if (rect == Rectangle.Empty)
                 rect = Elite.getWindowRect();
 
@@ -127,7 +126,6 @@ namespace SrvSurvey
 
         public static void floatRightMiddle(Form form, Rectangle rect, int fromRight, int aboveMiddle = 0)
         {
-            // position form top center above the heading
             if (rect == Rectangle.Empty)
                 rect = Elite.getWindowRect();
 
@@ -137,7 +135,6 @@ namespace SrvSurvey
 
         public static void floatCenterTop(Form form, Rectangle rect, int fromTop, int rightOfCenter = 0)
         {
-            // position form top center above the heading
             if (rect == Rectangle.Empty)
                 rect = Elite.getWindowRect();
 
@@ -145,9 +142,17 @@ namespace SrvSurvey
             form.Top = rect.Top + fromTop;
         }
 
-        public static void floatLeftTop(Form form, Rectangle rect, int fromLeft = 40, int fromTop = 40)
+        public static void floatCenterBottom(Form form, Rectangle rect, int fromBottom, int rightOfCenter = 0)
         {
-            // position form top center above the heading
+            if (rect == Rectangle.Empty)
+                rect = Elite.getWindowRect();
+
+            form.Left = rect.Left + (rect.Width / 2) - (form.Width / 2) + rightOfCenter;
+            form.Top = rect.Bottom - form.Height - fromBottom;
+        }
+
+        public static void floatLeftTop(Form form, Rectangle rect, int fromTop = 40, int fromLeft = 40)
+        {
             if (rect == Rectangle.Empty)
                 rect = Elite.getWindowRect();
 
@@ -157,7 +162,6 @@ namespace SrvSurvey
 
         public static void floatRightTop(Form form, Rectangle rect, int fromTop = 20, int fromRight = 20)
         {
-            // position form top center above the heading
             if (rect == Rectangle.Empty)
                 rect = Elite.getWindowRect();
 
@@ -165,9 +169,17 @@ namespace SrvSurvey
             form.Top = rect.Top + fromTop;
         }
 
+        public static void floatLeftBottom(Form form, Rectangle rect, int fromBottom = 20, int fromLeft = 40)
+        {
+            if (rect == Rectangle.Empty)
+                rect = Elite.getWindowRect();
+
+            form.Left = rect.Left + fromLeft;
+            form.Top = rect.Bottom - form.Height - fromBottom;
+        }
+
         public static void floatRightBottom(Form form, Rectangle rect, int fromBottom = 20, int fromRight = 20)
         {
-            // position form top center above the heading
             if (rect == Rectangle.Empty)
                 rect = Elite.getWindowRect();
 

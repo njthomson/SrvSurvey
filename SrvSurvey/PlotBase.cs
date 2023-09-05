@@ -242,6 +242,11 @@ namespace SrvSurvey
             // overriden as necessary
         }
 
+        protected virtual void onJournalEntry(FSSDiscoveryScan entry)
+        {
+            // overriden as necessary
+        }
+
         protected virtual void onJournalEntry(Scan entry)
         {
             // overriden as necessary

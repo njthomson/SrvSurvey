@@ -338,7 +338,7 @@ namespace SrvSurvey
                     this.drawRadarCircle(g, rect, b, p);
 
                     // draw an inner circle if really close
-                    if (tt.distance < PlotTrackers.highlightDistance)
+                    if (tt.distance < PlotTrackers.highlightDistance && game.cmdr.scanOne != null)
                     {
                         var innerRadius = 50;
                         rect = new RectangleF((float)tt.dx - innerRadius, (float)-tt.dy - innerRadius, innerRadius * 2f, innerRadius * 2f);

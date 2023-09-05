@@ -326,7 +326,7 @@ namespace SrvSurvey
                 || scan.PlanetClass == "High metal content body") // HMC
                 k = isTerraformable ? 100677 : 9654;
             else if (scan.PlanetClass == "Water world" // WW
-                || scan.PlanetClass == "Earth Level World") // ELW
+                || scan.PlanetClass == "Earth-Like Planet") // ELW
                 k = isTerraformable ? 116295 : 64831;
 
             // public static int GetBodyValue(int k, double mass, bool isFirstDiscoverer, bool isMapped, bool isFirstMapped, bool withEfficiencyBonus, bool isOdyssey, bool isFleetCarrierSale)

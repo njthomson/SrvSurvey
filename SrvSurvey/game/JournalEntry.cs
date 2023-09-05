@@ -358,6 +358,24 @@ namespace SrvSurvey
         public int BodyID { get; set; }
     }
 
+    class FSSDiscoveryScan : JournalEntry
+    {
+        // { "timestamp":"2023-09-04T00:06:12Z", "event":"FSSDiscoveryScan", "Progress":0.520163, "BodyCount":19, "NonBodyCount":10, "SystemName":"Abriama", "SystemAddress":7267219350913 }
+        public double Progress;
+        public int BodyCount;
+        public int NonBodyCount;
+        public string SystemName;
+        public long SystemAddress;
+    }
+
+    class FSSAllBodiesFound : JournalEntry
+    {
+        // { "timestamp":"2023-09-04T02:29:13Z", "event":"FSSAllBodiesFound", "SystemName":"HIP 51721", "SystemAddress":358596317890, "Count":10 }
+        public string SystemName;
+        public long SystemAddress;
+        public int Count;
+    }
+
     class Scan : JournalEntry
     {
         // See: https://elite-journal.readthedocs.io/en/latest/Exploration/#scan

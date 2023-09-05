@@ -129,6 +129,11 @@ namespace SrvSurvey
                 Program.showPlotter<PlotFSS>();
             else
                 Program.closePlotter<PlotFSS>();
+
+            if (SystemStatus.showPlotter)
+                Program.showPlotter<PlotSysStatus>();
+            else
+                Program.closePlotter<PlotSysStatus>();
         }
 
         private void settingsFolderWatcher_Changed(object sender, FileSystemEventArgs e)

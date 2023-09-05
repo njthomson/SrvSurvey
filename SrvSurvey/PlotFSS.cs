@@ -104,7 +104,6 @@ namespace SrvSurvey
         protected override void OnPaintBackground(PaintEventArgs e)
         {
             if (this.IsDisposed) return;
-            Game.log($"PlotFSS: render");
 
             this.g = e.Graphics;
             this.g.SmoothingMode = SmoothingMode.HighQuality;
