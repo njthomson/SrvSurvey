@@ -132,7 +132,7 @@ namespace SrvSurvey
             var sz = g.MeasureString(txt, font);
             g.DrawString(txt, font, brush, 4, 16);
 
-            this.Width = sz.Width > 420 ? (int)sz.Width : 320;
+            this.Width = sz.Width > 320 ? (int)sz.Width : 320;
         }
     }
 }
