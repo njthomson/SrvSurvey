@@ -92,6 +92,7 @@ namespace SrvSurvey
             tabPage2 = new TabPage();
             linkAboutTwo = new LinkLabel();
             linkAboutOne = new LinkLabel();
+            checkBox10 = new CheckBox();
             panel1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numOpacity).BeginInit();
@@ -775,6 +776,7 @@ namespace SrvSurvey
             // tabPage6
             // 
             tabPage6.BackColor = SystemColors.Control;
+            tabPage6.Controls.Add(checkBox10);
             tabPage6.Controls.Add(checkBox9);
             tabPage6.Controls.Add(pictureBox5);
             tabPage6.Controls.Add(checkBox8);
@@ -795,17 +797,17 @@ namespace SrvSurvey
             checkBox9.Location = new Point(31, 134);
             checkBox9.Margin = new Padding(4, 3, 4, 3);
             checkBox9.Name = "checkBox9";
-            checkBox9.Size = new Size(192, 19);
+            checkBox9.Size = new Size(141, 19);
             checkBox9.TabIndex = 15;
             checkBox9.Tag = "skipGasGiantDSS";
-            checkBox9.Text = "Skip requiring DSS of gas giants";
+            checkBox9.Text = "Skip DSS of gas giants";
             checkBox9.UseVisualStyleBackColor = true;
             // 
             // pictureBox5
             // 
             pictureBox5.BackgroundImage = (Image)resources.GetObject("pictureBox5.BackgroundImage");
             pictureBox5.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureBox5.Location = new Point(216, 107);
+            pictureBox5.Location = new Point(216, 104);
             pictureBox5.Name = "pictureBox5";
             pictureBox5.Size = new Size(233, 29);
             pictureBox5.TabIndex = 14;
@@ -886,6 +888,20 @@ namespace SrvSurvey
             linkAboutOne.TabStop = true;
             linkAboutOne.Text = resources.GetString("linkAboutOne.Text");
             linkAboutOne.UseCompatibleTextRendering = true;
+            // 
+            // checkBox10
+            // 
+            checkBox10.AutoSize = true;
+            checkBox10.Checked = true;
+            checkBox10.CheckState = CheckState.Checked;
+            checkBox10.Location = new Point(31, 159);
+            checkBox10.Margin = new Padding(4, 3, 4, 3);
+            checkBox10.Name = "checkBox10";
+            checkBox10.Size = new Size(114, 19);
+            checkBox10.TabIndex = 16;
+            checkBox10.Tag = "skipRingsDSS";
+            checkBox10.Text = "Skip DSS of rings";
+            checkBox10.UseVisualStyleBackColor = true;
             // 
             // FormSettings
             // 
@@ -993,5 +1009,6 @@ namespace SrvSurvey
         private PictureBox pictureBox5;
         private CheckBox checkBox8;
         private CheckBox checkBox9;
+        private CheckBox checkBox10;
     }
 }

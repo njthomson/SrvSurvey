@@ -108,18 +108,6 @@ namespace SrvSurvey.game
         public Dictionary<int, int> bioScans = new Dictionary<int, int>();
         public int scannedOrganics;
 
-        public static SystemStatus from(FSDJump entry)
-        {
-            var systemStatus = new SystemStatus(entry.StarSystem, entry.SystemAddress);
-            return systemStatus;
-        }
-
-        public static SystemStatus from(Location entry)
-        {
-            var systemStatus = new SystemStatus(entry.StarSystem, entry.SystemAddress);
-            return systemStatus;
-        }
-
         public SystemStatus(string name, long address)
         {
             this.name = name;
@@ -191,19 +179,41 @@ namespace SrvSurvey.game
             if (entry.SystemAddress != this.address) return;
             this.bodyIds[entry.BodyID] = entry.Bodyname;
 
-            var bodyType = entry.StarType != null ? "star" : entry.PlanetClass;
+            var bodyType = entry.StarType != null ? "Star" : entry.PlanetClass;
 
-            if (bodyType != null) // ? entry.ScanType == "Detailed"
+            if (bodyType != null)
                 this.fssBodies[entry.Bodyname] = bodyType;
+
+            // add any rings as independent bodies with "rA"/"rB" suffic
+            if (entry.ScanType == "Detailed" && entry.Rings?.Count > 0)
+            {
+                this.fssBodies[entry.Bodyname + " rA"] = "Ring";
+                this.bodyIds[entry.BodyID] = entry.Bodyname + " rA";
+
+                if (entry.Rings?.Count == 2)
+                {
+                    this.fssBodies[entry.Bodyname + " rB"] = "Ring";
+                    this.bodyIds[entry.BodyID] = entry.Bodyname + " rB";
+                }
+            }
         }
 
         public void onJournalEntry(SAAScanComplete entry)
         {
             // DSS complete
             if (entry.SystemAddress != this.address) return;
-            this.bodyIds[entry.BodyID] = entry.BodyName;
 
-            this.dssBodies.Add(entry.BodyName);
+            var bodyName = entry.BodyName;
+            if (bodyName.EndsWith("Ring"))
+            {
+                bodyName = entry.BodyName.Replace(" Ring", "");
+                bodyName = bodyName.Substring(0, bodyName.Length - 2)
+                    + " r"
+                    + bodyName.Substring(bodyName.Length - 1);
+            }
+
+            this.bodyIds[entry.BodyID] = bodyName;
+            this.dssBodies.Add(bodyName);
         }
 
         public void onJournalEntry(SAASignalsFound entry)
@@ -246,11 +256,15 @@ namespace SrvSurvey.game
             get
             {
                 var bodies = this.fssBodies
-                    .Where(_ => _.Value != "star" && !this.dssBodies.Contains(_.Key));
+                    .Where(_ => _.Value != "Star" && !this.dssBodies.Contains(_.Key));
 
                 if (Game.settings.skipGasGiantDSS)
                     bodies = bodies
                         .Where(_ => !_.Value.Contains("giant", StringComparison.OrdinalIgnoreCase) && !this.dssBodies.Contains(_.Key));
+
+                if (Game.settings.skipRingsDSS)
+                    bodies = bodies
+                        .Where(_ => _.Value != "Ring" && !this.dssBodies.Contains(_.Key));
 
                 return bodies
                     .Select(_ => _.Key.Replace(this.name, "").Replace(" ", ""))
@@ -264,7 +278,7 @@ namespace SrvSurvey.game
             get
             {
                 return this.bioBodies
-                    .Where(_ => this.bioScans.ContainsKey(_.Key) && this.bioScans[_.Key] >= _.Value)
+                    .Where(_ => !this.bioScans.ContainsKey(_.Key) || this.bioScans[_.Key] >= _.Value)
                     .Select(_ => this.bodyIds[_.Key].Replace(this.name, "").Replace(" ", ""))
                     .Order()
                     .ToList();

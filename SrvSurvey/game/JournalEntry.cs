@@ -407,7 +407,16 @@ namespace SrvSurvey
         public string Luminosity { get; set; } //  see §15.9
         public double Age_MY { get; set; } // age in millions of years
 
-        // TODO: Rings: [ array ] – if present
+        public class Ring
+        {
+            // "Rings":[ { "Name":"Stuemeae UY-S b3-86 7 A Ring", "RingClass":"eRingClass_Icy", "MassMT":1.036e+07, "InnerRad":2.2544e+07, "OuterRad":5.479e+07 } ]
+            public string Name;
+            public string RingClass;
+            public double MassMT;
+            public double InnerRad;
+            public double OuterRad;
+        }
+        public List<Ring> Rings { get; set; }
         public bool WasDiscovered { get; set; }
         public bool WasMapped { get; set; }
 

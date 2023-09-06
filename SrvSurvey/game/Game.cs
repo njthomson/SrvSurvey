@@ -734,7 +734,7 @@ namespace SrvSurvey.game
             }
 
             // start a new SystemStatus
-            this.systemStatus = SystemStatus.from(entry);
+            this.systemStatus = new SystemStatus(entry.StarSystem, entry.SystemAddress);
             this.systemStatus.initFromJournal(this);
         }
 
@@ -789,7 +789,7 @@ namespace SrvSurvey.game
             this.setLocations(entry);
 
             // start a new SystemStatus
-            this.systemStatus = SystemStatus.from(entry);
+            this.systemStatus = new SystemStatus(entry.StarSystem, entry.SystemAddress);
             this.systemStatus.initFromJournal(this);
 
             this.checkModeChange();

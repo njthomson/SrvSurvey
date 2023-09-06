@@ -18,6 +18,7 @@ namespace SrvSurvey
         public bool autoShowPlotFSS = true;
         public bool autoShowPlotSysStatus = true;
         public bool skipGasGiantDSS = true;
+        public bool skipRingsDSS = false;
         public bool autoTrackCompBioScans = true;
         public bool skipAnalyzedCompBioScans = true;
         public bool autoRemoveTrackerOnSampling = true;

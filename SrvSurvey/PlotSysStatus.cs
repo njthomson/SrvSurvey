@@ -98,7 +98,7 @@ namespace SrvSurvey
 
             var brush = GameColors.brushCyan;
 
-            var txt = "All system scans complete";
+            var txt = "All DSS scans complete";
             if (!sys.fssComplete && sys.fssBodies.Count < sys.bodyCount)
             {
                 //var fssCompletion = (100.0 / sys.bodyCount * sys.fssBodies.Count).ToString("N0");
@@ -110,14 +110,11 @@ namespace SrvSurvey
                 txt = "Previously scanned system";
                 brush = GameColors.brushGameOrange;
             }
-            else if (sys.dssBodies.Count < sys.bodyCount)
+            else if (sys.dssRemaining.Count > 0)
             {
-                if (sys.dssRemaining.Count > 0)
-                    txt = $"{sys.dssRemaining.Count}x DSS: " + String.Join(", ", sys.dssRemaining);
-                else
-                    brush = GameColors.brushGameOrange;
+                txt = $"{sys.dssRemaining.Count}x DSS: " + String.Join(", ", sys.dssRemaining);
             }
-            else if (sys.dssBodies.Count == sys.bodyCount)
+            else
             {
                 brush = GameColors.brushGameOrange;
             }
