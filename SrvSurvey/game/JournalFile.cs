@@ -133,30 +133,56 @@ namespace SrvSurvey
         public void searchDeep<T>(Func<T, bool> func, Func<JournalFile, bool>? finishWhen = null) where T : JournalEntry
         {
             var count = 0;
-            var journals = this;
+            var journal = this;
 
             // search older journals
-            while (journals != null)
+            while (journal != null)
             {
                 ++count;
-                // search journals
-                var finished = journals.search(func);
+                // search this journal
+                var finished = journal.search(func);
                 if (finished) break;
 
                 if (finishWhen != null)
                 {
-                    finished = finishWhen(journals);
+                    finished = finishWhen(journal);
                     if (finished) break;
                 }
 
-                var priorFilepath = JournalFile.getCommanderJournalBefore(this.CommanderName, this.isOdyssey, journals.timestamp);
-                journals = priorFilepath == null ? null : new JournalFile(priorFilepath);
+                var priorFilepath = JournalFile.getCommanderJournalBefore(this.CommanderName, this.isOdyssey, journal.timestamp);
+                journal = priorFilepath == null ? null : new JournalFile(priorFilepath);
             };
 
             Game.log($"searchJournalsDeep: count: {count}");
         }
 
-        public void walk(int index, bool searchUp, Func<JournalEntry, bool> func)
+        public void walkDeep(int index, bool searchUp, Func<JournalEntry, bool> func, Func<JournalFile, bool>? finishWhen = null)
+        {
+            var count = 0;
+            var journal = this;
+
+            // search older journals
+            while (journal != null)
+            {
+                ++count;
+                // walk this journal
+                var finished = journal.walk(index, searchUp, func);
+                if (finished) break;
+
+                if (finishWhen != null)
+                {
+                    finished = finishWhen(journal);
+                    if (finished) break;
+                }
+
+                var priorFilepath = JournalFile.getCommanderJournalBefore(this.CommanderName, this.isOdyssey, journal.timestamp);
+                journal = priorFilepath == null ? null : new JournalFile(priorFilepath);
+            };
+
+            Game.log($"walkDeep: count: {count}");
+        }
+
+        public bool walk(int index, bool searchUp, Func<JournalEntry, bool> func)
         {
             int idx = index;
             if (idx == -1)
@@ -168,14 +194,16 @@ namespace SrvSurvey
             while (idx != endIdx)
             {
                 var finished = func(this.Entries[idx]);
-                if (finished) return;
+                if (finished) return true;
 
                 // increment index and go round again
                 if (searchUp)
                     idx--;
                 else
                     idx++;
-            } 
+            }
+
+            return false;
         }
 
         public static string? getCommanderJournalBefore(string? cmdr, bool isOdyssey, DateTime timestamp)

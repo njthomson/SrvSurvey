@@ -5,12 +5,16 @@ namespace SrvSurvey
 {
     internal class PlotSysStatus : PlotBase, PlotterForm
     {
+        public string nextSystem;
+        private Font boldFont = Game.settings.fontMiddleBold;
 
         private PlotSysStatus() : base()
         {
             this.Width = 420;
-            this.Height = 42;
+            this.Height = 48;
             this.BackgroundImageLayout = ImageLayout.Stretch;
+
+            this.Font = Game.settings.fontMiddle;
         }
 
         protected override void Dispose(bool disposing)
@@ -56,7 +60,7 @@ namespace SrvSurvey
         {
             if (this.IsDisposed) return;
 
-            var targetMode = SystemStatus.showPlotter;
+            var targetMode = this.game.isMode(GameMode.SuperCruising, GameMode.SAA, GameMode.FSS, GameMode.ExternalPanel, GameMode.Orrery, GameMode.SystemMap);
             if (this.Opacity > 0 && !targetMode)
                 this.Opacity = 0;
             else if (this.Opacity == 0 && targetMode)
@@ -91,45 +95,77 @@ namespace SrvSurvey
             this.g.SmoothingMode = SmoothingMode.HighQuality;
             base.OnPaintBackground(e);
 
-            g.DrawString("Scans needed:", Game.settings.fontSmall, GameColors.brushGameOrange, 4, 7);
+            g.DrawString("System survey:", Game.settings.fontSmall, GameColors.brushGameOrange, 4, 7);
 
+            this.dtx = 6.0f;
+            this.dty = 19.0f;
 
             var sys = this.game.systemStatus;
+            var destinationBody = game.status.Destination?.Name?.Replace(sys.name, "").Trim();
 
-            var brush = GameColors.brushCyan;
+            try
+            {
+                if (this.nextSystem != null)
+                {
+                    // render next system only, if populated
+                    this.drawTextAt("Next system:");
+                    this.drawTextAt(this.nextSystem, GameColors.brushCyan);
+                    return;
+                }
 
-            var txt = "All DSS scans complete";
-            if (!sys.fssComplete && sys.fssBodies.Count < sys.bodyCount)
-            {
-                //var fssCompletion = (100.0 / sys.bodyCount * sys.fssBodies.Count).ToString("N0");
-                //txt = $"FSS completion: {fssCompletion}%";
-                txt = $"FSS incomplete";
-            }
-            else if (sys.fssComplete && sys.fssBodies.Count == 0)
-            {
-                txt = "Previously scanned system";
-                brush = GameColors.brushGameOrange;
-            }
-            else if (sys.dssRemaining.Count > 0)
-            {
-                txt = $"{sys.dssRemaining.Count}x DSS: " + String.Join(", ", sys.dssRemaining);
-            }
-            else
-            {
-                brush = GameColors.brushGameOrange;
-            }
+                if (!sys.fssComplete && sys.fssBodies.Count < sys.bodyCount)
+                {
+                    this.drawTextAt("FSS incomplete");
+                }
+                else if (sys.fssComplete && sys.fssBodies.Count == 0)
+                {
+                    this.drawTextAt("Previously scanned system");
+                }
+                else if (sys.dssRemaining.Count > 0)
+                {
+                    this.drawTextAt($"{sys.dssRemaining.Count}x DSS: ");
+                    this.drawRemainingBodies(destinationBody, sys.dssRemaining);
+                }
+                else
+                {
+                    this.drawTextAt("DSS scans complete");
+                }
 
-            var organicScanDiff = sys.sumOrganicSignals - sys.scannedOrganics;
-            if (organicScanDiff > 0)
-            {
-                txt += $" | {organicScanDiff}x Bio: " + String.Join(", ", sys.bioRemaining);
+                var organicScanDiff = sys.sumOrganicSignals - sys.scannedOrganics;
+                if (organicScanDiff > 0)
+                {
+                    this.drawTextAt($"| {organicScanDiff}x Bio: ");
+                    this.drawRemainingBodies(destinationBody, sys.bioRemaining);
+                }
             }
+            finally
+            {
+                // resize window to fit as necessary
+                this.Width = this.dtx > 120 ? (int)this.dtx + 6 : 120;
+            }
+        }
 
-            var font = Game.settings.fontMiddle;
-            var sz = g.MeasureString(txt, font);
-            g.DrawString(txt, font, brush, 4, 16);
+        /// <summary>
+        /// Render names in a horizontal list, highlighting any in the same group as the destination
+        /// </summary>
+        private void drawRemainingBodies(string? destination, List<string> names)
+        {
+            const TextFormatFlags flags = TextFormatFlags.VerticalCenter | TextFormatFlags.NoPadding;
 
-            this.Width = sz.Width > 320 ? (int)sz.Width : 320;
+            // draw each remaining body, highlighting color if they are in the same group as the destination, or all of them if no destination
+            foreach (var bodyName in names)
+            {
+                var isLocal = string.IsNullOrEmpty(destination) || bodyName[0] == destination[0];
+
+                var font = isLocal ? this.boldFont : this.Font;
+                var color = isLocal ? GameColors.Cyan : GameColors.Orange;
+
+                var sz = g.MeasureString(bodyName, font).ToSize();
+                var rect = new Rectangle((int)this.dtx, (int)this.dty, sz.Width, sz.Height);
+
+                TextRenderer.DrawText(g, bodyName, font, rect, color, flags);
+                this.dtx += sz.Width;
+            }
         }
     }
 }

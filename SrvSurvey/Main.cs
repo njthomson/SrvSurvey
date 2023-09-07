@@ -527,6 +527,17 @@ namespace SrvSurvey
 
             if (msg.StartsWith(MsgCmd.trackAdd) || msg.StartsWith(MsgCmd.trackRemove))
                 PlotTrackers.processCommand(msg);
+
+            // submit a Landscape survey
+            if (msg.StartsWith(MsgCmd.submit, StringComparison.OrdinalIgnoreCase))
+            {
+                var notes = entry.Message.Substring(MsgCmd.submit.Length).Trim();
+                game.systemStatus.submitSurvey(notes);
+            }
+            else if (msg.Equals(MsgCmd.nextSystem, StringComparison.OrdinalIgnoreCase))
+            {
+                game.systemStatus.nextSystem();
+            }
         }
 
         private void btnQuit_Click(object sender, EventArgs e)

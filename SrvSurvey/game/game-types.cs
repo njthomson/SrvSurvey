@@ -1,10 +1,5 @@
-﻿using SrvSurvey.canonn;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace SrvSurvey.game
 {
@@ -96,6 +91,25 @@ namespace SrvSurvey.game
 
     internal class SystemStatus
     {
+        public static bool showPlotter
+        {
+            get
+            {
+                return Game.activeGame?.systemStatus.honked ?? false;
+                /*
+                return Game.settings.autoShowPlotSysStatus
+                    && Game.activeGame != null
+                    && Game.activeGame.isMode(GameMode.SuperCruising, GameMode.SAA, GameMode.FSS, GameMode.ExternalPanel, GameMode.Orrery, GameMode.SystemMap)
+                    // show only after honking
+                    && Game.activeGame.systemStatus.honked
+                    // hide if FSS is complete but we scanned no systems - means FSS was done previously
+                    ; //&& (!Game.activeGame.systemStatus.fssComplete || Game.activeGame.systemStatus.fssBodies.Count > 0);
+                      //&& Game.activeGame.systemStatus.dssRemaining.Count > 0
+                      //&& Game.activeGame.systemStatus.bioBodies.Count > 0;
+                // */
+            }
+        }
+
         public string name;
         public long address;
         public int bodyCount;
@@ -118,7 +132,7 @@ namespace SrvSurvey.game
         {
             Game.log($"initFromJournal.walk: begin");
 
-            game.journals?.walk(-1, true, (entry) =>
+            game.journals?.walkDeep(-1, true, (entry) =>
             {
                 // stop at FSDJump's
                 if (entry is FSDJump) return true;
@@ -127,27 +141,8 @@ namespace SrvSurvey.game
                 return false;
             });
 
-            // TODO: go deep?
-
             Game.log($"initFromJournal.walk: found FSS: {this.fssComplete}, bodyCount: {this.bodyCount}, count FSS: {this.fssBodies.Count}, count DSS: {this.dssBodies.Count}, count bio bodies: {this.bioBodies.Count}");
         }
-
-        public static bool showPlotter
-        {
-            get
-            {
-                return Game.settings.autoShowPlotSysStatus
-                    && Game.activeGame != null
-                    && Game.activeGame.isMode(GameMode.SuperCruising, GameMode.SAA, GameMode.FSS, GameMode.ExternalPanel, GameMode.Orrery, GameMode.SystemMap)
-                    // show only after honking
-                    && Game.activeGame.systemStatus.honked
-                    // hide if FSS is complete but we scanned no systems - means FSS was done previously
-                    ; //&& (!Game.activeGame.systemStatus.fssComplete || Game.activeGame.systemStatus.fssBodies.Count > 0);
-                      //&& Game.activeGame.systemStatus.dssRemaining.Count > 0
-                      //&& Game.activeGame.systemStatus.bioBodies.Count > 0;
-            }
-        }
-
         private void Journals_onJournalEntry(JournalEntry entry) { this.onJournalEntry((dynamic)entry); }
         private void onJournalEntry(JournalEntry entry) { /* ignore */ }
 
@@ -260,7 +255,7 @@ namespace SrvSurvey.game
 
                 if (Game.settings.skipGasGiantDSS)
                     bodies = bodies
-                        .Where(_ => !_.Value.Contains("giant", StringComparison.OrdinalIgnoreCase) && !this.dssBodies.Contains(_.Key));
+                        .Where(_ => !_.Value.Contains("gas giant", StringComparison.OrdinalIgnoreCase) && !this.dssBodies.Contains(_.Key));
 
                 if (Game.settings.skipRingsDSS)
                     bodies = bodies
@@ -278,7 +273,7 @@ namespace SrvSurvey.game
             get
             {
                 return this.bioBodies
-                    .Where(_ => !this.bioScans.ContainsKey(_.Key) || this.bioScans[_.Key] >= _.Value)
+                    .Where(_ => !this.bioScans.ContainsKey(_.Key) || this.bioScans[_.Key] < _.Value)
                     .Select(_ => this.bodyIds[_.Key].Replace(this.name, "").Replace(" ", ""))
                     .Order()
                     .ToList();
@@ -286,6 +281,112 @@ namespace SrvSurvey.game
         }
 
         public int sumOrganicSignals { get => this.bioBodies.Values.Sum(); }
+
+        /// <summary>
+        /// Open Landscape signal survey page in a browser
+        /// </summary>
+        public void submitSurvey(string notes)
+        {
+            if (Game.activeGame == null) return;
+
+            var url = $"https://docs.google.com/forms/d/e/1FAIpQLSem1JJuPaRdBReaqowPTUelptVmLkJ-XtOP_R8ug1EHFSQTCA/viewform?usp=pp_url&entry.1338642726={Game.activeGame?.cmdr.commander}&entry.2050947313={this.name}";
+
+            // was FSS completed
+            if (this.fssComplete)
+                url += "&entry.1907158015=FSS+of+all+planets";
+
+            // were all planets DSS'd?
+            var planetsInSystem = this.fssBodies.Where(_ => _.Value != "Ring" && _.Value != "Star");
+            var planetsNotDSS = planetsInSystem.Where(_ => !this.dssBodies.Contains(_.Key));
+            if (!planetsNotDSS.Any())
+                url += "&entry.1907158015=Detailed+Surface+Scan+of+all+planets";
+
+            // were all rings DSS'd?
+            var ringsInSystem = this.fssBodies.Where(_ => _.Value == "Ring").Select(_ => _.Key);
+            var ringsNotDSS = ringsInSystem.Where(_ => !this.dssBodies.Contains(_));
+            if (!ringsNotDSS.Any())
+                url += "&entry.1907158015=Detailed+Scan+of+all+rings";
+
+            // finally, generate any useful notes
+            var gasGiantsInSystem = planetsNotDSS.Where(_ => _.Value.Contains("gas giant", StringComparison.OrdinalIgnoreCase));
+            if (planetsInSystem.Count() > 0 && gasGiantsInSystem.Count() > 0 && planetsNotDSS.All(_ => _.Value.Contains("gas giant", StringComparison.OrdinalIgnoreCase)))
+                notes += " DSS all planets except Gas Giants.";
+
+            if (!string.IsNullOrWhiteSpace(notes))
+                url += $"&entry.622407078={notes.Trim()}";
+
+
+            Util.openLink(url);
+        }
+
+        ///// <summary>
+        ///// Open Landscape signal survey reservation page in a browser
+        ///// </summary>
+        //public void reserveMoreSystems()
+        //{
+        //    if (Game.activeGame == null) return;
+
+        //    // assume we want to reserve more systems of the same class, meaning match "UY-S b", "KM-W c" or "FG-Y d"
+        //    string systemPrefix = null!;
+        //    if (Game.activeGame.cmdr.currentSystem.Contains("UY-S b"))
+        //        systemPrefix = "Stuemeae UY-S b";
+        //    else if (Game.activeGame.cmdr.currentSystem.Contains("KM-W c"))
+        //        systemPrefix = "Stuemeae KM-W c";
+        //    else if (Game.activeGame.cmdr.currentSystem.Contains("FG-Y d"))
+        //        systemPrefix = "Stuemeae FG-Y d";
+
+        //    var url = $"https://docs.google.com/forms/d/e/1FAIpQLSd2w1jFxFv33gxI-OeRsgEs0QPaCMbzDddmjefpEGjAU3A4kA/viewform?entry.1547632870={Game.activeGame?.cmdr.commander}&entry.1229009577=Reserve+10+Systems";
+        //    if (systemPrefix != null)
+        //        url += $"&entry.2100543585={systemPrefix}";
+
+
+        //    Util.openLink(url);
+        //}
+
+        /// <summary>
+        /// Open Landscape signal survey reservation page in a browser
+        /// </summary>
+        public async Task nextSystem()
+        {
+            if (Game.activeGame == null) return;
+
+            var cmdrName = Game.activeGame?.cmdr.commander;
+            var url = $"https://docs.google.com/spreadsheets/d/1U00SXnU0fGn_97mTQTlN6JL99jcHR3ox962BFqnpHGA/gviz/tq?gid=1930322502&single=true&tq=select * where A contains \"{cmdrName}\"";
+            Game.log($"Requesting systems in current reservation\r\n{url}");
+            var response = await new HttpClient().GetStringAsync(url);
+
+            const string marker = "setResponse(";
+            var idx = response.IndexOf(marker);
+            var json = response.Substring(idx + marker.Length);
+            json = json.Substring(0, json.Length - 2);
+
+            var obj = JsonConvert.DeserializeObject<JObject>(json)!;
+
+            // reduce the data down to the set of 10 system names.
+            var cells = obj["table"]?["rows"]?[0]?["c"]
+                ?.Select(_ => _.HasValues ? _["v"]?.Value<string?>() : "")
+                ?.Where(_ => _ != null && _ != cmdrName);
+
+            // and find the first non-blank one, that does not match our current system
+            var nextSystem = cells?.FirstOrDefault(_ => !string.IsNullOrWhiteSpace(_) && _ != this.name);
+
+            if (string.IsNullOrWhiteSpace(nextSystem))
+            {
+                Game.log($"Cannot find next reserved system from:\r\n{json}");
+            }
+            else
+            {
+                Game.log($"Copying next reserved system to clipboard: {nextSystem}");
+                Clipboard.SetText(nextSystem);
+
+                var form = Program.getPlotter<PlotSysStatus>();
+                if (form != null)
+                {
+                    form.nextSystem = nextSystem;
+                    form.Invalidate();
+                }
+            }
+        }
 
     }
 }

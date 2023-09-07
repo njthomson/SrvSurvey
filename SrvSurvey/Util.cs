@@ -108,6 +108,8 @@ namespace SrvSurvey
 
         public static void openLink(string link)
         {
+            Game.log($"Opening link:\r\n{link}\r\n");
+
             var info = new ProcessStartInfo(link);
             info.UseShellExecute = true;
             Process.Start(info);

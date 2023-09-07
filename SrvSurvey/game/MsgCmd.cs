@@ -38,5 +38,10 @@
         public const string trackAdd = "+";
         /// <summary> Main : prefix for various track removal commands </summary>
         public const string trackRemove = "-";
+
+        /// <summary> Main : submit a Landscape survey </summary>
+        public const string submit = ".submit";
+        /// <summary> Main : reserve another block of Landscape survey systems </summary>
+        public const string nextSystem = ".nextSystem";
     }
 }

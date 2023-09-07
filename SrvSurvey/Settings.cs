@@ -71,6 +71,7 @@ namespace SrvSurvey
         public Font fontSmall2 = new Font("Century Gothic", 8F, FontStyle.Regular, GraphicsUnit.Point);
         public Font fontSmaller = new Font("Century Gothic", 10F, FontStyle.Regular, GraphicsUnit.Point);
         public Font fontMiddle = new Font("Century Gothic", 12F, FontStyle.Regular, GraphicsUnit.Point);
+        public Font fontMiddleBold = new Font("Century Gothic", 12F, FontStyle.Bold, GraphicsUnit.Point);
         public Font font2 = new Font("Century Gothic", 16F, FontStyle.Regular, GraphicsUnit.Point);
         public Font fontBig = new Font("Century Gothic", 22F, FontStyle.Regular, GraphicsUnit.Point);
 
