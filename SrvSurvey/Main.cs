@@ -125,12 +125,14 @@ namespace SrvSurvey
             this.updateGuardianTexts();
             this.updateSphereLimit();
 
-            if (Game.settings.autoShowPlotFSS && (newMode == GameMode.FSS || game?.mode == GameMode.FSS))
+            var gameIsActive = game != null && game.isRunning && game.Commander != null;
+
+            if (gameIsActive && Game.settings.autoShowPlotFSS && (newMode == GameMode.FSS || game?.mode == GameMode.FSS))
                 Program.showPlotter<PlotFSS>();
             else
                 Program.closePlotter<PlotFSS>();
 
-            if (SystemStatus.showPlotter)
+            if (gameIsActive && SystemStatus.showPlotter)
                 Program.showPlotter<PlotSysStatus>();
             else
                 Program.closePlotter<PlotSysStatus>();

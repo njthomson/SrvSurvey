@@ -101,7 +101,7 @@ namespace SrvSurvey
             this.dty = 19.0f;
 
             var sys = this.game.systemStatus;
-            var destinationBody = game.status.Destination?.Name?.Replace(sys.name, "").Trim();
+            var destinationBody = game.status.Destination?.Name?.Replace(sys.name, "").Replace(" ", "");
 
             try
             {
@@ -157,7 +157,8 @@ namespace SrvSurvey
             {
                 var isLocal = string.IsNullOrEmpty(destination) || bodyName[0] == destination[0];
 
-                var font = isLocal ? this.boldFont : this.Font;
+                var font = this.Font;
+                if (destination == bodyName) font = this.boldFont;
                 var color = isLocal ? GameColors.Cyan : GameColors.Orange;
 
                 var sz = g.MeasureString(bodyName, font).ToSize();
