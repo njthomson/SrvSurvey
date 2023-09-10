@@ -5,7 +5,7 @@ namespace SrvSurvey
 {
     internal class PlotSysStatus : PlotBase, PlotterForm
     {
-        public string nextSystem;
+        public string? nextSystem;
         private Font boldFont = Game.settings.fontMiddleBold;
 
         private PlotSysStatus() : base()
@@ -78,12 +78,14 @@ namespace SrvSurvey
         protected override void onJournalEntry(FSSDiscoveryScan entry)
         {
             Game.log($"PlotSysStatus: Scan event: {entry.SystemName}");
+            this.nextSystem = null;
             this.Invalidate();
         }
 
         protected override void onJournalEntry(Scan entry)
         {
             Game.log($"PlotSysStatus: Scan event: {entry.Bodyname}");
+            this.nextSystem = null;
             this.Invalidate();
         }
 

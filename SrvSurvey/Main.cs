@@ -527,7 +527,7 @@ namespace SrvSurvey
                     return;
             }
 
-            if (msg.StartsWith(MsgCmd.trackAdd) || msg.StartsWith(MsgCmd.trackRemove))
+            if (msg.StartsWith(MsgCmd.trackAdd) || msg.StartsWith(MsgCmd.trackRemove) || msg.StartsWith(MsgCmd.trackRemoveLast))
                 PlotTrackers.processCommand(msg);
 
             // submit a Landscape survey
@@ -601,7 +601,7 @@ namespace SrvSurvey
 
             if (this.lastWindowHasFocus != hasFocus)
             {
-                Game.log($"EliteDangerous window focus changed: {hasFocus}");
+                //Game.log($"EliteDangerous window focus changed: {hasFocus}");
 
                 if (hasFocus)
                     Program.showActivePlotters();

@@ -38,6 +38,8 @@
         public const string trackAdd = "+";
         /// <summary> Main : prefix for various track removal commands </summary>
         public const string trackRemove = "-";
+        /// <summary> Main : prefix for various track removal commands </summary>
+        public const string trackRemoveLast = "=";
 
         /// <summary> Main : submit a Landscape survey </summary>
         public const string submit = ".submit";

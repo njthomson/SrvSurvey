@@ -13,7 +13,7 @@ namespace SrvSurvey
 
         public static void processCommand(string msg)
         {
-            if (Game.activeGame == null || !(msg.StartsWith(MsgCmd.trackAdd) || msg.StartsWith(MsgCmd.trackRemove))) return;
+            if (Game.activeGame == null || !(msg.StartsWith(MsgCmd.trackAdd) || msg.StartsWith(MsgCmd.trackRemove) || msg.StartsWith(MsgCmd.trackRemoveLast))) return;
             var cmdr = Game.activeGame.cmdr;
 
             if (msg.StartsWith("---"))
@@ -29,6 +29,7 @@ namespace SrvSurvey
             var offset = 1;
             if (msg.StartsWith("+")) verb = "add";
             if (msg.StartsWith("-")) verb = "remove";
+            if (msg.StartsWith("=")) verb = "removeLast";
             if (msg.StartsWith("--")) { verb = "clear"; offset = 2; }
 
             var parts = msg.Substring(offset).Split(' ', 2, StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
@@ -102,6 +103,28 @@ namespace SrvSurvey
                     cmdr.Save();
 
                     if (form != null) form.trackers[name].RemoveAt(0);
+                }
+                else if (verb == "removeLast")
+                {
+                    // remove the furthest entry
+                    var radius = (decimal)Game.activeGame.nearBody!.radius;
+                    decimal maxDist = 0;
+                    LatLong2 maxEntry = null!;
+                    foreach (var _ in cmdr.trackTargets[name])
+                    {
+                        var dist = Util.getDistance(_, Status.here, radius);
+                        if (dist > maxDist)
+                        {
+                            maxDist = dist;
+                            maxEntry = _;
+                        }
+                    }
+
+                    Game.log($"Removing furthest entry from group '{name}': {maxEntry}");
+                    cmdr.trackTargets[name].Remove(maxEntry);
+                    cmdr.Save();
+
+                    if (form != null) form.trackers[name].RemoveAt(form.trackers.Count - 1);
                 }
             }
             else

@@ -777,6 +777,14 @@ namespace SrvSurvey.game
                 this.fsdJumping = true;
                 this.checkModeChange();
                 this.Status_StatusChanged(false);
+
+                // clear the nextSystem displayed when jumping to some other system
+                var form = Program.getPlotter<PlotSysStatus>();
+                if (form != null)
+                {
+                    form.nextSystem = null;
+                    form.Invalidate();
+                }
             }
         }
 
@@ -1080,7 +1088,7 @@ namespace SrvSurvey.game
                 var match = BioScan.prefixes.FirstOrDefault(_ => _.Value.Contains(namePart, StringComparison.OrdinalIgnoreCase));
                 var prefix = match.Key;
                 var genusName = match.Value;
-                if (prefix != null && this.nearBody?.data.organisms != null)
+                if (prefix != null && this.nearBody?.data.organisms != null && this.nearBody.data.organisms.ContainsKey(genusName))
                 {
                     var organism = this.nearBody.data.organisms[genusName];
                     if (organism.analyzed && Game.settings.skipAnalyzedCompBioScans)
