@@ -117,6 +117,7 @@ namespace SrvSurvey.game
         public bool fssComplete;
         public Dictionary<string, string> fssBodies = new Dictionary<string, string>();
         public HashSet<string> dssBodies = new HashSet<string>();
+        public HashSet<string> visitedBodies = new HashSet<string>();
         public Dictionary<int, string> bodyIds = new Dictionary<int, string>();
         public Dictionary<int, int> bioBodies = new Dictionary<int, int>();
         public Dictionary<int, int> bioScans = new Dictionary<int, int>();
@@ -174,6 +175,10 @@ namespace SrvSurvey.game
             if (entry.SystemAddress != this.address) return;
             this.bodyIds[entry.BodyID] = entry.Bodyname;
 
+            // ignore stars
+            if (entry.StarType != null)
+                return;
+
             var bodyType = entry.StarType != null ? "Star" : entry.PlanetClass;
 
             if (bodyType != null)
@@ -209,6 +214,7 @@ namespace SrvSurvey.game
 
             this.bodyIds[entry.BodyID] = bodyName;
             this.dssBodies.Add(bodyName);
+            this.visitedBodies.Add(bodyName);
         }
 
         public void onJournalEntry(SAASignalsFound entry)
@@ -251,15 +257,15 @@ namespace SrvSurvey.game
             get
             {
                 var bodies = this.fssBodies
-                    .Where(_ => _.Value != "Star" && !this.dssBodies.Contains(_.Key));
+                    .Where(_ => _.Value != "Star" && !this.visitedBodies.Contains(_.Key));
 
                 if (Game.settings.skipGasGiantDSS)
                     bodies = bodies
-                        .Where(_ => !_.Value.Contains("gas giant", StringComparison.OrdinalIgnoreCase) && !this.dssBodies.Contains(_.Key));
+                        .Where(_ => !_.Value.Contains("gas giant", StringComparison.OrdinalIgnoreCase) && !this.visitedBodies.Contains(_.Key));
 
                 if (Game.settings.skipRingsDSS)
                     bodies = bodies
-                        .Where(_ => _.Value != "Ring" && !this.dssBodies.Contains(_.Key));
+                        .Where(_ => _.Value != "Ring" && !this.visitedBodies.Contains(_.Key));
 
                 return bodies
                     .Select(_ => _.Key.Replace(this.name, "").Replace(" ", ""))
@@ -281,6 +287,32 @@ namespace SrvSurvey.game
         }
 
         public int sumOrganicSignals { get => this.bioBodies.Values.Sum(); }
+
+
+        /// <summary>
+        /// Marks the current target as a visited body
+        /// </summary>
+        public void visitedTargetBody(string bodyName)
+        {
+            if (Game.activeGame == null || Game.activeGame?.status?.Destination?.Name == null || string.IsNullOrWhiteSpace(bodyName)) return;
+
+            if (string.IsNullOrWhiteSpace(bodyName))
+            {
+                this.visitedBodies.Add(Game.activeGame.status.Destination.Name);
+            }
+            else
+            {
+                var matchedBody = this.fssBodies.Keys.FirstOrDefault(_ => _.Replace(this.name, "").Replace(" ", "").Equals(bodyName, StringComparison.OrdinalIgnoreCase));
+                // find a match from the destinations
+                Game.log($"Matched '{matchedBody}' from '{bodyName}'");
+                if (!string.IsNullOrWhiteSpace(matchedBody))
+                    this.visitedBodies.Add(matchedBody);
+            }
+            //var destination = Game.activeGame.status.Destination.Name.Replace(this.name, "").Replace(" ", "");
+
+            var form = Program.getPlotter<PlotSysStatus>();
+            if (form != null) form.Invalidate();
+        }
 
         /// <summary>
         /// Open Landscape signal survey page in a browser
@@ -311,6 +343,9 @@ namespace SrvSurvey.game
             var gasGiantsInSystem = planetsNotDSS.Where(_ => _.Value.Contains("gas giant", StringComparison.OrdinalIgnoreCase));
             if (planetsInSystem.Count() > 0 && gasGiantsInSystem.Count() > 0 && planetsNotDSS.All(_ => _.Value.Contains("gas giant", StringComparison.OrdinalIgnoreCase)))
                 notes += " DSS all planets except Gas Giants.";
+
+            if (this.visitedBodies.Count < this.fssBodies.Count)
+                notes += $" Visited {this.visitedBodies.Count} of {this.fssBodies.Count} non-Star bodies.";
 
             if (!string.IsNullOrWhiteSpace(notes))
                 url += $"&entry.622407078={notes.Trim()}";
@@ -369,17 +404,23 @@ namespace SrvSurvey.game
 
             // and find the first non-blank one, that does not match our current system
             var nextSystem = cells?.FirstOrDefault(_ => !string.IsNullOrWhiteSpace(_) && _ != this.name);
+            var form = Program.getPlotter<PlotSysStatus>();
 
             if (string.IsNullOrWhiteSpace(nextSystem))
             {
                 Game.log($"Cannot find next reserved system from:\r\n{json}");
+                if (form != null)
+                {
+                    var m = 20 - DateTime.Now.Minute % 20;
+                    form.nextSystem = $"Unknown. Try again in ~{m} minutes.";
+                    form.Invalidate();
+                }
             }
             else
             {
                 Game.log($"Copying next reserved system to clipboard: {nextSystem}");
                 Clipboard.SetText(nextSystem);
 
-                var form = Program.getPlotter<PlotSysStatus>();
                 if (form != null)
                 {
                     form.nextSystem = nextSystem;

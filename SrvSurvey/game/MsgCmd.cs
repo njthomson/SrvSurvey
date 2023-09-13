@@ -41,6 +41,8 @@
         /// <summary> Main : prefix for various track removal commands </summary>
         public const string trackRemoveLast = "=";
 
+        /// <summary> Main : Record that a particular body has been visited </summary>
+        public const string visited = ".visited";
         /// <summary> Main : submit a Landscape survey </summary>
         public const string submit = ".submit";
         /// <summary> Main : reserve another block of Landscape survey systems </summary>

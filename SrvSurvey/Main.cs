@@ -531,7 +531,12 @@ namespace SrvSurvey
                 PlotTrackers.processCommand(msg);
 
             // submit a Landscape survey
-            if (msg.StartsWith(MsgCmd.submit, StringComparison.OrdinalIgnoreCase))
+            if (msg.StartsWith(MsgCmd.visited, StringComparison.OrdinalIgnoreCase))
+            {
+                var bodyName = entry.Message.Substring(MsgCmd.visited.Length).Trim();
+                game.systemStatus.visitedTargetBody(bodyName);
+            }
+            else if (msg.StartsWith(MsgCmd.submit, StringComparison.OrdinalIgnoreCase))
             {
                 var notes = entry.Message.Substring(MsgCmd.submit.Length).Trim();
                 game.systemStatus.submitSurvey(notes);

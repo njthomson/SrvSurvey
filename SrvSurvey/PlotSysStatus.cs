@@ -53,14 +53,14 @@ namespace SrvSurvey
 
         public static bool allowPlotter
         {
-            get => Game.activeGame != null && Game.activeGame.isMode(GameMode.SuperCruising, GameMode.SAA, GameMode.FSS, GameMode.ExternalPanel, GameMode.Orrery, GameMode.SystemMap);
+            get => Game.activeGame != null && Game.activeGame.isMode(GameMode.SuperCruising, GameMode.SAA, GameMode.FSS, GameMode.ExternalPanel, GameMode.Orrery, GameMode.SystemMap, GameMode.CommsPanel);
         }
 
         protected override void Game_modeChanged(GameMode newMode, bool force)
         {
             if (this.IsDisposed) return;
 
-            var targetMode = this.game.isMode(GameMode.SuperCruising, GameMode.SAA, GameMode.FSS, GameMode.ExternalPanel, GameMode.Orrery, GameMode.SystemMap);
+            var targetMode = this.game.isMode(GameMode.SuperCruising, GameMode.SAA, GameMode.FSS, GameMode.ExternalPanel, GameMode.Orrery, GameMode.SystemMap, GameMode.CommsPanel);
             if (this.Opacity > 0 && !targetMode)
                 this.Opacity = 0;
             else if (this.Opacity == 0 && targetMode)
@@ -97,7 +97,7 @@ namespace SrvSurvey
             this.g.SmoothingMode = SmoothingMode.HighQuality;
             base.OnPaintBackground(e);
 
-            g.DrawString("System survey:", Game.settings.fontSmall, GameColors.brushGameOrange, 4, 7);
+            g.DrawString("System survey remaining:", Game.settings.fontSmall, GameColors.brushGameOrange, 4, 7);
 
             this.dtx = 6.0f;
             this.dty = 19.0f;
@@ -117,7 +117,7 @@ namespace SrvSurvey
 
                 if (!sys.fssComplete && sys.fssBodies.Count < sys.bodyCount)
                 {
-                    this.drawTextAt("FSS incomplete");
+                    this.drawTextAt("FSS incomplete", GameColors.brushCyan);
                 }
                 else if (sys.fssComplete && sys.fssBodies.Count == 0)
                 {
@@ -125,7 +125,7 @@ namespace SrvSurvey
                 }
                 else if (sys.dssRemaining.Count > 0)
                 {
-                    this.drawTextAt($"{sys.dssRemaining.Count}x DSS: ");
+                    this.drawTextAt($"{sys.dssRemaining.Count}x bodies: ");
                     this.drawRemainingBodies(destinationBody, sys.dssRemaining);
                 }
                 else
@@ -136,14 +136,17 @@ namespace SrvSurvey
                 var organicScanDiff = sys.sumOrganicSignals - sys.scannedOrganics;
                 if (organicScanDiff > 0)
                 {
-                    this.drawTextAt($"| {organicScanDiff}x Bio: ");
+                    this.drawTextAt($"| {organicScanDiff}x Bio signals on: ");
+                    //this.drawTextAt($"| Bio signals: ");
+                    //var names = sys.bioRemaining.Select(_ => $"{_}:0").ToList();
+                    //var txt = $"{sys.bioRemaining}x0";
                     this.drawRemainingBodies(destinationBody, sys.bioRemaining);
                 }
             }
             finally
             {
                 // resize window to fit as necessary
-                this.Width = this.dtx > 120 ? (int)this.dtx + 6 : 120;
+                this.Width = this.dtx > 170 ? (int)this.dtx + 6 : 170;
             }
         }
 
