@@ -80,7 +80,7 @@ namespace SrvSurvey
                 // prepare summary with value of last thing scanned
                 var namePart = entry.Name.Split('_')[2];
                 var genusName = BioScan.ranges.Keys.FirstOrDefault(_ => _.Contains(namePart, StringComparison.OrdinalIgnoreCase));
-                if (genusName != null && game.nearBody?.data.organisms != null)
+                if (genusName != null && game.nearBody?.data.organisms != null && game.nearBody.data.organisms.ContainsKey(genusName))
                 {
                     var organism = game.nearBody.data.organisms[genusName];
                     this.lastCodexScan = $"{entry.Name_Localised} {Util.credits(organism.reward)}";

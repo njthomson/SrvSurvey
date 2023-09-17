@@ -39,7 +39,7 @@ namespace SrvSurvey.units
         public decimal complete { get; private set; }
 
         private readonly decimal mpd;
-        private readonly decimal radius;
+        public readonly decimal radius;
         private LatLong2 current;
         private LatLong2 target;
 

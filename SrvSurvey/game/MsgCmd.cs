@@ -40,6 +40,8 @@
         public const string trackRemove = "-";
         /// <summary> Main : prefix for various track removal commands </summary>
         public const string trackRemoveLast = "=";
+        /// <summary> PlotTrackers: write debug diagnostics to traces to help solve distance calculations </summary>
+        public const string dbgDump = ".dbgdump";
 
         /// <summary> Main : Record that a particular body has been visited </summary>
         public const string visited = ".visited";

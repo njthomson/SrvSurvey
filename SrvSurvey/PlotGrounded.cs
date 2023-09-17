@@ -3,6 +3,7 @@ using SrvSurvey.units;
 using System;
 using System.Diagnostics;
 using System.Drawing.Drawing2D;
+using System.Text;
 
 namespace SrvSurvey
 {
@@ -73,7 +74,7 @@ namespace SrvSurvey
             game.nearBody!.bioScanEvent += NearBody_bioScanEvent;
 
             // get landing location
-            Game.log($"initialize here: {Status.here}, touchdownLocation: {game.touchdownLocation}");
+            Game.log($"initialize here: {Status.here}, touchdownLocation: {game.touchdownLocation}, radius: {game.nearBody!.radius.ToString("N0")}");
 
             if (game.touchdownLocation == null)
             {
@@ -136,6 +137,48 @@ namespace SrvSurvey
                 this.Invalidate();
             }
         }
+
+        private void onJournalEntry(SendText entry)
+        {
+            if (entry.Message.ToLower() == MsgCmd.dbgDump)
+            {
+                var str = new StringBuilder($"Distance diagnostics from here: {Status.here}, nearBody.radius: {game.nearBody?.radius.ToString("N0")}\r\n");
+
+                if (game.nearBody?.data.bioScans != null)
+                {
+                    foreach (var scan in game.nearBody.data.bioScans)
+                    {
+                        str.AppendLine($"\r\n> Species: {scan.species} ({scan.status})");
+                        str.AppendLine($"      radius: " + scan.radius.ToString("N0"));
+                        str.AppendLine($"      location: {scan.location}");
+                    }
+                }
+
+                if (game.cmdr.scanOne != null)
+                    str.AppendLine($"ScanOne: radius: {game.cmdr.scanOne.radius.ToString("N0")}, location: {game.cmdr.scanOne.location}");
+                if (game.cmdr.scanTwo != null)
+                    str.AppendLine($"ScanTwo: radius: {game.cmdr.scanTwo.radius.ToString("N0")}, location: {game.cmdr.scanTwo.location}");
+
+                var form = Program.getPlotter<PlotTrackers>();
+                if (form != null)
+                {
+                    foreach (var foo in form.trackers)
+                    {
+                        str.AppendLine($"\r\n> Key: {foo.Key}");
+                        foreach (var bar in foo.Value)
+                        {
+                            str.AppendLine($" --> {bar}");
+                            str.AppendLine($"      radius: " + bar.radius.ToString("N0"));
+                            str.AppendLine($"      target: {bar.Target}");
+                            str.AppendLine($"      current: {bar.Current}");
+                        }
+                    }
+                }
+
+                Game.log(str.ToString());
+            }
+        }
+
 
         #endregion
 
@@ -296,11 +339,11 @@ namespace SrvSurvey
                 drawBioScan(g, d, scan);
             }
 
-            // ---
+            // draw trackers circles first
             if (game.cmdr.trackTargets?.Count > 0)
                 drawTrackers(g);
-            // ---
 
+            // draw active scans top most
             if (game.nearBody.scanOne != null)
             {
                 drawBioScan(g, d, game.nearBody.scanOne);

@@ -1104,7 +1104,7 @@ namespace SrvSurvey.game
                 }
                 else
                 {
-                    Game.log($"Genus name not found from: {entry.Name} ({entry.Name_Localised})");
+                    Game.log($"Genus name '{genusName}' not found from: '{entry.Name}' ({entry.Name_Localised})");
                 }
             }
         }

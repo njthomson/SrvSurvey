@@ -27,6 +27,7 @@ namespace SrvSurvey.game
         public LandableBody(Game game, string systemName, string bodyName, int bodyId, long systemAddress, double radius)
         {
             if (radius == 0) throw new Exception("Bad radius!");
+            Game.log($"Creating LandableBody bodyName: '{bodyName}', radius: {radius.ToString("N0")}");
 
             this.game = game;
             this.systemName = systemName;
@@ -64,6 +65,7 @@ namespace SrvSurvey.game
 
         protected virtual void Dispose(bool disposing)
         {
+            Game.log($"Disposing LandableBody bodyName: '{this.bodyName}', radius: {this.radius.ToString("N0")}, disposing: {disposing}, this.isDisposed: {this.isDisposed}");
             this.isDisposed = true;
 
             if (this.data != null)
@@ -91,13 +93,13 @@ namespace SrvSurvey.game
         private void onJournalEntry(JournalEntry entry) { /* ignore */ }
         private void onJournalEntry(ScanOrganic entry)
         {
-            Game.log($"ScanOrganic: {entry.ScanType}: {entry.Genus} / {entry.Species}");
+            Game.log($"ScanOrganic: {entry.ScanType}: {entry.Genus} / {entry.Species} | current location: {Status.here}");
             this.addBioScan(entry);
         }
 
         private void onJournalEntry(CodexEntry entry)
         {
-            Game.log($"CodexEntry: {entry.Name_Localised}, lat/long: {entry.Latitude},{entry.Longitude}");
+            Game.log($"CodexEntry: {entry.Name_Localised}, lat/long: {entry.Latitude},{entry.Longitude} | current location: {Status.here}");
             //  CodexEntry - to get the full name of a species
             foreach (var genusName in data.organisms.Keys)
             {
@@ -329,7 +331,7 @@ namespace SrvSurvey.game
                 radius = organism.range,
                 status = BioScan.Status.Active,
             };
-            Game.log($"new bio scan: {bioScan}");
+            Game.log($"new bio scan: {bioScan} | current location: {Status.here}");
 
             if (entry.ScanType == ScanType.Log)
             {

@@ -133,15 +133,27 @@ namespace SrvSurvey.game
         {
             Game.log($"initFromJournal.walk: begin");
 
+            var manualVisits = new List<SendText>();
+
             game.journals?.walkDeep(-1, true, (entry) =>
             {
                 // stop at FSDJump's
                 if (entry is FSDJump) return true;
 
                 this.Journals_onJournalEntry(entry);
+
+                if (entry is SendText)
+                    manualVisits.Add((SendText)entry);
+
                 return false;
             });
 
+            // re-init for .visited systems
+            if (manualVisits.Count > 0)
+            {
+                foreach(var entry in manualVisits)
+                    this.onJournalEntry(entry);
+            }
             Game.log($"initFromJournal.walk: found FSS: {this.fssComplete}, bodyCount: {this.bodyCount}, count FSS: {this.fssBodies.Count}, count DSS: {this.dssBodies.Count}, count bio bodies: {this.bioBodies.Count}");
         }
         private void Journals_onJournalEntry(JournalEntry entry) { this.onJournalEntry((dynamic)entry); }
@@ -252,6 +264,18 @@ namespace SrvSurvey.game
             this.bioScans[entry.Body]++;
         }
 
+        public void onJournalEntry(SendText entry)
+        {
+            if (Game.activeGame?.systemStatus == null) return;
+
+            var msg = entry.Message.ToLowerInvariant();
+            if (msg.StartsWith(MsgCmd.visited, StringComparison.OrdinalIgnoreCase))
+            {
+                var bodyName = entry.Message.Substring(MsgCmd.visited.Length).Trim();
+                Game.activeGame.systemStatus.visitedTargetBody(bodyName);
+            }
+        }
+
         public List<string> dssRemaining
         {
             get
@@ -296,22 +320,11 @@ namespace SrvSurvey.game
         {
             if (Game.activeGame == null || Game.activeGame?.status?.Destination?.Name == null || string.IsNullOrWhiteSpace(bodyName)) return;
 
-            if (string.IsNullOrWhiteSpace(bodyName))
-            {
-                this.visitedBodies.Add(Game.activeGame.status.Destination.Name);
-            }
-            else
-            {
-                var matchedBody = this.fssBodies.Keys.FirstOrDefault(_ => _.Replace(this.name, "").Replace(" ", "").Equals(bodyName, StringComparison.OrdinalIgnoreCase));
-                // find a match from the destinations
-                Game.log($"Matched '{matchedBody}' from '{bodyName}'");
-                if (!string.IsNullOrWhiteSpace(matchedBody))
-                    this.visitedBodies.Add(matchedBody);
-            }
-            //var destination = Game.activeGame.status.Destination.Name.Replace(this.name, "").Replace(" ", "");
-
-            var form = Program.getPlotter<PlotSysStatus>();
-            if (form != null) form.Invalidate();
+            var matchedBody = this.fssBodies.Keys.FirstOrDefault(_ => _.Replace(this.name, "").Replace(" ", "").Equals(bodyName, StringComparison.OrdinalIgnoreCase));
+            // find a match from the destinations
+            Game.log($"Matched '{matchedBody}' from '{bodyName}'");
+            if (!string.IsNullOrWhiteSpace(matchedBody))
+                this.visitedBodies.Add(matchedBody);
         }
 
         /// <summary>

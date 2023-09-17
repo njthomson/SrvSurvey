@@ -1,6 +1,7 @@
 ﻿using SrvSurvey.game;
 using SrvSurvey.units;
 using System.Drawing.Drawing2D;
+using System.Text;
 
 namespace SrvSurvey
 {
@@ -262,6 +263,7 @@ namespace SrvSurvey
                 }
             }
         }
+
 
         protected override void OnPaintBackground(PaintEventArgs e)
         {
