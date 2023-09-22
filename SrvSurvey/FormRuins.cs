@@ -163,7 +163,20 @@ namespace SrvSurvey
                 ? template.poi.Count(_ => _.type != POIType.relic)
                 : newSite.poiStatus.Count(_ => !_.Key.StartsWith("t") && (_.Value == SitePoiStatus.present || _.Value == SitePoiStatus.empty));
 
-            lblStatus.Text = $"Relic Towers: {countTowers}, puddles: {countItems}";
+            var siteHeading = this.siteData?.siteHeading > 0 - 1 ? $"{this.siteData.siteHeading}°" : "?";
+            var relicTowerHeading = this.siteData?.relicTowerHeading > 0 ? $"{this.siteData.relicTowerHeading}°" : "?";
+            lblStatus.Text = $"Relic Towers: {countTowers}, puddles: {countItems}, site heading: {siteHeading}, relic tower heading: {relicTowerHeading}";
+
+            var dd = "";
+            if (this.siteData != null && this.siteData.siteHeading >= 0 && this.siteData.relicTowerHeading >= 0)
+            {
+                var sh = this.siteData.siteHeading;
+                var th = this.siteData.relicTowerHeading;
+                if (sh < th) sh += 360;
+                var d = sh - th;
+                if (d > 180) d = 360 - d;
+                lblStatus.Text += $", diff: {d}°";
+            }
         }
 
         private void getAllSurveyedRuins()
@@ -388,9 +401,24 @@ namespace SrvSurvey
                 img.Height * template.scaleFactor);
             g.DrawImage(this.img, imgRect);
 
-            var compass = new Pen(Color.FromArgb(100, Color.Red)) { DashStyle = System.Drawing.Drawing2D.DashStyle.Solid };
-            g.DrawLine(compass, -map.Width * 2, 0, map.Width * 2, 0);
-            g.DrawLine(compass, 0, -map.Height * 2, 0, map.Height * 2);
+            if (this.siteData != null)
+            {
+                var heading = (float)this.siteData.siteHeading;
+                if (heading >= 0)
+                {
+                    g.RotateTransform(+heading);
+                    g.DrawLine(Pens.Red, 0, -map.Height * 2, 0, 0);
+                    g.RotateTransform(-heading);
+                }
+
+                heading = (float)this.siteData.relicTowerHeading;
+                if (heading >= 0)
+                {
+                    g.RotateTransform(+heading);
+                    g.DrawLine(Pens.DarkCyan, 0, -map.Height * 2, 0, 0);
+                    g.RotateTransform(-heading);
+                }
+            }
 
             drawArtifacts(g);
 
@@ -412,9 +440,6 @@ namespace SrvSurvey
             var siteData = game.nearBody.siteData;
             var cd = Util.getDistance(Status.here, siteData.location, (decimal)game.nearBody.radius);
             var cA = DecimalEx.PiHalf + Util.getBearingRad(siteData.location, Status.here) - (decimal)Util.degToRad(siteData.siteHeading);
-
-            var cx = (float)(DecimalEx.Cos(cA) * cd);
-            var cy = (float)(DecimalEx.Sin(cA) * cd);
 
             var cp = calcCmdrToSite();
             if (cp != null)
@@ -525,7 +550,7 @@ namespace SrvSurvey
             tp.X = 20;
             tp.Y = 20;
             g.ResetTransform();
-            var rect = new RectangleF(tp.X - 5, tp.Y - 5, 108, 174);
+            var rect = new RectangleF(tp.X - 5, tp.Y - 5, 114, 209);
 
             g.FillRectangle(GameColors.Map.Legend.brush, rect);
             g.DrawRectangle(GameColors.Map.Legend.pen, rect);
@@ -553,6 +578,12 @@ namespace SrvSurvey
 
             drawString(g, "Empty puddle");
             drawPuddle(g, new PointF(tp.X - 10, tp.Y - 10), POIType.totem, SitePoiStatus.empty);
+
+            drawString(g, "Site heading");
+            g.DrawLine(Pens.Red, tp.X-15, tp.Y-6, tp.X - 5, tp.Y - 14);
+
+            drawString(g, "Tower heading");
+            g.DrawLine(Pens.DarkCyan, tp.X - 15, tp.Y - 6, tp.X - 5, tp.Y - 14);
         }
 
         private void drawString(Graphics g, string msg)
