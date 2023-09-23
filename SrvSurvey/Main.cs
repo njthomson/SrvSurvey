@@ -543,7 +543,7 @@ namespace SrvSurvey
             }
             else if (msg.Equals(MsgCmd.nextSystem, StringComparison.OrdinalIgnoreCase))
             {
-                game.systemStatus.nextSystem();
+                game.systemStatus.nextSystem().ConfigureAwait(false);
             }
         }
 

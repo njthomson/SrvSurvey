@@ -52,17 +52,17 @@ namespace SrvSurvey
         /// <summary>
         /// The the location of the mouse pointer, relative to site origin
         /// </summary>
-        private PointF mousePos = new PointF();
+        private PointF mousePos;
 
         /// <summary>
         /// The center of the map image control
         /// </summary>
-        public PointF mapCenter = new PointF();
+        public PointF mapCenter;
 
         /// <summary>
         /// Offset from dragging the map around
         /// </summary>
-        public PointF dragOffset = new Point();
+        public PointF dragOffset;
         private bool dragging = false;
         private Point mouseDownPoint;
 
@@ -80,7 +80,7 @@ namespace SrvSurvey
         private SitePOI nearestPoi;
 
         private List<GuardianSiteData> surveyedSites;
-        private Dictionary<string, GuardianSiteData?> filteredSites = new Dictionary<string, GuardianSiteData?>();
+        private readonly Dictionary<string, GuardianSiteData?> filteredSites = new();
         private GuardianSiteData? siteData;
 
         public FormRuins(GuardianSiteData? siteData)
@@ -167,7 +167,6 @@ namespace SrvSurvey
             var relicTowerHeading = this.siteData?.relicTowerHeading > 0 ? $"{this.siteData.relicTowerHeading}°" : "?";
             lblStatus.Text = $"Relic Towers: {countTowers}, puddles: {countItems}, site heading: {siteHeading}, relic tower heading: {relicTowerHeading}";
 
-            var dd = "";
             if (this.siteData != null && this.siteData.siteHeading >= 0 && this.siteData.relicTowerHeading >= 0)
             {
                 var sh = this.siteData.siteHeading;
@@ -188,8 +187,7 @@ namespace SrvSurvey
         {
             if (string.IsNullOrEmpty(comboSiteType.Text)) return;
 
-            GuardianSiteData.SiteType targetType;
-            Enum.TryParse<GuardianSiteData.SiteType>(comboSiteType.Text, true, out targetType);
+            Enum.TryParse<GuardianSiteData.SiteType>(comboSiteType.Text, true, out GuardianSiteData.SiteType targetType);
 
             filteredSites.Clear();
             if (targetType == GuardianSiteData.SiteType.Unknown)
@@ -340,23 +338,6 @@ namespace SrvSurvey
             //showStatus();
         }
 
-        private void parseOriginText()
-        {
-            //if (string.IsNullOrEmpty(txtSiteOrigin.Text)) return;
-            //var idx = txtSiteOrigin.Text.IndexOf(",");
-            //if (idx < 0) return;
-
-            //var parts = txtSiteOrigin.Text.Split(",", StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
-            //if (parts.Length != 2) return;
-
-            //int x, y;
-            //if (int.TryParse(parts[0], out x) && int.TryParse(parts[1], out y))
-            //{
-            //    this.data.siteOrigin = new Point(x, y);
-            //    this.data.Save();
-            //}
-        }
-
         #endregion
 
         private void showStatus()
@@ -437,10 +418,6 @@ namespace SrvSurvey
             g.ScaleTransform(this.scale, this.scale);
             g.RotateTransform(180);
 
-            var siteData = game.nearBody.siteData;
-            var cd = Util.getDistance(Status.here, siteData.location, (decimal)game.nearBody.radius);
-            var cA = DecimalEx.PiHalf + Util.getBearingRad(siteData.location, Status.here) - (decimal)Util.degToRad(siteData.siteHeading);
-
             var cp = calcCmdrToSite();
             if (cp != null)
                 drawCommander(g, (PointF)cp, 10f);
@@ -516,7 +493,7 @@ namespace SrvSurvey
                 g.DrawEllipse(GameColors.penCyan4, nearestPt.X - 14, nearestPt.Y - 14, 28, 28);
         }
 
-        private void drawPuddle(Graphics g, PointF pt, POIType poiType, SitePoiStatus? poiStatus = SitePoiStatus.present)
+        private static void drawPuddle(Graphics g, PointF pt, POIType poiType, SitePoiStatus? poiStatus = SitePoiStatus.present)
         {
             var brush = GameColors.Map.brushes[poiType][poiStatus ?? SitePoiStatus.present];
             var pen = GameColors.Map.pens[poiType][poiStatus ?? SitePoiStatus.present];
@@ -528,7 +505,7 @@ namespace SrvSurvey
             g.DrawEllipse(pen, rect);
         }
 
-        private void drawRelicTower(Graphics g, PointF pt, SitePoiStatus? poiStatus = SitePoiStatus.present)
+        private static void drawRelicTower(Graphics g, PointF pt, SitePoiStatus? poiStatus = SitePoiStatus.present)
         {
             PointF[] points =
             {
@@ -580,7 +557,7 @@ namespace SrvSurvey
             drawPuddle(g, new PointF(tp.X - 10, tp.Y - 10), POIType.totem, SitePoiStatus.empty);
 
             drawString(g, "Site heading");
-            g.DrawLine(Pens.Red, tp.X-15, tp.Y-6, tp.X - 5, tp.Y - 14);
+            g.DrawLine(Pens.Red, tp.X - 15, tp.Y - 6, tp.X - 5, tp.Y - 14);
 
             drawString(g, "Tower heading");
             g.DrawLine(Pens.DarkCyan, tp.X - 15, tp.Y - 6, tp.X - 5, tp.Y - 14);
