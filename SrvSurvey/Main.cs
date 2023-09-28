@@ -704,7 +704,12 @@ namespace SrvSurvey
             this.stopWatchingScreenshots();
 
             // watch for creation of new log files
-            var folder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), "Frontier Developments\\Elite Dangerous");
+            var folder = Game.settings.screenshotSourceFolder;
+            if (string.IsNullOrEmpty(folder) || !Directory.Exists(folder))
+            {
+                // assume a hard-coded folder if the setting is bad
+                folder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), "Frontier Developments\\Elite Dangerous");
+            }
             this.screenshotWatcher = new FileSystemWatcher(folder, "*.bmp");
             this.screenshotWatcher.Created += ScreenshotWatcher_Created;
             this.screenshotWatcher.EnableRaisingEvents = true;

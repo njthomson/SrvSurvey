@@ -134,9 +134,18 @@ namespace SrvSurvey
 
             if (siteType != GuardianSiteData.SiteType.Unknown)
             {
-                var filepath = $"{siteType}-background.png".ToLowerInvariant();
-                using (var img = Bitmap.FromFile(Path.Combine("images", filepath)))
-                    this.img = new Bitmap(img);
+                var filename = $"{siteType}-background.png".ToLowerInvariant();
+                var filepath = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "images", filename);
+                if (File.Exists(filepath))
+                {
+                    using (var img = Bitmap.FromFile(filepath))
+                        this.img = new Bitmap(img);
+                }
+                else
+                {
+                    Game.log($"Unexpected! Cannot find background image: {filepath}");
+                    this.img = new Bitmap(40, 40);
+                }
 
                 // load template
                 this.template = SiteTemplate.sites[siteType];
