@@ -330,6 +330,8 @@ namespace SrvSurvey
             else if (scan.PlanetClass == "Water world" // WW
                 || scan.PlanetClass == "Earth-Like Planet") // ELW
                 k = isTerraformable ? 116295 : 64831;
+            else if (isTerraformable)
+                k = 93328; // RB
 
             // public static int GetBodyValue(int k, double mass, bool isFirstDiscoverer, bool isMapped, bool isFirstMapped, bool withEfficiencyBonus, bool isOdyssey, bool isFleetCarrierSale)
             // based on code from https://forums.frontier.co.uk/threads/exploration-value-formulae.232000/
