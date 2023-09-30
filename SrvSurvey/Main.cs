@@ -909,7 +909,11 @@ namespace SrvSurvey
         private void btnAllRuins_Click(object sender, EventArgs e)
         {
             FormAllRuins.show();
-            //FormBeacons.show();
+        }
+
+        private void btnGuarduanThings_Click(object sender, EventArgs e)
+        {
+            FormBeacons.show();
             //Program.closePlotter<PlotGuardianBeaconStatus>(); Program.showPlotter<PlotGuardianBeaconStatus>();
         }
 

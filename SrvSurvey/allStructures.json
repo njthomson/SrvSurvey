@@ -1,0 +1,2144 @@
+[
+  {
+    "idx": 0,
+    "systemName": "IC 2391 Sector CA-A d43",
+    "systemAddress": 1488080308579,
+    "bodyName": "12 a",
+    "bodyId": 66,
+    "distanceToArrival": 2729.0,
+    "starPos": [
+      591.5625,
+      -112.15625,
+      -36.1875
+    ],
+    "siteType": "Stickyhand"
+  },
+  {
+    "idx": 0,
+    "systemName": "IC 2391 Sector HG-X b1-8",
+    "systemAddress": 18271193277841,
+    "bodyName": "C 2",
+    "bodyId": 27,
+    "distanceToArrival": 19390.0,
+    "starPos": [
+      603.9375,
+      -104.15625,
+      -61.5625
+    ],
+    "siteType": "Robolobster"
+  },
+  {
+    "idx": 0,
+    "systemName": "IC 2391 Sector FL-X b1-7",
+    "systemAddress": 16072170087825,
+    "bodyName": "A 3",
+    "bodyId": 15,
+    "distanceToArrival": 53.0,
+    "starPos": [
+      611.34375,
+      -78.40625,
+      -51.6875
+    ],
+    "siteType": "Squid"
+  },
+  {
+    "idx": 0,
+    "systemName": "Synuefe NB-B b47-10",
+    "systemAddress": 22669776594321,
+    "bodyName": "B 2",
+    "bodyId": 21,
+    "distanceToArrival": 2279.0,
+    "starPos": [
+      643.4375,
+      -113.84375,
+      -61.5625
+    ],
+    "siteType": "Robolobster"
+  },
+  {
+    "idx": 0,
+    "systemName": "Synuefe DK-D b46-4",
+    "systemAddress": 9475637257609,
+    "bodyName": "C 1",
+    "bodyId": 53,
+    "distanceToArrival": 80845.0,
+    "starPos": [
+      652.9375,
+      -63.90625,
+      -80.78125
+    ],
+    "siteType": "Squid"
+  },
+  {
+    "idx": 0,
+    "systemName": "Synuefe GQ-N c23-21",
+    "systemAddress": 5857429361354,
+    "bodyName": "B 3",
+    "bodyId": 64,
+    "distanceToArrival": 79414.0,
+    "starPos": [
+      655.53125,
+      -66.34375,
+      -62.1875
+    ],
+    "siteType": "Stickyhand"
+  },
+  {
+    "idx": 0,
+    "systemName": "Synuefe PX-J c25-8",
+    "systemAddress": 2283949429466,
+    "bodyName": "7 a",
+    "bodyId": 44,
+    "distanceToArrival": 2068.0,
+    "starPos": [
+      649.6875,
+      -124.25,
+      32.4375
+    ],
+    "siteType": "Turtle"
+  },
+  {
+    "idx": 0,
+    "systemName": "HIP 39890",
+    "systemAddress": 10611558763,
+    "bodyName": "10 a",
+    "bodyId": 55,
+    "distanceToArrival": 1648.0,
+    "starPos": [
+      648.5625,
+      -137.21875,
+      -0.3125
+    ],
+    "siteType": "Crossroads"
+  },
+  {
+    "idx": 0,
+    "systemName": "Synuefe GV-T b50-4",
+    "systemAddress": 9475905430961,
+    "bodyName": "B 1",
+    "bodyId": 25,
+    "distanceToArrival": 1566.0,
+    "starPos": [
+      663.46875,
+      -127.5625,
+      27.25
+    ],
+    "siteType": "Bear"
+  },
+  {
+    "idx": 0,
+    "systemName": "Synuefe HT-F d12-29",
+    "systemAddress": 1007060748651,
+    "bodyName": "C 3",
+    "bodyId": 50,
+    "distanceToArrival": 55858.0,
+    "starPos": [
+      665.78125,
+      -131.96875,
+      38.65625
+    ],
+    "siteType": "Crossroads"
+  },
+  {
+    "idx": 0,
+    "systemName": "Synuefe IL-N c23-19",
+    "systemAddress": 5307673514698,
+    "bodyName": "B 2",
+    "bodyId": 20,
+    "distanceToArrival": 2097.0,
+    "starPos": [
+      667.40625,
+      -120.5625,
+      -58.8125
+    ],
+    "siteType": "Squid"
+  },
+  {
+    "idx": 0,
+    "systemName": "Synuefe EA-U b50-3",
+    "systemAddress": 7276882240945,
+    "bodyName": "B 6",
+    "bodyId": 18,
+    "distanceToArrival": 553.0,
+    "starPos": [
+      673.78125,
+      -106.625,
+      25.75
+    ],
+    "siteType": "Fistbump"
+  },
+  {
+    "idx": 0,
+    "systemName": "Synuefe DJ-G b44-3",
+    "systemAddress": 7277150676345,
+    "bodyName": "A 5",
+    "bodyId": 10,
+    "distanceToArrival": 60.0,
+    "starPos": [
+      679.59375,
+      -105.6875,
+      -122.40625
+    ],
+    "siteType": "Robolobster"
+  },
+  {
+    "idx": 0,
+    "systemName": "Synuefe HP-E b45-8",
+    "systemAddress": 18272266954113,
+    "bodyName": "D 3",
+    "bodyId": 51,
+    "distanceToArrival": 159863.0,
+    "starPos": [
+      688.59375,
+      -120.40625,
+      -87.21875
+    ],
+    "siteType": "Stickyhand"
+  },
+  {
+    "idx": 0,
+    "systemName": "HIP 36781",
+    "systemAddress": 44988074331,
+    "bodyName": "A 6 b",
+    "bodyId": 47,
+    "distanceToArrival": 3801.0,
+    "starPos": [
+      682.03125,
+      -154.03125,
+      -126.65625
+    ],
+    "siteType": "Squid"
+  },
+  {
+    "idx": 0,
+    "systemName": "Synuefe HF-V b49-5",
+    "systemAddress": 11675196990889,
+    "bodyName": "C 1",
+    "bodyId": 10,
+    "distanceToArrival": 1075.0,
+    "starPos": [
+      692.46875,
+      -181.15625,
+      6.0625
+    ],
+    "siteType": "Fistbump"
+  },
+  {
+    "idx": 0,
+    "systemName": "Synuefe PM-L c24-24",
+    "systemAddress": 6682130125522,
+    "bodyName": "C 6",
+    "bodyId": 35,
+    "distanceToArrival": 110124.0,
+    "starPos": [
+      706.6875,
+      -158.875,
+      10.5
+    ],
+    "siteType": "Bear"
+  },
+  {
+    "idx": 0,
+    "systemName": "Synuefe JP-E b45-4",
+    "systemAddress": 9476710802817,
+    "bodyName": "C 1",
+    "bodyId": 28,
+    "distanceToArrival": 20053.0,
+    "starPos": [
+      724.34375,
+      -111.09375,
+      -103.5625
+    ],
+    "siteType": "Stickyhand"
+  },
+  {
+    "idx": 0,
+    "systemName": "Synuefe LQ-T b50-1",
+    "systemAddress": 2879640905137,
+    "bodyName": "B 2",
+    "bodyId": 18,
+    "distanceToArrival": 1197.0,
+    "starPos": [
+      728.5,
+      -155.65625,
+      19.3125
+    ],
+    "siteType": "Turtle"
+  },
+  {
+    "idx": 0,
+    "systemName": "Synuefe HE-G b44-5",
+    "systemAddress": 11675733992825,
+    "bodyName": "B 2",
+    "bodyId": 18,
+    "distanceToArrival": 644.0,
+    "starPos": [
+      726.6875,
+      -128.9375,
+      -112.71875
+    ],
+    "siteType": "Squid"
+  },
+  {
+    "idx": 0,
+    "systemName": "Synuefe BZ-Q c21-11",
+    "systemAddress": 3108717367994,
+    "bodyName": "B 5",
+    "bodyId": 27,
+    "distanceToArrival": 34639.0,
+    "starPos": [
+      727.21875,
+      -119.90625,
+      -128.15625
+    ],
+    "siteType": "Robolobster"
+  },
+  {
+    "idx": 0,
+    "systemName": "Synuefe ZG-J d10-79",
+    "systemAddress": 2725047667035,
+    "bodyName": "B 1",
+    "bodyId": 16,
+    "distanceToArrival": 5290.0,
+    "starPos": [
+      728.0,
+      -121.34375,
+      -133.25
+    ],
+    "siteType": "Squid"
+  },
+  {
+    "idx": 0,
+    "systemName": "Synuefe IE-G b44-2",
+    "systemAddress": 5078932661625,
+    "bodyName": "A 4",
+    "bodyId": 10,
+    "distanceToArrival": 104.0,
+    "starPos": [
+      737.25,
+      -130.28125,
+      -111.34375
+    ],
+    "siteType": "Robolobster"
+  },
+  {
+    "idx": 0,
+    "systemName": "Synuefe EN-H d11-29",
+    "systemAddress": 1007077525859,
+    "bodyName": "6 b",
+    "bodyId": 24,
+    "distanceToArrival": 1256.0,
+    "starPos": [
+      745.6875,
+      -115.0,
+      -91.34375
+    ],
+    "siteType": "Robolobster"
+  },
+  {
+    "idx": 0,
+    "systemName": "Synuefe AH-J d10-46",
+    "systemAddress": 1591193078107,
+    "bodyName": "C 1",
+    "bodyId": 22,
+    "distanceToArrival": 21789.0,
+    "starPos": [
+      741.3125,
+      -164.8125,
+      -138.78125
+    ],
+    "siteType": "Robolobster"
+  },
+  {
+    "idx": 0,
+    "systemName": "Synuefe KZ-F b44-5",
+    "systemAddress": 11676002362745,
+    "bodyName": "A 1",
+    "bodyId": 5,
+    "distanceToArrival": 21.0,
+    "starPos": [
+      747.90625,
+      -161.21875,
+      -109.46875
+    ],
+    "siteType": "Stickyhand"
+  },
+  {
+    "idx": 0,
+    "systemName": "Synuefe GT-H b43-1",
+    "systemAddress": 2879909340529,
+    "bodyName": "C 4",
+    "bodyId": 37,
+    "distanceToArrival": 27555.0,
+    "starPos": [
+      749.0,
+      -163.09375,
+      -128.0625
+    ],
+    "siteType": "Turtle"
+  },
+  {
+    "idx": 0,
+    "systemName": "NGC 2451A Sector VJ-R c4-22",
+    "systemAddress": 6132441420466,
+    "bodyName": "A 1",
+    "bodyId": 3,
+    "distanceToArrival": 269.0,
+    "starPos": [
+      746.34375,
+      -153.09375,
+      -164.25
+    ],
+    "siteType": "Stickyhand"
+  },
+  {
+    "idx": 0,
+    "systemName": "Synuefe PF-E b45-5",
+    "systemAddress": 11676270798209,
+    "bodyName": "B 2",
+    "bodyId": 14,
+    "distanceToArrival": 777.0,
+    "starPos": [
+      758.5,
+      -164.65625,
+      -101.28125
+    ],
+    "siteType": "Stickyhand"
+  },
+  {
+    "idx": 0,
+    "systemName": "Synuefe EN-H d11-96",
+    "systemAddress": 3309179996515,
+    "bodyName": "7 a",
+    "bodyId": 35,
+    "distanceToArrival": 2229.0,
+    "starPos": [
+      757.125,
+      -179.3125,
+      -96.0625
+    ],
+    "siteType": "Stickyhand"
+  },
+  {
+    "idx": 0,
+    "systemName": "Synuefe EU-Q c21-15",
+    "systemAddress": 4208296071866,
+    "bodyName": "A 1",
+    "bodyId": 7,
+    "distanceToArrival": 114.0,
+    "starPos": [
+      754.15625,
+      -171.84375,
+      -138.09375
+    ],
+    "siteType": "Squid"
+  },
+  {
+    "idx": 0,
+    "systemName": "Synuefe EN-H d11-28",
+    "systemAddress": 972717787491,
+    "bodyName": "8 b",
+    "bodyId": 26,
+    "distanceToArrival": 742.0,
+    "starPos": [
+      771.78125,
+      -145.0,
+      -26.65625
+    ],
+    "siteType": "Robolobster"
+  },
+  {
+    "idx": 0,
+    "systemName": "NGC 2451A Sector TO-R c4-10",
+    "systemAddress": 2833906569906,
+    "bodyName": "B 1",
+    "bodyId": 19,
+    "distanceToArrival": 355747.0,
+    "starPos": [
+      758.875,
+      -122.0,
+      -165.03125
+    ],
+    "siteType": "Robolobster"
+  },
+  {
+    "idx": 0,
+    "systemName": "Synuefe AH-J d10-20",
+    "systemAddress": 697839880539,
+    "bodyName": "A 3",
+    "bodyId": 6,
+    "distanceToArrival": 795.0,
+    "starPos": [
+      759.21875,
+      -148.3125,
+      -145.75
+    ],
+    "siteType": "Stickyhand"
+  },
+  {
+    "idx": 0,
+    "systemName": "Synuefe EU-Q c21-10",
+    "systemAddress": 2833906537146,
+    "bodyName": "A 3",
+    "bodyId": 7,
+    "distanceToArrival": 312.0,
+    "starPos": [
+      758.65625,
+      -176.90625,
+      -133.21875
+    ],
+    "siteType": "Bear"
+  },
+  {
+    "idx": 0,
+    "systemName": "Synuefe NU-F b44-5",
+    "systemAddress": 11676270732665,
+    "bodyName": "B 1",
+    "bodyId": 22,
+    "distanceToArrival": 677.0,
+    "starPos": [
+      768.21875,
+      -166.0625,
+      -106.40625
+    ],
+    "siteType": "Stickyhand"
+  },
+  {
+    "idx": 0,
+    "systemName": "Synuefe HF-P c22-17",
+    "systemAddress": 4758119027394,
+    "bodyName": "B 1",
+    "bodyId": 5,
+    "distanceToArrival": 3454.0,
+    "starPos": [
+      783.84375,
+      -114.40625,
+      -92.53125
+    ],
+    "siteType": "Bear"
+  },
+  {
+    "idx": 0,
+    "systemName": "NGC 2451A Sector DL-Y d61",
+    "systemAddress": 2106572376395,
+    "bodyName": "A 2",
+    "bodyId": 16,
+    "distanceToArrival": 287.0,
+    "starPos": [
+      734.6875,
+      -150.28125,
+      -272.28125
+    ],
+    "siteType": "Turtle"
+  },
+  {
+    "idx": 0,
+    "systemName": "Synuefe BE-R c21-35",
+    "systemAddress": 9705921385146,
+    "bodyName": "E 2",
+    "bodyId": 29,
+    "distanceToArrival": 46704.0,
+    "starPos": [
+      782.6875,
+      -96.15625,
+      -135.03125
+    ],
+    "siteType": "Robolobster"
+  },
+  {
+    "idx": 0,
+    "systemName": "Synuefe AH-J d10-103",
+    "systemAddress": 3549698165083,
+    "bodyName": "B 1",
+    "bodyId": 18,
+    "distanceToArrival": 182058.0,
+    "starPos": [
+      777.53125,
+      -158.28125,
+      -117.4375
+    ],
+    "siteType": "Squid"
+  },
+  {
+    "idx": 0,
+    "systemName": "NGC 2451A Sector IR-W d1-77",
+    "systemAddress": 2656344967507,
+    "bodyName": "AB 1 a",
+    "bodyId": 8,
+    "distanceToArrival": 1303.0,
+    "starPos": [
+      742.78125,
+      -156.90625,
+      -260.96875
+    ],
+    "siteType": "Hammerbot"
+  },
+  {
+    "idx": 0,
+    "systemName": "Pencil Sector YJ-A c33",
+    "systemAddress": 9156165636794,
+    "bodyName": "1",
+    "bodyId": 1,
+    "distanceToArrival": 225.0,
+    "starPos": [
+      794.40625,
+      4.75,
+      -116.78125
+    ],
+    "siteType": "Bear"
+  },
+  {
+    "idx": 0,
+    "systemName": "NGC 2451A Sector JR-W c1-1",
+    "systemAddress": 360005374618,
+    "bodyName": "1 c",
+    "bodyId": 19,
+    "distanceToArrival": 787.0,
+    "starPos": [
+      739.625,
+      -158.09375,
+      -278.3125
+    ],
+    "siteType": "Lacrosse"
+  },
+  {
+    "idx": 0,
+    "systemName": "Synuefe EN-H d11-106",
+    "systemAddress": 3652777380195,
+    "bodyName": "6 a",
+    "bodyId": 31,
+    "distanceToArrival": 1557.0,
+    "starPos": [
+      785.15625,
+      -167.0625,
+      -75.46875
+    ],
+    "siteType": "Bear"
+  },
+  {
+    "idx": 0,
+    "systemName": "Pencil Sector CQ-Y c31",
+    "systemAddress": 8606409822914,
+    "bodyName": "C 1",
+    "bodyId": 23,
+    "distanceToArrival": 4495.0,
+    "starPos": [
+      800.25,
+      -7.53125,
+      -101.25
+    ],
+    "siteType": "Bowl"
+  },
+  {
+    "idx": 0,
+    "systemName": "Synuefe ED-I b43-8",
+    "systemAddress": 18273609131377,
+    "bodyName": "A 2",
+    "bodyId": 12,
+    "distanceToArrival": 73.0,
+    "starPos": [
+      791.1875,
+      -120.625,
+      -129.40625
+    ],
+    "siteType": "Squid"
+  },
+  {
+    "idx": 0,
+    "systemName": "Pencil Sector YJ-A c12",
+    "systemAddress": 3383729590970,
+    "bodyName": "B 3",
+    "bodyId": 13,
+    "distanceToArrival": 8834.0,
+    "starPos": [
+      801.53125,
+      -12.15625,
+      -132.09375
+    ],
+    "siteType": "Turtle"
+  },
+  {
+    "idx": 0,
+    "systemName": "Wregoe CQ-G d10-153",
+    "systemAddress": 5267685116251,
+    "bodyName": "C 2",
+    "bodyId": 43,
+    "distanceToArrival": 19924.0,
+    "starPos": [
+      794.53125,
+      26.5,
+      -175.90625
+    ],
+    "siteType": "Crossroads"
+  },
+  {
+    "idx": 0,
+    "systemName": "Synuefe DZ-Q c21-14",
+    "systemAddress": 3933485306554,
+    "bodyName": "10 a",
+    "bodyId": 22,
+    "distanceToArrival": 855.0,
+    "starPos": [
+      793.96875,
+      -122.46875,
+      -135.03125
+    ],
+    "siteType": "Squid"
+  },
+  {
+    "idx": 0,
+    "systemName": "Wregoe CQ-G d10-56",
+    "systemAddress": 1934790494555,
+    "bodyName": "6 a",
+    "bodyId": 39,
+    "distanceToArrival": 1137.0,
+    "starPos": [
+      798.8125,
+      49.90625,
+      -153.625
+    ],
+    "siteType": "Lacrosse"
+  },
+  {
+    "idx": 0,
+    "systemName": "Pencil Sector VY-A b8",
+    "systemAddress": 18273877960049,
+    "bodyName": "B 1",
+    "bodyId": 14,
+    "distanceToArrival": 1686.0,
+    "starPos": [
+      804.03125,
+      5.5,
+      -142.65625
+    ],
+    "siteType": "Turtle"
+  },
+  {
+    "idx": 0,
+    "systemName": "NGC 2451A Sector WE-Q b5-6",
+    "systemAddress": 13875294184777,
+    "bodyName": "B 1",
+    "bodyId": 10,
+    "distanceToArrival": 900.0,
+    "starPos": [
+      772.5625,
+      -123.75,
+      -240.125
+    ],
+    "siteType": "Bear"
+  },
+  {
+    "idx": 0,
+    "systemName": "Wregoe JR-A b41-3",
+    "systemAddress": 7278761682273,
+    "bodyName": "F 2",
+    "bodyId": 50,
+    "distanceToArrival": 373722.0,
+    "starPos": [
+      801.34375,
+      -3.0625,
+      -166.46875
+    ],
+    "siteType": "Bowl"
+  },
+  {
+    "idx": 0,
+    "systemName": "Synuefe FK-P c22-2",
+    "systemAddress": 634950456002,
+    "bodyName": "E 1",
+    "bodyId": 54,
+    "distanceToArrival": 492161.0,
+    "starPos": [
+      809.75,
+      -104.96875,
+      -104.5625
+    ],
+    "siteType": "Hammerbot"
+  },
+  {
+    "idx": 0,
+    "systemName": "NGC 2451A Sector UO-R c4-4",
+    "systemAddress": 1184706237106,
+    "bodyName": "B 5",
+    "bodyId": 17,
+    "distanceToArrival": 116600.0,
+    "starPos": [
+      800.25,
+      -118.84375,
+      -158.875
+    ],
+    "siteType": "Fistbump"
+  },
+  {
+    "idx": 0,
+    "systemName": "Synuefe ZR-I b43-10",
+    "systemAddress": 22671924274545,
+    "bodyName": "D 2",
+    "bodyId": 46,
+    "distanceToArrival": 68995.0,
+    "starPos": [
+      811.40625,
+      -60.4375,
+      -144.71875
+    ],
+    "siteType": "Lacrosse"
+  },
+  {
+    "idx": 0,
+    "systemName": "Synuefe EN-H d11-5",
+    "systemAddress": 182443805027,
+    "bodyName": "4 e",
+    "bodyId": 38,
+    "distanceToArrival": 1116.0,
+    "starPos": [
+      813.625,
+      -121.28125,
+      -90.25
+    ],
+    "siteType": "Lacrosse"
+  },
+  {
+    "idx": 0,
+    "systemName": "HIP 41730",
+    "systemAddress": 57166267564,
+    "bodyName": "13 g a",
+    "bodyId": 0,
+    "distanceToArrival": -1.0,
+    "starPos": [
+      818.375,
+      -7.90625,
+      -149.9375
+    ],
+    "siteType": "Bowl"
+  },
+  {
+    "idx": 0,
+    "systemName": "Synuefe CE-R c21-6",
+    "systemAddress": 1734529192634,
+    "bodyName": "C 1",
+    "bodyId": 53,
+    "distanceToArrival": 72531.0,
+    "starPos": [
+      828.1875,
+      -78.0,
+      -105.1875
+    ],
+    "siteType": "Hammerbot"
+  },
+  {
+    "idx": 0,
+    "systemName": "Wregoe IM-Z b41-2",
+    "systemAddress": 5080007058793,
+    "bodyName": "B 2",
+    "bodyId": 24,
+    "distanceToArrival": 2519.0,
+    "starPos": [
+      820.71875,
+      55.78125,
+      -164.09375
+    ],
+    "siteType": "Turtle"
+  },
+  {
+    "idx": 0,
+    "systemName": "Wregoe KH-Z b41-0",
+    "systemAddress": 681960482153,
+    "bodyName": "C 3",
+    "bodyId": 11,
+    "distanceToArrival": 788.0,
+    "starPos": [
+      826.0,
+      51.375,
+      -162.6875
+    ],
+    "siteType": "Fistbump"
+  },
+  {
+    "idx": 0,
+    "systemName": "NGC 2451A Sector TY-R b4-6",
+    "systemAddress": 13875562620225,
+    "bodyName": "C 1",
+    "bodyId": 30,
+    "distanceToArrival": 3462.0,
+    "starPos": [
+      792.40625,
+      -119.6875,
+      -264.21875
+    ],
+    "siteType": "Fistbump"
+  },
+  {
+    "idx": 0,
+    "systemName": "NGC 2451A Sector MC-V c2-5",
+    "systemAddress": 1459584144034,
+    "bodyName": "E 1",
+    "bodyId": 62,
+    "distanceToArrival": 51347.0,
+    "starPos": [
+      795.6875,
+      -114.34375,
+      -258.25
+    ],
+    "siteType": "Bowl"
+  },
+  {
+    "idx": 0,
+    "systemName": "Pencil Sector AF-A d80",
+    "systemAddress": 2759440992603,
+    "bodyName": "8 f",
+    "bodyId": 36,
+    "distanceToArrival": 1387.0,
+    "starPos": [
+      835.65625,
+      -17.34375,
+      -130.21875
+    ],
+    "siteType": "Fistbump"
+  },
+  {
+    "idx": 0,
+    "systemName": "Synuefe ZL-J d10-119",
+    "systemAddress": 4099470772571,
+    "bodyName": "9 b",
+    "bodyId": 28,
+    "distanceToArrival": 1068.0,
+    "starPos": [
+      834.21875,
+      -51.21875,
+      -154.65625
+    ],
+    "siteType": "Fistbump"
+  },
+  {
+    "idx": 0,
+    "systemName": "Pencil Sector XO-A c31",
+    "systemAddress": 8606476964538,
+    "bodyName": "B 3",
+    "bodyId": 18,
+    "distanceToArrival": 94741.0,
+    "starPos": [
+      842.3125,
+      40.3125,
+      -120.0625
+    ],
+    "siteType": "Hammerbot"
+  },
+  {
+    "idx": 0,
+    "systemName": "Synuefe LY-I b42-2",
+    "systemAddress": 5079737705833,
+    "bodyName": "C 2",
+    "bodyId": 25,
+    "distanceToArrival": 1766.0,
+    "starPos": [
+      814.71875,
+      -222.78125,
+      -151.15625
+    ],
+    "siteType": "Fistbump"
+  },
+  {
+    "idx": 0,
+    "systemName": "Synuefe SP-F b44-0",
+    "systemAddress": 681959695737,
+    "bodyName": "C 1",
+    "bodyId": 27,
+    "distanceToArrival": 31923.0,
+    "starPos": [
+      831.625,
+      -187.5625,
+      -121.84375
+    ],
+    "siteType": "Bear"
+  },
+  {
+    "idx": 0,
+    "systemName": "Pencil Sector ZJ-A c4",
+    "systemAddress": 1184773444282,
+    "bodyName": "B 4",
+    "bodyId": 18,
+    "distanceToArrival": 3618.0,
+    "starPos": [
+      854.90625,
+      7.8125,
+      -112.125
+    ],
+    "siteType": "Turtle"
+  },
+  {
+    "idx": 0,
+    "systemName": "Synuefe BH-J d10-68",
+    "systemAddress": 2347124099419,
+    "bodyName": "C 1",
+    "bodyId": 51,
+    "distanceToArrival": 159060.0,
+    "starPos": [
+      831.375,
+      -149.125,
+      -175.96875
+    ],
+    "siteType": "Bowl"
+  },
+  {
+    "idx": 0,
+    "systemName": "Synuefe ZL-J d10-109",
+    "systemAddress": 3755873388891,
+    "bodyName": "E 3",
+    "bodyId": 75,
+    "distanceToArrival": 89052.0,
+    "starPos": [
+      852.65625,
+      -51.125,
+      -124.84375
+    ],
+    "siteType": "Hammerbot"
+  },
+  {
+    "idx": 0,
+    "systemName": "Synuefe OT-I b42-4",
+    "systemAddress": 9478052586857,
+    "bodyName": "B 2",
+    "bodyId": 22,
+    "distanceToArrival": 550.0,
+    "starPos": [
+      817.5,
+      -238.875,
+      -147.40625
+    ],
+    "siteType": "Crossroads"
+  },
+  {
+    "idx": 0,
+    "systemName": "Wregoe JR-L c21-1",
+    "systemAddress": 360206865082,
+    "bodyName": "C 2",
+    "bodyId": 48,
+    "distanceToArrival": 119869.0,
+    "starPos": [
+      855.25,
+      17.34375,
+      -137.90625
+    ],
+    "siteType": "Bowl"
+  },
+  {
+    "idx": 0,
+    "systemName": "Synuefe TP-F b44-0",
+    "systemAddress": 682228131193,
+    "bodyName": "CD 1",
+    "bodyId": 16,
+    "distanceToArrival": 1254.0,
+    "starPos": [
+      838.75,
+      -197.84375,
+      -111.84375
+    ],
+    "siteType": "Fistbump"
+  },
+  {
+    "idx": 0,
+    "systemName": "Synuefe NL-N c23-4",
+    "systemAddress": 1184840454858,
+    "bodyName": "B 3",
+    "bodyId": 18,
+    "distanceToArrival": 1897.0,
+    "starPos": [
+      860.125,
+      -124.59375,
+      -61.0625
+    ],
+    "siteType": "Turtle"
+  },
+  {
+    "idx": 0,
+    "systemName": "Synuefe VK-F b44-0",
+    "systemAddress": 682228065657,
+    "bodyName": "B 1",
+    "bodyId": 13,
+    "distanceToArrival": 1057.0,
+    "starPos": [
+      836.9375,
+      -220.78125,
+      -122.75
+    ],
+    "siteType": "Hammerbot"
+  },
+  {
+    "idx": 0,
+    "systemName": "Wregoe DQ-G d10-42",
+    "systemAddress": 1453770934619,
+    "bodyName": "5 a",
+    "bodyId": 34,
+    "distanceToArrival": 1813.0,
+    "starPos": [
+      865.0625,
+      11.625,
+      -136.4375
+    ],
+    "siteType": "Crossroads"
+  },
+  {
+    "idx": 0,
+    "systemName": "Col 173 Sector FK-C c14-6",
+    "systemAddress": 1734596301506,
+    "bodyName": "D 2",
+    "bodyId": 36,
+    "distanceToArrival": 11865.0,
+    "starPos": [
+      869.46875,
+      -84.46875,
+      -93.5
+    ],
+    "siteType": "Bowl"
+  },
+  {
+    "idx": 0,
+    "systemName": "HIP 39768",
+    "systemAddress": 8219259477,
+    "bodyName": "A 14 f",
+    "bodyId": 48,
+    "distanceToArrival": 7046.0,
+    "starPos": [
+      866.59375,
+      -119.125,
+      -109.03125
+    ],
+    "siteType": "Fistbump"
+  },
+  {
+    "idx": 0,
+    "systemName": "Col 173 Sector DZ-D c13-2",
+    "systemAddress": 635084640954,
+    "bodyName": "12 a",
+    "bodyId": 51,
+    "distanceToArrival": 2723.0,
+    "starPos": [
+      864.0625,
+      -122.4375,
+      -136.375
+    ],
+    "siteType": "Crossroads"
+  },
+  {
+    "idx": 0,
+    "systemName": "Col 173 Sector PF-E b28-3",
+    "systemAddress": 7279566464385,
+    "bodyName": "B 1",
+    "bodyId": 9,
+    "distanceToArrival": 1561.0,
+    "starPos": [
+      870.34375,
+      -156.03125,
+      -92.84375
+    ],
+    "siteType": "Bowl"
+  },
+  {
+    "idx": 0,
+    "systemName": "Col 173 Sector BO-F c12-24",
+    "systemAddress": 6682398560946,
+    "bodyName": "A 3",
+    "bodyId": 8,
+    "distanceToArrival": 141.0,
+    "starPos": [
+      864.5,
+      -161.65625,
+      -153.03125
+    ],
+    "siteType": "Crossroads"
+  },
+  {
+    "idx": 0,
+    "systemName": "Col 173 Sector IJ-G b27-1",
+    "systemAddress": 2881788519801,
+    "bodyName": "A 1",
+    "bodyId": 7,
+    "distanceToArrival": 84.0,
+    "starPos": [
+      882.65625,
+      -122.875,
+      -115.71875
+    ],
+    "siteType": "Lacrosse"
+  },
+  {
+    "idx": 0,
+    "systemName": "Col 173 Sector ME-P d6-92",
+    "systemAddress": 3171757836635,
+    "bodyName": "B 5",
+    "bodyId": 18,
+    "distanceToArrival": 381.0,
+    "starPos": [
+      891.65625,
+      -98.53125,
+      -157.1875
+    ],
+    "siteType": "Bowl"
+  },
+  {
+    "idx": 0,
+    "systemName": "Vela Dark Region JS-T b3-0",
+    "systemAddress": 683033634185,
+    "bodyName": "A 3",
+    "bodyId": 9,
+    "distanceToArrival": 109.0,
+    "starPos": [
+      899.9375,
+      -142.1875,
+      -82.25
+    ],
+    "siteType": "Bowl"
+  },
+  {
+    "idx": 0,
+    "systemName": "Col 173 Sector QU-O d6-25",
+    "systemAddress": 869655333211,
+    "bodyName": "5 b",
+    "bodyId": 29,
+    "distanceToArrival": 1278.0,
+    "starPos": [
+      878.84375,
+      -205.5625,
+      -156.59375
+    ],
+    "siteType": "Lacrosse"
+  },
+  {
+    "idx": 0,
+    "systemName": "Col 173 Sector ZS-F c12-27",
+    "systemAddress": 7507032314546,
+    "bodyName": "B 3",
+    "bodyId": 20,
+    "distanceToArrival": 10059.0,
+    "starPos": [
+      894.6875,
+      -113.5625,
+      -166.46875
+    ],
+    "siteType": "Hammerbot"
+  },
+  {
+    "idx": 0,
+    "systemName": "Col 173 Sector DS-J b25-2",
+    "systemAddress": 5081080145257,
+    "bodyName": "B 5",
+    "bodyId": 22,
+    "distanceToArrival": 608.0,
+    "starPos": [
+      895.875,
+      -132.125,
+      -150.71875
+    ],
+    "siteType": "Turtle"
+  },
+  {
+    "idx": 0,
+    "systemName": "Col 173 Sector VV-D b28-0",
+    "systemAddress": 683033437569,
+    "bodyName": "A 1",
+    "bodyId": 5,
+    "distanceToArrival": 87.0,
+    "starPos": [
+      895.71875,
+      -201.75,
+      -101.4375
+    ],
+    "siteType": "Crossroads"
+  },
+  {
+    "idx": 0,
+    "systemName": "Col 173 Sector ZL-L b24-7",
+    "systemAddress": 16076196423009,
+    "bodyName": "C 4",
+    "bodyId": 12,
+    "distanceToArrival": 1905.0,
+    "starPos": [
+      899.0,
+      -131.1875,
+      -173.0
+    ],
+    "siteType": "Lacrosse"
+  },
+  {
+    "idx": 0,
+    "systemName": "Col 173 Sector ZL-L b24-2",
+    "systemAddress": 5081080145249,
+    "bodyName": "B 1",
+    "bodyId": 14,
+    "distanceToArrival": 544.0,
+    "starPos": [
+      896.78125,
+      -134.90625,
+      -182.09375
+    ],
+    "siteType": "Bowl"
+  },
+  {
+    "idx": 0,
+    "systemName": "Vela Dark Region BQ-Y d94",
+    "systemAddress": 3240494090595,
+    "bodyName": "9 b",
+    "bodyId": 24,
+    "distanceToArrival": 1283.0,
+    "starPos": [
+      916.6875,
+      -99.46875,
+      -86.5625
+    ],
+    "siteType": "Lacrosse"
+  },
+  {
+    "idx": 0,
+    "systemName": "Col 173 Sector QU-O d6-32",
+    "systemAddress": 1110173501787,
+    "bodyName": "3 a",
+    "bodyId": 38,
+    "distanceToArrival": 1691.0,
+    "starPos": [
+      894.09375,
+      -203.625,
+      -146.5625
+    ],
+    "siteType": "Lacrosse"
+  },
+  {
+    "idx": 0,
+    "systemName": "Col 173 Sector XH-H c11-21",
+    "systemAddress": 5857764840106,
+    "bodyName": "B 1",
+    "bodyId": 16,
+    "distanceToArrival": 18580.0,
+    "starPos": [
+      894.3125,
+      -153.75,
+      -212.3125
+    ],
+    "siteType": "Bear"
+  },
+  {
+    "idx": 0,
+    "systemName": "Vela Dark Region DL-Y d91",
+    "systemAddress": 3137414859107,
+    "bodyName": "5 a",
+    "bodyId": 24,
+    "distanceToArrival": 1953.0,
+    "starPos": [
+      922.78125,
+      -126.0,
+      -101.78125
+    ],
+    "siteType": "Bear"
+  },
+  {
+    "idx": 0,
+    "systemName": "Col 173 Sector EZ-D c13-25",
+    "systemAddress": 6957343609530,
+    "bodyName": "B 1",
+    "bodyId": 31,
+    "distanceToArrival": 26053.0,
+    "starPos": [
+      922.3125,
+      -135.65625,
+      -130.96875
+    ],
+    "siteType": "Fistbump"
+  },
+  {
+    "idx": 0,
+    "systemName": "Col 173 Sector LT-Q d5-90",
+    "systemAddress": 3103055120723,
+    "bodyName": "D 1",
+    "bodyId": 31,
+    "distanceToArrival": 74484.0,
+    "starPos": [
+      911.0625,
+      -115.875,
+      -208.15625
+    ],
+    "siteType": "Bowl"
+  },
+  {
+    "idx": 0,
+    "systemName": "Vela Dark Region DL-Y d112",
+    "systemAddress": 3858969364835,
+    "bodyName": "1 a",
+    "bodyId": 17,
+    "distanceToArrival": 1187.0,
+    "starPos": [
+      924.46875,
+      -171.8125,
+      -98.21875
+    ],
+    "siteType": "Turtle"
+  },
+  {
+    "idx": 0,
+    "systemName": "Vela Dark Region PY-R b4-3",
+    "systemAddress": 7280640271761,
+    "bodyName": "B 2",
+    "bodyId": 13,
+    "distanceToArrival": 2380.0,
+    "starPos": [
+      935.59375,
+      -138.1875,
+      -48.40625
+    ],
+    "siteType": "Fistbump"
+  },
+  {
+    "idx": 0,
+    "systemName": "Vela Dark Region DL-Y d83",
+    "systemAddress": 2862536952163,
+    "bodyName": "5 b",
+    "bodyId": 12,
+    "distanceToArrival": 1014.0,
+    "starPos": [
+      930.4375,
+      -165.78125,
+      -65.1875
+    ],
+    "siteType": "Turtle"
+  },
+  {
+    "idx": 0,
+    "systemName": "Col 173 Sector ZV-M b23-1",
+    "systemAddress": 2882056758617,
+    "bodyName": "A 1",
+    "bodyId": 3,
+    "distanceToArrival": 81.0,
+    "starPos": [
+      914.375,
+      -167.3125,
+      -202.5625
+    ],
+    "siteType": "Bowl"
+  },
+  {
+    "idx": 0,
+    "systemName": "Col 173 Sector PZ-O d6-116",
+    "systemAddress": 3996408318299,
+    "bodyName": "6 d",
+    "bodyId": 20,
+    "distanceToArrival": 1275.0,
+    "starPos": [
+      931.4375,
+      -131.25,
+      -164.46875
+    ],
+    "siteType": "Crossroads"
+  },
+  {
+    "idx": 0,
+    "systemName": "Col 173 Sector LT-Q d5-82",
+    "systemAddress": 2828177213779,
+    "bodyName": "A 3",
+    "bodyId": 12,
+    "distanceToArrival": 615.0,
+    "starPos": [
+      926.84375,
+      -120.65625,
+      -199.6875
+    ],
+    "siteType": "Bowl"
+  },
+  {
+    "idx": 0,
+    "systemName": "Vela Dark Region CQ-Y c0",
+    "systemAddress": 85463044794,
+    "bodyName": "A 2",
+    "bodyId": 7,
+    "distanceToArrival": 309.0,
+    "starPos": [
+      940.78125,
+      -122.34375,
+      -133.0625
+    ],
+    "siteType": "Bowl"
+  },
+  {
+    "idx": 0,
+    "systemName": "Vela Dark Region BQ-Y d110",
+    "systemAddress": 3790249904483,
+    "bodyName": "4 b",
+    "bodyId": 17,
+    "distanceToArrival": 1024.0,
+    "starPos": [
+      953.375,
+      -93.8125,
+      -76.28125
+    ],
+    "siteType": "Fistbump"
+  },
+  {
+    "idx": 0,
+    "systemName": "Col 135 Sector TU-O c6-15",
+    "systemAddress": 4208564540066,
+    "bodyName": "D 1",
+    "bodyId": 34,
+    "distanceToArrival": 11379.0,
+    "starPos": [
+      923.9375,
+      -138.125,
+      -231.84375
+    ],
+    "siteType": "Crossroads"
+  },
+  {
+    "idx": 0,
+    "systemName": "Col 173 Sector PZ-O d6-110",
+    "systemAddress": 3790249888091,
+    "bodyName": "5 a",
+    "bodyId": 20,
+    "distanceToArrival": 1940.0,
+    "starPos": [
+      943.0625,
+      -130.75,
+      -142.03125
+    ],
+    "siteType": "Bowl"
+  },
+  {
+    "idx": 0,
+    "systemName": "Col 173 Sector SZ-G b26-0",
+    "systemAddress": 683301741937,
+    "bodyName": "B 2",
+    "bodyId": 22,
+    "distanceToArrival": 1212.0,
+    "starPos": [
+      925.625,
+      -234.96875,
+      -132.6875
+    ],
+    "siteType": "Turtle"
+  },
+  {
+    "idx": 0,
+    "systemName": "Col 173 Sector HU-D c13-2",
+    "systemAddress": 635218825914,
+    "bodyName": "A 1",
+    "bodyId": 5,
+    "distanceToArrival": 303.0,
+    "starPos": [
+      940.84375,
+      -173.9375,
+      -126.28125
+    ],
+    "siteType": "Crossroads"
+  },
+  {
+    "idx": 0,
+    "systemName": "Col 173 Sector XL-K b25-1",
+    "systemAddress": 2882594022761,
+    "bodyName": "B 1",
+    "bodyId": 13,
+    "distanceToArrival": 4202.0,
+    "starPos": [
+      950.3125,
+      -57.625,
+      -161.40625
+    ],
+    "siteType": "Fistbump"
+  },
+  {
+    "idx": 0,
+    "systemName": "Col 173 Sector JI-J b25-0",
+    "systemAddress": 683570373993,
+    "bodyName": "AB 2",
+    "bodyId": 7,
+    "distanceToArrival": 52.0,
+    "starPos": [
+      936.78125,
+      -184.125,
+      -160.75
+    ],
+    "siteType": "Crossroads"
+  },
+  {
+    "idx": 0,
+    "systemName": "Col 173 Sector AD-H c11-15",
+    "systemAddress": 4208564474538,
+    "bodyName": "B 2",
+    "bodyId": 19,
+    "distanceToArrival": 7382.0,
+    "starPos": [
+      925.0,
+      -200.09375,
+      -205.65625
+    ],
+    "siteType": "Bear"
+  },
+  {
+    "idx": 0,
+    "systemName": "Col 173 Sector FZ-D c13-30",
+    "systemAddress": 8331800253114,
+    "bodyName": "2",
+    "bodyId": 2,
+    "distanceToArrival": 323.0,
+    "starPos": [
+      951.375,
+      -117.09375,
+      -143.8125
+    ],
+    "siteType": "Hammerbot"
+  },
+  {
+    "idx": 0,
+    "systemName": "Col 173 Sector DO-F c12-4",
+    "systemAddress": 1184974639794,
+    "bodyName": "A 1",
+    "bodyId": 3,
+    "distanceToArrival": 332.0,
+    "starPos": [
+      943.15625,
+      -169.46875,
+      -146.78125
+    ],
+    "siteType": "Fistbump"
+  },
+  {
+    "idx": 0,
+    "systemName": "Col 173 Sector WP-O b22-1",
+    "systemAddress": 2882325194065,
+    "bodyName": "A 3",
+    "bodyId": 6,
+    "distanceToArrival": 22.0,
+    "starPos": [
+      934.125,
+      -172.125,
+      -205.34375
+    ],
+    "siteType": "Lacrosse"
+  },
+  {
+    "idx": 0,
+    "systemName": "Col 173 Sector DE-E c13-27",
+    "systemAddress": 7507166565050,
+    "bodyName": "C 2",
+    "bodyId": 34,
+    "distanceToArrival": 7232.0,
+    "starPos": [
+      961.28125,
+      -69.25,
+      -139.5
+    ],
+    "siteType": "Fistbump"
+  },
+  {
+    "idx": 0,
+    "systemName": "Vela Dark Region EG-X b1-1",
+    "systemAddress": 2882862196089,
+    "bodyName": "A 1",
+    "bodyId": 3,
+    "distanceToArrival": 42.0,
+    "starPos": [
+      957.6875,
+      -143.34375,
+      -123.40625
+    ],
+    "siteType": "Bear"
+  },
+  {
+    "idx": 0,
+    "systemName": "Col 173 Sector JP-D c13-14",
+    "systemAddress": 3933753676474,
+    "bodyName": "A 4",
+    "bodyId": 8,
+    "distanceToArrival": 367.0,
+    "starPos": [
+      948.0625,
+      -216.9375,
+      -107.65625
+    ],
+    "siteType": "Crossroads"
+  },
+  {
+    "idx": 0,
+    "systemName": "Col 173 Sector GS-J b25-4",
+    "systemAddress": 9479931962729,
+    "bodyName": "D 2",
+    "bodyId": 52,
+    "distanceToArrival": 29731.0,
+    "starPos": [
+      957.03125,
+      -142.0,
+      -160.53125
+    ],
+    "siteType": "Turtle"
+  },
+  {
+    "idx": 0,
+    "systemName": "Col 173 Sector NV-B c14-1",
+    "systemAddress": 360340886210,
+    "bodyName": "1",
+    "bodyId": 1,
+    "distanceToArrival": 384.0,
+    "starPos": [
+      954.21875,
+      -212.5625,
+      -94.8125
+    ],
+    "siteType": "Hammerbot"
+  },
+  {
+    "idx": 0,
+    "systemName": "Vela Dark Region IW-W b1-3",
+    "systemAddress": 7280908576121,
+    "bodyName": "B 1",
+    "bodyId": 19,
+    "distanceToArrival": 1902.0,
+    "starPos": [
+      963.03125,
+      -165.1875,
+      -124.4375
+    ],
+    "siteType": "Lacrosse"
+  },
+  {
+    "idx": 0,
+    "systemName": "Vela Dark Region QI-T b3-2",
+    "systemAddress": 5081885320585,
+    "bodyName": "B 1",
+    "bodyId": 19,
+    "distanceToArrival": 3437.0,
+    "starPos": [
+      967.28125,
+      -180.3125,
+      -72.84375
+    ],
+    "siteType": "Lacrosse"
+  },
+  {
+    "idx": 0,
+    "systemName": "Vela Dark Region RY-R b4-7",
+    "systemAddress": 16077270164881,
+    "bodyName": "A 1",
+    "bodyId": 3,
+    "distanceToArrival": 25.0,
+    "starPos": [
+      977.90625,
+      -126.21875,
+      -57.65625
+    ],
+    "siteType": "Crossroads"
+  },
+  {
+    "idx": 0,
+    "systemName": "Vela Dark Region ZE-A d66",
+    "systemAddress": 2278421399899,
+    "bodyName": "6 b",
+    "bodyId": 27,
+    "distanceToArrival": 1437.0,
+    "starPos": [
+      966.90625,
+      -158.0,
+      -131.6875
+    ],
+    "siteType": "Hammerbot"
+  },
+  {
+    "idx": 0,
+    "systemName": "Col 173 Sector CC-K b25-8",
+    "systemAddress": 18276025116009,
+    "bodyName": "A 5",
+    "bodyId": 15,
+    "distanceToArrival": 35.0,
+    "starPos": [
+      970.375,
+      -99.5625,
+      -160.53125
+    ],
+    "siteType": "Hammerbot"
+  },
+  {
+    "idx": 0,
+    "systemName": "Col 173 Sector RU-O d6-16",
+    "systemAddress": 560434465115,
+    "bodyName": "A 2 a",
+    "bodyId": 15,
+    "distanceToArrival": 1496.0,
+    "starPos": [
+      951.1875,
+      -223.25,
+      -152.40625
+    ],
+    "siteType": "Hammerbot"
+  },
+  {
+    "idx": 0,
+    "systemName": "Col 173 Sector YF-N b23-5",
+    "systemAddress": 11678955218265,
+    "bodyName": "A 5",
+    "bodyId": 11,
+    "distanceToArrival": 89.0,
+    "starPos": [
+      962.15625,
+      -144.46875,
+      -188.53125
+    ],
+    "siteType": "Crossroads"
+  },
+  {
+    "idx": 0,
+    "systemName": "Vela Dark Region EL-Y d55",
+    "systemAddress": 1900481055075,
+    "bodyName": "1",
+    "bodyId": 1,
+    "distanceToArrival": 367.0,
+    "starPos": [
+      975.78125,
+      -156.8125,
+      -75.34375
+    ],
+    "siteType": "Bear"
+  },
+  {
+    "idx": 0,
+    "systemName": "Col 173 Sector YF-N b23-6",
+    "systemAddress": 13877978473817,
+    "bodyName": "A 3",
+    "bodyId": 7,
+    "distanceToArrival": 41.0,
+    "starPos": [
+      962.84375,
+      -132.78125,
+      -194.65625
+    ],
+    "siteType": "Lacrosse"
+  },
+  {
+    "idx": 0,
+    "systemName": "Col 173 Sector BH-K b25-8",
+    "systemAddress": 18276293617001,
+    "bodyName": "B 3",
+    "bodyId": 21,
+    "distanceToArrival": 4406.0,
+    "starPos": [
+      986.21875,
+      -69.53125,
+      -163.4375
+    ],
+    "siteType": "Fistbump"
+  },
+  {
+    "idx": 0,
+    "systemName": "Col 173 Sector AY-F c12-0",
+    "systemAddress": 85530186418,
+    "bodyName": "A 1",
+    "bodyId": 7,
+    "distanceToArrival": 207.0,
+    "starPos": [
+      988.90625,
+      -78.6875,
+      -155.65625
+    ],
+    "siteType": "Lacrosse"
+  },
+  {
+    "idx": 0,
+    "systemName": "Col 173 Sector KY-Q d5-26",
+    "systemAddress": 904048658771,
+    "bodyName": "6 a",
+    "bodyId": 30,
+    "distanceToArrival": 1347.0,
+    "starPos": [
+      975.3125,
+      -103.1875,
+      -222.125
+    ],
+    "siteType": "Bowl"
+  },
+  {
+    "idx": 0,
+    "systemName": "Col 173 Sector SU-O d6-54",
+    "systemAddress": 1866121300315,
+    "bodyName": "B 2",
+    "bodyId": 19,
+    "distanceToArrival": 7113.0,
+    "starPos": [
+      981.125,
+      -202.65625,
+      -110.53125
+    ],
+    "siteType": "Turtle"
+  },
+  {
+    "idx": 0,
+    "systemName": "HD 63154",
+    "systemAddress": 22810707116,
+    "bodyName": "B 3 a",
+    "bodyId": 44,
+    "distanceToArrival": 149122.0,
+    "starPos": [
+      979.46875,
+      -207.40625,
+      -131.59375
+    ],
+    "siteType": "Turtle"
+  },
+  {
+    "idx": 0,
+    "systemName": "Col 173 Sector RT-I b25-1",
+    "systemAddress": 2883130303849,
+    "bodyName": "B 1",
+    "bodyId": 19,
+    "distanceToArrival": 1200.0,
+    "starPos": [
+      977.0,
+      -233.625,
+      -151.0625
+    ],
+    "siteType": "Fistbump"
+  },
+  {
+    "idx": 0,
+    "systemName": "Col 173 Sector KY-Q d5-42",
+    "systemAddress": 1453804472659,
+    "bodyName": "1 a",
+    "bodyId": 2,
+    "distanceToArrival": 989.0,
+    "starPos": [
+      991.875,
+      -84.625,
+      -203.71875
+    ],
+    "siteType": "Fistbump"
+  },
+  {
+    "idx": 0,
+    "systemName": "Vela Dark Region EL-Y d32",
+    "systemAddress": 1110207072611,
+    "bodyName": "B 1",
+    "bodyId": 8,
+    "distanceToArrival": 58274.0,
+    "starPos": [
+      1000.65625,
+      -166.21875,
+      -64.15625
+    ],
+    "siteType": "Crossroads"
+  },
+  {
+    "idx": 0,
+    "systemName": "Col 173 Sector QZ-O d6-1",
+    "systemAddress": 45055183195,
+    "bodyName": "4 c",
+    "bodyId": 48,
+    "distanceToArrival": 920.0,
+    "starPos": [
+      989.28125,
+      -170.8125,
+      -175.125
+    ],
+    "siteType": "Fistbump"
+  },
+  {
+    "idx": 0,
+    "systemName": "Col 173 Sector JX-K b24-0",
+    "systemAddress": 684107179361,
+    "bodyName": "B 2",
+    "bodyId": 23,
+    "distanceToArrival": 628.0,
+    "starPos": [
+      993.0625,
+      -188.1875,
+      -173.53125
+    ],
+    "siteType": "Crossroads"
+  },
+  {
+    "idx": 0,
+    "systemName": "Col 173 Sector KN-J b25-5",
+    "systemAddress": 11679492023657,
+    "bodyName": "C 3",
+    "bodyId": 44,
+    "distanceToArrival": 11305.0,
+    "starPos": [
+      1002.90625,
+      -152.28125,
+      -160.25
+    ],
+    "siteType": "Lacrosse"
+  },
+  {
+    "idx": 0,
+    "systemName": "Col 173 Sector AI-H c11-22",
+    "systemAddress": 6132844073642,
+    "bodyName": "B 1",
+    "bodyId": 14,
+    "distanceToArrival": 17614.0,
+    "starPos": [
+      992.6875,
+      -153.625,
+      -213.71875
+    ],
+    "siteType": "Fistbump"
+  },
+  {
+    "idx": 0,
+    "systemName": "Col 173 Sector HN-I b26-5",
+    "systemAddress": 11679760721265,
+    "bodyName": "A 1",
+    "bodyId": 7,
+    "distanceToArrival": 95.0,
+    "starPos": [
+      1022.3125,
+      -76.9375,
+      -139.03125
+    ],
+    "siteType": "Bowl"
+  },
+  {
+    "idx": 0,
+    "systemName": "HD 62755",
+    "systemAddress": 18515739820,
+    "bodyName": "10 b",
+    "bodyId": 40,
+    "distanceToArrival": 6549.0,
+    "starPos": [
+      1001.78125,
+      -201.53125,
+      -167.125
+    ],
+    "siteType": "Crossroads"
+  },
+  {
+    "idx": 0,
+    "systemName": "Col 173 Sector OD-J b25-2",
+    "systemAddress": 5082422125929,
+    "bodyName": "B 1",
+    "bodyId": 12,
+    "distanceToArrival": 1472.0,
+    "starPos": [
+      1008.375,
+      -201.5625,
+      -157.4375
+    ],
+    "siteType": "Bear"
+  },
+  {
+    "idx": 0,
+    "systemName": "Col 173 Sector WZ-O b22-4",
+    "systemAddress": 9480468833617,
+    "bodyName": "C 5",
+    "bodyId": 41,
+    "distanceToArrival": 299635.0,
+    "starPos": [
+      1011.0625,
+      -131.78125,
+      -210.4375
+    ],
+    "siteType": "Lacrosse"
+  },
+  {
+    "idx": 0,
+    "systemName": "Col 173 Sector DH-K b25-2",
+    "systemAddress": 5082690954601,
+    "bodyName": "A 5",
+    "bodyId": 10,
+    "distanceToArrival": 88.0,
+    "starPos": [
+      1027.09375,
+      -80.25,
+      -163.4375
+    ],
+    "siteType": "Lacrosse"
+  },
+  {
+    "idx": 0,
+    "systemName": "Col 173 Sector HR-M b23-0",
+    "systemAddress": 684644050265,
+    "bodyName": "C 1",
+    "bodyId": 5,
+    "distanceToArrival": 1075.0,
+    "starPos": [
+      1015.5625,
+      -200.84375,
+      -190.4375
+    ],
+    "siteType": "Lacrosse"
+  },
+  {
+    "idx": 0,
+    "systemName": "Vela Dark Region KR-W c1-24",
+    "systemAddress": 6682666996418,
+    "bodyName": "7 a",
+    "bodyId": 17,
+    "distanceToArrival": 638.0,
+    "starPos": [
+      1036.875,
+      -163.59375,
+      -85.96875
+    ],
+    "siteType": "Lacrosse"
+  },
+  {
+    "idx": 0,
+    "systemName": "Col 173 Sector HR-M b23-3",
+    "systemAddress": 7281713816921,
+    "bodyName": "B 7",
+    "bodyId": 28,
+    "distanceToArrival": 2693.0,
+    "starPos": [
+      1024.28125,
+      -191.71875,
+      -193.8125
+    ],
+    "siteType": "Hammerbot"
+  },
+  {
+    "idx": 0,
+    "systemName": "Vela Dark Region FL-Y d63",
+    "systemAddress": 2175375739235,
+    "bodyName": "B 1",
+    "bodyId": 23,
+    "distanceToArrival": 6631.0,
+    "starPos": [
+      1064.5,
+      -144.03125,
+      -101.71875
+    ],
+    "siteType": "Lacrosse"
+  },
+  {
+    "idx": 0,
+    "systemName": "Vela Dark Region TD-S b4-5",
+    "systemAddress": 11680297461137,
+    "bodyName": "C 1",
+    "bodyId": 24,
+    "distanceToArrival": 51237.0,
+    "starPos": [
+      1071.21875,
+      -121.03125,
+      -50.09375
+    ],
+    "siteType": "Bear"
+  },
+  {
+    "idx": 0,
+    "systemName": "Vela Dark Region HB-X c1-28",
+    "systemAddress": 7782245798594,
+    "bodyName": "E 2",
+    "bodyId": 39,
+    "distanceToArrival": 368789.0,
+    "starPos": [
+      1073.0625,
+      -100.65625,
+      -92.75
+    ],
+    "siteType": "Crossroads"
+  },
+  {
+    "idx": 0,
+    "systemName": "Trapezium Sector YU-X c1-2",
+    "systemAddress": 634547605994,
+    "bodyName": "1 a",
+    "bodyId": 2,
+    "distanceToArrival": 253.0,
+    "starPos": [
+      573.59375,
+      -339.46875,
+      -1167.65625
+    ],
+    "siteType": "Squid"
+  }
+]

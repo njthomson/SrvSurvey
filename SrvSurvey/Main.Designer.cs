@@ -73,6 +73,7 @@ namespace SrvSurvey
             label5 = new Label();
             lblNotInstalled = new LinkLabel();
             btnSphereLimit = new Button();
+            btnGuarduanThings = new Button();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
             groupBox3.SuspendLayout();
@@ -429,6 +430,7 @@ namespace SrvSurvey
             // groupBox4
             // 
             groupBox4.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            groupBox4.Controls.Add(btnGuarduanThings);
             groupBox4.Controls.Add(btnRuins);
             groupBox4.Controls.Add(btnAllRuins);
             groupBox4.Controls.Add(btnRuinsMap);
@@ -448,9 +450,9 @@ namespace SrvSurvey
             btnRuins.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnRuins.BackColor = SystemColors.ControlLight;
             btnRuins.FlatStyle = FlatStyle.System;
-            btnRuins.Location = new Point(240, 31);
+            btnRuins.Location = new Point(309, 56);
             btnRuins.Name = "btnRuins";
-            btnRuins.Size = new Size(50, 47);
+            btnRuins.Size = new Size(56, 32);
             btnRuins.TabIndex = 18;
             btnRuins.Text = "Ruins Map";
             btnRuins.UseVisualStyleBackColor = false;
@@ -461,11 +463,11 @@ namespace SrvSurvey
             btnAllRuins.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnAllRuins.BackColor = SystemColors.ControlLight;
             btnAllRuins.FlatStyle = FlatStyle.System;
-            btnAllRuins.Location = new Point(296, 31);
+            btnAllRuins.Location = new Point(240, 55);
             btnAllRuins.Name = "btnAllRuins";
-            btnAllRuins.Size = new Size(68, 47);
+            btnAllRuins.Size = new Size(55, 35);
             btnAllRuins.TabIndex = 17;
-            btnAllRuins.Text = "All Guardian Ruins";
+            btnAllRuins.Text = "All Ruins";
             btnAllRuins.UseVisualStyleBackColor = false;
             btnAllRuins.Click += btnAllRuins_Click;
             // 
@@ -556,6 +558,19 @@ namespace SrvSurvey
             btnSphereLimit.UseVisualStyleBackColor = false;
             btnSphereLimit.Click += btnSphereLimit_Click;
             // 
+            // btnGuarduanThings
+            // 
+            btnGuarduanThings.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnGuarduanThings.BackColor = SystemColors.ControlLight;
+            btnGuarduanThings.FlatStyle = FlatStyle.System;
+            btnGuarduanThings.Location = new Point(240, 16);
+            btnGuarduanThings.Name = "btnGuarduanThings";
+            btnGuarduanThings.Size = new Size(124, 34);
+            btnGuarduanThings.TabIndex = 19;
+            btnGuarduanThings.Text = "All Beacons and Structures";
+            btnGuarduanThings.UseVisualStyleBackColor = false;
+            btnGuarduanThings.Click += btnGuarduanThings_Click;
+            // 
             // Main
             // 
             AutoScaleDimensions = new SizeF(7F, 12F);
@@ -641,5 +656,6 @@ namespace SrvSurvey
         private Button btnAllRuins;
         private Button btnRuins;
         private Button btnSphereLimit;
+        private Button btnGuarduanThings;
     }
 }

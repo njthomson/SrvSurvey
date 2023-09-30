@@ -75,8 +75,9 @@ namespace SrvSurvey
 
         private void prepareAllRows()
         {
-            var allBeacons = Game.canonn.allBeacons.Select(_ => new GuardianBeaconEntry(_));
-            Game.log($"Rendering {Game.canonn.allBeacons.Count} beacons.");
+            var allBeacons = Game.canonn.allBeacons.Select(_ => new GuardianGridEntry(_));
+            var allStructures = Game.canonn.allStructures.Select(_ => new GuardianGridEntry(_));
+            Game.log($"Rendering {Game.canonn.allBeacons.Count} beacons, {Game.canonn.allStructures.Count} structures");
 
             foreach (var entry in allBeacons)
             {
@@ -94,7 +95,31 @@ namespace SrvSurvey
                     new ListViewItem.ListViewSubItem { Text = "x ly", Name = "distanceToSystem" },
                     new ListViewItem.ListViewSubItem { Text = $"{distanceToArrival} ls" },
                     new ListViewItem.ListViewSubItem { Text = lastVisited },
-                    new ListViewItem.ListViewSubItem { Text = entry.relatedStructure },
+                    new ListViewItem.ListViewSubItem { Text = entry.siteType },
+                    new ListViewItem.ListViewSubItem { Text = entry.notes ?? "" },
+                };
+
+                var row = new ListViewItem(subItems, 0) { Tag = entry, };
+                this.rows.Add(row);
+            }
+
+            foreach (var entry in allStructures)
+            {
+                var lastVisited = entry.lastVisited == DateTimeOffset.MinValue ? "" : entry.lastVisited.ToString("d")!;
+                var distanceToArrival = entry.distanceToArrival.ToString("N0");
+
+                entry.systemDistance = Util.getSystemDistance(this.star.pos, entry.starPos);
+                var distanceToSystem = entry.systemDistance.ToString("N0");
+
+                var subItems = new ListViewItem.ListViewSubItem[]
+                {
+                    // ordering here needs to manually match columns
+                    new ListViewItem.ListViewSubItem { Text = entry.systemName, Name = "systemName" },
+                    new ListViewItem.ListViewSubItem { Text = entry.bodyName },
+                    new ListViewItem.ListViewSubItem { Text = "x ly", Name = "distanceToSystem" },
+                    new ListViewItem.ListViewSubItem { Text = $"{distanceToArrival} ls" },
+                    new ListViewItem.ListViewSubItem { Text = lastVisited },
+                    new ListViewItem.ListViewSubItem { Text = entry.siteType },
                     new ListViewItem.ListViewSubItem { Text = entry.notes ?? "" },
                 };
 
@@ -114,7 +139,7 @@ namespace SrvSurvey
         {
             foreach (var row in this.rows)
             {
-                var entry = (GuardianBeaconEntry)row.Tag;
+                var entry = (GuardianGridEntry)row.Tag;
                 entry.systemDistance = Util.getSystemDistance(this.star.pos, entry.starPos);
                 row.SubItems["distanceToSystem"]!.Text = entry.systemDistance.ToString("N0") + " ly";
             }
@@ -127,7 +152,7 @@ namespace SrvSurvey
             // apply filter
             var filteredRows = this.rows.Where(row =>
             {
-                var entry = (GuardianBeaconEntry)row.Tag;
+                var entry = (GuardianGridEntry)row.Tag;
 
                 if (checkVisited.Checked && entry.lastVisited == DateTimeOffset.MinValue)
                     return false;
@@ -158,19 +183,19 @@ namespace SrvSurvey
             switch (this.sortColumn)
             {
                 case 0: // system name
-                    return rows.OrderBy(row => ((GuardianBeaconEntry)row.Tag).systemName);
+                    return rows.OrderBy(row => ((GuardianGridEntry)row.Tag).systemName);
                 case 1: // bodyName
-                    return rows.OrderBy(row => ((GuardianBeaconEntry)row.Tag).bodyName);
+                    return rows.OrderBy(row => ((GuardianGridEntry)row.Tag).bodyName);
                 case 2: //systemDistance
-                    return rows.OrderBy(row => ((GuardianBeaconEntry)row.Tag).systemDistance);
+                    return rows.OrderBy(row => ((GuardianGridEntry)row.Tag).systemDistance);
                 case 3: // distanceToArrival;
-                    return rows.OrderBy(row => ((GuardianBeaconEntry)row.Tag).distanceToArrival);
+                    return rows.OrderBy(row => ((GuardianGridEntry)row.Tag).distanceToArrival);
                 case 4: // last visited
-                    return rows.OrderBy(row => ((GuardianBeaconEntry)row.Tag).lastVisited);
+                    return rows.OrderBy(row => ((GuardianGridEntry)row.Tag).lastVisited);
                 case 5: // relatedStructure
-                    return rows.OrderBy(row => ((GuardianBeaconEntry)row.Tag).relatedStructure);
+                    return rows.OrderBy(row => ((GuardianGridEntry)row.Tag).siteType);
                 case 6: // notes
-                    return rows.OrderBy(row => ((GuardianBeaconEntry)row.Tag).notes);
+                    return rows.OrderBy(row => ((GuardianGridEntry)row.Tag).notes);
 
                 default:
                     Game.log($"Unexpected sort column: {this.sortColumn}");
@@ -207,6 +232,11 @@ namespace SrvSurvey
             else
                 this.sortColumn = e.Column;
 
+            this.showAllRows();
+        }
+
+        private void btnFilter_Click(object sender, EventArgs e)
+        {
             this.showAllRows();
         }
     }

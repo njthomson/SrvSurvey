@@ -493,7 +493,8 @@ namespace SrvSurvey.canonn
 
     #endregion
 
-    internal class GuardianBeaconSummary
+
+    internal class GuardianSummary
     {
         public string systemName;
         public long systemAddress;
@@ -501,17 +502,24 @@ namespace SrvSurvey.canonn
         public int bodyId;
         public double distanceToArrival;
         public double[] starPos;
+        public string siteType;
+    }
+
+    internal class GuardianBeaconSummary : GuardianSummary
+    {
         public string relatedStructure;
         public double relatedStructureDist;
     }
 
-    internal class GuardianBeaconEntry : GuardianBeaconSummary
+    internal class GuardianGridEntry : GuardianSummary
     {
         public DateTimeOffset lastVisited;
         public double systemDistance;
         public string notes = "";
 
-        public GuardianBeaconEntry(GuardianBeaconSummary summary)
+        public double relatedStructureDist;
+
+        public GuardianGridEntry(GuardianBeaconSummary summary)
         {
             if (summary != null)
             {
@@ -521,12 +529,30 @@ namespace SrvSurvey.canonn
                 base.bodyId = summary.bodyId;
                 base.distanceToArrival = summary.distanceToArrival;
                 base.starPos = summary.starPos;
-                base.relatedStructure = summary.relatedStructure;
-                base.relatedStructureDist = summary.relatedStructureDist;
-                this.notes = this.relatedStructureDist.ToString("N2") + " ly";
+                this.relatedStructureDist = summary.relatedStructureDist;
+                base.siteType = "Beacon";
+                this.notes = $"Structure: {summary.relatedStructure}, dist: " + summary.relatedStructureDist.ToString("N2") + " ly";
             }
-
         }
+
+        public GuardianGridEntry(GuardianStructureSummary summary)
+        {
+            if (summary != null)
+            {
+                base.systemName = summary.systemName;
+                base.systemAddress = summary.systemAddress;
+                base.bodyName = summary.bodyName;
+                base.bodyId = summary.bodyId;
+                base.distanceToArrival = summary.distanceToArrival;
+                base.starPos = summary.starPos;
+                base.siteType = summary.siteType;
+            }
+        }
+
     }
 
+    internal class GuardianStructureSummary : GuardianSummary
+    {
+        public int idx;
+    }
 }

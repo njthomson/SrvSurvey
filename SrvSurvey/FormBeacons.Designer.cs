@@ -44,7 +44,7 @@
             colBody = new ColumnHeader();
             colSystem = new ColumnHeader();
             grid = new ListView();
-            colRelatedStructure = new ColumnHeader();
+            colSiteType = new ColumnHeader();
             statusStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -118,6 +118,7 @@
             btnFilter.TabIndex = 11;
             btnFilter.Text = "Filter";
             btnFilter.UseVisualStyleBackColor = true;
+            btnFilter.Click += btnFilter_Click;
             // 
             // colNotes
             // 
@@ -155,7 +156,7 @@
             // grid
             // 
             grid.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            grid.Columns.AddRange(new ColumnHeader[] { colSystem, colBody, colDistance, colArrival, colLastVisited, colRelatedStructure, colNotes });
+            grid.Columns.AddRange(new ColumnHeader[] { colSystem, colBody, colDistance, colArrival, colLastVisited, colSiteType, colNotes });
             grid.FullRowSelect = true;
             grid.GridLines = true;
             grid.Location = new Point(0, 35);
@@ -167,12 +168,13 @@
             grid.View = View.Details;
             grid.ColumnClick += grid_ColumnClick;
             // 
-            // colRelatedStructure
+            // colSiteType
             // 
-            colRelatedStructure.Text = "Structure";
+            colSiteType.Text = "Site type";
             // 
             // FormBeacons
             // 
+            AcceptButton = btnFilter;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1176, 386);
@@ -186,7 +188,7 @@
             Controls.Add(grid);
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "FormBeacons";
-            Text = "Guardian Beacons";
+            Text = "Guardian Beacons and Structures";
             Load += FormBeacons_Load;
             statusStrip1.ResumeLayout(false);
             statusStrip1.PerformLayout();
@@ -211,6 +213,6 @@
         private ColumnHeader colBody;
         private ColumnHeader colSystem;
         private ListView grid;
-        private ColumnHeader colRelatedStructure;
+        private ColumnHeader colSiteType;
     }
 }

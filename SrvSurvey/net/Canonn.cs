@@ -14,21 +14,27 @@ namespace SrvSurvey.canonn
         private static string allRuinsStaticPathDbg = "D:\\code\\SrvSurvey\\SrvSurvey\\allRuins.json";
         private static string allRuinsStaticPath = Debugger.IsAttached ? allRuinsStaticPathDbg : Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "allRuins.json");
         private static string allBeaconsStaticPath = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "allBeacons.json");
+        private static string allStructuresStaticPathDbg = "D:\\code\\SrvSurvey\\SrvSurvey\\allStructures.json";
+        private static string allStructuresStaticPath = Debugger.IsAttached ? allStructuresStaticPathDbg : Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "allStructures.json");
         public List<GuardianRuinSummary> allRuins { get; private set; }
         public List<GuardianBeaconSummary> allBeacons { get; private set; }
+        public List<GuardianStructureSummary> allStructures { get; private set; }
 
         public void init()
         {
             // load static ruins summaries
             this.allRuins = JsonConvert.DeserializeObject<List<GuardianRuinSummary>>(File.ReadAllText(Canonn.allRuinsStaticPath))!;
-            var json = File.ReadAllText(Canonn.allBeaconsStaticPath);
-            this.allBeacons = JsonConvert.DeserializeObject<List<GuardianBeaconSummary>>(json)!;
-            Game.log($"Loaded {this.allRuins.Count} ruins, {this.allBeacons.Count} beacons");
+            this.allBeacons = JsonConvert.DeserializeObject<List<GuardianBeaconSummary>>(File.ReadAllText(Canonn.allBeaconsStaticPath))!;
+            this.allStructures = JsonConvert.DeserializeObject<List<GuardianStructureSummary>>(File.ReadAllText(Canonn.allStructuresStaticPath))!;
+            Game.log($"Loaded {this.allRuins.Count} ruins, {this.allBeacons.Count} beacons, {this.allStructures.Count} beacons");
 
             /*
-             if (Debugger.IsAttached)
-                 Game.canonn.prepareNewSummaries();
-             // */
+            if (Debugger.IsAttached)
+            {
+                //Game.canonn.prepareNewSummaries();
+                Game.canonn.prepareNewStructures();
+            }
+            // */
 
             // to calculate average distance from Beacon to related structure.
             //this.getDistancesFromBeaconToStructure().ContinueWith((stuff) => { Game.log($"Done"); });
@@ -369,7 +375,7 @@ namespace SrvSurvey.canonn
             // re-read XML if no partial progress
             if (!File.Exists(allRuinsStaticPathDbg))
             {
-                readXmlSheet(allRuinsStaticPathDbg);
+                readXmlSheetRuins(allRuinsStaticPathDbg);
                 this.showSummaryCounts();
             }
             else
@@ -459,7 +465,7 @@ namespace SrvSurvey.canonn
             File.WriteAllText(allRuinsStaticPathDbg, json);
         }
 
-        public void readXmlSheet(string filepath)
+        public void readXmlSheetRuins(string filepath)
         {
             this.newSummaries = new List<GuardianRuinSummary>();
 
@@ -468,13 +474,13 @@ namespace SrvSurvey.canonn
             var rows = table.Elements(XName.Get("Row", "urn:schemas-microsoft-com:office:spreadsheet")).Skip(1);
 
             foreach (var row in rows)
-                processXmlRow(row);
+                processXmlRowRuins(row);
 
             // save new summaries
             this.saveNewSummaries();
         }
 
-        private void processXmlRow(XElement row)
+        private void processXmlRowRuins(XElement row)
         {
             var cells = row.Elements(XName.Get("Cell", "urn:schemas-microsoft-com:office:spreadsheet")).ToList();
 
@@ -958,6 +964,192 @@ namespace SrvSurvey.canonn
             var json = JsonConvert.SerializeObject(this.allBeacons, Formatting.Indented);
             File.WriteAllText(allBeaconsStaticPath, json);
             // */
+        }
+
+        #endregion
+
+        #region build summaries of structures
+
+        private List<GuardianStructureSummary> newStructures;
+
+        public void readXmlSheetStructures()
+        {
+            this.newStructures = new List<GuardianStructureSummary>();
+
+            var doc = XDocument.Load(@"d:\code\Catalog of Guardian Structures and Ruins.xml");
+            var table = doc.Root?.Elements().Where(_ => _.Name.LocalName == "Worksheet" && _.FirstAttribute?.Value == "Structures").First().Elements()!;
+            var rows = table.Elements(XName.Get("Row", "urn:schemas-microsoft-com:office:spreadsheet")).Skip(1);
+
+            foreach (var row in rows)
+                processXmlRowStructure(row);
+        }
+
+        private void processXmlRowStructure(XElement row)
+        {
+            var cells = row.Elements(XName.Get("Cell", "urn:schemas-microsoft-com:office:spreadsheet")).ToList();
+
+            var systemName = cells[0].Value;
+            var bodyName = cells[2].Value;
+            var starPos = new double[3] /* x, y, z */ { double.Parse(cells[17].Value), double.Parse(cells[18].Value), double.Parse(cells[19].Value) };
+            var siteType = cells[4].Value;
+
+            var summary = new GuardianStructureSummary
+            {
+                systemName = systemName,
+                bodyName = bodyName,
+                starPos = starPos,
+                //idx = n + 1,
+                siteType = siteType,
+                //siteID = -1, // match against grsites
+                //bodyId = -1, // find from Spansh?
+                distanceToArrival = -1, //find from Spansh?
+                systemAddress = -1, // query from EDSM or Spansh
+                //latitude = Double.NaN, // query from grreports 
+                //longitude = Double.NaN, // query from grreports
+                //lastUpdated = DateTimeOffset.UtcNow,
+            };
+
+            // confirm no prior entry before adding to list
+            /*var existingMatch = newSummaries.Find(_ =>
+            {
+                return _.systemName.Equals(summary.systemName, StringComparison.OrdinalIgnoreCase)
+                    && _.bodyName.Equals(summary.bodyName, StringComparison.OrdinalIgnoreCase)
+                    && _.idx == summary.idx;
+            });
+
+            if (existingMatch != null)
+                Game.log($"Duplicate ruins? {summary}");
+            else
+                newSummaries.Add(summary);
+            */
+            newStructures.Add(summary);
+        }
+
+        public void prepareNewStructures()
+        {
+            Game.log("prepareNewStructures");
+
+            //if (!File.Exists(allStructuresStaticPathDbg)) return;
+
+            // re-read XML if no partial progress
+            if (!File.Exists(allStructuresStaticPathDbg))
+            {
+                readXmlSheetStructures();
+                //this.showSummaryCounts();
+                this.saveNewStructures();
+            }
+            else
+            {
+                var json = File.ReadAllText(allStructuresStaticPathDbg);
+                this.newStructures = JsonConvert.DeserializeObject<List<GuardianStructureSummary>>(json)!;
+            }
+
+            this.matchSystemAddresses2();
+            this.matchBodyIds2();
+
+            Game.log($"-=-=-=-=- Done!");
+        }
+
+        private void saveNewStructures()
+        {
+            // save new summaries
+            var json = JsonConvert.SerializeObject(this.newStructures, Formatting.Indented);
+            File.WriteAllText(allStructuresStaticPathDbg, json);
+        }
+
+
+        private async Task matchSystemAddresses2()
+        {
+            foreach (var ruins in newStructures)
+            {
+                var dirty = false;
+
+                if (ruins.systemAddress > 0) continue;
+
+                // do we have an existing match already?
+                var existingSystem = newStructures.Find(_ => _.systemName.Equals(ruins.systemName, StringComparison.OrdinalIgnoreCase) && _.systemAddress > 0);
+                if (ruins.systemAddress <= 0 && existingSystem != null)
+                {
+                    ruins.systemAddress = existingSystem.systemAddress;
+                    dirty = true;
+                    continue;
+                }
+
+                // find a match in EDSM?
+                Game.log($"EDSM lookup system: {ruins.systemName}");
+                var edsmResponse = await Game.edsm.getSystems(ruins.systemName);
+                Game.log($"Found {edsmResponse.Length} systems from: {ruins.systemName}");
+                var matchedSystemAddress = edsmResponse.FirstOrDefault()?.id64;
+                if (matchedSystemAddress > 0)
+                {
+                    ruins.systemAddress = (long)matchedSystemAddress;
+                    dirty = true;
+                    continue;
+                }
+
+                // find a match in Spansh?
+                Game.log($"Spansh lookup system: {ruins.systemName}");
+                var spanshResponse = await Game.spansh.getSystem(ruins.systemName);
+                matchedSystemAddress = spanshResponse.min_max.FirstOrDefault(_ => _.name.Equals(ruins.systemName, StringComparison.OrdinalIgnoreCase))?.id64;
+                if (matchedSystemAddress > 0)
+                {
+                    ruins.systemAddress = (long)matchedSystemAddress;
+                    dirty = true;
+                    continue;
+                }
+
+                if (dirty)
+                {
+                    this.saveNewStructures();
+                }
+            }
+        }
+
+        private async Task matchBodyIds2()
+        {
+            foreach (var ruins in newStructures)
+            {
+                var dirty = false;
+
+                if (ruins.bodyId > 0 && ruins.distanceToArrival > 0) continue;
+
+                // do we have an existing match already?
+                var existingBody = newStructures.Find(_ => _.systemName.Equals(ruins.systemName, StringComparison.OrdinalIgnoreCase) && _.bodyName.Equals(ruins.bodyName, StringComparison.OrdinalIgnoreCase) && _.bodyId > 0);
+                if (ruins.bodyId <= 0 && existingBody?.bodyId > 0)
+                {
+                    ruins.bodyId = existingBody.bodyId;
+                    dirty = true;
+                }
+                if (ruins.distanceToArrival <= 0 && existingBody?.distanceToArrival > 0)
+                {
+                    ruins.distanceToArrival = existingBody.distanceToArrival;
+                    dirty = true;
+                }
+
+                if (ruins.bodyId < 0 || ruins.distanceToArrival < 0 && ruins.systemName != "HIP 41730")
+                {
+                    // find a match in EDSM?
+                    Game.log($"EDSM lookup bodies: {ruins.systemName}");
+                    var edsmResponse = await Game.edsm.getBodies(ruins.systemName);
+                    var fullBodyName = $"{ruins.systemName} {ruins.bodyName}";
+                    var matchedBody = edsmResponse.bodies.FirstOrDefault(_ => _.name.Equals(fullBodyName, StringComparison.OrdinalIgnoreCase));
+                    if (ruins.bodyId <= 0 && matchedBody?.bodyId > 0)
+                    {
+                        ruins.bodyId = matchedBody.bodyId;
+                        dirty = true;
+                    }
+                    if (ruins.distanceToArrival <= 0 && matchedBody?.distanceToArrival > 0)
+                    {
+                        ruins.distanceToArrival = matchedBody.distanceToArrival;
+                        dirty = true;
+                    }
+                }
+
+                if (dirty)
+                {
+                    this.saveNewStructures();
+                }
+            }
         }
 
         #endregion
