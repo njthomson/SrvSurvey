@@ -239,5 +239,13 @@ namespace SrvSurvey
         {
             this.showAllRows();
         }
+
+        private void grid_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right && grid.SelectedItems.Count > 0)
+            {
+                Clipboard.SetText(grid.SelectedItems[0].SubItems[0].Text);
+            }
+        }
     }
 }

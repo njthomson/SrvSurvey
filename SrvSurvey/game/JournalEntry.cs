@@ -400,7 +400,7 @@ namespace SrvSurvey
         public string StarType { get; set; } // Stellar classification (for a star) – see §15.2
         public int Subclass { get; set; } // Star's heat classification 0..9
         public double StellarMass { get; set; } //  mass as multiple of Sol's mass
-        public double Radius { get; set; }
+        public decimal Radius { get; set; }
         public double AbsoluteMagnitude { get; set; }
         public double RotationPeriod { get; set; } // (seconds)
         public double SurfaceTemperature { get; set; }

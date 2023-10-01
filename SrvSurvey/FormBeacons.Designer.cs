@@ -167,6 +167,7 @@
             grid.UseCompatibleStateImageBehavior = false;
             grid.View = View.Details;
             grid.ColumnClick += grid_ColumnClick;
+            grid.MouseClick += grid_MouseClick;
             // 
             // colSiteType
             // 

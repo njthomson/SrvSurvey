@@ -12,22 +12,23 @@ namespace SrvSurvey.game
         public static string getFilename(ApproachSettlement entry)
         {
             var index = parseSettlementIdx(entry.Name);
-            return getFilename(entry.BodyName, index);
+            var isRuins = entry.Name.StartsWith("$Ancient:#index=");
+            return getFilename(entry.BodyName, index, isRuins);
         }
 
-        public static string getFilename(string bodyName, int index)
+        public static string getFilename(string bodyName, int index, bool isRuins)
         {
-            var namePart = "ruins"; // TODO: structures?
+            var namePart = isRuins ? "ruins" : "structure";
             return $"{bodyName}-{namePart}-{index}.json";
         }
 
-        public static GuardianSiteData? Load(string bodyName, int index)
+        public static GuardianSiteData? Load(string bodyName, int index, bool isRuins)
         {
             var fid = Game.activeGame?.fid ?? Game.settings.lastFid!;
             var folder = Path.Combine(rootFolder, fid!);
             if (!Util.isOdyssey) folder = Path.Combine(folder, "legacy");
 
-            var filename = getFilename(bodyName, index);
+            var filename = getFilename(bodyName, index, isRuins);
             var filepath = Path.Combine(folder, filename);
             return Data.Load<GuardianSiteData>(filepath);
         }
@@ -72,6 +73,10 @@ namespace SrvSurvey.game
                     poiStatus = new Dictionary<string, SitePoiStatus>(),
                     legacy = !Util.isOdyssey,
                 };
+
+                // Structures have their type in the name
+                if (entry.Name.StartsWith("$Ancient_"))
+                    data.type = getStructureTypeFromName(entry.Name);
 
                 data.Save();
                 return data;
@@ -136,6 +141,30 @@ namespace SrvSurvey.game
             return data;
         }
 
+        public static SiteType getStructureTypeFromName(string settlementName)
+        {
+            var name = settlementName.Substring(0, settlementName.IndexOf(":#"));
+            switch (name)
+            {
+                case "$Ancient_Tiny_001": return SiteType.Lacrosse;
+                case "$Ancient_Tiny_002": return SiteType.Crossroads;
+                case "$Ancient_Tiny_003": return SiteType.Fistbump;
+
+                case "$Ancient_Small_001": return SiteType.Hammerbot;
+                case "$Ancient_Small_002": return SiteType.Bear;
+                case "$Ancient_Small_003": return SiteType.Bowl;
+                // "$Ancient_Small_004" is unused
+                case "$Ancient_Small_005": return SiteType.Turtle;
+
+                case "$Ancient_Medium_001": return SiteType.Robolobster;
+                case "$Ancient_Medium_002": return SiteType.Squid;
+                case "$Ancient_Medium_003": return SiteType.Stickyhand;
+
+                default:
+                    throw new Exception($"Unexpected settlementName: {settlementName}");
+            }
+        }
+
         #region data members
 
         public string name;
@@ -167,21 +196,39 @@ namespace SrvSurvey.game
         public static int parseSettlementIdx(string name)
         {
             const string ruinsPrefix = "$Ancient:#index=";
+            const string structurePrefix = "$Ancient_";
+
             // $Ancient:#index=2;
             if (name.StartsWith(ruinsPrefix))
             {
                 return int.Parse(name.Substring(ruinsPrefix.Length, 1));
+            }
+            // $Ancient_Tiny_003:#index=1;
+            if (name.StartsWith(structurePrefix))
+            {
+                return int.Parse(name.Substring(name.IndexOf("=") + 1, 1));
             }
             throw new Exception("Unkown site type");
         }
 
         public enum SiteType
         {
+            // ruins ...
             Unknown,
             Alpha,
             Beta,
             Gamma,
-            // structures ... ?
+            // structures ...
+            Lacrosse,
+            Crossroads,
+            Fistbump,
+            Hammerbot,
+            Bear,
+            Bowl,
+            Turtle,
+            Robolobster,
+            Squid,
+            Stickyhand,
         }
 
         public static void migrateAlphaSites()

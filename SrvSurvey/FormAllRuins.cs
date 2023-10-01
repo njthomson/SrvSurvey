@@ -286,7 +286,7 @@ namespace SrvSurvey
             if (grid.SelectedItems.Count > 0)
             {
                 var entry = (GuardianRuinEntry)grid.SelectedItems[0].Tag;
-                var siteData = GuardianSiteData.Load($"{entry.systemName} {entry.bodyName}", entry.idx);
+                var siteData = GuardianSiteData.Load($"{entry.systemName} {entry.bodyName}", entry.idx, true);
                 FormRuins.show(siteData);
             }
         }

@@ -34,7 +34,7 @@ namespace SrvSurvey
 
         public string BodyName { get; set; }
         public Destination Destination { get; set; }
-        public double PlanetRadius { get; set; }
+        public decimal PlanetRadius { get; set; }
         public string SelectedWeapon { get; set; }
         public string SelectedWeapon_Localised { get; set; }
 

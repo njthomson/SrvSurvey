@@ -163,5 +163,24 @@
       { "name": "p26", "dist": 515, "angle": 179.9, "type": "tablet" },
       { "name": "p27", "dist": 499, "angle": 131.4, "type": "totem" }
     ]
+  },
+  "robolobster": {
+    "name": "Robolobster",
+    "imageOffset": "583,353",
+    "scaleFactor": 1.1,
+    "poi": [
+      { "name": "c1", "dist": 167, "angle": 209, "type": "component" },
+
+      { "name": "p1", "dist": 289, "angle": 357, "type": "totem" },
+      { "name": "p2", "dist": 279, "angle": 358, "type": "tablet" },
+      { "name": "p3", "dist": 119, "angle": 19, "type": "urn" },
+      { "name": "p4", "dist": 110, "angle": 157, "type": "casket" },
+      { "name": "p5", "dist": 131, "angle": 227, "type": "casket" },
+      { "name": "p6", "dist": 148, "angle": 254, "type": "tablet" },
+      { "name": "p7", "dist": 195, "angle": 291, "type": "tablet" },
+      { "name": "p8", "dist": 148, "angle": 297, "type": "urn" },
+      { "name": "p8", "dist": 167, "angle": 209, "type": "orb" },
+      { "name": "p8", "dist": 52, "angle": 138, "type": "tablet" }
+    ]
   }
 }

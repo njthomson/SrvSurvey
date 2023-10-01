@@ -13,7 +13,7 @@ namespace SrvSurvey.game
         public readonly string bodyName;
         public readonly int bodyId;
         public long systemAddress;
-        public double radius;
+        public decimal radius;
         public BodyData data;
 
         public event BioScanEvent? bioScanEvent;
@@ -24,7 +24,7 @@ namespace SrvSurvey.game
         public GuardianSiteData siteData;
         public HashSet<string> settlements = new HashSet<string>();
 
-        public LandableBody(Game game, string systemName, string bodyName, int bodyId, long systemAddress, double radius)
+        public LandableBody(Game game, string systemName, string bodyName, int bodyId, long systemAddress, decimal radius)
         {
             if (radius == 0) throw new Exception("Bad radius!");
             Game.log($"Creating LandableBody bodyName: '{bodyName}', radius: {radius.ToString("N0")}");
@@ -174,7 +174,10 @@ namespace SrvSurvey.game
             game.journals!.searchDeep(
                 (ApproachSettlement _) =>
                 {
-                    if (_.BodyName == this.bodyName && _.Name.StartsWith("$Ancient:") && _.Latitude != 0)
+                    if (_.BodyName != this.bodyName || _.Latitude == 0) return false;
+
+                    // Ruins or Structures
+                    if (_.Name.StartsWith("$Ancient:") || _.Name.StartsWith("$Ancient_"))
                     {
                         var filename = GuardianSiteData.getFilename(_);
                         if (this.settlements.Contains(filename))
@@ -190,7 +193,6 @@ namespace SrvSurvey.game
                             nearest = _;
                         }
                     }
-
                     return false;
                 },
                 // stop searching older journal files if we see we reached this system

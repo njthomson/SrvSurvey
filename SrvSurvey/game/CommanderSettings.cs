@@ -32,7 +32,7 @@ namespace SrvSurvey.game
         public long currentSystemAddress;
         public string? currentBody;
         public int currentBodyId;
-        public double currentBodyRadius;
+        public decimal currentBodyRadius;
         public double[] starPos;
 
         public string? lastOrganicScan;

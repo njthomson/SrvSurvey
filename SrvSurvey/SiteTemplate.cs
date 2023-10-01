@@ -84,6 +84,8 @@ namespace SrvSurvey
         totem,
         urn,
         emptyPuddle,
+        component,
+        pylon,
 
         /* Possibilities for future use:
          * Obelisk or maybe just ActiveObelisk

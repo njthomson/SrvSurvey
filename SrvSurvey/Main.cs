@@ -369,9 +369,12 @@ namespace SrvSurvey
             else if (Game.settings.enableGuardianSites)
             {
                 lblGuardianCount.Text = game.nearBody.settlements.Count.ToString();
-                if (this.game.nearBody.siteData != null && this.game.nearBody.siteData.isRuins)
+                if (this.game.nearBody.siteData != null)
                 {
-                    txtGuardianSite.Text = $"Ruins #{this.game.nearBody.siteData.index} - {this.game.nearBody.siteData.type}, {this.game.nearBody.siteData.siteHeading}°";
+                    if (this.game.nearBody.siteData.isRuins)
+                        txtGuardianSite.Text = $"Ruins #{this.game.nearBody.siteData.index} - {this.game.nearBody.siteData.type}, {this.game.nearBody.siteData.siteHeading}°";
+                    else
+                        txtGuardianSite.Text = $"{this.game.nearBody.siteData.type}, {this.game.nearBody.siteData.siteHeading}°";
 
                     if (game.showBodyPlotters && this.game.showGuardianPlotters)
                     {
@@ -778,9 +781,9 @@ namespace SrvSurvey
             if (game!.nearBody?.siteData != null)
             {
                 var siteData = game!.nearBody?.siteData!;
-
-                var majorType = siteData.isRuins ? "Ruins" : "Structure";
-                filename += $", {majorType}{siteData.index} {siteData.type}";
+                
+                var majorType = siteData.isRuins ? $"Ruins{siteData.index} " : "";
+                filename += $", {majorType}{siteData.type}";
 
                 extraTxt = $"\r\n  {siteData.nameLocalised}";
                 siteType = siteData.type;
@@ -920,6 +923,12 @@ namespace SrvSurvey
         private void btnRuins_Click(object sender, EventArgs e)
         {
             FormRuins.show();
+
+            //Program.closePlotter<PlotGuardians>();
+            //Program.closePlotter<PlotGuardianStatus>();
+
+            //Program.showPlotter<PlotGuardians>();
+            //Program.showPlotter<PlotGuardianStatus>();
         }
 
         private void btnSphereLimit_Click(object sender, EventArgs e)

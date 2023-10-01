@@ -57,6 +57,7 @@ namespace SrvSurvey
             }
 
             this.scale = 0.65f;
+            this.scale = 1f;
 
             this.nextMode();
         }
@@ -200,6 +201,11 @@ namespace SrvSurvey
                 case SiteType.Gamma:
                     PlotVertialStripe.mode = PlotVertialStripe.Mode.Gamma;
                     PlotVertialStripe.targetAltitude = Game.settings.aerialAltGamma;
+                    break;
+
+                case SiteType.Robolobster:
+                    PlotVertialStripe.mode = PlotVertialStripe.Mode.Robolobster;
+                    PlotVertialStripe.targetAltitude = 1500;// TODO: Game.settings.aerialAltGamma;
                     break;
             }
 
@@ -378,7 +384,7 @@ namespace SrvSurvey
                 var dist = Util.getDistance(Status.here, siteData.location, (decimal)game.nearBody!.radius);
                 // get angle relative to North, then adjust by siteHeading
                 Angle angle = Util.getBearing(Status.here, siteData.location) - siteData.siteHeading;
-                Game.log($"!! angle: {angle}, dist: {Math.Round(dist)}");
+                Game.log($"!! dist: {Math.Round(dist)}, angle: {angle}");
             }
 
             if (msg == "ll")
@@ -627,6 +633,8 @@ namespace SrvSurvey
 
         protected override void OnPaintBackground(PaintEventArgs e)
         {
+            if (game.isShutdown) return;
+
             //Game.log($"-- -- --> PlotGuardians: OnPaintBackground {this.template?.imageOffset} / {this.template?.scaleFactor}");
             if (this.template != null)
             {

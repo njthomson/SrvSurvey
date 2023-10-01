@@ -2,6 +2,7 @@
 using SrvSurvey.canonn;
 using SrvSurvey.game;
 using SrvSurvey.units;
+using System.ComponentModel;
 using System.Diagnostics;
 
 namespace SrvSurvey
@@ -261,6 +262,9 @@ namespace SrvSurvey
                     break;
                 case GuardianSiteData.SiteType.Gamma:
                     targetAlt = Game.settings.aerialAltGamma;
+                    break;
+                case GuardianSiteData.SiteType.Robolobster:
+                    targetAlt = 1500d; // TODO: setting?
                     break;
             }
 

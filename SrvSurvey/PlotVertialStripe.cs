@@ -14,6 +14,7 @@ namespace SrvSurvey
             Beta,
             Gamma,
             RelicTower,
+            Robolobster
         }
 
         public static Mode mode;
@@ -45,7 +46,7 @@ namespace SrvSurvey
             this.BackColor = Color.Red;
             this.TransparencyKey = Color.Red;
             this.AllowTransparency = true;
-
+            
             game.status.StatusChanged += Status_StatusChanged;
         }
 
@@ -178,6 +179,10 @@ namespace SrvSurvey
                     break;
                 case Mode.RelicTower:
                     this.drawRelicTowerTarget(g);
+                    break;
+
+                case Mode.Robolobster:
+                    this.drawRobolobsterTarget(g);
                     break;
 
                 case Mode.Buttress:
@@ -517,5 +522,59 @@ namespace SrvSurvey
             g.DrawLine(nightVision ? GameColors.penYellow4 : GameColors.penCyan2, w - w2, t + 180, w + w2, t + 180);
             g.DrawLine(ppp, w - w2, t + 180, w + w2, t + 180);
         }
+
+
+        private void drawRobolobsterTarget(Graphics g)
+        {
+            var er = Elite.getWindowRect();
+            var r = (float)er.Width / (float)er.Height;
+            var ew = er.Width * 0.01f;
+            var eh = er.Height * 0.01f;
+            var pp = new Pen(Color.Black, 4) { DashStyle = DashStyle.Dash };
+
+            var d = 0f;
+            var x = 0f;
+            var y = 0f;
+            var w = (this.Width / 2f);
+            var h = (this.Height / 2f);
+
+            // rock marker
+            x = w;
+            y = this.Height * 0.65f;
+            //drawLine(g, w, y, w, y + 100); // h - eh*12);
+
+            // tops
+            //*
+            d = eh * 1.5f;
+            x = w - d;
+            y = h - eh * 4;
+            drawLine(g, x, y, x - eh * 1f, y);
+            drawLine(g, x, y + 100, x, y + 100 + eh * 20); // h - eh*12);
+
+            x = w + d;
+            drawLine(g, x, y, x + eh * 1f, y);
+            drawLine(g, x, y + 100, x, y + 100 + eh * 20); // h - eh*12);
+
+
+            //drawLine(g, w, 4, w, 500); // h - eh*12);
+            //drawLine(g, 0, h, 1000, h);
+
+            // rock marker
+            //x = w - ew*7;
+            //y = this.Height * 0.8f;
+            //drawLine(g, x, this.Height * 0.7f, x, this.Height - 20);
+
+            //x = w + ew * 5;
+            //drawLine(g, x, h, x, h + eh * 20);
+
+            //x = w - ew * 5;
+            //y = this.Height * 0.6f;
+            //drawCircle(g, x, y, 80);
+
+            //x = w + ew * 1;
+            //y = eh * 24;
+            //drawCircle(g, x, y, 60);
+        }
+
     }
 }

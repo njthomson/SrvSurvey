@@ -970,9 +970,9 @@ namespace SrvSurvey.game
             cmdr.Save();
         }
 
-        private double findLastRadius(string bodyName)
+        private decimal findLastRadius(string bodyName)
         {
-            double planetRadius = -1;
+            decimal planetRadius = -1;
 
             journals!.searchDeep(
                 (Scan scan) =>
