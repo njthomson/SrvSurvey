@@ -12166,5 +12166,77 @@
     "legacyLongitude": 176.780197,
     "legacySiteHeading": -1,
     "legacyRelicTowerHeading": -1
+  },
+  {
+    "siteID": -1,
+    "systemName": "Graea Hypue LO-P d6-194",
+    "systemAddress": 6676048416443,
+    "bodyName": "14 b",
+    "bodyId": 84,
+    "siteType": "Alpha",
+    "idx": 1,
+    "lastUpdated": "2023-09-29T17:51:49.9704445+00:00",
+    "distanceToArrival": 2502.820958,
+    "starPos": [
+      -1037.65625,
+      -492.65625,
+      13612.6875
+    ],
+    "latitude": -43.566963,
+    "longitude": -45.432392,
+    "siteHeading": 156,
+    "relicTowerHeading": 279,
+    "legacyLatitude": "NaN",
+    "legacyLongitude": "NaN",
+    "legacySiteHeading": -1,
+    "legacyRelicTowerHeading": -1
+  },
+  {
+    "siteID": -1,
+    "systemName": "Graea Hypue LO-P d6-194",
+    "systemAddress": 6676048416443,
+    "bodyName": "14 a",
+    "bodyId": 84,
+    "siteType": "Beta",
+    "idx": 1,
+    "lastUpdated": "2023-09-29T17:51:49.9704445+00:00",
+    "distanceToArrival": 2503.606978,
+    "starPos": [
+      -1037.65625,
+      -492.65625,
+      13612.6875
+    ],
+    "latitude": 22.209421,
+    "longitude": -112.090813,
+    "siteHeading": 273,
+    "relicTowerHeading": 34,
+    "legacyLatitude": "NaN",
+    "legacyLongitude": "NaN",
+    "legacySiteHeading": -1,
+    "legacyRelicTowerHeading": -1
+  },
+  {
+    "siteID": -1,
+    "systemName": "Graea Hypue LO-P d6-194",
+    "systemAddress": 6676048416443,
+    "bodyName": "14 a",
+    "bodyId": 84,
+    "siteType": "Gamma",
+    "idx": 2,
+    "lastUpdated": "2023-09-29T17:51:49.9704445+00:00",
+    "distanceToArrival": 2503.606978,
+    "starPos": [
+      -1037.65625,
+      -492.65625,
+      13612.6875
+    ],
+    "latitude": 15.938621,
+    "longitude": 132.153992,
+    "siteHeading": 337,
+    "relicTowerHeading": 7,
+    "legacyLatitude": "NaN",
+    "legacyLongitude": "NaN",
+    "legacySiteHeading": -1,
+    "legacyRelicTowerHeading": -1
   }
 ]

@@ -162,6 +162,7 @@ namespace SrvSurvey.game
         public static event GameModeChanged? update;
 
         public bool atMainMenu = false;
+        public bool atCarrierMgmt = false;
         private bool fsdJumping = false;
         public bool isShutdown = false;
         public LandableBody? nearBody;
@@ -249,6 +250,9 @@ namespace SrvSurvey.game
 
                 if (this.atMainMenu || this.Commander == null)
                     return GameMode.MainMenu;
+
+                if (this.atCarrierMgmt)
+                    return GameMode.CarrierMgmt;
 
                 // use GuiFocus if it is interesting
                 if (this.status?.GuiFocus != GuiFocus.NoFocus)
@@ -747,6 +751,14 @@ namespace SrvSurvey.game
             {
                 // if atMainMenu has changed - force a status change event
                 this.atMainMenu = newMainMenu;
+                this.Status_StatusChanged(false);
+            }
+
+            var newCarrierMgmt = entry.MusicTrack == "FleetCarrier_Managment";
+            if (this.atCarrierMgmt != newCarrierMgmt)
+            {
+                // if atMainMenu has changed - force a status change event
+                this.atCarrierMgmt = newCarrierMgmt;
                 this.Status_StatusChanged(false);
             }
 

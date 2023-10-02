@@ -338,8 +338,26 @@ namespace SrvSurvey.canonn
                         // create an entry to represent our own data
                         if (matches.Count == 0)
                         {
-                            Game.log($"Unknown Guardian body: {data.bodyName} {data.name}");
+                            Game.log($"Unknown Guardian body: {data.bodyName} {data.name}. Adding entry without starPos or distanceToArrival");
                             // TODO: fabricate an entry from logs?
+                            //var newSummary = new GuardianRuinSummary
+                            //{
+                            //    bodyId = data.bodyId,
+                            //    bodyName = data.bodyName,
+                            //    distanceToArrival = -1,
+                            //    idx = data.index,
+                            //    latitude = data.location.Lat,
+                            //    longitude = data.location.Long,
+                            //    siteHeading = data.siteHeading,
+                            //    relicTowerHeading = data.relicTowerHeading,
+                            //    siteType = data.type.ToString(),
+                            //    systemName = data.systemName,
+                            //    systemAddress = data.systemAddress,
+                            //    starPos = new double[3],
+                            //};
+
+                            //entry = new GuardianRuinEntry(newSummary);
+                            //allRuins.Add(entry);
                         }
                         else
                         {
@@ -1025,7 +1043,7 @@ namespace SrvSurvey.canonn
             newStructures.Add(summary);
         }
 
-        public void prepareNewStructures()
+        public async Task prepareNewStructures()
         {
             Game.log("prepareNewStructures");
 
@@ -1044,8 +1062,8 @@ namespace SrvSurvey.canonn
                 this.newStructures = JsonConvert.DeserializeObject<List<GuardianStructureSummary>>(json)!;
             }
 
-            this.matchSystemAddresses2();
-            this.matchBodyIds2();
+            await this.matchSystemAddresses2();
+            await this.matchBodyIds2();
 
             Game.log($"-=-=-=-=- Done!");
         }

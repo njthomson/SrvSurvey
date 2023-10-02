@@ -66,6 +66,7 @@ namespace SrvSurvey.game
 
         MainMenu,
         FSDJumping,
+        CarrierMgmt,
 
         Unknown,
     }
