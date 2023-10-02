@@ -57,6 +57,7 @@
             btnShare.TabIndex = 18;
             btnShare.Text = "Share your discovered data";
             btnShare.UseVisualStyleBackColor = true;
+            btnShare.Visible = false;
             // 
             // statusStrip1
             // 

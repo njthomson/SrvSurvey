@@ -97,7 +97,7 @@ namespace SrvSurvey
 
         protected override void OnPaintBackground(PaintEventArgs e)
         {
-            if (this.IsDisposed || PlotGuardians.instance == null) return;
+            if (this.IsDisposed || PlotGuardians.instance == null || this.game.isShutdown) return;
 
             base.OnPaintBackground(e);
             this.g = e.Graphics;

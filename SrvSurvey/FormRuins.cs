@@ -189,7 +189,7 @@ namespace SrvSurvey
 
         private void getAllSurveyedRuins()
         {
-            this.surveyedSites = GuardianSiteData.loadAllSites();
+            this.surveyedSites = GuardianSiteData.loadAllSites(true);
         }
 
         private void showFilteredSites(GuardianSiteData? siteData = null)
@@ -215,7 +215,7 @@ namespace SrvSurvey
                     var name = $"{survey.bodyName ?? prefix}, ruins #{survey.index} - {survey.type}";
 
                     if (filteredSites.ContainsKey(name))
-                        Game.log($"Why? {name}");
+                        Game.log($"Why is {name} here twice?");
                     else
                         filteredSites.Add(name, survey);
                 }

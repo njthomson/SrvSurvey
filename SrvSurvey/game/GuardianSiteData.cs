@@ -283,13 +283,15 @@ namespace SrvSurvey.game
         //    Game.settings.Save();
         //}
 
-        public static List<GuardianSiteData> loadAllSites()
+        public static List<GuardianSiteData> loadAllSites(bool onlyRuins)
         {
             var folder = Path.Combine(rootFolder, Game.settings.lastFid!);
             if (!Directory.Exists(folder))
                 return new List<GuardianSiteData>();
 
-            var files = Directory.GetFiles(folder);
+            var files = onlyRuins 
+                ? Directory.GetFiles(folder, "*-ruins-*.json")
+                : Directory.GetFiles(folder);
 
             Game.log($"Reading {files.Length} ruins files from disk");
             return files

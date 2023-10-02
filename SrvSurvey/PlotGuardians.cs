@@ -57,7 +57,6 @@ namespace SrvSurvey
             }
 
             this.scale = 0.65f;
-            this.scale = 1f;
 
             this.nextMode();
         }

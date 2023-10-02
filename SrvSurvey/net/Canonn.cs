@@ -255,8 +255,8 @@ namespace SrvSurvey.canonn
 
         public List<GuardianRuinEntry> loadAllRuins()
         {
-            var summaries = this.allRuins; // new
-            //var summaries = this.ruinSummaries; // old
+            var summaries = this.allRuins;
+
             if (summaries == null)
             {
                 Game.log("Why no ruinSummaries?");
