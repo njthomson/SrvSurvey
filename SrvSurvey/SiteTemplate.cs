@@ -24,9 +24,12 @@ namespace SrvSurvey
 
             if (File.Exists(filepath))
             {
-                var json = File.ReadAllText(filepath);
-                SiteTemplate.sites = JsonConvert.DeserializeObject<Dictionary<GuardianSiteData.SiteType, SiteTemplate>>(json)!;
-                Game.log($"SiteTemplate.Imported {SiteTemplate.sites.Count} templates");
+                using (var reader = new StreamReader(new FileStream(filepath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)))
+                {
+                    var json = reader.ReadToEnd();
+                    SiteTemplate.sites = JsonConvert.DeserializeObject<Dictionary<GuardianSiteData.SiteType, SiteTemplate>>(json)!;
+                    Game.log($"SiteTemplate.Imported {SiteTemplate.sites.Count} templates");
+                }
 
                 /* Temp: Reformat POIs json 
                 var txt = new StringBuilder("\r\n");
@@ -86,6 +89,8 @@ namespace SrvSurvey
         emptyPuddle,
         component,
         pylon,
+        obelisk,
+        brokeObelisk,
 
         /* Possibilities for future use:
          * Obelisk or maybe just ActiveObelisk
@@ -105,6 +110,7 @@ namespace SrvSurvey
         public string name;
         public float angle;
         public float dist;
+        public float rot;
 
         public override string ToString()
         {

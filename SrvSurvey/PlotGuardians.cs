@@ -1,5 +1,6 @@
 ﻿using SrvSurvey.game;
 using SrvSurvey.units;
+using System.Diagnostics;
 using System.Drawing.Drawing2D;
 using static SrvSurvey.game.GuardianSiteData;
 
@@ -380,10 +381,14 @@ namespace SrvSurvey
 
             if (msg == "..")
             {
-                var dist = Util.getDistance(Status.here, siteData.location, (decimal)game.nearBody!.radius);
+                var dist = ((double)Util.getDistance(Status.here, siteData.location, (decimal)game.nearBody!.radius)).ToString("N1");
                 // get angle relative to North, then adjust by siteHeading
-                Angle angle = Util.getBearing(Status.here, siteData.location) - siteData.siteHeading;
-                Game.log($"!! dist: {Math.Round(dist)}, angle: {angle}");
+                var angle = ((float)new Angle((Util.getBearing(Status.here, siteData.location) - siteData.siteHeading))).ToString("N1");
+                var rot = (int)new Angle(game.status.Heading);
+                Game.log($"!! dist: {dist}, angle: {angle}, rot: {rot}");
+                var json = $"{{ \"name\": \"xxx\", \"dist\": {dist}, \"angle\": {angle}, \"type\": \"unknown\", \"rot\": {rot} }},";
+                Game.log(json);
+                Clipboard.SetText(json + "\r\n");
             }
 
             if (msg == "ll")
@@ -394,6 +399,8 @@ namespace SrvSurvey
                 this.Invalidate();
             }
 
+            if (msg == "watch")
+                this.devFileWatcher();
 
             if (msg.StartsWith(">>"))
             {
@@ -555,9 +562,21 @@ namespace SrvSurvey
             {
                 var newAngle = game.status.Heading;
                 if (newAngle < 0) newAngle += 360;
-                Game.log($"Changing Relic Tower heading from: {siteData.relicTowerHeading}° to: {newAngle}");
-                siteData.relicTowerHeading = newAngle;
-                siteData.Save();
+                if (this.siteData.isRuins)
+                {
+                    // ruins
+                    Game.log($"Changing Relic Tower heading from: {siteData.relicTowerHeading}° to: {newAngle}");
+                    siteData.relicTowerHeading = newAngle;
+                    siteData.Save();
+                }
+                else if (this.nearestPoi != null)
+                {
+                    // structures
+                    var oldHeading = siteData.relicHeadings.ContainsKey(this.nearestPoi.name) ? siteData.relicHeadings[this.nearestPoi.name] : -1;
+                    Game.log($"Relic Tower heading from: {oldHeading}° to: {newAngle}");
+                    siteData.relicHeadings[this.nearestPoi.name] = newAngle;
+                    siteData.Save();
+                }
             }
 
             // prepare other stuff
@@ -627,6 +646,32 @@ namespace SrvSurvey
                 */
             }
 
+            this.Invalidate();
+        }
+        private FileSystemWatcher watcher;
+
+        private void devFileWatcher()
+        {
+            string filepath = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "settlementTemplates.json");
+
+            if (Debugger.IsAttached)
+                filepath = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "..\\..\\..\\..\\", "settlementTemplates.json");
+
+            Game.log($"Dev watching: {filepath}");
+
+            
+            this.watcher = new FileSystemWatcher(Path.GetFullPath(Path.GetDirectoryName(filepath)), "settlementTemplates.json");
+            this.watcher.Changed += Watcher_Changed;
+            this.watcher.NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.Size;
+            this.watcher.EnableRaisingEvents = true;
+        }
+
+        private void Watcher_Changed(object sender, FileSystemEventArgs e)
+        {
+            Game.log("Reloading watched site template");
+            Application.DoEvents(); Application.DoEvents(); Application.DoEvents(); Application.DoEvents();
+            SiteTemplate.Import(true);
+            this.loadSiteTemplate();
             this.Invalidate();
         }
 
@@ -986,7 +1031,7 @@ namespace SrvSurvey
 
                 //var foo = siteData.poiStatus.GetValueOrDefault(poi.name);
                 //if (foo == SitePoiStatus.unknown)
-                if (d < nearestDist)
+                if (d < nearestDist && poi.type != POIType.pylon && poi.type != POIType.brokeObelisk && poi.type != POIType.obelisk && poi.type != POIType.component)
                 {
                     aa = Util.ToAngle(x, y) - siteData.siteHeading; //  - game.status.Heading;
                     if (y < 0) aa += 180;
@@ -1034,17 +1079,77 @@ namespace SrvSurvey
             var d = poi.type == POIType.relic ? 16f : 10f;
             var dd = d / 2;
 
+            // choose pen color
             var pen = this.getPoiPen(poi);
+            if (poi.type == POIType.relic && !this.siteData.isRuins && this.siteData.relicHeadings.ContainsKey(poi.name))
+                pen = GameColors.penPoiRelicPresent;
 
-            // temporary highlight a particular POI
-            var highlight = poi.name.StartsWith("?") || string.Compare(poi.name, this.highlightPoi, true) == 0;
+                // temporary highlight a particular POI
+                var highlight = poi.name.StartsWith("?") || string.Compare(poi.name, this.highlightPoi, true) == 0;
             if (highlight)
             {
                 pen = GameColors.penCyan8;
                 //g.DrawLine(GameColors.penCyan2Dotted, 0, 0, -sz.Width, -sz.Height);
             }
 
-            g.DrawEllipse(pen, -pt.X - dd, -pt.Y - dd, d, d);
+            if (poi.type == POIType.obelisk || poi.type == POIType.brokeObelisk)
+            {
+                PointF[] points = {
+                    new PointF(0, - 5),
+                    new PointF(+ 5, + 3),
+                    new PointF( - 5, + 3),
+                    new PointF(0, - 5),
+                };
+                var pp = new Pen(Color.Wheat)
+                {
+                    Width = 2,
+                    LineJoin = LineJoin.Bevel,
+                    StartCap = LineCap.Triangle,
+                    EndCap = LineCap.Triangle,
+                };
+                g.TranslateTransform(-pt.X, -pt.Y);
+                g.RotateTransform(poi.rot);
+
+                g.DrawLines(pp, points);
+
+                if (poi.type == POIType.obelisk)
+                {
+                    g.DrawLine(pp, 0, 1, 2, 3);
+                    g.DrawLine(pp, 0, 1, -2, 3);
+                }
+
+                g.RotateTransform(-poi.rot);
+                g.TranslateTransform(+pt.X, +pt.Y);
+            }
+            else if (poi.type == POIType.pylon)
+            {
+                PointF[] points = {
+                    new PointF(0, -3),
+                    new PointF(+6, 0),
+                    new PointF(0, +3),
+                    new PointF(-6, 0),
+                    new PointF(0, -3),
+                };
+                var pp = new Pen(Color.Yellow)
+                {
+                    Width = 2,
+                    LineJoin = LineJoin.Bevel,
+                    StartCap = LineCap.Triangle,
+                    EndCap = LineCap.Triangle,
+                };
+                g.TranslateTransform(-pt.X, -pt.Y);
+                g.RotateTransform(poi.rot);
+
+                g.DrawLines(pp, points);
+                g.DrawLine(pp, 0, 0, 0, 3);
+
+                g.RotateTransform(-poi.rot);
+                g.TranslateTransform(+pt.X, +pt.Y);
+            }
+            else
+            {
+                g.DrawEllipse(pen, -pt.X - dd, -pt.Y - dd, d, d);
+            }
         }
 
         private Pen getPoiPen(SitePOI poi)

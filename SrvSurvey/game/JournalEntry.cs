@@ -181,8 +181,9 @@ namespace SrvSurvey
 
     class DataScanned : JournalEntry
     {
-        // { "timestamp":"2023-07-19T05:57:28Z", "event":"DataScanned", "Type":"$Datascan_AncientPylon;" }
+        // { "timestamp":"2023-10-07T04:26:43Z", "event":"DataScanned", "Type":"$Datascan_ANCIENTCODEX;", "Type_Localised":"Ancient Codex" }
         public string Type;
+        public string Type_Localised;
     }
 
     class SendText : JournalEntry

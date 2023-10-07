@@ -61,8 +61,10 @@
     <None Remove="allStructures.json" />
     <None Remove="images\alpha-background.png" />
     <None Remove="images\alpha-heading-guide.png" />
+    <None Remove="images\bear-background.png" />
     <None Remove="images\beta-background.png" />
     <None Remove="images\beta-heading-guide.png" />
+    <None Remove="images\fistbump-background.png" />
     <None Remove="images\gamma-background.png" />
     <None Remove="images\gamma-heading-guide.png" />
     <None Remove="images\robolobster-background.png" />
@@ -85,11 +87,17 @@
     <Content Include="images\alpha-heading-guide.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="images\bear-background.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="images\beta-background.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="images\beta-heading-guide.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\fistbump-background.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="images\gamma-background.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

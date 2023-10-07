@@ -163,6 +163,139 @@
       { "name": "p26", "dist": 515, "angle": 179.9, "type": "tablet" },
       { "name": "p27", "dist": 499, "angle": 131.4, "type": "totem" }
     ]
+  }, 
+  "bear": {
+    "name": "Bear",
+    "imageOffset": "416,370",
+    "scaleFactor": 0.81,
+    "poi": [
+      { "name": "t1", "dist": 147, "angle": 357, "type": "relic" },
+      { "name": "t2", "dist": 249, "angle": 226.5, "type": "relic" },
+      { "name": "t3", "dist": 345.4, "angle": 128.2, "type": "relic" },
+      { "name": "t4", "dist": 151.3, "angle": 284.2, "type": "relic" },
+      { "name": "t5", "dist": 139.3, "angle": 103.6, "type": "relic" },
+
+      
+      { "name": "py1", "dist": 21.8, "angle": 184.0, "type": "pylon", "rot": 12 },
+      { "name": "py2", "dist": 316.9, "angle": 132.7, "type": "pylon", "rot": 299 },
+
+      { "name": "py3", "dist": 288.4, "angle": 51.4, "type": "pylon", "rot": 230 },
+      { "name": "py4", "dist": 284.1, "angle": 230.0, "type": "pylon", "rot": 297 },
+      { "name": "py5", "dist": 187.0, "angle": 174.6, "type": "pylon", "rot": 15 },
+      { "name": "py6", "dist": 185.5, "angle": 183.0, "type": "pylon", "rot": 15 },
+
+      { "name": "py7", "dist": 166.9, "angle": 57.0, "type": "pylon", "rot": 206 },
+      { "name": "py8", "dist": 124.1, "angle": 180.0, "type": "pylon", "rot": 342 },
+      { "name": "py9", "dist": 166.8, "angle": 206.0, "type": "pylon", "rot": 290 },
+      { "name": "py10", "dist": 258.9, "angle": 222.0, "type": "pylon", "rot": 271 },
+
+
+      { "name": "A01", "dist": 292.0, "angle": 137.0, "type": "brokeObelisk", "rot": 30 },
+      { "name": "A02", "dist": 281.2, "angle": 134.2, "type": "brokeObelisk", "rot": 208 },
+      { "name": "A03", "dist": 302.9, "angle": 136.0, "type": "brokeObelisk", "rot": 30 },
+      { "name": "A04", "dist": 293, "angle": 133.0, "type": "brokeObelisk", "rot": 208 },
+      { "name": "A05", "dist": 314.3, "angle": 135.0, "type": "brokeObelisk", "rot": 30 },
+      { "name": "A06", "dist": 304, "angle": 132.0, "type": "brokeObelisk", "rot": 208 },
+
+
+      { "name": "E01", "dist": 108, "angle": 338.3, "type": "brokeObelisk", "rot": 104 },
+      { "name": "E02", "dist": 120, "angle": 340.1, "type": "brokeObelisk", "rot": 97 },
+      { "name": "E03", "dist": 132, "angle": 341.4, "type": "obelisk", "rot": 343 },
+      { "name": "E04", "dist": 105, "angle": 343.2, "type": "brokeObelisk", "rot": 281 },
+      { "name": "E05", "dist": 117, "angle": 344.7, "type": "obelisk", "rot": 46 },
+      { "name": "E06", "dist": 129, "angle": 346.3, "type": "brokeObelisk", "rot": 281 },
+      { "name": "E07", "dist": 108, "angle": 354.1, "type": "obelisk", "rot": 226 },
+      { "name": "E08", "dist": 120, "angle": 354.5, "type": "obelisk", "rot": 345 },
+      { "name": "E09", "dist": 107, "angle": 359.5, "type": "brokeObelisk", "rot": 285 },
+      { "name": "E10", "dist": 120, "angle": 359.4, "type": "brokeObelisk", "rot": 281 },
+      { "name": "E12", "dist": 114, "angle": 8.3, "type": "brokeObelisk", "rot": 102 },
+      { "name": "E16", "dist": 126, "angle": 12, "type": "obelisk", "rot": 45 },
+      { "name": "E14", "dist": 106, "angle": 15, "type": "obelisk", "rot": 163 },
+      { "name": "E11", "dist": 103, "angle": 10, "type": "obelisk", "rot": 224 },
+      { "name": "E15", "dist": 116, "angle": 13.4, "type": "brokeObelisk", "rot": 280 },
+      { "name": "E13", "dist": 124, "angle": 7.8, "type": "brokeObelisk", "rot": 104 },
+
+      { "name": "B01", "dist": 164, "angle": 190.0, "type": "obelisk", "rot": 132 },
+      { "name": "B02", "dist": 154, "angle": 191.0, "type": "obelisk", "rot": 71 },
+      { "name": "B03", "dist": 162, "angle": 168.0, "type": "brokeObelisk", "rot": 6 },
+      { "name": "B04", "dist": 152, "angle": 168.0, "type": "obelisk", "rot": 71 },
+
+      { "name": "C01", "dist": 127, "angle": 198.0, "type": "obelisk", "rot": 40 },
+      { "name": "C02", "dist": 131, "angle": 202.0, "type": "obelisk", "rot": 340 },
+      { "name": "C03", "dist": 131, "angle": 211.0, "type": "brokeObelisk", "rot": 326 },
+      { "name": "C04", "dist": 130, "angle": 216.0, "type": "obelisk", "rot": 21 },
+      { "name": "C05", "dist": 119, "angle": 224.0, "type": "obelisk", "rot": 131 },
+      { "name": "C06", "dist": 112, "angle": 227.0, "type": "obelisk", "rot": 308 },
+      { "name": "C07", "dist": 95, "angle": 234.0, "type": "obelisk", "rot": 59 },
+      { "name": "C08", "dist": 85, "angle": 235.0, "type": "brokeObelisk", "rot": 241 },
+      { "name": "C09", "dist": 66, "angle": 233.0, "type": "obelisk", "rot": 220 },
+      { "name": "C10", "dist": 58, "angle": 227.0, "type": "brokeObelisk", "rot": 272 },
+
+      { "name": "D01", "dist": 55, "angle": 133.0, "type": "obelisk", "rot": 347 },
+      { "name": "D02", "dist": 63, "angle": 126.0, "type": "brokeObelisk", "rot": 286 },
+      { "name": "D03", "dist": 82, "angle": 124.0, "type": "obelisk", "rot": 34 },
+      { "name": "D04", "dist": 92, "angle": 125.0, "type": "obelisk", "rot": 208 },
+      { "name": "D05", "dist": 108, "angle": 132.0, "type": "obelisk", "rot": 74 },
+      { "name": "D06", "dist": 115, "angle": 135.0, "type": "obelisk", "rot": 255 },
+      { "name": "D07", "dist": 126, "angle": 143.0, "type": "obelisk", "rot": 346 },
+      { "name": "D08", "dist": 130, "angle": 147.0, "type": "obelisk", "rot": 289 },
+      { "name": "D09", "dist": 127, "angle": 157.0, "type": "brokeObelisk", "rot": 285 },
+      { "name": "D10", "dist": 124, "angle": 161.0, "type": "brokeObelisk", "rot": 103 },
+
+      
+      { "name": "c1", "dist": 165, "angle": 342, "type": "component" },
+      { "name": "c2", "dist": 169.1, "angle": 211.7, "type": "component" },
+      { "name": "c3", "dist": 160.8, "angle": 12.0, "type": "component" },
+      { "name": "c4", "dist": 160.3, "angle": 135.0, "type": "component" },
+      { "name": "c5", "dist": 82.2, "angle": 322.0, "type": "component" }, // not at Vela Dark Region EG-X b1-1
+
+
+      { "name": "p1", "dist": 171, "angle": 329, "type": "casket" },
+      { "name": "p2", "dist": 24, "angle": 46, "type": "urn" },
+      { "name": "p3", "dist": 142, "angle": 295, "type": "urn" },
+      { "name": "p4", "dist": 270, "angle": 225, "type": "tablet" },
+      { "name": "p5", "dist": 218, "angle": 10, "type": "totem" },
+      { "name": "p6", "dist": 166, "angle": 7, "type": "urn" },
+      { "name": "p7", "dist": 141, "angle": 161.0, "type": "tablet" },
+      { "name": "p8", "dist": 202, "angle": 135.0, "type": "casket" },
+      { "name": "p9", "dist": 222, "angle": 146.0, "type": "urn" },
+      { "name": "p10", "dist": 152.7, "angle": 24.0, "type": "casket" },
+      { "name": "p11", "dist": 243.8, "angle": 59.0, "type": "tablet" },
+      { "name": "p12", "dist": 198.4, "angle": 62.0, "type": "casket" }, // unknown item
+      { "name": "p13", "dist": 240.6, "angle": 172.8, "type": "totem" },
+      { "name": "p14", "dist": 249.3, "angle": 214.8, "type": "orb" },
+      { "name": "p15", "dist": 145.1, "angle": 119.6, "type": "totem" },
+      { "name": "p16", "dist": 77.4, "angle": 287.6, "type": "totem" },
+      { "name": "p17", "dist": 111.3, "angle": 315.8, "type": "totem" },
+      { "name": "p18", "dist": 199.1, "angle": 48.0, "type": "urn" },
+      { "name": "p19", "dist": 154.0, "angle": 280.0, "type": "urn" },
+      { "name": "p20", "dist": 141.7, "angle": 256.6, "type": "tablet" },
+      { "name": "p21", "dist": 133.1, "angle": 227.0, "type": "casket" },
+      { "name": "p22", "dist": 231.9, "angle": 238.6, "type": "totem" },
+
+
+    ]
+  },
+  "fistbump": {
+    "name": "Fistbump",
+    "imageOffset": "310,590",
+    "scaleFactor": 1.1,
+    "poi": [
+      { "name": "t1", "dist": 85, "angle": 358, "type": "relic" },
+      { "name": "t2", "dist": 33, "angle": 193, "type": "relic" },
+
+      { "name": "o1", "dist": 93, "angle": 177, "type": "obelisk", "rot": 315 },
+      { "name": "o2", "dist": 121, "angle": 347, "type": "obelisk", "rot": 240 },
+      { "name": "o3", "dist": 142, "angle": 278, "type": "obelisk", "rot": 335 },
+
+      { "name": "p1", "dist": 137, "angle": 12, "type": "tablet" },
+      { "name": "p2", "dist": 49, "angle": 31, "type": "tablet" }, // unknown item
+      { "name": "p3", "dist": 172, "angle": 5, "type": "totem" },
+      { "name": "p4", "dist": 100, "angle": 243, "type": "casket" },
+      { "name": "p5", "dist": 149, "angle": 162, "type": "tablet" },
+      { "name": "p5", "dist": 163, "angle": 254, "type": "urn" },
+
+    ]
   },
   "robolobster": {
     "name": "Robolobster",

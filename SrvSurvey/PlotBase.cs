@@ -1,11 +1,7 @@
 ﻿using SrvSurvey.game;
 using SrvSurvey.units;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Drawing.Drawing2D;
 
 namespace SrvSurvey
 {
@@ -337,14 +333,14 @@ namespace SrvSurvey
             // draw SRV marker
             if (this.srvLocation != null)
             {
-                const float srvSize = 16f; // 32f;
+                const float srvSize = 10f;
                 var rect = new RectangleF(
                     (float)srvLocation.dx - srvSize,
                     (float)-srvLocation.dy - srvSize,
                     srvSize * 2,
                     srvSize * 2);
 
-                g.FillRectangle(GameColors.brushGameOrange, rect);
+                g.FillRectangle(GameColors.brushSrvLocation, rect);
             }
 
             g.ResetTransform();

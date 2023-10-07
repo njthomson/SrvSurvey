@@ -797,7 +797,7 @@ namespace SrvSurvey
                         td.Current = new LatLong2(double.Parse(entry.Latitude), double.Parse(entry.Longitude));
 
                     // if we are within 50m of the origin, and altitude is between 500m and 2000 - this qualifies as an aerial screenshot
-                    if (td.distance < 50 && game.status.Altitude > 1000 && game.status.Altitude < 2000)
+                    if (td.distance < 50 && game.status.Altitude > 500 && game.status.Altitude < 2000)
                         isAerialScreenshot = true;
                 }
             }

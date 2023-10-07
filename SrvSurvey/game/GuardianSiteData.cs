@@ -187,6 +187,7 @@ namespace SrvSurvey.game
 
         public Dictionary<string, bool> confirmedPOI = new Dictionary<string, bool>();
         public Dictionary<string, SitePoiStatus> poiStatus = new Dictionary<string, SitePoiStatus>();
+        public Dictionary<string, int> relicHeadings = new Dictionary<string, int>();
 
         #endregion
 

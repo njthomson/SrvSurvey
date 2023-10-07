@@ -162,6 +162,7 @@ namespace SrvSurvey
                     // if the system name, bodyName or Notes contains or systemAddress ...
                     return entry.systemName.Contains(txtFilter.Text, StringComparison.OrdinalIgnoreCase)
                         || row.SubItems[row.SubItems.Count - 1].Text.Contains(txtFilter.Text, StringComparison.OrdinalIgnoreCase)
+                        || row.SubItems[5].Text.Contains(txtFilter.Text, StringComparison.OrdinalIgnoreCase)
                         || entry.systemAddress.ToString() == txtFilter.Text;
                 }
 

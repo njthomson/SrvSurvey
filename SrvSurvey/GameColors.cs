@@ -1,6 +1,4 @@
-﻿using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Net.NetworkInformation;
+﻿using System.Drawing.Drawing2D;
 
 namespace SrvSurvey
 {
@@ -106,10 +104,9 @@ namespace SrvSurvey
         public static Brush brushTrackerClose = new SolidBrush(Color.FromArgb(32, Color.DarkCyan));
         public static Pen penTrackerClose = new Pen(Color.FromArgb(36, Color.Cyan)) { Width = 12 };
 
-        public static Brush brushShipLocation;
-        public static Brush brushShipFormerLocation;
-        public static Brush brushSrvLocation;
-
+        public static Brush brushShipLocation = new HatchBrush(HatchStyle.SmallCheckerBoard, Cyan, Color.Transparent);
+        public static Brush brushShipFormerLocation = new HatchBrush(HatchStyle.Divot, Cyan, Color.Transparent);
+        public static Brush brushSrvLocation = new HatchBrush(HatchStyle.SmallCheckerBoard, Color.FromArgb(128, GameColors.Orange), Color.Transparent);
 
         public static Brush brushBackgroundStripe;
         public static Brush brushOrangeStripe;
