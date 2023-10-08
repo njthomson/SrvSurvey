@@ -57,7 +57,7 @@ namespace SrvSurvey
                 case 2: this.Width = 600; this.Height = 700; break;
             }
 
-            this.scale = 0.65f;
+            this.scale = this.siteData.isRuins ? 0.65f : 1.5f;
 
             this.nextMode();
         }
@@ -384,7 +384,7 @@ namespace SrvSurvey
                 var dist = ((double)Util.getDistance(Status.here, siteData.location, (decimal)game.nearBody!.radius)).ToString("N1");
                 // get angle relative to North, then adjust by siteHeading
                 var angle = ((float)new Angle((Util.getBearing(Status.here, siteData.location) - siteData.siteHeading))).ToString("N1");
-                var rot = (int)new Angle(game.status.Heading);
+                var rot = (int)new Angle(game.status.Heading - this.siteData.siteHeading);
                 Game.log($"!! dist: {dist}, angle: {angle}, rot: {rot}");
                 var json = $"{{ \"name\": \"xxx\", \"dist\": {dist}, \"angle\": {angle}, \"type\": \"unknown\", \"rot\": {rot} }},";
                 Game.log(json);
@@ -401,6 +401,13 @@ namespace SrvSurvey
 
             if (msg == "watch")
                 this.devFileWatcher();
+
+            if (msg == ".p")
+                confirmPOI(SitePoiStatus.present);
+            else if (msg == ".m")
+                confirmPOI(SitePoiStatus.absent);
+            else if (msg == ".e")
+                confirmPOI(SitePoiStatus.empty);
 
             if (msg.StartsWith(">>"))
             {
@@ -423,6 +430,21 @@ namespace SrvSurvey
             this.Invalidate();
         }
 
+        protected override void onJournalEntry(Embark entry)
+        {
+            base.onJournalEntry(entry);
+
+            this.scale = 1.5f;
+        }
+
+        protected override void onJournalEntry(Disembark entry)
+        {
+            base.onJournalEntry(entry);
+
+            this.scale = 3f;
+        }
+
+
         private void setSiteHeading(int newHeading)
         {
             Game.log($"Changing site heading from: '{siteData.siteHeading}' to: '{newHeading}'");
@@ -436,7 +458,7 @@ namespace SrvSurvey
 
         private void loadSiteTemplate()
         {
-            if (siteData.type == GuardianSiteData.SiteType.Unknown) return;
+            if (siteData == null || siteData.type == GuardianSiteData.SiteType.Unknown) return;
 
             this.template = SiteTemplate.sites[siteData.type];
 
@@ -492,6 +514,30 @@ namespace SrvSurvey
             }
         }
 
+        protected void confirmPOI(SitePoiStatus poiStatus)
+        {
+            //SitePoiStatus poiStatus;
+            if (poiStatus == SitePoiStatus.unknown)
+            //{
+            //    // confirm POI is missing/present by param
+            //    poiStatus = present ? SitePoiStatus.present : SitePoiStatus.absent;
+            //}
+            //else
+            {
+                // confirm POI is missing/present/empty by fire groups
+                poiStatus = (SitePoiStatus)(game.status.FireGroup % 3) + 1;
+            }
+
+            // (don't let Relic's get a status of Empty)
+            if (!(nearestPoi.type == POIType.relic && poiStatus == SitePoiStatus.empty))
+            {
+                Game.log($"Confirming POI {poiStatus}: '{this.nearestPoi.name}' ({this.nearestPoi.type})");
+                siteData.poiStatus[this.nearestPoi.name] = poiStatus;
+                siteData.Save();
+                this.Invalidate();
+            }
+        }
+
         protected override void Status_StatusChanged(bool blink)
         {
             if (this.IsDisposed || game?.status == null || this.IsDisposed) return;
@@ -544,17 +590,7 @@ namespace SrvSurvey
                 }
                 else if (this.nearestPoi != null && this.mode == Mode.map)
                 {
-                    // confirm POI is missing
-                    var poiStatus = (SitePoiStatus)(game.status.FireGroup % 3) + 1;
-
-                    // (don't let Relic's get a status of Empty)
-                    if (!(nearestPoi.type == POIType.relic && poiStatus == SitePoiStatus.empty))
-                    {
-                        Game.log($"Confirming POI {poiStatus}: '{this.nearestPoi.name}' ({this.nearestPoi.type})");
-                        siteData.poiStatus[this.nearestPoi.name] = poiStatus;
-                        siteData.Save();
-                        this.Invalidate();
-                    }
+                    confirmPOI(SitePoiStatus.unknown);
                 }
             }
 
@@ -575,6 +611,7 @@ namespace SrvSurvey
                     var oldHeading = siteData.relicHeadings.ContainsKey(this.nearestPoi.name) ? siteData.relicHeadings[this.nearestPoi.name] : -1;
                     Game.log($"Relic Tower heading from: {oldHeading}° to: {newAngle}");
                     siteData.relicHeadings[this.nearestPoi.name] = newAngle;
+                    siteData.poiStatus[this.nearestPoi.name] = SitePoiStatus.present;
                     siteData.Save();
                 }
             }
@@ -659,8 +696,8 @@ namespace SrvSurvey
 
             Game.log($"Dev watching: {filepath}");
 
-            
-            this.watcher = new FileSystemWatcher(Path.GetFullPath(Path.GetDirectoryName(filepath)), "settlementTemplates.json");
+
+            this.watcher = new FileSystemWatcher(Path.GetFullPath(Path.GetDirectoryName(filepath)!), "settlementTemplates.json");
             this.watcher.Changed += Watcher_Changed;
             this.watcher.NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.Size;
             this.watcher.EnableRaisingEvents = true;
@@ -997,8 +1034,8 @@ namespace SrvSurvey
             var nearestDeg = 0f;
 
             int countRelics = 0, confirmedRelics = 0, countPuddles = 0, confirmedPuddles = 0;
-            Angle aa = 0;
-            var tt = "";
+            Angle aa;
+            string tt;
             // and draw all the POIs
             foreach (var poi in this.template.poi)
             {
@@ -1008,7 +1045,7 @@ namespace SrvSurvey
                     if (siteData.poiStatus.ContainsKey(poi.name))
                         confirmedRelics++;
                 }
-                else
+                else if (poi.type != POIType.obelisk && poi.type != POIType.brokeObelisk)
                 {
                     countPuddles++;
                     if (siteData.poiStatus.ContainsKey(poi.name))
@@ -1031,7 +1068,7 @@ namespace SrvSurvey
 
                 //var foo = siteData.poiStatus.GetValueOrDefault(poi.name);
                 //if (foo == SitePoiStatus.unknown)
-                if (d < nearestDist && poi.type != POIType.pylon && poi.type != POIType.brokeObelisk && poi.type != POIType.obelisk && poi.type != POIType.component)
+                if (d < nearestDist && poi.type != POIType.brokeObelisk) // && poi.type != POIType.pylon && poi.type != POIType.brokeObelisk && poi.type != POIType.component)
                 {
                     aa = Util.ToAngle(x, y) - siteData.siteHeading; //  - game.status.Heading;
                     if (y < 0) aa += 180;
@@ -1051,7 +1088,9 @@ namespace SrvSurvey
             else
             {
                 // draw highlight over closest POI
-                g.DrawEllipse(GameColors.penCyan4, -nearestPt.X - 14, -nearestPt.Y - 14, 28, 28);
+                if (nearestPoi.type != POIType.obelisk && nearestPoi.type != POIType.brokeObelisk)
+                    g.DrawEllipse(GameColors.penCyan4, -nearestPt.X - 14, -nearestPt.Y - 14, 28, 28);
+
                 var poiStatus = siteData.poiStatus.GetValueOrDefault(this.nearestPoi.name);
 
                 var nextStatus = (SitePoiStatus)(game.status.FireGroup % 3) + 1;
@@ -1059,14 +1098,31 @@ namespace SrvSurvey
                 var nextStatusDifferent = nextStatus != siteData.poiStatus.GetValueOrDefault(nearestPoi.name);
                 var action = nextStatusDifferent ? $"(set {nextStatus})" : "";
 
-                var footerBrush = poiStatus == SitePoiStatus.unknown || nextStatusDifferent ? GameColors.brushCyan : GameColors.brushGameOrange;
-                this.drawFooterText($"{this.nearestPoi.type} {this.nearestPoi.name}: {poiStatus} {action}", footerBrush);
+                if (this.nearestPoi.type == POIType.obelisk || this.nearestPoi.type == POIType.brokeObelisk)
+                {
+                    if (this.siteData.activeObelisks.ContainsKey(nearestPoi.name))
+                    {
+                        var obelisk = this.siteData.activeObelisks[nearestPoi.name];
+                        var items = string.Join(", ", obelisk.items).ToUpperInvariant();
+                        this.drawFooterText($"Oblisk {nearestPoi.name} - {items} for {obelisk.data}", GameColors.brushCyan);
+                    }
+                    else
+                    {
+                        this.drawFooterText($"Oblisk {nearestPoi.name}", GameColors.brushGameOrange);
+                    }
+                }
+                else
+                {
+                    var footerBrush = poiStatus == SitePoiStatus.unknown || nextStatusDifferent ? GameColors.brushCyan : GameColors.brushGameOrange;
+                    this.drawFooterText($"{this.nearestPoi.type} {this.nearestPoi.name}: {poiStatus} {action}", footerBrush);
+                }
             }
 
             var headerBrush = confirmedRelics + confirmedPuddles < countRelics + countPuddles
                 ? GameColors.brushCyan
                 : GameColors.brushGameOrange;
-            this.drawHeaderText($"Confirmed: {confirmedRelics}/{countRelics} relics, {confirmedPuddles}/{countPuddles} puddles", headerBrush);
+
+            this.drawHeaderText($"Confirmed: {confirmedRelics}/{countRelics} relics, {confirmedPuddles}/{countPuddles} items", headerBrush);
 
             g.ResetTransform();
             //var aa = new Angle(180 - game.status.Heading - nearestDeg);
@@ -1075,17 +1131,32 @@ namespace SrvSurvey
 
         private void drawSitePoi(SitePOI poi, PointF pt)
         {
+            var rot = poi.rot + this.siteData.siteHeading;
+
+            // at structures - do not render missing POIs
+            if (!this.siteData.isRuins && this.siteData.poiStatus.ContainsKey(poi.name) && this.siteData.poiStatus[poi.name] == SitePoiStatus.absent)
+                return;
+
+
             // diameters: relics are bigger then puddles
             var d = poi.type == POIType.relic ? 16f : 10f;
             var dd = d / 2;
+
+            if (!this.siteData.isRuins && !this.siteData.poiStatus.ContainsKey(poi.name) && poi.type != POIType.obelisk && poi.type != POIType.brokeObelisk)
+            {
+                // anything unknown gets a blue circle underneath
+                g.FillEllipse(Brushes.DarkSlateBlue, -pt.X - dd - 5, -pt.Y - dd - 5, d + 10, d + 10);
+                //g.DrawEllipse(Pens.White, -pt.X - dd - 5, -pt.Y - dd - 5, d + 10, d + 10);
+                // DarkOliveGreen / DarkSlateBlue
+            }
 
             // choose pen color
             var pen = this.getPoiPen(poi);
             if (poi.type == POIType.relic && !this.siteData.isRuins && this.siteData.relicHeadings.ContainsKey(poi.name))
                 pen = GameColors.penPoiRelicPresent;
 
-                // temporary highlight a particular POI
-                var highlight = poi.name.StartsWith("?") || string.Compare(poi.name, this.highlightPoi, true) == 0;
+            // temporary highlight a particular POI
+            var highlight = poi.name.StartsWith("?") || string.Compare(poi.name, this.highlightPoi, true) == 0;
             if (highlight)
             {
                 pen = GameColors.penCyan8;
@@ -1100,15 +1171,21 @@ namespace SrvSurvey
                     new PointF( - 5, + 3),
                     new PointF(0, - 5),
                 };
-                var pp = new Pen(Color.Wheat)
+                var pp = new Pen(Color.SandyBrown)
                 {
-                    Width = 2,
+                    Width = 1,
                     LineJoin = LineJoin.Bevel,
                     StartCap = LineCap.Triangle,
                     EndCap = LineCap.Triangle,
                 };
+                if (this.siteData.activeObelisks.ContainsKey(poi.name))
+                {
+                    pp.Color = Color.LightCyan;
+                    pp.Width = 2;
+                }
+
                 g.TranslateTransform(-pt.X, -pt.Y);
-                g.RotateTransform(poi.rot);
+                g.RotateTransform(rot);
 
                 g.DrawLines(pp, points);
 
@@ -1118,7 +1195,7 @@ namespace SrvSurvey
                     g.DrawLine(pp, 0, 1, -2, 3);
                 }
 
-                g.RotateTransform(-poi.rot);
+                g.RotateTransform(-rot);
                 g.TranslateTransform(+pt.X, +pt.Y);
             }
             else if (poi.type == POIType.pylon)
@@ -1130,24 +1207,106 @@ namespace SrvSurvey
                     new PointF(-6, 0),
                     new PointF(0, -3),
                 };
-                var pp = new Pen(Color.Yellow)
+                var pp = new Pen(Color.DodgerBlue) // SkyBlue ?
                 {
                     Width = 2,
                     LineJoin = LineJoin.Bevel,
                     StartCap = LineCap.Triangle,
                     EndCap = LineCap.Triangle,
                 };
+
+                if (!this.siteData.isRuins && !this.siteData.poiStatus.ContainsKey(poi.name))
+                    pp.Color = GameColors.Cyan;
+
                 g.TranslateTransform(-pt.X, -pt.Y);
-                g.RotateTransform(poi.rot);
+                g.RotateTransform(+rot);
 
                 g.DrawLines(pp, points);
                 g.DrawLine(pp, 0, 0, 0, 3);
 
-                g.RotateTransform(-poi.rot);
+                g.RotateTransform(-rot);
+                g.TranslateTransform(+pt.X, +pt.Y);
+            }
+            else if (poi.type == POIType.component)
+            {
+                PointF[] points = {
+                    new PointF(0, +1),
+                    new PointF(-2, -2),
+                    new PointF(+2, -2),
+                    new PointF(0, +1),
+                    new PointF(0, +4),
+                    new PointF(-5, -4),
+                    new PointF(+5, -4),
+                    new PointF(0, +4),
+                };
+                var pp = new Pen(Color.Lime)
+                {
+                    Width = 1,
+                    DashStyle = DashStyle.Dash,
+                    LineJoin = LineJoin.Bevel,
+                    StartCap = LineCap.Triangle,
+                    EndCap = LineCap.Triangle,
+                };
+
+                if (!this.siteData.isRuins && !this.siteData.poiStatus.ContainsKey(poi.name))
+                    pp.Color = GameColors.Cyan;
+
+                rot -= 45;
+                g.TranslateTransform(-pt.X, -pt.Y);
+                g.RotateTransform(+rot);
+
+                g.DrawLines(pp, points);
+
+                g.RotateTransform(-rot);
+                g.TranslateTransform(+pt.X, +pt.Y);
+            }
+            else if (siteData.isRuins)
+            {
+                // relic towers and items at ruins
+                g.DrawEllipse(pen, -pt.X - dd, -pt.Y - dd, d, d);
+            }
+            else if (poi.type == POIType.relic)
+            {
+                PointF[] points = {
+                    new PointF(0, -4),
+                    new PointF(-5, +4),
+                    new PointF(+5, +4),
+                    new PointF(0, -4),
+                };
+                var pp = new Pen(Color.DarkBlue)
+                {
+                    Width = 2,
+                    LineJoin = LineJoin.Bevel,
+                    StartCap = LineCap.Triangle,
+                    EndCap = LineCap.Triangle,
+                };
+
+                if (!this.siteData.poiStatus.ContainsKey(poi.name))
+                    pp.Color = GameColors.Cyan;
+
+                rot = 0; // + game.status.Heading;
+                g.TranslateTransform(-pt.X, -pt.Y);
+                g.RotateTransform(+rot);
+
+                g.FillEllipse(Brushes.DarkCyan, -7, -6, 14, 14);
+                g.DrawLines(pp, points);
+                //g.DrawLine(pp, 0, 0, 0, -30);
+
+                g.RotateTransform(-rot);
                 g.TranslateTransform(+pt.X, +pt.Y);
             }
             else
             {
+                //if (!this.siteData.poiStatus.ContainsKey(poi.name))
+                //    pen = GameColors.
+                //if (poi.type == POIType.relic && this.siteData.poiStatus.ContainsKey(poi.name))
+                //    pen = GameColors.penGameOrangeDim2;
+                //else 
+                if (poi.type != POIType.relic && this.siteData.poiStatus.ContainsKey(poi.name))
+                    pen = this.siteData.poiStatus.ContainsKey(poi.name)
+                    ? GameColors.penGameOrangeDim2
+                    : Pens.LightCoral;
+
                 g.DrawEllipse(pen, -pt.X - dd, -pt.Y - dd, d, d);
             }
         }

@@ -380,6 +380,55 @@ namespace SrvSurvey.canonn
             return allRuins;
         }
 
+
+        public List<GuardianGridEntry> loadAllStructures()
+        {
+            var summaries = this.allStructures;
+
+            var newEntries = new List<GuardianGridEntry>();
+
+            var allStructures= summaries.Select(_ => new GuardianGridEntry(_)).ToList();
+            var folder = Path.Combine(Application.UserAppDataPath, "guardian", Game.settings.lastFid!);
+            if (Directory.Exists(folder))
+            {
+                var files = Directory.GetFiles(folder, "*-structure-*.json");
+
+                Game.log($"Reading {files.Length} structure files from disk");
+                foreach (var filename in files)
+                {
+                    var data = Data.Load<GuardianSiteData>(filename)!;
+
+                    var matches = allStructures.Where(_ => _.systemAddress == data.systemAddress
+                        && _.bodyId == data.bodyId
+                        && string.Equals(_.siteType.ToString(), data.type.ToString(), StringComparison.OrdinalIgnoreCase)
+                    ).ToList();
+
+                    GuardianGridEntry? entry = null;
+
+                    // take the first, assiming only 1 ruin on the body
+                    if (matches.Count == 1)
+                        entry = matches.First();
+                    else
+                        throw new Exception("Why structure match?");
+
+                    if (entry != null)
+                    {
+                        entry.merge(data);
+                    }
+                }
+
+                // remove an unmatchable entry for each new one
+                //foreach (var newEntry in newEntries)
+                //{
+                //    var victim = allRuins.First(_ => _.systemAddress == newEntry.systemAddress && _.bodyId == newEntry.bodyId && string.Compare(_.siteType, newEntry.siteType, true) == 0);
+                //    allRuins.Remove(victim);
+                //    allRuins.Add(newEntry);
+                //}
+            }
+
+            return allStructures;
+        }
+
         #endregion
 
         #region parse Excel sheet of Ruins

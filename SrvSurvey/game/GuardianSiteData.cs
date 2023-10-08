@@ -188,6 +188,7 @@ namespace SrvSurvey.game
         public Dictionary<string, bool> confirmedPOI = new Dictionary<string, bool>();
         public Dictionary<string, SitePoiStatus> poiStatus = new Dictionary<string, SitePoiStatus>();
         public Dictionary<string, int> relicHeadings = new Dictionary<string, int>();
+        public Dictionary<string, ActiveObelisk> activeObelisks = new Dictionary<string, ActiveObelisk>();
 
         #endregion
 
@@ -299,7 +300,12 @@ namespace SrvSurvey.game
                 .Select(filename => Data.Load<GuardianSiteData>(filename))
                 .ToList()!;
         }
+    }
 
+    internal class ActiveObelisk
+    {
+        public List<POIType> items;
+        public string data;
     }
 }
 

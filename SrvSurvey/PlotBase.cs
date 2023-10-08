@@ -155,9 +155,9 @@ namespace SrvSurvey
             this.Invalidate();
         }
 
-        protected void onJournalEntry(Disembark entry)
+        protected virtual void onJournalEntry(Disembark entry)
         {
-            Game.log($"Disembark srvLocation {Status.here}");
+            //Game.log($"Disembark srvLocation {Status.here}");
             if (entry.SRV && this.srvLocation == null)
             {
                 this.srvLocation = new TrackingDelta(
@@ -167,9 +167,9 @@ namespace SrvSurvey
             }
         }
 
-        protected void onJournalEntry(Embark entry)
+        protected virtual void onJournalEntry(Embark entry)
         {
-            Game.log($"Embark {Status.here}");
+            //Game.log($"Embark {Status.here}");
             if (entry.SRV && this.srvLocation != null)
             {
                 this.srvLocation = null;
@@ -190,7 +190,7 @@ namespace SrvSurvey
                 {
                     Game.log($"Change zoom scale from: '{this.scale}' to: '{zoomFactor}'");
                     zoomFactor = (float)Math.Max(zoomFactor, 0.2);
-                    zoomFactor = (float)Math.Min(zoomFactor, 4);
+                    zoomFactor = (float)Math.Min(zoomFactor, 8);
                     this.scale = zoomFactor;
                     this.Invalidate();
                     return;
