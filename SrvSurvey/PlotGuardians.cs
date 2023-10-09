@@ -434,14 +434,14 @@ namespace SrvSurvey
         {
             base.onJournalEntry(entry);
 
-            this.scale = 1.5f;
+            this.scale = this.siteData.isRuins ? 0.65f :  1.5f;
         }
 
         protected override void onJournalEntry(Disembark entry)
         {
             base.onJournalEntry(entry);
 
-            this.scale = 3f;
+            this.scale = 2f;
         }
 
 

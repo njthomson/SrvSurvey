@@ -324,7 +324,7 @@ namespace SrvSurvey
 
             if (scan.PlanetClass == "Metal rich body") // MR
                 k = 21790;
-            else if (scan.PlanetClass == "Ammonia World") // AW
+            else if (scan.PlanetClass == "Ammonia world") // AW
                 k = 96932;
             else if (scan.PlanetClass == "Sudarsky class I gas giant") // GG1
                 k = 1656;
@@ -332,7 +332,7 @@ namespace SrvSurvey
                 || scan.PlanetClass == "High metal content body") // HMC
                 k = isTerraformable ? 100677 : 9654;
             else if (scan.PlanetClass == "Water world" // WW
-                || scan.PlanetClass == "Earth-Like Planet") // ELW
+                || scan.PlanetClass == "Earthlike body") // ELW
                 k = isTerraformable ? 116295 : 64831;
             else if (isTerraformable)
                 k = 93328; // RB
