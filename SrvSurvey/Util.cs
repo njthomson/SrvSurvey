@@ -330,12 +330,21 @@ namespace SrvSurvey
                 k = 1656;
             else if (scan.PlanetClass == "Sudarsky class II gas giant" // GG2
                 || scan.PlanetClass == "High metal content body") // HMC
-                k = isTerraformable ? 100677 : 9654;
+            {
+                k = 9654;
+                if (isTerraformable) k += 100677;
+            }
             else if (scan.PlanetClass == "Water world" // WW
                 || scan.PlanetClass == "Earthlike body") // ELW
-                k = isTerraformable ? 116295 : 64831;
-            else if (isTerraformable)
-                k = 93328; // RB
+            {
+                k = 64831;
+                if (isTerraformable) k += 116295;
+            }
+            else // RB
+            {
+                k = 300;
+                if (isTerraformable) k += 93328;
+            }
 
             // public static int GetBodyValue(int k, double mass, bool isFirstDiscoverer, bool isMapped, bool isFirstMapped, bool withEfficiencyBonus, bool isOdyssey, bool isFleetCarrierSale)
             // based on code from https://forums.frontier.co.uk/threads/exploration-value-formulae.232000/
