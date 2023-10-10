@@ -201,7 +201,6 @@ namespace SrvSurvey
             var rslt = dialog.ShowDialog(this);
             if (rslt == DialogResult.OK)
                 linkLabel.Text = dialog.SelectedPath;
-
         }
 
         private void btnChooseScreenshotSourceFolder_Click(object sender, EventArgs e)

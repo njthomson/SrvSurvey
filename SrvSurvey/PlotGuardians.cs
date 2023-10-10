@@ -2,6 +2,7 @@
 using SrvSurvey.units;
 using System.Diagnostics;
 using System.Drawing.Drawing2D;
+using System.Runtime.CompilerServices;
 using static SrvSurvey.game.GuardianSiteData;
 
 namespace SrvSurvey
@@ -16,13 +17,15 @@ namespace SrvSurvey
 
     internal partial class PlotGuardians : PlotBase, IDisposable
     {
-        private SiteTemplate? template;
+        public SiteTemplate? template;
         private Image? siteMap;
         //private Image? trails;
         private Image? underlay;
         public Image? headingGuidance;
         private string highlightPoi; // tmp
         public SitePOI nearestPoi;
+        public SitePOI? forcePoi;
+        public FormEditMap? formEditMap;
 
         /// <summary> Site map width </summary>
         private float ux;
@@ -47,19 +50,28 @@ namespace SrvSurvey
             PlotGuardians.instance = this;
             InitializeComponent();
 
-            SiteTemplate.Import();
-
             // set window size based on setting
             switch (Game.settings.idxGuardianPlotter)
             {
                 case 0: this.Width = 300; this.Height = 400; break;
                 case 1: this.Width = 500; this.Height = 500; break;
                 case 2: this.Width = 600; this.Height = 700; break;
+                case 3: this.Width = 800; this.Height = 1000; break;
+                case 4: this.Width = 1200; this.Height = 1200; break;
             }
 
             this.scale = this.siteData.isRuins ? 0.65f : 1.5f;
 
             this.nextMode();
+        }
+
+        public void devRefreshBackground(string imagePath)
+        {
+            if (this.template == null) return;
+
+            Game.log("devRefreshBackground");
+            this.loadSiteTemplate(imagePath);
+            this.Invalidate();
         }
 
         protected override void OnFormClosing(FormClosingEventArgs e)
@@ -402,6 +414,16 @@ namespace SrvSurvey
             if (msg == "watch")
                 this.devFileWatcher();
 
+            if (msg == ".editmap" && this.formEditMap == null)
+            {
+                new FormEditMap().Show();
+            }
+            else if (msg == "ee" && this.formEditMap != null)
+            {
+                formEditMap.setCurrentPoi(nearestPoi);
+                formEditMap.Activate();
+            }
+
             if (msg == ".p")
                 confirmPOI(SitePoiStatus.present);
             else if (msg == ".m")
@@ -434,7 +456,7 @@ namespace SrvSurvey
         {
             base.onJournalEntry(entry);
 
-            this.scale = this.siteData.isRuins ? 0.65f :  1.5f;
+            this.scale = this.siteData.isRuins ? 0.65f : 1.5f;
         }
 
         protected override void onJournalEntry(Disembark entry)
@@ -456,32 +478,45 @@ namespace SrvSurvey
             game.fireUpdate(true);
         }
 
-        private void loadSiteTemplate()
+        private void loadSiteTemplate(string? imagePath = null)
         {
             if (siteData == null || siteData.type == GuardianSiteData.SiteType.Unknown) return;
+
+            if (!SiteTemplate.sites.ContainsKey(siteData.type))
+            {
+                // create an empty site if needed
+                Game.log($"Creating empty site for: {siteData.type}");
+                SiteTemplate.sites[siteData.type] = new SiteTemplate()
+                {
+                    name = siteData.name
+                };
+            }
 
             this.template = SiteTemplate.sites[siteData.type];
 
             var folder = Path.GetDirectoryName(Application.ExecutablePath)!;
-            var filepath = Path.Combine(folder, "images", $"{siteData.type}-background.png".ToLowerInvariant());
+            var filepath = imagePath ?? Path.Combine(folder, "images", $"{siteData.type}-background.png".ToLowerInvariant());
             Game.log($"Loading image: {filepath}");
-            this.siteMap = Bitmap.FromFile(filepath);
+            if (File.Exists(filepath))
+                this.siteMap = Bitmap.FromFile(filepath);
+            else
+                this.siteMap = new Bitmap(100, 100);
 
             //this.trails = new Bitmap(this.siteMap.Width * 2, this.siteMap.Height * 2);
 
-            // Temporary until trail tracking works
-            //using (var gg = Graphics.FromImage(this.trails))
-            //{
-            //    gg.Clear(Color.FromArgb(128, Color.Navy));
-            //    //gg.FillRectangle(Brushes.Blue, -400, -400, 800, 800);
-            //    gg.DrawRectangle(GameColors.penGameOrange8, 0, 0, this.trails.Width, this.trails.Height);
-            //    gg.DrawLine(GameColors.penCyan8, 0, 0, trails.Width, trails.Height);
-            //    gg.DrawLine(GameColors.penCyan8, trails.Width, 0, 0, trails.Height);
-            //    gg.DrawLine(GameColors.penYellow8, 0, 0, trails.Height, 0);
-            //    //gg.FillRectangle(Brushes.Red, (this.trails.Width / 2), (this.trails.Height / 2), 40, 40);
-            //}
+                // Temporary until trail tracking works
+                //using (var gg = Graphics.FromImage(this.trails))
+                //{
+                //    gg.Clear(Color.FromArgb(128, Color.Navy));
+                //    //gg.FillRectangle(Brushes.Blue, -400, -400, 800, 800);
+                //    gg.DrawRectangle(GameColors.penGameOrange8, 0, 0, this.trails.Width, this.trails.Height);
+                //    gg.DrawLine(GameColors.penCyan8, 0, 0, trails.Width, trails.Height);
+                //    gg.DrawLine(GameColors.penCyan8, trails.Width, 0, 0, trails.Height);
+                //    gg.DrawLine(GameColors.penYellow8, 0, 0, trails.Height, 0);
+                //    //gg.FillRectangle(Brushes.Red, (this.trails.Width / 2), (this.trails.Height / 2), 40, 40);
+                //}
 
-            // prepare underlay
+                // prepare underlay
             this.underlay = new Bitmap(this.siteMap.Width * 3, this.siteMap.Height * 3);
             this.ux = this.underlay.Width / 2;
             this.uy = this.underlay.Height / 2;
@@ -681,6 +716,13 @@ namespace SrvSurvey
 
                 }
                 */
+            }
+
+            if (formEditMap != null)
+            {
+                var td = new TrackingDelta(game.nearBody!.radius, this.siteData!.location);
+                formEditMap.txtDeltaLat.Text = Util.metersToString(td.dx, true);
+                formEditMap.txtDeltaLong.Text = Util.metersToString(td.dy, true);
             }
 
             this.Invalidate();
@@ -1031,7 +1073,6 @@ namespace SrvSurvey
 
             var nearestDist = double.MaxValue;
             var nearestPt = PointF.Empty;
-            var nearestDeg = 0f;
 
             int countRelics = 0, confirmedRelics = 0, countPuddles = 0, confirmedPuddles = 0;
             Angle aa;
@@ -1068,19 +1109,21 @@ namespace SrvSurvey
 
                 //var foo = siteData.poiStatus.GetValueOrDefault(poi.name);
                 //if (foo == SitePoiStatus.unknown)
-                if (d < nearestDist && poi.type != POIType.brokeObelisk) // && poi.type != POIType.pylon && poi.type != POIType.brokeObelisk && poi.type != POIType.component)
+                var selectPoi = d < nearestDist && poi.type != POIType.brokeObelisk;
+                if (forcePoi != null)
+                    selectPoi = forcePoi == poi; // force selection in map editor if present
+                if (selectPoi) // && poi.type != POIType.pylon && poi.type != POIType.brokeObelisk && poi.type != POIType.component)
                 {
                     aa = Util.ToAngle(x, y) - siteData.siteHeading; //  - game.status.Heading;
                     if (y < 0) aa += 180;
                     tt = $"{aa} | {x}, {y}";
-                    nearestDeg = deg;
                     nearestDist = d;
                     this.nearestPoi = poi;
                     nearestPt = pt;
                 }
             }
 
-            if (nearestDist > 75)
+            if (nearestDist > 75 && forcePoi == null)
             {
                 // make sure we're relatively close before selecting the item
                 this.nearestPoi = null!;
@@ -1088,7 +1131,7 @@ namespace SrvSurvey
             else
             {
                 // draw highlight over closest POI
-                if (nearestPoi.type != POIType.obelisk && nearestPoi.type != POIType.brokeObelisk)
+                if ((nearestPoi == forcePoi) || (nearestPoi.type != POIType.obelisk && nearestPoi.type != POIType.brokeObelisk))
                     g.DrawEllipse(GameColors.penCyan4, -nearestPt.X - 14, -nearestPt.Y - 14, 28, 28);
 
                 var poiStatus = siteData.poiStatus.GetValueOrDefault(this.nearestPoi.name);
@@ -1127,26 +1170,36 @@ namespace SrvSurvey
             g.ResetTransform();
             //var aa = new Angle(180 - game.status.Heading - nearestDeg);
             //this.drawBearingTo(0, this.Height - 20, tt, nearestDist, aa);
+
+            forcePoi = null;
         }
 
         private void drawSitePoi(SitePOI poi, PointF pt)
         {
             var rot = poi.rot + this.siteData.siteHeading;
 
-            // at structures - do not render missing POIs
-            if (!this.siteData.isRuins && this.siteData.poiStatus.ContainsKey(poi.name) && this.siteData.poiStatus[poi.name] == SitePoiStatus.absent)
-                return;
-
-
             // diameters: relics are bigger then puddles
             var d = poi.type == POIType.relic ? 16f : 10f;
             var dd = d / 2;
 
+            if (formEditMap != null && formEditMap.checkHighlightAll.Checked)
+            {
+                // highlight everything if map editor check says so
+                var b = new SolidBrush(Color.FromArgb(160, Color.DarkSlateBlue));
+                //g.FillEllipse(b, -pt.X - dd - 2, -pt.Y - dd - 2, d + 4, d + 4);
+                g.DrawEllipse(Pens.DarkViolet, -pt.X - dd - 2, -pt.Y - dd - 2, d + 4, d + 4);
+                // DarkOliveGreen / DarkSlateBlue
+            }
+
+            // at structures - do not render missing POIs
+            if (!this.siteData.isRuins && this.siteData.poiStatus.ContainsKey(poi.name) && this.siteData.poiStatus[poi.name] == SitePoiStatus.absent)
+                return;
+
             if (!this.siteData.isRuins && !this.siteData.poiStatus.ContainsKey(poi.name) && poi.type != POIType.obelisk && poi.type != POIType.brokeObelisk)
             {
                 // anything unknown gets a blue circle underneath
-                g.FillEllipse(Brushes.DarkSlateBlue, -pt.X - dd - 5, -pt.Y - dd - 5, d + 10, d + 10);
-                //g.DrawEllipse(Pens.White, -pt.X - dd - 5, -pt.Y - dd - 5, d + 10, d + 10);
+                var b = new SolidBrush(Color.FromArgb(160, Color.DarkSlateBlue));
+                g.FillEllipse(b, -pt.X - dd - 5, -pt.Y - dd - 5, d + 10, d + 10);
                 // DarkOliveGreen / DarkSlateBlue
             }
 
@@ -1166,10 +1219,10 @@ namespace SrvSurvey
             if (poi.type == POIType.obelisk || poi.type == POIType.brokeObelisk)
             {
                 PointF[] points = {
-                    new PointF(0, - 5),
-                    new PointF(+ 5, + 3),
-                    new PointF( - 5, + 3),
-                    new PointF(0, - 5),
+                    new PointF(0, - 4),
+                    new PointF(+ 4, + 2),
+                    new PointF( - 4, + 2),
+                    new PointF(0, - 4),
                 };
                 var pp = new Pen(Color.SandyBrown)
                 {
@@ -1191,8 +1244,8 @@ namespace SrvSurvey
 
                 if (poi.type == POIType.obelisk)
                 {
-                    g.DrawLine(pp, 0, 1, 2, 3);
-                    g.DrawLine(pp, 0, 1, -2, 3);
+                    g.DrawLine(pp, 0, 0, 2, 2);
+                    g.DrawLine(pp, 0, 0, -2, 2);
                 }
 
                 g.RotateTransform(-rot);

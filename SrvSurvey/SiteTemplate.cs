@@ -1,7 +1,9 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using SrvSurvey.canonn;
 using SrvSurvey.game;
 using SrvSurvey.units;
+using System;
 using System.Text;
 
 namespace SrvSurvey
@@ -13,11 +15,15 @@ namespace SrvSurvey
     {
         #region static loading code
 
-        public static Dictionary<GuardianSiteData.SiteType, SiteTemplate> sites = new Dictionary<GuardianSiteData.SiteType, SiteTemplate>();
+        public static readonly Dictionary<GuardianSiteData.SiteType, SiteTemplate> sites = new Dictionary<GuardianSiteData.SiteType, SiteTemplate>();
+
+        private static string editableFilepath = Path.Combine(Application.UserAppDataPath, "settlementTemplates.json");
 
         public static void Import(bool devReload = false)
         {
-            string filepath = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "settlementTemplates.json");
+            string filepath = File.Exists(editableFilepath)
+                ? editableFilepath
+                : Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "settlementTemplates.json");
 
             if (devReload)
                 filepath = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "..\\..\\..\\..", "settlementTemplates.json");
@@ -27,32 +33,25 @@ namespace SrvSurvey
                 using (var reader = new StreamReader(new FileStream(filepath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)))
                 {
                     var json = reader.ReadToEnd();
-                    SiteTemplate.sites = JsonConvert.DeserializeObject<Dictionary<GuardianSiteData.SiteType, SiteTemplate>>(json)!;
+                    var newSites = JsonConvert.DeserializeObject<Dictionary<GuardianSiteData.SiteType, SiteTemplate>>(json)!;
+                    foreach(var _ in newSites)
+                        SiteTemplate.sites[_.Key] = _.Value;
+
                     Game.log($"SiteTemplate.Imported {SiteTemplate.sites.Count} templates");
                 }
-
-                /* Temp: Reformat POIs json 
-                var txt = new StringBuilder("\r\n");
-                txt.AppendLine("Alpha:");
-                foreach (var poi in SiteTemplate.sites[GuardianSiteData.SiteType.alpha].poi)
-                    txt.AppendFormat("  {{ \"name\": \"{0}\", \"dist\": {1}, \"angle\": {2}, \"type\": \"{3}\" }},\r\n", poi.name, poi.dist, poi.angle, poi.type);
-
-                txt.AppendLine("Beta:");
-                foreach (var poi in SiteTemplate.sites[GuardianSiteData.SiteType.beta].poi)
-                    txt.AppendFormat("  {{ \"name\": \"{0}\", \"dist\": {1}, \"angle\": {2}, \"type\": \"{3}\" }},\r\n", poi.name, poi.dist, poi.angle, poi.type);
-
-                txt.AppendLine("Gamma:");
-                foreach (var poi in SiteTemplate.sites[GuardianSiteData.SiteType.gamma].poi)
-                    txt.AppendFormat("  {{ \"name\": \"{0}\", \"dist\": {2}, \"angle\": {1}, \"type\": \"{3}\" }},\r\n", poi.name, poi.dist, poi.angle, poi.type);
-
-                Game.log(txt);
-                // End temp */
             }
             else
             {
                 Game.log($"Missing file: {filepath}");
             }
+        }
 
+        public static void SaveEdits()
+        {
+            Game.log($"Saving edits to SiteTemplates: {editableFilepath}");
+
+            var json = JsonConvert.SerializeObject(SiteTemplate.sites);
+            File.WriteAllText(editableFilepath, json);
         }
 
         #endregion
@@ -114,7 +113,7 @@ namespace SrvSurvey
 
         public override string ToString()
         {
-            return $"{type} {name} {angle}° {dist}m";
+            return $"{type} {name} {angle}° {dist}m rot:{rot}°";
         }
     }
 

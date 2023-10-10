@@ -84,6 +84,7 @@ namespace SrvSurvey
             checkAddBanner = new CheckBox();
             checkProcessScreenshots = new CheckBox();
             tabPage6 = new TabPage();
+            checkBox10 = new CheckBox();
             checkBox9 = new CheckBox();
             pictureBox5 = new PictureBox();
             checkBox8 = new CheckBox();
@@ -92,7 +93,6 @@ namespace SrvSurvey
             tabPage2 = new TabPage();
             linkAboutTwo = new LinkLabel();
             linkAboutOne = new LinkLabel();
-            checkBox10 = new CheckBox();
             panel1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numOpacity).BeginInit();
@@ -490,7 +490,7 @@ namespace SrvSurvey
             // 
             comboGuardianWindowSize.DropDownStyle = ComboBoxStyle.DropDownList;
             comboGuardianWindowSize.FormattingEnabled = true;
-            comboGuardianWindowSize.Items.AddRange(new object[] { "Small - 300 x 400", "Medium - 500 x 500", "Large - 600 x 700" });
+            comboGuardianWindowSize.Items.AddRange(new object[] { "Small - 300 x 400", "Medium - 500 x 500", "Large - 600 x 700", "Huge - 800 x 1000", "Massive - 1200 x 1200" });
             comboGuardianWindowSize.Location = new Point(89, 223);
             comboGuardianWindowSize.Name = "comboGuardianWindowSize";
             comboGuardianWindowSize.Size = new Size(177, 23);
@@ -789,6 +789,20 @@ namespace SrvSurvey
             tabPage6.TabIndex = 5;
             tabPage6.Text = "Exploration";
             // 
+            // checkBox10
+            // 
+            checkBox10.AutoSize = true;
+            checkBox10.Checked = true;
+            checkBox10.CheckState = CheckState.Checked;
+            checkBox10.Location = new Point(31, 159);
+            checkBox10.Margin = new Padding(4, 3, 4, 3);
+            checkBox10.Name = "checkBox10";
+            checkBox10.Size = new Size(114, 19);
+            checkBox10.TabIndex = 16;
+            checkBox10.Tag = "skipRingsDSS";
+            checkBox10.Text = "Skip DSS of rings";
+            checkBox10.UseVisualStyleBackColor = true;
+            // 
             // checkBox9
             // 
             checkBox9.AutoSize = true;
@@ -888,20 +902,6 @@ namespace SrvSurvey
             linkAboutOne.TabStop = true;
             linkAboutOne.Text = resources.GetString("linkAboutOne.Text");
             linkAboutOne.UseCompatibleTextRendering = true;
-            // 
-            // checkBox10
-            // 
-            checkBox10.AutoSize = true;
-            checkBox10.Checked = true;
-            checkBox10.CheckState = CheckState.Checked;
-            checkBox10.Location = new Point(31, 159);
-            checkBox10.Margin = new Padding(4, 3, 4, 3);
-            checkBox10.Name = "checkBox10";
-            checkBox10.Size = new Size(114, 19);
-            checkBox10.TabIndex = 16;
-            checkBox10.Tag = "skipRingsDSS";
-            checkBox10.Text = "Skip DSS of rings";
-            checkBox10.UseVisualStyleBackColor = true;
             // 
             // FormSettings
             // 

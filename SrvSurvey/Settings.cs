@@ -25,7 +25,7 @@ namespace SrvSurvey
         public bool focusGameOnStart = true;
         public bool focusGameOnMinimize = true;
 
-        public bool enableGuardianSites = false;
+        public bool enableGuardianSites = true;
         public bool disableRuinsMeasurementGrid = false;
         public bool disableAerialAlignmentGrid = false;
         public bool hidePlottersFromCombatSuits = false;
@@ -40,6 +40,7 @@ namespace SrvSurvey
         public Rectangle formAllRuinsLocation;
         public Rectangle formRuinsLocation;
         public Rectangle formBeaconsLocation;
+        public Rectangle formMapEditor;
 
         public bool mapShowNotes = true;
 

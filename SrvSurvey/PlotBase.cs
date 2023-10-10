@@ -13,7 +13,7 @@ namespace SrvSurvey
         /// <summary> The center point on this plotter. </summary>
         protected Size mid;
         protected Graphics g;
-        protected float scale = 1.0f;
+        public float scale = 1.0f;
 
         protected PlotBase()
         {

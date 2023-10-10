@@ -81,6 +81,8 @@ namespace SrvSurvey
 
         private void Main_Load(object sender, EventArgs e)
         {
+            //new FormEditMap().Show(this);
+
             if (Debugger.IsAttached)
                 this.Text += " (dbg)";
 
@@ -99,6 +101,7 @@ namespace SrvSurvey
             this.lastWindowRect = Elite.getWindowRect();
 
             Game.canonn.init();
+            SiteTemplate.Import();
 
             if (Elite.isGameRunning)
                 this.newGame();
@@ -107,7 +110,6 @@ namespace SrvSurvey
             this.timer1.Start();
 
             Game.codexRef.init();
-            SiteTemplate.Import();
 
             if (!Game.settings.migratedAlphaSiteHeading)
                 GuardianSiteData.migrateAlphaSites();
@@ -923,12 +925,6 @@ namespace SrvSurvey
         private void btnRuins_Click(object sender, EventArgs e)
         {
             FormRuins.show();
-
-            //Program.closePlotter<PlotGuardians>();
-            //Program.closePlotter<PlotGuardianStatus>();
-
-            //Program.showPlotter<PlotGuardians>();
-            //Program.showPlotter<PlotGuardianStatus>();
         }
 
         private void btnSphereLimit_Click(object sender, EventArgs e)
