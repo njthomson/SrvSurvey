@@ -96,14 +96,14 @@
             // 
             // tabs
             // 
+            tabs.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             tabs.Controls.Add(tabItems);
             tabs.Controls.Add(tabBackground);
-            tabs.Dock = DockStyle.Bottom;
             tabs.Location = new Point(0, 28);
             tabs.Multiline = true;
             tabs.Name = "tabs";
             tabs.SelectedIndex = 0;
-            tabs.Size = new Size(800, 422);
+            tabs.Size = new Size(859, 433);
             tabs.TabIndex = 0;
             // 
             // tabItems
@@ -117,7 +117,7 @@
             tabItems.Location = new Point(4, 24);
             tabItems.Name = "tabItems";
             tabItems.Padding = new Padding(3);
-            tabItems.Size = new Size(792, 394);
+            tabItems.Size = new Size(851, 405);
             tabItems.TabIndex = 0;
             tabItems.Text = "Site POI";
             // 
@@ -163,7 +163,7 @@
             listPoi.MultiSelect = false;
             listPoi.Name = "listPoi";
             listPoi.ShowGroups = false;
-            listPoi.Size = new Size(586, 363);
+            listPoi.Size = new Size(648, 399);
             listPoi.TabIndex = 1;
             listPoi.UseCompatibleStateImageBehavior = false;
             listPoi.View = View.Details;
@@ -196,7 +196,6 @@
             // 
             // groupCurrentPoi
             // 
-            groupCurrentPoi.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             groupCurrentPoi.Controls.Add(checkPoiPrecision);
             groupCurrentPoi.Controls.Add(btnPoiApply);
             groupCurrentPoi.Controls.Add(checkApplyPoiLive);
@@ -214,7 +213,7 @@
             groupCurrentPoi.Controls.Add(txtPoiName);
             groupCurrentPoi.Location = new Point(8, 6);
             groupCurrentPoi.Name = "groupCurrentPoi";
-            groupCurrentPoi.Size = new Size(189, 262);
+            groupCurrentPoi.Size = new Size(187, 262);
             groupCurrentPoi.TabIndex = 0;
             groupCurrentPoi.TabStop = false;
             groupCurrentPoi.Text = "Current POI:";
@@ -565,7 +564,7 @@
             // mapZoom
             // 
             mapZoom.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            mapZoom.Location = new Point(600, -2);
+            mapZoom.Location = new Point(659, -2);
             mapZoom.Minimum = 1;
             mapZoom.Name = "mapZoom";
             mapZoom.Size = new Size(200, 45);
@@ -576,8 +575,9 @@
             // 
             // label4
             // 
+            label4.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             label4.AutoSize = true;
-            label4.Location = new Point(527, 7);
+            label4.Location = new Point(592, 7);
             label4.Name = "label4";
             label4.Size = new Size(67, 15);
             label4.TabIndex = 2;
@@ -586,7 +586,7 @@
             // btnFocusGame
             // 
             btnFocusGame.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnFocusGame.Location = new Point(415, 3);
+            btnFocusGame.Location = new Point(474, 3);
             btnFocusGame.Name = "btnFocusGame";
             btnFocusGame.Size = new Size(106, 23);
             btnFocusGame.TabIndex = 1;
@@ -600,7 +600,7 @@
             checkHighlightAll.AutoSize = true;
             checkHighlightAll.Checked = true;
             checkHighlightAll.CheckState = CheckState.Checked;
-            checkHighlightAll.Location = new Point(258, 3);
+            checkHighlightAll.Location = new Point(317, 3);
             checkHighlightAll.Name = "checkHighlightAll";
             checkHighlightAll.Size = new Size(151, 19);
             checkHighlightAll.TabIndex = 0;
@@ -624,7 +624,7 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = btnFocusGame;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(859, 461);
             Controls.Add(lblSiteType);
             Controls.Add(checkHighlightAll);
             Controls.Add(btnFocusGame);

@@ -81,8 +81,6 @@ namespace SrvSurvey
 
         private void Main_Load(object sender, EventArgs e)
         {
-            //new FormEditMap().Show(this);
-
             if (Debugger.IsAttached)
                 this.Text += " (dbg)";
 

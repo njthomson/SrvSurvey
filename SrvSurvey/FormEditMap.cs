@@ -37,7 +37,10 @@ namespace SrvSurvey
         private void FormEditMap_FormClosed(object sender, FormClosedEventArgs e)
         {
             if (plotter != null)
+            {
                 plotter.formEditMap = null;
+                plotter.Invalidate();
+            }
         }
 
         protected override void OnResizeEnd(EventArgs e)
@@ -51,7 +54,6 @@ namespace SrvSurvey
                 Game.settings.Save();
             }
         }
-
 
         private void FormEditMap_Load(object sender, EventArgs e)
         {
