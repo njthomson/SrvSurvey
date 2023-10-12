@@ -31,6 +31,11 @@ namespace SrvSurvey
             comboPoiStatus.Items.AddRange(Enum.GetNames<SitePoiStatus>());
             plotter.formEditMap = this;
 
+            // default the background image path to the default file
+            var folder = Path.GetDirectoryName(Application.ExecutablePath)!;
+            var filepath = Path.Combine(folder, "images", $"{siteData.type}-background.png".ToLowerInvariant());
+            txtBackgroundImage.Text = filepath;
+
             Util.useLastLocation(this, Game.settings.formMapEditor);
         }
 
@@ -86,16 +91,23 @@ namespace SrvSurvey
 
         private ListViewItem createListViewItemForPoi(SitePOI poi)
         {
-            var status = siteData.poiStatus.ContainsKey(poi.name) ? siteData.poiStatus[poi.name] : SitePoiStatus.unknown;
+            var rot = poi.rot.ToString();
+            if (poi.type == POIType.relic && siteData.relicHeadings.ContainsKey(poi.name))
+                rot =  siteData.relicHeadings[poi.name].ToString();
+
+            var status = (siteData.poiStatus.ContainsKey(poi.name) ? siteData.poiStatus[poi.name] : SitePoiStatus.unknown).ToString();
+            if (poi.type == POIType.obelisk || poi.type == POIType.brokeObelisk)
+                status = "n/a";
+
             var subItems = new ListViewItem.ListViewSubItem[]
             {
                     // ordering here needs to manually match columns
-                    new ListViewItem.ListViewSubItem { Text = poi.name },
-                    new ListViewItem.ListViewSubItem { Text = poi.dist.ToString() },
-                    new ListViewItem.ListViewSubItem { Text = poi.angle.ToString() },
-                    new ListViewItem.ListViewSubItem { Text = poi.type.ToString() },
-                    new ListViewItem.ListViewSubItem { Text = poi.rot.ToString() },
-                    new ListViewItem.ListViewSubItem { Text = status.ToString() },
+                    new ListViewItem.ListViewSubItem { Name = "name", Text = poi.name },
+                    new ListViewItem.ListViewSubItem { Name = "dist", Text = poi.dist.ToString() },
+                    new ListViewItem.ListViewSubItem { Name = "angle", Text = poi.angle.ToString() },
+                    new ListViewItem.ListViewSubItem { Name = "type", Text = poi.type.ToString() },
+                    new ListViewItem.ListViewSubItem { Name = "rot", Text = rot },
+                    new ListViewItem.ListViewSubItem { Name = "status", Text = status },
             };
 
             var row = new ListViewItem(subItems, 0)
@@ -104,6 +116,33 @@ namespace SrvSurvey
                 Tag = poi,
             };
             return row;
+        }
+
+        private void updateRowFromPoi(SitePOI poi)
+        {
+            foreach (ListViewItem row in listPoi.Items)
+            {
+                if (row.Tag != poi) continue;
+
+                row.SubItems[0]!.Text = poi.name;
+                row.SubItems[1]!.Text = poi.dist.ToString();
+                row.SubItems[2]!.Text = poi.angle.ToString();
+                row.SubItems[3]!.Text = poi.type.ToString();
+
+                var rot = poi.rot.ToString();
+                if (poi.type == POIType.relic && siteData.relicHeadings.ContainsKey(poi.name))
+                    rot = siteData.relicHeadings[poi.name].ToString();
+                row.SubItems[4]!.Text = rot;
+
+                var status = (siteData.poiStatus.ContainsKey(poi.name) ? siteData.poiStatus[poi.name] : SitePoiStatus.unknown).ToString();
+                if (poi.type == POIType.obelisk || poi.type == POIType.brokeObelisk)
+                    status = "n/a";
+                row.SubItems[5]!.Text = status;
+
+                row.Selected = true;
+                row.EnsureVisible();
+                return;
+            }
         }
 
         private void btnSaveEdits_Click(object sender, EventArgs e)
@@ -226,17 +265,18 @@ namespace SrvSurvey
                 comboPoiStatus.Text = siteData.poiStatus.ContainsKey(newPoi.name) ? siteData.poiStatus[newPoi.name].ToString() : SitePoiStatus.unknown.ToString();
 
                 // finally - update grid selection if not already matching
-                var listedPoi = listPoi.Items.Find(newPoi.name, false);
-                if (listedPoi != null && listedPoi.Length > 0 && !listedPoi[0].Selected)
-                {
-                    listPoi.SelectedItems.Clear();
-                    listedPoi[0].Selected = true;
-                    listedPoi[0].EnsureVisible();
-                }
-                else
-                {
-                    Game.log("setCurrentPoi not found in grid?");
-                }
+                updateRowFromPoi(newPoi);
+                //var listedPoi = listPoi.Items.Find(newPoi.name, false);
+                //if (listedPoi != null && listedPoi.Length > 0 && !listedPoi[0].Selected)
+                //{
+                //    listPoi.SelectedItems.Clear();
+                //    listedPoi[0].Selected = true;
+                //    listedPoi[0].EnsureVisible();
+                //}
+                //else
+                //{
+                //    Game.log("setCurrentPoi not found in grid?");
+                //}
             }
 
             plotter.forcePoi = newPoi;
@@ -257,6 +297,7 @@ namespace SrvSurvey
         {
             if (!checkApplyPoiLive.Checked || poi == null) return;
             poi.name = txtPoiName.Text;
+            updateRowFromPoi(poi);
             plotter.forcePoi = poi;
             plotter.Invalidate();
         }
@@ -265,6 +306,7 @@ namespace SrvSurvey
         {
             if (!checkApplyPoiLive.Checked || poi == null) return;
             poi.dist = (float)numPoiDist.Value;
+            updateRowFromPoi(poi);
             plotter.forcePoi = poi;
             plotter.Invalidate();
         }
@@ -273,6 +315,7 @@ namespace SrvSurvey
         {
             if (!checkApplyPoiLive.Checked || poi == null) return;
             poi.angle = (float)numPoiAngle.Value;
+            updateRowFromPoi(poi);
             plotter.forcePoi = poi;
             plotter.Invalidate();
         }
@@ -281,6 +324,7 @@ namespace SrvSurvey
         {
             if (!checkApplyPoiLive.Checked || poi == null) return;
             poi.rot = (float)numPoiRot.Value;
+            updateRowFromPoi(poi);
             plotter.forcePoi = poi;
             plotter.Invalidate();
         }
@@ -294,6 +338,7 @@ namespace SrvSurvey
             if (newStatus == SitePoiStatus.unknown)
                 siteData.poiStatus.Remove(poi.name);
 
+            updateRowFromPoi(poi);
             plotter.forcePoi = poi;
             plotter.Invalidate();
         }
@@ -313,6 +358,7 @@ namespace SrvSurvey
             if (newStatus == SitePoiStatus.unknown)
                 siteData.poiStatus.Remove(poi.name);
 
+            updateRowFromPoi(poi);
             plotter.forcePoi = poi;
             plotter.Invalidate();
         }
@@ -347,7 +393,7 @@ namespace SrvSurvey
             if (listPoi.SelectedItems.Count > 0)
             {
                 var newPoi = listPoi.SelectedItems[0].Tag as SitePOI;
-                setCurrentPoi(newPoi);
+                setCurrentPoi(newPoi!);
             }
         }
 
@@ -381,6 +427,15 @@ namespace SrvSurvey
 
         private void checkHighlightAll_CheckedChanged(object sender, EventArgs e)
         {
+            if (checkHighlightAll.Checked)
+                checkHideAllPoi.Checked = false;
+            plotter.Invalidate();
+        }
+
+        private void checkHideAllPoi_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkHideAllPoi.Checked)
+                checkHighlightAll.Checked = false;
             plotter.Invalidate();
         }
 
@@ -392,9 +447,7 @@ namespace SrvSurvey
                 listPoi.Items.Remove(lvi);
                 template.poi.Remove(lvi.Tag as SitePOI);
                 setCurrentPoi(null);
-
             }
-
         }
 
         private void FormEditMap_Activated(object sender, EventArgs e)

@@ -80,6 +80,7 @@
             btnFocusGame = new Button();
             checkHighlightAll = new CheckBox();
             lblSiteType = new Label();
+            checkHideAllPoi = new CheckBox();
             tabs.SuspendLayout();
             tabItems.SuspendLayout();
             groupCurrentPoi.SuspendLayout();
@@ -388,7 +389,7 @@
             tabBackground.Location = new Point(4, 24);
             tabBackground.Name = "tabBackground";
             tabBackground.Padding = new Padding(3);
-            tabBackground.Size = new Size(792, 394);
+            tabBackground.Size = new Size(851, 405);
             tabBackground.TabIndex = 1;
             tabBackground.Text = "Background image";
             // 
@@ -399,17 +400,20 @@
             groupBox1.Controls.Add(txtDeltaLong);
             groupBox1.Controls.Add(txtDeltaLat);
             groupBox1.Controls.Add(label11);
+            groupBox1.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
             groupBox1.Location = new Point(40, 123);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(214, 117);
+            groupBox1.Size = new Size(248, 150);
             groupBox1.TabIndex = 24;
             groupBox1.TabStop = false;
             groupBox1.Text = "Origin alignment:";
             // 
             // label13
             // 
+            label13.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             label13.AutoSize = true;
-            label13.Location = new Point(6, 84);
+            label13.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            label13.Location = new Point(5, 124);
             label13.Name = "label13";
             label13.Size = new Size(64, 15);
             label13.TabIndex = 4;
@@ -417,8 +421,10 @@
             // 
             // label12
             // 
+            label12.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             label12.AutoSize = true;
-            label12.Location = new Point(17, 55);
+            label12.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            label12.Location = new Point(16, 95);
             label12.Name = "label12";
             label12.Size = new Size(53, 15);
             label12.TabIndex = 3;
@@ -426,26 +432,33 @@
             // 
             // txtDeltaLong
             // 
-            txtDeltaLong.Location = new Point(76, 81);
+            txtDeltaLong.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            txtDeltaLong.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            txtDeltaLong.Location = new Point(75, 121);
             txtDeltaLong.Name = "txtDeltaLong";
+            txtDeltaLong.ReadOnly = true;
             txtDeltaLong.Size = new Size(100, 23);
             txtDeltaLong.TabIndex = 2;
             // 
             // txtDeltaLat
             // 
-            txtDeltaLat.Location = new Point(76, 52);
+            txtDeltaLat.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            txtDeltaLat.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            txtDeltaLat.Location = new Point(75, 92);
             txtDeltaLat.Name = "txtDeltaLat";
+            txtDeltaLat.ReadOnly = true;
             txtDeltaLat.Size = new Size(100, 23);
             txtDeltaLat.TabIndex = 1;
             // 
             // label11
             // 
             label11.AutoSize = true;
+            label11.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
             label11.Location = new Point(6, 19);
             label11.Name = "label11";
-            label11.Size = new Size(196, 30);
+            label11.Size = new Size(233, 60);
             label11.TabIndex = 0;
-            label11.Text = "Face north move your cmdr on foot\r\nuntil deltas reach zero:";
+            label11.Text = "Face north move your cmdr on foot\r\nuntil deltas reach zero:\r\n\r\n(Switch weapon or tool to force an update)";
             // 
             // btnSaveBackground
             // 
@@ -483,7 +496,6 @@
             // 
             // btnChooseBackgroundImage
             // 
-            btnChooseBackgroundImage.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnChooseBackgroundImage.Location = new Point(8, 21);
             btnChooseBackgroundImage.Name = "btnChooseBackgroundImage";
             btnChooseBackgroundImage.Size = new Size(26, 23);
@@ -495,7 +507,7 @@
             // numScaleFactor
             // 
             numScaleFactor.DecimalPlaces = 2;
-            numScaleFactor.Increment = new decimal(new int[] { 1, 0, 0, 65536 });
+            numScaleFactor.Increment = new decimal(new int[] { 1, 0, 0, 131072 });
             numScaleFactor.Location = new Point(308, 65);
             numScaleFactor.Maximum = new decimal(new int[] { 10, 0, 0, 0 });
             numScaleFactor.Minimum = new decimal(new int[] { 1, 0, 0, 65536 });
@@ -600,11 +612,11 @@
             checkHighlightAll.AutoSize = true;
             checkHighlightAll.Checked = true;
             checkHighlightAll.CheckState = CheckState.Checked;
-            checkHighlightAll.Location = new Point(317, 3);
+            checkHighlightAll.Location = new Point(304, 3);
             checkHighlightAll.Name = "checkHighlightAll";
-            checkHighlightAll.Size = new Size(151, 19);
+            checkHighlightAll.Size = new Size(164, 19);
             checkHighlightAll.TabIndex = 0;
-            checkHighlightAll.Text = "Render all POI locations";
+            checkHighlightAll.Text = "Highlight all POI locations";
             checkHighlightAll.UseVisualStyleBackColor = true;
             checkHighlightAll.CheckedChanged += checkHighlightAll_CheckedChanged;
             // 
@@ -619,12 +631,26 @@
             lblSiteType.TabIndex = 25;
             lblSiteType.Text = "Robolobster";
             // 
+            // checkHideAllPoi
+            // 
+            checkHideAllPoi.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            checkHideAllPoi.AutoSize = true;
+            checkHideAllPoi.Location = new Point(210, 3);
+            checkHideAllPoi.Name = "checkHideAllPoi";
+            checkHideAllPoi.Size = new Size(88, 19);
+            checkHideAllPoi.TabIndex = 25;
+            checkHideAllPoi.Text = "Hide all POI";
+            checkHideAllPoi.UseVisualStyleBackColor = true;
+            checkHideAllPoi.CheckedChanged += checkHideAllPoi_CheckedChanged;
+            // 
             // FormEditMap
             // 
+            AcceptButton = btnApplyImage;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = btnFocusGame;
             ClientSize = new Size(859, 461);
+            Controls.Add(checkHideAllPoi);
             Controls.Add(lblSiteType);
             Controls.Add(checkHighlightAll);
             Controls.Add(btnFocusGame);
@@ -709,5 +735,6 @@
         public TextBox txtDeltaLat;
         private Label label11;
         private Label lblSiteType;
+        public CheckBox checkHideAllPoi;
     }
 }

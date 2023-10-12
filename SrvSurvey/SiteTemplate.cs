@@ -50,7 +50,7 @@ namespace SrvSurvey
         {
             Game.log($"Saving edits to SiteTemplates: {editableFilepath}");
 
-            var json = JsonConvert.SerializeObject(SiteTemplate.sites);
+            var json = JsonConvert.SerializeObject(SiteTemplate.sites, Formatting.Indented);
             File.WriteAllText(editableFilepath, json);
         }
 
@@ -73,7 +73,6 @@ namespace SrvSurvey
         public List<SitePOI> poi = new List<SitePOI>();
 
         #endregion
-
     }
 
     enum POIType

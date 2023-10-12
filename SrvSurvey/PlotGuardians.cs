@@ -718,11 +718,12 @@ namespace SrvSurvey
                 */
             }
 
+            // update cmdr location relative to origin if editor is running
             if (formEditMap != null)
             {
                 var td = new TrackingDelta(game.nearBody!.radius, this.siteData!.location);
-                formEditMap.txtDeltaLat.Text = Util.metersToString(td.dx, true);
-                formEditMap.txtDeltaLong.Text = Util.metersToString(td.dy, true);
+                formEditMap.txtDeltaLat.Text = td.dy.ToString("N2") + "m";
+                formEditMap.txtDeltaLong.Text = td.dx.ToString("N2") + "m";
             }
 
             this.Invalidate();
@@ -997,6 +998,7 @@ namespace SrvSurvey
             // prepare underlay image
             using (var gg = Graphics.FromImage(this.underlay))
             {
+                gg.Clear(Color.Transparent);
                 gg.ResetTransform();
                 //gg.Clear(Color.Black);
                 //gg.RotateTransform(360 - game.status!.Heading);
@@ -1176,7 +1178,11 @@ namespace SrvSurvey
 
         private void drawSitePoi(SitePOI poi, PointF pt)
         {
-            var rot = poi.rot + this.siteData.siteHeading;
+            // render no POI if form editor says so
+            if (formEditMap != null && formEditMap.checkHideAllPoi.Checked)
+                return;
+
+                var rot = poi.rot + this.siteData.siteHeading;
 
             // diameters: relics are bigger then puddles
             var d = poi.type == POIType.relic ? 16f : 10f;
