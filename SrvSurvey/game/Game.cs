@@ -361,16 +361,6 @@ namespace SrvSurvey.game
 
         #region Process and window handle stuff
 
-        private static IntPtr getGameWindowHandle()
-        {
-            //this.TopMost = !this.TopMost;
-            var procED = Process.GetProcessesByName("EliteDangerous64");
-            if (procED.Length > 0)
-                return procED[0].MainWindowHandle;
-            else
-                return IntPtr.Zero;
-        }
-
         /// <summary>
         /// Returns True if the game is actively running
         /// </summary>
@@ -380,18 +370,6 @@ namespace SrvSurvey.game
             {
                 var procED = Process.GetProcessesByName("EliteDangerous64");
                 return procED.Length > 0;
-            }
-        }
-
-        /// <summary>
-        /// Returns True if multiple versions of the game are running
-        /// </summary>
-        public bool isRunningMultiple
-        {
-            get
-            {
-                var procED = Process.GetProcessesByName("EliteDangerous64");
-                return procED.Length > 1;
             }
         }
 
@@ -1013,9 +991,21 @@ namespace SrvSurvey.game
         {
             get
             {
-                if (this._touchdownLocation == null)
+                if (this._touchdownLocation == null && this.journals != null)
                 {
                     Game.log($"Searching journals for last touchdown location... (mode: {this.mode})");
+                    journals.searchDeep(
+                        (Touchdown entry) =>
+                        {
+                            _touchdownLocation = new LatLong2(entry);
+                            Game.log($"Found last touchdown location: {_touchdownLocation}");
+                            return true;
+                        },
+                        // stop searching older journal files if we see we reached this system
+                        (JournalFile journals) => journals.search((ApproachBody _) => true)
+                    );
+
+                    /*
                     var lastTouchdown = journals!.FindEntryByType<Touchdown>(-1, true);
                     var lastLiftoff = journals.FindEntryByType<Liftoff>(-1, true);
                     if (lastTouchdown != null)
@@ -1037,6 +1027,7 @@ namespace SrvSurvey.game
                         _touchdownLocation = Status.here.clone();
                         Game.log($"Last touchdown location: NOT FOUND but we're landed so using current location: {_touchdownLocation}");
                     }
+                    */
                 }
                 return _touchdownLocation!;
             }
@@ -1045,7 +1036,6 @@ namespace SrvSurvey.game
                 this._touchdownLocation = value;
                 if (this.nearBody != null)
                     this.nearBody.data.lastTouchdown = value;
-
             }
         }
 

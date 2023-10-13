@@ -252,5 +252,21 @@ namespace SrvSurvey
             // TODO: As we already loaded the journal into memory, it would be nice to use that rather than reload it again from JournalWatcher
             return filename;
         }
+
+        /// <summary>
+        /// Force append a shutdown entry - to be used if the game crashes
+        /// </summary>
+        public void fakeShutdown()
+        {
+            try
+            {
+                var timestamp = DateTime.UtcNow.ToString("s");
+                File.AppendAllText(this.filepath, @$"{{ ""timestamp"":""{timestamp}Z"", ""event"":""Shutdown"" }}");
+            }
+            catch (Exception ex)
+            {
+                Game.log($"Error in fakeShutdown: {ex.Message}");
+            }
+        }
     }
 }

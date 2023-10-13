@@ -624,6 +624,12 @@ namespace SrvSurvey
                 this.lastWindowRect = rect;
                 Program.repositionPlotters(rect);
             }
+
+            if (rect == Rectangle.Empty && Elite.isGameRunning && game?.journals != null)
+            {
+                Game.log($"EliteDangerous process died?!");
+                game.journals.fakeShutdown();
+            }
         }
 
         private void Main_ResizeEnd(object sender, EventArgs e)
@@ -781,7 +787,7 @@ namespace SrvSurvey
             if (game!.nearBody?.siteData != null)
             {
                 var siteData = game!.nearBody?.siteData!;
-                
+
                 var majorType = siteData.isRuins ? $"Ruins{siteData.index} " : "";
                 filename += $", {majorType}{siteData.type}";
 
