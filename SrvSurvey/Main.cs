@@ -618,7 +618,7 @@ namespace SrvSurvey
 
                 this.lastWindowHasFocus = hasFocus;
             }
-            else if (rect != lastWindowRect && hasFocus)
+            else if (rect != this.lastWindowRect && hasFocus)
             {
                 Game.log($"EliteDangerous window reposition: {this.lastWindowRect} => {rect}");
                 this.lastWindowRect = rect;
@@ -629,6 +629,7 @@ namespace SrvSurvey
             {
                 Game.log($"EliteDangerous process died?!");
                 game.journals.fakeShutdown();
+                this.removeGame();
             }
         }
 
