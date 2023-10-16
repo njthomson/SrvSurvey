@@ -21,9 +21,10 @@ namespace SrvSurvey
 
         public static void Import(bool devReload = false)
         {
-            string filepath = File.Exists(editableFilepath)
-                ? editableFilepath
-                : Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "settlementTemplates.json");
+            string filepath = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "settlementTemplates.json");
+
+            // load map editor version?
+            if (File.Exists(editableFilepath)) filepath = editableFilepath;
 
             if (devReload)
                 filepath = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "..\\..\\..\\..", "settlementTemplates.json");
@@ -34,7 +35,7 @@ namespace SrvSurvey
                 {
                     var json = reader.ReadToEnd();
                     var newSites = JsonConvert.DeserializeObject<Dictionary<GuardianSiteData.SiteType, SiteTemplate>>(json)!;
-                    foreach(var _ in newSites)
+                    foreach (var _ in newSites)
                         SiteTemplate.sites[_.Key] = _.Value;
 
                     Game.log($"SiteTemplate.Imported {SiteTemplate.sites.Count} templates");

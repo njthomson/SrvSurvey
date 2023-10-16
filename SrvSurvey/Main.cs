@@ -625,7 +625,8 @@ namespace SrvSurvey
                 Program.repositionPlotters(rect);
             }
 
-            if (rect == Rectangle.Empty && Elite.isGameRunning && game?.journals != null)
+            // if the game process is NOT running, but we have an active game object processing journals ... append a fake shutdown entry and stop processing journal entries
+            if (!Elite.isGameRunning && game != null && !game.isShutdown && game.journals != null)
             {
                 Game.log($"EliteDangerous process died?!");
                 game.journals.fakeShutdown();

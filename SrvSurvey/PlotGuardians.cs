@@ -757,7 +757,7 @@ namespace SrvSurvey
 
         protected override void OnPaintBackground(PaintEventArgs e)
         {
-            if (game.isShutdown) return;
+            if (this.IsDisposed || game.isShutdown) return;
 
             //Game.log($"-- -- --> PlotGuardians: OnPaintBackground {this.template?.imageOffset} / {this.template?.scaleFactor}");
             if (this.template != null)

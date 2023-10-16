@@ -362,7 +362,7 @@ namespace SrvSurvey.game
         #region Process and window handle stuff
 
         /// <summary>
-        /// Returns True if the game is actively running
+        /// Returns True if the game process is actively running
         /// </summary>
         public bool isRunning
         {

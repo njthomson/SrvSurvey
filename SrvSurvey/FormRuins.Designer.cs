@@ -155,7 +155,7 @@
             comboSite.DropDownStyle = ComboBoxStyle.DropDownList;
             comboSite.DropDownWidth = 404;
             comboSite.FormattingEnabled = true;
-            comboSite.Items.AddRange(new object[] { "Alpha template", "Beta template", "Gamma template", "----------------" });
+            comboSite.Items.AddRange(new object[] { "Alpha template", "Beta template", "Gamma template", "Bear template", "----------------" });
             comboSite.Location = new Point(239, 10);
             comboSite.Name = "comboSite";
             comboSite.Size = new Size(420, 23);
@@ -176,7 +176,7 @@
             comboSiteType.DropDownStyle = ComboBoxStyle.DropDownList;
             comboSiteType.DropDownWidth = 404;
             comboSiteType.FormattingEnabled = true;
-            comboSiteType.Items.AddRange(new object[] { "All", "Alpha", "Beta", "Gamma" });
+            comboSiteType.Items.AddRange(new object[] { "All", "Alpha", "Beta", "Gamma", "Bear" });
             comboSiteType.Location = new Point(80, 9);
             comboSiteType.Name = "comboSiteType";
             comboSiteType.Size = new Size(153, 23);

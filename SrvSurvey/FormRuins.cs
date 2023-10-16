@@ -130,6 +130,7 @@ namespace SrvSurvey
                 case "Alpha Template": siteType = GuardianSiteData.SiteType.Alpha; break;
                 case "Beta Template": siteType = GuardianSiteData.SiteType.Beta; break;
                 case "Gamma Template": siteType = GuardianSiteData.SiteType.Gamma; break;
+                case "Bear Template": siteType = GuardianSiteData.SiteType.Bear; break;
             }
 
             if (siteType != GuardianSiteData.SiteType.Unknown)
@@ -493,8 +494,18 @@ namespace SrvSurvey
                 var poiStatus = this.siteData?.poiStatus.GetValueOrDefault(poi.name);
                 if (poi.type == POIType.relic)
                     drawRelicTower(g, pt, poiStatus);
-                else
+                else if (poi.type == POIType.pylon)
+                    drawRelicTower(g, pt, poiStatus);
+                else if (poi.type == POIType.component)
+                    drawRelicTower(g, pt, poiStatus);
+                else if (poi.type == POIType.obelisk || poi.type == POIType.brokeObelisk)
+                    drawRelicTower(g, pt, poiStatus);
+                else if (poi.type == POIType.orb || poi.type == POIType.casket || poi.type == POIType.tablet || poi.type == POIType.totem || poi.type == POIType.urn)
                     drawPuddle(g, pt, poi.type, poiStatus);
+                else
+                {
+                    Game.log($"Unexpected poi.type: {poi.type}");
+                }
             }
 
             // draw highlight over closest POI
