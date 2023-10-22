@@ -334,11 +334,14 @@ namespace SrvSurvey
                 k = 9654;
                 if (isTerraformable) k += 100677;
             }
-            else if (scan.PlanetClass == "Water world" // WW
-                || scan.PlanetClass == "Earthlike body") // ELW
+            else if (scan.PlanetClass == "Water world") // WW
             {
                 k = 64831;
                 if (isTerraformable) k += 116295;
+            }
+            else if (scan.PlanetClass == "Earthlike body") // ELW
+            {
+                k = 116295;
             }
             else // RB
             {

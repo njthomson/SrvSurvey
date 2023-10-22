@@ -306,12 +306,8 @@ namespace SrvSurvey
 
         private void drawCompassLines(Graphics g)
         {
-            const float pad = 8;
-
             g.ResetTransform();
-
-            var r = new RectangleF(0, pad, this.Width, this.Height - pad * 2);
-            g.Clip = new Region(r);
+            g.Clip = new Region(new RectangleF(4, 24, this.Width - 8, this.Height - 48));
             g.TranslateTransform(mw, mh);
 
             // draw compass rose lines
@@ -319,6 +315,9 @@ namespace SrvSurvey
             g.DrawLine(Pens.DarkRed, -this.Width, 0, +this.Width, 0);
             g.DrawLine(Pens.DarkRed, 0, 0, 0, +this.Height);
             g.DrawLine(Pens.Red, 0, -this.Height, 0, 0);
+
+            g.ResetTransform();
+            g.Clip = new Region(new RectangleF(8, 8, this.Width - 16, this.Height - 16));
         }
 
         private void drawBioScans(Graphics g)
@@ -327,6 +326,8 @@ namespace SrvSurvey
 
             // delta to ship
             g.ResetTransform();
+            g.Clip = new Region(new RectangleF(4, 24, this.Width - 8, this.Height - 48));
+
             g.TranslateTransform(mw, mh);
             g.ScaleTransform(scale, scale);
             g.RotateTransform(360 - game.status!.Heading);
@@ -352,6 +353,9 @@ namespace SrvSurvey
             {
                 drawBioScan(g, d, game.nearBody.scanTwo);
             }
+
+            g.ResetTransform();
+            g.Clip = new Region(new RectangleF(4, 8, this.Width - 8, this.Height - 16));
         }
 
         private void drawTrackers(Graphics g)
