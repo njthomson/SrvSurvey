@@ -56,7 +56,10 @@ namespace SrvSurvey
             {
                 Program.control!.Invoke((MethodInvoker)delegate
                 {
-                    this.onJournalEntry(entry, this.Entries.Count - 1);
+                    if (entry != null && this.onJournalEntry != null && !this.disposed)
+                    {
+                        this.onJournalEntry(entry, this.Entries.Count - 1);
+                    }
                 });
             }
 

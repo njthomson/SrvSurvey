@@ -525,6 +525,12 @@ namespace SrvSurvey
                     this.updateTrackTargetTexts();
                     return;
 
+                case MsgCmd.imgs:
+                    var folder = Path.Combine(Game.settings.screenshotTargetFolder!, game.cmdr.currentSystem);
+                    if (Directory.Exists(folder))
+                        Util.openLink(folder);
+                    return;
+
                 case MsgCmd.kill:
                     Application.Exit();
                     return;

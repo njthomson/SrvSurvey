@@ -89,37 +89,44 @@ namespace SrvSurvey
             // read the file contents ...
             using (var sr = new StreamReader(new FileStream(Status.Filepath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)))
             {
-                var json = sr.ReadToEnd();
-                if (json == null || json == "") return;
-
-                // ... parse into tmp object ...
-                var obj = JsonConvert.DeserializeObject<Status>(json);
-
-                // ... assign all property values from tmp object 
-                var allProps = typeof(Status).GetProperties(Program.InstanceProps);
-                foreach (var prop in allProps)
+                try
                 {
-                    if (prop.CanWrite)
+                    var json = sr.ReadToEnd();
+                    if (json == null || json == "") return;
+
+                    // ... parse into tmp object ...
+                    var obj = JsonConvert.DeserializeObject<Status>(json);
+
+                    // ... assign all property values from tmp object 
+                    var allProps = typeof(Status).GetProperties(Program.InstanceProps);
+                    foreach (var prop in allProps)
                     {
-                        prop.SetValue(this, prop.GetValue(obj));
+                        if (prop.CanWrite)
+                        {
+                            prop.SetValue(this, prop.GetValue(obj));
+                        }
                     }
+
+                    // update singleton location
+                    Status.here.Lat = this.Latitude;
+                    Status.here.Long = this.Longitude;
+
+                    var blink = this.trackBlinks();
+
+                    // fire the event for external code on the UI thread
+                    Program.control!.Invoke((MethodInvoker)delegate
+                    {
+                        if (this.StatusChanged != null)
+                        {
+                            this.StatusChanged(blink);
+                        }
+                    });
+                }
+                catch (Exception)
+                {
+                    // ignore any errors
                 }
             }
-
-            // update singleton location
-            Status.here.Lat = this.Latitude;
-            Status.here.Long = this.Longitude;
-
-            var blink = this.trackBlinks();
-
-            // fire the event for external code on the UI thread
-            Program.control!.Invoke((MethodInvoker)delegate
-            {
-                if (this.StatusChanged != null)
-                {
-                    this.StatusChanged(blink);
-                }
-            });
         }
 
         #endregion

@@ -28,6 +28,8 @@
         /// <summary> Append message to site notes </summary>
         public const string note = ".note";
 
+        /// <summary> Main: Open the images folder </summary>
+        public const string imgs = ".imgs";
         /// <summary> Main : set current location as trackign target </summary>
         public const string targetHere = ".target here";
         /// <summary> Main : hide tracking target plotter </summary>

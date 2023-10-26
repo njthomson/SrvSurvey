@@ -1092,6 +1092,8 @@ namespace SrvSurvey.game
                 var genusName = match.Value;
                 if (prefix != null && this.nearBody?.data.organisms != null && this.nearBody.data.organisms.ContainsKey(genusName))
                 {
+                    // wait a bit for the status file to update
+                    Application.DoEvents();
                     Game.log($"!! Comp scan organic: {genusName} ({entry.Name}) timestamps entry: {entry.timestamp} vs status: {this.status.timestamp} | Locations: entry: {entry.Latitude}, {entry.Longitude} vs status: {this.status.Latitude}, {this.status.Longitude}");
                     var organism = this.nearBody.data.organisms[genusName];
                     if (organism.analyzed && Game.settings.skipAnalyzedCompBioScans)
