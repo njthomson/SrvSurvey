@@ -20,6 +20,7 @@ namespace SrvSurvey.game
             // read and parse file contents into tmp object
             if (File.Exists(filepath))
             {
+                // Game.log($"Reading: {filepath}");
                 var json = File.ReadAllText(filepath);
                 try
                 {

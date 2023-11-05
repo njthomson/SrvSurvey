@@ -258,6 +258,11 @@ namespace SrvSurvey
             // overriden as necessary
         }
 
+        protected virtual void onJournalEntry(MaterialCollected entry)
+        {
+            // overriden as necessary
+        }
+
         protected void drawCommander()
         {
             if (g == null) return;

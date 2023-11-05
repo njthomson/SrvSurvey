@@ -93,7 +93,7 @@ namespace SrvSurvey
         {
             var rot = poi.rot.ToString();
             if (poi.type == POIType.relic && siteData.relicHeadings.ContainsKey(poi.name))
-                rot =  siteData.relicHeadings[poi.name].ToString();
+                rot = siteData.relicHeadings[poi.name].ToString();
 
             var status = (siteData.poiStatus.ContainsKey(poi.name) ? siteData.poiStatus[poi.name] : SitePoiStatus.unknown).ToString();
             if (poi.type == POIType.obelisk || poi.type == POIType.brokeObelisk)
@@ -149,6 +149,7 @@ namespace SrvSurvey
         {
             // save stuff to a clone template file
             SiteTemplate.SaveEdits();
+            this.siteData.Save();
         }
 
         #region edit background image
@@ -368,7 +369,6 @@ namespace SrvSurvey
             var stepValue = checkPoiPrecision.Checked ? 0.1m : 1m;
             numPoiDist.Increment = stepValue;
             numPoiAngle.Increment = stepValue;
-            numPoiRot.Increment = stepValue;
         }
 
         private void numPoiDist_KeyDown(object sender, KeyEventArgs e)
@@ -423,6 +423,7 @@ namespace SrvSurvey
 
             // make it current item and redraw the plotter
             setCurrentPoi(newPoi);
+            txtPoiName.Focus();
         }
 
         private void checkHighlightAll_CheckedChanged(object sender, EventArgs e)

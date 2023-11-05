@@ -2,7 +2,6 @@
 using SrvSurvey.units;
 using System.Diagnostics;
 using System.Drawing.Drawing2D;
-using System.Runtime.CompilerServices;
 using static SrvSurvey.game.GuardianSiteData;
 
 namespace SrvSurvey
@@ -373,6 +372,33 @@ namespace SrvSurvey
                 siteData.Save();
             }
 
+            // set obelisk items
+            if (msg.StartsWith(MsgCmd.ao, StringComparison.OrdinalIgnoreCase))
+            {
+                this.parseActiveObelisk(msg.Substring(3).Trim().ToLowerInvariant());
+            }
+            else if (msg.StartsWith(MsgCmd.aod, StringComparison.OrdinalIgnoreCase) && this.nearestPoi?.type == POIType.obelisk)
+            {
+                if (!this.siteData.activeObelisks.ContainsKey(this.nearestPoi.name))
+                    this.siteData.activeObelisks.Add(this.nearestPoi.name, new ActiveObelisk());
+                var obelisk = this.siteData.activeObelisks[this.nearestPoi.name];
+
+                Game.log($"TODO Marking Active Obelisk '{this.nearestPoi.name}' as yielding: {msg}");
+
+                //var obelisk = this.siteData.activeObelisks[this.nearestPoi.name];
+                //obelisk.data = entry.Name;
+                //siteData.Save();
+            }
+            else if (msg.StartsWith(MsgCmd.aom, StringComparison.OrdinalIgnoreCase) && this.nearestPoi != null)
+            {
+                if (!this.siteData.activeObelisks.ContainsKey(this.nearestPoi.name))
+                    this.siteData.activeObelisks.Add(this.nearestPoi.name, new ActiveObelisk());
+                var obelisk = this.siteData.activeObelisks[this.nearestPoi.name];
+
+                obelisk.msg = msg.Substring(4).Trim().ToUpperInvariant();
+                siteData.Save();
+            }
+
             // temporary stuff after here
             this.xtraCmds(msg);
         }
@@ -439,6 +465,79 @@ namespace SrvSurvey
             }
         }
 
+        private void parseActiveObelisk(string msg)
+        {
+            var parts = msg.Split(' ');
+            if (this.nearestPoi.type != POIType.obelisk || parts.Length == 0) return;
+
+            // add or retreive obelisk
+            if (!this.siteData.activeObelisks.ContainsKey(this.nearestPoi.name))
+                this.siteData.activeObelisks.Add(this.nearestPoi.name, new ActiveObelisk());
+            var obelisk = this.siteData.activeObelisks[this.nearestPoi.name];
+
+            obelisk.items = new List<ObeliskItem>();
+
+            var item1 = parseActiveObeliskItem(parts[0]);
+            if (item1 != ObeliskItem.unknown) obelisk.items.Add(item1);
+
+            if (parts.Length == 2)
+            {
+                var item2 = parseActiveObeliskItem(parts[1]);
+                if (item2 != ObeliskItem.unknown) obelisk.items.Add(item2);
+            }
+            Game.log($"Updating active obelisk '{this.nearestPoi.name}' to need items: " + string.Join(',', obelisk.items));
+            siteData.Save();
+            this.Invalidate();
+        }
+
+        private ObeliskItem parseActiveObeliskItem(string txt)
+        {
+            switch (txt)
+            {
+                case "ca":
+                case "casket":
+                    return ObeliskItem.casket;
+                case "or":
+                case "orb":
+                    return ObeliskItem.orb;
+                case "re":
+                case "relic":
+                    return ObeliskItem.relic;
+                case "ta":
+                case "tablet":
+                    return ObeliskItem.tablet;
+                case "to":
+                case "totem":
+                    return ObeliskItem.totem;
+                case "ur":
+                case "urn":
+                    return ObeliskItem.urn;
+
+                case "se":
+                case "sensor":
+                    return ObeliskItem.sensor;
+                case "pr":
+                case "probe":
+                    return ObeliskItem.probe;
+                case "li":
+                case "link":
+                    return ObeliskItem.link;
+                case "cy":
+                case "cyclops":
+                    return ObeliskItem.cyclops;
+                case "ba":
+                case "basilisk":
+                    return ObeliskItem.basilisk;
+                case "me":
+                case "medusa":
+                    return ObeliskItem.medusa;
+
+                default:
+                    Game.log($"Unspected item for obelisk: {txt}");
+                    return ObeliskItem.unknown;
+            }
+        }
+
         protected override void onJournalEntry(CodexEntry entry)
         {
             // exit if we have no selected POI or it isn't a relic
@@ -448,6 +547,41 @@ namespace SrvSurvey
             // use combat/exploration mode to know if item is present or missing
             Game.log($"POI confirmed: '{this.nearestPoi.name}' ({this.nearestPoi.type})");
             siteData.poiStatus[this.nearestPoi.name] = SitePoiStatus.present;
+            siteData.Save();
+            this.Invalidate();
+        }
+
+        protected override void onJournalEntry(MaterialCollected entry)
+        {
+            // TODO: Finish this feature
+            if (!Debugger.IsAttached) return;
+
+            if (this.nearestPoi.type != POIType.obelisk) return;
+            Game.log($"Marking Active Obelisk '{this.nearestPoi.name}' as yielding: {entry.Name_Localised} ({entry.Name})");
+
+            if (!this.siteData.activeObelisks.ContainsKey(this.nearestPoi.name))
+                this.siteData.activeObelisks.Add(this.nearestPoi.name, new ActiveObelisk());
+            var obelisk = this.siteData.activeObelisks[this.nearestPoi.name];
+
+            if (obelisk.data == null)
+                obelisk.data = new HashSet<ObeliskData>();
+
+            switch (entry.Name)
+            {
+                case "ancientbiologicaldata":
+                    obelisk.data.Add(ObeliskData.alpha);
+                    break;
+                case "ancientlanguagedata":
+                    obelisk.data.Add(ObeliskData.delta);
+                    break;
+                case "ancienttechnologicaldata":
+                    obelisk.data.Add(ObeliskData.epsilon);
+                    break;
+                case "ancienthistoricaldata":
+                    obelisk.data.Add(ObeliskData.gamma);
+                    break;
+            }
+
             siteData.Save();
             this.Invalidate();
         }
@@ -504,19 +638,19 @@ namespace SrvSurvey
 
             //this.trails = new Bitmap(this.siteMap.Width * 2, this.siteMap.Height * 2);
 
-                // Temporary until trail tracking works
-                //using (var gg = Graphics.FromImage(this.trails))
-                //{
-                //    gg.Clear(Color.FromArgb(128, Color.Navy));
-                //    //gg.FillRectangle(Brushes.Blue, -400, -400, 800, 800);
-                //    gg.DrawRectangle(GameColors.penGameOrange8, 0, 0, this.trails.Width, this.trails.Height);
-                //    gg.DrawLine(GameColors.penCyan8, 0, 0, trails.Width, trails.Height);
-                //    gg.DrawLine(GameColors.penCyan8, trails.Width, 0, 0, trails.Height);
-                //    gg.DrawLine(GameColors.penYellow8, 0, 0, trails.Height, 0);
-                //    //gg.FillRectangle(Brushes.Red, (this.trails.Width / 2), (this.trails.Height / 2), 40, 40);
-                //}
+            // Temporary until trail tracking works
+            //using (var gg = Graphics.FromImage(this.trails))
+            //{
+            //    gg.Clear(Color.FromArgb(128, Color.Navy));
+            //    //gg.FillRectangle(Brushes.Blue, -400, -400, 800, 800);
+            //    gg.DrawRectangle(GameColors.penGameOrange8, 0, 0, this.trails.Width, this.trails.Height);
+            //    gg.DrawLine(GameColors.penCyan8, 0, 0, trails.Width, trails.Height);
+            //    gg.DrawLine(GameColors.penCyan8, trails.Width, 0, 0, trails.Height);
+            //    gg.DrawLine(GameColors.penYellow8, 0, 0, trails.Height, 0);
+            //    //gg.FillRectangle(Brushes.Red, (this.trails.Width / 2), (this.trails.Height / 2), 40, 40);
+            //}
 
-                // prepare underlay
+            // prepare underlay
             this.underlay = new Bitmap(this.siteMap.Width * 3, this.siteMap.Height * 3);
             this.ux = this.underlay.Width / 2;
             this.uy = this.underlay.Height / 2;
@@ -719,9 +853,9 @@ namespace SrvSurvey
             }
 
             // update cmdr location relative to origin if editor is running
-            if (formEditMap != null)
+            if (formEditMap != null && this.siteData != null)
             {
-                var td = new TrackingDelta(game.nearBody!.radius, this.siteData!.location);
+                var td = new TrackingDelta(game.nearBody!.radius, this.siteData.location);
                 formEditMap.txtDeltaLat.Text = td.dy.ToString("N2") + "m";
                 formEditMap.txtDeltaLong.Text = td.dx.ToString("N2") + "m";
             }
@@ -1097,9 +1231,10 @@ namespace SrvSurvey
 
                 // calculate render point for POI
                 var deg = 180 - siteData.siteHeading - poi.angle;
+                var dist = poi.dist * 1.01f; // scaling for perspective?
                 var pt = Util.rotateLine(
                     deg,
-                    poi.dist);
+                    dist);
 
                 // render it
                 this.drawSitePoi(poi, pt);
@@ -1133,8 +1268,9 @@ namespace SrvSurvey
             else
             {
                 // draw highlight over closest POI
-                if ((nearestPoi == forcePoi) || (nearestPoi.type != POIType.obelisk && nearestPoi.type != POIType.brokeObelisk))
-                    g.DrawEllipse(GameColors.penCyan4, -nearestPt.X - 14, -nearestPt.Y - 14, 28, 28);
+                // TODO: revisit?
+                if ((nearestPoi == forcePoi) || (isRuinsPoi(nearestPoi.type)) || (siteData.activeObelisks.ContainsKey(nearestPoi.name)))
+                    g.DrawEllipse(GameColors.penDarkCyan4, -nearestPt.X - 14, -nearestPt.Y - 14, 28, 28);
 
                 var poiStatus = siteData.poiStatus.GetValueOrDefault(this.nearestPoi.name);
 
@@ -1147,13 +1283,36 @@ namespace SrvSurvey
                 {
                     if (this.siteData.activeObelisks.ContainsKey(nearestPoi.name))
                     {
+                        var txt = $"Obelisk {nearestPoi.name}";
+
                         var obelisk = this.siteData.activeObelisks[nearestPoi.name];
-                        var items = string.Join(", ", obelisk.items).ToUpperInvariant();
-                        this.drawFooterText($"Oblisk {nearestPoi.name} - {items} for {obelisk.data}", GameColors.brushCyan);
+                        var items = "??";
+                        if (obelisk.items != null)
+                            items = string.Join(", ", obelisk.items).ToUpperInvariant();
+                        var data = "?";
+                        if (obelisk.data != null && obelisk.data.Count > 0)
+                            data = string.Join(", ", obelisk.data).ToUpperInvariant();
+
+                        txt += $": {items} for {data}";
+                        if (!string.IsNullOrWhiteSpace(obelisk.msg))
+                        {
+                            string msg = "";
+                            switch (obelisk.msg[0])
+                            {
+                                case 'C': msg = "Culture"; break;
+                                case 'H': msg = "History"; break;
+                                case 'B': msg = "Biology"; break;
+                                case 'T': msg = "Technology"; break;
+                            }
+                            msg += " #" + obelisk.msg.Substring(1);
+                            txt += $" ({msg})";
+                        }
+
+                        this.drawFooterText(txt , GameColors.brushCyan);
                     }
                     else
                     {
-                        this.drawFooterText($"Oblisk {nearestPoi.name}", GameColors.brushGameOrange);
+                        this.drawFooterText($"Obelisk {nearestPoi.name}", GameColors.brushGameOrange);
                     }
                 }
                 else
@@ -1176,13 +1335,30 @@ namespace SrvSurvey
             forcePoi = null;
         }
 
+        private bool isRuinsPoi(POIType poiType)
+        {
+            switch (poiType)
+            {
+                case POIType.casket:
+                case POIType.orb:
+                case POIType.relic:
+                case POIType.tablet:
+                case POIType.totem:
+                case POIType.urn:
+                    return true;
+
+                default:
+                    return false;
+            }
+        }
+
         private void drawSitePoi(SitePOI poi, PointF pt)
         {
             // render no POI if form editor says so
             if (formEditMap != null && formEditMap.checkHideAllPoi.Checked)
                 return;
 
-                var rot = poi.rot + this.siteData.siteHeading;
+            var rot = poi.rot + this.siteData.siteHeading;
 
             // diameters: relics are bigger then puddles
             var d = poi.type == POIType.relic ? 16f : 10f;
@@ -1224,12 +1400,33 @@ namespace SrvSurvey
 
             if (poi.type == POIType.obelisk || poi.type == POIType.brokeObelisk)
             {
-                PointF[] points = {
-                    new PointF(0, - 4),
-                    new PointF(+ 4, + 2),
-                    new PointF( - 4, + 2),
-                    new PointF(0, - 4),
-                };
+                //PointF[] points = {
+                //    new PointF(0, - 3),
+                //    new PointF(+ 4, + 2),
+                //    new PointF( - 4, + 2),
+                //    new PointF(0, - 3),
+                //};
+                var l = 4f;
+                float s32 = (float)Math.Sqrt(3 / 2);
+                //PointF[] points = {
+                //    new PointF(l, 0),
+                //    new PointF(-l/2f, l * s32),
+                //    new PointF(-l/2f, -l * s32),
+                //    new PointF(l, 0),
+                //};
+                //PointF[] points = {
+                //    //new PointF(1-1.5f, 4-1.5f),
+                //    //new PointF(0-1.5f, 0-1.5f),
+                //    //new PointF(4-1.5f, 1-1.5f),
+                //    //new PointF(1-1.5f, 4-1.5f),
+                //    //new PointF(.5f, -1.5f),
+                //    new PointF(2-3f, 8-3f),
+                //    new PointF(0-3f, 0-3f),
+                //    new PointF(8-3f, 2-3f),
+                //    new PointF(2-3f, 8-3f),
+                //    new PointF(1f, -3f),
+
+                //};
                 var pp = new Pen(Color.SandyBrown)
                 {
                     Width = 1,
@@ -1240,18 +1437,40 @@ namespace SrvSurvey
                 if (this.siteData.activeObelisks.ContainsKey(poi.name))
                 {
                     pp.Color = Color.LightCyan;
-                    pp.Width = 2;
+                    pp.Width = 1;
                 }
 
+                rot += 150;
                 g.TranslateTransform(-pt.X, -pt.Y);
                 g.RotateTransform(rot);
+                //var points = new PointF[] {
+                //    new PointF(2-3f, 8-3f),
+                //    new PointF(0-3f, 0-3f),
+                //    new PointF(8-3f, 2-3f),
+                //    new PointF(2-3f, 8-3f),
+                //};
+                //g.FillPolygon(Brushes.DarkSlateBlue, points);
+
+                var points = poi.type == POIType.obelisk
+                    ? new PointF[] {
+                        new PointF(1 - 1.5f, 3.5f - 1.5f),
+                        new PointF(0 - 1.5f, 0 - 1.5f),
+                        new PointF(4 - 1.5f, 1 - 1.5f),
+                        new PointF(1 - 1.5f, 3.5f - 1.5f),
+                        new PointF(.5f, -1.5f),
+                    }
+                    : new PointF[] {
+                        new PointF(1 - 1.5f, 4 - 1.5f),
+                        new PointF(0 - 1.5f, 0 - 1.5f),
+                        new PointF(4 - 1.5f, 1 - 1.5f),
+                        new PointF(1 - 1.5f, 4 - 1.5f),
+                    };
 
                 g.DrawLines(pp, points);
 
                 if (poi.type == POIType.obelisk)
                 {
-                    g.DrawLine(pp, 0, 0, 2, 2);
-                    g.DrawLine(pp, 0, 0, -2, 2);
+                    //new PointF(0 - 1.5f, 0 - 1.5f),
                 }
 
                 g.RotateTransform(-rot);

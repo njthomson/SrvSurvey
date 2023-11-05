@@ -537,7 +537,7 @@ namespace SrvSurvey
             }
 
             if (msg.StartsWith(MsgCmd.trackAdd) || msg.StartsWith(MsgCmd.trackRemove) || msg.StartsWith(MsgCmd.trackRemoveLast))
-                PlotTrackers.processCommand(msg);
+                PlotTrackers.processCommand(msg, Status.here.clone());
 
             // submit a Landscape survey
             if (msg.StartsWith(MsgCmd.visited, StringComparison.OrdinalIgnoreCase))
@@ -662,7 +662,7 @@ namespace SrvSurvey
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Util.openLink("https://njthomson.github.io/SrvSurvey/");
+            Util.openLink("https://github.com/njthomson/SrvSurvey/wiki");
         }
 
         private void Main_SizeChanged(object sender, EventArgs e)

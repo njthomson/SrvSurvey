@@ -21,12 +21,18 @@
         public const string site = ".site";
         /// <summary> PlotGuardians : set relic tower heading </summary>
         public const string tower = ".tower";
-        /// <summary> Signal an empty puddle </summary>
+        /// <summary> PlotGuardians : Signal an empty puddle </summary>
         public const string empty = ".empty";
-        /// <summary> Toggle aiming assistance overlay </summary>
+        /// <summary> PlotGuardians : Toggle aiming assistance overlay </summary>
         public const string aim = ".aim";
-        /// <summary> Append message to site notes </summary>
+        /// <summary> PlotGuardians : Append message to site notes </summary>
         public const string note = ".note";
+        /// <summary> PlotGuardians : Active Obelisk - set which items an obelisk is asking for </summary>
+        public const string ao = ".ao ";
+        /// <summary> PlotGuardians : Active Obelisk Data - set what data an obelisk provides </summary>
+        public const string aod = ".aod ";
+        /// <summary> PlotGuardians : Active Obelisk Message - set what Ram Tah mission message an obelisk provides </summary>
+        public const string aom = ".aom ";
 
         /// <summary> Main: Open the images folder </summary>
         public const string imgs = ".imgs";

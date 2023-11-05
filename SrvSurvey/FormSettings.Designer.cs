@@ -84,6 +84,8 @@ namespace SrvSurvey
             checkAddBanner = new CheckBox();
             checkProcessScreenshots = new CheckBox();
             tabPage6 = new TabPage();
+            checkBox11 = new CheckBox();
+            numMinScanValue = new NumericUpDown();
             checkBox10 = new CheckBox();
             checkBox9 = new CheckBox();
             pictureBox5 = new PictureBox();
@@ -93,6 +95,7 @@ namespace SrvSurvey
             tabPage2 = new TabPage();
             linkAboutTwo = new LinkLabel();
             linkAboutOne = new LinkLabel();
+            label10 = new Label();
             panel1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numOpacity).BeginInit();
@@ -108,6 +111,7 @@ namespace SrvSurvey
             tabPage5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
             tabPage6.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numMinScanValue).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox5).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox4).BeginInit();
             tabPage2.SuspendLayout();
@@ -776,6 +780,9 @@ namespace SrvSurvey
             // tabPage6
             // 
             tabPage6.BackColor = SystemColors.Control;
+            tabPage6.Controls.Add(label10);
+            tabPage6.Controls.Add(checkBox11);
+            tabPage6.Controls.Add(numMinScanValue);
             tabPage6.Controls.Add(checkBox10);
             tabPage6.Controls.Add(checkBox9);
             tabPage6.Controls.Add(pictureBox5);
@@ -788,6 +795,32 @@ namespace SrvSurvey
             tabPage6.Size = new Size(452, 377);
             tabPage6.TabIndex = 5;
             tabPage6.Text = "Exploration";
+            // 
+            // checkBox11
+            // 
+            checkBox11.AutoSize = true;
+            checkBox11.Checked = true;
+            checkBox11.CheckState = CheckState.Checked;
+            checkBox11.Location = new Point(31, 184);
+            checkBox11.Name = "checkBox11";
+            checkBox11.Size = new Size(236, 19);
+            checkBox11.TabIndex = 19;
+            checkBox11.Tag = "skipLowValueDSS";
+            checkBox11.Text = "Skip bodies with estimated value below:";
+            checkBox11.UseVisualStyleBackColor = true;
+            // 
+            // numMinScanValue
+            // 
+            numMinScanValue.Increment = new decimal(new int[] { 100000, 0, 0, 0 });
+            numMinScanValue.Location = new Point(281, 183);
+            numMinScanValue.Maximum = new decimal(new int[] { 6000000, 0, 0, 0 });
+            numMinScanValue.Name = "numMinScanValue";
+            numMinScanValue.Size = new Size(88, 23);
+            numMinScanValue.TabIndex = 18;
+            numMinScanValue.Tag = "skipLowValueAmount";
+            numMinScanValue.TextAlign = HorizontalAlignment.Right;
+            numMinScanValue.ThousandsSeparator = true;
+            numMinScanValue.Value = new decimal(new int[] { 2000000, 0, 0, 0 });
             // 
             // checkBox10
             // 
@@ -820,10 +853,10 @@ namespace SrvSurvey
             // pictureBox5
             // 
             pictureBox5.BackgroundImage = (Image)resources.GetObject("pictureBox5.BackgroundImage");
-            pictureBox5.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureBox5.Location = new Point(216, 104);
+            pictureBox5.BackgroundImageLayout = ImageLayout.None;
+            pictureBox5.Location = new Point(193, 129);
             pictureBox5.Name = "pictureBox5";
-            pictureBox5.Size = new Size(233, 29);
+            pictureBox5.Size = new Size(256, 49);
             pictureBox5.TabIndex = 14;
             pictureBox5.TabStop = false;
             // 
@@ -835,10 +868,10 @@ namespace SrvSurvey
             checkBox8.Location = new Point(10, 109);
             checkBox8.Margin = new Padding(4, 3, 4, 3);
             checkBox8.Name = "checkBox8";
-            checkBox8.Size = new Size(209, 19);
+            checkBox8.Size = new Size(339, 19);
             checkBox8.TabIndex = 13;
             checkBox8.Tag = "autoShowPlotSysStatus";
-            checkBox8.Text = "Show FSS and body DSS remaining";
+            checkBox8.Text = "Show system scans, FSS, body DSS and bio scans remaining";
             checkBox8.UseVisualStyleBackColor = true;
             // 
             // pictureBox4
@@ -903,6 +936,15 @@ namespace SrvSurvey
             linkAboutOne.Text = resources.GetString("linkAboutOne.Text");
             linkAboutOne.UseCompatibleTextRendering = true;
             // 
+            // label10
+            // 
+            label10.AutoSize = true;
+            label10.Location = new Point(375, 185);
+            label10.Name = "label10";
+            label10.Size = new Size(42, 15);
+            label10.TabIndex = 20;
+            label10.Text = "credits";
+            // 
             // FormSettings
             // 
             AcceptButton = btnSave;
@@ -940,6 +982,7 @@ namespace SrvSurvey
             ((System.ComponentModel.ISupportInitialize)pictureBox3).EndInit();
             tabPage6.ResumeLayout(false);
             tabPage6.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numMinScanValue).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox5).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox4).EndInit();
             tabPage2.ResumeLayout(false);
@@ -1010,5 +1053,8 @@ namespace SrvSurvey
         private CheckBox checkBox8;
         private CheckBox checkBox9;
         private CheckBox checkBox10;
+        private CheckBox checkBox11;
+        private NumericUpDown numMinScanValue;
+        private Label label10;
     }
 }

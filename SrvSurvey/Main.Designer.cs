@@ -64,6 +64,7 @@ namespace SrvSurvey
             linkLabel1 = new LinkLabel();
             lblFullScreen = new Label();
             groupBox4 = new GroupBox();
+            btnGuarduanThings = new Button();
             btnRuins = new Button();
             btnAllRuins = new Button();
             btnRuinsMap = new Button();
@@ -73,7 +74,6 @@ namespace SrvSurvey
             label5 = new Label();
             lblNotInstalled = new LinkLabel();
             btnSphereLimit = new Button();
-            btnGuarduanThings = new Button();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
             groupBox3.SuspendLayout();
@@ -403,13 +403,13 @@ namespace SrvSurvey
             // 
             linkLabel1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             linkLabel1.Font = new Font("Lucida Sans Typewriter", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            linkLabel1.LinkArea = new LinkArea(16, 38);
+            linkLabel1.LinkArea = new LinkArea(16, 43);
             linkLabel1.Location = new Point(10, 441);
             linkLabel1.Name = "linkLabel1";
             linkLabel1.Size = new Size(373, 39);
             linkLabel1.TabIndex = 17;
             linkLabel1.TabStop = true;
-            linkLabel1.Text = "See guidance at https://njthomson.github.io/SrvSurvey/";
+            linkLabel1.Text = "See guidance at https://github.com/njthomson/SrvSurvey/wiki";
             linkLabel1.UseCompatibleTextRendering = true;
             linkLabel1.LinkClicked += linkLabel1_LinkClicked;
             // 
@@ -444,6 +444,19 @@ namespace SrvSurvey
             groupBox4.TabIndex = 19;
             groupBox4.TabStop = false;
             groupBox4.Text = "Guardian sites: (experimental)";
+            // 
+            // btnGuarduanThings
+            // 
+            btnGuarduanThings.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnGuarduanThings.BackColor = SystemColors.ControlLight;
+            btnGuarduanThings.FlatStyle = FlatStyle.System;
+            btnGuarduanThings.Location = new Point(240, 16);
+            btnGuarduanThings.Name = "btnGuarduanThings";
+            btnGuarduanThings.Size = new Size(124, 34);
+            btnGuarduanThings.TabIndex = 19;
+            btnGuarduanThings.Text = "All Beacons and Structures";
+            btnGuarduanThings.UseVisualStyleBackColor = false;
+            btnGuarduanThings.Click += btnGuarduanThings_Click;
             // 
             // btnRuins
             // 
@@ -557,19 +570,6 @@ namespace SrvSurvey
             btnSphereLimit.Text = "Sphere limit";
             btnSphereLimit.UseVisualStyleBackColor = false;
             btnSphereLimit.Click += btnSphereLimit_Click;
-            // 
-            // btnGuarduanThings
-            // 
-            btnGuarduanThings.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnGuarduanThings.BackColor = SystemColors.ControlLight;
-            btnGuarduanThings.FlatStyle = FlatStyle.System;
-            btnGuarduanThings.Location = new Point(240, 16);
-            btnGuarduanThings.Name = "btnGuarduanThings";
-            btnGuarduanThings.Size = new Size(124, 34);
-            btnGuarduanThings.TabIndex = 19;
-            btnGuarduanThings.Text = "All Beacons and Structures";
-            btnGuarduanThings.UseVisualStyleBackColor = false;
-            btnGuarduanThings.Click += btnGuarduanThings_Click;
             // 
             // Main
             // 

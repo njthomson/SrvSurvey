@@ -92,13 +92,36 @@ namespace SrvSurvey
         brokeObelisk,
 
         /* Possibilities for future use:
-         * Obelisk or maybe just ActiveObelisk
          * ObeliskGroup
-         * EneryPylon
-         * EnergyTower
          * AncientBeacon
          * SkimmerSpawnPoint
          */
+    }
+
+    enum ObeliskItem
+    {
+        unknown = 0,
+        casket,
+        orb,
+        relic,
+        tablet,
+        totem,
+        urn,
+        sensor,
+        probe,
+        link,
+        cyclops,
+        basilisk,
+        medusa,
+    }
+
+    enum ObeliskData
+    {
+        unknown = 0,
+        alpha,
+        epsilon,
+        delta,
+        gamma,
     }
 
     /// <summary> Some item or location expected within a Guardian site. </summary>

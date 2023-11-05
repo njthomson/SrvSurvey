@@ -583,6 +583,16 @@ namespace SrvSurvey
         public int Threat;
         public string? MarketID;
     }
+
+    class MaterialCollected : JournalEntry
+    {
+        // { "timestamp":"2023-10-21T21:36:39Z", "event":"MaterialCollected", "Category":"Encoded", "Name":"ancienttechnologicaldata", "Name_Localised":"Pattern Epsilon Obelisk Data", "Count":3 }
+
+        public string Category;
+        public string Name;
+        public string Name_Localised;
+        public int Count;
+    }
 }
 
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.

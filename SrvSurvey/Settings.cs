@@ -19,6 +19,8 @@ namespace SrvSurvey
         public bool autoShowPlotSysStatus = true;
         public bool skipGasGiantDSS = true;
         public bool skipRingsDSS = false;
+        public bool skipLowValueDSS = true;
+        public int skipLowValueAmount = 1_000_000;
         public bool autoTrackCompBioScans = true;
         public bool skipAnalyzedCompBioScans = true;
         public bool autoRemoveTrackerOnSampling = true;

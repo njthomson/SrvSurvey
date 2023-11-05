@@ -499,7 +499,7 @@ namespace SrvSurvey
                 else if (poi.type == POIType.component)
                     drawRelicTower(g, pt, poiStatus);
                 else if (poi.type == POIType.obelisk || poi.type == POIType.brokeObelisk)
-                    drawRelicTower(g, pt, poiStatus);
+                    drawObelisk(g, pt, poiStatus);
                 else if (poi.type == POIType.orb || poi.type == POIType.casket || poi.type == POIType.tablet || poi.type == POIType.totem || poi.type == POIType.urn)
                     drawPuddle(g, pt, poi.type, poiStatus);
                 else
@@ -537,6 +537,24 @@ namespace SrvSurvey
 
             var brush = GameColors.Map.brushes[POIType.relic][poiStatus ?? SitePoiStatus.present];
             var pen = GameColors.Map.pens[POIType.relic][poiStatus ?? SitePoiStatus.present];
+
+            g.FillPolygon(brush, points);
+            g.DrawLines(pen, points);
+        }
+
+        private static void drawObelisk(Graphics g, PointF pt, SitePoiStatus? poiStatus = SitePoiStatus.present)
+        {
+            // TODO: Account for obelisk rotation
+            var brush = Brushes.Blue;
+            var pen = Pens.Cyan;
+
+            var points = new PointF[] {
+                    new PointF(pt.X +1 - 1.5f, pt.Y +4 - 1.5f),
+                    new PointF(pt.X +0 - 1.5f, pt.Y +0 - 1.5f),
+                    new PointF(pt.X +4 - 1.5f, pt.Y +1 - 1.5f),
+                    new PointF(pt.X +1 - 1.5f, pt.Y +4 - 1.5f),
+                    //new PointF(pt.X +.5f, pt.Y +-1.5f),
+                };
 
             g.FillPolygon(brush, points);
             g.DrawLines(pen, points);

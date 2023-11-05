@@ -124,7 +124,7 @@
             // 
             // btnSaveEdits
             // 
-            btnSaveEdits.Location = new Point(8, 303);
+            btnSaveEdits.Location = new Point(8, 363);
             btnSaveEdits.Name = "btnSaveEdits";
             btnSaveEdits.Size = new Size(189, 23);
             btnSaveEdits.TabIndex = 4;
@@ -134,7 +134,7 @@
             // 
             // btnRemovePoi
             // 
-            btnRemovePoi.Location = new Point(91, 274);
+            btnRemovePoi.Location = new Point(91, 334);
             btnRemovePoi.Name = "btnRemovePoi";
             btnRemovePoi.Size = new Size(106, 23);
             btnRemovePoi.TabIndex = 3;
@@ -144,7 +144,7 @@
             // 
             // btnNewPoi
             // 
-            btnNewPoi.Location = new Point(8, 274);
+            btnNewPoi.Location = new Point(8, 334);
             btnNewPoi.Name = "btnNewPoi";
             btnNewPoi.Size = new Size(75, 23);
             btnNewPoi.TabIndex = 2;
@@ -214,7 +214,7 @@
             groupCurrentPoi.Controls.Add(txtPoiName);
             groupCurrentPoi.Location = new Point(8, 6);
             groupCurrentPoi.Name = "groupCurrentPoi";
-            groupCurrentPoi.Size = new Size(187, 262);
+            groupCurrentPoi.Size = new Size(187, 322);
             groupCurrentPoi.TabIndex = 0;
             groupCurrentPoi.TabStop = false;
             groupCurrentPoi.Text = "Current POI:";

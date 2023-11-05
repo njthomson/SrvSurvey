@@ -12,7 +12,7 @@ namespace SrvSurvey
 
         public Dictionary<string, List<TrackingDelta>> trackers = new Dictionary<string, List<TrackingDelta>>();
 
-        public static void processCommand(string msg)
+        public static void processCommand(string msg, LatLong2 location)
         {
             if (Game.activeGame == null || !(msg.StartsWith(MsgCmd.trackAdd) || msg.StartsWith(MsgCmd.trackRemove) || msg.StartsWith(MsgCmd.trackRemoveLast))) return;
             var cmdr = Game.activeGame.cmdr;
@@ -55,9 +55,9 @@ namespace SrvSurvey
                 // only add if less than 4 entries
                 if (cmdr.trackTargets[name].Count < 4)
                 {
-                    Game.log($"Add to group '{name}': {Status.here}");
+                    Game.log($"Add to group '{name}': {location}");
 
-                    var pos = Status.here.clone();
+                    var pos = location;
                     cmdr.trackTargets[name].Add(pos);
                     cmdr.Save();
 
@@ -92,7 +92,7 @@ namespace SrvSurvey
                     LatLong2 minEntry = null!;
                     foreach (var _ in cmdr.trackTargets[name])
                     {
-                        var dist = Util.getDistance(_, Status.here, radius);
+                        var dist = Util.getDistance(_, location, radius);
                         if (dist < minDist)
                         {
                             minDist = dist;
@@ -113,7 +113,7 @@ namespace SrvSurvey
                     LatLong2 maxEntry = null!;
                     foreach (var _ in cmdr.trackTargets[name])
                     {
-                        var dist = Util.getDistance(_, Status.here, radius);
+                        var dist = Util.getDistance(_, location, radius);
                         if (dist > maxDist)
                         {
                             maxDist = dist;
@@ -258,7 +258,7 @@ namespace SrvSurvey
                     {
                         Game.log($"Auto removing tracker for: '{BioScan.genusNames[entry.Genus]}'/'{entry.Genus}'");
                         var prefix = BioScan.prefixes.First(_ => _.Value.Contains(entry.Genus)).Key;
-                        processCommand($"-{prefix}");
+                        processCommand($"-{prefix}", Status.here.clone());
                     }
                 }
             }

@@ -103,7 +103,7 @@
       { "name": "p24", "dist": 499, "angle": 181.7, "type": "tablet" },
       { "name": "p25", "dist": 394, "angle": 179.3, "type": "casket" },
       { "name": "p26", "dist": 226, "angle": 193.3, "type": "casket" },
-      { "name": "p27", "dist": 276, "angle": 168.3, "type": "casket" }, // or Orb ?
+      { "name": "p27", "dist": 276, "angle": 168.3, "type": "orb" }, // was casket??
       { "name": "p28", "dist": 538, "angle": 141.4, "type": "orb" },
       { "name": "p29", "dist": 606, "angle": 125.6, "type": "urn" },
       { "name": "p30", "dist": 534, "angle": 122, "type": "totem" },

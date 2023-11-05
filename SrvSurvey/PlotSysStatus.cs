@@ -121,7 +121,7 @@ namespace SrvSurvey
                 }
                 else if (sys.fssComplete && sys.fssBodies.Count == 0)
                 {
-                    this.drawTextAt("Previously scanned system");
+                    this.drawTextAt("No scans required");
                 }
                 else if (sys.dssRemaining.Count > 0)
                 {

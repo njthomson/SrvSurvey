@@ -1103,7 +1103,7 @@ namespace SrvSurvey.game
                     else
                     {
                         // whilst CodexEntry has a lat/long ... it's further away than the cmdr's current location
-                        PlotTrackers.processCommand($"+{prefix}");
+                        PlotTrackers.processCommand($"+{prefix}", entry);
                         Game.log($"Auto-adding tracker from CodexEntry: {genusName} ({entry.Name})");
                     }
                 }

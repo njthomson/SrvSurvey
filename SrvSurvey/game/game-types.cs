@@ -117,6 +117,7 @@ namespace SrvSurvey.game
         public bool honked;
         public bool fssComplete;
         public Dictionary<string, string> fssBodies = new Dictionary<string, string>();
+        public Dictionary<string, double> valueBodies = new Dictionary<string, double>();
         public HashSet<string> dssBodies = new HashSet<string>();
         public HashSet<string> visitedBodies = new HashSet<string>();
         public Dictionary<int, string> bodyIds = new Dictionary<int, string>();
@@ -195,7 +196,10 @@ namespace SrvSurvey.game
             var bodyType = entry.StarType != null ? "Star" : entry.PlanetClass;
 
             if (bodyType != null)
+            {
                 this.fssBodies[entry.Bodyname] = bodyType;
+                this.valueBodies[entry.Bodyname] = Util.GetBodyValue(entry, true);
+            }
 
             // add any rings as independent bodies with "rA"/"rB" suffic
             if (entry.ScanType == "Detailed" && entry.Rings?.Count > 0)
@@ -291,6 +295,10 @@ namespace SrvSurvey.game
                 if (Game.settings.skipRingsDSS)
                     bodies = bodies
                         .Where(_ => _.Value != "Ring" && !this.visitedBodies.Contains(_.Key));
+
+                if (Game.settings.skipLowValueDSS)
+                    bodies = bodies
+                        .Where(_ => !this.valueBodies.ContainsKey(_.Key) || this.valueBodies[_.Key] > Game.settings.skipLowValueAmount);
 
                 return bodies
                     .Select(_ => _.Key.Replace(this.name, "").Replace(" ", ""))
