@@ -665,6 +665,11 @@ namespace SrvSurvey
             Util.openLink("https://github.com/njthomson/SrvSurvey/wiki");
         }
 
+        private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Util.openLink("https://discord.gg/YGV65e6MMJ");
+        }
+
         private void Main_SizeChanged(object sender, EventArgs e)
         {
             if (this.WindowState == FormWindowState.Minimized && Game.settings.focusGameOnMinimize)

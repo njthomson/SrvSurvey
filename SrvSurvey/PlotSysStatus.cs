@@ -130,7 +130,7 @@ namespace SrvSurvey
                 }
                 else
                 {
-                    this.drawTextAt("DSS scans complete");
+                    this.drawTextAt("No DSS scans needed");
                 }
 
                 var organicScanDiff = sys.sumOrganicSignals - sys.scannedOrganics;

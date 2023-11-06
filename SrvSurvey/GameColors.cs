@@ -82,7 +82,13 @@ namespace SrvSurvey
             DashStyle = DashStyle.Dot
         };
 
-        public static Pen penLime2 = new Pen(LimeIsh, 2);
+        public static Pen penNearestUnknownSitePOI = new Pen(Color.FromArgb(96, Color.DarkCyan), 15) 
+        { 
+            EndCap = LineCap.RoundAnchor, 
+            StartCap = LineCap.RoundAnchor,
+        };
+
+    public static Pen penLime2 = new Pen(LimeIsh, 2);
         public static Pen penLime4 = new Pen(LimeIsh, 4);
 
         public static Pen penOrangeStripe3;

@@ -74,6 +74,7 @@ namespace SrvSurvey
             label5 = new Label();
             lblNotInstalled = new LinkLabel();
             btnSphereLimit = new Button();
+            linkLabel2 = new LinkLabel();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
             groupBox3.SuspendLayout();
@@ -403,13 +404,13 @@ namespace SrvSurvey
             // 
             linkLabel1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             linkLabel1.Font = new Font("Lucida Sans Typewriter", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            linkLabel1.LinkArea = new LinkArea(16, 43);
-            linkLabel1.Location = new Point(10, 441);
+            linkLabel1.LinkArea = new LinkArea(13, 12);
+            linkLabel1.Location = new Point(10, 433);
             linkLabel1.Name = "linkLabel1";
-            linkLabel1.Size = new Size(373, 39);
+            linkLabel1.Size = new Size(373, 18);
             linkLabel1.TabIndex = 17;
             linkLabel1.TabStop = true;
-            linkLabel1.Text = "See guidance at https://github.com/njthomson/SrvSurvey/wiki";
+            linkLabel1.Text = "For guidance see the wiki on GitHub";
             linkLabel1.UseCompatibleTextRendering = true;
             linkLabel1.LinkClicked += linkLabel1_LinkClicked;
             // 
@@ -571,12 +572,27 @@ namespace SrvSurvey
             btnSphereLimit.UseVisualStyleBackColor = false;
             btnSphereLimit.Click += btnSphereLimit_Click;
             // 
+            // linkLabel2
+            // 
+            linkLabel2.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            linkLabel2.Font = new Font("Lucida Sans Typewriter", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            linkLabel2.LinkArea = new LinkArea(17, 22);
+            linkLabel2.Location = new Point(10, 451);
+            linkLabel2.Name = "linkLabel2";
+            linkLabel2.Size = new Size(385, 29);
+            linkLabel2.TabIndex = 23;
+            linkLabel2.TabStop = true;
+            linkLabel2.Text = "Ask questions at Guardian Science Corps on Discord";
+            linkLabel2.UseCompatibleTextRendering = true;
+            linkLabel2.LinkClicked += linkLabel2_LinkClicked;
+            // 
             // Main
             // 
             AutoScaleDimensions = new SizeF(7F, 12F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = btnQuit2;
             ClientSize = new Size(395, 518);
+            Controls.Add(linkLabel2);
             Controls.Add(btnSphereLimit);
             Controls.Add(lblNotInstalled);
             Controls.Add(groupBox3);
@@ -657,5 +673,6 @@ namespace SrvSurvey
         private Button btnRuins;
         private Button btnSphereLimit;
         private Button btnGuarduanThings;
+        private LinkLabel linkLabel2;
     }
 }

@@ -26,6 +26,7 @@ namespace SrvSurvey
         {
             InitializeComponent();
             checkApplyBackgroundLive.Checked = false;
+            listPoi.Sorting = SortOrder.Ascending;
 
             comboPoiType.Items.AddRange(Enum.GetNames<POIType>());
             comboPoiStatus.Items.AddRange(Enum.GetNames<SitePoiStatus>());
@@ -114,6 +115,7 @@ namespace SrvSurvey
             {
                 Name = poi.name,
                 Tag = poi,
+                Text = poi.name,
             };
             return row;
         }
@@ -143,6 +145,7 @@ namespace SrvSurvey
                 row.EnsureVisible();
                 return;
             }
+            listPoi.Sort();
         }
 
         private void btnSaveEdits_Click(object sender, EventArgs e)
@@ -150,6 +153,8 @@ namespace SrvSurvey
             // save stuff to a clone template file
             SiteTemplate.SaveEdits();
             this.siteData.Save();
+
+            listPoi.Sort();
         }
 
         #region edit background image

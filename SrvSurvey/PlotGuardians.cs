@@ -675,7 +675,7 @@ namespace SrvSurvey
                 this.headingGuidance = null;
             }
 
-            var filepath = Path.Combine("images", $"{siteData.type}-heading-guide.png");
+            var filepath = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "images", $"{siteData.type}-heading-guide.png");
             if (File.Exists(filepath))
             {
                 using (var img = Bitmap.FromFile(filepath))
@@ -1210,6 +1210,10 @@ namespace SrvSurvey
             var nearestDist = double.MaxValue;
             var nearestPt = PointF.Empty;
 
+            var nearestUnknownDist = double.MaxValue;
+            var nearestUnknownPt = PointF.Empty;
+            SitePOI? nearestUnknownPoi = null;
+
             int countRelics = 0, confirmedRelics = 0, countPuddles = 0, confirmedPuddles = 0;
             Angle aa;
             string tt;
@@ -1236,17 +1240,25 @@ namespace SrvSurvey
                     deg,
                     dist);
 
-                // render it
-                this.drawSitePoi(poi, pt);
+                // work in progress - only render if a RUINS poi
+                if (this.isRuinsPoi(poi.type)) // || Debugger.IsAttached)
+                    // render it
+                    this.drawSitePoi(poi, pt);
 
                 // is this the closest POI?
                 var x = pt.X - commanderOffset.X;
                 var y = pt.Y - commanderOffset.Y;
                 var d = Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
 
-                //var foo = siteData.poiStatus.GetValueOrDefault(poi.name);
-                //if (foo == SitePoiStatus.unknown)
-                var selectPoi = d < nearestDist && poi.type != POIType.brokeObelisk;
+                var poiStatus = siteData.poiStatus.GetValueOrDefault(poi.name);
+                if (poiStatus == SitePoiStatus.unknown && d < nearestUnknownDist && isRuinsPoi(poi.type))
+                {
+                    nearestUnknownPoi = poi;
+                    nearestUnknownDist = d;
+                    nearestUnknownPt = pt;
+                }
+
+                var selectPoi = d < nearestDist && isRuinsPoi(poi.type); //.type != POIType.brokeObelisk;
                 if (forcePoi != null)
                     selectPoi = forcePoi == poi; // force selection in map editor if present
                 if (selectPoi) // && poi.type != POIType.pylon && poi.type != POIType.brokeObelisk && poi.type != POIType.component)
@@ -1260,6 +1272,12 @@ namespace SrvSurvey
                 }
             }
 
+            // draw an indicator to the nearest unknown POI
+            if (nearestUnknownPoi != null)
+            {
+                g.DrawLine(GameColors.penNearestUnknownSitePOI, -nearestUnknownPt.X , -nearestUnknownPt.Y, -commanderOffset.X, -commanderOffset.Y);
+            }
+
             if (nearestDist > 75 && forcePoi == null)
             {
                 // make sure we're relatively close before selecting the item
@@ -1268,7 +1286,6 @@ namespace SrvSurvey
             else
             {
                 // draw highlight over closest POI
-                // TODO: revisit?
                 if ((nearestPoi == forcePoi) || (isRuinsPoi(nearestPoi.type)) || (siteData.activeObelisks.ContainsKey(nearestPoi.name)))
                     g.DrawEllipse(GameColors.penDarkCyan4, -nearestPt.X - 14, -nearestPt.Y - 14, 28, 28);
 

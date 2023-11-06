@@ -119,7 +119,7 @@ namespace SrvSurvey
                     drawCenterMessage("Use Profile Analyser near Relic Towers for aiming assistance.\r\nFace the side with a single large left facing triangle.");
                 }
 
-                drawFooterText("(toggle lights to force update)");
+                drawFooterText("(toggle weapon to force location update)");
                 return;
             }
 

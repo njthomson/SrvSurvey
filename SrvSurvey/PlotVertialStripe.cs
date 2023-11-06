@@ -101,8 +101,8 @@ namespace SrvSurvey
             if (PlotVertialStripe.mode == Mode.RelicTower)
                 return 0.8;
 
-
-            var delta = Math.Abs(game.status.Altitude - targetAltitude);
+            var gameAltitude = Math.Max(0, game.status.Altitude);
+            var delta = Math.Abs(gameAltitude - targetAltitude);
             if (delta > 220)
                 return 0;
             else if (delta < 20)
