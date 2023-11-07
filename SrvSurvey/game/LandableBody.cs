@@ -1,5 +1,5 @@
-﻿using SrvSurvey.canonn;
-using SrvSurvey.units;
+﻿using SrvSurvey.units;
+using System.Diagnostics;
 
 namespace SrvSurvey.game
 {
@@ -177,7 +177,7 @@ namespace SrvSurvey.game
                     if (_.BodyName != this.bodyName || _.Latitude == 0) return false;
 
                     // Ruins or Structures
-                    if (_.Name.StartsWith("$Ancient:")) // TODO: no structures just yet || _.Name.StartsWith("$Ancient_"))
+                    if (_.Name.StartsWith("$Ancient:") || (_.Name.StartsWith("$Ancient_") && Debugger.IsAttached)) // TODO: remove debugger check
                     {
                         var filename = GuardianSiteData.getFilename(_);
                         if (this.settlements.Contains(filename))

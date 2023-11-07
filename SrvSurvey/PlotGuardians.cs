@@ -1241,7 +1241,7 @@ namespace SrvSurvey
                     dist);
 
                 // work in progress - only render if a RUINS poi
-                if (this.isRuinsPoi(poi.type)) // || Debugger.IsAttached)
+                if (this.isRuinsPoi(poi.type) || Debugger.IsAttached)
                     // render it
                     this.drawSitePoi(poi, pt);
 
@@ -1251,14 +1251,14 @@ namespace SrvSurvey
                 var d = Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
 
                 var poiStatus = siteData.poiStatus.GetValueOrDefault(poi.name);
-                if (poiStatus == SitePoiStatus.unknown && d < nearestUnknownDist && isRuinsPoi(poi.type))
+                if (poiStatus == SitePoiStatus.unknown && d < nearestUnknownDist && (isRuinsPoi(poi.type) || (!siteData.isRuins && Debugger.IsAttached && poi.type != POIType.obelisk && poi.type != POIType.brokeObelisk)))
                 {
                     nearestUnknownPoi = poi;
                     nearestUnknownDist = d;
                     nearestUnknownPt = pt;
                 }
 
-                var selectPoi = d < nearestDist && isRuinsPoi(poi.type); //.type != POIType.brokeObelisk;
+                var selectPoi = d < nearestDist && (isRuinsPoi(poi.type) || Debugger.IsAttached); //.type != POIType.brokeObelisk;
                 if (forcePoi != null)
                     selectPoi = forcePoi == poi; // force selection in map editor if present
                 if (selectPoi) // && poi.type != POIType.pylon && poi.type != POIType.brokeObelisk && poi.type != POIType.component)
@@ -1286,7 +1286,7 @@ namespace SrvSurvey
             else
             {
                 // draw highlight over closest POI
-                if ((nearestPoi == forcePoi) || (isRuinsPoi(nearestPoi.type)) || (siteData.activeObelisks.ContainsKey(nearestPoi.name)))
+                if ((nearestPoi == forcePoi) || isRuinsPoi(nearestPoi.type) || siteData.activeObelisks.ContainsKey(nearestPoi.name) || (!siteData.isRuins && Debugger.IsAttached))
                     g.DrawEllipse(GameColors.penDarkCyan4, -nearestPt.X - 14, -nearestPt.Y - 14, 28, 28);
 
                 var poiStatus = siteData.poiStatus.GetValueOrDefault(this.nearestPoi.name);
@@ -1386,7 +1386,7 @@ namespace SrvSurvey
                 // highlight everything if map editor check says so
                 var b = new SolidBrush(Color.FromArgb(160, Color.DarkSlateBlue));
                 //g.FillEllipse(b, -pt.X - dd - 2, -pt.Y - dd - 2, d + 4, d + 4);
-                g.DrawEllipse(Pens.DarkViolet, -pt.X - dd - 2, -pt.Y - dd - 2, d + 4, d + 4);
+                g.DrawEllipse(Pens.AntiqueWhite, -pt.X - dd - 2, -pt.Y - dd - 2, d + 4, d + 4);
                 // DarkOliveGreen / DarkSlateBlue
             }
 
@@ -1809,7 +1809,7 @@ namespace SrvSurvey
             var ty = 20f;
 
             var isRuins = siteData.isRuins;
-            msg = $"Need site heading\r\n\r\n■ To use current heading either:\r\n    - Toggle Cargo scoop twice\r\n    - Send message:   .heading\r\n\r\n■ Or send message: <degrees>";
+            msg = $"Need site heading\r\n\r\n■ To use current heading either:\r\n    - Toggle cockpit mode twice\r\n    - Send message:   .heading\r\n\r\n■ Or send message: <degrees>";
             if (isRuins)
                 msg += $"\r\n\r\nAlign with this buttress:";
             var sz = g.MeasureString(msg, Game.settings.fontMiddle, this.Width);

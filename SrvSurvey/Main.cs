@@ -667,7 +667,7 @@ namespace SrvSurvey
 
         private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Util.openLink("https://discord.gg/YGV65e6MMJ");
+            Util.openLink("https://discord.gg/GJjTFa9fsz");
         }
 
         private void Main_SizeChanged(object sender, EventArgs e)

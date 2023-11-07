@@ -84,6 +84,7 @@ namespace SrvSurvey
             checkAddBanner = new CheckBox();
             checkProcessScreenshots = new CheckBox();
             tabPage6 = new TabPage();
+            label10 = new Label();
             checkBox11 = new CheckBox();
             numMinScanValue = new NumericUpDown();
             checkBox10 = new CheckBox();
@@ -95,7 +96,6 @@ namespace SrvSurvey
             tabPage2 = new TabPage();
             linkAboutTwo = new LinkLabel();
             linkAboutOne = new LinkLabel();
-            label10 = new Label();
             panel1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numOpacity).BeginInit();
@@ -796,6 +796,15 @@ namespace SrvSurvey
             tabPage6.TabIndex = 5;
             tabPage6.Text = "Exploration";
             // 
+            // label10
+            // 
+            label10.AutoSize = true;
+            label10.Location = new Point(375, 185);
+            label10.Name = "label10";
+            label10.Size = new Size(42, 15);
+            label10.TabIndex = 20;
+            label10.Text = "credits";
+            // 
             // checkBox11
             // 
             checkBox11.AutoSize = true;
@@ -930,20 +939,11 @@ namespace SrvSurvey
             linkAboutOne.LinkArea = new LinkArea(65, 15);
             linkAboutOne.Location = new Point(3, 3);
             linkAboutOne.Name = "linkAboutOne";
-            linkAboutOne.Size = new Size(442, 286);
+            linkAboutOne.Size = new Size(442, 307);
             linkAboutOne.TabIndex = 1;
             linkAboutOne.TabStop = true;
             linkAboutOne.Text = resources.GetString("linkAboutOne.Text");
             linkAboutOne.UseCompatibleTextRendering = true;
-            // 
-            // label10
-            // 
-            label10.AutoSize = true;
-            label10.Location = new Point(375, 185);
-            label10.Name = "label10";
-            label10.Size = new Size(42, 15);
-            label10.TabIndex = 20;
-            label10.Text = "credits";
             // 
             // FormSettings
             // 

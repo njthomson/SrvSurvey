@@ -84,7 +84,7 @@ namespace SrvSurvey
 
         public static Pen penNearestUnknownSitePOI = new Pen(Color.FromArgb(96, Color.DarkCyan), 15) 
         { 
-            EndCap = LineCap.RoundAnchor, 
+            EndCap = LineCap.Round, 
             StartCap = LineCap.RoundAnchor,
         };
 
