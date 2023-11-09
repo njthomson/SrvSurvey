@@ -210,7 +210,7 @@ namespace SrvSurvey
 
         public static string? getCommanderJournalBefore(string? cmdr, bool isOdyssey, DateTime timestamp)
         {
-            var manyFiles = new DirectoryInfo(JournalFile.journalFolder)
+            var manyFiles = new DirectoryInfo(Game.settings.watchedJournalFolder)
                 .EnumerateFiles("*.log", SearchOption.TopDirectoryOnly)
                 .OrderByDescending(_ => _.LastWriteTimeUtc);
 

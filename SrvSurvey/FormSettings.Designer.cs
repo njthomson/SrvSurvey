@@ -35,6 +35,9 @@ namespace SrvSurvey
             btnSave = new Button();
             btnCancel = new Button();
             tabPage1 = new TabPage();
+            btnChooseJournalFolder = new Button();
+            label11 = new Label();
+            linkJournalFolder = new LinkLabel();
             linkDataFiles = new LinkLabel();
             checkMinimizeOnStart = new CheckBox();
             checkHideOverlayOnMouseOver = new CheckBox();
@@ -168,6 +171,9 @@ namespace SrvSurvey
             // tabPage1
             // 
             tabPage1.BorderStyle = BorderStyle.Fixed3D;
+            tabPage1.Controls.Add(btnChooseJournalFolder);
+            tabPage1.Controls.Add(label11);
+            tabPage1.Controls.Add(linkJournalFolder);
             tabPage1.Controls.Add(linkDataFiles);
             tabPage1.Controls.Add(checkMinimizeOnStart);
             tabPage1.Controls.Add(checkHideOverlayOnMouseOver);
@@ -187,6 +193,38 @@ namespace SrvSurvey
             tabPage1.TabIndex = 0;
             tabPage1.Text = "General";
             // 
+            // btnChooseJournalFolder
+            // 
+            btnChooseJournalFolder.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnChooseJournalFolder.Location = new Point(7, 171);
+            btnChooseJournalFolder.Name = "btnChooseJournalFolder";
+            btnChooseJournalFolder.Size = new Size(26, 35);
+            btnChooseJournalFolder.TabIndex = 22;
+            btnChooseJournalFolder.Text = "...";
+            btnChooseJournalFolder.UseVisualStyleBackColor = true;
+            btnChooseJournalFolder.Click += btnChooseJournalFolder_Click;
+            // 
+            // label11
+            // 
+            label11.AutoSize = true;
+            label11.Location = new Point(5, 153);
+            label11.Name = "label11";
+            label11.Size = new Size(118, 15);
+            label11.TabIndex = 21;
+            label11.Text = "Watch journal folder:";
+            // 
+            // linkJournalFolder
+            // 
+            linkJournalFolder.BorderStyle = BorderStyle.FixedSingle;
+            linkJournalFolder.Location = new Point(39, 171);
+            linkJournalFolder.Name = "linkJournalFolder";
+            linkJournalFolder.Size = new Size(401, 35);
+            linkJournalFolder.TabIndex = 20;
+            linkJournalFolder.TabStop = true;
+            linkJournalFolder.Tag = "watchedJournalFolder";
+            linkJournalFolder.Text = "C:\\xxx\\Pictures\\Frontier Developments\\Elite Dangerous\\";
+            linkJournalFolder.LinkClicked += linkJournalFolder_LinkClicked;
+            // 
             // linkDataFiles
             // 
             linkDataFiles.Anchor = AnchorStyles.Top | AnchorStyles.Right;
@@ -204,7 +242,7 @@ namespace SrvSurvey
             // 
             checkMinimizeOnStart.Checked = true;
             checkMinimizeOnStart.CheckState = CheckState.Checked;
-            checkMinimizeOnStart.Location = new Point(8, 108);
+            checkMinimizeOnStart.Location = new Point(10, 97);
             checkMinimizeOnStart.Margin = new Padding(4, 3, 4, 3);
             checkMinimizeOnStart.Name = "checkMinimizeOnStart";
             checkMinimizeOnStart.Size = new Size(431, 19);
@@ -216,7 +254,7 @@ namespace SrvSurvey
             // checkHideOverlayOnMouseOver
             // 
             checkHideOverlayOnMouseOver.AutoSize = true;
-            checkHideOverlayOnMouseOver.Location = new Point(8, 255);
+            checkHideOverlayOnMouseOver.Location = new Point(8, 348);
             checkHideOverlayOnMouseOver.Name = "checkHideOverlayOnMouseOver";
             checkHideOverlayOnMouseOver.Size = new Size(246, 19);
             checkHideOverlayOnMouseOver.TabIndex = 9;
@@ -226,7 +264,7 @@ namespace SrvSurvey
             // 
             // label4
             // 
-            label4.Location = new Point(8, 193);
+            label4.Location = new Point(8, 286);
             label4.Name = "label4";
             label4.Size = new Size(427, 34);
             label4.TabIndex = 8;
@@ -236,7 +274,7 @@ namespace SrvSurvey
             // 
             checkHidePlottersFromWeapons.Checked = true;
             checkHidePlottersFromWeapons.CheckState = CheckState.Checked;
-            checkHidePlottersFromWeapons.Location = new Point(8, 230);
+            checkHidePlottersFromWeapons.Location = new Point(8, 323);
             checkHidePlottersFromWeapons.Margin = new Padding(4, 3, 4, 3);
             checkHidePlottersFromWeapons.Name = "checkHidePlottersFromWeapons";
             checkHidePlottersFromWeapons.Size = new Size(431, 19);
@@ -249,7 +287,7 @@ namespace SrvSurvey
             // 
             checkFocusOnMinimize.Checked = true;
             checkFocusOnMinimize.CheckState = CheckState.Checked;
-            checkFocusOnMinimize.Location = new Point(8, 133);
+            checkFocusOnMinimize.Location = new Point(10, 119);
             checkFocusOnMinimize.Margin = new Padding(4, 3, 4, 3);
             checkFocusOnMinimize.Name = "checkFocusOnMinimize";
             checkFocusOnMinimize.Size = new Size(431, 19);
@@ -304,7 +342,7 @@ namespace SrvSurvey
             // 
             // label1
             // 
-            label1.Location = new Point(8, 12);
+            label1.Location = new Point(6, 12);
             label1.Margin = new Padding(4, 0, 4, 0);
             label1.Name = "label1";
             label1.Size = new Size(430, 18);
@@ -1073,5 +1111,8 @@ namespace SrvSurvey
         private NumericUpDown numMinScanValue;
         private Label label10;
         private CheckBox checkBox12;
+        private Button btnChooseJournalFolder;
+        private Label label11;
+        private LinkLabel linkJournalFolder;
     }
 }

@@ -121,9 +121,9 @@ namespace SrvSurvey
         private void btnSave_Click(object sender, EventArgs e)
         {
             // restart the app if these are different:
-            var restartApp = txtCommander.Text != Game.settings.preferredCommander
-                || checkEnableGuardianFeatures.Checked != Game.settings.enableGuardianSites;
-
+            var restartApp = this.txtCommander.Text != Game.settings.preferredCommander
+                || this.checkEnableGuardianFeatures.Checked != Game.settings.enableGuardianSites
+                || this.linkJournalFolder.Text != Game.settings.watchedJournalFolder;
 
             updateSettingsFromForm(this);
             Game.settings.Save();
@@ -191,10 +191,12 @@ namespace SrvSurvey
                     ctrl.Enabled = senderCheckbox.Checked;
         }
 
-        private void chooseScreenshotFolder(LinkLabel linkLabel)
+        private void chooseScreenshotFolder(LinkLabel linkLabel, string title)
         {
             var dialog = new FolderBrowserDialog()
             {
+                Description = title,
+                UseDescriptionForTitle = true,
                 SelectedPath = Game.settings.screenshotSourceFolder ?? Elite.defaultScreenshotFolder,
             };
 
@@ -205,12 +207,12 @@ namespace SrvSurvey
 
         private void btnChooseScreenshotSourceFolder_Click(object sender, EventArgs e)
         {
-            this.chooseScreenshotFolder(linkScreenshotSourceFolder);
+            this.chooseScreenshotFolder(linkScreenshotSourceFolder, "Choose source folder screenshots");
         }
 
         private void btnChooseScreenshotTargetFolder_Click(object sender, EventArgs e)
         {
-            this.chooseScreenshotFolder(linkTargetScreenshotFolder);
+            this.chooseScreenshotFolder(linkTargetScreenshotFolder, "Choose destination folder screenshots");
         }
 
         private void linkScreenshotFolder_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -223,6 +225,25 @@ namespace SrvSurvey
         private void linkDataFiles_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Util.openLink(Application.UserAppDataPath);
+        }
+
+        private void btnChooseJournalFolder_Click(object sender, EventArgs e)
+        {
+            var dialog = new FolderBrowserDialog()
+            {
+                Description = "Choose folder for journal files",
+                UseDescriptionForTitle = true,
+                SelectedPath = Game.settings.watchedJournalFolder,
+            };
+
+            var rslt = dialog.ShowDialog(this);
+            if (rslt == DialogResult.OK)
+                linkJournalFolder.Text = dialog.SelectedPath;
+        }
+
+        private void linkJournalFolder_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Util.openLink(linkJournalFolder.Text);
         }
     }
 }

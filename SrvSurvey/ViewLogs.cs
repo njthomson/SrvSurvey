@@ -104,5 +104,11 @@ namespace SrvSurvey
                 Game.settings.Save();
             }
         }
+
+        private void btnCopy_Click(object sender, EventArgs e)
+        {
+            Clipboard.SetText(txtLogs.Text);
+            Game.log("Logs copied");
+        }
     }
 }

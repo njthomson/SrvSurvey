@@ -8,7 +8,7 @@ namespace SrvSurvey
     {
 
         public static readonly string Filename = "NavRoute.json";
-        public static string Filepath { get => Path.Combine(JournalFile.journalFolder, NavRouteFile.Filename); }
+        public static string Filepath { get => Path.Combine(Game.settings.watchedJournalFolder, NavRouteFile.Filename); }
 
         #region properties from file
 
@@ -34,7 +34,7 @@ namespace SrvSurvey
             if (watch)
             {
                 // start watching the status file
-                route.fileWatcher = new FileSystemWatcher(JournalFile.journalFolder, NavRouteFile.Filename);
+                route.fileWatcher = new FileSystemWatcher(Game.settings.watchedJournalFolder, NavRouteFile.Filename);
                 route.fileWatcher.NotifyFilter = NotifyFilters.LastWrite;
                 route.fileWatcher.Changed += route.FileWatcher_Changed;
                 route.fileWatcher.EnableRaisingEvents = true;
@@ -74,6 +74,12 @@ namespace SrvSurvey
 
         private void parseFile()
         {
+            if (!File.Exists(Status.Filepath))
+            {
+                Game.log($"Check watched journal folder setting!\r\nCannot find file: {NavRouteFile.Filepath}");
+                return;
+            }
+
             // read the file contents ...
             using (var sr = new StreamReader(new FileStream(NavRouteFile.Filepath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)))
             {

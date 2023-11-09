@@ -13,7 +13,7 @@ namespace SrvSurvey
     {
 
         public static readonly string Filename = "Status.json";
-        public static string Filepath { get => Path.Combine(JournalFile.journalFolder, Status.Filename); }
+        public static string Filepath { get => Path.Combine(Game.settings.watchedJournalFolder, Status.Filename); }
 
         #region properties from file
 
@@ -51,7 +51,7 @@ namespace SrvSurvey
             if (watch)
             {
                 // start watching the status file
-                this.fileWatcher = new FileSystemWatcher(JournalFile.journalFolder, Status.Filename);
+                this.fileWatcher = new FileSystemWatcher(Game.settings.watchedJournalFolder, Status.Filename);
                 this.fileWatcher.NotifyFilter = NotifyFilters.LastWrite;
                 this.fileWatcher.Changed += fileWatcher_Changed;
                 this.fileWatcher.EnableRaisingEvents = true;
@@ -86,6 +86,12 @@ namespace SrvSurvey
 
         private void parseStatusFile()
         {
+            if (!File.Exists(Status.Filepath))
+            {
+                Game.log($"Check watched journal folder setting!\r\nCannot find file: {Status.Filepath}");
+                return;
+            }
+
             // read the file contents ...
             using (var sr = new StreamReader(new FileStream(Status.Filepath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)))
             {

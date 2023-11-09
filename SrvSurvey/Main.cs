@@ -21,13 +21,13 @@ namespace SrvSurvey
         {
             InitializeComponent();
 
-            if (Path.Exists(JournalFile.journalFolder))
+            if (Path.Exists(Game.settings.watchedJournalFolder))
             {
                 // watch for creation of new log files
-                this.logFolderWatcher = new FileSystemWatcher(JournalFile.journalFolder, "*.log");
+                this.logFolderWatcher = new FileSystemWatcher(Game.settings.watchedJournalFolder, "*.log");
                 this.logFolderWatcher.Created += logFolderWatcher_Created;
                 this.logFolderWatcher.EnableRaisingEvents = true;
-                Game.log($"Watching folder: {JournalFile.journalFolder}");
+                Game.log($"Watching folder: {Game.settings.watchedJournalFolder}");
             }
 
             if (Path.Exists(Elite.displaySettingsFolder))

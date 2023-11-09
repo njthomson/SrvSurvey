@@ -9,6 +9,7 @@ namespace SrvSurvey
         public string? preferredCommander = null;
         public string? lastCommander = null;
         public string? lastFid = null;
+        public string watchedJournalFolder = JournalFile.journalFolder;
 
         public LatLong2 targetLatLong = LatLong2.Empty;
         public bool targetLatLongActive = false;
