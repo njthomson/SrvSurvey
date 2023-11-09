@@ -28,6 +28,7 @@ namespace SrvSurvey
         public bool focusGameOnMinimize = true;
 
         public bool enableGuardianSites = true;
+        public bool enableEarlyGuardianStructures = false;
         public bool disableRuinsMeasurementGrid = false;
         public bool disableAerialAlignmentGrid = false;
         public bool hidePlottersFromCombatSuits = false;

@@ -554,7 +554,7 @@ namespace SrvSurvey
         protected override void onJournalEntry(MaterialCollected entry)
         {
             // TODO: Finish this feature
-            if (!Debugger.IsAttached) return;
+            if (!Game.settings.enableEarlyGuardianStructures) return;
 
             if (this.nearestPoi.type != POIType.obelisk) return;
             Game.log($"Marking Active Obelisk '{this.nearestPoi.name}' as yielding: {entry.Name_Localised} ({entry.Name})");
@@ -1241,7 +1241,7 @@ namespace SrvSurvey
                     dist);
 
                 // work in progress - only render if a RUINS poi
-                if (this.isRuinsPoi(poi.type) || Debugger.IsAttached)
+                if (this.isRuinsPoi(poi.type) || Game.settings.enableEarlyGuardianStructures)
                     // render it
                     this.drawSitePoi(poi, pt);
 
@@ -1251,14 +1251,14 @@ namespace SrvSurvey
                 var d = Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
 
                 var poiStatus = siteData.poiStatus.GetValueOrDefault(poi.name);
-                if (poiStatus == SitePoiStatus.unknown && d < nearestUnknownDist && (isRuinsPoi(poi.type) || (!siteData.isRuins && Debugger.IsAttached && poi.type != POIType.obelisk && poi.type != POIType.brokeObelisk)))
+                if (poiStatus == SitePoiStatus.unknown && d < nearestUnknownDist && (isRuinsPoi(poi.type) || (Game.settings.enableEarlyGuardianStructures && !siteData.isRuins && poi.type != POIType.obelisk && poi.type != POIType.brokeObelisk)))
                 {
                     nearestUnknownPoi = poi;
                     nearestUnknownDist = d;
                     nearestUnknownPt = pt;
                 }
 
-                var selectPoi = d < nearestDist && (isRuinsPoi(poi.type) || Debugger.IsAttached); //.type != POIType.brokeObelisk;
+                var selectPoi = d < nearestDist && (isRuinsPoi(poi.type) || Game.settings.enableEarlyGuardianStructures); //.type != POIType.brokeObelisk;
                 if (forcePoi != null)
                     selectPoi = forcePoi == poi; // force selection in map editor if present
                 if (selectPoi) // && poi.type != POIType.pylon && poi.type != POIType.brokeObelisk && poi.type != POIType.component)
@@ -1286,7 +1286,7 @@ namespace SrvSurvey
             else
             {
                 // draw highlight over closest POI
-                if ((nearestPoi == forcePoi) || isRuinsPoi(nearestPoi.type) || siteData.activeObelisks.ContainsKey(nearestPoi.name) || (!siteData.isRuins && Debugger.IsAttached))
+                if ((nearestPoi == forcePoi) || isRuinsPoi(nearestPoi.type) || siteData.activeObelisks.ContainsKey(nearestPoi.name) || (!siteData.isRuins && Game.settings.enableEarlyGuardianStructures))
                     g.DrawEllipse(GameColors.penDarkCyan4, -nearestPt.X - 14, -nearestPt.Y - 14, 28, 28);
 
                 var poiStatus = siteData.poiStatus.GetValueOrDefault(this.nearestPoi.name);

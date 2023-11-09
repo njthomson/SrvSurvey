@@ -57,6 +57,7 @@ namespace SrvSurvey
             checkBox1 = new CheckBox();
             checkBioStatusAutoShow = new CheckBox();
             tabPage3 = new TabPage();
+            checkBox12 = new CheckBox();
             checkBox3 = new CheckBox();
             label9 = new Label();
             comboGuardianWindowSize = new ComboBox();
@@ -446,6 +447,7 @@ namespace SrvSurvey
             // tabPage3
             // 
             tabPage3.BorderStyle = BorderStyle.Fixed3D;
+            tabPage3.Controls.Add(checkBox12);
             tabPage3.Controls.Add(checkBox3);
             tabPage3.Controls.Add(label9);
             tabPage3.Controls.Add(comboGuardianWindowSize);
@@ -466,6 +468,20 @@ namespace SrvSurvey
             tabPage3.Size = new Size(452, 377);
             tabPage3.TabIndex = 2;
             tabPage3.Text = "Guardian sites";
+            // 
+            // checkBox12
+            // 
+            checkBox12.AutoSize = true;
+            checkBox12.Checked = true;
+            checkBox12.CheckState = CheckState.Checked;
+            checkBox12.Location = new Point(7, 348);
+            checkBox12.Margin = new Padding(4, 3, 4, 3);
+            checkBox12.Name = "checkBox12";
+            checkBox12.Size = new Size(292, 19);
+            checkBox12.TabIndex = 15;
+            checkBox12.Tag = "enableEarlyGuardianStructures";
+            checkBox12.Text = "Enable Guardian structures features (experimental)";
+            checkBox12.UseVisualStyleBackColor = true;
             // 
             // checkBox3
             // 
@@ -1056,5 +1072,6 @@ namespace SrvSurvey
         private CheckBox checkBox11;
         private NumericUpDown numMinScanValue;
         private Label label10;
+        private CheckBox checkBox12;
     }
 }

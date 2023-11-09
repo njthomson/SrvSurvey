@@ -177,7 +177,7 @@ namespace SrvSurvey.game
                     if (_.BodyName != this.bodyName || _.Latitude == 0) return false;
 
                     // Ruins or Structures
-                    if (_.Name.StartsWith("$Ancient:") || (_.Name.StartsWith("$Ancient_") && Debugger.IsAttached)) // TODO: remove debugger check
+                    if (_.Name.StartsWith("$Ancient:") || (_.Name.StartsWith("$Ancient_") && Game.settings.enableEarlyGuardianStructures))
                     {
                         var filename = GuardianSiteData.getFilename(_);
                         if (this.settlements.Contains(filename))
