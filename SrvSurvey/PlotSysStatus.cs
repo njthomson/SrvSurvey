@@ -136,10 +136,9 @@ namespace SrvSurvey
                     this.drawTextAt("No DSS scans needed");
                 }
 
-                var organicScanDiff = sys.sumOrganicSignals - sys.scannedOrganics;
-                if (organicScanDiff > 0)
+                if (sys.bioRemaining.Count > 0)
                 {
-                    this.drawTextAt($"| {organicScanDiff}x Bio signals on: ");
+                    this.drawTextAt($"| {sys.bioRemaining.Count}x Bio signals on: ");
                     //this.drawTextAt($"| Bio signals: ");
                     //var names = sys.bioRemaining.Select(_ => $"{_}:0").ToList();
                     //var txt = $"{sys.bioRemaining}x0";
@@ -149,7 +148,7 @@ namespace SrvSurvey
             finally
             {
                 // resize window to fit as necessary
-                this.Width = this.dtx > 170 ? (int)this.dtx + 6 : 170;
+                this.Width = Math.Max((int)this.dtx + 6, 170);
             }
         }
 
