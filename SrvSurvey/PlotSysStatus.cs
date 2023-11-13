@@ -6,7 +6,7 @@ namespace SrvSurvey
     internal class PlotSysStatus : PlotBase, PlotterForm
     {
         public string? nextSystem;
-        private Font boldFont = Game.settings.fontMiddleBold;
+        private Font boldFont = GameColors.fontMiddleBold;
 
         private PlotSysStatus() : base()
         {
@@ -14,7 +14,7 @@ namespace SrvSurvey
             this.Height = 48;
             this.BackgroundImageLayout = ImageLayout.Stretch;
 
-            this.Font = Game.settings.fontMiddle;
+            this.Font = GameColors.fontMiddle;
         }
 
         protected override void Dispose(bool disposing)
@@ -95,9 +95,12 @@ namespace SrvSurvey
 
             this.g = e.Graphics;
             this.g.SmoothingMode = SmoothingMode.HighQuality;
-            base.OnPaintBackground(e);
 
-            g.DrawString("System survey remaining:", Game.settings.fontSmall, GameColors.brushGameOrange, 4, 7);
+            base.OnPaintBackground(e);
+            var txt = "";
+            if (Game.settings.skipLowValueDSS) txt += $">{Util.credits(Game.settings.skipLowValueAmount)}";
+            if (!Game.settings.skipRingsDSS) txt += " +Rings";
+            g.DrawString($"System survey remaining: ({txt})", GameColors.fontSmall, GameColors.brushGameOrange, 4, 7);
 
             this.dtx = 6.0f;
             this.dty = 19.0f;
@@ -163,6 +166,7 @@ namespace SrvSurvey
                 var isLocal = string.IsNullOrEmpty(destination) || bodyName[0] == destination[0];
 
                 var font = this.Font;
+                
                 if (destination == bodyName) font = this.boldFont;
                 var color = isLocal ? GameColors.Cyan : GameColors.Orange;
 

@@ -1767,10 +1767,10 @@ namespace SrvSurvey
             // draw heading text (center bottom)
             g.ResetTransform();
             g.ResetClip();
-            var sz = g.MeasureString(msg, Game.settings.fontSmall);
+            var sz = g.MeasureString(msg, GameColors.fontSmall);
             var tx = mid.Width - (sz.Width / 2);
             var ty = this.Height - sz.Height - 6;
-            g.DrawString(msg, Game.settings.fontSmall, GameColors.brushGameOrange, tx, ty);
+            g.DrawString(msg, GameColors.fontSmall, GameColors.brushGameOrange, tx, ty);
         }
 
         private void drawSiteTypeHelper()
@@ -1791,8 +1791,8 @@ namespace SrvSurvey
 
             // if we don't know the site type yet ...
             msg = $"\r\nSelect site type with \r\nfire group or send\r\nmessage:\r\n\r\n 'a' for Alpha\r\n\r\n 'b' for Beta\r\n\r\n 'g' for Gamma";
-            sz = g.MeasureString(msg, Game.settings.font1, this.Width);
-            g.DrawString(msg, Game.settings.font1, GameColors.brushCyan, tx, ty, StringFormat.GenericTypographic);
+            sz = g.MeasureString(msg, GameColors.font1, this.Width);
+            g.DrawString(msg, GameColors.font1, GameColors.brushCyan, tx, ty, StringFormat.GenericTypographic);
         }
 
         private void drawSiteHeadingHelper()
@@ -1812,9 +1812,9 @@ namespace SrvSurvey
             msg = $"Need site heading\r\n\r\n■ To use current heading either:\r\n    - Toggle cockpit mode twice\r\n    - Send message:   .heading\r\n\r\n■ Or send message: <degrees>";
             if (isRuins)
                 msg += $"\r\n\r\nAlign with this buttress:";
-            var sz = g.MeasureString(msg, Game.settings.fontMiddle, this.Width);
+            var sz = g.MeasureString(msg, GameColors.fontMiddle, this.Width);
 
-            g.DrawString(msg, Game.settings.fontMiddle, GameColors.brushCyan, tx, ty, StringFormat.GenericTypographic);
+            g.DrawString(msg, GameColors.fontMiddle, GameColors.brushCyan, tx, ty, StringFormat.GenericTypographic);
 
             // show location of helpful buttress
             if (isRuins && this.headingGuidance != null)

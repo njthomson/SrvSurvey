@@ -184,20 +184,20 @@ namespace SrvSurvey
         {
             var c = highlightIdx == 0 ? GameColors.Cyan : GameColors.Orange;
             if (highlightIdx == -2) c = Color.Gray;
-            TextRenderer.DrawText(g, "A:", Game.settings.fontSmall, ptLetter[0], c);
-            TextRenderer.DrawText(g, msg1, Game.settings.fontMiddle, ptMain[0], c);
+            TextRenderer.DrawText(g, "A:", GameColors.fontSmall, ptLetter[0], c);
+            TextRenderer.DrawText(g, msg1, GameColors.fontMiddle, ptMain[0], c);
 
             c = highlightIdx == 1 ? GameColors.Cyan : GameColors.Orange;
             if (highlightIdx == -2) c = Color.Gray;
-            TextRenderer.DrawText(g, "B:", Game.settings.fontSmall, ptLetter[1], c);
-            TextRenderer.DrawText(g, msg2, Game.settings.fontMiddle, ptMain[1], c);
+            TextRenderer.DrawText(g, "B:", GameColors.fontSmall, ptLetter[1], c);
+            TextRenderer.DrawText(g, msg2, GameColors.fontMiddle, ptMain[1], c);
 
             if (msg3 != null)
             {
                 c = highlightIdx == 2 ? GameColors.Cyan : GameColors.Orange;
                 if (highlightIdx == -2) c = Color.Gray;
-                TextRenderer.DrawText(g, "C:", Game.settings.fontSmall, ptLetter[2], c);
-                TextRenderer.DrawText(g, msg3, Game.settings.fontMiddle, ptMain[2], c);
+                TextRenderer.DrawText(g, "C:", GameColors.fontSmall, ptLetter[2], c);
+                TextRenderer.DrawText(g, msg3, GameColors.fontMiddle, ptMain[2], c);
             }
 
             // show selection rectangle
@@ -223,7 +223,7 @@ namespace SrvSurvey
 
         private void drawCenterMessage(string msg)
         {
-            var font = Game.settings.fontMiddle;
+            var font = GameColors.fontMiddle;
             var sz = g.MeasureString(msg, font);
             var tx = mid.Width - (sz.Width / 2);
             var ty = 34;

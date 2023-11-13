@@ -85,7 +85,7 @@ namespace SrvSurvey
             base.OnPaintBackground(e);
             var g = e.Graphics;
             g.SmoothingMode = SmoothingMode.HighQuality;
-            var font = Game.settings.fontMiddle;
+            var font = GameColors.fontMiddle;
 
             string txt = $"From: {game.cmdr.sphereLimit.centerSystemName}";
             var pt = new Point(8, 8);

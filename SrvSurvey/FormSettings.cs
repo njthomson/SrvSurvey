@@ -142,7 +142,8 @@ namespace SrvSurvey
             {
                 // close all plotters
                 Program.closeAllPlotters();
-                Program.showPlotter<PlotPulse>();
+                if (!Game.settings.hideJournalWriteTimer)
+                    Program.showPlotter<PlotPulse>();
             }
         }
 
@@ -244,6 +245,16 @@ namespace SrvSurvey
         private void linkJournalFolder_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Util.openLink(linkJournalFolder.Text);
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            PlotTrackers.processCommand("---", Status.here.clone());
+        }
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Util.openLink("https://github.com/njthomson/SrvSurvey/wiki#when-bio-scanning");
         }
     }
 }

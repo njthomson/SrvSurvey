@@ -170,17 +170,17 @@ namespace SrvSurvey
 
             // draw heading text (center bottom)
             var headingTxt = ((int)this.td.angle).ToString();
-            var sz = g.MeasureString(headingTxt, Game.settings.fontSmall);
+            var sz = g.MeasureString(headingTxt, GameColors.fontSmall);
             var tx = w - (sz.Width / 2);
             var ty = this.Height - sz.Height - 6;
-            g.DrawString(this.td.angle.ToString(), Game.settings.fontSmall, Brushes.Orange, tx, ty);
+            g.DrawString(this.td.angle.ToString(), GameColors.fontSmall, Brushes.Orange, tx, ty);
 
             // draw distance text (top left corner
             var dist = td.distance;
             if ((game.status.Flags & StatusFlags.AltitudeFromAverageRadius) > 0)
                 dist += td.distance + game.status.Altitude;
             var txt = "Distance: " + Util.metersToString(dist);
-            g.DrawString(txt, Game.settings.fontSmall, Brushes.Orange, 4, 10);
+            g.DrawString(txt, GameColors.fontSmall, Brushes.Orange, 4, 10);
 
             // assuming panel is 200 x 200
             g.TranslateTransform(w, h);

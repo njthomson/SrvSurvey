@@ -10,6 +10,7 @@ namespace SrvSurvey
         public string? lastCommander = null;
         public string? lastFid = null;
         public string watchedJournalFolder = JournalFile.journalFolder;
+        public bool hideJournalWriteTimer = false;
 
         public LatLong2 targetLatLong = LatLong2.Empty;
         public bool targetLatLongActive = false;
@@ -70,15 +71,6 @@ namespace SrvSurvey
 
         // configurable colours and fonts
         public Color GameOrange = Color.FromArgb(255, 255, 113, 00); // #FF7100
-
-        public Font font1 = new Font("Lucida Sans Typewriter", 16F, FontStyle.Regular, GraphicsUnit.Point);
-        public Font fontSmall = new Font("Lucida Sans Typewriter", 8F, FontStyle.Regular, GraphicsUnit.Point);
-        public Font fontSmall2 = new Font("Century Gothic", 8F, FontStyle.Regular, GraphicsUnit.Point);
-        public Font fontSmaller = new Font("Century Gothic", 10F, FontStyle.Regular, GraphicsUnit.Point);
-        public Font fontMiddle = new Font("Century Gothic", 12F, FontStyle.Regular, GraphicsUnit.Point);
-        public Font fontMiddleBold = new Font("Century Gothic", 12F, FontStyle.Bold, GraphicsUnit.Point);
-        public Font font2 = new Font("Century Gothic", 16F, FontStyle.Regular, GraphicsUnit.Point);
-        public Font fontBig = new Font("Century Gothic", 22F, FontStyle.Regular, GraphicsUnit.Point);
 
         public int processIdx = 0;
 

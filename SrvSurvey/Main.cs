@@ -201,7 +201,8 @@ namespace SrvSurvey
             this.game.departingBody += Game_departingBody;
             this.game.journals!.onJournalEntry += Journals_onJournalEntry;
 
-            Program.showPlotter<PlotPulse>();
+            if (!Game.settings.hideJournalWriteTimer)
+                Program.showPlotter<PlotPulse>();
 
             this.updateAllControls();
         }

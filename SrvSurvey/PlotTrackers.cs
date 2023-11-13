@@ -69,7 +69,7 @@ namespace SrvSurvey
                 }
                 else
                 {
-                    Game.log($"Group '{name}' has too many entries");
+                    Game.log($"Group '{name}' has too many entries. Ignoring location: {location}");
                 }
             }
             else if (cmdr.trackTargets.ContainsKey(name))
@@ -273,7 +273,7 @@ namespace SrvSurvey
             this.g.SmoothingMode = SmoothingMode.HighQuality;
             base.OnPaintBackground(e);
 
-            g.DrawString($"Tracking {game.cmdr.trackTargets?.Count} targets:", Game.settings.fontSmall, GameColors.brushGameOrange, 4, 8);
+            g.DrawString($"Tracking {game.cmdr.trackTargets?.Count} targets:", GameColors.fontSmall, GameColors.brushGameOrange, 4, 8);
 
             if (game.cmdr.trackTargets == null) return;
 
@@ -309,13 +309,13 @@ namespace SrvSurvey
                 if (!BioScan.genusNames.TryGetValue(name, out displayName))
                     displayName = name;
 
-                var sz = g.MeasureString(displayName, Game.settings.fontSmall);
+                var sz = g.MeasureString(displayName, GameColors.fontSmall);
                 brush = isActive ? GameColors.brushGameOrange : GameColors.brushGameOrangeDim;
                 if (isClose) brush = isActive ? GameColors.brushCyan : Brushes.DarkCyan;
 
                 g.DrawString(
                     displayName,
-                    Game.settings.fontSmall,
+                    GameColors.fontSmall,
                     brush,
                     this.Width - indent - sz.Width + 3, y);
             }

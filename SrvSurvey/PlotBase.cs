@@ -377,10 +377,10 @@ namespace SrvSurvey
             if (!string.IsNullOrEmpty(txt))
             {
                 //var txt = scan == game.nearBody.scanOne ? "Scan one:" : "Scan two:";
-                g.DrawString(txt, Game.settings.fontSmall, brush, x, y);
+                g.DrawString(txt, GameColors.fontSmall, brush, x, y);
             }
 
-            var txtSz = g.MeasureString(txt, Game.settings.fontSmall);
+            var txtSz = g.MeasureString(txt, GameColors.fontSmall);
 
             var sz = 5;
             x += txtSz.Width + 8;
@@ -394,7 +394,7 @@ namespace SrvSurvey
             g.DrawLine(pen, x + sz, y + sz, x + sz + dx, y + sz - dy);
 
             x += 2 + sz * 3;
-            g.DrawString(Util.metersToString(dist), Game.settings.fontSmall, brush, x, y);
+            g.DrawString(Util.metersToString(dist), GameColors.fontSmall, brush, x, y);
         }
 
         protected void drawHeaderText(string msg, Brush? brush = null)
@@ -405,7 +405,7 @@ namespace SrvSurvey
             g.ResetTransform();
             g.ResetClip();
 
-            var font = Game.settings.fontMiddle;
+            var font = GameColors.fontMiddle;
             var sz = g.MeasureString(msg, font);
             var tx = mid.Width - (sz.Width / 2);
             var ty = 4;
@@ -421,7 +421,7 @@ namespace SrvSurvey
             g.ResetTransform();
             g.ResetClip();
 
-            var font = Game.settings.fontMiddle;
+            var font = GameColors.fontMiddle;
             var sz = g.MeasureString(msg, font);
             var tx = mid.Width - (sz.Width / 2);
             var ty = this.Height - sz.Height - 5;
@@ -431,7 +431,7 @@ namespace SrvSurvey
 
         protected void drawCenterMessage(string msg, Brush? brush = null)
         {
-            var font = Game.settings.fontMiddle;
+            var font = GameColors.fontMiddle;
             var sz = g.MeasureString(msg, font);
             var tx = mid.Width - (sz.Width / 2);
             var ty = 34;
@@ -552,20 +552,20 @@ namespace SrvSurvey
         {
             var c = highlightIdx == 0 ? GameColors.Cyan : GameColors.Orange;
             if (highlightIdx == -2) c = Color.Gray;
-            TextRenderer.DrawText(g, "A:", Game.settings.fontSmall, ptLetter[0], c);
-            TextRenderer.DrawText(g, msg1, Game.settings.fontMiddle, ptMain[0], c);
+            TextRenderer.DrawText(g, "A:", GameColors.fontSmall, ptLetter[0], c);
+            TextRenderer.DrawText(g, msg1, GameColors.fontMiddle, ptMain[0], c);
 
             c = highlightIdx == 1 ? GameColors.Cyan : GameColors.Orange;
             if (highlightIdx == -2) c = Color.Gray;
-            TextRenderer.DrawText(g, "B:", Game.settings.fontSmall, ptLetter[1], c);
-            TextRenderer.DrawText(g, msg2, Game.settings.fontMiddle, ptMain[1], c);
+            TextRenderer.DrawText(g, "B:", GameColors.fontSmall, ptLetter[1], c);
+            TextRenderer.DrawText(g, msg2, GameColors.fontMiddle, ptMain[1], c);
 
             if (msg3 != null)
             {
                 c = highlightIdx == 2 ? GameColors.Cyan : GameColors.Orange;
                 if (highlightIdx == -2) c = Color.Gray;
-                TextRenderer.DrawText(g, "C:", Game.settings.fontSmall, ptLetter[2], c);
-                TextRenderer.DrawText(g, msg3, Game.settings.fontMiddle, ptMain[2], c);
+                TextRenderer.DrawText(g, "C:", GameColors.fontSmall, ptLetter[2], c);
+                TextRenderer.DrawText(g, msg3, GameColors.fontMiddle, ptMain[2], c);
             }
 
             // show selection rectangle

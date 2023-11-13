@@ -41,32 +41,31 @@ namespace SrvSurvey
         /// </summary>
         private void InitializeComponent()
         {
-            this.SuspendLayout();
+            SuspendLayout();
             // 
             // PlotGrounded
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.AutoValidate = System.Windows.Forms.AutoValidate.Disable;
-            this.BackColor = System.Drawing.Color.Black;
-            this.CausesValidation = false;
-            this.ClientSize = new System.Drawing.Size(320, 400);
-            this.ControlBox = false;
-            this.DoubleBuffered = true;
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Name = "PlotGrounded";
-            this.Opacity = 0.5D;
-            this.ShowIcon = false;
-            this.ShowInTaskbar = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
-            this.Text = "PlotGrounded";
-            this.TopMost = true;
-            this.Load += new System.EventHandler(this.PlotGrounded_Load);
-            this.Paint += new System.Windows.Forms.PaintEventHandler(this.PlotGrounded_Paint);
-            this.ResumeLayout(false);
-
+            AutoScaleMode = AutoScaleMode.None;
+            AutoValidate = AutoValidate.Disable;
+            BackColor = Color.Black;
+            CausesValidation = false;
+            ClientSize = new Size(533, 769);
+            ControlBox = false;
+            DoubleBuffered = true;
+            FormBorderStyle = FormBorderStyle.None;
+            Margin = new Padding(5, 6, 5, 6);
+            MaximizeBox = false;
+            MinimizeBox = false;
+            Name = "PlotGrounded";
+            Opacity = 0.5D;
+            ShowIcon = false;
+            ShowInTaskbar = false;
+            StartPosition = FormStartPosition.Manual;
+            Text = "PlotGrounded";
+            TopMost = true;
+            Load += PlotGrounded_Load;
+            Paint += PlotGrounded_Paint;
+            ResumeLayout(false);
         }
 
         #endregion

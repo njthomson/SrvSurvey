@@ -199,10 +199,10 @@ namespace SrvSurvey
             g.FillRectangle(Brushes.Black, w - 45, 5 + y, 85, 30);
 
             var txt = $"{new Angle(game.status.Heading)}";
-            var sz = g.MeasureString(txt, Game.settings.fontBig);
+            var sz = g.MeasureString(txt, GameColors.fontBig);
 
             var x = (this.Width / 2f) - (sz.Width / 2);
-            g.DrawString(txt, Game.settings.fontBig, Brushes.Yellow, x, y);
+            g.DrawString(txt, GameColors.fontBig, Brushes.Yellow, x, y);
         }
 
         private void drawLine(Graphics g, float x1, float y1, float x2, float y2)

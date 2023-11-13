@@ -1,6 +1,5 @@
 ﻿using SrvSurvey.game;
 using SrvSurvey.units;
-using System;
 using System.Diagnostics;
 using System.Drawing.Drawing2D;
 using System.Text;
@@ -24,7 +23,7 @@ namespace SrvSurvey
             InitializeComponent();
 
             // TODO: use a size from some setting?
-            //this.Height = 200;
+            this.Height = 500;
             this.Width = 380;
 
             this.scale = 0.25f;
@@ -239,6 +238,10 @@ namespace SrvSurvey
 
             var g = e.Graphics;
             g.SmoothingMode = SmoothingMode.HighQuality;
+            // clip to preserve top/bottom text area
+
+            var bottomClip = game.cmdr.scanOne == null ? 34 : 52;
+            g.Clip = new Region(new RectangleF(4, 24, this.Width - 8, this.Height - bottomClip));
 
             // draw basic compass cross hairs centered in the window
             this.drawCompassLines(g);
@@ -246,6 +249,7 @@ namespace SrvSurvey
             this.drawBioScans(g);
 
             // draw touchdown marker
+            var shipDeparted = game.touchdownLocation == null || game.touchdownLocation == LatLong2.Empty;
             if (game.touchdownLocation != null)
             {
                 if (this.td == null)
@@ -259,8 +263,20 @@ namespace SrvSurvey
 
                 const float touchdownSize = 64f;
                 var rect = new RectangleF((float)td.dx - touchdownSize, (float)-td.dy - touchdownSize, touchdownSize * 2, touchdownSize * 2);
-                var b = (game.touchdownLocation == null || game.touchdownLocation == LatLong2.Empty) ? GameColors.brushShipFormerLocation : GameColors.brushShipLocation;
+                var b = shipDeparted ? GameColors.brushShipFormerLocation : GameColors.brushShipLocation;
                 g.FillEllipse(b, rect);
+
+                if (!shipDeparted && (game.vehicle == ActiveVehicle.SRV || game.vehicle == ActiveVehicle.Foot))
+                {
+                    // draw 2km circle for when ship may depart
+                    const float liftoffSize = 2000f;
+                    rect = new RectangleF((float)td.dx - liftoffSize, (float)-td.dy - liftoffSize, liftoffSize * 2, liftoffSize * 2);
+                    var p = new Pen(Color.FromArgb(64, Color.Red), 32) { DashStyle = DashStyle.DashDotDot };
+                    if (this.td.distance > 1800)
+                        p = new Pen(Color.FromArgb(255, Color.Red), 32) { DashStyle = DashStyle.DashDotDot };
+
+                    g.DrawEllipse(p, rect);
+                }
             }
 
             // draw SRV marker
@@ -289,6 +305,8 @@ namespace SrvSurvey
             g.DrawLine(GameColors.penLime2, 0, 0, +dx, -dy);
 
             g.ResetTransform();
+            // remove clip to preserving top/bottom text area
+            g.Clip = new Region(new RectangleF(0, 4, this.Width, this.Height - 8));
 
             if (this.td != null)
                 this.drawBearingTo(g, 4, 8, "Touchdown:", this.td.Target);
@@ -302,12 +320,28 @@ namespace SrvSurvey
 
             if (game.nearBody.scanTwo != null)
                 this.drawBearingTo(g, 10 + mw, y, "Scan two:", game.nearBody.scanTwo.location!);
+
+            if (!shipDeparted && this.td?.distance > 1800 && (game.vehicle == ActiveVehicle.SRV || game.vehicle == ActiveVehicle.Foot))
+            {
+                var msg = "Nearing ship departure distance";
+                var font = GameColors.fontSmall;
+                var sz = g.MeasureString(msg, font);
+                var tx = mw - (sz.Width / 2);
+                var ty = 42;
+
+                const int pad = 14;
+                var rect = new RectangleF(tx - pad, ty - pad, sz.Width + pad * 2, sz.Height + pad * 2);
+                g.FillRectangle(GameColors.brushShipDismissWarning, rect);
+
+                rect.Inflate(-10, -10);
+                g.FillRectangle(Brushes.Black, rect);
+                g.DrawString(msg, font, Brushes.Red, tx + 1, ty + 1);
+            }
         }
 
         private void drawCompassLines(Graphics g)
         {
             g.ResetTransform();
-            g.Clip = new Region(new RectangleF(4, 24, this.Width - 8, this.Height - 48));
             g.TranslateTransform(mw, mh);
 
             // draw compass rose lines
@@ -317,7 +351,6 @@ namespace SrvSurvey
             g.DrawLine(Pens.Red, 0, -this.Height, 0, 0);
 
             g.ResetTransform();
-            g.Clip = new Region(new RectangleF(8, 8, this.Width - 16, this.Height - 16));
         }
 
         private void drawBioScans(Graphics g)
@@ -326,7 +359,6 @@ namespace SrvSurvey
 
             // delta to ship
             g.ResetTransform();
-            g.Clip = new Region(new RectangleF(4, 24, this.Width - 8, this.Height - 48));
 
             g.TranslateTransform(mw, mh);
             g.ScaleTransform(scale, scale);
@@ -355,7 +387,6 @@ namespace SrvSurvey
             }
 
             g.ResetTransform();
-            g.Clip = new Region(new RectangleF(4, 8, this.Width - 8, this.Height - 16));
         }
 
         private void drawTrackers(Graphics g)
@@ -451,9 +482,9 @@ namespace SrvSurvey
         private void drawBearingTo(Graphics g, float x, float y, string txt, LatLong2 location)
         {
             //var txt = scan == game.nearBody.scanOne ? "Scan one:" : "Scan two:";
-            g.DrawString(txt, Game.settings.fontSmall, GameColors.brushGameOrange, x, y);
+            g.DrawString(txt, GameColors.fontSmall, GameColors.brushGameOrange, x, y);
 
-            var txtSz = g.MeasureString(txt, Game.settings.fontSmall);
+            var txtSz = g.MeasureString(txt, GameColors.fontSmall);
 
             var sz = 6;
             x += txtSz.Width + 8;
@@ -468,7 +499,7 @@ namespace SrvSurvey
             g.DrawLine(GameColors.penGameOrange2, x + sz, y + sz, x + sz + dx, y + sz - dy);
 
             x += sz * 3;
-            g.DrawString(Util.metersToString(dd.distance), Game.settings.fontSmall, GameColors.brushGameOrange, x, y);
+            g.DrawString(Util.metersToString(dd.distance), GameColors.fontSmall, GameColors.brushGameOrange, x, y);
         }
     }
 }

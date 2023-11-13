@@ -6,7 +6,7 @@ namespace SrvSurvey
 
     static class Program
     {
-        public static Control? control { get; private set; }
+        public static Control control { get; private set; }
 
         public static readonly BindingFlags InstanceProps =
             System.Reflection.BindingFlags.Public |
@@ -26,7 +26,7 @@ namespace SrvSurvey
 
             Application.EnableVisualStyles();
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
-            Application.SetCompatibleTextRenderingDefault(false);
+            Application.SetCompatibleTextRenderingDefault(true);
             Application.ThreadException += Application_ThreadException;
 
             // create some control for invoking back onto the UI thread

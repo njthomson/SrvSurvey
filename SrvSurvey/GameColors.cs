@@ -38,8 +38,8 @@ namespace SrvSurvey
             GameColors.penExclusionAbandoned = new Pen(Color.FromArgb(96, Color.Blue), 20);
 
             // prepare brush for bio-scan exclusion circles: dark blue/grey cross-hatch
-            GameColors.brushExclusionComplete = new HatchBrush(HatchStyle.Divot, Color.SlateBlue, Color.Transparent);
-            GameColors.penExclusionComplete = new Pen(Color.FromArgb(96, Color.DarkSlateBlue), 20);
+            GameColors.brushExclusionComplete = new HatchBrush(HatchStyle.Divot, Color.FromArgb(96, Color.SlateBlue), Color.Transparent);
+            GameColors.penExclusionComplete = new Pen(Color.FromArgb(32, Color.DarkSlateBlue), 20);
 
             // prepare brush for ship location
             GameColors.brushShipLocation = new HatchBrush(HatchStyle.SmallCheckerBoard, Cyan, Color.Transparent);
@@ -82,13 +82,13 @@ namespace SrvSurvey
             DashStyle = DashStyle.Dot
         };
 
-        public static Pen penNearestUnknownSitePOI = new Pen(Color.FromArgb(96, Color.DarkCyan), 15) 
-        { 
-            EndCap = LineCap.Round, 
+        public static Pen penNearestUnknownSitePOI = new Pen(Color.FromArgb(96, Color.DarkCyan), 15)
+        {
+            EndCap = LineCap.Round,
             StartCap = LineCap.RoundAnchor,
         };
 
-    public static Pen penLime2 = new Pen(LimeIsh, 2);
+        public static Pen penLime2 = new Pen(LimeIsh, 2);
         public static Pen penLime4 = new Pen(LimeIsh, 4);
 
         public static Pen penOrangeStripe3;
@@ -135,6 +135,8 @@ namespace SrvSurvey
         public static Pen penPoiPuddleUnconfirmed = new Pen(Color.Cyan, 3) { DashStyle = DashStyle.Dot, }; // PeachPuff ?
         public static Pen penPoiPuddlePresent = new Pen(Color.Orange, 3) { DashStyle = DashStyle.Solid, };
         public static Pen penPoiPuddleMissing = new Pen(Color.DarkRed, 3) { DashStyle = DashStyle.Solid, };
+
+        public static Brush brushShipDismissWarning = new HatchBrush(HatchStyle.WideUpwardDiagonal, Color.Red, Color.Black);
 
         internal static class Map
         {
@@ -220,6 +222,21 @@ namespace SrvSurvey
                     { SitePoiStatus.empty, brushEmpty } } },
             };
         }
+
+        #region Fonts
+
+        public static float fontScaleFactor = 96f / Program.control.CreateGraphics().DpiX;
+
+        public static Font font1 = new Font("Lucida Sans Typewriter", 16F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
+        public static Font fontSmall = new Font("Lucida Sans Typewriter", 8F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
+        public static Font fontSmall2 = new Font("Century Gothic", 8F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
+        public static Font fontSmaller = new Font("Century Gothic", 10F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
+        public static Font fontMiddle = new Font("Century Gothic", 12F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
+        public static Font fontMiddleBold = new Font("Century Gothic", 12F * fontScaleFactor, FontStyle.Bold, GraphicsUnit.Point);
+        public static Font font2 = new Font("Century Gothic", 16F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
+        public static Font fontBig = new Font("Century Gothic", 22F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
+
+        #endregion
 
         internal static class Theme
         {

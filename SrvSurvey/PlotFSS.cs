@@ -111,18 +111,18 @@ namespace SrvSurvey
 
             var brush = this.lastWasDiscovered ? GameColors.brushGameOrange : GameColors.brushCyan;
 
-            g.DrawString($"Last scan:    {this.lastBodyName}", Game.settings.fontSmaller, brush, 4, 8);
+            g.DrawString($"Last scan:    {this.lastBodyName}", GameColors.fontSmaller, brush, 4, 8);
 
             if (!string.IsNullOrEmpty(this.lastBodyName))
             {
                 //if (!this.lastWasDiscovered)
-                //    g.DrawString("(undiscovered)", Game.settings.fontSmall2, GameColors.brushCyan, 330, 8);
+                //    g.DrawString("(undiscovered)", GameColors.fontSmall2, GameColors.brushCyan, 330, 8);
 
                 var msg = $"Estimated value:    {this.lastInitialValue} cr\r\nWith surface scan:    {this.lastMappedValue} cr";
-                g.DrawString(msg, Game.settings.fontMiddle, brush, 18, 28);
+                g.DrawString(msg, GameColors.fontMiddle, brush, 18, 28);
 
                 if (!string.IsNullOrEmpty(this.lastNotes))
-                    g.DrawString(this.lastNotes, Game.settings.fontMiddle, GameColors.brushCyan, 18, 65);
+                    g.DrawString(this.lastNotes, GameColors.fontMiddle, GameColors.brushCyan, 18, 65);
             }
         }
     }

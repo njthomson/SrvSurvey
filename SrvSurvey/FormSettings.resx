@@ -118,6 +118,28 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="pictureBox6.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAADYAAAAlCAIAAACGZY2/AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        vgAADr4B6kKxwAAAA6VJREFUWEfNl0Fy1DAQRadCwioeS55kQWWXJTsOAjeADZUqciM4B1wALgBH4re+
+        /N1q2xNnKpVE9colt+TWG7U8mewOOR/2+dCvM8wiRl8IwRZkBiHouOpzLgxH2T3gF1jWrWhJgP5xRU4O
+        NovsFlZ96NN75ESwsETDTOA/Awgqa+xCFuORij4dbhGkip+moJ+8Eae4UsTzN6uNQ7iqw6sIzQ+JIDRn
+        h09GQhVw6xV9UsE4m24L5+3tMYLQHFNkj1pEouD4ShplxzfGC2a8hlRm9EOfcJ0UgbQUASHjIwlyC65+
+        rZY+m+Wwmw1EQsZTWd1ILNHuC7SARa4Hu0Jx0JaOkxpCxn/3txdtZAPHCg0Jna6wNCNQpB9pZpCQ0Svy
+        wv7JYAmozP2ECs29nAaETwc/KUpOndMIy81pzuLiRwkZg+L7d+cfP1x8WgGjenCNsNycSRF+10uWIWNb
+        6Dfw+/H57Rqw1INrlOotF5D4XdyfsIuQCFqebYpxxUBT6EV8Op1F+qG9OkXwErvY5WFfQGc2DEJGfxbB
+        syimIveqFWehgE+ns6jIcyimLqeUU29MA25HQ8YXUMz7nLuci+VwOQ68MsVkdCmlfkj4MxhnhIxrit9b
+        OfKUiqlw6GAZZ/h0a2fR/L4sWD5KEb/wm8M2Bk0xdemQhmLZp244OEvM4PefePJdhBZWwVr2Vox9ux3B
+        64ISF8Wuz/tDLpbyw4yNiotsVAS2Fl6Jsc+lcQvwH6Apwu8qYyNhaX1sJJ8EIePJimzq1HZWFYG0eEu/
+        omh+PI5DBny7O/sZzKlaA6ydxTUeUDyzn+OsmK8bzWx1lL5DoflGVxAuM8qx4FSk0jLg7/2tlkHHK+o4
+        qoNRzdRTviGIJbwl18UVuoxMb3RVLLtYr6Mic3GN7Yq44tdkneoyoKmPKz24f77WjFdF+JWDWAqNb3IB
+        0a4qqgVFSEBFTlIkGNVkNPQ9Vuii6M24L9IF2kXI4V0BOREeynIWoSVwFv3tn7ubX1+vwM8C+4r8vrup
+        j3xrnuKZpjc9eOxqvxAVR3rI4XUmGIYlstQPXRoWYJ/B44TGSJigPQs0hXZYoe1XBT7QWOuSp6ZDO6J4
+        WlNl51DUK1qVBWsN3ZppbF7F+/m4byE+n0ZFQTn1YWlfOvZ3r31RpnKPb3RoclJnS6uTz3hXm+TkBLwl
+        vrrxR9n+Lk/FBWX/eIT1DND3OSJ4/nqwQmCOzR+HmDpfjh0HH5zmLNEkQeZ9/g+29t2Tjuwa/AAAAABJ
+        RU5ErkJggg==
+</value>
+  </data>
   <data name="pictureBox2.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAT8AAAGQCAIAAABXjvDHAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
@@ -3354,7 +3376,9 @@ It provides on-screen assistance when a player is near a planet in the SRV, on f
 
 This tool was inspired by the work of the Guardian Science Corps and aims to help anyone exploring the mysteries of the Guardians.
 
-I'd like to give special thanks to V Clara and Running Wild for their inspiration and help with Ruins and Structures. Also to Brammmers for his dedication and patience whilst we ironed out the bugs in bio-scanning features.
+I'd like to give special thanks to V Clara and Running Wild for their inspiration and help with Ruins and Structures. To Seventh_Circle for the Ruins background images, CMDR Just for the Srv Survey icon, and others at Canonn.
+
+Finally to Brammmers for his dedication and patience whilst we ironed out the bugs in bio-scanning features.
 </value>
   </data>
 </root>

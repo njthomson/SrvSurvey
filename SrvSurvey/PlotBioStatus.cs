@@ -149,7 +149,7 @@ namespace SrvSurvey
 
             g.DrawString(
                 $"Biological signals: {game.nearBody.data.countOrganisms} | Analyzed: {game.nearBody.data.countAnalyzed}", // | {Util.credits(game.cmdr.organicRewards)}",
-                Game.settings.fontSmall, GameColors.brushGameOrange, 4, 8);
+                GameColors.fontSmall, GameColors.brushGameOrange, 4, 8);
 
             if (game.nearBody.currentOrganism == null)
                 this.showAllGenus(g);
@@ -189,7 +189,7 @@ namespace SrvSurvey
             // Species name
             g.DrawString(
                 $"{organism.speciesLocalized}",
-                Game.settings.fontBig, GameColors.brushCyan,
+                GameColors.fontBig, GameColors.brushCyan,
                 104, y - 8);
 
             // Reward
@@ -197,7 +197,7 @@ namespace SrvSurvey
             {
                 g.DrawString(
                     Util.credits(organism.reward),
-                    Game.settings.fontSmall, GameColors.brushCyan,
+                    GameColors.fontSmall, GameColors.brushCyan,
                     4, 62);
             }
 
@@ -211,11 +211,11 @@ namespace SrvSurvey
             g.ResetTransform();
 
             var txt = Util.metersToString(dist);
-            var txtSz = g.MeasureString(txt, Game.settings.fontSmall);
+            var txtSz = g.MeasureString(txt, GameColors.fontSmall);
             var x = this.Width - pad - txtSz.Width;
             var y = this.Height - pad - txtSz.Height + 2;
 
-            g.DrawString(txt, Game.settings.fontSmall, GameColors.brushCyan,
+            g.DrawString(txt, GameColors.fontSmall, GameColors.brushCyan,
                 x, y,
                 StringFormat.GenericTypographic);
 
@@ -252,12 +252,12 @@ namespace SrvSurvey
                     txt = $"?~100%";
             }
 
-            var txtSz = g.MeasureString(txt, Game.settings.fontSmall);
+            var txtSz = g.MeasureString(txt, GameColors.fontSmall);
             var x = this.Width - pad - txtSz.Width;
             var y = pad;
 
             var b = data.scanProgress < 1 || !fullValueKnown ? GameColors.brushCyan : GameColors.brushGameOrange;
-            g.DrawString(txt, Game.settings.fontSmall, b,
+            g.DrawString(txt, GameColors.fontSmall, b,
                 x, y,
                 StringFormat.GenericTypographic);
 
@@ -322,7 +322,7 @@ namespace SrvSurvey
                 //}
                 // */
 
-                var sz = g.MeasureString(txt, Game.settings.fontSmall);
+                var sz = g.MeasureString(txt, GameColors.fontSmall);
                 if (x + sz.Width > this.Width - 16)
                 {
                     x = 24;
@@ -331,7 +331,7 @@ namespace SrvSurvey
 
                 g.DrawString(
                     txt,
-                    Game.settings.fontSmall,
+                    GameColors.fontSmall,
                     organism.analyzed ? GameColors.brushGameOrange : GameColors.brushCyan,
                     x, y);
 
@@ -353,7 +353,7 @@ namespace SrvSurvey
             g.ResetClip();
 
             var mid = this.Size / 2;
-            var font = Game.settings.fontSmall;
+            var font = GameColors.fontSmall;
             var sz = g.MeasureString(msg, font);
             var tx = mid.Width - (sz.Width / 2);
             var ty = this.Height - sz.Height - 5;
