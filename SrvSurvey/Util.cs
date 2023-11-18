@@ -225,6 +225,28 @@ namespace SrvSurvey
             return dist;
         }
 
+        public static bool isCloseToScan(LatLong2 location, string genusName)
+        {
+            if (Game.activeGame?.cmdr == null || Game.activeGame.nearBody == null) return false;
+
+            if (Game.activeGame.cmdr.scanOne != null)
+            {
+                if (Game.activeGame.cmdr.scanOne.genus != genusName) return false; 
+
+                var dist = Util.getDistance(location, Game.activeGame.cmdr.scanOne.location, Game.activeGame.nearBody.radius);
+                if (dist < (decimal)Game.activeGame.cmdr.scanOne.radius)
+                    return true;
+            }
+            if (Game.activeGame.cmdr.scanTwo != null)
+            {
+                var dist = Util.getDistance(location, Game.activeGame.cmdr.scanTwo.location, Game.activeGame.nearBody.radius);
+                if (dist < (decimal)Game.activeGame.cmdr.scanTwo.radius)
+                    return true;
+            }
+
+            return false;
+        }
+
         public static void useLastLocation(Form form, Rectangle rect)
         {
             if (rect == Rectangle.Empty)

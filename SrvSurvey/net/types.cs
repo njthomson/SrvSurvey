@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using SrvSurvey.game;
+using SrvSurvey.units;
 
 namespace SrvSurvey.canonn
 {
@@ -221,11 +222,11 @@ namespace SrvSurvey.canonn
     {
         public string body; //: "A 4",
         public string english_name; //: "Bacterium Cerbrus - Teal",
-        public long entryid; //: 2321207,
+        public long? entryid; //: 2321207,
         public string hud_category; //: "Biology",
-        public long index_id; // : null,
-        public double latitude; //: null,
-        public double longitude; //: null,
+        public long? index_id; // : null,
+        public double? latitude; //: null,
+        public double? longitude; //: null,
         public bool scanned; //: "false"
     }
 
@@ -237,6 +238,14 @@ namespace SrvSurvey.canonn
         public List<Codex> codex;
         public string odyssey;
         public string system;
+    }
+
+    internal class SystemBioSignal
+    {
+        public string poiName;
+        public string genusName;
+        public string credits;
+        public List<TrackingDelta> trackers = new List<TrackingDelta>();
     }
 
     internal class OrganicRewards
@@ -251,7 +260,7 @@ namespace SrvSurvey.canonn
         // https://us-central1-canonn-api-236217.cloudfunctions.net/query/codex/ref
         public string category; //     "$Codex_Category_Biology;"
         public string english_name; // "Roseum Brain Tree"
-        public long entryid; //         2100201
+        public string entryid; //         2100201
         public string hud_category; // "Biology"
         public string name; //         "$Codex_Ent_Seed_Name;"
         public string platform; //     "legacy"

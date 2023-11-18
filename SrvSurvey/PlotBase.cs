@@ -447,11 +447,11 @@ namespace SrvSurvey
         /// <summary>
         /// Draws text at the location of ( dtx, dty ) incrementing dtx by the width of the rendered string.
         /// </summary>
-        protected void drawTextAt(string txt, Brush? brush = null)
+        protected void drawTextAt(string txt, Brush? brush = null, Font? font = null)
         {
             brush = brush ?? GameColors.brushGameOrange;
 
-            g.DrawString(txt, this.Font, brush, this.dtx, this.dty);
+            g.DrawString(txt, font ?? this.Font, brush, this.dtx, this.dty);
             this.dtx += g.MeasureString(txt, this.Font).Width;
         }
     }

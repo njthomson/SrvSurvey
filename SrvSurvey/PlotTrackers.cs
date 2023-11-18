@@ -33,7 +33,7 @@ namespace SrvSurvey
             if (msg.StartsWith("=")) verb = "removeLast";
             if (msg.StartsWith("--")) { verb = "clear"; offset = 2; }
 
-            var parts = msg.Substring(offset).Split(' ', 2, StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+            var parts = msg.Substring(offset).Split(' ', 1, StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
 
             if (verb == null || parts.Length == 0) return;
             var name = parts[0]?.ToLowerInvariant()!;
@@ -180,26 +180,28 @@ namespace SrvSurvey
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
+            var gameRect = Elite.getWindowRect(true);
 
             this.prepTrackers();
             this.setNewHeight();
             this.initialize();
-            this.reposition(Elite.getWindowRect(true));
+            this.reposition(gameRect);
         }
 
         private void prepTrackers()
         {
-            if (game.cmdr.trackTargets == null) return;
-
-            foreach (var name in game.cmdr.trackTargets.Keys)
+            if (game.cmdr.trackTargets != null)
             {
-                if (!this.trackers.ContainsKey(name))
+                foreach (var name in game.cmdr.trackTargets.Keys)
                 {
-                    // create group and TrackingDelta's for each location
-                    this.trackers.Add(name, new List<TrackingDelta>());
+                    if (!this.trackers.ContainsKey(name))
+                    {
+                        // create group and TrackingDelta's for each location
+                        this.trackers.Add(name, new List<TrackingDelta>());
 
-                    foreach (var pos in game.cmdr.trackTargets[name])
-                        this.trackers[name].Add(new TrackingDelta(game.nearBody!.radius, pos));
+                        foreach (var pos in game.cmdr.trackTargets[name])
+                            this.trackers[name].Add(new TrackingDelta(game.nearBody!.radius, pos));
+                    }
                 }
             }
         }
@@ -263,7 +265,6 @@ namespace SrvSurvey
                 }
             }
         }
-
 
         protected override void OnPaintBackground(PaintEventArgs e)
         {

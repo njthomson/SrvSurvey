@@ -1,5 +1,4 @@
 ﻿using SrvSurvey.units;
-using System.Diagnostics;
 
 namespace SrvSurvey.game
 {
@@ -55,6 +54,12 @@ namespace SrvSurvey.game
             this.findGuardianSites();
 
             game.journals!.onJournalEntry += Journals_onJournalEntry;
+
+            if (Game.settings.autoLoadPriorScans)
+                Program.control.BeginInvoke(new Action(() => {
+                // make this a little async so we can exit here and assign .nearBody
+                this.preparePriorScans();
+            }));
         }
 
         public void Dispose()
@@ -396,6 +401,25 @@ namespace SrvSurvey.game
                     return null;
 
                 return data.organisms[game.cmdr.scanOne.genus!];
+            }
+        }
+
+        public void preparePriorScans()
+        {
+            if (!Game.settings.autoLoadPriorScans || game.canonnPoi == null) return;
+
+            Game.log($"Filtering organic signals from Canonn...");
+            var currentBody = this.bodyName.Replace(game.cmdr.currentSystem, "").Trim();
+            var localPoi = game.canonnPoi.codex.Where(_ => _.body == currentBody && _.hud_category == "Biology" && _.latitude != null && _.longitude != null).ToList();
+            Game.log($"Found {localPoi.Count} organic signals from Canonn for: {game.cmdr.currentBody}");
+
+            if (localPoi.Count > 0)
+            {
+                Program.control.Invoke(new Action(() =>
+                {
+                    var form = Program.showPlotter<PlotPriorScans>();
+                    form.setPriorScans(localPoi);
+                }));
             }
         }
     }

@@ -372,6 +372,10 @@ namespace SrvSurvey
                 drawBioScan(g, d, scan);
             }
 
+            // draw prior scan circle first
+            if (Game.settings.autoLoadPriorScans)
+                drawPriorScans(g);
+
             // draw trackers circles first
             if (game.cmdr.trackTargets?.Count > 0)
                 drawTrackers(g);
@@ -387,6 +391,53 @@ namespace SrvSurvey
             }
 
             g.ResetTransform();
+        }
+
+        private void drawPriorScans(Graphics g)
+        {
+            var form = Program.getPlotter<PlotPriorScans>();
+            if (game.nearBody == null || form == null) return;
+
+            foreach (var signal in form.signals)
+            {
+                var analyzed = game.nearBody.data.organisms[signal.genusName].analyzed;
+                var isActive = (game.cmdr.scanOne?.genus == null && !analyzed) || game.cmdr.scanOne?.genus == signal.genusName;
+
+                // default range to 50m unless name matches a Genus
+                var radius = BioScan.ranges.ContainsKey(signal.genusName) ? BioScan.ranges[signal.genusName] : 50;
+
+                // draw radar circles for this group, and lines
+                foreach (var tt in signal.trackers)
+                {
+                    if (Util.isCloseToScan(tt.Target, signal.genusName) || analyzed) continue;
+
+                    Brush b = isActive ? /*GameColors.brushTracker*/ new HatchBrush(HatchStyle.DottedDiamond, Color.FromArgb(48, Color.Lime), Color.Transparent)
+                        : /*GameColors.brushTrackInactive*/ new HatchBrush(HatchStyle.DottedDiamond, Color.FromArgb(48, Color.SlateGray), Color.Transparent);
+
+                    var p = isActive ? /*GameColors.penTracker*/ new Pen(Color.FromArgb(64, Color.Lime)) { Width = 8, DashStyle = DashStyle.Dot }
+                        : /*GameColors.penTrackInactive*/ new Pen(Color.FromArgb(48, Color.SlateGray)) { Width = 8, DashStyle = DashStyle.Dot };
+
+                    if (tt.distance < PlotTrackers.highlightDistance)
+                    {
+                        b = isActive ? new HatchBrush(HatchStyle.DottedDiamond, Color.FromArgb(80, Color.Yellow), Color.Transparent)
+                        : new HatchBrush(HatchStyle.DottedDiamond, Color.FromArgb(80, Color.Olive), Color.Transparent);
+                        //p = Pens.Yellow; //GameColors.penTrackerClose;
+                        p = isActive ? new Pen(Color.FromArgb(80, Color.Yellow)) { Width = 8, DashStyle = DashStyle.Dot}
+                        : new Pen(Color.FromArgb(80, Color.Olive)) { Width = 8, DashStyle = DashStyle.Dot };
+                    }
+
+                    var rect = new RectangleF((float)tt.dx - radius, (float)-tt.dy - radius, radius * 2f, radius * 2f);
+                    this.drawRadarCircle(g, rect, b, p);
+
+                    // draw an inner circle if really close
+                    if (tt.distance < PlotTrackers.highlightDistance) // && game.cmdr.scanOne != null)
+                    {
+                        var innerRadius = 50;
+                        rect = new RectangleF((float)tt.dx - innerRadius, (float)-tt.dy - innerRadius, innerRadius * 2f, innerRadius * 2f);
+                        this.drawRadarCircle(g, rect, b, p);
+                    }
+                }
+            }
         }
 
         private void drawTrackers(Graphics g)
@@ -429,6 +480,7 @@ namespace SrvSurvey
         private void drawBioScan(Graphics g, TrackingDelta d, BioScan scan)
         {
             d.Target = scan.location!;
+            var radius = scan.radius * 1f;
 
             Brush b;
             Pen p;
@@ -440,12 +492,21 @@ namespace SrvSurvey
             }
             else if (scan.status == BioScan.Status.Abandoned)
             {
-                // blue colors for abandoned scans
+                // grey colors for abandoned scans
                 //b = GameColors.brushExclusionAbandoned;
                 //p = GameColors.penExclusionAbandoned;
                 b = GameColors.brushTrackInactive;
                 p = GameColors.penTrackInactive;
 
+            }
+            else if (scan.status == BioScan.Status.Died)
+            {
+                var isActive = game.cmdr.scanOne == null || scan.genus == game.cmdr.scanOne.genus;
+                var analyzed = game.nearBody != null && game.nearBody.data.organisms.ContainsKey(scan.genus!) && game.nearBody.data.organisms[scan.genus!].analyzed;
+                // blue colors for scans lost due to death
+                b = isActive && !analyzed ? GameColors.brushExclusionAbandoned : Brushes.Transparent;
+                p = isActive && !analyzed ? GameColors.penExclusionAbandoned : Pens.Navy;
+                radius = 40;
             }
             else if (d.distance < (decimal)scan.radius)
             {
@@ -460,7 +521,6 @@ namespace SrvSurvey
                 p = GameColors.penExclusionActive;
             }
 
-            var radius = scan.radius * 1f;
             var rect = new RectangleF((float)d.dx - radius, (float)-d.dy - radius, radius * 2f, radius * 2f);
 
             this.drawRadarCircle(g, rect, b, p);
@@ -476,7 +536,6 @@ namespace SrvSurvey
             g.DrawEllipse(p, rect);
             rect.Inflate(fudge, fudge);
             g.DrawEllipse(p, rect);
-
         }
 
         private void drawBearingTo(Graphics g, float x, float y, string txt, LatLong2 location)

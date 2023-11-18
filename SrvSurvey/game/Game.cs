@@ -71,6 +71,8 @@ namespace SrvSurvey.game
         /// </summary>
         public CommanderSettings cmdr;
 
+        public SystemPoi? canonnPoi = null;
+
         public Game(string? cmdr)
         {
             log($"Game .ctor");
@@ -645,6 +647,55 @@ namespace SrvSurvey.game
                 });
             }
 
+            // use the status file?
+            if (this.nearBody == null)
+            {
+                // look for a recent Scan event
+                journals!.searchDeep(
+                    (SAASignalsFound entry) =>
+                    {
+                        if (entry.BodyName == bodyName && this.cmdr.currentSystemAddress == entry.SystemAddress && this.status.BodyName == bodyName)
+                        {
+                            this.nearBody = new LandableBody(
+                                this,
+                                this.cmdr.currentSystem,
+                                entry.BodyName,
+                                entry.BodyID,
+                                entry.SystemAddress,
+                                this.status.PlanetRadius);
+                            return true;
+                        }
+                        return false;
+                    },
+                    (JournalFile journals) =>
+                    {
+                        // stop searching older journal files if we see FSDJump
+                        return journals.search((FSDJump _) =>
+                        {
+                            return true;
+                        });
+                    }
+                );
+                //// 
+                //if (this.status.BodyName == bodyName)
+                //{
+                //    this.nearBody = new LandableBody(
+                //        this,
+                //        this.cmdr.currentSystem,
+                //        bodyName,
+                //        exitEvent.BodyID,
+                //        exitEvent.SystemAddress,
+                //        status.PlanetRadius);
+                //}
+                //log($"Failed to create any body for: {bodyName}");
+            }
+
+
+            if (this.nearBody == null)
+            {
+                log($"Failed to create any body for: {bodyName}");
+            }
+
             if (this.nearBody?.data.countOrganisms > 0)
             {
                 log($"Genuses ({this.nearBody.data.countOrganisms}): " + string.Join(",", this.nearBody.data.organisms.Values.Select(_ => _.genusLocalized)));
@@ -720,6 +771,19 @@ namespace SrvSurvey.game
             this.systemStatus.initFromJournal(this);
         }
 
+        private void onJournalEntry(Died entry)
+        {
+            Game.log($"You died. Clearing ${Util.credits(this.cmdr.organicRewards)} from {this.cmdr.scannedOrganics.Count} organisms.");
+            // revisit all active bio-scan entries per body and mark them as Died
+            /*
+            this.cmdr.scannedOrganics.Clear();
+            this.cmdr.scanOne = null;
+            this.cmdr.scanTwo = null;
+            this.cmdr.lastOrganicScan = null;
+            // !! this.cmdr.Save();
+            */
+        }
+
         private void onJournalEntry(Music entry)
         {
             this.musicTrack = entry.MusicTrack;
@@ -765,6 +829,7 @@ namespace SrvSurvey.game
             if (entry.JumpType == "Hyperspace")
             {
                 this.fsdJumping = true;
+                this.canonnPoi = null;
                 this.checkModeChange();
                 this.Status_StatusChanged(false);
 
@@ -870,6 +935,9 @@ namespace SrvSurvey.game
             cmdr.lastSystemLocation = Util.getLocationString(entry.StarSystem, entry.Body);
             cmdr.Save();
             this.fireUpdate();
+
+            if (Game.settings.autoLoadPriorScans)
+                this.preparePriorScans(entry.StarSystem);
         }
 
         public void setLocations(ApproachBody entry)
@@ -893,6 +961,9 @@ namespace SrvSurvey.game
 
             cmdr.lastSystemLocation = Util.getLocationString(entry.StarSystem, entry.Body);
             cmdr.Save();
+
+            if (Game.settings.autoLoadPriorScans)
+                this.preparePriorScans(entry.StarSystem);
         }
 
         public void setLocations(SupercruiseExit entry)
@@ -925,6 +996,9 @@ namespace SrvSurvey.game
 
             cmdr.lastSystemLocation = Util.getLocationString(entry.Starsystem, entry.Body);
             cmdr.Save();
+
+            if (Game.settings.autoLoadPriorScans)
+                this.preparePriorScans(entry.Starsystem);
         }
 
         public void setLocations(Location entry)
@@ -958,6 +1032,9 @@ namespace SrvSurvey.game
 
             cmdr.lastSystemLocation = Util.getLocationString(entry.StarSystem, entry.Body);
             cmdr.Save();
+
+            if (Game.settings.autoLoadPriorScans)
+                this.preparePriorScans(entry.StarSystem);
         }
 
         private decimal findLastRadius(string bodyName)
@@ -979,6 +1056,32 @@ namespace SrvSurvey.game
             );
 
             return planetRadius;
+        }
+
+        private void preparePriorScans(string systemName)
+        {
+            if (this.canonnPoi?.system == systemName)
+            {
+                return;
+            }
+            else if (this.canonnPoi != null)
+            {
+                Game.log($"why/when {systemName} vs {this.canonnPoi.system}");
+                this.canonnPoi = null;
+            }
+
+            // make a call for system POIs and pre-load trackers for known bio-signals
+            Game.log($"Searching for system POI from Canonn...");
+            Game.canonn.getSystemPoi(systemName).ContinueWith(response =>
+            {
+                this.canonnPoi = response.Result;
+                Game.log($"Found system POI from Canonn for: {systemName}");
+                if (this.nearBody != null)
+                    this.nearBody.preparePriorScans();
+
+                if (this.systemStatus != null)
+                    this.systemStatus.mergeCanonnPoi(this.canonnPoi);
+            });
         }
 
         #endregion

@@ -286,6 +286,7 @@ namespace SrvSurvey
                 Program.closePlotter<PlotBioStatus>();
                 Program.closePlotter<PlotGrounded>();
                 Program.closePlotter<PlotTrackers>();
+                Program.closePlotter<PlotPriorScans>();
             }
             else if (game.nearBody == null)
             {
@@ -293,12 +294,14 @@ namespace SrvSurvey
                 Program.closePlotter<PlotBioStatus>();
                 Program.closePlotter<PlotGrounded>();
                 Program.closePlotter<PlotTrackers>();
+                Program.closePlotter<PlotPriorScans>();
             }
             else if (game.nearBody.data.countOrganisms == 0)
             {
                 foreach (var ctrl in this.bioCtrls) ctrl.Text = "-";
                 Program.closePlotter<PlotBioStatus>();
                 Program.closePlotter<PlotGrounded>();
+                Program.closePlotter<PlotPriorScans>();
             }
             else
             {
@@ -315,7 +318,8 @@ namespace SrvSurvey
                     if (showPlotTrackers)
                         Program.showPlotter<PlotTrackers>();
 
-                    if (game.isLanded || showPlotTrackers)
+                    var plotPriorScans = Program.getPlotter<PlotPriorScans>();
+                    if (game.mode != GameMode.SuperCruising && (game.isLanded || showPlotTrackers || plotPriorScans != null))
                         Program.showPlotter<PlotGrounded>();
                 }
             }

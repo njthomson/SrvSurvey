@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using SrvSurvey.canonn;
 
 namespace SrvSurvey.game
 {
@@ -278,6 +279,22 @@ namespace SrvSurvey.game
             {
                 var bodyName = entry.Message.Substring(MsgCmd.visited.Length).Trim();
                 Game.activeGame.systemStatus.visitedTargetBody(bodyName);
+            }
+        }
+
+        public void mergeCanonnPoi(SystemPoi canonnPoi)
+        {
+            // TODO: overhaul system status based on a single list of rich items - not so many separate dictionaries
+            var bioBodies = canonnPoi.SAAsignals.Where(_ => _.hud_category == "Biology").ToList();
+            Game.log($"Found {bioBodies.Count} bodies with bio signals");
+            foreach (var signal in bioBodies)
+            {
+                var matchBody = this.bodyIds.FirstOrDefault(_ => _.Value == $"{canonnPoi.system} {signal.body}");
+                if (matchBody.Value != null)
+                {
+                    if (!this.bioBodies.ContainsKey(matchBody.Key))
+                        this.bioBodies[matchBody.Key] = signal.count;
+                }
             }
         }
 

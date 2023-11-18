@@ -136,9 +136,10 @@ namespace SrvSurvey
                     this.drawTextAt("No DSS scans needed");
                 }
 
-                if (sys.bioRemaining.Count > 0)
+                var organicScanDiff = sys.sumOrganicSignals - sys.scannedOrganics;
+                if (organicScanDiff > 0)
                 {
-                    this.drawTextAt($"| {sys.bioRemaining.Count}x Bio signals on: ");
+                    this.drawTextAt($"| {organicScanDiff}x Bio signals on: ");
                     //this.drawTextAt($"| Bio signals: ");
                     //var names = sys.bioRemaining.Select(_ => $"{_}:0").ToList();
                     //var txt = $"{sys.bioRemaining}x0";

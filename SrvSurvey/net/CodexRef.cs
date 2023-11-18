@@ -7,8 +7,10 @@ namespace SrvSurvey.canonn
     {
         private static string codexRefPath = Path.Combine(Application.UserAppDataPath, "codexRef.json");
         private static string speciesRewardPath = Path.Combine(Application.UserAppDataPath, "speciesRewards.json");
+        private static string entryIdRewardPath = Path.Combine(Application.UserAppDataPath, "entryIdRewards.json");
 
         private Dictionary<string, long>? rewards;
+        private Dictionary<string, long>? rewardsByEntryId;
 
         public void init()
         {
@@ -38,7 +40,7 @@ namespace SrvSurvey.canonn
 
         public async Task loadOrganicRewards()
         {
-            if (!File.Exists(speciesRewardPath))
+            if (!File.Exists(speciesRewardPath) || !File.Exists(entryIdRewardPath))
             {
                 Game.log("Preparing organic rewards from codex/ref");
                 var codexRef = await loadCodexRef();
@@ -46,6 +48,7 @@ namespace SrvSurvey.canonn
                     .Where(_ => _.sub_category == "$Codex_SubCategory_Organic_Structures;" && _.reward > 0);
 
                 rewards = new Dictionary<string, long>();
+                rewardsByEntryId = new Dictionary<string, long>();
                 foreach (var _ in foo)
                 {
                     // extract the species prefix from the name, without the color variant part
@@ -59,16 +62,26 @@ namespace SrvSurvey.canonn
                     {
                         Game.log($"BAD? {_.name} / {species} {rewards[species]} vs {(long)_.reward!}");
                     }
+
+                    var entryIdKey = _.entryid.Substring(0, 5);
+                    if (!rewardsByEntryId.ContainsKey(entryIdKey))
+                    {
+                        rewardsByEntryId.Add(entryIdKey, (long)_.reward!);
+                    }
+                    else if (rewardsByEntryId[entryIdKey] != (long)_.reward!)
+                    {
+                        Game.log($"BAD? {_.name} / {species} {rewardsByEntryId[entryIdKey]} vs {(long)_.reward!}");
+                    }
                 }
 
-                var json = JsonConvert.SerializeObject(rewards);
-                File.WriteAllText(speciesRewardPath, json);
+                File.WriteAllText(speciesRewardPath, JsonConvert.SerializeObject(rewards));
+                File.WriteAllText(entryIdRewardPath, JsonConvert.SerializeObject(rewardsByEntryId));
             }
             else
             {
                 Game.log("Reading organic rewards from disk");
-                var json = File.ReadAllText(speciesRewardPath);
-                rewards = JsonConvert.DeserializeObject<Dictionary<string, long>>(json)!;
+                rewards = JsonConvert.DeserializeObject<Dictionary<string, long>>(File.ReadAllText(speciesRewardPath))!;
+                rewardsByEntryId = JsonConvert.DeserializeObject<Dictionary<string, long>>(File.ReadAllText(entryIdRewardPath))!;
             }
         }
 
@@ -80,6 +93,17 @@ namespace SrvSurvey.canonn
             var key = rewards!.Keys.FirstOrDefault(_ => name.StartsWith(_));
             if (key != null && rewards.ContainsKey(key))
                 return rewards[key];
+            else
+                return -1;
+        }
+
+        public long getRewardForEntryId(string entryId)
+        {
+            if (rewardsByEntryId == null)
+                loadOrganicRewards().Wait();
+            entryId = entryId.Substring(0, 5);
+            if (rewardsByEntryId.ContainsKey(entryId))
+                return rewardsByEntryId[entryId];
             else
                 return -1;
         }

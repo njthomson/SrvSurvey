@@ -108,6 +108,7 @@ namespace SrvSurvey
             Complete,
             Active,
             Abandoned,
+            Died,
         }
     }
 

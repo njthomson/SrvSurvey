@@ -69,6 +69,7 @@ namespace SrvSurvey
         public static Pen penGameOrangeDim2 = new Pen(OrangeDim, 2);
 
         public static Pen penGreen2 = new Pen(Color.Green, 2);
+        public static Pen penDarkGreen2 = new Pen(Color.DarkGreen, 2);
         public static Pen penLightGreen2 = new Pen(Color.LightGreen, 2);
 
         public static Pen penCyan2 = new Pen(Cyan, 2);
