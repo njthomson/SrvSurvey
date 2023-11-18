@@ -400,11 +400,11 @@ namespace SrvSurvey
 
             foreach (var signal in form.signals)
             {
-                var analyzed = game.nearBody.data.organisms[signal.genusName].analyzed;
+                var analyzed = signal.genusName != null && game.nearBody.data.organisms[signal.genusName].analyzed;
                 var isActive = (game.cmdr.scanOne?.genus == null && !analyzed) || game.cmdr.scanOne?.genus == signal.genusName;
 
                 // default range to 50m unless name matches a Genus
-                var radius = BioScan.ranges.ContainsKey(signal.genusName) ? BioScan.ranges[signal.genusName] : 50;
+                var radius = signal.genusName != null && BioScan.ranges.ContainsKey(signal.genusName) ? BioScan.ranges[signal.genusName] : 50;
 
                 // draw radar circles for this group, and lines
                 foreach (var tt in signal.trackers)

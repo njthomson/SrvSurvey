@@ -225,13 +225,13 @@ namespace SrvSurvey
             return dist;
         }
 
-        public static bool isCloseToScan(LatLong2 location, string genusName)
+        public static bool isCloseToScan(LatLong2 location, string? genusName)
         {
-            if (Game.activeGame?.cmdr == null || Game.activeGame.nearBody == null) return false;
+            if (Game.activeGame?.cmdr == null || Game.activeGame.nearBody == null || genusName == null) return false;
 
             if (Game.activeGame.cmdr.scanOne != null)
             {
-                if (Game.activeGame.cmdr.scanOne.genus != genusName) return false; 
+                if (Game.activeGame.cmdr.scanOne.genus != genusName) return false;
 
                 var dist = Util.getDistance(location, Game.activeGame.cmdr.scanOne.location, Game.activeGame.nearBody.radius);
                 if (dist < (decimal)Game.activeGame.cmdr.scanOne.radius)

@@ -122,6 +122,10 @@ namespace SrvSurvey
                     {
                         var nameParts = name.Split(' ', 2);
                         var genusName = BioScan.genusNames.FirstOrDefault(_ => _.Value.Equals(nameParts[0], StringComparison.OrdinalIgnoreCase)).Key;
+                        // for pre-Odyssey bio's
+                        if (!name.Contains("-"))
+                            genusName = BioScan.genusNames.FirstOrDefault(_ => _.Value.Equals(nameParts[1], StringComparison.OrdinalIgnoreCase)).Key;
+
                         var reward = Game.codexRef.getRewardForEntryId(poi.entryid.ToString()!);
 
                         signal = new SystemBioSignal
@@ -185,7 +189,7 @@ namespace SrvSurvey
             this.dty = 8;
             foreach (var signal in this.signals)
             {
-                var analyzed = game.nearBody.data.organisms.ContainsKey(signal.genusName) && game.nearBody.data.organisms[signal.genusName].analyzed;
+                var analyzed = signal.genusName != null && game.nearBody.data.organisms.ContainsKey(signal.genusName) && game.nearBody.data.organisms[signal.genusName].analyzed;
                 var isActive = (game.cmdr.scanOne?.genus == null) || game.cmdr.scanOne?.genus == signal.genusName;
                 Brush brush;
 

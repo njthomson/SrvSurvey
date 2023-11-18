@@ -154,7 +154,7 @@ namespace SrvSurvey.game
             // re-init for .visited systems
             if (manualVisits.Count > 0)
             {
-                foreach(var entry in manualVisits)
+                foreach (var entry in manualVisits)
                     this.onJournalEntry(entry);
             }
             Game.log($"initFromJournal.walk: found FSS: {this.fssComplete}, bodyCount: {this.bodyCount}, count FSS: {this.fssBodies.Count}, count DSS: {this.dssBodies.Count}, count bio bodies: {this.bioBodies.Count}");
@@ -285,7 +285,9 @@ namespace SrvSurvey.game
         public void mergeCanonnPoi(SystemPoi canonnPoi)
         {
             // TODO: overhaul system status based on a single list of rich items - not so many separate dictionaries
-            var bioBodies = canonnPoi.SAAsignals.Where(_ => _.hud_category == "Biology").ToList();
+            var bioBodies = canonnPoi.SAAsignals?.Where(_ => _.hud_category == "Biology").ToList();
+            if (bioBodies == null) return;
+
             Game.log($"Found {bioBodies.Count} bodies with bio signals");
             foreach (var signal in bioBodies)
             {

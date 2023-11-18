@@ -406,7 +406,7 @@ namespace SrvSurvey.game
 
         public void preparePriorScans()
         {
-            if (!Game.settings.autoLoadPriorScans || game.canonnPoi == null) return;
+            if (!Game.settings.autoLoadPriorScans || game.canonnPoi == null || game.canonnPoi.codex == null) return;
 
             Game.log($"Filtering organic signals from Canonn...");
             var currentBody = this.bodyName.Replace(game.cmdr.currentSystem, "").Trim();
