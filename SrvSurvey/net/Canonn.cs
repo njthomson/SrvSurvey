@@ -11,10 +11,10 @@ namespace SrvSurvey.canonn
 {
     internal class Canonn
     {
-        private static string allRuinsStaticPathDbg = "D:\\code\\SrvSurvey\\SrvSurvey\\allRuins.json";
+        private static string allRuinsStaticPathDbg = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "..\\..\\..\\..", "allRuins.json");//"D:\\code\\SrvSurvey\\SrvSurvey\\allRuins.json";
         private static string allRuinsStaticPath = Debugger.IsAttached ? allRuinsStaticPathDbg : Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "allRuins.json");
         private static string allBeaconsStaticPath = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "allBeacons.json");
-        private static string allStructuresStaticPathDbg = "D:\\code\\SrvSurvey\\SrvSurvey\\allStructures.json";
+        private static string allStructuresStaticPathDbg = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "..\\..\\..\\..", "allStructures.json"); //"D:\\code\\SrvSurvey\\SrvSurvey\\allStructures.json";
         private static string allStructuresStaticPath = Debugger.IsAttached ? allStructuresStaticPathDbg : Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "allStructures.json");
         public List<GuardianRuinSummary> allRuins { get; private set; }
         public List<GuardianBeaconSummary> allBeacons { get; private set; }

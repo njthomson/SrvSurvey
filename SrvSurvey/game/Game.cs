@@ -1258,7 +1258,8 @@ namespace SrvSurvey.game
             else
                 this.nearBody.readSAASignalsFound(entry);
 
-            this.systemStatus.onJournalEntry(entry);
+            if (this.systemStatus != null)
+                this.systemStatus.onJournalEntry(entry);
 
             // force a mode change to update ux
             fireUpdate(this._mode, true);
