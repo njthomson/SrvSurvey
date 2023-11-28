@@ -102,7 +102,7 @@ namespace SrvSurvey.canonn
             if (rewardsByEntryId == null)
                 loadOrganicRewards().Wait();
             entryId = entryId.Substring(0, 5);
-            if (rewardsByEntryId.ContainsKey(entryId))
+            if (rewardsByEntryId!.ContainsKey(entryId))
                 return rewardsByEntryId[entryId];
             else
                 return -1;

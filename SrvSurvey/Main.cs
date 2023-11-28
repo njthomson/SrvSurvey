@@ -566,10 +566,6 @@ namespace SrvSurvey
             Application.Exit();
         }
 
-        private void Main_DoubleClick(object sender, EventArgs e)
-        {
-        }
-
         private void btnViewLogs_Click(object sender, EventArgs e)
         {
             ViewLogs.show(Game.logs);
@@ -686,8 +682,10 @@ namespace SrvSurvey
 
         private void Main_FormClosed(object sender, FormClosedEventArgs e)
         {
+            Game.log("Saving settings on close...");
             this.game?.cmdr?.Save();
             Game.settings.Save();
+            Game.log("Closed without errors");
         }
 
         private void checkFullScreenGraphics()

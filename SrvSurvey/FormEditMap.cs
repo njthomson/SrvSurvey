@@ -16,11 +16,11 @@ namespace SrvSurvey
     internal partial class FormEditMap : Form
     {
         private Game game = Game.activeGame!;
-        public SitePOI poi;
+        public SitePOI? poi;
 
         private GuardianSiteData siteData { get => game?.nearBody?.siteData!; }
-        private PlotGuardians plotter { get => Program.getPlotter<PlotGuardians>(); }
-        private SiteTemplate template { get => plotter.template; }
+        private PlotGuardians plotter { get => Program.getPlotter<PlotGuardians>()!; }
+        private SiteTemplate template { get => plotter.template!; }
 
         public FormEditMap()
         {
@@ -244,7 +244,7 @@ namespace SrvSurvey
 
         #endregion
 
-        public void setCurrentPoi(SitePOI newPoi)
+        public void setCurrentPoi(SitePOI? newPoi)
         {
             if (this.poi == newPoi) return;
 
@@ -293,7 +293,7 @@ namespace SrvSurvey
         {
             if (!checkApplyPoiLive.Checked) return;
 
-            Enum.TryParse<POIType>(comboPoiType.Text, out poi.type);
+            Enum.TryParse<POIType>(comboPoiType.Text, out poi!.type);
             numPoiRot.Enabled = poi.type == POIType.obelisk || poi.type == POIType.brokeObelisk || poi.type == POIType.pylon || poi.type == POIType.component;
             plotter.forcePoi = poi;
             plotter.Invalidate();
@@ -449,9 +449,9 @@ namespace SrvSurvey
         {
             if (listPoi.SelectedItems.Count > 0)
             {
-                var lvi = listPoi.SelectedItems[0];
+                var lvi = listPoi.SelectedItems[0]!;
                 listPoi.Items.Remove(lvi);
-                template.poi.Remove(lvi.Tag as SitePOI);
+                template.poi.Remove((SitePOI)lvi.Tag);
                 setCurrentPoi(null);
             }
         }

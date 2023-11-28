@@ -1423,7 +1423,7 @@ namespace SrvSurvey
                 //    new PointF( - 4, + 2),
                 //    new PointF(0, - 3),
                 //};
-                var l = 4f;
+                //var l = 4f;
                 float s32 = (float)Math.Sqrt(3 / 2);
                 //PointF[] points = {
                 //    new PointF(l, 0),

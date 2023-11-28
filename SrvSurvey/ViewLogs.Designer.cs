@@ -35,6 +35,7 @@ namespace SrvSurvey
             btnClear = new Button();
             panel1 = new Panel();
             btnCopy = new Button();
+            linkLabel1 = new LinkLabel();
             panel1.SuspendLayout();
             SuspendLayout();
             // 
@@ -79,6 +80,7 @@ namespace SrvSurvey
             // 
             // panel1
             // 
+            panel1.Controls.Add(linkLabel1);
             panel1.Controls.Add(btnCopy);
             panel1.Controls.Add(btnClear);
             panel1.Controls.Add(btnClose);
@@ -101,6 +103,17 @@ namespace SrvSurvey
             btnCopy.UseVisualStyleBackColor = true;
             btnCopy.Click += btnCopy_Click;
             // 
+            // linkLabel1
+            // 
+            linkLabel1.AutoSize = true;
+            linkLabel1.Location = new Point(195, 13);
+            linkLabel1.Name = "linkLabel1";
+            linkLabel1.Size = new Size(95, 15);
+            linkLabel1.TabIndex = 4;
+            linkLabel1.TabStop = true;
+            linkLabel1.Text = "Open logs folder";
+            linkLabel1.LinkClicked += linkLabel1_LinkClicked;
+            // 
             // ViewLogs
             // 
             AcceptButton = btnClose;
@@ -122,6 +135,7 @@ namespace SrvSurvey
             Shown += ViewLogs_Shown;
             ResizeEnd += ViewLogs_ResizeEnd;
             panel1.ResumeLayout(false);
+            panel1.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -133,5 +147,6 @@ namespace SrvSurvey
         private Button btnClear;
         private Panel panel1;
         private Button btnCopy;
+        private LinkLabel linkLabel1;
     }
 }

@@ -110,5 +110,10 @@ namespace SrvSurvey
             Clipboard.SetText(txtLogs.Text);
             Game.log("Logs copied");
         }
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Util.openLink(Game.logFolder);
+        }
     }
 }

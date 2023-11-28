@@ -9,7 +9,7 @@ namespace SrvSurvey
     /// </summary>
     class BioScan
     {
-        public LatLong2? location;
+        public LatLong2 location;
         public float radius;
         public string? genus;
         public string? species;

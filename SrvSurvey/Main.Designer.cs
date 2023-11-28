@@ -616,7 +616,6 @@ namespace SrvSurvey
             Load += Main_Load;
             ResizeEnd += Main_ResizeEnd;
             SizeChanged += Main_SizeChanged;
-            DoubleClick += Main_DoubleClick;
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
             groupBox2.ResumeLayout(false);

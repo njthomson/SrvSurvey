@@ -15,8 +15,11 @@ namespace SrvSurvey.game
         static Game()
         {
             Game.logs = new List<string>();
+            Game.logPath = prepLogFile();
             var releaseVersion = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyFileVersionAttribute>()?.Version;
             Game.log($"SrvSurvey version: {releaseVersion}");
+            Game.log($"New log file: {Game.logPath}");
+            Game.removeExcessLogFiles();
 
             settings = Settings.Load();
             codexRef = new CodexRef();
@@ -27,6 +30,17 @@ namespace SrvSurvey.game
 
         #region logging
 
+        private static string prepLogFile()
+        {
+            // prepare filepath for log file
+            Directory.CreateDirectory(Game.logFolder);
+            var datepart = DateTime.Now.ToString("yyyyMMdd_HHmmss");
+            var filepath = Path.Combine(Game.logFolder, $"srvs-{datepart}.txt")!;
+            File.WriteAllLines(filepath, Game.logs);
+
+            return filepath;
+        }
+
         public static void log(object? msg)
         {
             var txt = DateTime.Now.ToString("HH:mm:ss") + ": " + msg?.ToString();
@@ -36,9 +50,29 @@ namespace SrvSurvey.game
             Game.logs.Add(txt);
 
             ViewLogs.append(txt);
+
+            File.AppendAllText(Game.logPath, txt + "\r\n");
+        }
+
+        private static void removeExcessLogFiles()
+        {
+            var logFiles = new DirectoryInfo(Game.logFolder)
+                .EnumerateFiles("*.txt", SearchOption.TopDirectoryOnly)
+                .OrderByDescending(_ => _.LastWriteTimeUtc)
+                .ToList();
+
+            for (var idx = 5; idx < logFiles.Count; idx++)
+            {
+                var filename = logFiles[idx].FullName;
+                Game.log($"Removing old log file: {filename}");
+                File.Delete(filename);
+            }
         }
 
         public static readonly List<string> logs;
+        private static readonly string logPath;
+        public static string logFolder = Path.Combine(Application.UserAppDataPath, "logs", "");
+
 
         #endregion
 
