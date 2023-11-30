@@ -46,16 +46,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="SrvSurvey.cs" />
-    <Compile Remove="SrvSurvey.Designer.cs" />
-    <Compile Remove="SurveyingSrv.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Remove="SrvSurvey.resx" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Remove="allBeacons.json" />
     <None Remove="allRuins.json" />
     <None Remove="allStructures.json" />
@@ -115,10 +105,6 @@
 
   <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />
-    <None Include="SrvSurvey.cs" />
-    <None Include="SrvSurvey.Designer.cs" />
-    <None Include="SrvSurvey.resx" />
-    <None Include="SurveyingSrv.cs" />
   </ItemGroup>
 
   <ItemGroup>
