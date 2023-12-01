@@ -91,7 +91,7 @@ namespace SrvSurvey
 
         protected override void OnPaintBackground(PaintEventArgs e)
         {
-            if (this.IsDisposed) return;
+            if (this.IsDisposed || game.systemData == null) return;
 
             this.g = e.Graphics;
             this.g.SmoothingMode = SmoothingMode.HighQuality;
@@ -118,6 +118,34 @@ namespace SrvSurvey
                     return;
                 }
 
+                // new
+                var dssRemaining = game.systemData.getDssRemainingNames();
+
+                if (!game.systemData.fssComplete)
+                {
+                    var foo = 100.0 / (float)game.systemData.bodyCount * (float)game.systemData.fssBodyCount;
+                    this.drawTextAt($"FSS {foo}% complete", GameColors.brushCyan);
+                }
+                else if (dssRemaining.Count > 0)
+                {
+                    this.drawTextAt($"{dssRemaining.Count}x bodies: ");
+                    this.drawRemainingBodies(destinationBody, dssRemaining);
+                }
+                else
+                {
+                    this.drawTextAt("No DSS scans needed");
+                }
+
+                var bioRemaining = game.systemData.getBioRemainingNames();
+                if (bioRemaining.Count > 0)
+                {
+                    this.drawTextAt($"| {game.systemData.bioSignalsRemaining}x Bio signals on: ");
+                    this.drawRemainingBodies(destinationBody, bioRemaining);
+                }
+
+
+                // old
+                return;
                 if (!sys.fssComplete && sys.fssBodies.Count < sys.bodyCount)
                 {
                     this.drawTextAt("FSS incomplete", GameColors.brushCyan);
@@ -166,7 +194,7 @@ namespace SrvSurvey
                 var isLocal = string.IsNullOrEmpty(destination) || bodyName[0] == destination[0];
 
                 var font = this.Font;
-                
+
                 if (destination == bodyName) font = this.boldFont;
                 var color = isLocal ? GameColors.Cyan : GameColors.Orange;
 
@@ -179,5 +207,4 @@ namespace SrvSurvey
         }
     }
 }
-
 

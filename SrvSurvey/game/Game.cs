@@ -100,6 +100,8 @@ namespace SrvSurvey.game
 
         public SystemStatus systemStatus;
 
+        public SystemData? systemData;
+
         /// <summary>
         /// Distinct settings for the current commander
         /// </summary>
@@ -478,6 +480,8 @@ namespace SrvSurvey.game
 
                 this.systemStatus = new SystemStatus(cmdr.currentSystem, cmdr.currentSystemAddress);
                 this.systemStatus.initFromJournal(this);
+
+                this.initSystemData();
             }
 
             // if we are near a planet
@@ -540,6 +544,63 @@ namespace SrvSurvey.game
             log($"Game.initializeFromJournal: END Commander:{this.Commander}, starSystem:{cmdr?.currentSystem}, systemLocation:{cmdr?.lastSystemLocation}, nearBody:{this.nearBody}, journals.Count:{journals.Count}");
             this.initialized = Game.activeGame == this && this.Commander != null;
             this.checkModeChange();
+        }
+
+        private void initSystemData()
+        {
+            // try to find a location from recent journal items
+            if (cmdr == null || this.journals == null) return;
+
+            log($"Game.initSystemData: rewind to last FSDJump");
+
+            var playForwards = new List<JournalEntry>();
+
+            Location? lastLocation = null;
+            this.journals.walkDeep(-1, true, (entry) =>
+            {
+                // record last location event, in case ...
+                var locationEvent = entry as Location;
+                if (locationEvent != null && lastLocation == null)
+                {
+                    log($"Game.initSystemData: last location: '{locationEvent.StarSystem}' ({locationEvent.SystemAddress})");
+                    lastLocation = locationEvent;
+                    return false;
+                }
+
+                // .. we were on a carrier and it jumped when we not playing, hence no FSD or Carrier jump event. We can init from the Location event, once we see that journal entries are coming from some other system
+                var systemAddressEntry = entry as ISystemAddress;
+                if (systemAddressEntry != null && lastLocation != null && systemAddressEntry.SystemAddress != lastLocation.SystemAddress)
+                {
+                    log($"Game.initSystemData: Carrier jump since last session? Some SystemAddress ({systemAddressEntry.SystemAddress}) does not match current location ({lastLocation.SystemAddress})");
+                    this.systemData = SystemData.From(lastLocation);
+                    return true;
+                }
+
+                // init from FSD or Carrier jump event
+                var starterEvent = entry as ISystemDataStarter;
+                if (starterEvent != null && starterEvent.@event != nameof(Location))
+                {
+                    log($"Game.initSystemData: found last {starterEvent.@event}, to '{starterEvent.StarSystem}' ({starterEvent.SystemAddress})");
+                    this.systemData = SystemData.From(starterEvent);
+                    return true;
+                }
+
+                if (SystemData.journalEventTypes.Contains(entry.@event))
+                {
+                    playForwards.Add(entry);
+                }
+
+                return false;
+            });
+            if (this.systemData == null) throw new Exception("Why no systemData?");
+
+            log($"Game.initSystemData: Processing {playForwards.Count} journal items forwards...");
+            playForwards.Reverse();
+            foreach (var entry in playForwards)
+                this.systemData.Journals_onJournalEntry(entry);
+
+            this.systemData.Save();
+            log($"Game.initSystemData: complete '{this.systemData.name}' ({this.systemData.address}), bodyCount: {this.systemData.bodyCount}");
         }
 
         private void getLastTouchdownDeep()
@@ -767,6 +828,13 @@ namespace SrvSurvey.game
         {
             Game.log($"Game.event => {entry.@event}");
             this.onJournalEntry((dynamic)entry);
+
+            if (this.systemData != null)
+            {
+                this.systemData.Journals_onJournalEntry(entry);
+                // TODO: maybe not every time?
+                this.systemData.Save();
+            }
         }
 
         private void onJournalEntry(JournalEntry entry) { /* ignore */ }
@@ -943,7 +1011,7 @@ namespace SrvSurvey.game
             cmdr.currentSystemAddress = entry.SystemAddress;
             cmdr.starPos = entry.StarPos;
 
-            if (entry.BodyType == "Planet")
+            if (entry.BodyType == BodyType.Planet)
             {
                 // would this ever happen?
                 Game.log($"setLocations: FSDJump is a planet?!");
@@ -1043,7 +1111,7 @@ namespace SrvSurvey.game
             cmdr.currentSystemAddress = entry.SystemAddress;
             cmdr.starPos = entry.StarPos;
 
-            if (entry.BodyType == "Planet")
+            if (entry.BodyType ==  BodyType.Planet)
             {
                 cmdr.currentBody = entry.Body;
                 cmdr.currentBodyId = entry.BodyID;

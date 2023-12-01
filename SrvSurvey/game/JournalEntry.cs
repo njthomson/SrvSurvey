@@ -1,4 +1,5 @@
-﻿using SrvSurvey.game;
+﻿using Newtonsoft.Json;
+using SrvSurvey.game;
 using SrvSurvey.units;
 using System;
 using System.Collections.Generic;
@@ -18,7 +19,9 @@ namespace SrvSurvey
 
     class JournalEntry
     {
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public DateTime timestamp { get; set; }
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public string @event { get; set; }
     }
 
@@ -26,7 +29,6 @@ namespace SrvSurvey
     {
         public double Latitude { get; set; }
         public double Longitude { get; set; }
-
     }
 
     class Fileheader : JournalEntry
@@ -70,7 +72,7 @@ namespace SrvSurvey
         public string build { get; set; }
     }
 
-    class Location : LocationEntry
+    class Location : LocationEntry, ISystemAddress, ISystemDataStarter
     {
         // { "timestamp":"2023-01-11T03:44:33Z", "event":"Location", "Latitude":-15.325527, "Longitude":6.507746, "DistFromStarLS":513.174241, "Docked":false, "InSRV":true, "StarSystem":"Col 173 Sector JX-K b24-0", "SystemAddress":684107179361, "StarPos":[993.06250,-188.18750,-173.53125], "SystemAllegiance":"Guardian", "SystemEconomy":"$economy_None;", "SystemEconomy_Localised":"None", "SystemSecondEconomy":"$economy_None;", "SystemSecondEconomy_Localised":"None", "SystemGovernment":"$government_None;", "SystemGovernment_Localised":"None", "SystemSecurity":"$GAlAXY_MAP_INFO_state_anarchy;", "SystemSecurity_Localised":"Anarchy", "Population":0, "Body":"Col 173 Sector JX-K b24-0 B 4", "BodyID":26, "BodyType":"Planet" }
 
@@ -92,7 +94,7 @@ namespace SrvSurvey
         public double Population { get; set; }
         public string Body { get; set; }
         public int BodyID { get; set; }
-        public string BodyType { get; set; }
+        public BodyType BodyType { get; set; }
     }
 
     class Died : JournalEntry
@@ -100,7 +102,7 @@ namespace SrvSurvey
         // { "timestamp":"2023-11-13T11:24:26Z", "event":"Died" }
     }
 
-    class ApproachSettlement : LocationEntry
+    class ApproachSettlement : LocationEntry, ISystemAddress
     {
         // { "timestamp":"2023-01-06T00:14:38Z", "event":"ApproachSettlement", "Name":"$Ancient_Tiny_001:#index=1;", "Name_Localised":"Guardian Structure", "SystemAddress":2881788519801, "BodyID":7, "BodyName":"Col 173 Sector IJ-G b27-1 A 1", "Latitude":-33.219879, "Longitude":87.628571 }
 
@@ -111,7 +113,7 @@ namespace SrvSurvey
         public string BodyName { get; set; }
     }
 
-    class Touchdown : LocationEntry
+    class Touchdown : LocationEntry, ISystemAddress
     {
 
         // { "timestamp":"2023-01-06T00:34:41Z", "event":"Touchdown", "PlayerControlled":true, "Taxi":false, "Multicrew":false, "StarSystem":"Synuefe NL-N c23-4", "SystemAddress":1184840454858, "Body":"Synuefe NL-N c23-4 B 3", "BodyID":18, "OnStation":false, "OnPlanet":true, "Latitude":5.602152, "Longitude":-148.097961, "NearestDestination":"$Ancient:#index=3;", "NearestDestination_Localised":"Ancient Ruins (3)" }
@@ -158,11 +160,11 @@ namespace SrvSurvey
         public int ID { get; set; }
     }
 
-    class CodexEntry : LocationEntry
+    class CodexEntry : LocationEntry, ISystemAddress
     {
         // { "timestamp":"2023-01-06T00:46:41Z", "event":"CodexEntry", "EntryID":3200200, "Name":"$Codex_Ent_Guardian_Data_Logs_Name;", "Name_Localised":"Guardian Codex", "SubCategory":"$Codex_SubCategory_Guardian;", "SubCategory_Localised":"Guardian objects", "Category":"$Codex_Category_Civilisations;", "Category_Localised":"Xenological", "Region":"$Codex_RegionName_18;", "Region_Localised":"Inner Orion Spur", "System":"Synuefe NL-N c23-4", "SystemAddress":1184840454858, "BodyID":18, "NearestDestination":"$Ancient:#index=3;", "NearestDestination_Localised":"Ancient Ruins (3)", "Latitude":5.613951, "Longitude":-148.100403, "IsNewEntry":true, "VoucherAmount":50000 }
 
-        public string EntryID { get; set; }
+        public long EntryID { get; set; }
         public string Name { get; set; }
         public string Name_Localised { get; set; }
 
@@ -202,7 +204,7 @@ namespace SrvSurvey
         public bool Sent { get; set; }
     }
 
-    class SupercruiseExit : JournalEntry
+    class SupercruiseExit : JournalEntry, ISystemAddress
     {
         // { "timestamp":"2023-03-12T06:16:56Z", "event":"SupercruiseExit", "Taxi":false, "Multicrew":false, "StarSystem":"Synuefe EN-H d11-96", "SystemAddress":3309179996515, "Body":"Synuefe EN-H d11-96 2", "BodyID":9, "BodyType":"Planet" }
 
@@ -226,7 +228,7 @@ namespace SrvSurvey
         public string MusicTrack { get; set; }
     }
 
-    class StartJump : JournalEntry
+    class StartJump : JournalEntry, ISystemAddress
     {
         // { "timestamp":"2023-01-24T05:06:43Z", "event":"StartJump", "JumpType":"Hyperspace", "StarSystem":"Maridwyn", "SystemAddress":13866167838129, "StarClass":"M" }
 
@@ -236,7 +238,7 @@ namespace SrvSurvey
         public string StarClass { get; set; }
     }
 
-    class FSDJump : JournalEntry
+    class FSDJump : JournalEntry, ISystemAddress, ISystemDataStarter
     {
         // { "timestamp":"2023-01-24T05:07:01Z", "event":"FSDJump", "Taxi":false, "Multicrew":false, "StarSystem":"Maridwyn", "SystemAddress":13866167838129, "StarPos":[90.46875,16.40625,21.62500], "SystemAllegiance":"Federation", "SystemEconomy":"$economy_Agri;", "SystemEconomy_Localised":"Agriculture", "SystemSecondEconomy":"$economy_Refinery;", "SystemSecondEconomy_Localised":"Refinery", "SystemGovernment":"$government_Corporate;", "SystemGovernment_Localised":"Corporate", "SystemSecurity":"$SYSTEM_SECURITY_high;", "SystemSecurity_Localised":"High Security", "Population":4058074576, "Body":"Maridwyn A", "BodyID":1, "BodyType":"Star", "Powers":[ "Felicia Winters" ], "PowerplayState":"Exploited", "JumpDist":8.278, "FuelUsed":0.091548, "FuelLevel":13.458453, "Factions":[ { "Name":"Social Maridwyn Green Party", "FactionState":"None", "Government":"Democracy", "Influence":0.027559, "Allegiance":"Independent", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":0.000000 }, { "Name":"p Velorum Crimson Creative Int", "FactionState":"None", "Government":"Corporate", "Influence":0.059055, "Allegiance":"Federation", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":4.187500 }, { "Name":"Maridwyn Co", "FactionState":"None", "Government":"Corporate", "Influence":0.487205, "Allegiance":"Federation", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":0.000000, "RecoveringStates":[ { "State":"Boom", "Trend":0 } ] }, { "Name":"Maridwyn Constitution Party", "FactionState":"None", "Government":"Dictatorship", "Influence":0.041339, "Allegiance":"Independent", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":0.000000 }, { "Name":"Maridwyn Gold Electronics Ltd", "FactionState":"None", "Government":"Corporate", "Influence":0.021654, "Allegiance":"Independent", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":0.000000 }, { "Name":"United Maridwyn Law Party", "FactionState":"None", "Government":"Dictatorship", "Influence":0.040354, "Allegiance":"Independent", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":0.000000 }, { "Name":"Federal Reclamation Co", "FactionState":"Expansion", "Government":"Corporate", "Influence":0.322835, "Allegiance":"Federation", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":97.425003, "ActiveStates":[ { "State":"Expansion" } ] } ], "SystemFaction":{ "Name":"Maridwyn Co" } }
 
@@ -257,7 +259,7 @@ namespace SrvSurvey
         public long Population { get; set; }// 4058074576,
         public string Body { get; set; } // "Maridwyn A",
         public int BodyID { get; set; } // 1,
-        public string BodyType { get; set; }  // "Star"
+        public BodyType BodyType { get; set; }  // "Star"
 
         public List<string> Powers { get; set; } // [ "Felicia Winters" ]
         public string PowerplayState { get; set; } // Exploited
@@ -277,6 +279,54 @@ namespace SrvSurvey
 
     }
 
+
+    class CarrierJump : JournalEntry, ISystemAddress, ISystemDataStarter
+    {
+        // { "timestamp":"2023-12-01T04:50:10Z", "event":"CarrierJump", "Docked":true, "StationName":"H6B-5HQ", "StationType":"FleetCarrier", "MarketID":3708733696, "StationFaction":{ "Name":"FleetCarrier" }, "StationGovernment":"$government_Carrier;", "StationGovernment_Localised":"Private Ownership", "StationServices":[ "dock", "autodock", "commodities", "contacts", "exploration", "outfitting", "crewlounge", "rearm", "refuel", "repair", "shipyard", "engineer", "flightcontroller", "stationoperations", "stationMenu", "carriermanagement", "carrierfuel", "livery", "socialspace", "bartender", "vistagenomics" ], "StationEconomy":"$economy_Carrier;", "StationEconomy_Localised":"Private Enterprise", "StationEconomies":[ { "Name":"$economy_Carrier;", "Name_Localised":"Private Enterprise", "Proportion":1.000000 } ], "Taxi":false, "Multicrew":false, "StarSystem":"Wregoe VG-U b17-0", "SystemAddress":681155568793, "StarPos":[764.15625,174.68750,-675.90625], "SystemAllegiance":"", "SystemEconomy":"$economy_None;", "SystemEconomy_Localised":"None", "SystemSecondEconomy":"$economy_None;", "SystemSecondEconomy_Localised":"None", "SystemGovernment":"$government_None;", "SystemGovernment_Localised":"None", "SystemSecurity":"$GAlAXY_MAP_INFO_state_anarchy;", "SystemSecurity_Localised":"Anarchy", "Population":0, "Body":"Wregoe VG-U b17-0 A", "BodyID":1, "BodyType":"Star" }
+
+        public bool Docked { get; set; }
+        public string StationName { get; set; }
+        public string StationType { get; set; }
+        public long MarketID { get; set; }
+        // StationFaction // TODO: { "Name":"FleetCarrier" }
+        public string StationGovernment { get; set; }
+        public string StationGovernment_Localised { get; set; }
+        public List<string> StationServices { get; set; }
+        public string StationEconomy { get; set; }
+        public string StationEconomy_Localised { get; set; }
+        // StationEconomies // TODO: [ { "Name":"$economy_Carrier;", "Name_Localised":"Private Enterprise", "Proportion":1.000000 } ],
+        public bool Taxi { get; set; }
+        public bool Multicrew { get; set; }
+        public string StarSystem { get; set; }
+        public long SystemAddress { get; set; }
+        public double[] StarPos { get; set; }
+        public string SystemAllegiance { get; set; }
+        public string SystemEconomy { get; set; }
+        public string SystemEconomy_Localised { get; set; }
+        public string SystemSecondEconomy { get; set; }
+        public string SystemSecondEconomy_Localised { get; set; }
+        public string SystemGovernment { get; set; }
+        public string SystemGovernment_Localised { get; set; }
+        public string SystemSecurity { get; set; }
+        public string SystemSecurity_Localised { get; set; }
+        public long Population { get; set; }
+        public string Body { get; set; }
+        public int BodyID { get; set; }
+        public BodyType BodyType { get; set; }
+    }
+
+    class CarrierJumpRequest : JournalEntry
+    {
+        // { "timestamp":"2023-12-01T05:49:05Z", "event":"CarrierJumpRequest", "CarrierID":3708733696, "SystemName":"Synuefe OR-D c15-8", "Body":"Synuefe OR-D c15-8", "SystemAddress":2283613950594, "BodyID":0, "DepartureTime":"2023-12-01T06:05:10Z" }
+
+        public long CarrierID;
+        public string SystemName;
+        public string Body;
+        public long SystemAddress;
+        public int BodyID;
+        public DateTimeOffset DepartureTime;
+    }
+
     class Shutdown : JournalEntry
     {
         // { "timestamp":"2023-01-24T06:58:26Z", "event":"Shutdown" }
@@ -289,7 +339,7 @@ namespace SrvSurvey
         Analyse
     }
 
-    class ScanOrganic : JournalEntry
+    class ScanOrganic : JournalEntry, ISystemAddress
     {
         // { "timestamp":"2023-05-10T20:03:22Z", "event":"ScanOrganic", "ScanType":"Log", "Genus":"$Codex_Ent_Fonticulus_Genus_Name;", "Genus_Localised":"Fonticulua", "Species":"$Codex_Ent_Fonticulus_02_Name;", "Species_Localised":"Fonticulua Campestris", "Variant":"$Codex_Ent_Fonticulus_02_M_Name;", "Variant_Localised":"Fonticulua Campestris - Amethyst", "SystemAddress":1419209836875, "Body":2 }
 
@@ -324,7 +374,7 @@ namespace SrvSurvey
         public string Genus_Localised { get; set; }
     }
 
-    class SAASignalsFound : JournalEntry
+    class SAASignalsFound : JournalEntry, ISystemAddress
     {
         // { "timestamp":"2023-02-07T06:12:43Z", "event":"SAASignalsFound", "BodyName":"Synuefe TP-F b44-0 AB 7", "SystemAddress":682228131193, "BodyID":14, "Signals":[ { "Type":"$SAA_SignalType_Biological;", "Type_Localised":"Biological", "Count":6 } ], "Genuses":[ { "Genus":"$Codex_Ent_Bacterial_Genus_Name;", "Genus_Localised":"Bacterium" }, { "Genus":"$Codex_Ent_Cactoid_Genus_Name;", "Genus_Localised":"Cactoida" }, { "Genus":"$Codex_Ent_Fungoids_Genus_Name;", "Genus_Localised":"Fungoida" }, { "Genus":"$Codex_Ent_Stratum_Genus_Name;", "Genus_Localised":"Stratum" }, { "Genus":"$Codex_Ent_Shrubs_Genus_Name;", "Genus_Localised":"Frutexa" }, { "Genus":"$Codex_Ent_Tussocks_Genus_Name;", "Genus_Localised":"Tussock" } ] }
 
@@ -335,7 +385,7 @@ namespace SrvSurvey
         public List<ScanGenus> Genuses { get; set; }
     }
 
-    class SAAScanComplete : JournalEntry
+    class SAAScanComplete : JournalEntry, ISystemAddress
     {
         // { "timestamp":"2023-03-26T22:34:35Z", "event":"SAAScanComplete", "BodyName":"Col 173 Sector PF-E b28-3 B 7", "SystemAddress":7279566464385, "BodyID":17, "ProbesUsed":4, "EfficiencyTarget":4 }
         public string BodyName { get; set; }
@@ -345,7 +395,7 @@ namespace SrvSurvey
         public int EfficiencyTarget { get; set; }
     }
 
-    class ApproachBody : JournalEntry
+    class ApproachBody : JournalEntry, ISystemAddress
     {
         // { "timestamp":"2023-02-07T06:27:26Z", "event":"ApproachBody", "StarSystem":"Synuefe TP-F b44-0", "SystemAddress":682228131193, "Body":"Synuefe TP-F b44-0 AB 7", "BodyID":14 }
 
@@ -355,7 +405,7 @@ namespace SrvSurvey
         public int BodyID { get; set; }
     }
 
-    class LeaveBody : JournalEntry
+    class LeaveBody : JournalEntry, ISystemAddress
     {
         // { "timestamp":"2023-02-07T06:29:32Z", "event":"LeaveBody", "StarSystem":"Synuefe TP-F b44-0", "SystemAddress":682228131193, "Body":"Synuefe TP-F b44-0 AB 7", "BodyID":14 }
         public string StarSystem { get; set; }
@@ -382,7 +432,7 @@ namespace SrvSurvey
         public int Count;
     }
 
-    class Scan : JournalEntry
+    class Scan : JournalEntry, ISystemAddress
     {
         // See: https://elite-journal.readthedocs.io/en/latest/Exploration/#scan
         // { "timestamp":"2023-02-07T06:12:44Z", "event":"Scan", "ScanType":"Detailed", "BodyName":"Synuefe TP-F b44-0 AB 7", "BodyID":14, "Parents":[ {"Null":1}, {"Null":0} ], "StarSystem":"Synuefe TP-F b44-0", "SystemAddress":682228131193, "DistanceFromArrivalLS":163.640473, "TidalLock":false, "TerraformState":"", "PlanetClass":"High metal content body", "Atmosphere":"thin ammonia atmosphere", "AtmosphereType":"Ammonia", "AtmosphereComposition":[ { "Name":"Ammonia", "Percent":100.000000 } ], "Volcanism":"", "MassEM":0.012165, "Radius":1506425.250000, "SurfaceGravity":2.136633, "SurfaceTemperature":171.117615, "SurfacePressure":218.443268, "Landable":true, "Materials":[ { "Name":"iron", "Percent":22.081503 }, { "Name":"nickel", "Percent":16.701525 }, { "Name":"sulphur", "Percent":15.735665 }, { "Name":"carbon", "Percent":13.232062 }, { "Name":"manganese", "Percent":9.119436 }, { "Name":"phosphorus", "Percent":8.471395 }, { "Name":"zinc", "Percent":6.000926 }, { "Name":"germanium", "Percent":4.639404 }, { "Name":"molybdenum", "Percent":1.441909 }, { "Name":"ruthenium", "Percent":1.363674 }, { "Name":"tungsten", "Percent":1.212496 } ], "Composition":{ "Ice":0.000000, "Rock":0.672827, "Metal":0.327173 }, "SemiMajorAxis":51394448280.334473, "Eccentricity":0.173554, "OrbitalInclination":-164.752899, "Periapsis":243.912489, "OrbitalPeriod":9480342.149734, "AscendingNode":-98.783954, "MeanAnomaly":62.655478, "RotationPeriod":127770.138485, "AxialTilt":-0.440350, "WasDiscovered":true, "WasMapped":true }
@@ -395,52 +445,85 @@ namespace SrvSurvey
 
         // Star specific ...
 
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public string ScanType { get; set; }
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public string StarSystem { get; set; } // name
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public long SystemAddress { get; set; }
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public string Bodyname { get; set; }
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public int BodyID { get; set; }
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public long DistanceFromArrivalLS { get; set; }
 
 
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public string StarType { get; set; } // Stellar classification (for a star) – see §15.2
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public int Subclass { get; set; } // Star's heat classification 0..9
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public double StellarMass { get; set; } //  mass as multiple of Sol's mass
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public decimal Radius { get; set; }
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public double AbsoluteMagnitude { get; set; }
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public double RotationPeriod { get; set; } // (seconds)
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public double SurfaceTemperature { get; set; }
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public string Luminosity { get; set; } //  see §15.9
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public double Age_MY { get; set; } // age in millions of years
 
         public class Ring
         {
             // "Rings":[ { "Name":"Stuemeae UY-S b3-86 7 A Ring", "RingClass":"eRingClass_Icy", "MassMT":1.036e+07, "InnerRad":2.2544e+07, "OuterRad":5.479e+07 } ]
+
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
             public string Name;
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
             public string RingClass;
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
             public double MassMT;
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
             public double InnerRad;
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
             public double OuterRad;
         }
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public List<Ring> Rings { get; set; }
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public bool WasDiscovered { get; set; }
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public bool WasMapped { get; set; }
-
 
         // Planet specific ...
 
         // TODO: Parents: Array of BodyType:BodyID pairs
 
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public bool TidalLock { get; set; } // 1 if tidally locked
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public string TerraformState { get; set; } // Terraformable, Terraforming, Terraformed, or null
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public string PlanetClass { get; set; } // see §15.3
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public double MassEM { get; set; }
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public string Atmosphere { get; set; } // see §15.4
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public string AtmosphereType { get; set; }
         // TODO: AtmosphereComposition: [array of info]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public string Volcanism { get; set; } // see §15.5
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public double SurfaceGravity { get; set; }
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public double SurfacePressure { get; set; }
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public bool Landable { get; set; } // : true (if landable)
 
         /* TODO: Materials: JSON array with objects with material names and percentage occurrence
@@ -452,27 +535,26 @@ namespace SrvSurvey
 
         /* TODO: Rings: [array of info] – if rings present
         ReserveLevel: (Pristine/Major/Common/Low/Depleted) – if rings present
-
-        Rings properties
-            Name
-            RingClass
-            MassMT – ie in megatons
-            InnerRad
-            OuterRad
         */
 
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public double Axial { get; set; } // tilt If rotating:
 
         // Orbital Parameters for any Star/Planet/Moon(except main star of single-star system)
 
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public double SemiMajorAxis { get; set; }
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public double Eccentricity { get; set; }
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public double OrbitalInclination { get; set; }
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public double Periapsis { get; set; }
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public double OrbitalPeriod { get; set; }
     }
 
-    class FSSBodySignals : JournalEntry
+    class FSSBodySignals : JournalEntry, ISystemAddress
     {
         // { "timestamp":"2023-08-18T23:10:13Z", "event":"FSSBodySignals", "BodyName":"Wregoe LH-T b5-0 1", "BodyID":5, "SystemAddress":684377515057, "Signals":[ { "Type":"$SAA_SignalType_Biological;", "Type_Localised":"Biological", "Count":1 } ] }
         public long SystemAddress { get; set; }
@@ -481,7 +563,7 @@ namespace SrvSurvey
         public List<ScanSignal> Signals { get; set; }
     }
 
-    class Disembark : JournalEntry
+    class Disembark : JournalEntry, ISystemAddress
     {
         // { "timestamp":"2023-03-03T06:20:22Z", "event":"Disembark", "SRV":true, "Taxi":false, "Multicrew":false, "ID":26, "StarSystem":"Synuefe TP-F b44-0", "SystemAddress":682228131193, "Body":"Synuefe TP-F b44-0 AB 7", "BodyID":14, "OnStation":false, "OnPlanet":true }
         public bool SRV { get; set; }

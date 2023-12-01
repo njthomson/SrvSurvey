@@ -83,6 +83,42 @@ namespace SrvSurvey.game
         double Latitude { get; set; }
     }
 
+    interface ISystemAddress
+    {
+        public long SystemAddress { get; set; }
+    }
+
+    interface ISystemDataStarter
+    {
+        string @event { get; set; }
+        string StarSystem { get; set; }
+        long SystemAddress { get; set; }
+        double[] StarPos { get; set; }
+        string Body { get; set; }
+        int BodyID { get; set; }
+        BodyType BodyType { get; set; }
+    }
+
+    enum BodyType
+    {
+        BaryCenter,
+        Star,
+        Planet,
+        PlanteryRing,
+        StellarRing,
+        Station,
+        AsteroidCluster,
+    }
+
+    internal enum SystemBodyType
+    {
+        Star,
+        Giant,
+        SolidBody,
+        LandableBody,
+        Asteroid,
+    }
+
     public enum SuitType
     {
         flightSuite,

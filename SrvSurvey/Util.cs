@@ -202,6 +202,9 @@ namespace SrvSurvey
             return angle;
         }
 
+        /// <summary>
+        /// Extract the species prefix from the name, without the color variant part
+        /// </summary>
         public static string getSpeciesPrefix(string name)
         {
             // extract the species prefix from the name, without the color variant part
@@ -212,6 +215,25 @@ namespace SrvSurvey
 
             species = $"$Codex_Ent_{species}_";
             return species;
+        }
+
+        /// <summary>
+        /// Extract the genus prefix from the name, without the color variant part
+        /// </summary>
+        public static string getGenusNameFromVariant(string name)
+        {
+            // extract the species prefix from the name, without the color variant part
+            var genus = name.Replace("$Codex_Ent_", "").Replace("_Name;", "");
+            var idx = genus.LastIndexOf('_');
+            if (genus.IndexOf('_') != idx)
+                genus = genus.Substring(0, idx);
+
+            idx = genus.LastIndexOf('_');
+            if (idx > 0)
+                genus = genus.Substring(0, idx);
+
+            genus = $"$Codex_Ent_{genus}_";
+            return genus;
         }
 
         public static double getSystemDistance(double[] here, double[] there)
@@ -332,36 +354,41 @@ namespace SrvSurvey
 
         public static int GetBodyValue(Scan scan, bool ifMapped)
         {
-            var mass = scan.MassEM > 0 ? scan.MassEM : scan.StellarMass;
-            var isFirstDiscoverer = !scan.WasDiscovered;
-            var isMapped = ifMapped;
-            var isFirstMapped = !scan.WasMapped;
+            return Util.GetBodyValue(
+                scan.PlanetClass, // planetClass
+                scan.TerraformState == "Terraformable", // isTerraformable
+                scan.MassEM > 0 ? scan.MassEM : scan.StellarMass, // mass
+                !scan.WasDiscovered, // isFirstDiscoverer
+                ifMapped, // isMapped
+                !scan.WasMapped // isFirstMapped
+            );
+        }
+
+        public static int GetBodyValue(string? planetClass, bool isTerraformable, double mass, bool isFirstDiscoverer, bool isMapped, bool isFirstMapped, bool withEfficiencyBonus = true, bool isFleetCarrierSale = false)
+        {
             var isOdyssey = Util.isOdyssey;
-            var withEfficiencyBonus = true;
-            var isFleetCarrierSale = false;
-            var isTerraformable = scan.TerraformState == "Terraformable";
 
             // determine base value
             var k = 300;
 
-            if (scan.PlanetClass == "Metal rich body") // MR
+            if (planetClass == "Metal rich body") // MR
                 k = 21790;
-            else if (scan.PlanetClass == "Ammonia world") // AW
+            else if (planetClass == "Ammonia world") // AW
                 k = 96932;
-            else if (scan.PlanetClass == "Sudarsky class I gas giant") // GG1
+            else if (planetClass == "Sudarsky class I gas giant") // GG1
                 k = 1656;
-            else if (scan.PlanetClass == "Sudarsky class II gas giant" // GG2
-                || scan.PlanetClass == "High metal content body") // HMC
+            else if (planetClass == "Sudarsky class II gas giant" // GG2
+                || planetClass == "High metal content body") // HMC
             {
                 k = 9654;
                 if (isTerraformable) k += 100677;
             }
-            else if (scan.PlanetClass == "Water world") // WW
+            else if (planetClass == "Water world") // WW
             {
                 k = 64831;
                 if (isTerraformable) k += 116295;
             }
-            else if (scan.PlanetClass == "Earthlike body") // ELW
+            else if (planetClass == "Earthlike body") // ELW
             {
                 k = 116295;
             }

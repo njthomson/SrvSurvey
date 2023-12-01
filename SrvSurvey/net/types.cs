@@ -260,7 +260,7 @@ namespace SrvSurvey.canonn
         // https://us-central1-canonn-api-236217.cloudfunctions.net/query/codex/ref
         public string category; //     "$Codex_Category_Biology;"
         public string english_name; // "Roseum Brain Tree"
-        public string entryid; //         2100201
+        public string entryid; //         2100201 // this should remain a string as we sub-string on it
         public string hud_category; // "Biology"
         public string name; //         "$Codex_Ent_Seed_Name;"
         public string platform; //     "legacy"

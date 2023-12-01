@@ -40,6 +40,10 @@ namespace SrvSurvey.game
         public BioScan? scanTwo;
         public long organicRewards;
         public List<ScannedOrganic> scannedOrganics = new List<ScannedOrganic>();
+        /// <summary>
+        /// A HashSet of union strings of "{systemAddress}_{bodyId}_{entryId}". Used to efficiently track final scans of bio signals, that can be undone upon death.
+        /// </summary>
+        public HashSet<string> scannedBioEntryIds = new HashSet<string>();
 
         // spherical searching
         public SphereLimit sphereLimit = new SphereLimit();
