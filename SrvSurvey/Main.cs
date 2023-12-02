@@ -319,7 +319,7 @@ namespace SrvSurvey
                         Program.showPlotter<PlotTrackers>();
 
                     var plotPriorScans = Program.getPlotter<PlotPriorScans>();
-                    if (game.mode != GameMode.SuperCruising && (game.isLanded || showPlotTrackers || plotPriorScans != null))
+                    if (game.mode != GameMode.SuperCruising && (game.isLanded || showPlotTrackers || plotPriorScans != null || game.cmdr.scanOne != null))
                         Program.showPlotter<PlotGrounded>();
                 }
             }

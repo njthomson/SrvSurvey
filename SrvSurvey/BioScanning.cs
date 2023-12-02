@@ -1,4 +1,6 @@
-﻿using SrvSurvey.units;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using SrvSurvey.units;
 
 #pragma warning disable CS0649
 
@@ -13,6 +15,7 @@ namespace SrvSurvey
         public float radius;
         public string? genus;
         public string? species;
+        [JsonConverter(typeof(StringEnumConverter))]
         public Status status;
 
         public override string ToString()

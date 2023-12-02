@@ -35,13 +35,13 @@ namespace SrvSurvey
             this.initialize();
             this.reposition(Elite.getWindowRect(true));
 
-            if (Game.settings.autoLoadPriorScans && game.nearBody != null)
+            if (Game.settings.autoLoadPriorScans && game.nearBody != null) // later
             {
                 // show prior scans - if we have anything to show?
                 var form = Program.getPlotter<PlotPriorScans>();
                 if (form == null && game.canonnPoi != null)
                 {
-                    game.nearBody.preparePriorScans();
+                    game.nearBody.preparePriorScans(); // later
                 }
             }
         }
@@ -50,8 +50,7 @@ namespace SrvSurvey
         {
             this.BackgroundImage = GameGraphics.getBackgroundForForm(this);
 
-
-            if (game.nearBody == null)
+            if (game.nearBody == null || game.systemBody == null) // later
             {
                 Game.log("PlotBioStatus_Load bad!");
                 return;
@@ -64,7 +63,7 @@ namespace SrvSurvey
 
             //this.Opacity = 1;
             game.journals!.onJournalEntry += Journals_onJournalEntry;
-            game.nearBody!.bioScanEvent += NearBody_bioScanEvent;
+            game.nearBody!.bioScanEvent += NearBody_bioScanEvent; // later
         }
 
         private void NearBody_bioScanEvent()
@@ -87,12 +86,9 @@ namespace SrvSurvey
         {
             if (entry.Category == "$Codex_Category_Biology;")
             {
-                // prepare summary with value of last thing scanned
-                var namePart = entry.Name.Split('_')[2];
-                var genusName = BioScan.ranges.Keys.FirstOrDefault(_ => _.Contains(namePart, StringComparison.OrdinalIgnoreCase));
-                if (genusName != null && game.nearBody?.data.organisms != null && game.nearBody.data.organisms.ContainsKey(genusName))
+                var organism = game.systemBody?.organisms.FirstOrDefault(_ => _.variant == entry.Name);
+                if (organism != null)
                 {
-                    var organism = game.nearBody.data.organisms[genusName];
                     this.lastCodexScan = $"{entry.Name_Localised} {Util.credits(organism.reward)}";
                     this.Invalidate();
                 }
@@ -155,13 +151,13 @@ namespace SrvSurvey
             var g = e.Graphics;
             g.SmoothingMode = SmoothingMode.HighQuality;
 
-            if (game?.nearBody?.data?.organisms == null) return;
+            if (game.systemBody?.organisms == null) return;
 
             g.DrawString(
-                $"Biological signals: {game.nearBody.data.countOrganisms} | Analyzed: {game.nearBody.data.countAnalyzed}", // | {Util.credits(game.cmdr.organicRewards)}",
+                $"Biological signals: {game.systemBody.bioSignalCount} | Analyzed: {game.systemBody.countAnalyzedBioSignals}",
                 GameColors.fontSmall, GameColors.brushGameOrange, 4, 8);
 
-            if (game.nearBody.currentOrganism == null)
+            if (game.cmdr.scanOne == null)
                 this.showAllGenus(g);
             else
                 this.showCurrentGenus(g);
@@ -171,7 +167,7 @@ namespace SrvSurvey
 
         private void showCurrentGenus(Graphics g)
         {
-            var organism = game.nearBody!.currentOrganism!;
+            var organism = game.systemBody!.organisms.FirstOrDefault(_ => _.species == game.cmdr.scanOne!.species)!;
 
             float y = 28;
 
@@ -182,7 +178,7 @@ namespace SrvSurvey
 
             // middle circle - filled after scan two
             r = new RectangleF(40, y, 24, 24);
-            if (game.nearBody!.scanTwo != null)
+            if (game.cmdr.scanTwo != null)
             {
                 g.FillEllipse(GameColors.brushGameOrangeDim, r);
                 g.DrawEllipse(GameColors.penGameOrange2, r);
@@ -197,9 +193,16 @@ namespace SrvSurvey
             g.DrawEllipse(GameColors.penGameOrange2, r);
 
             // Species name
+            var txt = $"{organism.variantLocalized}"; // or species?
+            var f = GameColors.fontBig;
+            var sz = g.MeasureString(txt, f);
+            if (sz.Width > this.Width - 104 - 8) f = GameColors.font18;
+            sz = g.MeasureString(txt, f);
+            if (sz.Width > this.Width - 104 - 8) f = GameColors.font14;
+
             g.DrawString(
-                $"{organism.speciesLocalized}",
-                GameColors.fontBig, GameColors.brushCyan,
+                txt,
+                f, GameColors.brushCyan,
                 104, y - 8);
 
             // Reward
@@ -245,11 +248,39 @@ namespace SrvSurvey
 
             g.ResetTransform();
 
+            // use a simpler percentage
+            var percent = 100.0f / (float)game.systemBody!.bioSignalCount * (float)game.systemBody.countAnalyzedBioSignals;
+            var txt = $"  {percent}%";
+            var txtSz = g.MeasureString(txt, GameColors.fontSmall);
+            var x = this.Width - pad - txtSz.Width;
+            var y = pad;
+
+            var b = percent < 100 ? GameColors.brushCyan : GameColors.brushGameOrange;
+            g.DrawString(txt, GameColors.fontSmall, b,
+                x, y,
+                StringFormat.GenericTypographic);
+
+            const float length = 100f;
+            //var scannedLength = 20; // ratio * data.sumAnalyzed;
+
+            x = this.Width - pad - txtSz.Width - length;
+            y += pad - 2;
+
+            // known unscanned - solid blue line
+            g.DrawLine(GameColors.penCyan4, x, y, x + length, y);
+
+            // already scanned value - orange bar
+            g.FillRectangle(GameColors.brushGameOrange, x, 8, percent, 12);
+
+            // active scan organism value - solid blue bar
+            if (game.cmdr.scanOne != null)
+                g.FillRectangle(GameColors.brushCyan, x + percent, 9, length/ (float)game.systemBody!.bioSignalCount, 10);
+
+            // old
+            /*
             var data = game.nearBody!.data;
             data.updateScanProgress();
 
-
-            //var scanProgress = game.nearBody!.data.bodyScanValueProgress;
             var fullValueKnown = data.sumPotentialEstimate == data.sumPotentialKnown;
             var percent = Math.Round(data.scanProgress * 100);
             var txt = $"  {percent}%";
@@ -301,6 +332,7 @@ namespace SrvSurvey
             l = r;
             r = l + activeLength;
             g.FillRectangle(GameColors.brushCyan, l, 10, r - l, 8);
+            */
         }
 
         private void showAllGenus(Graphics g)
@@ -310,7 +342,7 @@ namespace SrvSurvey
             float y = 22;
 
             var allScanned = true;
-            foreach (var organism in game.nearBody!.data.organisms.Values)
+            foreach (var organism in game.systemBody!.organisms)
             {
                 allScanned &= organism.analyzed;
                 var txt = organism.genusLocalized;

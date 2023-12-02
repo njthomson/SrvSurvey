@@ -355,7 +355,7 @@ namespace SrvSurvey
 
         private void drawBioScans(Graphics g)
         {
-            if (game.nearBody == null) return;
+            if (game.nearBody == null || game.systemBody == null) return;
 
             // delta to ship
             g.ResetTransform();
@@ -367,10 +367,9 @@ namespace SrvSurvey
             // use the same Tracking delta for all bioScans against the same currentLocation
             var currentLocation = new LatLong2(this.game.status);
             var d = new TrackingDelta(game.nearBody.radius, currentLocation.clone());
-            foreach (var scan in game.nearBody.data.bioScans)
-            {
-                drawBioScan(g, d, scan);
-            }
+            if (game.systemBody?.bioScans?.Count > 0)
+                foreach (var scan in game.systemBody.bioScans)
+                    drawBioScan(g, d, scan);
 
             // draw prior scan circle first
             if (Game.settings.autoLoadPriorScans)
@@ -422,7 +421,7 @@ namespace SrvSurvey
                         b = isActive ? new HatchBrush(HatchStyle.DottedDiamond, Color.FromArgb(80, Color.Yellow), Color.Transparent)
                         : new HatchBrush(HatchStyle.DottedDiamond, Color.FromArgb(80, Color.Olive), Color.Transparent);
                         //p = Pens.Yellow; //GameColors.penTrackerClose;
-                        p = isActive ? new Pen(Color.FromArgb(80, Color.Yellow)) { Width = 8, DashStyle = DashStyle.Dot}
+                        p = isActive ? new Pen(Color.FromArgb(80, Color.Yellow)) { Width = 8, DashStyle = DashStyle.Dot }
                         : new Pen(Color.FromArgb(80, Color.Olive)) { Width = 8, DashStyle = DashStyle.Dot };
                     }
 

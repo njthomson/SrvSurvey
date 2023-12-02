@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using SrvSurvey.canonn;
 using SrvSurvey.units;
 
 namespace SrvSurvey.game
@@ -335,7 +336,7 @@ namespace SrvSurvey.game
 
             // update fields
             var bioSignals = entry.Signals.FirstOrDefault(_ => _.Type == "$SAA_SignalType_Biological;");
-            if (bioSignals != null)
+            if (bioSignals != null && body.bioSignalCount < bioSignals.Count)
                 body.bioSignalCount = bioSignals.Count;
         }
 
@@ -349,7 +350,8 @@ namespace SrvSurvey.game
             var bioSignals = entry.Signals.FirstOrDefault(_ => _.Type == "$SAA_SignalType_Biological;");
             if (bioSignals != null)
             {
-                body.bioSignalCount = bioSignals.Count;
+                if (body.bioSignalCount < bioSignals.Count)
+                    body.bioSignalCount = bioSignals.Count;
 
                 foreach (var genusEntry in entry.Genuses)
                 {
@@ -415,13 +417,6 @@ namespace SrvSurvey.game
             organism.variant = entry.Name;
             organism.variantLocalized = entry.Name_Localised;
             organism.reward = Game.codexRef.getRewardForEntryId(entry.EntryID.ToString());
-
-            // add to bio scan locations
-            if (body.bioScanLocations == null) body.bioScanLocations = new List<Tuple<string, LatLong2>>();
-
-            var tooClose = body.bioScanLocations.Any(_ => _.Item1 == entry.Name && Util.getDistance(_.Item2, entry, body.radius) < 20);
-            if (!tooClose)
-                body.bioScanLocations.Add(new Tuple<string, LatLong2>(entry.Name, entry));
         }
 
         public void onJournalEntry(ScanOrganic entry)
@@ -430,7 +425,20 @@ namespace SrvSurvey.game
             var body = this.bodies.FirstOrDefault(_ => _.id == entry.Body);
             if (body!.organisms == null) body.organisms = new List<SystemOrganism>();
 
-            var organism = body.organisms.FirstOrDefault(_ => _.genus == entry.Genus);
+            var organism = body.organisms.FirstOrDefault(_ => _.variant == entry.Variant);
+
+            // we might not have variant yet? Try again with just Genus
+            if (organism == null)
+                organism = body.organisms.FirstOrDefault(_ => _.genus == entry.Genus);
+
+            // some organisms have 2 species on the same planet, eg: Brain Tree's
+            if (organism != null && organism.variant != entry.Variant)
+            {
+                // clear current organism, so we start another one
+                organism = null;
+                body.bioSignalCount++;
+            }
+
             if (organism == null)
             {
                 organism = new SystemOrganism()
@@ -450,25 +458,51 @@ namespace SrvSurvey.game
             organism.variant = entry.Variant;
             organism.variantLocalized = entry.Variant_Localised;
 
+            if (organism.entryId == 0)
+            {
+                Game.codexRef.loadCodexRef().ContinueWith(response =>
+                {
+                    if (!response.IsCompletedSuccessfully) return;
+
+                    Dictionary<string, RefCodexEntry> codexRef = response.Result;
+                    var match = codexRef.Values.FirstOrDefault(_ => _.name == entry.Variant);
+
+                    if (match != null)
+                    {
+                        // update fields
+                        organism.entryId = long.Parse(match.entryid);
+                        if (match.reward.HasValue) organism.reward = match.reward.Value;
+
+                        Application.DoEvents();
+                        Application.DoEvents();
+                        this.Save();
+                    }
+                    else
+                    {
+                        Game.log($"No codexRef match found for organism '{entry.Variant_Localised ?? entry.Variant}' to '{body.name}' ({body.id})");
+                    }
+                });
+            }
+
             // upon the 3rd and final scan ...
             if (entry.ScanType == ScanType.Analyse)
             {
                 organism.analyzed = true;
 
-                if (organism.entryId == 0)
-                {
-                    Game.log($"Looking up missing missing entryId for organism '{entry.Variant_Localised ?? entry.Variant}' to '{body.name}' ({body.id})");
-                    // (run synchronously, assuming the network calls were done already)
-                    var pending = Game.codexRef.loadCodexRef();
-                    pending.Wait();
-                    var codexRef = pending.Result;
-                    var match = codexRef.Values.FirstOrDefault(_ => _.name == entry.Variant);
+                //if (organism.entryId == 0)
+                //{
+                //    Game.log($"Looking up missing missing entryId for organism '{entry.Variant_Localised ?? entry.Variant}' to '{body.name}' ({body.id})");
+                //    // (run synchronously, assuming the network calls were done already)
+                //    var pending = Game.codexRef.loadCodexRef();
+                //    pending.Wait();
+                //    var codexRef = pending.Result;
+                //    var match = codexRef.Values.FirstOrDefault(_ => _.name == entry.Variant);
 
-                    if (match != null)
-                        organism.entryId = long.Parse(match.entryid);
-                    else
-                        Game.log($"No codexRef match found for organism '{entry.Variant_Localised ?? entry.Variant}' to '{body.name}' ({body.id})");
-                }
+                //    if (match != null)
+                //        organism.entryId = long.Parse(match.entryid);
+                //    else
+                //        Game.log($"No codexRef match found for organism '{entry.Variant_Localised ?? entry.Variant}' to '{body.name}' ({body.id})");
+                //}
 
                 // efficiently track which organisms were scanned where
                 if (organism.entryId > 0)
@@ -621,7 +655,7 @@ namespace SrvSurvey.game
 
         /// <summary> Locations of all bio scans or Codex scans performed on this body </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-        public List<Tuple<string, LatLong2>>? bioScanLocations = new List<Tuple<string, LatLong2>>();
+        public List<BioScan>? bioScans = new List<BioScan>();
 
         /// <summary> Locations of named bookmarks on this body </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]

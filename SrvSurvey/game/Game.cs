@@ -477,6 +477,13 @@ namespace SrvSurvey.game
                         this.setLocations(superCruiseExitEvent);
                         return true;
                     }
+
+                    var approachBodyEvent = entry as ApproachBody;
+                    if (approachBodyEvent != null)
+                    {
+                        this.setLocations(approachBodyEvent);
+                        return true;
+                    }
                     return false;
                 });
                 log($"Game.initializeFromJournal: system: '{cmdr.currentSystem}' (id:{cmdr.currentSystemAddress}), body: '{cmdr.currentBody}' (id:{cmdr.currentBodyId}, r: {Util.metersToString(cmdr.currentBodyRadius)})");
@@ -1325,6 +1332,7 @@ namespace SrvSurvey.game
                         // whilst CodexEntry has a lat/long ... it's further away than the cmdr's current location
                         // PlotTrackers.processCommand($"+{prefix}", entry); // TODO: retire
                         this.addBookmark(prefix, entry);
+                        Program.showPlotter<PlotTrackers>().prepTrackers();
                         Game.log($"Auto-adding tracker from CodexEntry: {genusName} ({entry.Name})");
                     }
                 }
@@ -1354,16 +1362,31 @@ namespace SrvSurvey.game
             this.systemStatus.onJournalEntry(entry);
 
             // add to bio scan locations. Skip for ScanType == ScanType.Analyse as a Sample event happens right before at the same location
-            if (entry.ScanType != ScanType.Analyse)
+            if (entry.ScanType == ScanType.Analyse)
             {
                 if (this.systemData == null || this.systemBody == null) throw new Exception("Why no systemBody?");
-                if (this.systemBody.bioScanLocations == null) this.systemBody.bioScanLocations = new List<Tuple<string, LatLong2>>();
+                if (this.systemBody.bioScans == null) this.systemBody.bioScans = new List<BioScan>();
 
-                var location = Status.here.clone();
-                var tooClose = this.systemBody.bioScanLocations.Any(_ => Util.getDistance(_.Item2, location, this.systemBody.radius) < 20);
+                // add a new BioScan for this 3rd and final entry
+                var bioScan = new BioScan
+                {
+                    location = Status.here.clone(),
+                    genus = entry.Genus,
+                    species = entry.Species,
+                    radius = BioScan.ranges[entry.Genus],
+                    status = BioScan.Status.Complete,
+                };
+                this.systemBody.bioScans.Add(bioScan);
 
-                if (!tooClose)
-                    this.systemBody.bioScanLocations.Add(new Tuple<string, LatLong2>(entry.Variant, location));
+                // and add the first two scans as completed
+                if (this.cmdr.scanOne != null)
+                {
+                    // (this can happen if there are 2 copies of Elite running at the same time)
+                    this.cmdr.scanOne!.status = BioScan.Status.Complete;
+                    this.systemBody.bioScans.Add(this.cmdr.scanOne);
+                    this.cmdr.scanTwo!.status = BioScan.Status.Complete;
+                    this.systemBody.bioScans.Add(this.cmdr.scanTwo);
+                }
             }
 
             // force a mode change to update ux
