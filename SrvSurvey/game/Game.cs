@@ -101,6 +101,7 @@ namespace SrvSurvey.game
         public SystemStatus systemStatus;
 
         public SystemData? systemData;
+        public SystemBody? systemBody;
 
         /// <summary>
         /// Distinct settings for the current commander
@@ -452,6 +453,8 @@ namespace SrvSurvey.game
             // try to find a location from recent journal items
             if (cmdr != null)
             {
+                this.initSystemData();
+
                 journals.walk(-1, true, (entry) =>
                 {
                     var locationEvent = entry as Location;
@@ -481,7 +484,6 @@ namespace SrvSurvey.game
                 this.systemStatus = new SystemStatus(cmdr.currentSystem, cmdr.currentSystemAddress);
                 this.systemStatus.initFromJournal(this);
 
-                this.initSystemData();
             }
 
             // if we are near a planet
@@ -1003,6 +1005,13 @@ namespace SrvSurvey.game
 
         #region location tracking
 
+        private void setCurrentBody(int bodyId)
+        {
+            if (this.systemData == null)
+                throw new Exception($"Why no systemData for bodyId: {bodyId}?");
+            this.systemBody = this.systemData.bodies.FirstOrDefault(_ => _.id == bodyId);
+        }
+
         public void setLocations(FSDJump entry)
         {
             Game.log($"setLocations: from FSDJump: {entry.StarSystem} / {entry.Body} ({entry.BodyType})");
@@ -1018,6 +1027,7 @@ namespace SrvSurvey.game
 
                 cmdr.currentBody = entry.Body;
                 cmdr.currentBodyId = entry.BodyID;
+                this.setCurrentBody(entry.BodyID);
 
                 // steal radius from status?
                 if (Game.activeGame!.status.BodyName == entry.Body)
@@ -1051,6 +1061,7 @@ namespace SrvSurvey.game
 
             cmdr.currentBody = entry.Body;
             cmdr.currentBodyId = entry.BodyID;
+            this.setCurrentBody(entry.BodyID);
 
             // steal radius from status?
             if (Game.activeGame!.status.BodyName == entry.Body)
@@ -1079,6 +1090,7 @@ namespace SrvSurvey.game
             {
                 cmdr.currentBody = entry.Body;
                 cmdr.currentBodyId = entry.BodyID;
+                this.setCurrentBody(entry.BodyID);
 
                 // steal radius from status?
                 if (Game.activeGame!.status.BodyName == entry.Body)
@@ -1094,6 +1106,7 @@ namespace SrvSurvey.game
                 cmdr.currentBody = null;
                 cmdr.currentBodyId = -1;
                 cmdr.currentBodyRadius = -1;
+                this.systemBody = null;
             }
 
             cmdr.lastSystemLocation = Util.getLocationString(entry.Starsystem, entry.Body);
@@ -1111,10 +1124,11 @@ namespace SrvSurvey.game
             cmdr.currentSystemAddress = entry.SystemAddress;
             cmdr.starPos = entry.StarPos;
 
-            if (entry.BodyType ==  BodyType.Planet)
+            if (entry.BodyType == BodyType.Planet)
             {
                 cmdr.currentBody = entry.Body;
                 cmdr.currentBodyId = entry.BodyID;
+                this.setCurrentBody(entry.BodyID);
 
                 // steal radius from status?
                 if (Game.activeGame!.status.BodyName == entry.Body)
@@ -1130,6 +1144,7 @@ namespace SrvSurvey.game
                 cmdr.currentBody = null;
                 cmdr.currentBodyId = -1;
                 cmdr.currentBodyRadius = -1;
+                this.systemBody = null;
             }
 
             cmdr.lastSystemLocation = Util.getLocationString(entry.StarSystem, entry.Body);
@@ -1308,7 +1323,8 @@ namespace SrvSurvey.game
                     else
                     {
                         // whilst CodexEntry has a lat/long ... it's further away than the cmdr's current location
-                        PlotTrackers.processCommand($"+{prefix}", entry);
+                        // PlotTrackers.processCommand($"+{prefix}", entry); // TODO: retire
+                        this.addBookmark(prefix, entry);
                         Game.log($"Auto-adding tracker from CodexEntry: {genusName} ({entry.Name})");
                     }
                 }
@@ -1336,6 +1352,19 @@ namespace SrvSurvey.game
         private void onJournalEntry(ScanOrganic entry)
         {
             this.systemStatus.onJournalEntry(entry);
+
+            // add to bio scan locations. Skip for ScanType == ScanType.Analyse as a Sample event happens right before at the same location
+            if (entry.ScanType != ScanType.Analyse)
+            {
+                if (this.systemData == null || this.systemBody == null) throw new Exception("Why no systemBody?");
+                if (this.systemBody.bioScanLocations == null) this.systemBody.bioScanLocations = new List<Tuple<string, LatLong2>>();
+
+                var location = Status.here.clone();
+                var tooClose = this.systemBody.bioScanLocations.Any(_ => Util.getDistance(_.Item2, location, this.systemBody.radius) < 20);
+
+                if (!tooClose)
+                    this.systemBody.bioScanLocations.Add(new Tuple<string, LatLong2>(entry.Variant, location));
+            }
 
             // force a mode change to update ux
             fireUpdate(this._mode, true);
@@ -1391,5 +1420,80 @@ namespace SrvSurvey.game
         }
 
         #endregion
+
+        #region bookmarking
+
+        public void addBookmark(string name, LatLong2 location)
+        {
+            if (this.systemData == null || this.systemBody == null)
+                throw new Exception($"Why no systemData or systemBody?");
+
+
+            if (this.systemBody.bookmarks == null) this.systemBody.bookmarks = new Dictionary<string, List<LatLong2>>();
+            if (!this.systemBody.bookmarks.ContainsKey(name)) this.systemBody.bookmarks[name] = new List<LatLong2>();
+
+            var pos = location;
+            var tooClose = this.systemBody.bookmarks[name].Any(_ => Util.getDistance(_, location, this.systemBody.radius) < 20);
+
+            if (tooClose)
+            {
+                Game.log($"Too close to prior bookmark. Move 20m away");
+                return;
+            }
+
+            Game.log($"Add bookmark '{name}' ({location}) on '{this.systemBody.name}' ({this.systemBody.id}");
+            this.systemBody.bookmarks[name].Add(pos);
+
+            // TODO: limit to only 4?
+            //Game.log($"Group '{name}' has too many entries. Ignoring location: {location}");
+            this.systemData.Save();
+        }
+
+        public void clearAllBookmarks()
+        {
+            if (this.systemData == null || this.systemBody == null) return;
+            Game.log($"Clearing all bookmarks on '{this.systemBody.name}' ({this.systemBody.id}");
+
+            this.systemBody.bookmarks = null;
+            this.systemData.Save();
+        }
+
+        public void removeBookmarkName(string name)
+        {
+            if (this.systemData == null || this.systemBody?.bookmarks == null) return;
+            Game.log($"Clearing all bookmarks for '{name}' on '{this.systemBody.name}' ({this.systemBody.id}");
+            if (!this.systemBody.bookmarks.ContainsKey(name)) return;
+
+            this.systemBody.bookmarks.Remove(name);
+            if (this.systemBody.bookmarks.Count == 0) this.systemBody.bookmarks = null;
+            this.systemData.Save();
+        }
+
+        public void removeBookmark(string name, LatLong2 location, bool nearest)
+        {
+            if (this.systemData == null || this.systemBody == null)
+                throw new Exception($"Why no systemData or systemBody?");
+            if (this.systemBody.bookmarks == null || this.systemBody.bookmarks.Count == 0) return;
+
+            if (!this.systemBody.bookmarks.ContainsKey(name)) return;
+
+            var list = this.systemBody.bookmarks[name]
+                .Select(_ => new TrackingDelta(this.systemBody.radius, _, location))
+                .ToList();
+            list.Sort((a, b) => a.distance.CompareTo(b.distance));
+
+            var victim = list[nearest ? 0 : list.Count - 1].Target;
+
+            Game.log($"Removing nearest bookmark '{name}' to {location}, victim: {victim} on '{this.systemBody.name}' ({this.systemBody.id}");
+            this.systemBody.bookmarks[name].Remove(victim);
+
+            if (this.systemBody.bookmarks[name].Count == 0) this.systemBody.bookmarks.Remove(name);
+            if (this.systemBody.bookmarks.Count == 0) this.systemBody.bookmarks = null;
+
+            this.systemData.Save();
+        }
+
+        #endregion
+
     }
 }

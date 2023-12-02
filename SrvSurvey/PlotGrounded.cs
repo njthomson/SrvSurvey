@@ -377,7 +377,7 @@ namespace SrvSurvey
                 drawPriorScans(g);
 
             // draw trackers circles first
-            if (game.cmdr.trackTargets?.Count > 0)
+            if (game.systemBody?.bookmarks?.Count > 0)
                 drawTrackers(g);
 
             // draw active scans top most
@@ -443,14 +443,15 @@ namespace SrvSurvey
         private void drawTrackers(Graphics g)
         {
             var form = Program.getPlotter<PlotTrackers>();
-            if (game.cmdr.trackTargets == null || game.nearBody == null || form == null) return;
+            if (game.systemBody?.bookmarks == null || game.nearBody == null || form == null) return;
 
             foreach (var name in form.trackers.Keys)
             {
                 var isActive = /* game.cmdr.scanOne?.genus == null || */ game.cmdr.scanOne?.genus == name;
 
                 // default range to 50m unless name matches a Genus
-                var radius = BioScan.ranges.ContainsKey(name) ? BioScan.ranges[name] : 50;
+                BioScan.prefixes.TryGetValue(name, out var fullName);
+                var radius = fullName != null && BioScan.ranges.ContainsKey(fullName) ? BioScan.ranges[fullName] : 50;
 
                 // draw radar circles for this group, and lines
                 foreach (var tt in form.trackers[name])

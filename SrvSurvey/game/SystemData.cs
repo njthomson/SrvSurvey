@@ -415,6 +415,13 @@ namespace SrvSurvey.game
             organism.variant = entry.Name;
             organism.variantLocalized = entry.Name_Localised;
             organism.reward = Game.codexRef.getRewardForEntryId(entry.EntryID.ToString());
+
+            // add to bio scan locations
+            if (body.bioScanLocations == null) body.bioScanLocations = new List<Tuple<string, LatLong2>>();
+
+            var tooClose = body.bioScanLocations.Any(_ => _.Item1 == entry.Name && Util.getDistance(_.Item2, entry, body.radius) < 20);
+            if (!tooClose)
+                body.bioScanLocations.Add(new Tuple<string, LatLong2>(entry.Name, entry));
         }
 
         public void onJournalEntry(ScanOrganic entry)
@@ -469,6 +476,8 @@ namespace SrvSurvey.game
                 else
                     Game.log($"BAD! Why entryId for organism '{entry.Variant_Localised ?? entry.Variant}' to '{body.name}' ({body.id})");
             }
+
+            // We cannot log locations here because we do not know if the event is tracked live or retrospectively during playback (where the status file cannot be trusted)
         }
 
         #endregion
@@ -610,9 +619,13 @@ namespace SrvSurvey.game
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public List<SystemRing> rings;
 
-        /// <summary> Locations of all scans performed on this body </summary>
-        //[JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-        //public List<BioScan> scanLocations = new List<BioScan>(); // TODO: fix type
+        /// <summary> Locations of all bio scans or Codex scans performed on this body </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public List<Tuple<string, LatLong2>>? bioScanLocations = new List<Tuple<string, LatLong2>>();
+
+        /// <summary> Locations of named bookmarks on this body </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public Dictionary<string, List<LatLong2>>? bookmarks = new Dictionary<string, List<LatLong2>>();
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public int bioSignalCount;
@@ -695,6 +708,9 @@ namespace SrvSurvey.game
         {
             return $"{this.speciesLocalized ?? this.species ?? this.genusLocalized ?? this.genus} ({this.entryId})";
         }
+
+        [JsonIgnore]
+        public int range { get => BioScan.ranges[this.genus]; }
     }
 
 }

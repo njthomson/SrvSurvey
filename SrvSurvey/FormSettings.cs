@@ -249,7 +249,8 @@ namespace SrvSurvey
 
         private void button1_Click(object sender, EventArgs e)
         {
-            PlotTrackers.processCommand("---", Status.here.clone());
+            // PlotTrackers.processCommand("---", Status.here.clone()); // TODO: retire
+            game.clearAllBookmarks();
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

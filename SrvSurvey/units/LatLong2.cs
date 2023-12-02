@@ -81,7 +81,6 @@ namespace SrvSurvey.units
 
             public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
             {
-                
                 var obj = serializer.Deserialize<JToken>(reader);
                 if (obj == null || !obj.HasValues)
                     return null;

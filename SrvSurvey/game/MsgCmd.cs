@@ -42,12 +42,16 @@
         public const string targetOff = ".target off";
         /// <summary> Main : show tracking target plotter </summary>
         public const string targetOn = ".target on";
-        /// <summary> Main : prefix for various track additive commands </summary>
+        /// <summary> Main : prefix for adding a bookmark by name </summary>
         public const string trackAdd = "+";
-        /// <summary> Main : prefix for various track removal commands </summary>
+        /// <summary> Main : prefix for removing the nearest bookmark by name </summary>
         public const string trackRemove = "-";
-        /// <summary> Main : prefix for various track removal commands </summary>
+        /// <summary> Main : prefix for removing the furthest bookmark by name </summary>
         public const string trackRemoveLast = "=";
+        /// <summary> Main : prefix for removing all bookmarks by name </summary>
+        public const string trackRemoveName = "--";
+        /// <summary> Main : Remove all bookmarks on current body </summary>
+        public const string trackRemoveAll = "---";
         /// <summary> PlotTrackers: write debug diagnostics to traces to help solve distance calculations </summary>
         public const string dbgDump = ".dbgdump";
 

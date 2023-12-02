@@ -314,7 +314,7 @@ namespace SrvSurvey
 
                 if (game.showBodyPlotters && Game.settings.autoShowBioPlot && !this.game.showGuardianPlotters)
                 {
-                    var showPlotTrackers = game.cmdr.trackTargets?.Count > 0 && game.nearBody != null;
+                    var showPlotTrackers = game.systemBody?.bookmarks?.Count > 0;
                     if (showPlotTrackers)
                         Program.showPlotter<PlotTrackers>();
 
@@ -508,7 +508,7 @@ namespace SrvSurvey
         private void onJournalEntry(SendText entry)
         {
             if (game == null) return;
-            var msg = entry.Message.ToLowerInvariant();
+            var msg = entry.Message.ToLowerInvariant().Trim();
 
             switch (msg)
             {
@@ -542,7 +542,38 @@ namespace SrvSurvey
             }
 
             if (msg.StartsWith(MsgCmd.trackAdd) || msg.StartsWith(MsgCmd.trackRemove) || msg.StartsWith(MsgCmd.trackRemoveLast))
-                PlotTrackers.processCommand(msg, Status.here.clone());
+            {
+                // PlotTrackers.processCommand(msg, Status.here.clone()); // TODO: retire
+
+                // book marking
+                if (msg == MsgCmd.trackRemoveAll)
+                {
+                    game.clearAllBookmarks();
+                }
+                else if (msg.StartsWith(MsgCmd.trackAdd))
+                {
+                    var name = msg.Substring(1).Trim();
+                    game.addBookmark(name, Status.here.clone());
+                }
+                else if (msg.StartsWith(MsgCmd.trackRemoveName))
+                {
+                    var name = msg.Substring(2).Trim();
+                    game.removeBookmarkName(name);
+                }
+                else if (msg.StartsWith(MsgCmd.trackRemove))
+                {
+                    var name = msg.Substring(1).Trim();
+                    game.removeBookmark(name, Status.here.clone(), true);
+                }
+                else if (msg.StartsWith(MsgCmd.trackRemoveLast))
+                {
+                    var name = msg.Substring(1).Trim();
+                    game.removeBookmark(name, Status.here.clone(), false);
+                }
+
+                // force a re-render
+                Program.showPlotter<PlotTrackers>()?.prepTrackers();
+            }
 
             // submit a Landscape survey
             if (msg.StartsWith(MsgCmd.visited, StringComparison.OrdinalIgnoreCase))

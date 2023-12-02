@@ -12,6 +12,7 @@ namespace SrvSurvey
 
         public Dictionary<string, List<TrackingDelta>> trackers = new Dictionary<string, List<TrackingDelta>>();
 
+        /*
         public static void processCommand(string msg, LatLong2 location)
         {
             if (Game.activeGame == null || !(msg.StartsWith(MsgCmd.trackAdd) || msg.StartsWith(MsgCmd.trackRemove) || msg.StartsWith(MsgCmd.trackRemoveLast))) return;
@@ -145,6 +146,7 @@ namespace SrvSurvey
                 Program.closePlotter<PlotTrackers>();
             }
         }
+        */
 
         private PlotTrackers() : base()
         {
@@ -154,10 +156,10 @@ namespace SrvSurvey
 
         private void setNewHeight()
         {
-            if (game.cmdr.trackTargets == null) return;
+            if (game.systemBody?.bookmarks == null) return;
 
             // adjust height if needed
-            var formHeight = 42 + (game.cmdr.trackTargets.Count * rowHeight);
+            var formHeight = 42 + (game.systemBody.bookmarks.Count * rowHeight);
             if (this.Height != formHeight)
             {
                 this.Height = formHeight;
@@ -188,22 +190,31 @@ namespace SrvSurvey
             this.reposition(gameRect);
         }
 
-        private void prepTrackers()
+        public void prepTrackers()
         {
-            if (game.cmdr.trackTargets != null)
+            this.trackers.Clear();
+            if (game.systemBody?.bookmarks != null)
             {
-                foreach (var name in game.cmdr.trackTargets.Keys)
+                foreach (var name in game.systemBody.bookmarks.Keys)
                 {
                     if (!this.trackers.ContainsKey(name))
                     {
                         // create group and TrackingDelta's for each location
                         this.trackers.Add(name, new List<TrackingDelta>());
 
-                        foreach (var pos in game.cmdr.trackTargets[name])
-                            this.trackers[name].Add(new TrackingDelta(game.nearBody!.radius, pos));
+                        foreach (var pos in game.systemBody.bookmarks[name])
+                            this.trackers[name].Add(new TrackingDelta(game.systemBody.radius, pos));
+
+                        this.trackers[name].Sort((a, b) => a.distance.CompareTo(b.distance));
                     }
                 }
             }
+
+            this.setNewHeight();
+            Program.getPlotter<PlotGrounded>()?.Invalidate();
+
+            if (this.trackers.Count == 0)
+                Program.closePlotter<PlotTrackers>();
         }
 
         public override void reposition(Rectangle gameRect)
@@ -247,6 +258,8 @@ namespace SrvSurvey
 
         protected override void onJournalEntry(ScanOrganic entry)
         {
+            if (this.IsDisposed || game.systemBody == null) return;
+
             // if we are close enough to a tracker ... auto remove it
             if (this.trackers.ContainsKey(entry.Genus))
             {
@@ -260,7 +273,8 @@ namespace SrvSurvey
                     {
                         Game.log($"Auto removing tracker for: '{BioScan.genusNames[entry.Genus]}'/'{entry.Genus}'");
                         var prefix = BioScan.prefixes.First(_ => _.Value.Contains(entry.Genus)).Key;
-                        processCommand($"-{prefix}", Status.here.clone());
+                        game.removeBookmark(prefix, Status.here.clone(), true);
+                        // processCommand($"-{prefix}", Status.here.clone()); // TODO: retire
                     }
                 }
             }
@@ -268,15 +282,13 @@ namespace SrvSurvey
 
         protected override void OnPaintBackground(PaintEventArgs e)
         {
-            if (this.IsDisposed || game.nearBody == null) return;
+            if (this.IsDisposed || game.nearBody == null || game.systemBody?.bookmarks == null || game.systemBody.bookmarks.Count == 0) return;
 
             this.g = e.Graphics;
             this.g.SmoothingMode = SmoothingMode.HighQuality;
             base.OnPaintBackground(e);
 
-            g.DrawString($"Tracking {game.cmdr.trackTargets?.Count} targets:", GameColors.fontSmall, GameColors.brushGameOrange, 4, 8);
-
-            if (game.cmdr.trackTargets == null) return;
+            g.DrawString($"Tracking {game.systemBody.bookmarks?.Count} targets:", GameColors.fontSmall, GameColors.brushGameOrange, 4, 8);
 
             var indent = 220 + 80;
             var y = 12;
@@ -286,7 +298,8 @@ namespace SrvSurvey
 
                 var x = (float)this.Width - indent;
 
-                var isActive = game.cmdr.scanOne?.genus == null || game.cmdr.scanOne?.genus == name;
+                BioScan.prefixes.TryGetValue(name, out var fullName);
+                var isActive = game.cmdr.scanOne?.genus == null || game.cmdr.scanOne?.genus == fullName;
                 var isClose = false;
                 var bearingWidth = 75;
                 Brush brush;
