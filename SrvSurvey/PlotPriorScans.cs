@@ -1,4 +1,5 @@
-﻿using SrvSurvey.canonn;
+﻿using DecimalMath;
+using SrvSurvey.canonn;
 using SrvSurvey.game;
 using SrvSurvey.units;
 using System.Drawing.Drawing2D;
@@ -87,7 +88,8 @@ namespace SrvSurvey
             //else
             {
                 //Elite.floatRightMiddle(this, gameRect, 20);
-                Elite.floatRightTop(this, gameRect, 20);
+                //Elite.floatRightTop(this, gameRect, 20);
+                Elite.floatLeftMiddle(this, gameRect);
             }
 
             this.Invalidate();
@@ -133,6 +135,7 @@ namespace SrvSurvey
                             poiName = poi.english_name,
                             genusName = genusName,
                             credits = Util.credits(reward),
+                            reward = reward,
                         };
                         this.signals.Add(signal);
                     }
@@ -187,7 +190,8 @@ namespace SrvSurvey
             var bearingWidth = 75;
 
             this.dty = 8;
-            foreach (var signal in this.signals)
+            var sortedSignals = this.signals.OrderByDescending(_ => _.reward);
+            foreach (var signal in sortedSignals)
             {
                 var analyzed = signal.genusName != null && game.nearBody.data.organisms.ContainsKey(signal.genusName) && game.nearBody.data.organisms[signal.genusName].analyzed;
                 var isActive = (game.cmdr.scanOne?.genus == null) || game.cmdr.scanOne?.genus == signal.genusName;
@@ -212,7 +216,7 @@ namespace SrvSurvey
                         this.dtx = indent;
                         this.dty += rowHeight;
                     }
-                    
+
                     var isTooCloseToScan = Util.isCloseToScan(dd.Target, signal.genusName);
 
                     isClose |= dd.distance < highlightDistance && !analyzed && !isTooCloseToScan;
@@ -261,7 +265,17 @@ namespace SrvSurvey
 
                 r.Y = (int)ly;
                 TextRenderer.DrawText(g, signal.poiName, f, r, ((SolidBrush)brush).Color, TextFormatFlags.NoPadding | TextFormatFlags.Left);
-                TextRenderer.DrawText(g, signal.credits, f, r , ((SolidBrush)brush).Color, TextFormatFlags.NoPadding | TextFormatFlags.Right);
+                TextRenderer.DrawText(g, signal.credits, f, r, ((SolidBrush)brush).Color, TextFormatFlags.NoPadding | TextFormatFlags.Right);
+
+                if (game.isMode(GameMode.SuperCruising, GameMode.GlideMode))
+                {
+                    // calculate angle of decline for the nearest location
+                    r.Y += rowHeight;
+                    var aa = DecimalEx.ToDeg(DecimalEx.ATan(game.status.Altitude / signal.trackers[0].distance));
+                    // color it red if steeper than 60°
+                    if (aa > 60) brush = Brushes.DarkRed;
+                    TextRenderer.DrawText(g, $"{(int)aa}°", f, r, ((SolidBrush)brush).Color, TextFormatFlags.NoPadding | TextFormatFlags.Left);
+                }
             }
         }
     }

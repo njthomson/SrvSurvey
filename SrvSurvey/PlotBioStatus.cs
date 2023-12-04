@@ -50,7 +50,7 @@ namespace SrvSurvey
         {
             this.BackgroundImage = GameGraphics.getBackgroundForForm(this);
 
-            if (game.nearBody == null || game.systemBody == null) // later
+            if (game.nearBody == null) // later
             {
                 Game.log("PlotBioStatus_Load bad!");
                 return;
@@ -250,7 +250,7 @@ namespace SrvSurvey
 
             // use a simpler percentage
             var percent = 100.0f / (float)game.systemBody!.bioSignalCount * (float)game.systemBody.countAnalyzedBioSignals;
-            var txt = $"  {percent}%";
+            var txt = $"  {(int)percent}%";
             var txtSz = g.MeasureString(txt, GameColors.fontSmall);
             var x = this.Width - pad - txtSz.Width;
             var y = pad;

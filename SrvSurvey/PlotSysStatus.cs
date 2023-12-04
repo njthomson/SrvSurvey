@@ -121,10 +121,14 @@ namespace SrvSurvey
                 // new
                 var dssRemaining = game.systemData.getDssRemainingNames();
 
-                if (!game.systemData.fssComplete)
+                if (!game.systemData.honked)
                 {
-                    var foo = 100.0 / (float)game.systemData.bodyCount * (float)game.systemData.fssBodyCount;
-                    this.drawTextAt($"FSS {foo}% complete", GameColors.brushCyan);
+                    this.drawTextAt($"FSS not started", GameColors.brushCyan);
+                }
+                else if (!game.systemData.fssComplete)
+                {
+                    var fssProgress = 100.0 / (float)game.systemData.bodyCount * (float)game.systemData.fssBodyCount;
+                    this.drawTextAt($"FSS {(int)fssProgress}% complete", GameColors.brushCyan);
                 }
                 else if (dssRemaining.Count > 0)
                 {

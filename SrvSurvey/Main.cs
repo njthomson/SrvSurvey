@@ -262,14 +262,20 @@ namespace SrvSurvey
 
             this.txtVehicle.Text = game.vehicle.ToString();
 
-            this.txtLocation.Text = game.cmdr?.lastSystemLocation
-                ?? "Unknown";
+            this.txtLocation.Text = game.systemBody?.name ?? $"?{game.systemData?.name}" ?? "";
 
-            // TODO: use "game.cmdr.lastBody" instead??
-            if (game.nearBody != null)
+            if (game.fsdJumping)
+            {
+                this.txtNearBody.Text = "Witch space";
+            }
+            else if(game.nearBody != null)
+            {
                 this.txtNearBody.Text = "Near body";
+            }
             else
+            {
                 this.txtNearBody.Text = "Deep space";
+            }
         }
 
         private void updateBioTexts()

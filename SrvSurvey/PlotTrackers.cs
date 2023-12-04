@@ -261,9 +261,10 @@ namespace SrvSurvey
             if (this.IsDisposed || game.systemBody == null) return;
 
             // if we are close enough to a tracker ... auto remove it
-            if (this.trackers.ContainsKey(entry.Genus))
+            var prefix = BioScan.prefixes.First(_ => _.Value.Contains(entry.Genus)).Key;
+            if (this.trackers.ContainsKey(prefix))
             {
-                var td = this.trackers[entry.Genus].FirstOrDefault();
+                var td = this.trackers[prefix].FirstOrDefault();
                 if (td != null)
                 {
                     Game.log($"Distance to nearest '{entry.Genus}' tracker: {Util.metersToString(td.distance)}");
@@ -272,8 +273,8 @@ namespace SrvSurvey
                     if (td.distance < highlightDistance && Game.settings.autoRemoveTrackerOnSampling)
                     {
                         Game.log($"Auto removing tracker for: '{BioScan.genusNames[entry.Genus]}'/'{entry.Genus}'");
-                        var prefix = BioScan.prefixes.First(_ => _.Value.Contains(entry.Genus)).Key;
                         game.removeBookmark(prefix, Status.here.clone(), true);
+                        this.prepTrackers();
                         // processCommand($"-{prefix}", Status.here.clone()); // TODO: retire
                     }
                 }

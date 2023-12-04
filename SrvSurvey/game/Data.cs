@@ -52,7 +52,23 @@ namespace SrvSurvey.game
             Directory.CreateDirectory(folder);
 
             var json = JsonConvert.SerializeObject(this, Formatting.Indented);
-            File.WriteAllText(this.filepath, json);
+            var success = false;
+            var attempts = 0;
+            while (!success && attempts < 50)
+            {
+                try
+                {
+                    attempts++;
+                    File.WriteAllText(this.filepath, json);
+                    success = true;
+                }
+                catch
+                {
+                    Game.log($"Failed on attempt {attempts} to save: {this.filepath}");
+                    // swallow and try again
+                    Application.DoEvents();
+                }
+            }
         }
     }
 }

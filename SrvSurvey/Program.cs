@@ -155,6 +155,14 @@ namespace SrvSurvey
                 form.Opacity = Game.settings.Opacity;
         }
 
+        public static void invalidateActivePlotters()
+        {
+            Game.log($"Program.hideActivePlotters: {activePlotters.Count}");
+
+            foreach (PlotterForm form in activePlotters.Values)
+                form.Invalidate();
+        }
+
         #endregion
     }
 
@@ -162,5 +170,6 @@ namespace SrvSurvey
     {
         void reposition(Rectangle gameRect);
         double Opacity { get; set; }
+        void Invalidate();
     }
 }

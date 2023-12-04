@@ -202,7 +202,7 @@ namespace SrvSurvey.game
 
         public bool atMainMenu = false;
         public bool atCarrierMgmt = false;
-        private bool fsdJumping = false;
+        public bool fsdJumping = false;
         public bool isShutdown = false;
         public LandableBody? nearBody;
         /// <summary>
@@ -259,6 +259,8 @@ namespace SrvSurvey.game
                         cmdr.currentBodyRadius = -1;
                         cmdr.Save();
 
+                        this.systemBody = null;
+
                         // fire event
                         var leftBody = this.nearBody;
                         this.nearBody.Dispose();
@@ -274,6 +276,12 @@ namespace SrvSurvey.game
                         this.createNearBody(status.BodyName);
                     }
                 }
+            }
+
+            if (!status.hasLatLong && this.systemBody != null)
+            {
+                log($"status change clearing systemBody from: '{this.systemBody.name}' ({this.systemBody.id})");
+                this.systemBody = null;
             }
 
             this.checkModeChange();
@@ -794,10 +802,13 @@ namespace SrvSurvey.game
                 //log($"Failed to create any body for: {bodyName}");
             }
 
-
             if (this.nearBody == null)
             {
                 log($"Failed to create any body for: {bodyName}");
+            }
+            else
+            {
+                this.setCurrentBody(this.nearBody.bodyId);
             }
 
             if (this.nearBody?.data.countOrganisms > 0)
@@ -941,6 +952,8 @@ namespace SrvSurvey.game
             {
                 this.fsdJumping = true;
                 this.canonnPoi = null;
+                this.systemBody = null;
+                this.systemData = null;
                 this.checkModeChange();
                 this.Status_StatusChanged(false);
 
@@ -985,27 +998,30 @@ namespace SrvSurvey.game
 
         private void onJournalEntry(FSSDiscoveryScan entry)
         {
-            this.systemStatus.onJournalEntry(entry);
+            this.systemStatus.onJournalEntry(entry); // retire
         }
 
         private void onJournalEntry(Scan entry)
         {
-            this.systemStatus.onJournalEntry(entry);
+            this.systemStatus.onJournalEntry(entry); // retire
         }
 
         private void onJournalEntry(SAAScanComplete entry)
         {
-            this.systemStatus.onJournalEntry(entry);
+            this.systemStatus.onJournalEntry(entry); // retire
+
+            this.setCurrentBody(entry.BodyID);
+            this.fireUpdate();
         }
 
         private void onJournalEntry(FSSAllBodiesFound entry)
         {
-            this.systemStatus.onJournalEntry(entry);
+            this.systemStatus.onJournalEntry(entry); // retire
         }
 
         private void onJournalEntry(FSSBodySignals entry)
         {
-            this.systemStatus.onJournalEntry(entry);
+            this.systemStatus.onJournalEntry(entry); // retire
         }
 
         #endregion
@@ -1014,9 +1030,11 @@ namespace SrvSurvey.game
 
         private void setCurrentBody(int bodyId)
         {
+            log($"setCurrentBody: {bodyId}");
             if (this.systemData == null)
                 throw new Exception($"Why no systemData for bodyId: {bodyId}?");
             this.systemBody = this.systemData.bodies.FirstOrDefault(_ => _.id == bodyId);
+            Program.invalidateActivePlotters();
         }
 
         public void setLocations(FSDJump entry)
@@ -1026,6 +1044,7 @@ namespace SrvSurvey.game
             cmdr.currentSystem = entry.StarSystem;
             cmdr.currentSystemAddress = entry.SystemAddress;
             cmdr.starPos = entry.StarPos;
+            this.systemData = SystemData.From(entry);
 
             if (entry.BodyType == BodyType.Planet)
             {
@@ -1050,6 +1069,7 @@ namespace SrvSurvey.game
                 cmdr.currentBody = null;
                 cmdr.currentBodyId = -1;
                 cmdr.currentBodyRadius = -1;
+                this.systemBody = null;
             }
             cmdr.lastSystemLocation = Util.getLocationString(entry.StarSystem, entry.Body);
             cmdr.Save();
@@ -1130,6 +1150,7 @@ namespace SrvSurvey.game
             cmdr.currentSystem = entry.StarSystem;
             cmdr.currentSystemAddress = entry.SystemAddress;
             cmdr.starPos = entry.StarPos;
+            this.systemData = SystemData.From(entry);
 
             if (entry.BodyType == BodyType.Planet)
             {

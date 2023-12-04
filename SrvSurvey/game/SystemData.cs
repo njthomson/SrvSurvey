@@ -425,14 +425,12 @@ namespace SrvSurvey.game
             var body = this.bodies.FirstOrDefault(_ => _.id == entry.Body);
             if (body!.organisms == null) body.organisms = new List<SystemOrganism>();
 
+            // find by variant first, otherwise genus
             var organism = body.organisms.FirstOrDefault(_ => _.variant == entry.Variant);
-
-            // we might not have variant yet? Try again with just Genus
-            if (organism == null)
-                organism = body.organisms.FirstOrDefault(_ => _.genus == entry.Genus);
+            if (organism == null) organism = body.organisms.FirstOrDefault(_ => _.genus == entry.Genus);
 
             // some organisms have 2 species on the same planet, eg: Brain Tree's
-            if (organism != null && organism.variant != entry.Variant)
+            if (organism?.variant != null && organism.variant != entry.Variant)
             {
                 // clear current organism, so we start another one
                 organism = null;
@@ -450,9 +448,9 @@ namespace SrvSurvey.game
                 body.organisms.Add(organism);
             }
 
-            // TODO: handle multiple Brain Tree entries!
-
             // update fields
+            if (!string.IsNullOrWhiteSpace(entry.Genus_Localized))
+                organism.genusLocalized = entry.Genus_Localized;
             organism.species = entry.Species;
             organism.speciesLocalized = entry.Species_Localised;
             organism.variant = entry.Variant;
@@ -473,9 +471,13 @@ namespace SrvSurvey.game
                         organism.entryId = long.Parse(match.entryid);
                         if (match.reward.HasValue) organism.reward = match.reward.Value;
 
-                        Application.DoEvents();
-                        Application.DoEvents();
-                        this.Save();
+                        try
+                        {
+                            Application.DoEvents();
+                            Application.DoEvents();
+                            this.Save();
+                        }
+                        catch { /* ignore */ }
                     }
                     else
                     {

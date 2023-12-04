@@ -245,6 +245,7 @@ namespace SrvSurvey.canonn
         public string poiName;
         public string genusName;
         public string credits;
+        public long reward;
         public List<TrackingDelta> trackers = new List<TrackingDelta>();
     }
 

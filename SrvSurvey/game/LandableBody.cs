@@ -375,8 +375,10 @@ namespace SrvSurvey.game
                     // (this can happen if there are 2 copies of Elite running at the same time)
                     game.cmdr.scanOne!.status = BioScan.Status.Complete;
                     data.bioScans.Add(game.cmdr.scanOne);
+                    game.systemBody.bioScans!.Add(game.cmdr.scanOne); // !
                     game.cmdr.scanTwo!.status = BioScan.Status.Complete;
                     data.bioScans.Add(game.cmdr.scanTwo);
+                    game.systemBody.bioScans!.Add(game.cmdr.scanTwo); // !
                 }
                 bioScan.status = BioScan.Status.Complete;
                 data.bioScans.Add(bioScan);
