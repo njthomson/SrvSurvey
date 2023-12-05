@@ -16,8 +16,7 @@ namespace SrvSurvey.game
         {
             Game.logs = new List<string>();
             Game.logPath = prepLogFile();
-            var releaseVersion = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyFileVersionAttribute>()?.Version;
-            Game.log($"SrvSurvey version: {releaseVersion}");
+            Game.log($"SrvSurvey version: {Game.releaseVersion}");
             Game.log($"New log file: {Game.logPath}");
             Game.removeExcessLogFiles();
 
@@ -72,7 +71,7 @@ namespace SrvSurvey.game
         public static readonly List<string> logs;
         private static readonly string logPath;
         public static string logFolder = Path.Combine(Application.UserAppDataPath, "logs", "");
-
+        public static string releaseVersion = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyFileVersionAttribute>()?.Version!;
 
         #endregion
 
@@ -811,9 +810,9 @@ namespace SrvSurvey.game
                 this.setCurrentBody(this.nearBody.bodyId);
             }
 
-            if (this.nearBody?.data.countOrganisms > 0)
+            if (this.nearBody?.data.countOrganisms > 0 && this.systemBody?.organisms != null)
             {
-                log($"Genuses ({this.nearBody.data.countOrganisms}): " + string.Join(",", this.nearBody.data.organisms.Values.Select(_ => _.genusLocalized)));
+                log($"Genuses ({this.systemBody!.bioSignalCount}): " + string.Join(",", this.systemBody.organisms.Select(_ => _.genusLocalized)));
             }
 
             //if (this.nearBody?.guardianSiteCount > 0)
@@ -1221,12 +1220,32 @@ namespace SrvSurvey.game
             {
                 this.canonnPoi = response.Result;
                 Game.log($"Found system POI from Canonn for: {systemName}");
-                if (this.nearBody != null)
-                    this.nearBody.preparePriorScans();
+                this.showPriorScans();
 
                 if (this.systemStatus != null)
                     this.systemStatus.mergeCanonnPoi(this.canonnPoi);
             });
+        }
+
+        public void showPriorScans()
+        {
+            if (!Game.settings.autoLoadPriorScans || this.canonnPoi == null || this.canonnPoi.codex == null || this.systemData == null || this.systemBody == null) return;
+
+            Game.log($"Filtering organic signals from Canonn...");
+            var currentBody = this.systemBody.name.Replace(this.systemData.name, "").Trim();
+            var localPoi = this.canonnPoi.codex.Where(_ => _.body == currentBody && _.hud_category == "Biology" && _.latitude != null && _.longitude != null).ToList();
+            Game.log($"Found {localPoi.Count} organic signals from Canonn for: {this.systemBody.name}");
+
+            if (localPoi.Count > 0)
+            {
+                Program.control.Invoke(new Action(() =>
+                {
+                    var form = Program.showPlotter<PlotPriorScans>();
+                    form.setPriorScans(localPoi);
+                }));
+            }
+
+            // TODO: add some details to systemData too?
         }
 
         #endregion
@@ -1282,8 +1301,8 @@ namespace SrvSurvey.game
             set
             {
                 this._touchdownLocation = value;
-                if (this.nearBody != null)
-                    this.nearBody.data.lastTouchdown = value;
+                if (this.nearBody != null) this.nearBody.data.lastTouchdown = value;
+                if (this.systemBody != null) this.systemBody.lastTouchdown = value;
             }
         }
 
@@ -1338,13 +1357,13 @@ namespace SrvSurvey.game
                 var match = BioScan.prefixes.FirstOrDefault(_ => _.Value.Contains(namePart, StringComparison.OrdinalIgnoreCase));
                 var prefix = match.Key;
                 var genusName = match.Value;
-                if (prefix != null && this.nearBody?.data.organisms != null && this.nearBody.data.organisms.ContainsKey(genusName))
+                if (prefix != null && this.systemBody?.organisms != null)
                 {
                     // wait a bit for the status file to update
                     Application.DoEvents();
                     Game.log($"!! Comp scan organic: {genusName} ({entry.Name}) timestamps entry: {entry.timestamp} vs status: {this.status.timestamp} | Locations: entry: {entry.Latitude}, {entry.Longitude} vs status: {this.status.Latitude}, {this.status.Longitude}");
-                    var organism = this.nearBody.data.organisms[genusName];
-                    if (organism.analyzed && Game.settings.skipAnalyzedCompBioScans)
+                    var organism = systemBody.organisms.FirstOrDefault(_ => _.genus == genusName);
+                    if (organism?.analyzed == true && Game.settings.skipAnalyzedCompBioScans)
                     {
                         Game.log($"Already analyzed, NOT auto-adding tracker for: {genusName}");
                     }

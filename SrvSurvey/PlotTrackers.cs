@@ -321,7 +321,7 @@ namespace SrvSurvey
                 }
 
                 string? displayName;
-                if (!BioScan.genusNames.TryGetValue(name, out displayName))
+                if (!BioScan.prefixes.ContainsKey(name) || !BioScan.genusNames.TryGetValue(BioScan.prefixes[name], out displayName))
                     displayName = name;
 
                 var sz = g.MeasureString(displayName, GameColors.fontSmall);

@@ -143,9 +143,9 @@ namespace SrvSurvey
             {
                 var str = new StringBuilder($"Distance diagnostics from here: {Status.here}, nearBody.radius: {game.nearBody?.radius.ToString("N0")}\r\n");
 
-                if (game.nearBody?.data.bioScans != null)
+                if (game.systemBody?.bioScans != null)
                 {
-                    foreach (var scan in game.nearBody.data.bioScans)
+                    foreach (var scan in game.systemBody.bioScans)
                     {
                         str.AppendLine($"\r\n> Species: {scan.species} ({scan.status})");
                         str.AppendLine($"      radius: " + scan.radius.ToString("N0"));
@@ -399,7 +399,7 @@ namespace SrvSurvey
 
             foreach (var signal in form.signals)
             {
-                var analyzed = signal.genusName != null && game.nearBody.data.organisms[signal.genusName].analyzed;
+                var analyzed = game.systemBody?.organisms?.FirstOrDefault(_ => _.genus == signal.genusName)?.analyzed == true;
                 var isActive = (game.cmdr.scanOne?.genus == null && !analyzed) || game.cmdr.scanOne?.genus == signal.genusName;
 
                 // default range to 50m unless name matches a Genus
@@ -502,7 +502,7 @@ namespace SrvSurvey
             else if (scan.status == BioScan.Status.Died)
             {
                 var isActive = game.cmdr.scanOne == null || scan.genus == game.cmdr.scanOne.genus;
-                var analyzed = game.nearBody != null && game.nearBody.data.organisms.ContainsKey(scan.genus!) && game.nearBody.data.organisms[scan.genus!].analyzed;
+                var analyzed = game.systemBody?.organisms?.FirstOrDefault(_ => _.genus == scan.genus)?.analyzed == true;
                 // blue colors for scans lost due to death
                 b = isActive && !analyzed ? GameColors.brushExclusionAbandoned : Brushes.Transparent;
                 p = isActive && !analyzed ? GameColors.penExclusionAbandoned : Pens.Navy;

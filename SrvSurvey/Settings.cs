@@ -17,7 +17,6 @@ namespace SrvSurvey
 
         public bool autoShowBioSummary = true;
         public bool autoShowBioPlot = true;
-        public bool autoLoadPriorScans = true; // !
         public bool autoShowPlotFSS = true;
         public bool autoShowPlotSysStatus = true;
         public bool skipGasGiantDSS = true;
@@ -27,6 +26,11 @@ namespace SrvSurvey
         public bool autoTrackCompBioScans = true;
         public bool skipAnalyzedCompBioScans = true;
         public bool autoRemoveTrackerOnSampling = true;
+
+        public bool autoLoadPriorScans = true; // !
+        public bool skipPriorScansLowValue = false;
+        public int skipPriorScansLowValueAmount = 1_000_000;
+
         public bool focusGameOnStart = true;
         public bool focusGameOnMinimize = true;
 

@@ -236,6 +236,16 @@ namespace SrvSurvey
             return genus;
         }
 
+        /// <summary>
+        /// Extract the genus display name from variant localized
+        /// </summary>
+        public static string getGenusDisplayNameFromVariant(string variantLocalized)
+        {
+            // TODO: handle Braint Trees?
+            var parts = variantLocalized.Split(" ", StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+            return parts[0];
+        }
+
         public static double getSystemDistance(double[] here, double[] there)
         {
             // math.sqrt(sum(tuple([math.pow(p[i] - g[i], 2) for i in range(3)])))

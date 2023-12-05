@@ -395,10 +395,12 @@ namespace SrvSurvey.game
         {
             if (entry.SystemAddress != this.address) throw new ArgumentOutOfRangeException($"Unmatched system! Expected: `{this.address}`, got: {entry.SystemAddress}");
             // ignore non bio entries
-            if (entry.Category != "$Codex_Category_Biology;") return;
+            if (entry.SubCategory != "$Codex_SubCategory_Organic_Structures;") return;
 
             var body = this.bodies.FirstOrDefault(_ => _.id == entry.BodyID);
             if (body!.organisms == null) body.organisms = new List<SystemOrganism>();
+
+            // TODO: There's still a problem with BrainTree's here - the genus may not match, even when there's a single entry
 
             var genusName = Util.getGenusNameFromVariant(entry.Name) + "Genus_Name;";
             var organism = body.organisms.FirstOrDefault(_ => _.genus == genusName);
@@ -451,6 +453,8 @@ namespace SrvSurvey.game
             // update fields
             if (!string.IsNullOrWhiteSpace(entry.Genus_Localized))
                 organism.genusLocalized = entry.Genus_Localized;
+            if (organism.genusLocalized == null && entry.Variant_Localised != null)
+                organism.genusLocalized = Util.getGenusDisplayNameFromVariant(entry.Variant_Localised);
             organism.species = entry.Species;
             organism.speciesLocalized = entry.Species_Localised;
             organism.variant = entry.Variant;

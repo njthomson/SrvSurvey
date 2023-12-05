@@ -257,5 +257,15 @@ namespace SrvSurvey
         {
             Util.openLink("https://github.com/njthomson/SrvSurvey/wiki#when-bio-scanning");
         }
+
+        private void checkBox11_CheckedChanged(object sender, EventArgs e)
+        {
+            numMinScanValue.Enabled = checkBox11.Checked;
+        }
+
+        private void checkBox14_CheckedChanged(object sender, EventArgs e)
+        {
+            numPriorScanMinValue.Enabled = checkBox14.Checked;
+        }
     }
 }

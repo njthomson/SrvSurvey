@@ -274,7 +274,7 @@ namespace SrvSurvey
 
             // active scan organism value - solid blue bar
             if (game.cmdr.scanOne != null)
-                g.FillRectangle(GameColors.brushCyan, x + percent, 9, length/ (float)game.systemBody!.bioSignalCount, 10);
+                g.FillRectangle(GameColors.brushCyan, x + percent, 9, length / (float)game.systemBody!.bioSignalCount, 10);
 
             // old
             /*
@@ -346,6 +346,7 @@ namespace SrvSurvey
             {
                 allScanned &= organism.analyzed;
                 var txt = organism.genusLocalized;
+                if (txt == null && organism.variantLocalized != null) txt = Util.getGenusDisplayNameFromVariant(organism.variantLocalized);
                 if (organism.range > 0 && !organism.analyzed)
                 {
                     allScanned &= false;

@@ -11,6 +11,7 @@ namespace SrvSurvey.canonn
 {
     internal class Canonn
     {
+        private static HttpClient client;
         private static string allRuinsStaticPathDbg = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "..\\..\\..\\..", "allRuins.json");//"D:\\code\\SrvSurvey\\SrvSurvey\\allRuins.json";
         private static string allRuinsStaticPath = Debugger.IsAttached ? allRuinsStaticPathDbg : Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "allRuins.json");
         private static string allBeaconsStaticPath = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "allBeacons.json");
@@ -22,6 +23,10 @@ namespace SrvSurvey.canonn
 
         public void init()
         {
+            Canonn.client = new HttpClient();
+            Canonn.client.DefaultRequestHeaders.Add("accept-encoding", "gzip, deflate");
+            Canonn.client.DefaultRequestHeaders.Add("user-agent", $"SrvSurvey-{Game.releaseVersion}");
+
             // load static ruins summaries
             this.allRuins = JsonConvert.DeserializeObject<List<GuardianRuinSummary>>(File.ReadAllText(Canonn.allRuinsStaticPath))!;
             this.allBeacons = JsonConvert.DeserializeObject<List<GuardianBeaconSummary>>(File.ReadAllText(Canonn.allBeaconsStaticPath))!;
@@ -54,7 +59,7 @@ namespace SrvSurvey.canonn
         {
             Game.log($"Requesting getSystemPoi: {systemName}");
 
-            var json = await new HttpClient().GetStringAsync($"https://us-central1-canonn-api-236217.cloudfunctions.net/query/getSystemPoi?system={systemName}&odyssey=Y&cmdr={Game.activeGame?.cmdr.commander}");
+            var json = await client.GetStringAsync($"https://us-central1-canonn-api-236217.cloudfunctions.net/query/getSystemPoi?system={systemName}&odyssey=Y&cmdr={Game.activeGame?.cmdr.commander}");
             var systemPoi = JsonConvert.DeserializeObject<SystemPoi>(json)!;
 
             Game.log(systemPoi!);
@@ -64,7 +69,7 @@ namespace SrvSurvey.canonn
 
         public static async void biostats(long systemAddress, int bodyId)
         {
-            var json = await new HttpClient().GetStringAsync($"https://us-central1-canonn-api-236217.cloudfunctions.net/query/codex/biostats?id={systemAddress}");
+            var json = await client.GetStringAsync($"https://us-central1-canonn-api-236217.cloudfunctions.net/query/codex/biostats?id={systemAddress}");
 
             JToken biostats = JsonConvert.DeserializeObject<JToken>(json)!;
 
@@ -925,7 +930,7 @@ namespace SrvSurvey.canonn
             foreach (var systemName in allSystems)
             {
                 Game.log($"Checking: ({(100.0f / allSystems.Count * results.Count).ToString("#.#")}%) {systemName}");
-                var json = await new HttpClient().GetStringAsync($"https://api.canonn.tech/grreports?_limit=1&systemName={systemName}");
+                var json = await client.GetStringAsync($"https://api.canonn.tech/grreports?_limit=1&systemName={systemName}");
                 results[systemName] = json != "[]";
             }
 
@@ -942,7 +947,7 @@ namespace SrvSurvey.canonn
             foreach (var bodyName in allBodies)
             {
                 Game.log($"Checking: ({Math.Round(100.0f / allBodies.Count * results.Count)}%) {bodyName}");
-                var json = await new HttpClient().GetStringAsync($"https://api.canonn.tech/grreports?_limit=1&bodyName={bodyName}");
+                var json = await client.GetStringAsync($"https://api.canonn.tech/grreports?_limit=1&bodyName={bodyName}");
                 results[bodyName] = json != "[]";
             }
 

@@ -268,7 +268,7 @@ namespace SrvSurvey
             {
                 this.txtNearBody.Text = "Witch space";
             }
-            else if(game.nearBody != null)
+            else if (game.nearBody != null)
             {
                 this.txtNearBody.Text = "Near body";
             }
@@ -302,7 +302,7 @@ namespace SrvSurvey
                 Program.closePlotter<PlotTrackers>();
                 Program.closePlotter<PlotPriorScans>();
             }
-            else if (game.nearBody.data.countOrganisms == 0)
+            else if (game.systemBody?.bioSignalCount == 0)
             {
                 foreach (var ctrl in this.bioCtrls) ctrl.Text = "-";
                 Program.closePlotter<PlotBioStatus>();
@@ -311,12 +311,15 @@ namespace SrvSurvey
             }
             else
             {
-                txtBodyBioSignals.Text = game.nearBody.data.countOrganisms.ToString();
-                txtBodyBioScanned.Text = game.nearBody.data.countAnalyzed.ToString();
-                txtBodyBioValues.Text = Util.credits(game.nearBody.data.sumPotentialEstimate, true) + " / " + Util.credits(game.nearBody.data.sumAnalyzed);
+                txtBodyBioSignals.Text = game.systemBody?.bioSignalCount.ToString();
+                txtBodyBioScanned.Text = game.systemBody?.countAnalyzedBioSignals.ToString();
+                txtBodyBioValues.Text = Util.credits(game.nearBody.data.sumPotentialEstimate, true) + " / " + Util.credits(game.nearBody.data.sumAnalyzed); // TODO: retire?
 
-                if (Game.settings.autoShowBioSummary && (game.showBodyPlotters || game.mode == GameMode.SAA))
-                    Program.showPlotter<PlotBioStatus>();
+                if (game.systemBody?.organisms != null)
+                {
+                    if (Game.settings.autoShowBioSummary && (game.showBodyPlotters || game.mode == GameMode.SAA))
+                        Program.showPlotter<PlotBioStatus>();
+                }
 
                 if (game.showBodyPlotters && Game.settings.autoShowBioPlot && !this.game.showGuardianPlotters)
                 {
@@ -429,7 +432,7 @@ namespace SrvSurvey
         {
             Game.log($"Main.Disembark {entry.Body}");
 
-            if (entry.OnPlanet && !entry.OnStation && game?.nearBody?.data.countOrganisms > 0)
+            if (entry.OnPlanet && !entry.OnStation && game?.systemBody?.bioSignalCount > 0)
             {
                 if (Game.settings.autoShowBioSummary)
                     Program.showPlotter<PlotBioStatus>();
@@ -442,7 +445,7 @@ namespace SrvSurvey
         {
             Game.log($"Main.LaunchSRV {game?.status?.BodyName}");
 
-            if (game!.showBodyPlotters && game.nearBody?.data.countOrganisms > 0)
+            if (game!.showBodyPlotters && game.systemBody?.bioSignalCount > 0)
             {
                 if (Game.settings.autoShowBioSummary)
                     Program.showPlotter<PlotBioStatus>();
@@ -455,7 +458,7 @@ namespace SrvSurvey
         {
             Game.log($"Main.ApproachBody {entry.Body}");
 
-            if (game!.showBodyPlotters && game.nearBody?.data.countOrganisms > 0)
+            if (game!.showBodyPlotters && game.systemBody?.bioSignalCount > 0)
             {
                 if (Game.settings.autoShowBioSummary)
                     Program.showPlotter<PlotBioStatus>();
@@ -696,6 +699,7 @@ namespace SrvSurvey
 
             // force opacity changes to take immediate effect
             Program.showActivePlotters();
+            game?.showPriorScans();
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

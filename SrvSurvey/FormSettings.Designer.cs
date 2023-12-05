@@ -53,6 +53,11 @@ namespace SrvSurvey
             label1 = new Label();
             tabControl1 = new TabControl();
             tabPage4 = new TabPage();
+            label12 = new Label();
+            checkBox14 = new CheckBox();
+            numPriorScanMinValue = new NumericUpDown();
+            checkBox13 = new CheckBox();
+            linkLabel1 = new LinkLabel();
             button1 = new Button();
             checkBox7 = new CheckBox();
             checkBox6 = new CheckBox();
@@ -103,7 +108,6 @@ namespace SrvSurvey
             tabPage2 = new TabPage();
             linkAboutTwo = new LinkLabel();
             linkAboutOne = new LinkLabel();
-            linkLabel1 = new LinkLabel();
             panel1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox6).BeginInit();
@@ -111,6 +115,7 @@ namespace SrvSurvey
             ((System.ComponentModel.ISupportInitialize)trackOpacity).BeginInit();
             tabControl1.SuspendLayout();
             tabPage4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numPriorScanMinValue).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             tabPage3.SuspendLayout();
@@ -396,6 +401,10 @@ namespace SrvSurvey
             // 
             // tabPage4
             // 
+            tabPage4.Controls.Add(label12);
+            tabPage4.Controls.Add(checkBox14);
+            tabPage4.Controls.Add(numPriorScanMinValue);
+            tabPage4.Controls.Add(checkBox13);
             tabPage4.Controls.Add(linkLabel1);
             tabPage4.Controls.Add(button1);
             tabPage4.Controls.Add(checkBox7);
@@ -412,6 +421,64 @@ namespace SrvSurvey
             tabPage4.Size = new Size(490, 377);
             tabPage4.TabIndex = 3;
             tabPage4.Text = "Bio Scanning";
+            // 
+            // label12
+            // 
+            label12.AutoSize = true;
+            label12.Location = new Point(396, 344);
+            label12.Name = "label12";
+            label12.Size = new Size(42, 15);
+            label12.TabIndex = 23;
+            label12.Text = "credits";
+            // 
+            // checkBox14
+            // 
+            checkBox14.AutoSize = true;
+            checkBox14.Checked = true;
+            checkBox14.CheckState = CheckState.Checked;
+            checkBox14.Location = new Point(40, 343);
+            checkBox14.Name = "checkBox14";
+            checkBox14.Size = new Size(256, 19);
+            checkBox14.TabIndex = 22;
+            checkBox14.Tag = "skipPriorScansLowValue";
+            checkBox14.Text = "Skip organmisms with reward values below:";
+            checkBox14.UseVisualStyleBackColor = true;
+            checkBox14.CheckedChanged += checkBox14_CheckedChanged;
+            // 
+            // numPriorScanMinValue
+            // 
+            numPriorScanMinValue.Increment = new decimal(new int[] { 100000, 0, 0, 0 });
+            numPriorScanMinValue.Location = new Point(302, 342);
+            numPriorScanMinValue.Maximum = new decimal(new int[] { 6000000, 0, 0, 0 });
+            numPriorScanMinValue.Name = "numPriorScanMinValue";
+            numPriorScanMinValue.Size = new Size(88, 23);
+            numPriorScanMinValue.TabIndex = 21;
+            numPriorScanMinValue.Tag = "skipPriorScansLowValueAmount";
+            numPriorScanMinValue.TextAlign = HorizontalAlignment.Right;
+            numPriorScanMinValue.ThousandsSeparator = true;
+            numPriorScanMinValue.Value = new decimal(new int[] { 2000000, 0, 0, 0 });
+            // 
+            // checkBox13
+            // 
+            checkBox13.AutoSize = true;
+            checkBox13.Location = new Point(10, 318);
+            checkBox13.Name = "checkBox13";
+            checkBox13.Size = new Size(289, 19);
+            checkBox13.TabIndex = 16;
+            checkBox13.Tag = "autoLoadPriorScans";
+            checkBox13.Text = "Show prior bio scans from Canonn (experimental)";
+            checkBox13.UseVisualStyleBackColor = true;
+            // 
+            // linkLabel1
+            // 
+            linkLabel1.AutoSize = true;
+            linkLabel1.Location = new Point(170, 293);
+            linkLabel1.Name = "linkLabel1";
+            linkLabel1.Size = new Size(251, 15);
+            linkLabel1.TabIndex = 15;
+            linkLabel1.TabStop = true;
+            linkLabel1.Text = "See related messaging commands on the wiki.";
+            linkLabel1.LinkClicked += linkLabel1_LinkClicked;
             // 
             // button1
             // 
@@ -467,9 +534,9 @@ namespace SrvSurvey
             // 
             // btnClearUnclaimed
             // 
-            btnClearUnclaimed.Location = new Point(10, 348);
+            btnClearUnclaimed.Location = new Point(401, 8);
             btnClearUnclaimed.Name = "btnClearUnclaimed";
-            btnClearUnclaimed.Size = new Size(154, 23);
+            btnClearUnclaimed.Size = new Size(86, 53);
             btnClearUnclaimed.TabIndex = 6;
             btnClearUnclaimed.Text = "Clear unclaimed rewards";
             btnClearUnclaimed.UseVisualStyleBackColor = true;
@@ -913,6 +980,7 @@ namespace SrvSurvey
             checkBox11.Tag = "skipLowValueDSS";
             checkBox11.Text = "Skip bodies with estimated value below:";
             checkBox11.UseVisualStyleBackColor = true;
+            checkBox11.CheckedChanged += checkBox11_CheckedChanged;
             // 
             // numMinScanValue
             // 
@@ -1041,17 +1109,6 @@ namespace SrvSurvey
             linkAboutOne.Text = resources.GetString("linkAboutOne.Text");
             linkAboutOne.UseCompatibleTextRendering = true;
             // 
-            // linkLabel1
-            // 
-            linkLabel1.AutoSize = true;
-            linkLabel1.Location = new Point(170, 293);
-            linkLabel1.Name = "linkLabel1";
-            linkLabel1.Size = new Size(251, 15);
-            linkLabel1.TabIndex = 15;
-            linkLabel1.TabStop = true;
-            linkLabel1.Text = "See related messaging commands on the wiki.";
-            linkLabel1.LinkClicked += linkLabel1_LinkClicked;
-            // 
             // FormSettings
             // 
             AcceptButton = btnSave;
@@ -1078,6 +1135,7 @@ namespace SrvSurvey
             tabControl1.ResumeLayout(false);
             tabPage4.ResumeLayout(false);
             tabPage4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numPriorScanMinValue).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             tabPage3.ResumeLayout(false);
@@ -1172,5 +1230,9 @@ namespace SrvSurvey
         private CheckBox checkHideJournalTimer;
         private Button button1;
         private LinkLabel linkLabel1;
+        private CheckBox checkBox13;
+        private Label label12;
+        private CheckBox checkBox14;
+        private NumericUpDown numPriorScanMinValue;
     }
 }

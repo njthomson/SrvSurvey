@@ -70,27 +70,7 @@ namespace SrvSurvey
 
             this.Opacity = Game.settings.Opacity;
 
-            var plotGrounded = Program.getPlotter<PlotGrounded>();
-            var plotTrackers = Program.getPlotter<PlotTrackers>();
-
-            //if (plotTrackers != null)
-            //{
-            //    this.Width = plotTrackers.Width;
-            //    this.Left = gameRect.Right - this.Width - 20;
-            //    this.Top = plotTrackers.Bottom + 4;
-            //}
-            //else if (plotGrounded != null)
-            //{
-            //    this.Width = plotGrounded.Width;
-            //    this.Left = gameRect.Right - this.Width - 20;
-            //    this.Top = plotGrounded.Bottom + 4;
-            //}
-            //else
-            {
-                //Elite.floatRightMiddle(this, gameRect, 20);
-                //Elite.floatRightTop(this, gameRect, 20);
-                Elite.floatLeftMiddle(this, gameRect);
-            }
+            Elite.floatLeftMiddle(this, gameRect);
 
             this.Invalidate();
         }
@@ -111,24 +91,33 @@ namespace SrvSurvey
 
         public void setPriorScans(List<Codex> localPoi)
         {
+            if (game.systemBody == null) throw new Exception("Why?");
             this.signals.Clear();
 
             foreach (var poi in localPoi)
             {
-                var name = poi.english_name;
+                // skip anything with value is too low
+                var reward = Game.codexRef.getRewardForEntryId(poi.entryid.ToString()!);
+                if (Game.settings.skipPriorScansLowValue && reward < Game.settings.skipPriorScansLowValueAmount)
+                    continue;
+
                 if (poi.latitude != null && poi.longitude != null && poi.entryid != null)
                 {
+                    // skip anything too close (50m) to our own scans
+                    var location = new LatLong2((double)poi.latitude, (double)poi.longitude);
+                    var tooClose = game.systemBody.bioScans?.Any(_ => Util.getDistance(_.location, location, game.systemBody.radius) < 50);
+                    if (tooClose == true) continue;
+
                     // create group and TrackingDelta's for each location
                     var signal = this.signals.FirstOrDefault(_ => _.poiName == poi.english_name);
                     if (signal == null)
                     {
+                        var name = poi.english_name;
                         var nameParts = name.Split(' ', 2);
                         var genusName = BioScan.genusNames.FirstOrDefault(_ => _.Value.Equals(nameParts[0], StringComparison.OrdinalIgnoreCase)).Key;
                         // for pre-Odyssey bio's
                         if (!name.Contains("-"))
                             genusName = BioScan.genusNames.FirstOrDefault(_ => _.Value.Equals(nameParts[1], StringComparison.OrdinalIgnoreCase)).Key;
-
-                        var reward = Game.codexRef.getRewardForEntryId(poi.entryid.ToString()!);
 
                         signal = new SystemBioSignal
                         {
@@ -140,10 +129,6 @@ namespace SrvSurvey
                         this.signals.Add(signal);
                     }
 
-                    //if (!this.trackers.ContainsKey(name))
-                    //    this.trackers.Add(name, new List<TrackingDelta>());
-
-                    var location = new LatLong2((double)poi.latitude, (double)poi.longitude);
                     signal.trackers.Add(new TrackingDelta(game.nearBody!.radius, location));
                 }
             }
@@ -193,7 +178,7 @@ namespace SrvSurvey
             var sortedSignals = this.signals.OrderByDescending(_ => _.reward);
             foreach (var signal in sortedSignals)
             {
-                var analyzed = signal.genusName != null && game.nearBody.data.organisms.ContainsKey(signal.genusName) && game.nearBody.data.organisms[signal.genusName].analyzed;
+                var analyzed = game.systemBody?.organisms?.FirstOrDefault(_ => _.genus == signal.genusName)?.analyzed == true;
                 var isActive = (game.cmdr.scanOne?.genus == null) || game.cmdr.scanOne?.genus == signal.genusName;
                 Brush brush;
 
@@ -267,14 +252,14 @@ namespace SrvSurvey
                 TextRenderer.DrawText(g, signal.poiName, f, r, ((SolidBrush)brush).Color, TextFormatFlags.NoPadding | TextFormatFlags.Left);
                 TextRenderer.DrawText(g, signal.credits, f, r, ((SolidBrush)brush).Color, TextFormatFlags.NoPadding | TextFormatFlags.Right);
 
-                if (game.isMode(GameMode.SuperCruising, GameMode.GlideMode))
+                if (game.status.Altitude > 500) //game.isMode(GameMode.SuperCruising, GameMode.GlideMode))
                 {
                     // calculate angle of decline for the nearest location
                     r.Y += rowHeight;
                     var aa = DecimalEx.ToDeg(DecimalEx.ATan(game.status.Altitude / signal.trackers[0].distance));
                     // color it red if steeper than 60°
                     if (aa > 60) brush = Brushes.DarkRed;
-                    TextRenderer.DrawText(g, $"{(int)aa}°", f, r, ((SolidBrush)brush).Color, TextFormatFlags.NoPadding | TextFormatFlags.Left);
+                    TextRenderer.DrawText(g, $"-{(int)aa}°", f, r, ((SolidBrush)brush).Color, TextFormatFlags.NoPadding | TextFormatFlags.Left);
                 }
             }
         }
