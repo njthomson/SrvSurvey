@@ -520,6 +520,59 @@ namespace SrvSurvey.game
             // We cannot log locations here because we do not know if the event is tracked live or retrospectively during playback (where the status file cannot be trusted)
         }
 
+        public void onCanonnData(SystemPoi canonnPoi)
+        {
+            var dirty = false;
+
+            // update count of bio signals in bodies from Canonn data
+            var bioSignals = canonnPoi.SAAsignals.Where(_ => _.hud_category == "Biology");
+            foreach (var signal in bioSignals)
+            {
+                var signalBodyName = $"{canonnPoi.system} {signal.body}";
+                var signalBody = this.bodies.FirstOrDefault(_ => _.name == signalBodyName);
+
+                if (signalBody != null && signalBody.bioSignalCount < signal.count)
+                {
+                    Game.log($"Updating bioSignalCount from {signalBody.bioSignalCount} to {signal.count} for '{signalBody.name}' ({signalBody.id})");
+                    signalBody.bioSignalCount = signal.count;
+                    dirty = true;
+                }
+            }
+
+            foreach (var poi in canonnPoi.codex)
+            {
+                if (poi.hud_category != "Biology" || poi.latitude == null || poi.longitude == null || poi.entryid == null) continue;
+
+                var poiBodyName = $"{canonnPoi.system} {poi.body}";
+                var poiBody = this.bodies.FirstOrDefault(_ => _.name == poiBodyName);
+                if (poiBody != null)
+                {
+                    var organism = poiBody.organisms.FirstOrDefault(_ => _.entryId == poi.entryid);
+                    if (organism == null)
+                    {
+                        // TODO: handle Brain Trees
+                        var parts = poi.english_name.Split(' ', 2);
+                        var genusName = BioScan.genusNames.FirstOrDefault(_ => _.Value == parts[0]).Key;
+
+                        organism = new SystemOrganism()
+                        {
+                            genus = genusName,
+                            genusLocalized = parts[0],
+                            variantLocalized = poi.english_name,
+                            entryId = poi.entryid.Value,
+                            reward = Game.codexRef.getRewardForEntryId(poi.entryid.ToString()!),
+                        };
+                        Game.log($"add organism '{genusName}' from Canonn POI to '{poiBody.name}' ({poiBody.id})");
+                        poiBody.organisms.Add(organism);
+                        dirty = true;
+                    }
+                }
+            }
+
+            if (dirty)
+                this.Save();
+        }
+
         #endregion
 
         public override string ToString()

@@ -699,7 +699,10 @@ namespace SrvSurvey
 
             // force opacity changes to take immediate effect
             Program.showActivePlotters();
-            game?.showPriorScans();
+
+            // including prior scan data if present
+            if (game?.canonnPoi != null)
+                game.showPriorScans();
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

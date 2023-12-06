@@ -805,8 +805,9 @@ namespace SrvSurvey.game
             {
                 log($"Failed to create any body for: {bodyName}");
             }
-            else
+            else if (this.systemData != null)
             {
+                // TODO: revisit starting logic from status file. Maybe populate in one the blocks above?
                 this.setCurrentBody(this.nearBody.bodyId);
             }
 
@@ -1229,23 +1230,26 @@ namespace SrvSurvey.game
 
         public void showPriorScans()
         {
-            if (!Game.settings.autoLoadPriorScans || this.canonnPoi == null || this.canonnPoi.codex == null || this.systemData == null || this.systemBody == null) return;
+            if (this.canonnPoi?.codex == null || this.systemData == null || this.systemBody == null) return;
+
+            // add some details to systemData
+            this.systemData.onCanonnData(this.canonnPoi);
 
             Game.log($"Filtering organic signals from Canonn...");
             var currentBody = this.systemBody.name.Replace(this.systemData.name, "").Trim();
-            var localPoi = this.canonnPoi.codex.Where(_ => _.body == currentBody && _.hud_category == "Biology" && _.latitude != null && _.longitude != null).ToList();
-            Game.log($"Found {localPoi.Count} organic signals from Canonn for: {this.systemBody.name}");
+            var bioPoi = this.canonnPoi.codex.Where(_ => _.body == currentBody && _.hud_category == "Biology" && _.latitude != null && _.longitude != null).ToList();
+            Game.log($"Found {bioPoi.Count} organic signals from Canonn for: {this.systemBody.name}");
 
-            if (localPoi.Count > 0)
+            if (Game.settings.autoLoadPriorScans && bioPoi.Count > 0)
             {
+                // show prior scans overlay
                 Program.control.Invoke(new Action(() =>
                 {
                     var form = Program.showPlotter<PlotPriorScans>();
-                    form.setPriorScans(localPoi);
+                    form.setPriorScans(bioPoi);
                 }));
             }
 
-            // TODO: add some details to systemData too?
         }
 
         #endregion

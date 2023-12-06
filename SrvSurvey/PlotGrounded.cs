@@ -321,6 +321,7 @@ namespace SrvSurvey
             if (game.nearBody.scanTwo != null)
                 this.drawBearingTo(g, 10 + mw, y, "Scan two:", game.nearBody.scanTwo.location!);
 
+            // TODO: fix bug where warning shown and ship already departed
             if (!shipDeparted && this.td?.distance > 1800 && (game.vehicle == ActiveVehicle.SRV || game.vehicle == ActiveVehicle.Foot))
             {
                 var msg = "Nearing ship departure distance";
