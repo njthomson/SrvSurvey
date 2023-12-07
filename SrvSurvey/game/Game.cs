@@ -567,7 +567,7 @@ namespace SrvSurvey.game
             // try to find a location from recent journal items
             if (cmdr == null || this.journals == null) return;
 
-            log($"Game.initSystemData: rewind to last FSDJump");
+            log($"Game.initSystemData: rewind to last FSDJump or CarrierJump");
 
             var playForwards = new List<JournalEntry>();
 
@@ -583,9 +583,9 @@ namespace SrvSurvey.game
                     return false;
                 }
 
-                // .. we were on a carrier and it jumped when we not playing, hence no FSD or Carrier jump event. We can init from the Location event, once we see that journal entries are coming from some other system
+                // .. we were on a carrier and it jumped when not playing, hence no FSD or Carrier jump event. We can init from the Location event, once we see that journal entries are coming from some other system
                 var systemAddressEntry = entry as ISystemAddress;
-                if (systemAddressEntry != null && lastLocation != null && systemAddressEntry.SystemAddress != lastLocation.SystemAddress)
+                if (systemAddressEntry?.SystemAddress > 0 && lastLocation != null && systemAddressEntry.SystemAddress != lastLocation.SystemAddress)
                 {
                     log($"Game.initSystemData: Carrier jump since last session? Some SystemAddress ({systemAddressEntry.SystemAddress}) does not match current location ({lastLocation.SystemAddress})");
                     this.systemData = SystemData.From(lastLocation);
@@ -613,7 +613,10 @@ namespace SrvSurvey.game
             log($"Game.initSystemData: Processing {playForwards.Count} journal items forwards...");
             playForwards.Reverse();
             foreach (var entry in playForwards)
+            {
+                log($"Game.initSystemData: playForwards '{entry.@event}' ({entry.timestamp})");
                 this.systemData.Journals_onJournalEntry(entry);
+            }
 
             this.systemData.Save();
             log($"Game.initSystemData: complete '{this.systemData.name}' ({this.systemData.address}), bodyCount: {this.systemData.bodyCount}");
@@ -1221,7 +1224,8 @@ namespace SrvSurvey.game
             {
                 this.canonnPoi = response.Result;
                 Game.log($"Found system POI from Canonn for: {systemName}");
-                this.showPriorScans();
+                if (this.mode != GameMode.SuperCruising && (this.isLanded || this.cmdr.scanOne != null))
+                    this.showPriorScans();
 
                 if (this.systemStatus != null)
                     this.systemStatus.mergeCanonnPoi(this.canonnPoi);

@@ -701,8 +701,8 @@ namespace SrvSurvey
             Program.showActivePlotters();
 
             // including prior scan data if present
-            if (game?.canonnPoi != null)
-                game.showPriorScans();
+            if (game?.canonnPoi != null && game.mode != GameMode.SuperCruising && (game.isLanded || game.cmdr.scanOne != null)) 
+                    game.showPriorScans();
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
