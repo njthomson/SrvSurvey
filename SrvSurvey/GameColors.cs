@@ -23,28 +23,8 @@ namespace SrvSurvey
                 g.DrawLine(GameColors.penGameOrangeDim1, 0, 2, 1, 2);
             }
             GameColors.brushOrangeStripe = new TextureBrush(bm, WrapMode.TileFlipX);
+
             GameColors.penOrangeStripe3 = new Pen(GameColors.brushOrangeStripe, 3);
-
-            // prepare brush for bio-scan exclusion circles: green cross-hatch
-            GameColors.brushExclusionActive = new HatchBrush(HatchStyle.ZigZag, Color.DarkGreen, Color.Transparent);
-            GameColors.penExclusionActive = new Pen(Color.FromArgb(96, Color.Green), 20);
-
-            // prepare brush for bio-scan exclusion circles: red cross-hatch
-            GameColors.brushExclusionDenied = new HatchBrush(HatchStyle.ZigZag, Color.DarkRed, Color.Transparent);
-            GameColors.penExclusionDenied = new Pen(Color.FromArgb(96, Color.Red), 20);
-
-            // prepare brush for bio-scan exclusion circles: blue cross-hatch
-            GameColors.brushExclusionAbandoned = new HatchBrush(HatchStyle.Divot, Color.DarkBlue, Color.Transparent);
-            GameColors.penExclusionAbandoned = new Pen(Color.FromArgb(96, Color.Blue), 20);
-
-            // prepare brush for bio-scan exclusion circles: dark blue/grey cross-hatch
-            GameColors.brushExclusionComplete = new HatchBrush(HatchStyle.Divot, Color.FromArgb(96, Color.SlateBlue), Color.Transparent);
-            GameColors.penExclusionComplete = new Pen(Color.FromArgb(32, Color.DarkSlateBlue), 20);
-
-            // prepare brush for ship location
-            GameColors.brushShipLocation = new HatchBrush(HatchStyle.SmallCheckerBoard, Cyan, Color.Transparent);
-            GameColors.brushShipFormerLocation = new HatchBrush(HatchStyle.Divot, Cyan, Color.Transparent);
-            GameColors.brushSrvLocation = new HatchBrush(HatchStyle.SmallCheckerBoard, Orange, Color.Transparent);
         }
 
         public static Color LimeIsh = Color.FromArgb(200, Color.Lime);
@@ -94,14 +74,14 @@ namespace SrvSurvey
 
         public static Pen penOrangeStripe3;
 
-        public static Brush brushExclusionActive;
-        public static Pen penExclusionActive;
-        public static Brush brushExclusionDenied;
-        public static Pen penExclusionDenied;
-        public static Brush brushExclusionAbandoned;
-        public static Pen penExclusionAbandoned;
-        public static Brush brushExclusionComplete;
-        public static Pen penExclusionComplete;
+        public static Brush brushExclusionActive = new HatchBrush(HatchStyle.ZigZag, Color.DarkGreen, Color.Transparent);
+        public static Pen penExclusionActive = new Pen(Color.FromArgb(96, Color.Green), 20);
+        public static Brush brushExclusionDenied = new HatchBrush(HatchStyle.ZigZag, Color.DarkRed, Color.Transparent);
+        public static Pen penExclusionDenied = new Pen(Color.FromArgb(96, Color.Red), 20);
+        public static Brush brushExclusionAbandoned = new HatchBrush(HatchStyle.Divot, Color.DarkBlue, Color.Transparent);
+        public static Pen penExclusionAbandoned = new Pen(Color.FromArgb(96, Color.Blue), 20);
+        public static Brush brushExclusionComplete = new HatchBrush(HatchStyle.Divot, Color.FromArgb(96, Color.SlateBlue), Color.Transparent);
+        public static Pen penExclusionComplete = new Pen(Color.FromArgb(32, Color.DarkSlateBlue), 20);
 
         public static Brush brushTrackInactive = new SolidBrush(Color.FromArgb(32, Color.Gray));
         public static Pen penTrackInactive = new Pen(Color.FromArgb(64, Color.SlateGray)) { Width = 12 };
@@ -111,6 +91,50 @@ namespace SrvSurvey
 
         public static Brush brushTrackerClose = new SolidBrush(Color.FromArgb(32, Color.DarkCyan));
         public static Pen penTrackerClose = new Pen(Color.FromArgb(36, Color.Cyan)) { Width = 12 };
+
+        internal static class PriorScans
+        {
+            /// <summary> orange </summary>
+            internal static class Active
+            {
+                public static Brush brush = GameColors.brushGameOrange;
+                public static Pen pen = GameColors.penGameOrange2;
+                public static Pen penRadar = new Pen(Color.FromArgb(32, GameColors.Orange)) { Width = 16, DashStyle = DashStyle.Solid };
+            }
+            /// <summary> orange dim </summary>
+            internal static class Inactive
+            {
+                public static Brush brush = GameColors.brushGameOrangeDim;
+                public static Pen pen = GameColors.penGameOrangeDim2;
+                public static Pen penRadar = new Pen(Color.FromArgb(32, GameColors.OrangeDim)) { Width = 16, DashStyle = DashStyle.Solid };
+            }
+            /// <summary> cyan </summary>
+            internal static class CloseActive
+            {
+                public static Brush brush = GameColors.brushCyan;
+                public static Pen pen = GameColors.penCyan2;
+                public static Pen penRadar = new Pen(Color.FromArgb(48, GameColors.Cyan)) { Width = 16, DashStyle = DashStyle.Solid };
+            }
+            /// <summary> dark cyan </summary>
+            internal static class CloseInactive
+            {
+                public static Brush brush = Brushes.DarkCyan;
+                public static Pen pen = Pens.DarkCyan;
+                public static Pen penRadar = new Pen(Color.FromArgb(80, Color.DarkCyan)) { Width = 8, DashStyle = DashStyle.Dot };
+            }
+            /// <summary> orange dim </summary>
+            internal static class FarAway
+            {
+                public static Brush brush = GameColors.brushGameOrangeDim;
+                public static Pen pen = GameColors.penGameOrangeDim2;
+            }
+            /// <summary> dark slate gray </summary>
+            internal static class Analyzed
+            {
+                public static Brush brush = Brushes.DarkSlateGray;
+                public static Pen pen = Pens.DarkSlateGray;
+            }
+        }
 
         public static Brush brushShipLocation = new HatchBrush(HatchStyle.SmallCheckerBoard, Cyan, Color.Transparent);
         public static Brush brushShipFormerLocation = new HatchBrush(HatchStyle.Divot, Cyan, Color.Transparent);

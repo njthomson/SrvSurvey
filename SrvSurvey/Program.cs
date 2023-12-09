@@ -77,6 +77,9 @@ namespace SrvSurvey
                 form = (T)activePlotters[formType.Name];
             }
 
+            // don't try showing a disposed form
+            if (form.IsDisposed) return null!;
+
             // show form if not visible
             if (!form.Visible)
             {

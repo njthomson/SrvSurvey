@@ -262,7 +262,7 @@ namespace SrvSurvey
 
             this.txtVehicle.Text = game.vehicle.ToString();
 
-            this.txtLocation.Text = game.systemBody?.name ?? $"?{game.systemData?.name}" ?? "";
+            this.txtLocation.Text = game.systemBody?.name ?? $"{game.systemData?.name}" ?? "";
 
             if (game.fsdJumping)
             {
@@ -294,7 +294,7 @@ namespace SrvSurvey
                 Program.closePlotter<PlotTrackers>();
                 Program.closePlotter<PlotPriorScans>();
             }
-            else if (game.nearBody == null)
+            else if (game.systemBody == null)
             {
                 foreach (var ctrl in this.bioCtrls) ctrl.Text = "-";
                 Program.closePlotter<PlotBioStatus>();
@@ -323,12 +323,18 @@ namespace SrvSurvey
 
                 if (game.showBodyPlotters && Game.settings.autoShowBioPlot && !this.game.showGuardianPlotters)
                 {
+                    // show trackers only if we have some
                     var showPlotTrackers = game.systemBody?.bookmarks?.Count > 0;
                     if (showPlotTrackers)
                         Program.showPlotter<PlotTrackers>();
 
-                    var plotPriorScans = Program.getPlotter<PlotPriorScans>();
-                    if (game.mode != GameMode.SuperCruising && (game.isLanded || showPlotTrackers || plotPriorScans != null || game.cmdr.scanOne != null))
+                    // show prior scan data only if present
+                    var showPlotPriorScans = Game.settings.autoLoadPriorScans && game.canonnPoiHasLocalBioSignals();
+                    if (showPlotPriorScans)
+                        Program.showPlotter<PlotPriorScans>();
+
+                    // show radar if we have trackers, prior scans, we landed or started scanning already
+                    if (!game.isMode(GameMode.SuperCruising, GameMode.GlideMode) && (game.isLanded || showPlotTrackers || showPlotPriorScans || game.cmdr.scanOne != null))
                         Program.showPlotter<PlotGrounded>();
                 }
             }
@@ -699,10 +705,6 @@ namespace SrvSurvey
 
             // force opacity changes to take immediate effect
             Program.showActivePlotters();
-
-            // including prior scan data if present
-            if (game?.canonnPoi != null && game.mode != GameMode.SuperCruising && (game.isLanded || game.cmdr.scanOne != null)) 
-                    game.showPriorScans();
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

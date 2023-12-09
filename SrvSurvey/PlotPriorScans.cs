@@ -31,7 +31,7 @@ namespace SrvSurvey
             });
 
             // adjust height if needed
-            var formHeight = 36 + (rows * rowHeight);
+            var formHeight = 36 + (rows * rowHeight) + 12;
             if (this.Height != formHeight)
             {
                 this.Height = formHeight;
@@ -58,6 +58,8 @@ namespace SrvSurvey
             this.setNewHeight();
             this.initialize();
             this.reposition(Elite.getWindowRect(true));
+
+            this.setPriorScans();
         }
 
         public override void reposition(Rectangle gameRect)
@@ -89,12 +91,16 @@ namespace SrvSurvey
             base.Status_StatusChanged(blink);
         }
 
-        public void setPriorScans(List<Codex> localPoi)
+        public void setPriorScans()
         {
-            if (game.systemBody == null) throw new Exception("Why?");
-            this.signals.Clear();
+            if (game.systemData == null || game.systemBody == null || game.canonnPoi == null) throw new Exception("Why?");
 
-            foreach (var poi in localPoi)
+            var currentBody = game.systemBody.name.Replace(game.systemData.name, "").Trim();
+            var bioPoi = game.canonnPoi.codex.Where(_ => _.body == currentBody && _.hud_category == "Biology" && _.latitude != null && _.longitude != null).ToList();
+            Game.log($"Found {bioPoi.Count} organic signals from Canonn for: {game.systemBody.name}");
+
+            this.signals.Clear();
+            foreach (var poi in bioPoi)
             {
                 // skip anything with value is too low
                 var reward = Game.codexRef.getRewardForEntryId(poi.entryid.ToString()!);
@@ -103,18 +109,27 @@ namespace SrvSurvey
 
                 if (poi.latitude != null && poi.longitude != null && poi.entryid != null)
                 {
-                    // skip anything too close (50m) to our own scans
+                    // extract genus name 
+                    var name = poi.english_name;
+                    var nameParts = name.Split(' ', 2);
+                    var genusName = BioScan.genusNames.FirstOrDefault(_ => _.Value.Equals(nameParts[0], StringComparison.OrdinalIgnoreCase)).Key;
+                    var shortName = BioScan.prefixes.FirstOrDefault(_ => _.Value == genusName).Key;
+
+                    // skip things we've already analyzed
+                    var organism = game.systemBody.organisms.FirstOrDefault(_ => _.genus == genusName);
+                    if (organism?.analyzed == true) continue;
+
+                    // skip anything too close to our own scans or or own trackers
                     var location = new LatLong2((double)poi.latitude, (double)poi.longitude);
-                    var tooClose = game.systemBody.bioScans?.Any(_ => Util.getDistance(_.location, location, game.systemBody.radius) < 50);
+                    var tooClose = game.systemBody.bioScans?.Any(_ => _.genus == genusName && Util.getDistance(_.location, location, game.systemBody.radius) < PlotTrackers.highlightDistance) == true
+                     || game.systemBody.bookmarks?.Any(marks => marks.Key == shortName && marks.Value.Any(_ => Util.getDistance(_, location, game.systemBody.radius) < PlotTrackers.highlightDistance)) == true
+                     || Util.isCloseToScan(location, genusName);
                     if (tooClose == true) continue;
 
                     // create group and TrackingDelta's for each location
                     var signal = this.signals.FirstOrDefault(_ => _.poiName == poi.english_name);
                     if (signal == null)
                     {
-                        var name = poi.english_name;
-                        var nameParts = name.Split(' ', 2);
-                        var genusName = BioScan.genusNames.FirstOrDefault(_ => _.Value.Equals(nameParts[0], StringComparison.OrdinalIgnoreCase)).Key;
                         // for pre-Odyssey bio's
                         if (!name.Contains("-"))
                             genusName = BioScan.genusNames.FirstOrDefault(_ => _.Value.Equals(nameParts[1], StringComparison.OrdinalIgnoreCase)).Key;
@@ -131,6 +146,14 @@ namespace SrvSurvey
 
                     signal.trackers.Add(new TrackingDelta(game.nearBody!.radius, location));
                 }
+            }
+
+            // stop here and close the plotter if there's nothing to show
+            if (this.signals.Count == 0)
+            {
+                Game.log($"Zero prior scans, self closing PlotPriorScans");
+                Program.closePlotter<PlotPriorScans>();
+                return;
             }
 
             // force a numeric sort?
@@ -155,8 +178,27 @@ namespace SrvSurvey
             }
 
             this.setNewHeight();
-
             this.Invalidate();
+
+            Program.getPlotter<PlotGrounded>()?.Invalidate();
+        }
+
+        protected override void onJournalEntry(ScanOrganic entry)
+        {
+            if (this.IsDisposed || game.systemBody == null) return;
+
+            // TODO: revisit for Brain Trees
+
+            // remove any tracked locations that are close enough to what we scanned
+            var match = this.signals.FirstOrDefault(_ => _.genusName == entry.Genus);
+            if (match != null)
+            {
+                match.trackers.RemoveAll(_ => _.distance < PlotTrackers.highlightDistance);
+
+                // remove the whole group if empty or we finished analyzing this species
+                if (match.trackers.Count == 0 || entry.ScanType == ScanType.Analyse)
+                    this.signals.Remove(match);
+            }
         }
 
         protected override void OnPaintBackground(PaintEventArgs e)
@@ -192,7 +234,6 @@ namespace SrvSurvey
                 var isCloseIsh = false;
 
                 var r = new Rectangle(8, 0, this.Width - 16, 14);
-                //var rr = new Rectangle(this.Width - 208, 0, 200, 14);
                 foreach (var dd in signal.trackers)
                 {
                     if (dtx + bearingWidth > this.Width - 8)
@@ -207,16 +248,13 @@ namespace SrvSurvey
                     isClose |= dd.distance < highlightDistance && !analyzed && !isTooCloseToScan;
                     var deg = dd.angle - game.status!.Heading;
 
-                    brush = isActive ? Brushes.Lime : Brushes.SlateGray;
-                    //if (isClose) brush = isActive ? Brushes.Lime : Brushes.LightSeaGreen;
-
-                    var pen = isActive ? GameColors.penLime2 : Pens.SlateGray;
-                    //if (isClose) pen = isActive ? GameColors.penLime2 : Pens.LightSeaGreen;
+                    brush = isActive ? GameColors.PriorScans.Active.brush : GameColors.PriorScans.Inactive.brush;
+                    var pen = isActive ? GameColors.PriorScans.Active.pen : GameColors.PriorScans.Inactive.pen;
 
                     if (dd.distance > 1_000_000) // within 50km
                     {
-                        brush = Brushes.ForestGreen;
-                        pen = Pens.ForestGreen;
+                        brush = GameColors.PriorScans.FarAway.brush;
+                        pen = GameColors.PriorScans.FarAway.pen;
                     }
                     else
                     {
@@ -224,14 +262,14 @@ namespace SrvSurvey
                     }
                     if (dd.distance < PlotTrackers.highlightDistance)
                     {
-                        brush = isActive ? Brushes.Yellow : Brushes.Olive;
-                        pen = isActive ? Pens.Yellow : Pens.Olive;
+                        brush = isActive ? GameColors.PriorScans.CloseActive.brush : GameColors.PriorScans.CloseInactive.brush;
+                        pen = isActive ? GameColors.PriorScans.CloseActive.pen : GameColors.PriorScans.CloseInactive.pen;
                     }
 
                     if (analyzed || isTooCloseToScan)
                     {
-                        brush = Brushes.DarkSlateGray;
-                        pen = Pens.DarkSlateGray;
+                        brush = GameColors.PriorScans.Analyzed.brush;
+                        pen = GameColors.PriorScans.Analyzed.pen;
                     }
 
                     this.drawBearingTo(dtx, dty, "", (double)dd.distance, (double)deg, brush, pen);
@@ -240,9 +278,9 @@ namespace SrvSurvey
 
                 // draw label above trackers - color depending on if any of them are close
                 //if (isClose) brush = isActive ? Brushes.Lime : Brushes.DarkGreen;
-                brush = isCloseIsh ? Brushes.LightSlateGray : Brushes.ForestGreen;
-                if (isActive) brush = Brushes.Lime;
-                if (isClose) brush = isActive ? Brushes.Yellow : Brushes.Olive;
+                brush = GameColors.brushGameOrangeDim;
+                if (isActive) brush = GameColors.PriorScans.Active.brush;
+                if (isClose) brush = isActive ? GameColors.PriorScans.CloseActive.brush : GameColors.PriorScans.CloseInactive.brush;
                 if (analyzed) brush = Brushes.DarkSlateGray;
 
                 var f = this.Font;
@@ -257,11 +295,23 @@ namespace SrvSurvey
                     // calculate angle of decline for the nearest location
                     r.Y += rowHeight;
                     var aa = DecimalEx.ToDeg(DecimalEx.ATan(game.status.Altitude / signal.trackers[0].distance));
-                    // color it red if steeper than 60°
-                    if (aa > 60) brush = Brushes.DarkRed;
+                    // choose color based on ...
+                    if (aa < 10) // .. 0
+                        brush = Brushes.Transparent; // it's probably around the curve of the planet
+                    else if (aa < 30) // .. 10
+                        brush = Brushes.Orange;
+                    else if (aa < 50) // .. 30
+                        brush = Brushes.Cyan;
+                    else if (aa < 60) // .. 50
+                        brush = Brushes.Red;
+                    else // > 60
+                        brush = Brushes.DarkRed;
+
                     TextRenderer.DrawText(g, $"-{(int)aa}°", f, r, ((SolidBrush)brush).Color, TextFormatFlags.NoPadding | TextFormatFlags.Left);
                 }
             }
+
+            this.drawFooterText("(Tracked locations may not be that close to signals)", GameColors.brushGameOrangeDim, this.Font);
         }
     }
 }

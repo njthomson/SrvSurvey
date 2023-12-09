@@ -1,6 +1,8 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using SrvSurvey.canonn;
+using SrvSurvey.net;
+using SrvSurvey.net.EDSM;
 using SrvSurvey.units;
 
 namespace SrvSurvey.game
@@ -66,45 +68,6 @@ namespace SrvSurvey.game
             }
         }
 
-        //public static SystemData From(FSDJump entry)
-        //{
-        //    lock (cache)
-        //    {
-        //        // load from file or cache
-        //        var data = Load(entry.StarSystem, entry.SystemAddress);
-
-        //        if (data == null)
-        //        {
-        //            // create a new data object with the main star populated
-        //            data = new SystemData()
-        //            {
-        //                filepath = Path.Combine(Application.UserAppDataPath, "systems", Game.activeGame!.fid!, $"{entry.StarSystem}_{entry.SystemAddress}.json"),
-        //                name = entry.StarSystem,
-        //                address = entry.SystemAddress,
-        //                starPos = entry.StarPos,
-        //                commander = Game.activeGame.cmdr.commander,
-        //                firstVisited = DateTimeOffset.UtcNow,
-        //                lastVisited = DateTimeOffset.UtcNow,
-        //            };
-
-        //            var mainStar = new SystemBody()
-        //            {
-        //                id = entry.BodyID,
-        //                name = entry.Body,
-        //                type = SystemBodyType.Star,
-        //                firstVisited = DateTimeOffset.UtcNow,
-        //                lastVisited = DateTimeOffset.UtcNow,
-        //            };
-        //            data.bodies.Add(mainStar);
-
-        //            cache[entry.SystemAddress] = data;
-        //            data.Save();
-        //        }
-
-        //        return data;
-        //    }
-        //}
-
         public static SystemData From(ISystemDataStarter entry)
         {
             lock (cache)
@@ -147,58 +110,6 @@ namespace SrvSurvey.game
                 return data;
             }
         }
-
-        //public static SystemData From(CarrierJump entry)
-        //{
-        //    lock (cache)
-        //    {
-        //        // load from file or cache
-        //        var data = Load(entry.StarSystem, entry.SystemAddress);
-
-        //        if (data == null)
-        //        {
-        //            // create a new data object with the main star populated
-        //            data = new SystemData()
-        //            {
-        //                filepath = Path.Combine(Application.UserAppDataPath, "systems", Game.activeGame!.fid!, $"{entry.StarSystem}_{entry.SystemAddress}.json"),
-        //                name = entry.StarSystem,
-        //                address = entry.SystemAddress,
-        //                starPos = entry.StarPos,
-        //                commander = Game.activeGame.cmdr.commander,
-        //                firstVisited = DateTimeOffset.UtcNow,
-        //                lastVisited = DateTimeOffset.UtcNow,
-        //            };
-
-        //            var mainStar = new SystemBody()
-        //            {
-        //                id = entry.BodyID,
-        //                name = entry.Body,
-        //                type = SystemBodyType.Star,
-        //                firstVisited = DateTimeOffset.UtcNow,
-        //                lastVisited = DateTimeOffset.UtcNow,
-        //            };
-        //            data.bodies.Add(mainStar);
-
-        //            cache[entry.SystemAddress] = data;
-        //            data.Save();
-        //        }
-
-        //        return data;
-        //    }
-        //}
-
-        //private static SystemBodyType mapBodyType(BodyType bodyType)
-        //{
-        //    switch(bodyType)
-        //    {
-        //        case BodyType.Star:
-        //            return SystemBodyType.Star;
-
-        //        case BodyType.PlanteryRing:
-        //            return SystemBodyType.
-        //    }
-
-        //}
 
         #endregion
 
@@ -305,15 +216,19 @@ namespace SrvSurvey.game
 
             if (entry.Rings != null)
             {
-                body.rings = new List<SystemRing>();
-                foreach (var ring in entry.Rings)
+                foreach (var newRing in entry.Rings)
                 {
-                    Game.log($"add ring '{ring.Name}' to '{body.name}' ({body.id})");
-                    body.rings.Add(new SystemRing()
+                    var ring = body.rings?.FirstOrDefault(_ => _.name == newRing.Name);
+                    if (ring == null)
                     {
-                        name = ring.Name,
-                        ringClass = ring.RingClass,
-                    });
+                        Game.log($"add ring '{newRing.Name}' to '{body.name}' ({body.id})");
+                        if (body.rings == null) body.rings = new List<SystemRing>();
+                        body.rings.Add(new SystemRing()
+                        {
+                            name = newRing.Name,
+                            ringClass = newRing.RingClass,
+                        });
+                    }
                 }
             }
         }
@@ -434,7 +349,7 @@ namespace SrvSurvey.game
             // some organisms have 2 species on the same planet, eg: Brain Tree's
             if (organism?.variant != null && organism.variant != entry.Variant)
             {
-                // clear current organism, so we start another one
+                // if we found something but the variant name is populated and different - clear current organism, and start a new one
                 organism = null;
                 body.bioSignalCount++;
             }
@@ -460,6 +375,7 @@ namespace SrvSurvey.game
             organism.variant = entry.Variant;
             organism.variantLocalized = entry.Variant_Localised;
 
+            // look-up entryId and reward from CodexRef
             if (organism.entryId == 0)
             {
                 Game.codexRef.loadCodexRef().ContinueWith(response =>
@@ -475,13 +391,7 @@ namespace SrvSurvey.game
                         organism.entryId = long.Parse(match.entryid);
                         if (match.reward.HasValue) organism.reward = match.reward.Value;
 
-                        try
-                        {
-                            Application.DoEvents();
-                            Application.DoEvents();
-                            this.Save();
-                        }
-                        catch { /* ignore */ }
+                        this.Save();
                     }
                     else
                     {
@@ -510,6 +420,19 @@ namespace SrvSurvey.game
                 //        Game.log($"No codexRef match found for organism '{entry.Variant_Localised ?? entry.Variant}' to '{body.name}' ({body.id})");
                 //}
 
+                // TODO: enact this when retiring game.nearBody ...
+                //// track scans as completed
+                //if (game.cmdr.scanOne != null)
+                //{
+                //    // (this can happen if there are 2 copies of Elite running at the same time)
+                //    game.cmdr.scanOne!.status = BioScan.Status.Complete;
+                //    data.bioScans.Add(game.cmdr.scanOne);
+                //    game.systemBody?.bioScans!.Add(game.cmdr.scanOne); // !
+                //    game.cmdr.scanTwo!.status = BioScan.Status.Complete;
+                //    data.bioScans.Add(game.cmdr.scanTwo);
+                //    game.systemBody?.bioScans!.Add(game.cmdr.scanTwo); // !
+                //}
+
                 // efficiently track which organisms were scanned where
                 if (organism.entryId > 0)
                     Game.activeGame!.cmdr.scannedBioEntryIds.Add($"{this.address}_{body.id}_{organism.entryId}");
@@ -522,55 +445,173 @@ namespace SrvSurvey.game
 
         public void onCanonnData(SystemPoi canonnPoi)
         {
-            var dirty = false;
+            if (canonnPoi.system != this.name) throw new ArgumentOutOfRangeException($"Unmatched system! Expected: `{this.name}`, got: {canonnPoi.system}");
 
-            // update count of bio signals in bodies from Canonn data
-            var bioSignals = canonnPoi.SAAsignals.Where(_ => _.hud_category == "Biology");
-            foreach (var signal in bioSignals)
+            // update count of bio signals in bodies
+            if (canonnPoi.SAAsignals != null)
             {
-                var signalBodyName = $"{canonnPoi.system} {signal.body}";
-                var signalBody = this.bodies.FirstOrDefault(_ => _.name == signalBodyName);
-
-                if (signalBody != null && signalBody.bioSignalCount < signal.count)
+                var bioSignals = canonnPoi.SAAsignals.Where(_ => _.hud_category == "Biology");
+                foreach (var signal in bioSignals)
                 {
-                    Game.log($"Updating bioSignalCount from {signalBody.bioSignalCount} to {signal.count} for '{signalBody.name}' ({signalBody.id})");
-                    signalBody.bioSignalCount = signal.count;
-                    dirty = true;
-                }
-            }
+                    var signalBodyName = $"{canonnPoi.system} {signal.body}";
+                    var signalBody = this.bodies.FirstOrDefault(_ => _.name == signalBodyName);
 
-            foreach (var poi in canonnPoi.codex)
-            {
-                if (poi.hud_category != "Biology" || poi.latitude == null || poi.longitude == null || poi.entryid == null) continue;
-
-                var poiBodyName = $"{canonnPoi.system} {poi.body}";
-                var poiBody = this.bodies.FirstOrDefault(_ => _.name == poiBodyName);
-                if (poiBody != null)
-                {
-                    var organism = poiBody.organisms.FirstOrDefault(_ => _.entryId == poi.entryid);
-                    if (organism == null)
+                    if (signalBody != null && signalBody.bioSignalCount < signal.count)
                     {
-                        // TODO: handle Brain Trees
-                        var parts = poi.english_name.Split(' ', 2);
-                        var genusName = BioScan.genusNames.FirstOrDefault(_ => _.Value == parts[0]).Key;
-
-                        organism = new SystemOrganism()
-                        {
-                            genus = genusName,
-                            genusLocalized = parts[0],
-                            variantLocalized = poi.english_name,
-                            entryId = poi.entryid.Value,
-                            reward = Game.codexRef.getRewardForEntryId(poi.entryid.ToString()!),
-                        };
-                        Game.log($"add organism '{genusName}' from Canonn POI to '{poiBody.name}' ({poiBody.id})");
-                        poiBody.organisms.Add(organism);
-                        dirty = true;
+                        Game.log($"Updating bioSignalCount from {signalBody.bioSignalCount} to {signal.count} for '{signalBody.name}' ({signalBody.id})");
+                        if (signalBody.bioSignalCount < signal.count)
+                            signalBody.bioSignalCount = signal.count;
                     }
                 }
             }
 
-            if (dirty)
-                this.Save();
+            // update known organisms
+            if (canonnPoi.codex != null)
+            {
+                foreach (var poi in canonnPoi.codex)
+                {
+                    if (poi.hud_category != "Biology" || poi.latitude == null || poi.longitude == null || poi.entryid == null) continue;
+
+                    var poiBodyName = $"{canonnPoi.system} {poi.body}";
+                    var poiBody = this.bodies.FirstOrDefault(_ => _.name == poiBodyName);
+                    if (poiBody != null)
+                    {
+                        // TODO: handle Brain Trees
+                        var genusDisplayName = Util.getGenusDisplayNameFromVariant(poi.english_name);
+                        var genusName = BioScan.genusNames.FirstOrDefault(_ => _.Value == genusDisplayName).Key;
+
+                        var organism = poiBody.organisms?.FirstOrDefault(_ => _.entryId == poi.entryid || _.variantLocalized == poi.english_name || _.genus == genusName);
+                        if (organism == null)
+                        {
+
+                            organism = new SystemOrganism()
+                            {
+                                genus = genusName,
+                                genusLocalized = genusDisplayName,
+                                variantLocalized = poi.english_name,
+                                entryId = poi.entryid.Value,
+                                reward = Game.codexRef.getRewardForEntryId(poi.entryid.ToString()!),
+                            };
+                            Game.log($"add organism '{genusName}' from Canonn POI to '{poiBody.name}' ({poiBody.id})");
+                            if (poiBody.organisms == null) poiBody.organisms = new List<SystemOrganism>();
+                            poiBody.organisms.Add(organism);
+                        }
+
+                        // update fields
+                        organism.entryId = poi.entryid.Value;
+                        organism.reward = Game.codexRef.getRewardForEntryId(poi.entryid.ToString()!);
+                    }
+                }
+            }
+        }
+
+        public void onEdsmResponse(EdsmSystem edsmSystem)
+        {
+            if (edsmSystem.id64 != this.address) throw new ArgumentOutOfRangeException($"Unmatched system! Expected: `{this.name}`, got: {edsmSystem.name}");
+
+            // update bodies from response
+            foreach (var entry in edsmSystem.bodies)
+            {
+                var body = this.findOrCreate(entry.name, entry.bodyId);
+
+                // update fields
+                if (entry.type == "Star")
+                    body.type = SystemBodyType.Star;
+                else
+                    body.type = SystemBody.typeFrom(null!, entry.subType, entry.isLandable);
+                if (body.distanceFromArrivalLS == 0) body.distanceFromArrivalLS = entry.distanceToArrival;
+                if (body.radius == 0 && entry.radius > 0) body.radius = entry.radius * 1000; // why?
+                if (body.planetClass == null) body.planetClass = entry.subType;
+                body.terraformable = entry.terraformingState == "Terraformable";
+                if (body.mass == 0) body.mass = entry.earthMasses > 0 ? entry.earthMasses : entry.solarMasses; // mass
+
+                if (entry.rings != null)
+                {
+                    foreach (var newRing in entry.rings)
+                    {
+                        var ring = body.rings?.FirstOrDefault(_ => _.name == newRing.name);
+                        if (ring == null)
+                        {
+                            Game.log($"add ring '{newRing.name}' from EDSM to '{body.name}' ({body.id})");
+                            if (body.rings == null) body.rings = new List<SystemRing>();
+                            body.rings.Add(new SystemRing()
+                            {
+                                name = newRing.name,
+                                ringClass = newRing.type,
+                            });
+                        }
+                    }
+                }
+            }
+        }
+
+        public void onSpanshResponse(ApiSystemDumpSystem spanshSystem)
+        {
+            if (spanshSystem.id64 != this.address) throw new ArgumentOutOfRangeException($"Unmatched system! Expected: `{this.name}`, got: {spanshSystem.name}");
+
+            // update bodies from response
+            foreach (var entry in spanshSystem.bodies)
+            {
+                var body = this.findOrCreate(entry.name, entry.bodyId);
+
+                // update fields
+                if (entry.type == "Star")
+                    body.type = SystemBodyType.Star;
+                else
+                    body.type = SystemBody.typeFrom(null!, entry.subType, entry.isLandable ?? false);
+                if (body.distanceFromArrivalLS == 0) body.distanceFromArrivalLS = entry.distanceToArrival ?? 0;
+                if (body.radius == 0 && entry.radius != null) body.radius = entry.radius.Value * 1000; // why?
+                if (body.planetClass == null) body.planetClass = entry.subType;
+                body.terraformable = entry.terraformingState == "Terraformable";
+                if (body.mass == 0) body.mass = (entry.earthMasses > 0 ? entry.earthMasses : entry.solarMasses) ?? 0; // mass
+
+                // update rings
+                if (entry.rings != null)
+                {
+                    foreach (var newRing in entry.rings)
+                    {
+                        var ring = body.rings?.FirstOrDefault(_ => _.name == newRing.name);
+                        if (ring == null)
+                        {
+                            Game.log($"add ring '{newRing.name}' from Spansh to '{body.name}' ({body.id})");
+                            if (body.rings == null) body.rings = new List<SystemRing>();
+                            body.rings.Add(new SystemRing()
+                            {
+                                name = newRing.name,
+                                ringClass = newRing.type,
+                            });
+                        }
+                    }
+                }
+
+                // update bio counts
+                if (entry.signals?.signals?.ContainsKey("$SAA_SignalType_Biological;") == true)
+                {
+                    var newCount = entry.signals.signals["$SAA_SignalType_Biological;"];
+                    if (body.bioSignalCount < newCount)
+                        body.bioSignalCount = newCount;
+                }
+
+                // update genus if not already known
+                if (entry.signals?.genuses?.Count > 0)
+                {
+                    foreach (var newGenus in entry.signals.genuses)
+                    {
+                        var organism = body.organisms?.FirstOrDefault(_ => _.genus == newGenus);
+                        if (organism == null)
+                        {
+                            Game.log($"add organism '{newGenus}' from Spansh to '{body.name}' ({body.id})");
+                            if (body.organisms == null) body.organisms = new List<SystemOrganism>();
+                            body.organisms.Add(new SystemOrganism()
+                            {
+                                genus = newGenus,
+                                genusLocalized = BioScan.genusNames[newGenus],
+                            });
+                        }
+                    }
+                }
+
+            }
         }
 
         #endregion

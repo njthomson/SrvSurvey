@@ -1,12 +1,5 @@
 ﻿using Newtonsoft.Json;
 using SrvSurvey.game;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static SrvSurvey.canonn.GuardianRuinEntry;
-using static SrvSurvey.net.EDSM.EdsmBodies;
 
 namespace SrvSurvey.net.EDSM
 {
@@ -22,14 +15,14 @@ namespace SrvSurvey.net.EDSM
             return JsonConvert.DeserializeObject<StarSystem[]>(json)!;
         }
 
-        public async Task<GetBodiesResponse> getBodies(string systemName)
+        public async Task<EdsmSystem> getBodies(string systemName)
         {
             // docs: https://www.edsm.net/en/api-system-v1
             // https://www.edsm.net/api-system-v1/bodies?systemName=Colonia
             Game.log($"Getting system bodies by name: {systemName}");
 
             var json = await new HttpClient().GetStringAsync($"https://www.edsm.net/api-system-v1/bodies?systemName={systemName}");
-            return JsonConvert.DeserializeObject<GetBodiesResponse>(json)!;
+            return JsonConvert.DeserializeObject<EdsmSystem>(json)!;
         }
 
     }
@@ -60,7 +53,17 @@ namespace SrvSurvey.net.EDSM
         }
     }
 
-    internal class EdsmBodies
+    internal class EdsmRing
+    {
+        public string name;
+        public string type;
+        public double mass;
+        public double innerRadius;
+        public double outerRadius;
+    }
+
+
+    internal class EdsmBody
     {
         public int id;
         public int bodyId;
@@ -70,11 +73,14 @@ namespace SrvSurvey.net.EDSM
         public long distanceToArrival;
         public bool isMainStar;
         public bool isScoopable;
+        public bool isLandable;
         public long age;
         public string luminosity;
         public double absoluteMagnitude;
         public double solarMasses;
         public double solarRadius;
+        public double earthMasses;
+        public decimal radius;
         public double surfaceTemperature;
         public double? orbitalPeriod;
         public double? semiMajorAxis;
@@ -84,15 +90,18 @@ namespace SrvSurvey.net.EDSM
         public double rotationalPeriod;
         public bool rotationalPeriodTidallyLocked;
         public double? axialTilt;
+        public string? terraformingState;
+
+        public List<EdsmRing> rings;
     }
 
-    internal class GetBodiesResponse
+    internal class EdsmSystem
     {
         public string name;
         public long id;
         public long id64;
         public int bodyCount;
-        public List<EdsmBodies> bodies;
+        public List<EdsmBody> bodies;
 
         public override string ToString()
         {

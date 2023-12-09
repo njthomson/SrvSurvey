@@ -30,6 +30,37 @@ namespace SrvSurvey
             this.mw = this.Width / 2;
             this.mh = this.Height / 2;
             this.Cursor = Cursors.Cross;
+
+            bbs = new List<TextureBrush>()
+            {
+                this.bbActive,
+                this.bbClose,
+                this.bbInactive,
+                //this.bbAnalyzed,
+            };
+        }
+
+        private List<TextureBrush> bbs;
+        private TextureBrush bbActive = makeBrush(Color.FromArgb(24, GameColors.Orange), 60);
+        private TextureBrush bbClose = makeBrush(Color.FromArgb(24, GameColors.Cyan), 40);
+        private TextureBrush bbCloseInactive = makeBrush(Color.FromArgb(32, Color.DarkCyan), 60);
+        private TextureBrush bbInactive = makeBrush(Color.FromArgb(24, Color.Gray), 80);
+        //private TextureBrush bbAnalyzed = makeBrush(Color.FromArgb(16, Color.SlateGray), 30);
+
+        private static TextureBrush makeBrush(Color c, int sz)
+        {
+            var bm = new Bitmap(sz * 2, sz * 2);
+            using (var g = Graphics.FromImage(bm))
+            {
+                var cc = new SolidBrush(c);
+                //g.FillRectangle(cc, 0, 0, sz, sz);
+                //g.FillRectangle(cc, sz, sz, sz, sz);
+
+                // sparse stripes
+                g.FillRectangle(cc, 0, sz, sz * 2, 16);
+                g.FillRectangle(cc, sz, 0, 16, sz * 2);
+            }
+            return new TextureBrush(bm, WrapMode.Tile);
         }
 
         public void reposition(Rectangle gameRect)
@@ -363,7 +394,22 @@ namespace SrvSurvey
 
             g.TranslateTransform(mw, mh);
             g.ScaleTransform(scale, scale);
-            g.RotateTransform(360 - game.status!.Heading);
+            var rotation = 360 - game.status!.Heading;
+            g.RotateTransform(rotation);
+
+            //this.bbs.ForEach(b =>
+            //{
+            //    b.ResetTransform();
+            //    //this.bb1.RotateTransform(-rotation);
+            //    //b.TranslateTransform((float)this.td.dx, (float)this.td.dy);
+
+            //    var tt = new TrackingDelta(game.systemBody.radius, LatLong2.Empty);
+            //    b.TranslateTransform((float)tt.dx, -(float)tt.dy);
+
+            //    //var lx = (float)game.status.Latitude * 1000;
+            //    //var ly = (float)game.status.Longitude * 1000;
+            //    //b.TranslateTransform(lx, ly);
+            //});
 
             // use the same Tracking delta for all bioScans against the same currentLocation
             var currentLocation = new LatLong2(this.game.status);
@@ -411,20 +457,45 @@ namespace SrvSurvey
                 {
                     if (Util.isCloseToScan(tt.Target, signal.genusName) || analyzed) continue;
 
-                    Brush b = isActive ? /*GameColors.brushTracker*/ new HatchBrush(HatchStyle.DottedDiamond, Color.FromArgb(48, Color.Lime), Color.Transparent)
-                        : /*GameColors.brushTrackInactive*/ new HatchBrush(HatchStyle.DottedDiamond, Color.FromArgb(48, Color.SlateGray), Color.Transparent);
+                    //this.bbs.ForEach(b =>
+                    //{
+                    //    b.ResetTransform();
+                    //    //this.bb1.RotateTransform(-rotation);
+                    //    //b.TranslateTransform((float)this.td.dx, (float)this.td.dy);
 
-                    var p = isActive ? /*GameColors.penTracker*/ new Pen(Color.FromArgb(64, Color.Lime)) { Width = 8, DashStyle = DashStyle.Dot }
-                        : /*GameColors.penTrackInactive*/ new Pen(Color.FromArgb(48, Color.SlateGray)) { Width = 8, DashStyle = DashStyle.Dot };
+                    //    //var tt = new TrackingDelta(game.systemBody.radius, LatLong2.Empty);
+                    //    b.TranslateTransform((float)tt.dx, -(float)tt.dy);
+
+                    //    //var lx = (float)game.status.Latitude * 1000;
+                    //    //var ly = (float)game.status.Longitude * 1000;
+                    //    //b.TranslateTransform(lx, ly);
+                    //});
+
+
+                    //Brush b = isActive ? /*GameColors.brushTracker*/ this.bbActive // new HatchBrush(HatchStyle.DottedDiamond, Color.FromArgb(48, Color.Lime), Color.Transparent)
+                    //    : /*GameColors.brushTrackInactive*/ new HatchBrush(HatchStyle.DottedDiamond, Color.FromArgb(48, Color.SlateGray), Color.Transparent);
+
+                    //var p = isActive ? /*GameColors.penTracker*/ new Pen(Color.FromArgb(32, GameColors.Orange)) { Width = 8, DashStyle = DashStyle.Solid }
+                    //    : /*GameColors.penTrackInactive*/ new Pen(Color.FromArgb(48, Color.SlateGray)) { Width = 8, DashStyle = DashStyle.Dot };
+
+                    TextureBrush b = isActive ? this.bbActive : bbInactive;
+                    var p = isActive ? /*GameColors.penTracker*/ new Pen(Color.FromArgb(32, GameColors.Orange)) { Width = 16, DashStyle = DashStyle.Solid }
+                        : new Pen(Color.FromArgb(48, Color.SlateGray)) { Width = 8, DashStyle = DashStyle.Solid };
 
                     if (tt.distance < PlotTrackers.highlightDistance)
                     {
-                        b = isActive ? new HatchBrush(HatchStyle.DottedDiamond, Color.FromArgb(80, Color.Yellow), Color.Transparent)
-                        : new HatchBrush(HatchStyle.DottedDiamond, Color.FromArgb(80, Color.Olive), Color.Transparent);
-                        //p = Pens.Yellow; //GameColors.penTrackerClose;
-                        p = isActive ? new Pen(Color.FromArgb(80, Color.Yellow)) { Width = 8, DashStyle = DashStyle.Dot }
-                        : new Pen(Color.FromArgb(80, Color.Olive)) { Width = 8, DashStyle = DashStyle.Dot };
+                        b = isActive ? this.bbClose : this.bbCloseInactive;
+                        //// new HatchBrush(HatchStyle.DottedDiamond, Color.FromArgb(80, Color.Yellow), Color.Transparent)
+                        //: new HatchBrush(HatchStyle.DottedDiamond, Color.FromArgb(80, Color.Olive), Color.Transparent);
+
+                        p = isActive ? GameColors.PriorScans.CloseActive.penRadar // new Pen(Color.FromArgb(48, GameColors.Cyan)) { Width = 16, DashStyle = DashStyle.Solid }
+                        : GameColors.PriorScans.CloseInactive.penRadar; // new Pen(Color.FromArgb(80, Color.DarkCyan)) { Width = 8, DashStyle = DashStyle.Dot };
                     }
+
+                    // animate brush
+                    b.ResetTransform();
+                    b.TranslateTransform((float)tt.dx, -(float)tt.dy);
+
 
                     var rect = new RectangleF((float)tt.dx - radius, (float)-tt.dy - radius, radius * 2f, radius * 2f);
                     this.drawRadarCircle(g, rect, b, p);
@@ -447,7 +518,8 @@ namespace SrvSurvey
 
             foreach (var name in form.trackers.Keys)
             {
-                var isActive = /* game.cmdr.scanOne?.genus == null || */ game.cmdr.scanOne?.genus == name;
+                BioScan.prefixes.TryGetValue(name, out var genusName);
+                var isActive = /* game.cmdr.scanOne?.genus == null || */ game.cmdr.scanOne?.genus == genusName;
 
                 // default range to 50m unless name matches a Genus
                 BioScan.prefixes.TryGetValue(name, out var fullName);
@@ -468,11 +540,14 @@ namespace SrvSurvey
                     this.drawRadarCircle(g, rect, b, p);
 
                     // draw an inner circle if really close
-                    if (tt.distance < PlotTrackers.highlightDistance && game.cmdr.scanOne != null)
+                    if (tt.distance < PlotTrackers.highlightDistance)
                     {
+                        if (game.cmdr.scanOne != null)
+                            p = GameColors.penExclusionActive;
+
                         var innerRadius = 50;
                         rect = new RectangleF((float)tt.dx - innerRadius, (float)-tt.dy - innerRadius, innerRadius * 2f, innerRadius * 2f);
-                        this.drawRadarCircle(g, rect, b, GameColors.penExclusionActive);
+                        this.drawRadarCircle(g, rect, b, p);
                     }
                 }
             }

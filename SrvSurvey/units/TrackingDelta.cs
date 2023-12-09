@@ -47,7 +47,7 @@ namespace SrvSurvey.units
         {
             this.radius = bodyRadius;
             this.mpd = this.radius * DecimalEx.TwoPi / 360M;
-            this.current = current ?? Status.here;
+            this.current = current ?? Status.here; // explicitly not cloning - so it auto-updates
             this.target = targetLocation;
             this.calc();
         }

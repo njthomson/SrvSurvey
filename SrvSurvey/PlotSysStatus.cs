@@ -46,7 +46,7 @@ namespace SrvSurvey
             this.Opacity = Game.settings.Opacity;
 
             //Elite.floatLeftTop(this, gameRect, 4, 10);
-            Elite.floatLeftBottom(this, gameRect, 10, 60);
+            Elite.floatLeftBottom(this, gameRect, 44, 12);
 
             this.Invalidate();
         }
@@ -118,7 +118,6 @@ namespace SrvSurvey
                     return;
                 }
 
-                // new
                 var dssRemaining = game.systemData.getDssRemainingNames();
 
                 if (!game.systemData.honked)
@@ -145,37 +144,6 @@ namespace SrvSurvey
                 {
                     this.drawTextAt($"| {game.systemData.bioSignalsRemaining}x Bio signals on: ");
                     this.drawRemainingBodies(destinationBody, bioRemaining);
-                }
-
-
-                // old
-                return;
-                if (!sys.fssComplete && sys.fssBodies.Count < sys.bodyCount)
-                {
-                    this.drawTextAt("FSS incomplete", GameColors.brushCyan);
-                }
-                else if (sys.fssComplete && sys.fssBodies.Count == 0)
-                {
-                    this.drawTextAt("No scans required");
-                }
-                else if (sys.dssRemaining.Count > 0)
-                {
-                    this.drawTextAt($"{sys.dssRemaining.Count}x bodies: ");
-                    this.drawRemainingBodies(destinationBody, sys.dssRemaining);
-                }
-                else
-                {
-                    this.drawTextAt("No DSS scans needed");
-                }
-
-                var organicScanDiff = sys.sumOrganicSignals - sys.scannedOrganics;
-                if (organicScanDiff > 0)
-                {
-                    this.drawTextAt($"| {organicScanDiff}x Bio signals on: ");
-                    //this.drawTextAt($"| Bio signals: ");
-                    //var names = sys.bioRemaining.Select(_ => $"{_}:0").ToList();
-                    //var txt = $"{sys.bioRemaining}x0";
-                    this.drawRemainingBodies(destinationBody, sys.bioRemaining);
                 }
             }
             finally

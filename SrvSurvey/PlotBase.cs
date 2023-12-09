@@ -413,7 +413,7 @@ namespace SrvSurvey
             g.DrawString(msg, font, brush ?? GameColors.brushGameOrange, tx, ty);
         }
 
-        protected void drawFooterText(string msg, Brush? brush = null)
+        protected void drawFooterText(string msg, Brush? brush = null, Font? font = null)
         {
             if (g == null) return;
 
@@ -421,7 +421,7 @@ namespace SrvSurvey
             g.ResetTransform();
             g.ResetClip();
 
-            var font = GameColors.fontMiddle;
+            font = font ?? GameColors.fontMiddle;
             var sz = g.MeasureString(msg, font);
             var tx = mid.Width - (sz.Width / 2);
             var ty = this.Height - sz.Height - 5;

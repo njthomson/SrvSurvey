@@ -54,12 +54,6 @@ namespace SrvSurvey.game
             this.findGuardianSites();
 
             game.journals!.onJournalEntry += Journals_onJournalEntry;
-
-            if (Game.settings.autoLoadPriorScans)
-                Program.control.BeginInvoke(new Action(() => {
-                // make this a little async so we can exit here and assign .nearBody
-                this.preparePriorScans();
-            }));
         }
 
         public void Dispose()
@@ -375,10 +369,10 @@ namespace SrvSurvey.game
                     // (this can happen if there are 2 copies of Elite running at the same time)
                     game.cmdr.scanOne!.status = BioScan.Status.Complete;
                     data.bioScans.Add(game.cmdr.scanOne);
-                    game.systemBody.bioScans!.Add(game.cmdr.scanOne); // !
+                    game.systemBody?.bioScans!.Add(game.cmdr.scanOne); // !
                     game.cmdr.scanTwo!.status = BioScan.Status.Complete;
                     data.bioScans.Add(game.cmdr.scanTwo);
-                    game.systemBody.bioScans!.Add(game.cmdr.scanTwo); // !
+                    game.systemBody?.bioScans!.Add(game.cmdr.scanTwo); // !
                 }
                 bioScan.status = BioScan.Status.Complete;
                 data.bioScans.Add(bioScan);
@@ -406,23 +400,23 @@ namespace SrvSurvey.game
             }
         }
 
-        public void preparePriorScans()
-        {
-            if (!Game.settings.autoLoadPriorScans || game.canonnPoi == null || game.canonnPoi.codex == null) return;
+        //public void preparePriorScans()
+        //{
+        //    if (!Game.settings.autoLoadPriorScans || game.canonnPoi == null || game.canonnPoi.codex == null) return;
 
-            Game.log($"Filtering organic signals from Canonn...");
-            var currentBody = this.bodyName.Replace(game.cmdr.currentSystem, "").Trim();
-            var localPoi = game.canonnPoi.codex.Where(_ => _.body == currentBody && _.hud_category == "Biology" && _.latitude != null && _.longitude != null).ToList();
-            Game.log($"Found {localPoi.Count} organic signals from Canonn for: {game.cmdr.currentBody}");
+        //    Game.log($"Filtering organic signals from Canonn...");
+        //    var currentBody = this.bodyName.Replace(game.cmdr.currentSystem, "").Trim();
+        //    var localPoi = game.canonnPoi.codex.Where(_ => _.body == currentBody && _.hud_category == "Biology" && _.latitude != null && _.longitude != null).ToList();
+        //    Game.log($"Found {localPoi.Count} organic signals from Canonn for: {game.cmdr.currentBody}");
 
-            if (localPoi.Count > 0)
-            {
-                Program.control.Invoke(new Action(() =>
-                {
-                    var form = Program.showPlotter<PlotPriorScans>();
-                    form.setPriorScans(localPoi);
-                }));
-            }
-        }
+        //    if (localPoi.Count > 0)
+        //    {
+        //        Program.control.Invoke(new Action(() =>
+        //        {
+        //            var form = Program.showPlotter<PlotPriorScans>();
+        //            form.setPriorScans(localPoi);
+        //        }));
+        //    }
+        //}
     }
 }

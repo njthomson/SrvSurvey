@@ -187,7 +187,17 @@ namespace SrvSurvey.game
 
         public void fireUpdate(bool force = false)
         {
-            this.fireUpdate(this.mode, force);
+            if (Program.control.InvokeRequired)
+            {
+                Program.control.Invoke(new Action(() =>
+                {
+                    this.fireUpdate(this.mode, force);
+                }));
+            }
+           else
+            {
+                this.fireUpdate(this.mode, force);
+            }
         }
 
         public void fireUpdate(GameMode newMode, bool force)
@@ -1079,7 +1089,7 @@ namespace SrvSurvey.game
             this.fireUpdate();
 
             if (Game.settings.autoLoadPriorScans)
-                this.preparePriorScans(entry.StarSystem);
+                this.fetchSystemData(entry.StarSystem, entry.SystemAddress);
         }
 
         public void setLocations(ApproachBody entry)
@@ -1106,7 +1116,7 @@ namespace SrvSurvey.game
             cmdr.Save();
 
             if (Game.settings.autoLoadPriorScans)
-                this.preparePriorScans(entry.StarSystem);
+                this.fetchSystemData(entry.StarSystem, entry.SystemAddress);
         }
 
         public void setLocations(SupercruiseExit entry)
@@ -1143,7 +1153,7 @@ namespace SrvSurvey.game
             cmdr.Save();
 
             if (Game.settings.autoLoadPriorScans)
-                this.preparePriorScans(entry.Starsystem);
+                this.fetchSystemData(entry.Starsystem, entry.SystemAddress);
         }
 
         public void setLocations(Location entry)
@@ -1182,7 +1192,7 @@ namespace SrvSurvey.game
             cmdr.Save();
 
             if (Game.settings.autoLoadPriorScans)
-                this.preparePriorScans(entry.StarSystem);
+                this.fetchSystemData(entry.StarSystem, entry.SystemAddress);
         }
 
         private decimal findLastRadius(string bodyName)
@@ -1206,9 +1216,12 @@ namespace SrvSurvey.game
             return planetRadius;
         }
 
-        private void preparePriorScans(string systemName)
+        /// <summary>
+        /// Request data about this system from EDSM, Canonn and Spansh
+        /// </summary>
+        private void fetchSystemData(string systemName, long systemAddress)
         {
-            if (this.canonnPoi?.system == systemName)
+            if (this.canonnPoi?.system == systemName || this.systemData == null)
             {
                 return;
             }
@@ -1218,43 +1231,90 @@ namespace SrvSurvey.game
                 this.canonnPoi = null;
             }
 
+            var spanshFinished = false;
+            var edsmFinished = false;
+            var canonnFinished = false;
+
+            // lookup system from Spansh
+            Game.log($"Searching Spansh for '{systemName}' ({systemAddress})...");
+            Game.spansh.getSystemDump(systemAddress).ContinueWith(response =>
+            {
+                spanshFinished = true;
+                if (!response.IsCompletedSuccessfully) { Game.log($"Spansh call failed? {response.Exception}"); return; }
+
+                var spanshSystem = response.Result;
+
+                Game.log($"Found {spanshSystem.bodyCount} bodies from Spansh for '{systemName}'");
+                if (this.systemData != null && spanshSystem.id64 == this.systemData?.address)
+                    this.systemData.onSpanshResponse(spanshSystem);
+
+                if (spanshFinished && edsmFinished && canonnFinished) { this.systemData?.Save(); this.fireUpdate(true); }
+            });
+
+            // lookup system from EDSM
+            Game.log($"Searching EDSM for '{systemName}'...");
+            Game.edsm.getBodies(systemName).ContinueWith(response =>
+            {
+                edsmFinished = true;
+                if (!response.IsCompletedSuccessfully) { Game.log($"EDSM call failed? {response.Exception}"); return; }
+
+                var edsmData = response.Result;
+                Game.log($"Found {edsmData.bodyCount} bodies from EDSM for '{systemName}'");
+                if (edsmData.id64 == this.systemData?.address)
+                    this.systemData.onEdsmResponse(edsmData);
+
+                if (spanshFinished && edsmFinished && canonnFinished) { this.systemData?.Save(); this.fireUpdate(true); }
+            });
+
             // make a call for system POIs and pre-load trackers for known bio-signals
             Game.log($"Searching for system POI from Canonn...");
             Game.canonn.getSystemPoi(systemName).ContinueWith(response =>
             {
+                canonnFinished = true;
+                if (!response.IsCompletedSuccessfully) { Game.log($"Canonn call failed? {response.Exception}"); return; }
+
                 this.canonnPoi = response.Result;
                 Game.log($"Found system POI from Canonn for: {systemName}");
-                if (this.mode != GameMode.SuperCruising && (this.isLanded || this.cmdr.scanOne != null))
-                    this.showPriorScans();
+                this.systemData.onCanonnData(this.canonnPoi);
 
+                // TODO: retire
                 if (this.systemStatus != null)
                     this.systemStatus.mergeCanonnPoi(this.canonnPoi);
+
+                if (spanshFinished && edsmFinished && canonnFinished) { this.systemData?.Save(); this.fireUpdate(true); }
             });
         }
 
-        public void showPriorScans()
+        /// <summary>
+        /// Returns True when there are plottable bio signals in canonnPoi for the current body
+        /// </summary>
+        public bool canonnPoiHasLocalBioSignals()
         {
-            if (this.canonnPoi?.codex == null || this.systemData == null || this.systemBody == null) return;
+            if (this.systemData == null || this.systemBody == null || this.canonnPoi == null) return false;
 
-            // add some details to systemData
-            this.systemData.onCanonnData(this.canonnPoi);
-
-            Game.log($"Filtering organic signals from Canonn...");
             var currentBody = this.systemBody.name.Replace(this.systemData.name, "").Trim();
-            var bioPoi = this.canonnPoi.codex.Where(_ => _.body == currentBody && _.hud_category == "Biology" && _.latitude != null && _.longitude != null).ToList();
-            Game.log($"Found {bioPoi.Count} organic signals from Canonn for: {this.systemBody.name}");
-
-            if (Game.settings.autoLoadPriorScans && bioPoi.Count > 0)
-            {
-                // show prior scans overlay
-                Program.control.Invoke(new Action(() =>
-                {
-                    var form = Program.showPlotter<PlotPriorScans>();
-                    form.setPriorScans(bioPoi);
-                }));
-            }
-
+            return this.canonnPoi.codex.Any(_ => _.body == currentBody && _.hud_category == "Biology" && _.latitude != null && _.longitude != null);
         }
+
+        //public void showPriorScans()
+        //{
+        //    if (this.canonnPoi?.codex == null || this.systemData == null || this.systemBody == null) return;
+
+        //    Game.log($"Filtering organic signals from Canonn...");
+        //    var currentBody = this.systemBody.name.Replace(this.systemData.name, "").Trim();
+        //    var bioPoi = this.canonnPoi.codex.Where(_ => _.body == currentBody && _.hud_category == "Biology" && _.latitude != null && _.longitude != null).ToList();
+        //    Game.log($"Found {bioPoi.Count} organic signals from Canonn for: {this.systemBody.name}");
+
+        //    if (Game.settings.autoLoadPriorScans && bioPoi.Count > 0 && this.mode != GameMode.SuperCruising && (this.isLanded || this.cmdr.scanOne != null))
+        //    {
+        //        // show prior scans overlay
+        //        Program.control.Invoke(new Action(() =>
+        //        {
+        //            Program.showPlotter<PlotPriorScans>().setPriorScans();
+        //        }));
+        //    }
+
+        //}
 
         #endregion
 

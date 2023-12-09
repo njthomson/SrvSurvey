@@ -35,15 +35,6 @@ namespace SrvSurvey
             this.initialize();
             this.reposition(Elite.getWindowRect(true));
 
-            if (Game.settings.autoLoadPriorScans && game.nearBody != null) // later
-            {
-                // show prior scans - if we have anything to show?
-                var form = Program.getPlotter<PlotPriorScans>();
-                if (form == null && game.canonnPoi != null)
-                {
-                    game.nearBody.preparePriorScans(); // later
-                }
-            }
         }
 
         private void initialize()
