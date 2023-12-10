@@ -22,8 +22,6 @@ namespace SrvSurvey
 
         private void setNewHeight()
         {
-            if (this.signals.Count == 0) return;
-
             var rows = this.signals.Sum(_ =>
             {
                 var r = 2 + ((_.trackers.Count - 1) / 4);
@@ -32,6 +30,10 @@ namespace SrvSurvey
 
             // adjust height if needed
             var formHeight = 36 + (rows * rowHeight) + 12;
+
+            if (rows == 0)
+                formHeight += 40;
+
             if (this.Height != formHeight)
             {
                 this.Height = formHeight;
@@ -106,6 +108,7 @@ namespace SrvSurvey
 
         public void setPriorScans()
         {
+            if (this.IsDisposed) return;
             if (game.systemData == null || game.systemBody == null || game.canonnPoi == null) throw new Exception("Why?");
 
             var currentBody = game.systemBody.name.Replace(game.systemData.name, "").Trim();
@@ -134,10 +137,16 @@ namespace SrvSurvey
 
                     // skip anything too close to our own scans or or own trackers
                     var location = new LatLong2((double)poi.latitude, (double)poi.longitude);
-                    var tooClose = game.systemBody.bioScans?.Any(_ => _.genus == genusName && Util.getDistance(_.location, location, game.systemBody.radius) < PlotTrackers.highlightDistance) == true
-                     || game.systemBody.bookmarks?.Any(marks => marks.Key == shortName && marks.Value.Any(_ => Util.getDistance(_, location, game.systemBody.radius) < PlotTrackers.highlightDistance)) == true
-                     || Util.isCloseToScan(location, genusName);
-                    if (tooClose == true) continue;
+                    var match = Game.codexRef.matchFromEntryId(poi.entryid.Value);
+
+                    if (game.systemBody.bioScans?.Any(_ => _.genus == genusName && Util.getDistance(_.location, location, game.systemBody.radius) < PlotTrackers.highlightDistance) == true)
+                        continue;
+                    if (game.systemBody.bookmarks?.Any(marks => marks.Key == shortName && marks.Value.Any(_ => Util.getDistance(_, location, game.systemBody.radius) < PlotTrackers.highlightDistance)) == true)
+                        continue;
+                    if (Util.isCloseToScan(location, genusName))
+                        continue;
+                    if (game.systemBody.organisms.FirstOrDefault(_ => _.entryId == poi.entryid)?.analyzed == true)
+                        continue;
 
                     // create group and TrackingDelta's for each location
                     var signal = this.signals.FirstOrDefault(_ => _.poiName == poi.english_name);
@@ -161,15 +170,7 @@ namespace SrvSurvey
                 }
             }
 
-            // stop here and close the plotter if there's nothing to show
-            if (this.signals.Count == 0)
-            {
-                Game.log($"Zero prior scans, self closing PlotPriorScans");
-                Program.closePlotter<PlotPriorScans>();
-                return;
-            }
-
-            // force a numeric sort?
+            // sort most profitable topmost
             this.signals.Sort((a, b) => b.credits.CompareTo(a.credits));
 
             foreach (var signal in this.signals)
@@ -178,11 +179,11 @@ namespace SrvSurvey
                 signal.trackers.ForEach(_ => _.calc());
                 signal.trackers.Sort((a, b) => a.distance.CompareTo(b.distance));
 
-                // remove any scans within 100m of another
+                // remove any scans too close to each other
                 for (var n = 1; n < signal.trackers.Count; n++)
                 {
                     var relativeDistance = signal.trackers[n].distance - signal.trackers[n - 1].distance;
-                    if (relativeDistance < 100)
+                    if (relativeDistance < PlotTrackers.highlightDistance)
                     {
                         signal.trackers.RemoveAt(n);
                         n--;
@@ -224,6 +225,7 @@ namespace SrvSurvey
             this.g = e.Graphics;
             this.g.SmoothingMode = SmoothingMode.HighQuality;
             base.OnPaintBackground(e);
+            this.drawFooterText("(Tracked locations may not be that close to signals)", GameColors.brushGameOrangeDim, this.Font);
 
             this.dtx = 4;
             this.dty = 8;
@@ -231,6 +233,12 @@ namespace SrvSurvey
             if (Game.settings.skipPriorScansLowValue)
                 txt += $" (> {Util.credits(Game.settings.skipPriorScansLowValueAmount)})";
             base.drawTextAt(txt, GameColors.brushGameOrange, GameColors.fontSmall);
+
+            if (this.signals.Count == 0)
+            {
+                g.DrawString("No unscanned signals meet criteria", this.Font, GameColors.brushGameOrange, 16f, 36f);
+                return;
+            }
 
             var indent = 70;
             var bearingWidth = 75;
@@ -345,8 +353,6 @@ namespace SrvSurvey
                     TextRenderer.DrawText(g, $"-{(int)aa}°", f, r, ((SolidBrush)brush).Color, TextFormatFlags.NoPadding | TextFormatFlags.Left);
                 }
             }
-
-            this.drawFooterText("(Tracked locations may not be that close to signals)", GameColors.brushGameOrangeDim, this.Font);
         }
     }
 }

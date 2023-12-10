@@ -127,6 +127,68 @@ namespace SrvSurvey.game
         dominator,
     }
 
+    internal class BioMatch
+    {
+        public BioMatch(BioGenus genus, BioSpecies species, BioVariant variant)
+        {
+            this.genus = genus;
+            this.species = species;
+            this.variant = variant;
+        }
+
+        public BioGenus genus;
+        public BioSpecies species;
+        public BioVariant variant;
+
+        public long entryId { get => long.Parse(species.entryIdPrefix + variant!.entryIdSuffix); }
+    }
+
+    internal class BioGenus
+    {
+        public string name;   // $Codex_Ent_Tussocks_Genus_Name;
+        public string englishName; // Tussock
+        public int dist; // how far before next scan
+
+        public List<BioSpecies> species;
+
+        public override string ToString()
+        {
+            return $"'{this.name}' ({this.englishName}";
+        }
+
+        public string shortName
+        {
+            get => this.englishName.Substring(0, 3).ToLowerInvariant(); // tus
+        }
+    }
+
+    internal class BioSpecies
+    {
+        public string name;   // $Codex_Ent_Stratum_07_Name;
+        public string englishName; // Stratum Tectonicas
+        public long reward; // 19010800
+        public string entryIdPrefix; // 24207
+
+        public List<BioVariant> variants;
+
+        public override string ToString()
+        {
+            return $"'{this.name}' ({this.englishName}";
+        }
+    }
+
+    internal class BioVariant
+    {
+        public string name;   // $Codex_Ent_Stratum_07_M_Name;
+        public string englishName; // Stratum Tectonicas - Green
+        public string entryIdSuffix; // 03
+
+        public override string ToString()
+        {
+            return $"'{this.name}' ({this.englishName}";
+        }
+    }
+
     internal class SystemStatus
     {
         public static bool showPlotter

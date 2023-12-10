@@ -279,6 +279,7 @@ namespace SrvSurvey.game
                             genus = genusEntry.Genus,
                             genusLocalized = genusEntry.Genus_Localised!,
                         });
+                        body.bioSignalCount = Math.Max(body.bioSignalCount, body.organisms.Count);
                     }
                 }
             }
@@ -315,25 +316,39 @@ namespace SrvSurvey.game
             var body = this.bodies.FirstOrDefault(_ => _.id == entry.BodyID);
             if (body!.organisms == null) body.organisms = new List<SystemOrganism>();
 
-            // TODO: There's still a problem with BrainTree's here - the genus may not match, even when there's a single entry
 
-            var genusName = Util.getGenusNameFromVariant(entry.Name) + "Genus_Name;";
-            var organism = body.organisms.FirstOrDefault(_ => _.genus == genusName);
+            // find by first variant or entryId, then genusName
+            var match = Game.codexRef.matchFromEntryId(entry.EntryID);
+            var organism = body.organisms.FirstOrDefault(_ => _.variant == match.variant.name || _.entryId == match.entryId);
+            if (organism == null) organism = body.organisms.FirstOrDefault(_ => _.genus == match.genus.name);
+
+            // some organisms have 2+ species on the same planet, eg: Brain Tree's
+            if (organism?.variant != null && organism.variant != match.variant.name)
+            {
+                // if we found something but the variant name is populated and different - clear current organism, and start a new one
+                organism = null;
+            }
+
             if (organism == null)
             {
                 organism = new SystemOrganism()
                 {
-                    genus = genusName,
+                    genus = match.genus.name,
                 };
-                Game.log($"add organism '{genusName}' to '{body.name}' ({body.id})");
+                Game.log($"add organism '{match.variant.name}' ({match.entryId}) to '{body.name}' ({body.id})");
                 body.organisms.Add(organism);
+                body.bioSignalCount = Math.Max(body.bioSignalCount, body.organisms.Count);
             }
 
             // update fields
             organism.entryId = entry.EntryID;
             organism.variant = entry.Name;
             organism.variantLocalized = entry.Name_Localised;
-            organism.reward = Game.codexRef.getRewardForEntryId(entry.EntryID.ToString());
+            organism.reward = match.species.reward;
+
+            if (organism.species == null) organism.species = match.species.name;
+            if (organism.speciesLocalized == null) organism.speciesLocalized = match.species.englishName;
+            if (organism.genusLocalized == null) organism.genusLocalized = match.genus.englishName;
         }
 
         public void onJournalEntry(ScanOrganic entry)
@@ -342,8 +357,9 @@ namespace SrvSurvey.game
             var body = this.bodies.FirstOrDefault(_ => _.id == entry.Body);
             if (body!.organisms == null) body.organisms = new List<SystemOrganism>();
 
-            // find by variant first, otherwise genus
-            var organism = body.organisms.FirstOrDefault(_ => _.variant == entry.Variant);
+            // find by first variant or entryId, then genusName
+            var match = Game.codexRef.matchFromVariant(entry.Variant);
+            var organism = body.organisms.FirstOrDefault(_ => _.entryId == match.entryId || _.variant == entry.Variant);
             if (organism == null) organism = body.organisms.FirstOrDefault(_ => _.genus == entry.Genus);
 
             // some organisms have 2 species on the same planet, eg: Brain Tree's
@@ -351,7 +367,6 @@ namespace SrvSurvey.game
             {
                 // if we found something but the variant name is populated and different - clear current organism, and start a new one
                 organism = null;
-                body.bioSignalCount++;
             }
 
             if (organism == null)
@@ -361,8 +376,9 @@ namespace SrvSurvey.game
                     genus = entry.Genus,
                     genusLocalized = entry.Genus_Localized,
                 };
-                Game.log($"add organism '{entry.Genus_Localized ?? entry.Genus}' to '{body.name}' ({body.id})");
+                Game.log($"add organism '{entry.Variant_Localised}' ({match.entryId}) to '{body.name}' ({body.id})");
                 body.organisms.Add(organism);
+                body.bioSignalCount = Math.Max(body.bioSignalCount, body.organisms.Count);
             }
 
             // update fields
@@ -370,35 +386,13 @@ namespace SrvSurvey.game
                 organism.genusLocalized = entry.Genus_Localized;
             if (organism.genusLocalized == null && entry.Variant_Localised != null)
                 organism.genusLocalized = Util.getGenusDisplayNameFromVariant(entry.Variant_Localised);
+
             organism.species = entry.Species;
             organism.speciesLocalized = entry.Species_Localised;
             organism.variant = entry.Variant;
             organism.variantLocalized = entry.Variant_Localised;
-
-            // look-up entryId and reward from CodexRef
-            if (organism.entryId == 0)
-            {
-                Game.codexRef.loadCodexRef().ContinueWith(response =>
-                {
-                    if (!response.IsCompletedSuccessfully) return;
-
-                    Dictionary<string, RefCodexEntry> codexRef = response.Result;
-                    var match = codexRef.Values.FirstOrDefault(_ => _.name == entry.Variant);
-
-                    if (match != null)
-                    {
-                        // update fields
-                        organism.entryId = long.Parse(match.entryid);
-                        if (match.reward.HasValue) organism.reward = match.reward.Value;
-
-                        this.Save();
-                    }
-                    else
-                    {
-                        Game.log($"No codexRef match found for organism '{entry.Variant_Localised ?? entry.Variant}' to '{body.name}' ({body.id})");
-                    }
-                });
-            }
+            organism.entryId = match.entryId;
+            organism.reward = match.species.reward;
 
             // upon the 3rd and final scan ...
             if (entry.ScanType == ScanType.Analyse)
@@ -446,6 +440,7 @@ namespace SrvSurvey.game
         public void onCanonnData(SystemPoi canonnPoi)
         {
             if (canonnPoi.system != this.name) throw new ArgumentOutOfRangeException($"Unmatched system! Expected: `{this.name}`, got: {canonnPoi.system}");
+            if (!Game.settings.useExternalData) return;
 
             // update count of bio signals in bodies
             if (canonnPoi.SAAsignals != null)
@@ -474,32 +469,29 @@ namespace SrvSurvey.game
 
                     var poiBodyName = $"{canonnPoi.system} {poi.body}";
                     var poiBody = this.bodies.FirstOrDefault(_ => _.name == poiBodyName);
-                    if (poiBody != null)
+                    if (poiBody != null && poi.entryid != null)
                     {
-                        // TODO: handle Brain Trees
-                        var genusDisplayName = Util.getGenusDisplayNameFromVariant(poi.english_name);
-                        var genusName = BioScan.genusNames.FirstOrDefault(_ => _.Value == genusDisplayName).Key;
-
-                        var organism = poiBody.organisms?.FirstOrDefault(_ => _.entryId == poi.entryid || _.variantLocalized == poi.english_name || _.genus == genusName);
+                        var match = Game.codexRef.matchFromEntryId(poi.entryid.Value);
+                        var organism = poiBody.organisms?.FirstOrDefault(_ => _.variant == match.variant.name || _.entryId == poi.entryid);
                         if (organism == null)
                         {
-
                             organism = new SystemOrganism()
                             {
-                                genus = genusName,
-                                genusLocalized = genusDisplayName,
+                                genus = match.genus.name,
+                                genusLocalized = match.genus.englishName,
                                 variantLocalized = poi.english_name,
                                 entryId = poi.entryid.Value,
-                                reward = Game.codexRef.getRewardForEntryId(poi.entryid.ToString()!),
+                                reward = match.species.reward,
                             };
-                            Game.log($"add organism '{genusName}' from Canonn POI to '{poiBody.name}' ({poiBody.id})");
+                            Game.log($"add organism '{match.variant.name}' ({match.entryId}) from Canonn POI to '{poiBody.name}' ({poiBody.id})");
                             if (poiBody.organisms == null) poiBody.organisms = new List<SystemOrganism>();
                             poiBody.organisms.Add(organism);
+                            poiBody.bioSignalCount = Math.Max(poiBody.bioSignalCount, poiBody.organisms.Count);
                         }
 
                         // update fields
                         organism.entryId = poi.entryid.Value;
-                        organism.reward = Game.codexRef.getRewardForEntryId(poi.entryid.ToString()!);
+                        organism.reward = match.species.reward;
                     }
                 }
             }
@@ -508,6 +500,7 @@ namespace SrvSurvey.game
         public void onEdsmResponse(EdsmSystem edsmSystem)
         {
             if (edsmSystem.id64 != this.address) throw new ArgumentOutOfRangeException($"Unmatched system! Expected: `{this.name}`, got: {edsmSystem.name}");
+            if (!Game.settings.useExternalData) return;
 
             // update bodies from response
             foreach (var entry in edsmSystem.bodies)
@@ -548,6 +541,7 @@ namespace SrvSurvey.game
         public void onSpanshResponse(ApiSystemDumpSystem spanshSystem)
         {
             if (spanshSystem.id64 != this.address) throw new ArgumentOutOfRangeException($"Unmatched system! Expected: `{this.name}`, got: {spanshSystem.name}");
+            if (!Game.settings.useExternalData) return;
 
             // update bodies from response
             foreach (var entry in spanshSystem.bodies)

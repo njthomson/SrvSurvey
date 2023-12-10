@@ -30,7 +30,9 @@ namespace SrvSurvey
             this.TopMost = true;
             this.Cursor = Cursors.Cross;
 
-            if (game.nearBody != null)
+            if (this.game == null) throw new Exception("Why no active game?");
+
+            if (game.nearBody != null) // retire
             {
                 this.touchdownLocation = new TrackingDelta(
                     game.nearBody!.radius,
@@ -89,6 +91,8 @@ namespace SrvSurvey
 
         protected virtual void initialize()
         {
+            if (this.IsDisposed) return;
+
             this.reposition(Elite.getWindowRect());
             this.mid = this.Size / 2;
 

@@ -1293,7 +1293,7 @@ namespace SrvSurvey.game
             if (this.systemData == null || this.systemBody == null || this.canonnPoi == null) return false;
 
             var currentBody = this.systemBody.name.Replace(this.systemData.name, "").Trim();
-            return this.canonnPoi.codex.Any(_ => _.body == currentBody && _.hud_category == "Biology" && _.latitude != null && _.longitude != null);
+            return this.canonnPoi.codex.Any(_ => _.body == currentBody && _.hud_category == "Biology" && _.latitude != null && _.longitude != null && _.scanned == false);
         }
 
         //public void showPriorScans()
@@ -1418,35 +1418,35 @@ namespace SrvSurvey.game
                 data.lastVisited = DateTime.UtcNow;
                 data.Save();
             }
-            else if (entry.Category == "$Codex_Category_Biology;" && Game.settings.autoTrackCompBioScans)
+            else if (entry.SubCategory == "$Codex_SubCategory_Organic_Structures;" && Game.settings.autoTrackCompBioScans)
             {
                 // auto add CodexScans as a tracker location
-                var namePart = entry.Name.Split('_')[2];
-                var match = BioScan.prefixes.FirstOrDefault(_ => _.Value.Contains(namePart, StringComparison.OrdinalIgnoreCase));
-                var prefix = match.Key;
-                var genusName = match.Value;
-                if (prefix != null && this.systemBody?.organisms != null)
+                var match = Game.codexRef.matchFromEntryId(entry.EntryID);
+                if (match != null && this.systemBody?.organisms != null)
                 {
                     // wait a bit for the status file to update
                     Application.DoEvents();
-                    Game.log($"!! Comp scan organic: {genusName} ({entry.Name}) timestamps entry: {entry.timestamp} vs status: {this.status.timestamp} | Locations: entry: {entry.Latitude}, {entry.Longitude} vs status: {this.status.Latitude}, {this.status.Longitude}");
-                    var organism = systemBody.organisms.FirstOrDefault(_ => _.genus == genusName);
+                    Game.log($"!! Comp scan organic: {entry.Name_Localised ?? entry.Name} ({entry.EntryID}) timestamps entry: {entry.timestamp} vs status: {this.status.timestamp} | Locations: entry: {entry.Latitude}, {entry.Longitude} vs status: {this.status.Latitude}, {this.status.Longitude}");
+                    // find by first variant or entryId, then genusName
+                    var organism = systemBody.organisms.FirstOrDefault(_ => _.variant == match.variant.name || _.entryId == entry.EntryID);
+                    if (organism == null) organism = systemBody.organisms.FirstOrDefault(_ => _.genus == match.genus.name);
+
                     if (organism?.analyzed == true && Game.settings.skipAnalyzedCompBioScans)
                     {
-                        Game.log($"Already analyzed, NOT auto-adding tracker for: {genusName}");
+                        Game.log($"Already analyzed, NOT auto-adding tracker for: {entry.Name_Localised} ({entry.EntryID})");
                     }
                     else
                     {
                         // whilst CodexEntry has a lat/long ... it's further away than the cmdr's current location
                         // PlotTrackers.processCommand($"+{prefix}", entry); // TODO: retire
-                        this.addBookmark(prefix, entry);
+                        this.addBookmark(match.genus.shortName, entry);
                         Program.showPlotter<PlotTrackers>().prepTrackers();
-                        Game.log($"Auto-adding tracker from CodexEntry: {genusName} ({entry.Name})");
+                        Game.log($"Auto-adding tracker from CodexEntry: {entry.Name_Localised} ({entry.EntryID})");
                     }
                 }
                 else
                 {
-                    Game.log($"Genus name '{genusName}' not found from: '{entry.Name}' ({entry.Name_Localised})");
+                    Game.log($"Organism '{entry.Name_Localised}' not found from: '{entry.Name_Localised}' ({entry.EntryID})");
                 }
             }
         }

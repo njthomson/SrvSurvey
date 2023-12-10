@@ -241,9 +241,15 @@ namespace SrvSurvey
         /// </summary>
         public static string getGenusDisplayNameFromVariant(string variantLocalized)
         {
-            // TODO: handle Braint Trees?
-            var parts = variantLocalized.Split(" ", StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
-            return parts[0];
+            var parts = variantLocalized.Split(" ", 2);
+            if (variantLocalized.Contains("-"))
+            {
+                return parts[0];
+            }
+            else
+            {
+                return parts[1];
+            }
         }
 
         public static double getSystemDistance(double[] here, double[] there)

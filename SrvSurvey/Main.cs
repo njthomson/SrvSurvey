@@ -100,6 +100,7 @@ namespace SrvSurvey
 
             Game.canonn.init();
             SiteTemplate.Import();
+            Game.codexRef.init();
 
             if (Elite.isGameRunning)
                 this.newGame();
@@ -107,7 +108,6 @@ namespace SrvSurvey
             this.timer1.Interval = 200;
             this.timer1.Start();
 
-            Game.codexRef.init();
 
             if (!Game.settings.migratedAlphaSiteHeading)
                 GuardianSiteData.migrateAlphaSites();
@@ -313,7 +313,7 @@ namespace SrvSurvey
             {
                 txtBodyBioSignals.Text = game.systemBody?.bioSignalCount.ToString();
                 txtBodyBioScanned.Text = game.systemBody?.countAnalyzedBioSignals.ToString();
-                txtBodyBioValues.Text = Util.credits(game.nearBody.data.sumPotentialEstimate, true) + " / " + Util.credits(game.nearBody.data.sumAnalyzed); // TODO: retire?
+                txtBodyBioValues.Text = Util.credits(game.nearBody?.data.sumPotentialEstimate ?? 0, true) + " / " + Util.credits(game.nearBody?.data.sumAnalyzed ?? 0); // TODO: retire?
 
                 if (game.systemBody?.organisms != null)
                 {

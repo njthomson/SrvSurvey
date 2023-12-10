@@ -100,6 +100,7 @@ namespace SrvSurvey.net.EDSM
         public string name;
         public long id;
         public long id64;
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public int bodyCount;
         public List<EdsmBody> bodies;
 
