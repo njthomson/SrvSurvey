@@ -1221,7 +1221,7 @@ namespace SrvSurvey.game
         /// </summary>
         private void fetchSystemData(string systemName, long systemAddress)
         {
-            if (this.canonnPoi?.system == systemName || this.systemData == null)
+            if (!Game.settings.useExternalData || this.canonnPoi?.system == systemName || this.systemData == null)
             {
                 return;
             }
@@ -1516,6 +1516,8 @@ namespace SrvSurvey.game
 
                 cmdr.organicRewards -= data.Value;
                 cmdr.scannedOrganics.Remove(match);
+
+                // TODO: remove entries from cmdr.scannedBioEntryIds
             }
 
             cmdr.Save();

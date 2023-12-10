@@ -592,7 +592,6 @@ namespace SrvSurvey
         public string Species_Localised { get; set; } // "Electricae Radialem"
         public long Value { get; set; } // 6284600
         public long Bonus { get; set; } // 0
-
     }
 
     class SellOrganicData : JournalEntry

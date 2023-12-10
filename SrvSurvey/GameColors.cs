@@ -32,6 +32,7 @@ namespace SrvSurvey
         public static Color Orange = Color.FromArgb(255, 186, 113, 4);
         public static Color OrangeDim = Color.FromArgb(255, 95, 48, 3);
         public static Color Cyan = Color.FromArgb(255, 84, 223, 237);
+        public static Color DarkCyan = Color.DarkCyan;        
 
         public static Pen penBackgroundStripe = new Pen(Color.FromArgb(255, 12, 12, 12));
 
@@ -57,6 +58,10 @@ namespace SrvSurvey
         public static Pen penCyan4 = new Pen(Cyan, 4);
         public static Pen penCyan8 = new Pen(Cyan, 8);
         public static Pen penDarkCyan4 = new Pen(Color.DarkCyan, 4);
+
+        public static Pen penRed2 = new Pen(Color.Red, 2);
+        public static Pen penDarkRed2 = new Pen(Color.DarkRed, 2);
+        public static Pen penDarkRed3 = new Pen(Color.DarkRed, 3);
 
         public static Pen penGameOrange2Dotted = new Pen(Orange, 2)
         {
@@ -97,13 +102,15 @@ namespace SrvSurvey
             /// <summary> orange </summary>
             internal static class Active
             {
+                public static Color color = Color.FromArgb(32, GameColors.Orange);
                 public static Brush brush = GameColors.brushGameOrange;
                 public static Pen pen = GameColors.penGameOrange2;
                 public static Pen penRadar = new Pen(Color.FromArgb(32, GameColors.Orange)) { Width = 16, DashStyle = DashStyle.Solid };
             }
-            /// <summary> orange dim </summary>
+            /// <summary> orange dim or gray </summary>
             internal static class Inactive
             {
+                public static Color color = Color.FromArgb(32, Color.Gray); // GameColors.OrangeDim);
                 public static Brush brush = GameColors.brushGameOrangeDim;
                 public static Pen pen = GameColors.penGameOrangeDim2;
                 public static Pen penRadar = new Pen(Color.FromArgb(32, GameColors.OrangeDim)) { Width = 16, DashStyle = DashStyle.Solid };
@@ -111,6 +118,7 @@ namespace SrvSurvey
             /// <summary> cyan </summary>
             internal static class CloseActive
             {
+                public static Color color = Color.FromArgb(32, GameColors.Cyan);
                 public static Brush brush = GameColors.brushCyan;
                 public static Pen pen = GameColors.penCyan2;
                 public static Pen penRadar = new Pen(Color.FromArgb(48, GameColors.Cyan)) { Width = 16, DashStyle = DashStyle.Solid };
@@ -118,9 +126,10 @@ namespace SrvSurvey
             /// <summary> dark cyan </summary>
             internal static class CloseInactive
             {
+                public static Color color = Color.FromArgb(32, GameColors.DarkCyan);
                 public static Brush brush = Brushes.DarkCyan;
                 public static Pen pen = Pens.DarkCyan;
-                public static Pen penRadar = new Pen(Color.FromArgb(80, Color.DarkCyan)) { Width = 8, DashStyle = DashStyle.Dot };
+                public static Pen penRadar = new Pen(Color.FromArgb(80, GameColors.DarkCyan)) { Width = 8, DashStyle = DashStyle.Dot };
             }
             /// <summary> orange dim </summary>
             internal static class FarAway

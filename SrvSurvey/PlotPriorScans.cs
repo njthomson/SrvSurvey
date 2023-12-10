@@ -77,6 +77,19 @@ namespace SrvSurvey
             this.Invalidate();
         }
 
+        protected override void Game_modeChanged(GameMode newMode, bool force)
+        {
+            if (this.IsDisposed) return;
+
+            var targetMode = game.showBodyPlotters || game.mode == GameMode.SAA;
+            if (this.Opacity > 0 && !targetMode)
+                this.Opacity = 0;
+            else if (this.Opacity == 0 && targetMode)
+                this.reposition(Elite.getWindowRect());
+
+            this.Invalidate();
+        }
+
         protected override void Status_StatusChanged(bool blink)
         {
             if (this.IsDisposed) return;
@@ -197,7 +210,10 @@ namespace SrvSurvey
 
                 // remove the whole group if empty or we finished analyzing this species
                 if (match.trackers.Count == 0 || entry.ScanType == ScanType.Analyse)
+                {
                     this.signals.Remove(match);
+                    this.setNewHeight();
+                }
             }
         }
 
@@ -211,7 +227,10 @@ namespace SrvSurvey
 
             this.dtx = 4;
             this.dty = 8;
-            base.drawTextAt($"Tracking {this.signals.Count} signals from Canonn:", GameColors.brushGameOrange, GameColors.fontSmall);
+            var txt = $"Tracking {this.signals.Count} signals from Canonn:";
+            if (Game.settings.skipPriorScansLowValue)
+                txt += $" (> {Util.credits(Game.settings.skipPriorScansLowValueAmount)})";
+            base.drawTextAt(txt, GameColors.brushGameOrange, GameColors.fontSmall);
 
             var indent = 70;
             var bearingWidth = 75;
@@ -231,7 +250,6 @@ namespace SrvSurvey
                 this.dtx = indent;
                 this.dty += rowHeight;
                 var isClose = false;
-                var isCloseIsh = false;
 
                 var r = new Rectangle(8, 0, this.Width - 16, 14);
                 foreach (var dd in signal.trackers)
@@ -256,10 +274,7 @@ namespace SrvSurvey
                         brush = GameColors.PriorScans.FarAway.brush;
                         pen = GameColors.PriorScans.FarAway.pen;
                     }
-                    else
-                    {
-                        isCloseIsh = true;
-                    }
+
                     if (dd.distance < PlotTrackers.highlightDistance)
                     {
                         brush = isActive ? GameColors.PriorScans.CloseActive.brush : GameColors.PriorScans.CloseInactive.brush;
@@ -272,12 +287,21 @@ namespace SrvSurvey
                         pen = GameColors.PriorScans.Analyzed.pen;
                     }
 
+                    if (signal.trackers.IndexOf(dd) == 0 && game.isMode(GameMode.SuperCruising, GameMode.GlideMode))
+                    {
+                        if ((deg > 330 || deg < 30))
+                            pen = GameColors.penCyan2;
+                        else if (deg > 90 && deg < 270)
+                            pen = GameColors.penDarkRed2;
+                        else if (deg > 60 && deg < 300)
+                            pen = GameColors.penRed2;
+                    }
+
                     this.drawBearingTo(dtx, dty, "", (double)dd.distance, (double)deg, brush, pen);
                     dtx += bearingWidth;
                 }
 
                 // draw label above trackers - color depending on if any of them are close
-                //if (isClose) brush = isActive ? Brushes.Lime : Brushes.DarkGreen;
                 brush = GameColors.brushGameOrangeDim;
                 if (isActive) brush = GameColors.PriorScans.Active.brush;
                 if (isClose) brush = isActive ? GameColors.PriorScans.CloseActive.brush : GameColors.PriorScans.CloseInactive.brush;
@@ -297,7 +321,7 @@ namespace SrvSurvey
                     var aa = DecimalEx.ToDeg(DecimalEx.ATan(game.status.Altitude / signal.trackers[0].distance));
                     // choose color based on ...
                     if (aa < 10) // .. 0
-                        brush = Brushes.Transparent; // it's probably around the curve of the planet
+                        continue; // brush = Brushes.Transparent; // it's probably around the curve of the planet
                     else if (aa < 30) // .. 10
                         brush = Brushes.Orange;
                     else if (aa < 50) // .. 30
@@ -307,6 +331,17 @@ namespace SrvSurvey
                     else // > 60
                         brush = Brushes.DarkRed;
 
+                    // draw angle of attack - pie
+                    var deg = signal.trackers[0].angle - game.status!.Heading;
+                    var attackAngle = deg > 90 && deg < 270 ? 180 - aa : aa;
+                    GraphicsPath path = new GraphicsPath();
+                    path.AddPie(r.X, r.Y - 22, 36, 36, 180, -(int)attackAngle);
+                    var pp = new Pen(brush, 2.2f);
+                    g.FillPath(brush, path);
+                    g.DrawPath(pp, path);
+
+                    // draw angle of attack - text
+                    r.X += 38;
                     TextRenderer.DrawText(g, $"-{(int)aa}°", f, r, ((SolidBrush)brush).Color, TextFormatFlags.NoPadding | TextFormatFlags.Left);
                 }
             }

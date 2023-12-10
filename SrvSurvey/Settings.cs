@@ -27,9 +27,12 @@ namespace SrvSurvey
         public bool skipAnalyzedCompBioScans = true;
         public bool autoRemoveTrackerOnSampling = true;
 
-        public bool autoLoadPriorScans = true; // !
+        public bool useExternalData = true;
+        public bool autoLoadPriorScans = true;
         public bool skipPriorScansLowValue = false;
         public int skipPriorScansLowValueAmount = 1_000_000;
+        public bool showCanonnSignalsOnRadar = true;
+        public bool useSmallCirclesWithCanonn = true;
 
         public bool focusGameOnStart = true;
         public bool focusGameOnMinimize = true;

@@ -31,37 +31,8 @@ namespace SrvSurvey
             this.mh = this.Height / 2;
             this.Cursor = Cursors.Cross;
 
-            bbs = new List<TextureBrush>()
-            {
-                this.bbActive,
-                this.bbClose,
-                this.bbInactive,
-                //this.bbAnalyzed,
-            };
         }
 
-        private List<TextureBrush> bbs;
-        private TextureBrush bbActive = makeBrush(Color.FromArgb(24, GameColors.Orange), 60);
-        private TextureBrush bbClose = makeBrush(Color.FromArgb(24, GameColors.Cyan), 40);
-        private TextureBrush bbCloseInactive = makeBrush(Color.FromArgb(32, Color.DarkCyan), 60);
-        private TextureBrush bbInactive = makeBrush(Color.FromArgb(24, Color.Gray), 80);
-        //private TextureBrush bbAnalyzed = makeBrush(Color.FromArgb(16, Color.SlateGray), 30);
-
-        private static TextureBrush makeBrush(Color c, int sz)
-        {
-            var bm = new Bitmap(sz * 2, sz * 2);
-            using (var g = Graphics.FromImage(bm))
-            {
-                var cc = new SolidBrush(c);
-                //g.FillRectangle(cc, 0, 0, sz, sz);
-                //g.FillRectangle(cc, sz, sz, sz, sz);
-
-                // sparse stripes
-                g.FillRectangle(cc, 0, sz, sz * 2, 16);
-                g.FillRectangle(cc, sz, 0, 16, sz * 2);
-            }
-            return new TextureBrush(bm, WrapMode.Tile);
-        }
 
         public void reposition(Rectangle gameRect)
         {
@@ -419,7 +390,7 @@ namespace SrvSurvey
                     drawBioScan(g, d, scan);
 
             // draw prior scan circle first
-            if (Game.settings.autoLoadPriorScans)
+            if (Game.settings.useExternalData && Game.settings.autoLoadPriorScans && Game.settings.showCanonnSignalsOnRadar)
                 drawPriorScans(g);
 
             // draw trackers circles first
@@ -457,55 +428,46 @@ namespace SrvSurvey
                 {
                     if (Util.isCloseToScan(tt.Target, signal.genusName) || analyzed) continue;
 
-                    //this.bbs.ForEach(b =>
-                    //{
-                    //    b.ResetTransform();
-                    //    //this.bb1.RotateTransform(-rotation);
-                    //    //b.TranslateTransform((float)this.td.dx, (float)this.td.dy);
 
-                    //    //var tt = new TrackingDelta(game.systemBody.radius, LatLong2.Empty);
-                    //    b.TranslateTransform((float)tt.dx, -(float)tt.dy);
+                    var b = isActive ? GameColors.PriorScans.Active.brush : GameColors.PriorScans.Inactive.brush; // TODO: confirm
+                        //this.bbActive : bbInactive;
 
-                    //    //var lx = (float)game.status.Latitude * 1000;
-                    //    //var ly = (float)game.status.Longitude * 1000;
-                    //    //b.TranslateTransform(lx, ly);
-                    //});
-
-
-                    //Brush b = isActive ? /*GameColors.brushTracker*/ this.bbActive // new HatchBrush(HatchStyle.DottedDiamond, Color.FromArgb(48, Color.Lime), Color.Transparent)
-                    //    : /*GameColors.brushTrackInactive*/ new HatchBrush(HatchStyle.DottedDiamond, Color.FromArgb(48, Color.SlateGray), Color.Transparent);
-
-                    //var p = isActive ? /*GameColors.penTracker*/ new Pen(Color.FromArgb(32, GameColors.Orange)) { Width = 8, DashStyle = DashStyle.Solid }
-                    //    : /*GameColors.penTrackInactive*/ new Pen(Color.FromArgb(48, Color.SlateGray)) { Width = 8, DashStyle = DashStyle.Dot };
-
-                    TextureBrush b = isActive ? this.bbActive : bbInactive;
                     var p = isActive ? /*GameColors.penTracker*/ new Pen(Color.FromArgb(32, GameColors.Orange)) { Width = 16, DashStyle = DashStyle.Solid }
                         : new Pen(Color.FromArgb(48, Color.SlateGray)) { Width = 8, DashStyle = DashStyle.Solid };
 
+                    var c = isActive ? GameColors.PriorScans.Active.color : GameColors.PriorScans.Inactive.color;
+
                     if (tt.distance < PlotTrackers.highlightDistance)
                     {
-                        b = isActive ? this.bbClose : this.bbCloseInactive;
-                        //// new HatchBrush(HatchStyle.DottedDiamond, Color.FromArgb(80, Color.Yellow), Color.Transparent)
-                        //: new HatchBrush(HatchStyle.DottedDiamond, Color.FromArgb(80, Color.Olive), Color.Transparent);
+                        b = isActive ? GameColors.PriorScans.CloseActive.brush : GameColors.PriorScans.CloseInactive.brush; // TODO: confirm
+                            // this.bbClose : this.bbCloseInactive; 
 
-                        p = isActive ? GameColors.PriorScans.CloseActive.penRadar // new Pen(Color.FromArgb(48, GameColors.Cyan)) { Width = 16, DashStyle = DashStyle.Solid }
-                        : GameColors.PriorScans.CloseInactive.penRadar; // new Pen(Color.FromArgb(80, Color.DarkCyan)) { Width = 8, DashStyle = DashStyle.Dot };
+                        p = isActive ? GameColors.PriorScans.CloseActive.penRadar : GameColors.PriorScans.CloseInactive.penRadar;
+                        c = isActive ? GameColors.PriorScans.CloseActive.color : GameColors.PriorScans.CloseInactive.color;
                     }
 
                     // animate brush
-                    b.ResetTransform();
-                    b.TranslateTransform((float)tt.dx, -(float)tt.dy);
 
+                    // draw differed radar circle - either small or at radius size
+                    GraphicsPath path = new GraphicsPath();
+                    if (Game.settings.useSmallCirclesWithCanonn)
+                        path.AddEllipse((float)tt.dx - 100, (float)-tt.dy - 100, 200, 200);
+                    else
+                        path.AddEllipse(new RectangleF((float)tt.dx - radius, (float)-tt.dy - radius, radius * 2f, radius * 2f));
 
-                    var rect = new RectangleF((float)tt.dx - radius, (float)-tt.dy - radius, radius * 2f, radius * 2f);
-                    this.drawRadarCircle(g, rect, b, p);
+                    var gb = new PathGradientBrush(path)
+                    {
+                        CenterColor = Color.Transparent,
+                        SurroundColors = new Color[] { c }
+                    };
+                    g.FillPath(gb, path);
 
                     // draw an inner circle if really close
                     if (tt.distance < PlotTrackers.highlightDistance) // && game.cmdr.scanOne != null)
                     {
                         var innerRadius = 50;
-                        rect = new RectangleF((float)tt.dx - innerRadius, (float)-tt.dy - innerRadius, innerRadius * 2f, innerRadius * 2f);
-                        this.drawRadarCircle(g, rect, b, p);
+                        var rect = new RectangleF((float)tt.dx - innerRadius, (float)-tt.dy - innerRadius, innerRadius * 2f, innerRadius * 2f);
+                        this.drawRadarCircle(g, rect, Brushes.Transparent, p);
                     }
                 }
             }

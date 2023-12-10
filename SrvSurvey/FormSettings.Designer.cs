@@ -53,10 +53,6 @@ namespace SrvSurvey
             label1 = new Label();
             tabControl1 = new TabControl();
             tabPage4 = new TabPage();
-            label12 = new Label();
-            checkBox14 = new CheckBox();
-            numPriorScanMinValue = new NumericUpDown();
-            checkBox13 = new CheckBox();
             linkLabel1 = new LinkLabel();
             button1 = new Button();
             checkBox7 = new CheckBox();
@@ -105,6 +101,18 @@ namespace SrvSurvey
             checkBox8 = new CheckBox();
             pictureBox4 = new PictureBox();
             checkBox4 = new CheckBox();
+            tabPage7 = new TabPage();
+            radioUseRadius = new RadioButton();
+            radioUseSmall = new RadioButton();
+            pictureBox9 = new PictureBox();
+            pictureBox8 = new PictureBox();
+            checkShowCanonnOnRadar = new CheckBox();
+            checkUseSystemData = new CheckBox();
+            pictureBox7 = new PictureBox();
+            lblPriorScansCredits = new Label();
+            checkSkipCheapSignals = new CheckBox();
+            numPriorScanMinValue = new NumericUpDown();
+            checkShowPriorScans = new CheckBox();
             tabPage2 = new TabPage();
             linkAboutTwo = new LinkLabel();
             linkAboutOne = new LinkLabel();
@@ -115,7 +123,6 @@ namespace SrvSurvey
             ((System.ComponentModel.ISupportInitialize)trackOpacity).BeginInit();
             tabControl1.SuspendLayout();
             tabPage4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)numPriorScanMinValue).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             tabPage3.SuspendLayout();
@@ -128,6 +135,11 @@ namespace SrvSurvey
             ((System.ComponentModel.ISupportInitialize)numMinScanValue).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox5).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox4).BeginInit();
+            tabPage7.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox9).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox8).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox7).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numPriorScanMinValue).BeginInit();
             tabPage2.SuspendLayout();
             SuspendLayout();
             // 
@@ -390,6 +402,7 @@ namespace SrvSurvey
             tabControl1.Controls.Add(tabPage3);
             tabControl1.Controls.Add(tabPage5);
             tabControl1.Controls.Add(tabPage6);
+            tabControl1.Controls.Add(tabPage7);
             tabControl1.Controls.Add(tabPage2);
             tabControl1.Dock = DockStyle.Fill;
             tabControl1.Location = new Point(0, 0);
@@ -401,10 +414,6 @@ namespace SrvSurvey
             // 
             // tabPage4
             // 
-            tabPage4.Controls.Add(label12);
-            tabPage4.Controls.Add(checkBox14);
-            tabPage4.Controls.Add(numPriorScanMinValue);
-            tabPage4.Controls.Add(checkBox13);
             tabPage4.Controls.Add(linkLabel1);
             tabPage4.Controls.Add(button1);
             tabPage4.Controls.Add(checkBox7);
@@ -421,53 +430,6 @@ namespace SrvSurvey
             tabPage4.Size = new Size(490, 377);
             tabPage4.TabIndex = 3;
             tabPage4.Text = "Bio Scanning";
-            // 
-            // label12
-            // 
-            label12.AutoSize = true;
-            label12.Location = new Point(396, 344);
-            label12.Name = "label12";
-            label12.Size = new Size(42, 15);
-            label12.TabIndex = 23;
-            label12.Text = "credits";
-            // 
-            // checkBox14
-            // 
-            checkBox14.AutoSize = true;
-            checkBox14.Checked = true;
-            checkBox14.CheckState = CheckState.Checked;
-            checkBox14.Location = new Point(40, 343);
-            checkBox14.Name = "checkBox14";
-            checkBox14.Size = new Size(256, 19);
-            checkBox14.TabIndex = 22;
-            checkBox14.Tag = "skipPriorScansLowValue";
-            checkBox14.Text = "Skip organmisms with reward values below:";
-            checkBox14.UseVisualStyleBackColor = true;
-            checkBox14.CheckedChanged += checkBox14_CheckedChanged;
-            // 
-            // numPriorScanMinValue
-            // 
-            numPriorScanMinValue.Increment = new decimal(new int[] { 100000, 0, 0, 0 });
-            numPriorScanMinValue.Location = new Point(302, 342);
-            numPriorScanMinValue.Maximum = new decimal(new int[] { 6000000, 0, 0, 0 });
-            numPriorScanMinValue.Name = "numPriorScanMinValue";
-            numPriorScanMinValue.Size = new Size(88, 23);
-            numPriorScanMinValue.TabIndex = 21;
-            numPriorScanMinValue.Tag = "skipPriorScansLowValueAmount";
-            numPriorScanMinValue.TextAlign = HorizontalAlignment.Right;
-            numPriorScanMinValue.ThousandsSeparator = true;
-            numPriorScanMinValue.Value = new decimal(new int[] { 2000000, 0, 0, 0 });
-            // 
-            // checkBox13
-            // 
-            checkBox13.AutoSize = true;
-            checkBox13.Location = new Point(10, 318);
-            checkBox13.Name = "checkBox13";
-            checkBox13.Size = new Size(289, 19);
-            checkBox13.TabIndex = 16;
-            checkBox13.Tag = "autoLoadPriorScans";
-            checkBox13.Text = "Show prior bio scans from Canonn (experimental)";
-            checkBox13.UseVisualStyleBackColor = true;
             // 
             // linkLabel1
             // 
@@ -534,9 +496,9 @@ namespace SrvSurvey
             // 
             // btnClearUnclaimed
             // 
-            btnClearUnclaimed.Location = new Point(401, 8);
+            btnClearUnclaimed.Location = new Point(10, 348);
             btnClearUnclaimed.Name = "btnClearUnclaimed";
-            btnClearUnclaimed.Size = new Size(86, 53);
+            btnClearUnclaimed.Size = new Size(197, 23);
             btnClearUnclaimed.TabIndex = 6;
             btnClearUnclaimed.Text = "Clear unclaimed rewards";
             btnClearUnclaimed.UseVisualStyleBackColor = true;
@@ -1071,6 +1033,152 @@ namespace SrvSurvey
             checkBox4.Text = "Show exploration values in FSS";
             checkBox4.UseVisualStyleBackColor = true;
             // 
+            // tabPage7
+            // 
+            tabPage7.Controls.Add(radioUseRadius);
+            tabPage7.Controls.Add(radioUseSmall);
+            tabPage7.Controls.Add(pictureBox9);
+            tabPage7.Controls.Add(pictureBox8);
+            tabPage7.Controls.Add(checkShowCanonnOnRadar);
+            tabPage7.Controls.Add(checkUseSystemData);
+            tabPage7.Controls.Add(pictureBox7);
+            tabPage7.Controls.Add(lblPriorScansCredits);
+            tabPage7.Controls.Add(checkSkipCheapSignals);
+            tabPage7.Controls.Add(numPriorScanMinValue);
+            tabPage7.Controls.Add(checkShowPriorScans);
+            tabPage7.Location = new Point(4, 24);
+            tabPage7.Name = "tabPage7";
+            tabPage7.Padding = new Padding(3);
+            tabPage7.Size = new Size(490, 377);
+            tabPage7.TabIndex = 6;
+            tabPage7.Text = "External Data";
+            // 
+            // radioUseRadius
+            // 
+            radioUseRadius.CheckAlign = ContentAlignment.TopLeft;
+            radioUseRadius.Location = new Point(257, 207);
+            radioUseRadius.Name = "radioUseRadius";
+            radioUseRadius.Size = new Size(99, 37);
+            radioUseRadius.TabIndex = 34;
+            radioUseRadius.TabStop = true;
+            radioUseRadius.Text = "Use bio signal radius";
+            radioUseRadius.UseVisualStyleBackColor = true;
+            // 
+            // radioUseSmall
+            // 
+            radioUseSmall.CheckAlign = ContentAlignment.TopLeft;
+            radioUseSmall.Location = new Point(28, 207);
+            radioUseSmall.Name = "radioUseSmall";
+            radioUseSmall.Size = new Size(83, 37);
+            radioUseSmall.TabIndex = 33;
+            radioUseSmall.TabStop = true;
+            radioUseSmall.Tag = "useSmallCirclesWithCanonn";
+            radioUseSmall.Text = "Use small circles";
+            radioUseSmall.UseVisualStyleBackColor = true;
+            // 
+            // pictureBox9
+            // 
+            pictureBox9.BackgroundImage = (Image)resources.GetObject("pictureBox9.BackgroundImage");
+            pictureBox9.BackgroundImageLayout = ImageLayout.Zoom;
+            pictureBox9.Location = new Point(117, 207);
+            pictureBox9.Name = "pictureBox9";
+            pictureBox9.Size = new Size(128, 150);
+            pictureBox9.TabIndex = 32;
+            pictureBox9.TabStop = false;
+            // 
+            // pictureBox8
+            // 
+            pictureBox8.BackgroundImage = (Image)resources.GetObject("pictureBox8.BackgroundImage");
+            pictureBox8.BackgroundImageLayout = ImageLayout.Zoom;
+            pictureBox8.Location = new Point(362, 207);
+            pictureBox8.Name = "pictureBox8";
+            pictureBox8.Size = new Size(128, 150);
+            pictureBox8.TabIndex = 31;
+            pictureBox8.TabStop = false;
+            // 
+            // checkShowCanonnOnRadar
+            // 
+            checkShowCanonnOnRadar.AutoSize = true;
+            checkShowCanonnOnRadar.CheckAlign = ContentAlignment.TopLeft;
+            checkShowCanonnOnRadar.Location = new Point(28, 182);
+            checkShowCanonnOnRadar.Name = "checkShowCanonnOnRadar";
+            checkShowCanonnOnRadar.Size = new Size(255, 19);
+            checkShowCanonnOnRadar.TabIndex = 30;
+            checkShowCanonnOnRadar.Tag = "showCanonnSignalsOnRadar";
+            checkShowCanonnOnRadar.Text = "Show bio signals from Canonn on the radar";
+            checkShowCanonnOnRadar.UseVisualStyleBackColor = true;
+            checkShowCanonnOnRadar.CheckedChanged += checkShowCanonnOnRadar_CheckedChanged;
+            // 
+            // checkUseSystemData
+            // 
+            checkUseSystemData.CheckAlign = ContentAlignment.TopLeft;
+            checkUseSystemData.Location = new Point(8, 6);
+            checkUseSystemData.Name = "checkUseSystemData";
+            checkUseSystemData.Size = new Size(472, 34);
+            checkUseSystemData.TabIndex = 29;
+            checkUseSystemData.Tag = "useExternalData";
+            checkUseSystemData.Text = "Download star system, bodies and organic signals data from EDSM, Spansh and Canonn";
+            checkUseSystemData.UseVisualStyleBackColor = true;
+            checkUseSystemData.CheckedChanged += disableEverythingElse_CheckedChanged;
+            // 
+            // pictureBox7
+            // 
+            pictureBox7.BackgroundImage = (Image)resources.GetObject("pictureBox7.BackgroundImage");
+            pictureBox7.BackgroundImageLayout = ImageLayout.Zoom;
+            pictureBox7.Location = new Point(258, 45);
+            pictureBox7.Name = "pictureBox7";
+            pictureBox7.Size = new Size(228, 131);
+            pictureBox7.TabIndex = 28;
+            pictureBox7.TabStop = false;
+            // 
+            // lblPriorScansCredits
+            // 
+            lblPriorScansCredits.AutoSize = true;
+            lblPriorScansCredits.Location = new Point(196, 114);
+            lblPriorScansCredits.Name = "lblPriorScansCredits";
+            lblPriorScansCredits.Size = new Size(42, 15);
+            lblPriorScansCredits.TabIndex = 27;
+            lblPriorScansCredits.Text = "credits";
+            // 
+            // checkSkipCheapSignals
+            // 
+            checkSkipCheapSignals.AutoSize = true;
+            checkSkipCheapSignals.Checked = true;
+            checkSkipCheapSignals.CheckState = CheckState.Checked;
+            checkSkipCheapSignals.Location = new Point(50, 87);
+            checkSkipCheapSignals.Name = "checkSkipCheapSignals";
+            checkSkipCheapSignals.Size = new Size(190, 19);
+            checkSkipCheapSignals.TabIndex = 26;
+            checkSkipCheapSignals.Tag = "skipPriorScansLowValue";
+            checkSkipCheapSignals.Text = "Skip signals with reward below:";
+            checkSkipCheapSignals.UseVisualStyleBackColor = true;
+            checkSkipCheapSignals.CheckedChanged += checkBox14_CheckedChanged;
+            // 
+            // numPriorScanMinValue
+            // 
+            numPriorScanMinValue.Increment = new decimal(new int[] { 100000, 0, 0, 0 });
+            numPriorScanMinValue.Location = new Point(102, 112);
+            numPriorScanMinValue.Maximum = new decimal(new int[] { 6000000, 0, 0, 0 });
+            numPriorScanMinValue.Name = "numPriorScanMinValue";
+            numPriorScanMinValue.Size = new Size(88, 23);
+            numPriorScanMinValue.TabIndex = 25;
+            numPriorScanMinValue.Tag = "skipPriorScansLowValueAmount";
+            numPriorScanMinValue.TextAlign = HorizontalAlignment.Right;
+            numPriorScanMinValue.ThousandsSeparator = true;
+            numPriorScanMinValue.Value = new decimal(new int[] { 2000000, 0, 0, 0 });
+            // 
+            // checkShowPriorScans
+            // 
+            checkShowPriorScans.CheckAlign = ContentAlignment.TopLeft;
+            checkShowPriorScans.Location = new Point(28, 45);
+            checkShowPriorScans.Name = "checkShowPriorScans";
+            checkShowPriorScans.Size = new Size(224, 35);
+            checkShowPriorScans.TabIndex = 24;
+            checkShowPriorScans.Tag = "autoLoadPriorScans";
+            checkShowPriorScans.Text = "Show aiming guidance to bio signals from Canonn";
+            checkShowPriorScans.UseVisualStyleBackColor = true;
+            checkShowPriorScans.CheckedChanged += checkShowPriorScans_CheckedChanged;
+            // 
             // tabPage2
             // 
             tabPage2.BorderStyle = BorderStyle.Fixed3D;
@@ -1135,7 +1243,6 @@ namespace SrvSurvey
             tabControl1.ResumeLayout(false);
             tabPage4.ResumeLayout(false);
             tabPage4.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)numPriorScanMinValue).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             tabPage3.ResumeLayout(false);
@@ -1151,6 +1258,12 @@ namespace SrvSurvey
             ((System.ComponentModel.ISupportInitialize)numMinScanValue).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox5).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox4).EndInit();
+            tabPage7.ResumeLayout(false);
+            tabPage7.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox9).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox8).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox7).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numPriorScanMinValue).EndInit();
             tabPage2.ResumeLayout(false);
             ResumeLayout(false);
         }
@@ -1230,9 +1343,17 @@ namespace SrvSurvey
         private CheckBox checkHideJournalTimer;
         private Button button1;
         private LinkLabel linkLabel1;
-        private CheckBox checkBox13;
-        private Label label12;
-        private CheckBox checkBox14;
+        private TabPage tabPage7;
+        private CheckBox checkUseSystemData;
+        private PictureBox pictureBox7;
+        private Label lblPriorScansCredits;
+        private CheckBox checkSkipCheapSignals;
         private NumericUpDown numPriorScanMinValue;
+        private CheckBox checkShowPriorScans;
+        private CheckBox checkShowCanonnOnRadar;
+        private RadioButton radioUseRadius;
+        private RadioButton radioUseSmall;
+        private PictureBox pictureBox9;
+        private PictureBox pictureBox8;
     }
 }

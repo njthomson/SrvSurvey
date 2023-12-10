@@ -321,17 +321,17 @@ namespace SrvSurvey
                         Program.showPlotter<PlotBioStatus>();
                 }
 
+                // show prior scan data only if present
+                var showPlotPriorScans = Game.settings.autoLoadPriorScans && (game.showBodyPlotters || game.mode == GameMode.SAA) && game.canonnPoiHasLocalBioSignals();
+                if (showPlotPriorScans)
+                    Program.showPlotter<PlotPriorScans>();
+
                 if (game.showBodyPlotters && Game.settings.autoShowBioPlot && !this.game.showGuardianPlotters)
                 {
                     // show trackers only if we have some
                     var showPlotTrackers = game.systemBody?.bookmarks?.Count > 0;
                     if (showPlotTrackers)
                         Program.showPlotter<PlotTrackers>();
-
-                    // show prior scan data only if present
-                    var showPlotPriorScans = Game.settings.autoLoadPriorScans && game.canonnPoiHasLocalBioSignals();
-                    if (showPlotPriorScans)
-                        Program.showPlotter<PlotPriorScans>();
 
                     // show radar if we have trackers, prior scans, we landed or started scanning already
                     if (!game.isMode(GameMode.SuperCruising, GameMode.GlideMode) && (game.isLanded || showPlotTrackers || showPlotPriorScans || game.cmdr.scanOne != null))

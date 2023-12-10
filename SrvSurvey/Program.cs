@@ -104,8 +104,8 @@ namespace SrvSurvey
                 Game.log($"Program.Closing plotter: {name}");
 
                 var plotter = Program.activePlotters[name];
-                plotter.Close();
                 Program.activePlotters.Remove(plotter.Name);
+                plotter.Close();
             }
         }
 

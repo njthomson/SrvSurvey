@@ -30,6 +30,16 @@ namespace SrvSurvey
         private void FormSettings_Load(object sender, EventArgs e)
         {
             updateFormFromSettings(this);
+
+            // disable controls based on settings
+            checkShowPriorScans.Enabled = checkUseSystemData.Checked;
+            checkSkipCheapSignals.Enabled = checkUseSystemData.Checked && checkShowPriorScans.Checked;
+            numPriorScanMinValue.Enabled = checkUseSystemData.Checked && checkShowPriorScans.Checked && checkSkipCheapSignals.Checked;
+            lblPriorScansCredits.Enabled = checkUseSystemData.Checked && checkShowPriorScans.Checked && checkSkipCheapSignals.Checked;
+
+            checkShowCanonnOnRadar.Enabled = checkUseSystemData.Checked && checkShowPriorScans.Checked;
+            radioUseSmall.Enabled = checkUseSystemData.Checked && checkShowPriorScans.Checked && checkShowCanonnOnRadar.Checked;
+            radioUseRadius.Enabled = checkUseSystemData.Checked && checkShowPriorScans.Checked && checkShowCanonnOnRadar.Checked;
         }
 
         private void updateFormFromSettings(Control parentControl)
@@ -65,6 +75,10 @@ namespace SrvSurvey
                             ((ComboBox)ctrl).SelectedIndex = Convert.ToInt32(map[name].GetValue(Game.settings));
                             break;
 
+                        case nameof(RadioButton):
+                            ((RadioButton)ctrl).Checked = (bool)map[name].GetValue(Game.settings)!;
+                            break;
+
                         default:
                             throw new Exception($"Unexpected control type: {ctrl.GetType().Name}");
                     }
@@ -74,6 +88,9 @@ namespace SrvSurvey
                 if (ctrl.HasChildren)
                     updateFormFromSettings(ctrl);
             }
+
+            // TODO: handle radio's better?
+            radioUseRadius.Checked = !radioUseSmall.Checked;
         }
 
         private void updateSettingsFromForm(Control parentControl)
@@ -102,6 +119,10 @@ namespace SrvSurvey
 
                         case nameof(ComboBox):
                             val = Convert.ToInt32(((ComboBox)ctrl).SelectedIndex);
+                            break;
+
+                        case nameof(RadioButton):
+                            val = ((RadioButton)ctrl).Checked;
                             break;
 
                         default:
@@ -157,7 +178,6 @@ namespace SrvSurvey
         {
             if (numOpacity.Value != trackOpacity.Value)
                 trackOpacity.Value = (int)numOpacity.Value;
-
         }
 
         private void btnNextProc_Click(object sender, EventArgs e)
@@ -265,7 +285,26 @@ namespace SrvSurvey
 
         private void checkBox14_CheckedChanged(object sender, EventArgs e)
         {
-            numPriorScanMinValue.Enabled = checkBox14.Checked;
+            numPriorScanMinValue.Enabled = checkSkipCheapSignals.Checked;
+            lblPriorScansCredits.Enabled = checkSkipCheapSignals.Checked;
+        }
+
+        private void checkShowCanonnOnRadar_CheckedChanged(object sender, EventArgs e)
+        {
+            radioUseSmall.Enabled =
+            radioUseRadius.Enabled =
+                checkShowCanonnOnRadar.Checked;
+        }
+
+        private void checkShowPriorScans_CheckedChanged(object sender, EventArgs e)
+        {
+            checkSkipCheapSignals.Enabled =
+            numPriorScanMinValue.Enabled =
+            lblPriorScansCredits.Enabled =
+            radioUseSmall.Enabled =
+            radioUseRadius.Enabled =
+            checkShowCanonnOnRadar.Enabled =
+                checkShowPriorScans.Checked;
         }
     }
 }
