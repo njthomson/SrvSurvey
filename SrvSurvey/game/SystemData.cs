@@ -320,15 +320,7 @@ namespace SrvSurvey.game
 
             // find by first variant or entryId, then genusName
             var match = Game.codexRef.matchFromEntryId(entry.EntryID);
-            var organism = body.organisms.FirstOrDefault(_ => _.variant == match.variant.name || _.entryId == match.entryId);
-            if (organism == null) organism = body.organisms.FirstOrDefault(_ => _.genus == match.genus.name);
-
-            // some organisms have 2+ species on the same planet, eg: Brain Tree's
-            if (organism?.variant != null && organism.variant != match.variant.name)
-            {
-                // if we found something but the variant name is populated and different - clear current organism, and start a new one
-                organism = null;
-            }
+            var organism = body.findOrganism(match);
 
             if (organism == null)
             {
@@ -360,15 +352,7 @@ namespace SrvSurvey.game
 
             // find by first variant or entryId, then genusName
             var match = Game.codexRef.matchFromVariant(entry.Variant);
-            var organism = body.organisms.FirstOrDefault(_ => _.entryId == match.entryId || _.variant == entry.Variant);
-            if (organism == null) organism = body.organisms.FirstOrDefault(_ => _.genus == entry.Genus);
-
-            // some organisms have 2 species on the same planet, eg: Brain Tree's
-            if (organism?.variant != null && organism.variant != entry.Variant)
-            {
-                // if we found something but the variant name is populated and different - clear current organism, and start a new one
-                organism = null;
-            }
+            var organism = body.findOrganism(match);
 
             if (organism == null)
             {
@@ -430,7 +414,7 @@ namespace SrvSurvey.game
 
                 // efficiently track which organisms were scanned where
                 if (organism.entryId > 0)
-                    Game.activeGame!.cmdr.scannedBioEntryIds.Add($"{this.address}_{body.id}_{organism.entryId}");
+                    Game.activeGame!.cmdr.scannedBioEntryIds.Add($"{this.address}_{body.id}_{organism.entryId}_{organism.reward}");
                 else
                     Game.log($"BAD! Why entryId for organism '{entry.Variant_Localised ?? entry.Variant}' to '{body.name}' ({body.id})");
             }
@@ -473,7 +457,7 @@ namespace SrvSurvey.game
                     if (poiBody != null && poi.entryid != null)
                     {
                         var match = Game.codexRef.matchFromEntryId(poi.entryid.Value);
-                        var organism = poiBody.organisms?.FirstOrDefault(_ => _.variant == match.variant.name || _.entryId == poi.entryid);
+                        var organism = poiBody.findOrganism(match);
                         if (organism == null)
                         {
                             organism = new SystemOrganism()
@@ -800,6 +784,26 @@ namespace SrvSurvey.game
 
                 return estimate;
             }
+        }
+
+        public SystemOrganism? findOrganism(BioMatch match)
+        {
+            return this.findOrganism(match.variant.name, match.entryId, match.genus.name);
+        }
+
+        public SystemOrganism? findOrganism(string variant, long entryId, string genus)
+        {
+            var organism = this.organisms.FirstOrDefault(_ => _.variant == variant || _.entryId == entryId);
+            if (organism == null) organism = this.organisms.FirstOrDefault(_ => _.genus == genus);
+
+            // some organisms have 2+ species on the same planet, eg: Brain Tree's
+            if (organism?.variant != null && organism.variant != variant)
+            {
+                // if we found something but the variant name is populated and different - it is not a valid match
+                return null;
+            }
+
+            return organism;
         }
     }
 

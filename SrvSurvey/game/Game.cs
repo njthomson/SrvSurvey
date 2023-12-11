@@ -194,7 +194,7 @@ namespace SrvSurvey.game
                     this.fireUpdate(this.mode, force);
                 }));
             }
-           else
+            else
             {
                 this.fireUpdate(this.mode, force);
             }
@@ -1427,10 +1427,7 @@ namespace SrvSurvey.game
                     // wait a bit for the status file to update
                     Application.DoEvents();
                     Game.log($"!! Comp scan organic: {entry.Name_Localised ?? entry.Name} ({entry.EntryID}) timestamps entry: {entry.timestamp} vs status: {this.status.timestamp} | Locations: entry: {entry.Latitude}, {entry.Longitude} vs status: {this.status.Latitude}, {this.status.Longitude}");
-                    // find by first variant or entryId, then genusName
-                    var organism = systemBody.organisms.FirstOrDefault(_ => _.variant == match.variant.name || _.entryId == entry.EntryID);
-                    if (organism == null) organism = systemBody.organisms.FirstOrDefault(_ => _.genus == match.genus.name);
-
+                    var organism = systemBody.findOrganism(match);
                     if (organism?.analyzed == true && Game.settings.skipAnalyzedCompBioScans)
                     {
                         Game.log($"Already analyzed, NOT auto-adding tracker for: {entry.Name_Localised} ({entry.EntryID})");
@@ -1517,7 +1514,23 @@ namespace SrvSurvey.game
                 cmdr.organicRewards -= data.Value;
                 cmdr.scannedOrganics.Remove(match);
 
-                // TODO: remove entries from cmdr.scannedBioEntryIds
+                // get species entryIfPrefix
+                string? entryIdPrefix = null;
+                foreach (var genusRef in Game.codexRef.genus)
+                    foreach (var speciesRef in genusRef.species)
+                        if (speciesRef.name == data.Species)
+                        {
+                            entryIdPrefix = speciesRef.entryIdPrefix;
+                            break;
+                        }
+
+                if (entryIdPrefix != null)
+                {
+                    var txtReward = data.Value.ToString();
+                    var match3 = this.cmdr.scannedBioEntryIds.FirstOrDefault(_ => _.Contains(entryIdPrefix) && _.EndsWith(txtReward));
+                    if (match3 != null)
+                        cmdr.scannedBioEntryIds.Remove(match3);
+                }
             }
 
             cmdr.Save();
