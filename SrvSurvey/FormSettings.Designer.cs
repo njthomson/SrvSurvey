@@ -116,6 +116,9 @@ namespace SrvSurvey
             tabPage2 = new TabPage();
             linkAboutTwo = new LinkLabel();
             linkAboutOne = new LinkLabel();
+            label12 = new Label();
+            numGravityWarningLevel = new NumericUpDown();
+            checkBox13 = new CheckBox();
             panel1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox6).BeginInit();
@@ -141,6 +144,7 @@ namespace SrvSurvey
             ((System.ComponentModel.ISupportInitialize)pictureBox7).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numPriorScanMinValue).BeginInit();
             tabPage2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numGravityWarningLevel).BeginInit();
             SuspendLayout();
             // 
             // panel1
@@ -193,6 +197,9 @@ namespace SrvSurvey
             // tabPage1
             // 
             tabPage1.BorderStyle = BorderStyle.Fixed3D;
+            tabPage1.Controls.Add(label12);
+            tabPage1.Controls.Add(numGravityWarningLevel);
+            tabPage1.Controls.Add(checkBox13);
             tabPage1.Controls.Add(pictureBox6);
             tabPage1.Controls.Add(checkHideJournalTimer);
             tabPage1.Controls.Add(btnChooseJournalFolder);
@@ -300,7 +307,7 @@ namespace SrvSurvey
             // checkHideOverlayOnMouseOver
             // 
             checkHideOverlayOnMouseOver.AutoSize = true;
-            checkHideOverlayOnMouseOver.Location = new Point(8, 348);
+            checkHideOverlayOnMouseOver.Location = new Point(10, 348);
             checkHideOverlayOnMouseOver.Name = "checkHideOverlayOnMouseOver";
             checkHideOverlayOnMouseOver.Size = new Size(246, 19);
             checkHideOverlayOnMouseOver.TabIndex = 9;
@@ -320,7 +327,7 @@ namespace SrvSurvey
             // 
             checkHidePlottersFromWeapons.Checked = true;
             checkHidePlottersFromWeapons.CheckState = CheckState.Checked;
-            checkHidePlottersFromWeapons.Location = new Point(8, 323);
+            checkHidePlottersFromWeapons.Location = new Point(10, 323);
             checkHidePlottersFromWeapons.Margin = new Padding(4, 3, 4, 3);
             checkHidePlottersFromWeapons.Name = "checkHidePlottersFromWeapons";
             checkHidePlottersFromWeapons.Size = new Size(431, 19);
@@ -1217,6 +1224,42 @@ namespace SrvSurvey
             linkAboutOne.Text = resources.GetString("linkAboutOne.Text");
             linkAboutOne.UseCompatibleTextRendering = true;
             // 
+            // label12
+            // 
+            label12.AutoSize = true;
+            label12.Location = new Point(31, 263);
+            label12.Name = "label12";
+            label12.Size = new Size(156, 15);
+            label12.TabIndex = 27;
+            label12.Text = "When body gravity is above:";
+            // 
+            // numGravityWarningLevel
+            // 
+            numGravityWarningLevel.DecimalPlaces = 2;
+            numGravityWarningLevel.Increment = new decimal(new int[] { 1, 0, 0, 65536 });
+            numGravityWarningLevel.Location = new Point(191, 261);
+            numGravityWarningLevel.Maximum = new decimal(new int[] { 50, 0, 0, 0 });
+            numGravityWarningLevel.Name = "numGravityWarningLevel";
+            numGravityWarningLevel.Size = new Size(50, 23);
+            numGravityWarningLevel.TabIndex = 26;
+            numGravityWarningLevel.Tag = "highGravityWarningLevel";
+            numGravityWarningLevel.TextAlign = HorizontalAlignment.Right;
+            numGravityWarningLevel.Value = new decimal(new int[] { 50, 0, 0, 0 });
+            // 
+            // checkBox13
+            // 
+            checkBox13.AutoSize = true;
+            checkBox13.Checked = true;
+            checkBox13.CheckState = CheckState.Checked;
+            checkBox13.Location = new Point(10, 241);
+            checkBox13.Margin = new Padding(4, 3, 4, 3);
+            checkBox13.Name = "checkBox13";
+            checkBox13.Size = new Size(137, 19);
+            checkBox13.TabIndex = 25;
+            checkBox13.Tag = "autoShowFlightWarnings";
+            checkBox13.Text = "Show flight warnings";
+            checkBox13.UseVisualStyleBackColor = true;
+            // 
             // FormSettings
             // 
             AcceptButton = btnSave;
@@ -1265,6 +1308,7 @@ namespace SrvSurvey
             ((System.ComponentModel.ISupportInitialize)pictureBox7).EndInit();
             ((System.ComponentModel.ISupportInitialize)numPriorScanMinValue).EndInit();
             tabPage2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)numGravityWarningLevel).EndInit();
             ResumeLayout(false);
         }
 
@@ -1355,5 +1399,9 @@ namespace SrvSurvey
         private RadioButton radioUseSmall;
         private PictureBox pictureBox9;
         private PictureBox pictureBox8;
+        private CheckBox checkBox14;
+        private Label label12;
+        private NumericUpDown numGravityWarningLevel;
+        private CheckBox checkBox13;
     }
 }

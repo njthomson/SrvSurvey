@@ -44,6 +44,9 @@ namespace SrvSurvey
         public bool hidePlottersFromCombatSuits = false;
         public bool hideOverlaysFromMouse = true;
 
+        public bool autoShowFlightWarnings = true;
+        public double highGravityWarningLevel = 1.0f;
+
         [JsonIgnore]
         public float Opacity { get => plotterOpacity / 100f; }
         public float plotterOpacity = 50;

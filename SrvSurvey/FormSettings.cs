@@ -114,7 +114,10 @@ namespace SrvSurvey
                             break;
 
                         case nameof(NumericUpDown):
-                            val = Convert.ToInt32(((NumericUpDown)ctrl).Value);
+                            if (((NumericUpDown)ctrl).DecimalPlaces == 0)
+                                val = Convert.ToInt32(((NumericUpDown)ctrl).Value);
+                            else
+                                val = Convert.ToDouble(((NumericUpDown)ctrl).Value);
                             break;
 
                         case nameof(ComboBox):

@@ -136,6 +136,12 @@ namespace SrvSurvey
                 Program.showPlotter<PlotSysStatus>();
             else
                 Program.closePlotter<PlotSysStatus>();
+
+            var isHighGravity = game?.systemBody?.surfaceGravity > Game.settings.highGravityWarningLevel * 10;
+            if (Game.settings.autoShowFlightWarnings && game?.systemBody != null && isHighGravity && game.isMode(GameMode.Landed, GameMode.SuperCruising, GameMode.GlideMode, GameMode.Flying, GameMode.InFighter, GameMode.InSrv))
+                Program.showPlotter<PlotFlightWarning>();
+            else
+                Program.closePlotter<PlotFlightWarning>();
         }
 
         private void settingsFolderWatcher_Changed(object sender, FileSystemEventArgs e)

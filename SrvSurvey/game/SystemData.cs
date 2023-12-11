@@ -211,6 +211,7 @@ namespace SrvSurvey.game
             body.radius = entry.Radius;
             body.wasDiscovered = entry.WasDiscovered;
             body.wasMapped = entry.WasMapped;
+            body.surfaceGravity = entry.SurfaceGravity;
 
             // TODO: Parents ?
 
@@ -768,6 +769,9 @@ namespace SrvSurvey.game
         {
             return $"'{this.name}' ({this.id}, {this.type})";
         }
+
+        [JsonIgnore]
+        public double surfaceGravity; // keep in memory but it's not worth saving in files
 
         [JsonIgnore]
         public bool hasRings { get => this.rings?.Count > 0; }
