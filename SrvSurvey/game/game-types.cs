@@ -112,6 +112,7 @@ namespace SrvSurvey.game
 
     internal enum SystemBodyType
     {
+        Unknown,
         Star,
         Giant,
         SolidBody,
@@ -148,6 +149,7 @@ namespace SrvSurvey.game
         public string name;   // $Codex_Ent_Tussocks_Genus_Name;
         public string englishName; // Tussock
         public int dist; // how far before next scan
+        public bool odyssey; // is new for Odyssey?
 
         public List<BioSpecies> species;
 

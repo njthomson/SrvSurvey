@@ -133,7 +133,7 @@ namespace SrvSurvey.game
                 countOrganisms++;
 
                 // sum known rewards
-                if (organism.reward > 0 )
+                if (organism.reward > 0)
                 {
                     sumPotentialKnown += organism.reward;
                     sumPotentialEstimate += organism.reward;
@@ -153,6 +153,64 @@ namespace SrvSurvey.game
             }
 
             scanProgress = 1f / sumPotentialEstimate * sumAnalyzed;
+        }
+
+        public static void migrate_ScannedOrganics_Into_ScannedBioEntryIds(CommanderSettings cmdr)
+        {
+            Game.log("Migrate cmdr 'scannedOrganics' into 'scannedBioEntryIds' ...");
+
+            // first migrate any 'scannedBioEntryIds' entries without rewards or firstFoot entries
+            var foo = cmdr.scannedBioEntryIds.Select(oldEntry =>
+            {
+                var parts = oldEntry.Split('_').ToList();
+
+                if (parts.Count == 3)
+                {
+                    // append the reward
+                    var bioMatch = Game.codexRef.matchFromEntryId(parts[2]);
+                    parts.Add(bioMatch.species.reward.ToString());
+                }
+
+                if (parts.Count == 4)
+                {
+                    // append firstFoot (false as we no longer know)
+                    parts.Add(bool.FalseString);
+                }
+
+                return string.Join("_", parts);
+            }).ToList();
+            cmdr.scannedBioEntryIds = new HashSet<string>(foo);
+            cmdr.Save();
+
+            // now migrate cmdr 'scannedOrganics' into 'scannedBioEntryIds', maintaining the order from 'scannedOrganics'
+            var newScannedBioEntryIds = cmdr.scannedBioEntryIds.ToList();
+            for (var n = cmdr.scannedOrganics.Count; n > 0; n--)
+            {
+                var oldScanEntry = cmdr.scannedOrganics[n - 1];
+
+                // we did not track variant previously, so we'll use "" which will match any variant of the species (and their will only be 1 variant per species on a body ... apart from legacy organisms, but that's okay the species is enough to know the full entryId)
+                var suffix = "";
+
+                var isLegacyGenus = Game.codexRef.isLegacyGenus(oldScanEntry.genus!, oldScanEntry.species!);
+                if (isLegacyGenus)
+                    suffix = Game.codexRef.matchFromSpecies(oldScanEntry.species!).variants[0].entryIdSuffix;
+
+                var speciesRef = Game.codexRef.matchFromSpecies(oldScanEntry.species!);
+                var entryId = speciesRef.entryIdPrefix + suffix;
+
+                var prefix = $"{oldScanEntry.systemAddress}_{oldScanEntry.bodyId}_{entryId}";
+                var match = newScannedBioEntryIds.FirstOrDefault(_ => _.StartsWith(prefix) && _.Contains($"_{oldScanEntry.reward}_"));
+                if (match == null)
+                {
+                    var newScannedEntryId = $"{oldScanEntry.systemAddress}_{oldScanEntry.bodyId}_{entryId}_{oldScanEntry.reward}_{bool.FalseString}";
+                    newScannedBioEntryIds.Insert(0, newScannedEntryId);
+                }
+            }
+            cmdr.scannedBioEntryIds = new HashSet<string>(newScannedBioEntryIds);
+
+            Game.log("Migrate cmdr 'scannedOrganics' into 'scannedBioEntryIds' - complete");
+            cmdr.migratedScannedOrganicsInEntryId = true;
+            cmdr.Save();
         }
     }
 }

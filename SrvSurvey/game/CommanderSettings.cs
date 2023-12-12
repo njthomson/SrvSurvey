@@ -49,6 +49,9 @@ namespace SrvSurvey.game
         public SphereLimit sphereLimit = new SphereLimit();
 
         public Dictionary<string, List<LatLong2>>? trackTargets;
+
+        public bool migratedNonSystemDataOrganics = false;
+        public bool migratedScannedOrganicsInEntryId = false;
     }
 
     internal class SphereLimit

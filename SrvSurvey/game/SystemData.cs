@@ -26,12 +26,12 @@ namespace SrvSurvey.game
             }
 
             // try finding files by systemAddress first, then system name
-            var path = Path.Combine(Application.UserAppDataPath, "systems", Game.activeGame!.fid!);
-            Directory.CreateDirectory(path);
-            var files = Directory.GetFiles(path, $"*{systemAddress}.json");
+            var folder = Path.Combine(Application.UserAppDataPath, "systems", Game.activeGame!.fid!);
+            Directory.CreateDirectory(folder);
+            var files = Directory.GetFiles(folder, $"*_{systemAddress}.json");
             if (files.Length == 0)
             {
-                files = Directory.GetFiles(path, $"{systemName}*.json");
+                files = Directory.GetFiles(folder, $"{systemName}_*.json");
             }
 
             // create new if no matches found
@@ -109,6 +109,274 @@ namespace SrvSurvey.game
 
                 return data;
             }
+        }
+
+        #endregion
+
+        #region migrate data from individual body files
+
+        private static SystemData From(BodyData bodyData)
+        {
+            lock (cache)
+            {
+
+                // load from file or cache
+                var data = SystemData.Load(bodyData.systemName, bodyData.systemAddress);
+
+                if (data == null)
+                {
+                    // create a new data object with the main star populated
+                    data = new SystemData()
+                    {
+                        filepath = Path.Combine(Application.UserAppDataPath, "systems", Game.activeGame!.fid!, $"{bodyData.systemName}_{bodyData.systemAddress}.json"),
+                        name = bodyData.systemName,
+                        address = bodyData.systemAddress,
+                        starPos = null!,
+                        commander = Game.activeGame.cmdr.commander,
+                        firstVisited = bodyData.firstVisited,
+                        lastVisited = bodyData.lastVisited,
+                    };
+
+                    if (cache.ContainsKey(bodyData.systemAddress))
+                        throw new Exception($"Cache problem with '{bodyData.systemName}' ?");
+
+                    cache[bodyData.systemAddress] = data;
+                    data.Save();
+                }
+                return data;
+            }
+        }
+
+        public static async Task migrate_BodyData_Into_SystemData(CommanderSettings cmdr)
+        {
+            var folder = Path.Combine(Application.UserAppDataPath, "organic", Game.activeGame!.fid!);
+            if (!Directory.Exists(folder)) return;
+
+            var filenames = Directory.GetFiles(folder);
+            Game.log($"Migrate cmdr 'BodyData' into 'SystemData', {filenames.Length} files to process ...");
+
+            foreach (var filename in filenames)
+            {
+                var filepath = Path.Combine(folder, filename);
+                Game.log($"Reading: {filepath}");
+                var bodyData = Data.Load<BodyData>(filepath)!;
+
+                var systemData = SystemData.From(bodyData);
+                if (systemData.starPos == null)
+                {
+                    // we need a starPos before we can create the file...
+                    // get starPos from EDSM or Spansh, or fail :(
+                    var edsmResult = await Game.edsm.getSystems(systemData.name);
+                    systemData.starPos = edsmResult?.FirstOrDefault()?.coords?.starPos;
+                }
+                if (systemData.starPos == null)
+                {
+                    var spanshResult = await Game.spansh.getSystem(systemData.name);
+                    var matchedSystem = spanshResult.min_max.FirstOrDefault(_ => _.name.Equals(systemData.name, StringComparison.OrdinalIgnoreCase));
+                    if (matchedSystem != null)
+                        systemData.starPos = new double[] { matchedSystem.x, matchedSystem.y, matchedSystem.z };
+                }
+                if (systemData.starPos == null)
+                {
+                    // TODO: search back through journal files?
+                    throw new Exception($"Failed to find a starPos for: '{systemData.name}'");
+                }
+
+
+                // update fields
+                if (systemData.firstVisited > bodyData.firstVisited) systemData.firstVisited = bodyData.firstVisited;
+                if (systemData.lastVisited < bodyData.lastVisited) systemData.lastVisited = bodyData.lastVisited;
+
+                // populate the body
+                var systemBody = systemData.findOrCreate(bodyData.bodyName, bodyData.bodyId);
+                if (systemBody.lastTouchdown == null && bodyData.lastTouchdown != null) systemBody.lastTouchdown = bodyData.lastTouchdown;
+                if (systemBody.type == SystemBodyType.Unknown) systemBody.type = SystemBodyType.LandableBody; // assume it's landable as we have old data for it
+
+                // migrate any bioScans
+                if (bodyData.bioScans?.Count > 0)
+                {
+                    foreach (var bioScan in bodyData.bioScans)
+                    {
+                        // try using the variant name from 'bodyData.organisms'
+                        if (bioScan.entryId == 0 || bioScan.entryId.ToString().EndsWith("00"))
+                        {
+                            var matchSpecies = bodyData.organisms.Values.FirstOrDefault(_ => _.species == bioScan.species && _.variant != null);
+                            if (matchSpecies?.variant != null)
+                            {
+                                bioScan.entryId = Game.codexRef.matchFromVariant(matchSpecies.variant).entryId;
+                            }
+                        }
+
+                        // attempt to match entryId from cmdr's scannedBioEntryIds list
+                        if (bioScan.entryId == 0 || bioScan.entryId.ToString().EndsWith("00"))
+                        {
+                            var speciesRef = Game.codexRef.matchFromSpecies(bioScan.species!);
+                            var prefix = $"{bodyData.systemAddress}_{bodyData.bodyId}_{speciesRef.entryIdPrefix}";
+                            var matchForEntryId = cmdr.scannedBioEntryIds.FirstOrDefault(_ => _.StartsWith(prefix));
+                            if (matchForEntryId != null)
+                            {
+                                var parts = matchForEntryId.Split('_');
+                                bioScan.entryId = long.Parse(parts[2]);
+                            }
+
+                            if (bioScan.entryId == 0 || bioScan.entryId.ToString().EndsWith("00"))
+                            {
+                                var genusRef = Game.codexRef.genus.FirstOrDefault(genusRef => genusRef.species.Any(_ => _.name == bioScan.species) || genusRef.name == bioScan.genus);
+                                if (genusRef?.odyssey == false)
+                                {
+                                    // try populate with some legacy entryId
+                                    bioScan.entryId = long.Parse(speciesRef.entryIdPrefix + speciesRef.variants[0].entryIdSuffix);
+                                }
+                            }
+                            if (bioScan.entryId == 0 || bioScan.entryId.ToString().EndsWith("00"))
+                            {
+                                // otherwise populate with some weak entryId
+                                bioScan.entryId = long.Parse(speciesRef.entryIdPrefix + "00");
+                            }
+                        }
+
+                        // update equivalent in systemBody 
+                        var match = systemBody.bioScans?.FirstOrDefault(_ => _.species == bioScan.species && _.location.Lat == bioScan.location.Lat && _.location.Long == bioScan.location.Long);
+                        if (match == null)
+                        {
+                            if (systemBody.bioScans == null) systemBody.bioScans = new List<BioScan>();
+                            systemBody.bioScans.Add(bioScan);
+                        }
+                        else if (match.entryId == 0 || match.entryId.ToString().EndsWith("00"))
+                        {
+                            match.entryId = bioScan.entryId;
+                        }
+                    }
+                }
+
+
+                // migrate any organisms
+                if (bodyData.organisms?.Count > 0)
+                {
+                    if (systemBody.organisms == null) systemBody.organisms = new List<SystemOrganism>();
+
+                    foreach (var bodyOrg in bodyData.organisms.Values)
+                    {
+                        SystemOrganism? systemOrg;
+                        if (string.IsNullOrEmpty(bodyOrg.variant))
+                        {
+                            var genusRef = Game.codexRef.genus.FirstOrDefault(genusRef => genusRef.species.Any(_ => _.name == bodyOrg.species) || genusRef.name == bodyOrg.genus);
+                            if (genusRef?.odyssey == false && bodyOrg.species != null)
+                            {
+                                // legacy organics never had a variant, but we double up the species info
+                                Game.log($"Repair legacy missing variant: '{bodyOrg.species ?? bodyOrg.genus}' on '{bodyData.bodyName}' ({bodyData.bodyId})");
+                                var matchedSpecies = Game.codexRef.matchFromSpecies(bodyOrg.species!);
+                                bodyOrg.variant = matchedSpecies.variants[0].name;
+                                bodyOrg.variantLocalized = matchedSpecies.variants[0].englishName;
+                            }
+                            else if (bodyOrg.genus != null)
+                            {
+                                var foo = systemBody.bioScans?.FirstOrDefault(_ => _.species == bodyOrg.species && _.entryId > 0 && !_.entryId.ToString().EndsWith("00"));
+                                if (foo != null)
+                                {
+                                    // we can repair this one!
+                                    Game.log($"Repairing missing variant: '{bodyOrg.species ?? bodyOrg.genus}' ({foo.entryId}) on '{bodyData.bodyName}' ({bodyData.bodyId})");
+                                    var bioMatch2 = Game.codexRef.matchFromEntryId(foo.entryId);
+                                    bodyOrg.variant = bioMatch2.variant.name;
+                                    bodyOrg.variantLocalized = bioMatch2.variant.englishName;
+                                }
+                                else
+                                {
+
+                                    // missing data - add just genus data for this, as if we DSS'd the body
+                                    // We did DSS but never scanned an organism - all we have is a genus
+                                    systemOrg = systemBody.organisms.FirstOrDefault(_ => _.genus == bodyOrg.genus);
+                                    if (systemOrg == null)
+                                    {
+                                        Game.log($"Variant missing, adding genus only for: '{bodyOrg.species ?? bodyOrg.genus}' on '{bodyData.bodyName}' ({bodyData.bodyId})");
+                                        systemOrg = new SystemOrganism()
+                                        {
+                                            genus = bodyOrg.genus,
+                                            genusLocalized = bodyOrg.genusLocalized!,
+                                        };
+                                        systemBody.organisms.Add(systemOrg);
+                                        systemBody.bioSignalCount = Math.Max(systemBody.bioSignalCount, systemBody.organisms.Count);
+                                    }
+                                    continue;
+                                }
+                            }
+                            else
+                            {
+                                // missing data - add just genus data for this, as if we DSS'd the body
+                                Game.log($"Bad datafor: '{bodyOrg.species ?? bodyOrg.genus ?? bodyOrg.speciesLocalized ?? bodyOrg.genusLocalized}' on '{bodyData.bodyName}' ({bodyData.bodyId})");
+                                continue;
+                            }
+                        }
+
+                        if (bodyOrg.variant == null) throw new Exception($"Variant STILL missing, adding genus only for: '{{bodyOrg.species ?? bodyOrg.genus}}' on '{{bodyData.bodyName}}' ({{bodyData.bodyId}})\"");
+                        var bioMatch = Game.codexRef.matchFromVariant(bodyOrg.variant);
+                        systemOrg = systemBody.findOrganism(bioMatch);
+                        if (systemOrg == null)
+                        {
+                            systemOrg = new SystemOrganism()
+                            {
+                                genus = bioMatch.genus.name,
+                            };
+                            Game.log($"add organism '{bioMatch.variant.name}' ({bioMatch.entryId}) to '{systemBody.name}' ({systemBody.id})");
+                            systemBody.organisms.Add(systemOrg);
+                            systemBody.bioSignalCount = Math.Max(systemBody.bioSignalCount, systemBody.organisms.Count);
+                        }
+
+                        // update fields
+                        if (systemOrg.entryId == 0) systemOrg.entryId = bioMatch.entryId;
+                        if (systemOrg.reward == 0) systemOrg.reward = bioMatch.species.reward;
+                        if (!systemOrg.analyzed && bodyOrg.analyzed) systemOrg.analyzed = true;
+
+                        if (systemOrg.genusLocalized == null && bodyOrg.genusLocalized != null) systemOrg.genusLocalized = bodyOrg.genusLocalized;
+                        if (systemOrg.genusLocalized == null) systemOrg.genusLocalized = bioMatch.genus.englishName;
+                        if (systemOrg.species == null && bodyOrg.species != null) systemOrg.species = bodyOrg.species;
+                        if (systemOrg.speciesLocalized == null && bodyOrg.speciesLocalized != null) systemOrg.speciesLocalized = bodyOrg.speciesLocalized;
+                        if (systemOrg.variant == null && bodyOrg.variant != null) systemOrg.variant = bodyOrg.variant;
+                        if (systemOrg.variantLocalized == null && bodyOrg.variantLocalized != null) systemOrg.variantLocalized = bodyOrg.variantLocalized;
+                    }
+
+                    // finally - can we repair any 'scannedBioEntryIds' with better entryId's?
+                    var list = cmdr.scannedBioEntryIds.ToList();
+                    for (var n = 0; n < list.Count; n++)
+                    {
+                        var scannedEntryId = list[n];
+                        var prefix = $"{bodyData.systemAddress}_{bodyData.bodyId}_";
+                        if (!scannedEntryId.StartsWith(prefix)) continue;
+
+                        var parts = scannedEntryId.Split('_');
+                        if (!parts[2].EndsWith("00")) continue;
+
+                        var matchedOrganismWithEntryId = systemBody.organisms.FirstOrDefault(_ => !_.entryId.ToString().EndsWith("00") && _.entryId.ToString().StartsWith(parts[2].Substring(0, 5)));
+                        if (matchedOrganismWithEntryId != null)
+                        {
+                            parts[2] = matchedOrganismWithEntryId.entryId.ToString();
+                            scannedEntryId = string.Join('_', parts);
+                            Game.log($"Repairing: '{list[n]}' => '{scannedEntryId}'");
+                            list[n] = scannedEntryId;
+                        }
+                    }
+                    cmdr.scannedBioEntryIds = new HashSet<string>(list);
+                }
+
+                // done with this body
+                systemData.Save();
+                bodyData.Save();
+            }
+
+            //foreach (var scannedEntryId in cmdr.scannedBioEntryIds)
+            //{
+            //    var parts = scannedEntryId.Split('_');
+            //    if (!parts[2].EndsWith("00")) continue;
+
+            //    //var matchedOrganismWithEntryId = systemBody.organisms.FirstOrDefault(_ => !_.entryId.ToString().EndsWith("00") && _.entryId.ToString().StartsWith(parts[2].Substring(0, 5)));
+            //    //if (matchedOrganismWithEntryId != null)
+
+            //    Game.log($"TODO: Repair '{scannedEntryId}' ?");
+            //}
+
+            Game.log($"Migrate cmdr 'BodyData' into 'SystemData', {filenames.Length} files to process - complete!");
+            cmdr.migratedNonSystemDataOrganics = true;
+            cmdr.Save();
         }
 
         #endregion
@@ -414,7 +682,10 @@ namespace SrvSurvey.game
 
                 // efficiently track which organisms were scanned where
                 if (organism.entryId > 0)
-                    Game.activeGame!.cmdr.scannedBioEntryIds.Add($"{this.address}_{body.id}_{organism.entryId}_{organism.reward}");
+                {
+                    Game.activeGame!.cmdr.scannedBioEntryIds.Add($"{this.address}_{body.id}_{organism.entryId}_{organism.reward}_{body.firstFootFall}");
+                    Game.activeGame.cmdr.Save();
+                }
                 else
                     Game.log($"BAD! Why entryId for organism '{entry.Variant_Localised ?? entry.Variant}' to '{body.name}' ({body.id})");
             }
@@ -747,6 +1018,9 @@ namespace SrvSurvey.game
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public List<SystemOrganism> organisms;
 
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public bool firstFootFall;
+
         #endregion
 
         public override string ToString()
@@ -848,5 +1122,4 @@ namespace SrvSurvey.game
         [JsonIgnore]
         public int range { get => BioScan.ranges[this.genus]; }
     }
-
 }

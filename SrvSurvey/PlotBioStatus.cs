@@ -34,7 +34,6 @@ namespace SrvSurvey
         {
             this.initialize();
             this.reposition(Elite.getWindowRect(true));
-
         }
 
         private void initialize()
@@ -372,10 +371,16 @@ namespace SrvSurvey
                 x += sz.Width + 8;
             }
 
-            if (allScanned)
+            if (allScanned && game.systemBody.firstFootFall)
+                this.drawFooterText(g, "All signals scanned with first discoverer bonus", GameColors.brushCyan);
+            else if (allScanned)
                 this.drawFooterText(g, "All signals scanned", GameColors.brushGameOrange);
             else if (this.lastCodexScan != null)
-                this.drawFooterText(g, this.lastCodexScan);
+                this.drawFooterText(g, this.lastCodexScan, GameColors.brushCyan);
+            else if (game.systemBody.firstFootFall)
+                this.drawFooterText(g, "First discoverer bonus will apply!", GameColors.brushCyan);
+            else if (!game.systemBody.wasMapped && game.systemBody.countAnalyzedBioSignals == 0)
+                this.drawFooterText(g, "First discoverer bonus likely", GameColors.brushCyan);
         }
 
         protected void drawFooterText(Graphics g, string msg, Brush? brush = null)

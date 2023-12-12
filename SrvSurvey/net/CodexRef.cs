@@ -93,10 +93,10 @@ namespace SrvSurvey.canonn
             if (!File.Exists(bioRefPath))
             {
                 Game.log("Preparing organic rewards from codex/ref");
+                this.genus = new List<BioGenus>();
                 var codexRef = await loadCodexRef();
                 var organicStuff = codexRef!.Values
                     .Where(_ => _.sub_category == "$Codex_SubCategory_Organic_Structures;" && _.reward > 0);
-
                 foreach (var thing in organicStuff)
                 {
                     if (thing.entryid.Length != 7) throw new Exception("Bad EntryId length!");
@@ -156,6 +156,7 @@ namespace SrvSurvey.canonn
                             name = genusName,
                             englishName = genusEnglishName,
                             dist = BioScan.ranges[genusName],
+                            odyssey = thing.platform == "odyssey",
                             species = new List<BioSpecies>(),
                         };
                         this.genus.Add(genusRef);
@@ -201,10 +202,10 @@ namespace SrvSurvey.canonn
 
         public BioMatch matchFromEntryId(long entryId)
         {
-            return genusFromEntryId(entryId.ToString());
+            return matchFromEntryId(entryId.ToString());
         }
 
-        public BioMatch genusFromEntryId(string entryId)
+        public BioMatch matchFromEntryId(string entryId)
         {
             if (this.genus == null || this.genus.Count == 0)
                 throw new Exception($"BioRef is not loaded.");
@@ -237,7 +238,27 @@ namespace SrvSurvey.canonn
                             if (variantRef.name == variantName)
                                 return new BioMatch(genusRef, speciesRef, variantRef);
 
+            throw new Exception($"Unexpected variantName: '{speciesName}'");
+        }
+
+        public BioSpecies matchFromSpecies(string speciesName)
+        {
+            if (this.genus == null || this.genus.Count == 0) throw new Exception($"BioRef is not loaded.");
+            if (string.IsNullOrEmpty(speciesName)) throw new Exception($"Missing species name!");
+
+            // we cannot pre-match by genus name as Brain Tree species name are not consistent with their genus names
+            foreach (var genusRef in this.genus)
+                foreach (var speciesRef in genusRef.species)
+                    if (speciesRef.name == speciesName)
+                        return speciesRef;
+
             throw new Exception($"Unexpected speciesName: '{speciesName}'");
+        }
+
+        public bool isLegacyGenus(string genusName, string speciesName)
+        {
+            var genusRef = Game.codexRef.genus.FirstOrDefault(genusRef => genusRef.species.Any(_ => _.name == speciesName) || genusRef.name == genusName);
+            return genusRef?.odyssey == false;
         }
 
         public long getRewardForSpecies(string name)

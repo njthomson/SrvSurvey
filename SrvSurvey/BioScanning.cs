@@ -17,6 +17,8 @@ namespace SrvSurvey
         public string? species;
         [JsonConverter(typeof(StringEnumConverter))]
         public Status status;
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public long entryId;
 
         public override string ToString()
         {

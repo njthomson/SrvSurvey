@@ -1041,6 +1041,43 @@ namespace SrvSurvey.game
 
         #region location tracking
 
+        public void toggleFirstFootfall()
+        {
+            if (this.systemData == null || this.systemBody == null) return;
+
+            this.systemBody.firstFootFall = !this.systemBody.firstFootFall;
+            Game.log($"Recording first Footfall: {this.systemBody.firstFootFall} for '{this.systemBody.name}' ({this.systemBody.id})");
+            this.systemData.Save();
+
+            // apply update
+            var totalReward = 0L;
+            var list = cmdr.scannedBioEntryIds.ToList();
+            for (var n = 0; n < list.Count; n++)
+            {
+                var parts = list[n].Split('_');
+
+                // toggle if it's the body we're on
+                var prefix = $"{this.systemData.address}_{this.systemBody.id}_";
+                if (list[n].StartsWith(prefix))
+                {
+                    parts[4] = this.systemBody.firstFootFall.ToString();
+                    list[n] = string.Join('_', parts);
+                }
+
+                // and sum the new total
+                var reward = long.Parse(parts[3]);
+                if (parts[4] == bool.TrueString)
+                    reward *= 5;
+                totalReward += reward;
+            }
+            this.cmdr.scannedBioEntryIds = new HashSet<string>(list);
+
+            Game.log($"Updated rewards total: {Util.credits(totalReward)}, was {Util.credits(cmdr.organicRewards)}");
+            cmdr.organicRewards = totalReward;
+            this.cmdr.Save();
+            this.fireUpdate(true);
+        }
+
         private void setCurrentBody(int bodyId)
         {
             log($"setCurrentBody: {bodyId}");
@@ -1504,6 +1541,25 @@ namespace SrvSurvey.game
             Game.log($"SellOrganicData: removing {entry.BioData.Count} scans, worth: {Util.credits(entry.BioData.Sum(_ => _.Value))} + bonus: {Util.credits(entry.BioData.Sum(_ => _.Bonus))}");
             foreach (var data in entry.BioData)
             {
+                try
+                {
+                    // find the species + confirm the reward matches
+                    var speciesRef = Game.codexRef.matchFromSpecies(data.Species);
+                    if (speciesRef.reward != data.Value) throw new Exception("Why do rewards not match?");
+
+                    // find the entry with the entryId and reward value. Sadly, it's not possible to concretely tie it to the system or body.
+                    var txtReward = data.Value.ToString();
+                    var scannedEntryId = this.cmdr.scannedBioEntryIds.FirstOrDefault(_ => _.Contains(speciesRef.entryIdPrefix) && _.Contains(txtReward));
+                    if (scannedEntryId != null)
+                        cmdr.scannedBioEntryIds.Remove(scannedEntryId);
+                }
+                catch
+                {
+                    Game.log($"No species match found when selling: {data.Species_Localised} for {data.Value} Cr");
+                    continue;
+                }
+
+                // retire?
                 var match = cmdr.scannedOrganics.Find(_ => _.species == data.Species && _.reward == data.Value);
                 if (match == null)
                 {
@@ -1513,24 +1569,6 @@ namespace SrvSurvey.game
 
                 cmdr.organicRewards -= data.Value;
                 cmdr.scannedOrganics.Remove(match);
-
-                // get species entryIfPrefix
-                string? entryIdPrefix = null;
-                foreach (var genusRef in Game.codexRef.genus)
-                    foreach (var speciesRef in genusRef.species)
-                        if (speciesRef.name == data.Species)
-                        {
-                            entryIdPrefix = speciesRef.entryIdPrefix;
-                            break;
-                        }
-
-                if (entryIdPrefix != null)
-                {
-                    var txtReward = data.Value.ToString();
-                    var match3 = this.cmdr.scannedBioEntryIds.FirstOrDefault(_ => _.Contains(entryIdPrefix) && _.EndsWith(txtReward));
-                    if (match3 != null)
-                        cmdr.scannedBioEntryIds.Remove(match3);
-                }
             }
 
             cmdr.Save();

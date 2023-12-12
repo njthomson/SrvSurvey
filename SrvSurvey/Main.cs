@@ -142,6 +142,8 @@ namespace SrvSurvey
                 Program.showPlotter<PlotFlightWarning>();
             else
                 Program.closePlotter<PlotFlightWarning>();
+
+            Program.invalidateActivePlotters();
         }
 
         private void settingsFolderWatcher_Changed(object sender, FileSystemEventArgs e)
@@ -211,6 +213,18 @@ namespace SrvSurvey
                 Program.showPlotter<PlotPulse>();
 
             this.updateAllControls();
+
+            if (!newGame.cmdr.migratedScannedOrganicsInEntryId || !newGame.cmdr.migratedNonSystemDataOrganics)
+            {
+                Task.Run(new Action(() =>
+                {
+                    if (!newGame.cmdr.migratedScannedOrganicsInEntryId)
+                        BodyData.migrate_ScannedOrganics_Into_ScannedBioEntryIds(newGame.cmdr);
+
+                    if (!newGame.cmdr.migratedNonSystemDataOrganics)
+                        SystemData.migrate_BodyData_Into_SystemData(newGame.cmdr).ConfigureAwait(false);
+                }));
+            }
         }
 
         private void Game_departingBody(LandableBody nearBody)
@@ -610,6 +624,12 @@ namespace SrvSurvey
             else if (msg.Equals(MsgCmd.nextSystem, StringComparison.OrdinalIgnoreCase))
             {
                 game.systemStatus.nextSystem().ConfigureAwait(false);
+            }
+
+            // first foot fall
+            else if (game.systemBody != null && (msg.Equals(MsgCmd.firstFoot, StringComparison.OrdinalIgnoreCase) || msg.Equals(MsgCmd.ff, StringComparison.OrdinalIgnoreCase)))
+            {
+                game.toggleFirstFootfall();
             }
         }
 
