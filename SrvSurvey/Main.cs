@@ -214,7 +214,7 @@ namespace SrvSurvey
 
             this.updateAllControls();
 
-            if (!newGame.cmdr.migratedScannedOrganicsInEntryId || !newGame.cmdr.migratedNonSystemDataOrganics)
+            if (newGame.cmdr != null && !newGame.cmdr.migratedScannedOrganicsInEntryId || !newGame.cmdr.migratedNonSystemDataOrganics)
             {
                 Task.Run(new Action(() =>
                 {
@@ -288,7 +288,7 @@ namespace SrvSurvey
             {
                 this.txtNearBody.Text = "Witch space";
             }
-            else if (game.nearBody != null)
+            else if (game.systemBody != null)
             {
                 this.txtNearBody.Text = "Near body";
             }
@@ -654,7 +654,7 @@ namespace SrvSurvey
             this.updateTrackTargetTexts();
 
             // show plotter if near a body
-            if (game?.nearBody != null && game.showBodyPlotters)
+            if (game?.systemBody != null && game.showBodyPlotters)
                 Program.showPlotter<PlotTrackTarget>();
         }
 
@@ -886,7 +886,7 @@ namespace SrvSurvey
                     extraTxt += $" - {siteData.type}";
 
                     // measure distance from site origin (from the entry lat/long if possible)
-                    var td = new TrackingDelta(game.nearBody!.radius, siteData.location);
+                    var td = new TrackingDelta(game.systemBody!.radius, siteData.location);
                     if (!string.IsNullOrEmpty(entry.Latitude) && !string.IsNullOrEmpty(entry.Longitude))
                         td.Current = new LatLong2(double.Parse(entry.Latitude), double.Parse(entry.Longitude));
 
