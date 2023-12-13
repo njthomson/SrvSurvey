@@ -53,15 +53,10 @@ namespace SrvSurvey
             this.bioCtrls = new List<Control>()
             {
                 txtSystemBioSignals,
-                txtSystemBioScanned,
                 txtSystemBioValues,
                 txtBodyBioSignals,
-                txtBodyBioScanned,
                 txtBodyBioValues,
             };
-
-            // TODO: Remove once system signals are implemented
-            lblSysBio.Enabled = txtSystemBioScanned.Enabled = txtSystemBioSignals.Enabled = txtSystemBioValues.Enabled = false;
         }
 
         private void useLastWindowLocation()
@@ -214,7 +209,7 @@ namespace SrvSurvey
 
             this.updateAllControls();
 
-            if (newGame.cmdr != null && !newGame.cmdr.migratedScannedOrganicsInEntryId || !newGame.cmdr.migratedNonSystemDataOrganics)
+            if (newGame?.cmdr != null && !newGame.cmdr.migratedScannedOrganicsInEntryId || !newGame.cmdr.migratedNonSystemDataOrganics)
             {
                 Task.Run(new Action(() =>
                 {
@@ -306,6 +301,20 @@ namespace SrvSurvey
                     + $", organisms: {game.cmdr.scannedOrganics.Count}";
             }
 
+            if (game?.systemData != null)
+            {
+                var systemTotal = game.systemData.bodies.Sum(_ => _.bioSignalCount);
+                var systemScanned = game.systemData.bodies.Sum(_ => _.countAnalyzedBioSignals);
+                txtSystemBioSignals.Text = $"{systemScanned} of {systemTotal}";
+
+                var sysEstimate = game.systemData.bodies.Sum(_ => _.sumPotentialEstimate);
+                var sysActual = game.systemData.bodies.Sum(_ => _.sumAnalyzed);
+                txtSystemBioValues.Text = $"{Util.credits(sysActual, true)} of {Util.credits(sysEstimate, true)}";
+                var countFirstFootFall = game.systemData.bodies.Count(_ => _.firstFootFall);
+                if (countFirstFootFall > 0)
+                    txtSystemBioValues.Text += $" ({countFirstFootFall}: FF)";
+            }
+
             if (game == null || game.atMainMenu || !game.isRunning || !game.initialized)
             {
                 foreach (var ctrl in this.bioCtrls) ctrl.Text = "-";
@@ -316,7 +325,7 @@ namespace SrvSurvey
             }
             else if (game.systemBody == null)
             {
-                foreach (var ctrl in this.bioCtrls) ctrl.Text = "-";
+                txtBodyBioSignals.Text = txtBodyBioValues.Text = "-";
                 Program.closePlotter<PlotBioStatus>();
                 Program.closePlotter<PlotGrounded>();
                 Program.closePlotter<PlotTrackers>();
@@ -331,9 +340,9 @@ namespace SrvSurvey
             }
             else
             {
-                txtBodyBioSignals.Text = game.systemBody?.bioSignalCount.ToString();
-                txtBodyBioScanned.Text = game.systemBody?.countAnalyzedBioSignals.ToString();
-                txtBodyBioValues.Text = Util.credits(game.nearBody?.data.sumPotentialEstimate ?? 0, true) + " / " + Util.credits(game.nearBody?.data.sumAnalyzed ?? 0); // TODO: retire?
+                txtBodyBioSignals.Text = $"{game.systemBody!.countAnalyzedBioSignals} of {game.systemBody!.bioSignalCount}";
+                txtBodyBioValues.Text = $"{Util.credits(game.systemBody.sumAnalyzed, true)} of {Util.credits(game.systemBody.sumPotentialEstimate, true)}";
+                if (game.systemBody.firstFootFall) txtBodyBioValues.Text += " (FF)";
 
                 if (game.systemBody?.organisms != null)
                 {
@@ -627,9 +636,10 @@ namespace SrvSurvey
             }
 
             // first foot fall
-            else if (game.systemBody != null && (msg.Equals(MsgCmd.firstFoot, StringComparison.OrdinalIgnoreCase) || msg.Equals(MsgCmd.ff, StringComparison.OrdinalIgnoreCase)))
+            else if (game.systemData != null && (msg.StartsWith(MsgCmd.firstFoot, StringComparison.OrdinalIgnoreCase) || msg.StartsWith(MsgCmd.ff, StringComparison.OrdinalIgnoreCase)))
             {
-                game.toggleFirstFootfall();
+                var parts = msg.Split(' ', 2);
+                game.toggleFirstFootfall(parts.Length == 2 ? parts[1] : null);
             }
         }
 

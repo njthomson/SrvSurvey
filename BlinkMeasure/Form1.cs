@@ -16,18 +16,18 @@ namespace BlinkMeasure
             DashStyle = System.Drawing.Drawing2D.DashStyle.Dash,
         };
 
-        private Form floater;
+        private Form? floater;
         private Point pt;
         private Size sz;
-        private RGB lastAvg;
+        private RGB? lastAvg;
         private double threshold;
         private int count;
-        private Bitmap lastImg;
+        //private Bitmap? lastImg;
         private DateTime startTime;
         private List<LineItem> lines = new List<LineItem>();
         private bool measuring = false;
         private bool stop = true;
-        private string folder;
+        private string? folder;
         private bool deltaFirst;
 
         public Form1()
@@ -120,7 +120,7 @@ namespace BlinkMeasure
 
         private void Floater_Paint(object? sender, PaintEventArgs e)
         {
-            e.Graphics.DrawRectangle(floaterBorderPen, 1, 1, this.floater.Width - floaterBorderWidth, this.floater.Height - floaterBorderWidth);
+            e.Graphics.DrawRectangle(floaterBorderPen, 1, 1, this.floater!.Width - floaterBorderWidth, this.floater!.Height - floaterBorderWidth);
         }
 
         private Bitmap grabFrame()
@@ -250,9 +250,9 @@ namespace BlinkMeasure
 
             var delta = new RGB()
             {
-                r = Math.Abs(lastAvg.r - avg.r),
-                g = Math.Abs(lastAvg.g - avg.g),
-                b = Math.Abs(lastAvg.b - avg.b),
+                r = Math.Abs(lastAvg!.r - avg.r),
+                g = Math.Abs(lastAvg!.g - avg.g),
+                b = Math.Abs(lastAvg!.b - avg.b),
             };
 
             var line = new LineItem()
@@ -305,7 +305,7 @@ namespace BlinkMeasure
 
         private void endStuff()
         {
-            Directory.CreateDirectory(this.folder);
+            Directory.CreateDirectory(this.folder!);
             var str = new StringBuilder();
             str.AppendLine("duration (seconds),delta,image path");
 
@@ -315,21 +315,21 @@ namespace BlinkMeasure
                 var imgPath = "";
                 if (line.img != null)
                 {
-                    imgPath = Path.Combine(this.folder, $"img-{duration}.png");
+                    imgPath = Path.Combine(this.folder!, $"img-{duration}.png");
                     line.img.Save(imgPath, ImageFormat.Png);
                 }
 
                 str.AppendLine($"{duration},{line.delta},{imgPath}");
             }
 
-            var csvPath = Path.Combine(this.folder, $"data.csv");
+            var csvPath = Path.Combine(this.folder!, $"data.csv");
             File.WriteAllText(csvPath, str.ToString());
 
             this.Invoke(new Action(() =>
             {
                 this.Text = "Stopped";
 
-                var info = new ProcessStartInfo(this.folder);
+                var info = new ProcessStartInfo(this.folder!);
                 info.UseShellExecute = true;
                 Process.Start(info);
             }));
@@ -340,7 +340,7 @@ namespace BlinkMeasure
     {
         public TimeSpan duration;
         public double delta;
-        public Bitmap img;
+        public Bitmap? img;
 
         public override string ToString()
         {

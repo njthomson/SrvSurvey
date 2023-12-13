@@ -35,6 +35,9 @@ namespace SrvSurvey
             btnSave = new Button();
             btnCancel = new Button();
             tabPage1 = new TabPage();
+            label12 = new Label();
+            numGravityWarningLevel = new NumericUpDown();
+            checkBox13 = new CheckBox();
             pictureBox6 = new PictureBox();
             checkHideJournalTimer = new CheckBox();
             btnChooseJournalFolder = new Button();
@@ -113,14 +116,13 @@ namespace SrvSurvey
             checkSkipCheapSignals = new CheckBox();
             numPriorScanMinValue = new NumericUpDown();
             checkShowPriorScans = new CheckBox();
+            checkHideMyOwnCanonnSignals = new CheckBox();
             tabPage2 = new TabPage();
             linkAboutTwo = new LinkLabel();
             linkAboutOne = new LinkLabel();
-            label12 = new Label();
-            numGravityWarningLevel = new NumericUpDown();
-            checkBox13 = new CheckBox();
             panel1.SuspendLayout();
             tabPage1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numGravityWarningLevel).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox6).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numOpacity).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackOpacity).BeginInit();
@@ -144,7 +146,6 @@ namespace SrvSurvey
             ((System.ComponentModel.ISupportInitialize)pictureBox7).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numPriorScanMinValue).BeginInit();
             tabPage2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)numGravityWarningLevel).BeginInit();
             SuspendLayout();
             // 
             // panel1
@@ -223,6 +224,42 @@ namespace SrvSurvey
             tabPage1.Size = new Size(490, 377);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "General";
+            // 
+            // label12
+            // 
+            label12.AutoSize = true;
+            label12.Location = new Point(31, 263);
+            label12.Name = "label12";
+            label12.Size = new Size(156, 15);
+            label12.TabIndex = 27;
+            label12.Text = "When body gravity is above:";
+            // 
+            // numGravityWarningLevel
+            // 
+            numGravityWarningLevel.DecimalPlaces = 2;
+            numGravityWarningLevel.Increment = new decimal(new int[] { 1, 0, 0, 65536 });
+            numGravityWarningLevel.Location = new Point(191, 261);
+            numGravityWarningLevel.Maximum = new decimal(new int[] { 50, 0, 0, 0 });
+            numGravityWarningLevel.Name = "numGravityWarningLevel";
+            numGravityWarningLevel.Size = new Size(50, 23);
+            numGravityWarningLevel.TabIndex = 26;
+            numGravityWarningLevel.Tag = "highGravityWarningLevel";
+            numGravityWarningLevel.TextAlign = HorizontalAlignment.Right;
+            numGravityWarningLevel.Value = new decimal(new int[] { 50, 0, 0, 0 });
+            // 
+            // checkBox13
+            // 
+            checkBox13.AutoSize = true;
+            checkBox13.Checked = true;
+            checkBox13.CheckState = CheckState.Checked;
+            checkBox13.Location = new Point(10, 241);
+            checkBox13.Margin = new Padding(4, 3, 4, 3);
+            checkBox13.Name = "checkBox13";
+            checkBox13.Size = new Size(137, 19);
+            checkBox13.TabIndex = 25;
+            checkBox13.Tag = "autoShowFlightWarnings";
+            checkBox13.Text = "Show flight warnings";
+            checkBox13.UseVisualStyleBackColor = true;
             // 
             // pictureBox6
             // 
@@ -1053,6 +1090,7 @@ namespace SrvSurvey
             tabPage7.Controls.Add(checkSkipCheapSignals);
             tabPage7.Controls.Add(numPriorScanMinValue);
             tabPage7.Controls.Add(checkShowPriorScans);
+            tabPage7.Controls.Add(checkHideMyOwnCanonnSignals);
             tabPage7.Location = new Point(4, 24);
             tabPage7.Name = "tabPage7";
             tabPage7.Padding = new Padding(3);
@@ -1186,6 +1224,17 @@ namespace SrvSurvey
             checkShowPriorScans.UseVisualStyleBackColor = true;
             checkShowPriorScans.CheckedChanged += checkShowPriorScans_CheckedChanged;
             // 
+            // checkHideMyOwnCanonnSignals
+            // 
+            checkHideMyOwnCanonnSignals.AutoSize = true;
+            checkHideMyOwnCanonnSignals.Location = new Point(28, 358);
+            checkHideMyOwnCanonnSignals.Name = "checkHideMyOwnCanonnSignals";
+            checkHideMyOwnCanonnSignals.Size = new Size(328, 19);
+            checkHideMyOwnCanonnSignals.TabIndex = 35;
+            checkHideMyOwnCanonnSignals.Tag = "hideMyOwnCanonnSignals";
+            checkHideMyOwnCanonnSignals.Text = "Hide my own scans. Uncheck to revisit signals after dying";
+            checkHideMyOwnCanonnSignals.UseVisualStyleBackColor = true;
+            // 
             // tabPage2
             // 
             tabPage2.BorderStyle = BorderStyle.Fixed3D;
@@ -1224,42 +1273,6 @@ namespace SrvSurvey
             linkAboutOne.Text = resources.GetString("linkAboutOne.Text");
             linkAboutOne.UseCompatibleTextRendering = true;
             // 
-            // label12
-            // 
-            label12.AutoSize = true;
-            label12.Location = new Point(31, 263);
-            label12.Name = "label12";
-            label12.Size = new Size(156, 15);
-            label12.TabIndex = 27;
-            label12.Text = "When body gravity is above:";
-            // 
-            // numGravityWarningLevel
-            // 
-            numGravityWarningLevel.DecimalPlaces = 2;
-            numGravityWarningLevel.Increment = new decimal(new int[] { 1, 0, 0, 65536 });
-            numGravityWarningLevel.Location = new Point(191, 261);
-            numGravityWarningLevel.Maximum = new decimal(new int[] { 50, 0, 0, 0 });
-            numGravityWarningLevel.Name = "numGravityWarningLevel";
-            numGravityWarningLevel.Size = new Size(50, 23);
-            numGravityWarningLevel.TabIndex = 26;
-            numGravityWarningLevel.Tag = "highGravityWarningLevel";
-            numGravityWarningLevel.TextAlign = HorizontalAlignment.Right;
-            numGravityWarningLevel.Value = new decimal(new int[] { 50, 0, 0, 0 });
-            // 
-            // checkBox13
-            // 
-            checkBox13.AutoSize = true;
-            checkBox13.Checked = true;
-            checkBox13.CheckState = CheckState.Checked;
-            checkBox13.Location = new Point(10, 241);
-            checkBox13.Margin = new Padding(4, 3, 4, 3);
-            checkBox13.Name = "checkBox13";
-            checkBox13.Size = new Size(137, 19);
-            checkBox13.TabIndex = 25;
-            checkBox13.Tag = "autoShowFlightWarnings";
-            checkBox13.Text = "Show flight warnings";
-            checkBox13.UseVisualStyleBackColor = true;
-            // 
             // FormSettings
             // 
             AcceptButton = btnSave;
@@ -1280,6 +1293,7 @@ namespace SrvSurvey
             panel1.ResumeLayout(false);
             tabPage1.ResumeLayout(false);
             tabPage1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numGravityWarningLevel).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox6).EndInit();
             ((System.ComponentModel.ISupportInitialize)numOpacity).EndInit();
             ((System.ComponentModel.ISupportInitialize)trackOpacity).EndInit();
@@ -1308,7 +1322,6 @@ namespace SrvSurvey
             ((System.ComponentModel.ISupportInitialize)pictureBox7).EndInit();
             ((System.ComponentModel.ISupportInitialize)numPriorScanMinValue).EndInit();
             tabPage2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)numGravityWarningLevel).EndInit();
             ResumeLayout(false);
         }
 
@@ -1403,5 +1416,6 @@ namespace SrvSurvey
         private Label label12;
         private NumericUpDown numGravityWarningLevel;
         private CheckBox checkBox13;
+        private CheckBox checkHideMyOwnCanonnSignals;
     }
 }

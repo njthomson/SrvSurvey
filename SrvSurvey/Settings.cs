@@ -33,6 +33,7 @@ namespace SrvSurvey
         public int skipPriorScansLowValueAmount = 1_000_000;
         public bool showCanonnSignalsOnRadar = true;
         public bool useSmallCirclesWithCanonn = true;
+        public bool hideMyOwnCanonnSignals = true;
 
         public bool focusGameOnStart = true;
         public bool focusGameOnMinimize = true;

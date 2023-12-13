@@ -214,6 +214,7 @@ namespace SrvSurvey.game
         public bool fsdJumping = false;
         public bool isShutdown = false;
         public LandableBody? nearBody;
+
         /// <summary>
         /// Tracks if we status had Lat/Long last time we knew
         /// </summary>
@@ -252,15 +253,15 @@ namespace SrvSurvey.game
             var newHasLatLong = status.hasLatLong;
             if (this.statusHasLatLong != newHasLatLong)
             {
-                Game.log($"Changed hasLatLong: {newHasLatLong}, has nearBody: {this.nearBody != null}, nearBody matches: {status.BodyName == this.nearBody?.bodyName}");
+                Game.log($"Changed hasLatLong: {newHasLatLong}, has nearBody: {this.systemBody != null}, nearBody matches: {status.BodyName == this.systemBody?.name}");
                 this.statusHasLatLong = newHasLatLong;
 
                 if (!newHasLatLong)
                 {
                     // we are departing
-                    if (this.departingBody != null && this.nearBody != null)
+                    if (this.departingBody != null && this.systemBody != null)
                     {
-                        Game.log($"EVENT:departingBody, from {this.nearBody.bodyName}");
+                        Game.log($"EVENT:departingBody, from {this.systemBody.name}");
 
                         // change system locations to be just system (not the body)
                         cmdr.currentBody = null;
@@ -271,16 +272,21 @@ namespace SrvSurvey.game
                         this.systemBody = null;
 
                         // fire event
-                        var leftBody = this.nearBody;
-                        this.nearBody.Dispose();
-                        this.nearBody = null;
-                        this.departingBody(leftBody);
+                        if (this.nearBody != null)
+                        {
+                            var leftBody = this.nearBody;
+                            this.nearBody.Dispose();
+                            this.nearBody = null;
+                            this.departingBody(leftBody);
+                        }
                     }
                 }
                 else
                 {
                     if (this.nearBody == null && status.BodyName != null)
                     {
+                        this.setCurrentBody(status.BodyName);
+
                         // we are approaching - create and fire event
                         this.createNearBody(status.BodyName);
                     }
@@ -545,7 +551,7 @@ namespace SrvSurvey.game
             // if we have landed, we need to find the last Touchdown location
             if (this.isLanded && this._touchdownLocation == null) // || (status.Flags & StatusFlags.HasLatLong) > 0)
             {
-                if (this.nearBody == null)
+                if (this.systemData == null || this.systemBody == null)
                 {
                     Game.log("Why is nearBody null?");
                     return;
@@ -554,7 +560,7 @@ namespace SrvSurvey.game
                 if (this.mode == GameMode.Landed)
                 {
                     var location = journals.FindEntryByType<Location>(-1, true);
-                    if (location != null && location.SystemAddress == this.nearBody.systemAddress && location.BodyID == this.nearBody.bodyId)
+                    if (location != null && location.SystemAddress == this.systemData.address && location.BodyID == this.systemBody.id)
                     {
                         Game.log($"LastTouchdown from Location: {location}");
                         this.touchdownLocation = location;
@@ -824,7 +830,7 @@ namespace SrvSurvey.game
                 this.setCurrentBody(this.nearBody.bodyId);
             }
 
-            if (this.nearBody?.data.countOrganisms > 0 && this.systemBody?.organisms != null)
+            if (this.systemBody?.bioSignalCount > 0 && this.systemBody.organisms != null)
             {
                 log($"Genuses ({this.systemBody!.bioSignalCount}): " + string.Join(",", this.systemBody.organisms.Select(_ => _.genusLocalized)));
             }
@@ -1041,12 +1047,34 @@ namespace SrvSurvey.game
 
         #region location tracking
 
-        public void toggleFirstFootfall()
+        public void toggleFirstFootfall(string bodyName)
         {
-            if (this.systemData == null || this.systemBody == null) return;
+            if (this.systemData == null) return;
+            if (string.IsNullOrEmpty(bodyName) && this.systemBody == null) return;
 
-            this.systemBody.firstFootFall = !this.systemBody.firstFootFall;
-            Game.log($"Recording first Footfall: {this.systemBody.firstFootFall} for '{this.systemBody.name}' ({this.systemBody.id})");
+            // try to match the given bodyName
+            SystemBody? targetBody = null;
+            if (!string.IsNullOrEmpty(bodyName))
+            {
+                // match on just the body name?
+                bodyName = bodyName.Trim().ToLowerInvariant();
+                targetBody = this.systemData.bodies.FirstOrDefault(body =>
+                {
+                    var bodyNotSystem = body.name.Replace(systemData.name, "").Trim();
+                    if (bodyNotSystem.Equals(bodyName, StringComparison.OrdinalIgnoreCase)) return true;
+                    if (bodyNotSystem.Replace(" ", "").Equals(bodyName, StringComparison.OrdinalIgnoreCase)) return true;
+                    return false;
+                });
+                if (targetBody == null)
+                    Game.log($"No body matched from: '{bodyName}'");
+                else
+                    Game.log($"Match body '{targetBody?.name}' from: '{bodyName}'");
+            }
+            if (targetBody == null) targetBody = this.systemBody;
+
+
+            targetBody!.firstFootFall = !targetBody.firstFootFall;
+            Game.log($"Recording first Footfall: {targetBody.firstFootFall} for '{targetBody.name}' ({targetBody.id})");
             this.systemData.Save();
 
             // apply update
@@ -1057,10 +1085,10 @@ namespace SrvSurvey.game
                 var parts = list[n].Split('_');
 
                 // toggle if it's the body we're on
-                var prefix = $"{this.systemData.address}_{this.systemBody.id}_";
+                var prefix = $"{this.systemData.address}_{targetBody.id}_";
                 if (list[n].StartsWith(prefix))
                 {
-                    parts[4] = this.systemBody.firstFootFall.ToString();
+                    parts[4] = targetBody.firstFootFall.ToString();
                     list[n] = string.Join('_', parts);
                 }
 
@@ -1078,9 +1106,18 @@ namespace SrvSurvey.game
             this.fireUpdate(true);
         }
 
+        private void setCurrentBody(string bodyName)
+        {
+            log($"setCurrentBody by name: {bodyName}");
+            if (this.systemData == null)
+                throw new Exception($"Why no systemData for bodyName: {bodyName}?");
+            this.systemBody = this.systemData.bodies.FirstOrDefault(_ => _.name == bodyName);
+            Program.invalidateActivePlotters();
+        }
+
         private void setCurrentBody(int bodyId)
         {
-            log($"setCurrentBody: {bodyId}");
+            log($"setCurrentBody by id: {bodyId}");
             if (this.systemData == null)
                 throw new Exception($"Why no systemData for bodyId: {bodyId}?");
             this.systemBody = this.systemData.bodies.FirstOrDefault(_ => _.id == bodyId);
@@ -1330,7 +1367,7 @@ namespace SrvSurvey.game
             if (this.systemData == null || this.systemBody == null || this.canonnPoi == null) return false;
 
             var currentBody = this.systemBody.name.Replace(this.systemData.name, "").Trim();
-            return this.canonnPoi.codex.Any(_ => _.body == currentBody && _.hud_category == "Biology" && _.latitude != null && _.longitude != null && _.scanned == false);
+            return this.canonnPoi.codex.Any(_ => _.body == currentBody && _.hud_category == "Biology" && _.latitude != null && _.longitude != null && _.scanned != Game.settings.hideMyOwnCanonnSignals);
         }
 
         //public void showPriorScans()

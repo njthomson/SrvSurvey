@@ -46,14 +46,10 @@ namespace SrvSurvey
             txtCommander = new TextBox();
             groupBox3 = new GroupBox();
             txtBodyBioValues = new TextBox();
-            txtBodyBioScanned = new TextBox();
             txtBodyBioSignals = new TextBox();
             lblSysBio = new Label();
             txtSystemBioValues = new TextBox();
-            txtSystemBioScanned = new TextBox();
             txtSystemBioSignals = new TextBox();
-            label9 = new Label();
-            label8 = new Label();
             label7 = new Label();
             label6 = new Label();
             txtBioRewards = new TextBox();
@@ -231,14 +227,10 @@ namespace SrvSurvey
             // 
             groupBox3.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             groupBox3.Controls.Add(txtBodyBioValues);
-            groupBox3.Controls.Add(txtBodyBioScanned);
             groupBox3.Controls.Add(txtBodyBioSignals);
             groupBox3.Controls.Add(lblSysBio);
             groupBox3.Controls.Add(txtSystemBioValues);
-            groupBox3.Controls.Add(txtSystemBioScanned);
             groupBox3.Controls.Add(txtSystemBioSignals);
-            groupBox3.Controls.Add(label9);
-            groupBox3.Controls.Add(label8);
             groupBox3.Controls.Add(label7);
             groupBox3.Controls.Add(label6);
             groupBox3.Controls.Add(txtBioRewards);
@@ -253,34 +245,25 @@ namespace SrvSurvey
             // txtBodyBioValues
             // 
             txtBodyBioValues.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            txtBodyBioValues.Location = new Point(208, 91);
+            txtBodyBioValues.Location = new Point(143, 81);
             txtBodyBioValues.Name = "txtBodyBioValues";
             txtBodyBioValues.ReadOnly = true;
-            txtBodyBioValues.Size = new Size(156, 20);
+            txtBodyBioValues.Size = new Size(221, 20);
             txtBodyBioValues.TabIndex = 26;
-            // 
-            // txtBodyBioScanned
-            // 
-            txtBodyBioScanned.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            txtBodyBioScanned.Location = new Point(148, 91);
-            txtBodyBioScanned.Name = "txtBodyBioScanned";
-            txtBodyBioScanned.ReadOnly = true;
-            txtBodyBioScanned.Size = new Size(54, 20);
-            txtBodyBioScanned.TabIndex = 25;
             // 
             // txtBodyBioSignals
             // 
             txtBodyBioSignals.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            txtBodyBioSignals.Location = new Point(88, 91);
+            txtBodyBioSignals.Location = new Point(69, 81);
             txtBodyBioSignals.Name = "txtBodyBioSignals";
             txtBodyBioSignals.ReadOnly = true;
-            txtBodyBioSignals.Size = new Size(54, 20);
+            txtBodyBioSignals.Size = new Size(68, 20);
             txtBodyBioSignals.TabIndex = 24;
             // 
             // lblSysBio
             // 
             lblSysBio.AutoSize = true;
-            lblSysBio.Location = new Point(15, 68);
+            lblSysBio.Location = new Point(8, 58);
             lblSysBio.Name = "lblSysBio";
             lblSysBio.Size = new Size(54, 12);
             lblSysBio.TabIndex = 23;
@@ -289,61 +272,35 @@ namespace SrvSurvey
             // txtSystemBioValues
             // 
             txtSystemBioValues.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            txtSystemBioValues.Location = new Point(208, 65);
+            txtSystemBioValues.Location = new Point(143, 55);
             txtSystemBioValues.Name = "txtSystemBioValues";
             txtSystemBioValues.ReadOnly = true;
-            txtSystemBioValues.Size = new Size(156, 20);
+            txtSystemBioValues.Size = new Size(221, 20);
             txtSystemBioValues.TabIndex = 22;
-            // 
-            // txtSystemBioScanned
-            // 
-            txtSystemBioScanned.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            txtSystemBioScanned.Location = new Point(148, 65);
-            txtSystemBioScanned.Name = "txtSystemBioScanned";
-            txtSystemBioScanned.ReadOnly = true;
-            txtSystemBioScanned.Size = new Size(54, 20);
-            txtSystemBioScanned.TabIndex = 21;
             // 
             // txtSystemBioSignals
             // 
             txtSystemBioSignals.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            txtSystemBioSignals.Location = new Point(88, 65);
+            txtSystemBioSignals.Location = new Point(69, 55);
             txtSystemBioSignals.Name = "txtSystemBioSignals";
             txtSystemBioSignals.ReadOnly = true;
-            txtSystemBioSignals.Size = new Size(54, 20);
+            txtSystemBioSignals.Size = new Size(68, 20);
             txtSystemBioSignals.TabIndex = 20;
-            // 
-            // label9
-            // 
-            label9.AutoSize = true;
-            label9.Location = new Point(205, 50);
-            label9.Name = "label9";
-            label9.Size = new Size(159, 12);
-            label9.TabIndex = 19;
-            label9.Text = "Total / scanned value:";
-            // 
-            // label8
-            // 
-            label8.AutoSize = true;
-            label8.Location = new Point(148, 50);
-            label8.Name = "label8";
-            label8.Size = new Size(54, 12);
-            label8.TabIndex = 18;
-            label8.Text = "Scanned";
+            txtSystemBioSignals.Text = "99 of 99";
             // 
             // label7
             // 
             label7.AutoSize = true;
-            label7.Location = new Point(88, 50);
+            label7.Location = new Point(71, 38);
             label7.Name = "label7";
-            label7.Size = new Size(54, 12);
+            label7.Size = new Size(201, 12);
             label7.TabIndex = 17;
-            label7.Text = "Signals";
+            label7.Text = "Scanned signals and rewards:";
             // 
             // label6
             // 
             label6.AutoSize = true;
-            label6.Location = new Point(16, 94);
+            label6.Location = new Point(22, 84);
             label6.Name = "label6";
             label6.Size = new Size(40, 12);
             label6.TabIndex = 16;
@@ -592,12 +549,12 @@ namespace SrvSurvey
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = btnQuit2;
             ClientSize = new Size(395, 518);
+            Controls.Add(lblNotInstalled);
+            Controls.Add(lblFullScreen);
             Controls.Add(linkLabel2);
             Controls.Add(btnSphereLimit);
-            Controls.Add(lblNotInstalled);
             Controls.Add(groupBox3);
             Controls.Add(groupBox4);
-            Controls.Add(lblFullScreen);
             Controls.Add(linkLabel1);
             Controls.Add(btnSettings);
             Controls.Add(btnLogs);
@@ -656,14 +613,10 @@ namespace SrvSurvey
         private TextBox txtBioRewards;
         private Label label4;
         private TextBox txtBodyBioValues;
-        private TextBox txtBodyBioScanned;
         private TextBox txtBodyBioSignals;
         private Label lblSysBio;
         private TextBox txtSystemBioValues;
-        private TextBox txtSystemBioScanned;
         private TextBox txtSystemBioSignals;
-        private Label label9;
-        private Label label8;
         private Label label7;
         private Label label6;
         private Button btnRuinsMap;

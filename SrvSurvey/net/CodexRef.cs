@@ -255,6 +255,12 @@ namespace SrvSurvey.canonn
             throw new Exception($"Unexpected speciesName: '{speciesName}'");
         }
 
+        public BioGenus? matchFromGenus(string genusName)
+        {
+            var genusRef = Game.codexRef.genus.FirstOrDefault(genusRef => genusRef.species.Any(_ => genusRef.name == genusName));
+            return genusRef;
+        }
+
         public bool isLegacyGenus(string genusName, string speciesName)
         {
             var genusRef = Game.codexRef.genus.FirstOrDefault(genusRef => genusRef.species.Any(_ => _.name == speciesName) || genusRef.name == genusName);

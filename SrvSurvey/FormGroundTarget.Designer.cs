@@ -110,9 +110,9 @@ namespace SrvSurvey
             label6.Location = new Point(14, 10);
             label6.Margin = new Padding(4, 0, 4, 0);
             label6.Name = "label6";
-            label6.Size = new Size(464, 60);
+            label6.Size = new Size(464, 45);
             label6.TabIndex = 6;
-            label6.Text = "Got a tip from a mysterious stranger to go to some Lat/Long on some planet or moon?\r\n\r\nEnter some Lat/Long position and guidance will appear when you approach.\r\n\r\n";
+            label6.Text = "Got a tip from a mysterious stranger to go to some Lat/Long on some planet or moon?\r\n\r\nEnter some Lat/Long position and guidance will appear when you approach.";
             // 
             // button1
             // 

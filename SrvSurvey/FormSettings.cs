@@ -307,6 +307,7 @@ namespace SrvSurvey
             radioUseSmall.Enabled =
             radioUseRadius.Enabled =
             checkShowCanonnOnRadar.Enabled =
+            checkHideMyOwnCanonnSignals.Enabled =
                 checkShowPriorScans.Checked;
         }
     }

@@ -167,7 +167,7 @@ namespace SrvSurvey.game
                     // we need a starPos before we can create the file...
                     // get starPos from EDSM or Spansh, or fail :(
                     var edsmResult = await Game.edsm.getSystems(systemData.name);
-                    systemData.starPos = edsmResult?.FirstOrDefault()?.coords?.starPos;
+                    systemData.starPos = edsmResult?.FirstOrDefault()?.coords?.starPos!;
                 }
                 if (systemData.starPos == null)
                 {
@@ -181,7 +181,6 @@ namespace SrvSurvey.game
                     // TODO: search back through journal files?
                     throw new Exception($"Failed to find a starPos for: '{systemData.name}'");
                 }
-
 
                 // update fields
                 if (systemData.firstVisited > bodyData.firstVisited) systemData.firstVisited = bodyData.firstVisited;
@@ -1041,6 +1040,38 @@ namespace SrvSurvey.game
                 ? 0
                 : this.organisms.Count(_ => _.analyzed);
         }
+
+        [JsonIgnore]
+        public long sumPotentialEstimate
+        {
+            get
+            {
+                if (this.organisms == null) return 0;
+
+                long estimate = 0;
+                foreach (var organism in this.organisms)
+                {
+                    // use the reward if we know it, otherwise pick the lowest from the species
+                    var reward = organism.reward;
+                    if (reward == 0)
+                    {
+                        if (organism.species != null) throw new Exception($"Why no reward if we have a species?");
+
+                        var genusRef = Game.codexRef.matchFromGenus(organism.genus);
+                        reward = genusRef?.species.Min(_ => _.reward) ?? 0;
+                    }
+                    if (reward == 0) throw new Exception($"Why no reward?");
+
+                    if (this.firstFootFall) reward *= 5;
+                    estimate += reward;
+                }
+
+                return estimate;
+            }
+        }
+
+        [JsonIgnore]
+        public long sumAnalyzed { get => this.organisms?.Sum(_ => !_.analyzed ? 0 : this.firstFootFall ? _.reward * 5 : _.reward) ?? 0; }
 
         [JsonIgnore]
         public double rewardEstimate

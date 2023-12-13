@@ -56,7 +56,7 @@ namespace SrvSurvey
         private void initialize()
         {
             this.BackgroundImage = GameGraphics.getBackgroundForForm(this);
-            this.td = new TrackingDelta(game.nearBody.radius, Game.settings.targetLatLong);
+            this.td = new TrackingDelta(game.systemBody.radius, Game.settings.targetLatLong);
 
             game.status.StatusChanged += Status_StatusChanged;
             Game.update += Game_modeChanged;
@@ -122,6 +122,8 @@ namespace SrvSurvey
 
         private void Status_StatusChanged(bool blink)
         {
+            if (this.IsDisposed) return;
+
             this.td.Current = Status.here;
             this.calculate();
         }
@@ -129,7 +131,7 @@ namespace SrvSurvey
         private void calculate()
         {
             // exit early if we're not in the right mode
-            if (game.nearBody != null && game.mode != GameMode.SuperCruising && game.mode != GameMode.Flying && game.mode != GameMode.Landed && game.mode != GameMode.InSrv && game.mode != GameMode.OnFoot && game.mode != GameMode.GlideMode)
+            if (game.systemBody != null && game.mode != GameMode.SuperCruising && game.mode != GameMode.Flying && game.mode != GameMode.Landed && game.mode != GameMode.InSrv && game.mode != GameMode.OnFoot && game.mode != GameMode.GlideMode)
                 return;
 
 

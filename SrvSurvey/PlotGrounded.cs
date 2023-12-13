@@ -75,7 +75,7 @@ namespace SrvSurvey
             game.nearBody!.bioScanEvent += NearBody_bioScanEvent;
 
             // get landing location
-            Game.log($"initialize here: {Status.here}, touchdownLocation: {game.touchdownLocation}, radius: {game.nearBody!.radius.ToString("N0")}");
+            Game.log($"initialize here: {Status.here}, touchdownLocation: {game.touchdownLocation}, radius: {game.systemBody!.radius.ToString("N0")}");
 
             if (game.touchdownLocation == null)
             {
@@ -84,7 +84,7 @@ namespace SrvSurvey
             }
 
             this.td = new TrackingDelta(
-                game.nearBody.radius,
+                game.systemBody.radius,
                 game.touchdownLocation);
         }
 
@@ -124,7 +124,7 @@ namespace SrvSurvey
             Game.log($"Disembark srvLocation {Status.here}");
             if (entry.SRV && this.srvLocation == null)
             {
-                this.srvLocation = new TrackingDelta(game.nearBody!.radius, Status.here.clone());
+                this.srvLocation = new TrackingDelta(game.systemBody!.radius, Status.here.clone());
                 this.Invalidate();
             }
         }
@@ -143,7 +143,7 @@ namespace SrvSurvey
         {
             if (entry.Message.ToLower() == MsgCmd.dbgDump)
             {
-                var str = new StringBuilder($"Distance diagnostics from here: {Status.here}, nearBody.radius: {game.nearBody?.radius.ToString("N0")}\r\n");
+                var str = new StringBuilder($"Distance diagnostics from here: {Status.here}, nearBody.radius: {game.systemBody?.radius.ToString("N0")}\r\n");
 
                 if (game.systemBody?.bioScans != null)
                 {
@@ -236,7 +236,7 @@ namespace SrvSurvey
 
         private void PlotGrounded_Paint(object sender, PaintEventArgs e)
         {
-            if (game.nearBody == null) return;
+            if (this.IsDisposed || game.systemBody == null || game.status == null) return;
 
             var g = e.Graphics;
             g.SmoothingMode = SmoothingMode.HighQuality;
@@ -255,7 +255,7 @@ namespace SrvSurvey
             if (game.touchdownLocation != null)
             {
                 if (this.td == null)
-                    this.td = new TrackingDelta(game.nearBody.radius, game.touchdownLocation);
+                    this.td = new TrackingDelta(game.systemBody.radius, game.touchdownLocation);
 
                 // delta to ship
                 g.ResetTransform();
@@ -317,11 +317,11 @@ namespace SrvSurvey
                 this.drawBearingTo(g, 4 + mw, 8, "SRV:", this.srvLocation.Target);
 
             float y = this.Height - 24;
-            if (game.nearBody!.scanOne != null)
-                this.drawBearingTo(g, 10, y, "Scan one:", game.nearBody.scanOne.location!);
+            if (game.cmdr!.scanOne != null)
+                this.drawBearingTo(g, 10, y, "Scan one:", game.cmdr.scanOne.location!);
 
-            if (game.nearBody.scanTwo != null)
-                this.drawBearingTo(g, 10 + mw, y, "Scan two:", game.nearBody.scanTwo.location!);
+            if (game.cmdr.scanTwo != null)
+                this.drawBearingTo(g, 10 + mw, y, "Scan two:", game.cmdr.scanTwo.location!);
 
             // TODO: fix bug where warning shown and ship already departed
             if (!shipDeparted && this.td?.distance > 1800 && (game.vehicle == ActiveVehicle.SRV || game.vehicle == ActiveVehicle.Foot))
@@ -384,7 +384,7 @@ namespace SrvSurvey
 
             // use the same Tracking delta for all bioScans against the same currentLocation
             var currentLocation = new LatLong2(this.game.status);
-            var d = new TrackingDelta(game.nearBody.radius, currentLocation.clone());
+            var d = new TrackingDelta(game.systemBody.radius, currentLocation.clone());
             if (game.systemBody?.bioScans?.Count > 0)
                 foreach (var scan in game.systemBody.bioScans)
                     drawBioScan(g, d, scan);
@@ -398,13 +398,13 @@ namespace SrvSurvey
                 drawTrackers(g);
 
             // draw active scans top most
-            if (game.nearBody.scanOne != null)
+            if (game.cmdr.scanOne != null)
             {
-                drawBioScan(g, d, game.nearBody.scanOne);
+                drawBioScan(g, d, game.cmdr.scanOne);
             }
-            if (game.nearBody.scanTwo != null)
+            if (game.cmdr.scanTwo != null)
             {
-                drawBioScan(g, d, game.nearBody.scanTwo);
+                drawBioScan(g, d, game.cmdr.scanTwo);
             }
 
             g.ResetTransform();
@@ -413,11 +413,11 @@ namespace SrvSurvey
         private void drawPriorScans(Graphics g)
         {
             var form = Program.getPlotter<PlotPriorScans>();
-            if (game.nearBody == null || form == null) return;
+            if (game.systemBody == null || form == null) return;
 
             foreach (var signal in form.signals)
             {
-                var analyzed = game.systemBody?.organisms?.FirstOrDefault(_ => _.genus == signal.genusName)?.analyzed == true;
+                var analyzed = game.systemBody.organisms?.FirstOrDefault(_ => _.genus == signal.genusName)?.analyzed == true;
                 var isActive = (game.cmdr.scanOne?.genus == null && !analyzed) || game.cmdr.scanOne?.genus == signal.genusName;
 
                 // default range to 50m unless name matches a Genus
@@ -588,7 +588,7 @@ namespace SrvSurvey
             var r = new RectangleF(x, y, sz * 2, sz * 2);
             g.DrawEllipse(GameColors.penGameOrange2, r);
 
-            var dd = new TrackingDelta(game.nearBody!.radius, location);
+            var dd = new TrackingDelta(game.systemBody!.radius, location);
 
             Angle deg = dd.angle - game.status!.Heading;
             var dx = (float)Math.Sin(Util.degToRad(deg)) * 10F;

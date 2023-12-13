@@ -35,7 +35,7 @@ namespace SrvSurvey
             if (game.nearBody != null) // retire
             {
                 this.touchdownLocation = new TrackingDelta(
-                    game.nearBody!.radius,
+                    game.systemBody!.radius,
                     game.touchdownLocation ?? LatLong2.Empty);
             }
         }
@@ -148,7 +148,7 @@ namespace SrvSurvey
             if (this.touchdownLocation == null)
             {
                 this.touchdownLocation = new TrackingDelta(
-                    game.nearBody!.radius,
+                    game.systemBody!.radius,
                     game.touchdownLocation ?? LatLong2.Empty);
             }
             else
@@ -165,7 +165,7 @@ namespace SrvSurvey
             if (entry.SRV && this.srvLocation == null)
             {
                 this.srvLocation = new TrackingDelta(
-                    game.nearBody!.radius,
+                    game.systemBody!.radius,
                     Status.here.clone());
                 this.Invalidate();
             }
@@ -366,7 +366,7 @@ namespace SrvSurvey
 
         protected void drawBearingTo(float x, float y, string txt, LatLong2 location)
         {
-            var dd = new TrackingDelta(game.nearBody!.radius, location);
+            var dd = new TrackingDelta(game.systemBody!.radius, location);
             Angle deg = dd.angle - game.status!.Heading;
 
             drawBearingTo(x, y, txt, (double)dd.distance, (double)deg);

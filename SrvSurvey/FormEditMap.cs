@@ -409,7 +409,7 @@ namespace SrvSurvey
 
         private void btnNewPoi_Click(object sender, EventArgs e)
         {
-            var dist = ((double)Util.getDistance(Status.here, siteData.location, (decimal)game.nearBody!.radius));
+            var dist = ((double)Util.getDistance(Status.here, siteData.location, game.systemBody!.radius));
             var angle = ((float)new Angle((Util.getBearing(Status.here, siteData.location) - siteData.siteHeading)));
             var rot = (int)new Angle(game.status.Heading - this.siteData.siteHeading);
 

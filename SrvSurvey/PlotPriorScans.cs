@@ -139,7 +139,7 @@ namespace SrvSurvey
                     var location = new LatLong2((double)poi.latitude, (double)poi.longitude);
                     var match = Game.codexRef.matchFromEntryId(poi.entryid.Value);
 
-                    if (game.systemBody.bioScans?.Any(_ => _.genus == genusName && Util.getDistance(_.location, location, game.systemBody.radius) < PlotTrackers.highlightDistance) == true)
+                    if (game.systemBody.bioScans?.Any(_ => _.status != BioScan.Status.Died && _.genus == genusName && Util.getDistance(_.location, location, game.systemBody.radius) < PlotTrackers.highlightDistance) == true)
                         continue;
                     if (game.systemBody.bookmarks?.Any(marks => marks.Key == shortName && marks.Value.Any(_ => Util.getDistance(_, location, game.systemBody.radius) < PlotTrackers.highlightDistance)) == true)
                         continue;
@@ -166,7 +166,7 @@ namespace SrvSurvey
                         this.signals.Add(signal);
                     }
 
-                    signal.trackers.Add(new TrackingDelta(game.nearBody!.radius, location));
+                    signal.trackers.Add(new TrackingDelta(game.systemBody!.radius, location));
                 }
             }
 
@@ -220,7 +220,7 @@ namespace SrvSurvey
 
         protected override void OnPaintBackground(PaintEventArgs e)
         {
-            if (this.IsDisposed || game.nearBody == null) return;
+            if (this.IsDisposed || game.systemBody == null) return;
 
             this.g = e.Graphics;
             this.g.SmoothingMode = SmoothingMode.HighQuality;

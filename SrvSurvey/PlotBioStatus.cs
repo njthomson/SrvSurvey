@@ -158,6 +158,7 @@ namespace SrvSurvey
         private void showCurrentGenus(Graphics g)
         {
             var organism = game.systemBody!.organisms.FirstOrDefault(_ => _.species == game.cmdr.scanOne!.species)!;
+            if (organism == null) throw new Exception($"Why no organism found for scan one: {game.cmdr.scanOne!.species}");
 
             float y = 28;
 
@@ -198,8 +199,11 @@ namespace SrvSurvey
             // Reward
             if (organism.reward > 0)
             {
+                var reward = game.systemBody.firstFootFall ? organism.reward * 5 : organism.reward;
+                var txt2 = Util.credits(reward);
+                if (game.systemBody.firstFootFall) txt2 += " (bonus)";
                 g.DrawString(
-                    Util.credits(organism.reward),
+                    txt2,
                     GameColors.fontSmall, GameColors.brushCyan,
                     4, 62);
             }
@@ -372,15 +376,15 @@ namespace SrvSurvey
             }
 
             if (allScanned && game.systemBody.firstFootFall)
-                this.drawFooterText(g, "All signals scanned with first discoverer bonus", GameColors.brushCyan);
+                this.drawFooterText(g, "All signals scanned with bonus applied", GameColors.brushCyan);
             else if (allScanned)
                 this.drawFooterText(g, "All signals scanned", GameColors.brushGameOrange);
             else if (this.lastCodexScan != null)
                 this.drawFooterText(g, this.lastCodexScan, GameColors.brushCyan);
             else if (game.systemBody.firstFootFall)
-                this.drawFooterText(g, "First discoverer bonus will apply!", GameColors.brushCyan);
+                this.drawFooterText(g, "First discoverer bonus will apply", GameColors.brushCyan);
             else if (!game.systemBody.wasMapped && game.systemBody.countAnalyzedBioSignals == 0)
-                this.drawFooterText(g, "First discoverer bonus likely", GameColors.brushCyan);
+                this.drawFooterText(g, "First discoverer bonus is likely - send '.ff' to confirm", GameColors.brushCyan);
         }
 
         protected void drawFooterText(Graphics g, string msg, Brush? brush = null)
