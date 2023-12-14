@@ -1765,7 +1765,10 @@ namespace SrvSurvey.game
             tim.Elapsed += (o, s) =>
             {
                 if (count++ > frames)
+                {
                     tim.Stop();
+                    Game.log($"Stop counting - fps: {fps} for {duration} seconds");
+                }
 
                 var blueCount = this.getBlueCount();
                 if (blueCount > threshold && this.systemBody != null)
