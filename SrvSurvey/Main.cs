@@ -306,7 +306,7 @@ namespace SrvSurvey
         {
             if (game?.cmdr != null)
             {
-                txtBioRewards.Text = Util.credits(game.cmdr.organicRewards)
+                txtBioRewards.Text = Util.credits(game.cmdr.organicRewards, true)
                     + $", organisms: {game.cmdr.scannedBioEntryIds.Count}";
             }
 
@@ -1059,6 +1059,7 @@ namespace SrvSurvey
         private void btnRuins_Click(object sender, EventArgs e)
         {
             FormRuins.show();
+            //Game.log(">>>> " + game?.getBlueCount(false).ToString());
         }
 
         private void btnSphereLimit_Click(object sender, EventArgs e)

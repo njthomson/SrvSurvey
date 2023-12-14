@@ -83,7 +83,8 @@ namespace SrvSurvey
         {
             if (this.IsDisposed) return;
 
-            var targetMode = game.showBodyPlotters || game.mode == GameMode.SAA;
+            var targetMode = (game.showBodyPlotters || game.mode == GameMode.SAA) 
+                && (!force && this.signals.Count > 0); // keep plotter hidden if no more signals
             if (this.Opacity > 0 && !targetMode)
                 this.Opacity = 0;
             else if (this.Opacity == 0 && targetMode)

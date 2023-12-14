@@ -268,19 +268,20 @@ namespace SrvSurvey
         public static bool isCloseToScan(LatLong2 location, string? genusName)
         {
             if (Game.activeGame?.cmdr == null || Game.activeGame.nearBody == null || genusName == null) return false;
+            var minDist = (decimal)Math.Min(PlotTrackers.highlightDistance, Game.activeGame.cmdr.scanOne?.radius ?? int.MaxValue);
 
             if (Game.activeGame.cmdr.scanOne != null)
             {
                 if (Game.activeGame.cmdr.scanOne.genus != genusName) return false;
 
                 var dist = Util.getDistance(location, Game.activeGame.cmdr.scanOne.location, Game.activeGame.nearBody.radius);
-                if (dist < PlotTrackers.highlightDistance) // (decimal)Game.activeGame.cmdr.scanOne.radius / 2)
+                if (dist < minDist)
                     return true;
             }
             if (Game.activeGame.cmdr.scanTwo != null)
             {
                 var dist = Util.getDistance(location, Game.activeGame.cmdr.scanTwo.location, Game.activeGame.nearBody.radius);
-                if (dist < PlotTrackers.highlightDistance) // (decimal)Game.activeGame.cmdr.scanTwo.radius / 2)
+                if (dist < minDist)
                     return true;
             }
 
@@ -451,6 +452,14 @@ namespace SrvSurvey
             value *= (isFirstDiscoverer) ? 2.6 : 1;
             value *= (isFleetCarrierSale) ? 0.75 : 1;
             return (int)Math.Round(value);
+        }
+
+        public static bool isCloseColor(Color actual, Color expected, int tolerance = 5)
+        {
+            // confirm actual RGB values are within ~5 of expected
+            return actual.R > expected.R - tolerance && actual.R < expected.R + tolerance
+                && actual.G > expected.G - tolerance && actual.G < expected.G + tolerance
+                && actual.B > expected.B - tolerance && actual.B < expected.B + tolerance;
         }
     }
 }

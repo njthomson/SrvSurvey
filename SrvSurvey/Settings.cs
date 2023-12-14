@@ -81,8 +81,9 @@ namespace SrvSurvey
 
         public bool migratedAlphaSiteHeading = false;
 
-        // configurable colours and fonts
-        public Color GameOrange = Color.FromArgb(255, 255, 113, 00); // #FF7100
+        public Color inferColor = Color.FromArgb(255, 102, 255, 255);
+        public int inferTolerance = 25;
+        public float inferThreshold = 0.002f;
 
         public int processIdx = 0;
 

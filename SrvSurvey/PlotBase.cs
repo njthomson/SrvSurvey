@@ -1,7 +1,6 @@
 ﻿using SrvSurvey.game;
 using SrvSurvey.units;
 using System.Diagnostics;
-using System.Drawing.Drawing2D;
 
 namespace SrvSurvey
 {

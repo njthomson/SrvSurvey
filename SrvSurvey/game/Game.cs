@@ -3,9 +3,7 @@ using SrvSurvey.net;
 using SrvSurvey.net.EDSM;
 using SrvSurvey.units;
 using System.Diagnostics;
-using System.Drawing.Imaging;
 using System.Reflection;
-using System.Timers;
 
 namespace SrvSurvey.game
 {
@@ -638,6 +636,9 @@ namespace SrvSurvey.game
 
             this.systemData.Save();
             log($"Game.initSystemData: complete '{this.systemData.name}' ({this.systemData.address}), bodyCount: {this.systemData.bodyCount}");
+
+            if (Game.settings.autoLoadPriorScans)
+                this.fetchSystemData(this.systemData.name, this.systemData.address);
         }
 
         private void getLastTouchdownDeep()
@@ -1320,13 +1321,18 @@ namespace SrvSurvey.game
             Game.spansh.getSystemDump(systemAddress).ContinueWith(response =>
             {
                 spanshFinished = true;
-                if (!response.IsCompletedSuccessfully) { Game.log($"Spansh call failed? {response.Exception}"); return; }
+                if (response.IsCompletedSuccessfully)
+                {
+                    var spanshSystem = response.Result;
 
-                var spanshSystem = response.Result;
-
-                Game.log($"Found {spanshSystem.bodyCount} bodies from Spansh for '{systemName}'");
-                if (this.systemData != null && spanshSystem.id64 == this.systemData?.address)
-                    this.systemData.onSpanshResponse(spanshSystem);
+                    Game.log($"Found {spanshSystem.bodyCount} bodies from Spansh for '{systemName}'");
+                    if (this.systemData != null && spanshSystem.id64 == this.systemData?.address)
+                        this.systemData.onSpanshResponse(spanshSystem);
+                }
+                else
+                {
+                    Game.log($"Spansh call failed? {response.Exception}");
+                }
 
                 if (spanshFinished && edsmFinished && canonnFinished) { this.systemData?.Save(); this.fireUpdate(true); }
             });
@@ -1336,13 +1342,17 @@ namespace SrvSurvey.game
             Game.edsm.getBodies(systemName).ContinueWith(response =>
             {
                 edsmFinished = true;
-                if (!response.IsCompletedSuccessfully) { Game.log($"EDSM call failed? {response.Exception}"); return; }
-
-                var edsmData = response.Result;
-                Game.log($"Found {edsmData.bodyCount} bodies from EDSM for '{systemName}'");
-                if (edsmData.id64 == this.systemData?.address)
-                    this.systemData.onEdsmResponse(edsmData);
-
+                if (response.IsCompletedSuccessfully)
+                {
+                    var edsmData = response.Result;
+                    Game.log($"Found {edsmData.bodyCount} bodies from EDSM for '{systemName}'");
+                    if (edsmData.id64 == this.systemData?.address)
+                        this.systemData.onEdsmResponse(edsmData);
+                }
+                else
+                {
+                    Game.log($"EDSM call failed? {response.Exception}");
+                }
                 if (spanshFinished && edsmFinished && canonnFinished) { this.systemData?.Save(); this.fireUpdate(true); }
             });
 
@@ -1351,15 +1361,20 @@ namespace SrvSurvey.game
             Game.canonn.getSystemPoi(systemName).ContinueWith(response =>
             {
                 canonnFinished = true;
-                if (!response.IsCompletedSuccessfully) { Game.log($"Canonn call failed? {response.Exception}"); return; }
+                if (response.IsCompletedSuccessfully)
+                {
+                    this.canonnPoi = response.Result;
+                    Game.log($"Found system POI from Canonn for: {systemName}");
+                    this.systemData.onCanonnData(this.canonnPoi);
 
-                this.canonnPoi = response.Result;
-                Game.log($"Found system POI from Canonn for: {systemName}");
-                this.systemData.onCanonnData(this.canonnPoi);
-
-                // TODO: retire
-                if (this.systemStatus != null)
-                    this.systemStatus.mergeCanonnPoi(this.canonnPoi);
+                    // TODO: retire
+                    if (this.systemStatus != null)
+                        this.systemStatus.mergeCanonnPoi(this.canonnPoi);
+                }
+                else
+                {
+                    Game.log($"Canonn call failed? {response.Exception}");
+                }
 
                 if (spanshFinished && edsmFinished && canonnFinished) { this.systemData?.Save(); this.fireUpdate(true); }
             });
@@ -1746,14 +1761,14 @@ namespace SrvSurvey.game
         private void onJournalEntry(Backpack entry)
         {
             log($"Backpack - this.onPlanet: {this.onPlanet}, firstFootfall: {this.systemBody?.firstFootFall}");
-            if (this.onPlanet && this.systemBody?.firstFootFall == false)
+            if (this.onPlanet) // && this.systemBody?.firstFootFall == false)
                 this.inferFirstFootFall();
         }
 
         public void inferFirstFootFall()
         {
             if (this.systemBody == null) return;
-            var threshold = 0.002f;
+            var threshold = Game.settings.inferThreshold;
 
             var fps = 20;
             var duration = 15; // seconds
@@ -1774,7 +1789,7 @@ namespace SrvSurvey.game
                 if (blueCount > threshold && this.systemBody != null)
                 {
                     tim.Stop();
-                    Game.log($"Frame #{count} {blueCount} > {threshold}");
+                    Game.log($"Frame #{count}: {blueCount} > {threshold}");
                     Game.log($"Setting first footfall on: '{systemBody.name}' ({systemBody.id})");
                     this.systemBody.firstFootFall = true;
                     this.systemData?.Save();
@@ -1785,7 +1800,7 @@ namespace SrvSurvey.game
             tim.Start();
         }
 
-        private float getBlueCount()
+        public float getBlueCount()
         {
             var gameRect = Elite.getWindowRect();
 
@@ -1796,6 +1811,7 @@ namespace SrvSurvey.game
                 gameRect.Top + (int)(gameRect.Height * 0.17f),
                 cw * 2, ch);
 
+            // var hits = new Dictionary<string, int>(); // dgb
             using (var b = new Bitmap(watchRect.Width, watchRect.Height))
             {
                 using (var g = Graphics.FromImage(b))
@@ -1803,16 +1819,29 @@ namespace SrvSurvey.game
                     g.CopyFromScreen(watchRect.Left, watchRect.Top, 0, 0, b.Size);
 
                     var countBlue = 0;
-                    for (var y = 0; y < watchRect.Height; y++)
+                    for (var y = 0; y < b.Height; y++)
                     {
-                        for (var x = 0; x < watchRect.Width; x++)
+                        for (var x = 0; x < b.Width; x++)
                         {
                             var p = b.GetPixel(x, y);
-                            if (p.R < 128 && p.B > 250 && p.G > 250) countBlue++;
+                            if (Util.isCloseColor(p, Game.settings.inferColor, Game.settings.inferTolerance)) countBlue++;
+
+                            /* if (p.G > 250 && p.B > 250) // dbg
+                            {
+                                var key = p.ToString();
+                                if (!hits.ContainsKey(key)) hits[key] = 0;
+                                hits[key] += 1;
+                            } // */
                         }
                     }
 
                     var ratio = 1f / (watchRect.Width * watchRect.Height) * countBlue;
+
+                    /* if (hits.Count > 0) // dbg
+                    {
+                        Game.log($"ratio: {ratio}, hits: {hits.Count}");
+                        Game.log(string.Join(", ", hits.OrderBy(_ => _.Value).Reverse().Select(_ => $"{_.Key}: {_.Value}")));
+                    } // */
                     return ratio;
                 }
             }
