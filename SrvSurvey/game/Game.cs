@@ -1385,7 +1385,7 @@ namespace SrvSurvey.game
         /// </summary>
         public bool canonnPoiHasLocalBioSignals()
         {
-            if (this.systemData == null || this.systemBody == null || this.canonnPoi == null) return false;
+            if (this.systemData == null || this.systemBody == null || this.canonnPoi?.codex == null) return false;
 
             var currentBody = this.systemBody.name.Replace(this.systemData.name, "").Trim();
             return this.canonnPoi.codex.Any(_ => _.body == currentBody && _.hud_category == "Biology" && _.latitude != null && _.longitude != null && _.scanned != Game.settings.hideMyOwnCanonnSignals);
