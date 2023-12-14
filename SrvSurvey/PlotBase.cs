@@ -32,10 +32,10 @@ namespace SrvSurvey
 
             if (this.game == null) throw new Exception("Why no active game?");
 
-            if (game.nearBody != null) // retire
+            if (game.systemData != null && game.systemBody != null) // retire
             {
                 this.touchdownLocation = new TrackingDelta(
-                    game.systemBody!.radius,
+                    game.systemBody.radius,
                     game.touchdownLocation ?? LatLong2.Empty);
             }
         }

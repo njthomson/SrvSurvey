@@ -294,7 +294,7 @@ namespace SrvSurvey
             }
             else if (game.systemBody != null)
             {
-                this.txtNearBody.Text = "Near body";
+                this.txtNearBody.Text = game.systemBody.type.ToString();// "Near body";
             }
             else
             {
@@ -307,21 +307,32 @@ namespace SrvSurvey
             if (game?.cmdr != null)
             {
                 txtBioRewards.Text = Util.credits(game.cmdr.organicRewards)
-                    + $", organisms: {game.cmdr.scannedOrganics.Count}";
+                    + $", organisms: {game.cmdr.scannedBioEntryIds.Count}";
             }
 
             if (game?.systemData != null)
             {
-                var systemTotal = game.systemData.bodies.Sum(_ => _.bioSignalCount);
+                var systemTotal = game!.systemData.bodies.Sum(_ => _.bioSignalCount);
                 var systemScanned = game.systemData.bodies.Sum(_ => _.countAnalyzedBioSignals);
                 txtSystemBioSignals.Text = $"{systemScanned} of {systemTotal}";
 
                 var sysEstimate = game.systemData.bodies.Sum(_ => _.sumPotentialEstimate);
                 var sysActual = game.systemData.bodies.Sum(_ => _.sumAnalyzed);
                 txtSystemBioValues.Text = $"{Util.credits(sysActual, true)} of {Util.credits(sysEstimate, true)}";
-                var countFirstFootFall = game.systemData.bodies.Count(_ => _.firstFootFall);
+                var countFirstFootFall = game.systemData.bodies.Count(_ => _.firstFootFall && _.bioSignalCount > 0);
                 if (countFirstFootFall > 0)
                     txtSystemBioValues.Text += $" (FF: {countFirstFootFall})";
+
+                // update First Footfall checkbox
+                checkFirstFootFall.AutoEllipsis = false;
+                checkFirstFootFall.Enabled = game?.systemBody != null;
+                // checkFirstFootFall.Text = $"First footfall: {game?.systemBody?.name}";
+                if (game?.systemBody == null)
+                    checkFirstFootFall.CheckState = CheckState.Unchecked;
+                else if (checkFirstFootFall.Checked != game.systemBody.firstFootFall)
+                    checkFirstFootFall.Checked = game.systemBody.firstFootFall;
+
+                checkFirstFootFall.AutoEllipsis = true;
             }
 
             if (game == null || game.atMainMenu || !game.isRunning || !game.initialized)
@@ -335,6 +346,8 @@ namespace SrvSurvey
             else if (game.systemBody == null)
             {
                 txtBodyBioSignals.Text = txtBodyBioValues.Text = "-";
+                lblBodyBio.Enabled = txtBodyBioSignals.Enabled = txtBodyBioValues.Enabled = false;
+
                 Program.closePlotter<PlotBioStatus>();
                 Program.closePlotter<PlotGrounded>();
                 Program.closePlotter<PlotTrackers>();
@@ -349,6 +362,7 @@ namespace SrvSurvey
             }
             else
             {
+                lblBodyBio.Enabled = txtBodyBioSignals.Enabled = txtBodyBioValues.Enabled = true;
                 txtBodyBioSignals.Text = $"{game.systemBody!.countAnalyzedBioSignals} of {game.systemBody!.bioSignalCount}";
                 txtBodyBioValues.Text = $"{Util.credits(game.systemBody.sumAnalyzed, true)} of {Util.credits(game.systemBody.sumPotentialEstimate, true)}";
                 if (game.systemBody.firstFootFall) txtBodyBioValues.Text += " (FF)";
@@ -647,8 +661,18 @@ namespace SrvSurvey
             // first foot fall
             else if (game.systemData != null && (msg.StartsWith(MsgCmd.firstFoot, StringComparison.OrdinalIgnoreCase) || msg.StartsWith(MsgCmd.ff, StringComparison.OrdinalIgnoreCase)))
             {
-                var parts = msg.Split(' ', 2);
+                var parts = msg.Split(' ', 2)!;
                 game.toggleFirstFootfall(parts.Length == 2 ? parts[1] : null);
+            }
+        }
+
+        private void checkFirstFootFall_CheckedChanged(object sender, EventArgs e)
+        {
+            // abuse AutoEllipsis to stop stack overflowing
+            if (checkFirstFootFall.AutoEllipsis && game?.systemBody != null)
+            {
+                game.toggleFirstFootfall(null);
+                Elite.setFocusED();
             }
         }
 
@@ -1030,14 +1054,11 @@ namespace SrvSurvey
         private void btnGuarduanThings_Click(object sender, EventArgs e)
         {
             FormBeacons.show();
-            //Program.closePlotter<PlotGuardianBeaconStatus>(); Program.showPlotter<PlotGuardianBeaconStatus>();
         }
 
         private void btnRuins_Click(object sender, EventArgs e)
         {
-            //FormRuins.show();
-            //game.watchScreen();
-            game?.watchScreen2();
+            FormRuins.show();
         }
 
         private void btnSphereLimit_Click(object sender, EventArgs e)

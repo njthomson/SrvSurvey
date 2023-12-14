@@ -55,15 +55,15 @@ namespace SrvSurvey.game
         /// </summary>
         /// <param name="systemName"></param>
         /// <param name="systemAddress"></param>
-        public static void Close(SystemData data)
+        public static void Close(SystemData? data)
         {
-            Game.log($"Closing and saving SystemData for: '{data.name}' ({data.address})");
+            Game.log($"Closing and saving SystemData for: '{data?.name}' ({data?.address})");
             lock (cache)
             {
                 // ensure data is saved then remove from the cache
-                data.Save();
+                data?.Save();
 
-                if (cache.ContainsValue(data))
+                if (data != null && cache.ContainsValue(data))
                     cache.Remove(data.address);
             }
         }
@@ -439,6 +439,7 @@ namespace SrvSurvey.game
             nameof(SAAScanComplete),
             nameof(SAASignalsFound),
             nameof(ApproachBody),
+            nameof(Disembark),
             nameof(Touchdown),
             nameof(CodexEntry),
             nameof(ScanOrganic),
@@ -573,12 +574,19 @@ namespace SrvSurvey.game
             // update fields
             body.lastVisited = DateTimeOffset.Now;
             body.lastTouchdown = entry;
+        }
 
-            // assume first footfall if body was not discovered previously
-            if (!body.wasDiscovered)
+        public void onJournalEntry(Disembark entry)
+        {
+            if (entry.OnPlanet)
             {
-                Game.log($"Assuming first footfall when disembarking on undiscovered body: '{body.name}' ({body.id})");
-                body.firstFootFall = true;
+                // assume first footfall if body was not discovered previously
+                var body = this.findOrCreate(entry.Body, entry.BodyID);
+                if (!body.wasDiscovered)
+                {
+                    Game.log($"Assuming first footfall when disembarking an undiscovered body: '{body.name}' ({body.id})");
+                    body.firstFootFall = true;
+                }
             }
         }
 
@@ -1105,8 +1113,8 @@ namespace SrvSurvey.game
 
         public SystemOrganism? findOrganism(string variant, long entryId, string genus)
         {
-            var organism = this.organisms.FirstOrDefault(_ => _.variant == variant || _.entryId == entryId);
-            if (organism == null) organism = this.organisms.FirstOrDefault(_ => _.genus == genus);
+            var organism = this.organisms?.FirstOrDefault(_ => _.variant == variant || _.entryId == entryId);
+            if (organism == null) organism = this.organisms?.FirstOrDefault(_ => _.genus == genus);
 
             // some organisms have 2+ species on the same planet, eg: Brain Tree's
             if (organism?.variant != null && organism.variant != variant)

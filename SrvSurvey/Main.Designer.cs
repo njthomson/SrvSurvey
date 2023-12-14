@@ -39,19 +39,20 @@ namespace SrvSurvey
             groupBox1 = new GroupBox();
             lblTrackTargetStatus = new Label();
             groupBox2 = new GroupBox();
+            txtCommander = new TextBox();
             txtNearBody = new TextBox();
             txtMode = new TextBox();
             txtLocation = new TextBox();
             txtVehicle = new TextBox();
-            txtCommander = new TextBox();
             groupBox3 = new GroupBox();
+            checkFirstFootFall = new CheckBox();
             txtBodyBioValues = new TextBox();
             txtBodyBioSignals = new TextBox();
             lblSysBio = new Label();
             txtSystemBioValues = new TextBox();
             txtSystemBioSignals = new TextBox();
             label7 = new Label();
-            label6 = new Label();
+            lblBodyBio = new Label();
             txtBioRewards = new TextBox();
             label4 = new Label();
             timer1 = new System.Windows.Forms.Timer(components);
@@ -174,15 +175,25 @@ namespace SrvSurvey
             groupBox2.TabStop = false;
             groupBox2.Text = "Commander:";
             // 
+            // txtCommander
+            // 
+            txtCommander.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            txtCommander.Location = new Point(16, 19);
+            txtCommander.Name = "txtCommander";
+            txtCommander.ReadOnly = true;
+            txtCommander.Size = new Size(348, 20);
+            txtCommander.TabIndex = 10;
+            txtCommander.Text = "<cmdr name>";
+            // 
             // txtNearBody
             // 
             txtNearBody.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            txtNearBody.Location = new Point(278, 43);
+            txtNearBody.Location = new Point(271, 43);
             txtNearBody.Name = "txtNearBody";
             txtNearBody.ReadOnly = true;
-            txtNearBody.Size = new Size(86, 20);
+            txtNearBody.Size = new Size(93, 20);
             txtNearBody.TabIndex = 14;
-            txtNearBody.Text = "<near/far>";
+            txtNearBody.Text = "LandableBody";
             // 
             // txtMode
             // 
@@ -200,7 +211,7 @@ namespace SrvSurvey
             txtLocation.Location = new Point(16, 43);
             txtLocation.Name = "txtLocation";
             txtLocation.ReadOnly = true;
-            txtLocation.Size = new Size(256, 20);
+            txtLocation.Size = new Size(249, 20);
             txtLocation.TabIndex = 12;
             txtLocation.Text = "<location>";
             // 
@@ -213,26 +224,17 @@ namespace SrvSurvey
             txtVehicle.TabIndex = 11;
             txtVehicle.Text = "<vehicle>";
             // 
-            // txtCommander
-            // 
-            txtCommander.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            txtCommander.Location = new Point(16, 19);
-            txtCommander.Name = "txtCommander";
-            txtCommander.ReadOnly = true;
-            txtCommander.Size = new Size(348, 20);
-            txtCommander.TabIndex = 10;
-            txtCommander.Text = "<cmdr name>";
-            // 
             // groupBox3
             // 
             groupBox3.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            groupBox3.Controls.Add(checkFirstFootFall);
             groupBox3.Controls.Add(txtBodyBioValues);
             groupBox3.Controls.Add(txtBodyBioSignals);
             groupBox3.Controls.Add(lblSysBio);
             groupBox3.Controls.Add(txtSystemBioValues);
             groupBox3.Controls.Add(txtSystemBioSignals);
             groupBox3.Controls.Add(label7);
-            groupBox3.Controls.Add(label6);
+            groupBox3.Controls.Add(lblBodyBio);
             groupBox3.Controls.Add(txtBioRewards);
             groupBox3.Controls.Add(label4);
             groupBox3.Location = new Point(12, 116);
@@ -241,6 +243,18 @@ namespace SrvSurvey
             groupBox3.TabIndex = 14;
             groupBox3.TabStop = false;
             groupBox3.Text = "Bio scanning";
+            // 
+            // checkFirstFootFall
+            // 
+            checkFirstFootFall.AutoSize = true;
+            checkFirstFootFall.FlatStyle = FlatStyle.System;
+            checkFirstFootFall.Location = new Point(143, 107);
+            checkFirstFootFall.Name = "checkFirstFootFall";
+            checkFirstFootFall.Size = new Size(128, 17);
+            checkFirstFootFall.TabIndex = 27;
+            checkFirstFootFall.Text = "First Footfall";
+            checkFirstFootFall.UseVisualStyleBackColor = true;
+            checkFirstFootFall.CheckedChanged += checkFirstFootFall_CheckedChanged;
             // 
             // txtBodyBioValues
             // 
@@ -297,14 +311,14 @@ namespace SrvSurvey
             label7.TabIndex = 17;
             label7.Text = "Scanned signals and rewards:";
             // 
-            // label6
+            // lblBodyBio
             // 
-            label6.AutoSize = true;
-            label6.Location = new Point(22, 84);
-            label6.Name = "label6";
-            label6.Size = new Size(40, 12);
-            label6.TabIndex = 16;
-            label6.Text = "Body:";
+            lblBodyBio.AutoSize = true;
+            lblBodyBio.Location = new Point(22, 84);
+            lblBodyBio.Name = "lblBodyBio";
+            lblBodyBio.Size = new Size(40, 12);
+            lblBodyBio.TabIndex = 16;
+            lblBodyBio.Text = "Body:";
             // 
             // txtBioRewards
             // 
@@ -618,7 +632,7 @@ namespace SrvSurvey
         private TextBox txtSystemBioValues;
         private TextBox txtSystemBioSignals;
         private Label label7;
-        private Label label6;
+        private Label lblBodyBio;
         private Button btnRuinsMap;
         private Button btnRuinsOrigin;
         private Button btnAllRuins;
@@ -626,5 +640,6 @@ namespace SrvSurvey
         private Button btnSphereLimit;
         private Button btnGuarduanThings;
         private LinkLabel linkLabel2;
+        private CheckBox checkFirstFootFall;
     }
 }

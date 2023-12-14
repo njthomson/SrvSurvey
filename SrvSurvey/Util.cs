@@ -123,8 +123,10 @@ namespace SrvSurvey
             var millions = credits / 1000000.0D;
             if (millions == 0)
                 txt = "0 M";
-            else
+            else if (millions < 1000)
                 txt = millions.ToString("#.## M");
+            else
+                txt = (millions / 1000).ToString("#.### B");
 
             if (!hideUnits)
                 txt += " CR";

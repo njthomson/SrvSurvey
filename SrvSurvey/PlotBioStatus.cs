@@ -172,15 +172,15 @@ namespace SrvSurvey
             {
                 var allScanned = game.systemBody!.countAnalyzedBioSignals == game.systemBody.bioSignalCount;
                 if (allScanned && game.systemBody.firstFootFall)
-                    this.drawFooterText(g, "All signals scanned with bonus applied", GameColors.brushCyan);
+                    this.drawFooterText(g, "All signals scanned with FF bonus applied", GameColors.brushCyan);
                 else if (allScanned)
                     this.drawFooterText(g, "All signals scanned", GameColors.brushGameOrange);
                 else if (this.lastCodexScan != null)
                     this.drawFooterText(g, this.lastCodexScan, GameColors.brushCyan);
                 else if (game.systemBody.firstFootFall)
                     this.drawFooterText(g, "Applying first footfall bonus", GameColors.brushCyan);
-                else if (!game.systemBody.wasMapped && game.systemBody.countAnalyzedBioSignals == 0)
-                    this.drawFooterText(g, "First footfall is likely - send '.ff' to confirm", GameColors.brushCyan);
+                else if (!game.systemBody.wasMapped && game.systemBody.countAnalyzedBioSignals == 0 && Game.settings.useExternalData && Game.settings.autoLoadPriorScans && Program.getPlotter<PlotPriorScans>() == null)
+                    this.drawFooterText(g, "Potential first footfall - send '.ff' to confirm", GameColors.brushCyan);
             }
         }
 
