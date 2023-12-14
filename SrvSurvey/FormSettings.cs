@@ -286,7 +286,7 @@ namespace SrvSurvey
             numMinScanValue.Enabled = checkBox11.Checked;
         }
 
-        private void checkBox14_CheckedChanged(object sender, EventArgs e)
+        private void checkSkipCheapSignals_CheckedChanged(object sender, EventArgs e)
         {
             numPriorScanMinValue.Enabled = checkSkipCheapSignals.Checked;
             lblPriorScansCredits.Enabled = checkSkipCheapSignals.Checked;

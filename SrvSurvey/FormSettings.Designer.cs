@@ -1197,7 +1197,7 @@ namespace SrvSurvey
             checkSkipCheapSignals.Tag = "skipPriorScansLowValue";
             checkSkipCheapSignals.Text = "Skip signals with reward below:";
             checkSkipCheapSignals.UseVisualStyleBackColor = true;
-            checkSkipCheapSignals.CheckedChanged += checkBox14_CheckedChanged;
+            checkSkipCheapSignals.CheckedChanged += checkSkipCheapSignals_CheckedChanged;
             // 
             // numPriorScanMinValue
             // 
@@ -1412,7 +1412,6 @@ namespace SrvSurvey
         private RadioButton radioUseSmall;
         private PictureBox pictureBox9;
         private PictureBox pictureBox8;
-        private CheckBox checkBox14;
         private Label label12;
         private NumericUpDown numGravityWarningLevel;
         private CheckBox checkBox13;

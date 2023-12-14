@@ -138,21 +138,50 @@ namespace SrvSurvey
 
         private void PlotBioStatus_Paint(object sender, PaintEventArgs e)
         {
+            if (this.IsDisposed || game.systemBody == null) return;
+
             var g = e.Graphics;
             g.SmoothingMode = SmoothingMode.HighQuality;
 
-            if (game.systemBody?.organisms == null) return;
+            if (game.systemBody?.organisms.Count > 0)
+            {
+                g.DrawString(
+                    $"Biological signals: {game.systemBody.bioSignalCount} | Analyzed: {game.systemBody.countAnalyzedBioSignals}",
+                    GameColors.fontSmall, GameColors.brushGameOrange, 4, 8);
 
-            g.DrawString(
-                $"Biological signals: {game.systemBody.bioSignalCount} | Analyzed: {game.systemBody.countAnalyzedBioSignals}",
-                GameColors.fontSmall, GameColors.brushGameOrange, 4, 8);
+                if (game.cmdr.scanOne == null)
+                    this.showAllGenus(g);
+                else
+                    this.showCurrentGenus(g);
+
+                this.drawValueCompletion(g);
+            }
+            else
+            {
+                // show a message if cmdr forgot to DSS the body
+                var msg = $"Bio signals detected - DSS Scan required";
+                var mid = this.Size / 2;
+                var font = GameColors.fontSmall;
+                var sz = g.MeasureString(msg, GameColors.fontMiddle);
+                var tx = mid.Width - (sz.Width / 2);
+                var ty = 16;
+                g.DrawString(msg, GameColors.fontMiddle, GameColors.brushCyan, tx, ty);
+            }
 
             if (game.cmdr.scanOne == null)
-                this.showAllGenus(g);
-            else
-                this.showCurrentGenus(g);
-
-            this.drawValueCompletion(g);
+            {
+                var allScanned = game.systemBody!.countAnalyzedBioSignals == game.systemBody.bioSignalCount;
+                if (allScanned && game.systemBody.firstFootFall)
+                    this.drawFooterText(g, "All signals scanned with bonus applied", GameColors.brushCyan);
+                else if (allScanned)
+                    this.drawFooterText(g, "All signals scanned", GameColors.brushGameOrange);
+                else if (this.lastCodexScan != null)
+                    this.drawFooterText(g, this.lastCodexScan, GameColors.brushCyan);
+                else if (game.systemBody.firstFootFall)
+                    this.drawFooterText(g, "Applying first footfall bonus", GameColors.brushCyan);
+                else if (!game.systemBody.wasMapped && game.systemBody.countAnalyzedBioSignals == 0)
+                    this.drawFooterText(g, "First footfall is likely - send '.ff' to confirm", GameColors.brushCyan);
+            }
         }
 
         private void showCurrentGenus(Graphics g)
@@ -201,7 +230,7 @@ namespace SrvSurvey
             {
                 var reward = game.systemBody.firstFootFall ? organism.reward * 5 : organism.reward;
                 var txt2 = Util.credits(reward);
-                if (game.systemBody.firstFootFall) txt2 += " (bonus)";
+                if (game.systemBody.firstFootFall) txt2 += " (FF bonus)";
                 g.DrawString(
                     txt2,
                     GameColors.fontSmall, GameColors.brushCyan,
@@ -374,17 +403,6 @@ namespace SrvSurvey
 
                 x += sz.Width + 8;
             }
-
-            if (allScanned && game.systemBody.firstFootFall)
-                this.drawFooterText(g, "All signals scanned with bonus applied", GameColors.brushCyan);
-            else if (allScanned)
-                this.drawFooterText(g, "All signals scanned", GameColors.brushGameOrange);
-            else if (this.lastCodexScan != null)
-                this.drawFooterText(g, this.lastCodexScan, GameColors.brushCyan);
-            else if (game.systemBody.firstFootFall)
-                this.drawFooterText(g, "First discoverer bonus will apply", GameColors.brushCyan);
-            else if (!game.systemBody.wasMapped && game.systemBody.countAnalyzedBioSignals == 0)
-                this.drawFooterText(g, "First discoverer bonus is likely - send '.ff' to confirm", GameColors.brushCyan);
         }
 
         protected void drawFooterText(Graphics g, string msg, Brush? brush = null)

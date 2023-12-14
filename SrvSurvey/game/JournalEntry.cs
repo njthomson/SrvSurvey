@@ -679,6 +679,14 @@ namespace SrvSurvey
         public string Name_Localised;
         public int Count;
     }
+
+    class Backpack : JournalEntry
+    {
+        // { "timestamp":"2023-12-13T18:25:08Z", "event":"Backpack", "Items":[  ], "Components":[  ], "Consumables":[ { "Name":"healthpack", "Name_Localised":"Medkit", "OwnerID":0, "Count":1 }, { "Name":"energycell", "Name_Localised":"Energy Cell", "OwnerID":0, "Count":3 }, { "Name":"amm_grenade_emp", "Name_Localised":"Shield Disruptor", "OwnerID":0, "Count":1 }, { "Name":"amm_grenade_frag", "Name_Localised":"Frag Grenade", "OwnerID":0, "Count":1 }, { "Name":"amm_grenade_shield", "Name_Localised":"Shield Projector", "OwnerID":0, "Count":1 }, { "Name":"bypass", "Name_Localised":"E-Breach", "OwnerID":0, "Count":1 } ], "Data":[  ] }
+
+        // TODO: all the fields - this is just being used as a trigger currently
+    }
+
 }
 
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.

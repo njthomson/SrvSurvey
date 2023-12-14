@@ -573,6 +573,13 @@ namespace SrvSurvey.game
             // update fields
             body.lastVisited = DateTimeOffset.Now;
             body.lastTouchdown = entry;
+
+            // assume first footfall if body was not discovered previously
+            if (!body.wasDiscovered)
+            {
+                Game.log($"Assuming first footfall when disembarking on undiscovered body: '{body.name}' ({body.id})");
+                body.firstFootFall = true;
+            }
         }
 
         public void onJournalEntry(CodexEntry entry)

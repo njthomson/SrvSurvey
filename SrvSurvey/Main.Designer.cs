@@ -162,11 +162,11 @@ namespace SrvSurvey
             // groupBox2
             // 
             groupBox2.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            groupBox2.Controls.Add(txtCommander);
             groupBox2.Controls.Add(txtNearBody);
             groupBox2.Controls.Add(txtMode);
             groupBox2.Controls.Add(txtLocation);
             groupBox2.Controls.Add(txtVehicle);
-            groupBox2.Controls.Add(txtCommander);
             groupBox2.Location = new Point(12, 12);
             groupBox2.Name = "groupBox2";
             groupBox2.Size = new Size(371, 98);
@@ -376,7 +376,7 @@ namespace SrvSurvey
             lblFullScreen.BackColor = Color.DarkRed;
             lblFullScreen.Dock = DockStyle.Top;
             lblFullScreen.ForeColor = Color.White;
-            lblFullScreen.Location = new Point(0, 0);
+            lblFullScreen.Location = new Point(0, 102);
             lblFullScreen.Name = "lblFullScreen";
             lblFullScreen.Padding = new Padding(10);
             lblFullScreen.Size = new Size(395, 86);
@@ -504,7 +504,7 @@ namespace SrvSurvey
             lblNotInstalled.ForeColor = Color.White;
             lblNotInstalled.LinkArea = new LinkArea(57, 15);
             lblNotInstalled.LinkColor = Color.FromArgb(128, 255, 255);
-            lblNotInstalled.Location = new Point(0, 86);
+            lblNotInstalled.Location = new Point(0, 0);
             lblNotInstalled.Name = "lblNotInstalled";
             lblNotInstalled.Padding = new Padding(10);
             lblNotInstalled.Size = new Size(395, 102);
@@ -549,8 +549,8 @@ namespace SrvSurvey
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = btnQuit2;
             ClientSize = new Size(395, 518);
-            Controls.Add(lblNotInstalled);
             Controls.Add(lblFullScreen);
+            Controls.Add(lblNotInstalled);
             Controls.Add(linkLabel2);
             Controls.Add(btnSphereLimit);
             Controls.Add(groupBox3);

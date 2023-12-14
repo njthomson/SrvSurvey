@@ -14,7 +14,7 @@ namespace SrvSurvey
         public static readonly string displaySettingsXml = Path.Combine(displaySettingsFolder, "DisplaySettings.xml");
 
         public static readonly string defaultScreenshotFolder = Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), 
+            Environment.GetFolderPath(Environment.SpecialFolder.MyPictures),
             "Frontier Developments", "Elite Dangerous");
 
         public static Point gameCenter = Point.Empty;
@@ -40,18 +40,11 @@ namespace SrvSurvey
                 Game.log("setFocusED: got Zero!");
         }
 
-        public static RectangleF getClientRect()
-        {
-            var hwndED = Elite.getWindowHandle();
-            var rect = new RECT();
-            Elite.GetClientRect(hwndED, ref rect);
 
-            return new RectangleF(
-                rect.Left, rect.Top, 
-                rect.Bottom - rect.Top, rect.Right - rect.Left
-);
-        }
 
+        /// <summary>
+        /// Return the rectangle of the game window
+        /// </summary>
         public static Rectangle getWindowRect(bool force = false)
         {
             var hwndED = Elite.getWindowHandle();
@@ -72,7 +65,7 @@ namespace SrvSurvey
             var windowTitleHeight = windowRect.Bottom - windowRect.Top - clientRect.Bottom;
             if (windowTitleHeight == 0)
                 windowTitleHeight = 4;
-            
+
             var rect = new Rectangle(
                 // use the Window rect for the top left corder
                 windowRect.Left, windowRect.Top + windowTitleHeight,

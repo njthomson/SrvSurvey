@@ -3,7 +3,9 @@ using SrvSurvey.net;
 using SrvSurvey.net.EDSM;
 using SrvSurvey.units;
 using System.Diagnostics;
+using System.Drawing.Imaging;
 using System.Reflection;
+using System.Timers;
 
 namespace SrvSurvey.game
 {
@@ -1110,7 +1112,10 @@ namespace SrvSurvey.game
         {
             log($"setCurrentBody by name: {bodyName}");
             if (this.systemData == null)
-                throw new Exception($"Why no systemData for bodyName: {bodyName}?");
+            {
+                Game.log($"setCurrentBody: No systemData - ignoring bodyName: {bodyName}");
+                return;
+            }
             this.systemBody = this.systemData.bodies.FirstOrDefault(_ => _.name == bodyName);
             Program.invalidateActivePlotters();
         }
@@ -1589,10 +1594,15 @@ namespace SrvSurvey.game
                     var scannedEntryId = this.cmdr.scannedBioEntryIds.FirstOrDefault(_ => _.Contains(speciesRef.entryIdPrefix) && _.Contains(txtReward));
                     if (scannedEntryId != null)
                         cmdr.scannedBioEntryIds.Remove(scannedEntryId);
+                    else
+                    {
+                        Game.log($"No scannedBioEntryIds match found when selling: {data.Species_Localised} for {data.Value} Cr");
+                        continue;
+                    }
                 }
-                catch
+                catch(Exception e)
                 {
-                    Game.log($"No species match found when selling: {data.Species_Localised} for {data.Value} Cr");
+                    Game.log($"Error when selling: {data.Species_Localised} for {data.Value} Cr:\r\n{e}");
                     continue;
                 }
 
@@ -1600,7 +1610,7 @@ namespace SrvSurvey.game
                 var match = cmdr.scannedOrganics.Find(_ => _.species == data.Species && _.reward == data.Value);
                 if (match == null)
                 {
-                    Game.log($"No match found when selling: {data.Species_Localised} for {data.Value} Cr");
+                    Game.log($"No scannedOrganics match found when selling: {data.Species_Localised} for {data.Value} Cr");
                     continue;
                 }
 
@@ -1716,5 +1726,133 @@ namespace SrvSurvey.game
 
         #endregion
 
+        #region screen stuff
+
+        private bool onPlanet = false;
+
+        private void onJournalEntry(Disembark entry)
+        {
+            log($"Disembark - entry.onPlanet: {entry.OnPlanet}");
+            this.onPlanet = entry.OnPlanet;
+        }
+
+        private void onJournalEntry(Embark entry)
+        {
+            log($"Embark - entry.onPlanet: {entry.OnPlanet}");
+            this.onPlanet = false;
+        }
+
+        private void onJournalEntry(Backpack entry)
+        {
+            log($"Backpack - this.onPlanet: {this.onPlanet}, firstFootfall: {this.systemBody?.firstFootFall}");
+            if (this.onPlanet && this.systemBody?.firstFootFall == false)
+                this.watchScreen2();
+        }
+
+        public void watchScreen2()
+        {
+            var threshold = 0.002f;
+
+            var fps = 20;
+            var duration = 15; // seconds
+            var interval = 1000f / fps;
+            var frames = duration * fps;
+
+            Game.log($"Start counting - fps: {fps} for {duration} seconds ...");
+
+            var blueCounts0 = new List<float>();
+
+            var tim = new System.Timers.Timer(interval);
+            var count = 0;
+            tim.Elapsed += (o, s) =>
+            {
+                if (count++ > frames)
+                {
+                    tim.Stop();
+                    var blueCounts = new List<float>(blueCounts0);
+                    var blueFrames = blueCounts.Count(_ => _ > threshold);
+
+                    float firstRatio = 0, firstIdx = 0;
+                    float maxRatio = 0, maxIdx = 0;
+                    for (var n = 0; n < blueCounts.Count; n++)
+                    {
+                        if (blueCounts[n] > threshold)
+                        {
+                            firstRatio = blueCounts[n];
+                            firstIdx = n;
+                        }
+                        if (blueCounts[n] > maxRatio)
+                        {
+                            maxRatio = blueCounts[n];
+                            maxIdx = n;
+                        }
+                    }
+
+                    Game.log($"Final tally: {blueFrames} of {blueCounts.Count}. First: {blueCounts.First()}, Last: {blueCounts.Last()}, Best hit #{maxIdx}: {maxRatio}, First hit #{firstIdx}: {firstRatio} (threshold: > {threshold})");
+                    if (blueCounts.Count < frames) Game.log($"(Missed {frames - blueCounts.Count} frames)");
+
+                    if (this.systemBody != null && firstIdx > 0)
+                    {
+                        Game.log($"Setting first footfall on: '{systemBody.name}' ({systemBody.id})");
+                        this.systemBody.firstFootFall = true;
+                    }
+
+                    /*
+                    // get 1 more frame for last
+                    if (Debugger.IsAttached) this.getBlueCount(true, count);
+                    // */
+                }
+
+                blueCounts0.Add(this.getBlueCount(Debugger.IsAttached && count == 1, count));
+            };
+
+            tim.Start();
+        }
+
+        private float getBlueCount(bool save, int count)
+        {
+            var gr = Elite.getWindowRect();
+
+            var cw = 400;
+            var wr = new Rectangle(
+                (gr.Width / 2) - cw,
+                (int)(gr.Height * 0.19f), // TODO: check this ratio against different screen resolutions and aspect ratios
+                cw * 2, 200);
+
+            using (var b = new Bitmap(wr.Width, wr.Height))
+            {
+                using (var g = Graphics.FromImage(b))
+                {
+                    g.CopyFromScreen(wr.Left, wr.Top, 0, 0, b.Size);
+
+                    var countBlue = 0;
+                    for (var y = 0; y < wr.Height; y++)
+                    {
+                        for (var x = 0; x < wr.Width; x++)
+                        {
+                            var p = b.GetPixel(x, y);
+                            if (p.R < 128 && p.B > 250 && p.G > 250) countBlue++;
+                        }
+                    }
+
+                    var ratio = 1f / (wr.Width * wr.Height) * countBlue;
+
+                    /*
+                    if (Debugger.IsAttached && ratio > 0.0010) save = true;
+                    Game.log($"Frame {count}: {ratio.ToString("N5")} ~ {countBlue} ({save})");
+                    if (save)
+                    {
+                        g.DrawRectangle(Pens.Red, wr);
+                        g.DrawString($"Frame {count}: {countBlue}", GameColors.fontBig, Brushes.Red, wr.Left, wr.Bottom + 10);
+                        b.Save($"d:\\frames\\frame-{count}.png", ImageFormat.Png);
+                    }
+                    // */
+
+                    return ratio;
+                }
+            }
+        }
+
+        #endregion
     }
 }

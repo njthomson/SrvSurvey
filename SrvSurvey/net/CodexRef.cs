@@ -14,12 +14,12 @@ namespace SrvSurvey.canonn
         private Dictionary<string, long>? rewardsByEntryId;
         public List<BioGenus> genus;
 
-        public void init()
+        public async Task init()
         {
-#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-            prepBioRef();
-            loadOrganicRewards();
-#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+            // get CodexRef ready first, before running these in parallel
+            var codexRef = await loadCodexRef();
+            prepBioRef(codexRef);
+            loadOrganicRewards(codexRef); // todo: retire
         }
 
         public async Task<Dictionary<string, RefCodexEntry>> loadCodexRef()
@@ -27,13 +27,14 @@ namespace SrvSurvey.canonn
             string json;
             if (!File.Exists(codexRefPath))
             {
-                Game.log("Requesting codex/ref from network");
+                Game.log("loadCodexRef: preparing from network ...");
                 json = await new HttpClient().GetStringAsync("https://us-central1-canonn-api-236217.cloudfunctions.net/query/codex/ref");
                 File.WriteAllText(codexRefPath, json);
+                Game.log("loadCodexRef: complete");
             }
             else
             {
-                Game.log("Reading codex/ref from disk");
+                Game.log("loadCodexRef: reading codex/ref from disk");
                 json = File.ReadAllText(codexRefPath);
             }
 
@@ -41,12 +42,11 @@ namespace SrvSurvey.canonn
             return codexRef;
         }
 
-        public async Task loadOrganicRewards()
+        public void loadOrganicRewards(Dictionary<string, RefCodexEntry> codexRef)
         {
             if (!File.Exists(speciesRewardPath) || !File.Exists(entryIdRewardPath))
             {
-                Game.log("Preparing organic rewards from codex/ref");
-                var codexRef = await loadCodexRef();
+                Game.log("loadOrganicRewards: preparing ...");
                 var organicStuff = codexRef!.Values
                     .Where(_ => _.sub_category == "$Codex_SubCategory_Organic_Structures;" && _.reward > 0);
 
@@ -79,22 +79,22 @@ namespace SrvSurvey.canonn
 
                 File.WriteAllText(speciesRewardPath, JsonConvert.SerializeObject(rewards));
                 File.WriteAllText(entryIdRewardPath, JsonConvert.SerializeObject(rewardsByEntryId));
+                Game.log("loadOrganicRewards: complete");
             }
             else
             {
-                Game.log("Reading organic rewards from disk");
+                Game.log("loadOrganicRewards: reading organic rewards from disk");
                 this.rewards = JsonConvert.DeserializeObject<Dictionary<string, long>>(File.ReadAllText(speciesRewardPath))!;
                 this.rewardsByEntryId = JsonConvert.DeserializeObject<Dictionary<string, long>>(File.ReadAllText(entryIdRewardPath))!;
             }
         }
 
-        public async Task prepBioRef()
+        public void prepBioRef(Dictionary<string, RefCodexEntry> codexRef)
         {
             if (!File.Exists(bioRefPath))
             {
-                Game.log("Preparing organic rewards from codex/ref");
+                Game.log("prepBioRef: preparing from network ...");
                 this.genus = new List<BioGenus>();
-                var codexRef = await loadCodexRef();
                 var organicStuff = codexRef!.Values
                     .Where(_ => _.sub_category == "$Codex_SubCategory_Organic_Structures;" && _.reward > 0);
                 foreach (var thing in organicStuff)
@@ -119,7 +119,6 @@ namespace SrvSurvey.canonn
                     }
                     else
                     {
-
                         // extract/create various names
                         variantName = thing.name;
                         variantEnglishName = thing.english_name;
@@ -141,10 +140,6 @@ namespace SrvSurvey.canonn
                             default:
                                 throw new Exception($"Oops: {thing.sub_class}?");
                         }
-
-                        Game.log("!");
-                        // { "timestamp":"2023-06-11T22:50:27Z", "event":"ScanOrganic", "ScanType":"Sample", "Genus":"$Codex_Ent_Brancae_Name;", "Genus_Localised":"Brain Trees", "Species":"$Codex_Ent_SeedABCD_02_Name;", "Species_Localised":"Ostrinum Brain Tree", "Variant":"$Codex_Ent_SeedABCD_02_Name;", "Variant_Localised":"Ostrinum Brain Tree", "SystemAddress":546399072737, "Body":12 }
-                        // { "timestamp":"2023-03-12T06:57:16Z", "event":"CodexEntry", "EntryID":2100203, "Name":"$Codex_Ent_SeedABCD_02_Name;", "Name_Localised":"Ostrinum Brain Tree", "SubCategory":"$Codex_SubCategory_Organic_Structures;", "SubCategory_Localised":"Organic structures", "Category":"$Codex_Category_Biology;", "Category_Localised":"Biological and Geological", "Region":"$Codex_RegionName_18;", "Region_Localised":"Inner Orion Spur", "System":"Synuefe EN-H d11-96", "SystemAddress":3309179996515, "BodyID":9, "Latitude":-23.696585, "Longitude":178.804047, "IsNewEntry":true }
                     }
 
                     // match or create the Genus
@@ -192,10 +187,11 @@ namespace SrvSurvey.canonn
                 }
 
                 File.WriteAllText(bioRefPath, JsonConvert.SerializeObject(this.genus));
+                Game.log("prepBioRef: complete");
             }
             else
             {
-                Game.log("Reading bioRef from disk");
+                Game.log("prepBioRef: reading bioRef from disk");
                 this.genus = JsonConvert.DeserializeObject<List<BioGenus>>(File.ReadAllText(bioRefPath))!;
             }
         }
@@ -207,8 +203,7 @@ namespace SrvSurvey.canonn
 
         public BioMatch matchFromEntryId(string entryId)
         {
-            if (this.genus == null || this.genus.Count == 0)
-                throw new Exception($"BioRef is not loaded.");
+            if (this.genus == null || this.genus.Count == 0) throw new Exception($"BioRef is not loaded.");
 
             // search all species for the shorter entryId
             var entryIdPrefix = entryId.Substring(0, 5);
@@ -269,8 +264,6 @@ namespace SrvSurvey.canonn
 
         public long getRewardForSpecies(string name)
         {
-            if (rewards == null)
-                loadOrganicRewards().Wait();
 
             var key = rewards!.Keys.FirstOrDefault(_ => name.StartsWith(_));
             if (key != null && rewards.ContainsKey(key))
@@ -281,8 +274,6 @@ namespace SrvSurvey.canonn
 
         public long getRewardForEntryId(string entryId)
         {
-            if (rewardsByEntryId == null)
-                loadOrganicRewards().Wait();
             entryId = entryId.Substring(0, 5);
             if (rewardsByEntryId!.ContainsKey(entryId))
                 return rewardsByEntryId[entryId];

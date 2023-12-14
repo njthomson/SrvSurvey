@@ -95,19 +95,28 @@ namespace SrvSurvey
 
             Game.canonn.init();
             SiteTemplate.Import();
-            Game.codexRef.init();
 
-            if (Elite.isGameRunning)
-                this.newGame();
+            Game.log("async init ...");
+            txtCommander.Text = "Booting up...";
+            Game.codexRef.init().ContinueWith((foo) =>
+                {
+                    Game.log("async init - complete");
+                    this.BeginInvoke(new Action(() =>
+                    {
+                        txtCommander.Text = "?";
 
-            this.timer1.Interval = 200;
-            this.timer1.Start();
+                        if (Elite.isGameRunning)
+                            this.newGame();
 
+                        this.timer1.Interval = 200;
+                        this.timer1.Start();
 
-            if (!Game.settings.migratedAlphaSiteHeading)
-                GuardianSiteData.migrateAlphaSites();
-            //if (!Game.settings.migratedLiveAndLegacyLocations)
-            //    GuardianSiteData.migrateLiveLegacyLocations();
+                        if (!Game.settings.migratedAlphaSiteHeading)
+                            GuardianSiteData.migrateAlphaSites();
+                        //if (!Game.settings.migratedLiveAndLegacyLocations)
+                        //    GuardianSiteData.migrateLiveLegacyLocations();
+                    }));
+                });
         }
 
         private void updateAllControls(GameMode? newMode = null)
@@ -209,7 +218,7 @@ namespace SrvSurvey
 
             this.updateAllControls();
 
-            if (newGame?.cmdr != null && !newGame.cmdr.migratedScannedOrganicsInEntryId || !newGame.cmdr.migratedNonSystemDataOrganics)
+            if (newGame?.cmdr != null && (!newGame.cmdr.migratedScannedOrganicsInEntryId || !newGame.cmdr.migratedNonSystemDataOrganics))
             {
                 Task.Run(new Action(() =>
                 {
@@ -312,7 +321,7 @@ namespace SrvSurvey
                 txtSystemBioValues.Text = $"{Util.credits(sysActual, true)} of {Util.credits(sysEstimate, true)}";
                 var countFirstFootFall = game.systemData.bodies.Count(_ => _.firstFootFall);
                 if (countFirstFootFall > 0)
-                    txtSystemBioValues.Text += $" ({countFirstFootFall}: FF)";
+                    txtSystemBioValues.Text += $" (FF: {countFirstFootFall})";
             }
 
             if (game == null || game.atMainMenu || !game.isRunning || !game.initialized)
@@ -1026,7 +1035,9 @@ namespace SrvSurvey
 
         private void btnRuins_Click(object sender, EventArgs e)
         {
-            FormRuins.show();
+            //FormRuins.show();
+            //game.watchScreen();
+            game?.watchScreen2();
         }
 
         private void btnSphereLimit_Click(object sender, EventArgs e)
