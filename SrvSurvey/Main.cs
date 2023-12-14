@@ -218,6 +218,7 @@ namespace SrvSurvey
 
             this.updateAllControls();
 
+            Game.log($"migratedScannedOrganicsInEntryId: {newGame.cmdr.migratedScannedOrganicsInEntryId}, migratedNonSystemDataOrganics: {newGame.cmdr.migratedNonSystemDataOrganics}");
             if (newGame?.cmdr != null && (!newGame.cmdr.migratedScannedOrganicsInEntryId || !newGame.cmdr.migratedNonSystemDataOrganics))
             {
                 Task.Run(new Action(() =>
@@ -227,6 +228,8 @@ namespace SrvSurvey
 
                     if (!newGame.cmdr.migratedNonSystemDataOrganics)
                         SystemData.migrate_BodyData_Into_SystemData(newGame.cmdr).ConfigureAwait(false);
+
+                    Game.log($"Cmdr migrations complete!");
                 }));
             }
         }
