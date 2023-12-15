@@ -6,7 +6,7 @@ namespace SrvSurvey
     static class Program
     {
         public static Control control { get; private set; }
-        public static string dataFolder = Path.GetFullPath(Path.Combine(Application.UserAppDataPath, "..", "2.0.0.0"));
+        public static string dataFolder = Path.GetFullPath(Path.Combine(Application.UserAppDataPath, "..", "1.1.0.0"));
         private static string dataRootFolder = Path.GetFullPath(Path.Combine(dataFolder, ".."));
 
         public static readonly BindingFlags InstanceProps =
@@ -184,7 +184,7 @@ namespace SrvSurvey
 
             var rootFolder = new DirectoryInfo(Path.GetFullPath(Path.Combine(Program.dataFolder, "..")));
             var oldFolders = rootFolder.EnumerateDirectories()
-                .Where(_ => !_.Name.EndsWith("2.0.0.0"))
+                .Where(_ => !_.Name.EndsWith("1.1.0.0"))
                 // order by oldest first
                 .OrderBy(_ => File.GetLastWriteTime(Path.Combine(_.FullName, "settings.json")))
                 .ToList();

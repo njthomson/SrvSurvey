@@ -94,8 +94,8 @@ namespace SrvSurvey
 
             this.lastWindowRect = Elite.getWindowRect();
 
-            Game.log($"isMigrationValid: {Program.isMigrationValid()}, dataFolder2000: {Game.settings.dataFolder2000}");
-            if (Program.isMigrationValid() && !Game.settings.dataFolder2000)
+            Game.log($"isMigrationValid: {Program.isMigrationValid()}, dataFolder2000: {Game.settings.dataFolder1100}");
+            if (Program.isMigrationValid() && !Game.settings.dataFolder1100)
             {
                 // we need to migrate all data to the new folder
                 foreach (Control ctrl in this.Controls) ctrl.Enabled = false;
@@ -132,7 +132,7 @@ namespace SrvSurvey
                             // save that migration completed
                             Application.DoEvents();
                             var newSettings = Settings.Load();
-                            newSettings.dataFolder2000 = true;
+                            newSettings.dataFolder1100 = true;
                             newSettings.Save();
 
                             // force a restart

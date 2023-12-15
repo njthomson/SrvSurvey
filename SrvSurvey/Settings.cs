@@ -85,7 +85,7 @@ namespace SrvSurvey
         public int inferTolerance = 25;
         public float inferThreshold = 0.002f;
 
-        public bool dataFolder2000 = false;
+        public bool dataFolder1100 = false;
 
         public int processIdx = 0;
 
