@@ -99,6 +99,7 @@ namespace SrvSurvey
             {
                 // we need to migrate all data to the new folder
                 foreach (Control ctrl in this.Controls) ctrl.Enabled = false;
+                btnLogs.Enabled = true;
                 this.Activate();
 
                 this.BeginInvoke(new Action(() =>
@@ -116,25 +117,32 @@ namespace SrvSurvey
                     txtCommander.Text = "Migrating data...";
                     txtLocation.Text = "Please stand by...";
 
-                    // migrate the data files
-                    Program.migrateToNewDataFolder();
+                    // Prep CodexRef first
+                    Game.codexRef.init().ContinueWith((foo) =>
+                    {
+                        this.BeginInvoke(new Action(() =>
+                        {
+                            // migrate the data files
+                            Program.migrateToNewDataFolder();
 
-                    // show thank you message
-                    Application.DoEvents();
-                    MessageBox.Show(this, "Thank you, your data has been migrated.\r\n\r\nSrvSurvey will now restart...", "SrvSurvey", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            // show thank you message
+                            Application.DoEvents();
+                            MessageBox.Show(this, "Thank you, your data has been migrated.\r\n\r\nSrvSurvey will now restart...", "SrvSurvey", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                    // save that migration completed
-                    Application.DoEvents();
-                    var newSettings = Settings.Load();
-                    newSettings.dataFolder2000 = true;
-                    newSettings.Save();
+                            // save that migration completed
+                            Application.DoEvents();
+                            var newSettings = Settings.Load();
+                            newSettings.dataFolder2000 = true;
+                            newSettings.Save();
 
-                    // force a restart
-                    Application.DoEvents();
-                    Application.DoEvents();
-                    Process.Start(Application.ExecutablePath);
-                    Application.DoEvents();
-                    Process.GetCurrentProcess().Kill();
+                            // force a restart
+                            Application.DoEvents();
+                            Application.DoEvents();
+                            Process.Start(Application.ExecutablePath);
+                            Application.DoEvents();
+                            Process.GetCurrentProcess().Kill();
+                        }));
+                    });
                 }));
                 return;
             }
@@ -147,16 +155,15 @@ namespace SrvSurvey
 
         private void Main_Load_Async()
         {
-            Game.log("async init ...");
             txtCommander.Text = "Preparing reference data...";
             txtLocation.Text = "This is a (mostly) one time thing";
+            this.txtMode.Text = "";
 
             Game.codexRef.init().ContinueWith((foo) =>
             {
-                Game.log("async init - complete");
                 this.BeginInvoke(new Action(() =>
                 {
-                    txtCommander.Text = "?";
+                    this.updateCommanderTexts();
                     Application.DoEvents();
 
                     if (Elite.isGameRunning)

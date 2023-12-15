@@ -195,7 +195,7 @@ namespace SrvSurvey
 
             oldFolders.ForEach(_ => mergeScannedBioEntryIds(_.FullName));
             oldFolders.ForEach(_ => mergeChildFiles(_.FullName));
-            
+
             Game.log($"migrateToNewDataFolder: old data into common folder - complete");
         }
 
@@ -203,7 +203,10 @@ namespace SrvSurvey
         {
             Game.log($"> moveCoreFiles: {oldFolder}");
             var filenames = new List<string>();
-            filenames.Add(Path.Combine(oldFolder, "settings.json"));
+
+            var settingsFilepath = Path.Combine(oldFolder, "settings.json");
+            if (File.Exists(settingsFilepath)) filenames.Add(settingsFilepath);
+
             filenames.AddRange(Directory.EnumerateFiles(oldFolder, "*-legacy.json"));
             filenames.AddRange(Directory.EnumerateFiles(oldFolder, "*-live.json"));
 
@@ -219,14 +222,20 @@ namespace SrvSurvey
         private static void mergeScannedBioEntryIds(string oldFolder)
         {
             var cmdrFiles = Directory.EnumerateFiles(oldFolder, "*-live.json");
-            foreach(var cmdrFile in cmdrFiles)
+            foreach (var cmdrFile in cmdrFiles)
             {
                 var oldCmdr = Data.Load<CommanderSettings>(cmdrFile)!;
                 var newCmdr = Data.Load<CommanderSettings>(cmdrFile.Replace(oldFolder, dataFolder))!;
+                if (newCmdr == null) newCmdr = CommanderSettings.Load(oldCmdr.fid, oldCmdr.isOdyssey, oldCmdr.commander);
+
                 Game.log($">> mergeScannedBioEntryIds: {cmdrFile}");
 
-                foreach(var old in oldCmdr.scannedBioEntryIds)
+                // merge prior scans, both types, and update total
+                BodyData.migrate_ScannedOrganics_Into_ScannedBioEntryIds(oldCmdr);
+                foreach (var old in oldCmdr.scannedBioEntryIds)
                     newCmdr.scannedBioEntryIds.Add(old);
+
+                newCmdr.reCalcOrganicRewards();
 
                 // force these migrations to happen again
                 newCmdr.migratedNonSystemDataOrganics = false;

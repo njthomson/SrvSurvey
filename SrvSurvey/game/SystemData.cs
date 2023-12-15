@@ -334,7 +334,7 @@ namespace SrvSurvey.game
                         if (systemOrg.variantLocalized == null && bodyOrg.variantLocalized != null) systemOrg.variantLocalized = bodyOrg.variantLocalized;
                     }
 
-                    // finally - can we repair any 'scannedBioEntryIds' with better entryId's?
+                    // finally - can we repair any 'scannedBioEntryIds' with better entryId's or firstFootfall's?
                     var list = cmdr.scannedBioEntryIds.ToList();
                     for (var n = 0; n < list.Count; n++)
                     {
@@ -343,13 +343,19 @@ namespace SrvSurvey.game
                         if (!scannedEntryId.StartsWith(prefix)) continue;
 
                         var parts = scannedEntryId.Split('_');
-                        if (!parts[2].EndsWith("00")) continue;
-
-                        var matchedOrganismWithEntryId = systemBody.organisms.FirstOrDefault(_ => !_.entryId.ToString().EndsWith("00") && _.entryId.ToString().StartsWith(parts[2].Substring(0, 5)));
-                        if (matchedOrganismWithEntryId != null)
+                        if (parts[2].EndsWith("00") || parts[2].Length == 5)
                         {
-                            parts[2] = matchedOrganismWithEntryId.entryId.ToString();
-                            scannedEntryId = string.Join('_', parts);
+                            var matchedOrganismWithEntryId = systemBody.organisms.FirstOrDefault(_ => !_.entryId.ToString().EndsWith("00") && _.entryId.ToString().StartsWith(parts[2].Substring(0, 5)));
+                            if (matchedOrganismWithEntryId != null)
+                                parts[2] = matchedOrganismWithEntryId.entryId.ToString();
+                        }
+
+                        if (systemBody.firstFootFall && parts[4] == bool.FalseString)
+                            parts[4] = bool.TrueString;
+
+                        scannedEntryId = string.Join('_', parts);
+                        if (scannedEntryId != list[n])
+                        {
                             Game.log($"Repairing: '{list[n]}' => '{scannedEntryId}'");
                             list[n] = scannedEntryId;
                         }
@@ -360,6 +366,7 @@ namespace SrvSurvey.game
                 // done with this body
                 systemData.Save();
                 bodyData.Save();
+                cmdr.Save();
             }
 
             //foreach (var scannedEntryId in cmdr.scannedBioEntryIds)

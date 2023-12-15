@@ -16,10 +16,14 @@ namespace SrvSurvey.canonn
 
         public async Task init()
         {
+            Game.log("CodexRef init ...");
+
             // get CodexRef ready first, before running these in parallel
             var codexRef = await loadCodexRef();
             prepBioRef(codexRef);
             loadOrganicRewards(codexRef); // todo: retire
+
+            Game.log("CodexRef init - complete");
         }
 
         public async Task<Dictionary<string, RefCodexEntry>> loadCodexRef()

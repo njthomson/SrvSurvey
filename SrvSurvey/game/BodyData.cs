@@ -157,7 +157,7 @@ namespace SrvSurvey.game
 
         public static void migrate_ScannedOrganics_Into_ScannedBioEntryIds(CommanderSettings cmdr)
         {
-            Game.log("Migrate cmdr 'scannedOrganics' into 'scannedBioEntryIds' ...");
+            Game.log($"Migrate cmdr 'scannedOrganics' into 'scannedBioEntryIds', scannedOrganics: {cmdr.scannedOrganics.Count}, scannedBioEntryIds: {cmdr.scannedBioEntryIds.Count} ...");
 
             // first migrate any 'scannedBioEntryIds' entries without rewards or firstFoot entries
             var foo = cmdr.scannedBioEntryIds.Select(oldEntry =>
@@ -208,6 +208,7 @@ namespace SrvSurvey.game
                 }
             }
             cmdr.scannedBioEntryIds = new HashSet<string>(newScannedBioEntryIds);
+            cmdr.reCalcOrganicRewards();
 
             Game.log("Migrate cmdr 'scannedOrganics' into 'scannedBioEntryIds' - complete");
             cmdr.migratedScannedOrganicsInEntryId = true;
