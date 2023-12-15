@@ -7,7 +7,7 @@ namespace SrvSurvey.game
 {
     internal class GuardianSiteData : Data
     {
-        private static string rootFolder = Path.Combine(Application.UserAppDataPath, "guardian");
+        private static string rootFolder = Path.Combine(Program.dataFolder, "guardian");
 
         public static string getFilename(ApproachSettlement entry)
         {

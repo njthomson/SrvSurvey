@@ -86,6 +86,7 @@ namespace SrvSurvey
 
             if (!Path.Exists(Elite.displaySettingsFolder))
             {
+                // stop here if Elite is not installed
                 return;
             }
 
@@ -93,30 +94,81 @@ namespace SrvSurvey
 
             this.lastWindowRect = Elite.getWindowRect();
 
+            Game.log($"isMigrationValid: {Program.isMigrationValid()}, dataFolder2000: {Game.settings.dataFolder2000}");
+            if (Program.isMigrationValid() && !Game.settings.dataFolder2000)
+            {
+                // we need to migrate all data to the new folder
+                foreach (Control ctrl in this.Controls) ctrl.Enabled = false;
+                this.Activate();
+
+                this.BeginInvoke(new Action(() =>
+                {
+                    txtCommander.Text = "Data migration needed";
+                    txtLocation.Text = "";
+                    txtMode.Text = "";
+                    Application.DoEvents();
+                    var rslt = MessageBox.Show(this, "This new version of SrvSurvey needs to perform a one time migration of data files.\r\n\r\nReady to proceed?", "SrvSurvey", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+                    if (rslt == DialogResult.Cancel)
+                    {
+                        Application.Exit();
+                        return;
+                    }
+                    txtCommander.Text = "Migrating data...";
+                    txtLocation.Text = "Please stand by...";
+
+                    // migrate the data files
+                    Program.migrateToNewDataFolder();
+
+                    // show thank you message
+                    Application.DoEvents();
+                    MessageBox.Show(this, "Thank you, your data has been migrated.\r\n\r\nSrvSurvey will now restart...", "SrvSurvey", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    // save that migration completed
+                    Application.DoEvents();
+                    var newSettings = Settings.Load();
+                    newSettings.dataFolder2000 = true;
+                    newSettings.Save();
+
+                    // force a restart
+                    Application.DoEvents();
+                    Application.DoEvents();
+                    Process.Start(Application.ExecutablePath);
+                    Application.DoEvents();
+                    Process.GetCurrentProcess().Kill();
+                }));
+                return;
+            }
+
             Game.canonn.init();
             SiteTemplate.Import();
 
+            this.Main_Load_Async();
+        }
+
+        private void Main_Load_Async()
+        {
             Game.log("async init ...");
-            txtCommander.Text = "Booting up...";
+            txtCommander.Text = "Preparing reference data...";
+            txtLocation.Text = "This is a (mostly) one time thing";
+
             Game.codexRef.init().ContinueWith((foo) =>
+            {
+                Game.log("async init - complete");
+                this.BeginInvoke(new Action(() =>
                 {
-                    Game.log("async init - complete");
-                    this.BeginInvoke(new Action(() =>
-                    {
-                        txtCommander.Text = "?";
+                    txtCommander.Text = "?";
+                    Application.DoEvents();
 
-                        if (Elite.isGameRunning)
-                            this.newGame();
+                    if (Elite.isGameRunning)
+                        this.newGame();
 
-                        this.timer1.Interval = 200;
-                        this.timer1.Start();
+                    this.timer1.Interval = 200;
+                    this.timer1.Start();
 
-                        if (!Game.settings.migratedAlphaSiteHeading)
-                            GuardianSiteData.migrateAlphaSites();
-                        //if (!Game.settings.migratedLiveAndLegacyLocations)
-                        //    GuardianSiteData.migrateLiveLegacyLocations();
-                    }));
-                });
+                    if (!Game.settings.migratedAlphaSiteHeading)
+                        GuardianSiteData.migrateAlphaSites();
+                }));
+            });
         }
 
         private void updateAllControls(GameMode? newMode = null)

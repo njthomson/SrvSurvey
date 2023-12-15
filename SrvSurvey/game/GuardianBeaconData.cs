@@ -7,7 +7,7 @@ namespace SrvSurvey.game
 {
     internal class GuardianBeaconData : Data
     {
-        private static string rootFolder = Path.Combine(Application.UserAppDataPath, "guardian");
+        private static string rootFolder = Path.Combine(Program.dataFolder, "guardian");
 
         public static string getFilepath(string systemName)
         {

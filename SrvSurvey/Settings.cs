@@ -85,11 +85,13 @@ namespace SrvSurvey
         public int inferTolerance = 25;
         public float inferThreshold = 0.002f;
 
+        public bool dataFolder2000 = false;
+
         public int processIdx = 0;
 
         #region loading /saving
 
-        static readonly string settingsPath = Path.Combine(Application.UserAppDataPath, "settings.json");
+        static readonly string settingsPath = Path.Combine(Program.dataFolder, "settings.json");
 
         public static Settings Load()
         {

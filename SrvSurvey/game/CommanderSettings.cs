@@ -7,7 +7,7 @@ namespace SrvSurvey.game
         public static CommanderSettings Load(string fid, bool isOdyssey, string commanderName)
         {
             var mode = isOdyssey ? "live" : "legacy";
-            var filepath = Path.Combine(Application.UserAppDataPath, $"{fid}-{mode}.json");
+            var filepath = Path.Combine(Program.dataFolder, $"{fid}-{mode}.json");
 
             return Data.Load<CommanderSettings>(filepath)
                 ?? new CommanderSettings()

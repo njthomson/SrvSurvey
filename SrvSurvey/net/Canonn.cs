@@ -84,8 +84,8 @@ namespace SrvSurvey.canonn
 
         #region get all Guardian Ruins from GRSites
 
-        private static string allRuinsRefPath = Path.Combine(Application.UserAppDataPath, "allRuins.json");
-        private static string ruinSummariesPath = Path.Combine(Application.UserAppDataPath, "ruinSummaries.json");
+        private static string allRuinsRefPath = Path.Combine(Program.dataFolder, "allRuins.json");
+        private static string ruinSummariesPath = Path.Combine(Program.dataFolder, "ruinSummaries.json");
         //public IEnumerable<GuardianRuinSummary> ruinSummaries { get; private set; }
 
         public async Task<List<GRReport>> getRuinsReports(string bodyName, int idx, bool descending, string? cmdr = null)
@@ -271,7 +271,7 @@ namespace SrvSurvey.canonn
             var newEntries = new List<GuardianRuinEntry>();
 
             var allRuins = summaries.Select(_ => new GuardianRuinEntry(_)).ToList();
-            var folder = Path.Combine(Application.UserAppDataPath, "guardian", Game.settings.lastFid!);
+            var folder = Path.Combine(Program.dataFolder, "guardian", Game.settings.lastFid!);
             if (Directory.Exists(folder))
             {
                 var files = Directory.GetFiles(folder, "*-ruins-*.json");
@@ -393,7 +393,7 @@ namespace SrvSurvey.canonn
             var newEntries = new List<GuardianGridEntry>();
 
             var allStructures= summaries.Select(_ => new GuardianGridEntry(_)).ToList();
-            var folder = Path.Combine(Application.UserAppDataPath, "guardian", Game.settings.lastFid!);
+            var folder = Path.Combine(Program.dataFolder, "guardian", Game.settings.lastFid!);
             if (Directory.Exists(folder))
             {
                 var files = Directory.GetFiles(folder, "*-structure-*.json");

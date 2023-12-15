@@ -17,7 +17,7 @@ namespace SrvSurvey
 
         public static readonly Dictionary<GuardianSiteData.SiteType, SiteTemplate> sites = new Dictionary<GuardianSiteData.SiteType, SiteTemplate>();
 
-        private static string editableFilepath = Path.Combine(Application.UserAppDataPath, "settlementTemplates.json");
+        private static string editableFilepath = Path.Combine(Program.dataFolder, "settlementTemplates.json");
 
         public static void Import(bool devReload = false)
         {

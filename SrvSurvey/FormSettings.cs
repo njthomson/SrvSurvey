@@ -248,7 +248,7 @@ namespace SrvSurvey
 
         private void linkDataFiles_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Util.openLink(Application.UserAppDataPath);
+            Util.openLink(Program.dataFolder);
         }
 
         private void btnChooseJournalFolder_Click(object sender, EventArgs e)

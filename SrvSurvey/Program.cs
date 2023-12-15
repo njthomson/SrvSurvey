@@ -3,10 +3,11 @@ using System.Reflection;
 
 namespace SrvSurvey
 {
-
     static class Program
     {
         public static Control control { get; private set; }
+        public static string dataFolder = Path.GetFullPath(Path.Combine(Application.UserAppDataPath, "..", "2.0.0.0"));
+        private static string dataRootFolder = Path.GetFullPath(Path.Combine(dataFolder, ".."));
 
         public static readonly BindingFlags InstanceProps =
             System.Reflection.BindingFlags.Public |
@@ -34,7 +35,6 @@ namespace SrvSurvey
             Program.control.CreateControl();
 
             Application.Run(new Main());
-            //Application.Run(new FormRuins()); // tmp!
         }
 
         private static void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
@@ -164,6 +164,111 @@ namespace SrvSurvey
 
             foreach (PlotterForm form in activePlotters.Values)
                 form.Invalidate();
+        }
+
+        #endregion
+
+        #region migrate data files
+
+        public static bool isMigrationValid()
+        {
+            // do we have any settings files in any folder already?
+            var migrationValid = Directory.EnumerateFiles(dataRootFolder, "settings.json", SearchOption.AllDirectories).Any();
+            return migrationValid;
+        }
+
+        public static void migrateToNewDataFolder()
+        {
+            Game.log($"migrateToNewDataFolder: old data into common folder: {Program.dataFolder} ...");
+            Directory.CreateDirectory(Program.dataFolder);
+
+            var rootFolder = new DirectoryInfo(Path.GetFullPath(Path.Combine(Program.dataFolder, "..")));
+            var oldFolders = rootFolder.EnumerateDirectories()
+                .Where(_ => !_.Name.EndsWith("2.0.0.0"))
+                // order by oldest first
+                .OrderBy(_ => File.GetLastWriteTime(Path.Combine(_.FullName, "settings.json")))
+                .ToList();
+            Game.log($"Migrating old folders:\r\n  " + string.Join("\r\n  ", oldFolders));
+
+            // move core files from the most recent folder only
+            moveCoreFiles(oldFolders.Last().FullName);
+
+            oldFolders.ForEach(_ => mergeScannedBioEntryIds(_.FullName));
+            oldFolders.ForEach(_ => mergeChildFiles(_.FullName));
+            
+            Game.log($"migrateToNewDataFolder: old data into common folder - complete");
+        }
+
+        private static void moveCoreFiles(string oldFolder)
+        {
+            Game.log($"> moveCoreFiles: {oldFolder}");
+            var filenames = new List<string>();
+            filenames.Add(Path.Combine(oldFolder, "settings.json"));
+            filenames.AddRange(Directory.EnumerateFiles(oldFolder, "*-legacy.json"));
+            filenames.AddRange(Directory.EnumerateFiles(oldFolder, "*-live.json"));
+
+            Game.log(string.Join("\r\n", filenames));
+
+            filenames.ForEach(_ =>
+            {
+                Game.log($">> moveCoreFile: {_}");
+                File.Copy(_, _.Replace(oldFolder, dataFolder), true);
+            });
+        }
+
+        private static void mergeScannedBioEntryIds(string oldFolder)
+        {
+            var cmdrFiles = Directory.EnumerateFiles(oldFolder, "*-live.json");
+            foreach(var cmdrFile in cmdrFiles)
+            {
+                var oldCmdr = Data.Load<CommanderSettings>(cmdrFile)!;
+                var newCmdr = Data.Load<CommanderSettings>(cmdrFile.Replace(oldFolder, dataFolder))!;
+                Game.log($">> mergeScannedBioEntryIds: {cmdrFile}");
+
+                foreach(var old in oldCmdr.scannedBioEntryIds)
+                    newCmdr.scannedBioEntryIds.Add(old);
+
+                // force these migrations to happen again
+                newCmdr.migratedNonSystemDataOrganics = false;
+                newCmdr.migratedScannedOrganicsInEntryId = false;
+                newCmdr.Save();
+            }
+        }
+
+        private static void mergeChildFiles(string oldFolder)
+        {
+            var allOldFiles = new List<string>();
+            if (Directory.Exists(Path.Combine(oldFolder, "guardian")))
+                allOldFiles.AddRange(Directory.EnumerateFiles(Path.Combine(oldFolder, "guardian"), "*.*", SearchOption.AllDirectories));
+            if (Directory.Exists(Path.Combine(oldFolder, "guardian-beacon")))
+                allOldFiles.AddRange(Directory.EnumerateFiles(Path.Combine(oldFolder, "guardian-beacon"), "*.*", SearchOption.AllDirectories));
+            if (Directory.Exists(Path.Combine(oldFolder, "organic")))
+                allOldFiles.AddRange(Directory.EnumerateFiles(Path.Combine(oldFolder, "organic"), "*.*", SearchOption.AllDirectories));
+            if (Directory.Exists(Path.Combine(oldFolder, "systems")))
+                allOldFiles.AddRange(Directory.EnumerateFiles(Path.Combine(oldFolder, "systems"), "*.*", SearchOption.AllDirectories));
+
+            Game.log($"> Merging {allOldFiles.Count} files (or clobbering if they are larger)");
+
+            foreach (var oldFile in allOldFiles)
+            {
+                var newFile = oldFile.Replace(oldFolder, dataFolder);
+                Directory.CreateDirectory(Path.GetDirectoryName(newFile)!);
+
+                if (!File.Exists(newFile))
+                {
+                    // copy old if it does not exist
+                    File.Copy(oldFile, newFile, true);
+                }
+                else
+                {
+                    // if old is larger, overwrite new with old
+                    var oldLength = new FileInfo(oldFile).Length;
+                    var newLength = new FileInfo(newFile).Length;
+                    if (oldLength > newLength)
+                        File.Copy(oldFile, newFile, true);
+                }
+            }
+            Game.log($"> Merging {allOldFiles.Count} files - complete");
         }
 
         #endregion

@@ -18,6 +18,8 @@ namespace SrvSurvey.game
             Game.logPath = prepLogFile();
             Game.log($"SrvSurvey version: {Game.releaseVersion}");
             Game.log($"New log file: {Game.logPath}");
+            Game.log($"dataFolder: {Program.dataFolder}");
+
             Game.removeExcessLogFiles();
 
             settings = Settings.Load();
@@ -70,7 +72,7 @@ namespace SrvSurvey.game
 
         public static readonly List<string> logs;
         private static readonly string logPath;
-        public static string logFolder = Path.Combine(Application.UserAppDataPath, "logs", "");
+        public static string logFolder = Path.Combine(Program.dataFolder, "logs", "");
         public static string releaseVersion = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyFileVersionAttribute>()?.Version!;
 
         #endregion
@@ -1688,7 +1690,7 @@ namespace SrvSurvey.game
                 return;
             }
 
-            Game.log($"Add bookmark '{name}' ({location}) on '{this.systemBody.name}' ({this.systemBody.id}");
+            Game.log($"Add bookmark '{name}' ({location}) on '{this.systemBody.name}' ({this.systemBody.id})");
             this.systemBody.bookmarks[name].Add(pos);
 
             // TODO: limit to only 4?

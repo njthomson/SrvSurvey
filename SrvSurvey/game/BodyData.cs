@@ -7,7 +7,7 @@ namespace SrvSurvey.game
     {
         public static BodyData Load(LandableBody nearBody)
         {
-            var path = Path.Combine(Application.UserAppDataPath, "organic", Game.activeGame!.fid!);
+            var path = Path.Combine(Program.dataFolder, "organic", Game.activeGame!.fid!);
             Directory.CreateDirectory(path);
 
             var filepath = Path.Combine(path, $"{nearBody.bodyName}.json");

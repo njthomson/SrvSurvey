@@ -5,10 +5,10 @@ namespace SrvSurvey.canonn
 {
     internal class CodexRef
     {
-        private static string codexRefPath = Path.Combine(Application.UserAppDataPath, "codexRef.json");
-        private static string speciesRewardPath = Path.Combine(Application.UserAppDataPath, "speciesRewards.json");
-        private static string entryIdRewardPath = Path.Combine(Application.UserAppDataPath, "entryIdRewards.json");
-        private static string bioRefPath = Path.Combine(Application.UserAppDataPath, "bioRef.json");
+        private static string codexRefPath = Path.Combine(Program.dataFolder, "codexRef.json");
+        private static string speciesRewardPath = Path.Combine(Program.dataFolder, "speciesRewards.json");
+        private static string entryIdRewardPath = Path.Combine(Program.dataFolder, "entryIdRewards.json");
+        private static string bioRefPath = Path.Combine(Program.dataFolder, "bioRef.json");
 
         private Dictionary<string, long>? rewards;
         private Dictionary<string, long>? rewardsByEntryId;

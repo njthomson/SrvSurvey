@@ -26,7 +26,7 @@ namespace SrvSurvey.game
             }
 
             // try finding files by systemAddress first, then system name
-            var folder = Path.Combine(Application.UserAppDataPath, "systems", Game.activeGame!.fid!);
+            var folder = Path.Combine(Program.dataFolder, "systems", Game.activeGame!.fid!);
             Directory.CreateDirectory(folder);
             var files = Directory.GetFiles(folder, $"*_{systemAddress}.json");
             if (files.Length == 0)
@@ -80,7 +80,7 @@ namespace SrvSurvey.game
                     // create a new data object with the main star populated
                     data = new SystemData()
                     {
-                        filepath = Path.Combine(Application.UserAppDataPath, "systems", Game.activeGame!.fid!, $"{entry.StarSystem}_{entry.SystemAddress}.json"),
+                        filepath = Path.Combine(Program.dataFolder, "systems", Game.activeGame!.fid!, $"{entry.StarSystem}_{entry.SystemAddress}.json"),
                         name = entry.StarSystem,
                         address = entry.SystemAddress,
                         starPos = entry.StarPos,
@@ -128,7 +128,7 @@ namespace SrvSurvey.game
                     // create a new data object with the main star populated
                     data = new SystemData()
                     {
-                        filepath = Path.Combine(Application.UserAppDataPath, "systems", Game.activeGame!.fid!, $"{bodyData.systemName}_{bodyData.systemAddress}.json"),
+                        filepath = Path.Combine(Program.dataFolder, "systems", Game.activeGame!.fid!, $"{bodyData.systemName}_{bodyData.systemAddress}.json"),
                         name = bodyData.systemName,
                         address = bodyData.systemAddress,
                         starPos = null!,
@@ -149,7 +149,7 @@ namespace SrvSurvey.game
 
         public static async Task migrate_BodyData_Into_SystemData(CommanderSettings cmdr)
         {
-            var folder = Path.Combine(Application.UserAppDataPath, "organic", Game.activeGame!.fid!);
+            var folder = Path.Combine(Program.dataFolder, "organic", Game.activeGame!.fid!);
             if (!Directory.Exists(folder)) return;
 
             var filenames = Directory.GetFiles(folder);
@@ -197,7 +197,7 @@ namespace SrvSurvey.game
                     foreach (var bioScan in bodyData.bioScans)
                     {
                         // try using the variant name from 'bodyData.organisms'
-                        if (bioScan.entryId == 0 || bioScan.entryId.ToString().EndsWith("00"))
+                        if (bioScan.entryId == 0 || bioScan.entryId.ToString().EndsWith("00") || bioScan.entryId.ToString().Length < 7)
                         {
                             var matchSpecies = bodyData.organisms.Values.FirstOrDefault(_ => _.species == bioScan.species && _.variant != null);
                             if (matchSpecies?.variant != null)
@@ -207,7 +207,7 @@ namespace SrvSurvey.game
                         }
 
                         // attempt to match entryId from cmdr's scannedBioEntryIds list
-                        if (bioScan.entryId == 0 || bioScan.entryId.ToString().EndsWith("00"))
+                        if (bioScan.entryId == 0 || bioScan.entryId.ToString().EndsWith("00") || bioScan.entryId.ToString().Length < 7)
                         {
                             var speciesRef = Game.codexRef.matchFromSpecies(bioScan.species!);
                             var prefix = $"{bodyData.systemAddress}_{bodyData.bodyId}_{speciesRef.entryIdPrefix}";
@@ -218,7 +218,7 @@ namespace SrvSurvey.game
                                 bioScan.entryId = long.Parse(parts[2]);
                             }
 
-                            if (bioScan.entryId == 0 || bioScan.entryId.ToString().EndsWith("00"))
+                            if (bioScan.entryId == 0 || bioScan.entryId.ToString().EndsWith("00") || bioScan.entryId.ToString().Length < 7)
                             {
                                 var genusRef = Game.codexRef.genus.FirstOrDefault(genusRef => genusRef.species.Any(_ => _.name == bioScan.species) || genusRef.name == bioScan.genus);
                                 if (genusRef?.odyssey == false)
@@ -227,7 +227,7 @@ namespace SrvSurvey.game
                                     bioScan.entryId = long.Parse(speciesRef.entryIdPrefix + speciesRef.variants[0].entryIdSuffix);
                                 }
                             }
-                            if (bioScan.entryId == 0 || bioScan.entryId.ToString().EndsWith("00"))
+                            if (bioScan.entryId == 0 || bioScan.entryId.ToString().EndsWith("00") || bioScan.entryId.ToString().Length < 7)
                             {
                                 // otherwise populate with some weak entryId
                                 bioScan.entryId = long.Parse(speciesRef.entryIdPrefix + "00");
@@ -270,7 +270,7 @@ namespace SrvSurvey.game
                             }
                             else if (bodyOrg.genus != null)
                             {
-                                var foo = systemBody.bioScans?.FirstOrDefault(_ => _.species == bodyOrg.species && _.entryId > 0 && !_.entryId.ToString().EndsWith("00"));
+                                var foo = systemBody.bioScans?.FirstOrDefault(_ => _.species == bodyOrg.species && _.entryId > 0 && !_.entryId.ToString().EndsWith("00") && _.entryId.ToString().Length == 7);
                                 if (foo != null)
                                 {
                                     // we can repair this one!
