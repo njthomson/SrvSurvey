@@ -202,6 +202,7 @@ namespace SrvSurvey.game
                 var match = newScannedBioEntryIds.FirstOrDefault(_ => _.StartsWith(prefix) && _.Contains($"_{oldScanEntry.reward}_"));
                 if (match == null)
                 {
+                    if (entryId.Length == 5) entryId += "00";
                     var newScannedEntryId = $"{oldScanEntry.systemAddress}_{oldScanEntry.bodyId}_{entryId}_{oldScanEntry.reward}_{bool.FalseString}";
                     newScannedBioEntryIds.Insert(0, newScannedEntryId);
                 }

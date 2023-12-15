@@ -186,6 +186,10 @@ namespace SrvSurvey.canonn
                     };
                 }
 
+                // special case for Brain Tree genus name
+                var trouble = this.genus.FirstOrDefault(_ => _.englishName == "Brain Tree");
+                if (trouble != null) trouble.englishName = "Brain Trees";
+
                 File.WriteAllText(bioRefPath, JsonConvert.SerializeObject(this.genus));
                 Game.log("prepBioRef: complete");
             }
