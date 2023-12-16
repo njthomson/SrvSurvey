@@ -1777,6 +1777,8 @@ namespace SrvSurvey.game
             var frames = duration * fps;
             Game.log($"Start counting - fps: {fps} for {duration} seconds ...");
 
+            float maxBlueCount = 0;
+
             var tim = new System.Timers.Timer(1000f / fps);
             var count = 0;
             tim.Elapsed += (o, s) =>
@@ -1784,7 +1786,7 @@ namespace SrvSurvey.game
                 if (count++ > frames)
                 {
                     tim.Stop();
-                    Game.log($"Stop counting - fps: {fps} for {duration} seconds");
+                    Game.log($"Stop counting - fps: {fps} for {duration} seconds. (Max observed: {maxBlueCount.ToString("N5")})");
                 }
 
                 var blueCount = this.getBlueCount();
@@ -1797,6 +1799,7 @@ namespace SrvSurvey.game
                     this.systemData?.Save();
                     this.fireUpdate(true);
                 }
+                maxBlueCount = Math.Max(maxBlueCount, blueCount);
             };
 
             tim.Start();

@@ -138,12 +138,12 @@ namespace SrvSurvey
 
         private void PlotBioStatus_Paint(object sender, PaintEventArgs e)
         {
-            if (this.IsDisposed || game.systemBody == null) return;
+            if (this.IsDisposed || game?.systemBody == null) return;
 
             var g = e.Graphics;
             g.SmoothingMode = SmoothingMode.HighQuality;
 
-            if (game.systemBody?.organisms.Count > 0)
+            if (game.systemBody.organisms?.Count > 0)
             {
                 g.DrawString(
                     $"Biological signals: {game.systemBody.bioSignalCount} | Analyzed: {game.systemBody.countAnalyzedBioSignals}",

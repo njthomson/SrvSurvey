@@ -156,7 +156,7 @@ namespace SrvSurvey
 
         private void setNewHeight()
         {
-            if (game.systemBody?.bookmarks == null) return;
+            if (this.IsDisposed || game?.systemBody?.bookmarks == null) return;
 
             // adjust height if needed
             var formHeight = 42 + (game.systemBody.bookmarks.Count * rowHeight);
@@ -192,6 +192,8 @@ namespace SrvSurvey
 
         public void prepTrackers()
         {
+            if (this.IsDisposed) return;
+
             this.trackers.Clear();
             if (game.systemBody?.bookmarks != null)
             {

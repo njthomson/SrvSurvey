@@ -631,6 +631,21 @@ namespace SrvSurvey
             this.updateAllControls();
         }
 
+        private void onJournalEntry(FSSBodySignals entry)
+        {
+            Application.DoEvents();
+            this.updateAllControls();
+        }
+
+        private void onJournalEntry(ScanOrganic entry)
+        {
+            if (entry.ScanType == ScanType.Analyse)
+            {
+                Application.DoEvents();
+                this.updateAllControls();
+            }
+        }
+
         private void onJournalEntry(CodexEntry entry)
         {
             if (entry.Name == "$Codex_Ent_Guardian_Beacons_Name;")
@@ -1157,6 +1172,9 @@ namespace SrvSurvey
         {
             FormRuins.show();
             //Game.log(">>>> " + game?.getBlueCount(false).ToString());
+
+            //if (game?.systemData?.bodies != null)
+            //    Game.log(string.Join("\r\n", game.systemData.bodies.Select(_ => $"'{_.name}' ({_.id}) : {Util.credits((long)_.rewardEstimate)}")));
         }
 
         private void btnSphereLimit_Click(object sender, EventArgs e)

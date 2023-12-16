@@ -480,7 +480,8 @@ namespace SrvSurvey.game
             // update fields
             body.type = SystemBody.typeFrom(entry.StarType, entry.PlanetClass, entry.Landable);
             body.planetClass = entry.PlanetClass;
-            body.terraformable = entry.TerraformState == "Terraformable";
+            if (!string.IsNullOrEmpty(entry.TerraformState))
+                body.terraformable = entry.TerraformState == "Terraformable";
             body.mass = entry.MassEM > 0 ? entry.MassEM : entry.StellarMass; // mass
             body.distanceFromArrivalLS = entry.DistanceFromArrivalLS;
             body.radius = entry.Radius;
@@ -792,7 +793,8 @@ namespace SrvSurvey.game
                 if (body.distanceFromArrivalLS == 0) body.distanceFromArrivalLS = entry.distanceToArrival;
                 if (body.radius == 0 && entry.radius > 0) body.radius = entry.radius * 1000; // why?
                 if (body.planetClass == null) body.planetClass = entry.subType;
-                body.terraformable = entry.terraformingState == "Terraformable";
+                if (!string.IsNullOrEmpty(entry.terraformingState))
+                    body.terraformable = entry.terraformingState == "Candidate for terraforming";
                 if (body.mass == 0) body.mass = entry.earthMasses > 0 ? entry.earthMasses : entry.solarMasses; // mass
 
                 if (entry.rings != null)
@@ -833,7 +835,8 @@ namespace SrvSurvey.game
                 if (body.distanceFromArrivalLS == 0) body.distanceFromArrivalLS = entry.distanceToArrival ?? 0;
                 if (body.radius == 0 && entry.radius != null) body.radius = entry.radius.Value * 1000; // why?
                 if (body.planetClass == null) body.planetClass = entry.subType;
-                body.terraformable = entry.terraformingState == "Terraformable";
+                if (!string.IsNullOrEmpty(entry.terraformingState))
+                    body.terraformable = entry.terraformingState == "Candidate for terraforming";
                 if (body.mass == 0) body.mass = (entry.earthMasses > 0 ? entry.earthMasses : entry.solarMasses) ?? 0; // mass
 
                 // update rings
@@ -914,6 +917,9 @@ namespace SrvSurvey.game
             var ordered = this.bodies.OrderBy(_ => _.id);
             foreach (var _ in ordered)
             {
+                // skip things already scanned
+                if (_.dssComplete) continue;
+
                 // skip stars and asteroids
                 if (_.type == SystemBodyType.Star || _.type == SystemBodyType.Asteroid) continue;
 
@@ -1037,7 +1043,7 @@ namespace SrvSurvey.game
 
         /// <summary> All the organisms for this body </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-        public List<SystemOrganism> organisms;
+        public List<SystemOrganism>? organisms;
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public bool firstFootFall;
@@ -1105,7 +1111,8 @@ namespace SrvSurvey.game
                     this.terraformable, // isTerraformable
                     this.mass, // mass
                     !this.wasDiscovered, // isFirstDiscoverer
-                    this.dssComplete, // isMapped
+                    true, // assume yes - that's why this is an estimate :)
+                          // this.dssComplete, // isMapped
                     !this.wasMapped // isFirstMapped
                 );
 

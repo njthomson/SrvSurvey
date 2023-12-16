@@ -348,7 +348,7 @@ namespace SrvSurvey.game
             else if (entry.ScanType == ScanType.Analyse)
             {
                 // track rewards successful scan 
-                game.cmdr.organicRewards += organism.reward;
+                game.cmdr.organicRewards += game?.systemBody?.firstFootFall == true ? organism.reward * 5 : organism.reward; // retire / relocate
                 var scanned = new ScannedOrganic
                 {
                     reward = organism.reward,
