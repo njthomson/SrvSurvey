@@ -51,7 +51,7 @@ namespace SrvSurvey
             lblSysBio = new Label();
             txtSystemBioValues = new TextBox();
             txtSystemBioSignals = new TextBox();
-            label7 = new Label();
+            labelSignalsAndRewards = new Label();
             lblBodyBio = new Label();
             txtBioRewards = new TextBox();
             label4 = new Label();
@@ -233,7 +233,7 @@ namespace SrvSurvey
             groupBox3.Controls.Add(lblSysBio);
             groupBox3.Controls.Add(txtSystemBioValues);
             groupBox3.Controls.Add(txtSystemBioSignals);
-            groupBox3.Controls.Add(label7);
+            groupBox3.Controls.Add(labelSignalsAndRewards);
             groupBox3.Controls.Add(lblBodyBio);
             groupBox3.Controls.Add(txtBioRewards);
             groupBox3.Controls.Add(label4);
@@ -247,6 +247,7 @@ namespace SrvSurvey
             // checkFirstFootFall
             // 
             checkFirstFootFall.AutoSize = true;
+            checkFirstFootFall.Enabled = false;
             checkFirstFootFall.FlatStyle = FlatStyle.System;
             checkFirstFootFall.Location = new Point(143, 107);
             checkFirstFootFall.Name = "checkFirstFootFall";
@@ -259,6 +260,7 @@ namespace SrvSurvey
             // txtBodyBioValues
             // 
             txtBodyBioValues.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            txtBodyBioValues.Enabled = false;
             txtBodyBioValues.Location = new Point(143, 81);
             txtBodyBioValues.Name = "txtBodyBioValues";
             txtBodyBioValues.ReadOnly = true;
@@ -268,6 +270,7 @@ namespace SrvSurvey
             // txtBodyBioSignals
             // 
             txtBodyBioSignals.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            txtBodyBioSignals.Enabled = false;
             txtBodyBioSignals.Location = new Point(69, 81);
             txtBodyBioSignals.Name = "txtBodyBioSignals";
             txtBodyBioSignals.ReadOnly = true;
@@ -277,6 +280,7 @@ namespace SrvSurvey
             // lblSysBio
             // 
             lblSysBio.AutoSize = true;
+            lblSysBio.Enabled = false;
             lblSysBio.Location = new Point(8, 58);
             lblSysBio.Name = "lblSysBio";
             lblSysBio.Size = new Size(54, 12);
@@ -286,6 +290,7 @@ namespace SrvSurvey
             // txtSystemBioValues
             // 
             txtSystemBioValues.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            txtSystemBioValues.Enabled = false;
             txtSystemBioValues.Location = new Point(143, 55);
             txtSystemBioValues.Name = "txtSystemBioValues";
             txtSystemBioValues.ReadOnly = true;
@@ -295,6 +300,7 @@ namespace SrvSurvey
             // txtSystemBioSignals
             // 
             txtSystemBioSignals.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            txtSystemBioSignals.Enabled = false;
             txtSystemBioSignals.Location = new Point(69, 55);
             txtSystemBioSignals.Name = "txtSystemBioSignals";
             txtSystemBioSignals.ReadOnly = true;
@@ -302,18 +308,19 @@ namespace SrvSurvey
             txtSystemBioSignals.TabIndex = 20;
             txtSystemBioSignals.Text = "99 of 99";
             // 
-            // label7
+            // labelSignalsAndRewards
             // 
-            label7.AutoSize = true;
-            label7.Location = new Point(71, 38);
-            label7.Name = "label7";
-            label7.Size = new Size(201, 12);
-            label7.TabIndex = 17;
-            label7.Text = "Scanned signals and rewards:";
+            labelSignalsAndRewards.AutoSize = true;
+            labelSignalsAndRewards.Location = new Point(71, 38);
+            labelSignalsAndRewards.Name = "labelSignalsAndRewards";
+            labelSignalsAndRewards.Size = new Size(201, 12);
+            labelSignalsAndRewards.TabIndex = 17;
+            labelSignalsAndRewards.Text = "Scanned signals and rewards:";
             // 
             // lblBodyBio
             // 
             lblBodyBio.AutoSize = true;
+            lblBodyBio.Enabled = false;
             lblBodyBio.Location = new Point(22, 84);
             lblBodyBio.Name = "lblBodyBio";
             lblBodyBio.Size = new Size(40, 12);
@@ -631,7 +638,7 @@ namespace SrvSurvey
         private Label lblSysBio;
         private TextBox txtSystemBioValues;
         private TextBox txtSystemBioSignals;
-        private Label label7;
+        private Label labelSignalsAndRewards;
         private Label lblBodyBio;
         private Button btnRuinsMap;
         private Button btnRuinsOrigin;

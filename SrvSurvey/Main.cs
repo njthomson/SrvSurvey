@@ -94,57 +94,85 @@ namespace SrvSurvey
 
             this.lastWindowRect = Elite.getWindowRect();
 
-            Game.log($"isMigrationValid: {Program.isMigrationValid()}, dataFolder2000: {Game.settings.dataFolder1100}");
-            if (Program.isMigrationValid() && !Game.settings.dataFolder1100)
+            var isMigrationValid = Program.getMigratableFolders().Any();
+            Game.log($"isMigrationValid: {isMigrationValid}, dataFolder1100: {Game.settings.dataFolder1100}");
+            if (isMigrationValid)
             {
-                // we need to migrate all data to the new folder
-                foreach (Control ctrl in this.Controls) ctrl.Enabled = false;
-                btnLogs.Enabled = true;
-                this.Activate();
-
-                this.BeginInvoke(new Action(() =>
+                if (!Game.settings.dataFolder1100)
                 {
-                    txtCommander.Text = "Data migration needed";
-                    txtLocation.Text = "";
-                    txtMode.Text = "";
-                    Application.DoEvents();
-                    var rslt = MessageBox.Show(this, "This new version of SrvSurvey needs to perform a one time migration of data files.\r\n\r\nReady to proceed?", "SrvSurvey", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
-                    if (rslt == DialogResult.Cancel)
-                    {
-                        Application.Exit();
-                        return;
-                    }
-                    txtCommander.Text = "Migrating data...";
-                    txtLocation.Text = "Please stand by...";
+                    // we need to migrate all data to the new folder
+                    foreach (Control ctrl in this.Controls) ctrl.Enabled = false;
+                    btnLogs.Enabled = true;
+                    this.Activate();
 
-                    // Prep CodexRef first
-                    Game.codexRef.init().ContinueWith((foo) =>
+                    this.BeginInvoke(new Action(() =>
                     {
-                        this.BeginInvoke(new Action(() =>
+                        txtCommander.Text = "Data migration needed";
+                        txtLocation.Text = "";
+                        txtMode.Text = "";
+                        Application.DoEvents();
+                        var rslt = MessageBox.Show(this, "This new version of SrvSurvey needs to perform a migration of data files. This might take a few minutes if you have visited many systems with SrvSurvey.\r\n\r\nReady to proceed?", "SrvSurvey", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+                        if (rslt == DialogResult.Cancel)
                         {
-                            // migrate the data files
+                            Application.Exit();
+                            return;
+                        }
+                        txtCommander.Text = "Preparing reference data...";
+                        txtLocation.Text = "Please stand by...";
+
+                        // Prep CodexRef first
+                        Game.codexRef.init().ContinueWith((foo) =>
+                        {
+                            this.Invoke(new Action(() =>
+                            {
+                                // migrate the data files
+                                txtCommander.Text = "Migrating data...";
+                                Application.DoEvents();
+                            }));
+
+                            // keep this on background thread
                             Program.migrateToNewDataFolder();
 
-                            // show thank you message
-                            Application.DoEvents();
-                            MessageBox.Show(this, "Thank you, your data has been migrated.\r\n\r\nSrvSurvey will now restart...", "SrvSurvey", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            this.Invoke(new Action(() =>
+                            {
+                                // migrate the data files
+                                txtCommander.Text = "Reticulating data...";
+                                Application.DoEvents();
+                            }));
 
-                            // save that migration completed
-                            Application.DoEvents();
-                            var newSettings = Settings.Load();
-                            newSettings.dataFolder1100 = true;
-                            newSettings.Save();
+                            // keep this on background thread
+                            Program.migrate_BodyData_Into_SystemData();
 
-                            // force a restart
-                            Application.DoEvents();
-                            Application.DoEvents();
-                            Process.Start(Application.ExecutablePath);
-                            Application.DoEvents();
-                            Process.GetCurrentProcess().Kill();
-                        }));
-                    });
-                }));
-                return;
+                            this.Invoke(new Action(() =>
+                            {
+                                // show thank you message
+                                txtCommander.Text = "Ready!";
+                                txtLocation.Text = "";
+                                Application.DoEvents();
+                                MessageBox.Show(this, "Thank you, your data has been migrated.\r\n\r\nSrvSurvey will now restart...", "SrvSurvey", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                                // save that migration completed
+                                Application.DoEvents();
+                                var newSettings = Settings.Load();
+                                newSettings.dataFolder1100 = true;
+                                newSettings.Save();
+
+                                // force a restart
+                                Application.DoEvents();
+                                Application.DoEvents();
+                                Process.Start(Application.ExecutablePath);
+                                Application.DoEvents();
+                                Process.GetCurrentProcess().Kill();
+                            }));
+                        });
+                    }));
+                    return;
+                }
+            }
+            else if (!Game.settings.dataFolder1100)
+            {
+                Game.settings.dataFolder1100 = true;
+                Game.settings.Save();
             }
 
             Game.canonn.init();
@@ -277,7 +305,7 @@ namespace SrvSurvey
 
             this.updateAllControls();
 
-            Game.log($"migratedScannedOrganicsInEntryId: {newGame.cmdr.migratedScannedOrganicsInEntryId}, migratedNonSystemDataOrganics: {newGame.cmdr.migratedNonSystemDataOrganics}");
+            Game.log($"migratedScannedOrganicsInEntryId: {newGame.cmdr?.migratedScannedOrganicsInEntryId}, migratedNonSystemDataOrganics: {newGame.cmdr?.migratedNonSystemDataOrganics}");
             if (newGame?.cmdr != null && (!newGame.cmdr.migratedScannedOrganicsInEntryId || !newGame.cmdr.migratedNonSystemDataOrganics))
             {
                 Task.Run(new Action(() =>
@@ -372,43 +400,50 @@ namespace SrvSurvey
                     + $", organisms: {game.cmdr.scannedBioEntryIds.Count}";
             }
 
-            if (game?.systemData != null)
-            {
-                var systemTotal = game!.systemData.bodies.Sum(_ => _.bioSignalCount);
-                var systemScanned = game.systemData.bodies.Sum(_ => _.countAnalyzedBioSignals);
-                txtSystemBioSignals.Text = $"{systemScanned} of {systemTotal}";
-
-                var sysEstimate = game.systemData.bodies.Sum(_ => _.sumPotentialEstimate);
-                var sysActual = game.systemData.bodies.Sum(_ => _.sumAnalyzed);
-                txtSystemBioValues.Text = $"{Util.credits(sysActual, true)} of {Util.credits(sysEstimate, true)}";
-                var countFirstFootFall = game.systemData.bodies.Count(_ => _.firstFootFall && _.bioSignalCount > 0);
-                if (countFirstFootFall > 0)
-                    txtSystemBioValues.Text += $" (FF: {countFirstFootFall})";
-
-                // update First Footfall checkbox
-                checkFirstFootFall.AutoEllipsis = false;
-                checkFirstFootFall.Enabled = game?.systemBody != null;
-                // checkFirstFootFall.Text = $"First footfall: {game?.systemBody?.name}";
-                if (game?.systemBody == null)
-                    checkFirstFootFall.CheckState = CheckState.Unchecked;
-                else if (checkFirstFootFall.Checked != game.systemBody.firstFootFall)
-                    checkFirstFootFall.Checked = game.systemBody.firstFootFall;
-
-                checkFirstFootFall.AutoEllipsis = true;
-            }
-
-            if (game == null || game.atMainMenu || !game.isRunning || !game.initialized)
+            if (game == null || game.atMainMenu || !game.isRunning || !game.initialized || game.systemData == null)
             {
                 foreach (var ctrl in this.bioCtrls) ctrl.Text = "-";
+                lblSysBio.Enabled = txtSystemBioSignals.Enabled = txtSystemBioValues.Enabled = labelSignalsAndRewards.Enabled = false;
+                lblBodyBio.Enabled = txtBodyBioSignals.Enabled = txtBodyBioValues.Enabled = checkFirstFootFall.Enabled = false;
+
                 Program.closePlotter<PlotBioStatus>();
                 Program.closePlotter<PlotGrounded>();
                 Program.closePlotter<PlotTrackers>();
                 Program.closePlotter<PlotPriorScans>();
+                return;
             }
-            else if (game.systemBody == null)
+
+            // update system bio numbers
+            var systemTotal = game.systemData.bodies.Sum(_ => _.bioSignalCount);
+            var systemScanned = game.systemData.bodies.Sum(_ => _.countAnalyzedBioSignals);
+            txtSystemBioSignals.Text = $"{systemScanned} of {systemTotal}";
+
+            var sysEstimate = game.systemData.bodies.Sum(_ => _.sumPotentialEstimate);
+            var sysActual = game.systemData.bodies.Sum(_ => _.sumAnalyzed);
+            txtSystemBioValues.Text = $"{Util.credits(sysActual, true)} of {Util.credits(sysEstimate, true)}";
+
+            var countFirstFootFall = game.systemData.bodies.Count(_ => _.firstFootFall && _.bioSignalCount > 0);
+            if (countFirstFootFall > 0)
+                txtSystemBioValues.Text += $" (FF: {countFirstFootFall})";
+
+            // update First Footfall checkbox
+            checkFirstFootFall.AutoEllipsis = false;
+            checkFirstFootFall.Enabled = game?.systemBody != null;
+            // checkFirstFootFall.Text = $"First footfall: {game?.systemBody?.name}";
+            if (game?.systemBody == null)
+                checkFirstFootFall.CheckState = CheckState.Unchecked;
+            else if (checkFirstFootFall.Checked != game.systemBody.firstFootFall)
+                checkFirstFootFall.Checked = game.systemBody.firstFootFall;
+
+            checkFirstFootFall.AutoEllipsis = true;
+
+            // enable/disable controls according to
+            lblSysBio.Enabled = txtSystemBioSignals.Enabled = txtSystemBioValues.Enabled = labelSignalsAndRewards.Enabled = systemTotal > 0;
+            lblBodyBio.Enabled = txtBodyBioSignals.Enabled = txtBodyBioValues.Enabled = game?.systemBody?.bioSignalCount > 0;
+
+            if (game?.systemBody == null)
             {
                 txtBodyBioSignals.Text = txtBodyBioValues.Text = "-";
-                lblBodyBio.Enabled = txtBodyBioSignals.Enabled = txtBodyBioValues.Enabled = false;
 
                 Program.closePlotter<PlotBioStatus>();
                 Program.closePlotter<PlotGrounded>();
@@ -418,13 +453,13 @@ namespace SrvSurvey
             else if (game.systemBody?.bioSignalCount == 0)
             {
                 foreach (var ctrl in this.bioCtrls) ctrl.Text = "-";
+
                 Program.closePlotter<PlotBioStatus>();
                 Program.closePlotter<PlotGrounded>();
                 Program.closePlotter<PlotPriorScans>();
             }
             else
             {
-                lblBodyBio.Enabled = txtBodyBioSignals.Enabled = txtBodyBioValues.Enabled = true;
                 txtBodyBioSignals.Text = $"{game.systemBody!.countAnalyzedBioSignals} of {game.systemBody!.bioSignalCount}";
                 txtBodyBioValues.Text = $"{Util.credits(game.systemBody.sumAnalyzed, true)} of {Util.credits(game.systemBody.sumPotentialEstimate, true)}";
                 if (game.systemBody.firstFootFall) txtBodyBioValues.Text += " (FF)";

@@ -16,7 +16,7 @@ namespace SrvSurvey.game
         /// <summary>
         /// Open or create a SystemData object for the a star system by name or address.
         /// </summary>
-        private static SystemData? Load(string systemName, long systemAddress)
+        private static SystemData? Load(string systemName, long systemAddress, string fid)
         {
             Game.log($"Loading SystemData for: '{systemName}' ({systemAddress})");
             // use cache entry if present
@@ -26,7 +26,7 @@ namespace SrvSurvey.game
             }
 
             // try finding files by systemAddress first, then system name
-            var folder = Path.Combine(Program.dataFolder, "systems", Game.activeGame!.fid!);
+            var folder = Path.Combine(Program.dataFolder, "systems", fid);
             Directory.CreateDirectory(folder);
             var files = Directory.GetFiles(folder, $"*_{systemAddress}.json");
             if (files.Length == 0)
@@ -73,14 +73,15 @@ namespace SrvSurvey.game
             lock (cache)
             {
                 // load from file or cache
-                var data = Load(entry.StarSystem, entry.SystemAddress);
+                var fid = Game.activeGame!.fid!;
+                var data = Load(entry.StarSystem, entry.SystemAddress, fid);
 
                 if (data == null)
                 {
                     // create a new data object with the main star populated
                     data = new SystemData()
                     {
-                        filepath = Path.Combine(Program.dataFolder, "systems", Game.activeGame!.fid!, $"{entry.StarSystem}_{entry.SystemAddress}.json"),
+                        filepath = Path.Combine(Program.dataFolder, "systems", fid, $"{entry.StarSystem}_{entry.SystemAddress}.json"),
                         name = entry.StarSystem,
                         address = entry.SystemAddress,
                         starPos = entry.StarPos,
@@ -115,24 +116,23 @@ namespace SrvSurvey.game
 
         #region migrate data from individual body files
 
-        private static SystemData From(BodyData bodyData)
+        private static SystemData From(BodyData bodyData, CommanderSettings cmdr)
         {
             lock (cache)
             {
-
                 // load from file or cache
-                var data = SystemData.Load(bodyData.systemName, bodyData.systemAddress);
+                var data = SystemData.Load(bodyData.systemName, bodyData.systemAddress, cmdr.fid);
 
                 if (data == null)
                 {
                     // create a new data object with the main star populated
                     data = new SystemData()
                     {
-                        filepath = Path.Combine(Program.dataFolder, "systems", Game.activeGame!.fid!, $"{bodyData.systemName}_{bodyData.systemAddress}.json"),
+                        filepath = Path.Combine(Program.dataFolder, "systems", cmdr.fid, $"{bodyData.systemName}_{bodyData.systemAddress}.json"),
                         name = bodyData.systemName,
                         address = bodyData.systemAddress,
                         starPos = null!,
-                        commander = Game.activeGame.cmdr.commander,
+                        commander = cmdr.commander,
                         firstVisited = bodyData.firstVisited,
                         lastVisited = bodyData.lastVisited,
                     };
@@ -149,7 +149,7 @@ namespace SrvSurvey.game
 
         public static async Task migrate_BodyData_Into_SystemData(CommanderSettings cmdr)
         {
-            var folder = Path.Combine(Program.dataFolder, "organic", Game.activeGame!.fid!);
+            var folder = Path.Combine(Program.dataFolder, "organic", cmdr.fid);
             if (!Directory.Exists(folder)) return;
 
             var filenames = Directory.GetFiles(folder);
@@ -161,7 +161,7 @@ namespace SrvSurvey.game
                 Game.log($"Reading: {filepath}");
                 var bodyData = Data.Load<BodyData>(filepath)!;
 
-                var systemData = SystemData.From(bodyData);
+                var systemData = SystemData.From(bodyData, cmdr);
                 if (systemData.starPos == null)
                 {
                     // we need a starPos before we can create the file...
@@ -366,7 +366,6 @@ namespace SrvSurvey.game
                 // done with this body
                 systemData.Save();
                 bodyData.Save();
-                cmdr.Save();
             }
 
             //foreach (var scannedEntryId in cmdr.scannedBioEntryIds)
@@ -380,9 +379,10 @@ namespace SrvSurvey.game
             //    Game.log($"TODO: Repair '{scannedEntryId}' ?");
             //}
 
-            Game.log($"Migrate cmdr 'BodyData' into 'SystemData', {filenames.Length} files to process - complete!");
             cmdr.migratedNonSystemDataOrganics = true;
+            cmdr.reCalcOrganicRewards();
             cmdr.Save();
+            Game.log($"Migrate cmdr 'BodyData' into 'SystemData', {filenames.Length} files to process - complete!");
         }
 
         #endregion
@@ -702,9 +702,9 @@ namespace SrvSurvey.game
                 //}
 
                 // efficiently track which organisms were scanned where
-                if (organism.entryId > 0)
+                if (organism.entryId > 0 && Game.activeGame != null)
                 {
-                    Game.activeGame!.cmdr.scannedBioEntryIds.Add($"{this.address}_{body.id}_{organism.entryId}_{organism.reward}_{body.firstFootFall}");
+                    Game.activeGame.cmdr.scannedBioEntryIds.Add($"{this.address}_{body.id}_{organism.entryId}_{organism.reward}_{body.firstFootFall}");
                     Game.activeGame.cmdr.Save();
                 }
                 else

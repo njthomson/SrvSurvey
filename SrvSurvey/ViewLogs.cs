@@ -35,8 +35,11 @@ namespace SrvSurvey
                 {
                     try
                     {
-                        ViewLogs.activeForm.txtLogs.Text += "\r\n" + txt;
-                        ViewLogs.activeForm.scrollToEnd();
+                        if (ViewLogs.activeForm != null)
+                        {
+                            ViewLogs.activeForm.txtLogs.Text += "\r\n" + txt;
+                            ViewLogs.activeForm.scrollToEnd();
+                        }
                     }
                     catch { }
                 });

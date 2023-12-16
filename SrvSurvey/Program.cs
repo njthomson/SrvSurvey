@@ -170,11 +170,15 @@ namespace SrvSurvey
 
         #region migrate data files
 
-        public static bool isMigrationValid()
+        public static List<string> getMigratableFolders()
         {
             // do we have any settings files in any folder already?
-            var migrationValid = Directory.EnumerateFiles(dataRootFolder, "settings.json", SearchOption.AllDirectories).Any();
-            return migrationValid;
+            var folders = Directory.EnumerateFiles(dataRootFolder, "settings.json", SearchOption.AllDirectories)
+                .Where(_ => !_.EndsWith("\\SrvSurvey\\1.1.0.0\\settings.json"))
+                .Select(_ => Path.GetDirectoryName(_)!)
+                .ToList();
+
+            return folders;
         }
 
         public static void migrateToNewDataFolder()
@@ -183,18 +187,17 @@ namespace SrvSurvey
             Directory.CreateDirectory(Program.dataFolder);
 
             var rootFolder = new DirectoryInfo(Path.GetFullPath(Path.Combine(Program.dataFolder, "..")));
-            var oldFolders = rootFolder.EnumerateDirectories()
-                .Where(_ => !_.Name.EndsWith("1.1.0.0"))
+            var oldFolders = getMigratableFolders()
                 // order by oldest first
-                .OrderBy(_ => File.GetLastWriteTime(Path.Combine(_.FullName, "settings.json")))
+                .OrderBy(_ => File.GetLastWriteTime(Path.Combine(_, "settings.json")))
                 .ToList();
             Game.log($"Migrating old folders:\r\n  " + string.Join("\r\n  ", oldFolders));
 
             // move core files from the most recent folder only
-            moveCoreFiles(oldFolders.Last().FullName);
+            moveCoreFiles(oldFolders.Last());
 
-            oldFolders.ForEach(_ => mergeScannedBioEntryIds(_.FullName));
-            oldFolders.ForEach(_ => mergeChildFiles(_.FullName));
+            oldFolders.ForEach(_ => mergeScannedBioEntryIds(_));
+            oldFolders.ForEach(_ => mergeChildFiles(_));
 
             Game.log($"migrateToNewDataFolder: old data into common folder - complete");
         }
@@ -278,6 +281,20 @@ namespace SrvSurvey
                 }
             }
             Game.log($"> Merging {allOldFiles.Count} files - complete");
+        }
+
+        public static void migrate_BodyData_Into_SystemData()
+        {
+            Game.log($"migrate_BodyData_Into_SystemData ...");
+
+            var cmdrFiles = Directory.EnumerateFiles(dataFolder, "*-live.json");
+            foreach (var cmdrFile in cmdrFiles)
+            {
+                var newCmdr = Data.Load<CommanderSettings>(cmdrFile)!;
+                SystemData.migrate_BodyData_Into_SystemData(newCmdr).Wait();
+            }
+
+            Game.log($"migrateToNewDataFolder - complete");
         }
 
         #endregion
