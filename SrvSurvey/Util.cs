@@ -461,5 +461,50 @@ namespace SrvSurvey
                 && actual.G > expected.G - tolerance && actual.G < expected.G + tolerance
                 && actual.B > expected.B - tolerance && actual.B < expected.B + tolerance;
         }
+
+        public static bool isFirewallProblem(Exception? ex)
+        {
+            if (true || ex?.Message.Contains("An attempt was made to access a socket in a way forbidden by its access permissions") == true)
+            {
+                var cmd = $"netsh advfirewall firewall add rule name=\"SrvSurvey\" dir=out action=allow program=\"{Application.ExecutablePath}\" enable=yes";
+
+                var rslt = MessageBox.Show(
+                    $"Network calls for SrvSurvey are being blocked by a firewall. Running the following from an elevated command prompt should fix the problem:\r\n\r\n{cmd}\r\n\r\nWould you like to copy this command to the clipboard?",
+                    "SrvSurvey",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning);
+
+                if (rslt == DialogResult.Yes) Clipboard.SetText(cmd);
+                return true;
+            }
+            return false;
+        }
+
+        public static void handleError(Exception? ex)
+        {
+            if (Program.control.InvokeRequired)
+            {
+                Program.control.Invoke(new Action(() => handleError(ex)));
+                return;
+            }
+
+            Game.log(ex);
+            if (false && ex != null)
+            {
+                FormErrorSubmit.Show(ex);
+            }
+            else
+            {                
+                MessageBox.Show(
+                    Main.ActiveForm,
+                    "Something unexpected went wrong, please share the logs.\r\nIt is recommended to restart SrvSurvey.",
+                    "SrvSurvey",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+
+                ViewLogs.show(Game.logs);
+            }
+
+        }
     }
 }

@@ -121,10 +121,16 @@ namespace SrvSurvey
                         txtLocation.Text = "Please stand by...";
 
                         // Prep CodexRef first
-                        Game.codexRef.init().ContinueWith((foo) =>
+                        Game.codexRef.init().ContinueWith((rslt) =>
                         {
                             this.Invoke(new Action(() =>
                             {
+                                if (!rslt.IsCompletedSuccessfully)
+                                {
+                                    Util.handleError(rslt.Exception);
+                                    return;
+                                }
+
                                 // migrate the data files
                                 txtCommander.Text = "Migrating data...";
                                 Application.DoEvents();
@@ -187,10 +193,16 @@ namespace SrvSurvey
             txtLocation.Text = "This is a (mostly) one time thing";
             this.txtMode.Text = "";
 
-            Game.codexRef.init().ContinueWith((foo) =>
+            Game.codexRef.init().ContinueWith((rslt) =>
             {
                 this.BeginInvoke(new Action(() =>
                 {
+                    if (!rslt.IsCompletedSuccessfully)
+                    {
+                        Util.handleError(rslt.Exception);
+                        return;
+                    }
+
                     this.updateCommanderTexts();
                     Application.DoEvents();
 

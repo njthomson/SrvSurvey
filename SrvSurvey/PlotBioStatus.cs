@@ -237,7 +237,7 @@ namespace SrvSurvey
             // Reward
             if (organism.reward > 0)
             {
-                var reward = game.systemBody.firstFootFall ? organism.reward * 5 : organism.reward;
+                var reward = game.systemBody!.firstFootFall ? organism.reward * 5 : organism.reward;
                 var txt2 = Util.credits(reward);
                 if (game.systemBody.firstFootFall) txt2 += " (FF bonus)";
                 g.DrawString(
@@ -372,6 +372,18 @@ namespace SrvSurvey
             // all the Genus names
             float x = 24;
             float y = 22;
+
+            if (game.systemBody?.organisms == null || game.systemBody.organisms.Count == 0)
+            {
+                Game.log($"Why is game.systemBody!.organisms NULL ??");
+                g.DrawString(
+                    "Something is wrong. Please share logs.",
+                    GameColors.fontSmall,
+                    Brushes.OrangeRed,
+                    x, y);
+
+                return;
+            }
 
             var allScanned = true;
             foreach (var organism in game.systemBody!.organisms)

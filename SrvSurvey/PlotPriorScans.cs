@@ -133,8 +133,8 @@ namespace SrvSurvey
                     var shortName = BioScan.prefixes.FirstOrDefault(_ => _.Value == genusName).Key;
 
                     // skip things we've already analyzed
-                    var organism = game.systemBody.organisms.FirstOrDefault(_ => _.genus == genusName);
-                    if (organism?.analyzed == true) continue;
+                    //var organism = game.systemBody.organisms?.FirstOrDefault(_ => _.genus == genusName);
+                    //if (organism?.analyzed == true) continue;
 
                     // skip anything too close to our own scans or or own trackers
                     var location = new LatLong2((double)poi.latitude, (double)poi.longitude);
@@ -146,7 +146,7 @@ namespace SrvSurvey
                         continue;
                     if (Util.isCloseToScan(location, genusName))
                         continue;
-                    if (game.systemBody.organisms.FirstOrDefault(_ => _.entryId == poi.entryid)?.analyzed == true)
+                    if (game.systemBody.organisms?.FirstOrDefault(_ => _.entryId == poi.entryid)?.analyzed == true)
                         continue;
 
                     // create group and TrackingDelta's for each location

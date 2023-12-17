@@ -55,14 +55,12 @@ namespace SrvSurvey.canonn
 
         #region getSystemPoi
 
-        public async Task<SystemPoi> getSystemPoi(string systemName)
+        public async Task<SystemPoi> getSystemPoi(string systemName, string cmdrName)
         {
             Game.log($"Requesting getSystemPoi: {systemName}");
 
-            var json = await client.GetStringAsync($"https://us-central1-canonn-api-236217.cloudfunctions.net/query/getSystemPoi?system={systemName}&odyssey=Y&cmdr={Game.activeGame?.cmdr.commander}");
+            var json = await client.GetStringAsync($"https://us-central1-canonn-api-236217.cloudfunctions.net/query/getSystemPoi?system={systemName}&odyssey=Y&cmdr={cmdrName}");
             var systemPoi = JsonConvert.DeserializeObject<SystemPoi>(json)!;
-
-            Game.log(systemPoi!);
 
             return systemPoi;
         }

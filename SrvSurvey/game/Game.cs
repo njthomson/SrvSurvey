@@ -52,7 +52,16 @@ namespace SrvSurvey.game
 
             ViewLogs.append(txt);
 
-            File.AppendAllText(Game.logPath, txt + "\r\n");
+            try
+            {
+                File.AppendAllText(Game.logPath, txt + "\r\n");
+            }
+            catch
+            {
+                // try one more shortly afterwards
+                Application.DoEvents();
+                File.AppendAllText(Game.logPath, txt + "\r\n");
+            }
         }
 
         private static void removeExcessLogFiles()
@@ -578,6 +587,12 @@ namespace SrvSurvey.game
             log($"Game.initializeFromJournal: END Commander:{this.Commander}, starSystem:{cmdr?.currentSystem}, systemLocation:{cmdr?.lastSystemLocation}, nearBody:{this.nearBody}, journals.Count:{journals.Count}");
             this.initialized = Game.activeGame == this && this.Commander != null;
             this.checkModeChange();
+
+            // do this last and a bit delayed, once initialization finished
+            if (Game.settings.autoLoadPriorScans && this.systemData != null)
+            {
+                Program.control.BeginInvoke(new Action(() => this.fetchSystemData(this.systemData.name, this.systemData.address)));
+            }
         }
 
         private void initSystemData()
@@ -638,9 +653,6 @@ namespace SrvSurvey.game
 
             this.systemData.Save();
             log($"Game.initSystemData: complete '{this.systemData.name}' ({this.systemData.address}), bodyCount: {this.systemData.bodyCount}");
-
-            if (Game.settings.autoLoadPriorScans)
-                this.fetchSystemData(this.systemData.name, this.systemData.address);
         }
 
         private void getLastTouchdownDeep()
@@ -1331,7 +1343,7 @@ namespace SrvSurvey.game
                     if (this.systemData != null && spanshSystem.id64 == this.systemData?.address)
                         this.systemData.onSpanshResponse(spanshSystem);
                 }
-                else if ((response.Exception?.InnerException as HttpRequestException)?.StatusCode == System.Net.HttpStatusCode.NotFound)
+                else if ((response.Exception?.InnerException as HttpRequestException)?.StatusCode == System.Net.HttpStatusCode.NotFound || Util.isFirewallProblem(response.Exception))
                 {
                     // ignore NotFound responses
                 }
@@ -1355,7 +1367,7 @@ namespace SrvSurvey.game
                     if (edsmData.id64 == this.systemData?.address)
                         this.systemData.onEdsmResponse(edsmData);
                 }
-                else if ((response.Exception?.InnerException as HttpRequestException)?.StatusCode == System.Net.HttpStatusCode.NotFound)
+                else if ((response.Exception?.InnerException as HttpRequestException)?.StatusCode == System.Net.HttpStatusCode.NotFound || Util.isFirewallProblem(response.Exception))
                 {
                     // ignore NotFound responses
                 }
@@ -1368,7 +1380,7 @@ namespace SrvSurvey.game
 
             // make a call for system POIs and pre-load trackers for known bio-signals
             Game.log($"Searching for system POI from Canonn...");
-            Game.canonn.getSystemPoi(systemName).ContinueWith(response =>
+            Game.canonn.getSystemPoi(systemName, this.cmdr.commander).ContinueWith(response =>
             {
                 canonnFinished = true;
                 if (response.IsCompletedSuccessfully)
@@ -1381,7 +1393,7 @@ namespace SrvSurvey.game
                     if (this.systemStatus != null)
                         this.systemStatus.mergeCanonnPoi(this.canonnPoi);
                 }
-                else if ((response.Exception?.InnerException as HttpRequestException)?.StatusCode == System.Net.HttpStatusCode.NotFound)
+                else if ((response.Exception?.InnerException as HttpRequestException)?.StatusCode == System.Net.HttpStatusCode.NotFound || Util.isFirewallProblem(response.Exception))
                 {
                     // ignore NotFound responses
                 }
