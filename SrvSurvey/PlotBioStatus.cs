@@ -74,12 +74,17 @@ namespace SrvSurvey
 
         private void onJournalEntry(CodexEntry entry)
         {
-            if (entry.Category == "$Codex_Category_Biology;")
+            if (entry.Category == "$Codex_Category_Biology;" && game.systemBody?.organisms != null)
             {
-                var organism = game.systemBody?.organisms.FirstOrDefault(_ => _.variant == entry.Name);
+                var organism = game.systemBody.organisms?.FirstOrDefault(_ => _.variant == entry.Name);
                 if (organism != null)
                 {
-                    this.lastCodexScan = $"{entry.Name_Localised} {Util.credits(organism.reward)}";
+                    this.lastCodexScan = $"{entry.Name_Localised}";
+                    if (game.systemBody.firstFootFall)
+                        this.lastCodexScan += $" {Util.credits(organism.reward * 5)} (FF bonus)";
+                    else
+                        this.lastCodexScan += $" {Util.credits(organism.reward)}";
+
                     this.Invalidate();
                 }
             }
@@ -172,7 +177,7 @@ namespace SrvSurvey
             {
                 var allScanned = game.systemBody!.countAnalyzedBioSignals == game.systemBody.bioSignalCount;
                 if (allScanned && game.systemBody.firstFootFall)
-                    this.drawFooterText(g, "All signals scanned with FF bonus applied", GameColors.brushCyan);
+                    this.drawFooterText(g, "All signals scanned with FF bonus applied");
                 else if (allScanned)
                     this.drawFooterText(g, "All signals scanned", GameColors.brushGameOrange);
                 else if (this.lastCodexScan != null)
@@ -186,8 +191,12 @@ namespace SrvSurvey
 
         private void showCurrentGenus(Graphics g)
         {
-            var organism = game.systemBody!.organisms.FirstOrDefault(_ => _.species == game.cmdr.scanOne!.species)!;
-            if (organism == null) throw new Exception($"Why no organism found for scan one: {game.cmdr.scanOne!.species}");
+            var organism = game.systemBody?.organisms?.FirstOrDefault(_ => _.species == game.cmdr.scanOne!.species)!;
+            if (organism == null)
+            {
+                Game.log($"Why no organism found for scan one: {game.cmdr.scanOne!.species}");
+                return;
+            }
 
             float y = 28;
 
@@ -293,11 +302,11 @@ namespace SrvSurvey
             g.DrawLine(GameColors.penCyan4, x, y, x + length, y);
 
             // already scanned value - orange bar
-            g.FillRectangle(GameColors.brushGameOrange, x, 8, percent, 12);
+            g.FillRectangle(GameColors.brushGameOrange, x, 9, percent, 10);
 
             // active scan organism value - solid blue bar
             if (game.cmdr.scanOne != null)
-                g.FillRectangle(GameColors.brushCyan, x + percent, 9, length / (float)game.systemBody!.bioSignalCount, 10);
+                g.FillRectangle(GameColors.brushCyan, x + percent, 10, length / (float)game.systemBody!.bioSignalCount, 8);
 
             // old
             /*

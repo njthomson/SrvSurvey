@@ -1331,6 +1331,10 @@ namespace SrvSurvey.game
                     if (this.systemData != null && spanshSystem.id64 == this.systemData?.address)
                         this.systemData.onSpanshResponse(spanshSystem);
                 }
+                else if ((response.Exception?.InnerException as HttpRequestException)?.StatusCode == System.Net.HttpStatusCode.NotFound)
+                {
+                    // ignore NotFound responses
+                }
                 else
                 {
                     Game.log($"Spansh call failed? {response.Exception}");
@@ -1350,6 +1354,10 @@ namespace SrvSurvey.game
                     Game.log($"Found {edsmData.bodyCount} bodies from EDSM for '{systemName}'");
                     if (edsmData.id64 == this.systemData?.address)
                         this.systemData.onEdsmResponse(edsmData);
+                }
+                else if ((response.Exception?.InnerException as HttpRequestException)?.StatusCode == System.Net.HttpStatusCode.NotFound)
+                {
+                    // ignore NotFound responses
                 }
                 else
                 {
@@ -1372,6 +1380,10 @@ namespace SrvSurvey.game
                     // TODO: retire
                     if (this.systemStatus != null)
                         this.systemStatus.mergeCanonnPoi(this.canonnPoi);
+                }
+                else if ((response.Exception?.InnerException as HttpRequestException)?.StatusCode == System.Net.HttpStatusCode.NotFound)
+                {
+                    // ignore NotFound responses
                 }
                 else
                 {

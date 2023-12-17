@@ -332,7 +332,7 @@ namespace SrvSurvey.game
                 radius = organism.range,
                 status = BioScan.Status.Active,
             };
-            Game.log($"new bio scan: {bioScan} | current location: {Status.here}");
+            Game.log($"new bio scan: {bioScan} ({entry.ScanType}) | current location: {Status.here}");
 
             if (entry.ScanType == ScanType.Log)
             {
