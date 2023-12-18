@@ -559,6 +559,15 @@ namespace SrvSurvey.canonn
             }
         }
 
+        public void merge(GuardianBeaconData data)
+        {
+            //this.latitude = data.location.Lat;
+            //this.longitude = data.location.Long;
+            //this.siteHeading = data.siteHeading;
+            this.lastVisited = data.lastVisited;
+            this.notes += data.notes;
+        }
+
         public void merge(GuardianSiteData data)
         {
             //this.latitude = data.location.Lat;

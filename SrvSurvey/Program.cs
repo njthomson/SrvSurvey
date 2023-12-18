@@ -183,23 +183,33 @@ namespace SrvSurvey
 
         public static void migrateToNewDataFolder()
         {
-            Game.log($"migrateToNewDataFolder: old data into common folder: {Program.dataFolder} ...");
-            Directory.CreateDirectory(Program.dataFolder);
+            try
+            {
+                Game.log($"migrateToNewDataFolder: old data into common folder: {Program.dataFolder} ...");
+                Directory.CreateDirectory(Program.dataFolder);
 
-            var rootFolder = new DirectoryInfo(Path.GetFullPath(Path.Combine(Program.dataFolder, "..")));
-            var oldFolders = getMigratableFolders()
-                // order by oldest first
-                .OrderBy(_ => File.GetLastWriteTime(Path.Combine(_, "settings.json")))
-                .ToList();
-            Game.log($"Migrating old folders:\r\n  " + string.Join("\r\n  ", oldFolders));
+                var rootFolder = new DirectoryInfo(Path.GetFullPath(Path.Combine(Program.dataFolder, "..")));
+                var oldFolders = getMigratableFolders()
+                    // order by oldest first
+                    .OrderBy(_ => File.GetLastWriteTime(Path.Combine(_, "settings.json")))
+                    .ToList();
+                Game.log($"Migrating old folders:\r\n  " + string.Join("\r\n  ", oldFolders));
 
-            // move core files from the most recent folder only
-            moveCoreFiles(oldFolders.Last());
+                // move core files from the most recent folder only
+                moveCoreFiles(oldFolders.Last());
 
-            oldFolders.ForEach(_ => mergeScannedBioEntryIds(_));
-            oldFolders.ForEach(_ => mergeChildFiles(_));
+                oldFolders.ForEach(_ => mergeScannedBioEntryIds(_));
+                oldFolders.ForEach(_ => mergeChildFiles(_));
 
-            Game.log($"migrateToNewDataFolder: old data into common folder - complete");
+            }
+            catch (Exception ex)
+            {
+                Game.log($"migrateToNewDataFolder: exception: {ex}");
+            }
+            finally
+            {
+                Game.log($"migrateToNewDataFolder: old data into common folder - complete");
+            }
         }
 
         private static void moveCoreFiles(string oldFolder)

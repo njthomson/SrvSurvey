@@ -432,6 +432,45 @@ namespace SrvSurvey.canonn
             return allStructures;
         }
 
+        public List<GuardianGridEntry> loadAllBeacons()
+        {
+            var summaries = this.allBeacons;
+
+            var newEntries = new List<GuardianGridEntry>();
+
+            var allStructures = summaries.Select(_ => new GuardianGridEntry(_)).ToList();
+            var folder = Path.Combine(Program.dataFolder, "guardian", Game.settings.lastFid!);
+            if (Directory.Exists(folder))
+            {
+                var files = Directory.GetFiles(folder, "*-beacon.json");
+
+                Game.log($"Reading {files.Length} beacon files from disk");
+                foreach (var filename in files)
+                {
+                    var data = Data.Load<GuardianBeaconData>(filename)!;
+
+                    var matches = allStructures.Where(_ => _.systemAddress == data.systemAddress
+                        && _.bodyId == data.bodyId
+                    ).ToList();
+
+                    GuardianGridEntry? entry = null;
+
+                    // take the first, assiming only 1 ruin on the body
+                    if (matches.Count == 1)
+                        entry = matches.First();
+                    else
+                        throw new Exception("Why beacon match?");
+
+                    if (entry != null)
+                    {
+                        entry.merge(data);
+                    }
+                }
+            }
+
+            return allStructures;
+        }
+
         #endregion
 
         #region parse Excel sheet of Ruins

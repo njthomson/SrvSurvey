@@ -285,7 +285,7 @@ namespace SrvSurvey
 
         protected override void OnPaintBackground(PaintEventArgs e)
         {
-            if (this.IsDisposed || game.systemData == null || game.systemBody == null || game.systemBody?.bookmarks == null || game.systemBody.bookmarks.Count == 0) return;
+            if (this.IsDisposed || game?.systemData == null || game.systemBody == null || game.systemBody.bookmarks == null || game.systemBody.bookmarks?.Count == 0) return;
 
             this.g = e.Graphics;
             this.g.SmoothingMode = SmoothingMode.HighQuality;

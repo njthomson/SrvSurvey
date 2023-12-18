@@ -1272,10 +1272,18 @@ namespace SrvSurvey
                 }
             }
 
+            if (this.formEditMap != null && this.forcePoi != null)
+            {
+                // draw guide lines when map editor is active
+                var fpp = new Pen(Color.GreenYellow, 0.2f) { DashStyle = DashStyle.Dot };
+                g.DrawLine(fpp, -nearestPt.X * 0.97f, -nearestPt.Y * 0.97f, -nearestPt.X * 1.01f, -nearestPt.Y * 1.01f);
+                g.DrawEllipse(fpp, -this.forcePoi.dist, -this.forcePoi.dist, this.forcePoi.dist * 2, this.forcePoi.dist * 2);
+            }
+
             // draw an indicator to the nearest unknown POI
             if (nearestUnknownPoi != null)
             {
-                g.DrawLine(GameColors.penNearestUnknownSitePOI, -nearestUnknownPt.X , -nearestUnknownPt.Y, -commanderOffset.X, -commanderOffset.Y);
+                g.DrawLine(GameColors.penNearestUnknownSitePOI, -nearestUnknownPt.X, -nearestUnknownPt.Y, -commanderOffset.X, -commanderOffset.Y);
             }
 
             if (nearestDist > 75 && forcePoi == null)
@@ -1325,7 +1333,7 @@ namespace SrvSurvey
                             txt += $" ({msg})";
                         }
 
-                        this.drawFooterText(txt , GameColors.brushCyan);
+                        this.drawFooterText(txt, GameColors.brushCyan);
                     }
                     else
                     {
@@ -1348,8 +1356,6 @@ namespace SrvSurvey
             g.ResetTransform();
             //var aa = new Angle(180 - game.status.Heading - nearestDeg);
             //this.drawBearingTo(0, this.Height - 20, tt, nearestDist, aa);
-
-            forcePoi = null;
         }
 
         private bool isRuinsPoi(POIType poiType)

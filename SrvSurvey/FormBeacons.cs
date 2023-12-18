@@ -75,7 +75,7 @@ namespace SrvSurvey
 
         private void prepareAllRows()
         {
-            var allBeacons = Game.canonn.allBeacons.Select(_ => new GuardianGridEntry(_));
+            var allBeacons = Game.canonn.loadAllBeacons();
             var allStructures = Game.canonn.loadAllStructures();
 
             Game.log($"Rendering {Game.canonn.allBeacons.Count} beacons, {Game.canonn.allStructures.Count} structures");

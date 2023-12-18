@@ -103,6 +103,11 @@ namespace SrvSurvey.units
             return (int)a.n;
         }
 
+        public static implicit operator float(Angle a)
+        {
+            return (float)a.n;
+        }
+
         public static implicit operator Angle(int n)
         {
             return new Angle(n);

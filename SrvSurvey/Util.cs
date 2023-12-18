@@ -2,7 +2,6 @@
 using SrvSurvey.canonn;
 using SrvSurvey.game;
 using SrvSurvey.units;
-using System.ComponentModel;
 using System.Diagnostics;
 
 namespace SrvSurvey
@@ -23,11 +22,6 @@ namespace SrvSurvey
         public static decimal degToRad(decimal angle)
         {
             return angle / ratioDegreesToRadians;
-        }
-
-        public static double radToDeg(double angle)
-        {
-            return angle * Angle.ratioDegreesToRadians;
         }
 
         public static string metersToString(decimal m, bool asDelta = false)
@@ -191,13 +185,18 @@ namespace SrvSurvey
             return new PointF(dx, dy);
         }
 
-        public static double ToAngle(double opp, double adj)
+        public static decimal ToAngle(double opp, double adj)
+        {
+            return ToAngle((decimal)opp, (decimal)adj);
+        }
+
+        public static decimal ToAngle(decimal opp, decimal adj)
         {
             if (opp == 0 && adj == 0) return 0;
 
             var flip = adj < 0;
 
-            var angle = Util.radToDeg(Math.Atan(opp / adj));
+            var angle = DecimalEx.ToDeg(DecimalEx.ATan(opp / adj));
 
             if (flip) angle = angle - 180;
 

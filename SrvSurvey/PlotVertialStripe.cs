@@ -40,7 +40,7 @@ namespace SrvSurvey
             this.ControlBox = false;
             this.Visible = false;
 
-            this.Opacity = Game.settings.Opacity;
+            this.Opacity = getOpacity() * Game.settings.Opacity;
             this.TopMost = true;
 
             this.BackColor = Color.Red;
