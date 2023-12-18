@@ -489,7 +489,7 @@ namespace SrvSurvey
             }
 
             Game.log(ex);
-            if (false && ex != null)
+            if (ex != null)
             {
                 FormErrorSubmit.Show(ex);
             }
