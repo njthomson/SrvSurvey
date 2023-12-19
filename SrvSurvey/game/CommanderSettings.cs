@@ -59,7 +59,7 @@ namespace SrvSurvey.game
             {
                 var parts = _.Split('_');
                 var reward = long.Parse(parts[3]);
-                return parts[4] == bool.FalseString ? reward : reward * 5;
+                return parts.Length > 4 && parts[4] == bool.FalseString ? reward : reward * 5;
             });
             Game.log($"reCalcOrganicRewards: updated to: {newTotal.ToString("N0")}, was: {this.organicRewards.ToString("N0")}");
             this.organicRewards = newTotal;
