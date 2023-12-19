@@ -189,7 +189,7 @@ namespace SrvSurvey.game
         public Dictionary<string, SitePoiStatus> poiStatus = new Dictionary<string, SitePoiStatus>();
         public Dictionary<string, int> relicHeadings = new Dictionary<string, int>();
         public Dictionary<string, ActiveObelisk> activeObelisks = new Dictionary<string, ActiveObelisk>();
-        public HashSet<string> obeliskGroups = new HashSet<string>();
+        public HashSet<char> obeliskGroups = new HashSet<char>();
 
         #endregion
 

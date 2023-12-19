@@ -478,13 +478,13 @@ namespace SrvSurvey
 
                 if (game.systemBody?.organisms != null)
                 {
-                    if (Game.settings.autoShowBioSummary && (game.showBodyPlotters || game.mode == GameMode.SAA))
+                    if (Game.settings.autoShowBioSummary && (game.showBodyPlotters || game.mode == GameMode.SAA) && !game.showGuardianPlotters && !Program.isPlotter<PlotGuardians>())
                         Program.showPlotter<PlotBioStatus>();
                 }
 
                 // show prior scan data only if present
-                var showPlotPriorScans = Game.settings.autoLoadPriorScans && (game.showBodyPlotters || game.mode == GameMode.SAA) && game.canonnPoiHasLocalBioSignals();
-                if (showPlotPriorScans)
+                var showPlotPriorScans = Game.settings.useExternalData && Game.settings.autoLoadPriorScans && (game.showBodyPlotters || game.mode == GameMode.SAA) && game.canonnPoiHasLocalBioSignals();
+                if (showPlotPriorScans && !game.showGuardianPlotters && !Program.isPlotter<PlotGuardians>())
                     Program.showPlotter<PlotPriorScans>();
 
                 if (game.showBodyPlotters && Game.settings.autoShowBioPlot && !this.game.showGuardianPlotters)
@@ -599,7 +599,7 @@ namespace SrvSurvey
         {
             Game.log($"Main.Disembark {entry.Body}");
 
-            if (entry.OnPlanet && !entry.OnStation && game?.systemBody?.bioSignalCount > 0)
+            if (entry.OnPlanet && !entry.OnStation && game?.systemBody?.bioSignalCount > 0 && !game.showGuardianPlotters && !Program.isPlotter<PlotGuardians>())
             {
                 if (Game.settings.autoShowBioSummary)
                     Program.showPlotter<PlotBioStatus>();
@@ -612,7 +612,7 @@ namespace SrvSurvey
         {
             Game.log($"Main.LaunchSRV {game?.status?.BodyName}");
 
-            if (game!.showBodyPlotters && game.systemBody?.bioSignalCount > 0)
+            if (game!.showBodyPlotters && game.systemBody?.bioSignalCount > 0 && !game.showGuardianPlotters && !Program.isPlotter<PlotGuardians>())
             {
                 if (Game.settings.autoShowBioSummary)
                     Program.showPlotter<PlotBioStatus>();

@@ -98,6 +98,7 @@ namespace SrvSurvey
          */
     }
 
+    [JsonConverter(typeof(StringEnumConverter))]
     enum ObeliskItem
     {
         unknown = 0,
@@ -115,6 +116,7 @@ namespace SrvSurvey
         medusa,
     }
 
+    [JsonConverter(typeof(StringEnumConverter))]
     enum ObeliskData
     {
         unknown = 0,
@@ -130,9 +132,9 @@ namespace SrvSurvey
         [JsonConverter(typeof(StringEnumConverter))]
         public POIType type;
         public string name;
-        public float angle;
-        public float dist;
-        public float rot;
+        public decimal angle;
+        public decimal dist;
+        public decimal rot;
 
         public override string ToString()
         {

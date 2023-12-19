@@ -1,5 +1,6 @@
 ﻿using SrvSurvey.game;
 using System.Drawing.Drawing2D;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace SrvSurvey
 {
@@ -141,11 +142,7 @@ namespace SrvSurvey
                     return;
             }
 
-            if (PlotGuardians.instance.nearestPoi != null)
-            {
-                drawSelectedItem();
-            }
-            else
+            if (PlotGuardians.instance.nearestPoi == null)
             {
                 drawHeaderText("Move within ~75m to select an item");
                 drawFooterText("(toggle lights to force update)");
@@ -155,7 +152,66 @@ namespace SrvSurvey
                     "Empty",
                     -2
                 );
+            }
+            else if (PlotGuardians.instance.nearestPoi.type == POIType.obelisk || PlotGuardians.instance.nearestPoi.type == POIType.brokeObelisk)
+            {
+                drawNearObelisk();
+            }
+            else
+            {
+                drawSelectedItem();
+            }
+        }
 
+        private void drawNearObelisk()
+        {
+            var poi = PlotGuardians.instance?.nearestPoi;
+            var siteData = game.nearBody?.siteData;
+            if (siteData == null || poi == null) return;
+
+
+            var poiType = poi.type.ToString().ToUpper();
+
+            var isActive = siteData.activeObelisks != null && siteData.activeObelisks.ContainsKey(poi.name) == true;
+            var headerTxt = $"Obelisk {poi.name}: ";
+            if (poi.type == POIType.brokeObelisk)
+                headerTxt += "Broken";
+            else
+                headerTxt += isActive ? "Active" : "Inactive";
+            this.drawHeaderText(headerTxt);
+
+            this.dtx = 10;
+            this.dty = 30;
+            if (isActive)
+            {
+                var obelisk = siteData.activeObelisks![poi.name];
+                var items = "??";
+                if (obelisk.items != null)
+                    items = string.Join(", ", obelisk.items).ToUpperInvariant();
+                var data = "?";
+                if (obelisk.data != null && obelisk.data.Count > 0)
+                    data = string.Join(", ", obelisk.data).ToUpperInvariant();
+
+                var txt = $"Requires: {items} for {data}";
+                if (!string.IsNullOrWhiteSpace(obelisk.msg))
+                {
+                    string msg = "";
+                    switch (obelisk.msg[0])
+                    {
+                        case 'C': msg = "Culture"; break;
+                        case 'H': msg = "History"; break;
+                        case 'B': msg = "Biology"; break;
+                        case 'T': msg = "Technology"; break;
+                    }
+                    msg += " #" + obelisk.msg.Substring(1);
+                    txt += $" ({msg})";
+                }
+                this.drawTextAt(txt, GameColors.brushCyan, GameColors.fontMiddle);
+            }
+            else
+            {
+                //this.drawTextAt("Inactive", GameColors.brushGameOrange, GameColors.fontMiddle);
+                //this.drawFooterText("Send '.ao <item1> <item2> to declare active");
             }
         }
 

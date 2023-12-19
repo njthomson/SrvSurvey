@@ -176,13 +176,13 @@ namespace SrvSurvey
             return rad;
         }
 
-        public static PointF rotateLine(float angle, float length)
+        public static PointF rotateLine(decimal angle, decimal length)
         {
             var heading = new Angle(angle);
-            var dx = (float)Math.Sin(heading.radians) * length;
-            var dy = (float)Math.Cos(heading.radians) * length;
+            var dx = DecimalEx.Sin(heading.radians) * length;
+            var dy = DecimalEx.Cos(heading.radians) * length;
 
-            return new PointF(dx, dy);
+            return new PointF((float)dx, (float)dy);
         }
 
         public static decimal ToAngle(double opp, double adj)
@@ -196,6 +196,7 @@ namespace SrvSurvey
 
             var flip = adj < 0;
 
+            if (adj == 0) adj += 0.00001M;
             var angle = DecimalEx.ToDeg(DecimalEx.ATan(opp / adj));
 
             if (flip) angle = angle - 180;

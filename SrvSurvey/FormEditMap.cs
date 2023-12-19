@@ -312,7 +312,7 @@ namespace SrvSurvey
         private void numPoiDist_ValueChanged(object sender, EventArgs e)
         {
             if (!checkApplyPoiLive.Checked || poi == null) return;
-            poi.dist = (float)numPoiDist.Value;
+            poi.dist = numPoiDist.Value;
             updateRowFromPoi(poi);
             plotter.forcePoi = poi;
             plotter.Invalidate();
@@ -321,7 +321,7 @@ namespace SrvSurvey
         private void numPoiAngle_ValueChanged(object sender, EventArgs e)
         {
             if (!checkApplyPoiLive.Checked || poi == null) return;
-            poi.angle = (float)numPoiAngle.Value;
+            poi.angle = numPoiAngle.Value;
             updateRowFromPoi(poi);
             plotter.forcePoi = poi;
             plotter.Invalidate();
@@ -330,7 +330,7 @@ namespace SrvSurvey
         private void numPoiRot_ValueChanged(object sender, EventArgs e)
         {
             if (!checkApplyPoiLive.Checked || poi == null) return;
-            poi.rot = (float)numPoiRot.Value;
+            poi.rot = numPoiRot.Value;
             updateRowFromPoi(poi);
             plotter.forcePoi = poi;
             plotter.Invalidate();
@@ -355,10 +355,10 @@ namespace SrvSurvey
             if (poi == null) return;
 
             poi.name = txtPoiName.Text;
-            poi.dist = (float)numPoiDist.Value;
-            poi.angle = (float)numPoiAngle.Value;
+            poi.dist = numPoiDist.Value;
+            poi.angle = numPoiAngle.Value;
             Enum.TryParse<POIType>(comboPoiType.Text, out poi.type);
-            poi.rot = (float)numPoiRot.Value;
+            poi.rot = numPoiRot.Value;
 
             Enum.TryParse<SitePoiStatus>(comboPoiStatus.Text, out var newStatus);
             siteData.poiStatus[poi.name] = newStatus;
@@ -410,17 +410,17 @@ namespace SrvSurvey
 
         private void btnNewPoi_Click(object sender, EventArgs e)
         {
-            var dist = ((double)Util.getDistance(Status.here, siteData.location, game.systemBody!.radius));
+            var dist = ((decimal)Util.getDistance(Status.here, siteData.location, game.systemBody!.radius));
             // dist -= 5.7; // ?
-            var angle = ((float)new Angle((Util.getBearing(Status.here, siteData.location) - (decimal)siteData.siteHeading)));
-            var rot = (float)new Angle(game.status.Heading - this.siteData.siteHeading);
+            var angle = ((decimal)new Angle((Util.getBearing(Status.here, siteData.location) - (decimal)siteData.siteHeading)));
+            var rot = (decimal)new Angle(game.status.Heading - this.siteData.siteHeading);
 
             var newPoi = new SitePOI()
             {
                 name = $"{(int)DateTime.Now.TimeOfDay.TotalSeconds}",
-                dist = (float)dist,
-                angle = (float)angle,
-                type = POIType.unknown,
+                dist = dist,
+                angle = angle,
+                type = POIType.obelisk, // !! .unknown,
                 rot = rot,
             };
             // add to the template and ListView

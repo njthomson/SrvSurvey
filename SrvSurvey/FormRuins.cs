@@ -475,7 +475,7 @@ namespace SrvSurvey
             {
                 // calculate render point for POI
                 var pt = Util.rotateLine(
-                    360 - poi.angle,
+                    360 - (decimal)poi.angle,
                     poi.dist);
 
                 // is this the closest POI?

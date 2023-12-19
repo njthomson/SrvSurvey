@@ -1,4 +1,5 @@
-﻿using SrvSurvey.game;
+﻿using DecimalMath;
+using SrvSurvey.game;
 using System;
 
 namespace SrvSurvey.units
@@ -13,7 +14,7 @@ namespace SrvSurvey.units
 
         public const double ratioDegreesToRadians = 180 / Math.PI;
 
-        double n;
+        decimal n;
 
         public static Angle FromRadians(double radians)
         {
@@ -29,7 +30,7 @@ namespace SrvSurvey.units
             // wrap around if too low
             while (a < 0) a += limit;
 
-            this.n = a;
+            this.n = (decimal)a;
         }
 
         public Angle(int n) : this((double)n)
@@ -45,11 +46,11 @@ namespace SrvSurvey.units
             return this.n.ToString("0") + "°";
         }
 
-        public double radians
+        public decimal radians
         {
             get
             {
-                return this.n / ratioDegreesToRadians;
+                return DecimalEx.ToRad(this.n); // / ratioDegreesToRadians;
             }
         }
 
@@ -94,6 +95,11 @@ namespace SrvSurvey.units
         }
 
         public static implicit operator double(Angle a)
+        {
+            return (double)a.n;
+        }
+
+        public static implicit operator decimal(Angle a)
         {
             return a.n;
         }

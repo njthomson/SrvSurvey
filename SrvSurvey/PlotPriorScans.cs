@@ -140,14 +140,16 @@ namespace SrvSurvey
                     var location = new LatLong2((double)poi.latitude, (double)poi.longitude);
                     var match = Game.codexRef.matchFromEntryId(poi.entryid.Value);
 
+                    // TODO: handle Brain Tree's
                     if (game.systemBody.bioScans?.Any(_ => _.status != BioScan.Status.Died && _.genus == genusName && Util.getDistance(_.location, location, game.systemBody.radius) < PlotTrackers.highlightDistance) == true)
                         continue;
                     if (game.systemBody.bookmarks?.Any(marks => marks.Key == shortName && marks.Value.Any(_ => Util.getDistance(_, location, game.systemBody.radius) < PlotTrackers.highlightDistance)) == true)
                         continue;
                     if (Util.isCloseToScan(location, genusName))
                         continue;
-                    if (game.systemBody.organisms?.FirstOrDefault(_ => _.entryId == poi.entryid)?.analyzed == true)
-                        continue;
+                    // TODO: fix this + make it honour the setting
+                    //if (game.systemBody.organisms?.FirstOrDefault(_ => _.entryId == poi.entryid)?.analyzed == true)
+                    //    continue;
 
                     // create group and TrackingDelta's for each location
                     var signal = this.signals.FirstOrDefault(_ => _.poiName == poi.english_name);

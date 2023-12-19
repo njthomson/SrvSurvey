@@ -1,4 +1,5 @@
-﻿using SrvSurvey.game;
+﻿using DecimalMath;
+using SrvSurvey.game;
 using SrvSurvey.units;
 using System.Diagnostics;
 using System.Drawing.Drawing2D;
@@ -59,8 +60,7 @@ namespace SrvSurvey
                 case 4: this.Width = 1200; this.Height = 1200; break;
             }
 
-            this.scale = this.siteData.isRuins ? 0.65f : 1.5f;
-
+            this.setMapScale();
             this.nextMode();
         }
 
@@ -590,7 +590,7 @@ namespace SrvSurvey
         {
             base.onJournalEntry(entry);
 
-            this.scale = this.siteData.isRuins ? 0.65f : 1.5f;
+            this.setMapScale();
         }
 
         protected override void onJournalEntry(Disembark entry)
@@ -598,8 +598,23 @@ namespace SrvSurvey
             base.onJournalEntry(entry);
 
             this.scale = 2f;
+            this.Invalidate();
         }
 
+        private void setMapScale(double nearestObelisk = 1000)
+        {
+            var newScale = this.scale;
+            if (Game.settings.enableEarlyGuardianStructures && nearestObelisk < 20)
+                newScale = 3f;
+            else
+                newScale = this.siteData.isRuins ? 0.65f : 1.5f;
+
+            if (newScale != this.scale)
+            {
+                this.scale = newScale;
+                this.Invalidate();
+            }
+        }
 
         private void setSiteHeading(int newHeading)
         {
@@ -969,8 +984,8 @@ namespace SrvSurvey
 
             // calculate deltas from site origin to ship
             var td = new TrackingDelta(game.nearBody!.radius, siteData.location!);
-            var x = -(float)td.dx;
-            var y = (float)td.dy;
+            var x = -td.dx;
+            var y = td.dy;
 
             // adjust scale depending on distance from target
             var sf = 1f;
@@ -1005,15 +1020,15 @@ namespace SrvSurvey
 
             // draw moving ship circle marker, showing ship heading
             var rect = new RectangleF(
-                    x - vr, y - vr,
+                    (float)(x - vr), (float)(y - vr),
                     +vr * 2, +vr * 2);
             g.DrawEllipse(shipPen, rect);
             var dHeading = new Angle(game.status.Heading);
             //var dHeading = new Angle(game.status.Heading) - siteData.siteHeading;
             //var dHeading = new Angle(siteData.siteHeading) - game.status.Heading;
-            var dx = (float)Math.Sin(dHeading.radians) * 10F;
-            var dy = (float)Math.Cos(dHeading.radians) * 10F;
-            g.DrawLine(shipPen, x, y, x + dx, y - dy);
+            var dx = (decimal)DecimalEx.Sin(dHeading.radians) * 10;
+            var dy = (decimal)DecimalEx.Cos(dHeading.radians) * 10;
+            g.DrawLine(shipPen, (float)x, (float)y, (float)(x + dx), (float)(y - dy));
             this.drawCompassLines(siteData.siteHeading);
 
             Point[] pps = { new Point((int)x, (int)y) };
@@ -1214,12 +1229,16 @@ namespace SrvSurvey
             var nearestUnknownPt = PointF.Empty;
             SitePOI? nearestUnknownPoi = null;
 
+            var nearestObeliskDist = 1000d;
             int countRelics = 0, confirmedRelics = 0, countPuddles = 0, confirmedPuddles = 0;
             Angle aa;
             string tt;
             // and draw all the POIs
             foreach (var poi in this.template.poi)
             {
+                // skip obelisks in groups not in this site
+                if (siteData.obeliskGroups.Count > 0 && (poi.type == POIType.obelisk || poi.type == POIType.brokeObelisk) && !siteData.obeliskGroups.Contains(poi.name[0])) continue;
+
                 if (poi.type == POIType.relic)
                 {
                     countRelics++;
@@ -1235,7 +1254,7 @@ namespace SrvSurvey
 
                 // calculate render point for POI
                 var deg = 180 - siteData.siteHeading - poi.angle;
-                var dist = poi.dist * 1.01f; // scaling for perspective?
+                var dist = poi.dist; //  * 1.01m; // scaling for perspective? !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 var pt = Util.rotateLine(
                     deg,
                     dist);
@@ -1258,12 +1277,15 @@ namespace SrvSurvey
                     nearestUnknownPt = pt;
                 }
 
+                if ((poi.type == POIType.obelisk || poi.type == POIType.brokeObelisk) && d < nearestObeliskDist)
+                    nearestObeliskDist = d;
+
                 var selectPoi = d < nearestDist && (isRuinsPoi(poi.type) || Game.settings.enableEarlyGuardianStructures); //.type != POIType.brokeObelisk;
                 if (forcePoi != null)
                     selectPoi = forcePoi == poi; // force selection in map editor if present
                 if (selectPoi) // && poi.type != POIType.pylon && poi.type != POIType.brokeObelisk && poi.type != POIType.component)
                 {
-                    aa = Util.ToAngle(x, y) - siteData.siteHeading; //  - game.status.Heading;
+                    aa = Util.ToAngle(x, y) - siteData.siteHeading;
                     if (y < 0) aa += 180;
                     tt = $"{aa} | {x}, {y}";
                     nearestDist = d;
@@ -1275,9 +1297,9 @@ namespace SrvSurvey
             if (this.formEditMap != null && this.forcePoi != null)
             {
                 // draw guide lines when map editor is active
-                var fpp = new Pen(Color.GreenYellow, 0.2f) { DashStyle = DashStyle.Dot };
-                g.DrawLine(fpp, -nearestPt.X * 0.97f, -nearestPt.Y * 0.97f, -nearestPt.X * 1.01f, -nearestPt.Y * 1.01f);
-                g.DrawEllipse(fpp, -this.forcePoi.dist, -this.forcePoi.dist, this.forcePoi.dist * 2, this.forcePoi.dist * 2);
+                var fpp = new Pen(Color.GreenYellow, 0.5f) { DashStyle = DashStyle.Dash, EndCap = LineCap.ArrowAnchor, StartCap = LineCap.ArrowAnchor };
+                g.DrawLine(fpp, -nearestPt.X * 0.96f, -nearestPt.Y * 0.96f, -nearestPt.X * 1.04f, -nearestPt.Y * 1.04f);
+                g.DrawEllipse(fpp, (float)-this.forcePoi.dist, (float)-this.forcePoi.dist, (float)this.forcePoi.dist * 2, (float)this.forcePoi.dist * 2);
             }
 
             // draw an indicator to the nearest unknown POI
@@ -1294,8 +1316,15 @@ namespace SrvSurvey
             else
             {
                 // draw highlight over closest POI
-                if ((nearestPoi == forcePoi) || isRuinsPoi(nearestPoi.type) || siteData.activeObelisks.ContainsKey(nearestPoi.name) || (!siteData.isRuins && Game.settings.enableEarlyGuardianStructures))
+                if ((nearestPoi.type == POIType.obelisk && Game.settings.enableEarlyGuardianStructures))
+                {
+                    // use a smaller circle for obelisks
+                    g.DrawEllipse(GameColors.penDarkCyan4, -nearestPt.X - 8, -nearestPt.Y - 8, 16, 16);
+                }
+                else if ((nearestPoi == forcePoi) || isRuinsPoi(nearestPoi.type) || siteData.activeObelisks.ContainsKey(nearestPoi.name) || (!siteData.isRuins && Game.settings.enableEarlyGuardianStructures))
+                {
                     g.DrawEllipse(GameColors.penDarkCyan4, -nearestPt.X - 14, -nearestPt.Y - 14, 28, 28);
+                }
 
                 var poiStatus = siteData.poiStatus.GetValueOrDefault(this.nearestPoi.name);
 
@@ -1352,10 +1381,10 @@ namespace SrvSurvey
                 : GameColors.brushGameOrange;
 
             this.drawHeaderText($"Confirmed: {confirmedRelics}/{countRelics} relics, {confirmedPuddles}/{countPuddles} items", headerBrush);
+            if (Game.settings.enableEarlyGuardianStructures && this.formEditMap == null)
+                this.setMapScale(nearestObeliskDist);
 
             g.ResetTransform();
-            //var aa = new Angle(180 - game.status.Heading - nearestDeg);
-            //this.drawBearingTo(0, this.Height - 20, tt, nearestDist, aa);
         }
 
         private bool isRuinsPoi(POIType poiType)
@@ -1450,22 +1479,23 @@ namespace SrvSurvey
                 //    new PointF(1f, -3f),
 
                 //};
-                var pp = new Pen(Color.SandyBrown)
+                var pp = new Pen(Color.DarkCyan)
                 {
-                    Width = 1,
+                    Width = 0.5f,
                     LineJoin = LineJoin.Bevel,
                     StartCap = LineCap.Triangle,
                     EndCap = LineCap.Triangle,
                 };
                 if (this.siteData.activeObelisks.ContainsKey(poi.name))
                 {
-                    pp.Color = Color.LightCyan;
-                    pp.Width = 1;
+                    pp.Color = Color.Cyan;
+                    pp.Width = 0.5f;
                 }
 
-                rot += 150;
+                rot += 167.5m;
+                //rot += 35;
                 g.TranslateTransform(-pt.X, -pt.Y);
-                g.RotateTransform(rot);
+                g.RotateTransform((float)rot);
                 //var points = new PointF[] {
                 //    new PointF(2-3f, 8-3f),
                 //    new PointF(0-3f, 0-3f),
@@ -1480,7 +1510,7 @@ namespace SrvSurvey
                         new PointF(0 - 1.5f, 0 - 1.5f),
                         new PointF(4 - 1.5f, 1 - 1.5f),
                         new PointF(1 - 1.5f, 3.5f - 1.5f),
-                        new PointF(.5f, -1.5f),
+                        //new PointF(.5f, -1.5f),
                     }
                     : new PointF[] {
                         new PointF(1 - 1.5f, 4 - 1.5f),
@@ -1493,10 +1523,11 @@ namespace SrvSurvey
 
                 if (poi.type == POIType.obelisk)
                 {
-                    //new PointF(0 - 1.5f, 0 - 1.5f),
+                    g.DrawLine(pp, 0.2f, 0, -0.5f, -1.2f);
+                    g.DrawLine(pp, 0.2f, 0, +1.5f, -0.8f);
                 }
 
-                g.RotateTransform(-rot);
+                g.RotateTransform((float)-rot);
                 g.TranslateTransform(+pt.X, +pt.Y);
             }
             else if (poi.type == POIType.pylon)
@@ -1520,12 +1551,12 @@ namespace SrvSurvey
                     pp.Color = GameColors.Cyan;
 
                 g.TranslateTransform(-pt.X, -pt.Y);
-                g.RotateTransform(+rot);
+                g.RotateTransform((float)+rot);
 
                 g.DrawLines(pp, points);
                 g.DrawLine(pp, 0, 0, 0, 3);
 
-                g.RotateTransform(-rot);
+                g.RotateTransform((float)-rot);
                 g.TranslateTransform(+pt.X, +pt.Y);
             }
             else if (poi.type == POIType.component)
@@ -1554,11 +1585,11 @@ namespace SrvSurvey
 
                 rot -= 45;
                 g.TranslateTransform(-pt.X, -pt.Y);
-                g.RotateTransform(+rot);
+                g.RotateTransform((float)+rot);
 
                 g.DrawLines(pp, points);
 
-                g.RotateTransform(-rot);
+                g.RotateTransform((float)-rot);
                 g.TranslateTransform(+pt.X, +pt.Y);
             }
             else if (siteData.isRuins)
@@ -1587,13 +1618,13 @@ namespace SrvSurvey
 
                 rot = 0; // + game.status.Heading;
                 g.TranslateTransform(-pt.X, -pt.Y);
-                g.RotateTransform(+rot);
+                g.RotateTransform((float)+rot);
 
                 g.FillEllipse(Brushes.DarkCyan, -7, -6, 14, 14);
                 g.DrawLines(pp, points);
                 //g.DrawLine(pp, 0, 0, 0, -30);
 
-                g.RotateTransform(-rot);
+                g.RotateTransform((float)-rot);
                 g.TranslateTransform(+pt.X, +pt.Y);
             }
             else
@@ -1761,8 +1792,8 @@ namespace SrvSurvey
                 : new Pen(Color.PeachPuff, 2) { DashStyle = DashStyle.Dot, };
 
             var sz = Util.rotateLine(
-                180 - siteData.siteHeading - angle,
-                dist);
+                180m - (decimal)siteData.siteHeading - (decimal)angle,
+                (decimal)dist);
             g.DrawEllipse(p, -sz.X - dd, -sz.Y - dd, d, d);
         }
 
