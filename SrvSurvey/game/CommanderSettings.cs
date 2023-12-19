@@ -58,7 +58,7 @@ namespace SrvSurvey.game
             var newTotal = this.scannedBioEntryIds.Sum(_ =>
             {
                 var parts = _.Split('_');
-                var reward = long.Parse(parts[3]);
+                var reward = parts.Length > 3 ? long.Parse(parts[3]) : 0;
                 return parts.Length > 4 && parts[4] == bool.FalseString ? reward : reward * 5;
             });
             Game.log($"reCalcOrganicRewards: updated to: {newTotal.ToString("N0")}, was: {this.organicRewards.ToString("N0")}");
