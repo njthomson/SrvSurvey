@@ -104,26 +104,6 @@ namespace SrvSurvey
             this.g = e.Graphics;
             g.SmoothingMode = SmoothingMode.HighQuality;
 
-            if (game.vehicle == ActiveVehicle.Foot)
-            {
-                if (game.status.SelectedWeapon == "$humanoid_companalyser_name;")
-                {
-                    var msg = "Toggle shields to set Relic Tower heading.";
-                    if (game.nearBody!.siteData.relicTowerHeading != -1)
-                        msg += $"\r\nRecorded heading: {game.nearBody.siteData.relicTowerHeading}°";
-                    else
-                        msg += "\r\nFace the side with a single large left facing triangle.";
-                    drawCenterMessage(msg);
-                }
-                else
-                {
-                    drawCenterMessage("Use Profile Analyser near Relic Towers for aiming assistance.\r\nFace the side with a single large left facing triangle.");
-                }
-
-                drawFooterText("(toggle weapon to force location update)");
-                return;
-            }
-
             switch (PlotGuardians.instance.mode)
             {
                 case Mode.siteType:
@@ -142,7 +122,29 @@ namespace SrvSurvey
                     return;
             }
 
-            if (PlotGuardians.instance.nearestPoi == null)
+            if (PlotGuardians.instance.nearestPoi != null && (PlotGuardians.instance.nearestPoi.type == POIType.obelisk || PlotGuardians.instance.nearestPoi.type == POIType.brokeObelisk))
+            {
+                drawNearObelisk();
+            }
+            else if (game.vehicle == ActiveVehicle.Foot)
+            {
+                if (game.status.SelectedWeapon == "$humanoid_companalyser_name;")
+                {
+                    var msg = "Toggle shields to set Relic Tower heading.";
+                    if (game.nearBody!.siteData.relicTowerHeading != -1)
+                        msg += $"\r\nRecorded heading: {game.nearBody.siteData.relicTowerHeading}°";
+                    else
+                        msg += "\r\nFace the side with a single large left facing triangle.";
+                    drawCenterMessage(msg);
+                }
+                else
+                {
+                    drawCenterMessage("Use Profile Analyser near Relic Towers for aiming assistance.\r\nFace the side with a single large left facing triangle.");
+                }
+
+                drawFooterText("(toggle weapon to force location update)");
+            }
+            else if (PlotGuardians.instance.nearestPoi == null)
             {
                 drawHeaderText("Move within ~75m to select an item");
                 drawFooterText("(toggle lights to force update)");
@@ -152,10 +154,6 @@ namespace SrvSurvey
                     "Empty",
                     -2
                 );
-            }
-            else if (PlotGuardians.instance.nearestPoi.type == POIType.obelisk || PlotGuardians.instance.nearestPoi.type == POIType.brokeObelisk)
-            {
-                drawNearObelisk();
             }
             else
             {
@@ -186,12 +184,18 @@ namespace SrvSurvey
                 var obelisk = siteData.activeObelisks![poi.name];
 
                 // show the material reward, or a hint to scan it
-                var data = ""; // ... ?";
                 if (obelisk.data != null && obelisk.data.Count > 0)
-                    data = " - " + string.Join(", ", obelisk.data).ToUpperInvariant();
+                {
+                    headerTxt += " - " + string.Join(", ", obelisk.data).ToUpperInvariant();
+                    if (obelisk.scanned)
+                        this.drawFooterText("You have scanned this obelisk");
+                    else
+                        this.drawFooterText("You have not scanned this obelisk");
+                }
                 else
+                {
                     this.drawFooterText("Scan to populate data material");
-                headerTxt += data;
+                }
 
                 var items = "??";
                 if (obelisk.items != null)

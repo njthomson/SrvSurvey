@@ -121,6 +121,7 @@ namespace SrvSurvey
     {
         unknown = 0,
         alpha,
+        beta,
         epsilon,
         delta,
         gamma,

@@ -85,7 +85,7 @@ namespace SrvSurvey
 
             var targetMode = (game.showBodyPlotters || game.mode == GameMode.SAA) 
                 && (!force && this.signals.Count > 0); // keep plotter hidden if no more signals
-            if (this.Opacity > 0 && !targetMode)
+            if (!force && this.Opacity > 0 && !targetMode)
                 this.Opacity = 0;
             else if (this.Opacity == 0 && targetMode)
                 this.reposition(Elite.getWindowRect());

@@ -182,7 +182,9 @@ namespace SrvSurvey.game
         public string bodyName;
         public int siteHeading = -1;
         public int relicTowerHeading = -1;
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public string notes;
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public bool legacy = false;
 
         public Dictionary<string, bool> confirmedPOI = new Dictionary<string, bool>();
@@ -305,9 +307,14 @@ namespace SrvSurvey.game
 
     internal class ActiveObelisk
     {
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public List<ObeliskItem> items = new List<ObeliskItem>();
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public HashSet<ObeliskData> data = new HashSet<ObeliskData>();
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public string msg;
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public bool scanned;
     }
 }
 

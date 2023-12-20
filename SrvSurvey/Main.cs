@@ -433,7 +433,7 @@ namespace SrvSurvey
             var sysEstimate = game.systemData.bodies.Sum(_ => _.sumPotentialEstimate);
             var sysActual = game.systemData.bodies.Sum(_ => _.sumAnalyzed);
             txtSystemBioValues.Text = $"{Util.credits(sysActual, true)} of {Util.credits(sysEstimate, true)}";
-            if (game.systemData.bodies.Any(_ => _.bioSignalCount > _.countAnalyzedBioSignals))
+            if (game.systemData.bodies.Any(_ => _.bioSignalCount > 0 && _.organisms?.All(o => o.species != null) != true))
                 txtSystemBioValues.Text += "?";
 
                 var countFirstFootFall = game.systemData.bodies.Count(_ => _.firstFootFall && _.bioSignalCount > 0);
@@ -476,7 +476,7 @@ namespace SrvSurvey
             {
                 txtBodyBioSignals.Text = $"{game.systemBody!.countAnalyzedBioSignals} of {game.systemBody!.bioSignalCount}";
                 txtBodyBioValues.Text = $"{Util.credits(game.systemBody.sumAnalyzed, true)} of {Util.credits(game.systemBody.sumPotentialEstimate, true)}";
-                if (game.systemBody.bioSignalCount > game.systemBody.countAnalyzedBioSignals)
+                if (game.systemBody.organisms?.All(o => o.species != null) != true)
                     txtBodyBioValues.Text += "?";
 
                 if (game.systemBody.firstFootFall) txtBodyBioValues.Text += " (FF)";

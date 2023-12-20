@@ -83,9 +83,10 @@ namespace SrvSurvey
                 return;
             }
 
-            this.td = new TrackingDelta(
-                game.systemBody.radius,
-                game.touchdownLocation);
+            if (game.systemBody.lastTouchdown != null)
+                this.td = new TrackingDelta(
+                    game.systemBody.radius,
+                    game.systemBody.lastTouchdown);
         }
 
         private void NearBody_bioScanEvent()
@@ -252,10 +253,10 @@ namespace SrvSurvey
 
             // draw touchdown marker
             var shipDeparted = game.touchdownLocation == null || game.touchdownLocation == LatLong2.Empty;
-            if (game.touchdownLocation != null)
+            if (game.systemBody.lastTouchdown != null)
             {
                 if (this.td == null)
-                    this.td = new TrackingDelta(game.systemBody.radius, game.touchdownLocation);
+                    this.td = new TrackingDelta(game.systemBody.radius, game.systemBody.lastTouchdown);
 
                 // delta to ship
                 g.ResetTransform();

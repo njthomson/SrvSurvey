@@ -418,23 +418,25 @@ namespace SrvSurvey.game
 
         private SystemBody findOrCreate(string bodyName, int bodyId)
         {
-            // do we know this body already?
-            var body = this.bodies.FirstOrDefault(_ => _.id == bodyId);
-
-            if (body == null)
+            lock (this.bodies)
             {
-                // create a sub if not
-                body = new SystemBody()
+                // do we know this body already?
+                var body = this.bodies.FirstOrDefault(_ => _.id == bodyId);
+
+                if (body == null)
                 {
-                    name = bodyName,
-                    id = bodyId,
-                };
+                    // create a sub if not
+                    body = new SystemBody()
+                    {
+                        name = bodyName,
+                        id = bodyId,
+                    };
 
-                Game.log($"SystemData: add body: '{body.name}' ({body.id}, {body.type})");
-                this.bodies.Add(body);
+                    Game.log($"SystemData: add body: '{body.name}' ({body.id}, {body.type})");
+                    this.bodies.Add(body);
+                }
+                return body;
             }
-
-            return body;
         }
 
         public static List<string> journalEventTypes = new List<string>()
@@ -896,7 +898,7 @@ namespace SrvSurvey.game
         }
 
         [JsonIgnore]
-        public int fssBodyCount { get => this.bodies.Count(_ => _.type != SystemBodyType.Asteroid && _.type != SystemBodyType.Unknown); }
+        public int fssBodyCount { get => this.bodies.Count(_ => _.type != SystemBodyType.Asteroid); }
 
         /// <summary> Returns True when all non-star/non-asteroid bodies have been found with FSS </summary>
         [JsonIgnore]
