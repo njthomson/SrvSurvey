@@ -97,10 +97,6 @@ namespace SrvSurvey
             this.g.SmoothingMode = SmoothingMode.HighQuality;
 
             base.OnPaintBackground(e);
-            var txt = "";
-            if (Game.settings.skipLowValueDSS) txt += $">{Util.credits(Game.settings.skipLowValueAmount)}";
-            if (!Game.settings.skipRingsDSS) txt += " +Rings";
-            g.DrawString($"System survey remaining: ({txt})", GameColors.fontSmall, GameColors.brushGameOrange, 4, 7);
 
             this.dtx = 6.0f;
             this.dty = 19.0f;
@@ -145,6 +141,16 @@ namespace SrvSurvey
                     this.drawTextAt($"| {game.systemData.bioSignalsRemaining}x Bio signals on: ");
                     this.drawRemainingBodies(destinationBody, bioRemaining);
                 }
+
+                var headerTxt = "";
+                if (game.systemData.fssComplete && (Game.settings.skipLowValueDSS || !Game.settings.skipRingsDSS))
+                {
+                    headerTxt += "(";
+                    if (Game.settings.skipLowValueDSS) headerTxt += $" >{Util.credits(Game.settings.skipLowValueAmount)}";
+                    if (!Game.settings.skipRingsDSS) headerTxt += " +Rings";
+                    headerTxt += " )";
+                }
+                g.DrawString($"System survey remaining: {headerTxt}", GameColors.fontSmall, GameColors.brushGameOrange, 4, 7);
             }
             finally
             {

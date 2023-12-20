@@ -200,7 +200,6 @@ namespace SrvSurvey
 
                 oldFolders.ForEach(_ => mergeScannedBioEntryIds(_));
                 oldFolders.ForEach(_ => mergeChildFiles(_));
-
             }
             catch (Exception ex)
             {

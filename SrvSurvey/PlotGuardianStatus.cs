@@ -178,21 +178,26 @@ namespace SrvSurvey
                 headerTxt += "Broken";
             else
                 headerTxt += isActive ? "Active" : "Inactive";
-            this.drawHeaderText(headerTxt);
 
             this.dtx = 10;
             this.dty = 30;
             if (isActive)
             {
                 var obelisk = siteData.activeObelisks![poi.name];
+
+                // show the material reward, or a hint to scan it
+                var data = ""; // ... ?";
+                if (obelisk.data != null && obelisk.data.Count > 0)
+                    data = " - " + string.Join(", ", obelisk.data).ToUpperInvariant();
+                else
+                    this.drawFooterText("Scan to populate data material");
+                headerTxt += data;
+
                 var items = "??";
                 if (obelisk.items != null)
                     items = string.Join(", ", obelisk.items).ToUpperInvariant();
-                var data = "?";
-                if (obelisk.data != null && obelisk.data.Count > 0)
-                    data = string.Join(", ", obelisk.data).ToUpperInvariant();
 
-                var txt = $"Requires: {items} for {data}";
+                var txt = $"Requires: {items} for ";
                 if (!string.IsNullOrWhiteSpace(obelisk.msg))
                 {
                     string msg = "";
@@ -204,7 +209,11 @@ namespace SrvSurvey
                         case 'T': msg = "Technology"; break;
                     }
                     msg += " #" + obelisk.msg.Substring(1);
-                    txt += $" ({msg})";
+                    txt += msg;
+                }
+                else
+                {
+                    txt += " ... ?";
                 }
                 this.drawTextAt(txt, GameColors.brushCyan, GameColors.fontMiddle);
             }
@@ -213,6 +222,8 @@ namespace SrvSurvey
                 //this.drawTextAt("Inactive", GameColors.brushGameOrange, GameColors.fontMiddle);
                 //this.drawFooterText("Send '.ao <item1> <item2> to declare active");
             }
+
+            this.drawHeaderText(headerTxt);
         }
 
         private void drawSelectedItem()

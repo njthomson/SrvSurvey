@@ -156,6 +156,7 @@ namespace SrvSurvey
             this.siteData.Save();
 
             listPoi.Sort();
+            Elite.setFocusED();
         }
 
         #region edit background image

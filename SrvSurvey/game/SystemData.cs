@@ -896,7 +896,7 @@ namespace SrvSurvey.game
         }
 
         [JsonIgnore]
-        public int fssBodyCount { get => this.bodies.Count(_ => _.type != SystemBodyType.Asteroid); }
+        public int fssBodyCount { get => this.bodies.Count(_ => _.type != SystemBodyType.Asteroid && _.type != SystemBodyType.Unknown); }
 
         /// <summary> Returns True when all non-star/non-asteroid bodies have been found with FSS </summary>
         [JsonIgnore]

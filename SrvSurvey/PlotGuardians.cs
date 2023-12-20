@@ -377,6 +377,19 @@ namespace SrvSurvey
             {
                 this.parseActiveObelisk(msg.Substring(3).Trim().ToLowerInvariant());
             }
+            if (msg.StartsWith(MsgCmd.aog, StringComparison.OrdinalIgnoreCase))
+            {
+                var letters = msg.Substring(4)
+                    .Trim()
+                    .ToUpperInvariant()
+                    .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.RemoveEmptyEntries)
+                    .ToList();
+                letters.Sort();
+                this.siteData.obeliskGroups.Clear();
+                letters.ForEach(_ => this.siteData.obeliskGroups.Add(_[0]));
+                Game.log($"Setting obelisk groups: " + string.Join(", ", letters));
+                this.siteData.Save();
+            }
             else if (msg.StartsWith(MsgCmd.aod, StringComparison.OrdinalIgnoreCase) && this.nearestPoi?.type == POIType.obelisk)
             {
                 if (!this.siteData.activeObelisks.ContainsKey(this.nearestPoi.name))
@@ -1313,7 +1326,7 @@ namespace SrvSurvey
                 // make sure we're relatively close before selecting the item
                 this.nearestPoi = null!;
             }
-            else
+            else if (nearestPoi != null)
             {
                 // draw highlight over closest POI
                 if ((nearestPoi.type == POIType.obelisk && Game.settings.enableEarlyGuardianStructures))

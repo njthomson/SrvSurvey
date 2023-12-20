@@ -27,11 +27,13 @@
         public const string aim = ".aim";
         /// <summary> PlotGuardians : Append message to site notes </summary>
         public const string note = ".note";
-        /// <summary> PlotGuardians : Active Obelisk - set which items an obelisk is asking for </summary>
+        /// <summary> PlotGuardians : Active Obelisk Groups - set which obelisk groups exist at this site, expecting a comma separated list of letters </summary>
+        public const string aog = ".aog";
+        /// <summary> PlotGuardians : Active Obelisk - set which items an obelisk is asking for, eg: '.ao ca or' </summary>
         public const string ao = ".ao ";
-        /// <summary> PlotGuardians : Active Obelisk Data - set what data an obelisk provides </summary>
+        /// <summary> PlotGuardians : Active Obelisk Data - set what data an obelisk provides. eg: '.aog a,b,t,g' </summary>
         public const string aod = ".aod ";
-        /// <summary> PlotGuardians : Active Obelisk Message - set what Ram Tah mission message an obelisk provides </summary>
+        /// <summary> PlotGuardians : Active Obelisk Message - set what Ram Tah mission message an obelisk provides, eg: History $12 '.aom h12' or Biology #9 '.aom 'B9 </summary>
         public const string aom = ".aom ";
 
         /// <summary> Main: Open the images folder </summary>

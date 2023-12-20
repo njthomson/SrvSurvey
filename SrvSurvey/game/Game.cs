@@ -366,6 +366,10 @@ namespace SrvSurvey.game
                 if (activeVehicle == ActiveVehicle.MainShip)
                     return GameMode.Flying;
 
+                // if we're here and these are zero ...
+                if (status.Flags == 0 && status.Flags2 == 0)
+                    return GameMode.Offline;
+
                 Game.log($"Unknown game mode? status.Flags: {status.Flags}, status.Flags2: {status.Flags2}");
                 return GameMode.Unknown;
             }
