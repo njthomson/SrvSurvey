@@ -432,7 +432,8 @@ namespace SrvSurvey.game
                 && this.isMode(GameMode.InSrv, GameMode.OnFoot, GameMode.Landed, GameMode.Flying, GameMode.InFighter)
                 && !this.hidePlottersFromCombatSuits
                 && this.status.Altitude < 4000
-                && Util.getDistance(this.nearBody.siteData.location, Status.here, this.nearBody.radius) < 4000;
+                && this.systemBody != null 
+                && Util.getDistance(this.nearBody.siteData.location, Status.here, this.systemBody.radius) < 4000;
         }
 
         #endregion

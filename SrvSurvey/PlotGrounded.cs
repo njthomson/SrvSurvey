@@ -144,7 +144,7 @@ namespace SrvSurvey
         {
             if (entry.Message.ToLower() == MsgCmd.dbgDump)
             {
-                var str = new StringBuilder($"Distance diagnostics from here: {Status.here}, nearBody.radius: {game.systemBody?.radius.ToString("N0")}\r\n");
+                var str = new StringBuilder($"Distance diagnostics from here: {Status.here}, systemBody.radius: {game.systemBody?.radius.ToString("N0")}\r\n");
 
                 if (game.systemBody?.bioScans != null)
                 {

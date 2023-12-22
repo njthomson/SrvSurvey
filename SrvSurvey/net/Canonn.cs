@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
+using static SrvSurvey.game.GuardianSiteData;
 
 namespace SrvSurvey.canonn
 {
@@ -23,6 +24,8 @@ namespace SrvSurvey.canonn
 
         public void init()
         {
+            // readXmlSheetRuins2();
+
             Canonn.client = new HttpClient();
             Canonn.client.DefaultRequestHeaders.Add("accept-encoding", "gzip, deflate");
             Canonn.client.DefaultRequestHeaders.Add("user-agent", $"SrvSurvey-{Game.releaseVersion}");
@@ -390,7 +393,7 @@ namespace SrvSurvey.canonn
 
             var newEntries = new List<GuardianGridEntry>();
 
-            var allStructures= summaries.Select(_ => new GuardianGridEntry(_)).ToList();
+            var allStructures = summaries.Select(_ => new GuardianGridEntry(_)).ToList();
             var folder = Path.Combine(Program.dataFolder, "guardian", Game.settings.lastFid!);
             if (Directory.Exists(folder))
             {
@@ -1074,6 +1077,133 @@ namespace SrvSurvey.canonn
             File.WriteAllText(allBeaconsStaticPath, json);
             // */
         }
+
+        #endregion
+
+        #region parse LilacLight sheet
+
+        public void readXmlSheetRuins2()
+        {
+
+            var doc = XDocument.Load(@"d:\code\Guardian Ruin Survey.xml");
+
+            var obeliskGroupings = new Dictionary<string, string>();
+            parseObeliskGroupings(doc, "Alpha - Groups Present", obeliskGroupings);
+            parseObeliskGroupings(doc, "Beta - Groups Present", obeliskGroupings);
+            parseObeliskGroupings(doc, "Gamma - Groups Present", obeliskGroupings);
+
+            var sites = parseGRNames(doc, obeliskGroupings);
+            Game.log($"Writing {sites.Count} pubData files");
+
+            // now write them out to disk
+            foreach(var site in sites)
+            {
+                var pubPath = Path.Combine(Program.dataFolder, "pub", "guardian", $"{site.systemName} {site.bodyName}-ruins-{site.idx}.json");
+
+                var json = JsonConvert.SerializeObject(site, Formatting.Indented);
+                File.WriteAllText(pubPath, json);
+            }
+            Game.log($"Writing {sites.Count} pubData files - complete");
+        }
+
+        private List<GuardianSitePub> parseGRNames(XDocument doc, Dictionary<string, string> obeliskGroupings)
+        {
+            var sites = new List<GuardianSitePub>();
+
+            var table = doc.Root?.Elements().Where(_ => _.Name.LocalName == "Worksheet" && _.FirstAttribute?.Value == "Ruins").First().Elements()!;
+            var rows = table.Elements(XName.Get("Row", "urn:schemas-microsoft-com:office:spreadsheet")).Skip(2);
+
+            GuardianSitePub site = null!;
+
+            foreach (var row in rows)
+            {
+                var cells = row.Elements(XName.Get("Cell", "urn:schemas-microsoft-com:office:spreadsheet")).ToList();
+                try
+                {
+
+                    // start a new site?
+                    var siteId = cells[1].Value;
+                    if (!string.IsNullOrEmpty(siteId))
+                    {
+                        siteId = siteId.Substring(0, 5);
+                        site = new GuardianSitePub()
+                        {
+                            sid = siteId,
+                            systemName = cells[3].Value,
+                            bodyName = cells[10].Value,
+                            idx = int.Parse(cells[21].Value),
+                            t = Enum.Parse<SiteType>(cells[22].Value, true),
+                            og = obeliskGroupings[siteId].Replace(" ", "").Replace(",", ""),
+                            ao = new List<ActiveObelisk>(),
+                        };
+                        sites.Add(site);
+                        continue;
+                    }
+
+                    var bank = cells[25].Value;
+                    var bankIdx = cells[26].Value;
+                    if (bankIdx == "19*B")
+                    {
+                        Game.log($"Ignore rows about 19*B. Skipping row:" + string.Join(", ", cells.Select(_ => _.Value)));
+                        continue;
+                    }
+                    var item1 = cells[27].Value;
+                    var item2 = cells[28].Value;
+                    if (string.IsNullOrEmpty(item1) || item1 == "-")
+                    {
+                        // skip rows without items
+                        Game.log($"Uncertain items. Skipping row:" + string.Join(", ", cells.Select(_ => _.Value)));
+                        continue;
+                    }
+
+                    var msgType = cells[30].Value;
+                    if (msgType.EndsWith("?"))
+                    {
+                        // skip rows without items
+                        Game.log($"Uncertain msgType. Skipping row:" + string.Join(", ", cells.Select(_ => _.Value)));
+                        continue;
+                    }
+                    var msgNum = int.Parse(cells[31].Value);
+
+                    var activeObelisk = new ActiveObelisk()
+                    {
+                        name = bank.ToUpperInvariant() + int.Parse(bankIdx).ToString("00"),
+                        msg = $"{msgType.ToUpperInvariant()[0]}{msgNum}",
+                    };
+                    activeObelisk.items.Add(Enum.Parse<ObeliskItem>(item1, true));
+                    if (!string.IsNullOrEmpty(item2) && item2 != "-")
+                        activeObelisk.items.Add(Enum.Parse<ObeliskItem>(item2, true));
+
+                    site.ao.Add(activeObelisk);
+                }
+                catch (Exception ex)
+                {
+                    Game.log($"Error: {ex}\r\n" +
+                        $"Row:" + string.Join(", ", cells.Select(_ => _.Value)));
+
+                }
+            }
+
+            return sites;
+        }
+
+
+        private void parseObeliskGroupings(XDocument doc, string tabName, Dictionary<string, string> obeliskGroupings)
+        {
+            var table = doc.Root?.Elements().Where(_ => _.Name.LocalName == "Worksheet" && _.FirstAttribute?.Value == tabName).First().Elements()!;
+            var rows = table.Elements(XName.Get("Row", "urn:schemas-microsoft-com:office:spreadsheet")).Skip(1);
+
+            foreach (var row in rows)
+            {
+                var cells = row.Elements(XName.Get("Cell", "urn:schemas-microsoft-com:office:spreadsheet")).ToList();
+
+                var siteId = cells[1].Value.Substring(0, 5);
+                var groups = cells[2].Value;
+
+                obeliskGroupings.Add(siteId, groups);
+            }
+        }
+
 
         #endregion
 

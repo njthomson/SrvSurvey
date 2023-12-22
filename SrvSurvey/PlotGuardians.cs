@@ -78,6 +78,7 @@ namespace SrvSurvey
             base.OnFormClosing(e);
 
             PlotGuardians.instance = null;
+            Program.closePlotter<PlotGuardianStatus>();
         }
 
         public override void reposition(Rectangle gameRect)
@@ -103,6 +104,8 @@ namespace SrvSurvey
         protected override void initialize()
         {
             base.initialize();
+
+            this.siteData.loadPub();
 
             this.nextMode();
         }
@@ -506,7 +509,7 @@ namespace SrvSurvey
 
             if (msg == "..")
             {
-                var dist = ((double)Util.getDistance(Status.here, siteData.location, (decimal)game.nearBody!.radius)).ToString("N1");
+                var dist = ((double)Util.getDistance(Status.here, siteData.location, (decimal)game.systemBody!.radius)).ToString("N1");
                 // get angle relative to North, then adjust by siteHeading
                 var angle = ((float)new Angle((Util.getBearing(Status.here, siteData.location) - siteData.siteHeading))).ToString("N1");
                 var rot = (int)new Angle(game.status.Heading - this.siteData.siteHeading);
@@ -898,7 +901,7 @@ namespace SrvSurvey
                 //    (float)(offset.Long * template.scaleFactor),
                 //    (float)(offset.Lat * -template.scaleFactor));
                 //Game.log($"commanderOffset old: {commanderOffset}");
-                var td = new TrackingDelta(game.nearBody!.radius, siteData.location);
+                var td = new TrackingDelta(game.systemBody!.radius, siteData.location);
                 var ss = 1f;
                 this.commanderOffset = new PointF(
                     (float)td.dx * ss,
@@ -960,7 +963,7 @@ namespace SrvSurvey
             // update cmdr location relative to origin if editor is running
             if (formEditMap != null && this.siteData != null)
             {
-                var td = new TrackingDelta(game.nearBody!.radius, this.siteData.location);
+                var td = new TrackingDelta(game.systemBody!.radius, this.siteData.location);
                 formEditMap.txtDeltaLat.Text = td.dy.ToString("N2") + "m";
                 formEditMap.txtDeltaLong.Text = td.dx.ToString("N2") + "m";
             }
@@ -1073,7 +1076,7 @@ namespace SrvSurvey
             var vr = 5;
 
             // calculate deltas from site origin to ship
-            var td = new TrackingDelta(game.nearBody!.radius, siteData.location!);
+            var td = new TrackingDelta(game.systemBody!.radius, siteData.location!);
             var x = -td.dx;
             var y = td.dy;
 

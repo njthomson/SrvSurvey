@@ -274,13 +274,13 @@ namespace SrvSurvey
             {
                 if (Game.activeGame.cmdr.scanOne.genus != genusName) return false;
 
-                var dist = Util.getDistance(location, Game.activeGame.cmdr.scanOne.location, Game.activeGame.nearBody.radius);
+                var dist = Util.getDistance(location, Game.activeGame.cmdr.scanOne.location, Game.activeGame.systemBody!.radius);
                 if (dist < minDist)
                     return true;
             }
             if (Game.activeGame.cmdr.scanTwo != null)
             {
-                var dist = Util.getDistance(location, Game.activeGame.cmdr.scanTwo.location, Game.activeGame.nearBody.radius);
+                var dist = Util.getDistance(location, Game.activeGame.cmdr.scanTwo.location, Game.activeGame.systemBody!.radius);
                 if (dist < minDist)
                     return true;
             }

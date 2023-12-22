@@ -283,8 +283,12 @@ namespace SrvSurvey.game
 
         public void loadPub()
         {
+            if (this.pubData != null)
+                return;
+
             var pubPath = Path.Combine(Program.dataFolder, "pub", "guardian", Path.GetFileName(this.filepath));
-            if (!File.Exists(pubPath)) return;
+            if (!File.Exists(pubPath))
+                return;
 
             Game.log($"Reading pubData for '{this.bodyName}' #{this.index} ({this.type}");
             var json = File.ReadAllText(pubPath);
@@ -310,8 +314,8 @@ namespace SrvSurvey.game
                 {
                     t = this.type,
                     idx = this.index,
-                    sa = this.systemAddress,
-                    bi = this.bodyId,
+                    //sa = this.systemAddress,
+                    //bi = this.bodyId,
                     ll = this.location,
                     sh = this.siteHeading,
                     rh = this.relicTowerHeading,

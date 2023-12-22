@@ -577,14 +577,22 @@ namespace SrvSurvey.game
 
     internal class GuardianSitePub
     {
+        [JsonIgnore]
+        public string systemName;
+        [JsonIgnore]
+        public string bodyName;
+
+        /// <summary> Canonn SiteId </summary>
+        public string sid;
+
         /// <summary> Index of ruins </summary>
         public int idx;
 
         /// <summary> System address </summary>
-        public long sa;
+        //public long sa;
 
-        /// <summary> BodyId  </summary>
-        public int bi;
+        /// <summary> BodyId </summary>
+        //public int bi;
 
         /// <summary> Site heading </summary>
         public int sh;
@@ -596,7 +604,7 @@ namespace SrvSurvey.game
         /// <summary> Relic tower heading, if applicable </summary>
         public int rh;
 
-        /// <summary> Relic tower heading, if applicable </summary>
+        /// <summary> Lat/Long location </summary>
         public LatLong2 ll;
 
         /// <summary> POI status : absent </summary>

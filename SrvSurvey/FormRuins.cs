@@ -439,7 +439,7 @@ namespace SrvSurvey
 
             var siteData = Game.activeGame.nearBody.siteData;
 
-            var cd = Util.getDistance(Status.here, siteData.location, (decimal)Game.activeGame.nearBody.radius);
+            var cd = Util.getDistance(Status.here, siteData.location, (decimal)Game.activeGame.systemBody!.radius);
             var cA = DecimalEx.PiHalf + Util.getBearingRad(siteData.location, Status.here) - (decimal)Util.degToRad(siteData.siteHeading);
 
             return new PointF(
