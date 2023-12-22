@@ -169,8 +169,9 @@ namespace SrvSurvey
 
 
             var poiType = poi.type.ToString().ToUpper();
+            var obelisk = siteData.getActiveObelisk(poi.name);
 
-            var isActive = siteData.activeObelisks != null && siteData.activeObelisks.ContainsKey(poi.name) == true;
+            var isActive = obelisk != null; // siteData.activeObelisks != null && siteData.activeObelisks.ContainsKey(poi.name) == true;
             var headerTxt = $"Obelisk {poi.name}: ";
             if (poi.type == POIType.brokeObelisk)
                 headerTxt += "Broken";
@@ -181,7 +182,6 @@ namespace SrvSurvey
             this.dty = 30;
             if (isActive)
             {
-                var obelisk = siteData.activeObelisks![poi.name];
 
                 // show the material reward, or a hint to scan it
                 if (obelisk.data != null && obelisk.data.Count > 0)
@@ -190,7 +190,7 @@ namespace SrvSurvey
                     if (obelisk.scanned)
                         this.drawFooterText("You have scanned this obelisk");
                     else
-                        this.drawFooterText("You have not scanned this obelisk");
+                        this.drawFooterText("You have not scanned this obelisk", GameColors.brushCyan);
                 }
                 else
                 {
@@ -225,6 +225,8 @@ namespace SrvSurvey
             {
                 //this.drawTextAt("Inactive", GameColors.brushGameOrange, GameColors.fontMiddle);
                 //this.drawFooterText("Send '.ao <item1> <item2> to declare active");
+                this.drawFooterText("Active obelisk groups: " + string.Join(" ", siteData.obeliskGroups));
+                    //"Send '.ao <item1> <item2> to declare active");
             }
 
             this.drawHeaderText(headerTxt);
@@ -374,6 +376,7 @@ namespace SrvSurvey
 
         protected override void onJournalEntry(SupercruiseEntry entry)
         {
+            Program.closePlotter<PlotGuardianStatus>();
             Program.closePlotter<PlotGuardianBeaconStatus>();
         }
 

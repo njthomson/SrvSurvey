@@ -541,6 +541,7 @@ namespace SrvSurvey
                 lblGuardianCount.Text = "";
                 txtGuardianSite.Text = "";
                 Program.closePlotter<PlotGuardians>();
+                Program.closePlotter<PlotGuardianStatus>();
                 btnRuinsMap.Enabled = false;
                 btnRuinsOrigin.Enabled = false;
             }
@@ -549,6 +550,7 @@ namespace SrvSurvey
                 lblGuardianCount.Text = "0";
                 txtGuardianSite.Text = "";
                 Program.closePlotter<PlotGuardians>();
+                Program.closePlotter<PlotGuardianStatus>();
                 btnRuinsMap.Enabled = false;
                 btnRuinsOrigin.Enabled = false;
             }

@@ -35,6 +35,8 @@
         public const string aod = ".aod ";
         /// <summary> PlotGuardians : Active Obelisk Message - set what Ram Tah mission message an obelisk provides, eg: History $12 '.aom h12' or Biology #9 '.aom 'B9 </summary>
         public const string aom = ".aom ";
+        /// <summary> PlotGuardians : Create a publish file for the current Guardian site </summary>
+        public const string pubSite = ".pubsite";
 
         /// <summary> Main: Open the images folder </summary>
         public const string imgs = ".imgs";

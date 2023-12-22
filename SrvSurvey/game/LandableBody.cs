@@ -202,6 +202,7 @@ namespace SrvSurvey.game
             {
                 Game.log($"Nearest site '{nearest.Name_Localised}' is {Util.metersToString(dist)} away, location: {new LatLong2(nearest)} vs Here: {Status.here}");
                 this.siteData = GuardianSiteData.Load(nearest);
+                this.siteData.loadPub(); // maybe not the best place?
 
                 if (string.IsNullOrEmpty(this.siteData.systemName))
                 {

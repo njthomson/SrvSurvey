@@ -474,7 +474,7 @@ namespace SrvSurvey.canonn
                 idx = _.index,
                 latitude = _.location.Lat,
                 longitude = _.location.Long,
-                notes = _.notes,
+                notes = _.notes ?? "",
             };
             entry.merge(_);
 

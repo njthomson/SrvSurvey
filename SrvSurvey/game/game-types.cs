@@ -1,6 +1,9 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 using SrvSurvey.canonn;
+using SrvSurvey.units;
+using static SrvSurvey.game.GuardianSiteData;
 
 namespace SrvSurvey.game
 {
@@ -571,4 +574,55 @@ namespace SrvSurvey.game
         }
 
     }
+
+    internal class GuardianSitePub
+    {
+        /// <summary> Index of ruins </summary>
+        public int idx;
+
+        /// <summary> System address </summary>
+        public long sa;
+
+        /// <summary> BodyId  </summary>
+        public int bi;
+
+        /// <summary> Site heading </summary>
+        public int sh;
+
+        /// <summary> Site type, eg: Alpha, Beta, Bear, Robolobster, etc </summary>
+        [JsonConverter(typeof(StringEnumConverter))]
+        public SiteType t;
+
+        /// <summary> Relic tower heading, if applicable </summary>
+        public int rh;
+
+        /// <summary> Relic tower heading, if applicable </summary>
+        public LatLong2 ll;
+
+        /// <summary> POI status : absent </summary>
+        public string pa;
+
+        /// <summary> POI status : present </summary>
+        public string pp;
+
+        /// <summary> POI status : present </summary>
+        public string pe;
+
+        /// <summary>
+        /// Obelisk groups - a bunch of letters, to be split into a HashSet
+        /// </summary>
+        public string og;
+
+        /// <summary>
+        /// Active Obelisks - a string of this encoding:
+        /// 
+        /// "{name}{! if scanned}-{item1},{item2}-{msg}-{data1}-{data2},{data3}"
+        /// 
+        /// Eg:
+        /// "F07!-ca,to-H15-b,e"
+        /// 
+        /// </summary>
+        public List<ActiveObelisk> ao;
+    }
+
 }

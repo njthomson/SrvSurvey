@@ -75,7 +75,9 @@ namespace SrvSurvey
         };
 
         public static Pen penLime2 = new Pen(LimeIsh, 2);
+        public static Pen penLime2Dot = new Pen(Color.FromArgb(64, GameColors.LimeIsh), 2) { DashStyle = DashStyle.Dash };
         public static Pen penLime4 = new Pen(LimeIsh, 4);
+        public static Pen penLime4Dot = new Pen(Color.FromArgb(128, GameColors.LimeIsh), 4) { DashStyle = DashStyle.Dash };
 
         public static Pen penOrangeStripe3;
 
