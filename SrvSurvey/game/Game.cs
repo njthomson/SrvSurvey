@@ -903,6 +903,7 @@ namespace SrvSurvey.game
             catch (Exception ex)
             {
                 Game.log($"Exception processing event '{entry.@event}':\r\n{ex}");
+                FormErrorSubmit.Show(ex);
             }
         }
 
