@@ -888,14 +888,21 @@ namespace SrvSurvey.game
 
         private void Journals_onJournalEntry(JournalEntry entry, int index)
         {
-            Game.log($"Game.event => {entry.@event}");
-            this.onJournalEntry((dynamic)entry);
-
-            if (this.systemData != null)
+            try
             {
-                this.systemData.Journals_onJournalEntry(entry);
-                // TODO: maybe not every time?
-                this.systemData.Save();
+                Game.log($"Game.event => {entry.@event}");
+                this.onJournalEntry((dynamic)entry);
+
+                if (this.systemData != null)
+                {
+                    this.systemData.Journals_onJournalEntry(entry);
+                    // TODO: maybe not every time?
+                    this.systemData.Save();
+                }
+            }
+            catch (Exception ex)
+            {
+                Game.log($"Exception processing event '{entry.@event}':\r\n{ex}");
             }
         }
 

@@ -789,6 +789,12 @@ namespace SrvSurvey
                 using (var img = Bitmap.FromFile(filepath))
                     this.headingGuidance = new Bitmap(img);
             }
+            else if (siteData.name.StartsWith("$Ancient_Medium") || siteData.name.StartsWith("$Ancient_Small"))
+            {
+                filepath = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "images", $"data-port-heading-guide.png");
+                using (var img = Bitmap.FromFile(filepath))
+                    this.headingGuidance = new Bitmap(img);
+            }
         }
 
         protected void confirmPOI(SitePoiStatus poiStatus)
@@ -1364,7 +1370,7 @@ namespace SrvSurvey
                 var y = pt.Y - commanderOffset.Y;
                 var d = Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
 
-                if (poiStatus == SitePoiStatus.unknown && d < nearestUnknownDist && (isRuinsPoi(poi.type) 
+                if (poiStatus == SitePoiStatus.unknown && d < nearestUnknownDist && (isRuinsPoi(poi.type)
                     && (poi.type == POIType.relic == (game.vehicle == ActiveVehicle.SRV)) // only target Relic Towers when in SRV
                     || (Game.settings.enableEarlyGuardianStructures && !siteData.isRuins && poi.type != POIType.obelisk && poi.type != POIType.brokeObelisk)))
                 {
@@ -1413,6 +1419,21 @@ namespace SrvSurvey
             {
                 // make sure we're relatively close before selecting the item
                 this.nearestPoi = null!;
+
+                switch (siteData.type)
+                {
+                    case SiteType.Bowl:
+                    case SiteType.Crossroads:
+                    case SiteType.Fistbump:
+                    case SiteType.Hammerbot:
+                    case SiteType.Lacrosse:
+                    case SiteType.Squid:
+                    case SiteType.Stickyhand:
+                    case SiteType.Turtle:
+                        // there is no map for these
+                        this.drawFooterText($"(There is no map yet for: {siteData.type})");
+                        break;
+                }
             }
             else if (nearestPoi != null)
             {
@@ -1930,16 +1951,41 @@ namespace SrvSurvey
             var ty = 20f;
 
             var isRuins = siteData.isRuins;
-            msg = $"Need site heading\r\n\r\n■ To use current heading either:\r\n    - Toggle cockpit mode twice\r\n    - Send message:   .heading\r\n\r\n■ Or send message: <degrees>";
+            msg = $"Need site heading:\r\n\r\n■ To use current heading either:\r\n    - Toggle cockpit mode twice\r\n    - Send message:   .heading\r\n\r\n■ Or send message: <degrees>";
             if (isRuins)
                 msg += $"\r\n\r\nAlign with this buttress:";
+            else
+            {
+                switch (siteData.type)
+                {
+                    case SiteType.Bowl:
+                    case SiteType.Crossroads:
+                    case SiteType.Fistbump:
+                    case SiteType.Hammerbot:
+                    case SiteType.Lacrosse:
+                    case SiteType.Squid:
+                    case SiteType.Stickyhand:
+                    case SiteType.Turtle:
+                        // there is no map for these
+                        msg += $"\r\n\r\n■ Note: there is no map yet for: {siteData.type}";
+                        break;
+
+                        //case SiteType.Robolobster:
+                        //case SiteType.Bear:
+                        // these have a map
+                        //    break;
+                }
+
+                if (siteData.name.StartsWith("$Ancient_Medium") || siteData.name.StartsWith("$Ancient_Small"))
+                    msg += $"\r\n\r\nAlign with the data port:";
+            }
             var sz = g.MeasureString(msg, GameColors.fontMiddle, this.Width);
 
             g.DrawString(msg, GameColors.fontMiddle, GameColors.brushCyan, tx, ty, StringFormat.GenericTypographic);
 
-            // show location of helpful buttress
-            if (isRuins && this.headingGuidance != null)
-                g.DrawImage(this.headingGuidance, 40, 20 + sz.Height); //, 200, 200);
+            // show location of buttress or other thing to align with
+            if (this.headingGuidance != null)
+                g.DrawImage(this.headingGuidance, 40, 20 + sz.Height);
         }
 
         #region static accessing stuff
