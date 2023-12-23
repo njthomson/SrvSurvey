@@ -24,6 +24,13 @@ namespace SrvSurvey.game
             return $"{bodyName}-{namePart}-{index}.json";
         }
 
+        public static GuardianSiteData? Load(string bodyName, string settlementName)
+        {
+            var isRuins = settlementName.StartsWith("$Ancient:") == true;
+            var idx = GuardianSiteData.parseSettlementIdx(settlementName);
+            return Load(bodyName, idx, isRuins);
+        }
+
         public static GuardianSiteData? Load(string bodyName, int index, bool isRuins)
         {
             var fid = Game.activeGame?.fid ?? Game.settings.lastFid!;

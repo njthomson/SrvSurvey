@@ -829,16 +829,17 @@ namespace SrvSurvey
 
         protected override void Status_StatusChanged(bool blink)
         {
-            if (this.IsDisposed || game?.status == null || this.IsDisposed) return;
+            if (this.IsDisposed || game?.status == null || this.IsDisposed || game.systemBody == null) return;
 
             base.Status_StatusChanged(blink);
 
-            if (game.status.Altitude > 4000)
+            if (game.systemSite == null)
             {
-                Game.log("Too high, closing PlotGuardians");
+                Game.log("Too far, closing PlotGuardians");
                 game.fireUpdate(true);
                 Program.closePlotter<PlotGuardians>();
                 Program.closePlotter<PlotGuardianStatus>();
+                return;
             }
 
             // show Relic Tower aiming assistance when on foot and using this tool

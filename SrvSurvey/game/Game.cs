@@ -112,6 +112,7 @@ namespace SrvSurvey.game
 
         public SystemData? systemData;
         public SystemBody? systemBody;
+        public GuardianSiteData? systemSite;
 
         /// <summary>
         /// Distinct settings for the current commander
@@ -310,6 +311,9 @@ namespace SrvSurvey.game
                 this.systemBody = null;
             }
 
+            // set or clear 'systemSite'
+            this.setCurrentSite();
+
             this.checkModeChange();
         }
 
@@ -427,13 +431,15 @@ namespace SrvSurvey.game
         public bool showGuardianPlotters
         {
             get => Game.settings.enableGuardianSites
+                && this.systemSite != null
                 && this.nearBody?.siteData != null
                 && this.nearBody?.siteData.location != null // ??
                 && this.isMode(GameMode.InSrv, GameMode.OnFoot, GameMode.Landed, GameMode.Flying, GameMode.InFighter)
                 && !this.hidePlottersFromCombatSuits
-                && this.status.Altitude < 4000
-                && this.systemBody != null 
-                && Util.getDistance(this.nearBody.siteData.location, Status.here, this.systemBody.radius) < 4000;
+                //&& this.status.Altitude < 4000
+                && this.systemBody != null
+            ;
+//                && Util.getDistance(this.nearBody.siteData.location, Status.here, this.systemBody.radius) < 2000;
         }
 
         #endregion
@@ -976,7 +982,13 @@ namespace SrvSurvey.game
                 this.Status_StatusChanged(false);
             }
 
-            if (entry.MusicTrack == "GuardianSites" && this.nearBody != null)
+            if (entry.MusicTrack == "GuardianSites" && this.systemBody != null)
+            {
+                // Are we at a Guardian site without realizing?
+                Program.control.BeginInvoke(new Action(this.setCurrentSite));
+            }
+
+            if (entry.MusicTrack == "GuardianSites" && this.nearBody != null)  // retire
             {
                 // Are we at a Guardian site without realizing?
                 if (this.nearBody.siteData == null)
@@ -1138,6 +1150,60 @@ namespace SrvSurvey.game
             this.fireUpdate(true);
         }
 
+        public string? getNearestSettlement()
+        {
+            // must be near a body and under 4km
+            if (this.systemBody == null || this.status.Altitude > 4000)
+                return null;
+
+            return this.systemBody.settlements?.Keys.FirstOrDefault(_ =>
+            {
+                if (_.StartsWith("$Ancient:") || (_.StartsWith("$Ancient_") && Game.settings.enableEarlyGuardianStructures))
+                {
+                    var dist = Util.getDistance(this.systemBody.settlements[_], Status.here, this.systemBody.radius);
+                    // Game.log($"{_}: {dist}");
+                    return dist < 2000;
+                }
+
+                return false;
+            });
+        }
+
+        private void setCurrentSite()
+        {
+            var fireEvent = false;
+            var nearestSettlement = this.getNearestSettlement();
+
+            if (this.systemBody != null)
+            {
+                // load 'systemSite' if needed
+                if (nearestSettlement != null && nearestSettlement.StartsWith("$Ancient"))
+                {
+                    log($"Close enough, creating  systemSite: '{nearestSettlement}' on '{this.systemBody!.name}' ");
+
+                    if (this.systemSite == null)
+                    {
+                        this.systemSite = GuardianSiteData.Load(this.systemBody.name, nearestSettlement);
+                        fireEvent = true;
+                    }
+                    else if (this.systemSite.name != nearestSettlement)
+                        throw new Exception($"Bad settlements? Have '{this.systemSite.name}' but should it be '{nearestSettlement}' ?");
+                }
+            }
+
+            // remove 'systemSite' if needed
+            if (nearestSettlement == null && this.systemSite != null)
+            {
+                log($"Too far, clearing systemSite: '{systemSite.name}' ");
+                this.systemSite.Save();
+                this.systemSite = null;
+                fireEvent = true;
+            }
+
+            if (fireEvent)
+                this.fireUpdate(true);
+        }
+
         private void setCurrentBody(string bodyName)
         {
             log($"setCurrentBody by name: {bodyName}");
@@ -1147,6 +1213,7 @@ namespace SrvSurvey.game
                 return;
             }
             this.systemBody = this.systemData.bodies.FirstOrDefault(_ => _.name == bodyName);
+            this.setCurrentSite();
             Program.invalidateActivePlotters();
         }
 
@@ -1156,6 +1223,7 @@ namespace SrvSurvey.game
             if (this.systemData == null)
                 throw new Exception($"Why no systemData for bodyId: {bodyId}?");
             this.systemBody = this.systemData.bodies.FirstOrDefault(_ => _.id == bodyId);
+            this.setCurrentSite();
             Program.invalidateActivePlotters();
         }
 
@@ -1192,6 +1260,7 @@ namespace SrvSurvey.game
                 cmdr.currentBodyId = -1;
                 cmdr.currentBodyRadius = -1;
                 this.systemBody = null;
+                this.setCurrentSite();
             }
             cmdr.lastSystemLocation = Util.getLocationString(entry.StarSystem, entry.Body);
             cmdr.Save();
@@ -1256,6 +1325,7 @@ namespace SrvSurvey.game
                 cmdr.currentBodyId = -1;
                 cmdr.currentBodyRadius = -1;
                 this.systemBody = null;
+                this.setCurrentSite();
             }
 
             cmdr.lastSystemLocation = Util.getLocationString(entry.Starsystem, entry.Body);
@@ -1295,6 +1365,7 @@ namespace SrvSurvey.game
                 cmdr.currentBodyId = -1;
                 cmdr.currentBodyRadius = -1;
                 this.systemBody = null;
+                this.setCurrentSite();
             }
 
             cmdr.lastSystemLocation = Util.getLocationString(entry.StarSystem, entry.Body);

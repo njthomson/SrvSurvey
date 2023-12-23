@@ -452,6 +452,7 @@ namespace SrvSurvey.game
             nameof(Touchdown),
             nameof(CodexEntry),
             nameof(ScanOrganic),
+            nameof(ApproachSettlement),
         };
 
         public void Journals_onJournalEntry(JournalEntry entry) { this.onJournalEntry((dynamic)entry); }
@@ -890,6 +891,16 @@ namespace SrvSurvey.game
             }
         }
 
+        public void onJournalEntry(ApproachSettlement entry)
+        {
+            if (entry.SystemAddress != this.address) throw new ArgumentOutOfRangeException($"Unmatched system! Expected: `{this.address}`, got: {entry.SystemAddress}");
+            var body = this.findOrCreate(entry.BodyName, entry.BodyID);
+
+            // update settlements
+            if (body.settlements == null) body.settlements = new Dictionary<string, LatLong2>();
+            body.settlements[entry.Name] = entry;
+        }
+
         #endregion
 
         public override string ToString()
@@ -1049,6 +1060,10 @@ namespace SrvSurvey.game
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public bool firstFootFall;
+
+        /// <summary> A of settlements known on this body. /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public Dictionary<string, LatLong2> settlements;
 
         #endregion
 

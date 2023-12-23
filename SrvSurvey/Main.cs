@@ -568,8 +568,11 @@ namespace SrvSurvey
                     {
                         Program.showPlotter<PlotGuardians>();
                         Program.showPlotter<PlotGuardianStatus>();
+
                         Program.closePlotter<PlotGrounded>();
                         Program.closePlotter<PlotBioStatus>();
+                        Program.closePlotter<PlotPriorScans>();
+                        Program.closePlotter<PlotTrackers>();
                     }
 
                     btnRuinsMap.Enabled = game.nearBody.siteData.siteHeading != -1 && this.game.showGuardianPlotters;
@@ -811,7 +814,7 @@ namespace SrvSurvey
         {
             try
             {
-                Application.Exit();
+                this.Close();
             }
             catch
             {
