@@ -2337,8 +2337,8 @@
   "Fistbump": {
     "name": "Fistbump",
     "backgroundImage": "",
-    "imageOffset": "310, 590",
-    "scaleFactor": 1.1,
+    "imageOffset": "357, 461",
+    "scaleFactor": 0.41,
     "poi": [
       {
         "type": "relic",

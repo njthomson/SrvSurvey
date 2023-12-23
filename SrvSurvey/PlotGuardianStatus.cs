@@ -182,9 +182,8 @@ namespace SrvSurvey
             this.dty = 30;
             if (isActive)
             {
-
                 // show the material reward, or a hint to scan it
-                if (obelisk.data != null && obelisk.data.Count > 0)
+                if (obelisk?.data != null && obelisk.data.Count > 0)
                 {
                     headerTxt += " - " + string.Join(", ", obelisk.data).ToUpperInvariant();
                     if (obelisk.scanned)
@@ -198,11 +197,11 @@ namespace SrvSurvey
                 }
 
                 var items = "??";
-                if (obelisk.items != null)
+                if (obelisk?.items != null)
                     items = string.Join(", ", obelisk.items).ToUpperInvariant();
 
                 var txt = $"Requires: {items} for ";
-                if (!string.IsNullOrWhiteSpace(obelisk.msg))
+                if (!string.IsNullOrWhiteSpace(obelisk?.msg))
                 {
                     string msg = "";
                     switch (obelisk.msg[0])

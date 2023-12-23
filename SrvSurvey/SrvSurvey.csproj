@@ -54,10 +54,13 @@
     <None Remove="images\bear-background.png" />
     <None Remove="images\beta-background.png" />
     <None Remove="images\beta-heading-guide.png" />
+    <None Remove="images\crossroads-heading-guide.png" />
     <None Remove="images\data-port-heading-guide.png" />
     <None Remove="images\fistbump-background.png" />
+    <None Remove="images\fistbump-heading-guide.png" />
     <None Remove="images\gamma-background.png" />
     <None Remove="images\gamma-heading-guide.png" />
+    <None Remove="images\lacrosse-heading-guide.png" />
     <None Remove="images\robolobster-background.png" />
     <None Remove="settlementTemplates.json" />
   </ItemGroup>
@@ -87,16 +90,25 @@
     <Content Include="images\beta-heading-guide.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="images\crossroads-heading-guide.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="images\data-port-heading-guide.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="images\fistbump-background.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="images\fistbump-heading-guide.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="images\gamma-background.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="images\gamma-heading-guide.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\lacrosse-heading-guide.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="images\robolobster-background.png">

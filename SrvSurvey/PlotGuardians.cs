@@ -97,6 +97,12 @@ namespace SrvSurvey
 
         private void PlotGuardians_Load(object sender, EventArgs e)
         {
+            // if these are open - close them
+            Program.closePlotter<PlotBioStatus>();
+            Program.closePlotter<PlotGrounded>();
+            Program.closePlotter<PlotPriorScans>();
+            Program.closePlotter<PlotTrackers>();
+
             this.initialize();
             this.reposition(Elite.getWindowRect(true));
         }
@@ -395,7 +401,7 @@ namespace SrvSurvey
             }
             else if (msg.StartsWith(MsgCmd.aod, StringComparison.OrdinalIgnoreCase) && this.nearestPoi?.type == POIType.obelisk)
             {
-                var obelisk = this.siteData.getActiveObelisk(this.nearestPoi.name, true);
+                var obelisk = this.siteData.getActiveObelisk(this.nearestPoi.name, true)!;
 
                 var parts = msg
                     .ToLowerInvariant()
@@ -1302,7 +1308,12 @@ namespace SrvSurvey
 
         private void drawArtifacts()
         {
-            if (this.template == null || this.template.poi.Count == 0) return;
+            if (this.template == null || this.template.poi.Count == 0)
+            {
+                // there is no map for these
+                this.drawFooterText($"(There is no map yet for: {siteData.type})");
+                return;
+            }
 
             // get pixel location of site origin relative to overlay window
             g.ResetTransform();
@@ -1424,7 +1435,6 @@ namespace SrvSurvey
                 {
                     case SiteType.Bowl:
                     case SiteType.Crossroads:
-                    case SiteType.Fistbump:
                     case SiteType.Hammerbot:
                     case SiteType.Lacrosse:
                     case SiteType.Squid:
@@ -1970,8 +1980,9 @@ namespace SrvSurvey
                         msg += $"\r\n\r\n■ Note: there is no map yet for: {siteData.type}";
                         break;
 
-                        //case SiteType.Robolobster:
-                        //case SiteType.Bear:
+                    //case SiteType.Robolobster:
+                    //case SiteType.Bear:
+                    //case SiteType.Fistbump:
                         // these have a map
                         //    break;
                 }

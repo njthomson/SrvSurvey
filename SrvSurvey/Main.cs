@@ -809,7 +809,15 @@ namespace SrvSurvey
 
         private void btnQuit_Click(object sender, EventArgs e)
         {
-            Application.Exit();
+            try
+            {
+                Application.Exit();
+            }
+            catch
+            {
+                // swallow
+                Application.Exit();
+            }
         }
 
         private void btnViewLogs_Click(object sender, EventArgs e)
