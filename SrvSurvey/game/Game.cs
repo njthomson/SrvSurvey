@@ -1719,11 +1719,12 @@ namespace SrvSurvey.game
                     // find the entry with the entryId and reward value. Sadly, it's not possible to concretely tie it to the system or body.
                     var txtReward = data.Value.ToString();
                     var scannedEntryId = this.cmdr.scannedBioEntryIds.FirstOrDefault(_ => _.Contains(speciesRef.entryIdPrefix) && _.Contains(txtReward));
+                    Game.log($"SellOrganicData: sell: '{data.Species_Localised}' ({data.Species}, prefix: {speciesRef.entryIdPrefix}, match: {scannedEntryId}) for {txtReward} Cr");
                     if (scannedEntryId != null)
                         cmdr.scannedBioEntryIds.Remove(scannedEntryId);
                     else
                     {
-                        Game.log($"No scannedBioEntryIds match found when selling: {data.Species_Localised} for {data.Value} Cr");
+                        Game.log($"SellOrganicData: No scannedBioEntryIds? For: '{data.Species_Localised}' ({data.Species}, {scannedEntryId}) for {txtReward} Cr");
                         continue;
                     }
                 }
