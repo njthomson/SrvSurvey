@@ -1528,18 +1528,10 @@ namespace SrvSurvey.game
                     continue;
                 }
 
-                // retire?
-                var match = cmdr.scannedOrganics.Find(_ => _.species == data.Species && _.reward == data.Value);
-                if (match == null)
-                {
-                    Game.log($"No scannedOrganics match found when selling: {data.Species_Localised} for {data.Value} Cr");
-                    continue;
-                }
 
-                cmdr.organicRewards -= data.Value;
-                cmdr.scannedOrganics.Remove(match);
             }
 
+            cmdr.reCalcOrganicRewards();
             cmdr.Save();
             Game.log($"SellOrganicData: post-sale total: {this.cmdr.organicRewards} (from {cmdr.scannedBioEntryIds.Count} sigals)\r\n{String.Join("\r\n", cmdr.scannedBioEntryIds)}");
             // force a mode change to update ux
