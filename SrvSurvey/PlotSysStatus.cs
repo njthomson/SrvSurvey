@@ -104,6 +104,7 @@ namespace SrvSurvey
             var sys = this.game.systemStatus;
             var destinationBody = game.status.Destination?.Name?.Replace(sys.name, "").Replace(" ", "");
 
+            var minViableWidth = 170;
             try
             {
                 if (this.nextSystem != null)
@@ -145,9 +146,19 @@ namespace SrvSurvey
                 var headerTxt = "";
                 if (game.systemData.fssComplete && (Game.settings.skipLowValueDSS || !Game.settings.skipRingsDSS))
                 {
+                    minViableWidth += 20;
+
                     headerTxt += "(";
-                    if (Game.settings.skipLowValueDSS) headerTxt += $" >{Util.credits(Game.settings.skipLowValueAmount)}";
-                    if (!Game.settings.skipRingsDSS) headerTxt += " +Rings";
+                    if (Game.settings.skipLowValueDSS)
+                    {
+                        headerTxt += $" >{Util.credits(Game.settings.skipLowValueAmount)}";
+                        minViableWidth += 80;
+                    }
+                    if (!Game.settings.skipRingsDSS)
+                    {
+                        headerTxt += " +Rings";
+                        minViableWidth += 45;
+                    }
                     headerTxt += " )";
                 }
                 g.DrawString($"System survey remaining: {headerTxt}", GameColors.fontSmall, GameColors.brushGameOrange, 4, 7);
@@ -155,7 +166,7 @@ namespace SrvSurvey
             finally
             {
                 // resize window to fit as necessary
-                this.Width = Math.Max((int)this.dtx + 6, 170);
+                this.Width = Math.Max((int)this.dtx + 6, minViableWidth);
             }
         }
 

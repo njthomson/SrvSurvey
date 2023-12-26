@@ -571,7 +571,8 @@ namespace SrvSurvey.game
             var body = this.findOrCreate(entry.Body, entry.BodyID);
 
             // update fields
-            body.lastVisited = DateTimeOffset.Now;
+            if (entry.timestamp > body.lastVisited)
+                body.lastVisited = entry.timestamp;
         }
 
         public void onJournalEntry(Touchdown entry)
@@ -690,19 +691,6 @@ namespace SrvSurvey.game
                 //        organism.entryId = long.Parse(match.entryid);
                 //    else
                 //        Game.log($"No codexRef match found for organism '{entry.Variant_Localised ?? entry.Variant}' to '{body.name}' ({body.id})");
-                //}
-
-                // TODO: enact this when retiring game.nearBody ...
-                //// track scans as completed
-                //if (game.cmdr.scanOne != null)
-                //{
-                //    // (this can happen if there are 2 copies of Elite running at the same time)
-                //    game.cmdr.scanOne!.status = BioScan.Status.Complete;
-                //    data.bioScans.Add(game.cmdr.scanOne);
-                //    game.systemBody?.bioScans!.Add(game.cmdr.scanOne); // !
-                //    game.cmdr.scanTwo!.status = BioScan.Status.Complete;
-                //    data.bioScans.Add(game.cmdr.scanTwo);
-                //    game.systemBody?.bioScans!.Add(game.cmdr.scanTwo); // !
                 //}
 
                 // efficiently track which organisms were scanned where
@@ -1019,6 +1007,9 @@ namespace SrvSurvey.game
         public decimal radius;
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public double surfaceGravity;
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public bool wasDiscovered;
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
@@ -1071,9 +1062,6 @@ namespace SrvSurvey.game
         {
             return $"'{this.name}' ({this.id}, {this.type})";
         }
-
-        [JsonIgnore]
-        public double surfaceGravity; // keep in memory but it's not worth saving in files
 
         [JsonIgnore]
         public bool hasRings { get => this.rings?.Count > 0; }

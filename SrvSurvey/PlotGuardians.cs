@@ -35,7 +35,7 @@ namespace SrvSurvey
         public Mode mode;
         private PointF commanderOffset;
 
-        private GuardianSiteData siteData { get => game?.nearBody?.siteData!; }
+        private GuardianSiteData siteData { get => game?.systemSite!; }
 
         private PlotGuardians() : base()
         {
@@ -1012,7 +1012,7 @@ namespace SrvSurvey
 
         protected override void OnPaintBackground(PaintEventArgs e)
         {
-            if (this.IsDisposed || game.isShutdown) return;
+            if (this.IsDisposed || game.isShutdown || this.siteData == null) return;
 
             //Game.log($"-- -- --> PlotGuardians: OnPaintBackground {this.template?.imageOffset} / {this.template?.scaleFactor}");
             if (this.template != null)
@@ -1931,7 +1931,7 @@ namespace SrvSurvey
             if (g == null) return;
 
             this.drawHeaderText($"{siteData.nameLocalised} | {siteData.type} | ???°");
-            this.drawFooterText($"{game.nearBody!.bodyName}");
+            this.drawFooterText($"{game.systemBody?.name}");
             g.ResetTransform();
             this.clipToMiddle();
 
@@ -1940,7 +1940,7 @@ namespace SrvSurvey
             var tx = 10f;
             var ty = 20f;
 
-            this.drawFooterText($"{game.nearBody!.bodyName}");
+            this.drawFooterText($"{game.systemBody?.name}");
 
             // if we don't know the site type yet ...
             msg = $"\r\nSelect site type with \r\nfire group or send\r\nmessage:\r\n\r\n 'a' for Alpha\r\n\r\n 'b' for Beta\r\n\r\n 'g' for Gamma";
@@ -1953,7 +1953,7 @@ namespace SrvSurvey
             if (g == null) return;
 
             this.drawHeaderText($"{siteData.nameLocalised} | {siteData.type} | ???°");
-            this.drawFooterText($"{game.nearBody!.bodyName}");
+            this.drawFooterText($"{game.systemBody?.name}");
             g.ResetTransform();
             this.clipToMiddle();
 

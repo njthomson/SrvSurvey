@@ -55,6 +55,14 @@ namespace SrvSurvey.units
         public void calc()
         {
             this.distance = Util.getDistance(this.current, this.target, this.radius);
+            if (distance == 0)
+            {
+                this.complete = 0;
+                this.angle = 0;
+                this.dx = 0;
+                this.dy = 0;
+                return;
+            }
 
             this.complete = 100.0M / this.radius * this.distance;
             //Game.log($"ccomplete: {this.halfCirc} / {this.distance} / {this.complete}");

@@ -72,7 +72,7 @@ namespace SrvSurvey
             this.Status_StatusChanged(false);
 
             game.journals!.onJournalEntry += Journals_onJournalEntry;
-            game.nearBody!.bioScanEvent += NearBody_bioScanEvent;
+            //game.nearBody!.bioScanEvent += NearBody_bioScanEvent; // retire
 
             // get landing location
             Game.log($"initialize here: {Status.here}, touchdownLocation: {game.touchdownLocation}, radius: {game.systemBody!.radius.ToString("N0")}");
@@ -89,12 +89,12 @@ namespace SrvSurvey
                     game.systemBody.lastTouchdown);
         }
 
-        private void NearBody_bioScanEvent()
-        {
-            if (this.IsDisposed) return;
+        //private void NearBody_bioScanEvent()
+        //{
+        //    if (this.IsDisposed) return;
 
-            this.Invalidate();
-        }
+        //    this.Invalidate();
+        //}
 
         #region journal events
 
@@ -359,7 +359,7 @@ namespace SrvSurvey
 
         private void drawBioScans(Graphics g)
         {
-            if (game.nearBody == null || game.systemBody == null) return;
+            if (game.systemBody == null) return;
 
             // delta to ship
             g.ResetTransform();
@@ -477,7 +477,7 @@ namespace SrvSurvey
         private void drawTrackers(Graphics g)
         {
             var form = Program.getPlotter<PlotTrackers>();
-            if (game.systemBody?.bookmarks == null || game.nearBody == null || form == null) return;
+            if (game.systemBody?.bookmarks == null || form == null) return;
 
             foreach (var name in form.trackers.Keys)
             {

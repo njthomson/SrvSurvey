@@ -267,7 +267,7 @@ namespace SrvSurvey
 
         public static bool isCloseToScan(LatLong2 location, string? genusName)
         {
-            if (Game.activeGame?.cmdr == null || Game.activeGame.nearBody == null || genusName == null) return false;
+            if (Game.activeGame?.cmdr == null || Game.activeGame.systemBody == null || genusName == null) return false;
             var minDist = (decimal)Math.Min(PlotTrackers.highlightDistance, Game.activeGame.cmdr.scanOne?.radius ?? int.MaxValue);
 
             if (Game.activeGame.cmdr.scanOne != null)

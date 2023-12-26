@@ -148,7 +148,7 @@ namespace SrvSurvey
             {
                 this.touchdownLocation = new TrackingDelta(
                     game.systemBody!.radius,
-                    game.touchdownLocation ?? LatLong2.Empty);
+                    entry); // Really? LatLong2.Empty);
             }
             else
             {

@@ -18,7 +18,7 @@ namespace SrvSurvey
         private Game game = Game.activeGame!;
         public SitePOI? poi;
 
-        private GuardianSiteData siteData { get => game?.nearBody?.siteData!; }
+        private GuardianSiteData siteData { get => game?.systemSite!; }
         private PlotGuardians plotter { get => Program.getPlotter<PlotGuardians>()!; }
         private SiteTemplate template { get => plotter.template!; }
 

@@ -95,7 +95,7 @@ namespace SrvSurvey
 
             comboSiteType.SelectedIndex = 0;
             comboSite.SelectedIndex = 0;
-            this.showFilteredSites(siteData ?? game?.nearBody?.siteData);
+            this.showFilteredSites(siteData ?? game?.systemSite);
 
             checkNotes.Checked = Game.settings.mapShowNotes;
             splitter.Panel2Collapsed = this.siteData == null || !Game.settings.mapShowNotes;
@@ -415,13 +415,13 @@ namespace SrvSurvey
 
             drawLegend(g);
 
-            if (game?.nearBody?.siteData != null && game.nearBody.siteData.type == this.siteType)
+            if (game.systemSite?.type == this.siteType)
                 drawCommander(g);
         }
 
         private void drawCommander(Graphics g)
         {
-            if (game.nearBody?.siteData == null) return;
+            if (game.systemSite == null) return;
 
             g.ResetTransform();
             g.TranslateTransform(mapCenter.X - dragOffset.X, mapCenter.Y - dragOffset.Y);
@@ -435,9 +435,9 @@ namespace SrvSurvey
 
         public static PointF? calcCmdrToSite()
         {
-            if (Game.activeGame?.nearBody?.siteData == null) return null;
+            if (Game.activeGame?.systemSite == null) return null;
 
-            var siteData = Game.activeGame.nearBody.siteData;
+            var siteData = Game.activeGame.systemSite;
 
             var cd = Util.getDistance(Status.here, siteData.location, (decimal)Game.activeGame.systemBody!.radius);
             var cA = DecimalEx.PiHalf + Util.getBearingRad(siteData.location, Status.here) - (decimal)Util.degToRad(siteData.siteHeading);
@@ -450,14 +450,14 @@ namespace SrvSurvey
 
         private void drawCommander(Graphics g, PointF cp, float r)
         {
-            if (game?.nearBody?.siteData == null) return;
+            if (game?.systemSite == null) return;
 
             var p1 = GameColors.penLime4;
             var rect = new RectangleF(cp.X - r, cp.Y - r, r * 2, r * 2);
             g.DrawEllipse(p1, rect);
 
 
-            var pt = Util.rotateLine(game.status.Heading - game.nearBody.siteData.siteHeading - 180, 20);
+            var pt = Util.rotateLine(game.status.Heading - game.systemSite.siteHeading - 180, 20);
             g.DrawLine(GameColors.penLime4, cp.X, cp.Y, cp.X + pt.X, cp.Y - pt.Y);
         }
 

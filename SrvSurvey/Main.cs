@@ -278,8 +278,8 @@ namespace SrvSurvey
             if (this.game != null)
             {
                 Game.update -= Game_modeChanged;
-                this.game.nearingBody -= Game_nearingBody;
-                this.game.departingBody -= Game_departingBody;
+                //this.game.nearingBody -= Game_nearingBody;
+                //this.game.departingBody -= Game_departingBody;
                 if (this.game.journals != null)
                     this.game.journals.onJournalEntry -= Journals_onJournalEntry;
                 this.game.Dispose();
@@ -308,8 +308,8 @@ namespace SrvSurvey
             this.game = newGame;
 
             Game.update += Game_modeChanged;
-            this.game.nearingBody += Game_nearingBody;
-            this.game.departingBody += Game_departingBody;
+            //this.game.nearingBody += Game_nearingBody;
+            //this.game.departingBody += Game_departingBody;
             this.game.journals!.onJournalEntry += Journals_onJournalEntry;
 
             if (!Game.settings.hideJournalWriteTimer)
@@ -333,22 +333,22 @@ namespace SrvSurvey
             }
         }
 
-        private void Game_departingBody(LandableBody nearBody)
-        {
-            nearBody.bioScanEvent -= NearBody_bioScanEvent;
-            this.NearBody_bioScanEvent();
-        }
+        //private void Game_departingBody(LandableBody nearBody)
+        //{
+        //    nearBody.bioScanEvent -= NearBody_bioScanEvent;
+        //    this.NearBody_bioScanEvent();
+        //}
 
-        private void Game_nearingBody(LandableBody nearBody)
-        {
-            this.NearBody_bioScanEvent();
-            nearBody.bioScanEvent += NearBody_bioScanEvent;
-        }
+        //private void Game_nearingBody(LandableBody nearBody)
+        //{
+        //    this.NearBody_bioScanEvent();
+        //    nearBody.bioScanEvent += NearBody_bioScanEvent;
+        //}
 
-        private void NearBody_bioScanEvent()
-        {
-            this.updateAllControls();
-        }
+        //private void NearBody_bioScanEvent()
+        //{
+        //    this.updateAllControls();
+        //}
 
         private void Game_modeChanged(GameMode newMode, bool force)
         {
@@ -520,7 +520,7 @@ namespace SrvSurvey
                 lblTrackTargetStatus.Text = "Inactive";
                 Program.closePlotter<PlotTrackTarget>();
             }
-            else if (game.showBodyPlotters && (game.status!.Flags & StatusFlags.HasLatLong) > 0 && game.nearBody != null)
+            else if (game.showBodyPlotters && (game.status!.Flags & StatusFlags.HasLatLong) > 0 && game.systemBody != null)
             {
                 txtTargetLatLong.Text = Game.settings.targetLatLong.ToString();
                 lblTrackTargetStatus.Text = "Active";
@@ -545,7 +545,7 @@ namespace SrvSurvey
                 btnRuinsMap.Enabled = false;
                 btnRuinsOrigin.Enabled = false;
             }
-            else if (game.nearBody == null || game.nearBody.settlements.Count == 0)
+            else if (game.systemBody == null || game.systemBody.settlements?.Count == 0)
             {
                 lblGuardianCount.Text = "0";
                 txtGuardianSite.Text = "";
@@ -556,13 +556,13 @@ namespace SrvSurvey
             }
             else if (Game.settings.enableGuardianSites)
             {
-                lblGuardianCount.Text = game.nearBody.settlements.Count.ToString();
-                if (this.game.nearBody.siteData != null)
+                lblGuardianCount.Text = game.systemBody.settlements?.Count.ToString();
+                if (this.game.systemSite != null)
                 {
-                    if (this.game.nearBody.siteData.isRuins)
-                        txtGuardianSite.Text = $"Ruins #{this.game.nearBody.siteData.index} - {this.game.nearBody.siteData.type}, {this.game.nearBody.siteData.siteHeading}°";
+                    if (this.game.systemSite.isRuins)
+                        txtGuardianSite.Text = $"Ruins #{this.game.systemSite.index} - {this.game.systemSite.type}, {this.game.systemSite.siteHeading}°";
                     else
-                        txtGuardianSite.Text = $"{this.game.nearBody.siteData.type}, {this.game.nearBody.siteData.siteHeading}°";
+                        txtGuardianSite.Text = $"{this.game.systemSite.type}, {this.game.systemSite.siteHeading}°";
 
                     if (game.showBodyPlotters && this.game.showGuardianPlotters)
                     {
@@ -575,8 +575,8 @@ namespace SrvSurvey
                         Program.closePlotter<PlotTrackers>();
                     }
 
-                    btnRuinsMap.Enabled = game.nearBody.siteData.siteHeading != -1 && this.game.showGuardianPlotters;
-                    btnRuinsOrigin.Enabled = game.nearBody.siteData.siteHeading != -1 && this.game.showGuardianPlotters;
+                    btnRuinsMap.Enabled = game.systemSite.siteHeading != -1 && this.game.showGuardianPlotters;
+                    btnRuinsOrigin.Enabled = game.systemSite.siteHeading != -1 && this.game.showGuardianPlotters;
                 }
             }
         }
@@ -1057,9 +1057,9 @@ namespace SrvSurvey
             var isAerialScreenshot = false;
             var siteType = GuardianSiteData.SiteType.Unknown;
 
-            if (game!.nearBody?.siteData != null)
+            if (game!.systemSite != null)
             {
-                var siteData = game!.nearBody?.siteData!;
+                var siteData = game!.systemSite;
 
                 var majorType = siteData.isRuins ? $"Ruins{siteData.index} " : "";
                 filename += $", {majorType}{siteData.type}";

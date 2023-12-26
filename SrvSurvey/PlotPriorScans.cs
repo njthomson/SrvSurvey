@@ -90,7 +90,10 @@ namespace SrvSurvey
             else if (this.Opacity == 0 && targetMode)
                 this.reposition(Elite.getWindowRect());
 
-            this.Invalidate();
+            if (game.systemBody == null)
+                Program.closePlotter<PlotPriorScans>();
+            else
+                this.Invalidate();
         }
 
         protected override void Status_StatusChanged(bool blink)

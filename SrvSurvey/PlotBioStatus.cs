@@ -40,7 +40,7 @@ namespace SrvSurvey
         {
             this.BackgroundImage = GameGraphics.getBackgroundForForm(this);
 
-            if (game.nearBody == null) // later
+            if (game.systemBody == null)
             {
                 Game.log("PlotBioStatus_Load bad!");
                 return;
@@ -53,13 +53,13 @@ namespace SrvSurvey
 
             //this.Opacity = 1;
             game.journals!.onJournalEntry += Journals_onJournalEntry;
-            game.nearBody!.bioScanEvent += NearBody_bioScanEvent; // later
+            //game.nearBody!.bioScanEvent += NearBody_bioScanEvent; // later
         }
 
-        private void NearBody_bioScanEvent()
-        {
-            this.Invalidate();
-        }
+        //private void NearBody_bioScanEvent()
+        //{
+        //    this.Invalidate();
+        //}
 
         #region journal events
 
@@ -111,6 +111,9 @@ namespace SrvSurvey
             {
                 this.reposition(Elite.getWindowRect());
             }
+
+            if (game.systemBody == null)
+                Program.closePlotter<PlotBioStatus>();
         }
 
         #region mouse handlers

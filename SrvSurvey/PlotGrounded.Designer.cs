@@ -27,8 +27,8 @@ namespace SrvSurvey
 
             if (game?.journals != null)
                 game.journals.onJournalEntry -= Journals_onJournalEntry;
-            if (game?.nearBody != null)
-                game.nearBody.bioScanEvent -= NearBody_bioScanEvent;
+            //if (game?.nearBody != null) // retire
+            //    game.nearBody.bioScanEvent -= NearBody_bioScanEvent; // retire
 
             base.Dispose(disposing);
         }

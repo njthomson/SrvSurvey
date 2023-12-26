@@ -116,7 +116,7 @@ namespace SrvSurvey
                     return;
 
                 case Mode.origin:
-                    var alt = Util.targetAltitudeForSite(game.nearBody!.siteData.type).ToString("N0");
+                    var alt = Util.targetAltitudeForSite(game.systemSite!.type).ToString("N0");
                     drawCenterMessage($"Align with site origin and rise to target altitude: {alt}m");
                     drawFooterText("(toggle lights to force update)");
                     return;
@@ -131,8 +131,8 @@ namespace SrvSurvey
                 if (game.status.SelectedWeapon == "$humanoid_companalyser_name;")
                 {
                     var msg = "Toggle shields to set Relic Tower heading.";
-                    if (game.nearBody!.siteData.relicTowerHeading != -1)
-                        msg += $"\r\nRecorded heading: {game.nearBody.siteData.relicTowerHeading}°";
+                    if (game.systemSite!.relicTowerHeading != -1)
+                        msg += $"\r\nRecorded heading: {game.systemSite!.relicTowerHeading}°";
                     else
                         msg += "\r\nFace the side with a single large left facing triangle.";
                     drawCenterMessage(msg);
@@ -164,9 +164,8 @@ namespace SrvSurvey
         private void drawNearObelisk()
         {
             var poi = PlotGuardians.instance?.nearestPoi;
-            var siteData = game.nearBody?.siteData;
+            var siteData = game.systemSite;
             if (siteData == null || poi == null) return;
-
 
             var poiType = poi.type.ToString().ToUpper();
             var obelisk = siteData.getActiveObelisk(poi.name);
@@ -237,7 +236,7 @@ namespace SrvSurvey
             if (poi == null) return;
 
             var poiType = poi.type.ToString().ToUpper();
-            var poiStatus = game.nearBody?.siteData.poiStatus.GetValueOrDefault(poi.name);
+            var poiStatus = game.systemSite!.poiStatus.GetValueOrDefault(poi.name);
 
             drawHeaderText($"{poiType} ({poi.name}) : {poiStatus}");
 
