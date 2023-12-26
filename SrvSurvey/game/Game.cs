@@ -718,7 +718,7 @@ namespace SrvSurvey.game
 
         private void onJournalEntry(Died entry)
         {
-            Game.log($"You died. Clearing ${Util.credits(this.cmdr.organicRewards)} from {this.cmdr.scannedOrganics.Count} organisms.");
+            Game.log($"You died. Clearing ${Util.credits(this.cmdr.organicRewards)} from {this.cmdr.scannedBioEntryIds.Count} organisms.");
             // revisit all active bio-scan entries per body and mark them as Died
             /*
             this.cmdr.scannedOrganics.Clear();
