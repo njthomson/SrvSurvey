@@ -78,6 +78,7 @@ namespace SrvSurvey
         private PointF tp;
 
         private SitePOI nearestPoi;
+        private double nearestDist;
 
         private List<GuardianSiteData> surveyedSites;
         private readonly Dictionary<string, GuardianSiteData?> filteredSites = new();
@@ -113,7 +114,10 @@ namespace SrvSurvey
         {
             if (string.IsNullOrEmpty(name)) return;
 
-            var newSite = filteredSites.GetValueOrDefault(name);
+            var newSite = name == game?.systemSite?.displayName
+                ? game.systemSite
+                : filteredSites.GetValueOrDefault(name);
+
             this.loadMap(newSite);
         }
 
@@ -176,6 +180,7 @@ namespace SrvSurvey
             var siteHeading = this.siteData?.siteHeading > 0 - 1 ? $"{this.siteData.siteHeading}°" : "?";
             var relicTowerHeading = this.siteData?.relicTowerHeading > 0 ? $"{this.siteData.relicTowerHeading}°" : "?";
             lblStatus.Text = $"Relic Towers: {countTowers}, puddles: {countItems}, site heading: {siteHeading}, relic tower heading: {relicTowerHeading}";
+            lblObeliskGroups.Text = "Obelisk groups: " + (siteData?.obeliskGroups == null ? "" : string.Join("", siteData!.obeliskGroups));
 
             if (this.siteData != null && this.siteData.siteHeading >= 0 && this.siteData.relicTowerHeading >= 0)
             {
@@ -301,12 +306,51 @@ namespace SrvSurvey
             //map.Invalidate();
         }
 
+        private void map_DoubleClick(object sender, EventArgs e)
+        {
+            // do nothing if these don't match
+            if (game.systemSite != null && game.systemSite != this.siteData)
+                return;
+
+            if (this.nearestDist < 5)
+            {
+                var oldStatus = siteData!.getPoiStatus(this.nearestPoi.name);
+
+                if (oldStatus == SitePoiStatus.unknown)
+                    setPoiStatus(this.nearestPoi.name, SitePoiStatus.present);
+                else if (oldStatus == SitePoiStatus.present)
+                    setPoiStatus(this.nearestPoi.name, SitePoiStatus.absent);
+                else if (oldStatus == SitePoiStatus.absent)
+                    setPoiStatus(this.nearestPoi.name, SitePoiStatus.unknown);
+            }
+        }
+
         private void map_MouseDown(object sender, MouseEventArgs e)
         {
-            mouseDownPoint = e.Location;
-            dragging = true;
-            map.Cursor = Cursors.SizeAll;
-            showStatus();
+            if (e.Button == MouseButtons.Right)
+            {
+                Game.log("map_MouseDown: right");
+
+                this.mousePos = new PointF(
+                    e.X - mapCenter.X,
+                    e.Y - mapCenter.Y
+                );
+
+                map.Invalidate();
+                Application.DoEvents();
+                if (this.nearestDist < 15)
+                {
+                    this.prepContext();
+                    mapContext.Show(this.map, e.X, e.Y - (mnuName.Height * 2));
+                }
+            }
+            else
+            {
+                mouseDownPoint = e.Location;
+                dragging = true;
+                map.Cursor = Cursors.SizeAll;
+                showStatus();
+            }
         }
 
         private void map_MouseUp(object sender, MouseEventArgs e)
@@ -314,6 +358,25 @@ namespace SrvSurvey
             dragging = false;
             map.Cursor = Cursors.Hand;
             showStatus();
+        }
+
+        private void prepContext()
+        {
+            if (this.nearestDist > 5 || this.siteData == null) return;
+
+            mnuName.Text = $"Name: {this.nearestPoi.name}";
+            mnuType.Text = $"Type: {this.nearestPoi.type}";
+
+            mnuUnknown.Checked = mnuPresent.Checked = mnuAbsent.Checked = mnuEmpty.Checked = false;
+
+            if (this.siteData!.getPoiStatus(this.nearestPoi.name) == SitePoiStatus.unknown)
+                mnuUnknown.Checked = true;
+            else if (this.siteData!.getPoiStatus(this.nearestPoi.name) == SitePoiStatus.present)
+                mnuPresent.Checked = true;
+            else if (this.siteData!.getPoiStatus(this.nearestPoi.name) == SitePoiStatus.absent)
+                mnuAbsent.Checked = true;
+            else if (this.siteData!.getPoiStatus(this.nearestPoi.name) == SitePoiStatus.empty)
+                mnuEmpty.Checked = true;
         }
 
         #region image dev - no longer needed?
@@ -354,20 +417,15 @@ namespace SrvSurvey
         {
             var poi = this.nearestPoi!;
             if (poi != null)
-                lblSelectedItem.Text = $"{poi.name} ({poi.type}) d: {poi.dist}, a: {poi.angle}° / " + new Angle(poi.angle + 180);
+                lblSelectedItem.Text = $"{poi.name} ({poi.type}): {siteData?.getPoiStatus(poi.name)}";
             else
                 lblSelectedItem.Text = "";
 
             var x = (mousePos.X + dragOffset.X) / this.scale;
             var y = (mousePos.Y + dragOffset.Y) / this.scale;
 
-            var dist = Math.Sqrt(x * x + y * y).ToString("N1");
 
-            var a1 = Util.ToAngle(x, -y);
-            var a2 = new Angle(a1);
 
-            lblDist.Text = $"Dist: {dist}";
-            lblAngle.Text = $"Angle: " + a2.ToString();
             lblMouseX.Text = "X: " + x.ToString("N1");
             lblMouseY.Text = "Y: " + (-y).ToString("N1");
             lblZoom.Text = "Zoom: " + this.scale.ToString("N1");
@@ -398,7 +456,7 @@ namespace SrvSurvey
                 if (heading >= 0)
                 {
                     g.RotateTransform(+heading);
-                    g.DrawLine(Pens.Red, 0, -map.Height * 2, 0, 0);
+                    g.DrawLine(Pens.DarkRed, 0, -map.Height * 2, 0, 0);
                     g.RotateTransform(-heading);
                 }
 
@@ -415,7 +473,7 @@ namespace SrvSurvey
 
             drawLegend(g);
 
-            if (game.systemSite?.type == this.siteType)
+            if (game?.systemSite?.type == this.siteType)
                 drawCommander(g);
         }
 
@@ -467,12 +525,15 @@ namespace SrvSurvey
             g.TranslateTransform(mapCenter.X - dragOffset.X, mapCenter.Y - dragOffset.Y);
             g.ScaleTransform(this.scale, this.scale);
 
-            var nearestDist = double.MaxValue;
+            this.nearestDist = double.MaxValue;
             var nearestPt = PointF.Empty;
-            nearestPoi = null!;
+            this.nearestPoi = null!;
 
             foreach (var poi in template.poi)
             {
+                // skip obelisks in groups not in this site
+                if (siteData?.obeliskGroups?.Count > 0 && (poi.type == POIType.obelisk || poi.type == POIType.brokeObelisk) && !siteData.obeliskGroups.Contains(poi.name[0])) continue;
+
                 // calculate render point for POI
                 var pt = Util.rotateLine(
                     360 - (decimal)poi.angle,
@@ -483,9 +544,9 @@ namespace SrvSurvey
                 var y = pt.Y * this.scale - mousePos.Y - dragOffset.Y;
                 var d = Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
 
-                if (!this.dragging && d < nearestDist)
+                if (!this.dragging && d < this.nearestDist)
                 {
-                    nearestDist = d;
+                    this.nearestDist = d;
                     this.nearestPoi = poi;
                     nearestPt = new PointF(pt.X, pt.Y);
                 }
@@ -595,7 +656,7 @@ namespace SrvSurvey
             drawPuddle(g, new PointF(tp.X - 10, tp.Y - 10), POIType.totem, SitePoiStatus.empty);
 
             drawString(g, "Site heading");
-            g.DrawLine(Pens.Red, tp.X - 15, tp.Y - 6, tp.X - 5, tp.Y - 14);
+            g.DrawLine(Pens.DarkRed, tp.X - 15, tp.Y - 6, tp.X - 5, tp.Y - 14);
 
             drawString(g, "Tower heading");
             g.DrawLine(Pens.DarkCyan, tp.X - 15, tp.Y - 6, tp.X - 5, tp.Y - 14);
@@ -625,6 +686,54 @@ namespace SrvSurvey
                 this.siteData.notes = txtNotes.Text;
                 this.siteData.Save();
             }
+        }
+
+        private void FormRuins_Activated(object sender, EventArgs e)
+        {
+            // use the same siteData as the game - if needed
+            if (game?.systemSite != null && game.systemSite != this.siteData)
+            {
+                this.siteData = game.systemSite;
+                map.Invalidate();
+            }
+        }
+
+        private void setPoiStatus(string name, SitePoiStatus newStatus)
+        {
+            if (newStatus == SitePoiStatus.unknown)
+            {
+                if (siteData!.poiStatus.ContainsKey(name))
+                    siteData!.poiStatus.Remove(name);
+            }
+            else
+            {
+                siteData!.poiStatus[name] = newStatus;
+            }
+
+            siteData.Save();
+            map.Invalidate();
+            Program.getPlotter<PlotGuardians>()?.Invalidate();
+            Elite.setFocusED();
+        }
+
+        private void mnuPresent_Click(object sender, EventArgs e)
+        {
+            setPoiStatus(this.nearestPoi.name, SitePoiStatus.present);
+        }
+
+        private void mnuAbsent_Click(object sender, EventArgs e)
+        {
+            setPoiStatus(this.nearestPoi.name, SitePoiStatus.absent);
+        }
+
+        private void mnuEmpty_Click(object sender, EventArgs e)
+        {
+            setPoiStatus(this.nearestPoi.name, SitePoiStatus.empty);
+        }
+
+        private void mnuUnknown_Click(object sender, EventArgs e)
+        {
+            setPoiStatus(this.nearestPoi.name, SitePoiStatus.unknown);
         }
     }
 }

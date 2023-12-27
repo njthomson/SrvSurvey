@@ -1383,12 +1383,15 @@ namespace SrvSurvey
                 var d = Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
 
                 if (poiStatus == SitePoiStatus.unknown && d < nearestUnknownDist && (isRuinsPoi(poi.type)
-                    && (poi.type == POIType.relic == (game.vehicle == ActiveVehicle.SRV)) // only target Relic Towers when in SRV
+                    //&& (poi.type == POIType.relic == (game.vehicle == ActiveVehicle.SRV)) // only target Relic Towers when in SRV
                     || (Game.settings.enableEarlyGuardianStructures && !siteData.isRuins && poi.type != POIType.obelisk && poi.type != POIType.brokeObelisk)))
                 {
-                    nearestUnknownPoi = poi;
-                    nearestUnknownDist = d;
-                    nearestUnknownPt = pt;
+                    if (poi.type != POIType.relic || (game.vehicle == ActiveVehicle.SRV && poi.type == POIType.relic))
+                    {
+                        nearestUnknownPoi = poi;
+                        nearestUnknownDist = d;
+                        nearestUnknownPt = pt;
+                    }
                 }
 
                 if ((poi.type == POIType.obelisk || poi.type == POIType.brokeObelisk) && d < nearestObeliskDist)
@@ -1398,8 +1401,12 @@ namespace SrvSurvey
                 if (forcePoi != null)
                     selectPoi = forcePoi == poi; // force selection in map editor if present
 
-                // (relic towers and obelisks are not selectable unless on foot or SRV)
+                // (obelisks are not selectable unless on foot or SRV)
                 if (selectPoi && (poi.type == POIType.obelisk || poi.type == POIType.brokeObelisk) && (game.vehicle != ActiveVehicle.Foot && game.vehicle != ActiveVehicle.SRV))
+                    selectPoi = false;
+
+                // (relic towers are not selectable unless on foot or SRV)
+                if (selectPoi && poi.type == POIType.relic && (game.vehicle != ActiveVehicle.Foot && game.vehicle != ActiveVehicle.SRV))
                     selectPoi = false;
 
                 if (selectPoi) // && poi.type != POIType.pylon && poi.type != POIType.brokeObelisk && poi.type != POIType.component)
@@ -1981,9 +1988,9 @@ namespace SrvSurvey
                         msg += $"\r\n\r\n■ Note: there is no map yet for: {siteData.type}";
                         break;
 
-                    //case SiteType.Robolobster:
-                    //case SiteType.Bear:
-                    //case SiteType.Fistbump:
+                        //case SiteType.Robolobster:
+                        //case SiteType.Bear:
+                        //case SiteType.Fistbump:
                         // these have a map
                         //    break;
                 }

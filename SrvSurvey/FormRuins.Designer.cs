@@ -32,13 +32,21 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormRuins));
             map = new PictureBox();
+            mapContext = new ContextMenuStrip(components);
+            mnuName = new ToolStripMenuItem();
+            mnuType = new ToolStripMenuItem();
+            toolStripSeparator1 = new ToolStripSeparator();
+            mnuPresent = new ToolStripMenuItem();
+            mnuAbsent = new ToolStripMenuItem();
+            mnuEmpty = new ToolStripMenuItem();
+            mnuUnknown = new ToolStripMenuItem();
+            toolStripSeparator2 = new ToolStripSeparator();
             statusStrip1 = new StatusStrip();
             lblSelectedItem = new ToolStripStatusLabel();
             lblStatus = new ToolStripStatusLabel();
-            lblDist = new ToolStripStatusLabel();
-            lblAngle = new ToolStripStatusLabel();
             lblMouseX = new ToolStripStatusLabel();
             lblMouseY = new ToolStripStatusLabel();
             lblZoom = new ToolStripStatusLabel();
@@ -50,7 +58,9 @@
             splitter = new SplitContainer();
             txtNotes = new TextBox();
             btnSaveNotes = new Button();
+            lblObeliskGroups = new ToolStripStatusLabel();
             ((System.ComponentModel.ISupportInitialize)map).BeginInit();
+            mapContext.SuspendLayout();
             statusStrip1.SuspendLayout();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)splitter).BeginInit();
@@ -72,13 +82,74 @@
             map.TabStop = false;
             map.Click += map_Click;
             map.Paint += map_Paint;
+            map.DoubleClick += map_DoubleClick;
             map.MouseDown += map_MouseDown;
             map.MouseMove += map_MouseMove;
             map.MouseUp += map_MouseUp;
             // 
+            // mapContext
+            // 
+            mapContext.Items.AddRange(new ToolStripItem[] { mnuName, mnuType, toolStripSeparator1, mnuPresent, mnuAbsent, mnuEmpty, mnuUnknown, toolStripSeparator2 });
+            mapContext.Name = "mapContext";
+            mapContext.Size = new Size(126, 148);
+            // 
+            // mnuName
+            // 
+            mnuName.Enabled = false;
+            mnuName.Name = "mnuName";
+            mnuName.Size = new Size(125, 22);
+            mnuName.Text = "Name:";
+            // 
+            // mnuType
+            // 
+            mnuType.Enabled = false;
+            mnuType.Name = "mnuType";
+            mnuType.Size = new Size(125, 22);
+            mnuType.Text = "Type:";
+            // 
+            // toolStripSeparator1
+            // 
+            toolStripSeparator1.Name = "toolStripSeparator1";
+            toolStripSeparator1.Size = new Size(122, 6);
+            // 
+            // mnuPresent
+            // 
+            mnuPresent.Name = "mnuPresent";
+            mnuPresent.Size = new Size(125, 22);
+            mnuPresent.Text = "Present";
+            mnuPresent.Click += mnuPresent_Click;
+            // 
+            // mnuAbsent
+            // 
+            mnuAbsent.Name = "mnuAbsent";
+            mnuAbsent.Size = new Size(125, 22);
+            mnuAbsent.Text = "Absent";
+            mnuAbsent.Click += mnuAbsent_Click;
+            // 
+            // mnuEmpty
+            // 
+            mnuEmpty.Name = "mnuEmpty";
+            mnuEmpty.Size = new Size(125, 22);
+            mnuEmpty.Text = "Empty";
+            mnuEmpty.Click += mnuEmpty_Click;
+            // 
+            // mnuUnknown
+            // 
+            mnuUnknown.Checked = true;
+            mnuUnknown.CheckState = CheckState.Checked;
+            mnuUnknown.Name = "mnuUnknown";
+            mnuUnknown.Size = new Size(125, 22);
+            mnuUnknown.Text = "Unknown";
+            mnuUnknown.Click += mnuUnknown_Click;
+            // 
+            // toolStripSeparator2
+            // 
+            toolStripSeparator2.Name = "toolStripSeparator2";
+            toolStripSeparator2.Size = new Size(122, 6);
+            // 
             // statusStrip1
             // 
-            statusStrip1.Items.AddRange(new ToolStripItem[] { lblSelectedItem, lblStatus, lblDist, lblAngle, lblMouseX, lblMouseY, lblZoom });
+            statusStrip1.Items.AddRange(new ToolStripItem[] { lblSelectedItem, lblStatus, lblObeliskGroups, lblMouseX, lblMouseY, lblZoom });
             statusStrip1.Location = new Point(0, 535);
             statusStrip1.Name = "statusStrip1";
             statusStrip1.Size = new Size(870, 24);
@@ -99,28 +170,10 @@
             lblStatus.BorderStyle = Border3DStyle.Sunken;
             lblStatus.DisplayStyle = ToolStripItemDisplayStyle.Text;
             lblStatus.Name = "lblStatus";
-            lblStatus.Size = new Size(536, 19);
+            lblStatus.Size = new Size(537, 19);
             lblStatus.Spring = true;
             lblStatus.Text = "...";
             lblStatus.TextAlign = ContentAlignment.MiddleLeft;
-            // 
-            // lblDist
-            // 
-            lblDist.BorderSides = ToolStripStatusLabelBorderSides.Left | ToolStripStatusLabelBorderSides.Top | ToolStripStatusLabelBorderSides.Right | ToolStripStatusLabelBorderSides.Bottom;
-            lblDist.BorderStyle = Border3DStyle.Etched;
-            lblDist.DisplayStyle = ToolStripItemDisplayStyle.Text;
-            lblDist.Name = "lblDist";
-            lblDist.Size = new Size(55, 19);
-            lblDist.Text = "Dist: 999";
-            // 
-            // lblAngle
-            // 
-            lblAngle.BorderSides = ToolStripStatusLabelBorderSides.Left | ToolStripStatusLabelBorderSides.Top | ToolStripStatusLabelBorderSides.Right | ToolStripStatusLabelBorderSides.Bottom;
-            lblAngle.BorderStyle = Border3DStyle.Etched;
-            lblAngle.DisplayStyle = ToolStripItemDisplayStyle.Text;
-            lblAngle.Name = "lblAngle";
-            lblAngle.Size = new Size(71, 19);
-            lblAngle.Text = "Angle: 999°";
             // 
             // lblMouseX
             // 
@@ -249,6 +302,14 @@
             btnSaveNotes.UseVisualStyleBackColor = true;
             btnSaveNotes.Click += btnSaveNotes_Click;
             // 
+            // lblObeliskGroups
+            // 
+            lblObeliskGroups.BorderSides = ToolStripStatusLabelBorderSides.Left | ToolStripStatusLabelBorderSides.Top | ToolStripStatusLabelBorderSides.Right | ToolStripStatusLabelBorderSides.Bottom;
+            lblObeliskGroups.BorderStyle = Border3DStyle.Sunken;
+            lblObeliskGroups.Name = "lblObeliskGroups";
+            lblObeliskGroups.Size = new Size(125, 19);
+            lblObeliskGroups.Text = "Obelisk groups: A B C";
+            // 
             // FormRuins
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -262,9 +323,11 @@
             Name = "FormRuins";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Ruins Map";
+            Activated += FormRuins_Activated;
             Load += FormRuins_Load;
             ResizeEnd += FormRuins_ResizeEnd;
             ((System.ComponentModel.ISupportInitialize)map).EndInit();
+            mapContext.ResumeLayout(false);
             statusStrip1.ResumeLayout(false);
             statusStrip1.PerformLayout();
             panel1.ResumeLayout(false);
@@ -288,13 +351,21 @@
         private ToolStripStatusLabel lblMouseX;
         private ToolStripStatusLabel lblMouseY;
         private ToolStripStatusLabel lblZoom;
-        private ToolStripStatusLabel lblDist;
-        private ToolStripStatusLabel lblAngle;
         private ComboBox comboSiteType;
         private Panel panel1;
         private SplitContainer splitter;
         private TextBox txtNotes;
         private CheckBox checkNotes;
         private Button btnSaveNotes;
+        private ContextMenuStrip mapContext;
+        private ToolStripMenuItem mnuName;
+        private ToolStripMenuItem mnuType;
+        private ToolStripSeparator toolStripSeparator1;
+        private ToolStripMenuItem mnuPresent;
+        private ToolStripMenuItem mnuAbsent;
+        private ToolStripMenuItem mnuEmpty;
+        private ToolStripMenuItem mnuUnknown;
+        private ToolStripSeparator toolStripSeparator2;
+        private ToolStripStatusLabel lblObeliskGroups;
     }
 }

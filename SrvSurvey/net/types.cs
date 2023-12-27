@@ -456,7 +456,8 @@ namespace SrvSurvey.canonn
             this.longitude = data.location.Long;
             this.siteHeading = data.siteHeading;
             this.relicTowerHeading = data.relicTowerHeading;
-            this.lastVisited = data.lastVisited;
+            if (data.lastVisited != DateTimeOffset.MinValue)
+                this.lastVisited = data.lastVisited;
             this.idx = data.index;
             this.notes += data.notes;
         }
@@ -573,7 +574,8 @@ namespace SrvSurvey.canonn
             //this.latitude = data.location.Lat;
             //this.longitude = data.location.Long;
             //this.siteHeading = data.siteHeading;
-            this.lastVisited = data.lastVisited;
+            if (data.lastVisited != DateTimeOffset.MinValue)
+                this.lastVisited = data.lastVisited;
             this.notes += data.notes;
         }
     }

@@ -590,16 +590,17 @@ namespace SrvSurvey.game
 
         public void onJournalEntry(Disembark entry)
         {
-            if (entry.OnPlanet)
-            {
-                // assume first footfall if body was not discovered previously
-                var body = this.findOrCreate(entry.Body, entry.BodyID);
-                if (!body.wasDiscovered)
-                {
-                    Game.log($"Assuming first footfall when disembarking an undiscovered body: '{body.name}' ({body.id})");
-                    body.firstFootFall = true;
-                }
-            }
+            // this doesn't work very well
+            //if (entry.OnPlanet)
+            //{
+            //    // assume first footfall if body was not discovered previously
+            //    var body = this.findOrCreate(entry.Body, entry.BodyID);
+            //    if (!body.wasDiscovered)
+            //    {
+            //        Game.log($"Assuming first footfall when disembarking an undiscovered body: '{body.name}' ({body.id})");
+            //        body.firstFootFall = true;
+            //    }
+            //}
         }
 
         public void onJournalEntry(CodexEntry entry)

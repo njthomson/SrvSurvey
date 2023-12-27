@@ -1,4 +1,5 @@
 ﻿using SrvSurvey.game;
+using SrvSurvey.net.EDSM;
 using SrvSurvey.units;
 using System.Diagnostics;
 using System.Drawing.Imaging;
@@ -436,7 +437,7 @@ namespace SrvSurvey
             if (game.systemData.bodies.Any(_ => _.bioSignalCount > 0 && _.organisms?.All(o => o.species != null) != true))
                 txtSystemBioValues.Text += "?";
 
-                var countFirstFootFall = game.systemData.bodies.Count(_ => _.firstFootFall && _.bioSignalCount > 0);
+            var countFirstFootFall = game.systemData.bodies.Count(_ => _.firstFootFall && _.bioSignalCount > 0);
             if (countFirstFootFall > 0)
                 txtSystemBioValues.Text += $" (FF: {countFirstFootFall})";
 
@@ -704,6 +705,25 @@ namespace SrvSurvey
 
             // close these plotters upon super-cruise
             Program.closePlotter<PlotGrounded>();
+        }
+
+        private void onJournalEntry(FSDJump entry)
+        {
+            // Trigger forms to update as we jump systems
+            var systemMatch = new net.EDSM.StarSystem()
+            {
+                name = entry.StarSystem,
+                id64 = entry.SystemAddress,
+                coords = new SystemCoords()
+                {
+                    x = entry.StarPos[0],
+                    y = entry.StarPos[1],
+                    z = entry.StarPos[2],
+                },
+            };
+
+            FormAllRuins.activeForm?.StarSystemLookup_starSystemMatch(systemMatch);
+            FormBeacons.activeForm?.StarSystemLookup_starSystemMatch(systemMatch);
         }
 
         private void onJournalEntry(SendText entry)

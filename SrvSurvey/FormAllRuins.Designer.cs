@@ -265,10 +265,10 @@
         private ColumnHeader colIndex;
         private Label label1;
         private ColumnHeader colSiteId;
-        private ComboBox comboCurrentSystem;
         private ColumnHeader colNotes;
         private StatusStrip statusStrip1;
         private ToolStripStatusLabel lblStatus;
         private Button btnShare;
+        public ComboBox comboCurrentSystem;
     }
 }

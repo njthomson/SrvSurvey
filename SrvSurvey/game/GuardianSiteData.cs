@@ -207,6 +207,9 @@ namespace SrvSurvey.game
         [JsonIgnore]
         public bool isRuins { get => this.name != null && this.name.StartsWith("$Ancient:"); }
 
+        [JsonIgnore]
+        public string displayName { get => $"{this.bodyName}, ruins #{this.index} - {this.type}"; }
+
         public static int parseSettlementIdx(string name)
         {
             const string ruinsPrefix = "$Ancient:#index=";

@@ -8,7 +8,7 @@ namespace SrvSurvey
 {
     internal partial class FormAllRuins : Form
     {
-        private static FormAllRuins? activeForm;
+        public static FormAllRuins? activeForm;
 
         private double[] currentSystem;
 
@@ -70,7 +70,7 @@ namespace SrvSurvey
             }
         }
 
-        private void StarSystemLookup_starSystemMatch(net.EDSM.StarSystem? match)
+        public void StarSystemLookup_starSystemMatch(net.EDSM.StarSystem? match)
         {
             if (match == null)
             {

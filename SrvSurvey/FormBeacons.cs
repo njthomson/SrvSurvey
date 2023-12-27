@@ -16,7 +16,7 @@ namespace SrvSurvey
 {
     public partial class FormBeacons : Form
     {
-        private static FormBeacons? activeForm;
+        public static FormBeacons? activeForm;
 
         private canonn.StarSystem star;
 
@@ -205,7 +205,7 @@ namespace SrvSurvey
             }
         }
 
-        private void StarSystemLookup_starSystemMatch(net.EDSM.StarSystem? match)
+        internal void StarSystemLookup_starSystemMatch(net.EDSM.StarSystem? match)
         {
             if (match == null)
             {

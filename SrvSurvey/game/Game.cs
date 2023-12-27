@@ -918,7 +918,7 @@ namespace SrvSurvey.game
                 {
                     var dist = Util.getDistance(this.systemBody.settlements[_], Status.here, this.systemBody.radius);
                     // Game.log($"{_}: {dist}");
-                    return dist < 2000;
+                    return dist < 4000;
                 }
 
                 return false;
@@ -935,11 +935,15 @@ namespace SrvSurvey.game
                 // load 'systemSite' if needed
                 if (nearestSettlement != null && nearestSettlement.StartsWith("$Ancient"))
                 {
-                    log($"Close enough, creating  systemSite: '{nearestSettlement}' on '{this.systemBody!.name}' ");
-
                     if (this.systemSite == null)
                     {
+                        log($"Close enough, creating  systemSite: '{nearestSettlement}' on '{this.systemBody!.name}' ");
                         this.systemSite = GuardianSiteData.Load(this.systemBody.name, nearestSettlement);
+                        
+                        // create entry if no match found
+                        if (this.systemSite == null)
+                            Game.log($"Why no site for: '{nearestSettlement}' on 'this.systemBody.name' ?");
+
                         fireEvent = true;
                     }
                     else if (this.systemSite.name != nearestSettlement)
@@ -1360,12 +1364,21 @@ namespace SrvSurvey.game
         private void onJournalEntry(ApproachBody entry)
         {
             this.setLocations(entry);
-
         }
 
         private void onJournalEntry(ApproachSettlement entry)
         {
+            GuardianSiteData.Load(entry);
+            this.setCurrentSite();
 
+            if (systemSite != null)
+            {
+                if (this.systemSite.lastVisited < entry.timestamp)
+                {
+                    this.systemSite.lastVisited = entry.timestamp;
+                    this.systemSite.Save();
+                }
+            }
         }
 
         private void onJournalEntry(CodexEntry entry)
@@ -1667,6 +1680,12 @@ namespace SrvSurvey.game
         public void inferFirstFootFall()
         {
             if (this.systemBody == null) return;
+            if (this.systemSite != null)
+            {
+                Game.log($"inferFirstFootFall: skip when at Guardian sites");
+                return;
+            }
+
             var threshold = Game.settings.inferThreshold;
 
             var fps = 20;
