@@ -1,5 +1,5 @@
 {
-  "settlementTemplate": "2",
+  "settlementTemplate": 2,
   "guardian": {
     "1": [
       "\\pub\\guardian\\2MASS J10444160-5947046 1 b-ruins-1.json",
@@ -518,4 +518,4 @@
       "\\pub\\guardian\\Vela Dark Region YO-R b4-1 D 2-ruins-1.json"
     ]
   }
-  }
+}
