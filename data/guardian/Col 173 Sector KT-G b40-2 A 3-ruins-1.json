@@ -1,0 +1,31 @@
+{
+  "sid": "GR206",
+  "idx": 1,
+  "sh": 0,
+  "t": "Alpha",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "AEHJKLMNOP",
+  "ao": [
+    "A10-to,to-C2-",
+    "A12-to,ur-C4-",
+    "A15-ca,ur-H3-",
+    "E05-ca,to-H6-",
+    "H03-ca,ur-H3-",
+    "J04-ca,to-H6-",
+    "K11-ca,or-H5-",
+    "K22-to,or-C6-",
+    "L05-ca,to-H6-",
+    "M11-ta,ca-L3-",
+    "M12-ta,ur-L4-",
+    "M21-ta,or-L5-",
+    "N05-ca,to-H6-",
+    "O01-or-T1-",
+    "O11-or,ta-T5-",
+    "P04-or,ta-T5-",
+    "P11-or,or-T2-"
+  ]
+}

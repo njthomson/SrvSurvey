@@ -1,0 +1,29 @@
+{
+  "sid": "GR456",
+  "idx": 1,
+  "sh": 0,
+  "t": "Alpha",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "DEFHIJKLQ",
+  "ao": [
+    "D06-or,to-C6-",
+    "D11-or,to-C6-",
+    "E05-ca,to-H6-",
+    "F08-ur,ur-B2-",
+    "F22-ur,or-B5-",
+    "H03-ca,ur-H3-",
+    "I15-ur,or-B5-",
+    "I20-ur,to-B6-",
+    "J05-ca,ta-H4-",
+    "K08-or,ca-T3-",
+    "K22-to,or-C6-",
+    "L05-ca,to-H6-",
+    "Q17-ta,ta-L6-",
+    "Q23-ta,ca-L3-",
+    "Q26-ta,ta-L6-"
+  ]
+}

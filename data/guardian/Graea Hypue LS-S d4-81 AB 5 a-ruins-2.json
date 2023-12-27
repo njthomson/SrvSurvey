@@ -1,0 +1,33 @@
+{
+  "sid": "GR324",
+  "idx": 2,
+  "sh": 0,
+  "t": "Alpha",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "BDFGJKLMNOP",
+  "ao": [
+    "B03-to,re-C1-",
+    "B20-to,to-C2-",
+    "D04-or,ca-T3-",
+    "D12-to,ta-C5-",
+    "F12-ur,ta-B4-",
+    "F19-ur,or-B5-",
+    "G02-ca,ur-H3-",
+    "J03-ca,ur-H3-",
+    "K12-ca,ta-H4-",
+    "K19-to,ur-C4-",
+    "L04-ca,re-H7-",
+    "M02-ta,ta-L2-",
+    "M03-ta,ca-L3-",
+    "M20-ta,ur-L4-",
+    "N04-ca,re-H7-",
+    "O10-or,ur-T4-",
+    "O15-or,or-T2-",
+    "P12-or-T1-",
+    "P13-or-T1-"
+  ]
+}

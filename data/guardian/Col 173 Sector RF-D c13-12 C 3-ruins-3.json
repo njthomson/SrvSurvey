@@ -1,0 +1,29 @@
+{
+  "sid": "GR311",
+  "idx": 3,
+  "sh": 0,
+  "t": "Alpha",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "ABCDFJNO",
+  "ao": [
+    "A01-ta-L1-",
+    "A06-ur,ur-B2-",
+    "A18-or,or-T2-",
+    "B15-to,ur-C4-",
+    "B18-to,re-C1-",
+    "C02-to,ur-C4-",
+    "C03-to,ca-C3-",
+    "D02-or,ta-C5-",
+    "D03-or,ur-T4-",
+    "F06-ur,ur-B2-",
+    "F13-ur,ca-B3-",
+    "J02-ca,re-H7-",
+    "N03-ca,or-H5-",
+    "O09-or,ca-T3-",
+    "O12-or,to-T6-"
+  ]
+}

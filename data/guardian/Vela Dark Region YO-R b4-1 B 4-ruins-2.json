@@ -1,0 +1,32 @@
+{
+  "sid": "GR264",
+  "idx": 2,
+  "sh": 0,
+  "t": "Gamma",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "ACEGIJKLMPR",
+  "ao": [
+    "A02-ur-B13-",
+    "A03-ur,re-B19-",
+    "C03-to,ta-C18-",
+    "C13-to,re-C20-",
+    "E07-ca,to-H17-",
+    "G03-or,re-T20-",
+    "I05-ur,re-B19-",
+    "I06-ur-B13-",
+    "J03-ca,or-H21-",
+    "K08-or,or-T15-",
+    "K13-or,or-T15-",
+    "L03-or,ta-T18-",
+    "L12-or,ta-T18-",
+    "M03-to,ur-C17-",
+    "M05-to-C14-",
+    "P03-to,re-C20-",
+    "R06-to,or-C19-",
+    "R18-ca,to-H17-"
+  ]
+}

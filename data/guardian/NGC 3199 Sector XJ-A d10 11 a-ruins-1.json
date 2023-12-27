@@ -1,0 +1,22 @@
+{
+  "sid": "GR334",
+  "idx": 1,
+  "sh": 0,
+  "t": "Beta",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "ADJKNS",
+  "ao": [
+    "A03-ca,to-H14-",
+    "D09-ca,ca-H9-",
+    "J10-or,re-T13-",
+    "K02-to,re-C13-",
+    "K26-to-C7-",
+    "N09-ta,ca-L10-",
+    "N25-ta,or-L12-",
+    "S01-or,re-T13-"
+  ]
+}

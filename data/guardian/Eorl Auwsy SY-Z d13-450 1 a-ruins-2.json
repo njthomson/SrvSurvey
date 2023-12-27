@@ -1,0 +1,24 @@
+{
+  "sid": "GR486",
+  "idx": 2,
+  "sh": 0,
+  "t": "Beta",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "EGJKST",
+  "ao": [
+    "E03-or,ca-T9-",
+    "E10-to-C7-",
+    "G01-ca,re-H14-",
+    "G15-ca,re-H16-",
+    "J05-or,ca-T9-",
+    "K12-to,or-C12-",
+    "K23-to,ur-C10-",
+    "S02-or,re-T12-",
+    "T01-ca,re-H16-",
+    "T15-ca,re-H14-"
+  ]
+}

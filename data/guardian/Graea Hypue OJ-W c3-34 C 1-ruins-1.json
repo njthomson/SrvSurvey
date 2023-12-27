@@ -1,0 +1,32 @@
+{
+  "sid": "GR499",
+  "idx": 1,
+  "sh": 0,
+  "t": "Gamma",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "AGHIKLNQS",
+  "ao": [
+    "A19-ur,ur-B14-",
+    "A21-ur,re-B19-",
+    "G12-or,re-T20-",
+    "H03-ta,ta-L16-",
+    "H11-ta,or-L19-",
+    "H20-ta-L15-",
+    "H36-ta,ca-L17-",
+    "H37-ta,ta-L16-",
+    "I05-ur,re-B19-",
+    "I06-ur-B13-",
+    "K08-or,or-T15-",
+    "K13-or,or-T15-",
+    "L08-or,ta-T18-",
+    "L12-or,ta-T18-",
+    "N03-or,ca-T16-",
+    "N07-or,ca-T16-",
+    "Q09-ca,to-H17-",
+    "S06-ca,ur-H19-"
+  ]
+}

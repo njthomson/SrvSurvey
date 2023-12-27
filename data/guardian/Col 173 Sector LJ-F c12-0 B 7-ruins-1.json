@@ -1,0 +1,30 @@
+{
+  "sid": "GR165",
+  "idx": 1,
+  "sh": 0,
+  "t": "Alpha",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "CFIJKLMNP",
+  "ao": [
+    "C02-to,ur-C4-",
+    "C06-to,ta-C5-",
+    "F05-ur,ur-B2-",
+    "F21-ur,to-B6-",
+    "I05-ur,ur-B2-",
+    "I08-ur,ur-B2-",
+    "J05-ca,ta-H4-",
+    "K05-or,or-T2-",
+    "K21-to,or-C6-",
+    "L05-ca,to-H6-",
+    "M04-ta,ur-L4-",
+    "M17-ta-L1-",
+    "M18-ta,ta-L2-",
+    "N05-ca,to-H6-",
+    "P03-or,to-T6-",
+    "P04-or,ta-T5-"
+  ]
+}

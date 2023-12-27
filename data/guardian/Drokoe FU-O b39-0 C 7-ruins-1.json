@@ -1,0 +1,23 @@
+{
+  "sid": "GR357",
+  "idx": 1,
+  "sh": 0,
+  "t": "Beta",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "EHMOPR",
+  "ao": [
+    "E09-ur,or-B11-",
+    "E20-ta,ta-L9-",
+    "H08-or,ca-T9-",
+    "M03-or,or-T8-",
+    "O03-or,re-T13-",
+    "P02-to,re-C13-",
+    "P17-to,re-C13-",
+    "R09-to,ca-C9-",
+    "R20-ur,re-B7-"
+  ]
+}

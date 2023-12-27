@@ -1,0 +1,25 @@
+{
+  "sid": "GR388",
+  "idx": 2,
+  "sh": 0,
+  "t": "Beta",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "BFHIKOSU",
+  "ao": [
+    "B04-or,re-T9-",
+    "F04-ca,or-H12-",
+    "H09-or,or-T8-",
+    "I12-ta-L8-",
+    "K04-to,ta-C11-",
+    "K08-to-C7-",
+    "O02-or,re-T13-",
+    "S02-or,re-T12-",
+    "U10-ur,ca-B9-",
+    "U26-ur,ta-B10-",
+    "U29-ur,ca-B9-"
+  ]
+}

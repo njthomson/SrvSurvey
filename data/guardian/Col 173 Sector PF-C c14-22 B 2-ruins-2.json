@@ -1,0 +1,25 @@
+{
+  "sid": "GR409",
+  "idx": 2,
+  "sh": 0,
+  "t": "Beta",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "CEFJLOPQ",
+  "ao": [
+    "C05-ta,or-L12-",
+    "C18-ta,ur-L11-",
+    "E17-ur,ta-B10-",
+    "E23-ta,or-L12-",
+    "F07-ca,to-H15-",
+    "J10-or,re-T13-",
+    "L01-or,ca-T9-",
+    "O01-or,re-T13-",
+    "P16-to,or-C12-",
+    "P18-to,ta-C11-",
+    "Q01-or-T7-"
+  ]
+}

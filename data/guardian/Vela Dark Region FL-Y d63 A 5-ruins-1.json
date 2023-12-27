@@ -1,0 +1,28 @@
+{
+  "sid": "GR136",
+  "idx": 1,
+  "sh": 0,
+  "t": "Beta",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "AFKOPRTU",
+  "ao": [
+    "A03-ca,to-H14-",
+    "F07-ca,to-H15-",
+    "K09-to,re-C13-",
+    "K25-to,to-C8-",
+    "O01-or,re-T13-",
+    "P09-to,or-C12-",
+    "P25-to,or-C12-",
+    "R15-ca,to-H13-",
+    "R26-ur,or-B5-",
+    "T02-ca,to-H15-",
+    "T17-ca,or-H12-",
+    "U02-ur,to-B12-",
+    "U30-ur,ur-B8-",
+    "U42-ur,or-B11-"
+  ]
+}

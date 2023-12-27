@@ -1,0 +1,33 @@
+{
+  "sid": "GR329",
+  "idx": 1,
+  "sh": 0,
+  "t": "Gamma",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "ADEFGIJKLNOQS",
+  "ao": [
+    "A09-ur-B13-",
+    "A19-ur,ur-B14-",
+    "D08-ta,ta-L16-",
+    "E07-ca,to-H17-",
+    "F05-or-T14-",
+    "F08-or,ca-T16-",
+    "G03-or,re-T20-",
+    "I05-ur,re-B19-",
+    "I17-ur,ta-B16-",
+    "J03-ca,or-H21-",
+    "K05-or,re-T20-",
+    "K08-or,or-T15-",
+    "L08-or,ta-T18-",
+    "L14-or,re-T20-",
+    "N01-or-T14-",
+    "N07-or,ca-T16-",
+    "O07-ca,ca-H18-",
+    "Q07-ca,ta-H20-",
+    "S05-ca,ur-H19-"
+  ]
+}

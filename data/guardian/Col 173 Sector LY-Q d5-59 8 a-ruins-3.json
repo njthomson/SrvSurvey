@@ -1,0 +1,24 @@
+{
+  "sid": "GR033",
+  "idx": 3,
+  "sh": 0,
+  "t": "Beta",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "DEGJKOQ",
+  "ao": [
+    "D10-ca,or-H12-",
+    "E06-or,re-T12-",
+    "E16-to,re-C13-",
+    "G02-ca,to-H15-",
+    "G08-ca,re-H16-",
+    "J09-or,re-T12-",
+    "K09-to,re-C13-",
+    "K14-to,ur-C10-",
+    "O02-or,re-T13-",
+    "Q03-or,ca-T9-"
+  ]
+}

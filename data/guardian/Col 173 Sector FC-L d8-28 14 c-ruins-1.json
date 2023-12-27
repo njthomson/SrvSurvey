@@ -1,0 +1,23 @@
+{
+  "sid": "GR100",
+  "idx": 1,
+  "sh": 0,
+  "t": "Beta",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "CDHLPU",
+  "ao": [
+    "C17-ta-L8-",
+    "D05-ca,ta-H11-",
+    "H05-or,ta-T11-",
+    "L06-or,re-T13-",
+    "P05-to,ur-C10-",
+    "P15-to,ta-C11-",
+    "U01-ur,re-B7-",
+    "U27-ur,ca-B9-",
+    "U31-ur,ur-B8-"
+  ]
+}

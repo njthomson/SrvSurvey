@@ -1,0 +1,32 @@
+{
+  "sid": "GR105",
+  "idx": 3,
+  "sh": 0,
+  "t": "Gamma",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "BDFGIJLMNPS",
+  "ao": [
+    "B21-ur,re-B19-",
+    "B22-ur,to-B18-",
+    "D08-ta,ta-L16-",
+    "F04-or,or-T15-",
+    "F13-or,ca-T16-",
+    "G07-or,re-T20-",
+    "I06-ur-B13-",
+    "I15-ur,to-B18-",
+    "J03-ca,or-H21-",
+    "L08-or,ta-T18-",
+    "L12-or,ta-T18-",
+    "M05-to-C14-",
+    "M08-to,ca-C16-",
+    "N03-or,ca-T16-",
+    "N07-or,ca-T16-",
+    "P21-to,re-C20-",
+    "P22-to,or-C19-",
+    "S05-ca,ur-H19-"
+  ]
+}

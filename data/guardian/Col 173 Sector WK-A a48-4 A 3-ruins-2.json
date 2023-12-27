@@ -1,0 +1,30 @@
+{
+  "sid": "GR133",
+  "idx": 2,
+  "sh": 0,
+  "t": "Alpha",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "AFGHILMNO",
+  "ao": [
+    "A01-ta-L1-",
+    "A08-ur,ta-B4-",
+    "A13-ca-H1-",
+    "F01-ur,re-B1-",
+    "F21-ur,to-B6-",
+    "G02-ca,ur-H3-",
+    "H03-ca,ur-H3-",
+    "I08-ur,ur-B2-",
+    "I11-ur,ta-B4-",
+    "L05-ca,to-H6-",
+    "M03-ta,ca-L3-",
+    "M04-ta,ur-L4-",
+    "M17-ta-L1-",
+    "N05-ca,to-H6-",
+    "O01-or-T1-",
+    "O11-or,ta-T5-"
+  ]
+}

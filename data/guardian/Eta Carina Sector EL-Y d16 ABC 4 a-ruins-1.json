@@ -1,0 +1,29 @@
+{
+  "sid": "GR153",
+  "idx": 1,
+  "sh": 0,
+  "t": "Gamma",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "ACDEGLMNP",
+  "ao": [
+    "A09-ur-B13-",
+    "A13-ur,to-B18-",
+    "C09-to,ur-C17-",
+    "C15-to,ca-C16-",
+    "D02-ta,re-L21-",
+    "E04-ca,ur-H19-",
+    "G04-or,to-T19-",
+    "L09-or,to-T19-",
+    "L14-or,re-T20-",
+    "M10-to,ta-C18-",
+    "M13-to,to-C15-",
+    "N01-or-T14-",
+    "N06-or,or-T15-",
+    "P09-to-C14-",
+    "P13-to,or-C19-"
+  ]
+}

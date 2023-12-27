@@ -1,0 +1,32 @@
+{
+  "sid": "GR005",
+  "idx": 1,
+  "sh": 0,
+  "t": "Alpha",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "ACDFGHKPQ",
+  "ao": [
+    "A05-ur,re-B1-",
+    "A08-ur,ta-B4-",
+    "A11-to,ca-C3-",
+    "C01-to,ur-C4-",
+    "C06-to,ta-C5-",
+    "D01-or,to-C6-",
+    "D06-or,to-C6-",
+    "F08-ur,ur-B2-",
+    "F15-ur,ta-B4-",
+    "G02-ca,ur-H3-",
+    "H03-ca,ur-H3-",
+    "K08-or,ca-T3-",
+    "K15-ca,or-H5-",
+    "P07-or,ca-T3-",
+    "P09-or,ur-T4-",
+    "Q18-ta,re-L7-",
+    "Q24-ta,ur-L4-",
+    "Q27-ta,re-L7-"
+  ]
+}

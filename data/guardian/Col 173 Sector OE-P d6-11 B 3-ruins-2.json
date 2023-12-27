@@ -1,0 +1,30 @@
+{
+  "sid": "GR066",
+  "idx": 2,
+  "sh": 0,
+  "t": "Alpha",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "CDFGHIJMO",
+  "ao": [
+    "C03-to,ca-C3-",
+    "C06-to,ta-C5-",
+    "D03-or,ur-T4-",
+    "D06-or,to-C6-",
+    "F10-ur,ca-B3-",
+    "F21-ur,to-B6-",
+    "G02-ca,ur-H3-",
+    "H03-ca,ur-H3-",
+    "I08-ur,ur-B2-",
+    "I10-ur,ta-B4-",
+    "J05-ca,ta-H4-",
+    "M04-ta,ur-L4-",
+    "M14-ta,ta-L6-",
+    "M21-ta,or-L5-",
+    "O01-or-T1-",
+    "O12-or,to-T6-"
+  ]
+}

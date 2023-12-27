@@ -1,0 +1,28 @@
+{
+  "sid": "GR488",
+  "idx": 1,
+  "sh": 0,
+  "t": "Alpha",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "CFGHJKMP",
+  "ao": [
+    "C02-to,ur-C4-",
+    "C04-to,ca-C3-",
+    "F05-ur,ur-B2-",
+    "F19-ur,or-B5-",
+    "G03-ca,or-H5-",
+    "H01-ca,ta-H4-",
+    "J02-ca,re-H7-",
+    "K05-or,or-T2-",
+    "K19-to,ur-C4-",
+    "M11-ta,ca-L3-",
+    "M18-ta,ta-L2-",
+    "M19-ta,ca-L3-",
+    "P03-or,to-T6-",
+    "P13-or-T1-"
+  ]
+}

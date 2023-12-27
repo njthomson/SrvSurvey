@@ -1,0 +1,25 @@
+{
+  "sid": "GR210",
+  "idx": 3,
+  "sh": 0,
+  "t": "Beta",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "ADGIKLPS",
+  "ao": [
+    "A06-ca-H8-",
+    "D07-ca,to-H13-",
+    "G05-ca,ca-H9-",
+    "G18-ca-H8-",
+    "I07-ca,ca-H9-",
+    "K16-to,to-C8-",
+    "K26-to-C7-",
+    "L02-or,ur-T10-",
+    "P16-to,or-C12-",
+    "P26-to,re-C13-",
+    "S01-or,re-T13-"
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "sid": "GR504",
+  "idx": 1,
+  "sh": 0,
+  "t": "Beta",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "AGHKLNQU",
+  "ao": [
+    "A03-ca,to-H14-",
+    "G10-ca,re-H14-",
+    "G17-ca,ur-H10-",
+    "H10-or-T7-",
+    "K15-to,ca-C9-",
+    "K25-to,to-C8-",
+    "L01-or,ca-T9-",
+    "N08-ta,or-L12-",
+    "N13-ta-L8-",
+    "Q01-or-T7-",
+    "U02-ur,to-B12-",
+    "U21-ur,to-B12-",
+    "U30-ur,ur-B8-"
+  ]
+}

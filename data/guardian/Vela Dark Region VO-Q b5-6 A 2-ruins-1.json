@@ -1,0 +1,29 @@
+{
+  "sid": "GR449",
+  "idx": 1,
+  "sh": 0,
+  "t": "Gamma",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "FHIJNPQ",
+  "ao": [
+    "F06-or,ta-T18-",
+    "F12-or,ur-T17-",
+    "H05-ta,ur-L18-",
+    "H17-ta,ca-L17-",
+    "H24-ta,ur-L18-",
+    "H25-ta,or-L19-",
+    "H36-ta,ca-L17-",
+    "I01-ur,ca-B15-",
+    "I07-ur,ur-B14-",
+    "J04-ca,ca-H18-",
+    "N08-or,ur-T17-",
+    "N13-or,ur-T17-",
+    "P18-to-C14-",
+    "P26-to,to-C15-",
+    "Q01-ca,ur-H19-"
+  ]
+}

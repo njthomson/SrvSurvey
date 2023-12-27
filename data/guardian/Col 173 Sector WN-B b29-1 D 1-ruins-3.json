@@ -1,0 +1,21 @@
+{
+  "sid": "GR078",
+  "idx": 3,
+  "sh": 0,
+  "t": "Beta",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "DGHMR",
+  "ao": [
+    "D12-ca-H8-",
+    "G03-ca,to-H15-",
+    "G11-ca,ur-H10-",
+    "H09-or,or-T8-",
+    "M02-or-T7-",
+    "R14-ur,ta-B10-",
+    "R15-ca,to-H13-"
+  ]
+}

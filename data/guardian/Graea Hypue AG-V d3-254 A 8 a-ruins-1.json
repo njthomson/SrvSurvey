@@ -1,0 +1,27 @@
+{
+  "sid": "GR431",
+  "idx": 1,
+  "sh": 0,
+  "t": "Gamma",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "EFJMNOQRS",
+  "ao": [
+    "E05-ca,ta-H20-",
+    "F05-or-T14-",
+    "F13-or,ca-T16-",
+    "J05-ca,ta-H20-",
+    "M10-to,ta-C18-",
+    "M12-to,to-C15-",
+    "N03-or,ca-T16-",
+    "N05-or-T14-",
+    "O05-ca,to-H17-",
+    "Q05-ca,re-H21-",
+    "R12-to,ca-C16-",
+    "R18-ca,to-H17-",
+    "S02-ca,ca-H18-"
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "sid": "GR243",
+  "idx": 2,
+  "sh": 0,
+  "t": "Beta",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "CDGKQ",
+  "ao": [
+    "C14-ta,ur-L11-",
+    "D04-ca,to-H13-",
+    "D10-ca,or-H12-",
+    "G02-ca,to-H15-",
+    "G08-ca,re-H16-",
+    "G16-ca,ur-H10-",
+    "K06-to,ca-C9-",
+    "K08-to-C7-",
+    "K14-to,ur-C10-",
+    "Q03-or,ca-T9-",
+    "Q05-or,ur-T10-"
+  ]
+}

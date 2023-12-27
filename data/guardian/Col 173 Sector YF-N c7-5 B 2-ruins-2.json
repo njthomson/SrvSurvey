@@ -1,0 +1,32 @@
+{
+  "sid": "GR274",
+  "idx": 2,
+  "sh": 0,
+  "t": "Alpha",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "BCIKLMNOQ",
+  "ao": [
+    "B03-to,re-C1-",
+    "B20-to,to-C2-",
+    "C04-to,ca-C3-",
+    "C12-to,or-C6-",
+    "I11-ur,ta-B4-",
+    "I12-ur,to-B6-",
+    "K01-or-T1-",
+    "K12-ca,ta-H4-",
+    "L06-ca,re-H7-",
+    "M02-ta,ta-L2-",
+    "M03-ta,ca-L3-",
+    "M13-ta,or-L5-",
+    "N06-ca,re-H7-",
+    "O08-or,or-T2-",
+    "O11-or,ta-T5-",
+    "Q06-ta,or-L5-",
+    "Q19-ta,re-L7-",
+    "Q23-ta,ca-L3-"
+  ]
+}

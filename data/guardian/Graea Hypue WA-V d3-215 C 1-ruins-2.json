@@ -1,0 +1,33 @@
+{
+  "sid": "GR496",
+  "idx": 2,
+  "sh": 0,
+  "t": "Alpha",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "BCDEIJKMPQ",
+  "ao": [
+    "B03-to,re-C1-",
+    "B04-to,ca-C3-",
+    "C04-to,ca-C3-",
+    "C11-to,or-C6-",
+    "D04-or,ca-T3-",
+    "D11-or,to-C6-",
+    "E05-ca,to-H6-",
+    "I01-ur,re-B1-",
+    "I08-ur,ur-B2-",
+    "J05-ca,ta-H4-",
+    "K01-or-T1-",
+    "K21-to,or-C6-",
+    "M01-ta-L1-",
+    "M12-ta,ur-L4-",
+    "P04-or,ta-T5-",
+    "P13-or-T1-",
+    "Q06-ta,or-L5-",
+    "Q17-ta,ta-L6-",
+    "Q28-ta,ta-L6-"
+  ]
+}

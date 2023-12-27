@@ -1,0 +1,24 @@
+{
+  "sid": "GR371",
+  "idx": 1,
+  "sh": 0,
+  "t": "Beta",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "EGNOQT",
+  "ao": [
+    "E09-ur,or-B11-",
+    "E21-ta,ca-L10-",
+    "G04-ca,re-H14-",
+    "G11-ca,ur-H10-",
+    "N02-ta,re-L14-",
+    "N18-ta,ta-L9-",
+    "O03-or,re-T13-",
+    "Q04-or,ca-T9-",
+    "T04-ca,to-H13-",
+    "T11-ca,or-H12-"
+  ]
+}

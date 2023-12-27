@@ -1,0 +1,26 @@
+{
+  "sid": "GR124",
+  "idx": 1,
+  "sh": 0,
+  "t": "Gamma",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "ABDEGKPQS",
+  "ao": [
+    "A02-ur-B13-",
+    "A22-ur,to-B18-",
+    "B02-ur,re-B19-",
+    "B22-ur,to-B18-",
+    "D08-ta,ta-L16-",
+    "E08-ca,ca-H18-",
+    "G07-or,re-T20-",
+    "K04-or-T14-",
+    "K08-or,or-T15-",
+    "P22-to,or-C19-",
+    "Q08-ca,ca-H18-",
+    "S05-ca,ur-H19-"
+  ]
+}

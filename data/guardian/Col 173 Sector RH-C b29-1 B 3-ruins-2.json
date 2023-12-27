@@ -1,0 +1,24 @@
+{
+  "sid": "GR209",
+  "idx": 2,
+  "sh": 0,
+  "t": "Beta",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "DFHJPQRS",
+  "ao": [
+    "D05-ca,ta-H11-",
+    "F06-ca,to-H13-",
+    "H05-or,ta-T11-",
+    "J05-or,ca-T9-",
+    "P15-to,ta-C11-",
+    "P21-to,to-C8-",
+    "Q04-or,ca-T9-",
+    "R03-ca,ta-H10-",
+    "R19-ca-H8-",
+    "S02-or,re-T12-"
+  ]
+}

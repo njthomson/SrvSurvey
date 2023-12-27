@@ -1,0 +1,23 @@
+{
+  "sid": "GR118",
+  "idx": 1,
+  "sh": 0,
+  "t": "Beta",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "ABDKLNS",
+  "ao": [
+    "A04-ca-H8-",
+    "B04-or,re-T9-",
+    "D04-ca,to-H13-",
+    "K06-to,ca-C9-",
+    "K13-to,ta-C11-",
+    "L05-or,re-T12-",
+    "N04-ta,or-L12-",
+    "N07-ta,to-L13-",
+    "S02-or,re-T12-"
+  ]
+}

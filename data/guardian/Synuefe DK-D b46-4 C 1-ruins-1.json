@@ -1,0 +1,21 @@
+{
+  "sid": "GR291",
+  "idx": 1,
+  "sh": 0,
+  "t": "Beta",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "ACDET",
+  "ao": [
+    "A09-ca,ur-H10-",
+    "C19-ta,ca-L10-",
+    "D01-ca,or-H12-",
+    "E11-to,to-C8-",
+    "E19-ta-L8-",
+    "T13-ca,re-H16-",
+    "T16-ca,to-H13-"
+  ]
+}

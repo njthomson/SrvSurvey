@@ -1,0 +1,32 @@
+{
+  "sid": "GR441",
+  "idx": 1,
+  "sh": 0,
+  "t": "Alpha",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "ABDFHIMNO",
+  "ao": [
+    "A07-ur,ca-B3-",
+    "A17-or-T1-",
+    "A20-or,ur-T4-",
+    "B09-to,ur-C4-",
+    "B19-to,ca-C3-",
+    "D06-or,to-C6-",
+    "D13-or,to-T6-",
+    "F07-ur,ur-B2-",
+    "F08-ur,ur-B2-",
+    "H03-ca,ur-H3-",
+    "I07-ur,ca-B3-",
+    "I20-ur,to-B6-",
+    "M05-ta,or-L5-",
+    "M14-ta,ta-L6-",
+    "M22-ta,ta-L6-",
+    "N05-ca,to-H6-",
+    "O07-or-T1-",
+    "O20-or,to-T6-"
+  ]
+}

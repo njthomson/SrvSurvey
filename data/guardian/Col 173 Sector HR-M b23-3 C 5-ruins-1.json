@@ -1,0 +1,21 @@
+{
+  "sid": "GR113",
+  "idx": 1,
+  "sh": 0,
+  "t": "Beta",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "IKLNS",
+  "ao": [
+    "I03-ca,ta-L11-",
+    "K02-to,re-C13-",
+    "K12-to,or-C12-",
+    "L03-or,ta-T11-",
+    "N20-ta,to-L13-",
+    "N25-ta,or-L12-",
+    "S03-or,re-T13-"
+  ]
+}

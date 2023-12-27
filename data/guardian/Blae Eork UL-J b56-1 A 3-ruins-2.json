@@ -1,0 +1,33 @@
+{
+  "sid": "GR242",
+  "idx": 2,
+  "sh": 0,
+  "t": "Alpha",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "BDEHIJMOPQ",
+  "ao": [
+    "B01-to,ca-C3-",
+    "B06-to,re-C1-",
+    "D01-or,to-C6-",
+    "D06-or,to-C6-",
+    "E04-ca,re-H7-",
+    "H04-ca,ca-H2-",
+    "I19-ur,or-B5-",
+    "I20-ur,to-B6-",
+    "J03-ca,ur-H3-",
+    "M04-ta,ur-L4-",
+    "M11-ta,ca-L3-",
+    "M22-ta,ta-L6-",
+    "O04-or,ur-T4-",
+    "O07-or-T1-",
+    "P05-or,ca-T5-",
+    "P07-or,ca-T3-",
+    "Q03-ta,ca-L3-",
+    "Q14-ta,ca-L3-",
+    "Q27-ta,re-L7-"
+  ]
+}

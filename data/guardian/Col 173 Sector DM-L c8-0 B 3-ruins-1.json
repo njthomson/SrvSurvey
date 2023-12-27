@@ -1,0 +1,32 @@
+{
+  "sid": "GR338",
+  "idx": 1,
+  "sh": 0,
+  "t": "Alpha",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "CDEGHIJKLNOP",
+  "ao": [
+    "C02-to,ur-C4-",
+    "C13-to,re-C1-",
+    "D02-or,ta-C5-",
+    "D13-or,to-T6-",
+    "E09-ca-H1-",
+    "G01-ca,ca-H2-",
+    "H05-ca-H1-",
+    "I05-ur,ur-B2-",
+    "I07-ur,ca-B3-",
+    "J06-ca,or-H5-",
+    "K05-or,or-T2-",
+    "K07-or,ca-T3-",
+    "L09-ca-H1-",
+    "N09-ca-H1-",
+    "O16-or,ca-T3-",
+    "O20-or,to-T6-",
+    "P01-or,to-T6-",
+    "P03-or,to-T6-"
+  ]
+}

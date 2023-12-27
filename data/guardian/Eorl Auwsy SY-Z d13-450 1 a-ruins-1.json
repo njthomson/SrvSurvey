@@ -1,0 +1,23 @@
+{
+  "sid": "GR485",
+  "idx": 1,
+  "sh": 0,
+  "t": "Beta",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "ADEINT",
+  "ao": [
+    "A07-ca,or-H12-",
+    "D02-ca,ur-H10-",
+    "E04-or,ur-T10-",
+    "E17-ur,ta-B10-",
+    "I02-ca,ur-C10-",
+    "N01-ta,to-L13-",
+    "N24-ta,to-L13-",
+    "T12-ca,ta-H11-",
+    "T14-ca,to-H15-"
+  ]
+}

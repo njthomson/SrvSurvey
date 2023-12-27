@@ -1,0 +1,28 @@
+{
+  "sid": "GR465",
+  "idx": 2,
+  "sh": 0,
+  "t": "Alpha",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "ACDEGILO",
+  "ao": [
+    "A04-ta,re-L7-",
+    "A12-to,ur-C4-",
+    "A16-ca,ta-H4-",
+    "C07-to,ta-C5-",
+    "C08-to,to-C2-",
+    "D07-to,ta-C5-",
+    "D08-or,ta-T5-",
+    "E01-ca,ur-H3-",
+    "G03-ca,or-H5-",
+    "I03-ur,re-B1-",
+    "I17-ur,to-B6-",
+    "L01-ca,ur-H3-",
+    "O15-or,or-T2-",
+    "O17-or,ur-T4-"
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "sid": "GR446",
+  "idx": 3,
+  "sh": 0,
+  "t": "Beta",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "AFILMNP",
+  "ao": [
+    "A03-ca,to-H14-",
+    "F07-ca,to-H15-",
+    "I09-ta,ta-L9-",
+    "L01-or,ca-T9-",
+    "M01-or-T7-",
+    "N01-ta,to-L13-",
+    "N09-ta,ca-L10-",
+    "P18-to,ta-C11-",
+    "P26-to,re-C13-"
+  ]
+}

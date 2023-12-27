@@ -1,0 +1,31 @@
+{
+  "sid": "GR247",
+  "idx": 1,
+  "sh": 0,
+  "t": "Alpha",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "BCFGKNOPQ",
+  "ao": [
+    "B02-to,to-C2-",
+    "B16-to,ca-C3-",
+    "C01-to,ur-C4-",
+    "C12-to,or-C6-",
+    "F14-ur,ca-B3-",
+    "F16-ur,ta-B4-",
+    "G03-ca,or-H5-",
+    "K14-ca,or-H5-",
+    "K16-ca,ta-H4-",
+    "N06-ca,re-H7-",
+    "O08-or,or-T2-",
+    "O19-or,ta-T5-",
+    "P08-or,ur-T4-",
+    "P09-or,ur-T4-",
+    "Q05-ta,ur-L4-",
+    "Q15-ta,ur-L4-",
+    "Q18-ta,re-L7-"
+  ]
+}

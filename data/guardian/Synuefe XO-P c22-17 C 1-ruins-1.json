@@ -1,0 +1,25 @@
+{
+  "sid": "GR004",
+  "idx": 1,
+  "sh": 0,
+  "t": "Beta",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "ABGIJKLP",
+  "ao": [
+    "A05-ca,to-H13-",
+    "B04-or,re-T9-",
+    "G03-ca,to-H15-",
+    "G07-ca,to-H13-",
+    "I12-ta-L8-",
+    "J09-or,re-T12-",
+    "K02-to,re-C13-",
+    "K05-to,ur-C10-",
+    "L05-or,re-T12-",
+    "P02-to,re-C13-",
+    "P05-to,ur-C10-"
+  ]
+}

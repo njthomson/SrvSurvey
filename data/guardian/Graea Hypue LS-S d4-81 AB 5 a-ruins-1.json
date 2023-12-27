@@ -1,0 +1,31 @@
+{
+  "sid": "GR323",
+  "idx": 1,
+  "sh": 0,
+  "t": "Alpha",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "BCDEJLMPQ",
+  "ao": [
+    "B16-to,ca-C3-",
+    "B17-to,to-C2-",
+    "C07-to,ta-C5-",
+    "C12-to,or-C6-",
+    "D07-to,ta-C5-",
+    "D12-to,ta-C5-",
+    "E06-ca,re-H7-",
+    "J01-ca-H1-",
+    "L06-ca,re-H7-",
+    "M01-ta-L1-",
+    "M02-ta,ta-L2-",
+    "M10-ta,ta-L2-",
+    "P02-or,to-T6-",
+    "P08-or,ur-T4-",
+    "Q08-ta,re-L7-",
+    "Q17-ta,ta-L6-",
+    "Q18-ta,re-L7-"
+  ]
+}

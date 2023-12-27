@@ -1,0 +1,28 @@
+{
+  "sid": "GR513",
+  "idx": 2,
+  "sh": 0,
+  "t": "Alpha",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "BCFGHJMP",
+  "ao": [
+    "B20-to,to-C2-",
+    "B21-to,re-C1-",
+    "C02-to,ur-C4-",
+    "C07-to,ta-C5-",
+    "F05-ur,ur-B2-",
+    "F17-ur,to-B6-",
+    "G03-ca,or-H5-",
+    "H01-ca,ta-H4-",
+    "J01-ca-H1-",
+    "M10-ta,ta-L2-",
+    "M18-ta,ta-L2-",
+    "M19-ta,ca-L3-",
+    "P03-or,to-T6-",
+    "P12-or-T1-"
+  ]
+}

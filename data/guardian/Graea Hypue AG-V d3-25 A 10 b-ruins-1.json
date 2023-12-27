@@ -1,0 +1,32 @@
+{
+  "sid": "GR385",
+  "idx": 1,
+  "sh": 0,
+  "t": "Alpha",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "ACFGHJKMNO",
+  "ao": [
+    "A08-ur,ta-B4-",
+    "A10-to,to-C2-",
+    "A20-or,ur-T4-",
+    "C06-to,ta-C5-",
+    "C11-to,or-C6-",
+    "F21-ur,to-B6-",
+    "F22-ur,or-B5-",
+    "G02-ca,ur-H3-",
+    "H03-ca,ur-H3-",
+    "J04-ca,to-H6-",
+    "K21-to,or-C6-",
+    "K22-to,or-C6-",
+    "M04-ta,ur-L4-",
+    "M12-ta,ur-L4-",
+    "M22-ta,ta-L6-",
+    "N05-ca,to-H6-",
+    "O01-or-T1-",
+    "O20-or,to-T6-"
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "sid": "GR222",
+  "idx": 1,
+  "sh": 0,
+  "t": "Beta",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "ABCKMR",
+  "ao": [
+    "A05-ca,to-H13-",
+    "B02-or,or-T8-",
+    "C12-ta-L8-",
+    "K05-to,ur-C10-",
+    "K09-to,re-C13-",
+    "M02-or-T7-",
+    "R05-ur,to-B6-",
+    "R15-ca,to-H13-"
+  ]
+}

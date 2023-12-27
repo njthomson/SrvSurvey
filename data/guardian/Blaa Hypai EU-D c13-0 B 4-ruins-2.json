@@ -1,0 +1,33 @@
+{
+  "sid": "GR253",
+  "idx": 2,
+  "sh": 0,
+  "t": "Gamma",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "BCFGHILRS",
+  "ao": [
+    "B06-ur,ta-B16-",
+    "B23-ur,or-B17-",
+    "C04-to,ur-C17-",
+    "C09-to,ur-C17-",
+    "F04-or,or-T15-",
+    "F14-or,or-T15-",
+    "G07-or,re-T20-",
+    "H13-ta,re-L21-",
+    "H15-ta,or-L19-",
+    "H28-ta,ur-L18-",
+    "H32-ta,re-L21-",
+    "H49-ta,ca-L17-",
+    "I04-ur,to-B18-",
+    "I15-ur,to-B18-",
+    "L04-or,to-T19-",
+    "L09-or,to-T19-",
+    "R07-to,re-C20-",
+    "R25-to,re-C20-",
+    "S07-ca,ta-H20-"
+  ]
+}

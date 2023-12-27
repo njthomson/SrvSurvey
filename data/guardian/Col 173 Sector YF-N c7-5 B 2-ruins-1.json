@@ -1,0 +1,30 @@
+{
+  "sid": "GR273",
+  "idx": 1,
+  "sh": 0,
+  "t": "Alpha",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "ABCGILPQ",
+  "ao": [
+    "A01-ta-L1-",
+    "A06-ur,ur-B2-",
+    "A09-to,re-C1-",
+    "B05-to,to-C2-",
+    "B18-to,re-C1-",
+    "C02-to,ur-C4-",
+    "C11-to,or-C6-",
+    "G03-ca,or-H5-",
+    "I13-ur,or-B5-",
+    "I14-ur,or-B5-",
+    "L03-ca,or-H5-",
+    "P03-or,to-T6-",
+    "P09-or,ur-T4-",
+    "Q10-ta,or-L5-",
+    "Q18-ta,re-L7-",
+    "Q23-ta,ca-L3-"
+  ]
+}

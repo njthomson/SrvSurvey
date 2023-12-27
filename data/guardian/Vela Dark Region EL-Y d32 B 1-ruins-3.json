@@ -1,0 +1,25 @@
+{
+  "sid": "GR056",
+  "idx": 3,
+  "sh": 0,
+  "t": "Beta",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "CDLMOQRU",
+  "ao": [
+    "C09-ta,or-L12-",
+    "C21-ta-L8-",
+    "D08-ca,ta-H11-",
+    "L01-or,ca-T9-",
+    "M01-or-T7-",
+    "O01-or,re-T13-",
+    "Q01-or-T7-",
+    "R10-to,re-C13-",
+    "R18-to,to-C8-",
+    "U04-ur,or-B11-",
+    "U20-ur,to-B12-"
+  ]
+}

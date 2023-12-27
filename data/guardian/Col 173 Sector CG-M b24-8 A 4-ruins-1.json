@@ -1,0 +1,31 @@
+{
+  "sid": "GR031",
+  "idx": 1,
+  "sh": 0,
+  "t": "Gamma",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "BCFHLNOQ",
+  "ao": [
+    "B07-ur,ca-B15-",
+    "B14-ur,or-B17-",
+    "C05-to-C14-",
+    "C14-to,ca-C16-",
+    "F02-or,ur-T17-",
+    "F15-or-T14-",
+    "H06-ta,or-L19-",
+    "H24-ta,ur-L18-",
+    "H33-ta,to-L20-",
+    "H48-ta,ur-L18-",
+    "H52-ta,or-L19-",
+    "L05-or,re-T20-",
+    "L13-or,to-T19-",
+    "N02-or,or-T15-",
+    "N10-or-T14-",
+    "O04-ca,or-H21-",
+    "Q02-ca,ta-H20-"
+  ]
+}

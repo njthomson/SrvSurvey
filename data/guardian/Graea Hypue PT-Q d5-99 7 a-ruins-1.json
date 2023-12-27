@@ -1,0 +1,32 @@
+{
+  "sid": "GR382",
+  "idx": 1,
+  "sh": 0,
+  "t": "Gamma",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "BFGKNQS",
+  "ao": [
+    "B05-ur,or-B17-",
+    "B06-ur,ta-B16-",
+    "B13-ur,to-B18-",
+    "F03-or,ca-T16-",
+    "F04-or,or-T15-",
+    "F15-or-T14-",
+    "G07-or,re-T20-",
+    "G08-or,to-T19-",
+    "K09-or-T14-",
+    "K10-or,re-T20-",
+    "K15-or,re-T20-",
+    "N02-or,or-T15-",
+    "N07-or,ca-T16-",
+    "N11-or,or-T15-",
+    "Q02-ca,ta-H20-",
+    "Q08-ca,ca-H18-",
+    "S01-ca,ca-H18-",
+    "S03-ca,to-H17-"
+  ]
+}

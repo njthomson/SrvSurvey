@@ -1,0 +1,23 @@
+{
+  "sid": "GR017",
+  "idx": 3,
+  "sh": 0,
+  "t": "Beta",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "ADGHJKL",
+  "ao": [
+    "A08-ca,ca-H9-",
+    "D06-ca,ca-H9-",
+    "G01-ca,re-H14-",
+    "G16-ca,ur-H10-",
+    "H03-or,re-T12-",
+    "J03-or,or-T8-",
+    "K03-to,or-C12-",
+    "K24-to,ca-C9-",
+    "L06-or,re-T13-"
+  ]
+}

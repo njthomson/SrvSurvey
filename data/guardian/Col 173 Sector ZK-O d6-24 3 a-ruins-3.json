@@ -1,0 +1,33 @@
+{
+  "sid": "GR349",
+  "idx": 3,
+  "sh": 0,
+  "t": "Gamma",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "DFHJKMNPR",
+  "ao": [
+    "D02-ta,re-L21-",
+    "F13-or,ca-T16-",
+    "F15-or-T14-",
+    "H18-ta,ta-L16-",
+    "H20-ta-L15-",
+    "H36-ta,ca-L17-",
+    "H42-ta,ur-L18-",
+    "H47-ta,or-L19-",
+    "J09-ca,ur-H19-",
+    "K13-or,or-T15-",
+    "K15-or,re-T20-",
+    "M05-to-C14-",
+    "M13-to,to-C15-",
+    "N02-or,or-T15-",
+    "N03-or,ca-T16-",
+    "P13-to,or-C19-",
+    "P21-to,re-C20-",
+    "R09-ca,ur-H19-",
+    "R22-to,ur-C17-"
+  ]
+}

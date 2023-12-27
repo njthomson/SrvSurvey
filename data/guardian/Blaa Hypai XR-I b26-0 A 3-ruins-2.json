@@ -1,0 +1,22 @@
+{
+  "sid": "GR249",
+  "idx": 2,
+  "sh": 0,
+  "t": "Beta",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "DELQU",
+  "ao": [
+    "D05-ca,ta-H11-",
+    "E08-ur,to-B12-",
+    "E12-to,ca-C9-",
+    "L06-or,re-T13-",
+    "Q04-or,ca-T9-",
+    "U22-ur,to-B12-",
+    "U23-ur,or-B11-",
+    "U30-ur,ur-B8-"
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "sid": "GR506",
+  "idx": 1,
+  "sh": 0,
+  "t": "Gamma",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "DEKMNQR",
+  "ao": [
+    "D12-ta,to-L20-",
+    "E04-ca,ur-H19-",
+    "K04-or-T14-",
+    "K14-or-T14-",
+    "M08-to,ca-C16-",
+    "M09-to,ca-C16-",
+    "N05-or-T14-",
+    "N11-or,or-T15-",
+    "Q04-ca,ur-H19-",
+    "R07-to,re-C20-",
+    "R25-to,re-C20-"
+  ]
+}

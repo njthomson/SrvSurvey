@@ -1,0 +1,26 @@
+{
+  "sid": "GR381",
+  "idx": 2,
+  "sh": 0,
+  "t": "Beta",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "BHNQT",
+  "ao": [
+    "B02-or,or-T8-",
+    "B06-or,ta-T11-",
+    "H03-or,re-T12-",
+    "H07-or,ur-T10-",
+    "N02-ta,re-L14-",
+    "N05-ta,re-L14-",
+    "N22-ta,ta-L9-",
+    "Q03-or,ca-T9-",
+    "Q04-or,ca-T9-",
+    "T04-ca,to-H13-",
+    "T11-ca,or-H12-",
+    "T18-ca,ta-H11-"
+  ]
+}

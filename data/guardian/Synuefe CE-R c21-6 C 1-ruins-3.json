@@ -1,0 +1,28 @@
+{
+  "sid": "GR042",
+  "idx": 3,
+  "sh": 0,
+  "t": "Alpha",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "ADGJLMNO",
+  "ao": [
+    "A01-ta-L1-",
+    "A07-ur,ca-B3-",
+    "A18-or,or-T2-",
+    "D02-or,ta-C5-",
+    "D06-or,to-C6-",
+    "G03-ca,or-H5-",
+    "J02-ca,re-H7-",
+    "L03-ca,or-H5-",
+    "M05-ta,or-L5-",
+    "M07-ta,re-L7-",
+    "M17-ta-L1-",
+    "N03-ca,or-H5-",
+    "O02-or,or-T2-",
+    "O09-or,ca-T3-"
+  ]
+}

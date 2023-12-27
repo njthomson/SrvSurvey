@@ -1,0 +1,20 @@
+{
+  "sid": "GR091",
+  "idx": 1,
+  "sh": 0,
+  "t": "Beta",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "BIKOS",
+  "ao": [
+    "B06-or,ta-T11-",
+    "I06-ca,ur-L10-",
+    "K06-to,ca-C9-",
+    "K14-to,ur-C10-",
+    "O03-or,re-T13-",
+    "S03-or,re-T13-"
+  ]
+}

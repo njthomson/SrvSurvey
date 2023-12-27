@@ -1,0 +1,24 @@
+{
+  "sid": "GR454",
+  "idx": 2,
+  "sh": 0,
+  "t": "Beta",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "DEFGHSU",
+  "ao": [
+    "D01-ca,or-H12-",
+    "E01-or-T7-",
+    "E12-to,ca-C9-",
+    "F03-ca,ca-H9-",
+    "G10-ca,re-H14-",
+    "G13-ca,or-H12-",
+    "H08-or,ca-T9-",
+    "S03-or,re-T13-",
+    "U32-ur,re-B7-",
+    "U36-or,ur-T10-"
+  ]
+}

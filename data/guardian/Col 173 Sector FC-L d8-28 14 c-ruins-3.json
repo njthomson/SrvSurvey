@@ -1,0 +1,22 @@
+{
+  "sid": "GR099",
+  "idx": 3,
+  "sh": 0,
+  "t": "Beta",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "CEHLMT",
+  "ao": [
+    "C05-ta,or-L12-",
+    "E05-or,ta-T11-",
+    "E08-ur,to-B12-",
+    "H10-or-T7-",
+    "L01-or,ca-T9-",
+    "M01-or-T7-",
+    "T09-ca,re-H14-",
+    "T12-ca,ta-H11-"
+  ]
+}

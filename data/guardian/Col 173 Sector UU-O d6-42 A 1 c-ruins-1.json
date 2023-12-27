@@ -1,0 +1,22 @@
+{
+  "sid": "GR079",
+  "idx": 1,
+  "sh": 0,
+  "t": "Beta",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "EHMNT",
+  "ao": [
+    "E12-to,ca-C9-",
+    "E15-to,or-C12-",
+    "H05-or,ta-T11-",
+    "M02-or-T7-",
+    "N08-ta,or-L12-",
+    "N16-ta,to-L13-",
+    "T02-ca,to-H15-",
+    "T10-ca,to-H13-"
+  ]
+}

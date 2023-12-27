@@ -1,0 +1,24 @@
+{
+  "sid": "GR163",
+  "idx": 2,
+  "sh": 0,
+  "t": "Beta",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "BKMNOQR",
+  "ao": [
+    "B06-or,ta-T11-",
+    "K24-to,ca-C9-",
+    "K25-to,to-C8-",
+    "M03-or,or-T8-",
+    "N03-ta,to-L13-",
+    "N13-ta-L8-",
+    "O03-or,re-T13-",
+    "Q04-or,ca-T9-",
+    "R11-ca,ca-H9-",
+    "R26-ur,or-B5-"
+  ]
+}

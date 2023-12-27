@@ -1,0 +1,30 @@
+{
+  "sid": "GR224",
+  "idx": 1,
+  "sh": 0,
+  "t": "Alpha",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "ABDIJKNQ",
+  "ao": [
+    "A02-ta-L1-",
+    "A03-ta,ta-L6-",
+    "A13-ca-H1-",
+    "B03-to,re-C1-",
+    "B21-to,re-C1-",
+    "D02-or,ta-C5-",
+    "D04-or,ca-T3-",
+    "I05-ur,ur-B2-",
+    "I11-ur,ta-B4-",
+    "J02-ca,re-H7-",
+    "K01-or-T1-",
+    "K05-or,or-T2-",
+    "N03-ca,or-H5-",
+    "Q06-ta,or-L5-",
+    "Q08-ta,re-L7-",
+    "Q10-ta,or-L5-"
+  ]
+}

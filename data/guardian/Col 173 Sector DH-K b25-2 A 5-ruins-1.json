@@ -1,0 +1,28 @@
+{
+  "sid": "GR073",
+  "idx": 1,
+  "sh": 0,
+  "t": "Alpha",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "CFIJLNOQ",
+  "ao": [
+    "C02-to,ur-C4-",
+    "C06-to,ta-C5-",
+    "F05-ur,ur-B2-",
+    "F08-ur,ur-B2-",
+    "I05-ur,ur-B2-",
+    "I20-ur,to-B6-",
+    "J02-ca,re-H7-",
+    "L03-ca,or-H5-",
+    "N03-ca,or-H5-",
+    "O07-or-T1-",
+    "O16-or,ca-T3-",
+    "Q09-ta,re-L7-",
+    "Q26-ta,ta-L6-",
+    "Q29-ta,ur-L4-"
+  ]
+}

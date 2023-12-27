@@ -1,0 +1,31 @@
+{
+  "sid": "GR464",
+  "idx": 1,
+  "sh": 0,
+  "t": "Alpha",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "ACFGHIKLNO",
+  "ao": [
+    "A02-ta-L1-",
+    "A11-to,ca-C3-",
+    "A17-or-T1-",
+    "C01-to,ur-C4-",
+    "C02-to,ur-C4-",
+    "F05-ur,ur-B2-",
+    "F14-ur,ca-B3-",
+    "G02-ca,ur-H3-",
+    "H04-ca,ca-H2-",
+    "I05-ur,ur-B2-",
+    "I14-ur,or-B5-",
+    "K05-or,or-T2-",
+    "K14-ca,or-H5-",
+    "L02-ca,ta-H4-",
+    "N02-ca,ta-H4-",
+    "O16-or,ca-T3-",
+    "O19-or,ta-T5-"
+  ]
+}

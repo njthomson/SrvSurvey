@@ -1,0 +1,25 @@
+{
+  "sid": "GR328",
+  "idx": 2,
+  "sh": 0,
+  "t": "Beta",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "GIJKQRT",
+  "ao": [
+    "G05-ca,ca-H9-",
+    "G09-ca,to-H15-",
+    "I12-ta-L8-",
+    "J09-or,re-T12-",
+    "K05-to,ur-C10-",
+    "K16-to,to-C8-",
+    "Q05-or,ur-T10-",
+    "R05-ur,to-B6-",
+    "R23-ca,or-H12-",
+    "T05-ca,or-H12-",
+    "T09-ca,re-H14-"
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "sid": "GR021",
+  "idx": 1,
+  "sh": 0,
+  "t": "Beta",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "GJLMORSU",
+  "ao": [
+    "G10-ca,re-H14-",
+    "G11-ca,ur-H10-",
+    "J05-or,ca-T9-",
+    "L06-or,re-T13-",
+    "M02-or-T7-",
+    "O02-or,re-T13-",
+    "R03-ca,ta-H10-",
+    "R08-to-C7-",
+    "S02-or,re-T12-",
+    "U02-ur,to-B12-",
+    "U30-ur,ur-B8-",
+    "U41-ur,or-B11-"
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "sid": "GR084",
+  "idx": 1,
+  "sh": 0,
+  "t": "Gamma",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "DFGIKLO",
+  "ao": [
+    "D14-ta-L15-",
+    "F08-or,ca-T16-",
+    "F09-or,or-T15-",
+    "G03-or,re-T20-",
+    "I09-ur,ta-B16-",
+    "I12-ur,ur-B14-",
+    "K08-or,or-T15-",
+    "K09-or-T14-",
+    "L03-or,ta-T18-",
+    "L04-or,to-T19-",
+    "O07-ca,ca-H18-"
+  ]
+}

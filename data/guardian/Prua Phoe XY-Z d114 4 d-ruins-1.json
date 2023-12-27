@@ -1,0 +1,31 @@
+{
+  "sid": "GR185",
+  "idx": 1,
+  "sh": 0,
+  "t": "Gamma",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "BCDEFIMNPQ",
+  "ao": [
+    "B08-ur,ur-B14-",
+    "B26-ur,ur-B14-",
+    "C07-to,ta-C18-",
+    "C10-to,to-C15-",
+    "D11-ta,or-H21-",
+    "E03-ca,or-H21-",
+    "F05-or-T14-",
+    "F12-or,ur-T17-",
+    "I02-ur,ta-B16-",
+    "I13-ur-B13-",
+    "M02-to,re-C20-",
+    "M11-to,ta-C18-",
+    "N05-or-T14-",
+    "N08-or,ur-T17-",
+    "P08-to,to-C15-",
+    "P26-to,to-C15-",
+    "Q03-ca,re-H21-"
+  ]
+}

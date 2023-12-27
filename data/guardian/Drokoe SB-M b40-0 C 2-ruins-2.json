@@ -1,0 +1,32 @@
+{
+  "sid": "GR484",
+  "idx": 2,
+  "sh": 0,
+  "t": "Alpha",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "BDFLMNOPQ",
+  "ao": [
+    "B06-to,re-C1-",
+    "B16-to,ca-C3-",
+    "D04-or,ca-T3-",
+    "D12-to,ta-C5-",
+    "F19-ur,or-B5-",
+    "F20-ur,or-B5-",
+    "L06-ca,re-H7-",
+    "M01-ta-L1-",
+    "M19-ta,ca-L3-",
+    "M20-ta,ur-L4-",
+    "N06-ca,re-H7-",
+    "O02-or,or-T2-",
+    "O10-or,ur-T4-",
+    "P08-or,ur-T4-",
+    "P13-or-T1-",
+    "Q15-ta,ur-L4-",
+    "Q16-ta,or-L5-",
+    "Q17-ta,ta-L6-"
+  ]
+}

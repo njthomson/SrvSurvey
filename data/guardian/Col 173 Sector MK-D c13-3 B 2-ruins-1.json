@@ -1,0 +1,27 @@
+{
+  "sid": "GR389",
+  "idx": 1,
+  "sh": 0,
+  "t": "Alpha",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "BCEGJMNP",
+  "ao": [
+    "B06-to,re-C1-",
+    "B21-to,re-C1-",
+    "C02-to,ur-C4-",
+    "C04-to,ca-C3-",
+    "E03-ca,or-H5-",
+    "G03-ca,or-H5-",
+    "J02-ca,re-H7-",
+    "M09-ta-L1-",
+    "M18-ta,ta-L2-",
+    "M19-ta,ca-L3-",
+    "N03-ca,or-H5-",
+    "P03-or,to-T6-",
+    "P13-or-T1-"
+  ]
+}

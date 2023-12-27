@@ -1,0 +1,23 @@
+{
+  "sid": "GR006",
+  "idx": 2,
+  "sh": 0,
+  "t": "Beta",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "CHILMQR",
+  "ao": [
+    "C01-ta,or-L12-",
+    "C18-ta,ur-L11-",
+    "H07-or,ur-T10-",
+    "I07-ca,ca-H9-",
+    "L02-or,ur-T10-",
+    "M01-or-T7-",
+    "Q03-or,ca-T9-",
+    "R08-to-C7-",
+    "R23-ca,or-H12-"
+  ]
+}

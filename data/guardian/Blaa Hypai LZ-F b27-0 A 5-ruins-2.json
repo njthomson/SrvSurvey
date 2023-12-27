@@ -1,0 +1,33 @@
+{
+  "sid": "GR228",
+  "idx": 2,
+  "sh": 0,
+  "t": "Alpha",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "ABGIJKMOQ",
+  "ao": [
+    "A05-ur,re-B1-",
+    "A08-ur,ta-B4-",
+    "A17-or-T1-",
+    "B01-to,ca-C3-",
+    "B15-to,ur-C4-",
+    "G02-ca,ur-H3-",
+    "I04-ur,re-B1-",
+    "I08-ur,ur-B2-",
+    "J05-ca,ta-H4-",
+    "K08-or,ca-T3-",
+    "K21-to,or-C6-",
+    "M01-ta-L1-",
+    "M04-ta,ur-L4-",
+    "M14-ta,ta-L6-",
+    "O01-or-T1-",
+    "O07-or-T1-",
+    "Q13-ta,ta-L2-",
+    "Q18-ta,re-L7-",
+    "Q27-ta,re-L7-"
+  ]
+}

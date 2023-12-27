@@ -1,0 +1,28 @@
+{
+  "sid": "GR396",
+  "idx": 2,
+  "sh": 0,
+  "t": "Alpha",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "DEFHJOPQ",
+  "ao": [
+    "D02-or,ta-C5-",
+    "D07-to,ta-C5-",
+    "E03-ca,or-H5-",
+    "F13-ur,ca-B3-",
+    "F17-ur,to-B6-",
+    "H01-ca,ta-H4-",
+    "J02-ca,re-H7-",
+    "O03-or,ca-T3-",
+    "O09-or,ca-T3-",
+    "P02-or,to-T6-",
+    "P03-or,to-T6-",
+    "Q01-ta,ta-L2-",
+    "Q08-ta,re-L7-",
+    "Q10-ta,or-L5-"
+  ]
+}

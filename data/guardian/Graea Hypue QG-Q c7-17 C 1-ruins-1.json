@@ -1,0 +1,25 @@
+{
+  "sid": "GR473",
+  "idx": 1,
+  "sh": 0,
+  "t": "Beta",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "CINOPST",
+  "ao": [
+    "C21-ta-L8-",
+    "C25-ta-L8-",
+    "I02-ca,ur-C10-",
+    "N20-ta,to-L13-",
+    "N23-ta,re-L14-",
+    "O03-or,re-T13-",
+    "P12-to,to-C8-",
+    "P19-to-C7-",
+    "S03-or,re-T13-",
+    "T01-ca,re-H16-",
+    "T14-ca,to-H15-"
+  ]
+}

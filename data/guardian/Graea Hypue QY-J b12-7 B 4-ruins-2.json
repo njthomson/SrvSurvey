@@ -1,0 +1,27 @@
+{
+  "sid": "GR419",
+  "idx": 2,
+  "sh": 0,
+  "t": "Beta",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "BEFMOQ",
+  "ao": [
+    "B01-or-T7-",
+    "B02-or,or-T8-",
+    "E10-to-C7-",
+    "E12-to,ca-C9-",
+    "E23-ta,or-L12-",
+    "F03-ca,ca-H9-",
+    "F08-ca,re-H16-",
+    "M01-or-T7-",
+    "M03-or,or-T8-",
+    "O01-or,re-T13-",
+    "O03-or,re-T13-",
+    "Q03-or,ca-T9-",
+    "Q06-or,ta-T11-"
+  ]
+}

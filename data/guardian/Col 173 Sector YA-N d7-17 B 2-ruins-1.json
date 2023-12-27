@@ -1,0 +1,28 @@
+{
+  "sid": "GR269",
+  "idx": 1,
+  "sh": 0,
+  "t": "Gamma",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "DEFGKLNOP",
+  "ao": [
+    "D01-ta,or-H21-",
+    "E01-ca,ur-H19-",
+    "F06-or,ta-T18-",
+    "F09-or,or-T15-",
+    "G09-or,ta-T18-",
+    "K11-or,ur-T17-",
+    "K14-or-T14-",
+    "L02-or,ur-T17-",
+    "L04-or,to-T19-",
+    "N11-or,or-T15-",
+    "N13-or,ur-T17-",
+    "O02-ca,ta-H20-",
+    "P15-to,ur-C17-",
+    "P27-to-C14-"
+  ]
+}

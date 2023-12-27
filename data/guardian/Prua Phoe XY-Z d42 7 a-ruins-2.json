@@ -1,0 +1,25 @@
+{
+  "sid": "GR182",
+  "idx": 2,
+  "sh": 0,
+  "t": "Beta",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "ILPRTU",
+  "ao": [
+    "I09-ta,ta-L9-",
+    "L01-or,ca-T9-",
+    "P14-to,ur-C10-",
+    "P26-to,re-C13-",
+    "R06-to,ur-C10-",
+    "R27-ca,re-H16-",
+    "T08-ca,to-H15-",
+    "T18-ca,ta-H11-",
+    "U05-ur,or-B11-",
+    "U34-or,ur-T10-",
+    "U47-ur,ur-B8-"
+  ]
+}

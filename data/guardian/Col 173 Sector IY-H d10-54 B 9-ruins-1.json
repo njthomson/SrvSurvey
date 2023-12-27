@@ -1,0 +1,25 @@
+{
+  "sid": "GR406",
+  "idx": 1,
+  "sh": 0,
+  "t": "Beta",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "BCDEGOU",
+  "ao": [
+    "B04-or,re-T9-",
+    "C22-ta,ur-L11-",
+    "D04-ca,to-H13-",
+    "E02-or,or-T8-",
+    "E25-ta,re-L14-",
+    "G06-ca,ca-H9-",
+    "G15-ca,re-H16-",
+    "O02-or,re-T13-",
+    "U14-ur,re-B7-",
+    "U24-ur,or-B11-",
+    "U33-ur,re-B7-"
+  ]
+}

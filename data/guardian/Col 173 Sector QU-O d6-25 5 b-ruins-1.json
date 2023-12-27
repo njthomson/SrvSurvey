@@ -1,0 +1,22 @@
+{
+  "sid": "GR265",
+  "idx": 1,
+  "sh": 0,
+  "t": "Beta",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "DFHLNOS",
+  "ao": [
+    "D09-ca,ca-H9-",
+    "F07-ca,to-H15-",
+    "H10-or-T7-",
+    "L01-or,ca-T9-",
+    "N09-ta,ca-L10-",
+    "N22-ta,ta-L9-",
+    "O01-or,re-T13-",
+    "S01-or,re-T13-"
+  ]
+}

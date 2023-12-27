@@ -1,0 +1,23 @@
+{
+  "sid": "GR132",
+  "idx": 1,
+  "sh": 0,
+  "t": "Beta",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "ABEFHOR",
+  "ao": [
+    "A05-ca,to-H13-",
+    "B04-or,re-T9-",
+    "E14-to,ta-C11-",
+    "E18-ur,ca-B9-",
+    "F04-ca,or-H12-",
+    "H09-or,or-T8-",
+    "O02-or,re-T13-",
+    "R14-ur,ta-B10-",
+    "R18-to,to-C8-"
+  ]
+}

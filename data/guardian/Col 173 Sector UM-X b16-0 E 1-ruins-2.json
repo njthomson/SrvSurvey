@@ -1,0 +1,21 @@
+{
+  "sid": "GR493",
+  "idx": 2,
+  "sh": 0,
+  "t": "Beta",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "ACDFMOS",
+  "ao": [
+    "A04-ca-H8-",
+    "C01-ta,or-L12-",
+    "D05-ca,ta-H11-",
+    "F06-ca,to-H13-",
+    "M02-or-T7-",
+    "O02-or,re-T13-",
+    "S02-or,re-T12-"
+  ]
+}

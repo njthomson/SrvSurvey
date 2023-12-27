@@ -1,0 +1,28 @@
+{
+  "sid": "GR034",
+  "idx": 2,
+  "sh": 0,
+  "t": "Gamma",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "ABEHJOP",
+  "ao": [
+    "A12-ur,re-B19-",
+    "A18-ur-B13-",
+    "B12-ur,re-B19-",
+    "B18-ur-B13-",
+    "E09-ca,to-H17-",
+    "H11-ta,or-L19-",
+    "H17-ta,ca-L17-",
+    "H24-ta,ur-L18-",
+    "H31-ta,ta-L16-",
+    "H43-ta,or-L19-",
+    "J07-ca,or-H21-",
+    "O06-ca,or-H21-",
+    "P12-to,re-C20-",
+    "P18-to-C14-"
+  ]
+}

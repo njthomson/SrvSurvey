@@ -1,0 +1,30 @@
+{
+  "sid": "GR435",
+  "idx": 1,
+  "sh": 0,
+  "t": "Gamma",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "ADEGHKLR",
+  "ao": [
+    "A14-ur,or-B17-",
+    "A27-ur-B13-",
+    "D01-ta,or-H21-",
+    "E01-ca,ur-H19-",
+    "G09-or,ta-T18-",
+    "H02-ta-L15-",
+    "H12-ta,re-L21-",
+    "H18-ta,ta-L16-",
+    "H22-ta,ta-L16-",
+    "H29-ta-L15-",
+    "K10-or,re-T20-",
+    "K11-or,ur-T17-",
+    "L02-or,ur-T17-",
+    "L13-or,to-T19-",
+    "R11-to,to-C15-",
+    "R23-to,ta-C18-"
+  ]
+}

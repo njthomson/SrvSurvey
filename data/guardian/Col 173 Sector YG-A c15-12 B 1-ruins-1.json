@@ -1,0 +1,30 @@
+{
+  "sid": "GR226",
+  "idx": 1,
+  "sh": 0,
+  "t": "Gamma",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "BDEGIJLMNR",
+  "ao": [
+    "B03-ur,re-B19-",
+    "B04-ur,to-B18-",
+    "D03-ta,ur-L18-",
+    "E05-ca,ta-H20-",
+    "G13-or,to-T19-",
+    "I16-ur,or-B17-",
+    "I18-ur,ca-B15-",
+    "J05-ca,ta-H20-",
+    "L12-or,ta-T18-",
+    "L14-or,re-T20-",
+    "M05-to-C14-",
+    "M10-to,ta-C18-",
+    "N01-or-T14-",
+    "N03-or,ca-T16-",
+    "R13-to,ur-C17-",
+    "R18-ca,to-H17-"
+  ]
+}

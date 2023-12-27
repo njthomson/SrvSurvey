@@ -1,0 +1,19 @@
+{
+  "sid": "GR203",
+  "idx": 1,
+  "sh": 0,
+  "t": "Beta",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "ABCFL",
+  "ao": [
+    "A02-ca,to-H15-",
+    "B04-or,re-T9-",
+    "C17-ta-L8-",
+    "F05-ca,re-H14-",
+    "L05-or,re-T12-"
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "sid": "GR170",
+  "idx": 1,
+  "sh": 0,
+  "t": "Beta",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "HIJOQRTU",
+  "ao": [
+    "H08-or,ca-T9-",
+    "I03-ca,ta-L11-",
+    "J08-or,ta-T11-",
+    "O03-or,re-T13-",
+    "Q06-or,ta-T11-",
+    "R02-ta,ur-C10-",
+    "R10-to,re-C13-",
+    "T01-ca,re-H16-",
+    "T15-ca,re-H14-",
+    "U14-ur,re-B7-",
+    "U36-or,ur-T10-"
+  ]
+}

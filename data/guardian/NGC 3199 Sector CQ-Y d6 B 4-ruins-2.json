@@ -1,0 +1,24 @@
+{
+  "sid": "GR332",
+  "idx": 2,
+  "sh": 0,
+  "t": "Beta",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "FGJLMRT",
+  "ao": [
+    "F04-ca,or-H12-",
+    "G06-ca,ca-H9-",
+    "G10-ca,re-H14-",
+    "J07-or,ur-T10-",
+    "L02-or,ur-T10-",
+    "M01-or-T7-",
+    "R03-ca,ta-H10-",
+    "R25-to,ur-C10-",
+    "T06-ca,ta-H11-",
+    "T10-ca,to-H13-"
+  ]
+}

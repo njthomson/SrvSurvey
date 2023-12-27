@@ -1,0 +1,21 @@
+{
+  "sid": "GR375",
+  "idx": 2,
+  "sh": 0,
+  "t": "Beta",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "HIKOU",
+  "ao": [
+    "H09-or,or-T8-",
+    "I10-ca-H8-",
+    "K09-to,re-C13-",
+    "O02-or,re-T13-",
+    "U04-ur,or-B11-",
+    "U42-ur,or-B11-",
+    "U43-ur,ta-B10-"
+  ]
+}

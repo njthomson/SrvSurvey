@@ -1,0 +1,22 @@
+{
+  "sid": "GR483",
+  "idx": 1,
+  "sh": 0,
+  "t": "Beta",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "DEKMR",
+  "ao": [
+    "D03-ca-H8-",
+    "E10-to-C7-",
+    "E20-ta,ta-L9-",
+    "K02-to,re-C13-",
+    "K03-to,or-C12-",
+    "M03-or,or-T8-",
+    "R10-to,re-C13-",
+    "R20-ur,re-B7-"
+  ]
+}

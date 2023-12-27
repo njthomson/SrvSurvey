@@ -1,0 +1,21 @@
+{
+  "sid": "GR509",
+  "idx": 1,
+  "sh": 0,
+  "t": "Beta",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "GIJPQ",
+  "ao": [
+    "G07-ca,to-H13-",
+    "G14-ca,re-H16-",
+    "I02-ca,ur-C10-",
+    "J03-or,or-T8-",
+    "P02-to,re-C13-",
+    "P13-to,ca-C9-",
+    "Q06-or,ta-T11-"
+  ]
+}

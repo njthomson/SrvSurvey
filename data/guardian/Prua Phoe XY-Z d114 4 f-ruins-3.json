@@ -1,0 +1,25 @@
+{
+  "sid": "GR188",
+  "idx": 3,
+  "sh": 0,
+  "t": "Gamma",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "ACFKOPS",
+  "ao": [
+    "A19-ur,ur-B14-",
+    "A23-ur,or-B17-",
+    "C08-to,or-C19-",
+    "C09-to,ur-C17-",
+    "F08-or,ca-T16-",
+    "F14-or,or-T15-",
+    "K08-or,or-T15-",
+    "K15-or,re-T20-",
+    "O04-ca,or-H21-",
+    "P23-to,ta-C18-",
+    "S01-ca,ca-H18-"
+  ]
+}

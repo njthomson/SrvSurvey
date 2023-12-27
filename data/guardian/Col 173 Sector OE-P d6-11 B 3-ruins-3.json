@@ -1,0 +1,26 @@
+{
+  "sid": "GR067",
+  "idx": 3,
+  "sh": 0,
+  "t": "Beta",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "DEFGILNT",
+  "ao": [
+    "D06-ca,ca-H9-",
+    "E13-to,ur-C10-",
+    "E22-ta,ur-L11-",
+    "F02-ca,ta-H11-",
+    "G04-ca,re-H14-",
+    "G14-ca,re-H16-",
+    "I06-ca,ur-L10-",
+    "L06-or,re-T13-",
+    "N02-ta,re-L14-",
+    "N24-ta,to-L13-",
+    "T04-ca,to-H13-",
+    "T14-ca,to-H15-"
+  ]
+}

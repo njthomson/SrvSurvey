@@ -1,0 +1,30 @@
+{
+  "sid": "GR421",
+  "idx": 1,
+  "sh": 0,
+  "t": "Alpha",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "ABCGIJKLO",
+  "ao": [
+    "A08-ur,ta-B4-",
+    "A15-ca,ur-H3-",
+    "A16-ca,ta-H4-",
+    "B01-to,ca-C3-",
+    "B03-to,re-C1-",
+    "C06-to,ta-C5-",
+    "C08-to,to-C2-",
+    "G02-ca,ur-H3-",
+    "I11-ur,ta-B4-",
+    "I20-ur,to-B6-",
+    "J05-ca,ta-H4-",
+    "K01-or-T1-",
+    "K08-or,ca-T3-",
+    "L05-ca,to-H6-",
+    "O07-or-T1-",
+    "O11-or,ta-T5-"
+  ]
+}

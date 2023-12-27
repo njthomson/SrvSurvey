@@ -1,0 +1,27 @@
+{
+  "sid": "GR193",
+  "idx": 1,
+  "sh": 0,
+  "t": "Beta",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "LPQRT",
+  "ao": [
+    "L01-or,ca-T9-",
+    "L06-or,re-T13-",
+    "P19-to-C7-",
+    "P22-to,ca-C9-",
+    "P25-to,or-C12-",
+    "Q01-or-T7-",
+    "Q04-or,ca-T9-",
+    "R13-ca,ta-H11-",
+    "R22-to,ur-C10-",
+    "R26-ur,or-B5-",
+    "T04-ca,to-H13-",
+    "T14-ca,to-H15-",
+    "T17-ca,or-H12-"
+  ]
+}

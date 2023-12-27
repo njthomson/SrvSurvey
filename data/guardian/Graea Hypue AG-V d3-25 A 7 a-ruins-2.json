@@ -1,0 +1,24 @@
+{
+  "sid": "GR383",
+  "idx": 2,
+  "sh": 0,
+  "t": "Beta",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "BDFHQTU",
+  "ao": [
+    "B04-or,re-T9-",
+    "D12-ca-H8-",
+    "F05-ca,re-H14-",
+    "H09-or,or-T8-",
+    "Q05-or,ur-T10-",
+    "T05-ca,or-H12-",
+    "T09-ca,re-H14-",
+    "U07-ur,ta-B10-",
+    "U09-ur,ta-B10-",
+    "U17-or,or-T8-"
+  ]
+}

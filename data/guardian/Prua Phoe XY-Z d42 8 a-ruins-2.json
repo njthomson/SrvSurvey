@@ -1,0 +1,32 @@
+{
+  "sid": "GR184",
+  "idx": 2,
+  "sh": 0,
+  "t": "Alpha",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "BCEIMNOPQ",
+  "ao": [
+    "B15-to,ur-C4-",
+    "B16-to,ca-C3-",
+    "C12-to,or-C6-",
+    "C13-to,re-C1-",
+    "E06-ca,re-H7-",
+    "I04-ur,re-B1-",
+    "I12-ur,to-B6-",
+    "M02-ta,ta-L2-",
+    "M06-ta,ta-L6-",
+    "M21-ta,or-L5-",
+    "N06-ca,re-H7-",
+    "O06-or,to-T6-",
+    "O08-or,or-T2-",
+    "P01-or,to-T6-",
+    "P08-or,ur-T4-",
+    "Q18-ta,re-L7-",
+    "Q22-ta,ta-L2-",
+    "Q25-ta,or-L5-"
+  ]
+}

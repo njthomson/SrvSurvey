@@ -1,0 +1,24 @@
+{
+  "sid": "GR479",
+  "idx": 2,
+  "sh": 0,
+  "t": "Beta",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "CDGHJNQS",
+  "ao": [
+    "C19-ta,ca-L10-",
+    "D01-ca,or-H12-",
+    "G08-ca,re-H15-",
+    "G13-ca,or-H12-",
+    "H08-or,ca-T9-",
+    "J08-or,ta-T11-",
+    "N06-ta,re-L14-",
+    "N19-ta,re-L14-",
+    "Q06-or,ta-T11-",
+    "S03-or,re-T13-"
+  ]
+}

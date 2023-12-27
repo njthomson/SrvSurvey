@@ -1,0 +1,21 @@
+{
+  "sid": "GR393",
+  "idx": 2,
+  "sh": 0,
+  "t": "Beta",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "AILPR",
+  "ao": [
+    "A06-ca-H8-",
+    "I11-to-C7-",
+    "L02-or,ur-T10-",
+    "P03-to,to-C8-",
+    "P07-to,or-C12-",
+    "R01-to,ur-C10-",
+    "R24-ur,or-B11-"
+  ]
+}

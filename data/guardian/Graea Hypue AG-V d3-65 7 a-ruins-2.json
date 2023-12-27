@@ -1,0 +1,19 @@
+{
+  "sid": "GR428",
+  "idx": 2,
+  "sh": 0,
+  "t": "Beta",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "CDLOQ",
+  "ao": [
+    "C22-ta,ur-L11-",
+    "D11-ca,ur-H10-",
+    "L02-or,ur-T10-",
+    "O01-or,re-T13-",
+    "Q03-or,ca-T9-"
+  ]
+}

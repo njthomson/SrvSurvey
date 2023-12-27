@@ -1,0 +1,31 @@
+{
+  "sid": "GR410",
+  "idx": 3,
+  "sh": 0,
+  "t": "Alpha",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "BDHIJLMPQ",
+  "ao": [
+    "B16-to,ca-C3-",
+    "B19-to,ca-C3-",
+    "D06-or,to-C6-",
+    "D12-to,ta-C5-",
+    "H03-ca,ur-H3-",
+    "I16-ur,to-B6-",
+    "I20-ur,to-B6-",
+    "J05-ca,ta-H4-",
+    "L06-ca,re-H7-",
+    "M01-ta-L1-",
+    "M02-ta,ta-L2-",
+    "M05-ta,or-L5-",
+    "P07-or,ca-T3-",
+    "P08-or,ur-T4-",
+    "Q17-ta,ta-L6-",
+    "Q19-ta,re-L7-",
+    "Q26-ta,ta-L6-"
+  ]
+}

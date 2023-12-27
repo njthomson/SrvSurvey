@@ -1,0 +1,27 @@
+{
+  "sid": "GR003",
+  "idx": 1,
+  "sh": 0,
+  "t": "Alpha",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "BCDGIKLN",
+  "ao": [
+    "B18-to,re-C1-",
+    "B20-to,to-C2-",
+    "C07-to,ta-C5-",
+    "C12-to,or-C6-",
+    "D07-to,ta-C5-",
+    "D12-to,ta-C5-",
+    "G03-ca,or-H5-",
+    "I09-ur,or-B5-",
+    "I17-ur,to-B6-",
+    "K09-ca-H1-",
+    "K12-ca,ta-H4-",
+    "L01-ca,ur-H3-",
+    "N01-ca,ur-H3-"
+  ]
+}

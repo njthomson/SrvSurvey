@@ -1,0 +1,29 @@
+{
+  "sid": "GR295",
+  "idx": 2,
+  "sh": 0,
+  "t": "Gamma",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "AHKLOQR",
+  "ao": [
+    "A03-ur,re-B19-",
+    "A19-ur,ur-B14-",
+    "H12-ta,re-L21-",
+    "H20-ta-L15-",
+    "H21-ta-L15-",
+    "H36-ta,ca-L17-",
+    "H48-ta,ur-L18-",
+    "K03-or,or-T15-",
+    "K08-or,or-T15-",
+    "L08-or,ta-T18-",
+    "L12-or,ta-T18-",
+    "O07-ca,ca-H18-",
+    "Q07-ca,ta-H20-",
+    "R08-ca,ta-H20-",
+    "R15-to,or-C19-"
+  ]
+}

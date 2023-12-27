@@ -1,0 +1,25 @@
+{
+  "sid": "GR213",
+  "idx": 2,
+  "sh": 0,
+  "t": "Gamma",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "BCDNPQRS",
+  "ao": [
+    "B02-ur,re-B19-",
+    "B19-ur,to-B18-",
+    "C03-to,ta-C18-",
+    "C08-to,or-C19-",
+    "D08-ta,ta-L16-",
+    "N07-or,ca-T16-",
+    "N12-or,ca-T16-",
+    "Q07-ca,ta-H20-",
+    "R15-to,or-C19-",
+    "R24-to,or-C19-",
+    "S05-ca,ur-H19-"
+  ]
+}

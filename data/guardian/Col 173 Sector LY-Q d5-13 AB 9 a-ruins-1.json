@@ -1,0 +1,24 @@
+{
+  "sid": "GR024",
+  "idx": 1,
+  "sh": 0,
+  "t": "Beta",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "FIJKRST",
+  "ao": [
+    "F04-ca,or-H12-",
+    "I10-ca-H8-",
+    "J09-or,re-T12-",
+    "K04-to,ta-C11-",
+    "K21-to,or-C12-",
+    "R14-ur,ta-B10-",
+    "R19-ca-H8-",
+    "S02-or,re-T12-",
+    "T03-ca,re-H14-",
+    "T13-ca,re-H16-"
+  ]
+}

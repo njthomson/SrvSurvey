@@ -1,0 +1,28 @@
+{
+  "sid": "GR287",
+  "idx": 1,
+  "sh": 0,
+  "t": "Gamma",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "ACFGLNPS",
+  "ao": [
+    "A05-ur,or-B17-",
+    "A13-ur,to-B18-",
+    "C14-to,ca-C16-",
+    "C15-to,ca-C16-",
+    "F10-or-T14-",
+    "F15-or-T14-",
+    "G08-or,to-T19-",
+    "L13-or,to-T19-",
+    "L14-or,re-T20-",
+    "N01-or-T14-",
+    "N02-or,or-T15-",
+    "P05-to,ta-C18-",
+    "P13-to,or-C19-",
+    "S01-ca,ca-H18-"
+  ]
+}

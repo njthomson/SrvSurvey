@@ -1,0 +1,26 @@
+{
+  "sid": "GR258",
+  "idx": 3,
+  "sh": 0,
+  "t": "Beta",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "DFGKLPSU",
+  "ao": [
+    "D01-ca,or-H12-",
+    "F03-ca,ca-H9-",
+    "G13-ca,or-H12-",
+    "G17-ca,ur-H10-",
+    "K21-to,or-C12-",
+    "K25-to,to-C8-",
+    "L03-or,ta-T11-",
+    "P21-to,to-C8-",
+    "P25-to,or-C12-",
+    "S03-or,re-T13-",
+    "U20-ur,to-B12-",
+    "U43-ur,ta-B10-"
+  ]
+}

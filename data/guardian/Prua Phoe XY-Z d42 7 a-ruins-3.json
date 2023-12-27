@@ -1,0 +1,29 @@
+{
+  "sid": "GR181",
+  "idx": 3,
+  "sh": 0,
+  "t": "Gamma",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "BEFGLMOPQS",
+  "ao": [
+    "B03-ur,re-B19-",
+    "B21-ur,re-B19-",
+    "E09-ca,to-H17-",
+    "F03-or,ca-T16-",
+    "F13-or,ca-T16-",
+    "G12-or,re-T20-",
+    "L05-or,re-T20-",
+    "L12-or,ta-T18-",
+    "M05-to-C14-",
+    "M12-to,to-C15-",
+    "O06-ca,or-H21-",
+    "P03-to,re-C20-",
+    "P21-to,re-C20-",
+    "Q09-ca,to-H17-",
+    "S06-ca,ur-H19-"
+  ]
+}

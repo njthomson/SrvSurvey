@@ -1,0 +1,29 @@
+{
+  "sid": "GR069",
+  "idx": 3,
+  "sh": 0,
+  "t": "Gamma",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "ACEFILMOQ",
+  "ao": [
+    "A17-ur,ur-B14-",
+    "A27-ur-B13-",
+    "C02-to,or-C19-",
+    "C05-to-C14-",
+    "E03-ca,or-H21-",
+    "F06-or,ta-T18-",
+    "F07-or,ur-T17-",
+    "I01-ur,ca-B15-",
+    "I08-ur,ca-B15-",
+    "L02-or,ur-T17-",
+    "L05-or,re-T20-",
+    "M01-to,re-C20-",
+    "M06-to,or-C19-",
+    "O02-ca,ta-H20-",
+    "Q03-ca,re-H21-"
+  ]
+}

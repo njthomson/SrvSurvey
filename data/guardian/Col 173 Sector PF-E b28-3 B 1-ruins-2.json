@@ -1,0 +1,22 @@
+{
+  "sid": "GR270",
+  "idx": 2,
+  "sh": 0,
+  "t": "Beta",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "CJLSU",
+  "ao": [
+    "C19-ta,ca-L10-",
+    "C20-ta,ta-L9-",
+    "J08-or,ta-T11-",
+    "L03-or,ta-T11-",
+    "S03-or,re-T13-",
+    "U17-or,or-T8-",
+    "U18-or,ta-T11-",
+    "U47-ur,ur-B8-"
+  ]
+}

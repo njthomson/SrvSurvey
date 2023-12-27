@@ -1,0 +1,32 @@
+{
+  "sid": "GR512",
+  "idx": 1,
+  "sh": 0,
+  "t": "Gamma",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "CDFGIKLMORS",
+  "ao": [
+    "C05-to-C14-",
+    "C14-to,ca-C16-",
+    "D02-ta,re-L21-",
+    "F02-or,ur-T17-",
+    "F15-or-T14-",
+    "G08-or,to-T19-",
+    "I11-ur,to-B18-",
+    "I14-ur,re-B19-",
+    "K07-or,ca-T16-",
+    "K15-or,re-T20-",
+    "L05-or,re-T20-",
+    "L13-or,to-T19-",
+    "M07-to,or-C19-",
+    "M13-to,to-C15-",
+    "O04-ca,or-H21-",
+    "R05-to,ta-C18-",
+    "R23-to,ta-C18-",
+    "S01-ca,ca-H18-"
+  ]
+}

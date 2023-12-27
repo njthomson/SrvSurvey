@@ -1,0 +1,26 @@
+{
+  "sid": "GR498",
+  "idx": 1,
+  "sh": 0,
+  "t": "Beta",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "AFGKOPST",
+  "ao": [
+    "A06-ca-H8-",
+    "F04-ca,or-H12-",
+    "G06-ca,ca-H9-",
+    "G11-ca,ur-H10-",
+    "K07-to,to-C8-",
+    "K17-to-C7-",
+    "O01-or,re-T13-",
+    "P07-to,or-C12-",
+    "P17-to,re-C13-",
+    "S01-or,re-T13-",
+    "T06-ca,ta-H11-",
+    "T11-ca,or-H12-"
+  ]
+}

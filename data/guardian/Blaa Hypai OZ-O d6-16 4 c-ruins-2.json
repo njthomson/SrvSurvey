@@ -1,0 +1,28 @@
+{
+  "sid": "GR231",
+  "idx": 2,
+  "sh": 0,
+  "t": "Gamma",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "ACEGKNPR",
+  "ao": [
+    "A07-ur,ca-B15-",
+    "A17-ur,ur-B14-",
+    "C05-to-C14-",
+    "C10-to,to-C15-",
+    "E01-ca,ur-H19-",
+    "G09-or,ta-T18-",
+    "K06-or,ur-T17-",
+    "K07-or,ca-T16-",
+    "N05-or-T14-",
+    "N10-or-T14-",
+    "P07-to,ca-C16-",
+    "P17-to,to-C15-",
+    "R05-to,ta-C18-",
+    "R20-to,to-C15-"
+  ]
+}

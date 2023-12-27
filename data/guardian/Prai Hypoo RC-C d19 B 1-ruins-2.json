@@ -1,0 +1,22 @@
+{
+  "sid": "GR417",
+  "idx": 2,
+  "sh": 0,
+  "t": "Beta",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "IKMOQR",
+  "ao": [
+    "I04-ca,ur-H10-",
+    "K18-to,or-C12-",
+    "K23-to,ur-C10-",
+    "M02-or-T7-",
+    "O02-or,re-T13-",
+    "Q05-or,ur-T10-",
+    "R02-ta,ur-C10-",
+    "R17-ca,to-H15-"
+  ]
+}

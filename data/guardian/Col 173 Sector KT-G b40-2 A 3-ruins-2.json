@@ -1,0 +1,29 @@
+{
+  "sid": "GR205",
+  "idx": 2,
+  "sh": 0,
+  "t": "Alpha",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "CEFIJKLOP",
+  "ao": [
+    "C04-to,ca-C3-",
+    "C12-to,or-C6-",
+    "E01-ca,ur-H3-",
+    "F12-ur,ta-B4-",
+    "F19-ur,or-B5-",
+    "I01-ur,re-B1-",
+    "I17-ur,to-B6-",
+    "J01-ca-H1-",
+    "K12-ca,ta-H4-",
+    "K19-to,ur-C4-",
+    "L01-ca,ur-H3-",
+    "O10-or,ur-T4-",
+    "O15-or,or-T2-",
+    "P12-or-T1-",
+    "P13-or-T1-"
+  ]
+}

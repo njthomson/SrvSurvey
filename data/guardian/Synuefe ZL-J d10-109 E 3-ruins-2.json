@@ -1,0 +1,25 @@
+{
+  "sid": "GR089",
+  "idx": 2,
+  "sh": 0,
+  "t": "Beta",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "AGKOTU",
+  "ao": [
+    "A09-ca,ur-H10-",
+    "G13-ca,or-H12-",
+    "G18-ca-H8-",
+    "K21-to,or-C12-",
+    "K26-to-C7-",
+    "O03-or,re-T13-",
+    "T13-ca,re-H16-",
+    "T18-ca,ta-H11-",
+    "U04-ur,or-B11-",
+    "U21-ur,to-B12-",
+    "U36-or,ur-T10-"
+  ]
+}

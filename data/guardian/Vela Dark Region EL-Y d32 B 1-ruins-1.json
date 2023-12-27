@@ -1,0 +1,32 @@
+{
+  "sid": "GR057",
+  "idx": 1,
+  "sh": 0,
+  "t": "Gamma",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "ADEFIKMNPQS",
+  "ao": [
+    "A23-ur,or-B17-",
+    "A25-ur,ca-B15-",
+    "D02-ta,re-L21-",
+    "E04-ca,ur-H19-",
+    "F12-or,ur-T17-",
+    "F14-or,or-T15-",
+    "I02-ur,ta-B16-",
+    "I04-ur,to-B18-",
+    "K12-or,ca-T16-",
+    "K14-or-T14-",
+    "M02-to,re-C20-",
+    "M09-to,ca-C16-",
+    "N06-or,or-T15-",
+    "N08-or,ur-T17-",
+    "P23-to,ta-C18-",
+    "P25-to,ca-C16-",
+    "Q04-ca,ur-H19-",
+    "S01-ca,ca-H18-"
+  ]
+}

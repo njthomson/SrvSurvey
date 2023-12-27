@@ -1,0 +1,24 @@
+{
+  "sid": "GR179",
+  "idx": 3,
+  "sh": 0,
+  "t": "Beta",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "AHIJKMOP",
+  "ao": [
+    "A03-ca,to-H14-",
+    "H10-or-T7-",
+    "I08-to,to-C8-",
+    "J10-or,re-T13-",
+    "K22-to,ta-C11-",
+    "K26-to-C7-",
+    "M01-or-T7-",
+    "O01-or,re-T13-",
+    "P22-to,ca-C9-",
+    "P26-to,re-C13-"
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "sid": "GR477",
+  "idx": 3,
+  "sh": 0,
+  "t": "Alpha",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "ACDGIJKNOP",
+  "ao": [
+    "A09-to,re-C1-",
+    "A12-to,ur-C4-",
+    "A20-or,ur-T4-",
+    "C01-to,ur-C4-",
+    "C11-to,or-C6-",
+    "D01-or,to-C6-",
+    "D11-or,to-C6-",
+    "G02-ca,ur-H3-",
+    "I14-ur,or-B5-",
+    "I19-ur,or-B5-",
+    "J04-ca,to-H6-",
+    "K15-ca,or-H5-",
+    "K18-to,to-C2-",
+    "N02-ca,ta-H4-",
+    "O04-or,ur-T4-",
+    "O18-or,ta-T5-",
+    "P05-or,ca-T5-",
+    "P09-or,ur-T4-"
+  ]
+}

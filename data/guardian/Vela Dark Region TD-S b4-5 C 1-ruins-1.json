@@ -1,0 +1,24 @@
+{
+  "sid": "GR376",
+  "idx": 1,
+  "sh": 0,
+  "t": "Beta",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "CHKNOST",
+  "ao": [
+    "C01-ta,or-L12-",
+    "H05-or,ta-T11-",
+    "K13-to,ta-C11-",
+    "K17-to-C7-",
+    "N06-ta,re-L14-",
+    "N22-ta,ta-L9-",
+    "O02-or,re-T13-",
+    "S02-or,re-T12-",
+    "T08-ca,to-H15-",
+    "T11-ca,or-H12-"
+  ]
+}

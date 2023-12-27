@@ -1,0 +1,25 @@
+{
+  "sid": "GR102",
+  "idx": 1,
+  "sh": 0,
+  "t": "Beta",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "CLMQRTU",
+  "ao": [
+    "C19-ta,ca-L10-",
+    "L06-or,re-T13-",
+    "M02-or-T7-",
+    "Q04-or,ca-T9-",
+    "R01-to,ur-C10-",
+    "R03-ca,ta-H10-",
+    "T13-ca,re-H16-",
+    "T15-ca,re-H14-",
+    "U12-ur,ur-B8-",
+    "U30-ur,ur-B8-",
+    "U36-or,ur-T10-"
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "sid": "GR096",
+  "idx": 3,
+  "sh": 0,
+  "t": "Beta",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "DEJKRU",
+  "ao": [
+    "D11-ca,ur-H10-",
+    "E13-to,ur-C10-",
+    "E24-ta,to-L13-",
+    "J07-or,ur-T10-",
+    "K07-to,to-C8-",
+    "K22-to,ta-C11-",
+    "R13-ca,ta-H11-",
+    "R24-ur,or-B11-",
+    "U06-ur,or-B11-",
+    "U12-ur,ur-B8-",
+    "U52-or,ca-T9-"
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "sid": "GR494",
+  "idx": 2,
+  "sh": 0,
+  "t": "Beta",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "CGJOP",
+  "ao": [
+    "C13-ta-L8-",
+    "G16-ca,ur-H10-",
+    "G17-ca,ur-H10-",
+    "J03-or,or-T8-",
+    "O03-or,re-T13-",
+    "P06-to,ta-C11-",
+    "P25-to,or-C12-"
+  ]
+}

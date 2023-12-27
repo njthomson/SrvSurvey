@@ -1,0 +1,33 @@
+{
+  "sid": "GR114",
+  "idx": 1,
+  "sh": 0,
+  "t": "Gamma",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "BCEFGMN",
+  "ao": [
+    "B14-ur,or-B17-",
+    "B19-ur,to-B18-",
+    "B27-ur-B13-",
+    "C02-to,or-C19-",
+    "C08-to,or-C19-",
+    "C14-to,ca-C16-",
+    "E02-ca,ta-H20-",
+    "E07-ca,to-H17-",
+    "F06-or,ta-T18-",
+    "F08-or,ca-T16-",
+    "F15-or-T14-",
+    "G03-or,re-T20-",
+    "G08-or,to-T19-",
+    "M01-to,re-C20-",
+    "M03-to,ur-C17-",
+    "M13-to,to-C15-",
+    "N02-or,or-T15-",
+    "N07-or,ca-T16-",
+    "N13-or,ur-T17-"
+  ]
+}

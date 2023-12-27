@@ -1,0 +1,26 @@
+{
+  "sid": "GR325",
+  "idx": 1,
+  "sh": 0,
+  "t": "Gamma",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "ACJMPQR",
+  "ao": [
+    "A06-ur,ta-B16-",
+    "A27-ur-B13-",
+    "C02-to,or-C19-",
+    "C04-to,ur-C17-",
+    "J03-ca,or-H21-",
+    "M01-to,re-C20-",
+    "M08-to,ca-C16-",
+    "P06-to,ur-C17-",
+    "P27-to-C14-",
+    "Q08-ca,ca-H18-",
+    "R10-to-C14-",
+    "R17-ca,ca-H18-"
+  ]
+}

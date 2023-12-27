@@ -1,0 +1,27 @@
+{
+  "sid": "GR025",
+  "idx": 2,
+  "sh": 0,
+  "t": "Beta",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "CEHIMNPU",
+  "ao": [
+    "C20-ta,ta-L9-",
+    "E03-or,ca-T9-",
+    "E20-ta,ta-L9-",
+    "H05-or,ta-T11-",
+    "I05-ca,ca-C9-",
+    "M02-or-T7-",
+    "N08-ta,or-L12-",
+    "N25-ta,or-L12-",
+    "P02-to,re-C13-",
+    "P23-to,ur-C10-",
+    "U12-ur,ur-B8-",
+    "U15-ur,re-B7-",
+    "U46-ur,ca-B9-"
+  ]
+}

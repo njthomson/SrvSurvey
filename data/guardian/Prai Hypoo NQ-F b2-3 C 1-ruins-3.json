@@ -1,0 +1,27 @@
+{
+  "sid": "GR308",
+  "idx": 3,
+  "sh": 0,
+  "t": "Beta",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "CHIMOPTU",
+  "ao": [
+    "C20-ta,ta-L9-",
+    "C24-ta,ta-L9-",
+    "H03-or,re-T12-",
+    "I02-ca,ur-C10-",
+    "M03-or,or-T8-",
+    "O03-or,re-T13-",
+    "P12-to,to-C8-",
+    "P22-to,ca-C9-",
+    "T04-ca,to-H13-",
+    "T07-ca,re-H16-",
+    "U42-ur,or-B11-",
+    "U51-ur,re-B7-",
+    "U52-or,ca-T9-"
+  ]
+}

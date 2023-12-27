@@ -1,0 +1,31 @@
+{
+  "sid": "GR116",
+  "idx": 3,
+  "sh": 0,
+  "t": "Gamma",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "BCEFJKMNPQS",
+  "ao": [
+    "B02-ur,re-B19-",
+    "B09-ur-B13-",
+    "C03-to,ta-C18-",
+    "C15-to,ca-C16-",
+    "E07-ca,to-H17-",
+    "F05-or-T14-",
+    "F08-or,ca-T16-",
+    "J03-ca,or-H21-",
+    "K05-or,re-T20-",
+    "K08-or,or-T15-",
+    "M03-to,ur-C17-",
+    "M10-to,ta-C18-",
+    "N01-or-T14-",
+    "N12-or,ca-T16-",
+    "P09-to-C14-",
+    "Q07-ca,ta-H20-",
+    "S05-ca,ur-H19-"
+  ]
+}

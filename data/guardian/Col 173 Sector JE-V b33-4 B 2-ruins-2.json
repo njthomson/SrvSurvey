@@ -1,0 +1,28 @@
+{
+  "sid": "GR404",
+  "idx": 2,
+  "sh": 0,
+  "t": "Alpha",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "CDEFIJLNO",
+  "ao": [
+    "C08-to,to-C2-",
+    "C12-to,or-C6-",
+    "D08-or,ta-T5-",
+    "D12-to,ta-C5-",
+    "E06-ca,re-H7-",
+    "F11-ur,ur-B2-",
+    "F16-ur,ta-B4-",
+    "I11-ur,ta-B4-",
+    "I12-ur,to-B6-",
+    "J01-ca-H1-",
+    "L06-ca,re-H7-",
+    "N06-ca,re-H7-",
+    "O08-or,or-T2-",
+    "O17-or,ur-T4-"
+  ]
+}

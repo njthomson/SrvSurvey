@@ -1,0 +1,28 @@
+{
+  "sid": "GR128",
+  "idx": 2,
+  "sh": 0,
+  "t": "Gamma",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "CDFJKLOPS",
+  "ao": [
+    "C05-to-C14-",
+    "C15-to,ca-C16-",
+    "D06-ta,re-L21-",
+    "F02-or,ur-T17-",
+    "F10-or-T14-",
+    "J05-ca,ta-H20-",
+    "K07-or,ca-T16-",
+    "K10-or,re-T20-",
+    "L05-or,re-T20-",
+    "L14-or,re-T20-",
+    "O04-ca,or-H21-",
+    "P05-to,ta-C18-",
+    "P16-to,ca-C16-",
+    "S03-ca,to-H17-"
+  ]
+}

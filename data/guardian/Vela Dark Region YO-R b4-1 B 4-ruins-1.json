@@ -1,0 +1,21 @@
+{
+  "sid": "GR263",
+  "idx": 1,
+  "sh": 0,
+  "t": "Beta",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "FGIOP",
+  "ao": [
+    "F03-ca,ca-H9-",
+    "G01-ca,re-H14-",
+    "G08-ca,re-H16-",
+    "I03-ca,ta-L11-",
+    "O03-or,re-T13-",
+    "P12-to,to-C8-",
+    "P14-to,ur-C10-"
+  ]
+}

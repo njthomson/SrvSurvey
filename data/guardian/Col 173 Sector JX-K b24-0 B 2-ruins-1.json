@@ -1,0 +1,27 @@
+{
+  "sid": "GR171",
+  "idx": 1,
+  "sh": 0,
+  "t": "Gamma",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "AGILMNOQ",
+  "ao": [
+    "A02-ur-B13-",
+    "A23-ur,or-B17-",
+    "G03-or,re-T20-",
+    "I04-ur,to-B18-",
+    "I12-ur,ur-B14-",
+    "L03-or,ta-T18-",
+    "L09-or,to-T19-",
+    "M03-to,ur-C17-",
+    "M09-to,ca-C16-",
+    "N06-or,or-T15-",
+    "N12-or,ca-T16-",
+    "O07-ca,ca-H18-",
+    "Q07-ca,ta-H20-"
+  ]
+}

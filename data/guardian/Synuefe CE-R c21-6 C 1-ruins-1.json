@@ -1,0 +1,33 @@
+{
+  "sid": "GR043",
+  "idx": 1,
+  "sh": 0,
+  "t": "Alpha",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "ACEFHIJKLOP",
+  "ao": [
+    "A15-ca,ur-H3-",
+    "A16-ca,ta-H4-",
+    "A20-or,ur-T4-",
+    "C08-to,to-C2-",
+    "C13-to,re-C1-",
+    "E08-ca,ca-H2-",
+    "F03-ur,re-B1-",
+    "F11-ur,ur-B2-",
+    "H04-ca,ca-H2-",
+    "I03-ur,re-B1-",
+    "I11-ur,ta-B4-",
+    "J07-ca,ca-H2-",
+    "K03-or-T1-",
+    "K11-ca,or-H5-",
+    "L08-ca,ca-H2-",
+    "O17-or,ur-T4-",
+    "O20-or,to-T6-",
+    "P01-or,to-T6-",
+    "P11-or,or-T2-"
+  ]
+}

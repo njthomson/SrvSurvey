@@ -1,0 +1,24 @@
+{
+  "sid": "GR064",
+  "idx": 1,
+  "sh": 0,
+  "t": "Gamma",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "BCDGJKO",
+  "ao": [
+    "B25-ur,ca-B15-",
+    "B26-ur,ur-B14-",
+    "C07-to,ta-C18-",
+    "C14-to,ca-C16-",
+    "D11-ta,or-H21-",
+    "G05-or,ta-T18-",
+    "J04-ca,ca-H18-",
+    "K11-or,ur-T17-",
+    "K12-or,ca-T16-",
+    "O02-ca,ta-H20-"
+  ]
+}

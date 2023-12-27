@@ -1,0 +1,28 @@
+{
+  "sid": "GR511",
+  "idx": 3,
+  "sh": 0,
+  "t": "Gamma",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "AGHLORS",
+  "ao": [
+    "A12-ur,re-B19-",
+    "A19-ur,ur-B14-",
+    "G03-or,re-T20-",
+    "H35-ta,ur-L18-",
+    "H36-ta,ca-L17-",
+    "H52-ta,or-L19-",
+    "H53-ta,ur-L18-",
+    "H56-ta-L15-",
+    "L03-or,ta-T18-",
+    "L08-or,ta-T18-",
+    "O07-ca,ca-H18-",
+    "R08-ca,ta-H20-",
+    "R15-to,or-C19-",
+    "S05-ca,ur-H19-"
+  ]
+}

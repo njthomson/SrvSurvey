@@ -1,0 +1,23 @@
+{
+  "sid": "GR394",
+  "idx": 3,
+  "sh": 0,
+  "t": "Beta",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "CDENP",
+  "ao": [
+    "C14-ta,ur-L11-",
+    "C25-ta-L8-",
+    "D10-ca,or-H12-",
+    "E04-or,ur-T10-",
+    "E16-to,re-C13-",
+    "N16-ta,to-L13-",
+    "N24-ta,to-L13-",
+    "P02-to,re-C13-",
+    "P09-to,or-C12-"
+  ]
+}

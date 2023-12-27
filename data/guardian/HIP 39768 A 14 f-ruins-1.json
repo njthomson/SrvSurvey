@@ -1,0 +1,22 @@
+{
+  "sid": "GR008",
+  "idx": 1,
+  "sh": 0,
+  "t": "Beta",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "BGILPQ",
+  "ao": [
+    "B03-or,ur-T10-",
+    "G02-ca,to-H15-",
+    "G18-ca-H8-",
+    "I08-to,to-C8-",
+    "L01-or,ca-T9-",
+    "P09-to,or-C12-",
+    "P27-to-C7-",
+    "Q01-or-T7-"
+  ]
+}

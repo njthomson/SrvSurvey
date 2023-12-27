@@ -1,0 +1,24 @@
+{
+  "sid": "GR505",
+  "idx": 2,
+  "sh": 0,
+  "t": "Beta",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "ACIJKLNO",
+  "ao": [
+    "A06-ca-H8-",
+    "C14-ta,ur-L11-",
+    "I11-to-C7-",
+    "J07-or,ur-T10-",
+    "K08-to-C7-",
+    "K24-to,ca-C9-",
+    "L02-or,ur-T10-",
+    "N03-ta,to-L13-",
+    "N17-ta,or-L12-",
+    "O01-or,re-T13-"
+  ]
+}

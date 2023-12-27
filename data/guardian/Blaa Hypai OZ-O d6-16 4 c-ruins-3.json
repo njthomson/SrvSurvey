@@ -1,0 +1,27 @@
+{
+  "sid": "GR230",
+  "idx": 3,
+  "sh": 0,
+  "t": "Gamma",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "BGJKLOPRS",
+  "ao": [
+    "B17-ur,ur-B14-",
+    "B19-ur,to-B18-",
+    "G09-or,ta-T18-",
+    "J08-ca,to-H17-",
+    "K06-or,ur-T17-",
+    "K08-or,or-T15-",
+    "L05-or,re-T20-",
+    "L08-or,ta-T18-",
+    "O01-ca,ur-H19-",
+    "P17-to,to-C15-",
+    "R06-to,or-C19-",
+    "R19-to-C14-",
+    "S04-ca,to-H17-"
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "sid": "GR439",
+  "idx": 2,
+  "sh": 0,
+  "t": "Beta",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "FGHJLP",
+  "ao": [
+    "F04-ca,or-H12-",
+    "G06-ca,ca-H9-",
+    "G07-ca,to-H13-",
+    "H07-or,ur-T10-",
+    "J07-or,ur-T10-",
+    "L02-or,ur-T10-",
+    "P02-to,re-C13-",
+    "P07-to,or-C12-"
+  ]
+}

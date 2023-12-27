@@ -1,0 +1,33 @@
+{
+  "sid": "GR112",
+  "idx": 1,
+  "sh": 0,
+  "t": "Alpha",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "ACDFGHIKLNP",
+  "ao": [
+    "A03-ta,ta-L6-",
+    "A13-ca-H1-",
+    "A16-ca,ta-H4-",
+    "C04-to,ca-C3-",
+    "C08-to,to-C2-",
+    "D04-or,ca-T3-",
+    "D08-or,ta-T5-",
+    "F01-ur,re-B1-",
+    "F03-ur,re-B1-",
+    "G01-ca,ca-H2-",
+    "H05-ca-H1-",
+    "I03-ur,re-B1-",
+    "I11-ur,ta-B4-",
+    "K01-or-T1-",
+    "K03-or-T1-",
+    "L07-ca,to-H6-",
+    "N07-ca,to-H6-",
+    "P06-or,ca-T3-",
+    "P13-or-T1-"
+  ]
+}

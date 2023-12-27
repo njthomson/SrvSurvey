@@ -1,0 +1,24 @@
+{
+  "sid": "GR134",
+  "idx": 1,
+  "sh": 0,
+  "t": "Beta",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "EIMNOST",
+  "ao": [
+    "E13-to,ur-C10-",
+    "E17-ur,ta-B10-",
+    "I02-ca,ur-C10-",
+    "M03-or,or-T8-",
+    "N01-ta,to-L13-",
+    "N23-ta,re-L14-",
+    "O03-or,re-T13-",
+    "S03-or,re-T13-",
+    "T04-ca,to-H13-",
+    "T12-ca,ta-H11-"
+  ]
+}

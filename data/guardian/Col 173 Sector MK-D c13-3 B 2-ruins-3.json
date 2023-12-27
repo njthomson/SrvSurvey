@@ -1,0 +1,30 @@
+{
+  "sid": "GR391",
+  "idx": 3,
+  "sh": 0,
+  "t": "Alpha",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "ABCFIJOP",
+  "ao": [
+    "A02-ta-L1-",
+    "A11-to,ca-C3-",
+    "A14-ca,ca-H2-",
+    "B06-to,re-C1-",
+    "B21-to,re-C1-",
+    "C02-to,ur-C4-",
+    "C04-to,ca-C3-",
+    "F05-ur,ur-B2-",
+    "F19-ur,or-B5-",
+    "I05-ur,ur-B2-",
+    "I19-ur,or-B5-",
+    "J02-ca,re-H7-",
+    "O10-or,ur-T4-",
+    "O16-or,ca-T3-",
+    "P03-or,to-T6-",
+    "P13-or-T1-"
+  ]
+}

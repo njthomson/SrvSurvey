@@ -1,0 +1,24 @@
+{
+  "sid": "GR478",
+  "idx": 1,
+  "sh": 0,
+  "t": "Gamma",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "EKOPQRS",
+  "ao": [
+    "E08-ca,ca-H18-",
+    "K02-or,ca-T16-",
+    "K04-or-T14-",
+    "O07-ca,ca-H18-",
+    "P08-to,to-C15-",
+    "P22-to,or-C19-",
+    "Q08-ca,ca-H18-",
+    "R04-to,ur-C17-",
+    "R15-to,or-C19-",
+    "S05-ca,ur-H19-"
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "sid": "GR232",
+  "idx": 1,
+  "sh": 0,
+  "t": "Beta",
+  "rh": 0,
+  "ll": null,
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "CDEFJMRT",
+  "ao": [
+    "C09-ta,or-L12-",
+    "C22-ta,ur-L11-",
+    "D11-ca,ur-H10-",
+    "E24-ta,to-L13-",
+    "E27-ur,ur-B8-",
+    "F08-ca,re-H16-",
+    "J07-or,ur-T10-",
+    "M01-or-T7-",
+    "R24-ur,or-B11-",
+    "R27-ca,re-H16-",
+    "T06-ca,ta-H11-",
+    "T18-ca,ta-H11-"
+  ]
+}
