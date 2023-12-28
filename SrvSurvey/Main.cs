@@ -1228,7 +1228,9 @@ namespace SrvSurvey
 
         private void btnGuarduanThings_Click(object sender, EventArgs e)
         {
-            FormBeacons.show();
+            //FormBeacons.show();
+
+            Game.git.publishLocalData();
         }
 
         private void btnRuins_Click(object sender, EventArgs e)
@@ -1237,11 +1239,6 @@ namespace SrvSurvey
 
             //if (game?.systemData?.bodies != null)
             //    Game.log(string.Join("\r\n", game.systemData.bodies.Select(_ => $"'{_.name}' ({_.id}) : {Util.credits((long)_.rewardEstimate)}")));
-
-
-            //Game.git.publishLocalData();
-
-            //Game.git.prepNextZip();
         }
 
         private void btnSphereLimit_Click(object sender, EventArgs e)

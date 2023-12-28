@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
 using SrvSurvey.game;
 using System.IO.Compression;
-using System.Runtime.CompilerServices;
 
 namespace SrvSurvey.net
 {
@@ -74,8 +73,11 @@ namespace SrvSurvey.net
 
         public void publishLocalData()
         {
+            Game.log($"publishLocalData ...");
             var modifiedPubData = new List<GuardianSitePub>();
             var sites = GuardianSiteData.loadAllSites(true);
+            var diffCount = 0;
+
             foreach (var site in sites)
             {
                 site.loadPub();
@@ -158,6 +160,7 @@ namespace SrvSurvey.net
 
                 if (diff)
                 {
+                    diffCount++;
                     var filepath = Path.Combine(@"D:\code\SrvSurvey\data\guardian", $"{site.bodyName}-ruins-{site.index}.json");
                     Game.log($"Updating pubData for: '{site.displayName}' into: {filepath}");
 
@@ -165,6 +168,9 @@ namespace SrvSurvey.net
                     File.WriteAllText(filepath, json);
                 }
             }
+            Game.log($"publishLocalData - complete, diffCount: {diffCount}");
+            if (diffCount > 0)
+                this.prepNextZip();
         }
 
         public void prepNextZip()
