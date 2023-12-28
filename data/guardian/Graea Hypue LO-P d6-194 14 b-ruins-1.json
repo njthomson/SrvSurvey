@@ -1,13 +1,16 @@
 {
   "sid": "GR508",
   "idx": 1,
-  "sh": 0,
+  "sh": 157,
   "t": "Alpha",
-  "rh": 0,
-  "ll": null,
-  "pa": null,
-  "pp": null,
-  "pe": null,
+  "rh": 279,
+  "ll": {
+    "lat": -43.566963,
+    "long": -45.432392
+  },
+  "pa": "p15,p16,p18,p32,p34,t5",
+  "pp": "p17,p19,p30,t4",
+  "pe": "p31",
   "og": "ACEGHIJKNOPQ",
   "ao": [
     "A03-ta,ta-L6-",

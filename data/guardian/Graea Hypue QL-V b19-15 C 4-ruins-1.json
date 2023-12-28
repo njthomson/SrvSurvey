@@ -1,12 +1,15 @@
 {
   "sid": "GR317",
   "idx": 1,
-  "sh": 0,
+  "sh": 171,
   "t": "Gamma",
   "rh": 0,
-  "ll": null,
-  "pa": null,
-  "pp": null,
+  "ll": {
+    "lat": -31.981228,
+    "long": 44.757191
+  },
+  "pa": "p3",
+  "pp": "p4",
   "pe": null,
   "og": "ADHMOQS",
   "ao": [

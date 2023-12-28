@@ -1,12 +1,15 @@
 {
   "sid": "GR509",
   "idx": 1,
-  "sh": 0,
+  "sh": 273,
   "t": "Beta",
-  "rh": 0,
-  "ll": null,
-  "pa": null,
-  "pp": null,
+  "rh": 34,
+  "ll": {
+    "lat": 22.209421,
+    "long": -112.090813
+  },
+  "pa": "p10,p16,p17,p18,p29,p30,p32,p33,p34,p35,p36,p37,p9,t5,t6",
+  "pp": "p11,p12,p15,p19,p20,p24,p27,p28,p31,p38,p39,p8,t1,t2,t3,t4,t7,t8",
   "pe": null,
   "og": "GIJPQ",
   "ao": [

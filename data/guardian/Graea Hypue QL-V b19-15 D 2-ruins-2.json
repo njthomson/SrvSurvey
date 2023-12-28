@@ -1,10 +1,13 @@
 {
   "sid": "GR319",
   "idx": 2,
-  "sh": 0,
+  "sh": 58,
   "t": "Gamma",
   "rh": 0,
-  "ll": null,
+  "ll": {
+    "lat": 0.469522,
+    "long": 55.585617
+  },
   "pa": null,
   "pp": null,
   "pe": null,

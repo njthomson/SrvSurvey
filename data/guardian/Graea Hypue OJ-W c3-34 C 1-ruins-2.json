@@ -1,13 +1,16 @@
 {
   "sid": "GR500",
   "idx": 2,
-  "sh": 0,
+  "sh": 111,
   "t": "Gamma",
-  "rh": 0,
-  "ll": null,
-  "pa": null,
-  "pp": null,
-  "pe": null,
+  "rh": 140,
+  "ll": {
+    "lat": -52.087685,
+    "long": 35.6404
+  },
+  "pa": "p10,p13,p17,p19,p20,p23,p26,p28,p30,p32,p35,p36,p37,p38,t6,t7",
+  "pp": "p11,p12,p14,p15,p16,p18,p2,p21,p22,p24,p25,p27,p29,p3,p31,p33,p34,p4,p5,p6,p7,p8,p9,t1,t2,t3,t4,t5,t8",
+  "pe": "p1",
   "og": "BCDFGHIJOPQR",
   "ao": [
     "B05-ur,or-B17-",

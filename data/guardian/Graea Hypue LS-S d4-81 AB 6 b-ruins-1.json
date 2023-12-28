@@ -1,13 +1,16 @@
 {
   "sid": "GR336",
   "idx": 1,
-  "sh": 0,
+  "sh": 236,
   "t": "Alpha",
-  "rh": 0,
-  "ll": null,
-  "pa": null,
-  "pp": null,
-  "pe": null,
+  "rh": 181,
+  "ll": {
+    "lat": -0.453253,
+    "long": -67.712708
+  },
+  "pa": "p1,p11,p13,p14,p16,p18,p19,p22,p25,p29,p3,p30,p31,p32,p33,p34,p37,p39,p6,p8,t10,t11,t12,t7",
+  "pp": "p10,p12,p15,p17,p2,p20,p21,p23,p24,p26,p27,p28,p35,p5,p7,p9,t1,t2,t3,t4,t5,t6,t8,t9",
+  "pe": "p36,p38,p4,p40",
   "og": "CDEGJKLNO",
   "ao": [
     "C12-to,or-C6-",

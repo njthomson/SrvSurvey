@@ -1,12 +1,15 @@
 {
   "sid": "GR414",
   "idx": 1,
-  "sh": 0,
+  "sh": 27,
   "t": "Gamma",
   "rh": 0,
-  "ll": null,
-  "pa": null,
-  "pp": null,
+  "ll": {
+    "lat": -47.681725,
+    "long": 76.137169
+  },
+  "pa": "p12",
+  "pp": "p9",
   "pe": null,
   "og": "ACEGHIKLOPRS",
   "ao": [

@@ -622,6 +622,7 @@ namespace SrvSurvey.game
         /// "F07!-ca,to-H15-b,e"
         /// 
         /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public HashSet<ActiveObelisk> ao;
     }
 

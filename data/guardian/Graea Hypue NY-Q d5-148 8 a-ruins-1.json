@@ -1,12 +1,15 @@
 {
   "sid": "GR433",
   "idx": 1,
-  "sh": 0,
+  "sh": 357,
   "t": "Gamma",
   "rh": 0,
-  "ll": null,
-  "pa": null,
-  "pp": null,
+  "ll": {
+    "lat": 44.894035,
+    "long": 138.226364
+  },
+  "pa": "p2",
+  "pp": "p4",
   "pe": null,
   "og": "ACEFGJKNORS",
   "ao": [

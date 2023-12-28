@@ -1,10 +1,13 @@
 {
   "sid": "GR480",
   "idx": 1,
-  "sh": 0,
+  "sh": 229,
   "t": "Gamma",
   "rh": 0,
-  "ll": null,
+  "ll": {
+    "lat": -26.671301,
+    "long": -16.115023
+  },
   "pa": null,
   "pp": null,
   "pe": null,

@@ -39,6 +39,16 @@ namespace SrvSurvey.units
             return $"Lat:{this.Lat}, Long:{this.Long}";
         }
 
+        public override bool Equals(object? obj)
+        {
+            return this.ToString() == obj?.ToString();
+        }
+
+        public override int GetHashCode()
+        {
+            return this.ToString().GetHashCode();
+        }
+
         /// <summary>
         /// Returns the distance of this LatLong as degrees to the origin.
         /// </summary>

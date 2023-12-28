@@ -1,13 +1,16 @@
 {
   "sid": "GR499",
   "idx": 1,
-  "sh": 0,
+  "sh": 14,
   "t": "Gamma",
-  "rh": 0,
-  "ll": null,
-  "pa": null,
-  "pp": null,
-  "pe": null,
+  "rh": 44,
+  "ll": {
+    "lat": 32.340317,
+    "long": 146.81369
+  },
+  "pa": "E02,E03,E05,p12,p13,p14,p15,p17,p18,p19,p23,p26,p27,p3,p31,p33,p9,t3,t4,t6",
+  "pp": "p10,p11,p16,p2,p20,p21,p22,p24,p25,p28,p29,p30,p32,p34,p35,p36,p37,p38,p4,p5,p6,p7,p8,t1,t2,t5,t7,t8",
+  "pe": "p1",
   "og": "AGHIKLNQS",
   "ao": [
     "A19-ur,ur-B14-",

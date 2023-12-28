@@ -1,12 +1,15 @@
 {
   "sid": "GR374",
   "idx": 1,
-  "sh": 0,
+  "sh": 187,
   "t": "Gamma",
-  "rh": 0,
-  "ll": null,
+  "rh": 218,
+  "ll": {
+    "lat": 41.275333,
+    "long": -16.668974
+  },
   "pa": null,
-  "pp": null,
+  "pp": "p4,p5",
   "pe": null,
   "og": "ADEFGHIKMOR",
   "ao": [

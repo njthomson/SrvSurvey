@@ -1,13 +1,16 @@
 {
   "sid": "GR318",
   "idx": 1,
-  "sh": 0,
+  "sh": 294,
   "t": "Alpha",
-  "rh": 0,
-  "ll": null,
-  "pa": null,
-  "pp": null,
-  "pe": null,
+  "rh": 357,
+  "ll": {
+    "lat": -36.303894,
+    "long": -44.759796
+  },
+  "pa": "p1,p12,p13,p14,p18,p19,p22,p24,p25,p26,p27,p30,p31,p32,p33,p34,p35,p36,p37,p39,p40,p5,p6,p8,t12,t3,t4,t9",
+  "pp": "p10,p11,p15,p16,p17,p2,p20,p21,p23,p28,p29,p3,p4,p7,p9,t1,t10,t11,t2,t5,t6,t7,t8",
+  "pe": "p38",
   "og": "DEFGJKLMNOQ",
   "ao": [
     "D04-or,ca-T3-",

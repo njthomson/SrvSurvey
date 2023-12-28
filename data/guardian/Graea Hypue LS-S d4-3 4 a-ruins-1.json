@@ -1,13 +1,16 @@
 {
   "sid": "GR329",
   "idx": 1,
-  "sh": 0,
+  "sh": 122,
   "t": "Gamma",
-  "rh": 0,
-  "ll": null,
-  "pa": null,
-  "pp": null,
-  "pe": null,
+  "rh": 151,
+  "ll": {
+    "lat": -42.053898,
+    "long": 97.562523
+  },
+  "pa": "p10,p13,p14,p15,p18,p2,p23,p26,p28,p29,p31,p34,p36,p40,p41,p42,t1,t3,t6,t8",
+  "pp": "p11,p12,p16,p17,p19,p20,p21,p22,p24,p25,p27,p3,p30,p32,p33,p35,p37,p38,p39,p4,p5,p6,p7,p8,p9,t2,t4,t5,t7",
+  "pe": "p1",
   "og": "ADEFGIJKLNOQS",
   "ao": [
     "A09-ur-B13-",

@@ -1,12 +1,15 @@
 {
   "sid": "GR507",
   "idx": 2,
-  "sh": 0,
+  "sh": 337,
   "t": "Gamma",
-  "rh": 0,
-  "ll": null,
-  "pa": null,
-  "pp": null,
+  "rh": 7,
+  "ll": {
+    "lat": 15.938621,
+    "long": 132.153992
+  },
+  "pa": "p12,p14,p19,t1,t6",
+  "pp": "p11,p13,p21,p8,t2,t8",
   "pe": null,
   "og": "AEGHIJKMOPR",
   "ao": [

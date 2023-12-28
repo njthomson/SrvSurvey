@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SrvSurvey.game;
-using SrvSurvey.net;
 using SrvSurvey.units;
 using System.Diagnostics;
 using System.Text;
@@ -25,8 +24,6 @@ namespace SrvSurvey.canonn
 
         public void init()
         {
-            //readXmlSheetRuins2();
-
             Canonn.client = new HttpClient();
             Canonn.client.DefaultRequestHeaders.Add("accept-encoding", "gzip, deflate");
             Canonn.client.DefaultRequestHeaders.Add("user-agent", $"SrvSurvey-{Game.releaseVersion}");
@@ -1097,9 +1094,10 @@ namespace SrvSurvey.canonn
             Game.log($"Writing {sites.Count} pubData files");
 
             // now write them out to disk
-            foreach(var site in sites)
+            foreach (var site in sites)
             {
-                var pubPath = Path.Combine(Git.pubGuardianFolder, $"{site.systemName} {site.bodyName}-ruins-{site.idx}.json");
+                var pubPath = Path.Combine(@"D:\code\SrvSurvey\data\guardian", $"{site.systemName} {site.bodyName}-ruins-{site.idx}.json");
+                site.ao = site.ao.OrderBy(_ => _.name).ToHashSet();
 
                 var json = JsonConvert.SerializeObject(site, Formatting.Indented);
                 File.WriteAllText(pubPath, json);
@@ -1121,22 +1119,42 @@ namespace SrvSurvey.canonn
                 var cells = row.Elements(XName.Get("Cell", "urn:schemas-microsoft-com:office:spreadsheet")).ToList();
                 try
                 {
-
                     // start a new site?
                     var siteId = cells[1].Value;
                     if (!string.IsNullOrEmpty(siteId))
                     {
                         siteId = siteId.Substring(0, 5);
-                        site = new GuardianSitePub()
+                        var systemName = cells[3].Value;
+                        var bodyName = cells[10].Value;
+                        var idx = int.Parse(cells[21].Value);
+
+                        var pubPath = Path.Combine(@"D:\code\SrvSurvey\data\guardian", $"{systemName} {bodyName}-ruins-{idx}.json");
+                        if (File.Exists(pubPath))
                         {
-                            sid = siteId,
-                            systemName = cells[3].Value,
-                            bodyName = cells[10].Value,
-                            idx = int.Parse(cells[21].Value),
-                            t = Enum.Parse<SiteType>(cells[22].Value, true),
-                            og = obeliskGroupings[siteId].Replace(" ", "").Replace(",", ""),
-                            ao = new HashSet<ActiveObelisk>(),
-                        };
+                            // start from existing file
+                            var json = File.ReadAllText(pubPath);
+                            site = JsonConvert.DeserializeObject<GuardianSitePub>(json)!;
+                            if (site.sid == null) site.sid = siteId;
+                            site.systemName = systemName;
+                            site.bodyName = bodyName;
+                            if (site.idx == 0) site.idx = idx;
+                            if (site.t == SiteType.Unknown) site.t = Enum.Parse<SiteType>(cells[22].Value, true);
+                            if (string.IsNullOrWhiteSpace(site.og)) site.og = obeliskGroupings[siteId].Replace(" ", "").Replace(",", "");
+                            if (site.ao == null) site.ao = new HashSet<ActiveObelisk>();
+                        }
+                        else
+                        {
+                            site = new GuardianSitePub()
+                            {
+                                sid = siteId,
+                                systemName = systemName,
+                                bodyName = bodyName,
+                                idx = idx,
+                                t = Enum.Parse<SiteType>(cells[22].Value, true),
+                                og = obeliskGroupings[siteId].Replace(" ", "").Replace(",", ""),
+                                ao = new HashSet<ActiveObelisk>(),
+                            };
+                        }
                         sites.Add(site);
                         continue;
                     }
@@ -1181,7 +1199,6 @@ namespace SrvSurvey.canonn
                 {
                     Game.log($"Error: {ex}\r\n" +
                         $"Row:" + string.Join(", ", cells.Select(_ => _.Value)));
-
                 }
             }
 

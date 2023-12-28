@@ -1228,9 +1228,10 @@ namespace SrvSurvey
 
         private void btnGuarduanThings_Click(object sender, EventArgs e)
         {
-            //FormBeacons.show();
+            FormBeacons.show();
 
-            Game.git.publishLocalData();
+            //Game.git.publishLocalData();
+            //Game.canonn.readXmlSheetRuins2();
         }
 
         private void btnRuins_Click(object sender, EventArgs e)

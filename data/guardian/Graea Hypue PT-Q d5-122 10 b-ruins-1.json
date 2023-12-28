@@ -1,12 +1,15 @@
 {
   "sid": "GR437",
   "idx": 1,
-  "sh": 0,
+  "sh": 208,
   "t": "Gamma",
   "rh": 0,
-  "ll": null,
+  "ll": {
+    "lat": 10.569999,
+    "long": -2.05828
+  },
   "pa": null,
-  "pp": null,
+  "pp": "p12",
   "pe": null,
   "og": "BCEFGHJLNPR",
   "ao": [

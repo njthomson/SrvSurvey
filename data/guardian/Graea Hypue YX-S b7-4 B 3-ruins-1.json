@@ -1,12 +1,15 @@
 {
   "sid": "GR506",
   "idx": 1,
-  "sh": 0,
+  "sh": 23,
   "t": "Gamma",
   "rh": 0,
-  "ll": null,
-  "pa": null,
-  "pp": null,
+  "ll": {
+    "lat": 20.269428,
+    "long": 162.223663
+  },
+  "pa": "p10,p13,p17,p18,p19,p2,p23,p25,p27,p3,p9,t4,t6,t7,t8",
+  "pp": "p1,p11,p12,p14,p15,p16,p20,p21,p22,p24,p26,p28,p29,p30,p31,p32,p33,p4,p5,p6,p7,p8,t1,t2,t3,t5",
   "pe": null,
   "og": "DEKMNQR",
   "ao": [

@@ -348,6 +348,9 @@ namespace SrvSurvey.game
                 if (_.Value == SitePoiStatus.absent) poiAbsent.Add(_.Key);
                 if (_.Value == SitePoiStatus.empty) poiEmpty.Add(_.Key);
             }
+            poiPresent.Sort();
+            poiAbsent.Sort();
+            poiEmpty.Sort();
             this.pubData.pp = string.Join(',', poiPresent);
             this.pubData.pa = string.Join(',', poiAbsent);
             this.pubData.pe = string.Join(',', poiEmpty);
@@ -596,6 +599,9 @@ namespace SrvSurvey.game
                     if (_.Value == SitePoiStatus.absent) poiAbsent.Add(_.Key);
                     if (_.Value == SitePoiStatus.empty) poiEmpty.Add(_.Key);
                 }
+                poiPresent.Sort();
+                poiAbsent.Sort();
+                poiEmpty.Sort();
                 obj.Add("poiPresent", string.Join(',', poiPresent));
                 obj.Add("poiAbsent", string.Join(',', poiAbsent));
                 obj.Add("poiEmpty", string.Join(',', poiEmpty));
@@ -649,6 +655,16 @@ namespace SrvSurvey.game
             txt.Append("-");
             txt.Append(string.Join(',', this.data.Select(_ => _.ToString()[0])));
             return txt.ToString();
+        }
+
+        public override bool Equals(object? obj)
+        {
+            return this.ToString() == obj?.ToString();
+        }
+
+        public override int GetHashCode()
+        {
+            return this.ToString().GetHashCode();
         }
 
         class JsonConverter : Newtonsoft.Json.JsonConverter

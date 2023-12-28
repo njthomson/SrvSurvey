@@ -8,15 +8,15 @@
     "lat": -28.024704,
     "long": -51.36367
   },
-  "pa": null,
-  "pp": null,
+  "pa": "p1,p12,p13,p14,p16,p17,p18,p19,p21,p23,p24,p26,p28,p3,p32,p33,p35,p36,p37,p38,p4,p40,p41,p6,p7,p8,p9,t5,t6",
+  "pp": "p10,p11,p15,p2,p20,p22,p25,p27,p29,p30,p31,p34,p39,p42,p5,t1,t2,t3,t4,t7,t8",
   "pe": null,
   "og": "BDFMQ",
   "ao": [
     "B03-or,ur-T10-",
-    "D09-ca,ca-H9-",
-    "F07-ca,to-H15-",
-    "M01-or-T7-",
-    "Q01-or-T7-"
+    "D09-ca,ca-H9-e",
+    "F07-ca,to-H15-b",
+    "M01-or-T7-b,d",
+    "Q01-or-T7-a"
   ]
 }

@@ -1,13 +1,16 @@
 {
   "sid": "GR314",
   "idx": 1,
-  "sh": 0,
+  "sh": 138,
   "t": "Alpha",
-  "rh": 0,
-  "ll": null,
-  "pa": null,
-  "pp": null,
-  "pe": null,
+  "rh": 78,
+  "ll": {
+    "lat": -54.467453,
+    "long": 145.726105
+  },
+  "pa": "p1,p10,p11,p12,p13,p14,p15,p19,p20,p23,p25,p29,p3,p30,p32,p33,p34,p36,p37,p38,p4,p40,p8,p9,t11,t12,t2,t3,t4,t7",
+  "pp": "p16,p17,p18,p2,p21,p24,p26,p27,p28,p35,p39,p5,p6,p7,t1,t10,t5,t6,t8,t9",
+  "pe": "p22,p31",
   "og": "ABCEFHIOPQ",
   "ao": [
     "A04-ta,re-L7-",

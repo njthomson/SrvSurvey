@@ -1,12 +1,15 @@
 {
   "sid": "GR325",
   "idx": 1,
-  "sh": 0,
+  "sh": 174,
   "t": "Gamma",
   "rh": 0,
-  "ll": null,
+  "ll": {
+    "lat": 34.128849,
+    "long": -7.960019
+  },
   "pa": null,
-  "pp": null,
+  "pp": "p7,p9",
   "pe": null,
   "og": "ACJMPQR",
   "ao": [

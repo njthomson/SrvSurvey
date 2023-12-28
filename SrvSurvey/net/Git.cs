@@ -122,23 +122,34 @@ namespace SrvSurvey.net
                     if (site.getPoiStatus(_.Key) == SitePoiStatus.absent) poiAbsent.Add(_.Key);
                     if (site.getPoiStatus(_.Key) == SitePoiStatus.empty) poiEmpty.Add(_.Key);
                 }
+                poiPresent.Sort();
+                poiAbsent.Sort();
+                poiEmpty.Sort();
                 var sitePP = string.Join(',', poiPresent);
                 var sitePA = string.Join(',', poiAbsent);
                 var sitePE = string.Join(',', poiEmpty);
-                if (site.pubData.pp != sitePP && !string.IsNullOrWhiteSpace(sitePP))
+
+                var sumSitePoi = poiPresent.Count + poiAbsent.Count + poiEmpty.Count;
+                var sumPubDataPoi = (site.pubData.pp?.Split(",").Length ?? 0) + (site.pubData.pa?.Split(",").Length ?? 0) + (site.pubData.pe?.Split(",").Length ?? 0);
+                if (sumSitePoi < sumPubDataPoi)
+                    Game.log($"Skipping poiStatus due suspicious counts - sumSitePoi:{sumSitePoi} vs sumPubDataPoi:{sumPubDataPoi}");
+                else
                 {
-                    diff = true;
-                    site.pubData.pp = sitePP;
-                }
-                if (site.pubData.pa != sitePA && !string.IsNullOrWhiteSpace(sitePA))
-                {
-                    diff = true;
-                    site.pubData.pa = sitePA;
-                }
-                if (site.pubData.pe != sitePE && !string.IsNullOrWhiteSpace(sitePE))
-                {
-                    diff = true;
-                    site.pubData.pe = sitePE;
+                    if (site.pubData.pp != sitePP && !string.IsNullOrWhiteSpace(sitePP))
+                    {
+                        diff = true;
+                        site.pubData.pp = sitePP;
+                    }
+                    if (site.pubData.pa != sitePA && !string.IsNullOrWhiteSpace(sitePA))
+                    {
+                        diff = true;
+                        site.pubData.pa = sitePA;
+                    }
+                    if (site.pubData.pe != sitePE && !string.IsNullOrWhiteSpace(sitePE))
+                    {
+                        diff = true;
+                        site.pubData.pe = sitePE;
+                    }
                 }
 
                 // active obelisks
@@ -150,12 +161,13 @@ namespace SrvSurvey.net
                     .OrderBy(_ => _.name)
                     .ToHashSet();
 
-                var siteObelisksJson = JsonConvert.SerializeObject(siteObelisks);
+                var siteObelisksJson = JsonConvert.SerializeObject(siteObelisks).Replace("!", "");
                 var pubDataObelisksJson = JsonConvert.SerializeObject(site.pubData.ao.OrderBy(_ => _.name));
                 if (siteObelisks != null && siteObelisksJson != pubDataObelisksJson && siteObelisks.Count >= site.pubData.ao.Count && siteObelisksJson.Length > pubDataObelisksJson.Length)
                 {
                     diff = true;
-                    site.pubData.ao = siteObelisks;
+                    site.pubData.ao = siteObelisks.ToHashSet();
+                    foreach (var ao in site.pubData.ao) ao.scanned = false;
                 }
 
                 if (diff)
