@@ -34,8 +34,7 @@ namespace SrvSurvey.net
                 {
                     Game.log($"Downloading settlementTemplates.json");
                     var json2 = await Git.client.GetStringAsync($"https://raw.githubusercontent.com/njthomson/SrvSurvey/main/SrvSurvey/settlementTemplates.json");
-                    var filepath = Path.Combine(Git.pubDataFolder, "settlementTemplates.json");
-                    File.WriteAllText(filepath, json2);
+                    File.WriteAllText(Path.Combine(Git.pubDataFolder, "settlementTemplates.json"), json2);
 
                     // update settings to current level
                     Game.settings.pubDataSettlementTemplate = pubData.settlementTemplate;
@@ -45,8 +44,11 @@ namespace SrvSurvey.net
                 Game.log($"pubDataGuardian - local: {Game.settings.pubDataGuardian}, remote: {pubData.guardian}");
                 if (pubData.guardian > Game.settings.pubDataGuardian)
                 {
-                    Game.log($"Downloading guardian.zip ...");
+                    Game.log($"Downloading allRuins.json");
+                    var json3 = await Git.client.GetStringAsync($"https://raw.githubusercontent.com/njthomson/SrvSurvey/main/SrvSurvey/allRuins.json");
+                    File.WriteAllText(Path.Combine(Git.pubDataFolder, "allRuins.json"), json3);
 
+                    Game.log($"Downloading guardian.zip ...");
                     var url = $"https://raw.githubusercontent.com/njthomson/SrvSurvey/main/data/guardian.zip";
                     var filepath = Path.Combine(Git.pubDataFolder, "guardian.zip");
                     Game.log($"{url} => {filepath}");
@@ -57,6 +59,9 @@ namespace SrvSurvey.net
                     // update settings to current level
                     Game.settings.pubDataGuardian = pubData.guardian;
                     Game.settings.Save();
+
+                    // finally, re-init canonn to get updated allRuins
+                    Game.canonn.init();
                     Game.log($"Downloading guardian.zip - complete");
                 }
             }

@@ -120,8 +120,6 @@ namespace SrvSurvey
                 var siteID = entry.siteID == -1 ? "?" : $"GR" + entry.siteID.ToString("000");
 
                 var notes = entry.notes ?? "";
-                if (entry.missingLiveLatLong)
-                    notes = "(missing live lat/long co-ordinates) " + notes;
 
                 var subItems = new ListViewItem.ListViewSubItem[]
                 {

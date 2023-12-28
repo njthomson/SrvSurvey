@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SrvSurvey.game;
+using SrvSurvey.net;
 using SrvSurvey.units;
-using System.Diagnostics;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
@@ -14,10 +14,12 @@ namespace SrvSurvey.canonn
     {
         private static HttpClient client;
         private static string allRuinsStaticPathDbg = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "..\\..\\..\\..", "allRuins.json");//"D:\\code\\SrvSurvey\\SrvSurvey\\allRuins.json";
-        private static string allRuinsStaticPath = Debugger.IsAttached ? allRuinsStaticPathDbg : Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "allRuins.json");
+        //private static string allRuinsStaticPath = Debugger.IsAttached ? allRuinsStaticPathDbg : Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "allRuins.json");
+        private static string allRuinsStaticPath = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "allRuins.json");
         private static string allBeaconsStaticPath = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "allBeacons.json");
         private static string allStructuresStaticPathDbg = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "..\\..\\..\\..", "allStructures.json"); //"D:\\code\\SrvSurvey\\SrvSurvey\\allStructures.json";
-        private static string allStructuresStaticPath = Debugger.IsAttached ? allStructuresStaticPathDbg : Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "allStructures.json");
+        //private static string allStructuresStaticPath = Debugger.IsAttached ? allStructuresStaticPathDbg : Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "allStructures.json");
+        private static string allStructuresStaticPath = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "allStructures.json");
         public List<GuardianRuinSummary> allRuins { get; private set; }
         public List<GuardianBeaconSummary> allBeacons { get; private set; }
         public List<GuardianStructureSummary> allStructures { get; private set; }
@@ -29,7 +31,10 @@ namespace SrvSurvey.canonn
             Canonn.client.DefaultRequestHeaders.Add("user-agent", $"SrvSurvey-{Game.releaseVersion}");
 
             // load static ruins summaries
-            this.allRuins = JsonConvert.DeserializeObject<List<GuardianRuinSummary>>(File.ReadAllText(Canonn.allRuinsStaticPath))!;
+            var pubAllRuinsPath = Path.Combine(Git.pubDataFolder, "allRuins.json");
+            this.allRuins = File.Exists(pubAllRuinsPath)
+                    ? JsonConvert.DeserializeObject<List<GuardianRuinSummary>>(File.ReadAllText(pubAllRuinsPath))!
+                     : JsonConvert.DeserializeObject<List<GuardianRuinSummary>>(File.ReadAllText(Canonn.allRuinsStaticPath))!;
             this.allBeacons = JsonConvert.DeserializeObject<List<GuardianBeaconSummary>>(File.ReadAllText(Canonn.allBeaconsStaticPath))!;
             this.allStructures = JsonConvert.DeserializeObject<List<GuardianStructureSummary>>(File.ReadAllText(Canonn.allStructuresStaticPath))!;
             Game.log($"Loaded {this.allRuins.Count} ruins, {this.allBeacons.Count} beacons, {this.allStructures.Count} beacons");
