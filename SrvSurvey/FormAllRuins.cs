@@ -108,8 +108,6 @@ namespace SrvSurvey
             foreach (var entry in allRuins)
             {
                 var lastVisited = entry.lastVisited == DateTimeOffset.MinValue ? "" : entry.lastVisited.ToString("d")!;
-                var siteHeading = entry.siteHeading == -1 ? "" : $"{entry.siteHeading}°";
-                var relicTowerHeading = entry.relicTowerHeading == -1 ? "" : $"{entry.relicTowerHeading}°";
 
                 // confirm there are images specific to this Ruins
                 var hasImages = ruinsHasImages(entry);
@@ -119,7 +117,7 @@ namespace SrvSurvey
                 entry.systemDistance = Util.getSystemDistance(currentSystem, entry.starPos);
                 var distanceToSystem = entry.systemDistance.ToString("N0");
 
-                var siteID = entry.siteID == -1 ? "?" : entry.siteID.ToString();
+                var siteID = entry.siteID == -1 ? "?" : $"GR" + entry.siteID.ToString("000");
 
                 var notes = entry.notes ?? "";
                 if (entry.missingLiveLatLong)
@@ -137,8 +135,7 @@ namespace SrvSurvey
                     new ListViewItem.ListViewSubItem { Text = entry.idx > 0 ? $"#{entry.idx}" : "" },
                     new ListViewItem.ListViewSubItem { Text = lastVisited },
                     new ListViewItem.ListViewSubItem { Text = hasImages ? "yes" : "" },
-                    new ListViewItem.ListViewSubItem { Text = siteHeading },
-                    new ListViewItem.ListViewSubItem { Text = relicTowerHeading },
+                    new ListViewItem.ListViewSubItem { Text = entry.surveyComplete ? "yes" : "" },
                     new ListViewItem.ListViewSubItem { Text = notes },
                 };
 
@@ -225,11 +222,9 @@ namespace SrvSurvey
                     return rows.OrderBy(row => ((GuardianRuinEntry)row.Tag).lastVisited);
                 case 8: // has images
                     return rows.OrderBy(row => row.SubItems[8].Text);
-                case 9: // site heading
-                    return rows.OrderBy(row => ((GuardianRuinEntry)row.Tag).siteHeading);
-                case 10: // relic tower heading
-                    return rows.OrderBy(row => ((GuardianRuinEntry)row.Tag).relicTowerHeading);
-                case 11: // notes
+                case 9: // survey complete
+                    return rows.OrderBy(row => row.SubItems[9].Text);
+                case 10: // notes
                     return rows.OrderBy(row => ((GuardianRuinEntry)row.Tag).notes);
 
                 default:

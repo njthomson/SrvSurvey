@@ -366,6 +366,7 @@ namespace SrvSurvey.canonn
         public double longitude = double.NaN;
         public int siteHeading = -1;
         public int relicTowerHeading = -1;
+        public bool surveyComplete = false;
 
         // properties whose values differ live from legacy
         public double legacyLatitude = double.NaN;
@@ -439,6 +440,7 @@ namespace SrvSurvey.canonn
                 base.legacyLongitude = summary.legacyLongitude;
                 base.legacySiteHeading = summary.legacySiteHeading;
                 base.legacyRelicTowerHeading = summary.legacyRelicTowerHeading;
+                base.surveyComplete = summary.surveyComplete;
             }
         }
 

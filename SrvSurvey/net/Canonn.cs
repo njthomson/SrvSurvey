@@ -1099,9 +1099,78 @@ namespace SrvSurvey.canonn
                 var pubPath = Path.Combine(@"D:\code\SrvSurvey\data\guardian", $"{site.systemName} {site.bodyName}-ruins-{site.idx}.json");
                 site.ao = site.ao.OrderBy(_ => _.name).ToHashSet();
 
+                if (site.sh <= 0 && site.rh <= 0)
+                {
+                    // restore -1's where they became zero's
+                    site.sh = -1;
+                    site.rh = -1;
+                }
+
                 var json = JsonConvert.SerializeObject(site, Formatting.Indented);
                 File.WriteAllText(pubPath, json);
+
+                // update parts of summary from file
+                var ruinSummary = this.allRuins.FirstOrDefault(_ => _.systemName == site.systemName && _.bodyName == site.bodyName && _.idx == site.idx);
+                if (ruinSummary == null) throw new Exception("Why?");
+                // location
+                if (site.ll != null && (double.IsNaN(ruinSummary.latitude) || double.IsNaN(ruinSummary.longitude)))
+                {
+                    ruinSummary.latitude = site.ll.Lat;
+                    ruinSummary.longitude = site.ll.Long;
+                }
+                // siteHeading
+                if (ruinSummary.siteHeading == -1 && site.sh != -1 && ruinSummary.siteHeading != site.sh)
+                    ruinSummary.siteHeading = site.sh;
+                // relicTowerHeading 
+                if (ruinSummary.relicTowerHeading == -1 && site.rh != -1 && ruinSummary.relicTowerHeading != site.rh)
+                    ruinSummary.relicTowerHeading = site.rh;
+
+                // surveyComplete
+                if (!ruinSummary.surveyComplete)
+                {
+                    // The survey is complete when we know:
+                    var complete = true;
+
+                    // the site and relic tower headings
+                    complete &= ruinSummary.siteHeading >= 0;
+                    complete &= ruinSummary.relicTowerHeading >= 0;
+                    // live lat / long
+                    complete &= !double.IsNaN(ruinSummary.latitude);
+                    complete &= !double.IsNaN(ruinSummary.longitude);
+                    // status of all POI
+                    var template = SiteTemplate.sites[site.t];
+                    var sumCountNonObelisks = template.poi
+                        .Where(_ => _.type != POIType.obelisk && _.type != POIType.brokeObelisk)
+                        .Count();
+                    var sumCountPOI = (site.pp?.Split(",").Length ?? 0) + (site.pa?.Split(",").Length ?? 0) + (site.pe?.Split(",").Length ?? 0);
+                    complete &= sumCountPOI == sumCountNonObelisks; // TODO: Compare with template count
+                    if (string.IsNullOrEmpty(site.og))
+                    {
+                        complete &= false;
+                    }
+                    else
+                    {
+                        // every obelisk group has at least 1 active obelisk
+                        foreach (var g in site.og)
+                            complete &= site.ao.Any(_ => _.name.StartsWith(g.ToString().ToUpperInvariant()));
+                    }
+
+                    ruinSummary.surveyComplete = complete;
+                }
+
+                if (ruinSummary.bodyId == -1)
+                {
+                    throw new NotImplementedException("TODO!!");
+                }
+                if (ruinSummary.systemAddress == -1)
+                {
+                    throw new NotImplementedException("TODO!!");
+                }
             }
+
+            var summaryJson = JsonConvert.SerializeObject(this.allRuins, Formatting.Indented);
+            File.WriteAllText(allRuinsStaticPathDbg, summaryJson);
+
             Game.log($"Writing {sites.Count} pubData files - complete");
         }
 
@@ -1156,6 +1225,46 @@ namespace SrvSurvey.canonn
                             };
                         }
                         sites.Add(site);
+
+                        // and create/update the summary entry for this Ruins
+                        var ruinSummary = this.allRuins.FirstOrDefault(_ => _.systemName == site.systemName && _.bodyName == site.bodyName && _.idx == site.idx);
+                        if (ruinSummary == null)
+                        {
+                            ruinSummary = new GuardianRuinSummary()
+                            {
+                                systemName = site.systemName,
+                                bodyName = site.bodyName,
+                                distanceToArrival = double.Parse(cells[11].Value),
+                                siteType = site.t.ToString(),
+                                idx = site.idx,
+
+                                // populated from pubData file ...
+                                //   latitude
+                                //   longitude
+                                //   siteHeading
+                                //   relicTowerHeading
+                            };
+                            this.allRuins.Add(ruinSummary);
+                        }
+
+                        // update starPos if missing
+                        ruinSummary.siteID = int.Parse(site.sid.Substring(2));
+                        if (ruinSummary.starPos == null)
+                        {
+                            ruinSummary.starPos = new double[3]
+                            {
+                                double.Parse(cells[5].Value),
+                                double.Parse(cells[6].Value),
+                                double.Parse(cells[7].Value),
+                            };
+                        }
+                        // update legacy lat/long if missing
+                        if (double.IsNaN(ruinSummary.legacyLatitude) || double.IsNaN(ruinSummary.legacyLongitude))
+                        {
+                            ruinSummary.legacyLatitude = double.Parse(cells[17].Value);
+                            ruinSummary.legacyLongitude = double.Parse(cells[18].Value);
+                        }
+
                         continue;
                     }
 
@@ -1205,7 +1314,6 @@ namespace SrvSurvey.canonn
             return sites;
         }
 
-
         private void parseObeliskGroupings(XDocument doc, string tabName, Dictionary<string, string> obeliskGroupings)
         {
             var table = doc.Root?.Elements().Where(_ => _.Name.LocalName == "Worksheet" && _.FirstAttribute?.Value == tabName).First().Elements()!;
@@ -1221,7 +1329,6 @@ namespace SrvSurvey.canonn
                 obeliskGroupings.Add(siteId, groups);
             }
         }
-
 
         #endregion
 

@@ -39,8 +39,7 @@
             colIndex = new ColumnHeader();
             colLastVisited = new ColumnHeader();
             colHasImages = new ColumnHeader();
-            colSiteHeading = new ColumnHeader();
-            colRelicTowerHeading = new ColumnHeader();
+            colSurveyComplete = new ColumnHeader();
             colNotes = new ColumnHeader();
             btnFilter = new Button();
             txtFilter = new TextBox();
@@ -57,7 +56,7 @@
             // grid
             // 
             grid.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            grid.Columns.AddRange(new ColumnHeader[] { colSiteId, colSystem, colBody, colDistance, colArrival, colSiteType, colIndex, colLastVisited, colHasImages, colSiteHeading, colRelicTowerHeading, colNotes });
+            grid.Columns.AddRange(new ColumnHeader[] { colSiteId, colSystem, colBody, colDistance, colArrival, colSiteType, colIndex, colLastVisited, colHasImages, colSurveyComplete, colNotes });
             grid.FullRowSelect = true;
             grid.GridLines = true;
             grid.Location = new Point(0, 40);
@@ -119,17 +118,11 @@
             colHasImages.TextAlign = HorizontalAlignment.Center;
             colHasImages.Width = 80;
             // 
-            // colSiteHeading
+            // colSurveyComplete
             // 
-            colSiteHeading.Text = "Site heading";
-            colSiteHeading.TextAlign = HorizontalAlignment.Center;
-            colSiteHeading.Width = 90;
-            // 
-            // colRelicTowerHeading
-            // 
-            colRelicTowerHeading.Text = "Relic tower heading";
-            colRelicTowerHeading.TextAlign = HorizontalAlignment.Center;
-            colRelicTowerHeading.Width = 130;
+            colSurveyComplete.Text = "Survey complete";
+            colSurveyComplete.TextAlign = HorizontalAlignment.Center;
+            colSurveyComplete.Width = 120;
             // 
             // colNotes
             // 
@@ -253,8 +246,7 @@
         private ColumnHeader colBody;
         private ColumnHeader colSiteType;
         private ColumnHeader colLastVisited;
-        private ColumnHeader colSiteHeading;
-        private ColumnHeader colRelicTowerHeading;
+        private ColumnHeader colSurveyComplete;
         private ColumnHeader colHasImages;
         private Button btnFilter;
         private ColumnHeader colDistance;
