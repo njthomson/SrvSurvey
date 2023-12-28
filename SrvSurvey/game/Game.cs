@@ -806,6 +806,21 @@ namespace SrvSurvey.game
             this.checkModeChange();
         }
 
+        private void onJournalEntry(CarrierJump entry)
+        {
+            // Carrier Jump completed
+            this.fsdJumping = false;
+            this.statusBodyName = null;
+
+            this.setLocations(entry);
+
+            // start a new SystemStatus
+            this.systemStatus = new SystemStatus(entry.StarSystem, entry.SystemAddress);
+            this.systemStatus.initFromJournal(this);
+
+            this.checkModeChange();
+        }
+
         private void onJournalEntry(SupercruiseEntry entry)
         {
             Program.closePlotter<PlotGuardians>();
@@ -997,9 +1012,9 @@ namespace SrvSurvey.game
             Program.invalidateActivePlotters();
         }
 
-        public void setLocations(FSDJump entry)
+        public void setLocations(ISystemDataStarter entry)
         {
-            Game.log($"setLocations: from FSDJump: {entry.StarSystem} / {entry.Body} ({entry.BodyType})");
+            Game.log($"setLocations: from FSDJump/CarrierJump: {entry.StarSystem} / {entry.Body} ({entry.BodyType})");
 
             cmdr.currentSystem = entry.StarSystem;
             cmdr.currentSystemAddress = entry.SystemAddress;
@@ -1009,7 +1024,7 @@ namespace SrvSurvey.game
             if (entry.BodyType == BodyType.Planet)
             {
                 // would this ever happen?
-                Game.log($"setLocations: FSDJump is a planet?!");
+                Game.log($"setLocations: FSDJump/Carrier is a planet?!");
 
                 cmdr.currentBody = entry.Body;
                 cmdr.currentBodyId = entry.BodyID;
