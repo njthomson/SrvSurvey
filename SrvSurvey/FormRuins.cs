@@ -124,7 +124,7 @@ namespace SrvSurvey
         private void loadMap(GuardianSiteData? newSite)
         {
             this.siteData = newSite;
-
+            this.siteData?.loadPub();
             this.siteType = this.siteData?.type ?? GuardianSiteData.SiteType.Unknown;
 
 
