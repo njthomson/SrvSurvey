@@ -329,20 +329,14 @@ namespace SrvSurvey
         {
             if (e.Button == MouseButtons.Right)
             {
-                Game.log("map_MouseDown: right");
-
                 this.mousePos = new PointF(
                     e.X - mapCenter.X,
                     e.Y - mapCenter.Y
                 );
-
                 map.Invalidate();
                 Application.DoEvents();
                 if (this.nearestDist < 15)
-                {
-                    this.prepContext();
-                    mapContext.Show(this.map, e.X, e.Y - (mnuName.Height * 2));
-                }
+                    this.prepContext(e);
             }
             else
             {
@@ -360,9 +354,10 @@ namespace SrvSurvey
             showStatus();
         }
 
-        private void prepContext()
+        private void prepContext(MouseEventArgs e)
         {
             if (this.nearestDist > 5 || this.siteData == null) return;
+            if (this.nearestPoi.type == POIType.brokeObelisk || this.nearestPoi.type == POIType.obelisk) return;
 
             mnuName.Text = $"Name: {this.nearestPoi.name}";
             mnuType.Text = $"Type: {this.nearestPoi.type}";
@@ -377,6 +372,8 @@ namespace SrvSurvey
                 mnuAbsent.Checked = true;
             else if (this.siteData!.getPoiStatus(this.nearestPoi.name) == SitePoiStatus.empty)
                 mnuEmpty.Checked = true;
+
+            mapContext.Show(this.map, e.X, e.Y - (mnuName.Height * 2));
         }
 
         #region image dev - no longer needed?
@@ -423,8 +420,6 @@ namespace SrvSurvey
 
             var x = (mousePos.X + dragOffset.X) / this.scale;
             var y = (mousePos.Y + dragOffset.Y) / this.scale;
-
-
 
             lblMouseX.Text = "X: " + x.ToString("N1");
             lblMouseY.Text = "Y: " + (-y).ToString("N1");
@@ -696,6 +691,9 @@ namespace SrvSurvey
                 this.siteData = game.systemSite;
                 map.Invalidate();
             }
+
+            if (this.siteData?.notes != null &&  txtNotes.Text != this.siteData.notes)
+                txtNotes.Text = this.siteData.notes;
         }
 
         private void setPoiStatus(string name, SitePoiStatus newStatus)

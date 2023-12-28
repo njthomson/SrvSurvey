@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
+using SrvSurvey.net;
 using SrvSurvey.units;
 using System.Text;
 
@@ -210,6 +211,9 @@ namespace SrvSurvey.game
         [JsonIgnore]
         public string displayName { get => $"{this.bodyName}, ruins #{this.index} - {this.type}"; }
 
+        [JsonIgnore]
+        private GuardianSitePub? pubData;
+
         public static int parseSettlementIdx(string name)
         {
             const string ruinsPrefix = "$Ancient:#index=";
@@ -288,15 +292,12 @@ namespace SrvSurvey.game
             return obelisk;
         }
 
-        [JsonIgnore]
-        private GuardianSitePub? pubData;
-
         public void loadPub()
         {
             if (this.pubData != null)
                 return;
 
-            var pubPath = Path.Combine(Program.dataFolder, "pub", "guardian", Path.GetFileName(this.filepath));
+            var pubPath = Path.Combine(Git.pubDataFolder, "guardian", Path.GetFileName(this.filepath));
             if (!File.Exists(pubPath))
                 return;
 
@@ -305,8 +306,8 @@ namespace SrvSurvey.game
             this.pubData = JsonConvert.DeserializeObject<GuardianSitePub>(json)!;
 
             if (this.type == SiteType.Unknown) this.type = pubData.t;
-            if (this.siteHeading == -1) this.siteHeading = pubData.sh;
-            if (this.relicTowerHeading == -1) this.relicTowerHeading = pubData.rh;
+            if (this.siteHeading == -1 && pubData.sh != -1) this.siteHeading = pubData.sh;
+            if (this.relicTowerHeading == -1 && pubData.rh != -1) this.relicTowerHeading = pubData.rh;
             if (this.obeliskGroups.Count == 0)
             {
                 foreach (var c in pubData.og)
@@ -324,8 +325,6 @@ namespace SrvSurvey.game
                 {
                     t = this.type,
                     idx = this.index,
-                    //sa = this.systemAddress,
-                    //bi = this.bodyId,
                     ll = this.location,
                     sh = this.siteHeading,
                     rh = this.relicTowerHeading,

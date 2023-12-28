@@ -203,7 +203,6 @@
         private Button btnShare;
         private StatusStrip statusStrip1;
         private ToolStripStatusLabel lblStatus;
-        private ComboBox comboCurrentSystem;
         private Label label1;
         private CheckBox checkVisited;
         private TextBox txtFilter;
@@ -216,5 +215,6 @@
         private ColumnHeader colSystem;
         private ListView grid;
         private ColumnHeader colSiteType;
+        public ComboBox comboCurrentSystem;
     }
 }

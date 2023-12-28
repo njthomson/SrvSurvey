@@ -1,10 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using SrvSurvey.canonn;
 using SrvSurvey.game;
-using SrvSurvey.units;
-using System;
-using System.Text;
+using SrvSurvey.net;
 
 namespace SrvSurvey
 {
@@ -18,17 +15,36 @@ namespace SrvSurvey
         public static readonly Dictionary<GuardianSiteData.SiteType, SiteTemplate> sites = new Dictionary<GuardianSiteData.SiteType, SiteTemplate>();
 
         private static string editableFilepath = Path.Combine(Program.dataFolder, "settlementTemplates.json");
+        private static string pubDataFilepath = Path.Combine(Git.pubDataFolder, "settlementTemplates.json");
 
         public static void Import(bool devReload = false)
         {
-            string filepath = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "settlementTemplates.json");
-
-            // load map editor version?
-            if (File.Exists(editableFilepath)) filepath = editableFilepath;
-
+            string filepath;
             if (devReload)
+            {
+                Game.log($"Using settlementTemplates.json devReload");
                 filepath = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "..\\..\\..\\..", "settlementTemplates.json");
+            }
+            else if (File.Exists(editableFilepath))
+            {
+                // load map editor version?
+                Game.log($"Using settlementTemplates.json from editor");
+                filepath = editableFilepath;
+            }
+            else if (File.Exists(pubDataFilepath))
+            {
+                // load pub data version?
+                Game.log($"Using settlementTemplates.json from pubData");
+                filepath = pubDataFilepath;
+            }
+            else
+            {
+                // otherwise, use the file shipped with the app
+                Game.log($"Using settlementTemplates.json app package");
+                filepath = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "settlementTemplates.json");
+            }
 
+            Game.log($"Reading settlementTemplates.json: {filepath}");
             if (File.Exists(filepath))
             {
                 using (var reader = new StreamReader(new FileStream(filepath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)))

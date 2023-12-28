@@ -1451,6 +1451,13 @@ namespace SrvSurvey
                         // there is no map for these
                         this.drawFooterText($"(There is no map yet for: {siteData.type})");
                         break;
+
+                    default:
+                        if (siteData.isRuins)
+                            this.drawFooterText($"{siteData.bodyName}, Ruins #{siteData.index} - {siteData.type}");
+                        else
+                            this.drawFooterText($"{siteData.bodyName}: {siteData.type}");
+                        break;
                 }
             }
             else if (nearestPoi != null)

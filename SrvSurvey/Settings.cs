@@ -87,6 +87,9 @@ namespace SrvSurvey
 
         public bool dataFolder1100 = false;
 
+        public int pubDataSettlementTemplate = 0;
+        public int pubDataGuardian = 0;
+
         public int processIdx = 0;
 
         #region loading /saving

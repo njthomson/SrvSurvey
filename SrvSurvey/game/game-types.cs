@@ -586,21 +586,15 @@ namespace SrvSurvey.game
         /// <summary> Index of ruins </summary>
         public int idx;
 
-        /// <summary> System address </summary>
-        //public long sa;
-
-        /// <summary> BodyId </summary>
-        //public int bi;
-
         /// <summary> Site heading </summary>
-        public int sh;
+        public int sh = -1;
 
         /// <summary> Site type, eg: Alpha, Beta, Bear, Robolobster, etc </summary>
         [JsonConverter(typeof(StringEnumConverter))]
         public SiteType t;
 
         /// <summary> Relic tower heading, if applicable </summary>
-        public int rh;
+        public int rh = -1;
 
         /// <summary> Lat/Long location </summary>
         public LatLong2 ll;

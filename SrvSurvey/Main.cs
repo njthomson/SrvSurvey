@@ -92,8 +92,13 @@ namespace SrvSurvey
             }
 
             this.checkFullScreenGraphics();
-
             this.lastWindowRect = Elite.getWindowRect();
+
+            // update pub data
+            Task.Factory.StartNew(new Action(async () =>
+            {
+                await Game.git.updatePubData();
+            }));
 
             var isMigrationValid = Program.getMigratableFolders().Any();
             Game.log($"isMigrationValid: {isMigrationValid}, dataFolder1100: {Game.settings.dataFolder1100}");
@@ -722,8 +727,16 @@ namespace SrvSurvey
                 },
             };
 
-            FormAllRuins.activeForm?.StarSystemLookup_starSystemMatch(systemMatch);
-            FormBeacons.activeForm?.StarSystemLookup_starSystemMatch(systemMatch);
+            if (FormAllRuins.activeForm != null)
+            {
+                FormAllRuins.activeForm.comboCurrentSystem.Text = systemMatch.name;
+                FormAllRuins.activeForm.StarSystemLookup_starSystemMatch(systemMatch);
+            }
+            if (FormBeacons.activeForm != null)
+            {
+                FormBeacons.activeForm.comboCurrentSystem.Text = systemMatch.name;
+                FormBeacons.activeForm.StarSystemLookup_starSystemMatch(systemMatch);
+            }
         }
 
         private void onJournalEntry(SendText entry)
@@ -1225,6 +1238,10 @@ namespace SrvSurvey
 
             //if (game?.systemData?.bodies != null)
             //    Game.log(string.Join("\r\n", game.systemData.bodies.Select(_ => $"'{_.name}' ({_.id}) : {Util.credits((long)_.rewardEstimate)}")));
+
+            //Game.git.getPubData();
+            //ZipFile.CreateFromDirectory(@"D:\code\SrvSurvey\data\guardian\1", @"D:\code\SrvSurvey\data\guardian\guardian1.zip");
+            //ZipFile.ExtractToDirectory(@"C:\Users\grinn\AppData\Roaming\SrvSurvey\SrvSurvey\1.1.0.0\pub\guardian0.zip", @"C:\Users\grinn\AppData\Roaming\SrvSurvey\SrvSurvey\1.1.0.0\pub\guardian3");
         }
 
         private void btnSphereLimit_Click(object sender, EventArgs e)

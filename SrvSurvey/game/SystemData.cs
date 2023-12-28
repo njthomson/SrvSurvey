@@ -888,6 +888,13 @@ namespace SrvSurvey.game
             // update settlements
             if (body.settlements == null) body.settlements = new Dictionary<string, LatLong2>();
             body.settlements[entry.Name] = entry;
+
+            var siteData = GuardianSiteData.Load(entry);
+            if (siteData != null && siteData.lastVisited < entry.timestamp)
+            {
+                siteData.lastVisited = entry.timestamp;
+                siteData.Save();
+            }
         }
 
         #endregion
