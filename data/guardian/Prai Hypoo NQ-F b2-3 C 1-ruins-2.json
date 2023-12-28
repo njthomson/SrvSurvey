@@ -1,12 +1,15 @@
 {
   "sid": "GR307",
   "idx": 2,
-  "sh": 0,
+  "sh": 310,
   "t": "Gamma",
-  "rh": 0,
-  "ll": null,
+  "rh": -1,
+  "ll": {
+    "lat": 59.315254,
+    "long": 147.131516
+  },
   "pa": null,
-  "pp": null,
+  "pp": "p12,p9,p2,p8,p11,p7,p10",
   "pe": null,
   "og": "ACDHJKNPQRS",
   "ao": [

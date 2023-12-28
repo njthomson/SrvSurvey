@@ -1,12 +1,15 @@
 {
   "sid": "GR212",
   "idx": 1,
-  "sh": 0,
+  "sh": 146,
   "t": "Gamma",
-  "rh": 0,
-  "ll": null,
-  "pa": null,
-  "pp": null,
+  "rh": -1,
+  "ll": {
+    "lat": 31.968714,
+    "long": -94.988426
+  },
+  "pa": "p9,p2",
+  "pp": "p12",
   "pe": null,
   "og": "ACEFMOP",
   "ao": [

@@ -622,7 +622,7 @@ namespace SrvSurvey.game
         /// "F07!-ca,to-H15-b,e"
         /// 
         /// </summary>
-        public List<ActiveObelisk> ao;
+        public HashSet<ActiveObelisk> ao;
     }
 
 }

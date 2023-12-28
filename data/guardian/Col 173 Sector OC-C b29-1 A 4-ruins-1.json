@@ -1,12 +1,15 @@
 {
   "sid": "GR119",
   "idx": 1,
-  "sh": 0,
+  "sh": 211,
   "t": "Gamma",
-  "rh": 0,
-  "ll": null,
-  "pa": null,
-  "pp": null,
+  "rh": 242,
+  "ll": {
+    "lat": 21.130445,
+    "long": 54.572971
+  },
+  "pa": "p12",
+  "pp": "t1",
   "pe": null,
   "og": "CDEFGHIJLOPR",
   "ao": [

@@ -1,10 +1,13 @@
 {
   "sid": "GR265",
   "idx": 1,
-  "sh": 0,
+  "sh": 200,
   "t": "Beta",
-  "rh": 0,
-  "ll": null,
+  "rh": -1,
+  "ll": {
+    "lat": 19.499439,
+    "long": -126.738434
+  },
   "pa": null,
   "pp": null,
   "pe": null,

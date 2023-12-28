@@ -1,12 +1,15 @@
 {
   "sid": "GR026",
   "idx": 3,
-  "sh": 0,
+  "sh": 347,
   "t": "Beta",
-  "rh": 0,
-  "ll": null,
-  "pa": null,
-  "pp": null,
+  "rh": 108,
+  "ll": {
+    "lat": 6.846118,
+    "long": 52.811592
+  },
+  "pa": "p41,p38,p26,p27,p25,p24,p23,p18,p17,p16,p7,p8,p9,p11,p21,p22,p28,p30,p31,p33,p34,p40,p35,p36,p4,p1,t3,p32,t1,t7",
+  "pp": "p39,p37,p20,p19,p15,p14,p12,p10,p6,p13,p29,p5,p2,p3,t2,t8,t6,t5,t4",
   "pe": null,
   "og": "BHLNORST",
   "ao": [

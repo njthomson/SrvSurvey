@@ -1,13 +1,16 @@
 {
   "sid": "GR177",
   "idx": 2,
-  "sh": 0,
+  "sh": 54,
   "t": "Alpha",
-  "rh": 0,
-  "ll": null,
-  "pa": null,
-  "pp": null,
-  "pe": null,
+  "rh": 177,
+  "ll": {
+    "lat": 5.42248,
+    "long": 34.929607
+  },
+  "pa": "p31,p32,p25,p26,p24,p39,p9,p33,p13,p36,p14,p15,p16,p18,p17,p34,p30,t12,t10,t8,p41,p8,p6,t3,p4,p3,p1,t2",
+  "pp": "p20,p21,p35,p23,p29,p27,p28,p37,p10,p11,p12,p19,p40,t4,t5,t9,t7,p5,t1,p2,p7,t11,t6",
+  "pe": "p22,p38",
   "og": "BCDEFILMNP",
   "ao": [
     "B04-to,ca-C3-",

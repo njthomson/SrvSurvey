@@ -1,11 +1,14 @@
 {
   "sid": "GR297",
   "idx": 1,
-  "sh": 0,
+  "sh": 340,
   "t": "Gamma",
-  "rh": 0,
-  "ll": null,
-  "pa": null,
+  "rh": -1,
+  "ll": {
+    "lat": -36.099964,
+    "long": -132.88269
+  },
+  "pa": "p12,p9",
   "pp": null,
   "pe": null,
   "og": "ABCFGKMOR",

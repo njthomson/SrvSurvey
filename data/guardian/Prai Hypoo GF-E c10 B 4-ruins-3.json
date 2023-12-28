@@ -1,12 +1,15 @@
 {
   "sid": "GR211",
   "idx": 3,
-  "sh": 0,
+  "sh": 333,
   "t": "Gamma",
-  "rh": 0,
-  "ll": null,
+  "rh": -1,
+  "ll": {
+    "lat": 25.504524,
+    "long": 140.646927
+  },
   "pa": null,
-  "pp": null,
+  "pp": "p12",
   "pe": null,
   "og": "ACGJKLMNOPRS",
   "ao": [

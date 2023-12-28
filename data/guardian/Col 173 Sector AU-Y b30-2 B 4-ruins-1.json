@@ -1,12 +1,15 @@
 {
   "sid": "GR236",
   "idx": 1,
-  "sh": 0,
+  "sh": 128,
   "t": "Gamma",
-  "rh": 0,
-  "ll": null,
-  "pa": null,
-  "pp": null,
+  "rh": 158,
+  "ll": {
+    "lat": -54.182861,
+    "long": 49.600803
+  },
+  "pa": "t1,t2",
+  "pp": "p12,p13,p14,t3,p7,p10,p8,p11,p1",
   "pe": null,
   "og": "ABCDEFGJMNOQS",
   "ao": [

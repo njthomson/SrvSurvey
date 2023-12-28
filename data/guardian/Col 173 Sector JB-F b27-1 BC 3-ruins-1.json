@@ -1,12 +1,15 @@
 {
   "sid": "GR130",
   "idx": 1,
-  "sh": 0,
+  "sh": 247,
   "t": "Beta",
-  "rh": 0,
-  "ll": null,
-  "pa": null,
-  "pp": null,
+  "rh": 7,
+  "ll": {
+    "lat": 7.534891,
+    "long": 128.832611
+  },
+  "pa": "p21,p22,p23,p24,p25,p27,p28,p29,p30,p31,p34,p33,p35,p36,p37,p38,p26,p6,p7,p16,p17,p18,p19,p5,p4,p2,p3,p42,t3,t5,p10,t2,p8",
+  "pp": "p13,p20,p32,p40,p39,p11,p9,p12,p14,p15,p1,p41,t4,t6,t7,t8,t1",
   "pe": null,
   "og": "FHLMPT",
   "ao": [

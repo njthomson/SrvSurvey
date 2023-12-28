@@ -1,12 +1,15 @@
 {
   "sid": "GR018",
   "idx": 1,
-  "sh": 0,
+  "sh": 296,
   "t": "Beta",
-  "rh": 0,
-  "ll": null,
-  "pa": null,
-  "pp": null,
+  "rh": 57,
+  "ll": {
+    "lat": 42.841373,
+    "long": -175.657761
+  },
+  "pa": "p38,p13,p22,p19,p17,p18,p15,p16,p14,p12,p7,p6,p8,p10,p11,p4,p1,p2,p3,p33,p35,p36,p37,p28,t7,t5,t4",
+  "pp": "p41,p39,p26,p21,p23,p20,p9,p5,p40,p34,p32,p27,p25,p24,p29,p30,p31,t3,t2,t1,t8,t6",
   "pe": null,
   "og": "ABDGJLNR",
   "ao": [

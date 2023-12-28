@@ -1,12 +1,15 @@
 {
   "sid": "GR021",
   "idx": 1,
-  "sh": 0,
+  "sh": 328,
   "t": "Beta",
-  "rh": 0,
-  "ll": null,
-  "pa": null,
-  "pp": null,
+  "rh": 88,
+  "ll": {
+    "lat": 49.74485,
+    "long": -63.096291
+  },
+  "pa": "p14,p16,p17,p19,p18,p20,p24,p27,p22,p21,p37,p35,p36,p32,p30,p31,p40,p41,p3,p2,p1,p4,p6,p7,t6,p33,t4",
+  "pp": "p11,p9,p10,p12,p15,p23,p25,p26,p13,p38,p39,p28,p29,p34,p5,p8,t7,t8,t1,t2,t3,t5",
   "pe": null,
   "og": "GJLMORSU",
   "ao": [

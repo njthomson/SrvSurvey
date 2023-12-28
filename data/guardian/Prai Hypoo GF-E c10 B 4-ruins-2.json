@@ -1,10 +1,13 @@
 {
   "sid": "GR213",
   "idx": 2,
-  "sh": 0,
+  "sh": 254,
   "t": "Gamma",
-  "rh": 0,
-  "ll": null,
+  "rh": -1,
+  "ll": {
+    "lat": -31.198475,
+    "long": -55.567127
+  },
   "pa": null,
   "pp": null,
   "pe": null,

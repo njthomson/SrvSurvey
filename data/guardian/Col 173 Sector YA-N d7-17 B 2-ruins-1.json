@@ -1,13 +1,16 @@
 {
   "sid": "GR269",
   "idx": 1,
-  "sh": 0,
+  "sh": 6,
   "t": "Gamma",
-  "rh": 0,
-  "ll": null,
-  "pa": null,
-  "pp": null,
-  "pe": null,
+  "rh": 48,
+  "ll": {
+    "lat": 63.340961,
+    "long": 164.126022
+  },
+  "pa": "p2,p13,p5,p3",
+  "pp": "p9,p16,t4,p17,p18,p11,p8,p19,p14,t6,p20,p4,p21",
+  "pe": "p1",
   "og": "DEFGKLNOP",
   "ao": [
     "D01-ta,or-H21-",

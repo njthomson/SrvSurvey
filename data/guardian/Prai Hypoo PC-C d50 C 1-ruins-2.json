@@ -1,12 +1,15 @@
 {
   "sid": "GR295",
   "idx": 2,
-  "sh": 0,
+  "sh": 223,
   "t": "Gamma",
-  "rh": 0,
-  "ll": null,
+  "rh": -1,
+  "ll": {
+    "lat": 78.649643,
+    "long": 42.069717
+  },
   "pa": null,
-  "pp": null,
+  "pp": "p12",
   "pe": null,
   "og": "AHKLOQR",
   "ao": [

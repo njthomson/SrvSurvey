@@ -1,10 +1,13 @@
 {
   "sid": "GR171",
   "idx": 1,
-  "sh": 0,
+  "sh": 47,
   "t": "Gamma",
-  "rh": 0,
-  "ll": null,
+  "rh": -1,
+  "ll": {
+    "lat": 8.169463,
+    "long": 82.877914
+  },
   "pa": null,
   "pp": null,
   "pe": null,

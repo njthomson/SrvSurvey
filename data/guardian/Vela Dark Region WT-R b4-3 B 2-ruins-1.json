@@ -1,12 +1,15 @@
 {
   "sid": "GR149",
   "idx": 1,
-  "sh": 0,
+  "sh": 33,
   "t": "Gamma",
-  "rh": 0,
-  "ll": null,
-  "pa": null,
-  "pp": null,
+  "rh": 62,
+  "ll": {
+    "lat": 27.58954,
+    "long": -105.912987
+  },
+  "pa": "p12,p27,p25,p32,p36,p39,p3,p20,p37,p29,p10,t5,p7,t3,p26,p30,p14,p13,p34,t7,p23,t8",
+  "pp": "p19,p8,p11,p18,p17,p2,p31,p16,p9,p22,p35,p28,p21,p4,p5,p38,t2,t6,p1,p6,p33,p15,t1,E02,E06,E04,E01,t4,p24",
   "pe": null,
   "og": "ACEFHIJLMPQRS",
   "ao": [

@@ -1,12 +1,15 @@
 {
   "sid": "GR135",
   "idx": 3,
-  "sh": 0,
+  "sh": 189,
   "t": "Gamma",
-  "rh": 0,
-  "ll": null,
+  "rh": -1,
+  "ll": {
+    "lat": 20.687569,
+    "long": -116.205589
+  },
   "pa": null,
-  "pp": null,
+  "pp": "p9,p2",
   "pe": null,
   "og": "ABCEIJKMNQS",
   "ao": [

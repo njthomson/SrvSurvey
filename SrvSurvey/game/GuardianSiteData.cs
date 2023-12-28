@@ -212,7 +212,7 @@ namespace SrvSurvey.game
         public string displayName { get => $"{this.bodyName}, ruins #{this.index} - {this.type}"; }
 
         [JsonIgnore]
-        private GuardianSitePub? pubData;
+        public GuardianSitePub? pubData;
 
         public static int parseSettlementIdx(string name)
         {
@@ -297,7 +297,7 @@ namespace SrvSurvey.game
             if (this.pubData != null)
                 return;
 
-            var pubPath = Path.Combine(Git.pubDataFolder, "guardian", Path.GetFileName(this.filepath));
+            var pubPath = Path.Combine(Git.pubGuardianFolder, Path.GetFileName(this.filepath));
             if (!File.Exists(pubPath))
                 return;
 
@@ -308,11 +308,12 @@ namespace SrvSurvey.game
             if (this.type == SiteType.Unknown) this.type = pubData.t;
             if (this.siteHeading == -1 && pubData.sh != -1) this.siteHeading = pubData.sh;
             if (this.relicTowerHeading == -1 && pubData.rh != -1) this.relicTowerHeading = pubData.rh;
+
             if (this.obeliskGroups.Count == 0)
-            {
                 foreach (var c in pubData.og)
                     this.obeliskGroups.Add(c);
-            }
+
+            // no need to push poiStatus or activeObelisks states - that is handled within `this.getPoiStatus` / `this.getActiveObelisk`
         }
 
         public void publishSite()
@@ -336,7 +337,7 @@ namespace SrvSurvey.game
             }
 
             this.pubData.og = string.Join("", this.obeliskGroups);
-            this.pubData.ao = new List<ActiveObelisk>(this.activeObelisks.Values);
+            this.pubData.ao = new HashSet<ActiveObelisk>(this.activeObelisks.Values);
 
             var poiPresent = new List<string>();
             var poiAbsent = new List<string>();

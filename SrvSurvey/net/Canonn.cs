@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SrvSurvey.game;
+using SrvSurvey.net;
 using SrvSurvey.units;
 using System.Diagnostics;
 using System.Text;
@@ -24,7 +25,7 @@ namespace SrvSurvey.canonn
 
         public void init()
         {
-            // readXmlSheetRuins2();
+            //readXmlSheetRuins2();
 
             Canonn.client = new HttpClient();
             Canonn.client.DefaultRequestHeaders.Add("accept-encoding", "gzip, deflate");
@@ -1098,7 +1099,7 @@ namespace SrvSurvey.canonn
             // now write them out to disk
             foreach(var site in sites)
             {
-                var pubPath = Path.Combine(Program.dataFolder, "pub", "guardian", $"{site.systemName} {site.bodyName}-ruins-{site.idx}.json");
+                var pubPath = Path.Combine(Git.pubGuardianFolder, $"{site.systemName} {site.bodyName}-ruins-{site.idx}.json");
 
                 var json = JsonConvert.SerializeObject(site, Formatting.Indented);
                 File.WriteAllText(pubPath, json);
@@ -1134,7 +1135,7 @@ namespace SrvSurvey.canonn
                             idx = int.Parse(cells[21].Value),
                             t = Enum.Parse<SiteType>(cells[22].Value, true),
                             og = obeliskGroupings[siteId].Replace(" ", "").Replace(",", ""),
-                            ao = new List<ActiveObelisk>(),
+                            ao = new HashSet<ActiveObelisk>(),
                         };
                         sites.Add(site);
                         continue;

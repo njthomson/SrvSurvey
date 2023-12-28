@@ -1,12 +1,15 @@
 {
   "sid": "GR162",
   "idx": 1,
-  "sh": 0,
+  "sh": 323,
   "t": "Beta",
-  "rh": 0,
-  "ll": null,
-  "pa": null,
-  "pp": null,
+  "rh": -1,
+  "ll": {
+    "lat": -42.098759,
+    "long": 101.85881
+  },
+  "pa": "p9,p10,p14,p24,p27,p26,p8,p4,p3,p41,p39,p37,P35,p32,p28,p22,t6,t5",
+  "pp": "p11,p15,p17,p19,p20,p23,p25,p13,p7,p6,p5,p40,t3,p34,p30,p31,p29,t2,t1,t8,t7,t4,p12",
   "pe": null,
   "og": "AEJMU",
   "ao": [

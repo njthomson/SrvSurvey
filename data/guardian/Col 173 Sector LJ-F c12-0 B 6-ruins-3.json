@@ -1,12 +1,15 @@
 {
   "sid": "GR164",
   "idx": 3,
-  "sh": 0,
+  "sh": 36,
   "t": "Beta",
-  "rh": 0,
-  "ll": null,
-  "pa": null,
-  "pp": null,
+  "rh": -1,
+  "ll": {
+    "lat": 51.463108,
+    "long": -62.51606
+  },
+  "pa": "P35,t3,p41,p4,p5,t5,p9,p12,p10,t7,p14,p15,p17,p19,p20,t1,p26,p25,p30,p32",
+  "pp": "p13,p34,p37,p39,p40,p3,t4,p7,p8,t6,t8,p24,p23,p22,p27,t2,p28,p29,p31",
   "pe": null,
   "og": "CHINO",
   "ao": [

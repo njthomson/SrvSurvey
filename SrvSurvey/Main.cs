@@ -1234,14 +1234,14 @@ namespace SrvSurvey
         private void btnRuins_Click(object sender, EventArgs e)
         {
             FormRuins.show();
-            //Game.log(">>>> " + game?.getBlueCount(false).ToString());
 
             //if (game?.systemData?.bodies != null)
             //    Game.log(string.Join("\r\n", game.systemData.bodies.Select(_ => $"'{_.name}' ({_.id}) : {Util.credits((long)_.rewardEstimate)}")));
 
-            //Game.git.getPubData();
-            //ZipFile.CreateFromDirectory(@"D:\code\SrvSurvey\data\guardian\1", @"D:\code\SrvSurvey\data\guardian\guardian1.zip");
-            //ZipFile.ExtractToDirectory(@"C:\Users\grinn\AppData\Roaming\SrvSurvey\SrvSurvey\1.1.0.0\pub\guardian0.zip", @"C:\Users\grinn\AppData\Roaming\SrvSurvey\SrvSurvey\1.1.0.0\pub\guardian3");
+
+            //Game.git.publishLocalData();
+
+            //Game.git.prepNextZip();
         }
 
         private void btnSphereLimit_Click(object sender, EventArgs e)

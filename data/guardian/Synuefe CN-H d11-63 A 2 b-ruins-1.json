@@ -1,10 +1,13 @@
 {
   "sid": "GR272",
   "idx": 1,
-  "sh": 0,
+  "sh": 342,
   "t": "Gamma",
-  "rh": 0,
-  "ll": null,
+  "rh": 12,
+  "ll": {
+    "lat": 24.134918,
+    "long": 172.044754
+  },
   "pa": null,
   "pp": null,
   "pe": null,

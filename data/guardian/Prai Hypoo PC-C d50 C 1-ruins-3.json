@@ -1,12 +1,15 @@
 {
   "sid": "GR296",
   "idx": 3,
-  "sh": 0,
+  "sh": 245,
   "t": "Gamma",
-  "rh": 0,
-  "ll": null,
-  "pa": null,
-  "pp": null,
+  "rh": -1,
+  "ll": {
+    "lat": 18.323917,
+    "long": -116.333229
+  },
+  "pa": "p10",
+  "pp": "p1",
   "pe": null,
   "og": "CDFJKLOPR",
   "ao": [

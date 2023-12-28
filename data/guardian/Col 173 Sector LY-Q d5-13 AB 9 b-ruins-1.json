@@ -1,12 +1,15 @@
 {
   "sid": "GR027",
   "idx": 1,
-  "sh": 0,
+  "sh": 350,
   "t": "Gamma",
-  "rh": 0,
-  "ll": null,
+  "rh": -1,
+  "ll": {
+    "lat": 27.415854,
+    "long": 120.901711
+  },
   "pa": null,
-  "pp": null,
+  "pp": "p10",
   "pe": null,
   "og": "ABCFHIJLMNORS",
   "ao": [

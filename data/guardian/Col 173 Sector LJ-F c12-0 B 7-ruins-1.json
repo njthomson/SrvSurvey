@@ -1,12 +1,15 @@
 {
   "sid": "GR165",
   "idx": 1,
-  "sh": 0,
+  "sh": 235,
   "t": "Alpha",
-  "rh": 0,
-  "ll": null,
-  "pa": null,
-  "pp": null,
+  "rh": -1,
+  "ll": {
+    "lat": 23.414459,
+    "long": 20.678741
+  },
+  "pa": "t12,p22,p26,p37,p9,P35,p14,p16,p17,p18,p34,p19,p30,p31,p32,t4,t10,p23,p8,p6,t1,p1,p33,p12,p10,t6,p39,p38",
+  "pp": "p21,p29,p25,p27,p24,p13,p15,p20,t5,t11,t8,t9,p28,p5,t3,p4,p3,p2,t2,p11,t7,p7,p35",
   "pe": null,
   "og": "CFIJKLMNP",
   "ao": [

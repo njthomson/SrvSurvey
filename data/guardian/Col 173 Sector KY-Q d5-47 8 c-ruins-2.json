@@ -1,12 +1,15 @@
 {
   "sid": "GR006",
   "idx": 2,
-  "sh": 0,
+  "sh": 86,
   "t": "Beta",
-  "rh": 0,
-  "ll": null,
-  "pa": null,
-  "pp": null,
+  "rh": 208,
+  "ll": {
+    "lat": -32.697018,
+    "long": 29.834711
+  },
+  "pa": "p41,p39,p37,P35,p26,p25,p23,p14,p13,p11,p7,p6,p5,p4,p3,p34,p32,p31,p28,t5,t8,t1,p40,t4,p35,p36,p38,p21,p16,p18,p2,p33",
+  "pp": "p27,p24,p22,p20,p19,p17,p15,p12,p10,p9,p8,p1,p30,p29,t6,t7,t2,t3",
   "pe": null,
   "og": "CHILMQR",
   "ao": [

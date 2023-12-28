@@ -1,10 +1,13 @@
 {
   "sid": "GR141",
   "idx": 1,
-  "sh": 0,
+  "sh": 187,
   "t": "Gamma",
-  "rh": 0,
-  "ll": null,
+  "rh": 218,
+  "ll": {
+    "lat": -54.580582,
+    "long": 25.089537
+  },
   "pa": null,
   "pp": null,
   "pe": null,

@@ -1,12 +1,15 @@
 {
   "sid": "GR121",
   "idx": 3,
-  "sh": 0,
+  "sh": 34,
   "t": "Gamma",
-  "rh": 0,
-  "ll": null,
+  "rh": 65,
+  "ll": {
+    "lat": 15.072274,
+    "long": 136.554138
+  },
   "pa": null,
-  "pp": null,
+  "pp": "t1",
   "pe": null,
   "og": "ABCDEFLOQRS",
   "ao": [

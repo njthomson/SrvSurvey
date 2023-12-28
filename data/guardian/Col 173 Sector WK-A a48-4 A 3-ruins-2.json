@@ -1,13 +1,16 @@
 {
   "sid": "GR133",
   "idx": 2,
-  "sh": 0,
+  "sh": 71,
   "t": "Alpha",
-  "rh": 0,
-  "ll": null,
-  "pa": null,
-  "pp": null,
-  "pe": null,
+  "rh": -1,
+  "ll": {
+    "lat": 21.003735,
+    "long": -173.533142
+  },
+  "pa": "p17,p24,p25,p22,p21,p32,p34,p36,p11,p12,p8,p38,p23,p35,t4,p40,p31,t12,t10,p37,p16,t2,p6,p5,t3,p3,p1",
+  "pp": "p18,p28,p27,p26,p29,p20,p30,p19,p15,p13,p14,p33,t5,t11,t9,t8,p9,t7,p10,t6,p7,t1,p2",
+  "pe": "p39,p4",
   "og": "AFGHILMNO",
   "ao": [
     "A01-ta-L1-",

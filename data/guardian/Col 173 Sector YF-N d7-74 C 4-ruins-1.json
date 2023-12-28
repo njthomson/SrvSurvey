@@ -1,13 +1,16 @@
 {
   "sid": "GR178",
   "idx": 1,
-  "sh": 0,
+  "sh": 159,
   "t": "Alpha",
-  "rh": 0,
-  "ll": null,
-  "pa": null,
-  "pp": null,
-  "pe": null,
+  "rh": 284,
+  "ll": {
+    "lat": 44.408997,
+    "long": 50.945045
+  },
+  "pa": "p32,p31,p21,p35,p26,p41,p27,p24,p8,p10,p11,p33,p36,p13,p14,p15,p16,p34,p17,p30,p20,t12,p22,t11,t8,t9,t1,p5,t3,p4,p3,p1",
+  "pp": "p29,p25,p28,p9,p37,p12,p19,p18,t5,t4,t10,t7,t6,t2,p6,p2,p7,p23",
+  "pe": "p39,p40,p38",
   "og": "ACFHIJKLMQ",
   "ao": [
     "A03-ta,ta-L6-",

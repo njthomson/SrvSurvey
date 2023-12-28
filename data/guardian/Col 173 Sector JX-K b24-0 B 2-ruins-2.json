@@ -1,10 +1,13 @@
 {
   "sid": "GR172",
   "idx": 2,
-  "sh": 0,
+  "sh": 216,
   "t": "Alpha",
-  "rh": 0,
-  "ll": null,
+  "rh": -1,
+  "ll": {
+    "lat": 8.263453,
+    "long": 82.77124
+  },
   "pa": null,
   "pp": null,
   "pe": null,

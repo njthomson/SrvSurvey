@@ -1,10 +1,13 @@
 {
   "sid": "GR042",
   "idx": 3,
-  "sh": 0,
+  "sh": 54,
   "t": "Alpha",
-  "rh": 0,
-  "ll": null,
+  "rh": 356,
+  "ll": {
+    "lat": -34.966747,
+    "long": -124.462822
+  },
   "pa": null,
   "pp": null,
   "pe": null,

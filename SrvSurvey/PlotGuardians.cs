@@ -492,8 +492,8 @@ namespace SrvSurvey
                 }
             }
 
-            if (msg == MsgCmd.pubSite)
-                this.siteData.publishSite();
+            //if (msg == MsgCmd.pubSite)
+            //    this.siteData.publishSite();
 
             // temporary stuff after here
             this.xtraCmds(msg);

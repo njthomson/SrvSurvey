@@ -1,12 +1,15 @@
 {
   "sid": "GR309",
   "idx": 1,
-  "sh": 0,
+  "sh": 340,
   "t": "Gamma",
-  "rh": 0,
-  "ll": null,
+  "rh": -1,
+  "ll": {
+    "lat": 3.831339,
+    "long": -148.244766
+  },
   "pa": null,
-  "pp": null,
+  "pp": "p12,p9,p8,p11",
   "pe": null,
   "og": "BEHJLRS",
   "ao": [

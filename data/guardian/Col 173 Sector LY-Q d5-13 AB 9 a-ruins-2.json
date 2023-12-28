@@ -1,13 +1,16 @@
 {
   "sid": "GR023",
   "idx": 2,
-  "sh": 0,
+  "sh": 215,
   "t": "Alpha",
-  "rh": 0,
-  "ll": null,
-  "pa": null,
-  "pp": null,
-  "pe": null,
+  "rh": 157,
+  "ll": {
+    "lat": -36.850231,
+    "long": 32.322792
+  },
+  "pa": "p38,p25,t9,p26,p6,t3,p4,p1,p7,p15,p36,p13,p14,p10,p9,p8,p35,t12,p32,p31,t4,p20,p30,p40,p29,p23,p11,p12,p16,p18,p34",
+  "pp": "t10,t11,t8,p5,p3,t1,p2,t2,t6,t7,p37,p28,p21,t5,p22,p24,p27,p33,p17,p19",
+  "pe": "p39",
   "og": "ABDEHIJKLNOP",
   "ao": [
     "A11-to,ca-C3-",

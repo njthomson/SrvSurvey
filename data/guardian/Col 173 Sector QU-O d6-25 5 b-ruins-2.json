@@ -1,10 +1,13 @@
 {
   "sid": "GR255",
   "idx": 2,
-  "sh": 0,
+  "sh": 51,
   "t": "Alpha",
-  "rh": 0,
-  "ll": null,
+  "rh": 355,
+  "ll": {
+    "lat": -35.138523,
+    "long": -135.35257
+  },
   "pa": null,
   "pp": null,
   "pe": null,

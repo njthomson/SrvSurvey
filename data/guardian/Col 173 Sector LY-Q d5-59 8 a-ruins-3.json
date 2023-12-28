@@ -1,12 +1,15 @@
 {
   "sid": "GR033",
   "idx": 3,
-  "sh": 0,
+  "sh": 20,
   "t": "Beta",
-  "rh": 0,
-  "ll": null,
-  "pa": null,
-  "pp": null,
+  "rh": 141,
+  "ll": {
+    "lat": 1.527324,
+    "long": -116.647827
+  },
+  "pa": "p10,p14,t3,p34,p27,p24,p30,p2,p4,p5,p19,p18,p17,p16,p15,p7,p6,p8,p11,p13,p22,p23,p26,p38,p37,p36,p33,p31,t4,t7,p41",
+  "pp": "p9,p12,p40,p32,t2,t1,p28,p29,p42,p3,p1,p20,p21,p25,p39,p35,t5,t6,t8",
   "pe": null,
   "og": "DEGJKOQ",
   "ao": [

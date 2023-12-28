@@ -1,11 +1,14 @@
 {
   "sid": "GR034",
   "idx": 2,
-  "sh": 0,
+  "sh": 42,
   "t": "Gamma",
-  "rh": 0,
-  "ll": null,
-  "pa": null,
+  "rh": -1,
+  "ll": {
+    "lat": -4.984453,
+    "long": -175.226913
+  },
+  "pa": "p9",
   "pp": null,
   "pe": null,
   "og": "ABEHJOP",

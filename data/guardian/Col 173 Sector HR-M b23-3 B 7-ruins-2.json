@@ -1,10 +1,13 @@
 {
   "sid": "GR111",
   "idx": 2,
-  "sh": 0,
+  "sh": 111,
   "t": "Alpha",
-  "rh": 0,
-  "ll": null,
+  "rh": -1,
+  "ll": {
+    "lat": -22.598898,
+    "long": 170.110306
+  },
   "pa": null,
   "pp": null,
   "pe": null,

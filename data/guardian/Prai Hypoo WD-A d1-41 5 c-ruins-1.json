@@ -1,12 +1,15 @@
 {
   "sid": "GR259",
   "idx": 1,
-  "sh": 0,
+  "sh": 54,
   "t": "Gamma",
-  "rh": 0,
-  "ll": null,
-  "pa": null,
-  "pp": null,
+  "rh": -1,
+  "ll": {
+    "lat": 19.796623,
+    "long": -118.454102
+  },
+  "pa": "p9,p2,p5,p3",
+  "pp": "p12,p11,p8,t3,p7,p6,p4",
   "pe": null,
   "og": "BCDEFGKLNOPQRS",
   "ao": [

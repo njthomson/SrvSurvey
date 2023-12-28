@@ -1,12 +1,15 @@
 ﻿using Newtonsoft.Json;
 using SrvSurvey.game;
 using System.IO.Compression;
+using System.Runtime.CompilerServices;
 
 namespace SrvSurvey.net
 {
     internal class Git
     {
         public static string pubDataFolder = Path.Combine(Program.dataFolder, "pub");
+        public static string pubGuardianFolder = Path.Combine(pubDataFolder, "guardian");
+
         private static HttpClient client;
 
         static Git()
@@ -26,13 +29,12 @@ namespace SrvSurvey.net
                 Game.log($"pubDataSettlementTemplate - local: {Game.settings.pubDataSettlementTemplate}, remote: {pubData.settlementTemplate}");
 
                 Directory.CreateDirectory(Git.pubDataFolder);
-                var pubDataGuardian = Path.Combine(Git.pubDataFolder, "guardian");
-                Directory.CreateDirectory(pubDataGuardian);
+                Directory.CreateDirectory(pubGuardianFolder);
 
                 if (pubData.settlementTemplate > Game.settings.pubDataSettlementTemplate)
                 {
                     Game.log($"Downloading settlementTemplates.json");
-                    var json2 = await Git.client.GetStringAsync($"https://raw.githubusercontent.com/njthomson/SrvSurvey/main/data/settlementTemplates.json");
+                    var json2 = await Git.client.GetStringAsync($"https://raw.githubusercontent.com/njthomson/SrvSurvey/main/SrvSurvey/settlementTemplates.json");
                     var filepath = Path.Combine(Git.pubDataFolder, "settlementTemplates.json");
                     File.WriteAllText(filepath, json2);
 
@@ -51,7 +53,7 @@ namespace SrvSurvey.net
                     Game.log($"{url} => {filepath}");
                     var bytes = await Git.client.GetByteArrayAsync(url);
                     await File.WriteAllBytesAsync(filepath, bytes);
-                    ZipFile.ExtractToDirectory(filepath, pubDataGuardian, true);
+                    ZipFile.ExtractToDirectory(filepath, pubGuardianFolder, true);
 
                     // update settings to current level
                     Game.settings.pubDataGuardian = pubData.guardian;
@@ -68,6 +70,111 @@ namespace SrvSurvey.net
             {
                 Game.log($"updatePubData - complete");
             }
+        }
+
+        public void publishLocalData()
+        {
+            var modifiedPubData = new List<GuardianSitePub>();
+            var sites = GuardianSiteData.loadAllSites(true);
+            foreach (var site in sites)
+            {
+                site.loadPub();
+                if (site.pubData == null) continue;
+
+                var diff = false;
+                // site heading
+                if (site.pubData!.sh != site.siteHeading && site.siteHeading != -1)
+                {
+                    diff = true;
+                    site.pubData.sh = site.siteHeading;
+                }
+                // relic toiwer heading
+                if (site.pubData!.rh != site.relicTowerHeading && site.relicTowerHeading != -1)
+                {
+                    diff = true;
+                    site.pubData.rh = site.relicTowerHeading;
+                }
+                // location
+                if (site.location != null && (site.pubData.ll == null || site.pubData.ll.Lat != site.location.Lat || site.pubData.ll.Long != site.location.Long))
+                {
+                    diff = true;
+                    site.pubData.ll = site.location;
+                }
+
+                // obelisk groups
+                var siteOG = string.Join("", site.obeliskGroups);
+                if (site.pubData.og != siteOG)
+                {
+                    diff = true;
+                    site.pubData.og = siteOG;
+                }
+
+                // POI status
+                var poiPresent = new List<string>();
+                var poiAbsent = new List<string>();
+                var poiEmpty = new List<string>();
+                foreach (var _ in site.poiStatus)
+                {
+                    // (use the func, so it reads into site.pubData intentionally)
+                    if (site.getPoiStatus(_.Key) == SitePoiStatus.present) poiPresent.Add(_.Key);
+                    if (site.getPoiStatus(_.Key) == SitePoiStatus.absent) poiAbsent.Add(_.Key);
+                    if (site.getPoiStatus(_.Key) == SitePoiStatus.empty) poiEmpty.Add(_.Key);
+                }
+                var sitePP = string.Join(',', poiPresent);
+                var sitePA = string.Join(',', poiAbsent);
+                var sitePE = string.Join(',', poiEmpty);
+                if (site.pubData.pp != sitePP && !string.IsNullOrWhiteSpace(sitePP))
+                {
+                    diff = true;
+                    site.pubData.pp = sitePP;
+                }
+                if (site.pubData.pa != sitePA && !string.IsNullOrWhiteSpace(sitePA))
+                {
+                    diff = true;
+                    site.pubData.pa = sitePA;
+                }
+                if (site.pubData.pe != sitePE && !string.IsNullOrWhiteSpace(sitePE))
+                {
+                    diff = true;
+                    site.pubData.pe = sitePE;
+                }
+
+                // active obelisks
+                var template = SiteTemplate.sites[site.type];
+                var siteObelisks = template.poi
+                    .Where(_ => _.type == POIType.obelisk)
+                    .Select(_ => site.getActiveObelisk(_.name)!)
+                    .Where(_ => _ != null)
+                    .OrderBy(_ => _.name)
+                    .ToHashSet();
+
+                var siteObelisksJson = JsonConvert.SerializeObject(siteObelisks);
+                var pubDataObelisksJson = JsonConvert.SerializeObject(site.pubData.ao.OrderBy(_ => _.name));
+                if (siteObelisks != null && siteObelisksJson != pubDataObelisksJson && siteObelisks.Count >= site.pubData.ao.Count && siteObelisksJson.Length > pubDataObelisksJson.Length)
+                {
+                    diff = true;
+                    site.pubData.ao = siteObelisks;
+                }
+
+                if (diff)
+                {
+                    var filepath = Path.Combine(@"D:\code\SrvSurvey\data\guardian", $"{site.bodyName}-ruins-{site.index}.json");
+                    Game.log($"Updating pubData for: '{site.displayName}' into: {filepath}");
+
+                    var json = JsonConvert.SerializeObject(site.pubData, Formatting.Indented);
+                    File.WriteAllText(filepath, json);
+                }
+            }
+        }
+
+        public void prepNextZip()
+        {
+            Game.log($"Updating guardian.zip");
+            var sourceFolder = @"D:\code\SrvSurvey\data\guardian";
+            var targetZipFile = @"D:\code\SrvSurvey\data\guardian.zip";
+            if (File.Exists(targetZipFile)) File.Delete(targetZipFile);
+
+            ZipFile.CreateFromDirectory(sourceFolder, targetZipFile, CompressionLevel.SmallestSize, false);
         }
     }
 
