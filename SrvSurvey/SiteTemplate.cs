@@ -67,6 +67,10 @@ namespace SrvSurvey
         {
             Game.log($"Saving edits to SiteTemplates: {editableFilepath}");
 
+            // alpha sort all POIs by their name
+            foreach (var template in SiteTemplate.sites.Values)
+                template.poi = template.poi.OrderBy(_ => _.name).ToList();
+
             var json = JsonConvert.SerializeObject(SiteTemplate.sites, Formatting.Indented);
             File.WriteAllText(editableFilepath, json);
         }
@@ -144,6 +148,7 @@ namespace SrvSurvey
     }
 
     /// <summary> Some item or location expected within a Guardian site. </summary>
+    [JsonConverter(typeof(SitePOI.JsonConverter))]
     class SitePOI
     {
         [JsonConverter(typeof(StringEnumConverter))]
@@ -151,12 +156,96 @@ namespace SrvSurvey
         public string name;
         public decimal angle;
         public decimal dist;
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public decimal rot;
 
         public override string ToString()
         {
             return $"{type} {name} {angle}° {dist}m rot:{rot}°";
         }
+
+        class JsonConverter : Newtonsoft.Json.JsonConverter
+        {
+            public override bool CanConvert(Type objectType)
+            {
+                return false;
+            }
+
+            public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
+            {
+                var poi = new SitePOI();
+
+                reader.Read();
+                if (reader.Value as string == "name")
+                    poi.name = reader.ReadAsString()!;
+                else
+                    poi.type = reader.ValueType == typeof(string)
+                        ? Enum.Parse<POIType>(reader.ReadAsString()!)
+                        : (POIType)reader.ReadAsInt32()!;
+
+                reader.Read();
+                if (reader.Value as string == "name")
+                    poi.name = reader.ReadAsString()!;
+                else
+                    poi.type = reader.ValueType == typeof(string)
+                        ? Enum.Parse<POIType>(reader.ReadAsString()!)
+                        : (POIType)reader.ReadAsInt32()!;
+
+                reader.Read();
+                poi.angle = reader.ReadAsDecimal()!.Value;
+
+                reader.Read();
+                poi.dist = reader.ReadAsDecimal()!.Value;
+
+                reader.Read();
+                if (reader.TokenType != JsonToken.EndObject)
+                {
+                    poi.rot = reader.ReadAsDecimal()!.Value;
+                    reader.Read();
+                }
+
+                //var obj = serializer.Deserialize<JObject>(reader);
+                //if (obj == null || !obj.HasValues)
+                //    return null;
+
+                //var type = obj["type"]!.Type == JTokenType.String
+                //    ? Enum.Parse<POIType>(obj["type"]!.Value<string>()!, true)
+                //    : (POIType)obj["type"]!.Value<int>();
+
+                //var poi = new SitePOI()
+                //{
+                //    name = obj["name"]!.Value<string>()!,
+                //    angle = obj["angle"]!.Value<decimal>(),
+                //    dist = obj["dist"]!.Value<decimal>(),
+                //    rot = obj["rot"]!.Value<decimal>(),
+                //    type = type,
+                //};
+
+                return poi;
+            }
+
+            public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
+            {
+                var poi = value as SitePOI;
+
+                if (poi == null)
+                    throw new Exception($"Unexpected value: {value?.GetType().Name}");
+
+
+                var json = $"\"name\": \"{poi.name}\", \"type\": \"{poi.type}\", \"angle\": {poi.angle}, \"dist\": {poi.dist}";
+                if (poi.rot != 0) json += $", \"rot\": {poi.rot}";
+                writer.WriteRawValue("{ " + json + " }");
+
+                //var obj = new JObject();
+                //obj.Add("type", poi.type.ToString());
+                //obj.Add("name", poi.name);
+                //obj.Add("angle", poi.angle);
+                //obj.Add("dist", (decimal)poi.dist);
+                //obj.Add("rot", poi.rot);
+                //obj.WriteTo(writer);
+            }
+        }
+
     }
 
     [JsonConverter(typeof(StringEnumConverter))]

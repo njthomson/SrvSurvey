@@ -108,7 +108,7 @@ namespace SrvSurvey.units
                 if (latLong == null)
                     throw new Exception($"Unexpected value: {value?.GetType().Name}");
 
-                    var obj = new JObject();
+                var obj = new JObject();
                 obj.Add("lat", (double)latLong.Lat);
                 obj.Add("long", (double)latLong.Long);
 
