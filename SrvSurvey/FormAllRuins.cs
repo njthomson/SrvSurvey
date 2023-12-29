@@ -37,6 +37,7 @@ namespace SrvSurvey
 
             this.starSystemLookup = new LookupStarSystem(comboCurrentSystem);
             this.starSystemLookup.onSystemMatch += StarSystemLookup_starSystemMatch;
+            btnShare.Visible = false;
         }
 
         protected override void OnClosing(CancelEventArgs e)
@@ -55,7 +56,7 @@ namespace SrvSurvey
             this.grid.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
 
             // do we have any lat/long's worth sharing?
-            btnShare.Visible = this.getLatLongsToShare().Count > 0;
+            //btnShare.Visible = this.getLatLongsToShare().Count > 0;
         }
 
         protected override void OnResizeEnd(EventArgs e)

@@ -1,7 +1,7 @@
 {
   "sid": "GR011",
   "idx": 1,
-  "sh": -1,
+  "sh": 286,
   "t": "Alpha",
   "rh": -1,
   "ll": {
@@ -9,7 +9,7 @@
     "long": 141.158997
   },
   "pa": null,
-  "pp": null,
+  "pp": "p20,p21,p30",
   "pe": null,
   "og": "CDGJMNOP",
   "ao": [
