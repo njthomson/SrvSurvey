@@ -209,6 +209,7 @@ namespace SrvSurvey
                         case 'H': msg = "History"; break;
                         case 'B': msg = "Biology"; break;
                         case 'T': msg = "Technology"; break;
+                        case 'L': msg = "Language"; break;
                     }
                     msg += " #" + obelisk.msg.Substring(1);
                     txt += msg;

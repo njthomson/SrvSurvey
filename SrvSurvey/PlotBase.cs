@@ -25,6 +25,7 @@ namespace SrvSurvey
             this.FormBorderStyle = FormBorderStyle.None;
             this.Opacity = Game.settings.Opacity;
             this.DoubleBuffered = true;
+            this.Text = this.GetType().Name;
 
             this.TopMost = true;
             this.Cursor = Cursors.Cross;

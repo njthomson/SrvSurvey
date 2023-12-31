@@ -1385,15 +1385,18 @@ namespace SrvSurvey.game
 
         private void onJournalEntry(ApproachSettlement entry)
         {
-            GuardianSiteData.Load(entry);
-            this.setCurrentSite();
-
-            if (systemSite != null)
+            if (entry.Name.StartsWith("$Ancient"))
             {
-                if (this.systemSite.lastVisited < entry.timestamp)
+                GuardianSiteData.Load(entry);
+                this.setCurrentSite();
+
+                if (systemSite != null)
                 {
-                    this.systemSite.lastVisited = entry.timestamp;
-                    this.systemSite.Save();
+                    if (this.systemSite.lastVisited < entry.timestamp)
+                    {
+                        this.systemSite.lastVisited = entry.timestamp;
+                        this.systemSite.Save();
+                    }
                 }
             }
         }
@@ -1432,6 +1435,7 @@ namespace SrvSurvey.game
                         this.addBookmark(match.genus.shortName, entry);
                         Program.showPlotter<PlotTrackers>().prepTrackers();
                         Game.log($"Auto-adding tracker from CodexEntry: {entry.Name_Localised} ({entry.EntryID})");
+                        this.fireUpdate(true);
                     }
                 }
                 else

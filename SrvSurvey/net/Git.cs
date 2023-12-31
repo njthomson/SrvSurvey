@@ -90,13 +90,13 @@ namespace SrvSurvey.net
 
                 var diff = false;
                 // site heading
-                if (site.pubData!.sh != site.siteHeading && site.siteHeading != -1)
+                if (site.siteHeading != -1 && Math.Abs(site.pubData!.sh - site.siteHeading) > 1)
                 {
                     diff = true;
                     site.pubData.sh = site.siteHeading;
                 }
-                // relic toiwer heading
-                if (site.pubData!.rh != site.relicTowerHeading && site.relicTowerHeading != -1)
+                // relic tower heading
+                if (site.relicTowerHeading != -1 && Math.Abs(site.pubData!.rh - site.relicTowerHeading) > 1)
                 {
                     diff = true;
                     site.pubData.rh = site.relicTowerHeading;
@@ -173,6 +173,17 @@ namespace SrvSurvey.net
                     diff = true;
                     site.pubData.ao = siteObelisks.ToHashSet();
                     foreach (var ao in site.pubData.ao) ao.scanned = false;
+                }
+
+                if (site.pubData.sh == 0)
+                {
+                    diff = true;
+                    site.pubData.sh = -1;
+                }
+                if (site.pubData.rh == 0)
+                {
+                    diff = true;
+                    site.pubData.rh = -1;
                 }
 
                 if (diff)

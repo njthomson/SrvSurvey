@@ -109,6 +109,7 @@ namespace SrvSurvey.game
         StellarRing,
         Station,
         AsteroidCluster,
+        Null,
     }
 
     internal enum SystemBodyType
@@ -198,7 +199,7 @@ namespace SrvSurvey.game
         {
             get
             {
-                return Game.activeGame?.systemStatus.honked ?? false;
+                return Game.activeGame?.systemStatus?.honked ?? false;
                 /*
                 return Game.settings.autoShowPlotSysStatus
                     && Game.activeGame != null

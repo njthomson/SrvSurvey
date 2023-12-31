@@ -1230,8 +1230,8 @@ namespace SrvSurvey
         {
             FormBeacons.show();
 
-            //Game.git.publishLocalData();
-            //Game.canonn.readXmlSheetRuins2();
+            //Game.git.publishLocalData(); // 1st: for updating publish data from local surveys
+            //Game.canonn.readXmlSheetRuins2(); // 2nd: for updating allRuins.json and reading from Excel data
         }
 
         private void btnRuins_Click(object sender, EventArgs e)

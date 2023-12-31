@@ -1350,7 +1350,7 @@ namespace SrvSurvey
                 var poiStatus = siteData.getPoiStatus(poi.name);
 
                 // skip obelisks in groups not in this site
-                if (siteData.obeliskGroups.Count > 0 && (poi.type == POIType.obelisk || poi.type == POIType.brokeObelisk) && !siteData.obeliskGroups.Contains(poi.name[0])) continue;
+                if (siteData.obeliskGroups.Count > 0 && (poi.type == POIType.obelisk || poi.type == POIType.brokeObelisk) && !string.IsNullOrEmpty(poi.name) && !siteData.obeliskGroups.Contains(poi.name[0])) continue;
 
                 if (poi.type == POIType.relic)
                 {
@@ -1528,7 +1528,11 @@ namespace SrvSurvey
                 ? GameColors.brushCyan
                 : GameColors.brushGameOrange;
 
-            this.drawHeaderText($"Confirmed: {confirmedRelics}/{countRelics} relics, {confirmedPuddles}/{countPuddles} items", headerBrush);
+            if (confirmedRelics < countRelics || confirmedPuddles < countPuddles || !siteData.isSurveyComplete())
+                this.drawHeaderText($"Confirmed: {confirmedRelics}/{countRelics} relics, {confirmedPuddles}/{countPuddles} items", headerBrush);
+            else
+                this.drawHeaderText($"Ruins #{siteData.index}: survey complete!", headerBrush);
+
             if (Game.settings.enableEarlyGuardianStructures && this.formEditMap == null)
                 this.setMapScale(nearestObeliskDist);
 

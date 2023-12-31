@@ -695,10 +695,16 @@ namespace SrvSurvey.game
                 //}
 
                 // efficiently track which organisms were scanned where
-                if (organism.entryId > 0 && Game.activeGame != null)
+                var cmdr = Game.activeGame?.cmdr;
+                if (cmdr != null && organism.entryId > 0)
                 {
-                    Game.activeGame.cmdr.scannedBioEntryIds.Add($"{this.address}_{body.id}_{organism.entryId}_{organism.reward}_{body.firstFootFall}");
-                    Game.activeGame.cmdr.Save();
+                    var scannedEntryHash = $"{this.address}_{body.id}_{organism.entryId}_{organism.reward}";
+                    var priorScan = cmdr.scannedBioEntryIds.FirstOrDefault(_ => _.StartsWith(scannedEntryHash));
+                    if (priorScan != null) cmdr.scannedBioEntryIds.Remove(priorScan);
+
+                    cmdr.scannedBioEntryIds.Add($"{scannedEntryHash}_{body.firstFootFall}");
+                    cmdr.reCalcOrganicRewards();
+                    cmdr.Save();
                 }
                 else
                     Game.log($"BAD! Why entryId for organism '{entry.Variant_Localised ?? entry.Variant}' to '{body.name}' ({body.id})");
@@ -885,15 +891,18 @@ namespace SrvSurvey.game
             if (entry.SystemAddress != this.address) throw new ArgumentOutOfRangeException($"Unmatched system! Expected: `{this.address}`, got: {entry.SystemAddress}");
             var body = this.findOrCreate(entry.BodyName, entry.BodyID);
 
-            // update settlements
-            if (body.settlements == null) body.settlements = new Dictionary<string, LatLong2>();
-            body.settlements[entry.Name] = entry;
-
-            var siteData = GuardianSiteData.Load(entry);
-            if (siteData != null && siteData.lastVisited < entry.timestamp)
+            if (entry.Name.StartsWith("$Ancient"))
             {
-                siteData.lastVisited = entry.timestamp;
-                siteData.Save();
+                // update settlements
+                if (body.settlements == null) body.settlements = new Dictionary<string, LatLong2>();
+                body.settlements[entry.Name] = entry;
+
+                var siteData = GuardianSiteData.Load(entry);
+                if (siteData != null && siteData.lastVisited < entry.timestamp)
+                {
+                    siteData.lastVisited = entry.timestamp;
+                    siteData.Save();
+                }
             }
         }
 

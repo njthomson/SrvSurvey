@@ -462,6 +462,8 @@ namespace SrvSurvey.canonn
                 this.lastVisited = data.lastVisited;
             this.idx = data.index;
             this.notes += data.notes;
+            if (!this.surveyComplete)
+                this.surveyComplete = data.isSurveyComplete();
         }
 
         public static GuardianRuinEntry from(GuardianSiteData _, GuardianRuinEntry similar)

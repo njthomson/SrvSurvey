@@ -1,12 +1,15 @@
 {
   "sid": "GR435",
   "idx": 1,
-  "sh": -1,
+  "sh": 322,
   "t": "Gamma",
   "rh": -1,
-  "ll": null,
-  "pa": null,
-  "pp": null,
+  "ll": {
+    "lat": -2.819338,
+    "long": -176.397766
+  },
+  "pa": "p9",
+  "pp": "p12",
   "pe": null,
   "og": "ADEGHKLR",
   "ao": [

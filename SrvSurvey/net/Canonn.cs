@@ -1307,7 +1307,8 @@ namespace SrvSurvey.canonn
                     if (!string.IsNullOrEmpty(item2) && item2 != "-")
                         activeObelisk.items.Add(Enum.Parse<ObeliskItem>(item2, true));
 
-                    site.ao.Add(activeObelisk);
+                    if (!site.ao.Any(_ => _.ToString(true) == activeObelisk.ToString(true)))
+                        site.ao.Add(activeObelisk);
                 }
                 catch (Exception ex)
                 {

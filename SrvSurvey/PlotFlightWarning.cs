@@ -70,12 +70,13 @@ namespace SrvSurvey
             base.OnPaintBackground(e);
             g.Clear(Color.Black);
 
-            const int pad = 14;
+            const int pad = 15;
 
             var bodyGrav = (game.systemBody!.surfaceGravity / 10).ToString("N2");
             var txt = $"Warning: Surface gravity {bodyGrav}g";
 
             var sz = g.MeasureString(txt, this.Font);
+            sz.Width += 2;
             this.Width = (int)sz.Width + pad * 2;
             this.Height = (int)sz.Height + pad * 2;
 

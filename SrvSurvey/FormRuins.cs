@@ -312,7 +312,7 @@ namespace SrvSurvey
             if (game.systemSite != null && game.systemSite != this.siteData)
                 return;
 
-            if (this.nearestDist < 5)
+            if (this.nearestDist < 30)
             {
                 var oldStatus = siteData!.getPoiStatus(this.nearestPoi.name);
 
@@ -335,7 +335,7 @@ namespace SrvSurvey
                 );
                 map.Invalidate();
                 Application.DoEvents();
-                if (this.nearestDist < 15)
+                if (this.nearestDist < 30)
                     this.prepContext(e);
             }
             else
@@ -356,7 +356,7 @@ namespace SrvSurvey
 
         private void prepContext(MouseEventArgs e)
         {
-            if (this.nearestDist > 5 || this.siteData == null) return;
+            if (this.nearestDist > 30 || this.siteData == null) return;
             if (this.nearestPoi.type == POIType.brokeObelisk || this.nearestPoi.type == POIType.obelisk) return;
 
             mnuName.Text = $"Name: {this.nearestPoi.name}";
@@ -676,8 +676,10 @@ namespace SrvSurvey
         {
             if (this.siteData != null)
             {
-                // reload from file before saving - to avoid clobbering updates during survey
-                this.siteData = GuardianSiteData.Load(this.siteData.bodyName, this.siteData.index, true)!;
+                // use the same siteData as the game - if needed
+                if (game?.systemSite != null && game.systemSite != this.siteData)
+                    this.siteData = game.systemSite;
+
                 this.siteData.notes = txtNotes.Text;
                 this.siteData.Save();
             }
@@ -692,21 +694,31 @@ namespace SrvSurvey
                 map.Invalidate();
             }
 
-            if (this.siteData?.notes != null &&  txtNotes.Text != this.siteData.notes)
+            if (this.siteData?.notes != null && txtNotes.Text != this.siteData.notes)
                 txtNotes.Text = this.siteData.notes;
         }
 
         private void setPoiStatus(string name, SitePoiStatus newStatus)
         {
+            if (siteData == null) return;
+
             if (newStatus == SitePoiStatus.unknown)
             {
-                if (siteData!.poiStatus.ContainsKey(name))
-                    siteData!.poiStatus.Remove(name);
+                if (siteData.poiStatus.ContainsKey(name))
+                    siteData.poiStatus.Remove(name);
             }
             else
             {
-                siteData!.poiStatus[name] = newStatus;
+                siteData.poiStatus[name] = newStatus;
             }
+
+            // update footer counts
+            var countTowers = siteData.poiStatus.Count(_ => _.Key.StartsWith("t") && _.Value == SitePoiStatus.present);
+            var countItems = siteData.poiStatus.Count(_ => !_.Key.StartsWith("t") && (_.Value == SitePoiStatus.present || _.Value == SitePoiStatus.empty));
+
+            var siteHeading = this.siteData.siteHeading > 0 - 1 ? $"{this.siteData.siteHeading}°" : "?";
+            var relicTowerHeading = this.siteData.relicTowerHeading > 0 ? $"{this.siteData.relicTowerHeading}°" : "?";
+            lblStatus.Text = $"Relic Towers: {countTowers}, puddles: {countItems}, site heading: {siteHeading}, relic tower heading: {relicTowerHeading}";
 
             siteData.Save();
             map.Invalidate();

@@ -229,7 +229,7 @@ namespace SrvSurvey.game
             {
                 return int.Parse(name.Substring(name.IndexOf("=") + 1, 1));
             }
-            throw new Exception("Unkown site type");
+            throw new Exception("Unknown site type");
         }
 
         public enum SiteType
@@ -316,6 +316,40 @@ namespace SrvSurvey.game
             // no need to push poiStatus or activeObelisks states - that is handled within `this.getPoiStatus` / `this.getActiveObelisk`
         }
 
+        public bool isSurveyComplete()
+        {
+            // The survey is complete when we know:
+            var complete = true;
+
+            // the site and relic tower headings
+            complete &= this.siteHeading >= 0;
+            complete &= this.relicTowerHeading >= 0;
+            // live lat / long
+            complete &= this.location != null;
+            // status of all POI
+            var template = SiteTemplate.sites[this.type];
+            var sumCountNonObelisks = template.poi
+                .Where(_ => _.type != POIType.obelisk && _.type != POIType.brokeObelisk)
+                .Count();
+            var sumCountPOI = this.poiStatus.Keys.Count(_ => this.getPoiStatus(_) != SitePoiStatus.unknown);
+            complete &= sumCountPOI >= sumCountNonObelisks; // TODO: Compare with template count
+            if (this.obeliskGroups.Count == 0)
+            {
+                complete &= false;
+            }
+            else if (this.type != SiteType.Gamma)
+            {
+                this.loadPub();
+                // every obelisk group has at least 1 active obelisk
+                foreach (var g in this.obeliskGroups)
+                    complete &= this.activeObelisks.Keys.Any(_ => _.StartsWith(g.ToString().ToUpperInvariant()))
+                        || (this.pubData != null && this.pubData.ao.Any(_ => _.name.StartsWith(g.ToString().ToUpperInvariant())));
+            }
+
+            return complete;
+        }
+
+        /*
         public void publishSite()
         {
             var pubPath = Path.Combine(Program.dataFolder, "pub", "guardian", Path.GetFileName(this.filepath));
@@ -360,6 +394,7 @@ namespace SrvSurvey.game
             File.WriteAllText(pubPath, json);
             Game.log($"Updated pubData file for site '{this.bodyName}' #{this.index}");
         }
+        */
 
         #region old migration 
 
@@ -525,7 +560,8 @@ namespace SrvSurvey.game
                         throw new Exception($"Unexpected object type: {activeObelisks.Type} for obeliskGroups");
 
                     foreach (var _ in obelisks)
-                        data.activeObelisks.Add(_.name, _);
+                        if (!string.IsNullOrEmpty(_.name))
+                            data.activeObelisks.Add(_.name, _);
                 }
 
                 // read active obelisks groups - in either format
@@ -642,6 +678,11 @@ namespace SrvSurvey.game
 
         public override string ToString()
         {
+            return this.ToString(false);
+        }
+
+        public string ToString(bool excludeData)
+        {
             // "{name}-{item1},{item2}-{msg}-{data1},{data2},{data3}"
             var txt = new StringBuilder(this.name);
             if (this.scanned) txt.Append("!");
@@ -653,7 +694,9 @@ namespace SrvSurvey.game
             txt.Append(msg);
 
             txt.Append("-");
-            txt.Append(string.Join(',', this.data.Select(_ => _.ToString()[0])));
+            if (!excludeData)
+                txt.Append(string.Join(',', this.data.Select(_ => _.ToString()[0])));
+
             return txt.ToString();
         }
 
