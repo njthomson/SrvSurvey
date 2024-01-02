@@ -1236,7 +1236,11 @@ namespace SrvSurvey
 
         private void btnRuins_Click(object sender, EventArgs e)
         {
-            FormRuins.show();
+            //FormRuins.show();
+
+            var form = new FormRamTah();
+            form.ShowDialog(this);
+            form.Close();
 
             //if (game?.systemData?.bodies != null)
             //    Game.log(string.Join("\r\n", game.systemData.bodies.Select(_ => $"'{_.name}' ({_.id}) : {Util.credits((long)_.rewardEstimate)}")));

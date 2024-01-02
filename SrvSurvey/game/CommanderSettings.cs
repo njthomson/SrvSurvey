@@ -53,6 +53,16 @@ namespace SrvSurvey.game
         public bool migratedNonSystemDataOrganics = false;
         public bool migratedScannedOrganicsInEntryId = false;
 
+        /// <summary>
+        /// Progress against Ram Tah Mission #1: Decode the Ruins
+        /// </summary>
+        public List<bool> decodeTheRuins = new List<bool>();
+
+        /// <summary>
+        /// Progress against Ram Tah Mission #2: Decode the Ancient Logs
+        /// </summary>
+        public List<bool> decodeTheLogs= new List<bool>();
+
         public long reCalcOrganicRewards()
         {
             var newTotal = this.scannedBioEntryIds.Sum(_ =>
