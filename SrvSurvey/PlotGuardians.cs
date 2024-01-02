@@ -1397,9 +1397,11 @@ namespace SrvSurvey
                 if ((poi.type == POIType.obelisk || poi.type == POIType.brokeObelisk) && d < nearestObeliskDist)
                     nearestObeliskDist = d;
 
-                var selectPoi = d < nearestDist && (isRuinsPoi(poi.type) || Game.settings.enableEarlyGuardianStructures); //.type != POIType.brokeObelisk;
+                var selectPoi = d < nearestDist && (isRuinsPoi(poi.type) || (Game.settings.enableEarlyGuardianStructures));
                 if (forcePoi != null)
                     selectPoi = forcePoi == poi; // force selection in map editor if present
+                if (selectPoi && poi.type == POIType.obelisk && siteData.getActiveObelisk(poi.name) == null)
+                    selectPoi = false;
 
                 // (obelisks are not selectable unless on foot or SRV)
                 if (selectPoi && (poi.type == POIType.obelisk || poi.type == POIType.brokeObelisk) && (game.vehicle != ActiveVehicle.Foot && game.vehicle != ActiveVehicle.SRV))
@@ -1528,10 +1530,12 @@ namespace SrvSurvey
                 ? GameColors.brushCyan
                 : GameColors.brushGameOrange;
 
-            if (confirmedRelics < countRelics || confirmedPuddles < countPuddles || !siteData.isSurveyComplete())
+            if (confirmedRelics < countRelics || confirmedPuddles < countPuddles)// || !siteData.isSurveyComplete())
                 this.drawHeaderText($"Confirmed: {confirmedRelics}/{countRelics} relics, {confirmedPuddles}/{countPuddles} items", headerBrush);
+            else if (siteData.relicTowerHeading == -1)
+                this.drawHeaderText($"Need Relic Tower heading", GameColors.brushCyan);
             else
-                this.drawHeaderText($"Ruins #{siteData.index}: survey complete!", headerBrush);
+                this.drawHeaderText($"Ruins #{siteData.index}: survey complete", headerBrush);
 
             if (Game.settings.enableEarlyGuardianStructures && this.formEditMap == null)
                 this.setMapScale(nearestObeliskDist);

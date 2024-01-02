@@ -428,7 +428,7 @@ namespace SrvSurvey
 
         private void map_Paint(object sender, PaintEventArgs e)
         {
-            if (this.template == null) return;
+            if (this.template == null || this.game?.status == null || this.game?.cmdr == null || this.game.isShutdown) return;
 
             var g = e.Graphics;
             g.SmoothingMode = SmoothingMode.HighQuality;

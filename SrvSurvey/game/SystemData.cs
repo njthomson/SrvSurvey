@@ -460,7 +460,7 @@ namespace SrvSurvey.game
 
         public void onJournalEntry(FSSDiscoveryScan entry)
         {
-            if (entry.SystemAddress != this.address) throw new ArgumentOutOfRangeException($"Unmatched system! Expected: `{this.name}`, got: {entry.SystemName}");
+            if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! Expected: `{this.name}`, got: {entry.SystemName}"); return; }
 
             // Discovery scan a.k.a. honk
             this.honked = true;
@@ -469,7 +469,7 @@ namespace SrvSurvey.game
 
         public void onJournalEntry(FSSAllBodiesFound entry)
         {
-            if (entry.SystemAddress != this.address) throw new ArgumentOutOfRangeException($"Unmatched system! Expected: `{this.address}`, got: {entry.SystemAddress}");
+            if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! Expected: `{this.address}`, got: {entry.SystemAddress}"); return; }
 
             // FSS completed in-game
             this.fssAllBodies = true;
@@ -477,7 +477,7 @@ namespace SrvSurvey.game
 
         public void onJournalEntry(Scan entry)
         {
-            if (entry.SystemAddress != this.address) throw new ArgumentOutOfRangeException($"Unmatched system! Expected: `{this.name}`, got: {entry.StarSystem}");
+            if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! Expected: `{this.name}`, got: {entry.StarSystem}"); return; }
             var body = this.findOrCreate(entry.Bodyname, entry.BodyID);
 
             // update fields
@@ -516,7 +516,7 @@ namespace SrvSurvey.game
         public void onJournalEntry(SAAScanComplete entry)
         {
             // DSS complete
-            if (entry.SystemAddress != this.address) throw new ArgumentOutOfRangeException($"Unmatched system! Expected: `{this.address}`, got: {entry.SystemAddress}");
+            if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! Expected: `{this.address}`, got: {entry.SystemAddress}"); return; }
             var body = this.findOrCreate(entry.BodyName, entry.BodyID);
 
             // update fields
@@ -526,7 +526,7 @@ namespace SrvSurvey.game
 
         public void onJournalEntry(FSSBodySignals entry)
         {
-            if (entry.SystemAddress != this.address) throw new ArgumentOutOfRangeException($"Unmatched system! Expected: `{this.address}`, got: {entry.SystemAddress}");
+            if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! Expected: `{this.address}`, got: {entry.SystemAddress}"); return; }
             var body = this.findOrCreate(entry.Bodyname, entry.BodyID);
 
             // update fields
@@ -538,7 +538,7 @@ namespace SrvSurvey.game
         public void onJournalEntry(SAASignalsFound entry)
         {
             // DSS complete
-            if (entry.SystemAddress != this.address) throw new ArgumentOutOfRangeException($"Unmatched system! Expected: `{this.address}`, got: {entry.SystemAddress}");
+            if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! Expected: `{this.address}`, got: {entry.SystemAddress}"); return; }
             var body = this.findOrCreate(entry.BodyName, entry.BodyID);
             if (body.organisms == null) body.organisms = new List<SystemOrganism>();
 
@@ -567,7 +567,7 @@ namespace SrvSurvey.game
 
         public void onJournalEntry(ApproachBody entry)
         {
-            if (entry.SystemAddress != this.address) throw new ArgumentOutOfRangeException($"Unmatched system! Expected: `{this.address}`, got: {entry.SystemAddress}");
+            if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! Expected: `{this.address}`, got: {entry.SystemAddress}"); return; }
             var body = this.findOrCreate(entry.Body, entry.BodyID);
 
             // update fields
@@ -577,7 +577,7 @@ namespace SrvSurvey.game
 
         public void onJournalEntry(Touchdown entry)
         {
-            if (entry.SystemAddress != this.address) throw new ArgumentOutOfRangeException($"Unmatched system! Expected: `{this.address}`, got: {entry.SystemAddress}");
+            if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! Expected: `{this.address}`, got: {entry.SystemAddress}"); return; }
             // ignore landing on stations
             if (!entry.OnPlanet) return;
 
@@ -605,7 +605,7 @@ namespace SrvSurvey.game
 
         public void onJournalEntry(CodexEntry entry)
         {
-            if (entry.SystemAddress != this.address) throw new ArgumentOutOfRangeException($"Unmatched system! Expected: `{this.address}`, got: {entry.SystemAddress}");
+            if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! Expected: `{this.address}`, got: {entry.SystemAddress}"); return; }
             // ignore non bio entries
             if (entry.SubCategory != "$Codex_SubCategory_Organic_Structures;") return;
 
@@ -641,7 +641,7 @@ namespace SrvSurvey.game
 
         public void onJournalEntry(ScanOrganic entry)
         {
-            if (entry.SystemAddress != this.address) throw new ArgumentOutOfRangeException($"Unmatched system! Expected: `{this.address}`, got: {entry.SystemAddress}");
+            if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! Expected: `{this.address}`, got: {entry.SystemAddress}"); return; }
             var body = this.bodies.FirstOrDefault(_ => _.id == entry.Body);
             if (body!.organisms == null) body.organisms = new List<SystemOrganism>();
 
@@ -715,7 +715,7 @@ namespace SrvSurvey.game
 
         public void onCanonnData(SystemPoi canonnPoi)
         {
-            if (canonnPoi.system != this.name) throw new ArgumentOutOfRangeException($"Unmatched system! Expected: `{this.name}`, got: {canonnPoi.system}");
+            if (canonnPoi.system != this.name) { Game.log($"Unmatched system! Expected: `{this.name}`, got: {canonnPoi.system}"); return; }
             if (!Game.settings.useExternalData) return;
 
             // update count of bio signals in bodies
@@ -775,7 +775,7 @@ namespace SrvSurvey.game
 
         public void onEdsmResponse(EdsmSystem edsmSystem)
         {
-            if (edsmSystem.id64 != this.address) throw new ArgumentOutOfRangeException($"Unmatched system! Expected: `{this.name}`, got: {edsmSystem.name}");
+            if (edsmSystem.id64 != this.address) { Game.log($"Unmatched system! Expected: `{this.name}`, got: {edsmSystem.name}"); return; }
             if (!Game.settings.useExternalData) return;
 
             // update bodies from response
@@ -817,7 +817,7 @@ namespace SrvSurvey.game
 
         public void onSpanshResponse(ApiSystemDumpSystem spanshSystem)
         {
-            if (spanshSystem.id64 != this.address) throw new ArgumentOutOfRangeException($"Unmatched system! Expected: `{this.name}`, got: {spanshSystem.name}");
+            if (spanshSystem.id64 != this.address) { Game.log($"Unmatched system! Expected: `{this.name}`, got: {spanshSystem.name}"); return; }
             if (!Game.settings.useExternalData) return;
 
             // update bodies from response
@@ -888,7 +888,7 @@ namespace SrvSurvey.game
 
         public void onJournalEntry(ApproachSettlement entry)
         {
-            if (entry.SystemAddress != this.address) throw new ArgumentOutOfRangeException($"Unmatched system! Expected: `{this.address}`, got: {entry.SystemAddress}");
+            if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! Expected: `{this.address}`, got: {entry.SystemAddress}"); return; }
             var body = this.findOrCreate(entry.BodyName, entry.BodyID);
 
             if (entry.Name.StartsWith("$Ancient"))
