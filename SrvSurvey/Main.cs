@@ -58,6 +58,8 @@ namespace SrvSurvey
                 txtBodyBioSignals,
                 txtBodyBioValues,
             };
+
+            btnPublish.Visible = Debugger.IsAttached;
         }
 
         private void useLastWindowLocation()
@@ -1236,9 +1238,6 @@ namespace SrvSurvey
         private void btnGuarduanThings_Click(object sender, EventArgs e)
         {
             FormBeacons.show();
-
-            //Game.git.publishLocalData(); // 1st: for updating publish data from local surveys
-            //Game.canonn.readXmlSheetRuins2(); // 2nd: for updating allRuins.json and reading from Excel data
         }
 
         private void btnRuins_Click(object sender, EventArgs e)
@@ -1276,6 +1275,12 @@ namespace SrvSurvey
         private void btnRamTah_Click(object sender, EventArgs e)
         {
             FormRamTah.show();
+        }
+
+        private void btnPublish_Click(object sender, EventArgs e)
+        {
+            Game.git.publishLocalData(); // 1st: for updating publish data from local surveys
+            Game.canonn.readXmlSheetRuins2(); // 2nd: for updating allRuins.json and reading from Excel data
         }
     }
 }

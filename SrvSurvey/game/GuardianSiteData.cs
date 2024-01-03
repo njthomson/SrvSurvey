@@ -299,6 +299,9 @@ namespace SrvSurvey.game
 
             this.pubData = GuardianSitePub.Load(this.bodyName, this.index, this.type);
 
+            if (this.pubData == null)
+                throw new Exception($"Why no pubData for '{this.bodyName}' / '{this.name}'? (Newly discovered Ruins?)");
+
 
             if (this.type == SiteType.Unknown) this.type = pubData.t;
             if (this.siteHeading == -1 && pubData.sh != -1) this.siteHeading = pubData.sh;

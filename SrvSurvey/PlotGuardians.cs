@@ -26,6 +26,7 @@ namespace SrvSurvey
         public SitePOI nearestPoi;
         public SitePOI? forcePoi;
         public FormEditMap? formEditMap;
+        private double nearestObeliskDist = 1000d;
 
         /// <summary> Site map width </summary>
         private float ux;
@@ -647,8 +648,6 @@ namespace SrvSurvey
 
         protected override void onJournalEntry(MaterialCollected entry)
         {
-            if (!Game.settings.enableEarlyGuardianStructures) return;
-
             if (this.nearestPoi.type != POIType.obelisk)
             {
                 Game.log($"No obelisk is known by '{this.nearestPoi.name}'!");
@@ -700,10 +699,10 @@ namespace SrvSurvey
             this.Invalidate();
         }
 
-        private void setMapScale(double nearestObelisk = 1000)
+        private void setMapScale()
         {
             var newScale = this.scale;
-            if (Game.settings.enableEarlyGuardianStructures && nearestObelisk < 30 && (game.vehicle == ActiveVehicle.SRV || game.vehicle == ActiveVehicle.Foot))
+            if (this.nearestObeliskDist < 30 && (game.vehicle == ActiveVehicle.SRV || game.vehicle == ActiveVehicle.Foot))
                 newScale = 3f;
             else
                 newScale = this.siteData.isRuins ? 0.65f : 1.5f;
@@ -905,6 +904,10 @@ namespace SrvSurvey
                     siteData.Save();
                 }
             }
+
+            // adjust the zoom?
+            if (this.nearestPoi?.type == POIType.obelisk && this.formEditMap == null)
+                this.setMapScale();
 
             // prepare other stuff
             if (template != null && siteData != null)
@@ -1341,7 +1344,7 @@ namespace SrvSurvey
             var nearestUnknownPt = PointF.Empty;
             SitePOI? nearestUnknownPoi = null;
 
-            var nearestObeliskDist = 1000d;
+            this.nearestObeliskDist = 1000d;
             int countRelics = 0, confirmedRelics = 0, countPuddles = 0, confirmedPuddles = 0;
             Angle aa;
             string tt;
@@ -1374,7 +1377,7 @@ namespace SrvSurvey
                     dist);
 
                 // work in progress - only render if a RUINS poi
-                if (this.isRuinsPoi(poi.type) || Game.settings.enableEarlyGuardianStructures)
+                if (this.isRuinsPoi(poi.type, true) || Game.settings.enableEarlyGuardianStructures)
                     // render it
                     this.drawSitePoi(poi, pt);
 
@@ -1383,10 +1386,10 @@ namespace SrvSurvey
                 var y = pt.Y - commanderOffset.Y;
                 var d = Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
 
-                if (poiStatus == SitePoiStatus.unknown && d < nearestUnknownDist && (isRuinsPoi(poi.type)
-                    //&& (poi.type == POIType.relic == (game.vehicle == ActiveVehicle.SRV)) // only target Relic Towers when in SRV
+                if (poiStatus == SitePoiStatus.unknown && d < nearestUnknownDist && (isRuinsPoi(poi.type, false)
                     || (Game.settings.enableEarlyGuardianStructures && !siteData.isRuins && poi.type != POIType.obelisk && poi.type != POIType.brokeObelisk)))
                 {
+                    // only target Relic Towers when in SRV
                     if (poi.type != POIType.relic || (game.vehicle == ActiveVehicle.SRV && poi.type == POIType.relic))
                     {
                         nearestUnknownPoi = poi;
@@ -1395,10 +1398,10 @@ namespace SrvSurvey
                     }
                 }
 
-                if ((poi.type == POIType.obelisk || poi.type == POIType.brokeObelisk) && d < nearestObeliskDist)
-                    nearestObeliskDist = d;
+                if ((poi.type == POIType.obelisk || poi.type == POIType.brokeObelisk) && d < this.nearestObeliskDist)
+                    this.nearestObeliskDist = d;
 
-                var selectPoi = d < nearestDist && (isRuinsPoi(poi.type) || (Game.settings.enableEarlyGuardianStructures));
+                var selectPoi = d < nearestDist && (isRuinsPoi(poi.type, true) || (Game.settings.enableEarlyGuardianStructures));
                 if (forcePoi != null)
                     selectPoi = forcePoi == poi; // force selection in map editor if present
                 if (selectPoi && poi.type == POIType.obelisk && siteData.getActiveObelisk(poi.name) == null)
@@ -1466,12 +1469,12 @@ namespace SrvSurvey
             else if (nearestPoi != null)
             {
                 // draw highlight over closest POI
-                if ((nearestPoi.type == POIType.obelisk && Game.settings.enableEarlyGuardianStructures))
+                if ((nearestPoi.type == POIType.obelisk))
                 {
                     // use a smaller circle for obelisks
                     g.DrawEllipse(GameColors.penLime2Dot, -nearestPt.X - 8, -nearestPt.Y - 8, 16, 16);
                 }
-                else if ((nearestPoi == forcePoi) || isRuinsPoi(nearestPoi.type) || siteData.activeObelisks.ContainsKey(nearestPoi.name) || (!siteData.isRuins && Game.settings.enableEarlyGuardianStructures))
+                else if ((nearestPoi == forcePoi) || isRuinsPoi(nearestPoi.type, false) || siteData.activeObelisks.ContainsKey(nearestPoi.name) || (!siteData.isRuins && Game.settings.enableEarlyGuardianStructures))
                 {
                     g.DrawEllipse(GameColors.penLime4Dot, -nearestPt.X - 13, -nearestPt.Y - 13, 26, 26);
                 }
@@ -1548,13 +1551,10 @@ namespace SrvSurvey
             else
                 this.drawHeaderText($"Ruins #{siteData.index}: survey complete", headerBrush);
 
-            if (Game.settings.enableEarlyGuardianStructures && this.formEditMap == null)
-                this.setMapScale(nearestObeliskDist);
-
             g.ResetTransform();
         }
 
-        private bool isRuinsPoi(POIType poiType)
+        private bool isRuinsPoi(POIType poiType, bool incObelisks)
         {
             switch (poiType)
             {
@@ -1565,6 +1565,9 @@ namespace SrvSurvey
                 case POIType.totem:
                 case POIType.urn:
                     return true;
+
+                case POIType.obelisk:
+                    return incObelisks;
 
                 default:
                     return false;

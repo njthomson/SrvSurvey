@@ -73,6 +73,7 @@ namespace SrvSurvey
             btnSphereLimit = new Button();
             linkLabel2 = new LinkLabel();
             btnRamTah = new Button();
+            btnPublish = new Button();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
             groupBox3.SuspendLayout();
@@ -97,7 +98,6 @@ namespace SrvSurvey
             btnQuit2.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnQuit2.DialogResult = DialogResult.Cancel;
             btnQuit2.FlatStyle = FlatStyle.System;
-            btnQuit2.Font = new Font("Century Gothic", 8.25F, FontStyle.Regular, GraphicsUnit.Point);
             btnQuit2.Location = new Point(308, 483);
             btnQuit2.Name = "btnQuit2";
             btnQuit2.Size = new Size(75, 23);
@@ -129,7 +129,7 @@ namespace SrvSurvey
             btnClearTarget.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnClearTarget.BackColor = SystemColors.ControlLight;
             btnClearTarget.FlatStyle = FlatStyle.System;
-            btnClearTarget.Location = new Point(195, 45);
+            btnClearTarget.Location = new Point(196, 45);
             btnClearTarget.Name = "btnClearTarget";
             btnClearTarget.Size = new Size(62, 21);
             btnClearTarget.TabIndex = 13;
@@ -356,7 +356,6 @@ namespace SrvSurvey
             btnLogs.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnLogs.DialogResult = DialogResult.Cancel;
             btnLogs.FlatStyle = FlatStyle.System;
-            btnLogs.Font = new Font("Century Gothic", 8.25F, FontStyle.Regular, GraphicsUnit.Point);
             btnLogs.Location = new Point(93, 483);
             btnLogs.Name = "btnLogs";
             btnLogs.Size = new Size(75, 23);
@@ -370,7 +369,6 @@ namespace SrvSurvey
             btnSettings.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnSettings.DialogResult = DialogResult.Cancel;
             btnSettings.FlatStyle = FlatStyle.System;
-            btnSettings.Font = new Font("Century Gothic", 8.25F, FontStyle.Regular, GraphicsUnit.Point);
             btnSettings.Location = new Point(12, 483);
             btnSettings.Name = "btnSettings";
             btnSettings.Size = new Size(75, 23);
@@ -443,9 +441,9 @@ namespace SrvSurvey
             btnRuins.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnRuins.BackColor = SystemColors.ControlLight;
             btnRuins.FlatStyle = FlatStyle.System;
-            btnRuins.Location = new Point(309, 56);
+            btnRuins.Location = new Point(308, 55);
             btnRuins.Name = "btnRuins";
-            btnRuins.Size = new Size(56, 32);
+            btnRuins.Size = new Size(56, 35);
             btnRuins.TabIndex = 18;
             btnRuins.Text = "Ruins Map";
             btnRuins.UseVisualStyleBackColor = false;
@@ -482,7 +480,7 @@ namespace SrvSurvey
             btnRuinsOrigin.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnRuinsOrigin.BackColor = SystemColors.ControlLight;
             btnRuinsOrigin.FlatStyle = FlatStyle.System;
-            btnRuinsOrigin.Location = new Point(108, 57);
+            btnRuinsOrigin.Location = new Point(109, 57);
             btnRuinsOrigin.Name = "btnRuinsOrigin";
             btnRuinsOrigin.Size = new Size(126, 21);
             btnRuinsOrigin.TabIndex = 15;
@@ -578,12 +576,24 @@ namespace SrvSurvey
             btnRamTah.UseVisualStyleBackColor = false;
             btnRamTah.Click += btnRamTah_Click;
             // 
+            // btnPublish
+            // 
+            btnPublish.Location = new Point(174, 483);
+            btnPublish.Name = "btnPublish";
+            btnPublish.Size = new Size(75, 23);
+            btnPublish.TabIndex = 25;
+            btnPublish.Text = "Publish";
+            btnPublish.UseVisualStyleBackColor = true;
+            btnPublish.Visible = false;
+            btnPublish.Click += btnPublish_Click;
+            // 
             // Main
             // 
             AutoScaleDimensions = new SizeF(7F, 12F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = btnQuit2;
             ClientSize = new Size(395, 518);
+            Controls.Add(btnPublish);
             Controls.Add(btnRamTah);
             Controls.Add(lblFullScreen);
             Controls.Add(lblNotInstalled);
@@ -664,5 +674,6 @@ namespace SrvSurvey
         private LinkLabel linkLabel2;
         private CheckBox checkFirstFootFall;
         private Button btnRamTah;
+        private Button btnPublish;
     }
 }
