@@ -891,15 +891,15 @@ namespace SrvSurvey
                 if (this.siteData.isRuins)
                 {
                     // ruins
-                    Game.log($"Changing Relic Tower heading from: {siteData.relicTowerHeading}° to: {newAngle}");
+                    Game.log($"Changing Relic Tower heading from: {siteData.relicTowerHeading}° to: {newAngle}°");
                     siteData.relicTowerHeading = newAngle;
                     siteData.Save();
                 }
-                else if (this.nearestPoi != null)
+                if (this.nearestPoi != null)
                 {
                     // structures
                     var oldHeading = siteData.relicHeadings.ContainsKey(this.nearestPoi.name) ? siteData.relicHeadings[this.nearestPoi.name] : -1;
-                    Game.log($"Relic Tower heading from: {oldHeading}° to: {newAngle}");
+                    Game.log($"Relic Tower '{this.nearestPoi.name}' heading from: {oldHeading}° to: {newAngle}°");
                     siteData.relicHeadings[this.nearestPoi.name] = newAngle;
                     siteData.poiStatus[this.nearestPoi.name] = SitePoiStatus.present;
                     siteData.Save();
@@ -1226,7 +1226,7 @@ namespace SrvSurvey
             }
 
             var headerTxt = $"Site heading: {siteData.siteHeading}° | Rotate ship ";
-            headerTxt += adjustAngle > 0 && adjustAngle < 180  ? "right" : "left";
+            headerTxt += adjustAngle > 0 && adjustAngle < 180 ? "right" : "left";
             if (adjustAngle > 180) adjustAngle = 360 - adjustAngle;
             headerTxt += $" {Math.Abs(adjustAngle)}°";
 
@@ -1522,6 +1522,16 @@ namespace SrvSurvey
                 }
                 else
                 {
+                    if (string.IsNullOrEmpty(action) && this.nearestPoi.type == POIType.relic && poiStatus != SitePoiStatus.absent)
+                    {
+                        // show the relic tower heading (individual or site general)
+                        if (siteData.relicHeadings.ContainsKey(this.nearestPoi.name))
+                            action = $" ({siteData.relicHeadings[this.nearestPoi.name]}°)";
+                        else if (siteData.relicTowerHeading == -1)
+                            action = $" (unknown heading)";
+                        else
+                            action = $" ({siteData.relicTowerHeading}°)";
+                    }
                     var footerBrush = poiStatus == SitePoiStatus.unknown || nextStatusDifferent ? GameColors.brushCyan : GameColors.brushGameOrange;
                     this.drawFooterText($"{this.nearestPoi.type} {this.nearestPoi.name}: {poiStatus} {action}", footerBrush);
                 }

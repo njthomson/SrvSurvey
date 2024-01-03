@@ -254,7 +254,7 @@ namespace SrvSurvey
                 Program.closePlotter<PlotFlightWarning>();
 
             // show Guardian status
-            if (Game.settings.autoShowSysSettlements && PlotGuardianSystem.allowPlotter && game?.systemData?.settlements.Count > 0)
+            if (Game.settings.enableGuardianSites && Game.settings.autoShowGuardianSummary && PlotGuardianSystem.allowPlotter && game?.systemData?.settlements.Count > 0)
                 Program.showPlotter<PlotGuardianSystem>();
             else
                 Program.closePlotter<PlotGuardianSystem>();
@@ -1251,7 +1251,7 @@ namespace SrvSurvey
 
             //Program.closePlotter<PlotGuardianSystem>();
 
-            // game!.systemData!.prepSettlements();
+            //game!.systemData!.prepSettlements();
             //Program.invalidateActivePlotters();
 
             //GuardianSitePub.Find(game.systemData.name);

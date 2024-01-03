@@ -80,7 +80,6 @@ namespace SrvSurvey
             label6 = new Label();
             label5 = new Label();
             checkRuinsMeasurementGrid = new CheckBox();
-            label3 = new Label();
             checkEnableGuardianFeatures = new CheckBox();
             tabPage5 = new TabPage();
             checkDeleteScreenshotOriginal = new CheckBox();
@@ -120,6 +119,7 @@ namespace SrvSurvey
             tabPage2 = new TabPage();
             linkAboutTwo = new LinkLabel();
             linkAboutOne = new LinkLabel();
+            checkBox14 = new CheckBox();
             panel1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numGravityWarningLevel).BeginInit();
@@ -599,6 +599,7 @@ namespace SrvSurvey
             // tabPage3
             // 
             tabPage3.BorderStyle = BorderStyle.Fixed3D;
+            tabPage3.Controls.Add(checkBox14);
             tabPage3.Controls.Add(checkBox12);
             tabPage3.Controls.Add(checkBox3);
             tabPage3.Controls.Add(label9);
@@ -612,7 +613,6 @@ namespace SrvSurvey
             tabPage3.Controls.Add(label6);
             tabPage3.Controls.Add(label5);
             tabPage3.Controls.Add(checkRuinsMeasurementGrid);
-            tabPage3.Controls.Add(label3);
             tabPage3.Controls.Add(checkEnableGuardianFeatures);
             tabPage3.Location = new Point(4, 24);
             tabPage3.Name = "tabPage3";
@@ -765,16 +765,6 @@ namespace SrvSurvey
             checkRuinsMeasurementGrid.Tag = "disableRuinsMeasurementGrid";
             checkRuinsMeasurementGrid.Text = "Disable site heading assistance overlay.";
             checkRuinsMeasurementGrid.UseVisualStyleBackColor = true;
-            // 
-            // label3
-            // 
-            label3.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            label3.Location = new Point(11, 28);
-            label3.Margin = new Padding(4, 0, 4, 0);
-            label3.Name = "label3";
-            label3.Size = new Size(473, 83);
-            label3.TabIndex = 2;
-            label3.Text = "Guardian site features are still experimental and may not function properly.\r\nKnown issues:\r\n- Some Relic Tower and puddle locations are not known for Gamma Ruins.\r\n- Obelisks are not yet mapped.\r\n";
             // 
             // checkEnableGuardianFeatures
             // 
@@ -1273,6 +1263,20 @@ namespace SrvSurvey
             linkAboutOne.Text = resources.GetString("linkAboutOne.Text");
             linkAboutOne.UseCompatibleTextRendering = true;
             // 
+            // checkBox14
+            // 
+            checkBox14.AutoSize = true;
+            checkBox14.Checked = true;
+            checkBox14.CheckState = CheckState.Checked;
+            checkBox14.Location = new Point(35, 31);
+            checkBox14.Margin = new Padding(4, 3, 4, 3);
+            checkBox14.Name = "checkBox14";
+            checkBox14.Size = new Size(199, 19);
+            checkBox14.TabIndex = 16;
+            checkBox14.Tag = "autoShowGuardianSummary";
+            checkBox14.Text = "Show summary of Guardian sites";
+            checkBox14.UseVisualStyleBackColor = true;
+            // 
             // FormSettings
             // 
             AcceptButton = btnSave;
@@ -1341,7 +1345,6 @@ namespace SrvSurvey
         private LinkLabel linkAboutOne;
         private LinkLabel linkAboutTwo;
         private TabPage tabPage3;
-        private Label label3;
         private CheckBox checkEnableGuardianFeatures;
         private Button btnNextProc;
         private CheckBox checkRuinsMeasurementGrid;
@@ -1416,5 +1419,6 @@ namespace SrvSurvey
         private NumericUpDown numGravityWarningLevel;
         private CheckBox checkBox13;
         private CheckBox checkHideMyOwnCanonnSignals;
+        private CheckBox checkBox14;
     }
 }

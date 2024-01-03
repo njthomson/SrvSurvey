@@ -65,7 +65,7 @@ namespace SrvSurvey
 
         private void checkLog_CheckedChanged(object sender, EventArgs e)
         {
-            if (this.cmdr == null) return;
+            if (this.cmdr == null || Game.activeGame?.isRunning != true) return;
 
             var checkbox = sender as System.Windows.Forms.CheckBox;
             if (checkbox != null)
@@ -125,7 +125,7 @@ namespace SrvSurvey
 
         private void listRuins_MouseClick(object sender, MouseEventArgs e)
         {
-            if (this.cmdr == null) return;
+            if (this.cmdr == null || Game.activeGame?.isRunning != true) return;
 
             var row = listRuins.GetItemAt(e.X, e.Y);
             if (row != null)
@@ -159,11 +159,9 @@ namespace SrvSurvey
 
         private void listView1_DrawSubItem(object sender, DrawListViewSubItemEventArgs e)
         {
-            if (this.cmdr == null) return;
-
             var name = e.Item?.SubItems[e.ColumnIndex].Name;
             // background + edges;
-            if (!string.IsNullOrEmpty(name) && this.cmdr.decodeTheRuins.Contains(name))
+            if (!string.IsNullOrEmpty(name) && this.cmdr?.decodeTheRuins.Contains(name) == true)
             {
                 e.Graphics.FillRectangle(Brushes.Lime, e.Bounds);
             }
@@ -189,7 +187,7 @@ namespace SrvSurvey
             {
                 if (!string.IsNullOrEmpty(name))
                 {
-                    var checkState = this.cmdr.decodeTheRuins.Contains(name) ? CheckBoxState.CheckedNormal : CheckBoxState.UncheckedNormal;
+                    var checkState = this.cmdr?.decodeTheRuins.Contains(name) == true? CheckBoxState.CheckedNormal : CheckBoxState.UncheckedNormal;
                     var pt = this.getBoundsCenter(e.Bounds, CheckBoxRenderer.GetGlyphSize(e.Graphics, checkState));
                     pt.Offset(e.Bounds.Location);
                     CheckBoxRenderer.DrawCheckBox(e.Graphics, pt, checkState);

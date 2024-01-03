@@ -144,7 +144,7 @@ namespace SrvSurvey
 
         public static void hideActivePlotters()
         {
-            Game.log($"Program.hideActivePlotters: {activePlotters.Count}");
+            //Game.log($"Program.hideActivePlotters: {activePlotters.Count}");
 
             foreach (PlotterForm form in activePlotters.Values)
                 form.Opacity = 0;
@@ -152,7 +152,7 @@ namespace SrvSurvey
 
         public static void showActivePlotters()
         {
-            Game.log($"Program.showActivePlotters: {activePlotters.Count}");
+            //Game.log($"Program.showActivePlotters: {activePlotters.Count}");
 
             foreach (PlotterForm form in activePlotters.Values)
                 form.Opacity = Game.settings.Opacity;

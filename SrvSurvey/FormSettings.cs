@@ -156,11 +156,16 @@ namespace SrvSurvey
             // kill current process and reload
             if (restartApp)
             {
-                Application.DoEvents();
-                Process.Start(Application.ExecutablePath);
+                try
+                {
+                    Application.DoEvents();
+                    Process.Start(Application.ExecutablePath);
 
-                Application.DoEvents();
-                Application.Exit();
+                    Application.DoEvents();
+                    Application.DoEvents();
+                    Process.GetCurrentProcess().Kill();
+                }
+                catch { /* swallow */ }
             }
             else
             {

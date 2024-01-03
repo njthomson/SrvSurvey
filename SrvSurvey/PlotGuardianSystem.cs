@@ -44,8 +44,7 @@ namespace SrvSurvey
 
             this.Opacity = Game.settings.Opacity;
 
-            Elite.floatLeftTop(this, gameRect, 4, 10);
-            //Elite.floatLeftTop(this, gameRect, 140, 10);
+            Elite.floatLeftTop(this, gameRect, 4, 20);
 
             this.Invalidate();
         }
@@ -91,29 +90,37 @@ namespace SrvSurvey
                 foreach (var site in sites)
                 {
                     var txt = $"{site.displayText}{site.type}";
-                    if (site.status != null) txt += $" - {site.status}";
 
-                    var currentOrTargetBody = game?.status?.Destination?.Body == site.body.id
-                        || game?.systemBody?.name == site.body.name;
-                    this.dtx = 16f;
-                    this.dty += this.drawTextAt(txt, currentOrTargetBody ? GameColors.brushCyan : null).Height;
+                    var highlight = game?.status?.Destination?.Body == site.body.id;
+                    if (highlight && game?.status?.Destination.Name.StartsWith("$Ancient") == true && game?.status?.Destination.Name != site.name)
+                        highlight = false;
+                    var brush = highlight ? GameColors.brushCyan : null;
+
+                    // draw main text (bigger font)
+                    this.dtx = 8f;
+                    this.dty += this.drawTextAt(txt, brush).Height;
                     if (this.dtx > sz.Width) sz.Width = this.dtx;
-                    //this.dty += 18.0f;
 
-                    if (site.extra != null)
+                    // draw status (smaller font)
+                    if (site.status != null)
                     {
-                        this.dtx = 30f;
-                        this.dty += this.drawTextAt(site.extra, null, GameColors.fontSmall).Height;
+                        this.dtx = 20f;
+                        this.dty += this.drawTextAt("- " + site.status, brush, GameColors.fontSmall).Height + 2;
                         if (this.dtx > sz.Width) sz.Width = this.dtx;
                     }
 
+                    // draw extra (smaller font)
+                    if (site.extra != null)
+                    {
+                        this.dtx = 20f;
+                        this.dty += this.drawTextAt("- " + site.extra, brush, GameColors.fontSmall).Height;
+                        if (this.dtx > sz.Width) sz.Width = this.dtx;
+                    }
                 }
             }
 
             sz.Width += 10;
             sz.Height = this.dty + 10f;
-            //sz.Height += 10f;
-
 
             if (this.Size != sz.ToSize())
             {

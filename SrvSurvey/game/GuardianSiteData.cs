@@ -788,6 +788,7 @@ namespace SrvSurvey.game
     internal class SystemSettlementSummary
     {
         public SystemBody body;
+        public string name;
         public string displayText;
         public string type;
         public string status;
@@ -802,21 +803,22 @@ namespace SrvSurvey.game
             var summary = new SystemSettlementSummary()
             {
                 body = body,
+                name = $"$Ancient:#index={idx};",
                 displayText = $"{body.name.Replace(systemData.name, "")}: Ruins #{idx} - {site.siteType}",
             };
 
-            var siteData = GuardianSiteData.Load(body.name, idx, true);
-            if (siteData == null)
+            // show survey status if not complete
+            if (!site.surveyComplete)
             {
-                //summary.status = "Unknown";
-            }
-            else
-            {
-                summary.status = siteData.isSurveyComplete()
-                        ? "Surveyed"
-                        : "Survey pending";
-
-                siteData.loadPub();
+                var siteData = GuardianSiteData.Load(body.name, idx, true);
+                if (siteData == null)
+                {
+                    summary.status = "Survey: not started";
+                }
+                else if (!siteData.isSurveyComplete())
+                {
+                    summary.status = "Survey: incomplete";
+                }
             }
 
             // add required Ram Tah logs, if relevant
