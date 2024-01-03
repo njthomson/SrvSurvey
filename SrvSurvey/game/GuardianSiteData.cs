@@ -783,7 +783,107 @@ namespace SrvSurvey.game
                 writer.WriteValue(txt);
             }
         }
+    }
 
+    internal class SystemSettlementSummary
+    {
+        public SystemBody body;
+        public string displayText;
+        public string type;
+        public string status;
+        public string extra;
+
+        public static SystemSettlementSummary forRuins(SystemData systemData, SystemBody body, int idx)
+        {
+            var site = Game.canonn.allRuins.FirstOrDefault(_ => _.systemAddress == systemData.address && _.bodyId == body.id && _.idx == idx);
+
+            if (site == null) throw new Exception("New site found??");
+
+            var summary = new SystemSettlementSummary()
+            {
+                body = body,
+                displayText = $"{body.name.Replace(systemData.name, "")}: Ruins #{idx} - {site.siteType}",
+            };
+
+            var siteData = GuardianSiteData.Load(body.name, idx, true);
+            if (siteData == null)
+            {
+                //summary.status = "Unknown";
+            }
+            else
+            {
+                summary.status = siteData.isSurveyComplete()
+                        ? "Surveyed"
+                        : "Survey pending";
+
+                siteData.loadPub();
+            }
+
+            // add required Ram Tah logs, if relevant
+            var cmdr = Game.activeGame?.cmdr;
+            if (cmdr?.decodeTheRuinsMissionActive == TahMissionStatus.Active)
+            {
+                var pubData = GuardianSitePub.Load(body.name, idx, Enum.Parse<GuardianSiteData.SiteType>(site.siteType, true));
+                if (pubData == null) throw new Exception("Why?");
+
+                var logsNeeded = pubData.ao
+                    .Where(_ => !cmdr.decodeTheRuins.Contains(_.msg))
+                    .Select(_ => _.msg)
+                    .OrderBy(_ => _)
+                    .ToHashSet();
+
+                summary.extra = "Ram Tah: " + string.Join(" ", logsNeeded);
+            }
+
+            return summary;
+        }
+
+        public static SystemSettlementSummary forStructure(SystemData systemData, SystemBody body, string settlementName)
+        {
+            var site = Game.canonn.allStructures.FirstOrDefault(_ => _.systemAddress == 4208564474538 && _.bodyId == 19); // _.systemAddress == this.address && _.bodyId == body.id);
+
+            var siteData = GuardianSiteData.Load("Col 173 Sector AD-H c11-15 B 2", "$Ancient_Small_002:#index=1;");
+
+            var siteStatus = siteData == null
+                ? "Unknown"
+                : siteData.isSurveyComplete()
+                    ? "Surveyed"
+                    : "Survey pending";
+
+            var summary = new SystemSettlementSummary()
+            {
+                body = body,
+                displayText = $"{body.name.Replace(systemData.name, "")}: {siteData!.type}",
+                status = siteStatus
+            };
+
+            // add blue print type
+            if (siteData.type == GuardianSiteData.SiteType.Robolobster || siteData.type == GuardianSiteData.SiteType.Squid || siteData.type == GuardianSiteData.SiteType.Stickyhand)
+                summary.type += ", BP: figher";
+            else if (siteData.type == GuardianSiteData.SiteType.Turtle)
+                summary.type += ", BP: module";
+            else if (siteData.type == GuardianSiteData.SiteType.Bear || siteData.type == GuardianSiteData.SiteType.Hammerbot || siteData.type == GuardianSiteData.SiteType.Bowl)
+                summary.type += ", BP: weapon";
+
+            // add required Ram Tah logs, if relevant
+            var cmdr = Game.activeGame?.cmdr;
+            if (cmdr?.decodeTheLogsMissionActive == TahMissionStatus.Active)
+            {
+                // TODO: ...
+                //var pubData = GuardianSitePub.Load(body.name, idx, Enum.Parse<GuardianSiteData.SiteType>(site.siteType, true));
+                //if (pubData == null) throw new Exception("Why?");
+
+                //var logsNeeded = pubData.ao
+                //    .Where(_ => !cmdr.decodeTheRuins.Contains(_.msg))
+                //    .Select(_ => _.msg)
+                //    .OrderBy(_ => _)
+                //    .ToHashSet();
+
+                //summary.extra = "Rah Tah: " + string.Join(" ", logsNeeded);
+            }
+
+            return summary;
+        }
     }
 }
 
