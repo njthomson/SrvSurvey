@@ -721,9 +721,10 @@ namespace SrvSurvey.game
             // update count of bio signals in bodies
             if (canonnPoi.SAAsignals != null)
             {
-                var bioSignals = canonnPoi.SAAsignals.Where(_ => _.hud_category == "Biology");
-                foreach (var signal in bioSignals)
+                foreach (var signal in canonnPoi.SAAsignals)
                 {
+                    if (signal.hud_category != "Biology") continue;
+
                     var signalBodyName = $"{canonnPoi.system} {signal.body}";
                     var signalBody = this.bodies.FirstOrDefault(_ => _.name == signalBodyName);
 
@@ -977,6 +978,39 @@ namespace SrvSurvey.game
 
             return names;
         }
+
+        [JsonIgnore]
+        private List<SystemSettlementSummary>? _settlements;
+
+        [JsonIgnore]
+        public List<SystemSettlementSummary> settlements
+        {
+            get
+            {
+                if (this._settlements == null)
+                    this.prepSettlements();
+
+                return this._settlements!;
+            }
+        }
+
+        public void prepSettlements()
+        {
+            this._settlements = new List<SystemSettlementSummary>();
+
+            var sites = GuardianSitePub.Find(this.name);
+            foreach(var site in sites)
+            {
+                if (site.t == GuardianSiteData.SiteType.Alpha || site.t == GuardianSiteData.SiteType.Beta|| site.t == GuardianSiteData.SiteType.Gamma)
+                {
+                    var body = this.bodies.FirstOrDefault(_ => _.name == site.bodyName)!;
+                    this.settlements.Add(SystemSettlementSummary.forRuins(this, body, site.idx));
+                }
+
+                // TODO: Handle structures
+            }
+        }
+
     }
 
     internal class SystemBody

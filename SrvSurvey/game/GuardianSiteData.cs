@@ -297,13 +297,8 @@ namespace SrvSurvey.game
             if (this.pubData != null)
                 return;
 
-            var pubPath = Path.Combine(Git.pubGuardianFolder, Path.GetFileName(this.filepath));
-            if (!File.Exists(pubPath))
-                return;
+            this.pubData = GuardianSitePub.Load(this.bodyName, this.index, this.type);
 
-            Game.log($"Reading pubData for '{this.bodyName}' #{this.index} ({this.type}");
-            var json = File.ReadAllText(pubPath);
-            this.pubData = JsonConvert.DeserializeObject<GuardianSitePub>(json)!;
 
             if (this.type == SiteType.Unknown) this.type = pubData.t;
             if (this.siteHeading == -1 && pubData.sh != -1) this.siteHeading = pubData.sh;

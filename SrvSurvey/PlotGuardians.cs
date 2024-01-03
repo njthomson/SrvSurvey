@@ -1213,7 +1213,7 @@ namespace SrvSurvey
                 var ay = -mid.Height * 0.8f;
                 var ad = 80;
                 var ac = 10;
-                if (adjustAngle < 0)
+                if (adjustAngle < 0 || adjustAngle > 180)
                 {
                     ax *= -1;
                     ac *= -1;
@@ -1226,7 +1226,8 @@ namespace SrvSurvey
             }
 
             var headerTxt = $"Site heading: {siteData.siteHeading}° | Rotate ship ";
-            headerTxt += adjustAngle > 0 ? "right" : "left";
+            headerTxt += adjustAngle > 0 && adjustAngle < 180  ? "right" : "left";
+            if (adjustAngle > 180) adjustAngle = 360 - adjustAngle;
             headerTxt += $" {Math.Abs(adjustAngle)}°";
 
             this.drawHeaderText(headerTxt, brush);

@@ -18,6 +18,7 @@ namespace SrvSurvey
         public bool autoShowBioSummary = true;
         public bool autoShowBioPlot = true;
         public bool autoShowPlotFSS = true;
+        public bool autoShowSysSettlements = true;
         public bool autoShowPlotSysStatus = true;
         public bool skipGasGiantDSS = true;
         public bool skipRingsDSS = false;

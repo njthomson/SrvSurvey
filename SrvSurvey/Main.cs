@@ -246,11 +246,18 @@ namespace SrvSurvey
             else
                 Program.closePlotter<PlotSysStatus>();
 
+            // show high gravity warning
             var isHighGravity = game?.systemBody?.surfaceGravity > Game.settings.highGravityWarningLevel * 10;
             if (Game.settings.autoShowFlightWarnings && game?.systemBody != null && isHighGravity && game.isMode(GameMode.Landed, GameMode.SuperCruising, GameMode.GlideMode, GameMode.Flying, GameMode.InFighter, GameMode.InSrv))
                 Program.showPlotter<PlotFlightWarning>();
             else
                 Program.closePlotter<PlotFlightWarning>();
+
+            // show Guardian status
+            if (Game.settings.autoShowSysSettlements && PlotGuardianSystem.allowPlotter && game?.systemData?.settlements.Count > 0)
+                Program.showPlotter<PlotGuardianSystem>();
+            else
+                Program.closePlotter<PlotGuardianSystem>();
 
             Program.invalidateActivePlotters();
         }
@@ -1236,11 +1243,21 @@ namespace SrvSurvey
 
         private void btnRuins_Click(object sender, EventArgs e)
         {
-            //FormRuins.show();
+            FormRuins.show();
 
-            var form = new FormRamTah();
-            form.ShowDialog(this);
-            form.Close();
+            //var form = new FormRamTah();
+            //form.ShowDialog(this);
+            //form.Close();
+
+            //Program.closePlotter<PlotGuardianSystem>();
+
+            // game!.systemData!.prepSettlements();
+            //Program.invalidateActivePlotters();
+
+            //GuardianSitePub.Find(game.systemData.name);
+
+            //Game.log(game?.systemData?.getGuardianSites());
+
 
             //if (game?.systemData?.bodies != null)
             //    Game.log(string.Join("\r\n", game.systemData.bodies.Select(_ => $"'{_.name}' ({_.id}) : {Util.credits((long)_.rewardEstimate)}")));
@@ -1254,6 +1271,11 @@ namespace SrvSurvey
             form.ShowDialog(this);
 
             this.updateSphereLimit();
+        }
+
+        private void btnRamTah_Click(object sender, EventArgs e)
+        {
+            FormRamTah.show();
         }
     }
 }

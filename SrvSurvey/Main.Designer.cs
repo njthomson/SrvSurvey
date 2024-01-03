@@ -72,6 +72,7 @@ namespace SrvSurvey
             lblNotInstalled = new LinkLabel();
             btnSphereLimit = new Button();
             linkLabel2 = new LinkLabel();
+            btnRamTah = new Button();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
             groupBox3.SuspendLayout();
@@ -83,9 +84,9 @@ namespace SrvSurvey
             btnGroundTarget.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnGroundTarget.BackColor = SystemColors.ControlLight;
             btnGroundTarget.FlatStyle = FlatStyle.System;
-            btnGroundTarget.Location = new Point(82, 45);
+            btnGroundTarget.Location = new Point(105, 45);
             btnGroundTarget.Name = "btnGroundTarget";
-            btnGroundTarget.Size = new Size(119, 21);
+            btnGroundTarget.Size = new Size(84, 21);
             btnGroundTarget.TabIndex = 3;
             btnGroundTarget.Text = "Set target";
             btnGroundTarget.UseVisualStyleBackColor = false;
@@ -111,7 +112,7 @@ namespace SrvSurvey
             txtTargetLatLong.Location = new Point(16, 19);
             txtTargetLatLong.Name = "txtTargetLatLong";
             txtTargetLatLong.ReadOnly = true;
-            txtTargetLatLong.Size = new Size(281, 20);
+            txtTargetLatLong.Size = new Size(241, 20);
             txtTargetLatLong.TabIndex = 11;
             txtTargetLatLong.Text = "<none>";
             // 
@@ -128,9 +129,9 @@ namespace SrvSurvey
             btnClearTarget.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnClearTarget.BackColor = SystemColors.ControlLight;
             btnClearTarget.FlatStyle = FlatStyle.System;
-            btnClearTarget.Location = new Point(207, 45);
+            btnClearTarget.Location = new Point(195, 45);
             btnClearTarget.Name = "btnClearTarget";
-            btnClearTarget.Size = new Size(90, 21);
+            btnClearTarget.Size = new Size(62, 21);
             btnClearTarget.TabIndex = 13;
             btnClearTarget.Text = "Hide";
             btnClearTarget.UseVisualStyleBackColor = false;
@@ -145,7 +146,7 @@ namespace SrvSurvey
             groupBox1.Controls.Add(txtTargetLatLong);
             groupBox1.Location = new Point(12, 352);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(303, 78);
+            groupBox1.Size = new Size(265, 78);
             groupBox1.TabIndex = 14;
             groupBox1.TabStop = false;
             groupBox1.Text = "Target lat/Long:";
@@ -457,7 +458,7 @@ namespace SrvSurvey
             btnAllRuins.FlatStyle = FlatStyle.System;
             btnAllRuins.Location = new Point(240, 55);
             btnAllRuins.Name = "btnAllRuins";
-            btnAllRuins.Size = new Size(55, 35);
+            btnAllRuins.Size = new Size(63, 35);
             btnAllRuins.TabIndex = 17;
             btnAllRuins.Text = "All Ruins";
             btnAllRuins.UseVisualStyleBackColor = false;
@@ -542,9 +543,9 @@ namespace SrvSurvey
             btnSphereLimit.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnSphereLimit.BackColor = SystemColors.ControlLight;
             btnSphereLimit.FlatStyle = FlatStyle.System;
-            btnSphereLimit.Location = new Point(321, 352);
+            btnSphereLimit.Location = new Point(283, 397);
             btnSphereLimit.Name = "btnSphereLimit";
-            btnSphereLimit.Size = new Size(55, 78);
+            btnSphereLimit.Size = new Size(100, 33);
             btnSphereLimit.TabIndex = 22;
             btnSphereLimit.Text = "Sphere limit";
             btnSphereLimit.UseVisualStyleBackColor = false;
@@ -564,12 +565,26 @@ namespace SrvSurvey
             linkLabel2.UseCompatibleTextRendering = true;
             linkLabel2.LinkClicked += linkLabel2_LinkClicked;
             // 
+            // btnRamTah
+            // 
+            btnRamTah.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnRamTah.BackColor = SystemColors.ControlLight;
+            btnRamTah.FlatStyle = FlatStyle.System;
+            btnRamTah.Location = new Point(283, 357);
+            btnRamTah.Name = "btnRamTah";
+            btnRamTah.Size = new Size(100, 33);
+            btnRamTah.TabIndex = 24;
+            btnRamTah.Text = "Ram Tah Missions";
+            btnRamTah.UseVisualStyleBackColor = false;
+            btnRamTah.Click += btnRamTah_Click;
+            // 
             // Main
             // 
             AutoScaleDimensions = new SizeF(7F, 12F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = btnQuit2;
             ClientSize = new Size(395, 518);
+            Controls.Add(btnRamTah);
             Controls.Add(lblFullScreen);
             Controls.Add(lblNotInstalled);
             Controls.Add(linkLabel2);
@@ -648,5 +663,6 @@ namespace SrvSurvey
         private Button btnGuarduanThings;
         private LinkLabel linkLabel2;
         private CheckBox checkFirstFootFall;
+        private Button btnRamTah;
     }
 }

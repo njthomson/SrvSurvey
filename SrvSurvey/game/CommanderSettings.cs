@@ -1,4 +1,6 @@
-﻿using SrvSurvey.units;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using SrvSurvey.units;
 
 namespace SrvSurvey.game
 {
@@ -56,12 +58,14 @@ namespace SrvSurvey.game
         /// <summary>
         /// Progress against Ram Tah Mission #1: Decode the Ruins
         /// </summary>
-        public List<bool> decodeTheRuins = new List<bool>();
+        public HashSet<string> decodeTheRuins = new HashSet<string>();
+        public TahMissionStatus decodeTheRuinsMissionActive = TahMissionStatus.NotStarted;
 
         /// <summary>
         /// Progress against Ram Tah Mission #2: Decode the Ancient Logs
         /// </summary>
-        public List<bool> decodeTheLogs= new List<bool>();
+        public HashSet<string> decodeTheLogs2 = new HashSet<string>();
+        public TahMissionStatus decodeTheLogsMissionActive = TahMissionStatus.NotStarted;
 
         public long reCalcOrganicRewards()
         {
@@ -89,5 +93,13 @@ namespace SrvSurvey.game
     {
         public string bodyName;
         public Dictionary<string, LatLong2> targets = new Dictionary<string, LatLong2>();
+    }
+
+    [JsonConverter(typeof(StringEnumConverter))]
+    internal enum TahMissionStatus
+    {
+        NotStarted,
+        Active,
+        Complete,
     }
 }

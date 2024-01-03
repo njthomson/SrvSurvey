@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 using SrvSurvey.canonn;
+using SrvSurvey.net;
 using SrvSurvey.units;
 using static SrvSurvey.game.GuardianSiteData;
 
@@ -576,6 +577,43 @@ namespace SrvSurvey.game
 
     internal class GuardianSitePub
     {
+        public static GuardianSitePub? Load(string bodyName, int index, SiteType siteType)
+        {
+            var isRuins = siteType == SiteType.Alpha || siteType == SiteType.Beta || siteType == SiteType.Gamma;
+            var filename = GuardianSiteData.getFilename(bodyName, index, isRuins);
+
+            var pubPath = Path.Combine(Git.pubGuardianFolder, filename);
+            if (!File.Exists(pubPath))
+                return null;
+
+            Game.log($"Reading pubData for '{bodyName}' #{index} ({siteType})");
+            var json = File.ReadAllText(pubPath);
+
+            var pubData = JsonConvert.DeserializeObject<GuardianSitePub>(json);
+            return pubData;
+        }
+
+        public static List<GuardianSitePub> Find(string systemName)
+        {
+            var sites = new List<GuardianSitePub>();
+
+            var files = Directory.GetFiles(Git.pubGuardianFolder, $"{systemName}*.json");
+            foreach (var filepath in files)
+            {
+                var filename = Path.GetFileName(filepath);
+                Game.log($"Reading pubData for '{filename}'");
+
+                var json = File.ReadAllText(filepath);
+                var pubData = JsonConvert.DeserializeObject<GuardianSitePub>(json)!;
+                pubData.bodyName = filename.Substring(0, filename.IndexOf("-ruins"));
+                sites.Add(pubData);
+
+                // TODO: Structures?
+            }
+
+            return sites;
+        }
+
         [JsonIgnore]
         public string systemName;
         [JsonIgnore]

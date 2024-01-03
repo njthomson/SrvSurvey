@@ -8,7 +8,7 @@ namespace SrvSurvey
 {
     internal partial class FormAllRuins : Form
     {
-        public static FormAllRuins? activeForm;
+        internal static FormAllRuins? activeForm;
 
         private double[] currentSystem;
 
@@ -27,7 +27,7 @@ namespace SrvSurvey
 
         private readonly LookupStarSystem starSystemLookup;
 
-        public FormAllRuins()
+        private FormAllRuins()
         {
             InitializeComponent();
             comboSiteType.SelectedIndex = 0;
