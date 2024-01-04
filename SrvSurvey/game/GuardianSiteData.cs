@@ -292,16 +292,64 @@ namespace SrvSurvey.game
             return obelisk;
         }
 
+        private Dictionary<string, HashSet<string>> _ramTahObelisks;
+
+        public bool ramTahNeeded(string? msg)
+        {
+            if (msg == null || Game.activeGame == null || !Game.activeGame.cmdr.ramTahActive || this.ramTahObelisks == null)
+                return false;
+            else
+                return this.ramTahObelisks.ContainsKey(msg);
+        }
+
+        public void ramTahRecalc()
+        {
+            this._ramTahObelisks = this.getObelisksForRamTah();
+        }
+
+        [JsonIgnore]
+        public Dictionary<string, HashSet<string>> ramTahObelisks
+        {
+            get
+            {
+                if (this._ramTahObelisks == null)
+                    this._ramTahObelisks = this.getObelisksForRamTah();
+
+                return this._ramTahObelisks;
+            }
+        }
+
+        public Dictionary<string, HashSet<string>> getObelisksForRamTah()
+        {
+            // A map of log name to which obelisks contain it, eg: 'H12' => D03, H11
+            var rslt = new Dictionary<string, HashSet<string>>();
+            var cmdr = Game.activeGame?.cmdr;
+            if (cmdr != null)
+            {
+                var allObelisks = this.activeObelisks.Values.ToList();
+                if (this.pubData?.ao != null) allObelisks.AddRange(this.pubData.ao);
+
+                foreach (var ob in allObelisks.OrderBy(_ => _.msg))
+                {
+                    var isNeeded = (cmdr.decodeTheRuinsMissionActive == TahMissionStatus.Active && !cmdr.decodeTheRuins.Contains(ob.msg))
+                        || (cmdr.decodeTheLogsMissionActive == TahMissionStatus.Active && !cmdr.decodeTheLogs.Contains(ob.msg));
+
+                    if (isNeeded != true) continue;
+                    if (!rslt.ContainsKey(ob.msg)) rslt.Add(ob.msg, new HashSet<string>());
+                    rslt[ob.msg].Add(ob.name);
+                }
+            }
+
+            return rslt;
+        }
+
         public void loadPub()
         {
             if (this.pubData != null)
                 return;
 
             this.pubData = GuardianSitePub.Load(this.bodyName, this.index, this.type);
-
-            if (this.pubData == null)
-                throw new Exception($"Why no pubData for '{this.bodyName}' / '{this.name}'? (Newly discovered Ruins?)");
-
+            if (this.pubData == null) throw new Exception($"Why no pubData for '{this.bodyName}' / '{this.name}'? (Newly discovered Ruins?)");
 
             if (this.type == SiteType.Unknown) this.type = pubData.t;
             if (this.siteHeading == -1 && pubData.sh != -1) this.siteHeading = pubData.sh;
@@ -673,6 +721,9 @@ namespace SrvSurvey.game
         public string msg;
         [JsonIgnore]
         public bool scanned;
+
+        [JsonIgnore]
+        public string msgDisplay { get => Util.getLogNameFromChar(this.msg[0]) + " #" + this.msg.Substring(1); }
 
         public override string ToString()
         {

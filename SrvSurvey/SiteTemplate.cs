@@ -22,7 +22,7 @@ namespace SrvSurvey
             string filepath;
             if (devReload)
             {
-                Game.log($"Using settlementTemplates.json devReload");
+                Game.log($"Using settlementTemplates.json, devReload:{devReload}");
                 filepath = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "..\\..\\..\\..", "settlementTemplates.json");
             }
             else if (File.Exists(editableFilepath))
@@ -75,6 +75,15 @@ namespace SrvSurvey
             File.WriteAllText(editableFilepath, json);
         }
 
+        public static void publish()
+        {
+            if (File.Exists(editableFilepath))
+            {
+                Game.log($"Publishing edited settlementTemplates.json");
+                File.Copy(editableFilepath, @"D:\code\SrvSurvey\SrvSurvey\settlementTemplates.json", true);
+            }
+        }
+
         #endregion
 
         #region instance members loaded from JSON
@@ -92,6 +101,8 @@ namespace SrvSurvey
         public float scaleFactor = 1;
 
         public List<SitePOI> poi = new List<SitePOI>();
+
+        public Dictionary<string, PointF> obeliskGroupNameLocations = new Dictionary<string, PointF>();
 
         #endregion
     }

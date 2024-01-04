@@ -58,7 +58,7 @@ namespace SrvSurvey
                 if (checkbox == null) continue;
 
                 var idx = int.Parse(checkbox.Name.Substring(8));
-                checkbox.Checked = cmdr?.decodeTheLogs2.Contains($"#{idx}") == true;
+                checkbox.Checked = cmdr?.decodeTheLogs.Contains($"#{idx}") == true;
                 checkbox.BackColor = checkbox.Checked ? Color.Lime : Color.Transparent;
             }
         }
@@ -74,9 +74,9 @@ namespace SrvSurvey
 
                 var idx = int.Parse(checkbox.Name.Substring(8));
                 if (checkbox.Checked)
-                    this.cmdr.decodeTheLogs2.Add($"#{idx}");
+                    this.cmdr.decodeTheLogs.Add($"#{idx}");
                 else
-                    this.cmdr.decodeTheLogs2.Remove($"#{idx}");
+                    this.cmdr.decodeTheLogs.Remove($"#{idx}");
 
                 // update header labels to match
                 lblThargoids.BackColor = checkLog1.Checked && checkLog2.Checked && checkLog3.Checked && checkLog4.Checked && checkLog5.Checked
@@ -120,7 +120,6 @@ namespace SrvSurvey
                 var item = new ListViewItem(subItems, 0);
                 listRuins.Items.Add(item);
             }
-
         }
 
         private void listRuins_MouseClick(object sender, MouseEventArgs e)
@@ -169,6 +168,10 @@ namespace SrvSurvey
             {
                 e.Graphics.FillRectangle(SystemBrushes.HotTrack, e.Bounds);
             }
+            else if (e.ItemIndex % 2 == 1)
+            {
+                e.Graphics.FillRectangle(SystemBrushes.ControlLight, e.Bounds);
+            }
             else
             {
                 e.DrawBackground();
@@ -187,7 +190,7 @@ namespace SrvSurvey
             {
                 if (!string.IsNullOrEmpty(name))
                 {
-                    var checkState = this.cmdr?.decodeTheRuins.Contains(name) == true? CheckBoxState.CheckedNormal : CheckBoxState.UncheckedNormal;
+                    var checkState = this.cmdr?.decodeTheRuins.Contains(name) == true ? CheckBoxState.CheckedNormal : CheckBoxState.UncheckedNormal;
                     var pt = this.getBoundsCenter(e.Bounds, CheckBoxRenderer.GetGlyphSize(e.Graphics, checkState));
                     pt.Offset(e.Bounds.Location);
                     CheckBoxRenderer.DrawCheckBox(e.Graphics, pt, checkState);
@@ -227,9 +230,16 @@ namespace SrvSurvey
             e.DrawDefault = false;
         }
 
+        protected override void OnClosed(EventArgs e)
+        {
+            base.OnClosed(e);
+            this.cmdr?.Save();
+            Game.activeGame?.systemSite?.ramTahRecalc();
+            Program.invalidateActivePlotters();
+        }
+
         private void btnQuit_Click(object sender, EventArgs e)
         {
-            this.cmdr?.Save();
             this.Close();
         }
 
@@ -268,7 +278,7 @@ namespace SrvSurvey
 
             var rslt = MessageBox.Show(
                 this,
-                $"Are you sure you want to clear your progress of Decode the Ancient Logs, {this.cmdr.decodeTheLogs2.Count} logs?",
+                $"Are you sure you want to clear your progress of Decode the Ancient Logs, {this.cmdr.decodeTheLogs.Count} logs?",
                 "SrvSurvey",
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question
@@ -276,7 +286,7 @@ namespace SrvSurvey
 
             if (rslt == DialogResult.Yes)
             {
-                this.cmdr.decodeTheLogs2.Clear();
+                this.cmdr.decodeTheLogs.Clear();
                 this.prepLogCheckboxes();
             }
         }

@@ -496,7 +496,7 @@ namespace SrvSurvey
 
                 if (game.systemBody.firstFootFall) txtBodyBioValues.Text += " (FF)";
 
-                if (game.systemBody?.organisms != null)
+                if (game.systemSite == null && game.systemBody?.organisms != null)
                 {
                     if (Game.settings.autoShowBioSummary && (game.showBodyPlotters || game.mode == GameMode.SAA) && !game.showGuardianPlotters && !Program.isPlotter<PlotGuardians>())
                         Program.showPlotter<PlotBioStatus>();
@@ -504,18 +504,18 @@ namespace SrvSurvey
 
                 // show prior scan data only if present
                 var showPlotPriorScans = Game.settings.useExternalData && Game.settings.autoLoadPriorScans && (game.showBodyPlotters || game.mode == GameMode.SAA) && game.canonnPoiHasLocalBioSignals();
-                if (showPlotPriorScans && !game.showGuardianPlotters && !Program.isPlotter<PlotGuardians>())
+                if (game.systemSite == null && showPlotPriorScans && !game.showGuardianPlotters && !Program.isPlotter<PlotGuardians>())
                     Program.showPlotter<PlotPriorScans>();
 
                 if (game.showBodyPlotters && Game.settings.autoShowBioPlot && !this.game.showGuardianPlotters)
                 {
                     // show trackers only if we have some
                     var showPlotTrackers = game.systemBody?.bookmarks?.Count > 0;
-                    if (showPlotTrackers)
+                    if (game.systemSite == null && showPlotTrackers)
                         Program.showPlotter<PlotTrackers>();
 
                     // show radar if we have trackers, prior scans, we landed or started scanning already
-                    if (!game.isMode(GameMode.SuperCruising, GameMode.GlideMode) && (game.isLanded || showPlotTrackers || showPlotPriorScans || game.cmdr.scanOne != null))
+                    if (game.systemSite == null && !game.isMode(GameMode.SuperCruising, GameMode.GlideMode) && (game.isLanded || showPlotTrackers || showPlotPriorScans || game.cmdr.scanOne != null))
                         Program.showPlotter<PlotGrounded>();
                 }
             }
@@ -557,6 +557,8 @@ namespace SrvSurvey
                 txtGuardianSite.Text = "";
                 Program.closePlotter<PlotGuardians>();
                 Program.closePlotter<PlotGuardianStatus>();
+                Program.closePlotter<PlotRamTah>();
+
                 btnRuinsMap.Enabled = false;
                 btnRuinsOrigin.Enabled = false;
             }
@@ -566,6 +568,7 @@ namespace SrvSurvey
                 txtGuardianSite.Text = "";
                 Program.closePlotter<PlotGuardians>();
                 Program.closePlotter<PlotGuardianStatus>();
+                Program.closePlotter<PlotRamTah>();
                 btnRuinsMap.Enabled = false;
                 btnRuinsOrigin.Enabled = false;
             }
@@ -583,6 +586,8 @@ namespace SrvSurvey
                     {
                         Program.showPlotter<PlotGuardians>();
                         Program.showPlotter<PlotGuardianStatus>();
+                        if (game.cmdr.ramTahActive)
+                            Program.showPlotter<PlotRamTah>();
 
                         Program.closePlotter<PlotGrounded>();
                         Program.closePlotter<PlotBioStatus>();
@@ -1248,7 +1253,7 @@ namespace SrvSurvey
             //form.ShowDialog(this);
             //form.Close();
 
-            //Program.closePlotter<PlotGuardianSystem>();
+            //Program.closePlotter<PlotRamTah>(); Program.showPlotter<PlotRamTah>();
 
             //game!.systemData!.prepSettlements();
             //Program.invalidateActivePlotters();
@@ -1281,6 +1286,7 @@ namespace SrvSurvey
         {
             Game.git.publishLocalData(); // 1st: for updating publish data from local surveys
             Game.canonn.readXmlSheetRuins2(); // 2nd: for updating allRuins.json and reading from Excel data
+            SiteTemplate.publish();
         }
     }
 }

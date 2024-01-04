@@ -75,6 +75,13 @@
             label2 = new Label();
             txtBackgroundImage = new TextBox();
             label1 = new Label();
+            tabPage1 = new TabPage();
+            button1 = new Button();
+            numGroupNameAngle = new NumericUpDown();
+            numGroupNameDist = new NumericUpDown();
+            label14 = new Label();
+            label15 = new Label();
+            listGroupNames = new ListBox();
             mapZoom = new TrackBar();
             label4 = new Label();
             btnFocusGame = new Button();
@@ -92,6 +99,9 @@
             ((System.ComponentModel.ISupportInitialize)numScaleFactor).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numOriginTop).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numOriginLeft).BeginInit();
+            tabPage1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numGroupNameAngle).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numGroupNameDist).BeginInit();
             ((System.ComponentModel.ISupportInitialize)mapZoom).BeginInit();
             SuspendLayout();
             // 
@@ -100,12 +110,14 @@
             tabs.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             tabs.Controls.Add(tabItems);
             tabs.Controls.Add(tabBackground);
+            tabs.Controls.Add(tabPage1);
             tabs.Location = new Point(0, 28);
             tabs.Multiline = true;
             tabs.Name = "tabs";
             tabs.SelectedIndex = 0;
             tabs.Size = new Size(859, 433);
             tabs.TabIndex = 0;
+            tabs.SelectedIndexChanged += tabs_SelectedIndexChanged;
             // 
             // tabItems
             // 
@@ -573,6 +585,84 @@
             label1.TabIndex = 0;
             label1.Text = "Load image:";
             // 
+            // tabPage1
+            // 
+            tabPage1.Controls.Add(button1);
+            tabPage1.Controls.Add(numGroupNameAngle);
+            tabPage1.Controls.Add(numGroupNameDist);
+            tabPage1.Controls.Add(label14);
+            tabPage1.Controls.Add(label15);
+            tabPage1.Controls.Add(listGroupNames);
+            tabPage1.Location = new Point(4, 24);
+            tabPage1.Name = "tabPage1";
+            tabPage1.Padding = new Padding(3);
+            tabPage1.Size = new Size(851, 405);
+            tabPage1.TabIndex = 2;
+            tabPage1.Text = "Obelisk group name locations";
+            tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // button1
+            // 
+            button1.Location = new Point(61, 71);
+            button1.Name = "button1";
+            button1.Size = new Size(189, 23);
+            button1.TabIndex = 10;
+            button1.Text = "Save changes";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += btnSaveEdits_Click;
+            // 
+            // numGroupNameAngle
+            // 
+            numGroupNameAngle.DecimalPlaces = 2;
+            numGroupNameAngle.Location = new Point(131, 42);
+            numGroupNameAngle.Maximum = new decimal(new int[] { 1000, 0, 0, 0 });
+            numGroupNameAngle.Name = "numGroupNameAngle";
+            numGroupNameAngle.Size = new Size(100, 23);
+            numGroupNameAngle.TabIndex = 9;
+            numGroupNameAngle.Value = new decimal(new int[] { 1, 0, 0, 0 });
+            numGroupNameAngle.ValueChanged += numGroupNameAngle_ValueChanged;
+            // 
+            // numGroupNameDist
+            // 
+            numGroupNameDist.DecimalPlaces = 2;
+            numGroupNameDist.Location = new Point(131, 15);
+            numGroupNameDist.Maximum = new decimal(new int[] { 1000, 0, 0, 0 });
+            numGroupNameDist.Name = "numGroupNameDist";
+            numGroupNameDist.Size = new Size(100, 23);
+            numGroupNameDist.TabIndex = 7;
+            numGroupNameDist.Value = new decimal(new int[] { 1, 0, 0, 0 });
+            numGroupNameDist.ValueChanged += numGroupNameDist_ValueChanged;
+            // 
+            // label14
+            // 
+            label14.AutoSize = true;
+            label14.Location = new Point(84, 42);
+            label14.Name = "label14";
+            label14.Size = new Size(41, 15);
+            label14.TabIndex = 8;
+            label14.Text = "Angle:";
+            // 
+            // label15
+            // 
+            label15.AutoSize = true;
+            label15.Location = new Point(70, 17);
+            label15.Name = "label15";
+            label15.Size = new Size(55, 15);
+            label15.TabIndex = 6;
+            label15.Text = "Distance:";
+            // 
+            // listGroupNames
+            // 
+            listGroupNames.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            listGroupNames.FormattingEnabled = true;
+            listGroupNames.ItemHeight = 15;
+            listGroupNames.Items.AddRange(new object[] { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L" });
+            listGroupNames.Location = new Point(8, 6);
+            listGroupNames.Name = "listGroupNames";
+            listGroupNames.Size = new Size(47, 394);
+            listGroupNames.TabIndex = 0;
+            listGroupNames.SelectedValueChanged += listGroupNames_SelectedValueChanged;
+            // 
             // mapZoom
             // 
             mapZoom.Anchor = AnchorStyles.Top | AnchorStyles.Right;
@@ -678,13 +768,16 @@
             ((System.ComponentModel.ISupportInitialize)numScaleFactor).EndInit();
             ((System.ComponentModel.ISupportInitialize)numOriginTop).EndInit();
             ((System.ComponentModel.ISupportInitialize)numOriginLeft).EndInit();
+            tabPage1.ResumeLayout(false);
+            tabPage1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numGroupNameAngle).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numGroupNameDist).EndInit();
             ((System.ComponentModel.ISupportInitialize)mapZoom).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
-        private TabControl tabs;
         private TabPage tabItems;
         private TabPage tabBackground;
         private NumericUpDown numScaleFactor;
@@ -736,5 +829,13 @@
         private Label label11;
         private Label lblSiteType;
         public CheckBox checkHideAllPoi;
+        private TabPage tabPage1;
+        private NumericUpDown numGroupNameAngle;
+        private NumericUpDown numGroupNameDist;
+        private Label label14;
+        private Label label15;
+        private Button button1;
+        public ListBox listGroupNames;
+        public TabControl tabs;
     }
 }

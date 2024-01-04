@@ -162,9 +162,9 @@
             label2.AutoSize = true;
             label2.Location = new Point(19, 36);
             label2.Name = "label2";
-            label2.Size = new Size(166, 15);
+            label2.Size = new Size(210, 15);
             label2.TabIndex = 2;
-            label2.Text = "Mission 1: Decoding the Ruins";
+            label2.Text = "Mission 1: Decoding the Ancient Ruins";
             // 
             // linkLabel2
             // 

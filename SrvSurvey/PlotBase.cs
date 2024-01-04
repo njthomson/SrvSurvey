@@ -183,7 +183,6 @@ namespace SrvSurvey
 
         protected virtual void onJournalEntry(SendText entry)
         {
-            Game.log($"PlotBase: SendText: {entry.Message}");
             var msg = entry.Message.ToLowerInvariant();
 
             // adjust the zoom factor 'z <number>'
@@ -447,6 +446,23 @@ namespace SrvSurvey
         protected float dtx;
         /// <summary> The y location to use in drawTextAt</summary>
         protected float dty;
+
+
+        /// <summary>
+        /// Draws text at the location of ( dtx, dty ) incrementing dtx by the width of the rendered string.
+        /// </summary>
+        protected SizeF drawTextAt(string txt)
+        {
+            return this.drawTextAt(txt, null, null);
+        }
+
+        /// <summary>
+        /// Draws text at the location of ( dtx, dty ) incrementing dtx by the width of the rendered string.
+        /// </summary>
+        protected SizeF drawTextAt(string txt, Font? font = null)
+        {
+            return this.drawTextAt(txt, null, font);
+        }
 
         /// <summary>
         /// Draws text at the location of ( dtx, dty ) incrementing dtx by the width of the rendered string.

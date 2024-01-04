@@ -416,8 +416,7 @@ namespace SrvSurvey.game
         public bool showGuardianPlotters
         {
             get => Game.settings.enableGuardianSites
-                && this.systemSite != null
-                && this.systemSite.location != null
+                && this.systemSite?.location != null
                 && this.isMode(GameMode.InSrv, GameMode.OnFoot, GameMode.Landed, GameMode.Flying, GameMode.InFighter)
                 && !this.hidePlottersFromCombatSuits
                 && this.systemBody != null

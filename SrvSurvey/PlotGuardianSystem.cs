@@ -16,16 +16,6 @@ namespace SrvSurvey
             this.Font = GameColors.fontMiddle;
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                // ??
-            }
-
-            base.Dispose(disposing);
-        }
-
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -51,7 +41,7 @@ namespace SrvSurvey
 
         public static bool allowPlotter
         {
-            get => Game.activeGame != null && Game.activeGame.isMode(GameMode.SuperCruising, GameMode.FSS, GameMode.ExternalPanel, GameMode.Orrery, GameMode.SystemMap, GameMode.CommsPanel);
+            get => Game.activeGame != null && Game.activeGame.isMode(GameMode.SuperCruising, GameMode.FSS, GameMode.ExternalPanel, GameMode.Orrery, GameMode.SystemMap);
         }
 
         protected override void Game_modeChanged(GameMode newMode, bool force)
@@ -77,7 +67,7 @@ namespace SrvSurvey
             base.OnPaintBackground(e);
 
             this.dtx = 6.0f;
-            this.dty = 6.0f;
+            this.dty = 8.0f;
             var sz = new SizeF(6, 6);
 
             var sites = game?.systemData?.settlements;
@@ -119,16 +109,15 @@ namespace SrvSurvey
                 }
             }
 
+            // resize window as necessary
             sz.Width += 10;
             sz.Height = this.dty + 10f;
-
             if (this.Size != sz.ToSize())
             {
                 this.Size = sz.ToSize();
                 this.BackgroundImage = GameGraphics.getBackgroundForForm(this);
                 this.Invalidate();
             }
-            Game.log(sz);
         }
     }
 }

@@ -494,7 +494,7 @@ namespace SrvSurvey
                 FormErrorSubmit.Show(ex);
             }
             else
-            {                
+            {
                 MessageBox.Show(
                     Main.ActiveForm,
                     "Something unexpected went wrong, please share the logs.\r\nIt is recommended to restart SrvSurvey.",
@@ -505,6 +505,20 @@ namespace SrvSurvey
                 ViewLogs.show(Game.logs);
             }
 
+        }
+
+        public static string getLogNameFromChar(char c)
+        {
+            switch (c)
+            {
+                case 'C': return "Culture";
+                case 'H': return "History";
+                case 'B': return "Biology";
+                case 'T': return "Technology";
+                case 'L': return "Language";
+                default:
+                    throw new Exception($"Unexpected character '{c}'");
+            }
         }
     }
 }

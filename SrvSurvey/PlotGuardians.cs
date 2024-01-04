@@ -27,6 +27,7 @@ namespace SrvSurvey
         public SitePOI? forcePoi;
         public FormEditMap? formEditMap;
         private double nearestObeliskDist = 1000d;
+        public string? targetObelisk;
 
         /// <summary> Site map width </summary>
         private float ux;
@@ -317,7 +318,6 @@ namespace SrvSurvey
             }
 
             // heading stuff...
-
             var changeHeading = false;
             int newHeading = -1;
             // try parsing some number as the site heading
@@ -493,11 +493,30 @@ namespace SrvSurvey
                 }
             }
 
-            //if (msg == MsgCmd.pubSite)
-            //    this.siteData.publishSite();
+            // target a specific obelisk
+            if (msg.StartsWith(MsgCmd.to))
+            {
+                this.setTargetObelisk(msg.Substring(MsgCmd.to.Length).Trim().ToUpperInvariant());
+            }
 
             // temporary stuff after here
             this.xtraCmds(msg);
+        }
+
+        private void setTargetObelisk(string target)
+        {
+            if (string.IsNullOrEmpty(target))
+            {
+                Game.log($"Clearing target obelisk");
+                this.targetObelisk = null;
+            }
+            else
+            {
+                Game.log($"Set target obelisk: '{target}'");
+                this.targetObelisk = target;
+            }
+            this.Invalidate();
+            Program.getPlotter<PlotRamTah>()?.Invalidate();
         }
 
         private void xtraCmds(string msg)
@@ -906,7 +925,7 @@ namespace SrvSurvey
             }
 
             // adjust the zoom?
-            if (this.nearestPoi?.type == POIType.obelisk && this.formEditMap == null)
+            if (this.formEditMap == null)
                 this.setMapScale();
 
             // prepare other stuff
@@ -1239,8 +1258,6 @@ namespace SrvSurvey
         private void drawSiteMap()
         {
             if (g == null) return;
-            //this.drawHeaderText($"{siteData.nameLocalised} | {siteData.type} | {siteData.siteHeading}°");
-            //this.drawFooterText($"{game.nearBody!.bodyName}");
 
             if (this.underlay == null)
             {
@@ -1295,32 +1312,8 @@ namespace SrvSurvey
 
             this.drawTouchdownAndSrvLocation(true);
 
-            this.drawArtifacts();
 
-            this.drawCommander();
-
-            //if (siteData.siteHeading != -1)
-            //{
-            //    //this.drawSiteSummaryFooter($"Site heading: {siteHeading}°");
-            //    //var m = Util.getDistance(Status.here, siteData.location, (decimal)game.nearBody.radius);
-            //    //var a = Util.getBearing(Status.here, siteData.location);
-            //    //this.drawSiteSummaryFooter($"{Math.Round(m)}m / {Math.Round(a)}°");
-
-            //    var ttd = new TrackingDelta(game.nearBody.radius, siteData.location);
-            //    this.drawSiteSummaryFooter($"{ttd}");
-            //}
-        }
-
-        private void drawArtifacts()
-        {
-            if (this.template == null || this.template.poi.Count == 0)
-            {
-                // there is no map for these
-                this.drawFooterText($"(There is no map yet for: {siteData.type})");
-                return;
-            }
-
-            // get pixel location of site origin relative to overlay window
+            // get pixel location of site origin relative to overlay window --
             g.ResetTransform();
             g.TranslateTransform(mid.Width, mid.Height);
             g.ScaleTransform(this.scale, this.scale);
@@ -1329,6 +1322,74 @@ namespace SrvSurvey
             PointF[] pts = { new PointF(commanderOffset.X, commanderOffset.Y) };
             g.TransformPoints(CoordinateSpace.Page, CoordinateSpace.World, pts);
             var siteOrigin = pts[0];
+
+            this.drawArtifacts(siteOrigin);
+
+            this.drawObeliskGroupNames(siteOrigin);
+
+            this.drawCommander();
+        }
+
+        private void drawObeliskGroupNames(PointF siteOrigin)
+        {
+            if (g == null || template == null || (this.touchdownLocation == null && this.srvLocation == null)) return;
+
+            // reset transform with origin at that point, scaled and rotated to match the commander
+            g.ResetTransform();
+            this.clipToMiddle();
+            g.TranslateTransform(siteOrigin.X, siteOrigin.Y);
+            g.ScaleTransform(this.scale, this.scale);
+            var rot = 360 - game.status.Heading;
+            g.RotateTransform(rot);
+
+            foreach (var foo in template.obeliskGroupNameLocations)
+            {
+                if (this.formEditMap == null && !siteData.obeliskGroups.Contains(foo.Key[0])) continue;
+
+                if (foo.Value != PointF.Empty)
+                {
+                    var angle = foo.Value.X;
+                    var dist = foo.Value.Y;
+                    var pt = Util.rotateLine((decimal)angle, (decimal)dist);
+                    // draw guide lines when map editor is active
+                    if (this.formEditMap?.tabs.SelectedIndex == 2 && this.formEditMap?.listGroupNames.Text == foo.Key)
+                    {
+                        var fpp = new Pen(Color.GreenYellow, 0.5f) { DashStyle = DashStyle.Dash, EndCap = LineCap.ArrowAnchor, StartCap = LineCap.ArrowAnchor };
+                        var r2 = new RectangleF(-dist, -dist, dist * 2, dist * 2);
+                        g.DrawEllipse(fpp, r2);
+                        g.DrawLine(fpp, 0, 0, -pt.X, -pt.Y);
+                    }
+
+                    // draw background smudge?
+                    // var pad = 18;
+                    // var rect = new Rectangle(-(int)pt.X - pad, -(int)pt.Y - pad, pad * 2, pad * 2);
+                    //g.FillEllipse(Brushes.Navy, rect);
+
+                    // draw group name character
+                    var sz = g.MeasureString(foo.Key, GameColors.fontBigBold);
+                    var brush = this.formEditMap?.tabs.SelectedIndex == 2 ? Brushes.Red : Brushes.DarkCyan; // game.cmdr.ramTahActive ? Brushes.SlateGray : Brushes.DarkCyan;
+
+                    // we must re-translate/rotate otherwise the text will be rotated too
+                    g.TranslateTransform(-pt.X, -pt.Y);
+                    g.RotateTransform(-rot);
+
+                    g.DrawString(foo.Key, GameColors.fontBig, brush, -(sz.Width / 2) + 2, -(sz.Height / 2) + 2);
+
+                    g.RotateTransform(rot);
+                    g.TranslateTransform(+pt.X, +pt.Y);
+                }
+
+            }
+        }
+
+        private void drawArtifacts(PointF siteOrigin)
+        {
+            if (this.template == null || this.template.poi.Count == 0)
+            {
+                // there is no map for these
+                this.drawFooterText($"(There is no map yet for: {siteData.type})");
+                return;
+            }
 
             // reset transform with origin at that point, scaled and rotated to match the commander
             g.ResetTransform();
@@ -1354,7 +1415,7 @@ namespace SrvSurvey
                 var poiStatus = siteData.getPoiStatus(poi.name);
 
                 // skip obelisks in groups not in this site
-                if (siteData.obeliskGroups.Count > 0 && (poi.type == POIType.obelisk || poi.type == POIType.brokeObelisk) && !string.IsNullOrEmpty(poi.name) && !siteData.obeliskGroups.Contains(poi.name[0])) continue;
+                if (formEditMap?.tabs.SelectedIndex != 2 && siteData.obeliskGroups.Count > 0 && (poi.type == POIType.obelisk || poi.type == POIType.brokeObelisk) && !string.IsNullOrEmpty(poi.name) && !siteData.obeliskGroups.Contains(poi.name[0])) continue;
 
                 if (poi.type == POIType.relic)
                 {
@@ -1377,7 +1438,7 @@ namespace SrvSurvey
                     dist);
 
                 // work in progress - only render if a RUINS poi
-                if (this.isRuinsPoi(poi.type, true) || Game.settings.enableEarlyGuardianStructures)
+                if (this.isRuinsPoi(poi.type, true, true) || Game.settings.enableEarlyGuardianStructures)
                     // render it
                     this.drawSitePoi(poi, pt);
 
@@ -1386,16 +1447,20 @@ namespace SrvSurvey
                 var y = pt.Y - commanderOffset.Y;
                 var d = Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
 
-                if (poiStatus == SitePoiStatus.unknown && d < nearestUnknownDist && (isRuinsPoi(poi.type, false)
-                    || (Game.settings.enableEarlyGuardianStructures && !siteData.isRuins && poi.type != POIType.obelisk && poi.type != POIType.brokeObelisk)))
+
+                var validNearestUnknown = poiStatus == SitePoiStatus.unknown && d < nearestUnknownDist
+                    && (isRuinsPoi(poi.type, false) || (Game.settings.enableEarlyGuardianStructures && !siteData.isRuins && poi.type != POIType.obelisk && poi.type != POIType.brokeObelisk));
+                // only target Relic Towers when in SRV
+                if (validNearestUnknown && poi.type == POIType.relic && game.vehicle != ActiveVehicle.SRV)
+                    validNearestUnknown = false;
+                if (targetObelisk != null)
+                    validNearestUnknown = poi.name == targetObelisk;
+                //if (poiStatus == SitePoiStatus.unknown && d < nearestUnknownDist && (isRuinsPoi(poi.type, false) || (Game.settings.enableEarlyGuardianStructures && !siteData.isRuins && poi.type != POIType.obelisk && poi.type != POIType.brokeObelisk)))
+                if (validNearestUnknown)
                 {
-                    // only target Relic Towers when in SRV
-                    if (poi.type != POIType.relic || (game.vehicle == ActiveVehicle.SRV && poi.type == POIType.relic))
-                    {
-                        nearestUnknownPoi = poi;
-                        nearestUnknownDist = d;
-                        nearestUnknownPt = pt;
-                    }
+                    nearestUnknownPoi = poi;
+                    nearestUnknownDist = d;
+                    nearestUnknownPt = pt;
                 }
 
                 if ((poi.type == POIType.obelisk || poi.type == POIType.brokeObelisk) && d < this.nearestObeliskDist)
@@ -1426,7 +1491,7 @@ namespace SrvSurvey
                 }
             }
 
-            if (this.formEditMap != null && this.forcePoi != null)
+            if (this.formEditMap?.tabs.SelectedIndex == 0 && this.forcePoi != null)
             {
                 // draw guide lines when map editor is active
                 var fpp = new Pen(Color.GreenYellow, 0.5f) { DashStyle = DashStyle.Dash, EndCap = LineCap.ArrowAnchor, StartCap = LineCap.ArrowAnchor };
@@ -1434,13 +1499,22 @@ namespace SrvSurvey
                 g.DrawEllipse(fpp, (float)-this.forcePoi.dist, (float)-this.forcePoi.dist, (float)this.forcePoi.dist * 2, (float)this.forcePoi.dist * 2);
             }
 
-            // draw an indicator to the nearest unknown POI
+            // draw an indicator to the nearest unknown POI or target obelisk
             if (nearestUnknownPoi != null)
             {
                 g.DrawLine(GameColors.penNearestUnknownSitePOI, -nearestUnknownPt.X, -nearestUnknownPt.Y, -commanderOffset.X, -commanderOffset.Y);
             }
 
-            if (nearestDist > 75 && forcePoi == null)
+            // draw footer text
+            var footerTxt = "";
+            var footerBrush = GameColors.brushGameOrange;
+
+            if (this.targetObelisk != null)
+            {
+                footerTxt = $"Obelisk {this.targetObelisk} - dist: {Util.metersToString(nearestUnknownDist)}";
+                footerBrush = GameColors.brushCyan;
+            }
+            else if (nearestDist > 75 && forcePoi == null && this.targetObelisk == null)
             {
                 // make sure we're relatively close before selecting the item
                 this.nearestPoi = null!;
@@ -1455,14 +1529,14 @@ namespace SrvSurvey
                     case SiteType.Stickyhand:
                     case SiteType.Turtle:
                         // there is no map for these
-                        this.drawFooterText($"(There is no map yet for: {siteData.type})");
+                        footerTxt = $"(There is no map yet for: {siteData.type})";
                         break;
 
                     default:
                         if (siteData.isRuins)
-                            this.drawFooterText($"{siteData.bodyName}, Ruins #{siteData.index} - {siteData.type}");
+                            footerTxt = $"{siteData.bodyName}, Ruins #{siteData.index} - {siteData.type}";
                         else
-                            this.drawFooterText($"{siteData.bodyName}: {siteData.type}");
+                            footerTxt = $"{siteData.bodyName}: {siteData.type}";
                         break;
                 }
             }
@@ -1488,39 +1562,16 @@ namespace SrvSurvey
 
                 if (this.nearestPoi.type == POIType.obelisk || this.nearestPoi.type == POIType.brokeObelisk)
                 {
+                    var obelisk = siteData.getActiveObelisk(nearestPoi.name);
                     // draw footer text about obelisks
-                    if (this.siteData.activeObelisks.ContainsKey(nearestPoi.name))
+                    if (this.targetObelisk != null)
                     {
-                        var txt = $"Obelisk {nearestPoi.name}";
-
-                        var obelisk = this.siteData.activeObelisks[nearestPoi.name];
-                        var items = "??";
-                        if (obelisk.items != null)
-                            items = string.Join(", ", obelisk.items).ToUpperInvariant();
-                        var data = "?";
-                        if (obelisk.data != null && obelisk.data.Count > 0)
-                            data = string.Join(", ", obelisk.data).ToUpperInvariant();
-
-                        txt += $": {items} for {data}";
-                        if (!string.IsNullOrWhiteSpace(obelisk.msg))
-                        {
-                            string msg = "";
-                            switch (obelisk.msg[0])
-                            {
-                                case 'C': msg = "Culture"; break;
-                                case 'H': msg = "History"; break;
-                                case 'B': msg = "Biology"; break;
-                                case 'T': msg = "Technology"; break;
-                            }
-                            msg += " #" + obelisk.msg.Substring(1);
-                            txt += $" ({msg})";
-                        }
-
-                        this.drawFooterText(txt, GameColors.brushCyan);
+                        footerTxt = $"Obelisk {this.targetObelisk} dist: {Util.metersToString(nearestUnknownDist)}";
+                        footerBrush = GameColors.brushCyan;
                     }
                     else
                     {
-                        this.drawFooterText($"Obelisk {nearestPoi.name}", GameColors.brushGameOrange);
+                        footerTxt = $"Obelisk {nearestPoi.name}: " + (obelisk == null ? "Inactive" : "Active") + (obelisk?.scanned == true ? " (scanned)" : "");
                     }
                 }
                 else
@@ -1535,10 +1586,11 @@ namespace SrvSurvey
                         else
                             action = $" ({siteData.relicTowerHeading}°)";
                     }
-                    var footerBrush = poiStatus == SitePoiStatus.unknown || nextStatusDifferent ? GameColors.brushCyan : GameColors.brushGameOrange;
-                    this.drawFooterText($"{this.nearestPoi.type} {this.nearestPoi.name}: {poiStatus} {action}", footerBrush);
+                    footerBrush = poiStatus == SitePoiStatus.unknown || nextStatusDifferent ? GameColors.brushCyan : GameColors.brushGameOrange;
+                    footerTxt = $"{this.nearestPoi.type} {this.nearestPoi.name}: {poiStatus} {action}";
                 }
             }
+            this.drawFooterText(footerTxt, footerBrush);
 
             var headerBrush = confirmedRelics + confirmedPuddles < countRelics + countPuddles
                 ? GameColors.brushCyan
@@ -1554,7 +1606,7 @@ namespace SrvSurvey
             g.ResetTransform();
         }
 
-        private bool isRuinsPoi(POIType poiType, bool incObelisks)
+        private bool isRuinsPoi(POIType poiType, bool incObelisks, bool incBrokeObelisks = false)
         {
             switch (poiType)
             {
@@ -1568,6 +1620,9 @@ namespace SrvSurvey
 
                 case POIType.obelisk:
                     return incObelisks;
+
+                case POIType.brokeObelisk:
+                    return incBrokeObelisks;
 
                 default:
                     return false;
@@ -1624,8 +1679,10 @@ namespace SrvSurvey
             if (poi.type == POIType.obelisk || poi.type == POIType.brokeObelisk)
             {
                 var obelisk = siteData.getActiveObelisk(poi.name);
+                var ramTahActive = game.cmdr.ramTahActive;
+                var ramTahNeeded = ramTahActive && obelisk != null && game.systemSite?.ramTahObelisks?.ContainsKey(obelisk.msg) == true;
 
-                var pp = new Pen(Color.DarkCyan)
+                var pp = new Pen(Color.DarkCyan) //!ramTahActive || ramTahNeeded ? Color.DarkCyan : Color.Gray)
                 {
                     Width = 0.5f,
                     LineJoin = LineJoin.Bevel,
@@ -1645,17 +1702,15 @@ namespace SrvSurvey
 
                 if (poi.type == POIType.obelisk && obelisk != null)
                 {
-                    // show dithered arc for active obelisks
-                    //var obelisk = this.siteData.activeObelisks[poi.name];
-                    GraphicsPath path = new GraphicsPath();
-                    path.AddPie(-14.9f, -14.7f, 30, 30, 240, 90);
-                    var gb = new PathGradientBrush(path)
-                    {
-                        CenterColor = obelisk.scanned ? GameColors.Orange : Color.Cyan,
-                        SurroundColors = new Color[] { Color.Transparent },
-                        CenterPoint = new PointF(0, 0)
-                    };
-                    g.FillPath(gb, path);
+                    // show dithered arc for active obelisks - changing the colour if scanned or is relevant for Ram Tah
+                    if (obelisk.scanned)
+                        GameColors.shiningBrush.CenterColor = GameColors.Orange;
+                    else if (!ramTahNeeded)
+                        GameColors.shiningBrush.CenterColor = Color.LightGray;
+                    else
+                        GameColors.shiningBrush.CenterColor = GameColors.Cyan;
+
+                    g.FillPath(GameColors.shiningBrush, GameColors.shiningPath);
                 }
 
                 var points = poi.type == POIType.obelisk

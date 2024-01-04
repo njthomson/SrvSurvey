@@ -72,13 +72,36 @@ namespace SrvSurvey
         private void loadPoiFromTemplate()
         {
             listPoi.Items.Clear();
-            foreach (var poi in template.poi)
+            foreach (var poi in this.template.poi)
             {
                 var row = createListViewItemForPoi(poi);
                 this.listPoi.Items.Add(row);
             }
 
-            setCurrentPoi(plotter.nearestPoi);
+            this.setCurrentPoi(plotter.nearestPoi);
+            this.prepObeliskGroupNames();
+        }
+
+        private void prepObeliskGroupNames()
+        {
+            var endAt = 'B';
+            switch (siteData.type)
+            {
+                case GuardianSiteData.SiteType.Alpha: endAt = 'Q'; break;
+                case GuardianSiteData.SiteType.Beta: endAt = 'U'; break;
+                case GuardianSiteData.SiteType.Gamma: endAt = 'S'; break;
+            }
+
+            listGroupNames.Items.Clear();
+            for (char c = 'A'; c <= endAt; c++)
+                listGroupNames.Items.Add(c.ToString());
+
+            listGroupNames.SelectedIndex = 0;
+        }
+
+        private void tabs_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            plotter.Invalidate();
         }
 
         private ListViewItem createListViewItemForPoi(SitePOI poi)
@@ -463,5 +486,28 @@ namespace SrvSurvey
         {
             numPoiDist.Select();
         }
+
+        #region obelisk group name locations
+
+        private void listGroupNames_SelectedValueChanged(object sender, EventArgs e)
+        {
+            var pf = template.obeliskGroupNameLocations.GetValueOrDefault(listGroupNames.Text);
+            numGroupNameAngle.Value = (decimal)pf.X;
+            numGroupNameDist.Value = (decimal)pf.Y;
+        }
+
+        private void numGroupNameDist_ValueChanged(object sender, EventArgs e)
+        {
+            template.obeliskGroupNameLocations[listGroupNames.Text] = new PointF((float)numGroupNameAngle.Value, (float)numGroupNameDist.Value);
+            plotter.Invalidate();
+        }
+
+        private void numGroupNameAngle_ValueChanged(object sender, EventArgs e)
+        {
+            template.obeliskGroupNameLocations[listGroupNames.Text] = new PointF((float)numGroupNameAngle.Value, (float)numGroupNameDist.Value);
+            plotter.Invalidate();
+        }
+
+        #endregion
     }
 }

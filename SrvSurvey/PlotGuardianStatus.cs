@@ -167,22 +167,22 @@ namespace SrvSurvey
             var siteData = game.systemSite;
             if (siteData == null || poi == null) return;
 
-            var poiType = poi.type.ToString().ToUpper();
             var obelisk = siteData.getActiveObelisk(poi.name);
+            var ramTahNeeded = siteData.ramTahNeeded(obelisk?.msg);
+            var brush = ramTahNeeded ? GameColors.brushCyan : null;
 
-            var isActive = obelisk != null; // siteData.activeObelisks != null && siteData.activeObelisks.ContainsKey(poi.name) == true;
             var headerTxt = $"Obelisk {poi.name}: ";
             if (poi.type == POIType.brokeObelisk)
                 headerTxt += "Broken";
-            else
-                headerTxt += isActive ? "Active" : "Inactive";
 
             this.dtx = 10;
             this.dty = 30;
-            if (isActive)
+            if (obelisk != null)
             {
+                headerTxt += "Active";
+
                 // show the material reward, or a hint to scan it
-                if (obelisk?.data != null && obelisk.data.Count > 0)
+                if (obelisk.data != null && obelisk.data.Count > 0)
                 {
                     headerTxt += " - " + string.Join(", ", obelisk.data).ToUpperInvariant();
                     if (obelisk.scanned)
@@ -192,40 +192,36 @@ namespace SrvSurvey
                 }
                 else
                 {
-                    this.drawFooterText("Scan to populate data material");
+                    this.drawFooterText("Scan to populate data material", GameColors.brushCyan);
                 }
 
                 var items = "??";
-                if (obelisk?.items != null)
+                if (obelisk.items != null)
                     items = string.Join(", ", obelisk.items).ToUpperInvariant();
 
+                // show items needed for Ram Tah mission
                 var txt = $"Requires: {items} for ";
-                if (!string.IsNullOrWhiteSpace(obelisk?.msg))
-                {
-                    string msg = "";
-                    switch (obelisk.msg[0])
-                    {
-                        case 'C': msg = "Culture"; break;
-                        case 'H': msg = "History"; break;
-                        case 'B': msg = "Biology"; break;
-                        case 'T': msg = "Technology"; break;
-                        case 'L': msg = "Language"; break;
-                    }
-                    msg += " #" + obelisk.msg.Substring(1);
-                    txt += msg;
-                }
+                if (!string.IsNullOrWhiteSpace(obelisk.msg))
+                    txt += obelisk.msgDisplay;
                 else
-                {
                     txt += " ... ?";
+                this.drawTextAt(txt, brush, GameColors.fontMiddle);
+
+                // show current status if Ram Tah mission is active
+                if (game.cmdr.ramTahActive)
+                {
+                    this.dtx = 10;
+                    this.dty = 50;
+                    if (ramTahNeeded)
+                        this.drawTextAt($"(Needed for Ram Tah mission)", brush, GameColors.fontMiddle);
+                    else
+                        this.drawTextAt($"(Log already acquired)", brush, GameColors.fontMiddle);
                 }
-                this.drawTextAt(txt, GameColors.brushCyan, GameColors.fontMiddle);
             }
             else
             {
-                //this.drawTextAt("Inactive", GameColors.brushGameOrange, GameColors.fontMiddle);
-                //this.drawFooterText("Send '.ao <item1> <item2> to declare active");
+                headerTxt += "Inactive";
                 this.drawFooterText("Active obelisk groups: " + string.Join(" ", siteData.obeliskGroups));
-                    //"Send '.ao <item1> <item2> to declare active");
             }
 
             this.drawHeaderText(headerTxt);

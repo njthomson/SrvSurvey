@@ -25,14 +25,28 @@ namespace SrvSurvey
             GameColors.brushOrangeStripe = new TextureBrush(bm, WrapMode.TileFlipX);
 
             GameColors.penOrangeStripe3 = new Pen(GameColors.brushOrangeStripe, 3);
+
+            GameColors.shiningPath = new GraphicsPath();
+            shiningPath.AddPie(-14.9f, -14.7f, 30, 30, 240, 90);
+
+            GameColors.shiningBrush = new PathGradientBrush(shiningPath)
+            {
+                CenterColor = Color.Cyan,
+                SurroundColors = new Color[] { Color.Transparent },
+                CenterPoint = new PointF(0, 0)
+            };
+
         }
+
+        public static GraphicsPath shiningPath;
+        public static PathGradientBrush shiningBrush;
 
         public static Color LimeIsh = Color.FromArgb(200, Color.Lime);
         //public static Color Orange = Color.FromArgb(255, 172, 81, 1); // ?? Color.FromArgb(255, 186, 113, 4);
         public static Color Orange = Color.FromArgb(255, 186, 113, 4);
         public static Color OrangeDim = Color.FromArgb(255, 95, 48, 3);
         public static Color Cyan = Color.FromArgb(255, 84, 223, 237);
-        public static Color DarkCyan = Color.DarkCyan;        
+        public static Color DarkCyan = Color.DarkCyan;
 
         public static Pen penBackgroundStripe = new Pen(Color.FromArgb(255, 12, 12, 12));
 
@@ -265,12 +279,14 @@ namespace SrvSurvey
 
         public static Font font1 = new Font("Lucida Sans Typewriter", 16F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
         public static Font fontSmall = new Font("Lucida Sans Typewriter", 8F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
+        public static Font fontSmallBold = new Font("Lucida Sans Typewriter", 8F * fontScaleFactor, FontStyle.Bold, GraphicsUnit.Point);
         public static Font fontSmall2 = new Font("Century Gothic", 8F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
         public static Font fontSmaller = new Font("Century Gothic", 10F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
         public static Font fontMiddle = new Font("Century Gothic", 12F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
         public static Font fontMiddleBold = new Font("Century Gothic", 12F * fontScaleFactor, FontStyle.Bold, GraphicsUnit.Point);
         public static Font font2 = new Font("Century Gothic", 16F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
         public static Font fontBig = new Font("Century Gothic", 22F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
+        public static Font fontBigBold = new Font("Century Gothic", 22F * fontScaleFactor, FontStyle.Bold, GraphicsUnit.Point);
         public static Font font18 = new Font("Century Gothic", 18F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
         public static Font font14 = new Font("Century Gothic", 14F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
 

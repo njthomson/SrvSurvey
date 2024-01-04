@@ -64,7 +64,7 @@ namespace SrvSurvey.game
         /// <summary>
         /// Progress against Ram Tah Mission #2: Decode the Ancient Logs
         /// </summary>
-        public HashSet<string> decodeTheLogs2 = new HashSet<string>();
+        public HashSet<string> decodeTheLogs = new HashSet<string>();
         public TahMissionStatus decodeTheLogsMissionActive = TahMissionStatus.NotStarted;
 
         public long reCalcOrganicRewards()
@@ -79,6 +79,9 @@ namespace SrvSurvey.game
             this.organicRewards = newTotal;
             return this.organicRewards;
         }
+
+        [JsonIgnore]
+        public bool ramTahActive { get => this.decodeTheRuinsMissionActive == TahMissionStatus.Active || this.decodeTheLogsMissionActive == TahMissionStatus.Active; }
     }
 
     internal class SphereLimit
