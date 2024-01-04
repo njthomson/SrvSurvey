@@ -999,12 +999,13 @@ namespace SrvSurvey.game
             this._settlements = new List<SystemSettlementSummary>();
 
             var sites = GuardianSitePub.Find(this.name);
-            foreach(var site in sites)
+            foreach (var site in sites)
             {
-                if (site.t == GuardianSiteData.SiteType.Alpha || site.t == GuardianSiteData.SiteType.Beta|| site.t == GuardianSiteData.SiteType.Gamma)
+                if (site.t == GuardianSiteData.SiteType.Alpha || site.t == GuardianSiteData.SiteType.Beta || site.t == GuardianSiteData.SiteType.Gamma)
                 {
                     var body = this.bodies.FirstOrDefault(_ => _.name == site.bodyName)!;
-                    this.settlements.Add(SystemSettlementSummary.forRuins(this, body, site.idx));
+                    if (body != null)
+                        this.settlements.Add(SystemSettlementSummary.forRuins(this, body, site.idx));
                 }
 
                 // TODO: Handle structures

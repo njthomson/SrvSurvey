@@ -687,6 +687,69 @@ namespace SrvSurvey
         // TODO: all the fields - this is just being used as a trigger currently
     }
 
+    class Missions : JournalEntry
+    {
+        // { "timestamp":"2024-01-04T03:58:00Z", "event":"Missions", "Active":[ { "MissionID":949733662, "Name":"Mission_HackMegaship_name", "PassengerMission":false, "Expires":0 } ], "Failed":[  ], "Complete":[  ] }
+        public List<Mission> Active;
+        public List<Mission> Failed;
+        public List<Mission> Complete;
+    }
+
+    class Mission
+    {
+        public long MissionID;
+        public string Name;
+        public bool PassengerMission;
+        public long Expires;
+    }
+
+    class MissionAccepted : JournalEntry
+    {
+        // { "timestamp":"2024-01-04T04:30:06Z", "event":"MissionAccepted", "Faction":"Meene General Industries", "Name":"Mission_TheDead", "LocalisedName":"Decoding the Ancient Ruins", "Wing":false, "Influence":"None", "Reputation":"None", "MissionID":949931893 }
+
+        public string Faction;
+        public string Name;
+        public long MissionID;
+        public string LocalisedName;
+        public bool Wing;
+        public string Influence;
+        public string Reputation;
+        public long Reward;
+
+        // TODO: the rest...
+    }
+
+    class MissionCompleted: JournalEntry
+    {
+        // { "timestamp":"2023-03-22T04:22:48Z", "event":"MissionCompleted", "Faction":"Xihe Energy Industry", "Name":"Mission_Assassinate_Legal_War_name", "MissionID":920770802, "TargetType":"$MissionUtil_FactionTag_VenerableGeneral;", "TargetType_Localised":"Venerable General", "TargetFaction":"Psi Capricorni Purple Brothers", "DestinationSystem":"Psi Capricorni", "DestinationStation":"Shaw Holdings", "Target":"Zaphod Quagmire", "Reward":1344814, "MaterialsReward":[ { "Name":"EmbeddedFirmware", "Name_Localised":"Modified Embedded Firmware", "Category":"$MICRORESOURCE_CATEGORY_Encoded;", "Category_Localised":"Encoded", "Count":5 } ], "FactionEffects":[ { "Faction":"Xihe Energy Industry", "Effects":[ { "Effect":"$MISSIONUTIL_Interaction_Summary_EP_up;", "Effect_Localised":"The economic status of $#MinorFaction; has improved in the $#System; system.", "Trend":"UpGood" } ], "Influence":[ { "SystemAddress":1183364125402, "Trend":"UpGood", "Influence":"++" } ], "ReputationTrend":"UpGood", "Reputation":"++" }, { "Faction":"", "Effects":[ { "Effect":"$MISSIONUTIL_Interaction_Summary_EP_down;", "Effect_Localised":"The economic status of $#MinorFaction; has declined in the $#System; system.", "Trend":"DownBad" } ], "Influence":[ { "SystemAddress":525873432939, "Trend":"DownBad", "Influence":"+" } ], "ReputationTrend":"DownBad", "Reputation":"+" } ] }
+
+        public string Faction;
+        public string Name;
+        public long MissionID;
+
+        // TODO: the rest...
+    }
+
+    class MissionFailed : JournalEntry
+    {
+        // { "timestamp":"2022-03-20T05:41:32Z", "event":"MissionFailed", "Name":"Mission_OnFoot_AssassinationIllegal_MB_name", "MissionID":855110856 }
+
+        public string Name;
+        public long MissionID;
+        public string LocalisedName;
+        public long Fine;
+
+        // TODO: the rest...
+    }
+
+    class MissionAbandoned: JournalEntry
+    {
+        // { "timestamp":"2024-01-04T04:55:12Z", "event":"MissionAbandoned", "Name":"Mission_TheDead_name", "LocalisedName":"Decoding the Ancient Ruins", "MissionID":949931893 }
+        public string Name;
+        public long MissionID;
+        public string LocalisedName;
+    }
+
 }
 
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.

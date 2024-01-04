@@ -93,7 +93,7 @@ namespace SrvSurvey.game
         public static Canonn canonn { get; private set; }
         public static Spansh spansh { get; private set; }
         public static EDSM edsm { get; private set; }
-        public static Git git{ get; private set; }
+        public static Git git { get; private set; }
 
         public bool initialized { get; private set; }
 
@@ -859,6 +859,82 @@ namespace SrvSurvey.game
             this.systemStatus.onJournalEntry(entry); // retire
         }
 
+        private void onJournalEntry(Missions entry)
+        {
+            if (entry.Active.Any(_ => _.Name == "Mission_TheDead" || _.Name == "Mission_TheDead_name"))
+                this.cmdr.decodeTheRuinsMissionActive = TahMissionStatus.Active;
+            //this.cmdr.decodeTheRuinsMissionActive = this.cmdr.decodeTheRuinsMissionActive == TahMissionStatus.Active ? TahMissionStatus.Complete : TahMissionStatus.NotStarted;
+
+            if (entry.Active.Any(_ => _.Name == "Mission_TheDead_002" || _.Name == "Mission_TheDead_002_name"))
+                this.cmdr.decodeTheLogsMissionActive = TahMissionStatus.Active;
+            //this.cmdr.decodeTheLogsMissionActive = this.cmdr.decodeTheLogsMissionActive == TahMissionStatus.Active ? TahMissionStatus.Complete : TahMissionStatus.NotStarted;
+            Game.log($"Missions: decodeTheRuinsMissionActive: {this.cmdr.decodeTheRuinsMissionActive}, decodeTheLogsMissionActive: {this.cmdr.decodeTheLogsMissionActive}");
+        }
+
+        private void onJournalEntry(MissionAccepted entry)
+        {
+            if (entry.Name == "Mission_TheDead" || entry.Name == "Mission_TheDead_name")
+            {
+                this.cmdr.decodeTheRuinsMissionActive = TahMissionStatus.Active;
+                this.cmdr.Save();
+                Game.log("MissionAccepted: Starting 'Decoding the Ancient Ruins' ...");
+            }
+            else if (entry.Name == "Mission_TheDead_002" || entry.Name == "Mission_TheDead_002_name")
+            {
+                this.cmdr.decodeTheLogsMissionActive = TahMissionStatus.Active;
+                this.cmdr.Save();
+                Game.log("MissionAccepted: Starting 'Decrypting the Guardian Logs' ...");
+            }
+        }
+
+        private void onJournalEntry(MissionFailed entry)
+        {
+            if (entry.Name == "Mission_TheDead" || entry.Name == "Mission_TheDead_name")
+            {
+                this.cmdr.decodeTheRuinsMissionActive = TahMissionStatus.NotStarted;
+                this.cmdr.Save();
+                Game.log("MissionAccepted: Failed 'Decoding the Ancient Ruins' ...");
+            }
+            else if (entry.Name == "Mission_TheDead_002" || entry.Name == "Mission_TheDead_002_name")
+            {
+                this.cmdr.decodeTheLogsMissionActive = TahMissionStatus.NotStarted;
+                this.cmdr.Save();
+                Game.log("MissionAccepted: Failed 'Decrypting the Guardian Logs' ...");
+            }
+        }
+
+        private void onJournalEntry(MissionAbandoned entry)
+        {
+            if (entry.Name == "Mission_TheDead" || entry.Name == "Mission_TheDead_name")
+            {
+                this.cmdr.decodeTheRuinsMissionActive = TahMissionStatus.NotStarted;
+                this.cmdr.Save();
+                Game.log("MissionAccepted: Failed 'Decoding the Ancient Ruins' ...");
+            }
+            else if (entry.Name == "Mission_TheDead_002" || entry.Name == "Mission_TheDead_002_name")
+            {
+                this.cmdr.decodeTheLogsMissionActive = TahMissionStatus.NotStarted;
+                this.cmdr.Save();
+                Game.log("MissionAccepted: Failed 'Decrypting the Guardian Logs' ...");
+            }
+        }
+
+        private void onJournalEntry(MissionCompleted entry)
+        {
+            if (entry.Name == "Mission_TheDead" || entry.Name == "Mission_TheDead_name")
+            {
+                this.cmdr.decodeTheRuinsMissionActive = TahMissionStatus.Complete;
+                this.cmdr.Save();
+                Game.log("MissionAccepted: Completed 'Decoding the Ancient Ruins' ...");
+            }
+            else if (entry.Name == "Mission_TheDead_002" || entry.Name == "Mission_TheDead_002_name")
+            {
+                this.cmdr.decodeTheLogsMissionActive = TahMissionStatus.Complete;
+                this.cmdr.Save();
+                Game.log("MissionAccepted: Completed 'Decrypting the Guardian Logs' ...");
+            }
+        }
+
         #endregion
 
         #region location tracking
@@ -955,7 +1031,7 @@ namespace SrvSurvey.game
                     {
                         log($"Close enough, creating  systemSite: '{nearestSettlement}' on '{this.systemBody!.name}' ");
                         this.systemSite = GuardianSiteData.Load(this.systemBody.name, nearestSettlement);
-                        
+
                         // create entry if no match found
                         if (this.systemSite == null)
                             Game.log($"Why no site for: '{nearestSettlement}' on 'this.systemBody.name' ?");

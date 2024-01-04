@@ -24,9 +24,17 @@ namespace SrvSurvey
             Util.useLastLocation(this, Game.settings.formRamTah);
 
             txtRuinsMissionActive.Text = this.cmdr?.decodeTheRuinsMissionActive.ToString() ?? "Unknown";
+            if (this.cmdr?.decodeTheRuinsMissionActive == TahMissionStatus.Active) txtRuinsMissionActive.BackColor = Color.Lime;
+
             txtLogsMissionActive.Text = this.cmdr?.decodeTheLogsMissionActive.ToString() ?? "Unknown";
+            if (this.cmdr?.decodeTheLogsMissionActive == TahMissionStatus.Active) txtLogsMissionActive.BackColor = Color.Lime;
+
             this.prepRuinsRows();
             this.prepLogCheckboxes();
+
+            // auto select 2nd tab if only the 2nd mission is active
+            if (this.cmdr?.decodeTheRuinsMissionActive != TahMissionStatus.Active && this.cmdr?.decodeTheLogsMissionActive == TahMissionStatus.Active)
+                tabControl1.SelectedIndex = 1;
         }
 
         protected override void OnResizeEnd(EventArgs e)
@@ -130,7 +138,7 @@ namespace SrvSurvey
             if (row != null)
             {
                 var subItem = row.GetSubItemAt(e.X, e.Y);
-                if (subItem.Name != null)
+                if (!string.IsNullOrEmpty(subItem.Name))
                 {
                     if (cmdr.decodeTheRuins.Contains(subItem.Name))
                         cmdr.decodeTheRuins.Remove(subItem.Name);
@@ -140,7 +148,6 @@ namespace SrvSurvey
                     listRuins.Invalidate(true);
                     //listRuins.Invalidate(subItem.Bounds);
                     //listRuins.Invalidate(new Rectangle(subItem.Bounds.X, 0, subItem.Bounds.Width, 24));
-
                 }
             }
 

@@ -134,6 +134,7 @@
             txtRuinsMissionActive.Size = new Size(76, 23);
             txtRuinsMissionActive.TabIndex = 3;
             txtRuinsMissionActive.Text = "Not started";
+            txtRuinsMissionActive.TextAlign = HorizontalAlignment.Center;
             // 
             // txtLogsMissionActive
             // 
@@ -143,6 +144,7 @@
             txtLogsMissionActive.Size = new Size(76, 23);
             txtLogsMissionActive.TabIndex = 7;
             txtLogsMissionActive.Text = "ACTIVE";
+            txtLogsMissionActive.TextAlign = HorizontalAlignment.Center;
             // 
             // linkLabel1
             // 

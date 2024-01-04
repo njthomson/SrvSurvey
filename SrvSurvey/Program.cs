@@ -160,7 +160,7 @@ namespace SrvSurvey
 
         public static void invalidateActivePlotters()
         {
-            Game.log($"Program.invalidateActivePlotters: {activePlotters.Count}");
+            // Game.log($"Program.invalidateActivePlotters: {activePlotters.Count}");
 
             foreach (PlotterForm form in activePlotters.Values)
                 form.Invalidate();

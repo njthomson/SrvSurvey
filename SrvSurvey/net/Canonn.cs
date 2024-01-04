@@ -283,7 +283,9 @@ namespace SrvSurvey.canonn
                 Game.log($"Reading {files.Length} ruins files from disk");
                 foreach (var filename in files)
                 {
-                    var data = Data.Load<GuardianSiteData>(filename)!;
+                    var data = Data.Load<GuardianSiteData>(filename);
+                    if (data == null)
+                        throw new Exception($"Why no siteData for: {filename}");
 
                     var matches = allRuins.Where(_ => _.systemAddress == data.systemAddress
                         && _.bodyId == data.bodyId
