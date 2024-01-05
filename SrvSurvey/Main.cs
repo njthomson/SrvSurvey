@@ -1273,11 +1273,19 @@ namespace SrvSurvey
 
         private void btnPublish_Click(object sender, EventArgs e)
         {
-            Game.git.publishLocalData(); // 1st: for updating publish data from local surveys
-            Game.canonn.readXmlSheetRuins2(); // 2nd: for updating allRuins.json and reading from Excel data
-            SiteTemplate.publish();
+            btnPublish.Enabled = false;
+            try
+            {
+                Game.git.publishLocalData(); // 1st: for updating publish data from local surveys
+                Game.canonn.readXmlSheetRuins2(); // 2nd: for updating allRuins.json and reading from Excel data
+                SiteTemplate.publish();
 
-            Game.log("\r\n****\r\n**** Publishing all complete\r\n****");
+                Game.log("\r\n****\r\n**** Publishing all complete\r\n****");
+            }
+            finally
+            {
+                btnPublish.Enabled = true;
+            }
         }
     }
 }

@@ -405,7 +405,7 @@ namespace SrvSurvey.game
             this.pubData = GuardianSitePub.Load(this.bodyName, this.index, this.type);
             if (this.pubData == null)
             {
-                Game.log($"Why no pubData for '{this.bodyName}' / '{this.name}'? (Newly discovered Ruins?)");
+                Game.log($"Why no pubData for '{this.bodyName}' / '{this.name}'? (Newly discovered Ruins?)\r\nSee: {this.filepath}");
                 if (Debugger.IsAttached) Debugger.Break();
                 return;
             }
