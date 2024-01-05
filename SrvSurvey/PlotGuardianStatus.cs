@@ -182,7 +182,7 @@ namespace SrvSurvey
                 headerTxt += "Active";
 
                 // show the material reward, or a hint to scan it
-                if (obelisk.data != null && obelisk.data.Count > 0)
+                if (obelisk.scanned || (obelisk.data != null && obelisk.data.Count > 0))
                 {
                     headerTxt += " - " + string.Join(", ", obelisk.data).ToUpperInvariant();
                     if (obelisk.scanned)
@@ -195,17 +195,31 @@ namespace SrvSurvey
                     this.drawFooterText("Scan to populate data material", GameColors.brushCyan);
                 }
 
-                var items = "??";
-                if (obelisk.items != null)
-                    items = string.Join(", ", obelisk.items).ToUpperInvariant();
 
-                // show items needed for Ram Tah mission
-                var txt = $"Requires: {items} for ";
-                if (!string.IsNullOrWhiteSpace(obelisk.msg))
-                    txt += obelisk.msgDisplay;
+                this.drawTextAt("Requires:", brush, GameColors.fontMiddle);
+
+                if (obelisk.items == null)
+                {
+                    this.drawTextAt("??", brush, GameColors.fontMiddle);
+                }
                 else
-                    txt += " ... ?";
-                this.drawTextAt(txt, brush, GameColors.fontMiddle);
+                {
+                    // first, do we have the items needed?
+                    var item1 = obelisk.items.First().ToString();
+                    var hasItem1 = game.getInventoryItem(item1)?.Count >= 1;
+
+                    var item2 = obelisk.items.Count > 1 ? obelisk.items.Last().ToString() : null;
+                    var hasItem2 = item2 == null ? true : game.getInventoryItem(item2)?.Count >= (item1 == item2 ? 2 : 1);
+
+                    this.drawTextAt("Requires:", brush, GameColors.fontMiddle);
+                    this.drawTextAt(item1, hasItem1 ? brush : Brushes.Red, GameColors.fontMiddle);
+                    if (item2 != null)
+                    {
+                        this.drawTextAt("+ ", brush, GameColors.fontMiddle);
+                        this.drawTextAt(item2, hasItem2 ? brush : Brushes.Red, GameColors.fontMiddle);
+                    }
+                }
+                this.drawTextAt($"for {obelisk.msgDisplay}", brush, GameColors.fontMiddle);
 
                 // show current status if Ram Tah mission is active
                 if (game.cmdr.ramTahActive)

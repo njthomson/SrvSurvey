@@ -586,7 +586,7 @@ namespace SrvSurvey
                     {
                         Program.showPlotter<PlotGuardians>();
                         Program.showPlotter<PlotGuardianStatus>();
-                        if (game.cmdr.ramTahActive)
+                        if (Game.settings.autoShowRamTah && game.cmdr.ramTahActive)
                             Program.showPlotter<PlotRamTah>();
 
                         Program.closePlotter<PlotGrounded>();
@@ -1249,19 +1249,8 @@ namespace SrvSurvey
         {
             FormRuins.show();
 
-            //var form = new FormRamTah();
-            //form.ShowDialog(this);
-            //form.Close();
-
-            //Program.closePlotter<PlotRamTah>(); Program.showPlotter<PlotRamTah>();
-
             //game!.systemData!.prepSettlements();
             //Program.invalidateActivePlotters();
-
-            //GuardianSitePub.Find(game.systemData.name);
-
-            //Game.log(game?.systemData?.getGuardianSites());
-
 
             //if (game?.systemData?.bodies != null)
             //    Game.log(string.Join("\r\n", game.systemData.bodies.Select(_ => $"'{_.name}' ({_.id}) : {Util.credits((long)_.rewardEstimate)}")));
@@ -1287,6 +1276,8 @@ namespace SrvSurvey
             Game.git.publishLocalData(); // 1st: for updating publish data from local surveys
             Game.canonn.readXmlSheetRuins2(); // 2nd: for updating allRuins.json and reading from Excel data
             SiteTemplate.publish();
+
+            Game.log("\r\n****\r\n**** Publishing all complete\r\n****");
         }
     }
 }

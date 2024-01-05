@@ -22,12 +22,28 @@ namespace SrvSurvey
 
         private FileSystemWatcher? fileWatcher;
 
-        public NavRouteFile()
+        private NavRouteFile()
         {
         }
 
         public static NavRouteFile load(bool watch)
         {
+            // if it doesn't exist yet ... create a stub empty file
+            if (!File.Exists(NavRouteFile.Filepath))
+            {
+                try
+                {
+                    Game.log($"Creating empty NavRoute.json in: {NavRouteFile.Filepath}");
+                    var isoNow = DateTimeOffset.UtcNow.ToString("s");
+                    var json = "{ \"timestamp\":\"" + isoNow + "Z\", \"event\":\"NavRouteClear\", \"Route\":[] }";
+                    File.WriteAllText(NavRouteFile.Filepath, json);
+                }
+                catch (Exception ex)
+                {
+                    Game.log($"Failed to create stub NavRoute.json: {ex}");
+                }
+            }
+
             var route = new NavRouteFile();
             route.parseFile();
 

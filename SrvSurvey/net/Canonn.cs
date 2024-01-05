@@ -284,12 +284,11 @@ namespace SrvSurvey.canonn
                 foreach (var filename in files)
                 {
                     var data = Data.Load<GuardianSiteData>(filename);
-                    if (data == null)
-                        throw new Exception($"Why no siteData for: {filename}");
+                    if (data == null) throw new Exception($"Why no siteData for: {filename}");
 
                     var matches = allRuins.Where(_ => _.systemAddress == data.systemAddress
                         && _.bodyId == data.bodyId
-                        && string.Equals(_.siteType.ToString(), data.type.ToString(), StringComparison.OrdinalIgnoreCase)
+                        && string.Equals(_.siteType, data.type.ToString(), StringComparison.OrdinalIgnoreCase)
                     ).ToList();
 
                     GuardianRuinEntry? entry = null;

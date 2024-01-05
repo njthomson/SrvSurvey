@@ -67,6 +67,8 @@ namespace SrvSurvey
             checkBox1 = new CheckBox();
             checkBioStatusAutoShow = new CheckBox();
             tabPage3 = new TabPage();
+            checkBox15 = new CheckBox();
+            checkBox14 = new CheckBox();
             checkBox12 = new CheckBox();
             checkBox3 = new CheckBox();
             label9 = new Label();
@@ -119,7 +121,6 @@ namespace SrvSurvey
             tabPage2 = new TabPage();
             linkAboutTwo = new LinkLabel();
             linkAboutOne = new LinkLabel();
-            checkBox14 = new CheckBox();
             panel1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numGravityWarningLevel).BeginInit();
@@ -599,6 +600,7 @@ namespace SrvSurvey
             // tabPage3
             // 
             tabPage3.BorderStyle = BorderStyle.Fixed3D;
+            tabPage3.Controls.Add(checkBox15);
             tabPage3.Controls.Add(checkBox14);
             tabPage3.Controls.Add(checkBox12);
             tabPage3.Controls.Add(checkBox3);
@@ -621,6 +623,34 @@ namespace SrvSurvey
             tabPage3.TabIndex = 2;
             tabPage3.Text = "Guardian sites";
             // 
+            // checkBox15
+            // 
+            checkBox15.AutoSize = true;
+            checkBox15.Checked = true;
+            checkBox15.CheckState = CheckState.Checked;
+            checkBox15.Location = new Point(35, 56);
+            checkBox15.Margin = new Padding(4, 3, 4, 3);
+            checkBox15.Name = "checkBox15";
+            checkBox15.Size = new Size(206, 19);
+            checkBox15.TabIndex = 17;
+            checkBox15.Tag = "autoShowRamTah";
+            checkBox15.Text = "Show helper for Ram Tah missions";
+            checkBox15.UseVisualStyleBackColor = true;
+            // 
+            // checkBox14
+            // 
+            checkBox14.AutoSize = true;
+            checkBox14.Checked = true;
+            checkBox14.CheckState = CheckState.Checked;
+            checkBox14.Location = new Point(35, 31);
+            checkBox14.Margin = new Padding(4, 3, 4, 3);
+            checkBox14.Name = "checkBox14";
+            checkBox14.Size = new Size(199, 19);
+            checkBox14.TabIndex = 16;
+            checkBox14.Tag = "autoShowGuardianSummary";
+            checkBox14.Text = "Show summary of Guardian sites";
+            checkBox14.UseVisualStyleBackColor = true;
+            // 
             // checkBox12
             // 
             checkBox12.AutoSize = true;
@@ -640,7 +670,7 @@ namespace SrvSurvey
             checkBox3.AutoSize = true;
             checkBox3.Checked = true;
             checkBox3.CheckState = CheckState.Checked;
-            checkBox3.Location = new Point(11, 252);
+            checkBox3.Location = new Point(11, 262);
             checkBox3.Margin = new Padding(4, 3, 4, 3);
             checkBox3.Name = "checkBox3";
             checkBox3.Size = new Size(289, 19);
@@ -652,7 +682,7 @@ namespace SrvSurvey
             // label9
             // 
             label9.AutoSize = true;
-            label9.Location = new Point(11, 226);
+            label9.Location = new Point(11, 236);
             label9.Name = "label9";
             label9.Size = new Size(72, 15);
             label9.TabIndex = 13;
@@ -663,7 +693,7 @@ namespace SrvSurvey
             comboGuardianWindowSize.DropDownStyle = ComboBoxStyle.DropDownList;
             comboGuardianWindowSize.FormattingEnabled = true;
             comboGuardianWindowSize.Items.AddRange(new object[] { "Small - 300 x 400", "Medium - 500 x 500", "Large - 600 x 700", "Huge - 800 x 1000", "Massive - 1200 x 1200" });
-            comboGuardianWindowSize.Location = new Point(89, 223);
+            comboGuardianWindowSize.Location = new Point(89, 233);
             comboGuardianWindowSize.Name = "comboGuardianWindowSize";
             comboGuardianWindowSize.Size = new Size(177, 23);
             comboGuardianWindowSize.TabIndex = 12;
@@ -674,7 +704,7 @@ namespace SrvSurvey
             checkBox2.AutoSize = true;
             checkBox2.Checked = true;
             checkBox2.CheckState = CheckState.Checked;
-            checkBox2.Location = new Point(10, 198);
+            checkBox2.Location = new Point(10, 208);
             checkBox2.Margin = new Padding(4, 3, 4, 3);
             checkBox2.Name = "checkBox2";
             checkBox2.Size = new Size(256, 19);
@@ -686,7 +716,7 @@ namespace SrvSurvey
             // numAltGamma
             // 
             numAltGamma.Increment = new decimal(new int[] { 10, 0, 0, 0 });
-            numAltGamma.Location = new Point(293, 144);
+            numAltGamma.Location = new Point(293, 154);
             numAltGamma.Maximum = new decimal(new int[] { 5000, 0, 0, 0 });
             numAltGamma.Name = "numAltGamma";
             numAltGamma.Size = new Size(51, 23);
@@ -697,7 +727,7 @@ namespace SrvSurvey
             // numAltBeta
             // 
             numAltBeta.Increment = new decimal(new int[] { 10, 0, 0, 0 });
-            numAltBeta.Location = new Point(178, 144);
+            numAltBeta.Location = new Point(178, 154);
             numAltBeta.Maximum = new decimal(new int[] { 5000, 0, 0, 0 });
             numAltBeta.Name = "numAltBeta";
             numAltBeta.Size = new Size(51, 23);
@@ -707,7 +737,7 @@ namespace SrvSurvey
             // 
             // numAltAlpha
             // 
-            numAltAlpha.Location = new Point(82, 144);
+            numAltAlpha.Location = new Point(82, 154);
             numAltAlpha.Maximum = new decimal(new int[] { 5000, 0, 0, 0 });
             numAltAlpha.Name = "numAltAlpha";
             numAltAlpha.Size = new Size(51, 23);
@@ -718,7 +748,7 @@ namespace SrvSurvey
             // label8
             // 
             label8.AutoSize = true;
-            label8.Location = new Point(235, 146);
+            label8.Location = new Point(235, 156);
             label8.Name = "label8";
             label8.Size = new Size(52, 15);
             label8.TabIndex = 7;
@@ -727,7 +757,7 @@ namespace SrvSurvey
             // label7
             // 
             label7.AutoSize = true;
-            label7.Location = new Point(139, 146);
+            label7.Location = new Point(139, 156);
             label7.Name = "label7";
             label7.Size = new Size(33, 15);
             label7.TabIndex = 6;
@@ -737,7 +767,7 @@ namespace SrvSurvey
             // label6
             // 
             label6.AutoSize = true;
-            label6.Location = new Point(35, 146);
+            label6.Location = new Point(35, 156);
             label6.Name = "label6";
             label6.Size = new Size(41, 15);
             label6.TabIndex = 5;
@@ -746,7 +776,7 @@ namespace SrvSurvey
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new Point(10, 111);
+            label5.Location = new Point(10, 121);
             label5.Name = "label5";
             label5.Size = new Size(382, 30);
             label5.TabIndex = 4;
@@ -757,7 +787,7 @@ namespace SrvSurvey
             checkRuinsMeasurementGrid.AutoSize = true;
             checkRuinsMeasurementGrid.Checked = true;
             checkRuinsMeasurementGrid.CheckState = CheckState.Checked;
-            checkRuinsMeasurementGrid.Location = new Point(10, 173);
+            checkRuinsMeasurementGrid.Location = new Point(10, 183);
             checkRuinsMeasurementGrid.Margin = new Padding(4, 3, 4, 3);
             checkRuinsMeasurementGrid.Name = "checkRuinsMeasurementGrid";
             checkRuinsMeasurementGrid.Size = new Size(231, 19);
@@ -1263,20 +1293,6 @@ namespace SrvSurvey
             linkAboutOne.Text = resources.GetString("linkAboutOne.Text");
             linkAboutOne.UseCompatibleTextRendering = true;
             // 
-            // checkBox14
-            // 
-            checkBox14.AutoSize = true;
-            checkBox14.Checked = true;
-            checkBox14.CheckState = CheckState.Checked;
-            checkBox14.Location = new Point(35, 31);
-            checkBox14.Margin = new Padding(4, 3, 4, 3);
-            checkBox14.Name = "checkBox14";
-            checkBox14.Size = new Size(199, 19);
-            checkBox14.TabIndex = 16;
-            checkBox14.Tag = "autoShowGuardianSummary";
-            checkBox14.Text = "Show summary of Guardian sites";
-            checkBox14.UseVisualStyleBackColor = true;
-            // 
             // FormSettings
             // 
             AcceptButton = btnSave;
@@ -1420,5 +1436,6 @@ namespace SrvSurvey
         private CheckBox checkBox13;
         private CheckBox checkHideMyOwnCanonnSignals;
         private CheckBox checkBox14;
+        private CheckBox checkBox15;
     }
 }

@@ -6,7 +6,7 @@ namespace SrvSurvey
 {
     public partial class FormRamTah : Form
     {
-        private static FormRamTah? activeForm;
+        public static FormRamTah? activeForm;
 
         public static void show()
         {
@@ -15,10 +15,12 @@ namespace SrvSurvey
 
             Util.showForm(FormRamTah.activeForm);
         }
+
         private FormRamTah()
         {
             InitializeComponent();
             this.DoubleBuffered = true;
+            this.setCurrentObelisk(null);
 
             // can we fit in our last location
             Util.useLastLocation(this, Game.settings.formRamTah);
@@ -184,6 +186,13 @@ namespace SrvSurvey
                 e.DrawBackground();
             }
 
+            if (Game.activeGame?.systemSite?.currentObelisk?.msg == name)
+            {
+                // draw some obvious highlight when the current obelisk yields this log
+                var r = Rectangle.Inflate(e.Bounds, -2, -2);
+                e.Graphics.DrawRectangle(GameColors.penBlack3Dotted, r);
+            }
+
             if (e.Item?.Selected == true) // .ItemState == ListViewItemStates.Selected)
                 e.DrawFocusRectangle(e.Bounds);
 
@@ -242,7 +251,6 @@ namespace SrvSurvey
             base.OnClosed(e);
             this.cmdr?.Save();
             Game.activeGame?.systemSite?.ramTahRecalc();
-            Program.invalidateActivePlotters();
         }
 
         private void btnQuit_Click(object sender, EventArgs e)
@@ -298,5 +306,31 @@ namespace SrvSurvey
             }
         }
 
+        internal void setCurrentObelisk(ActiveObelisk? obelisk)
+        {
+            if (obelisk == null)
+            {
+                txtObelisk.Enabled = lblObelisk.Enabled = btnToggleObelisk.Enabled = false;
+                txtObelisk.Text = null;
+            }
+            else
+            {
+                txtObelisk.Enabled = lblObelisk.Enabled = btnToggleObelisk.Enabled = true;
+                txtObelisk.Text = $"{obelisk.name}: {obelisk.items[0]}"
+                    + (obelisk.items.Count > 1 ? $" + {obelisk.items[1]}" : null)
+                    + $" for {obelisk.msgDisplay}";
+            }
+
+            listRuins.Invalidate();
+        }
+
+        private void btnToggleObelisk_Click(object sender, EventArgs e)
+        {
+            // toggle it!
+            var siteData = Game.activeGame?.systemSite;
+            if (siteData == null || siteData.currentObelisk == null) return;
+
+            siteData.toggleObeliskScanned();
+        }
     }
 }

@@ -327,7 +327,8 @@
       { "name": "t7", "type": "relic", "angle": 315.0, "dist": 621.0 },
       { "name": "t8", "type": "relic", "angle": 233.0, "dist": 388.0 },
       { "name": "t9", "type": "relic", "angle": 233.0, "dist": 582.0 }
-    ]
+    ],
+    "obeliskGroupNameLocations": {}
   },
   "Beta": {
     "name": "Beta",
@@ -725,7 +726,8 @@
       { "name": "U53", "type": "obelisk", "angle": 149.069563367028, "dist": 366.77401912959363306438211812, "rot": 335.0 },
       { "name": "U54", "type": "obelisk", "angle": 150.725691466257, "dist": 359.92084297686365293438139166, "rot": 95.0 },
       { "name": "U55", "type": "obelisk", "angle": 152.698200335545, "dist": 351.92177855204234047061242829, "rot": 335.0 }
-    ]
+    ],
+    "obeliskGroupNameLocations": {}
   },
   "Gamma": {
     "name": "Gamma",
@@ -851,24 +853,12 @@
       { "name": "G05", "type": "obelisk", "angle": 116.912421089458, "dist": 345.71296311631615653562163143, "rot": 283 },
       { "name": "G06", "type": "brokeObelisk", "angle": 127.061624245644, "dist": 390.87869658767511070598784673, "rot": 100 },
       { "name": "G07", "type": "obelisk", "angle": 123.908479693792, "dist": 372.51353331152630153784969884, "rot": 162 },
-      { "name": "G07", "type": "obelisk", "angle": 206.67198524276, "dist": 700.66215412961047585390922176, "rot": 60 },
       { "name": "G08", "type": "obelisk", "angle": 120.545055494563, "dist": 359.62121866411069034174768777, "rot": 102 },
-      { "name": "G08", "type": "obelisk", "angle": 207.062304587199, "dist": 690.00536246824368912468821321, "rot": 300 },
-      { "name": "G09", "type": "obelisk", "angle": 207.540235444028, "dist": 677.79657598391985976009183917, "rot": 300 },
       { "name": "G10", "type": "brokeObelisk", "angle": 129.604297358843, "dist": 425.53369311338343656975223006, "rot": 12 },
-      { "name": "G10", "type": "obelisk", "angle": 208.096448280366, "dist": 666.45742310127055795254633263, "rot": 60 },
       { "name": "G11", "type": "brokeObelisk", "angle": 126.661129725333, "dist": 409.38508800095012412877090572, "rot": 341 },
-      { "name": "G11", "type": "obelisk", "angle": 208.602009038633, "dist": 655.32183184569555593763652330, "rot": 301 },
       { "name": "G12", "type": "obelisk", "angle": 123.876616424179, "dist": 392.36584597661823835115127519, "rot": 282 },
-      { "name": "G12", "type": "obelisk", "angle": 209.110586222555, "dist": 643.12994718324291056536144134, "rot": 180 },
       { "name": "G13", "type": "obelisk", "angle": 120.714339569191, "dist": 379.43709913213546757193706481, "rot": 342 },
-      { "name": "G13", "type": "obelisk", "angle": 205.157003948824, "dist": 693.23467109943306592550375161, "rot": 300 },
       { "name": "G14", "type": "obelisk", "angle": 117.405211024424, "dist": 367.22795287389507058831129132, "rot": 283 },
-      { "name": "G14", "type": "obelisk", "angle": 205.672763015809, "dist": 681.17768802057932009253714000, "rot": 60 },
-      { "name": "G15", "type": "obelisk", "angle": 206.127129481523, "dist": 668.70001425138017645503194800, "rot": 60 },
-      { "name": "G16", "type": "obelisk", "angle": 206.535993969926, "dist": 658.40893771480380785694275797, "rot": 300 },
-      { "name": "G17", "type": "obelisk", "angle": 207.093062232717, "dist": 645.46521383836279173492624128, "rot": 60 },
-      { "name": "G18", "type": "obelisk", "angle": 207.63514551647, "dist": 634.16804433965580329302551990, "rot": 180 },
       { "name": "H01", "type": "obelisk", "angle": 242.735201477535, "dist": 714.75610978292108717310172201, "rot": 271 },
       { "name": "H02", "type": "obelisk", "angle": 242.159760676073, "dist": 701.38225070273816007455601871, "rot": 271 },
       { "name": "H03", "type": "obelisk", "angle": 241.659397016791, "dist": 690.19496777945544879454870591, "rot": 271 },
@@ -932,6 +922,18 @@
       { "name": "I04", "type": "obelisk", "angle": 209.438538881451, "dist": 675.12328996825018557191734299, "rot": 180 },
       { "name": "I05", "type": "obelisk", "angle": 210.010834968948, "dist": 663.60817054600104177576094372, "rot": 180 },
       { "name": "I06", "type": "obelisk", "angle": 210.583908673755, "dist": 652.49905070867385314264514173, "rot": 180 },
+      { "name": "I07", "type": "obelisk", "angle": 206.67198524276, "dist": 700.66215412961047585390922176, "rot": 60 },
+      { "name": "I08", "type": "obelisk", "angle": 207.062304587199, "dist": 690.00536246824368912468821321, "rot": 300 },
+      { "name": "I09", "type": "obelisk", "angle": 207.540235444028, "dist": 677.79657598391985976009183917, "rot": 300 },
+      { "name": "I10", "type": "obelisk", "angle": 208.096448280366, "dist": 666.45742310127055795254633263, "rot": 60 },
+      { "name": "I11", "type": "obelisk", "angle": 208.602009038633, "dist": 655.32183184569555593763652330, "rot": 301 },
+      { "name": "I12", "type": "obelisk", "angle": 209.110586222555, "dist": 643.12994718324291056536144134, "rot": 180 },
+      { "name": "I13", "type": "obelisk", "angle": 205.157003948824, "dist": 693.23467109943306592550375161, "rot": 300 },
+      { "name": "I14", "type": "obelisk", "angle": 205.672763015809, "dist": 681.17768802057932009253714000, "rot": 60 },
+      { "name": "I15", "type": "obelisk", "angle": 206.127129481523, "dist": 668.70001425138017645503194800, "rot": 60 },
+      { "name": "I16", "type": "obelisk", "angle": 206.535993969926, "dist": 658.40893771480380785694275797, "rot": 300 },
+      { "name": "I17", "type": "obelisk", "angle": 207.093062232717, "dist": 645.46521383836279173492624128, "rot": 60 },
+      { "name": "I18", "type": "obelisk", "angle": 207.63514551647, "dist": 634.16804433965580329302551990, "rot": 180 },
       { "name": "J01", "type": "brokeObelisk", "angle": 190.491213143662, "dist": 353.32981227569190512583181487, "rot": 78.0 },
       { "name": "J02", "type": "brokeObelisk", "angle": 188.435449531121, "dist": 350.98692463303321256343465030, "rot": 90.0 },
       { "name": "J03", "type": "obelisk", "angle": 185.963393064137, "dist": 348.45660817697342902147781221, "rot": 90.0 },
@@ -1128,7 +1130,14 @@
       { "name": "t6", "type": "relic", "angle": 202.0, "dist": 176.0 },
       { "name": "t7", "type": "relic", "angle": 10.4, "dist": 601.0 },
       { "name": "t8", "type": "relic", "angle": 323.8, "dist": 456.0 }
-    ]
+    ],
+    "obeliskGroupNameLocations": {
+      "A": {
+        "IsEmpty": true,
+        "X": 0.0,
+        "Y": 0.0
+      }
+    }
   },
   "Bear": {
     "name": "Bear",
@@ -1244,7 +1253,8 @@
       { "name": "t3", "type": "relic", "angle": 128.8, "dist": 345.8 },
       { "name": "t4", "type": "relic", "angle": 284.2, "dist": 151.3 },
       { "name": "t5", "type": "relic", "angle": 103.6, "dist": 139.3 }
-    ]
+    ],
+    "obeliskGroupNameLocations": {}
   },
   "Fistbump": {
     "name": "Fistbump",
@@ -1263,7 +1273,8 @@
       { "name": "p5", "type": "urn", "angle": 254.0, "dist": 163.0 },
       { "name": "t1", "type": "relic", "angle": 358.0, "dist": 85.0 },
       { "name": "t2", "type": "relic", "angle": 193.0, "dist": 33.0 }
-    ]
+    ],
+    "obeliskGroupNameLocations": {}
   },
   "Robolobster": {
     "name": "Robolobster",
@@ -1282,7 +1293,8 @@
       { "name": "p8", "type": "urn", "angle": 297.0, "dist": 148.0 },
       { "name": "p8", "type": "orb", "angle": 209.0, "dist": 167.0 },
       { "name": "p8", "type": "tablet", "angle": 138.0, "dist": 52.0 }
-    ]
+    ],
+    "obeliskGroupNameLocations": {}
   },
   "Squid": {
     "name": "$Ancient_Medium_002:#index=1;",
@@ -1301,7 +1313,8 @@
       { "name": "AA09", "type": "brokeObelisk", "angle": 187.946658141271, "dist": 329.64498149461900064767892708, "rot": 125.0 },
       { "name": "AA10", "type": "obelisk", "angle": 189.817754641042, "dist": 314.50541862161045646765473334, "rot": 151.0 },
       { "name": "AA11", "type": "obelisk", "angle": 191.131654168348, "dist": 287.53838131918311066862491555, "rot": 235.0 }
-    ]
+    ],
+    "obeliskGroupNameLocations": {}
   },
   "Lacrosse": {
     "name": "$Ancient_Tiny_001:#index=1;",
@@ -1365,6 +1378,7 @@
       { "name": "p6", "type": "urn", "angle": 149.429825763381, "dist": 98.65740752657101746599904875, "rot": 262.0 },
       { "name": "t1", "type": "relic", "angle": 272.60746410644, "dist": 176.43104194418760045197057615, "rot": 25.0 },
       { "name": "t2", "type": "relic", "angle": 346.676949463081, "dist": 64.024173292749380184309303466, "rot": 340.0 }
-    ]
+    ],
+    "obeliskGroupNameLocations": {}
   }
 }

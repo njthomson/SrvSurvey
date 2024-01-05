@@ -103,7 +103,8 @@ namespace SrvSurvey
 
         public static void openLink(string link)
         {
-            Game.log($"Opening link:\r\n{link}\r\n");
+            var trimmedLink = link.Substring(0, Math.Min(200, link.Length));
+            Game.log($"Opening link: (length: {link.Length})\r\n{trimmedLink}\r\n");
 
             var info = new ProcessStartInfo(link);
             info.UseShellExecute = true;

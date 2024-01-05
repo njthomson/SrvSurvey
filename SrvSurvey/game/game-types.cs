@@ -584,7 +584,10 @@ namespace SrvSurvey.game
 
             var pubPath = Path.Combine(Git.pubGuardianFolder, filename);
             if (!File.Exists(pubPath))
+            {
+                Game.log($"No pubData for: {pubPath}");
                 return null;
+            }
 
             Game.log($"Reading pubData for '{bodyName}' #{index} ({siteType})");
             var json = File.ReadAllText(pubPath);

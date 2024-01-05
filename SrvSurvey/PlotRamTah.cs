@@ -40,14 +40,14 @@ namespace SrvSurvey
         public static bool allowPlotter
         {
             // TODO: show this earlier, like on approach?
-            get => Game.activeGame != null && Game.activeGame.showGuardianPlotters && Game.activeGame.cmdr.ramTahActive;
+            get => Game.settings.autoShowRamTah && Game.activeGame != null && Game.activeGame.showGuardianPlotters && Game.activeGame.cmdr.ramTahActive;
         }
 
         protected override void Game_modeChanged(GameMode newMode, bool force)
         {
             if (this.IsDisposed) return;
 
-            var targetMode = this.game.isMode(GameMode.InSrv, GameMode.OnFoot, GameMode.Landed, GameMode.Flying, GameMode.InFighter, GameMode.CommsPanel, GameMode.InternalPanel);
+            var targetMode = !game.hidePlottersFromCombatSuits && game.isMode(GameMode.InSrv, GameMode.OnFoot, GameMode.Landed, GameMode.Flying, GameMode.InFighter, GameMode.CommsPanel, GameMode.InternalPanel);
             if (this.Opacity > 0 && !targetMode)
                 this.Opacity = 0;
             else if (this.Opacity == 0 && targetMode)
@@ -58,7 +58,7 @@ namespace SrvSurvey
 
         protected override void OnPaintBackground(PaintEventArgs e)
         {
-            if (this.IsDisposed || game.systemSite == null) return;
+            if (this.IsDisposed || game?.systemSite == null) return;
 
             this.g = e.Graphics;
             this.g.SmoothingMode = SmoothingMode.HighQuality;
@@ -69,7 +69,7 @@ namespace SrvSurvey
             this.dty = 8.0f;
             var sz = new SizeF(6, 6);
 
-            var ramTahObelisks = game?.systemSite.ramTahObelisks;
+            var ramTahObelisks = game.systemSite.ramTahObelisks;
             this.drawTextAt($"Unscanned Ram Tah logs: {ramTahObelisks?.Count ?? 0}", GameColors.fontSmall);
             if (this.dtx > sz.Width) sz.Width = this.dtx;
             this.dty = 24f;
@@ -79,15 +79,37 @@ namespace SrvSurvey
                 var targetObelisk = PlotGuardians.instance?.targetObelisk;
                 foreach (var bar in ramTahObelisks)
                 {
+                    var obelisk = game.systemSite.getActiveObelisk(bar.Value.First());
+                    if (obelisk == null) continue;
+
+                    // first, do we have the items needed?
+                    var item1 = obelisk.items.First().ToString();
+                    var hasItem1 = game.getInventoryItem(item1)?.Count >= 1;
+
+                    var item2 = obelisk.items.Count > 1 ? obelisk.items.Last().ToString() : null;
+                    var hasItem2 = item2 == null ? true : game.getInventoryItem(item2)?.Count >= (item1 == item2 ? 2 : 1);
+
+                    var isTargetObelisk = targetObelisk != null && bar.Value.Contains(targetObelisk);
+                    var brush = isTargetObelisk ? GameColors.brushCyan : GameColors.brushGameOrange;
+
+                    // change colours if items are missing? Perhaps overkill?
+                    //var brush = (hasItem1 && hasItem2)
+                    //    ? isTargetObelisk ? GameColors.brushCyan : GameColors.brushGameOrange
+                    //    : isTargetObelisk ? Brushes.DarkCyan : GameColors.brushGameOrangeDim;
+
                     // draw main text (bigger font)
                     this.dtx = 14f;
                     var logName = $"{Util.getLogNameFromChar(bar.Key[0])} #{bar.Key.Substring(1)}:";
-                    var brush = targetObelisk != null && bar.Value.Contains(targetObelisk) ? GameColors.brushCyan : null;
                     this.drawTextAt(logName, brush, GameColors.fontMiddle);
                     this.dty += 6;
-                    var obelisk = game?.systemSite.getActiveObelisk(bar.Value.First());
-                    if (obelisk != null)
-                        this.drawTextAt(string.Join(" + ", obelisk.items), brush, GameColors.fontSmall);
+
+                    this.drawTextAt(item1, hasItem1 ? brush : Brushes.Red, GameColors.fontSmall);
+
+                    if (item2 != null)
+                    {
+                        this.drawTextAt("+ ", brush, GameColors.fontSmall);
+                        this.drawTextAt(item2, hasItem2 ? brush : Brushes.Red, GameColors.fontSmall);
+                    }
 
                     if (this.dtx > sz.Width) sz.Width = this.dtx;
                     this.dty += 16;
@@ -97,7 +119,7 @@ namespace SrvSurvey
                     foreach (var ob in bar.Value)
                     {
                         if (targetObelisk == ob)
-                            this.drawTextAt(ob, GameColors.brushCyan, GameColors.fontSmallBold);
+                            this.drawTextAt(ob, brush , GameColors.fontSmallBold);
                         else
                             this.drawTextAt(ob, GameColors.fontSmall);
                     }

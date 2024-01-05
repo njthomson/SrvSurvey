@@ -122,6 +122,7 @@ namespace SrvSurvey.game
         public CommanderSettings cmdr;
 
         public SystemPoi? canonnPoi = null;
+        public List<InventoryItem> inventory;
 
         public Game(string? cmdr)
         {
@@ -219,6 +220,7 @@ namespace SrvSurvey.game
         public bool atCarrierMgmt = false;
         public bool fsdJumping = false;
         public bool isShutdown = false;
+        private string? fetchedSystemData = null;
 
         /// <summary>
         /// Tracks if we status had Lat/Long last time we knew
@@ -481,6 +483,7 @@ namespace SrvSurvey.game
             if (cmdr != null)
             {
                 this.initSystemData();
+                this.initCargoData();
 
                 LeaveBody? leaveBodyEvent = null;
                 journals.walk(-1, true, (entry) =>
@@ -534,11 +537,7 @@ namespace SrvSurvey.game
 
                 this.systemStatus = new SystemStatus(cmdr.currentSystem, cmdr.currentSystemAddress);
                 this.systemStatus.initFromJournal(this);
-
             }
-
-            // if we are near a planet
-
 
             // if we have landed, we need to find the last Touchdown location
             if (this.isLanded && this._touchdownLocation == null) // || (status.Flags & StatusFlags.HasLatLong) > 0)
@@ -619,9 +618,7 @@ namespace SrvSurvey.game
                 }
 
                 if (SystemData.journalEventTypes.Contains(entry.@event))
-                {
                     playForwards.Add(entry);
-                }
 
                 return false;
             });
@@ -637,6 +634,40 @@ namespace SrvSurvey.game
 
             this.systemData.Save();
             log($"Game.initSystemData: complete '{this.systemData.name}' ({this.systemData.address}), bodyCount: {this.systemData.bodyCount}");
+        }
+
+        private void initCargoData()
+        {
+            // try to find a location from recent journal items
+            if (cmdr == null || this.journals == null) return;
+
+            log($"Game.initCargoData: rewind to last Cargo");
+
+            var playCargo = new List<JournalEntry>();
+            Cargo? lastCargoEntry = null;
+
+            this.journals.walk(-1, true, (entry) =>
+            {
+                if (lastCargoEntry == null && Game.cargoJournalEventTypes.Contains(entry.@event))
+                    playCargo.Add(entry);
+
+                var cargoEvent = entry as Cargo;
+                if (lastCargoEntry == null && cargoEvent?.Inventory != null)
+                    lastCargoEntry = cargoEvent;
+
+                return false;
+            });
+            if (lastCargoEntry == null) throw new Exception("Why no lastCargoEntry?");
+
+            log($"Game.initCargoData: Processing {playCargo.Count} cargo journal items forwards...");
+            playCargo.Reverse();
+            foreach (var entry in playCargo)
+            {
+                log($"Game.initCargoData: cargo playForwards '{entry.@event}' ({entry.timestamp})");
+                this.onJournalEntry((dynamic)entry);
+            }
+
+            log($"Game.initCargoData: Current cargo:\r\n  " + string.Join("\r\n  ", this.inventory));
         }
 
         private void getLastTouchdownDeep()
@@ -777,6 +808,7 @@ namespace SrvSurvey.game
                 this.canonnPoi = null;
                 this.systemBody = null;
                 this.systemData = null;
+                this.fetchedSystemData = null;
                 this.checkModeChange();
                 this.Status_StatusChanged(false);
 
@@ -933,6 +965,124 @@ namespace SrvSurvey.game
                 this.cmdr.Save();
                 Game.log("MissionAccepted: Completed 'Decrypting the Guardian Logs' ...");
             }
+        }
+
+        #endregion
+
+        #region Cargo handling
+
+        private static List<string> cargoJournalEventTypes = new List<string>()
+        {
+            nameof(Cargo),
+            nameof(CollectCargo),
+            nameof(EjectCargo),
+            nameof(CargoTransfer),
+        };
+
+        private void onJournalEntry(Cargo entry)
+        {
+            // ignore events without details of the actual cargo, but use them to check our tracking is working correctly
+            if (entry.Inventory == null)
+            {
+                var sumCount = this.inventory.Sum(_ => _.Count);
+                if (entry.Count != sumCount)
+                    Game.log($"Why is Cargo inventory count not matching?\r\nEntry.count: {entry.Count}, sumCount: {sumCount}\r\n  " + string.Join("\r\n  ", this.inventory));
+            }
+            else
+            {
+                Game.log($"Updating inventory, count: {entry.Count}");
+                this.inventory = entry.Inventory;
+                Program.invalidateActivePlotters();
+            }
+        }
+
+        private void onJournalEntry(CollectCargo entry)
+        {
+            Game.log($"CollectCargo: {entry.Type_Localised} ({entry.Type})");
+
+            var inventoryItem = this.inventory.FirstOrDefault(_ => _.Name.Equals(entry.Type, StringComparison.OrdinalIgnoreCase));
+            if (inventoryItem == null)
+            {
+                inventoryItem = new InventoryItem(entry.Type, entry.Type_Localised);
+                this.inventory.Add(inventoryItem);
+            }
+
+            inventoryItem.Count++;
+            Program.invalidateActivePlotters();
+        }
+
+        private void onJournalEntry(EjectCargo entry)
+        {
+            var inventoryItem = this.inventory.FirstOrDefault(_ => _.Name.Equals(entry.Type, StringComparison.OrdinalIgnoreCase));
+            if (inventoryItem == null)
+            {
+                Game.log($"EjectCargo: How can we eject cargo we do not have? {entry.Type_Localised} ({entry.Type})");
+            }
+            else
+            {
+                inventoryItem.Count -= entry.Count;
+                Game.log($"EjectCargo: {entry.Count} x {entry.Type_Localised} ({entry.Type}), new count: {inventoryItem.Count}");
+                if (inventoryItem.Count == 0)
+                    this.inventory.Remove(inventoryItem);
+            }
+            Program.invalidateActivePlotters();
+        }
+
+        private void onJournalEntry(CargoTransfer entry)
+        {
+            Game.log($"Updating inventory from transfer");
+            foreach (var transferItem in entry.Transfers)
+            {
+                // TODO: check to / from ship?
+                var inventoryItem = this.inventory.FirstOrDefault(_ => _.Name.Equals(transferItem.Type, StringComparison.OrdinalIgnoreCase));
+                if (inventoryItem == null)
+                {
+                    inventoryItem = new InventoryItem(transferItem.Type, transferItem.Type_Localised);
+                    this.inventory.Add(inventoryItem);
+                }
+
+                inventoryItem.Count += transferItem.Count;
+            }
+            Program.invalidateActivePlotters();
+        }
+
+        private static Dictionary<string, string> inventoryItemNameMap = new Dictionary<string, string>()
+        {
+            { "ca", "ancientcasket" },
+            { "casket", "ancientcasket" },
+            { "or", "ancientorb" },
+            { "orb", "ancientorb" },
+            { "re", "ancientrelic" },
+            { "relic", "ancientrelic" },
+            { "ta", "ancienttablet" },
+            { "tablet", "ancienttablet" },
+            { "to", "ancienttotem" },
+            { "totem", "ancienttotem" },
+            { "ur", "ancienturn" },
+            { "urn", "ancienturn" },
+
+            { "se", "unknownartifact" }, // Thargoid Sensor
+            { "sensor", "unknownartifact" },
+            { "pr", "unknownartifact2" }, // Thargoid Probe
+            { "probe", "unknownartifact2" },
+            { "li", "unknownartifact3" }, // Thargoid Link
+            { "link", "unknownartifact3" },
+            { "cy", "thargoidtissuesampletype1" }, // Thargoid Cyclops Tissue Sample
+            { "cyclops", "thargoidtissuesampletype1" },
+            { "ba", "thargoidtissuesampletype2" }, // Thargoid Basilisk Tissue Sample
+            { "basilisk", "thargoidtissuesampletype2" },
+            { "me", "thargoidtissuesampletype3" }, // Thargoid Medusa Tissue Sample
+            { "medusa", "thargoidtissuesampletype3" },
+        };
+
+        public InventoryItem? getInventoryItem(string itemName)
+        {
+            // for convenience, allow itemName to be an alias of what the game really uses, eg: 'ta' becomes 'ancienttablet'
+            if (inventoryItemNameMap.ContainsKey(itemName))
+                itemName = inventoryItemNameMap[itemName];
+
+            var inventoryItem = this.inventory?.FirstOrDefault(_ => _.Name.Equals(itemName, StringComparison.OrdinalIgnoreCase));
+            return inventoryItem;
         }
 
         #endregion
@@ -1261,94 +1411,106 @@ namespace SrvSurvey.game
         /// </summary>
         private void fetchSystemData(string systemName, long systemAddress)
         {
-            if (!Game.settings.useExternalData || this.canonnPoi?.system == systemName || this.systemData == null)
+            if (this.fetchedSystemData == systemName) return;
+            try
             {
-                return;
+                this.fetchedSystemData = systemName;
+                Game.log($"this.fetchedSystemData = '{systemName}'");
+
+                if (!Game.settings.useExternalData || this.canonnPoi?.system == systemName || this.systemData == null)
+                {
+                    return;
+                }
+                else if (this.canonnPoi != null)
+                {
+                    Game.log($"why/when {systemName} vs {this.canonnPoi.system}");
+                    this.canonnPoi = null;
+                }
+
+                var spanshFinished = false;
+                var edsmFinished = false;
+                var canonnFinished = false;
+
+                // lookup system from Spansh
+                Game.log($"Searching Spansh for '{systemName}' ({systemAddress})...");
+                Game.spansh.getSystemDump(systemAddress).ContinueWith(response =>
+                {
+                    spanshFinished = true;
+                    if (response.IsCompletedSuccessfully)
+                    {
+                        var spanshSystem = response.Result;
+
+                        Game.log($"Found {spanshSystem.bodyCount} bodies from Spansh for '{systemName}'");
+                        if (this.systemData != null && spanshSystem.id64 == this.systemData?.address)
+                            this.systemData.onSpanshResponse(spanshSystem);
+                    }
+                    else if ((response.Exception?.InnerException as HttpRequestException)?.StatusCode == System.Net.HttpStatusCode.NotFound || Util.isFirewallProblem(response.Exception))
+                    {
+                        // ignore NotFound responses
+                    }
+                    else
+                    {
+                        Game.log($"Spansh call failed? {response.Exception}");
+                    }
+
+                    if (spanshFinished && edsmFinished && canonnFinished) { this.systemData?.Save(); this.fireUpdate(true); }
+                });
+
+                // lookup system from EDSM
+                Game.log($"Searching EDSM for '{systemName}'...");
+                Game.edsm.getBodies(systemName).ContinueWith(response =>
+                {
+                    edsmFinished = true;
+                    if (response.IsCompletedSuccessfully)
+                    {
+                        var edsmData = response.Result;
+                        Game.log($"Found {edsmData.bodyCount} bodies from EDSM for '{systemName}'");
+                        if (edsmData.id64 == this.systemData?.address)
+                            this.systemData.onEdsmResponse(edsmData);
+                    }
+                    else if ((response.Exception?.InnerException as HttpRequestException)?.StatusCode == System.Net.HttpStatusCode.NotFound || Util.isFirewallProblem(response.Exception))
+                    {
+                        // ignore NotFound responses
+                    }
+                    else
+                    {
+                        Game.log($"EDSM call failed? {response.Exception}");
+                    }
+                    if (spanshFinished && edsmFinished && canonnFinished) { this.systemData?.Save(); this.fireUpdate(true); }
+                });
+
+                // make a call for system POIs and pre-load trackers for known bio-signals
+                Game.log($"Searching for system POI from Canonn...");
+                Game.canonn.getSystemPoi(systemName, this.cmdr.commander).ContinueWith(response =>
+                {
+                    canonnFinished = true;
+                    if (response.IsCompletedSuccessfully)
+                    {
+                        this.canonnPoi = response.Result;
+                        Game.log($"Found system POI from Canonn for: {systemName}");
+                        this.systemData.onCanonnData(this.canonnPoi);
+
+                        // TODO: retire
+                        if (this.systemStatus != null)
+                            this.systemStatus.mergeCanonnPoi(this.canonnPoi);
+                    }
+                    else if ((response.Exception?.InnerException as HttpRequestException)?.StatusCode == System.Net.HttpStatusCode.NotFound || Util.isFirewallProblem(response.Exception))
+                    {
+                        // ignore NotFound responses
+                    }
+                    else
+                    {
+                        Game.log($"Canonn call failed? {response.Exception}");
+                    }
+
+                    if (spanshFinished && edsmFinished && canonnFinished) { this.systemData?.Save(); this.fireUpdate(true); }
+                });
             }
-            else if (this.canonnPoi != null)
+            finally
             {
-                Game.log($"why/when {systemName} vs {this.canonnPoi.system}");
-                this.canonnPoi = null;
+                Game.log($"this.fetchedSystemData = '{systemName}' - complete");
+                this.fetchedSystemData = systemName;
             }
-
-            var spanshFinished = false;
-            var edsmFinished = false;
-            var canonnFinished = false;
-
-            // lookup system from Spansh
-            Game.log($"Searching Spansh for '{systemName}' ({systemAddress})...");
-            Game.spansh.getSystemDump(systemAddress).ContinueWith(response =>
-            {
-                spanshFinished = true;
-                if (response.IsCompletedSuccessfully)
-                {
-                    var spanshSystem = response.Result;
-
-                    Game.log($"Found {spanshSystem.bodyCount} bodies from Spansh for '{systemName}'");
-                    if (this.systemData != null && spanshSystem.id64 == this.systemData?.address)
-                        this.systemData.onSpanshResponse(spanshSystem);
-                }
-                else if ((response.Exception?.InnerException as HttpRequestException)?.StatusCode == System.Net.HttpStatusCode.NotFound || Util.isFirewallProblem(response.Exception))
-                {
-                    // ignore NotFound responses
-                }
-                else
-                {
-                    Game.log($"Spansh call failed? {response.Exception}");
-                }
-
-                if (spanshFinished && edsmFinished && canonnFinished) { this.systemData?.Save(); this.fireUpdate(true); }
-            });
-
-            // lookup system from EDSM
-            Game.log($"Searching EDSM for '{systemName}'...");
-            Game.edsm.getBodies(systemName).ContinueWith(response =>
-            {
-                edsmFinished = true;
-                if (response.IsCompletedSuccessfully)
-                {
-                    var edsmData = response.Result;
-                    Game.log($"Found {edsmData.bodyCount} bodies from EDSM for '{systemName}'");
-                    if (edsmData.id64 == this.systemData?.address)
-                        this.systemData.onEdsmResponse(edsmData);
-                }
-                else if ((response.Exception?.InnerException as HttpRequestException)?.StatusCode == System.Net.HttpStatusCode.NotFound || Util.isFirewallProblem(response.Exception))
-                {
-                    // ignore NotFound responses
-                }
-                else
-                {
-                    Game.log($"EDSM call failed? {response.Exception}");
-                }
-                if (spanshFinished && edsmFinished && canonnFinished) { this.systemData?.Save(); this.fireUpdate(true); }
-            });
-
-            // make a call for system POIs and pre-load trackers for known bio-signals
-            Game.log($"Searching for system POI from Canonn...");
-            Game.canonn.getSystemPoi(systemName, this.cmdr.commander).ContinueWith(response =>
-            {
-                canonnFinished = true;
-                if (response.IsCompletedSuccessfully)
-                {
-                    this.canonnPoi = response.Result;
-                    Game.log($"Found system POI from Canonn for: {systemName}");
-                    this.systemData.onCanonnData(this.canonnPoi);
-
-                    // TODO: retire
-                    if (this.systemStatus != null)
-                        this.systemStatus.mergeCanonnPoi(this.canonnPoi);
-                }
-                else if ((response.Exception?.InnerException as HttpRequestException)?.StatusCode == System.Net.HttpStatusCode.NotFound || Util.isFirewallProblem(response.Exception))
-                {
-                    // ignore NotFound responses
-                }
-                else
-                {
-                    Game.log($"Canonn call failed? {response.Exception}");
-                }
-
-                if (spanshFinished && edsmFinished && canonnFinished) { this.systemData?.Save(); this.fireUpdate(true); }
-            });
         }
 
         /// <summary>
@@ -1486,10 +1648,10 @@ namespace SrvSurvey.game
 
                 // add the lat/long co-ordinates
                 data.scannedLocations[DateTime.UtcNow] = entry;
-                data.lastVisited = DateTime.UtcNow;
+                data.lastVisited = entry.timestamp;
                 data.Save();
             }
-            else if (entry.SubCategory == "$Codex_SubCategory_Organic_Structures;" && Game.settings.autoTrackCompBioScans)
+            else if (Game.settings.autoTrackCompBioScans && entry.SubCategory == "$Codex_SubCategory_Organic_Structures;")
             {
                 // auto add CodexScans as a tracker location
                 var match = Game.codexRef.matchFromEntryId(entry.EntryID);
@@ -1649,7 +1811,6 @@ namespace SrvSurvey.game
 
         private void setSuitType(SuitLoadout entry)
         {
-
             if (entry.SuitName.StartsWith("flightsuit"))
                 this.currentSuitType = SuitType.flightSuite;
             else if (entry.SuitName.StartsWith("explorationsuit"))

@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
-using SrvSurvey.net;
 using SrvSurvey.units;
+using System.Diagnostics;
 using System.Text;
 
 namespace SrvSurvey.game
@@ -10,6 +10,26 @@ namespace SrvSurvey.game
     [JsonConverter(typeof(GuardianSiteData.JsonConverter))]
     internal class GuardianSiteData : Data
     {
+        public enum SiteType
+        {
+            // ruins ...
+            Unknown,
+            Alpha,
+            Beta,
+            Gamma,
+            // structures ...
+            Lacrosse,
+            Crossroads,
+            Fistbump,
+            Hammerbot,
+            Bear,
+            Bowl,
+            Turtle,
+            Robolobster,
+            Squid,
+            Stickyhand,
+        }
+
         private static string rootFolder = Path.Combine(Program.dataFolder, "guardian");
 
         public static string getFilename(ApproachSettlement entry)
@@ -214,6 +234,26 @@ namespace SrvSurvey.game
         [JsonIgnore]
         public GuardianSitePub? pubData;
 
+        [JsonIgnore]
+        public ActiveObelisk? currentObelisk;
+
+        public void setCurrentObelisk(string? name)
+        {
+            var changed = this.currentObelisk?.name != name;
+            Game.log($"setCurrentObelisk: {name} (changed: {changed})");
+
+            if (name == null)
+                this.currentObelisk = null;
+            else
+                this.currentObelisk = this.getActiveObelisk(name, false);
+
+            if (changed)
+            {
+                FormRamTah.activeForm?.setCurrentObelisk(this.currentObelisk);
+                Program.getPlotter<PlotGuardianStatus>()?.Invalidate();
+            }
+        }
+
         public static int parseSettlementIdx(string name)
         {
             const string ruinsPrefix = "$Ancient:#index=";
@@ -230,26 +270,6 @@ namespace SrvSurvey.game
                 return int.Parse(name.Substring(name.IndexOf("=") + 1, 1));
             }
             throw new Exception("Unknown site type");
-        }
-
-        public enum SiteType
-        {
-            // ruins ...
-            Unknown,
-            Alpha,
-            Beta,
-            Gamma,
-            // structures ...
-            Lacrosse,
-            Crossroads,
-            Fistbump,
-            Hammerbot,
-            Bear,
-            Bowl,
-            Turtle,
-            Robolobster,
-            Squid,
-            Stickyhand,
         }
 
         public SitePoiStatus getPoiStatus(string name)
@@ -271,6 +291,9 @@ namespace SrvSurvey.game
 
         public ActiveObelisk? getActiveObelisk(string name, bool addIfMissing = false)
         {
+            if (addIfMissing && string.IsNullOrWhiteSpace(name))
+                throw new Exception($"Bad obelisk name! (addIfMissing: {addIfMissing})");
+
             // use our own data first
             if (this.activeObelisks.ContainsKey(name))
                 return this.activeObelisks[name];
@@ -292,6 +315,35 @@ namespace SrvSurvey.game
             return obelisk;
         }
 
+        public void toggleObeliskScanned()
+        {
+            if (this.currentObelisk == null) return;
+            this.setObeliskScanned(this.currentObelisk, !this.currentObelisk.scanned);
+        }
+
+        public void setObeliskScanned(ActiveObelisk obelisk, bool scanned)
+        {
+            obelisk.scanned = scanned;
+            Game.log($"Setting obelisk '{obelisk.name}' as scanned: {obelisk.scanned}");
+            this.Save();
+
+            var cmdr = Game.activeGame?.cmdr;
+            if (cmdr?.ramTahActive == true)
+            {
+                var hashSet = this.isRuins ? cmdr.decodeTheRuins : cmdr.decodeTheLogs;
+                if (obelisk.scanned)
+                    hashSet.Add(obelisk.msg);
+                else
+                    hashSet.Remove(obelisk.msg);
+                this.ramTahRecalc();
+                Game.log($"Recording '{obelisk.msg}' Ram Tah as scanned: {obelisk.scanned}");
+                cmdr.Save();
+            }
+
+            FormRamTah.activeForm?.listRuins.Invalidate();
+            Program.invalidateActivePlotters();
+        }
+
         private Dictionary<string, HashSet<string>> _ramTahObelisks;
 
         public bool ramTahNeeded(string? msg)
@@ -305,6 +357,9 @@ namespace SrvSurvey.game
         public void ramTahRecalc()
         {
             this._ramTahObelisks = this.getObelisksForRamTah();
+
+            FormRamTah.activeForm?.listRuins.Invalidate();
+            Program.invalidateActivePlotters();
         }
 
         [JsonIgnore]
@@ -331,10 +386,9 @@ namespace SrvSurvey.game
 
                 foreach (var ob in allObelisks.OrderBy(_ => _.msg))
                 {
-                    var isNeeded = (cmdr.decodeTheRuinsMissionActive == TahMissionStatus.Active && !cmdr.decodeTheRuins.Contains(ob.msg))
-                        || (cmdr.decodeTheLogsMissionActive == TahMissionStatus.Active && !cmdr.decodeTheLogs.Contains(ob.msg));
+                    var hashSet = this.isRuins ? cmdr.decodeTheRuins : cmdr.decodeTheLogs;
 
-                    if (isNeeded != true) continue;
+                    if (hashSet.Contains(ob.msg)) continue;
                     if (!rslt.ContainsKey(ob.msg)) rslt.Add(ob.msg, new HashSet<string>());
                     rslt[ob.msg].Add(ob.name);
                 }
@@ -345,11 +399,16 @@ namespace SrvSurvey.game
 
         public void loadPub()
         {
-            if (this.pubData != null)
+            if (this.pubData != null || !this.isRuins)
                 return;
 
             this.pubData = GuardianSitePub.Load(this.bodyName, this.index, this.type);
-            if (this.pubData == null) throw new Exception($"Why no pubData for '{this.bodyName}' / '{this.name}'? (Newly discovered Ruins?)");
+            if (this.pubData == null)
+            {
+                Game.log($"Why no pubData for '{this.bodyName}' / '{this.name}'? (Newly discovered Ruins?)");
+                if (Debugger.IsAttached) Debugger.Break();
+                return;
+            }
 
             if (this.type == SiteType.Unknown) this.type = pubData.t;
             if (this.siteHeading == -1 && pubData.sh != -1) this.siteHeading = pubData.sh;

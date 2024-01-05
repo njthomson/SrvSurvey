@@ -31,7 +31,7 @@ namespace SrvSurvey.game
                 }
                 catch (Exception ex)
                 {
-                    Game.log($"Failed to read data: {ex.Message}");
+                    Game.log($"Failed to read data from: {filepath}\r\n{ex.Message}");
                     Game.log(json);
                 }
             }

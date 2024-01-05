@@ -1,4 +1,6 @@
-﻿namespace SrvSurvey
+﻿using SrvSurvey.game;
+
+namespace SrvSurvey
 {
     partial class FormRamTah
     {
@@ -103,6 +105,9 @@
             btnQuit = new Button();
             btnResetRuins = new Button();
             btnResetLogs = new Button();
+            lblObelisk = new Label();
+            btnToggleObelisk = new Button();
+            txtObelisk = new TextBox();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             tabPage2.SuspendLayout();
@@ -729,12 +734,46 @@
             btnResetLogs.UseVisualStyleBackColor = true;
             btnResetLogs.Click += btnResetLogs_Click;
             // 
+            // lblObelisk
+            // 
+            lblObelisk.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            lblObelisk.AutoSize = true;
+            lblObelisk.Location = new Point(12, 570);
+            lblObelisk.Name = "lblObelisk";
+            lblObelisk.Size = new Size(49, 15);
+            lblObelisk.TabIndex = 10;
+            lblObelisk.Text = "Obelisk:";
+            // 
+            // btnToggleObelisk
+            // 
+            btnToggleObelisk.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnToggleObelisk.Location = new Point(302, 566);
+            btnToggleObelisk.Name = "btnToggleObelisk";
+            btnToggleObelisk.Size = new Size(96, 23);
+            btnToggleObelisk.TabIndex = 11;
+            btnToggleObelisk.Text = "Toggle obelisk";
+            btnToggleObelisk.UseVisualStyleBackColor = true;
+            btnToggleObelisk.Click += btnToggleObelisk_Click;
+            // 
+            // txtObelisk
+            // 
+            txtObelisk.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            txtObelisk.Location = new Point(67, 566);
+            txtObelisk.Name = "txtObelisk";
+            txtObelisk.ReadOnly = true;
+            txtObelisk.Size = new Size(229, 23);
+            txtObelisk.TabIndex = 12;
+            txtObelisk.Text = "N10: Casket + Totem for Tech #10";
+            // 
             // FormRamTah
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = btnQuit;
             ClientSize = new Size(496, 595);
+            Controls.Add(txtObelisk);
+            Controls.Add(btnToggleObelisk);
+            Controls.Add(lblObelisk);
             Controls.Add(btnResetLogs);
             Controls.Add(btnResetRuins);
             Controls.Add(btnQuit);
@@ -770,7 +809,6 @@
         private TabControl tabControl1;
         private TabPage tabPage1;
         private TabPage tabPage2;
-        private ListView listRuins;
         private ColumnHeader columnHeader6;
         private ColumnHeader columnHeader1;
         private ColumnHeader columnHeader2;
@@ -813,5 +851,9 @@
         private Button btnQuit;
         private Button btnResetRuins;
         private Button btnResetLogs;
+        private Label lblObelisk;
+        private Button btnToggleObelisk;
+        public TextBox txtObelisk;
+        public ListView listRuins;
     }
 }

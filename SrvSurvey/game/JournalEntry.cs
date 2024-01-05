@@ -1,14 +1,5 @@
 ﻿using Newtonsoft.Json;
 using SrvSurvey.game;
-using SrvSurvey.units;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.NetworkInformation;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Tab;
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
@@ -719,7 +710,7 @@ namespace SrvSurvey
         // TODO: the rest...
     }
 
-    class MissionCompleted: JournalEntry
+    class MissionCompleted : JournalEntry
     {
         // { "timestamp":"2023-03-22T04:22:48Z", "event":"MissionCompleted", "Faction":"Xihe Energy Industry", "Name":"Mission_Assassinate_Legal_War_name", "MissionID":920770802, "TargetType":"$MissionUtil_FactionTag_VenerableGeneral;", "TargetType_Localised":"Venerable General", "TargetFaction":"Psi Capricorni Purple Brothers", "DestinationSystem":"Psi Capricorni", "DestinationStation":"Shaw Holdings", "Target":"Zaphod Quagmire", "Reward":1344814, "MaterialsReward":[ { "Name":"EmbeddedFirmware", "Name_Localised":"Modified Embedded Firmware", "Category":"$MICRORESOURCE_CATEGORY_Encoded;", "Category_Localised":"Encoded", "Count":5 } ], "FactionEffects":[ { "Faction":"Xihe Energy Industry", "Effects":[ { "Effect":"$MISSIONUTIL_Interaction_Summary_EP_up;", "Effect_Localised":"The economic status of $#MinorFaction; has improved in the $#System; system.", "Trend":"UpGood" } ], "Influence":[ { "SystemAddress":1183364125402, "Trend":"UpGood", "Influence":"++" } ], "ReputationTrend":"UpGood", "Reputation":"++" }, { "Faction":"", "Effects":[ { "Effect":"$MISSIONUTIL_Interaction_Summary_EP_down;", "Effect_Localised":"The economic status of $#MinorFaction; has declined in the $#System; system.", "Trend":"DownBad" } ], "Influence":[ { "SystemAddress":525873432939, "Trend":"DownBad", "Influence":"+" } ], "ReputationTrend":"DownBad", "Reputation":"+" } ] }
 
@@ -742,12 +733,79 @@ namespace SrvSurvey
         // TODO: the rest...
     }
 
-    class MissionAbandoned: JournalEntry
+    class MissionAbandoned : JournalEntry
     {
         // { "timestamp":"2024-01-04T04:55:12Z", "event":"MissionAbandoned", "Name":"Mission_TheDead_name", "LocalisedName":"Decoding the Ancient Ruins", "MissionID":949931893 }
         public string Name;
         public long MissionID;
         public string LocalisedName;
+    }
+
+    class Cargo : JournalEntry
+    {
+        // { "timestamp":"2024-01-04T19:16:45Z", "event":"Cargo", "Vessel":"SRV", "Count":3, "Inventory":[ { "Name":"ancienttablet", "Name_Localised":"Guardian Tablet", "Count":1, "Stolen":0 }, { "Name":"ancienturn", "Name_Localised":"Guardian Urn", "Count":1, "Stolen":0 }, { "Name":"ancienttotem", "Name_Localised":"Guardian Totem", "Count":1, "Stolen":0 } ] }
+        public string Vessel;
+        public int Count;
+        public List<InventoryItem> Inventory;
+    }
+
+    class InventoryItem
+    {
+        // { "Name":"ancienttablet", "Name_Localised":"Guardian Tablet", "Count":1, "Stolen":0 }
+        public string Name;
+        public string Name_Localised;
+        public int Count;
+        public bool Stolen;
+
+        public override string ToString()
+        {
+            return $"{Name}: {Count}";
+        }
+
+        public InventoryItem() { }
+
+        public InventoryItem(string name, string nameLocalized)
+        {
+            this.Name = name;
+            this.Name_Localised = nameLocalized;
+        }
+    }
+
+    class CollectCargo : JournalEntry
+    {
+        // { "timestamp":"2024-01-04T20:42:18Z", "event":"CollectCargo", "Type":"ancienttablet", "Type_Localised":"Guardian Tablet", "Stolen":false }
+        public string Type;
+        public string Type_Localised;
+        public bool Stolen;
+    }
+
+    class EjectCargo : JournalEntry
+    {
+        // { "timestamp":"2024-01-04T21:06:06Z", "event":"EjectCargo", "Type":"ancientrelic", "Type_Localised":"Guardian Relic", "Count":1, "Abandoned":false }
+        public string Type;
+        public string Type_Localised;
+        public int Count;
+        public bool Abandoned;
+    }
+
+    class CargoTransfer : JournalEntry
+    {
+        // { "timestamp":"2023-08-17T23:31:00Z", "event":"CargoTransfer", "Transfers":[ { "Type":"ancienttablet", "Type_Localised":"Guardian Tablet", "Count":1, "Direction":"toship" }, { "Type":"ancientrelic", "Type_Localised":"Guardian Relic", "Count":2, "Direction":"toship" }, { "Type":"ancienttotem", "Type_Localised":"Guardian Totem", "Count":1, "Direction":"toship" } ] }
+        public List<TransferItem> Transfers;
+    }
+
+    class TransferItem
+    {
+        // { "Type":"ancienttablet", "Type_Localised":"Guardian Tablet", "Count":1, "Direction":"toship" }
+        public string Type;
+        public string Type_Localised;
+        public int Count;
+        public string Direction;
+
+        public override string ToString()
+        {
+            return $"{Type}: {Count} => {Direction}";
+        }
     }
 
 }
