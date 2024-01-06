@@ -48,9 +48,9 @@ namespace SrvSurvey.net
                     var json3 = await Git.client.GetStringAsync($"https://raw.githubusercontent.com/njthomson/SrvSurvey/main/SrvSurvey/allRuins.json");
                     File.WriteAllText(Path.Combine(Git.pubDataFolder, "allRuins.json"), json3);
 
-                    //Game.log($"Downloading allStructuresRuins.json");
-                    //var json4 = await Git.client.GetStringAsync($"https://raw.githubusercontent.com/njthomson/SrvSurvey/main/SrvSurvey/allRuins.json");
-                    //File.WriteAllText(Path.Combine(Git.pubDataFolder, "allStructures.json"), json4);
+                    Game.log($"Downloading allStructuresRuins.json");
+                    var json4 = await Git.client.GetStringAsync($"https://raw.githubusercontent.com/njthomson/SrvSurvey/main/SrvSurvey/allStructures.json");
+                    File.WriteAllText(Path.Combine(Git.pubDataFolder, "allStructures.json"), json4);
 
                     Game.log($"Downloading guardian.zip ...");
                     var url = $"https://raw.githubusercontent.com/njthomson/SrvSurvey/main/data/guardian.zip";

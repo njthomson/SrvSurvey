@@ -683,9 +683,9 @@ namespace SrvSurvey
 
         protected override void onJournalEntry(MaterialCollected entry)
         {
-            if (this.nearestPoi.type != POIType.obelisk)
+            if (this.nearestPoi?.type != POIType.obelisk)
             {
-                Game.log($"No obelisk is known by '{this.nearestPoi.name}'!");
+                Game.log($"No obelisk is known by '{this.nearestPoi?.name}'!");
                 return;
             }
             var obelisk = siteData.getActiveObelisk(this.nearestPoi.name, true)!;

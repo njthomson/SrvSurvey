@@ -171,6 +171,20 @@ namespace SrvSurvey.game
             return data;
         }
 
+        public static Dictionary<SiteType, string> mapSiteTypeToSettlementName = new Dictionary<SiteType, string>()
+        {
+            { SiteType.Lacrosse, "$Ancient_Tiny_001" },
+            { SiteType.Crossroads, "$Ancient_Tiny_002" },
+            { SiteType.Fistbump, "$Ancient_Tiny_003" },
+            { SiteType.Hammerbot, "$Ancient_Small_001" },
+            { SiteType.Bear, "$Ancient_Small_002" },
+            { SiteType.Bowl, "$Ancient_Small_003" },
+            { SiteType.Turtle, "$Ancient_Small_005" },
+            { SiteType.Robolobster, "$Ancient_Medium_001" },
+            { SiteType.Squid, "$Ancient_Medium_002" },
+            { SiteType.Stickyhand, "$Ancient_Medium_003" },
+        };
+
         public static SiteType getStructureTypeFromName(string settlementName)
         {
             var name = settlementName.Substring(0, settlementName.IndexOf(":#"));
@@ -912,7 +926,6 @@ namespace SrvSurvey.game
         public static SystemSettlementSummary forRuins(SystemData systemData, SystemBody body, int idx)
         {
             var site = Game.canonn.allRuins.FirstOrDefault(_ => _.systemAddress == systemData.address && _.bodyId == body.id && _.idx == idx);
-
             if (site == null) throw new Exception("New site found??");
 
             var summary = new SystemSettlementSummary()
@@ -956,48 +969,42 @@ namespace SrvSurvey.game
             return summary;
         }
 
-        public static SystemSettlementSummary forStructure(SystemData systemData, SystemBody body, string settlementName)
+        public static SystemSettlementSummary forStructure(SystemData systemData, SystemBody body)
         {
-            var site = Game.canonn.allStructures.FirstOrDefault(_ => _.systemAddress == 4208564474538 && _.bodyId == 19); // _.systemAddress == this.address && _.bodyId == body.id);
+            var site = Game.canonn.allStructures.FirstOrDefault(_ => _.systemAddress == systemData.address && _.bodyId == body.id);
+            if (site == null) throw new Exception("New site found??");
 
-            var siteData = GuardianSiteData.Load("Col 173 Sector AD-H c11-15 B 2", "$Ancient_Small_002:#index=1;");
-
-            var siteStatus = siteData == null
-                ? "Unknown"
-                : siteData.isSurveyComplete()
-                    ? "Surveyed"
-                    : "Survey pending";
-
+            var siteType = Enum.Parse<GuardianSiteData.SiteType>(site.siteType);
             var summary = new SystemSettlementSummary()
             {
                 body = body,
-                displayText = $"{body.name.Replace(systemData.name, "")}: {siteData!.type}",
-                status = siteStatus
+                name = GuardianSiteData.mapSiteTypeToSettlementName[siteType],
+                displayText = $"{body.name.Replace(systemData.name, "")}: {siteType}",
             };
 
             // add blue print type
-            if (siteData.type == GuardianSiteData.SiteType.Robolobster || siteData.type == GuardianSiteData.SiteType.Squid || siteData.type == GuardianSiteData.SiteType.Stickyhand)
-                summary.type += ", BP: figher";
-            else if (siteData.type == GuardianSiteData.SiteType.Turtle)
-                summary.type += ", BP: module";
-            else if (siteData.type == GuardianSiteData.SiteType.Bear || siteData.type == GuardianSiteData.SiteType.Hammerbot || siteData.type == GuardianSiteData.SiteType.Bowl)
-                summary.type += ", BP: weapon";
+            if (siteType == GuardianSiteData.SiteType.Robolobster || siteType == GuardianSiteData.SiteType.Squid || siteType == GuardianSiteData.SiteType.Stickyhand)
+                summary.status = "Blue print: fighter";
+            else if (siteType == GuardianSiteData.SiteType.Turtle)
+                summary.status = "Blue print: module";
+            else if (siteType == GuardianSiteData.SiteType.Bear || siteType == GuardianSiteData.SiteType.Hammerbot || siteType == GuardianSiteData.SiteType.Bowl)
+                summary.status = "Blue print: weapon";
 
             // add required Ram Tah logs, if relevant
             var cmdr = Game.activeGame?.cmdr;
             if (cmdr?.decodeTheLogsMissionActive == TahMissionStatus.Active)
             {
                 // TODO: ...
-                //var pubData = GuardianSitePub.Load(body.name, idx, Enum.Parse<GuardianSiteData.SiteType>(site.siteType, true));
-                //if (pubData == null) throw new Exception("Why?");
+                var pubData = GuardianSitePub.Load(body.name, 1, Enum.Parse<GuardianSiteData.SiteType>(site.siteType, true));
+                if (pubData == null) throw new Exception("Why?");
 
-                //var logsNeeded = pubData.ao
-                //    .Where(_ => !cmdr.decodeTheRuins.Contains(_.msg))
-                //    .Select(_ => _.msg)
-                //    .OrderBy(_ => _)
-                //    .ToHashSet();
+                var logsNeeded = pubData.ao
+                    .Where(_ => !cmdr.decodeTheRuins.Contains(_.msg))
+                    .Select(_ => _.msg)
+                    .OrderBy(_ => _)
+                    .ToHashSet();
 
-                //summary.extra = "Rah Tah: " + string.Join(" ", logsNeeded);
+                summary.extra = "Rah Tah: " + string.Join(" ", logsNeeded);
             }
 
             return summary;

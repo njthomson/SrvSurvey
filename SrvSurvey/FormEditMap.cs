@@ -90,6 +90,17 @@ namespace SrvSurvey
                 case GuardianSiteData.SiteType.Alpha: endAt = 'Q'; break;
                 case GuardianSiteData.SiteType.Beta: endAt = 'U'; break;
                 case GuardianSiteData.SiteType.Gamma: endAt = 'S'; break;
+
+                case GuardianSiteData.SiteType.Lacrosse: endAt = 'D'; break;
+                case GuardianSiteData.SiteType.Crossroads: endAt = 'D'; break;
+                case GuardianSiteData.SiteType.Fistbump: endAt = 'C'; break;
+                case GuardianSiteData.SiteType.Hammerbot: endAt = 'C'; break;
+                case GuardianSiteData.SiteType.Bear: endAt = 'E'; break;
+                case GuardianSiteData.SiteType.Bowl: endAt = 'D'; break;
+                case GuardianSiteData.SiteType.Turtle: endAt = 'D'; break;
+                case GuardianSiteData.SiteType.Robolobster: endAt = 'D'; break;
+                case GuardianSiteData.SiteType.Squid: endAt = 'F'; break;
+                case GuardianSiteData.SiteType.Stickyhand: endAt = 'H'; break;
             }
 
             listGroupNames.Items.Clear();

@@ -608,7 +608,9 @@ namespace SrvSurvey.game
 
                 var json = File.ReadAllText(filepath);
                 var pubData = JsonConvert.DeserializeObject<GuardianSitePub>(json)!;
-                pubData.bodyName = filename.Substring(0, filename.IndexOf("-ruins"));
+                var idx = filename.IndexOf("-ruins");
+                if (idx < 0) idx = filename.IndexOf("-structure");
+                pubData.bodyName = filename.Substring(0, idx);
                 sites.Add(pubData);
 
                 // TODO: Structures?

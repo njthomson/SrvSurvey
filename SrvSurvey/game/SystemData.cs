@@ -1007,11 +1007,14 @@ namespace SrvSurvey.game
                     if (body != null)
                         this.settlements.Add(SystemSettlementSummary.forRuins(this, body, site.idx));
                 }
-
-                // TODO: Handle structures
+                else
+                {
+                    var body = this.bodies.FirstOrDefault(_ => _.name == site.bodyName)!;
+                    if (body != null)
+                        this.settlements.Add(SystemSettlementSummary.forStructure(this, body));
+                }
             }
         }
-
     }
 
     internal class SystemBody

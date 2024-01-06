@@ -330,6 +330,10 @@ namespace SrvSurvey
                 case GuardianSiteData.SiteType.Robolobster:
                     targetAlt = 1500d; // TODO: setting?
                     break;
+                default:
+                    targetAlt = 650d;
+                    break;
+                    // crossroads: 500
             }
 
             return targetAlt;
@@ -517,6 +521,7 @@ namespace SrvSurvey
                 case 'B': return "Biology";
                 case 'T': return "Technology";
                 case 'L': return "Language";
+                case '#': return "";
                 default:
                     throw new Exception($"Unexpected character '{c}'");
             }

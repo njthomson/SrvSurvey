@@ -171,7 +171,7 @@ namespace SrvSurvey
             // background + edges;
             if (!string.IsNullOrEmpty(name) && this.cmdr?.decodeTheRuins.Contains(name) == true)
             {
-                e.Graphics.FillRectangle(Brushes.Lime, e.Bounds);
+                e.Graphics.FillRectangle(Brushes.ForestGreen, e.Bounds);
             }
             else if (e.Item?.Selected == true)
             {
