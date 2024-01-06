@@ -1,0 +1,25 @@
+{
+  "sid": "GS093",
+  "idx": 1,
+  "sh": -1,
+  "t": "Stickyhand",
+  "rh": -1,
+  "ll": {
+    "lat": 43.729572,
+    "long": -98.208046
+  },
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "ABCDEFGH",
+  "ao": [
+    "A03-re,ca-#15-",
+    "A11-or,or-#12-",
+    "B03-ca,or-#6-",
+    "B08-se,cy-#1-",
+    "D02-or,ca-#19-",
+    "D06-re,or-#20-",
+    "G01-re,ca-#15-",
+    "G06-or,or-#12-"
+  ]
+}

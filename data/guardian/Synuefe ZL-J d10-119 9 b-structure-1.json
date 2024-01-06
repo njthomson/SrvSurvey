@@ -1,0 +1,20 @@
+{
+  "sid": "GS007",
+  "idx": 1,
+  "sh": -1,
+  "t": "Fistbump",
+  "rh": -1,
+  "ll": {
+    "lat": 13.470932,
+    "long": -50.470749
+  },
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "ABC",
+  "ao": [
+    "A10-re,to-#14-",
+    "B07-re,ur-#16-",
+    "C09-re,to-#14-"
+  ]
+}

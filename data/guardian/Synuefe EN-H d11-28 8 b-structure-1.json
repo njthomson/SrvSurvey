@@ -1,0 +1,20 @@
+{
+  "sid": "GS087",
+  "idx": 1,
+  "sh": -1,
+  "t": "Robolobster",
+  "rh": -1,
+  "ll": {
+    "lat": 42.945576,
+    "long": 179.955643
+  },
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "ABCD",
+  "ao": [
+    "A04-or,ur-#21-",
+    "B12-re,ta-#17-",
+    "C07-re,to-#14-"
+  ]
+}

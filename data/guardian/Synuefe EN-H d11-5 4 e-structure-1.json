@@ -1,0 +1,22 @@
+{
+  "sid": "GS073",
+  "idx": 1,
+  "sh": 348,
+  "t": "Lacrosse",
+  "rh": -1,
+  "ll": {
+    "lat": 58.95113,
+    "long": 88.509132
+  },
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "ABCD",
+  "ao": [
+    "A05-re,or-#20-",
+    "B07-ta,to-#24-",
+    "D08-re,ta-#17-",
+    "D11-re,or-#20-",
+    "D12-re,to-#14-"
+  ]
+}

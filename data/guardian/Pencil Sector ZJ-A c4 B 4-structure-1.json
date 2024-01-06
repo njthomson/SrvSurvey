@@ -1,0 +1,22 @@
+{
+  "sid": "GS130",
+  "idx": 1,
+  "sh": -1,
+  "t": "Turtle",
+  "rh": -1,
+  "ll": {
+    "lat": 46.485451,
+    "long": -28.382158
+  },
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "ABCD",
+  "ao": [
+    "A12-ta,to-#24-",
+    "B08-re,to-#14-",
+    "C02-ca,re-#9-",
+    "C05-re,ca-#15-",
+    "D07-ur,ta-#27-"
+  ]
+}

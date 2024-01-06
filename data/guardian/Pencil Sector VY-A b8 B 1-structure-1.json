@@ -1,0 +1,22 @@
+{
+  "sid": "GS124",
+  "idx": 1,
+  "sh": -1,
+  "t": "Turtle",
+  "rh": -1,
+  "ll": {
+    "lat": 28.877272,
+    "long": 10.441991
+  },
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "ABCD",
+  "ao": [
+    "A09-or,ur-#21-",
+    "B06-re,ta-#17-",
+    "C01-se,ba-#2-",
+    "C06-re,ta-#17-",
+    "D06-ta,to-#24-"
+  ]
+}

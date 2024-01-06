@@ -1,0 +1,21 @@
+{
+  "sid": "GS101",
+  "idx": 1,
+  "sh": -1,
+  "t": "Squid",
+  "rh": -1,
+  "ll": {
+    "lat": 44.868057,
+    "long": -118.881874
+  },
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "ABCDEF",
+  "ao": [
+    "A04-ur,ca-#28-",
+    "B13-or,ca-#19-",
+    "C01-or,ca-#19-",
+    "D02-re,ca-#15-"
+  ]
+}

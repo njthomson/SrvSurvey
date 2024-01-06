@@ -36,7 +36,10 @@ namespace SrvSurvey.canonn
                     ? JsonConvert.DeserializeObject<List<GuardianRuinSummary>>(File.ReadAllText(pubAllRuinsPath))!
                      : JsonConvert.DeserializeObject<List<GuardianRuinSummary>>(File.ReadAllText(Canonn.allRuinsStaticPath))!;
             this.allBeacons = JsonConvert.DeserializeObject<List<GuardianBeaconSummary>>(File.ReadAllText(Canonn.allBeaconsStaticPath))!;
-            this.allStructures = JsonConvert.DeserializeObject<List<GuardianStructureSummary>>(File.ReadAllText(Canonn.allStructuresStaticPath))!;
+            var pubAllStructuresPath = Path.Combine(Git.pubDataFolder, "allStructures.json");
+            this.allStructures = File.Exists(pubAllStructuresPath)
+                ? JsonConvert.DeserializeObject<List<GuardianStructureSummary>>(File.ReadAllText(pubAllStructuresPath))!
+                : JsonConvert.DeserializeObject<List<GuardianStructureSummary>>(File.ReadAllText(Canonn.allStructuresStaticPath))!;
             Game.log($"Loaded {this.allRuins.Count} ruins, {this.allBeacons.Count} beacons, {this.allStructures.Count} beacons");
 
             /*
@@ -1084,7 +1087,7 @@ namespace SrvSurvey.canonn
 
         #endregion
 
-        #region parse LilacLight sheet
+        #region parse LilacLight sheets
 
         public void readXmlSheetRuins2()
         {
@@ -1092,12 +1095,12 @@ namespace SrvSurvey.canonn
             var doc = XDocument.Load(@"d:\code\Guardian Ruin Survey.xml");
 
             var obeliskGroupings = new Dictionary<string, string>();
-            parseObeliskGroupings(doc, "Alpha - Groups Present", obeliskGroupings);
-            parseObeliskGroupings(doc, "Beta - Groups Present", obeliskGroupings);
-            parseObeliskGroupings(doc, "Gamma - Groups Present", obeliskGroupings);
+            parseRuinObeliskGroupings(doc, "Alpha - Groups Present", obeliskGroupings);
+            parseRuinObeliskGroupings(doc, "Beta - Groups Present", obeliskGroupings);
+            parseRuinObeliskGroupings(doc, "Gamma - Groups Present", obeliskGroupings);
 
-            var sites = parseGRNames(doc, obeliskGroupings);
-            Game.log($"Writing {sites.Count} pubData files");
+            var sites = parseGRRuins(doc, obeliskGroupings);
+            Game.log($"Writing {sites.Count} pubData Ruins files");
 
             // now write them out to disk
             foreach (var site in sites)
@@ -1177,10 +1180,10 @@ namespace SrvSurvey.canonn
             var summaryJson = JsonConvert.SerializeObject(this.allRuins, Formatting.Indented);
             File.WriteAllText(allRuinsStaticPathDbg, summaryJson);
 
-            Game.log($"Writing {sites.Count} pubData files - complete");
+            Game.log($"Writing {sites.Count} pubData Ruins files - complete");
         }
 
-        private List<GuardianSitePub> parseGRNames(XDocument doc, Dictionary<string, string> obeliskGroupings)
+        private List<GuardianSitePub> parseGRRuins(XDocument doc, Dictionary<string, string> obeliskGroupings)
         {
             var sites = new List<GuardianSitePub>();
 
@@ -1321,7 +1324,7 @@ namespace SrvSurvey.canonn
             return sites;
         }
 
-        private void parseObeliskGroupings(XDocument doc, string tabName, Dictionary<string, string> obeliskGroupings)
+        private void parseRuinObeliskGroupings(XDocument doc, string tabName, Dictionary<string, string> obeliskGroupings)
         {
             var table = doc.Root?.Elements().Where(_ => _.Name.LocalName == "Worksheet" && _.FirstAttribute?.Value == tabName).First().Elements()!;
             var rows = table.Elements(XName.Get("Row", "urn:schemas-microsoft-com:office:spreadsheet")).Skip(1);
@@ -1335,6 +1338,248 @@ namespace SrvSurvey.canonn
 
                 obeliskGroupings.Add(siteId, groups);
             }
+        }
+
+        public async Task readXmlSheetRuins3()
+        {
+            var doc = XDocument.Load(@"d:\code\Guardian Structure Survey.xml");
+
+            var obeliskGroupings = new Dictionary<string, string>();
+
+            var sites = parseGRStructures(doc, obeliskGroupings);
+            Game.log($"Writing {sites.Count} pubData Structure files");
+
+            // now write them out to disk
+            foreach (var site in sites)
+            {
+                var pubPath = Path.Combine(@"D:\code\SrvSurvey\data\guardian", $"{site.systemName} {site.bodyName}-structure-{site.idx}.json");
+                site.ao = site.ao.OrderBy(_ => _.name).ToHashSet();
+
+                var json = JsonConvert.SerializeObject(site, Formatting.Indented);
+                File.WriteAllText(pubPath, json);
+
+                // update parts of summary from file
+                var siteSummary = this.allStructures.FirstOrDefault(_ => _.systemName == site.systemName && _.bodyName == site.bodyName); // && _.idx == site.idx);
+                if (siteSummary == null) throw new Exception("Why?");
+                // location
+                if (site.ll != null && (double.IsNaN(siteSummary.latitude) || double.IsNaN(siteSummary.longitude)))
+                {
+                    siteSummary.latitude = site.ll.Lat;
+                    siteSummary.longitude = site.ll.Long;
+                }
+                // siteHeading
+                if (siteSummary.siteHeading == -1 && site.sh != -1 && siteSummary.siteHeading != site.sh)
+                    siteSummary.siteHeading = site.sh;
+
+                if (siteSummary.siteID <= 0)
+                    siteSummary.siteID = int.Parse(site.sid.Substring(2));
+
+                // surveyComplete
+                if (!siteSummary.surveyComplete)
+                {
+                    // The survey is complete when we know:
+                    var complete = true;
+
+                    // the site heading
+                    complete &= siteSummary.siteHeading >= 0;
+
+                    // live lat / long
+                    complete &= !double.IsNaN(siteSummary.latitude);
+                    complete &= !double.IsNaN(siteSummary.longitude);
+
+                    // status of all POI
+                    if (!SiteTemplate.sites.ContainsKey(site.t))
+                        complete = false;
+                    else
+                    {
+                        var template = SiteTemplate.sites[site.t];
+                        var sumCountNonObelisks = template.poi
+                            .Where(_ => _.type != POIType.obelisk && _.type != POIType.brokeObelisk)
+                            .Count();
+                        var sumCountPOI = (site.pp?.Split(",").Length ?? 0) + (site.pa?.Split(",").Length ?? 0) + (site.pe?.Split(",").Length ?? 0);
+                        complete &= sumCountPOI == sumCountNonObelisks; // TODO: Compare with template count
+                    }
+                    // every obelisk group has at least 1 active obelisk
+                    foreach (var g in site.og)
+                        complete &= site.ao.Any(_ => _.name.StartsWith(g.ToString().ToUpperInvariant()));
+
+                    siteSummary.surveyComplete = complete;
+                }
+
+                // match some Ruins?
+                if (siteSummary.systemAddress < 0)
+                    siteSummary.systemAddress = this.allRuins.FirstOrDefault(_ => _.systemName == siteSummary.systemName)?.systemAddress ?? -1;
+                // match some other structure?
+                if (siteSummary.systemAddress < 0)
+                    siteSummary.systemAddress = this.allStructures.FirstOrDefault(_ => _.systemName == siteSummary.systemName)?.systemAddress ?? -1;
+
+                // match some Ruins?
+                if (siteSummary.bodyId < 0)
+                    siteSummary.bodyId = this.allRuins.FirstOrDefault(_ => _.systemName == siteSummary.systemName && _.bodyName == siteSummary.bodyName)?.bodyId ?? -1;
+                if (siteSummary.bodyId < 0)
+                    siteSummary.bodyId = this.allStructures.FirstOrDefault(_ => _.systemName == siteSummary.systemName && _.bodyName == siteSummary.bodyName)?.bodyId ?? -1;
+
+                if (siteSummary.systemAddress < 0 || siteSummary.bodyId < 0)
+                {
+                    var rslt = await Game.edsm.getBodies(siteSummary.systemName);
+                    siteSummary.systemAddress = rslt.id64;
+                    siteSummary.bodyId = rslt.bodies.FirstOrDefault(_ => _.name == $"{siteSummary.systemName} {siteSummary.bodyName}")?.bodyId ?? -1;
+                }
+
+                if (siteSummary.systemAddress < 0 || siteSummary.bodyId < 0)
+                    throw new Exception("Why?!");
+            }
+
+            var summaryJson = JsonConvert.SerializeObject(this.allStructures, Formatting.Indented);
+            File.WriteAllText(allStructuresStaticPathDbg, summaryJson);
+
+            Game.log($"Writing {sites.Count} pubData Structure files - complete");
+        }
+
+        private static Dictionary<string, string> structureObeliskGroups = new Dictionary<string, string>()
+        {
+            { "Turtle", "ABCD" },
+            { "Crossroads", "ABCD" },
+            { "Fistbump", "ABC" },
+            { "Lacrosse", "ABCD" },
+            { "Bear", "ABCDE" },
+            { "Bowl", "ABCD" },
+            { "Hammerbot", "ABC" },
+            { "Robolobster", "ABCD" },
+            { "Squid", "ABCDEF" },
+            { "Stickyhand", "ABCDEFGH" },
+        };
+
+        private List<GuardianSitePub> parseGRStructures(XDocument doc, Dictionary<string, string> obeliskGroupings)
+        {
+            var sites = new List<GuardianSitePub>();
+
+            var table = doc.Root?.Elements().Where(_ => _.Name.LocalName == "Worksheet" && _.FirstAttribute?.Value == "Structures").First().Elements()!;
+            var rows = table.Elements(XName.Get("Row", "urn:schemas-microsoft-com:office:spreadsheet")).Skip(2);
+
+            GuardianSitePub site = null!;
+
+            foreach (var row in rows)
+            {
+                var cells = row.Elements(XName.Get("Cell", "urn:schemas-microsoft-com:office:spreadsheet")).ToList();
+                try
+                {
+                    // start a new site?
+                    var siteId = cells[1].Value;
+                    if (!string.IsNullOrEmpty(siteId))
+                    {
+                        siteId = siteId.Replace(" ", "").Substring(0, 5);
+                        var systemName = cells[2].Value;
+                        var bodyName = cells[9].Value;
+                        var idx = 1;
+                        var siteTypeCell = cells[17].Value;
+                        var siteType = siteTypeCell.Split('-', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries).Last();
+                        var latitude = double.Parse(cells[15].Value);
+                        var longitude = double.Parse(cells[16].Value);
+
+                        var pubPath = Path.Combine(@"D:\code\SrvSurvey\data\guardian", $"{systemName} {bodyName}-structure-{idx}.json");
+                        if (File.Exists(pubPath))
+                        {
+                            // start from existing file
+                            var json = File.ReadAllText(pubPath);
+                            site = JsonConvert.DeserializeObject<GuardianSitePub>(json)!;
+                            if (site.sid == null) site.sid = siteId;
+                            site.systemName = systemName;
+                            site.bodyName = bodyName;
+                            site.ll = new LatLong2(latitude, longitude);
+                            if (site.idx == 0) site.idx = idx;
+                            if (site.t == SiteType.Unknown) site.t = Enum.Parse<SiteType>(siteType, true);
+                            if (site.og == null) site.og = structureObeliskGroups[siteType];
+                            if (site.ao == null) site.ao = new HashSet<ActiveObelisk>();
+                        }
+                        else
+                        {
+                            site = new GuardianSitePub()
+                            {
+                                sid = siteId,
+                                systemName = systemName,
+                                bodyName = bodyName,
+                                ll = new LatLong2(latitude, longitude),
+                                idx = idx,
+                                t = Enum.Parse<SiteType>(siteType, true),
+                                og = structureObeliskGroups[siteType],
+                                ao = new HashSet<ActiveObelisk>(),
+                            };
+                        }
+                        sites.Add(site);
+
+                        // and create/update the summary entry for this Structure
+                        var siteSummary = this.allStructures.FirstOrDefault(_ => _.systemName.Equals(site.systemName, StringComparison.OrdinalIgnoreCase) && _.bodyName.Equals(site.bodyName, StringComparison.OrdinalIgnoreCase)); // && _.idx == site.idx);
+                        if (siteSummary == null)
+                        {
+                            siteSummary = new GuardianStructureSummary()
+                            {
+                                // siteID is below
+                                systemName = site.systemName,
+                                bodyName = site.bodyName,
+                                distanceToArrival = double.Parse(cells[10].Value),
+                                siteType = site.t.ToString(),
+                                idx = site.idx,
+                                latitude = double.Parse(cells[15].Value),
+                                longitude = double.Parse(cells[16].Value),
+
+                                // populated from pubData file ...
+                                //   siteHeading
+                                //   relicTowerHeading
+                            };
+                            this.allStructures.Add(siteSummary);
+                        }
+
+                        // update starPos if missing
+                        siteSummary.siteID = int.Parse(site.sid.Substring(2));
+                        if (siteSummary.starPos == null)
+                        {
+                            siteSummary.starPos = new double[3]
+                            {
+                                double.Parse(cells[3].Value),
+                                double.Parse(cells[4].Value),
+                                double.Parse(cells[5].Value),
+                            };
+                        }
+
+                        continue;
+                    }
+
+                    // collect obelisk items and logs
+                    var bank = cells[18].Value;
+                    var bankIdx = cells[19].Value;
+
+                    var item1 = cells[20].Value;
+                    var item2 = cells[21].Value;
+                    if (string.IsNullOrEmpty(item1) || item1 == "-")
+                    {
+                        // skip rows without items
+                        Game.log($"Uncertain items. Skipping row:" + string.Join(", ", cells.Select(_ => _.Value)));
+                        continue;
+                    }
+
+                    var msgNum = int.Parse(cells[22].Value);
+
+                    var activeObelisk = new ActiveObelisk()
+                    {
+                        name = bank.ToUpperInvariant() + int.Parse(bankIdx).ToString("00"),
+                        msg = $"#{msgNum}",
+                    };
+                    activeObelisk.items.Add(Enum.Parse<ObeliskItem>(item1, true));
+                    if (!string.IsNullOrEmpty(item2) && item2 != "-")
+                        activeObelisk.items.Add(Enum.Parse<ObeliskItem>(item2, true));
+
+                    if (!site.ao.Any(_ => _.ToString(true) == activeObelisk.ToString(true)))
+                        site.ao.Add(activeObelisk);
+                }
+                catch (Exception ex)
+                {
+                    Game.log($"Error: {ex}\r\n" +
+                        $"Row:" + string.Join(", ", cells.Select(_ => _.Value)));
+                }
+            }
+
+            return sites;
         }
 
         #endregion

@@ -1,0 +1,22 @@
+{
+  "sid": "GS129",
+  "idx": 1,
+  "sh": -1,
+  "t": "Lacrosse",
+  "rh": -1,
+  "ll": {
+    "lat": -22.337757,
+    "long": 6.003507
+  },
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "ABCD",
+  "ao": [
+    "A03-re,ur-#16-",
+    "B03-re,ta-#17-",
+    "D08-re,ta-#17-",
+    "D11-re,or-#20-",
+    "D13-ca,ur-#10-"
+  ]
+}

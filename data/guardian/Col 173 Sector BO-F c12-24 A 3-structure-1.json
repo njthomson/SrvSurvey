@@ -1,0 +1,21 @@
+{
+  "sid": "GS047",
+  "idx": 1,
+  "sh": -1,
+  "t": "Crossroads",
+  "rh": -1,
+  "ll": {
+    "lat": -7.948433,
+    "long": -0.178041
+  },
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "ABCD",
+  "ao": [
+    "A08-re,or-#20-",
+    "B06-re,or-#20-",
+    "B11-ur,ta-#27-",
+    "C02-ur,ta-#27-"
+  ]
+}

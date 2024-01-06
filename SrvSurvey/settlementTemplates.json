@@ -1380,5 +1380,45 @@
       { "name": "t2", "type": "relic", "angle": 346.676949463081, "dist": 64.024173292749380184309303466, "rot": 340.0 }
     ],
     "obeliskGroupNameLocations": {}
+  },
+  "Turtle": {
+    "name": "$Ancient_Small_005:#index=1;",
+    "backgroundImage": "",
+    "imageOffset": "0, 0",
+    "scaleFactor": 1.0,
+    "poi": [],
+    "obeliskGroupNameLocations": {}
+  },
+  "Crossroads": {
+    "name": "$Ancient_Tiny_002:#index=1;",
+    "backgroundImage": "",
+    "imageOffset": "0, 0",
+    "scaleFactor": 1.0,
+    "poi": [],
+    "obeliskGroupNameLocations": {}
+  },
+  "Bowl": {
+    "name": "$Ancient_Small_003:#index=1;",
+    "backgroundImage": "",
+    "imageOffset": "0, 0",
+    "scaleFactor": 1.0,
+    "poi": [],
+    "obeliskGroupNameLocations": {}
+  },
+  "Hammerbot": {
+    "name": "$Ancient_Small_001:#index=1;",
+    "backgroundImage": "",
+    "imageOffset": "0, 0",
+    "scaleFactor": 1.0,
+    "poi": [],
+    "obeliskGroupNameLocations": {}
+  },
+  "Stickyhand": {
+    "name": "$Ancient_Medium_003:#index=1;",
+    "backgroundImage": "",
+    "imageOffset": "0, 0",
+    "scaleFactor": 1.0,
+    "poi": [],
+    "obeliskGroupNameLocations": {}
   }
 }

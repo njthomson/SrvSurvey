@@ -1,0 +1,20 @@
+{
+  "sid": "GS080",
+  "idx": 1,
+  "sh": -1,
+  "t": "Hammerbot",
+  "rh": -1,
+  "ll": {
+    "lat": -48.604752,
+    "long": 121.875587
+  },
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "ABC",
+  "ao": [
+    "A04-ur,ca-#28-",
+    "B03-re,or-#20-",
+    "C13-re,ur-#16-"
+  ]
+}

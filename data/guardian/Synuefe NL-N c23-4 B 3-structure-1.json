@@ -1,0 +1,22 @@
+{
+  "sid": "GS049",
+  "idx": 1,
+  "sh": -1,
+  "t": "Turtle",
+  "rh": -1,
+  "ll": {
+    "lat": 51.209953,
+    "long": 89.097206
+  },
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "ABCD",
+  "ao": [
+    "A04-or,ca-#19-",
+    "B04-re,ur-#16-",
+    "C01-se,ba-#2-",
+    "C06-re,ta-#17-",
+    "D06-ta,to-#24-"
+  ]
+}

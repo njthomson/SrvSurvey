@@ -1,0 +1,25 @@
+{
+  "sid": "GS099",
+  "idx": 1,
+  "sh": -1,
+  "t": "Squid",
+  "rh": -1,
+  "ll": {
+    "lat": 33.619419,
+    "long": 40.013123
+  },
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "ABCDEF",
+  "ao": [
+    "A15-re,or-#20-",
+    "A18-or,ca-#19-",
+    "B05-re,to-#14-",
+    "B20-re,ca-#15-",
+    "C08-re,ca-#15-",
+    "C24-re,to-#14-",
+    "D06-ca,or-#6-",
+    "D08-se,cy-#1-"
+  ]
+}

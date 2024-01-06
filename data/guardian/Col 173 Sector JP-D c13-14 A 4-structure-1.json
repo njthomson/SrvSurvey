@@ -1,0 +1,21 @@
+{
+  "sid": "GS120",
+  "idx": 1,
+  "sh": -1,
+  "t": "Crossroads",
+  "rh": -1,
+  "ll": {
+    "lat": 69.366951,
+    "long": -95.814087
+  },
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "ABCD",
+  "ao": [
+    "A01-re,to-#14-",
+    "B02-re,to-#14-",
+    "B11-ur,ta-#27-",
+    "C05-re,to-#14-"
+  ]
+}

@@ -511,10 +511,12 @@ namespace SrvSurvey.canonn
 
     internal class GuardianSummary
     {
+        /// <summary> The ID number used by Canonn in GSSites, etc </summary>
+        public int siteID;
         public string systemName;
-        public long systemAddress;
+        public long systemAddress = -1;
         public string bodyName;
-        public int bodyId;
+        public int bodyId = -1;
         public double distanceToArrival;
         public double[] starPos;
         public string siteType;
@@ -587,5 +589,9 @@ namespace SrvSurvey.canonn
     internal class GuardianStructureSummary : GuardianSummary
     {
         public int idx;
+        public double latitude = double.NaN;
+        public double longitude = double.NaN;
+        public int siteHeading = -1;
+        public bool surveyComplete;
     }
 }

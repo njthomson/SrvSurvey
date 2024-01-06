@@ -399,7 +399,7 @@ namespace SrvSurvey.game
 
         public void loadPub()
         {
-            if (this.pubData != null || !this.isRuins)
+            if (this.pubData != null)
                 return;
 
             this.pubData = GuardianSitePub.Load(this.bodyName, this.index, this.type);
@@ -564,9 +564,11 @@ namespace SrvSurvey.game
 
             var files = onlyRuins
                 ? Directory.GetFiles(folder, "*-ruins-*.json")
-                : Directory.GetFiles(folder);
+                : Directory.GetFiles(folder)
+                    .Where(_ => !_.Contains("beacon"))
+                    .ToArray();
 
-            Game.log($"Reading {files.Length} ruins files from disk");
+            Game.log($"Reading {files.Length} guardian sites files from disk");
             return files
                 .Select(filename => Data.Load<GuardianSiteData>(filename))
                 .ToList()!;
@@ -802,7 +804,7 @@ namespace SrvSurvey.game
             txt.Append(msg);
 
             txt.Append("-");
-            if (!excludeData)
+            if (!excludeData && this.data != null)
                 txt.Append(string.Join(',', this.data.Select(_ => _.ToString()[0])));
 
             return txt.ToString();
@@ -947,7 +949,8 @@ namespace SrvSurvey.game
                     .OrderBy(_ => _)
                     .ToHashSet();
 
-                summary.extra = "Ram Tah: " + string.Join(" ", logsNeeded);
+                if (logsNeeded.Count > 0)
+                    summary.extra = "Ram Tah: " + string.Join(" ", logsNeeded);
             }
 
             return summary;

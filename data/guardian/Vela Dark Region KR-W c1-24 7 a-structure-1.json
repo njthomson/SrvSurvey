@@ -1,0 +1,25 @@
+{
+  "sid": "GS004",
+  "idx": 1,
+  "sh": -1,
+  "t": "Lacrosse",
+  "rh": -1,
+  "ll": {
+    "lat": 28.004879,
+    "long": -15.423215
+  },
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "ABCD",
+  "ao": [
+    "A04-re,ta-#17-",
+    "A06-ca,ur-#10-",
+    "B03-re,ta-#17-",
+    "B04-ur,to-#26-",
+    "D07-ur,to-#26-",
+    "D10-ca,ur-#10-",
+    "D13-ca,ur-#10-",
+    "D14-ur,to-#26-"
+  ]
+}

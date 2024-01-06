@@ -1,0 +1,21 @@
+{
+  "sid": "GS100",
+  "idx": 1,
+  "sh": -1,
+  "t": "Stickyhand",
+  "rh": -1,
+  "ll": {
+    "lat": 37.194111,
+    "long": 30.487875
+  },
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "ABCDEFGH",
+  "ao": [
+    "A05-or,ur-#21-",
+    "B06-re,ca-#15-",
+    "D03-ur,ca-#28-",
+    "H02-or,ur-#21-"
+  ]
+}

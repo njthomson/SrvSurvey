@@ -1,0 +1,20 @@
+{
+  "sid": "GS196",
+  "idx": 1,
+  "sh": -1,
+  "t": "Fistbump",
+  "rh": -1,
+  "ll": {
+    "lat": 59.925705,
+    "long": -43.706291
+  },
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "ABC",
+  "ao": [
+    "A10-re,to-#14-",
+    "B09-re,to-#14-",
+    "C09-re,to-#14-"
+  ]
+}

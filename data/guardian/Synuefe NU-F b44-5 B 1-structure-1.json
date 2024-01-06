@@ -1,0 +1,21 @@
+{
+  "sid": "GS086",
+  "idx": 1,
+  "sh": -1,
+  "t": "Stickyhand",
+  "rh": -1,
+  "ll": {
+    "lat": 55.652012,
+    "long": -27.694227
+  },
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "ABCDEFGH",
+  "ao": [
+    "A02-ur,to-#26-",
+    "B01-re,ur-#16-",
+    "E05-se,cy-#1-",
+    "H04-ur,to-#26-"
+  ]
+}

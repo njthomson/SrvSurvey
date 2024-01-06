@@ -1,0 +1,21 @@
+{
+  "sid": "GS091",
+  "idx": 1,
+  "sh": 347,
+  "t": "Stickyhand",
+  "rh": -1,
+  "ll": {
+    "lat": -0.874411,
+    "long": -38.162308
+  },
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "ABCDEFGH",
+  "ao": [
+    "A02-ur,to-#26-",
+    "B01-re,ur-#16-",
+    "E05-se,cy-#1-",
+    "H04-ur,to-#26-"
+  ]
+}

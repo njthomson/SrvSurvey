@@ -136,7 +136,7 @@ namespace SrvSurvey
             else
             {
                 this.dtx = 24f;
-                this.dty += this.drawTextAt($"All logs already scanned.", GameColors.brushGameOrange, GameColors.fontMiddle).Height;
+                this.dty += this.drawTextAt($"All logs at this site have\r\nalready scanned.", GameColors.brushGameOrange, GameColors.fontMiddle).Height;
                 if (this.dtx > sz.Width) sz.Width = this.dtx;
             }
 

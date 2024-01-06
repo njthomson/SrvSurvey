@@ -1,0 +1,22 @@
+{
+  "sid": "GS188",
+  "idx": 1,
+  "sh": -1,
+  "t": "Turtle",
+  "rh": -1,
+  "ll": {
+    "lat": 49.715645,
+    "long": 77.462921
+  },
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "ABCD",
+  "ao": [
+    "A12-ta,to-#24-",
+    "B08-re,to-#14-",
+    "C01-se,ba-#2-",
+    "C05-re,ca-#15-",
+    "D06-ta,to-#24-"
+  ]
+}

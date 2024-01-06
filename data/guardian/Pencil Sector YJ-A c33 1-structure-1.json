@@ -1,0 +1,21 @@
+{
+  "sid": "GS198",
+  "idx": 1,
+  "sh": -1,
+  "t": "Bear",
+  "rh": -1,
+  "ll": {
+    "lat": 3.07507,
+    "long": -68.783615
+  },
+  "pa": null,
+  "pp": null,
+  "pe": null,
+  "og": "ABCDE",
+  "ao": [
+    "B02-ur,or-#25-",
+    "C04-or,or-#12-",
+    "D04-or,or-#12-",
+    "E07-ur,or-#25-"
+  ]
+}

@@ -48,6 +48,10 @@ namespace SrvSurvey.net
                     var json3 = await Git.client.GetStringAsync($"https://raw.githubusercontent.com/njthomson/SrvSurvey/main/SrvSurvey/allRuins.json");
                     File.WriteAllText(Path.Combine(Git.pubDataFolder, "allRuins.json"), json3);
 
+                    //Game.log($"Downloading allStructuresRuins.json");
+                    //var json4 = await Git.client.GetStringAsync($"https://raw.githubusercontent.com/njthomson/SrvSurvey/main/SrvSurvey/allRuins.json");
+                    //File.WriteAllText(Path.Combine(Git.pubDataFolder, "allStructures.json"), json4);
+
                     Game.log($"Downloading guardian.zip ...");
                     var url = $"https://raw.githubusercontent.com/njthomson/SrvSurvey/main/data/guardian.zip";
                     var filepath = Path.Combine(Git.pubDataFolder, "guardian.zip");
@@ -80,7 +84,7 @@ namespace SrvSurvey.net
         {
             Game.log($"publishLocalData ...");
             var modifiedPubData = new List<GuardianSitePub>();
-            var sites = GuardianSiteData.loadAllSites(true);
+            var sites = GuardianSiteData.loadAllSites(false);
             var diffCount = 0;
 
             foreach (var site in sites)
@@ -189,7 +193,8 @@ namespace SrvSurvey.net
                 if (diff)
                 {
                     diffCount++;
-                    var filepath = Path.Combine(@"D:\code\SrvSurvey\data\guardian", $"{site.bodyName}-ruins-{site.index}.json");
+                    var roughType = site.isRuins ? "ruins" : "structure";
+                    var filepath = Path.Combine(@"D:\code\SrvSurvey\data\guardian", $"{site.bodyName}-{roughType}-{site.index}.json");
                     Game.log($"Updating pubData for: '{site.displayName}' into: {filepath}");
 
                     var json = JsonConvert.SerializeObject(site.pubData, Formatting.Indented);
