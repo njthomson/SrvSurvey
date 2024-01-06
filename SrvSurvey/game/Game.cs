@@ -657,7 +657,6 @@ namespace SrvSurvey.game
 
                 return false;
             });
-            if (lastCargoEntry == null) throw new Exception("Why no lastCargoEntry?");
 
             log($"Game.initCargoData: Processing {playCargo.Count} cargo journal items forwards...");
             playCargo.Reverse();

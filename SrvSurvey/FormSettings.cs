@@ -6,8 +6,6 @@ namespace SrvSurvey
 {
     public partial class FormSettings : Form
     {
-        private static string releaseVersion = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyFileVersionAttribute>()?.Version!;
-
         private Game game = Game.activeGame!;
         private readonly Dictionary<string, FieldInfo> map = new Dictionary<string, FieldInfo>();
 
@@ -22,7 +20,7 @@ namespace SrvSurvey
             // only show this button if there are multiple copies of EliteDengerous running at the same time
             var procED = Process.GetProcessesByName("EliteDangerous64");
             btnNextProc.Visible = procED.Length > 1;
-            this.Text += $" ({releaseVersion})";
+            this.Text += $" ({Game.releaseVersion})";
 
             this.linkDataFiles.Visible = Debugger.IsAttached;
         }

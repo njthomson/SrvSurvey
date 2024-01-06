@@ -1,15 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.ComponentModel;
-using System.Data;
+﻿using Newtonsoft.Json;
 using SrvSurvey.game;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Data;
 using System.Net;
-using System.Windows.Forms;
-using System.Diagnostics;
 
 namespace SrvSurvey
 {
@@ -36,7 +28,7 @@ namespace SrvSurvey
         private void ErrorSubmit_Load(object sender, EventArgs e)
         {
             // show stack information on the form
-            txtStack.Text = ex.GetType().Name + ":" +ex.Message + "\r\n\r\n" + ex.StackTrace;
+            txtStack.Text = ex.GetType().Name + ":" + ex.Message + "\r\n\r\n" + ex.StackTrace;
 
             var lineCount = Math.Min(Game.logs.Count, 10);
             checkIncludeLogs.Text += $" (last {lineCount})";
@@ -47,13 +39,18 @@ namespace SrvSurvey
             var form = new Dictionary<string, string>();
             form.Add("title", $"{ex.GetType().Name} \"{ex.Message}\" at {DateTimeOffset.Now}");
             form.Add("what-happened", txtSteps.Text);
-            form.Add("version", Application.ProductVersion);
+            form.Add("version", Game.releaseVersion);
             form.Add("exception-message", ex.Message);
             form.Add("exception-stack", ex.StackTrace!);
 
             if (checkIncludeLogs.Checked)
             {
-                var lines = String.Join('\n', Game.logs.TakeLast(10));
+                var lines = String.Join('\n', Game.logs.TakeLast(20));
+
+                // and include the version of the game if possible
+                var gameFileHeader = Game.activeGame?.journals?.Entries.FirstOrDefault();
+                if (gameFileHeader != null) lines = JsonConvert.SerializeObject(gameFileHeader) + "\r\n" + lines;
+
                 form.Add("logs", lines);
             }
 
@@ -65,7 +62,7 @@ namespace SrvSurvey
 
             var url = new UriBuilder("https://github.com/njthomson/SrvSurvey/issues/new")
             {
-                Scheme= "https",
+                Scheme = "https",
                 Query = query,
             };
 
