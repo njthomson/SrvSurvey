@@ -666,6 +666,7 @@ namespace SrvSurvey.game
                 this.onJournalEntry((dynamic)entry);
             }
 
+            if (this.inventory == null) this.inventory = new List<InventoryItem>();
             log($"Game.initCargoData: Current cargo:\r\n  " + string.Join("\r\n  ", this.inventory));
         }
 
@@ -970,7 +971,7 @@ namespace SrvSurvey.game
 
         #region Cargo handling
 
-        private static List<string> cargoJournalEventTypes = new List<string>()
+        private static readonly List<string> cargoJournalEventTypes = new List<string>()
         {
             nameof(Cargo),
             nameof(CollectCargo),

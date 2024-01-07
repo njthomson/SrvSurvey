@@ -651,6 +651,10 @@ namespace SrvSurvey.game
                         throw new Exception($"Unexpected object type: {obeliskGroups.Type} for obeliskGroups");
                 }
 
+                var relicHeadings = obj["relicHeadings"];
+                if (relicHeadings != null)
+                    data.relicHeadings = relicHeadings.ToObject<Dictionary<string, int>>()!;
+
                 // read active obelisks groups - in either format
                 var activeObelisks = obj["activeObelisks"];
                 if (activeObelisks?.HasValues == true)
@@ -746,6 +750,9 @@ namespace SrvSurvey.game
 
                 var activeObelisks = JToken.FromObject(data.activeObelisks.Values);
                 obj.Add("activeObelisks", activeObelisks);
+
+                var relicHeadings = JToken.FromObject(data.relicHeadings);
+                obj.Add("relicHeadings", relicHeadings);
 
                 var poiPresent = new List<string>();
                 var poiAbsent = new List<string>();

@@ -1532,7 +1532,7 @@ namespace SrvSurvey
             {
                 footerTxt = $"Obelisk {this.targetObelisk} - dist: {Util.metersToString(nearestUnknownDist)}";
                 footerBrush = GameColors.brushCyan;
-                if (this.targetObelisk == this.nearestPoi.name)
+                if (this.targetObelisk == this.nearestPoi?.name)
                     g.DrawEllipse(GameColors.penLime2Dot, -nearestPt.X - 8, -nearestPt.Y - 8, 16, 16);
             }
             else if (nearestDist > 75 && forcePoi == null && this.targetObelisk == null)
@@ -1617,12 +1617,26 @@ namespace SrvSurvey
                 ? GameColors.brushCyan
                 : GameColors.brushGameOrange;
 
-            if (confirmedRelics < countRelics || confirmedPuddles < countPuddles)// || !siteData.isSurveyComplete())
-                this.drawHeaderText($"Confirmed: {confirmedRelics}/{countRelics} relics, {confirmedPuddles}/{countPuddles} items", headerBrush);
-            else if (siteData.relicTowerHeading == -1)
-                this.drawHeaderText($"Need Relic Tower heading", GameColors.brushCyan);
+            if (siteData.isRuins)
+            {
+                if (confirmedRelics < countRelics || confirmedPuddles < countPuddles)// || !siteData.isSurveyComplete())
+                    this.drawHeaderText($"Confirmed: {confirmedRelics}/{countRelics} relics, {confirmedPuddles}/{countPuddles} items", headerBrush);
+                else if (siteData.relicTowerHeading == -1)
+                    this.drawHeaderText($"Need Relic Tower heading", GameColors.brushCyan);
+                else
+                    this.drawHeaderText($"Ruins #{siteData.index}: survey complete", headerBrush);
+            }
             else
-                this.drawHeaderText($"Ruins #{siteData.index}: survey complete", headerBrush);
+            {
+                if (confirmedRelics < countRelics || confirmedPuddles < countPuddles)// || !siteData.isSurveyComplete())
+                    this.drawHeaderText($"Confirmed: {confirmedRelics}/{countRelics} relics, {confirmedPuddles}/{countPuddles} items", headerBrush);
+                else
+                {
+                    var totalRelicCount = this.template.poi.Where(_ => _.type == POIType.relic && siteData.poiStatus.Any(t => t.Key == _.name && t.Value == SitePoiStatus.present)).Count();
+                    if (siteData.relicHeadings.Count < totalRelicCount)
+                        this.drawHeaderText($"Need {totalRelicCount - siteData.relicHeadings.Count} Relic Tower heading(s)", GameColors.brushCyan);
+                }
+            }
 
             g.ResetTransform();
         }
