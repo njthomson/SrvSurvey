@@ -11,7 +11,7 @@ namespace SrvSurvey
         {
             var form = new FormErrorSubmit(ex);
 
-            form.ShowDialog();
+            form.ShowDialog(Main.ActiveForm);
         }
 
         public Exception ex;

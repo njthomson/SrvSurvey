@@ -143,6 +143,7 @@ namespace SrvSurvey
             // 
             // txtLogsMissionActive
             // 
+            txtLogsMissionActive.BackColor = Color.Turquoise;
             txtLogsMissionActive.Location = new Point(241, 61);
             txtLogsMissionActive.Name = "txtLogsMissionActive";
             txtLogsMissionActive.ReadOnly = true;

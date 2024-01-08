@@ -234,6 +234,8 @@
             // checkPoiPrecision
             // 
             checkPoiPrecision.AutoSize = true;
+            checkPoiPrecision.Checked = true;
+            checkPoiPrecision.CheckState = CheckState.Checked;
             checkPoiPrecision.Location = new Point(67, 202);
             checkPoiPrecision.Name = "checkPoiPrecision";
             checkPoiPrecision.Size = new Size(94, 19);
@@ -625,6 +627,7 @@
             // numGroupNameDist
             // 
             numGroupNameDist.DecimalPlaces = 2;
+            numGroupNameDist.Increment = new decimal(new int[] { 10, 0, 0, 0 });
             numGroupNameDist.Location = new Point(131, 15);
             numGroupNameDist.Maximum = new decimal(new int[] { 1000, 0, 0, 0 });
             numGroupNameDist.Name = "numGroupNameDist";
@@ -700,8 +703,6 @@
             // 
             checkHighlightAll.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             checkHighlightAll.AutoSize = true;
-            checkHighlightAll.Checked = true;
-            checkHighlightAll.CheckState = CheckState.Checked;
             checkHighlightAll.Location = new Point(304, 3);
             checkHighlightAll.Name = "checkHighlightAll";
             checkHighlightAll.Size = new Size(164, 19);

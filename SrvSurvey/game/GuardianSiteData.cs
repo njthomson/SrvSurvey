@@ -303,10 +303,13 @@ namespace SrvSurvey.game
             return SitePoiStatus.unknown;
         }
 
-        public ActiveObelisk? getActiveObelisk(string name, bool addIfMissing = false)
+        public ActiveObelisk? getActiveObelisk(string? name, bool addIfMissing = false)
         {
-            if (addIfMissing && string.IsNullOrWhiteSpace(name))
-                throw new Exception($"Bad obelisk name! (addIfMissing: {addIfMissing})");
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                if (addIfMissing) throw new Exception($"Bad obelisk name! (addIfMissing: {addIfMissing})");
+                return null;
+            }
 
             // use our own data first
             if (this.activeObelisks.ContainsKey(name))
@@ -338,6 +341,7 @@ namespace SrvSurvey.game
         public void setObeliskScanned(ActiveObelisk obelisk, bool scanned)
         {
             obelisk.scanned = scanned;
+            this.activeObelisks[obelisk.name] = obelisk;
             Game.log($"Setting obelisk '{obelisk.name}' as scanned: {obelisk.scanned}");
             this.Save();
 
@@ -354,7 +358,11 @@ namespace SrvSurvey.game
                 cmdr.Save();
             }
 
-            FormRamTah.activeForm?.listRuins.Invalidate();
+            var plot = Program.getPlotter<PlotGuardians>();
+            if (plot?.targetObelisk == obelisk.name)
+                plot.setTargetObelisk(null);
+
+            FormRamTah.activeForm?.updateChecks();
             Program.invalidateActivePlotters();
         }
 
@@ -372,7 +380,7 @@ namespace SrvSurvey.game
         {
             this._ramTahObelisks = this.getObelisksForRamTah();
 
-            FormRamTah.activeForm?.listRuins.Invalidate();
+            FormRamTah.activeForm?.updateChecks();
             Program.invalidateActivePlotters();
         }
 
@@ -932,6 +940,7 @@ namespace SrvSurvey.game
 
         public static SystemSettlementSummary forRuins(SystemData systemData, SystemBody body, int idx)
         {
+            if (Game.canonn.allRuins == null) throw new Exception("Why is allRuins not populated?");
             var site = Game.canonn.allRuins.FirstOrDefault(_ => _.systemAddress == systemData.address && _.bodyId == body.id && _.idx == idx);
             if (site == null) throw new Exception("New site found??");
 
@@ -978,6 +987,7 @@ namespace SrvSurvey.game
 
         public static SystemSettlementSummary forStructure(SystemData systemData, SystemBody body)
         {
+            if (Game.canonn.allStructures == null) throw new Exception("Why is allStructures not populated?");
             var site = Game.canonn.allStructures.FirstOrDefault(_ => _.systemAddress == systemData.address && _.bodyId == body.id);
             if (site == null) throw new Exception("New site found??");
 
@@ -985,7 +995,7 @@ namespace SrvSurvey.game
             var summary = new SystemSettlementSummary()
             {
                 body = body,
-                name = GuardianSiteData.mapSiteTypeToSettlementName[siteType],
+                name = GuardianSiteData.mapSiteTypeToSettlementName[siteType] + ":#index=1;",
                 displayText = $"{body.name.Replace(systemData.name, "")}: {siteType}",
             };
 

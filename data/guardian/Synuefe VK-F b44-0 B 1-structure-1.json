@@ -1,7 +1,7 @@
 {
   "sid": "GS071",
   "idx": 1,
-  "sh": -1,
+  "sh": 337,
   "t": "Hammerbot",
   "rh": -1,
   "ll": {
@@ -9,12 +9,12 @@
     "long": -94.175446
   },
   "pa": null,
-  "pp": null,
+  "pp": "p1,P1,p10,p11,p12,p13,p14,p15,p16,p2,p3,p4,p5,p6,p7,p8,p9,py1,py2,py3,py5,t1,t2,t3,t4,t5,t6",
   "pe": null,
   "og": "ABC",
   "ao": [
     "A01-re,ta-#17-",
     "B11-se,cy-#1-",
-    "C01-ur,ca-#28-"
+    "C01-ur,ca-#28-e"
   ]
 }

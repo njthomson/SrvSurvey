@@ -471,15 +471,13 @@ namespace SrvSurvey
         {
             if (true || ex?.Message.Contains("An attempt was made to access a socket in a way forbidden by its access permissions") == true)
             {
-                var cmd = $"netsh advfirewall firewall add rule name=\"SrvSurvey\" dir=out action=allow program=\"{Application.ExecutablePath}\" enable=yes";
-
                 var rslt = MessageBox.Show(
-                    $"Network calls for SrvSurvey are being blocked by a firewall. Running the following from an elevated command prompt should fix the problem:\r\n\r\n{cmd}\r\n\r\nWould you like to copy this command to the clipboard?",
+                    $"It appears network calls for SrvSurvey are being blocked by a firewall. This is more likely when running SrvSurvey from within the Downloads folder. Adding the location of SrvSurvey to your filewall will solve this problem.\r\n\r\n{Application.ExecutablePath}\r\n\r\nWould you like to copy that location to the clipboard?",
                     "SrvSurvey",
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Warning);
 
-                if (rslt == DialogResult.Yes) Clipboard.SetText(cmd);
+                if (rslt == DialogResult.Yes) Clipboard.SetText(Application.ExecutablePath);
                 return true;
             }
             return false;
@@ -494,7 +492,11 @@ namespace SrvSurvey
             }
 
             Game.log(ex);
-            if (ex != null)
+            if ((ex as HttpRequestException)?.StatusCode == System.Net.HttpStatusCode.NotFound || Util.isFirewallProblem(ex))
+            {
+                // ignore NotFound or firewall responses
+            }
+            else if (ex != null)
             {
                 FormErrorSubmit.Show(ex);
             }

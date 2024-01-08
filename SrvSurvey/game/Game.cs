@@ -61,7 +61,14 @@ namespace SrvSurvey.game
             {
                 // try one more shortly afterwards
                 Application.DoEvents();
-                File.AppendAllText(Game.logPath, txt + "\r\n");
+                try
+                {
+                    File.AppendAllText(Game.logPath, txt + "\r\n");
+                }
+                catch
+                {
+                    // and give up if the 2nd attempt fails too
+                }
             }
         }
 
@@ -1453,7 +1460,7 @@ namespace SrvSurvey.game
                         Game.log($"Spansh call failed? {response.Exception}");
                     }
 
-                    if (spanshFinished && edsmFinished && canonnFinished) { this.systemData?.Save(); this.fireUpdate(true); }
+                    if (spanshFinished && edsmFinished && canonnFinished) this.fetchSystemDataEnd();
                 });
 
                 // lookup system from EDSM
@@ -1476,7 +1483,7 @@ namespace SrvSurvey.game
                     {
                         Game.log($"EDSM call failed? {response.Exception}");
                     }
-                    if (spanshFinished && edsmFinished && canonnFinished) { this.systemData?.Save(); this.fireUpdate(true); }
+                    if (spanshFinished && edsmFinished && canonnFinished) this.fetchSystemDataEnd();
                 });
 
                 // make a call for system POIs and pre-load trackers for known bio-signals
@@ -1503,7 +1510,7 @@ namespace SrvSurvey.game
                         Game.log($"Canonn call failed? {response.Exception}");
                     }
 
-                    if (spanshFinished && edsmFinished && canonnFinished) { this.systemData?.Save(); this.fireUpdate(true); }
+                    if (spanshFinished && edsmFinished && canonnFinished) this.fetchSystemDataEnd();
                 });
             }
             finally
@@ -1511,6 +1518,12 @@ namespace SrvSurvey.game
                 Game.log($"this.fetchedSystemData = '{systemName}' - complete");
                 this.fetchedSystemData = systemName;
             }
+        }
+
+        private void fetchSystemDataEnd()
+        {
+            this.systemData?.Save();
+            this.fireUpdate(true);
         }
 
         /// <summary>

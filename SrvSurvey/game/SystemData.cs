@@ -996,22 +996,24 @@ namespace SrvSurvey.game
 
         public void prepSettlements()
         {
-            this._settlements = new List<SystemSettlementSummary>();
-
             var sites = GuardianSitePub.Find(this.name);
+            Game.log($"prepSettlements: for: '{this.name}' ({this.address}), sites.Count: {sites.Count}");
+            this._settlements = new List<SystemSettlementSummary>();
             foreach (var site in sites)
             {
                 if (site.t == GuardianSiteData.SiteType.Alpha || site.t == GuardianSiteData.SiteType.Beta || site.t == GuardianSiteData.SiteType.Gamma)
                 {
                     var body = this.bodies.FirstOrDefault(_ => _.name == site.bodyName)!;
                     if (body != null)
-                        this.settlements.Add(SystemSettlementSummary.forRuins(this, body, site.idx));
+                        this._settlements.Add(SystemSettlementSummary.forRuins(this, body, site.idx));
                 }
                 else
                 {
                     var body = this.bodies.FirstOrDefault(_ => _.name == site.bodyName)!;
                     if (body != null)
-                        this.settlements.Add(SystemSettlementSummary.forStructure(this, body));
+                        this._settlements.Add(SystemSettlementSummary.forStructure(this, body));
+                    else
+                        Game.log($"Why no body yet for: '{site.bodyName}'");
                 }
             }
         }

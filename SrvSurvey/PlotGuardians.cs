@@ -514,7 +514,7 @@ namespace SrvSurvey
             this.xtraCmds(msg);
         }
 
-        private void setTargetObelisk(string target)
+        public void setTargetObelisk(string? target)
         {
             // stop if the target is not known
             var obelisk = siteData.getActiveObelisk(target);
@@ -712,7 +712,7 @@ namespace SrvSurvey
                     obelisk.data.Add(ObeliskData.gamma);
                     break;
             }
-            obelisk.scanned = true;
+            siteData.setObeliskScanned(obelisk, true);
 
             siteData.Save();
             Program.getPlotter<PlotGuardianStatus>()?.Invalidate();

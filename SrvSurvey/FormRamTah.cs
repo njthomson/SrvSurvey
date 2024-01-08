@@ -7,6 +7,7 @@ namespace SrvSurvey
     public partial class FormRamTah : Form
     {
         public static FormRamTah? activeForm;
+        private Color checkedColor = Color.Turquoise; // .ForestGreen;
 
         public static void show()
         {
@@ -20,22 +21,23 @@ namespace SrvSurvey
         {
             InitializeComponent();
             this.DoubleBuffered = true;
-            this.setCurrentObelisk(null);
+            this.setCurrentObelisk(Game.activeGame?.systemSite?.currentObelisk);
 
             // can we fit in our last location
             Util.useLastLocation(this, Game.settings.formRamTah);
 
             txtRuinsMissionActive.Text = this.cmdr?.decodeTheRuinsMissionActive.ToString() ?? "Unknown";
-            if (this.cmdr?.decodeTheRuinsMissionActive == TahMissionStatus.Active) txtRuinsMissionActive.BackColor = Color.Lime;
+            if (this.cmdr?.decodeTheRuinsMissionActive == TahMissionStatus.Active) txtRuinsMissionActive.BackColor = checkedColor;
 
             txtLogsMissionActive.Text = this.cmdr?.decodeTheLogsMissionActive.ToString() ?? "Unknown";
-            if (this.cmdr?.decodeTheLogsMissionActive == TahMissionStatus.Active) txtLogsMissionActive.BackColor = Color.Lime;
+            if (this.cmdr?.decodeTheLogsMissionActive == TahMissionStatus.Active) txtLogsMissionActive.BackColor = checkedColor;
 
             this.prepRuinsRows();
             this.prepLogCheckboxes();
 
-            // auto select 2nd tab if only the 2nd mission is active
-            if (this.cmdr?.decodeTheRuinsMissionActive != TahMissionStatus.Active && this.cmdr?.decodeTheLogsMissionActive == TahMissionStatus.Active)
+            // auto select 2nd tab if only the 2nd mission is active, or if we're at a structure
+            var only2ndMissionActive = this.cmdr?.decodeTheRuinsMissionActive != TahMissionStatus.Active && this.cmdr?.decodeTheLogsMissionActive == TahMissionStatus.Active;
+            if (only2ndMissionActive || Game.activeGame?.systemSite?.isRuins == false)
                 tabControl1.SelectedIndex = 1;
         }
 
@@ -69,7 +71,7 @@ namespace SrvSurvey
 
                 var idx = int.Parse(checkbox.Name.Substring(8));
                 checkbox.Checked = cmdr?.decodeTheLogs.Contains($"#{idx}") == true;
-                checkbox.BackColor = checkbox.Checked ? Color.Lime : Color.Transparent;
+                checkbox.BackColor = checkbox.Checked ? checkedColor : Color.Transparent;
             }
         }
 
@@ -80,7 +82,7 @@ namespace SrvSurvey
             var checkbox = sender as System.Windows.Forms.CheckBox;
             if (checkbox != null)
             {
-                checkbox.BackColor = checkbox.Checked ? Color.Lime : Color.Transparent;
+                checkbox.BackColor = checkbox.Checked ? checkedColor : Color.Transparent;
 
                 var idx = int.Parse(checkbox.Name.Substring(8));
                 if (checkbox.Checked)
@@ -90,20 +92,20 @@ namespace SrvSurvey
 
                 // update header labels to match
                 lblThargoids.BackColor = checkLog1.Checked && checkLog2.Checked && checkLog3.Checked && checkLog4.Checked && checkLog5.Checked
-                    ? Color.Lime : Color.Transparent;
+                    ? checkedColor : Color.Transparent;
 
                 lblCivilWar.BackColor = checkLog6.Checked && checkLog7.Checked && checkLog8.Checked && checkLog9.Checked && checkLog10.Checked
-                    ? Color.Lime : Color.Transparent;
+                    ? checkedColor : Color.Transparent;
 
                 lblTechnology.BackColor = checkLog11.Checked && checkLog12.Checked && checkLog13.Checked && checkLog14.Checked && checkLog15.Checked
                     && checkLog16.Checked && checkLog17.Checked && checkLog18.Checked && checkLog19.Checked && checkLog20.Checked
                     && checkLog21.Checked && checkLog22.Checked && checkLog23.Checked
-                    ? Color.Lime : Color.Transparent;
+                    ? checkedColor : Color.Transparent;
 
-                lblLanguage.BackColor = checkLog24.Checked ? Color.Lime : Color.Transparent;
+                lblLanguage.BackColor = checkLog24.Checked ? checkedColor : Color.Transparent;
 
                 lblBodyProtectorate.BackColor = checkLog25.Checked && checkLog26.Checked && checkLog27.Checked && checkLog28.Checked
-                    ? Color.Lime : Color.Transparent;
+                    ? checkedColor : Color.Transparent;
             }
         }
 
@@ -171,7 +173,7 @@ namespace SrvSurvey
             // background + edges;
             if (!string.IsNullOrEmpty(name) && this.cmdr?.decodeTheRuins.Contains(name) == true)
             {
-                e.Graphics.FillRectangle(Brushes.ForestGreen, e.Bounds);
+                e.Graphics.FillRectangle(Brushes.Turquoise, e.Bounds);
             }
             else if (e.Item?.Selected == true)
             {
@@ -321,7 +323,7 @@ namespace SrvSurvey
                     + $" for {obelisk.msgDisplay}";
             }
 
-            listRuins.Invalidate();
+            this.updateChecks();
         }
 
         private void btnToggleObelisk_Click(object sender, EventArgs e)
@@ -331,6 +333,12 @@ namespace SrvSurvey
             if (siteData == null || siteData.currentObelisk == null) return;
 
             siteData.toggleObeliskScanned();
+        }
+
+        public void updateChecks()
+        {
+            this.listRuins.Invalidate();
+            this.prepLogCheckboxes();
         }
     }
 }
