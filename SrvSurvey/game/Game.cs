@@ -256,7 +256,7 @@ namespace SrvSurvey.game
             //log("status changed");
             if (this.statusBodyName != null && status!.BodyName != null && status!.BodyName != this.statusBodyName)
             {
-                // exit early if the body suddenly switches to something different without being NULL first
+                // exit early if the body suddenly switches to something different without being NULL first (this is an artifact of running the game twice at the same time)
                 Game.log($"Multiple running games? this.statusBodyName: ${this.statusBodyName} vs status.BodyName: {status.BodyName}");
                 // TODO: some planet/moons are close enough together to trigger this - maybe compare the first word from each?
                 return;
@@ -859,15 +859,9 @@ namespace SrvSurvey.game
             this.checkModeChange();
         }
 
-        private void onJournalEntry(SupercruiseEntry entry)
-        {
-            Program.closePlotter<PlotGuardians>();
-        }
-
         private void onJournalEntry(SupercruiseExit entry)
         {
             this.setLocations(entry);
-
         }
 
         private void onJournalEntry(FSSDiscoveryScan entry)
@@ -1166,7 +1160,6 @@ namespace SrvSurvey.game
                 if (_.StartsWith("$Ancient:") || (_.StartsWith("$Ancient_") && Game.settings.enableEarlyGuardianStructures))
                 {
                     var dist = Util.getDistance(this.systemBody.settlements[_], Status.here, this.systemBody.radius);
-                    // Game.log($"{_}: {dist}");
                     return dist < 4000;
                 }
 
@@ -1196,7 +1189,10 @@ namespace SrvSurvey.game
                         fireEvent = true;
                     }
                     else if (this.systemSite.name != nearestSettlement)
+                    {
+                        // TODO: check this where there are 2 ruins next to each other.
                         throw new Exception($"Bad settlements? Have '{this.systemSite.name}' but should it be '{nearestSettlement}' ?");
+                    }
                 }
             }
 
@@ -1454,7 +1450,7 @@ namespace SrvSurvey.game
                             this.systemData.onSpanshResponse(spanshSystem);
 
                             // update Guardian system status if any body has a Guardian signal
-                            var foo = spanshSystem.bodies.Any(body => body.signals?.signals?.Any(_ => _.Key.Contains("Guardian", StringComparison.OrdinalIgnoreCase)) == true);
+                            var foo = spanshSystem.bodies?.Any(body => body.signals?.signals?.Any(_ => _.Key.Contains("Guardian", StringComparison.OrdinalIgnoreCase)) == true) == true;
                             if (foo)
                                 shouldRefreshGuardianSystemStatus = true;
                         }
@@ -1506,7 +1502,7 @@ namespace SrvSurvey.game
                         this.systemData.onCanonnData(this.canonnPoi);
 
                         // update Guardian system status if any there are some Guardian signals
-                        var foo = this.canonnPoi.SAAsignals.Any(_ => _.hud_category == "Guardian");
+                        var foo = this.canonnPoi.SAAsignals?.Any(_ => _.hud_category == "Guardian") == true;
                         if (foo)
                             shouldRefreshGuardianSystemStatus = true;
 

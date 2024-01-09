@@ -1,4 +1,5 @@
-﻿using SrvSurvey.game;
+﻿using Newtonsoft.Json;
+using SrvSurvey.game;
 using System.Diagnostics;
 using System.Reflection;
 
@@ -38,6 +39,28 @@ namespace SrvSurvey
             checkShowCanonnOnRadar.Enabled = checkUseSystemData.Checked && checkShowPriorScans.Checked;
             radioUseSmall.Enabled = checkUseSystemData.Checked && checkShowPriorScans.Checked && checkShowCanonnOnRadar.Checked;
             radioUseRadius.Enabled = checkUseSystemData.Checked && checkShowPriorScans.Checked && checkShowCanonnOnRadar.Checked;
+        }
+
+        private void findCmdrs()
+        {
+            var cmdrs = new List<string>();
+            var files = Directory.GetFiles(Program.dataFolder, "F*-live.json");
+            foreach (var file in files)
+            {
+                var cmdr = JsonConvert.DeserializeObject<CommanderSettings>(File.ReadAllText(file));
+                if (!string.IsNullOrWhiteSpace(cmdr?.commander))
+                    cmdrs.Add(cmdr.commander);
+            }
+
+            comboCmdr.Items.Clear();
+            comboCmdr.Items.Add("(no preference)");
+            cmdrs.Sort();
+            comboCmdr.Items.AddRange(cmdrs.ToArray());
+
+            if (string.IsNullOrEmpty(Game.settings.preferredCommander))
+                comboCmdr.SelectedIndex = 0;
+            else
+                comboCmdr.SelectedItem = Game.settings.preferredCommander;
         }
 
         private void updateFormFromSettings(Control parentControl)
@@ -86,6 +109,9 @@ namespace SrvSurvey
                 if (ctrl.HasChildren)
                     updateFormFromSettings(ctrl);
             }
+
+            // load potential cmdr's
+            this.findCmdrs();
 
             // TODO: handle radio's better?
             radioUseRadius.Checked = !radioUseSmall.Checked;
@@ -138,12 +164,18 @@ namespace SrvSurvey
                 if (ctrl.HasChildren)
                     updateSettingsFromForm(ctrl);
             }
+
+            // special case for comboCmdrs
+            Game.settings.preferredCommander = comboCmdr.SelectedIndex > 0 ? comboCmdr.Text : null;
         }
 
         private void btnSave_Click(object sender, EventArgs e)
         {
+            var sameCmdr = (string.IsNullOrWhiteSpace(Game.settings.preferredCommander) && comboCmdr.SelectedIndex == 0)
+                || (comboCmdr.Text == Game.settings.preferredCommander);
+
             // restart the app if these are different:
-            var restartApp = this.txtCommander.Text != Game.settings.preferredCommander
+            var restartApp = !sameCmdr
                 || this.checkEnableGuardianFeatures.Checked != Game.settings.enableGuardianSites
                 || this.linkJournalFolder.Text != Game.settings.watchedJournalFolder;
 

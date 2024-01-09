@@ -35,6 +35,7 @@ namespace SrvSurvey
             btnSave = new Button();
             btnCancel = new Button();
             tabPage1 = new TabPage();
+            comboCmdr = new ComboBox();
             label12 = new Label();
             numGravityWarningLevel = new NumericUpDown();
             checkBox13 = new CheckBox();
@@ -52,7 +53,6 @@ namespace SrvSurvey
             numOpacity = new NumericUpDown();
             label2 = new Label();
             trackOpacity = new TrackBar();
-            txtCommander = new TextBox();
             label1 = new Label();
             tabControl1 = new TabControl();
             tabPage4 = new TabPage();
@@ -199,6 +199,7 @@ namespace SrvSurvey
             // tabPage1
             // 
             tabPage1.BorderStyle = BorderStyle.Fixed3D;
+            tabPage1.Controls.Add(comboCmdr);
             tabPage1.Controls.Add(label12);
             tabPage1.Controls.Add(numGravityWarningLevel);
             tabPage1.Controls.Add(checkBox13);
@@ -216,7 +217,6 @@ namespace SrvSurvey
             tabPage1.Controls.Add(numOpacity);
             tabPage1.Controls.Add(label2);
             tabPage1.Controls.Add(trackOpacity);
-            tabPage1.Controls.Add(txtCommander);
             tabPage1.Controls.Add(label1);
             tabPage1.Location = new Point(4, 24);
             tabPage1.Margin = new Padding(4, 3, 4, 3);
@@ -225,6 +225,16 @@ namespace SrvSurvey
             tabPage1.Size = new Size(490, 377);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "General";
+            // 
+            // comboCmdr
+            // 
+            comboCmdr.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            comboCmdr.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboCmdr.FormattingEnabled = true;
+            comboCmdr.Location = new Point(10, 30);
+            comboCmdr.Name = "comboCmdr";
+            comboCmdr.Size = new Size(468, 23);
+            comboCmdr.TabIndex = 28;
             // 
             // label12
             // 
@@ -276,7 +286,7 @@ namespace SrvSurvey
             // 
             checkHideJournalTimer.Checked = true;
             checkHideJournalTimer.CheckState = CheckState.Checked;
-            checkHideJournalTimer.Location = new Point(10, 144);
+            checkHideJournalTimer.Location = new Point(10, 143);
             checkHideJournalTimer.Margin = new Padding(4, 3, 4, 3);
             checkHideJournalTimer.Name = "checkHideJournalTimer";
             checkHideJournalTimer.Size = new Size(431, 19);
@@ -320,7 +330,7 @@ namespace SrvSurvey
             // 
             linkDataFiles.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             linkDataFiles.AutoSize = true;
-            linkDataFiles.Location = new Point(455, 12);
+            linkDataFiles.Location = new Point(455, 3);
             linkDataFiles.Name = "linkDataFiles";
             linkDataFiles.Size = new Size(30, 15);
             linkDataFiles.TabIndex = 12;
@@ -355,9 +365,9 @@ namespace SrvSurvey
             // 
             // label4
             // 
-            label4.Location = new Point(8, 286);
+            label4.Location = new Point(6, 291);
             label4.Name = "label4";
-            label4.Size = new Size(427, 34);
+            label4.Size = new Size(477, 34);
             label4.TabIndex = 8;
             label4.Text = "Players using mouse and keyboard have reported some issues with overlay windows trapping focus from the game.";
             // 
@@ -365,7 +375,7 @@ namespace SrvSurvey
             // 
             checkHidePlottersFromWeapons.Checked = true;
             checkHidePlottersFromWeapons.CheckState = CheckState.Checked;
-            checkHidePlottersFromWeapons.Location = new Point(10, 323);
+            checkHidePlottersFromWeapons.Location = new Point(10, 328);
             checkHidePlottersFromWeapons.Margin = new Padding(4, 3, 4, 3);
             checkHidePlottersFromWeapons.Name = "checkHidePlottersFromWeapons";
             checkHidePlottersFromWeapons.Size = new Size(431, 19);
@@ -378,7 +388,7 @@ namespace SrvSurvey
             // 
             checkFocusOnMinimize.Checked = true;
             checkFocusOnMinimize.CheckState = CheckState.Checked;
-            checkFocusOnMinimize.Location = new Point(10, 119);
+            checkFocusOnMinimize.Location = new Point(10, 120);
             checkFocusOnMinimize.Margin = new Padding(4, 3, 4, 3);
             checkFocusOnMinimize.Name = "checkFocusOnMinimize";
             checkFocusOnMinimize.Size = new Size(431, 19);
@@ -420,16 +430,6 @@ namespace SrvSurvey
             trackOpacity.TabIndex = 4;
             trackOpacity.TickFrequency = 10;
             trackOpacity.Scroll += trackOpacity_Scroll;
-            // 
-            // txtCommander
-            // 
-            txtCommander.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            txtCommander.Location = new Point(8, 33);
-            txtCommander.Margin = new Padding(4, 3, 4, 3);
-            txtCommander.Name = "txtCommander";
-            txtCommander.Size = new Size(470, 23);
-            txtCommander.TabIndex = 1;
-            txtCommander.Tag = "preferredCommander";
             // 
             // label1
             // 
@@ -776,7 +776,7 @@ namespace SrvSurvey
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new Point(10, 121);
+            label5.Location = new Point(10, 120);
             label5.Name = "label5";
             label5.Size = new Size(382, 30);
             label5.TabIndex = 4;
@@ -1353,7 +1353,6 @@ namespace SrvSurvey
         private NumericUpDown numOpacity;
         private Label label2;
         private TrackBar trackOpacity;
-        private TextBox txtCommander;
         private Label label1;
         private TabControl tabControl1;
         private CheckBox checkFocusOnMinimize;
@@ -1437,5 +1436,6 @@ namespace SrvSurvey
         private CheckBox checkHideMyOwnCanonnSignals;
         private CheckBox checkBox14;
         private CheckBox checkBox15;
+        private ComboBox comboCmdr;
     }
 }

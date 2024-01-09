@@ -58,12 +58,11 @@ namespace SrvSurvey
 
         protected override void OnPaintBackground(PaintEventArgs e)
         {
+            base.OnPaintBackground(e);
             if (this.IsDisposed || game?.systemSite == null) return;
 
             this.g = e.Graphics;
             this.g.SmoothingMode = SmoothingMode.HighQuality;
-
-            base.OnPaintBackground(e);
 
             this.dtx = 6.0f;
             this.dty = 8.0f;
@@ -136,7 +135,7 @@ namespace SrvSurvey
             else
             {
                 this.dtx = 24f;
-                this.dty += this.drawTextAt($"All logs at this site have\r\nalready scanned.", GameColors.brushGameOrange, GameColors.fontMiddle).Height;
+                this.dty += this.drawTextAt($"All logs at this site have\r\nalready been scanned.", GameColors.brushGameOrange, GameColors.fontMiddle).Height;
                 if (this.dtx > sz.Width) sz.Width = this.dtx;
             }
 

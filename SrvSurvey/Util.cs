@@ -469,7 +469,8 @@ namespace SrvSurvey
 
         public static bool isFirewallProblem(Exception? ex)
         {
-            if (true || ex?.Message.Contains("An attempt was made to access a socket in a way forbidden by its access permissions") == true)
+            if (ex != null) Game.log($"isFirewallProblem?\r\n{ex}");
+            if (ex?.Message.Contains("An attempt was made to access a socket in a way forbidden by its access permissions") == true)
             {
                 var rslt = MessageBox.Show(
                     $"It appears network calls for SrvSurvey are being blocked by a firewall. This is more likely when running SrvSurvey from within the Downloads folder. Adding the location of SrvSurvey to your filewall will solve this problem.\r\n\r\n{Application.ExecutablePath}\r\n\r\nWould you like to copy that location to the clipboard?",

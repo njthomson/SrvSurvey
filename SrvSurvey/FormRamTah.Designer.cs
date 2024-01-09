@@ -833,8 +833,6 @@ namespace SrvSurvey
         private CheckBox checkLog13;
         private CheckBox checkLog12;
         private CheckBox checkLog11;
-        private Label lblCivilWar;
-        private Label lblThargoids;
         private CheckBox checkLog28;
         private CheckBox checkLog27;
         private CheckBox checkLog26;

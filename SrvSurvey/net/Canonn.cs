@@ -24,7 +24,7 @@ namespace SrvSurvey.canonn
         public List<GuardianBeaconSummary> allBeacons { get; private set; }
         public List<GuardianStructureSummary> allStructures { get; private set; }
 
-        public void init()
+        public void init(bool devReload = false)
         {
             Canonn.client = new HttpClient();
             Canonn.client.DefaultRequestHeaders.Add("accept-encoding", "gzip, deflate");
@@ -32,12 +32,12 @@ namespace SrvSurvey.canonn
 
             // load static ruins summaries
             var pubAllRuinsPath = Path.Combine(Git.pubDataFolder, "allRuins.json");
-            this.allRuins = File.Exists(pubAllRuinsPath)
+            this.allRuins = File.Exists(pubAllRuinsPath) && !devReload
                     ? JsonConvert.DeserializeObject<List<GuardianRuinSummary>>(File.ReadAllText(pubAllRuinsPath))!
                      : JsonConvert.DeserializeObject<List<GuardianRuinSummary>>(File.ReadAllText(Canonn.allRuinsStaticPath))!;
             this.allBeacons = JsonConvert.DeserializeObject<List<GuardianBeaconSummary>>(File.ReadAllText(Canonn.allBeaconsStaticPath))!;
             var pubAllStructuresPath = Path.Combine(Git.pubDataFolder, "allStructures.json");
-            this.allStructures = File.Exists(pubAllStructuresPath)
+            this.allStructures = File.Exists(pubAllStructuresPath) && !devReload
                 ? JsonConvert.DeserializeObject<List<GuardianStructureSummary>>(File.ReadAllText(pubAllStructuresPath))!
                 : JsonConvert.DeserializeObject<List<GuardianStructureSummary>>(File.ReadAllText(Canonn.allStructuresStaticPath))!;
             Game.log($"Loaded {this.allRuins.Count} ruins, {this.allBeacons.Count} beacons, {this.allStructures.Count} beacons");
@@ -1119,7 +1119,7 @@ namespace SrvSurvey.canonn
                 File.WriteAllText(pubPath, json);
 
                 // update parts of summary from file
-                var ruinSummary = this.allRuins.FirstOrDefault(_ => _.systemName == site.systemName && _.bodyName == site.bodyName && _.idx == site.idx);
+                var ruinSummary = this.allRuins.FirstOrDefault(_ => _.systemName.Equals(site.systemName, StringComparison.OrdinalIgnoreCase) && _.bodyName.Equals(site.bodyName, StringComparison.OrdinalIgnoreCase) && _.idx == site.idx);
                 if (ruinSummary == null) throw new Exception("Why?");
                 // location
                 if (site.ll != null && (double.IsNaN(ruinSummary.latitude) || double.IsNaN(ruinSummary.longitude)))
@@ -1128,10 +1128,10 @@ namespace SrvSurvey.canonn
                     ruinSummary.longitude = site.ll.Long;
                 }
                 // siteHeading
-                if (ruinSummary.siteHeading == -1 && site.sh != -1 && ruinSummary.siteHeading != site.sh)
+                if (site.sh != -1 && ruinSummary.siteHeading != site.sh)
                     ruinSummary.siteHeading = site.sh;
                 // relicTowerHeading 
-                if (ruinSummary.relicTowerHeading == -1 && site.rh != -1 && ruinSummary.relicTowerHeading != site.rh)
+                if (site.rh != -1 && ruinSummary.relicTowerHeading != site.rh)
                     ruinSummary.relicTowerHeading = site.rh;
 
                 // surveyComplete
@@ -1359,7 +1359,7 @@ namespace SrvSurvey.canonn
                 File.WriteAllText(pubPath, json);
 
                 // update parts of summary from file
-                var siteSummary = this.allStructures.FirstOrDefault(_ => _.systemName == site.systemName && _.bodyName == site.bodyName); // && _.idx == site.idx);
+                var siteSummary = this.allStructures.FirstOrDefault(_ => _.systemName.Equals(site.systemName, StringComparison.OrdinalIgnoreCase) && _.bodyName.Equals(site.bodyName, StringComparison.OrdinalIgnoreCase)); // && _.idx == site.idx);
                 if (siteSummary == null) throw new Exception("Why?");
                 // location
                 if (site.ll != null && (double.IsNaN(siteSummary.latitude) || double.IsNaN(siteSummary.longitude)))

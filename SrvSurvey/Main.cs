@@ -562,7 +562,7 @@ namespace SrvSurvey
                 btnRuinsMap.Enabled = false;
                 btnRuinsOrigin.Enabled = false;
             }
-            else if (game.systemBody == null || game.systemBody.settlements?.Count == 0)
+            else if (game.systemSite == null || game.systemBody == null || game.systemBody.settlements?.Count == 0)
             {
                 lblGuardianCount.Text = "0";
                 txtGuardianSite.Text = "";
@@ -724,6 +724,9 @@ namespace SrvSurvey
 
             // close these plotters upon super-cruise
             Program.closePlotter<PlotGrounded>();
+            Program.closePlotter<PlotGuardians>();
+            Program.closePlotter<PlotGuardianStatus>();
+            Program.closePlotter<PlotRamTah>();
         }
 
         private void onJournalEntry(FSDJump entry)
@@ -1275,6 +1278,8 @@ namespace SrvSurvey
         {
             btnPublish.Enabled = false;
             SiteTemplate.Import(true);
+            Game.canonn.init(true);
+
             Game.git.publishLocalData(); // 1st: for updating publish data from local surveys
             Game.canonn.readXmlSheetRuins2(); // 2nd: for updating allRuins.json and reading from Excel data
             Game.canonn.readXmlSheetRuins3() // 3rd: for updating allStructures.json and reading from Excel data

@@ -7,7 +7,7 @@ namespace SrvSurvey
     public partial class FormRamTah : Form
     {
         public static FormRamTah? activeForm;
-        private Color checkedColor = Color.Turquoise; // .ForestGreen;
+        private Color checkedColor = Color.Turquoise;
         private List<CheckBox> checkLogs;
 
         public static void show()
