@@ -1,7 +1,7 @@
 {
   "sid": "GS101",
   "idx": 1,
-  "sh": -1,
+  "sh": 8,
   "t": "Squid",
   "rh": -1,
   "ll": {
@@ -9,8 +9,8 @@
     "long": -118.881874
   },
   "pa": null,
-  "pp": null,
-  "pe": null,
+  "pp": "B12,P1,p2,p3,p4,p5,p6,p7,p8,p9,py1,py2,py3,py4,py5,t1,t2",
+  "pe": "p1",
   "og": "ABCDEF",
   "ao": [
     "A04-ur,ca-#28-",

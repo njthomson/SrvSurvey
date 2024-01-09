@@ -30,27 +30,27 @@ namespace SrvSurvey
         /// </summary>
         private void InitializeComponent()
         {
-            ListViewItem listViewItem1 = new ListViewItem(new string[] { "1", "a", "b", "c", "d", "e" }, -1);
-            ListViewItem listViewItem2 = new ListViewItem(new string[] { "2", "a", "b", "c", "d", "e" }, -1, Color.Empty, SystemColors.Highlight, null);
-            ListViewItem listViewItem3 = new ListViewItem(new string[] { "3" }, -1, Color.Empty, SystemColors.MenuHighlight, null);
-            ListViewItem listViewItem4 = new ListViewItem("4");
-            ListViewItem listViewItem5 = new ListViewItem("5");
-            ListViewItem listViewItem6 = new ListViewItem("6");
-            ListViewItem listViewItem7 = new ListViewItem("7");
-            ListViewItem listViewItem8 = new ListViewItem("8");
-            ListViewItem listViewItem9 = new ListViewItem("9");
-            ListViewItem listViewItem10 = new ListViewItem("10");
-            ListViewItem listViewItem11 = new ListViewItem("11");
-            ListViewItem listViewItem12 = new ListViewItem("12");
-            ListViewItem listViewItem13 = new ListViewItem("13");
-            ListViewItem listViewItem14 = new ListViewItem("14");
-            ListViewItem listViewItem15 = new ListViewItem("15");
-            ListViewItem listViewItem16 = new ListViewItem("16");
-            ListViewItem listViewItem17 = new ListViewItem("17");
-            ListViewItem listViewItem18 = new ListViewItem("18");
-            ListViewItem listViewItem19 = new ListViewItem("19");
-            ListViewItem listViewItem20 = new ListViewItem("20");
-            ListViewItem listViewItem21 = new ListViewItem("21");
+            ListViewItem listViewItem22 = new ListViewItem(new string[] { "1", "a", "b", "c", "d", "e" }, -1);
+            ListViewItem listViewItem23 = new ListViewItem(new string[] { "2", "a", "b", "c", "d", "e" }, -1, Color.Empty, SystemColors.Highlight, null);
+            ListViewItem listViewItem24 = new ListViewItem(new string[] { "3" }, -1, Color.Empty, SystemColors.MenuHighlight, null);
+            ListViewItem listViewItem25 = new ListViewItem("4");
+            ListViewItem listViewItem26 = new ListViewItem("5");
+            ListViewItem listViewItem27 = new ListViewItem("6");
+            ListViewItem listViewItem28 = new ListViewItem("7");
+            ListViewItem listViewItem29 = new ListViewItem("8");
+            ListViewItem listViewItem30 = new ListViewItem("9");
+            ListViewItem listViewItem31 = new ListViewItem("10");
+            ListViewItem listViewItem32 = new ListViewItem("11");
+            ListViewItem listViewItem33 = new ListViewItem("12");
+            ListViewItem listViewItem34 = new ListViewItem("13");
+            ListViewItem listViewItem35 = new ListViewItem("14");
+            ListViewItem listViewItem36 = new ListViewItem("15");
+            ListViewItem listViewItem37 = new ListViewItem("16");
+            ListViewItem listViewItem38 = new ListViewItem("17");
+            ListViewItem listViewItem39 = new ListViewItem("18");
+            ListViewItem listViewItem40 = new ListViewItem("19");
+            ListViewItem listViewItem41 = new ListViewItem("20");
+            ListViewItem listViewItem42 = new ListViewItem("21");
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormRamTah));
             label1 = new Label();
             label3 = new Label();
@@ -97,20 +97,25 @@ namespace SrvSurvey
             checkLog13 = new CheckBox();
             checkLog12 = new CheckBox();
             checkLog11 = new CheckBox();
-            lblLanguage = new Label();
-            lblBodyProtectorate = new Label();
-            lblTechnology = new Label();
-            lblCivilWar = new Label();
-            lblThargoids = new Label();
             btnQuit = new Button();
             btnResetRuins = new Button();
             btnResetLogs = new Button();
             lblObelisk = new Label();
             btnToggleObelisk = new Button();
             txtObelisk = new TextBox();
+            groupBodyProtectorate = new GroupBox();
+            groupThargoids = new GroupBox();
+            groupWar = new GroupBox();
+            groupTech = new GroupBox();
+            groupLang = new GroupBox();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             tabPage2.SuspendLayout();
+            groupBodyProtectorate.SuspendLayout();
+            groupThargoids.SuspendLayout();
+            groupWar.SuspendLayout();
+            groupTech.SuspendLayout();
+            groupLang.SuspendLayout();
             SuspendLayout();
             // 
             // label1
@@ -216,18 +221,18 @@ namespace SrvSurvey
             listRuins.Dock = DockStyle.Fill;
             listRuins.FullRowSelect = true;
             listRuins.HeaderStyle = ColumnHeaderStyle.Nonclickable;
-            listViewItem1.StateImageIndex = 0;
-            listViewItem2.StateImageIndex = 0;
-            listViewItem3.StateImageIndex = 0;
-            listViewItem4.StateImageIndex = 0;
-            listViewItem5.StateImageIndex = 0;
-            listViewItem6.StateImageIndex = 0;
-            listViewItem7.StateImageIndex = 0;
-            listViewItem8.StateImageIndex = 0;
-            listViewItem9.StateImageIndex = 0;
-            listViewItem11.ToolTipText = "11";
-            listViewItem12.ToolTipText = "12";
-            listRuins.Items.AddRange(new ListViewItem[] { listViewItem1, listViewItem2, listViewItem3, listViewItem4, listViewItem5, listViewItem6, listViewItem7, listViewItem8, listViewItem9, listViewItem10, listViewItem11, listViewItem12, listViewItem13, listViewItem14, listViewItem15, listViewItem16, listViewItem17, listViewItem18, listViewItem19, listViewItem20, listViewItem21 });
+            listViewItem22.StateImageIndex = 0;
+            listViewItem23.StateImageIndex = 0;
+            listViewItem24.StateImageIndex = 0;
+            listViewItem25.StateImageIndex = 0;
+            listViewItem26.StateImageIndex = 0;
+            listViewItem27.StateImageIndex = 0;
+            listViewItem28.StateImageIndex = 0;
+            listViewItem29.StateImageIndex = 0;
+            listViewItem30.StateImageIndex = 0;
+            listViewItem32.ToolTipText = "11";
+            listViewItem33.ToolTipText = "12";
+            listRuins.Items.AddRange(new ListViewItem[] { listViewItem22, listViewItem23, listViewItem24, listViewItem25, listViewItem26, listViewItem27, listViewItem28, listViewItem29, listViewItem30, listViewItem31, listViewItem32, listViewItem33, listViewItem34, listViewItem35, listViewItem36, listViewItem37, listViewItem38, listViewItem39, listViewItem40, listViewItem41, listViewItem42 });
             listRuins.Location = new Point(3, 3);
             listRuins.Name = "listRuins";
             listRuins.OwnerDraw = true;
@@ -278,39 +283,11 @@ namespace SrvSurvey
             // tabPage2
             // 
             tabPage2.BackColor = Color.Transparent;
-            tabPage2.Controls.Add(checkLog28);
-            tabPage2.Controls.Add(checkLog27);
-            tabPage2.Controls.Add(checkLog26);
-            tabPage2.Controls.Add(checkLog25);
-            tabPage2.Controls.Add(checkLog24);
-            tabPage2.Controls.Add(checkLog23);
-            tabPage2.Controls.Add(checkLog22);
-            tabPage2.Controls.Add(checkLog21);
-            tabPage2.Controls.Add(checkLog20);
-            tabPage2.Controls.Add(checkLog19);
-            tabPage2.Controls.Add(checkLog18);
-            tabPage2.Controls.Add(checkLog17);
-            tabPage2.Controls.Add(checkLog16);
-            tabPage2.Controls.Add(checkLog10);
-            tabPage2.Controls.Add(checkLog9);
-            tabPage2.Controls.Add(checkLog8);
-            tabPage2.Controls.Add(checkLog7);
-            tabPage2.Controls.Add(checkLog6);
-            tabPage2.Controls.Add(checkLog5);
-            tabPage2.Controls.Add(checkLog4);
-            tabPage2.Controls.Add(checkLog3);
-            tabPage2.Controls.Add(checkLog2);
-            tabPage2.Controls.Add(checkLog1);
-            tabPage2.Controls.Add(checkLog15);
-            tabPage2.Controls.Add(checkLog14);
-            tabPage2.Controls.Add(checkLog13);
-            tabPage2.Controls.Add(checkLog12);
-            tabPage2.Controls.Add(checkLog11);
-            tabPage2.Controls.Add(lblLanguage);
-            tabPage2.Controls.Add(lblBodyProtectorate);
-            tabPage2.Controls.Add(lblTechnology);
-            tabPage2.Controls.Add(lblCivilWar);
-            tabPage2.Controls.Add(lblThargoids);
+            tabPage2.Controls.Add(groupTech);
+            tabPage2.Controls.Add(groupLang);
+            tabPage2.Controls.Add(groupWar);
+            tabPage2.Controls.Add(groupThargoids);
+            tabPage2.Controls.Add(groupBodyProtectorate);
             tabPage2.Location = new Point(4, 24);
             tabPage2.Name = "tabPage2";
             tabPage2.Padding = new Padding(3);
@@ -321,7 +298,7 @@ namespace SrvSurvey
             // checkLog28
             // 
             checkLog28.AutoSize = true;
-            checkLog28.Location = new Point(286, 255);
+            checkLog28.Location = new Point(162, 22);
             checkLog28.Name = "checkLog28";
             checkLog28.Padding = new Padding(2);
             checkLog28.Size = new Size(49, 23);
@@ -333,7 +310,7 @@ namespace SrvSurvey
             // checkLog27
             // 
             checkLog27.AutoSize = true;
-            checkLog27.Location = new Point(235, 255);
+            checkLog27.Location = new Point(111, 22);
             checkLog27.Name = "checkLog27";
             checkLog27.Padding = new Padding(2);
             checkLog27.Size = new Size(49, 23);
@@ -345,7 +322,7 @@ namespace SrvSurvey
             // checkLog26
             // 
             checkLog26.AutoSize = true;
-            checkLog26.Location = new Point(181, 255);
+            checkLog26.Location = new Point(57, 22);
             checkLog26.Name = "checkLog26";
             checkLog26.Padding = new Padding(2);
             checkLog26.Size = new Size(49, 23);
@@ -357,7 +334,7 @@ namespace SrvSurvey
             // checkLog25
             // 
             checkLog25.AutoSize = true;
-            checkLog25.Location = new Point(130, 255);
+            checkLog25.Location = new Point(6, 22);
             checkLog25.Name = "checkLog25";
             checkLog25.Padding = new Padding(2);
             checkLog25.Size = new Size(49, 23);
@@ -369,7 +346,7 @@ namespace SrvSurvey
             // checkLog24
             // 
             checkLog24.AutoSize = true;
-            checkLog24.Location = new Point(130, 203);
+            checkLog24.Location = new Point(6, 22);
             checkLog24.Name = "checkLog24";
             checkLog24.Padding = new Padding(2);
             checkLog24.Size = new Size(49, 23);
@@ -381,7 +358,7 @@ namespace SrvSurvey
             // checkLog23
             // 
             checkLog23.AutoSize = true;
-            checkLog23.Location = new Point(236, 156);
+            checkLog23.Location = new Point(111, 80);
             checkLog23.Name = "checkLog23";
             checkLog23.Padding = new Padding(2);
             checkLog23.Size = new Size(49, 23);
@@ -393,7 +370,7 @@ namespace SrvSurvey
             // checkLog22
             // 
             checkLog22.AutoSize = true;
-            checkLog22.Location = new Point(182, 156);
+            checkLog22.Location = new Point(57, 80);
             checkLog22.Name = "checkLog22";
             checkLog22.Padding = new Padding(2);
             checkLog22.Size = new Size(49, 23);
@@ -405,7 +382,7 @@ namespace SrvSurvey
             // checkLog21
             // 
             checkLog21.AutoSize = true;
-            checkLog21.Location = new Point(131, 156);
+            checkLog21.Location = new Point(6, 80);
             checkLog21.Name = "checkLog21";
             checkLog21.Padding = new Padding(2);
             checkLog21.Size = new Size(49, 23);
@@ -417,7 +394,7 @@ namespace SrvSurvey
             // checkLog20
             // 
             checkLog20.AutoSize = true;
-            checkLog20.Location = new Point(337, 131);
+            checkLog20.Location = new Point(212, 51);
             checkLog20.Name = "checkLog20";
             checkLog20.Padding = new Padding(2);
             checkLog20.Size = new Size(49, 23);
@@ -429,7 +406,7 @@ namespace SrvSurvey
             // checkLog19
             // 
             checkLog19.AutoSize = true;
-            checkLog19.Location = new Point(286, 131);
+            checkLog19.Location = new Point(161, 51);
             checkLog19.Name = "checkLog19";
             checkLog19.Padding = new Padding(2);
             checkLog19.Size = new Size(49, 23);
@@ -441,7 +418,7 @@ namespace SrvSurvey
             // checkLog18
             // 
             checkLog18.AutoSize = true;
-            checkLog18.Location = new Point(236, 131);
+            checkLog18.Location = new Point(111, 51);
             checkLog18.Name = "checkLog18";
             checkLog18.Padding = new Padding(2);
             checkLog18.Size = new Size(49, 23);
@@ -453,7 +430,7 @@ namespace SrvSurvey
             // checkLog17
             // 
             checkLog17.AutoSize = true;
-            checkLog17.Location = new Point(182, 131);
+            checkLog17.Location = new Point(57, 51);
             checkLog17.Name = "checkLog17";
             checkLog17.Padding = new Padding(2);
             checkLog17.Size = new Size(49, 23);
@@ -465,7 +442,7 @@ namespace SrvSurvey
             // checkLog16
             // 
             checkLog16.AutoSize = true;
-            checkLog16.Location = new Point(131, 131);
+            checkLog16.Location = new Point(6, 51);
             checkLog16.Name = "checkLog16";
             checkLog16.Padding = new Padding(2);
             checkLog16.Size = new Size(48, 23);
@@ -477,7 +454,7 @@ namespace SrvSurvey
             // checkLog10
             // 
             checkLog10.AutoSize = true;
-            checkLog10.Location = new Point(337, 59);
+            checkLog10.Location = new Point(213, 22);
             checkLog10.Name = "checkLog10";
             checkLog10.Padding = new Padding(2);
             checkLog10.Size = new Size(49, 23);
@@ -489,7 +466,7 @@ namespace SrvSurvey
             // checkLog9
             // 
             checkLog9.AutoSize = true;
-            checkLog9.Location = new Point(286, 59);
+            checkLog9.Location = new Point(162, 22);
             checkLog9.Name = "checkLog9";
             checkLog9.Padding = new Padding(2);
             checkLog9.Size = new Size(42, 23);
@@ -501,7 +478,7 @@ namespace SrvSurvey
             // checkLog8
             // 
             checkLog8.AutoSize = true;
-            checkLog8.Location = new Point(235, 59);
+            checkLog8.Location = new Point(111, 22);
             checkLog8.Name = "checkLog8";
             checkLog8.Padding = new Padding(2);
             checkLog8.Size = new Size(43, 23);
@@ -513,7 +490,7 @@ namespace SrvSurvey
             // checkLog7
             // 
             checkLog7.AutoSize = true;
-            checkLog7.Location = new Point(181, 59);
+            checkLog7.Location = new Point(57, 22);
             checkLog7.Name = "checkLog7";
             checkLog7.Padding = new Padding(2);
             checkLog7.Size = new Size(43, 23);
@@ -525,7 +502,7 @@ namespace SrvSurvey
             // checkLog6
             // 
             checkLog6.AutoSize = true;
-            checkLog6.Location = new Point(130, 59);
+            checkLog6.Location = new Point(6, 22);
             checkLog6.Name = "checkLog6";
             checkLog6.Padding = new Padding(2);
             checkLog6.Size = new Size(43, 23);
@@ -537,7 +514,7 @@ namespace SrvSurvey
             // checkLog5
             // 
             checkLog5.AutoSize = true;
-            checkLog5.Location = new Point(337, 13);
+            checkLog5.Location = new Point(214, 22);
             checkLog5.Name = "checkLog5";
             checkLog5.Padding = new Padding(2);
             checkLog5.Size = new Size(43, 23);
@@ -549,7 +526,7 @@ namespace SrvSurvey
             // checkLog4
             // 
             checkLog4.AutoSize = true;
-            checkLog4.Location = new Point(285, 13);
+            checkLog4.Location = new Point(162, 22);
             checkLog4.Name = "checkLog4";
             checkLog4.Padding = new Padding(2);
             checkLog4.Size = new Size(42, 23);
@@ -561,7 +538,7 @@ namespace SrvSurvey
             // checkLog3
             // 
             checkLog3.AutoSize = true;
-            checkLog3.Location = new Point(234, 13);
+            checkLog3.Location = new Point(111, 22);
             checkLog3.Name = "checkLog3";
             checkLog3.Padding = new Padding(2);
             checkLog3.Size = new Size(43, 23);
@@ -573,7 +550,7 @@ namespace SrvSurvey
             // checkLog2
             // 
             checkLog2.AutoSize = true;
-            checkLog2.Location = new Point(180, 13);
+            checkLog2.Location = new Point(57, 22);
             checkLog2.Name = "checkLog2";
             checkLog2.Padding = new Padding(2);
             checkLog2.Size = new Size(43, 23);
@@ -585,7 +562,7 @@ namespace SrvSurvey
             // checkLog1
             // 
             checkLog1.AutoSize = true;
-            checkLog1.Location = new Point(129, 13);
+            checkLog1.Location = new Point(6, 22);
             checkLog1.Name = "checkLog1";
             checkLog1.Padding = new Padding(2);
             checkLog1.Size = new Size(43, 23);
@@ -597,7 +574,7 @@ namespace SrvSurvey
             // checkLog15
             // 
             checkLog15.AutoSize = true;
-            checkLog15.Location = new Point(337, 106);
+            checkLog15.Location = new Point(213, 22);
             checkLog15.Name = "checkLog15";
             checkLog15.Padding = new Padding(2);
             checkLog15.Size = new Size(49, 23);
@@ -609,7 +586,7 @@ namespace SrvSurvey
             // checkLog14
             // 
             checkLog14.AutoSize = true;
-            checkLog14.Location = new Point(286, 106);
+            checkLog14.Location = new Point(162, 22);
             checkLog14.Name = "checkLog14";
             checkLog14.Padding = new Padding(2);
             checkLog14.Size = new Size(49, 23);
@@ -621,7 +598,7 @@ namespace SrvSurvey
             // checkLog13
             // 
             checkLog13.AutoSize = true;
-            checkLog13.Location = new Point(235, 106);
+            checkLog13.Location = new Point(111, 22);
             checkLog13.Name = "checkLog13";
             checkLog13.Padding = new Padding(2);
             checkLog13.Size = new Size(49, 23);
@@ -633,7 +610,7 @@ namespace SrvSurvey
             // checkLog12
             // 
             checkLog12.AutoSize = true;
-            checkLog12.Location = new Point(181, 106);
+            checkLog12.Location = new Point(57, 22);
             checkLog12.Name = "checkLog12";
             checkLog12.Padding = new Padding(2);
             checkLog12.Size = new Size(49, 23);
@@ -645,7 +622,7 @@ namespace SrvSurvey
             // checkLog11
             // 
             checkLog11.AutoSize = true;
-            checkLog11.Location = new Point(130, 106);
+            checkLog11.Location = new Point(6, 22);
             checkLog11.Name = "checkLog11";
             checkLog11.Padding = new Padding(2);
             checkLog11.Size = new Size(49, 23);
@@ -653,56 +630,6 @@ namespace SrvSurvey
             checkLog11.Text = "#11";
             checkLog11.UseVisualStyleBackColor = true;
             checkLog11.CheckedChanged += checkLog_CheckedChanged;
-            // 
-            // lblLanguage
-            // 
-            lblLanguage.AutoSize = true;
-            lblLanguage.Location = new Point(19, 206);
-            lblLanguage.Name = "lblLanguage";
-            lblLanguage.Padding = new Padding(2);
-            lblLanguage.Size = new Size(66, 19);
-            lblLanguage.TabIndex = 26;
-            lblLanguage.Text = "Language:";
-            // 
-            // lblBodyProtectorate
-            // 
-            lblBodyProtectorate.AutoSize = true;
-            lblBodyProtectorate.Location = new Point(19, 258);
-            lblBodyProtectorate.Name = "lblBodyProtectorate";
-            lblBodyProtectorate.Padding = new Padding(2);
-            lblBodyProtectorate.Size = new Size(109, 19);
-            lblBodyProtectorate.TabIndex = 28;
-            lblBodyProtectorate.Text = "Body Protectorate:";
-            // 
-            // lblTechnology
-            // 
-            lblTechnology.AutoSize = true;
-            lblTechnology.Location = new Point(19, 109);
-            lblTechnology.Name = "lblTechnology";
-            lblTechnology.Padding = new Padding(2);
-            lblTechnology.Size = new Size(75, 19);
-            lblTechnology.TabIndex = 12;
-            lblTechnology.Text = "Technology:";
-            // 
-            // lblCivilWar
-            // 
-            lblCivilWar.AutoSize = true;
-            lblCivilWar.Location = new Point(19, 62);
-            lblCivilWar.Name = "lblCivilWar";
-            lblCivilWar.Padding = new Padding(2);
-            lblCivilWar.Size = new Size(59, 19);
-            lblCivilWar.TabIndex = 6;
-            lblCivilWar.Text = "Civil war:";
-            // 
-            // lblThargoids
-            // 
-            lblThargoids.AutoSize = true;
-            lblThargoids.Location = new Point(19, 16);
-            lblThargoids.Name = "lblThargoids";
-            lblThargoids.Padding = new Padding(2);
-            lblThargoids.Size = new Size(66, 19);
-            lblThargoids.TabIndex = 0;
-            lblThargoids.Text = "Thargoids:";
             // 
             // btnQuit
             // 
@@ -766,6 +693,81 @@ namespace SrvSurvey
             txtObelisk.TabIndex = 12;
             txtObelisk.Text = "N10: Casket + Totem for Tech #10";
             // 
+            // groupBodyProtectorate
+            // 
+            groupBodyProtectorate.BackColor = Color.Transparent;
+            groupBodyProtectorate.Controls.Add(checkLog25);
+            groupBodyProtectorate.Controls.Add(checkLog28);
+            groupBodyProtectorate.Controls.Add(checkLog26);
+            groupBodyProtectorate.Controls.Add(checkLog27);
+            groupBodyProtectorate.FlatStyle = FlatStyle.Flat;
+            groupBodyProtectorate.Location = new Point(6, 313);
+            groupBodyProtectorate.Name = "groupBodyProtectorate";
+            groupBodyProtectorate.Size = new Size(377, 58);
+            groupBodyProtectorate.TabIndex = 33;
+            groupBodyProtectorate.TabStop = false;
+            groupBodyProtectorate.Text = "Body Protectorate ";
+            // 
+            // groupThargoids
+            // 
+            groupThargoids.Controls.Add(checkLog5);
+            groupThargoids.Controls.Add(checkLog1);
+            groupThargoids.Controls.Add(checkLog2);
+            groupThargoids.Controls.Add(checkLog3);
+            groupThargoids.Controls.Add(checkLog4);
+            groupThargoids.Location = new Point(6, 6);
+            groupThargoids.Name = "groupThargoids";
+            groupThargoids.Size = new Size(377, 58);
+            groupThargoids.TabIndex = 33;
+            groupThargoids.TabStop = false;
+            groupThargoids.Text = "Thargoids ";
+            // 
+            // groupWar
+            // 
+            groupWar.Controls.Add(checkLog6);
+            groupWar.Controls.Add(checkLog7);
+            groupWar.Controls.Add(checkLog8);
+            groupWar.Controls.Add(checkLog9);
+            groupWar.Controls.Add(checkLog10);
+            groupWar.Location = new Point(6, 70);
+            groupWar.Name = "groupWar";
+            groupWar.Size = new Size(377, 58);
+            groupWar.TabIndex = 34;
+            groupWar.TabStop = false;
+            groupWar.Text = "Civil war ";
+            // 
+            // groupTech
+            // 
+            groupTech.Controls.Add(checkLog11);
+            groupTech.Controls.Add(checkLog12);
+            groupTech.Controls.Add(checkLog13);
+            groupTech.Controls.Add(checkLog14);
+            groupTech.Controls.Add(checkLog15);
+            groupTech.Controls.Add(checkLog23);
+            groupTech.Controls.Add(checkLog16);
+            groupTech.Controls.Add(checkLog22);
+            groupTech.Controls.Add(checkLog17);
+            groupTech.Controls.Add(checkLog21);
+            groupTech.Controls.Add(checkLog18);
+            groupTech.Controls.Add(checkLog20);
+            groupTech.Controls.Add(checkLog19);
+            groupTech.Location = new Point(6, 134);
+            groupTech.Name = "groupTech";
+            groupTech.Size = new Size(377, 109);
+            groupTech.TabIndex = 0;
+            groupTech.TabStop = false;
+            groupTech.Text = "Technology ";
+            // 
+            // groupLang
+            // 
+            groupLang.Controls.Add(checkLog24);
+            groupLang.Location = new Point(6, 249);
+            groupLang.Name = "groupLang";
+            groupLang.Size = new Size(377, 58);
+            groupLang.TabIndex = 0;
+            groupLang.TabStop = false;
+            groupLang.Text = "Language ";
+            // 
             // FormRamTah
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -790,10 +792,20 @@ namespace SrvSurvey
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "FormRamTah";
             Text = "Ram Tah Missions";
+            Load += FormRamTah_Load;
             tabControl1.ResumeLayout(false);
             tabPage1.ResumeLayout(false);
             tabPage2.ResumeLayout(false);
-            tabPage2.PerformLayout();
+            groupBodyProtectorate.ResumeLayout(false);
+            groupBodyProtectorate.PerformLayout();
+            groupThargoids.ResumeLayout(false);
+            groupThargoids.PerformLayout();
+            groupWar.ResumeLayout(false);
+            groupWar.PerformLayout();
+            groupTech.ResumeLayout(false);
+            groupTech.PerformLayout();
+            groupLang.ResumeLayout(false);
+            groupLang.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -821,9 +833,6 @@ namespace SrvSurvey
         private CheckBox checkLog13;
         private CheckBox checkLog12;
         private CheckBox checkLog11;
-        private Label lblLanguage;
-        private Label lblBodyProtectorate;
-        private Label lblTechnology;
         private Label lblCivilWar;
         private Label lblThargoids;
         private CheckBox checkLog28;
@@ -856,5 +865,10 @@ namespace SrvSurvey
         private Button btnToggleObelisk;
         public TextBox txtObelisk;
         public ListView listRuins;
+        private GroupBox groupTech;
+        private GroupBox groupLang;
+        private GroupBox groupWar;
+        private GroupBox groupThargoids;
+        private GroupBox groupBodyProtectorate;
     }
 }

@@ -8,6 +8,7 @@ namespace SrvSurvey
     {
         public static FormRamTah? activeForm;
         private Color checkedColor = Color.Turquoise; // .ForestGreen;
+        private List<CheckBox> checkLogs;
 
         public static void show()
         {
@@ -21,7 +22,6 @@ namespace SrvSurvey
         {
             InitializeComponent();
             this.DoubleBuffered = true;
-            this.setCurrentObelisk(Game.activeGame?.systemSite?.currentObelisk);
 
             // can we fit in our last location
             Util.useLastLocation(this, Game.settings.formRamTah);
@@ -32,8 +32,20 @@ namespace SrvSurvey
             txtLogsMissionActive.Text = this.cmdr?.decodeTheLogsMissionActive.ToString() ?? "Unknown";
             if (this.cmdr?.decodeTheLogsMissionActive == TahMissionStatus.Active) txtLogsMissionActive.BackColor = checkedColor;
 
+            this.checkLogs = new List<CheckBox>()
+            {
+                checkLog1, checkLog2, checkLog3, checkLog4, checkLog5,
+                checkLog6, checkLog7, checkLog8, checkLog9, checkLog10,
+                checkLog11, checkLog12, checkLog13, checkLog14, checkLog15,
+                checkLog16, checkLog17, checkLog18, checkLog19, checkLog20,
+                checkLog21, checkLog22, checkLog23, checkLog24, checkLog25,
+                checkLog26, checkLog27, checkLog28
+            };
+
             this.prepRuinsRows();
             this.prepLogCheckboxes();
+
+            this.setCurrentObelisk(Game.activeGame?.systemSite?.currentObelisk);
 
             // auto select 2nd tab if only the 2nd mission is active, or if we're at a structure
             var only2ndMissionActive = this.cmdr?.decodeTheRuinsMissionActive != TahMissionStatus.Active && this.cmdr?.decodeTheLogsMissionActive == TahMissionStatus.Active;
@@ -64,11 +76,8 @@ namespace SrvSurvey
         private void prepLogCheckboxes()
         {
 
-            foreach (Control ctrl in tabPage2.Controls)
+            foreach (var checkbox in this.checkLogs)
             {
-                var checkbox = ctrl as System.Windows.Forms.CheckBox;
-                if (checkbox == null) continue;
-
                 var idx = int.Parse(checkbox.Name.Substring(8));
                 checkbox.Checked = cmdr?.decodeTheLogs.Contains($"#{idx}") == true;
                 checkbox.BackColor = checkbox.Checked ? checkedColor : Color.Transparent;
@@ -90,22 +99,22 @@ namespace SrvSurvey
                 else
                     this.cmdr.decodeTheLogs.Remove($"#{idx}");
 
-                // update header labels to match
-                lblThargoids.BackColor = checkLog1.Checked && checkLog2.Checked && checkLog3.Checked && checkLog4.Checked && checkLog5.Checked
-                    ? checkedColor : Color.Transparent;
+                //// update header labels to match
+                //lblThargoids.BackColor = checkLog1.Checked && checkLog2.Checked && checkLog3.Checked && checkLog4.Checked && checkLog5.Checked
+                //    ? checkedColor : Color.Transparent;
 
-                lblCivilWar.BackColor = checkLog6.Checked && checkLog7.Checked && checkLog8.Checked && checkLog9.Checked && checkLog10.Checked
-                    ? checkedColor : Color.Transparent;
+                //lblCivilWar.BackColor = checkLog6.Checked && checkLog7.Checked && checkLog8.Checked && checkLog9.Checked && checkLog10.Checked
+                //    ? checkedColor : Color.Transparent;
 
-                lblTechnology.BackColor = checkLog11.Checked && checkLog12.Checked && checkLog13.Checked && checkLog14.Checked && checkLog15.Checked
-                    && checkLog16.Checked && checkLog17.Checked && checkLog18.Checked && checkLog19.Checked && checkLog20.Checked
-                    && checkLog21.Checked && checkLog22.Checked && checkLog23.Checked
-                    ? checkedColor : Color.Transparent;
+                //lblTechnology.BackColor = checkLog11.Checked && checkLog12.Checked && checkLog13.Checked && checkLog14.Checked && checkLog15.Checked
+                //    && checkLog16.Checked && checkLog17.Checked && checkLog18.Checked && checkLog19.Checked && checkLog20.Checked
+                //    && checkLog21.Checked && checkLog22.Checked && checkLog23.Checked
+                //    ? checkedColor : Color.Transparent;
 
-                lblLanguage.BackColor = checkLog24.Checked ? checkedColor : Color.Transparent;
+                //lblLanguage.BackColor = checkLog24.Checked ? checkedColor : Color.Transparent;
 
-                lblBodyProtectorate.BackColor = checkLog25.Checked && checkLog26.Checked && checkLog27.Checked && checkLog28.Checked
-                    ? checkedColor : Color.Transparent;
+                //lblBodyProtectorate.BackColor = checkLog25.Checked && checkLog26.Checked && checkLog27.Checked && checkLog28.Checked
+                //    ? checkedColor : Color.Transparent;
             }
         }
 
@@ -333,12 +342,18 @@ namespace SrvSurvey
             if (siteData == null || siteData.currentObelisk == null) return;
 
             siteData.toggleObeliskScanned();
+            Elite.setFocusED();
         }
 
         public void updateChecks()
         {
             this.listRuins.Invalidate();
             this.prepLogCheckboxes();
+        }
+
+        private void FormRamTah_Load(object sender, EventArgs e)
+        {
+            Elite.setFocusED();
         }
     }
 }

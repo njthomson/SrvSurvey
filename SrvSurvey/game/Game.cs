@@ -1437,6 +1437,7 @@ namespace SrvSurvey.game
                 var spanshFinished = false;
                 var edsmFinished = false;
                 var canonnFinished = false;
+                var shouldRefreshGuardianSystemStatus = false;
 
                 // lookup system from Spansh
                 Game.log($"Searching Spansh for '{systemName}' ({systemAddress})...");
@@ -1449,7 +1450,14 @@ namespace SrvSurvey.game
 
                         Game.log($"Found {spanshSystem.bodyCount} bodies from Spansh for '{systemName}'");
                         if (this.systemData != null && spanshSystem.id64 == this.systemData?.address)
+                        {
                             this.systemData.onSpanshResponse(spanshSystem);
+
+                            // update Guardian system status if any body has a Guardian signal
+                            var foo = spanshSystem.bodies.Any(body => body.signals?.signals?.Any(_ => _.Key.Contains("Guardian", StringComparison.OrdinalIgnoreCase)) == true);
+                            if (foo)
+                                shouldRefreshGuardianSystemStatus = true;
+                        }
                     }
                     else if ((response.Exception?.InnerException as HttpRequestException)?.StatusCode == System.Net.HttpStatusCode.NotFound || Util.isFirewallProblem(response.Exception))
                     {
@@ -1460,7 +1468,7 @@ namespace SrvSurvey.game
                         Game.log($"Spansh call failed? {response.Exception}");
                     }
 
-                    if (spanshFinished && edsmFinished && canonnFinished) this.fetchSystemDataEnd();
+                    if (spanshFinished && edsmFinished && canonnFinished) this.fetchSystemDataEnd(shouldRefreshGuardianSystemStatus);
                 });
 
                 // lookup system from EDSM
@@ -1483,7 +1491,7 @@ namespace SrvSurvey.game
                     {
                         Game.log($"EDSM call failed? {response.Exception}");
                     }
-                    if (spanshFinished && edsmFinished && canonnFinished) this.fetchSystemDataEnd();
+                    if (spanshFinished && edsmFinished && canonnFinished) this.fetchSystemDataEnd(shouldRefreshGuardianSystemStatus);
                 });
 
                 // make a call for system POIs and pre-load trackers for known bio-signals
@@ -1496,6 +1504,11 @@ namespace SrvSurvey.game
                         this.canonnPoi = response.Result;
                         Game.log($"Found system POI from Canonn for: {systemName}");
                         this.systemData.onCanonnData(this.canonnPoi);
+
+                        // update Guardian system status if any there are some Guardian signals
+                        var foo = this.canonnPoi.SAAsignals.Any(_ => _.hud_category == "Guardian");
+                        if (foo)
+                            shouldRefreshGuardianSystemStatus = true;
 
                         // TODO: retire
                         if (this.systemStatus != null)
@@ -1510,7 +1523,7 @@ namespace SrvSurvey.game
                         Game.log($"Canonn call failed? {response.Exception}");
                     }
 
-                    if (spanshFinished && edsmFinished && canonnFinished) this.fetchSystemDataEnd();
+                    if (spanshFinished && edsmFinished && canonnFinished) this.fetchSystemDataEnd(shouldRefreshGuardianSystemStatus);
                 });
             }
             finally
@@ -1520,8 +1533,11 @@ namespace SrvSurvey.game
             }
         }
 
-        private void fetchSystemDataEnd()
+        private void fetchSystemDataEnd(bool shouldRefreshGuardianSystemStatus)
         {
+            if (shouldRefreshGuardianSystemStatus)
+                this.systemData?.prepSettlements();
+
             this.systemData?.Save();
             this.fireUpdate(true);
         }
@@ -1660,7 +1676,7 @@ namespace SrvSurvey.game
                 var data = GuardianBeaconData.Load(entry);
 
                 // add the lat/long co-ordinates
-                data.scannedLocations[DateTime.UtcNow] = entry;
+                data.scannedLocations[entry.timestamp] = entry;
                 data.lastVisited = entry.timestamp;
                 data.Save();
             }
@@ -1672,7 +1688,7 @@ namespace SrvSurvey.game
                 {
                     // wait a bit for the status file to update
                     Application.DoEvents();
-                    Game.log($"!! Comp scan organic: {entry.Name_Localised ?? entry.Name} ({entry.EntryID}) timestamps entry: {entry.timestamp} vs status: {this.status.timestamp} | Locations: entry: {entry.Latitude}, {entry.Longitude} vs status: {this.status.Latitude}, {this.status.Longitude}");
+                    Game.log($"!! Comp scan organic: {entry.Name_Localised ?? entry.Name} ({entry.EntryID}) timestamps entry: {entry.timestamp} vs status: {this.status?.timestamp} | Locations: entry: {entry.Latitude}, {entry.Longitude} vs status: {this.status?.Latitude}, {this.status?.Longitude}");
                     var organism = systemBody.findOrganism(match);
                     if (organism?.analyzed == true && Game.settings.skipAnalyzedCompBioScans)
                     {

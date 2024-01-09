@@ -98,7 +98,7 @@ namespace SrvSurvey
 
         protected override void OnPaintBackground(PaintEventArgs e)
         {
-            if (this.IsDisposed || PlotGuardians.instance == null || this.game.isShutdown) return;
+            if (this.IsDisposed || PlotGuardians.instance == null || this.game.isShutdown || game.systemSite == null) return;
 
             base.OnPaintBackground(e);
             this.g = e.Graphics;
@@ -131,8 +131,10 @@ namespace SrvSurvey
                 if (game.status.SelectedWeapon == "$humanoid_companalyser_name;")
                 {
                     var msg = "Toggle shields to set Relic Tower heading.";
-                    if (game.systemSite!.relicTowerHeading != -1)
+                    if (game.systemSite.isRuins && game.systemSite.relicTowerHeading != -1)
                         msg += $"\r\nRecorded heading: {game.systemSite!.relicTowerHeading}°";
+                    else if (!game.systemSite.isRuins && game.systemSite.relicHeadings.FirstOrDefault(_ => _.Key == PlotGuardians.instance.nearestPoi?.name).Value >= 0)
+                        msg += $"\r\nRecorded heading: {game.systemSite.relicHeadings[PlotGuardians.instance.nearestPoi!.name]}°";
                     else
                         msg += "\r\nFace the side with a single large left facing triangle.";
                     drawCenterMessage(msg);

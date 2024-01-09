@@ -1485,7 +1485,7 @@ namespace SrvSurvey
                 var selectPoi = d < nearestDist && (isRuinsPoi(poi.type, true) || (Game.settings.enableEarlyGuardianStructures));
                 if (forcePoi != null)
                     selectPoi = forcePoi == poi; // force selection in map editor if present
-                if (selectPoi && poi.type == POIType.obelisk && siteData.getActiveObelisk(poi.name) == null)
+                if (selectPoi && poi.type == POIType.obelisk && siteData.getActiveObelisk(poi.name) == null && formEditMap == null)
                     selectPoi = false;
 
                 // (obelisks are not selectable unless on foot or SRV)
@@ -1680,9 +1680,7 @@ namespace SrvSurvey
             {
                 // highlight everything if map editor check says so
                 var b = new SolidBrush(Color.FromArgb(160, Color.DarkSlateBlue));
-                //g.FillEllipse(b, -pt.X - dd - 2, -pt.Y - dd - 2, d + 4, d + 4);
                 g.DrawEllipse(Pens.AntiqueWhite, -pt.X - dd - 2, -pt.Y - dd - 2, d + 4, d + 4);
-                // DarkOliveGreen / DarkSlateBlue
             }
 
             // at structures - do not render missing POIs
