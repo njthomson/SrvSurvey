@@ -133,7 +133,16 @@ namespace SrvSurvey
                 case "Alpha Template": siteType = GuardianSiteData.SiteType.Alpha; break;
                 case "Beta Template": siteType = GuardianSiteData.SiteType.Beta; break;
                 case "Gamma Template": siteType = GuardianSiteData.SiteType.Gamma; break;
+                case "Lacrosse Template": siteType = GuardianSiteData.SiteType.Lacrosse; break;
+                case "Crossroads Template": siteType = GuardianSiteData.SiteType.Crossroads; break;
+                case "Fistbump Template": siteType = GuardianSiteData.SiteType.Fistbump; break;
+                case "Hammerbot Template": siteType = GuardianSiteData.SiteType.Hammerbot; break;
                 case "Bear Template": siteType = GuardianSiteData.SiteType.Bear; break;
+                case "Bowl Template": siteType = GuardianSiteData.SiteType.Bowl; break;
+                case "Turtle Template": siteType = GuardianSiteData.SiteType.Turtle; break;
+                case "Robolobster Template": siteType = GuardianSiteData.SiteType.Robolobster; break;
+                case "Squid Template": siteType = GuardianSiteData.SiteType.Squid; break;
+                case "Stickyhand Template": siteType = GuardianSiteData.SiteType.Stickyhand; break;
             }
 
             if (siteType != GuardianSiteData.SiteType.Unknown)
@@ -160,9 +169,9 @@ namespace SrvSurvey
             }
 
             // reset some numbers
-            //this.dragOffset.X = -map.Width / 2f;
-            //this.dragOffset.Y = -map.Height / 2f;
-            //scale = 0.5f;
+            this.dragOffset.X = -map.Width / 2f;
+            this.dragOffset.Y = -map.Height / 2f;
+            scale = 0.5f;
             splitter.Panel2Collapsed = this.siteData == null || !Game.settings.mapShowNotes;
             txtNotes.Text = this.siteData?.notes;
 
@@ -427,7 +436,7 @@ namespace SrvSurvey
 
         private void map_Paint(object sender, PaintEventArgs e)
         {
-            if (this.template == null || this.game?.status == null || this.game?.cmdr == null || this.game.isShutdown) return;
+            if (this.template == null) return;
 
             var g = e.Graphics;
             g.SmoothingMode = SmoothingMode.HighQuality;

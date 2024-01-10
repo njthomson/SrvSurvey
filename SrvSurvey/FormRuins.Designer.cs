@@ -47,6 +47,7 @@
             statusStrip1 = new StatusStrip();
             lblSelectedItem = new ToolStripStatusLabel();
             lblStatus = new ToolStripStatusLabel();
+            lblObeliskGroups = new ToolStripStatusLabel();
             lblMouseX = new ToolStripStatusLabel();
             lblMouseY = new ToolStripStatusLabel();
             lblZoom = new ToolStripStatusLabel();
@@ -58,7 +59,6 @@
             splitter = new SplitContainer();
             txtNotes = new TextBox();
             btnSaveNotes = new Button();
-            lblObeliskGroups = new ToolStripStatusLabel();
             ((System.ComponentModel.ISupportInitialize)map).BeginInit();
             mapContext.SuspendLayout();
             statusStrip1.SuspendLayout();
@@ -175,6 +175,14 @@
             lblStatus.Text = "...";
             lblStatus.TextAlign = ContentAlignment.MiddleLeft;
             // 
+            // lblObeliskGroups
+            // 
+            lblObeliskGroups.BorderSides = ToolStripStatusLabelBorderSides.Left | ToolStripStatusLabelBorderSides.Top | ToolStripStatusLabelBorderSides.Right | ToolStripStatusLabelBorderSides.Bottom;
+            lblObeliskGroups.BorderStyle = Border3DStyle.Sunken;
+            lblObeliskGroups.Name = "lblObeliskGroups";
+            lblObeliskGroups.Size = new Size(125, 19);
+            lblObeliskGroups.Text = "Obelisk groups: A B C";
+            // 
             // lblMouseX
             // 
             lblMouseX.BorderSides = ToolStripStatusLabelBorderSides.Left | ToolStripStatusLabelBorderSides.Top | ToolStripStatusLabelBorderSides.Right | ToolStripStatusLabelBorderSides.Bottom;
@@ -209,7 +217,7 @@
             comboSite.DropDownWidth = 404;
             comboSite.FormattingEnabled = true;
             comboSite.Items.AddRange(new object[] { "Alpha template", "Beta template", "Gamma template", "Bear template", "----------------" });
-            comboSite.Location = new Point(239, 10);
+            comboSite.Location = new Point(239, 9);
             comboSite.Name = "comboSite";
             comboSite.Size = new Size(420, 23);
             comboSite.TabIndex = 2;
@@ -229,7 +237,7 @@
             comboSiteType.DropDownStyle = ComboBoxStyle.DropDownList;
             comboSiteType.DropDownWidth = 404;
             comboSiteType.FormattingEnabled = true;
-            comboSiteType.Items.AddRange(new object[] { "All", "Alpha", "Beta", "Gamma", "Bear" });
+            comboSiteType.Items.AddRange(new object[] { "All", "Alpha", "Beta", "Gamma", "Lacrosse", "Crossroads", "Fistbump", "Hammerbot", "Bear", "Bowl", "Turtle", "Robolobster", "Squid", "Stickyhand" });
             comboSiteType.Location = new Point(80, 9);
             comboSiteType.Name = "comboSiteType";
             comboSiteType.Size = new Size(153, 23);
@@ -301,14 +309,6 @@
             btnSaveNotes.Text = "Save notes";
             btnSaveNotes.UseVisualStyleBackColor = true;
             btnSaveNotes.Click += btnSaveNotes_Click;
-            // 
-            // lblObeliskGroups
-            // 
-            lblObeliskGroups.BorderSides = ToolStripStatusLabelBorderSides.Left | ToolStripStatusLabelBorderSides.Top | ToolStripStatusLabelBorderSides.Right | ToolStripStatusLabelBorderSides.Bottom;
-            lblObeliskGroups.BorderStyle = Border3DStyle.Sunken;
-            lblObeliskGroups.Name = "lblObeliskGroups";
-            lblObeliskGroups.Size = new Size(125, 19);
-            lblObeliskGroups.Text = "Obelisk groups: A B C";
             // 
             // FormRuins
             // 

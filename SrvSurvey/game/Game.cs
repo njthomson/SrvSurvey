@@ -983,7 +983,13 @@ namespace SrvSurvey.game
         private void onJournalEntry(Cargo entry)
         {
             // ignore events without details of the actual cargo, but use them to check our tracking is working correctly
-            if (entry.Inventory == null)
+            if (entry.Count == 0 && entry.Vessel == "SRV")
+            {
+                // we are entering the SRV - which starts without any cargo
+                this.inventory.Clear();
+                Program.invalidateActivePlotters();
+            }
+            else if (entry.Inventory == null)
             {
                 var sumCount = this.inventory.Sum(_ => _.Count);
                 if (entry.Count != sumCount)

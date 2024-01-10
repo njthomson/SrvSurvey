@@ -1050,51 +1050,13 @@ namespace SrvSurvey
 
         protected override void OnPaintBackground(PaintEventArgs e)
         {
+            base.OnPaintBackground(e);
             if (this.IsDisposed || game.isShutdown || this.siteData == null) return;
 
             //Game.log($"-- -- --> PlotGuardians: OnPaintBackground {this.template?.imageOffset} / {this.template?.scaleFactor}");
-            if (this.template != null)
-            {
-                // alpha
-                //this.template.scaleFactor = 0.88f;
-                //this.template.imageOffset.X = 737;
-                //this.template.imageOffset.Y = 885;
 
-
-                //this.template.scaleFactor = 0.75f;
-                //this.template.imageOffset.X = 730;
-                //this.template.imageOffset.Y = 885;
-
-                // beta
-                //this.template.scaleFactor = 1.15f;
-                //this.template.scaleFactor = 1.3f;
-
-                //this.template.imageOffset.X = 652;
-                //this.template.imageOffset.Y = 714;
-
-                //this.template.imageOffset.X = 638;
-                //this.template.imageOffset.Y = 752;
-
-                //this.template.imageOffset.X = 644;
-                //this.template.imageOffset.Y = 795;
-
-                //this.template.imageOffset.X = 652;
-                //this.template.imageOffset.Y = 714;
-
-                // gamma
-                //this.template.scaleFactor = 1.15f;
-
-                //this.template.imageOffset.X = 915;
-                //this.template.imageOffset.Y = 685;
-
-                /*
-    "imageOffset": "638,752",
-    "imageOffset": "652,714",
-                */
-            }
-
-            base.OnPaintBackground(e);
             this.g = e.Graphics;
+
             g.SmoothingMode = SmoothingMode.HighQuality;
             switch (this.mode)
             {
@@ -1277,7 +1239,7 @@ namespace SrvSurvey
 
             if (this.underlay == null)
             {
-                Game.log("WHy no underlay?");
+                Game.log("Why no underlay?");
                 return;
             }
 
@@ -1290,6 +1252,7 @@ namespace SrvSurvey
             // prepare underlay image
             using (var gg = Graphics.FromImage(this.underlay))
             {
+                gg.SmoothingMode = SmoothingMode.HighQuality;
                 gg.Clear(Color.Transparent);
                 gg.ResetTransform();
                 //gg.Clear(Color.Black);
@@ -1299,10 +1262,11 @@ namespace SrvSurvey
                 gg.TranslateTransform(ux, uy);
                 // rotate by site heading only
                 gg.RotateTransform(+siteData.siteHeading);
-                gg.ScaleTransform(this.template!.scaleFactor, this.template!.scaleFactor);
+                gg.ScaleTransform(this.template!.scaleFactor * GameColors.fontScaleFactor, this.template!.scaleFactor * GameColors.fontScaleFactor);
 
                 // draw the site bitmap and trails(?)
-                gg.DrawImageUnscaled(this.siteMap!, -this.template!.imageOffset.X, -this.template.imageOffset.Y);
+                var bbs = 1 / GameColors.fontScaleFactor;
+                gg.DrawImageUnscaled(this.siteMap!, (int)(-this.template!.imageOffset.X * bbs), (int)(-(float)this.template.imageOffset.Y * bbs));
 
                 //var ix = -(double)this.template!.imageOffset.X * (double)this.template!.scaleFactor;
                 //var iy = -(double)this.template.imageOffset.Y * (double)this.template!.scaleFactor;

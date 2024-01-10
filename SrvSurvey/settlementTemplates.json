@@ -328,7 +328,93 @@
       { "name": "t8", "type": "relic", "angle": 233.0, "dist": 388.0 },
       { "name": "t9", "type": "relic", "angle": 233.0, "dist": 582.0 }
     ],
-    "obeliskGroupNameLocations": {}
+    "obeliskGroupNameLocations": {
+      "A": {
+        "IsEmpty": false,
+        "X": 161.0,
+        "Y": 200.0
+      },
+      "O": {
+        "IsEmpty": false,
+        "X": 111.0,
+        "Y": 500.0
+      },
+      "B": {
+        "IsEmpty": false,
+        "X": 123.0,
+        "Y": 550.0
+      },
+      "P": {
+        "IsEmpty": false,
+        "X": 135.0,
+        "Y": 510.0
+      },
+      "K": {
+        "IsEmpty": false,
+        "X": 151.0,
+        "Y": 460.0
+      },
+      "L": {
+        "IsEmpty": false,
+        "X": 63.0,
+        "Y": 260.0
+      },
+      "C": {
+        "IsEmpty": false,
+        "X": 37.0,
+        "Y": 320.0
+      },
+      "M": {
+        "IsEmpty": false,
+        "X": 14.0,
+        "Y": 340.0
+      },
+      "Q": {
+        "IsEmpty": false,
+        "X": 27.0,
+        "Y": 450.0
+      },
+      "G": {
+        "IsEmpty": false,
+        "X": 160.0,
+        "Y": 750.0
+      },
+      "J": {
+        "IsEmpty": false,
+        "X": 188.0,
+        "Y": 790.0
+      },
+      "H": {
+        "IsEmpty": false,
+        "X": 237.0,
+        "Y": 130.0
+      },
+      "N": {
+        "IsEmpty": false,
+        "X": 338.0,
+        "Y": 280.0
+      },
+      "D": {
+        "IsEmpty": false,
+        "X": 348.0,
+        "Y": 530.0
+      },
+      "I": {
+        "IsEmpty": false,
+        "X": 226.0,
+        "Y": 460.0
+      },
+      "E": {
+        "IsEmpty": false,
+        "X": 295.0,
+        "Y": 330.0
+      },
+      "F": {
+        "IsEmpty": false,
+        "X": 257.0,
+        "Y": 520.0
+      }
+    }
   },
   "Beta": {
     "name": "Beta",
