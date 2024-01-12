@@ -15,7 +15,7 @@
     "A19-or,ca-T3-",
     "C01-to,ur-C4-",
     "C13-to,re-C1-",
-    "D01-or,to-C6-",
+    "D01-to,or-C6-",
     "D13-or,to-T6-",
     "E09-ca-H1-",
     "F04-ur,re-B1-",
@@ -30,6 +30,6 @@
     "M20-ta,ur-L4-",
     "N09-ca-H1-",
     "P01-or,to-T6-",
-    "P05-or,ca-T5-"
+    "P05-or,ta-T5-"
   ]
 }

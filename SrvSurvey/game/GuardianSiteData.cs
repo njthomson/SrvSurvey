@@ -243,7 +243,15 @@ namespace SrvSurvey.game
         public bool isRuins { get => this.name != null && this.name.StartsWith("$Ancient:"); }
 
         [JsonIgnore]
-        public string displayName { get => $"{this.bodyName}, ruins #{this.index} - {this.type}"; }
+        public string displayName
+        {
+            get
+            {
+                return this.isRuins
+                    ? $"{this.bodyName}, ruins #{this.index} - {this.type}"
+                    : $"{this.bodyName}, {this.type}";
+            }
+        }
 
         [JsonIgnore]
         public GuardianSitePub? pubData;
@@ -610,6 +618,21 @@ namespace SrvSurvey.game
                 .ToList()!;
         }
 
+        public static List<GuardianSiteData> loadAllSitesFromAllUsers()
+        {
+            if (!Directory.Exists(GuardianSiteData.rootFolder)) return new List<GuardianSiteData>();
+
+            var files = Directory.GetFiles(GuardianSiteData.rootFolder, "*.json", SearchOption.AllDirectories)
+                    .Where(_ => !_.Contains("beacon") && !_.Contains("legacy"))
+                    .ToArray();
+
+            Game.log($"Reading {files.Length} guardian sites files from disk");
+            return files
+                .Select(filename => Data.Load<GuardianSiteData>(filename)!)
+                .Where(_ => _.legacy == false)
+                .ToList()!;
+        }
+
         class JsonConverter : Newtonsoft.Json.JsonConverter
         {
             public override bool CanConvert(Type objectType)
@@ -781,6 +804,10 @@ namespace SrvSurvey.game
                 var poiEmpty = new List<string>();
                 foreach (var _ in data.poiStatus)
                 {
+                    // ignore any obelisks
+                    var poiType = SiteTemplate.sites[data.type].poi.FirstOrDefault(poi => poi.name == _.Key)?.type;
+                    if (poiType == null) { Game.log($"Unknown POI? '{_.Key}' at '{data.displayName}'"); continue; }
+                    else if (poiType == POIType.obelisk || poiType == POIType.brokeObelisk) { Game.log($"Ignoring obelisk POI? '{_.Key}' at '{data.displayName}'"); continue; }
                     if (_.Value == SitePoiStatus.present) poiPresent.Add(_.Key);
                     if (_.Value == SitePoiStatus.absent) poiAbsent.Add(_.Key);
                     if (_.Value == SitePoiStatus.empty) poiEmpty.Add(_.Key);

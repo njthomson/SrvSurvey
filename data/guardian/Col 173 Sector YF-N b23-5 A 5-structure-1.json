@@ -1,7 +1,7 @@
 {
   "sid": "GS039",
   "idx": 1,
-  "sh": -1,
+  "sh": 193,
   "t": "Crossroads",
   "rh": -1,
   "ll": {
@@ -9,7 +9,7 @@
     "long": -115.195076
   },
   "pa": null,
-  "pp": null,
+  "pp": "c1,c2,c3,p1,p2,p3,p4,p5,p6",
   "pe": null,
   "og": "ABCD",
   "ao": [

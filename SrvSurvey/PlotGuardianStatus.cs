@@ -128,12 +128,12 @@ namespace SrvSurvey
             }
             else if (game.vehicle == ActiveVehicle.Foot)
             {
-                if (game.status.SelectedWeapon == "$humanoid_companalyser_name;")
+                if (game.status.SelectedWeapon == "$humanoid_companalyser_name;" && !string.IsNullOrEmpty(PlotGuardians.instance.nearestPoi?.name))
                 {
                     var msg = "Toggle shields to set Relic Tower heading.";
                     if (game.systemSite.isRuins && game.systemSite.relicTowerHeading != -1)
                         msg += $"\r\nRecorded heading: {game.systemSite!.relicTowerHeading}°";
-                    else if (!game.systemSite.isRuins && game.systemSite.relicHeadings.FirstOrDefault(_ => _.Key == PlotGuardians.instance.nearestPoi?.name).Value >= 0)
+                    else if (!game.systemSite.isRuins && game.systemSite.relicHeadings.ContainsKey(PlotGuardians.instance.nearestPoi.name))
                         msg += $"\r\nRecorded heading: {game.systemSite.relicHeadings[PlotGuardians.instance.nearestPoi!.name]}°";
                     else
                         msg += "\r\nFace the side with a single large left facing triangle.";

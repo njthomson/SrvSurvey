@@ -78,8 +78,12 @@ namespace SrvSurvey
             foreach (var checkbox in this.checkLogs)
             {
                 var idx = int.Parse(checkbox.Name.Substring(8));
-                checkbox.Checked = cmdr?.decodeTheLogs.Contains($"#{idx}") == true;
+                var shouldCheck = cmdr?.decodeTheLogs.Contains($"#{idx}") == true;
+                if (checkbox.Checked != shouldCheck) checkbox.Checked = shouldCheck;
                 checkbox.BackColor = checkbox.Checked ? checkedColor : Color.Transparent;
+
+                if (Game.activeGame?.systemSite?.currentObelisk?.msg == $"#{idx}")
+                    checkbox.BackColor = Color.Lime;
             }
         }
 
@@ -97,6 +101,12 @@ namespace SrvSurvey
                     this.cmdr.decodeTheLogs.Add($"#{idx}");
                 else
                     this.cmdr.decodeTheLogs.Remove($"#{idx}");
+
+                if (this.cmdr?.decodeTheLogsMissionActive == TahMissionStatus.Active)
+                {
+                    var logsProgress = (100.0 / 28 * cmdr?.decodeTheLogs.Count ?? 0).ToString("0");
+                    txtLogsMissionActive.Text = $"{this.cmdr?.decodeTheLogsMissionActive} - {logsProgress}%";
+                }
 
                 //// update header labels to match
                 //lblThargoids.BackColor = checkLog1.Checked && checkLog2.Checked && checkLog3.Checked && checkLog4.Checked && checkLog5.Checked
@@ -157,9 +167,13 @@ namespace SrvSurvey
                     else
                         cmdr.decodeTheRuins.Add(subItem.Name);
 
-                    listRuins.Invalidate(true);
-                    //listRuins.Invalidate(subItem.Bounds);
-                    //listRuins.Invalidate(new Rectangle(subItem.Bounds.X, 0, subItem.Bounds.Width, 24));
+                    listRuins.Invalidate(new Rectangle(0, subItem.Bounds.Y, subItem.Bounds.Width, 24));
+
+                    if (this.cmdr?.decodeTheRuinsMissionActive == TahMissionStatus.Active)
+                    {
+                        var ruinsProgress = (100.0 / 101 * cmdr?.decodeTheRuins.Count ?? 0).ToString("0");
+                        txtRuinsMissionActive.Text = $"{this.cmdr?.decodeTheRuinsMissionActive} - {ruinsProgress}%";
+                    }
                 }
             }
 

@@ -515,6 +515,9 @@ namespace SrvSurvey
 
         private void numGroupNameAngle_ValueChanged(object sender, EventArgs e)
         {
+            if (numGroupNameAngle.Value < 0) numGroupNameAngle.Value = 359;
+            else if (numGroupNameAngle.Value > 359) numGroupNameAngle.Value = 0;
+
             template.obeliskGroupNameLocations[listGroupNames.Text] = new PointF((float)numGroupNameAngle.Value, (float)numGroupNameDist.Value);
             plotter.Invalidate();
         }

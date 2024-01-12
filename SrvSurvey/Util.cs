@@ -529,5 +529,15 @@ namespace SrvSurvey
                     throw new Exception($"Unexpected character '{c}'");
             }
         }
+
+        /// <summary>
+        /// Returns True if the two numbers are within tolerance of each other.
+        /// </summary>
+        public static bool isClose(double left, double right, double tolerance)
+        {
+            var delta = Math.Abs(left - right);
+            return delta <= tolerance;
+        }
+
     }
 }

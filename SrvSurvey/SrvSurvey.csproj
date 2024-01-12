@@ -56,7 +56,6 @@
     <None Remove="images\beta-heading-guide.png" />
     <None Remove="images\crossroads-heading-guide.png" />
     <None Remove="images\data-port-heading-guide.png" />
-    <None Remove="images\fistbump-background.png" />
     <None Remove="images\fistbump-heading-guide.png" />
     <None Remove="images\gamma-background.png" />
     <None Remove="images\gamma-heading-guide.png" />
@@ -94,9 +93,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="images\data-port-heading-guide.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="images\fistbump-background.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="images\fistbump-heading-guide.png">

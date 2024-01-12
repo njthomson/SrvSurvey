@@ -1,18 +1,21 @@
 {
   "sid": "GR472",
   "idx": 2,
-  "sh": -1,
+  "sh": 11,
   "t": "Gamma",
-  "rh": -1,
-  "ll": null,
-  "pa": null,
-  "pp": null,
-  "pe": null,
+  "rh": 40,
+  "ll": {
+    "lat": 36.969349,
+    "long": 142.938202
+  },
+  "pa": "p10,p12,p14,p18,p19,p2,p23,p25,p3,p31,p36,p37,p38,p39,p40,p9,t1,t2,t4,t6",
+  "pp": "p11,p13,p15,p16,p17,p20,p21,p22,p24,p26,p27,p28,p29,p30,p32,p33,p34,p35,p4,p5,p6,p7,p8,t3,t5,t7,t8",
+  "pe": "p1",
   "og": "AEFHIJLMNOPRS",
   "ao": [
     "A14-ur,or-B17-",
     "A22-ur,to-B18-",
-    "E08-ca,ca-H18-",
+    "E08-ca,ca-H18-e",
     "F04-or,or-T15-",
     "F15-or-T14-",
     "H10-ta,ta-L16-",
@@ -22,18 +25,18 @@
     "H54-ta,ca-L17-",
     "I10-ur,or-B17-",
     "I15-ur,to-B18-",
-    "J03-ca,or-H21-",
-    "L08-or,ta-T18-",
-    "L13-or,to-T19-",
+    "J03-ca,or-H21-e",
+    "L08-or,ta-T18-g",
+    "L13-or,to-T19-b,d",
     "M08-to,ca-C16-",
     "M14-to-C14-",
     "N02-or,or-T15-",
     "N07-or,ca-T16-",
-    "O07-ca,ca-H18-",
+    "O07-ca,ca-H18-b,a",
     "P14-to,ta-C18-",
     "P22-to,or-C19-",
     "R07-to,re-C20-",
     "R23-to,ta-C18-",
-    "S07-ca,ta-H20-"
+    "S07-ca,ta-H20-g"
   ]
 }

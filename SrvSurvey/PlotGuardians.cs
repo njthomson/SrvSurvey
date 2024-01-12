@@ -912,7 +912,7 @@ namespace SrvSurvey
                     // take current heading
                     this.setSiteHeading(game.status.Heading);
                 }
-                else if (this.nearestPoi != null && this.mode == Mode.map)
+                else if (this.nearestPoi != null && this.mode == Mode.map && this.nearestPoi.type != POIType.obelisk && this.nearestPoi.type != POIType.brokeObelisk)
                 {
                     confirmPOI(SitePoiStatus.unknown);
                 }
@@ -1472,7 +1472,7 @@ namespace SrvSurvey
             }
 
             // set/clear the current obelisk
-            if (this.nearestPoi.type == POIType.obelisk && nearestDist < 25)
+            if (this.nearestPoi?.type == POIType.obelisk && nearestDist < 25)
                 siteData.setCurrentObelisk(this.nearestPoi.name);
             else
                 siteData.setCurrentObelisk(null);

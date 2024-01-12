@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using SrvSurvey.game;
+using System.Diagnostics;
 using System.IO.Compression;
 
 namespace SrvSurvey.net
@@ -18,7 +19,7 @@ namespace SrvSurvey.net
             Git.client.DefaultRequestHeaders.Add("user-agent", $"SrvSurvey-{Game.releaseVersion}");
         }
 
-        public async Task updatePubData()
+        public async Task refreshPublishedData()
         {
             Game.log($"updatePubData ...");
             try
@@ -91,29 +92,33 @@ namespace SrvSurvey.net
         {
             Game.log($"publishLocalData ...");
             var modifiedPubData = new List<GuardianSitePub>();
-            var sites = GuardianSiteData.loadAllSites(false);
+            var sites = GuardianSiteData.loadAllSitesFromAllUsers();
             var diffCount = 0;
 
             foreach (var site in sites)
             {
                 site.loadPub();
-                if (site.pubData == null) continue;
+                if (site.pubData == null)
+                {
+                    Game.log($"Site without pubData? '{site.displayName}'");
+                    continue;
+                }
 
                 var diff = false;
                 // site heading
-                if (site.siteHeading != -1 && Math.Abs(site.pubData!.sh - site.siteHeading) > 1)
+                if (site.siteHeading != -1 && !Util.isClose(site.pubData!.sh, site.siteHeading, 1))
                 {
                     diff = true;
                     site.pubData.sh = site.siteHeading;
                 }
                 // relic tower heading
-                if (site.relicTowerHeading != -1 && Math.Abs(site.pubData!.rh - site.relicTowerHeading) > 1)
+                if (site.relicTowerHeading != -1 && !Util.isClose(site.pubData!.rh, site.relicTowerHeading, 1))
                 {
                     diff = true;
                     site.pubData.rh = site.relicTowerHeading;
                 }
                 // location
-                if (site.location != null && (site.pubData.ll == null || site.pubData.ll.Lat != site.location.Lat || site.pubData.ll.Long != site.location.Long))
+                if (site.location != null && (site.pubData.ll == null || !Util.isClose(site.pubData.ll.Lat, site.location.Lat, 0.0001) || !Util.isClose(site.pubData.ll.Long, site.location.Long, 0.0001)))
                 {
                     diff = true;
                     site.pubData.ll = site.location;
@@ -128,11 +133,33 @@ namespace SrvSurvey.net
                 }
 
                 // POI status
+                var template = SiteTemplate.sites[site.type];
+
                 var poiPresent = new List<string>();
                 var poiAbsent = new List<string>();
                 var poiEmpty = new List<string>();
                 foreach (var _ in site.poiStatus)
                 {
+                    var poiType = template.poi.FirstOrDefault(poi => poi.name == _.Key)?.type;
+                    if (poiType == null)
+                    {
+                        Game.log($"POI unknown to template? At '{site.displayName}' => {_.Key}");
+                        Clipboard.SetText(site.bodyName);
+                        Debugger.Break();
+                    }
+                    else if (poiType == POIType.obelisk || poiType == POIType.brokeObelisk)
+                    {
+                        Game.log($"Obelisk in poiStatus? At '{site.displayName}' => {_.Key}");
+                        Clipboard.SetText(site.bodyName);
+                        Debugger.Break();
+                    }
+                    else if (_.Key == _.Key.ToUpperInvariant())
+                    {
+                        Game.log($"Upper case non-Obelisk POI? At '{site.displayName}' => {_.Key}");
+                        Clipboard.SetText(site.bodyName);
+                        Debugger.Break();
+                    }
+
                     // (use the func, so it reads into site.pubData intentionally)
                     if (site.getPoiStatus(_.Key) == SitePoiStatus.present) poiPresent.Add(_.Key);
                     if (site.getPoiStatus(_.Key) == SitePoiStatus.absent) poiAbsent.Add(_.Key);
@@ -169,13 +196,22 @@ namespace SrvSurvey.net
                 }
 
                 // active obelisks
-                var template = SiteTemplate.sites[site.type];
                 var siteObelisks = template.poi
                     .Where(_ => _.type == POIType.obelisk)
                     .Select(_ => site.getActiveObelisk(_.name)!)
                     .Where(_ => _ != null)
                     .OrderBy(_ => _.name)
                     .ToHashSet();
+
+                var obNamesList = siteObelisks.Select(_ => _.name).ToList();
+                var obNamesSet = obNamesList.ToHashSet();
+                if (obNamesSet.Count != obNamesList.Count)
+                {
+                    // we need to remove and reparse obelisks for this
+                    Game.log($"Need to rerun publish to correct obelisk data!");
+                    Debugger.Break();
+                    siteObelisks = new HashSet<ActiveObelisk>();
+                }
 
                 var siteObelisksJson = JsonConvert.SerializeObject(siteObelisks).Replace("!", "");
                 var pubDataObelisksJson = JsonConvert.SerializeObject(site.pubData.ao.OrderBy(_ => _.name));

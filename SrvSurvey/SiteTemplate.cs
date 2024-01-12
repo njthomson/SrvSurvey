@@ -82,6 +82,8 @@ namespace SrvSurvey
                 Game.log($"Publishing edited settlementTemplates.json");
                 File.Copy(editableFilepath, @"D:\code\SrvSurvey\SrvSurvey\settlementTemplates.json", true);
             }
+
+            SiteTemplate.Import(true);
         }
 
         #endregion
@@ -107,6 +109,7 @@ namespace SrvSurvey
         #endregion
     }
 
+    [JsonConverter(typeof(StringEnumConverter))]
     enum POIType
     {
         unknown = 0,

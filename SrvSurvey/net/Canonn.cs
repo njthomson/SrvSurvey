@@ -3,6 +3,7 @@ using Newtonsoft.Json.Linq;
 using SrvSurvey.game;
 using SrvSurvey.net;
 using SrvSurvey.units;
+using System.Diagnostics;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
@@ -1091,7 +1092,6 @@ namespace SrvSurvey.canonn
 
         public void readXmlSheetRuins2()
         {
-
             var doc = XDocument.Load(@"d:\code\Guardian Ruin Survey.xml");
 
             var obeliskGroupings = new Dictionary<string, string>();
@@ -1128,14 +1128,13 @@ namespace SrvSurvey.canonn
                     ruinSummary.longitude = site.ll.Long;
                 }
                 // siteHeading
-                if (site.sh != -1 && ruinSummary.siteHeading != site.sh)
+                if (site.sh != -1 && !Util.isClose(ruinSummary.siteHeading, site.sh, 1))
                     ruinSummary.siteHeading = site.sh;
                 // relicTowerHeading 
-                if (site.rh != -1 && ruinSummary.relicTowerHeading != site.rh)
+                if (site.rh != -1 && !Util.isClose(ruinSummary.relicTowerHeading, site.rh, 1))
                     ruinSummary.relicTowerHeading = site.rh;
 
-                // surveyComplete
-                if (!ruinSummary.surveyComplete)
+                // re-compute surveyComplete
                 {
                     // The survey is complete when we know:
                     var complete = true;
@@ -1147,12 +1146,28 @@ namespace SrvSurvey.canonn
                     complete &= !double.IsNaN(ruinSummary.latitude);
                     complete &= !double.IsNaN(ruinSummary.longitude);
                     // status of all POI
+                    var allPoi = new List<string>();
+                    if (site.pp != null) allPoi.AddRange(site.pp.Split(","));
+                    if (site.pa != null) allPoi.AddRange(site.pa.Split(","));
+                    if (site.pe != null) allPoi.AddRange(site.pe.Split(","));
+                    var allPoiHash = allPoi.ToHashSet();
+                    if (allPoiHash.Count != allPoi.Count)
+                        Debugger.Break();
+
                     var template = SiteTemplate.sites[site.t];
-                    var sumCountNonObelisks = template.poi
+                    var totalPoiCount = template.poi.Count(_ => _.type != POIType.obelisk && _.type != POIType.brokeObelisk);
+                    if (allPoi.Count > totalPoiCount)
+                    {
+                        Game.log($"Bad data? {pubPath}");
+                        Clipboard.SetText(pubPath);
+                        Debugger.Break();
+                    }
+
+                    var allPoiMatched = template.poi
                         .Where(_ => _.type != POIType.obelisk && _.type != POIType.brokeObelisk)
-                        .Count();
-                    var sumCountPOI = (site.pp?.Split(",").Length ?? 0) + (site.pa?.Split(",").Length ?? 0) + (site.pe?.Split(",").Length ?? 0);
-                    complete &= sumCountPOI == sumCountNonObelisks; // TODO: Compare with template count
+                        .All(_ => allPoiHash.Contains(_.name));
+                    complete &= allPoiMatched;
+
                     if (string.IsNullOrEmpty(site.og))
                     {
                         complete &= false;
@@ -1167,13 +1182,14 @@ namespace SrvSurvey.canonn
                     ruinSummary.surveyComplete = complete;
                 }
 
+
                 if (ruinSummary.bodyId == -1)
                 {
-                    throw new NotImplementedException("TODO!!");
+                    throw new NotImplementedException("TODO?");
                 }
                 if (ruinSummary.systemAddress == -1)
                 {
-                    throw new NotImplementedException("TODO!!");
+                    throw new NotImplementedException("TODO?");
                 }
             }
 
@@ -1278,6 +1294,11 @@ namespace SrvSurvey.canonn
                     }
 
                     var bank = cells[25].Value;
+                    if (string.IsNullOrEmpty(bank))
+                    {
+                        Game.log($"Empty bank. Skipping row:" + string.Join(", ", cells.Select(_ => _.Value)));
+                        continue;
+                    }
                     var bankIdx = cells[26].Value;
                     if (bankIdx == "19*B")
                     {
@@ -1286,6 +1307,15 @@ namespace SrvSurvey.canonn
                     }
                     var item1 = cells[27].Value;
                     var item2 = cells[28].Value;
+                    var correctCombo = cells[34].Value;
+                    if (!string.IsNullOrEmpty(correctCombo) && correctCombo.StartsWith("Correct Combo:"))
+                    {
+                        Game.log($"Using 'Correct Combo:' => '{correctCombo}' replacing: '{item1}' / '{item2}' on row:" + string.Join(", ", cells.Select(_ => _.Value)));
+                        var parts = correctCombo.Substring(correctCombo.IndexOf(':')+1).Split(' ', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+                        item1 = parts[0];
+                        item2 = parts[2];
+                    }
+
                     if (string.IsNullOrEmpty(item1) || item1 == "-")
                     {
                         // skip rows without items
@@ -1311,6 +1341,11 @@ namespace SrvSurvey.canonn
                     if (!string.IsNullOrEmpty(item2) && item2 != "-")
                         activeObelisk.items.Add(Enum.Parse<ObeliskItem>(item2, true));
 
+                    // remove any prior entries of the same name but otherwise different
+                    var existingButDiff = site.ao.FirstOrDefault(_ => _.name == activeObelisk.name && _.ToString(true) != activeObelisk.ToString(true));
+                    if (existingButDiff != null)
+                        site.ao.Remove(existingButDiff);
+                    
                     if (!site.ao.Any(_ => _.ToString(true) == activeObelisk.ToString(true)))
                         site.ao.Add(activeObelisk);
                 }
@@ -1374,8 +1409,7 @@ namespace SrvSurvey.canonn
                 if (siteSummary.siteID <= 0)
                     siteSummary.siteID = int.Parse(site.sid.Substring(2));
 
-                // surveyComplete
-                if (!siteSummary.surveyComplete)
+                // recompute surveyComplete
                 {
                     // The survey is complete when we know:
                     var complete = true;
@@ -1547,6 +1581,11 @@ namespace SrvSurvey.canonn
 
                     // collect obelisk items and logs
                     var bank = cells[18].Value;
+                    if (string.IsNullOrEmpty(bank))
+                    {
+                        Game.log($"Empty bank. Skipping row:" + string.Join(", ", cells.Select(_ => _.Value)));
+                        continue;
+                    }
                     var bankIdx = cells[19].Value;
 
                     var item1 = cells[20].Value;
@@ -1568,6 +1607,11 @@ namespace SrvSurvey.canonn
                     activeObelisk.items.Add(Enum.Parse<ObeliskItem>(item1, true));
                     if (!string.IsNullOrEmpty(item2) && item2 != "-")
                         activeObelisk.items.Add(Enum.Parse<ObeliskItem>(item2, true));
+
+                    // remove any prior entries of the same name but otherwise different
+                    var existingButDiff = site.ao.FirstOrDefault(_ => _.name == activeObelisk.name && _.ToString(true) != activeObelisk.ToString(true));
+                    if (existingButDiff != null)
+                        site.ao.Remove(existingButDiff);
 
                     if (!site.ao.Any(_ => _.ToString(true) == activeObelisk.ToString(true)))
                         site.ao.Add(activeObelisk);

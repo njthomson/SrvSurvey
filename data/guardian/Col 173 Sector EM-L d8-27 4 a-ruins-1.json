@@ -15,7 +15,7 @@
     "A11-to,ca-C3-",
     "B02-to,to-C2-",
     "B20-to,to-C2-",
-    "D01-or,to-C6-",
+    "D01-to,or-C6-",
     "D07-to,ta-C5-",
     "E02-ca,ta-H4-",
     "G02-ca,ur-H3-",
@@ -25,7 +25,7 @@
     "L02-ca,ta-H4-",
     "O15-or,or-T2-",
     "O19-or,ta-T5-",
-    "P05-or,ca-T5-",
+    "P05-or,ta-T5-",
     "P12-or-T1-"
   ]
 }

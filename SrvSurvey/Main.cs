@@ -99,7 +99,7 @@ namespace SrvSurvey
             // update pub data
             Task.Factory.StartNew(new Action(async () =>
             {
-                await Game.git.updatePubData();
+                await Game.git.refreshPublishedData();
             }));
 
             var isMigrationValid = Program.getMigratableFolders().Any();
@@ -1277,7 +1277,7 @@ namespace SrvSurvey
         private void btnPublish_Click(object sender, EventArgs e)
         {
             btnPublish.Enabled = false;
-            SiteTemplate.Import(true);
+            SiteTemplate.publish();
             Game.canonn.init(true);
 
             Game.git.publishLocalData(); // 1st: for updating publish data from local surveys
@@ -1285,7 +1285,6 @@ namespace SrvSurvey
             Game.canonn.readXmlSheetRuins3() // 3rd: for updating allStructures.json and reading from Excel data
                 .ContinueWith(task =>
                 {
-                    SiteTemplate.publish();
                     Game.log("\r\n****\r\n**** Publishing all complete\r\n****");
                     this.Invoke(() => { btnPublish.Enabled = true; });
                 });

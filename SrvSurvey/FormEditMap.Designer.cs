@@ -617,7 +617,8 @@
             // 
             numGroupNameAngle.DecimalPlaces = 2;
             numGroupNameAngle.Location = new Point(131, 42);
-            numGroupNameAngle.Maximum = new decimal(new int[] { 1000, 0, 0, 0 });
+            numGroupNameAngle.Maximum = new decimal(new int[] { 360, 0, 0, 0 });
+            numGroupNameAngle.Minimum = new decimal(new int[] { 1, 0, 0, int.MinValue });
             numGroupNameAngle.Name = "numGroupNameAngle";
             numGroupNameAngle.Size = new Size(100, 23);
             numGroupNameAngle.TabIndex = 9;

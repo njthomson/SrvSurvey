@@ -89,9 +89,11 @@ namespace SrvSurvey
                     var hasItem2 = item2 == null ? true : game.getInventoryItem(item2)?.Count >= (item1 == item2 ? 2 : 1);
 
                     var isTargetObelisk = targetObelisk != null && bar.Value.Contains(targetObelisk);
-                    var brush = isTargetObelisk ? GameColors.brushCyan : GameColors.brushGameOrange;
-
-                    if (bar.Value.Any(_ => _ == game.systemSite.currentObelisk?.name))
+                    var isCurrentObelisk = bar.Value.Any(_ => _ == game.systemSite.currentObelisk?.name);
+                    var brush = GameColors.brushGameOrange;
+                    if (isTargetObelisk && !isCurrentObelisk)
+                        brush = Brushes.DarkCyan;
+                    else if (isCurrentObelisk || isTargetObelisk)
                         brush = GameColors.brushCyan;
 
                     // change colours if items are missing? Perhaps overkill?

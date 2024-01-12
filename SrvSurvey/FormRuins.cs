@@ -156,7 +156,7 @@ namespace SrvSurvey
                 }
                 else
                 {
-                    Game.log($"Unexpected! Cannot find background image: {filepath}");
+                    Game.log($"Cannot find background image: {filepath}");
                     this.img = new Bitmap(40, 40);
                 }
 
