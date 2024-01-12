@@ -200,18 +200,12 @@ namespace SrvSurvey.game
         {
             get
             {
-                return Game.activeGame?.systemStatus?.honked ?? false;
-                /*
+                //return Game.activeGame?.systemStatus?.honked ?? false;
                 return Game.settings.autoShowPlotSysStatus
                     && Game.activeGame != null
                     && Game.activeGame.isMode(GameMode.SuperCruising, GameMode.SAA, GameMode.FSS, GameMode.ExternalPanel, GameMode.Orrery, GameMode.SystemMap)
-                    // show only after honking
-                    && Game.activeGame.systemStatus.honked
-                    // hide if FSS is complete but we scanned no systems - means FSS was done previously
-                    ; //&& (!Game.activeGame.systemStatus.fssComplete || Game.activeGame.systemStatus.fssBodies.Count > 0);
-                      //&& Game.activeGame.systemStatus.dssRemaining.Count > 0
-                      //&& Game.activeGame.systemStatus.bioBodies.Count > 0;
-                // */
+                    // show only after honking or we have Canonn data
+                    && (Game.activeGame.systemStatus.honked || Game.activeGame.canonnPoi != null);
             }
         }
 

@@ -3318,7 +3318,7 @@
     "longitude": -133.645996,
     "siteHeading": 232,
     "relicTowerHeading": 353,
-    "surveyComplete": false,
+    "surveyComplete": true,
     "legacyLatitude": -20.301718,
     "legacyLongitude": -133.645996,
     "legacySiteHeading": -1,

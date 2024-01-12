@@ -40,6 +40,12 @@ namespace SrvSurvey
             }
         }
 
+        protected override void OnActivated(EventArgs e)
+        {
+            base.OnActivated(e);
+            Elite.setFocusED();
+        }
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);

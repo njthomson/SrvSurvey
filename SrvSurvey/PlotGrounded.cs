@@ -33,6 +33,11 @@ namespace SrvSurvey
 
         }
 
+        protected override void OnActivated(EventArgs e)
+        {
+            base.OnActivated(e);
+            Elite.setFocusED();
+        }
 
         public void reposition(Rectangle gameRect)
         {

@@ -532,6 +532,20 @@ namespace SrvSurvey
             var nearestPt = PointF.Empty;
             this.nearestPoi = null!;
 
+            foreach (var foo in template.obeliskGroupNameLocations)
+            {
+                // skip obelisks in groups not in this site
+                if (siteData?.obeliskGroups.Contains(foo.Key[0]) == false) continue;
+
+                var angle = 180 - foo.Value.X;
+                var dist = foo.Value.Y;
+                var pt = Util.rotateLine((decimal)angle, (decimal)dist);
+
+                //g.DrawLine(Pens.DarkBlue, 0,0, -pt.X, -pt.Y);
+                var sz = g.MeasureString(foo.Key, GameColors.fontBigBold);
+                g.DrawString(foo.Key, GameColors.fontBig, Brushes.DarkCyan, - pt.X -(sz.Width / 2) + 2,  -pt.Y - (sz.Height / 2) + 2);
+            }
+
             foreach (var poi in template.poi)
             {
                 // skip obelisks in groups not in this site

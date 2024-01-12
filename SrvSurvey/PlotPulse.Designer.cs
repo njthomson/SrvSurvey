@@ -29,41 +29,41 @@ namespace SrvSurvey
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PlotPulse));
-            this.timer = new System.Windows.Forms.Timer(this.components);
-            this.SuspendLayout();
+            timer = new System.Windows.Forms.Timer(components);
+            SuspendLayout();
             // 
             // timer
             // 
-            this.timer.Enabled = true;
-            this.timer.Interval = 500;
-            this.timer.Tick += new System.EventHandler(this.timer_Tick);
+            timer.Enabled = true;
+            timer.Interval = 500;
+            timer.Tick += timer_Tick;
             // 
             // PlotPulse
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.Black;
-            this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
-            this.CausesValidation = false;
-            this.ClientSize = new System.Drawing.Size(32, 32);
-            this.ControlBox = false;
-            this.DoubleBuffered = true;
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Name = "PlotPulse";
-            this.ShowIcon = false;
-            this.ShowInTaskbar = false;
-            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
-            this.TopMost = true;
-            this.TransparencyKey = System.Drawing.Color.Red;
-            this.Load += new System.EventHandler(this.PlotPulse_Load);
-            this.Paint += new System.Windows.Forms.PaintEventHandler(this.PlotPulse_Paint);
-            this.ResumeLayout(false);
-
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.Black;
+            BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
+            CausesValidation = false;
+            ClientSize = new Size(37, 37);
+            ControlBox = false;
+            DoubleBuffered = true;
+            FormBorderStyle = FormBorderStyle.None;
+            Margin = new Padding(4, 3, 4, 3);
+            MaximizeBox = false;
+            MinimizeBox = false;
+            Name = "PlotPulse";
+            ShowIcon = false;
+            ShowInTaskbar = false;
+            SizeGripStyle = SizeGripStyle.Hide;
+            StartPosition = FormStartPosition.Manual;
+            TopMost = true;
+            TransparencyKey = Color.Red;
+            Load += PlotPulse_Load;
+            Paint += PlotPulse_Paint;
+            ResumeLayout(false);
         }
 
         #endregion

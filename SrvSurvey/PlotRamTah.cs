@@ -91,6 +91,9 @@ namespace SrvSurvey
                     var isTargetObelisk = targetObelisk != null && bar.Value.Contains(targetObelisk);
                     var brush = isTargetObelisk ? GameColors.brushCyan : GameColors.brushGameOrange;
 
+                    if (bar.Value.Any(_ => _ == game.systemSite.currentObelisk?.name))
+                        brush = GameColors.brushCyan;
+
                     // change colours if items are missing? Perhaps overkill?
                     //var brush = (hasItem1 && hasItem2)
                     //    ? isTargetObelisk ? GameColors.brushCyan : GameColors.brushGameOrange
@@ -117,8 +120,8 @@ namespace SrvSurvey
                     this.dtx = 24f;
                     foreach (var ob in bar.Value)
                     {
-                        if (targetObelisk == ob)
-                            this.drawTextAt(ob, brush , GameColors.fontSmallBold);
+                        if (targetObelisk == ob || game.systemSite.currentObelisk?.name == ob)
+                            this.drawTextAt(ob, brush, GameColors.fontSmallBold);
                         else
                             this.drawTextAt(ob, GameColors.fontSmall);
                     }

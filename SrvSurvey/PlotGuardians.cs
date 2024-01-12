@@ -1324,17 +1324,17 @@ namespace SrvSurvey
 
             foreach (var foo in template.obeliskGroupNameLocations)
             {
-                if (this.formEditMap == null && !siteData.obeliskGroups.Contains(foo.Key[0])) continue;
+                if (formEditMap?.tabs.SelectedIndex != 2 && !siteData.obeliskGroups.Contains(foo.Key[0])) continue;
 
                 if (foo.Value != PointF.Empty)
                 {
-                    var angle = foo.Value.X;
+                    var angle = 180 - siteData.siteHeading - foo.Value.X;
                     var dist = foo.Value.Y;
                     var pt = Util.rotateLine((decimal)angle, (decimal)dist);
                     // draw guide lines when map editor is active
                     if (this.formEditMap?.tabs.SelectedIndex == 2 && this.formEditMap?.listGroupNames.Text == foo.Key)
                     {
-                        var fpp = new Pen(Color.GreenYellow, 0.5f) { DashStyle = DashStyle.Dash, EndCap = LineCap.ArrowAnchor, StartCap = LineCap.ArrowAnchor };
+                        var fpp = new Pen(Color.Green, 0.5f) { DashStyle = DashStyle.Dash, EndCap = LineCap.ArrowAnchor, StartCap = LineCap.ArrowAnchor };
                         var r2 = new RectangleF(-dist, -dist, dist * 2, dist * 2);
                         g.DrawEllipse(fpp, r2);
                         g.DrawLine(fpp, 0, 0, -pt.X, -pt.Y);
@@ -1347,7 +1347,7 @@ namespace SrvSurvey
 
                     // draw group name character
                     var sz = g.MeasureString(foo.Key, GameColors.fontBigBold);
-                    var brush = this.formEditMap?.tabs.SelectedIndex == 2 ? Brushes.Red : Brushes.DarkCyan; // game.cmdr.ramTahActive ? Brushes.SlateGray : Brushes.DarkCyan;
+                    var brush = this.formEditMap?.tabs.SelectedIndex == 2 ? Brushes.Lime : Brushes.DarkCyan; // game.cmdr.ramTahActive ? Brushes.SlateGray : Brushes.DarkCyan;
 
                     // we must re-translate/rotate otherwise the text will be rotated too
                     g.TranslateTransform(-pt.X, -pt.Y);
@@ -1472,7 +1472,10 @@ namespace SrvSurvey
             }
 
             // set/clear the current obelisk
-            siteData.setCurrentObelisk(this.nearestPoi?.type == POIType.obelisk ? this.nearestPoi.name : null);
+            if (this.nearestPoi.type == POIType.obelisk && nearestDist < 25)
+                siteData.setCurrentObelisk(this.nearestPoi.name);
+            else
+                siteData.setCurrentObelisk(null);
 
             if (this.formEditMap?.tabs.SelectedIndex == 0 && this.forcePoi != null)
             {
@@ -1492,7 +1495,7 @@ namespace SrvSurvey
             var footerTxt = "";
             var footerBrush = GameColors.brushGameOrange;
 
-            if (this.targetObelisk != null && nearestUnknownDist != double.MaxValue)
+            if (this.targetObelisk != null && nearestUnknownDist != double.MaxValue && this.targetObelisk == siteData.currentObelisk?.name)
             {
                 footerTxt = $"Obelisk {this.targetObelisk} - dist: {Util.metersToString(nearestUnknownDist)}";
                 footerBrush = GameColors.brushCyan;

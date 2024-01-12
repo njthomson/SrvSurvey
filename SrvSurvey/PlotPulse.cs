@@ -89,6 +89,12 @@ namespace SrvSurvey
 
         #endregion
 
+        protected override void OnActivated(EventArgs e)
+        {
+            base.OnActivated(e);
+            Elite.setFocusED();
+        }
+
         private void PlotPulse_Paint(object sender, PaintEventArgs e)
         {
             var g = e.Graphics;

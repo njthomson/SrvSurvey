@@ -18,6 +18,12 @@ namespace SrvSurvey
             this.Cursor = Cursors.Cross;
         }
 
+        protected override void OnActivated(EventArgs e)
+        {
+            base.OnActivated(e);
+            Elite.setFocusED();
+        }
+
         public void reposition(Rectangle gameRect)
         {
             if (gameRect == Rectangle.Empty)

@@ -30,27 +30,27 @@ namespace SrvSurvey
         /// </summary>
         private void InitializeComponent()
         {
-            ListViewItem listViewItem22 = new ListViewItem(new string[] { "1", "a", "b", "c", "d", "e" }, -1);
-            ListViewItem listViewItem23 = new ListViewItem(new string[] { "2", "a", "b", "c", "d", "e" }, -1, Color.Empty, SystemColors.Highlight, null);
-            ListViewItem listViewItem24 = new ListViewItem(new string[] { "3" }, -1, Color.Empty, SystemColors.MenuHighlight, null);
-            ListViewItem listViewItem25 = new ListViewItem("4");
-            ListViewItem listViewItem26 = new ListViewItem("5");
-            ListViewItem listViewItem27 = new ListViewItem("6");
-            ListViewItem listViewItem28 = new ListViewItem("7");
-            ListViewItem listViewItem29 = new ListViewItem("8");
-            ListViewItem listViewItem30 = new ListViewItem("9");
-            ListViewItem listViewItem31 = new ListViewItem("10");
-            ListViewItem listViewItem32 = new ListViewItem("11");
-            ListViewItem listViewItem33 = new ListViewItem("12");
-            ListViewItem listViewItem34 = new ListViewItem("13");
-            ListViewItem listViewItem35 = new ListViewItem("14");
-            ListViewItem listViewItem36 = new ListViewItem("15");
-            ListViewItem listViewItem37 = new ListViewItem("16");
-            ListViewItem listViewItem38 = new ListViewItem("17");
-            ListViewItem listViewItem39 = new ListViewItem("18");
-            ListViewItem listViewItem40 = new ListViewItem("19");
-            ListViewItem listViewItem41 = new ListViewItem("20");
-            ListViewItem listViewItem42 = new ListViewItem("21");
+            ListViewItem listViewItem1 = new ListViewItem(new string[] { "1", "a", "b", "c", "d", "e" }, -1);
+            ListViewItem listViewItem2 = new ListViewItem(new string[] { "2", "a", "b", "c", "d", "e" }, -1, Color.Empty, SystemColors.Highlight, null);
+            ListViewItem listViewItem3 = new ListViewItem(new string[] { "3" }, -1, Color.Empty, SystemColors.MenuHighlight, null);
+            ListViewItem listViewItem4 = new ListViewItem("4");
+            ListViewItem listViewItem5 = new ListViewItem("5");
+            ListViewItem listViewItem6 = new ListViewItem("6");
+            ListViewItem listViewItem7 = new ListViewItem("7");
+            ListViewItem listViewItem8 = new ListViewItem("8");
+            ListViewItem listViewItem9 = new ListViewItem("9");
+            ListViewItem listViewItem10 = new ListViewItem("10");
+            ListViewItem listViewItem11 = new ListViewItem("11");
+            ListViewItem listViewItem12 = new ListViewItem("12");
+            ListViewItem listViewItem13 = new ListViewItem("13");
+            ListViewItem listViewItem14 = new ListViewItem("14");
+            ListViewItem listViewItem15 = new ListViewItem("15");
+            ListViewItem listViewItem16 = new ListViewItem("16");
+            ListViewItem listViewItem17 = new ListViewItem("17");
+            ListViewItem listViewItem18 = new ListViewItem("18");
+            ListViewItem listViewItem19 = new ListViewItem("19");
+            ListViewItem listViewItem20 = new ListViewItem("20");
+            ListViewItem listViewItem21 = new ListViewItem("21");
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormRamTah));
             label1 = new Label();
             label3 = new Label();
@@ -69,53 +69,53 @@ namespace SrvSurvey
             columnHeader5 = new ColumnHeader();
             columnHeader6 = new ColumnHeader();
             tabPage2 = new TabPage();
-            checkLog28 = new CheckBox();
-            checkLog27 = new CheckBox();
-            checkLog26 = new CheckBox();
-            checkLog25 = new CheckBox();
-            checkLog24 = new CheckBox();
+            groupTech = new GroupBox();
+            checkLog11 = new CheckBox();
+            checkLog12 = new CheckBox();
+            checkLog13 = new CheckBox();
+            checkLog14 = new CheckBox();
+            checkLog15 = new CheckBox();
             checkLog23 = new CheckBox();
+            checkLog16 = new CheckBox();
             checkLog22 = new CheckBox();
+            checkLog17 = new CheckBox();
             checkLog21 = new CheckBox();
+            checkLog18 = new CheckBox();
             checkLog20 = new CheckBox();
             checkLog19 = new CheckBox();
-            checkLog18 = new CheckBox();
-            checkLog17 = new CheckBox();
-            checkLog16 = new CheckBox();
-            checkLog10 = new CheckBox();
-            checkLog9 = new CheckBox();
-            checkLog8 = new CheckBox();
-            checkLog7 = new CheckBox();
+            groupLang = new GroupBox();
+            checkLog24 = new CheckBox();
+            groupWar = new GroupBox();
             checkLog6 = new CheckBox();
+            checkLog7 = new CheckBox();
+            checkLog8 = new CheckBox();
+            checkLog9 = new CheckBox();
+            checkLog10 = new CheckBox();
+            groupThargoids = new GroupBox();
             checkLog5 = new CheckBox();
-            checkLog4 = new CheckBox();
-            checkLog3 = new CheckBox();
-            checkLog2 = new CheckBox();
             checkLog1 = new CheckBox();
-            checkLog15 = new CheckBox();
-            checkLog14 = new CheckBox();
-            checkLog13 = new CheckBox();
-            checkLog12 = new CheckBox();
-            checkLog11 = new CheckBox();
+            checkLog2 = new CheckBox();
+            checkLog3 = new CheckBox();
+            checkLog4 = new CheckBox();
+            groupBodyProtectorate = new GroupBox();
+            checkLog25 = new CheckBox();
+            checkLog28 = new CheckBox();
+            checkLog26 = new CheckBox();
+            checkLog27 = new CheckBox();
             btnQuit = new Button();
             btnResetRuins = new Button();
             btnResetLogs = new Button();
             lblObelisk = new Label();
             btnToggleObelisk = new Button();
             txtObelisk = new TextBox();
-            groupBodyProtectorate = new GroupBox();
-            groupThargoids = new GroupBox();
-            groupWar = new GroupBox();
-            groupTech = new GroupBox();
-            groupLang = new GroupBox();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             tabPage2.SuspendLayout();
-            groupBodyProtectorate.SuspendLayout();
-            groupThargoids.SuspendLayout();
-            groupWar.SuspendLayout();
             groupTech.SuspendLayout();
             groupLang.SuspendLayout();
+            groupWar.SuspendLayout();
+            groupThargoids.SuspendLayout();
+            groupBodyProtectorate.SuspendLayout();
             SuspendLayout();
             // 
             // label1
@@ -134,14 +134,14 @@ namespace SrvSurvey
             label3.Name = "label3";
             label3.Size = new Size(216, 15);
             label3.TabIndex = 6;
-            label3.Text = "Mission 2: Decoding the Guardian Logs ";
+            label3.Text = "Mission 2: Decoding the Guardian Logs:";
             // 
             // txtRuinsMissionActive
             // 
-            txtRuinsMissionActive.Location = new Point(241, 32);
+            txtRuinsMissionActive.Location = new Point(241, 33);
             txtRuinsMissionActive.Name = "txtRuinsMissionActive";
             txtRuinsMissionActive.ReadOnly = true;
-            txtRuinsMissionActive.Size = new Size(76, 23);
+            txtRuinsMissionActive.Size = new Size(101, 23);
             txtRuinsMissionActive.TabIndex = 3;
             txtRuinsMissionActive.Text = "Not started";
             txtRuinsMissionActive.TextAlign = HorizontalAlignment.Center;
@@ -152,18 +152,19 @@ namespace SrvSurvey
             txtLogsMissionActive.Location = new Point(241, 61);
             txtLogsMissionActive.Name = "txtLogsMissionActive";
             txtLogsMissionActive.ReadOnly = true;
-            txtLogsMissionActive.Size = new Size(76, 23);
+            txtLogsMissionActive.Size = new Size(101, 23);
             txtLogsMissionActive.TabIndex = 7;
-            txtLogsMissionActive.Text = "ACTIVE";
+            txtLogsMissionActive.Text = "ACTIVE - 100%";
             txtLogsMissionActive.TextAlign = HorizontalAlignment.Center;
             // 
             // linkLabel1
             // 
             linkLabel1.AutoSize = true;
+            linkLabel1.Font = new Font("Segoe UI", 8F, FontStyle.Regular, GraphicsUnit.Point);
             linkLabel1.LinkArea = new LinkArea(1, 12);
-            linkLabel1.Location = new Point(323, 36);
+            linkLabel1.Location = new Point(347, 37);
             linkLabel1.Name = "linkLabel1";
-            linkLabel1.Size = new Size(89, 21);
+            linkLabel1.Size = new Size(79, 19);
             linkLabel1.TabIndex = 4;
             linkLabel1.TabStop = true;
             linkLabel1.Text = "(Canonn guide)";
@@ -175,17 +176,18 @@ namespace SrvSurvey
             label2.AutoSize = true;
             label2.Location = new Point(19, 36);
             label2.Name = "label2";
-            label2.Size = new Size(210, 15);
+            label2.Size = new Size(213, 15);
             label2.TabIndex = 2;
-            label2.Text = "Mission 1: Decoding the Ancient Ruins";
+            label2.Text = "Mission 1: Decoding the Ancient Ruins:";
             // 
             // linkLabel2
             // 
             linkLabel2.AutoSize = true;
+            linkLabel2.Font = new Font("Segoe UI", 8F, FontStyle.Regular, GraphicsUnit.Point);
             linkLabel2.LinkArea = new LinkArea(1, 12);
-            linkLabel2.Location = new Point(323, 64);
+            linkLabel2.Location = new Point(348, 65);
             linkLabel2.Name = "linkLabel2";
-            linkLabel2.Size = new Size(89, 21);
+            linkLabel2.Size = new Size(79, 19);
             linkLabel2.TabIndex = 8;
             linkLabel2.TabStop = true;
             linkLabel2.Text = "(Canonn guide)";
@@ -221,18 +223,18 @@ namespace SrvSurvey
             listRuins.Dock = DockStyle.Fill;
             listRuins.FullRowSelect = true;
             listRuins.HeaderStyle = ColumnHeaderStyle.Nonclickable;
-            listViewItem22.StateImageIndex = 0;
-            listViewItem23.StateImageIndex = 0;
-            listViewItem24.StateImageIndex = 0;
-            listViewItem25.StateImageIndex = 0;
-            listViewItem26.StateImageIndex = 0;
-            listViewItem27.StateImageIndex = 0;
-            listViewItem28.StateImageIndex = 0;
-            listViewItem29.StateImageIndex = 0;
-            listViewItem30.StateImageIndex = 0;
-            listViewItem32.ToolTipText = "11";
-            listViewItem33.ToolTipText = "12";
-            listRuins.Items.AddRange(new ListViewItem[] { listViewItem22, listViewItem23, listViewItem24, listViewItem25, listViewItem26, listViewItem27, listViewItem28, listViewItem29, listViewItem30, listViewItem31, listViewItem32, listViewItem33, listViewItem34, listViewItem35, listViewItem36, listViewItem37, listViewItem38, listViewItem39, listViewItem40, listViewItem41, listViewItem42 });
+            listViewItem1.StateImageIndex = 0;
+            listViewItem2.StateImageIndex = 0;
+            listViewItem3.StateImageIndex = 0;
+            listViewItem4.StateImageIndex = 0;
+            listViewItem5.StateImageIndex = 0;
+            listViewItem6.StateImageIndex = 0;
+            listViewItem7.StateImageIndex = 0;
+            listViewItem8.StateImageIndex = 0;
+            listViewItem9.StateImageIndex = 0;
+            listViewItem11.ToolTipText = "11";
+            listViewItem12.ToolTipText = "12";
+            listRuins.Items.AddRange(new ListViewItem[] { listViewItem1, listViewItem2, listViewItem3, listViewItem4, listViewItem5, listViewItem6, listViewItem7, listViewItem8, listViewItem9, listViewItem10, listViewItem11, listViewItem12, listViewItem13, listViewItem14, listViewItem15, listViewItem16, listViewItem17, listViewItem18, listViewItem19, listViewItem20, listViewItem21 });
             listRuins.Location = new Point(3, 3);
             listRuins.Name = "listRuins";
             listRuins.OwnerDraw = true;
@@ -295,65 +297,87 @@ namespace SrvSurvey
             tabPage2.TabIndex = 1;
             tabPage2.Text = "Mission 2";
             // 
-            // checkLog28
+            // groupTech
             // 
-            checkLog28.AutoSize = true;
-            checkLog28.Location = new Point(162, 22);
-            checkLog28.Name = "checkLog28";
-            checkLog28.Padding = new Padding(2);
-            checkLog28.Size = new Size(49, 23);
-            checkLog28.TabIndex = 32;
-            checkLog28.Text = "#28";
-            checkLog28.UseVisualStyleBackColor = true;
-            checkLog28.CheckedChanged += checkLog_CheckedChanged;
+            groupTech.Controls.Add(checkLog11);
+            groupTech.Controls.Add(checkLog12);
+            groupTech.Controls.Add(checkLog13);
+            groupTech.Controls.Add(checkLog14);
+            groupTech.Controls.Add(checkLog15);
+            groupTech.Controls.Add(checkLog23);
+            groupTech.Controls.Add(checkLog16);
+            groupTech.Controls.Add(checkLog22);
+            groupTech.Controls.Add(checkLog17);
+            groupTech.Controls.Add(checkLog21);
+            groupTech.Controls.Add(checkLog18);
+            groupTech.Controls.Add(checkLog20);
+            groupTech.Controls.Add(checkLog19);
+            groupTech.Location = new Point(6, 134);
+            groupTech.Name = "groupTech";
+            groupTech.Size = new Size(377, 109);
+            groupTech.TabIndex = 0;
+            groupTech.TabStop = false;
+            groupTech.Text = "Technology ";
             // 
-            // checkLog27
+            // checkLog11
             // 
-            checkLog27.AutoSize = true;
-            checkLog27.Location = new Point(111, 22);
-            checkLog27.Name = "checkLog27";
-            checkLog27.Padding = new Padding(2);
-            checkLog27.Size = new Size(49, 23);
-            checkLog27.TabIndex = 31;
-            checkLog27.Text = "#27";
-            checkLog27.UseVisualStyleBackColor = true;
-            checkLog27.CheckedChanged += checkLog_CheckedChanged;
+            checkLog11.AutoSize = true;
+            checkLog11.Location = new Point(6, 22);
+            checkLog11.Name = "checkLog11";
+            checkLog11.Padding = new Padding(2);
+            checkLog11.Size = new Size(49, 23);
+            checkLog11.TabIndex = 13;
+            checkLog11.Text = "#11";
+            checkLog11.UseVisualStyleBackColor = true;
+            checkLog11.CheckedChanged += checkLog_CheckedChanged;
             // 
-            // checkLog26
+            // checkLog12
             // 
-            checkLog26.AutoSize = true;
-            checkLog26.Location = new Point(57, 22);
-            checkLog26.Name = "checkLog26";
-            checkLog26.Padding = new Padding(2);
-            checkLog26.Size = new Size(49, 23);
-            checkLog26.TabIndex = 30;
-            checkLog26.Text = "#26";
-            checkLog26.UseVisualStyleBackColor = true;
-            checkLog26.CheckedChanged += checkLog_CheckedChanged;
+            checkLog12.AutoSize = true;
+            checkLog12.Location = new Point(57, 22);
+            checkLog12.Name = "checkLog12";
+            checkLog12.Padding = new Padding(2);
+            checkLog12.Size = new Size(49, 23);
+            checkLog12.TabIndex = 14;
+            checkLog12.Text = "#12";
+            checkLog12.UseVisualStyleBackColor = true;
+            checkLog12.CheckedChanged += checkLog_CheckedChanged;
             // 
-            // checkLog25
+            // checkLog13
             // 
-            checkLog25.AutoSize = true;
-            checkLog25.Location = new Point(6, 22);
-            checkLog25.Name = "checkLog25";
-            checkLog25.Padding = new Padding(2);
-            checkLog25.Size = new Size(49, 23);
-            checkLog25.TabIndex = 29;
-            checkLog25.Text = "#25";
-            checkLog25.UseVisualStyleBackColor = true;
-            checkLog25.CheckedChanged += checkLog_CheckedChanged;
+            checkLog13.AutoSize = true;
+            checkLog13.Location = new Point(111, 22);
+            checkLog13.Name = "checkLog13";
+            checkLog13.Padding = new Padding(2);
+            checkLog13.Size = new Size(49, 23);
+            checkLog13.TabIndex = 15;
+            checkLog13.Text = "#13";
+            checkLog13.UseVisualStyleBackColor = true;
+            checkLog13.CheckedChanged += checkLog_CheckedChanged;
             // 
-            // checkLog24
+            // checkLog14
             // 
-            checkLog24.AutoSize = true;
-            checkLog24.Location = new Point(6, 22);
-            checkLog24.Name = "checkLog24";
-            checkLog24.Padding = new Padding(2);
-            checkLog24.Size = new Size(49, 23);
-            checkLog24.TabIndex = 27;
-            checkLog24.Text = "#24";
-            checkLog24.UseVisualStyleBackColor = true;
-            checkLog24.CheckedChanged += checkLog_CheckedChanged;
+            checkLog14.AutoSize = true;
+            checkLog14.Location = new Point(162, 22);
+            checkLog14.Name = "checkLog14";
+            checkLog14.Padding = new Padding(2);
+            checkLog14.Size = new Size(49, 23);
+            checkLog14.TabIndex = 16;
+            checkLog14.Text = "#14";
+            checkLog14.UseVisualStyleBackColor = true;
+            checkLog14.CheckedChanged += checkLog_CheckedChanged;
+            // 
+            // checkLog15
+            // 
+            checkLog15.AutoSize = true;
+            checkLog15.Location = new Point(213, 22);
+            checkLog15.Name = "checkLog15";
+            checkLog15.Padding = new Padding(2);
+            checkLog15.Size = new Size(49, 23);
+            checkLog15.TabIndex = 17;
+            checkLog15.Text = "#15";
+            checkLog15.UseVisualStyleBackColor = true;
+            checkLog15.CheckedChanged += checkLog_CheckedChanged;
             // 
             // checkLog23
             // 
@@ -367,6 +391,18 @@ namespace SrvSurvey
             checkLog23.UseVisualStyleBackColor = true;
             checkLog23.CheckedChanged += checkLog_CheckedChanged;
             // 
+            // checkLog16
+            // 
+            checkLog16.AutoSize = true;
+            checkLog16.Location = new Point(6, 51);
+            checkLog16.Name = "checkLog16";
+            checkLog16.Padding = new Padding(2);
+            checkLog16.Size = new Size(48, 23);
+            checkLog16.TabIndex = 18;
+            checkLog16.Text = "$16";
+            checkLog16.UseVisualStyleBackColor = true;
+            checkLog16.CheckedChanged += checkLog_CheckedChanged;
+            // 
             // checkLog22
             // 
             checkLog22.AutoSize = true;
@@ -379,6 +415,18 @@ namespace SrvSurvey
             checkLog22.UseVisualStyleBackColor = true;
             checkLog22.CheckedChanged += checkLog_CheckedChanged;
             // 
+            // checkLog17
+            // 
+            checkLog17.AutoSize = true;
+            checkLog17.Location = new Point(57, 51);
+            checkLog17.Name = "checkLog17";
+            checkLog17.Padding = new Padding(2);
+            checkLog17.Size = new Size(49, 23);
+            checkLog17.TabIndex = 19;
+            checkLog17.Text = "#17";
+            checkLog17.UseVisualStyleBackColor = true;
+            checkLog17.CheckedChanged += checkLog_CheckedChanged;
+            // 
             // checkLog21
             // 
             checkLog21.AutoSize = true;
@@ -390,6 +438,18 @@ namespace SrvSurvey
             checkLog21.Text = "#21";
             checkLog21.UseVisualStyleBackColor = true;
             checkLog21.CheckedChanged += checkLog_CheckedChanged;
+            // 
+            // checkLog18
+            // 
+            checkLog18.AutoSize = true;
+            checkLog18.Location = new Point(111, 51);
+            checkLog18.Name = "checkLog18";
+            checkLog18.Padding = new Padding(2);
+            checkLog18.Size = new Size(49, 23);
+            checkLog18.TabIndex = 20;
+            checkLog18.Text = "#18";
+            checkLog18.UseVisualStyleBackColor = true;
+            checkLog18.CheckedChanged += checkLog_CheckedChanged;
             // 
             // checkLog20
             // 
@@ -415,89 +475,41 @@ namespace SrvSurvey
             checkLog19.UseVisualStyleBackColor = true;
             checkLog19.CheckedChanged += checkLog_CheckedChanged;
             // 
-            // checkLog18
+            // groupLang
             // 
-            checkLog18.AutoSize = true;
-            checkLog18.Location = new Point(111, 51);
-            checkLog18.Name = "checkLog18";
-            checkLog18.Padding = new Padding(2);
-            checkLog18.Size = new Size(49, 23);
-            checkLog18.TabIndex = 20;
-            checkLog18.Text = "#18";
-            checkLog18.UseVisualStyleBackColor = true;
-            checkLog18.CheckedChanged += checkLog_CheckedChanged;
+            groupLang.Controls.Add(checkLog24);
+            groupLang.Location = new Point(6, 249);
+            groupLang.Name = "groupLang";
+            groupLang.Size = new Size(377, 58);
+            groupLang.TabIndex = 0;
+            groupLang.TabStop = false;
+            groupLang.Text = "Language ";
             // 
-            // checkLog17
+            // checkLog24
             // 
-            checkLog17.AutoSize = true;
-            checkLog17.Location = new Point(57, 51);
-            checkLog17.Name = "checkLog17";
-            checkLog17.Padding = new Padding(2);
-            checkLog17.Size = new Size(49, 23);
-            checkLog17.TabIndex = 19;
-            checkLog17.Text = "#17";
-            checkLog17.UseVisualStyleBackColor = true;
-            checkLog17.CheckedChanged += checkLog_CheckedChanged;
+            checkLog24.AutoSize = true;
+            checkLog24.Location = new Point(6, 22);
+            checkLog24.Name = "checkLog24";
+            checkLog24.Padding = new Padding(2);
+            checkLog24.Size = new Size(49, 23);
+            checkLog24.TabIndex = 27;
+            checkLog24.Text = "#24";
+            checkLog24.UseVisualStyleBackColor = true;
+            checkLog24.CheckedChanged += checkLog_CheckedChanged;
             // 
-            // checkLog16
+            // groupWar
             // 
-            checkLog16.AutoSize = true;
-            checkLog16.Location = new Point(6, 51);
-            checkLog16.Name = "checkLog16";
-            checkLog16.Padding = new Padding(2);
-            checkLog16.Size = new Size(48, 23);
-            checkLog16.TabIndex = 18;
-            checkLog16.Text = "$16";
-            checkLog16.UseVisualStyleBackColor = true;
-            checkLog16.CheckedChanged += checkLog_CheckedChanged;
-            // 
-            // checkLog10
-            // 
-            checkLog10.AutoSize = true;
-            checkLog10.Location = new Point(213, 22);
-            checkLog10.Name = "checkLog10";
-            checkLog10.Padding = new Padding(2);
-            checkLog10.Size = new Size(49, 23);
-            checkLog10.TabIndex = 11;
-            checkLog10.Text = "#10";
-            checkLog10.UseVisualStyleBackColor = true;
-            checkLog10.CheckedChanged += checkLog_CheckedChanged;
-            // 
-            // checkLog9
-            // 
-            checkLog9.AutoSize = true;
-            checkLog9.Location = new Point(162, 22);
-            checkLog9.Name = "checkLog9";
-            checkLog9.Padding = new Padding(2);
-            checkLog9.Size = new Size(42, 23);
-            checkLog9.TabIndex = 10;
-            checkLog9.Text = "$9";
-            checkLog9.UseVisualStyleBackColor = true;
-            checkLog9.CheckedChanged += checkLog_CheckedChanged;
-            // 
-            // checkLog8
-            // 
-            checkLog8.AutoSize = true;
-            checkLog8.Location = new Point(111, 22);
-            checkLog8.Name = "checkLog8";
-            checkLog8.Padding = new Padding(2);
-            checkLog8.Size = new Size(43, 23);
-            checkLog8.TabIndex = 9;
-            checkLog8.Text = "#8";
-            checkLog8.UseVisualStyleBackColor = true;
-            checkLog8.CheckedChanged += checkLog_CheckedChanged;
-            // 
-            // checkLog7
-            // 
-            checkLog7.AutoSize = true;
-            checkLog7.Location = new Point(57, 22);
-            checkLog7.Name = "checkLog7";
-            checkLog7.Padding = new Padding(2);
-            checkLog7.Size = new Size(43, 23);
-            checkLog7.TabIndex = 8;
-            checkLog7.Text = "#7";
-            checkLog7.UseVisualStyleBackColor = true;
-            checkLog7.CheckedChanged += checkLog_CheckedChanged;
+            groupWar.Controls.Add(checkLog6);
+            groupWar.Controls.Add(checkLog7);
+            groupWar.Controls.Add(checkLog8);
+            groupWar.Controls.Add(checkLog9);
+            groupWar.Controls.Add(checkLog10);
+            groupWar.Location = new Point(6, 70);
+            groupWar.Name = "groupWar";
+            groupWar.Size = new Size(377, 58);
+            groupWar.TabIndex = 34;
+            groupWar.TabStop = false;
+            groupWar.Text = "Civil war ";
             // 
             // checkLog6
             // 
@@ -511,6 +523,68 @@ namespace SrvSurvey
             checkLog6.UseVisualStyleBackColor = true;
             checkLog6.CheckedChanged += checkLog_CheckedChanged;
             // 
+            // checkLog7
+            // 
+            checkLog7.AutoSize = true;
+            checkLog7.Location = new Point(57, 22);
+            checkLog7.Name = "checkLog7";
+            checkLog7.Padding = new Padding(2);
+            checkLog7.Size = new Size(43, 23);
+            checkLog7.TabIndex = 8;
+            checkLog7.Text = "#7";
+            checkLog7.UseVisualStyleBackColor = true;
+            checkLog7.CheckedChanged += checkLog_CheckedChanged;
+            // 
+            // checkLog8
+            // 
+            checkLog8.AutoSize = true;
+            checkLog8.Location = new Point(111, 22);
+            checkLog8.Name = "checkLog8";
+            checkLog8.Padding = new Padding(2);
+            checkLog8.Size = new Size(43, 23);
+            checkLog8.TabIndex = 9;
+            checkLog8.Text = "#8";
+            checkLog8.UseVisualStyleBackColor = true;
+            checkLog8.CheckedChanged += checkLog_CheckedChanged;
+            // 
+            // checkLog9
+            // 
+            checkLog9.AutoSize = true;
+            checkLog9.Location = new Point(162, 22);
+            checkLog9.Name = "checkLog9";
+            checkLog9.Padding = new Padding(2);
+            checkLog9.Size = new Size(42, 23);
+            checkLog9.TabIndex = 10;
+            checkLog9.Text = "$9";
+            checkLog9.UseVisualStyleBackColor = true;
+            checkLog9.CheckedChanged += checkLog_CheckedChanged;
+            // 
+            // checkLog10
+            // 
+            checkLog10.AutoSize = true;
+            checkLog10.Location = new Point(213, 22);
+            checkLog10.Name = "checkLog10";
+            checkLog10.Padding = new Padding(2);
+            checkLog10.Size = new Size(49, 23);
+            checkLog10.TabIndex = 11;
+            checkLog10.Text = "#10";
+            checkLog10.UseVisualStyleBackColor = true;
+            checkLog10.CheckedChanged += checkLog_CheckedChanged;
+            // 
+            // groupThargoids
+            // 
+            groupThargoids.Controls.Add(checkLog5);
+            groupThargoids.Controls.Add(checkLog1);
+            groupThargoids.Controls.Add(checkLog2);
+            groupThargoids.Controls.Add(checkLog3);
+            groupThargoids.Controls.Add(checkLog4);
+            groupThargoids.Location = new Point(6, 6);
+            groupThargoids.Name = "groupThargoids";
+            groupThargoids.Size = new Size(377, 58);
+            groupThargoids.TabIndex = 33;
+            groupThargoids.TabStop = false;
+            groupThargoids.Text = "Thargoids ";
+            // 
             // checkLog5
             // 
             checkLog5.AutoSize = true;
@@ -522,42 +596,6 @@ namespace SrvSurvey
             checkLog5.Text = "#5";
             checkLog5.UseVisualStyleBackColor = true;
             checkLog5.CheckedChanged += checkLog_CheckedChanged;
-            // 
-            // checkLog4
-            // 
-            checkLog4.AutoSize = true;
-            checkLog4.Location = new Point(162, 22);
-            checkLog4.Name = "checkLog4";
-            checkLog4.Padding = new Padding(2);
-            checkLog4.Size = new Size(42, 23);
-            checkLog4.TabIndex = 4;
-            checkLog4.Text = "$4";
-            checkLog4.UseVisualStyleBackColor = true;
-            checkLog4.CheckedChanged += checkLog_CheckedChanged;
-            // 
-            // checkLog3
-            // 
-            checkLog3.AutoSize = true;
-            checkLog3.Location = new Point(111, 22);
-            checkLog3.Name = "checkLog3";
-            checkLog3.Padding = new Padding(2);
-            checkLog3.Size = new Size(43, 23);
-            checkLog3.TabIndex = 3;
-            checkLog3.Text = "#3";
-            checkLog3.UseVisualStyleBackColor = true;
-            checkLog3.CheckedChanged += checkLog_CheckedChanged;
-            // 
-            // checkLog2
-            // 
-            checkLog2.AutoSize = true;
-            checkLog2.Location = new Point(57, 22);
-            checkLog2.Name = "checkLog2";
-            checkLog2.Padding = new Padding(2);
-            checkLog2.Size = new Size(43, 23);
-            checkLog2.TabIndex = 2;
-            checkLog2.Text = "#2";
-            checkLog2.UseVisualStyleBackColor = true;
-            checkLog2.CheckedChanged += checkLog_CheckedChanged;
             // 
             // checkLog1
             // 
@@ -571,65 +609,104 @@ namespace SrvSurvey
             checkLog1.UseVisualStyleBackColor = true;
             checkLog1.CheckedChanged += checkLog_CheckedChanged;
             // 
-            // checkLog15
+            // checkLog2
             // 
-            checkLog15.AutoSize = true;
-            checkLog15.Location = new Point(213, 22);
-            checkLog15.Name = "checkLog15";
-            checkLog15.Padding = new Padding(2);
-            checkLog15.Size = new Size(49, 23);
-            checkLog15.TabIndex = 17;
-            checkLog15.Text = "#15";
-            checkLog15.UseVisualStyleBackColor = true;
-            checkLog15.CheckedChanged += checkLog_CheckedChanged;
+            checkLog2.AutoSize = true;
+            checkLog2.Location = new Point(57, 22);
+            checkLog2.Name = "checkLog2";
+            checkLog2.Padding = new Padding(2);
+            checkLog2.Size = new Size(43, 23);
+            checkLog2.TabIndex = 2;
+            checkLog2.Text = "#2";
+            checkLog2.UseVisualStyleBackColor = true;
+            checkLog2.CheckedChanged += checkLog_CheckedChanged;
             // 
-            // checkLog14
+            // checkLog3
             // 
-            checkLog14.AutoSize = true;
-            checkLog14.Location = new Point(162, 22);
-            checkLog14.Name = "checkLog14";
-            checkLog14.Padding = new Padding(2);
-            checkLog14.Size = new Size(49, 23);
-            checkLog14.TabIndex = 16;
-            checkLog14.Text = "#14";
-            checkLog14.UseVisualStyleBackColor = true;
-            checkLog14.CheckedChanged += checkLog_CheckedChanged;
+            checkLog3.AutoSize = true;
+            checkLog3.Location = new Point(111, 22);
+            checkLog3.Name = "checkLog3";
+            checkLog3.Padding = new Padding(2);
+            checkLog3.Size = new Size(43, 23);
+            checkLog3.TabIndex = 3;
+            checkLog3.Text = "#3";
+            checkLog3.UseVisualStyleBackColor = true;
+            checkLog3.CheckedChanged += checkLog_CheckedChanged;
             // 
-            // checkLog13
+            // checkLog4
             // 
-            checkLog13.AutoSize = true;
-            checkLog13.Location = new Point(111, 22);
-            checkLog13.Name = "checkLog13";
-            checkLog13.Padding = new Padding(2);
-            checkLog13.Size = new Size(49, 23);
-            checkLog13.TabIndex = 15;
-            checkLog13.Text = "#13";
-            checkLog13.UseVisualStyleBackColor = true;
-            checkLog13.CheckedChanged += checkLog_CheckedChanged;
+            checkLog4.AutoSize = true;
+            checkLog4.Location = new Point(162, 22);
+            checkLog4.Name = "checkLog4";
+            checkLog4.Padding = new Padding(2);
+            checkLog4.Size = new Size(42, 23);
+            checkLog4.TabIndex = 4;
+            checkLog4.Text = "$4";
+            checkLog4.UseVisualStyleBackColor = true;
+            checkLog4.CheckedChanged += checkLog_CheckedChanged;
             // 
-            // checkLog12
+            // groupBodyProtectorate
             // 
-            checkLog12.AutoSize = true;
-            checkLog12.Location = new Point(57, 22);
-            checkLog12.Name = "checkLog12";
-            checkLog12.Padding = new Padding(2);
-            checkLog12.Size = new Size(49, 23);
-            checkLog12.TabIndex = 14;
-            checkLog12.Text = "#12";
-            checkLog12.UseVisualStyleBackColor = true;
-            checkLog12.CheckedChanged += checkLog_CheckedChanged;
+            groupBodyProtectorate.BackColor = Color.Transparent;
+            groupBodyProtectorate.Controls.Add(checkLog25);
+            groupBodyProtectorate.Controls.Add(checkLog28);
+            groupBodyProtectorate.Controls.Add(checkLog26);
+            groupBodyProtectorate.Controls.Add(checkLog27);
+            groupBodyProtectorate.FlatStyle = FlatStyle.Flat;
+            groupBodyProtectorate.Location = new Point(6, 313);
+            groupBodyProtectorate.Name = "groupBodyProtectorate";
+            groupBodyProtectorate.Size = new Size(377, 58);
+            groupBodyProtectorate.TabIndex = 33;
+            groupBodyProtectorate.TabStop = false;
+            groupBodyProtectorate.Text = "Body Protectorate ";
             // 
-            // checkLog11
+            // checkLog25
             // 
-            checkLog11.AutoSize = true;
-            checkLog11.Location = new Point(6, 22);
-            checkLog11.Name = "checkLog11";
-            checkLog11.Padding = new Padding(2);
-            checkLog11.Size = new Size(49, 23);
-            checkLog11.TabIndex = 13;
-            checkLog11.Text = "#11";
-            checkLog11.UseVisualStyleBackColor = true;
-            checkLog11.CheckedChanged += checkLog_CheckedChanged;
+            checkLog25.AutoSize = true;
+            checkLog25.Location = new Point(6, 22);
+            checkLog25.Name = "checkLog25";
+            checkLog25.Padding = new Padding(2);
+            checkLog25.Size = new Size(49, 23);
+            checkLog25.TabIndex = 29;
+            checkLog25.Text = "#25";
+            checkLog25.UseVisualStyleBackColor = true;
+            checkLog25.CheckedChanged += checkLog_CheckedChanged;
+            // 
+            // checkLog28
+            // 
+            checkLog28.AutoSize = true;
+            checkLog28.Location = new Point(162, 22);
+            checkLog28.Name = "checkLog28";
+            checkLog28.Padding = new Padding(2);
+            checkLog28.Size = new Size(49, 23);
+            checkLog28.TabIndex = 32;
+            checkLog28.Text = "#28";
+            checkLog28.UseVisualStyleBackColor = true;
+            checkLog28.CheckedChanged += checkLog_CheckedChanged;
+            // 
+            // checkLog26
+            // 
+            checkLog26.AutoSize = true;
+            checkLog26.Location = new Point(57, 22);
+            checkLog26.Name = "checkLog26";
+            checkLog26.Padding = new Padding(2);
+            checkLog26.Size = new Size(49, 23);
+            checkLog26.TabIndex = 30;
+            checkLog26.Text = "#26";
+            checkLog26.UseVisualStyleBackColor = true;
+            checkLog26.CheckedChanged += checkLog_CheckedChanged;
+            // 
+            // checkLog27
+            // 
+            checkLog27.AutoSize = true;
+            checkLog27.Location = new Point(111, 22);
+            checkLog27.Name = "checkLog27";
+            checkLog27.Padding = new Padding(2);
+            checkLog27.Size = new Size(49, 23);
+            checkLog27.TabIndex = 31;
+            checkLog27.Text = "#27";
+            checkLog27.UseVisualStyleBackColor = true;
+            checkLog27.CheckedChanged += checkLog_CheckedChanged;
             // 
             // btnQuit
             // 
@@ -644,9 +721,9 @@ namespace SrvSurvey
             // 
             // btnResetRuins
             // 
-            btnResetRuins.Location = new Point(418, 32);
+            btnResetRuins.Location = new Point(432, 32);
             btnResetRuins.Name = "btnResetRuins";
-            btnResetRuins.Size = new Size(59, 23);
+            btnResetRuins.Size = new Size(45, 23);
             btnResetRuins.TabIndex = 5;
             btnResetRuins.Text = "Reset";
             btnResetRuins.UseVisualStyleBackColor = true;
@@ -654,9 +731,9 @@ namespace SrvSurvey
             // 
             // btnResetLogs
             // 
-            btnResetLogs.Location = new Point(418, 60);
+            btnResetLogs.Location = new Point(432, 60);
             btnResetLogs.Name = "btnResetLogs";
-            btnResetLogs.Size = new Size(59, 23);
+            btnResetLogs.Size = new Size(45, 23);
             btnResetLogs.TabIndex = 9;
             btnResetLogs.Text = "Reset";
             btnResetLogs.UseVisualStyleBackColor = true;
@@ -693,81 +770,6 @@ namespace SrvSurvey
             txtObelisk.TabIndex = 12;
             txtObelisk.Text = "N10: Casket + Totem for Tech #10";
             // 
-            // groupBodyProtectorate
-            // 
-            groupBodyProtectorate.BackColor = Color.Transparent;
-            groupBodyProtectorate.Controls.Add(checkLog25);
-            groupBodyProtectorate.Controls.Add(checkLog28);
-            groupBodyProtectorate.Controls.Add(checkLog26);
-            groupBodyProtectorate.Controls.Add(checkLog27);
-            groupBodyProtectorate.FlatStyle = FlatStyle.Flat;
-            groupBodyProtectorate.Location = new Point(6, 313);
-            groupBodyProtectorate.Name = "groupBodyProtectorate";
-            groupBodyProtectorate.Size = new Size(377, 58);
-            groupBodyProtectorate.TabIndex = 33;
-            groupBodyProtectorate.TabStop = false;
-            groupBodyProtectorate.Text = "Body Protectorate ";
-            // 
-            // groupThargoids
-            // 
-            groupThargoids.Controls.Add(checkLog5);
-            groupThargoids.Controls.Add(checkLog1);
-            groupThargoids.Controls.Add(checkLog2);
-            groupThargoids.Controls.Add(checkLog3);
-            groupThargoids.Controls.Add(checkLog4);
-            groupThargoids.Location = new Point(6, 6);
-            groupThargoids.Name = "groupThargoids";
-            groupThargoids.Size = new Size(377, 58);
-            groupThargoids.TabIndex = 33;
-            groupThargoids.TabStop = false;
-            groupThargoids.Text = "Thargoids ";
-            // 
-            // groupWar
-            // 
-            groupWar.Controls.Add(checkLog6);
-            groupWar.Controls.Add(checkLog7);
-            groupWar.Controls.Add(checkLog8);
-            groupWar.Controls.Add(checkLog9);
-            groupWar.Controls.Add(checkLog10);
-            groupWar.Location = new Point(6, 70);
-            groupWar.Name = "groupWar";
-            groupWar.Size = new Size(377, 58);
-            groupWar.TabIndex = 34;
-            groupWar.TabStop = false;
-            groupWar.Text = "Civil war ";
-            // 
-            // groupTech
-            // 
-            groupTech.Controls.Add(checkLog11);
-            groupTech.Controls.Add(checkLog12);
-            groupTech.Controls.Add(checkLog13);
-            groupTech.Controls.Add(checkLog14);
-            groupTech.Controls.Add(checkLog15);
-            groupTech.Controls.Add(checkLog23);
-            groupTech.Controls.Add(checkLog16);
-            groupTech.Controls.Add(checkLog22);
-            groupTech.Controls.Add(checkLog17);
-            groupTech.Controls.Add(checkLog21);
-            groupTech.Controls.Add(checkLog18);
-            groupTech.Controls.Add(checkLog20);
-            groupTech.Controls.Add(checkLog19);
-            groupTech.Location = new Point(6, 134);
-            groupTech.Name = "groupTech";
-            groupTech.Size = new Size(377, 109);
-            groupTech.TabIndex = 0;
-            groupTech.TabStop = false;
-            groupTech.Text = "Technology ";
-            // 
-            // groupLang
-            // 
-            groupLang.Controls.Add(checkLog24);
-            groupLang.Location = new Point(6, 249);
-            groupLang.Name = "groupLang";
-            groupLang.Size = new Size(377, 58);
-            groupLang.TabIndex = 0;
-            groupLang.TabStop = false;
-            groupLang.Text = "Language ";
-            // 
             // FormRamTah
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -796,16 +798,16 @@ namespace SrvSurvey
             tabControl1.ResumeLayout(false);
             tabPage1.ResumeLayout(false);
             tabPage2.ResumeLayout(false);
-            groupBodyProtectorate.ResumeLayout(false);
-            groupBodyProtectorate.PerformLayout();
-            groupThargoids.ResumeLayout(false);
-            groupThargoids.PerformLayout();
-            groupWar.ResumeLayout(false);
-            groupWar.PerformLayout();
             groupTech.ResumeLayout(false);
             groupTech.PerformLayout();
             groupLang.ResumeLayout(false);
             groupLang.PerformLayout();
+            groupWar.ResumeLayout(false);
+            groupWar.PerformLayout();
+            groupThargoids.ResumeLayout(false);
+            groupThargoids.PerformLayout();
+            groupBodyProtectorate.ResumeLayout(false);
+            groupBodyProtectorate.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }

@@ -564,7 +564,7 @@ namespace SrvSurvey
             }
             else if (game.systemSite == null || game.systemBody == null || game.systemBody.settlements?.Count == 0)
             {
-                lblGuardianCount.Text = "0";
+                lblGuardianCount.Text = game?.systemBody?.settlements?.Count.ToString() ?? "0";
                 txtGuardianSite.Text = "";
                 Program.closePlotter<PlotGuardians>();
                 Program.closePlotter<PlotGuardianStatus>();

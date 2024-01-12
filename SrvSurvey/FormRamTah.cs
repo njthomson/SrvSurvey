@@ -18,6 +18,8 @@ namespace SrvSurvey
             Util.showForm(FormRamTah.activeForm);
         }
 
+        private CommanderSettings? cmdr { get => Game.activeGame?.cmdr; }
+
         private FormRamTah()
         {
             InitializeComponent();
@@ -43,7 +45,7 @@ namespace SrvSurvey
             };
 
             this.prepRuinsRows();
-            this.prepLogCheckboxes();
+            this.updateChecks();
 
             this.setCurrentObelisk(Game.activeGame?.systemSite?.currentObelisk);
 
@@ -71,11 +73,8 @@ namespace SrvSurvey
             FormRamTah.activeForm = null;
         }
 
-        private CommanderSettings? cmdr { get => Game.activeGame?.cmdr; }
-
         private void prepLogCheckboxes()
         {
-
             foreach (var checkbox in this.checkLogs)
             {
                 var idx = int.Parse(checkbox.Name.Substring(8));
@@ -349,6 +348,18 @@ namespace SrvSurvey
         {
             this.listRuins.Invalidate();
             this.prepLogCheckboxes();
+
+            if (this.cmdr?.decodeTheRuinsMissionActive == TahMissionStatus.Active)
+            {
+                var ruinsProgress = (100.0 / 101 * cmdr?.decodeTheRuins.Count ?? 0).ToString("0");
+                txtRuinsMissionActive.Text = $"{this.cmdr?.decodeTheRuinsMissionActive} - {ruinsProgress}%";
+            }
+
+            if (this.cmdr?.decodeTheLogsMissionActive == TahMissionStatus.Active)
+            {
+                var logsProgress = (100.0 / 28 * cmdr?.decodeTheLogs.Count ?? 0).ToString("0");
+                txtLogsMissionActive.Text = $"{this.cmdr?.decodeTheLogsMissionActive} - {logsProgress}%";
+            }
         }
 
         private void FormRamTah_Load(object sender, EventArgs e)

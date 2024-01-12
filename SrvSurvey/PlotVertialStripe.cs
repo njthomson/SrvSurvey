@@ -50,6 +50,12 @@ namespace SrvSurvey
             game.status.StatusChanged += Status_StatusChanged;
         }
 
+        protected override void OnActivated(EventArgs e)
+        {
+            base.OnActivated(e);
+            Elite.setFocusED();
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

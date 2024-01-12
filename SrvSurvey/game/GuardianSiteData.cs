@@ -345,17 +345,31 @@ namespace SrvSurvey.game
             Game.log($"Setting obelisk '{obelisk.name}' as scanned: {obelisk.scanned}");
             this.Save();
 
-            var cmdr = Game.activeGame?.cmdr;
-            if (cmdr?.ramTahActive == true)
+            var game = Game.activeGame!;
+            var haveItems = false;
+            if (obelisk.items.Count == 2 && obelisk.items[0] == obelisk.items[1])
+                haveItems = game.getInventoryItem(obelisk.items[0].ToString())?.Count > 1;
+            else
+                haveItems = obelisk.items.All(item => game.getInventoryItem(item.ToString())?.Count > 0);
+
+            if (haveItems)
             {
-                var hashSet = this.isRuins ? cmdr.decodeTheRuins : cmdr.decodeTheLogs;
-                if (obelisk.scanned)
-                    hashSet.Add(obelisk.msg);
-                else
-                    hashSet.Remove(obelisk.msg);
-                this.ramTahRecalc();
-                Game.log($"Recording '{obelisk.msg}' Ram Tah as scanned: {obelisk.scanned}");
-                cmdr.Save();
+                var cmdr = Game.activeGame?.cmdr;
+                if (cmdr?.ramTahActive == true)
+                {
+                    var hashSet = this.isRuins ? cmdr.decodeTheRuins : cmdr.decodeTheLogs;
+                    if (obelisk.scanned)
+                        hashSet.Add(obelisk.msg);
+                    else
+                        hashSet.Remove(obelisk.msg);
+                    this.ramTahRecalc();
+                    Game.log($"Recording '{obelisk.msg}' Ram Tah as scanned: {obelisk.scanned}");
+                    cmdr.Save();
+                }
+            }
+            else
+            {
+                Game.log($"Insufficient items - NOT changing Ram Tah obelisk '{obelisk.name}' status");
             }
 
             var plot = Program.getPlotter<PlotGuardians>();
