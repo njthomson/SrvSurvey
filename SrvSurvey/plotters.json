@@ -1,7 +1,17 @@
 {
+  /*
+   * Overlays can be repositioned relative to the edge of the game window: "<horizontal> , <vertical> , <opacity>"
+   *  Horizontal: [ left | center | right ] : < +/- pixels >
+   *    Vertical: [ top | middle | bottom ] : < +/- pixels >
+   *
+   * Opacity (optional): < decimal number between 0 and 1 >
+   * (when not specified, standard opacity will be used)
+   *
+   * Edits to this file will take immediate effect.
+   */
   "PlotBioStatus": "center:0, top:8",
   "PlotFlightWarning": "center:0, top:90",
-  "PlotFSS": "center:0, top:20",
+  "PlotFSS": "center:0, top:8",
   "PlotGrounded": "right:20, middle:0",
   "PlotGuardians": "left:8, middle:0",
   "PlotGuardianStatus": "center:0, top:8",

@@ -891,7 +891,10 @@ namespace SrvSurvey
 
             // show plotter if near a body
             if (game?.systemBody != null && game.showBodyPlotters)
-                Program.showPlotter<PlotTrackTarget>();
+            {
+                var form = Program.showPlotter<PlotTrackTarget>();
+                form.calculate(Game.settings.targetLatLong);
+            }
         }
 
         private void btnGroundTarget_Click(object sender, EventArgs e)

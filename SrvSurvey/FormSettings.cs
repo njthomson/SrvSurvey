@@ -346,5 +346,18 @@ namespace SrvSurvey
             checkHideMyOwnCanonnSignals.Enabled =
                 checkShowPriorScans.Checked;
         }
+
+        private void btnResetOverlays_Click(object sender, EventArgs e)
+        {
+            var rslt = MessageBox.Show(
+                this,
+                "This will reset any custom overlay positions.\r\n\r\nAre you sure?",
+                "SrvSurvey",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+
+            if (rslt == DialogResult.Yes)
+                PlotPos.reset();
+        }
     }
 }

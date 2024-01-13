@@ -19,7 +19,7 @@ namespace SrvSurvey
             InitializeComponent();
             this.TopMost = true;
 
-            this.Height = 100;
+            this.Height = 108;
             this.Width = 100;
 
             this.Cursor = Cursors.Cross;
@@ -62,7 +62,6 @@ namespace SrvSurvey
 
             this.calculate();
         }
-
 
         #region mouse handlers
 
@@ -121,20 +120,19 @@ namespace SrvSurvey
         {
             if (this.IsDisposed) return;
 
-            this.td.Current = Status.here;
             this.calculate();
         }
 
-        private void calculate()
+        public void calculate(LatLong2? newLocation = null)
         {
             // exit early if we're not in the right mode
             if (game.systemBody != null && game.mode != GameMode.SuperCruising && game.mode != GameMode.Flying && game.mode != GameMode.Landed && game.mode != GameMode.InSrv && game.mode != GameMode.OnFoot && game.mode != GameMode.GlideMode)
                 return;
 
+            if (newLocation != null)
+                this.td = new TrackingDelta(game.systemBody.radius, newLocation);
 
-            //this.Text = td.ToString();
-            //textBox2.Text = td.angle.ToString() + " / " + td.MetersToString(td.distance);
-            //Game.log(td);
+            this.td.Current = Status.here;
             this.Invalidate();
         }
 

@@ -634,46 +634,61 @@ namespace SrvSurvey
 
         public static void prepPlotterPositions()
         {
-            var filepath = defaultPlotterPositionPath;
-            
-            if (File.Exists(customPlotterPositionPath))
-                filepath = customPlotterPositionPath;
+            if (!File.Exists(customPlotterPositionPath))
+                PlotPos.reset();
 
             watcher = new FileSystemWatcher(Program.dataFolder, "plotters.json");
             watcher.Changed += Watcher_Changed;
             watcher.EnableRaisingEvents = true;
 
-            readPlotterPositions(filepath);
-        }
-
-        private static void readPlotterPositions(string filepath)
-        {
             try
             {
-                Game.log($"Reading PlotterPositions from: {filepath}");
-
-                var json = File.ReadAllText(filepath);
-                var obj = JsonConvert.DeserializeObject<Dictionary<string, string>>(json)!;
-
-                var newPositions = new Dictionary<string, PlotPos>();
-
-                foreach (var _ in obj)
-                    newPositions[_.Key] = new PlotPos(_.Value);
-
-                plotterPositions = newPositions;
-                var rect = Elite.getWindowRect();
-                Program.control.Invoke(() => Program.repositionPlotters(rect));
+                readPlotterPositions(customPlotterPositionPath);
             }
             catch (Exception ex)
             {
                 if (ex is IOException) return; // ignore these
-                MessageBox.Show(Main.ActiveForm, $"Error reading plotter positions:\r\n\r\n{ex.Message}", "SrvSurvey", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Game.log($"Error first reading overlay positions:\r\n\r\n{ex.Message}");
+
+                // if we fail the first time, retry using the default file
+                readPlotterPositions(defaultPlotterPositionPath);
             }
+        }
+
+        public static void reset()
+        {
+            Game.log($"Resetting custom overlay positions");
+            File.Copy(defaultPlotterPositionPath, customPlotterPositionPath, true);
+        }
+
+        private static void readPlotterPositions(string filepath)
+        {
+            Game.log($"Reading PlotterPositions from: {filepath}");
+
+            var json = File.ReadAllText(filepath);
+            var obj = JsonConvert.DeserializeObject<Dictionary<string, string>>(json)!;
+
+            var newPositions = new Dictionary<string, PlotPos>();
+
+            foreach (var _ in obj)
+                newPositions[_.Key] = new PlotPos(_.Value);
+
+            plotterPositions = newPositions;
+            var rect = Elite.getWindowRect();
+            Program.control.Invoke(() => Program.repositionPlotters(rect));
         }
 
         private static void Watcher_Changed(object sender, FileSystemEventArgs e)
         {
-            readPlotterPositions(e.FullPath);
+            try
+            {
+                readPlotterPositions(e.FullPath);
+            }
+            catch (Exception ex)
+            {
+                if (ex is IOException) return; // ignore these
+                Game.log($"Error reading overlay positions:\r\n\r\n{ex.Message}");
+            }
         }
 
         public static float getOpacity(PlotterForm form)
@@ -721,7 +736,7 @@ namespace SrvSurvey
         {
             // eg: "left:40,top:50",
 
-            var parts = txt.Split(new char[] { ':', ','});
+            var parts = txt.Split(new char[] { ':', ',' });
             if (parts.Length < 4) throw new Exception($"Bad plotter position: '{txt}'");
             this.h = Enum.Parse<Horiz>(parts[0], true);
             this.x = int.Parse(parts[1]);
@@ -749,5 +764,5 @@ namespace SrvSurvey
             Bottom,
         };
     }
-    
+
 }

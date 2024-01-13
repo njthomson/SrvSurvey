@@ -121,6 +121,7 @@ namespace SrvSurvey
             tabPage2 = new TabPage();
             linkAboutTwo = new LinkLabel();
             linkAboutOne = new LinkLabel();
+            btnResetOverlays = new Button();
             panel1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numGravityWarningLevel).BeginInit();
@@ -199,6 +200,7 @@ namespace SrvSurvey
             // tabPage1
             // 
             tabPage1.BorderStyle = BorderStyle.Fixed3D;
+            tabPage1.Controls.Add(btnResetOverlays);
             tabPage1.Controls.Add(comboCmdr);
             tabPage1.Controls.Add(label12);
             tabPage1.Controls.Add(numGravityWarningLevel);
@@ -1293,6 +1295,16 @@ namespace SrvSurvey
             linkAboutOne.Text = resources.GetString("linkAboutOne.Text");
             linkAboutOne.UseCompatibleTextRendering = true;
             // 
+            // btnResetOverlays
+            // 
+            btnResetOverlays.Location = new Point(296, 228);
+            btnResetOverlays.Name = "btnResetOverlays";
+            btnResetOverlays.Size = new Size(182, 32);
+            btnResetOverlays.TabIndex = 29;
+            btnResetOverlays.Text = "Reset custom overlay positions";
+            btnResetOverlays.UseVisualStyleBackColor = true;
+            btnResetOverlays.Click += btnResetOverlays_Click;
+            // 
             // FormSettings
             // 
             AcceptButton = btnSave;
@@ -1437,5 +1449,6 @@ namespace SrvSurvey
         private CheckBox checkBox14;
         private CheckBox checkBox15;
         private ComboBox comboCmdr;
+        private Button btnResetOverlays;
     }
 }
