@@ -1247,7 +1247,10 @@ namespace SrvSurvey.game
                     else if (this.systemSite.name != nearestSettlement)
                     {
                         // TODO: check this where there are 2 ruins next to each other.
-                        throw new Exception($"Bad settlements? Have '{this.systemSite.name}' but should it be '{nearestSettlement}' ?");
+                        // Checked: this is mostly okay
+                        this.systemSite = GuardianSiteData.Load(this.systemBody.name, nearestSettlement);
+                        Program.closeAllPlotters();
+                        fireEvent = true;
                     }
                 }
             }

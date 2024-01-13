@@ -1,16 +1,16 @@
 {
   "sid": "GS015",
   "idx": 1,
-  "sh": -1,
+  "sh": 317,
   "t": "Crossroads",
   "rh": -1,
   "ll": {
     "lat": -11.482594,
     "long": 107.162323
   },
-  "pa": null,
-  "pp": null,
-  "pe": null,
+  "pa": "c1,p3,p6",
+  "pp": "c2,c3,c4,p1,p10,p11,p12,p13,p14,p2,p4,p5,p8,p9,t1",
+  "pe": "p7",
   "og": "ABCD",
   "ao": [
     "A05-se,li-#3-",

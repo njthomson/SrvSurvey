@@ -47,8 +47,8 @@ namespace SrvSurvey
                 return;
             }
 
-            this.Opacity = Game.settings.Opacity;
-            Elite.floatRightMiddle(this, gameRect, 20);
+            this.Opacity = PlotPos.getOpacity(this);
+            PlotPos.reposition(this, gameRect);
         }
 
         private void PlotGrounded_Load(object sender, EventArgs e)

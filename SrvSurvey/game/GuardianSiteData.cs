@@ -1048,6 +1048,21 @@ namespace SrvSurvey.game
             else if (siteType == GuardianSiteData.SiteType.Bear || siteType == GuardianSiteData.SiteType.Hammerbot || siteType == GuardianSiteData.SiteType.Bowl)
                 summary.status = "Blue print: weapon";
 
+            // TODO: ...
+            //// show survey status if not complete
+            //if (!site.surveyComplete)
+            //{
+            //    var siteData = GuardianSiteData.Load(body.name, idx, true);
+            //    if (siteData == null)
+            //    {
+            //        summary.status += "\r\nSurvey: not started";
+            //    }
+            //    else if (!siteData.isSurveyComplete())
+            //    {
+            //        summary.status += "\r\nSurvey: incomplete";
+            //    }
+            //}
+
             // add required Ram Tah logs, if relevant
             var cmdr = Game.activeGame?.cmdr;
             if (cmdr?.decodeTheLogsMissionActive == TahMissionStatus.Active)

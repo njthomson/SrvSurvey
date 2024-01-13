@@ -5,8 +5,6 @@ namespace SrvSurvey
 {
     internal class PlotFlightWarning : PlotBase, PlotterForm
     {
-        private static int fromTop = 90;
-
         private PlotFlightWarning() : base()
         {
             this.Width = 0;
@@ -41,9 +39,8 @@ namespace SrvSurvey
                 return;
             }
 
-            this.Opacity = Game.settings.Opacity;
-
-            Elite.floatCenterTop(this, gameRect, fromTop);
+            this.Opacity = PlotPos.getOpacity(this);
+            PlotPos.reposition(this, gameRect);
 
             this.Invalidate();
         }
@@ -80,7 +77,7 @@ namespace SrvSurvey
             this.Width = (int)sz.Width + pad * 2;
             this.Height = (int)sz.Height + pad * 2;
 
-            Elite.floatCenterTop(this, Elite.getWindowRect(), fromTop);
+            PlotPos.reposition(this, Elite.getWindowRect());
 
             var rect = new RectangleF(0, 0, sz.Width + pad * 2, sz.Height + pad * 2);
             g.FillRectangle(GameColors.brushShipDismissWarning, rect);

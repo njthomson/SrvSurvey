@@ -91,8 +91,8 @@ namespace SrvSurvey
                 return;
             }
 
-            this.Opacity = Game.settings.Opacity;
-            Elite.floatLeftMiddle(this, gameRect);
+            this.Opacity = PlotPos.getOpacity(this);
+            PlotPos.reposition(this, gameRect);
 
             this.Invalidate();
         }
@@ -512,7 +512,83 @@ namespace SrvSurvey
 
             // temporary stuff after here
             this.xtraCmds(msg);
+
+            if (msg.StartsWith(".new"))
+            {
+                // eg: .new totem
+                this.addNewPoi(msg.Substring(4).Trim().ToLowerInvariant());
+            }
         }
+
+        private void addNewPoi(string msg)
+        {
+            POIType poiType;
+            if (!Enum.TryParse<POIType>(msg, true, out poiType))
+            {
+                Game.log($"Bad new poi: '{msg}'");
+                return;
+            }
+
+            var prefix = getPoiPrefix(poiType);
+
+            var lastEntryOfType = template!.poi
+                .Select(_ => _.name)
+                .Where(_ => _.StartsWith(prefix) && char.IsAsciiDigit(_.Substring(prefix.Length)[0]))
+                .OrderBy(_ => int.Parse(_.Substring(prefix.Length)))
+                .LastOrDefault();
+                
+            var nextIdx = lastEntryOfType == null
+                ? 1 : int.Parse(lastEntryOfType.Substring(prefix.Length)) + 1;
+
+            var dist = ((decimal)Util.getDistance(Status.here, siteData.location, game.systemBody!.radius));
+            var angle = ((decimal)new Angle((Util.getBearing(Status.here, siteData.location) - (decimal)siteData.siteHeading)));
+            var rot = (decimal)new Angle(game.status.Heading - this.siteData.siteHeading);
+
+            // TODO: check for an existing POI at this location?
+
+            var newPoi = new SitePOI()
+            {
+                name = $"{prefix}{nextIdx}",
+                dist = dist,
+                angle = angle,
+                type = poiType,
+                rot = rot,
+            };
+
+            // add to the template and ListView
+            Game.log($"Added new {poiType} named '{newPoi.name}' as present");
+            template.poi.Add(newPoi);
+            siteData.poiStatus[newPoi.name] = SitePoiStatus.present;
+            SiteTemplate.SaveEdits();
+            this.siteData.Save();
+            this.Invalidate();
+        }
+
+        private string getPoiPrefix(POIType poiType)
+        {
+            switch (poiType)
+            {
+                case POIType.relic:
+                    return "t";
+                case POIType.casket:
+                case POIType.orb:
+                case POIType.tablet:
+                case POIType.totem:
+                case POIType.urn:
+                case POIType.unknown:
+                    return "p";
+
+                case POIType.pylon:
+                    return "py";
+
+                case POIType.component:
+                    return "c";
+
+                default:
+                    throw new Exception($"Unexpected poiType: '{poiType}'");
+            }
+        }
+
 
         public void setTargetObelisk(string? target)
         {
@@ -1602,6 +1678,8 @@ namespace SrvSurvey
                     var totalRelicCount = this.template.poi.Where(_ => _.type == POIType.relic && siteData.poiStatus.Any(t => t.Key == _.name && t.Value == SitePoiStatus.present)).Count();
                     if (siteData.relicHeadings.Count < totalRelicCount)
                         this.drawHeaderText($"Need {totalRelicCount - siteData.relicHeadings.Count} Relic Tower heading(s)", GameColors.brushCyan);
+                    else
+                        this.drawHeaderText($"Structure {siteData.type}: survey complete", headerBrush);
                 }
             }
 
@@ -1824,6 +1902,9 @@ namespace SrvSurvey
 
                 if (poiStatus == SitePoiStatus.unknown)
                     pp.Color = GameColors.Cyan;
+
+                if (!siteData.relicHeadings.ContainsKey(poi.name))
+                    pp.Color = Color.Red;
 
                 rot = 0; // + game.status.Heading;
                 g.TranslateTransform(-pt.X, -pt.Y);

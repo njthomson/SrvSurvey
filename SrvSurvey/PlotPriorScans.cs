@@ -72,9 +72,8 @@ namespace SrvSurvey
                 return;
             }
 
-            this.Opacity = Game.settings.Opacity;
-
-            Elite.floatLeftMiddle(this, gameRect);
+            this.Opacity = PlotPos.getOpacity(this);
+            PlotPos.reposition(this, gameRect);
 
             this.Invalidate();
         }

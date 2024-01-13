@@ -1,4 +1,5 @@
-﻿using SrvSurvey.game;
+﻿using Newtonsoft.Json;
+using SrvSurvey.game;
 using SrvSurvey.units;
 using System.Diagnostics;
 
@@ -619,4 +620,134 @@ namespace SrvSurvey
             drawFooterText($"(toggle {triggerTxt} {times} to set)", b);
         }
     }
+
+    internal class PlotPos
+    {
+        #region static loading
+
+        private static string customPlotterPositionPath = Path.Combine(Program.dataFolder, "plotters.json");
+        private static string defaultPlotterPositionPath = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "plotters.json");
+
+        private static Dictionary<string, PlotPos> plotterPositions = new Dictionary<string, PlotPos>();
+
+        private static FileSystemWatcher watcher;
+
+        public static void prepPlotterPositions()
+        {
+            var filepath = defaultPlotterPositionPath;
+            
+            if (File.Exists(customPlotterPositionPath))
+                filepath = customPlotterPositionPath;
+
+            watcher = new FileSystemWatcher(Program.dataFolder, "plotters.json");
+            watcher.Changed += Watcher_Changed;
+            watcher.EnableRaisingEvents = true;
+
+            readPlotterPositions(filepath);
+        }
+
+        private static void readPlotterPositions(string filepath)
+        {
+            try
+            {
+                Game.log($"Reading PlotterPositions from: {filepath}");
+
+                var json = File.ReadAllText(filepath);
+                var obj = JsonConvert.DeserializeObject<Dictionary<string, string>>(json)!;
+
+                var newPositions = new Dictionary<string, PlotPos>();
+
+                foreach (var _ in obj)
+                    newPositions[_.Key] = new PlotPos(_.Value);
+
+                plotterPositions = newPositions;
+                var rect = Elite.getWindowRect();
+                Program.control.Invoke(() => Program.repositionPlotters(rect));
+            }
+            catch (Exception ex)
+            {
+                if (ex is IOException) return; // ignore these
+                MessageBox.Show(Main.ActiveForm, $"Error reading plotter positions:\r\n\r\n{ex.Message}", "SrvSurvey", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private static void Watcher_Changed(object sender, FileSystemEventArgs e)
+        {
+            readPlotterPositions(e.FullPath);
+        }
+
+        public static float getOpacity(PlotterForm form)
+        {
+            var pp = plotterPositions[form.GetType().Name];
+            return pp.opacity ?? Game.settings.Opacity;
+        }
+
+        public static void reposition(PlotterForm form, Rectangle rect)
+        {
+            if (rect == Rectangle.Empty)
+                rect = Elite.getWindowRect();
+
+            var pp = plotterPositions[form.GetType().Name];
+
+            var left = 0;
+            if (pp.h == Horiz.Left)
+                left = rect.Left + pp.x;
+            else if (pp.h == Horiz.Center)
+                left = rect.Left + (rect.Width / 2) - (form.Width / 2) + pp.x;
+            else if (pp.h == Horiz.Right)
+                left = rect.Right - form.Width - pp.x;
+
+
+            var top = 0;
+            if (pp.v == Vert.Top)
+                top = rect.Top + pp.y;
+            else if (pp.v == Vert.Middle)
+                top = rect.Top + (rect.Height / 2) - (form.Height / 2) + pp.y;
+            else if (pp.v == Vert.Bottom)
+                top = rect.Bottom - form.Height - pp.y;
+
+            form.Location = new Point(left, top);
+        }
+
+        #endregion
+
+        private Horiz h;
+        private Vert v;
+        private int x;
+        private int y;
+        private float? opacity;
+
+        public PlotPos(string txt)
+        {
+            // eg: "left:40,top:50",
+
+            var parts = txt.Split(new char[] { ':', ','});
+            if (parts.Length < 4) throw new Exception($"Bad plotter position: '{txt}'");
+            this.h = Enum.Parse<Horiz>(parts[0], true);
+            this.x = int.Parse(parts[1]);
+            this.v = Enum.Parse<Vert>(parts[2], true);
+            this.y = int.Parse(parts[3]);
+            if (parts.Length >= 5)
+            {
+                this.opacity = float.Parse(parts[4]);
+                if (this.opacity < 0 || this.opacity > 1)
+                    throw new ArgumentException("Opacity must be a decimal number between 0 and 1");
+            }
+        }
+
+        public enum Horiz
+        {
+            Left,
+            Center,
+            Right,
+        };
+
+        public enum Vert
+        {
+            Top,
+            Middle,
+            Bottom,
+        };
+    }
+    
 }

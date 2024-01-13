@@ -30,9 +30,8 @@ namespace SrvSurvey
                 return;
             }
 
-            this.Opacity = Game.settings.Opacity;
-
-            Elite.floatRightMiddle(this, gameRect, 10);
+            this.Opacity = PlotPos.getOpacity(this);
+            PlotPos.reposition(this, gameRect);
 
             this.Invalidate();
         }
@@ -79,7 +78,7 @@ namespace SrvSurvey
                 foreach (var bar in ramTahObelisks)
                 {
                     var obelisk = game.systemSite.getActiveObelisk(bar.Value.First());
-                    if (obelisk == null) continue;
+                    if (obelisk == null || string.IsNullOrEmpty(obelisk.name) || string.IsNullOrEmpty(bar.Key)) continue;
 
                     // first, do we have the items needed?
                     var item1 = obelisk.items.First().ToString();

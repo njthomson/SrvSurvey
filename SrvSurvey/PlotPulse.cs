@@ -40,9 +40,8 @@ namespace SrvSurvey
                 return;
             }
 
-            this.Opacity = Game.settings.Opacity;
-            this.Left = gameRect.Left + 12;
-            this.Top = gameRect.Bottom - this.Height - 8;
+            this.Opacity = PlotPos.getOpacity(this);
+            PlotPos.reposition(this, gameRect);
         }
 
         private void timer_Tick(object sender, EventArgs e)

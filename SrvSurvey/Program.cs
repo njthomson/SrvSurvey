@@ -314,5 +314,9 @@ namespace SrvSurvey
         void reposition(Rectangle gameRect);
         double Opacity { get; set; }
         void Invalidate();
+
+        int Width { get; set; }
+        int Height { get; set; }
+        Point Location { get; set; }
     }
 }

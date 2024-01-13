@@ -61,6 +61,7 @@
     <None Remove="images\gamma-heading-guide.png" />
     <None Remove="images\lacrosse-heading-guide.png" />
     <None Remove="images\robolobster-background.png" />
+    <None Remove="plotters.json" />
     <None Remove="settlementTemplates.json" />
   </ItemGroup>
 
@@ -108,6 +109,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="images\robolobster-background.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="plotters.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="settlementTemplates.json">

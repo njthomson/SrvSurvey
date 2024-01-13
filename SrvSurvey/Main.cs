@@ -21,6 +21,7 @@ namespace SrvSurvey
         public Main()
         {
             InitializeComponent();
+            PlotPos.prepPlotterPositions();
 
             if (Path.Exists(Game.settings.watchedJournalFolder))
             {
@@ -997,9 +998,8 @@ namespace SrvSurvey
 
         private void checkFullScreenGraphics()
         {
-            var fullScreen = Elite.getGraphicsMode();
             // 0: Windows / 1: FullScreen / 2: Borderless
-            lblFullScreen.Visible = fullScreen == 1;
+            lblFullScreen.Visible = Elite.getGraphicsMode() == GraphicsMode.FullScreen;
         }
 
         private void lblNotInstalled_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

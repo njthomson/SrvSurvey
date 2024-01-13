@@ -39,18 +39,9 @@ namespace SrvSurvey
                 return;
             }
 
-            this.Opacity = Game.settings.Opacity;
+            this.Opacity = PlotPos.getOpacity(this);
+            PlotPos.reposition(this, gameRect);
 
-            if (game.mode == GameMode.OnFoot)
-            {
-                // roughly above the helmet lat/long indicator
-                Elite.floatCenterTop(this, gameRect, 0, 440);
-            }
-            else
-            {
-                // roughly above the game heading indicator
-                Elite.floatCenterTop(this, gameRect, 160);
-            }
         }
 
         private void PlotGroundTarget_Load(object sender, EventArgs e)

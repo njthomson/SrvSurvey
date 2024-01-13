@@ -3,13 +3,13 @@
   "idx": 1,
   "sh": 47,
   "t": "Gamma",
-  "rh": -1,
+  "rh": 76,
   "ll": {
     "lat": 8.169463,
     "long": 82.877914
   },
-  "pa": null,
-  "pp": null,
+  "pa": "p17,p18,p19,p2,p20,p25,p26,p27,p28,p31,p33,p36,p40,p41,p42,t4,t6,t7,t8",
+  "pp": "p1,p10,p11,p12,p13,p14,p15,p16,p21,p22,p23,p24,p29,p3,p30,p32,p34,p35,p37,p38,p39,p4,p43,p5,p6,p7,p8,p9,t1,t2,t3,t5,t9",
   "pe": null,
   "og": "AGILMNOQ",
   "ao": [
