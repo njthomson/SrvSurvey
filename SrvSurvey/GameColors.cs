@@ -234,6 +234,11 @@ namespace SrvSurvey
                     { SitePoiStatus.present, new Pen(Color.FromArgb(255, 84, 37, 84) /* pink-ish */, 3) },
                     { SitePoiStatus.absent, penAbsent },
                     { SitePoiStatus.empty, penEmpty } } },
+                { POIType.unknown, new Dictionary<SitePoiStatus, Pen> {
+                    { SitePoiStatus.unknown, penUnknown },
+                    { SitePoiStatus.present, new Pen(Color.FromArgb(255, 255, 0, 0) /* red */, 3) },
+                    { SitePoiStatus.absent, penAbsent },
+                    { SitePoiStatus.empty, penEmpty } } },
             };
 
             private static Brush brushUnknown = new SolidBrush(Color.DarkSlateGray);
@@ -270,6 +275,11 @@ namespace SrvSurvey
                 { POIType.urn, new Dictionary<SitePoiStatus, Brush> {
                     { SitePoiStatus.unknown, brushUnknown },
                     { SitePoiStatus.present, new SolidBrush(Color.FromArgb(255, 163, 73, 164) /* pink-ish */) },
+                    { SitePoiStatus.absent, brushAbsent },
+                    { SitePoiStatus.empty, brushEmpty } } },
+                { POIType.unknown, new Dictionary<SitePoiStatus, Brush> {
+                    { SitePoiStatus.unknown, brushUnknown },
+                    { SitePoiStatus.present, new SolidBrush(Color.FromArgb(255, 100, 0, 0) /* red */) },
                     { SitePoiStatus.absent, brushAbsent },
                     { SitePoiStatus.empty, brushEmpty } } },
             };

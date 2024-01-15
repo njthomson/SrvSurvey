@@ -1,16 +1,16 @@
 {
   "sid": "GS046",
   "idx": 1,
-  "sh": -1,
+  "sh": 8,
   "t": "Fistbump",
   "rh": -1,
   "ll": {
     "lat": -21.143145,
     "long": 44.135551
   },
-  "pa": null,
-  "pp": null,
-  "pe": null,
+  "pa": "p12,p13,p2,p3,p4,p7,p8",
+  "pp": "c1,c2,c3,c4,p1,p10,p14,p15,p16,p5,p6,p9,t1,t2,t3",
+  "pe": "p11",
   "og": "ABC",
   "ao": [
     "A04-re,ta-#17-",

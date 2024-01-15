@@ -1,15 +1,15 @@
 {
   "sid": "GS029",
   "idx": 1,
-  "sh": -1,
+  "sh": 20,
   "t": "Lacrosse",
   "rh": -1,
   "ll": {
     "lat": -41.814926,
     "long": -137.674301
   },
-  "pa": null,
-  "pp": null,
+  "pa": "p1,p3,p4,p6,p8,p9,t1,t2",
+  "pp": "c1,c2,p10,p11,p2,p5,p7,t3,t4",
   "pe": null,
   "og": "ABCD",
   "ao": [

@@ -1152,7 +1152,12 @@ namespace SrvSurvey.canonn
                     if (site.pe != null) allPoi.AddRange(site.pe.Split(","));
                     var allPoiHash = allPoi.ToHashSet();
                     if (allPoiHash.Count != allPoi.Count)
+                    {
+                        Game.log($"Bad data? {pubPath}");
+                        Game.log(string.Join(',', allPoiHash.Order()));
+                        Game.log(string.Join(',', allPoi.Order()));
                         Debugger.Break();
+                    }
 
                     var template = SiteTemplate.sites[site.t];
                     var totalPoiCount = template.poi.Count(_ => _.type != POIType.obelisk && _.type != POIType.brokeObelisk);

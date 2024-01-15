@@ -795,6 +795,7 @@ namespace SrvSurvey.game
                 if (!string.IsNullOrEmpty(entry.terraformingState))
                     body.terraformable = entry.terraformingState == "Candidate for terraforming";
                 if (body.mass == 0) body.mass = entry.earthMasses > 0 ? entry.earthMasses : entry.solarMasses; // mass
+                if (body.surfaceGravity == 0 && entry.gravity > 0) body.surfaceGravity = entry.gravity.Value; // gravity
 
                 if (entry.rings != null)
                 {
@@ -837,6 +838,7 @@ namespace SrvSurvey.game
                 if (!string.IsNullOrEmpty(entry.terraformingState))
                     body.terraformable = entry.terraformingState == "Candidate for terraforming";
                 if (body.mass == 0) body.mass = (entry.earthMasses > 0 ? entry.earthMasses : entry.solarMasses) ?? 0; // mass
+                if (body.surfaceGravity == 0 && entry.gravity > 0) body.surfaceGravity = entry.gravity.Value; // gravity
 
                 // update rings
                 if (entry.rings != null)

@@ -100,6 +100,8 @@ namespace SrvSurvey
             checkNotes.Checked = Game.settings.mapShowNotes;
             splitter.Panel2Collapsed = this.siteData == null || !Game.settings.mapShowNotes;
 
+            map.BackColor = Color.Black;
+
             if (game?.status != null)
                 game.status.StatusChanged += Status_StatusChanged;
         }
@@ -511,7 +513,7 @@ namespace SrvSurvey
 
         private void drawCommander(Graphics g, PointF cp, float r)
         {
-            if (game?.systemSite == null) return;
+            if (game?.systemSite == null || game?.status == null || game.isShutdown) return;
 
             var p1 = GameColors.penLime4;
             var rect = new RectangleF(cp.X - r, cp.Y - r, r * 2, r * 2);
@@ -578,7 +580,7 @@ namespace SrvSurvey
                     drawRelicTower(g, pt, poiStatus);
                 else if (poi.type == POIType.obelisk || poi.type == POIType.brokeObelisk)
                     drawObelisk(g, pt, poiStatus);
-                else if (poi.type == POIType.orb || poi.type == POIType.casket || poi.type == POIType.tablet || poi.type == POIType.totem || poi.type == POIType.urn)
+                else if (poi.type == POIType.orb || poi.type == POIType.casket || poi.type == POIType.tablet || poi.type == POIType.totem || poi.type == POIType.urn || poi.type == POIType.unknown)
                     drawPuddle(g, pt, poi.type, poiStatus);
                 else
                 {

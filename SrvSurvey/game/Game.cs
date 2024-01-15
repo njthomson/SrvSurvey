@@ -430,6 +430,7 @@ namespace SrvSurvey.game
                 && this.isMode(GameMode.InSrv, GameMode.OnFoot, GameMode.Landed, GameMode.Flying, GameMode.InFighter)
                 && !this.hidePlottersFromCombatSuits
                 && this.systemBody != null
+                //&& this.status.SelectedWeapon != "$humanoid_sampletool_name;"
             ;
         }
 
@@ -1856,7 +1857,7 @@ namespace SrvSurvey.game
         {
             // match and remove sold items from running totals
             Game.log($"SellOrganicData: removing {entry.BioData.Count} scans, worth: {Util.credits(entry.BioData.Sum(_ => _.Value))} + bonus: {Util.credits(entry.BioData.Sum(_ => _.Bonus))} ({Util.credits(entry.BioData.Sum(_ => _.Value) + entry.BioData.Sum(_ => _.Bonus))})");
-            Game.log($"SellOrganicData: pre-sale total: {this.cmdr.organicRewards} (from {cmdr.scannedBioEntryIds.Count} sigals)\r\n{String.Join("\r\n", cmdr.scannedBioEntryIds)}");
+            Game.log($"SellOrganicData: pre-sale total: {this.cmdr.organicRewards} (from {cmdr.scannedBioEntryIds.Count} signals)\r\n{String.Join("\r\n", cmdr.scannedBioEntryIds)}");
             foreach (var data in entry.BioData)
             {
                 try

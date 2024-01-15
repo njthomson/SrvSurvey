@@ -1961,7 +1961,7 @@ namespace SrvSurvey
                     }
 
                 default:
-                    return Pens.Red;
+                    return Pens.Magenta;
             }
         }
 

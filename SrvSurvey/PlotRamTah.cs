@@ -90,7 +90,7 @@ namespace SrvSurvey
                     var isTargetObelisk = targetObelisk != null && bar.Value.Contains(targetObelisk);
                     var isCurrentObelisk = bar.Value.Any(_ => _ == game.systemSite.currentObelisk?.name);
                     var brush = GameColors.brushGameOrange;
-                    if (isTargetObelisk && !isCurrentObelisk)
+                    if (isTargetObelisk && !isCurrentObelisk && game.systemSite.currentObelisk != null)
                         brush = Brushes.DarkCyan;
                     else if (isCurrentObelisk || isTargetObelisk)
                         brush = GameColors.brushCyan;

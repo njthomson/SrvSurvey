@@ -262,7 +262,7 @@ namespace SrvSurvey.game
         public void setCurrentObelisk(string? name)
         {
             var changed = this.currentObelisk?.name != name;
-            Game.log($"setCurrentObelisk: {name} (changed: {changed})");
+            if (changed) Game.log($"setCurrentObelisk: {name}");
 
             if (name == null)
                 this.currentObelisk = null;
@@ -379,6 +379,8 @@ namespace SrvSurvey.game
             {
                 Game.log($"Insufficient items - NOT changing Ram Tah obelisk '{obelisk.name}' status");
             }
+
+            Game.activeGame?.systemData?.prepSettlements();
 
             var plot = Program.getPlotter<PlotGuardians>();
             if (plot?.targetObelisk == obelisk.name)
@@ -556,7 +558,7 @@ namespace SrvSurvey.game
             var folders = Directory.GetDirectories(rootFolder);
             foreach (var folder in folders)
             {
-                var files = Directory.GetFiles(Path.Combine(rootFolder, folder));
+                var files = Directory.GetFiles(Path.Combine(rootFolder, folder), "*ruins*.json");
                 foreach (var file in files)
                 {
                     string filepath = Path.Combine(rootFolder, folder, file);
@@ -802,16 +804,19 @@ namespace SrvSurvey.game
                 var poiPresent = new List<string>();
                 var poiAbsent = new List<string>();
                 var poiEmpty = new List<string>();
+                var poiToRemove = new HashSet<string>();
                 foreach (var _ in data.poiStatus)
                 {
                     // ignore any obelisks
                     var poiType = SiteTemplate.sites[data.type].poi.FirstOrDefault(poi => poi.name == _.Key)?.type;
-                    if (poiType == null) { Game.log($"Unknown POI? '{_.Key}' at '{data.displayName}'"); continue; }
-                    else if (poiType == POIType.obelisk || poiType == POIType.brokeObelisk) { Game.log($"Ignoring obelisk POI? '{_.Key}' at '{data.displayName}'"); continue; }
+                    if (poiType == null) { Game.log($"Unknown POI? '{_.Key}' at '{data.displayName}'"); poiToRemove.Add(_.Key); continue; }
+                    else if (poiType == POIType.obelisk || poiType == POIType.brokeObelisk) { Game.log($"Ignoring obelisk POI? '{_.Key}' at '{data.displayName}'"); poiToRemove.Add(_.Key); continue; }
                     if (_.Value == SitePoiStatus.present) poiPresent.Add(_.Key);
                     if (_.Value == SitePoiStatus.absent) poiAbsent.Add(_.Key);
                     if (_.Value == SitePoiStatus.empty) poiEmpty.Add(_.Key);
                 }
+                foreach (var _ in poiToRemove)
+                    data.poiStatus.Remove(_);
                 poiPresent.Sort();
                 poiAbsent.Sort();
                 poiEmpty.Sort();
@@ -1067,17 +1072,17 @@ namespace SrvSurvey.game
             var cmdr = Game.activeGame?.cmdr;
             if (cmdr?.decodeTheLogsMissionActive == TahMissionStatus.Active)
             {
-                // TODO: ...
                 var pubData = GuardianSitePub.Load(body.name, 1, Enum.Parse<GuardianSiteData.SiteType>(site.siteType, true));
                 if (pubData == null) throw new Exception("Why?");
 
                 var logsNeeded = pubData.ao
-                    .Where(_ => !cmdr.decodeTheRuins.Contains(_.msg))
+                    .Where(_ => !cmdr.decodeTheLogs.Contains(_.msg))
                     .Select(_ => _.msg)
                     .OrderBy(_ => _)
                     .ToHashSet();
 
-                summary.extra = "Rah Tah: " + string.Join(" ", logsNeeded);
+                if (logsNeeded.Count > 0)
+                    summary.extra = "Ram Tah: " + string.Join(" ", logsNeeded);
             }
 
             return summary;

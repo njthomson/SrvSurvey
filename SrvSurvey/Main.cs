@@ -221,8 +221,8 @@ namespace SrvSurvey
                     this.timer1.Interval = 200;
                     this.timer1.Start();
 
-                    if (!Game.settings.migratedAlphaSiteHeading)
-                        GuardianSiteData.migrateAlphaSites();
+                    //if (!Game.settings.migratedAlphaSiteHeading)
+                    //    GuardianSiteData.migrateAlphaSites();
                 }));
             });
         }
@@ -250,7 +250,7 @@ namespace SrvSurvey
                 Program.closePlotter<PlotSysStatus>();
 
             // show high gravity warning
-            var isHighGravity = game?.systemBody?.surfaceGravity > Game.settings.highGravityWarningLevel * 10;
+            var isHighGravity = (game?.systemBody?.surfaceGravity ?? 0) >= Game.settings.highGravityWarningLevel * 10;
             if (Game.settings.autoShowFlightWarnings && game?.systemBody != null && isHighGravity && game.isMode(GameMode.Landed, GameMode.SuperCruising, GameMode.GlideMode, GameMode.Flying, GameMode.InFighter, GameMode.InSrv))
                 Program.showPlotter<PlotFlightWarning>();
             else
@@ -518,6 +518,8 @@ namespace SrvSurvey
                     // show radar if we have trackers, prior scans, we landed or started scanning already
                     if (game.systemSite == null && !game.isMode(GameMode.SuperCruising, GameMode.GlideMode) && (game.isLanded || showPlotTrackers || showPlotPriorScans || game.cmdr.scanOne != null))
                         Program.showPlotter<PlotGrounded>();
+                    else
+                        Program.closePlotter<PlotGrounded>();
                 }
             }
         }
@@ -904,7 +906,7 @@ namespace SrvSurvey
 
             if (Game.settings.targetLatLongActive)
             {
-                Game.log($"Main.Set target lat/long: {Game.settings.targetLatLong}, near: {game?.cmdr.lastSystemLocation}");
+                Game.log($"Main.Set target lat/long: {Game.settings.targetLatLong}, near: {game?.cmdr?.lastSystemLocation}");
                 setTargetLatLong();
             }
             else

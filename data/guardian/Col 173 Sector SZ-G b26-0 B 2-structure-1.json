@@ -1,7 +1,7 @@
 {
   "sid": "GS188",
   "idx": 1,
-  "sh": -1,
+  "sh": 236,
   "t": "Turtle",
   "rh": -1,
   "ll": {
@@ -9,7 +9,7 @@
     "long": 77.462921
   },
   "pa": null,
-  "pp": null,
+  "pp": "c1,c2,c3,c4,c5,c6,c7,p1,p10,p11,p12,p2,p3,p4,p5,p6,p7,p8,p9,py1,py2,py3,py4,py5,py6,t1,t2,t3",
   "pe": null,
   "og": "ABCD",
   "ao": [

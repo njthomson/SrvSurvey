@@ -1,15 +1,15 @@
 {
   "sid": "GS110",
   "idx": 1,
-  "sh": 1,
+  "sh": 205,
   "t": "Hammerbot",
   "rh": -1,
   "ll": {
     "lat": 10.522972,
     "long": 131.982635
   },
-  "pa": null,
-  "pp": null,
+  "pa": "c2,c5,c6,p1,p10,p11,p13,p14,p16,p17,p18,p19,p2,p4,p6,p8,p9,py6,py7,py8,t10,t11,t7,t8,t9",
+  "pp": "c1,c10,c3,c4,c7,c8,c9,p12,p15,p20,p21,p22,p23,p24,p25,p26,p3,p5,p7,py1,py2,py3,py4,py5,t1,t2,t3,t4,t5,t6",
   "pe": null,
   "og": "ABC",
   "ao": [

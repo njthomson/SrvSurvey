@@ -195,7 +195,10 @@ namespace SrvSurvey
             // background + edges;
             if (!string.IsNullOrEmpty(name) && this.cmdr?.decodeTheRuins.Contains(name) == true)
             {
-                e.Graphics.FillRectangle(Brushes.Turquoise, e.Bounds);
+                var b = e.ItemIndex % 2 == 1
+                    ? Brushes.DarkTurquoise
+                    : Brushes.Turquoise;
+                e.Graphics.FillRectangle(b, e.Bounds);
             }
             else if (e.Item?.Selected == true)
             {
