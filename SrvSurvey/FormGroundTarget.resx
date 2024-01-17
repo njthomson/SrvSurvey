@@ -118,6 +118,14 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="btnPaste.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wQAADsEBuJFr7QAAAIFJREFUWEft01EKgCAMBmDP5qnsPPmcl8hzGT+sKGii4YTg/0C0tbY9mCOi30lb
+        Kt77EtdYJDRPCEs5B8COZ3llD03PxvcdS1Js5D1fjWoLefLJWCgux6rWvG4cwKxwK20A7XIOv4woKseH
+        3vhnHIADvN12xLVGWny4ab8hEZEt5w73V49gZv9jAQAAAABJRU5ErkJggg==
+</value>
+  </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         AAABAAQAQEAAAAAAGAAoMgAARgAAAAAAAAAAABgAKCADAG4yAACAgAAAAAAYACjIAACWUgMAICAAAAAA

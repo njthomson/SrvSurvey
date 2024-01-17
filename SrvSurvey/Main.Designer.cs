@@ -37,6 +37,7 @@ namespace SrvSurvey
             label2 = new Label();
             btnClearTarget = new Button();
             groupBox1 = new GroupBox();
+            btnPasteLatLong = new Button();
             lblTrackTargetStatus = new Label();
             groupBox2 = new GroupBox();
             txtCommander = new TextBox();
@@ -85,9 +86,9 @@ namespace SrvSurvey
             btnGroundTarget.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnGroundTarget.BackColor = SystemColors.ControlLight;
             btnGroundTarget.FlatStyle = FlatStyle.System;
-            btnGroundTarget.Location = new Point(105, 45);
+            btnGroundTarget.Location = new Point(85, 44);
             btnGroundTarget.Name = "btnGroundTarget";
-            btnGroundTarget.Size = new Size(84, 21);
+            btnGroundTarget.Size = new Size(91, 27);
             btnGroundTarget.TabIndex = 3;
             btnGroundTarget.Text = "Set target";
             btnGroundTarget.UseVisualStyleBackColor = false;
@@ -112,7 +113,7 @@ namespace SrvSurvey
             txtTargetLatLong.Location = new Point(16, 19);
             txtTargetLatLong.Name = "txtTargetLatLong";
             txtTargetLatLong.ReadOnly = true;
-            txtTargetLatLong.Size = new Size(241, 20);
+            txtTargetLatLong.Size = new Size(243, 20);
             txtTargetLatLong.TabIndex = 11;
             txtTargetLatLong.Text = "<none>";
             // 
@@ -129,9 +130,9 @@ namespace SrvSurvey
             btnClearTarget.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnClearTarget.BackColor = SystemColors.ControlLight;
             btnClearTarget.FlatStyle = FlatStyle.System;
-            btnClearTarget.Location = new Point(196, 45);
+            btnClearTarget.Location = new Point(180, 44);
             btnClearTarget.Name = "btnClearTarget";
-            btnClearTarget.Size = new Size(62, 21);
+            btnClearTarget.Size = new Size(53, 27);
             btnClearTarget.TabIndex = 13;
             btnClearTarget.Text = "Hide";
             btnClearTarget.UseVisualStyleBackColor = false;
@@ -140,6 +141,7 @@ namespace SrvSurvey
             // groupBox1
             // 
             groupBox1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            groupBox1.Controls.Add(btnPasteLatLong);
             groupBox1.Controls.Add(lblTrackTargetStatus);
             groupBox1.Controls.Add(btnClearTarget);
             groupBox1.Controls.Add(btnGroundTarget);
@@ -150,6 +152,16 @@ namespace SrvSurvey
             groupBox1.TabIndex = 14;
             groupBox1.TabStop = false;
             groupBox1.Text = "Target lat/Long:";
+            // 
+            // btnPasteLatLong
+            // 
+            btnPasteLatLong.Image = (Image)resources.GetObject("btnPasteLatLong.Image");
+            btnPasteLatLong.Location = new Point(237, 44);
+            btnPasteLatLong.Name = "btnPasteLatLong";
+            btnPasteLatLong.Size = new Size(23, 27);
+            btnPasteLatLong.TabIndex = 26;
+            btnPasteLatLong.UseVisualStyleBackColor = true;
+            btnPasteLatLong.Click += btnPasteLatLong_Click;
             // 
             // lblTrackTargetStatus
             // 
@@ -675,5 +687,6 @@ namespace SrvSurvey
         private CheckBox checkFirstFootFall;
         private Button btnRamTah;
         private Button btnPublish;
+        private Button btnPasteLatLong;
     }
 }

@@ -469,6 +469,8 @@ namespace SrvSurvey.game
 
         public bool isSurveyComplete()
         {
+            if (this.type == SiteType.Unknown) return false;
+
             // The survey is complete when we know:
             var complete = true;
 
@@ -670,7 +672,7 @@ namespace SrvSurvey.game
                     notes = obj["notes"]?.Value<string>(),
                     legacy = obj["legacy"]?.Value<bool>() ?? false,
 
-                    // confirmedPOI - officially retired now :)
+                    confirmedPOI = obj["confirmedPOI"]?.ToObject<Dictionary<string, bool>>()!, 
                     obeliskGroups = new HashSet<char>(),
                 };
 
@@ -789,7 +791,8 @@ namespace SrvSurvey.game
                     { "bodyId", data.bodyId },
                     { "bodyName", data.bodyName },
                     { "siteHeading", data.siteHeading },
-                    { "relicTowerHeading", data.relicTowerHeading }
+                    { "relicTowerHeading", data.relicTowerHeading },
+                    { "notes", data.notes },
                 };
 
                 var obeliskGroups = string.Join("", data.obeliskGroups);

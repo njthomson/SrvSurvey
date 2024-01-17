@@ -1,14 +1,7 @@
 ﻿using SrvSurvey.game;
 using SrvSurvey.units;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+using System.Net.NetworkInformation;
+using System.Text.RegularExpressions;
 
 namespace SrvSurvey
 {
@@ -55,6 +48,32 @@ namespace SrvSurvey
         {
             txtLat.Text = Status.here.Lat.ToString();
             txtLong.Text = Status.here.Long.ToString();
+        }
+
+        private static Regex matchPaste = new Regex("([\\+-.0-9]*)\\s*[,|`/]\\s*([\\+-.0-9]*)", RegexOptions.Singleline);
+
+        public static LatLong2? pasteFromClipboard()
+        {
+            var txt = Clipboard.GetText(TextDataFormat.Text);
+            if (string.IsNullOrEmpty(txt)) return null;
+
+            var match = matchPaste.Match(txt);
+            if (match.Success && match.Groups.Count == 3 && double.TryParse(match.Groups[1].Value, out var newLat) && double.TryParse(match.Groups[2].Value, out var newLong))
+            {
+                return new LatLong2(newLat, newLong);
+            }
+
+            return null;
+        }
+
+        private void btnPaste_Click(object sender, EventArgs e)
+        {
+            var newLocation = pasteFromClipboard();
+            if (newLocation != null)
+            {
+                txtLat.Text = newLocation.Lat.ToString();
+                txtLong.Text = newLocation.Long.ToString();
+            }
         }
     }
 }

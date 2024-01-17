@@ -913,6 +913,17 @@ namespace SrvSurvey
                 Program.closePlotter<PlotTrackTarget>();
         }
 
+        private void btnPasteLatLong_Click(object sender, EventArgs e)
+        {
+            var newLocation = FormGroundTarget.pasteFromClipboard();
+            if (newLocation != null)
+            {
+                Game.settings.targetLatLong = newLocation;
+                Game.log($"Main.Set target from clipboard lat/long: {Game.settings.targetLatLong}, near: {game?.cmdr?.lastSystemLocation}");
+                setTargetLatLong();
+            }
+        }
+
         private void btnClearTarget_Click(object sender, EventArgs e)
         {
             Game.settings.targetLatLongActive = false;

@@ -39,6 +39,7 @@ namespace SrvSurvey
             label6 = new Label();
             button1 = new Button();
             btnTargetCurrent = new Button();
+            btnPaste = new Button();
             SuspendLayout();
             // 
             // label2
@@ -82,7 +83,7 @@ namespace SrvSurvey
             // btnBegin
             // 
             btnBegin.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnBegin.Location = new Point(312, 165);
+            btnBegin.Location = new Point(312, 183);
             btnBegin.Margin = new Padding(4, 3, 4, 3);
             btnBegin.Name = "btnBegin";
             btnBegin.Size = new Size(88, 27);
@@ -95,7 +96,7 @@ namespace SrvSurvey
             // 
             btnCancel.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnCancel.DialogResult = DialogResult.Cancel;
-            btnCancel.Location = new Point(406, 165);
+            btnCancel.Location = new Point(406, 183);
             btnCancel.Margin = new Padding(4, 3, 4, 3);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new Size(88, 27);
@@ -116,8 +117,7 @@ namespace SrvSurvey
             // 
             // button1
             // 
-            button1.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            button1.Location = new Point(18, 165);
+            button1.Location = new Point(18, 136);
             button1.Margin = new Padding(4, 3, 4, 3);
             button1.Name = "button1";
             button1.Size = new Size(88, 27);
@@ -128,15 +128,27 @@ namespace SrvSurvey
             // 
             // btnTargetCurrent
             // 
-            btnTargetCurrent.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnTargetCurrent.Location = new Point(114, 165);
+            btnTargetCurrent.Location = new Point(114, 136);
             btnTargetCurrent.Margin = new Padding(4, 3, 4, 3);
             btnTargetCurrent.Name = "btnTargetCurrent";
-            btnTargetCurrent.Size = new Size(160, 27);
+            btnTargetCurrent.Size = new Size(145, 27);
             btnTargetCurrent.TabIndex = 8;
             btnTargetCurrent.Text = "&Target current location";
             btnTargetCurrent.UseVisualStyleBackColor = true;
             btnTargetCurrent.Click += btnTargetCurrent_Click;
+            // 
+            // btnPaste
+            // 
+            btnPaste.Image = (Image)resources.GetObject("btnPaste.Image");
+            btnPaste.ImageAlign = ContentAlignment.MiddleLeft;
+            btnPaste.Location = new Point(266, 136);
+            btnPaste.Name = "btnPaste";
+            btnPaste.Size = new Size(73, 27);
+            btnPaste.TabIndex = 9;
+            btnPaste.Text = "Paste  ";
+            btnPaste.TextAlign = ContentAlignment.MiddleRight;
+            btnPaste.UseVisualStyleBackColor = true;
+            btnPaste.Click += btnPaste_Click;
             // 
             // FormGroundTarget
             // 
@@ -144,7 +156,8 @@ namespace SrvSurvey
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = btnCancel;
-            ClientSize = new Size(507, 205);
+            ClientSize = new Size(507, 223);
+            Controls.Add(btnPaste);
             Controls.Add(btnTargetCurrent);
             Controls.Add(button1);
             Controls.Add(label6);
@@ -178,5 +191,6 @@ namespace SrvSurvey
         private Label label6;
         private Button button1;
         private Button btnTargetCurrent;
+        private Button btnPaste;
     }
 }
