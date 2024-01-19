@@ -1,12 +1,15 @@
 {
   "sid": "GR403",
   "idx": 1,
-  "sh": -1,
+  "sh": 266,
   "t": "Alpha",
   "rh": -1,
-  "ll": null,
-  "pa": null,
-  "pp": null,
+  "ll": {
+    "lat": 13.017698,
+    "long": -148.397385
+  },
+  "pa": "p11,p12,p14,p25,p29,p31,p33,p36,p37,p38,p41,p42,p8,p9",
+  "pp": "p10,p13,p20,p21,p22,p26,p32",
   "pe": null,
   "og": "ACDEGIKLNO",
   "ao": [

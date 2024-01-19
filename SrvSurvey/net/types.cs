@@ -512,6 +512,7 @@ namespace SrvSurvey.canonn
         public int idx;
         public bool surveyComplete;
 
+        [ JsonIgnore ]
         public bool isRuins { get => siteType == "Alpha" || siteType == "Beta" || siteType == "Gamma"; }
     }
 

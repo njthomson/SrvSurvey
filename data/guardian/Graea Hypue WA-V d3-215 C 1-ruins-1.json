@@ -4,7 +4,10 @@
   "sh": -1,
   "t": "Beta",
   "rh": -1,
-  "ll": null,
+  "ll": {
+    "lat": -33.708,
+    "long": 108.620865
+  },
   "pa": null,
   "pp": null,
   "pe": null,

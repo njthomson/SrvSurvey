@@ -8,8 +8,8 @@
     "lat": 27.415854,
     "long": 120.901711
   },
-  "pa": null,
-  "pp": "p10",
+  "pa": "p43",
+  "pp": "p10,p38,t2,t6",
   "pe": null,
   "og": "ABCFHIJLMNORS",
   "ao": [

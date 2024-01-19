@@ -1,12 +1,15 @@
 {
   "sid": "GR376",
   "idx": 1,
-  "sh": -1,
+  "sh": 275,
   "t": "Beta",
   "rh": -1,
-  "ll": null,
-  "pa": null,
-  "pp": null,
+  "ll": {
+    "lat": 38.139462,
+    "long": 173.195724
+  },
+  "pa": "p41,p9",
+  "pp": "p11,p8,t5",
   "pe": null,
   "og": "CHKNOST",
   "ao": [

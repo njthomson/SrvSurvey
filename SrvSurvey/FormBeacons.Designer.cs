@@ -539,6 +539,5 @@
         private ToolStripSeparator toolStripSeparator3;
         private ToolStripMenuItem menuOpenImagesFolder;
         private ToolStripMenuItem systemAddressToolStripMenuItem;
-        private CheckBox checkBox1;
     }
 }

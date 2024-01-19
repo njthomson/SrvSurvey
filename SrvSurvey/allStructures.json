@@ -1,10 +1,5 @@
 [
   {
-    "idx": 0,
-    "latitude": -0.874411,
-    "longitude": -38.162308,
-    "siteHeading": 347,
-    "surveyComplete": false,
     "siteID": 91,
     "systemName": "IC 2391 Sector CA-A d43",
     "systemAddress": 1488080308579,
@@ -16,14 +11,14 @@
       -112.15625,
       -36.1875
     ],
-    "siteType": "Stickyhand"
+    "siteType": "Stickyhand",
+    "latitude": -0.874411,
+    "longitude": -38.162308,
+    "siteHeading": 347,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": -44.520168,
-    "longitude": 34.332687,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 96,
     "systemName": "IC 2391 Sector HG-X b1-8",
     "systemAddress": 18271193277841,
@@ -35,14 +30,14 @@
       -104.15625,
       -61.5625
     ],
-    "siteType": "Robolobster"
+    "siteType": "Robolobster",
+    "latitude": -44.520168,
+    "longitude": 34.332687,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 25.465786,
-    "longitude": -132.903366,
-    "siteHeading": 338,
-    "surveyComplete": false,
     "siteID": 97,
     "systemName": "IC 2391 Sector FL-X b1-7",
     "systemAddress": 16072170087825,
@@ -54,14 +49,14 @@
       -78.40625,
       -51.6875
     ],
-    "siteType": "Squid"
+    "siteType": "Squid",
+    "latitude": 25.465786,
+    "longitude": -132.903366,
+    "siteHeading": 338,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 53.72599,
-    "longitude": 97.492889,
-    "siteHeading": 238,
-    "surveyComplete": false,
     "siteID": 95,
     "systemName": "Synuefe NB-B b47-10",
     "systemAddress": 22669776594321,
@@ -73,14 +68,14 @@
       -113.84375,
       -61.5625
     ],
-    "siteType": "Robolobster"
+    "siteType": "Robolobster",
+    "latitude": 53.72599,
+    "longitude": 97.492889,
+    "siteHeading": 238,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": -58.067825,
-    "longitude": 114.49604,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 106,
     "systemName": "Synuefe DK-D b46-4",
     "systemAddress": 9475637257609,
@@ -92,14 +87,14 @@
       -63.90625,
       -80.78125
     ],
-    "siteType": "Squid"
+    "siteType": "Squid",
+    "latitude": -58.067825,
+    "longitude": 114.49604,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 55.388264,
-    "longitude": 16.360062,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 79,
     "systemName": "Synuefe GQ-N c23-21",
     "systemAddress": 5857429361354,
@@ -111,14 +106,14 @@
       -66.34375,
       -62.1875
     ],
-    "siteType": "Stickyhand"
+    "siteType": "Stickyhand",
+    "latitude": 55.388264,
+    "longitude": 16.360062,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 54.487339,
-    "longitude": 64.281319,
-    "siteHeading": 280,
-    "surveyComplete": false,
     "siteID": 119,
     "systemName": "Synuefe PX-J c25-8",
     "systemAddress": 2283949429466,
@@ -130,14 +125,14 @@
       -124.25,
       32.4375
     ],
-    "siteType": "Turtle"
+    "siteType": "Turtle",
+    "latitude": 54.487339,
+    "longitude": 64.281319,
+    "siteHeading": 280,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": -14.247764,
-    "longitude": -36.906628,
-    "siteHeading": 59,
-    "surveyComplete": false,
     "siteID": 118,
     "systemName": "HIP 39890",
     "systemAddress": 10611558763,
@@ -149,14 +144,14 @@
       -137.21875,
       -0.3125
     ],
-    "siteType": "Crossroads"
+    "siteType": "Crossroads",
+    "latitude": -14.247764,
+    "longitude": -36.906628,
+    "siteHeading": 59,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": -40.403393,
-    "longitude": 128.508774,
-    "siteHeading": 266,
-    "surveyComplete": false,
     "siteID": 116,
     "systemName": "Synuefe GV-T b50-4",
     "systemAddress": 9475905430961,
@@ -168,14 +163,14 @@
       -127.5625,
       27.25
     ],
-    "siteType": "Bear"
+    "siteType": "Bear",
+    "latitude": -40.403393,
+    "longitude": 128.508774,
+    "siteHeading": 266,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 33.411873,
-    "longitude": 6.633374,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 112,
     "systemName": "Synuefe HT-F d12-29",
     "systemAddress": 1007060748651,
@@ -187,14 +182,14 @@
       -131.96875,
       38.65625
     ],
-    "siteType": "Crossroads"
+    "siteType": "Crossroads",
+    "latitude": 33.411873,
+    "longitude": 6.633374,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 39.420448,
-    "longitude": -49.136593,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 102,
     "systemName": "Synuefe IL-N c23-19",
     "systemAddress": 5307673514698,
@@ -206,14 +201,14 @@
       -120.5625,
       -58.8125
     ],
-    "siteType": "Squid"
+    "siteType": "Squid",
+    "latitude": 39.420448,
+    "longitude": -49.136593,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": -45.130802,
-    "longitude": 109.935677,
-    "siteHeading": 268,
-    "surveyComplete": false,
     "siteID": 111,
     "systemName": "Synuefe EA-U b50-3",
     "systemAddress": 7276882240945,
@@ -225,14 +220,14 @@
       -106.625,
       25.75
     ],
-    "siteType": "Fistbump"
+    "siteType": "Fistbump",
+    "latitude": -45.130802,
+    "longitude": 109.935677,
+    "siteHeading": 268,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 76.911507,
-    "longitude": 174.095932,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 98,
     "systemName": "Synuefe DJ-G b44-3",
     "systemAddress": 7277150676345,
@@ -244,14 +239,14 @@
       -105.6875,
       -122.40625
     ],
-    "siteType": "Robolobster"
+    "siteType": "Robolobster",
+    "latitude": 76.911507,
+    "longitude": 174.095932,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 43.729572,
-    "longitude": -98.208046,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 93,
     "systemName": "Synuefe HP-E b45-8",
     "systemAddress": 18272266954113,
@@ -263,14 +258,14 @@
       -120.40625,
       -87.21875
     ],
-    "siteType": "Stickyhand"
+    "siteType": "Stickyhand",
+    "latitude": 43.729572,
+    "longitude": -98.208046,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 19.553461,
-    "longitude": -132.669281,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 121,
     "systemName": "HIP 36781",
     "systemAddress": 44988074331,
@@ -282,14 +277,14 @@
       -154.03125,
       -126.65625
     ],
-    "siteType": "Squid"
+    "siteType": "Squid",
+    "latitude": 19.553461,
+    "longitude": -132.669281,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 16.793079,
-    "longitude": -52.37011,
-    "siteHeading": 325,
-    "surveyComplete": false,
     "siteID": 178,
     "systemName": "Synuefe HF-V b49-5",
     "systemAddress": 11675196990889,
@@ -301,14 +296,14 @@
       -181.15625,
       6.0625
     ],
-    "siteType": "Fistbump"
+    "siteType": "Fistbump",
+    "latitude": 16.793079,
+    "longitude": -52.37011,
+    "siteHeading": 325,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 45.987629,
-    "longitude": 175.797653,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 114,
     "systemName": "Synuefe PM-L c24-24",
     "systemAddress": 6682130125522,
@@ -320,14 +315,14 @@
       -158.875,
       10.5
     ],
-    "siteType": "Bear"
+    "siteType": "Bear",
+    "latitude": 45.987629,
+    "longitude": 175.797653,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": -11.561507,
-    "longitude": -144.114349,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 84,
     "systemName": "Synuefe JP-E b45-4",
     "systemAddress": 9476710802817,
@@ -339,14 +334,14 @@
       -111.09375,
       -103.5625
     ],
-    "siteType": "Stickyhand"
+    "siteType": "Stickyhand",
+    "latitude": -11.561507,
+    "longitude": -144.114349,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": -43.850643,
-    "longitude": -21.313807,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 113,
     "systemName": "Synuefe LQ-T b50-1",
     "systemAddress": 2879640905137,
@@ -358,14 +353,14 @@
       -155.65625,
       19.3125
     ],
-    "siteType": "Turtle"
+    "siteType": "Turtle",
+    "latitude": -43.850643,
+    "longitude": -21.313807,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 33.619419,
-    "longitude": 40.013123,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 99,
     "systemName": "Synuefe HE-G b44-5",
     "systemAddress": 11675733992825,
@@ -377,14 +372,14 @@
       -128.9375,
       -112.71875
     ],
-    "siteType": "Squid"
+    "siteType": "Squid",
+    "latitude": 33.619419,
+    "longitude": 40.013123,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": -2.036813,
-    "longitude": 54.365608,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 82,
     "systemName": "Synuefe BZ-Q c21-11",
     "systemAddress": 3108717367994,
@@ -396,14 +391,14 @@
       -119.90625,
       -128.15625
     ],
-    "siteType": "Robolobster"
+    "siteType": "Robolobster",
+    "latitude": -2.036813,
+    "longitude": 54.365608,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 46.210194,
-    "longitude": -70.963852,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 81,
     "systemName": "Synuefe ZG-J d10-79",
     "systemAddress": 2725047667035,
@@ -415,14 +410,14 @@
       -121.34375,
       -133.25
     ],
-    "siteType": "Squid"
+    "siteType": "Squid",
+    "latitude": 46.210194,
+    "longitude": -70.963852,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": -48.670284,
-    "longitude": -10.052026,
-    "siteHeading": 80,
-    "surveyComplete": false,
     "siteID": 83,
     "systemName": "Synuefe IE-G b44-2",
     "systemAddress": 5078932661625,
@@ -434,14 +429,14 @@
       -130.28125,
       -111.34375
     ],
-    "siteType": "Robolobster"
+    "siteType": "Robolobster",
+    "latitude": -48.670284,
+    "longitude": -10.052026,
+    "siteHeading": 80,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 39.446285,
-    "longitude": -127.877617,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 80,
     "systemName": "Synuefe EN-H d11-29",
     "systemAddress": 1007077525859,
@@ -453,14 +448,14 @@
       -115.0,
       -91.34375
     ],
-    "siteType": "Robolobster"
+    "siteType": "Robolobster",
+    "latitude": 39.446285,
+    "longitude": -127.877617,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 40.593163,
-    "longitude": -28.932734,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 94,
     "systemName": "Synuefe AH-J d10-46",
     "systemAddress": 1591193078107,
@@ -472,14 +467,14 @@
       -164.8125,
       -138.78125
     ],
-    "siteType": "Robolobster"
+    "siteType": "Robolobster",
+    "latitude": 40.593163,
+    "longitude": -28.932734,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 6.33101,
-    "longitude": -11.048854,
-    "siteHeading": 35,
-    "surveyComplete": false,
     "siteID": 89,
     "systemName": "Synuefe KZ-F b44-5",
     "systemAddress": 11676002362745,
@@ -491,14 +486,14 @@
       -161.21875,
       -109.46875
     ],
-    "siteType": "Stickyhand"
+    "siteType": "Stickyhand",
+    "latitude": 6.33101,
+    "longitude": -11.048854,
+    "siteHeading": 35,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 27.952511,
-    "longitude": -5.201449,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 32,
     "systemName": "Synuefe GT-H b43-1",
     "systemAddress": 2879909340529,
@@ -510,14 +505,14 @@
       -163.09375,
       -128.0625
     ],
-    "siteType": "Turtle"
+    "siteType": "Turtle",
+    "latitude": 27.952511,
+    "longitude": -5.201449,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 37.194111,
-    "longitude": 30.487875,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 100,
     "systemName": "NGC 2451A Sector VJ-R c4-22",
     "systemAddress": 6132441420466,
@@ -529,14 +524,14 @@
       -153.09375,
       -164.25
     ],
-    "siteType": "Stickyhand"
+    "siteType": "Stickyhand",
+    "latitude": 37.194111,
+    "longitude": 30.487875,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": -2.251864,
-    "longitude": 117.278419,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 75,
     "systemName": "Synuefe PF-E b45-5",
     "systemAddress": 11676270798209,
@@ -548,14 +543,14 @@
       -164.65625,
       -101.28125
     ],
-    "siteType": "Stickyhand"
+    "siteType": "Stickyhand",
+    "latitude": -2.251864,
+    "longitude": 117.278419,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": -15.146383,
-    "longitude": -124.884094,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 77,
     "systemName": "Synuefe EN-H d11-96",
     "systemAddress": 3309179996515,
@@ -567,14 +562,14 @@
       -179.3125,
       -96.0625
     ],
-    "siteType": "Stickyhand"
+    "siteType": "Stickyhand",
+    "latitude": -15.146383,
+    "longitude": -124.884094,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 44.868057,
-    "longitude": -118.881874,
-    "siteHeading": 8,
-    "surveyComplete": false,
     "siteID": 101,
     "systemName": "Synuefe EU-Q c21-15",
     "systemAddress": 4208296071866,
@@ -586,14 +581,14 @@
       -171.84375,
       -138.09375
     ],
-    "siteType": "Squid"
+    "siteType": "Squid",
+    "latitude": 44.868057,
+    "longitude": -118.881874,
+    "siteHeading": 8,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 42.945576,
-    "longitude": 179.955643,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 87,
     "systemName": "Synuefe EN-H d11-28",
     "systemAddress": 972717787491,
@@ -605,14 +600,14 @@
       -145.0,
       -26.65625
     ],
-    "siteType": "Robolobster"
+    "siteType": "Robolobster",
+    "latitude": 42.945576,
+    "longitude": 179.955643,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": -21.960999,
-    "longitude": 127.821297,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 105,
     "systemName": "NGC 2451A Sector TO-R c4-10",
     "systemAddress": 2833906569906,
@@ -624,14 +619,14 @@
       -122.0,
       -165.03125
     ],
-    "siteType": "Robolobster"
+    "siteType": "Robolobster",
+    "latitude": -21.960999,
+    "longitude": 127.821297,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": -8.711272,
-    "longitude": -51.778748,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 76,
     "systemName": "Synuefe AH-J d10-20",
     "systemAddress": 697839880539,
@@ -643,14 +638,14 @@
       -148.3125,
       -145.75
     ],
-    "siteType": "Stickyhand"
+    "siteType": "Stickyhand",
+    "latitude": -8.711272,
+    "longitude": -51.778748,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 19.823612,
-    "longitude": -82.460922,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 9,
     "systemName": "Synuefe EU-Q c21-10",
     "systemAddress": 2833906537146,
@@ -662,14 +657,14 @@
       -176.90625,
       -133.21875
     ],
-    "siteType": "Bear"
+    "siteType": "Bear",
+    "latitude": 19.823612,
+    "longitude": -82.460922,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 55.652012,
-    "longitude": -27.694227,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 86,
     "systemName": "Synuefe NU-F b44-5",
     "systemAddress": 11676270732665,
@@ -681,14 +676,14 @@
       -166.0625,
       -106.40625
     ],
-    "siteType": "Stickyhand"
+    "siteType": "Stickyhand",
+    "latitude": 55.652012,
+    "longitude": -27.694227,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": -40.911968,
-    "longitude": -156.147552,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 103,
     "systemName": "Synuefe HF-P c22-17",
     "systemAddress": 4758119027394,
@@ -700,14 +695,14 @@
       -114.40625,
       -92.53125
     ],
-    "siteType": "Bear"
+    "siteType": "Bear",
+    "latitude": -40.911968,
+    "longitude": -156.147552,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": -14.801762,
-    "longitude": -101.44075,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 60,
     "systemName": "NGC 2451A Sector DL-Y d61",
     "systemAddress": 2106572376395,
@@ -719,14 +714,14 @@
       -150.28125,
       -272.28125
     ],
-    "siteType": "Turtle"
+    "siteType": "Turtle",
+    "latitude": -14.801762,
+    "longitude": -101.44075,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": -16.195827,
-    "longitude": -5.728627,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 92,
     "systemName": "Synuefe BE-R c21-35",
     "systemAddress": 9705921385146,
@@ -738,14 +733,14 @@
       -96.15625,
       -135.03125
     ],
-    "siteType": "Robolobster"
+    "siteType": "Robolobster",
+    "latitude": -16.195827,
+    "longitude": -5.728627,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": -46.799656,
-    "longitude": -132.282379,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 78,
     "systemName": "Synuefe AH-J d10-103",
     "systemAddress": 3549698165083,
@@ -757,14 +752,14 @@
       -158.28125,
       -117.4375
     ],
-    "siteType": "Squid"
+    "siteType": "Squid",
+    "latitude": -46.799656,
+    "longitude": -132.282379,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 62.745342,
-    "longitude": 43.220318,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 52,
     "systemName": "NGC 2451A Sector IR-W d1-77",
     "systemAddress": 2656344967507,
@@ -776,14 +771,14 @@
       -156.90625,
       -260.96875
     ],
-    "siteType": "Hammerbot"
+    "siteType": "Hammerbot",
+    "latitude": 62.745342,
+    "longitude": 43.220318,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 3.07507,
-    "longitude": -68.783615,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 198,
     "systemName": "Pencil Sector YJ-A c33",
     "systemAddress": 9156165636794,
@@ -795,14 +790,14 @@
       4.75,
       -116.78125
     ],
-    "siteType": "Bear"
+    "siteType": "Bear",
+    "latitude": 3.07507,
+    "longitude": -68.783615,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 54.100517,
-    "longitude": -52.077148,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 63,
     "systemName": "NGC 2451A Sector JR-W c1-1",
     "systemAddress": 360005374618,
@@ -814,14 +809,14 @@
       -158.09375,
       -278.3125
     ],
-    "siteType": "Lacrosse"
+    "siteType": "Lacrosse",
+    "latitude": 54.100517,
+    "longitude": -52.077148,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": -25.660549,
-    "longitude": 169.939041,
-    "siteHeading": 288,
-    "surveyComplete": false,
     "siteID": 104,
     "systemName": "Synuefe EN-H d11-106",
     "systemAddress": 3652777380195,
@@ -833,14 +828,14 @@
       -167.0625,
       -75.46875
     ],
-    "siteType": "Bear"
+    "siteType": "Bear",
+    "latitude": -25.660549,
+    "longitude": 169.939041,
+    "siteHeading": 288,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 27.593573,
-    "longitude": 111.994247,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 197,
     "systemName": "Pencil Sector CQ-Y c31",
     "systemAddress": 8606409822914,
@@ -852,14 +847,14 @@
       -7.53125,
       -101.25
     ],
-    "siteType": "Bowl"
+    "siteType": "Bowl",
+    "latitude": 27.593573,
+    "longitude": 111.994247,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": -23.98826,
-    "longitude": 174.221298,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 85,
     "systemName": "Synuefe ED-I b43-8",
     "systemAddress": 18273609131377,
@@ -871,14 +866,14 @@
       -120.625,
       -129.40625
     ],
-    "siteType": "Squid"
+    "siteType": "Squid",
+    "latitude": -23.98826,
+    "longitude": 174.221298,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": -42.131813,
-    "longitude": 120.871452,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 128,
     "systemName": "Pencil Sector YJ-A c12",
     "systemAddress": 3383729590970,
@@ -890,14 +885,14 @@
       -12.15625,
       -132.09375
     ],
-    "siteType": "Turtle"
+    "siteType": "Turtle",
+    "latitude": -42.131813,
+    "longitude": 120.871452,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 23.931753,
-    "longitude": -51.990963,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 179,
     "systemName": "Wregoe CQ-G d10-153",
     "systemAddress": 5267685116251,
@@ -909,14 +904,14 @@
       26.5,
       -175.90625
     ],
-    "siteType": "Crossroads"
+    "siteType": "Crossroads",
+    "latitude": 23.931753,
+    "longitude": -51.990963,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": -29.165123,
-    "longitude": 9.459513,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 88,
     "systemName": "Synuefe DZ-Q c21-14",
     "systemAddress": 3933485306554,
@@ -928,14 +923,14 @@
       -122.46875,
       -135.03125
     ],
-    "siteType": "Squid"
+    "siteType": "Squid",
+    "latitude": -29.165123,
+    "longitude": 9.459513,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": -22.337757,
-    "longitude": 6.003507,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 129,
     "systemName": "Wregoe CQ-G d10-56",
     "systemAddress": 1934790494555,
@@ -947,14 +942,14 @@
       49.90625,
       -153.625
     ],
-    "siteType": "Lacrosse"
+    "siteType": "Lacrosse",
+    "latitude": -22.337757,
+    "longitude": 6.003507,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 28.877272,
-    "longitude": 10.441991,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 124,
     "systemName": "Pencil Sector VY-A b8",
     "systemAddress": 18273877960049,
@@ -966,14 +961,14 @@
       5.5,
       -142.65625
     ],
-    "siteType": "Turtle"
+    "siteType": "Turtle",
+    "latitude": 28.877272,
+    "longitude": 10.441991,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 28.127224,
-    "longitude": 50.590214,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 70,
     "systemName": "NGC 2451A Sector WE-Q b5-6",
     "systemAddress": 13875294184777,
@@ -985,14 +980,14 @@
       -123.75,
       -240.125
     ],
-    "siteType": "Bear"
+    "siteType": "Bear",
+    "latitude": 28.127224,
+    "longitude": 50.590214,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": -56.137829,
-    "longitude": 68.315697,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 131,
     "systemName": "Wregoe JR-A b41-3",
     "systemAddress": 7278761682273,
@@ -1004,14 +999,14 @@
       -3.0625,
       -166.46875
     ],
-    "siteType": "Bowl"
+    "siteType": "Bowl",
+    "latitude": -56.137829,
+    "longitude": 68.315697,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 39.116386,
-    "longitude": 166.909653,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 36,
     "systemName": "Synuefe FK-P c22-2",
     "systemAddress": 634950456002,
@@ -1023,14 +1018,14 @@
       -104.96875,
       -104.5625
     ],
-    "siteType": "Hammerbot"
+    "siteType": "Hammerbot",
+    "latitude": 39.116386,
+    "longitude": 166.909653,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": -49.538887,
-    "longitude": -81.89782,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 90,
     "systemName": "NGC 2451A Sector UO-R c4-4",
     "systemAddress": 1184706237106,
@@ -1042,14 +1037,14 @@
       -118.84375,
       -158.875
     ],
-    "siteType": "Fistbump"
+    "siteType": "Fistbump",
+    "latitude": -49.538887,
+    "longitude": -81.89782,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 55.992836,
-    "longitude": 4.726782,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 20,
     "systemName": "Synuefe ZR-I b43-10",
     "systemAddress": 22671924274545,
@@ -1061,14 +1056,14 @@
       -60.4375,
       -144.71875
     ],
-    "siteType": "Lacrosse"
+    "siteType": "Lacrosse",
+    "latitude": 55.992836,
+    "longitude": 4.726782,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 58.95113,
-    "longitude": 88.509132,
-    "siteHeading": 348,
-    "surveyComplete": false,
     "siteID": 73,
     "systemName": "Synuefe EN-H d11-5",
     "systemAddress": 182443805027,
@@ -1080,14 +1075,14 @@
       -121.28125,
       -90.25
     ],
-    "siteType": "Lacrosse"
+    "siteType": "Lacrosse",
+    "latitude": 58.95113,
+    "longitude": 88.509132,
+    "siteHeading": 348,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 24.304094,
-    "longitude": -65.507484,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 125,
     "systemName": "HIP 41730",
     "systemAddress": 57166267564,
@@ -1099,14 +1094,14 @@
       -7.90625,
       -149.9375
     ],
-    "siteType": "Bowl"
+    "siteType": "Bowl",
+    "latitude": 24.304094,
+    "longitude": -65.507484,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 11.428931,
-    "longitude": -30.32794,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 19,
     "systemName": "Synuefe CE-R c21-6",
     "systemAddress": 1734529192634,
@@ -1118,14 +1113,14 @@
       -78.0,
       -105.1875
     ],
-    "siteType": "Hammerbot"
+    "siteType": "Hammerbot",
+    "latitude": 11.428931,
+    "longitude": -30.32794,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 11.443815,
-    "longitude": -64.927292,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 180,
     "systemName": "Wregoe IM-Z b41-2",
     "systemAddress": 5080007058793,
@@ -1137,14 +1132,14 @@
       55.78125,
       -164.09375
     ],
-    "siteType": "Turtle"
+    "siteType": "Turtle",
+    "latitude": 11.443815,
+    "longitude": -64.927292,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": -50.283966,
-    "longitude": 77.582657,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 127,
     "systemName": "Wregoe KH-Z b41-0",
     "systemAddress": 681960482153,
@@ -1156,14 +1151,14 @@
       51.375,
       -162.6875
     ],
-    "siteType": "Fistbump"
+    "siteType": "Fistbump",
+    "latitude": -50.283966,
+    "longitude": 77.582657,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 40.688301,
-    "longitude": 169.298096,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 62,
     "systemName": "NGC 2451A Sector TY-R b4-6",
     "systemAddress": 13875562620225,
@@ -1175,14 +1170,14 @@
       -119.6875,
       -264.21875
     ],
-    "siteType": "Fistbump"
+    "siteType": "Fistbump",
+    "latitude": 40.688301,
+    "longitude": 169.298096,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": -39.310135,
-    "longitude": -95.305794,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 61,
     "systemName": "NGC 2451A Sector MC-V c2-5",
     "systemAddress": 1459584144034,
@@ -1194,14 +1189,14 @@
       -114.34375,
       -258.25
     ],
-    "siteType": "Bowl"
+    "siteType": "Bowl",
+    "latitude": -39.310135,
+    "longitude": -95.305794,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 67.93824,
-    "longitude": 171.216034,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 189,
     "systemName": "Pencil Sector AF-A d80",
     "systemAddress": 2759440992603,
@@ -1213,14 +1208,14 @@
       -17.34375,
       -130.21875
     ],
-    "siteType": "Fistbump"
+    "siteType": "Fistbump",
+    "latitude": 67.93824,
+    "longitude": 171.216034,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 13.470932,
-    "longitude": -50.470749,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 7,
     "systemName": "Synuefe ZL-J d10-119",
     "systemAddress": 4099470772571,
@@ -1232,14 +1227,14 @@
       -51.21875,
       -154.65625
     ],
-    "siteType": "Fistbump"
+    "siteType": "Fistbump",
+    "latitude": 13.470932,
+    "longitude": -50.470749,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 51.103813,
-    "longitude": -81.72084,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 183,
     "systemName": "Pencil Sector XO-A c31",
     "systemAddress": 8606476964538,
@@ -1251,14 +1246,14 @@
       40.3125,
       -120.0625
     ],
-    "siteType": "Hammerbot"
+    "siteType": "Hammerbot",
+    "latitude": 51.103813,
+    "longitude": -81.72084,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 54.702057,
-    "longitude": -118.181046,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 1,
     "systemName": "Synuefe LY-I b42-2",
     "systemAddress": 5079737705833,
@@ -1270,14 +1265,14 @@
       -222.78125,
       -151.15625
     ],
-    "siteType": "Fistbump"
+    "siteType": "Fistbump",
+    "latitude": 54.702057,
+    "longitude": -118.181046,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": -30.655045,
-    "longitude": 167.240494,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 23,
     "systemName": "Synuefe SP-F b44-0",
     "systemAddress": 681959695737,
@@ -1289,14 +1284,14 @@
       -187.5625,
       -121.84375
     ],
-    "siteType": "Bear"
+    "siteType": "Bear",
+    "latitude": -30.655045,
+    "longitude": 167.240494,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 46.485451,
-    "longitude": -28.382158,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 130,
     "systemName": "Pencil Sector ZJ-A c4",
     "systemAddress": 1184773444282,
@@ -1308,14 +1303,14 @@
       7.8125,
       -112.125
     ],
-    "siteType": "Turtle"
+    "siteType": "Turtle",
+    "latitude": 46.485451,
+    "longitude": -28.382158,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": -15.310192,
-    "longitude": 53.221272,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 56,
     "systemName": "Synuefe BH-J d10-68",
     "systemAddress": 2347124099419,
@@ -1327,14 +1322,14 @@
       -149.125,
       -175.96875
     ],
-    "siteType": "Bowl"
+    "siteType": "Bowl",
+    "latitude": -15.310192,
+    "longitude": 53.221272,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": -48.604752,
-    "longitude": 121.875587,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 80,
     "systemName": "Synuefe ZL-J d10-109",
     "systemAddress": 3755873388891,
@@ -1346,14 +1341,14 @@
       -51.125,
       -124.84375
     ],
-    "siteType": "Hammerbot"
+    "siteType": "Hammerbot",
+    "latitude": -48.604752,
+    "longitude": 121.875587,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": -15.695237,
-    "longitude": -27.645632,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 72,
     "systemName": "Synuefe OT-I b42-4",
     "systemAddress": 9478052586857,
@@ -1365,14 +1360,14 @@
       -238.875,
       -147.40625
     ],
-    "siteType": "Crossroads"
+    "siteType": "Crossroads",
+    "latitude": -15.695237,
+    "longitude": -27.645632,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 76.710686,
-    "longitude": -142.042236,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 123,
     "systemName": "Wregoe JR-L c21-1",
     "systemAddress": 360206865082,
@@ -1384,14 +1379,14 @@
       17.34375,
       -137.90625
     ],
-    "siteType": "Bowl"
+    "siteType": "Bowl",
+    "latitude": 76.710686,
+    "longitude": -142.042236,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": -27.326454,
-    "longitude": -17.166643,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 27,
     "systemName": "Synuefe TP-F b44-0",
     "systemAddress": 682228131193,
@@ -1403,14 +1398,14 @@
       -197.84375,
       -111.84375
     ],
-    "siteType": "Fistbump"
+    "siteType": "Fistbump",
+    "latitude": -27.326454,
+    "longitude": -17.166643,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 51.209953,
-    "longitude": 89.097206,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 49,
     "systemName": "Synuefe NL-N c23-4",
     "systemAddress": 1184840454858,
@@ -1422,14 +1417,14 @@
       -124.59375,
       -61.0625
     ],
-    "siteType": "Turtle"
+    "siteType": "Turtle",
+    "latitude": 51.209953,
+    "longitude": 89.097206,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 4.92378,
-    "longitude": -94.175446,
-    "siteHeading": 337,
-    "surveyComplete": false,
     "siteID": 71,
     "systemName": "Synuefe VK-F b44-0",
     "systemAddress": 682228065657,
@@ -1441,14 +1436,14 @@
       -220.78125,
       -122.75
     ],
-    "siteType": "Hammerbot"
+    "siteType": "Hammerbot",
+    "latitude": 4.92378,
+    "longitude": -94.175446,
+    "siteHeading": 337,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": -1.496974,
-    "longitude": 136.608704,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 126,
     "systemName": "Wregoe DQ-G d10-42",
     "systemAddress": 1453770934619,
@@ -1460,14 +1455,14 @@
       11.625,
       -136.4375
     ],
-    "siteType": "Crossroads"
+    "siteType": "Crossroads",
+    "latitude": -1.496974,
+    "longitude": 136.608704,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": -26.228455,
-    "longitude": -75.500862,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 193,
     "systemName": "Col 173 Sector FK-C c14-6",
     "systemAddress": 1734596301506,
@@ -1479,14 +1474,14 @@
       -84.46875,
       -93.5
     ],
-    "siteType": "Bowl"
+    "siteType": "Bowl",
+    "latitude": -26.228455,
+    "longitude": -75.500862,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": -19.53747,
-    "longitude": -36.963837,
-    "siteHeading": 29,
-    "surveyComplete": false,
     "siteID": 5,
     "systemName": "HIP 39768",
     "systemAddress": 8219259477,
@@ -1498,14 +1493,14 @@
       -119.125,
       -109.03125
     ],
-    "siteType": "Fistbump"
+    "siteType": "Fistbump",
+    "latitude": -19.53747,
+    "longitude": -36.963837,
+    "siteHeading": 29,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": -48.058647,
-    "longitude": -20.001421,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 59,
     "systemName": "Col 173 Sector DZ-D c13-2",
     "systemAddress": 635084640954,
@@ -1517,14 +1512,14 @@
       -122.4375,
       -136.375
     ],
-    "siteType": "Crossroads"
+    "siteType": "Crossroads",
+    "latitude": -48.058647,
+    "longitude": -20.001421,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": -14.499706,
-    "longitude": 145.032257,
-    "siteHeading": 290,
-    "surveyComplete": false,
     "siteID": 67,
     "systemName": "Col 173 Sector PF-E b28-3",
     "systemAddress": 7279566464385,
@@ -1536,14 +1531,14 @@
       -156.03125,
       -92.84375
     ],
-    "siteType": "Bowl"
+    "siteType": "Bowl",
+    "latitude": -14.499706,
+    "longitude": 145.032257,
+    "siteHeading": 290,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": -7.948433,
-    "longitude": -0.178041,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 47,
     "systemName": "Col 173 Sector BO-F c12-24",
     "systemAddress": 6682398560946,
@@ -1555,14 +1550,14 @@
       -161.65625,
       -153.03125
     ],
-    "siteType": "Crossroads"
+    "siteType": "Crossroads",
+    "latitude": -7.948433,
+    "longitude": -0.178041,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": -33.219879,
-    "longitude": 87.628571,
-    "siteHeading": 285,
-    "surveyComplete": false,
     "siteID": 25,
     "systemName": "Col 173 Sector IJ-G b27-1",
     "systemAddress": 2881788519801,
@@ -1574,14 +1569,14 @@
       -122.875,
       -115.71875
     ],
-    "siteType": "Lacrosse"
+    "siteType": "Lacrosse",
+    "latitude": -33.219879,
+    "longitude": 87.628571,
+    "siteHeading": 285,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 7.507686,
-    "longitude": -68.310425,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 38,
     "systemName": "Col 173 Sector ME-P d6-92",
     "systemAddress": 3171757836635,
@@ -1593,14 +1588,14 @@
       -98.53125,
       -157.1875
     ],
-    "siteType": "Bowl"
+    "siteType": "Bowl",
+    "latitude": 7.507686,
+    "longitude": -68.310425,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 67.082237,
-    "longitude": -154.795837,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 33,
     "systemName": "Vela Dark Region JS-T b3-0",
     "systemAddress": 683033634185,
@@ -1612,14 +1607,14 @@
       -142.1875,
       -82.25
     ],
-    "siteType": "Bowl"
+    "siteType": "Bowl",
+    "latitude": 67.082237,
+    "longitude": -154.795837,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 25.948015,
-    "longitude": 16.520372,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 14,
     "systemName": "Col 173 Sector QU-O d6-25",
     "systemAddress": 869655333211,
@@ -1631,14 +1626,14 @@
       -205.5625,
       -156.59375
     ],
-    "siteType": "Lacrosse"
+    "siteType": "Lacrosse",
+    "latitude": 25.948015,
+    "longitude": 16.520372,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 19.272213,
-    "longitude": 67.520538,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 55,
     "systemName": "Col 173 Sector ZS-F c12-27",
     "systemAddress": 7507032314546,
@@ -1650,14 +1645,14 @@
       -113.5625,
       -166.46875
     ],
-    "siteType": "Hammerbot"
+    "siteType": "Hammerbot",
+    "latitude": 19.272213,
+    "longitude": 67.520538,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 44.620869,
-    "longitude": 111.888855,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 194,
     "systemName": "Col 173 Sector DS-J b25-2",
     "systemAddress": 5081080145257,
@@ -1669,14 +1664,14 @@
       -132.125,
       -150.71875
     ],
-    "siteType": "Turtle"
+    "siteType": "Turtle",
+    "latitude": 44.620869,
+    "longitude": 111.888855,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 34.593796,
-    "longitude": -52.222752,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 191,
     "systemName": "Col 173 Sector VV-D b28-0",
     "systemAddress": 683033437569,
@@ -1688,14 +1683,14 @@
       -201.75,
       -101.4375
     ],
-    "siteType": "Crossroads"
+    "siteType": "Crossroads",
+    "latitude": 34.593796,
+    "longitude": -52.222752,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 22.184898,
-    "longitude": -61.064617,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 58,
     "systemName": "Col 173 Sector ZL-L b24-7",
     "systemAddress": 16076196423009,
@@ -1707,14 +1702,14 @@
       -131.1875,
       -173.0
     ],
-    "siteType": "Lacrosse"
+    "siteType": "Lacrosse",
+    "latitude": 22.184898,
+    "longitude": -61.064617,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": -18.243898,
-    "longitude": -175.576874,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 35,
     "systemName": "Col 173 Sector ZL-L b24-2",
     "systemAddress": 5081080145249,
@@ -1726,14 +1721,14 @@
       -134.90625,
       -182.09375
     ],
-    "siteType": "Bowl"
+    "siteType": "Bowl",
+    "latitude": -18.243898,
+    "longitude": -175.576874,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 35.001404,
-    "longitude": -51.4855,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 54,
     "systemName": "Vela Dark Region BQ-Y d94",
     "systemAddress": 3240494090595,
@@ -1745,14 +1740,14 @@
       -99.46875,
       -86.5625
     ],
-    "siteType": "Lacrosse"
+    "siteType": "Lacrosse",
+    "latitude": 35.001404,
+    "longitude": -51.4855,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 31.457447,
-    "longitude": -154.251556,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 12,
     "systemName": "Col 173 Sector QU-O d6-32",
     "systemAddress": 1110173501787,
@@ -1764,14 +1759,14 @@
       -203.625,
       -146.5625
     ],
-    "siteType": "Lacrosse"
+    "siteType": "Lacrosse",
+    "latitude": 31.457447,
+    "longitude": -154.251556,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": -34.296829,
-    "longitude": 150.305801,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 68,
     "systemName": "Col 173 Sector XH-H c11-21",
     "systemAddress": 5857764840106,
@@ -1783,14 +1778,14 @@
       -153.75,
       -212.3125
     ],
-    "siteType": "Bear"
+    "siteType": "Bear",
+    "latitude": -34.296829,
+    "longitude": 150.305801,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 15.545576,
-    "longitude": -166.476242,
-    "siteHeading": 300,
-    "surveyComplete": false,
     "siteID": 24,
     "systemName": "Vela Dark Region DL-Y d91",
     "systemAddress": 3137414859107,
@@ -1802,14 +1797,14 @@
       -126.0,
       -101.78125
     ],
-    "siteType": "Bear"
+    "siteType": "Bear",
+    "latitude": 15.545576,
+    "longitude": -166.476242,
+    "siteHeading": 300,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 41.285805,
-    "longitude": -44.602657,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 108,
     "systemName": "Col 173 Sector EZ-D c13-25",
     "systemAddress": 6957343609530,
@@ -1821,14 +1816,14 @@
       -135.65625,
       -130.96875
     ],
-    "siteType": "Fistbump"
+    "siteType": "Fistbump",
+    "latitude": 41.285805,
+    "longitude": -44.602657,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": -43.215603,
-    "longitude": 157.734146,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 66,
     "systemName": "Col 173 Sector LT-Q d5-90",
     "systemAddress": 3103055120723,
@@ -1840,14 +1835,14 @@
       -115.875,
       -208.15625
     ],
-    "siteType": "Bowl"
+    "siteType": "Bowl",
+    "latitude": -43.215603,
+    "longitude": 157.734146,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": -37.078789,
-    "longitude": -138.124985,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 31,
     "systemName": "Vela Dark Region DL-Y d112",
     "systemAddress": 3858969364835,
@@ -1859,14 +1854,14 @@
       -171.8125,
       -98.21875
     ],
-    "siteType": "Turtle"
+    "siteType": "Turtle",
+    "latitude": -37.078789,
+    "longitude": -138.124985,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": -43.241249,
-    "longitude": 108.2631,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 182,
     "systemName": "Vela Dark Region PY-R b4-3",
     "systemAddress": 7280640271761,
@@ -1878,14 +1873,14 @@
       -138.1875,
       -48.40625
     ],
-    "siteType": "Fistbump"
+    "siteType": "Fistbump",
+    "latitude": -43.241249,
+    "longitude": 108.2631,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 45.836552,
-    "longitude": -179.821075,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 122,
     "systemName": "Vela Dark Region DL-Y d83",
     "systemAddress": 2862536952163,
@@ -1897,14 +1892,14 @@
       -165.78125,
       -65.1875
     ],
-    "siteType": "Turtle"
+    "siteType": "Turtle",
+    "latitude": 45.836552,
+    "longitude": -179.821075,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 19.981455,
-    "longitude": -38.105019,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 195,
     "systemName": "Col 173 Sector ZV-M b23-1",
     "systemAddress": 2882056758617,
@@ -1916,14 +1911,14 @@
       -167.3125,
       -202.5625
     ],
-    "siteType": "Bowl"
+    "siteType": "Bowl",
+    "latitude": 19.981455,
+    "longitude": -38.105019,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": -1.700207,
-    "longitude": 131.111252,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 51,
     "systemName": "Col 173 Sector PZ-O d6-116",
     "systemAddress": 3996408318299,
@@ -1935,14 +1930,14 @@
       -131.25,
       -164.46875
     ],
-    "siteType": "Crossroads"
+    "siteType": "Crossroads",
+    "latitude": -1.700207,
+    "longitude": 131.111252,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 41.200089,
-    "longitude": -50.037632,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 34,
     "systemName": "Col 173 Sector LT-Q d5-82",
     "systemAddress": 2828177213779,
@@ -1954,14 +1949,14 @@
       -120.65625,
       -199.6875
     ],
-    "siteType": "Bowl"
+    "siteType": "Bowl",
+    "latitude": 41.200089,
+    "longitude": -50.037632,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 42.97744,
-    "longitude": 42.669018,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 109,
     "systemName": "Vela Dark Region CQ-Y c0",
     "systemAddress": 85463044794,
@@ -1973,14 +1968,14 @@
       -122.34375,
       -133.0625
     ],
-    "siteType": "Bowl"
+    "siteType": "Bowl",
+    "latitude": 42.97744,
+    "longitude": 42.669018,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 34.131947,
-    "longitude": -124.692345,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 117,
     "systemName": "Vela Dark Region BQ-Y d110",
     "systemAddress": 3790249904483,
@@ -1992,14 +1987,14 @@
       -93.8125,
       -76.28125
     ],
-    "siteType": "Fistbump"
+    "siteType": "Fistbump",
+    "latitude": 34.131947,
+    "longitude": -124.692345,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 39.743687,
-    "longitude": 72.974297,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 65,
     "systemName": "Col 135 Sector TU-O c6-15",
     "systemAddress": 4208564540066,
@@ -2011,14 +2006,14 @@
       -138.125,
       -231.84375
     ],
-    "siteType": "Crossroads"
+    "siteType": "Crossroads",
+    "latitude": 39.743687,
+    "longitude": 72.974297,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": -40.390713,
-    "longitude": 144.709595,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 50,
     "systemName": "Col 173 Sector PZ-O d6-110",
     "systemAddress": 3790249888091,
@@ -2030,14 +2025,14 @@
       -130.75,
       -142.03125
     ],
-    "siteType": "Bowl"
+    "siteType": "Bowl",
+    "latitude": -40.390713,
+    "longitude": 144.709595,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 49.715645,
-    "longitude": 77.462921,
-    "siteHeading": 236,
-    "surveyComplete": true,
     "siteID": 188,
     "systemName": "Col 173 Sector SZ-G b26-0",
     "systemAddress": 683301741937,
@@ -2049,14 +2044,14 @@
       -234.96875,
       -132.6875
     ],
-    "siteType": "Turtle"
+    "siteType": "Turtle",
+    "latitude": 49.715645,
+    "longitude": 77.462921,
+    "siteHeading": 236,
+    "idx": 0,
+    "surveyComplete": true
   },
   {
-    "idx": 0,
-    "latitude": 43.696274,
-    "longitude": -170.381058,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 21,
     "systemName": "Col 173 Sector HU-D c13-2",
     "systemAddress": 635218825914,
@@ -2068,14 +2063,14 @@
       -173.9375,
       -126.28125
     ],
-    "siteType": "Crossroads"
+    "siteType": "Crossroads",
+    "latitude": 43.696274,
+    "longitude": -170.381058,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": -16.160803,
-    "longitude": -10.064655,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 57,
     "systemName": "Col 173 Sector XL-K b25-1",
     "systemAddress": 2882594022761,
@@ -2087,14 +2082,14 @@
       -57.625,
       -161.40625
     ],
-    "siteType": "Fistbump"
+    "siteType": "Fistbump",
+    "latitude": -16.160803,
+    "longitude": -10.064655,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": -31.777176,
-    "longitude": 144.74408,
-    "siteHeading": 295,
-    "surveyComplete": false,
     "siteID": 64,
     "systemName": "Col 173 Sector JI-J b25-0",
     "systemAddress": 683570373993,
@@ -2106,14 +2101,14 @@
       -184.125,
       -160.75
     ],
-    "siteType": "Crossroads"
+    "siteType": "Crossroads",
+    "latitude": -31.777176,
+    "longitude": 144.74408,
+    "siteHeading": 295,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": -14.838905,
-    "longitude": 67.709763,
-    "siteHeading": 56,
-    "surveyComplete": false,
     "siteID": 190,
     "systemName": "Col 173 Sector AD-H c11-15",
     "systemAddress": 4208564474538,
@@ -2125,14 +2120,14 @@
       -200.09375,
       -205.65625
     ],
-    "siteType": "Bear"
+    "siteType": "Bear",
+    "latitude": -14.838905,
+    "longitude": 67.709763,
+    "siteHeading": 56,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 10.522972,
-    "longitude": 131.982635,
-    "siteHeading": 1,
-    "surveyComplete": false,
     "siteID": 110,
     "systemName": "Col 173 Sector FZ-D c13-30",
     "systemAddress": 8331800253114,
@@ -2144,14 +2139,14 @@
       -117.09375,
       -143.8125
     ],
-    "siteType": "Hammerbot"
+    "siteType": "Hammerbot",
+    "latitude": 10.522972,
+    "longitude": 131.982635,
+    "siteHeading": 1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": -21.143145,
-    "longitude": 44.135551,
-    "siteHeading": 8,
-    "surveyComplete": true,
     "siteID": 46,
     "systemName": "Col 173 Sector DO-F c12-4",
     "systemAddress": 1184974639794,
@@ -2163,14 +2158,14 @@
       -169.46875,
       -146.78125
     ],
-    "siteType": "Fistbump"
+    "siteType": "Fistbump",
+    "latitude": -21.143145,
+    "longitude": 44.135551,
+    "siteHeading": 8,
+    "idx": 0,
+    "surveyComplete": true
   },
   {
-    "idx": 0,
-    "latitude": 43.750557,
-    "longitude": 179.357498,
-    "siteHeading": 122,
-    "surveyComplete": false,
     "siteID": 69,
     "systemName": "Col 173 Sector WP-O b22-1",
     "systemAddress": 2882325194065,
@@ -2182,14 +2177,14 @@
       -172.125,
       -205.34375
     ],
-    "siteType": "Lacrosse"
+    "siteType": "Lacrosse",
+    "latitude": 43.750557,
+    "longitude": 179.357498,
+    "siteHeading": 122,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": -31.861481,
-    "longitude": -132.126892,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 185,
     "systemName": "Col 173 Sector DE-E c13-27",
     "systemAddress": 7507166565050,
@@ -2201,14 +2196,14 @@
       -69.25,
       -139.5
     ],
-    "siteType": "Fistbump"
+    "siteType": "Fistbump",
+    "latitude": -31.861481,
+    "longitude": -132.126892,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": -34.10603,
-    "longitude": 66.936562,
-    "siteHeading": 13,
-    "surveyComplete": false,
     "siteID": 2,
     "systemName": "Vela Dark Region EG-X b1-1",
     "systemAddress": 2882862196089,
@@ -2220,14 +2215,14 @@
       -143.34375,
       -123.40625
     ],
-    "siteType": "Bear"
+    "siteType": "Bear",
+    "latitude": -34.10603,
+    "longitude": 66.936562,
+    "siteHeading": 13,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 69.366951,
-    "longitude": -95.814087,
-    "siteHeading": 50,
-    "surveyComplete": false,
     "siteID": 120,
     "systemName": "Col 173 Sector JP-D c13-14",
     "systemAddress": 3933753676474,
@@ -2239,14 +2234,14 @@
       -216.9375,
       -107.65625
     ],
-    "siteType": "Crossroads"
+    "siteType": "Crossroads",
+    "latitude": 69.366951,
+    "longitude": -95.814087,
+    "siteHeading": 50,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": -46.121265,
-    "longitude": -163.866425,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 44,
     "systemName": "Col 173 Sector GS-J b25-4",
     "systemAddress": 9479931962729,
@@ -2258,14 +2253,14 @@
       -142.0,
       -160.53125
     ],
-    "siteType": "Turtle"
+    "siteType": "Turtle",
+    "latitude": -46.121265,
+    "longitude": -163.866425,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": -57.501709,
-    "longitude": 142.130188,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 107,
     "systemName": "Col 173 Sector NV-B c14-1",
     "systemAddress": 360340886210,
@@ -2277,14 +2272,14 @@
       -212.5625,
       -94.8125
     ],
-    "siteType": "Hammerbot"
+    "siteType": "Hammerbot",
+    "latitude": -57.501709,
+    "longitude": 142.130188,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": -41.814926,
-    "longitude": -137.674301,
-    "siteHeading": 20,
-    "surveyComplete": false,
     "siteID": 29,
     "systemName": "Vela Dark Region IW-W b1-3",
     "systemAddress": 7280908576121,
@@ -2296,14 +2291,14 @@
       -165.1875,
       -124.4375
     ],
-    "siteType": "Lacrosse"
+    "siteType": "Lacrosse",
+    "latitude": -41.814926,
+    "longitude": -137.674301,
+    "siteHeading": 20,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": -14.347525,
-    "longitude": 142.573624,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 192,
     "systemName": "Vela Dark Region QI-T b3-2",
     "systemAddress": 5081885320585,
@@ -2315,14 +2310,14 @@
       -180.3125,
       -72.84375
     ],
-    "siteType": "Lacrosse"
+    "siteType": "Lacrosse",
+    "latitude": -14.347525,
+    "longitude": 142.573624,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 1.910246,
-    "longitude": -52.670677,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 41,
     "systemName": "Vela Dark Region RY-R b4-7",
     "systemAddress": 16077270164881,
@@ -2334,14 +2329,14 @@
       -126.21875,
       -57.65625
     ],
-    "siteType": "Crossroads"
+    "siteType": "Crossroads",
+    "latitude": 1.910246,
+    "longitude": -52.670677,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": -28.255943,
-    "longitude": 18.774065,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 53,
     "systemName": "Vela Dark Region ZE-A d66",
     "systemAddress": 2278421399899,
@@ -2353,14 +2348,14 @@
       -158.0,
       -131.6875
     ],
-    "siteType": "Hammerbot"
+    "siteType": "Hammerbot",
+    "latitude": -28.255943,
+    "longitude": 18.774065,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": -45.083519,
-    "longitude": 44.343475,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 37,
     "systemName": "Col 173 Sector CC-K b25-8",
     "systemAddress": 18276025116009,
@@ -2372,14 +2367,14 @@
       -99.5625,
       -160.53125
     ],
-    "siteType": "Hammerbot"
+    "siteType": "Hammerbot",
+    "latitude": -45.083519,
+    "longitude": 44.343475,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 50.684097,
-    "longitude": -70.51017,
-    "siteHeading": 3,
-    "surveyComplete": true,
     "siteID": 43,
     "systemName": "Col 173 Sector RU-O d6-16",
     "systemAddress": 560434465115,
@@ -2391,14 +2386,14 @@
       -223.25,
       -152.40625
     ],
-    "siteType": "Hammerbot"
+    "siteType": "Hammerbot",
+    "latitude": 50.684097,
+    "longitude": -70.51017,
+    "siteHeading": 3,
+    "idx": 0,
+    "surveyComplete": true
   },
   {
-    "idx": 0,
-    "latitude": -23.988466,
-    "longitude": -115.195076,
-    "siteHeading": 193,
-    "surveyComplete": false,
     "siteID": 39,
     "systemName": "Col 173 Sector YF-N b23-5",
     "systemAddress": 11678955218265,
@@ -2410,14 +2405,14 @@
       -144.46875,
       -188.53125
     ],
-    "siteType": "Crossroads"
+    "siteType": "Crossroads",
+    "latitude": -23.988466,
+    "longitude": -115.195076,
+    "siteHeading": 193,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": -60.041149,
-    "longitude": 71.153229,
-    "siteHeading": 346,
-    "surveyComplete": false,
     "siteID": 42,
     "systemName": "Vela Dark Region EL-Y d55",
     "systemAddress": 1900481055075,
@@ -2429,14 +2424,14 @@
       -156.8125,
       -75.34375
     ],
-    "siteType": "Bear"
+    "siteType": "Bear",
+    "latitude": -60.041149,
+    "longitude": 71.153229,
+    "siteHeading": 346,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": -35.128635,
-    "longitude": -42.341866,
-    "siteHeading": 1,
-    "surveyComplete": false,
     "siteID": 40,
     "systemName": "Col 173 Sector YF-N b23-6",
     "systemAddress": 13877978473817,
@@ -2448,14 +2443,14 @@
       -132.78125,
       -194.65625
     ],
-    "siteType": "Lacrosse"
+    "siteType": "Lacrosse",
+    "latitude": -35.128635,
+    "longitude": -42.341866,
+    "siteHeading": 1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": -50.119286,
-    "longitude": -69.979225,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 11,
     "systemName": "Col 173 Sector BH-K b25-8",
     "systemAddress": 18276293617001,
@@ -2467,14 +2462,14 @@
       -69.53125,
       -163.4375
     ],
-    "siteType": "Fistbump"
+    "siteType": "Fistbump",
+    "latitude": -50.119286,
+    "longitude": -69.979225,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": -43.308563,
-    "longitude": 163.735626,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 115,
     "systemName": "Col 173 Sector AY-F c12-0",
     "systemAddress": 85530186418,
@@ -2486,14 +2481,14 @@
       -78.6875,
       -155.65625
     ],
-    "siteType": "Lacrosse"
+    "siteType": "Lacrosse",
+    "latitude": -43.308563,
+    "longitude": 163.735626,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 67.983154,
-    "longitude": 21.8657,
-    "siteHeading": 63,
-    "surveyComplete": true,
     "siteID": 45,
     "systemName": "Col 173 Sector KY-Q d5-26",
     "systemAddress": 904048658771,
@@ -2505,14 +2500,14 @@
       -103.1875,
       -222.125
     ],
-    "siteType": "Bowl"
+    "siteType": "Bowl",
+    "latitude": 67.983154,
+    "longitude": 21.8657,
+    "siteHeading": 63,
+    "idx": 0,
+    "surveyComplete": true
   },
   {
-    "idx": 0,
-    "latitude": 38.602749,
-    "longitude": -159.793243,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 181,
     "systemName": "Col 173 Sector SU-O d6-54",
     "systemAddress": 1866121300315,
@@ -2524,14 +2519,14 @@
       -202.65625,
       -110.53125
     ],
-    "siteType": "Turtle"
+    "siteType": "Turtle",
+    "latitude": 38.602749,
+    "longitude": -159.793243,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": -45.782867,
-    "longitude": -102.657578,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 13,
     "systemName": "HD 63154",
     "systemAddress": 22810707116,
@@ -2543,14 +2538,14 @@
       -207.40625,
       -131.59375
     ],
-    "siteType": "Turtle"
+    "siteType": "Turtle",
+    "latitude": -45.782867,
+    "longitude": -102.657578,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 47.709942,
-    "longitude": -168.178223,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 28,
     "systemName": "Col 173 Sector RT-I b25-1",
     "systemAddress": 2883130303849,
@@ -2562,14 +2557,14 @@
       -233.625,
       -151.0625
     ],
-    "siteType": "Fistbump"
+    "siteType": "Fistbump",
+    "latitude": 47.709942,
+    "longitude": -168.178223,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 59.925705,
-    "longitude": -43.706291,
-    "siteHeading": 326,
-    "surveyComplete": false,
     "siteID": 196,
     "systemName": "Col 173 Sector KY-Q d5-42",
     "systemAddress": 1453804472659,
@@ -2581,14 +2576,14 @@
       -84.625,
       -203.71875
     ],
-    "siteType": "Fistbump"
+    "siteType": "Fistbump",
+    "latitude": 59.925705,
+    "longitude": -43.706291,
+    "siteHeading": 326,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 64.110748,
-    "longitude": -25.365894,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 30,
     "systemName": "Vela Dark Region EL-Y d32",
     "systemAddress": 1110207072611,
@@ -2600,14 +2595,14 @@
       -166.21875,
       -64.15625
     ],
-    "siteType": "Crossroads"
+    "siteType": "Crossroads",
+    "latitude": 64.110748,
+    "longitude": -25.365894,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 37.813358,
-    "longitude": -140.112839,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 184,
     "systemName": "Col 173 Sector QZ-O d6-1",
     "systemAddress": 45055183195,
@@ -2619,14 +2614,14 @@
       -170.8125,
       -175.125
     ],
-    "siteType": "Fistbump"
+    "siteType": "Fistbump",
+    "latitude": 37.813358,
+    "longitude": -140.112839,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": -11.482594,
-    "longitude": 107.162323,
-    "siteHeading": 317,
-    "surveyComplete": false,
     "siteID": 15,
     "systemName": "Col 173 Sector JX-K b24-0",
     "systemAddress": 684107179361,
@@ -2638,14 +2633,14 @@
       -188.1875,
       -173.53125
     ],
-    "siteType": "Crossroads"
+    "siteType": "Crossroads",
+    "latitude": -11.482594,
+    "longitude": 107.162323,
+    "siteHeading": 317,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 48.182552,
-    "longitude": 87.63282,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 16,
     "systemName": "Col 173 Sector KN-J b25-5",
     "systemAddress": 11679492023657,
@@ -2657,14 +2652,14 @@
       -152.28125,
       -160.25
     ],
-    "siteType": "Lacrosse"
+    "siteType": "Lacrosse",
+    "latitude": 48.182552,
+    "longitude": 87.63282,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": -36.508419,
-    "longitude": 52.917187,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 74,
     "systemName": "Col 173 Sector AI-H c11-22",
     "systemAddress": 6132844073642,
@@ -2676,14 +2671,14 @@
       -153.625,
       -213.71875
     ],
-    "siteType": "Fistbump"
+    "siteType": "Fistbump",
+    "latitude": -36.508419,
+    "longitude": 52.917187,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": -27.743124,
-    "longitude": -15.290405,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 48,
     "systemName": "Col 173 Sector HN-I b26-5",
     "systemAddress": 11679760721265,
@@ -2695,14 +2690,14 @@
       -76.9375,
       -139.03125
     ],
-    "siteType": "Bowl"
+    "siteType": "Bowl",
+    "latitude": -27.743124,
+    "longitude": -15.290405,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 57.234314,
-    "longitude": 28.793852,
-    "siteHeading": 108,
-    "surveyComplete": false,
     "siteID": 22,
     "systemName": "HD 62755",
     "systemAddress": 18515739820,
@@ -2714,14 +2709,14 @@
       -201.53125,
       -167.125
     ],
-    "siteType": "Crossroads"
+    "siteType": "Crossroads",
+    "latitude": 57.234314,
+    "longitude": 28.793852,
+    "siteHeading": 108,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 19.253191,
-    "longitude": -46.770954,
-    "siteHeading": 130,
-    "surveyComplete": false,
     "siteID": 26,
     "systemName": "Col 173 Sector OD-J b25-2",
     "systemAddress": 5082422125929,
@@ -2733,14 +2728,14 @@
       -201.5625,
       -157.4375
     ],
-    "siteType": "Bear"
+    "siteType": "Bear",
+    "latitude": 19.253191,
+    "longitude": -46.770954,
+    "siteHeading": 130,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": -77.975349,
-    "longitude": -170.472656,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 10,
     "systemName": "Col 173 Sector WZ-O b22-4",
     "systemAddress": 9480468833617,
@@ -2752,14 +2747,14 @@
       -131.78125,
       -210.4375
     ],
-    "siteType": "Lacrosse"
+    "siteType": "Lacrosse",
+    "latitude": -77.975349,
+    "longitude": -170.472656,
+    "siteHeading": 74,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 21.215445,
-    "longitude": 39.19553,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 6,
     "systemName": "Col 173 Sector DH-K b25-2",
     "systemAddress": 5082690954601,
@@ -2771,14 +2766,14 @@
       -80.25,
       -163.4375
     ],
-    "siteType": "Lacrosse"
+    "siteType": "Lacrosse",
+    "latitude": 21.215445,
+    "longitude": 39.19553,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": -26.658451,
-    "longitude": -127.018219,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 151,
     "systemName": "Col 173 Sector HR-M b23-0",
     "systemAddress": 684644050265,
@@ -2790,14 +2785,14 @@
       -200.84375,
       -190.4375
     ],
-    "siteType": "Lacrosse"
+    "siteType": "Lacrosse",
+    "latitude": -26.658451,
+    "longitude": -127.018219,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 28.004879,
-    "longitude": -15.423215,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 4,
     "systemName": "Vela Dark Region KR-W c1-24",
     "systemAddress": 6682666996418,
@@ -2809,14 +2804,14 @@
       -163.59375,
       -85.96875
     ],
-    "siteType": "Lacrosse"
+    "siteType": "Lacrosse",
+    "latitude": 28.004879,
+    "longitude": -15.423215,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": -0.465408,
-    "longitude": 92.140396,
-    "siteHeading": 359,
-    "surveyComplete": false,
     "siteID": 3,
     "systemName": "Col 173 Sector HR-M b23-3",
     "systemAddress": 7281713816921,
@@ -2828,14 +2823,14 @@
       -191.71875,
       -193.8125
     ],
-    "siteType": "Hammerbot"
+    "siteType": "Hammerbot",
+    "latitude": -0.465408,
+    "longitude": 92.140396,
+    "siteHeading": 359,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": -21.909544,
-    "longitude": -18.934084,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 18,
     "systemName": "Vela Dark Region FL-Y d63",
     "systemAddress": 2175375739235,
@@ -2847,14 +2842,14 @@
       -144.03125,
       -101.71875
     ],
-    "siteType": "Lacrosse"
+    "siteType": "Lacrosse",
+    "latitude": -21.909544,
+    "longitude": -18.934084,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 34.362774,
-    "longitude": -14.608253,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 187,
     "systemName": "Vela Dark Region TD-S b4-5",
     "systemAddress": 11680297461137,
@@ -2866,14 +2861,14 @@
       -121.03125,
       -50.09375
     ],
-    "siteType": "Bear"
+    "siteType": "Bear",
+    "latitude": 34.362774,
+    "longitude": -14.608253,
+    "siteHeading": 79,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 22.190657,
-    "longitude": -1.282367,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 17,
     "systemName": "Vela Dark Region HB-X c1-28",
     "systemAddress": 7782245798594,
@@ -2885,14 +2880,14 @@
       -100.65625,
       -92.75
     ],
-    "siteType": "Crossroads"
+    "siteType": "Crossroads",
+    "latitude": 22.190657,
+    "longitude": -1.282367,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 0,
-    "latitude": 31.6155,
-    "longitude": 119.8659,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 186,
     "systemName": "Trapezium Sector YU-X c1-2",
     "systemAddress": 634547605994,
@@ -2904,14 +2899,14 @@
       -339.46875,
       -1167.65625
     ],
-    "siteType": "Squid"
+    "siteType": "Squid",
+    "latitude": 31.6155,
+    "longitude": 119.8659,
+    "siteHeading": -1,
+    "idx": 0,
+    "surveyComplete": false
   },
   {
-    "idx": 1,
-    "latitude": 48.424553,
-    "longitude": -84.539001,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 199,
     "systemName": "Pencil Sector BQ-X b1-4",
     "systemAddress": 9477785003393,
@@ -2923,14 +2918,14 @@
       26.75,
       -104.59375
     ],
-    "siteType": "Bear"
+    "siteType": "Bear",
+    "latitude": 48.424553,
+    "longitude": -84.539001,
+    "siteHeading": -1,
+    "idx": 1,
+    "surveyComplete": false
   },
   {
-    "idx": 1,
-    "latitude": -2.3777,
-    "longitude": -95.3708,
-    "siteHeading": -1,
-    "surveyComplete": false,
     "siteID": 201,
     "systemName": "Wregoe BU-Y b2-0",
     "systemAddress": 685451322393,
@@ -2942,6 +2937,11 @@
       400.5625,
       -993.375
     ],
-    "siteType": "Bear"
+    "siteType": "Bear",
+    "latitude": -2.3777,
+    "longitude": -95.3708,
+    "siteHeading": -1,
+    "idx": 1,
+    "surveyComplete": false
   }
 ]
