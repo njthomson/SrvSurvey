@@ -1,16 +1,10 @@
 ﻿using SrvSurvey.canonn;
 using SrvSurvey.game;
 using SrvSurvey.net;
-using SrvSurvey.net.EDSM;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
+using System.Diagnostics;
 using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace SrvSurvey
 {
@@ -30,20 +24,27 @@ namespace SrvSurvey
 
         private List<ListViewItem> rows = new List<ListViewItem>();
         // default sort by system distance
-        private int sortColumn = 2;
+        private int sortColumn = 3;
         private bool sortUp = false;
 
         private readonly LookupStarSystem starSystemLookup;
+        private bool updatingTree = false;
 
         public FormBeacons()
         {
             InitializeComponent();
+            this.treeSiteTypes.Nodes[2].Expand(); // ruins
+            this.treeSiteTypes.Nodes[3].Expand(); // structures
+            this.comboVisited.SelectedIndex = 0;
 
             // can we fit in our last location
             Util.useLastLocation(this, Game.settings.formBeaconsLocation);
 
             this.starSystemLookup = new LookupStarSystem(comboCurrentSystem);
             this.starSystemLookup.onSystemMatch += StarSystemLookup_starSystemMatch;
+
+            // hide this from everyone else
+            menuOpenDataFile.Visible = Debugger.IsAttached;
         }
 
         protected override void OnClosing(CancelEventArgs e)
@@ -66,19 +67,68 @@ namespace SrvSurvey
 
         private void FormBeacons_Load(object sender, EventArgs e)
         {
+            this.grid.Columns[10].Width = 0;
             this.star = Util.getRecentStarSystem();
             comboCurrentSystem.Text = star.systemName;
 
-            this.prepareAllRows();
-            this.grid.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+            this.beginPrepareAllRows().ContinueWith((rslt) =>
+            {
+                // no-op
+            });
         }
 
-        private void prepareAllRows()
+        private Task beginPrepareAllRows()
         {
+            // ignore events whilst checkbox is disabled
+            if (!checkRamTah.Enabled) return Task.CompletedTask;
+            checkRamTah.Enabled = false;
+
+            var incRamTahLogs = checkRamTah.Checked;
+            // the first load of Ram Tah data can be slow and needs to be async
+            checkRamTah.ThreeState = true;
+            checkRamTah.CheckState = CheckState.Indeterminate;
+
+            List<GuardianGridEntry> allSites = new List<GuardianGridEntry>();
+            return Task.Run(() =>
+            {
+                try
+                {
+                    // reload all Ruins, optionally including Ram Tah logs
+                    allSites.AddRange(Game.canonn.loadAllStructures(incRamTahLogs));
+                    allSites.AddRange(Game.canonn.loadAllRuins(incRamTahLogs));
+
+                    this.Invoke(() =>
+                    {
+                        this.endPrepareAllRows(allSites);
+
+                        checkRamTah.ThreeState = false;
+                        this.grid.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+                        if (!incRamTahLogs) this.grid.Columns[10].Width = 0;
+
+                        this.BeginInvoke(() =>
+                        {
+                            checkRamTah.CheckState = incRamTahLogs ? CheckState.Checked : CheckState.Unchecked;
+                            checkRamTah.Enabled = true;
+                        });
+
+                    });
+                }
+                catch (Exception ex)
+                {
+                    Game.log($"beginPrepareAllRows: error: {ex}");
+                    FormErrorSubmit.Show(ex);
+                }
+            });
+        }
+
+        private void endPrepareAllRows(List<GuardianGridEntry> allSites)
+        {
+            this.grid.SuspendLayout();
+            this.grid.BeginUpdate();
             var allBeacons = Game.canonn.loadAllBeacons();
-            var allStructures = Game.canonn.loadAllStructures();
 
             Game.log($"Rendering {Game.canonn.allBeacons.Count} beacons, {Game.canonn.allStructures.Count} structures");
+            this.rows.Clear();
 
             foreach (var entry in allBeacons)
             {
@@ -91,12 +141,17 @@ namespace SrvSurvey
                 var subItems = new ListViewItem.ListViewSubItem[]
                 {
                     // ordering here needs to manually match columns
+                    new ListViewItem.ListViewSubItem { Text = $"GB {entry.siteID}" },
                     new ListViewItem.ListViewSubItem { Text = entry.systemName, Name = "systemName" },
                     new ListViewItem.ListViewSubItem { Text = entry.bodyName },
                     new ListViewItem.ListViewSubItem { Text = "x ly", Name = "distanceToSystem" },
                     new ListViewItem.ListViewSubItem { Text = $"{distanceToArrival} ls" },
                     new ListViewItem.ListViewSubItem { Text = lastVisited },
                     new ListViewItem.ListViewSubItem { Text = entry.siteType },
+                    new ListViewItem.ListViewSubItem { Text = "" }, // idx
+                    new ListViewItem.ListViewSubItem { Text = "" }, // hasImages
+                    new ListViewItem.ListViewSubItem { Text = "" }, // surveyComplete
+                    new ListViewItem.ListViewSubItem { Text = "" }, // ramTahLogs
                     new ListViewItem.ListViewSubItem { Text = entry.notes ?? "" },
                 };
 
@@ -104,7 +159,7 @@ namespace SrvSurvey
                 this.rows.Add(row);
             }
 
-            foreach (var entry in allStructures)
+            foreach (var entry in allSites)
             {
                 var lastVisited = entry.lastVisited == DateTimeOffset.MinValue ? "" : entry.lastVisited.ToString("d")!;
                 var distanceToArrival = entry.distanceToArrival.ToString("N0");
@@ -112,15 +167,22 @@ namespace SrvSurvey
                 entry.systemDistance = Util.getSystemDistance(this.star.pos, entry.starPos);
                 var distanceToSystem = entry.systemDistance.ToString("N0");
 
+                var hasImages = siteHasImages(entry);
+
                 var subItems = new ListViewItem.ListViewSubItem[]
                 {
                     // ordering here needs to manually match columns
+                    new ListViewItem.ListViewSubItem { Text = entry.isRuins ?  $"GR {entry.siteID}" : $"GS {entry.siteID}" },
                     new ListViewItem.ListViewSubItem { Text = entry.systemName, Name = "systemName" },
                     new ListViewItem.ListViewSubItem { Text = entry.bodyName },
                     new ListViewItem.ListViewSubItem { Text = "x ly", Name = "distanceToSystem" },
                     new ListViewItem.ListViewSubItem { Text = $"{distanceToArrival} ls" },
                     new ListViewItem.ListViewSubItem { Text = lastVisited },
                     new ListViewItem.ListViewSubItem { Text = entry.siteType },
+                    new ListViewItem.ListViewSubItem { Text = entry.idx > 0 ? $"#{entry.idx}" : "" },
+                    new ListViewItem.ListViewSubItem { Text = hasImages ? "yes" : "" },
+                    new ListViewItem.ListViewSubItem { Text = entry.surveyComplete ? "yes" : "" },
+                    new ListViewItem.ListViewSubItem { Text = entry.ramTahLogs },
                     new ListViewItem.ListViewSubItem { Text = entry.notes ?? "" },
                 };
 
@@ -130,9 +192,15 @@ namespace SrvSurvey
 
             calculateDistances();
 
-            Program.control!.Invoke((MethodInvoker)delegate
+            this.showAllRows();
+
+            this.grid.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+            if (!checkRamTah.Checked) this.grid.Columns[10].Width = 0;
+
+            this.BeginInvoke(() =>
             {
-                this.showAllRows();
+                this.grid.EndUpdate();
+                this.grid.ResumeLayout();
             });
         }
 
@@ -149,25 +217,56 @@ namespace SrvSurvey
         private void showAllRows()
         {
             this.grid.Items.Clear();
+            var countVisited = 0;
+            var countSurveyed = 0;
 
             // apply filter
             var filteredRows = this.rows.Where(row =>
             {
                 var entry = (GuardianGridEntry)row.Tag;
+                var keep = true;
 
-                if (checkVisited.Checked && entry.lastVisited == DateTimeOffset.MinValue)
-                    return false;
+                // if only visited
+                if (comboVisited.SelectedIndex == 1 && entry.lastVisited == DateTimeOffset.MinValue) keep = false;
+                // if only un visited
+                if (comboVisited.SelectedIndex == 2 && entry.lastVisited != DateTimeOffset.MinValue) keep = false;
 
-                if (!string.IsNullOrEmpty(txtFilter.Text))
+                // site type
+                if (entry.siteType == "Beacon" && !treeSiteTypes.Nodes[1].Checked) keep = false;
+
+                if (entry.siteType == "Alpha" && !treeSiteTypes.Nodes[2].Nodes[0].Checked) keep = false;
+                if (entry.siteType == "Beta" && !treeSiteTypes.Nodes[2].Nodes[1].Checked) keep = false;
+                if (entry.siteType == "Gamma" && !treeSiteTypes.Nodes[2].Nodes[2].Checked) keep = false;
+
+                if (entry.siteType == "Lacrosse" && !treeSiteTypes.Nodes[3].Nodes[0].Checked) keep = false;
+                if (entry.siteType == "Crossroads" && !treeSiteTypes.Nodes[3].Nodes[1].Checked) keep = false;
+                if (entry.siteType == "Fistbump" && !treeSiteTypes.Nodes[3].Nodes[2].Checked) keep = false;
+                if (entry.siteType == "Hammerbot" && !treeSiteTypes.Nodes[3].Nodes[3].Checked) keep = false;
+                if (entry.siteType == "Bear" && !treeSiteTypes.Nodes[3].Nodes[4].Checked) keep = false;
+                if (entry.siteType == "Bowl" && !treeSiteTypes.Nodes[3].Nodes[5].Checked) keep = false;
+                if (entry.siteType == "Turtle" && !treeSiteTypes.Nodes[3].Nodes[6].Checked) keep = false;
+                if (entry.siteType == "Robolobster" && !treeSiteTypes.Nodes[3].Nodes[7].Checked) keep = false;
+                if (entry.siteType == "Squid" && !treeSiteTypes.Nodes[3].Nodes[8].Checked) keep = false;
+                if (entry.siteType == "Stickyhand" && !treeSiteTypes.Nodes[3].Nodes[9].Checked) keep = false;
+
+
+                if (keep == true && !string.IsNullOrWhiteSpace(txtFilter.Text))
                 {
                     // if the system name, bodyName or Notes contains or systemAddress ...
-                    return entry.systemName.Contains(txtFilter.Text, StringComparison.OrdinalIgnoreCase)
-                        || row.SubItems[row.SubItems.Count - 1].Text.Contains(txtFilter.Text, StringComparison.OrdinalIgnoreCase)
-                        || row.SubItems[5].Text.Contains(txtFilter.Text, StringComparison.OrdinalIgnoreCase)
-                        || entry.systemAddress.ToString() == txtFilter.Text;
+                    keep &= entry.systemName.Contains(txtFilter.Text, StringComparison.OrdinalIgnoreCase) // system
+                        || row.SubItems[row.SubItems.Count - 1].Text.Contains(txtFilter.Text, StringComparison.OrdinalIgnoreCase) // notes
+                        || row.SubItems[6].Text.Contains(txtFilter.Text, StringComparison.OrdinalIgnoreCase) // site type
+                        || entry.systemAddress.ToString().Contains(txtFilter.Text, StringComparison.OrdinalIgnoreCase) // numeric system address
+                        || (checkRamTah.Checked && entry.ramTahLogs.Contains(txtFilter.Text, StringComparison.OrdinalIgnoreCase)); // Ram Tah logs
                 }
 
-                return true;
+                if (keep == true)
+                {
+                    if (entry.lastVisited != DateTimeOffset.MinValue) countVisited++;
+                    if (entry.surveyComplete) countSurveyed++;
+                }
+
+                return keep;
             });
 
             // apply sort
@@ -177,26 +276,52 @@ namespace SrvSurvey
                 sortedRows = sortedRows.Reverse();
 
             this.grid.Items.AddRange(sortedRows.ToArray());
-            this.lblStatus.Text = $"{this.grid.Items.Count} rows.";
+            var rowCount = this.grid.Items.Count;
+            var percentVisited = (100.0 / (float)rowCount * (float)countVisited).ToString("0");
+            var percentSurveyed = (100.0 / (float)rowCount * (float)countSurveyed).ToString("0"); ;
+            this.lblStatus.Text = $"{rowCount} of {this.rows.Count} rows | visited: {countVisited} ({percentVisited}%) | surveys complete: {countSurveyed} ({percentSurveyed}%)";
+        }
+
+        private bool siteHasImages(GuardianGridEntry entry)
+        {
+            var imageFilenamePrefix = $"{entry.systemName.ToUpper()} {entry.bodyName}".ToUpperInvariant();
+            var imageFilenameSuffix = entry.isRuins ? $", Ruins{entry.idx}".ToUpperInvariant() : entry.siteType;
+
+            var folder = Path.Combine(Game.settings.screenshotTargetFolder!, entry.systemName);
+            if (!Directory.Exists(folder)) return false;
+
+            var files = Directory.GetFiles(folder, "*.png").Select(_ => Path.GetFileNameWithoutExtension(_));
+            var hasImages = files.Any(_ => _.StartsWith(imageFilenamePrefix, StringComparison.OrdinalIgnoreCase) && _.Contains(imageFilenameSuffix, StringComparison.OrdinalIgnoreCase));
+            return hasImages;
         }
 
         private IEnumerable<ListViewItem> sortRows(IEnumerable<ListViewItem> rows)
         {
             switch (this.sortColumn)
             {
-                case 0: // system name
+                case 0: // site ID
+                    return rows.OrderBy(row => ((GuardianGridEntry)row.Tag).siteID);
+                case 1: // system name
                     return rows.OrderBy(row => ((GuardianGridEntry)row.Tag).systemName);
-                case 1: // bodyName
+                case 2: // bodyName
                     return rows.OrderBy(row => ((GuardianGridEntry)row.Tag).bodyName);
-                case 2: //systemDistance
+                case 3: //systemDistance
                     return rows.OrderBy(row => ((GuardianGridEntry)row.Tag).systemDistance);
-                case 3: // distanceToArrival;
+                case 4: // distanceToArrival;
                     return rows.OrderBy(row => ((GuardianGridEntry)row.Tag).distanceToArrival);
-                case 4: // last visited
+                case 5: // last visited
                     return rows.OrderBy(row => ((GuardianGridEntry)row.Tag).lastVisited);
-                case 5: // relatedStructure
+                case 6: // siteType
                     return rows.OrderBy(row => ((GuardianGridEntry)row.Tag).siteType);
-                case 6: // notes
+                case 7: // index
+                    return rows.OrderBy(row => ((GuardianGridEntry)row.Tag).idx);
+                case 8: // has images
+                    return rows.OrderBy(row => row.SubItems[8].Text);
+                case 9: // survey complete
+                    return rows.OrderBy(row => row.SubItems[9].Text);
+                case 10: // Ram Tah
+                    return rows.OrderBy(row => ((GuardianGridEntry)row.Tag).ramTahLogs);
+                case 11: // notes
                     return rows.OrderBy(row => ((GuardianGridEntry)row.Tag).notes);
 
                 default:
@@ -246,8 +371,213 @@ namespace SrvSurvey
         {
             if (e.Button == MouseButtons.Right && grid.SelectedItems.Count > 0)
             {
-                Clipboard.SetText(grid.SelectedItems[0].SubItems[0].Text);
+                // show right-click context menu, when clicking on some item
+                var item = this.grid.GetItemAt(e.X, e.Y)!;
+                var entry = item.Tag as GuardianGridEntry;
+                if (entry == null) return;
+
+                menuOpenSiteSurvey.Enabled = entry.siteType != "Beacon" && entry.lastVisited != DateTimeOffset.MinValue;
+                menuOpenDataFile.Enabled = File.Exists(entry.filepath);
+
+                var folder = Path.Combine(Game.settings.screenshotTargetFolder!, entry.systemName);
+                menuOpenImagesFolder.Enabled = Directory.Exists(folder);
+
+                this.contextMenu.Show(this.grid, e.X, e.Y);
             }
+        }
+
+        private void checkRamTah_CheckedChanged(object sender, EventArgs e)
+        {
+            this.beginPrepareAllRows();
+        }
+
+        private void btnSiteTypes_Click(object sender, EventArgs e)
+        {
+            this.togglePanel(true);
+        }
+
+        private void btnSetSiteTypes_Click(object sender, EventArgs e)
+        {
+            this.togglePanel(false);
+            showAllRows();
+        }
+
+        private void togglePanel(bool show)
+        {
+            panelSiteTypes.Visible = show;
+
+            // disable everything else whilst tree view is up
+            foreach (Control ctrl in this.Controls)
+                if (ctrl != this.panelSiteTypes)
+                    ctrl.Enabled = !show;
+        }
+
+        private void treeSiteTypes_AfterCheck(object sender, TreeViewEventArgs e)
+        {
+            this.toggleNode(e.Node);
+        }
+
+        private void treeSiteTypes_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            this.toggleNode(e.Node);
+        }
+
+        private void toggleNode(TreeNode? node)
+        {
+            if (node == null || updatingTree) return;
+
+            this.BeginInvoke(() =>
+            {
+                try
+                {
+                    updatingTree = true;
+
+                    if (node.Name == "nAllSites")
+                    {
+                        treeSiteTypes.Nodes[1].Checked = node.Checked;
+                        treeSiteTypes.Nodes[2].Checked = node.Checked;
+                        treeSiteTypes.Nodes[3].Checked = node.Checked;
+                        foreach (TreeNode child in treeSiteTypes.Nodes[2].Nodes) child.Checked = node.Checked;
+                        foreach (TreeNode child in treeSiteTypes.Nodes[3].Nodes) child.Checked = node.Checked;
+                    }
+                    else if (node.Name == "nAllRuins" || node.Name == "nAllStructures")
+                    {
+                        foreach (TreeNode child in node.Nodes) child.Checked = node.Checked;
+                    }
+                    else if (node.Parent?.Name == "nAllRuins" || node.Parent?.Name == "nAllStructures")
+                    {
+                        var allSiblings = node.Parent.Nodes.Cast<TreeNode>();
+                        var allChecked = allSiblings.All(_ => _.Checked);
+                        node.Parent.Checked = allChecked;
+                    }
+
+                    // check all node if top 3 are checked
+                    treeSiteTypes.Nodes[0].Checked = treeSiteTypes.Nodes[1].Checked && treeSiteTypes.Nodes[2].Checked && treeSiteTypes.Nodes[3].Checked;
+
+                    // summarize checked states
+                    var txt = new StringBuilder();
+                    if (treeSiteTypes.Nodes[0].Checked || treeSiteTypes.Nodes[2].Checked && treeSiteTypes.Nodes[3].Checked)
+                        txt.Append("All Ruins, Structures");
+                    else if (treeSiteTypes.Nodes[2].Checked)
+                    {
+                        txt.Append("All Ruins");
+                        var others = string.Join(", ", treeSiteTypes.Nodes[3].Nodes.Cast<TreeNode>().Where(_ => _.Checked).Select(_ => _.Text));
+                        if (!string.IsNullOrEmpty(others)) txt.Append(", " + others);
+                    }
+                    else if (treeSiteTypes.Nodes[3].Checked)
+                    {
+                        txt.Append("All Structures");
+                        var others = string.Join(", ", treeSiteTypes.Nodes[2].Nodes.Cast<TreeNode>().Where(_ => _.Checked).Select(_ => _.Text));
+                        if (!string.IsNullOrEmpty(others)) txt.Append(", " + others);
+                    }
+                    else
+                    {
+                        var types = new List<TreeNode>();
+                        types.AddRange(treeSiteTypes.Nodes[2].Nodes.Cast<TreeNode>());
+                        types.AddRange(treeSiteTypes.Nodes[3].Nodes.Cast<TreeNode>());
+                        txt.Append(string.Join(", ", types.Where(_ => _.Checked).Select(_ => _.Text)));
+                    }
+                    if (treeSiteTypes.Nodes[1].Checked)
+                    {
+                        if (txt.Length > 0)
+                            txt.Append(" and ");
+                        txt.Append("Beacons");
+                    }
+
+                    txtSiteTypes.Text = txt.ToString();
+                    btnSiteTypes.Enabled = !string.IsNullOrWhiteSpace(txtSiteTypes.Text);
+                }
+                finally
+                {
+                    updatingTree = false;
+                }
+            });
+        }
+
+        private void copySystemNameToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // copy system name
+            if (this.grid.SelectedItems.Count == 0) return;
+            var entry = (GuardianGridEntry)this.grid.SelectedItems[0].Tag;
+            Clipboard.SetText(entry.systemName);
+        }
+
+        private void systemAddressToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // copy system address
+            if (this.grid.SelectedItems.Count == 0) return;
+            var entry = (GuardianGridEntry)this.grid.SelectedItems[0].Tag;
+            Clipboard.SetText(entry.systemAddress.ToString());
+        }
+
+        private void copyBodyNameToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // copy body name
+            if (this.grid.SelectedItems.Count == 0) return;
+            var entry = (GuardianGridEntry)this.grid.SelectedItems[0].Tag;
+            Clipboard.SetText(entry.fullBodyName);
+        }
+
+        private void copyStarPosToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // copy star pos
+            if (this.grid.SelectedItems.Count == 0) return;
+            var entry = (GuardianGridEntry)this.grid.SelectedItems[0].Tag;
+            Clipboard.SetText($"x: {entry.starPos[0]}, y: {entry.starPos[1]}, z: {entry.starPos[2]}");
+        }
+
+        private void copyLatlongToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // copy lat/long
+            if (this.grid.SelectedItems.Count == 0) return;
+            var entry = (GuardianGridEntry)this.grid.SelectedItems[0].Tag;
+            Clipboard.SetText($"{entry.latitude}, {entry.longitude}");
+        }
+
+        private void notesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // copy notes
+            if (this.grid.SelectedItems.Count == 0) return;
+            var entry = (GuardianGridEntry)this.grid.SelectedItems[0].Tag;
+            Clipboard.SetText(entry.notes);
+        }
+
+        private void openSystemInEDSMToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (this.grid.SelectedItems.Count == 0) return;
+            var entry = (GuardianGridEntry)this.grid.SelectedItems[0].Tag;
+
+            // https://canonn-science.github.io/canonn-signals/?system=Synuefe%20EN-H%20d11-106
+            Util.openLink($"https://canonn-science.github.io/canonn-signals/?system={entry.systemName}");
+        }
+
+        private void menuOpenSiteSurvey_Click(object sender, EventArgs e)
+        {
+            if (this.grid.SelectedItems.Count == 0) return;
+            var entry = (GuardianGridEntry)this.grid.SelectedItems[0].Tag;
+            if (entry.siteType == "Beacon" || entry.lastVisited == DateTimeOffset.MinValue) return;
+
+            var siteData = GuardianSiteData.Load($"{entry.systemName} {entry.bodyName}", entry.idx, entry.isRuins);
+            FormRuins.show(siteData);
+        }
+
+        private void openDataFileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (this.grid.SelectedItems.Count == 0) return;
+            var entry = (GuardianGridEntry)this.grid.SelectedItems[0].Tag;
+
+            if (File.Exists(entry.filepath))
+                Util.openLink(entry.filepath);
+        }
+
+        private void menuOpenImagesFolder_Click(object sender, EventArgs e)
+        {
+            if (this.grid.SelectedItems.Count == 0) return;
+            var entry = (GuardianGridEntry)this.grid.SelectedItems[0].Tag;
+
+            var folder = Path.Combine(Game.settings.screenshotTargetFolder!, entry.systemName);
+            if (Directory.Exists(folder))
+                Util.openLink(folder);
         }
     }
 }

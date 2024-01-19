@@ -109,6 +109,7 @@ namespace SrvSurvey
         private void Status_StatusChanged(bool blink)
         {
             map.Invalidate();
+            this.showSurveyProgress();
         }
 
         private void loadMap(string name)
@@ -192,43 +193,95 @@ namespace SrvSurvey
             lblStatus.Text = $"Relic Towers: {countTowers}, puddles: {countItems}, site heading: {siteHeading}, relic tower heading: {relicTowerHeading}";
             lblObeliskGroups.Text = "Obelisk groups: " + (siteData?.obeliskGroups == null ? "" : string.Join("", siteData!.obeliskGroups));
 
-            if (this.siteData != null && this.siteData.siteHeading >= 0 && this.siteData.relicTowerHeading >= 0)
+            this.showSurveyProgress();
+
+            //if (this.siteData != null && this.siteData.siteHeading >= 0 && this.siteData.relicTowerHeading >= 0)
+            //{
+            //    var sh = this.siteData.siteHeading;
+            //    var th = this.siteData.relicTowerHeading;
+            //    if (sh < th) sh += 360;
+            //    var d = sh - th;
+            //    if (d > 180) d = 360 - d;
+            //    lblStatus.Text += $", diff: {d}°";
+            //}
+        }
+
+        private void showSurveyProgress()
+        {
+            if (siteData == null)
             {
-                var sh = this.siteData.siteHeading;
-                var th = this.siteData.relicTowerHeading;
-                if (sh < th) sh += 360;
-                var d = sh - th;
-                if (d > 180) d = 360 - d;
-                lblStatus.Text += $", diff: {d}°";
+                lblSurveyCompletion.Text = $"";
+                progressSurvey.Value = 0;
+                return;
             }
+
+            var countRelics = template.poi.Count(_ => _.type == POIType.relic);
+            // site heading
+            var total = +1
+                // count of non-obelisk POIs
+                + template.poi.Count(_ => _.type != POIType.obelisk && _.type != POIType.brokeObelisk)
+                // count relic towers again (for their headings)
+                + countRelics;
+
+            var actual = siteData.poiStatus.Count;
+            if (siteData.siteHeading >= 0) actual++;
+            if (!siteData.isRuins)
+                actual += siteData.relicHeadings.Count;
+            else if (siteData.relicTowerHeading >= 0)
+                actual += countRelics;
+
+            var progress = (100.0 / total * actual).ToString("0");
+            lblSurveyCompletion.Text = $"Survey: {progress}%";
+            progressSurvey.Maximum = total;
+            progressSurvey.Value = actual;
         }
 
         private void getAllSurveyedRuins()
         {
-            this.surveyedSites = GuardianSiteData.loadAllSites(true);
+            this.surveyedSites = GuardianSiteData.loadAllSites(false);
         }
 
         private void showFilteredSites(GuardianSiteData? siteData = null)
         {
-            if (string.IsNullOrEmpty(comboSiteType.Text)) return;
+            if (string.IsNullOrEmpty(comboSiteType.Text) || comboSiteType.Enabled == false) return;
 
             Enum.TryParse<GuardianSiteData.SiteType>(comboSiteType.Text, true, out GuardianSiteData.SiteType targetType);
 
             filteredSites.Clear();
-            if (targetType == GuardianSiteData.SiteType.Unknown)
+            if (siteData != null)
+            {
+                targetType = siteData.type;
+                filteredSites.Add($"{siteData.type} Template", null);
+                comboSiteType.Enabled = false;
+                comboSiteType.Text = siteData.type.ToString();
+                comboSiteType.Enabled = true;
+            }
+            else if (targetType == GuardianSiteData.SiteType.Unknown)
             {
                 filteredSites.Add("Alpha Template", null);
                 filteredSites.Add("Beta Template", null);
                 filteredSites.Add("Gamma Template", null);
+
+                filteredSites.Add("Lacrosse Template", null);
+                filteredSites.Add("Crossroads Template", null);
+                filteredSites.Add("Fistbump Template", null);
+                filteredSites.Add("Hammerbot Template", null);
+                filteredSites.Add("Bear Template", null);
+                filteredSites.Add("Bowl Template", null);
+                filteredSites.Add("Turtle Template", null);
+                filteredSites.Add("Robolobster Template", null);
+                filteredSites.Add("Squid Template", null);
+                filteredSites.Add("Stickyhand Template", null);
             }
 
-            filteredSites.Add($"{targetType} Template", null);
             foreach (var survey in this.surveyedSites)
             {
                 if (targetType == GuardianSiteData.SiteType.Unknown || survey.type == targetType)
                 {
                     var prefix = $"{survey.systemAddress} {survey.bodyId}";
-                    var name = $"{survey.bodyName ?? prefix}, ruins #{survey.index} - {survey.type}";
+                    var name = survey.isRuins
+                        ? $"{survey.bodyName ?? prefix}, ruins #{survey.index} - {survey.type}"
+                        : $"{survey.bodyName ?? prefix} - {survey.type}";
 
                     if (filteredSites.ContainsKey(name))
                         Game.log($"Why is {name} here twice?");
@@ -428,11 +481,7 @@ namespace SrvSurvey
             else
                 lblSelectedItem.Text = "";
 
-            var x = (mousePos.X + dragOffset.X) / this.scale;
-            var y = (mousePos.Y + dragOffset.Y) / this.scale;
 
-            lblMouseX.Text = "X: " + x.ToString("N1");
-            lblMouseY.Text = "Y: " + (-y).ToString("N1");
             lblZoom.Text = "Zoom: " + this.scale.ToString("N1");
         }
 
@@ -545,7 +594,7 @@ namespace SrvSurvey
 
                 //g.DrawLine(Pens.DarkBlue, 0,0, -pt.X, -pt.Y);
                 var sz = g.MeasureString(foo.Key, GameColors.fontBigBold);
-                g.DrawString(foo.Key, GameColors.fontBig, Brushes.DarkCyan, - pt.X -(sz.Width / 2) + 2,  -pt.Y - (sz.Height / 2) + 2);
+                g.DrawString(foo.Key, GameColors.fontBig, Brushes.DarkCyan, -pt.X - (sz.Width / 2) + 2, -pt.Y - (sz.Height / 2) + 2);
             }
 
             foreach (var poi in template.poi)
@@ -563,7 +612,7 @@ namespace SrvSurvey
                 var y = pt.Y * this.scale - mousePos.Y - dragOffset.Y;
                 var d = Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
 
-                if (!this.dragging && d < this.nearestDist)
+                if (!this.dragging && d < this.nearestDist && d < 30)
                 {
                     this.nearestDist = d;
                     this.nearestPoi = poi;
@@ -742,7 +791,10 @@ namespace SrvSurvey
 
             var siteHeading = this.siteData.siteHeading > 0 - 1 ? $"{this.siteData.siteHeading}°" : "?";
             var relicTowerHeading = this.siteData.relicTowerHeading > 0 ? $"{this.siteData.relicTowerHeading}°" : "?";
+
             lblStatus.Text = $"Relic Towers: {countTowers}, puddles: {countItems}, site heading: {siteHeading}, relic tower heading: {relicTowerHeading}";
+
+            this.showSurveyProgress();
 
             siteData.Save();
             map.Invalidate();

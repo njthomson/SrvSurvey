@@ -23,7 +23,7 @@ namespace SrvSurvey.canonn
         private static string allStructuresStaticPath = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "allStructures.json");
         public List<GuardianRuinSummary> allRuins { get; private set; }
         public List<GuardianBeaconSummary> allBeacons { get; private set; }
-        public List<GuardianStructureSummary> allStructures { get; private set; }
+        public List<GuardianSiteSummary> allStructures { get; private set; }
 
         public void init(bool devReload = false)
         {
@@ -39,8 +39,8 @@ namespace SrvSurvey.canonn
             this.allBeacons = JsonConvert.DeserializeObject<List<GuardianBeaconSummary>>(File.ReadAllText(Canonn.allBeaconsStaticPath))!;
             var pubAllStructuresPath = Path.Combine(Git.pubDataFolder, "allStructures.json");
             this.allStructures = File.Exists(pubAllStructuresPath) && !devReload
-                ? JsonConvert.DeserializeObject<List<GuardianStructureSummary>>(File.ReadAllText(pubAllStructuresPath))!
-                : JsonConvert.DeserializeObject<List<GuardianStructureSummary>>(File.ReadAllText(Canonn.allStructuresStaticPath))!;
+                ? JsonConvert.DeserializeObject<List<GuardianSiteSummary>>(File.ReadAllText(pubAllStructuresPath))!
+                : JsonConvert.DeserializeObject<List<GuardianSiteSummary>>(File.ReadAllText(Canonn.allStructuresStaticPath))!;
             Game.log($"Loaded {this.allRuins.Count} ruins, {this.allBeacons.Count} beacons, {this.allStructures.Count} beacons");
 
             /*
@@ -266,178 +266,143 @@ namespace SrvSurvey.canonn
             return summaries;
         }
 
-        public List<GuardianRuinEntry> loadAllRuins()
+        public List<GuardianGridEntry> loadAllRuins(bool incRamTahLogs = false)
         {
-            var summaries = this.allRuins;
-
-            if (summaries == null)
+            Data.suppressLoadingMsg = true;
+            Game.log($"loadAllRuins: incRamTahLogs: {incRamTahLogs}");
+            if (this.allRuins == null)
             {
                 Game.log("Why no ruinSummaries?");
-                return new List<GuardianRuinEntry>();
+                return new List<GuardianGridEntry>();
             }
 
-            var newEntries = new List<GuardianRuinEntry>();
+            // start by converting allRuins into entries
+            var allRuinEntries = this.allRuins.Select(_ => new GuardianGridEntry(_)).ToList();
 
-            var allRuins = summaries.Select(_ => new GuardianRuinEntry(_)).ToList();
-            var folder = Path.Combine(Program.dataFolder, "guardian", Game.settings.lastFid!);
-            if (Directory.Exists(folder))
+            // optionally include Ram Tah logs available at each Ruins
+            if (incRamTahLogs)
             {
-                var files = Directory.GetFiles(folder, "*-ruins-*.json");
-
-                Game.log($"Reading {files.Length} ruins files from disk");
-                foreach (var filename in files)
+                foreach (var entry in allRuinEntries)
                 {
-                    var data = Data.Load<GuardianSiteData>(filename);
-                    if (data == null) throw new Exception($"Why no siteData for: {filename}");
+                    var pubData = GuardianSitePub.Load(entry.fullBodyName, entry.idx, entry.siteType);
+                    // set notes as Ram Tah logs
+                    entry.ramTahLogs = ActiveObelisk.orderedRamTahLogs(pubData?.ao)!;
+                }
+            }
 
-                    var matches = allRuins.Where(_ => _.systemAddress == data.systemAddress
-                        && _.bodyId == data.bodyId
-                        && string.Equals(_.siteType, data.type.ToString(), StringComparison.OrdinalIgnoreCase)
-                    ).ToList();
+            // exit early if cmdr has no Guardian files
+            var folder = Path.Combine(Program.dataFolder, "guardian", Game.settings.lastFid!);
+            if (!Directory.Exists(folder)) return allRuinEntries;
 
-                    GuardianRuinEntry? entry = null;
 
-                    // take the first, assiming only 1 ruin on the body
-                    if (matches.Count == 1)
-                        entry = matches.First();
+            // process all guardian data gathered by cmdr
+            var files = Directory.GetFiles(folder, "*-ruins-*.json");
+            Game.log($"Reading {files.Length} ruins files from disk");
+            foreach (var filename in files)
+            {
+                var data = Data.Load<GuardianSiteData>(filename);
+                if (data == null) throw new Exception($"Why no siteData for: {filename}");
 
-                    // if more than 1, take the one matching the Ruins #
-                    if (entry == null)
-                        entry = matches.FirstOrDefault(_ => _.idx == data.index);
-
-                    // try matching if there's only 1 unmatched entry of this type
-                    if (entry == null)
+                if (data.type == SiteType.Unknown)
+                {
+                    // find a match?
+                    var match = allRuinEntries.FirstOrDefault(_ => _.systemAddress == data.systemAddress && _.bodyId == data.bodyId && _.idx == data.index && _.isRuins);
+                    if (match != null)
                     {
-                        var match = matches.Where(_ => _.idx == 0 && string.Compare(_.siteType, data.type.ToString(), true) == 0);
-                        if (match.Count() == 1)
-                            entry = match.First();
-                    }
-
-                    // if still no match, take the one that is really close by lat/long
-                    if (entry == null)
-                    {
-                        foreach (var match in matches)
-                        {
-                            if (match.latitude == 0 && match.longitude == 0) continue;
-
-                            var dist = Util.getDistance(data.location, new LatLong2(match.latitude, match.longitude), 1);
-                            if (dist < 0.0005M)
-                            {
-                                entry = match;
-                                Game.log($"Matched {data.bodyName} #{data.index} on distance!");
-                                break;
-                            }
-                        }
-                    }
-
-                    if (string.IsNullOrEmpty(data.systemName) && matches.Any())
-                    {
-                        var firstMatch = matches.First();
-                        data.systemName = firstMatch.systemName;
-                        data.bodyName = firstMatch.fullBodyName;
+                        data.type = Enum.Parse<SiteType>(match.siteType, true);
                         data.Save();
-                    }
-                    if (string.IsNullOrEmpty(data.commander) && !string.IsNullOrEmpty(Game.activeGame?.Commander))
-                    {
-                        data.commander = Game.activeGame.Commander;
-                        data.Save();
-                    }
-
-                    if (entry != null)
-                    {
-                        entry.merge(data);
-                    }
-                    else
-                    {
-                        // create an entry to represent our own data
-                        if (matches.Count == 0)
-                        {
-                            Game.log($"Unknown Guardian body: {data.bodyName} {data.name}. Adding entry without starPos or distanceToArrival");
-                            // TODO: fabricate an entry from logs?
-                            //var newSummary = new GuardianRuinSummary
-                            //{
-                            //    bodyId = data.bodyId,
-                            //    bodyName = data.bodyName,
-                            //    distanceToArrival = -1,
-                            //    idx = data.index,
-                            //    latitude = data.location.Lat,
-                            //    longitude = data.location.Long,
-                            //    siteHeading = data.siteHeading,
-                            //    relicTowerHeading = data.relicTowerHeading,
-                            //    siteType = data.type.ToString(),
-                            //    systemName = data.systemName,
-                            //    systemAddress = data.systemAddress,
-                            //    starPos = new double[3],
-                            //};
-
-                            //entry = new GuardianRuinEntry(newSummary);
-                            //allRuins.Add(entry);
-                        }
-                        else
-                        {
-                            Game.log($"No exact match for: {data.bodyName} {data.name}");
-                            //var newEntry = GuardianRuinEntry.from(data, matches.First());
-                            //newEntries.Add(newEntry);
-                        }
                     }
                 }
 
-                // remove an unmatchable entry for each new one
-                //foreach (var newEntry in newEntries)
-                //{
-                //    var victim = allRuins.First(_ => _.systemAddress == newEntry.systemAddress && _.bodyId == newEntry.bodyId && string.Compare(_.siteType, newEntry.siteType, true) == 0);
-                //    allRuins.Remove(victim);
-                //    allRuins.Add(newEntry);
-                //}
+                var entry = allRuinEntries.FirstOrDefault(_ => _.systemAddress == data.systemAddress && _.bodyId == data.bodyId && _.idx == data.index && _.siteType == data.type.ToString());
+                if (entry == null)
+                {
+                    // did somebody discover a new Ruins??
+                    Game.log($"Skipping unexpected ruins? {data.displayName}");
+                    continue;
+                }
+
+                if (entry != null)
+                {
+                    entry.merge(data);
+                }
+                else
+                {
+                    // create an entry from logs?
+                    Game.log($"Unknown Guardian body: {data.bodyName} {data.name}. Adding entry without starPos or distanceToArrival");
+                    //var newSummary = new GuardianStructureSummary
+                    //{
+                    //    bodyId = data.bodyId,
+                    //    bodyName = data.bodyName,
+                    //    distanceToArrival = -1,
+                    //    idx = data.index,
+                    //    latitude = data.location.Lat,
+                    //    longitude = data.location.Long,
+                    //    siteHeading = data.siteHeading,
+                    //    relicTowerHeading = data.relicTowerHeading,
+                    //    siteType = data.type.ToString(),
+                    //    systemName = data.systemName,
+                    //    systemAddress = data.systemAddress,
+                    //    starPos = new double[3],
+                    //};
+
+                    //entry = new GuardianGridEntry(newSummary);
+                    //allRuins.Add(entry);
+                }
             }
 
-            return allRuins;
+            Data.suppressLoadingMsg = false;
+            return allRuinEntries;
         }
 
 
-        public List<GuardianGridEntry> loadAllStructures()
+        public List<GuardianGridEntry> loadAllStructures(bool incRamTahLogs = false)
         {
-            var summaries = this.allStructures;
-
             var newEntries = new List<GuardianGridEntry>();
 
-            var allStructures = summaries.Select(_ => new GuardianGridEntry(_)).ToList();
-            var folder = Path.Combine(Program.dataFolder, "guardian", Game.settings.lastFid!);
-            if (Directory.Exists(folder))
+            // start by converting allRuins into entries
+            var allStructures = this.allStructures.Select(_ => new GuardianGridEntry(_)).ToList();
+
+            // optionally include Ram Tah logs available at each Ruins
+            if (incRamTahLogs)
             {
-                var files = Directory.GetFiles(folder, "*-structure-*.json");
-
-                Game.log($"Reading {files.Length} structure files from disk");
-                foreach (var filename in files)
+                foreach (var entry in allStructures)
                 {
-                    var data = Data.Load<GuardianSiteData>(filename)!;
-
-                    var matches = allStructures.Where(_ => _.systemAddress == data.systemAddress
-                        && _.bodyId == data.bodyId
-                        && string.Equals(_.siteType.ToString(), data.type.ToString(), StringComparison.OrdinalIgnoreCase)
-                    ).ToList();
-
-                    GuardianGridEntry? entry = null;
-
-                    // take the first, assiming only 1 ruin on the body
-                    if (matches.Count == 1)
-                        entry = matches.First();
-                    else
-                        throw new Exception("Why structure match?");
-
-                    if (entry != null)
-                    {
-                        entry.merge(data);
-                    }
+                    var pubData = GuardianSitePub.Load(entry.fullBodyName, 1, entry.siteType);
+                    // set notes as Ram Tah logs
+                    entry.ramTahLogs = ActiveObelisk.orderedRamTahLogs(pubData?.ao)!;
                 }
+            }
 
-                // remove an unmatchable entry for each new one
-                //foreach (var newEntry in newEntries)
-                //{
-                //    var victim = allRuins.First(_ => _.systemAddress == newEntry.systemAddress && _.bodyId == newEntry.bodyId && string.Compare(_.siteType, newEntry.siteType, true) == 0);
-                //    allRuins.Remove(victim);
-                //    allRuins.Add(newEntry);
-                //}
+            // exit early if cmdr has no Guardian files
+            var folder = Path.Combine(Program.dataFolder, "guardian", Game.settings.lastFid!);
+            if (!Directory.Exists(folder)) return allStructures;
+
+
+            var files = Directory.GetFiles(folder, "*-structure-*.json");
+
+            Game.log($"Reading {files.Length} structure files from disk");
+            foreach (var filename in files)
+            {
+                var data = Data.Load<GuardianSiteData>(filename)!;
+
+                var matches = allStructures.Where(_ => _.systemAddress == data.systemAddress
+                    && _.bodyId == data.bodyId
+                    && string.Equals(_.siteType.ToString(), data.type.ToString(), StringComparison.OrdinalIgnoreCase)
+                ).ToList();
+
+                GuardianGridEntry? entry = null;
+
+                // take the first, assiming only 1 ruin on the body
+                if (matches.Count == 1)
+                    entry = matches.First();
+                else
+                    throw new Exception("Why structure match?");
+
+                if (entry != null)
+                {
+                    entry.merge(data);
+                }
             }
 
             return allStructures;
@@ -449,33 +414,35 @@ namespace SrvSurvey.canonn
 
             var newEntries = new List<GuardianGridEntry>();
 
+            // start by converting allRuins into entries
             var allStructures = summaries.Select(_ => new GuardianGridEntry(_)).ToList();
+
+            // exit early if cmdr has no Guardian files
             var folder = Path.Combine(Program.dataFolder, "guardian", Game.settings.lastFid!);
-            if (Directory.Exists(folder))
+            if (!Directory.Exists(folder)) return allStructures;
+
+            var files = Directory.GetFiles(folder, "*-beacon.json");
+
+            Game.log($"Reading {files.Length} beacon files from disk");
+            foreach (var filename in files)
             {
-                var files = Directory.GetFiles(folder, "*-beacon.json");
+                var data = Data.Load<GuardianBeaconData>(filename)!;
 
-                Game.log($"Reading {files.Length} beacon files from disk");
-                foreach (var filename in files)
+                var matches = allStructures.Where(_ => _.systemAddress == data.systemAddress
+                    && _.bodyId == data.bodyId
+                ).ToList();
+
+                GuardianGridEntry? entry = null;
+
+                // take the first, assiming only 1 ruin on the body
+                if (matches.Count == 1)
+                    entry = matches.First();
+                else
+                    throw new Exception("Why beacon match?");
+
+                if (entry != null)
                 {
-                    var data = Data.Load<GuardianBeaconData>(filename)!;
-
-                    var matches = allStructures.Where(_ => _.systemAddress == data.systemAddress
-                        && _.bodyId == data.bodyId
-                    ).ToList();
-
-                    GuardianGridEntry? entry = null;
-
-                    // take the first, assiming only 1 ruin on the body
-                    if (matches.Count == 1)
-                        entry = matches.First();
-                    else
-                        throw new Exception("Why beacon match?");
-
-                    if (entry != null)
-                    {
-                        entry.merge(data);
-                    }
+                    entry.merge(data);
                 }
             }
 
@@ -842,7 +809,7 @@ namespace SrvSurvey.canonn
                     var matchedBody = edsmResponse.bodies.FirstOrDefault(_ => _.name.Equals(fullBodyName, StringComparison.OrdinalIgnoreCase));
                     if (ruins.bodyId <= 0 && matchedBody?.bodyId > 0)
                     {
-                        ruins.bodyId = matchedBody.bodyId;
+                        ruins.bodyId = matchedBody.bodyId.Value;
                         ruins.lastUpdated = DateTimeOffset.UtcNow;
                         dirty = true;
                     }
@@ -1316,7 +1283,7 @@ namespace SrvSurvey.canonn
                     if (!string.IsNullOrEmpty(correctCombo) && correctCombo.StartsWith("Correct Combo:"))
                     {
                         Game.log($"Using 'Correct Combo:' => '{correctCombo}' replacing: '{item1}' / '{item2}' on row:" + string.Join(", ", cells.Select(_ => _.Value)));
-                        var parts = correctCombo.Substring(correctCombo.IndexOf(':')+1).Split(' ', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+                        var parts = correctCombo.Substring(correctCombo.IndexOf(':') + 1).Split(' ', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
                         item1 = parts[0];
                         item2 = parts[2];
                     }
@@ -1350,7 +1317,7 @@ namespace SrvSurvey.canonn
                     var existingButDiff = site.ao.FirstOrDefault(_ => _.name == activeObelisk.name && _.ToString(true) != activeObelisk.ToString(true));
                     if (existingButDiff != null)
                         site.ao.Remove(existingButDiff);
-                    
+
                     if (!site.ao.Any(_ => _.ToString(true) == activeObelisk.ToString(true)))
                         site.ao.Add(activeObelisk);
                 }
@@ -1551,7 +1518,7 @@ namespace SrvSurvey.canonn
                         var siteSummary = this.allStructures.FirstOrDefault(_ => _.systemName.Equals(site.systemName, StringComparison.OrdinalIgnoreCase) && _.bodyName.Equals(site.bodyName, StringComparison.OrdinalIgnoreCase)); // && _.idx == site.idx);
                         if (siteSummary == null)
                         {
-                            siteSummary = new GuardianStructureSummary()
+                            siteSummary = new GuardianSiteSummary()
                             {
                                 // siteID is below
                                 systemName = site.systemName,
@@ -1635,11 +1602,11 @@ namespace SrvSurvey.canonn
 
         #region build summaries of structures
 
-        private List<GuardianStructureSummary> newStructures;
+        private List<GuardianSiteSummary> newStructures;
 
         public void readXmlSheetStructures()
         {
-            this.newStructures = new List<GuardianStructureSummary>();
+            this.newStructures = new List<GuardianSiteSummary>();
 
             var doc = XDocument.Load(@"d:\code\Catalog of Guardian Structures and Ruins.xml");
             var table = doc.Root?.Elements().Where(_ => _.Name.LocalName == "Worksheet" && _.FirstAttribute?.Value == "Structures").First().Elements()!;
@@ -1658,7 +1625,7 @@ namespace SrvSurvey.canonn
             var starPos = new double[3] /* x, y, z */ { double.Parse(cells[17].Value), double.Parse(cells[18].Value), double.Parse(cells[19].Value) };
             var siteType = cells[4].Value;
 
-            var summary = new GuardianStructureSummary
+            var summary = new GuardianSiteSummary
             {
                 systemName = systemName,
                 bodyName = bodyName,
@@ -1706,7 +1673,7 @@ namespace SrvSurvey.canonn
             else
             {
                 var json = File.ReadAllText(allStructuresStaticPathDbg);
-                this.newStructures = JsonConvert.DeserializeObject<List<GuardianStructureSummary>>(json)!;
+                this.newStructures = JsonConvert.DeserializeObject<List<GuardianSiteSummary>>(json)!;
             }
 
             await this.matchSystemAddresses2();
@@ -1800,7 +1767,7 @@ namespace SrvSurvey.canonn
                     var matchedBody = edsmResponse.bodies.FirstOrDefault(_ => _.name.Equals(fullBodyName, StringComparison.OrdinalIgnoreCase));
                     if (ruins.bodyId <= 0 && matchedBody?.bodyId > 0)
                     {
-                        ruins.bodyId = matchedBody.bodyId;
+                        ruins.bodyId = matchedBody.bodyId.Value;
                         dirty = true;
                     }
                     if (ruins.distanceToArrival <= 0 && matchedBody?.distanceToArrival > 0)

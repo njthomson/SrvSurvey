@@ -66,7 +66,7 @@ namespace SrvSurvey.net.EDSM
     internal class EdsmBody
     {
         public int id;
-        public int bodyId;
+        public int? bodyId;
         public string name;
         public string type;
         public string subType;

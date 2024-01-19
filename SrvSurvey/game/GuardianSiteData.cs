@@ -864,6 +864,18 @@ namespace SrvSurvey.game
         [JsonIgnore]
         public string msgDisplay { get => Util.getLogNameFromChar(this.msg[0]) + " #" + this.msg.Substring(1); }
 
+        public static string? orderedRamTahLogs(IEnumerable<ActiveObelisk>? obelisks)
+        {
+            if (obelisks == null) return null;
+
+            var ordered = obelisks
+                .Select(_ => _.msg)
+                .ToHashSet()
+                .OrderBy(  _ => _[0] + _.Substring(1).PadLeft(2, '0'));
+
+            return string.Join(", ", ordered);
+        }
+
         public override string ToString()
         {
             return this.ToString(false);
@@ -1018,7 +1030,7 @@ namespace SrvSurvey.game
             var cmdr = Game.activeGame?.cmdr;
             if (cmdr?.decodeTheRuinsMissionActive == TahMissionStatus.Active)
             {
-                var pubData = GuardianSitePub.Load(body.name, idx, Enum.Parse<GuardianSiteData.SiteType>(site.siteType, true));
+                var pubData = GuardianSitePub.Load(body.name, idx, site.siteType);
                 if (pubData == null) throw new Exception("Why?");
 
                 var logsNeeded = pubData.ao
@@ -1075,7 +1087,7 @@ namespace SrvSurvey.game
             var cmdr = Game.activeGame?.cmdr;
             if (cmdr?.decodeTheLogsMissionActive == TahMissionStatus.Active)
             {
-                var pubData = GuardianSitePub.Load(body.name, 1, Enum.Parse<GuardianSiteData.SiteType>(site.siteType, true));
+                var pubData = GuardianSitePub.Load(body.name, 1, site.siteType);
                 if (pubData == null) throw new Exception("Why?");
 
                 var logsNeeded = pubData.ao

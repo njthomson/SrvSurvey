@@ -345,6 +345,13 @@ namespace SrvSurvey
                 // try parsing a number after '.heading'
                 changeHeading = int.TryParse(msg.Substring(MsgCmd.heading.Length), out newHeading);
             }
+            else if (msg == ".alphaflip")
+            {
+                newHeading = siteData.siteHeading + 180;
+                if (newHeading > 360) newHeading -= 360;
+                changeHeading = true;
+                this.mode = Mode.map;
+            }
 
             if (changeHeading)
             {
@@ -915,13 +922,7 @@ namespace SrvSurvey
 
         protected void confirmPOI(SitePoiStatus poiStatus)
         {
-            //SitePoiStatus poiStatus;
             if (poiStatus == SitePoiStatus.unknown)
-            //{
-            //    // confirm POI is missing/present by param
-            //    poiStatus = present ? SitePoiStatus.present : SitePoiStatus.absent;
-            //}
-            //else
             {
                 // confirm POI is missing/present/empty by fire groups
                 poiStatus = (SitePoiStatus)(game.status.FireGroup % 3) + 1;
@@ -934,6 +935,7 @@ namespace SrvSurvey
                 siteData.poiStatus[this.nearestPoi.name] = poiStatus;
                 siteData.Save();
                 this.Invalidate();
+                game.systemData?.prepSettlements();
             }
         }
 
@@ -1571,7 +1573,8 @@ namespace SrvSurvey
             var footerTxt = "";
             var footerBrush = GameColors.brushGameOrange;
 
-            if (this.targetObelisk != null && nearestUnknownDist != double.MaxValue && this.targetObelisk == siteData.currentObelisk?.name)
+
+            if (this.targetObelisk != null && nearestUnknownDist != double.MaxValue) // && this.targetObelisk == siteData.currentObelisk?.name)
             {
                 footerTxt = $"Obelisk {this.targetObelisk} - dist: {Util.metersToString(nearestUnknownDist)}";
                 footerBrush = GameColors.brushCyan;

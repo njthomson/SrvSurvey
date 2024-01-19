@@ -451,8 +451,9 @@ namespace SrvSurvey.canonn
 
         public void merge(GuardianSiteData data)
         {
-            if (this.missingLiveLatLong || (this.siteHeading < 0 && data.siteHeading >= 0) || (this.relicTowerHeading < 0 && data.relicTowerHeading >= 0))
-                this.notes += PleaseShareMessage;
+            // TODO: revisit 
+            //if (this.missingLiveLatLong || (this.siteHeading < 0 && data.siteHeading >= 0) || (this.relicTowerHeading < 0 && data.relicTowerHeading >= 0))
+            //    this.notes += PleaseShareMessage;
 
             this.latitude = data.location.Lat;
             this.longitude = data.location.Long;
@@ -461,30 +462,15 @@ namespace SrvSurvey.canonn
             if (data.lastVisited != DateTimeOffset.MinValue)
                 this.lastVisited = data.lastVisited;
             this.idx = data.index;
-            this.notes += data.notes;
+            if (string.IsNullOrEmpty(this.notes))
+                this.notes = data.notes!;
+            else
+                this.notes += " | " + data.notes;
             if (!this.surveyComplete)
                 this.surveyComplete = data.isSurveyComplete();
         }
 
-        public static GuardianRuinEntry from(GuardianSiteData _, GuardianRuinEntry similar)
-        {
-            var entry = new GuardianRuinEntry(similar)
-            {
-                siteID = -1,
-                systemName = _.systemName,
-                systemAddress = _.systemAddress,
-                bodyName = _.bodyName.Replace(_.systemName, "").Trim(),
-                bodyId = _.bodyId,
-                siteType = _.type.ToString(),
-                idx = _.index,
-                latitude = _.location.Lat,
-                longitude = _.location.Long,
-                notes = _.notes ?? "",
-            };
-            entry.merge(_);
 
-            return entry;
-        }
     }
 
     #region spansh types
@@ -520,6 +506,13 @@ namespace SrvSurvey.canonn
         public double distanceToArrival;
         public double[] starPos;
         public string siteType;
+        public double latitude = double.NaN;
+        public double longitude = double.NaN;
+        public int siteHeading = -1;
+        public int idx;
+        public bool surveyComplete;
+
+        public bool isRuins { get => siteType == "Alpha" || siteType == "Beta" || siteType == "Gamma"; }
     }
 
     internal class GuardianBeaconSummary : GuardianSummary
@@ -533,8 +526,14 @@ namespace SrvSurvey.canonn
         public DateTimeOffset lastVisited;
         public double systemDistance;
         public string notes = "";
+        public string ramTahLogs = "";
 
         public double relatedStructureDist;
+        public string filepath;
+
+        public string fullBodyName { get => $"{this.systemName} {this.bodyName}"; }
+
+        public string fullBodyNameWithIdx { get => $"{this.systemName} {this.bodyName}, Ruins #{this.idx}"; }
 
         public GuardianGridEntry(GuardianBeaconSummary summary)
         {
@@ -552,17 +551,41 @@ namespace SrvSurvey.canonn
             }
         }
 
-        public GuardianGridEntry(GuardianStructureSummary summary)
+        public GuardianGridEntry(GuardianSiteSummary summary)
         {
             if (summary != null)
             {
+                base.siteID = summary.siteID;
                 base.systemName = summary.systemName;
                 base.systemAddress = summary.systemAddress;
                 base.bodyName = summary.bodyName;
                 base.bodyId = summary.bodyId;
+                base.idx = 1; // summary.idx;
                 base.distanceToArrival = summary.distanceToArrival;
                 base.starPos = summary.starPos;
                 base.siteType = summary.siteType;
+                base.latitude = summary.latitude;
+                base.longitude = summary.longitude;
+                base.surveyComplete = summary.surveyComplete;
+            }
+        }
+
+        public GuardianGridEntry(GuardianRuinSummary summary)
+        {
+            if (summary != null)
+            {
+                base.siteID = summary.siteID;
+                base.systemName = summary.systemName;
+                base.systemAddress = summary.systemAddress;
+                base.bodyName = summary.bodyName;
+                base.bodyId = summary.bodyId;
+                base.siteType = summary.siteType;
+                base.idx = summary.idx;
+                base.distanceToArrival = summary.distanceToArrival;
+                base.starPos = summary.starPos;
+                base.latitude = summary.latitude;
+                base.longitude = summary.longitude;
+                base.surveyComplete = summary.surveyComplete;
             }
         }
 
@@ -573,6 +596,8 @@ namespace SrvSurvey.canonn
             //this.siteHeading = data.siteHeading;
             this.lastVisited = data.lastVisited;
             this.notes += data.notes;
+
+            this.filepath = data.filepath;
         }
 
         public void merge(GuardianSiteData data)
@@ -583,15 +608,15 @@ namespace SrvSurvey.canonn
             if (data.lastVisited != DateTimeOffset.MinValue)
                 this.lastVisited = data.lastVisited;
             this.notes += data.notes;
+
+            if (!this.surveyComplete)
+                this.surveyComplete = data.isSurveyComplete();
+
+            this.filepath = data.filepath;
         }
     }
 
-    internal class GuardianStructureSummary : GuardianSummary
+    internal class GuardianSiteSummary : GuardianSummary
     {
-        public int idx;
-        public double latitude = double.NaN;
-        public double longitude = double.NaN;
-        public int siteHeading = -1;
-        public bool surveyComplete;
     }
 }

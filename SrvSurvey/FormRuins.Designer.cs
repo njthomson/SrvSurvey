@@ -48,8 +48,8 @@
             lblSelectedItem = new ToolStripStatusLabel();
             lblStatus = new ToolStripStatusLabel();
             lblObeliskGroups = new ToolStripStatusLabel();
-            lblMouseX = new ToolStripStatusLabel();
-            lblMouseY = new ToolStripStatusLabel();
+            lblSurveyCompletion = new ToolStripStatusLabel();
+            progressSurvey = new ToolStripProgressBar();
             lblZoom = new ToolStripStatusLabel();
             comboSite = new ComboBox();
             label4 = new Label();
@@ -149,7 +149,7 @@
             // 
             // statusStrip1
             // 
-            statusStrip1.Items.AddRange(new ToolStripItem[] { lblSelectedItem, lblStatus, lblObeliskGroups, lblMouseX, lblMouseY, lblZoom });
+            statusStrip1.Items.AddRange(new ToolStripItem[] { lblSelectedItem, lblStatus, lblObeliskGroups, lblSurveyCompletion, progressSurvey, lblZoom });
             statusStrip1.Location = new Point(0, 535);
             statusStrip1.Name = "statusStrip1";
             statusStrip1.Size = new Size(870, 24);
@@ -170,7 +170,7 @@
             lblStatus.BorderStyle = Border3DStyle.Sunken;
             lblStatus.DisplayStyle = ToolStripItemDisplayStyle.Text;
             lblStatus.Name = "lblStatus";
-            lblStatus.Size = new Size(537, 19);
+            lblStatus.Size = new Size(411, 19);
             lblStatus.Spring = true;
             lblStatus.Text = "...";
             lblStatus.TextAlign = ContentAlignment.MiddleLeft;
@@ -183,28 +183,25 @@
             lblObeliskGroups.Size = new Size(125, 19);
             lblObeliskGroups.Text = "Obelisk groups: A B C";
             // 
-            // lblMouseX
+            // lblSurveyCompletion
             // 
-            lblMouseX.BorderSides = ToolStripStatusLabelBorderSides.Left | ToolStripStatusLabelBorderSides.Top | ToolStripStatusLabelBorderSides.Right | ToolStripStatusLabelBorderSides.Bottom;
-            lblMouseX.BorderStyle = Border3DStyle.Etched;
-            lblMouseX.DisplayStyle = ToolStripItemDisplayStyle.Text;
-            lblMouseX.Name = "lblMouseX";
-            lblMouseX.Size = new Size(42, 19);
-            lblMouseX.Text = "X: 999";
+            lblSurveyCompletion.BorderSides = ToolStripStatusLabelBorderSides.Left | ToolStripStatusLabelBorderSides.Top | ToolStripStatusLabelBorderSides.Right | ToolStripStatusLabelBorderSides.Bottom;
+            lblSurveyCompletion.BorderStyle = Border3DStyle.Sunken;
+            lblSurveyCompletion.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            lblSurveyCompletion.Name = "lblSurveyCompletion";
+            lblSurveyCompletion.Size = new Size(127, 19);
+            lblSurveyCompletion.Text = "Survey: 55% complete";
             // 
-            // lblMouseY
+            // progressSurvey
             // 
-            lblMouseY.BorderSides = ToolStripStatusLabelBorderSides.Left | ToolStripStatusLabelBorderSides.Top | ToolStripStatusLabelBorderSides.Right | ToolStripStatusLabelBorderSides.Bottom;
-            lblMouseY.BorderStyle = Border3DStyle.Etched;
-            lblMouseY.DisplayStyle = ToolStripItemDisplayStyle.Text;
-            lblMouseY.Name = "lblMouseY";
-            lblMouseY.Size = new Size(42, 19);
-            lblMouseY.Text = "Y: 999";
+            progressSurvey.MarqueeAnimationSpeed = 500;
+            progressSurvey.Name = "progressSurvey";
+            progressSurvey.Size = new Size(50, 18);
             // 
             // lblZoom
             // 
             lblZoom.BorderSides = ToolStripStatusLabelBorderSides.Left | ToolStripStatusLabelBorderSides.Top | ToolStripStatusLabelBorderSides.Right | ToolStripStatusLabelBorderSides.Bottom;
-            lblZoom.BorderStyle = Border3DStyle.Etched;
+            lblZoom.BorderStyle = Border3DStyle.Sunken;
             lblZoom.DisplayStyle = ToolStripItemDisplayStyle.Text;
             lblZoom.Name = "lblZoom";
             lblZoom.Size = new Size(55, 19);
@@ -348,8 +345,7 @@
         private ToolStripStatusLabel lblSelectedItem;
         private ComboBox comboSite;
         private Label label4;
-        private ToolStripStatusLabel lblMouseX;
-        private ToolStripStatusLabel lblMouseY;
+        private ToolStripStatusLabel lblSurveyCompletion;
         private ToolStripStatusLabel lblZoom;
         private ComboBox comboSiteType;
         private Panel panel1;
@@ -367,5 +363,6 @@
         private ToolStripMenuItem mnuUnknown;
         private ToolStripSeparator toolStripSeparator2;
         private ToolStripStatusLabel lblObeliskGroups;
+        private ToolStripProgressBar progressSurvey;
     }
 }

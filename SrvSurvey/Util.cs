@@ -298,7 +298,7 @@ namespace SrvSurvey
             }
 
             form.Width = Math.Max(rect.Width, form.MinimumSize.Width);
-            form.Height = Math.Max(rect.Height, form.MinimumSize.Width);
+            form.Height = Math.Max(rect.Height, form.MinimumSize.Height);
 
             // position ourself within the bound of which ever screen is chosen
             var pt = rect.Location;

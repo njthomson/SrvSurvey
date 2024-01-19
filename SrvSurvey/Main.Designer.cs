@@ -64,7 +64,6 @@ namespace SrvSurvey
             groupBox4 = new GroupBox();
             btnGuarduanThings = new Button();
             btnRuins = new Button();
-            btnAllRuins = new Button();
             btnRuinsMap = new Button();
             btnRuinsOrigin = new Button();
             txtGuardianSite = new TextBox();
@@ -422,7 +421,6 @@ namespace SrvSurvey
             groupBox4.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             groupBox4.Controls.Add(btnGuarduanThings);
             groupBox4.Controls.Add(btnRuins);
-            groupBox4.Controls.Add(btnAllRuins);
             groupBox4.Controls.Add(btnRuinsMap);
             groupBox4.Controls.Add(btnRuinsOrigin);
             groupBox4.Controls.Add(txtGuardianSite);
@@ -442,9 +440,9 @@ namespace SrvSurvey
             btnGuarduanThings.FlatStyle = FlatStyle.System;
             btnGuarduanThings.Location = new Point(240, 16);
             btnGuarduanThings.Name = "btnGuarduanThings";
-            btnGuarduanThings.Size = new Size(124, 34);
+            btnGuarduanThings.Size = new Size(124, 33);
             btnGuarduanThings.TabIndex = 19;
-            btnGuarduanThings.Text = "All Beacons and Structures";
+            btnGuarduanThings.Text = "All Guardian Sites";
             btnGuarduanThings.UseVisualStyleBackColor = false;
             btnGuarduanThings.Click += btnGuarduanThings_Click;
             // 
@@ -453,26 +451,13 @@ namespace SrvSurvey
             btnRuins.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnRuins.BackColor = SystemColors.ControlLight;
             btnRuins.FlatStyle = FlatStyle.System;
-            btnRuins.Location = new Point(308, 55);
+            btnRuins.Location = new Point(241, 55);
             btnRuins.Name = "btnRuins";
-            btnRuins.Size = new Size(56, 35);
+            btnRuins.Size = new Size(123, 35);
             btnRuins.TabIndex = 18;
-            btnRuins.Text = "Ruins Map";
+            btnRuins.Text = "Survey Maps";
             btnRuins.UseVisualStyleBackColor = false;
             btnRuins.Click += btnRuins_Click;
-            // 
-            // btnAllRuins
-            // 
-            btnAllRuins.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnAllRuins.BackColor = SystemColors.ControlLight;
-            btnAllRuins.FlatStyle = FlatStyle.System;
-            btnAllRuins.Location = new Point(240, 55);
-            btnAllRuins.Name = "btnAllRuins";
-            btnAllRuins.Size = new Size(63, 35);
-            btnAllRuins.TabIndex = 17;
-            btnAllRuins.Text = "All Ruins";
-            btnAllRuins.UseVisualStyleBackColor = false;
-            btnAllRuins.Click += btnAllRuins_Click;
             // 
             // btnRuinsMap
             // 
@@ -679,7 +664,6 @@ namespace SrvSurvey
         private Label lblBodyBio;
         private Button btnRuinsMap;
         private Button btnRuinsOrigin;
-        private Button btnAllRuins;
         private Button btnRuins;
         private Button btnSphereLimit;
         private Button btnGuarduanThings;

@@ -10,7 +10,6 @@ namespace SrvSurvey
         public static void Show(Exception ex)
         {
             var form = new FormErrorSubmit(ex);
-
             form.ShowDialog(Main.ActiveForm);
         }
 

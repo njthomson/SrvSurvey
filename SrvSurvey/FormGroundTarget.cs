@@ -39,6 +39,7 @@ namespace SrvSurvey
 
         private void button1_Click(object sender, EventArgs e)
         {
+            Game.settings.targetLatLong = LatLong2.Empty;
             Game.settings.targetLatLongActive = false;
             Game.settings.Save();
             this.DialogResult = DialogResult.OK;

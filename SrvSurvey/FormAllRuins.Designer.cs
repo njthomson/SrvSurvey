@@ -43,13 +43,14 @@
             colNotes = new ColumnHeader();
             btnFilter = new Button();
             txtFilter = new TextBox();
-            checkVisited = new CheckBox();
             comboSiteType = new ComboBox();
             label1 = new Label();
             comboCurrentSystem = new ComboBox();
             statusStrip1 = new StatusStrip();
             lblStatus = new ToolStripStatusLabel();
             btnShare = new Button();
+            checkRamTah = new CheckBox();
+            comboVisited = new ComboBox();
             statusStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -74,55 +75,59 @@
             // 
             colSiteId.Text = "ID";
             colSiteId.TextAlign = HorizontalAlignment.Right;
+            colSiteId.Width = 40;
             // 
             // colSystem
             // 
             colSystem.Text = "System";
-            colSystem.Width = 110;
+            colSystem.Width = 165;
             // 
             // colBody
             // 
             colBody.Text = "Body";
-            colBody.Width = 110;
+            colBody.Width = 55;
             // 
             // colDistance
             // 
             colDistance.Text = "System distance";
             colDistance.TextAlign = HorizontalAlignment.Right;
+            colDistance.Width = 100;
             // 
             // colArrival
             // 
             colArrival.Text = "Arrival distance:";
             colArrival.TextAlign = HorizontalAlignment.Right;
+            colArrival.Width = 100;
             // 
             // colSiteType
             // 
             colSiteType.Text = "Site type";
             colSiteType.TextAlign = HorizontalAlignment.Center;
-            colSiteType.Width = 90;
+            colSiteType.Width = 65;
             // 
             // colIndex
             // 
             colIndex.Text = "Ruins #";
             colIndex.TextAlign = HorizontalAlignment.Center;
+            colIndex.Width = 55;
             // 
             // colLastVisited
             // 
             colLastVisited.Text = "Last visited";
             colLastVisited.TextAlign = HorizontalAlignment.Center;
-            colLastVisited.Width = 90;
+            colLastVisited.Width = 72;
             // 
             // colHasImages
             // 
             colHasImages.Text = "Has images";
             colHasImages.TextAlign = HorizontalAlignment.Center;
-            colHasImages.Width = 80;
+            colHasImages.Width = 75;
             // 
             // colSurveyComplete
             // 
             colSurveyComplete.Text = "Survey complete";
             colSurveyComplete.TextAlign = HorizontalAlignment.Center;
-            colSurveyComplete.Width = 120;
+            colSurveyComplete.Width = 100;
             // 
             // colNotes
             // 
@@ -130,7 +135,7 @@
             // 
             // btnFilter
             // 
-            btnFilter.Location = new Point(12, 12);
+            btnFilter.Location = new Point(12, 13);
             btnFilter.Name = "btnFilter";
             btnFilter.Size = new Size(50, 23);
             btnFilter.TabIndex = 1;
@@ -140,28 +145,17 @@
             // 
             // txtFilter
             // 
-            txtFilter.Location = new Point(68, 12);
+            txtFilter.Location = new Point(68, 13);
             txtFilter.Name = "txtFilter";
-            txtFilter.Size = new Size(254, 23);
+            txtFilter.Size = new Size(166, 23);
             txtFilter.TabIndex = 2;
-            // 
-            // checkVisited
-            // 
-            checkVisited.AutoSize = true;
-            checkVisited.Location = new Point(328, 14);
-            checkVisited.Name = "checkVisited";
-            checkVisited.Size = new Size(88, 19);
-            checkVisited.TabIndex = 3;
-            checkVisited.Text = "Only visited";
-            checkVisited.UseVisualStyleBackColor = true;
-            checkVisited.CheckedChanged += checkVisited_CheckedChanged;
             // 
             // comboSiteType
             // 
             comboSiteType.DropDownStyle = ComboBoxStyle.DropDownList;
             comboSiteType.FormattingEnabled = true;
             comboSiteType.Items.AddRange(new object[] { "All types", "Alpha", "Beta", "Gamma" });
-            comboSiteType.Location = new Point(422, 12);
+            comboSiteType.Location = new Point(319, 13);
             comboSiteType.Name = "comboSiteType";
             comboSiteType.Size = new Size(121, 23);
             comboSiteType.TabIndex = 4;
@@ -170,7 +164,7 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(549, 15);
+            label1.Location = new Point(446, 16);
             label1.Name = "label1";
             label1.Size = new Size(136, 15);
             label1.TabIndex = 5;
@@ -179,7 +173,7 @@
             // comboCurrentSystem
             // 
             comboCurrentSystem.FormattingEnabled = true;
-            comboCurrentSystem.Location = new Point(691, 11);
+            comboCurrentSystem.Location = new Point(588, 13);
             comboCurrentSystem.Name = "comboCurrentSystem";
             comboCurrentSystem.Size = new Size(181, 23);
             comboCurrentSystem.TabIndex = 7;
@@ -205,13 +199,35 @@
             // btnShare
             // 
             btnShare.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            btnShare.Location = new Point(878, 12);
+            btnShare.Location = new Point(1174, 11);
             btnShare.Name = "btnShare";
-            btnShare.Size = new Size(196, 23);
+            btnShare.Size = new Size(153, 23);
             btnShare.TabIndex = 9;
             btnShare.Text = "Share your discovered data";
             btnShare.UseVisualStyleBackColor = true;
             btnShare.Click += btnShare_Click;
+            // 
+            // checkRamTah
+            // 
+            checkRamTah.AutoSize = true;
+            checkRamTah.Location = new Point(775, 15);
+            checkRamTah.Name = "checkRamTah";
+            checkRamTah.Size = new Size(131, 19);
+            checkRamTah.TabIndex = 10;
+            checkRamTah.Text = "Show Ram Tah Logs";
+            checkRamTah.UseVisualStyleBackColor = true;
+            checkRamTah.CheckedChanged += checkRamTah_CheckedChanged;
+            // 
+            // comboVisited
+            // 
+            comboVisited.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboVisited.FormattingEnabled = true;
+            comboVisited.Items.AddRange(new object[] { "All", "Visited", "Unvisited" });
+            comboVisited.Location = new Point(240, 13);
+            comboVisited.Name = "comboVisited";
+            comboVisited.Size = new Size(73, 23);
+            comboVisited.TabIndex = 11;
+            comboVisited.SelectedIndexChanged += comboSiteType_SelectedIndexChanged;
             // 
             // FormAllRuins
             // 
@@ -219,12 +235,13 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1339, 429);
+            Controls.Add(comboVisited);
+            Controls.Add(checkRamTah);
             Controls.Add(btnShare);
             Controls.Add(statusStrip1);
             Controls.Add(comboCurrentSystem);
             Controls.Add(label1);
             Controls.Add(comboSiteType);
-            Controls.Add(checkVisited);
             Controls.Add(txtFilter);
             Controls.Add(btnFilter);
             Controls.Add(grid);
@@ -252,7 +269,6 @@
         private ColumnHeader colDistance;
         private ColumnHeader colArrival;
         private TextBox txtFilter;
-        private CheckBox checkVisited;
         private ComboBox comboSiteType;
         private ColumnHeader colIndex;
         private Label label1;
@@ -262,5 +278,7 @@
         private ToolStripStatusLabel lblStatus;
         private Button btnShare;
         public ComboBox comboCurrentSystem;
+        private CheckBox checkRamTah;
+        private ComboBox comboVisited;
     }
 }

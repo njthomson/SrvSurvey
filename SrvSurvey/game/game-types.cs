@@ -571,6 +571,11 @@ namespace SrvSurvey.game
 
     internal class GuardianSitePub
     {
+        public static GuardianSitePub? Load(string bodyName, int index, string siteType)
+        {
+            return Load(bodyName, index, Enum.Parse<GuardianSiteData.SiteType>(siteType, true));
+        }
+
         public static GuardianSitePub? Load(string bodyName, int index, SiteType siteType)
         {
             var isRuins = siteType == SiteType.Alpha || siteType == SiteType.Beta || siteType == SiteType.Gamma;
@@ -583,7 +588,8 @@ namespace SrvSurvey.game
                 return null;
             }
 
-            Game.log($"Reading pubData for '{bodyName}' #{index} ({siteType})");
+            if (!Data.suppressLoadingMsg)
+                Game.log($"Reading pubData for '{bodyName}' #{index} ({siteType})");
             var json = File.ReadAllText(pubPath);
 
             var pubData = JsonConvert.DeserializeObject<GuardianSitePub>(json);
@@ -598,7 +604,8 @@ namespace SrvSurvey.game
             foreach (var filepath in files)
             {
                 var filename = Path.GetFileName(filepath);
-                Game.log($"Reading pubData for '{filename}'");
+                if (!Data.suppressLoadingMsg)
+                    Game.log($"Reading pubData for '{filename}'");
 
                 var json = File.ReadAllText(filepath);
                 var pubData = JsonConvert.DeserializeObject<GuardianSitePub>(json)!;

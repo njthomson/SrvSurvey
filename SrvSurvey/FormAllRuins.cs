@@ -31,6 +31,7 @@ namespace SrvSurvey
         {
             InitializeComponent();
             comboSiteType.SelectedIndex = 0;
+            comboVisited.SelectedIndex = 0;
 
             // can we fit in our last location
             Util.useLastLocation(this, Game.settings.formAllRuinsLocation);
@@ -48,12 +49,29 @@ namespace SrvSurvey
 
         private void FormAllRuins_Load(object sender, EventArgs e)
         {
+
             var star = Util.getRecentStarSystem();
             comboCurrentSystem.Text = star.systemName;
             currentSystem = star.pos;
 
-            this.prepareAllRows();
-            this.grid.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+            // disable everything whilst loading
+            foreach (Control ctrl in this.Controls) ctrl.Enabled = false;
+
+            Task.Run(() =>
+            {
+                // reload all Ruins, this time including Ram Tah logs
+                var allRuins = Game.canonn.loadAllRuins(false);
+
+                this.BeginInvoke(() =>
+                {
+                    this.prepareAllRows(allRuins);
+                    this.grid.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+
+                    // re-enable everything
+                    foreach (Control ctrl in this.Controls) ctrl.Enabled = true;
+                });
+            });
+
 
             // do we have any lat/long's worth sharing?
             //btnShare.Visible = this.getLatLongsToShare().Count > 0;
@@ -94,18 +112,17 @@ namespace SrvSurvey
         {
             foreach (var row in this.rows)
             {
-                var entry = (GuardianRuinEntry)row.Tag;
+                var entry = (GuardianGridEntry)row.Tag;
                 entry.systemDistance = Util.getSystemDistance(currentSystem, entry.starPos);
                 row.SubItems["distanceToSystem"]!.Text = entry.systemDistance.ToString("N0") + " ly";
             }
         }
 
-        private void prepareAllRows()
+        private void prepareAllRows(List<GuardianGridEntry> allRuins)
         {
-            var allRuins = Game.canonn.loadAllRuins();
-
             Game.log($"Rendering {allRuins.Count} ruins.");
 
+            this.rows.Clear();
             foreach (var entry in allRuins)
             {
                 var lastVisited = entry.lastVisited == DateTimeOffset.MinValue ? "" : entry.lastVisited.ToString("d")!;
@@ -150,7 +167,7 @@ namespace SrvSurvey
             });
         }
 
-        private bool ruinsHasImages(GuardianRuinEntry entry)
+        private bool ruinsHasImages(GuardianGridEntry entry)
         {
             var imageFilenamePrefix = $"{entry.systemName.ToUpper()} {entry.bodyName}".ToUpperInvariant();
             var imageFilenameSuffix = $", Ruins{entry.idx}".ToUpperInvariant();
@@ -165,17 +182,20 @@ namespace SrvSurvey
 
         private void showAllRows()
         {
-            this.grid.Items.Clear();
-
             // apply filter
             var filteredRows = this.rows.Where(row =>
             {
-                var entry = (GuardianRuinEntry)row.Tag;
+                var entry = (GuardianGridEntry)row.Tag;
 
-                if (checkVisited.Checked && entry.lastVisited == DateTimeOffset.MinValue)
+                // if only visited
+                if (comboVisited.SelectedIndex == 1 && entry.lastVisited == DateTimeOffset.MinValue)
+                    return false;
+                // if only un visited
+                if (comboVisited.SelectedIndex == 2 && entry.lastVisited != DateTimeOffset.MinValue)
                     return false;
 
-                if (comboSiteType.SelectedIndex != 0 && comboSiteType.Text != entry.siteType)
+                // site type
+                if (comboSiteType.SelectedIndex > 0 && comboSiteType.Text != entry.siteType)
                     return false;
 
                 if (!string.IsNullOrEmpty(txtFilter.Text))
@@ -195,6 +215,7 @@ namespace SrvSurvey
             if (this.sortUp)
                 sortedRows = sortedRows.Reverse();
 
+            this.grid.Items.Clear();
             this.grid.Items.AddRange(sortedRows.ToArray());
             this.lblStatus.Text = $"{this.grid.Items.Count} rows. Right click a row to copy the system name to the clipboard. Double click a row to open that specific ruins map.";
         }
@@ -204,31 +225,31 @@ namespace SrvSurvey
             switch (this.sortColumn)
             {
                 case 0: // siteID
-                    return rows.OrderBy(row => ((GuardianRuinEntry)row.Tag).siteID);
+                    return rows.OrderBy(row => ((GuardianGridEntry)row.Tag).siteID);
                 case 1: // system name
-                    return rows.OrderBy(row => ((GuardianRuinEntry)row.Tag).systemName);
+                    return rows.OrderBy(row => ((GuardianGridEntry)row.Tag).systemName);
                 case 2: // bodyName
-                    return rows.OrderBy(row => ((GuardianRuinEntry)row.Tag).bodyName);
+                    return rows.OrderBy(row => ((GuardianGridEntry)row.Tag).bodyName);
                 case 3: //systemDistance
-                    return rows.OrderBy(row => ((GuardianRuinEntry)row.Tag).systemDistance);
+                    return rows.OrderBy(row => ((GuardianGridEntry)row.Tag).systemDistance);
                 case 4: // distanceToArrival;
-                    return rows.OrderBy(row => ((GuardianRuinEntry)row.Tag).distanceToArrival);
+                    return rows.OrderBy(row => ((GuardianGridEntry)row.Tag).distanceToArrival);
                 case 5: // site type
-                    return rows.OrderBy(row => ((GuardianRuinEntry)row.Tag).siteType);
+                    return rows.OrderBy(row => ((GuardianGridEntry)row.Tag).siteType);
                 case 6: // Ruins #
-                    return rows.OrderBy(row => ((GuardianRuinEntry)row.Tag).idx);
+                    return rows.OrderBy(row => ((GuardianGridEntry)row.Tag).idx);
                 case 7: // last visited
-                    return rows.OrderBy(row => ((GuardianRuinEntry)row.Tag).lastVisited);
+                    return rows.OrderBy(row => ((GuardianGridEntry)row.Tag).lastVisited);
                 case 8: // has images
                     return rows.OrderBy(row => row.SubItems[8].Text);
                 case 9: // survey complete
                     return rows.OrderBy(row => row.SubItems[9].Text);
                 case 10: // notes
-                    return rows.OrderBy(row => ((GuardianRuinEntry)row.Tag).notes);
+                    return rows.OrderBy(row => ((GuardianGridEntry)row.Tag).notes);
 
                 default:
                     Game.log($"Unexpected sort column: {this.sortColumn}");
-                    return rows.OrderBy(row => ((GuardianRuinEntry)row.Tag).systemName);
+                    return rows.OrderBy(row => ((GuardianGridEntry)row.Tag).systemName);
             }
 
         }
@@ -271,7 +292,7 @@ namespace SrvSurvey
             // open the form for this row?
             if (grid.SelectedItems.Count > 0)
             {
-                var entry = (GuardianRuinEntry)grid.SelectedItems[0].Tag;
+                var entry = (GuardianGridEntry)grid.SelectedItems[0].Tag;
                 var siteData = GuardianSiteData.Load($"{entry.systemName} {entry.bodyName}", entry.idx, true);
                 FormRuins.show(siteData);
             }
@@ -280,13 +301,13 @@ namespace SrvSurvey
         private List<string> getLatLongsToShare()
         {
             var lines = new List<string>();
-            foreach (ListViewItem item in this.grid.Items)
-            {
-                var entry = (GuardianRuinEntry)item.Tag;
+            //foreach (ListViewItem item in this.grid.Items)
+            //{
+            //    var entry = (GuardianGridEntry)item.Tag;
 
-                if (entry.notes.Contains(GuardianRuinEntry.PleaseShareMessage))
-                    lines.Add($"{entry.systemName}, {entry.bodyName}, #{entry.idx} - {entry.siteType}\r\n  \"latitude\": {entry.latitude},\r\n  \"longitude\": {entry.longitude},\r\n  \"siteHeading\": {entry.siteHeading},\r\n  \"relicTowerHeading\": {entry.relicTowerHeading},\r\n");
-            }
+            //    if (entry.notes.Contains(GuardianRuinEntry.PleaseShareMessage))
+            //        lines.Add($"{entry.systemName}, {entry.bodyName}, #{entry.idx} - {entry.siteType}\r\n  \"latitude\": {entry.latitude},\r\n  \"longitude\": {entry.longitude},\r\n  \"siteHeading\": {entry.siteHeading},\r\n  \"relicTowerHeading\": {entry.relicTowerHeading},\r\n");
+            //}
 
             return lines;
         }
@@ -299,6 +320,36 @@ namespace SrvSurvey
             {
                 Clipboard.SetText($"Discovered data for {lines.Count} Guardian Ruins:\r\n\r\n" + string.Join("\r\n", lines));
             }
+        }
+
+        private void checkRamTah_CheckedChanged(object sender, EventArgs e)
+        {
+            // ignore events whilst checkbox is disabled
+            if (!checkRamTah.Enabled) return;
+            checkRamTah.Enabled = false;
+
+            var wasChecked = checkRamTah.Checked;
+            // the first load of Ram Tah data can be slow and needs to be async
+            checkRamTah.ThreeState = true;
+            checkRamTah.CheckState = CheckState.Indeterminate;
+            Task.Run(() =>
+            {
+                // reload all Ruins, optionally including Ram Tah logs
+                var allRuins = Game.canonn.loadAllRuins(wasChecked);
+
+                this.BeginInvoke(() =>
+                {
+                    this.prepareAllRows(allRuins);
+
+                    checkRamTah.ThreeState = false;
+                    checkRamTah.Checked = wasChecked;
+
+                    this.BeginInvoke(() =>
+                    {
+                        checkRamTah.Enabled = true;
+                    });
+                });
+            });
         }
     }
 }

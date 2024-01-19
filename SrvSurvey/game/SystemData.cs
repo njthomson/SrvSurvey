@@ -782,7 +782,9 @@ namespace SrvSurvey.game
             // update bodies from response
             foreach (var entry in edsmSystem.bodies)
             {
-                var body = this.findOrCreate(entry.name, entry.bodyId);
+                if (entry.bodyId == null) continue;
+
+                var body = this.findOrCreate(entry.name, entry.bodyId.Value);
 
                 // update fields
                 if (entry.type == "Star")

@@ -143,10 +143,9 @@ namespace SrvSurvey
             btnPaste.ImageAlign = ContentAlignment.MiddleLeft;
             btnPaste.Location = new Point(266, 136);
             btnPaste.Name = "btnPaste";
-            btnPaste.Size = new Size(73, 27);
+            btnPaste.Size = new Size(87, 27);
             btnPaste.TabIndex = 9;
-            btnPaste.Text = "Paste  ";
-            btnPaste.TextAlign = ContentAlignment.MiddleRight;
+            btnPaste.Text = "   Paste";
             btnPaste.UseVisualStyleBackColor = true;
             btnPaste.Click += btnPaste_Click;
             // 

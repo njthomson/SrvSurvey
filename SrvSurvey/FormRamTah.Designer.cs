@@ -639,9 +639,9 @@ namespace SrvSurvey
             checkLog4.Location = new Point(162, 22);
             checkLog4.Name = "checkLog4";
             checkLog4.Padding = new Padding(2);
-            checkLog4.Size = new Size(42, 23);
+            checkLog4.Size = new Size(43, 23);
             checkLog4.TabIndex = 4;
-            checkLog4.Text = "$4";
+            checkLog4.Text = "#4";
             checkLog4.UseVisualStyleBackColor = true;
             checkLog4.CheckedChanged += checkLog_CheckedChanged;
             // 

@@ -13,7 +13,10 @@ namespace SrvSurvey.game
     /// </summary>
     internal abstract class Data
     {
-        protected string filepath;
+        public static bool suppressLoadingMsg = false;
+
+        [JsonIgnore]
+        public string filepath { get; protected set; }
 
         public static T? Load<T>(string filepath) where T : Data
         {
@@ -25,7 +28,8 @@ namespace SrvSurvey.game
                 try
                 {
                     var data = JsonConvert.DeserializeObject<T>(json)!;
-                    Game.log($"Loaded data from: {filepath}");
+                    if (!suppressLoadingMsg)
+                        Game.log($"Loaded data from: {filepath}");
                     data.filepath = filepath;
                     return data;
                 }

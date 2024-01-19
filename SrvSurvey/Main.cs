@@ -881,11 +881,6 @@ namespace SrvSurvey
             ViewLogs.show(Game.logs);
         }
 
-        private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            new FormSettings().ShowDialog(this);
-        }
-
         private void setTargetLatLong()
         {
             // update our UX
@@ -910,7 +905,10 @@ namespace SrvSurvey
                 setTargetLatLong();
             }
             else
+            {
                 Program.closePlotter<PlotTrackTarget>();
+                this.updateTrackTargetTexts();
+            }
         }
 
         private void btnPasteLatLong_Click(object sender, EventArgs e)
@@ -919,8 +917,10 @@ namespace SrvSurvey
             if (newLocation != null)
             {
                 Game.settings.targetLatLong = newLocation;
+                Game.settings.targetLatLongActive = true;
                 Game.log($"Main.Set target from clipboard lat/long: {Game.settings.targetLatLong}, near: {game?.cmdr?.lastSystemLocation}");
                 setTargetLatLong();
+                this.updateTrackTargetTexts();
             }
         }
 
@@ -1253,11 +1253,6 @@ namespace SrvSurvey
         }
 
         #endregion
-
-        private void btnAllRuins_Click(object sender, EventArgs e)
-        {
-            FormAllRuins.show();
-        }
 
         private void btnGuarduanThings_Click(object sender, EventArgs e)
         {
