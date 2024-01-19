@@ -29,10 +29,10 @@ namespace SrvSurvey
             Util.useLastLocation(this, Game.settings.formRamTah);
 
             txtRuinsMissionActive.Text = this.cmdr?.decodeTheRuinsMissionActive.ToString() ?? "Unknown";
-            if (this.cmdr?.decodeTheRuinsMissionActive == TahMissionStatus.Active) txtRuinsMissionActive.BackColor = checkedColor;
+            txtRuinsMissionActive.BackColor = this.cmdr?.decodeTheRuinsMissionActive == TahMissionStatus.Active ? checkedColor : SystemColors.Control;
 
             txtLogsMissionActive.Text = this.cmdr?.decodeTheLogsMissionActive.ToString() ?? "Unknown";
-            if (this.cmdr?.decodeTheLogsMissionActive == TahMissionStatus.Active) txtLogsMissionActive.BackColor = checkedColor;
+            txtLogsMissionActive.BackColor = this.cmdr?.decodeTheLogsMissionActive == TahMissionStatus.Active ? checkedColor : SystemColors.Control;
 
             this.checkLogs = new List<CheckBox>()
             {

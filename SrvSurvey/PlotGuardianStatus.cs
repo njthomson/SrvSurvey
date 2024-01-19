@@ -199,7 +199,6 @@ namespace SrvSurvey
 
 
                 this.drawTextAt("Requires:", brush, GameColors.fontMiddle);
-
                 if (obelisk.items == null)
                 {
                     this.drawTextAt("??", brush, GameColors.fontMiddle);
@@ -213,7 +212,6 @@ namespace SrvSurvey
                     var item2 = obelisk.items.Count > 1 ? obelisk.items.Last().ToString() : null;
                     var hasItem2 = item2 == null ? true : game.getInventoryItem(item2)?.Count >= (item1 == item2 ? 2 : 1);
 
-                    this.drawTextAt("Requires:", brush, GameColors.fontMiddle);
                     this.drawTextAt(item1, hasItem1 ? brush : Brushes.Red, GameColors.fontMiddle);
                     if (item2 != null)
                     {
