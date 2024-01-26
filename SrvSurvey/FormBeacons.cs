@@ -162,8 +162,6 @@ namespace SrvSurvey
 
             foreach (var entry in allSites)
             {
-                if (entry.hasDiscoveredData) countNewData++;
-
                 var lastVisited = entry.lastVisited == DateTimeOffset.MinValue ? "" : entry.lastVisited.ToString("d")!;
                 var distanceToArrival = entry.distanceToArrival.ToString("N0");
 
@@ -171,6 +169,13 @@ namespace SrvSurvey
                 var distanceToSystem = entry.systemDistance.ToString("N0");
 
                 var hasImages = siteHasImages(entry);
+
+                var surveyComplete = entry.surveyComplete ? "complete" : "";
+                if (entry.hasDiscoveredData)
+                {
+                    countNewData++;
+                    surveyComplete = "discovered data";
+                }
 
                 var subItems = new ListViewItem.ListViewSubItem[]
                 {
@@ -184,7 +189,7 @@ namespace SrvSurvey
                     new ListViewItem.ListViewSubItem { Text = entry.siteType },
                     new ListViewItem.ListViewSubItem { Text = entry.idx > 0 ? $"#{entry.idx}" : "" },
                     new ListViewItem.ListViewSubItem { Text = hasImages ? "yes" : "" },
-                    new ListViewItem.ListViewSubItem { Text = entry.surveyComplete ? "yes" : "" },
+                    new ListViewItem.ListViewSubItem { Text = surveyComplete },
                     new ListViewItem.ListViewSubItem { Text = entry.ramTahLogs },
                     new ListViewItem.ListViewSubItem { Text = entry.notes ?? "" },
                 };

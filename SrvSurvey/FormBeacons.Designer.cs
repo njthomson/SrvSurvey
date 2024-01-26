@@ -232,7 +232,7 @@
             // 
             // colSurveyComplete
             // 
-            colSurveyComplete.Text = "Survey complete";
+            colSurveyComplete.Text = "Survey status";
             colSurveyComplete.TextAlign = HorizontalAlignment.Center;
             colSurveyComplete.Width = 100;
             // 

@@ -143,8 +143,11 @@ namespace SrvSurvey.net
                 }
 
                 // relic tower headings
-                if (site.relicHeadings.Count > 0)
+                if (site.relicHeadings.Count != site.pubData.relicTowerHeadings.Count && site.relicHeadings.Count > 0)
+                {
+                    diff = true;
                     site.pubData.rth = string.Join(',', site.relicHeadings.Select(_ => $"{_.Key}:{_.Value}"));
+                }
 
                 // POI status
                 var template = SiteTemplate.sites[site.type];
