@@ -143,7 +143,8 @@ namespace SrvSurvey.net
                 }
 
                 // relic tower headings
-                site.pubData.rth = string.Join(',', site.relicHeadings.Select(_ => $"{_.Key}:{_.Value}"));
+                if (site.relicHeadings.Count > 0)
+                    site.pubData.rth = string.Join(',', site.relicHeadings.Select(_ => $"{_.Key}:{_.Value}"));
 
                 // POI status
                 var template = SiteTemplate.sites[site.type];

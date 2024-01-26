@@ -4,7 +4,10 @@
   "sh": -1,
   "t": "Gamma",
   "rh": -1,
-  "ll": null,
+  "ll": {
+    "lat": 26.4821,
+    "long": 135.310043
+  },
   "pa": null,
   "pp": null,
   "pe": null,
