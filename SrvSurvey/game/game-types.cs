@@ -641,6 +641,7 @@ namespace SrvSurvey.game
         public int rh = -1;
 
         /// <summary> Lat/Long location </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public LatLong2 ll;
 
         /// <summary> POI status : absent </summary>
