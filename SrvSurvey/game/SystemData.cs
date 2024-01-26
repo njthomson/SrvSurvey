@@ -606,8 +606,8 @@ namespace SrvSurvey.game
         public void onJournalEntry(CodexEntry entry)
         {
             if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! Expected: `{this.address}`, got: {entry.SystemAddress}"); return; }
-            // ignore non bio entries
-            if (entry.SubCategory != "$Codex_SubCategory_Organic_Structures;") return;
+            // ignore non bio or Notable stellar phenomena entries
+            if (entry.SubCategory != "$Codex_SubCategory_Organic_Structures;" || entry.NearestDestination == "$Fixed_Event_Life_Cloud;") return;
 
             var body = this.bodies.FirstOrDefault(_ => _.id == entry.BodyID);
             if (body!.organisms == null) body.organisms = new List<SystemOrganism>();

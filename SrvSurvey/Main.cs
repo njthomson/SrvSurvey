@@ -414,7 +414,7 @@ namespace SrvSurvey
         {
             var gameIsActive = game != null && game.isRunning && game.Commander != null;
 
-            if (!gameIsActive)
+            if (!gameIsActive || game == null)
             {
                 if (!string.IsNullOrEmpty(Game.settings.preferredCommander))
                     this.txtCommander.Text = Game.settings.preferredCommander + " (only)";
