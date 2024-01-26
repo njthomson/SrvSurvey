@@ -359,11 +359,11 @@ namespace SrvSurvey
             }
         }
 
-        public static void showForm(Form form)
+        public static void showForm(Form form, Form? parent = null)
         {
             if (form.Visible == false)
             {
-                form.Show();
+                form.Show(parent);
             }
             else
             {

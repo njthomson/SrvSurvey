@@ -495,7 +495,7 @@ namespace SrvSurvey.canonn
     #endregion
 
 
-    internal class GuardianSummary
+    internal class GuardianSiteSummary
     {
         /// <summary> The ID number used by Canonn in GSSites, etc </summary>
         public int siteID;
@@ -516,13 +516,13 @@ namespace SrvSurvey.canonn
         public bool isRuins { get => siteType == "Alpha" || siteType == "Beta" || siteType == "Gamma"; }
     }
 
-    internal class GuardianBeaconSummary : GuardianSummary
+    internal class GuardianBeaconSummary : GuardianSiteSummary
     {
         public string relatedStructure;
         public double relatedStructureDist;
     }
 
-    internal class GuardianGridEntry : GuardianSummary
+    internal class GuardianGridEntry : GuardianSiteSummary
     {
         public DateTimeOffset lastVisited;
         public double systemDistance;
@@ -531,6 +531,7 @@ namespace SrvSurvey.canonn
 
         public double relatedStructureDist;
         public string filepath;
+        public bool hasDiscoveredData;
 
         public string fullBodyName { get => $"{this.systemName} {this.bodyName}"; }
 
@@ -592,9 +593,6 @@ namespace SrvSurvey.canonn
 
         public void merge(GuardianBeaconData data)
         {
-            //this.latitude = data.location.Lat;
-            //this.longitude = data.location.Long;
-            //this.siteHeading = data.siteHeading;
             this.lastVisited = data.lastVisited;
             this.notes += data.notes;
 
@@ -603,9 +601,6 @@ namespace SrvSurvey.canonn
 
         public void merge(GuardianSiteData data)
         {
-            //this.latitude = data.location.Lat;
-            //this.longitude = data.location.Long;
-            //this.siteHeading = data.siteHeading;
             if (data.lastVisited != DateTimeOffset.MinValue)
                 this.lastVisited = data.lastVisited;
             this.notes += data.notes;
@@ -614,10 +609,7 @@ namespace SrvSurvey.canonn
                 this.surveyComplete = data.isSurveyComplete();
 
             this.filepath = data.filepath;
+            this.hasDiscoveredData = data.hasDiscoveredData();
         }
-    }
-
-    internal class GuardianSiteSummary : GuardianSummary
-    {
     }
 }

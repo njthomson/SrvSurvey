@@ -502,52 +502,32 @@ namespace SrvSurvey.game
             return complete;
         }
 
-        /*
-        public void publishSite()
+        public bool hasDiscoveredData()
         {
-            var pubPath = Path.Combine(Program.dataFolder, "pub", "guardian", Path.GetFileName(this.filepath));
-            if (!File.Exists(pubPath))
-            {
-                Game.log($"Creating pubData file for site '{this.bodyName}' #{this.index}");
-                this.pubData = new GuardianSitePub()
-                {
-                    t = this.type,
-                    idx = this.index,
-                    ll = this.location,
-                    sh = this.siteHeading,
-                    rh = this.relicTowerHeading,
-                };
-            }
-            else
-            {
-                this.pubData = JsonConvert.DeserializeObject<GuardianSitePub>(File.ReadAllText(pubPath))!;
-            }
+            // Yes - if ...
+            if (this.pubData == null) this.loadPub();
+            var site = this!;
 
-            this.pubData.og = string.Join("", this.obeliskGroups);
-            this.pubData.ao = new HashSet<ActiveObelisk>(this.activeObelisks.Values);
+            // pubData is missing and we have: site.relic headings, location
+            if (pubData!.sh == -1 && this.siteHeading != -1) return true;
+            if (this.isRuins && pubData.rh == -1 && this.relicTowerHeading != -1) return true;
+            if (pubData.ll == null && this.location != null) return true;
 
-            var poiPresent = new List<string>();
-            var poiAbsent = new List<string>();
-            var poiEmpty = new List<string>();
-            foreach (var _ in this.poiStatus)
-            {
-                if (_.Value == SitePoiStatus.present) poiPresent.Add(_.Key);
-                if (_.Value == SitePoiStatus.absent) poiAbsent.Add(_.Key);
-                if (_.Value == SitePoiStatus.empty) poiEmpty.Add(_.Key);
-            }
-            poiPresent.Sort();
-            poiAbsent.Sort();
-            poiEmpty.Sort();
-            this.pubData.pp = string.Join(',', poiPresent);
-            this.pubData.pa = string.Join(',', poiAbsent);
-            this.pubData.pe = string.Join(',', poiEmpty);
+            // we have more POI than pubData
+            var sumPubDataPoi = (this.pubData.pp?.Split(",").Length ?? 0) + (this.pubData.pa?.Split(",").Length ?? 0) + (this.pubData.pe?.Split(",").Length ?? 0);
+            if (this.poiStatus.Count > pubData.getPoiStatus().Count) return true;
 
+            // we have more relic tower headings than pubData
+            if (this.relicHeadings.Count > pubData.relicTowerHeadings.Count) return true;
 
-            var json = JsonConvert.SerializeObject(pubData, Formatting.Indented);
-            File.WriteAllText(pubPath, json);
-            Game.log($"Updated pubData file for site '{this.bodyName}' #{this.index}");
+            // obelisk group names differ
+            if (pubData.og != string.Join("", site.obeliskGroups)) return true;
+
+            // ignore differences in activeObelisks
+
+            return false;
         }
-        */
+
 
         #region old migration 
 
@@ -604,6 +584,9 @@ namespace SrvSurvey.game
 
         #endregion
 
+        /// <summary>
+        /// Returns a list of all loaded Ruins and optionally Structures, but never Beacons.
+        /// </summary>
         public static List<GuardianSiteData> loadAllSites(bool onlyRuins)
         {
             var folder = Path.Combine(rootFolder, Game.settings.lastFid!);

@@ -393,7 +393,7 @@ namespace SrvSurvey.canonn
 
                 GuardianGridEntry? entry = null;
 
-                // take the first, assiming only 1 ruin on the body
+                // take the first, assuming only 1 ruin on the body
                 if (matches.Count == 1)
                     entry = matches.First();
                 else

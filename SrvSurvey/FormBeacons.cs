@@ -129,6 +129,7 @@ namespace SrvSurvey
 
             Game.log($"Rendering {Game.canonn.allBeacons.Count} beacons, {Game.canonn.allStructures.Count} structures");
             this.rows.Clear();
+            var countNewData = 0;
 
             foreach (var entry in allBeacons)
             {
@@ -161,6 +162,8 @@ namespace SrvSurvey
 
             foreach (var entry in allSites)
             {
+                if (entry.hasDiscoveredData) countNewData++;
+
                 var lastVisited = entry.lastVisited == DateTimeOffset.MinValue ? "" : entry.lastVisited.ToString("d")!;
                 var distanceToArrival = entry.distanceToArrival.ToString("N0");
 
@@ -201,6 +204,9 @@ namespace SrvSurvey
             {
                 this.grid.EndUpdate();
                 this.grid.ResumeLayout();
+
+                if (countNewData > 0 && !string.IsNullOrEmpty(Game.settings.lastFid))
+                    btnShare.Visible = true;
             });
         }
 
@@ -578,6 +584,11 @@ namespace SrvSurvey
             var folder = Path.Combine(Game.settings.screenshotTargetFolder!, entry.systemName);
             if (Directory.Exists(folder))
                 Util.openLink(folder);
+        }
+
+        private void btnShare_Click(object sender, EventArgs e)
+        {
+            FormShareData.show(this);
         }
     }
 }

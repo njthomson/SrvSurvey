@@ -644,17 +644,21 @@ namespace SrvSurvey.game
         public LatLong2 ll;
 
         /// <summary> POI status : absent </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public string pa;
 
         /// <summary> POI status : present </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public string pp;
 
         /// <summary> POI status : present </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public string pe;
 
         /// <summary>
         /// Obelisk groups - a bunch of letters, to be split into a HashSet
         /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public string og;
 
         /// <summary>
@@ -668,6 +672,53 @@ namespace SrvSurvey.game
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public HashSet<ActiveObelisk> ao;
+
+        /// <summary>
+        /// Relic tower headings - a bunch of "t11:123" to be split into a Dictionary
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public string rth;
+
+        [JsonIgnore]
+        public Dictionary<string, int> relicTowerHeadings
+        {
+            get
+            {
+                if (this._relicTowerHeadings == null)
+                {
+                    this._relicTowerHeadings = new Dictionary<string, int>();
+
+                    if (!string.IsNullOrEmpty(this.rth))
+                    {
+                        var towers = this.rth.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+                        foreach (var tower in towers)
+                        {
+                            var parts = tower.Split(':', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+                            if (parts.Length != 2) throw new Exception("Corrupt rth?");
+
+                            this._relicTowerHeadings[parts[0]] = int.Parse(parts[1]);
+                        }
+                    }
+
+                }
+
+                return this._relicTowerHeadings;
+            }
+        }
+        private Dictionary<string, int> _relicTowerHeadings;
+
+        public Dictionary<string, SitePoiStatus> getPoiStatus()
+        {
+            var poiStatus = new Dictionary<string, SitePoiStatus>();
+
+            // status of all POI
+            var allPoi = new List<string>();
+            if (this.pp != null) this.pp.Split(",").ToList().ForEach(_ => poiStatus[_] = SitePoiStatus.present);
+            if (this.pa != null) this.pa.Split(",").ToList().ForEach(_ => poiStatus[_] = SitePoiStatus.absent);
+            if (this.pe != null) this.pe.Split(",").ToList().ForEach(_ => poiStatus[_] = SitePoiStatus.empty);
+
+            return poiStatus;
+        }
     }
 
 }

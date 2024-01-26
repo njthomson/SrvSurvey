@@ -97,13 +97,14 @@
             // btnShare
             // 
             btnShare.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            btnShare.Location = new Point(1051, 7);
+            btnShare.Location = new Point(736, 36);
             btnShare.Name = "btnShare";
-            btnShare.Size = new Size(113, 23);
+            btnShare.Size = new Size(177, 23);
             btnShare.TabIndex = 18;
             btnShare.Text = "Share your discovered data";
             btnShare.UseVisualStyleBackColor = true;
             btnShare.Visible = false;
+            btnShare.Click += btnShare_Click;
             // 
             // statusStrip1
             // 
@@ -485,7 +486,7 @@
             Controls.Add(grid);
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "FormBeacons";
-            Text = "Guardian Beacons and Structures";
+            Text = "Ruins, Structures and Beacons";
             Load += FormBeacons_Load;
             statusStrip1.ResumeLayout(false);
             statusStrip1.PerformLayout();

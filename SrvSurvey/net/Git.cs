@@ -142,6 +142,9 @@ namespace SrvSurvey.net
                     site.pubData.og = siteOG;
                 }
 
+                // relic tower headings
+                site.pubData.rth = string.Join(',', site.relicHeadings.Select(_ => $"{_.Key}:{_.Value}"));
+
                 // POI status
                 var template = SiteTemplate.sites[site.type];
 
