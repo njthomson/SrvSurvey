@@ -700,7 +700,7 @@ namespace SrvSurvey
 
             if (hasRot)
             {
-                var pp = new Pen(Color.FromArgb(32, Color.Blue), 4);
+                var pp = new Pen(Color.FromArgb(32, Color.Blue), 10);
                 g.DrawLine(pp, 0, -2000, 0, 2000);
             }
 

@@ -1023,6 +1023,8 @@ namespace SrvSurvey.game
         {
             this.cargo = new List<InventoryItem>(this.shipCargo);
             log($"Game.DockSRV: new cargo:\r\n  " + string.Join("\r\n  ", this.cargo));
+
+            this.systemData?.prepSettlements();
         }
 
         private void onJournalEntry(CollectCargo entry)
@@ -1700,6 +1702,8 @@ namespace SrvSurvey.game
         {
             this._touchdownLocation = LatLong2.Empty;
             log($"Liftoff!");
+
+            this.systemData?.prepSettlements();
         }
 
         private void onJournalEntry(ApproachBody entry)
@@ -2012,6 +2016,8 @@ namespace SrvSurvey.game
         {
             log($"Embark - entry.onPlanet: {entry.OnPlanet}");
             this.onPlanet = false;
+
+            this.systemData?.prepSettlements();
         }
 
         private void onJournalEntry(Backpack entry)

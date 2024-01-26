@@ -614,8 +614,6 @@ namespace SrvSurvey.game
                 if (idx < 0) idx = filename.IndexOf("-structure");
                 pubData.bodyName = filename.Substring(0, idx);
                 sites.Add(pubData);
-
-                // TODO: Structures?
             }
 
             return sites;

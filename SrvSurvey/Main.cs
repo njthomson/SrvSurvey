@@ -85,6 +85,8 @@ namespace SrvSurvey
 
             foreach (Control ctrl in this.Controls) ctrl.Enabled = false;
             btnLogs.Enabled = true;
+            btnSettings.Enabled = true;
+            btnQuit2.Enabled = true;
             Application.DoEvents();
 
             if (!Path.Exists(Elite.displaySettingsFolder))
@@ -215,6 +217,9 @@ namespace SrvSurvey
 
                     this.Invoke(new Action(() =>
                     {
+                        btnSettings.Enabled = true;
+                        btnQuit2.Enabled = true;
+
                         this.updateCommanderTexts();
                         Application.DoEvents();
 
@@ -409,15 +414,24 @@ namespace SrvSurvey
         {
             var gameIsActive = game != null && game.isRunning && game.Commander != null;
 
-            if (!gameIsActive || game == null)
+            if (!gameIsActive)
             {
-                this.txtCommander.Text = game?.Commander ?? Game.settings.preferredCommander;
-                if (string.IsNullOrWhiteSpace(this.txtCommander.Text))
+                if (!string.IsNullOrEmpty(Game.settings.preferredCommander))
+                    this.txtCommander.Text = Game.settings.preferredCommander + " (only)";
+                else
                     this.txtCommander.Text = Game.settings.lastCommander + " ?";
-                this.txtMode.Text = game?.mode == GameMode.MainMenu ? "MainMenu" : "Game is not active";
+
                 this.txtVehicle.Text = "";
                 this.txtLocation.Text = "";
                 this.txtNearBody.Text = "";
+
+                if (game?.mode == GameMode.MainMenu)
+                    this.txtMode.Text = "MainMenu";
+                if (Elite.isGameRunning)
+                    this.txtMode.Text = "Wrong commander or game not active";
+                else
+                    this.txtMode.Text = "Game is not active";
+
                 return;
             }
 

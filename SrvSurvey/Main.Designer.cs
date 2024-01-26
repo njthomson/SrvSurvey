@@ -590,9 +590,9 @@ namespace SrvSurvey
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = btnQuit2;
             ClientSize = new Size(395, 518);
+            Controls.Add(lblFullScreen);
             Controls.Add(btnPublish);
             Controls.Add(btnRamTah);
-            Controls.Add(lblFullScreen);
             Controls.Add(lblNotInstalled);
             Controls.Add(linkLabel2);
             Controls.Add(btnSphereLimit);
