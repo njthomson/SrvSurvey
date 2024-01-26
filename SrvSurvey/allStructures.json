@@ -242,7 +242,7 @@
     "siteType": "Robolobster",
     "latitude": 76.911507,
     "longitude": 174.095932,
-    "siteHeading": -1,
+    "siteHeading": 250,
     "idx": 0,
     "surveyComplete": false
   },
@@ -280,7 +280,7 @@
     "siteType": "Squid",
     "latitude": 19.553461,
     "longitude": -132.669281,
-    "siteHeading": -1,
+    "siteHeading": 69,
     "idx": 0,
     "surveyComplete": false
   },
@@ -451,7 +451,7 @@
     "siteType": "Robolobster",
     "latitude": 39.446285,
     "longitude": -127.877617,
-    "siteHeading": -1,
+    "siteHeading": 275,
     "idx": 0,
     "surveyComplete": false
   },
@@ -2845,7 +2845,7 @@
     "siteType": "Lacrosse",
     "latitude": -21.909544,
     "longitude": -18.934084,
-    "siteHeading": -1,
+    "siteHeading": 256,
     "idx": 0,
     "surveyComplete": false
   },

@@ -318,7 +318,7 @@ namespace SrvSurvey.canonn
                 if (entry == null)
                 {
                     // did somebody discover a new Ruins??
-                    Game.log($"Skipping unexpected ruins? {data.displayName}");
+                    Game.log($"Skipping unexpected ruins? {data.displayName}\r\n{filename}");
                     continue;
                 }
 
@@ -1265,21 +1265,21 @@ namespace SrvSurvey.canonn
                         continue;
                     }
 
-                    var bank = cells[25].Value;
+                    var bank = cells[26].Value;
                     if (string.IsNullOrEmpty(bank))
                     {
                         Game.log($"Empty bank. Skipping row:" + string.Join(", ", cells.Select(_ => _.Value)));
                         continue;
                     }
-                    var bankIdx = cells[26].Value;
+                    var bankIdx = cells[27].Value;
                     if (bankIdx == "19*B")
                     {
                         Game.log($"Ignore rows about 19*B. Skipping row:" + string.Join(", ", cells.Select(_ => _.Value)));
                         continue;
                     }
-                    var item1 = cells[27].Value;
-                    var item2 = cells[28].Value;
-                    var correctCombo = cells[34].Value;
+                    var item1 = cells[28].Value;
+                    var item2 = cells[29].Value;
+                    var correctCombo = cells[35].Value;
                     if (!string.IsNullOrEmpty(correctCombo) && correctCombo.StartsWith("Correct Combo:"))
                     {
                         Game.log($"Using 'Correct Combo:' => '{correctCombo}' replacing: '{item1}' / '{item2}' on row:" + string.Join(", ", cells.Select(_ => _.Value)));
@@ -1295,14 +1295,14 @@ namespace SrvSurvey.canonn
                         continue;
                     }
 
-                    var msgType = cells[30].Value;
+                    var msgType = cells[31].Value;
                     if (msgType.EndsWith("?"))
                     {
                         // skip rows without items
                         Game.log($"Uncertain msgType. Skipping row:" + string.Join(", ", cells.Select(_ => _.Value)));
                         continue;
                     }
-                    var msgNum = int.Parse(cells[31].Value);
+                    var msgNum = int.Parse(cells[32].Value);
 
                     var activeObelisk = new ActiveObelisk()
                     {

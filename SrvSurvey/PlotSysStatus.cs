@@ -89,7 +89,7 @@ namespace SrvSurvey
 
         protected override void OnPaintBackground(PaintEventArgs e)
         {
-            if (this.IsDisposed || game?.systemData == null) return;
+            if (this.IsDisposed || game?.systemData == null || game.status == null) return;
 
             this.g = e.Graphics;
             this.g.SmoothingMode = SmoothingMode.HighQuality;

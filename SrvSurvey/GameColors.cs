@@ -205,7 +205,7 @@ namespace SrvSurvey
             {
                 { POIType.relic, new Dictionary<SitePoiStatus, Pen> {
                     { SitePoiStatus.unknown, penUnknown },
-                    { SitePoiStatus.present, new Pen(Color.CadetBlue, 4) { DashStyle = DashStyle.Solid, StartCap = LineCap.Triangle, EndCap = LineCap.Triangle, } },
+                    { SitePoiStatus.present, new Pen(Color.CadetBlue, 3) { DashStyle = DashStyle.Solid, StartCap = LineCap.Triangle, EndCap = LineCap.Triangle, } },
                     { SitePoiStatus.absent, penAbsent },
                     { SitePoiStatus.empty, penEmpty } } },
 

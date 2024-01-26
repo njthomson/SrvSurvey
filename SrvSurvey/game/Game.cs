@@ -1557,6 +1557,8 @@ namespace SrvSurvey.game
                     canonnFinished = true;
                     if (response.IsCompletedSuccessfully)
                     {
+                        if (this.systemData == null) return;
+
                         this.canonnPoi = response.Result;
                         Game.log($"Found system POI from Canonn for: {systemName}");
                         this.systemData.onCanonnData(this.canonnPoi);

@@ -1,15 +1,15 @@
 {
   "sid": "GR496",
   "idx": 2,
-  "sh": -1,
+  "sh": 79,
   "t": "Alpha",
-  "rh": -1,
+  "rh": 201,
   "ll": {
     "lat": 70.624649,
     "long": -1.822445
   },
-  "pa": null,
-  "pp": null,
+  "pa": "p1,p11,p12,p13,p14,p15,p16,p2,p20,p21,p26,p30,p31,p33,p34,p35,p36,p37,p38,p39,p40,p42,p5,p7,p8,t1,t11,t12,t3,t4",
+  "pp": "p10,p17,p18,p19,p22,p23,p24,p25,p27,p28,p29,p3,p32,p4,p41,p6,p9,t10,t2,t5,t6,t7,t8,t9",
   "pe": null,
   "og": "BCDEIJKMPQ",
   "ao": [
@@ -26,6 +26,7 @@
     "K01-or-T1-",
     "K21-to,or-C6-",
     "M01-ta-L1-",
+    "M03-ta,ca-L3-",
     "M12-ta,ur-L4-",
     "P04-or,ta-T5-",
     "P13-or-T1-",

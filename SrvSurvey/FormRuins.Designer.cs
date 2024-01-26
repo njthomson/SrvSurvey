@@ -57,8 +57,18 @@
             panel1 = new Panel();
             checkNotes = new CheckBox();
             splitter = new SplitContainer();
+            panelEdit = new Panel();
+            numA = new NumericUpDown();
+            button1 = new Button();
+            numScale = new NumericUpDown();
+            numY = new NumericUpDown();
+            numX = new NumericUpDown();
             txtNotes = new TextBox();
             btnSaveNotes = new Button();
+            label1 = new Label();
+            label2 = new Label();
+            label3 = new Label();
+            label5 = new Label();
             ((System.ComponentModel.ISupportInitialize)map).BeginInit();
             mapContext.SuspendLayout();
             statusStrip1.SuspendLayout();
@@ -67,6 +77,11 @@
             splitter.Panel1.SuspendLayout();
             splitter.Panel2.SuspendLayout();
             splitter.SuspendLayout();
+            panelEdit.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numA).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numScale).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numY).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numX).BeginInit();
             SuspendLayout();
             // 
             // map
@@ -170,7 +185,7 @@
             lblStatus.BorderStyle = Border3DStyle.Sunken;
             lblStatus.DisplayStyle = ToolStripItemDisplayStyle.Text;
             lblStatus.Name = "lblStatus";
-            lblStatus.Size = new Size(411, 19);
+            lblStatus.Size = new Size(442, 19);
             lblStatus.Spring = true;
             lblStatus.Text = "...";
             lblStatus.TextAlign = ContentAlignment.MiddleLeft;
@@ -228,6 +243,8 @@
             label4.Size = new Size(62, 15);
             label4.TabIndex = 0;
             label4.Text = "Select site:";
+            label4.DoubleClick += label4_DoubleClick;
+            label4.MouseDoubleClick += label4_MouseDoubleClick;
             // 
             // comboSiteType
             // 
@@ -274,6 +291,7 @@
             // 
             // splitter.Panel1
             // 
+            splitter.Panel1.Controls.Add(panelEdit);
             splitter.Panel1.Controls.Add(map);
             // 
             // splitter.Panel2
@@ -284,6 +302,80 @@
             splitter.Size = new Size(870, 487);
             splitter.SplitterDistance = 661;
             splitter.TabIndex = 1;
+            // 
+            // panelEdit
+            // 
+            panelEdit.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            panelEdit.BorderStyle = BorderStyle.Fixed3D;
+            panelEdit.Controls.Add(label5);
+            panelEdit.Controls.Add(label3);
+            panelEdit.Controls.Add(label2);
+            panelEdit.Controls.Add(label1);
+            panelEdit.Controls.Add(numA);
+            panelEdit.Controls.Add(button1);
+            panelEdit.Controls.Add(numScale);
+            panelEdit.Controls.Add(numY);
+            panelEdit.Controls.Add(numX);
+            panelEdit.Location = new Point(3, 446);
+            panelEdit.Name = "panelEdit";
+            panelEdit.Size = new Size(416, 34);
+            panelEdit.TabIndex = 4;
+            // 
+            // numA
+            // 
+            numA.DecimalPlaces = 3;
+            numA.Increment = new decimal(new int[] { 5, 0, 0, 131072 });
+            numA.Location = new Point(310, 3);
+            numA.Maximum = new decimal(new int[] { 361, 0, 0, 0 });
+            numA.Minimum = new decimal(new int[] { 1, 0, 0, int.MinValue });
+            numA.Name = "numA";
+            numA.Size = new Size(51, 23);
+            numA.TabIndex = 4;
+            numA.ValueChanged += numA_ValueChanged;
+            // 
+            // button1
+            // 
+            button1.Location = new Point(367, 1);
+            button1.Name = "button1";
+            button1.Size = new Size(38, 23);
+            button1.TabIndex = 3;
+            button1.Text = "save";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
+            // 
+            // numScale
+            // 
+            numScale.DecimalPlaces = 3;
+            numScale.Increment = new decimal(new int[] { 1, 0, 0, 131072 });
+            numScale.Location = new Point(206, 3);
+            numScale.Maximum = new decimal(new int[] { 10, 0, 0, 0 });
+            numScale.Name = "numScale";
+            numScale.Size = new Size(51, 23);
+            numScale.TabIndex = 2;
+            numScale.Value = new decimal(new int[] { 1, 0, 0, 0 });
+            numScale.ValueChanged += numScale_ValueChanged;
+            // 
+            // numY
+            // 
+            numY.Location = new Point(106, 3);
+            numY.Maximum = new decimal(new int[] { 2000, 0, 0, 0 });
+            numY.Name = "numY";
+            numY.Size = new Size(51, 23);
+            numY.TabIndex = 1;
+            numY.TextAlign = HorizontalAlignment.Right;
+            numY.Value = new decimal(new int[] { 555, 0, 0, 0 });
+            numY.ValueChanged += numY_ValueChanged;
+            // 
+            // numX
+            // 
+            numX.Location = new Point(26, 3);
+            numX.Maximum = new decimal(new int[] { 2000, 0, 0, 0 });
+            numX.Name = "numX";
+            numX.Size = new Size(51, 23);
+            numX.TabIndex = 0;
+            numX.TextAlign = HorizontalAlignment.Right;
+            numX.Value = new decimal(new int[] { 555, 0, 0, 0 });
+            numX.ValueChanged += numX_ValueChanged;
             // 
             // txtNotes
             // 
@@ -306,6 +398,42 @@
             btnSaveNotes.Text = "Save notes";
             btnSaveNotes.UseVisualStyleBackColor = true;
             btnSaveNotes.Click += btnSaveNotes_Click;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(3, 7);
+            label1.Name = "label1";
+            label1.Size = new Size(17, 15);
+            label1.TabIndex = 5;
+            label1.Text = "X:";
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(83, 7);
+            label2.Name = "label2";
+            label2.Size = new Size(17, 15);
+            label2.TabIndex = 6;
+            label2.Text = "Y:";
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(163, 5);
+            label3.Name = "label3";
+            label3.Size = new Size(37, 15);
+            label3.TabIndex = 7;
+            label3.Text = "Scale:";
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Location = new Point(263, 5);
+            label5.Name = "label5";
+            label5.Size = new Size(41, 15);
+            label5.TabIndex = 8;
+            label5.Text = "Angle:";
             // 
             // FormRuins
             // 
@@ -334,6 +462,12 @@
             splitter.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)splitter).EndInit();
             splitter.ResumeLayout(false);
+            panelEdit.ResumeLayout(false);
+            panelEdit.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numA).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numScale).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numY).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numX).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -364,5 +498,15 @@
         private ToolStripSeparator toolStripSeparator2;
         private ToolStripStatusLabel lblObeliskGroups;
         private ToolStripProgressBar progressSurvey;
+        private Panel panelEdit;
+        private NumericUpDown numScale;
+        private NumericUpDown numY;
+        private NumericUpDown numX;
+        private Button button1;
+        private NumericUpDown numA;
+        private Label label5;
+        private Label label3;
+        private Label label2;
+        private Label label1;
     }
 }

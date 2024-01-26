@@ -31,6 +31,16 @@ namespace SrvSurvey.net
                 Directory.CreateDirectory(Git.pubDataFolder);
                 Directory.CreateDirectory(pubGuardianFolder);
 
+                if (pubData.codexRef > Game.settings.pubCodexRef)
+                {
+                    Game.log($"Updating CodexRef ...");
+                    await Game.codexRef.init(true);
+
+                    // update settings to current level
+                    Game.settings.pubCodexRef = pubData.codexRef;
+                    Game.settings.Save();
+                }
+
                 if (pubData.settlementTemplate > Game.settings.pubDataSettlementTemplate)
                 {
                     Game.log($"Downloading settlementTemplates.json");
@@ -262,6 +272,7 @@ namespace SrvSurvey.net
 
     internal class GitDataIndex
     {
+        public int codexRef;
         public int settlementTemplate;
         public int guardian;
     }

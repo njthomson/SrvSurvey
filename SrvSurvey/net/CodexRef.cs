@@ -14,9 +14,19 @@ namespace SrvSurvey.canonn
         private Dictionary<string, long>? rewardsByEntryId;
         public List<BioGenus> genus;
 
-        public async Task init()
+        public async Task init(bool reset)
         {
-            Game.log("CodexRef init ...");
+            Game.log($"CodexRef init (reset: {reset}) ...");
+
+            // remove cached files if we are resetting
+            if (reset)
+            {
+                if (File.Exists(codexRefPath)) File.Delete(codexRefPath);
+                if (File.Exists(bioRefPath)) File.Delete(bioRefPath);
+
+                if (File.Exists(speciesRewardPath)) File.Delete(speciesRewardPath);
+                if (File.Exists(entryIdRewardPath)) File.Delete(entryIdRewardPath);
+            }
 
             // get CodexRef ready first, before running these in parallel
             var codexRef = await loadCodexRef();

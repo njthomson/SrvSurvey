@@ -121,6 +121,7 @@ namespace SrvSurvey.game
         SolidBody,
         LandableBody,
         Asteroid,
+        PlanetaryRing,
     }
 
     public enum SuitType

@@ -1,15 +1,15 @@
 {
   "sid": "GS080",
   "idx": 1,
-  "sh": -1,
+  "sh": 275,
   "t": "Robolobster",
   "rh": -1,
   "ll": {
     "lat": 39.446285,
     "long": -127.877617
   },
-  "pa": null,
-  "pp": null,
+  "pa": "p14,p17,p19,p2,p4,p7",
+  "pp": "c1,c2,c3,c4,c5,c6,c7,p1,p10,p11,p12,p13,p15,p16,p18,p20,p21,p22,p3,p5,p6,p8,p9,py1,py2,py3,py4,py5,py6,t1,t2,t3,t4,t5,t6",
   "pe": null,
   "og": "ABCD",
   "ao": [

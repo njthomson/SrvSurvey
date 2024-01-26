@@ -82,11 +82,13 @@ namespace SrvSurvey
         private List<GuardianSiteData> surveyedSites;
         private readonly Dictionary<string, GuardianSiteData?> filteredSites = new();
         private GuardianSiteData? siteData;
+        private float angle = 0f;
 
         public FormRuins(GuardianSiteData? siteData)
         {
             InitializeComponent();
             map.MouseWheel += Map_MouseWheel;
+            panelEdit.Visible = false;
 
             // can we fit in our last location
             Util.useLastLocation(this, Game.settings.formRuinsLocation);
@@ -165,6 +167,9 @@ namespace SrvSurvey
 
                 // load template
                 this.template = SiteTemplate.sites[siteType];
+                this.numX.Value = this.template.imageOffset.X;
+                this.numY.Value = this.template.imageOffset.Y;
+                this.numScale.Value = (decimal)this.template.scaleFactor;
             }
             else
             {
@@ -219,16 +224,16 @@ namespace SrvSurvey
             // site heading
             var total = +1
                 // count of non-obelisk POIs
-                + template.poi.Count(_ => _.type != POIType.obelisk && _.type != POIType.brokeObelisk)
+                + template.poi.Count(_ => _.type != POIType.obelisk && _.type != POIType.brokeObelisk);
                 // count relic towers again (for their headings)
-                + countRelics;
+                //+ countRelics;
 
             var actual = siteData.poiStatus.Count;
             if (siteData.siteHeading >= 0) actual++;
-            if (!siteData.isRuins)
-                actual += siteData.relicHeadings.Count;
-            else if (siteData.relicTowerHeading >= 0)
-                actual += countRelics;
+            //if (siteData.isRuins)
+            //    actual += siteData.relicHeadings.Count;
+            //else if (siteData.relicTowerHeading >= 0)
+            //    actual += countRelics;
 
             var progress = (100.0 / total * actual).ToString("0");
             lblSurveyCompletion.Text = $"Survey: {progress}%";
@@ -273,6 +278,10 @@ namespace SrvSurvey
                 filteredSites.Add("Squid Template", null);
                 filteredSites.Add("Stickyhand Template", null);
             }
+            else
+            {
+                filteredSites.Add($"{targetType} Template", null);
+            }
 
             foreach (var survey in this.surveyedSites)
             {
@@ -301,7 +310,7 @@ namespace SrvSurvey
                 comboSite.Text = match.Key;
             }
 
-            if (string.IsNullOrEmpty(comboSite.Text))
+            if (string.IsNullOrEmpty(comboSite.Text) && comboSite.Items.Count > 0)
                 comboSite.SelectedIndex = 0;
         }
 
@@ -502,25 +511,38 @@ namespace SrvSurvey
                 -template.imageOffset.Y * template.scaleFactor,
                 img.Width * template.scaleFactor,
                 img.Height * template.scaleFactor);
+            g.RotateTransform(+angle);
             g.DrawImage(this.img, imgRect);
+            g.RotateTransform(-angle);
 
             if (this.siteData != null)
             {
                 var heading = (float)this.siteData.siteHeading;
                 if (heading >= 0)
                 {
-                    g.RotateTransform(+heading);
-                    g.DrawLine(Pens.DarkRed, 0, -map.Height * 2, 0, 0);
                     g.RotateTransform(-heading);
+                    g.DrawLine(Pens.DarkRed, 0, -map.Height * 2, 0, 0);
+                    g.RotateTransform(+heading);
                 }
 
-                heading = (float)this.siteData.relicTowerHeading;
-                if (heading >= 0)
+                if (siteData.isRuins && this.siteData.relicTowerHeading != -1)
                 {
-                    g.RotateTransform(+heading);
-                    g.DrawLine(Pens.DarkCyan, 0, -map.Height * 2, 0, 0);
-                    g.RotateTransform(-heading);
+                    heading = (float)(180-this.siteData.relicTowerHeading);
+                    if (heading != -1)
+                    {
+                        var rot = heading;
+                        g.RotateTransform(+rot);
+                        g.DrawLine(Pens.DarkCyan, 0, -map.Height * 2, 0, 0);
+                        g.RotateTransform(-rot);
+                    }
                 }
+            }
+
+            if (panelEdit.Visible)
+            {
+                var pp = new Pen(Color.Yellow, 0.2f) { DashStyle = DashStyle.Dot };
+                g.DrawLine(pp, 0, -map.Height * 2, 0, +map.Height * 2);
+                g.DrawLine(pp, -map.Width * 2, 0, +map.Width * 2, 0);
             }
 
             drawArtifacts(g);
@@ -622,11 +644,11 @@ namespace SrvSurvey
                 //var drawItem = this.siteData == null || this.siteData.poiStatus.GetValueOrDefault(poi.name) != SitePoiStatus.unknown;
                 var poiStatus = this.siteData?.poiStatus.GetValueOrDefault(poi.name);
                 if (poi.type == POIType.relic)
-                    drawRelicTower(g, pt, poiStatus);
+                    drawRelicTower(g, pt, poi, siteData, poiStatus);
                 else if (poi.type == POIType.pylon)
-                    drawRelicTower(g, pt, poiStatus);
+                    drawPylon(g, pt, poi, siteData);
                 else if (poi.type == POIType.component)
-                    drawRelicTower(g, pt, poiStatus);
+                    drawComponent(g, pt, poi, siteData);
                 else if (poi.type == POIType.obelisk || poi.type == POIType.brokeObelisk)
                     drawObelisk(g, pt, poiStatus);
                 else if (poi.type == POIType.orb || poi.type == POIType.casket || poi.type == POIType.tablet || poi.type == POIType.totem || poi.type == POIType.urn || poi.type == POIType.unknown)
@@ -647,28 +669,48 @@ namespace SrvSurvey
             var brush = GameColors.Map.brushes[poiType][poiStatus ?? SitePoiStatus.present];
             var pen = GameColors.Map.pens[poiType][poiStatus ?? SitePoiStatus.present];
 
-            var d = 8;
+            var d = 5;
             var rect = new RectangleF(pt.X - d, pt.Y - d, d * 2, d * 2);
             g.FillEllipse(brush, rect);
 
             g.DrawEllipse(pen, rect);
         }
 
-        private static void drawRelicTower(Graphics g, PointF pt, SitePoiStatus? poiStatus = SitePoiStatus.present)
+        private static void drawRelicTower(Graphics g, PointF pt, SitePOI? poi, GuardianSiteData? siteData, SitePoiStatus? poiStatus = SitePoiStatus.present)
         {
+            g.RotateTransform(+180);
+            var rot = 0; // (poi?.rot ?? 0) + 180;
+            var hasRot = siteData != null && poi != null && siteData.relicHeadings.ContainsKey(poi.name) && poiStatus == SitePoiStatus.present;
+            if (hasRot)
+                rot = 180 -  siteData!.relicHeadings[poi!.name]; // + siteData.siteHeading;
+
             PointF[] points =
             {
-                new PointF(pt.X, pt.Y - 8),
-                new PointF(pt.X + 8, pt.Y + 8),
-                new PointF(pt.X - 8, pt.Y + 8),
-                new PointF(pt.X, pt.Y - 8),
+                new PointF(0, 0 - 6),
+                new PointF(0 + 6, 0 + 6),
+                new PointF(0 - 6, 0 + 6),
+                new PointF(0, 0 - 6),
             };
 
             var brush = GameColors.Map.brushes[POIType.relic][poiStatus ?? SitePoiStatus.present];
             var pen = GameColors.Map.pens[POIType.relic][poiStatus ?? SitePoiStatus.present];
 
+            g.TranslateTransform(-pt.X, -pt.Y);
+            g.RotateTransform((float)+rot);
+
+            if (hasRot)
+            {
+                var pp = new Pen(Color.FromArgb(32, Color.Blue), 4);
+                g.DrawLine(pp, 0, -2000, 0, 2000);
+            }
+
             g.FillPolygon(brush, points);
             g.DrawLines(pen, points);
+
+            g.RotateTransform((float)-rot);
+            g.TranslateTransform(+pt.X, +pt.Y);
+
+            g.RotateTransform(-180);
         }
 
         private static void drawObelisk(Graphics g, PointF pt, SitePoiStatus? poiStatus = SitePoiStatus.present)
@@ -689,6 +731,74 @@ namespace SrvSurvey
             g.DrawLines(pen, points);
         }
 
+        private static void drawPylon(Graphics g, PointF pt, SitePOI poi, GuardianSiteData? siteData, SitePoiStatus? poiStatus = SitePoiStatus.present)
+        {
+            g.RotateTransform(+180);
+            var rot = poi.rot + 180;
+
+            PointF[] points = {
+                    new PointF(0, -3),
+                    new PointF(+6, 0),
+                    new PointF(0, +3),
+                    new PointF(-6, 0),
+                    new PointF(0, -3),
+                };
+            var pp = new Pen(Color.DodgerBlue) // SkyBlue ?
+            {
+                Width = 2,
+                LineJoin = LineJoin.Bevel,
+                StartCap = LineCap.Triangle,
+                EndCap = LineCap.Triangle,
+            };
+
+            g.TranslateTransform(-pt.X, -pt.Y);
+            g.RotateTransform((float)+rot);
+
+            g.DrawLines(pp, points);
+            g.DrawLine(pp, 0, 0, 0, 3);
+
+            g.RotateTransform((float)-rot);
+            g.TranslateTransform(+pt.X, +pt.Y);
+
+            g.RotateTransform(-180);
+        }
+
+        private static void drawComponent(Graphics g, PointF pt, SitePOI poi, GuardianSiteData? siteData, SitePoiStatus? poiStatus = SitePoiStatus.present)
+        {
+            g.RotateTransform(+180);
+            var rot = poi.rot + 180;
+
+            PointF[] points = {
+                    new PointF(0, +1),
+                    new PointF(-2, -2),
+                    new PointF(+2, -2),
+                    new PointF(0, +1),
+                    new PointF(0, +4),
+                    new PointF(-5, -4),
+                    new PointF(+5, -4),
+                    new PointF(0, +4),
+                };
+            var pp = new Pen(Color.Lime)
+            {
+                Width = 1,
+                DashStyle = DashStyle.Dash,
+                LineJoin = LineJoin.Bevel,
+                StartCap = LineCap.Triangle,
+                EndCap = LineCap.Triangle,
+            };
+
+            rot -= 45;
+            g.TranslateTransform(-pt.X, -pt.Y);
+            g.RotateTransform((float)+rot);
+
+            g.DrawLines(pp, points);
+
+            g.RotateTransform((float)-rot);
+            g.TranslateTransform(+pt.X, +pt.Y);
+
+            g.RotateTransform(-180);
+        }
+
         private void drawLegend(Graphics g)
         {
             tp.X = 20;
@@ -703,7 +813,7 @@ namespace SrvSurvey
             tp.X += 20;
 
             drawString(g, "Relic Tower");
-            drawRelicTower(g, new PointF(tp.X - 10, tp.Y - 10));
+            drawRelicTower(g, new PointF(tp.X - 10, tp.Y - 10), null, null);
 
             drawString(g, "\r\nOrb");
             drawPuddle(g, new PointF(tp.X - 10, tp.Y - 10), POIType.orb);
@@ -820,6 +930,56 @@ namespace SrvSurvey
         private void mnuUnknown_Click(object sender, EventArgs e)
         {
             setPoiStatus(this.nearestPoi.name, SitePoiStatus.unknown);
+        }
+
+        private void label4_DoubleClick(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label4_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if (e.Clicks == 2 && e.Button == MouseButtons.Right)
+            {
+                panelEdit.Visible = !panelEdit.Visible;
+                map.Invalidate();
+            }
+        }
+
+        private void numX_ValueChanged(object sender, EventArgs e)
+        {
+            template.imageOffset.X = (int)numX.Value;
+            this.map.Invalidate();
+            Program.getPlotter<PlotGuardians>()?.Invalidate();
+        }
+
+        private void numY_ValueChanged(object sender, EventArgs e)
+        {
+            template.imageOffset.Y = (int)numY.Value;
+            this.map.Invalidate();
+            Program.getPlotter<PlotGuardians>()?.Invalidate();
+        }
+
+        private void numScale_ValueChanged(object sender, EventArgs e)
+        {
+            template.scaleFactor = (float)numScale.Value;
+            this.map.Invalidate();
+            Program.getPlotter<PlotGuardians>()?.Invalidate();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            SiteTemplate.SaveEdits();
+        }
+
+        private void numA_ValueChanged(object sender, EventArgs e)
+        {
+            if (numA.Value < 0) numA.Value = 360 - numA.Increment;
+            else if (numA.Value >= 360) numA.Value = 0;
+
+            this.angle = (float)numA.Value;
+            this.map.Invalidate();
+            Program.getPlotter<PlotGuardians>()?.Invalidate();
         }
     }
 }

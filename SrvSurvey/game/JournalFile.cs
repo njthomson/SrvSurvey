@@ -48,10 +48,10 @@ namespace SrvSurvey
             var entry = this.FindEntryByType<Commander>(0, false);
             this.CommanderName = entry?.Name;
 
-            if (this.Entries.Count > 0)
+            // assume Odyssey if we don't have the Fileheader line yet.
+            this.isOdyssey = true;
+            if (this.Entries.Count > 0 && this.Entries[0] is Fileheader)
                 this.isOdyssey = ((Fileheader)this.Entries[0]).Odyssey;
-            else
-                this.isOdyssey = true; // assume Odyssey if we don't have the Fileheader line yet.
         }
 
         public int Count { get => this.Entries.Count; }
@@ -195,6 +195,7 @@ namespace SrvSurvey
             
             while (idx != endIdx)
             {
+                if (idx < 0 || idx >= this.Entries.Count) break;
                 var finished = func(this.Entries[idx]);
                 if (finished) return true;
 

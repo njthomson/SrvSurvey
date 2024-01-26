@@ -9,6 +9,12 @@ namespace SrvSurvey
     {
         public static void Show(Exception ex)
         {
+            if (Program.control.InvokeRequired)
+            {
+                Program.control.Invoke(() => FormErrorSubmit.Show(ex));
+                return;
+            }
+
             var form = new FormErrorSubmit(ex);
             form.ShowDialog(Main.ActiveForm);
         }

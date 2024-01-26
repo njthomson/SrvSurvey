@@ -77,8 +77,7 @@ namespace SrvSurvey
 
         }
 
-        private static Point p1 = new Point(10, 10);
-        private static Point p2 = new Point(10, 24);
+        private static Point p1 = new Point(8, 10);
 
         protected override void OnPaintBackground(PaintEventArgs e)
         {

@@ -45,6 +45,7 @@ namespace SrvSurvey
         {
             base.OnActivated(e);
             Elite.setFocusED();
+            this.Invalidate();
         }
 
         protected override void Dispose(bool disposing)
@@ -291,7 +292,7 @@ namespace SrvSurvey
 
         protected void clipToMiddle()
         {
-            this.clipToMiddle(4, 20, 4, 24);
+            this.clipToMiddle(4, 26, 4, 24);
         }
 
         protected void clipToMiddle(float left, float top, float right, float bottom)
@@ -341,7 +342,8 @@ namespace SrvSurvey
                     touchdownSize * 2,
                     touchdownSize * 2);
 
-                var brush = (game.touchdownLocation == null || game.touchdownLocation == LatLong2.Empty) ? GameColors.brushShipFormerLocation : GameColors.brushShipLocation;
+                var isFormerTouchdownLocation = game.touchdownLocation == null || game.touchdownLocation == LatLong2.Empty || (game.vehicle == ActiveVehicle.MainShip && game.mode == GameMode.Flying);
+                var brush = isFormerTouchdownLocation ? GameColors.brushShipFormerLocation : GameColors.brushShipLocation;
                 g.FillEllipse(brush, rect);
             }
 

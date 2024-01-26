@@ -543,7 +543,7 @@ namespace SrvSurvey
                 .Where(_ => _.StartsWith(prefix) && char.IsAsciiDigit(_.Substring(prefix.Length)[0]))
                 .OrderBy(_ => int.Parse(_.Substring(prefix.Length)))
                 .LastOrDefault();
-                
+
             var nextIdx = lastEntryOfType == null
                 ? 1 : int.Parse(lastEntryOfType.Substring(prefix.Length)) + 1;
 
@@ -595,7 +595,6 @@ namespace SrvSurvey
                     throw new Exception($"Unexpected poiType: '{poiType}'");
             }
         }
-
 
         public void setTargetObelisk(string? target)
         {
@@ -1030,7 +1029,7 @@ namespace SrvSurvey
                 //    (float)(offset.Long * template.scaleFactor),
                 //    (float)(offset.Lat * -template.scaleFactor));
                 //Game.log($"commanderOffset old: {commanderOffset}");
-                var td = new TrackingDelta(game.systemBody!.radius, siteData.location);
+                var td = new TrackingDelta(game.systemBody.radius, siteData.location);
                 var ss = 1f;
                 this.commanderOffset = new PointF(
                     (float)td.dx * ss,
@@ -1099,6 +1098,7 @@ namespace SrvSurvey
 
             this.Invalidate();
         }
+
         private FileSystemWatcher watcher;
 
         private void devFileWatcher()
@@ -1313,63 +1313,13 @@ namespace SrvSurvey
 
         private void drawSiteMap()
         {
-            if (g == null) return;
+            if (g == null || this.template == null || this.siteMap == null) return;
 
             if (this.underlay == null)
             {
                 Game.log("Why no underlay?");
                 return;
             }
-
-            g.ResetTransform();
-            this.clipToMiddle(8, 26, 8, 24);
-            g.TranslateTransform(mid.Width, mid.Height);
-            g.ScaleTransform(this.scale, this.scale);
-            g.RotateTransform(-game.status.Heading);
-
-            // prepare underlay image
-            using (var gg = Graphics.FromImage(this.underlay))
-            {
-                gg.SmoothingMode = SmoothingMode.HighQuality;
-                gg.Clear(Color.Transparent);
-                gg.ResetTransform();
-                //gg.Clear(Color.Black);
-                //gg.RotateTransform(360 - game.status!.Heading);
-
-                // shift by underlay size
-                gg.TranslateTransform(ux, uy);
-                // rotate by site heading only
-                gg.RotateTransform(+siteData.siteHeading);
-                gg.ScaleTransform(this.template!.scaleFactor * GameColors.fontScaleFactor, this.template!.scaleFactor * GameColors.fontScaleFactor);
-
-                // draw the site bitmap and trails(?)
-                var bbs = 1 / GameColors.fontScaleFactor;
-                gg.DrawImageUnscaled(this.siteMap!, (int)(-this.template!.imageOffset.X * bbs), (int)(-(float)this.template.imageOffset.Y * bbs));
-
-                //var ix = -(double)this.template!.imageOffset.X * (double)this.template!.scaleFactor;
-                //var iy = -(double)this.template.imageOffset.Y * (double)this.template!.scaleFactor;
-                //gg.DrawImageUnscaled(this.siteMap!, (int)ix, (int)iy); // -this.template!.imageOffset.X * this.template!.scaleFactor, -this.template.imageOffset.Y * this.template!.scaleFactor);
-                //int xx = 0; // -this.trails!.Width;
-                //int yy = 0; // -this.trails!.Height / 2;
-                //gg.DrawImageUnscaled(this.trails!, -this.template!.imageOffset.X, -this.template.imageOffset.Y);
-
-                //gg.ResetTransform();
-                //gg.DrawRectangle(Pens.Red, 0, 0, underlay.Width, underlay.Height);
-            }
-
-            float x = commanderOffset.X;
-            float y = commanderOffset.Y;
-
-            g.DrawImageUnscaled(this.underlay!, -(int)(ux - x), -(int)(uy - y));
-
-            // draw compass rose lines centered on underlay
-            g.DrawLine(Pens.DarkRed, -this.Width * 2, y, +this.Width * 2, y);
-            g.DrawLine(Pens.DarkRed, x, y, x, +this.Height * 2);
-            g.DrawLine(Pens.Red, x, -this.Height * 2, x, y);
-            g.ResetClip();
-
-            this.drawTouchdownAndSrvLocation(true);
-
 
             // get pixel location of site origin relative to overlay window --
             g.ResetTransform();
@@ -1380,12 +1330,61 @@ namespace SrvSurvey
             PointF[] pts = { new PointF(commanderOffset.X, commanderOffset.Y) };
             g.TransformPoints(CoordinateSpace.Page, CoordinateSpace.World, pts);
             var siteOrigin = pts[0];
+            g.ResetTransform();
+
+            // Render background bitmap, rotated for commander heading, than translated, then rotated for the site heading
+            g.ResetTransform();
+            this.clipToMiddle(4, 26, 4, 24);
+            g.TranslateTransform(mid.Width, mid.Height);
+            g.ScaleTransform(this.scale, this.scale);
+
+            var mx = template.imageOffset.X * template.scaleFactor;
+            var my = template.imageOffset.Y * template.scaleFactor;
+
+            var sx = siteMap.Width * template.scaleFactor;
+            var sy = siteMap.Height * template.scaleFactor;
+
+            var r1 = -game.status.Heading;
+            var r2 = siteData.siteHeading;
+
+            var rx = commanderOffset.X;
+            var ry = commanderOffset.Y;
+
+            g.RotateTransform(+r1); // rotate by commander heading
+            //g.DrawEllipse(Pens.HotPink, -20, -20, 40, 40);
+            g.TranslateTransform(rx, ry);
+            g.RotateTransform(+r2); // rotate by site heading
+
+            g.DrawImage(this.siteMap, -mx, -my, sx, sy); // <-- -- -- **
+            g.DrawEllipse(Pens.DarkRed, -2, -2, 4, 4);
+            //g.DrawEllipse(Pens.DarkRed, -5, -5, 10, 10);
+
+            //g.DrawRectangle(Pens.Blue, -mx, -my, sx, sy);
+            //g.DrawLine(Pens.Blue, -mx, -my, -mx + sx, -my + sy);
+            //g.DrawLine(Pens.Blue, -mx, -my + sy, sx - mx, -my);
+
+
+            g.ResetTransform();
+            this.clipToMiddle(4, 26, 4, 24);
+            g.TranslateTransform(mid.Width, mid.Height);
+            g.ScaleTransform(this.scale, this.scale);
+            g.RotateTransform(-game.status.Heading);
+
+            // draw compass rose lines centered on the commander
+            float x = commanderOffset.X;
+            float y = commanderOffset.Y;
+            g.DrawLine(Pens.DarkRed, -this.Width * 2, y, +this.Width * 2, y);
+            g.DrawLine(Pens.DarkRed, x, y, x, +this.Height * 2);
+            g.DrawLine(Pens.Red, x, -this.Height * 2, x, y);
+
+            this.drawTouchdownAndSrvLocation(true);
 
             this.drawArtifacts(siteOrigin);
 
             this.drawObeliskGroupNames(siteOrigin);
 
             this.drawCommander();
+            g.ResetClip();
         }
 
         private void drawObeliskGroupNames(PointF siteOrigin)
@@ -1786,7 +1785,7 @@ namespace SrvSurvey
                     // show dithered arc for active obelisks - changing the colour if scanned or is relevant for Ram Tah
                     if (obelisk.scanned)
                         GameColors.shiningBrush.CenterColor = GameColors.Orange;
-                    else if (!ramTahNeeded)
+                    else if (!ramTahNeeded && game.cmdr.ramTahActive)
                         GameColors.shiningBrush.CenterColor = Color.LightGray;
                     else
                         GameColors.shiningBrush.CenterColor = GameColors.Cyan;

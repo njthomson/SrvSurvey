@@ -83,25 +83,31 @@ namespace SrvSurvey
             if (Debugger.IsAttached)
                 this.Text += " (dbg)";
 
+            foreach (Control ctrl in this.Controls) ctrl.Enabled = false;
+            btnLogs.Enabled = true;
+            Application.DoEvents();
+
+            if (!Path.Exists(Elite.displaySettingsFolder))
+            {
+                lblNotInstalled.Enabled = true;
+                // stop here if Elite is not installed
+                return;
+            }
+
+            // if journal folder is not found, warn and push user directly into settings
+            if (!Directory.Exists(Game.settings.watchedJournalFolder))
+            {
+                this.BeginInvoke(() => this.handleJournalFolderNotFound());
+                return;
+            }
+
             if (Game.settings.focusGameOnStart)
                 Elite.setFocusED();
 
             this.updateAllControls();
 
-            if (!Path.Exists(Elite.displaySettingsFolder))
-            {
-                // stop here if Elite is not installed
-                return;
-            }
-
             this.checkFullScreenGraphics();
             this.lastWindowRect = Elite.getWindowRect();
-
-            // update pub data
-            Task.Factory.StartNew(new Action(async () =>
-            {
-                await Game.git.refreshPublishedData();
-            }));
 
             var isMigrationValid = Program.getMigratableFolders().Any();
             Game.log($"isMigrationValid: {isMigrationValid}, dataFolder1100: {Game.settings.dataFolder1100}");
@@ -130,7 +136,7 @@ namespace SrvSurvey
                         txtLocation.Text = "Please stand by...";
 
                         // Prep CodexRef first
-                        Game.codexRef.init().ContinueWith((rslt) =>
+                        Game.codexRef.init(true).ContinueWith((rslt) =>
                         {
                             this.Invoke(new Action(() =>
                             {
@@ -190,41 +196,66 @@ namespace SrvSurvey
                 Game.settings.Save();
             }
 
-            Game.canonn.init();
-            SiteTemplate.Import();
-
-            this.Main_Load_Async();
-        }
-
-        private void Main_Load_Async()
-        {
+            // update pub data and other files
             txtCommander.Text = "Preparing reference data...";
             txtLocation.Text = "This is a (mostly) one time thing";
             this.txtMode.Text = "";
 
-            Game.codexRef.init().ContinueWith((rslt) =>
+
+            Task.Factory.StartNew(new Action(async () =>
             {
-                this.BeginInvoke(new Action(() =>
+                try
                 {
-                    if (!rslt.IsCompletedSuccessfully)
+                    await Game.git.refreshPublishedData();
+
+                    Game.canonn.init();
+                    SiteTemplate.Import();
+
+                    await Game.codexRef.init(false);
+
+                    this.Invoke(new Action(() =>
                     {
-                        Util.handleError(rslt.Exception);
-                        return;
-                    }
+                        this.updateCommanderTexts();
+                        Application.DoEvents();
 
-                    this.updateCommanderTexts();
-                    Application.DoEvents();
+                        if (Elite.isGameRunning)
+                            this.newGame();
 
-                    if (Elite.isGameRunning)
-                        this.newGame();
+                        foreach (Control ctrl in this.Controls) ctrl.Enabled = true;
 
-                    this.timer1.Interval = 200;
-                    this.timer1.Start();
+                        this.timer1.Interval = 200;
+                        this.timer1.Start();
+                    }));
+                }
+                catch (Exception ex)
+                {
+                    Util.handleError(ex);
+                }
+            }));
+        }
 
-                    //if (!Game.settings.migratedAlphaSiteHeading)
-                    //    GuardianSiteData.migrateAlphaSites();
-                }));
-            });
+        private void handleJournalFolderNotFound()
+        {
+            Game.log($"Journal watch folder not found: {Game.settings.watchedJournalFolder}");
+            txtCommander.Text = "Journal folder not found!";
+            txtLocation.Text = "Settings update required";
+            txtMode.Text = "";
+
+            txtCommander.Enabled
+                = txtLocation.Enabled
+                = btnSettings.Enabled
+                = btnQuit2.Enabled
+                = true;
+
+            MessageBox.Show(
+                this,
+                $"Cannot find the folder for journal files:\r\n\r\n{Game.settings.watchedJournalFolder}\r\n\r\nPlease update 'watch journal folder' in settings...",
+                "SrvSurvey",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Exclamation
+            );
+            new FormSettings().ShowDialog(this);
+
         }
 
         private void updateAllControls(GameMode? newMode = null)
@@ -1016,6 +1047,7 @@ namespace SrvSurvey
         {
             // 0: Windows / 1: FullScreen / 2: Borderless
             lblFullScreen.Visible = Elite.getGraphicsMode() == GraphicsMode.FullScreen;
+            lblFullScreen.Enabled = true;
         }
 
         private void lblNotInstalled_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
