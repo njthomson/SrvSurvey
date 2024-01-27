@@ -3,7 +3,6 @@ using Newtonsoft.Json.Linq;
 using SrvSurvey.game;
 using SrvSurvey.net;
 using SrvSurvey.units;
-using System.Diagnostics;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
@@ -1102,6 +1101,7 @@ namespace SrvSurvey.canonn
                     ruinSummary.relicTowerHeading = site.rh;
 
                 // re-compute surveyComplete
+                /*
                 {
                     // The survey is complete when we know:
                     var complete = true;
@@ -1153,6 +1153,10 @@ namespace SrvSurvey.canonn
 
                     ruinSummary.surveyComplete = complete;
                 }
+                if (ruinSummary.surveyComplete != site.isSurveyComplete())
+                    Debugger.Break();
+                */
+                ruinSummary.surveyComplete = site.isSurveyComplete();
 
 
                 if (ruinSummary.bodyId == -1)
@@ -1382,6 +1386,7 @@ namespace SrvSurvey.canonn
                     siteSummary.siteID = int.Parse(site.sid.Substring(2));
 
                 // recompute surveyComplete
+                /*
                 {
                     // The survey is complete when we know:
                     var complete = true;
@@ -1411,6 +1416,10 @@ namespace SrvSurvey.canonn
 
                     siteSummary.surveyComplete = complete;
                 }
+                if (siteSummary.surveyComplete != site.isSurveyComplete())
+                    Debugger.Break();
+                */
+                siteSummary.surveyComplete = site.isSurveyComplete();
 
                 // match some Ruins?
                 if (siteSummary.systemAddress < 0)

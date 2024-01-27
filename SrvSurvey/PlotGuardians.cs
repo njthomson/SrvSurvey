@@ -360,7 +360,7 @@ namespace SrvSurvey
             }
 
             // set Relic Tower heading
-            if (msg == MsgCmd.tower)
+            if (msg == MsgCmd.tower && siteData.isRuins)
             {
                 var newAngle = new Angle(game.status.Heading);
                 Game.log($"Changing Relic Tower heading from: {siteData.relicTowerHeading}° to: {newAngle}");
@@ -523,11 +523,28 @@ namespace SrvSurvey
             if (msg.StartsWith(".new"))
             {
                 // eg: .new totem
-                this.addNewPoi(msg.Substring(4).Trim().ToLowerInvariant());
+                this.addNewPoi(msg.Substring(4).Trim().ToLowerInvariant(), true);
+            }
+            else if (msg.StartsWith(".add"))
+            {
+                // eg: .new totem
+                this.addNewPoi(msg.Substring(4).Trim().ToLowerInvariant(), false);
+            }
+            else if (msg.StartsWith(".remove") && siteData.rawPoi != null && this.nearestPoi?.name.StartsWith('x') == true)
+            {
+                // eg: .remove
+                var name = this.nearestPoi?.name;
+                var match = siteData.rawPoi?.FirstOrDefault(_ => _.name == name);
+                if (match != null && siteData.rawPoi != null)
+                {
+                    siteData.rawPoi.Remove(match);
+                    this.siteData.Save();
+                    this.Invalidate();
+                }
             }
         }
 
-        private void addNewPoi(string msg)
+        private void addNewPoi(string msg, bool addToMaster)
         {
             POIType poiType;
             if (!Enum.TryParse<POIType>(msg, true, out poiType))
@@ -555,20 +572,36 @@ namespace SrvSurvey
 
             var newPoi = new SitePOI()
             {
-                name = $"{prefix}{nextIdx}",
+                // name is populated below
                 dist = dist,
                 angle = angle,
                 type = poiType,
                 rot = rot,
             };
 
-            // add to the template and ListView
-            Game.log($"Added new {poiType} named '{newPoi.name}' as present");
-            template.poi.Add(newPoi);
-            siteData.poiStatus[newPoi.name] = SitePoiStatus.present;
-            SiteTemplate.SaveEdits();
-            this.siteData.Save();
-            this.Invalidate();
+            if (addToMaster)
+            {
+                // add to the master template and ListView
+                newPoi.name = $"{prefix}{nextIdx}";
+                Game.log($"Added new {poiType} named '{newPoi.name}' as present");
+                template.poi.Add(newPoi);
+                siteData.poiStatus[newPoi.name] = SitePoiStatus.present;
+                SiteTemplate.SaveEdits();
+                this.siteData.Save();
+                this.Invalidate();
+            }
+            else
+            {
+                if (siteData.rawPoi == null) siteData.rawPoi = new List<SitePOI>();
+
+                // add to the master template and ListView
+                newPoi.name = $"x{siteData.rawPoi.Count + 1}";
+                newPoi.rot = -1;
+                Game.log($"Adding new raw {poiType} named '{newPoi.name}' as present");
+                siteData.rawPoi.Add(newPoi);
+                this.siteData.Save();
+                this.Invalidate();
+            }
         }
 
         private string getPoiPrefix(POIType poiType)
@@ -921,21 +954,25 @@ namespace SrvSurvey
 
         protected void confirmPOI(SitePoiStatus poiStatus)
         {
+            // it must be from rawPoi if not known to the template - ignore it
+            if (!template!.poi.Any(_ => _.name == this.nearestPoi.name)) return;
+            // and ignore obelisks
+            if (this.nearestPoi.type == POIType.obelisk || this.nearestPoi.type == POIType.brokeObelisk || this.nearestPoi.type == POIType.emptyPuddle) return;
+
             if (poiStatus == SitePoiStatus.unknown)
             {
-                // confirm POI is missing/present/empty by fire groups
+                // interpret POI is missing/present/empty by fire groups
                 poiStatus = (SitePoiStatus)(game.status.FireGroup % 3) + 1;
             }
 
             // (don't let Relic's get a status of Empty)
-            if (!(nearestPoi.type == POIType.relic && poiStatus == SitePoiStatus.empty))
-            {
-                Game.log($"Confirming POI {poiStatus}: '{this.nearestPoi.name}' ({this.nearestPoi.type})");
-                siteData.poiStatus[this.nearestPoi.name] = poiStatus;
-                siteData.Save();
-                this.Invalidate();
-                game.systemData?.prepSettlements();
-            }
+            if (nearestPoi.type == POIType.relic && poiStatus == SitePoiStatus.empty) return;
+
+            Game.log($"Confirming POI {poiStatus}: '{this.nearestPoi.name}' ({this.nearestPoi.type})");
+            siteData.poiStatus[this.nearestPoi.name] = poiStatus;
+            siteData.Save();
+            this.Invalidate();
+            game.systemData?.prepSettlements();
         }
 
         protected override void Status_StatusChanged(bool blink)
@@ -1001,19 +1038,33 @@ namespace SrvSurvey
                 if (newAngle < 0) newAngle += 360;
                 if (this.siteData.isRuins)
                 {
-                    // ruins
+                    // ruins only
                     Game.log($"Changing Relic Tower heading from: {siteData.relicTowerHeading}° to: {newAngle}°");
                     siteData.relicTowerHeading = newAngle;
                     siteData.Save();
                 }
                 if (this.nearestPoi != null)
                 {
-                    // structures
-                    var oldHeading = siteData.relicHeadings.ContainsKey(this.nearestPoi.name) ? siteData.relicHeadings[this.nearestPoi.name] : -1;
-                    Game.log($"Relic Tower '{this.nearestPoi.name}' heading from: {oldHeading}° to: {newAngle}°");
-                    siteData.relicHeadings[this.nearestPoi.name] = newAngle;
-                    siteData.poiStatus[this.nearestPoi.name] = SitePoiStatus.present;
-                    siteData.Save();
+                    // structures or ruins
+                    var oldHeading = siteData.getRelicHeading(this.nearestPoi.name);
+                    if (template!.relicTowerNames.Contains(this.nearestPoi.name))
+                    {
+                        Game.log($"Relic Tower '{this.nearestPoi.name}' heading from: {oldHeading}° to: {newAngle}°");
+                        siteData.relicHeadings[this.nearestPoi.name] = newAngle;
+                        siteData.poiStatus[this.nearestPoi.name] = SitePoiStatus.present;
+                        siteData.Save();
+                    }
+                    else
+                    {
+                        // raw Poi's...
+                        var match = siteData.rawPoi?.FirstOrDefault(_ => _.name == this.nearestPoi.name);
+                        if (match != null)
+                        {
+                            Game.log($"Raw Relic Tower '{this.nearestPoi.name}' heading from: {oldHeading}° to: {newAngle}°");
+                            match.rot = newAngle;
+                            siteData.Save();
+                        }
+                    }
                 }
             }
 
@@ -1466,13 +1517,18 @@ namespace SrvSurvey
             int countRelics = 0, confirmedRelics = 0, countPuddles = 0, confirmedPuddles = 0;
             Angle aa;
             string tt;
-            // and draw all the POIs
-            foreach (var poi in this.template.poi)
-            {
-                var poiStatus = siteData.getPoiStatus(poi.name);
 
+            // and draw all the POIs
+            var poiToRender = siteData.rawPoi == null
+                ? this.template.poi
+                : this.template.poi.Union(siteData.rawPoi);
+
+            foreach (var poi in poiToRender)
+            {
                 // skip obelisks in groups not in this site
                 if (formEditMap?.tabs.SelectedIndex != 2 && siteData.obeliskGroups.Count > 0 && (poi.type == POIType.obelisk || poi.type == POIType.brokeObelisk) && !string.IsNullOrEmpty(poi.name) && !siteData.obeliskGroups.Contains(poi.name[0])) continue;
+
+                var poiStatus = siteData.getPoiStatus(poi.name);
 
                 if (poi.type == POIType.relic)
                 {
@@ -1662,30 +1718,35 @@ namespace SrvSurvey
                 ? GameColors.brushCyan
                 : GameColors.brushGameOrange;
 
-            if (siteData.isRuins)
+            // Draw header
+            this.drawHeader(confirmedRelics, countRelics, confirmedPuddles, countPuddles);
+
+            g.ResetTransform();
+        }
+
+        private void drawHeader(int confirmedRelics, int countRelics, int confirmedPuddles, int countPuddles)
+        {
+            if (confirmedRelics < countRelics || confirmedPuddles < countPuddles)
             {
-                if (confirmedRelics < countRelics || confirmedPuddles < countPuddles)// || !siteData.isSurveyComplete())
-                    this.drawHeaderText($"Confirmed: {confirmedRelics}/{countRelics} relics, {confirmedPuddles}/{countPuddles} items", headerBrush);
-                else if (siteData.relicTowerHeading == -1)
+                // how many relic and puddles remain
+                this.drawHeaderText($"Confirmed: {confirmedRelics}/{countRelics} relics, {confirmedPuddles}/{countPuddles} items", GameColors.brushCyan); // TODO: use this.drawAt for different colors?
+            }
+            else if (siteData.isRuins)
+            {
+                // Ruins ...
+                if (siteData.relicTowerHeading == -1)
                     this.drawHeaderText($"Need Relic Tower heading", GameColors.brushCyan);
                 else
-                    this.drawHeaderText($"Ruins #{siteData.index}: survey complete", headerBrush);
+                    this.drawHeaderText($"Ruins #{siteData.index}: survey complete", GameColors.brushGameOrange);
             }
             else
             {
-                if (confirmedRelics < countRelics || confirmedPuddles < countPuddles)// || !siteData.isSurveyComplete())
-                    this.drawHeaderText($"Confirmed: {confirmedRelics}/{countRelics} relics, {confirmedPuddles}/{countPuddles} items", headerBrush);
+                // Structures...
+                if (siteData.relicHeadings.Count < template!.countRelicTowers)
+                    this.drawHeaderText($"Need {siteData.relicHeadings.Count - template.countRelicTowers} Relic Tower heading", GameColors.brushCyan);
                 else
-                {
-                    var totalRelicCount = this.template.poi.Where(_ => _.type == POIType.relic && siteData.poiStatus.Any(t => t.Key == _.name && t.Value == SitePoiStatus.present)).Count();
-                    if (siteData.relicHeadings.Count < totalRelicCount)
-                        this.drawHeaderText($"Need {totalRelicCount - siteData.relicHeadings.Count} Relic Tower heading(s)", GameColors.brushCyan);
-                    else
-                        this.drawHeaderText($"Structure {siteData.type}: survey complete", headerBrush);
-                }
+                    this.drawHeaderText($"Structure {siteData.type}: survey complete", GameColors.brushGameOrange);
             }
-
-            g.ResetTransform();
         }
 
         private bool isRuinsPoi(POIType poiType, bool incObelisks, bool incBrokeObelisks = false)

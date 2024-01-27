@@ -131,10 +131,11 @@ namespace SrvSurvey
                 if (game.status.SelectedWeapon == "$humanoid_companalyser_name;" && !string.IsNullOrEmpty(PlotGuardians.instance.nearestPoi?.name))
                 {
                     var msg = "Toggle shields to set Relic Tower heading.";
+                    var angle = game.systemSite.getRelicHeading(PlotGuardians.instance.nearestPoi!.name);
                     if (game.systemSite.isRuins && game.systemSite.relicTowerHeading != -1)
                         msg += $"\r\nRecorded heading: {game.systemSite!.relicTowerHeading}°";
-                    else if (!game.systemSite.isRuins && game.systemSite.relicHeadings.ContainsKey(PlotGuardians.instance.nearestPoi.name))
-                        msg += $"\r\nRecorded heading: {game.systemSite.relicHeadings[PlotGuardians.instance.nearestPoi!.name]}°";
+                    else if (!game.systemSite.isRuins && angle != -1)
+                        msg += $"\r\nRecorded heading: {angle}°";
                     else
                         msg += "\r\nFace the side with a single large left facing triangle.";
                     drawCenterMessage(msg);

@@ -302,7 +302,7 @@ namespace SrvSurvey.game
                             else
                             {
                                 // missing data - add just genus data for this, as if we DSS'd the body
-                                Game.log($"Bad datafor: '{bodyOrg.species ?? bodyOrg.genus ?? bodyOrg.speciesLocalized ?? bodyOrg.genusLocalized}' on '{bodyData.bodyName}' ({bodyData.bodyId})");
+                                Game.log($"Bad data for: '{bodyOrg.species ?? bodyOrg.genus ?? bodyOrg.speciesLocalized ?? bodyOrg.genusLocalized}' on '{bodyData.bodyName}' ({bodyData.bodyId})");
                                 continue;
                             }
                         }
@@ -1007,7 +1007,7 @@ namespace SrvSurvey.game
             this._settlements = new List<SystemSettlementSummary>();
             foreach (var site in sites)
             {
-                if (site.t == GuardianSiteData.SiteType.Alpha || site.t == GuardianSiteData.SiteType.Beta || site.t == GuardianSiteData.SiteType.Gamma)
+                if (site.isRuins)
                 {
                     var body = this.bodies.FirstOrDefault(_ => _.name == site.bodyName)!;
                     if (body != null)

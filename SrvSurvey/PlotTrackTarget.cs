@@ -52,6 +52,8 @@ namespace SrvSurvey
 
         private void initialize()
         {
+            if (game.systemBody == null || game.status == null) return;
+
             this.BackgroundImage = GameGraphics.getBackgroundForForm(this);
             this.td = new TrackingDelta(game.systemBody.radius, Game.settings.targetLatLong);
 

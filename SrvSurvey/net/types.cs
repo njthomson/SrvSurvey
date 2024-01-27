@@ -346,7 +346,7 @@ namespace SrvSurvey.canonn
     }
 
     /// <summary>
-    /// Data pulled from runinSummaries.json
+    /// Data pulled from allRuins.json
     /// </summary>
     internal class GuardianRuinSummary
     {

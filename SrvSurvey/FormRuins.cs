@@ -225,8 +225,8 @@ namespace SrvSurvey
             var total = +1
                 // count of non-obelisk POIs
                 + template.poi.Count(_ => _.type != POIType.obelisk && _.type != POIType.brokeObelisk);
-                // count relic towers again (for their headings)
-                //+ countRelics;
+            // count relic towers again (for their headings)
+            //+ countRelics;
 
             var actual = siteData.poiStatus.Count;
             if (siteData.siteHeading >= 0) actual++;
@@ -239,6 +239,14 @@ namespace SrvSurvey
             lblSurveyCompletion.Text = $"Survey: {progress}%";
             progressSurvey.Maximum = total;
             progressSurvey.Value = actual;
+
+            var countTowers = siteData.poiStatus.Count(_ => _.Key.StartsWith("t") && _.Value == SitePoiStatus.present);
+            var countItems = siteData.poiStatus.Count(_ => !_.Key.StartsWith("t") && (_.Value == SitePoiStatus.present || _.Value == SitePoiStatus.empty));
+
+            var siteHeading = this.siteData.siteHeading > -1 ? $"{this.siteData.siteHeading}°" : "?";
+            var relicTowerHeading = this.siteData.relicTowerHeading > 0 ? $"{this.siteData.relicTowerHeading}°" : "?";
+
+            lblStatus.Text = $"Relic Towers: {countTowers}, puddles: {countItems}, site heading: {siteHeading}, relic tower heading: {relicTowerHeading}";
         }
 
         private void getAllSurveyedRuins()
@@ -429,7 +437,7 @@ namespace SrvSurvey
         private void prepContext(MouseEventArgs e)
         {
             if (this.nearestDist > 30 || this.siteData == null) return;
-            if (this.nearestPoi.type == POIType.brokeObelisk || this.nearestPoi.type == POIType.obelisk) return;
+            if (this.nearestPoi.type == POIType.brokeObelisk || this.nearestPoi.type == POIType.obelisk || this.nearestPoi.type == POIType.emptyPuddle || this.nearestPoi.name.StartsWith('x')) return;
 
             mnuName.Text = $"Name: {this.nearestPoi.name}";
             mnuType.Text = $"Type: {this.nearestPoi.type}";
@@ -527,7 +535,7 @@ namespace SrvSurvey
 
                 if (siteData.isRuins && this.siteData.relicTowerHeading != -1)
                 {
-                    heading = (float)(180-this.siteData.relicTowerHeading);
+                    heading = (float)(this.siteData.relicTowerHeading - siteData.siteHeading);
                     if (heading != -1)
                     {
                         var rot = heading;
@@ -619,7 +627,12 @@ namespace SrvSurvey
                 g.DrawString(foo.Key, GameColors.fontBig, Brushes.DarkCyan, -pt.X - (sz.Width / 2) + 2, -pt.Y - (sz.Height / 2) + 2);
             }
 
-            foreach (var poi in template.poi)
+            // and draw all the POIs
+            var poiToRender = siteData?.rawPoi == null
+                ? this.template.poi
+                : this.template.poi.Union(siteData.rawPoi);
+
+            foreach (var poi in poiToRender)
             {
                 // skip obelisks in groups not in this site
                 if (siteData?.obeliskGroups?.Count > 0 && (poi.type == POIType.obelisk || poi.type == POIType.brokeObelisk) && !siteData.obeliskGroups.Contains(poi.name[0])) continue;
@@ -642,7 +655,10 @@ namespace SrvSurvey
                 }
 
                 //var drawItem = this.siteData == null || this.siteData.poiStatus.GetValueOrDefault(poi.name) != SitePoiStatus.unknown;
-                var poiStatus = this.siteData?.poiStatus.GetValueOrDefault(poi.name);
+                var poiStatus = poi.name.StartsWith("x")
+                    ? SitePoiStatus.present
+                    : this.siteData?.poiStatus.GetValueOrDefault(poi.name);
+
                 if (poi.type == POIType.relic)
                     drawRelicTower(g, pt, poi, siteData, poiStatus);
                 else if (poi.type == POIType.pylon)
@@ -679,10 +695,12 @@ namespace SrvSurvey
         private static void drawRelicTower(Graphics g, PointF pt, SitePOI? poi, GuardianSiteData? siteData, SitePoiStatus? poiStatus = SitePoiStatus.present)
         {
             g.RotateTransform(+180);
-            var rot = 0; // (poi?.rot ?? 0) + 180;
+            var rot = -1;
             var hasRot = siteData != null && poi != null && siteData.relicHeadings.ContainsKey(poi.name) && poiStatus == SitePoiStatus.present;
             if (hasRot)
-                rot = 180 -  siteData!.relicHeadings[poi!.name]; // + siteData.siteHeading;
+                rot = siteData!.relicHeadings[poi!.name] - siteData.siteHeading - 180;
+            else if (poi?.name.StartsWith('x') == true && poi.rot != -1)
+                rot = (int)poi.rot - siteData.siteHeading - 180;
 
             PointF[] points =
             {
@@ -698,7 +716,7 @@ namespace SrvSurvey
             g.TranslateTransform(-pt.X, -pt.Y);
             g.RotateTransform((float)+rot);
 
-            if (hasRot)
+            if (rot != -1)
             {
                 var pp = new Pen(Color.FromArgb(32, Color.Blue), 10);
                 g.DrawLine(pp, 0, -2000, 0, 2000);
@@ -860,7 +878,7 @@ namespace SrvSurvey
             if (this.siteData != null)
             {
                 // use the same siteData as the game - if needed
-                if (game?.systemSite != null && game.systemSite != this.siteData)
+                if (game?.systemSite != null && game.systemSite != this.siteData && game.systemSite.displayName == this.siteData.displayName)
                     this.siteData = game.systemSite;
 
                 this.siteData.notes = txtNotes.Text;
@@ -870,14 +888,16 @@ namespace SrvSurvey
 
         private void FormRuins_Activated(object sender, EventArgs e)
         {
+            if (this.siteData == null) return;
+
             // use the same siteData as the game - if needed
-            if (game?.systemSite != null && game.systemSite != this.siteData)
+            if (game?.systemSite != null && game.systemSite != this.siteData && game.systemSite.displayName == this.siteData.displayName)
             {
                 this.siteData = game.systemSite;
                 map.Invalidate();
             }
 
-            if (this.siteData?.notes != null && txtNotes.Text != this.siteData.notes)
+            if (this.siteData.notes != null && txtNotes.Text != this.siteData.notes)
                 txtNotes.Text = this.siteData.notes;
         }
 
@@ -896,13 +916,6 @@ namespace SrvSurvey
             }
 
             // update footer counts
-            var countTowers = siteData.poiStatus.Count(_ => _.Key.StartsWith("t") && _.Value == SitePoiStatus.present);
-            var countItems = siteData.poiStatus.Count(_ => !_.Key.StartsWith("t") && (_.Value == SitePoiStatus.present || _.Value == SitePoiStatus.empty));
-
-            var siteHeading = this.siteData.siteHeading > 0 - 1 ? $"{this.siteData.siteHeading}°" : "?";
-            var relicTowerHeading = this.siteData.relicTowerHeading > 0 ? $"{this.siteData.relicTowerHeading}°" : "?";
-
-            lblStatus.Text = $"Relic Towers: {countTowers}, puddles: {countItems}, site heading: {siteHeading}, relic tower heading: {relicTowerHeading}";
 
             this.showSurveyProgress();
 

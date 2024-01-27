@@ -52,7 +52,10 @@ namespace SrvSurvey
                     var json = reader.ReadToEnd();
                     var newSites = JsonConvert.DeserializeObject<Dictionary<GuardianSiteData.SiteType, SiteTemplate>>(json)!;
                     foreach (var _ in newSites)
+                    {
+                        _.Value.init();
                         SiteTemplate.sites[_.Key] = _.Value;
+                    }
 
                     Game.log($"SiteTemplate.Imported {SiteTemplate.sites.Count} templates");
                 }
@@ -107,6 +110,28 @@ namespace SrvSurvey
         public Dictionary<string, PointF> obeliskGroupNameLocations = new Dictionary<string, PointF>();
 
         #endregion
+
+        public void init()
+        {
+            this.relicTowerNames = new List<string>();
+            foreach(var _ in this.poi)
+            {
+                if (_.type == POIType.relic)
+                    this.relicTowerNames.Add(_.name);
+                else if (_.type != POIType.obelisk && _.type != POIType.brokeObelisk)
+                    this.countNonObelisks++;
+            }
+            this.countNonObelisks += this.countRelicTowers;
+        }
+
+        [JsonIgnore]
+        public List<string> relicTowerNames { get; private set; }
+
+        [JsonIgnore]
+        public int countRelicTowers { get => relicTowerNames.Count; }
+
+        [JsonIgnore]
+        public int countNonObelisks { get; private set; }
     }
 
     [JsonConverter(typeof(StringEnumConverter))]
@@ -119,7 +144,7 @@ namespace SrvSurvey
         tablet,
         totem,
         urn,
-        emptyPuddle,
+        emptyPuddle, // TODO: remove?
         component,
         pylon,
         obelisk,

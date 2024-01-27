@@ -180,7 +180,6 @@
 
         private Button btnClose;
         private Label label1;
-        private LinkLabel linkZipfile;
         private ListBox list;
         private Label label2;
         private LinkLabel linkDiscordChannel;

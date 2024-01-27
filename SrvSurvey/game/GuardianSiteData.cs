@@ -237,6 +237,8 @@ namespace SrvSurvey.game
         public Dictionary<string, ActiveObelisk> activeObelisks = new Dictionary<string, ActiveObelisk>();
         public HashSet<char> obeliskGroups = new HashSet<char>();
 
+        public List<SitePOI>? rawPoi;
+
         #endregion
 
         [JsonIgnore]
@@ -308,7 +310,23 @@ namespace SrvSurvey.game
             if (this.pubData?.pe?.Contains(name) == true)
                 return SitePoiStatus.empty;
 
+            // otherwise check rawPoi
+            if (this.rawPoi?.Any(_ => _.name == name) == true)
+                return SitePoiStatus.present;
+
             return SitePoiStatus.unknown;
+        }
+
+        public int getRelicHeading(string name)
+        {
+            if (this.relicHeadings.ContainsKey(name))
+                return this.relicHeadings[name];
+
+            var match = this.rawPoi?.FirstOrDefault(_ => _.name == name);
+            if (match != null)
+                return (int)match.rot;
+
+            return -1;
         }
 
         public ActiveObelisk? getActiveObelisk(string? name, bool addIfMissing = false)
@@ -469,37 +487,25 @@ namespace SrvSurvey.game
 
         public bool isSurveyComplete()
         {
-            if (this.type == SiteType.Unknown) return false;
-
-            // The survey is complete when we know:
-            var complete = true;
-
-            // the site and relic tower headings
-            complete &= this.siteHeading >= 0;
-            complete &= this.relicTowerHeading >= 0;
-            // live lat / long
-            complete &= this.location != null;
-            // status of all POI
+            if (this.type == SiteType.Unknown || !SiteTemplate.sites.ContainsKey(this.type)) return false;
             var template = SiteTemplate.sites[this.type];
-            var sumCountNonObelisks = template.poi
-                .Where(_ => _.type != POIType.obelisk && _.type != POIType.brokeObelisk)
-                .Count();
-            var sumCountPOI = this.poiStatus.Keys.Count(_ => this.getPoiStatus(_) != SitePoiStatus.unknown);
-            complete &= sumCountPOI >= sumCountNonObelisks; // TODO: Compare with template count
-            if (this.obeliskGroups.Count == 0)
-            {
-                complete &= false;
-            }
-            else if (this.type != SiteType.Gamma)
-            {
-                this.loadPub();
-                // every obelisk group has at least 1 active obelisk
-                foreach (var g in this.obeliskGroups)
-                    complete &= this.activeObelisks.Keys.Any(_ => _.StartsWith(g.ToString().ToUpperInvariant()))
-                        || (this.pubData != null && this.pubData.ao.Any(_ => _.name.StartsWith(g.ToString().ToUpperInvariant())));
-            }
 
-            return complete;
+            // the site heading
+            if (this.siteHeading == -1) return false;
+
+            // ruins: singular relic tower heading is known
+            if (this.isRuins && this.relicTowerHeading == -1) return false;
+
+            // live lat / long
+            if (this.location == null) return false;
+
+            // status for all POI
+            if (this.poiStatus.Count < template.countNonObelisks) return false;
+
+            // structures: all present relic towers have a heading
+            if (!isRuins && this.relicHeadings.Count < this.poiStatus?.Keys.Count(_ => template.relicTowerNames.Contains(_))) return false;
+
+            return true;
         }
 
         public bool hasDiscoveredData()
@@ -527,7 +533,6 @@ namespace SrvSurvey.game
 
             return false;
         }
-
 
         #region old migration 
 
@@ -655,7 +660,7 @@ namespace SrvSurvey.game
                     notes = obj["notes"]?.Value<string>(),
                     legacy = obj["legacy"]?.Value<bool>() ?? false,
 
-                    confirmedPOI = obj["confirmedPOI"]?.ToObject<Dictionary<string, bool>>()!, 
+                    confirmedPOI = obj["confirmedPOI"]?.ToObject<Dictionary<string, bool>>()!,
                     obeliskGroups = new HashSet<char>(),
                 };
 
@@ -747,6 +752,10 @@ namespace SrvSurvey.game
                             data.poiStatus[_] = SitePoiStatus.empty;
                 }
 
+                var rawPoi = obj["rawPoi"];
+                if (rawPoi != null)
+                    data.rawPoi = rawPoi.ToObject<List<SitePOI>>()!;
+
                 //Game.log($"Reading: {data.bodyName} #{data.index}   ** ** ** ** {data.poiStatus.Count}");
                 return data;
             }
@@ -810,6 +819,12 @@ namespace SrvSurvey.game
                 obj.Add("poiAbsent", string.Join(',', poiAbsent));
                 obj.Add("poiEmpty", string.Join(',', poiEmpty));
 
+                if (data.rawPoi != null)
+                {
+                    var rawPoi = JToken.FromObject(data.rawPoi);
+                    obj.Add("rawPoi", rawPoi);
+                }
+
                 //Game.log($"Writing: {data.bodyName} #{data.index}   ** ** ** ** {data.poiStatus.Count}");
                 obj.WriteTo(writer);
             }
@@ -854,7 +869,7 @@ namespace SrvSurvey.game
             var ordered = obelisks
                 .Select(_ => _.msg)
                 .ToHashSet()
-                .OrderBy(  _ => _[0] + _.Substring(1).PadLeft(2, '0'));
+                .OrderBy(_ => _[0] + _.Substring(1).PadLeft(2, '0'));
 
             return string.Join(", ", ordered);
         }

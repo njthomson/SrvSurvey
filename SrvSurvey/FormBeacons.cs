@@ -389,6 +389,7 @@ namespace SrvSurvey
 
                 menuOpenSiteSurvey.Enabled = entry.siteType != "Beacon" && entry.lastVisited != DateTimeOffset.MinValue;
                 menuOpenDataFile.Enabled = File.Exists(entry.filepath);
+                notesToolStripMenuItem.Enabled = !string.IsNullOrEmpty(entry.notes);
 
                 var folder = Path.Combine(Game.settings.screenshotTargetFolder!, entry.systemName);
                 menuOpenImagesFolder.Enabled = Directory.Exists(folder);
@@ -550,7 +551,8 @@ namespace SrvSurvey
             // copy notes
             if (this.grid.SelectedItems.Count == 0) return;
             var entry = (GuardianGridEntry)this.grid.SelectedItems[0].Tag;
-            Clipboard.SetText(entry.notes);
+            if (!string.IsNullOrEmpty(entry.notes))
+                Clipboard.SetText(entry.notes);
         }
 
         private void openSystemInEDSMToolStripMenuItem_Click(object sender, EventArgs e)

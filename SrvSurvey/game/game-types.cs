@@ -681,6 +681,9 @@ namespace SrvSurvey.game
         public string rth;
 
         [JsonIgnore]
+        public bool isRuins { get => this.t == SiteType.Alpha || this.t == SiteType.Beta || this.t == SiteType.Gamma; }
+
+        [JsonIgnore]
         public Dictionary<string, int> relicTowerHeadings
         {
             get
@@ -719,6 +722,30 @@ namespace SrvSurvey.game
             if (this.pe != null) this.pe.Split(",").ToList().ForEach(_ => poiStatus[_] = SitePoiStatus.empty);
 
             return poiStatus;
+        }
+
+        public bool isSurveyComplete()
+        {
+            if (this.t == SiteType.Unknown || !SiteTemplate.sites.ContainsKey(this.t)) return false;
+            var template = SiteTemplate.sites[this.t];
+
+            // the site heading
+            if (this.sh == -1) return false;
+
+            // ruins: singular relic tower heading is known
+            if (this.isRuins && this.rh == -1) return false;
+
+            // live lat / long
+            if (this.ll == null) return false;
+
+            // status for all POI
+            var poiStatus = this.getPoiStatus();
+            if (poiStatus.Count < template.countNonObelisks) return false;
+
+            // structures: all present relic towers have a heading
+            if (!this.isRuins && this.relicTowerHeadings.Count < poiStatus?.Keys.Count(_ => template.relicTowerNames.Contains(_))) return false;
+
+            return true;
         }
     }
 

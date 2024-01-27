@@ -282,7 +282,7 @@
     "longitude": -132.669281,
     "siteHeading": 69,
     "idx": 0,
-    "surveyComplete": false
+    "surveyComplete": true
   },
   {
     "siteID": 178,
@@ -491,7 +491,7 @@
     "longitude": -11.048854,
     "siteHeading": 35,
     "idx": 0,
-    "surveyComplete": false
+    "surveyComplete": true
   },
   {
     "siteID": 32,
@@ -2391,7 +2391,7 @@
     "longitude": -70.51017,
     "siteHeading": 3,
     "idx": 0,
-    "surveyComplete": true
+    "surveyComplete": false
   },
   {
     "siteID": 39,
