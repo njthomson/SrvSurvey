@@ -539,17 +539,17 @@ namespace SrvSurvey
             // temporary stuff after here
             this.xtraCmds(msg);
 
-            if (msg.StartsWith(".new") && Debugger.IsAttached)
+            if (msg.StartsWith(MsgCmd.@new) && Debugger.IsAttached)
             {
                 // eg: .new totem
                 this.addNewPoi(msg.Substring(4).Trim().ToLowerInvariant(), true);
             }
-            else if (msg.StartsWith(".add"))
+            else if (msg.StartsWith(MsgCmd.add))
             {
                 // eg: .new totem
                 this.addNewPoi(msg.Substring(4).Trim().ToLowerInvariant(), false);
             }
-            else if (msg.StartsWith(".remove") && siteData.rawPoi != null && this.nearestPoi?.name.StartsWith('x') == true)
+            else if (msg.StartsWith(MsgCmd.remove) && siteData.rawPoi != null && this.nearestPoi?.name.StartsWith('x') == true)
             {
                 // eg: .remove
                 var name = this.nearestPoi?.name;
@@ -871,7 +871,9 @@ namespace SrvSurvey
         private void setMapScale()
         {
             var newScale = this.scale;
-            if (this.nearestObeliskDist < 30 && (game.vehicle == ActiveVehicle.SRV || game.vehicle == ActiveVehicle.Foot))
+            if (this.customScale != -1f)
+                newScale = this.customScale;
+            else if (this.nearestObeliskDist < 30 && (game.vehicle == ActiveVehicle.SRV || game.vehicle == ActiveVehicle.Foot))
                 newScale = 3f;
             else
                 newScale = this.siteData.isRuins ? 0.65f : 1.5f;

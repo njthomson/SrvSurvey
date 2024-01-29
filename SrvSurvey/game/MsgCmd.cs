@@ -39,10 +39,16 @@
         public const string to = ".to";
         /// <summary> PlotGuardians : Obelisk Scanned - toggles that an obelisk has been scanned (mostly for Ram Tah mission) </summary>
         public const string os = ".os";
+        /// <summary> PlotGuardians : add some POI to the map template directly</summary>
+        public const string @new = ".new";
+        /// <summary> PlotGuardians : add some POI to the map </summary>
+        public const string add = ".add";
+        /// <summary> PlotGuardians : remove some POI to the map </summary>
+        public const string remove = ".remove";
 
         /// <summary> Main: Open the images folder </summary>
         public const string imgs = ".imgs";
-        /// <summary> Main : set current location as trackign target </summary>
+        /// <summary> Main : set current location as tracking target </summary>
         public const string targetHere = ".target here";
         /// <summary> Main : hide tracking target plotter </summary>
         public const string targetOff = ".target off";

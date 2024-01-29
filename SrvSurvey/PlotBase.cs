@@ -14,6 +14,7 @@ namespace SrvSurvey
         protected Size mid;
         protected Graphics g;
         public float scale = 1.0f;
+        public float customScale = -1.0f;
 
         protected PlotBase()
         {
@@ -191,18 +192,24 @@ namespace SrvSurvey
 
         protected virtual void onJournalEntry(SendText entry)
         {
-            var msg = entry.Message.ToLowerInvariant();
+            var msg = entry.Message.ToLowerInvariant().Trim();
 
             // adjust the zoom factor 'z <number>'
-            if (msg.StartsWith(MsgCmd.z))
+            if (msg == MsgCmd.z)
             {
-                float zoomFactor;
-                if (float.TryParse(entry.Message.Substring(1), out zoomFactor))
+                Game.log($"Resetting custom zoom scale");
+                this.customScale = -1f;
+                this.Invalidate();
+                return;
+            }
+            else if (msg.StartsWith(MsgCmd.z))
+            {
+                if (float.TryParse(entry.Message.Substring(1), out this.customScale))
                 {
-                    Game.log($"Change zoom scale from: '{this.scale}' to: '{zoomFactor}'");
-                    zoomFactor = (float)Math.Max(zoomFactor, 0.2);
-                    zoomFactor = (float)Math.Min(zoomFactor, 8);
-                    this.scale = zoomFactor;
+                    this.customScale = (float)Math.Max(customScale, 0.1);
+                    this.customScale = (float)Math.Min(customScale, 20);
+                    Game.log($"Changing custom zoom scale from: '{this.scale}' to: '{this.customScale}'");
+                    this.scale = this.customScale;
                     this.Invalidate();
                     return;
                 }
