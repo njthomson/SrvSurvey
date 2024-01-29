@@ -118,7 +118,7 @@ namespace SrvSurvey
             {
                 if (_.type == POIType.relic)
                     this.relicTowerNames.Add(_.name);
-                else if (_.type != POIType.obelisk && _.type != POIType.brokeObelisk)
+                else if (_.type != POIType.obelisk && _.type != POIType.brokeObelisk && _.type != POIType.unknown)
                     this.countNonObelisks++;
             }
             this.countNonObelisks += this.countRelicTowers;

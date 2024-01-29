@@ -368,12 +368,31 @@ namespace SrvSurvey
                 siteData.Save();
                 Program.closePlotter<PlotVertialStripe>();
             }
-            else if (msg.StartsWith(MsgCmd.tower) && int.TryParse(msg.Substring(MsgCmd.tower.Length), out newHeading))
+            else if (msg.StartsWith(MsgCmd.tower) && int.TryParse(msg.Substring(MsgCmd.tower.Length), out newHeading) && this.nearestPoi?.type == POIType.relic)
             {
                 var newAngle = new Angle(newHeading);
-                Game.log($"Changing Relic Tower heading from: {siteData.relicTowerHeading}° to: {newAngle}");
-                siteData.relicTowerHeading = newAngle;
-                siteData.Save();
+
+                // structures or ruins
+                var oldHeading = siteData.getRelicHeading(this.nearestPoi.name);
+                if (template!.relicTowerNames.Contains(this.nearestPoi.name))
+                {
+                    Game.log($"Relic Tower '{this.nearestPoi.name}' heading from: {oldHeading}° to: {newAngle}°");
+                    siteData.relicHeadings[this.nearestPoi.name] = newAngle;
+                    siteData.poiStatus[this.nearestPoi.name] = SitePoiStatus.present;
+                    siteData.Save();
+                }
+                else
+                {
+                    // raw Poi's...
+                    var match = siteData.rawPoi?.FirstOrDefault(_ => _.name == this.nearestPoi.name);
+                    if (match != null)
+                    {
+                        Game.log($"Raw Relic Tower '{this.nearestPoi.name}' heading from: {oldHeading}° to: {newAngle}°");
+                        match.rot = newAngle;
+                        siteData.Save();
+                    }
+
+                }
             }
 
             if (changeHeading)
@@ -520,7 +539,7 @@ namespace SrvSurvey
             // temporary stuff after here
             this.xtraCmds(msg);
 
-            if (msg.StartsWith(".new"))
+            if (msg.StartsWith(".new") && Debugger.IsAttached)
             {
                 // eg: .new totem
                 this.addNewPoi(msg.Substring(4).Trim().ToLowerInvariant(), true);
@@ -564,7 +583,7 @@ namespace SrvSurvey
             var nextIdx = lastEntryOfType == null
                 ? 1 : int.Parse(lastEntryOfType.Substring(prefix.Length)) + 1;
 
-            var dist = ((decimal)Util.getDistance(Status.here, siteData.location, game.systemBody!.radius));
+            var dist = Util.getDistance(Status.here, siteData.location, game.systemBody!.radius);
             var angle = ((decimal)new Angle((Util.getBearing(Status.here, siteData.location) - (decimal)siteData.siteHeading)));
             var rot = (decimal)new Angle(game.status.Heading - this.siteData.siteHeading);
 
@@ -583,7 +602,7 @@ namespace SrvSurvey
             {
                 // add to the master template and ListView
                 newPoi.name = $"{prefix}{nextIdx}";
-                Game.log($"Added new {poiType} named '{newPoi.name}' as present");
+                Game.log($"Added new {poiType} named '{newPoi.name}' as present: {newPoi}");
                 template.poi.Add(newPoi);
                 siteData.poiStatus[newPoi.name] = SitePoiStatus.present;
                 SiteTemplate.SaveEdits();
@@ -596,8 +615,8 @@ namespace SrvSurvey
 
                 // add to the master template and ListView
                 newPoi.name = $"x{siteData.rawPoi.Count + 1}";
-                newPoi.rot = -1;
-                Game.log($"Adding new raw {poiType} named '{newPoi.name}' as present");
+                if (newPoi.type == POIType.relic) newPoi.rot = -1;
+                Game.log($"Adding new raw {poiType} named '{newPoi.name}' as present: {newPoi}");
                 siteData.rawPoi.Add(newPoi);
                 this.siteData.Save();
                 this.Invalidate();
@@ -1334,6 +1353,8 @@ namespace SrvSurvey
 
             var adjustAngle = siteData.siteHeading - game.status.Heading;
 
+            var headerTxt = $"Site heading: {siteData.siteHeading}°";
+
             Brush brush = GameColors.brushGameOrange;
             if (Math.Abs(adjustAngle) > 2)
             {
@@ -1354,10 +1375,13 @@ namespace SrvSurvey
                 g.DrawLine(pp, ax + ad, ay, ax + ad - ac, ay + 10);
             }
 
-            var headerTxt = $"Site heading: {siteData.siteHeading}° | Rotate ship ";
-            headerTxt += adjustAngle > 0 && adjustAngle < 180 ? "right" : "left";
-            if (adjustAngle > 180) adjustAngle = 360 - adjustAngle;
-            headerTxt += $" {Math.Abs(adjustAngle)}°";
+            if (Math.Abs(adjustAngle) > 0)
+            {
+                headerTxt += $" | Rotate ship ";
+                headerTxt += adjustAngle > 0 && adjustAngle < 180 ? "right" : "left";
+                if (adjustAngle > 180) adjustAngle = 360 - adjustAngle;
+                headerTxt += $" {Math.Abs(adjustAngle)}°";
+            }
 
             this.drawHeaderText(headerTxt, brush);
         }
@@ -1561,8 +1585,8 @@ namespace SrvSurvey
                 var d = Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
 
 
-                var validNearestUnknown = poiStatus == SitePoiStatus.unknown && d < nearestUnknownDist
-                    && (isRuinsPoi(poi.type, false) || (Game.settings.enableEarlyGuardianStructures && !siteData.isRuins && poi.type != POIType.obelisk && poi.type != POIType.brokeObelisk));
+                var validNearestUnknown = poiStatus == SitePoiStatus.unknown && d < nearestUnknownDist && (isRuinsPoi(poi.type, false)
+                    || (Game.settings.enableEarlyGuardianStructures && !siteData.isRuins && poi.type != POIType.obelisk && poi.type != POIType.brokeObelisk));
                 // only target Relic Towers when in SRV
                 if (validNearestUnknown && poi.type == POIType.relic && game.vehicle != ActiveVehicle.SRV)
                     validNearestUnknown = false;
@@ -1579,7 +1603,7 @@ namespace SrvSurvey
                 if ((poi.type == POIType.obelisk || poi.type == POIType.brokeObelisk) && d < this.nearestObeliskDist)
                     this.nearestObeliskDist = d;
 
-                var selectPoi = d < nearestDist && (isRuinsPoi(poi.type, true) || (Game.settings.enableEarlyGuardianStructures));
+                var selectPoi = d < nearestDist && (isRuinsPoi(poi.type, true) || (Game.settings.enableEarlyGuardianStructures) && poi.type != POIType.brokeObelisk);
                 if (forcePoi != null)
                     selectPoi = forcePoi == poi; // force selection in map editor if present
                 if (selectPoi && poi.type == POIType.obelisk && siteData.getActiveObelisk(poi.name) == null && formEditMap == null)
@@ -1742,8 +1766,9 @@ namespace SrvSurvey
             else
             {
                 // Structures...
-                if (siteData.relicHeadings.Count < template!.countRelicTowers)
-                    this.drawHeaderText($"Need {siteData.relicHeadings.Count - template.countRelicTowers} Relic Tower heading", GameColors.brushCyan);
+                var countRelicTowersPresent = siteData.poiStatus.Count(_ => _.Key.StartsWith('t') && _.Value == SitePoiStatus.present);
+                if (siteData.relicHeadings.Count < countRelicTowersPresent)
+                    this.drawHeaderText($"Need {siteData.relicHeadings.Count - countRelicTowersPresent} Relic Tower heading", GameColors.brushCyan);
                 else
                     this.drawHeaderText($"Structure {siteData.type}: survey complete", GameColors.brushGameOrange);
             }
@@ -1966,7 +1991,7 @@ namespace SrvSurvey
                 if (poiStatus == SitePoiStatus.unknown)
                     pp.Color = GameColors.Cyan;
 
-                if (!siteData.relicHeadings.ContainsKey(poi.name))
+                if (siteData.getRelicHeading(poi.name) == -1)
                     pp.Color = Color.Red;
 
                 rot = 0; // + game.status.Heading;

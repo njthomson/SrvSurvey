@@ -220,11 +220,12 @@ namespace SrvSurvey
                 return;
             }
 
-            var countRelics = template.poi.Count(_ => _.type == POIType.relic);
+            var countRelics = siteData.poiStatus.Count(_ => _.Key.StartsWith('t') && _.Value == SitePoiStatus.present);
+
             // site heading
             var total = +1
                 // count of non-obelisk POIs
-                + template.poi.Count(_ => _.type != POIType.obelisk && _.type != POIType.brokeObelisk);
+                + template.countNonObelisks;
             // count relic towers again (for their headings)
             //+ countRelics;
 
@@ -242,11 +243,14 @@ namespace SrvSurvey
 
             var countTowers = siteData.poiStatus.Count(_ => _.Key.StartsWith("t") && _.Value == SitePoiStatus.present);
             var countItems = siteData.poiStatus.Count(_ => !_.Key.StartsWith("t") && (_.Value == SitePoiStatus.present || _.Value == SitePoiStatus.empty));
-
             var siteHeading = this.siteData.siteHeading > -1 ? $"{this.siteData.siteHeading}°" : "?";
-            var relicTowerHeading = this.siteData.relicTowerHeading > 0 ? $"{this.siteData.relicTowerHeading}°" : "?";
 
-            lblStatus.Text = $"Relic Towers: {countTowers}, puddles: {countItems}, site heading: {siteHeading}, relic tower heading: {relicTowerHeading}";
+            lblStatus.Text = $"Relic Towers: {countTowers}, puddles: {countItems}, site heading: {siteHeading}";
+            if (siteData.isRuins)
+            {
+                var relicTowerHeading = this.siteData.relicTowerHeading > 0 ? $"{this.siteData.relicTowerHeading}°" : "?";
+                lblStatus.Text += $", relic tower heading: {relicTowerHeading}";
+            }
         }
 
         private void getAllSurveyedRuins()
@@ -699,7 +703,7 @@ namespace SrvSurvey
             var hasRot = siteData != null && poi != null && siteData.relicHeadings.ContainsKey(poi.name) && poiStatus == SitePoiStatus.present;
             if (hasRot)
                 rot = siteData!.relicHeadings[poi!.name] - siteData.siteHeading - 180;
-            else if (poi?.name.StartsWith('x') == true && poi.rot != -1)
+            else if (poi?.name.StartsWith('x') == true && poi.rot != -1 && siteData != null)
                 rot = (int)poi.rot - siteData.siteHeading - 180;
 
             PointF[] points =

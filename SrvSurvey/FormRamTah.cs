@@ -80,10 +80,12 @@ namespace SrvSurvey
                 var idx = int.Parse(checkbox.Name.Substring(8));
                 var shouldCheck = cmdr?.decodeTheLogs.Contains($"#{idx}") == true;
                 if (checkbox.Checked != shouldCheck) checkbox.Checked = shouldCheck;
-                checkbox.BackColor = checkbox.Checked ? checkedColor : Color.Transparent;
-
-                if (Game.activeGame?.systemSite?.currentObelisk?.msg == $"#{idx}")
+                if (checkbox.Checked)
+                    checkbox.BackColor = checkedColor;
+                else if (Game.activeGame?.systemSite?.currentObelisk?.msg == $"#{idx}")
                     checkbox.BackColor = Color.Lime;
+                else
+                    checkbox.BackColor = Color.Transparent;
             }
         }
 
@@ -167,7 +169,8 @@ namespace SrvSurvey
                     else
                         cmdr.decodeTheRuins.Add(subItem.Name);
 
-                    listRuins.Invalidate(new Rectangle(0, subItem.Bounds.Y, subItem.Bounds.Width, 24));
+                    //listRuins.Invalidate(new Rectangle(0, subItem.Bounds.Y, subItem.Bounds.Width, 24));
+                    listRuins.Invalidate();
 
                     if (this.cmdr?.decodeTheRuinsMissionActive == TahMissionStatus.Active)
                     {

@@ -363,7 +363,10 @@ namespace SrvSurvey
         {
             if (form.Visible == false)
             {
-                form.Show(parent);
+                if (parent == null)
+                    form.Show();
+                else
+                    form.Show(parent);
             }
             else
             {
