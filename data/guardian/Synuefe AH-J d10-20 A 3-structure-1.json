@@ -1,13 +1,14 @@
 {
   "sid": "GS076",
   "idx": 1,
-  "sh": -1,
+  "sh": 355,
   "t": "Stickyhand",
   "rh": -1,
   "ll": {
     "lat": -8.711272,
     "long": -51.778748
   },
+  "pp": "py1,py2",
   "og": "ABCDEFGH",
   "ao": [
     "A12-re,ta-#17-",

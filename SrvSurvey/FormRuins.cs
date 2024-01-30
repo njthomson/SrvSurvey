@@ -228,10 +228,15 @@ namespace SrvSurvey
                 + template.countNonObelisks;
             // count relic towers again (for their headings)
             //+ countRelics;
+            if (siteData.isRuins)
+                total++; // for relic tower headings
+            else
+                total += countRelics;
 
             var actual = siteData.poiStatus.Count;
             if (siteData.siteHeading >= 0) actual++;
-            //if (siteData.isRuins)
+            if (siteData.isRuins && siteData.relicTowerHeading >= 0) actual++;
+            if (!siteData.isRuins) actual += siteData.relicHeadings.Count;
             //    actual += siteData.relicHeadings.Count;
             //else if (siteData.relicTowerHeading >= 0)
             //    actual += countRelics;

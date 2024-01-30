@@ -375,9 +375,9 @@
     "siteType": "Squid",
     "latitude": 33.619419,
     "longitude": 40.013123,
-    "siteHeading": -1,
+    "siteHeading": 156,
     "idx": 0,
-    "surveyComplete": false
+    "surveyComplete": true
   },
   {
     "siteID": 82,
@@ -508,7 +508,7 @@
     "siteType": "Turtle",
     "latitude": 27.952511,
     "longitude": -5.201449,
-    "siteHeading": -1,
+    "siteHeading": 224,
     "idx": 0,
     "surveyComplete": false
   },
@@ -641,7 +641,7 @@
     "siteType": "Stickyhand",
     "latitude": -8.711272,
     "longitude": -51.778748,
-    "siteHeading": -1,
+    "siteHeading": 355,
     "idx": 0,
     "surveyComplete": false
   },
@@ -660,7 +660,7 @@
     "siteType": "Bear",
     "latitude": 19.823612,
     "longitude": -82.460922,
-    "siteHeading": -1,
+    "siteHeading": 26,
     "idx": 0,
     "surveyComplete": false
   },
@@ -833,7 +833,7 @@
     "longitude": 169.939041,
     "siteHeading": 288,
     "idx": 0,
-    "surveyComplete": false
+    "surveyComplete": true
   },
   {
     "siteID": 197,
@@ -1401,7 +1401,7 @@
     "siteType": "Fistbump",
     "latitude": -27.326454,
     "longitude": -17.166643,
-    "siteHeading": -1,
+    "siteHeading": 327,
     "idx": 0,
     "surveyComplete": false
   },
@@ -1686,7 +1686,7 @@
     "siteType": "Crossroads",
     "latitude": 34.593796,
     "longitude": -52.222752,
-    "siteHeading": -1,
+    "siteHeading": 83,
     "idx": 0,
     "surveyComplete": false
   },
@@ -1724,7 +1724,7 @@
     "siteType": "Bowl",
     "latitude": -18.243898,
     "longitude": -175.576874,
-    "siteHeading": -1,
+    "siteHeading": 278,
     "idx": 0,
     "surveyComplete": false
   },
@@ -1914,7 +1914,7 @@
     "siteType": "Bowl",
     "latitude": 19.981455,
     "longitude": -38.105019,
-    "siteHeading": -1,
+    "siteHeading": 27,
     "idx": 0,
     "surveyComplete": false
   },

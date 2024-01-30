@@ -860,7 +860,7 @@ namespace SrvSurvey.game
         public bool scanned;
 
         [JsonIgnore]
-        public string msgDisplay { get => Util.getLogNameFromChar(this.msg[0]) + " #" + this.msg.Substring(1); }
+        public string msgDisplay { get => string.IsNullOrEmpty(this.msg) ? "?" : (Util.getLogNameFromChar(this.msg[0]) + " #" + this.msg.Substring(1)); }
 
         public static string? orderedRamTahLogs(IEnumerable<ActiveObelisk>? obelisks)
         {

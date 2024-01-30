@@ -1503,7 +1503,6 @@
       { "name": "p25", "type": "urn", "angle": 126.0, "dist": 302.8 },
       { "name": "p26", "type": "unknown", "angle": 339.4, "dist": 84.7 },
       { "name": "p27", "type": "orb", "angle": 100.4, "dist": 131.2 },
-      { "name": "p28", "type": "orb", "angle": 106.3, "dist": 84.7 },
       { "name": "p28", "type": "urn", "angle": 210.0, "dist": 102.6 },
       { "name": "p29", "type": "tablet", "angle": 246.5, "dist": 103.0 },
       { "name": "p3", "type": "urn", "angle": 295.0, "dist": 142.0 },
@@ -1513,6 +1512,7 @@
       { "name": "p33", "type": "unknown", "angle": 228.8, "dist": 185.7 },
       { "name": "p34", "type": "urn", "angle": 208.0, "dist": 166.5, "rot": 304.0 },
       { "name": "p35", "type": "tablet", "angle": 344.0, "dist": 200.7223, "rot": 185.0 },
+      { "name": "p36", "type": "orb", "angle": 106.3, "dist": 84.7 },
       { "name": "p4", "type": "tablet", "angle": 225.0, "dist": 270.0 },
       { "name": "p5", "type": "totem", "angle": 10.0, "dist": 218.0 },
       { "name": "p6", "type": "urn", "angle": 7.0, "dist": 166.0 },
@@ -1693,7 +1693,7 @@
       { "name": "C07", "type": "obelisk", "angle": 71.8014979871829, "dist": 185.55602555089081704001658435, "rot": 296 },
       { "name": "C08", "type": "brokeObelisk", "angle": 71.3560588864489, "dist": 193.62188687042749872866378310, "rot": 199 },
       { "name": "C09", "type": "brokeObelisk", "angle": 76.1931615634223, "dist": 242.32389532370622793202101771, "rot": 124 },
-      { "name": "c1", "type": "component", "angle": 209.0, "dist": 167.0 },
+      { "name": "c1", "type": "component", "angle": 209.0, "dist": 165.0 },
       { "name": "C10", "type": "brokeObelisk", "angle": 80.0441730768834, "dist": 254.97720140967072021192532519, "rot": 147 },
       { "name": "C11", "type": "obelisk", "angle": 82.1726437376574, "dist": 258.67564282005064399824235809, "rot": 328 },
       { "name": "C12", "type": "brokeObelisk", "angle": 93.52957418303, "dist": 259.10604533177301485192676743, "rot": 208 },
@@ -1739,7 +1739,7 @@
       { "name": "p6", "type": "tablet", "angle": 254.0, "dist": 148.0 },
       { "name": "p7", "type": "tablet", "angle": 291.0, "dist": 195.0 },
       { "name": "p8", "type": "urn", "angle": 297.0, "dist": 148.0 },
-      { "name": "p8", "type": "orb", "angle": 209.0, "dist": 167.0 },
+      { "name": "p8", "type": "orb", "angle": 209.0, "dist": 170.0 },
       { "name": "p8", "type": "tablet", "angle": 138.0, "dist": 52.0 },
       { "name": "p9", "type": "totem", "angle": 274.683302292935, "dist": 347.55418333305127754100065653, "rot": 10 },
       { "name": "py1", "type": "pylon", "angle": 178.67259987344, "dist": 206.11640145659040533632595339, "rot": 301 },
@@ -2022,22 +2022,22 @@
     "obeliskGroupNameLocations": {
       "A": {
         "IsEmpty": false,
-        "X": 261.0,
-        "Y": 164.0
+        "X": 284.0,
+        "Y": 124.0
       },
       "D": {
         "IsEmpty": false,
-        "X": 140.0,
+        "X": 50.0,
         "Y": 150.0
       },
       "C": {
         "IsEmpty": false,
-        "X": 200.0,
-        "Y": 140.0
+        "X": 344.0,
+        "Y": 150.0
       },
       "B": {
         "IsEmpty": false,
-        "X": 352.0,
+        "X": 170.0,
         "Y": 90.0
       }
     }
@@ -2547,42 +2547,42 @@
     "obeliskGroupNameLocations": {
       "A": {
         "IsEmpty": false,
-        "X": 343.0,
-        "Y": 520.0
+        "X": 170.0,
+        "Y": 540.0
       },
       "B": {
         "IsEmpty": false,
-        "X": 353.0,
-        "Y": 360.0
+        "X": 162.0,
+        "Y": 290.0
       },
       "C": {
         "IsEmpty": false,
-        "X": 226.0,
-        "Y": 340.0
+        "X": 294.0,
+        "Y": 290.0
       },
       "H": {
         "IsEmpty": false,
-        "X": 74.0,
-        "Y": 300.0
+        "X": 78.0,
+        "Y": 280.0
       },
       "G": {
         "IsEmpty": false,
-        "X": 93.0,
+        "X": 52.0,
         "Y": 430.0
       },
       "F": {
         "IsEmpty": false,
-        "X": 113.0,
+        "X": 30.0,
         "Y": 520.0
       },
       "E": {
         "IsEmpty": false,
-        "X": 136.0,
+        "X": 9.0,
         "Y": 520.0
       },
       "D": {
         "IsEmpty": false,
-        "X": 158.0,
+        "X": 351.0,
         "Y": 490.0
       }
     }

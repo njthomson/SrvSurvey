@@ -720,7 +720,8 @@ namespace SrvSurvey
                 left = rect.Left + (rect.Width / 2) - (form.Width / 2) + pp.x;
             else if (pp.h == Horiz.Right)
                 left = rect.Right - form.Width - pp.x;
-
+            else if (pp.h == Horiz.OS)
+                left = pp.x;
 
             var top = 0;
             if (pp.v == Vert.Top)
@@ -729,6 +730,8 @@ namespace SrvSurvey
                 top = rect.Top + (rect.Height / 2) - (form.Height / 2) + pp.y;
             else if (pp.v == Vert.Bottom)
                 top = rect.Bottom - form.Height - pp.y;
+            else if (pp.v == Vert.OS)
+                top = pp.y;
 
             form.Location = new Point(left, top);
         }
@@ -764,6 +767,7 @@ namespace SrvSurvey
             Left,
             Center,
             Right,
+            OS,
         };
 
         public enum Vert
@@ -771,6 +775,7 @@ namespace SrvSurvey
             Top,
             Middle,
             Bottom,
+            OS,
         };
     }
 

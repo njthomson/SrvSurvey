@@ -146,7 +146,7 @@ namespace SrvSurvey.net
                 if (site.relicHeadings.Count != site.pubData.relicTowerHeadings.Count && site.relicHeadings.Count > 0)
                 {
                     diff = true;
-                    site.pubData.rth = string.Join(',', site.relicHeadings.Select(_ => $"{_.Key}:{_.Value}"));
+                    site.pubData.rth = string.Join(',', site.relicHeadings.OrderBy(_ => int.Parse(_.Key.Substring(1))).Select(_ => $"{_.Key}:{_.Value}"));
                 }
 
                 // POI status

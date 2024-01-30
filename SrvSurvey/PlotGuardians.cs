@@ -1770,7 +1770,7 @@ namespace SrvSurvey
                 // Structures...
                 var countRelicTowersPresent = siteData.poiStatus.Count(_ => _.Key.StartsWith('t') && _.Value == SitePoiStatus.present);
                 if (siteData.relicHeadings.Count < countRelicTowersPresent)
-                    this.drawHeaderText($"Need {siteData.relicHeadings.Count - countRelicTowersPresent} Relic Tower heading", GameColors.brushCyan);
+                    this.drawHeaderText($"Need {countRelicTowersPresent - siteData.relicHeadings.Count} Relic Tower heading", GameColors.brushCyan);
                 else
                     this.drawHeaderText($"Structure {siteData.type}: survey complete", GameColors.brushGameOrange);
             }
