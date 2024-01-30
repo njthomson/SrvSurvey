@@ -542,5 +542,13 @@ namespace SrvSurvey
             return delta <= tolerance;
         }
 
+        /// <summary>
+        /// Returns True if the two numbers are within tolerance of each other.
+        /// </summary>
+        public static bool isClose(decimal left, decimal right, decimal tolerance)
+        {
+            var delta = Math.Abs(left - right);
+            return delta <= tolerance;
+        }
     }
 }

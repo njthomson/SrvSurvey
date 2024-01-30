@@ -1094,10 +1094,10 @@ namespace SrvSurvey.canonn
                     ruinSummary.longitude = site.ll.Long;
                 }
                 // siteHeading
-                if (site.sh != -1 && !Util.isClose(ruinSummary.siteHeading, site.sh, 1))
+                if (site.sh != -1 && !Util.isClose(ruinSummary.siteHeading, site.sh, 1m))
                     ruinSummary.siteHeading = site.sh;
                 // relicTowerHeading 
-                if (site.rh != -1 && !Util.isClose(ruinSummary.relicTowerHeading, site.rh, 1))
+                if (site.rh != -1 && !Util.isClose(ruinSummary.relicTowerHeading, site.rh, 1m))
                     ruinSummary.relicTowerHeading = site.rh;
 
                 // re-compute surveyComplete

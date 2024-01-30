@@ -572,22 +572,17 @@ namespace SrvSurvey
                 return;
             }
 
-            var prefix = getPoiPrefix(poiType);
-
-            var lastEntryOfType = template!.poi
-                .Select(_ => _.name)
-                .Where(_ => _.StartsWith(prefix) && char.IsAsciiDigit(_.Substring(prefix.Length)[0]))
-                .OrderBy(_ => int.Parse(_.Substring(prefix.Length)))
-                .LastOrDefault();
-
-            var nextIdx = lastEntryOfType == null
-                ? 1 : int.Parse(lastEntryOfType.Substring(prefix.Length)) + 1;
-
             var dist = Util.getDistance(Status.here, siteData.location, game.systemBody!.radius);
             var angle = ((decimal)new Angle((Util.getBearing(Status.here, siteData.location) - (decimal)siteData.siteHeading)));
             var rot = (decimal)new Angle(game.status.Heading - this.siteData.siteHeading);
 
-            // TODO: check for an existing POI at this location?
+            // do not allow new POI that are too close to existing ones
+            var match = template!.findPoiAtLocation(angle, dist, poiType);
+            if (match != null)
+            {
+                Game.log($"New POI is too close to existing POI: {match}");
+                return;
+            }
 
             var newPoi = new SitePOI()
             {
@@ -601,7 +596,7 @@ namespace SrvSurvey
             if (addToMaster)
             {
                 // add to the master template and ListView
-                newPoi.name = $"{prefix}{nextIdx}";
+                newPoi.name = template.nextNameForNewPoi(poiType);
                 Game.log($"Added new {poiType} named '{newPoi.name}' as present: {newPoi}");
                 template.poi.Add(newPoi);
                 siteData.poiStatus[newPoi.name] = SitePoiStatus.present;

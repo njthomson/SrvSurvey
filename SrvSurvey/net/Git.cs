@@ -104,6 +104,7 @@ namespace SrvSurvey.net
             var modifiedPubData = new List<GuardianSitePub>();
             var sites = GuardianSiteData.loadAllSitesFromAllUsers();
             var diffCount = 0;
+            var templateChanged = false;
 
             foreach (var site in sites)
             {
@@ -116,13 +117,13 @@ namespace SrvSurvey.net
 
                 var diff = false;
                 // site heading
-                if (site.siteHeading != -1 && !Util.isClose(site.pubData!.sh, site.siteHeading, 1))
+                if (site.siteHeading != -1 && !Util.isClose(site.pubData!.sh, site.siteHeading, 1m))
                 {
                     diff = true;
                     site.pubData.sh = site.siteHeading;
                 }
                 // relic tower heading
-                if (site.relicTowerHeading != -1 && !Util.isClose(site.pubData!.rh, site.relicTowerHeading, 1))
+                if (site.relicTowerHeading != -1 && !Util.isClose(site.pubData!.rh, site.relicTowerHeading, 1m))
                 {
                     diff = true;
                     site.pubData.rh = site.relicTowerHeading;
@@ -250,6 +251,23 @@ namespace SrvSurvey.net
                     site.pubData.rh = -1;
                 }
 
+                // handle any rawPOIs ...
+                if (site.rawPoi != null)
+                {
+                    foreach(var raw in site.rawPoi)
+                    {
+                        // does this raw POI match something now known to the template?
+                        var match = template.findPoiAtLocation(raw.angle, raw.dist, raw.type);
+                        if (match == null)
+                        {
+                            // raw POI does NOT match something from the template, so let's add it with a corrected name
+                            raw.name = template.nextNameForNewPoi(raw.type);
+                            template.poi.Add(raw);
+                            templateChanged = true;
+                        }
+                    }
+                }
+
                 if (diff)
                 {
                     diffCount++;
@@ -260,6 +278,12 @@ namespace SrvSurvey.net
                     var json = JsonConvert.SerializeObject(site.pubData, Formatting.Indented);
                     File.WriteAllText(filepath, json);
                 }
+            }
+
+            if (templateChanged)
+            {
+                SiteTemplate.SaveEdits();
+                SiteTemplate.publish();
             }
             Game.log($"publishLocalData - complete, diffCount: {diffCount}");
             if (diffCount > 0)

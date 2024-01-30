@@ -72,7 +72,7 @@ namespace SrvSurvey
 
             // alpha sort all POIs by their name
             foreach (var template in SiteTemplate.sites.Values)
-                template.poi = template.poi.OrderBy(_ => _.name).ToList();
+                template.poi = template.poi.OrderBy(_ => _.sortName).ToList();
 
             var json = JsonConvert.SerializeObject(SiteTemplate.sites, Formatting.Indented);
             File.WriteAllText(editableFilepath, json);
@@ -114,7 +114,7 @@ namespace SrvSurvey
         public void init()
         {
             this.relicTowerNames = new List<string>();
-            foreach(var _ in this.poi)
+            foreach (var _ in this.poi)
             {
                 if (_.type == POIType.relic)
                     this.relicTowerNames.Add(_.name);
@@ -132,6 +132,81 @@ namespace SrvSurvey
 
         [JsonIgnore]
         public int countNonObelisks { get; private set; }
+
+        public string nextNameForNewPoi(POIType poiType)
+        {
+            var prefix = getPoiPrefix(poiType);
+
+            var lastEntryOfType = this.poi
+                .Where(_ => _.name.StartsWith(prefix) && char.IsAsciiDigit(_.name.Substring(prefix.Length)[0]))
+                .OrderBy(_ => int.Parse(_.name.Substring(prefix.Length)))
+                .LastOrDefault()?.name;
+
+            var nextIdx = lastEntryOfType == null
+                ? 1 : int.Parse(lastEntryOfType.Substring(prefix.Length)) + 1;
+
+            return $"{prefix}{nextIdx}";
+        }
+
+        public static string getPoiPrefix(POIType poiType)
+        {
+            switch (poiType)
+            {
+                case POIType.relic:
+                    return "t";
+                case POIType.casket:
+                case POIType.orb:
+                case POIType.tablet:
+                case POIType.totem:
+                case POIType.urn:
+                case POIType.unknown:
+                    return "p";
+
+                case POIType.pylon:
+                    return "py";
+
+                case POIType.component:
+                    return "c";
+
+                default:
+                    throw new Exception($"Unexpected poiType: '{poiType}'");
+            }
+        }
+
+        public SitePOI? findPoiAtLocation(decimal angle, decimal dist, POIType poiType)
+        {
+            foreach (var poi in this.poi)
+            {
+
+                // exact matches are not interesting
+                if (poi.angle == angle && poi.dist == dist)
+                {
+                    // unless the type does not match
+                    if (poi.type != poiType) { Game.log("Exact match of different types!?"); }
+                    return poi;
+                }
+
+                // TODO: curate angle based on the distance? (Otherwise things far away might be deemed too close when they're not)
+
+                // really close of any type
+                var ta = 1.5m;
+                if (Util.isClose(poi.angle, angle, ta) && Util.isClose(poi.dist, dist, 3))
+                {
+                    Game.log($"Match too close?");
+                    return poi;
+                }
+
+                // slightly close, of the same type
+                if (poi.type == poiType && Util.isClose(poi.angle, angle, 3) && Util.isClose(poi.dist, dist, 10))
+                {
+                    return poi;
+                }
+
+            }
+
+            // otherwise no match
+            return null;
+        }
     }
 
     [JsonConverter(typeof(StringEnumConverter))]
@@ -203,6 +278,21 @@ namespace SrvSurvey
             return $"{type} {name} {angle}° {dist}m rot:{rot}°";
         }
 
+        [JsonIgnore]
+        public string sortName
+        {
+            get
+            {
+                // make obelisks always be sorted to the top
+                if (this.type == POIType.obelisk || this.type == POIType.brokeObelisk)
+                    return "_" + name;
+
+                // make the number parts always be padded with 2 zero's 
+                var idx = SiteTemplate.getPoiPrefix(this.type).Length;
+                return name.Substring(0, idx) + name.Substring(idx).PadLeft(2, '0');
+            }
+        }
+
         class JsonConverter : Newtonsoft.Json.JsonConverter
         {
             public override bool CanConvert(Type objectType)
@@ -270,9 +360,9 @@ namespace SrvSurvey
                 if (poi == null)
                     throw new Exception($"Unexpected value: {value?.GetType().Name}");
 
-
                 var json = $"\"name\": \"{poi.name}\", \"type\": \"{poi.type}\", \"angle\": {poi.angle}, \"dist\": {poi.dist}";
-                if (poi.rot != 0) json += $", \"rot\": {poi.rot}";
+                if (poi.rot > 0 && (poi.type == POIType.pylon || poi.type == POIType.component || poi.type == POIType.relic || poi.type == POIType.obelisk || poi.type == POIType.brokeObelisk))
+                    json += $", \"rot\": {poi.rot}";
                 writer.WriteRawValue("{ " + json + " }");
 
                 //var obj = new JObject();
