@@ -282,7 +282,7 @@
     "longitude": -132.669281,
     "siteHeading": 69,
     "idx": 0,
-    "surveyComplete": true
+    "surveyComplete": false
   },
   {
     "siteID": 178,
@@ -377,7 +377,7 @@
     "longitude": 40.013123,
     "siteHeading": 156,
     "idx": 0,
-    "surveyComplete": true
+    "surveyComplete": false
   },
   {
     "siteID": 82,
@@ -833,7 +833,7 @@
     "longitude": 169.939041,
     "siteHeading": 288,
     "idx": 0,
-    "surveyComplete": true
+    "surveyComplete": false
   },
   {
     "siteID": 197,
@@ -2049,7 +2049,7 @@
     "longitude": 77.462921,
     "siteHeading": 236,
     "idx": 0,
-    "surveyComplete": true
+    "surveyComplete": false
   },
   {
     "siteID": 21,
