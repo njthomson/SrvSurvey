@@ -47,6 +47,8 @@ namespace SrvSurvey.net
                     var json2 = await Git.client.GetStringAsync($"https://raw.githubusercontent.com/njthomson/SrvSurvey/main/SrvSurvey/settlementTemplates.json");
                     File.WriteAllText(Path.Combine(Git.pubDataFolder, "settlementTemplates.json"), json2);
 
+                    this.updateRawPoiAfterRefresh();
+
                     // update settings to current level
                     Game.settings.pubDataSettlementTemplate = pubData.settlementTemplate;
                     Game.settings.Save();
@@ -75,7 +77,7 @@ namespace SrvSurvey.net
                     Game.settings.pubDataGuardian = pubData.guardian;
                     Game.settings.Save();
 
-                    // finally, re-init canonn to get updated allRuins
+                    // finally, re-init Canonn to get updated allRuins
                     Game.canonn.init();
                     Game.log($"Downloading guardian.zip - complete");
                 }
@@ -98,6 +100,38 @@ namespace SrvSurvey.net
             }
         }
 
+        private void updateRawPoiAfterRefresh()
+        {
+            var sites = GuardianSiteData.loadAllSites(false);
+
+            foreach (var site in sites)
+            {
+                if (site.rawPoi == null || site.rawPoi.Count == 0) continue;
+                var template = SiteTemplate.sites[site.type];
+
+                var initialRawCount = site.rawPoi.Count;
+                for (var n = 0; n < site.rawPoi.Count; n++)
+                {
+                    var raw = site.rawPoi[n];
+                    var match = template.findPoiAtLocation(raw.angle, raw.dist, raw.type, true);
+                    if (match != null)
+                    {
+                        // if a match is found - promote rawPoi into regular
+                        site.poiStatus[match.name] = raw.type == POIType.unknown ? SitePoiStatus.empty : SitePoiStatus.present;
+                        if (raw.type == POIType.relic && raw.rot > -1)
+                            site.relicHeadings[match.name] = (int)raw.rot;
+
+                        site.rawPoi.RemoveAt(n);
+                        n--;
+                    }
+                }
+
+                Game.log($"Removed {initialRawCount - site.rawPoi.Count} rawPoi, {site.rawPoi.Count} remaining for: {site.displayName}");
+                if (initialRawCount != site.rawPoi.Count)
+                    site.Save();
+            }
+        }
+
         public void publishLocalData()
         {
             Game.log($"publishLocalData ...");
@@ -113,6 +147,37 @@ namespace SrvSurvey.net
                 {
                     Game.log($"Site without pubData? '{site.displayName}'");
                     continue;
+                }
+
+                // POI status
+                var template = SiteTemplate.sites[site.type];
+
+                // first - handle any rawPOIs ...
+                if (site.rawPoi != null)
+                {
+                    foreach (var raw in site.rawPoi)
+                    {
+                        // all obelisks should be mapped at this point
+                        if (raw.type == POIType.obelisk || raw.type == POIType.brokeObelisk) { continue; }
+
+                        // skip anything that needs a `rot` value and it's missing
+                        if (raw.rot < 0 && (raw.type == POIType.pylon || raw.type == POIType.component)) { continue; }
+
+                        // does this raw POI match something now known to the template?
+                        var match = template.findPoiAtLocation(raw.angle, raw.dist, raw.type, false);
+                        if (match == null)
+                        {
+                            // raw POI does NOT match something from the template, so let's add it with a corrected name
+                            raw.name = template.nextNameForNewPoi(raw.type);
+                            template.poi.Add(raw);
+                            templateChanged = true;
+
+                            // add now consider that present
+                            site.poiStatus[raw.name] = raw.type == POIType.unknown ? SitePoiStatus.empty : SitePoiStatus.present;
+                            if (raw.type == POIType.relic && raw.rot != -1)
+                                site.relicHeadings[raw.name] = (int)raw.rot;
+                        }
+                    }
                 }
 
                 var diff = false;
@@ -143,15 +208,22 @@ namespace SrvSurvey.net
                     site.pubData.og = siteOG;
                 }
 
-                // relic tower headings
-                if (site.relicHeadings.Count != site.pubData.relicTowerHeadings.Count && site.relicHeadings.Count > 0)
+                // relic tower headings - merging
+                if (site.relicHeadings.Count > 0 && string.Join(',', site.relicHeadings.Keys.Order()) != string.Join(',', site.pubData.relicTowerHeadings.Keys.Order()))
                 {
-                    diff = true;
-                    site.pubData.rth = string.Join(',', site.relicHeadings.OrderBy(_ => int.Parse(_.Key.Substring(1))).Select(_ => $"{_.Key}:{_.Value}"));
+                    // add only towers that are missing
+                    foreach (var _ in site.relicHeadings)
+                    {
+                        if (!site.pubData.relicTowerHeadings.ContainsKey(_.Key))
+                        {
+                            diff = true;
+                            site.pubData.relicTowerHeadings[_.Key] = _.Value;
+                        }
+                    }
+
+                    site.pubData.rth = string.Join(',', site.pubData.relicTowerHeadings.OrderBy(_ => int.Parse(_.Key.Substring(1))).Select(_ => $"{_.Key}:{_.Value}"));
                 }
 
-                // POI status
-                var template = SiteTemplate.sites[site.type];
 
                 var poiPresent = new List<string>();
                 var poiAbsent = new List<string>();
@@ -168,8 +240,8 @@ namespace SrvSurvey.net
                     else if (poiType == POIType.obelisk || poiType == POIType.brokeObelisk)
                     {
                         Game.log($"Obelisk in poiStatus? At '{site.displayName}' => {_.Key}");
-                        Clipboard.SetText(site.bodyName);
-                        Debugger.Break();
+                        //Clipboard.SetText(site.bodyName);
+                        //Debugger.Break();
                     }
                     else if (_.Key == _.Key.ToUpperInvariant())
                     {
@@ -249,23 +321,6 @@ namespace SrvSurvey.net
                 {
                     diff = true;
                     site.pubData.rh = -1;
-                }
-
-                // handle any rawPOIs ...
-                if (site.rawPoi != null)
-                {
-                    foreach(var raw in site.rawPoi)
-                    {
-                        // does this raw POI match something now known to the template?
-                        var match = template.findPoiAtLocation(raw.angle, raw.dist, raw.type);
-                        if (match == null)
-                        {
-                            // raw POI does NOT match something from the template, so let's add it with a corrected name
-                            raw.name = template.nextNameForNewPoi(raw.type);
-                            template.poi.Add(raw);
-                            templateChanged = true;
-                        }
-                    }
                 }
 
                 if (diff)

@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Converters;
 using SrvSurvey.game;
 using SrvSurvey.net;
+using System.Diagnostics;
 
 namespace SrvSurvey
 {
@@ -173,11 +174,11 @@ namespace SrvSurvey
             }
         }
 
-        public SitePOI? findPoiAtLocation(decimal angle, decimal dist, POIType poiType)
+        public SitePOI? findPoiAtLocation(decimal angle, decimal dist, POIType poiType, bool matchPoiType, List<SitePOI>? rawPoi = null)
         {
-            foreach (var poi in this.poi)
+            var pois = rawPoi == null ? this.poi : this.poi.Union(rawPoi);
+            foreach (var poi in pois)
             {
-
                 // exact matches are not interesting
                 if (poi.angle == angle && poi.dist == dist)
                 {
@@ -188,20 +189,21 @@ namespace SrvSurvey
 
                 // TODO: curate angle based on the distance? (Otherwise things far away might be deemed too close when they're not)
 
+                // slightly close, of the same type
+                if (poi.type == poiType && Util.isClose(poi.angle, angle, 3) && Util.isClose(poi.dist, dist, 10))
+                {
+                    Game.log($"Match slightly close? {poiType}: a:{angle} vs {poi.angle}, d:{dist} vs {poi.dist}");
+                    return poi;
+                }
+
                 // really close of any type
                 var ta = 1.5m;
                 if (Util.isClose(poi.angle, angle, ta) && Util.isClose(poi.dist, dist, 3))
                 {
-                    Game.log($"Match too close?");
-                    return poi;
+                    Game.log($"Match really close? {poiType} vs {poi.type}, a:{angle} vs {poi.angle}, d:{dist} vs {poi.dist}");
+                    Debugger.Break();
+                    //return poi;
                 }
-
-                // slightly close, of the same type
-                if (poi.type == poiType && Util.isClose(poi.angle, angle, 3) && Util.isClose(poi.dist, dist, 10))
-                {
-                    return poi;
-                }
-
             }
 
             // otherwise no match

@@ -1,18 +1,21 @@
 {
   "sid": "GS106",
   "idx": 1,
-  "sh": -1,
+  "sh": 106,
   "t": "Squid",
   "rh": -1,
   "ll": {
     "lat": -58.067825,
     "long": 114.49604
   },
+  "pa": "p1,p3,p4,p5,p6,p7,p8",
+  "pp": "p2,p9,py1,py2,py3,py4,py5,py6,t1,t2",
   "og": "ABCDEF",
   "ao": [
     "A10-re,ta-#17-",
     "B16-se,cy-#1-",
     "C10-se,cy-#1-",
     "D07-ur,ca-#28-"
-  ]
+  ],
+  "rth": "t1:135,t2:15"
 }

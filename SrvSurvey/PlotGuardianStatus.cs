@@ -134,7 +134,7 @@ namespace SrvSurvey
                     var angle = game.systemSite.getRelicHeading(PlotGuardians.instance.nearestPoi!.name);
                     if (game.systemSite.isRuins && game.systemSite.relicTowerHeading != -1)
                         msg += $"\r\nRecorded heading: {game.systemSite!.relicTowerHeading}°";
-                    else if (!game.systemSite.isRuins && angle != -1)
+                    else if (!game.systemSite.isRuins && angle != null)
                         msg += $"\r\nRecorded heading: {angle}°";
                     else
                         msg += "\r\nFace the side with a single large left facing triangle.";

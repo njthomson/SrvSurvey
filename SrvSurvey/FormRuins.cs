@@ -663,10 +663,7 @@ namespace SrvSurvey
                     nearestPt = new PointF(pt.X, pt.Y);
                 }
 
-                //var drawItem = this.siteData == null || this.siteData.poiStatus.GetValueOrDefault(poi.name) != SitePoiStatus.unknown;
-                var poiStatus = poi.name.StartsWith("x")
-                    ? SitePoiStatus.present
-                    : this.siteData?.poiStatus.GetValueOrDefault(poi.name);
+                var poiStatus = siteData?.getPoiStatus(poi.name) ?? SitePoiStatus.unknown;
 
                 if (poi.type == POIType.relic)
                     drawRelicTower(g, pt, poi, siteData, poiStatus);
@@ -704,12 +701,9 @@ namespace SrvSurvey
         private static void drawRelicTower(Graphics g, PointF pt, SitePOI? poi, GuardianSiteData? siteData, SitePoiStatus? poiStatus = SitePoiStatus.present)
         {
             g.RotateTransform(+180);
-            var rot = -1;
-            var hasRot = siteData != null && poi != null && siteData.relicHeadings.ContainsKey(poi.name) && poiStatus == SitePoiStatus.present;
-            if (hasRot)
-                rot = siteData!.relicHeadings[poi!.name] - siteData.siteHeading - 180;
-            else if (poi?.name.StartsWith('x') == true && poi.rot != -1 && siteData != null)
-                rot = (int)poi.rot - siteData.siteHeading - 180;
+            var rot = siteData?.getRelicHeading(poi?.name);
+            if (siteData != null && poi != null && rot != null)
+                rot = rot - siteData.siteHeading - 180;
 
             PointF[] points =
             {
@@ -723,10 +717,10 @@ namespace SrvSurvey
             var pen = GameColors.Map.pens[POIType.relic][poiStatus ?? SitePoiStatus.present];
 
             g.TranslateTransform(-pt.X, -pt.Y);
-            g.RotateTransform((float)+rot);
 
-            if (rot != -1)
+            if (rot != null)
             {
+                g.RotateTransform((float)+rot);
                 var pp = new Pen(Color.FromArgb(32, Color.Blue), 10);
                 g.DrawLine(pp, 0, -2000, 0, 2000);
             }
@@ -734,7 +728,8 @@ namespace SrvSurvey
             g.FillPolygon(brush, points);
             g.DrawLines(pen, points);
 
-            g.RotateTransform((float)-rot);
+            if (rot != null)
+                g.RotateTransform((float)-rot);
             g.TranslateTransform(+pt.X, +pt.Y);
 
             g.RotateTransform(-180);

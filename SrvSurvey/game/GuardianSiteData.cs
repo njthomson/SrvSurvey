@@ -317,8 +317,10 @@ namespace SrvSurvey.game
             return SitePoiStatus.unknown;
         }
 
-        public int getRelicHeading(string name)
+        public int? getRelicHeading(string? name)
         {
+            if (string.IsNullOrEmpty(name)) return null;
+
             if (this.relicHeadings.ContainsKey(name))
                 return this.relicHeadings[name];
 
@@ -326,7 +328,10 @@ namespace SrvSurvey.game
             if (match != null)
                 return (int)match.rot;
 
-            return -1;
+            if (this.pubData?.relicTowerHeadings.ContainsKey(name) == true)
+                return this.pubData.relicTowerHeadings[name];
+
+            return null;
         }
 
         public ActiveObelisk? getActiveObelisk(string? name, bool addIfMissing = false)
@@ -741,13 +746,13 @@ namespace SrvSurvey.game
                 else
                 {
                     // read new format using 3 distinct arrays per status
-                    if (obj["poiPresent"] != null)
+                    if (obj["poiPresent"]?.Value<string>() != null)
                         foreach (var _ in obj["poiPresent"]!.Value<string>()!.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.RemoveEmptyEntries))
                             data.poiStatus[_] = SitePoiStatus.present;
-                    if (obj["poiAbsent"] != null)
+                    if (obj["poiAbsent"]?.Value<string>() != null)
                         foreach (var _ in obj["poiAbsent"]!.Value<string>()!.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.RemoveEmptyEntries))
                             data.poiStatus[_] = SitePoiStatus.absent;
-                    if (obj["poiAbsent"] != null)
+                    if (obj["poiEmpty"]?.Value<string>() != null)
                         foreach (var _ in obj["poiEmpty"]!.Value<string>()!.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.RemoveEmptyEntries))
                             data.poiStatus[_] = SitePoiStatus.empty;
                 }

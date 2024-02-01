@@ -208,10 +208,10 @@ namespace SrvSurvey
             {
                 try
                 {
+                    SiteTemplate.Import();
                     await Game.git.refreshPublishedData();
 
                     Game.canonn.init();
-                    SiteTemplate.Import();
 
                     await Game.codexRef.init(false);
 

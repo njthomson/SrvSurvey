@@ -373,7 +373,7 @@ namespace SrvSurvey
                 var newAngle = new Angle(newHeading);
 
                 // structures or ruins
-                var oldHeading = siteData.getRelicHeading(this.nearestPoi.name);
+                var oldHeading = siteData.getRelicHeading(this.nearestPoi.name) ?? -1;
                 if (template!.relicTowerNames.Contains(this.nearestPoi.name))
                 {
                     Game.log($"Relic Tower '{this.nearestPoi.name}' heading from: {oldHeading}° to: {newAngle}°");
@@ -577,7 +577,7 @@ namespace SrvSurvey
             var rot = (decimal)new Angle(game.status.Heading - this.siteData.siteHeading);
 
             // do not allow new POI that are too close to existing ones
-            var match = template!.findPoiAtLocation(angle, dist, poiType);
+            var match = template!.findPoiAtLocation(angle, dist, poiType, true, siteData.rawPoi);
             if (match != null)
             {
                 Game.log($"New POI is too close to existing POI: {match}");
@@ -1062,7 +1062,7 @@ namespace SrvSurvey
                 if (this.nearestPoi != null)
                 {
                     // structures or ruins
-                    var oldHeading = siteData.getRelicHeading(this.nearestPoi.name);
+                    var oldHeading = siteData.getRelicHeading(this.nearestPoi.name) ?? -1;
                     if (template!.relicTowerNames.Contains(this.nearestPoi.name))
                     {
                         Game.log($"Relic Tower '{this.nearestPoi.name}' heading from: {oldHeading}° to: {newAngle}°");
@@ -1988,7 +1988,7 @@ namespace SrvSurvey
                 if (poiStatus == SitePoiStatus.unknown)
                     pp.Color = GameColors.Cyan;
 
-                if (siteData.getRelicHeading(poi.name) == -1)
+                if (siteData.getRelicHeading(poi.name) == null)
                     pp.Color = Color.Red;
 
                 rot = 0; // + game.status.Heading;
