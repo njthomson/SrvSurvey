@@ -217,7 +217,7 @@ namespace SrvSurvey
                 }
 
                 // really close of any type
-                var ta = 1.5m;
+                var ta = 1m;
                 if (Util.isClose(poi.angle, angle, ta) && Util.isClose(poi.dist, dist, 3))
                 {
                     Game.log($"Match really close? {poiType} vs {poi.type}, a:{angle} vs {poi.angle}, d:{dist} vs {poi.dist}");

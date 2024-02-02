@@ -171,12 +171,17 @@ namespace SrvSurvey.net
                             raw.name = template.nextNameForNewPoi(raw.type);
                             template.poi.Add(raw);
                             templateChanged = true;
-
-                            // add now consider that present
-                            site.poiStatus[raw.name] = raw.type == POIType.unknown ? SitePoiStatus.empty : SitePoiStatus.present;
-                            if (raw.type == POIType.relic && raw.rot != -1)
-                                site.relicHeadings[raw.name] = (int)raw.rot;
                         }
+                        else
+                        {
+                            // switch this name, so we add that matched name on the few lines below
+                            raw.name = match.name;
+                        }
+
+                        // add now consider that present
+                        site.poiStatus[raw.name] = raw.type == POIType.unknown ? SitePoiStatus.empty : SitePoiStatus.present;
+                        if (raw.type == POIType.relic && raw.rot != -1)
+                            site.relicHeadings[raw.name] = (int)raw.rot;
                     }
                 }
 
@@ -224,22 +229,23 @@ namespace SrvSurvey.net
                     site.pubData.rth = string.Join(',', site.pubData.relicTowerHeadings.OrderBy(_ => int.Parse(_.Key.Substring(1))).Select(_ => $"{_.Key}:{_.Value}"));
                 }
 
-
-                var poiPresent = new List<string>();
-                var poiAbsent = new List<string>();
-                var poiEmpty = new List<string>();
+                var poiPresent = string.IsNullOrEmpty(site.pubData.pp) ? new HashSet<string>() : new HashSet<string>(site.pubData.pp.Split(','));
+                var poiAbsent = string.IsNullOrEmpty(site.pubData.pa) ? new HashSet<string>() : new HashSet<string>(site.pubData.pa.Split(','));
+                var poiEmpty = string.IsNullOrEmpty(site.pubData.pe) ? new HashSet<string>() : new HashSet<string>(site.pubData.pe.Split(','));
                 foreach (var _ in site.poiStatus)
                 {
-                    var poiType = template.poi.FirstOrDefault(poi => poi.name == _.Key)?.type;
-                    if (poiType == null)
+                    var poi = template.poi.FirstOrDefault(pt => pt.name == _.Key);
+                    if (poi == null)
                     {
                         Game.log($"POI unknown to template? At '{site.displayName}' => {_.Key}");
                         Clipboard.SetText(site.bodyName);
                         Debugger.Break();
+                        continue;
                     }
-                    else if (poiType == POIType.obelisk || poiType == POIType.brokeObelisk)
+                    else if (poi.type == POIType.obelisk || poi.type == POIType.brokeObelisk)
                     {
                         Game.log($"Obelisk in poiStatus? At '{site.displayName}' => {_.Key}");
+                        continue;
                         //Clipboard.SetText(site.bodyName);
                         //Debugger.Break();
                     }
@@ -255,12 +261,9 @@ namespace SrvSurvey.net
                     if (site.getPoiStatus(_.Key) == SitePoiStatus.absent) poiAbsent.Add(_.Key);
                     if (site.getPoiStatus(_.Key) == SitePoiStatus.empty) poiEmpty.Add(_.Key);
                 }
-                poiPresent.Sort();
-                poiAbsent.Sort();
-                poiEmpty.Sort();
-                var sitePP = string.Join(',', poiPresent);
-                var sitePA = string.Join(',', poiAbsent);
-                var sitePE = string.Join(',', poiEmpty);
+                var sitePP = string.Join(',', poiPresent.Order());
+                var sitePA = string.Join(',', poiAbsent.Order());
+                var sitePE = string.Join(',', poiEmpty.Order());
 
                 var sumSitePoi = poiPresent.Count + poiAbsent.Count + poiEmpty.Count;
                 var sumPubDataPoi = (site.pubData.pp?.Split(",").Length ?? 0) + (site.pubData.pa?.Split(",").Length ?? 0) + (site.pubData.pe?.Split(",").Length ?? 0);

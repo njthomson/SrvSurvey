@@ -8,8 +8,8 @@
     "lat": -14.801762,
     "long": -101.44075
   },
-  "pa": "c1,c2,c6,c7,p10,p2,p4,p5,p6,p8,py2,py3,t1,t2",
-  "pp": "c3,c4,c5,p1,p11,p12,p3,p7,p9,py1,py4,py5,py6,t3",
+  "pa": "c1,c2,c6,c7,p10,p13,p14,p16,p17,p19,p2,p21,p22,p23,p4,p5,p6,p8,py2,py3,t1,t2,t4",
+  "pp": "c13,c14,c3,c4,c5,p1,p11,p12,p15,p18,p20,p26,p3,p7,p9,py1,py4,py5,py6,t3",
   "og": "ABCD",
   "ao": [
     "A10-re,or-#20-",
