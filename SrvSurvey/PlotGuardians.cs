@@ -1546,8 +1546,9 @@ namespace SrvSurvey
 
             foreach (var poi in poiToRender)
             {
+                var isObelisk = poi.type == POIType.obelisk || poi.type == POIType.brokeObelisk;
                 // skip obelisks in groups not in this site
-                if (formEditMap?.tabs.SelectedIndex != 2 && siteData.obeliskGroups.Count > 0 && (poi.type == POIType.obelisk || poi.type == POIType.brokeObelisk) && !string.IsNullOrEmpty(poi.name) && !siteData.obeliskGroups.Contains(poi.name[0])) continue;
+                if (formEditMap?.tabs.SelectedIndex != 2 && siteData.obeliskGroups.Count > 0 && isObelisk && !string.IsNullOrEmpty(poi.name) && !siteData.obeliskGroups.Contains(poi.name[0])) continue;
 
                 var poiStatus = siteData.getPoiStatus(poi.name);
 
@@ -1581,15 +1582,19 @@ namespace SrvSurvey
                 var y = pt.Y - commanderOffset.Y;
                 var d = Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
 
-
-                var validNearestUnknown = poiStatus == SitePoiStatus.unknown && d < nearestUnknownDist && (isRuinsPoi(poi.type, false)
-                    || (Game.settings.enableEarlyGuardianStructures && !siteData.isRuins && poi.type != POIType.obelisk && poi.type != POIType.brokeObelisk));
+                // status is unknown, it's closer and not an obelisk
+                var validNearestUnknown = poiStatus == SitePoiStatus.unknown && d < nearestUnknownDist && !isObelisk;
+                    // && (isRuinsPoi(poi.type, false) || (Game.settings.enableEarlyGuardianStructures && !siteData.isRuins && poi.type != POIType.obelisk && poi.type != POIType.brokeObelisk));
                 // only target Relic Towers when in SRV
                 if (validNearestUnknown && poi.type == POIType.relic && game.vehicle != ActiveVehicle.SRV)
                     validNearestUnknown = false;
+                // it's a present closer relic without a heading (structures only)
+                if (poi.type == POIType.relic && poiStatus == SitePoiStatus.present && !siteData.isRuins && d < nearestUnknownDist && siteData.getRelicHeading(poi.name) == null)
+                    validNearestUnknown = true;
+                // target obelisks trump above conditions
                 if (targetObelisk != null)
                     validNearestUnknown = poi.name.Equals(targetObelisk, StringComparison.OrdinalIgnoreCase);
-                //if (poiStatus == SitePoiStatus.unknown && d < nearestUnknownDist && (isRuinsPoi(poi.type, false) || (Game.settings.enableEarlyGuardianStructures && !siteData.isRuins && poi.type != POIType.obelisk && poi.type != POIType.brokeObelisk)))
+
                 if (validNearestUnknown)
                 {
                     nearestUnknownPoi = poi;
@@ -1597,7 +1602,7 @@ namespace SrvSurvey
                     nearestUnknownPt = pt;
                 }
 
-                if ((poi.type == POIType.obelisk || poi.type == POIType.brokeObelisk) && d < this.nearestObeliskDist)
+                if (isObelisk && d < this.nearestObeliskDist)
                     this.nearestObeliskDist = d;
 
                 var selectPoi = d < nearestDist && (isRuinsPoi(poi.type, true) || (Game.settings.enableEarlyGuardianStructures) && poi.type != POIType.brokeObelisk);
@@ -1607,7 +1612,7 @@ namespace SrvSurvey
                     selectPoi = false;
 
                 // (obelisks are not selectable unless on foot or SRV)
-                if (selectPoi && (poi.type == POIType.obelisk || poi.type == POIType.brokeObelisk) && (game.vehicle != ActiveVehicle.Foot && game.vehicle != ActiveVehicle.SRV))
+                if (selectPoi && isObelisk && (game.vehicle != ActiveVehicle.Foot && game.vehicle != ActiveVehicle.SRV))
                     selectPoi = false;
 
                 // (relic towers are not selectable unless on foot or SRV)
@@ -1722,12 +1727,13 @@ namespace SrvSurvey
                     if (string.IsNullOrEmpty(action) && this.nearestPoi.type == POIType.relic && poiStatus != SitePoiStatus.absent)
                     {
                         // show the relic tower heading (individual or site general)
-                        if (siteData.relicHeadings.ContainsKey(this.nearestPoi.name))
-                            action = $" ({siteData.relicHeadings[this.nearestPoi.name]}°)";
-                        else if (siteData.relicTowerHeading == -1)
-                            action = $" (unknown heading)";
-                        else
+                        var relicHeading = siteData.getRelicHeading(this.nearestPoi.name);
+                        if (relicHeading != null)
+                            action = $" ({relicHeading}°)";
+                        else if (siteData.isRuins)
                             action = $" ({siteData.relicTowerHeading}°)";
+                        else if (relicHeading == null || siteData.relicTowerHeading == -1)
+                            action = $" (unknown heading)";
                     }
                     footerBrush = poiStatus == SitePoiStatus.unknown || nextStatusDifferent ? GameColors.brushCyan : GameColors.brushGameOrange;
                     footerTxt = $"{this.nearestPoi.type} {this.nearestPoi.name}: {poiStatus} {action}";
@@ -1747,10 +1753,12 @@ namespace SrvSurvey
 
         private void drawHeader(int confirmedRelics, int countRelics, int confirmedPuddles, int countPuddles)
         {
+            var status = siteData.getCompletionStatus();
+
             if (confirmedRelics < countRelics || confirmedPuddles < countPuddles)
             {
                 // how many relic and puddles remain
-                this.drawHeaderText($"Confirmed: {confirmedRelics}/{countRelics} relics, {confirmedPuddles}/{countPuddles} items", GameColors.brushCyan); // TODO: use this.drawAt for different colors?
+                this.drawHeaderText($"Survey: {status.percent} | {confirmedRelics}/{countRelics} relics, {confirmedPuddles}/{countPuddles} items", GameColors.brushCyan); // TODO: use this.drawAt for different colors?
             }
             else if (siteData.isRuins)
             {
@@ -1764,8 +1772,8 @@ namespace SrvSurvey
             {
                 // Structures...
                 var countRelicTowersPresent = siteData.poiStatus.Count(_ => _.Key.StartsWith('t') && _.Value == SitePoiStatus.present);
-                if (siteData.relicHeadings.Count < countRelicTowersPresent)
-                    this.drawHeaderText($"Need {countRelicTowersPresent - siteData.relicHeadings.Count} Relic Tower heading", GameColors.brushCyan);
+                if (status.countRelicsNeedingHeading > 0)
+                    this.drawHeaderText($"Need {status.countRelicsNeedingHeading} Relic Tower heading", GameColors.brushCyan);
                 else
                     this.drawHeaderText($"Structure {siteData.type}: survey complete", GameColors.brushGameOrange);
             }

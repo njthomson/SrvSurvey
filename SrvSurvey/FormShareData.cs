@@ -39,9 +39,11 @@ namespace SrvSurvey
         private void FormShareData_Load(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(Game.settings.lastFid)) throw new Exception("prepLocalDataForSharing with no lastFid?");
+            foreach (Control ctrl in this.Controls) ctrl.Enabled = false;
 
-            this.BeginInvoke(() =>
+            Task.Run(() =>
             {
+                // on a background thread ...
                 // prepare a folder
                 var folder = Path.Combine(shareFolder, Game.settings.lastFid);
                 if (Directory.Exists(folder)) Directory.Delete(folder, true);
@@ -51,10 +53,10 @@ namespace SrvSurvey
                 // copy all site files that have new data
                 var sites = GuardianSiteData.loadAllSites(false)
                     .Where(_ => _.hasDiscoveredData());
-
+                var siteNames = new List<string>();
                 foreach (var site in sites)
                 {
-                    list.Items.Add(site.displayName);
+                    siteNames.Add(site.displayName);
                     var newPath = Path.Combine(folder, Path.GetFileName(site.filepath));
                     File.Copy(site.filepath, newPath);
                 }
@@ -69,11 +71,16 @@ namespace SrvSurvey
                 if (File.Exists(this.zipFilepath)) File.Delete(this.zipFilepath);
                 ZipFile.CreateFromDirectory(folder, this.zipFilepath, CompressionLevel.SmallestSize, false);
 
-                Game.log($"{sites.Count()} sites ready to be shared: {this.zipFilepath}");
-
-                label1.Text = $"Congratulations on discovering new data for {sites.Count()} Guardian sites:";
-                txtZipFile.Text = this.zipFilepath;
-                txtZipFile.SelectionStart = this.zipFilepath.Length;
+                this.BeginInvoke(() =>
+                {
+                    // back on the UX thread
+                    Game.log($"{sites.Count()} sites ready to be shared: {this.zipFilepath}");
+                    label1.Text = $"Congratulations on discovering new data for {sites.Count()} Guardian sites:";
+                    txtZipFile.Text = this.zipFilepath;
+                    txtZipFile.SelectionStart = this.zipFilepath.Length;
+                    list.Items.AddRange(siteNames.ToArray());
+                    foreach (Control ctrl in this.Controls) ctrl.Enabled = true;
+                });
             });
         }
 

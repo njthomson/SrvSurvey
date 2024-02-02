@@ -115,24 +115,44 @@ namespace SrvSurvey
         public void init()
         {
             this.relicTowerNames = new List<string>();
+            this.poiObelisks = new List<SitePOI>();
+            this.poiSurvey = new List<SitePOI>();
+            this.poiRelics = new List<SitePOI>();
+
             foreach (var _ in this.poi)
             {
+                if (_.type == POIType.obelisk || _.type == POIType.brokeObelisk)
+                {
+                    this.poiObelisks.Add(_);
+                    continue;
+                }
+
+                this.poiSurvey.Add(_);
                 if (_.type == POIType.relic)
+                {
+                    this.poiRelics.Add(_);
                     this.relicTowerNames.Add(_.name);
-                else if (_.type != POIType.obelisk && _.type != POIType.brokeObelisk)
-                    this.countNonObelisks++;
+                }
+
+                if (_.type == POIType.casket || _.type == POIType.orb || _.type == POIType.tablet || _.type == POIType.totem || _.type == POIType.urn || _.type == POIType.emptyPuddle)
+                    this.countPuddles++;
             }
-            this.countNonObelisks += this.countRelicTowers;
         }
 
         [JsonIgnore]
         public List<string> relicTowerNames { get; private set; }
 
         [JsonIgnore]
-        public int countRelicTowers { get => relicTowerNames.Count; }
+        public List<SitePOI> poiObelisks;
 
         [JsonIgnore]
-        public int countNonObelisks { get; private set; }
+        public List<SitePOI> poiSurvey;
+
+        [JsonIgnore]
+        public List<SitePOI> poiRelics;
+
+        [JsonIgnore]
+        public int countPuddles{ get; private set; }
 
         public string nextNameForNewPoi(POIType poiType)
         {

@@ -57,9 +57,9 @@
             label1.AutoSize = true;
             label1.Location = new Point(12, 9);
             label1.Name = "label1";
-            label1.Size = new Size(332, 15);
+            label1.Size = new Size(330, 15);
             label1.TabIndex = 0;
-            label1.Text = "Congratulations on discovering new data for X Guardian sites:";
+            label1.Text = "Congratulations on discovering new data for ? Guardian sites:";
             // 
             // list
             // 
@@ -122,11 +122,12 @@
             txtZipFile.ReadOnly = true;
             txtZipFile.Size = new Size(510, 23);
             txtZipFile.TabIndex = 3;
-            txtZipFile.Text = "C:\\Users\\grinn\\AppData\\Roaming\\SrvSurvey\\SrvSurvey\\1.1.0.0.share-F123456.zip";
+            txtZipFile.Text = "...";
             // 
             // btnOpenDiscord
             // 
             btnOpenDiscord.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnOpenDiscord.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
             btnOpenDiscord.Location = new Point(283, 261);
             btnOpenDiscord.Name = "btnOpenDiscord";
             btnOpenDiscord.Size = new Size(158, 23);
@@ -138,6 +139,7 @@
             // button1
             // 
             button1.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            button1.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
             button1.Location = new Point(345, 186);
             button1.Name = "button1";
             button1.Size = new Size(177, 23);

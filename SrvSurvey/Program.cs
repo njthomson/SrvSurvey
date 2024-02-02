@@ -1,4 +1,5 @@
 using SrvSurvey.game;
+using System.IO.Compression;
 using System.Reflection;
 
 namespace SrvSurvey
@@ -185,6 +186,11 @@ namespace SrvSurvey
         {
             try
             {
+                // make a .zip backup of everything before beginning
+                var datepart = DateTime.Now.ToString("yyyyMMdd_HHmmss");
+                var zipBackupPath = Path.GetFullPath(Path.Combine(dataRootFolder, "..", $"pre-migration-backup-{datepart}.zip"));
+                ZipFile.CreateFromDirectory(dataRootFolder, zipBackupPath, CompressionLevel.SmallestSize, false);
+
                 Game.log($"migrateToNewDataFolder: old data into common folder: {Program.dataFolder} ...");
                 Directory.CreateDirectory(Program.dataFolder);
 

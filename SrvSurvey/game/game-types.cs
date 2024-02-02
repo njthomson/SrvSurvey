@@ -711,18 +711,25 @@ namespace SrvSurvey.game
         }
         private Dictionary<string, int> _relicTowerHeadings;
 
-        public Dictionary<string, SitePoiStatus> getPoiStatus()
+        [JsonIgnore]
+        public Dictionary<string, SitePoiStatus> poiStatus
         {
-            var poiStatus = new Dictionary<string, SitePoiStatus>();
+            get
+            {
+                if (this._poiStatus == null)
+                {
+                    this._poiStatus = new Dictionary<string, SitePoiStatus>();
 
-            // status of all POI
-            var allPoi = new List<string>();
-            if (this.pp != null) this.pp.Split(",").ToList().ForEach(_ => poiStatus[_] = SitePoiStatus.present);
-            if (this.pa != null) this.pa.Split(",").ToList().ForEach(_ => poiStatus[_] = SitePoiStatus.absent);
-            if (this.pe != null) this.pe.Split(",").ToList().ForEach(_ => poiStatus[_] = SitePoiStatus.empty);
-
-            return poiStatus;
+                    // status of all POI
+                    var allPoi = new List<string>();
+                    if (this.pp != null) this.pp.Split(",").ToList().ForEach(_ => this._poiStatus[_] = SitePoiStatus.present);
+                    if (this.pa != null) this.pa.Split(",").ToList().ForEach(_ => this._poiStatus[_] = SitePoiStatus.absent);
+                    if (this.pe != null) this.pe.Split(",").ToList().ForEach(_ => this._poiStatus[_] = SitePoiStatus.empty);
+                }
+                return this._poiStatus;
+            }
         }
+        private Dictionary<string, SitePoiStatus> _poiStatus;
 
         public bool isSurveyComplete()
         {
@@ -739,11 +746,10 @@ namespace SrvSurvey.game
             if (this.ll == null) return false;
 
             // status for all POI
-            var poiStatus = this.getPoiStatus();
-            if (poiStatus.Count < template.countNonObelisks) return false;
+            if (this.poiStatus.Count < template.poiSurvey.Count) return false;
 
             // structures: all present relic towers have a heading
-            if (!this.isRuins && this.relicTowerHeadings.Count < poiStatus?.Keys.Count(_ => template.relicTowerNames.Contains(_))) return false;
+            if (!this.isRuins && this.relicTowerHeadings.Count < this.poiStatus?.Keys.Count(_ => template.relicTowerNames.Contains(_))) return false;
 
             return true;
         }

@@ -493,7 +493,6 @@ namespace SrvSurvey.game
         public bool isSurveyComplete()
         {
             if (this.type == SiteType.Unknown || !SiteTemplate.sites.ContainsKey(this.type)) return false;
-            var template = SiteTemplate.sites[this.type];
 
             // the site heading
             if (this.siteHeading == -1) return false;
@@ -504,39 +503,87 @@ namespace SrvSurvey.game
             // live lat / long
             if (this.location == null) return false;
 
-            // status for all POI
-            if (this.poiStatus.Count < template.countNonObelisks) return false;
-
-            // structures: all present relic towers have a heading
-            if (!isRuins && this.relicHeadings.Count < this.poiStatus?.Keys.Count(_ => template.relicTowerNames.Contains(_))) return false;
-
-            return true;
+            var status = this.getCompletionStatus();
+            return status.isComplete;
         }
 
         public bool hasDiscoveredData()
         {
             // Yes - if ...
+
+            // we have some raw POIs
+            if (this.rawPoi?.Count > 0) return true;
+
             if (this.pubData == null) this.loadPub();
-            var site = this!;
 
             // pubData is missing and we have: site.relic headings, location
             if (pubData!.sh == -1 && this.siteHeading != -1) return true;
             if (this.isRuins && pubData.rh == -1 && this.relicTowerHeading != -1) return true;
             if (pubData.ll == null && this.location != null) return true;
 
-            // we have more POI than pubData
-            var sumPubDataPoi = (this.pubData.pp?.Split(",").Length ?? 0) + (this.pubData.pa?.Split(",").Length ?? 0) + (this.pubData.pe?.Split(",").Length ?? 0);
-            if (this.poiStatus.Count > pubData.getPoiStatus().Count) return true;
+            // we have some POI status not in pubData or is different
+            if (this.poiStatus.Keys.Any(_ => !pubData.poiStatus.ContainsKey(_) || pubData.poiStatus[_] != this.poiStatus[_])) return true;
 
-            // we have more relic tower headings than pubData
-            if (this.relicHeadings.Count > pubData.relicTowerHeadings.Count) return true;
+            // we have some relic heading not in pubData (ignore number differences at this time)
+            if (this.relicHeadings.Keys.Any(_ => !pubData.relicTowerHeadings.ContainsKey(_))) return true;
 
             // obelisk group names differ
-            if (pubData.og != string.Join("", site.obeliskGroups)) return true;
+            if (pubData.og != string.Join("", this.obeliskGroups)) return true;
 
             // ignore differences in activeObelisks
 
             return false;
+        }
+
+        public SurveyCompletionStatus getCompletionStatus()
+        {
+            this.loadPub();
+            var status = new SurveyCompletionStatus();
+            var template = SiteTemplate.sites[this.type];
+
+            // process all POIs from template and raw
+            var poiToProcess = this.rawPoi == null
+                ? template.poiSurvey
+                : template.poiSurvey.Union(this.rawPoi);
+
+            foreach (var poi in poiToProcess)
+            {
+                var poiStatus = this.getPoiStatus(poi.name);
+                if (poiStatus != SitePoiStatus.unknown)
+                    status.score += 1;
+
+                if (poi.type == POIType.relic)
+                {
+                    if (poiStatus == SitePoiStatus.present)
+                    {
+                        status.countRelicsPresent += 1;
+
+                        if (this.getRelicHeading(poi.name) == null)
+                            status.countRelicsNeedingHeading += 1;
+                        else
+                            status.score += 1;
+                    }
+                }
+                else if (poi.type == POIType.casket || poi.type == POIType.orb || poi.type == POIType.tablet || poi.type == POIType.totem || poi.type == POIType.urn)
+                {
+                    status.countPuddlesPresent += 1;
+                }
+            }
+
+            if (this.siteHeading != -1) status.score += 1;
+            if (this.location != null) status.score += 1;
+
+            // compute max score
+            status.maxScore = poiToProcess.Count() + 2; // +1 for site heading, +1 for location
+
+            if (this.isRuins)
+                status.maxScore += 1; // one relic heading for site
+            else
+                status.maxScore += status.countRelicsPresent; // one relic heading per each tower
+
+            status.progress = (int)(100.0 / status.maxScore * status.score);
+            status.isComplete = status.progress == 100;
+            return status;
         }
 
         #region old migration 
@@ -834,7 +881,6 @@ namespace SrvSurvey.game
                 obj.WriteTo(writer);
             }
         }
-
     }
 
     // keeping for migration purposes only
@@ -1001,6 +1047,7 @@ namespace SrvSurvey.game
         public string type;
         public string status;
         public string extra;
+        public string bluePrint;
 
         public static SystemSettlementSummary forRuins(SystemData systemData, SystemBody body, int idx)
         {
@@ -1020,13 +1067,9 @@ namespace SrvSurvey.game
             {
                 var siteData = GuardianSiteData.Load(body.name, idx, true);
                 if (siteData == null)
-                {
                     summary.status = "Survey: not started";
-                }
                 else if (!siteData.isSurveyComplete())
-                {
                     summary.status = "Survey: incomplete";
-                }
             }
 
             // add required Ram Tah logs, if relevant
@@ -1065,26 +1108,21 @@ namespace SrvSurvey.game
 
             // add blue print type
             if (siteType == GuardianSiteData.SiteType.Robolobster || siteType == GuardianSiteData.SiteType.Squid || siteType == GuardianSiteData.SiteType.Stickyhand)
-                summary.status = "Blue print: fighter";
+                summary.bluePrint = "Blue print: fighter";
             else if (siteType == GuardianSiteData.SiteType.Turtle)
-                summary.status = "Blue print: module";
+                summary.bluePrint = "Blue print: module";
             else if (siteType == GuardianSiteData.SiteType.Bear || siteType == GuardianSiteData.SiteType.Hammerbot || siteType == GuardianSiteData.SiteType.Bowl)
-                summary.status = "Blue print: weapon";
+                summary.bluePrint = "Blue print: weapon";
 
-            // TODO: ...
-            //// show survey status if not complete
-            //if (!site.surveyComplete)
-            //{
-            //    var siteData = GuardianSiteData.Load(body.name, idx, true);
-            //    if (siteData == null)
-            //    {
-            //        summary.status += "\r\nSurvey: not started";
-            //    }
-            //    else if (!siteData.isSurveyComplete())
-            //    {
-            //        summary.status += "\r\nSurvey: incomplete";
-            //    }
-            //}
+            // show survey status if not complete
+            if (!site.surveyComplete)
+            {
+                var siteData = GuardianSiteData.Load(body.name, summary.name);
+                if (siteData == null)
+                    summary.status = "Survey: not started";
+                else if (!siteData.isSurveyComplete())
+                    summary.status = "Survey: incomplete";
+            }
 
             // add required Ram Tah logs, if relevant
             var cmdr = Game.activeGame?.cmdr;
@@ -1105,6 +1143,18 @@ namespace SrvSurvey.game
 
             return summary;
         }
+    }
+
+    internal class SurveyCompletionStatus
+    {
+        public int score;
+        public int maxScore;
+        public int countRelicsPresent;
+        public int countPuddlesPresent;
+        public int countRelicsNeedingHeading;
+        public int progress;
+        public bool isComplete;
+        public string percent { get => this.progress.ToString("0") + "%"; }
     }
 }
 

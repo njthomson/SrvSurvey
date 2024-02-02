@@ -127,10 +127,10 @@ namespace SrvSurvey
 
         private void loadMap(GuardianSiteData? newSite)
         {
+            var oldSiteType = this.siteData?.type;
             this.siteData = newSite;
             this.siteData?.loadPub();
             this.siteType = this.siteData?.type ?? GuardianSiteData.SiteType.Unknown;
-
 
             // are we loading a template?
             switch (comboSite.Text)
@@ -148,6 +148,14 @@ namespace SrvSurvey
                 case "Robolobster Template": siteType = GuardianSiteData.SiteType.Robolobster; break;
                 case "Squid Template": siteType = GuardianSiteData.SiteType.Squid; break;
                 case "Stickyhand Template": siteType = GuardianSiteData.SiteType.Stickyhand; break;
+            }
+
+            if (oldSiteType != this.siteType)
+            {
+                if (this.siteType == GuardianSiteData.SiteType.Alpha || this.siteType == GuardianSiteData.SiteType.Beta || this.siteType == GuardianSiteData.SiteType.Gamma || this.siteType == GuardianSiteData.SiteType.Stickyhand)
+                    scale = 0.5f;
+                else
+                    scale = 1f;
             }
 
             if (siteType != GuardianSiteData.SiteType.Unknown)
@@ -179,36 +187,16 @@ namespace SrvSurvey
             // reset some numbers
             this.dragOffset.X = -map.Width / 2f;
             this.dragOffset.Y = -map.Height / 2f;
-            scale = 0.5f;
             splitter.Panel2Collapsed = this.siteData == null || !Game.settings.mapShowNotes;
             txtNotes.Text = this.siteData?.notes;
 
             showStatus();
             map.Invalidate();
 
-            var countTowers = newSite == null
-                ? template.poi.Count(_ => _.type == POIType.relic)
-                : newSite.poiStatus.Count(_ => _.Key.StartsWith("t") && _.Value == SitePoiStatus.present);
-            var countItems = newSite == null
-                ? template.poi.Count(_ => _.type != POIType.relic)
-                : newSite.poiStatus.Count(_ => !_.Key.StartsWith("t") && (_.Value == SitePoiStatus.present || _.Value == SitePoiStatus.empty));
 
-            var siteHeading = this.siteData?.siteHeading > 0 - 1 ? $"{this.siteData.siteHeading}°" : "?";
-            var relicTowerHeading = this.siteData?.relicTowerHeading > 0 ? $"{this.siteData.relicTowerHeading}°" : "?";
-            lblStatus.Text = $"Relic Towers: {countTowers}, puddles: {countItems}, site heading: {siteHeading}, relic tower heading: {relicTowerHeading}";
             lblObeliskGroups.Text = "Obelisk groups: " + (siteData?.obeliskGroups == null ? "" : string.Join("", siteData!.obeliskGroups));
 
             this.showSurveyProgress();
-
-            //if (this.siteData != null && this.siteData.siteHeading >= 0 && this.siteData.relicTowerHeading >= 0)
-            //{
-            //    var sh = this.siteData.siteHeading;
-            //    var th = this.siteData.relicTowerHeading;
-            //    if (sh < th) sh += 360;
-            //    var d = sh - th;
-            //    if (d > 180) d = 360 - d;
-            //    lblStatus.Text += $", diff: {d}°";
-            //}
         }
 
         private void showSurveyProgress()
@@ -220,42 +208,18 @@ namespace SrvSurvey
                 return;
             }
 
-            var countRelics = siteData.poiStatus.Count(_ => _.Key.StartsWith('t') && _.Value == SitePoiStatus.present);
-
-            // site heading
-            var total = +1
-                // count of non-obelisk POIs
-                + template.countNonObelisks;
-            // count relic towers again (for their headings)
-            //+ countRelics;
-            if (siteData.isRuins)
-                total++; // for relic tower headings
-            else
-                total += countRelics;
-
-            var actual = siteData.poiStatus.Count;
-            if (siteData.siteHeading >= 0) actual++;
-            if (siteData.isRuins && siteData.relicTowerHeading >= 0) actual++;
-            if (!siteData.isRuins) actual += siteData.relicHeadings.Count;
-            //    actual += siteData.relicHeadings.Count;
-            //else if (siteData.relicTowerHeading >= 0)
-            //    actual += countRelics;
-
-            var progress = (100.0 / total * actual).ToString("0");
-            lblSurveyCompletion.Text = $"Survey: {progress}%";
-            progressSurvey.Maximum = total;
-            progressSurvey.Value = actual;
-
-            var countTowers = siteData.poiStatus.Count(_ => _.Key.StartsWith("t") && _.Value == SitePoiStatus.present);
-            var countItems = siteData.poiStatus.Count(_ => !_.Key.StartsWith("t") && (_.Value == SitePoiStatus.present || _.Value == SitePoiStatus.empty));
+            var status = siteData.getCompletionStatus();
             var siteHeading = this.siteData.siteHeading > -1 ? $"{this.siteData.siteHeading}°" : "?";
 
-            lblStatus.Text = $"Relic Towers: {countTowers}, puddles: {countItems}, site heading: {siteHeading}";
+            lblStatus.Text = $"Relic Towers: {status.countRelicsPresent}, puddles: {status.countPuddlesPresent}, site heading: {siteHeading}";
             if (siteData.isRuins)
             {
                 var relicTowerHeading = this.siteData.relicTowerHeading > 0 ? $"{this.siteData.relicTowerHeading}°" : "?";
                 lblStatus.Text += $", relic tower heading: {relicTowerHeading}";
             }
+            lblSurveyCompletion.Text = $"Survey: {status.percent}";
+            progressSurvey.Maximum = status.maxScore;
+            progressSurvey.Value = status.score;
         }
 
         private void getAllSurveyedRuins()
@@ -663,14 +627,14 @@ namespace SrvSurvey
                     nearestPt = new PointF(pt.X, pt.Y);
                 }
 
-                var poiStatus = siteData?.getPoiStatus(poi.name) ?? SitePoiStatus.unknown;
+                var poiStatus = siteData?.getPoiStatus(poi.name) ?? SitePoiStatus.present;
 
                 if (poi.type == POIType.relic)
                     drawRelicTower(g, pt, poi, siteData, poiStatus);
                 else if (poi.type == POIType.pylon)
-                    drawPylon(g, pt, poi, siteData);
+                    drawPylon(g, pt, poi, siteData, poiStatus);
                 else if (poi.type == POIType.component)
-                    drawComponent(g, pt, poi, siteData);
+                    drawComponent(g, pt, poi, siteData, poiStatus);
                 else if (poi.type == POIType.obelisk || poi.type == POIType.brokeObelisk)
                     drawObelisk(g, pt, poiStatus);
                 else if (poi.type == POIType.orb || poi.type == POIType.casket || poi.type == POIType.tablet || poi.type == POIType.totem || poi.type == POIType.urn || poi.type == POIType.unknown)
@@ -765,13 +729,19 @@ namespace SrvSurvey
                     new PointF(-6, 0),
                     new PointF(0, -3),
                 };
-            var pp = new Pen(Color.DodgerBlue) // SkyBlue ?
+            var pp = new Pen(GameColors.Map.colorUnknown)
             {
                 Width = 2,
                 LineJoin = LineJoin.Bevel,
                 StartCap = LineCap.Triangle,
                 EndCap = LineCap.Triangle,
             };
+
+            switch (poiStatus)
+            {
+                case SitePoiStatus.present: pp.Color = Color.DodgerBlue; break; // SkyBlue ?
+                case SitePoiStatus.absent: pp.Color = GameColors.Map.colorAbsent; break;
+            }
 
             g.TranslateTransform(-pt.X, -pt.Y);
             g.RotateTransform((float)+rot);
@@ -800,7 +770,7 @@ namespace SrvSurvey
                     new PointF(+5, -4),
                     new PointF(0, +4),
                 };
-            var pp = new Pen(Color.Lime)
+            var pp = new Pen(GameColors.Map.colorUnknown)
             {
                 Width = 1,
                 DashStyle = DashStyle.Dash,
@@ -808,6 +778,12 @@ namespace SrvSurvey
                 StartCap = LineCap.Triangle,
                 EndCap = LineCap.Triangle,
             };
+
+            switch (poiStatus)
+            {
+                case SitePoiStatus.present: pp.Color = Color.Lime; break;
+                case SitePoiStatus.absent: pp.Color = GameColors.Map.colorAbsent; break;
+            }
 
             rot -= 45;
             g.TranslateTransform(-pt.X, -pt.Y);

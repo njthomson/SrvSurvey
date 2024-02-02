@@ -91,6 +91,13 @@ namespace SrvSurvey
                     if (this.dtx > sz.Width) sz.Width = this.dtx;
 
                     // draw status (smaller font)
+                    if (site.bluePrint != null)
+                    {
+                        this.dtx = 20f;
+                        this.dty += this.drawTextAt("- " + site.bluePrint, brush, GameColors.fontSmall).Height + 2;
+                        if (this.dtx > sz.Width) sz.Width = this.dtx;
+                    }
+
                     if (site.status != null)
                     {
                         this.dtx = 20f;

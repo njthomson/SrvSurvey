@@ -198,8 +198,10 @@ namespace SrvSurvey
                 public static Brush brush = Brushes.LightGray;
             }
 
-            private static Pen penUnknown = new Pen(Color.LightSlateGray, 3);
-            private static Pen penAbsent = new Pen(Color.DarkSlateGray, 3); // new Pen(Color.DarkRed, 3);
+            public static Color colorUnknown = Color.FromArgb(128, Color.LightSlateGray);
+            public static Color colorAbsent = Color.FromArgb(128, Color.DarkSlateGray);
+            private static Pen penUnknown = new Pen(colorUnknown, 3);
+            private static Pen penAbsent = new Pen(colorAbsent, 3); // new Pen(Color.DarkRed, 3);
             private static Pen penEmpty = new Pen(Color.Yellow, 3);
             public static Dictionary<POIType, Dictionary<SitePoiStatus, Pen>> pens = new Dictionary<POIType, Dictionary<SitePoiStatus, Pen>>
             {

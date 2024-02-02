@@ -449,6 +449,7 @@ namespace SrvSurvey.canonn
             get => $"{this.systemName} {this.bodyName} {this.idx}";
         }
 
+        /*
         public void merge(GuardianSiteData data)
         {
             // TODO: revisit 
@@ -469,8 +470,7 @@ namespace SrvSurvey.canonn
             if (!this.surveyComplete)
                 this.surveyComplete = data.isSurveyComplete();
         }
-
-
+        */
     }
 
     #region spansh types
@@ -512,7 +512,7 @@ namespace SrvSurvey.canonn
         public int idx;
         public bool surveyComplete;
 
-        [ JsonIgnore ]
+        [JsonIgnore]
         public bool isRuins { get => siteType == "Alpha" || siteType == "Beta" || siteType == "Gamma"; }
     }
 
@@ -532,6 +532,7 @@ namespace SrvSurvey.canonn
         public double relatedStructureDist;
         public string filepath;
         public bool hasDiscoveredData;
+        public SurveyCompletionStatus? surveyStatus;
 
         public string fullBodyName { get => $"{this.systemName} {this.bodyName}"; }
 
@@ -606,7 +607,10 @@ namespace SrvSurvey.canonn
             this.notes += data.notes;
 
             if (!this.surveyComplete)
-                this.surveyComplete = data.isSurveyComplete();
+            {
+                this.surveyStatus = data.getCompletionStatus();
+                this.surveyComplete = this.surveyStatus.isComplete;
+            }
 
             this.filepath = data.filepath;
             this.hasDiscoveredData = data.hasDiscoveredData();
