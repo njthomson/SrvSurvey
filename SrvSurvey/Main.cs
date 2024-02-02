@@ -634,7 +634,7 @@ namespace SrvSurvey
                     {
                         Program.showPlotter<PlotGuardians>();
                         Program.showPlotter<PlotGuardianStatus>();
-                        if (Game.settings.autoShowRamTah && game.cmdr.ramTahActive)
+                        if (Game.settings.autoShowRamTah && (this.game.systemSite.isRuins && game.cmdr.decodeTheRuinsMissionActive == TahMissionStatus.Active || !this.game.systemSite.isRuins && game.cmdr.decodeTheLogsMissionActive == TahMissionStatus.Active))
                             Program.showPlotter<PlotRamTah>();
 
                         Program.closePlotter<PlotGrounded>();

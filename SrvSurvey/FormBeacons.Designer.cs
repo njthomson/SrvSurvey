@@ -99,9 +99,9 @@
             btnShare.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
             btnShare.Location = new Point(736, 36);
             btnShare.Name = "btnShare";
-            btnShare.Size = new Size(177, 23);
+            btnShare.Size = new Size(190, 23);
             btnShare.TabIndex = 18;
-            btnShare.Text = "Share your discovered data";
+            btnShare.Text = "Share your discovered data **";
             btnShare.UseVisualStyleBackColor = true;
             btnShare.Visible = false;
             btnShare.Click += btnShare_Click;

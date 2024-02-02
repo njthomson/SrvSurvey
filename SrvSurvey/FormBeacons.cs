@@ -174,7 +174,7 @@ namespace SrvSurvey
                 if (entry.hasDiscoveredData)
                 {
                     countNewData++;
-                    surveyComplete = "discovered data";
+                    surveyComplete += " **"; // discovered data";
                 }
 
                 var subItems = new ListViewItem.ListViewSubItem[]
