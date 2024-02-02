@@ -560,7 +560,7 @@ namespace SrvSurvey.game
 
                         if (this.getRelicHeading(poi.name) == null)
                             status.countRelicsNeedingHeading += 1;
-                        else
+                        else if (!this.isRuins)
                             status.score += 1;
                     }
                 }
@@ -577,7 +577,10 @@ namespace SrvSurvey.game
             status.maxScore = poiToProcess.Count() + 2; // +1 for site heading, +1 for location
 
             if (this.isRuins)
+            {
                 status.maxScore += 1; // one relic heading for site
+                if (this.relicTowerHeading != -1) status.score += 1;
+            }
             else
                 status.maxScore += status.countRelicsPresent; // one relic heading per each tower
 

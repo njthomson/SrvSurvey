@@ -104,6 +104,9 @@ namespace SrvSurvey
 
         private double getOpacity()
         {
+            if (game.mode == GameMode.Landed)
+                return 0;
+
             if (PlotVertialStripe.mode == Mode.RelicTower)
                 return 0.8;
 

@@ -1731,7 +1731,7 @@ namespace SrvSurvey
                         if (relicHeading != null)
                             action = $" ({relicHeading}°)";
                         else if (siteData.isRuins)
-                            action = $" ({siteData.relicTowerHeading}°)";
+                            action = $" (site: {siteData.relicTowerHeading}°)";
                         else if (relicHeading == null || siteData.relicTowerHeading == -1)
                             action = $" (unknown heading)";
                     }

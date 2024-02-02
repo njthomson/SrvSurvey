@@ -193,7 +193,6 @@ namespace SrvSurvey
             showStatus();
             map.Invalidate();
 
-
             lblObeliskGroups.Text = "Obelisk groups: " + (siteData?.obeliskGroups == null ? "" : string.Join("", siteData!.obeliskGroups));
 
             this.showSurveyProgress();
@@ -498,24 +497,24 @@ namespace SrvSurvey
 
             if (this.siteData != null)
             {
+                if (siteData.isRuins && this.siteData.relicTowerHeading != -1)
+                {
+                    var relicHeading = (float)(this.siteData.relicTowerHeading - siteData.siteHeading);
+                    if (relicHeading != -1)
+                    {
+                        var rot = relicHeading;
+                        g.RotateTransform(+rot);
+                        g.DrawLine(GameColors.Map.penCentralRelicTowerHeading, 0, -map.Height * 2, 0, 0);
+                        g.RotateTransform(-rot);
+                    }
+                }
+
                 var heading = (float)this.siteData.siteHeading;
                 if (heading >= 0)
                 {
                     g.RotateTransform(-heading);
-                    g.DrawLine(Pens.DarkRed, 0, -map.Height * 2, 0, 0);
+                    g.DrawLine(GameColors.Map.penCentralCompass, 0, -map.Height * 2, 0, 0);
                     g.RotateTransform(+heading);
-                }
-
-                if (siteData.isRuins && this.siteData.relicTowerHeading != -1)
-                {
-                    heading = (float)(this.siteData.relicTowerHeading - siteData.siteHeading);
-                    if (heading != -1)
-                    {
-                        var rot = heading;
-                        g.RotateTransform(+rot);
-                        g.DrawLine(Pens.DarkCyan, 0, -map.Height * 2, 0, 0);
-                        g.RotateTransform(-rot);
-                    }
                 }
             }
 
@@ -660,6 +659,8 @@ namespace SrvSurvey
             g.FillEllipse(brush, rect);
 
             g.DrawEllipse(pen, rect);
+            if (poiStatus == SitePoiStatus.unknown)
+                g.DrawEllipse(GameColors.penPoiPuddleUnconfirmed, rect);
         }
 
         private static void drawRelicTower(Graphics g, PointF pt, SitePOI? poi, GuardianSiteData? siteData, SitePoiStatus? poiStatus = SitePoiStatus.present)
@@ -682,11 +683,17 @@ namespace SrvSurvey
 
             g.TranslateTransform(-pt.X, -pt.Y);
 
+            if (poiStatus == SitePoiStatus.unknown)
+            {
+                var d = 8;
+                var rect = new RectangleF(-d, -d, d * 2, d * 2);
+                g.DrawEllipse(GameColors.penPoiRelicUnconfirmed, rect);
+            }
+
             if (rot != null)
             {
                 g.RotateTransform((float)+rot);
-                var pp = new Pen(Color.FromArgb(32, Color.Blue), 10);
-                g.DrawLine(pp, 0, -2000, 0, 2000);
+                g.DrawLine(GameColors.Map.penRelicTowerHeading, 0, -2000, 0, 2000);
             }
 
             g.FillPolygon(brush, points);

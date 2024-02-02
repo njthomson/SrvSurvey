@@ -198,6 +198,10 @@ namespace SrvSurvey
                 public static Brush brush = Brushes.LightGray;
             }
 
+            public static Pen penCentralCompass = new Pen(Color.FromArgb(128, Color.DarkRed), 4) { EndCap = LineCap.RoundAnchor, StartCap = LineCap.Round };
+            public static Pen penCentralRelicTowerHeading = new Pen(Color.FromArgb(128, Color.DarkRed), 4) { EndCap = LineCap.RoundAnchor, StartCap = LineCap.Round };
+            public static Pen penRelicTowerHeading = new Pen(Color.FromArgb(32, Color.Blue), 10) { EndCap = LineCap.Round, StartCap = LineCap.Round };
+
             public static Color colorUnknown = Color.FromArgb(128, Color.LightSlateGray);
             public static Color colorAbsent = Color.FromArgb(128, Color.DarkSlateGray);
             private static Pen penUnknown = new Pen(colorUnknown, 3);
