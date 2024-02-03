@@ -744,9 +744,9 @@ namespace SrvSurvey
     class Cargo : JournalEntry
     {
         // { "timestamp":"2024-01-04T19:16:45Z", "event":"Cargo", "Vessel":"SRV", "Count":3, "Inventory":[ { "Name":"ancienttablet", "Name_Localised":"Guardian Tablet", "Count":1, "Stolen":0 }, { "Name":"ancienturn", "Name_Localised":"Guardian Urn", "Count":1, "Stolen":0 }, { "Name":"ancienttotem", "Name_Localised":"Guardian Totem", "Count":1, "Stolen":0 } ] }
-        public string Vessel;
-        public int Count;
-        public List<InventoryItem> Inventory;
+        public string Vessel { get; set; }
+        public int Count { get; set; }
+        public List<InventoryItem> Inventory { get; set; }
     }
 
     class InventoryItem

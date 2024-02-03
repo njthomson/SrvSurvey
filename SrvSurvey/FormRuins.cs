@@ -535,44 +535,26 @@ namespace SrvSurvey
 
         private void drawCommander(Graphics g)
         {
-            if (game.systemSite == null) return;
+            if (game?.systemSite == null || game?.status == null || game.isShutdown || this.siteData == null) return;
 
             g.ResetTransform();
             g.TranslateTransform(mapCenter.X - dragOffset.X, mapCenter.Y - dragOffset.Y);
             g.ScaleTransform(this.scale, this.scale);
-            g.RotateTransform(180);
 
-            var cp = calcCmdrToSite();
-            if (cp != null)
-                drawCommander(g, (PointF)cp, 10f);
-        }
-
-        public static PointF? calcCmdrToSite()
-        {
-            if (Game.activeGame?.systemSite == null) return null;
-
-            var siteData = Game.activeGame.systemSite;
-
-            var cd = Util.getDistance(Status.here, siteData.location, (decimal)Game.activeGame.systemBody!.radius);
+            var cd = Util.getDistance(Status.here, this.siteData.location, (decimal)this.game.systemBody!.radius);
             var cA = DecimalEx.PiHalf + Util.getBearingRad(siteData.location, Status.here) - (decimal)Util.degToRad(siteData.siteHeading);
 
-            return new PointF(
+            var cp = new PointF(
                 (float)(DecimalEx.Cos(cA) * cd),
                 (float)(DecimalEx.Sin(cA) * cd)
             );
-        }
 
-        private void drawCommander(Graphics g, PointF cp, float r)
-        {
-            if (game?.systemSite == null || game?.status == null || game.isShutdown) return;
+            g.TranslateTransform(-cp.X, -cp.Y);
+            g.RotateTransform(game.status.Heading - siteData.siteHeading - 180);
+            g.FillPath(GameColors.shiningCmdrBrush, GameColors.shiningCmdrPath);
 
-            var p1 = GameColors.penLime4;
-            var rect = new RectangleF(cp.X - r, cp.Y - r, r * 2, r * 2);
-            g.DrawEllipse(p1, rect);
-
-
-            var pt = Util.rotateLine(game.status.Heading - game.systemSite.siteHeading - 180, 20);
-            g.DrawLine(GameColors.penLime4, cp.X, cp.Y, cp.X + pt.X, cp.Y - pt.Y);
+            g.DrawEllipse(GameColors.penLime4, -10, -10, 20, 20);
+            g.DrawLine(GameColors.penLime4, 0, 0, 0, 20);
         }
 
         private void drawArtifacts(Graphics g)
@@ -637,7 +619,7 @@ namespace SrvSurvey
                 else if (poi.type == POIType.obelisk || poi.type == POIType.brokeObelisk)
                     drawObelisk(g, pt, poiStatus);
                 else if (poi.type == POIType.orb || poi.type == POIType.casket || poi.type == POIType.tablet || poi.type == POIType.totem || poi.type == POIType.urn || poi.type == POIType.unknown)
-                    drawPuddle(g, pt, poi.type, poiStatus);
+                    drawPuddle(g, pt, poi.type, this.siteData, poiStatus);
                 else
                 {
                     Game.log($"Unexpected poi.type: {poi.type}");
@@ -649,12 +631,12 @@ namespace SrvSurvey
                 g.DrawEllipse(GameColors.penCyan4, nearestPt.X - 14, nearestPt.Y - 14, 28, 28);
         }
 
-        private static void drawPuddle(Graphics g, PointF pt, POIType poiType, SitePoiStatus? poiStatus = SitePoiStatus.present)
+        private static void drawPuddle(Graphics g, PointF pt, POIType poiType, GuardianSiteData? siteData = null, SitePoiStatus? poiStatus = SitePoiStatus.present)
         {
             var brush = GameColors.Map.brushes[poiType][poiStatus ?? SitePoiStatus.present];
             var pen = GameColors.Map.pens[poiType][poiStatus ?? SitePoiStatus.present];
 
-            var d = 5;
+            var d = siteData?.isRuins == true && poiStatus != SitePoiStatus.unknown? 8 : 5;
             var rect = new RectangleF(pt.X - d, pt.Y - d, d * 2, d * 2);
             g.FillEllipse(brush, rect);
 
@@ -836,7 +818,7 @@ namespace SrvSurvey
             drawPuddle(g, new PointF(tp.X - 10, tp.Y - 10), POIType.urn);
 
             drawString(g, "Empty puddle");
-            drawPuddle(g, new PointF(tp.X - 10, tp.Y - 10), POIType.totem, SitePoiStatus.empty);
+            drawPuddle(g, new PointF(tp.X - 10, tp.Y - 10), POIType.totem, null, SitePoiStatus.empty);
 
             drawString(g, "Site heading");
             g.DrawLine(Pens.DarkRed, tp.X - 15, tp.Y - 6, tp.X - 5, tp.Y - 14);
@@ -892,15 +874,7 @@ namespace SrvSurvey
         {
             if (siteData == null) return;
 
-            if (newStatus == SitePoiStatus.unknown)
-            {
-                if (siteData.poiStatus.ContainsKey(name))
-                    siteData.poiStatus.Remove(name);
-            }
-            else
-            {
-                siteData.poiStatus[name] = newStatus;
-            }
+            siteData.poiStatus[name] = newStatus;
 
             // update footer counts
 
@@ -930,11 +904,6 @@ namespace SrvSurvey
         private void mnuUnknown_Click(object sender, EventArgs e)
         {
             setPoiStatus(this.nearestPoi.name, SitePoiStatus.unknown);
-        }
-
-        private void label4_DoubleClick(object sender, EventArgs e)
-        {
-
         }
 
         private void label4_MouseDoubleClick(object sender, MouseEventArgs e)

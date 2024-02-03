@@ -243,7 +243,6 @@
             label4.Size = new Size(62, 15);
             label4.TabIndex = 0;
             label4.Text = "Select site:";
-            label4.DoubleClick += label4_DoubleClick;
             label4.MouseDoubleClick += label4_MouseDoubleClick;
             // 
             // comboSiteType

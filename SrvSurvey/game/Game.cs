@@ -116,6 +116,7 @@ namespace SrvSurvey.game
         public JournalWatcher? journals;
         public Status status { get; private set; }
         public NavRouteFile navRoute { get; private set; }
+        public CargoFile cargoFile { get; private set; }
 
         public SystemStatus systemStatus;
 
@@ -129,8 +130,6 @@ namespace SrvSurvey.game
         public CommanderSettings cmdr;
 
         public SystemPoi? canonnPoi = null;
-        public List<InventoryItem> cargo = new List<InventoryItem>();
-        public List<InventoryItem> shipCargo = new List<InventoryItem>();
 
         public Game(string? cmdr)
         {
@@ -144,6 +143,7 @@ namespace SrvSurvey.game
             // track status file changes and force an immediate read
             this.status = new Status(true);
             this.navRoute = NavRouteFile.load(true);
+            this.cargoFile = CargoFile.load(true);
 
             // initialize from a journal file
             var filepath = JournalFile.getCommanderJournalBefore(cmdr, true, DateTime.MaxValue);
@@ -430,7 +430,7 @@ namespace SrvSurvey.game
                 && this.isMode(GameMode.InSrv, GameMode.OnFoot, GameMode.Landed, GameMode.Flying, GameMode.InFighter)
                 && !this.hidePlottersFromCombatSuits
                 && this.systemBody != null
-                //&& this.status.SelectedWeapon != "$humanoid_sampletool_name;"
+            //&& this.status.SelectedWeapon != "$humanoid_sampletool_name;"
             ;
         }
 
@@ -492,7 +492,6 @@ namespace SrvSurvey.game
             if (cmdr != null)
             {
                 this.initSystemData();
-                this.initCargoData();
 
                 LeaveBody? leaveBodyEvent = null;
                 journals.walk(-1, true, (entry) =>
@@ -643,41 +642,6 @@ namespace SrvSurvey.game
 
             this.systemData.Save();
             log($"Game.initSystemData: complete '{this.systemData.name}' ({this.systemData.address}), bodyCount: {this.systemData.bodyCount}");
-        }
-
-        private void initCargoData()
-        {
-            // try to find a location from recent journal items
-            if (cmdr == null || this.journals == null) return;
-
-            log($"Game.initCargoData: rewind to last Cargo");
-
-            var playCargo = new List<JournalEntry>();
-            Cargo? lastCargoEntry = null;
-
-            this.journals.walk(-1, true, (entry) =>
-            {
-                if (lastCargoEntry == null && Game.cargoJournalEventTypes.Contains(entry.@event))
-                    playCargo.Add(entry);
-
-                var cargoEvent = entry as Cargo;
-                if (lastCargoEntry == null && cargoEvent?.Inventory != null)
-                    lastCargoEntry = cargoEvent;
-
-                return false;
-            });
-
-            log($"Game.initCargoData: Processing {playCargo.Count} cargo journal items forwards...");
-            playCargo.Reverse();
-            foreach (var entry in playCargo)
-            {
-                log($"Game.initCargoData: cargo playForwards '{entry.@event}' ({entry.timestamp})");
-                this.onJournalEntry((dynamic)entry);
-            }
-
-            if (this.cargo == null) this.cargo = new List<InventoryItem>();
-            log($"Game.initCargoData: Current cargo:\r\n  " + string.Join("\r\n  ", this.cargo));
-            log($"Game.initCargoData: Ship cargo:\r\n  " + string.Join("\r\n  ", this.shipCargo));
         }
 
         private void getLastTouchdownDeep()
@@ -983,47 +947,8 @@ namespace SrvSurvey.game
             nameof(CargoTransfer),
         };
 
-        private void onJournalEntry(Cargo entry)
-        {
-            // ignore events without details of the actual cargo, but use them to check our tracking is working correctly
-            if (entry.Count == 0 && entry.Vessel == "SRV")
-            {
-                // we are entering the SRV - which starts without any cargo
-                this.cargo.Clear();
-                Program.invalidateActivePlotters();
-            }
-            else if (entry.Inventory == null)
-            {
-                var sumCount = this.cargo.Sum(_ => _.Count);
-                if (entry.Count != sumCount)
-                    Game.log($"Why is Cargo inventory count not matching?\r\nEntry.count: {entry.Count}, sumCount: {sumCount}\r\n  " + string.Join("\r\n  ", this.cargo));
-            }
-            else
-            {
-                Game.log($"Updating inventory for '{entry.Vessel}', count: {entry.Count}");
-                if (entry.Vessel == "Ship")
-                    this.shipCargo = new List<InventoryItem>(entry.Inventory);
-
-                if (this.vehicle == ActiveVehicle.SRV && entry.Vessel == "SRV" || this.vehicle == ActiveVehicle.MainShip && entry.Vessel == "Ship")
-                    this.cargo = new List<InventoryItem>(entry.Inventory);
-                else 
-                    Game.log($"What vehicle '{this.vehicle}'?");
-
-                //else
-                //{
-                //    this.cargo = new List<InventoryItem>(entry.Inventory);
-                //    if (this.vehicle == ActiveVehicle.MainShip)
-                //        this.shipCargo = new List<InventoryItem>(entry.Inventory);
-                //}
-                Program.invalidateActivePlotters();
-            }
-        }
-
         private void onJournalEntry(DockSRV entry)
         {
-            this.cargo = new List<InventoryItem>(this.shipCargo);
-            log($"Game.DockSRV: new cargo:\r\n  " + string.Join("\r\n  ", this.cargo));
-
             this.systemData?.prepSettlements();
         }
 
@@ -1031,11 +956,11 @@ namespace SrvSurvey.game
         {
             Game.log($"CollectCargo: {entry.Type_Localised} ({entry.Type})");
 
-            var inventoryItem = this.cargo.FirstOrDefault(_ => _.Name.Equals(entry.Type, StringComparison.OrdinalIgnoreCase));
+            var inventoryItem = this.cargoFile.Inventory.FirstOrDefault(_ => _.Name.Equals(entry.Type, StringComparison.OrdinalIgnoreCase));
             if (inventoryItem == null)
             {
                 inventoryItem = new InventoryItem(entry.Type, entry.Type_Localised);
-                this.cargo.Add(inventoryItem);
+                this.cargoFile.Inventory.Add(inventoryItem);
             }
 
             inventoryItem.Count++;
@@ -1044,7 +969,7 @@ namespace SrvSurvey.game
 
         private void onJournalEntry(EjectCargo entry)
         {
-            var inventoryItem = this.cargo.FirstOrDefault(_ => _.Name.Equals(entry.Type, StringComparison.OrdinalIgnoreCase));
+            var inventoryItem = this.cargoFile.Inventory.FirstOrDefault(_ => _.Name.Equals(entry.Type, StringComparison.OrdinalIgnoreCase));
             if (inventoryItem == null)
             {
                 Game.log($"EjectCargo: How can we eject cargo we do not have? {entry.Type_Localised} ({entry.Type})");
@@ -1054,7 +979,7 @@ namespace SrvSurvey.game
                 inventoryItem.Count -= entry.Count;
                 Game.log($"EjectCargo: {entry.Count} x {entry.Type_Localised} ({entry.Type}), new count: {inventoryItem.Count}");
                 if (inventoryItem.Count == 0)
-                    this.cargo.Remove(inventoryItem);
+                    this.cargoFile.Inventory.Remove(inventoryItem);
             }
             Program.invalidateActivePlotters();
         }
@@ -1065,45 +990,25 @@ namespace SrvSurvey.game
             foreach (var transferItem in entry.Transfers)
             {
                 // TODO: check to / from ship?
-                var inventoryItem = this.cargo.FirstOrDefault(_ => _.Name.Equals(transferItem.Type, StringComparison.OrdinalIgnoreCase));
+                var inventoryItem = this.cargoFile.Inventory.FirstOrDefault(_ => _.Name.Equals(transferItem.Type, StringComparison.OrdinalIgnoreCase));
                 if (inventoryItem == null)
                 {
                     inventoryItem = new InventoryItem(transferItem.Type, transferItem.Type_Localised);
-                    this.cargo.Add(inventoryItem);
+                    this.cargoFile.Inventory.Add(inventoryItem);
                 }
 
                 var delta = transferItem.Count;
-                if (this.vehicle == ActiveVehicle.SRV && transferItem.Direction == "toship")
+                if ((this.vehicle == ActiveVehicle.SRV && transferItem.Direction == "toship") || (this.vehicle == ActiveVehicle.MainShip && transferItem.Direction == "tocarrier"))
                 {
                     inventoryItem.Count -= delta;
-
-                    var shipItem = this.shipCargo.FirstOrDefault(_ => _.Name.Equals(inventoryItem.Name, StringComparison.OrdinalIgnoreCase));
-                    if (shipItem == null)
-                    {
-                        shipItem = new InventoryItem(inventoryItem.Name, inventoryItem.Name_Localised);
-                        this.shipCargo.Add(shipItem);
-                    }
-                    shipItem!.Count += delta;
                 }
-                else if (this.vehicle == ActiveVehicle.SRV && transferItem.Direction == "tosrv")
+                else if ((this.vehicle == ActiveVehicle.SRV && transferItem.Direction == "tosrv") || (this.vehicle == ActiveVehicle.MainShip && transferItem.Direction == "toship"))
                 {
                     inventoryItem.Count += delta;
-
-                    //var shipItem = this.shipCargo.FirstOrDefault(_ => _.Name.Equals(inventoryItem.Name, StringComparison.OrdinalIgnoreCase));
-                    //if (shipItem == null) this.shipCargo.Add(inventoryItem);
-                    //shipItem!.Count -= delta;
                 }
-                else
-                {
-                    //Debugger.Break();
-                }
-                // TODO: tranfers to FleetCarrier's?
-
-
             }
             Program.invalidateActivePlotters();
-
-            log($"Game.CargoTransfer: Current cargo:\r\n  " + string.Join("\r\n  ", this.cargo));
+            log($"Game.CargoTransfer: Current cargo:\r\n  " + string.Join("\r\n  ", this.cargoFile.Inventory));
         }
 
         private static Dictionary<string, string> inventoryItemNameMap = new Dictionary<string, string>()
@@ -1141,7 +1046,7 @@ namespace SrvSurvey.game
             if (inventoryItemNameMap.ContainsKey(itemName))
                 itemName = inventoryItemNameMap[itemName];
 
-            var inventoryItem = this.cargo?.FirstOrDefault(_ => _.Name.Equals(itemName, StringComparison.OrdinalIgnoreCase));
+            var inventoryItem = this.cargoFile.Inventory.FirstOrDefault(_ => _.Name.Equals(itemName, StringComparison.OrdinalIgnoreCase));
             return inventoryItem;
         }
 

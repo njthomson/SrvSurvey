@@ -870,6 +870,8 @@ namespace SrvSurvey
                 newScale = this.customScale;
             else if (this.nearestObeliskDist < 30 && (game.vehicle == ActiveVehicle.SRV || game.vehicle == ActiveVehicle.Foot))
                 newScale = 3f;
+            else if (game.vehicle == ActiveVehicle.Foot)
+                newScale = 2f;
             else
                 newScale = this.siteData.isRuins ? 0.65f : 1.5f;
 
@@ -1584,7 +1586,7 @@ namespace SrvSurvey
 
                 // status is unknown, it's closer and not an obelisk
                 var validNearestUnknown = poiStatus == SitePoiStatus.unknown && d < nearestUnknownDist && !isObelisk;
-                    // && (isRuinsPoi(poi.type, false) || (Game.settings.enableEarlyGuardianStructures && !siteData.isRuins && poi.type != POIType.obelisk && poi.type != POIType.brokeObelisk));
+                // && (isRuinsPoi(poi.type, false) || (Game.settings.enableEarlyGuardianStructures && !siteData.isRuins && poi.type != POIType.obelisk && poi.type != POIType.brokeObelisk));
                 // only target Relic Towers when in SRV
                 if (validNearestUnknown && poi.type == POIType.relic && game.vehicle != ActiveVehicle.SRV)
                     validNearestUnknown = false;
@@ -1808,10 +1810,11 @@ namespace SrvSurvey
             if (formEditMap != null && formEditMap.checkHideAllPoi.Checked)
                 return;
 
-            var rot = poi.rot + this.siteData.siteHeading;
+            var poiStatus = this.siteData.getPoiStatus(poi.name);
 
-            // diameters: relics are bigger then puddles
+            // diameters: relics are bigger then puddles (and bigger still at ruins)
             var d = poi.type == POIType.relic ? 16f : 10f;
+            if (siteData.isRuins && poiStatus != SitePoiStatus.unknown) d *= 1.6f;
             var dd = d / 2;
 
             if (formEditMap != null && formEditMap.checkHighlightAll.Checked)
@@ -1821,374 +1824,196 @@ namespace SrvSurvey
                 g.DrawEllipse(Pens.AntiqueWhite, -pt.X - dd - 2, -pt.Y - dd - 2, d + 4, d + 4);
             }
 
-            // at structures - do not render missing POIs
-            var poiStatus = this.siteData.getPoiStatus(poi.name);
-            if (!this.siteData.isRuins && poiStatus == SitePoiStatus.absent)
-                return;
-
-            if (!this.siteData.isRuins && poiStatus == SitePoiStatus.unknown && poi.type != POIType.obelisk && poi.type != POIType.brokeObelisk)
+            if (poiStatus == SitePoiStatus.unknown && poi.type != POIType.obelisk && poi.type != POIType.brokeObelisk)
             {
-                // anything unknown gets a blue circle underneath
-                var b = new SolidBrush(Color.FromArgb(160, Color.DarkSlateBlue));
-                g.FillEllipse(b, -pt.X - dd - 5, -pt.Y - dd - 5, d + 10, d + 10);
-                // DarkOliveGreen / DarkSlateBlue
+                // anything unknown gets a blue circle underneath with dots
+                g.FillEllipse(GameColors.brushAroundPoiUnknown, -pt.X - dd - 5, -pt.Y - dd - 5, d + 10, d + 10);
+                g.DrawEllipse(new Pen(Color.FromArgb(96, Color.Cyan), 1f) { DashStyle = DashStyle.Dot, }, -pt.X - dd - 4, -pt.Y - dd - 4, d + 8, d + 8);
             }
-
-            // choose pen color
-            var pen = this.getPoiPen(poi);
-            if (poi.type == POIType.relic && !this.siteData.isRuins && this.siteData.relicHeadings.ContainsKey(poi.name))
-                pen = GameColors.penPoiRelicPresent;
-
-            // temporary highlight a particular POI
-            var highlight = poi.name.StartsWith("?") || string.Compare(poi.name, this.highlightPoi, true) == 0;
-            if (highlight)
-            {
-                pen = GameColors.penCyan8;
-                //g.DrawLine(GameColors.penCyan2Dotted, 0, 0, -sz.Width, -sz.Height);
-            }
-
-            if (poi.type == POIType.obelisk || poi.type == POIType.brokeObelisk)
-            {
-                var obelisk = siteData.getActiveObelisk(poi.name);
-                var ramTahActive = game.cmdr.ramTahActive;
-                var ramTahNeeded = ramTahActive && obelisk != null && game.systemSite?.ramTahObelisks?.ContainsKey(obelisk.msg) == true;
-
-                var pp = new Pen(Color.DarkCyan) //!ramTahActive || ramTahNeeded ? Color.DarkCyan : Color.Gray)
-                {
-                    Width = 0.5f,
-                    LineJoin = LineJoin.Bevel,
-                    StartCap = LineCap.Triangle,
-                    EndCap = LineCap.Triangle,
-                };
-                if (obelisk != null)
-                {
-                    pp.Color = Color.Cyan;
-                    pp.Width = 0.5f;
-                }
-
-                rot += 167.5m;
-                //rot += 35;
-                g.TranslateTransform(-pt.X, -pt.Y);
-                g.RotateTransform((float)rot);
-
-                if (poi.type == POIType.obelisk && obelisk != null)
-                {
-                    // show dithered arc for active obelisks - changing the colour if scanned or is relevant for Ram Tah
-                    if (obelisk.scanned)
-                        GameColors.shiningBrush.CenterColor = GameColors.Orange;
-                    else if (!ramTahNeeded && game.cmdr.ramTahActive)
-                        GameColors.shiningBrush.CenterColor = Color.LightGray;
-                    else
-                        GameColors.shiningBrush.CenterColor = GameColors.Cyan;
-
-                    g.FillPath(GameColors.shiningBrush, GameColors.shiningPath);
-                }
-
-                var points = poi.type == POIType.obelisk
-                    ? new PointF[] {
-                        new PointF(1 - 1.5f, 3.5f - 1.5f),
-                        new PointF(0 - 1.5f, 0 - 1.5f),
-                        new PointF(4 - 1.5f, 1 - 1.5f),
-                        new PointF(1 - 1.5f, 3.5f - 1.5f),
-                        //new PointF(.5f, -1.5f),
-                    }
-                    : new PointF[] {
-                        new PointF(1 - 1.5f, 4 - 1.5f),
-                        new PointF(0 - 1.5f, 0 - 1.5f),
-                        new PointF(4 - 1.5f, 1 - 1.5f),
-                        new PointF(1 - 1.5f, 4 - 1.5f),
-                    };
-
-                g.DrawLines(pp, points);
-
-                if (poi.type == POIType.obelisk)
-                {
-                    g.DrawLine(pp, 0.2f, 0, -0.5f, -1.2f);
-                    g.DrawLine(pp, 0.2f, 0, +1.5f, -0.8f);
-                }
-
-                g.RotateTransform((float)-rot);
-                g.TranslateTransform(+pt.X, +pt.Y);
-            }
-            else if (poi.type == POIType.pylon)
-            {
-                PointF[] points = {
-                    new PointF(0, -3),
-                    new PointF(+6, 0),
-                    new PointF(0, +3),
-                    new PointF(-6, 0),
-                    new PointF(0, -3),
-                };
-                var pp = new Pen(Color.DodgerBlue) // SkyBlue ?
-                {
-                    Width = 2,
-                    LineJoin = LineJoin.Bevel,
-                    StartCap = LineCap.Triangle,
-                    EndCap = LineCap.Triangle,
-                };
-
-                if (!this.siteData.isRuins && poiStatus == SitePoiStatus.unknown)
-                    pp.Color = GameColors.Cyan;
-
-                g.TranslateTransform(-pt.X, -pt.Y);
-                g.RotateTransform((float)+rot);
-
-                g.DrawLines(pp, points);
-                g.DrawLine(pp, 0, 0, 0, 3);
-
-                g.RotateTransform((float)-rot);
-                g.TranslateTransform(+pt.X, +pt.Y);
-            }
-            else if (poi.type == POIType.component)
-            {
-                PointF[] points = {
-                    new PointF(0, +1),
-                    new PointF(-2, -2),
-                    new PointF(+2, -2),
-                    new PointF(0, +1),
-                    new PointF(0, +4),
-                    new PointF(-5, -4),
-                    new PointF(+5, -4),
-                    new PointF(0, +4),
-                };
-                var pp = new Pen(Color.Lime)
-                {
-                    Width = 1,
-                    DashStyle = DashStyle.Dash,
-                    LineJoin = LineJoin.Bevel,
-                    StartCap = LineCap.Triangle,
-                    EndCap = LineCap.Triangle,
-                };
-
-                if (!this.siteData.isRuins && poiStatus == SitePoiStatus.unknown)
-                    pp.Color = GameColors.Cyan;
-
-                rot -= 45;
-                g.TranslateTransform(-pt.X, -pt.Y);
-                g.RotateTransform((float)+rot);
-
-                g.DrawLines(pp, points);
-
-                g.RotateTransform((float)-rot);
-                g.TranslateTransform(+pt.X, +pt.Y);
-            }
-            else if (siteData.isRuins)
-            {
-                // relic towers and items at ruins
-                g.DrawEllipse(pen, -pt.X - dd, -pt.Y - dd, d, d);
-            }
-            else if (poi.type == POIType.relic)
-            {
-                PointF[] points = {
-                    new PointF(0, -4),
-                    new PointF(-5, +4),
-                    new PointF(+5, +4),
-                    new PointF(0, -4),
-                };
-                var pp = new Pen(Color.DarkBlue)
-                {
-                    Width = 2,
-                    LineJoin = LineJoin.Bevel,
-                    StartCap = LineCap.Triangle,
-                    EndCap = LineCap.Triangle,
-                };
-
-                if (poiStatus == SitePoiStatus.unknown)
-                    pp.Color = GameColors.Cyan;
-
-                if (siteData.getRelicHeading(poi.name) == null)
-                    pp.Color = Color.Red;
-
-                rot = 0; // + game.status.Heading;
-                g.TranslateTransform(-pt.X, -pt.Y);
-                g.RotateTransform((float)+rot);
-
-                g.FillEllipse(Brushes.DarkCyan, -7, -6, 14, 14);
-                g.DrawLines(pp, points);
-                //g.DrawLine(pp, 0, 0, 0, -30);
-
-                g.RotateTransform((float)-rot);
-                g.TranslateTransform(+pt.X, +pt.Y);
-            }
-            else
-            {
-                //if (!this.siteData.poiStatus.ContainsKey(poi.name))
-                //    pen = GameColors.
-                //if (poi.type == POIType.relic && this.siteData.poiStatus.ContainsKey(poi.name))
-                //    pen = GameColors.penGameOrangeDim2;
-                //else 
-                if (poi.type != POIType.relic && poiStatus != SitePoiStatus.unknown)
-                    pen = poiStatus != SitePoiStatus.unknown
-                    ? GameColors.penGameOrangeDim2
-                    : Pens.LightCoral;
-
-                g.DrawEllipse(pen, -pt.X - dd, -pt.Y - dd, d, d);
-            }
-        }
-
-        private Pen getPoiPen(SitePOI poi)
-        {
-            SitePoiStatus status = siteData.getPoiStatus(poi.name);
 
             switch (poi.type)
             {
+                case POIType.obelisk:
+                case POIType.brokeObelisk:
+                    this.drawObelisk(poi, pt, poiStatus); break;
+                case POIType.pylon:
+                    this.drawPylon(poi, pt, poiStatus); break;
+                case POIType.component:
+                    this.drawComponent(poi, pt, poiStatus); break;
                 case POIType.relic:
-                    return status == SitePoiStatus.present
-                        ? GameColors.penPoiRelicPresent
-                        : status == SitePoiStatus.absent
-                            ? GameColors.penPoiRelicMissing
-                            : GameColors.penPoiRelicUnconfirmed;
-
-                case POIType.orb:
-                case POIType.casket:
-                case POIType.tablet:
-                case POIType.totem:
-                case POIType.urn:
-                    switch (status)
-                    {
-                        case SitePoiStatus.present: return GameColors.penPoiPuddlePresent;
-                        case SitePoiStatus.absent: return GameColors.penPoiPuddleMissing;
-                        case SitePoiStatus.unknown: return GameColors.penPoiPuddleUnconfirmed;
-                        case SitePoiStatus.empty: return GameColors.penYellow4;
-                        default: return Pens.Azure;
-                    }
-
+                    this.drawRelicTower(poi, pt, poiStatus); break;
                 default:
-                    return Pens.Magenta;
+                    this.drawPuddle(poi, pt, poiStatus); break;
             }
         }
 
-        private void drawArtifactsOLD()
+        private static PointF[] obeliskPoints = {
+            new PointF(1 - 1.5f, 3.5f - 1.5f),
+            new PointF(0 - 1.5f, 0 - 1.5f),
+            new PointF(4 - 1.5f, 1 - 1.5f),
+            new PointF(1 - 1.5f, 3.5f - 1.5f),
+        };
+        private static PointF[] brokeObeliskPoints = {
+            new PointF(1 - 1.5f, 4 - 1.5f),
+            new PointF(0 - 1.5f, 0 - 1.5f),
+            new PointF(4 - 1.5f, 1 - 1.5f),
+            new PointF(1 - 1.5f, 4 - 1.5f),
+        };
+
+        private void drawObelisk(SitePOI poi, PointF pt, SitePoiStatus poiStatus)
         {
-            g.ResetTransform();
-            g.TranslateTransform(mid.Width, mid.Height);
-            g.ScaleTransform(this.scale, this.scale);
-            g.RotateTransform(-game.status.Heading);
-            float x = commanderOffset.X;
-            float y = commanderOffset.Y;
+            var rot = poi.rot + this.siteData.siteHeading + 167.5m; // adjust for rotation of points by: 167.5m
 
-            //var pp = new PointF(
-            //    commanderOffset.X,// / this.scale,
-            //    commanderOffset.Y// / this.scale
-            //);
-            PointF[] pps = { new PointF(commanderOffset.X, commanderOffset.Y) };
-            g.TransformPoints(CoordinateSpace.Page, CoordinateSpace.World, pps);
-            var pp = pps[0];
+            g.TranslateTransform(-pt.X, -pt.Y);
+            g.RotateTransform((float)rot);
 
-            //var td = new TrackingDelta(game.nearBody.radius, siteData.location);
+            // show dithered arc for active obelisks - changing the colour if scanned or is relevant for Ram Tah
+            var obelisk = siteData.getActiveObelisk(poi.name);
+            if (poi.type == POIType.obelisk && obelisk != null)
+            {
+                var ramTahNeeded = game.cmdr.ramTahActive && game.systemSite?.ramTahObelisks?.ContainsKey(obelisk.msg) == true;
+                if (obelisk.scanned)
+                    GameColors.shiningBrush.CenterColor = GameColors.Orange;
+                else if (!ramTahNeeded && game.cmdr.ramTahActive)
+                    GameColors.shiningBrush.CenterColor = Color.LightGray;
+                else
+                    GameColors.shiningBrush.CenterColor = GameColors.Cyan;
 
-            //pp.X *= this.scale;
-            //pp.Y *= this.scale;
+                g.FillPath(GameColors.shiningBrush, GameColors.shiningPath);
+            }
 
-            //this.drawHeaderText($"?d? {pp}");
+            var points = poi.type == POIType.obelisk ? obeliskPoints : brokeObeliskPoints;
+            var pp = obelisk == null ? GameColors.penObelisk : GameColors.penObeliskActive;
+            g.DrawLines(pp, points);
 
-            // ** ** ** **
-            g.ResetTransform();
-            g.TranslateTransform(pp.X, pp.Y);
-            g.ScaleTransform(this.scale, this.scale);
-            g.RotateTransform(360 - game.status.Heading);
+            if (poi.type == POIType.obelisk)
+            {
+                g.DrawLine(pp, 0.2f, 0, -0.5f, -1.2f);
+                g.DrawLine(pp, 0.2f, 0, +1.5f, -0.8f);
+            }
 
-            //* BETA
-
-            //// Synuefe TP-F b44-0 CD 1-ruins-2:
-            //this.drawSitePoiOLD(151, 120, "casket");
-            //this.drawSitePoiOLD(134f, 196, "tablet");
-            //this.drawSitePoiOLD(122, 534, "totem");
-            //this.drawSitePoiOLD(125.6f, 606, "urn");
-            //this.drawSitePoiOLD(104f, 421, "tablet");
-            //this.drawSitePoiOLD(90.6f, 241, "casket");
-            //this.drawSitePoiOLD(141.4f, 538, "urn");
-            //this.drawSitePoiOLD(111.9f, 560, "urn");
-            //this.drawSitePoiOLD(26.5f, 367, "casket");
-            //this.drawSitePoiOLD(5.5f, 549, "orb");
-            //this.drawSitePoiOLD(357.8f, 496, "urn");
-            //this.drawSitePoiOLD(286.7f, 285, "urn");
-            //this.drawSitePoiOLD(258.1f, 544, "totem");
-            //this.drawSitePoiOLD(193.3f, 226, "casket");
-            //this.drawSitePoiOLD(181.7f, 499, "tablet");
-            //this.drawSitePoiOLD(298.7f, 625, "urn");
-
-            //// Synuefe LY-I b42-2 C 2-ruins-3:
-            //this.drawSitePoiOLD(215.4f, 565, "totem");
-            //this.drawSitePoiOLD(200.7f, 485, "orb");
-            //this.drawSitePoiOLD(208.1f, 415, "tablet");
-            //this.drawSitePoiOLD(179.3f, 394, "casket");
-            //this.drawSitePoiOLD(169.2f, 276, "orb");
-            //this.drawSitePoiOLD(337f, 126, "orb");
-            //this.drawSitePoiOLD(300f, 183, "totem");
-
-            //// Col 173 Sector PF-E b28-3 B 1, Ruins #2
-            //this.drawSitePoiOLD(214.7f, 258, "totem");
-            //this.drawSitePoiOLD(230.8f, 506, "casket");
-            //this.drawSitePoiOLD(193.7f, 617, "urn");
-            //this.drawSitePoiOLD(276.8f, 436, "urn");
-
-
-            // relics ...
-
-            //// Synuefe TP-F b44-0 CD 1-ruins-2:
-            //this.drawSitePoiOLD(80.8f, 408, "relic");
-            //this.drawSitePoiOLD(236.8f, 612, "relic"); // leaning
-            //this.drawSitePoiOLD(151, 358, "relic");
-            //this.drawSitePoiOLD(35.5f, 515, "relic");
-            //this.drawSitePoiOLD(292.3f, 413, "relic"); // leaning
-            //// this.drawSitePoi(292, 378, "relic"); // ? ish
-
-            //// Synuefe LY-I b42-2 C 2-ruins-3:
-            //this.drawSitePoiOLD(196.3f, 378, "relic");
-            //this.drawSitePoiOLD(328.8f, 358, "relic");
-
-            //// Col 173 Sector PF-E b28-3 B 1, Ruins #2
-            //this.drawSitePoiOLD(253.2f, 390, "relic");
-
-            // */
-
-            /* ALPHA 
-
-            // relics ...
-            this.scale = 2f;
-            // 
-            this.drawSitePoi(32f, 80, "relic");
-            this.drawSitePoi(160f, 250, "relic");
-            this.drawSitePoi(176f, 147, "relic");
-            this.drawSitePoi(351.6f, 502, "relic");
-
-            // */
-
-
-
-            // -- -- -- --
-            //this.drawFooterText($"?c? {(int)pp.X},{(int)pp.Y}");
-            //this.drawHeaderText($"?d? {commanderOffset}");
-
+            g.RotateTransform((float)-rot);
+            g.TranslateTransform(+pt.X, +pt.Y);
         }
 
-        private void drawSitePoiOLD(float angle, float dist, string type)
+        private static PointF[] pylonPoints = {
+            new PointF(0, -3),
+            new PointF(+6, 0),
+            new PointF(0, +3),
+            new PointF(-6, 0),
+            new PointF(0, -3),
+        };
+
+        private void drawPylon(SitePOI poi, PointF pt, SitePoiStatus poiStatus)
         {
-            var d = type == "relic" ? 16f : 10f;
+            var rot = poi.rot + this.siteData.siteHeading;
+
+            g.TranslateTransform(-pt.X, -pt.Y);
+            g.RotateTransform((float)+rot);
+
+            var pp = GameColors.Map.pens[POIType.pylon][poiStatus];
+            g.DrawLines(pp, pylonPoints);
+            g.DrawLine(pp, 0, 0, 0, 3);
+
+            g.RotateTransform((float)-rot);
+            g.TranslateTransform(+pt.X, +pt.Y);
+        }
+
+        private static PointF[] componentPoints = {
+            new PointF(0, +2),
+            new PointF(-2, -1),
+            new PointF(+2, -1),
+            new PointF(0, +2),
+            new PointF(0, +5),
+            new PointF(-5, -3),
+            new PointF(+5, -3),
+            new PointF(0, +5),
+        };
+
+        private void drawComponent(SitePOI poi, PointF pt, SitePoiStatus poiStatus)
+        {
+            var rot = poi.rot + this.siteData.siteHeading - 45;
+
+            g.TranslateTransform(-pt.X, -pt.Y);
+            g.RotateTransform((float)+rot);
+
+            var pp = GameColors.Map.pens[POIType.component][poiStatus];
+            g.DrawLines(pp, componentPoints);
+
+            g.RotateTransform((float)-rot);
+            g.TranslateTransform(+pt.X, +pt.Y);
+        }
+
+        private static PointF[] relicPoints = {
+            new PointF(-5, -3),
+            new PointF(+5, -3),
+            new PointF(0, +6),
+            new PointF(-5, -3),
+        };
+
+        private void drawRelicTower(SitePOI poi, PointF pt, SitePoiStatus poiStatus)
+        {
+            // draw dashed blue line at ruins only
+            if (poiStatus == SitePoiStatus.unknown && siteData.isRuins)
+                g.DrawEllipse(GameColors.penPoiRelicUnconfirmed, -pt.X - 8, -pt.Y - 8, 16, 16);
+
+            var towerHeading = siteData.getRelicHeading(poi.name);
+            var rot = towerHeading == null ? 0 : towerHeading - 180;
+
+            // if at ruins, with site relic heading - use that over nothing
+            if (towerHeading == null && siteData.isRuins && siteData.relicTowerHeading != -1)
+                rot = siteData.relicTowerHeading - 180;
+
+            g.TranslateTransform(-pt.X, -pt.Y);
+            g.RotateTransform((float)+rot);
+
+            var bb = poiStatus == SitePoiStatus.present
+                ? GameColors.brushPoiPresent
+                : GameColors.brushPoiMissing;
+            g.FillPolygon(bb, relicPoints);
+
+            var pp = poiStatus == SitePoiStatus.present
+                ? GameColors.penPoiRelicPresent
+                : GameColors.penPoiRelicMissing;
+            g.DrawPolygon(pp, relicPoints);
+
+            if (towerHeading != null)
+                g.DrawLine(GameColors.Map.penRelicTowerHeading, 0, -2000, 0, 2000);
+
+            g.RotateTransform((float)-rot);
+            g.TranslateTransform(+pt.X, +pt.Y);
+        }
+
+        private void drawPuddle(SitePOI poi, PointF pt, SitePoiStatus poiStatus)
+        {
+            var d = 10f;
+            if (siteData.isRuins && poiStatus != SitePoiStatus.unknown) d *= 1.5f;
             var dd = d / 2;
 
-            var p = type == "relic"
-                ? new Pen(Color.CornflowerBlue, 4) { DashStyle = DashStyle.Dash, }
-                : new Pen(Color.PeachPuff, 2) { DashStyle = DashStyle.Dot, };
+            if (poiStatus == SitePoiStatus.unknown)
+            {
+                // draw dotted blue line
+                g.DrawEllipse(GameColors.penPoiPuddleUnconfirmed, -pt.X - dd, -pt.Y - dd, d, d);
+            }
+            else if (poiStatus == SitePoiStatus.absent)
+            {
+                if (!siteData.isRuins) { d -= 2; dd -= 1; } // make them a bit smaller at structures
 
-            var sz = Util.rotateLine(
-                180m - (decimal)siteData.siteHeading - (decimal)angle,
-                (decimal)dist);
-            g.DrawEllipse(p, -sz.X - dd, -sz.Y - dd, d, d);
-        }
+                g.FillEllipse(GameColors.brushPoiMissing, -pt.X - dd, -pt.Y - dd, d, d);
+                g.DrawEllipse(new Pen(Color.FromArgb(128, 128, 128, 128)), -pt.X - dd, -pt.Y - dd, d, d);
+            }
+            else if (poiStatus == SitePoiStatus.absent)
+            {
+                if (!siteData.isRuins) { d -= 2; dd -= 1; } // make them a bit smaller at structures
 
-        private void drawSiteSummaryFooter(string msg)
-        {
-            if (g == null) return;
-
-            // draw heading text (center bottom)
-            g.ResetTransform();
-            g.ResetClip();
-            var sz = g.MeasureString(msg, GameColors.fontSmall);
-            var tx = mid.Width - (sz.Width / 2);
-            var ty = this.Height - sz.Height - 6;
-            g.DrawString(msg, GameColors.fontSmall, GameColors.brushGameOrange, tx, ty);
+                g.FillEllipse(GameColors.brushPoiMissing, -pt.X - dd, -pt.Y - dd, d, d);
+                g.DrawEllipse(new Pen(Color.FromArgb(128, 128, 128, 128)), -pt.X - dd, -pt.Y - dd, d, d);
+            }
+            else // puddles present or empty
+            {
+                g.FillEllipse(GameColors.Map.brushes[poi.type][poiStatus], -pt.X - dd, -pt.Y - dd, d, d);
+                g.DrawEllipse(GameColors.Map.pens[poi.type][poiStatus], -pt.X - dd, -pt.Y - dd, d, d);
+            }
         }
 
         private void drawSiteTypeHelper()

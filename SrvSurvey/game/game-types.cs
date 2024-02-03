@@ -106,7 +106,7 @@ namespace SrvSurvey.game
         BaryCenter,
         Star,
         Planet,
-        PlanteryRing,
+        PlanetaryRing,
         StellarRing,
         Station,
         AsteroidCluster,

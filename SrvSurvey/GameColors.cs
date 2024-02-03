@@ -36,10 +36,21 @@ namespace SrvSurvey
                 CenterPoint = new PointF(0, 0)
             };
 
+            GameColors.shiningCmdrPath = new GraphicsPath();
+            shiningCmdrPath.AddPie(-75, -75, 150, 150, 40, 100);
+
+            GameColors.shiningCmdrBrush = new PathGradientBrush(shiningCmdrPath)
+            {
+                CenterColor = Color.FromArgb(160, 0, 80, 0),
+                SurroundColors = new Color[] { Color.Transparent },
+                CenterPoint = new PointF(0, 0)
+            };
         }
 
         public static GraphicsPath shiningPath;
         public static PathGradientBrush shiningBrush;
+        public static GraphicsPath shiningCmdrPath;
+        public static PathGradientBrush shiningCmdrBrush;
 
         public static Color LimeIsh = Color.FromArgb(200, Color.Lime);
         //public static Color Orange = Color.FromArgb(255, 172, 81, 1); // ?? Color.FromArgb(255, 186, 113, 4);
@@ -181,14 +192,26 @@ namespace SrvSurvey
 
 
         public static Pen penPoiRelicUnconfirmed = new Pen(Color.Cyan, 4) { DashStyle = DashStyle.Dash, }; // CornflowerBlue ?
-        public static Pen penPoiRelicPresent = new Pen(Color.Orange, 4) { DashStyle = DashStyle.Dash, };
-        public static Pen penPoiRelicMissing = new Pen(Color.DarkRed, 4) { DashStyle = DashStyle.Dash, };
+        public static Pen penPoiRelicPresent = new Pen(Cyan, 2f);
+        public static Pen penPoiRelicMissing = new Pen(Color.FromArgb(128, 128, 128, 128));
 
         public static Pen penPoiPuddleUnconfirmed = new Pen(Color.Cyan, 3) { DashStyle = DashStyle.Dot, }; // PeachPuff ?
         public static Pen penPoiPuddlePresent = new Pen(Color.Orange, 3) { DashStyle = DashStyle.Solid, };
         public static Pen penPoiPuddleMissing = new Pen(Color.DarkRed, 3) { DashStyle = DashStyle.Solid, };
 
+        public static Pen penObelisk = new Pen(Color.DarkCyan, 0.5f) { LineJoin = LineJoin.Bevel, StartCap = LineCap.Triangle, EndCap = LineCap.Triangle };
+        public static Pen penObeliskActive = new Pen(Color.Cyan, 0.5f) { LineJoin = LineJoin.Bevel, StartCap = LineCap.Triangle, EndCap = LineCap.Triangle };
+
         public static Brush brushShipDismissWarning = new HatchBrush(HatchStyle.WideUpwardDiagonal, Color.Red, Color.Black);
+
+        public static Color colorPoiMissingDark = Color.FromArgb(128, 64, 64, 64);
+        public static Color colorPoiMissingLight = Color.FromArgb(128, 128, 128, 128);
+        public static Color relicBlue = Color.FromArgb(255, 66, 44, 255);
+
+        public static Brush brushPoiPresent = new SolidBrush(relicBlue);
+        public static Brush brushPoiMissing = new SolidBrush(colorPoiMissingDark);
+
+        public static Brush brushAroundPoiUnknown = new SolidBrush(Color.FromArgb(160, Color.DarkSlateBlue));
 
         internal static class Map
         {
@@ -199,13 +222,14 @@ namespace SrvSurvey
             }
 
             public static Pen penCentralCompass = new Pen(Color.FromArgb(128, Color.DarkRed), 4) { EndCap = LineCap.RoundAnchor, StartCap = LineCap.Round };
-            public static Pen penCentralRelicTowerHeading = new Pen(Color.FromArgb(128, Color.DarkRed), 4) { EndCap = LineCap.RoundAnchor, StartCap = LineCap.Round };
-            public static Pen penRelicTowerHeading = new Pen(Color.FromArgb(32, Color.Blue), 10) { EndCap = LineCap.Round, StartCap = LineCap.Round };
+            public static Pen penCentralRelicTowerHeading = new Pen(Color.FromArgb(128, relicBlue), 4) { EndCap = LineCap.RoundAnchor, StartCap = LineCap.Round };
+            public static Pen penRelicTowerHeading = new Pen(Color.FromArgb(32, relicBlue), 10) { EndCap = LineCap.Round, StartCap = LineCap.Round };
 
             public static Color colorUnknown = Color.FromArgb(128, Color.LightSlateGray);
             public static Color colorAbsent = Color.FromArgb(128, Color.DarkSlateGray);
+
             private static Pen penUnknown = new Pen(colorUnknown, 3);
-            private static Pen penAbsent = new Pen(colorAbsent, 3); // new Pen(Color.DarkRed, 3);
+            private static Pen penAbsent = new Pen(colorPoiMissingLight, 3);
             private static Pen penEmpty = new Pen(Color.Yellow, 3);
             public static Dictionary<POIType, Dictionary<SitePoiStatus, Pen>> pens = new Dictionary<POIType, Dictionary<SitePoiStatus, Pen>>
             {
@@ -245,10 +269,30 @@ namespace SrvSurvey
                     { SitePoiStatus.present, new Pen(Color.FromArgb(255, 255, 0, 0) /* red */, 3) },
                     { SitePoiStatus.absent, penAbsent },
                     { SitePoiStatus.empty, penEmpty } } },
-            };
+
+
+                { POIType.obelisk, new Dictionary<SitePoiStatus, Pen> {
+                    { SitePoiStatus.unknown,  new Pen(Cyan, 2) { LineJoin = LineJoin.Bevel, StartCap = LineCap.Triangle, EndCap = LineCap.Triangle } },
+                    { SitePoiStatus.present, new Pen(Color.DodgerBlue, 2) { LineJoin = LineJoin.Bevel, StartCap = LineCap.Triangle, EndCap = LineCap.Triangle } },
+                    { SitePoiStatus.absent, new Pen(colorPoiMissingLight, 2) { LineJoin = LineJoin.Bevel, StartCap = LineCap.Triangle, EndCap = LineCap.Triangle } },
+                    { SitePoiStatus.empty, penEmpty } } },
+
+                { POIType.pylon, new Dictionary<SitePoiStatus, Pen> {
+                    { SitePoiStatus.unknown,  new Pen(Cyan, 2) { LineJoin = LineJoin.Bevel, StartCap = LineCap.Triangle, EndCap = LineCap.Triangle } },
+                    { SitePoiStatus.present, new Pen(Color.DodgerBlue, 2) { LineJoin = LineJoin.Bevel, StartCap = LineCap.Triangle, EndCap = LineCap.Triangle } },
+                    { SitePoiStatus.absent, new Pen(colorPoiMissingLight, 2) { LineJoin = LineJoin.Bevel, StartCap = LineCap.Triangle, EndCap = LineCap.Triangle } },
+                    { SitePoiStatus.empty, penEmpty } } },
+
+                { POIType.component, new Dictionary<SitePoiStatus, Pen> {
+                    { SitePoiStatus.unknown,  new Pen(Cyan, 1) { DashStyle = DashStyle.Dash, LineJoin = LineJoin.Bevel, StartCap = LineCap.Triangle, EndCap = LineCap.Triangle } },
+                    { SitePoiStatus.present, new Pen(Color.Lime, 1) { DashStyle = DashStyle.Dash, LineJoin = LineJoin.Bevel, StartCap = LineCap.Triangle, EndCap = LineCap.Triangle } },
+                    { SitePoiStatus.absent, new Pen(colorPoiMissingLight, 1) { DashStyle = DashStyle.Dash, LineJoin = LineJoin.Bevel, StartCap = LineCap.Triangle, EndCap = LineCap.Triangle } },
+                    { SitePoiStatus.empty, penEmpty } } },
+
+        };
 
             private static Brush brushUnknown = new SolidBrush(Color.DarkSlateGray);
-            private static Brush brushAbsent = new SolidBrush(Color.Black);
+            private static Brush brushAbsent = new SolidBrush(colorPoiMissingDark);
             private static Brush brushEmpty = new SolidBrush(Color.Gold);
             public static Dictionary<POIType, Dictionary<SitePoiStatus, Brush>> brushes = new Dictionary<POIType, Dictionary<SitePoiStatus, Brush>>
             {
@@ -316,7 +360,7 @@ namespace SrvSurvey
             ForeColor
             Window
             Control
-             
+
              */
 
         }

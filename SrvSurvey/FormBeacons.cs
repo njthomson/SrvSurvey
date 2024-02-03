@@ -45,6 +45,7 @@ namespace SrvSurvey
 
             // hide this from everyone else
             menuOpenDataFile.Visible = Debugger.IsAttached;
+            menuOpenPubData.Visible = Debugger.IsAttached;
         }
 
         protected override void OnClosing(CancelEventArgs e)
@@ -589,6 +590,19 @@ namespace SrvSurvey
                 Util.openLink(entry.filepath);
         }
 
+        private void menuOpenPubData_Click(object sender, EventArgs e)
+        {
+            if (this.grid.SelectedItems.Count == 0) return;
+            var entry = (GuardianGridEntry)this.grid.SelectedItems[0].Tag;
+
+            if (File.Exists(entry.filepath))
+            {
+                var filename = GuardianSiteData.getFilename($"{entry.systemName} {entry.bodyName}", entry.idx, entry.isRuins);
+                var pubPath = Path.Combine(Git.pubGuardianFolder, filename);
+                Util.openLink(pubPath);
+            }
+        }
+
         private void menuOpenImagesFolder_Click(object sender, EventArgs e)
         {
             if (this.grid.SelectedItems.Count == 0) return;
@@ -603,5 +617,6 @@ namespace SrvSurvey
         {
             FormShareData.show(this);
         }
+
     }
 }
