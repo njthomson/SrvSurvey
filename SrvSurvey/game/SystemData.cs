@@ -862,7 +862,8 @@ namespace SrvSurvey.game
                 }
 
                 // update bio counts
-                if (entry.signals?.signals?.ContainsKey("$SAA_SignalType_Biological;") == true)
+                DateTime liveLegacySplitDate = new DateTime(2022, 11, 29);
+                if (entry.signals?.signals?.ContainsKey("$SAA_SignalType_Biological;") == true && entry.signals.updateTime > liveLegacySplitDate)
                 {
                     var newCount = entry.signals.signals["$SAA_SignalType_Biological;"];
                     if (body.bioSignalCount < newCount)

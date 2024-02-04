@@ -1351,6 +1351,7 @@ namespace SrvSurvey
             g.TranslateTransform(mid.Width, mid.Height);
 
             var adjustAngle = siteData.siteHeading - game.status.Heading;
+            if (adjustAngle < 0) adjustAngle += 360;
 
             var headerTxt = $"Site heading: {siteData.siteHeading}°";
 

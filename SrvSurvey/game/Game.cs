@@ -1647,7 +1647,7 @@ namespace SrvSurvey.game
                 data.lastVisited = entry.timestamp;
                 data.Save();
             }
-            else if (Game.settings.autoTrackCompBioScans && entry.SubCategory == "$Codex_SubCategory_Organic_Structures;")
+            else if (Game.settings.autoTrackCompBioScans && entry.SubCategory == "$Codex_SubCategory_Organic_Structures;" && entry.NearestDestination != "$Fixed_Event_Life_Cloud;")
             {
                 // auto add CodexScans as a tracker location
                 var match = Game.codexRef.matchFromEntryId(entry.EntryID);
@@ -1663,8 +1663,6 @@ namespace SrvSurvey.game
                     }
                     else
                     {
-                        // whilst CodexEntry has a lat/long ... it's further away than the cmdr's current location
-                        // PlotTrackers.processCommand($"+{prefix}", entry); // TODO: retire
                         this.addBookmark(match.genus.shortName, entry);
                         Program.showPlotter<PlotTrackers>().prepTrackers();
                         Game.log($"Auto-adding tracker from CodexEntry: {entry.Name_Localised} ({entry.EntryID})");

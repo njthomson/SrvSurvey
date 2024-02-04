@@ -364,9 +364,9 @@ namespace SrvSurvey
             if (game.systemSite != null && game.systemSite != this.siteData)
                 return;
 
-            if (this.nearestDist < 30)
+            if (this.nearestDist < 30 && this.siteData != null)
             {
-                var oldStatus = siteData!.getPoiStatus(this.nearestPoi.name);
+                var oldStatus = this.siteData.getPoiStatus(this.nearestPoi.name);
 
                 if (oldStatus == SitePoiStatus.unknown)
                     setPoiStatus(this.nearestPoi.name, SitePoiStatus.present);
@@ -631,12 +631,13 @@ namespace SrvSurvey
                 g.DrawEllipse(GameColors.penCyan4, nearestPt.X - 14, nearestPt.Y - 14, 28, 28);
         }
 
-        private static void drawPuddle(Graphics g, PointF pt, POIType poiType, GuardianSiteData? siteData = null, SitePoiStatus? poiStatus = SitePoiStatus.present)
+        private void drawPuddle(Graphics g, PointF pt, POIType poiType, GuardianSiteData? siteData = null, SitePoiStatus? poiStatus = SitePoiStatus.present)
         {
             var brush = GameColors.Map.brushes[poiType][poiStatus ?? SitePoiStatus.present];
             var pen = GameColors.Map.pens[poiType][poiStatus ?? SitePoiStatus.present];
 
-            var d = siteData?.isRuins == true && poiStatus != SitePoiStatus.unknown? 8 : 5;
+            var isRuins = siteType == GuardianSiteData.SiteType.Alpha || siteType == GuardianSiteData.SiteType.Beta || siteType == GuardianSiteData.SiteType.Gamma;
+            var d = isRuins && poiStatus != SitePoiStatus.unknown? 8 : 5;
             var rect = new RectangleF(pt.X - d, pt.Y - d, d * 2, d * 2);
             g.FillEllipse(brush, rect);
 
@@ -654,10 +655,10 @@ namespace SrvSurvey
 
             PointF[] points =
             {
-                new PointF(0, 0 - 6),
-                new PointF(0 + 6, 0 + 6),
-                new PointF(0 - 6, 0 + 6),
-                new PointF(0, 0 - 6),
+                new PointF(0, 0 - 8),
+                new PointF(0 + 8, 0 + 8),
+                new PointF(0 - 8, 0 + 8),
+                new PointF(0, 0 - 8),
             };
 
             var brush = GameColors.Map.brushes[POIType.relic][poiStatus ?? SitePoiStatus.present];
@@ -667,7 +668,7 @@ namespace SrvSurvey
 
             if (poiStatus == SitePoiStatus.unknown)
             {
-                var d = 8;
+                var d = 15.7f;
                 var rect = new RectangleF(-d, -d, d * 2, d * 2);
                 g.DrawEllipse(GameColors.penPoiRelicUnconfirmed, rect);
             }
@@ -692,7 +693,7 @@ namespace SrvSurvey
         {
             // TODO: Account for obelisk rotation
             var brush = Brushes.Blue;
-            var pen = Pens.Cyan;
+            var pen = Pens.DarkCyan;
 
             var points = new PointF[] {
                     new PointF(pt.X +1 - 1.5f, pt.Y +4 - 1.5f),

@@ -223,6 +223,12 @@ namespace SrvSurvey
                 var entry = (GuardianGridEntry)row.Tag;
                 entry.systemDistance = Util.getSystemDistance(this.star.pos, entry.starPos);
                 row.SubItems["distanceToSystem"]!.Text = entry.systemDistance.ToString("N0") + " ly";
+
+                // TODO: highlight the row that is the current target destination
+                //if (entry.systemAddress == Game.activeGame?.navRoute.Route.LastOrDefault()?.SystemAddress)
+                //    row.Font = new Font(grid.Font, FontStyle.Bold);
+                //else
+                //    row.Font = grid.Font;
             }
         }
 

@@ -1363,7 +1363,7 @@
     "siteType": "Crossroads",
     "latitude": -15.695237,
     "longitude": -27.645632,
-    "siteHeading": -1,
+    "siteHeading": 70,
     "idx": 0,
     "surveyComplete": false
   },
@@ -2429,7 +2429,7 @@
     "longitude": 71.153229,
     "siteHeading": 346,
     "idx": 0,
-    "surveyComplete": false
+    "surveyComplete": true
   },
   {
     "siteID": 40,
