@@ -75,6 +75,8 @@ namespace SrvSurvey
         public string screenshotSourceFolder = Elite.defaultScreenshotFolder;
         public string screenshotTargetFolder = Path.Combine(Elite.defaultScreenshotFolder, "converted");
         public bool rotateAndTruncateAlphaAerialScreenshots = true;
+        public Color screenshotBannerColor = Color.Yellow;
+        public bool screenshotBannerLocalTime = false;
 
         public double aerialAltAlpha = 1200; // confirm this
         public double aerialAltBeta = 1550;

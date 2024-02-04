@@ -1121,7 +1121,13 @@ namespace SrvSurvey
 
             // process the image if it already exists, otherwise add to the queue
             if (File.Exists(imageFilename))
-                this.processScreenshot(entry, imageFilename);
+            {
+                Task.Run(() =>
+                {
+                    // do this in a background thread
+                    this.processScreenshot(entry, imageFilename);
+                });
+            }
             else
             {
                 Game.log($"Waiting for: {imageFilename}");
@@ -1270,7 +1276,10 @@ namespace SrvSurvey
             {
                 // main details
                 var txtBig = $"Body: {entry.Body}";
-                var txt = $"System: {entry.System}\r\nCmdr: {game!.Commander}  -  " + new DateTimeOffset(entry.timestamp).ToString("u") + extra;
+                var timestamp = Game.settings.screenshotBannerLocalTime
+                    ? entry.timestamp.ToLocalTime().ToString()
+                    : new DateTimeOffset(entry.timestamp).ToString("u");
+                var txt = $"System: {entry.System}\r\nCmdr: {game!.Commander}  -  " + timestamp + extra;
 
                 /* fake details - for creating sample image in settings
                 var txtBig = $"Body: <Nearest body name>";
@@ -1293,8 +1302,9 @@ namespace SrvSurvey
                     Math.Max(szBig.Width, szSmall.Width) + 10,
                     h
                 );
-                g.DrawString(txtBig, fontBig, Brushes.Yellow, 15, y + 5);
-                g.DrawString(txt, fontSmall, Brushes.Yellow, 15, y + 5 + szBig.Height);
+                var bb = new SolidBrush(Game.settings.screenshotBannerColor);
+                g.DrawString(txtBig, fontBig, bb, 15, y + 5);
+                g.DrawString(txt, fontSmall, bb, 15, y + 5 + szBig.Height);
             }
         }
 

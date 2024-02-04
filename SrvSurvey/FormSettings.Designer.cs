@@ -35,6 +35,7 @@ namespace SrvSurvey
             btnSave = new Button();
             btnCancel = new Button();
             tabPage1 = new TabPage();
+            btnResetOverlays = new Button();
             comboCmdr = new ComboBox();
             label12 = new Label();
             numGravityWarningLevel = new NumericUpDown();
@@ -84,6 +85,9 @@ namespace SrvSurvey
             checkRuinsMeasurementGrid = new CheckBox();
             checkEnableGuardianFeatures = new CheckBox();
             tabPage5 = new TabPage();
+            panelBannerColor = new Panel();
+            label3 = new Label();
+            btnBannerColor = new Button();
             checkDeleteScreenshotOriginal = new CheckBox();
             pictureBox3 = new PictureBox();
             checkUseGuardianAerialScreenshotsFolder = new CheckBox();
@@ -121,7 +125,8 @@ namespace SrvSurvey
             tabPage2 = new TabPage();
             linkAboutTwo = new LinkLabel();
             linkAboutOne = new LinkLabel();
-            btnResetOverlays = new Button();
+            colorDialog = new ColorDialog();
+            checkLocalTime = new CheckBox();
             panel1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numGravityWarningLevel).BeginInit();
@@ -156,7 +161,7 @@ namespace SrvSurvey
             panel1.Controls.Add(btnSave);
             panel1.Controls.Add(btnCancel);
             panel1.Dock = DockStyle.Bottom;
-            panel1.Location = new Point(0, 405);
+            panel1.Location = new Point(0, 432);
             panel1.Margin = new Padding(4, 3, 4, 3);
             panel1.Name = "panel1";
             panel1.Size = new Size(498, 48);
@@ -224,9 +229,19 @@ namespace SrvSurvey
             tabPage1.Margin = new Padding(4, 3, 4, 3);
             tabPage1.Name = "tabPage1";
             tabPage1.Padding = new Padding(4, 3, 4, 3);
-            tabPage1.Size = new Size(490, 377);
+            tabPage1.Size = new Size(490, 404);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "General";
+            // 
+            // btnResetOverlays
+            // 
+            btnResetOverlays.Location = new Point(296, 228);
+            btnResetOverlays.Name = "btnResetOverlays";
+            btnResetOverlays.Size = new Size(182, 32);
+            btnResetOverlays.TabIndex = 29;
+            btnResetOverlays.Text = "Reset custom overlay positions";
+            btnResetOverlays.UseVisualStyleBackColor = true;
+            btnResetOverlays.Click += btnResetOverlays_Click;
             // 
             // comboCmdr
             // 
@@ -456,7 +471,7 @@ namespace SrvSurvey
             tabControl1.Margin = new Padding(4, 3, 4, 3);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(498, 405);
+            tabControl1.Size = new Size(498, 432);
             tabControl1.TabIndex = 0;
             // 
             // tabPage4
@@ -474,7 +489,7 @@ namespace SrvSurvey
             tabPage4.Location = new Point(4, 24);
             tabPage4.Name = "tabPage4";
             tabPage4.Padding = new Padding(3);
-            tabPage4.Size = new Size(490, 377);
+            tabPage4.Size = new Size(490, 404);
             tabPage4.TabIndex = 3;
             tabPage4.Text = "Bio Scanning";
             // 
@@ -543,7 +558,7 @@ namespace SrvSurvey
             // 
             // btnClearUnclaimed
             // 
-            btnClearUnclaimed.Location = new Point(10, 348);
+            btnClearUnclaimed.Location = new Point(10, 375);
             btnClearUnclaimed.Name = "btnClearUnclaimed";
             btnClearUnclaimed.Size = new Size(197, 23);
             btnClearUnclaimed.TabIndex = 6;
@@ -621,7 +636,7 @@ namespace SrvSurvey
             tabPage3.Location = new Point(4, 24);
             tabPage3.Name = "tabPage3";
             tabPage3.Padding = new Padding(3);
-            tabPage3.Size = new Size(490, 377);
+            tabPage3.Size = new Size(490, 404);
             tabPage3.TabIndex = 2;
             tabPage3.Text = "Guardian sites";
             // 
@@ -658,7 +673,7 @@ namespace SrvSurvey
             checkBox12.AutoSize = true;
             checkBox12.Checked = true;
             checkBox12.CheckState = CheckState.Checked;
-            checkBox12.Location = new Point(7, 348);
+            checkBox12.Location = new Point(10, 375);
             checkBox12.Margin = new Padding(4, 3, 4, 3);
             checkBox12.Name = "checkBox12";
             checkBox12.Size = new Size(292, 19);
@@ -815,6 +830,10 @@ namespace SrvSurvey
             // 
             // tabPage5
             // 
+            tabPage5.Controls.Add(checkLocalTime);
+            tabPage5.Controls.Add(panelBannerColor);
+            tabPage5.Controls.Add(label3);
+            tabPage5.Controls.Add(btnBannerColor);
             tabPage5.Controls.Add(checkDeleteScreenshotOriginal);
             tabPage5.Controls.Add(pictureBox3);
             tabPage5.Controls.Add(checkUseGuardianAerialScreenshotsFolder);
@@ -829,9 +848,36 @@ namespace SrvSurvey
             tabPage5.Location = new Point(4, 24);
             tabPage5.Name = "tabPage5";
             tabPage5.Padding = new Padding(3);
-            tabPage5.Size = new Size(490, 377);
+            tabPage5.Size = new Size(490, 404);
             tabPage5.TabIndex = 4;
             tabPage5.Text = "Screenshots";
+            // 
+            // panelBannerColor
+            // 
+            panelBannerColor.BorderStyle = BorderStyle.Fixed3D;
+            panelBannerColor.Location = new Point(42, 213);
+            panelBannerColor.Name = "panelBannerColor";
+            panelBannerColor.Size = new Size(26, 23);
+            panelBannerColor.TabIndex = 26;
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(10, 195);
+            label3.Name = "label3";
+            label3.Size = new Size(100, 15);
+            label3.TabIndex = 25;
+            label3.Text = "Banner text color:";
+            // 
+            // btnBannerColor
+            // 
+            btnBannerColor.Location = new Point(10, 242);
+            btnBannerColor.Name = "btnBannerColor";
+            btnBannerColor.Size = new Size(100, 23);
+            btnBannerColor.TabIndex = 24;
+            btnBannerColor.Text = "Change color";
+            btnBannerColor.UseVisualStyleBackColor = true;
+            btnBannerColor.Click += button2_Click;
             // 
             // checkDeleteScreenshotOriginal
             // 
@@ -983,7 +1029,7 @@ namespace SrvSurvey
             tabPage6.Location = new Point(4, 24);
             tabPage6.Name = "tabPage6";
             tabPage6.Padding = new Padding(3);
-            tabPage6.Size = new Size(490, 377);
+            tabPage6.Size = new Size(490, 404);
             tabPage6.TabIndex = 5;
             tabPage6.Text = "Exploration";
             // 
@@ -1116,7 +1162,7 @@ namespace SrvSurvey
             tabPage7.Location = new Point(4, 24);
             tabPage7.Name = "tabPage7";
             tabPage7.Padding = new Padding(3);
-            tabPage7.Size = new Size(490, 377);
+            tabPage7.Size = new Size(490, 404);
             tabPage7.TabIndex = 6;
             tabPage7.Text = "External Data";
             // 
@@ -1249,7 +1295,7 @@ namespace SrvSurvey
             // checkHideMyOwnCanonnSignals
             // 
             checkHideMyOwnCanonnSignals.AutoSize = true;
-            checkHideMyOwnCanonnSignals.Location = new Point(28, 358);
+            checkHideMyOwnCanonnSignals.Location = new Point(28, 379);
             checkHideMyOwnCanonnSignals.Name = "checkHideMyOwnCanonnSignals";
             checkHideMyOwnCanonnSignals.Size = new Size(328, 19);
             checkHideMyOwnCanonnSignals.TabIndex = 35;
@@ -1266,7 +1312,7 @@ namespace SrvSurvey
             tabPage2.Location = new Point(4, 24);
             tabPage2.Name = "tabPage2";
             tabPage2.Padding = new Padding(3);
-            tabPage2.Size = new Size(490, 377);
+            tabPage2.Size = new Size(490, 404);
             tabPage2.TabIndex = 1;
             tabPage2.Text = "About";
             // 
@@ -1274,7 +1320,7 @@ namespace SrvSurvey
             // 
             linkAboutTwo.Dock = DockStyle.Bottom;
             linkAboutTwo.LinkArea = new LinkArea(83, 21);
-            linkAboutTwo.Location = new Point(3, 322);
+            linkAboutTwo.Location = new Point(3, 349);
             linkAboutTwo.Name = "linkAboutTwo";
             linkAboutTwo.Size = new Size(480, 48);
             linkAboutTwo.TabIndex = 2;
@@ -1295,15 +1341,20 @@ namespace SrvSurvey
             linkAboutOne.Text = resources.GetString("linkAboutOne.Text");
             linkAboutOne.UseCompatibleTextRendering = true;
             // 
-            // btnResetOverlays
+            // colorDialog
             // 
-            btnResetOverlays.Location = new Point(296, 228);
-            btnResetOverlays.Name = "btnResetOverlays";
-            btnResetOverlays.Size = new Size(182, 32);
-            btnResetOverlays.TabIndex = 29;
-            btnResetOverlays.Text = "Reset custom overlay positions";
-            btnResetOverlays.UseVisualStyleBackColor = true;
-            btnResetOverlays.Click += btnResetOverlays_Click;
+            colorDialog.Color = Color.Yellow;
+            // 
+            // checkLocalTime
+            // 
+            checkLocalTime.AutoSize = true;
+            checkLocalTime.Location = new Point(7, 271);
+            checkLocalTime.Name = "checkLocalTime";
+            checkLocalTime.Size = new Size(100, 19);
+            checkLocalTime.TabIndex = 27;
+            checkLocalTime.Tag = "screenshotBannerLocalTime";
+            checkLocalTime.Text = "Use local time";
+            checkLocalTime.UseVisualStyleBackColor = true;
             // 
             // FormSettings
             // 
@@ -1311,7 +1362,7 @@ namespace SrvSurvey
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = btnCancel;
-            ClientSize = new Size(498, 453);
+            ClientSize = new Size(498, 480);
             Controls.Add(tabControl1);
             Controls.Add(panel1);
             FormBorderStyle = FormBorderStyle.FixedToolWindow;
@@ -1450,5 +1501,10 @@ namespace SrvSurvey
         private CheckBox checkBox15;
         private ComboBox comboCmdr;
         private Button btnResetOverlays;
+        private ColorDialog colorDialog;
+        private Button btnBannerColor;
+        private Panel panelBannerColor;
+        private Label label3;
+        private CheckBox checkLocalTime;
     }
 }

@@ -115,6 +115,7 @@ namespace SrvSurvey
 
             // TODO: handle radio's better?
             radioUseRadius.Checked = !radioUseSmall.Checked;
+            panelBannerColor.BackColor = Game.settings.screenshotBannerColor;
         }
 
         private void updateSettingsFromForm(Control parentControl)
@@ -167,6 +168,7 @@ namespace SrvSurvey
 
             // special case for comboCmdrs
             Game.settings.preferredCommander = comboCmdr.SelectedIndex > 0 ? comboCmdr.Text : null;
+            Game.settings.screenshotBannerColor = panelBannerColor.BackColor;
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -358,6 +360,17 @@ namespace SrvSurvey
 
             if (rslt == DialogResult.Yes)
                 PlotPos.reset();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            colorDialog.Color = panelBannerColor.BackColor;
+
+            var rslt = colorDialog.ShowDialog(this);
+            if (rslt == DialogResult.OK)
+            {
+                panelBannerColor.BackColor = colorDialog.Color;
+            }
         }
     }
 }
