@@ -7,7 +7,8 @@ namespace SrvSurvey
 {
     public partial class FormSettings : Form
     {
-        private Game game = Game.activeGame!;
+        private Game? game = Game.activeGame;
+
         private readonly Dictionary<string, FieldInfo> map = new Dictionary<string, FieldInfo>();
 
         public FormSettings()
@@ -39,6 +40,12 @@ namespace SrvSurvey
             checkShowCanonnOnRadar.Enabled = checkUseSystemData.Checked && checkShowPriorScans.Checked;
             radioUseSmall.Enabled = checkUseSystemData.Checked && checkShowPriorScans.Checked && checkShowCanonnOnRadar.Checked;
             radioUseRadius.Enabled = checkUseSystemData.Checked && checkShowPriorScans.Checked && checkShowCanonnOnRadar.Checked;
+
+            if (game == null)
+            {
+                btnClearUnclaimed.Enabled = false;
+                btnClearTrackers.Enabled = false;
+            }
         }
 
         private void findCmdrs()
@@ -232,6 +239,8 @@ namespace SrvSurvey
 
         private void btnClearUnclaimed_Click(object sender, EventArgs e)
         {
+            if (game == null) return;
+
             var rslt = MessageBox.Show($"Are you sure you want to clear {Util.credits(game.cmdr.organicRewards)} from {game.cmdr.scannedBioEntryIds.Count} organisms?", "Clear unclaimed rewards", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
             if (rslt == DialogResult.Yes)
             {
@@ -308,10 +317,9 @@ namespace SrvSurvey
             Util.openLink(linkJournalFolder.Text);
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void btnClearTrackers_Click(object sender, EventArgs e)
         {
-            // PlotTrackers.processCommand("---", Status.here.clone()); // TODO: retire
-            game.clearAllBookmarks();
+            game?.clearAllBookmarks();
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

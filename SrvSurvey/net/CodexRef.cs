@@ -111,6 +111,7 @@ namespace SrvSurvey.canonn
                 this.genus = new List<BioGenus>();
                 var organicStuff = codexRef!.Values
                     .Where(_ => _.sub_category == "$Codex_SubCategory_Organic_Structures;" && _.reward > 0);
+
                 foreach (var thing in organicStuff)
                 {
                     if (thing.entryid.Length != 7) throw new Exception("Bad EntryId length!");
@@ -241,17 +242,16 @@ namespace SrvSurvey.canonn
         {
             if (this.genus == null || this.genus.Count == 0) throw new Exception($"BioRef is not loaded.");
 
-            var genusName = Util.getGenusNameFromVariant(variantName) + "Genus_Name;";
-            var speciesName = Util.getSpeciesPrefix(variantName) + "Name;";
+            var speciesName = Util.getSpeciesPrefix(variantName); // + "Name;";
 
             foreach (var genusRef in this.genus)
                 foreach (var speciesRef in genusRef.species)
-                    if (speciesRef.name == speciesName)
+                    if (speciesRef.name.StartsWith(speciesName)) // == speciesName)
                         foreach (var variantRef in speciesRef.variants)
                             if (variantRef.name == variantName)
                                 return new BioMatch(genusRef, speciesRef, variantRef);
 
-            throw new Exception($"Unexpected variantName: '{speciesName}'");
+            throw new Exception($"Unexpected variantName: '{variantName}' (speciesName: '{speciesName}')");
         }
 
         public BioSpecies matchFromSpecies(string speciesName)

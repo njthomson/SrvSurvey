@@ -58,7 +58,7 @@ namespace SrvSurvey
             tabControl1 = new TabControl();
             tabPage4 = new TabPage();
             linkLabel1 = new LinkLabel();
-            button1 = new Button();
+            btnClearTrackers = new Button();
             checkBox7 = new CheckBox();
             checkBox6 = new CheckBox();
             checkBox5 = new CheckBox();
@@ -85,6 +85,7 @@ namespace SrvSurvey
             checkRuinsMeasurementGrid = new CheckBox();
             checkEnableGuardianFeatures = new CheckBox();
             tabPage5 = new TabPage();
+            checkLocalTime = new CheckBox();
             panelBannerColor = new Panel();
             label3 = new Label();
             btnBannerColor = new Button();
@@ -126,7 +127,6 @@ namespace SrvSurvey
             linkAboutTwo = new LinkLabel();
             linkAboutOne = new LinkLabel();
             colorDialog = new ColorDialog();
-            checkLocalTime = new CheckBox();
             panel1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numGravityWarningLevel).BeginInit();
@@ -316,7 +316,7 @@ namespace SrvSurvey
             // 
             btnChooseJournalFolder.Location = new Point(10, 188);
             btnChooseJournalFolder.Name = "btnChooseJournalFolder";
-            btnChooseJournalFolder.Size = new Size(26, 35);
+            btnChooseJournalFolder.Size = new Size(26, 37);
             btnChooseJournalFolder.TabIndex = 22;
             btnChooseJournalFolder.Text = "...";
             btnChooseJournalFolder.UseVisualStyleBackColor = true;
@@ -477,7 +477,7 @@ namespace SrvSurvey
             // tabPage4
             // 
             tabPage4.Controls.Add(linkLabel1);
-            tabPage4.Controls.Add(button1);
+            tabPage4.Controls.Add(btnClearTrackers);
             tabPage4.Controls.Add(checkBox7);
             tabPage4.Controls.Add(checkBox6);
             tabPage4.Controls.Add(checkBox5);
@@ -504,15 +504,15 @@ namespace SrvSurvey
             linkLabel1.Text = "See related messaging commands on the wiki.";
             linkLabel1.LinkClicked += linkLabel1_LinkClicked;
             // 
-            // button1
+            // btnClearTrackers
             // 
-            button1.Location = new Point(10, 289);
-            button1.Name = "button1";
-            button1.Size = new Size(154, 23);
-            button1.TabIndex = 14;
-            button1.Text = "Clear tracked locations";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
+            btnClearTrackers.Location = new Point(10, 289);
+            btnClearTrackers.Name = "btnClearTrackers";
+            btnClearTrackers.Size = new Size(154, 23);
+            btnClearTrackers.TabIndex = 14;
+            btnClearTrackers.Text = "Clear tracked locations";
+            btnClearTrackers.UseVisualStyleBackColor = true;
+            btnClearTrackers.Click += btnClearTrackers_Click;
             // 
             // checkBox7
             // 
@@ -851,6 +851,17 @@ namespace SrvSurvey
             tabPage5.Size = new Size(490, 404);
             tabPage5.TabIndex = 4;
             tabPage5.Text = "Screenshots";
+            // 
+            // checkLocalTime
+            // 
+            checkLocalTime.AutoSize = true;
+            checkLocalTime.Location = new Point(7, 271);
+            checkLocalTime.Name = "checkLocalTime";
+            checkLocalTime.Size = new Size(100, 19);
+            checkLocalTime.TabIndex = 27;
+            checkLocalTime.Tag = "screenshotBannerLocalTime";
+            checkLocalTime.Text = "Use local time";
+            checkLocalTime.UseVisualStyleBackColor = true;
             // 
             // panelBannerColor
             // 
@@ -1345,17 +1356,6 @@ namespace SrvSurvey
             // 
             colorDialog.Color = Color.Yellow;
             // 
-            // checkLocalTime
-            // 
-            checkLocalTime.AutoSize = true;
-            checkLocalTime.Location = new Point(7, 271);
-            checkLocalTime.Name = "checkLocalTime";
-            checkLocalTime.Size = new Size(100, 19);
-            checkLocalTime.TabIndex = 27;
-            checkLocalTime.Tag = "screenshotBannerLocalTime";
-            checkLocalTime.Text = "Use local time";
-            checkLocalTime.UseVisualStyleBackColor = true;
-            // 
             // FormSettings
             // 
             AcceptButton = btnSave;
@@ -1479,7 +1479,7 @@ namespace SrvSurvey
         private LinkLabel linkJournalFolder;
         private PictureBox pictureBox6;
         private CheckBox checkHideJournalTimer;
-        private Button button1;
+        private Button btnClearTrackers;
         private LinkLabel linkLabel1;
         private TabPage tabPage7;
         private CheckBox checkUseSystemData;
