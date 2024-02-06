@@ -41,7 +41,7 @@ namespace SrvSurvey
 
             GameColors.shiningCmdrBrush = new PathGradientBrush(shiningCmdrPath)
             {
-                CenterColor = Color.FromArgb(160, 0, 80, 0),
+                CenterColor = Color.FromArgb(160, 0, 100, 0),
                 SurroundColors = new Color[] { Color.Transparent },
                 CenterPoint = new PointF(0, 0)
             };

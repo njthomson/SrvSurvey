@@ -102,6 +102,8 @@ namespace SrvSurvey.net
 
         private void updateRawPoiAfterRefresh()
         {
+            if (string.IsNullOrEmpty(Game.settings.lastFid)) return;
+
             var sites = GuardianSiteData.loadAllSites(false);
 
             foreach (var site in sites)

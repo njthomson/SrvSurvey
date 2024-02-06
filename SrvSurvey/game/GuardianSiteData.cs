@@ -564,7 +564,7 @@ namespace SrvSurvey.game
                             status.score += 1;
                     }
                 }
-                else if (poi.type == POIType.casket || poi.type == POIType.orb || poi.type == POIType.tablet || poi.type == POIType.totem || poi.type == POIType.urn)
+                else if (poiStatus == SitePoiStatus.present && (poi.type == POIType.casket || poi.type == POIType.orb || poi.type == POIType.tablet || poi.type == POIType.totem || poi.type == POIType.urn))
                 {
                     status.countPuddlesPresent += 1;
                 }
