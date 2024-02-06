@@ -1197,7 +1197,10 @@ namespace SrvSurvey.game
         {
             log($"setCurrentBody by id: {bodyId}");
             if (this.systemData == null)
-                throw new Exception($"Why no systemData for bodyId: {bodyId}?");
+            {
+                Game.log($"Why no systemData for bodyId: {bodyId}?");
+                return;
+            }
             var wasNull = this.systemBody == null;
             this.systemBody = this.systemData.bodies.FirstOrDefault(_ => _.id == bodyId);
             if (this.systemBody != null && wasNull)

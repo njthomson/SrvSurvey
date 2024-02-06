@@ -822,10 +822,10 @@ namespace SrvSurvey
             drawPuddle(g, new PointF(tp.X - 10, tp.Y - 10), POIType.totem, null, SitePoiStatus.empty);
 
             drawString(g, "Site heading");
-            g.DrawLine(Pens.DarkRed, tp.X - 15, tp.Y - 6, tp.X - 5, tp.Y - 14);
+            g.DrawLine(GameColors.Map.penCentralCompass, tp.X - 15, tp.Y - 6, tp.X - 5, tp.Y - 14);
 
             drawString(g, "Tower heading");
-            g.DrawLine(Pens.DarkCyan, tp.X - 15, tp.Y - 6, tp.X - 5, tp.Y - 14);
+            g.DrawLine(GameColors.Map.penCentralRelicTowerHeading, tp.X - 15, tp.Y - 6, tp.X - 5, tp.Y - 14);
         }
 
         private void drawString(Graphics g, string msg)
