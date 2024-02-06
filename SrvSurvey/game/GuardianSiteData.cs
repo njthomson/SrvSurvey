@@ -548,9 +548,12 @@ namespace SrvSurvey.game
 
             foreach (var poi in poiToProcess)
             {
+                if (poi.type == POIType.obelisk || poi.type == POIType.brokeObelisk) continue;
+
+                status.maxPoiConfirmed += 1;
                 var poiStatus = this.getPoiStatus(poi.name);
                 if (poiStatus != SitePoiStatus.unknown)
-                    status.score += 1;
+                    status.countPoiConfirmed += 1;
 
                 if (poi.type == POIType.relic)
                 {
@@ -564,17 +567,19 @@ namespace SrvSurvey.game
                             status.score += 1;
                     }
                 }
-                else if (poiStatus == SitePoiStatus.present && (poi.type == POIType.casket || poi.type == POIType.orb || poi.type == POIType.tablet || poi.type == POIType.totem || poi.type == POIType.urn))
+                else if (poiStatus == SitePoiStatus.present && Util.isBasicPoi(poi.type))
                 {
                     status.countPuddlesPresent += 1;
                 }
             }
 
+            status.score += status.countPoiConfirmed;
             if (this.siteHeading != -1) status.score += 1;
             if (this.location != null) status.score += 1;
 
             // compute max score
             status.maxScore = poiToProcess.Count() + 2; // +1 for site heading, +1 for location
+            status.maxPuddles = template.poi.Count(_ => Util.isBasicPoi(_.type));
 
             if (this.isRuins)
             {
@@ -1153,8 +1158,11 @@ namespace SrvSurvey.game
     {
         public int score;
         public int maxScore;
+        public int countPoiConfirmed;
+        public int maxPoiConfirmed;
         public int countRelicsPresent;
         public int countPuddlesPresent;
+        public int maxPuddles;
         public int countRelicsNeedingHeading;
         public int progress;
         public bool isComplete;

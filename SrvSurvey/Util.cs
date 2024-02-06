@@ -550,5 +550,13 @@ namespace SrvSurvey
             var delta = Math.Abs(left - right);
             return delta <= tolerance;
         }
+
+        /// <summary>
+        /// Returns True is poiType is Casket, Orb, Tablet, Totem or an Urn.
+        /// </summary>
+        public static bool isBasicPoi(POIType poiType)
+        {
+            return poiType == POIType.casket || poiType == POIType.orb || poiType == POIType.tablet || poiType == POIType.totem || poiType == POIType.urn || poiType == POIType.unknown;
+        }
     }
 }

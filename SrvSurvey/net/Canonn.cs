@@ -1794,5 +1794,169 @@ namespace SrvSurvey.canonn
         }
 
         #endregion
+
+        #region export to csv
+
+        public void dumpToFiles()
+        {
+            Game.log($"dumpToFiles: begin");
+            Data.suppressLoadingMsg = true;
+
+            var dumpFolder = @"d:\code";
+            var totals = new DumpTotalCounts();
+
+            var ruinsRows = dumpRuins(dumpFolder, totals);
+
+            // dump summaries
+            dumpTotals(dumpFolder, totals);
+
+            Data.suppressLoadingMsg = false;
+            Game.log($"dumpToFiles: end");
+        }
+
+        private List<List<string>> dumpRuins(string dumpFolder, DumpTotalCounts totals)
+        {
+            var rows = new List<List<string>>();
+
+            var allRuins = this.allRuins.OrderBy(_ => _.siteID);
+
+            foreach (var site in allRuins)
+            {
+                var pubData = GuardianSitePub.Load(site.fullBodyName, site.idx, site.siteType);
+                if (pubData == null) throw new Exception($"Why no pubData for: {site.fullBodyName}");
+
+                var siteType = Enum.Parse<GuardianSiteData.SiteType>(site.siteType);
+                var template = SiteTemplate.sites[siteType];
+
+                var status = pubData.getCompletionStatus();
+                var siteHeading = site.siteHeading == -1 ? "" : $"{site.siteHeading}";
+                var relicTowerHeading = site.relicTowerHeading == -1 ? "" : $"{site.relicTowerHeading}";
+
+                // update totals
+                var tc = totals.typeCounts[siteType];
+                tc.total += 1;
+                if (site.siteHeading != -1) tc.hasSiteHeading += 1;
+                if (site.relicTowerHeading != -1) tc.hasRelicHeadings += 1;
+                if (!double.IsNaN(site.latitude) && !double.IsNaN(site.longitude)) tc.hasLocation += 1;
+                if (status.isComplete) tc.surveyComplete += 1;
+
+                // build raw row
+                var row = new List<string>(new string[] {
+                    // columns to identify the site
+                    $"GR{site.siteID}",
+                    site.systemName,
+                    site.bodyName, // the short form
+                    site.siteType,
+                    $"{site.idx}",
+
+                    // columns reporting on survey status
+                    status.isComplete ? "1" : "",
+                    $"{status.percent}",
+                    $"{status.score}",
+                    $"{status.maxScore}",
+                    siteHeading,
+                    relicTowerHeading,
+                    $"{status.countRelicsPresent}", // count relics present
+                    $"{template.poiRelics.Count}", // max relic count
+                    $"{status.countPuddlesPresent}", // count puddles present
+                    $"{status.maxPuddles}", // max puddle count
+                    $"{status.countPoiConfirmed}", // count confirmed
+                    $"{status.maxPoiConfirmed}", // max confirmed
+
+                    // columns that will be hidden at the end
+                    $"{site.systemAddress}",
+                    $"{site.bodyId}",
+                    $"{site.distanceToArrival}",
+                    double.IsNaN(site.latitude) ? "" : $"{site.latitude}",
+                    double.IsNaN(site.longitude) ? "" : $"{site.longitude}",
+                    $"{site.starPos[0]}", // X
+                    $"{site.starPos[1]}", // Y
+                    $"{site.starPos[2]}", // Z
+                });
+                rows.Add(row);
+            }
+
+            // write raw data to file
+            var headers = new List<string>(new string[] {
+                    // columns to identify the site
+                    "SiteID",
+                    "System name",
+                    "Body name", // short form
+                    "Site type",
+                    "Index",
+
+                    // columns reporting on survey status
+                    "Survey complete",
+                    "Survey percent",
+                    "Score",
+                    "Max score",
+                    "Site heading",
+                    "Tower heading",
+                    "Count relics", // count relics present
+                    "Max relics", // max relic count
+                    "Count puddles", // count puddles present
+                    "Max puddles", // max puddle count
+                    "Count confirmed",
+                    "Max confirmed", // total valid survey valid POI
+
+                    // columns that will be hidden at the end
+                    "System address",
+                    "Body Id",
+                    "Distance to arrival",
+                    "Latitude",
+                    "Longitude",
+                    "Star pos X", // X
+                    "Star pos Y", // Y
+                    "Star pos Z", // Z
+                });
+            rows.Insert(0, headers);
+
+            var lines = rows.Select(row => string.Join(',', row.Select(_ => $"\"{_}\"")));
+            File.WriteAllText(Path.Combine(dumpFolder, "ruins-raw.csv"), string.Join("\n", lines));
+
+            // return raw data without headers
+            rows.RemoveAt(0);
+            return rows;
+        }
+
+        private void dumpTotals(string dumpFolder, DumpTotalCounts totals)
+        {
+            var rows = new Dictionary<string, int>();
+            foreach (var foo in totals.typeCounts)
+            {
+                rows.Add($"Total {foo.Key} sites:", foo.Value.total);
+                rows.Add($"Total {foo.Key} surveyComplete:", foo.Value.surveyComplete);
+
+
+            }
+
+            var lines = rows.Select(row => string.Join(',', $"\"{row.Key}\",\"{row.Value}\""));
+            File.WriteAllText(Path.Combine(dumpFolder, "raw-summary.csv"), string.Join("\n", lines));
+        }
+
+        internal class DumpTotalCounts
+        {
+            public Dictionary<SiteType, DumpSiteTypeTotals> typeCounts = new Dictionary<SiteType, DumpSiteTypeTotals>();
+
+            public DumpTotalCounts()
+            {
+                foreach (var foo in Enum.GetValues<SiteType>())
+                    this.typeCounts.Add(foo, new DumpSiteTypeTotals());
+            }
+        }
+
+        internal class DumpSiteTypeTotals
+        {
+            public int total;
+            public int surveyComplete;
+            public int hasLocation;
+            public int hasSiteHeading;
+            public int hasRelicHeadings;
+
+            // max count of each POI type from templates
+            public Dictionary<POIType, int> poiCounts = new Dictionary<POIType, int>();
+        }
+
+        #endregion
     }
 }

@@ -134,7 +134,7 @@ namespace SrvSurvey
                     this.relicTowerNames.Add(_.name);
                 }
 
-                if (_.type == POIType.casket || _.type == POIType.orb || _.type == POIType.tablet || _.type == POIType.totem || _.type == POIType.urn || _.type == POIType.emptyPuddle)
+                if (Util.isBasicPoi(_.type) || _.type == POIType.emptyPuddle)
                     this.countPuddles++;
             }
         }

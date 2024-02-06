@@ -753,6 +753,60 @@ namespace SrvSurvey.game
 
             return true;
         }
+
+        public SurveyCompletionStatus getCompletionStatus()
+        {
+            var status = new SurveyCompletionStatus();
+            var template = SiteTemplate.sites[this.t];
+
+            foreach (var poi in template.poiSurvey)
+            {
+                if (poi.type == POIType.obelisk || poi.type == POIType.brokeObelisk) continue;
+                if (!this.poiStatus.ContainsKey(poi.name)) continue;
+
+                status.maxPoiConfirmed += 1;
+                var poiStatus = this.poiStatus[poi.name];
+                if (poiStatus != SitePoiStatus.unknown)
+                    status.countPoiConfirmed += 1;
+
+                if (poi.type == POIType.relic)
+                {
+                    if (poiStatus == SitePoiStatus.present)
+                    {
+                        status.countRelicsPresent += 1;
+
+                        if (this.relicTowerHeadings.ContainsKey(poi.name))
+                            status.countRelicsNeedingHeading += 1;
+                        else if (!this.isRuins)
+                            status.score += 1;
+                    }
+                }
+                else if (poiStatus == SitePoiStatus.present && Util.isBasicPoi(poi.type))
+                {
+                    status.countPuddlesPresent += 1;
+                }
+            }
+
+            status.score += status.countPoiConfirmed;
+            if (this.sh != -1) status.score += 1;
+            if (this.ll != null) status.score += 1;
+
+            // compute max score
+            status.maxScore = template.poiSurvey.Count() + 2; // +1 for site heading, +1 for location
+            status.maxPuddles = template.poi.Count(_ => Util.isBasicPoi(_.type));
+
+            if (this.isRuins)
+            {
+                status.maxScore += 1; // one relic heading for site
+                if (this.rh != -1) status.score += 1;
+            }
+            else
+                status.maxScore += status.countRelicsPresent; // one relic heading per each tower
+
+            status.progress = (int)(100.0 / status.maxScore * status.score);
+            status.isComplete = status.progress == 100;
+            return status;
+        }
     }
 
 }

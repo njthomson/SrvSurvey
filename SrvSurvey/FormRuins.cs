@@ -618,7 +618,7 @@ namespace SrvSurvey
                     drawComponent(g, pt, poi, siteData, poiStatus);
                 else if (poi.type == POIType.obelisk || poi.type == POIType.brokeObelisk)
                     drawObelisk(g, pt, poiStatus);
-                else if (poi.type == POIType.orb || poi.type == POIType.casket || poi.type == POIType.tablet || poi.type == POIType.totem || poi.type == POIType.urn || poi.type == POIType.unknown)
+                else if (Util.isBasicPoi(poi.type))
                     drawPuddle(g, pt, poi.type, this.siteData, poiStatus);
                 else
                 {
