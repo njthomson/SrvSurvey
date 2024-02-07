@@ -75,7 +75,7 @@ namespace SrvSurvey
 
         protected override void onJournalEntry(FSSDiscoveryScan entry)
         {
-            Game.log($"PlotSysStatus: Scan event: {entry.SystemName}");
+            Game.log($"PlotSysStatus: FSSDiscoveryScan event: {entry.SystemName}");
             this.nextSystem = null;
             this.Invalidate();
         }
