@@ -58,71 +58,78 @@ namespace SrvSurvey
 
         protected override void OnPaintBackground(PaintEventArgs e)
         {
-            if (this.IsDisposed || game.systemData == null) return;
-
-            this.g = e.Graphics;
-            this.g.SmoothingMode = SmoothingMode.HighQuality;
-
             base.OnPaintBackground(e);
-
-            this.dtx = 6.0f;
-            this.dty = 8.0f;
-            var sz = new SizeF(6, 6);
-
-            var sites = game?.systemData?.settlements;
-            this.drawTextAt($"Guardian sites: {sites?.Count ?? 0}", GameColors.brushGameOrange, GameColors.fontSmall);
-            if (this.dtx > sz.Width) sz.Width = this.dtx;
-
-            if (sites?.Count > 0)
+            try
             {
-                this.dty = 20f;
-                foreach (var site in sites)
+                if (this.IsDisposed || game.systemData == null) return;
+
+                this.g = e.Graphics;
+                this.g.SmoothingMode = SmoothingMode.HighQuality;
+
+
+                this.dtx = 6.0f;
+                this.dty = 8.0f;
+                var sz = new SizeF(6, 6);
+
+                var sites = game?.systemData?.settlements;
+                this.drawTextAt($"Guardian sites: {sites?.Count ?? 0}", GameColors.brushGameOrange, GameColors.fontSmall);
+                if (this.dtx > sz.Width) sz.Width = this.dtx;
+
+                if (sites?.Count > 0)
                 {
-                    var txt = $"{site.displayText}{site.type}";
-
-                    var highlight = game?.status?.Destination?.Body == site.body.id;
-                    if (highlight && game?.status?.Destination.Name.StartsWith("$Ancient") == true && game?.status?.Destination.Name != site.name)
-                        highlight = false;
-                    var brush = highlight ? GameColors.brushCyan : null;
-
-                    // draw main text (bigger font)
-                    this.dtx = 8f;
-                    this.dty += this.drawTextAt(txt, brush).Height;
-                    if (this.dtx > sz.Width) sz.Width = this.dtx;
-
-                    // draw status (smaller font)
-                    if (site.bluePrint != null)
+                    this.dty = 20f;
+                    foreach (var site in sites)
                     {
-                        this.dtx = 20f;
-                        this.dty += this.drawTextAt("- " + site.bluePrint, brush, GameColors.fontSmall).Height + 2;
-                        if (this.dtx > sz.Width) sz.Width = this.dtx;
-                    }
+                        var txt = $"{site.displayText}{site.type}";
 
-                    if (site.status != null)
-                    {
-                        this.dtx = 20f;
-                        this.dty += this.drawTextAt("- " + site.status, brush, GameColors.fontSmall).Height + 2;
-                        if (this.dtx > sz.Width) sz.Width = this.dtx;
-                    }
+                        var highlight = game?.status?.Destination?.Body == site.body.id;
+                        if (highlight && game?.status?.Destination.Name.StartsWith("$Ancient") == true && game?.status?.Destination.Name != site.name)
+                            highlight = false;
+                        var brush = highlight ? GameColors.brushCyan : null;
 
-                    // draw extra (smaller font)
-                    if (site.extra != null)
-                    {
-                        this.dtx = 20f;
-                        this.dty += this.drawTextAt("- " + site.extra, brush, GameColors.fontSmall).Height;
+                        // draw main text (bigger font)
+                        this.dtx = 8f;
+                        this.dty += this.drawTextAt(txt, brush).Height;
                         if (this.dtx > sz.Width) sz.Width = this.dtx;
+
+                        // draw status (smaller font)
+                        if (site.bluePrint != null)
+                        {
+                            this.dtx = 20f;
+                            this.dty += this.drawTextAt("- " + site.bluePrint, brush, GameColors.fontSmall).Height + 2;
+                            if (this.dtx > sz.Width) sz.Width = this.dtx;
+                        }
+
+                        if (site.status != null)
+                        {
+                            this.dtx = 20f;
+                            this.dty += this.drawTextAt("- " + site.status, brush, GameColors.fontSmall).Height + 2;
+                            if (this.dtx > sz.Width) sz.Width = this.dtx;
+                        }
+
+                        // draw extra (smaller font)
+                        if (site.extra != null)
+                        {
+                            this.dtx = 20f;
+                            this.dty += this.drawTextAt("- " + site.extra, brush, GameColors.fontSmall).Height;
+                            if (this.dtx > sz.Width) sz.Width = this.dtx;
+                        }
                     }
                 }
-            }
 
-            // resize window as necessary
-            sz.Width += 10;
-            sz.Height = this.dty + 10f;
-            if (this.Size != sz.ToSize())
+                // resize window as necessary
+                sz.Width += 10;
+                sz.Height = this.dty + 10f;
+                if (this.Size != sz.ToSize())
+                {
+                    this.Size = sz.ToSize();
+                    this.BackgroundImage = GameGraphics.getBackgroundForForm(this);
+                    this.Invalidate();
+                }
+            }
+            catch (Exception ex)
             {
-                this.Size = sz.ToSize();
-                this.BackgroundImage = GameGraphics.getBackgroundForForm(this);
-                this.Invalidate();
+                Game.log($"PlotGuardianSystem.OnPaintBackground error: {ex}");
             }
         }
     }

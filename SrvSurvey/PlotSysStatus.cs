@@ -89,22 +89,22 @@ namespace SrvSurvey
 
         protected override void OnPaintBackground(PaintEventArgs e)
         {
-            if (this.IsDisposed || game?.systemData == null || game.status == null) return;
-
-            this.g = e.Graphics;
-            this.g.SmoothingMode = SmoothingMode.HighQuality;
-
             base.OnPaintBackground(e);
-
-            this.dtx = 6.0f;
-            this.dty = 19.0f;
-
-            var sys = this.game.systemStatus;
-            var destinationBody = game.status.Destination?.Name?.Replace(sys.name, "").Replace(" ", "");
-
             var minViableWidth = 170;
             try
             {
+                if (this.IsDisposed || game?.systemData == null || game.status == null) return;
+
+                this.g = e.Graphics;
+                this.g.SmoothingMode = SmoothingMode.HighQuality;
+
+
+                this.dtx = 6.0f;
+                this.dty = 19.0f;
+
+                var sys = this.game.systemStatus;
+                var destinationBody = game.status.Destination?.Name?.Replace(sys.name, "").Replace(" ", "");
+
                 if (this.nextSystem != null)
                 {
                     // render next system only, if populated
@@ -160,6 +160,10 @@ namespace SrvSurvey
                     headerTxt += " )";
                 }
                 g.DrawString($"System survey remaining: {headerTxt}", GameColors.fontSmall, GameColors.brushGameOrange, 4, 7);
+            }
+            catch (Exception ex)
+            {
+                Game.log($"PlotSysStatus.OnPaintBackground error: {ex}");
             }
             finally
             {

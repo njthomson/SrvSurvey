@@ -82,32 +82,39 @@ namespace SrvSurvey
         protected override void OnPaintBackground(PaintEventArgs e)
         {
             base.OnPaintBackground(e);
-            var g = e.Graphics;
-            g.SmoothingMode = SmoothingMode.HighQuality;
-            var font = GameColors.fontMiddle;
-
-            string txt = $"From: {game.cmdr.sphereLimit.centerSystemName}";
-            var pt = new Point(8, 8);
-            TextRenderer.DrawText(g, txt, font, p1, GameColors.Orange, TextFormatFlags.Left);
-            var sz = TextRenderer.MeasureText(txt, font);
-
-            pt.Y += sz.Height;
-            TextRenderer.DrawText(g, $"To: {this.targetSystemName}", font, pt, GameColors.Orange, TextFormatFlags.Left);
-            pt.Y += sz.Height;
-
-            if (this.distance >= 0)
+            try
             {
-                var td = this.distance.ToString("N2");
-                var limitDist = game.cmdr.sphereLimit.radius.ToString("N2");
-                var tc = this.distance < game.cmdr.sphereLimit.radius ? GameColors.Cyan : Color.Red;
-                var verb = this.distance < game.cmdr.sphereLimit.radius ? "within" : "exceeds";
-                TextRenderer.DrawText(
-                    g,
-                    $"Distance: {td}ly - {verb} {limitDist} ly",
-                    font,
-                    pt,
-                    tc,
-                    TextFormatFlags.Left);
+                var g = e.Graphics;
+                g.SmoothingMode = SmoothingMode.HighQuality;
+                var font = GameColors.fontMiddle;
+
+                string txt = $"From: {game.cmdr.sphereLimit.centerSystemName}";
+                var pt = new Point(8, 8);
+                TextRenderer.DrawText(g, txt, font, p1, GameColors.Orange, TextFormatFlags.Left);
+                var sz = TextRenderer.MeasureText(txt, font);
+
+                pt.Y += sz.Height;
+                TextRenderer.DrawText(g, $"To: {this.targetSystemName}", font, pt, GameColors.Orange, TextFormatFlags.Left);
+                pt.Y += sz.Height;
+
+                if (this.distance >= 0)
+                {
+                    var td = this.distance.ToString("N2");
+                    var limitDist = game.cmdr.sphereLimit.radius.ToString("N2");
+                    var tc = this.distance < game.cmdr.sphereLimit.radius ? GameColors.Cyan : Color.Red;
+                    var verb = this.distance < game.cmdr.sphereLimit.radius ? "within" : "exceeds";
+                    TextRenderer.DrawText(
+                        g,
+                        $"Distance: {td}ly - {verb} {limitDist} ly",
+                        font,
+                        pt,
+                        tc,
+                        TextFormatFlags.Left);
+                }
+            }
+            catch (Exception ex)
+            {
+                Game.log($"PlotSphericalSearch.OnPaintBackground error: {ex}");
             }
         }
     }

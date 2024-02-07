@@ -285,56 +285,63 @@ namespace SrvSurvey
 
         protected override void OnPaintBackground(PaintEventArgs e)
         {
-            if (this.IsDisposed || game?.systemData == null || game.systemBody == null || game.systemBody.bookmarks == null || game.systemBody.bookmarks?.Count == 0) return;
-
-            this.g = e.Graphics;
-            this.g.SmoothingMode = SmoothingMode.HighQuality;
-            base.OnPaintBackground(e);
-
-            g.DrawString($"Tracking {game.systemBody.bookmarks?.Count} targets:", GameColors.fontSmall, GameColors.brushGameOrange, 4, 8);
-
-            var indent = 220 + 80;
-            var y = 12;
-            foreach (var name in this.trackers.Keys)
+            try
             {
-                y += rowHeight;
+                if (this.IsDisposed || game?.systemData == null || game.systemBody == null || game.systemBody.bookmarks == null || game.systemBody.bookmarks?.Count == 0) return;
 
-                var x = (float)this.Width - indent;
+                this.g = e.Graphics;
+                this.g.SmoothingMode = SmoothingMode.HighQuality;
+                base.OnPaintBackground(e);
 
-                BioScan.prefixes.TryGetValue(name, out var fullName);
-                var isActive = game.cmdr.scanOne?.genus == null || game.cmdr.scanOne?.genus == fullName;
-                var isClose = false;
-                var bearingWidth = 75;
-                Brush brush;
-                foreach (var dd in this.trackers[name])
+                g.DrawString($"Tracking {game.systemBody.bookmarks?.Count} targets:", GameColors.fontSmall, GameColors.brushGameOrange, 4, 8);
+
+                var indent = 220 + 80;
+                var y = 12;
+                foreach (var name in this.trackers.Keys)
                 {
-                    var deg = dd.angle - game.status!.Heading;
-                    //var radius = BioScan.ranges.ContainsKey(name) ? BioScan.ranges[name] : highlightDistance;
+                    y += rowHeight;
 
-                    isClose |= dd.distance < highlightDistance;
+                    var x = (float)this.Width - indent;
+
+                    BioScan.prefixes.TryGetValue(name, out var fullName);
+                    var isActive = game.cmdr.scanOne?.genus == null || game.cmdr.scanOne?.genus == fullName;
+                    var isClose = false;
+                    var bearingWidth = 75;
+                    Brush brush;
+                    foreach (var dd in this.trackers[name])
+                    {
+                        var deg = dd.angle - game.status!.Heading;
+                        //var radius = BioScan.ranges.ContainsKey(name) ? BioScan.ranges[name] : highlightDistance;
+
+                        isClose |= dd.distance < highlightDistance;
+                        brush = isActive ? GameColors.brushGameOrange : GameColors.brushGameOrangeDim;
+                        if (dd.distance < highlightDistance) brush = isActive ? GameColors.brushCyan : Brushes.DarkCyan;
+
+                        var pen = isActive ? GameColors.penGameOrange2 : GameColors.penGameOrangeDim2;
+                        if (dd.distance < highlightDistance) pen = isActive ? GameColors.penCyan2 : Pens.DarkCyan;
+
+                        this.drawBearingTo(x, y, "", (double)dd.distance, (double)deg, brush, pen);
+                        x += bearingWidth;
+                    }
+
+                    string? displayName;
+                    if (!BioScan.prefixes.ContainsKey(name) || !BioScan.genusNames.TryGetValue(BioScan.prefixes[name], out displayName))
+                        displayName = name;
+
+                    var sz = g.MeasureString(displayName, GameColors.fontSmall);
                     brush = isActive ? GameColors.brushGameOrange : GameColors.brushGameOrangeDim;
-                    if (dd.distance < highlightDistance) brush = isActive ? GameColors.brushCyan : Brushes.DarkCyan;
+                    if (isClose) brush = isActive ? GameColors.brushCyan : Brushes.DarkCyan;
 
-                    var pen = isActive ? GameColors.penGameOrange2 : GameColors.penGameOrangeDim2;
-                    if (dd.distance < highlightDistance) pen = isActive ? GameColors.penCyan2 : Pens.DarkCyan;
-
-                    this.drawBearingTo(x, y, "", (double)dd.distance, (double)deg, brush, pen);
-                    x += bearingWidth;
+                    g.DrawString(
+                        displayName,
+                        GameColors.fontSmall,
+                        brush,
+                        this.Width - indent - sz.Width + 3, y);
                 }
-
-                string? displayName;
-                if (!BioScan.prefixes.ContainsKey(name) || !BioScan.genusNames.TryGetValue(BioScan.prefixes[name], out displayName))
-                    displayName = name;
-
-                var sz = g.MeasureString(displayName, GameColors.fontSmall);
-                brush = isActive ? GameColors.brushGameOrange : GameColors.brushGameOrangeDim;
-                if (isClose) brush = isActive ? GameColors.brushCyan : Brushes.DarkCyan;
-
-                g.DrawString(
-                    displayName,
-                    GameColors.fontSmall,
-                    brush,
-                    this.Width - indent - sz.Width + 3, y);
+            }
+            catch (Exception ex)
+            {
+                Game.log($"PlotTrackers.OnPaintBackground error: {ex}");
             }
         }
     }

@@ -1,5 +1,5 @@
 name: Crash Report
-description: File a crashing bug.
+description: File a crashing bug
 labels: ["bug", "crash", "triage"]
 body:
   - type: textarea
@@ -15,7 +15,7 @@ body:
     attributes:
       label: Version
       description: What version are you running?
-      placeholder: 1.0.0.1
+      placeholder: 1.1.0.0
     validations:
       required: true
   - type: textarea

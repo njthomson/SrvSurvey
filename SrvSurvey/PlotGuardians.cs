@@ -1198,30 +1198,35 @@ namespace SrvSurvey
         protected override void OnPaintBackground(PaintEventArgs e)
         {
             base.OnPaintBackground(e);
-            if (this.IsDisposed || game.isShutdown || this.siteData == null) return;
-
-            //Game.log($"-- -- --> PlotGuardians: OnPaintBackground {this.template?.imageOffset} / {this.template?.scaleFactor}");
-
-            this.g = e.Graphics;
-
-            g.SmoothingMode = SmoothingMode.HighQuality;
-            switch (this.mode)
+            try
             {
-                case Mode.siteType:
-                    this.drawSiteTypeHelper();
-                    return;
+                if (this.IsDisposed || game.isShutdown || this.siteData == null) return;
 
-                case Mode.heading:
-                    this.drawSiteHeadingHelper();
-                    return;
+                this.g = e.Graphics;
 
-                case Mode.origin:
-                    this.drawTrackOrigin();
-                    return;
+                g.SmoothingMode = SmoothingMode.HighQuality;
+                switch (this.mode)
+                {
+                    case Mode.siteType:
+                        this.drawSiteTypeHelper();
+                        return;
 
-                case Mode.map:
-                    this.drawSiteMap();
-                    return;
+                    case Mode.heading:
+                        this.drawSiteHeadingHelper();
+                        return;
+
+                    case Mode.origin:
+                        this.drawTrackOrigin();
+                        return;
+
+                    case Mode.map:
+                        this.drawSiteMap();
+                        return;
+                }
+            }
+            catch (Exception ex)
+            {
+                Game.log($"PlotGuardians.OnPaintBackground error: {ex}");
             }
         }
 

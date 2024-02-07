@@ -138,7 +138,7 @@ namespace SrvSurvey.net
         {
             Game.log($"publishLocalData ...");
             var modifiedPubData = new List<GuardianSitePub>();
-            var sites = GuardianSiteData.loadAllSitesFromAllUsers(false);
+            var sites = GuardianSiteData.loadAllSitesFromAllUsers(true);
             var diffCount = 0;
             var templateChanged = false;
 

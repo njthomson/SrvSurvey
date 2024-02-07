@@ -102,26 +102,33 @@ namespace SrvSurvey
 
         protected override void OnPaintBackground(PaintEventArgs e)
         {
-            if (this.IsDisposed) return;
-
-            this.g = e.Graphics;
-            this.g.SmoothingMode = SmoothingMode.HighQuality;
             base.OnPaintBackground(e);
-
-            var brush = this.lastWasDiscovered ? GameColors.brushGameOrange : GameColors.brushCyan;
-
-            g.DrawString($"Last scan:    {this.lastBodyName}", GameColors.fontSmaller, brush, 4, 8);
-
-            if (!string.IsNullOrEmpty(this.lastBodyName))
+            try
             {
-                //if (!this.lastWasDiscovered)
-                //    g.DrawString("(undiscovered)", GameColors.fontSmall2, GameColors.brushCyan, 330, 8);
+                if (this.IsDisposed) return;
 
-                var msg = $"Estimated value:    {this.lastInitialValue} cr\r\nWith surface scan:    {this.lastMappedValue} cr";
-                g.DrawString(msg, GameColors.fontMiddle, brush, 18, 28);
+                this.g = e.Graphics;
+                this.g.SmoothingMode = SmoothingMode.HighQuality;
 
-                if (!string.IsNullOrEmpty(this.lastNotes))
-                    g.DrawString(this.lastNotes, GameColors.fontMiddle, GameColors.brushCyan, 18, 65);
+                var brush = this.lastWasDiscovered ? GameColors.brushGameOrange : GameColors.brushCyan;
+
+                g.DrawString($"Last scan:    {this.lastBodyName}", GameColors.fontSmaller, brush, 4, 8);
+
+                if (!string.IsNullOrEmpty(this.lastBodyName))
+                {
+                    //if (!this.lastWasDiscovered)
+                    //    g.DrawString("(undiscovered)", GameColors.fontSmall2, GameColors.brushCyan, 330, 8);
+
+                    var msg = $"Estimated value:    {this.lastInitialValue} cr\r\nWith surface scan:    {this.lastMappedValue} cr";
+                    g.DrawString(msg, GameColors.fontMiddle, brush, 18, 28);
+
+                    if (!string.IsNullOrEmpty(this.lastNotes))
+                        g.DrawString(this.lastNotes, GameColors.fontMiddle, GameColors.brushCyan, 18, 65);
+                }
+            }
+            catch (Exception ex)
+            {
+                Game.log($"PlotFSS.OnPaintBackground error: {ex}");
             }
         }
     }

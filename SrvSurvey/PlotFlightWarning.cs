@@ -60,31 +60,38 @@ namespace SrvSurvey
 
         protected override void OnPaintBackground(PaintEventArgs e)
         {
-            if (this.IsDisposed || game.systemBody == null) return;
-
-            this.g = e.Graphics;
-            this.g.SmoothingMode = SmoothingMode.HighQuality;
             base.OnPaintBackground(e);
-            g.Clear(Color.Black);
+            try
+            {
+                if (this.IsDisposed || game.systemBody == null) return;
 
-            const int pad = 15;
+                this.g = e.Graphics;
+                this.g.SmoothingMode = SmoothingMode.HighQuality;
+                g.Clear(Color.Black);
 
-            var bodyGrav = (game.systemBody!.surfaceGravity / 10).ToString("N2");
-            var txt = $"Warning: Surface gravity {bodyGrav}g";
+                const int pad = 15;
 
-            var sz = g.MeasureString(txt, this.Font);
-            sz.Width += 2;
-            this.Width = (int)sz.Width + pad * 2;
-            this.Height = (int)sz.Height + pad * 2;
+                var bodyGrav = (game.systemBody!.surfaceGravity / 10).ToString("N2");
+                var txt = $"Warning: Surface gravity {bodyGrav}g";
 
-            PlotPos.reposition(this, Elite.getWindowRect());
+                var sz = g.MeasureString(txt, this.Font);
+                sz.Width += 2;
+                this.Width = (int)sz.Width + pad * 2;
+                this.Height = (int)sz.Height + pad * 2;
 
-            var rect = new RectangleF(0, 0, sz.Width + pad * 2, sz.Height + pad * 2);
-            g.FillRectangle(GameColors.brushShipDismissWarning, rect);
+                PlotPos.reposition(this, Elite.getWindowRect());
 
-            rect.Inflate(-10, -10);
-            g.FillRectangle(Brushes.Black, rect);
-            g.DrawString(txt, this.Font, Brushes.Red, pad + 1, pad + 1);
+                var rect = new RectangleF(0, 0, sz.Width + pad * 2, sz.Height + pad * 2);
+                g.FillRectangle(GameColors.brushShipDismissWarning, rect);
+
+                rect.Inflate(-10, -10);
+                g.FillRectangle(Brushes.Black, rect);
+                g.DrawString(txt, this.Font, Brushes.Red, pad + 1, pad + 1);
+            }
+            catch (Exception ex)
+            {
+                Game.log($"PlotFlightWarning.OnPaintBackground error: {ex}");
+            }
         }
     }
 }

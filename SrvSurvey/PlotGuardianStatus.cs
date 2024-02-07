@@ -1,6 +1,5 @@
 ﻿using SrvSurvey.game;
 using System.Drawing.Drawing2D;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace SrvSurvey
 {
@@ -98,69 +97,76 @@ namespace SrvSurvey
 
         protected override void OnPaintBackground(PaintEventArgs e)
         {
-            if (this.IsDisposed || PlotGuardians.instance == null || this.game.isShutdown || game.systemSite == null) return;
-
             base.OnPaintBackground(e);
-            this.g = e.Graphics;
-            g.SmoothingMode = SmoothingMode.HighQuality;
-
-            switch (PlotGuardians.instance.mode)
+            try
             {
-                case Mode.siteType:
-                    drawSiteType();
-                    return;
+                if (this.IsDisposed || PlotGuardians.instance == null || this.game.isShutdown || game.systemSite == null) return;
 
-                case Mode.heading:
-                    drawCenterMessage("\r\nAlign with buttess");
-                    showSelectionCue();
-                    return;
+                this.g = e.Graphics;
+                g.SmoothingMode = SmoothingMode.HighQuality;
 
-                case Mode.origin:
-                    var alt = Util.targetAltitudeForSite(game.systemSite!.type).ToString("N0");
-                    drawCenterMessage($"Align with site origin and rise to target altitude: {alt}m");
-                    drawFooterText("(toggle lights to force update)");
-                    return;
-            }
-
-            if (PlotGuardians.instance.nearestPoi != null && (PlotGuardians.instance.nearestPoi.type == POIType.obelisk || PlotGuardians.instance.nearestPoi.type == POIType.brokeObelisk))
-            {
-                drawNearObelisk();
-            }
-            else if (game.vehicle == ActiveVehicle.Foot)
-            {
-                if (game.status.SelectedWeapon == "$humanoid_companalyser_name;" && !string.IsNullOrEmpty(PlotGuardians.instance.nearestPoi?.name))
+                switch (PlotGuardians.instance.mode)
                 {
-                    var msg = "Toggle shields to set Relic Tower heading.";
-                    var angle = game.systemSite.getRelicHeading(PlotGuardians.instance.nearestPoi!.name);
-                    if (game.systemSite.isRuins && game.systemSite.relicTowerHeading != -1)
-                        msg += $"\r\nRecorded heading: {game.systemSite!.relicTowerHeading}°";
-                    else if (!game.systemSite.isRuins && angle != null)
-                        msg += $"\r\nRecorded heading: {angle}°";
+                    case Mode.siteType:
+                        drawSiteType();
+                        return;
+
+                    case Mode.heading:
+                        drawCenterMessage("\r\nAlign with buttess");
+                        showSelectionCue();
+                        return;
+
+                    case Mode.origin:
+                        var alt = Util.targetAltitudeForSite(game.systemSite!.type).ToString("N0");
+                        drawCenterMessage($"Align with site origin and rise to target altitude: {alt}m");
+                        drawFooterText("(toggle lights to force update)");
+                        return;
+                }
+
+                if (PlotGuardians.instance.nearestPoi != null && (PlotGuardians.instance.nearestPoi.type == POIType.obelisk || PlotGuardians.instance.nearestPoi.type == POIType.brokeObelisk))
+                {
+                    drawNearObelisk();
+                }
+                else if (game.vehicle == ActiveVehicle.Foot)
+                {
+                    if (game.status.SelectedWeapon == "$humanoid_companalyser_name;" && !string.IsNullOrEmpty(PlotGuardians.instance.nearestPoi?.name))
+                    {
+                        var msg = "Toggle shields to set Relic Tower heading.";
+                        var angle = game.systemSite.getRelicHeading(PlotGuardians.instance.nearestPoi!.name);
+                        if (game.systemSite.isRuins && game.systemSite.relicTowerHeading != -1)
+                            msg += $"\r\nRecorded heading: {game.systemSite!.relicTowerHeading}°";
+                        else if (!game.systemSite.isRuins && angle != null)
+                            msg += $"\r\nRecorded heading: {angle}°";
+                        else
+                            msg += "\r\nFace the side with a single large left facing triangle.";
+                        drawCenterMessage(msg);
+                    }
                     else
-                        msg += "\r\nFace the side with a single large left facing triangle.";
-                    drawCenterMessage(msg);
+                    {
+                        drawCenterMessage("Use Profile Analyser near Relic Towers for aiming assistance.\r\nFace the side with a single large left facing triangle.");
+                    }
+
+                    drawFooterText("(toggle weapon to force location update)");
+                }
+                else if (PlotGuardians.instance.nearestPoi == null)
+                {
+                    drawHeaderText("Move within ~75m to select an item");
+                    drawFooterText("(toggle lights to force update)");
+                    drawOptions(
+                        "Present",
+                        "Absent",
+                        "Empty",
+                        -2
+                    );
                 }
                 else
                 {
-                    drawCenterMessage("Use Profile Analyser near Relic Towers for aiming assistance.\r\nFace the side with a single large left facing triangle.");
+                    drawSelectedItem();
                 }
-
-                drawFooterText("(toggle weapon to force location update)");
             }
-            else if (PlotGuardians.instance.nearestPoi == null)
+            catch (Exception ex)
             {
-                drawHeaderText("Move within ~75m to select an item");
-                drawFooterText("(toggle lights to force update)");
-                drawOptions(
-                    "Present",
-                    "Absent",
-                    "Empty",
-                    -2
-                );
-            }
-            else
-            {
-                drawSelectedItem();
+                Game.log($"PlotGuardianStatus.OnPaintBackground error: {ex}");
             }
         }
 
@@ -397,50 +403,57 @@ namespace SrvSurvey
 
         protected override void OnPaintBackground(PaintEventArgs e)
         {
-            if (this.IsDisposed) return;
-
             base.OnPaintBackground(e);
-            this.g = e.Graphics;
-            g.SmoothingMode = SmoothingMode.HighQuality;
+            try
+            {
+                if (this.IsDisposed) return;
 
-            if (!this.dataLinkScanned)
-            {
-                drawHeaderText("Guardian Beacon");
-                drawCenterMessage($"Please activate and scan with Data Link Scanner", GameColors.brushCyan);
-            }
-            else if (this.different)
-            {
-                drawHeaderText($"Target body changed!", GameColors.brushCyan);
-                drawCenterMessage("Please share a screenshot of your inbox message!", GameColors.brushCyan);
-            }
-            else if (game.mode == GameMode.CommsPanel)
-            {
-                if (!this.confirmed)
-                {
-                    drawHeaderText($"Confirm: {this.relatedStructure} ?", GameColors.brushCyan);
-                    drawOptions("Yes", "No", null, game.status.FireGroup
-                    );
-                }
-                else if (!this.different)
-                {
-                    drawHeaderText($"Confirm: {this.relatedStructure}");
-                    drawCenterMessage($"Confirmed");
-                    drawFooterText("(thank you)");
-                }
-            }
-            else
-            {
-                drawHeaderText("Guardian Beacon scanned");
+                this.g = e.Graphics;
+                g.SmoothingMode = SmoothingMode.HighQuality;
 
-                if (!this.confirmed)
+                if (!this.dataLinkScanned)
                 {
-                    drawCenterMessage($"Please confirm target body:\r\n{this.relatedStructure}");
-                    drawFooterText("(check your inbox)", GameColors.brushCyan);
+                    drawHeaderText("Guardian Beacon");
+                    drawCenterMessage($"Please activate and scan with Data Link Scanner", GameColors.brushCyan);
                 }
-                else if (!this.different)
+                else if (this.different)
                 {
-                    drawCenterMessage($"Confirmed target body:\r\n{this.relatedStructure}");
+                    drawHeaderText($"Target body changed!", GameColors.brushCyan);
+                    drawCenterMessage("Please share a screenshot of your inbox message!", GameColors.brushCyan);
                 }
+                else if (game.mode == GameMode.CommsPanel)
+                {
+                    if (!this.confirmed)
+                    {
+                        drawHeaderText($"Confirm: {this.relatedStructure} ?", GameColors.brushCyan);
+                        drawOptions("Yes", "No", null, game.status.FireGroup
+                        );
+                    }
+                    else if (!this.different)
+                    {
+                        drawHeaderText($"Confirm: {this.relatedStructure}");
+                        drawCenterMessage($"Confirmed");
+                        drawFooterText("(thank you)");
+                    }
+                }
+                else
+                {
+                    drawHeaderText("Guardian Beacon scanned");
+
+                    if (!this.confirmed)
+                    {
+                        drawCenterMessage($"Please confirm target body:\r\n{this.relatedStructure}");
+                        drawFooterText("(check your inbox)", GameColors.brushCyan);
+                    }
+                    else if (!this.different)
+                    {
+                        drawCenterMessage($"Confirmed target body:\r\n{this.relatedStructure}");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Game.log($"PlotGuardianBeaconStatus.OnPaintBackground error: {ex}");
             }
         }
     }
