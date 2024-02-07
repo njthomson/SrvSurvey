@@ -205,6 +205,7 @@
             Controls.Add(label2);
             Controls.Add(linkMain);
             Font = new Font("Lucida Sans Typewriter", 8.25F, FontStyle.Regular, GraphicsUnit.Point);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             KeyPreview = true;
             Margin = new Padding(4, 3, 4, 3);
             MinimumSize = new Size(503, 435);

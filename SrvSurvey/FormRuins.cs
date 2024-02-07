@@ -637,7 +637,7 @@ namespace SrvSurvey
             var pen = GameColors.Map.pens[poiType][poiStatus ?? SitePoiStatus.present];
 
             var isRuins = siteType == GuardianSiteData.SiteType.Alpha || siteType == GuardianSiteData.SiteType.Beta || siteType == GuardianSiteData.SiteType.Gamma;
-            var d = isRuins && poiStatus != SitePoiStatus.unknown? 8 : 5;
+            var d = isRuins && poiStatus != SitePoiStatus.unknown ? 8 : 5;
             var rect = new RectangleF(pt.X - d, pt.Y - d, d * 2, d * 2);
             g.FillEllipse(brush, rect);
 

@@ -58,6 +58,10 @@
             checkNotes = new CheckBox();
             splitter = new SplitContainer();
             panelEdit = new Panel();
+            label5 = new Label();
+            label3 = new Label();
+            label2 = new Label();
+            label1 = new Label();
             numA = new NumericUpDown();
             button1 = new Button();
             numScale = new NumericUpDown();
@@ -65,10 +69,6 @@
             numX = new NumericUpDown();
             txtNotes = new TextBox();
             btnSaveNotes = new Button();
-            label1 = new Label();
-            label2 = new Label();
-            label3 = new Label();
-            label5 = new Label();
             ((System.ComponentModel.ISupportInitialize)map).BeginInit();
             mapContext.SuspendLayout();
             statusStrip1.SuspendLayout();
@@ -320,6 +320,42 @@
             panelEdit.Size = new Size(416, 34);
             panelEdit.TabIndex = 4;
             // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Location = new Point(263, 5);
+            label5.Name = "label5";
+            label5.Size = new Size(41, 15);
+            label5.TabIndex = 8;
+            label5.Text = "Angle:";
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(163, 5);
+            label3.Name = "label3";
+            label3.Size = new Size(37, 15);
+            label3.TabIndex = 7;
+            label3.Text = "Scale:";
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(83, 7);
+            label2.Name = "label2";
+            label2.Size = new Size(17, 15);
+            label2.TabIndex = 6;
+            label2.Text = "Y:";
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(3, 7);
+            label1.Name = "label1";
+            label1.Size = new Size(17, 15);
+            label1.TabIndex = 5;
+            label1.Text = "X:";
+            // 
             // numA
             // 
             numA.DecimalPlaces = 3;
@@ -397,42 +433,6 @@
             btnSaveNotes.Text = "Save notes";
             btnSaveNotes.UseVisualStyleBackColor = true;
             btnSaveNotes.Click += btnSaveNotes_Click;
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Location = new Point(3, 7);
-            label1.Name = "label1";
-            label1.Size = new Size(17, 15);
-            label1.TabIndex = 5;
-            label1.Text = "X:";
-            // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.Location = new Point(83, 7);
-            label2.Name = "label2";
-            label2.Size = new Size(17, 15);
-            label2.TabIndex = 6;
-            label2.Text = "Y:";
-            // 
-            // label3
-            // 
-            label3.AutoSize = true;
-            label3.Location = new Point(163, 5);
-            label3.Name = "label3";
-            label3.Size = new Size(37, 15);
-            label3.TabIndex = 7;
-            label3.Text = "Scale:";
-            // 
-            // label5
-            // 
-            label5.AutoSize = true;
-            label5.Location = new Point(263, 5);
-            label5.Name = "label5";
-            label5.Size = new Size(41, 15);
-            label5.TabIndex = 8;
-            label5.Text = "Angle:";
             // 
             // FormRuins
             // 
