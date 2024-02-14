@@ -1,20 +1,24 @@
 {
   "sid": "GR089",
   "idx": 2,
-  "sh": -1,
+  "sh": 4,
   "t": "Beta",
   "rh": -1,
+  "ll": {
+    "lat": 37.44635,
+    "long": 84.864822
+  },
   "og": "AGKOTU",
   "ao": [
     "A09-ca,ur-H10-",
-    "G13-ca,or-H12-",
-    "G18-ca-H8-",
-    "K21-to,or-C12-",
-    "K26-to-C7-",
-    "O03-or,re-T13-",
-    "T13-ca,re-H16-",
-    "T18-ca,ta-H11-",
-    "U04-ur,or-B11-",
+    "G13-ca,or-H12-b,d",
+    "G18-ca-H8-e,d",
+    "K21-to,or-C12-b",
+    "K26-to-C7-d",
+    "O03-or,re-T13-e",
+    "T13-ca,re-H16-d",
+    "T18-ca,ta-H11-b",
+    "U04-ur,or-B11-e",
     "U21-ur,to-B12-",
     "U36-or,ur-T10-"
   ]

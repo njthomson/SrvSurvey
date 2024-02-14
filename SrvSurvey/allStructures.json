@@ -16,7 +16,7 @@
     "longitude": -38.162308,
     "siteHeading": 347,
     "idx": 0,
-    "surveyComplete": false
+    "surveyComplete": true
   },
   {
     "siteID": 96,
@@ -33,7 +33,7 @@
     "siteType": "Robolobster",
     "latitude": -44.520168,
     "longitude": 34.332687,
-    "siteHeading": -1,
+    "siteHeading": 104,
     "idx": 0,
     "surveyComplete": false
   },
@@ -111,7 +111,7 @@
     "longitude": 16.360062,
     "siteHeading": 336,
     "idx": 0,
-    "surveyComplete": true
+    "surveyComplete": false
   },
   {
     "siteID": 119,
@@ -185,7 +185,7 @@
     "siteType": "Crossroads",
     "latitude": 33.411873,
     "longitude": 6.633374,
-    "siteHeading": -1,
+    "siteHeading": 95,
     "idx": 0,
     "surveyComplete": false
   },
@@ -263,7 +263,7 @@
     "longitude": -98.208046,
     "siteHeading": 194,
     "idx": 0,
-    "surveyComplete": true
+    "surveyComplete": false
   },
   {
     "siteID": 121,
@@ -491,7 +491,7 @@
     "longitude": -11.048854,
     "siteHeading": 35,
     "idx": 0,
-    "surveyComplete": true
+    "surveyComplete": false
   },
   {
     "siteID": 32,
@@ -1175,7 +1175,7 @@
     "longitude": 169.298096,
     "siteHeading": 203,
     "idx": 0,
-    "surveyComplete": true
+    "surveyComplete": false
   },
   {
     "siteID": 61,
@@ -1498,7 +1498,7 @@
     "longitude": -36.963837,
     "siteHeading": 29,
     "idx": 0,
-    "surveyComplete": true
+    "surveyComplete": false
   },
   {
     "siteID": 59,
@@ -1990,7 +1990,7 @@
     "siteType": "Fistbump",
     "latitude": 34.131947,
     "longitude": -124.692345,
-    "siteHeading": -1,
+    "siteHeading": 264,
     "idx": 0,
     "surveyComplete": false
   },
@@ -2332,7 +2332,7 @@
     "siteType": "Crossroads",
     "latitude": 1.910246,
     "longitude": -52.670677,
-    "siteHeading": -1,
+    "siteHeading": 97,
     "idx": 0,
     "surveyComplete": false
   },

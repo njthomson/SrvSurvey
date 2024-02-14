@@ -74,6 +74,7 @@ namespace SrvSurvey
             linkLabel2 = new LinkLabel();
             btnRamTah = new Button();
             btnPublish = new Button();
+            checkTempHide = new CheckBox();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
             groupBox3.SuspendLayout();
@@ -82,10 +83,10 @@ namespace SrvSurvey
             // 
             // btnGroundTarget
             // 
-            btnGroundTarget.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnGroundTarget.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnGroundTarget.BackColor = SystemColors.ControlLight;
             btnGroundTarget.FlatStyle = FlatStyle.System;
-            btnGroundTarget.Location = new Point(85, 44);
+            btnGroundTarget.Location = new Point(127, 44);
             btnGroundTarget.Name = "btnGroundTarget";
             btnGroundTarget.Size = new Size(91, 27);
             btnGroundTarget.TabIndex = 3;
@@ -98,7 +99,7 @@ namespace SrvSurvey
             btnQuit2.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnQuit2.DialogResult = DialogResult.Cancel;
             btnQuit2.FlatStyle = FlatStyle.System;
-            btnQuit2.Location = new Point(308, 483);
+            btnQuit2.Location = new Point(350, 512);
             btnQuit2.Name = "btnQuit2";
             btnQuit2.Size = new Size(75, 23);
             btnQuit2.TabIndex = 8;
@@ -112,7 +113,7 @@ namespace SrvSurvey
             txtTargetLatLong.Location = new Point(16, 19);
             txtTargetLatLong.Name = "txtTargetLatLong";
             txtTargetLatLong.ReadOnly = true;
-            txtTargetLatLong.Size = new Size(243, 20);
+            txtTargetLatLong.Size = new Size(285, 20);
             txtTargetLatLong.TabIndex = 11;
             txtTargetLatLong.Text = "<none>";
             // 
@@ -126,10 +127,10 @@ namespace SrvSurvey
             // 
             // btnClearTarget
             // 
-            btnClearTarget.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnClearTarget.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnClearTarget.BackColor = SystemColors.ControlLight;
             btnClearTarget.FlatStyle = FlatStyle.System;
-            btnClearTarget.Location = new Point(180, 44);
+            btnClearTarget.Location = new Point(222, 44);
             btnClearTarget.Name = "btnClearTarget";
             btnClearTarget.Size = new Size(53, 27);
             btnClearTarget.TabIndex = 13;
@@ -147,15 +148,16 @@ namespace SrvSurvey
             groupBox1.Controls.Add(txtTargetLatLong);
             groupBox1.Location = new Point(12, 352);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(265, 78);
+            groupBox1.Size = new Size(307, 78);
             groupBox1.TabIndex = 14;
             groupBox1.TabStop = false;
             groupBox1.Text = "Target lat/Long:";
             // 
             // btnPasteLatLong
             // 
+            btnPasteLatLong.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnPasteLatLong.Image = (Image)resources.GetObject("btnPasteLatLong.Image");
-            btnPasteLatLong.Location = new Point(237, 44);
+            btnPasteLatLong.Location = new Point(279, 44);
             btnPasteLatLong.Name = "btnPasteLatLong";
             btnPasteLatLong.Size = new Size(23, 27);
             btnPasteLatLong.TabIndex = 26;
@@ -182,7 +184,7 @@ namespace SrvSurvey
             groupBox2.Controls.Add(txtVehicle);
             groupBox2.Location = new Point(12, 12);
             groupBox2.Name = "groupBox2";
-            groupBox2.Size = new Size(371, 98);
+            groupBox2.Size = new Size(413, 98);
             groupBox2.TabIndex = 14;
             groupBox2.TabStop = false;
             groupBox2.Text = "Commander:";
@@ -193,14 +195,14 @@ namespace SrvSurvey
             txtCommander.Location = new Point(16, 19);
             txtCommander.Name = "txtCommander";
             txtCommander.ReadOnly = true;
-            txtCommander.Size = new Size(348, 20);
+            txtCommander.Size = new Size(390, 20);
             txtCommander.TabIndex = 10;
             txtCommander.Text = "<cmdr name>";
             // 
             // txtNearBody
             // 
             txtNearBody.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            txtNearBody.Location = new Point(271, 43);
+            txtNearBody.Location = new Point(313, 43);
             txtNearBody.Name = "txtNearBody";
             txtNearBody.ReadOnly = true;
             txtNearBody.Size = new Size(93, 20);
@@ -213,7 +215,7 @@ namespace SrvSurvey
             txtMode.Location = new Point(108, 69);
             txtMode.Name = "txtMode";
             txtMode.ReadOnly = true;
-            txtMode.Size = new Size(256, 20);
+            txtMode.Size = new Size(298, 20);
             txtMode.TabIndex = 13;
             txtMode.Text = "<mode>";
             // 
@@ -223,7 +225,7 @@ namespace SrvSurvey
             txtLocation.Location = new Point(16, 43);
             txtLocation.Name = "txtLocation";
             txtLocation.ReadOnly = true;
-            txtLocation.Size = new Size(249, 20);
+            txtLocation.Size = new Size(291, 20);
             txtLocation.TabIndex = 12;
             txtLocation.Text = "<location>";
             // 
@@ -251,7 +253,7 @@ namespace SrvSurvey
             groupBox3.Controls.Add(label4);
             groupBox3.Location = new Point(12, 116);
             groupBox3.Name = "groupBox3";
-            groupBox3.Size = new Size(371, 130);
+            groupBox3.Size = new Size(413, 130);
             groupBox3.TabIndex = 14;
             groupBox3.TabStop = false;
             groupBox3.Text = "Bio scanning";
@@ -276,7 +278,7 @@ namespace SrvSurvey
             txtBodyBioValues.Location = new Point(143, 81);
             txtBodyBioValues.Name = "txtBodyBioValues";
             txtBodyBioValues.ReadOnly = true;
-            txtBodyBioValues.Size = new Size(221, 20);
+            txtBodyBioValues.Size = new Size(263, 20);
             txtBodyBioValues.TabIndex = 26;
             // 
             // txtBodyBioSignals
@@ -286,7 +288,7 @@ namespace SrvSurvey
             txtBodyBioSignals.Location = new Point(69, 81);
             txtBodyBioSignals.Name = "txtBodyBioSignals";
             txtBodyBioSignals.ReadOnly = true;
-            txtBodyBioSignals.Size = new Size(68, 20);
+            txtBodyBioSignals.Size = new Size(110, 20);
             txtBodyBioSignals.TabIndex = 24;
             // 
             // lblSysBio
@@ -306,7 +308,7 @@ namespace SrvSurvey
             txtSystemBioValues.Location = new Point(143, 55);
             txtSystemBioValues.Name = "txtSystemBioValues";
             txtSystemBioValues.ReadOnly = true;
-            txtSystemBioValues.Size = new Size(221, 20);
+            txtSystemBioValues.Size = new Size(263, 20);
             txtSystemBioValues.TabIndex = 22;
             // 
             // txtSystemBioSignals
@@ -316,7 +318,7 @@ namespace SrvSurvey
             txtSystemBioSignals.Location = new Point(69, 55);
             txtSystemBioSignals.Name = "txtSystemBioSignals";
             txtSystemBioSignals.ReadOnly = true;
-            txtSystemBioSignals.Size = new Size(68, 20);
+            txtSystemBioSignals.Size = new Size(110, 20);
             txtSystemBioSignals.TabIndex = 20;
             txtSystemBioSignals.Text = "99 of 99";
             // 
@@ -345,7 +347,7 @@ namespace SrvSurvey
             txtBioRewards.Location = new Point(143, 13);
             txtBioRewards.Name = "txtBioRewards";
             txtBioRewards.ReadOnly = true;
-            txtBioRewards.Size = new Size(221, 20);
+            txtBioRewards.Size = new Size(263, 20);
             txtBioRewards.TabIndex = 15;
             // 
             // label4
@@ -364,10 +366,10 @@ namespace SrvSurvey
             // 
             // btnLogs
             // 
-            btnLogs.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnLogs.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnLogs.DialogResult = DialogResult.Cancel;
             btnLogs.FlatStyle = FlatStyle.System;
-            btnLogs.Location = new Point(93, 483);
+            btnLogs.Location = new Point(93, 512);
             btnLogs.Name = "btnLogs";
             btnLogs.Size = new Size(75, 23);
             btnLogs.TabIndex = 15;
@@ -377,10 +379,10 @@ namespace SrvSurvey
             // 
             // btnSettings
             // 
-            btnSettings.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnSettings.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnSettings.DialogResult = DialogResult.Cancel;
             btnSettings.FlatStyle = FlatStyle.System;
-            btnSettings.Location = new Point(12, 483);
+            btnSettings.Location = new Point(12, 512);
             btnSettings.Name = "btnSettings";
             btnSettings.Size = new Size(75, 23);
             btnSettings.TabIndex = 16;
@@ -393,9 +395,9 @@ namespace SrvSurvey
             linkLabel1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             linkLabel1.Font = new Font("Lucida Sans Typewriter", 9F, FontStyle.Regular, GraphicsUnit.Point);
             linkLabel1.LinkArea = new LinkArea(13, 12);
-            linkLabel1.Location = new Point(10, 433);
+            linkLabel1.Location = new Point(10, 462);
             linkLabel1.Name = "linkLabel1";
-            linkLabel1.Size = new Size(373, 18);
+            linkLabel1.Size = new Size(415, 18);
             linkLabel1.TabIndex = 17;
             linkLabel1.TabStop = true;
             linkLabel1.Text = "For guidance see the wiki on GitHub";
@@ -410,7 +412,7 @@ namespace SrvSurvey
             lblFullScreen.Location = new Point(0, 102);
             lblFullScreen.Name = "lblFullScreen";
             lblFullScreen.Padding = new Padding(10);
-            lblFullScreen.Size = new Size(395, 86);
+            lblFullScreen.Size = new Size(437, 86);
             lblFullScreen.TabIndex = 18;
             lblFullScreen.Text = "SrvSurvey cannot be used when Elite Dangerous is in Full Screen mode.\r\n\r\nPlease go to Options > Graphics > Display and change setting FULLSCREEN to either BORDERLESS or WINDOWED.";
             lblFullScreen.TextAlign = ContentAlignment.TopCenter;
@@ -428,7 +430,7 @@ namespace SrvSurvey
             groupBox4.Controls.Add(label5);
             groupBox4.Location = new Point(12, 252);
             groupBox4.Name = "groupBox4";
-            groupBox4.Size = new Size(371, 94);
+            groupBox4.Size = new Size(413, 94);
             groupBox4.TabIndex = 19;
             groupBox4.TabStop = false;
             groupBox4.Text = "Guardian sites: (experimental)";
@@ -438,7 +440,7 @@ namespace SrvSurvey
             btnGuarduanThings.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnGuarduanThings.BackColor = SystemColors.ControlLight;
             btnGuarduanThings.FlatStyle = FlatStyle.System;
-            btnGuarduanThings.Location = new Point(240, 16);
+            btnGuarduanThings.Location = new Point(282, 16);
             btnGuarduanThings.Name = "btnGuarduanThings";
             btnGuarduanThings.Size = new Size(124, 33);
             btnGuarduanThings.TabIndex = 19;
@@ -451,7 +453,7 @@ namespace SrvSurvey
             btnRuins.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnRuins.BackColor = SystemColors.ControlLight;
             btnRuins.FlatStyle = FlatStyle.System;
-            btnRuins.Location = new Point(241, 55);
+            btnRuins.Location = new Point(283, 55);
             btnRuins.Name = "btnRuins";
             btnRuins.Size = new Size(123, 35);
             btnRuins.TabIndex = 18;
@@ -461,7 +463,6 @@ namespace SrvSurvey
             // 
             // btnRuinsMap
             // 
-            btnRuinsMap.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnRuinsMap.BackColor = SystemColors.ControlLight;
             btnRuinsMap.FlatStyle = FlatStyle.System;
             btnRuinsMap.Location = new Point(16, 57);
@@ -477,7 +478,7 @@ namespace SrvSurvey
             btnRuinsOrigin.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnRuinsOrigin.BackColor = SystemColors.ControlLight;
             btnRuinsOrigin.FlatStyle = FlatStyle.System;
-            btnRuinsOrigin.Location = new Point(109, 57);
+            btnRuinsOrigin.Location = new Point(151, 57);
             btnRuinsOrigin.Name = "btnRuinsOrigin";
             btnRuinsOrigin.Size = new Size(126, 21);
             btnRuinsOrigin.TabIndex = 15;
@@ -491,7 +492,7 @@ namespace SrvSurvey
             txtGuardianSite.Location = new Point(16, 31);
             txtGuardianSite.Name = "txtGuardianSite";
             txtGuardianSite.ReadOnly = true;
-            txtGuardianSite.Size = new Size(218, 20);
+            txtGuardianSite.Size = new Size(260, 20);
             txtGuardianSite.TabIndex = 14;
             txtGuardianSite.Text = "<Guardian site>";
             // 
@@ -524,7 +525,7 @@ namespace SrvSurvey
             lblNotInstalled.Location = new Point(0, 0);
             lblNotInstalled.Name = "lblNotInstalled";
             lblNotInstalled.Padding = new Padding(10);
-            lblNotInstalled.Size = new Size(395, 102);
+            lblNotInstalled.Size = new Size(437, 102);
             lblNotInstalled.TabIndex = 21;
             lblNotInstalled.TabStop = true;
             lblNotInstalled.Text = "This application is intended for use only with the game \"Elite Dangerous\" by Frontier Developments.\r\n\r\nIt does not appear the game is installed.";
@@ -538,7 +539,7 @@ namespace SrvSurvey
             btnSphereLimit.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnSphereLimit.BackColor = SystemColors.ControlLight;
             btnSphereLimit.FlatStyle = FlatStyle.System;
-            btnSphereLimit.Location = new Point(283, 397);
+            btnSphereLimit.Location = new Point(325, 397);
             btnSphereLimit.Name = "btnSphereLimit";
             btnSphereLimit.Size = new Size(100, 33);
             btnSphereLimit.TabIndex = 22;
@@ -551,9 +552,9 @@ namespace SrvSurvey
             linkLabel2.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             linkLabel2.Font = new Font("Lucida Sans Typewriter", 9F, FontStyle.Regular, GraphicsUnit.Point);
             linkLabel2.LinkArea = new LinkArea(17, 22);
-            linkLabel2.Location = new Point(10, 451);
+            linkLabel2.Location = new Point(10, 480);
             linkLabel2.Name = "linkLabel2";
-            linkLabel2.Size = new Size(385, 29);
+            linkLabel2.Size = new Size(427, 29);
             linkLabel2.TabIndex = 23;
             linkLabel2.TabStop = true;
             linkLabel2.Text = "Ask questions at Guardian Science Corps on Discord";
@@ -565,7 +566,7 @@ namespace SrvSurvey
             btnRamTah.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnRamTah.BackColor = SystemColors.ControlLight;
             btnRamTah.FlatStyle = FlatStyle.System;
-            btnRamTah.Location = new Point(283, 357);
+            btnRamTah.Location = new Point(325, 357);
             btnRamTah.Name = "btnRamTah";
             btnRamTah.Size = new Size(100, 33);
             btnRamTah.TabIndex = 24;
@@ -575,7 +576,8 @@ namespace SrvSurvey
             // 
             // btnPublish
             // 
-            btnPublish.Location = new Point(174, 483);
+            btnPublish.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            btnPublish.Location = new Point(174, 512);
             btnPublish.Name = "btnPublish";
             btnPublish.Size = new Size(75, 23);
             btnPublish.TabIndex = 25;
@@ -584,16 +586,26 @@ namespace SrvSurvey
             btnPublish.Visible = false;
             btnPublish.Click += btnPublish_Click;
             // 
+            // checkTempHide
+            // 
+            checkTempHide.AutoSize = true;
+            checkTempHide.Location = new Point(12, 436);
+            checkTempHide.Name = "checkTempHide";
+            checkTempHide.Size = new Size(227, 16);
+            checkTempHide.TabIndex = 26;
+            checkTempHide.Text = "Temporarily hide all overlays";
+            checkTempHide.UseVisualStyleBackColor = true;
+            checkTempHide.CheckedChanged += checkTempHide_CheckedChanged;
+            // 
             // Main
             // 
             AutoScaleDimensions = new SizeF(7F, 12F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = btnQuit2;
-            ClientSize = new Size(395, 518);
-            Controls.Add(lblFullScreen);
+            ClientSize = new Size(437, 547);
+            Controls.Add(checkTempHide);
             Controls.Add(btnPublish);
             Controls.Add(btnRamTah);
-            Controls.Add(lblNotInstalled);
             Controls.Add(linkLabel2);
             Controls.Add(btnSphereLimit);
             Controls.Add(groupBox3);
@@ -605,6 +617,8 @@ namespace SrvSurvey
             Controls.Add(groupBox1);
             Controls.Add(label2);
             Controls.Add(btnQuit2);
+            Controls.Add(lblFullScreen);
+            Controls.Add(lblNotInstalled);
             Font = new Font("Lucida Sans Typewriter", 8.25F, FontStyle.Regular, GraphicsUnit.Point);
             FormBorderStyle = FormBorderStyle.Fixed3D;
             Icon = (Icon)resources.GetObject("$this.Icon");
@@ -672,5 +686,6 @@ namespace SrvSurvey
         private Button btnRamTah;
         private Button btnPublish;
         private Button btnPasteLatLong;
+        private CheckBox checkTempHide;
     }
 }

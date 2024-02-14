@@ -153,6 +153,8 @@ namespace SrvSurvey
 
         public static void showActivePlotters()
         {
+            if (Program.tempHideAllPlotters) return;
+
             //Game.log($"Program.showActivePlotters: {activePlotters.Count}");
 
             foreach (PlotterForm form in activePlotters.Values)
@@ -166,6 +168,8 @@ namespace SrvSurvey
             foreach (PlotterForm form in activePlotters.Values)
                 form.Invalidate();
         }
+
+        public static bool tempHideAllPlotters = false;
 
         #endregion
 

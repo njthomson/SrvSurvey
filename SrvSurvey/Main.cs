@@ -1356,6 +1356,17 @@ namespace SrvSurvey
                     this.Invoke(() => { btnPublish.Enabled = true; });
                 });
         }
+
+        private void checkTempHide_CheckedChanged(object sender, EventArgs e)
+        {
+            Program.tempHideAllPlotters = !Program.tempHideAllPlotters;
+            checkTempHide.Checked = Program.tempHideAllPlotters;
+
+            if (Program.tempHideAllPlotters)
+                Program.hideActivePlotters();
+            else
+                Program.showActivePlotters();
+        }
     }
 }
 

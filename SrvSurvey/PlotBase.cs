@@ -702,6 +702,8 @@ namespace SrvSurvey
 
         public static float getOpacity(PlotterForm form)
         {
+            if (Program.tempHideAllPlotters) return 0;
+
             var pp = plotterPositions[form.GetType().Name];
             return pp.opacity ?? Game.settings.Opacity;
         }

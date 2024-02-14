@@ -1,9 +1,13 @@
 {
   "sid": "GR122",
   "idx": 1,
-  "sh": -1,
+  "sh": 318,
   "t": "Alpha",
   "rh": -1,
+  "ll": {
+    "lat": 22.561901,
+    "long": -170.458603
+  },
   "og": "ABDEFIJKLMOP",
   "ao": [
     "A05-ur,re-B1-",
