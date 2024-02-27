@@ -20,6 +20,7 @@ namespace SrvSurvey
         }
 
         public Exception ex;
+        private int logLineCount = 0;
 
         private FormErrorSubmit(Exception ex)
         {
@@ -27,6 +28,7 @@ namespace SrvSurvey
             InitializeComponent();
 
             // for privacy reasons, this must be unchecked by default
+            txtSteps.Height = txtStack.Height;
             checkIncludeLogs.Checked = false;
         }
 
@@ -35,8 +37,8 @@ namespace SrvSurvey
             // show stack information on the form
             txtStack.Text = ex.GetType().Name + ":" + ex.Message + "\r\n\r\n" + ex.StackTrace;
 
-            var lineCount = Math.Min(Game.logs.Count, 10);
-            checkIncludeLogs.Text += $" (last {lineCount})";
+            this.logLineCount = Math.Min(Game.logs.Count, 20);
+            checkIncludeLogs.Text += $" (last {this.logLineCount})";
 
             if (!string.IsNullOrEmpty(Game.activeGame?.journals?.filepath) && File.Exists(Game.activeGame.journals.filepath))
             {
@@ -60,7 +62,7 @@ namespace SrvSurvey
 
             if (checkIncludeLogs.Checked)
             {
-                var lines = String.Join('\n', Game.logs.TakeLast(20));
+                var lines = String.Join('\n', Game.logs.TakeLast(this.logLineCount));
 
                 // and include the version of the game if possible
                 var gameFileHeader = Game.activeGame?.journals?.Entries.FirstOrDefault();

@@ -50,7 +50,7 @@
             linkMain.Location = new Point(13, 9);
             linkMain.Margin = new Padding(4, 0, 4, 0);
             linkMain.Name = "linkMain";
-            linkMain.Size = new Size(488, 29);
+            linkMain.Size = new Size(534, 29);
             linkMain.TabIndex = 6;
             linkMain.TabStop = true;
             linkMain.Text = "Oops! This is embarrasing. Please submit this error report, or enter details manually at: https://github.com/njthomson/SrvSurvey/issues";
@@ -78,24 +78,24 @@
             txtStack.Name = "txtStack";
             txtStack.ReadOnly = true;
             txtStack.ScrollBars = ScrollBars.Both;
-            txtStack.Size = new Size(487, 141);
+            txtStack.Size = new Size(533, 141);
             txtStack.TabIndex = 7;
             // 
             // txtSteps
             // 
-            txtSteps.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            txtSteps.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             txtSteps.Location = new Point(14, 206);
             txtSteps.Margin = new Padding(4, 3, 4, 3);
             txtSteps.Multiline = true;
             txtSteps.Name = "txtSteps";
             txtSteps.ScrollBars = ScrollBars.Both;
-            txtSteps.Size = new Size(487, 149);
+            txtSteps.Size = new Size(533, 149);
             txtSteps.TabIndex = 0;
             // 
             // btnSubmit
             // 
             btnSubmit.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnSubmit.Location = new Point(157, 443);
+            btnSubmit.Location = new Point(203, 443);
             btnSubmit.Margin = new Padding(4, 3, 4, 3);
             btnSubmit.Name = "btnSubmit";
             btnSubmit.Size = new Size(224, 23);
@@ -130,7 +130,7 @@
             // 
             btnClose.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnClose.DialogResult = DialogResult.Cancel;
-            btnClose.Location = new Point(389, 443);
+            btnClose.Location = new Point(435, 443);
             btnClose.Margin = new Padding(4, 3, 4, 3);
             btnClose.Name = "btnClose";
             btnClose.Size = new Size(112, 23);
@@ -140,12 +140,12 @@
             // 
             // linkToDiscord
             // 
-            linkToDiscord.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            linkToDiscord.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             linkToDiscord.LinkArea = new LinkArea(108, 14);
             linkToDiscord.Location = new Point(14, 401);
             linkToDiscord.Margin = new Padding(4, 0, 4, 0);
             linkToDiscord.Name = "linkToDiscord";
-            linkToDiscord.Size = new Size(488, 29);
+            linkToDiscord.Size = new Size(534, 29);
             linkToDiscord.TabIndex = 10;
             linkToDiscord.TabStop = true;
             linkToDiscord.Text = "(Submitting on GitHub.com requires an account. Issues may also be reported on our Discord server in channel #error-reports)";
@@ -154,6 +154,7 @@
             // 
             // linkJournal
             // 
+            linkJournal.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             linkJournal.AutoSize = true;
             linkJournal.LinkArea = new LinkArea(22, 200);
             linkJournal.Location = new Point(14, 380);
@@ -168,6 +169,7 @@
             // 
             // btnCopyJournalPath
             // 
+            btnCopyJournalPath.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnCopyJournalPath.Image = (Image)resources.GetObject("btnCopyJournalPath.Image");
             btnCopyJournalPath.Location = new Point(394, 375);
             btnCopyJournalPath.Name = "btnCopyJournalPath";
@@ -178,8 +180,9 @@
             // 
             // btnCopyStack
             // 
+            btnCopyStack.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnCopyStack.Image = (Image)resources.GetObject("btnCopyStack.Image");
-            btnCopyStack.Location = new Point(457, 43);
+            btnCopyStack.Location = new Point(503, 43);
             btnCopyStack.Name = "btnCopyStack";
             btnCopyStack.Size = new Size(23, 23);
             btnCopyStack.TabIndex = 28;
@@ -191,7 +194,7 @@
             AcceptButton = btnSubmit;
             AutoScaleDimensions = new SizeF(7F, 12F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(514, 478);
+            ClientSize = new Size(560, 478);
             Controls.Add(btnCopyStack);
             Controls.Add(btnCopyJournalPath);
             Controls.Add(linkJournal);

@@ -85,9 +85,10 @@ namespace SrvSurvey.net
             catch (Exception ex)
             {
                 Game.log($"Error in updatePubData:\r\n{ex}");
-                if ((ex as HttpRequestException)?.StatusCode == System.Net.HttpStatusCode.NotFound || Util.isFirewallProblem(ex))
+                var reqEx = ex as HttpRequestException;
+                if (reqEx?.StatusCode == System.Net.HttpStatusCode.NotFound || Util.isFirewallProblem(ex))
                 {
-                    // ignore NotFound responses
+                    // swallow NotFound responses or problems caused by firewalls
                 }
                 else
                 {

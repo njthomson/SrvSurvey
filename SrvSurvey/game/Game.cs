@@ -630,7 +630,12 @@ namespace SrvSurvey.game
 
                 return false;
             });
-            if (this.systemData == null) throw new Exception("Why no systemData?");
+            if (this.systemData == null)
+            {
+                log($"Game.initSystemData: Why no systemData? Current journal has {this.journals.Count} items.");
+                Debugger.Break(); // why/when does this really happen?
+                return;
+            }
 
             log($"Game.initSystemData: Processing {playForwards.Count} journal items forwards...");
             playForwards.Reverse();

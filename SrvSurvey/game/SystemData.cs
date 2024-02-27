@@ -442,20 +442,21 @@ namespace SrvSurvey.game
         public static List<string> journalEventTypes = new List<string>()
         {
             nameof(FSSDiscoveryScan),
-            nameof(Scan),
-            nameof(FSSBodySignals),
             nameof(FSSAllBodiesFound),
+            nameof(Scan),
             nameof(SAAScanComplete),
+            nameof(FSSBodySignals),
             nameof(SAASignalsFound),
             nameof(ApproachBody),
-            nameof(Disembark),
             nameof(Touchdown),
+            nameof(Disembark),
             nameof(CodexEntry),
             nameof(ScanOrganic),
             nameof(ApproachSettlement),
         };
 
         public void Journals_onJournalEntry(JournalEntry entry) { this.onJournalEntry((dynamic)entry); }
+
         private void onJournalEntry(JournalEntry entry) { /* ignore */ }
 
         public void onJournalEntry(FSSDiscoveryScan entry)
@@ -713,6 +714,28 @@ namespace SrvSurvey.game
             // We cannot log locations here because we do not know if the event is tracked live or retrospectively during playback (where the status file cannot be trusted)
         }
 
+        public void onJournalEntry(ApproachSettlement entry)
+        {
+            if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! Expected: `{this.address}`, got: {entry.SystemAddress}"); return; }
+            var body = this.findOrCreate(entry.BodyName, entry.BodyID);
+
+            if (entry.Name.StartsWith("$Ancient"))
+            {
+                // update settlements
+                if (body.settlements == null) body.settlements = new Dictionary<string, LatLong2>();
+                body.settlements[entry.Name] = entry;
+
+                var siteData = GuardianSiteData.Load(entry);
+                // always update the location of the site based on latest journal data
+                siteData.location = entry;
+                if (siteData != null && siteData.lastVisited < entry.timestamp)
+                {
+                    siteData.lastVisited = entry.timestamp;
+                    siteData.Save();
+                }
+            }
+        }
+
         public void onCanonnData(SystemPoi canonnPoi)
         {
             if (canonnPoi.system != this.name) { Game.log($"Unmatched system! Expected: `{this.name}`, got: {canonnPoi.system}"); return; }
@@ -889,28 +912,6 @@ namespace SrvSurvey.game
                     }
                 }
 
-            }
-        }
-
-        public void onJournalEntry(ApproachSettlement entry)
-        {
-            if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! Expected: `{this.address}`, got: {entry.SystemAddress}"); return; }
-            var body = this.findOrCreate(entry.BodyName, entry.BodyID);
-
-            if (entry.Name.StartsWith("$Ancient"))
-            {
-                // update settlements
-                if (body.settlements == null) body.settlements = new Dictionary<string, LatLong2>();
-                body.settlements[entry.Name] = entry;
-
-                var siteData = GuardianSiteData.Load(entry);
-                // always update the location of the site based on latest journal data
-                siteData.location = entry;
-                if (siteData != null && siteData.lastVisited < entry.timestamp)
-                {
-                    siteData.lastVisited = entry.timestamp;
-                    siteData.Save();
-                }
             }
         }
 
