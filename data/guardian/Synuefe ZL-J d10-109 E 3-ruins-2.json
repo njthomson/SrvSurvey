@@ -8,18 +8,20 @@
     "lat": 37.44635,
     "long": 84.864822
   },
+  "pa": "p27,p30,p40,p42,p8",
+  "pp": "p10,p13,p26,p9,t2,t3,t5,t6",
   "og": "AGKOTU",
   "ao": [
     "A09-ca,ur-H10-",
-    "G13-ca,or-H12-b,d",
-    "G18-ca-H8-e,d",
-    "K21-to,or-C12-b",
-    "K26-to-C7-d",
-    "O03-or,re-T13-e",
-    "T13-ca,re-H16-d",
-    "T18-ca,ta-H11-b",
-    "U04-ur,or-B11-e",
-    "U21-ur,to-B12-",
+    "G13-ca,or-H12-b,d,g",
+    "G18-ca-H8-e,d,b",
+    "K21-to,or-C12-",
+    "K26-to-C7-",
+    "O03-or,re-T13-",
+    "T13-ca,re-H16-d,e,b",
+    "T18-ca,ta-H11-",
+    "U04-ur,or-B11-e,b",
+    "U21-ur,to-B12-e,g",
     "U36-or,ur-T10-"
   ]
 }

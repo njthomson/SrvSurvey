@@ -1,25 +1,32 @@
 {
   "sid": "GR090",
   "idx": 3,
-  "sh": -1,
+  "sh": 251,
   "t": "Alpha",
-  "rh": -1,
+  "rh": 14,
+  "ll": {
+    "lat": -57.499325,
+    "long": -100.514328
+  },
+  "pa": "p1,p11,p12,p33,p7,t5",
+  "pp": "t1,t2,t7",
   "og": "BFGILMNQ",
   "ao": [
-    "B17-to,to-C2-",
-    "B20-to,to-C2-",
-    "F09-ur,ca-B3-",
-    "F12-ur,ta-B4-",
+    "B17-to,to-C2-d",
+    "B20-to,to-C2-b,d",
+    "F09-ur,ca-B3-a",
+    "F12-ur,ta-B4-d",
     "G03-ca,or-H5-",
-    "I09-ur,or-B5-",
-    "I12-ur,to-B6-",
+    "I09-ur,or-B5-g,d",
+    "I12-ur,to-B6-b",
     "L01-ca,ur-H3-",
     "M02-ta,ta-L2-",
-    "M09-ta-L1-",
-    "M24-ta,re-L7-",
+    "M09-ta-L1-a",
+    "M24-ta,re-L7-e,a",
     "N01-ca,ur-H3-",
     "Q04-ta,ca-L3-",
     "Q08-ta,re-L7-",
     "Q19-ta,re-L7-"
-  ]
+  ],
+  "rth": "t2:14"
 }

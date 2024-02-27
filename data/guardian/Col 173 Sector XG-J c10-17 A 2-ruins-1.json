@@ -1,16 +1,22 @@
 {
   "sid": "GR028",
   "idx": 1,
-  "sh": -1,
+  "sh": 87,
   "t": "Beta",
   "rh": -1,
+  "ll": {
+    "lat": -17.008703,
+    "long": 44.243992
+  },
+  "pa": "p22,p27,p35,p36,p37,p39,p41,t1,t5",
+  "pp": "p11,p13,p21,p26,p42,p9,t6,t7",
   "og": "CDHKLMST",
   "ao": [
     "C11-ta,ta-L9-",
-    "C17-ta-L8-",
+    "C17-ta-L8-e",
     "D12-ca-H8-",
-    "H09-or,or-T8-",
-    "K04-to,ta-C11-",
+    "H09-or,or-T8-b",
+    "K04-to,ta-C11-g",
     "K23-to,ur-C10-",
     "L05-or,re-T12-",
     "M02-or-T7-",

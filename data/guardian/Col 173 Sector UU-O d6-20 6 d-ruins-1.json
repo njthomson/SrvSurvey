@@ -1,16 +1,22 @@
 {
   "sid": "GR159",
   "idx": 1,
-  "sh": -1,
+  "sh": 247,
   "t": "Alpha",
-  "rh": -1,
+  "rh": 9,
+  "ll": {
+    "lat": -17.390842,
+    "long": -104.857132
+  },
+  "pa": "p21,p31,t12",
+  "pp": "p32,t4,t5",
   "og": "ABDFIJKLNOP",
   "ao": [
     "A06-ur,ur-B2-",
     "A10-to,to-C2-",
     "A14-ca,ca-H2-",
     "B04-to,ca-C3-",
-    "B06-to,re-C1-",
+    "B06-to,re-C1-e,d",
     "D04-or,ca-T3-",
     "D11-to,or-C6-",
     "F19-ur,or-B5-",
@@ -26,5 +32,6 @@
     "O10-or,ur-T4-",
     "P04-or,ta-T5-",
     "P13-or-T1-"
-  ]
+  ],
+  "rth": "t5:9"
 }

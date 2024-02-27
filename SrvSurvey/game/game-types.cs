@@ -206,6 +206,7 @@ namespace SrvSurvey.game
                     && Game.activeGame != null
                     && Game.activeGame.isMode(GameMode.SuperCruising, GameMode.SAA, GameMode.FSS, GameMode.ExternalPanel, GameMode.Orrery, GameMode.SystemMap)
                     // show only after honking or we have Canonn data
+                    && Game.activeGame.systemStatus != null
                     && (Game.activeGame.systemStatus.honked || Game.activeGame.canonnPoi != null);
             }
         }
