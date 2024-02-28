@@ -815,7 +815,7 @@ namespace SrvSurvey.game
                 else
                     body.type = SystemBody.typeFrom(null!, entry.subType, entry.isLandable);
                 if (body.distanceFromArrivalLS == 0) body.distanceFromArrivalLS = entry.distanceToArrival;
-                if (body.radius == 0 && entry.radius > 0) body.radius = entry.radius * 1000; // why?
+                if (body.radius == 0 && entry.radius > 0) body.radius = entry.radius * 1000;
                 if (body.planetClass == null) body.planetClass = entry.subType;
                 if (!string.IsNullOrEmpty(entry.terraformingState))
                     body.terraformable = entry.terraformingState == "Candidate for terraforming";
@@ -858,7 +858,7 @@ namespace SrvSurvey.game
                 else
                     body.type = SystemBody.typeFrom(null!, entry.subType, entry.isLandable ?? false);
                 if (body.distanceFromArrivalLS == 0) body.distanceFromArrivalLS = entry.distanceToArrival ?? 0;
-                if (body.radius == 0 && entry.radius != null) body.radius = entry.radius.Value * 1000; // why?
+                if (body.radius == 0 && entry.radius != null) body.radius = entry.radius.Value * 1000;
                 if (body.planetClass == null) body.planetClass = entry.subType;
                 if (!string.IsNullOrEmpty(entry.terraformingState))
                     body.terraformable = entry.terraformingState == "Candidate for terraforming";
