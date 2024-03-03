@@ -327,6 +327,8 @@ namespace SrvSurvey
         private void removeGame()
         {
             Game.log($"Main.removeGame, has old game: {this.game != null}");
+            Program.closeAllPlotters();
+
             if (this.game != null)
             {
                 Game.update -= Game_modeChanged;
@@ -337,8 +339,6 @@ namespace SrvSurvey
                 this.game.Dispose();
             }
             this.game = null;
-
-            Program.closeAllPlotters();
 
             this.updateAllControls();
         }

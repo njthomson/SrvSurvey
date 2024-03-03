@@ -228,7 +228,7 @@ namespace SrvSurvey
             base.OnPaintBackground(e);
             try
             {
-                if (this.IsDisposed || game.systemBody == null) return;
+                if (this.IsDisposed || game?.systemBody == null || game.isShutdown == true) return;
 
                 this.g = e.Graphics;
                 this.g.SmoothingMode = SmoothingMode.HighQuality;
