@@ -420,7 +420,8 @@ namespace SrvSurvey.game
             get => !this.isShutdown
                 && !this.atMainMenu
                 && this.isMode(GameMode.SuperCruising, GameMode.Flying, GameMode.Landed, GameMode.InSrv, GameMode.OnFoot, GameMode.GlideMode, GameMode.InFighter, GameMode.CommsPanel)
-                && !this.hidePlottersFromCombatSuits;
+                && !this.hidePlottersFromCombatSuits
+                && (this.status.Flags2 & StatusFlags2.InTaxi) == 0;
         }
 
         public bool showGuardianPlotters

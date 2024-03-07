@@ -77,14 +77,21 @@ namespace SrvSurvey
 
         private JournalEntry? parseNextEntry()
         {
-            var json = reader.ReadLine()!;
-            JToken entry = JsonConvert.DeserializeObject<JToken>(json)!;
-            if (entry == null) return null;
-
-            var eventName = entry["event"]!.Value<string>()!;
-            if (typeMap.ContainsKey(eventName))
+            try
             {
-                return entry.ToObject(typeMap[eventName]) as JournalEntry;
+                var json = reader.ReadLine()!;
+                JToken entry = JsonConvert.DeserializeObject<JToken>(json)!;
+                if (entry == null) return null;
+
+                var eventName = entry["event"]!.Value<string>()!;
+                if (typeMap.ContainsKey(eventName))
+                {
+                    return entry.ToObject(typeMap[eventName]) as JournalEntry;
+                }
+            }
+            catch (Exception ex)
+            {
+                Game.log($"parseNextEntry error: {ex.Message}\n{ex.StackTrace}");
             }
 
             // ignore anything else
@@ -192,7 +199,7 @@ namespace SrvSurvey
 
             // the end is either the first or last element
             var endIdx = searchUp ? 0 : this.Count - 1;
-            
+
             while (idx != endIdx)
             {
                 if (idx < 0 || idx >= this.Entries.Count) break;
@@ -240,7 +247,7 @@ namespace SrvSurvey
                         if (line == null) break;
 
                         if (line.Contains("\"event\":\"Fileheader\"") && !line.ToUpperInvariant().Contains($"\"Odyssey\":{isOdyssey}".ToUpperInvariant()))
-                                return false;
+                            return false;
 
                         if (line.Contains("\"event\":\"Commander\""))
                             // no need to process further lines
