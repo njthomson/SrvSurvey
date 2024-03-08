@@ -1677,7 +1677,6 @@ namespace SrvSurvey
 
                 switch (siteData.type)
                 {
-                    case SiteType.Bowl:
                     case SiteType.Crossroads:
                     case SiteType.Hammerbot:
                     case SiteType.Lacrosse:
@@ -2065,7 +2064,6 @@ namespace SrvSurvey
             {
                 switch (siteData.type)
                 {
-                    case SiteType.Bowl:
                     case SiteType.Crossroads:
                     case SiteType.Fistbump:
                     case SiteType.Hammerbot:
@@ -2076,12 +2074,6 @@ namespace SrvSurvey
                         // there is no map for these
                         msg += $"\r\n\r\n■ Note: there is no map yet for: {siteData.type}";
                         break;
-
-                        //case SiteType.Robolobster:
-                        //case SiteType.Bear:
-                        //case SiteType.Fistbump:
-                        // these have a map
-                        //    break;
                 }
 
                 if (siteData.name.StartsWith("$Ancient_Medium") || siteData.name.StartsWith("$Ancient_Small"))

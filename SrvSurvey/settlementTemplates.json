@@ -1427,8 +1427,8 @@
   "Bear": {
     "name": "Bear",
     "backgroundImage": "",
-    "imageOffset": "627, 657",
-    "scaleFactor": 0.45,
+    "imageOffset": "510, 542",
+    "scaleFactor": 0.65,
     "poi": [
       { "name": "A01", "type": "brokeObelisk", "angle": 138.5, "dist": 291.9, "rot": 15.0 },
       { "name": "A02", "type": "brokeObelisk", "angle": 135.3, "dist": 281.5, "rot": 195.0 },
@@ -2418,8 +2418,8 @@
   "Bowl": {
     "name": "$Ancient_Small_003:#index=1;",
     "backgroundImage": "",
-    "imageOffset": "0, 0",
-    "scaleFactor": 1.0,
+    "imageOffset": "456, 498",
+    "scaleFactor": 0.73,
     "poi": [
       { "name": "A01", "type": "obelisk", "angle": 340.802430980534, "dist": 187.25278991277349333285935171, "rot": 325 },
       { "name": "A02", "type": "brokeObelisk", "angle": 338.90234358966, "dist": 185.98684739787936815683058753, "rot": 209 },

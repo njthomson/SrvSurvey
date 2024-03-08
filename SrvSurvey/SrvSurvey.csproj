@@ -54,6 +54,7 @@
     <None Remove="images\bear-background.png" />
     <None Remove="images\beta-background.png" />
     <None Remove="images\beta-heading-guide.png" />
+    <None Remove="images\bowl-background.png" />
     <None Remove="images\crossroads-heading-guide.png" />
     <None Remove="images\data-port-heading-guide.png" />
     <None Remove="images\fistbump-heading-guide.png" />
@@ -88,6 +89,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="images\beta-heading-guide.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\bowl-background.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="images\crossroads-heading-guide.png">
