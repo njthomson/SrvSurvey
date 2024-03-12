@@ -101,6 +101,9 @@ namespace SrvSurvey
             lblScreenshotSource = new Label();
             lblScreenshotTarget = new Label();
             tabPage6 = new TabPage();
+            label13 = new Label();
+            checkBox16 = new CheckBox();
+            numericUpDown1 = new NumericUpDown();
             label10 = new Label();
             checkBox11 = new CheckBox();
             numMinScanValue = new NumericUpDown();
@@ -144,6 +147,7 @@ namespace SrvSurvey
             tabPage5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
             tabPage6.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numMinScanValue).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox5).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox4).BeginInit();
@@ -673,14 +677,16 @@ namespace SrvSurvey
             checkBox12.AutoSize = true;
             checkBox12.Checked = true;
             checkBox12.CheckState = CheckState.Checked;
+            checkBox12.Enabled = false;
             checkBox12.Location = new Point(10, 375);
             checkBox12.Margin = new Padding(4, 3, 4, 3);
             checkBox12.Name = "checkBox12";
-            checkBox12.Size = new Size(292, 19);
+            checkBox12.Size = new Size(474, 19);
             checkBox12.TabIndex = 15;
-            checkBox12.Tag = "enableEarlyGuardianStructures";
-            checkBox12.Text = "Enable Guardian structures features (experimental)";
+            checkBox12.Tag = "";
+            checkBox12.Text = "-- Enable Guardian structures features (experimental) /enableEarlyGuardianStructures";
             checkBox12.UseVisualStyleBackColor = true;
+            checkBox12.Visible = false;
             // 
             // checkBox3
             // 
@@ -1028,6 +1034,9 @@ namespace SrvSurvey
             // tabPage6
             // 
             tabPage6.BackColor = SystemColors.Control;
+            tabPage6.Controls.Add(label13);
+            tabPage6.Controls.Add(checkBox16);
+            tabPage6.Controls.Add(numericUpDown1);
             tabPage6.Controls.Add(label10);
             tabPage6.Controls.Add(checkBox11);
             tabPage6.Controls.Add(numMinScanValue);
@@ -1043,6 +1052,41 @@ namespace SrvSurvey
             tabPage6.Size = new Size(490, 404);
             tabPage6.TabIndex = 5;
             tabPage6.Text = "Exploration";
+            // 
+            // label13
+            // 
+            label13.AutoSize = true;
+            label13.Location = new Point(277, 210);
+            label13.Name = "label13";
+            label13.Size = new Size(114, 15);
+            label13.TabIndex = 23;
+            label13.Text = "LS from primary star";
+            // 
+            // checkBox16
+            // 
+            checkBox16.AutoSize = true;
+            checkBox16.Checked = true;
+            checkBox16.CheckState = CheckState.Checked;
+            checkBox16.Location = new Point(31, 209);
+            checkBox16.Name = "checkBox16";
+            checkBox16.Size = new Size(146, 19);
+            checkBox16.TabIndex = 22;
+            checkBox16.Tag = "skipHighDistanceDSS";
+            checkBox16.Text = "Skip bodies exceeding:";
+            checkBox16.UseVisualStyleBackColor = true;
+            // 
+            // numericUpDown1
+            // 
+            numericUpDown1.Increment = new decimal(new int[] { 10000, 0, 0, 0 });
+            numericUpDown1.Location = new Point(183, 208);
+            numericUpDown1.Maximum = new decimal(new int[] { 6000000, 0, 0, 0 });
+            numericUpDown1.Name = "numericUpDown1";
+            numericUpDown1.Size = new Size(88, 23);
+            numericUpDown1.TabIndex = 21;
+            numericUpDown1.Tag = "skipHighDistanceDSSValue";
+            numericUpDown1.TextAlign = HorizontalAlignment.Right;
+            numericUpDown1.ThousandsSeparator = true;
+            numericUpDown1.Value = new decimal(new int[] { 2000000, 0, 0, 0 });
             // 
             // label10
             // 
@@ -1397,6 +1441,7 @@ namespace SrvSurvey
             ((System.ComponentModel.ISupportInitialize)pictureBox3).EndInit();
             tabPage6.ResumeLayout(false);
             tabPage6.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown1).EndInit();
             ((System.ComponentModel.ISupportInitialize)numMinScanValue).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox5).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox4).EndInit();
@@ -1508,5 +1553,8 @@ namespace SrvSurvey
         private Panel panelBannerColor;
         private Label label3;
         private CheckBox checkLocalTime;
+        private Label label13;
+        private CheckBox checkBox16;
+        private NumericUpDown numericUpDown1;
     }
 }

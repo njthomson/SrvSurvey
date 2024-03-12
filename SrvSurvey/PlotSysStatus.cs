@@ -142,22 +142,26 @@ namespace SrvSurvey
                 }
 
                 var headerTxt = "";
-                if (game.systemData.fssComplete && (Game.settings.skipLowValueDSS || !Game.settings.skipRingsDSS))
+                if (game.systemData.fssComplete && (Game.settings.skipLowValueDSS || Game.settings.skipHighDistanceDSS || !Game.settings.skipRingsDSS))
                 {
-                    minViableWidth += 20;
-
-                    headerTxt += "(";
-                    if (Game.settings.skipLowValueDSS)
-                    {
-                        headerTxt += $" >{Util.credits(Game.settings.skipLowValueAmount)}";
-                        minViableWidth += 80;
-                    }
-                    if (!Game.settings.skipRingsDSS)
-                    {
-                        headerTxt += " +Rings";
-                        minViableWidth += 45;
-                    }
-                    headerTxt += " )";
+                    minViableWidth += 74;
+                    headerTxt += "(filtered)";
+                    //if (Game.settings.skipLowValueDSS)
+                    //{
+                    //    headerTxt += $" >{Util.credits(Game.settings.skipLowValueAmount)}";
+                    //    minViableWidth += 80;
+                    //}
+                    //if (!Game.settings.skipRingsDSS)
+                    //{
+                    //    headerTxt += " +Rings";
+                    //    minViableWidth += 45;
+                    //}
+                    //if (Game.settings.skipHighDistanceDSS)
+                    //{
+                    //    headerTxt += $" <{Game.settings.skipHighDistanceDSSValue / 1000}K LS";
+                    //    minViableWidth += 60;
+                    //}
+                    //headerTxt += ")";
                 }
                 g.DrawString($"System survey remaining: {headerTxt}", GameColors.fontSmall, GameColors.brushGameOrange, 4, 7);
             }

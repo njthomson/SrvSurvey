@@ -65,7 +65,7 @@ namespace SrvSurvey
 
         private void useLastWindowLocation()
         {
-            // position ourself within the bound of which ever screen is chosen
+            // position ourselves within the bound of which ever screen is chosen
             var pt = Game.settings.formMainLocation;
             var r = Screen.GetBounds(pt);
             if (pt.X < r.Left) pt.X = r.Left;
@@ -316,9 +316,10 @@ namespace SrvSurvey
         {
             this.Invoke((MethodInvoker)delegate
             {
-                Game.log($"New journal file created: {e.Name}");
+                Game.log($"New journal file detected: {e.Name} (existing game: {this.game != null})");
                 if (this.game == null)
                 {
+                    Application.DoEvents();
                     this.newGame();
                 }
             });
@@ -332,8 +333,6 @@ namespace SrvSurvey
             if (this.game != null)
             {
                 Game.update -= Game_modeChanged;
-                //this.game.nearingBody -= Game_nearingBody;
-                //this.game.departingBody -= Game_departingBody;
                 if (this.game.journals != null)
                     this.game.journals.onJournalEntry -= Journals_onJournalEntry;
                 this.game.Dispose();
@@ -348,7 +347,10 @@ namespace SrvSurvey
             Game.log($"Main.newGame: has old game:{this.game != null} ");
 
             if (this.game != null)
+            {
                 this.removeGame();
+                Application.DoEvents();
+            }
 
             var newGame = new Game(Game.settings.preferredCommander);
             if (newGame.isShutdown || !newGame.isRunning)
@@ -360,8 +362,6 @@ namespace SrvSurvey
             this.game = newGame;
 
             Game.update += Game_modeChanged;
-            //this.game.nearingBody += Game_nearingBody;
-            //this.game.departingBody += Game_departingBody;
             this.game.journals!.onJournalEntry += Journals_onJournalEntry;
 
             if (!Game.settings.hideJournalWriteTimer)
@@ -384,23 +384,6 @@ namespace SrvSurvey
                 }));
             }
         }
-
-        //private void Game_departingBody(LandableBody nearBody)
-        //{
-        //    nearBody.bioScanEvent -= NearBody_bioScanEvent;
-        //    this.NearBody_bioScanEvent();
-        //}
-
-        //private void Game_nearingBody(LandableBody nearBody)
-        //{
-        //    this.NearBody_bioScanEvent();
-        //    nearBody.bioScanEvent += NearBody_bioScanEvent;
-        //}
-
-        //private void NearBody_bioScanEvent()
-        //{
-        //    this.updateAllControls();
-        //}
 
         private void Game_modeChanged(GameMode newMode, bool force)
         {
@@ -1310,7 +1293,7 @@ namespace SrvSurvey
 
         #endregion
 
-        private void btnGuarduanThings_Click(object sender, EventArgs e)
+        private void btnGuardianThings_Click(object sender, EventArgs e)
         {
             FormBeacons.show();
         }

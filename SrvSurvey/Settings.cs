@@ -25,6 +25,8 @@ namespace SrvSurvey
         public bool skipRingsDSS = false;
         public bool skipLowValueDSS = true;
         public int skipLowValueAmount = 1_000_000;
+        public bool skipHighDistanceDSS = false;
+        public int skipHighDistanceDSSValue = 100_000;
         public bool autoTrackCompBioScans = true;
         public bool skipAnalyzedCompBioScans = true;
         public bool autoRemoveTrackerOnSampling = true;
@@ -41,7 +43,8 @@ namespace SrvSurvey
         public bool focusGameOnMinimize = true;
 
         public bool enableGuardianSites = true;
-        public bool enableEarlyGuardianStructures = false;
+        [JsonIgnore]
+        public bool enableEarlyGuardianStructures = true;
         public bool disableRuinsMeasurementGrid = false;
         public bool disableAerialAlignmentGrid = false;
         public bool hidePlottersFromCombatSuits = false;

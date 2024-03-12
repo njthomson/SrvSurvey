@@ -62,7 +62,7 @@ namespace SrvSurvey
             linkLabel1 = new LinkLabel();
             lblFullScreen = new Label();
             groupBox4 = new GroupBox();
-            btnGuarduanThings = new Button();
+            btnGuardianThings = new Button();
             btnRuins = new Button();
             btnRuinsMap = new Button();
             btnRuinsOrigin = new Button();
@@ -421,7 +421,7 @@ namespace SrvSurvey
             // groupBox4
             // 
             groupBox4.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            groupBox4.Controls.Add(btnGuarduanThings);
+            groupBox4.Controls.Add(btnGuardianThings);
             groupBox4.Controls.Add(btnRuins);
             groupBox4.Controls.Add(btnRuinsMap);
             groupBox4.Controls.Add(btnRuinsOrigin);
@@ -433,20 +433,20 @@ namespace SrvSurvey
             groupBox4.Size = new Size(413, 94);
             groupBox4.TabIndex = 19;
             groupBox4.TabStop = false;
-            groupBox4.Text = "Guardian sites: (experimental)";
+            groupBox4.Text = "Guardian sites:";
             // 
-            // btnGuarduanThings
+            // btnGuardianThings
             // 
-            btnGuarduanThings.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnGuarduanThings.BackColor = SystemColors.ControlLight;
-            btnGuarduanThings.FlatStyle = FlatStyle.System;
-            btnGuarduanThings.Location = new Point(282, 16);
-            btnGuarduanThings.Name = "btnGuarduanThings";
-            btnGuarduanThings.Size = new Size(124, 33);
-            btnGuarduanThings.TabIndex = 19;
-            btnGuarduanThings.Text = "All Guardian Sites";
-            btnGuarduanThings.UseVisualStyleBackColor = false;
-            btnGuarduanThings.Click += btnGuarduanThings_Click;
+            btnGuardianThings.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnGuardianThings.BackColor = SystemColors.ControlLight;
+            btnGuardianThings.FlatStyle = FlatStyle.System;
+            btnGuardianThings.Location = new Point(282, 16);
+            btnGuardianThings.Name = "btnGuardianThings";
+            btnGuardianThings.Size = new Size(124, 33);
+            btnGuardianThings.TabIndex = 19;
+            btnGuardianThings.Text = "All Guardian Sites";
+            btnGuardianThings.UseVisualStyleBackColor = false;
+            btnGuardianThings.Click += btnGuardianThings_Click;
             // 
             // btnRuins
             // 
@@ -680,7 +680,7 @@ namespace SrvSurvey
         private Button btnRuinsOrigin;
         private Button btnRuins;
         private Button btnSphereLimit;
-        private Button btnGuarduanThings;
+        private Button btnGuardianThings;
         private LinkLabel linkLabel2;
         private CheckBox checkFirstFootFall;
         private Button btnRamTah;

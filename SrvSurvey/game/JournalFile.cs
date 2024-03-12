@@ -247,12 +247,20 @@ namespace SrvSurvey
                         if (line == null) break;
 
                         if (line.Contains("\"event\":\"Fileheader\"") && !line.ToUpperInvariant().Contains($"\"Odyssey\":{isOdyssey}".ToUpperInvariant()))
+                        {
+                            Game.log($"getCommanderJournalBefore: wrong isOdyssey: {isOdyssey} - skip: {filepath}");
                             return false;
+                        }
 
                         if (line.Contains("\"event\":\"Commander\""))
+                        {
                             // no need to process further lines
+                            Game.log($"getCommanderJournalBefore: expected cmdr: {cmdr}, found '{line}' from: {filepath}");
                             return line.ToUpper().Contains($"\"NAME\":\"{CMDR}\"");
+                        }
                     }
+
+                    Game.log($"getCommanderJournalBefore: no cmdr found yet from: {filepath}");
                     return false;
                 }
             });

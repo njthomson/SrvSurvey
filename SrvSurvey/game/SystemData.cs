@@ -608,7 +608,7 @@ namespace SrvSurvey.game
         {
             if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! Expected: `{this.address}`, got: {entry.SystemAddress}"); return; }
             // ignore non bio or Notable stellar phenomena entries
-            if (entry.SubCategory != "$Codex_SubCategory_Organic_Structures;" || entry.NearestDestination == "$Fixed_Event_Life_Cloud;") return;
+            if (entry.SubCategory != "$Codex_SubCategory_Organic_Structures;" || entry.NearestDestination == "$Fixed_Event_Life_Cloud;" || entry.NearestDestination == "$Fixed_Event_Life_Ring;") return;
 
             var body = this.bodies.FirstOrDefault(_ => _.id == entry.BodyID);
             if (body!.organisms == null) body.organisms = new List<SystemOrganism>();
@@ -966,9 +966,12 @@ namespace SrvSurvey.game
                 // optionally skip gas giants
                 if (Game.settings.skipGasGiantDSS && _.type == SystemBodyType.Giant) continue;
 
-                // optionally skip low value bodoes
+                // optionally skip low value bodies
                 if (Game.settings.skipLowValueDSS && _.rewardEstimate < Game.settings.skipLowValueAmount) continue;
 
+                // optionally skip anything too far away
+                if (Game.settings.skipHighDistanceDSS && _.distanceFromArrivalLS > Game.settings.skipHighDistanceDSSValue)
+                    continue;
 
                 names.Add(reducedName);
             }
