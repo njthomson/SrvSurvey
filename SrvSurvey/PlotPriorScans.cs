@@ -284,7 +284,7 @@ namespace SrvSurvey
                         brush = isActive ? GameColors.PriorScans.Active.brush : GameColors.PriorScans.Inactive.brush;
                         var pen = isActive ? GameColors.PriorScans.Active.pen : GameColors.PriorScans.Inactive.pen;
 
-                        if (dd.distance > 1_000_000) // within 50km
+                        if (dd.distance > 1_000_000) // within 1,000km
                         {
                             brush = GameColors.PriorScans.FarAway.brush;
                             pen = GameColors.PriorScans.FarAway.pen;

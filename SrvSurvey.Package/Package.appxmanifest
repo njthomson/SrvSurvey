@@ -9,7 +9,7 @@
   <Identity
     Name="35333NosmohtSoftware.142860789C73F"
     Publisher="CN=751EEF47-F0CD-49C5-B803-2D61CC0B95D6"
-    Version="1.1.0.0" />
+    Version="1.1.1.0" />
 
   <Properties>
     <DisplayName>Srv Survey</DisplayName>
