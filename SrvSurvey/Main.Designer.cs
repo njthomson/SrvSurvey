@@ -603,6 +603,8 @@ namespace SrvSurvey
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = btnQuit2;
             ClientSize = new Size(437, 547);
+            Controls.Add(lblFullScreen);
+            Controls.Add(lblNotInstalled);
             Controls.Add(checkTempHide);
             Controls.Add(btnPublish);
             Controls.Add(btnRamTah);
@@ -617,8 +619,6 @@ namespace SrvSurvey
             Controls.Add(groupBox1);
             Controls.Add(label2);
             Controls.Add(btnQuit2);
-            Controls.Add(lblFullScreen);
-            Controls.Add(lblNotInstalled);
             Font = new Font("Lucida Sans Typewriter", 8.25F, FontStyle.Regular, GraphicsUnit.Point);
             FormBorderStyle = FormBorderStyle.Fixed3D;
             Icon = (Icon)resources.GetObject("$this.Icon");
