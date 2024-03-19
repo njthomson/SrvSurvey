@@ -13,8 +13,8 @@ namespace SrvSurvey
         {
             InitializeComponent();
 
-            this.Height = 80;
-            this.Width = 400;
+            this.Height = PlotBase.scaled(80);
+            this.Width = PlotBase.scaled(480);
             this.Cursor = Cursors.Cross;
         }
 
@@ -33,7 +33,7 @@ namespace SrvSurvey
             }
 
             this.Opacity = Game.settings.Opacity;
-            Elite.floatCenterTop(this, gameRect, 0);
+            PlotPos.reposition(this, gameRect);
         }
 
         private void PlotBioStatus_Load(object sender, EventArgs e)
@@ -161,7 +161,7 @@ namespace SrvSurvey
             {
                 g.DrawString(
                     $"Biological signals: {game.systemBody.bioSignalCount} | Analyzed: {game.systemBody.countAnalyzedBioSignals}",
-                    GameColors.fontSmall, GameColors.brushGameOrange, 4, 8);
+                    GameColors.fontSmall, GameColors.brushGameOrange, PlotBase.scaled(4), PlotBase.scaled(8));
 
                 if (game.cmdr.scanOne == null)
                     this.showAllGenus(g);
@@ -178,7 +178,7 @@ namespace SrvSurvey
                 var font = GameColors.fontSmall;
                 var sz = g.MeasureString(msg, GameColors.fontMiddle);
                 var tx = mid.Width - (sz.Width / 2);
-                var ty = 16;
+                var ty = PlotBase.scaled(16);
                 g.DrawString(msg, GameColors.fontMiddle, GameColors.brushCyan, tx, ty);
             }
 
@@ -207,15 +207,17 @@ namespace SrvSurvey
                 return;
             }
 
-            float y = 28;
+            float y = PlotBase.scaled(28);
 
             // left circle - always filled
-            var r = new RectangleF(8, y, 24, 24);
+            var twoFour = PlotBase.scaled(24);
+            var eight = PlotBase.scaled(8);
+            var r = new RectangleF(eight, y, twoFour, twoFour);
             g.FillEllipse(GameColors.brushGameOrangeDim, r);
             g.DrawEllipse(GameColors.penGameOrange2, r);
 
             // middle circle - filled after scan two
-            r = new RectangleF(40, y, 24, 24);
+            r = new RectangleF(PlotBase.scaled(40), y, twoFour, twoFour);
             if (game.cmdr.scanTwo != null)
             {
                 g.FillEllipse(GameColors.brushGameOrangeDim, r);
@@ -227,21 +229,22 @@ namespace SrvSurvey
             }
 
             // right circle - always empty
-            r = new RectangleF(72, y, 24, 24);
+            r = new RectangleF(PlotBase.scaled(72), y, twoFour, twoFour);
             g.DrawEllipse(GameColors.penGameOrange2, r);
 
             // Species name
             var txt = $"{organism.variantLocalized}"; // or species?
             var f = GameColors.fontBig;
             var sz = g.MeasureString(txt, f);
-            if (sz.Width > this.Width - 104 - 8) f = GameColors.font18;
+            var oneOhFour = PlotBase.scaled(104);
+            if (sz.Width > this.Width - oneOhFour - eight) f = GameColors.font18;
             sz = g.MeasureString(txt, f);
-            if (sz.Width > this.Width - 104 - 8) f = GameColors.font14;
+            if (sz.Width > this.Width - oneOhFour - eight) f = GameColors.font14;
 
             g.DrawString(
                 txt,
                 f, GameColors.brushCyan,
-                104, y - 8);
+                oneOhFour, y - eight);
 
             // Reward
             if (organism.reward > 0)
@@ -252,46 +255,48 @@ namespace SrvSurvey
                 g.DrawString(
                     txt2,
                     GameColors.fontSmall, GameColors.brushCyan,
-                    4, 62);
+                    PlotBase.scaled(4), PlotBase.scaled(62));
             }
 
-            this.drawScale(g, organism.range, 0.25f);
+            this.drawScale(g, organism.range);
         }
 
-        private void drawScale(Graphics g, float dist, float scale)
+        private void drawScale(Graphics g, float dist)
         {
-            const float pad = 8;
+            float pad = PlotBase.scaled(8);
 
             g.ResetTransform();
 
             var txt = Util.metersToString(dist);
             var txtSz = g.MeasureString(txt, GameColors.fontSmall);
+            var two = PlotBase.scaled(2);
             var x = this.Width - pad - txtSz.Width;
-            var y = this.Height - pad - txtSz.Height + 2;
+            var y = this.Height - pad - txtSz.Height + two;
 
             g.DrawString(txt, GameColors.fontSmall, GameColors.brushCyan,
                 x, y,
                 StringFormat.GenericTypographic);
 
             x -= pad;
-            y += pad - 2;
+            y += pad - two;
 
-            dist *= scale;
+            var bar = PlotBase.scaled(dist * 0.25f);
 
-            g.DrawLine(GameColors.penCyan2, x, y, x - dist, y); // bar
-            g.DrawLine(GameColors.penCyan2, x, y - 4, x, y + 4); // right edge
-            g.DrawLine(GameColors.penCyan2, x - dist, y - 4, x - dist, y + 4); // left edge
+            var four = PlotBase.scaled(4);
+            g.DrawLine(GameColors.penCyan2, x, y, x - bar, y); // bar
+            g.DrawLine(GameColors.penCyan2, x, y - four, x, y + four); // right edge
+            g.DrawLine(GameColors.penCyan2, x - bar, y - four, x - bar, y + four); // left edge
         }
 
         private void drawValueCompletion(Graphics g)
         {
-            const float pad = 8;
+            float pad = PlotBase.scaled(8);
 
             g.ResetTransform();
 
             // use a simpler percentage
             var percent = 100.0f / (float)game.systemBody!.bioSignalCount * (float)game.systemBody.countAnalyzedBioSignals;
-            var txt = $"  {(int)percent}%";
+            var txt = $" {(int)percent}%";
             var txtSz = g.MeasureString(txt, GameColors.fontSmall);
             var x = this.Width - pad - txtSz.Width;
             var y = pad;
@@ -301,86 +306,28 @@ namespace SrvSurvey
                 x, y,
                 StringFormat.GenericTypographic);
 
-            const float length = 100f;
+            float length = PlotBase.scaled(100f);
             //var scannedLength = 20; // ratio * data.sumAnalyzed;
 
             x = this.Width - pad - txtSz.Width - length;
-            y += pad - 2;
+            y += pad - PlotBase.scaled(2);
 
-            // known unscanned - solid blue line
+            // known un-scanned - solid blue line
             g.DrawLine(GameColors.penCyan4, x, y, x + length, y);
 
             // already scanned value - orange bar
-            g.FillRectangle(GameColors.brushGameOrange, x, 9, percent, 10);
+            g.FillRectangle(GameColors.brushGameOrange, x, PlotBase.scaled(9), PlotBase.scaled(percent), PlotBase.scaled(10));
 
             // active scan organism value - solid blue bar
             if (game.cmdr.scanOne != null)
-                g.FillRectangle(GameColors.brushCyan, x + percent, 10, length / (float)game.systemBody!.bioSignalCount, 8);
-
-            // old
-            /*
-            var data = game.nearBody!.data;
-            data.updateScanProgress();
-
-            var fullValueKnown = data.sumPotentialEstimate == data.sumPotentialKnown;
-            var percent = Math.Round(data.scanProgress * 100);
-            var txt = $"  {percent}%";
-
-            // change things if we don't know the full potential value of the body
-            if (!fullValueKnown)
-            {
-                txt = $"? {percent}%";
-                if (percent == 100)
-                    txt = $"?~100%";
-            }
-
-            var txtSz = g.MeasureString(txt, GameColors.fontSmall);
-            var x = this.Width - pad - txtSz.Width;
-            var y = pad;
-
-            var b = data.scanProgress < 1 || !fullValueKnown ? GameColors.brushCyan : GameColors.brushGameOrange;
-            g.DrawString(txt, GameColors.fontSmall, b,
-                x, y,
-                StringFormat.GenericTypographic);
-
-            const float length = 80f;
-            var ratio = length / data.sumPotentialEstimate;
-
-            var knownLength = ratio * data.sumPotentialKnown;
-            var estimateLength = ratio * (data.sumPotentialEstimate - data.sumPotentialKnown);
-            var scannedLength = ratio * data.sumAnalyzed;
-            var activeLength = game.nearBody!.currentOrganism == null ? 0 : ratio * game.nearBody!.currentOrganism!.reward;
-
-            x = this.Width - pad - txtSz.Width - length;
-            y += pad - 2;
-
-            // known unscanned - solid blue line
-            var l = x;
-            var r = x + knownLength;
-            g.DrawLine(GameColors.penCyan4, l, y, r, y);
-
-            // estimate unscanned - dotted blue line
-            l = x + knownLength;
-            r = l + estimateLength;
-            g.DrawLine(GameColors.penCyan2Dotted, l, y, r, y);
-
-            // already scanned value - orange bar
-            l = x;
-            r = l + scannedLength;
-            g.FillRectangle(GameColors.brushGameOrange, l, 8, r - l, 12);
-
-            // active scan organism value - solid blue bar
-            l = r;
-            r = l + activeLength;
-            g.FillRectangle(GameColors.brushCyan, l, 10, r - l, 8);
-            */
+                g.FillRectangle(GameColors.brushCyan, x + PlotBase.scaled(percent), PlotBase.scaled(10), length / (float)game.systemBody!.bioSignalCount, PlotBase.scaled(8));
         }
 
         private void showAllGenus(Graphics g)
         {
             // all the Genus names
-            float x = 24;
-            float y = 22;
+            float x = PlotBase.scaled(24);
+            float y = PlotBase.scaled(22);
 
             if (game.systemBody?.organisms == null || game.systemBody.organisms.Count == 0)
             {
@@ -419,9 +366,9 @@ namespace SrvSurvey
                 // */
 
                 var sz = g.MeasureString(txt, GameColors.fontSmall);
-                if (x + sz.Width > this.Width - 16)
+                if (x + sz.Width > this.Width - PlotBase.scaled(16))
                 {
-                    x = 24;
+                    x = PlotBase.scaled(24);
                     y += sz.Height;
                 }
 
@@ -431,7 +378,7 @@ namespace SrvSurvey
                     organism.analyzed ? GameColors.brushGameOrange : GameColors.brushCyan,
                     x, y);
 
-                x += sz.Width + 8;
+                x += sz.Width + PlotBase.scaled(8);
             }
         }
 

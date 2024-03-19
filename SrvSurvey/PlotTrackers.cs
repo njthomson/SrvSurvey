@@ -7,7 +7,7 @@ namespace SrvSurvey
 {
     internal class PlotTrackers : PlotBase, PlotterForm
     {
-        const int rowHeight = 20;
+        int rowHeight = scaled(20);
         public const int highlightDistance = 150;
 
         public Dictionary<string, List<TrackingDelta>> trackers = new Dictionary<string, List<TrackingDelta>>();
@@ -150,8 +150,8 @@ namespace SrvSurvey
 
         private PlotTrackers() : base()
         {
-            this.Width = 380;
-            this.Height = 100;
+            this.Width = scaled(380);
+            this.Height = scaled(100);
         }
 
         private void setNewHeight()
@@ -159,7 +159,7 @@ namespace SrvSurvey
             if (this.IsDisposed || game?.systemBody?.bookmarks == null) return;
 
             // adjust height if needed
-            var formHeight = 42 + (game.systemBody.bookmarks.Count * rowHeight);
+            var formHeight = scaled(42) + (game.systemBody.bookmarks.Count * rowHeight);
             if (this.Height != formHeight)
             {
                 this.Height = formHeight;
@@ -167,16 +167,6 @@ namespace SrvSurvey
             }
 
             this.Invalidate();
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                // ??
-            }
-
-            base.Dispose(disposing);
         }
 
         protected override void OnLoad(EventArgs e)
@@ -293,10 +283,10 @@ namespace SrvSurvey
                 this.g.SmoothingMode = SmoothingMode.HighQuality;
                 base.OnPaintBackground(e);
 
-                g.DrawString($"Tracking {game.systemBody.bookmarks?.Count} targets:", GameColors.fontSmall, GameColors.brushGameOrange, 4, 8);
+                g.DrawString($"Tracking {game.systemBody.bookmarks?.Count} targets:", GameColors.fontSmall, GameColors.brushGameOrange, scaled(4), scaled(8));
 
-                var indent = 220 + 80;
-                var y = 12;
+                var indent = scaled(220 + 80);
+                var y = scaled(12);
                 foreach (var name in this.trackers.Keys)
                 {
                     y += rowHeight;
@@ -306,7 +296,7 @@ namespace SrvSurvey
                     BioScan.prefixes.TryGetValue(name, out var fullName);
                     var isActive = game.cmdr.scanOne?.genus == null || game.cmdr.scanOne?.genus == fullName;
                     var isClose = false;
-                    var bearingWidth = 75;
+                    var bearingWidth = scaled(75);
                     Brush brush;
                     foreach (var dd in this.trackers[name])
                     {
@@ -336,7 +326,7 @@ namespace SrvSurvey
                         displayName,
                         GameColors.fontSmall,
                         brush,
-                        this.Width - indent - sz.Width + 3, y);
+                        this.Width - indent - sz.Width + scaled(3), y);
                 }
             }
             catch (Exception ex)

@@ -10,18 +10,10 @@ namespace SrvSurvey
 
         private PlotSphericalSearch() : base()
         {
-            this.Width = 400;
-            this.Height = 80;
+            this.Width = scaled(400);
+            this.Height = scaled(80);
 
-            this.BackColor = Color.Black;
-            this.ShowIcon = false;
-            this.ShowInTaskbar = false;
-            this.StartPosition = FormStartPosition.Manual;
-            this.MinimizeBox = false;
-            this.MaximizeBox = false;
-            this.FormBorderStyle = FormBorderStyle.None;
-            this.Opacity = Game.settings.Opacity;
-            this.DoubleBuffered = true;
+            this.Font = GameColors.fontMiddle;
         }
 
         protected override void OnLoad(EventArgs e)
@@ -77,39 +69,37 @@ namespace SrvSurvey
 
         }
 
-        private static Point p1 = new Point(8, 10);
+        private static Point p1 = scaled(new Point(8, 10));
+
+        int eight = scaled(8);
+        int ten = scaled(10);
 
         protected override void OnPaintBackground(PaintEventArgs e)
         {
             base.OnPaintBackground(e);
+            if (this.IsDisposed) return;
+
             try
             {
-                var g = e.Graphics;
-                g.SmoothingMode = SmoothingMode.HighQuality;
-                var font = GameColors.fontMiddle;
+                this.g = e.Graphics;
+                this.g.SmoothingMode = SmoothingMode.HighQuality;
 
-                string txt = $"From: {game.cmdr.sphereLimit.centerSystemName}";
-                var pt = new Point(8, 8);
-                TextRenderer.DrawText(g, txt, font, p1, GameColors.Orange, TextFormatFlags.Left);
-                var sz = TextRenderer.MeasureText(txt, font);
+                this.dtx = eight;
+                this.dty = ten;
 
-                pt.Y += sz.Height;
-                TextRenderer.DrawText(g, $"To: {this.targetSystemName}", font, pt, GameColors.Orange, TextFormatFlags.Left);
-                pt.Y += sz.Height;
+                this.dty += this.drawTextAt($"From: {game.cmdr.sphereLimit.centerSystemName}").Height;
+                this.dtx = eight;
+                this.dty += this.drawTextAt($"To: {this.targetSystemName}").Height;
 
                 if (this.distance >= 0)
                 {
-                    var td = this.distance.ToString("N2");
+                    var dist = this.distance.ToString("N2");
                     var limitDist = game.cmdr.sphereLimit.radius.ToString("N2");
-                    var tc = this.distance < game.cmdr.sphereLimit.radius ? GameColors.Cyan : Color.Red;
+                    var tc = this.distance < game.cmdr.sphereLimit.radius ? GameColors.brushCyan : GameColors.brushRed;
                     var verb = this.distance < game.cmdr.sphereLimit.radius ? "within" : "exceeds";
-                    TextRenderer.DrawText(
-                        g,
-                        $"Distance: {td}ly - {verb} {limitDist} ly",
-                        font,
-                        pt,
-                        tc,
-                        TextFormatFlags.Left);
+
+                    this.dtx = eight;
+                    this.drawTextAt($"Distance: {dist}ly - {verb} {limitDist} ly", tc);
                 }
             }
             catch (Exception ex)

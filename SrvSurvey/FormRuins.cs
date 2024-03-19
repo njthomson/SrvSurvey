@@ -520,7 +520,7 @@ namespace SrvSurvey
 
             if (panelEdit.Visible)
             {
-                var pp = new Pen(Color.Yellow, 0.2f) { DashStyle = DashStyle.Dot };
+                var pp = GameColors.newPen(Color.Yellow, 0.2f, DashStyle.Dot);
                 g.DrawLine(pp, 0, -map.Height * 2, 0, +map.Height * 2);
                 g.DrawLine(pp, -map.Width * 2, 0, +map.Width * 2, 0);
             }
@@ -721,7 +721,7 @@ namespace SrvSurvey
                 };
             var pp = new Pen(GameColors.Map.colorUnknown)
             {
-                Width = 2,
+                Width = 2 * GameColors.scaleFactor,
                 LineJoin = LineJoin.Bevel,
                 StartCap = LineCap.Triangle,
                 EndCap = LineCap.Triangle,
@@ -762,7 +762,7 @@ namespace SrvSurvey
                 };
             var pp = new Pen(GameColors.Map.colorUnknown)
             {
-                Width = 1,
+                Width = 1 * GameColors.scaleFactor,
                 DashStyle = DashStyle.Dash,
                 LineJoin = LineJoin.Bevel,
                 StartCap = LineCap.Triangle,

@@ -12,7 +12,7 @@
   "PlotBioStatus": "center:0, top:8",
   "PlotFlightWarning": "center:0, top:90",
   "PlotFSS": "center:0, top:8",
-  "PlotGrounded": "right:20, middle:0",
+  "PlotGrounded": "right:8, middle:0",
   "PlotGuardians": "left:8, middle:0",
   "PlotGuardianStatus": "center:0, top:8",
   "PlotGuardianSystem": "left:10, top:8",
@@ -21,5 +21,5 @@
   "PlotRamTah": "right:8, middle:0",
   "PlotSphericalSearch": "right:8, top:8",
   "PlotSysStatus": "left:8, bottom:44",
-  "PlotTrackTarget": "center:440, top:20"
+  "PlotTrackTarget": "center:480, top:8"
 }

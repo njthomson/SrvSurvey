@@ -12,16 +12,6 @@ namespace SrvSurvey
             this.Font = GameColors.fontSmall;
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                // ??
-            }
-
-            base.Dispose(disposing);
-        }
-
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -58,6 +48,10 @@ namespace SrvSurvey
             this.Invalidate();
         }
 
+        int pad = scaled(15);
+        int one = scaled(1);
+        int two = scaled(2);
+
         protected override void OnPaintBackground(PaintEventArgs e)
         {
             base.OnPaintBackground(e);
@@ -69,15 +63,14 @@ namespace SrvSurvey
                 this.g.SmoothingMode = SmoothingMode.HighQuality;
                 g.Clear(Color.Black);
 
-                const int pad = 15;
 
                 var bodyGrav = (game.systemBody!.surfaceGravity / 10).ToString("N2");
                 var txt = $"Warning: Surface gravity {bodyGrav}g";
 
                 var sz = g.MeasureString(txt, this.Font);
-                sz.Width += 2;
-                this.Width = (int)sz.Width + pad * 2;
-                this.Height = (int)sz.Height + pad * 2;
+                sz.Width += two;
+                this.Width = scaled((int)sz.Width + pad * 2);
+                this.Height = scaled((int)sz.Height + pad * 2);
 
                 PlotPos.reposition(this, Elite.getWindowRect());
 
@@ -86,7 +79,7 @@ namespace SrvSurvey
 
                 rect.Inflate(-10, -10);
                 g.FillRectangle(Brushes.Black, rect);
-                g.DrawString(txt, this.Font, Brushes.Red, pad + 1, pad + 1);
+                g.DrawString(txt, this.Font, Brushes.Red, pad + one, pad + one);
             }
             catch (Exception ex)
             {

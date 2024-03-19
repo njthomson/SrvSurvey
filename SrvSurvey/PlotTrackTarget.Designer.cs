@@ -19,16 +19,6 @@ namespace SrvSurvey
             if (disposing && (components != null))
             {
                 components.Dispose();
-
-                if (game != null)
-                {
-                    if (game?.status != null)
-                        game.status.StatusChanged -= Status_StatusChanged;
-
-                    Game.update -= Game_modeChanged;
-
-                    game = null;
-                }
             }
             base.Dispose(disposing);
         }
@@ -74,8 +64,6 @@ namespace SrvSurvey
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.TopMost = true;
-            this.Load += new System.EventHandler(this.PlotGroundTarget_Load);
-            this.Paint += new System.Windows.Forms.PaintEventHandler(this.plotPanel_Paint);
             this.ResumeLayout(false);
 
         }

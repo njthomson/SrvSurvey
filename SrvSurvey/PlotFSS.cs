@@ -18,18 +18,8 @@ namespace SrvSurvey
 
         private PlotFSS() : base()
         {
-            this.Width = 420;
-            this.Height = 96;
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                // ??
-            }
-
-            base.Dispose(disposing);
+            this.Width = scaled(420);
+            this.Height = scaled(96);
         }
 
         protected override void OnLoad(EventArgs e)
@@ -100,6 +90,12 @@ namespace SrvSurvey
             this.Invalidate();
         }
 
+        int four = scaled(4);
+        int eight = scaled(8);
+        int oneEight = scaled(18);
+        int twoEight = scaled(28);
+        int sixFive = scaled(65);
+
         protected override void OnPaintBackground(PaintEventArgs e)
         {
             base.OnPaintBackground(e);
@@ -112,7 +108,7 @@ namespace SrvSurvey
 
                 var brush = this.lastWasDiscovered ? GameColors.brushGameOrange : GameColors.brushCyan;
 
-                g.DrawString($"Last scan:    {this.lastBodyName}", GameColors.fontSmaller, brush, 4, 8);
+                g.DrawString($"Last scan:    {this.lastBodyName}", GameColors.fontSmaller, brush, four, eight);
 
                 if (!string.IsNullOrEmpty(this.lastBodyName))
                 {
@@ -120,10 +116,10 @@ namespace SrvSurvey
                     //    g.DrawString("(undiscovered)", GameColors.fontSmall2, GameColors.brushCyan, 330, 8);
 
                     var msg = $"Estimated value:    {this.lastInitialValue} cr\r\nWith surface scan:    {this.lastMappedValue} cr";
-                    g.DrawString(msg, GameColors.fontMiddle, brush, 18, 28);
+                    g.DrawString(msg, GameColors.fontMiddle, brush, oneEight, twoEight);
 
                     if (!string.IsNullOrEmpty(this.lastNotes))
-                        g.DrawString(this.lastNotes, GameColors.fontMiddle, GameColors.brushCyan, 18, 65);
+                        g.DrawString(this.lastNotes, GameColors.fontMiddle, GameColors.brushCyan, oneEight, sixFive);
                 }
             }
             catch (Exception ex)

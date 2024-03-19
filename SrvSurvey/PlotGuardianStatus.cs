@@ -8,7 +8,7 @@ namespace SrvSurvey
         private int selectedIndex = 0;
         private Point[] ptMain;
         private Point[] ptLetter;
-        private System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
+        private System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer(); // TODO: remove? It's in the base class
         private bool highlightBlink = false;
 
         private PlotGuardianStatus() : base()

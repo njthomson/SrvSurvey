@@ -1735,11 +1735,13 @@ namespace SrvSurvey.game
                 // replace 1st, clear 2nd
                 this.cmdr.scanOne = bioScan;
                 this.cmdr.scanTwo = null;
+                this.cmdr.Save();
             }
             else if (this.cmdr.scanOne != null && this.cmdr.scanTwo == null)
             {
                 // populate 2nd
                 this.cmdr.scanTwo = bioScan;
+                this.cmdr.Save();
             }
             else if (entry.ScanType == ScanType.Analyse)
             {

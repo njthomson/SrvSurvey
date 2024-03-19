@@ -296,7 +296,7 @@ namespace SrvSurvey
             this.grid.Items.AddRange(sortedRows.ToArray());
             var rowCount = this.grid.Items.Count;
             var percentVisited = (100.0 / (float)rowCount * (float)countVisited).ToString("0");
-            var percentSurveyed = (100.0 / (float)rowCount * (float)countSurveyed).ToString("0"); ;
+            var percentSurveyed = (100.0 / (float)rowCount * (float)countSurveyed).ToString("0");
             this.lblStatus.Text = $"{rowCount} of {this.rows.Count} rows | visited: {countVisited} ({percentVisited}%) | surveys complete: {countSurveyed} ({percentSurveyed}%)";
         }
 

@@ -8,16 +8,18 @@ namespace SrvSurvey
 {
     internal class PlotPriorScans : PlotBase, PlotterForm
     {
-        const int rowHeight = 20;
+        int rowHeight = scaled(20);
         public const int highlightDistance = 150;
 
         public readonly List<SystemBioSignal> signals = new List<SystemBioSignal>();
+        private Font boldFont;
 
         private PlotPriorScans() : base()
         {
-            this.Width = 380;
-            this.Height = 300;
+            this.Width = scaled(380);
+            this.Height = scaled(300);
             this.Font = GameColors.fontSmall;
+            this.boldFont = new Font(this.Font, FontStyle.Bold);
         }
 
         private void setNewHeight()
@@ -34,23 +36,15 @@ namespace SrvSurvey
             if (rows == 0)
                 formHeight += 40;
 
+            formHeight = scaled(formHeight);
             if (this.Height != formHeight)
             {
                 this.Height = formHeight;
                 this.BackgroundImage = GameGraphics.getBackgroundForForm(this);
             }
 
+            this.mid = this.Size / 2;
             this.Invalidate();
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                // ??
-            }
-
-            base.Dispose(disposing);
         }
 
         protected override void OnLoad(EventArgs e)
@@ -232,10 +226,11 @@ namespace SrvSurvey
 
                 this.g = e.Graphics;
                 this.g.SmoothingMode = SmoothingMode.HighQuality;
+
                 this.drawFooterText("(Tracked locations may not be that close to signals)", GameColors.brushGameOrangeDim, this.Font);
 
-                this.dtx = 4;
-                this.dty = 8;
+                this.dtx = scaled(4);
+                this.dty = scaled(8);
                 var txt = $"Tracking {this.signals.Count} signals from Canonn:";
                 if (Game.settings.skipPriorScansLowValue)
                     txt += $" (> {Util.credits(Game.settings.skipPriorScansLowValueAmount)})";
@@ -247,10 +242,10 @@ namespace SrvSurvey
                     return;
                 }
 
-                var indent = 70;
-                var bearingWidth = 75;
+                var indent = scaled(70);
+                var bearingWidth = scaled(75);
 
-                this.dty = 8;
+                this.dty = scaled(8f);
                 var sortedSignals = this.signals.OrderByDescending(_ => _.reward);
                 foreach (var signal in sortedSignals)
                 {
@@ -266,7 +261,7 @@ namespace SrvSurvey
                     this.dty += rowHeight;
                     var isClose = false;
 
-                    var r = new Rectangle(8, 0, this.Width - 16, 14);
+                    var r = new Rectangle(scaled(8), 0, this.Width - scaled(16), scaled(14));
                     foreach (var dd in signal.trackers)
                     {
                         if (dtx + bearingWidth > this.Width - 8)
@@ -323,7 +318,7 @@ namespace SrvSurvey
                     if (analyzed) brush = Brushes.DarkSlateGray;
 
                     var f = this.Font;
-                    if (isActive) f = new Font(this.Font, FontStyle.Bold);
+                    if (isActive) f = this.boldFont;
 
                     r.Y = (int)ly;
                     TextRenderer.DrawText(g, signal.poiName, f, r, ((SolidBrush)brush).Color, TextFormatFlags.NoPadding | TextFormatFlags.Left);
@@ -351,12 +346,15 @@ namespace SrvSurvey
                         var attackAngle = deg > 90 && deg < 270 ? 180 - aa : aa;
                         GraphicsPath path = new GraphicsPath();
                         path.AddPie(r.X, r.Y - 22, 36, 36, 180, -(int)attackAngle);
-                        var pp = new Pen(brush, 2.2f);
                         g.FillPath(brush, path);
+                        var pp = new Pen(brush, 2.2f * GameColors.scaleFactor);
                         g.DrawPath(pp, path);
 
                         // draw angle of attack - text
-                        r.X += 38;
+                        r.X += scaled(38);
+
+                        r.Width = scaled(r.Width);
+                        r.Height = scaled(r.Height);
                         TextRenderer.DrawText(g, $"-{(int)aa}°", f, r, ((SolidBrush)brush).Color, TextFormatFlags.NoPadding | TextFormatFlags.Left);
                     }
                 }

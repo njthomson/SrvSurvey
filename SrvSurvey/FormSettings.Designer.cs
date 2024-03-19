@@ -35,6 +35,8 @@ namespace SrvSurvey
             btnSave = new Button();
             btnCancel = new Button();
             tabPage1 = new TabPage();
+            label14 = new Label();
+            comboOverlayScale = new ComboBox();
             btnResetOverlays = new Button();
             comboCmdr = new ComboBox();
             label12 = new Label();
@@ -209,6 +211,8 @@ namespace SrvSurvey
             // tabPage1
             // 
             tabPage1.BorderStyle = BorderStyle.Fixed3D;
+            tabPage1.Controls.Add(label14);
+            tabPage1.Controls.Add(comboOverlayScale);
             tabPage1.Controls.Add(btnResetOverlays);
             tabPage1.Controls.Add(comboCmdr);
             tabPage1.Controls.Add(label12);
@@ -237,9 +241,29 @@ namespace SrvSurvey
             tabPage1.TabIndex = 0;
             tabPage1.Text = "General";
             // 
+            // label14
+            // 
+            label14.AutoSize = true;
+            label14.Location = new Point(10, 103);
+            label14.Name = "label14";
+            label14.Size = new Size(79, 15);
+            label14.TabIndex = 32;
+            label14.Text = "Overlay scale:";
+            // 
+            // comboOverlayScale
+            // 
+            comboOverlayScale.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboOverlayScale.FormattingEnabled = true;
+            comboOverlayScale.Items.AddRange(new object[] { "Match Windows OS scale (999%)", "Scale 100% (No scaling)", "Scale 150%", "Scale 200%" });
+            comboOverlayScale.Location = new Point(109, 100);
+            comboOverlayScale.Name = "comboOverlayScale";
+            comboOverlayScale.Size = new Size(243, 23);
+            comboOverlayScale.TabIndex = 31;
+            comboOverlayScale.Tag = "plotterScale";
+            // 
             // btnResetOverlays
             // 
-            btnResetOverlays.Location = new Point(296, 228);
+            btnResetOverlays.Location = new Point(296, 260);
             btnResetOverlays.Name = "btnResetOverlays";
             btnResetOverlays.Size = new Size(182, 32);
             btnResetOverlays.TabIndex = 29;
@@ -260,7 +284,7 @@ namespace SrvSurvey
             // label12
             // 
             label12.AutoSize = true;
-            label12.Location = new Point(31, 263);
+            label12.Location = new Point(31, 295);
             label12.Name = "label12";
             label12.Size = new Size(156, 15);
             label12.TabIndex = 27;
@@ -270,7 +294,7 @@ namespace SrvSurvey
             // 
             numGravityWarningLevel.DecimalPlaces = 2;
             numGravityWarningLevel.Increment = new decimal(new int[] { 1, 0, 0, 65536 });
-            numGravityWarningLevel.Location = new Point(191, 261);
+            numGravityWarningLevel.Location = new Point(191, 293);
             numGravityWarningLevel.Maximum = new decimal(new int[] { 50, 0, 0, 0 });
             numGravityWarningLevel.Name = "numGravityWarningLevel";
             numGravityWarningLevel.Size = new Size(50, 23);
@@ -284,7 +308,7 @@ namespace SrvSurvey
             checkBox13.AutoSize = true;
             checkBox13.Checked = true;
             checkBox13.CheckState = CheckState.Checked;
-            checkBox13.Location = new Point(10, 241);
+            checkBox13.Location = new Point(10, 273);
             checkBox13.Margin = new Padding(4, 3, 4, 3);
             checkBox13.Name = "checkBox13";
             checkBox13.Size = new Size(137, 19);
@@ -297,7 +321,7 @@ namespace SrvSurvey
             // 
             pictureBox6.BackgroundImage = (Image)resources.GetObject("pictureBox6.BackgroundImage");
             pictureBox6.BackgroundImageLayout = ImageLayout.None;
-            pictureBox6.Location = new Point(241, 139);
+            pictureBox6.Location = new Point(241, 171);
             pictureBox6.Name = "pictureBox6";
             pictureBox6.Size = new Size(56, 41);
             pictureBox6.TabIndex = 24;
@@ -307,7 +331,7 @@ namespace SrvSurvey
             // 
             checkHideJournalTimer.Checked = true;
             checkHideJournalTimer.CheckState = CheckState.Checked;
-            checkHideJournalTimer.Location = new Point(10, 143);
+            checkHideJournalTimer.Location = new Point(10, 175);
             checkHideJournalTimer.Margin = new Padding(4, 3, 4, 3);
             checkHideJournalTimer.Name = "checkHideJournalTimer";
             checkHideJournalTimer.Size = new Size(431, 19);
@@ -318,7 +342,7 @@ namespace SrvSurvey
             // 
             // btnChooseJournalFolder
             // 
-            btnChooseJournalFolder.Location = new Point(10, 188);
+            btnChooseJournalFolder.Location = new Point(10, 220);
             btnChooseJournalFolder.Name = "btnChooseJournalFolder";
             btnChooseJournalFolder.Size = new Size(26, 37);
             btnChooseJournalFolder.TabIndex = 22;
@@ -329,7 +353,7 @@ namespace SrvSurvey
             // linkJournalFolder
             // 
             linkJournalFolder.BorderStyle = BorderStyle.FixedSingle;
-            linkJournalFolder.Location = new Point(39, 190);
+            linkJournalFolder.Location = new Point(39, 222);
             linkJournalFolder.Name = "linkJournalFolder";
             linkJournalFolder.Size = new Size(439, 35);
             linkJournalFolder.TabIndex = 20;
@@ -341,7 +365,7 @@ namespace SrvSurvey
             // label11
             // 
             label11.AutoSize = true;
-            label11.Location = new Point(5, 170);
+            label11.Location = new Point(5, 202);
             label11.Name = "label11";
             label11.Size = new Size(118, 15);
             label11.TabIndex = 21;
@@ -364,7 +388,7 @@ namespace SrvSurvey
             // 
             checkMinimizeOnStart.Checked = true;
             checkMinimizeOnStart.CheckState = CheckState.Checked;
-            checkMinimizeOnStart.Location = new Point(10, 97);
+            checkMinimizeOnStart.Location = new Point(10, 129);
             checkMinimizeOnStart.Margin = new Padding(4, 3, 4, 3);
             checkMinimizeOnStart.Name = "checkMinimizeOnStart";
             checkMinimizeOnStart.Size = new Size(431, 19);
@@ -376,7 +400,7 @@ namespace SrvSurvey
             // checkHideOverlayOnMouseOver
             // 
             checkHideOverlayOnMouseOver.AutoSize = true;
-            checkHideOverlayOnMouseOver.Location = new Point(10, 348);
+            checkHideOverlayOnMouseOver.Location = new Point(10, 376);
             checkHideOverlayOnMouseOver.Name = "checkHideOverlayOnMouseOver";
             checkHideOverlayOnMouseOver.Size = new Size(246, 19);
             checkHideOverlayOnMouseOver.TabIndex = 9;
@@ -386,7 +410,7 @@ namespace SrvSurvey
             // 
             // label4
             // 
-            label4.Location = new Point(6, 291);
+            label4.Location = new Point(6, 319);
             label4.Name = "label4";
             label4.Size = new Size(477, 34);
             label4.TabIndex = 8;
@@ -396,7 +420,7 @@ namespace SrvSurvey
             // 
             checkHidePlottersFromWeapons.Checked = true;
             checkHidePlottersFromWeapons.CheckState = CheckState.Checked;
-            checkHidePlottersFromWeapons.Location = new Point(10, 328);
+            checkHidePlottersFromWeapons.Location = new Point(10, 356);
             checkHidePlottersFromWeapons.Margin = new Padding(4, 3, 4, 3);
             checkHidePlottersFromWeapons.Name = "checkHidePlottersFromWeapons";
             checkHidePlottersFromWeapons.Size = new Size(431, 19);
@@ -409,7 +433,7 @@ namespace SrvSurvey
             // 
             checkFocusOnMinimize.Checked = true;
             checkFocusOnMinimize.CheckState = CheckState.Checked;
-            checkFocusOnMinimize.Location = new Point(10, 120);
+            checkFocusOnMinimize.Location = new Point(10, 152);
             checkFocusOnMinimize.Margin = new Padding(4, 3, 4, 3);
             checkFocusOnMinimize.Name = "checkFocusOnMinimize";
             checkFocusOnMinimize.Size = new Size(431, 19);
@@ -1556,5 +1580,7 @@ namespace SrvSurvey
         private Label label13;
         private CheckBox checkBox16;
         private NumericUpDown numericUpDown1;
+        private Label label14;
+        private ComboBox comboOverlayScale;
     }
 }

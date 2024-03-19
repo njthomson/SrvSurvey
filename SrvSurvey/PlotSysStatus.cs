@@ -10,21 +10,11 @@ namespace SrvSurvey
 
         private PlotSysStatus() : base()
         {
-            this.Width = 420;
-            this.Height = 48;
+            this.Width = scaled(420);
+            this.Height = scaled(48);
             this.BackgroundImageLayout = ImageLayout.Stretch;
 
             this.Font = GameColors.fontMiddle;
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                // ??
-            }
-
-            base.Dispose(disposing);
         }
 
         protected override void OnLoad(EventArgs e)
@@ -90,7 +80,8 @@ namespace SrvSurvey
         protected override void OnPaintBackground(PaintEventArgs e)
         {
             base.OnPaintBackground(e);
-            var minViableWidth = 170;
+            
+            var minViableWidth = scaled(170);
             try
             {
                 if (this.IsDisposed || game?.systemData == null || game.status == null) return;
@@ -98,9 +89,8 @@ namespace SrvSurvey
                 this.g = e.Graphics;
                 this.g.SmoothingMode = SmoothingMode.HighQuality;
 
-
-                this.dtx = 6.0f;
-                this.dty = 19.0f;
+                this.dtx = scaled(6.0f);
+                this.dty = scaled(19.0f);
 
                 var sys = this.game.systemStatus;
                 var destinationBody = game.status.Destination?.Name?.Replace(sys.name, "").Replace(" ", "");
@@ -144,7 +134,7 @@ namespace SrvSurvey
                 var headerTxt = "";
                 if (game.systemData.fssComplete && (Game.settings.skipLowValueDSS || Game.settings.skipHighDistanceDSS || !Game.settings.skipRingsDSS))
                 {
-                    minViableWidth += 74;
+                    minViableWidth += scaled(74);
                     headerTxt += "(filtered)";
                     //if (Game.settings.skipLowValueDSS)
                     //{
@@ -163,7 +153,7 @@ namespace SrvSurvey
                     //}
                     //headerTxt += ")";
                 }
-                g.DrawString($"System survey remaining: {headerTxt}", GameColors.fontSmall, GameColors.brushGameOrange, 4, 7);
+                g.DrawString($"System survey remaining: {headerTxt}", GameColors.fontSmall, GameColors.brushGameOrange, scaled(4), scaled(7));
             }
             catch (Exception ex)
             {
@@ -172,7 +162,7 @@ namespace SrvSurvey
             finally
             {
                 // resize window to fit as necessary
-                this.Width = Math.Max((int)this.dtx + 6, minViableWidth);
+                this.Width = Math.Max((int)this.dtx + scaled(6), minViableWidth);
             }
         }
 

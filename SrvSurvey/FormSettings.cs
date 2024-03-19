@@ -19,12 +19,15 @@ namespace SrvSurvey
             foreach (var fieldInfo in typeof(Settings).GetRuntimeFields())
                 this.map.Add(fieldInfo.Name, fieldInfo);
 
-            // only show this button if there are multiple copies of EliteDengerous running at the same time
+            // only show this button if there are multiple copies of EliteDangerous running at the same time
             var procED = Process.GetProcessesByName("EliteDangerous64");
             btnNextProc.Visible = procED.Length > 1;
             this.Text += $" ({Game.releaseVersion})";
 
             this.linkDataFiles.Visible = Debugger.IsAttached;
+
+            var osScaleFactor = (this.DeviceDpi / 96f * 100).ToString("0");
+            this.comboOverlayScale.Items[0] = $"Match Windows OS scale ({osScaleFactor}%)";
         }
 
         private void FormSettings_Load(object sender, EventArgs e)
@@ -185,6 +188,7 @@ namespace SrvSurvey
 
             // restart the app if these are different:
             var restartApp = !sameCmdr
+                || comboOverlayScale.SelectedIndex != Game.settings.plotterScale
                 || this.checkEnableGuardianFeatures.Checked != Game.settings.enableGuardianSites
                 || this.linkJournalFolder.Text != Game.settings.watchedJournalFolder;
 

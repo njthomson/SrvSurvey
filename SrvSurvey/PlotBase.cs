@@ -8,11 +8,13 @@ namespace SrvSurvey
     internal abstract class PlotBase : Form, PlotterForm, IDisposable
     {
         protected Game game = Game.activeGame!;
-        protected TrackingDelta? touchdownLocation;
-        protected TrackingDelta? srvLocation;
+        protected TrackingDelta? touchdownLocation; // TODO: move to PlotSurfaceBase
+        protected TrackingDelta? srvLocation; // TODO: move to PlotSurfaceBase
+
         /// <summary> The center point on this plotter. </summary>
         protected Size mid;
         protected Graphics g;
+
         public float scale = 1.0f;
         public float customScale = -1.0f;
 
@@ -85,7 +87,6 @@ namespace SrvSurvey
             }
         }
 
-
         protected override void OnMouseDown(MouseEventArgs e)
         {
             base.OnMouseDown(e);
@@ -97,6 +98,44 @@ namespace SrvSurvey
         #endregion
 
         public abstract void reposition(Rectangle gameRect);
+
+        public static int scaled(int n)
+        {
+            return (int)(n * GameColors.scaleFactor);
+        }
+
+        public static float scaled(float n)
+        {
+            return (n * GameColors.scaleFactor);
+        }
+
+        public static Rectangle scaled(Rectangle r)
+        {
+            r.X = scaled(r.X);
+            r.Y = scaled(r.Y);
+            r.Width = scaled(r.Width);
+            r.Height = scaled(r.Height);
+
+            return r;
+        }
+
+        public static RectangleF scaled(RectangleF r)
+        {
+            r.X = scaled(r.X);
+            r.Y = scaled(r.Y);
+            r.Width = scaled(r.Width);
+            r.Height = scaled(r.Height);
+
+            return r;
+        }
+
+        public static Point scaled(Point pt)
+        {
+            pt.X = scaled(pt.X);
+            pt.Y = scaled(pt.Y);
+
+            return pt;
+        }
 
         protected virtual void initialize()
         {
@@ -121,10 +160,9 @@ namespace SrvSurvey
         {
             if (this.IsDisposed) return;
 
-            var targetMode = game.showBodyPlotters;
-            if (this.Opacity > 0 && !targetMode)
+            if (this.Opacity > 0 && !game.showBodyPlotters)
                 this.Opacity = 0;
-            else if (this.Opacity == 0 && targetMode)
+            else if (this.Opacity == 0 && game.showBodyPlotters)
                 this.reposition(Elite.getWindowRect());
 
             this.Invalidate();
@@ -401,15 +439,15 @@ namespace SrvSurvey
 
             var txtSz = g.MeasureString(txt, GameColors.fontSmall);
 
-            var sz = 5;
-            x += txtSz.Width + 8;
+            var sz = scaled(5);
+            x += txtSz.Width + scaled(8);
             //y += 4;
             var r = new RectangleF(x, y, sz * 2, sz * 2);
             g.DrawEllipse(pen, r);
 
 
-            var dx = (float)Math.Sin(Util.degToRad(deg)) * 9F;
-            var dy = (float)Math.Cos(Util.degToRad(deg)) * 9F;
+            var dx = (float)Math.Sin(Util.degToRad(deg)) * scaled(9F);
+            var dy = (float)Math.Cos(Util.degToRad(deg)) * scaled(9F);
             g.DrawLine(pen, x + sz, y + sz, x + sz + dx, y + sz - dy);
 
             x += 2 + sz * 3;
@@ -486,14 +524,21 @@ namespace SrvSurvey
         protected SizeF drawTextAt(string txt, Brush? brush = null, Font? font = null)
         {
             brush = brush ?? GameColors.brushGameOrange;
+            font = font ?? this.Font;
+            g.DrawString(txt, font, brush, this.dtx, this.dty);
 
-            g.DrawString(txt, font ?? this.Font, brush, this.dtx, this.dty);
-
-            var sz = g.MeasureString(txt, font ?? this.Font);
+            var sz = g.MeasureString(txt, font);
             this.dtx += sz.Width;
 
             return sz;
         }
+    }
+
+    internal abstract class PlotSurfaceBase : PlotBase
+    {
+        // TODO: Move these to here
+        //protected TrackingDelta? touchdownLocation;
+        //protected TrackingDelta? srvLocation;
     }
 
     internal class PlotBaseSelectable : PlotBase, PlotterForm

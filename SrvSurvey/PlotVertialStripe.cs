@@ -216,17 +216,14 @@ namespace SrvSurvey
 
         private void drawLine(Graphics g, float x1, float y1, float x2, float y2)
         {
-            var p1 = GameColors.penYellow4;
-            var p2 = new Pen(Color.Black, 2) { DashStyle = DashStyle.Dash };
-
-            g.DrawLine(p1, x1, y1, x2, y2);
-            g.DrawLine(p2, x1, y1, x2, y2);
+            g.DrawLine(GameColors.penYellow4, x1, y1, x2, y2);
+            g.DrawLine(GameColors.penBlack2Dash, x1, y1, x2, y2);
         }
 
         private void drawCircle(Graphics g, float x, float y, float r)
         {
             var p1 = GameColors.penYellow4;
-            var p2 = new Pen(Color.Black, 2) { DashStyle = DashStyle.Dash };
+            var p2 = GameColors.penBlack2Dash;
 
             var rect = new RectangleF(x - r, y - r, r * 2, r * 2);
             g.DrawEllipse(p1, rect);
@@ -235,8 +232,6 @@ namespace SrvSurvey
 
         private void drawAlphaSiteTarget(Graphics g)
         {
-            var pp = new Pen(Color.Black, 2) { DashStyle = DashStyle.Dash };
-
             var w = (this.Width / 2f);
             var h = (this.Height / 2f);
 
@@ -267,10 +262,7 @@ namespace SrvSurvey
 
         private void drawBetaSiteTarget(Graphics g)
         {
-            var pp = new Pen(Color.Black, 4) { DashStyle = DashStyle.Dot };
-
             var w = (this.Width / 2f);
-            var h = (this.Height / 2f);
 
             //var d = 120f;
             //var x = w - (d / 2f);
@@ -305,10 +297,7 @@ namespace SrvSurvey
         private void drawRelicTowerTarget(Graphics g)
         {
             var er = Elite.getWindowRect();
-            var r = (float)er.Width / (float)er.Height;
-            var ew = er.Width * 0.01f;
             var eh = er.Height * 0.01f;
-            var pp = new Pen(Color.Black, 4) { DashStyle = DashStyle.Dash };
 
             var d = 0f;
             var x = 0f;
@@ -319,7 +308,6 @@ namespace SrvSurvey
             // rock marker
             x = w;
             y = this.Height * 0.65f;
-            //drawLine(g, w, y, w, y + 100); // h - eh*12);
 
             // tops
             //*
@@ -444,8 +432,6 @@ namespace SrvSurvey
 
         private void drawGammaSiteTarget(Graphics g)
         {
-            var pp = new Pen(Color.Black, 4) { DashStyle = DashStyle.Dash };
-
             var w = (this.Width / 2f);
             var h = (this.Height / 2f);
 
@@ -497,9 +483,6 @@ namespace SrvSurvey
 
         private void drawButtressTarget(Graphics g)
         {
-            var pp = new Pen(Color.Black, 4) { DashStyle = DashStyle.Dash };
-            var ppp = new Pen(Color.Black, 2) { DashStyle = DashStyle.Dash };
-
             // top / height
             var t = this.Height / 2f;
             var h = (this.Height - t) * 0.8f;
@@ -509,37 +492,34 @@ namespace SrvSurvey
             // central thick line
             var w = (this.Width / 2);
             g.DrawLine(nightVision ? GameColors.penYellow8 : GameColors.penCyan8, w, t, w, t + h);
-            g.DrawLine(pp, w, t, w, t + h);
+            g.DrawLine(GameColors.penBlack4Dash, w, t, w, t + h);
 
             // thinner lines
             var w1 = 40; // width one
             g.DrawLine(nightVision ? GameColors.penYellow4 : GameColors.penCyan4, w - w1, t + 40, w - w1, t + 220);
-            g.DrawLine(ppp, w - w1, t + 40, w - w1, t + 220);
+            g.DrawLine(GameColors.penBlack2Dash, w - w1, t + 40, w - w1, t + 220);
             g.DrawLine(nightVision ? GameColors.penYellow4 : GameColors.penCyan4, w + w1, t + 40, w + w1, t + 220);
-            g.DrawLine(ppp, w + w1, t + 40, w + w1, t + 220);
+            g.DrawLine(GameColors.penBlack2Dash, w + w1, t + 40, w + w1, t + 220);
 
             var w2 = 70; // width two
             g.DrawLine(nightVision ? GameColors.penYellow4 : GameColors.penCyan2, w - w2, t + 60, w - w2, t + 200);
-            g.DrawLine(ppp, w - w2, t + 60, w - w2, t + 200);
+            g.DrawLine(GameColors.penBlack2Dash, w - w2, t + 60, w - w2, t + 200);
             g.DrawLine(nightVision ? GameColors.penYellow4 : GameColors.penCyan2, w + w2, t + 60, w + w2, t + 200);
-            g.DrawLine(ppp, w + w2, t + 60, w + w2, t + 200);
+            g.DrawLine(GameColors.penBlack2Dash, w + w2, t + 60, w + w2, t + 200);
 
             g.DrawLine(nightVision ? GameColors.penYellow4 : GameColors.penCyan2, w - w2, t + 80, w + w2, t + 80);
-            g.DrawLine(ppp, w - w2, t + 80, w + w2, t + 80);
+            g.DrawLine(GameColors.penBlack2Dash, w - w2, t + 80, w + w2, t + 80);
             g.DrawLine(nightVision ? GameColors.penYellow4 : GameColors.penCyan2, w - w2 - 50, t + 130, w + w2 + 50, t + 130);
-            g.DrawLine(ppp, w - w2 - 50, t + 130, w + w2 + 50, t + 130);
+            g.DrawLine(GameColors.penBlack2Dash, w - w2 - 50, t + 130, w + w2 + 50, t + 130);
             g.DrawLine(nightVision ? GameColors.penYellow4 : GameColors.penCyan2, w - w2, t + 180, w + w2, t + 180);
-            g.DrawLine(ppp, w - w2, t + 180, w + w2, t + 180);
+            g.DrawLine(GameColors.penBlack2Dash, w - w2, t + 180, w + w2, t + 180);
         }
 
 
         private void drawRobolobsterTarget(Graphics g)
         {
             var er = Elite.getWindowRect();
-            var r = (float)er.Width / (float)er.Height;
-            var ew = er.Width * 0.01f;
             var eh = er.Height * 0.01f;
-            var pp = new Pen(Color.Black, 4) { DashStyle = DashStyle.Dash };
 
             var d = 0f;
             var x = 0f;

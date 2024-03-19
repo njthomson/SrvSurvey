@@ -1491,10 +1491,9 @@ namespace SrvSurvey
                     // draw guide lines when map editor is active
                     if (this.formEditMap?.tabs.SelectedIndex == 2 && this.formEditMap?.listGroupNames.Text == foo.Key)
                     {
-                        var fpp = new Pen(Color.Green, 0.5f) { DashStyle = DashStyle.Dash, EndCap = LineCap.ArrowAnchor, StartCap = LineCap.ArrowAnchor };
                         var r2 = new RectangleF(-dist, -dist, dist * 2, dist * 2);
-                        g.DrawEllipse(fpp, r2);
-                        g.DrawLine(fpp, 0, 0, -pt.X, -pt.Y);
+                        g.DrawEllipse(GameColors.penMapEditGuideLineGreen, r2);
+                        g.DrawLine(GameColors.penMapEditGuideLineGreen, 0, 0, -pt.X, -pt.Y);
                     }
 
                     // draw background smudge?
@@ -1647,9 +1646,8 @@ namespace SrvSurvey
             if (this.formEditMap?.tabs.SelectedIndex == 0 && this.forcePoi != null)
             {
                 // draw guide lines when map editor is active
-                var fpp = new Pen(Color.GreenYellow, 0.5f) { DashStyle = DashStyle.Dash, EndCap = LineCap.ArrowAnchor, StartCap = LineCap.ArrowAnchor };
-                g.DrawLine(fpp, -nearestPt.X * 0.96f, -nearestPt.Y * 0.96f, -nearestPt.X * 1.04f, -nearestPt.Y * 1.04f);
-                g.DrawEllipse(fpp, (float)-this.forcePoi.dist, (float)-this.forcePoi.dist, (float)this.forcePoi.dist * 2, (float)this.forcePoi.dist * 2);
+                g.DrawLine(GameColors.penMapEditGuideLineGreenYellow, -nearestPt.X * 0.96f, -nearestPt.Y * 0.96f, -nearestPt.X * 1.04f, -nearestPt.Y * 1.04f);
+                g.DrawEllipse(GameColors.penMapEditGuideLineGreenYellow, (float)-this.forcePoi.dist, (float)-this.forcePoi.dist, (float)this.forcePoi.dist * 2, (float)this.forcePoi.dist * 2);
             }
 
             // draw an indicator to the nearest unknown POI or target obelisk
@@ -1833,7 +1831,7 @@ namespace SrvSurvey
             {
                 // anything unknown gets a blue circle underneath with dots
                 g.FillEllipse(GameColors.brushAroundPoiUnknown, -pt.X - dd - 5, -pt.Y - dd - 5, d + 10, d + 10);
-                g.DrawEllipse(new Pen(Color.FromArgb(96, Color.Cyan), 1f) { DashStyle = DashStyle.Dot, }, -pt.X - dd - 4, -pt.Y - dd - 4, d + 8, d + 8);
+                g.DrawEllipse(GameColors.penAroundPoiUnknown, -pt.X - dd - 4, -pt.Y - dd - 4, d + 8, d + 8);
             }
 
             switch (poi.type)
@@ -2005,14 +2003,14 @@ namespace SrvSurvey
                 if (!siteData.isRuins) { d -= 2; dd -= 1; } // make them a bit smaller at structures
 
                 g.FillEllipse(GameColors.brushPoiMissing, -pt.X - dd, -pt.Y - dd, d, d);
-                g.DrawEllipse(new Pen(Color.FromArgb(128, 128, 128, 128)), -pt.X - dd, -pt.Y - dd, d, d);
+                g.DrawEllipse(GameColors.penPoiMissing, -pt.X - dd, -pt.Y - dd, d, d);
             }
             else if (poiStatus == SitePoiStatus.absent)
             {
                 if (!siteData.isRuins) { d -= 2; dd -= 1; } // make them a bit smaller at structures
 
                 g.FillEllipse(GameColors.brushPoiMissing, -pt.X - dd, -pt.Y - dd, d, d);
-                g.DrawEllipse(new Pen(Color.FromArgb(128, 128, 128, 128)), -pt.X - dd, -pt.Y - dd, d, d);
+                g.DrawEllipse(GameColors.penPoiMissing, -pt.X - dd, -pt.Y - dd, d, d);
             }
             else // puddles present or empty
             {

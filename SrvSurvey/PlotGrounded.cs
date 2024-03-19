@@ -22,15 +22,13 @@ namespace SrvSurvey
         {
             InitializeComponent();
 
-            // TODO: use a size from some setting?
-            this.Height = 500;
-            this.Width = 380;
+            this.Height = PlotBase.scaled(500);
+            this.Width = PlotBase.scaled(380);
 
             this.scale = 0.25f;
             this.mw = this.Width / 2;
             this.mh = this.Height / 2;
             this.Cursor = Cursors.Cross;
-
         }
 
         protected override void OnActivated(EventArgs e)
@@ -77,7 +75,6 @@ namespace SrvSurvey
             this.Status_StatusChanged(false);
 
             game.journals!.onJournalEntry += Journals_onJournalEntry;
-            //game.nearBody!.bioScanEvent += NearBody_bioScanEvent; // retire
 
             // get landing location
             Game.log($"initialize here: {Status.here}, touchdownLocation: {game.touchdownLocation}, radius: {game.systemBody!.radius.ToString("N0")}");
@@ -93,13 +90,6 @@ namespace SrvSurvey
                     game.systemBody.radius,
                     game.systemBody.lastTouchdown);
         }
-
-        //private void NearBody_bioScanEvent()
-        //{
-        //    if (this.IsDisposed) return;
-
-        //    this.Invalidate();
-        //}
 
         #region journal events
 
@@ -243,12 +233,16 @@ namespace SrvSurvey
         private void PlotGrounded_Paint(object sender, PaintEventArgs e)
         {
             if (this.IsDisposed || game.systemBody == null || game.status == null) return;
+            var four = PlotBase.scaled(4);
+            var eight = PlotBase.scaled(8);
+            var ten = PlotBase.scaled(10);
+            var sixFour = PlotBase.scaled(64f);
 
             var g = e.Graphics;
             g.SmoothingMode = SmoothingMode.HighQuality;
             // clip to preserve top/bottom text area
 
-            var bottomClip = game.cmdr.scanOne == null ? 34 : 52;
+            var bottomClip = PlotBase.scaled(game.cmdr.scanOne == null ? 34 : 52);
             g.Clip = new Region(new RectangleF(4, 24, this.Width - 8, this.Height - bottomClip));
 
             // draw basic compass cross hairs centered in the window
@@ -269,8 +263,9 @@ namespace SrvSurvey
                 g.ScaleTransform(scale, scale);
                 g.RotateTransform(360 - game.status!.Heading);
 
-                const float touchdownSize = 64f;
-                var rect = new RectangleF((float)td.dx - touchdownSize, (float)-td.dy - touchdownSize, touchdownSize * 2, touchdownSize * 2);
+
+                float touchdownSize = sixFour;
+                var rect = PlotBase.scaled(new RectangleF((float)td.dx - 64, (float)-td.dy - 64, 128, 128));
                 var b = shipDeparted ? GameColors.brushShipFormerLocation : GameColors.brushShipLocation;
                 g.FillEllipse(b, rect);
 
@@ -278,10 +273,10 @@ namespace SrvSurvey
                 {
                     // draw 2km circle for when ship may depart
                     const float liftoffSize = 2000f;
-                    rect = new RectangleF((float)td.dx - liftoffSize, (float)-td.dy - liftoffSize, liftoffSize * 2, liftoffSize * 2);
-                    var p = new Pen(Color.FromArgb(64, Color.Red), 32) { DashStyle = DashStyle.DashDotDot };
+                    rect = PlotBase.scaled(new RectangleF((float)td.dx - liftoffSize, (float)-td.dy - liftoffSize, liftoffSize * 2, liftoffSize * 2));
+                    var p = GameColors.penShipDepartFar;
                     if (this.td.distance > 1800)
-                        p = new Pen(Color.FromArgb(255, Color.Red), 32) { DashStyle = DashStyle.DashDotDot };
+                        p = GameColors.penShipDepartNear;
 
                     g.DrawEllipse(p, rect);
                 }
@@ -298,7 +293,7 @@ namespace SrvSurvey
 
                 const float srvSize = 32f;
                 var rect = new RectangleF((float)srvLocation.dx - srvSize, (float)-srvLocation.dy - srvSize, srvSize * 2, srvSize * 2);
-                g.FillRectangle(GameColors.brushSrvLocation, rect);
+                g.FillRectangle(GameColors.brushSrvLocation, PlotBase.scaled(rect));
             }
 
             // draw current location pointer (always at center of plot + unscaled)
@@ -306,28 +301,28 @@ namespace SrvSurvey
             g.TranslateTransform(mw, mh);
             g.RotateTransform(360 - game.status!.Heading);
 
-            var locSz = 5f;
+            var locSz = PlotBase.scaled(5f);
             g.DrawEllipse(GameColors.penLime2, -locSz, -locSz, locSz * 2, locSz * 2);
-            var dx = (float)Math.Sin(Util.degToRad(game.status.Heading)) * 10F;
-            var dy = (float)Math.Cos(Util.degToRad(game.status.Heading)) * 10F;
+            var dx = (float)Math.Sin(Util.degToRad(game.status.Heading)) * locSz * 2;
+            var dy = (float)Math.Cos(Util.degToRad(game.status.Heading)) * locSz * 2;
             g.DrawLine(GameColors.penLime2, 0, 0, +dx, -dy);
 
             g.ResetTransform();
             // remove clip to preserving top/bottom text area
-            g.Clip = new Region(new RectangleF(0, 4, this.Width, this.Height - 8));
+            g.Clip = new Region(new RectangleF(0, four, this.Width, this.Height - eight));
 
             if (this.td != null)
-                this.drawBearingTo(g, 4, 8, "Touchdown:", this.td.Target);
+                this.drawBearingTo(g, four, eight, "Touchdown:", this.td.Target);
 
             if (this.srvLocation != null)
-                this.drawBearingTo(g, 4 + mw, 8, "SRV:", this.srvLocation.Target);
+                this.drawBearingTo(g, four + mw, eight, "SRV:", this.srvLocation.Target);
 
-            float y = this.Height - 24;
+            float y = this.Height - PlotBase.scaled(24);
             if (game.cmdr!.scanOne != null)
-                this.drawBearingTo(g, 10, y, "Scan one:", game.cmdr.scanOne.location!);
+                this.drawBearingTo(g, ten, y, "Scan one:", game.cmdr.scanOne.location!);
 
             if (game.cmdr.scanTwo != null)
-                this.drawBearingTo(g, 10 + mw, y, "Scan two:", game.cmdr.scanTwo.location!);
+                this.drawBearingTo(g, ten + mw, y, "Scan two:", game.cmdr.scanTwo.location!);
 
             // TODO: fix bug where warning shown and ship already departed
             if (!shipDeparted && this.td?.distance > 1800 && (game.vehicle == ActiveVehicle.SRV || game.vehicle == ActiveVehicle.Foot))
@@ -336,9 +331,9 @@ namespace SrvSurvey
                 var font = GameColors.fontSmall;
                 var sz = g.MeasureString(msg, font);
                 var tx = mw - (sz.Width / 2);
-                var ty = 42;
+                var ty = PlotBase.scaled(42);
 
-                const int pad = 14;
+                int pad = 14;
                 var rect = new RectangleF(tx - pad, ty - pad, sz.Width + pad * 2, sz.Height + pad * 2);
                 g.FillRectangle(GameColors.brushShipDismissWarning, rect);
 
@@ -434,19 +429,16 @@ namespace SrvSurvey
                 {
                     if (Util.isCloseToScan(tt.Target, signal.genusName) || analyzed) continue;
 
+                    var b = isActive ? GameColors.PriorScans.Active.brush : GameColors.PriorScans.Inactive.brush;
 
-                    var b = isActive ? GameColors.PriorScans.Active.brush : GameColors.PriorScans.Inactive.brush; // TODO: confirm
-                        //this.bbActive : bbInactive;
-
-                    var p = isActive ? /*GameColors.penTracker*/ new Pen(Color.FromArgb(32, GameColors.Orange)) { Width = 16, DashStyle = DashStyle.Solid }
-                        : new Pen(Color.FromArgb(48, Color.SlateGray)) { Width = 8, DashStyle = DashStyle.Solid };
+                    var p = isActive ? GameColors.penTrackerActive : GameColors.penTrackerInactive;
 
                     var c = isActive ? GameColors.PriorScans.Active.color : GameColors.PriorScans.Inactive.color;
 
                     if (tt.distance < PlotTrackers.highlightDistance)
                     {
                         b = isActive ? GameColors.PriorScans.CloseActive.brush : GameColors.PriorScans.CloseInactive.brush; // TODO: confirm
-                            // this.bbClose : this.bbCloseInactive; 
+                                                                                                                            // this.bbClose : this.bbCloseInactive; 
 
                         p = isActive ? GameColors.PriorScans.CloseActive.penRadar : GameColors.PriorScans.CloseInactive.penRadar;
                         c = isActive ? GameColors.PriorScans.CloseActive.color : GameColors.PriorScans.CloseInactive.color;
@@ -457,9 +449,9 @@ namespace SrvSurvey
                     // draw differed radar circle - either small or at radius size
                     GraphicsPath path = new GraphicsPath();
                     if (Game.settings.useSmallCirclesWithCanonn)
-                        path.AddEllipse((float)tt.dx - 100, (float)-tt.dy - 100, 200, 200);
+                        path.AddEllipse(PlotBase.scaled(new RectangleF((float)tt.dx - 100, (float)-tt.dy - 100, 200, 200)));
                     else
-                        path.AddEllipse(new RectangleF((float)tt.dx - radius, (float)-tt.dy - radius, radius * 2f, radius * 2f));
+                        path.AddEllipse(PlotBase.scaled(new RectangleF((float)tt.dx - radius, (float)-tt.dy - radius, radius * 2f, radius * 2f)));
 
                     var gb = new PathGradientBrush(path)
                     {
@@ -566,12 +558,12 @@ namespace SrvSurvey
             }
 
             var rect = new RectangleF((float)d.dx - radius, (float)-d.dy - radius, radius * 2f, radius * 2f);
-
             this.drawRadarCircle(g, rect, b, p);
         }
 
         private void drawRadarCircle(Graphics g, RectangleF rect, Brush b, Pen p)
         {
+            rect = PlotBase.scaled(rect);
             var fudge = 10;
 
             rect.Inflate(-(fudge * 2), -(fudge * 2));
@@ -589,16 +581,17 @@ namespace SrvSurvey
 
             var txtSz = g.MeasureString(txt, GameColors.fontSmall);
 
-            var sz = 6;
-            x += txtSz.Width + 8;
+            var sz = PlotBase.scaled(6);
+            x += txtSz.Width + PlotBase.scaled(8);
             var r = new RectangleF(x, y, sz * 2, sz * 2);
             g.DrawEllipse(GameColors.penGameOrange2, r);
 
             var dd = new TrackingDelta(game.systemBody!.radius, location);
 
             Angle deg = dd.angle - game.status!.Heading;
-            var dx = (float)Math.Sin(Util.degToRad(deg)) * 10F;
-            var dy = (float)Math.Cos(Util.degToRad(deg)) * 10F;
+            var ten = PlotBase.scaled(10f);
+            var dx = (float)Math.Sin(Util.degToRad(deg)) * ten;
+            var dy = (float)Math.Cos(Util.degToRad(deg)) * ten;
             g.DrawLine(GameColors.penGameOrange2, x + sz, y + sz, x + sz + dx, y + sz - dy);
 
             x += sz * 3;
