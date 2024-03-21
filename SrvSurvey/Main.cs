@@ -49,8 +49,7 @@ namespace SrvSurvey
                 this.startWatchingScreenshots();
 
             // can we fit in our last location
-            if (Game.settings.formMainLocation != Point.Empty)
-                this.useLastWindowLocation();
+            Util.useLastLocation(this, Game.settings.formMainLocation);
 
             this.bioCtrls = new List<Control>()
             {
@@ -61,21 +60,6 @@ namespace SrvSurvey
             };
 
             btnPublish.Visible = Debugger.IsAttached;
-        }
-
-        private void useLastWindowLocation()
-        {
-            // position ourselves within the bound of which ever screen is chosen
-            var pt = Game.settings.formMainLocation;
-            var r = Screen.GetBounds(pt);
-            if (pt.X < r.Left) pt.X = r.Left;
-            if (pt.X + this.Width > r.Right) pt.X = r.Right - this.Width;
-
-            if (pt.Y < r.Top) pt.Y = r.Top;
-            if (pt.Y + this.Height > r.Bottom) pt.Y = r.Bottom - this.Height;
-
-            this.StartPosition = FormStartPosition.Manual;
-            this.Location = pt;
         }
 
         private void Main_Load(object sender, EventArgs e)
@@ -227,6 +211,7 @@ namespace SrvSurvey
                             this.newGame();
 
                         foreach (Control ctrl in this.Controls) ctrl.Enabled = true;
+                        btnSphereLimit.Enabled = false;
 
                         this.timer1.Interval = 200;
                         this.timer1.Start();

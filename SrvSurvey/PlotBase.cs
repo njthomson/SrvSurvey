@@ -18,6 +18,31 @@ namespace SrvSurvey
         public float scale = 1.0f;
         public float customScale = -1.0f;
 
+        protected float one = scaled(1f);
+        protected float two = scaled(2f);
+        protected float four = scaled(4f);
+        protected float five = scaled(5f);
+        protected float six = scaled(6f);
+        protected float eight = scaled(8f);
+        protected float ten = scaled(10f);
+        protected float oneTwo = scaled(12f);
+        protected float oneFour = scaled(14f);
+        protected float oneSix = scaled(16f);
+        protected float oneEight = scaled(18f);
+        protected float twenty = scaled(20f);
+        protected float twoTwo = scaled(22f);
+        protected float twoFour = scaled(24f);
+        protected float twoSix = scaled(26f);
+        protected float twoEight = scaled(28f);
+        protected float thirty = scaled(30f);
+        protected float threeFour = scaled(34f);
+        protected float forty = scaled(40f);
+        protected float fourFour = scaled(44f);
+        protected float fourSix = scaled(46f);
+        protected float fifty = scaled(50f);
+        protected float sixFive = scaled(65f);
+        protected float eightSix = scaled(86f);
+
         protected PlotBase()
         {
             this.BackColor = Color.Black;
@@ -135,6 +160,14 @@ namespace SrvSurvey
             pt.Y = scaled(pt.Y);
 
             return pt;
+        }
+
+        public static SizeF scaled(SizeF sz)
+        {
+            sz.Width = scaled(sz.Width);
+            sz.Height = scaled(sz.Height);
+
+            return sz;
         }
 
         protected virtual void initialize()
@@ -337,7 +370,7 @@ namespace SrvSurvey
 
         protected void clipToMiddle()
         {
-            this.clipToMiddle(4, 26, 4, 24);
+            this.clipToMiddle(four, twoSix, four, twoFour);
         }
 
         protected void clipToMiddle(float left, float top, float right, float bottom)
@@ -356,7 +389,7 @@ namespace SrvSurvey
             if (heading == -1) heading = game.status!.Heading;
 
             g.ResetTransform();
-            this.clipToMiddle(4, 26, 4, 24);
+            this.clipToMiddle();
 
             g.TranslateTransform(mid.Width, mid.Height);
 
@@ -531,6 +564,50 @@ namespace SrvSurvey
             this.dtx += sz.Width;
 
             return sz;
+        }
+
+        private static Dictionary<string, POIType> itemPoiTypeMap = new Dictionary<string, POIType>()
+        {
+            { ObeliskItem.casket.ToString(), POIType.casket },
+            { ObeliskItem.orb.ToString(), POIType.orb },
+            { ObeliskItem.relic.ToString(), POIType.relic },
+            { ObeliskItem.tablet.ToString(), POIType.tablet},
+            { ObeliskItem.totem.ToString(), POIType.totem },
+            { ObeliskItem.urn.ToString(), POIType.urn },
+        };
+
+        private static PointF[] ramTahRelicPoints = {
+            new PointF(-8, -4),
+            new PointF(+8, -4),
+            new PointF(0, +10),
+            new PointF(-8, -4),
+        };
+
+        protected void drawRamTahDot(float dx, float dy, string item)
+        {
+            if (item == POIType.relic.ToString())
+            {
+                dx += this.dtx + four;
+                dy += this.dty + four;
+                this.dtx += oneTwo;
+
+                g.TranslateTransform(dx, dy);
+                g.FillPolygon(GameColors.brushPoiPresent, ramTahRelicPoints);
+                g.DrawPolygon(GameColors.penPoiRelicPresent, ramTahRelicPoints);
+
+                g.TranslateTransform(-dx, -dy);
+            }
+            else
+            {
+                var r = new RectangleF(this.dtx + dx, this.dty + dy, ten, ten);
+                var poiType = itemPoiTypeMap[item];
+                this.dtx += oneTwo;
+
+                g.FillEllipse(GameColors.Map.brushes[poiType][SitePoiStatus.present], r);
+                g.DrawEllipse(GameColors.Map.pens[poiType][SitePoiStatus.present], r);
+            }
+
+            // TODO: Thargoid items?
         }
     }
 

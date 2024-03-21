@@ -289,19 +289,32 @@ namespace SrvSurvey
             return false;
         }
 
-        public static void useLastLocation(Form form, Rectangle rect)
+        public static void useLastLocation(Form form, Rectangle rect, bool locationOnly = false)
         {
-            if (rect == Rectangle.Empty)
+            useLastLocation(form, rect.Location, locationOnly ? Size.Empty : rect.Size);
+        }
+
+        public static void useLastLocation(Form form, Point pt)
+        {
+            useLastLocation(form, pt, Size.Empty);
+        }
+
+        public static void useLastLocation(Form form, Point pt, Size sz)
+        {
+            if (pt == Point.Empty)
             {
                 form.StartPosition = FormStartPosition.CenterScreen;
                 return;
             }
 
-            form.Width = Math.Max(rect.Width, form.MinimumSize.Width);
-            form.Height = Math.Max(rect.Height, form.MinimumSize.Height);
+            if (sz != Size.Empty)
+            {
+                // not all forms are sizable, so don't change those
+                form.Width = Math.Max(sz.Width, form.MinimumSize.Width);
+                form.Height = Math.Max(sz.Height, form.MinimumSize.Height);
+            }
 
-            // position ourself within the bound of which ever screen is chosen
-            var pt = rect.Location;
+            // position ourselves within the bound of which ever screen is chosen
             var r = Screen.GetBounds(pt);
             if (pt.X < r.Left) pt.X = r.Left;
             if (pt.X + form.Width > r.Right) pt.X = r.Right - form.Width;

@@ -71,9 +71,6 @@ namespace SrvSurvey
 
         private static Point p1 = scaled(new Point(8, 10));
 
-        int eight = scaled(8);
-        int ten = scaled(10);
-
         protected override void OnPaintBackground(PaintEventArgs e)
         {
             base.OnPaintBackground(e);

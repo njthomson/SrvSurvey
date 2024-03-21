@@ -546,6 +546,7 @@ namespace SrvSurvey
             btnSphereLimit.Text = "Sphere limit";
             btnSphereLimit.UseVisualStyleBackColor = false;
             btnSphereLimit.Click += btnSphereLimit_Click;
+            btnSphereLimit.Enabled = false;
             // 
             // linkLabel2
             // 

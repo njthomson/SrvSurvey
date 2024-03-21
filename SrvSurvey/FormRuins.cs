@@ -798,7 +798,7 @@ namespace SrvSurvey
             g.DrawRectangle(GameColors.Map.Legend.pen, rect);
 
             drawString(g, "Legend:");
-            tp.X += 20;
+            tp.X += PlotBase.scaled(20);
 
             drawString(g, "Relic Tower");
             drawRelicTower(g, new PointF(tp.X - 10, tp.Y - 10), null, null);
@@ -832,7 +832,7 @@ namespace SrvSurvey
         {
             var sz = g.MeasureString(msg, this.Font);
             g.DrawString(msg, this.Font, Brushes.Black, tp);
-            tp.Y += sz.Height + 1;
+            tp.Y += sz.Height + PlotBase.scaled(1);
         }
 
         private void checkNotes_CheckedChanged(object sender, EventArgs e)

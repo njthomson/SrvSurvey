@@ -808,6 +808,22 @@ namespace SrvSurvey
         }
     }
 
+    class Materials : JournalEntry
+    {
+        // { "timestamp":"2024-03-18T00:04:26Z", "event":"Materials", "Raw":[ { "Name":"sulphur", "Count":3 }, { "Name":"zirconium", "Count":6 }, { "Name":"manganese", "Count":9 }, { "Name":"vanadium", "Count":15 }, { "Name":"tungsten", "Count":6 }, { "Name":"zinc", "Count":18 }, { "Name":"chromium", "Count":15 } ], "Manufactured":[ { "Name":"highdensitycomposites", "Name_Localised":"High Density Composites", "Count":3 }, { "Name":"configurablecomponents", "Name_Localised":"Configurable Components", "Count":5 }, { "Name":"phasealloys", "Name_Localised":"Phase Alloys", "Count":3 }, { "Name":"heatconductionwiring", "Name_Localised":"Heat Conduction Wiring", "Count":3 }, { "Name":"crystalshards", "Name_Localised":"Crystal Shards", "Count":3 }, { "Name":"hybridcapacitors", "Name_Localised":"Hybrid Capacitors", "Count":3 }, { "Name":"chemicalprocessors", "Name_Localised":"Chemical Processors", "Count":2 }, { "Name":"biotechconductors", "Name_Localised":"Biotech Conductors", "Count":4 }, { "Name":"refinedfocuscrystals", "Name_Localised":"Refined Focus Crystals", "Count":4 } ], "Encoded":[ { "Name":"encryptionarchives", "Name_Localised":"Atypical Encryption Archives", "Count":15 }, { "Name":"adaptiveencryptors", "Name_Localised":"Adaptive Encryptors Capture", "Count":6 }, { "Name":"consumerfirmware", "Name_Localised":"Modified Consumer Firmware", "Count":9 }, { "Name":"embeddedfirmware", "Name_Localised":"Modified Embedded Firmware", "Count":8 }, { "Name":"dataminedwake", "Name_Localised":"Datamined Wake Exceptions", "Count":12 }, { "Name":"disruptedwakeechoes", "Name_Localised":"Atypical Disrupted Wake Echoes", "Count":29 }, { "Name":"hyperspacetrajectories", "Name_Localised":"Eccentric Hyperspace Trajectories", "Count":18 }, { "Name":"compactemissionsdata", "Name_Localised":"Abnormal Compact Emissions Data", "Count":3 }, { "Name":"fsdtelemetry", "Name_Localised":"Anomalous FSD Telemetry", "Count":6 } ] }
+
+        public List<Material> Raw;
+        public List<Material> Manufactured;
+        public List<Material> Encoded;
+    }
+
+    class Material
+    {
+        public string Name;
+        public string Name_Localised;
+        public int Count;
+    }
+
 }
 
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.

@@ -7,8 +7,8 @@ namespace SrvSurvey
     {
         private PlotRamTah() : base()
         {
-            this.Width = 420;
-            this.Height = 88;
+            this.Width = scaled(420);
+            this.Height = scaled(88);
             this.BackgroundImageLayout = ImageLayout.Stretch;
 
             this.Font = GameColors.fontMiddle;
@@ -65,14 +65,15 @@ namespace SrvSurvey
                 this.g = e.Graphics;
                 this.g.SmoothingMode = SmoothingMode.HighQuality;
 
-                this.dtx = 6.0f;
-                this.dty = 8.0f;
-                var sz = new SizeF(6, 6);
+
+                this.dtx = six;
+                this.dty = eight;
+                var sz = new SizeF(six, six);
 
                 var ramTahObelisks = game.systemSite.ramTahObelisks;
                 this.drawTextAt($"Unscanned Ram Tah logs: {ramTahObelisks?.Count ?? 0}", GameColors.fontSmall);
                 if (this.dtx > sz.Width) sz.Width = this.dtx;
-                this.dty = 24f;
+                this.dty = twoFour;
 
                 if (ramTahObelisks?.Count > 0)
                 {
@@ -103,24 +104,27 @@ namespace SrvSurvey
                         //    : isTargetObelisk ? Brushes.DarkCyan : GameColors.brushGameOrangeDim;
 
                         // draw main text (bigger font)
-                        this.dtx = 14f;
+                        this.dtx = oneFour;
                         var logName = $"{Util.getLogNameFromChar(bar.Key[0])} #{bar.Key.Substring(1)}:";
                         this.drawTextAt(logName, brush, GameColors.fontMiddle);
-                        this.dty += 6;
+                        this.dty += six;
 
+                        this.drawRamTahDot(0, 0, item1);
                         this.drawTextAt(item1, hasItem1 ? brush : Brushes.Red, GameColors.fontSmall);
 
                         if (item2 != null)
                         {
-                            this.drawTextAt("+ ", brush, GameColors.fontSmall);
+                            this.drawTextAt("+", brush, GameColors.fontSmall);
+                            this.dtx += two;
+                            this.drawRamTahDot(0, 0, item2);
                             this.drawTextAt(item2, hasItem2 ? brush : Brushes.Red, GameColors.fontSmall);
                         }
 
                         if (this.dtx > sz.Width) sz.Width = this.dtx;
-                        this.dty += 16;
+                        this.dty += oneSix;
 
                         // draw each obelisk name, highlighting the target one
-                        this.dtx = 24f;
+                        this.dtx = twoFour;
                         foreach (var ob in bar.Value)
                         {
                             if (targetObelisk == ob || game.systemSite.currentObelisk?.name == ob)
@@ -129,25 +133,25 @@ namespace SrvSurvey
                                 this.drawTextAt(ob, GameColors.fontSmall);
                         }
 
-                        this.dty += 14;
+                        this.dty += oneFour;
                         if (this.dtx > sz.Width) sz.Width = this.dtx;
                     }
 
-                    this.dtx = 8f;
-                    this.dty += 10;
+                    this.dtx = eight;
+                    this.dty += ten;
                     this.dty += this.drawTextAt("Set target obelisk with '.to <A01>'", GameColors.fontSmall).Height;
                     if (this.dtx > sz.Width) sz.Width = this.dtx;
                 }
                 else
                 {
-                    this.dtx = 24f;
+                    this.dtx = twoFour;
                     this.dty += this.drawTextAt($"All logs at this site have\r\nalready been scanned.", GameColors.brushGameOrange, GameColors.fontMiddle).Height;
                     if (this.dtx > sz.Width) sz.Width = this.dtx;
                 }
 
                 // resize window as necessary
-                sz.Width += 10;
-                sz.Height = this.dty + 10f;
+                sz.Width += ten;
+                sz.Height = this.dty + ten;
                 if (this.Size != sz.ToSize())
                 {
                     this.Size = sz.ToSize();

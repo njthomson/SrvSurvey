@@ -90,12 +90,6 @@ namespace SrvSurvey
             this.Invalidate();
         }
 
-        int four = scaled(4);
-        int eight = scaled(8);
-        int oneEight = scaled(18);
-        int twoEight = scaled(28);
-        int sixFive = scaled(65);
-
         protected override void OnPaintBackground(PaintEventArgs e)
         {
             base.OnPaintBackground(e);

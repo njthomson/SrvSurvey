@@ -26,7 +26,7 @@ namespace SrvSurvey
             this.DoubleBuffered = true;
 
             // can we fit in our last location
-            Util.useLastLocation(this, Game.settings.formRamTah);
+            Util.useLastLocation(this, Game.settings.formRamTah.Location);
 
             txtRuinsMissionActive.Text = this.cmdr?.decodeTheRuinsMissionActive.ToString() ?? "Unknown";
             txtRuinsMissionActive.BackColor = this.cmdr?.decodeTheRuinsMissionActive == TahMissionStatus.Active ? checkedColor : SystemColors.Control;

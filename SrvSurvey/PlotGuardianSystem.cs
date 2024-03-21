@@ -9,8 +9,8 @@ namespace SrvSurvey
 
         private PlotGuardianSystem() : base()
         {
-            this.Width = 420;
-            this.Height = 88;
+            this.Width = scaled(420);
+            this.Height = scaled(88);
             this.BackgroundImageLayout = ImageLayout.Stretch;
 
             this.Font = GameColors.fontMiddle;
@@ -66,10 +66,9 @@ namespace SrvSurvey
                 this.g = e.Graphics;
                 this.g.SmoothingMode = SmoothingMode.HighQuality;
 
-
-                this.dtx = 6.0f;
-                this.dty = 8.0f;
-                var sz = new SizeF(6, 6);
+                this.dtx = six;
+                this.dty = eight;
+                var sz = new SizeF(six, six);
 
                 var sites = game?.systemData?.settlements;
                 this.drawTextAt($"Guardian sites: {sites?.Count ?? 0}", GameColors.brushGameOrange, GameColors.fontSmall);
@@ -77,7 +76,7 @@ namespace SrvSurvey
 
                 if (sites?.Count > 0)
                 {
-                    this.dty = 20f;
+                    this.dty = twenty;
                     foreach (var site in sites)
                     {
                         var txt = $"{site.displayText}{site.type}";
@@ -88,29 +87,29 @@ namespace SrvSurvey
                         var brush = highlight ? GameColors.brushCyan : null;
 
                         // draw main text (bigger font)
-                        this.dtx = 8f;
+                        this.dtx = eight;
                         this.dty += this.drawTextAt(txt, brush).Height;
                         if (this.dtx > sz.Width) sz.Width = this.dtx;
 
                         // draw status (smaller font)
                         if (site.bluePrint != null)
                         {
-                            this.dtx = 20f;
-                            this.dty += this.drawTextAt("- " + site.bluePrint, brush, GameColors.fontSmall).Height + 2;
+                            this.dtx = twenty;
+                            this.dty += this.drawTextAt("- " + site.bluePrint, brush, GameColors.fontSmall).Height + two;
                             if (this.dtx > sz.Width) sz.Width = this.dtx;
                         }
 
                         if (site.status != null)
                         {
-                            this.dtx = 20f;
-                            this.dty += this.drawTextAt("- " + site.status, brush, GameColors.fontSmall).Height + 2;
+                            this.dtx = twenty;
+                            this.dty += this.drawTextAt("- " + site.status, brush, GameColors.fontSmall).Height + two;
                             if (this.dtx > sz.Width) sz.Width = this.dtx;
                         }
 
                         // draw extra (smaller font)
                         if (site.extra != null)
                         {
-                            this.dtx = 20f;
+                            this.dtx = twenty;
                             this.dty += this.drawTextAt("- " + site.extra, brush, GameColors.fontSmall).Height;
                             if (this.dtx > sz.Width) sz.Width = this.dtx;
                         }
@@ -118,8 +117,8 @@ namespace SrvSurvey
                 }
 
                 // resize window as necessary
-                sz.Width += 10;
-                sz.Height = this.dty + 10f;
+                sz.Width += ten;
+                sz.Height = this.dty + ten;
                 if (this.Size != sz.ToSize())
                 {
                     this.Size = sz.ToSize();

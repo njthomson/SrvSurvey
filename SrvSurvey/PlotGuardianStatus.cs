@@ -13,8 +13,8 @@ namespace SrvSurvey
 
         private PlotGuardianStatus() : base()
         {
-            this.Width = 500;
-            this.Height = 108;
+            this.Width = scaled(500);
+            this.Height = scaled(108);
 
             timer.Tick += Timer_Tick;
         }
@@ -36,9 +36,10 @@ namespace SrvSurvey
             this.initialize();
             this.reposition(Elite.getWindowRect(true));
 
-            const int blockWidth = 100;
-            const int blockTop = 45;
-            const int letterOffset = 10;
+            int blockWidth = scaled(100);
+            int blockTop = scaled(45);
+            int letterOffset = scaled(10);
+
             ptMain = new Point[]
             {
                 new Point((int)(this.mid.Width - (blockWidth * 1.5f)) , blockTop ),
@@ -112,7 +113,7 @@ namespace SrvSurvey
                         return;
 
                     case Mode.heading:
-                        drawCenterMessage("\r\nAlign with buttess");
+                        drawCenterMessage("\r\nAlign with buttress");
                         showSelectionCue();
                         return;
 
@@ -184,8 +185,8 @@ namespace SrvSurvey
             if (poi.type == POIType.brokeObelisk)
                 headerTxt += "Broken";
 
-            this.dtx = 10;
-            this.dty = 30;
+            this.dtx = ten;
+            this.dty = twoSix;
             if (obelisk != null)
             {
                 headerTxt += "Active";
@@ -204,7 +205,6 @@ namespace SrvSurvey
                     this.drawFooterText("Scan to populate data material", GameColors.brushCyan);
                 }
 
-
                 this.drawTextAt("Requires:", brush, GameColors.fontMiddle);
                 if (obelisk.items == null)
                 {
@@ -219,10 +219,13 @@ namespace SrvSurvey
                     var item2 = obelisk.items.Count > 1 ? obelisk.items.Last().ToString() : null;
                     var hasItem2 = item2 == null ? true : game.getInventoryItem(item2)?.Count >= (item1 == item2 ? 2 : 1);
 
+                    this.drawRamTahDot(0, five, item1);
                     this.drawTextAt(item1, hasItem1 ? brush : Brushes.Red, GameColors.fontMiddle);
                     if (item2 != null)
                     {
-                        this.drawTextAt("+ ", brush, GameColors.fontMiddle);
+                        this.drawTextAt("+", brush, GameColors.fontMiddle);
+                        this.dtx += two;
+                        this.drawRamTahDot(0, five, item2);
                         this.drawTextAt(item2, hasItem2 ? brush : Brushes.Red, GameColors.fontMiddle);
                     }
                 }
@@ -231,12 +234,23 @@ namespace SrvSurvey
                 // show current status if Ram Tah mission is active
                 if (game.cmdr.ramTahActive)
                 {
-                    this.dtx = 10;
-                    this.dty = 50;
+                    this.dtx = ten;
+                    this.dty = fourSix;
                     if (ramTahNeeded)
-                        this.drawTextAt($"(Needed for Ram Tah mission)", brush, GameColors.fontMiddle);
+                        this.drawTextAt($"> Needed for Ram Tah mission", brush, GameColors.fontMiddle);
                     else
-                        this.drawTextAt($"(Log already acquired)", brush, GameColors.fontMiddle);
+                        this.drawTextAt($"> Log already acquired", brush, GameColors.fontMiddle);
+                }
+
+                if (game.guardianMatsFull)
+                {
+                    this.dtx = ten;
+                    this.dty += twoTwo;
+
+                    if (this.highlightBlink)
+                        this.drawTextAt($"(Guardian mats full - toggle cockpit mode again to mark scanned)", GameColors.brushCyan, GameColors.fontSmaller);
+                    else
+                        this.drawTextAt($"(Guardian mats full - toggle cockpit mode twice to mark scanned)", GameColors.brushGameOrange, GameColors.fontSmaller);
                 }
             }
             else
@@ -290,9 +304,9 @@ namespace SrvSurvey
             }
 
             // show selection rectangle
-            var rect = new Rectangle(0, 0, 86, 44);
-            rect.Location = ptMain[selectedIndex];
-            rect.Offset(-12, -12);
+            var rect = new RectangleF(
+                ptMain[selectedIndex].X - oneTwo, ptMain[selectedIndex].Y - oneTwo,
+                eightSix, fourFour);
             var p = highlightIdx == selectedIndex ? Pens.Cyan : GameColors.penGameOrange1;
             if (highlightIdx == -2 || (msg3 == null && highlightIdx == 2)) p = Pens.Gray;
             g.DrawRectangle(p, rect);
@@ -315,7 +329,7 @@ namespace SrvSurvey
             var font = GameColors.fontMiddle;
             var sz = g.MeasureString(msg, font);
             var tx = mid.Width - (sz.Width / 2);
-            var ty = 34;
+            var ty = threeFour;
 
             g.DrawString(msg, font, GameColors.brushGameOrange, tx, ty);
         }

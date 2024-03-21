@@ -29,11 +29,6 @@ namespace SrvSurvey
         private double nearestObeliskDist = 1000d;
         public string? targetObelisk;
 
-        /// <summary> Site map width </summary>
-        private float ux;
-        /// <summary> Site map height </summary>
-        private float uy;
-
         public Mode mode;
         private PointF commanderOffset;
 
@@ -55,11 +50,11 @@ namespace SrvSurvey
             // set window size based on setting
             switch (Game.settings.idxGuardianPlotter)
             {
-                case 0: this.Width = 300; this.Height = 400; break;
-                case 1: this.Width = 500; this.Height = 500; break;
-                case 2: this.Width = 600; this.Height = 700; break;
-                case 3: this.Width = 800; this.Height = 1000; break;
-                case 4: this.Width = 1200; this.Height = 1200; break;
+                case 0: this.Width = scaled(300); this.Height = scaled(400); break;
+                case 1: this.Width = scaled(500); this.Height = scaled(500); break;
+                case 2: this.Width = scaled(600); this.Height = scaled(700); break;
+                case 3: this.Width = scaled(800); this.Height = scaled(1000); break;
+                case 4: this.Width = scaled(1200); this.Height = scaled(1200); break;
             }
 
             this.setMapScale();
@@ -933,8 +928,6 @@ namespace SrvSurvey
 
             // prepare underlay
             this.underlay = new Bitmap(this.siteMap.Width * 3, this.siteMap.Height * 3);
-            this.ux = this.underlay.Width / 2;
-            this.uy = this.underlay.Height / 2;
 
             //// prepare other stuff
             //var offset = game.nearBody!.guardianSiteLocation! - touchdownLocation.Target;
@@ -1043,6 +1036,11 @@ namespace SrvSurvey
                 {
                     // take current heading
                     this.setSiteHeading(game.status.Heading);
+                }
+                else if (this.nearestPoi != null && this.mode == Mode.map && this.nearestPoi.type == POIType.obelisk)
+                {
+                    // toggle obelisk scanned if we're next to one
+                    siteData.toggleObeliskScanned();
                 }
                 else if (this.nearestPoi != null && this.mode == Mode.map && this.nearestPoi.type != POIType.obelisk && this.nearestPoi.type != POIType.brokeObelisk)
                 {
@@ -1293,7 +1291,7 @@ namespace SrvSurvey
             g.TransformPoints(CoordinateSpace.Page, CoordinateSpace.World, pps);
 
             g.ResetTransform();
-            this.clipToMiddle(4, 26, 4, 24);
+            this.clipToMiddle();
             g.TranslateTransform(mid.Width, mid.Height);
             g.ScaleTransform(sf, sf);
 
@@ -1414,7 +1412,7 @@ namespace SrvSurvey
 
             // Render background bitmap, rotated for commander heading, than translated, then rotated for the site heading
             g.ResetTransform();
-            this.clipToMiddle(4, 26, 4, 24);
+            this.clipToMiddle();
             g.TranslateTransform(mid.Width, mid.Height);
             g.ScaleTransform(this.scale, this.scale);
 
@@ -1445,7 +1443,7 @@ namespace SrvSurvey
 
 
             g.ResetTransform();
-            this.clipToMiddle(4, 26, 4, 24);
+            this.clipToMiddle();
             g.TranslateTransform(mid.Width, mid.Height);
             g.ScaleTransform(this.scale, this.scale);
             g.RotateTransform(-game.status.Heading);
@@ -1710,8 +1708,7 @@ namespace SrvSurvey
 
                 var nextStatus = (SitePoiStatus)(game.status.FireGroup % 3) + 1;
 
-                var nextStatusDifferent = nextStatus != poiStatus;
-                var action = nextStatusDifferent ? $"(set {nextStatus})" : "";
+                var action = "";
 
                 if (this.nearestPoi.type == POIType.obelisk || this.nearestPoi.type == POIType.brokeObelisk)
                 {
@@ -1740,7 +1737,7 @@ namespace SrvSurvey
                         else if (relicHeading == null || siteData.relicTowerHeading == -1)
                             action = $" (unknown heading)";
                     }
-                    footerBrush = poiStatus == SitePoiStatus.unknown || nextStatusDifferent ? GameColors.brushCyan : GameColors.brushGameOrange;
+                    footerBrush = poiStatus == SitePoiStatus.unknown ? GameColors.brushCyan : GameColors.brushGameOrange;
                     footerTxt = $"{this.nearestPoi.type} {this.nearestPoi.name}: {poiStatus} {action}";
                 }
             }
@@ -1875,12 +1872,12 @@ namespace SrvSurvey
             if (poi.type == POIType.obelisk && obelisk != null)
             {
                 var ramTahNeeded = game.cmdr.ramTahActive && game.systemSite?.ramTahObelisks?.ContainsKey(obelisk.msg) == true;
-                if (obelisk.scanned)
-                    GameColors.shiningBrush.CenterColor = GameColors.Orange;
-                else if (!ramTahNeeded && game.cmdr.ramTahActive)
-                    GameColors.shiningBrush.CenterColor = Color.LightGray;
-                else
+                if (ramTahNeeded && game.cmdr.ramTahActive)
                     GameColors.shiningBrush.CenterColor = GameColors.Cyan;
+                else if (obelisk.scanned)
+                    GameColors.shiningBrush.CenterColor = GameColors.Orange;
+                else
+                    GameColors.shiningBrush.CenterColor = Color.LightGray;
 
                 g.FillPath(GameColors.shiningBrush, GameColors.shiningPath);
             }
@@ -2051,8 +2048,8 @@ namespace SrvSurvey
             this.clipToMiddle();
 
             string msg;
-            var tx = 10f;
-            var ty = 20f;
+            var tx = ten;
+            var ty = twoEight;
 
             var isRuins = siteData.isRuins;
             msg = $"Need site heading:\r\n\r\n■ To use current heading either:\r\n    - Toggle cockpit mode twice\r\n    - Send message:   .heading\r\n\r\n■ Or send message: <degrees>";
@@ -2083,7 +2080,7 @@ namespace SrvSurvey
 
             // show location of buttress or other thing to align with
             if (this.headingGuidance != null)
-                g.DrawImage(this.headingGuidance, 40, 20 + sz.Height);
+                g.DrawImage(this.headingGuidance, forty, ty + sz.Height);
         }
 
         #region static accessing stuff

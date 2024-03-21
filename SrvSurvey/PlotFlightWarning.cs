@@ -49,8 +49,6 @@ namespace SrvSurvey
         }
 
         int pad = scaled(15);
-        int one = scaled(1);
-        int two = scaled(2);
 
         protected override void OnPaintBackground(PaintEventArgs e)
         {

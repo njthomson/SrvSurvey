@@ -117,6 +117,7 @@ namespace SrvSurvey.game
         public Status status { get; private set; }
         public NavRouteFile navRoute { get; private set; }
         public CargoFile cargoFile { get; private set; }
+        public bool guardianMatsFull;
 
         public SystemStatus systemStatus;
 
@@ -572,6 +573,11 @@ namespace SrvSurvey.game
                     this.getLastTouchdownDeep();
                 }
             }
+
+            // if we have landed, we need to find the last Touchdown location
+            var lastMaterials = journals.FindEntryByType<Materials>(-1, true);
+            if (lastMaterials != null)
+                onJournalEntry(lastMaterials);
 
             log($"Game.initializeFromJournal: END Commander:{this.Commander}, starSystem:{cmdr?.currentSystem}, systemLocation:{cmdr?.lastSystemLocation}, systemBody:{this.systemBody}, journals.Count:{journals.Count}");
             this.initialized = Game.activeGame == this && this.Commander != null;
@@ -1054,6 +1060,20 @@ namespace SrvSurvey.game
 
             var inventoryItem = this.cargoFile.Inventory.FirstOrDefault(_ => _.Name.Equals(itemName, StringComparison.OrdinalIgnoreCase));
             return inventoryItem;
+        }
+
+        private void onJournalEntry(Materials entry)
+        {
+            if (!guardianMatsFull)
+                guardianMatsFull = entry.Encoded.Find(_ => _.Name == "ancientbiologicaldata")?.Count == 150;
+            if (!guardianMatsFull)
+                guardianMatsFull = entry.Encoded.Find(_ => _.Name == "ancientlanguagedata")?.Count == 150;
+            if (!guardianMatsFull)
+                guardianMatsFull = entry.Encoded.Find(_ => _.Name == "ancientculturaldata")?.Count == 150;
+            if (!guardianMatsFull)
+                guardianMatsFull = entry.Encoded.Find(_ => _.Name == "ancienttechnologicaldata")?.Count == 150;
+            if (!guardianMatsFull)
+                guardianMatsFull = entry.Encoded.Find(_ => _.Name == "ancienthistoricaldata")?.Count == 150;
         }
 
         #endregion

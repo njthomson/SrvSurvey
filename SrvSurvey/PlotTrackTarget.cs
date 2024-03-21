@@ -118,10 +118,6 @@ namespace SrvSurvey
             tt.PathPoints[1].X += scaled(20);
         }
 
-        int four = scaled(4);
-        int six = scaled(6);
-        int ten = scaled(10);
-
         protected override void OnPaintBackground(PaintEventArgs e)
         {
             base.OnPaintBackground(e);
