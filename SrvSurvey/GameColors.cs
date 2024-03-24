@@ -16,10 +16,42 @@ namespace SrvSurvey
                     return Program.control.DeviceDpi / 96f;
                 case 1: // force 100%
                     return 1f;
-                case 2: // force 150%
+                case 2: // force 110%
+                    return 1.1f;
+                case 3: // force 120%
+                    return 1.2f;
+                case 4: // force 125%
+                    return 1.25f;
+                case 5: // force 130%
+                    return 1.3f;
+                case 6: // force 140%
+                    return 1.4f;
+                case 7: // force 150%
                     return 1.5f;
-                case 3: // force 200%
+                case 8: // force 160%
+                    return 1.6f;
+                case 9: // force 170%
+                    return 1.7f;
+                case 10: // force 175%
+                    return 1.75f;
+                case 11: // force 180%
+                    return 1.8f;
+                case 12: // force 190%
+                    return 1.9f;
+                case 13: // force 200%
                     return 2f;
+                case 14: // force 210%
+                    return 2.1f;
+                case 15: // force 220%
+                    return 2.2f;
+                case 16: // force 225%
+                    return 2.25f;
+                case 17: // force 230%
+                    return 2.3f;
+                case 18: // force 240%
+                    return 2.4f;
+                case 19: // force 250%
+                    return 2.5f;
             }
         }
         public static float scaleFactor = GameColors.getScaleFactor();
@@ -34,10 +66,42 @@ namespace SrvSurvey
                     return 1; // Program.control.DeviceDpi / 96f;
                 case 1: // force 100%
                     return 1f * osScaleFactor;
-                case 2: // force 150%
+                case 2: // force 110%
+                    return 1.1f * osScaleFactor;
+                case 3: // force 120%
+                    return 1.2f * osScaleFactor;
+                case 4: // force 125%
+                    return 1.25f * osScaleFactor;
+                case 5: // force 130%
+                    return 1.3f * osScaleFactor;
+                case 6: // force 140%
+                    return 1.4f * osScaleFactor;
+                case 7: // force 150%
                     return 1.5f * osScaleFactor;
-                case 3: // force 200%
+                case 8: // force 160%
+                    return 1.6f * osScaleFactor;
+                case 9: // force 170%
+                    return 1.7f * osScaleFactor;
+                case 10: // force 175%
+                    return 1.75f * osScaleFactor;
+                case 11: // force 180%
+                    return 1.8f * osScaleFactor;
+                case 12: // force 190%
+                    return 1.9f * osScaleFactor;
+                case 13: // force 200%
                     return 2f * osScaleFactor;
+                case 14: // force 210%
+                    return 2.1f * osScaleFactor;
+                case 15: // force 220%
+                    return 2.2f * osScaleFactor;
+                case 16: // force 225%
+                    return 2.25f * osScaleFactor;
+                case 17: // force 230%
+                    return 2.3f * osScaleFactor;
+                case 18: // force 240%
+                    return 2.4f * osScaleFactor;
+                case 19: // force 250%
+                    return 2.5f * osScaleFactor;
             }
         }
         public static float fontScaleFactor = GameColors.getFontScaleFactor();

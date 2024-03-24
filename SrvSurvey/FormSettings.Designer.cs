@@ -254,7 +254,7 @@ namespace SrvSurvey
             // 
             comboOverlayScale.DropDownStyle = ComboBoxStyle.DropDownList;
             comboOverlayScale.FormattingEnabled = true;
-            comboOverlayScale.Items.AddRange(new object[] { "Match Windows OS scale (999%)", "Scale 100% (No scaling)", "Scale 150%", "Scale 200%" });
+            comboOverlayScale.Items.AddRange(new object[] { "Match Windows OS scale (999%)", "100% (No scaling)", "110%", "120%", "125%", "130%", "140%", "150%", "160%", "170%", "175%", "180%", "190%", "200%", "210%", "220%", "225%", "230%", "240%", "250%" });
             comboOverlayScale.Location = new Point(109, 100);
             comboOverlayScale.Name = "comboOverlayScale";
             comboOverlayScale.Size = new Size(243, 23);
