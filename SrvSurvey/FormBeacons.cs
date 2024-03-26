@@ -594,18 +594,25 @@ namespace SrvSurvey
 
             if (File.Exists(entry.filepath))
                 Util.openLink(entry.filepath);
+            else
+                Game.log($"No filepath found for: {entry.fullBodyNameWithIdx}");
         }
 
         private void menuOpenPubData_Click(object sender, EventArgs e)
         {
             if (this.grid.SelectedItems.Count == 0) return;
             var entry = (GuardianGridEntry)this.grid.SelectedItems[0].Tag;
+            var pubDataPath = Path.Combine(Git.pubGuardianFolder, GuardianSiteData.getFilename(entry.fullBodyName, entry.idx, entry.isRuins));
 
-            if (File.Exists(entry.filepath))
+            if (File.Exists(pubDataPath))
             {
                 var filename = GuardianSiteData.getFilename($"{entry.systemName} {entry.bodyName}", entry.idx, entry.isRuins);
                 var pubPath = Path.Combine(Git.pubGuardianFolder, filename);
                 Util.openLink(pubPath);
+            }
+            else
+            {
+                Game.log($"No pubData file found for: {entry.fullBodyNameWithIdx}");
             }
         }
 

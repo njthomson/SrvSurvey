@@ -1,4 +1,5 @@
 using SrvSurvey.game;
+using System.Diagnostics;
 using System.IO.Compression;
 using System.Reflection;
 
@@ -7,7 +8,7 @@ namespace SrvSurvey
     static class Program
     {
         public static Control control { get; private set; }
-        public static string dataFolder = Path.GetFullPath(Path.Combine(Application.UserAppDataPath, "..", "1.1.0.0"));
+        public static string dataFolder = Path.GetFullPath(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "SrvSurvey", "SrvSurvey", "1.1.0.0"));
         private static string dataRootFolder = Path.GetFullPath(Path.Combine(dataFolder, ".."));
 
         public static readonly BindingFlags InstanceProps =
@@ -34,6 +35,12 @@ namespace SrvSurvey
             // create some control for invoking back onto the UI thread
             Program.control = new Control();
             Program.control.CreateControl();
+
+            // BEFORE we touch the main code - check if we're an AppStore build using a relocated data folder, meaning are we using:
+            // %USERPROFILE%\AppData\Local\Packages\35333NosmohtSoftware.142860789C73F_p4c193bsm1z5a\LocalCache\Roaming\SrvSurvey
+            // instead of the correct folder:
+            // %appdata%\SrvSurvey\...
+            Program.checkAndMigrateAppStoreRoamingFolder();
 
             Application.Run(new Main());
         }
@@ -314,6 +321,77 @@ namespace SrvSurvey
             }
 
             Game.log($"migrateToNewDataFolder - complete");
+        }
+
+        #endregion
+
+        #region migrate AppStore folders
+
+        public static void checkAndMigrateAppStoreRoamingFolder()
+        {
+            try
+            {
+                var redirectedRoamingFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Packages/35333NosmohtSoftware.142860789C73F_p4c193bsm1z5a/LocalCache/Roaming/SrvSurvey/SrvSurvey");
+                if (Directory.Exists(redirectedRoamingFolder))
+                {
+                    // first - rename redirected folder with a trailing '-' so it won't cause problems on the next run
+                    Directory.Move(redirectedRoamingFolder, $"{redirectedRoamingFolder}-");
+
+                    // ensure the real folder exists
+                    var info1 = new ProcessStartInfo("cmd.exe", $"/c \"md %appdata%\\SrvSurvey\\SrvSurvey\\1.0.0.0\"");
+                    Process.Start(info1)?.WaitForExit();
+
+                    MessageBox.Show($"SrvSurvey needs to make a one time update and will now restart.", "SrvSurvey", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    // restart regardless
+                    forceRestart();
+                }
+                else
+                {
+                    redirectedRoamingFolder += "-";
+                }
+
+                var hasAppStoreRedirectedRoamingFolder = Directory.Exists(redirectedRoamingFolder);
+                if (hasAppStoreRedirectedRoamingFolder)
+                {
+                    var filenames = Directory.GetFiles(redirectedRoamingFolder, "*.*", SearchOption.AllDirectories);
+                    hasAppStoreRedirectedRoamingFolder = filenames.Length > 0;
+                }
+
+                // exit here if we don't have this folder
+                if (!hasAppStoreRedirectedRoamingFolder) return;
+
+                var realRoamingFolder = dataFolder;
+                var hasRealRoamingFolder = Directory.Exists(realRoamingFolder);
+                if (hasRealRoamingFolder)
+                {
+                    var filenames = Directory.GetFiles(realRoamingFolder, "*.*", SearchOption.AllDirectories);
+                    hasRealRoamingFolder = filenames.Length > 0;
+                }
+
+                // move user data if it is in the redirected folder
+                if (!hasRealRoamingFolder)
+                {
+                    // but folders still redirected - must do the move this way
+                    var info2 = new ProcessStartInfo("cmd.exe", $"/c \"move /Y {redirectedRoamingFolder} %appdata%\\SrvSurvey & rd %appdata%\\SrvSurvey\\SrvSurvey /s /q & move /Y %appdata%\\SrvSurvey\\SrvSurvey- %appdata%\\SrvSurvey\\SrvSurvey");
+                    Process.Start(info2)?.WaitForExit();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An unexpected error occurred. Please report the following on https://github.com/njthomson/SrvSurvey/issues:\n\n {ex.Message}\n\n{ex.StackTrace}", "SrvSurvey", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Process.GetCurrentProcess().Kill();
+            }
+        }
+
+        public static void forceRestart()
+        {
+            // force a restart
+            Application.DoEvents();
+            Application.DoEvents();
+            Process.Start(Application.ExecutablePath);
+            Application.DoEvents();
+            Process.GetCurrentProcess().Kill();
         }
 
         #endregion

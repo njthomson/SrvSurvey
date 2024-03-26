@@ -95,6 +95,7 @@ namespace SrvSurvey
             this.checkFullScreenGraphics();
             this.lastWindowRect = Elite.getWindowRect();
 
+            // check for 1.0.0.0 to 1.1.0.0 migrations
             var isMigrationValid = Program.getMigratableFolders().Any();
             Game.log($"isMigrationValid: {isMigrationValid}, dataFolder1100: {Game.settings.dataFolder1100}");
             if (isMigrationValid)
@@ -112,11 +113,21 @@ namespace SrvSurvey
                         txtLocation.Text = "";
                         txtMode.Text = "";
                         Application.DoEvents();
-                        var rslt = MessageBox.Show(this, "This new version of SrvSurvey needs to perform a migration of data files. This might take a few minutes if you have visited many systems with SrvSurvey.\r\n\r\nReady to proceed?", "SrvSurvey", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+                        var rslt = MessageBox.Show(this, "This new version of SrvSurvey needs to perform a migration of data files. This might take a few minutes if you have visited many systems with SrvSurvey.\r\n\r\nReady to proceed?", "SrvSurvey", MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
                         if (rslt == DialogResult.Cancel)
                         {
-                            Application.Exit();
-                            return;
+                            var rslt2 = MessageBox.Show(this, "The migration is necessary before SrvSurvey can run.\r\n\r\nIf migration keeps failing, please report the issue on:\r\nhttps://github.com/njthomson/SrvSurvey/issues.\r\n\r\nAlternatively you may click 'Retry' to ignore your old data and proceed without it.", "SrvSurvey", MessageBoxButtons.RetryCancel, MessageBoxIcon.Warning);
+                            if (rslt2 == DialogResult.Retry)
+                            {
+                                Game.settings.dataFolder1100 = true;
+                                Game.settings.Save();
+                                Program.forceRestart();
+                            }
+                            else
+                            {
+                                Application.Exit();
+                                return;
+                            }
                         }
                         txtCommander.Text = "Preparing reference data...";
                         txtLocation.Text = "Please stand by...";

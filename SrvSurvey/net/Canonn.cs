@@ -36,10 +36,12 @@ namespace SrvSurvey.canonn
                     ? JsonConvert.DeserializeObject<List<GuardianRuinSummary>>(File.ReadAllText(pubAllRuinsPath))!
                      : JsonConvert.DeserializeObject<List<GuardianRuinSummary>>(File.ReadAllText(Canonn.allRuinsStaticPath))!;
             this.allBeacons = JsonConvert.DeserializeObject<List<GuardianBeaconSummary>>(File.ReadAllText(Canonn.allBeaconsStaticPath))!;
+
             var pubAllStructuresPath = Path.Combine(Git.pubDataFolder, "allStructures.json");
             this.allStructures = File.Exists(pubAllStructuresPath) && !devReload
                 ? JsonConvert.DeserializeObject<List<GuardianSiteSummary>>(File.ReadAllText(pubAllStructuresPath))!
                 : JsonConvert.DeserializeObject<List<GuardianSiteSummary>>(File.ReadAllText(Canonn.allStructuresStaticPath))!;
+
             Game.log($"Loaded {this.allRuins.Count} ruins, {this.allBeacons.Count} beacons, {this.allStructures.Count} structures");
 
             /*
