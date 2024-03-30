@@ -819,7 +819,7 @@ namespace SrvSurvey
                     return;
             }
 
-            if (msg.StartsWith(MsgCmd.trackAdd) || msg.StartsWith(MsgCmd.trackRemove) || msg.StartsWith(MsgCmd.trackRemoveLast))
+            if (game.systemData != null && game.systemBody != null && (msg.StartsWith(MsgCmd.trackAdd) || msg.StartsWith(MsgCmd.trackRemove) || msg.StartsWith(MsgCmd.trackRemoveLast)))
             {
                 // PlotTrackers.processCommand(msg, Status.here.clone()); // TODO: retire
 
