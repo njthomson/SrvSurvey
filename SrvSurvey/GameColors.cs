@@ -183,6 +183,7 @@ namespace SrvSurvey
         public static Pen penDarkGreen2 = newPen(Color.DarkGreen, 2);
         public static Pen penLightGreen2 = newPen(Color.LightGreen, 2);
 
+        public static Pen penCyan1 = newPen(Cyan, 1);
         public static Pen penCyan2 = newPen(Cyan, 2);
         public static Pen penCyan2Dotted = newPen(Cyan, 2, DashStyle.Dot);
         public static Pen penCyan4 = newPen(Cyan, 4);
@@ -291,6 +292,8 @@ namespace SrvSurvey
         public static Brush brushGameOrangeDim = new SolidBrush(OrangeDim); //  Color.FromArgb(255, 255, 113, 00));
 
         public static Brush brushCyan = new SolidBrush(Cyan); //  Color.FromArgb(255, 255, 113, 00));
+        public static Brush brushDarkCyan = new SolidBrush(DarkCyan);
+
         public static Brush brushOnTarget = new HatchBrush(HatchStyle.Percent50, OrangeDim, Color.Transparent);
         public static Brush brushOffTarget = new HatchBrush(HatchStyle.Percent25, OrangeDim, Color.Transparent);
 

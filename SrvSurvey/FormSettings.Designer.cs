@@ -59,6 +59,7 @@ namespace SrvSurvey
             label1 = new Label();
             tabControl1 = new TabControl();
             tabPage4 = new TabPage();
+            checkBox17 = new CheckBox();
             linkLabel1 = new LinkLabel();
             btnClearTrackers = new Button();
             checkBox7 = new CheckBox();
@@ -504,6 +505,7 @@ namespace SrvSurvey
             // 
             // tabPage4
             // 
+            tabPage4.Controls.Add(checkBox17);
             tabPage4.Controls.Add(linkLabel1);
             tabPage4.Controls.Add(btnClearTrackers);
             tabPage4.Controls.Add(checkBox7);
@@ -520,6 +522,20 @@ namespace SrvSurvey
             tabPage4.Size = new Size(490, 404);
             tabPage4.TabIndex = 3;
             tabPage4.Text = "Bio Scanning";
+            // 
+            // checkBox17
+            // 
+            checkBox17.AutoSize = true;
+            checkBox17.Checked = true;
+            checkBox17.CheckState = CheckState.Checked;
+            checkBox17.Location = new Point(10, 350);
+            checkBox17.Margin = new Padding(4, 3, 4, 3);
+            checkBox17.Name = "checkBox17";
+            checkBox17.Size = new Size(278, 19);
+            checkBox17.TabIndex = 16;
+            checkBox17.Tag = "autoShowPlotBioSystem";
+            checkBox17.Text = "Show alternate system bio status (experimental)";
+            checkBox17.UseVisualStyleBackColor = true;
             // 
             // linkLabel1
             // 
@@ -1582,5 +1598,6 @@ namespace SrvSurvey
         private NumericUpDown numericUpDown1;
         private Label label14;
         private ComboBox comboOverlayScale;
+        private CheckBox checkBox17;
     }
 }

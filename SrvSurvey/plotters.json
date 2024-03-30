@@ -20,6 +20,7 @@
   "PlotPulse": "left:8, bottom:8",
   "PlotRamTah": "right:8, middle:0",
   "PlotSphericalSearch": "right:8, top:8",
+  "PlotBioSystem": "left:8, bottom:144",
   "PlotSysStatus": "left:8, bottom:44",
   "PlotTrackTarget": "center:480, top:8"
 }

@@ -276,10 +276,15 @@ namespace SrvSurvey
             else
                 Program.closePlotter<PlotFSS>();
 
-            if (gameIsActive && SystemStatus.showPlotter)
+            if (gameIsActive && PlotSysStatus.allowPlotter)
                 Program.showPlotter<PlotSysStatus>();
             else
                 Program.closePlotter<PlotSysStatus>();
+
+            if (gameIsActive && PlotBioSystem.allowPlotter)
+                Program.showPlotter<PlotBioSystem>();
+            else
+                Program.closePlotter<PlotBioSystem>();
 
             // show high gravity warning
             var isHighGravity = (game?.systemBody?.surfaceGravity ?? 0) >= Game.settings.highGravityWarningLevel * 10;
@@ -821,8 +826,6 @@ namespace SrvSurvey
 
             if (game.systemData != null && game.systemBody != null && (msg.StartsWith(MsgCmd.trackAdd) || msg.StartsWith(MsgCmd.trackRemove) || msg.StartsWith(MsgCmd.trackRemoveLast)))
             {
-                // PlotTrackers.processCommand(msg, Status.here.clone()); // TODO: retire
-
                 // book marking
                 if (msg == MsgCmd.trackRemoveAll)
                 {

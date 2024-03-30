@@ -197,20 +197,6 @@ namespace SrvSurvey.game
 
     internal class SystemStatus
     {
-        public static bool showPlotter
-        {
-            get
-            {
-                //return Game.activeGame?.systemStatus?.honked ?? false;
-                return Game.settings.autoShowPlotSysStatus
-                    && Game.activeGame != null
-                    && Game.activeGame.isMode(GameMode.SuperCruising, GameMode.SAA, GameMode.FSS, GameMode.ExternalPanel, GameMode.Orrery, GameMode.SystemMap)
-                    // show only after honking or we have Canonn data
-                    && Game.activeGame.systemStatus != null
-                    && (Game.activeGame.systemStatus.honked || Game.activeGame.canonnPoi != null);
-            }
-        }
-
         public string name;
         public long address;
         public int bodyCount;
@@ -272,7 +258,7 @@ namespace SrvSurvey.game
             if (entry.Progress == 1)
                 this.fssComplete = true;
 
-            if (SystemStatus.showPlotter)
+            if (PlotSysStatus.allowPlotter)
                 Program.showPlotter<PlotSysStatus>();
         }
 

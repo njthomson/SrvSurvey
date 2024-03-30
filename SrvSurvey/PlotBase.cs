@@ -25,6 +25,7 @@ namespace SrvSurvey
         protected float six = scaled(6f);
         protected float eight = scaled(8f);
         protected float ten = scaled(10f);
+        protected float oneOne = scaled(11f);
         protected float oneTwo = scaled(12f);
         protected float oneFour = scaled(14f);
         protected float oneSix = scaled(16f);
@@ -289,67 +290,67 @@ namespace SrvSurvey
 
         protected virtual void onJournalEntry(CodexEntry entry)
         {
-            // overriden as necessary
+            // overridden as necessary
         }
 
         protected virtual void onJournalEntry(FSDTarget entry)
         {
-            // overriden as necessary
+            // overridden as necessary
         }
 
         protected virtual void onJournalEntry(Screenshot entry)
         {
-            // overriden as necessary
+            // overridden as necessary
         }
 
         protected virtual void onJournalEntry(DataScanned entry)
         {
-            // overriden as necessary
+            // overridden as necessary
         }
 
         protected virtual void onJournalEntry(SupercruiseEntry entry)
         {
-            // overriden as necessary
+            // overridden as necessary
         }
 
         protected virtual void onJournalEntry(FSDJump entry)
         {
-            // overriden as necessary
+            // overridden as necessary
         }
 
         protected virtual void onJournalEntry(NavRoute entry)
         {
-            // overriden as necessary
+            // overridden as necessary
         }
 
         protected virtual void onJournalEntry(NavRouteClear entry)
         {
-            // overriden as necessary
+            // overridden as necessary
         }
 
         protected virtual void onJournalEntry(FSSDiscoveryScan entry)
         {
-            // overriden as necessary
+            // overridden as necessary
         }
 
         protected virtual void onJournalEntry(Scan entry)
         {
-            // overriden as necessary
+            // overridden as necessary
         }
 
         protected virtual void onJournalEntry(FSSBodySignals entry)
         {
-            // overriden as necessary
+            // overridden as necessary
         }
 
         protected virtual void onJournalEntry(ScanOrganic entry)
         {
-            // overriden as necessary
+            // overridden as necessary
         }
 
         protected virtual void onJournalEntry(MaterialCollected entry)
         {
-            // overriden as necessary
+            // overridden as necessary
         }
 
         protected void drawCommander()
@@ -768,13 +769,14 @@ namespace SrvSurvey
             if (!File.Exists(customPlotterPositionPath))
                 PlotPos.reset();
 
+            // start watching the custom file
             watcher = new FileSystemWatcher(Program.dataFolder, "plotters.json");
             watcher.Changed += Watcher_Changed;
             watcher.EnableRaisingEvents = true;
 
             try
             {
-                readPlotterPositions(customPlotterPositionPath);
+                setPlotterPositions(customPlotterPositionPath);
             }
             catch (Exception ex)
             {
@@ -782,7 +784,35 @@ namespace SrvSurvey
                 Game.log($"Error first reading overlay positions:\r\n\r\n{ex.Message}");
 
                 // if we fail the first time, retry using the default file
-                readPlotterPositions(defaultPlotterPositionPath);
+                setPlotterPositions(defaultPlotterPositionPath);
+            }
+
+            // add default values if any single plotter is missing
+            var allPlotters = new string[] {
+              "PlotBioStatus",
+              "PlotFlightWarning",
+              "PlotFSS",
+              "PlotGrounded",
+              "PlotGuardians",
+              "PlotGuardianStatus",
+              "PlotGuardianSystem",
+              "PlotPriorScans",
+              "PlotPulse",
+              "PlotRamTah",
+              "PlotSphericalSearch",
+              "PlotBioSystem",
+              "PlotSysStatus",
+              "PlotTrackTarget",
+            };
+
+            Dictionary<string, PlotPos>? defaultPositions = null;
+            foreach (var name in allPlotters)
+            {
+                if (!plotterPositions.ContainsKey(name))
+                {
+                    if (defaultPositions == null) defaultPositions = readPlotterPositions(defaultPlotterPositionPath);
+                    plotterPositions[name] = defaultPositions[name];
+                }
             }
         }
 
@@ -792,7 +822,7 @@ namespace SrvSurvey
             File.Copy(defaultPlotterPositionPath, customPlotterPositionPath, true);
         }
 
-        private static void readPlotterPositions(string filepath)
+        private static Dictionary<string, PlotPos> readPlotterPositions(string filepath)
         {
             Game.log($"Reading PlotterPositions from: {filepath}");
 
@@ -804,7 +834,13 @@ namespace SrvSurvey
             foreach (var _ in obj)
                 newPositions[_.Key] = new PlotPos(_.Value);
 
-            plotterPositions = newPositions;
+            return newPositions;
+        }
+
+        private static void setPlotterPositions(string filepath)
+        {
+            plotterPositions = readPlotterPositions(filepath);
+
             var rect = Elite.getWindowRect();
             Program.control.Invoke(() => Program.repositionPlotters(rect));
         }
@@ -813,7 +849,7 @@ namespace SrvSurvey
         {
             try
             {
-                readPlotterPositions(e.FullPath);
+                setPlotterPositions(e.FullPath);
             }
             catch (Exception ex)
             {

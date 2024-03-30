@@ -13,6 +13,7 @@ namespace SrvSurvey
             this.Width = scaled(420);
             this.Height = scaled(48);
             this.BackgroundImageLayout = ImageLayout.Stretch;
+            this.Name = nameof(PlotSysStatus);
 
             this.Font = GameColors.fontMiddle;
         }
@@ -41,17 +42,22 @@ namespace SrvSurvey
 
         public static bool allowPlotter
         {
-            get => Game.activeGame != null && Game.activeGame.isMode(GameMode.SuperCruising, GameMode.SAA, GameMode.FSS, GameMode.ExternalPanel, GameMode.Orrery, GameMode.SystemMap, GameMode.CommsPanel);
+            get => Game.settings.autoShowPlotSysStatus
+                && Game.activeGame != null
+                && Game.activeGame.isMode(GameMode.SuperCruising, GameMode.SAA, GameMode.FSS, GameMode.ExternalPanel, GameMode.Orrery, GameMode.SystemMap)
+                // show only after honking or we have Canonn data
+                && Game.activeGame.systemData != null
+                && (Game.activeGame.systemData.honked || Game.activeGame.canonnPoi != null);
         }
 
         protected override void Game_modeChanged(GameMode newMode, bool force)
         {
             if (this.IsDisposed) return;
 
-            var targetMode = this.game.isMode(GameMode.SuperCruising, GameMode.SAA, GameMode.FSS, GameMode.ExternalPanel, GameMode.Orrery, GameMode.SystemMap, GameMode.CommsPanel);
-            if (this.Opacity > 0 && !targetMode)
+            //var targetMode = this.game.isMode(GameMode.SuperCruising, GameMode.SAA, GameMode.FSS, GameMode.ExternalPanel, GameMode.Orrery, GameMode.SystemMap, GameMode.CommsPanel);
+            if (this.Opacity > 0 && !PlotSysStatus.allowPlotter)
                 this.Opacity = 0;
-            else if (this.Opacity == 0 && targetMode)
+            else if (this.Opacity == 0 && PlotSysStatus.allowPlotter)
                 this.reposition(Elite.getWindowRect());
 
             this.Invalidate();
@@ -80,7 +86,7 @@ namespace SrvSurvey
         protected override void OnPaintBackground(PaintEventArgs e)
         {
             base.OnPaintBackground(e);
-            
+
             var minViableWidth = scaled(170);
             try
             {
@@ -125,7 +131,7 @@ namespace SrvSurvey
                 }
 
                 var bioRemaining = game.systemData.getBioRemainingNames();
-                if (bioRemaining.Count > 0)
+                if (bioRemaining.Count > 0 && !Game.settings.autoShowPlotBioSystem)
                 {
                     this.drawTextAt($"| {game.systemData.bioSignalsRemaining}x Bio signals on: ");
                     this.drawRemainingBodies(destinationBody, bioRemaining);

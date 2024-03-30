@@ -21,6 +21,18 @@ namespace SrvSurvey
             InitializeComponent();
             this.TopMost = true;
             this.Cursor = Cursors.Cross;
+            this.Name = nameof(PlotPulse);
+            this.Text = this.Name;
+
+            this.BackColor = Color.Black;
+            this.ShowIcon = false;
+            this.ShowInTaskbar = false;
+            this.StartPosition = FormStartPosition.Manual;
+            this.MinimizeBox = false;
+            this.MaximizeBox = false;
+            this.FormBorderStyle = FormBorderStyle.None;
+            this.Opacity = Game.settings.Opacity;
+            this.DoubleBuffered = true;
         }
 
         private void PlotPulse_Load(object sender, EventArgs e)
