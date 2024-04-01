@@ -966,6 +966,7 @@ namespace SrvSurvey
         protected void confirmPOI(SitePoiStatus poiStatus)
         {
             // it must be from rawPoi if not known to the template - ignore it
+            if (game.systemData == null) return;
             if (!template!.poi.Any(_ => _.name == this.nearestPoi.name)) return;
             // and ignore obelisks
             if (this.nearestPoi.type == POIType.obelisk || this.nearestPoi.type == POIType.brokeObelisk || this.nearestPoi.type == POIType.emptyPuddle) return;
@@ -983,7 +984,23 @@ namespace SrvSurvey
             siteData.poiStatus[this.nearestPoi.name] = poiStatus;
             siteData.Save();
             this.Invalidate();
-            game.systemData?.prepSettlements();
+            // update GuardianSystemStatus entry
+            game.systemData.prepSettlements();
+            /* TODO: test this when next at Guardian sites...
+            for(var n=0; n < game.systemData.settlements.Count; n++)
+            {
+                var entry = game.systemData.settlements[n];
+                if (entry.body == game.systemBody && entry.name == this.siteData.name)
+                {
+                    if (siteData.isRuins)
+                        game.systemData.settlements[n] = SystemSettlementSummary.forRuins(game.systemData, game.systemBody, siteData.index);
+                    else
+                        game.systemData.settlements[n] = SystemSettlementSummary.forStructure(game.systemData, game.systemBody);
+
+                    break;
+                }
+            }
+            */
         }
 
         protected override void Status_StatusChanged(bool blink)

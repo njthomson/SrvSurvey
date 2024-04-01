@@ -588,19 +588,22 @@ namespace SrvSurvey.game
         {
             var sites = new List<GuardianSitePub>();
 
-            var files = Directory.GetFiles(Git.pubGuardianFolder, $"{systemName}*.json");
-            foreach (var filepath in files)
+            if (Directory.Exists(Git.pubGuardianFolder))
             {
-                var filename = Path.GetFileName(filepath);
-                if (!Data.suppressLoadingMsg)
-                    Game.log($"Reading pubData for '{filename}'");
+                var files = Directory.GetFiles(Git.pubGuardianFolder, $"{systemName}*.json");
+                foreach (var filepath in files)
+                {
+                    var filename = Path.GetFileName(filepath);
+                    if (!Data.suppressLoadingMsg)
+                        Game.log($"Reading pubData for '{filename}'");
 
-                var json = File.ReadAllText(filepath);
-                var pubData = JsonConvert.DeserializeObject<GuardianSitePub>(json)!;
-                var idx = filename.IndexOf("-ruins");
-                if (idx < 0) idx = filename.IndexOf("-structure");
-                pubData.bodyName = filename.Substring(0, idx);
-                sites.Add(pubData);
+                    var json = File.ReadAllText(filepath);
+                    var pubData = JsonConvert.DeserializeObject<GuardianSitePub>(json)!;
+                    var idx = filename.IndexOf("-ruins");
+                    if (idx < 0) idx = filename.IndexOf("-structure");
+                    pubData.bodyName = filename.Substring(0, idx);
+                    sites.Add(pubData);
+                }
             }
 
             return sites;

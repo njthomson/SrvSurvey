@@ -29,7 +29,7 @@ namespace SrvSurvey.net
                 Game.log($"pubDataSettlementTemplate - local: {Game.settings.pubDataSettlementTemplate}, remote: {pubData.settlementTemplate}");
 
                 Directory.CreateDirectory(Git.pubDataFolder);
-                Directory.CreateDirectory(pubGuardianFolder);
+                Directory.CreateDirectory(Git.pubGuardianFolder);
 
                 if (pubData.codexRef > Game.settings.pubCodexRef)
                 {
