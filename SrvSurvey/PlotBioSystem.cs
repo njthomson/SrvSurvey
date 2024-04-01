@@ -64,7 +64,7 @@ namespace SrvSurvey
             base.OnPaintBackground(e);
             try
             {
-                if (this.IsDisposed || game.systemData == null) return;
+                if (this.IsDisposed || game.systemData == null || game.status == null || PlotBioSystem.allowPlotter) return;
 
                 this.g = e.Graphics;
                 this.g.SmoothingMode = SmoothingMode.HighQuality;
@@ -111,7 +111,6 @@ namespace SrvSurvey
                             //    //fill = ten * body.organisms[n].reward / 20_000_000f;
                             //}
                         }
-
                         if (fill == 0)
                             g.DrawString("?", GameColors.fontSmall, highlight ? GameColors.brushCyan : GameColors.brushGameOrange, this.dtx + one, this.dty + six);
                         else

@@ -212,10 +212,8 @@ namespace SrvSurvey
             }
             else
             {
-                // close all plotters
-                Program.closeAllPlotters();
-                if (!Game.settings.hideJournalWriteTimer)
-                    Program.showPlotter<PlotPulse>();
+                // close all plotters (except PlotPulse)
+                Program.closeAllPlotters(true);
             }
         }
 

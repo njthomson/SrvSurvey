@@ -133,13 +133,16 @@ namespace SrvSurvey
             return activePlotters.ContainsKey(typeof(T).Name) ? activePlotters[typeof(T).Name] as T : null;
         }
 
-        public static void closeAllPlotters()
+        public static void closeAllPlotters(bool exceptPlotPulse = false)
         {
             Game.log($"Program.CloseAllPlotters");
 
             var names = Program.activePlotters.Keys.ToArray();
             foreach (string name in names)
+            {
+                if (name == nameof(PlotPulse) && exceptPlotPulse) continue;
                 Program.closePlotter(name);
+            }
         }
 
         public static void repositionPlotters(Rectangle rect)

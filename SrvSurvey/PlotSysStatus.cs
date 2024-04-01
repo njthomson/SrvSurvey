@@ -90,7 +90,7 @@ namespace SrvSurvey
             var minViableWidth = scaled(170);
             try
             {
-                if (this.IsDisposed || game?.systemData == null || game.status == null) return;
+                if (this.IsDisposed || game?.systemData == null || game.status == null || PlotSysStatus.allowPlotter) return;
 
                 this.g = e.Graphics;
                 this.g.SmoothingMode = SmoothingMode.HighQuality;

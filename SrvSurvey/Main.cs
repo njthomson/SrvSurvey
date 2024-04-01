@@ -278,13 +278,9 @@ namespace SrvSurvey
 
             if (gameIsActive && PlotSysStatus.allowPlotter)
                 Program.showPlotter<PlotSysStatus>();
-            else
-                Program.closePlotter<PlotSysStatus>();
 
             if (gameIsActive && PlotBioSystem.allowPlotter)
                 Program.showPlotter<PlotBioSystem>();
-            else
-                Program.closePlotter<PlotBioSystem>();
 
             // show high gravity warning
             var isHighGravity = (game?.systemBody?.surfaceGravity ?? 0) >= Game.settings.highGravityWarningLevel * 10;
@@ -668,6 +664,10 @@ namespace SrvSurvey
                 if (Game.settings.autoShowBioPlot && !this.game.showGuardianPlotters)
                     Program.showPlotter<PlotGrounded>();
             }
+
+            // close these upon disembarking
+            if (!PlotSysStatus.allowPlotter) Program.closePlotter<PlotSysStatus>();
+            if (!PlotBioSystem.allowPlotter) Program.closePlotter<PlotBioSystem>();
         }
 
         private void onJournalEntry(LaunchSRV entry)
@@ -759,6 +759,15 @@ namespace SrvSurvey
             Program.closePlotter<PlotGuardians>();
             Program.closePlotter<PlotGuardianStatus>();
             Program.closePlotter<PlotRamTah>();
+        }
+
+        private void onJournalEntry(StartJump entry)
+        {
+            if (entry.JumpType == "Hyperspace")
+            {
+                // close everything when entering hyperspace (except PlotPulse)
+                Program.closeAllPlotters(true);
+            }
         }
 
         private void onJournalEntry(FSDJump entry)
