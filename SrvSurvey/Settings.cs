@@ -21,7 +21,7 @@ namespace SrvSurvey
         public bool autoShowGuardianSummary = true;
         public bool autoShowRamTah = true;
         public bool autoShowPlotSysStatus = true;
-        public bool autoShowPlotBioSystem = true;
+        public bool autoShowPlotBioSystem = false;
         public bool skipGasGiantDSS = true;
         public bool skipRingsDSS = false;
         public bool skipLowValueDSS = true;

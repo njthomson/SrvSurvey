@@ -536,6 +536,7 @@ namespace SrvSurvey
             checkBox17.Tag = "autoShowPlotBioSystem";
             checkBox17.Text = "Show alternate system bio status (experimental)";
             checkBox17.UseVisualStyleBackColor = true;
+            checkBox17.Visible = false;
             // 
             // linkLabel1
             // 

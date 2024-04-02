@@ -64,7 +64,7 @@ namespace SrvSurvey
             base.OnPaintBackground(e);
             try
             {
-                if (this.IsDisposed || game.systemData == null || game.status == null || PlotBioSystem.allowPlotter) return;
+                if (this.IsDisposed || game.systemData == null || game.status == null || !PlotBioSystem.allowPlotter) return;
 
                 this.g = e.Graphics;
                 this.g.SmoothingMode = SmoothingMode.HighQuality;
