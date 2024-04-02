@@ -130,7 +130,8 @@ namespace SrvSurvey
                             }
                         }
                         txtCommander.Text = "Preparing reference data...";
-                        txtLocation.Text = "Please stand by...";
+                        txtLocation.Text = "(watch the logs to see progress)";
+                        txtMode.Text = "Please stand by...";
 
                         // Prep CodexRef first
                         Game.codexRef.init(true).ContinueWith((rslt) =>
@@ -159,29 +160,37 @@ namespace SrvSurvey
                             }));
 
                             // keep this on background thread
-                            Program.migrate_BodyData_Into_SystemData();
-
-                            this.Invoke(new Action(() =>
+                            Program.migrate_BodyData_Into_SystemData().ContinueWith((result) =>
                             {
-                                // show thank you message
-                                txtCommander.Text = "Ready!";
-                                txtLocation.Text = "";
-                                Application.DoEvents();
-                                MessageBox.Show(this, "Thank you, your data has been migrated.\r\n\r\nSrvSurvey will now restart...", "SrvSurvey", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                this.Invoke(new Action(() =>
+                                {
+                                    if (result.IsFaulted && result.Exception != null)
+                                    {
+                                        FormErrorSubmit.Show(result.Exception.InnerException ?? result.Exception);
+                                        Application.Exit();
+                                        return;
+                                    }
 
-                                // save that migration completed
-                                Application.DoEvents();
-                                var newSettings = Settings.Load();
-                                newSettings.dataFolder1100 = true;
-                                newSettings.Save();
+                                    // show thank you message
+                                    txtCommander.Text = "Ready!";
+                                    txtLocation.Text = "";
+                                    Application.DoEvents();
+                                    MessageBox.Show(this, "Thank you, your data has been migrated.\r\n\r\nSrvSurvey will now restart...", "SrvSurvey", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                                // force a restart
-                                Application.DoEvents();
-                                Application.DoEvents();
-                                Process.Start(Application.ExecutablePath);
-                                Application.DoEvents();
-                                Process.GetCurrentProcess().Kill();
-                            }));
+                                    // save that migration completed
+                                    Application.DoEvents();
+                                    var newSettings = Settings.Load();
+                                    newSettings.dataFolder1100 = true;
+                                    newSettings.Save();
+
+                                    // force a restart
+                                    Application.DoEvents();
+                                    Application.DoEvents();
+                                    Process.Start(Application.ExecutablePath);
+                                    Application.DoEvents();
+                                    Process.GetCurrentProcess().Kill();
+                                }));
+                            });
                         });
                     }));
                     return;

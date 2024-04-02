@@ -12,6 +12,13 @@ namespace SrvSurvey.canonn
 {
     internal class Canonn
     {
+        static Canonn()
+        {
+            Canonn.client = new HttpClient();
+            Canonn.client.DefaultRequestHeaders.Add("accept-encoding", "gzip, deflate");
+            Canonn.client.DefaultRequestHeaders.Add("user-agent", $"SrvSurvey-{Game.releaseVersion}");
+        }
+
         private static HttpClient client;
         private static string allRuinsStaticPathDbg = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "..\\..\\..\\..", "allRuins.json");//"D:\\code\\SrvSurvey\\SrvSurvey\\allRuins.json";
         //private static string allRuinsStaticPath = Debugger.IsAttached ? allRuinsStaticPathDbg : Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "allRuins.json");
@@ -26,10 +33,6 @@ namespace SrvSurvey.canonn
 
         public void init(bool devReload = false)
         {
-            Canonn.client = new HttpClient();
-            Canonn.client.DefaultRequestHeaders.Add("accept-encoding", "gzip, deflate");
-            Canonn.client.DefaultRequestHeaders.Add("user-agent", $"SrvSurvey-{Game.releaseVersion}");
-
             // load static ruins summaries
             var pubAllRuinsPath = Path.Combine(Git.pubDataFolder, "allRuins.json");
             this.allRuins = File.Exists(pubAllRuinsPath) && !devReload

@@ -312,7 +312,7 @@ namespace SrvSurvey
             Game.log($"> Merging {allOldFiles.Count} files - complete");
         }
 
-        public static void migrate_BodyData_Into_SystemData()
+        public static async Task migrate_BodyData_Into_SystemData()
         {
             Game.log($"migrate_BodyData_Into_SystemData ...");
 
@@ -320,7 +320,7 @@ namespace SrvSurvey
             foreach (var cmdrFile in cmdrFiles)
             {
                 var newCmdr = Data.Load<CommanderSettings>(cmdrFile)!;
-                SystemData.migrate_BodyData_Into_SystemData(newCmdr).Wait();
+                await SystemData.migrate_BodyData_Into_SystemData(newCmdr);
             }
 
             Game.log($"migrateToNewDataFolder - complete");

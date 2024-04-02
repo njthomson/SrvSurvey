@@ -179,7 +179,8 @@ namespace SrvSurvey.game
                 if (systemData.starPos == null)
                 {
                     // TODO: search back through journal files?
-                    throw new Exception($"Failed to find a starPos for: '{systemData.name}'");
+                    Game.log($"Failed to find a starPos for: '{systemData.name}' - NOT migrating this system :(");
+                    continue;
                 }
 
                 // update fields

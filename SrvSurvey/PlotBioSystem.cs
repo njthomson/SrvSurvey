@@ -95,6 +95,7 @@ namespace SrvSurvey
                     var boxCount = body.bioSignalCount;
                     for (var n = 0; n < boxCount; n++)
                     {
+                        // Filled squares by value
                         var fill = 0f;
                         if (n < body.organisms?.Count)
                         {
