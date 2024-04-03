@@ -40,7 +40,7 @@ namespace SrvSurvey
 
         public static bool allowPlotter
         {
-            get => Game.activeGame != null && Game.activeGame.isMode(GameMode.SuperCruising, GameMode.FSS, GameMode.ExternalPanel, GameMode.Orrery, GameMode.SystemMap);
+            get => Game.activeGame?.isMode(GameMode.SuperCruising, GameMode.FSS, GameMode.ExternalPanel, GameMode.Orrery, GameMode.SystemMap) == true;
         }
 
         protected override void Game_modeChanged(GameMode newMode, bool force)

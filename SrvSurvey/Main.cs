@@ -304,7 +304,8 @@ namespace SrvSurvey
             else
                 Program.closePlotter<PlotGuardianSystem>();
 
-            Program.invalidateActivePlotters();
+            // Why was this necessary? (Which plotter is getting missed now?)
+            //Program.invalidateActivePlotters();
         }
 
         private void settingsFolderWatcher_Changed(object sender, FileSystemEventArgs e)

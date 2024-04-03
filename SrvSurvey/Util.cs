@@ -1,6 +1,7 @@
 ﻿using DecimalMath;
 using SrvSurvey.canonn;
 using SrvSurvey.game;
+using SrvSurvey.Properties;
 using SrvSurvey.units;
 using System.Diagnostics;
 
@@ -571,6 +572,36 @@ namespace SrvSurvey
         public static bool isBasicPoi(POIType poiType)
         {
             return poiType == POIType.casket || poiType == POIType.orb || poiType == POIType.tablet || poiType == POIType.totem || poiType == POIType.urn || poiType == POIType.unknown;
+        }
+
+        public static Image getBioImage(string genus)
+        {
+            switch (genus)
+            {
+                case "$Codex_Ent_Aleoids_Genus_Name;": return Resources.aleoida_18;
+                case "$Codex_Ent_Bacterial_Genus_Name;": return Resources.bacterium_18;
+                case "$Codex_Ent_Cactoid_Genus_Name;": return Resources.cactoida_18;
+                case "$Codex_Ent_Clypeus_Genus_Name;": return Resources.clypeus_18;
+                case "$Codex_Ent_Conchas_Genus_Name;": return Resources.concha_18;
+                case "$Codex_Ent_Electricae_Genus_Name;": return Resources.electricae_18;
+                case "$Codex_Ent_Fonticulus_Genus_Name;": return Resources.fonticulua_18;
+                case "$Codex_Ent_Shrubs_Genus_Name;": return Resources.frutexa_18;
+                case "$Codex_Ent_Fumerolas_Genus_Name;": return Resources.fumerola_18;
+                case "$Codex_Ent_Fungoids_Genus_Name;": return Resources.fungoida_18;
+                case "$Codex_Ent_Osseus_Genus_Name;": return Resources.osseus_18;
+                case "$Codex_Ent_Recepta_Genus_Name;": return Resources.recepta_18;
+                case "$Codex_Ent_Stratum_Genus_Name;": return Resources.stratum_18;
+                case "$Codex_Ent_Tubus_Genus_Name;": return Resources.tubus_18;
+                case "$Codex_Ent_Tussocks_Genus_Name;": return Resources.tussock_18;
+                case "$Codex_Ent_Vents_Name;": return Resources.amphora_18;
+                case "$Codex_Ent_Sphere_Name;": return Resources.anemone_18;
+                case "$Codex_Ent_Cone_Name;": return Resources.barkmound_18;
+                case "$Codex_Ent_Brancae_Name;": return Resources.braintree_18;
+                case "$Codex_Ent_Ground_Struct_Ice_Name;": return Resources.shards_18;
+                case "$Codex_Ent_Tube_Name;": return Resources.tuber_18;
+
+                default: throw new Exception($"Unexpected genus: '{genus}'");
+            }
         }
     }
 }

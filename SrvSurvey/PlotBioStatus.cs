@@ -241,10 +241,18 @@ namespace SrvSurvey
             sz = g.MeasureString(txt, f);
             if (sz.Width > this.Width - oneOhFour - eight) f = GameColors.font14;
 
+            var x = oneOhFour;
+            if (Game.settings.autoShowPlotBioSystem)
+            {
+                var reward = organism.reward;
+                PlotBase.drawBioRing(g, organism.genus, 104, y -6, reward, GameColors.brushCyan, 38);
+                x += 38;
+            }
+
             g.DrawString(
                 txt,
                 f, GameColors.brushCyan,
-                oneOhFour, y - eight);
+                x, y - eight);
 
             // Reward
             if (organism.reward > 0)
@@ -370,6 +378,12 @@ namespace SrvSurvey
                 {
                     x = PlotBase.scaled(24);
                     y += sz.Height;
+                }
+
+                if (Game.settings.autoShowPlotBioSystem)
+                {
+                    PlotBase.drawBioRing(g, organism.genus, x, y - 2, organism.reward, null, 12);
+                    x += 12;
                 }
 
                 g.DrawString(

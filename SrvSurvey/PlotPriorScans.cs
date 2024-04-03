@@ -313,7 +313,7 @@ namespace SrvSurvey
 
                     // draw label above trackers - color depending on if any of them are close
                     brush = GameColors.brushGameOrangeDim;
-                    if (isActive) brush = GameColors.PriorScans.Active.brush;
+                    if (isActive) brush = GameColors.PriorScans.CloseActive.brush;
                     if (isClose) brush = isActive ? GameColors.PriorScans.CloseActive.brush : GameColors.PriorScans.CloseInactive.brush;
                     if (analyzed) brush = Brushes.DarkSlateGray;
 
@@ -321,6 +321,14 @@ namespace SrvSurvey
                     if (isActive) f = this.boldFont;
 
                     r.Y = (int)ly;
+
+                    if (Game.settings.autoShowPlotBioSystem)
+                    {
+                        PlotBase.drawBioRing(g, signal.genusName, r.X, r.Y-2, signal.reward, brush, 24);
+                        r.X += 28;
+                        r.Width -= 28;
+                    }
+
                     TextRenderer.DrawText(g, signal.poiName, f, r, ((SolidBrush)brush).Color, TextFormatFlags.NoPadding | TextFormatFlags.Left);
                     TextRenderer.DrawText(g, signal.credits, f, r, ((SolidBrush)brush).Color, TextFormatFlags.NoPadding | TextFormatFlags.Right);
 

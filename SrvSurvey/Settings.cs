@@ -32,6 +32,10 @@ namespace SrvSurvey
         public bool skipAnalyzedCompBioScans = true;
         public bool autoRemoveTrackerOnSampling = true;
 
+        public int bioBucketOne = 3_000_000;
+        public int bioBucketTwo = 7_000_000;
+        public int bioBucketThree = 12_000_000;
+
         public bool useExternalData = true;
         public bool autoLoadPriorScans = true;
         public bool skipPriorScansLowValue = false;
