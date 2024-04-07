@@ -139,7 +139,7 @@ namespace SrvSurvey.game
             // track this instance as the active one
             Game.activeGame = this;
 
-            if (!this.isRunning) return;
+            if (!Elite.isGameRunning) return;
 
             // track status file changes and force an immediate read
             this.status = new Status(true);
@@ -318,7 +318,7 @@ namespace SrvSurvey.game
         {
             get
             {
-                if (!this.isRunning || this.isShutdown)
+                if (!Elite.isGameRunning || this.isShutdown)
                     return GameMode.Offline;
 
                 if (this.atMainMenu || this.Commander == null)
@@ -434,22 +434,6 @@ namespace SrvSurvey.game
                 && this.systemBody != null
             //&& this.status.SelectedWeapon != "$humanoid_sampletool_name;"
             ;
-        }
-
-        #endregion
-
-        #region Process and window handle stuff
-
-        /// <summary>
-        /// Returns True if the game process is actively running
-        /// </summary>
-        public bool isRunning
-        {
-            get
-            {
-                var procED = Process.GetProcessesByName("EliteDangerous64");
-                return procED.Length > 0;
-            }
         }
 
         #endregion

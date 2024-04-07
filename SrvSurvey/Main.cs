@@ -278,7 +278,7 @@ namespace SrvSurvey
             this.updateGuardianTexts();
             this.updateSphereLimit();
 
-            var gameIsActive = game != null && game.isRunning && game.Commander != null;
+            var gameIsActive = game != null && Elite.isGameRunning && game.Commander != null;
 
             if (gameIsActive && Game.settings.autoShowPlotFSS && (newMode == GameMode.FSS || game?.mode == GameMode.FSS))
                 Program.showPlotter<PlotFSS>();
@@ -360,7 +360,7 @@ namespace SrvSurvey
             }
 
             var newGame = new Game(Game.settings.preferredCommander);
-            if (newGame.isShutdown || !newGame.isRunning)
+            if (newGame.isShutdown || !Elite.isGameRunning)
             {
                 newGame.Dispose();
                 return;
@@ -402,7 +402,7 @@ namespace SrvSurvey
 
         private void updateCommanderTexts()
         {
-            var gameIsActive = game != null && game.isRunning && game.Commander != null;
+            var gameIsActive = game != null && Elite.isGameRunning && game.Commander != null;
 
             if (!gameIsActive || game == null)
             {
@@ -463,7 +463,7 @@ namespace SrvSurvey
                     + $", organisms: {game.cmdr.scannedBioEntryIds.Count}";
             }
 
-            if (game == null || game.atMainMenu || !game.isRunning || !game.initialized || game.systemData == null)
+            if (game == null || game.atMainMenu || !Elite.isGameRunning || !game.initialized || game.systemData == null)
             {
                 foreach (var ctrl in this.bioCtrls) ctrl.Text = "-";
                 lblSysBio.Enabled = txtSystemBioSignals.Enabled = txtSystemBioValues.Enabled = labelSignalsAndRewards.Enabled = false;
@@ -561,7 +561,7 @@ namespace SrvSurvey
 
         private void updateTrackTargetTexts()
         {
-            if (game == null || game.atMainMenu || !game.isRunning || !game.initialized)
+            if (game == null || game.atMainMenu || !Elite.isGameRunning || !game.initialized)
             {
                 txtTargetLatLong.Text = "";
                 lblTrackTargetStatus.Text = "-";
@@ -589,7 +589,7 @@ namespace SrvSurvey
 
         private void updateGuardianTexts()
         {
-            if (!groupBox4.Visible || game == null || game.atMainMenu || !game.isRunning || !game.initialized)
+            if (!groupBox4.Visible || game == null || game.atMainMenu || !Elite.isGameRunning || !game.initialized)
             {
                 lblGuardianCount.Text = "";
                 txtGuardianSite.Text = "";

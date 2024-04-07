@@ -19,12 +19,38 @@ namespace SrvSurvey
 
         public static Point gameCenter = Point.Empty;
 
+        private static Process? _gameProc;
+
+        private static Process? getGameProc()
+        {
+            // clear reference if that process died
+            if (_gameProc?.HasExited == true)
+                _gameProc = null;
+
+            if (_gameProc == null)
+            {
+                var edProcs = Process.GetProcessesByName("EliteDangerous64");
+                if (edProcs.Length == 0)
+                    _gameProc = null;
+                else if (edProcs.Length == 1)
+                    _gameProc = edProcs[0];
+                else
+                {
+                    if (Game.settings.processIdx > edProcs.Length - 1)
+                        Game.settings.processIdx = 0;
+
+                    _gameProc = edProcs[Game.settings.processIdx];
+                }
+            }
+
+            return _gameProc;
+        }
+
         public static bool isGameRunning
         {
             get
             {
-                var procED = Process.GetProcessesByName("EliteDangerous64");
-                return procED.Length > 0;
+                return getGameProc() != null;
             }
         }
 
@@ -81,14 +107,8 @@ namespace SrvSurvey
 
         private static IntPtr getWindowHandle()
         {
-            var procED = Process.GetProcessesByName("EliteDangerous64");
-            if (procED.Length == 0)
-                return IntPtr.Zero;
-
-            if (Game.settings.processIdx > procED.Length - 1)
-                Game.settings.processIdx = 0;
-
-            return procED[Game.settings.processIdx].MainWindowHandle;
+            var p = getGameProc();
+            return p == null ? IntPtr.Zero : p.MainWindowHandle;
         }
 
         public static GraphicsMode getGraphicsMode()

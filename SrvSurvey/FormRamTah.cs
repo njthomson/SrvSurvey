@@ -91,7 +91,7 @@ namespace SrvSurvey
 
         private void checkLog_CheckedChanged(object sender, EventArgs e)
         {
-            if (this.cmdr == null || Game.activeGame?.isRunning != true) return;
+            if (this.cmdr == null || Elite.isGameRunning != true) return;
 
             var checkbox = sender as System.Windows.Forms.CheckBox;
             if (checkbox != null)
@@ -156,7 +156,7 @@ namespace SrvSurvey
 
         private void listRuins_MouseClick(object sender, MouseEventArgs e)
         {
-            if (this.cmdr == null || Game.activeGame?.isRunning != true) return;
+            if (this.cmdr == null || Elite.isGameRunning != true) return;
 
             var row = listRuins.GetItemAt(e.X, e.Y);
             if (row != null)

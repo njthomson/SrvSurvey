@@ -59,7 +59,17 @@ namespace SrvSurvey
         private void measureDistanceToSystem()
         {
             var lastSystem = game.navRoute.Route.LastOrDefault();
-            if (lastSystem?.StarSystem == null || game.cmdr.sphereLimit.centerStarPos == null) return;
+            if (lastSystem?.StarSystem == null || game.cmdr.sphereLimit.centerStarPos == null)
+            {
+                if (game.systemData == null)
+                    return;
+
+                lastSystem = new RouteEntry()
+                {
+                    StarSystem = game.systemData.name,
+                    StarPos = game.systemData.starPos,
+                };
+            }
 
             Game.log($"Measuring distance to: {lastSystem.StarSystem}");
             this.targetSystemName = lastSystem.StarSystem;

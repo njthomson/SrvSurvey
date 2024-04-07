@@ -10,7 +10,7 @@ namespace SrvSurvey
 
         private PlotSysStatus() : base()
         {
-            this.Width = scaled(420);
+            this.Width = scaled(48);
             this.Height = scaled(48);
             this.BackgroundImageLayout = ImageLayout.Stretch;
             this.Name = nameof(PlotSysStatus);
