@@ -574,12 +574,14 @@ namespace SrvSurvey
             return poiType == POIType.casket || poiType == POIType.orb || poiType == POIType.tablet || poiType == POIType.totem || poiType == POIType.urn || poiType == POIType.unknown;
         }
 
-        public static Image getBioImage(string genus)
+        public static Image getBioImage(string genus, bool large = false)
         {
+            //return Resources.tubus18;
+
             switch (genus)
             {
                 case "$Codex_Ent_Aleoids_Genus_Name;": return Resources.aleoida_18;
-                case "$Codex_Ent_Bacterial_Genus_Name;": return Resources.bacterium_18;
+                case "$Codex_Ent_Bacterial_Genus_Name;": return large ? Resources.bacterium38 : Resources.bacterium18;
                 case "$Codex_Ent_Cactoid_Genus_Name;": return Resources.cactoida_18;
                 case "$Codex_Ent_Clypeus_Genus_Name;": return Resources.clypeus_18;
                 case "$Codex_Ent_Conchas_Genus_Name;": return Resources.concha_18;
@@ -591,8 +593,8 @@ namespace SrvSurvey
                 case "$Codex_Ent_Osseus_Genus_Name;": return Resources.osseus_18;
                 case "$Codex_Ent_Recepta_Genus_Name;": return Resources.recepta_18;
                 case "$Codex_Ent_Stratum_Genus_Name;": return Resources.stratum_18;
-                case "$Codex_Ent_Tubus_Genus_Name;": return Resources.tubus_18;
-                case "$Codex_Ent_Tussocks_Genus_Name;": return Resources.tussock_18;
+                case "$Codex_Ent_Tubus_Genus_Name;": return Resources.tubus18;
+                case "$Codex_Ent_Tussocks_Genus_Name;": return large ? Resources.tussock38 : Resources.tussock18;
                 case "$Codex_Ent_Vents_Name;": return Resources.amphora_18;
                 case "$Codex_Ent_Sphere_Name;": return Resources.anemone_18;
                 case "$Codex_Ent_Cone_Name;": return Resources.barkmound_18;

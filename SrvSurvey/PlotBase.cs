@@ -610,13 +610,19 @@ namespace SrvSurvey
             // TODO: Thargoid items?
         }
 
-        public static void drawBioRing(Graphics g, string genus, float x, float y, long reward = -1, Brush? dotBrush = null, float sz = 18)
+        public static void drawBioRing(Graphics g, string? genus, float x, float y, long reward = -1, Brush? dotBrush = null, float sz = 18)
         {
             // TODO: handle scaling
-
             g.FillEllipse(Brushes.Black, x - 1, y, sz + 2, sz + 2);
 
-            var img = Util.getBioImage(genus);
+            if (genus == null)
+            {
+                g.DrawEllipse(GameColors.penUnknownBioSignal, x, y + 2, sz, sz);
+                g.DrawString("?", GameColors.fontSmall, GameColors.brushUnknownBioSignal, x + 5, y + 6);
+                return;
+            }
+
+            var img = Util.getBioImage(genus, sz == 38);
             g.DrawImage(img, x, y + 2, sz, sz);
 
             if (reward < 0) return;
@@ -631,30 +637,33 @@ namespace SrvSurvey
             else if (reward > 0)
                 level = 0;
 
-            var sf = 1f / 18f * sz;
 
-            x += 3 * sf;
-            y += scaled(4f) * sf;
+            var sz2 = sz / 2.5f;
+            var sf = 1f / 18f * sz;
+            x += 4.2f * sf;
+            y += scaled(5f) * sf;
+
+            //var sf = 1f / 18f * sz;
+            //x += 3.5f * sf;
+            //y += scaled(4.5f) * sf;
 
             if (sz == 18) y += 1;
 
-
-            var b0 = new SolidBrush(Color.FromArgb(255, 55, 28, 3));
-            var sz3 = sz / 1.8f;
-            var sz2 = sz / 2.2f;
-            g.FillEllipse(b0, x + sf, y + sf, sz3, sz3);
+            //var b0 = new SolidBrush(Color.FromArgb(255, 45, 18, 3));
+            //var sz3 = sz / 1.8f;
+            //g.FillEllipse(b0, x + sf, y + sf, sz3, sz3);
             if (dotBrush == null) dotBrush = GameColors.brushGameOrange;
 
             x += 1 * sf;
             y += 1 * sf;
             if (level == 3)
-                g.FillPie(dotBrush, x , y, sz2, sz2, -90, 360);
+                g.FillPie(dotBrush, x, y, sz2, sz2, -90, 360);
             else if (level == 2)
-                g.FillPie(dotBrush, x , y , sz2, sz2, -90, 240);
+                g.FillPie(dotBrush, x, y, sz2, sz2, -90, 240);
             else if (level == 1)
-                g.FillPie(dotBrush, x , y , sz2, sz2, -90, 120);
+                g.FillPie(dotBrush, x, y, sz2, sz2, -90, 120);
             else
-                g.FillPie(dotBrush, x, y, sz3, sz3, -90, 20);
+                g.FillPie(dotBrush, x, y, sz2, sz2, -110, 40);
         }
     }
 

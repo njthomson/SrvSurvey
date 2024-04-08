@@ -42,9 +42,12 @@ namespace SrvSurvey
                 && Game.activeGame?.status != null
                 && Game.activeGame.systemData != null
                 && Game.activeGame.systemData.bioSignalsTotal > 0
+                //&& Game.activeGame.systemBody != null
                 && (
-                    Game.activeGame.isMode(GameMode.SuperCruising, GameMode.GlideMode, GameMode.SAA, GameMode.FSS, GameMode.ExternalPanel, GameMode.Orrery, GameMode.SystemMap, GameMode.Landed, GameMode.OnFoot, GameMode.CommsPanel)
-                    || (Game.activeGame.mode == GameMode.Flying && Game.activeGame.status.hasLatLong)
+                //Game.activeGame.isMode(GameMode.SuperCruising, GameMode.GlideMode, GameMode.SAA, GameMode.FSS, GameMode.ExternalPanel, GameMode.Orrery, GameMode.SystemMap, GameMode.Landed, GameMode.OnFoot, GameMode.CommsPanel)
+                //|| (Game.activeGame.mode == GameMode.Flying && Game.activeGame.status.hasLatLong)
+                (Game.activeGame.isMode(GameMode.SuperCruising, GameMode.SAA, GameMode.FSS, GameMode.ExternalPanel, GameMode.Orrery, GameMode.SystemMap))
+                || (Game.activeGame.systemBody?.bioSignalCount > 0 && Game.activeGame.status.hasLatLong && Game.activeGame.isMode(GameMode.GlideMode, GameMode.SAA, GameMode.FSS, GameMode.Flying, GameMode.Landed, GameMode.OnFoot, GameMode.CommsPanel))
                 );
         }
 
@@ -70,7 +73,7 @@ namespace SrvSurvey
                 this.g = e.Graphics;
                 this.g.SmoothingMode = SmoothingMode.HighQuality;
 
-                var sz = game.status.hasLatLong
+                var sz = (game.status.hasLatLong && game.systemBody?.bioSignalCount > 0) && game.mode != GameMode.ExternalPanel
                     ? this.drawBodyBios()
                     : this.drawSystemBios();
 
@@ -90,61 +93,75 @@ namespace SrvSurvey
 
         private SizeF drawBodyBios()
         {
-            if (game?.systemBody?.organisms == null) return SizeF.Empty;
-
             this.dtx = six;
             this.dty = eight;
             var sz = new SizeF(six, six);
 
-            this.dty += this.drawTextAt($"Body bio signals: {game.systemBody.bioSignalCount}", GameColors.brushGameOrange, GameColors.fontSmall).Height + two;
-            if (this.dtx > sz.Width) sz.Width = this.dtx;
-            this.dtx = six;
-            this.dty += six;
-
-            foreach (var organism in game.systemBody.organisms)
+            if (game?.systemBody?.organisms == null)
             {
-                var highlight = game.cmdr.scanOne?.genus == organism.genus;
-                var brush = highlight ? GameColors.brushCyan : GameColors.brushGameOrange;
-
-                PlotBase.drawBioRing(this.g, organism.genus, dtx, dty, organism.reward, brush);
-                dtx = thirty;
-
-                //if (organism.analyzed)
-                //    brush = GameColors.brushGameOrangeDim;
-
-                // draw body name
-                var displayName = organism.genusLocalized;
-                if (!string.IsNullOrEmpty(organism.variantLocalized))
-                    displayName = organism.variantLocalized;
-                else if (!string.IsNullOrEmpty(organism.speciesLocalized))
-                    displayName = organism.speciesLocalized;
-
-                this.drawTextAt(displayName, brush, GameColors.fontSmall);
+                this.dty += this.drawTextAt($"Body bio signals: {game?.systemBody?.bioSignalCount}", GameColors.brushGameOrange, GameColors.fontSmall).Height + two;
                 if (this.dtx > sz.Width) sz.Width = this.dtx;
-                //this.dtx = forty;
-
-                this.dtx = forty;
-                this.dty += oneSix;
-                var reward = game.systemBody!.firstFootFall ? organism.reward * 5 : organism.reward;
-
-                this.drawTextAt($"{Util.metersToString((decimal)organism.range, false)}         {Util.credits(reward)}", //brush, GameColors.fontSmall);
-                    highlight ? GameColors.brushDarkCyan : GameColors.brushGameOrangeDim, GameColors.fontSmall);
-                if (this.dtx > sz.Width) sz.Width = this.dtx;
-
                 this.dtx = six;
-                this.dty += oneSix;
+                this.dty += six;
+
+                this.dty += this.drawTextAt($"um ..?", GameColors.brushGameOrange, GameColors.fontSmall).Height + two;
             }
+            else
+            {
+                this.dty += this.drawTextAt($"Body bio signals: {game.systemBody.bioSignalCount}", GameColors.brushGameOrange, GameColors.fontSmall).Height + two;
+                if (this.dtx > sz.Width) sz.Width = this.dtx;
+                this.dtx = six;
+                this.dty += six;
 
-            this.dty += two;
-            var rewardEstimate = (long)game.systemBody.sumPotentialEstimate;
-            var footerTxt = $"Rewards: ~{Util.credits(rewardEstimate, true)}";
-            if (game.systemBody.firstFootFall) footerTxt += " (FF bonus)";
+                foreach (var organism in game.systemBody.organisms)
+                {
+                    var highlight = !organism.analyzed && (game.cmdr.scanOne?.genus == organism.genus || game.cmdr.scanOne?.genus == null);
+                    var brush = highlight ? GameColors.brushCyan : GameColors.brushGameOrange;
 
-            if (game.systemBody.bioSignalCount > 0 && game.systemBody.organisms?.All(o => o.species != null) != true)
-                footerTxt += "?";
+                    long reward2 = -1; // organism.reward;
+                    PlotBase.drawBioRing(this.g, organism.genus, dtx, dty, reward2, brush);
+                    dtx = thirty;
 
-            this.dty += this.drawTextAt(footerTxt, GameColors.brushGameOrange, GameColors.fontSmall).Height;
-            if (this.dtx > sz.Width) sz.Width = this.dtx;
+                    //if (organism.analyzed)
+                    //    brush = GameColors.brushGameOrangeDim;
+
+                    // draw body name
+                    var displayName = organism.genusLocalized;
+                    if (!string.IsNullOrEmpty(organism.variantLocalized))
+                        displayName = organism.variantLocalized;
+                    else if (!string.IsNullOrEmpty(organism.speciesLocalized))
+                        displayName = organism.speciesLocalized;
+
+                    this.drawTextAt(displayName, brush, GameColors.fontSmall);
+                    if (this.dtx > sz.Width) sz.Width = this.dtx;
+                    //this.dtx = forty;
+
+                    this.dtx = forty;
+                    this.dty += oneSix;
+                    var reward = game.systemBody!.firstFootFall ? organism.reward * 5 : organism.reward;
+
+                    this.drawTextAt($"{Util.metersToString((decimal)organism.range, false)}         {Util.credits(reward)}", //brush, GameColors.fontSmall);
+                        highlight ? GameColors.brushDarkCyan : GameColors.brushGameOrangeDim, GameColors.fontSmall);
+                    if (this.dtx > sz.Width) sz.Width = this.dtx;
+
+                    this.dtx = six;
+                    this.dty += oneSix;
+                }
+
+                this.dty += two;
+                var rewardEstimate = (long)game.systemBody.sumPotentialEstimate;
+                var footerTxt = "?";
+                if (rewardEstimate > 0)
+                {
+                    footerTxt = $"Rewards: ~{Util.credits(rewardEstimate, true)}";
+                    if (game.systemBody.firstFootFall) footerTxt += " (FF bonus)";
+
+                    if (game.systemBody.bioSignalCount > 0 && game.systemBody.organisms?.All(o => o.species != null) != true)
+                        footerTxt += "?";
+                }
+                this.dty += this.drawTextAt(footerTxt, GameColors.brushGameOrange, GameColors.fontSmall).Height;
+                if (this.dtx > sz.Width) sz.Width = this.dtx;
+            }
 
             // resize window as necessary
             sz.Width += ten;
@@ -152,7 +169,6 @@ namespace SrvSurvey
 
             return sz;
         }
-
 
         private SizeF drawSystemBios()
         {
@@ -176,21 +192,28 @@ namespace SrvSurvey
                                                              //highlight = bodyName == "4a";
 
                 // draw body name
-                this.drawTextAt(bodyName, highlight ? GameColors.brushCyan : GameColors.brushGameOrange, GameColors.fontMiddle);
+                var txt = bodyName;
+                this.drawTextAt(txt, highlight ? GameColors.brushCyan : GameColors.brushGameOrange, GameColors.fontMiddle);
                 this.dtx = forty;
 
                 // and a box for each signal
                 var signalCount = body.bioSignalCount;
                 for (var n = 0; n < signalCount; n++)
                 {
+                    string? genus = null;
+                    long reward = -1;
                     if (body.organisms != null && n < body.organisms.Count)
                     {
-                        PlotBase.drawBioRing(this.g, body.organisms[n].genus, dtx, dty, body.organisms[n].reward, highlight ? GameColors.brushCyan : GameColors.brushGameOrange);
-                        dtx += twoTwo;
-
-                        if (this.dtx > sz.Width) sz.Width = this.dtx;
+                        genus = body.organisms[n].genus;
+                        reward = body.organisms[n].reward;
                     }
+
+                    PlotBase.drawBioRing(this.g, genus, dtx, dty, reward, highlight ? GameColors.brushCyan : GameColors.brushGameOrange);
+                    dtx += twoTwo;
+
+                    if (this.dtx > sz.Width) sz.Width = this.dtx;
                 }
+
 
                 this.dtx = six;
                 this.dty += twoFour;

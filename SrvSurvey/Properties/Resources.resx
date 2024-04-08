@@ -127,6 +127,12 @@
   <data name="anemone_18" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\anemone-18.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="bacterium18" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\bacterium18.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="bacterium38" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\bacterium38.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="bacterium_18" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\bacterium-18.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -184,8 +190,20 @@
   <data name="tuber_18" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\tuber-18.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="tubus18" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\tubus18.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="tubus38" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\tubus38.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="tubus_18" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\tubus-18.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="tussock18" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\tussock18.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="tussock38" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\tussock38.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="tussock_18" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\tussock-18.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

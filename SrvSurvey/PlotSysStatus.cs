@@ -127,18 +127,21 @@ namespace SrvSurvey
                 }
                 else
                 {
-                    this.drawTextAt("No DSS scans needed");
+                    this.drawTextAt("No DSS meet criteria");
                 }
 
-                var bioRemaining = game.systemData.getBioRemainingNames();
-                if (bioRemaining.Count > 0 && !Game.settings.autoShowPlotBioSystem)
+                if (!Game.settings.autoShowPlotBioSystem)
                 {
-                    this.drawTextAt($"| {game.systemData.bioSignalsRemaining}x Bio signals on: ");
-                    this.drawRemainingBodies(destinationBody, bioRemaining);
+                    var bioRemaining = game.systemData.getBioRemainingNames();
+                    if (bioRemaining.Count > 0)
+                    {
+                        this.drawTextAt($"| {game.systemData.bioSignalsRemaining}x Bio signals on: ");
+                        this.drawRemainingBodies(destinationBody, bioRemaining);
+                    }
                 }
 
                 var headerTxt = "";
-                if (game.systemData.fssComplete && (Game.settings.skipLowValueDSS || Game.settings.skipHighDistanceDSS || !Game.settings.skipRingsDSS))
+                if (false && game.systemData.fssComplete && (Game.settings.skipLowValueDSS || Game.settings.skipHighDistanceDSS || !Game.settings.skipRingsDSS))
                 {
                     minViableWidth += scaled(74);
                     headerTxt += "(filtered)";
@@ -168,7 +171,7 @@ namespace SrvSurvey
             finally
             {
                 // resize window to fit as necessary
-                this.Width = Math.Max((int)this.dtx + scaled(6), minViableWidth);
+                this.Width = Math.Max((int)this.dtx, minViableWidth);
             }
         }
 

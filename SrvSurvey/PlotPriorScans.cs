@@ -238,11 +238,12 @@ namespace SrvSurvey
 
                 if (this.signals.Count == 0)
                 {
-                    g.DrawString("No unscanned signals meet criteria", this.Font, GameColors.brushGameOrange, 16f, 36f);
+                    g.DrawString("No un-scanned signals meet criteria", this.Font, GameColors.brushGameOrange, 16f, 36f);
                     return;
                 }
 
-                var indent = scaled(70);
+                var indent = scaled(70f);
+                if (Game.settings.autoShowPlotBioSystem) indent += threeFour;
                 var bearingWidth = scaled(75);
 
                 this.dty = scaled(8f);
@@ -250,7 +251,7 @@ namespace SrvSurvey
                 foreach (var signal in sortedSignals)
                 {
                     var analyzed = game.systemBody?.organisms?.FirstOrDefault(_ => _.genus == signal.genusName)?.analyzed == true;
-                    var isActive = (game.cmdr.scanOne?.genus == null) || game.cmdr.scanOne?.genus == signal.genusName;
+                    var isActive = game.cmdr.scanOne?.genus == signal.genusName || (game.cmdr.scanOne?.genus == null);
                     Brush brush;
 
                     // keep this y value for the label below
@@ -324,7 +325,7 @@ namespace SrvSurvey
 
                     if (Game.settings.autoShowPlotBioSystem)
                     {
-                        PlotBase.drawBioRing(g, signal.genusName, r.X, r.Y-2, signal.reward, brush, 24);
+                        PlotBase.drawBioRing(g, signal.genusName, r.X, r.Y - 2, -1, brush, 24);
                         r.X += 28;
                         r.Width -= 28;
                     }

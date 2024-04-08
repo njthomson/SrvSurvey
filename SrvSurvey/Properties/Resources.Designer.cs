@@ -103,6 +103,26 @@ namespace SrvSurvey.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap bacterium18 {
+            get {
+                object obj = ResourceManager.GetObject("bacterium18", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap bacterium38 {
+            get {
+                object obj = ResourceManager.GetObject("bacterium38", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap barkmound_18 {
             get {
                 object obj = ResourceManager.GetObject("barkmound_18", resourceCulture);
@@ -293,9 +313,49 @@ namespace SrvSurvey.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap tubus18 {
+            get {
+                object obj = ResourceManager.GetObject("tubus18", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap tubus38 {
+            get {
+                object obj = ResourceManager.GetObject("tubus38", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap tussock_18 {
             get {
                 object obj = ResourceManager.GetObject("tussock_18", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap tussock18 {
+            get {
+                object obj = ResourceManager.GetObject("tussock18", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap tussock38 {
+            get {
+                object obj = ResourceManager.GetObject("tussock38", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

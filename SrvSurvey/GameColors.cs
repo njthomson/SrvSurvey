@@ -195,6 +195,8 @@ namespace SrvSurvey
         public static Pen penDarkRed3 = newPen(Color.DarkRed, 3);
 
         public static Pen penBlack3Dotted = newPen(Color.Black, 3, DashStyle.Dot);
+        public static Pen penUnknownBioSignal = newPen(Color.FromArgb(255, 88, 88, 88), 1);
+        public static Brush brushUnknownBioSignal = new SolidBrush(Color.FromArgb(255, 88, 88, 88));
 
         public static Pen penGameOrange2Dotted = newPen(Orange, 2, DashStyle.Dot);
 
