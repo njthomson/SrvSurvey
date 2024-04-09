@@ -499,6 +499,14 @@ namespace SrvSurvey
                 if (rslt == DialogResult.Yes) Clipboard.SetText(Application.ExecutablePath);
                 return true;
             }
+
+            if (ex?.Message.Contains("Response status code does not indicate success: 500") == true
+                || ex?.Message.Contains("(Internal Server Error)") == true)
+            {
+                // strictly speaking this is not a firewall problem, it means some network call failed (hopefully) not due to us. Let's trace this and keep going.
+                Game.log($"Ignoring HTTP:500 response");
+                return true;
+            }
             return false;
         }
 
