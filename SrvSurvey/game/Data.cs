@@ -1,10 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SrvSurvey.game
 {
@@ -23,8 +17,9 @@ namespace SrvSurvey.game
             // read and parse file contents into tmp object
             if (File.Exists(filepath))
             {
-                // Game.log($"Reading: {filepath}");
                 var json = File.ReadAllText(filepath);
+                if (string.IsNullOrEmpty(json)) Game.log($"Why is this data file empty?\r\n{filepath}");
+
                 try
                 {
                     var data = JsonConvert.DeserializeObject<T>(json)!;

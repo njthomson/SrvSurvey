@@ -118,17 +118,20 @@ namespace SrvSurvey
             if (File.Exists(settingsPath))
             {
                 var json = File.ReadAllText(settingsPath);
-                try
+                if (!string.IsNullOrEmpty(json))
                 {
-                    var settings = JsonConvert.DeserializeObject<Settings>(json)!;
+                    try
+                    {
+                        var settings = JsonConvert.DeserializeObject<Settings>(json)!;
 
-                    Game.log($"Loaded settings: {json}");
-                    return settings;
-                }
-                catch (Exception ex)
-                {
-                    Game.log($"Failed to read settings: {ex.Message}");
-                    Game.log(json);
+                        Game.log($"Loaded settings: {json}");
+                        return settings;
+                    }
+                    catch (Exception ex)
+                    {
+                        Game.log($"Failed to read settings: {ex.Message}");
+                        Game.log(json);
+                    }
                 }
             }
 

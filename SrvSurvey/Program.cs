@@ -47,9 +47,16 @@ namespace SrvSurvey
             if (Program.checkAndMigrateAppStoreRoamingFolder())
                 return;
 
-            Application.Run(new Main());
+            try
+            {
+                Application.Run(new Main());
+            }
+            catch (Exception ex)
+            {
+                Game.log($"Failed to boot SrvSurvey: {ex.Message}\r\n{ex.StackTrace}");
+                MessageBox.Show($"An unexpected error occurred. Please report the following on https://github.com/njthomson/SrvSurvey/issues:\r\n\r\n{ex}", "SrvSurvey", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
-
         private static void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
         {
             game.Game.log("Exception: " + e.Exception.Message);
