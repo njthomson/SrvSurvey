@@ -36,14 +36,23 @@ namespace SrvSurvey
                     _gameProc = edProcs[0];
                 else
                 {
-                    if (Game.settings.processIdx > edProcs.Length - 1)
-                        Game.settings.processIdx = 0;
+                    if (_procIdx > edProcs.Length - 1)
+                        _procIdx = 0;
 
-                    _gameProc = edProcs[Game.settings.processIdx];
+                    _gameProc = edProcs[_procIdx];
                 }
             }
 
             return _gameProc;
+        }
+
+        private static int _procIdx = 0;
+
+        public static void nextWindow()
+        {
+            _procIdx += 1;
+            _gameProc = null;
+            getGameProc();
         }
 
         public static bool isGameRunning

@@ -120,6 +120,8 @@ namespace SrvSurvey
 
                     long reward2 = -1; // organism.reward;
                     PlotBase.drawBioRing(this.g, organism.genus, dtx, dty, reward2, brush);
+                    g.DrawEllipse(GameColors.penGameOrangeDim1, dtx-1.5f, dty-0.5f, 22, 22);
+                    //g.DrawEllipse(GameColors.penGameOrangeDim1, dtx - 1, dty + 1, 20, 20);
                     dtx = thirty;
 
                     //if (organism.analyzed)
@@ -176,7 +178,7 @@ namespace SrvSurvey
             this.dty = eight;
             var sz = new SizeF(six, six);
 
-            this.dty += this.drawTextAt($"System bio signals: {game.systemData.bioSignalsTotal}", GameColors.brushGameOrange, GameColors.fontSmall).Height + two;
+            this.dty += this.drawTextAt($"System bio signals: {game.systemData?.bioSignalsTotal}", GameColors.brushGameOrange, GameColors.fontSmall).Height + two;
             if (this.dtx > sz.Width) sz.Width = this.dtx;
             this.dtx = six;
 
@@ -209,6 +211,7 @@ namespace SrvSurvey
                     }
 
                     PlotBase.drawBioRing(this.g, genus, dtx, dty, reward, highlight ? GameColors.brushCyan : GameColors.brushGameOrange);
+                    g.DrawEllipse(GameColors.penGameOrangeDim1, dtx - 1, dty+1, 20, 20);
                     dtx += twoTwo;
 
                     if (this.dtx > sz.Width) sz.Width = this.dtx;

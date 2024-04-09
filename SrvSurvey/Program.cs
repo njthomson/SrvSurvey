@@ -9,6 +9,10 @@ namespace SrvSurvey
     {
         public static Control control { get; private set; }
         public static string dataFolder = Path.GetFullPath(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "SrvSurvey", "SrvSurvey", "1.1.0.0"));
+        public static string dataFolder2 = Path.GetFullPath(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "AppData", "Roaming", "SrvSurvey", "SrvSurvey", "1.1.0.0"));
+        //public static string dataFolder2 = "C:\\Users\\grinn\\AppData\\Local\\SrvSurvey\\SrvSurvey\\1.1.0.0";
+        //    //Path.GetFullPath(Path.Combine(Environment.GetEnvironmentVariable("USERPROFILE")!, "AppData", "Roaming", "SrvSurvey", "SrvSurvey", "1.1.0.0"));
+
         private static string dataRootFolder = Path.GetFullPath(Path.Combine(dataFolder, ".."));
 
         public static readonly BindingFlags InstanceProps =
@@ -333,10 +337,18 @@ namespace SrvSurvey
 
         public static bool checkAndMigrateAppStoreRoamingFolder()
         {
+            var redirectedRoamingFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Packages/35333NosmohtSoftware.142860789C73F_p4c193bsm1z5a/LocalCache/Roaming/SrvSurvey/SrvSurvey");
+            var redirectedRoamingFolder2 = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Packages/35333NosmohtSoftware.142860789C73F_p4c193bsm1z5a/LocalCache/Roaming/SrvSurvey/SrvSurvey-");
+
             try
             {
-                var redirectedRoamingFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Packages/35333NosmohtSoftware.142860789C73F_p4c193bsm1z5a/LocalCache/Roaming/SrvSurvey/SrvSurvey");
-                var redirectedRoamingFolder2 = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Packages/35333NosmohtSoftware.142860789C73F_p4c193bsm1z5a/LocalCache/Roaming/SrvSurvey/SrvSurvey-");
+                //// tmp
+                //var count1 = Directory.Exists(redirectedRoamingFolder) ? Directory.GetFiles(redirectedRoamingFolder, "*.*", SearchOption.AllDirectories).Length : -1;
+                //var count2 = Directory.Exists(redirectedRoamingFolder2) ? Directory.GetFiles(redirectedRoamingFolder2, "*.*", SearchOption.AllDirectories).Length : -1;
+                //var count3 = Directory.Exists(dataFolder) ? Directory.GetFiles(dataFolder, "*.*", SearchOption.AllDirectories).Length : -1;
+                //var count4 = Directory.Exists(dataFolder2) ? Directory.GetFiles(dataFolder2, "*.*", SearchOption.AllDirectories).Length : -1;
+                //MessageBox.Show($"A) counts: {count1}, {count2}, {count3}, {count4}\r\n\r\n{dataFolder}\r\n{dataFolder2}");
+                //// tmp
 
                 if (Directory.Exists(redirectedRoamingFolder) && !Directory.Exists(redirectedRoamingFolder2))
                 {
@@ -387,13 +399,20 @@ namespace SrvSurvey
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"An unexpected error occurred. Please report the following on https://github.com/njthomson/SrvSurvey/issues:\n\n {ex.Message}\n\n{ex.StackTrace}", "SrvSurvey", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                var count1 = Directory.Exists(redirectedRoamingFolder) ? Directory.GetFiles(redirectedRoamingFolder, "*.*", SearchOption.AllDirectories).Length : -1;
+                var count2 = Directory.Exists(redirectedRoamingFolder2) ? Directory.GetFiles(redirectedRoamingFolder2, "*.*", SearchOption.AllDirectories).Length : -1;
+                var count3 = Directory.Exists(dataFolder) ? Directory.GetFiles(dataFolder, "*.*", SearchOption.AllDirectories).Length : -1;
+                var count4 = Directory.Exists(dataFolder2) ? Directory.GetFiles(dataFolder2, "*.*", SearchOption.AllDirectories).Length : -1;
+
+                MessageBox.Show($"An unexpected error occurred. Please report the following on https://github.com/njthomson/SrvSurvey/issues:\r\n\r\nDiagnostic counts: [{count1}, {count2}, {count3}, {count4}]\n\n {ex.Message}\n\n{ex.StackTrace}", "SrvSurvey", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Process.GetCurrentProcess().Kill();
                 return true;
             }
 
             return false;
         }
+
+        #endregion
 
         public static void forceRestart()
         {
@@ -405,7 +424,6 @@ namespace SrvSurvey
             Process.GetCurrentProcess().Kill();
         }
 
-        #endregion
     }
 
     interface PlotterForm

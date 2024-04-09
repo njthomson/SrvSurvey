@@ -203,6 +203,16 @@ namespace SrvSurvey.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap electricae38 {
+            get {
+                object obj = ResourceManager.GetObject("electricae38", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap fonticulua_18 {
             get {
                 object obj = ResourceManager.GetObject("fonticulua_18", resourceCulture);
@@ -213,9 +223,39 @@ namespace SrvSurvey.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap fonticulua38 {
+            get {
+                object obj = ResourceManager.GetObject("fonticulua38", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap frutexa_18 {
             get {
                 object obj = ResourceManager.GetObject("frutexa_18", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap frutexa18 {
+            get {
+                object obj = ResourceManager.GetObject("frutexa18", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap frutexa38 {
+            get {
+                object obj = ResourceManager.GetObject("frutexa38", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -243,9 +283,39 @@ namespace SrvSurvey.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap fungoida18 {
+            get {
+                object obj = ResourceManager.GetObject("fungoida18", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap fungoida38 {
+            get {
+                object obj = ResourceManager.GetObject("fungoida38", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap osseus_18 {
             get {
                 object obj = ResourceManager.GetObject("osseus_18", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap osseus38 {
+            get {
+                object obj = ResourceManager.GetObject("osseus38", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -286,6 +356,26 @@ namespace SrvSurvey.Properties {
         internal static System.Drawing.Bitmap stratum_18 {
             get {
                 object obj = ResourceManager.GetObject("stratum_18", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap stratum18 {
+            get {
+                object obj = ResourceManager.GetObject("stratum18", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap stratum38 {
+            get {
+                object obj = ResourceManager.GetObject("stratum38", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

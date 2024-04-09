@@ -617,7 +617,7 @@ namespace SrvSurvey
 
             if (genus == null)
             {
-                g.DrawEllipse(GameColors.penUnknownBioSignal, x, y + 2, sz, sz);
+                //g.DrawEllipse(GameColors.penUnknownBioSignal, x, y + 2, sz, sz);
                 g.DrawString("?", GameColors.fontSmall, GameColors.brushUnknownBioSignal, x + 5, y + 6);
                 return;
             }

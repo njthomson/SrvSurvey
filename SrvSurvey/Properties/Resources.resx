@@ -157,11 +157,23 @@
   <data name="coral_18" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\coral-18.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="electricae38" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\electricae38.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="electricae_18" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\electricae-18.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="fonticulua38" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\fonticulua38.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="fonticulua_18" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\fonticulua-18.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="frutexa18" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\frutexa18.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="frutexa38" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\frutexa38.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="frutexa_18" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\frutexa-18.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -169,8 +181,17 @@
   <data name="fumerola_18" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\fumerola-18.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="fungoida18" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\fungoida18.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="fungoida38" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\fungoida38.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="fungoida_18" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\fungoida-18.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="osseus38" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\osseus38.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="osseus_18" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\osseus-18.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -183,6 +204,12 @@
   </data>
   <data name="spire_18" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\spire-18.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="stratum18" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\stratum18.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="stratum38" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\stratum38.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="stratum_18" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\stratum-18.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
