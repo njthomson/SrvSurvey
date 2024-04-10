@@ -59,6 +59,9 @@ namespace SrvSurvey
             label1 = new Label();
             tabControl1 = new TabControl();
             tabPage4 = new TabPage();
+            label15 = new Label();
+            numMinBioDuration = new NumericUpDown();
+            checkBox18 = new CheckBox();
             checkBox17 = new CheckBox();
             linkLabel1 = new LinkLabel();
             btnClearTrackers = new Button();
@@ -141,6 +144,7 @@ namespace SrvSurvey
             ((System.ComponentModel.ISupportInitialize)trackOpacity).BeginInit();
             tabControl1.SuspendLayout();
             tabPage4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numMinBioDuration).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             tabPage3.SuspendLayout();
@@ -505,6 +509,9 @@ namespace SrvSurvey
             // 
             // tabPage4
             // 
+            tabPage4.Controls.Add(label15);
+            tabPage4.Controls.Add(numMinBioDuration);
+            tabPage4.Controls.Add(checkBox18);
             tabPage4.Controls.Add(checkBox17);
             tabPage4.Controls.Add(linkLabel1);
             tabPage4.Controls.Add(btnClearTrackers);
@@ -523,6 +530,40 @@ namespace SrvSurvey
             tabPage4.TabIndex = 3;
             tabPage4.Text = "Bio Scanning";
             // 
+            // label15
+            // 
+            label15.AutoSize = true;
+            label15.Location = new Point(330, 290);
+            label15.Name = "label15";
+            label15.Size = new Size(53, 15);
+            label15.TabIndex = 23;
+            label15.Text = "seconds.";
+            // 
+            // numMinBioDuration
+            // 
+            numMinBioDuration.Enabled = false;
+            numMinBioDuration.Location = new Point(273, 288);
+            numMinBioDuration.Maximum = new decimal(new int[] { 600, 0, 0, 0 });
+            numMinBioDuration.Name = "numMinBioDuration";
+            numMinBioDuration.Size = new Size(51, 23);
+            numMinBioDuration.TabIndex = 22;
+            numMinBioDuration.Tag = "keepBioPlottersVisibleDuration";
+            numMinBioDuration.TextAlign = HorizontalAlignment.Right;
+            numMinBioDuration.ThousandsSeparator = true;
+            numMinBioDuration.Value = new decimal(new int[] { 555, 0, 0, 0 });
+            // 
+            // checkBox18
+            // 
+            checkBox18.AutoSize = true;
+            checkBox18.Location = new Point(10, 289);
+            checkBox18.Name = "checkBox18";
+            checkBox18.Size = new Size(257, 19);
+            checkBox18.TabIndex = 17;
+            checkBox18.Tag = "keepBioPlottersVisibleEnabled";
+            checkBox18.Text = "Keep bio overlays visible after DSS scans for:";
+            checkBox18.UseVisualStyleBackColor = true;
+            checkBox18.CheckedChanged += checkBox18_CheckedChanged;
+            // 
             // checkBox17
             // 
             checkBox17.AutoSize = true;
@@ -540,7 +581,7 @@ namespace SrvSurvey
             // linkLabel1
             // 
             linkLabel1.AutoSize = true;
-            linkLabel1.Location = new Point(170, 293);
+            linkLabel1.Location = new Point(170, 325);
             linkLabel1.Name = "linkLabel1";
             linkLabel1.Size = new Size(251, 15);
             linkLabel1.TabIndex = 15;
@@ -550,7 +591,7 @@ namespace SrvSurvey
             // 
             // btnClearTrackers
             // 
-            btnClearTrackers.Location = new Point(10, 289);
+            btnClearTrackers.Location = new Point(10, 321);
             btnClearTrackers.Name = "btnClearTrackers";
             btnClearTrackers.Size = new Size(154, 23);
             btnClearTrackers.TabIndex = 14;
@@ -1469,6 +1510,7 @@ namespace SrvSurvey
             tabControl1.ResumeLayout(false);
             tabPage4.ResumeLayout(false);
             tabPage4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numMinBioDuration).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             tabPage3.ResumeLayout(false);
@@ -1599,5 +1641,8 @@ namespace SrvSurvey
         private Label label14;
         private ComboBox comboOverlayScale;
         private CheckBox checkBox17;
+        private NumericUpDown numMinBioDuration;
+        private CheckBox checkBox18;
+        private Label label15;
     }
 }

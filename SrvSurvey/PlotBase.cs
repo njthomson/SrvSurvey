@@ -858,6 +858,7 @@ namespace SrvSurvey
               "PlotBioSystem",
               "PlotSysStatus",
               "PlotTrackTarget",
+              "PlotGalMap",
             };
 
             Dictionary<string, PlotPos>? defaultPositions = null;
@@ -866,7 +867,10 @@ namespace SrvSurvey
                 if (!plotterPositions.ContainsKey(name))
                 {
                     if (defaultPositions == null) defaultPositions = readPlotterPositions(defaultPlotterPositionPath);
-                    plotterPositions[name] = defaultPositions[name];
+                    if (!defaultPositions.ContainsKey(name))
+                        MessageBox.Show($"Missing default position for plotter: {name}", "Oops", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    else
+                        plotterPositions[name] = defaultPositions[name];
                 }
             }
         }

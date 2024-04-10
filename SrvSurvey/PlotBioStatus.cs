@@ -108,12 +108,16 @@ namespace SrvSurvey
         {
             if (this.IsDisposed) return;
 
-            var plotterMode = newMode == GameMode.SAA || game.showBodyPlotters;
-            if (this.Opacity > 0 && !plotterMode)
+            var showPlotter = newMode == GameMode.SAA || game.showBodyPlotters;
+
+            if (!showPlotter && game.systemBody != null && game.showBodyPlotters)
+                showPlotter = SystemData.isWithinLastDssDuration();
+
+            if (this.Opacity > 0 && !showPlotter)
             {
                 this.Opacity = 0;
             }
-            else if (this.Opacity == 0 && plotterMode)
+            else if (this.Opacity == 0 && showPlotter)
             {
                 this.reposition(Elite.getWindowRect());
             }

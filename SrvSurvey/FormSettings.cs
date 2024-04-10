@@ -383,5 +383,10 @@ namespace SrvSurvey
                 panelBannerColor.BackColor = colorDialog.Color;
             }
         }
+
+        private void checkBox18_CheckedChanged(object sender, EventArgs e)
+        {
+            numMinBioDuration.Enabled = checkBox18.Checked;
+        }
     }
 }

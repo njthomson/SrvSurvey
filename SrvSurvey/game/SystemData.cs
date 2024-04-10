@@ -523,7 +523,10 @@ namespace SrvSurvey.game
 
             // update fields
             body.dssComplete = true;
-            body.lastVisited = DateTimeOffset.Now;
+            if (entry.timestamp > body.lastVisited) body.lastVisited = entry.timestamp;
+
+            // store time of last DSS, so we can keep certain plotters visible within some duration of this time
+            SystemData.lastDssCompleteAt = entry.timestamp;
         }
 
         public void onJournalEntry(FSSBodySignals entry)
@@ -573,8 +576,7 @@ namespace SrvSurvey.game
             var body = this.findOrCreate(entry.Body, entry.BodyID);
 
             // update fields
-            if (entry.timestamp > body.lastVisited)
-                body.lastVisited = entry.timestamp;
+            if (entry.timestamp > body.lastVisited) body.lastVisited = entry.timestamp;
         }
 
         public void onJournalEntry(Touchdown entry)
@@ -586,7 +588,7 @@ namespace SrvSurvey.game
             var body = this.findOrCreate(entry.Body, entry.BodyID);
 
             // update fields
-            body.lastVisited = DateTimeOffset.Now;
+            if (entry.timestamp > body.lastVisited) body.lastVisited = entry.timestamp;
             body.lastTouchdown = entry;
         }
 
@@ -1028,6 +1030,18 @@ namespace SrvSurvey.game
                         Game.log($"Why no body yet for: '{site.bodyName}'");
                 }
             }
+        }
+
+        public static DateTime lastDssCompleteAt;
+
+        /// <summary>
+        /// Returns True if we completed some DSS scan within the duration from setting keepBioPlottersVisibleDuration
+        /// </summary>
+        public static bool isWithinLastDssDuration()
+        {
+            var duration = DateTime.Now - SystemData.lastDssCompleteAt;
+            var withinDuration = duration.TotalSeconds < Game.settings.keepBioPlottersVisibleDuration;
+            return withinDuration;
         }
     }
 

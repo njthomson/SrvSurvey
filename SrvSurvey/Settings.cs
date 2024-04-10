@@ -106,7 +106,8 @@ namespace SrvSurvey
         public int pubDataSettlementTemplate = 0;
         public int pubDataGuardian = 0;
 
-        public int processIdx = 0;
+        public bool keepBioPlottersVisibleEnabled = true;
+        public int keepBioPlottersVisibleDuration = 30;
 
         #region loading /saving
 

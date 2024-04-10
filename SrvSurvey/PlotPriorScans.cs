@@ -76,11 +76,16 @@ namespace SrvSurvey
         {
             if (this.IsDisposed) return;
 
-            var targetMode = (game.showBodyPlotters || game.mode == GameMode.SAA)
-                && (!force && this.signals.Count > 0); // keep plotter hidden if no more signals
-            if (!force && this.Opacity > 0 && !targetMode)
+            var showPlotter = (game.showBodyPlotters || game.mode == GameMode.SAA);
+                
+            if (!showPlotter && game.systemBody != null && game.showBodyPlotters)
+                showPlotter = SystemData.isWithinLastDssDuration();
+
+            showPlotter = showPlotter && (!force && this.signals.Count > 0); // keep plotter hidden if no more signals
+
+            if (!force && this.Opacity > 0 && !showPlotter)
                 this.Opacity = 0;
-            else if (this.Opacity == 0 && targetMode)
+            else if (this.Opacity == 0 && showPlotter)
                 this.reposition(Elite.getWindowRect());
 
             if (game.systemBody == null)

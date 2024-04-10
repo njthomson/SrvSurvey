@@ -644,7 +644,7 @@ namespace SrvSurvey
             btnSphereLimit.Enabled = game?.cmdr != null;
 
             // show/hide the sphere limit plotter
-            if (game?.mode == GameMode.GalaxyMap && game.cmdr.sphereLimit.active)
+            if (PlotSphericalSearch.allowPlotter)
                 Program.showPlotter<PlotSphericalSearch>();
             else
                 Program.closePlotter<PlotSphericalSearch>();

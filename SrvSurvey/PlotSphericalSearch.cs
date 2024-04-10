@@ -26,6 +26,13 @@ namespace SrvSurvey
             measureDistanceToSystem();
         }
 
+        public static bool allowPlotter
+        {
+            get => Game.activeGame != null
+                && Game.activeGame.mode == GameMode.GalaxyMap
+                && Game.activeGame.cmdr.sphereLimit.active;
+        }
+
         public override void reposition(Rectangle gameRect)
         {
             if (gameRect == Rectangle.Empty)
@@ -58,11 +65,12 @@ namespace SrvSurvey
 
         private void measureDistanceToSystem()
         {
+            if (game.cmdr.sphereLimit.centerStarPos == null) return;
+
             var lastSystem = game.navRoute.Route.LastOrDefault();
-            if (lastSystem?.StarSystem == null || game.cmdr.sphereLimit.centerStarPos == null)
+            if (lastSystem?.StarSystem == null)
             {
-                if (game.systemData == null)
-                    return;
+                if (game.systemData == null) return;
 
                 lastSystem = new RouteEntry()
                 {
@@ -78,8 +86,6 @@ namespace SrvSurvey
             this.Invalidate();
 
         }
-
-        private static Point p1 = scaled(new Point(8, 10));
 
         protected override void OnPaintBackground(PaintEventArgs e)
         {
