@@ -124,6 +124,7 @@ namespace SrvSurvey.game
         public SystemData? systemData;
         public SystemBody? systemBody;
         public GuardianSiteData? systemSite;
+        public HumanSiteData? humanSite;
 
         /// <summary>
         /// Distinct settings for the current commander
@@ -275,7 +276,7 @@ namespace SrvSurvey.game
                 if (!newHasLatLong)
                 {
                     // we are departing
-                    if (this.systemBody != null)
+                    if (this.systemBody != null && !SystemData.isWithinLastDssDuration())
                     {
                         Game.log($"EVENT:departingBody, from {this.systemBody.name}");
 
@@ -300,7 +301,7 @@ namespace SrvSurvey.game
                 }
             }
 
-            if (!status.hasLatLong && this.systemBody != null)
+            if (!status.hasLatLong && this.systemBody != null && !SystemData.isWithinLastDssDuration())
             {
                 log($"status change clearing systemBody from: '{this.systemBody.name}' ({this.systemBody.id})");
                 this.systemBody = null;
@@ -479,6 +480,13 @@ namespace SrvSurvey.game
             {
                 this.initSystemData();
 
+                if (cmdr.currentMarketId > 0)
+                {
+                    // attempt to load the humanSite, assumed we left at some station
+                    Game.log($"Loading humanSite: {cmdr.currentSystemAddress}-{cmdr.currentMarketId}");
+                    this.humanSite = HumanSiteData.Load(cmdr.currentSystemAddress, cmdr.currentMarketId);
+                }
+
                 LeaveBody? leaveBodyEvent = null;
                 journals.walk(-1, true, (entry) =>
                 {
@@ -621,6 +629,7 @@ namespace SrvSurvey.game
 
                 return false;
             });
+
             if (this.systemData == null)
             {
                 log($"Game.initSystemData: Why no systemData? Current journal has {this.journals.Count} items.");
@@ -1633,6 +1642,7 @@ namespace SrvSurvey.game
         {
             if (entry.Name.StartsWith("$Ancient"))
             {
+                // Guardian site
                 GuardianSiteData.Load(entry);
                 this.setCurrentSite();
 
@@ -1645,6 +1655,61 @@ namespace SrvSurvey.game
                     }
                 }
             }
+            else if (entry.MarketID > 0 && this.systemBody != null)
+            {
+                // Human site
+                this.humanSite = new HumanSiteData(entry);
+            }
+
+            // TODO: Thargoids?
+        }
+
+        private void onJournalEntry(DockingRequested entry)
+        {
+            if (entry.StationType == StationType.OnFootSettlement && this.humanSite?.marketId == entry.MarketID)
+                this.humanSite.dockingRequested(entry);
+
+        }
+
+        private void onJournalEntry(DockingGranted entry)
+        {
+            if (entry.StationType == StationType.OnFootSettlement && this.humanSite?.marketId == entry.MarketID)
+                this.humanSite.dockingGranted(entry);
+        }
+
+        private void onJournalEntry(Docked entry)
+        {
+            // store that we've docked here
+            this.cmdr.setMarketId(entry.MarketID);
+            if (entry.StationType != StationType.OnFootSettlement || this.systemData == null) return;
+
+
+            if (this.humanSite == null)
+            {
+                // try loading a file, it will exist if we have docked here before
+                this.humanSite = HumanSiteData.Load(this.systemData.address, entry.MarketID);
+            }
+            else if (this.humanSite.marketId == entry.MarketID)
+            {
+                // wait a bit for the status file to be written?
+                Task.Delay(100).ContinueWith((x) => {
+                    this.humanSite.docked(entry, this.status.Heading);
+                });
+            }
+            else
+            {
+                Game.log($"Mismatched name or marketId?! {entry.StationName} ({entry.MarketID})");
+            }
+        }
+
+        private void onJournalEntry(Undocked entry)
+        {
+            // clear that we docked here
+            //this.cmdr.setMarketId(0);
+            //if (entry.StationType != StationType.OnFootSettlement) return;
+
+            //if (this.humanSite != null)
+            //    this.humanSite = null;
         }
 
         private void onJournalEntry(CodexEntry entry)

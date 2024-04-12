@@ -614,5 +614,32 @@ namespace SrvSurvey
                 default: throw new Exception($"Unexpected genus: '{genus}'");
             }
         }
+
+        /// <summary>
+        /// Returns an Economy enum from strings like "$economy_HighTech;"
+        /// </summary>
+        public static Economy toEconomy(string? txt)
+        {
+            switch (txt)
+            {
+                case "$economy_Agri;": return Economy.Agriculture;
+                case "$economy_Colony;": return Economy.Colony;
+                case "$economy_Damaged;": return Economy.Damaged;
+                case "$economy_Extraction;": return Economy.Extraction;
+                case "$economy_HighTech;": return Economy.HighTech;
+                case "$economy_Industrial;": return Economy.Industrial;
+                case "$economy_Military;": return Economy.Military;
+                case "$economy_Prison;": return Economy.Prison;
+                case "$economy_Carrier;": return Economy.PrivateEnterprise;
+                case "$economy_Refinery;": return Economy.Refinery;
+                case "$economy_Repair;": return Economy.Repair;
+                case "$economy_Rescue;": return Economy.Rescue;
+                case "$economy_Service;": return Economy.Service;
+                case "$economy_Terraforming;": return Economy.Terraforming;
+                case "$economy_Tourism;": return Economy.Tourist;
+
+                default: return Economy.Unknown;
+            }
+        }
     }
 }

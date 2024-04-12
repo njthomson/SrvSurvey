@@ -36,7 +36,7 @@ namespace SrvSurvey.units
 
         public override string ToString()
         {
-            return $"Lat:{this.Lat}, Long:{this.Long}";
+            return $"Lat/Long: {this.Lat},{this.Long}";
         }
 
         public override bool Equals(object? obj)

@@ -8,9 +8,12 @@ namespace SrvSurvey
 {
     partial class PlotTrackTarget : PlotBase, PlotterForm
     {
-        private TrackingDelta td;
-        private GraphicsPath pp, tt;
+        public LatLong2 targetLocation = Game.settings.targetLatLong;
+        private decimal targetAngle;
+        private decimal targetDistance;
 
+        private TrackingDelta td; // TODO: Retire this
+        private GraphicsPath pp, tt;
 
         private PlotTrackTarget()
         {
@@ -91,11 +94,14 @@ namespace SrvSurvey
         public void calculate(LatLong2? newLocation = null)
         {
             // exit early if we're not in the right mode
-            if (this.IsDisposed || game?.systemBody == null || !game.isMode(GameMode.SuperCruising, GameMode.Flying, GameMode.Landed, GameMode.InSrv, GameMode.OnFoot, GameMode.GlideMode))
-                return;
+            if (this.IsDisposed || game?.systemBody == null) return;
 
             if (newLocation != null)
                 this.td = new TrackingDelta(game.systemBody.radius, newLocation);
+
+            this.td?.calc(); // retire
+            this.targetDistance = Util.getDistance(this.targetLocation, Status.here, game.systemBody.radius);
+            this.targetAngle = Util.getBearing(this.targetLocation, Status.here);
 
             this.Invalidate();
         }
@@ -123,30 +129,30 @@ namespace SrvSurvey
             base.OnPaintBackground(e);
             try
             {
-                if (this.IsDisposed || this.td == null) return;
+                if (this.IsDisposed || game.systemBody == null || this.td == null) return;
 
                 this.g = e.Graphics;
                 this.g.SmoothingMode = SmoothingMode.HighQuality;
 
-                float w = this.Width / 2;
-                float h = this.Height / 2;
-
+                float hw = this.Width / 2;
+                float hh = this.Height / 2;
 
                 // draw heading text (center bottom)
-                var headingTxt = ((int)this.td.angle).ToString();
+                var headingTxt = ((int)this.td.angle).ToString(); // TODO: this.targetAngle
                 var sz = g.MeasureString(headingTxt, GameColors.fontSmall);
-                var tx = w - (sz.Width / 2);
+                var tx = hw - (sz.Width / 2);
                 var ty = this.Height - sz.Height - six;
                 g.DrawString(this.td.angle.ToString(), GameColors.fontSmall, Brushes.Orange, tx, ty);
 
-                // draw distance text (top left corner
-                var dist = td.distance;
+                // draw distance text (center top)
+                var dist = td.distance; // TODO: this.targetDist
                 if ((game.status.Flags & StatusFlags.AltitudeFromAverageRadius) > 0)
-                    dist += td.distance + game.status.Altitude;
+                    dist += td.distance + game.status.Altitude; // Remove it? I don't think it helps any more
+
                 var txt = "Distance: " + Util.metersToString(dist);
                 g.DrawString(txt, GameColors.fontSmall, Brushes.Orange, four, ten);
 
-                g.TranslateTransform(w, h);
+                g.TranslateTransform(hw, hh);
 
                 // rotate so the arrow aligns "up" is forwards/in front of us
                 var da = (int)td.angle - game.status.Heading;

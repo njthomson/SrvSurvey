@@ -55,6 +55,14 @@ namespace SrvSurvey.game
         public bool migratedNonSystemDataOrganics = false;
         public bool migratedScannedOrganicsInEntryId = false;
 
+        public long currentMarketId;
+
+        public void setMarketId(long newMarketId)
+        {
+            this.currentMarketId = newMarketId;
+            this.Save();
+        }
+
         /// <summary>
         /// Progress against Ram Tah Mission #1: Decode the Ruins
         /// </summary>

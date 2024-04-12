@@ -66,6 +66,29 @@ namespace SrvSurvey
             FormErrorSubmit.Show(e.Exception);
         }
 
+        public static void crashGuard(Action func, bool beginInvoke = false)
+        {
+            try
+            {
+                if (beginInvoke)
+                {
+                    control.BeginInvoke(func);
+                }
+                else
+                {
+                    func();
+                }
+            }
+            catch (Exception ex)
+            {
+                Game.log($"crashGuard {ex}");
+                Program.control.BeginInvoke(() =>
+                {
+                    FormErrorSubmit.Show(ex);
+                });
+            }
+        }
+
         #region plotter tracking
 
         private static Dictionary<string, Form> activePlotters = new Dictionary<string, Form>();
@@ -442,5 +465,6 @@ namespace SrvSurvey
         int Width { get; set; }
         int Height { get; set; }
         Point Location { get; set; }
+        Size Size { get; set; }
     }
 }

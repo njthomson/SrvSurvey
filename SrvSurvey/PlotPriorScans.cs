@@ -76,8 +76,8 @@ namespace SrvSurvey
         {
             if (this.IsDisposed) return;
 
-            var showPlotter = (game.showBodyPlotters || game.mode == GameMode.SAA);
-                
+            var showPlotter = (game.showBodyPlotters || game.mode == GameMode.SAA || newMode == GameMode.Codex);
+
             if (!showPlotter && game.systemBody != null && game.showBodyPlotters)
                 showPlotter = SystemData.isWithinLastDssDuration();
 
@@ -88,7 +88,7 @@ namespace SrvSurvey
             else if (this.Opacity == 0 && showPlotter)
                 this.reposition(Elite.getWindowRect());
 
-            if (game.systemBody == null)
+            if (game.systemBody == null || game.systemBody.bioSignalCount == 0)
                 Program.closePlotter<PlotPriorScans>();
             else
                 this.Invalidate();

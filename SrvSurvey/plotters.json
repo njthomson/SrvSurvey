@@ -22,6 +22,6 @@
   "PlotSphericalSearch": "right:8, top:8",
   "PlotBioSystem": "left:8, bottom:144",
   "PlotSysStatus": "left:8, bottom:44",
-  "PlotTrackTarget": "center:480, top:8",
-  "PlotGalMap": "center:0, bottom:8"
+  "PlotTrackTarget": "center:480, top:8"
+
 }

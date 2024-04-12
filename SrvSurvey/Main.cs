@@ -17,6 +17,7 @@ namespace SrvSurvey
         private bool lastWindowHasFocus;
         private List<Control> bioCtrls;
         private Dictionary<string, Screenshot> pendingScreenshots = new Dictionary<string, Screenshot>();
+        private bool wasWithinDssDuration;
 
         public Main()
         {
@@ -213,6 +214,7 @@ namespace SrvSurvey
                 try
                 {
                     SiteTemplate.Import();
+                    HumanSiteTemplate.import();
                     await Game.git.refreshPublishedData();
 
                     Game.canonn.init();
@@ -304,32 +306,40 @@ namespace SrvSurvey
             else
                 Program.closePlotter<PlotGuardianSystem>();
 
+            if (Game.settings.autoShowPlotGalMapTest && PlotGalMap.allowPlotter)
+                Program.showPlotter<PlotGalMap>();
+            else
+                Program.closePlotter<PlotGalMap>();
+
             // Why was this necessary? (Which plotter is getting missed now?)
             //Program.invalidateActivePlotters();
         }
 
         private void settingsFolderWatcher_Changed(object sender, FileSystemEventArgs e)
         {
-            if (!this.IsHandleCreated) return;
+            if (!this.IsHandleCreated || this.IsDisposed) return;
 
-            this.Invoke((MethodInvoker)delegate
+            Program.crashGuard(() =>
             {
                 Application.DoEvents();
                 this.checkFullScreenGraphics();
-            });
+            }, true);
         }
 
         private void logFolderWatcher_Created(object sender, FileSystemEventArgs e)
         {
-            this.Invoke((MethodInvoker)delegate
+            if (!this.IsHandleCreated || this.IsDisposed) return;
+            Program.crashGuard(() =>
             {
+
                 Game.log($"New journal file detected: {e.Name} (existing game: {this.game != null})");
                 if (this.game == null)
                 {
                     Application.DoEvents();
                     this.newGame();
                 }
-            });
+
+            }, true);
         }
 
         private void removeGame()
@@ -428,6 +438,8 @@ namespace SrvSurvey
             var gameMode = game.cmdr.isOdyssey ? "live" : "legacy";
             this.txtCommander.Text = $"{game.Commander} (FID:{game.fid}, mode:{gameMode})";
             this.txtMode.Text = game.mode.ToString();
+            if (game.mode == GameMode.Docked && game.humanSite != null)
+                this.txtMode.Text += ": " + game.humanSite.name;
 
             if (game.atMainMenu)
             {
@@ -510,18 +522,18 @@ namespace SrvSurvey
             {
                 txtBodyBioSignals.Text = txtBodyBioValues.Text = "-";
 
-                Program.closePlotter<PlotBioStatus>();
-                Program.closePlotter<PlotGrounded>();
-                Program.closePlotter<PlotTrackers>();
-                Program.closePlotter<PlotPriorScans>();
+                //Program.closePlotter<PlotBioStatus>();
+                //Program.closePlotter<PlotGrounded>();
+                //Program.closePlotter<PlotTrackers>();
+                //Program.closePlotter<PlotPriorScans>();
             }
             else if (game.systemBody?.bioSignalCount == 0)
             {
                 foreach (var ctrl in this.bioCtrls) ctrl.Text = "-";
 
-                Program.closePlotter<PlotBioStatus>();
-                Program.closePlotter<PlotGrounded>();
-                Program.closePlotter<PlotPriorScans>();
+                //Program.closePlotter<PlotBioStatus>();
+                //Program.closePlotter<PlotGrounded>();
+                //Program.closePlotter<PlotPriorScans>();
             }
             else
             {
@@ -936,7 +948,8 @@ namespace SrvSurvey
             if (game?.systemBody != null && game.showBodyPlotters)
             {
                 var form = Program.showPlotter<PlotTrackTarget>();
-                form.calculate(Game.settings.targetLatLong);
+                form.targetLocation = Game.settings.targetLatLong;
+                form.calculate(Game.settings.targetLatLong); // TODO: retire
             }
         }
 
@@ -955,6 +968,7 @@ namespace SrvSurvey
                 Program.closePlotter<PlotTrackTarget>();
                 this.updateTrackTargetTexts();
             }
+            Elite.setFocusED();
         }
 
         private void btnPasteLatLong_Click(object sender, EventArgs e)
@@ -968,6 +982,7 @@ namespace SrvSurvey
                 setTargetLatLong();
                 this.updateTrackTargetTexts();
             }
+            Elite.setFocusED();
         }
 
         private void btnClearTarget_Click(object sender, EventArgs e)
@@ -976,6 +991,7 @@ namespace SrvSurvey
             Game.settings.Save();
 
             this.updateTrackTargetTexts();
+            Elite.setFocusED();
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -1008,6 +1024,21 @@ namespace SrvSurvey
                 Game.log($"EliteDangerous process died?!");
                 game.journals.fakeShutdown();
                 this.removeGame();
+            }
+
+            // check/clear the systemBody reference we're holding onto for some duration after a DSS scan completes
+            if (game != null)
+            {
+                var isWithinDssDuration = SystemData.isWithinLastDssDuration();
+                if (isWithinDssDuration)
+                {
+                    this.wasWithinDssDuration = true;
+                }
+                else if (this.wasWithinDssDuration && !isWithinDssDuration)
+                {
+                    game.fireUpdate(true);
+                    this.wasWithinDssDuration = false;
+                }
             }
         }
 
@@ -1138,11 +1169,15 @@ namespace SrvSurvey
 
         private void ScreenshotWatcher_Created(object sender, FileSystemEventArgs e)
         {
-            var matchFound = this.pendingScreenshots.ContainsKey(e.FullPath);
-            Game.log($"Screenshot created: {e.FullPath}, matchFound: {matchFound}");
+            if (this.IsDisposed) return;
+            Program.crashGuard(() =>
+            {
+                var matchFound = this.pendingScreenshots.ContainsKey(e.FullPath);
+                Game.log($"Screenshot created: {e.FullPath}, matchFound: {matchFound}");
 
-            if (matchFound)
-                this.processScreenshot(this.pendingScreenshots[e.FullPath], e.FullPath);
+                if (matchFound)
+                    this.processScreenshot(this.pendingScreenshots[e.FullPath], e.FullPath);
+            });
         }
 
         private void processScreenshot(Screenshot entry, string imageFilename)

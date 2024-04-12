@@ -2,6 +2,7 @@
 using SrvSurvey.game;
 using SrvSurvey.units;
 using System.Diagnostics;
+using System.Reflection;
 
 namespace SrvSurvey
 {
@@ -674,7 +675,7 @@ namespace SrvSurvey
         //protected TrackingDelta? srvLocation;
     }
 
-    internal class PlotBaseSelectable : PlotBase, PlotterForm
+    internal abstract class PlotBaseSelectable : PlotBase, PlotterForm
     {
         protected int selectedIndex = 0;
         private Point[] ptMain;
@@ -842,24 +843,17 @@ namespace SrvSurvey
                 setPlotterPositions(defaultPlotterPositionPath);
             }
 
-            // add default values if any single plotter is missing
-            var allPlotters = new string[] {
-              "PlotBioStatus",
-              "PlotFlightWarning",
-              "PlotFSS",
-              "PlotGrounded",
-              "PlotGuardians",
-              "PlotGuardianStatus",
-              "PlotGuardianSystem",
-              "PlotPriorScans",
-              "PlotPulse",
-              "PlotRamTah",
-              "PlotSphericalSearch",
-              "PlotBioSystem",
-              "PlotSysStatus",
-              "PlotTrackTarget",
-              "PlotGalMap",
-            };
+            // start by collecting all non-abstract classes derived from PlotBase
+            var allPlotters = Assembly.GetExecutingAssembly()
+                .GetTypes()
+                .Where(_ => typeof(PlotBase).IsAssignableFrom(_) && !_.IsAbstract)
+                .Select(_ => _.Name)
+                .ToList();
+            // include plotters not yet derived from the base class
+            allPlotters.AddRange("PlotBioStatus,PlotGrounded,PlotPulse".Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries));
+
+            // These plotters are not movable and are intentionally missing from plotters.json
+            // PlotGalMap, PlotGuardianBeaconStatus, PlotTrackers
 
             Dictionary<string, PlotPos>? defaultPositions = null;
             foreach (var name in allPlotters)
@@ -867,10 +861,9 @@ namespace SrvSurvey
                 if (!plotterPositions.ContainsKey(name))
                 {
                     if (defaultPositions == null) defaultPositions = readPlotterPositions(defaultPlotterPositionPath);
-                    if (!defaultPositions.ContainsKey(name))
-                        MessageBox.Show($"Missing default position for plotter: {name}", "Oops", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    else
+                    if (defaultPositions.ContainsKey(name))
                         plotterPositions[name] = defaultPositions[name];
+                    // ignore plotters not present in the master file
                 }
             }
         }
@@ -881,6 +874,9 @@ namespace SrvSurvey
             File.Copy(defaultPlotterPositionPath, customPlotterPositionPath, true);
         }
 
+        /// <summary>
+        /// Returns a dictionary of PlotPos objects by name, parsed from the given .json file
+        /// </summary>
         private static Dictionary<string, PlotPos> readPlotterPositions(string filepath)
         {
             Game.log($"Reading PlotterPositions from: {filepath}");
@@ -896,6 +892,9 @@ namespace SrvSurvey
             return newPositions;
         }
 
+        /// <summary>
+        /// Parses given file and applies it as current plotter positions
+        /// </summary>
         private static void setPlotterPositions(string filepath)
         {
             plotterPositions = readPlotterPositions(filepath);
@@ -917,28 +916,45 @@ namespace SrvSurvey
             }
         }
 
-        public static float getOpacity(PlotterForm form)
+        public static float getOpacity(PlotterForm form, float defaultValue = -1)
         {
             if (Program.tempHideAllPlotters) return 0;
 
-            var pp = plotterPositions[form.GetType().Name];
-            return pp.opacity ?? Game.settings.Opacity;
+            var pp = plotterPositions.GetValueOrDefault(form.GetType().Name);
+
+            if (pp?.opacity.HasValue == true)
+                return pp.opacity.Value;
+            else if (defaultValue >= 0)
+                return defaultValue;
+            else
+                return Game.settings.Opacity;
         }
 
         public static void reposition(PlotterForm form, Rectangle rect)
         {
+            var pt = getPlotterLocation(form.GetType().Name, form.Size, rect);
+            if (pt != Point.Empty)
+                form.Location = pt;
+        }
+
+        public static Point getPlotterLocation(string formName, Size sz, Rectangle rect)
+        {
+            // skip plotters that are fixed
+            if (!plotterPositions.ContainsKey(formName))
+                return Point.Empty;
+
+            var pp = plotterPositions[formName];
+
             if (rect == Rectangle.Empty)
                 rect = Elite.getWindowRect();
-
-            var pp = plotterPositions[form.GetType().Name];
 
             var left = 0;
             if (pp.h == Horiz.Left)
                 left = rect.Left + pp.x;
             else if (pp.h == Horiz.Center)
-                left = rect.Left + (rect.Width / 2) - (form.Width / 2) + pp.x;
+                left = rect.Left + (rect.Width / 2) - (sz.Width / 2) + pp.x;
             else if (pp.h == Horiz.Right)
-                left = rect.Right - form.Width - pp.x;
+                left = rect.Right - sz.Width - pp.x;
             else if (pp.h == Horiz.OS)
                 left = pp.x;
 
@@ -946,13 +962,13 @@ namespace SrvSurvey
             if (pp.v == Vert.Top)
                 top = rect.Top + pp.y;
             else if (pp.v == Vert.Middle)
-                top = rect.Top + (rect.Height / 2) - (form.Height / 2) + pp.y;
+                top = rect.Top + (rect.Height / 2) - (sz.Height / 2) + pp.y;
             else if (pp.v == Vert.Bottom)
-                top = rect.Bottom - form.Height - pp.y;
+                top = rect.Bottom - sz.Height - pp.y;
             else if (pp.v == Vert.OS)
                 top = pp.y;
 
-            form.Location = new Point(left, top);
+            return new Point(left, top);
         }
 
         #endregion

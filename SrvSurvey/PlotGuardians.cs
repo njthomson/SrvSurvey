@@ -1203,11 +1203,15 @@ namespace SrvSurvey
 
         private void Watcher_Changed(object sender, FileSystemEventArgs e)
         {
-            Game.log("Reloading watched site template");
-            Application.DoEvents(); Application.DoEvents(); Application.DoEvents(); Application.DoEvents();
-            SiteTemplate.Import(true);
-            this.loadSiteTemplate();
-            this.Invalidate();
+            if (this.IsDisposed) return;
+            Program.crashGuard(() =>
+            {
+                Game.log("Reloading watched site template");
+                Application.DoEvents(); Application.DoEvents(); Application.DoEvents(); Application.DoEvents();
+                SiteTemplate.Import(true);
+                this.loadSiteTemplate();
+                this.Invalidate();
+            }, true);
         }
 
         protected override void OnPaintBackground(PaintEventArgs e)

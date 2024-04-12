@@ -1039,7 +1039,7 @@ namespace SrvSurvey.game
         /// </summary>
         public static bool isWithinLastDssDuration()
         {
-            var duration = DateTime.Now - SystemData.lastDssCompleteAt;
+            var duration = DateTime.UtcNow - SystemData.lastDssCompleteAt;
             var withinDuration = duration.TotalSeconds < Game.settings.keepBioPlottersVisibleDuration;
             return withinDuration;
         }

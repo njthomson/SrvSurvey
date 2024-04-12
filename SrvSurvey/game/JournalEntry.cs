@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using SrvSurvey.game;
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
@@ -66,6 +67,7 @@ namespace SrvSurvey
     class Location : LocationEntry, ISystemAddress, ISystemDataStarter
     {
         // { "timestamp":"2023-01-11T03:44:33Z", "event":"Location", "Latitude":-15.325527, "Longitude":6.507746, "DistFromStarLS":513.174241, "Docked":false, "InSRV":true, "StarSystem":"Col 173 Sector JX-K b24-0", "SystemAddress":684107179361, "StarPos":[993.06250,-188.18750,-173.53125], "SystemAllegiance":"Guardian", "SystemEconomy":"$economy_None;", "SystemEconomy_Localised":"None", "SystemSecondEconomy":"$economy_None;", "SystemSecondEconomy_Localised":"None", "SystemGovernment":"$government_None;", "SystemGovernment_Localised":"None", "SystemSecurity":"$GAlAXY_MAP_INFO_state_anarchy;", "SystemSecurity_Localised":"Anarchy", "Population":0, "Body":"Col 173 Sector JX-K b24-0 B 4", "BodyID":26, "BodyType":"Planet" }
+        // { "timestamp":"2024-04-10T03:18:13Z", "event":"Location", "DistFromStarLS":18.841613, "Docked":true, "StationName":"Oyekan Prospecting Hub", "StationType":"OnFootSettlement", "MarketID":3888520448, "StationFaction":{ "Name":"Yaurnai Jet Hand Gang" }, "StationGovernment":"$government_Anarchy;", "StationGovernment_Localised":"Anarchy", "StationServices":[ "dock", "autodock", "blackmarket", "commodities", "contacts", "missions", "refuel", "repair", "engineer", "missionsgenerated", "facilitator", "flightcontroller", "stationoperations", "stationMenu" ], "StationEconomy":"$economy_Extraction;", "StationEconomy_Localised":"Extraction", "StationEconomies":[ { "Name":"$economy_Extraction;", "Name_Localised":"Extraction", "Proportion":1.000000 } ], "Taxi":false, "Multicrew":false, "StarSystem":"Yaurnai", "SystemAddress":669612713401, "StarPos":[-99.65625,116.56250,43.40625], "SystemAllegiance":"Independent", "SystemEconomy":"$economy_Extraction;", "SystemEconomy_Localised":"Extraction", "SystemSecondEconomy":"$economy_Industrial;", "SystemSecondEconomy_Localised":"Industrial", "SystemGovernment":"$government_Corporate;", "SystemGovernment_Localised":"Corporate", "SystemSecurity":"$SYSTEM_SECURITY_medium;", "SystemSecurity_Localised":"Medium Security", "Population":3143129, "Body":"Yaurnai 1", "BodyID":8, "BodyType":"Planet", "Factions":[ { "Name":"Yaurnai Independent Bridge", "FactionState":"None", "Government":"Patronage", "Influence":0.158052, "Allegiance":"Independent", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":2.970000 }, { "Name":"Stardreamer Systems", "FactionState":"None", "Government":"Corporate", "Influence":0.031809, "Allegiance":"Independent", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":100.000000 }, { "Name":"Yaurnai Partners", "FactionState":"None", "Government":"Corporate", "Influence":0.169980, "Allegiance":"Independent", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":1.980000 }, { "Name":"Raven Colonial Corporation", "FactionState":"Expansion", "Government":"Corporate", "Influence":0.471173, "Allegiance":"Independent", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "SquadronFaction":true, "MyReputation":100.000000, "ActiveStates":[ { "State":"Expansion" } ] }, { "Name":"Movement for Yaurnai Liberals", "FactionState":"None", "Government":"Democracy", "Influence":0.119284, "Allegiance":"Independent", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":4.620000 }, { "Name":"Yaurnai Jet Hand Gang", "FactionState":"None", "Government":"Anarchy", "Influence":0.049702, "Allegiance":"Independent", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":5.940000, "RecoveringStates":[ { "State":"PirateAttack", "Trend":0 } ] } ], "SystemFaction":{ "Name":"Raven Colonial Corporation", "FactionState":"Expansion" } }
 
         public double DistFromStarLS { get; set; }
         public bool Docked { get; set; }
@@ -86,6 +88,19 @@ namespace SrvSurvey
         public string Body { get; set; }
         public int BodyID { get; set; }
         public BodyType BodyType { get; set; }
+
+        public string StationName;
+        public StationType StationType;
+
+        public long MarketID;
+        // StationFaction ?
+        public string? StationGovernment;
+        public string? StationGovernment_Localised;
+        public List<string>? StationServices;
+        public string? StationEconomy;
+        public string? StationEconomy_Localised;
+        // StationEconomies ?
+        // SystemFaction ?
     }
 
     class Died : JournalEntry
@@ -96,12 +111,101 @@ namespace SrvSurvey
     class ApproachSettlement : LocationEntry, ISystemAddress
     {
         // { "timestamp":"2023-01-06T00:14:38Z", "event":"ApproachSettlement", "Name":"$Ancient_Tiny_001:#index=1;", "Name_Localised":"Guardian Structure", "SystemAddress":2881788519801, "BodyID":7, "BodyName":"Col 173 Sector IJ-G b27-1 A 1", "Latitude":-33.219879, "Longitude":87.628571 }
+        // { "timestamp":"2024-04-09T06:44:33Z", "event":"ApproachSettlement", "Name":"Oyekan Prospecting Hub", "MarketID":3888520448, "StationFaction":{ "Name":"Yaurnai Jet Hand Gang" }, "StationGovernment":"$government_Anarchy;", "StationGovernment_Localised":"Anarchy", "StationServices":[ "dock", "autodock", "blackmarket", "commodities", "contacts", "missions", "refuel", "repair", "engineer", "missionsgenerated", "facilitator", "flightcontroller", "stationoperations", "stationMenu" ], "StationEconomy":"$economy_Extraction;", "StationEconomy_Localised":"Extraction", "StationEconomies":[ { "Name":"$economy_Extraction;", "Name_Localised":"Extraction", "Proportion":1.000000 } ], "SystemAddress":669612713401, "BodyID":8, "BodyName":"Yaurnai 1", "Latitude":47.955894, "Longitude":-107.683449 }
 
         public string Name { get; set; }
         public string Name_Localised { get; set; }
         public long SystemAddress { get; set; }
         public int BodyID { get; set; }
         public string BodyName { get; set; }
+
+        public long MarketID;
+        // StationFaction ?
+        public List<string>? StationServices;
+        public string? StationGovernment;
+        public string? StationGovernment_Localised;
+        public string? StationEconomy;
+        public string? StationEconomy_Localised;
+        // StationEconomies ?
+    }
+
+    class DockingRequested : JournalEntry
+    {
+        // { "timestamp":"2024-02-10T07:10:27Z", "event":"DockingRequested", "MarketID":3888520704, "StationName":"Kvitka Synthetics Workshop", "StationType":"OnFootSettlement", "LandingPads":{ "Small":0, "Medium":0, "Large":1 } }
+
+        public long MarketID;
+        public string StationName;
+        public StationType StationType;
+        public LandingPads LandingPads;
+    }
+
+    class DockingGranted : JournalEntry
+    {
+        // { "timestamp":"2024-04-09T06:45:09Z", "event":"DockingGranted", "LandingPad":1, "MarketID":3888520448, "StationName":"Oyekan Prospecting Hub", "StationType":"OnFootSettlement" }
+
+        public int LandingPad;
+        public long MarketID;
+        public string StationName;
+        public StationType StationType;
+    }
+
+    class Docked : JournalEntry
+    {
+        // { "timestamp":"2024-04-09T06:45:51Z", "event":"Docked", "StationName":"Oyekan Prospecting Hub", "StationType":"OnFootSettlement", "Taxi":false, "Multicrew":false, "StarSystem":"Yaurnai", "SystemAddress":669612713401, "MarketID":3888520448, "StationFaction":{ "Name":"Yaurnai Jet Hand Gang" }, "StationGovernment":"$government_Anarchy;", "StationGovernment_Localised":"Anarchy", "StationServices":[ "dock", "autodock", "blackmarket", "commodities", "contacts", "missions", "refuel", "repair", "engineer", "missionsgenerated", "facilitator", "flightcontroller", "stationoperations", "stationMenu" ], "StationEconomy":"$economy_Extraction;", "StationEconomy_Localised":"Extraction", "StationEconomies":[ { "Name":"$economy_Extraction;", "Name_Localised":"Extraction", "Proportion":1.000000 } ], "DistFromStarLS":18.841609, "LandingPads":{ "Small":1, "Medium":0, "Large":0 } }
+
+        public string StationName;
+        public StationType StationType;
+        public bool Taxi;
+        public bool Multicrew;
+        public string StarSystem;
+        public long SystemAddress;
+        public long MarketID;
+        // StationFaction ?
+        public string? StationGovernment;
+        public string? StationGovernment_Localised;
+        public List<string>? StationServices;
+        public string? StationEconomy;
+        public string? StationEconomy_Localised;
+        // StationEconomies ?
+        public double DistFromStarLS;
+        public LandingPads LandingPads;
+    }
+
+    [JsonConverter(typeof(StringEnumConverter))]
+    internal enum StationType
+    {
+        Bernal,
+        Coriolis,
+        Ocellus,
+        Orbis,
+        Outpost,
+        MegaShip,
+        FleetCarrier,
+        OnFootSettlement,
+        CraterOutpost,
+    }
+
+    class Undocked : JournalEntry
+    {
+        // { "timestamp":"2024-04-09T06:38:15Z", "event":"Undocked", "StationName":"Bellamy Extraction Base", "StationType":"OnFootSettlement", "MarketID":3888519680, "Taxi":false, "Multicrew":false }
+
+        public string StationName;
+        public StationType StationType;
+        public long MarketID;
+        public bool Taxi;
+        public bool Multicrew;
+    }
+
+    internal class LandingPads
+    {
+        public int Large;
+        public int Medium;
+        public int Small;
+
+        public override string ToString()
+        {
+            return $"Small:{this.Small}, Medium:{this.Medium}, Large:{this.Large}";
+        }
     }
 
     class Touchdown : LocationEntry, ISystemAddress
@@ -277,7 +381,7 @@ namespace SrvSurvey
 
         public bool Docked { get; set; }
         public string StationName { get; set; }
-        public string StationType { get; set; }
+        public StationType StationType { get; set; }
         public long MarketID { get; set; }
         // StationFaction // TODO: { "Name":"FleetCarrier" }
         public string StationGovernment { get; set; }

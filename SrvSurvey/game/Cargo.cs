@@ -49,16 +49,19 @@ namespace SrvSurvey
                 // start watching the status file
                 cargo.fileWatcher = new FileSystemWatcher(Game.settings.watchedJournalFolder, CargoFile.Filename);
                 cargo.fileWatcher.NotifyFilter = NotifyFilters.LastWrite;
-                cargo.fileWatcher.Changed += cargo.FileWatcher_Changed;
+                cargo.fileWatcher.Changed += cargo.fileWatcher_Changed;
                 cargo.fileWatcher.EnableRaisingEvents = true;
             }
 
             return cargo;
         }
 
-        private void FileWatcher_Changed(object sender, FileSystemEventArgs e)
+        private void fileWatcher_Changed(object sender, FileSystemEventArgs e)
         {
-            this.parseFile();
+            Program.crashGuard(() =>
+            {
+                this.parseFile();
+            });
         }
 
         public void Dispose()
@@ -77,12 +80,6 @@ namespace SrvSurvey
                     this.fileWatcher = null;
                 }
             }
-        }
-
-        private void fileWatcher_Changed(object sender, FileSystemEventArgs e)
-        {
-            PlotPulse.LastChanged = DateTime.Now;
-            this.parseFile();
         }
 
         private void parseFile()

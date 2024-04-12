@@ -43,9 +43,11 @@ namespace SrvSurvey
         private void JournalWatcher_Changed(object sender, FileSystemEventArgs e)
         {
             if (this.disposed) return;
-
-            PlotPulse.LastChanged = DateTime.Now;
-            this.readEntries();
+            Program.crashGuard(() =>
+            {
+                PlotPulse.LastChanged = DateTime.Now;
+                this.readEntries();
+            });
         }
 
         protected override JournalEntry? readEntry()

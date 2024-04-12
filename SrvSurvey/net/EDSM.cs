@@ -94,6 +94,14 @@ namespace SrvSurvey.net.EDSM
         public string? terraformingState;
 
         public List<EdsmRing> rings;
+
+        public EdsmDiscoverer? discovery;
+    }
+
+    internal class EdsmDiscoverer
+    {
+        public string commander;
+        public DateTime date;
     }
 
     internal class EdsmSystem

@@ -108,7 +108,7 @@ namespace SrvSurvey
         {
             if (this.IsDisposed) return;
 
-            var showPlotter = newMode == GameMode.SAA || game.showBodyPlotters;
+            var showPlotter = newMode == GameMode.SAA || game.showBodyPlotters || newMode == GameMode.Codex;
 
             if (!showPlotter && game.systemBody != null && game.showBodyPlotters)
                 showPlotter = SystemData.isWithinLastDssDuration();
@@ -122,7 +122,7 @@ namespace SrvSurvey
                 this.reposition(Elite.getWindowRect());
             }
 
-            if (game.systemBody == null)
+            if (game.systemBody == null || game.systemBody.bioSignalCount == 0)
                 Program.closePlotter<PlotBioStatus>();
         }
 

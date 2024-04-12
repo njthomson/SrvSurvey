@@ -35,7 +35,7 @@ namespace SrvSurvey
         private void ErrorSubmit_Load(object sender, EventArgs e)
         {
             // show stack information on the form
-            txtStack.Text = ex.GetType().Name + ":" + ex.Message + "\r\n\r\n" + ex.StackTrace;
+            txtStack.Text = ex.ToString();
 
             this.logLineCount = Math.Min(Game.logs.Count, 20);
             checkIncludeLogs.Text += $" (last {this.logLineCount})";

@@ -84,7 +84,6 @@ namespace SrvSurvey
             this.distance = Util.getSystemDistance(game.cmdr.sphereLimit.centerStarPos, lastSystem.StarPos);
 
             this.Invalidate();
-
         }
 
         protected override void OnPaintBackground(PaintEventArgs e)

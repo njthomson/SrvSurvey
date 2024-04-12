@@ -80,8 +80,11 @@ namespace SrvSurvey
 
         private void fileWatcher_Changed(object sender, FileSystemEventArgs e)
         {
-            PlotPulse.LastChanged = DateTime.Now;
-            this.parseStatusFile();
+            Program.crashGuard(() =>
+            {
+                PlotPulse.LastChanged = DateTime.Now;
+                this.parseStatusFile();
+            });
         }
 
         private void parseStatusFile()

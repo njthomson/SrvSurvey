@@ -107,6 +107,7 @@ namespace SrvSurvey
             lblScreenshotSource = new Label();
             lblScreenshotTarget = new Label();
             tabPage6 = new TabPage();
+            checkBox19 = new CheckBox();
             label13 = new Label();
             checkBox16 = new CheckBox();
             numericUpDown1 = new NumericUpDown();
@@ -1115,6 +1116,7 @@ namespace SrvSurvey
             // tabPage6
             // 
             tabPage6.BackColor = SystemColors.Control;
+            tabPage6.Controls.Add(checkBox19);
             tabPage6.Controls.Add(label13);
             tabPage6.Controls.Add(checkBox16);
             tabPage6.Controls.Add(numericUpDown1);
@@ -1133,6 +1135,20 @@ namespace SrvSurvey
             tabPage6.Size = new Size(490, 404);
             tabPage6.TabIndex = 5;
             tabPage6.Text = "Exploration";
+            // 
+            // checkBox19
+            // 
+            checkBox19.AutoSize = true;
+            checkBox19.Checked = true;
+            checkBox19.CheckState = CheckState.Checked;
+            checkBox19.Location = new Point(10, 263);
+            checkBox19.Margin = new Padding(4, 3, 4, 3);
+            checkBox19.Name = "checkBox19";
+            checkBox19.Size = new Size(320, 19);
+            checkBox19.TabIndex = 24;
+            checkBox19.Tag = "autoShowPlotGalMapTest";
+            checkBox19.Text = "Show exploration preview in Galaxy Map (experimental)";
+            checkBox19.UseVisualStyleBackColor = true;
             // 
             // label13
             // 
@@ -1644,5 +1660,6 @@ namespace SrvSurvey
         private NumericUpDown numMinBioDuration;
         private CheckBox checkBox18;
         private Label label15;
+        private CheckBox checkBox19;
     }
 }
