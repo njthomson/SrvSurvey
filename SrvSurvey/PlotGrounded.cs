@@ -182,13 +182,14 @@ namespace SrvSurvey
         private void Game_modeChanged(GameMode newMode, bool force)
         {
             if (this.Opacity > 0 && !game.showBodyPlotters)
-            {
                 this.Opacity = 0;
-            }
             else if (this.Opacity == 0 && game.showBodyPlotters)
-            {
                 this.reposition(Elite.getWindowRect());
-            }
+
+            if (game.systemBody == null)
+                Program.closePlotter<PlotGrounded>();
+            else
+                this.Invalidate();
         }
 
         private void Status_StatusChanged(bool blink)

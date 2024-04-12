@@ -1655,7 +1655,7 @@ namespace SrvSurvey.game
                     }
                 }
             }
-            else if (entry.MarketID > 0 && this.systemBody != null)
+            else if (entry.MarketID > 0 && this.systemBody != null && Debugger.IsAttached)
             {
                 // Human site
                 this.humanSite = new HumanSiteData(entry);
@@ -1666,14 +1666,14 @@ namespace SrvSurvey.game
 
         private void onJournalEntry(DockingRequested entry)
         {
-            if (entry.StationType == StationType.OnFootSettlement && this.humanSite?.marketId == entry.MarketID)
+            if (entry.StationType == StationType.OnFootSettlement && this.humanSite?.marketId == entry.MarketID && Debugger.IsAttached)
                 this.humanSite.dockingRequested(entry);
 
         }
 
         private void onJournalEntry(DockingGranted entry)
         {
-            if (entry.StationType == StationType.OnFootSettlement && this.humanSite?.marketId == entry.MarketID)
+            if (entry.StationType == StationType.OnFootSettlement && this.humanSite?.marketId == entry.MarketID && Debugger.IsAttached)
                 this.humanSite.dockingGranted(entry);
         }
 
@@ -1681,7 +1681,7 @@ namespace SrvSurvey.game
         {
             // store that we've docked here
             this.cmdr.setMarketId(entry.MarketID);
-            if (entry.StationType != StationType.OnFootSettlement || this.systemData == null) return;
+            if (entry.StationType != StationType.OnFootSettlement || this.systemData == null || !Debugger.IsAttached) return;
 
 
             if (this.humanSite == null)

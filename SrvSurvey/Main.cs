@@ -884,7 +884,8 @@ namespace SrvSurvey
                 }
 
                 // force a re-render
-                Program.showPlotter<PlotTrackers>()?.prepTrackers();
+                if (game.showBodyPlotters)
+                    Program.showPlotter<PlotTrackers>()?.prepTrackers();
             }
 
             // submit a Landscape survey
