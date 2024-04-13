@@ -73,7 +73,7 @@ namespace SrvSurvey.canonn
         {
             Game.log($"Requesting getSystemPoi: {systemName}");
 
-            var json = await client.GetStringAsync($"https://us-central1-canonn-api-236217.cloudfunctions.net/query/getSystemPoi?system={systemName}&odyssey=Y&cmdr={cmdrName}");
+            var json = await client.GetStringAsync($"https://us-central1-canonn-api-236217.cloudfunctions.net/query/getSystemPoi?system={Uri.EscapeDataString(systemName)}&odyssey=Y&cmdr={Uri.EscapeDataString(cmdrName)}");
             var systemPoi = JsonConvert.DeserializeObject<SystemPoi>(json)!;
 
             return systemPoi;
@@ -949,7 +949,7 @@ namespace SrvSurvey.canonn
             foreach (var systemName in allSystems)
             {
                 Game.log($"Checking: ({(100.0f / allSystems.Count * results.Count).ToString("#.#")}%) {systemName}");
-                var json = await client.GetStringAsync($"https://api.canonn.tech/grreports?_limit=1&systemName={systemName}");
+                var json = await client.GetStringAsync($"https://api.canonn.tech/grreports?_limit=1&systemName={Uri.EscapeDataString(systemName)}");
                 results[systemName] = json != "[]";
             }
 
@@ -966,7 +966,7 @@ namespace SrvSurvey.canonn
             foreach (var bodyName in allBodies)
             {
                 Game.log($"Checking: ({Math.Round(100.0f / allBodies.Count * results.Count)}%) {bodyName}");
-                var json = await client.GetStringAsync($"https://api.canonn.tech/grreports?_limit=1&bodyName={bodyName}");
+                var json = await client.GetStringAsync($"https://api.canonn.tech/grreports?_limit=1&bodyName={Uri.EscapeDataString(bodyName)}");
                 results[bodyName] = json != "[]";
             }
 

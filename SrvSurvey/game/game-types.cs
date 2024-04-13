@@ -447,7 +447,7 @@ namespace SrvSurvey.game
         {
             if (Game.activeGame == null) return;
 
-            var url = $"https://docs.google.com/forms/d/e/1FAIpQLSem1JJuPaRdBReaqowPTUelptVmLkJ-XtOP_R8ug1EHFSQTCA/viewform?usp=pp_url&entry.1338642726={Game.activeGame?.cmdr.commander}&entry.2050947313={this.name}";
+            var url = $"https://docs.google.com/forms/d/e/1FAIpQLSem1JJuPaRdBReaqowPTUelptVmLkJ-XtOP_R8ug1EHFSQTCA/viewform?usp=pp_url&entry.1338642726={Uri.EscapeDataString(Game.activeGame.cmdr.commander)}&entry.2050947313={Uri.EscapeDataString(this.name)}";
 
             // was FSS completed
             if (this.fssComplete)
@@ -511,8 +511,8 @@ namespace SrvSurvey.game
         {
             if (Game.activeGame == null) return;
 
-            var cmdrName = Game.activeGame?.cmdr.commander;
-            var url = $"https://docs.google.com/spreadsheets/d/1U00SXnU0fGn_97mTQTlN6JL99jcHR3ox962BFqnpHGA/gviz/tq?gid=1930322502&single=true&tq=select * where A contains \"{cmdrName}\"";
+            var cmdrName = Game.activeGame.cmdr.commander;
+            var url = $"https://docs.google.com/spreadsheets/d/1U00SXnU0fGn_97mTQTlN6JL99jcHR3ox962BFqnpHGA/gviz/tq?gid=1930322502&single=true&tq=select * where A contains \"{Uri.EscapeDataString(cmdrName)}\"";
             Game.log($"Requesting systems in current reservation\r\n{url}");
             var response = await new HttpClient().GetStringAsync(url);
 

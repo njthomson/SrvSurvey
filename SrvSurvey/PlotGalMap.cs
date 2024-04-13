@@ -1,6 +1,5 @@
 ﻿using SrvSurvey.game;
 using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
 
 namespace SrvSurvey
 {
@@ -39,6 +38,7 @@ namespace SrvSurvey
         private void findBlackBox()
         {
             var gameRect = Elite.getWindowRect();
+            var boxColor = Color.Black;
 
             var hh = (int)(gameRect.Height * 0.5f);
             var watchRect = new Rectangle(
@@ -54,18 +54,18 @@ namespace SrvSurvey
                     g.CopyFromScreen(watchRect.Left, watchRect.Top, 0, 0, b.Size);
 
                     // up up until we hit pure black
-                    while (y > 0 && !Util.isCloseColor(b.GetPixel(x, y), Color.Black, 1)) y -= 2;
+                    while (y > 0 && !Util.isCloseColor(b.GetPixel(x, y), boxColor, 1)) y -= 2;
 
                     // exit early if we did not find the black box
                     if (y == 0) return;
                     boxSz.Height = hh - y;
 
                     // go left and right until we find not-black
-                    while (x > 0 && Util.isCloseColor(b.GetPixel(x, y), Color.Black, 1)) x -= 1;
+                    while (x > 0 && Util.isCloseColor(b.GetPixel(x, y), boxColor, 1)) x -= 1;
                     var x1 = x;
 
                     x = gameRect.Width / 2;
-                    while (x < b.Width && Util.isCloseColor(b.GetPixel(x, y), Color.Black, 1)) x += 1;
+                    while (x < b.Width && Util.isCloseColor(b.GetPixel(x, y), boxColor, 1)) x += 1;
                     boxSz.Width = x - x1;
                 }
             }
@@ -258,6 +258,13 @@ namespace SrvSurvey
 
                 if (this.nextStatus != null)
                     this.drawStatus66(this.nextStatus, this.nextSubStatus, this.Width * 0.34f);
+
+                if (this.targetStatus != null || this.nextStatus != null)
+                {
+                    dtx = eight;
+                    dty = oneFour;
+                    drawTextAt("(according to edsm.net)", GameColors.brushGameOrangeDim, GameColors.fontSmall);
+                }
             }
             catch (Exception ex)
             {

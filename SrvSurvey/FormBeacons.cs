@@ -574,7 +574,7 @@ namespace SrvSurvey
             var entry = (GuardianGridEntry)this.grid.SelectedItems[0].Tag;
 
             // https://canonn-science.github.io/canonn-signals/?system=Synuefe%20EN-H%20d11-106
-            Util.openLink($"https://canonn-science.github.io/canonn-signals/?system={entry.systemName}");
+            Util.openLink($"https://canonn-science.github.io/canonn-signals/?system={Uri.EscapeDataString(entry.systemName)}");
         }
 
         private void menuOpenSiteSurvey_Click(object sender, EventArgs e)

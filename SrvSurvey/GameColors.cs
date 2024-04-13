@@ -155,7 +155,8 @@ namespace SrvSurvey
         public static PathGradientBrush shiningCmdrBrush;
 
         public static Color LimeIsh = Color.FromArgb(200, Color.Lime);
-        public static Color Orange = Color.FromArgb(255, 240, 109, 29);
+        public static Color Orange = Color.FromArgb(255, 255, 111, 0);
+            //Color.FromArgb(255, 240, 109, 29);
         public static Color OrangeDim = Color.FromArgb(255, 95, 48, 3);
         public static Color Cyan = Color.FromArgb(255, 84, 223, 237);
         public static Color DarkCyan = Color.DarkCyan;

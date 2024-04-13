@@ -19,7 +19,7 @@ namespace SrvSurvey.net
         {
             Game.log($"Requesting api/systems: {systemName}");
 
-            var json = await Spansh.client.GetStringAsync($"https://spansh.co.uk/api/systems/field_values/system_names?q={systemName}");
+            var json = await Spansh.client.GetStringAsync($"https://spansh.co.uk/api/systems/field_values/system_names?q={Uri.EscapeDataString(systemName)}");
             var systems = JsonConvert.DeserializeObject<GetSystemResponse>(json)!;
             return systems;
         }

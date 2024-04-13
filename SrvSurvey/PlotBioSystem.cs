@@ -179,12 +179,11 @@ namespace SrvSurvey
             this.dty = eight;
             var sz = new SizeF(six, six);
 
-            this.dty += this.drawTextAt($"System bio signals: {game.systemData?.bioSignalsTotal}", GameColors.brushGameOrange, GameColors.fontSmall).Height + two;
+            this.dty += this.drawTextAt($"System bio signals: {game.systemData!.bioSignalsTotal}", GameColors.brushGameOrange, GameColors.fontSmall).Height + two;
             if (this.dtx > sz.Width) sz.Width = this.dtx;
             this.dtx = six;
 
             var destinationBody = game.status.Destination?.Name?.Replace(game.systemData.name, "").Replace(" ", "");
-
 
             foreach (var body in game.systemData.bodies)
             {
@@ -197,22 +196,24 @@ namespace SrvSurvey
                 // draw body name
                 var txt = bodyName;
                 this.drawTextAt(txt, highlight ? GameColors.brushCyan : GameColors.brushGameOrange, GameColors.fontMiddle);
+                // TODO: Indent to match the widest string
                 this.dtx = forty;
 
                 // and a box for each signal
                 var signalCount = body.bioSignalCount;
+                var sortedOrganisms = body.organisms?.OrderBy(_ => _.genus)?.ToList();
                 for (var n = 0; n < signalCount; n++)
                 {
                     string? genus = null;
                     long reward = -1;
-                    if (body.organisms != null && n < body.organisms.Count)
+                    if (sortedOrganisms != null && n < sortedOrganisms.Count)
                     {
-                        genus = body.organisms[n].genus;
-                        reward = body.organisms[n].reward;
+                        genus = sortedOrganisms[n].genus;
+                        reward = sortedOrganisms[n].reward;
                     }
 
                     PlotBase.drawBioRing(this.g, genus, dtx, dty, reward, highlight ? GameColors.brushCyan : GameColors.brushGameOrange);
-                    g.DrawEllipse(GameColors.penGameOrangeDim1, dtx - 1, dty + 1, 20, 20);
+                    g.DrawEllipse(GameColors.penGameOrangeDim1, dtx - 1, dty + 0.5f, 20, 20);
                     dtx += twoTwo;
 
                     if (this.dtx > sz.Width) sz.Width = this.dtx;
