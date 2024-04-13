@@ -910,6 +910,34 @@ namespace SrvSurvey
                 var parts = msg.Split(' ', 2)!;
                 game.toggleFirstFootfall(parts.Length == 2 ? parts[1] : null);
             }
+
+            if (game.humanSite != null)
+            {
+                var siteLocation = game.humanSite.location;
+                var siteHeading = (decimal)game.humanSite.heading;
+
+                // temp?
+                if (msg == "!!")
+                {
+                    // set site origin as target
+                    Game.settings.targetLatLongActive = true;
+                    Game.settings.targetLatLong = siteLocation;
+                    this.updateTrackTargetTexts();
+                }
+                else if (msg == "..")
+                {
+                    // measure dist/angle from site origin
+                    var radius = game.status.PlanetRadius;
+                    var dist = Util.getDistance(siteLocation, Status.here, radius).ToString("N2");
+                    var angle = Util.getBearing(siteLocation, Status.here) - siteHeading;
+                    if (angle < 0) angle += 360;
+                    var angleTxt = angle.ToString("N2");
+                    // "dist": 67.2, "angle": 36.5
+                    var txt = $"\"dist\": {dist}, \"angle\": {angleTxt}";
+                    Game.log($"Relative to site origin:\r\n\r\n\t{txt}\r\n\r\n\tSite: {siteLocation} / {siteHeading}°\r\n\tcmdr: {Status.here} / {game.status.Heading}°\r\n");
+                    Clipboard.SetText(txt);
+                }
+            }
         }
 
         private void checkFirstFootFall_CheckedChanged(object sender, EventArgs e)

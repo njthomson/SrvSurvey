@@ -32,7 +32,7 @@ namespace SrvSurvey
                 return;
             }
 
-            this.Opacity = Game.settings.Opacity;
+            this.Opacity = PlotPos.getOpacity(this);
             PlotPos.reposition(this, gameRect);
         }
 
@@ -57,15 +57,8 @@ namespace SrvSurvey
             // force a mode switch, that will initialize
             this.Game_modeChanged(game.mode, true);
 
-            //this.Opacity = 1;
             game.journals!.onJournalEntry += Journals_onJournalEntry;
-            //game.nearBody!.bioScanEvent += NearBody_bioScanEvent; // later
         }
-
-        //private void NearBody_bioScanEvent()
-        //{
-        //    this.Invalidate();
-        //}
 
         #region journal events
 

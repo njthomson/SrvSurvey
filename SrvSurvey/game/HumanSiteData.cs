@@ -98,6 +98,7 @@ namespace SrvSurvey.game
         public void docked(Docked entry, int shipHeading)
         {
             this.landingPads = entry.LandingPads;
+            if (this.targetPad == 0) return; // (when in a taxi)
 
             // infer the subType
             if (this.subType == 0) 
@@ -117,7 +118,7 @@ namespace SrvSurvey.game
                 // for other pads, we must apply their rotation to the ships heading
                 var padRot = this.template.landingPads[this.targetPad - 1].rot;
                 this.heading = shipHeading + padRot;
-                if (this.heading > 360) this.heading -= 360;
+                if (this.heading >= 360) this.heading -= 360;
             }
 
             // --- tmp ---

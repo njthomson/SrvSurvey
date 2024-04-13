@@ -3,39 +3,39 @@
     "economy": "Agriculture",
     "subType": 1,
     "landingPads": [
-      { "size": "small", "dist": 888, "angle": 400 },
-      { "size": "large", "dist": 888, "angle": 400, "rot":  400 }
+      { "size": "large", "dist": 156.83, "angle": 290.67 },
+      { "size": "small", "dist": 193.00, "angle": 129.39, "rot": 0 }
     ]
   },
   {
     "economy": "Agriculture",
     "subType": 2,
     "landingPads": [
-      { "size": "small", "dist": 888, "angle": 400 }
+      { "size": "small", "dist": 58.63, "angle": 215.33 }
     ]
   },
   {
     "economy": "Agriculture",
     "subType": 3,
     "landingPads": [
-      { "size": "small", "dist": 888, "angle": 400 },
-      { "size": "large", "dist": 888, "angle": 400, "rot":  400 }
+      { "size": "large", "dist": 214.77, "angle": 81.50 },
+      { "size": "small", "dist": 312.37, "angle": 209.90, "rot": 13 }
     ]
   },
   {
     "economy": "Agriculture",
     "subType": 4,
     "landingPads": [
-      { "size": "large", "dist": 182, "angle": 400 },
-      { "size": "small", "dist": 888, "angle": 400, "rot":  400 },
-      { "size": "small", "dist": 888, "angle": 400, "rot":  400 }
+      { "size": "large", "dist": 180.02, "angle": 269.96 },
+      { "size": "small", "dist": 185.39, "angle": 55.65, "rot": 120 },
+      { "size": "small", "dist": 154.22, "angle": 181.34, "rot": 0 }
     ]
   },
   {
     "economy": "Agriculture",
     "subType": 5,
     "landingPads": [
-      { "size": "small", "dist": 888, "angle": 400 }
+      { "size": "small", "dist": 79.39, "angle": 112.99 }
     ]
   },
 
@@ -43,39 +43,39 @@
     "economy": "Military",
     "subType": 1,
     "landingPads": [
-      { "size": "medium", "dist": 180, "angle": 0 }
+      { "size": "medium", "dist": 162.30, "angle": 1.28 }
     ]
   },
   {
     "economy": "Military",
     "subType": 2,
     "landingPads": [
-      { "size": "small", "dist": 888, "angle": 400 },
-      { "size": "large", "dist": 120, "angle": 400, "rot":  270 },
-      { "size": "small", "dist": 888, "angle": 400, "rot":  400 }
+      { "size": "small", "dist": 140.33, "angle": 270.91 },
+      { "size": "large", "dist": 114.72, "angle": 85.01, "rot": 270 },
+      { "size": "small", "dist": 48.43, "angle": 272.92, "rot": 180 }
     ]
   },
   {
     "economy": "Military",
     "subType": 3,
     "landingPads": [
-      { "size": "medium", "dist": 888, "angle": 400 },
-      { "size": "small", "dist": 151, "angle": 400, "rot":  180 }
+      { "size": "medium", "dist": 203.73, "angle": 88.44 },
+      { "size": "small", "dist": 169.93, "angle": 272.88, "rot": 180 }
     ]
   },
   {
     "economy": "Military",
     "subType": 4,
     "landingPads": [
-      { "size": "small", "dist": 888, "angle": 400 }
+      { "size": "small", "dist": 37.37, "angle": 187.92 }
     ]
   },
   {
     "economy": "Military",
     "subType": 5,
     "landingPads": [
-      { "size": "small", "dist": 888, "angle": 400 },
-      { "size": "medium", "dist": 888, "angle": 400, "rot":  400 }
+      { "size": "medium", "dist": 129.63, "angle": 159.36 },
+      { "size": "small","dist": 133.99, "angle": 322.24, "rot": 270 }
     ]
   },
 
@@ -83,37 +83,37 @@
     "economy": "Extraction",
     "subType": 1,
     "landingPads": [
-      { "size": "small", "dist": 888, "angle": 400 },
-      { "size": "large", "dist": 888, "angle": 400, "rot":  400 }
+      { "size": "small", "dist": 170.23, "angle": 249.52 },
+      { "size": "large", "dist": 72.03, "angle": 44.36, "rot": 224 }
     ]
   },
   {
     "economy": "Extraction",
     "subType": 2,
     "landingPads": [
-      { "size": "small", "dist": 888, "angle": 400 },
-      { "size": "large", "dist": 888, "angle": 400, "rot":  400 }
+      { "size": "small", "dist": 168.09, "angle": 44.61 },
+      { "size": "large", "dist": 189.85, "angle": 301.43, "rot": 0 }
     ]
   },
   {
     "economy": "Extraction",
     "subType": 3,
     "landingPads": [
-      { "size": "large", "dist": 888, "angle": 400 }
+      { "size": "large", "dist": 150.02, "angle": 315.56 }
     ]
   },
   {
     "economy": "Extraction",
     "subType": 4,
     "landingPads": [
-      { "size": "medium", "dist": 888, "angle": 400 }
+      { "size": "medium", "dist": 217.56, "angle": 160.81 }
     ]
   },
   {
     "economy": "Extraction",
     "subType": 5,
     "landingPads": [
-      { "size": "small", "dist": 888, "angle": 400 }
+      { "size": "small", "dist": 59.08, "angle": 273.14 }
     ]
   },
 
@@ -121,36 +121,36 @@
     "economy": "Industrial",
     "subType": 1,
     "landingPads": [
-      { "size": "small", "dist": 51, "angle": 289 }
+      { "size": "small", "dist": 48.41, "angle": 266.17 }
     ]
   },
   {
     "economy": "Industrial",
     "subType": 2,
     "landingPads": [
-      { "size": "large", "dist": 85, "angle": 68 }
+      { "size": "large", "dist": 80.67, "angle": 81.47 }
     ]
   },
   {
     "economy": "Industrial",
     "subType": 3,
     "landingPads": [
-      { "size": "medium", "dist": 44, "angle": 400 }
+      { "size": "medium", "dist": 82.94, "angle": 178.70 }
     ]
   },
   {
     "economy": "Industrial",
     "subType": 4,
     "landingPads": [
-      { "size": "small", "dist": 136, "angle": 253 },
-      { "size": "large", "dist": 91, "angle": 400, "rot":  270 }
+      { "size": "small", "dist": 143.20, "angle": 245.75 },
+      { "size": "large", "dist": 100.37, "angle": 27.79, "rot": 270 }
     ]
   },
   {
     "economy": "Industrial",
     "subType": 5,
     "landingPads": [
-      { "size": "large", "dist": 888, "angle": 400 }
+      { "size": "large", "dist": 156.08, "angle": 242.09 }
     ]
   },
 
@@ -158,31 +158,31 @@
     "economy": "HighTech",
     "subType": 1,
     "landingPads": [
-      { "size": "small", "dist": 888, "angle": 400 },
-      { "size": "large", "dist": 141, "angle": 400, "rot":  400 }
+      { "size": "small", "dist": 168.86, "angle": 339.67 },
+      { "size": "large", "dist": 134.59, "angle": 169.94, "rot":  270 }
     ]
   },
   {
     "economy": "HighTech",
     "subType": 2,
     "landingPads": [
-      { "size": "small", "dist": 888, "angle": 400 }
+      { "size": "small", "dist": 126.07, "angle": 244.61 }
     ]
   },
   {
     "economy": "HighTech",
     "subType": 3,
     "landingPads": [
-      { "size": "small", "dist": 888, "angle": 400 }
+      { "size": "small", "dist": 139.08, "angle": 89.82 }
     ]
   },
   {
     "economy": "HighTech",
     "subType": 4,
     "landingPads": [
-      { "size": "small", "dist": 888, "angle": 400 },
-      { "size": "small", "dist": 888, "angle": 400, "rot":  400 },
-      { "size": "small", "dist": 888, "angle": 400, "rot":  400 }
+      { "size": "small", "dist": 120.29, "angle": 180.50 },
+      { "size": "small", "dist": 127.96, "angle": 226.72, "rot": 325 },
+      { "size": "small", "dist": 151.42, "angle": 264.11, "rot": 290 }
     ]
   },
 
@@ -190,34 +190,34 @@
     "economy": "Tourist",
     "subType": 1,
     "landingPads": [
-      { "size": "small", "dist": 132, "angle": 340 },
-      { "size": "small", "dist": 145, "angle": 21, "rot":  0 },
-      { "size": "large", "dist": 888, "angle": 400, "rot":  0 },
-      { "size": "large", "dist": 888, "angle": 400, "rot":  0 }
+      { "size": "small", "dist": 114.79, "angle": 156.82 },
+      { "size": "small", "dist": 128.04, "angle": 204.30, "rot":  0 },
+      { "size": "large", "dist": 110.27, "angle": 46.74, "rot":  0 },
+      { "size": "large", "dist": 115.47, "angle": 314.69, "rot":  0 }
     ]
   },
   {
     "economy": "Tourist",
     "subType": 2,
     "landingPads": [
-      { "size": "medium", "dist": 888, "angle": 400 }
+      { "size": "medium", "dist": 29.49, "angle": 256.18 }
     ]
   },
   {
     "economy": "Tourist",
     "subType": 3,
     "landingPads": [
-      { "size": "small", "dist": 888, "angle": 400 },
-      { "size": "small", "dist": 888, "angle": 400, "rot":  180 },
-      { "size": "large", "dist": 888, "angle": 400, "rot":  90 }
+      { "size": "small", "dist": 85.57, "angle": 208.03 },
+      { "size": "small", "dist": 67.26, "angle": 323.51, "rot":  180 },
+      { "size": "large", "dist": 189.30, "angle": 270.73, "rot":  90 }
     ]
   },
   {
     "economy": "Tourist",
     "subType": 4,
     "landingPads": [
-      { "size": "large", "dist": 87, "angle": 400 },
-      { "size": "small", "dist": 888, "angle": 400, "rot":  400 }
+      { "size": "large", "dist": 115, "angle": 96 },
+      { "size": "small", "dist": 210, "angle": 302, "rot":  180 }
     ]
   }
 ]

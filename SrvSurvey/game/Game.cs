@@ -423,7 +423,7 @@ namespace SrvSurvey.game
                 && !this.atMainMenu
                 && this.isMode(GameMode.SuperCruising, GameMode.Flying, GameMode.Landed, GameMode.InSrv, GameMode.OnFoot, GameMode.GlideMode, GameMode.InFighter, GameMode.CommsPanel)
                 && !this.hidePlottersFromCombatSuits
-                && (this.status.Flags2 & StatusFlags2.InTaxi) == 0;
+                && !this.status.InTaxi;
         }
 
         public bool showGuardianPlotters
@@ -1583,6 +1583,13 @@ namespace SrvSurvey.game
                         // stop searching older journal files if we see we reached this system
                         (JournalFile journals) => journals.search((ApproachBody _) => true)
                     );
+
+                    // stop endless repeats
+                    if (this._touchdownLocation == null)
+                    {
+                        Game.log($"Last touchdown not found since ApproachBody");
+                        this._touchdownLocation = LatLong2.Empty;
+                    }
 
                     /*
                     var lastTouchdown = journals!.FindEntryByType<Touchdown>(-1, true);

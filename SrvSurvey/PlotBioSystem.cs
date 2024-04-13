@@ -42,6 +42,7 @@ namespace SrvSurvey
                 && Game.activeGame?.status != null
                 && Game.activeGame.systemData != null
                 && Game.activeGame.systemData.bioSignalsTotal > 0
+                && Game.activeGame.status?.InTaxi != true
                 //&& Game.activeGame.systemBody != null
                 && (
                 //Game.activeGame.isMode(GameMode.SuperCruising, GameMode.GlideMode, GameMode.SAA, GameMode.FSS, GameMode.ExternalPanel, GameMode.Orrery, GameMode.SystemMap, GameMode.Landed, GameMode.OnFoot, GameMode.CommsPanel)
@@ -120,7 +121,7 @@ namespace SrvSurvey
 
                     long reward2 = -1; // organism.reward;
                     PlotBase.drawBioRing(this.g, organism.genus, dtx, dty, reward2, brush);
-                    g.DrawEllipse(GameColors.penGameOrangeDim1, dtx-1.5f, dty-0.5f, 22, 22);
+                    g.DrawEllipse(GameColors.penGameOrangeDim1, dtx - 1.5f, dty - 0.5f, 22, 22);
                     //g.DrawEllipse(GameColors.penGameOrangeDim1, dtx - 1, dty + 1, 20, 20);
                     dtx = thirty;
 
@@ -211,7 +212,7 @@ namespace SrvSurvey
                     }
 
                     PlotBase.drawBioRing(this.g, genus, dtx, dty, reward, highlight ? GameColors.brushCyan : GameColors.brushGameOrange);
-                    g.DrawEllipse(GameColors.penGameOrangeDim1, dtx - 1, dty+1, 20, 20);
+                    g.DrawEllipse(GameColors.penGameOrangeDim1, dtx - 1, dty + 1, 20, 20);
                     dtx += twoTwo;
 
                     if (this.dtx > sz.Width) sz.Width = this.dtx;
