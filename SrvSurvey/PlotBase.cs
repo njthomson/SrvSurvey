@@ -668,11 +668,23 @@ namespace SrvSurvey
         }
     }
 
-    internal abstract class PlotSurfaceBase : PlotBase
+    /// <summary>
+    /// A base class for plotters using lat/long co-ordinates
+    /// </summary>
+    internal abstract class PlotBaseSurface : PlotBase
     {
         // TODO: Move these to here
         //protected TrackingDelta? touchdownLocation;
         //protected TrackingDelta? srvLocation;
+        protected LatLong2 cmdr;
+    }
+
+    /// <summary>
+    /// A base class for plotters around some site origin
+    /// </summary>
+    internal abstract class PlotBaseSite: PlotBase
+    {
+        protected LatLong2 siteOrigin;
     }
 
     internal abstract class PlotBaseSelectable : PlotBase, PlotterForm

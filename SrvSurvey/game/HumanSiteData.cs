@@ -64,7 +64,7 @@ namespace SrvSurvey.game
         public Economy economy;
         public string economyLocalized;
         public LatLong2 location;
-        public float heading;
+        public float heading = -1;
         public LandingPads landingPads;
 
         #endregion

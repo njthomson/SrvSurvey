@@ -293,6 +293,9 @@ namespace SrvSurvey
             if (gameIsActive && PlotBioSystem.allowPlotter)
                 Program.showPlotter<PlotBioSystem>();
 
+            if (gameIsActive && PlotHumanSite.allowPlotter)
+                Program.showPlotter<PlotHumanSite>();
+
             // show high gravity warning
             var isHighGravity = (game?.systemBody?.surfaceGravity ?? 0) >= Game.settings.highGravityWarningLevel * 10;
             if (Game.settings.autoShowFlightWarnings && game?.systemBody != null && isHighGravity && game.isMode(GameMode.Landed, GameMode.SuperCruising, GameMode.GlideMode, GameMode.Flying, GameMode.InFighter, GameMode.InSrv))
@@ -1403,7 +1406,8 @@ namespace SrvSurvey
 
         private void btnRamTah_Click(object sender, EventArgs e)
         {
-            FormRamTah.show();
+            //FormRamTah.show();
+            Program.showPlotter<PlotHumanSite>();
         }
 
         private void btnPublish_Click(object sender, EventArgs e)

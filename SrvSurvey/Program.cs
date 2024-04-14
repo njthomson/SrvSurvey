@@ -133,9 +133,12 @@ namespace SrvSurvey
             return form;
         }
 
-        public static void closePlotter<T>() where T : Form
+        public static void closePlotter<T>(bool async = false) where T : Form
         {
-            closePlotter(typeof(T).Name);
+            if (async)
+                Program.control.BeginInvoke(() => closePlotter(typeof(T).Name));
+            else
+                closePlotter(typeof(T).Name);
         }
 
         private static void closePlotter(string name)
