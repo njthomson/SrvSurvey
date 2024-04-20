@@ -56,7 +56,7 @@ namespace SrvSurvey
             var form = new Dictionary<string, string>();
             form.Add("title", $"{ex.GetType().Name} \"{ex.Message}\" at {DateTimeOffset.Now}");
             form.Add("what-happened", txtSteps.Text);
-            form.Add("version", Game.releaseVersion);
+            form.Add("version", Program.releaseVersion);
             form.Add("exception-message", ex.Message);
             form.Add("exception-stack", ex.StackTrace!);
 

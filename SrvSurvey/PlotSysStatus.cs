@@ -131,7 +131,7 @@ namespace SrvSurvey
                     this.drawTextAt("No DSS meet criteria");
                 }
 
-                if (!Game.settings.autoShowPlotBioSystem)
+                if (!Game.settings.autoShowPlotBioSystemTest)
                 {
                     var bioRemaining = game.systemData.getBioRemainingNames();
                     if (bioRemaining.Count > 0)

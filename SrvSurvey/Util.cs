@@ -172,7 +172,6 @@ namespace SrvSurvey
             { "empire_courier", new PointM(0, -14.442907807215595156071678409) },
 
             // TODO: figure this out for all the other ships
-
         };
 
         public static PointM getOffset(decimal r, LatLong2 p1, float siteHeading = -1)

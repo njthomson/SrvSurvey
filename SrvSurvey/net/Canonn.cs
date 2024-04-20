@@ -16,7 +16,7 @@ namespace SrvSurvey.canonn
         {
             Canonn.client = new HttpClient();
             Canonn.client.DefaultRequestHeaders.Add("accept-encoding", "gzip, deflate");
-            Canonn.client.DefaultRequestHeaders.Add("user-agent", $"SrvSurvey-{Game.releaseVersion}");
+            Canonn.client.DefaultRequestHeaders.Add("user-agent", Program.userAgent);
         }
 
         private static HttpClient client;

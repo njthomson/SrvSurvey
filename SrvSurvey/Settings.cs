@@ -21,9 +21,10 @@ namespace SrvSurvey
         public bool autoShowGuardianSummary = true;
         public bool autoShowRamTah = true;
         public bool autoShowPlotSysStatus = true;
-        public bool autoShowPlotBioSystem = false;
+        public bool autoShowPlotBioSystemTest = false;
         public bool autoShowPlotGalMapTest = true;
         public bool autoShowHumanSitesTest = false;
+
         public bool skipGasGiantDSS = true;
         public bool skipRingsDSS = false;
         public bool skipLowValueDSS = true;
@@ -133,7 +134,7 @@ namespace SrvSurvey
                     }
                     catch (Exception ex)
                     {
-                        Game.log($"Failed to read settings: {ex.Message}");
+                        Game.log($"Failed to read settings: {ex}");
                         Game.log(json);
                     }
                 }
@@ -149,8 +150,23 @@ namespace SrvSurvey
 
         public void Save()
         {
-            var json = JsonConvert.SerializeObject(this, Formatting.Indented);
-            File.WriteAllText(settingsPath, json);
+            this.Save(true);
+        }
+
+        private void Save(bool allowRetry)
+        {
+            try
+            {
+                var json = JsonConvert.SerializeObject(this, Formatting.Indented);
+                File.WriteAllText(settingsPath, json);
+            }
+            catch (Exception ex)
+            {
+                Game.log($"Failed to write settings (allowRetry: {allowRetry}): {ex}");
+                // allow a single retry if we fail to write settings
+                if (allowRetry)
+                    Program.control.BeginInvoke(() => this.Save(false));
+            }
         }
 
         #endregion

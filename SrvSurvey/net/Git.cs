@@ -16,7 +16,7 @@ namespace SrvSurvey.net
         {
             Git.client = new HttpClient();
             Git.client.DefaultRequestHeaders.Add("Cache-Control", "no-cache");
-            Git.client.DefaultRequestHeaders.Add("user-agent", $"SrvSurvey-{Game.releaseVersion}");
+            Git.client.DefaultRequestHeaders.Add("user-agent", Program.userAgent);
         }
 
         public async Task refreshPublishedData()

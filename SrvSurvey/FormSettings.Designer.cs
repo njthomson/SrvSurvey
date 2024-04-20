@@ -62,7 +62,7 @@ namespace SrvSurvey
             label15 = new Label();
             numMinBioDuration = new NumericUpDown();
             checkBox18 = new CheckBox();
-            checkBox17 = new CheckBox();
+            checkBioSystemPlotter = new CheckBox();
             linkLabel1 = new LinkLabel();
             btnClearTrackers = new Button();
             checkBox7 = new CheckBox();
@@ -107,7 +107,8 @@ namespace SrvSurvey
             lblScreenshotSource = new Label();
             lblScreenshotTarget = new Label();
             tabPage6 = new TabPage();
-            checkBox19 = new CheckBox();
+            checkHumanSitePlotter = new CheckBox();
+            checkGalMapPlotter = new CheckBox();
             label13 = new Label();
             checkBox16 = new CheckBox();
             numericUpDown1 = new NumericUpDown();
@@ -137,7 +138,6 @@ namespace SrvSurvey
             linkAboutTwo = new LinkLabel();
             linkAboutOne = new LinkLabel();
             colorDialog = new ColorDialog();
-            checkBox20 = new CheckBox();
             panel1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numGravityWarningLevel).BeginInit();
@@ -514,7 +514,7 @@ namespace SrvSurvey
             tabPage4.Controls.Add(label15);
             tabPage4.Controls.Add(numMinBioDuration);
             tabPage4.Controls.Add(checkBox18);
-            tabPage4.Controls.Add(checkBox17);
+            tabPage4.Controls.Add(checkBioSystemPlotter);
             tabPage4.Controls.Add(linkLabel1);
             tabPage4.Controls.Add(btnClearTrackers);
             tabPage4.Controls.Add(checkBox7);
@@ -566,19 +566,19 @@ namespace SrvSurvey
             checkBox18.UseVisualStyleBackColor = true;
             checkBox18.CheckedChanged += checkBox18_CheckedChanged;
             // 
-            // checkBox17
+            // checkBioSystemPlotter
             // 
-            checkBox17.AutoSize = true;
-            checkBox17.Checked = true;
-            checkBox17.CheckState = CheckState.Checked;
-            checkBox17.Location = new Point(10, 350);
-            checkBox17.Margin = new Padding(4, 3, 4, 3);
-            checkBox17.Name = "checkBox17";
-            checkBox17.Size = new Size(278, 19);
-            checkBox17.TabIndex = 16;
-            checkBox17.Tag = "autoShowPlotBioSystem";
-            checkBox17.Text = "Show alternate system bio status (experimental)";
-            checkBox17.UseVisualStyleBackColor = true;
+            checkBioSystemPlotter.AutoSize = true;
+            checkBioSystemPlotter.Checked = true;
+            checkBioSystemPlotter.CheckState = CheckState.Checked;
+            checkBioSystemPlotter.Location = new Point(10, 350);
+            checkBioSystemPlotter.Margin = new Padding(4, 3, 4, 3);
+            checkBioSystemPlotter.Name = "checkBioSystemPlotter";
+            checkBioSystemPlotter.Size = new Size(278, 19);
+            checkBioSystemPlotter.TabIndex = 16;
+            checkBioSystemPlotter.Tag = "autoShowPlotBioSystemTest";
+            checkBioSystemPlotter.Text = "Show alternate system bio status (experimental)";
+            checkBioSystemPlotter.UseVisualStyleBackColor = true;
             // 
             // linkLabel1
             // 
@@ -1117,8 +1117,8 @@ namespace SrvSurvey
             // tabPage6
             // 
             tabPage6.BackColor = SystemColors.Control;
-            tabPage6.Controls.Add(checkBox20);
-            tabPage6.Controls.Add(checkBox19);
+            tabPage6.Controls.Add(checkHumanSitePlotter);
+            tabPage6.Controls.Add(checkGalMapPlotter);
             tabPage6.Controls.Add(label13);
             tabPage6.Controls.Add(checkBox16);
             tabPage6.Controls.Add(numericUpDown1);
@@ -1138,19 +1138,30 @@ namespace SrvSurvey
             tabPage6.TabIndex = 5;
             tabPage6.Text = "Exploration";
             // 
-            // checkBox19
+            // checkHumanSitePlotter
             // 
-            checkBox19.AutoSize = true;
-            checkBox19.Checked = true;
-            checkBox19.CheckState = CheckState.Checked;
-            checkBox19.Location = new Point(10, 263);
-            checkBox19.Margin = new Padding(4, 3, 4, 3);
-            checkBox19.Name = "checkBox19";
-            checkBox19.Size = new Size(320, 19);
-            checkBox19.TabIndex = 24;
-            checkBox19.Tag = "autoShowPlotGalMapTest";
-            checkBox19.Text = "Show exploration preview in Galaxy Map (experimental)";
-            checkBox19.UseVisualStyleBackColor = true;
+            checkHumanSitePlotter.AutoSize = true;
+            checkHumanSitePlotter.Location = new Point(10, 288);
+            checkHumanSitePlotter.Name = "checkHumanSitePlotter";
+            checkHumanSitePlotter.Size = new Size(237, 19);
+            checkHumanSitePlotter.TabIndex = 25;
+            checkHumanSitePlotter.Tag = "autoShowHumanSitesTest";
+            checkHumanSitePlotter.Text = "Human settlement maps (experimental)";
+            checkHumanSitePlotter.UseVisualStyleBackColor = true;
+            // 
+            // checkGalMapPlotter
+            // 
+            checkGalMapPlotter.AutoSize = true;
+            checkGalMapPlotter.Checked = true;
+            checkGalMapPlotter.CheckState = CheckState.Checked;
+            checkGalMapPlotter.Location = new Point(10, 263);
+            checkGalMapPlotter.Margin = new Padding(4, 3, 4, 3);
+            checkGalMapPlotter.Name = "checkGalMapPlotter";
+            checkGalMapPlotter.Size = new Size(320, 19);
+            checkGalMapPlotter.TabIndex = 24;
+            checkGalMapPlotter.Tag = "autoShowPlotGalMapTest";
+            checkGalMapPlotter.Text = "Show exploration preview in Galaxy Map (experimental)";
+            checkGalMapPlotter.UseVisualStyleBackColor = true;
             // 
             // label13
             // 
@@ -1499,17 +1510,6 @@ namespace SrvSurvey
             // 
             colorDialog.Color = Color.Yellow;
             // 
-            // checkBox20
-            // 
-            checkBox20.AutoSize = true;
-            checkBox20.Location = new Point(10, 288);
-            checkBox20.Name = "checkBox20";
-            checkBox20.Size = new Size(237, 19);
-            checkBox20.TabIndex = 25;
-            checkBox20.Tag = "autoShowHumanSitesTest";
-            checkBox20.Text = "Human settlement maps (experimental)";
-            checkBox20.UseVisualStyleBackColor = true;
-            // 
             // FormSettings
             // 
             AcceptButton = btnSave;
@@ -1669,11 +1669,11 @@ namespace SrvSurvey
         private NumericUpDown numericUpDown1;
         private Label label14;
         private ComboBox comboOverlayScale;
-        private CheckBox checkBox17;
+        private CheckBox checkBioSystemPlotter;
         private NumericUpDown numMinBioDuration;
         private CheckBox checkBox18;
         private Label label15;
-        private CheckBox checkBox19;
-        private CheckBox checkBox20;
+        private CheckBox checkGalMapPlotter;
+        private CheckBox checkHumanSitePlotter;
     }
 }

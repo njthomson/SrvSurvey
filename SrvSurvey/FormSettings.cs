@@ -22,12 +22,20 @@ namespace SrvSurvey
             // only show this button if there are multiple copies of EliteDangerous running at the same time
             var procED = Process.GetProcessesByName("EliteDangerous64");
             btnNextProc.Visible = procED.Length > 1;
-            this.Text += $" ({Game.releaseVersion})";
+            this.Text += $" ({Program.releaseVersion})";
 
             this.linkDataFiles.Visible = Debugger.IsAttached;
 
             var osScaleFactor = (this.DeviceDpi / 96f * 100).ToString("0");
             this.comboOverlayScale.Items[0] = $"Match Windows OS scale ({osScaleFactor}%)";
+
+            // keep these hidden from official app-store builds for now            
+            if (Program.isAppStoreBuild)
+            {
+                checkBioSystemPlotter.Visible = false;
+                checkGalMapPlotter.Visible = false;
+                checkHumanSitePlotter.Visible = false;
+            }
         }
 
         private void FormSettings_Load(object sender, EventArgs e)

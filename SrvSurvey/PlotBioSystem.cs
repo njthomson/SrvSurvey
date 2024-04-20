@@ -38,7 +38,7 @@ namespace SrvSurvey
 
         public static bool allowPlotter
         {
-            get => Game.settings.autoShowPlotBioSystem
+            get => Game.settings.autoShowPlotBioSystemTest
                 && Game.activeGame?.status != null
                 && Game.activeGame.systemData != null
                 && Game.activeGame.systemData.bioSignalsTotal > 0
@@ -48,7 +48,7 @@ namespace SrvSurvey
                 //Game.activeGame.isMode(GameMode.SuperCruising, GameMode.GlideMode, GameMode.SAA, GameMode.FSS, GameMode.ExternalPanel, GameMode.Orrery, GameMode.SystemMap, GameMode.Landed, GameMode.OnFoot, GameMode.CommsPanel)
                 //|| (Game.activeGame.mode == GameMode.Flying && Game.activeGame.status.hasLatLong)
                 (Game.activeGame.isMode(GameMode.SuperCruising, GameMode.SAA, GameMode.FSS, GameMode.ExternalPanel, GameMode.Orrery, GameMode.SystemMap))
-                || (Game.activeGame.systemBody?.bioSignalCount > 0 && Game.activeGame.status.hasLatLong && Game.activeGame.isMode(GameMode.GlideMode, GameMode.SAA, GameMode.FSS, GameMode.Flying, GameMode.Landed, GameMode.OnFoot, GameMode.CommsPanel))
+                || (Game.activeGame.systemBody?.bioSignalCount > 0 && Game.activeGame?.status?.hasLatLong == true && Game.activeGame.isMode(GameMode.GlideMode, GameMode.SAA, GameMode.FSS, GameMode.Flying, GameMode.Landed, GameMode.OnFoot, GameMode.CommsPanel))
                 );
         }
 

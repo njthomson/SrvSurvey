@@ -12,7 +12,7 @@ namespace SrvSurvey.net
         {
             Spansh.client = new HttpClient();
             //Spansh.client.DefaultRequestHeaders.Add("accept-encoding", "gzip, deflate");
-            Spansh.client.DefaultRequestHeaders.Add("user-agent", $"SrvSurvey-{Game.releaseVersion}");
+            Spansh.client.DefaultRequestHeaders.Add("user-agent", Program.userAgent);
         }
 
         public async Task<GetSystemResponse> getSystem(string systemName)

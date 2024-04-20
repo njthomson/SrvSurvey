@@ -16,7 +16,7 @@ namespace SrvSurvey.game
         {
             Game.logs = new List<string>();
             Game.logPath = prepLogFile();
-            Game.log($"SrvSurvey version: {Game.releaseVersion}");
+            Game.log($"SrvSurvey version: {Program.releaseVersion}, isAppStoreBuild: {Program.isAppStoreBuild}");
             Game.log($"New log file: {Game.logPath}");
             Game.log($"dataFolder: {Program.dataFolder}");
 
@@ -90,7 +90,6 @@ namespace SrvSurvey.game
         public static readonly List<string> logs;
         private static readonly string logPath;
         public static string logFolder = Path.Combine(Program.dataFolder, "logs", "");
-        public static string releaseVersion = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyFileVersionAttribute>()?.Version!;
 
         #endregion
 
@@ -1872,7 +1871,7 @@ namespace SrvSurvey.game
                 data.lastVisited = entry.timestamp;
                 data.Save();
             }
-            else if (Game.settings.autoTrackCompBioScans && entry.SubCategory == "$Codex_SubCategory_Organic_Structures;" && entry.NearestDestination != "$Fixed_Event_Life_Cloud;")
+            else if (Game.settings.autoTrackCompBioScans && entry.SubCategory == "$Codex_SubCategory_Organic_Structures;" && entry.NearestDestination != "$Fixed_Event_Life_Cloud;" && entry.NearestDestination != "$Fixed_Event_Life_Ring;" && Game.activeGame?.status.hasLatLong == true)
             {
                 // auto add CodexScans as a tracker location
                 var match = Game.codexRef.matchFromEntryId(entry.EntryID);

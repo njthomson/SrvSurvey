@@ -10,8 +10,9 @@ namespace SrvSurvey
         public static Control control { get; private set; }
         public static string dataFolder = Path.GetFullPath(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "SrvSurvey", "SrvSurvey", "1.1.0.0"));
         public static string dataFolder2 = Path.GetFullPath(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "AppData", "Roaming", "SrvSurvey", "SrvSurvey", "1.1.0.0"));
-        //public static string dataFolder2 = "C:\\Users\\grinn\\AppData\\Local\\SrvSurvey\\SrvSurvey\\1.1.0.0";
-        //    //Path.GetFullPath(Path.Combine(Environment.GetEnvironmentVariable("USERPROFILE")!, "AppData", "Roaming", "SrvSurvey", "SrvSurvey", "1.1.0.0"));
+        public static bool isAppStoreBuild = Assembly.GetExecutingAssembly().Location.Contains("NosmohtSoftware");
+        public static string releaseVersion = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyFileVersionAttribute>()?.Version!;
+        public static string userAgent = $"SrvSurvey-{Program.releaseVersion}";
 
         private static string dataRootFolder = Path.GetFullPath(Path.Combine(dataFolder, ".."));
 

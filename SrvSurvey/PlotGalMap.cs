@@ -95,7 +95,8 @@ namespace SrvSurvey
         public static bool allowPlotter
         {
             get => Game.activeGame != null
-                && Game.activeGame.mode == GameMode.GalaxyMap;
+                && Game.activeGame.mode == GameMode.GalaxyMap
+                && Game.settings.useExternalData;
         }
 
         public override void reposition(Rectangle gameRect)
