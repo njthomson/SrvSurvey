@@ -103,6 +103,16 @@ namespace SrvSurvey
         // SystemFaction ?
     }
 
+    class Loadout : JournalEntry
+    {
+        // { "timestamp":"2024-04-15T21:09:12Z", "event":"Loadout", "Ship":"dolphin", "ShipID":35, "ShipName":"delphini", "ShipIdent":"GR-02D", "HullValue":1337323, "ModulesValue":17298866, "HullHealth":1.000000, "UnladenMass":182.292557, "CargoCapacity":16, "MaxJumpRange":56.538074, "FuelCapacity":{ "Main":16.000000, "Reserve":0.500000 }, "Rebuy":931810, "Modules":[ { "Slot":"TinyHardpoint2", "Item":"hpt_plasmapointdefence_turret_tiny", "On":true, "Priority":0, "AmmoInClip":12, "AmmoInHopper":10000, "Health":1.000000, "Value":18546, "Engineering":{ "Engineer":"Ram Tah", "EngineerID":300110, "BlueprintID":128731485, "BlueprintName":"Misc_LightWeight", "Level":5, "Quality":0.733000, "Modifiers":[ { "Label":"Mass", "Value":0.088350, "OriginalValue":0.500000, "LessIsGood":1 }, { "Label":"Integrity", "Value":15.000000, "OriginalValue":30.000000, "LessIsGood":0 } ] } }, { "Slot":"PaintJob", "Item":"paintjob_dolphin_ember_white", "On":true, "Priority":1, "Health":1.000000 }, { "Slot":"Armour", "Item":"dolphin_armour_grade1", "On":true, "Priority":1, "Health":1.000000 }, { "Slot":"PowerPlant", "Item":"int_guardianpowerplant_size4", "On":true, "Priority":1, "Health":1.000000, "Value":1517619 }, { "Slot":"MainEngines", "Item":"int_engine_size4_class2", "On":true, "Priority":0, "Health":1.000000, "Value":52329 }, { "Slot":"FrameShiftDrive", "Item":"int_hyperdrive_size4_class5", "On":true, "Priority":0, "Health":1.000000, "Value":1610080, "Engineering":{ "Engineer":"Felicity Farseer", "EngineerID":300100, "BlueprintID":128673694, "BlueprintName":"FSD_LongRange", "Level":5, "Quality":0.631000, "Modifiers":[ { "Label":"Mass", "Value":13.000000, "OriginalValue":10.000000, "LessIsGood":1 }, { "Label":"Integrity", "Value":85.000000, "OriginalValue":100.000000, "LessIsGood":0 }, { "Label":"PowerDraw", "Value":0.517500, "OriginalValue":0.450000, "LessIsGood":1 }, { "Label":"FSDOptimalMass", "Value":794.377502, "OriginalValue":525.000000, "LessIsGood":0 } ] } }, { "Slot":"LifeSupport", "Item":"int_lifesupport_size4_class2", "On":true, "Priority":0, "Health":1.000000, "Value":28373 }, { "Slot":"PowerDistributor", "Item":"int_guardianpowerdistributor_size3", "On":true, "Priority":0, "Health":1.000000, "Value":311364 }, { "Slot":"Radar", "Item":"int_sensors_size3_class2", "On":true, "Priority":0, "Health":1.000000, "Value":10133, "Engineering":{ "Engineer":"Lori Jameson", "EngineerID":300230, "BlueprintID":128740672, "BlueprintName":"Sensor_LightWeight", "Level":4, "Quality":0.819300, "Modifiers":[ { "Label":"Mass", "Value":0.754200, "OriginalValue":2.000000, "LessIsGood":1 }, { "Label":"Integrity", "Value":30.600000, "OriginalValue":51.000000, "LessIsGood":0 }, { "Label":"SensorTargetScanAngle", "Value":24.000000, "OriginalValue":30.000000, "LessIsGood":0 } ] } }, { "Slot":"FuelTank", "Item":"int_fueltank_size4_class3", "On":true, "Priority":1, "Health":1.000000 }, { "Slot":"Slot01_Size5", "Item":"int_fuelscoop_size5_class5", "On":true, "Priority":0, "Health":1.000000, "Value":9164432 }, { "Slot":"Slot02_Size4", "Item":"int_guardianfsdbooster_size4", "On":true, "Priority":1, "Health":1.000000, "Value":3163887 }, { "Slot":"Slot03_Size4", "Item":"int_corrosionproofcargorack_size4_class1", "On":true, "Priority":1, "Health":1.000000, "Value":91970 }, { "Slot":"Slot04_Size3", "Item":"int_shieldgenerator_size3_class2", "On":true, "Priority":0, "Health":1.000000, "Value":16508 }, { "Slot":"Slot05_Size2", "Item":"int_repairer_size2_class5", "On":true, "Priority":0, "Health":1.000000, "Value":1279395 }, { "Slot":"Slot06_Size2", "Item":"int_buggybay_size2_class2", "On":true, "Priority":0, "Health":1.000000, "Value":21060 }, { "Slot":"Slot07_Size2", "Item":"int_detailedsurfacescanner_tiny", "On":true, "Priority":0, "Health":1.000000, "Engineering":{ "Engineer":"Lei Cheung", "EngineerID":300120, "BlueprintID":128740151, "BlueprintName":"Sensor_Expanded", "Level":5, "Quality":1.000000, "Modifiers":[ { "Label":"PowerDraw", "Value":0.000000, "OriginalValue":0.000000, "LessIsGood":1 }, { "Label":"DSS_PatchRadius", "Value":40.000000, "OriginalValue":20.000000, "LessIsGood":0 } ] } }, { "Slot":"Slot08_Size1", "Item":"int_supercruiseassist", "On":true, "Priority":2, "Health":1.000000 }, { "Slot":"Slot09_Size1", "Item":"int_dockingcomputer_advanced", "On":true, "Priority":2, "Health":1.000000, "Value":13170 }, { "Slot":"PlanetaryApproachSuite", "Item":"int_planetapproachsuite_advanced", "On":true, "Priority":1, "Health":1.000000 }, { "Slot":"VesselVoice", "Item":"voicepack_verity", "On":true, "Priority":1, "Health":1.000000 }, { "Slot":"ShipCockpit", "Item":"dolphin_cockpit", "On":true, "Priority":1, "Health":1.000000 }, { "Slot":"CargoHatch", "Item":"modularcargobaydoor", "On":true, "Priority":4, "Health":1.000000 } ] }
+
+        public string Ship;
+        public int ShipID;
+        public string ShipName;
+        public string ShipIDent;
+    }
+
     class Died : JournalEntry
     {
         // { "timestamp":"2023-11-13T11:24:26Z", "event":"Died" }
@@ -230,9 +240,25 @@ namespace SrvSurvey
         public string NearestDestination_Localised { get; set; }
     }
 
-    class Liftoff : Touchdown
+    class Liftoff : LocationEntry, ISystemAddress
     {
         // { "timestamp":"2023-01-06T06:05:03Z", "event":"Liftoff", "PlayerControlled":true, "Taxi":false, "Multicrew":false, "StarSystem":"Synuefe NL-N c23-4", "SystemAddress":1184840454858, "Body":"Synuefe NL-N c23-4 B 3", "BodyID":18, "OnStation":false, "OnPlanet":true, "Latitude":-30.542755, "Longitude":-24.187830, "NearestDestination":"$Ancient:#index=2;", "NearestDestination_Localised":"Ancient Ruins (2)" }
+
+        public bool PlayerControlled { get; set; }
+        public bool Taxi { get; set; }
+        public bool Multicrew { get; set; }
+
+        public string StarSystem { get; set; }
+        public long SystemAddress { get; set; }
+
+        public string Body { get; set; }
+        public int BodyID { get; set; }
+
+        public bool OnStation { get; set; }
+        public bool OnPlanet { get; set; }
+
+        public string NearestDestination { get; set; }
+        public string NearestDestination_Localised { get; set; }
     }
 
     class LaunchSRV : JournalEntry
@@ -361,16 +387,16 @@ namespace SrvSurvey
         public float JumpDist { get; set; }// 8.278
         public float FuelUsed { get; set; } // 0.091548
         public float FuelLevel { get; set; } // 13.458453
-        // "Factions":[
-        //      { "Name":"Social Maridwyn Green Party", "FactionState":"None", "Government":"Democracy", "Influence":0.027559, "Allegiance":"Independent", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":0.000000 },
-        //      { "Name":"p Velorum Crimson Creative Int", "FactionState":"None", "Government":"Corporate", "Influence":0.059055, "Allegiance":"Federation", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":4.187500 },
-        //      { "Name":"Maridwyn Co", "FactionState":"None", "Government":"Corporate", "Influence":0.487205, "Allegiance":"Federation", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":0.000000, "RecoveringStates":[ { "State":"Boom", "Trend":0 } ] },
-        //      { "Name":"Maridwyn Constitution Party", "FactionState":"None", "Government":"Dictatorship", "Influence":0.041339, "Allegiance":"Independent", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":0.000000 },
-        //      { "Name":"Maridwyn Gold Electronics Ltd", "FactionState":"None", "Government":"Corporate", "Influence":0.021654, "Allegiance":"Independent", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":0.000000 },
-        //      { "Name":"United Maridwyn Law Party", "FactionState":"None", "Government":"Dictatorship", "Influence":0.040354, "Allegiance":"Independent", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":0.000000 },
-        //      { "Name":"Federal Reclamation Co", "FactionState":"Expansion", "Government":"Corporate", "Influence":0.322835, "Allegiance":"Federation", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":97.425003, "ActiveStates":[ { "State":"Expansion" } ] }
-        //  ],
-        // "SystemFaction":{ "Name":"Maridwyn Co" } }
+                                             // "Factions":[
+                                             //      { "Name":"Social Maridwyn Green Party", "FactionState":"None", "Government":"Democracy", "Influence":0.027559, "Allegiance":"Independent", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":0.000000 },
+                                             //      { "Name":"p Velorum Crimson Creative Int", "FactionState":"None", "Government":"Corporate", "Influence":0.059055, "Allegiance":"Federation", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":4.187500 },
+                                             //      { "Name":"Maridwyn Co", "FactionState":"None", "Government":"Corporate", "Influence":0.487205, "Allegiance":"Federation", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":0.000000, "RecoveringStates":[ { "State":"Boom", "Trend":0 } ] },
+                                             //      { "Name":"Maridwyn Constitution Party", "FactionState":"None", "Government":"Dictatorship", "Influence":0.041339, "Allegiance":"Independent", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":0.000000 },
+                                             //      { "Name":"Maridwyn Gold Electronics Ltd", "FactionState":"None", "Government":"Corporate", "Influence":0.021654, "Allegiance":"Independent", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":0.000000 },
+                                             //      { "Name":"United Maridwyn Law Party", "FactionState":"None", "Government":"Dictatorship", "Influence":0.040354, "Allegiance":"Independent", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":0.000000 },
+                                             //      { "Name":"Federal Reclamation Co", "FactionState":"Expansion", "Government":"Corporate", "Influence":0.322835, "Allegiance":"Federation", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":97.425003, "ActiveStates":[ { "State":"Expansion" } ] }
+                                             //  ],
+                                             // "SystemFaction":{ "Name":"Maridwyn Co" } }
 
     }
 

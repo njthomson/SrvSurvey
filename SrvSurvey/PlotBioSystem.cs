@@ -119,7 +119,7 @@ namespace SrvSurvey
                     var highlight = !organism.analyzed && (game.cmdr.scanOne?.genus == organism.genus || game.cmdr.scanOne?.genus == null);
                     var brush = highlight ? GameColors.brushCyan : GameColors.brushGameOrange;
 
-                    long reward2 = -1; // organism.reward;
+                    long reward2 = organism.reward;
                     PlotBase.drawBioRing(this.g, organism.genus, dtx, dty, reward2, brush);
                     g.DrawEllipse(GameColors.penGameOrangeDim1, dtx - 1.5f, dty - 0.5f, 22, 22);
                     //g.DrawEllipse(GameColors.penGameOrangeDim1, dtx - 1, dty + 1, 20, 20);
@@ -204,21 +204,24 @@ namespace SrvSurvey
                 var sortedOrganisms = body.organisms?.OrderBy(_ => _.genus)?.ToList();
                 for (var n = 0; n < signalCount; n++)
                 {
+                    var b = highlight ? GameColors.brushCyan : GameColors.brushGameOrange;
+
                     string? genus = null;
                     long reward = -1;
                     if (sortedOrganisms != null && n < sortedOrganisms.Count)
                     {
                         genus = sortedOrganisms[n].genus;
                         reward = sortedOrganisms[n].reward;
+                        if (sortedOrganisms[n].analyzed)
+                            b = Brushes.DarkGreen;
                     }
 
-                    PlotBase.drawBioRing(this.g, genus, dtx, dty, reward, highlight ? GameColors.brushCyan : GameColors.brushGameOrange);
+                    PlotBase.drawBioRing(this.g, genus, dtx, dty, reward, b);
                     g.DrawEllipse(GameColors.penGameOrangeDim1, dtx - 1, dty + 0.5f, 20, 20);
                     dtx += twoTwo;
 
                     if (this.dtx > sz.Width) sz.Width = this.dtx;
                 }
-
 
                 this.dtx = six;
                 this.dty += twoFour;

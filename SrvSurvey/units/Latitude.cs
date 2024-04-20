@@ -13,9 +13,9 @@ namespace SrvSurvey.units
     {
         private const int limit = 90;
 
-        private double n;
+        private decimal n;
 
-        public Latitude(double n)
+        public Latitude(decimal n)
         {
             this.n = n;
 
@@ -29,11 +29,11 @@ namespace SrvSurvey.units
         public override string ToString()
         {
             return this.n < 0
-                ? this.n.ToString("0.000000") 
-                : "+" + this.n.ToString("0.000000");
+                ? this.n.ToString("N6") 
+                : "+" + this.n.ToString("N6");
         }
 
-        public static Latitude operator +(Latitude l, double n)
+        public static Latitude operator +(Latitude l, decimal n)
         {
             var a = l.n + n;
 
@@ -43,7 +43,7 @@ namespace SrvSurvey.units
             return new Latitude(a);
         }
 
-        public static Latitude operator -(Latitude l, double n)
+        public static Latitude operator -(Latitude l, decimal n)
         {
             var a = l.n - n;
 
@@ -63,21 +63,24 @@ namespace SrvSurvey.units
             return l - r.n;
         }
 
-        public static implicit operator double(Latitude a)
+        public static implicit operator decimal(Latitude a)
         {
             return a.n;
         }
 
-        public static explicit operator decimal(Latitude a)
+        public static explicit operator double(Latitude a)
         {
-            return (decimal)a.n;
+            return (double)a.n;
         }
 
-        public static implicit operator Latitude(double n)
+        public static implicit operator Latitude(decimal n)
         {
             return new Latitude(n);
         }
-
+        public static implicit operator Latitude(double n)
+        {
+            return new Latitude((decimal)n);
+        }
         public static explicit operator Latitude(int n)
         {
             return new Latitude(n);

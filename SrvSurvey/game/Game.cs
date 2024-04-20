@@ -125,6 +125,7 @@ namespace SrvSurvey.game
         public SystemBody? systemBody;
         public GuardianSiteData? systemSite;
         public HumanSiteData? humanSite;
+        public string shipType;
 
         /// <summary>
         /// Distinct settings for the current commander
@@ -343,7 +344,7 @@ namespace SrvSurvey.game
                     return GameMode.InSrv;
                 if (activeVehicle == ActiveVehicle.Taxi)
                     return GameMode.InTaxi;
-                if ((this.status.Flags2 & StatusFlags2.OnFootExterior) > 0)
+                if ((this.status.Flags2 & StatusFlags2.OnFootOnPlanet) > 0)
                     return GameMode.OnFoot;
 
                 // otherwise we are in the main ship, travelling ...
@@ -421,6 +422,7 @@ namespace SrvSurvey.game
         {
             get => !this.isShutdown
                 && !this.atMainMenu
+                && this.humanSite == null
                 && this.isMode(GameMode.SuperCruising, GameMode.Flying, GameMode.Landed, GameMode.InSrv, GameMode.OnFoot, GameMode.GlideMode, GameMode.InFighter, GameMode.CommsPanel)
                 && !this.hidePlottersFromCombatSuits
                 && !this.status.InTaxi;
@@ -480,11 +482,11 @@ namespace SrvSurvey.game
             {
                 this.initSystemData();
 
-                if (cmdr.currentMarketId > 0)
+                if (status.hasLatLong && (cmdr.currentMarketId > 0 || status.Docked))
                 {
-                    // attempt to load the humanSite, assumed we left at some station
-                    Game.log($"Loading humanSite: {cmdr.currentSystemAddress}-{cmdr.currentMarketId}");
-                    this.humanSite = HumanSiteData.Load(cmdr.currentSystemAddress, cmdr.currentMarketId);
+                    this.initHumanSite();
+                    if (this.humanSite != null)
+                        log($"HumanSite matched: {humanSite.name} ({humanSite.marketId}) - {humanSite.economy} #{humanSite.subType}");
                 }
 
                 LeaveBody? leaveBodyEvent = null;
@@ -571,6 +573,14 @@ namespace SrvSurvey.game
             if (lastMaterials != null)
                 onJournalEntry(lastMaterials);
 
+            // which ship are we in?
+            var lastLoadout = journals.FindEntryByType<Loadout>(-1, true);
+            if (lastLoadout != null)
+                this.shipType = lastLoadout.Ship;
+
+            // clear old touchdown location but we're no longer on a planet
+            if (cmdr?.lastTouchdownLocation != null && !status.hasLatLong) cmdr.clearTouchdown();
+
             log($"Game.initializeFromJournal: END Commander:{this.Commander}, starSystem:{cmdr?.currentSystem}, systemLocation:{cmdr?.lastSystemLocation}, systemBody:{this.systemBody}, journals.Count:{journals.Count}");
             this.initialized = Game.activeGame == this && this.Commander != null;
             this.checkModeChange();
@@ -582,6 +592,106 @@ namespace SrvSurvey.game
                 {
                     this.fetchSystemData(this.systemData.name, this.systemData.address);
                 }));
+            }
+        }
+
+        private void initHumanSite()
+        {
+            if (this.journals == null || this.systemData == null || !status.hasLatLong) return;
+
+            // load this MarketId if it is close enough
+            if (cmdr.currentMarketId > 0)
+            {
+                var lastHumanSite = HumanSiteData.Load(systemData.address, cmdr.currentMarketId);
+                if (lastHumanSite != null)
+                {
+                    var dist = Util.getDistance(Status.here, lastHumanSite.location, status.PlanetRadius);
+                    if (dist < 1500)
+                    {
+                        this.humanSite = lastHumanSite;
+                        return;
+                    }
+                }
+            }
+
+            // Otherwise, walk journals backwards collecting relevant entries for us to replay forwards
+            ApproachSettlement? lastApproachSettlement = null;
+            DockingRequested? lastDockingRequested = null;
+            DockingGranted? lastDockingGranted = null;
+            Docked? lastDocked = null;
+            Touchdown? lastTouchdown = null;
+            var liftedOff = false;
+
+            this.journals.walkDeep(-1, true, (entry) =>
+            {
+                var loadout = entry as Loadout;
+                if (loadout != null && this.shipType == null) this.shipType = loadout.Ship;
+
+                // keep the first Docked event we find, unless we touched down
+                var docked = entry as Docked;
+                if (docked != null && lastDocked == null && lastTouchdown == null)
+                    lastDocked = docked;
+
+                // keep the first hit, or the one that matches the Docked
+                var dockingRequested = entry as DockingRequested;
+                if (dockingRequested != null && lastDockingRequested == null)
+                    if (lastDocked == null || lastDocked.MarketID == dockingRequested.MarketID)
+                        lastDockingRequested = dockingRequested;
+
+                // keep the first hit, or the one that matches the Docked
+                var dockingGranted = entry as DockingGranted;
+                if (dockingGranted != null && lastDockingGranted == null)
+                    if (lastDocked == null || lastDocked.MarketID == dockingGranted.MarketID)
+                        lastDockingGranted = dockingGranted;
+
+                // (so we can ignore any prior TouchDown's)
+                if (entry is Liftoff) liftedOff = true;
+
+                // in case we landed near a settlement without docking (and we're not already docked and did not Liftoff after)
+                var touchdown = entry as Touchdown;
+                if (touchdown != null && lastTouchdown == null && lastDocked == null && !liftedOff)
+                    lastTouchdown = touchdown;
+
+                // we often have ApproachSettlement near the top of the file and nothing else - let's try going past that to get the other entries
+                var approachSettlement = entry as ApproachSettlement;
+                if (approachSettlement != null && lastApproachSettlement == null)
+                    if (docked == null || docked.MarketID == approachSettlement.MarketID)
+                        lastApproachSettlement = entry as ApproachSettlement;
+
+                // stop if we have ApproachBody or StartJump, otherwise keep going
+                return entry is ApproachBody || entry is StartJump;
+            });
+
+            // exit early if there was no ApproachSettlement or we're not near that settlement any more
+            if (lastApproachSettlement == null || lastApproachSettlement.BodyName != status.BodyName) return;
+            if (Util.getDistance(Status.here, lastApproachSettlement, status.PlanetRadius) > 500) return;
+
+            // if we've been to this settlement before - load it and exit early
+            this.humanSite = HumanSiteData.Load(systemData.address, lastApproachSettlement.MarketID);
+
+            if (this.humanSite != null) return;
+
+            // replay entries forwards - starting with ApproachSettlement
+            this.humanSite = new HumanSiteData(lastApproachSettlement);
+
+            // docking requested/granted we can use regardless
+            if (lastDockingRequested != null) humanSite.dockingRequested(lastDockingRequested);
+            if (lastDockingGranted != null) humanSite.dockingGranted(lastDockingGranted);
+
+            // but we can only use the Docked event if we are still docked at that same pad
+            if (lastDocked != null && status.Docked)
+            {
+                // we'll need a shipType first, which may be much earlier than we already walked
+                if (this.shipType == null) this.shipType = journals.FindEntryByType<Loadout>(-1, true)?.Ship!;
+                if (this.shipType == null) this.shipType = journals.FindEntryByType<LoadGame>(-1, true)?.Ship!;
+
+                humanSite.docked(lastDocked, status.Heading);
+            }
+
+            // or if we touched down near a site
+            if (lastDocked == null && lastTouchdown?.NearestDestination == lastApproachSettlement.Name)
+            {
+                // not sure if we really need this.
             }
         }
 
@@ -662,7 +772,7 @@ namespace SrvSurvey.game
 
                         if (lastTouchdown.Body == status!.BodyName)
                         {
-                            onJournalEntry(lastTouchdown);
+                            this.touchdownLocation = lastTouchdown;
                             return true;
                         }
                         return false;
@@ -707,6 +817,8 @@ namespace SrvSurvey.game
         {
             if (this.Commander == null)
                 this.initializeFromJournal();
+
+            this.shipType = entry.Ship;
         }
 
         private void onJournalEntry(Location entry)
@@ -721,23 +833,27 @@ namespace SrvSurvey.game
 
             this.setLocations(entry);
 
-
             // start a new SystemStatus
             this.systemStatus = new SystemStatus(entry.StarSystem, entry.SystemAddress);
             this.systemStatus.initFromJournal(this);
+        }
+
+        private void onJournalEntry(Loadout entry)
+        {
+            this.shipType = entry.Ship;
         }
 
         private void onJournalEntry(Died entry)
         {
             Game.log($"You died. Clearing ${Util.credits(this.cmdr.organicRewards)} from {this.cmdr.scannedBioEntryIds.Count} organisms.");
             // revisit all active bio-scan entries per body and mark them as Died
-            /*
+
             this.cmdr.scannedOrganics.Clear();
             this.cmdr.scanOne = null;
             this.cmdr.scanTwo = null;
             this.cmdr.lastOrganicScan = null;
-            // !! this.cmdr.Save();
-            */
+            this.cmdr.currentMarketId = 0;
+            this.cmdr.Save();
         }
 
         private void onJournalEntry(Music entry)
@@ -799,6 +915,13 @@ namespace SrvSurvey.game
                     form.Invalidate();
                 }
             }
+
+            // for either FSD type ...
+
+            // we are certainly no longer at any humanSite
+            this.cmdr.setMarketId(0);
+            if (this.humanSite != null)
+                this.humanSite = null;
         }
 
         private void onJournalEntry(FSDJump entry)
@@ -1565,6 +1688,7 @@ namespace SrvSurvey.game
         #region journal tracking for ground ops
 
         private LatLong2? _touchdownLocation;
+        public LatLong2? srvLocation;
 
         public LatLong2 touchdownLocation
         {
@@ -1587,8 +1711,16 @@ namespace SrvSurvey.game
                     // stop endless repeats
                     if (this._touchdownLocation == null)
                     {
-                        Game.log($"Last touchdown not found since ApproachBody");
-                        this._touchdownLocation = LatLong2.Empty;
+                        if (status.hasLatLong && systemBody != null && systemBody.name == status.BodyName)
+                        {
+                            Game.log($"Last touchdown not found since ApproachBody - using last from systemBody");
+                            this._touchdownLocation = systemBody.lastTouchdown;
+                        }
+                        else
+                        {
+                            Game.log($"Last touchdown not found since ApproachBody");
+                            this._touchdownLocation = LatLong2.Empty;
+                        }
                     }
 
                     /*
@@ -1626,17 +1758,22 @@ namespace SrvSurvey.game
 
         private void onJournalEntry(Touchdown entry)
         {
-            this.touchdownLocation = entry;
+            // wait a bit for the status file to be written?
+            Task.Delay(10).ContinueWith((x) =>
+            {
+                // store the heading at the time of touchdown, so we can adjust the cockpit location to the center of the ship
+                this.cmdr.setTouchdown(entry, status.Heading);
+                this.touchdownLocation = entry;
 
-            var ago = Util.timeSpanToString(DateTime.UtcNow - entry.timestamp);
-            log($"Touchdown {ago}, at: {touchdownLocation}");
+                var ago = Util.timeSpanToString(DateTime.UtcNow - entry.timestamp);
+                log($"Touchdown {ago}, at: {touchdownLocation}");
+                this.fireUpdate(true);
+            });
         }
 
         private void onJournalEntry(Liftoff entry)
         {
             this._touchdownLocation = LatLong2.Empty;
-            log($"Liftoff!");
-
             this.systemData?.prepSettlements();
         }
 
@@ -1662,7 +1799,7 @@ namespace SrvSurvey.game
                     }
                 }
             }
-            else if (entry.MarketID > 0 && this.systemBody != null && Debugger.IsAttached)
+            else if (entry.MarketID > 0 && this.systemBody != null && Game.settings.autoShowHumanSitesTest)
             {
                 // Human site
                 this.humanSite = new HumanSiteData(entry);
@@ -1673,14 +1810,14 @@ namespace SrvSurvey.game
 
         private void onJournalEntry(DockingRequested entry)
         {
-            if (entry.StationType == StationType.OnFootSettlement && this.humanSite?.marketId == entry.MarketID && Debugger.IsAttached)
+            if (entry.StationType == StationType.OnFootSettlement && this.humanSite?.marketId == entry.MarketID && Game.settings.autoShowHumanSitesTest)
                 this.humanSite.dockingRequested(entry);
 
         }
 
         private void onJournalEntry(DockingGranted entry)
         {
-            if (entry.StationType == StationType.OnFootSettlement && this.humanSite?.marketId == entry.MarketID && Debugger.IsAttached)
+            if (entry.StationType == StationType.OnFootSettlement && this.humanSite?.marketId == entry.MarketID && Game.settings.autoShowHumanSitesTest)
                 this.humanSite.dockingGranted(entry);
         }
 
@@ -1688,35 +1825,38 @@ namespace SrvSurvey.game
         {
             // store that we've docked here
             this.cmdr.setMarketId(entry.MarketID);
-            if (entry.StationType != StationType.OnFootSettlement || this.systemData == null || !Debugger.IsAttached) return;
+            if (entry.StationType != StationType.OnFootSettlement || this.systemData == null || !Game.settings.autoShowHumanSitesTest) return;
 
+            // wait a bit for the status file to be written?
+            Task.Delay(10).ContinueWith((x) =>
+            {
+                // use current location as touchdown
+                // store the heading at the time of touchdown, so we can adjust the cockpit location to the center of the ship
+                var here = Status.here.clone();
+                this.cmdr.setTouchdown(here, this.status.Heading);
+                this.touchdownLocation = here;
 
-            if (this.humanSite == null)
-            {
-                // try loading a file, it will exist if we have docked here before
-                this.humanSite = HumanSiteData.Load(this.systemData.address, entry.MarketID);
-            }
-            else if (this.humanSite.marketId == entry.MarketID)
-            {
-                // wait a bit for the status file to be written?
-                Task.Delay(100).ContinueWith((x) => {
+                if (this.humanSite == null)
+                {
+                    // try loading a file, it will exist if we have docked here before
+                    this.humanSite = HumanSiteData.Load(this.systemData.address, entry.MarketID);
+                }
+                else if (this.humanSite.marketId == entry.MarketID)
+                {
+
                     this.humanSite.docked(entry, this.status.Heading);
-                });
-            }
-            else
-            {
-                Game.log($"Mismatched name or marketId?! {entry.StationName} ({entry.MarketID})");
-            }
+                    this.fireUpdate(true);
+                }
+                else
+                {
+                    Game.log($"Mismatched name or marketId?! {entry.StationName} ({entry.MarketID})");
+                }
+            });
         }
 
         private void onJournalEntry(Undocked entry)
         {
-            // clear that we docked here
-            //this.cmdr.setMarketId(0);
-            //if (entry.StationType != StationType.OnFootSettlement) return;
-
-            //if (this.humanSite != null)
-            //    this.humanSite = null;
+            this.touchdownLocation = LatLong2.Empty;
         }
 
         private void onJournalEntry(CodexEntry entry)
@@ -2000,6 +2140,10 @@ namespace SrvSurvey.game
         {
             log($"Disembark - entry.onPlanet: {entry.OnPlanet}");
             this.onPlanet = entry.OnPlanet;
+
+            // remember where we left the SRV
+            if (entry.SRV)
+                this.srvLocation = Status.here.clone();
         }
 
         private void onJournalEntry(Embark entry)
@@ -2008,6 +2152,10 @@ namespace SrvSurvey.game
             this.onPlanet = false;
 
             this.systemData?.prepSettlements();
+
+            // clear where we left the SRV
+            if (entry.SRV)
+                this.srvLocation = null;
         }
 
         private void onJournalEntry(Backpack entry)

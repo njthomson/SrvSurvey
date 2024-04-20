@@ -28,6 +28,14 @@ namespace SrvSurvey
             this.disposed = true;
         }
 
+        public void poke()
+        {
+            // FileSystemWatcher sometimes gets stale and needs to be poked, forcing a flush of any pending file writes
+            FileInfo fi = new FileInfo(this.filepath);
+            using FileStream stream = fi.Open(FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+            stream.Close();
+        }
+
         protected virtual void Dispose(bool disposing)
         {
             if (disposing)

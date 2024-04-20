@@ -43,7 +43,7 @@ namespace SrvSurvey.units
 
         public override string ToString()
         {
-            return this.n.ToString("0") + "°";
+            return this.n.ToString("N2") + "°";
         }
 
         public decimal radians

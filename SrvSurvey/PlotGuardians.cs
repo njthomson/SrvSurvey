@@ -1005,7 +1005,7 @@ namespace SrvSurvey
 
         protected override void Status_StatusChanged(bool blink)
         {
-            if (this.IsDisposed || game?.status == null || this.IsDisposed || game.systemBody == null) return;
+            if (this.IsDisposed || game?.status == null || game.systemBody == null) return;
 
             base.Status_StatusChanged(blink);
 
@@ -1114,10 +1114,9 @@ namespace SrvSurvey
                 //    (float)(offset.Lat * -template.scaleFactor));
                 //Game.log($"commanderOffset old: {commanderOffset}");
                 var td = new TrackingDelta(game.systemBody.radius, siteData.location);
-                var ss = 1f;
                 this.commanderOffset = new PointF(
-                    (float)td.dx * ss,
-                    -(float)td.dy * ss);
+                    (float)td.dx,
+                    -(float)td.dy);
                 //Game.log($"commanderOffset: {commanderOffset}");
 
 
@@ -1476,19 +1475,19 @@ namespace SrvSurvey
             g.DrawLine(Pens.DarkRed, x, y, x, +this.Height * 2);
             g.DrawLine(Pens.Red, x, -this.Height * 2, x, y);
 
-            this.drawTouchdownAndSrvLocation(true);
+            this.drawTouchdownAndSrvLocation0(true);
 
             this.drawArtifacts(siteOrigin);
 
             this.drawObeliskGroupNames(siteOrigin);
 
-            this.drawCommander();
+            this.drawCommander0();
             g.ResetClip();
         }
 
         private void drawObeliskGroupNames(PointF siteOrigin)
         {
-            if (g == null || template == null || (this.touchdownLocation == null && this.srvLocation == null)) return;
+            if (g == null || template == null || (this.touchdownLocation0 == null && this.srvLocation0 == null)) return;
 
             // reset transform with origin at that point, scaled and rotated to match the commander
             g.ResetTransform();
@@ -1506,7 +1505,7 @@ namespace SrvSurvey
                 {
                     var angle = 180 - siteData.siteHeading - foo.Value.X;
                     var dist = foo.Value.Y;
-                    var pt = Util.rotateLine((decimal)angle, (decimal)dist);
+                    var pt = (PointF)Util.rotateLine((decimal)angle, (decimal)dist);
                     // draw guide lines when map editor is active
                     if (this.formEditMap?.tabs.SelectedIndex == 2 && this.formEditMap?.listGroupNames.Text == foo.Key)
                     {
@@ -1594,14 +1593,14 @@ namespace SrvSurvey
                 // calculate render point for POI
                 var deg = 180 - siteData.siteHeading - poi.angle;
                 var dist = poi.dist; //  * 1.01m; // scaling for perspective? !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                var pt = Util.rotateLine(
+                var pt = (PointF)Util.rotateLine(
                     deg,
                     dist);
 
                 // work in progress - only render if a RUINS poi
                 if (this.isRuinsPoi(poi.type, true, true) || Game.settings.enableEarlyGuardianStructures)
                     // render it
-                    this.drawSitePoi(poi, pt);
+                    this.drawSitePoi(poi, (PointF)pt);
 
                 // is this the closest POI?
                 var x = pt.X - commanderOffset.X;

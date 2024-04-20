@@ -23,6 +23,7 @@ namespace SrvSurvey
         public bool autoShowPlotSysStatus = true;
         public bool autoShowPlotBioSystem = false;
         public bool autoShowPlotGalMapTest = true;
+        public bool autoShowHumanSitesTest = false;
         public bool skipGasGiantDSS = true;
         public bool skipRingsDSS = false;
         public bool skipLowValueDSS = true;
@@ -72,6 +73,7 @@ namespace SrvSurvey
         public Rectangle formBeaconsLocation;
         public Rectangle formMapEditor;
         public Rectangle formRamTah;
+        public Rectangle formGenusGuideLocation;
 
         public bool mapShowNotes = true;
 

@@ -120,6 +120,10 @@ namespace SrvSurvey
                     Status.here.Lat = this.Latitude;
                     Status.here.Long = this.Longitude;
 
+                    // work-around negative headings that sometimes occur when on-foot
+                    if (this.Heading < 0)
+                        this.Heading += 360;
+
                     var blink = this.trackBlinks();
 
                     // fire the event for external code on the UI thread
@@ -171,7 +175,7 @@ namespace SrvSurvey
         public DateTime lastblinkChange = DateTime.Now;
 
         [JsonIgnore]
-        public static readonly LatLong2 here = new LatLong2(0, 0);
+        public static readonly LatLong2 here = new LatLong2(0d, 0d);
 
         [JsonIgnore]
         public bool OnFoot { get => (this.Flags2 & StatusFlags2.OnFoot) > 0; }
@@ -185,6 +189,8 @@ namespace SrvSurvey
         public bool hasLatLong { get => (this.Flags & StatusFlags.HasLatLong) > 0; }
         [JsonIgnore]
         public bool InTaxi { get => (this.Flags2 & StatusFlags2.InTaxi) > 0; }
+        [JsonIgnore]
+        public bool Docked { get => (this.Flags & StatusFlags.Docked) > 0; }
     }
 
     class FuelStatus

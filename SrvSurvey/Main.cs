@@ -920,26 +920,109 @@ namespace SrvSurvey
                 var siteHeading = (decimal)game.humanSite.heading;
 
                 // temp?
-                if (msg == "!!")
+                if (msg == "!")
                 {
-                    // set site origin as target
                     Game.settings.targetLatLongActive = true;
-                    Game.settings.targetLatLong = siteLocation;
-                    this.updateTrackTargetTexts();
+                    Game.settings.targetLatLong = siteLocation; // set site origin as tracking target
+                    Game.settings.Save();
+
+                    this.setTargetLatLong();
+                    Game.log("Set site origin location as target");
+                }
+                else if (msg == "@")
+                {
+                    Game.settings.targetLatLongActive = true;
+                    // Game.settings.targetLatLong = game.touchdownLocation;
+                    Game.settings.targetLatLong = Status.here.clone(); // current location
+                    Game.settings.Save();
+
+                    this.setTargetLatLong();
+                    Game.log("Set current location as target");
+                }
+                else if (msg == "@@")
+                {
+                    var po = Util.getOffset(game.status.PlanetRadius, Game.settings.targetLatLong, game.humanSite.heading);
+                    Game.log($"\"{game.shipType}\", new PointM({po.x}, {po.y})");
+                    Util.mapShipCockpitOffsets[game.shipType] = po;
+                    Clipboard.SetText($"\"{game.shipType}\", new PointM({po.x}, {po.y})");
+                }
+                else if (msg == "ll")
+                {
+                    Program.closeAllPlotters();
+                    Application.DoEvents();
+                    HumanSiteTemplate.import(true);
+                    Application.DoEvents();
+                    if (game.humanSite != null)
+                        game.humanSite.template = HumanSiteTemplate.get(game.humanSite.economy, game.humanSite.subType);
+
+                    game.fireUpdate(true);
+                }
+                else if (msg == "!!")
+                {
+                    // get delta from tracking target
+                    var radius = game.status.PlanetRadius;
+                    var pf = Util.getOffset(radius, Game.settings.targetLatLong, game.humanSite.heading);
+
+                    var txt = $"\"offset\": {{ \"X\": {pf.X}, \"Y\": {pf.Y} }}";
+                    var dh = game.status.Heading - game.humanSite.heading;
+                    if (dh < 0) dh += 360;
+                    if (dh != 0) txt += $", \"rot\": {dh}";
+
+                    Game.log(txt);
+                    Clipboard.SetText(txt);
                 }
                 else if (msg == "..")
                 {
-                    // measure dist/angle from site origin
+                    //// measure dist/angle from site origin
                     var radius = game.status.PlanetRadius;
-                    var dist = Util.getDistance(siteLocation, Status.here, radius).ToString("N2");
-                    var angle = Util.getBearing(siteLocation, Status.here) - siteHeading;
-                    if (angle < 0) angle += 360;
-                    var angleTxt = angle.ToString("N2");
+                    //var dist = Util.getDistance(siteLocation, Status.here, radius).ToString("N2");
+                    //var angle = Util.getBearing(siteLocation, Status.here) - siteHeading;
+                    //if (angle < 0) angle += 360;
+                    //var angleTxt = angle.ToString("N2");
+                    //// "dist": 67.2, "angle": 36.5
+                    //var txt = $"\"dist\": {dist}, \"angle\": {angleTxt}";
+                    //Game.log($"Relative to site origin:\r\n\r\n\t{txt}\r\n\r\n\tSite: {siteLocation} / {siteHeading}°\r\n\tcmdr: {Status.here} / {game.status.Heading}°\r\n");
+                    //Clipboard.SetText(txt);
+                    // measure dist/angle from site origin
+
+                    //var radius = game.status.PlanetRadius;
+                    //var dist = Util.getDistance(siteLocation, Status.here, radius);
+                    //var angle = Util.getBearing(siteLocation, Status.here) - siteHeading;
+                    //if (angle < 0) angle += 360;
+                    //var pf = Util.rotateLine(180 - angle, dist);
+                    var pf = Util.getOffset(radius, game.humanSite.location, game.humanSite.heading);
+
+                    //var distTxt = dist.ToString("N2");
+                    //var angleTxt = angle.ToString("N2");
                     // "dist": 67.2, "angle": 36.5
-                    var txt = $"\"dist\": {dist}, \"angle\": {angleTxt}";
-                    Game.log($"Relative to site origin:\r\n\r\n\t{txt}\r\n\r\n\tSite: {siteLocation} / {siteHeading}°\r\n\tcmdr: {Status.here} / {game.status.Heading}°\r\n");
+                    //var txt = $"new PointF({pf.X}f, {pf.Y}f),";
+                    var txt = $"\"offset\": {{ \"X\": {pf.X}, \"Y\": {pf.Y} }}";
+                    Game.log($"Relative to site origin:\r\n\r\n\t{txt}\r\n");
                     Clipboard.SetText(txt);
                 }
+                else if (msg == "//")
+                {
+                    // measure dist/angle from site origin
+                    var radius = game.status.PlanetRadius;
+                    var cmdrOffset = Util.getOffset(radius, game.humanSite.location, Status.here, game.humanSite.heading);
+
+                    var dist = Util.getDistance(siteLocation, Status.here, radius);
+                    var angle = Util.getBearing(siteLocation, Status.here) - siteHeading;
+                    if (angle < 0) angle += 360;
+                    var pf = Util.rotateLine(180 - angle, dist);
+
+
+                    //var distTxt = dist.ToString("N2");
+                    //var angleTxt = angle.ToString("N2");
+                    // "dist": 67.2, "angle": 36.5
+                    //var txt = $"new PointF({pf.X}f, {pf.Y}f),";
+                    var txt = $"\"offset\": {{ \"X\": {pf.X}, \"Y\": {pf.Y} }}";
+                    var txt2 = $"\"offset\": {{ \"X\": {cmdrOffset.X}, \"Y\": {cmdrOffset.Y} }}";
+                    Game.log($"Relative1 to site origin:\r\n\r\n\t{txt}\r\nvs  {txt2}");
+                    //Game.log($"Relative2 to site origin:\r\n\r\n\t{txt2}\r\n");
+                    //Clipboard.SetText(txt);
+                }
+
             }
         }
 
@@ -1028,14 +1111,12 @@ namespace SrvSurvey
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            // slow timer to check the location of the game window, repositioning plotters if needed
+            // a periodic timer to check the location of the game window, repositioning plotters if needed
             var rect = Elite.getWindowRect();
             var hasFocus = rect != Rectangle.Empty && rect.X != -32000;
 
             if (this.lastWindowHasFocus != hasFocus)
             {
-                //Game.log($"EliteDangerous window focus changed: {hasFocus}");
-
                 if (hasFocus)
                     Program.showActivePlotters();
                 else
@@ -1072,6 +1153,9 @@ namespace SrvSurvey
                     this.wasWithinDssDuration = false;
                 }
             }
+
+            // poke the current journal file, combatting batched file writes by the game
+            if (game?.journals != null) game.journals.poke();
         }
 
         private void Main_ResizeEnd(object sender, EventArgs e)
@@ -1397,17 +1481,56 @@ namespace SrvSurvey
         private void btnSphereLimit_Click(object sender, EventArgs e)
         {
             Program.closePlotter<PlotSphericalSearch>();
-
-            var form = new FormSphereLimit();
-            form.ShowDialog(this);
-
+            new FormSphereLimit().ShowDialog(this);
             this.updateSphereLimit();
+
+            // revert touchdown location
+            /*
+            game!.touchdownLocation = game!.systemBody!.lastTouchdown!.clone();
+            Program.getPlotter<PlotHumanSite>()!.Invalidate();
+            // */
         }
 
         private void btnRamTah_Click(object sender, EventArgs e)
         {
-            //FormRamTah.show();
-            Program.showPlotter<PlotHumanSite>();
+            FormRamTah.show();
+
+            //new FormGenus().Show();
+
+            //game!.touchdownLocation = Util.adjustForCockpitOffset(game.status.PlanetRadius, game!.systemBody!.lastTouchdown!, game.shipType, 90);
+            //Program.getPlotter<PlotHumanSite>()!.Invalidate();
+
+            /*
+            var radius = game!.status.PlanetRadius; // in meters
+            var shipHeading = game.status.Heading;
+
+            //// Not quite ready :/
+            var ll1 = game!.systemBody!.lastTouchdown!.clone();
+            ////var pd = Util.rotateLine(shipHeading, 19m);
+
+            //var pd0 = Util.mapShipCockpitOffsets["dolphin"];
+            ////Math.Atan
+            //var dd = Math.Sqrt(Math.Pow(pd0.X, 2) + Math.Pow(pd0.Y, 2));
+            //var aa = DecimalMath.DecimalEx.ToDeg( DecimalMath.DecimalEx.ATan2((decimal)pd0.X, (decimal) pd0.Y) ) + shipHeading;
+            //Game.log($"{aa} / {dd}");
+
+            //var pd = Util.rotateLine(aa, (decimal)dd);
+
+
+            //var dl = (DecimalMath.DecimalEx.TwoPi * radius) / 360m; // meters per degree
+            //dl = 1 / dl; // degrees per meter
+            var ll2 = Util.adjustForCockpitOffset(radius, ll1, game.shipType, shipHeading);
+            //ll2.Lat += (double)((decimal)pd.Y * dl);
+            //ll2.Long += (double)((decimal)pd.X * dl);
+
+            //Game.log($"pd: {pd}");
+            //Game.log($"ll1: {ll1} / ll2: {ll2} / dl: {dl}");
+
+            //game.touchdownLocation = ll2;
+            var plotter = Program.getPlotter<PlotHumanSite>();
+            plotter.touchdownLocation0!.Target = ll2;
+            plotter.Invalidate();
+            // */
         }
 
         private void btnPublish_Click(object sender, EventArgs e)

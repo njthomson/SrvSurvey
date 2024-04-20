@@ -139,6 +139,7 @@ namespace SrvSurvey
 
                 // draw heading text (center bottom)
                 var headingTxt = ((int)this.td.angle).ToString(); // TODO: this.targetAngle
+                //var headingTxt = this.targetAngle.ToString("N0");
                 var sz = g.MeasureString(headingTxt, GameColors.fontSmall);
                 var tx = hw - (sz.Width / 2);
                 var ty = this.Height - sz.Height - six;
@@ -146,10 +147,11 @@ namespace SrvSurvey
 
                 // draw distance text (center top)
                 var dist = td.distance; // TODO: this.targetDist
+                //var dist = this.targetDistance;
                 if ((game.status.Flags & StatusFlags.AltitudeFromAverageRadius) > 0)
                     dist += td.distance + game.status.Altitude; // Remove it? I don't think it helps any more
 
-                var txt = "Distance: " + Util.metersToString(dist);
+                var txt = "Distance: " + Util.metersToString(dist); // dist.ToString("N2");
                 g.DrawString(txt, GameColors.fontSmall, Brushes.Orange, four, ten);
 
                 g.TranslateTransform(hw, hh);

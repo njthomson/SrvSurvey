@@ -156,7 +156,7 @@ namespace SrvSurvey
 
         public static Color LimeIsh = Color.FromArgb(200, Color.Lime);
         public static Color Orange = Color.FromArgb(255, 255, 111, 0);
-            //Color.FromArgb(255, 240, 109, 29);
+        //Color.FromArgb(255, 240, 109, 29);
         public static Color OrangeDim = Color.FromArgb(255, 95, 48, 3);
         public static Color Cyan = Color.FromArgb(255, 84, 223, 237);
         public static Color DarkCyan = Color.DarkCyan;
@@ -195,11 +195,15 @@ namespace SrvSurvey
         public static Pen penDarkRed2 = newPen(Color.DarkRed, 2);
         public static Pen penDarkRed3 = newPen(Color.DarkRed, 3);
 
+        public static Pen penRed2Ish = newPen(Color.FromArgb(128, Color.Red), 2);
+        public static Pen penDarkRed2Ish = newPen(Color.FromArgb(128, Color.DarkRed), 2);
+
         public static Pen penBlack3Dotted = newPen(Color.Black, 3, DashStyle.Dot);
         public static Pen penUnknownBioSignal = newPen(Color.FromArgb(255, 88, 88, 88), 1);
         public static Brush brushUnknownBioSignal = new SolidBrush(Color.FromArgb(255, 88, 88, 88));
 
         public static Pen penGameOrange2Dotted = newPen(Orange, 2, DashStyle.Dot);
+        public static Pen penGameOrange2DashedIsh = newPen(Color.FromArgb(128, Orange), 2, DashStyle.Dash);
 
         public static Pen penNearestUnknownSitePOI = newPen(Color.FromArgb(96, Color.DarkCyan), 15, LineCap.RoundAnchor, LineCap.Round);
 

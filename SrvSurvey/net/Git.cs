@@ -202,7 +202,7 @@ namespace SrvSurvey.net
                     site.pubData.rh = site.relicTowerHeading;
                 }
                 // location
-                if (site.location != null && (site.pubData.ll == null || !Util.isClose(site.pubData.ll.Lat, site.location.Lat, 0.0001) || !Util.isClose(site.pubData.ll.Long, site.location.Long, 0.0001)))
+                if (site.location != null && (site.pubData.ll == null || !Util.isClose(site.pubData.ll.Lat, site.location.Lat, 0.0001m) || !Util.isClose(site.pubData.ll.Long, site.location.Long, 0.0001m)))
                 {
                     diff = true;
                     site.pubData.ll = site.location;

@@ -57,10 +57,31 @@ namespace SrvSurvey.game
 
         public long currentMarketId;
 
+        /// <summary>
+        /// The heading of the ship when we last touched down, or docked
+        /// </summary>
+        public decimal lastTouchdownHeading = -1;
+        /// <summary>
+        /// The location of the ship when we last touched down, or docked
+        /// </summary>
+        public LatLong2? lastTouchdownLocation;
+
         public void setMarketId(long newMarketId)
         {
             this.currentMarketId = newMarketId;
             this.Save();
+        }
+
+        public void setTouchdown(LatLong2? location, decimal heading)
+        {
+            this.lastTouchdownLocation = location;
+            this.lastTouchdownHeading = heading;
+            this.Save();
+        }
+
+        public void clearTouchdown()
+        {
+            this.setTouchdown(null, -1);
         }
 
         /// <summary>

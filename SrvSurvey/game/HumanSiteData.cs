@@ -97,12 +97,13 @@ namespace SrvSurvey.game
 
         public void docked(Docked entry, int shipHeading)
         {
-            this.landingPads = entry.LandingPads;
-            if (this.targetPad == 0) return; // (when in a taxi)
+            if (entry != null) // if is tmp
+                this.landingPads = entry.LandingPads;
+            if (this.targetPad == 0) return; // (happens when in a taxi)
 
             // infer the subType
-            if (this.subType == 0) 
-                this.inferSubtypeFromDocked();
+            if (this.subType == 0 || entry == null)
+                this.inferSubtypeFromDocked(shipHeading);
 
             if (this.targetPad == 1)
             {
@@ -117,31 +118,31 @@ namespace SrvSurvey.game
             {
                 // for other pads, we must apply their rotation to the ships heading
                 var padRot = this.template.landingPads[this.targetPad - 1].rot;
-                this.heading = shipHeading + padRot;
-                if (this.heading >= 360) this.heading -= 360;
+                this.heading = shipHeading - padRot;
+                if (this.heading > 0) this.heading += 360;
             }
 
-            // --- tmp ---
-            Game.log($"Docked at: pad #{this.targetPad} - {this.name} ({this.marketId})");
-            Game.log($"Station location: {this.location}");
-            Game.log($"Ship location: {Status.here}, heading: {shipHeading}°");
+            //// --- tmp ---
+            //Game.log($"Docked at: pad #{this.targetPad} - {this.name} ({this.marketId})");
+            //Game.log($"Station location: {this.location}");
+            //Game.log($"Ship location: {Status.here}, heading: {shipHeading}°");
 
-            var radius = Game.activeGame.status.PlanetRadius;
-            var dist = Util.getDistance(this.location, Status.here, radius);
-            var bearing = Util.getBearing(this.location, Status.here);
+            //var radius = Game.activeGame!.status.PlanetRadius;
+            //var dist = Util.getDistance(this.location, Status.here, radius);
+            //var bearing = Util.getBearing(this.location, Status.here);
 
-            Game.log($"dist: {(int)dist}, bearing: {(int)bearing}");
-            var foo = (int)(bearing - shipHeading);
-            if (foo < 0) foo += 360;
-            Game.log($"pad angle? {foo}°");
+            //Game.log($"dist: {(int)dist}, bearing: {(int)bearing}");
+            //var foo = (int)(bearing - shipHeading);
+            //if (foo < 0) foo += 360;
+            //Game.log($"pad angle? {foo}°");
 
-            Game.log($"site heading? {this.heading}°");
-            var td = new TrackingDelta(radius, this.location);
-            Game.log($"td: {td}");
-            // --- tmp ---
+            //Game.log($"site heading? {this.heading}°");
+            //var td = new TrackingDelta(radius, this.location);
+            //Game.log($"td: {td}");
+            //// --- tmp ---
 
             // Only save if we inferred the subType and have a real heading
-            if (this.subType > 0 && this.heading != -1)
+            if (this.subType > 0 && this.heading != -1 && entry != null)
             {
                 if (this.filepath == null)
                 {
@@ -155,35 +156,52 @@ namespace SrvSurvey.game
             }
         }
 
-        private void inferSubtypeFromDocked()
+        /// <summary>
+        /// Infer the subType by matching the pad we landed in
+        /// </summary>
+        /// <param name="shipHeading"></param>
+        private void inferSubtypeFromDocked(int shipHeading)
         {
-            // infer the subType by matching the pad we landed in
-            var shipDist = Util.getDistance(this.location, Status.here, Game.activeGame!.status.PlanetRadius);
+            var game = Game.activeGame!;
+            var radius = game.status.PlanetRadius;
+            var shipLatLong = Util.adjustForCockpitOffset(radius, Status.here, game.shipType, shipHeading);
 
             foreach (var template in HumanSiteTemplate.templates)
             {
                 if (template.economy != this.economy) continue; // wrong economy
                 if (this.targetPad > template.landingPads.Count) continue; // not enough pads
+                var landPadSummary = template.landPadSummary(); // check pad configuration matches
+                if (this.landingPads.Small != landPadSummary.Small || this.landingPads.Medium != landPadSummary.Medium || this.landingPads.Large != landPadSummary.Large) continue;
 
                 // are we within ~5m of the expected pad? Is ~5m enough?
-                var padDist = template.landingPads[this.targetPad - 1].dist;
-                var match = Util.isClose(padDist, shipDist, 5);
-                if (match)
+                var pad = template.landingPads[this.targetPad - 1];
+                var shipOffset = Util.getOffset(radius, this.location, shipLatLong, shipHeading - pad.rot);
+
+                //var dx = pad.offset.X - shipOffset.X;
+                //var dy = pad.offset.Y - shipOffset.Y;
+                //var shipDistFromPadCenter = Math.Sqrt(Math.Pow(dx, 2) + Math.Pow(dy, 2));
+                var po = pad.offset - shipOffset;
+                var shipDistFromPadCenter = po.dist;
+
+                if (shipDistFromPadCenter < 50) // TODO: adjust by pad size?
                 {
                     this.subType = template.subType;
                     this.template = HumanSiteTemplate.get(this.economy, this.subType);
-                    Game.log($"inferSubtypeFromDocked: {this.economy}, pad #{this.targetPad} distance matched subType: #{this.subType} (pad:{padDist} vs ship:{(float)shipDist})");
+                    Game.log($"inferSubtypeFromDocked: matched {this.economy} #{template.subType} from pad #{this.targetPad}, shipDistFromPadCenter:" + Util.metersToString(shipDistFromPadCenter));
                     return;
                 }
                 else
                 {
                     // TODO: Remove once templates are populated
-                    Game.log($"not a match - {this.economy}, pad #{this.targetPad}: pad:{padDist} vs ship:{(float)shipDist}");
+                    Game.log($"not a match - {template.economy} #{template.subType}, pad #{this.targetPad} ({pad.size}): shipDistFromPadCenter: " + shipDistFromPadCenter.ToString("N2"));
                 }
             }
 
             if (this.subType == 0)
                 Game.log($"inferSubtypeFromDocked: Doh! We should have been able to infer the subType by this point :(");
+
+            if (this.subType != 0)
+                this.template = HumanSiteTemplate.get(this.economy, this.subType);
         }
 
         #region static mappings

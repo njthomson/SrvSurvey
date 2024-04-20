@@ -1095,8 +1095,8 @@ namespace SrvSurvey.canonn
                 // location
                 if (site.ll != null && (double.IsNaN(ruinSummary.latitude) || double.IsNaN(ruinSummary.longitude)))
                 {
-                    ruinSummary.latitude = site.ll.Lat;
-                    ruinSummary.longitude = site.ll.Long;
+                    ruinSummary.latitude = (double)site.ll.Lat;
+                    ruinSummary.longitude = (double)site.ll.Long;
                 }
                 // siteHeading
                 if (site.sh != -1 && !Util.isClose(ruinSummary.siteHeading, site.sh, 1m))
@@ -1380,8 +1380,8 @@ namespace SrvSurvey.canonn
                 // location
                 if (site.ll != null && (double.IsNaN(siteSummary.latitude) || double.IsNaN(siteSummary.longitude)))
                 {
-                    siteSummary.latitude = site.ll.Lat;
-                    siteSummary.longitude = site.ll.Long;
+                    siteSummary.latitude = (double)site.ll.Lat;
+                    siteSummary.longitude = (double)site.ll.Long;
                 }
                 // siteHeading
                 if (siteSummary.siteHeading == -1 && site.sh != -1 && siteSummary.siteHeading != site.sh)

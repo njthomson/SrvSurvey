@@ -58,9 +58,11 @@
     <None Remove="images\bowl-background.png" />
     <None Remove="images\crossroads-heading-guide.png" />
     <None Remove="images\data-port-heading-guide.png" />
+    <None Remove="images\extraction#5-s-1-x-200-y-200.png" />
     <None Remove="images\fistbump-heading-guide.png" />
     <None Remove="images\gamma-background.png" />
     <None Remove="images\gamma-heading-guide.png" />
+    <None Remove="images\industrial#5-s-1-x-200-y-200.png" />
     <None Remove="images\lacrosse-heading-guide.png" />
     <None Remove="images\robolobster-background.png" />
     <None Remove="plotters.json" />
@@ -104,6 +106,9 @@
     <Content Include="images\data-port-heading-guide.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="images\extraction#5-s-1-x-200-y-200.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="images\fistbump-heading-guide.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -111,6 +116,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="images\gamma-heading-guide.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\industrial#5-s-1-x-200-y-200.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="images\lacrosse-heading-guide.png">

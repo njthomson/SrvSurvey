@@ -2,6 +2,7 @@
 using SrvSurvey.game;
 using SrvSurvey.units;
 using System.Diagnostics;
+using System.Drawing.Drawing2D;
 using System.Reflection;
 
 namespace SrvSurvey
@@ -9,8 +10,8 @@ namespace SrvSurvey
     internal abstract class PlotBase : Form, PlotterForm, IDisposable
     {
         protected Game game = Game.activeGame!;
-        protected TrackingDelta? touchdownLocation; // TODO: move to PlotSurfaceBase
-        protected TrackingDelta? srvLocation; // TODO: move to PlotSurfaceBase
+        public TrackingDelta? touchdownLocation0; // TODO: move to PlotSurfaceBase // make protected again
+        protected TrackingDelta? srvLocation0; // TODO: move to PlotSurfaceBase
 
         /// <summary> The center point on this plotter. </summary>
         protected Size mid;
@@ -65,7 +66,7 @@ namespace SrvSurvey
 
             if (game.systemData != null && game.systemBody != null) // retire
             {
-                this.touchdownLocation = new TrackingDelta(
+                this.touchdownLocation0 = new TrackingDelta(
                     game.systemBody.radius,
                     game.touchdownLocation ?? LatLong2.Empty);
             }
@@ -207,14 +208,16 @@ namespace SrvSurvey
         {
             if (this.IsDisposed) return;
 
-            if (this.touchdownLocation != null)
-                this.touchdownLocation.Current = Status.here;
+            if (this.touchdownLocation0 != null)
+                this.touchdownLocation0.Current = Status.here;
 
-            if (this.srvLocation != null)
-                this.srvLocation.Current = Status.here;
+            if (this.srvLocation0 != null)
+                this.srvLocation0.Current = Status.here;
 
             this.Invalidate();
         }
+
+        #region journal processing
 
         protected void Journals_onJournalEntry(JournalEntry entry, int index)
         {
@@ -227,15 +230,15 @@ namespace SrvSurvey
 
         protected void onJournalEntry(Touchdown entry)
         {
-            if (this.touchdownLocation == null)
+            if (this.touchdownLocation0 == null)
             {
-                this.touchdownLocation = new TrackingDelta(
+                this.touchdownLocation0 = new TrackingDelta(
                     game.systemBody!.radius,
                     entry); // Really? LatLong2.Empty);
             }
             else
             {
-                this.touchdownLocation.Target = entry;
+                this.touchdownLocation0.Target = entry;
             }
 
             this.Invalidate();
@@ -244,9 +247,9 @@ namespace SrvSurvey
         protected virtual void onJournalEntry(Disembark entry)
         {
             //Game.log($"Disembark srvLocation {Status.here}");
-            if (entry.SRV && this.srvLocation == null)
+            if (entry.SRV && this.srvLocation0 == null)
             {
-                this.srvLocation = new TrackingDelta(
+                this.srvLocation0 = new TrackingDelta(
                     game.systemBody!.radius,
                     Status.here.clone());
                 this.Invalidate();
@@ -256,9 +259,9 @@ namespace SrvSurvey
         protected virtual void onJournalEntry(Embark entry)
         {
             //Game.log($"Embark {Status.here}");
-            if (entry.SRV && this.srvLocation != null)
+            if (entry.SRV && this.srvLocation0 != null)
             {
-                this.srvLocation = null;
+                this.srvLocation0 = null;
                 this.Invalidate();
             }
         }
@@ -349,12 +352,21 @@ namespace SrvSurvey
             // overridden as necessary
         }
 
+        #endregion
+
         protected virtual void onJournalEntry(MaterialCollected entry)
         {
             // overridden as necessary
         }
 
-        protected void drawCommander()
+        protected override void OnPaintBackground(PaintEventArgs e)
+        {
+            base.OnPaintBackground(e);
+            this.g = e.Graphics;
+            this.g.SmoothingMode = SmoothingMode.HighQuality;
+        }
+
+        protected void drawCommander0()
         {
             if (g == null) return;
 
@@ -379,8 +391,8 @@ namespace SrvSurvey
         {
             if (g == null) return;
 
-            var r = new RectangleF(left, top, this.Width - left - right, this.Height - top - bottom);
             g.ResetClip();
+            var r = new RectangleF(left, top, this.Width - left - right, this.Height - top - bottom);
             g.Clip = new Region(r);
         }
 
@@ -403,9 +415,9 @@ namespace SrvSurvey
             g.ResetClip();
         }
 
-        protected void drawTouchdownAndSrvLocation(bool hideHeader = false)
+        protected void drawTouchdownAndSrvLocation0(bool hideHeader = false)
         {
-            if (g == null || (this.touchdownLocation == null && this.srvLocation == null)) return;
+            if (g == null || (this.touchdownLocation0 == null && this.srvLocation0 == null)) return;
 
             g.ResetTransform();
             g.TranslateTransform(mid.Width, mid.Height);
@@ -413,12 +425,12 @@ namespace SrvSurvey
             g.RotateTransform(360 - game.status!.Heading);
 
             // draw touchdown marker
-            if (this.touchdownLocation != null)
+            if (this.touchdownLocation0 != null)
             {
                 const float touchdownSize = 24f; // 64f;
                 var rect = new RectangleF(
-                    (float)touchdownLocation.dx - touchdownSize,
-                    (float)-touchdownLocation.dy - touchdownSize,
+                    (float)touchdownLocation0.dx - touchdownSize,
+                    (float)-touchdownLocation0.dy - touchdownSize,
                     touchdownSize * 2,
                     touchdownSize * 2);
 
@@ -428,12 +440,15 @@ namespace SrvSurvey
             }
 
             // draw SRV marker
-            if (this.srvLocation != null)
+            if (game.srvLocation != null)
             {
+                var offset = Util.getOffset(game.status.PlanetRadius, game.srvLocation);
                 const float srvSize = 10f;
                 var rect = new RectangleF(
-                    (float)srvLocation.dx - srvSize,
-                    (float)-srvLocation.dy - srvSize,
+                    //(float)srvLocation0.dx - srvSize,
+                    //(float)-srvLocation0.dy - srvSize,
+                    (float)offset.X - srvSize,
+                    (float)offset.Y - srvSize,
                     srvSize * 2,
                     srvSize * 2);
 
@@ -444,11 +459,11 @@ namespace SrvSurvey
 
             if (!hideHeader)
             {
-                if (this.touchdownLocation != null)
-                    this.drawBearingTo(4, 10, "Touchdown:", this.touchdownLocation.Target);
+                if (this.touchdownLocation0 != null)
+                    this.drawBearingTo(4, 10, "Touchdown:", this.touchdownLocation0.Target);
 
-                if (this.srvLocation != null)
-                    this.drawBearingTo(4 + mid.Width, 10, "SRV:", this.srvLocation.Target);
+                if (this.srvLocation0 != null)
+                    this.drawBearingTo(4 + mid.Width, 10, "SRV:", this.srvLocation0.Target);
             }
         }
 
@@ -638,6 +653,15 @@ namespace SrvSurvey
             else if (reward > 0)
                 level = 0;
 
+            if (level == 3)
+                g.DrawArc(GameColors.penGameOrange1, x - 1.5f, y - 0.5f, 22, 22, -90, 360);
+            else if (level == 2)
+                g.DrawArc(GameColors.penGameOrange1, x - 1.5f, y - 0.5f, 22, 22, -90, 240);
+            else if (level == 1)
+                g.DrawArc(GameColors.penGameOrange1, x - 1.5f, y - 0.5f, 22, 22, -90, 120);
+            else
+                g.DrawArc(GameColors.penGameOrange1, x - 1.5f, y - 0.5f, 22, 22, -100, 30);
+
 
             var sz2 = sz / 2.5f;
             var sf = 1f / 18f * sz;
@@ -664,7 +688,7 @@ namespace SrvSurvey
             else if (level == 1)
                 g.FillPie(dotBrush, x, y, sz2, sz2, -90, 120);
             else
-                g.FillPie(dotBrush, x, y, sz2, sz2, -110, 40);
+                g.FillPie(dotBrush, x, y, sz2, sz2, -100, 30);
         }
     }
 
@@ -677,14 +701,190 @@ namespace SrvSurvey
         //protected TrackingDelta? touchdownLocation;
         //protected TrackingDelta? srvLocation;
         protected LatLong2 cmdr;
+
+        protected decimal radius { get => Game.activeGame!.systemBody!.radius; }
+
+        protected void resetMiddle()
+        {
+            // draw current location pointer (always at center of plot + unscaled)
+            g.ResetTransform();
+            g.TranslateTransform(mid.Width, mid.Height);
+        }
+
+        protected void resetMiddleRotated()
+        {
+            // draw current location pointer (always at center of plot + unscaled)
+            g.ResetTransform();
+            g.TranslateTransform(mid.Width, mid.Height);
+            g.ScaleTransform(scale, scale);
+            g.RotateTransform(-game.status.Heading);
+        }
+
+        protected void drawCommander()
+        {
+            const float sz = 5f;
+            g.DrawEllipse(GameColors.penLime2, -sz, -sz, sz * 2, sz * 2);
+            g.DrawLine(GameColors.penLime2, 0, 0, 0, sz * -2);
+        }
+
+        /// <summary>
+        /// Centered on cmdr
+        /// </summary>
+        protected virtual void drawCompassLines()
+        {
+            g.RotateTransform(-game.status.Heading);
+
+            // draw compass rose lines centered on the commander
+            g.DrawLine(Pens.DarkRed, -this.Width * 2, 0, +this.Width * 2, 0);
+            g.DrawLine(Pens.DarkRed, 0, 0, 0, +this.Height * 2);
+            g.DrawLine(Pens.Red, 0, -this.Height * 2, 0, 0);
+
+            g.RotateTransform(+game.status.Heading);
+        }
     }
 
     /// <summary>
     /// A base class for plotters around some site origin
     /// </summary>
-    internal abstract class PlotBaseSite: PlotBase
+    internal abstract class PlotBaseSite : PlotBaseSurface
     {
         protected LatLong2 siteOrigin;
+        protected float siteHeading;
+        protected PointF cmdrOffset;
+
+        protected Image? mapImage;
+        protected Point mapCenter;
+        protected float mapScale;
+
+        protected override void Status_StatusChanged(bool blink)
+        {
+            if (this.IsDisposed || game?.status == null || game.systemBody == null) return;
+            base.Status_StatusChanged(blink);
+
+            this.cmdrOffset = (PointF)Util.getOffset(this.radius, this.siteOrigin); // explicitly NOT including site.heading
+        }
+
+        //protected PointF getSiteOffset()
+        //{
+        //    // Still needed? I don't think so...
+
+        //    // get pixel location of site origin relative to overlay window --
+        //    g.ResetTransform();
+        //    g.TranslateTransform(mid.Width, mid.Height);
+        //    g.ScaleTransform(this.scale, this.scale);
+        //    g.RotateTransform(-game.status.Heading);
+
+        //    PointF[] pts = { new PointF(cmdrOffset.X, cmdrOffset.Y) };
+        //    g.TransformPoints(CoordinateSpace.Page, CoordinateSpace.World, pts);
+        //    var siteOffset = pts[0];
+        //    g.ResetTransform();
+        //    return siteOffset;
+        //}
+
+        protected void resetMiddleSiteOrigin()
+        {
+            g.ResetTransform();
+            g.TranslateTransform(mid.Width, mid.Height); // shift to center of window
+            g.ScaleTransform(scale, scale); // apply display scale factor (zoom)
+            g.RotateTransform(-game.status.Heading); // rotate by cmdr heading
+            g.TranslateTransform(-cmdrOffset.X, cmdrOffset.Y); // shift relative to cmdr
+            g.RotateTransform(siteHeading); // rotate by site heading
+
+            // vertical rotation flips depending on north/south hemisphere?
+            //if (this.siteOrigin.Lat < 0)                g.RotateTransform(180);
+        }
+
+        /// <summary>
+        /// Adjust graphics transform, calls the lambda then reverses the adjustments.
+        /// </summary>
+        /// <param name="pf"></param>
+        /// <param name="rot"></param>
+        /// <param name="func"></param>
+        protected void adjust(PointF pf, float rot, Action func)
+        {
+            // Y value only is inverted
+            g.TranslateTransform(+pf.X, -pf.Y);
+            g.RotateTransform(+rot);
+
+            func();
+
+            g.RotateTransform(-rot);
+            g.TranslateTransform(-pf.X, +pf.Y);
+        }
+
+        protected void drawMapImage()
+        {
+            if (this.mapImage == null || this.mapScale == 0 || this.mapCenter == Point.Empty) return;
+
+            var mx = this.mapCenter.X * this.mapScale;
+            var my = this.mapCenter.Y * this.mapScale;
+
+            var sx = this.mapImage.Width * this.mapScale;
+            var sy = this.mapImage.Height * this.mapScale;
+
+            g.DrawImage(this.mapImage, -mx, -my, sx, sy);
+        }
+
+        /// <summary>
+        /// Centered on site origin
+        /// </summary>
+        protected override void drawCompassLines()
+        {
+            adjust(PointF.Empty, -siteHeading, () =>
+            {
+                // draw compass rose lines centered on the site origin
+                g.DrawLine(GameColors.penDarkRed2Ish, -this.Width * 2, 0, +this.Width * 20, 0);
+                g.DrawLine(GameColors.penDarkRed2Ish, 0, 0, 0, +this.Height * 20);
+                g.DrawLine(GameColors.penRed2Ish, 0, -this.Height * 20, 0, 0);
+            });
+
+            // and a line to represent "north" relative to the site - visualizing the site's rotation
+            g.DrawLine(GameColors.penGameOrange2DashedIsh, 0, -this.Height * 20, 0, 0);
+        }
+
+        protected void drawShipAndSrvLocation()
+        {
+            if (g == null || game.systemBody == null) return;
+
+            // draw touchdown marker
+            if (game.cmdr.lastTouchdownLocation != null && game.cmdr.lastTouchdownHeading != -1)
+            {
+                const float shipSize = 24f;
+                var shipLatLong = game.cmdr.lastTouchdownLocation!;
+                var ship = Util.getOffset(game.systemBody.radius, shipLatLong, 180);
+
+                // adjust location by ship cockpit offset
+                var po = Util.mapShipCockpitOffsets.GetValueOrDefault(game.shipType);
+                var pd = po.rotate(game.cmdr.lastTouchdownHeading);
+                ship += pd;
+
+                var rect = new RectangleF(
+                    (float)ship.X - shipSize,
+                    (float)-ship.Y - shipSize,
+                    shipSize * 2,
+                    shipSize * 2);
+
+                var shipDeparted = game.touchdownLocation == null || game.touchdownLocation == LatLong2.Empty;
+                var brush = shipDeparted ? GameColors.brushShipFormerLocation : GameColors.brushShipLocation;
+
+                g.FillEllipse(brush, rect);
+            }
+
+            // draw SRV marker
+            if (game.srvLocation != null)
+            {
+                const float srvSize = 10f;
+
+                var srv = Util.getOffset(game.systemBody.radius, game.srvLocation, 180);
+                var rect = new RectangleF(
+                    (float)srv.X - srvSize,
+                    (float)-srv.Y - srvSize,
+                    srvSize * 2,
+                    srvSize * 2);
+
+                g.FillRectangle(GameColors.brushSrvLocation, rect);
+            }
+        }
     }
 
     internal abstract class PlotBaseSelectable : PlotBase, PlotterForm

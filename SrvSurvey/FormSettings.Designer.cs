@@ -137,6 +137,7 @@ namespace SrvSurvey
             linkAboutTwo = new LinkLabel();
             linkAboutOne = new LinkLabel();
             colorDialog = new ColorDialog();
+            checkBox20 = new CheckBox();
             panel1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numGravityWarningLevel).BeginInit();
@@ -1116,6 +1117,7 @@ namespace SrvSurvey
             // tabPage6
             // 
             tabPage6.BackColor = SystemColors.Control;
+            tabPage6.Controls.Add(checkBox20);
             tabPage6.Controls.Add(checkBox19);
             tabPage6.Controls.Add(label13);
             tabPage6.Controls.Add(checkBox16);
@@ -1497,6 +1499,17 @@ namespace SrvSurvey
             // 
             colorDialog.Color = Color.Yellow;
             // 
+            // checkBox20
+            // 
+            checkBox20.AutoSize = true;
+            checkBox20.Location = new Point(10, 288);
+            checkBox20.Name = "checkBox20";
+            checkBox20.Size = new Size(237, 19);
+            checkBox20.TabIndex = 25;
+            checkBox20.Tag = "autoShowHumanSitesTest";
+            checkBox20.Text = "Human settlement maps (experimental)";
+            checkBox20.UseVisualStyleBackColor = true;
+            // 
             // FormSettings
             // 
             AcceptButton = btnSave;
@@ -1661,5 +1674,6 @@ namespace SrvSurvey
         private CheckBox checkBox18;
         private Label label15;
         private CheckBox checkBox19;
+        private CheckBox checkBox20;
     }
 }

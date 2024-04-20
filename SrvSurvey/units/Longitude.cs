@@ -13,9 +13,9 @@ namespace SrvSurvey.units
     {
         private const int limit = 180;
 
-        private double n;
+        private decimal n;
 
-        public Longitude(double n)
+        public Longitude(decimal n)
         {
             this.n = n;
 
@@ -29,11 +29,11 @@ namespace SrvSurvey.units
         public override string ToString()
         {
             return this.n < 0
-                ? this.n.ToString("0.000000")
-                : "+" + this.n.ToString("0.000000");
+                ? this.n.ToString("N6")
+                : "+" + this.n.ToString("N6");
         }
 
-        public static Longitude operator +(Longitude l, double n)
+        public static Longitude operator +(Longitude l, decimal n)
         {
             var a = l.n + n;
 
@@ -43,7 +43,7 @@ namespace SrvSurvey.units
             return new Longitude(a);
         }
 
-        public static Longitude operator -(Longitude l, double n)
+        public static Longitude operator -(Longitude l, decimal n)
         {
             var a = l.n - n;
 
@@ -63,17 +63,22 @@ namespace SrvSurvey.units
             return l - r.n;
         }
 
-        public static implicit operator double(Longitude a)
-        {
-            return a.n;
-        }
-
-        public static explicit operator decimal(Longitude a)
+        public static implicit operator decimal(Longitude a)
         {
             return (decimal)a.n;
         }
 
+        public static explicit operator double(Longitude a)
+        {
+            return (double)a.n;
+        }
+
         public static implicit operator Longitude(double n)
+        {
+            return new Longitude((decimal)n);
+        }
+
+        public static implicit operator Longitude(decimal n)
         {
             return new Longitude(n);
         }

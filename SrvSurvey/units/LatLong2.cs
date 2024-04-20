@@ -11,21 +11,26 @@ namespace SrvSurvey.units
     [JsonConverter(typeof(LatLong2.JsonConverter))]
     class LatLong2
     {
-        public static readonly LatLong2 Empty = new LatLong2(0, 0);
+        public static readonly LatLong2 Empty = new LatLong2(0d, 0d);
 
         public Latitude Lat;
         public Longitude Long;
 
         public LatLong2()
         {
-            this.Lat = 0;
-            this.Long = 0;
+            this.Lat = 0d;
+            this.Long = 0d;
         }
 
         public LatLong2(double lat, double @long)
         {
             this.Lat = lat;
             this.Long = @long;
+        }
+        public LatLong2(decimal lat, decimal @long)
+        {
+            this.Lat = (double)lat;
+            this.Long = (double)@long;
         }
 
         public LatLong2(ILocation entry)
@@ -47,18 +52,6 @@ namespace SrvSurvey.units
         public override int GetHashCode()
         {
             return this.ToString().GetHashCode();
-        }
-
-        /// <summary>
-        /// Returns the distance of this LatLong as degrees to the origin.
-        /// </summary>
-        public double getDistance(bool positiveOnly)
-        {
-            var dist = Math.Sqrt(Math.Pow(this.Lat, 2) + Math.Pow(this.Long, 2));
-            if (this.Long < 0 && !positiveOnly)
-                return dist *= -1;
-            else
-                return dist;
         }
 
         public LatLong2 clone()

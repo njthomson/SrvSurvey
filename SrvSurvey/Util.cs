@@ -129,6 +129,81 @@ namespace SrvSurvey
             return txt;
         }
 
+        public static LatLong2 adjustForCockpitOffset(decimal radius, LatLong2 location, string shipType, float shipHeading)
+        {
+            if (shipType == null || !Util.mapShipCockpitOffsets.ContainsKey(shipType))
+            {
+                Game.log($"No map for {shipType} yet :/");
+                return location;
+            }
+
+            var po = Util.mapShipCockpitOffsets[shipType];
+            var pd = po.rotate((decimal)shipHeading);
+
+            var dpm = 1 / (DecimalEx.TwoPi * radius / 360m); // meters per degree
+            var dx = pd.X * dpm;
+            var dy = pd.Y * dpm;
+
+            var newLocation = new LatLong2(
+                location.Lat + dy,
+                location.Long + dx
+            );
+
+            var dist = po.dist;
+            var angle = po.angle + (decimal)shipHeading;
+            Game.log($"Adjusting landing location for: {shipType}, dist: {dist}, angle: {angle}\r\npd:{pd}, po:{po} (alt: {Game.activeGame?.status?.Altitude})\r\n{location} =>\r\n{newLocation}");
+            return newLocation;
+        }
+
+        /// <summary>
+        /// Per ship type, the relative location, in meters, of the cockpit to the center of the ship.
+        /// </summary>
+        public static Dictionary<string, PointM> mapShipCockpitOffsets = new Dictionary<string, PointM>()
+        {
+            // Determined by measuring difference between Docked lat/long and pad center lat/long, converted to meters.
+            { "dolphin", new PointM(0.24276978, -19.054316) },
+            { "diamondbackxl", new PointM(0.5462154, -18.501362) },
+            { "belugaliner", new PointM(-0.1590069086272495414747604156, -96.06768779190352971899572620) },
+            { "krait_mkii", new PointM(-0.4390055060502030101940869492, -28.642501220707376952320201527) },
+            { "cobramkiii", new PointM(000m, 000m) },
+            { "sidewinder", new PointM(0.0039735241560325261715803963, -1.8918079917214574007873715993) },
+            { "krait_light", new PointM(0.6031567730891498506706891727, -29.808101534971506981430079248) },
+            { "typex_3", new PointM(-0.1499968019864161648299420609, -23.326543081110057742124991058) }, // challenger
+            { "empire_courier", new PointM(0, -14.442907807215595156071678409) },
+
+            // TODO: figure this out for all the other ships
+
+        };
+
+        public static PointM getOffset(decimal r, LatLong2 p1, float siteHeading = -1)
+        {
+            return getOffset(r, p1, null, siteHeading);
+        }
+
+        /// <summary>
+        /// Returns the relative offset (in meters) from one location to the other
+        /// </summary>
+        public static PointM getOffset(decimal r, LatLong2 p1, LatLong2? p2, float siteHeading = -1)
+        {
+            if (p2 == null) p2 = Status.here.clone();
+
+            var dist = Util.getDistance(p1, p2, r);
+            var radians = Util.getBearingRad(p1, p2);
+
+            // apply siteHeading rotation, if given
+            if (siteHeading != -1)
+                radians = radians - DecimalEx.ToRad((decimal)siteHeading);
+
+            var dx = DecimalEx.Sin(radians) * dist;
+            var dy = DecimalEx.Cos(radians) * dist;
+
+            // Positive latitude is to the north
+            // Positive longitude is to the east
+
+            var pf = new PointM(dx, dy);
+            return pf;
+        }
+
         /// <summary>
         /// Returns the distance between two lat/long points on body with radius r.
         /// </summary>
@@ -138,14 +213,26 @@ namespace SrvSurvey
             if (p1.Lat == p2.Lat && p1.Long == p2.Long)
                 return 0;
 
-            var lat1 = degToRad((decimal)p1.Lat);
-            var lat2 = degToRad((decimal)p2.Lat);
+            var lat1 = DecimalEx.ToRad(p1.Lat);
+            var lat2 = DecimalEx.ToRad(p2.Lat);
 
             var angleDelta = DecimalEx.ACos(
                 DecimalEx.Sin(lat1) * DecimalEx.Sin(lat2) +
-                DecimalEx.Cos(lat1) * DecimalEx.Cos(lat2) * DecimalEx.Cos(Util.degToRad((decimal)p2.Long - (decimal)p1.Long))
+                DecimalEx.Cos(lat1) * DecimalEx.Cos(lat2) * DecimalEx.Cos(Util.degToRad(p2.Long - p1.Long))
             );
             var dist = angleDelta * r;
+
+            //// ---
+            //var dLat = DecimalEx.ToRad(p2.Lat - p1.Lat);
+            //var dLon = DecimalEx.ToRad(p2.Long - p1.Long);
+
+            //var aa = DecimalEx.Sin(dLat / 2) * DecimalEx.Sin(dLat / 2) +
+            //    DecimalEx.Cos(DecimalEx.ToRad(p1.Lat)) * DecimalEx.Cos(DecimalEx.ToRad(p2.Lat)) * DecimalEx.Sin(dLon / 2) *
+            //    DecimalEx.Sin(dLon / 2)
+            //    ;
+            //var cc = 2 * DecimalEx.ATan2(DecimalEx.Sqrt(aa), DecimalEx.Sqrt(1 - aa));
+            //var dd = r * cc;
+            //// ---
 
             return dist;
         }
@@ -171,20 +258,19 @@ namespace SrvSurvey
             var x = DecimalEx.Cos(lat2) * DecimalEx.Sin(lon2 - lon1);
             var y = DecimalEx.Cos(lat1) * DecimalEx.Sin(lat2) - DecimalEx.Sin(lat1) * DecimalEx.Cos(lat2) * DecimalEx.Cos(lon2 - lon1);
 
+            // x is opposite / y is adjacent
             var rad = DecimalEx.ATan2(x, y);
-            if (rad < 0)
-                rad += DecimalEx.TwoPi;
+            if (rad < 0) rad += DecimalEx.TwoPi;
 
             return rad;
         }
 
-        public static PointF rotateLine(decimal angle, decimal length)
+        public static PointM rotateLine(decimal angle, decimal length)
         {
-            var heading = new Angle(angle);
-            var dx = DecimalEx.Sin(heading.radians) * length;
-            var dy = DecimalEx.Cos(heading.radians) * length;
+            var dx = DecimalEx.Sin(DecimalEx.ToRad(angle)) * length;
+            var dy = DecimalEx.Cos(DecimalEx.ToRad(angle)) * length;
 
-            return new PointF((float)dx, (float)dy);
+            return new PointM(dx, dy);
         }
 
         public static decimal ToAngle(double opp, double adj)

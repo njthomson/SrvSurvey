@@ -26,13 +26,22 @@ namespace SrvSurvey
 
         private PlotGalMap() : base()
         {
-            this.Height = smaller ? scaled(38) : scaled(66);
+            this.Height = smaller ? scaled(36) : scaled(66);
             this.Font = GameColors.font18;
 
             // find the black box near the bottom of the screen, position ourself below it and a bit narrower
             findBlackBox();
             Game.log(boxSz);
-            this.Width = boxSz.Width - 40;
+            if (boxSz.Width > 300)
+            {
+                this.Width = boxSz.Width - 40;
+            }
+            else
+            {
+                // failed to match?
+                boxSz = Size.Empty;
+                this.Opacity = 0;
+            }
         }
 
         private void findBlackBox()
@@ -97,7 +106,7 @@ namespace SrvSurvey
                 return;
             }
 
-            if (boxSz == Size.Empty || boxSz.Width < 300)
+            if (boxSz == Size.Empty)
             {
                 // we failed to find the box properly
                 this.Opacity = 0;
@@ -252,7 +261,7 @@ namespace SrvSurvey
                 g.DrawRectangle(bp, 1, 1, this.Width - 2, this.Height - 2);
                 g.DrawRectangle(bp2, 2, 2, this.Width - 4, this.Height - 4);
 
-    
+
                 if (this.targetStatus != null)
                     this.drawStatus66(this.targetStatus, this.targetSubStatus, this.Width * 0.715f);
 

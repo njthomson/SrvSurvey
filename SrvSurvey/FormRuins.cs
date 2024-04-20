@@ -574,7 +574,7 @@ namespace SrvSurvey
 
                 var angle = 180 - foo.Value.X;
                 var dist = foo.Value.Y;
-                var pt = Util.rotateLine((decimal)angle, (decimal)dist);
+                var pt = (PointF)Util.rotateLine((decimal)angle, (decimal)dist);
 
                 //g.DrawLine(Pens.DarkBlue, 0,0, -pt.X, -pt.Y);
                 var sz = g.MeasureString(foo.Key, GameColors.fontBigBold);
@@ -592,7 +592,7 @@ namespace SrvSurvey
                 if (siteData?.obeliskGroups?.Count > 0 && (poi.type == POIType.obelisk || poi.type == POIType.brokeObelisk) && !siteData.obeliskGroups.Contains(poi.name[0])) continue;
 
                 // calculate render point for POI
-                var pt = Util.rotateLine(
+                var pt = (PointF)Util.rotateLine(
                     360 - (decimal)poi.angle,
                     poi.dist);
 

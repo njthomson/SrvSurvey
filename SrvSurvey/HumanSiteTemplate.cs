@@ -18,13 +18,22 @@ namespace SrvSurvey
             },
         };
 
-        public static void import()
+        public static void import(bool devReload = false)
         {
             // TODO: pubData distribute?
 
             // otherwise, use the file shipped with the app
-            //Game.log($"Using humanSiteTemplates.json app package");
-            var filepath = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "humanSiteTemplates.json");
+            string filepath;
+            if (devReload)
+            {
+                Game.log($"Using humanSiteTemplates.json, devReload:{devReload}");
+                filepath = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "..\\..\\..\\..", "humanSiteTemplates.json");
+            }
+            else
+            {
+                Game.log($"Using humanSiteTemplates.json app package");
+                filepath = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "humanSiteTemplates.json");
+            }
 
             Game.log($"Reading humanSiteTemplates.json: {filepath}");
             if (File.Exists(filepath))
@@ -74,16 +83,33 @@ namespace SrvSurvey
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public List<NamedPoi> namedPoi;
+
+        public LandingPads landPadSummary()
+        {
+            var pads = new LandingPads();
+            foreach (var pad in this.landingPads)
+            {
+                if (pad.size == LandingPadSize.Small)
+                    pads.Small++;
+                if (pad.size == LandingPadSize.Medium)
+                    pads.Medium++;
+                else if (pad.size == LandingPadSize.Large)
+                    pads.Large++;
+            }
+            return pads;
+        }
     }
 
     internal abstract class HumanSitePoi
     {
+        public PointF offset;
+
         /// <summary>
-        /// The distance of this POI from the site origin
+        /// OLD! The distance of this POI from the site origin
         /// </summary>
         public decimal dist;
         /// <summary>
-        /// The angle of this POI from the site origin
+        /// OLD! The angle of this POI from the site origin
         /// </summary>
         public float angle;
         /// <summary>
