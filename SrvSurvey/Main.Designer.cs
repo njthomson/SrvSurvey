@@ -46,6 +46,7 @@ namespace SrvSurvey
             txtLocation = new TextBox();
             txtVehicle = new TextBox();
             groupBox3 = new GroupBox();
+            btnBioSummary = new Button();
             checkFirstFootFall = new CheckBox();
             txtBodyBioValues = new TextBox();
             txtBodyBioSignals = new TextBox();
@@ -241,6 +242,7 @@ namespace SrvSurvey
             // groupBox3
             // 
             groupBox3.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            groupBox3.Controls.Add(btnBioSummary);
             groupBox3.Controls.Add(checkFirstFootFall);
             groupBox3.Controls.Add(txtBodyBioValues);
             groupBox3.Controls.Add(txtBodyBioSignals);
@@ -257,6 +259,19 @@ namespace SrvSurvey
             groupBox3.TabIndex = 14;
             groupBox3.TabStop = false;
             groupBox3.Text = "Bio scanning";
+            // 
+            // btnBioSummary
+            // 
+            btnBioSummary.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnBioSummary.BackColor = SystemColors.ControlLight;
+            btnBioSummary.FlatStyle = FlatStyle.System;
+            btnBioSummary.Location = new Point(283, 103);
+            btnBioSummary.Name = "btnBioSummary";
+            btnBioSummary.Size = new Size(123, 21);
+            btnBioSummary.TabIndex = 28;
+            btnBioSummary.Text = "Bio Summary";
+            btnBioSummary.UseVisualStyleBackColor = false;
+            btnBioSummary.Click += btnBioSummary_Click;
             // 
             // checkFirstFootFall
             // 
@@ -538,6 +553,7 @@ namespace SrvSurvey
             // 
             btnSphereLimit.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnSphereLimit.BackColor = SystemColors.ControlLight;
+            btnSphereLimit.Enabled = false;
             btnSphereLimit.FlatStyle = FlatStyle.System;
             btnSphereLimit.Location = new Point(325, 397);
             btnSphereLimit.Name = "btnSphereLimit";
@@ -546,7 +562,6 @@ namespace SrvSurvey
             btnSphereLimit.Text = "Sphere limit";
             btnSphereLimit.UseVisualStyleBackColor = false;
             btnSphereLimit.Click += btnSphereLimit_Click;
-            btnSphereLimit.Enabled = false;
             // 
             // linkLabel2
             // 
@@ -688,5 +703,6 @@ namespace SrvSurvey
         private Button btnPublish;
         private Button btnPasteLatLong;
         private CheckBox checkTempHide;
+        private Button btnBioSummary;
     }
 }

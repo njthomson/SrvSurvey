@@ -626,8 +626,11 @@ namespace SrvSurvey
             // TODO: Thargoid items?
         }
 
-        public static void drawBioRing(Graphics g, string? genus, float x, float y, long reward = -1, Brush? dotBrush = null, float sz = 18)
+        public static void drawBioRing(Graphics g, string? genus, float x, float y, long reward = -1, SolidBrush? dotBrush = null, float sz = 18, long maxReward = -1, Brush? maxDotBrush = null)
         {
+            var rr = 22;
+            if (sz == 38) rr = 42;
+
             // TODO: handle scaling
             g.FillEllipse(Brushes.Black, x - 1, y, sz + 2, sz + 2);
 
@@ -638,29 +641,48 @@ namespace SrvSurvey
                 return;
             }
 
+            g.DrawEllipse(sz == 18 ? GameColors.penGameOrangeDim1 : GameColors.penGameOrangeDim2, x - 1.5f, y - 0.5f, rr, rr);
+
             var img = Util.getBioImage(genus, sz == 38);
             g.DrawImage(img, x, y + 2, sz, sz);
 
             if (reward < 0) return;
 
-            var level = -1;
-            if (reward > Game.settings.bioBucketThree)
-                level = 3;
-            else if (reward > Game.settings.bioBucketTwo)
-                level = 2;
-            else if (reward > Game.settings.bioBucketOne)
-                level = 1;
-            else if (reward > 0)
-                level = 0;
+            var maxLevel = -1;
+            if (maxReward > Game.settings.bioBucketThree) maxLevel = 3;
+            else if (maxReward > Game.settings.bioBucketTwo) maxLevel = 2;
+            else if (maxReward > Game.settings.bioBucketOne) maxLevel = 1;
+            else if (maxReward > 0) maxLevel = 0;
 
+            var level = -1;
+            if (reward > Game.settings.bioBucketThree) level = 3;
+            else if (reward > Game.settings.bioBucketTwo) level = 2;
+            else if (reward > Game.settings.bioBucketOne) level = 1;
+            else if (reward > 0) level = 0;
+
+            if (dotBrush == null) dotBrush = GameColors.brushGameOrange;
+
+            // outer rings - max
+            var op0 = sz == 18 ? GameColors.penGameOrange1Dotted: GameColors.penGameOrange2Dotted;
+            if (maxLevel == 3)
+                g.DrawArc(op0, x - 1.5f, y - 0.5f, rr, rr, -90, 360);
+            else if (maxLevel == 2)
+                g.DrawArc(op0, x - 1.5f, y - 0.5f, rr, rr, -90, 240);
+            else if (maxLevel == 1)
+                g.DrawArc(op0, x - 1.5f, y - 0.5f, rr, rr, -90, 120);
+            else if (maxLevel == 0)
+                g.DrawArc(op0, x - 1.5f, y - 0.5f, rr, rr, -100, 30);
+
+            // outer rings - min
+            var op = sz == 18 ? new Pen(dotBrush.Color, 1) : new Pen(dotBrush.Color, 2);
             if (level == 3)
-                g.DrawArc(GameColors.penGameOrange1, x - 1.5f, y - 0.5f, 22, 22, -90, 360);
+                g.DrawArc(op, x - 1.5f, y - 0.5f, rr, rr, -90, 360);
             else if (level == 2)
-                g.DrawArc(GameColors.penGameOrange1, x - 1.5f, y - 0.5f, 22, 22, -90, 240);
+                g.DrawArc(op, x - 1.5f, y - 0.5f, rr, rr, -90, 240);
             else if (level == 1)
-                g.DrawArc(GameColors.penGameOrange1, x - 1.5f, y - 0.5f, 22, 22, -90, 120);
-            else
-                g.DrawArc(GameColors.penGameOrange1, x - 1.5f, y - 0.5f, 22, 22, -100, 30);
+                g.DrawArc(op, x - 1.5f, y - 0.5f, rr, rr, -90, 120);
+            else if(level == 0)
+                g.DrawArc(op, x - 1.5f, y - 0.5f, rr, rr, -100, 30);
 
 
             var sz2 = sz / 2.5f;
@@ -677,18 +699,32 @@ namespace SrvSurvey
             //var b0 = new SolidBrush(Color.FromArgb(255, 45, 18, 3));
             //var sz3 = sz / 1.8f;
             //g.FillEllipse(b0, x + sf, y + sf, sz3, sz3);
-            if (dotBrush == null) dotBrush = GameColors.brushGameOrange;
 
+            /*
             x += 1 * sf;
             y += 1 * sf;
+
+            // inner ring - max
+            var dotBrush0 = maxDotBrush ?? GameColors.brushGameOrangeDim;
+            if (maxLevel == 3)
+                g.FillPie(dotBrush0, x, y, sz2, sz2, -90, 360);
+            else if (maxLevel == 2)
+                g.FillPie(dotBrush0, x, y, sz2, sz2, -90, 240);
+            else if (maxLevel == 1)
+                g.FillPie(dotBrush0, x, y, sz2, sz2, -90, 120);
+            else if (maxLevel == 0)
+                g.FillPie(dotBrush0, x, y, sz2, sz2, -100, 30);
+
+            // inner ring
             if (level == 3)
                 g.FillPie(dotBrush, x, y, sz2, sz2, -90, 360);
             else if (level == 2)
                 g.FillPie(dotBrush, x, y, sz2, sz2, -90, 240);
             else if (level == 1)
                 g.FillPie(dotBrush, x, y, sz2, sz2, -90, 120);
-            else
+            else if (level == 0)
                 g.FillPie(dotBrush, x, y, sz2, sz2, -100, 30);
+            */
         }
     }
 

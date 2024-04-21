@@ -1478,6 +1478,32 @@ namespace SrvSurvey
             //    Game.log(string.Join("\r\n", game.systemData.bodies.Select(_ => $"'{_.name}' ({_.id}) : {Util.credits((long)_.rewardEstimate)}")));
         }
 
+        private void btnPublish_Click(object sender, EventArgs e)
+        {
+            btnPublish.Enabled = false;
+            SiteTemplate.publish();
+            Game.canonn.init(true);
+
+            Game.git.publishLocalData(); // 1st: for updating publish data from local surveys
+            Game.canonn.readXmlSheetRuins2(); // 2nd: for updating allRuins.json and reading from Excel data
+            Game.canonn.readXmlSheetRuins3() // 3rd: for updating allStructures.json and reading from Excel data
+                .ContinueWith(task =>
+                {
+                    Game.log("\r\n****\r\n**** Publishing all complete\r\n****");
+                    this.Invoke(() => { btnPublish.Enabled = true; });
+                });
+        }
+
+        private void checkTempHide_CheckedChanged(object sender, EventArgs e)
+        {
+            Program.tempHideAllPlotters = !Program.tempHideAllPlotters;
+            checkTempHide.Checked = Program.tempHideAllPlotters;
+
+            if (Program.tempHideAllPlotters)
+                Program.hideActivePlotters();
+            else
+                Program.showActivePlotters();
+        }
         private void btnSphereLimit_Click(object sender, EventArgs e)
         {
             Program.closePlotter<PlotSphericalSearch>();
@@ -1494,8 +1520,6 @@ namespace SrvSurvey
         private void btnRamTah_Click(object sender, EventArgs e)
         {
             FormRamTah.show();
-
-            //new FormGenus().Show();
 
             //game!.touchdownLocation = Util.adjustForCockpitOffset(game.status.PlanetRadius, game!.systemBody!.lastTouchdown!, game.shipType, 90);
             //Program.getPlotter<PlotHumanSite>()!.Invalidate();
@@ -1533,31 +1557,10 @@ namespace SrvSurvey
             // */
         }
 
-        private void btnPublish_Click(object sender, EventArgs e)
+
+        private void btnBioSummary_Click(object sender, EventArgs e)
         {
-            btnPublish.Enabled = false;
-            SiteTemplate.publish();
-            Game.canonn.init(true);
-
-            Game.git.publishLocalData(); // 1st: for updating publish data from local surveys
-            Game.canonn.readXmlSheetRuins2(); // 2nd: for updating allRuins.json and reading from Excel data
-            Game.canonn.readXmlSheetRuins3() // 3rd: for updating allStructures.json and reading from Excel data
-                .ContinueWith(task =>
-                {
-                    Game.log("\r\n****\r\n**** Publishing all complete\r\n****");
-                    this.Invoke(() => { btnPublish.Enabled = true; });
-                });
-        }
-
-        private void checkTempHide_CheckedChanged(object sender, EventArgs e)
-        {
-            Program.tempHideAllPlotters = !Program.tempHideAllPlotters;
-            checkTempHide.Checked = Program.tempHideAllPlotters;
-
-            if (Program.tempHideAllPlotters)
-                Program.hideActivePlotters();
-            else
-                Program.showActivePlotters();
+            FormGenus.show();
         }
     }
 }

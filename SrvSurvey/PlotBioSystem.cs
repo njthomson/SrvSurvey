@@ -74,7 +74,7 @@ namespace SrvSurvey
                 this.g = e.Graphics;
                 this.g.SmoothingMode = SmoothingMode.HighQuality;
 
-                var sz = (game.status.hasLatLong && game.systemBody?.bioSignalCount > 0) && game.mode != GameMode.ExternalPanel
+                var sz = (game.status.hasLatLong && game.systemBody?.bioSignalCount > 0) && !game.isMode(GameMode.ExternalPanel, GameMode.SystemMap)
                     ? this.drawBodyBios()
                     : this.drawSystemBios();
 
@@ -143,8 +143,11 @@ namespace SrvSurvey
                     this.dty += oneSix;
                     var reward = game.systemBody!.firstFootFall ? organism.reward * 5 : organism.reward;
 
-                    this.drawTextAt($"{Util.metersToString((decimal)organism.range, false)}         {Util.credits(reward)}", //brush, GameColors.fontSmall);
-                        highlight ? GameColors.brushDarkCyan : GameColors.brushGameOrangeDim, GameColors.fontSmall);
+                    var rewardTxt = reward > 0 ? Util.credits(reward) : "?";
+                    this.drawTextAt(
+                        $"{Util.metersToString((decimal)organism.range, false)}         {rewardTxt}", //brush, GameColors.fontSmall);
+                        highlight ? GameColors.brushDarkCyan : GameColors.brushGameOrangeDim,
+                        GameColors.fontSmall);
                     if (this.dtx > sz.Width) sz.Width = this.dtx;
 
                     this.dtx = six;
@@ -212,8 +215,8 @@ namespace SrvSurvey
                     {
                         genus = sortedOrganisms[n].genus;
                         reward = sortedOrganisms[n].reward;
-                        if (sortedOrganisms[n].analyzed)
-                            b = Brushes.DarkGreen;
+                        //if (sortedOrganisms[n].analyzed)
+                        //    b = GameColors.brushGameOrangeDim as SolidBrush; // Brushes.Gray as SolidBrush;
                     }
 
                     PlotBase.drawBioRing(this.g, genus, dtx, dty, reward, b);

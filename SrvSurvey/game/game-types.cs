@@ -166,6 +166,41 @@ namespace SrvSurvey.game
         {
             get => this.englishName.Substring(0, 3).ToLowerInvariant(); // tus
         }
+
+        private void calcMinMax()
+        {
+            _minValue = long.MaxValue;
+
+
+            foreach (var foo in this.species)
+            {
+                _minValue = (long)Math.Min(_minValue, foo.reward);
+                _maxValue = (long)Math.Max(_maxValue, foo.reward);
+            }
+        }
+
+        private long _minValue;
+        private long _maxValue;
+
+        public long minReward
+        {
+            get
+            {
+                if (_minValue == 0)
+                    calcMinMax();
+                return _minValue;
+            }
+        }
+
+        public long maxReward
+        {
+            get
+            {
+                if (_maxValue == 0)
+                    calcMinMax();
+                return _maxValue;
+            }
+        }
     }
 
     internal class BioSpecies

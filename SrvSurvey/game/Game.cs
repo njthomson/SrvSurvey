@@ -311,6 +311,10 @@ namespace SrvSurvey.game
             // set or clear 'systemSite'
             this.setCurrentSite();
 
+            if (FormGenus.activeForm != null && FormGenus.activeForm.targetBody != this.targetBodyShortName)
+                FormGenus.activeForm.populateGenus();
+                // TODO: we could avoid flicker by updating the colors on labels, rather than destroying and recreating them.
+
             this.checkModeChange();
         }
 
@@ -436,6 +440,26 @@ namespace SrvSurvey.game
                 && this.systemBody != null
             //&& this.status.SelectedWeapon != "$humanoid_sampletool_name;"
             ;
+        }
+
+        public string targetBodyShortName
+        {
+            get
+            {
+                if (this.systemData != null && status?.Destination?.Body > 0)
+                {
+                    var body = systemData.bodies.Find(_ => _.id == status.Destination.Body);
+                    return body?.shortName(systemData.name) ?? "";
+                }
+                else if (this.systemData != null && this.systemBody != null)
+                {
+                    return this.systemBody.shortName(systemData.name) ?? "";
+                }
+                else
+                {
+                    return "";
+                }
+            }
         }
 
         #endregion
@@ -1871,31 +1895,37 @@ namespace SrvSurvey.game
                 data.lastVisited = entry.timestamp;
                 data.Save();
             }
-            else if (Game.settings.autoTrackCompBioScans && entry.SubCategory == "$Codex_SubCategory_Organic_Structures;" && entry.NearestDestination != "$Fixed_Event_Life_Cloud;" && entry.NearestDestination != "$Fixed_Event_Life_Ring;" && Game.activeGame?.status.hasLatLong == true)
+            else if (entry.SubCategory == "$Codex_SubCategory_Organic_Structures;" && entry.NearestDestination != "$Fixed_Event_Life_Cloud;" && entry.NearestDestination != "$Fixed_Event_Life_Ring;" && Game.activeGame?.status.hasLatLong == true)
             {
-                // auto add CodexScans as a tracker location
-                var match = Game.codexRef.matchFromEntryId(entry.EntryID);
-                if (match != null && this.systemBody?.organisms != null)
+                // update FormGenus?
+                FormGenus.activeForm?.populateGenus();
+
+                if (Game.settings.autoTrackCompBioScans)
                 {
-                    // wait a bit for the status file to update
-                    Application.DoEvents();
-                    Game.log($"!! Comp scan organic: {entry.Name_Localised ?? entry.Name} ({entry.EntryID}) timestamps entry: {entry.timestamp} vs status: {this.status?.timestamp} | Locations: entry: {entry.Latitude}, {entry.Longitude} vs status: {this.status?.Latitude}, {this.status?.Longitude}");
-                    var organism = systemBody.findOrganism(match);
-                    if (organism?.analyzed == true && Game.settings.skipAnalyzedCompBioScans)
+                    // auto add CodexScans as a tracker location
+                    var match = Game.codexRef.matchFromEntryId(entry.EntryID);
+                    if (match != null && this.systemBody?.organisms != null)
                     {
-                        Game.log($"Already analyzed, NOT auto-adding tracker for: {entry.Name_Localised} ({entry.EntryID})");
+                        // wait a bit for the status file to update
+                        Application.DoEvents();
+                        Game.log($"!! Comp scan organic: {entry.Name_Localised ?? entry.Name} ({entry.EntryID}) timestamps entry: {entry.timestamp} vs status: {this.status?.timestamp} | Locations: entry: {entry.Latitude}, {entry.Longitude} vs status: {this.status?.Latitude}, {this.status?.Longitude}");
+                        var organism = systemBody.findOrganism(match);
+                        if (organism?.analyzed == true && Game.settings.skipAnalyzedCompBioScans)
+                        {
+                            Game.log($"Already analyzed, NOT auto-adding tracker for: {entry.Name_Localised} ({entry.EntryID})");
+                        }
+                        else
+                        {
+                            this.addBookmark(match.genus.shortName, entry);
+                            Program.showPlotter<PlotTrackers>().prepTrackers();
+                            Game.log($"Auto-adding tracker from CodexEntry: {entry.Name_Localised} ({entry.EntryID})");
+                            this.fireUpdate(true);
+                        }
                     }
                     else
                     {
-                        this.addBookmark(match.genus.shortName, entry);
-                        Program.showPlotter<PlotTrackers>().prepTrackers();
-                        Game.log($"Auto-adding tracker from CodexEntry: {entry.Name_Localised} ({entry.EntryID})");
-                        this.fireUpdate(true);
+                        Game.log($"Organism '{entry.Name_Localised}' not found from: '{entry.Name_Localised}' ({entry.EntryID})");
                     }
-                }
-                else
-                {
-                    Game.log($"Organism '{entry.Name_Localised}' not found from: '{entry.Name_Localised}' ({entry.EntryID})");
                 }
             }
         }

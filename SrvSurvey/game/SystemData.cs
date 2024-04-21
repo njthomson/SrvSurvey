@@ -1043,6 +1043,90 @@ namespace SrvSurvey.game
             var withinDuration = duration.TotalSeconds < Game.settings.keepBioPlottersVisibleDuration;
             return withinDuration;
         }
+
+        public SystemBioSummary summarizeBioSystem()
+        {
+            var foo = new SystemBioSummary();
+
+            foreach (var body in this.bodies)
+            {
+                if (body.organisms == null) continue;
+
+                foreach (var org in body.organisms)
+                {
+                    // look-up species name if we don't already know it
+                    if (org.species == null && org.entryId > 0)
+                    {
+                        var match = Game.codexRef.matchFromEntryId(org.entryId).species;
+                        org.species = match.name;
+                        org.speciesLocalized = match.englishName;
+
+                        if (org.reward == 0)
+                            org.reward = match.reward;
+                    }
+
+                    foo.add(org, body.shortName(this.name));
+                }
+            }
+
+            //var unknownSpeciesBody = genusBodies?
+            //    .Where(b => b.organisms?.Any(o => o.genus == genus.name && o.species == null) == true)
+            //    .Select(b => b.name.Replace(game!.systemData!.name, "").Replace(" ", ""))
+            //    .ToList();
+
+
+            return foo;
+        }
+    }
+
+    internal class SystemBioSummary
+    {
+        //public Dictionary<string, List<SystemBody>> genusBodies = new Dictionary<string, List<SystemBody>>();
+        public Dictionary<string, List<string>> genusBodies = new Dictionary<string, List<string>>();
+        public Dictionary<string, List<string>> speciesBodies = new Dictionary<string, List<string>>();
+        public Dictionary<string, List<string>> unknownSpeciesBodies = new Dictionary<string, List<string>>();
+        public long minReward;
+        public long maxReward;
+
+        public void add(SystemOrganism org, string shortBodyName)
+        {
+            if (!genusBodies.ContainsKey(org.genus)) genusBodies.Add(org.genus, new List<string>());
+            genusBodies[org.genus].Add(shortBodyName);
+
+            if (org.species != null)
+            {
+                if (!speciesBodies.ContainsKey(org.species)) speciesBodies.Add(org.species, new List<string>());
+                speciesBodies[org.species].Add(shortBodyName);
+                minReward += org.reward;
+                maxReward += org.reward;
+            }
+            else
+            {
+                if (!unknownSpeciesBodies.ContainsKey(org.genus)) unknownSpeciesBodies.Add(org.genus, new List<string>());
+                unknownSpeciesBodies[org.genus].Add(shortBodyName);
+
+                // if species is not known ... go with potential min/max
+                var match = Game.codexRef.matchFromGenus(org.genus);
+                if (match != null)
+                {
+                    minReward += match.minReward;
+                    maxReward += match.maxReward;
+                }
+            }
+        }
+
+        public bool hasGenus(string name)
+        {
+            return this.genusBodies.ContainsKey(name);
+        }
+        public bool hasSpecies(string name)
+        {
+            return this.speciesBodies.ContainsKey(name);
+        }
+        public bool hasUnknownSpecies(string name)
+        {
+            return this.unknownSpeciesBodies.ContainsKey(name);
+        }
     }
 
     internal class SystemBody
@@ -1226,6 +1310,14 @@ namespace SrvSurvey.game
             }
 
             return organism;
+        }
+
+        public string shortName(string? systemName)
+        {
+            if (systemName == null)
+                return this.name;
+            else
+                return this.name.Replace(systemName, "").Replace(" ", "");
         }
     }
 

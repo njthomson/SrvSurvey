@@ -202,7 +202,10 @@ namespace SrvSurvey
         public static Pen penUnknownBioSignal = newPen(Color.FromArgb(255, 88, 88, 88), 1);
         public static Brush brushUnknownBioSignal = new SolidBrush(Color.FromArgb(255, 88, 88, 88));
 
+        public static Pen penGameOrange1Dotted = newPen(Orange, 1, DashStyle.Dot);
+        public static Pen penGameOrange1Dashed= newPen(Orange, 1, DashStyle.Dash);
         public static Pen penGameOrange2Dotted = newPen(Orange, 2, DashStyle.Dot);
+        public static Pen penGameOrange2Dashed= newPen(Orange, 2, DashStyle.Dash);
         public static Pen penGameOrange2DashedIsh = newPen(Color.FromArgb(128, Orange), 2, DashStyle.Dash);
 
         public static Pen penNearestUnknownSitePOI = newPen(Color.FromArgb(96, Color.DarkCyan), 15, LineCap.RoundAnchor, LineCap.Round);
@@ -295,10 +298,10 @@ namespace SrvSurvey
 
         public static Brush brushBackgroundStripe;
         public static Brush brushOrangeStripe;
-        public static Brush brushGameOrange = new SolidBrush(Orange); //  Color.FromArgb(255, 255, 113, 00));
+        public static SolidBrush brushGameOrange = new SolidBrush(Orange); //  Color.FromArgb(255, 255, 113, 00));
         public static Brush brushGameOrangeDim = new SolidBrush(OrangeDim); //  Color.FromArgb(255, 255, 113, 00));
 
-        public static Brush brushCyan = new SolidBrush(Cyan); //  Color.FromArgb(255, 255, 113, 00));
+        public static SolidBrush brushCyan = new SolidBrush(Cyan); //  Color.FromArgb(255, 255, 113, 00));
         public static Brush brushDarkCyan = new SolidBrush(DarkCyan);
 
         public static Brush brushOnTarget = new HatchBrush(HatchStyle.Percent50, OrangeDim, Color.Transparent);

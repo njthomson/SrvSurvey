@@ -241,11 +241,8 @@ namespace SrvSurvey
             var x = oneOhFour;
             if (Game.settings.autoShowPlotBioSystemTest)
             {
-                g.DrawEllipse(GameColors.penGameOrangeDim1, 102, y - 6, 42, 42);
-
-                var reward = -1; // organism.reward;
+                var reward = organism.reward;
                 PlotBase.drawBioRing(g, organism.genus, 104, y - 6, reward, GameColors.brushCyan, 38);
-                //x += 38;
             }
 
             g.DrawString(

@@ -330,7 +330,7 @@ namespace SrvSurvey
 
                     if (Game.settings.autoShowPlotBioSystemTest)
                     {
-                        PlotBase.drawBioRing(g, signal.genusName, r.X, r.Y - 2, -1, brush, 24);
+                        PlotBase.drawBioRing(g, signal.genusName, r.X, r.Y - 2, -1, brush as SolidBrush, 24);
                         r.X += 28;
                         r.Width -= 28;
                     }
