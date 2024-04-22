@@ -73,6 +73,19 @@ namespace SrvSurvey
             pictureBox1 = new PictureBox();
             checkBox1 = new CheckBox();
             checkBioStatusAutoShow = new CheckBox();
+            groupRingBuckets = new GroupBox();
+            label20 = new Label();
+            label19 = new Label();
+            label18 = new Label();
+            label17 = new Label();
+            picBucket4 = new PictureBox();
+            picBucket3 = new PictureBox();
+            numRingBucket3 = new NumericUpDown();
+            picBucket2 = new PictureBox();
+            numRingBucket2 = new NumericUpDown();
+            picBucket1 = new PictureBox();
+            numRingBucket1 = new NumericUpDown();
+            label16 = new Label();
             tabPage3 = new TabPage();
             checkBox15 = new CheckBox();
             checkBox14 = new CheckBox();
@@ -149,6 +162,14 @@ namespace SrvSurvey
             ((System.ComponentModel.ISupportInitialize)numMinBioDuration).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            groupRingBuckets.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)picBucket4).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)picBucket3).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numRingBucket3).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)picBucket2).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numRingBucket2).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)picBucket1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numRingBucket1).BeginInit();
             tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numAltGamma).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numAltBeta).BeginInit();
@@ -525,6 +546,7 @@ namespace SrvSurvey
             tabPage4.Controls.Add(pictureBox1);
             tabPage4.Controls.Add(checkBox1);
             tabPage4.Controls.Add(checkBioStatusAutoShow);
+            tabPage4.Controls.Add(groupRingBuckets);
             tabPage4.Location = new Point(4, 24);
             tabPage4.Name = "tabPage4";
             tabPage4.Padding = new Padding(3);
@@ -535,7 +557,7 @@ namespace SrvSurvey
             // label15
             // 
             label15.AutoSize = true;
-            label15.Location = new Point(330, 290);
+            label15.Location = new Point(330, 222);
             label15.Name = "label15";
             label15.Size = new Size(53, 15);
             label15.TabIndex = 23;
@@ -544,7 +566,7 @@ namespace SrvSurvey
             // numMinBioDuration
             // 
             numMinBioDuration.Enabled = false;
-            numMinBioDuration.Location = new Point(273, 288);
+            numMinBioDuration.Location = new Point(273, 220);
             numMinBioDuration.Maximum = new decimal(new int[] { 600, 0, 0, 0 });
             numMinBioDuration.Name = "numMinBioDuration";
             numMinBioDuration.Size = new Size(51, 23);
@@ -557,7 +579,7 @@ namespace SrvSurvey
             // checkBox18
             // 
             checkBox18.AutoSize = true;
-            checkBox18.Location = new Point(10, 289);
+            checkBox18.Location = new Point(10, 221);
             checkBox18.Name = "checkBox18";
             checkBox18.Size = new Size(257, 19);
             checkBox18.TabIndex = 17;
@@ -583,17 +605,17 @@ namespace SrvSurvey
             // linkLabel1
             // 
             linkLabel1.AutoSize = true;
-            linkLabel1.Location = new Point(170, 325);
+            linkLabel1.Location = new Point(378, 379);
             linkLabel1.Name = "linkLabel1";
-            linkLabel1.Size = new Size(251, 15);
+            linkLabel1.Size = new Size(102, 15);
             linkLabel1.TabIndex = 15;
             linkLabel1.TabStop = true;
-            linkLabel1.Text = "See related messaging commands on the wiki.";
+            linkLabel1.Text = "(see tracking wiki)";
             linkLabel1.LinkClicked += linkLabel1_LinkClicked;
             // 
             // btnClearTrackers
             // 
-            btnClearTrackers.Location = new Point(10, 321);
+            btnClearTrackers.Location = new Point(218, 375);
             btnClearTrackers.Name = "btnClearTrackers";
             btnClearTrackers.Size = new Size(154, 23);
             btnClearTrackers.TabIndex = 14;
@@ -606,7 +628,7 @@ namespace SrvSurvey
             checkBox7.AutoSize = true;
             checkBox7.Checked = true;
             checkBox7.CheckState = CheckState.Checked;
-            checkBox7.Location = new Point(10, 264);
+            checkBox7.Location = new Point(10, 196);
             checkBox7.Margin = new Padding(4, 3, 4, 3);
             checkBox7.Name = "checkBox7";
             checkBox7.Size = new Size(372, 19);
@@ -620,7 +642,7 @@ namespace SrvSurvey
             checkBox6.AutoSize = true;
             checkBox6.Checked = true;
             checkBox6.CheckState = CheckState.Checked;
-            checkBox6.Location = new Point(40, 239);
+            checkBox6.Location = new Point(40, 171);
             checkBox6.Margin = new Padding(4, 3, 4, 3);
             checkBox6.Name = "checkBox6";
             checkBox6.Size = new Size(295, 19);
@@ -634,7 +656,7 @@ namespace SrvSurvey
             checkBox5.AutoSize = true;
             checkBox5.Checked = true;
             checkBox5.CheckState = CheckState.Checked;
-            checkBox5.Location = new Point(10, 217);
+            checkBox5.Location = new Point(10, 149);
             checkBox5.Margin = new Padding(4, 3, 4, 3);
             checkBox5.Name = "checkBox5";
             checkBox5.Size = new Size(376, 19);
@@ -657,7 +679,7 @@ namespace SrvSurvey
             // 
             pictureBox2.BackgroundImage = (Image)resources.GetObject("pictureBox2.BackgroundImage");
             pictureBox2.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureBox2.Location = new Point(226, 67);
+            pictureBox2.Location = new Point(373, 11);
             pictureBox2.Name = "pictureBox2";
             pictureBox2.Size = new Size(109, 132);
             pictureBox2.TabIndex = 8;
@@ -681,10 +703,10 @@ namespace SrvSurvey
             checkBox1.Location = new Point(10, 67);
             checkBox1.Margin = new Padding(4, 3, 4, 3);
             checkBox1.Name = "checkBox1";
-            checkBox1.Size = new Size(209, 19);
+            checkBox1.Size = new Size(230, 19);
             checkBox1.TabIndex = 5;
             checkBox1.Tag = "autoShowBioPlot";
-            checkBox1.Text = "Show sample scan exclusion zones";
+            checkBox1.Text = "Show sample scan exclusion zones -->";
             checkBox1.UseVisualStyleBackColor = true;
             // 
             // checkBioStatusAutoShow
@@ -700,6 +722,153 @@ namespace SrvSurvey
             checkBioStatusAutoShow.Tag = "autoShowBioSummary";
             checkBioStatusAutoShow.Text = "Show biological signal summary";
             checkBioStatusAutoShow.UseVisualStyleBackColor = true;
+            // 
+            // groupRingBuckets
+            // 
+            groupRingBuckets.Controls.Add(label20);
+            groupRingBuckets.Controls.Add(label19);
+            groupRingBuckets.Controls.Add(label18);
+            groupRingBuckets.Controls.Add(label17);
+            groupRingBuckets.Controls.Add(picBucket4);
+            groupRingBuckets.Controls.Add(picBucket3);
+            groupRingBuckets.Controls.Add(numRingBucket3);
+            groupRingBuckets.Controls.Add(picBucket2);
+            groupRingBuckets.Controls.Add(numRingBucket2);
+            groupRingBuckets.Controls.Add(picBucket1);
+            groupRingBuckets.Controls.Add(numRingBucket1);
+            groupRingBuckets.Controls.Add(label16);
+            groupRingBuckets.Location = new Point(10, 249);
+            groupRingBuckets.Name = "groupRingBuckets";
+            groupRingBuckets.Size = new Size(470, 95);
+            groupRingBuckets.TabIndex = 24;
+            groupRingBuckets.TabStop = false;
+            groupRingBuckets.Text = "Reward Ring Groups:";
+            // 
+            // label20
+            // 
+            label20.AutoSize = true;
+            label20.Location = new Point(393, 52);
+            label20.Name = "label20";
+            label20.Size = new Size(15, 15);
+            label20.TabIndex = 11;
+            label20.Text = ">";
+            // 
+            // label19
+            // 
+            label19.AutoSize = true;
+            label19.Location = new Point(317, 52);
+            label19.Name = "label19";
+            label19.Size = new Size(15, 15);
+            label19.TabIndex = 10;
+            label19.Text = "<";
+            // 
+            // label18
+            // 
+            label18.AutoSize = true;
+            label18.Location = new Point(187, 52);
+            label18.Name = "label18";
+            label18.Size = new Size(15, 15);
+            label18.TabIndex = 9;
+            label18.Text = "<";
+            // 
+            // label17
+            // 
+            label17.AutoSize = true;
+            label17.Location = new Point(56, 52);
+            label17.Name = "label17";
+            label17.Size = new Size(15, 15);
+            label17.TabIndex = 8;
+            label17.Text = "<";
+            // 
+            // picBucket4
+            // 
+            picBucket4.BackColor = Color.Black;
+            picBucket4.BackgroundImageLayout = ImageLayout.Center;
+            picBucket4.BorderStyle = BorderStyle.Fixed3D;
+            picBucket4.Location = new Point(410, 37);
+            picBucket4.Name = "picBucket4";
+            picBucket4.Size = new Size(52, 52);
+            picBucket4.TabIndex = 6;
+            picBucket4.TabStop = false;
+            picBucket4.Paint += picBucket4_Paint;
+            // 
+            // picBucket3
+            // 
+            picBucket3.BackColor = Color.Black;
+            picBucket3.BackgroundImageLayout = ImageLayout.Center;
+            picBucket3.BorderStyle = BorderStyle.Fixed3D;
+            picBucket3.Location = new Point(266, 37);
+            picBucket3.Name = "picBucket3";
+            picBucket3.Size = new Size(52, 52);
+            picBucket3.TabIndex = 5;
+            picBucket3.TabStop = false;
+            picBucket3.Paint += picBucket3_Paint;
+            // 
+            // numRingBucket3
+            // 
+            numRingBucket3.Location = new Point(333, 49);
+            numRingBucket3.Maximum = new decimal(new int[] { 20, 0, 0, 0 });
+            numRingBucket3.Name = "numRingBucket3";
+            numRingBucket3.Size = new Size(58, 23);
+            numRingBucket3.TabIndex = 4;
+            numRingBucket3.Tag = "bioRingBucketThree";
+            numRingBucket3.TextAlign = HorizontalAlignment.Right;
+            numRingBucket3.Value = new decimal(new int[] { 195, 0, 0, 65536 });
+            // 
+            // picBucket2
+            // 
+            picBucket2.BackColor = Color.Black;
+            picBucket2.BackgroundImageLayout = ImageLayout.Center;
+            picBucket2.BorderStyle = BorderStyle.Fixed3D;
+            picBucket2.Location = new Point(135, 37);
+            picBucket2.Name = "picBucket2";
+            picBucket2.Size = new Size(52, 52);
+            picBucket2.TabIndex = 3;
+            picBucket2.TabStop = false;
+            picBucket2.Paint += picBucket2_Paint;
+            // 
+            // numRingBucket2
+            // 
+            numRingBucket2.Location = new Point(202, 49);
+            numRingBucket2.Maximum = new decimal(new int[] { 20, 0, 0, 0 });
+            numRingBucket2.Name = "numRingBucket2";
+            numRingBucket2.Size = new Size(58, 23);
+            numRingBucket2.TabIndex = 2;
+            numRingBucket2.Tag = "bioRingBucketTwo";
+            numRingBucket2.TextAlign = HorizontalAlignment.Right;
+            numRingBucket2.Value = new decimal(new int[] { 195, 0, 0, 65536 });
+            // 
+            // picBucket1
+            // 
+            picBucket1.BackColor = Color.Black;
+            picBucket1.BackgroundImageLayout = ImageLayout.Center;
+            picBucket1.BorderStyle = BorderStyle.Fixed3D;
+            picBucket1.Location = new Point(6, 37);
+            picBucket1.Name = "picBucket1";
+            picBucket1.Size = new Size(52, 52);
+            picBucket1.TabIndex = 1;
+            picBucket1.TabStop = false;
+            picBucket1.Paint += picBucket1_Paint;
+            // 
+            // numRingBucket1
+            // 
+            numRingBucket1.Location = new Point(71, 49);
+            numRingBucket1.Maximum = new decimal(new int[] { 20, 0, 0, 0 });
+            numRingBucket1.Name = "numRingBucket1";
+            numRingBucket1.Size = new Size(58, 23);
+            numRingBucket1.TabIndex = 0;
+            numRingBucket1.Tag = "bioRingBucketOne";
+            numRingBucket1.TextAlign = HorizontalAlignment.Right;
+            numRingBucket1.Value = new decimal(new int[] { 195, 0, 0, 65536 });
+            // 
+            // label16
+            // 
+            label16.AutoSize = true;
+            label16.Location = new Point(6, 19);
+            label16.Name = "label16";
+            label16.Size = new Size(301, 15);
+            label16.TabIndex = 7;
+            label16.Text = "Choose the reward level per group by millons of credits:";
             // 
             // tabPage3
             // 
@@ -1542,6 +1711,15 @@ namespace SrvSurvey
             ((System.ComponentModel.ISupportInitialize)numMinBioDuration).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+            groupRingBuckets.ResumeLayout(false);
+            groupRingBuckets.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)picBucket4).EndInit();
+            ((System.ComponentModel.ISupportInitialize)picBucket3).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numRingBucket3).EndInit();
+            ((System.ComponentModel.ISupportInitialize)picBucket2).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numRingBucket2).EndInit();
+            ((System.ComponentModel.ISupportInitialize)picBucket1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numRingBucket1).EndInit();
             tabPage3.ResumeLayout(false);
             tabPage3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numAltGamma).EndInit();
@@ -1675,5 +1853,18 @@ namespace SrvSurvey
         private Label label15;
         private CheckBox checkGalMapPlotter;
         private CheckBox checkHumanSitePlotter;
+        private GroupBox groupRingBuckets;
+        private NumericUpDown numRingBucket1;
+        private PictureBox picBucket4;
+        private PictureBox picBucket3;
+        private NumericUpDown numRingBucket3;
+        private PictureBox picBucket2;
+        private NumericUpDown numRingBucket2;
+        private PictureBox picBucket1;
+        private Label label16;
+        private Label label20;
+        private Label label19;
+        private Label label18;
+        private Label label17;
     }
 }

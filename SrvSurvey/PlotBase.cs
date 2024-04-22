@@ -626,22 +626,25 @@ namespace SrvSurvey
             // TODO: Thargoid items?
         }
 
-        public static void drawBioRing(Graphics g, string? genus, float x, float y, long reward = -1, SolidBrush? dotBrush = null, float sz = 18, long maxReward = -1, Brush? maxDotBrush = null)
+        public static void drawBioRing(Graphics g, string? genus, float x, float y, long reward = -1, bool highlight = false, float sz = 18, long maxReward = -1)
         {
             var rr = 22;
             if (sz == 38) rr = 42;
 
             // TODO: handle scaling
             g.FillEllipse(Brushes.Black, x - 1, y, sz + 2, sz + 2);
+            g.DrawEllipse(sz == 18 ? GameColors.penGameOrangeDim1 : GameColors.penGameOrangeDim2, x - 1.5f, y - 0.5f, rr, rr);
 
             if (genus == null)
             {
                 //g.DrawEllipse(GameColors.penUnknownBioSignal, x, y + 2, sz, sz);
-                g.DrawString("?", GameColors.fontSmall, GameColors.brushUnknownBioSignal, x + 5, y + 6);
+                if (sz == 38)
+                    g.DrawString("?", GameColors.font1, GameColors.brushUnknownBioSignal, x + 10.5f, y + 8);
+                else
+                    g.DrawString("?", GameColors.fontSmall, GameColors.brushUnknownBioSignal, x + 5, y + 6);
                 return;
             }
 
-            g.DrawEllipse(sz == 18 ? GameColors.penGameOrangeDim1 : GameColors.penGameOrangeDim2, x - 1.5f, y - 0.5f, rr, rr);
 
             var img = Util.getBioImage(genus, sz == 38);
             g.DrawImage(img, x, y + 2, sz, sz);
@@ -649,21 +652,19 @@ namespace SrvSurvey
             if (reward < 0) return;
 
             var maxLevel = -1;
-            if (maxReward > Game.settings.bioBucketThree) maxLevel = 3;
-            else if (maxReward > Game.settings.bioBucketTwo) maxLevel = 2;
-            else if (maxReward > Game.settings.bioBucketOne) maxLevel = 1;
+            if (maxReward > Game.settings.bioRingBucketThree * 1_000_000) maxLevel = 3;
+            else if (maxReward > Game.settings.bioRingBucketTwo * 1_000_000) maxLevel = 2;
+            else if (maxReward > Game.settings.bioRingBucketOne * 1_000_000) maxLevel = 1;
             else if (maxReward > 0) maxLevel = 0;
 
             var level = -1;
-            if (reward > Game.settings.bioBucketThree) level = 3;
-            else if (reward > Game.settings.bioBucketTwo) level = 2;
-            else if (reward > Game.settings.bioBucketOne) level = 1;
+            if (reward > Game.settings.bioRingBucketThree * 1_000_000) level = 3;
+            else if (reward > Game.settings.bioRingBucketTwo * 1_000_000) level = 2;
+            else if (reward > Game.settings.bioRingBucketOne * 1_000_000) level = 1;
             else if (reward > 0) level = 0;
 
-            if (dotBrush == null) dotBrush = GameColors.brushGameOrange;
-
             // outer rings - max
-            var op0 = sz == 18 ? GameColors.penGameOrange1Dotted: GameColors.penGameOrange2Dotted;
+            var op0 = highlight ? GameColors.penCyan2Dotted : GameColors.penGameOrange2Dotted;
             if (maxLevel == 3)
                 g.DrawArc(op0, x - 1.5f, y - 0.5f, rr, rr, -90, 360);
             else if (maxLevel == 2)
@@ -674,15 +675,15 @@ namespace SrvSurvey
                 g.DrawArc(op0, x - 1.5f, y - 0.5f, rr, rr, -100, 30);
 
             // outer rings - min
-            var op = sz == 18 ? new Pen(dotBrush.Color, 1) : new Pen(dotBrush.Color, 2);
+            var op = highlight ? GameColors.penCyan2 : GameColors.penGameOrange2;
             if (level == 3)
                 g.DrawArc(op, x - 1.5f, y - 0.5f, rr, rr, -90, 360);
             else if (level == 2)
-                g.DrawArc(op, x - 1.5f, y - 0.5f, rr, rr, -90, 240);
+                g.DrawArc(op, x - 1.5f, y - 0.5f, rr, rr, -90, 275);
             else if (level == 1)
-                g.DrawArc(op, x - 1.5f, y - 0.5f, rr, rr, -90, 120);
+                g.DrawArc(op, x - 1.5f, y - 0.5f, rr, rr, -90, 180);
             else if(level == 0)
-                g.DrawArc(op, x - 1.5f, y - 0.5f, rr, rr, -100, 30);
+                g.DrawArc(op, x - 1.5f, y - 0.5f, rr, rr, -90, 90);
 
 
             var sz2 = sz / 2.5f;

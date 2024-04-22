@@ -105,7 +105,7 @@ namespace SrvSurvey
                 this.dtx = six;
                 this.dty += six;
 
-                this.dty += this.drawTextAt($"um ..?", GameColors.brushGameOrange, GameColors.fontSmall).Height + two;
+                this.dty += this.drawTextAt($"DSS required", GameColors.brushCyan, GameColors.fontSmall).Height + two;
             }
             else
             {
@@ -119,9 +119,8 @@ namespace SrvSurvey
                     var highlight = !organism.analyzed && (game.cmdr.scanOne?.genus == organism.genus || game.cmdr.scanOne?.genus == null);
                     var brush = highlight ? GameColors.brushCyan : GameColors.brushGameOrange;
 
-                    long reward2 = organism.reward;
-                    PlotBase.drawBioRing(this.g, organism.genus, dtx, dty, reward2, brush);
-                    g.DrawEllipse(GameColors.penGameOrangeDim1, dtx - 1.5f, dty - 0.5f, 22, 22);
+                    PlotBase.drawBioRing(this.g, organism.genus, dtx, dty, organism.reward, highlight);
+                    //g.DrawEllipse(GameColors.penGameOrangeDim1, dtx - 1.5f, dty - 0.5f, 22, 22);
                     //g.DrawEllipse(GameColors.penGameOrangeDim1, dtx - 1, dty + 1, 20, 20);
                     dtx = thirty;
 
@@ -186,15 +185,15 @@ namespace SrvSurvey
             if (this.dtx > sz.Width) sz.Width = this.dtx;
             this.dtx = six;
 
-            var destinationBody = game.status.Destination?.Name?.Replace(game.systemData.name, "").Replace(" ", "");
+            var anyFoo = game.systemData.bodies.Any(b => b.id == game.status.Destination?.Body && b.bioSignalCount > 0);
+            var destinationBody = game.targetBodyShortName;
 
             foreach (var body in game.systemData.bodies)
             {
                 if (body.bioSignalCount == 0) continue;
 
                 var bodyName = body.name.Replace(game.systemData.name, "").Replace(" ", "");
-                var highlight = bodyName == destinationBody; // body.countAnalyzedBioSignals == body.bioSignalCount || bodyName == "1 f";
-                                                             //highlight = bodyName == "4a";
+                var highlight = body.countAnalyzedBioSignals != body.bioSignalCount && (bodyName == destinationBody ||  !anyFoo); // body.countAnalyzedBioSignals == body.bioSignalCount || bodyName == "1 f";
 
                 // draw body name
                 var txt = bodyName;
@@ -207,21 +206,16 @@ namespace SrvSurvey
                 var sortedOrganisms = body.organisms?.OrderBy(_ => _.genus)?.ToList();
                 for (var n = 0; n < signalCount; n++)
                 {
-                    var b = highlight ? GameColors.brushCyan : GameColors.brushGameOrange;
-
                     string? genus = null;
                     long reward = -1;
                     if (sortedOrganisms != null && n < sortedOrganisms.Count)
                     {
                         genus = sortedOrganisms[n].genus;
                         reward = sortedOrganisms[n].reward;
-                        //if (sortedOrganisms[n].analyzed)
-                        //    b = GameColors.brushGameOrangeDim as SolidBrush; // Brushes.Gray as SolidBrush;
                     }
 
-                    PlotBase.drawBioRing(this.g, genus, dtx, dty, reward, b);
-                    g.DrawEllipse(GameColors.penGameOrangeDim1, dtx - 1, dty + 0.5f, 20, 20);
-                    dtx += twoTwo;
+                    PlotBase.drawBioRing(this.g, genus, dtx, dty, reward, highlight);
+                    dtx += twoFour;
 
                     if (this.dtx > sz.Width) sz.Width = this.dtx;
                 }
@@ -244,105 +238,6 @@ namespace SrvSurvey
             sz.Height = this.dty + ten;
 
             return sz;
-        }
-
-        private void drawSignalRing(SystemOrganism org, bool highlight)
-        {
-            g.FillEllipse(Brushes.Black, dtx - one, dty, 20, 20);
-
-            var img = Util.getBioImage(org.genus);
-            g.DrawImage(img, dtx, dty + two, 18, 18);
-
-            var x = dtx + four;
-            var y = dty + 5.7f;
-
-            if (org.reward > 0)
-            {
-                /* center dot
-                // Create a path that consists of a single ellipse.
-                GraphicsPath path = new GraphicsPath();
-                path.AddEllipse(x, y, 10, 10);
-
-                // Use the path to construct a brush.
-                PathGradientBrush pthGrBrush = new PathGradientBrush(path);
-                if (org.reward > 7_000_000)
-                    pthGrBrush.CenterColor = GameColors.Orange;
-                else if (org.reward > 3_000_000)
-                    pthGrBrush.CenterColor = GameColors.OrangeDim;
-                else if (org.reward > 0)
-                    pthGrBrush.CenterColor = Color.FromArgb(255, 35, 18, 3);
-
-                pthGrBrush.SurroundColors = new Color[] { Color.Transparent };
-
-                g.FillEllipse(pthGrBrush, x, y, 10, 10);
-                // */
-
-                //* moon phases
-                var b1 = new SolidBrush(Color.FromArgb(255, 24, 24, 24));
-                var b0 = new SolidBrush(Color.FromArgb(255, 55, 28, 3));
-                g.FillEllipse(b0, x, y, 10, 10);
-
-                var b2 = GameColors.brushGameOrange;
-
-                ////// pacman
-                ////if (org.genus == "$Codex_Ent_Tubus_Genus_Name;")
-                ////    g.FillPie(GameColors.brushGameOrange, x, y, 10, 10, 225, -270);
-                ////else if (org.reward > 7_000_000)
-                ////    g.FillPie(GameColors.brushGameOrange, x, y, 10, 10, 0, 180);
-                ////else if (org.reward > 3_000_000)
-                ////    //g.FillEllipse(b2, x, y, 10, 10);
-                ////    g.FillPie(GameColors.brushGameOrange, x, y, 10, 10, 45, 90);
-                //if (org.genus == "$Codex_Ent_Tubus_Genus_Name;")
-                //    g.FillPie(GameColors.brushGameOrange, x + 1, y + 1, 8, 8, -90, 360);
-                //else if (org.reward > 7_000_000)
-                //    g.FillPie(GameColors.brushGameOrange, x + 1, y + 1, 8, 8, -30, 240);
-                //else if (org.reward > 3_000_000)
-                //    //g.FillEllipse(b2, x, y, 10, 10);
-                //    g.FillPie(GameColors.brushGameOrange, x + 1, y + 1, 8, 8, 30, 120);
-
-
-                //// quadrants
-                if (org.genus == "$Codex_Ent_Tubus_Genus_Name;")
-                    g.FillPie(highlight ? GameColors.brushCyan : GameColors.brushGameOrange, x + 1, y + 1, 8, 8, -90, 360);
-                else if (org.reward > 7_000_000)
-                    g.FillPie(highlight ? GameColors.brushCyan : GameColors.brushGameOrange, x + 1, y + 1, 8, 8, -90, 240);
-                else if (org.reward > 3_000_000)
-                    //g.FillEllipse(b2, x, y, 10, 10);
-                    g.FillPie(highlight ? GameColors.brushCyan : GameColors.brushGameOrange, x + 1, y + 1, 8, 8, -90, 120);
-                else
-                    //g.FillEllipse(b2, x, y, 10, 10);
-                    g.FillPie(highlight ? GameColors.brushCyan : GameColors.brushGameOrange, x, y, 10, 10, -90, 20);
-                // */
-            }
-
-            dtx += img.Width + four;
-        }
-
-        private void drawSignalBox(SystemOrganism org, bool highlight)
-        {
-            // Filled squares by value
-            var fill = 0f;
-            if (org.reward > 15_000_000)
-                fill = 10;
-            else if (org.reward > 7_000_000)
-                fill = 7;
-            else if (org.reward > 3_000_000)
-                fill = 4;
-            else if (org.reward > 0)
-                fill = 1;
-            //{
-            //    //var reward = Game.codexRef.getRewardForSpecies(body.bioScans[n].species!);
-            //    //fill = ten * body.organisms[n].reward / 20_000_000f;
-            //}
-
-            if (fill == 0)
-                g.DrawString("?", GameColors.fontSmall, highlight ? GameColors.brushCyan : GameColors.brushGameOrange, this.dtx + one, this.dty + six);
-            else
-                g.FillRectangle(highlight ? GameColors.brushDarkCyan : GameColors.brushGameOrangeDim, dtx, dty + one + six + ten - fill, oneOne, fill);
-
-            g.DrawRectangle(highlight ? GameColors.penCyan1 : GameColors.penGameOrange1, dtx, dty + six, oneOne, oneOne);
-
-            dtx += oneSix;
         }
     }
 }

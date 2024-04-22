@@ -798,6 +798,8 @@ namespace SrvSurvey.game
                     }
                 }
             }
+
+            // TODO: FormGenus.xxx
         }
 
         public void onEdsmResponse(EdsmSystem edsmSystem)
@@ -1050,22 +1052,35 @@ namespace SrvSurvey.game
 
             foreach (var body in this.bodies)
             {
-                if (body.organisms == null) continue;
+                var shortBodyName = body.shortName(this.name);
 
-                foreach (var org in body.organisms)
+                if (body.organisms != null)
                 {
-                    // look-up species name if we don't already know it
-                    if (org.species == null && org.entryId > 0)
+                    foreach (var org in body.organisms)
                     {
-                        var match = Game.codexRef.matchFromEntryId(org.entryId).species;
-                        org.species = match.name;
-                        org.speciesLocalized = match.englishName;
+                        // look-up species name if we don't already know it
+                        if (org.species == null && org.entryId > 0)
+                        {
+                            var match = Game.codexRef.matchFromEntryId(org.entryId).species;
+                            org.species = match.name;
+                            org.speciesLocalized = match.englishName;
 
-                        if (org.reward == 0)
-                            org.reward = match.reward;
+                            if (org.reward == 0)
+                                org.reward = match.reward;
+                        }
+
+                        foo.add(org, shortBodyName);
                     }
+                }
 
-                    foo.add(org, body.shortName(this.name));
+                if (body.bioSignalCount > 0 && (body.organisms == null || body.organisms.Count < body.bioSignalCount))
+                {
+                    // we know there's something there but not what it is
+                    if (!foo.genusBodies.ContainsKey(SystemBioSummary.unknown)) foo.genusBodies.Add(SystemBioSummary.unknown, new List<string>());
+                    foo.genusBodies[SystemBioSummary.unknown].Add(shortBodyName);
+
+                    if (!foo.unknownSpeciesBodies.ContainsKey(SystemBioSummary.unknown)) foo.unknownSpeciesBodies.Add(SystemBioSummary.unknown, new List<string>());
+                    foo.unknownSpeciesBodies[SystemBioSummary.unknown].Add(shortBodyName);
                 }
             }
 
@@ -1074,13 +1089,14 @@ namespace SrvSurvey.game
             //    .Select(b => b.name.Replace(game!.systemData!.name, "").Replace(" ", ""))
             //    .ToList();
 
-
             return foo;
         }
     }
 
     internal class SystemBioSummary
     {
+        public static string unknown = "Unknown";
+
         //public Dictionary<string, List<SystemBody>> genusBodies = new Dictionary<string, List<SystemBody>>();
         public Dictionary<string, List<string>> genusBodies = new Dictionary<string, List<string>>();
         public Dictionary<string, List<string>> speciesBodies = new Dictionary<string, List<string>>();
@@ -1119,14 +1135,41 @@ namespace SrvSurvey.game
         {
             return this.genusBodies.ContainsKey(name);
         }
+
+        public bool hasGenusOnBody(string name, string? bodyShortName)
+        {
+            if (name == null || bodyShortName == null)
+                return false;
+            else
+                return this.genusBodies.GetValueOrDefault(name)?.Contains(bodyShortName) ?? false;
+        }
+
         public bool hasSpecies(string name)
         {
             return this.speciesBodies.ContainsKey(name);
         }
+
+        public bool hasSpeciesOnBody(string name, string? bodyShortName)
+        {
+            if (name == null || bodyShortName == null)
+                return false;
+            else
+                return this.speciesBodies.GetValueOrDefault(name)?.Contains(bodyShortName) ?? false;
+        }
+
         public bool hasUnknownSpecies(string name)
         {
             return this.unknownSpeciesBodies.ContainsKey(name);
         }
+
+        public bool hasUnknownOnBody(string name, string? bodyShortName)
+        {
+            if (name == null || bodyShortName == null)
+                return false;
+            else
+                return this.unknownSpeciesBodies.GetValueOrDefault(name)?.Contains(bodyShortName) ?? false;
+        }
+
     }
 
     internal class SystemBody

@@ -29,12 +29,13 @@ namespace SrvSurvey
             var osScaleFactor = (this.DeviceDpi / 96f * 100).ToString("0");
             this.comboOverlayScale.Items[0] = $"Match Windows OS scale ({osScaleFactor}%)";
 
-            // keep these hidden from official app-store builds for now            
+            // keep these hidden from official app-store builds for now
             if (Program.isAppStoreBuild)
             {
                 checkBioSystemPlotter.Visible = false;
                 checkGalMapPlotter.Visible = false;
                 checkHumanSitePlotter.Visible = false;
+                groupRingBuckets.Visible = false;
             }
         }
 
@@ -395,6 +396,26 @@ namespace SrvSurvey
         private void checkBox18_CheckedChanged(object sender, EventArgs e)
         {
             numMinBioDuration.Enabled = checkBox18.Checked;
+        }
+
+        private void picBucket1_Paint(object sender, PaintEventArgs e)
+        {
+            PlotBase.drawBioRing(e.Graphics, "$Codex_Ent_Tussocks_Genus_Name;", 3, 3, 1, false, 38);
+        }
+
+        private void picBucket2_Paint(object sender, PaintEventArgs e)
+        {
+            PlotBase.drawBioRing(e.Graphics, "$Codex_Ent_Tussocks_Genus_Name;", 3, 3, 1 + (long)Game.settings.bioRingBucketOne * 1_000_000, false, 38);
+        }
+
+        private void picBucket3_Paint(object sender, PaintEventArgs e)
+        {
+            PlotBase.drawBioRing(e.Graphics, "$Codex_Ent_Tussocks_Genus_Name;", 3, 3, 1 + (long)Game.settings.bioRingBucketTwo * 1_000_000, false, 38);
+        }
+
+        private void picBucket4_Paint(object sender, PaintEventArgs e)
+        {
+            PlotBase.drawBioRing(e.Graphics, "$Codex_Ent_Tussocks_Genus_Name;", 3, 3, 1 + (long)Game.settings.bioRingBucketThree * 1_000_000, false, 38);
         }
     }
 }

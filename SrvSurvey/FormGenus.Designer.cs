@@ -39,15 +39,15 @@
             statusStrip1 = new StatusStrip();
             toolStripStatusLabel1 = new ToolStripStatusLabel();
             toolSystemFilter = new ToolStripDropDownButton();
-            toolEverything = new ToolStripMenuItem();
+            toolShowGuide = new ToolStripMenuItem();
             toolStripSeparator1 = new ToolStripSeparator();
+            toolEverything = new ToolStripMenuItem();
             toolInSystem = new ToolStripMenuItem();
-            toolInSystemNote = new ToolStripMenuItem();
-            toolSizer = new ToolStripSplitButton();
-            toolSizeSmall = new ToolStripMenuItem();
-            toolSizeMedium = new ToolStripMenuItem();
+            toolOnBody = new ToolStripMenuItem();
+            toolFont = new ToolStripDropDownButton();
+            smallToolStripMenuItem = new ToolStripMenuItem();
+            largeToolStripMenuItem = new ToolStripMenuItem();
             toolFiller = new ToolStripStatusLabel();
-            toolRewardLabel = new ToolStripStatusLabel();
             toolRewardValue = new ToolStripStatusLabel();
             uberPanel.SuspendLayout();
             groupBox1.SuspendLayout();
@@ -75,7 +75,7 @@
             uberPanel.Location = new Point(0, 0);
             uberPanel.Margin = new Padding(0);
             uberPanel.Name = "uberPanel";
-            uberPanel.Size = new Size(741, 642);
+            uberPanel.Size = new Size(741, 636);
             uberPanel.TabIndex = 1;
             uberPanel.WrapContents = false;
             // 
@@ -124,104 +124,103 @@
             // 
             // statusStrip1
             // 
-            statusStrip1.Items.AddRange(new ToolStripItem[] { toolStripStatusLabel1, toolSystemFilter, toolSizer, toolFiller, toolRewardLabel, toolRewardValue });
-            statusStrip1.Location = new Point(0, 642);
+            statusStrip1.Items.AddRange(new ToolStripItem[] { toolStripStatusLabel1, toolSystemFilter, toolFont, toolFiller, toolRewardValue });
+            statusStrip1.Location = new Point(0, 636);
             statusStrip1.Name = "statusStrip1";
-            statusStrip1.Size = new Size(741, 24);
+            statusStrip1.Size = new Size(741, 30);
             statusStrip1.TabIndex = 2;
             statusStrip1.Text = "statusStrip1";
             // 
             // toolStripStatusLabel1
             // 
             toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            toolStripStatusLabel1.Size = new Size(39, 19);
+            toolStripStatusLabel1.Size = new Size(39, 25);
             toolStripStatusLabel1.Text = "Show:";
+            toolStripStatusLabel1.Click += toolStripStatusLabel1_Click;
             // 
             // toolSystemFilter
             // 
             toolSystemFilter.DisplayStyle = ToolStripItemDisplayStyle.Text;
-            toolSystemFilter.DropDownItems.AddRange(new ToolStripItem[] { toolEverything, toolStripSeparator1, toolInSystem, toolInSystemNote });
+            toolSystemFilter.DropDownItems.AddRange(new ToolStripItem[] { toolShowGuide, toolStripSeparator1, toolEverything, toolInSystem, toolOnBody });
             toolSystemFilter.Image = (Image)resources.GetObject("toolSystemFilter.Image");
             toolSystemFilter.ImageTransparentColor = Color.Magenta;
             toolSystemFilter.Name = "toolSystemFilter";
-            toolSystemFilter.Size = new Size(68, 22);
+            toolSystemFilter.Size = new Size(68, 28);
             toolSystemFilter.Text = "... stuff ...";
+            // 
+            // toolShowGuide
+            // 
+            toolShowGuide.CheckOnClick = true;
+            toolShowGuide.Name = "toolShowGuide";
+            toolShowGuide.Size = new Size(180, 22);
+            toolShowGuide.Text = "Ring Guide";
+            toolShowGuide.Click += toolShowGuide_Click;
+            // 
+            // toolStripSeparator1
+            // 
+            toolStripSeparator1.Name = "toolStripSeparator1";
+            toolStripSeparator1.Size = new Size(177, 6);
             // 
             // toolEverything
             // 
             toolEverything.CheckOnClick = true;
             toolEverything.Name = "toolEverything";
-            toolEverything.Size = new Size(272, 22);
+            toolEverything.Size = new Size(180, 22);
             toolEverything.Text = "Everything";
-            toolEverything.Click += toolInSystem_Click;
-            // 
-            // toolStripSeparator1
-            // 
-            toolStripSeparator1.Name = "toolStripSeparator1";
-            toolStripSeparator1.Size = new Size(269, 6);
+            toolEverything.Click += toolFilter_Click;
             // 
             // toolInSystem
             // 
             toolInSystem.CheckOnClick = true;
             toolInSystem.Name = "toolInSystem";
-            toolInSystem.Size = new Size(272, 22);
-            toolInSystem.Text = "Species in current system";
-            toolInSystem.Click += toolInSystem_Click;
+            toolInSystem.Size = new Size(180, 22);
+            toolInSystem.Text = "Current System";
+            toolInSystem.Click += toolFilter_Click;
             // 
-            // toolInSystemNote
+            // toolOnBody
             // 
-            toolInSystemNote.Enabled = false;
-            toolInSystemNote.Name = "toolInSystemNote";
-            toolInSystemNote.Size = new Size(272, 22);
-            toolInSystemNote.Text = "(If current system has any bio signals)";
+            toolOnBody.Name = "toolOnBody";
+            toolOnBody.Size = new Size(180, 22);
+            toolOnBody.Text = "Current Body";
+            toolOnBody.Click += toolFilter_Click;
             // 
-            // toolSizer
+            // toolFont
             // 
-            toolSizer.DisplayStyle = ToolStripItemDisplayStyle.Text;
-            toolSizer.DropDownItems.AddRange(new ToolStripItem[] { toolSizeSmall, toolSizeMedium });
-            toolSizer.Image = (Image)resources.GetObject("toolSizer.Image");
-            toolSizer.ImageTransparentColor = Color.Magenta;
-            toolSizer.Margin = new Padding(20, 2, 0, 0);
-            toolSizer.Name = "toolSizer";
-            toolSizer.Size = new Size(69, 22);
-            toolSizer.Text = "Font size";
-            toolSizer.ButtonClick += toolStripSplitButton1_ButtonClick;
+            toolFont.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            toolFont.DropDownItems.AddRange(new ToolStripItem[] { smallToolStripMenuItem, largeToolStripMenuItem });
+            toolFont.Image = (Image)resources.GetObject("toolFont.Image");
+            toolFont.ImageTransparentColor = Color.Magenta;
+            toolFont.Name = "toolFont";
+            toolFont.Size = new Size(69, 28);
+            toolFont.Text = "Font: size";
             // 
-            // toolSizeSmall
+            // smallToolStripMenuItem
             // 
-            toolSizeSmall.Name = "toolSizeSmall";
-            toolSizeSmall.Size = new Size(119, 22);
-            toolSizeSmall.Text = "Small";
-            toolSizeSmall.Click += toolSizeSmall_Click;
+            smallToolStripMenuItem.Name = "smallToolStripMenuItem";
+            smallToolStripMenuItem.Size = new Size(103, 22);
+            smallToolStripMenuItem.Text = "Small";
+            smallToolStripMenuItem.Click += toolSizeSmall_Click;
             // 
-            // toolSizeMedium
+            // largeToolStripMenuItem
             // 
-            toolSizeMedium.Name = "toolSizeMedium";
-            toolSizeMedium.Size = new Size(119, 22);
-            toolSizeMedium.Text = "Medium";
-            toolSizeMedium.Click += toolSizeMedium_Click;
+            largeToolStripMenuItem.Name = "largeToolStripMenuItem";
+            largeToolStripMenuItem.Size = new Size(103, 22);
+            largeToolStripMenuItem.Text = "Large";
+            largeToolStripMenuItem.Click += toolSizeLarge_Click;
             // 
             // toolFiller
             // 
             toolFiller.AutoSize = false;
             toolFiller.Name = "toolFiller";
-            toolFiller.Size = new Size(338, 19);
-            toolFiller.Spring = true;
-            // 
-            // toolRewardLabel
-            // 
-            toolRewardLabel.BorderSides = ToolStripStatusLabelBorderSides.Left | ToolStripStatusLabelBorderSides.Top | ToolStripStatusLabelBorderSides.Right | ToolStripStatusLabelBorderSides.Bottom;
-            toolRewardLabel.BorderStyle = Border3DStyle.Sunken;
-            toolRewardLabel.Name = "toolRewardLabel";
-            toolRewardLabel.Size = new Size(139, 19);
-            toolRewardLabel.Text = "System reward estimate:";
+            toolFiller.Size = new Size(104, 25);
             // 
             // toolRewardValue
             // 
             toolRewardValue.BorderSides = ToolStripStatusLabelBorderSides.Left | ToolStripStatusLabelBorderSides.Top | ToolStripStatusLabelBorderSides.Right | ToolStripStatusLabelBorderSides.Bottom;
             toolRewardValue.BorderStyle = Border3DStyle.Sunken;
+            toolRewardValue.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point);
             toolRewardValue.Name = "toolRewardValue";
-            toolRewardValue.Size = new Size(53, 19);
+            toolRewardValue.Size = new Size(74, 25);
             toolRewardValue.Text = "555M cr";
             // 
             // FormGenus
@@ -256,13 +255,13 @@
         private ToolStripMenuItem toolEverything;
         private ToolStripStatusLabel toolStripStatusLabel1;
         private ToolStripMenuItem toolInSystem;
-        private ToolStripSeparator toolStripSeparator1;
-        private ToolStripMenuItem toolInSystemNote;
-        private ToolStripSplitButton toolSizer;
         private ToolStripStatusLabel toolFiller;
-        private ToolStripStatusLabel toolRewardLabel;
         private ToolStripStatusLabel toolRewardValue;
-        private ToolStripMenuItem toolSizeSmall;
-        private ToolStripMenuItem toolSizeMedium;
+        private ToolStripMenuItem toolOnBody;
+        private ToolStripDropDownButton toolFont;
+        private ToolStripMenuItem smallToolStripMenuItem;
+        private ToolStripMenuItem largeToolStripMenuItem;
+        private ToolStripMenuItem toolShowGuide;
+        private ToolStripSeparator toolStripSeparator1;
     }
 }

@@ -3,7 +3,6 @@ using SrvSurvey.net;
 using SrvSurvey.net.EDSM;
 using SrvSurvey.units;
 using System.Diagnostics;
-using System.Reflection;
 
 namespace SrvSurvey.game
 {
@@ -311,9 +310,9 @@ namespace SrvSurvey.game
             // set or clear 'systemSite'
             this.setCurrentSite();
 
-            if (FormGenus.activeForm != null && FormGenus.activeForm.targetBody != this.targetBodyShortName)
+            if (FormGenus.activeForm != null && FormGenus.activeForm.targetBodyShortName != this.targetBodyShortName)
                 FormGenus.activeForm.populateGenus();
-                // TODO: we could avoid flicker by updating the colors on labels, rather than destroying and recreating them.
+            // TODO: we could avoid flicker by updating the colors on labels, rather than destroying and recreating them.
 
             this.checkModeChange();
         }
@@ -937,6 +936,10 @@ namespace SrvSurvey.game
                     form.nextSystem = null;
                     form.Invalidate();
                 }
+
+                // update FormGenus?
+                if (FormGenus.activeForm != null)
+                    FormGenus.activeForm.startingJump($"{entry.StarSystem}, star class: {entry.StarClass}");
             }
 
             // for either FSD type ...
@@ -960,6 +963,10 @@ namespace SrvSurvey.game
             this.systemStatus.initFromJournal(this);
 
             this.checkModeChange();
+
+            // update FormGenus?
+            if (FormGenus.activeForm != null)
+                FormGenus.activeForm.deferPopulateGenus();
         }
 
         private void onJournalEntry(CarrierJump entry)
@@ -998,6 +1005,9 @@ namespace SrvSurvey.game
 
             this.setCurrentBody(entry.BodyID);
             this.fireUpdate();
+
+            if (FormGenus.activeForm != null)
+                FormGenus.activeForm.deferPopulateGenus();
         }
 
         private void onJournalEntry(FSSAllBodiesFound entry)
@@ -1897,13 +1907,15 @@ namespace SrvSurvey.game
             }
             else if (entry.SubCategory == "$Codex_SubCategory_Organic_Structures;" && entry.NearestDestination != "$Fixed_Event_Life_Cloud;" && entry.NearestDestination != "$Fixed_Event_Life_Ring;" && Game.activeGame?.status.hasLatLong == true)
             {
+                var match = Game.codexRef.matchFromEntryId(entry.EntryID);
+
                 // update FormGenus?
-                FormGenus.activeForm?.populateGenus();
+                if (match != null && FormGenus.activeForm?.shouldRefresh(match.species.name) == true)
+                    FormGenus.activeForm.deferPopulateGenus();
 
                 if (Game.settings.autoTrackCompBioScans)
                 {
                     // auto add CodexScans as a tracker location
-                    var match = Game.codexRef.matchFromEntryId(entry.EntryID);
                     if (match != null && this.systemBody?.organisms != null)
                     {
                         // wait a bit for the status file to update
@@ -1961,8 +1973,6 @@ namespace SrvSurvey.game
             }
             this.cmdr.lastOrganicScan = hash;
 
-            //var match = Game.codexRef.matchFromVariant(entry.Variant);
-
             // add to bio scan locations. Skip for ScanType == ScanType.Analyse as a Sample event happens right before at the same location
             // add a new bio-scan - assuming we don't have one at this position already
             var bioScan = new BioScan
@@ -2016,6 +2026,10 @@ namespace SrvSurvey.game
 
             // force a mode change to update ux
             fireUpdate(this._mode, true);
+
+            // update FormGenus
+            if (FormGenus.activeForm?.shouldRefresh(entry.Species) == true)
+                FormGenus.activeForm.deferPopulateGenus();
         }
 
         private void onJournalEntry(SellOrganicData entry)
@@ -2241,6 +2255,9 @@ namespace SrvSurvey.game
         public float getBlueCount()
         {
             var gameRect = Elite.getWindowRect();
+
+            // don't bother if we have no rectangle to analyze
+            if (gameRect.Width == 0 || gameRect.Height == 0) return 0;
 
             var cw = gameRect.Width / 8;
             var ch = gameRect.Height / 7;

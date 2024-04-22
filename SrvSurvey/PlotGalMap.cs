@@ -47,13 +47,16 @@ namespace SrvSurvey
         private void findBlackBox()
         {
             var gameRect = Elite.getWindowRect();
-            var boxColor = Color.Black;
+
+            // don't bother if we have no rectangle to analyze
+            if (gameRect.Width == 0 || gameRect.Height == 0) return;
 
             var hh = (int)(gameRect.Height * 0.5f);
             var watchRect = new Rectangle(
                 gameRect.Left, gameRect.Top + hh,
                 gameRect.Width, hh);
 
+            var boxColor = Color.Black;
             var x = gameRect.Width / 2;
             var y = watchRect.Height - 4;
             using (var b = new Bitmap(watchRect.Width, watchRect.Height))

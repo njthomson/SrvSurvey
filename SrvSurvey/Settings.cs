@@ -35,9 +35,9 @@ namespace SrvSurvey
         public bool skipAnalyzedCompBioScans = true;
         public bool autoRemoveTrackerOnSampling = true;
 
-        public int bioBucketOne = 3_000_000;
-        public int bioBucketTwo = 7_000_000;
-        public int bioBucketThree = 12_000_000;
+        public double bioRingBucketOne = 3;
+        public double bioRingBucketTwo = 7;
+        public double bioRingBucketThree = 12;
 
         public bool useExternalData = true;
         public bool autoLoadPriorScans = true;
@@ -112,6 +112,10 @@ namespace SrvSurvey
 
         public bool keepBioPlottersVisibleEnabled = true;
         public int keepBioPlottersVisibleDuration = 30;
+
+        public int formGenusFilter = 0;
+        public int formGenusFontSize = 1;
+        public bool formGenusShowRingGuide = true;
 
         #region loading /saving
 

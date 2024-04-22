@@ -242,7 +242,7 @@ namespace SrvSurvey
             if (Game.settings.autoShowPlotBioSystemTest)
             {
                 var reward = organism.reward;
-                PlotBase.drawBioRing(g, organism.genus, 104, y - 6, reward, GameColors.brushCyan, 38);
+                PlotBase.drawBioRing(g, organism.genus, 104, y - 6, reward, true, 38);
             }
 
             g.DrawString(
@@ -379,7 +379,7 @@ namespace SrvSurvey
                 if (Game.settings.autoShowPlotBioSystemTest && false)
                 {
                     var reward = -1; // organism.reward;
-                    PlotBase.drawBioRing(g, organism.genus, x, y - 2, reward, null, 12);
+                    PlotBase.drawBioRing(g, organism.genus, x, y - 2, reward, false, 12);
                     x += 13;
                 }
 
