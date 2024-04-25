@@ -48,6 +48,7 @@
             smallToolStripMenuItem = new ToolStripMenuItem();
             largeToolStripMenuItem = new ToolStripMenuItem();
             toolFiller = new ToolStripStatusLabel();
+            toolSignalCount = new ToolStripStatusLabel();
             toolRewardValue = new ToolStripStatusLabel();
             uberPanel.SuspendLayout();
             groupBox1.SuspendLayout();
@@ -124,7 +125,7 @@
             // 
             // statusStrip1
             // 
-            statusStrip1.Items.AddRange(new ToolStripItem[] { toolStripStatusLabel1, toolSystemFilter, toolFont, toolFiller, toolRewardValue });
+            statusStrip1.Items.AddRange(new ToolStripItem[] { toolStripStatusLabel1, toolSystemFilter, toolFont, toolFiller, toolSignalCount, toolRewardValue });
             statusStrip1.Location = new Point(0, 636);
             statusStrip1.Name = "statusStrip1";
             statusStrip1.Size = new Size(741, 30);
@@ -152,20 +153,20 @@
             // 
             toolShowGuide.CheckOnClick = true;
             toolShowGuide.Name = "toolShowGuide";
-            toolShowGuide.Size = new Size(180, 22);
+            toolShowGuide.Size = new Size(155, 22);
             toolShowGuide.Text = "Ring Guide";
             toolShowGuide.Click += toolShowGuide_Click;
             // 
             // toolStripSeparator1
             // 
             toolStripSeparator1.Name = "toolStripSeparator1";
-            toolStripSeparator1.Size = new Size(177, 6);
+            toolStripSeparator1.Size = new Size(152, 6);
             // 
             // toolEverything
             // 
             toolEverything.CheckOnClick = true;
             toolEverything.Name = "toolEverything";
-            toolEverything.Size = new Size(180, 22);
+            toolEverything.Size = new Size(155, 22);
             toolEverything.Text = "Everything";
             toolEverything.Click += toolFilter_Click;
             // 
@@ -173,14 +174,14 @@
             // 
             toolInSystem.CheckOnClick = true;
             toolInSystem.Name = "toolInSystem";
-            toolInSystem.Size = new Size(180, 22);
+            toolInSystem.Size = new Size(155, 22);
             toolInSystem.Text = "Current System";
             toolInSystem.Click += toolFilter_Click;
             // 
             // toolOnBody
             // 
             toolOnBody.Name = "toolOnBody";
-            toolOnBody.Size = new Size(180, 22);
+            toolOnBody.Size = new Size(155, 22);
             toolOnBody.Text = "Current Body";
             toolOnBody.Click += toolFilter_Click;
             // 
@@ -213,6 +214,15 @@
             toolFiller.AutoSize = false;
             toolFiller.Name = "toolFiller";
             toolFiller.Size = new Size(104, 25);
+            // 
+            // toolSignalCount
+            // 
+            toolSignalCount.BorderSides = ToolStripStatusLabelBorderSides.Left | ToolStripStatusLabelBorderSides.Top | ToolStripStatusLabelBorderSides.Right | ToolStripStatusLabelBorderSides.Bottom;
+            toolSignalCount.BorderStyle = Border3DStyle.Sunken;
+            toolSignalCount.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point);
+            toolSignalCount.Name = "toolSignalCount";
+            toolSignalCount.Size = new Size(100, 25);
+            toolSignalCount.Text = "Signals: 999";
             // 
             // toolRewardValue
             // 
@@ -263,5 +273,6 @@
         private ToolStripMenuItem largeToolStripMenuItem;
         private ToolStripMenuItem toolShowGuide;
         private ToolStripSeparator toolStripSeparator1;
+        private ToolStripStatusLabel toolSignalCount;
     }
 }

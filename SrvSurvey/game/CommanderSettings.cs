@@ -36,6 +36,7 @@ namespace SrvSurvey.game
         public int currentBodyId;
         public decimal currentBodyRadius;
         public double[] starPos;
+        public string galacticRegion = "$Codex_RegionName_18;"; // default to Inner Orion Spur
 
         public string? lastOrganicScan;
         public BioScan? scanOne;
@@ -82,6 +83,18 @@ namespace SrvSurvey.game
         public void clearTouchdown()
         {
             this.setTouchdown(null, -1);
+        }
+
+        public void setGalacticRegion(string region)
+        {
+            if (this.galacticRegion != region)
+            {
+                var regionName = GalacticRegions.map.GetValueOrDefault(region) ?? "??";
+                Game.log($"Congratulations for entering: {regionName} ({region})");
+            }
+
+            this.galacticRegion = region;
+            this.Save();
         }
 
         /// <summary>

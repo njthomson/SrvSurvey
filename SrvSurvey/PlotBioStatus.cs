@@ -233,7 +233,7 @@ namespace SrvSurvey
             var txt = $"{organism.variantLocalized}"; // or species?
             var f = GameColors.fontBig;
             var sz = g.MeasureString(txt, f);
-            var oneOhFour = Game.settings.autoShowPlotBioSystemTest ? PlotBase.scaled(104 + 38) : PlotBase.scaled(104);
+            var oneOhFour = Game.settings.autoShowPlotBioSystemTest ? PlotBase.scaled(104 + 42) : PlotBase.scaled(104);
             if (sz.Width > this.Width - oneOhFour - eight) f = GameColors.font18;
             sz = g.MeasureString(txt, f);
             if (sz.Width > this.Width - oneOhFour - eight) f = GameColors.font14;
@@ -242,7 +242,7 @@ namespace SrvSurvey
             if (Game.settings.autoShowPlotBioSystemTest)
             {
                 var reward = organism.reward;
-                PlotBase.drawBioRing(g, organism.genus, 104, y - 6, reward, true, 38);
+                PlotBase.drawBioRing(g, organism.genus, 104, y - 7, reward, true, 38);
             }
 
             g.DrawString(

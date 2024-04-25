@@ -262,20 +262,39 @@ namespace SrvSurvey.canonn
             // we cannot pre-match by genus name as Brain Tree species name are not consistent with their genus names
             foreach (var genusRef in this.genus)
                 foreach (var speciesRef in genusRef.species)
-                    if (speciesRef.name == speciesName)
+                    if (speciesRef.name == speciesName || speciesRef.englishName.Equals(speciesName, StringComparison.Ordinal))
                         return speciesRef;
+
+            throw new Exception($"Unexpected speciesName: '{speciesName}'");
+        }
+
+        public BioMatch matchFromSpecies2(string speciesName)
+        {
+            if (this.genus == null || this.genus.Count == 0) throw new Exception($"BioRef is not loaded.");
+            if (string.IsNullOrEmpty(speciesName)) throw new Exception($"Missing species name!");
+
+            // we cannot pre-match by genus name as Brain Tree species name are not consistent with their genus names
+            foreach (var genusRef in this.genus)
+                foreach (var speciesRef in genusRef.species)
+                    if (speciesRef.name == speciesName || speciesRef.englishName.Equals(speciesName, StringComparison.Ordinal))
+                        return new BioMatch(genusRef, speciesRef, null!);
 
             throw new Exception($"Unexpected speciesName: '{speciesName}'");
         }
 
         public BioGenus? matchFromGenus(string genusName)
         {
+            if (this.genus == null || this.genus.Count == 0) throw new Exception($"BioRef is not loaded.");
+            if (string.IsNullOrEmpty(genusName)) throw new Exception($"Missing genus name!");
+
             var genusRef = Game.codexRef.genus.FirstOrDefault(genusRef => genusRef.species.Any(_ => genusRef.name == genusName));
             return genusRef;
         }
 
         public bool isLegacyGenus(string genusName, string speciesName)
         {
+            if (this.genus == null || this.genus.Count == 0) throw new Exception($"BioRef is not loaded.");
+
             var genusRef = Game.codexRef.genus.FirstOrDefault(genusRef => genusRef.species.Any(_ => _.name == speciesName) || genusRef.name == genusName);
             return genusRef?.odyssey == false;
         }
@@ -297,6 +316,29 @@ namespace SrvSurvey.canonn
                 return rewardsByEntryId[entryId];
             else
                 return -1;
+        }
+
+        private static List<SummaryGenus>? codexRefSummary = null;
+
+        public List<SummaryGenus> summarizeEverything()
+        {
+            if (codexRefSummary == null)
+            {
+                codexRefSummary = new List<SummaryGenus>();
+                foreach(var genusRef in this.genus)
+                {
+                    var summary = new SummaryGenus(genusRef, genusRef.englishName);
+                    codexRefSummary.Add(summary);
+
+                    foreach(var speciesRef in genusRef.species)
+                    {
+                        var shortSpeciesName = speciesRef.englishName.Replace(genusRef.englishName, "").Trim();
+                        summary.species.Add(new SummarySpecies(speciesRef, shortSpeciesName));
+                    }
+                }
+            }
+
+            return codexRefSummary;
         }
     }
 }

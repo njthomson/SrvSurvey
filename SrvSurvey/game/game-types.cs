@@ -145,7 +145,7 @@ namespace SrvSurvey.game
         public BioSpecies species;
         public BioVariant variant;
 
-        public long entryId { get => long.Parse(species.entryIdPrefix + variant!.entryIdSuffix); }
+        public long entryId { get => long.Parse(species.entryIdPrefix + variant?.entryIdSuffix); }
     }
 
     internal class BioGenus
@@ -200,6 +200,15 @@ namespace SrvSurvey.game
                     calcMinMax();
                 return _maxValue;
             }
+        }
+
+        public BioSpecies? matchSpecies(string speciesName)
+        {
+            foreach (var speciesRef in this.species)
+                if (speciesRef.name == speciesName || speciesRef.englishName.Equals(speciesName, StringComparison.Ordinal))
+                    return speciesRef;
+
+            return null;
         }
     }
 

@@ -47,6 +47,11 @@ namespace SrvSurvey.game
 
             var filepath = files[0];
             cache[systemAddress] = Data.Load<SystemData>(filepath)!;
+
+            // post-process body short names after loading
+            foreach (var body in cache[systemAddress].bodies)
+                body.shortName = body.name.Replace(cache[systemAddress].name, "").Replace(" ", "");
+
             return cache[systemAddress];
         }
 
@@ -430,6 +435,7 @@ namespace SrvSurvey.game
                     body = new SystemBody()
                     {
                         name = bodyName,
+                        shortName = bodyName.Replace(this.name, "").Replace(" ", ""),
                         id = bodyId,
                     };
 
@@ -493,6 +499,14 @@ namespace SrvSurvey.game
             body.wasDiscovered = entry.WasDiscovered;
             body.wasMapped = entry.WasMapped;
             body.surfaceGravity = entry.SurfaceGravity;
+            body.surfaceTemperature = entry.SurfaceTemperature;
+            body.atmosphereType = entry.AtmosphereType;
+            body.volcanism = entry.Volcanism;
+            if (entry.StarType != null)
+            {
+                body.starType = entry.StarType;
+                // body.starSubClass = entry.Subclass; // needed ?
+            }
 
             // TODO: Parents ?
 
@@ -742,7 +756,7 @@ namespace SrvSurvey.game
         public void onCanonnData(SystemPoi canonnPoi)
         {
             if (canonnPoi.system != this.name) { Game.log($"Unmatched system! Expected: `{this.name}`, got: {canonnPoi.system}"); return; }
-            if (!Game.settings.useExternalData) return;
+            if (!Game.settings.useExternalData || true) return; // tmp!
 
             // update count of bio signals in bodies
             if (canonnPoi.SAAsignals != null)
@@ -782,6 +796,9 @@ namespace SrvSurvey.game
                             {
                                 genus = match.genus.name,
                                 genusLocalized = match.genus.englishName,
+                                species = match.species.name,
+                                speciesLocalized = match.species.englishName,
+                                variant = match.variant.name,
                                 variantLocalized = poi.english_name,
                                 entryId = poi.entryid.Value,
                                 reward = match.species.reward,
@@ -795,11 +812,17 @@ namespace SrvSurvey.game
                         // update fields
                         organism.entryId = poi.entryid.Value;
                         organism.reward = match.species.reward;
+
+                        // populate these if not already known
+                        if (organism.species == null && match.species.name != null) organism.species = match.species.name;
+                        if (organism.speciesLocalized == null && match.species.englishName != null) organism.speciesLocalized = match.species.englishName;
+                        if (organism.variant == null && match.variant.name != null) organism.variant = match.variant.name;
                     }
                 }
             }
 
-            // TODO: FormGenus.xxx
+            if (FormGenus.activeForm != null)
+                FormGenus.activeForm.deferPopulateGenus();
         }
 
         public void onEdsmResponse(EdsmSystem edsmSystem)
@@ -826,6 +849,14 @@ namespace SrvSurvey.game
                     body.terraformable = entry.terraformingState == "Candidate for terraforming";
                 if (body.mass == 0) body.mass = entry.earthMasses > 0 ? entry.earthMasses : entry.solarMasses; // mass
                 if (body.surfaceGravity == 0 && entry.gravity > 0) body.surfaceGravity = entry.gravity.Value * 10; // gravity
+                if (body.surfaceTemperature == 0 && entry.surfaceTemperature > 0) body.surfaceTemperature = entry.surfaceTemperature;
+                if (body.atmosphereType == null && entry.atmosphereType != null) body.atmosphereType = entry.atmosphereType;
+                if (body.volcanism == null && entry.volcanismType != null) body.volcanism = entry.volcanismType;
+                if (body.starType == null && entry.subType != null)
+                {
+                    body.starType = entry.subType[0].ToString();
+                    //body.starSubClass = int.Parse(entry.spectralClass[1]);
+                }
 
                 if (entry.rings != null)
                 {
@@ -869,6 +900,14 @@ namespace SrvSurvey.game
                     body.terraformable = entry.terraformingState == "Candidate for terraforming";
                 if (body.mass == 0) body.mass = (entry.earthMasses > 0 ? entry.earthMasses : entry.solarMasses) ?? 0; // mass
                 if (body.surfaceGravity == 0 && entry.gravity > 0) body.surfaceGravity = entry.gravity.Value * 10; // gravity
+                if (body.surfaceTemperature == 0 && entry.surfaceTemperature > 0) body.surfaceTemperature = entry.surfaceTemperature.Value;
+                if (body.atmosphereType == null && entry.atmosphereType != null) body.atmosphereType = entry.atmosphereType;
+                if (body.volcanism == null && entry.volcanismType != null) body.volcanism = entry.volcanismType;
+                if (body.starType == null && entry.subType != null)
+                {
+                    body.starType = entry.subType[0].ToString();
+                    //body.starSubClass = int.Parse(entry.spectralClass[1]);
+                }
 
                 // update rings
                 if (entry.rings != null)
@@ -955,17 +994,13 @@ namespace SrvSurvey.game
                 // skip stars and asteroids
                 if (_.type == SystemBodyType.Star || _.type == SystemBodyType.Asteroid) continue;
 
-                var reducedName = _.name
-                    .Replace(this.name, "")
-                    .Replace(" ", "");
-
                 // inject rings
                 if (!Game.settings.skipRingsDSS && _.hasRings)
                 {
                     if (_.rings.Count > 0)
-                        names.Add(reducedName + "rA");
+                        names.Add(_.shortName + "rA");
                     if (_.rings.Count > 0)
-                        names.Add(reducedName + "rB");
+                        names.Add(_.shortName + "rB");
                 }
 
                 // optionally skip gas giants
@@ -978,7 +1013,7 @@ namespace SrvSurvey.game
                 if (Game.settings.skipHighDistanceDSS && _.distanceFromArrivalLS > Game.settings.skipHighDistanceDSSValue)
                     continue;
 
-                names.Add(reducedName);
+                names.Add(_.shortName);
             }
 
             return names;
@@ -989,7 +1024,7 @@ namespace SrvSurvey.game
             var names = this.bodies
                 .OrderBy(_ => _.id)
                 .Where(_ => _.countAnalyzedBioSignals < _.bioSignalCount)
-                .Select(_ => _.name.Replace(this.name, "").Replace(" ", ""))
+                .Select(_ => _.shortName)
                 .ToList();
 
             return names;
@@ -1048,12 +1083,10 @@ namespace SrvSurvey.game
 
         public SystemBioSummary summarizeBioSystem()
         {
-            var foo = new SystemBioSummary();
+            var summary = new SystemBioSummary(this.name);
 
             foreach (var body in this.bodies)
             {
-                var shortBodyName = body.shortName(this.name);
-
                 if (body.organisms != null)
                 {
                     foreach (var org in body.organisms)
@@ -1069,27 +1102,24 @@ namespace SrvSurvey.game
                                 org.reward = match.reward;
                         }
 
-                        foo.add(org, shortBodyName);
+                        summary.processOrganism(org, body);
                     }
                 }
 
-                if (body.bioSignalCount > 0 && (body.organisms == null || body.organisms.Count < body.bioSignalCount))
-                {
-                    // we know there's something there but not what it is
-                    if (!foo.genusBodies.ContainsKey(SystemBioSummary.unknown)) foo.genusBodies.Add(SystemBioSummary.unknown, new List<string>());
-                    foo.genusBodies[SystemBioSummary.unknown].Add(shortBodyName);
+                // we know there's something there but not what it is
+                var bioCount = body.bioSignalCount;
+                if (body.organisms != null) bioCount -= body.organisms.Count;
 
-                    if (!foo.unknownSpeciesBodies.ContainsKey(SystemBioSummary.unknown)) foo.unknownSpeciesBodies.Add(SystemBioSummary.unknown, new List<string>());
-                    foo.unknownSpeciesBodies[SystemBioSummary.unknown].Add(shortBodyName);
-                }
+                // predict the body if there are signals unaccounted for
+                if (bioCount > 0 || (body.bioSignalCount > 0 && body.organisms?.Any(_ => _.species == null) == true)) //body.bioSignalCount > 0 && (body.organisms == null || body.organisms.Count < body.bioSignalCount))
+                    bioCount -= summary.predictBody(body);
+
+                // if we still have unknowns...
+                if (bioCount > 0) //body.bioSignalCount > 0 && (body.organisms == null || body.organisms.Count < body.bioSignalCount))
+                    summary.bodiesWithUnknowns.Add(body);
             }
 
-            //var unknownSpeciesBody = genusBodies?
-            //    .Where(b => b.organisms?.Any(o => o.genus == genus.name && o.species == null) == true)
-            //    .Select(b => b.name.Replace(game!.systemData!.name, "").Replace(" ", ""))
-            //    .ToList();
-
-            return foo;
+            return summary;
         }
     }
 
@@ -1097,79 +1127,241 @@ namespace SrvSurvey.game
     {
         public static string unknown = "Unknown";
 
-        //public Dictionary<string, List<SystemBody>> genusBodies = new Dictionary<string, List<SystemBody>>();
-        public Dictionary<string, List<string>> genusBodies = new Dictionary<string, List<string>>();
-        public Dictionary<string, List<string>> speciesBodies = new Dictionary<string, List<string>>();
-        public Dictionary<string, List<string>> unknownSpeciesBodies = new Dictionary<string, List<string>>();
+        public string systemName;
+        public List<SummaryGenus> genusGroups = new List<SummaryGenus>();
+        public List<SystemBody> bodiesWithUnknowns = new List<SystemBody>();
+        public List<SummaryEstimateBodyRewards> bodySpecies = new List<SummaryEstimateBodyRewards>();
+
         public long minReward;
         public long maxReward;
 
-        public void add(SystemOrganism org, string shortBodyName)
+        public SystemBioSummary(string systemName)
         {
-            if (!genusBodies.ContainsKey(org.genus)) genusBodies.Add(org.genus, new List<string>());
-            genusBodies[org.genus].Add(shortBodyName);
+            this.systemName = systemName;
+        }
 
-            if (org.species != null)
+        private SummaryGenus findGenus(string genusName, string displayName)
+        {
+            var genus = genusGroups.Find(_ => _.name == genusName);
+            if (genus == null)
             {
-                if (!speciesBodies.ContainsKey(org.species)) speciesBodies.Add(org.species, new List<string>());
-                speciesBodies[org.species].Add(shortBodyName);
-                minReward += org.reward;
-                maxReward += org.reward;
+                var bioRef = Game.codexRef.matchFromGenus(genusName);
+                if (bioRef == null) throw new Exception($"Unknown genus: '{genusName}' ?!");
+                genus = new SummaryGenus(bioRef, displayName);
+                genusGroups.Add(genus);
             }
-            else
-            {
-                if (!unknownSpeciesBodies.ContainsKey(org.genus)) unknownSpeciesBodies.Add(org.genus, new List<string>());
-                unknownSpeciesBodies[org.genus].Add(shortBodyName);
 
-                // if species is not known ... go with potential min/max
-                var match = Game.codexRef.matchFromGenus(org.genus);
-                if (match != null)
+            return genus;
+        }
+
+        private SummaryEstimateBodyRewards trackSpeciesOnBody(SystemBody body, SummarySpecies species)
+        {
+            var bodyTracker = bodySpecies.Find(_ => _.body == body);
+            if (bodyTracker == null)
+            {
+                bodyTracker = new SummaryEstimateBodyRewards(body);
+                bodySpecies.Add(bodyTracker);
+            }
+
+            bodyTracker.species.Add(species);
+            return bodyTracker;
+        }
+
+        public void processOrganism(SystemOrganism? org, SystemBody body)
+        {
+            if (org != null)
+            {
+                // find/create the genus group
+                var genusGroup = this.findGenus(org.genus, org.genusLocalized);
+
+                // when we know the species already ...
+                if (org.species != null)
                 {
-                    minReward += match.minReward;
-                    maxReward += match.maxReward;
+                    // find/create the species
+                    var shortSpeciesName = org.speciesLocalized?.Replace(org.genusLocalized, "")?.Trim() ?? "EEK";
+                    var species = genusGroup.findSpecies(org.species, shortSpeciesName);
+
+                    // add this body to that list
+                    species.bodies.Add(body);
+
+                    // and track species by body
+                    trackSpeciesOnBody(body, species);
+                }
+                else
+                {
+                    // predict valid species within the genus ...
+                    var predictions = PotentialOrganism.match(org, body);
+                    foreach (var prediction in predictions)
+                    {
+                        var genusRef = Game.codexRef.matchFromGenus(org.genus)!;
+                        if (genusRef == null) throw new Exception($"Unknown genus: '{org.genus}' ?!");
+
+                        var speciesRef = genusRef.matchSpecies(prediction);
+                        if (speciesRef != null)
+                        {
+                            var shortSpeciesName = speciesRef.englishName.Replace(genusRef.englishName, "").Trim();
+                            var species = genusGroup.findSpecies(speciesRef.name, shortSpeciesName, true);
+                            species.bodies.Add(body);
+
+                            // and track species by body
+                            trackSpeciesOnBody(body, species);
+                        }
+                    }
                 }
             }
         }
 
-        public bool hasGenus(string name)
+        public int predictBody(SystemBody body)
         {
-            return this.genusBodies.ContainsKey(name);
+            var predictions = PotentialOrganism.match(null, body);
+
+            foreach (var prediction in predictions)
+            {
+                var match = Game.codexRef.matchFromSpecies2(prediction);
+                if (body.organisms?.Any(o => o.species == match.species.name) == true)
+                {
+                    // organism already known on this body - no need to predict it
+                }
+                else if (match?.genus != null && match?.species != null)
+                {
+                    var genusGroup = this.findGenus(match.genus.name, match.genus.englishName);
+
+                    var shortSpeciesName = match.species.englishName.Replace(match.genus.englishName, "").Trim();
+                    var species = genusGroup.findSpecies(match.species.name, shortSpeciesName, true);
+                    species.bodies.Add(body);
+
+                    // and track species by body
+                    trackSpeciesOnBody(body, species);
+                }
+                else
+                {
+                    Game.log($"Failed to find a match for prediction: {prediction}");
+                }
+            }
+
+            return predictions.Count;
         }
 
-        public bool hasGenusOnBody(string name, string? bodyShortName)
+        public void calcMinMax(SystemBody? currentBody)
         {
-            if (name == null || bodyShortName == null)
-                return false;
-            else
-                return this.genusBodies.GetValueOrDefault(name)?.Contains(bodyShortName) ?? false;
+            this.minReward = 0;
+            this.maxReward = 0;
+
+            // prepare a map of each body and the signals on it
+            foreach (var tracker in this.bodySpecies)
+            {
+                if (currentBody != null && currentBody != tracker.body)
+                    continue;
+
+                var rewardKnown = 0L;
+                var countKnown = 0;
+                var predicted = new List<SummarySpecies>();
+
+                foreach (var species in tracker.species)
+                {
+                    if (species.predicted)
+                    {
+                        // make a list of predictions
+                        predicted.Add(species);
+                    }
+                    else
+                    {
+                        // sum rewards for non-predicted species 
+                        rewardKnown += species.reward;
+                        countKnown++;
+                    }
+                }
+
+                // how many predictions are needed to reach the signal count?
+                var delta = tracker.body.bioSignalCount - countKnown;
+                var sortedPredictions = predicted.OrderBy(_ => _.reward);
+
+                // take that many from the top and bottom for min/max per body
+                tracker.minReward = sortedPredictions.Take(delta).Sum(_ => _.reward);
+                this.minReward += rewardKnown + tracker.minReward;
+
+                tracker.maxReward = sortedPredictions.TakeLast(delta).Sum(_ => _.reward);
+                this.maxReward += rewardKnown + tracker.maxReward;
+            }
+        }
+    }
+
+    internal class SummaryGenus
+    {
+        public BioGenus bioRef;
+        public string displayName;
+
+        public List<SummarySpecies> species = new List<SummarySpecies>();
+        public List<SummarySpecies> predictions = new List<SummarySpecies>();
+
+        public SummaryGenus(BioGenus bioRef, string displayName)
+        {
+            this.bioRef = bioRef;
+            this.displayName = displayName;
         }
 
-        public bool hasSpecies(string name)
+        public string name { get => bioRef.name; }
+
+        public SummarySpecies findSpecies(string speciesName, string displayName, bool prediction = false)
         {
-            return this.speciesBodies.ContainsKey(name);
+            var species = prediction
+                ? this.predictions.Find(_ => _.name == speciesName)
+                : this.species.Find(_ => _.name == speciesName);
+
+            if (species == null)
+            {
+                var speciesRef = this.bioRef.matchSpecies(speciesName);
+                //if (speciesRef == null) speciesRef = Game.codexRef.matchFromSpecies(speciesName); // TMP!!!
+                if (speciesRef == null) throw new Exception($"Unknown species: '{speciesName}' ?!");
+
+                species = new SummarySpecies(speciesRef, displayName) { predicted = prediction };
+
+                if (prediction)
+                    this.predictions.Add(species);
+                else
+                    this.species.Add(species);
+            }
+
+            return species;
         }
 
-        public bool hasSpeciesOnBody(string name, string? bodyShortName)
+        public bool hasBody(SystemBody body)
         {
-            if (name == null || bodyShortName == null)
-                return false;
-            else
-                return this.speciesBodies.GetValueOrDefault(name)?.Contains(bodyShortName) ?? false;
+            return
+                this.species.Any(_ => _.bodies.Contains(body))
+                || this.predictions.Any(_ => _.bodies.Contains(body));
+        }
+    }
+
+    internal class SummarySpecies
+    {
+        public BioSpecies bioRef;
+        public string displayName;
+        public HashSet<SystemBody> bodies = new HashSet<SystemBody>();
+        public bool predicted;
+
+        public SummarySpecies(BioSpecies bioRef, string displayName)
+        {
+            this.bioRef = bioRef;
+            this.displayName = displayName;
         }
 
-        public bool hasUnknownSpecies(string name)
-        {
-            return this.unknownSpeciesBodies.ContainsKey(name);
-        }
+        public string name { get => bioRef.name; }
+        public long reward { get => bioRef.reward; }
+    }
 
-        public bool hasUnknownOnBody(string name, string? bodyShortName)
-        {
-            if (name == null || bodyShortName == null)
-                return false;
-            else
-                return this.unknownSpeciesBodies.GetValueOrDefault(name)?.Contains(bodyShortName) ?? false;
-        }
+    internal class SummaryEstimateBodyRewards
+    {
+        public SystemBody body;
+        public long minReward;
+        public long maxReward;
 
+        public List<SummarySpecies> species = new List<SummarySpecies>();
+
+        public SummaryEstimateBodyRewards(SystemBody body)
+        {
+            this.body = body;
+        }
     }
 
     internal class SystemBody
@@ -1205,6 +1397,12 @@ namespace SrvSurvey.game
         public long distanceFromArrivalLS;
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public string? starType;
+
+        //[JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        //public int? starSubClass;
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public string? planetClass;
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
@@ -1218,6 +1416,15 @@ namespace SrvSurvey.game
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public double surfaceGravity;
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public double surfaceTemperature;
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public string atmosphereType;
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public string? volcanism;
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public bool wasDiscovered;
@@ -1272,6 +1479,9 @@ namespace SrvSurvey.game
         {
             return $"'{this.name}' ({this.id}, {this.type})";
         }
+
+        [JsonIgnore]
+        public string shortName;
 
         [JsonIgnore]
         public bool hasRings { get => this.rings?.Count > 0; }
@@ -1355,13 +1565,6 @@ namespace SrvSurvey.game
             return organism;
         }
 
-        public string shortName(string? systemName)
-        {
-            if (systemName == null)
-                return this.name;
-            else
-                return this.name.Replace(systemName, "").Replace(" ", "");
-        }
     }
 
     internal class SystemRing

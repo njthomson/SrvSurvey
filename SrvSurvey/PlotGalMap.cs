@@ -265,7 +265,6 @@ namespace SrvSurvey
                 g.DrawRectangle(bp, 1, 1, this.Width - 2, this.Height - 2);
                 g.DrawRectangle(bp2, 2, 2, this.Width - 4, this.Height - 4);
 
-
                 if (this.targetStatus != null)
                     this.drawStatus66(this.targetStatus, this.targetSubStatus, this.Width * 0.715f);
 

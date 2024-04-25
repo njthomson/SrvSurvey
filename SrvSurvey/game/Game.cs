@@ -139,7 +139,7 @@ namespace SrvSurvey.game
             // track this instance as the active one
             Game.activeGame = this;
 
-            if (!Elite.isGameRunning) return;
+            if (!Elite.isGameRunning && !Program.useLastIfShutdown) return;
 
             // track status file changes and force an immediate read
             this.status = new Status(true);
@@ -310,7 +310,7 @@ namespace SrvSurvey.game
             // set or clear 'systemSite'
             this.setCurrentSite();
 
-            if (FormGenus.activeForm != null && FormGenus.activeForm.targetBodyShortName != this.targetBodyShortName)
+            if (FormGenus.activeForm != null && FormGenus.activeForm.targetBody != this.targetBody)
                 FormGenus.activeForm.populateGenus();
             // TODO: we could avoid flicker by updating the colors on labels, rather than destroying and recreating them.
 
@@ -441,22 +441,24 @@ namespace SrvSurvey.game
             ;
         }
 
-        public string targetBodyShortName
+        public string targetBodyShortName { get => this.targetBody?.shortName ?? ""; }
+
+        public SystemBody? targetBody
         {
             get
             {
                 if (this.systemData != null && status?.Destination?.Body > 0)
                 {
                     var body = systemData.bodies.Find(_ => _.id == status.Destination.Body);
-                    return body?.shortName(systemData.name) ?? "";
+                    return body;
                 }
                 else if (this.systemData != null && this.systemBody != null)
                 {
-                    return this.systemBody.shortName(systemData.name) ?? "";
+                    return this.systemBody;
                 }
                 else
                 {
-                    return "";
+                    return null;
                 }
             }
         }
@@ -484,7 +486,7 @@ namespace SrvSurvey.game
 
             // exit early if we are shutdown
             var lastShutdown = journals!.FindEntryByType<Shutdown>(-1, true);
-            if (lastShutdown != null)
+            if (lastShutdown != null && !Program.useLastIfShutdown)
             {
                 log($"Game.initializeFromJournal: EXIT isShutdown! ({Game.activeGame == this})");
                 this.isShutdown = true;
@@ -992,11 +994,17 @@ namespace SrvSurvey.game
         private void onJournalEntry(FSSDiscoveryScan entry)
         {
             this.systemStatus.onJournalEntry(entry); // retire
+
+            if (FormGenus.activeForm != null)
+                FormGenus.activeForm.deferPopulateGenus();
         }
 
         private void onJournalEntry(Scan entry)
         {
             this.systemStatus.onJournalEntry(entry); // retire
+
+            if (FormGenus.activeForm != null)
+                FormGenus.activeForm.deferPopulateGenus();
         }
 
         private void onJournalEntry(SAAScanComplete entry)
@@ -1018,6 +1026,10 @@ namespace SrvSurvey.game
         private void onJournalEntry(FSSBodySignals entry)
         {
             this.systemStatus.onJournalEntry(entry); // retire
+
+            //var bioSignals = entry.Signals.FirstOrDefault(_ => _.Type == "$SAA_SignalType_Biological;");
+            //if (bioSignals != null && FormGenus.activeForm != null)
+            //    FormGenus.activeForm.deferPopulateGenus();
         }
 
         private void onJournalEntry(Missions entry)
@@ -1894,6 +1906,10 @@ namespace SrvSurvey.game
 
         private void onJournalEntry(CodexEntry entry)
         {
+            // update our region
+            // TODO: is there any other way to know this? Like from a StarPos?
+            this.cmdr.setGalacticRegion(entry.Region);
+
             if (entry.Name == "$Codex_Ent_Guardian_Beacons_Name;")
             {
                 // A Guardian Beacon

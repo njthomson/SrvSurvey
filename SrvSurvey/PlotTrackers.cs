@@ -87,12 +87,12 @@ namespace SrvSurvey
             if (plotGrounded != null)
             {
                 this.Width = plotGrounded.Width;
-                this.Left = gameRect.Right - this.Width - 20;
+                this.Left = gameRect.Right - this.Width - (gameRect.Width - plotGrounded.Right);
                 this.Top = plotGrounded.Bottom + 4;
             }
             else
             {
-                Elite.floatRightMiddle(this, gameRect, 20);
+                Elite.floatRightMiddle(this, gameRect, 8);
             }
 
             this.Invalidate();

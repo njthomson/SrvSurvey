@@ -13,6 +13,7 @@ namespace SrvSurvey
         public static bool isAppStoreBuild = Assembly.GetExecutingAssembly().Location.Contains("NosmohtSoftware");
         public static string releaseVersion = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyFileVersionAttribute>()?.Version!;
         public static string userAgent = $"SrvSurvey-{Program.releaseVersion}";
+        public static bool useLastIfShutdown = false;
 
         private static string dataRootFolder = Path.GetFullPath(Path.Combine(dataFolder, ".."));
 

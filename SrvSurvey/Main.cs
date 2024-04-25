@@ -61,6 +61,9 @@ namespace SrvSurvey
             };
 
             btnPublish.Visible = Debugger.IsAttached;
+
+            // keep these hidden from official app-store builds for now
+            btnBioSummary.Visible = !Program.isAppStoreBuild && Game.settings.autoShowPlotBioSystemTest;
         }
 
         private void Main_Load(object sender, EventArgs e)
@@ -229,7 +232,7 @@ namespace SrvSurvey
                         this.updateCommanderTexts();
                         Application.DoEvents();
 
-                        if (Elite.isGameRunning)
+                        if (Elite.isGameRunning || Program.useLastIfShutdown)
                             this.newGame();
 
                         foreach (Control ctrl in this.Controls) ctrl.Enabled = true;

@@ -81,6 +81,8 @@ namespace SrvSurvey.net.EDSM
         public double solarRadius;
         public double earthMasses;
         public double? gravity;
+        public string? atmosphereType;
+        public string? volcanismType;
         public decimal radius;
         public double surfaceTemperature;
         public double? orbitalPeriod;

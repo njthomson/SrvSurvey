@@ -80,6 +80,8 @@ namespace SrvSurvey.net
         public double? earthMasses;
         public decimal? radius;
         public double? gravity;
+        public string? atmosphereType;
+        public string? volcanismType;
         public bool? isLandable;
         public string? terraformingState;
         

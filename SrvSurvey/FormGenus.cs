@@ -16,7 +16,7 @@ namespace SrvSurvey
             Util.showForm(FormGenus.activeForm);
         }
 
-        public string? targetBodyShortName;
+        public SystemBody targetBody;
 
         private Game game = Game.activeGame!;
         private Font fontGenus;
@@ -105,7 +105,7 @@ namespace SrvSurvey
             if (this.filterIdx == 0 || this.summary == null)
                 return true;
             else
-                return !this.summary.hasSpeciesOnBody(speciesName, this.targetBodyShortName);
+                return !this.summary.genusGroups.Any(g => g.species.Any(s => s.name == speciesName && s.bodies.Contains(this.targetBody))); // hasSpeciesOnBody
         }
 
         public void deferPopulateGenus()
@@ -116,11 +116,13 @@ namespace SrvSurvey
             });
         }
 
-        public void populateGenus(string? targetBodyShortName = null)
+        public void populateGenus()
         {
-            this.targetBodyShortName = game?.targetBodyShortName;
+            Game.log("populateGenus");
 
-            toolRewardValue.Visible = this.filterIdx > 0;
+            this.targetBody = game?.targetBody!;
+
+            toolRewardValue.Visible = game?.systemData != null; // this.filterIdx > 0;
             Application.DoEvents();
 
             uberPanel.SuspendLayout();
@@ -131,28 +133,54 @@ namespace SrvSurvey
             // show something if the game is not running or there's no summary
             if (filterIdx == 0 && game == null)
                 this.addWarningLabel("Game is not running.", "Change filter to show everything?");
-            else if (filterIdx > 0 && (this.summary == null || this.summary.genusBodies.Count == 0))
+            else if (filterIdx > 0 && (this.summary == null || this.summary.genusGroups.Count == 0))
                 this.addWarningLabel("Current system has no detected bio signals.", "Change filter to show everything?");
-            else if (filterIdx > 1 && (this.summary == null || this.summary.genusBodies.Count == 0))
-                this.addWarningLabel("Current body has no detected bio signals.", "Change filter to system or everything?");
 
-            // populate (filtered) rows
-            var first = true;
-            foreach (var genus in Game.codexRef.genus)
+            var genusGroups = filterIdx == 0
+                ? Game.codexRef.summarizeEverything()
+                : summary?.genusGroups;
+
+            // warn first if DSS is incomplete
+            if (game?.systemData?.fssComplete == false)
             {
-                var panel = createGenusPanel(genus);
-                if (panel == null) continue;
-
-                if (first)
+                if (!game.systemData.honked)
                 {
-                    panel.showTopLine = false;
-                    first = false;
+                    this.addWarningLabel(null, $"Discovery scan needed");
                 }
-
-                uberPanel.Controls.Add(panel);
+                else
+                {
+                    var fssProgress = 100.0 / (float)game.systemData.bodyCount * (float)game.systemData.fssBodyCount;
+                    this.addWarningLabel(null, $"System not fully scanned: FSS {(int)fssProgress}% complete");
+                }
             }
 
-            if (this.summary?.hasGenus("Unknown") == true)
+            // populate known genus groups
+            var first = true;
+            if (genusGroups != null)
+            {
+                foreach (var genus in genusGroups)
+                {
+                    // skip genus when filtering to current body and it's not on it
+                    if (filterIdx > 1 && !genus.hasBody(this.targetBody))
+                        continue;
+
+                    var panel = createGenusPanel(genus);
+                    if (panel == null) continue;
+
+                    if (first)
+                    {
+                        panel.showTopLine = false;
+                        first = false;
+                    }
+
+                    uberPanel.Controls.Add(panel);
+                }
+            }
+
+            if (filterIdx > 1 && (this.summary == null || first))
+                this.addWarningLabel("Current body has no detected bio signals.", "Change filter to system or everything?");
+
+            if (summary != null && summary.bodiesWithUnknowns.Count > 0 && (this.filterIdx == 1 || this.summary.bodiesWithUnknowns.Contains(this.targetBody)))
             {
                 var panel = createUnknownGenusPanel();
                 panel.showTopLine = !first;
@@ -161,31 +189,46 @@ namespace SrvSurvey
 
             // show estimate(s)
             if (this.summary != null)
-                if (this.summary.minReward == this.summary.maxReward)
-                    toolRewardValue.Text = Util.credits(this.summary.minReward);
+            {
+                summary.calcMinMax(filterIdx == 2 ? this.targetBody : null);
+                var prefix = filterIdx == 2 ? "Body: " : "System: ";
+                if (summary.minReward == this.summary.maxReward)
+                    toolRewardValue.Text = prefix + Util.credits(summary.minReward);
                 else
-                    toolRewardValue.Text = Util.credits(this.summary.minReward, true) + " ~ " + Util.credits(this.summary.maxReward);
+                    toolRewardValue.Text = prefix + Util.credits(summary.minReward, true) + " ~ " + Util.credits(this.summary.maxReward);
+            }
+
+            // TODO: some kind of setting?
+            addBodySummary();
 
             if (Game.settings.formGenusShowRingGuide)
                 addRingGuide();
+
+            if (filterIdx > 1)
+            {
+                toolSignalCount.Text = $"Signals: {this.targetBody?.bioSignalCount ?? '?'}";
+            }
+            else
+                toolSignalCount.Text = $"Signals: {game?.systemData?.bioSignalsTotal}";
 
             uberPanel.ResumeLayout(true);
             uberPanel.Invalidate(true);
         }
 
-        private void addWarningLabel(string line1, string? line2 = null)
+        private void addWarningLabel(string? line1, string? line2 = null)
         {
-            uberPanel.Controls.Add(new Label()
-            {
-                Text = line1,
-                Font = this.fontGenus,
-                AutoSize = true,
-                BackColor = Color.Transparent,
-                Margin = new Padding(4, 0, 3, 0),
-                Padding = new Padding(0),
-            });
+            if (line1 != null)
+                uberPanel.Controls.Add(new Label()
+                {
+                    Text = line1,
+                    Font = this.fontGenus,
+                    AutoSize = true,
+                    BackColor = Color.Transparent,
+                    Margin = new Padding(4, 0, 3, 0),
+                    Padding = new Padding(0),
+                });
+
             if (line2 != null)
-            {
                 uberPanel.Controls.Add(new Label()
                 {
                     Text = line2,
@@ -195,14 +238,10 @@ namespace SrvSurvey
                     Margin = new Padding(4, 0, 3, 0),
                     Padding = new Padding(0),
                 });
-            }
         }
 
-        private GenusPanel? createGenusPanel(BioGenus genus)
+        private GenusPanel createGenusPanel(SummaryGenus genus)
         {
-            // skip if genus not present?
-            if (this.filterIdx > 0 && this.summary?.hasGenus(genus.name) != true) return null;
-
             var panel = new GenusPanel()
             {
                 Tag = genus,
@@ -218,83 +257,106 @@ namespace SrvSurvey
             // genus header label
             var lbl = new Label()
             {
-                Text = genus.englishName,
+                Text = genus.displayName,
                 Font = this.fontGenus,
                 AutoSize = true,
                 BackColor = Color.Transparent,
                 Margin = new Padding(4, 0, 3, 0),
-                Padding = new Padding(0),
+                Padding = new Padding(0, 3, 0, 3),
+                UseCompatibleTextRendering = false,
             };
             panel.Controls.Add(lbl);
 
             // highlight genus if it's on the current/target body
-            if (this.summary?.hasGenusOnBody(genus.name, this.targetBodyShortName) == true)
+            var genusBodyMatcher = filterIdx == 0 && this.summary != null
+                ? this.summary.genusGroups.Find(_ => _.name == genus.name)
+                : genus;
+
+            if (genusBodyMatcher != null && genusBodyMatcher.hasBody(this.targetBody!))
                 lbl.ForeColor = GameColors.Cyan;
 
             // add a row for each species...
             foreach (var species in genus.species.OrderBy(_ => -_.reward))
             {
-                // skip if not known on a system body, or the current one
-                if (filterIdx > 0 && this.summary?.hasSpecies(species.name) == false) continue;
-                var matchSpeciesToBody = this.summary?.hasSpeciesOnBody(species.name, this.targetBodyShortName) == true;
-                if (filterIdx > 1 && !matchSpeciesToBody) continue;
-
-                var txt = genus.odyssey
-                    ? species.englishName.Replace(genus.englishName, "").Replace(" ", "")
-                    : species.englishName.Replace("Brain Tree", "").Replace("Sinuous Tubers", "").Replace("Anemone", "");
-
-                // species label
-                var lbl2 = new Label()
-                {
-                    Tag = species,
-                    Text = txt,
-                    Font = this.fontSpecies,
-                    AutoSize = true,
-                    BackColor = Color.Transparent,
-                    Margin = new Padding(36, 0, 0, 0),
-                    Padding = new Padding(0),
-                };
-                panel.Controls.Add(lbl2);
-
-                // show which bodies have this species
-                if (filtered && this.summary?.speciesBodies[species.name].Count > 0)
-                    lbl2.Text += " (on: " + string.Join(", ", this.summary.speciesBodies[species.name]) + ")";
-
-                // highlight species if it's on the current/target body
-                if (matchSpeciesToBody)
-                    lbl2.ForeColor = GameColors.Cyan;
+                if (filterIdx > 1 && !species.bodies.Contains(this.targetBody))
+                    continue;
+                createSpeciesRow(species, panel, genusBodyMatcher ?? genus);
             }
 
-            // add another row when we know the genus but not the species
-            var matchUnknownToBody = this.summary?.hasUnknownOnBody(genus.name, this.targetBodyShortName) == true;
-            if (this.summary?.hasUnknownSpecies(genus.name) == true && (filterIdx == 1 || matchUnknownToBody))
+            foreach (var species in genus.predictions.OrderBy(_ => -_.reward))
             {
-                var lbl3 = new Label()
-                {
-                    Text = $"Unknown (on: {string.Join(", ", this.summary.unknownSpeciesBodies[genus.name])})",
-                    ForeColor = GameColors.OrangeDim,
-                    Font = this.fontSpecies,
-                    AutoSize = true,
-                    BackColor = Color.Transparent,
-                    Margin = new Padding(36, 0, 0, 0),
-                    Padding = new Padding(0),
-                };
-                panel.Controls.Add(lbl3);
-
-                // highlight if any of these are on the current/target body
-                if (matchUnknownToBody)
-                    lbl3.ForeColor = GameColors.Cyan;
+                if (filterIdx > 1 && !species.bodies.Contains(this.targetBody))
+                    continue;
+                createSpeciesRow(species, panel, genusBodyMatcher ?? genus);
             }
 
-            // ignore genus when filtering to current body and it's not on it
-            if (filterIdx > 1 && panel.Controls.Count == 1)
-                return null;
+            //// add another row when we know the genus but not the species?
+            //var matchUnknownToBody = this.summary?.hasUnknownOnBody(genus.name, this.targetBodyShortName) == true;
+            //if (this.summary?.hasUnknownSpecies(genus.name) == true && (filterIdx == 1 || matchUnknownToBody))
+            //{
+            //    var lbl3 = new Label()
+            //    {
+            //        Text = $"Unknown (on: {string.Join(", ", this.summary.unknownSpeciesBodies[genus.name])})",
+            //        ForeColor = GameColors.OrangeDim,
+            //        Font = this.fontSpecies,
+            //        AutoSize = true,
+            //        BackColor = Color.Transparent,
+            //        Margin = new Padding(36, 0, 0, 0),
+            //        Padding = new Padding(0),
+            //    };
+            //    panel.Controls.Add(lbl3);
+
+            //    // highlight if any of these are on the current/target body
+            //    if (matchUnknownToBody)
+            //        lbl3.ForeColor = GameColors.Cyan;
+            //}
 
             return panel;
         }
 
+        private void createSpeciesRow(SummarySpecies species, GenusPanel panel, SummaryGenus genusBodyMatcher)
+        {
+            // species label
+            var lbl2 = new Label()
+            {
+                Tag = species,
+                Text = species.displayName,
+                Font = this.fontSpecies,
+                AutoSize = true,
+                BackColor = Color.Transparent,
+                Margin = new Padding(36, 0, 0, 0),
+                Padding = new Padding(0, 3, 0, 3),
+                UseCompatibleTextRendering = false,
+
+            };
+            panel.Controls.Add(lbl2);
+
+            if (species.predicted)
+            {
+                lbl2.Text += "?";
+                lbl2.Font = new Font(lbl2.Font, FontStyle.Italic);
+            }
+
+            // show which bodies have this species
+            if (species.bodies.Count > 0)
+            {
+                lbl2.Text += species.predicted ? " (predicted on: " : " (on: ";
+                lbl2.Text += string.Join(", ", species.bodies.Select(_ => _.shortName)) + ")";
+            }
+
+            // highlight species if it's on the current/target body
+            var speciesBodyMatcher = filterIdx == 0 && genusBodyMatcher != null
+                ? genusBodyMatcher.species.Find(_ => _.name == species.name) ?? genusBodyMatcher.predictions.Find(_ => _.name == species.name)
+                : species;
+
+            if (speciesBodyMatcher != null && speciesBodyMatcher.bodies.Contains(this.targetBody!))
+                lbl2.ForeColor = GameColors.Cyan;
+        }
+
         private GenusPanel createUnknownGenusPanel()
         {
+            if (this.summary == null) throw new Exception("Why no summary?");
+
             var panel = new GenusPanel()
             {
                 FlowDirection = FlowDirection.TopDown,
@@ -318,15 +380,12 @@ namespace SrvSurvey
             };
             panel.Controls.Add(lbl);
 
-            // highlight genus if it's on the current/target body
-            if (this.summary?.hasGenusOnBody(SystemBioSummary.unknown, this.targetBodyShortName) == true)
-                lbl.ForeColor = GameColors.Cyan;
 
             // add another row as we also do not know the species
-            var matchUnknownToBody = this.summary?.hasUnknownOnBody(SystemBioSummary.unknown, this.targetBodyShortName) == true;
-            var lbl3 = new Label()
+            //var matchUnknownToBody = this.summary?.hasUnknownOnBody(SystemBioSummary.unknown, this.targetBodyShortName) == true;
+            var lbl2 = new Label()
             {
-                Text = $"Unknowns (on: {string.Join(", ", this.summary!.unknownSpeciesBodies[SystemBioSummary.unknown])})",
+                Text = $"Unknowns (on: {string.Join(", ", this.summary.bodiesWithUnknowns.Select(_ => _.shortName))})",
                 ForeColor = GameColors.Orange,
                 Font = this.fontSpecies,
                 AutoSize = true,
@@ -334,11 +393,15 @@ namespace SrvSurvey
                 Margin = new Padding(36, 0, 0, 0),
                 Padding = new Padding(0),
             };
-            panel.Controls.Add(lbl3);
+            panel.Controls.Add(lbl2);
 
-            // highlight if any of these are on the current/target body
-            if (matchUnknownToBody)
-                lbl3.ForeColor = GameColors.Cyan;
+            // highlight genus if it's on the current/target body
+            if (this.summary.bodiesWithUnknowns.Contains(this.targetBody))
+            {
+                // Not sure about this...
+                lbl.ForeColor = GameColors.Cyan;
+                lbl2.ForeColor = GameColors.Cyan;
+            }
 
             return panel;
         }
@@ -391,6 +454,57 @@ namespace SrvSurvey
             uberPanel.Controls.Add(panel);
         }
 
+        private void addBodySummary()
+        {
+            if (this.summary == null) return;
+
+            var panel = new GenusPanel()
+            {
+                isBodySummary = true,
+                //showTopLine = false,
+                FlowDirection = FlowDirection.TopDown,
+                WrapContents = false,
+                Anchor = AnchorStyles.Left | AnchorStyles.Top,
+                AutoSizeMode = AutoSizeMode.GrowOnly,
+                AutoSize = true,
+                Margin = new Padding(0),
+                Padding = new Padding(3, 4, 28, 0),
+            };
+
+            panel.Controls.Add(new Label()
+            {
+                Text = $"{this.summary.systemName} summary:",
+                Font = new Font(this.fontGenus, FontStyle.Bold),
+                AutoSize = true,
+                BackColor = Color.Transparent,
+                Margin = new Padding(4, 5, 3, 0),
+                Padding = new Padding(0),
+            });
+
+            foreach (var foo in summary.bodySpecies)
+            {
+                var txt = $"{foo.body.shortName}: {foo.body.bioSignalCount}x signals, {foo.body.distanceFromArrivalLS}LS";
+
+                var lbl = new Label()
+                {
+                    Tag = foo,
+                    Text = txt,
+                    Font = this.fontGenus,
+                    AutoSize = true,
+                    BackColor = Color.Transparent,
+                    Margin = new Padding(14, 0, 3, 0),
+                    Padding = new Padding(0),
+                };
+                if (foo.body == this.targetBody)
+                    lbl.ForeColor = GameColors.Cyan;
+
+                panel.Controls.Add(lbl);
+
+            }
+
+            uberPanel.Controls.Add(panel);
+        }
+
         private void toolFilter_Click(object sender, EventArgs e)
         {
             // ignore top 2 items
@@ -417,7 +531,6 @@ namespace SrvSurvey
 
             this.populateGenus();
         }
-
 
         private void toolSizeSmall_Click(object sender, EventArgs e)
         {
@@ -447,6 +560,7 @@ namespace SrvSurvey
 
         private void toolStripStatusLabel1_Click(object sender, EventArgs e)
         {
+            // cheap & cheerful refresh
             this.populateGenus();
         }
     }
@@ -455,10 +569,7 @@ namespace SrvSurvey
     {
         public bool showTopLine = true;
         public bool isRingGuide = false;
-
-        public GenusPanel()
-        {
-        }
+        public bool isBodySummary = false;
 
         public void updateFontSizes(Font fontGenus, Font fontSpecies)
         {
@@ -491,6 +602,8 @@ namespace SrvSurvey
         {
             base.OnPaintBackground(e);
             var g = e.Graphics;
+            g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
+
             g.FillRectangle(GameColors.brushBackgroundStripe, 0, 0, this.Width, this.Height);
 
             // the top line
@@ -499,13 +612,67 @@ namespace SrvSurvey
 
             if (this.isRingGuide)
                 this.drawRingGuide(e.Graphics);
+            else if (this.isBodySummary)
+                this.drawBodySummary(e.Graphics);
             else
                 this.drawRingsAndCredits(e.Graphics);
         }
 
+        private void drawBodySummary(Graphics g)
+        {
+            //var y = -30;
+            //PlotBase.drawBioRing(g, "$Codex_Ent_Tubus_Genus_Name;", 150, y + 30, -1, false, 38);
+
+            // the reward per species
+            if (this.Controls.Count > 1)
+            {
+                for (int n = 1; n < this.Controls.Count; n++)
+                {
+                    var lbl = (Label)this.Controls[n];
+                    var foo = lbl.Tag as SummaryEstimateBodyRewards;
+                    if (foo == null) continue;
+
+                    if (n % 2 == 0)
+                        g.FillRectangle(GameColors.brushTrackInactive, 0, lbl.Top - 2, this.ClientSize.Width, lbl.Height);
+
+                    var minReward = foo.minReward;
+                    var maxReward = foo.maxReward;
+
+                    if (foo.body.firstFootFall)
+                    {
+                        minReward *= 5;
+                        maxReward *= 5;
+                    }
+
+                    var txt = Util.credits(minReward, true);
+                    if (minReward != maxReward)
+                        txt += $" ~ {Util.credits(maxReward, true)}";
+
+                    TextRenderer.DrawText(
+                        g,
+                        txt,
+                        lbl.Font,
+                        new Rectangle(this.Width - 200, lbl.Top + lbl.Padding.Top, 200, lbl.Height),
+                        lbl.ForeColor,
+                        TextFormatFlags.Right | TextFormatFlags.NoPadding | TextFormatFlags.SingleLine
+                    );
+
+                    var x = lbl.Right + 4;
+                    var y = lbl.Top;
+                    foreach (var species in foo.species)
+                    {
+                        var genus = Util.getGenusNameFromVariant(species.name) + "Genus_Name;";
+                        PlotBase.drawBioRing(g, genus, x, y, -1, false);
+                        x += 24;
+                    }
+                }
+            }
+
+        }
+
         private void drawRingsAndCredits(Graphics g)
         {
-            var genus = this.Tag as BioGenus;
+            var genus = this.Tag as SummaryGenus;
             if (genus == null)
             {
                 PlotBase.drawBioRing(g, null, this.ClientSize.Width - 38 - 8, 7, -1, false, 38);
@@ -513,36 +680,27 @@ namespace SrvSurvey
             }
 
             // the reward per species
-            var minReward = genus.minReward;
             if (this.Controls.Count > 1)
             {
                 for (int n = 1; n < this.Controls.Count; n++)
                 {
-                    var ctrl = (Label)this.Controls[n];
-                    var species = ctrl.Tag as BioSpecies;
-                    var txt = species == null
-                        ? Util.credits(genus.minReward, true) + " ~ " + Util.credits(genus.maxReward)
-                        : Util.credits(species.reward);
+                    var lbl = (Label)this.Controls[n];
+                    var species = lbl.Tag as SummarySpecies;
+                    if (species == null) continue;
 
                     if (n % 2 == 0)
-                        g.FillRectangle(GameColors.brushTrackInactive, 0, ctrl.Top, this.ClientSize.Width, ctrl.Height);
+                        g.FillRectangle(GameColors.brushTrackInactive, 0, lbl.Top, this.ClientSize.Width, lbl.Height);
 
-                    var b = species == null ? GameColors.brushGameOrangeDim : GameColors.brushGameOrange;
-
-                    //var currentBodyShortName = Game.activeGame?.targetBodyShortName ?? "";
-                    if (ctrl.ForeColor == ((SolidBrush)GameColors.brushCyan).Color)
-                    {
-                        b = GameColors.brushCyan;
-                    }
-
-                    if (species != null)
-                        minReward = (int)Math.Max(minReward, species.reward);
-
-                    g.DrawString(
+                    var reward = species.bodies.Any(_ => _.firstFootFall) ? species.reward * 5 : species.reward;
+                    var txt = Util.credits(reward, true);
+                    TextRenderer.DrawText(
+                        g,
                         txt,
-                        ctrl.Font,
-                        b,
-                        this.Width - 170, this.Controls[n].Top);
+                        lbl.Font,
+                        new Point(this.Width - 170, lbl.Top + lbl.Padding.Top),
+                        lbl.ForeColor,
+                        TextFormatFlags.Left | TextFormatFlags.NoPadding | TextFormatFlags.SingleLine
+                    );
                 }
             }
 
