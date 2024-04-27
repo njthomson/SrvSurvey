@@ -39,7 +39,14 @@ namespace SrvSurvey
         public double bioRingBucketTwo = 7;
         public double bioRingBucketThree = 12;
 
+        /// <summary>
+        /// Controls if we make any calls to get exploration or bio data
+        /// </summary>
         public bool useExternalData = true;
+        /// <summary>
+        /// Controls if use any bio data from external data calls
+        /// </summary>
+        public bool useExternalBioData = false;
         public bool autoLoadPriorScans = true;
         public bool skipPriorScansLowValue = false;
         public int skipPriorScansLowValueAmount = 1_000_000;
@@ -75,6 +82,7 @@ namespace SrvSurvey
         public Rectangle formMapEditor;
         public Rectangle formRamTah;
         public Rectangle formGenusGuideLocation;
+        public Rectangle formPostProcess;
 
         public bool mapShowNotes = true;
 

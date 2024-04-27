@@ -34,7 +34,7 @@ namespace SrvSurvey
         public readonly string? CommanderName;
         public readonly bool isOdyssey;
 
-        public JournalFile(string filepath)
+        public JournalFile(string filepath, string? targetCmdr = null)
         {
             Game.log($"Reading: {Path.GetFileName(filepath)}");
 
@@ -43,7 +43,7 @@ namespace SrvSurvey
 
             this.reader = new StreamReader(new FileStream(filepath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite));
 
-            this.readEntries();
+            this.readEntries(targetCmdr);
 
             var entry = this.FindEntryByType<Commander>(0, false);
             this.CommanderName = entry?.Name;
@@ -56,11 +56,15 @@ namespace SrvSurvey
 
         public int Count { get => this.Entries.Count; }
 
-        public void readEntries()
+        public void readEntries(string? targetCmdr = null)
         {
             while (!this.reader.EndOfStream)
             {
-                this.readEntry();
+                var entry = this.readEntry();
+
+                // stop early if not target cmdr
+                if (targetCmdr != null && entry is Commander && ((Commander)entry).Name != targetCmdr)
+                    break;
             }
         }
 

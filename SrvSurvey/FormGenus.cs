@@ -25,7 +25,7 @@ namespace SrvSurvey
         private int filterIdx = 1;
         private SystemBioSummary? summary;
 
-        public FormGenus()
+        private FormGenus()
         {
             InitializeComponent();
             toolFiller.Width = 20;
@@ -128,7 +128,10 @@ namespace SrvSurvey
             uberPanel.SuspendLayout();
             uberPanel.Controls.Clear();
 
-            this.summary = game?.systemData?.summarizeBioSystem();
+            //if (game?.systemData != null && game.systemData.bioSummary == null)
+            game.systemData.summarizeBioSystem();
+
+            this.summary = game?.systemData?.bioSummary;// .summarizeBioSystem();
 
             // show something if the game is not running or there's no summary
             if (filterIdx == 0 && game == null)
@@ -468,7 +471,7 @@ namespace SrvSurvey
                 AutoSizeMode = AutoSizeMode.GrowOnly,
                 AutoSize = true,
                 Margin = new Padding(0),
-                Padding = new Padding(3, 4, 28, 0),
+                Padding = new Padding(3, 4, 28, 8),
             };
 
             panel.Controls.Add(new Label()
@@ -481,9 +484,16 @@ namespace SrvSurvey
                 Padding = new Padding(0),
             });
 
-            foreach (var foo in summary.bodySpecies)
+            foreach (var foo in summary.bodyGroups)
             {
-                var txt = $"{foo.body.shortName}: {foo.body.bioSignalCount}x signals, {foo.body.distanceFromArrivalLS}LS";
+                if (this.filterIdx > 1 && this.targetBody != null && this.targetBody != foo.body) continue;
+
+                var txt = $"{foo.body.shortName}: {foo.body.bioSignalCount}x signals, {Util.lsToString(foo.body.distanceFromArrivalLS)}";
+                txt += "\r\n  " + string.Join("\r\n  ", foo.species.Select(_ =>
+                {
+                    var prefix = foo.body.organisms?.Find(o => o.species == _.bioRef.name)?.analyzed == true ? "-" : ">";
+                    return $"\t{prefix}{_.bioRef.englishName}{(_.predicted ? "?" : "")}";
+                }));
 
                 var lbl = new Label()
                 {
@@ -629,7 +639,7 @@ namespace SrvSurvey
                 for (int n = 1; n < this.Controls.Count; n++)
                 {
                     var lbl = (Label)this.Controls[n];
-                    var foo = lbl.Tag as SummaryEstimateBodyRewards;
+                    var foo = lbl.Tag as SummaryBody;
                     if (foo == null) continue;
 
                     if (n % 2 == 0)
@@ -657,13 +667,20 @@ namespace SrvSurvey
                         TextFormatFlags.Right | TextFormatFlags.NoPadding | TextFormatFlags.SingleLine
                     );
 
-                    var x = lbl.Right + 4;
-                    var y = lbl.Top;
-                    foreach (var species in foo.species)
+                    if (foo.body.organisms != null)
                     {
-                        var genus = Util.getGenusNameFromVariant(species.name) + "Genus_Name;";
-                        PlotBase.drawBioRing(g, genus, x, y, -1, false);
-                        x += 24;
+                        var x = lbl.Right + 4;
+                        var y = lbl.Top;
+                        foreach (var org in foo.body.organisms)
+                        {
+                            var reward = org.reward;
+                            if (reward == 0)
+                                reward = foo.species.Find(s => s.predicted && s.bodies.Contains(foo.body))?.reward ?? 0;
+
+                            PlotBase.drawBioRing(g, org.genus, x, y, reward, !org.analyzed, 38);
+                            // x += 24;
+                            x += 48;
+                        }
                     }
                 }
             }

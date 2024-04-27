@@ -92,6 +92,7 @@ namespace SrvSurvey.game
 
     interface ISystemDataStarter
     {
+        DateTime timestamp { get; set; }
         string @event { get; set; }
         string StarSystem { get; set; }
         long SystemAddress { get; set; }
@@ -214,6 +215,9 @@ namespace SrvSurvey.game
 
     internal class BioSpecies
     {
+        [JsonIgnore]
+        public BioGenus genus;
+
         public string name;   // $Codex_Ent_Stratum_07_Name;
         public string englishName; // Stratum Tectonicas
         public long reward; // 19010800
@@ -229,6 +233,9 @@ namespace SrvSurvey.game
 
     internal class BioVariant
     {
+        [JsonIgnore]
+        public BioSpecies species;
+
         public string name;   // $Codex_Ent_Stratum_07_M_Name;
         public string englishName; // Stratum Tectonicas - Green
         public string entryIdSuffix; // 03

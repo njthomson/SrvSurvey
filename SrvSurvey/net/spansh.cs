@@ -70,6 +70,7 @@ namespace SrvSurvey.net
         public bool? rotationalPeriodTidallyLocked;
         public double? solarMasses;
         public double? solarRadius;
+        public List<Dictionary<string, int>> parents;
         public string? spectralClass;
         // TODO stations[]
         public string subType;
@@ -81,10 +82,12 @@ namespace SrvSurvey.net
         public decimal? radius;
         public double? gravity;
         public string? atmosphereType;
+        public Dictionary<string, float>? atmosphereComposition;
+        public Dictionary<string, float>? materials;
         public string? volcanismType;
         public bool? isLandable;
         public string? terraformingState;
-        
+
         public ApiSystemDumpSignals? signals;
 
         // TODO? parents[]

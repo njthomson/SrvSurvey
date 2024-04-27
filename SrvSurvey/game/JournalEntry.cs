@@ -623,7 +623,8 @@ namespace SrvSurvey
 
         // Planet specific ...
 
-        // TODO: Parents: Array of BodyType:BodyID pairs
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public List<Dictionary<string, int>> Parents { get; set; }
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public bool TidalLock { get; set; } // 1 if tidally locked
@@ -637,7 +638,8 @@ namespace SrvSurvey
         public string Atmosphere { get; set; } // see §15.4
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public string AtmosphereType { get; set; }
-        // TODO: AtmosphereComposition: [array of info]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public List<Composition> AtmosphereComposition { get; set; }
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public string Volcanism { get; set; } // see §15.5
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
@@ -646,6 +648,11 @@ namespace SrvSurvey
         public double SurfacePressure { get; set; }
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public bool Landable { get; set; } // : true (if landable)
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public List<Composition> Materials { get; set; }
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public Dictionary<string, float> Composition{ get; set; }
 
         /* TODO: Materials: JSON array with objects with material names and percentage occurrence
         Composition: structure containing info on solid composition
@@ -673,6 +680,13 @@ namespace SrvSurvey
         public double Periapsis { get; set; }
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public double OrbitalPeriod { get; set; }
+    }
+
+    class Composition
+    {
+        // "AtmosphereComposition":[ { "Name":"Ammonia", "Percent":100.000000 } ]
+        public string Name;
+        public float Percent;
     }
 
     class FSSBodySignals : JournalEntry, ISystemAddress

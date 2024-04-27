@@ -22,6 +22,8 @@ namespace SrvSurvey
         public Main()
         {
             InitializeComponent();
+            lblNotInstalled.BringToFront();
+            lblFullScreen.BringToFront();
             PlotPos.prepPlotterPositions();
 
             if (Path.Exists(Game.settings.watchedJournalFolder))
@@ -414,6 +416,11 @@ namespace SrvSurvey
             {
                 this.updateAllControls(newMode);
             }
+        }
+
+        private void btnCopyLocation_Click(object sender, EventArgs e)
+        {
+            Clipboard.SetText(txtLocation.Text);
         }
 
         private void updateCommanderTexts()
@@ -1523,6 +1530,7 @@ namespace SrvSurvey
         private void btnRamTah_Click(object sender, EventArgs e)
         {
             FormRamTah.show();
+            //FormPostProcess.show();
 
             //game!.touchdownLocation = Util.adjustForCockpitOffset(game.status.PlanetRadius, game!.systemBody!.lastTouchdown!, game.shipType, 90);
             //Program.getPlotter<PlotHumanSite>()!.Invalidate();

@@ -113,7 +113,18 @@ namespace SrvSurvey
                     g.DrawString(msg, GameColors.fontMiddle, brush, oneEight, twoEight);
 
                     if (!string.IsNullOrEmpty(this.lastNotes))
-                        g.DrawString(this.lastNotes, GameColors.fontMiddle, GameColors.brushCyan, oneEight, sixFive);
+                    {
+                        var txt = this.lastNotes;
+                        var bodySummary = game.systemData?.bioSummary?.bodyGroups.Find(_ => _.body.name == this.lastBodyName);
+                        if (bodySummary != null)
+                        {
+                            txt += $" ~{Util.credits(bodySummary.minReward, true)}";
+                            if (bodySummary.minReward != bodySummary.maxReward)
+                                txt += $" ~{Util.credits(bodySummary.maxReward, true)}";
+                        }
+
+                        g.DrawString(txt, GameColors.fontMiddle, GameColors.brushCyan, oneEight, sixFive);
+                    }
                 }
             }
             catch (Exception ex)

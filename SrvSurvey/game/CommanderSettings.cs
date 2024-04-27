@@ -21,6 +21,23 @@ namespace SrvSurvey.game
                 };
         }
 
+        /// <summary>
+        /// Returns a dictionary of FID to cmdr name 
+        /// </summary>
+        public static Dictionary<string, string> getAllCmdrs()
+        {
+            var cmdrs = new Dictionary<string, string>();
+            var files = Directory.GetFiles(Program.dataFolder, "F*-live.json");
+            foreach (var file in files)
+            {
+                var cmdr = JsonConvert.DeserializeObject<CommanderSettings>(File.ReadAllText(file));
+                if (!string.IsNullOrWhiteSpace(cmdr?.commander))
+                    cmdrs.Add(cmdr.fid, cmdr.commander);
+            }
+
+            return cmdrs;
+        }
+
         public string fid;
         public string commander;
         public bool isOdyssey;

@@ -25,6 +25,14 @@ namespace SrvSurvey
             return angle / ratioDegreesToRadians;
         }
 
+        public static string lsToString(decimal m)
+        {
+            if (m > 1000)
+                return (m / 1000).ToString("N1") + "k LS";
+            else
+                return m.ToString("N0") + " LS";
+        }
+
         public static string metersToString(decimal m, bool asDelta = false)
         {
             return metersToString((double)m, asDelta);

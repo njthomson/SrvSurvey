@@ -40,6 +40,7 @@ namespace SrvSurvey
             btnPasteLatLong = new Button();
             lblTrackTargetStatus = new Label();
             groupBox2 = new GroupBox();
+            btnCopyLocation = new Button();
             txtCommander = new TextBox();
             txtNearBody = new TextBox();
             txtMode = new TextBox();
@@ -178,6 +179,7 @@ namespace SrvSurvey
             // groupBox2
             // 
             groupBox2.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            groupBox2.Controls.Add(btnCopyLocation);
             groupBox2.Controls.Add(txtCommander);
             groupBox2.Controls.Add(txtNearBody);
             groupBox2.Controls.Add(txtMode);
@@ -189,6 +191,17 @@ namespace SrvSurvey
             groupBox2.TabIndex = 14;
             groupBox2.TabStop = false;
             groupBox2.Text = "Commander:";
+            // 
+            // btnCopyLocation
+            // 
+            btnCopyLocation.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnCopyLocation.Image = (Image)resources.GetObject("btnCopyLocation.Image");
+            btnCopyLocation.Location = new Point(288, 42);
+            btnCopyLocation.Name = "btnCopyLocation";
+            btnCopyLocation.Size = new Size(22, 22);
+            btnCopyLocation.TabIndex = 27;
+            btnCopyLocation.UseVisualStyleBackColor = true;
+            btnCopyLocation.Click += btnCopyLocation_Click;
             // 
             // txtCommander
             // 
@@ -226,7 +239,7 @@ namespace SrvSurvey
             txtLocation.Location = new Point(16, 43);
             txtLocation.Name = "txtLocation";
             txtLocation.ReadOnly = true;
-            txtLocation.Size = new Size(291, 20);
+            txtLocation.Size = new Size(272, 20);
             txtLocation.TabIndex = 12;
             txtLocation.Text = "<location>";
             // 
@@ -424,7 +437,7 @@ namespace SrvSurvey
             lblFullScreen.BackColor = Color.DarkRed;
             lblFullScreen.Dock = DockStyle.Top;
             lblFullScreen.ForeColor = Color.White;
-            lblFullScreen.Location = new Point(0, 102);
+            lblFullScreen.Location = new Point(0, 0);
             lblFullScreen.Name = "lblFullScreen";
             lblFullScreen.Padding = new Padding(10);
             lblFullScreen.Size = new Size(437, 86);
@@ -537,7 +550,7 @@ namespace SrvSurvey
             lblNotInstalled.ForeColor = Color.White;
             lblNotInstalled.LinkArea = new LinkArea(57, 15);
             lblNotInstalled.LinkColor = Color.FromArgb(128, 255, 255);
-            lblNotInstalled.Location = new Point(0, 0);
+            lblNotInstalled.Location = new Point(0, 86);
             lblNotInstalled.Name = "lblNotInstalled";
             lblNotInstalled.Padding = new Padding(10);
             lblNotInstalled.Size = new Size(437, 102);
@@ -619,8 +632,6 @@ namespace SrvSurvey
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = btnQuit2;
             ClientSize = new Size(437, 547);
-            Controls.Add(lblFullScreen);
-            Controls.Add(lblNotInstalled);
             Controls.Add(checkTempHide);
             Controls.Add(btnPublish);
             Controls.Add(btnRamTah);
@@ -635,6 +646,8 @@ namespace SrvSurvey
             Controls.Add(groupBox1);
             Controls.Add(label2);
             Controls.Add(btnQuit2);
+            Controls.Add(lblNotInstalled);
+            Controls.Add(lblFullScreen);
             Font = new Font("Lucida Sans Typewriter", 8.25F, FontStyle.Regular, GraphicsUnit.Point);
             FormBorderStyle = FormBorderStyle.Fixed3D;
             Icon = (Icon)resources.GetObject("$this.Icon");
@@ -704,5 +717,6 @@ namespace SrvSurvey
         private Button btnPasteLatLong;
         private CheckBox checkTempHide;
         private Button btnBioSummary;
+        private Button btnCopyLocation;
     }
 }

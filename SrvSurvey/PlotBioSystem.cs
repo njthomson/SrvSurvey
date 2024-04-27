@@ -196,10 +196,10 @@ namespace SrvSurvey
                 var highlight = body.countAnalyzedBioSignals != body.bioSignalCount && (bodyName == destinationBody ||  !anyFoo); // body.countAnalyzedBioSignals == body.bioSignalCount || bodyName == "1 f";
 
                 // draw body name
-                var txt = bodyName;
-                this.drawTextAt(txt, highlight ? GameColors.brushCyan : GameColors.brushGameOrange, GameColors.fontMiddle);
+                var txt = $"{bodyName} {body.bioSignalCount}x";
+                var sz2 = this.drawTextAt(txt, highlight ? GameColors.brushCyan : GameColors.brushGameOrange, GameColors.fontMiddle);
                 // TODO: Indent to match the widest string
-                this.dtx = forty;
+                this.dtx = oneTwo + sz2.Width;
 
                 // and a box for each signal
                 var signalCount = body.bioSignalCount;
@@ -214,11 +214,30 @@ namespace SrvSurvey
                         reward = sortedOrganisms[n].reward;
                     }
 
+                    if (genus == null) continue;
                     PlotBase.drawBioRing(this.g, genus, dtx, dty, reward, highlight);
-                    dtx += twoFour;
 
+                    dtx += twoFour;
                     if (this.dtx > sz.Width) sz.Width = this.dtx;
                 }
+
+                var bodySummary = game.systemData?.bioSummary?.bodyGroups.Find(_ => _.body == body);
+                if (bodySummary != null)
+                {
+                    foreach(var foo in bodySummary.species)
+                    {
+                        var genus = Util.getGenusNameFromVariant(foo.name) + "Genus_Name;";
+                        PlotBase.drawBioRing(this.g, genus, dtx, dty, foo.bioRef.reward, highlight);
+
+                        dtx += twoFour;
+                    }
+
+                    var txt2 = $" {Util.credits(bodySummary.minReward, true)}";
+                    this.drawTextAt(txt2, highlight ? GameColors.brushCyan : GameColors.brushGameOrange, GameColors.fontMiddle);
+                }
+
+                if (this.dtx > sz.Width) sz.Width = this.dtx;
+
 
                 this.dtx = six;
                 this.dty += twoFour;

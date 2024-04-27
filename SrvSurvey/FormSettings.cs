@@ -62,19 +62,14 @@ namespace SrvSurvey
 
         private void findCmdrs()
         {
-            var cmdrs = new List<string>();
-            var files = Directory.GetFiles(Program.dataFolder, "F*-live.json");
-            foreach (var file in files)
-            {
-                var cmdr = JsonConvert.DeserializeObject<CommanderSettings>(File.ReadAllText(file));
-                if (!string.IsNullOrWhiteSpace(cmdr?.commander))
-                    cmdrs.Add(cmdr.commander);
-            }
+            var cmdrs = CommanderSettings.getAllCmdrs()
+                .Values
+                .Order()
+                .ToArray();
 
             comboCmdr.Items.Clear();
             comboCmdr.Items.Add("(no preference)");
-            cmdrs.Sort();
-            comboCmdr.Items.AddRange(cmdrs.ToArray());
+            comboCmdr.Items.AddRange(cmdrs);
 
             if (string.IsNullOrEmpty(Game.settings.preferredCommander))
                 comboCmdr.SelectedIndex = 0;

@@ -71,6 +71,7 @@ namespace SrvSurvey.net.EDSM
         public string type;
         public string subType;
         public long distanceToArrival;
+        public List<Dictionary<string, int>> parents;
         public bool isMainStar;
         public bool isScoopable;
         public bool isLandable;
@@ -82,6 +83,8 @@ namespace SrvSurvey.net.EDSM
         public double earthMasses;
         public double? gravity;
         public string? atmosphereType;
+        public Dictionary<string, float>? atmosphereComposition;
+        public Dictionary<string, float>? materials;
         public string? volcanismType;
         public decimal radius;
         public double surfaceTemperature;

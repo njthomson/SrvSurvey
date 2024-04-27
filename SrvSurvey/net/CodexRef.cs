@@ -213,6 +213,17 @@ namespace SrvSurvey.canonn
                 Game.log("prepBioRef: reading bioRef from disk");
                 this.genus = JsonConvert.DeserializeObject<List<BioGenus>>(File.ReadAllText(bioRefPath))!;
             }
+
+            // post-process to make each node aware of its parent
+            foreach (var genusRef in this.genus)
+            {
+                foreach (var speciesRef in genusRef.species)
+                {
+                    speciesRef.genus = genusRef;
+                    foreach (var variantRef in speciesRef.variants)
+                        variantRef.species = speciesRef;
+                }
+            }
         }
 
         public BioMatch matchFromEntryId(long entryId)
@@ -325,12 +336,12 @@ namespace SrvSurvey.canonn
             if (codexRefSummary == null)
             {
                 codexRefSummary = new List<SummaryGenus>();
-                foreach(var genusRef in this.genus)
+                foreach (var genusRef in this.genus)
                 {
                     var summary = new SummaryGenus(genusRef, genusRef.englishName);
                     codexRefSummary.Add(summary);
 
-                    foreach(var speciesRef in genusRef.species)
+                    foreach (var speciesRef in genusRef.species)
                     {
                         var shortSpeciesName = speciesRef.englishName.Replace(genusRef.englishName, "").Trim();
                         summary.species.Add(new SummarySpecies(speciesRef, shortSpeciesName));
