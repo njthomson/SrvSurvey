@@ -586,7 +586,7 @@
     "longitude": -118.881874,
     "siteHeading": 8,
     "idx": 0,
-    "surveyComplete": false
+    "surveyComplete": true
   },
   {
     "siteID": 87,
@@ -662,7 +662,7 @@
     "longitude": -82.460922,
     "siteHeading": 26,
     "idx": 0,
-    "surveyComplete": false
+    "surveyComplete": true
   },
   {
     "siteID": 86,
@@ -1420,7 +1420,7 @@
     "siteType": "Turtle",
     "latitude": 51.209953,
     "longitude": 89.097206,
-    "siteHeading": -1,
+    "siteHeading": 162,
     "idx": 0,
     "surveyComplete": false
   },

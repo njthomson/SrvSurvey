@@ -222,7 +222,7 @@ namespace SrvSurvey
                 {
                     Game.log($"Match really close? {poiType} vs {poi.type}, a:{angle} vs {poi.angle}, d:{dist} vs {poi.dist}");
                     Debugger.Break();
-                    //return poi;
+                    return poi;
                 }
             }
 
