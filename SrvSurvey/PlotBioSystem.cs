@@ -365,15 +365,13 @@ namespace SrvSurvey
             foreach (var body in game.systemData.bodies)
             {
                 if (body.bioSignalCount == 0) continue;
-
-                var bodyName = body.name.Replace(game?.systemData?.name!, "").Replace(" ", "");
-                var highlight = body.countAnalyzedBioSignals != body.bioSignalCount && (bodyName == destinationBody); // || !anyFoo); // body.countAnalyzedBioSignals == body.bioSignalCount || bodyName == "1 f";
+                var highlight = body.countAnalyzedBioSignals != body.bioSignalCount && (body.shortName == destinationBody); // || !anyFoo); // body.countAnalyzedBioSignals == body.bioSignalCount || bodyName == "1 f";
 
                 // draw body name
-                var txt = $"{bodyName}"; // {body.bioSignalCount}x";
-                this.drawTextAt(six, txt, highlight ? GameColors.brushCyan : GameColors.brushGameOrange, GameColors.fontMiddle);
-                // TODO: Indent to match the widest string
-                //this.dtx = oneTwo + sz2.Width;
+                var sz2 = this.drawTextAt(six, body.shortName, highlight ? GameColors.brushCyan : GameColors.brushGameOrange, GameColors.fontMiddle);
+                if (body.bioSignalCount == body.countAnalyzedBioSignals)
+                    g.DrawLine(GameColors.penGameOrange1, dtx, dty + sz2.Height/2, dtx - sz2.Width, dty + sz2.Height / 2);
+
 
                 // and a box for each signal
                 var signalCount = body.bioSignalCount;
