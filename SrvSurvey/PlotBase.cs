@@ -44,7 +44,15 @@ namespace SrvSurvey
         protected float fourSix = scaled(46f);
         protected float fifty = scaled(50f);
         protected float sixFive = scaled(65f);
+        protected float eighty = scaled(80f);
         protected float eightSix = scaled(86f);
+        protected float eightEight= scaled(88f);
+        protected float nineSix = scaled(96f);
+        protected float hundred = scaled(100f);
+        protected float oneTwenty = scaled(120f);
+        protected float oneSeventy= scaled(170f);
+        protected float oneNinety = scaled(190f);
+        protected float twoThirty = scaled(230f);
 
         protected PlotBase()
         {
@@ -559,6 +567,11 @@ namespace SrvSurvey
             return this.drawTextAt(txt, null, null);
         }
 
+        protected SizeF drawTextAt(float tx, string txt)
+        {
+            return this.drawTextAt(tx, txt, null, null);
+        }
+
         /// <summary>
         /// Draws text at the location of ( dtx, dty ) incrementing dtx by the width of the rendered string.
         /// </summary>
@@ -567,19 +580,94 @@ namespace SrvSurvey
             return this.drawTextAt(txt, null, font);
         }
 
+        protected SizeF drawTextAt(float tx, string txt, Font? font = null)
+        {
+            return this.drawTextAt(tx, txt, null, font);
+        }
+
+        protected SizeF drawTextAt(string txt, Brush? brush = null, Font? font = null)
+        {
+            return drawTextAt(this.dtx, txt, brush, font);
+        }
+
         /// <summary>
         /// Draws text at the location of ( dtx, dty ) incrementing dtx by the width of the rendered string.
         /// </summary>
-        protected SizeF drawTextAt(string txt, Brush? brush = null, Font? font = null)
+        protected SizeF drawTextAt(float tx, string txt, Brush? brush = null, Font? font = null, bool right = false)
         {
+            this.dtx = tx;
+
             brush = brush ?? GameColors.brushGameOrange;
             font = font ?? this.Font;
-            g.DrawString(txt, font, brush, this.dtx, this.dty);
+            this.lastTextSize = g.MeasureString(txt, font);
 
-            var sz = g.MeasureString(txt, font);
-            this.dtx += sz.Width;
+            if (right)
+            {
+                var x = dtx - this.lastTextSize.Width;
+                g.DrawString(txt, font, brush, x, this.dty);
+            }
+            else
+            {
+                g.DrawString(txt, font, brush, this.dtx, this.dty);
+                this.dtx += this.lastTextSize.Width;
+            }
 
-            return sz;
+            return this.lastTextSize;
+        }
+
+        protected SizeF lastTextSize;
+        protected SizeF formSize;
+
+        protected void newLine()
+        {
+            newLine(0, false);
+        }
+
+        protected void newLine(bool grow = false)
+        {
+            newLine(0, grow);
+        }
+
+        protected void newLine(float dy = 0, bool grow = false)
+        {
+            this.dty += this.lastTextSize.Height + dy;
+
+            if (grow)
+                this.formGrow(true, true);
+        }
+
+        protected void resetPlotter(Graphics g)
+        {
+            this.g = g;
+            this.g.SmoothingMode = SmoothingMode.HighQuality;
+            this.formSize = new SizeF();
+            this.dtx = eight;
+            this.dty = ten;
+        }
+
+        protected void formGrow(bool horiz = true, bool vert = false)
+        {
+            // grow width?
+            if (horiz && this.dtx > this.formSize.Width)
+                this.formSize.Width = this.dtx;
+
+            // grow height?
+            if (vert && this.dty > this.formSize.Height)
+                this.formSize.Height = this.dty;
+        }
+
+        protected void formAdjustSize(float dx = 0, float dy = 0)
+        {
+            this.formSize.Width += dx;
+            this.formSize.Height += dy;
+
+            if (this.Size != this.formSize.ToSize())
+            {
+                this.Size = this.formSize.ToSize();
+                this.BackgroundImage = GameGraphics.getBackgroundForForm(this);
+                this.Invalidate();
+                this.reposition(Elite.getWindowRect());
+            }
         }
 
         private static Dictionary<string, POIType> itemPoiTypeMap = new Dictionary<string, POIType>()
@@ -682,7 +770,7 @@ namespace SrvSurvey
                 g.DrawArc(op, x - 1.5f, y - 0.5f, rr, rr, -90, 275);
             else if (level == 1)
                 g.DrawArc(op, x - 1.5f, y - 0.5f, rr, rr, -90, 180);
-            else if(level == 0)
+            else if (level == 0)
                 g.DrawArc(op, x - 1.5f, y - 0.5f, rr, rr, -90, 90);
 
 
@@ -739,7 +827,7 @@ namespace SrvSurvey
         //protected TrackingDelta? srvLocation;
         protected LatLong2 cmdr;
 
-        protected decimal radius { get => Game.activeGame!.systemBody!.radius; }
+        protected decimal radius { get => Game.activeGame?.systemBody?.radius ?? 0; }
 
         protected void resetMiddle()
         {

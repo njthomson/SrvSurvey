@@ -18,12 +18,17 @@ namespace SrvSurvey
         public bool autoShowBioSummary = true;
         public bool autoShowBioPlot = true;
         public bool autoShowPlotFSS = true;
+        public bool autoShowPlotFSSInfoTest = false;
         public bool autoShowGuardianSummary = true;
         public bool autoShowRamTah = true;
         public bool autoShowPlotSysStatus = true;
         public bool autoShowPlotBioSystemTest = false;
         public bool autoShowPlotGalMapTest = true;
         public bool autoShowHumanSitesTest = false;
+
+        public bool autoShowPlotBodyInfoTest = false;
+        public bool autoShowPlotBodyInfoInMapTest = true;
+        public bool autoShowPlotBodyInfoInOrbitTest = true;
 
         public bool skipGasGiantDSS = true;
         public bool skipRingsDSS = false;

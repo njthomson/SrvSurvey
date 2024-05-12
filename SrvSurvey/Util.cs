@@ -351,7 +351,6 @@ namespace SrvSurvey
 
         public static double getSystemDistance(double[] here, double[] there)
         {
-            // math.sqrt(sum(tuple([math.pow(p[i] - g[i], 2) for i in range(3)])))
             var dist = Math.Sqrt(
                 Math.Pow(here[0] - there[0], 2)
                 + Math.Pow(here[1] - there[1], 2)
@@ -489,7 +488,7 @@ namespace SrvSurvey
         public static int GetBodyValue(Scan scan, bool ifMapped)
         {
             return Util.GetBodyValue(
-                scan.PlanetClass, // planetClass
+                scan.PlanetClass ?? scan.StarType, // planetClass
                 scan.TerraformState == "Terraformable", // isTerraformable
                 scan.MassEM > 0 ? scan.MassEM : scan.StellarMass, // mass
                 !scan.WasDiscovered, // isFirstDiscoverer
@@ -498,9 +497,37 @@ namespace SrvSurvey
             );
         }
 
+        public static int GetBodyValue(SystemBody body, bool isMapped, bool withEfficiencyBonus)
+        {
+            return Util.GetBodyValue(
+                body.planetClass, // planetClass
+                body.terraformable, // isTerraformable
+                body.mass,
+                !body.wasDiscovered, // isFirstDiscoverer
+                isMapped,
+                !body.wasMapped, // isFirstMapped
+                withEfficiencyBonus
+            );
+        }
+
         public static int GetBodyValue(string? planetClass, bool isTerraformable, double mass, bool isFirstDiscoverer, bool isMapped, bool isFirstMapped, bool withEfficiencyBonus = true, bool isFleetCarrierSale = false)
         {
+            // Logic from https://forums.frontier.co.uk/threads/exploration-value-formulae.232000/
+
             var isOdyssey = Util.isOdyssey;
+            var isStar = planetClass != null && (planetClass.Length < 8 || planetClass[1] == '_' || planetClass == "SupermassiveBlackHole" || planetClass == "Nebula" || planetClass == "StellarRemnantNebula");
+
+            if (isStar)
+            {
+                var kk = 1200;
+                if (planetClass == "NS" || planetClass == "BH" || planetClass == "SupermassiveBlackHole")
+                    kk = 22628;
+                else if (planetClass?[0] == 'W')
+                    kk = 14057;
+
+                var starValue = kk + (mass * kk / 66.25);
+                return (int)Math.Round(starValue);
+            }
 
             // determine base value
             var k = 300;
@@ -676,6 +703,47 @@ namespace SrvSurvey
             return poiType == POIType.casket || poiType == POIType.orb || poiType == POIType.tablet || poiType == POIType.totem || poiType == POIType.urn || poiType == POIType.unknown;
         }
 
+        public static string camel(string txt)
+        {
+            if (string.IsNullOrEmpty(txt))
+                return "";
+            else
+                return char.ToUpperInvariant(txt[0]) + txt.Substring(1);
+        }
+
+        public static bool isMatLevelThree(string matName)
+        {
+            switch (matName.ToLowerInvariant())
+            {
+                case "cadmium":
+                case "mercury":
+                case "molybdenum":
+                case "niobium":
+                case "tin":
+                case "tungsten":
+                    return true;
+
+                default:
+                    return false;
+            }
+        }
+        public static bool isMatLevelFour(string matName)
+        {
+            switch (matName.ToLowerInvariant())
+            {
+                case "antimony":
+                case "polonium":
+                case "ruthenium":
+                case "technetium":
+                case "tellurium":
+                case "yttrium":
+                    return true;
+
+                default:
+                    return false;
+            }
+        }
+
         public static Image getBioImage(string genus, bool large = false)
         {
             //return Resources.tubus18;
@@ -697,12 +765,16 @@ namespace SrvSurvey
                 case "$Codex_Ent_Stratum_Genus_Name;": return large ? Resources.stratum38 : Resources.stratum18;
                 case "$Codex_Ent_Tubus_Genus_Name;": return large ? Resources.tubus38 : Resources.tubus18;
                 case "$Codex_Ent_Tussocks_Genus_Name;": return large ? Resources.tussock38 : Resources.tussock18;
-                case "$Codex_Ent_Vents_Name;": return Resources.amphora_18;
+                case "$Codex_Ent_Vents_Genus_Name;": return Resources.amphora_18;
                 case "$Codex_Ent_Sphere_Name;": return Resources.anemone_18;
-                case "$Codex_Ent_Cone_Name;": return Resources.barkmound_18;
-                case "$Codex_Ent_Brancae_Name;": return Resources.braintree_18;
-                case "$Codex_Ent_Ground_Struct_Ice_Name;": return Resources.shards_18;
-                case "$Codex_Ent_Tube_Name;": return Resources.tuber_18;
+                case "$Codex_Ent_Cone_Genus_Name;": return Resources.barkmound_18;
+                case "$Codex_Ent_Brancae_Genus_Name;": return Resources.braintree_18;
+                case "$Codex_Ent_Ground_Struct_Ice_Genus_Name;": return Resources.shards_18;
+                case "$Codex_Ent_Tube_Name;":
+                case "$Codex_Ent_Tube_Genus_Name;":
+                case "$Codex_Ent_TubeABCD_Genus_Name;":
+                case "$Codex_Ent_TubeEFGH_Genus_Name;":
+                    return Resources.tuber_18;
 
                 default: throw new Exception($"Unexpected genus: '{genus}'");
             }

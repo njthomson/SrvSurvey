@@ -87,7 +87,7 @@ namespace SrvSurvey
         public double Population { get; set; }
         public string Body { get; set; }
         public int BodyID { get; set; }
-        public BodyType BodyType { get; set; }
+        public FSDJumpBodyType BodyType { get; set; }
 
         public string StationName;
         public StationType StationType;
@@ -335,7 +335,7 @@ namespace SrvSurvey
         public long SystemAddress { get; set; }
         public string Body { get; set; }
         public int BodyID { get; set; }
-        public string BodyType { get; set; }
+        public FSDJumpBodyType BodyType { get; set; }
     }
 
     class SupercruiseEntry : JournalEntry
@@ -380,7 +380,7 @@ namespace SrvSurvey
         public long Population { get; set; }// 4058074576,
         public string Body { get; set; } // "Maridwyn A",
         public int BodyID { get; set; } // 1,
-        public BodyType BodyType { get; set; }  // "Star"
+        public FSDJumpBodyType BodyType { get; set; }  // "Star"
 
         public List<string> Powers { get; set; } // [ "Felicia Winters" ]
         public string PowerplayState { get; set; } // Exploited
@@ -397,7 +397,22 @@ namespace SrvSurvey
                                              //      { "Name":"Federal Reclamation Co", "FactionState":"Expansion", "Government":"Corporate", "Influence":0.322835, "Allegiance":"Federation", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":97.425003, "ActiveStates":[ { "State":"Expansion" } ] }
                                              //  ],
                                              // "SystemFaction":{ "Name":"Maridwyn Co" } }
+    }
 
+    [JsonConverter(typeof(StringEnumConverter))]
+    enum FSDJumpBodyType
+    {
+        BaryCenter,
+        Star,
+        Planet,
+        PlanetaryRing,
+        StellarRing,
+        Station,
+        AsteroidCluster,
+        /// <summary>
+        /// BaryCenter
+        /// </summary>
+        Null,
     }
 
 
@@ -433,7 +448,7 @@ namespace SrvSurvey
         public long Population { get; set; }
         public string Body { get; set; }
         public int BodyID { get; set; }
-        public BodyType BodyType { get; set; }
+        public FSDJumpBodyType BodyType { get; set; }
     }
 
     class CarrierJumpRequest : JournalEntry
@@ -624,7 +639,8 @@ namespace SrvSurvey
         // Planet specific ...
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-        public List<Dictionary<string, int>> Parents { get; set; }
+        //public BodyParents Parents { get; set; }
+        public List<Dictionary<ParentBodyType, int>> Parents { get; set; }
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public bool TidalLock { get; set; } // 1 if tidally locked
@@ -652,7 +668,7 @@ namespace SrvSurvey
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public List<Composition> Materials { get; set; }
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-        public Dictionary<string, float> Composition{ get; set; }
+        public Dictionary<string, float> Composition { get; set; }
 
         /* TODO: Materials: JSON array with objects with material names and percentage occurrence
         Composition: structure containing info on solid composition
@@ -966,6 +982,34 @@ namespace SrvSurvey
         public string Name;
         public string Name_Localised;
         public int Count;
+    }
+
+    class MultiSellExplorationData : JournalEntry
+    {
+        // { "timestamp":"2024-02-10T04:26:31Z", "event":"MultiSellExplorationData", "Discovered":[ { "SystemName":"Chu I", "NumBodies":3 }, { "SystemName":"Herculis Sector JC-V b2-2", "NumBodies":4 }, { "SystemName":"Sadhant", "NumBodies":4 }, { "SystemName":"Herculis Sector GW-W b1-4", "NumBodies":1 } ], "BaseValue":84069, "Bonus":0, "TotalEarnings":84069 }
+
+        public List<SoldSystem> Discovered;
+
+        public long BaseValue;
+        public long Bonus;
+        public long TotalEarnings;
+    }
+
+    class SoldSystem
+    {
+        public string SystemName;
+        public int NumBodies;
+    }
+
+    class SellExplorationData : JournalEntry
+    {
+        // { "timestamp":"2021-12-12T04:30:03Z", "event":"SellExplorationData", "Systems":[ "Phreia Flyou RX-S b49-3" ], "Discovered":[ "Phreia Flyou RX-S b49-3" ], "BaseValue":2350, "Bonus":2519, "TotalEarnings":3724 }
+
+        public List<string> Systems;
+        public List<string> Discovered;
+        public long BaseValue;
+        public long Bonus;
+        public long TotalEarnings;
     }
 
 }

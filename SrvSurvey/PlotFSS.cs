@@ -44,6 +44,25 @@ namespace SrvSurvey
             this.Invalidate();
         }
 
+        public static bool allowPlotter
+        {
+            get => Game.activeGame?.cmdr != null
+                && Game.settings.autoShowPlotFSS
+                && Game.activeGame.isMode(GameMode.FSS);
+        }
+
+        protected override void Game_modeChanged(GameMode newMode, bool force)
+        {
+            if (this.IsDisposed) return;
+
+            if (this.Opacity > 0 && !PlotFSS.allowPlotter)
+                this.Opacity = 0;
+            else if (this.Opacity == 0 && PlotFSS.allowPlotter)
+                this.reposition(Elite.getWindowRect());
+
+            this.Invalidate();
+        }
+
         protected override void onJournalEntry(FSSBodySignals entry)
         {
             Game.log($"PlotFSS: FSSBodySignals event: {entry.Bodyname}");
@@ -53,8 +72,6 @@ namespace SrvSurvey
         protected override void onJournalEntry(Scan entry)
         {
             Game.log($"PlotFSS: Scan event: {entry.Bodyname}");
-
-            this.Invalidate();
 
             // ignore Belt Clusters
             if (entry.Bodyname.Contains("Belt Cluster") || !string.IsNullOrEmpty(entry.StarType))

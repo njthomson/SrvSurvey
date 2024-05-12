@@ -1,6 +1,7 @@
 ﻿using SrvSurvey.game;
 using System.ComponentModel;
 using System.Data;
+using System.Text;
 
 namespace SrvSurvey
 {
@@ -128,8 +129,10 @@ namespace SrvSurvey
             uberPanel.SuspendLayout();
             uberPanel.Controls.Clear();
 
+            if (game?.systemData == null) return;
+
             //if (game?.systemData != null && game.systemData.bioSummary == null)
-            game.systemData.summarizeBioSystem();
+            game!.systemData!.summarizeBioSystem();
 
             this.summary = game?.systemData?.bioSummary;// .summarizeBioSystem();
 
@@ -159,7 +162,7 @@ namespace SrvSurvey
 
             // populate known genus groups
             var first = true;
-            if (genusGroups != null)
+            if (genusGroups != null && filterIdx > 1)
             {
                 foreach (var genus in genusGroups)
                 {
@@ -489,10 +492,12 @@ namespace SrvSurvey
                 if (this.filterIdx > 1 && this.targetBody != null && this.targetBody != foo.body) continue;
 
                 var txt = $"{foo.body.shortName}: {foo.body.bioSignalCount}x signals, {Util.lsToString(foo.body.distanceFromArrivalLS)}";
+                txt += $"\r\n({foo.body.planetClass}, {foo.body.atmosphereType}, {(foo.body.surfaceGravity/10f).ToString("N2")}g, {foo.body.surfaceTemperature.ToString("N2")}°K ({(foo.body.surfacePressure / 100_000f).ToString("N4")}) (atm), volcanism [{foo.body.volcanism}]\r\nmats [{string.Join(", ", foo.body.materials.Keys)}])";
+
                 txt += "\r\n  " + string.Join("\r\n  ", foo.species.Select(_ =>
                 {
                     var prefix = foo.body.organisms?.Find(o => o.species == _.bioRef.name)?.analyzed == true ? "-" : ">";
-                    return $"\t{prefix}{_.bioRef.englishName}{(_.predicted ? "?" : "")}";
+                    return $"\t{prefix}{_.bioRef.englishName}{(_.predicted ? " ???" : "")} {Util.credits(_.reward, true)}";
                 }));
 
                 var lbl = new Label()
@@ -572,6 +577,81 @@ namespace SrvSurvey
         {
             // cheap & cheerful refresh
             this.populateGenus();
+        }
+
+        private void menuOpenEDSM_Click(object sender, EventArgs e)
+        {
+            // TODO: look-up the EDSM system ID first?
+            //Util.openLink("https://www.edsm.net/en/system/id/21623090/name/Prua+Phoe+UO-N+c8-22");
+            Util.openLink("https://www.edsm.net/api-system-v1/bodies?systemName=" + Uri.EscapeDataString(game.systemData!.name));
+        }
+
+        private void menuOpenCanonnCodex_Click(object sender, EventArgs e)
+        {
+            Util.openLink("https://canonn-science.github.io/canonn-signals/?system=" + Uri.EscapeDataString(game.systemData!.name));
+        }
+
+        private void menuOpenCanonnDump_Click(object sender, EventArgs e)
+        {
+            Util.openLink("https://us-central1-canonn-api-236217.cloudfunctions.net/query/getSystemPoi?odyssey=Y&system=" + Uri.EscapeDataString(game.systemData!.name));
+        }
+
+        private void toolStripSplitButton1_ButtonClick(object sender, EventArgs e)
+        {
+            // get real data from Canonn and compare with what we predict
+            if (game.systemData?.name == null) return;
+
+            Game.canonn.getSystemPoi(game.systemData.name, game.cmdr.commander).ContinueWith(r =>
+            {
+                var txt = new StringBuilder();
+
+                var comp1 = new Dictionary<string, HashSet<long>>();
+                foreach (var _ in r.Result.codex)
+                {
+                    if (_.hud_category != "Biology") continue;
+                    if (!comp1.ContainsKey(_.body)) comp1.Add(_.body, new HashSet<long>());
+
+                    if (comp1[_.body].Contains(_.entryid ?? -1)) continue;
+                    comp1[_.body].Add(_.entryid ?? -1);
+
+                    //var body = this.summary?.bodyGroups.Find(b => b.body.name.EndsWith(_.body));
+                    //if (body == null)
+                    //    txt.AppendLine($"Body not known: {_.body}");
+                    //else
+                    //{
+                    //    var match = body.species.Find(s => _.entryid!.ToString().StartsWith(s.bioRef.entryIdPrefix));
+                    //    txt.AppendLine(match == null
+                    //        ? $">>> No match for {_.body} {_.english_name} ({_.entryid})"
+                    //        : $"Match: {_.body} {_.english_name}");
+                    //}
+                }
+
+                foreach(var _ in comp1)
+                {
+                    txt.AppendLine(_.Key);
+
+                    foreach(var entryId in _.Value)
+                    {
+                        var body = this.summary?.bodyGroups.Find(b => b.body.name.EndsWith(_.Key));
+                        if (body == null)
+                            txt.AppendLine($"\tBody not known: {_.Key}");
+                        else
+                        {
+                            var match = body.species.Find(s => entryId.ToString().StartsWith(s.bioRef.entryIdPrefix));
+                            if (match == null)
+                                txt.AppendLine($"\t>>> No match for {_.Key} {Game.codexRef.matchFromEntryId(entryId).species.englishName} ({entryId})");
+                            else
+                                txt.AppendLine($"\tMatch: {_.Key} {match.bioRef.englishName }");
+                        }
+                    }
+
+                }
+
+                //var txt = new StringBuilder();
+
+
+                Game.log(txt);
+            });
         }
     }
 

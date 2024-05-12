@@ -99,19 +99,56 @@ namespace SrvSurvey.game
         double[] StarPos { get; set; }
         string Body { get; set; }
         int BodyID { get; set; }
-        BodyType BodyType { get; set; }
+        FSDJumpBodyType BodyType { get; set; }
     }
 
-    enum BodyType
+    [JsonConverter(typeof(StringEnumConverter))]
+    enum ParentBodyType
     {
-        BaryCenter,
+        /// <summary>
+        /// BaryCenter
+        /// </summary>
+        Null,
         Star,
         Planet,
-        PlanetaryRing,
-        StellarRing,
-        Station,
-        AsteroidCluster,
-        Null,
+        Ring,
+        Asteroid, // Sadly many BaryCenters got classified as this
+    }
+
+    internal class BodyParent
+    {
+        public ParentBodyType type;
+        public int id;
+
+        public BodyParent()
+        {
+        }
+
+        public BodyParent(Dictionary<ParentBodyType, int> parent)
+        {
+            this.type = parent.First().Key;
+            this.id = parent.First().Value;
+        }
+
+        public override string ToString()
+        {
+            return $"{this.type}: {this.id}";
+        }
+    }
+
+    internal class BodyParents : List<BodyParent>
+    {
+        public static implicit operator BodyParents(List<Dictionary<ParentBodyType, int>> entry)
+        {
+            var parents = new BodyParents();
+
+            if (entry != null)
+                foreach (var p in entry)
+                    parents.Add(new BodyParent(p));
+
+            return parents;
+        }
+
     }
 
     internal enum SystemBodyType

@@ -90,6 +90,7 @@ namespace SrvSurvey
                 var countJumps = 0;
                 var countBodies = 0;
                 var countOrganisms = 0;
+                var cmdr = CommanderSettings.Load(this.targetCmdrFid!, true, this.targetCmdrName!);
 
                 // read each journal file...
                 for (var n = 0; n < files.Length; n++)

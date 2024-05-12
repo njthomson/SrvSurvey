@@ -278,6 +278,7 @@ namespace SrvSurvey
         private void updateAllControls(GameMode? newMode = null)
         {
             //Game.log("** ** ** updateAllControls ** ** **");
+            //Game.log($"systemBody? {game?.systemBody != null} / {game?.mode} / {PlotBodyInfo.allowPlotter}");
 
             this.updateCommanderTexts();
             this.updateBioTexts();
@@ -292,11 +293,19 @@ namespace SrvSurvey
             else
                 Program.closePlotter<PlotFSS>();
 
+            if (gameIsActive && PlotFSSInfo.allowPlotter)
+                Program.showPlotter<PlotFSSInfo>();
+            else
+                Program.closePlotter<PlotFSSInfo>();
+
             if (gameIsActive && PlotSysStatus.allowPlotter)
                 Program.showPlotter<PlotSysStatus>();
 
             if (gameIsActive && PlotBioSystem.allowPlotter)
                 Program.showPlotter<PlotBioSystem>();
+
+            if (gameIsActive && PlotBodyInfo.allowPlotter)
+                Program.showPlotter<PlotBodyInfo>();
 
             if (gameIsActive && PlotHumanSite.allowPlotter)
                 Program.showPlotter<PlotHumanSite>();
@@ -423,6 +432,21 @@ namespace SrvSurvey
             Clipboard.SetText(txtLocation.Text);
         }
 
+        private void btnResetExploration_Click(object sender, EventArgs e)
+        {
+            var rslt = MessageBox.Show(this, "Are you sure you want to reset estimated exploration values and statistics?", "SrvSurvey", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            if (rslt == DialogResult.Yes)
+            {
+                game.cmdr.explRewards = 0;
+                game.cmdr.countJumps = 0;
+                game.cmdr.countScans = 0;
+                game.cmdr.countDSS = 0;
+                game.cmdr.countLanded = 0;
+                game.cmdr.Save();
+                game.fireUpdate(true);
+            }
+        }
+
         private void updateCommanderTexts()
         {
             var gameIsActive = game != null && Elite.isGameRunning && game.Commander != null;
@@ -477,6 +501,24 @@ namespace SrvSurvey
             else
             {
                 this.txtNearBody.Text = "Deep space";
+            }
+
+            // exploration stats
+            if (game == null)
+            {
+                btnResetExploration.Enabled = false;
+                txtExplorationValue.Text = "";
+                txtSysValue.Text = "";
+                txtJumps.Text = "";
+                txtBodies.Text = "";
+            }
+            else
+            {
+                btnResetExploration.Enabled = true;
+                txtExplorationValue.Text = Util.credits(game.cmdr.explRewards, true);
+                txtSysValue.Text = game.systemData == null ? "" : Util.credits(game.systemData.sumRewards(), true);
+                txtJumps.Text = game.cmdr.countJumps.ToString("N0");
+                txtBodies.Text = $"scans: {game.cmdr.countScans}, DSS: {game.cmdr.countDSS}, Landed: {game.cmdr.countLanded}";
             }
         }
 
@@ -1514,11 +1556,14 @@ namespace SrvSurvey
             else
                 Program.showActivePlotters();
         }
+
         private void btnSphereLimit_Click(object sender, EventArgs e)
         {
             Program.closePlotter<PlotSphericalSearch>();
             new FormSphereLimit().ShowDialog(this);
             this.updateSphereLimit();
+
+            //GalacticNeblulae.lookupStarPos();
 
             // revert touchdown location
             /*
@@ -1529,7 +1574,14 @@ namespace SrvSurvey
 
         private void btnRamTah_Click(object sender, EventArgs e)
         {
-            FormRamTah.show();
+            //BioPrediction.buildPredictionMap();
+
+            //GalacticNeblulae.lookupStarPos();
+
+            BioPrediction.testManyNewVsOld().ContinueWith((_) => { /* done */ });
+
+
+            //FormRamTah.show();
             //FormPostProcess.show();
 
             //game!.touchdownLocation = Util.adjustForCockpitOffset(game.status.PlanetRadius, game!.systemBody!.lastTouchdown!, game.shipType, 90);

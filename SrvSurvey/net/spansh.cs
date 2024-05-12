@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using SrvSurvey.canonn;
 using SrvSurvey.game;
+using System.Text;
 
 namespace SrvSurvey.net
 {
@@ -33,7 +34,76 @@ namespace SrvSurvey.net
             return systemDump.system;
         }
 
+        public async Task getMinorFactionSystems()
+        {
+            Game.log($"Requesting foo");
+
+            var factions = new List<string>()
+            {
+                "Raven Colonial Corporation",
+                "Steven Gordon Jolliffe",
+                "Elite Secret Service",
+                "The Blue Brotherhood",
+                "Guardians of Cygnus"
+            };
+
+            var factionsTxt = string.Join(",", factions.Select(_ => $"\"{_}\""));
+            var json = "{\"filters\":{\"minor_faction_presences\":{\"value\":[" + factionsTxt + "]}},\"sort\":[{\"distance\":{\"direction\":\"asc\"}}],\"size\":200,\"page\":0,\"reference_system\":\"Banka\"}";
+
+            var body = new StringContent(
+                json,
+                Encoding.ASCII,
+                "application/json");
+
+            var response = await Spansh.client.PostAsync($"https://spansh.co.uk/api/systems/search", body);
+            var responseText = await response.Content.ReadAsStringAsync();
+            var results = JsonConvert.DeserializeObject<SystemsSearchResults>(responseText)!;
+
+            var foos = new List<MinorFactionSystem>();
+            foreach (var system in results.results)
+            {
+                var foo = new MinorFactionSystem
+                {
+                    name = system.name,
+                    coords = new MinorFactionSystemCoords { x = system.x, y = system.y, z = system.z },
+                    cat = new List<int> { },
+                    infos = $"Population: {system.population.ToString("N0")}%3Cbr%20%3E"
+                };
+
+                foreach (var fac in system.minor_faction_presences)
+                {
+                    var idx = factions.IndexOf(fac.name);
+                    if (idx != -1)
+                    {
+                        foo.cat.Add(idx);
+                        foo.infos += "%3Cbr%20%3E" + $"{fac.name}: {fac.influence.ToString("N2")}%";
+                    }
+                }
+
+                switch (system.name)
+                {
+                    case "Banka": // Raven Colonial Corporation
+                    case "Hungalun": //Steven Gordon Jolliffe
+                    case "Loperada": // Elite Secret Service
+                    case "Bhumians": // The Blue Brotherhood
+                    case "Dyavansana": // Guardians of Cygnus
+                        foo.cat[0] = 99;
+                        break;
+                }
+
+                foos.Add(foo);
+            }
+
+            var txt = JsonConvert.SerializeObject(foos, Formatting.None)
+                .Replace("]},", "]},\r\n");
+            txt = txt.Insert(1, "\r\n");
+            txt = txt.Insert(txt.Length - 1, "\r\n");
+            Clipboard.SetText(txt);
+
+            Game.log($"Processed {results.size} of {results.count} results");
+        }
     }
+
     internal class ApiSystemDump
     {
         public ApiSystemDumpSystem system;
@@ -70,11 +140,12 @@ namespace SrvSurvey.net
         public bool? rotationalPeriodTidallyLocked;
         public double? solarMasses;
         public double? solarRadius;
-        public List<Dictionary<string, int>> parents;
+        public List<Dictionary<ParentBodyType, int>> parents;
         public string? spectralClass;
         // TODO stations[]
         public string subType;
         public double? surfaceTemperature;
+        public double? surfacePressure;
         public string type;
         public DateTimeOffset updateTime;
 
@@ -112,4 +183,43 @@ namespace SrvSurvey.net
         public ApiSystemDumpSignals? signals;
     }
 
+    class SystemsSearchResults
+    {
+        public int count;
+        public int from;
+        public int size;
+        public List<SystemsSearchResult> results;
+    }
+
+    class SystemsSearchResult
+    {
+        public string name;
+        public double x;
+        public double y;
+        public double z;
+        public long population;
+        public List<MinorFactionPresence> minor_faction_presences;
+    }
+
+    class MinorFactionSystem
+    {
+        public string name;
+        public MinorFactionSystemCoords coords;
+        public string infos;
+        public List<int> cat;
+    }
+
+    class MinorFactionPresence
+    {
+        public float influence;
+        public string name;
+        public string state;
+    }
+
+    internal class MinorFactionSystemCoords
+    {
+        public double x;
+        public double y;
+        public double z;
+    }
 }

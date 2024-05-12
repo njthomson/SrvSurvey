@@ -479,7 +479,8 @@ namespace SrvSurvey
         public static Font font1 = new Font("Lucida Sans Typewriter", 16F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
         public static Font fontSmall = new Font("Lucida Sans Typewriter", 8F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
         public static Font fontSmallBold = new Font("Lucida Sans Typewriter", 8F * fontScaleFactor, FontStyle.Bold, GraphicsUnit.Point);
-        public static Font fontSmall2 = new Font("Century Gothic", 8F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
+        public static Font fontSmall2 = new Font("Century Gothic", 9F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
+        public static Font fontSmall2Bold = new Font("Century Gothic", 9F * fontScaleFactor, FontStyle.Bold, GraphicsUnit.Point);
         public static Font fontSmaller = new Font("Century Gothic", 10F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
         public static Font fontMiddle = new Font("Century Gothic", 12F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
         public static Font fontMiddleBold = new Font("Century Gothic", 12F * fontScaleFactor, FontStyle.Bold, GraphicsUnit.Point);

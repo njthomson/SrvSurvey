@@ -427,6 +427,7 @@ namespace SrvSurvey.game
                 && this.humanSite == null
                 && this.isMode(GameMode.SuperCruising, GameMode.Flying, GameMode.Landed, GameMode.InSrv, GameMode.OnFoot, GameMode.GlideMode, GameMode.InFighter, GameMode.CommsPanel)
                 && !this.hidePlottersFromCombatSuits
+                && this.status?.Altitude < 10_000
                 && !this.status.InTaxi;
         }
 
@@ -447,19 +448,26 @@ namespace SrvSurvey.game
         {
             get
             {
-                if (this.systemData != null && status?.Destination?.Body > 0)
+                if (this.systemData == null || this.status == null) return null;
+
+                // ignore if target it outside our system
+                if (status.Destination?.System > 0 && status.Destination.System != this.systemData.address)
+                    return null;
+
+                // use target if it's in our system
+                if (status.Destination?.System == this.systemData.address && status.Destination.Body > 0)
                 {
                     var body = systemData.bodies.Find(_ => _.id == status.Destination.Body);
                     return body;
                 }
-                else if (this.systemData != null && this.systemBody != null)
+
+                // use current body if we are landed
+                if (status.hasLatLong && this.systemBody != null)
                 {
                     return this.systemBody;
                 }
-                else
-                {
-                    return null;
-                }
+
+                return null;
             }
         }
 
@@ -964,6 +972,12 @@ namespace SrvSurvey.game
             this.systemStatus = new SystemStatus(entry.StarSystem, entry.SystemAddress);
             this.systemStatus.initFromJournal(this);
 
+            if (Game.activeGame?.systemData != null)
+            {
+                cmdr.countJumps += 1;
+                cmdr.Save();
+            }
+
             this.checkModeChange();
 
             // update FormGenus?
@@ -1406,7 +1420,7 @@ namespace SrvSurvey.game
             cmdr.starPos = entry.StarPos;
             this.systemData = SystemData.From(entry);
 
-            if (entry.BodyType == BodyType.Planet)
+            if (entry.BodyType == FSDJumpBodyType.Planet)
             {
                 // would this ever happen?
                 Game.log($"setLocations: FSDJump/Carrier is a planet?!");
@@ -1474,7 +1488,7 @@ namespace SrvSurvey.game
             cmdr.currentSystem = entry.Starsystem;
             cmdr.currentSystemAddress = entry.SystemAddress;
 
-            if (entry.BodyType == "Planet")
+            if (entry.BodyType == FSDJumpBodyType.Planet)
             {
                 cmdr.currentBody = entry.Body;
                 cmdr.currentBodyId = entry.BodyID;
@@ -1514,7 +1528,7 @@ namespace SrvSurvey.game
             cmdr.starPos = entry.StarPos;
             this.systemData = SystemData.From(entry);
 
-            if (entry.BodyType == BodyType.Planet)
+            if (entry.BodyType == FSDJumpBodyType.Planet)
             {
                 cmdr.currentBody = entry.Body;
                 cmdr.currentBodyId = entry.BodyID;
@@ -1902,6 +1916,32 @@ namespace SrvSurvey.game
         private void onJournalEntry(Undocked entry)
         {
             this.touchdownLocation = LatLong2.Empty;
+        }
+
+        private void onJournalEntry(MultiSellExplorationData entry)
+        {
+            // reset exploration data
+            Game.log($"Resetting exploration data: {Util.credits(cmdr.explRewards)} / {cmdr.countJumps} / {cmdr.countScans} / {cmdr.countDSS} / {cmdr.countLanded}");
+            cmdr.explRewards -= entry.BaseValue;
+            cmdr.countJumps = 0;
+            cmdr.countScans = 0;
+            cmdr.countDSS = 0;
+            cmdr.countLanded = 0;
+            cmdr.Save();
+            this.fireUpdate(true);
+        }
+
+        private void onJournalEntry(SellExplorationData entry)
+        {
+            // reset exploration data
+            Game.log($"Resetting exploration data: {Util.credits(cmdr.explRewards)} / {cmdr.countJumps} / {cmdr.countScans} / {cmdr.countDSS} / {cmdr.countLanded}");
+            cmdr.explRewards -= entry.BaseValue;
+            cmdr.countJumps = 0;
+            cmdr.countScans = 0;
+            cmdr.countDSS = 0;
+            cmdr.countLanded = 0;
+            cmdr.Save();
+            this.fireUpdate(true);
         }
 
         private void onJournalEntry(CodexEntry entry)

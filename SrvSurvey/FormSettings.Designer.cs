@@ -120,6 +120,10 @@ namespace SrvSurvey
             lblScreenshotSource = new Label();
             lblScreenshotTarget = new Label();
             tabPage6 = new TabPage();
+            checkBodyInfoOrbit = new CheckBox();
+            checkBodyInfoMap = new CheckBox();
+            checkBodyInfo = new CheckBox();
+            checkBox17 = new CheckBox();
             checkHumanSitePlotter = new CheckBox();
             checkGalMapPlotter = new CheckBox();
             label13 = new Label();
@@ -135,6 +139,7 @@ namespace SrvSurvey
             pictureBox4 = new PictureBox();
             checkBox4 = new CheckBox();
             tabPage7 = new TabPage();
+            checkUseBioData = new CheckBox();
             radioUseRadius = new RadioButton();
             radioUseSmall = new RadioButton();
             pictureBox9 = new PictureBox();
@@ -151,7 +156,6 @@ namespace SrvSurvey
             linkAboutTwo = new LinkLabel();
             linkAboutOne = new LinkLabel();
             colorDialog = new ColorDialog();
-            checkUseBioData = new CheckBox();
             panel1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numGravityWarningLevel).BeginInit();
@@ -1290,6 +1294,10 @@ namespace SrvSurvey
             // tabPage6
             // 
             tabPage6.BackColor = SystemColors.Control;
+            tabPage6.Controls.Add(checkBodyInfoOrbit);
+            tabPage6.Controls.Add(checkBodyInfoMap);
+            tabPage6.Controls.Add(checkBodyInfo);
+            tabPage6.Controls.Add(checkBox17);
             tabPage6.Controls.Add(checkHumanSitePlotter);
             tabPage6.Controls.Add(checkGalMapPlotter);
             tabPage6.Controls.Add(label13);
@@ -1310,6 +1318,62 @@ namespace SrvSurvey
             tabPage6.Size = new Size(534, 404);
             tabPage6.TabIndex = 5;
             tabPage6.Text = "Exploration";
+            // 
+            // checkBodyInfoOrbit
+            // 
+            checkBodyInfoOrbit.AutoSize = true;
+            checkBodyInfoOrbit.Checked = true;
+            checkBodyInfoOrbit.CheckState = CheckState.Checked;
+            checkBodyInfoOrbit.Location = new Point(163, 338);
+            checkBodyInfoOrbit.Margin = new Padding(4, 3, 4, 3);
+            checkBodyInfoOrbit.Name = "checkBodyInfoOrbit";
+            checkBodyInfoOrbit.Size = new Size(144, 19);
+            checkBodyInfoOrbit.TabIndex = 29;
+            checkBodyInfoOrbit.Tag = "autoShowPlotBodyInfoInOrbitTest";
+            checkBodyInfoOrbit.Text = "In orbit around a body";
+            checkBodyInfoOrbit.UseVisualStyleBackColor = true;
+            // 
+            // checkBodyInfoMap
+            // 
+            checkBodyInfoMap.AutoSize = true;
+            checkBodyInfoMap.Checked = true;
+            checkBodyInfoMap.CheckState = CheckState.Checked;
+            checkBodyInfoMap.Location = new Point(31, 338);
+            checkBodyInfoMap.Margin = new Padding(4, 3, 4, 3);
+            checkBodyInfoMap.Name = "checkBodyInfoMap";
+            checkBodyInfoMap.Size = new Size(124, 19);
+            checkBodyInfoMap.TabIndex = 28;
+            checkBodyInfoMap.Tag = "autoShowPlotBodyInfoInMapTest";
+            checkBodyInfoMap.Text = "In the System Map";
+            checkBodyInfoMap.UseVisualStyleBackColor = true;
+            // 
+            // checkBodyInfo
+            // 
+            checkBodyInfo.AutoSize = true;
+            checkBodyInfo.Checked = true;
+            checkBodyInfo.CheckState = CheckState.Checked;
+            checkBodyInfo.Location = new Point(10, 313);
+            checkBodyInfo.Margin = new Padding(4, 3, 4, 3);
+            checkBodyInfo.Name = "checkBodyInfo";
+            checkBodyInfo.Size = new Size(263, 19);
+            checkBodyInfo.TabIndex = 27;
+            checkBodyInfo.Tag = "autoShowPlotBodyInfoTest";
+            checkBodyInfo.Text = "Show body information panel (experimental)";
+            checkBodyInfo.UseVisualStyleBackColor = true;
+            checkBodyInfo.CheckedChanged += checkBodyInfo_CheckedChanged;
+            // 
+            // checkBox17
+            // 
+            checkBox17.Checked = true;
+            checkBox17.CheckState = CheckState.Checked;
+            checkBox17.Location = new Point(31, 31);
+            checkBox17.Margin = new Padding(4, 3, 4, 3);
+            checkBox17.Name = "checkBox17";
+            checkBox17.Size = new Size(167, 41);
+            checkBox17.TabIndex = 26;
+            checkBox17.Tag = "autoShowPlotFSSInfoTest";
+            checkBox17.Text = "Show exploration values list (experimental)";
+            checkBox17.UseVisualStyleBackColor = true;
             // 
             // checkHumanSitePlotter
             // 
@@ -1505,6 +1569,17 @@ namespace SrvSurvey
             tabPage7.TabIndex = 6;
             tabPage7.Text = "External Data";
             // 
+            // checkUseBioData
+            // 
+            checkUseBioData.AutoSize = true;
+            checkUseBioData.Location = new Point(28, 31);
+            checkUseBioData.Name = "checkUseBioData";
+            checkUseBioData.Size = new Size(298, 19);
+            checkUseBioData.TabIndex = 36;
+            checkUseBioData.Tag = "useExternalBioData";
+            checkUseBioData.Text = "Use downloaded bio data from Canonn and Spansh";
+            checkUseBioData.UseVisualStyleBackColor = true;
+            // 
             // radioUseRadius
             // 
             radioUseRadius.CheckAlign = ContentAlignment.TopLeft;
@@ -1685,17 +1760,6 @@ namespace SrvSurvey
             // colorDialog
             // 
             colorDialog.Color = Color.Yellow;
-            // 
-            // checkUseBioData
-            // 
-            checkUseBioData.AutoSize = true;
-            checkUseBioData.Location = new Point(28, 31);
-            checkUseBioData.Name = "checkUseBioData";
-            checkUseBioData.Size = new Size(298, 19);
-            checkUseBioData.TabIndex = 36;
-            checkUseBioData.Tag = "useExternalData";
-            checkUseBioData.Text = "Use downloaded bio data from Canonn and Spansh";
-            checkUseBioData.UseVisualStyleBackColor = true;
             // 
             // FormSettings
             // 
@@ -1885,5 +1949,9 @@ namespace SrvSurvey
         private Label label18;
         private Label label17;
         private CheckBox checkUseBioData;
+        private CheckBox checkBox17;
+        private CheckBox checkBodyInfo;
+        private CheckBox checkBodyInfoMap;
+        private CheckBox checkBodyInfoOrbit;
     }
 }

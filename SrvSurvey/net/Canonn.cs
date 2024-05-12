@@ -79,7 +79,19 @@ namespace SrvSurvey.canonn
             return systemPoi;
         }
 
-        public static async void biostats(long systemAddress, int bodyId)
+        public async Task<Dictionary<int, CanonnBioStats>> biostats(string genus)
+        {
+            Game.log($"Requesting biostats: {genus}");
+
+            var json = await client.GetStringAsync($"https://us-central1-canonn-api-236217.cloudfunctions.net/query/biostats/{genus}");
+            if (json == "what happen") return null!;
+            var biostats = JsonConvert.DeserializeObject<Dictionary<int, CanonnBioStats>>(json)!;
+
+            return biostats;
+        }
+
+
+        public static async void biostats0(long systemAddress, int bodyId)
         {
             var json = await client.GetStringAsync($"https://us-central1-canonn-api-236217.cloudfunctions.net/query/codex/biostats?id={systemAddress}");
 

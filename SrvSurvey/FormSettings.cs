@@ -53,6 +53,8 @@ namespace SrvSurvey
             radioUseSmall.Enabled = checkUseSystemData.Checked && checkShowPriorScans.Checked && checkShowCanonnOnRadar.Checked;
             radioUseRadius.Enabled = checkUseSystemData.Checked && checkShowPriorScans.Checked && checkShowCanonnOnRadar.Checked;
 
+            checkBodyInfoMap.Enabled = checkBodyInfoOrbit.Enabled = checkBodyInfo.Checked;
+
             if (game == null)
             {
                 btnClearUnclaimed.Enabled = false;
@@ -411,6 +413,11 @@ namespace SrvSurvey
         private void picBucket4_Paint(object sender, PaintEventArgs e)
         {
             PlotBase.drawBioRing(e.Graphics, "$Codex_Ent_Tussocks_Genus_Name;", 3, 3, 1 + (long)Game.settings.bioRingBucketThree * 1_000_000, false, 38);
+        }
+
+        private void checkBodyInfo_CheckedChanged(object sender, EventArgs e)
+        {
+            checkBodyInfoMap.Enabled = checkBodyInfoOrbit.Enabled = checkBodyInfo.Checked;
         }
     }
 }

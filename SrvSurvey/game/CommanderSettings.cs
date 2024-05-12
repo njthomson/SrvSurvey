@@ -75,6 +75,21 @@ namespace SrvSurvey.game
 
         public long currentMarketId;
 
+        public void applyExplReward(long reward, string reason)
+        {
+            Game.log($"Gained: +{reward.ToString("N0")} for {reason}");
+            this.explRewards += reward;
+
+            Game.activeGame?.fireUpdate(true);
+            this.Save();
+        }
+
+        public long explRewards;
+        public int countJumps;
+        public int countScans;
+        public int countDSS;
+        public int countLanded;
+
         /// <summary>
         /// The heading of the ship when we last touched down, or docked
         /// </summary>
@@ -106,7 +121,7 @@ namespace SrvSurvey.game
         {
             if (this.galacticRegion != region)
             {
-                var regionName = GalacticRegions.map.GetValueOrDefault(region) ?? "??";
+                var regionName = GalacticRegions.mapRegions.GetValueOrDefault(region) ?? "??";
                 Game.log($"Congratulations for entering: {regionName} ({region})");
             }
 

@@ -389,6 +389,10 @@ namespace SrvSurvey
                     organism.analyzed ? GameColors.brushGameOrange : GameColors.brushCyan,
                     x, y);
 
+                // strike through if analyzed
+                if (organism.analyzed)
+                    g.DrawLine(GameColors.penGameOrange1, x, y + sz.Height * .45f, x + sz.Width, y + sz.Height * .45f);
+
                 x += sz.Width + PlotBase.scaled(8);
             }
         }

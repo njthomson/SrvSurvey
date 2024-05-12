@@ -40,7 +40,12 @@ namespace SrvSurvey
 
         public static bool allowPlotter
         {
-            get => Game.activeGame?.isMode(GameMode.SuperCruising, GameMode.FSS, GameMode.ExternalPanel, GameMode.Orrery, GameMode.SystemMap) == true;
+            // Game.settings.enableGuardianSites && Game.settings.autoShowGuardianSummary && PlotGuardianSystem.allowPlotter && game?.systemData?.settlements.Count > 0
+            get => Game.settings.enableGuardianSites 
+                && Game.settings.autoShowGuardianSummary 
+                && Game.activeGame?.systemData != null
+                && Game.activeGame.systemData.settlements.Count > 0
+                && Game.activeGame.isMode(GameMode.SuperCruising, GameMode.FSS, GameMode.ExternalPanel, GameMode.Orrery, GameMode.SystemMap);
         }
 
         protected override void Game_modeChanged(GameMode newMode, bool force)

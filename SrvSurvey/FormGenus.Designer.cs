@@ -48,6 +48,10 @@
             smallToolStripMenuItem = new ToolStripMenuItem();
             largeToolStripMenuItem = new ToolStripMenuItem();
             toolFiller = new ToolStripStatusLabel();
+            toolStripSplitButton1 = new ToolStripSplitButton();
+            menuOpenCanonnDump = new ToolStripMenuItem();
+            menuOpenCanonnCodex = new ToolStripMenuItem();
+            menuOpenEDSM = new ToolStripMenuItem();
             toolSignalCount = new ToolStripStatusLabel();
             toolRewardValue = new ToolStripStatusLabel();
             uberPanel.SuspendLayout();
@@ -125,7 +129,7 @@
             // 
             // statusStrip1
             // 
-            statusStrip1.Items.AddRange(new ToolStripItem[] { toolStripStatusLabel1, toolSystemFilter, toolFont, toolFiller, toolSignalCount, toolRewardValue });
+            statusStrip1.Items.AddRange(new ToolStripItem[] { toolStripStatusLabel1, toolSystemFilter, toolFont, toolFiller, toolStripSplitButton1, toolSignalCount, toolRewardValue });
             statusStrip1.Location = new Point(0, 636);
             statusStrip1.Name = "statusStrip1";
             statusStrip1.Size = new Size(741, 30);
@@ -215,6 +219,38 @@
             toolFiller.Name = "toolFiller";
             toolFiller.Size = new Size(104, 25);
             // 
+            // toolStripSplitButton1
+            // 
+            toolStripSplitButton1.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            toolStripSplitButton1.DropDownItems.AddRange(new ToolStripItem[] { menuOpenCanonnDump, menuOpenCanonnCodex, menuOpenEDSM });
+            toolStripSplitButton1.Image = (Image)resources.GetObject("toolStripSplitButton1.Image");
+            toolStripSplitButton1.ImageTransparentColor = Color.Magenta;
+            toolStripSplitButton1.Name = "toolStripSplitButton1";
+            toolStripSplitButton1.Size = new Size(32, 28);
+            toolStripSplitButton1.Text = "toolStripSplitButton1";
+            toolStripSplitButton1.ButtonClick += toolStripSplitButton1_ButtonClick;
+            // 
+            // menuOpenCanonnDump
+            // 
+            menuOpenCanonnDump.Name = "menuOpenCanonnDump";
+            menuOpenCanonnDump.Size = new Size(202, 22);
+            menuOpenCanonnDump.Text = "Open Canonn dump";
+            menuOpenCanonnDump.Click += menuOpenCanonnDump_Click;
+            // 
+            // menuOpenCanonnCodex
+            // 
+            menuOpenCanonnCodex.Name = "menuOpenCanonnCodex";
+            menuOpenCanonnCodex.Size = new Size(202, 22);
+            menuOpenCanonnCodex.Text = "Open on Canonn Codex";
+            menuOpenCanonnCodex.Click += menuOpenCanonnCodex_Click;
+            // 
+            // menuOpenEDSM
+            // 
+            menuOpenEDSM.Name = "menuOpenEDSM";
+            menuOpenEDSM.Size = new Size(202, 22);
+            menuOpenEDSM.Text = "Open on EDSM";
+            menuOpenEDSM.Click += menuOpenEDSM_Click;
+            // 
             // toolSignalCount
             // 
             toolSignalCount.BorderSides = ToolStripStatusLabelBorderSides.Left | ToolStripStatusLabelBorderSides.Top | ToolStripStatusLabelBorderSides.Right | ToolStripStatusLabelBorderSides.Bottom;
@@ -274,5 +310,9 @@
         private ToolStripMenuItem toolShowGuide;
         private ToolStripSeparator toolStripSeparator1;
         private ToolStripStatusLabel toolSignalCount;
+        private ToolStripSplitButton toolStripSplitButton1;
+        private ToolStripMenuItem menuOpenCanonnDump;
+        private ToolStripMenuItem menuOpenCanonnCodex;
+        private ToolStripMenuItem menuOpenEDSM;
     }
 }

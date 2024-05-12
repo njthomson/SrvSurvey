@@ -77,10 +77,23 @@ namespace SrvSurvey
             btnRamTah = new Button();
             btnPublish = new Button();
             checkTempHide = new CheckBox();
+            groupBox5 = new GroupBox();
+            txtSysValue = new TextBox();
+            label7 = new Label();
+            txtJumps = new TextBox();
+            label6 = new Label();
+            label3 = new Label();
+            btnResetExploration = new Button();
+            label1 = new Label();
+            button1 = new Button();
+            txtExplorationValue = new TextBox();
+            textBox2 = new TextBox();
+            txtBodies = new TextBox();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
             groupBox3.SuspendLayout();
             groupBox4.SuspendLayout();
+            groupBox5.SuspendLayout();
             SuspendLayout();
             // 
             // btnGroundTarget
@@ -101,7 +114,7 @@ namespace SrvSurvey
             btnQuit2.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnQuit2.DialogResult = DialogResult.Cancel;
             btnQuit2.FlatStyle = FlatStyle.System;
-            btnQuit2.Location = new Point(350, 512);
+            btnQuit2.Location = new Point(350, 593);
             btnQuit2.Name = "btnQuit2";
             btnQuit2.Size = new Size(75, 23);
             btnQuit2.TabIndex = 8;
@@ -142,13 +155,13 @@ namespace SrvSurvey
             // 
             // groupBox1
             // 
-            groupBox1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            groupBox1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             groupBox1.Controls.Add(btnPasteLatLong);
             groupBox1.Controls.Add(lblTrackTargetStatus);
             groupBox1.Controls.Add(btnClearTarget);
             groupBox1.Controls.Add(btnGroundTarget);
             groupBox1.Controls.Add(txtTargetLatLong);
-            groupBox1.Location = new Point(12, 352);
+            groupBox1.Location = new Point(12, 433);
             groupBox1.Name = "groupBox1";
             groupBox1.Size = new Size(307, 78);
             groupBox1.TabIndex = 14;
@@ -254,7 +267,7 @@ namespace SrvSurvey
             // 
             // groupBox3
             // 
-            groupBox3.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            groupBox3.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             groupBox3.Controls.Add(btnBioSummary);
             groupBox3.Controls.Add(checkFirstFootFall);
             groupBox3.Controls.Add(txtBodyBioValues);
@@ -266,7 +279,7 @@ namespace SrvSurvey
             groupBox3.Controls.Add(lblBodyBio);
             groupBox3.Controls.Add(txtBioRewards);
             groupBox3.Controls.Add(label4);
-            groupBox3.Location = new Point(12, 116);
+            groupBox3.Location = new Point(12, 197);
             groupBox3.Name = "groupBox3";
             groupBox3.Size = new Size(413, 130);
             groupBox3.TabIndex = 14;
@@ -397,7 +410,7 @@ namespace SrvSurvey
             btnLogs.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnLogs.DialogResult = DialogResult.Cancel;
             btnLogs.FlatStyle = FlatStyle.System;
-            btnLogs.Location = new Point(93, 512);
+            btnLogs.Location = new Point(93, 593);
             btnLogs.Name = "btnLogs";
             btnLogs.Size = new Size(75, 23);
             btnLogs.TabIndex = 15;
@@ -410,7 +423,7 @@ namespace SrvSurvey
             btnSettings.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnSettings.DialogResult = DialogResult.Cancel;
             btnSettings.FlatStyle = FlatStyle.System;
-            btnSettings.Location = new Point(12, 512);
+            btnSettings.Location = new Point(12, 593);
             btnSettings.Name = "btnSettings";
             btnSettings.Size = new Size(75, 23);
             btnSettings.TabIndex = 16;
@@ -423,7 +436,7 @@ namespace SrvSurvey
             linkLabel1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             linkLabel1.Font = new Font("Lucida Sans Typewriter", 9F, FontStyle.Regular, GraphicsUnit.Point);
             linkLabel1.LinkArea = new LinkArea(13, 12);
-            linkLabel1.Location = new Point(10, 462);
+            linkLabel1.Location = new Point(10, 543);
             linkLabel1.Name = "linkLabel1";
             linkLabel1.Size = new Size(415, 18);
             linkLabel1.TabIndex = 17;
@@ -448,7 +461,7 @@ namespace SrvSurvey
             // 
             // groupBox4
             // 
-            groupBox4.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            groupBox4.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             groupBox4.Controls.Add(btnGuardianThings);
             groupBox4.Controls.Add(btnRuins);
             groupBox4.Controls.Add(btnRuinsMap);
@@ -456,7 +469,7 @@ namespace SrvSurvey
             groupBox4.Controls.Add(txtGuardianSite);
             groupBox4.Controls.Add(lblGuardianCount);
             groupBox4.Controls.Add(label5);
-            groupBox4.Location = new Point(12, 252);
+            groupBox4.Location = new Point(12, 333);
             groupBox4.Name = "groupBox4";
             groupBox4.Size = new Size(413, 94);
             groupBox4.TabIndex = 19;
@@ -564,11 +577,11 @@ namespace SrvSurvey
             // 
             // btnSphereLimit
             // 
-            btnSphereLimit.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnSphereLimit.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnSphereLimit.BackColor = SystemColors.ControlLight;
             btnSphereLimit.Enabled = false;
             btnSphereLimit.FlatStyle = FlatStyle.System;
-            btnSphereLimit.Location = new Point(325, 397);
+            btnSphereLimit.Location = new Point(325, 478);
             btnSphereLimit.Name = "btnSphereLimit";
             btnSphereLimit.Size = new Size(100, 33);
             btnSphereLimit.TabIndex = 22;
@@ -581,7 +594,7 @@ namespace SrvSurvey
             linkLabel2.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             linkLabel2.Font = new Font("Lucida Sans Typewriter", 9F, FontStyle.Regular, GraphicsUnit.Point);
             linkLabel2.LinkArea = new LinkArea(17, 22);
-            linkLabel2.Location = new Point(10, 480);
+            linkLabel2.Location = new Point(10, 561);
             linkLabel2.Name = "linkLabel2";
             linkLabel2.Size = new Size(427, 29);
             linkLabel2.TabIndex = 23;
@@ -592,10 +605,10 @@ namespace SrvSurvey
             // 
             // btnRamTah
             // 
-            btnRamTah.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnRamTah.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnRamTah.BackColor = SystemColors.ControlLight;
             btnRamTah.FlatStyle = FlatStyle.System;
-            btnRamTah.Location = new Point(325, 357);
+            btnRamTah.Location = new Point(325, 438);
             btnRamTah.Name = "btnRamTah";
             btnRamTah.Size = new Size(100, 33);
             btnRamTah.TabIndex = 24;
@@ -606,7 +619,7 @@ namespace SrvSurvey
             // btnPublish
             // 
             btnPublish.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            btnPublish.Location = new Point(174, 512);
+            btnPublish.Location = new Point(174, 593);
             btnPublish.Name = "btnPublish";
             btnPublish.Size = new Size(75, 23);
             btnPublish.TabIndex = 25;
@@ -617,8 +630,9 @@ namespace SrvSurvey
             // 
             // checkTempHide
             // 
+            checkTempHide.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             checkTempHide.AutoSize = true;
-            checkTempHide.Location = new Point(12, 436);
+            checkTempHide.Location = new Point(12, 517);
             checkTempHide.Name = "checkTempHide";
             checkTempHide.Size = new Size(227, 16);
             checkTempHide.TabIndex = 26;
@@ -626,12 +640,147 @@ namespace SrvSurvey
             checkTempHide.UseVisualStyleBackColor = true;
             checkTempHide.CheckedChanged += checkTempHide_CheckedChanged;
             // 
+            // groupBox5
+            // 
+            groupBox5.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            groupBox5.Controls.Add(txtSysValue);
+            groupBox5.Controls.Add(label7);
+            groupBox5.Controls.Add(txtJumps);
+            groupBox5.Controls.Add(label6);
+            groupBox5.Controls.Add(label3);
+            groupBox5.Controls.Add(btnResetExploration);
+            groupBox5.Controls.Add(label1);
+            groupBox5.Controls.Add(button1);
+            groupBox5.Controls.Add(txtExplorationValue);
+            groupBox5.Controls.Add(textBox2);
+            groupBox5.Controls.Add(txtBodies);
+            groupBox5.Location = new Point(12, 116);
+            groupBox5.Name = "groupBox5";
+            groupBox5.Size = new Size(413, 72);
+            groupBox5.TabIndex = 28;
+            groupBox5.TabStop = false;
+            groupBox5.Text = "Exploration:";
+            // 
+            // txtSysValue
+            // 
+            txtSysValue.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            txtSysValue.Location = new Point(265, 16);
+            txtSysValue.Name = "txtSysValue";
+            txtSysValue.ReadOnly = true;
+            txtSysValue.Size = new Size(72, 20);
+            txtSysValue.TabIndex = 34;
+            txtSysValue.Text = "999.99M";
+            txtSysValue.TextAlign = HorizontalAlignment.Right;
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Location = new Point(205, 19);
+            label7.Name = "label7";
+            label7.Size = new Size(54, 12);
+            label7.TabIndex = 33;
+            label7.Text = "System:";
+            // 
+            // txtJumps
+            // 
+            txtJumps.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            txtJumps.Location = new Point(61, 42);
+            txtJumps.Name = "txtJumps";
+            txtJumps.ReadOnly = true;
+            txtJumps.Size = new Size(52, 20);
+            txtJumps.TabIndex = 32;
+            txtJumps.Text = "999";
+            txtJumps.TextAlign = HorizontalAlignment.Right;
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Location = new Point(119, 45);
+            label6.Name = "label6";
+            label6.Size = new Size(40, 12);
+            label6.TabIndex = 31;
+            label6.Text = "Body:";
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(8, 45);
+            label3.Name = "label3";
+            label3.Size = new Size(47, 12);
+            label3.TabIndex = 30;
+            label3.Text = "Jumps:";
+            // 
+            // btnResetExploration
+            // 
+            btnResetExploration.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnResetExploration.BackColor = SystemColors.ControlLight;
+            btnResetExploration.Enabled = false;
+            btnResetExploration.FlatStyle = FlatStyle.System;
+            btnResetExploration.Location = new Point(343, 16);
+            btnResetExploration.Name = "btnResetExploration";
+            btnResetExploration.Size = new Size(64, 21);
+            btnResetExploration.TabIndex = 29;
+            btnResetExploration.Text = "Reset";
+            btnResetExploration.UseVisualStyleBackColor = false;
+            btnResetExploration.Click += btnResetExploration_Click;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(8, 19);
+            label1.Name = "label1";
+            label1.Size = new Size(117, 12);
+            label1.TabIndex = 28;
+            label1.Text = "Estimated value:";
+            // 
+            // button1
+            // 
+            button1.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            button1.Image = (Image)resources.GetObject("button1.Image");
+            button1.Location = new Point(501, 42);
+            button1.Name = "button1";
+            button1.Size = new Size(22, 22);
+            button1.TabIndex = 27;
+            button1.UseVisualStyleBackColor = true;
+            // 
+            // txtExplorationValue
+            // 
+            txtExplorationValue.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            txtExplorationValue.Location = new Point(127, 16);
+            txtExplorationValue.Name = "txtExplorationValue";
+            txtExplorationValue.ReadOnly = true;
+            txtExplorationValue.Size = new Size(72, 20);
+            txtExplorationValue.TabIndex = 10;
+            txtExplorationValue.Text = "999.99M";
+            txtExplorationValue.TextAlign = HorizontalAlignment.Right;
+            // 
+            // textBox2
+            // 
+            textBox2.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            textBox2.Location = new Point(526, 43);
+            textBox2.Name = "textBox2";
+            textBox2.ReadOnly = true;
+            textBox2.Size = new Size(93, 20);
+            textBox2.TabIndex = 14;
+            textBox2.Text = "LandableBody";
+            // 
+            // txtBodies
+            // 
+            txtBodies.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            txtBodies.Location = new Point(162, 42);
+            txtBodies.Name = "txtBodies";
+            txtBodies.ReadOnly = true;
+            txtBodies.Size = new Size(245, 20);
+            txtBodies.TabIndex = 12;
+            txtBodies.Text = "FSS: 999, DSS: 999, landed: 999";
+            // 
             // Main
             // 
             AutoScaleDimensions = new SizeF(7F, 12F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = btnQuit2;
-            ClientSize = new Size(437, 547);
+            ClientSize = new Size(437, 628);
+            Controls.Add(groupBox5);
             Controls.Add(checkTempHide);
             Controls.Add(btnPublish);
             Controls.Add(btnRamTah);
@@ -667,6 +816,8 @@ namespace SrvSurvey
             groupBox3.PerformLayout();
             groupBox4.ResumeLayout(false);
             groupBox4.PerformLayout();
+            groupBox5.ResumeLayout(false);
+            groupBox5.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -718,5 +869,17 @@ namespace SrvSurvey
         private CheckBox checkTempHide;
         private Button btnBioSummary;
         private Button btnCopyLocation;
+        private GroupBox groupBox5;
+        private Label label1;
+        private Button button1;
+        private TextBox txtExplorationValue;
+        private TextBox textBox2;
+        private TextBox txtBodies;
+        private TextBox txtJumps;
+        private Label label6;
+        private Label label3;
+        private Button btnResetExploration;
+        private TextBox txtSysValue;
+        private Label label7;
     }
 }

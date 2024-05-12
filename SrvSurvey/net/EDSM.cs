@@ -71,7 +71,7 @@ namespace SrvSurvey.net.EDSM
         public string type;
         public string subType;
         public long distanceToArrival;
-        public List<Dictionary<string, int>> parents;
+        public List<Dictionary<ParentBodyType, int>> parents;
         public bool isMainStar;
         public bool isScoopable;
         public bool isLandable;
@@ -88,6 +88,7 @@ namespace SrvSurvey.net.EDSM
         public string? volcanismType;
         public decimal radius;
         public double surfaceTemperature;
+        public double? surfacePressure;
         public double? orbitalPeriod;
         public double? semiMajorAxis;
         public double? orbitalEccentricity;

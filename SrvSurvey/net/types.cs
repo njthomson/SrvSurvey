@@ -240,6 +240,58 @@ namespace SrvSurvey.canonn
         public string system;
     }
 
+    internal class CanonnBioStats
+    {
+        // atmosComposition
+        public List<string> atmosphereType;
+        public List<string> bodies;
+        public long count;
+        public string fdevname;
+        public CanonnBioStatHistograms histograms;
+        public string hud_category;
+        public string id;
+        public List<string> localStars;
+        public List<string> materials;
+        public double? maxd;
+        public double? maxg;
+        public double? maxp;
+        public double? maxt;
+        public double? mind;
+        public double? ming;
+        public double? minp;
+        public double? mint;
+        public string name;
+        public string? platform;
+        public List<string> primaryStars;
+        public List<string> regions;
+        public long reward;
+        public List<string> solidComposition;
+        public List<string> systemBodyTypes;
+        public List<string> volcanism;
+    }
+
+    internal class CanonnBioStatHistograms
+    {
+        public Dictionary<string, int> atmos_types;
+        public Dictionary<string, int> body_types;
+        public List<MinMaxValue> distance;
+        public List<MinMaxValue> gravity;
+        public Dictionary<string, int> local_stars;
+        public Dictionary<string, int> materials;
+        public List<MinMaxValue> pressure;
+        public Dictionary<string, int> primary_stars;
+        public Dictionary<string, int> system_bodies;
+        public List<MinMaxValue> temperature;
+        public Dictionary<string, int> volcanic_body_types;
+
+        public class MinMaxValue
+        {
+            public double min;
+            public double max;
+            public double value;
+        }
+    }
+
     internal class SystemBioSignal
     {
         public string poiName;
