@@ -108,6 +108,10 @@ namespace SrvSurvey.game
         public string? Commander { get; private set; }
         public string? fid { get; private set; }
         public bool isOdyssey { get; private set; }
+        /// <summary>
+        /// If we're supposed to be loading journals for a specific cmdr only
+        /// </summary>
+        private string? targetCmdr;
         public string musicTrack { get; private set; }
         public SuitType currentSuitType { get; private set; }
 
@@ -134,7 +138,8 @@ namespace SrvSurvey.game
 
         public Game(string? cmdr)
         {
-            log($"Game .ctor");
+            log($"Game .ctor, targetCmdr: {cmdr}");
+            this.targetCmdr = cmdr;
 
             // track this instance as the active one
             Game.activeGame = this;
@@ -845,6 +850,17 @@ namespace SrvSurvey.game
 
         private void onJournalEntry(JournalEntry entry) { /* ignore */ }
 
+        private void onJournalEntry(Commander entry)
+        {
+            // the game loaded some cmdr - now we can check it's the right one
+            if (this.targetCmdr != null && !entry.Name.Equals(this.targetCmdr, StringComparison.OrdinalIgnoreCase))
+            {
+                Game.log($"Wrong cmdr loaded: '{entry.Name}' vs targetCmdr: '{this.targetCmdr}' - shutting down!");
+                this.isShutdown = true;
+                this.fireUpdate(true);
+            }
+        }
+
         private void onJournalEntry(LoadGame entry)
         {
             if (this.Commander == null)
@@ -921,8 +937,7 @@ namespace SrvSurvey.game
         {
             this.atMainMenu = false;
             this.isShutdown = true;
-            this.checkModeChange();
-            this.Status_StatusChanged(false);
+            this.fireUpdate(true);
         }
 
         private void onJournalEntry(StartJump entry)

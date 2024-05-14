@@ -280,6 +280,13 @@ namespace SrvSurvey
             //Game.log("** ** ** updateAllControls ** ** **");
             //Game.log($"systemBody? {game?.systemBody != null} / {game?.mode} / {PlotBodyInfo.allowPlotter}");
 
+            // if the game got shutdown
+            if (game != null && Elite.isGameRunning && game.isShutdown == true)
+            {
+                this.removeGame();
+                return;
+            }
+
             this.updateCommanderTexts();
             this.updateBioTexts();
             this.updateTrackTargetTexts();

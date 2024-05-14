@@ -229,13 +229,13 @@ namespace SrvSurvey
             {
                 if (this.IsDisposed || game?.systemBody == null || game.isShutdown == true) return;
 
-                this.g = e.Graphics;
-                this.g.SmoothingMode = SmoothingMode.HighQuality;
+                this.resetPlotter(g);
 
                 this.drawFooterText("(Tracked locations may not be that close to signals)", GameColors.brushGameOrangeDim, this.Font);
 
-                this.dtx = scaled(4);
-                this.dty = scaled(8);
+                this.dtx = four;
+                this.dty = eight;
+
                 var txt = $"Tracking {this.signals.Count} signals from Canonn:";
                 if (Game.settings.skipPriorScansLowValue)
                     txt += $" (> {Util.credits(Game.settings.skipPriorScansLowValueAmount)})";
@@ -337,6 +337,9 @@ namespace SrvSurvey
 
                     TextRenderer.DrawText(g, signal.poiName, f, r, ((SolidBrush)brush).Color, TextFormatFlags.NoPadding | TextFormatFlags.Left);
                     TextRenderer.DrawText(g, signal.credits, f, r, ((SolidBrush)brush).Color, TextFormatFlags.NoPadding | TextFormatFlags.Right);
+
+                    // strike-through if already analyzed
+                    // ??
 
                     if (game.status.Altitude > 500) //game.isMode(GameMode.SuperCruising, GameMode.GlideMode))
                     {

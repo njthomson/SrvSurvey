@@ -31,7 +31,7 @@ namespace SrvSurvey
         protected StreamReader reader;
         public readonly string filepath;
         public readonly DateTime timestamp;
-        public readonly string? CommanderName;
+        public readonly string? cmdrName;
         public readonly bool isOdyssey;
 
         public JournalFile(string filepath, string? targetCmdr = null)
@@ -46,7 +46,7 @@ namespace SrvSurvey
             this.readEntries(targetCmdr);
 
             var entry = this.FindEntryByType<Commander>(0, false);
-            this.CommanderName = entry?.Name;
+            this.cmdrName = entry?.Name;
 
             // assume Odyssey if we don't have the Fileheader line yet.
             this.isOdyssey = true;
@@ -162,7 +162,7 @@ namespace SrvSurvey
                     if (finished) break;
                 }
 
-                var priorFilepath = JournalFile.getCommanderJournalBefore(this.CommanderName, this.isOdyssey, journal.timestamp);
+                var priorFilepath = JournalFile.getCommanderJournalBefore(this.cmdrName, this.isOdyssey, journal.timestamp);
                 journal = priorFilepath == null ? null : new JournalFile(priorFilepath);
             };
 
@@ -188,7 +188,7 @@ namespace SrvSurvey
                     if (finished) break;
                 }
 
-                var priorFilepath = JournalFile.getCommanderJournalBefore(this.CommanderName, this.isOdyssey, journal.timestamp);
+                var priorFilepath = JournalFile.getCommanderJournalBefore(this.cmdrName, this.isOdyssey, journal.timestamp);
                 journal = priorFilepath == null ? null : new JournalFile(priorFilepath);
             };
 
@@ -247,7 +247,6 @@ namespace SrvSurvey
                     while (!reader.EndOfStream)
                     {
                         var line = reader.ReadLine();
-
                         if (line == null) break;
 
                         if (line.Contains("\"event\":\"Fileheader\"") && !line.ToUpperInvariant().Contains($"\"Odyssey\":{isOdyssey}".ToUpperInvariant()))
@@ -264,8 +263,21 @@ namespace SrvSurvey
                         }
                     }
 
+                    // it might be the right cmdr - we cannot tell yet as the game has not started
                     Game.log($"getCommanderJournalBefore: no cmdr found yet from: {filepath}");
-                    return false;
+
+                    // but confirm this is the current game log by failing to read it without sharing (proving the game has the file locked open)
+                    try
+                    {
+                        File.ReadAllText(filepath);
+                        // this file is NOT locked open - do not use it
+                        return false;
+                    }
+                    catch (IOException)
+                    {
+                        // yup, it's locked open - we'll use this file until we know who the cmdr is
+                        return true;
+                    }
                 }
             });
 

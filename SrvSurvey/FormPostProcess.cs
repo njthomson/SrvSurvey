@@ -106,7 +106,7 @@ namespace SrvSurvey
                     // skip if wrong cmdr
                     var filepath = files[n];
                     var journal = new JournalFile(filepath, this.targetCmdrName);
-                    if (journal.CommanderName != this.targetCmdrName) continue;
+                    if (journal.cmdrName != this.targetCmdrName) continue;
                     lastDate = $" ({journal.timestamp.ToShortDateString()})";
                     if (!journal.isOdyssey) continue;
 
