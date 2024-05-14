@@ -124,13 +124,26 @@ namespace SrvSurvey
         {
             string txt;
 
-            var millions = credits / 1000000.0D;
-            if (millions == 0)
-                txt = "0 M";
-            else if (millions < 1000)
-                txt = millions.ToString("#.## M");
+            if (credits < 1_000)
+                txt = credits.ToString("N0");
+            else if (credits < 100_000)
+                txt = (credits / 1_000d).ToString("#.##") + " K";
+            else if (credits < 1_000_000)
+                txt = (credits / 1_000d).ToString("#") + " K";
+            else if (credits < 100_000_000)
+                txt = (credits / 1_000_000d).ToString("#.##") + " M";
+            else if (credits < 1_000_000_000)
+                txt = (credits / 1_000_000d).ToString("#") + " M";
             else
-                txt = (millions / 1000).ToString("#.### B");
+                txt = (credits / 1_000_000_000d).ToString("#.###") + " B";
+
+            //var millions = credits / 1000000.0D;
+            //if (millions == 0)
+            //    txt = "0 M";
+            //else if (millions < 1000)
+            //    txt = millions.ToString("#.## M");
+            //else
+            //    txt = (millions / 1000).ToString("#.### B");
 
             if (!hideUnits)
                 txt += " CR";

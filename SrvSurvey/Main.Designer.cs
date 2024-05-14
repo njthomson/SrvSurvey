@@ -324,13 +324,13 @@ namespace SrvSurvey
             // 
             // txtBodyBioSignals
             // 
-            txtBodyBioSignals.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             txtBodyBioSignals.Enabled = false;
             txtBodyBioSignals.Location = new Point(69, 81);
             txtBodyBioSignals.Name = "txtBodyBioSignals";
             txtBodyBioSignals.ReadOnly = true;
-            txtBodyBioSignals.Size = new Size(110, 20);
+            txtBodyBioSignals.Size = new Size(77, 20);
             txtBodyBioSignals.TabIndex = 24;
+            txtBodyBioSignals.TextAlign = HorizontalAlignment.Center;
             // 
             // lblSysBio
             // 
@@ -354,14 +354,14 @@ namespace SrvSurvey
             // 
             // txtSystemBioSignals
             // 
-            txtSystemBioSignals.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             txtSystemBioSignals.Enabled = false;
             txtSystemBioSignals.Location = new Point(69, 55);
             txtSystemBioSignals.Name = "txtSystemBioSignals";
             txtSystemBioSignals.ReadOnly = true;
-            txtSystemBioSignals.Size = new Size(110, 20);
+            txtSystemBioSignals.Size = new Size(77, 20);
             txtSystemBioSignals.TabIndex = 20;
             txtSystemBioSignals.Text = "99 of 99";
+            txtSystemBioSignals.TextAlign = HorizontalAlignment.Center;
             // 
             // labelSignalsAndRewards
             // 
@@ -669,8 +669,8 @@ namespace SrvSurvey
             txtSysValue.ReadOnly = true;
             txtSysValue.Size = new Size(72, 20);
             txtSysValue.TabIndex = 34;
-            txtSysValue.Text = "999.99M";
-            txtSysValue.TextAlign = HorizontalAlignment.Right;
+            txtSysValue.Text = "-";
+            txtSysValue.TextAlign = HorizontalAlignment.Center;
             // 
             // label7
             // 
@@ -689,8 +689,8 @@ namespace SrvSurvey
             txtJumps.ReadOnly = true;
             txtJumps.Size = new Size(52, 20);
             txtJumps.TabIndex = 32;
-            txtJumps.Text = "999";
-            txtJumps.TextAlign = HorizontalAlignment.Right;
+            txtJumps.Text = "-";
+            txtJumps.TextAlign = HorizontalAlignment.Center;
             // 
             // label6
             // 
@@ -751,8 +751,8 @@ namespace SrvSurvey
             txtExplorationValue.ReadOnly = true;
             txtExplorationValue.Size = new Size(72, 20);
             txtExplorationValue.TabIndex = 10;
-            txtExplorationValue.Text = "999.99M";
-            txtExplorationValue.TextAlign = HorizontalAlignment.Right;
+            txtExplorationValue.Text = "-";
+            txtExplorationValue.TextAlign = HorizontalAlignment.Center;
             // 
             // textBox2
             // 
@@ -772,7 +772,8 @@ namespace SrvSurvey
             txtBodies.ReadOnly = true;
             txtBodies.Size = new Size(245, 20);
             txtBodies.TabIndex = 12;
-            txtBodies.Text = "FSS: 999, DSS: 999, landed: 999";
+            txtBodies.Text = "-";
+            txtBodies.TextAlign = HorizontalAlignment.Center;
             // 
             // Main
             // 

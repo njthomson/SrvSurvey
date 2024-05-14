@@ -930,6 +930,9 @@ namespace SrvSurvey.game
             // FSD charged - either for Jump or SuperCruise
             if (entry.JumpType == "Hyperspace")
             {
+                cmdr.countJumps += 1;
+                cmdr.Save();
+
                 this.fsdJumping = true;
                 SystemData.Close(this.systemData);
                 this.canonnPoi = null;
@@ -958,6 +961,8 @@ namespace SrvSurvey.game
             this.cmdr.setMarketId(0);
             if (this.humanSite != null)
                 this.humanSite = null;
+
+            fireUpdate(true);
         }
 
         private void onJournalEntry(FSDJump entry)
@@ -971,12 +976,6 @@ namespace SrvSurvey.game
             // start a new SystemStatus
             this.systemStatus = new SystemStatus(entry.StarSystem, entry.SystemAddress);
             this.systemStatus.initFromJournal(this);
-
-            if (Game.activeGame?.systemData != null)
-            {
-                cmdr.countJumps += 1;
-                cmdr.Save();
-            }
 
             this.checkModeChange();
 

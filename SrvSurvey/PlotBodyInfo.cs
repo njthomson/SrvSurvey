@@ -92,12 +92,12 @@ namespace SrvSurvey
                 var planetish = body.type != SystemBodyType.Star && body.type != SystemBodyType.Asteroid;
 
                 // reward
-                var txt = $"Scan value: {body.reward.ToString("N0")} cr";
+                var txt = $"Scan value: {Util.credits(body.reward)}";
                 var highlight = Game.settings.skipLowValueDSS && body.reward > Game.settings.skipLowValueAmount;
                 if (!body.dssComplete && planetish)
                 {
                     var dssReward = Util.GetBodyValue(body, true, true);
-                    txt += $" (with DSS: {dssReward.ToString("N0")} cr)";
+                    txt += $" (with DSS: {Util.credits(dssReward)})";
                     highlight = Game.settings.skipLowValueDSS && dssReward > Game.settings.skipLowValueAmount;
                 }
                 drawTextAt(eight, txt, highlight ? GameColors.brushCyan : null);
@@ -115,7 +115,8 @@ namespace SrvSurvey
                 // gravity | pressure
                 if (planetish)
                 {
-                    drawTextAt(eight, $"Gravity: {gravity}g");
+                    var isHighGravity = body.surfaceGravity  >= Game.settings.highGravityWarningLevel * 10;
+                    drawTextAt(eight, $"Gravity: {gravity}g", isHighGravity ? GameColors.brushRed : null);
                     var pressure = (body.surfacePressure / 100_000f).ToString("N2") + "(atm)";
                     if (pressure == "0.00(atm)") pressure = "None";
                     drawTextAt(oneTwenty, $" | Pressure: {pressure}");

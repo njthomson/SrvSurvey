@@ -26,6 +26,7 @@ namespace SrvSurvey
         protected float five = scaled(5f);
         protected float six = scaled(6f);
         protected float eight = scaled(8f);
+        protected float nine = scaled(9f);
         protected float ten = scaled(10f);
         protected float oneOne = scaled(11f);
         protected float oneTwo = scaled(12f);

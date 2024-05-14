@@ -553,7 +553,7 @@ namespace SrvSurvey.game
                 }
             }
 
-            if (Game.activeGame?.systemData == this && body.type != SystemBodyType.Asteroid)
+            if (Game.activeGame?.systemData == this && body.type != SystemBodyType.Asteroid && entry.ScanType != "NavBeaconDetail")
             {
                 var reward = Util.GetBodyValue(entry, false);
                 if (body.reward < reward)

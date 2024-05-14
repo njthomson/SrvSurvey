@@ -178,6 +178,7 @@ namespace SrvSurvey
         public static Pen penBlack4Dash = newPen(Color.Black, 4, DashStyle.Dash);
 
         public static Pen penGameOrangeDim1 = newPen(OrangeDim, 1);
+        public static Pen penGameOrangeDim1b = newPen(Color.FromArgb(128, OrangeDim), 1);
         public static Pen penGameOrangeDim2 = newPen(OrangeDim, 2);
 
         public static Pen penGreen2 = newPen(Color.Green, 2);
@@ -189,6 +190,7 @@ namespace SrvSurvey
         public static Pen penCyan2Dotted = newPen(Cyan, 2, DashStyle.Dot);
         public static Pen penCyan4 = newPen(Cyan, 4);
         public static Pen penCyan8 = newPen(Cyan, 8);
+        public static Pen penDarkCyan1 = newPen(Color.DarkCyan, 1);
         public static Pen penDarkCyan4 = newPen(Color.DarkCyan, 4);
 
         public static Pen penRed2 = newPen(Color.Red, 2);
