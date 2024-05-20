@@ -55,7 +55,11 @@ namespace SrvSurvey
             base.OnPaintBackground(e);
             try
             {
-                if (this.IsDisposed || game.systemBody == null) return;
+                if (this.IsDisposed || game.systemBody == null)
+                {
+                    Program.closePlotter<PlotFlightWarning>();
+                    return;
+                }
 
                 this.g = e.Graphics;
                 this.g.SmoothingMode = SmoothingMode.HighQuality;

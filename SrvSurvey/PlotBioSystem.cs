@@ -43,12 +43,13 @@ namespace SrvSurvey
                 && Game.activeGame.systemData != null
                 && Game.activeGame.systemData.bioSignalsTotal > 0
                 && Game.activeGame.status?.InTaxi != true
-                //&& Game.activeGame.systemBody != null
                 && (
-                //Game.activeGame.isMode(GameMode.SuperCruising, GameMode.GlideMode, GameMode.SAA, GameMode.FSS, GameMode.ExternalPanel, GameMode.Orrery, GameMode.SystemMap, GameMode.Landed, GameMode.OnFoot, GameMode.CommsPanel)
-                //|| (Game.activeGame.mode == GameMode.Flying && Game.activeGame.status.hasLatLong)
-                (Game.activeGame.isMode(GameMode.SuperCruising, GameMode.SAA, GameMode.FSS, GameMode.ExternalPanel, GameMode.Orrery, GameMode.SystemMap))
-                || (Game.activeGame.systemBody?.bioSignalCount > 0 && Game.activeGame?.status?.hasLatLong == true && Game.activeGame.isMode(GameMode.GlideMode, GameMode.SAA, GameMode.FSS, GameMode.Flying, GameMode.Landed, GameMode.OnFoot, GameMode.CommsPanel, GameMode.InSrv))
+                    Game.activeGame.isMode(GameMode.SuperCruising, GameMode.SAA, GameMode.FSS, GameMode.ExternalPanel, GameMode.Orrery, GameMode.SystemMap)
+                    || (
+                            Game.activeGame.systemBody?.bioSignalCount > 0 
+                            && Game.activeGame?.status?.hasLatLong == true 
+                            && Game.activeGame.isMode(GameMode.GlideMode, GameMode.Flying, GameMode.Landed, GameMode.OnFoot, GameMode.CommsPanel, GameMode.InSrv)
+                        )
                 );
         }
 
@@ -69,10 +70,14 @@ namespace SrvSurvey
             base.OnPaintBackground(e);
             try
             {
-                if (this.IsDisposed || game.systemData == null || game.status == null || !PlotBioSystem.allowPlotter) return;
+                if (this.IsDisposed || game.systemData == null || game.status == null || !PlotBioSystem.allowPlotter)
+                {
+                    this.Opacity = 0;
+                    return;
+                }
 
                 resetPlotter(e.Graphics);
-                var showBodyBios = !game.isMode(GameMode.ExternalPanel, GameMode.SystemMap) && game.status.hasLatLong && game.systemBody?.bioSignalCount > 0 && game.targetBody == game.systemBody;
+                var showBodyBios = !game.isMode(GameMode.ExternalPanel, GameMode.SystemMap) && game.status.hasLatLong && game.systemBody?.bioSignalCount > 0 && (game.targetBody == null || game.targetBody == game.systemBody);
                 if (showBodyBios)
                     this.drawBodyBios2();
                 else
@@ -196,6 +201,7 @@ namespace SrvSurvey
                 {
                     var highlight = !organism.analyzed && (game.cmdr.scanOne?.genus == organism.genus || game.cmdr.scanOne?.genus == null);
                     var brush = highlight ? GameColors.brushCyan : GameColors.brushGameOrange;
+                    dty = (int)dty;
 
                     if (first)
                         first = false;
@@ -237,7 +243,7 @@ namespace SrvSurvey
                     drawTextAt(
                         24,
                         displayName != organism.genusLocalized ? organism.genusLocalized : "?",
-                        highlight ? GameColors.brushDarkCyan : GameColors.brushGameOrangeDim);
+                        highlight ? GameColors.brushCyan : GameColors.brushGameOrange);
                     newLine(+eight, true);
                 }
 
@@ -346,9 +352,7 @@ namespace SrvSurvey
 
         private void drawSystemBios2()
         {
-            dty = six;
-
-            this.drawTextAt($"System bio signals: {game.systemData!.bioSignalsTotal}", GameColors.brushGameOrange);
+            this.drawTextAt($"System bio signals: {game.systemData!.bioSignalsTotal}", GameColors.brushGameOrange, GameColors.fontSmall);
             newLine(+four, true);
 
             var anyFoo = game.systemData.bodies.Any(b => b.id == game.status.Destination?.Body && b.bioSignalCount > 0);
@@ -363,10 +367,8 @@ namespace SrvSurvey
                 maxNameWidth = Math.Max(maxNameWidth, g.MeasureString(body.shortName, this.Font).Width);
                 maxBioCount = Math.Max(maxBioCount, body.bioSignalCount);
             }
-            var boxLeft = oneEight + maxNameWidth;
+            var boxLeft = twoFour+ maxNameWidth;
             var boxRight = boxLeft + (maxBioCount * oneTwo);
-            // TODO: revisit
-            //if (this.dtx > sz.Width) sz.Width = this.dtx;
 
             var first = true;
             foreach (var body in game.systemData.bodies)
@@ -431,8 +433,8 @@ namespace SrvSurvey
             if (game.systemData.bodies.Any(_ => _.bioSignalCount > 0 && _.organisms?.All(o => o.species != null) != true))
                 footerTxt += "?";
 
-            this.drawTextAt(six, footerTxt, GameColors.brushGameOrange);
-            newLine(true);
+            this.drawTextAt(six, footerTxt, GameColors.brushGameOrange, GameColors.fontSmall);
+            newLine(+two, true);
 
 
             formAdjustSize(+ten, +six);
@@ -464,7 +466,7 @@ namespace SrvSurvey
             {
                 if (reward == 0)
                 {
-                    var b2 = new HatchBrush(HatchStyle.DarkDownwardDiagonal, highlight ? GameColors.Cyan : GameColors.Orange, Color.Black);
+                    var b2 = new HatchBrush(HatchStyle.DarkDownwardDiagonal, highlight ? GameColors.DarkCyan : GameColors.Orange, Color.Black);
                     g.FillRectangle(b2, x, y, ww, three);
                     g.DrawRectangle(pp, x, y, ww, three);
                     y -= 4;

@@ -78,8 +78,7 @@ namespace SrvSurvey
             btnPublish = new Button();
             checkTempHide = new CheckBox();
             groupBox5 = new GroupBox();
-            txtSysValue = new TextBox();
-            label7 = new Label();
+            txtDistance = new TextBox();
             txtJumps = new TextBox();
             label6 = new Label();
             label3 = new Label();
@@ -643,8 +642,7 @@ namespace SrvSurvey
             // groupBox5
             // 
             groupBox5.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            groupBox5.Controls.Add(txtSysValue);
-            groupBox5.Controls.Add(label7);
+            groupBox5.Controls.Add(txtDistance);
             groupBox5.Controls.Add(txtJumps);
             groupBox5.Controls.Add(label6);
             groupBox5.Controls.Add(label3);
@@ -661,33 +659,24 @@ namespace SrvSurvey
             groupBox5.TabStop = false;
             groupBox5.Text = "Exploration:";
             // 
-            // txtSysValue
+            // txtDistance
             // 
-            txtSysValue.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            txtSysValue.Location = new Point(265, 16);
-            txtSysValue.Name = "txtSysValue";
-            txtSysValue.ReadOnly = true;
-            txtSysValue.Size = new Size(72, 20);
-            txtSysValue.TabIndex = 34;
-            txtSysValue.Text = "-";
-            txtSysValue.TextAlign = HorizontalAlignment.Center;
-            // 
-            // label7
-            // 
-            label7.AutoSize = true;
-            label7.Location = new Point(205, 19);
-            label7.Name = "label7";
-            label7.Size = new Size(54, 12);
-            label7.TabIndex = 33;
-            label7.Text = "System:";
+            txtDistance.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            txtDistance.Location = new Point(313, 16);
+            txtDistance.Name = "txtDistance";
+            txtDistance.ReadOnly = true;
+            txtDistance.Size = new Size(93, 20);
+            txtDistance.TabIndex = 33;
+            txtDistance.Text = "-";
+            txtDistance.TextAlign = HorizontalAlignment.Center;
             // 
             // txtJumps
             // 
             txtJumps.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            txtJumps.Location = new Point(61, 42);
+            txtJumps.Location = new Point(255, 16);
             txtJumps.Name = "txtJumps";
             txtJumps.ReadOnly = true;
-            txtJumps.Size = new Size(52, 20);
+            txtJumps.Size = new Size(55, 20);
             txtJumps.TabIndex = 32;
             txtJumps.Text = "-";
             txtJumps.TextAlign = HorizontalAlignment.Center;
@@ -695,7 +684,7 @@ namespace SrvSurvey
             // label6
             // 
             label6.AutoSize = true;
-            label6.Location = new Point(119, 45);
+            label6.Location = new Point(81, 45);
             label6.Name = "label6";
             label6.Size = new Size(40, 12);
             label6.TabIndex = 31;
@@ -704,7 +693,7 @@ namespace SrvSurvey
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(8, 45);
+            label3.Location = new Point(205, 19);
             label3.Name = "label3";
             label3.Size = new Size(47, 12);
             label3.TabIndex = 30;
@@ -716,7 +705,7 @@ namespace SrvSurvey
             btnResetExploration.BackColor = SystemColors.ControlLight;
             btnResetExploration.Enabled = false;
             btnResetExploration.FlatStyle = FlatStyle.System;
-            btnResetExploration.Location = new Point(343, 16);
+            btnResetExploration.Location = new Point(13, 41);
             btnResetExploration.Name = "btnResetExploration";
             btnResetExploration.Size = new Size(64, 21);
             btnResetExploration.TabIndex = 29;
@@ -727,7 +716,7 @@ namespace SrvSurvey
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(8, 19);
+            label1.Location = new Point(6, 19);
             label1.Name = "label1";
             label1.Size = new Size(117, 12);
             label1.TabIndex = 28;
@@ -767,13 +756,12 @@ namespace SrvSurvey
             // txtBodies
             // 
             txtBodies.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            txtBodies.Location = new Point(162, 42);
+            txtBodies.Location = new Point(127, 42);
             txtBodies.Name = "txtBodies";
             txtBodies.ReadOnly = true;
-            txtBodies.Size = new Size(245, 20);
+            txtBodies.Size = new Size(280, 20);
             txtBodies.TabIndex = 12;
             txtBodies.Text = "-";
-            txtBodies.TextAlign = HorizontalAlignment.Center;
             // 
             // Main
             // 
@@ -880,7 +868,6 @@ namespace SrvSurvey
         private Label label6;
         private Label label3;
         private Button btnResetExploration;
-        private TextBox txtSysValue;
-        private Label label7;
+        private TextBox txtDistance;
     }
 }

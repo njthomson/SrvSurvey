@@ -5,6 +5,8 @@ namespace SrvSurvey
 {
     internal class PlotBodyInfo : PlotBase, PlotterForm
     {
+        private string lastDestination;
+
         private PlotBodyInfo() : base()
         {
             this.Width = scaled(320);
@@ -31,7 +33,7 @@ namespace SrvSurvey
                     // any time during DSS or ... 
                     Game.activeGame.mode == GameMode.SAA
                     // ... or in the SystemMap and sub-setting allows
-                    || (Game.activeGame.mode == GameMode.SystemMap && Game.settings.autoShowPlotBodyInfoInMapTest)
+                    || (Game.activeGame.isMode(GameMode.SystemMap, GameMode.Orrery) && Game.settings.autoShowPlotBodyInfoInMapTest)
                     // ... or when super cruising/gliding close to a body and sub-setting allows
                     || (Game.activeGame.isMode(GameMode.SuperCruising, GameMode.GlideMode) && Game.activeGame.status.hasLatLong && Game.settings.autoShowPlotBodyInfoInOrbitTest)
                 );
@@ -63,23 +65,36 @@ namespace SrvSurvey
             this.Invalidate();
         }
 
+        protected override void Status_StatusChanged(bool blink)
+        {
+            base.Status_StatusChanged(blink);
+
+            var destination = $"{game.status.Destination?.System}/{game.status.Destination?.Body}/{game.status.Destination?.Name}";
+            if (destination != this.lastDestination)
+            {
+                // re-render if destination has changed
+                this.lastDestination = destination;
+                this.Invalidate();
+            }
+        }
+
         protected override void OnPaintBackground(PaintEventArgs e)
         {
             base.OnPaintBackground(e);
             if (this.IsDisposed || game == null) return;
 
-
             // use current body, or targetBody if in SystemMap
-            var body = /*game.mode == GameMode.SystemMap
-                ?*/ game.targetBody;
-            //: game.systemBody;
+            var body = Game.activeGame?.isMode(GameMode.SystemMap, GameMode.Orrery) == true
+                ? game.targetBody
+                : game.systemBody;
             if (body == null || !PlotBodyInfo.allowPlotter)
             {
+                Game.log($"Hiding PlotBodyInfo - no valid target");
                 this.Opacity = 0;
                 return;
             }
 
-            var temp = body.surfaceTemperature.ToString("N2");
+            var temp = body.surfaceTemperature.ToString("N0");
             var gravity = (body.surfaceGravity / 10f).ToString("N2");
 
             try
@@ -90,6 +105,30 @@ namespace SrvSurvey
                 drawTextAt($"{body.name}", GameColors.fontMiddleBold);
                 newLine(+2, true);
                 var planetish = body.type != SystemBodyType.Star && body.type != SystemBodyType.Asteroid;
+
+                if (body.type == SystemBodyType.Unknown)
+                {
+                    // we don't know enough about this body - exit early
+                    drawTextAt(eight, "Scan required", GameColors.brushCyan);
+                    newLine(+2, true);
+                    formAdjustSize(+ten, +oneFour);
+                    return;
+                }
+
+                // terraformable, undisdiscovered?
+                var subStatus = new List<string>();
+                if (body.terraformable)
+                    subStatus.Add("Terraformable");
+                if (!body.wasDiscovered)
+                    subStatus.Add("Undiscovered");
+                else if (!body.wasMapped)
+                    subStatus.Add("Unmapped");
+
+                if (subStatus.Count > 0)
+                {
+                    drawTextAt(this.ClientSize.Width - ten, $"({string.Join(", ", subStatus)})", GameColors.brushCyan, null, true);
+                    newLine(+2, true);
+                }
 
                 // reward
                 var txt = $"Scan value: {Util.credits(body.reward)}";
@@ -115,7 +154,7 @@ namespace SrvSurvey
                 // gravity | pressure
                 if (planetish)
                 {
-                    var isHighGravity = body.surfaceGravity  >= Game.settings.highGravityWarningLevel * 10;
+                    var isHighGravity = body.surfaceGravity >= Game.settings.highGravityWarningLevel * 10;
                     drawTextAt(eight, $"Gravity: {gravity}g", isHighGravity ? GameColors.brushRed : null);
                     var pressure = (body.surfacePressure / 100_000f).ToString("N2") + "(atm)";
                     if (pressure == "0.00(atm)") pressure = "None";
@@ -132,6 +171,8 @@ namespace SrvSurvey
                     newLine(+four, true);
                 }
 
+                // geo signals ?
+
                 // volcanism
                 if (planetish && body.type != SystemBodyType.Giant)
                 {
@@ -147,7 +188,7 @@ namespace SrvSurvey
                 // atmosphere
                 if (planetish)
                 {
-                    var atmos = string.IsNullOrEmpty(body.atmosphere) ? "None" : Util.camel(body.atmosphere.Replace(" atmosphere", ""));
+                    var atmos = string.IsNullOrEmpty(body.atmosphere) || body.atmosphere == "No atmosphere" ? "None" : Util.camel(body.atmosphere.Replace(" atmosphere", ""));
                     drawTextAt(eight, $"Atmosphere:");
                     drawTextAt(eightEight, atmos);
                     newLine(+two, true);
@@ -168,7 +209,7 @@ namespace SrvSurvey
                     if (body.materials != null)
                     {
                         drawTextAt(eight, $"Materials:");
-                        foreach (var mat in body.materials)
+                        foreach (var mat in body.materials.OrderByDescending(_ => _.Value))
                         {
                             var name = Util.camel(mat.Key);
                             var value = mat.Value.ToString("N2").PadLeft(5);

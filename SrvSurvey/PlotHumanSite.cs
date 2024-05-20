@@ -61,6 +61,7 @@ namespace SrvSurvey
         public static bool keepPlotter
         {
             get => Game.activeGame?.status != null
+                && !Game.activeGame.atMainMenu
                 && Game.activeGame.status.hasLatLong
                 && Game.activeGame.status.Altitude < 2000
                 && Game.settings.autoShowHumanSitesTest

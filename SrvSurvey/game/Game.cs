@@ -315,8 +315,8 @@ namespace SrvSurvey.game
             // set or clear 'systemSite'
             this.setCurrentSite();
 
-            if (FormGenus.activeForm != null && FormGenus.activeForm.targetBody != this.targetBody)
-                FormGenus.activeForm.populateGenus();
+            //if (FormGenus.activeForm != null && FormGenus.activeForm.targetBody != this.targetBody)
+            //    FormGenus.activeForm.populateGenus();
             // TODO: we could avoid flicker by updating the colors on labels, rather than destroying and recreating them.
 
             this.checkModeChange();
@@ -455,15 +455,17 @@ namespace SrvSurvey.game
             {
                 if (this.systemData == null || this.status == null) return null;
 
-                // ignore if target it outside our system
+                // ignore if target is outside our system
                 if (status.Destination?.System > 0 && status.Destination.System != this.systemData.address)
                     return null;
 
                 // use target if it's in our system
-                if (status.Destination?.System == this.systemData.address && status.Destination.Body > 0)
+                if (status.Destination?.System == this.systemData.address && status.Destination.Body >= 0)
                 {
                     var body = systemData.bodies.Find(_ => _.id == status.Destination.Body);
-                    return body;
+                    // but ignore if the name doesn't match (eg: when targetting a station around a planet)
+                    if (body?.name == status.Destination.Name)
+                        return body;
                 }
 
                 // use current body if we are landed
@@ -623,7 +625,7 @@ namespace SrvSurvey.game
             this.checkModeChange();
 
             // do this last and a bit delayed, once initialization finished
-            if (Game.settings.autoLoadPriorScans && this.systemData != null)
+            if (Game.settings.useExternalData && this.systemData != null)
             {
                 Program.control.BeginInvoke(new Action(() =>
                 {
@@ -980,11 +982,19 @@ namespace SrvSurvey.game
             fireUpdate(true);
         }
 
+        public string? fsdTarget;
+
+        private void onJournalEntry(FSDTarget entry)
+        {
+            this.fsdTarget = entry.Name;
+        }
+
         private void onJournalEntry(FSDJump entry)
         {
             // FSD Jump completed
             this.fsdJumping = false;
             this.statusBodyName = null;
+            cmdr.distanceTravelled += entry.JumpDist;
 
             this.setLocations(entry);
 
@@ -1464,7 +1474,7 @@ namespace SrvSurvey.game
             cmdr.Save();
             this.fireUpdate();
 
-            if (Game.settings.autoLoadPriorScans)
+            if (Game.settings.useExternalData)
                 this.fetchSystemData(entry.StarSystem, entry.SystemAddress);
         }
 
@@ -1491,7 +1501,7 @@ namespace SrvSurvey.game
             cmdr.lastSystemLocation = Util.getLocationString(entry.StarSystem, entry.Body);
             cmdr.Save();
 
-            if (Game.settings.autoLoadPriorScans)
+            if (Game.settings.useExternalData)
                 this.fetchSystemData(entry.StarSystem, entry.SystemAddress);
         }
 
@@ -1529,7 +1539,7 @@ namespace SrvSurvey.game
             cmdr.lastSystemLocation = Util.getLocationString(entry.Starsystem, entry.Body);
             cmdr.Save();
 
-            if (Game.settings.autoLoadPriorScans)
+            if (Game.settings.useExternalData)
                 this.fetchSystemData(entry.Starsystem, entry.SystemAddress);
         }
 
@@ -1569,7 +1579,7 @@ namespace SrvSurvey.game
             cmdr.lastSystemLocation = Util.getLocationString(entry.StarSystem, entry.Body);
             cmdr.Save();
 
-            if (Game.settings.autoLoadPriorScans)
+            if (Game.settings.useExternalData)
                 this.fetchSystemData(entry.StarSystem, entry.SystemAddress);
         }
 
@@ -1932,32 +1942,6 @@ namespace SrvSurvey.game
             this.touchdownLocation = LatLong2.Empty;
         }
 
-        private void onJournalEntry(MultiSellExplorationData entry)
-        {
-            // reset exploration data
-            Game.log($"Resetting exploration data: {Util.credits(cmdr.explRewards)} / {cmdr.countJumps} / {cmdr.countScans} / {cmdr.countDSS} / {cmdr.countLanded}");
-            cmdr.explRewards -= entry.BaseValue;
-            cmdr.countJumps = 0;
-            cmdr.countScans = 0;
-            cmdr.countDSS = 0;
-            cmdr.countLanded = 0;
-            cmdr.Save();
-            this.fireUpdate(true);
-        }
-
-        private void onJournalEntry(SellExplorationData entry)
-        {
-            // reset exploration data
-            Game.log($"Resetting exploration data: {Util.credits(cmdr.explRewards)} / {cmdr.countJumps} / {cmdr.countScans} / {cmdr.countDSS} / {cmdr.countLanded}");
-            cmdr.explRewards -= entry.BaseValue;
-            cmdr.countJumps = 0;
-            cmdr.countScans = 0;
-            cmdr.countDSS = 0;
-            cmdr.countLanded = 0;
-            cmdr.Save();
-            this.fireUpdate(true);
-        }
-
         private void onJournalEntry(CodexEntry entry)
         {
             // update our region
@@ -2098,7 +2082,7 @@ namespace SrvSurvey.game
             fireUpdate(this._mode, true);
 
             // update FormGenus
-            if (FormGenus.activeForm?.shouldRefresh(entry.Species) == true)
+            if (FormGenus.activeForm != null && (FormGenus.activeForm.shouldRefresh(entry.Species) == true || entry.ScanType == ScanType.Analyse))
                 FormGenus.activeForm.deferPopulateGenus();
         }
 

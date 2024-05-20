@@ -180,8 +180,8 @@ namespace SrvSurvey
                 if (genus != null && genus != foo.genus) continue;
 
                 //if (foo.speciesPart.Contains("Campestri")) Debugger.Break();
-                //if (body.name.Contains("6 a")) Debugger.Break();
-                //if (body.name.Contains("B 4") && foo.speciesPart.Contains("Campestri")) Debugger.Break();
+                //if (body.name.Contains("AB 1 c")) Debugger.Break();
+                //if (body.name.Contains("AB 1 c") && foo.speciesPart.Contains("Conditivus")) Debugger.Break();
 
                 if (foo.galacticRegion?.Contains(galacticRegion) == false) continue;
                 if (foo.planetClass?.Any(pc => body.planetClass?.Contains(pc) == true) == false) continue;
@@ -218,6 +218,7 @@ namespace SrvSurvey
 
                 if (foo.material != null && !foo.material.Any(_ => body.materials?.ContainsKey(_) == true)) continue;
                 // TODO filter for color variants and ensure amount is > 0.0001
+                if (foo.material != null && !foo.material.Any(_ => body.materials?.ContainsKey(_) == true && body.materials.GetValueOrDefault(_) > 0.0001)) continue;
 
                 // special cases
 
@@ -228,6 +229,7 @@ namespace SrvSurvey
                 if (foo.speciesPart.Contains("Brain")) continue;
 
                 if (foo.speciesPart.Contains("Pluma")) Debugger.Break();
+                //if (body.name.Contains("AB 1 c")) Debugger.Break();
                 potentials.Add(foo.speciesPart);
             }
 
@@ -493,6 +495,7 @@ namespace SrvSurvey
             { "Recepta | Recepta Deltahedronix | *             | 2.8 | SulphurDioxide | *    | 132 | 272 | * | cad+" },
             { "Recepta | Recepta Umbrux        | *             | 2.8 | SulphurDioxide | *    | 132 | 273 | B,A,F,G,K,M,L,T,TTS,Ae,Y,D" },
             { "Recepta | Recepta Umbrux        | *             | 2.8 | CarbonDioxide  | *    | 132 | 273 | B,A,F,G,K,M,L,T,TTS,Ae,Y,D" }, // EvilHorse
+            // Maybe these need a minimum of SulphurDioxide in the atmospheric composition?
 
             // 8x Stratum - https://canonn.science/codex/stratum/ and https://ed-dsn.net/en/stratum_en/
             //   genus | species            | body  | <g  | atmosType         | volc | >t  | <t  | star type              |mat| galactic regions

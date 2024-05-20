@@ -85,6 +85,7 @@ namespace SrvSurvey.game
         }
 
         public long explRewards;
+        public double distanceTravelled;
         public int countJumps;
         public int countScans;
         public int countDSS;

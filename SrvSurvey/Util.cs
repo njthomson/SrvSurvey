@@ -498,54 +498,47 @@ namespace SrvSurvey
 
         public static bool isOdyssey = Game.activeGame?.journals == null || Game.activeGame.journals.isOdyssey;
 
-        public static int GetBodyValue(Scan scan, bool ifMapped)
+        public static int GetBodyValue(Scan scan, bool cmdrMapped)
         {
             return Util.GetBodyValue(
                 scan.PlanetClass ?? scan.StarType, // planetClass
                 scan.TerraformState == "Terraformable", // isTerraformable
                 scan.MassEM > 0 ? scan.MassEM : scan.StellarMass, // mass
                 !scan.WasDiscovered, // isFirstDiscoverer
-                ifMapped, // isMapped
+                cmdrMapped, // isMapped
                 !scan.WasMapped // isFirstMapped
             );
         }
 
-        public static int GetBodyValue(SystemBody body, bool isMapped, bool withEfficiencyBonus)
+        public static int GetBodyValue(SystemBody body, bool cmdrMapped, bool withEfficiencyBonus)
         {
             return Util.GetBodyValue(
-                body.planetClass, // planetClass
+                body.type == SystemBodyType.Star ? body.starType : body.planetClass, // planetClass
                 body.terraformable, // isTerraformable
                 body.mass,
                 !body.wasDiscovered, // isFirstDiscoverer
-                isMapped,
+                cmdrMapped,
                 !body.wasMapped, // isFirstMapped
                 withEfficiencyBonus
             );
         }
 
-        public static int GetBodyValue(string? planetClass, bool isTerraformable, double mass, bool isFirstDiscoverer, bool isMapped, bool isFirstMapped, bool withEfficiencyBonus = true, bool isFleetCarrierSale = false)
+        public static double getStarKValue(string starClass)
         {
-            // Logic from https://forums.frontier.co.uk/threads/exploration-value-formulae.232000/
+            var kk = 1200;
+            if (starClass == "NS" || starClass == "BH" || starClass == "SupermassiveBlackHole")
+                kk = 22628;
+            else if (starClass?[0] == 'W')
+                kk = 14057;
 
-            var isOdyssey = Util.isOdyssey;
-            var isStar = planetClass != null && (planetClass.Length < 8 || planetClass[1] == '_' || planetClass == "SupermassiveBlackHole" || planetClass == "Nebula" || planetClass == "StellarRemnantNebula");
+            return kk;
+        }
 
-            if (isStar)
-            {
-                var kk = 1200;
-                if (planetClass == "NS" || planetClass == "BH" || planetClass == "SupermassiveBlackHole")
-                    kk = 22628;
-                else if (planetClass?[0] == 'W')
-                    kk = 14057;
+        public static double getBodyKValue(string planetClass, bool isTerraformable)
+        {
+            int k = 0;
 
-                var starValue = kk + (mass * kk / 66.25);
-                return (int)Math.Round(starValue);
-            }
-
-            // determine base value
-            var k = 300;
-
-            if (planetClass == "Metal rich body") // MR
+            if (planetClass == "Metal rich body") // MR - Metal Rich
                 k = 21790;
             else if (planetClass == "Ammonia world") // AW
                 k = 96932;
@@ -564,13 +557,33 @@ namespace SrvSurvey
             }
             else if (planetClass == "Earthlike body") // ELW
             {
-                k = 116295;
+                k = 64831 + 116295;
             }
-            else // RB
+            else // RB - Rocky Body
             {
                 k = 300;
                 if (isTerraformable) k += 93328;
             }
+
+            return k;
+        }
+
+        public static int GetBodyValue(string? planetClass, bool isTerraformable, double mass, bool isFirstDiscoverer, bool isMapped, bool isFirstMapped, bool withEfficiencyBonus = true, bool isFleetCarrierSale = false)
+        {
+            // Logic from https://forums.frontier.co.uk/threads/exploration-value-formulae.232000/
+
+            var isOdyssey = Util.isOdyssey;
+            var isStar = planetClass != null && (planetClass.Length < 8 || planetClass[1] == '_' || planetClass == "SupermassiveBlackHole" || planetClass == "Nebula" || planetClass == "StellarRemnantNebula");
+
+            if (isStar)
+            {
+                var kk = getStarKValue(planetClass!);
+                var starValue = kk + (mass * kk / 66.25);
+                return (int)Math.Round(starValue);
+            }
+
+            // determine base value
+            var k = getBodyKValue(planetClass!, isTerraformable);
 
             // public static int GetBodyValue(int k, double mass, bool isFirstDiscoverer, bool isMapped, bool isFirstMapped, bool withEfficiencyBonus, bool isOdyssey, bool isFleetCarrierSale)
             // based on code from https://forums.frontier.co.uk/threads/exploration-value-formulae.232000/

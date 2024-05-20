@@ -16,7 +16,30 @@ namespace SrvSurvey
             this.Font = GameColors.fontSmall2;
 
             if (systemName != game?.systemData?.name)
+            {
+                // if we've switched systems, clear and add in any stars
                 PlotFSSInfo.scans.Clear();
+
+            }
+
+            // add any bodies discovered whilst outside of FSS
+            if (game?.systemData?.bodies.Count > 0)
+            {
+                var bodies = game.systemData.bodies.OrderBy(_ => _.shortName);
+                foreach (var body in bodies)
+                {
+                    if (body.type == SystemBodyType.Asteroid || scans.Any(_ => _.body == body)) continue;
+                    if (body.bioSignalCount == 0 && body.reward < Game.settings.hideFssLowValueAmount) continue;
+
+                    var newScan = new FssEntry
+                    {
+                        body = body,
+                        reward = body.reward,
+                        dssReward = Util.GetBodyValue(body, true, false),
+                    };
+                    scans.Add(newScan);
+                }
+            }
 
             systemName = game?.systemData?.name;
         }
@@ -65,9 +88,8 @@ namespace SrvSurvey
         protected override void onJournalEntry(Scan entry)
         {
             // ignore Belt Clusters
-            if (entry.Bodyname.Contains("Belt Cluster") || !string.IsNullOrEmpty(entry.StarType) || game?.systemData == null)
+            if (entry.Bodyname.Contains("Belt Cluster") || game?.systemData == null)
                 return;
-
             // allow time for the body to get created
             Application.DoEvents();
 
@@ -78,6 +100,8 @@ namespace SrvSurvey
                 reward = Util.GetBodyValue(entry, false),
                 dssReward = Util.GetBodyValue(entry, true),
             };
+
+            if (body.bioSignalCount == 0 && newScan.reward < Game.settings.hideFssLowValueAmount && newScan.dssReward < Game.settings.hideFssLowValueAmount) return;
             scans.Insert(0, newScan);
 
             this.Invalidate();
@@ -116,21 +140,33 @@ namespace SrvSurvey
                     // or a gas giant
                     if (dssWorthy && Game.settings.skipGasGiantDSS && scan.body.type == SystemBodyType.Giant)
                         dssWorthy = false;
+                    if (scan.body.type == SystemBodyType.Star)
+                        dssWorthy = false;
 
                     var highlight = dssWorthy | hasBioSignals;
 
-
+                    // 1st line: body name + type
                     var planetClass = scan.body.planetClass?.Replace("Sudarsky c", "C");
                     var txt = $"{scan.body.shortName} - {planetClass}";
+                    if (scan.body.terraformable) txt += " (T)";
+                    if (scan.body.type == SystemBodyType.Star)
+                        txt = $"{scan.body.shortName} - {scan.body.starType} Star";
+
                     drawTextAt(oneSix, txt, highlight ? GameColors.brushCyan : null);
                     newLine(true);
 
-                    drawTextAt(thirty, $"{scan.reward.ToString("N0")} |");
-                    drawTextAt(scan.dssReward.ToString("N0"), dssWorthy ? GameColors.brushCyan : null);
+                    // 2nd line: scan values
+                    var reward = scan.body.reward.ToString("N0"); // scan.reward ?
+                    drawTextAt(thirty, $"{reward}", dssWorthy ? GameColors.brushCyan : null);
+                    if (scan.body.type != SystemBodyType.Star && !scan.body.dssComplete)
+                    {
+                        drawTextAt("| ", GameColors.brushGameOrangeDim);
+                        drawTextAt(scan.dssReward.ToString("N0"), dssWorthy ? GameColors.brushCyan : null);
+                    }
 
                     if (scan.body.bioSignalCount > 0)
                     {
-                        drawTextAt($"| ");
+                        drawTextAt("| ", GameColors.brushGameOrangeDim);
                         drawTextAt($"{scan.body.bioSignalCount} Genus", GameColors.brushCyan);
                     }
                     newLine(+four, true);

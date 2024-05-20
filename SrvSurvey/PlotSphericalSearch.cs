@@ -83,7 +83,9 @@ namespace SrvSurvey
             this.targetSystemName = lastSystem.StarSystem;
             this.distance = Util.getSystemDistance(game.cmdr.sphereLimit.centerStarPos, lastSystem.StarPos);
 
-            this.Invalidate();
+            this.BeginInvoke(() => {
+                this.Invalidate();
+            });
         }
 
         protected override void OnPaintBackground(PaintEventArgs e)

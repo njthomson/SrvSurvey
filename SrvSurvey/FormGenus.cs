@@ -492,12 +492,12 @@ namespace SrvSurvey
                 if (this.filterIdx > 1 && this.targetBody != null && this.targetBody != foo.body) continue;
 
                 var txt = $"{foo.body.shortName}: {foo.body.bioSignalCount}x signals, {Util.lsToString(foo.body.distanceFromArrivalLS)}";
-                txt += $"\r\n({foo.body.planetClass}, {foo.body.atmosphereType}, {(foo.body.surfaceGravity/10f).ToString("N2")}g, {foo.body.surfaceTemperature.ToString("N2")}°K ({(foo.body.surfacePressure / 100_000f).ToString("N4")}) (atm), volcanism [{foo.body.volcanism}]\r\nmats [{string.Join(", ", foo.body.materials.Keys)}])";
+                //txt += $"\r\n({foo.body.planetClass}, {foo.body.atmosphereType}, {(foo.body.surfaceGravity/10f).ToString("N2")}g, {foo.body.surfaceTemperature.ToString("N2")}°K ({(foo.body.surfacePressure / 100_000f).ToString("N4")}) (atm), volcanism [{foo.body.volcanism}]\r\nmats [{string.Join(", ", foo.body.materials.Keys)}])";
 
-                txt += "\r\n  " + string.Join("\r\n  ", foo.species.Select(_ =>
+                txt += "\r\n  " + string.Join("\r\n  ", foo.species.OrderBy(_ => _.name).Select(_ =>
                 {
-                    var prefix = foo.body.organisms?.Find(o => o.species == _.bioRef.name)?.analyzed == true ? "-" : ">";
-                    return $"\t{prefix}{_.bioRef.englishName}{(_.predicted ? " ???" : "")} {Util.credits(_.reward, true)}";
+                    var prefix = foo.body.organisms?.Find(o => o.species == _.bioRef.name)?.analyzed == true ? "- " : "■ ";
+                    return $"\t{prefix}{(_.predicted ? "? " : "")}{_.bioRef.englishName} {Util.credits(_.reward, true)}";
                 }));
 
                 var lbl = new Label()
@@ -606,6 +606,7 @@ namespace SrvSurvey
                 var txt = new StringBuilder();
 
                 var comp1 = new Dictionary<string, HashSet<long>>();
+                if (r.Result.codex == null) return;
                 foreach (var _ in r.Result.codex)
                 {
                     if (_.hud_category != "Biology") continue;
@@ -728,11 +729,11 @@ namespace SrvSurvey
                     var minReward = foo.minReward;
                     var maxReward = foo.maxReward;
 
-                    if (foo.body.firstFootFall)
-                    {
-                        minReward *= 5;
-                        maxReward *= 5;
-                    }
+                    //if (foo.body.firstFootFall)
+                    //{
+                    //    minReward *= 5;
+                    //    maxReward *= 5;
+                    //}
 
                     var txt = Util.credits(minReward, true);
                     if (minReward != maxReward)

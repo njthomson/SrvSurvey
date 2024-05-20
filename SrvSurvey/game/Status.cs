@@ -127,13 +127,8 @@ namespace SrvSurvey
                     var blink = this.trackBlinks();
 
                     // fire the event for external code on the UI thread
-                    Program.control!.Invoke((MethodInvoker)delegate
-                    {
-                        if (this.StatusChanged != null)
-                        {
-                            this.StatusChanged(blink);
-                        }
-                    });
+                    if (this.StatusChanged != null)
+                        Program.control.Invoke(() => this.StatusChanged(blink));
                 }
                 catch (Exception)
                 {

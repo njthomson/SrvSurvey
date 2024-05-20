@@ -21,6 +21,7 @@ namespace SrvSurvey
 
         private Size boxSz;
         private List<RouteInfo> hops = new List<RouteInfo>();
+        private double distanceJumped;
 
         private string? targetSystem;
         private string? targetStatus;
@@ -54,7 +55,7 @@ namespace SrvSurvey
             else
             {
                 this.MinimumSize = new Size(scaled(96), scaled(44));
-                this.Font = GameColors.fontSmall;
+                this.Font = GameColors.fontSmall2;
             }
         }
 
@@ -162,17 +163,32 @@ namespace SrvSurvey
                 this.reposition(Elite.getWindowRect());
         }
 
-        protected override void onJournalEntry(NavRoute _entry)
+        protected override void onJournalEntry(NavRoute entry)
         {
             if (this.IsDisposed) return;
             this.hops.Clear();
 
             // lookup if target system has been discovered
-            if (game.navRoute.Route.Count > 1)
-                this.hops.Add(new RouteInfo(game.navRoute.Route.Last(), this, true));
+            if (game.navRoute.Route.Count < 2)
+                return;
+
+            // the desintation is last
+            this.hops.Add(RouteInfo.create(game.navRoute.Route.Last(), true));
+
+
+            var next = game.fsdTarget != null
+                ? game.navRoute.Route.Find(_ => _.StarSystem == game.fsdTarget) ?? game.navRoute.Route[1]
+                : game.navRoute.Route[1];
 
             if (game.navRoute.Route.Count > 2)
-                this.hops.Add(new RouteInfo(game.navRoute.Route[1], this, false));
+                this.hops.Add(RouteInfo.create(next, false));
+
+            this.distanceJumped = 0;
+            for (int n = 1; n < game.navRoute.Route.Count; n++)
+            {
+                var d = Util.getSystemDistance(game.navRoute.Route[n - 1].StarPos, game.navRoute.Route[n].StarPos);
+                this.distanceJumped += d;
+            }
 
             //var target = game.navRoute.Route.LastOrDefault()?.StarSystem;
             //this.hops.Add(new RouteInfo(target, this));
@@ -311,7 +327,11 @@ namespace SrvSurvey
                     foreach (var hop in this.hops)
                         drawSystemSummary(hop);// "Next jump", nextSystem, nextStatus, nextSubStatus);
 
-                    this.drawTextAt(eight, $"Data from: edsm.net / spansh.co.uk", GameColors.brushGameOrangeDim);
+
+                    this.drawTextAt(eight, $"Total jumps: {game.navRoute.Route.Count - 1} ► Distance: {this.distanceJumped.ToString("N1")} ly", GameColors.brushGameOrange);
+                    this.newLine(true);
+
+                    this.drawTextAt(eight, $"Data from: edsm.net + spansh.co.uk", GameColors.brushGameOrangeDim);
                     this.newLine(true);
                 }
 
@@ -346,27 +366,27 @@ namespace SrvSurvey
                 this.drawTextAt(eight, $"Next jump:");
 
             // line 1: system name
-            this.drawTextAt(nineSix, $"{hop.systemName}");
+            this.drawTextAt(eightSix, $"► {hop.systemName}", GameColors.fontSmall2Bold);
             this.newLine(true);
 
             // line 2: status
             if (hop.highlight)
-                this.drawTextAt(nineSix, $"> {hop.status}", GameColors.brushCyan, GameColors.fontSmallBold);
+                this.drawTextAt(eightSix, $"{hop.status}", GameColors.brushCyan, GameColors.fontSmall2Bold);
             else
-                this.drawTextAt(nineSix, $"> {hop.status}");
+                this.drawTextAt(eightSix, $"{hop.status}");
 
             // line 3: who discovered
             if (!string.IsNullOrEmpty(hop.subStatus))
             {
                 this.newLine(true);
-                this.drawTextAt(nineSix, $"> {hop.subStatus}");
+                this.drawTextAt(eightSix, $"{hop.subStatus}");
             }
 
             // line 4: bio signals?
             if (hop.sumGenus > 0)
             {
                 this.newLine(true);
-                this.drawTextAt(nineSix, $"> {hop.sumGenus}x Genus", GameColors.brushCyan, GameColors.fontSmallBold);
+                this.drawTextAt(eightSix, $"{hop.sumGenus}x Genus", GameColors.brushCyan, GameColors.fontSmall2Bold);
             }
 
             this.newLine(+ten, true);
@@ -455,6 +475,22 @@ namespace SrvSurvey
 
     class RouteInfo
     {
+        private static Dictionary<double, RouteInfo> cache = new Dictionary<double, RouteInfo>();
+
+        public static RouteInfo create(RouteEntry entry, bool destination)
+        {
+            var info = cache.GetValueOrDefault(entry.SystemAddress);
+
+            if (info == null)
+            {
+                info = new RouteInfo(entry, destination);
+                cache.Add(entry.SystemAddress, info);
+            }
+
+            info.destination = destination;
+            return info;
+        }
+
         public RouteEntry entry;
         public string status = "...";
         public string? subStatus;
@@ -463,12 +499,9 @@ namespace SrvSurvey
         public bool destination;
         public int sumGenus;
 
-        private Form form;
-
-        public RouteInfo(RouteEntry entry, Form form, bool destination)
+        public RouteInfo(RouteEntry entry, bool destination)
         {
             this.entry = entry;
-            this.form = form;
             this.destination = destination;
 
             this.lookupSystem();
@@ -513,8 +546,9 @@ namespace SrvSurvey
                         subStatus = $"By {discCmdr}, {discDate}";
                 }
 
-                if (this.form.Created)
-                    this.form.BeginInvoke(() => this.form.Invalidate());
+                var plotter = Program.getPlotter<PlotGalMap>();
+                if (plotter != null && plotter.Created)
+                    plotter.BeginInvoke(() => plotter.Invalidate());
 
             });
 

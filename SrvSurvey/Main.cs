@@ -441,11 +441,14 @@ namespace SrvSurvey
 
         private void btnResetExploration_Click(object sender, EventArgs e)
         {
+            if (game == null) return;
+
             var rslt = MessageBox.Show(this, "Are you sure you want to reset estimated exploration values and statistics?", "SrvSurvey", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
             if (rslt == DialogResult.Yes)
             {
                 game.cmdr.explRewards = 0;
                 game.cmdr.countJumps = 0;
+                game.cmdr.distanceTravelled = 0;
                 game.cmdr.countScans = 0;
                 game.cmdr.countDSS = 0;
                 game.cmdr.countLanded = 0;
@@ -515,17 +518,17 @@ namespace SrvSurvey
             {
                 btnResetExploration.Enabled = false;
                 txtExplorationValue.Text = "";
-                txtSysValue.Text = "";
                 txtJumps.Text = "";
+                txtDistance.Text = "";
                 txtBodies.Text = "";
             }
             else
             {
                 btnResetExploration.Enabled = true;
                 txtExplorationValue.Text = Util.credits(game.cmdr.explRewards, true);
-                txtSysValue.Text = game.systemData == null ? "" : Util.credits(game.systemData.sumRewards(), true);
                 txtJumps.Text = game.cmdr.countJumps.ToString("N0");
-                txtBodies.Text = $"scans: {game.cmdr.countScans}, DSS: {game.cmdr.countDSS}, Landed: {game.cmdr.countLanded}";
+                txtDistance.Text = game.cmdr.distanceTravelled.ToString("N1") + " ly";
+                txtBodies.Text = $"Scanned: {game.cmdr.countScans}, DSS: {game.cmdr.countDSS}, Landed: {game.cmdr.countLanded}";
             }
         }
 

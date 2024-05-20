@@ -34,6 +34,7 @@ namespace SrvSurvey
         public bool skipRingsDSS = false;
         public bool skipLowValueDSS = true;
         public int skipLowValueAmount = 1_000_000;
+        public int hideFssLowValueAmount = 10_000;
         public bool skipHighDistanceDSS = false;
         public int skipHighDistanceDSSValue = 100_000;
         public bool autoTrackCompBioScans = true;

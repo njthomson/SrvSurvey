@@ -46,13 +46,16 @@ namespace SrvSurvey.game
             }
 
             var filepath = files[0];
-            cache[systemAddress] = Data.Load<SystemData>(filepath)!;
+            var systemData = Data.Load<SystemData>(filepath)!;
+            cache[systemAddress] = systemData;
 
             // post-process body short names after loading
-            foreach (var body in cache[systemAddress].bodies)
-                body.shortName = body.name?.Replace(cache[systemAddress].name, "").Replace(" ", "") ?? "";
+            foreach (var body in systemData.bodies)
+                body.shortName = body.name == systemData.name
+                    ? "0"
+                    : body.name.Replace(systemData.name, "").Replace(" ", "") ?? "";
 
-            return cache[systemAddress];
+            return systemData;
         }
 
         /// <summary>
@@ -102,10 +105,12 @@ namespace SrvSurvey.game
                         {
                             id = entry.BodyID,
                             name = entry.Body,
+                            shortName = entry.Body.Replace(entry.StarSystem, "").Replace(" ", ""),
                             type = SystemBodyType.Star,
                             firstVisited = entry.timestamp,
                             lastVisited = entry.timestamp,
                         };
+                        if (mainStar.shortName.Length == 0) mainStar.shortName = "0";
                         data.bodies.Add(mainStar);
                     }
 
@@ -433,6 +438,9 @@ namespace SrvSurvey.game
         public bool honked;
         public bool fssAllBodies;
 
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public bool dssAllBodies;
+
         /// <summary> A list of all bodies detected in this system </summary>
         public List<SystemBody> bodies = new List<SystemBody>();
 
@@ -499,6 +507,17 @@ namespace SrvSurvey.game
         {
             if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! Expected: `{this.address}`, got: {entry.SystemAddress}"); return; }
 
+            if (this.bodyCount < entry.Count) this.bodyCount = entry.Count;
+
+            //// apply bonus to exploration rewards - if main star was not discovered?
+            //var mainStar = bodies.Find(_ => _.isMainStar);
+            //if (Game.activeGame?.systemData == this && !this.fssAllBodies && mainStar?.wasDiscovered == false)
+            //{
+            //    var bonus = this.bodyCount * 1000;
+            //    Game.activeGame.cmdr.applyExplReward(bonus, $"FSS complete");
+            //}
+            // TODO: Confirm if this is the right thing to do
+
             // FSS completed in-game
             this.fssAllBodies = true;
         }
@@ -558,13 +577,54 @@ namespace SrvSurvey.game
                 var reward = Util.GetBodyValue(entry, false);
                 if (body.reward < reward)
                 {
-                    body.reward += reward;
+                    body.reward = reward;
                     Game.activeGame.cmdr.countScans += 1;
                     Game.activeGame.cmdr.applyExplReward(reward, $"Scan:{entry.ScanType} of {entry.Bodyname}");
+
+                    // and adjust main star value too
+                    if (this.honked)
+                        this.applyMainStarHonkBonus();
                 }
             }
 
             if (this.bioSummaryActive) this.summarizeBioSystem();
+        }
+
+        private void applyMainStarHonkBonus()
+        {
+            const double q = 0.56591828;
+
+            double bonus = 0;
+            int uncounted = this.bodyCount - 1;
+            foreach (var body in this.bodies)
+            {
+                if (body.isMainStar || body.type == SystemBodyType.Asteroid) continue;
+                uncounted -= 1;
+
+                if (body.type == SystemBodyType.Star)
+                {
+                    var bodyValue = Util.GetBodyValue(body, false, false) * 0.3f;
+                    if (!body.wasDiscovered) bodyValue *= 2.6f;
+                    bonus += bodyValue;
+                }
+                else if (body.type == SystemBodyType.LandableBody || body.type == SystemBodyType.SolidBody || body.type == SystemBodyType.Giant)
+                {
+                    var k = Util.getBodyKValue(body.planetClass!, body.terraformable);
+                    double bodyValue = Math.Max(500, (k + k * q * Math.Pow(body.mass, 0.2)) / 3);
+                    if (!body.wasDiscovered) bodyValue *= 2.6f;
+
+                    bonus += bodyValue;
+                }
+            }
+
+            // assume "500" for any un-counted/unscanned bodies
+            if (uncounted > 0)
+                bonus += uncounted * 500;
+
+            var mainStar = bodies.Find(_ => _.isMainStar)!;
+            var baseValue = Util.GetBodyValue(mainStar, false, false);
+            Game.log($"applyMainStarHonkBonus: baseValue: {baseValue}, bonus: {(int)bonus}");
+            mainStar.reward = baseValue + (int)bonus;
         }
 
         public void onJournalEntry(SAAScanComplete entry)
@@ -588,6 +648,18 @@ namespace SrvSurvey.game
                     body.reward = reward;
                     Game.activeGame.cmdr.countDSS += 1;
                     Game.activeGame.cmdr.applyExplReward(reward, $"DSS of {body.name}");
+                }
+            }
+
+            // have we mapped all mappable bodies in the system?
+            var countMappableBodies = this.bodies.Count(_ => _.type == SystemBodyType.LandableBody || _.type == SystemBodyType.SolidBody || _.type == SystemBodyType.Giant);
+            if (this.dssBodyCount == countMappableBodies && !this.dssAllBodies)
+            {
+                this.dssAllBodies = true;
+                if (Game.activeGame?.systemData == this)
+                {
+                    var bonus = countMappableBodies * 10_000;
+                    Game.activeGame.cmdr.applyExplReward(bonus, $"DSS mapped all valid bodies");
                 }
             }
         }
@@ -1064,9 +1136,24 @@ namespace SrvSurvey.game
             return $"'{this.name}' ({this.address}";
         }
 
+        /// <summary>
+        /// Returns sum of exploration rewards for this system
+        /// </summary>
         public long sumRewards()
         {
-            return this.bodies.Sum(_ => _.reward);
+            var sumReward = this.bodies.Sum(_ => _.reward);
+
+            // Maybe this needs the system to be completely undiscovered? (Meaning primary star was not discovered)
+            //// FSS completed?
+            //if (this.fssAllBodies)
+            //    sumReward += this.bodyCount * 1000;
+
+            //// Mapped all valid bodies?
+            //var countMappableBodies = this.bodies.Count(_ => _.type == SystemBodyType.LandableBody || _.type == SystemBodyType.SolidBody || _.type == SystemBodyType.Giant);
+            //if (this.dssBodyCount == countMappableBodies)
+            //    sumReward += countMappableBodies * 10_000;
+
+            return sumReward;
         }
 
         [JsonIgnore]
@@ -1449,16 +1536,11 @@ namespace SrvSurvey.game
             }
 
             // skip adding predicted species if we have confirmed ones
-            if (true)
-            {
-                if (!species.predicted && !bodyTracker.species.Any(_ => _.predicted == false && _.bioRef == species.bioRef))
-                    bodyTracker.species.Add(species);
-            }
-            if (!bodyTracker.species.Any(_ => _.predicted == false && _.bioRef.genus == species.bioRef.genus))
+            if (!species.predicted && !bodyTracker.species.Any(_ => _.predicted == false && _.bioRef == species.bioRef))
                 bodyTracker.species.Add(species);
-
-
-            //bodyTracker.species.Add(species);
+            // skip if that species is already present
+            else if (!bodyTracker.species.Any(_ => _.bioRef == species.bioRef))
+                bodyTracker.species.Add(species);
 
             return bodyTracker;
         }
@@ -1525,7 +1607,11 @@ namespace SrvSurvey.game
                 if (body.organisms?.Any(o => o.species == match.species.name) == true)
                     // species already known on this body - no need to predict it
                     continue;
+                // skip if genus is known and this isn't one of them
                 if (allGenusKnown && body.organisms?.Any(_ => _.genus == match.genus.name) == false)
+                    continue;
+                // skip if species is known
+                if (allGenusKnown && body.organisms?.Any(_ => _.genus == match.genus.name && _.species != null) == true)
                     continue;
 
                 if (match?.genus != null && match?.species != null)
@@ -1582,15 +1668,53 @@ namespace SrvSurvey.game
 
                 // how many predictions are needed to reach the signal count?
                 var delta = tracker.body.bioSignalCount - countKnown;
-                var sortedPredictions = predicted.OrderBy(_ => _.reward);
+                var sortedPredictions = predicted.OrderBy(_ => _.reward).ToList();
 
-                // take that many from the top and bottom for min/max per body
-                tracker.minReward += sortedPredictions.Take(delta).Sum(_ => _.reward);
+                // take that many from the bottom for min per body
+                var list = this.getShortList(delta, sortedPredictions, true);
+                var sum = list.Sum(_ => _.reward);
+                tracker.minReward += sum;
+                //tracker.minReward += sortedPredictions.Take(delta).Sum(_ => _.reward);
                 this.minReward += tracker.minReward;
 
-                tracker.maxReward = sortedPredictions.TakeLast(delta).Sum(_ => _.reward);
+                // take that many from the top for max per body
+                list = this.getShortList(delta, sortedPredictions, false);
+                sum = list.Sum(_ => _.reward);
+                tracker.maxReward = rewardKnown + sum;
+                //tracker.maxReward = sortedPredictions.TakeLast(delta).Sum(_ => _.reward);
                 this.maxReward += tracker.maxReward;
             }
+        }
+
+        private List<SummarySpecies> getShortList(int delta, List<SummarySpecies> sortedPredictions, bool minNotMax)
+        {
+            var idx = minNotMax ? 0 : sortedPredictions.Count - 1;
+
+            var list = new List<SummarySpecies>();
+            while (list.Count < delta && idx >= 0 && idx < sortedPredictions.Count)
+            {
+                var next = sortedPredictions[idx];
+                // add if that genus is not already present
+                var genusMatch = list.Find(_ => _.bioRef.genus == next.bioRef.genus);
+                if (genusMatch == null)
+                    list.Add(next);
+                else if (minNotMax && next.reward < genusMatch.reward)
+                {
+                    list.Remove(genusMatch);
+                    list.Add(next);
+                }
+                else if (!minNotMax && next.reward > genusMatch.reward)
+                {
+                    list.Remove(genusMatch);
+                    list.Add(next);
+                }
+                if (minNotMax)
+                    idx++;
+                else
+                    idx--;
+            }
+
+            return list;
         }
     }
 
@@ -1656,7 +1780,7 @@ namespace SrvSurvey.game
 
         public override string ToString()
         {
-            return $"{this.displayName} (guessed: {this.predicted})";
+            return $"{this.bioRef.genus.englishName} {this.displayName} (guessed: {this.predicted}) {Util.credits(this.reward, true)}";
         }
 
         public string name { get => bioRef.name; }
@@ -1825,6 +1949,17 @@ namespace SrvSurvey.game
         [JsonIgnore]
         public bool hasRings { get => this.rings?.Count > 0; }
 
+        [JsonIgnore]
+        public bool isMainStar
+        {
+            get
+            {
+                if (this.type != SystemBodyType.Star) return false;
+                if (this.id == 0 || this.name.EndsWith("A")) return true;
+                return false;
+            }
+        }
+
         public bool hasParent(int bodyId)
         {
             return this.parents.Any(_ => _.id == bodyId);
@@ -1837,6 +1972,9 @@ namespace SrvSurvey.game
                 ? 0
                 : this.organisms.Count(_ => _.analyzed);
         }
+
+        //[JsonIgnore]
+        //public Dictionary<string, BioSpecies> predictions = new Dictionary<string, BioSpecies>();
 
         [JsonIgnore]
         public long sumPotentialEstimate
