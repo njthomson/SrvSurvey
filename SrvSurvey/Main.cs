@@ -220,7 +220,15 @@ namespace SrvSurvey
                 {
                     SiteTemplate.Import();
                     HumanSiteTemplate.import();
-                    await Game.git.refreshPublishedData();
+                    await Game.git.refreshPublishedData().ContinueWith(_ =>
+                    {
+                        // show update available link as needed
+                        if (_.Result)
+                            BeginInvoke(() =>
+                            {
+                                linkNewBuildAvailable.Visible = true;
+                            });
+                    });
 
                     Game.canonn.init();
 
@@ -560,7 +568,7 @@ namespace SrvSurvey
 
             var sysEstimate = game.systemData.bodies.Sum(_ => _.sumPotentialEstimate);
             var sysActual = game.systemData.bodies.Sum(_ => _.sumAnalyzed);
-            txtSystemBioValues.Text = $"{Util.credits(sysActual, true)} of {Util.credits(sysEstimate, true)}";
+            txtSystemBioValues.Text = $" {Util.credits(sysActual, true)} of {Util.credits(sysEstimate, true)}";
             if (game.systemData.bodies.Any(_ => _.bioSignalCount > 0 && _.organisms?.All(o => o.species != null) != true))
                 txtSystemBioValues.Text += "?";
 
@@ -603,7 +611,7 @@ namespace SrvSurvey
             else
             {
                 txtBodyBioSignals.Text = $"{game.systemBody!.countAnalyzedBioSignals} of {game.systemBody!.bioSignalCount}";
-                txtBodyBioValues.Text = $"{Util.credits(game.systemBody.sumAnalyzed, true)} of {Util.credits(game.systemBody.sumPotentialEstimate, true)}";
+                txtBodyBioValues.Text = $" {Util.credits(game.systemBody.sumAnalyzed, true)} of {Util.credits(game.systemBody.firstFootFall ? game.systemBody.maxBioRewards * 5 : game.systemBody.maxBioRewards, true)}";
                 if (game.systemBody.organisms?.All(o => o.species != null) != true)
                     txtBodyBioValues.Text += "?";
 
@@ -1238,6 +1246,17 @@ namespace SrvSurvey
 
             // force opacity changes to take immediate effect
             Program.showActivePlotters();
+
+            btnBioSummary.Visible = Game.settings.autoShowPlotBioSystemTest;
+        }
+
+        private void linkNewBuildAvailable_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            // open MS App store link or GitHub Releases
+            if (Program.isAppStoreBuild)
+                Util.openLink("https://www.microsoft.com/store/productId/9NGT6RRH6B7N");
+            else
+                Util.openLink("https://github.com/njthomson/SrvSurvey/releases");
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

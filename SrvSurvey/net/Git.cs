@@ -19,8 +19,10 @@ namespace SrvSurvey.net
             Git.client.DefaultRequestHeaders.Add("user-agent", Program.userAgent);
         }
 
-        public async Task refreshPublishedData()
+        public async Task<bool> refreshPublishedData()
         {
+            var updateAvailable = false;
+
             Game.log($"updatePubData ...");
             try
             {
@@ -30,6 +32,12 @@ namespace SrvSurvey.net
 
                 Directory.CreateDirectory(Git.pubDataFolder);
                 Directory.CreateDirectory(Git.pubGuardianFolder);
+
+                var currentVersion = Version.Parse(Program.releaseVersion);
+                if (Program.isAppStoreBuild && pubData.msVer > currentVersion)
+                    updateAvailable = true;
+                else if (!Program.isAppStoreBuild && pubData.ghVer > currentVersion)
+                    updateAvailable = true;
 
                 if (pubData.codexRef > Game.settings.pubCodexRef)
                 {
@@ -99,6 +107,7 @@ namespace SrvSurvey.net
             {
                 Game.log($"updatePubData - complete");
             }
+            return updateAvailable;
         }
 
         private void updateRawPoiAfterRefresh()
@@ -364,6 +373,8 @@ namespace SrvSurvey.net
 
     internal class GitDataIndex
     {
+        public Version ghVer;
+        public Version msVer;
         public int codexRef;
         public int settlementTemplate;
         public int guardian;

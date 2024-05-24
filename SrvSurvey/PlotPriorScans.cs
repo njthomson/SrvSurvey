@@ -248,7 +248,7 @@ namespace SrvSurvey
                 }
 
                 var indent = scaled(70f);
-                if (Game.settings.autoShowPlotBioSystemTest) indent += threeFour;
+                if (false && Game.settings.autoShowPlotBioSystemTest) indent += threeFour;
                 var bearingWidth = scaled(75);
 
                 this.dty = scaled(8f);
@@ -328,7 +328,7 @@ namespace SrvSurvey
 
                     r.Y = (int)ly;
 
-                    if (Game.settings.autoShowPlotBioSystemTest)
+                    if (false && Game.settings.autoShowPlotBioSystemTest)
                     {
                         PlotBase.drawBioRing(g, signal.genusName, r.X, r.Y - 2, signal.reward, isActive, 24);
                         r.X += 28;

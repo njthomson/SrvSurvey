@@ -116,10 +116,15 @@ namespace SrvSurvey
             {
                 this.resetPlotter(e.Graphics);
 
+                // 1st line: system name
                 drawTextAt(game.systemData.name, GameColors.fontSmallBold);
                 newLine(+eight, true);
+
+                // 2nd line body count / values
                 var bodyCount = game.systemData.bodies.Count(_ => _.scanned && _.type != SystemBodyType.Asteroid);
-                drawTextAt(eight, $"Scanned {bodyCount} bodies: {game.systemData.sumRewards().ToString("N0")} cr");
+                drawTextAt(eight, $"Scanned {bodyCount} bodies: {Util.credits(game.systemData.sumRewards())}");
+                newLine(true);
+                drawTextAt(eight, $"( Hiding bodies < {Util.credits(Game.settings.hideFssLowValueAmount)} )", GameColors.brushGameOrangeDim);
                 newLine(+eight, true);
 
                 if (scans.Count == 0)
@@ -147,12 +152,13 @@ namespace SrvSurvey
 
                     // 1st line: body name + type
                     var planetClass = scan.body.planetClass?.Replace("Sudarsky c", "C");
-                    var txt = $"{scan.body.shortName} - {planetClass}";
+                    var prefix = scan.body.wasDiscovered ? "" : "*";
+                    var txt =  $"{prefix}{scan.body.shortName} - {planetClass}"; // ◌◎◉☆★☄☼☀⛀⛃✔✨✶✪❓❔❓⛬❗❕ * ❒❱✪❍❌✋❖⟡⦁⦂⧫
                     if (scan.body.terraformable) txt += " (T)";
                     if (scan.body.type == SystemBodyType.Star)
-                        txt = $"{scan.body.shortName} - {scan.body.starType} Star";
+                        txt = $"{prefix}{scan.body.shortName} - {scan.body.starType} Star";
 
-                    drawTextAt(oneSix, txt, highlight ? GameColors.brushCyan : null);
+                    drawTextAt(oneSix, txt, highlight ? GameColors.brushCyan : null, GameColors.fontSmall2);
                     newLine(true);
 
                     // 2nd line: scan values
@@ -177,10 +183,10 @@ namespace SrvSurvey
                         break;
                 }
 
-                newLine();
-                drawTextAt(eight, "( scan value | DSS value )", GameColors.brushGameOrangeDim);
+                drawTextAt(eight, "Scan value | DSS value", GameColors.brushGameOrangeDim);
                 newLine(true);
-
+                drawTextAt(eight, "* Undiscovered | T Terraformable", GameColors.brushGameOrangeDim);
+                newLine(true);
 
                 this.formAdjustSize(+oneEight, +ten);
             }

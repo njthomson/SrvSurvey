@@ -268,6 +268,7 @@
             toolRewardValue.Name = "toolRewardValue";
             toolRewardValue.Size = new Size(74, 25);
             toolRewardValue.Text = "555M cr";
+            toolRewardValue.Visible = false;
             // 
             // FormGenus
             // 

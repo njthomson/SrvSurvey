@@ -439,7 +439,7 @@ namespace SrvSurvey
                     txt.AppendLine($"  > " + string.Join("\r\n  > ", missed));
                 }
 
-                var list2 = PotentialOrganism.match(null, targetBody, systemData);
+                var list2 = PotentialOrganism.match(targetBody, null);
                 row.Add(list2.Count.ToString()); // method2 predicted count
                 txt.AppendLine($"\r\nMethod 2:");
                 countMatch = 0;

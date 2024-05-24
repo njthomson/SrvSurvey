@@ -150,6 +150,13 @@ namespace SrvSurvey
             return txt;
         }
 
+        public static string getMinMaxCredits(long min, long max)
+        {
+            return min == max
+                ? Util.credits(min, true)
+                : Util.credits(min, true) + " ~ " + Util.credits(max, true);
+        }
+
         public static LatLong2 adjustForCockpitOffset(decimal radius, LatLong2 location, string shipType, float shipHeading)
         {
             if (shipType == null || !Util.mapShipCockpitOffsets.ContainsKey(shipType))

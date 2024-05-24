@@ -1,5 +1,4 @@
 ﻿using SrvSurvey.game;
-using System.Drawing.Drawing2D;
 
 namespace SrvSurvey
 {
@@ -126,8 +125,8 @@ namespace SrvSurvey
 
                 if (subStatus.Count > 0)
                 {
-                    drawTextAt(this.ClientSize.Width - ten, $"({string.Join(", ", subStatus)})", GameColors.brushCyan, null, true);
-                    newLine(+2, true);
+                    drawTextAt(this.ClientSize.Width - ten, $"( {string.Join(", ", subStatus)} )", GameColors.brushCyan, null, true);
+                    newLine(+2);
                 }
 
                 // reward
@@ -165,9 +164,9 @@ namespace SrvSurvey
                 // bio signals
                 if (body.bioSignalCount > 0)
                 {
-                    dty += four;
+                    dty -= four;
                     drawTextAt(eight, $"Bio signals: {body.bioSignalCount}", GameColors.brushCyan);
-                    drawTextAt(oneTwenty, $" | Reward: {Util.credits(body.sumPotentialEstimate)}", GameColors.brushCyan);
+                    drawTextAt($"( value: {body.minMaxBioRewards} cr )", GameColors.brushCyan);
                     newLine(+four, true);
                 }
 

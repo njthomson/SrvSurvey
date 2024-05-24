@@ -49,11 +49,19 @@ namespace SrvSurvey.game
             var systemData = Data.Load<SystemData>(filepath)!;
             cache[systemAddress] = systemData;
 
-            // post-process body short names after loading
+            // post-process after loading ...
             foreach (var body in systemData.bodies)
+            {
+                // make all bodies aware of their parent system
+                body.system = systemData;
+                // short names
                 body.shortName = body.name == systemData.name
                     ? "0"
                     : body.name.Replace(systemData.name, "").Replace(" ", "") ?? "";
+                // make predictions based on what we know
+                if (body.bioSignalCount > 0 && (body.organisms == null || body.organisms.Any(o => o.species == null)))
+                    body.predictSpecies();
+            }
 
             return systemData;
         }
@@ -103,6 +111,7 @@ namespace SrvSurvey.game
                     {
                         var mainStar = new SystemBody()
                         {
+                            system = data,
                             id = entry.BodyID,
                             name = entry.Body,
                             shortName = entry.Body.Replace(entry.StarSystem, "").Replace(" ", ""),
@@ -323,6 +332,7 @@ namespace SrvSurvey.game
                                             genusLocalized = bodyOrg.genusLocalized!,
                                         };
                                         systemBody.organisms.Add(systemOrg);
+                                        systemBody.organisms = systemBody.organisms.OrderBy(_ => _.genusLocalized).ToList();
                                         systemBody.bioSignalCount = Math.Max(systemBody.bioSignalCount, systemBody.organisms.Count);
                                     }
                                     continue;
@@ -347,6 +357,7 @@ namespace SrvSurvey.game
                             };
                             Game.log($"add organism '{bioMatch.variant.name}' ({bioMatch.entryId}) to '{systemBody.name}' ({systemBody.id})");
                             systemBody.organisms.Add(systemOrg);
+                            systemBody.organisms = systemBody.organisms.OrderBy(_ => _.genusLocalized).ToList();
                             systemBody.bioSignalCount = Math.Max(systemBody.bioSignalCount, systemBody.organisms.Count);
                         }
 
@@ -460,6 +471,7 @@ namespace SrvSurvey.game
                     // create a sub if not
                     body = new SystemBody()
                     {
+                        system = this,
                         name = bodyName,
                         shortName = bodyName.Replace(this.name, "").Replace(" ", ""),
                         id = bodyId,
@@ -673,6 +685,9 @@ namespace SrvSurvey.game
             var bioSignals = entry.Signals.FirstOrDefault(_ => _.Type == "$SAA_SignalType_Biological;");
             if (bioSignals != null && body.bioSignalCount < bioSignals.Count)
                 body.bioSignalCount = bioSignals.Count;
+
+            if (bioSignals != null)
+                body.predictSpecies();
         }
 
         public void onJournalEntry(SAASignalsFound entry)
@@ -701,6 +716,7 @@ namespace SrvSurvey.game
                                 genus = genusEntry.Genus,
                                 genusLocalized = genusEntry.Genus_Localised!,
                             });
+                            body.organisms = body.organisms.OrderBy(_ => _.genusLocalized).ToList();
                             body.bioSignalCount = Math.Max(body.bioSignalCount, body.organisms.Count);
                         }
                     }
@@ -774,6 +790,7 @@ namespace SrvSurvey.game
                 };
                 Game.log($"add organism '{match.variant.name}' ({match.entryId}) to '{body.name}' ({body.id})");
                 body.organisms.Add(organism);
+                body.organisms = body.organisms.OrderBy(_ => _.genusLocalized).ToList();
                 body.bioSignalCount = Math.Max(body.bioSignalCount, body.organisms.Count);
             }
 
@@ -812,6 +829,7 @@ namespace SrvSurvey.game
                 };
                 Game.log($"add organism '{entry.Variant_Localised}' ({match.entryId}) to '{body.name}' ({body.id})");
                 body.organisms.Add(organism);
+                body.organisms = body.organisms.OrderBy(_ => _.genusLocalized).ToList();
                 body.bioSignalCount = Math.Max(body.bioSignalCount, body.organisms.Count);
             }
 
@@ -944,6 +962,7 @@ namespace SrvSurvey.game
                             Game.log($"add organism '{match.variant.name}' ({match.entryId}) from Canonn POI to '{poiBody.name}' ({poiBody.id})");
                             if (poiBody.organisms == null) poiBody.organisms = new List<SystemOrganism>();
                             poiBody.organisms.Add(organism);
+                            poiBody.organisms = poiBody.organisms.OrderBy(_ => _.genusLocalized).ToList();
                             poiBody.bioSignalCount = Math.Max(poiBody.bioSignalCount, poiBody.organisms.Count);
                         }
 
@@ -1122,6 +1141,7 @@ namespace SrvSurvey.game
                                 genus = newGenus,
                                 genusLocalized = BioScan.genusNames[newGenus],
                             });
+                            body.organisms = body.organisms.OrderBy(_ => _.genusLocalized).ToList();
                         }
                     }
                 }
@@ -1137,7 +1157,7 @@ namespace SrvSurvey.game
         }
 
         /// <summary>
-        /// Returns sum of exploration rewards for this system
+        /// Returns sum of current exploration rewards for this system
         /// </summary>
         public long sumRewards()
         {
@@ -1351,10 +1371,10 @@ namespace SrvSurvey.game
         //    return parentStarTypes;
         //}
 
-
         public HashSet<SystemBody> getParentStars(SystemBody body)
         {
             var parentStars = new HashSet<SystemBody>();
+            if (body.parents == null) return parentStars;
 
             // walk the list of parents for the given body
             foreach (var _ in body.parents)
@@ -1442,6 +1462,11 @@ namespace SrvSurvey.game
             // .Where(b => b.type == SystemBodyType.Star)
             return stars;
         }
+
+        [JsonIgnore]
+        public long minBioRewards { get => this.bodies.Sum(b => b.firstFootFall ? b.minBioRewards * 5 : b.minBioRewards); }
+        [JsonIgnore]
+        public long maxBioRewards { get => this.bodies.Sum(b => b.firstFootFall ? b.maxBioRewards * 5 : b.maxBioRewards); }
 
         [JsonIgnore]
         private bool bioSummaryActive;
@@ -1568,7 +1593,7 @@ namespace SrvSurvey.game
                 else
                 {
                     // predict valid species within the genus ...
-                    var predictions = PotentialOrganism.match(org, body, systemData);
+                    var predictions = PotentialOrganism.match(body, org.genus);
                     foreach (var prediction in predictions)
                     {
                         var genusRef = Game.codexRef.matchFromGenus(org.genus)!;
@@ -1591,7 +1616,7 @@ namespace SrvSurvey.game
 
         public int predictBody(SystemBody body, SystemData systemData)
         {
-            var predictions = PotentialOrganism.match(null, body, systemData);
+            var predictions = PotentialOrganism.match(body, null);
             var allGenusKnown = body.bioSignalCount == body.organisms?.Count;
 
             foreach (var prediction in predictions)
@@ -1799,6 +1824,25 @@ namespace SrvSurvey.game
         {
             this.body = body;
         }
+
+        public long getMaxEstimatedRewardForGenus(string genusName, bool minNotMax)
+        {
+            var reward = minNotMax ? 50_000_000 : -1L;
+
+            foreach (var foo in this.species)
+            {
+                if (foo.bioRef.genus.name != genusName) continue;
+                if (minNotMax && foo.reward < reward)
+                    reward = foo.reward;
+                else if (!minNotMax && foo.reward > reward)
+                    reward = foo.reward;
+            }
+
+            if (minNotMax && reward == 50_000_000)
+                return 0;
+            else
+                return reward;
+        }
     }
 
     internal class SystemBody
@@ -1944,6 +1988,9 @@ namespace SrvSurvey.game
         }
 
         [JsonIgnore]
+        public SystemData system;
+
+        [JsonIgnore]
         public string shortName;
 
         [JsonIgnore]
@@ -1973,9 +2020,26 @@ namespace SrvSurvey.game
                 : this.organisms.Count(_ => _.analyzed);
         }
 
-        //[JsonIgnore]
-        //public Dictionary<string, BioSpecies> predictions = new Dictionary<string, BioSpecies>();
+        [JsonIgnore]
+        public Dictionary<string, BioSpecies> predictions = new Dictionary<string, BioSpecies>();
 
+        [JsonIgnore]
+        public long minBioRewards;
+
+        [JsonIgnore]
+        public long maxBioRewards;
+
+        [JsonIgnore]
+        public string minMaxBioRewards
+        {
+            get => Util.getMinMaxCredits(
+                this.firstFootFall ? this.minBioRewards * 5 : this.minBioRewards,
+                this.firstFootFall ? this.maxBioRewards * 5 : this.maxBioRewards);
+        }
+
+        /// <summary>
+        /// TODO: retire!
+        /// </summary>
         [JsonIgnore]
         public long sumPotentialEstimate
         {
@@ -2006,8 +2070,11 @@ namespace SrvSurvey.game
         }
 
         [JsonIgnore]
-        public long sumAnalyzed { get => this.organisms?.Sum(_ => !_.analyzed ? 0 : this.firstFootFall ? _.reward * 5 : _.reward) ?? 0; }
+        public long sumAnalyzed { get => this.organisms?.Sum(o => !o.analyzed ? 0 : this.firstFootFall ? o.reward * 5 : o.reward) ?? 0; }
 
+        /// <summary>
+        /// Exploration reward estimate for body
+        /// </summary>
         [JsonIgnore]
         public double rewardEstimate
         {
@@ -2047,6 +2114,124 @@ namespace SrvSurvey.game
             return organism;
         }
 
+        public void predictSpecies()
+        {
+            this.predictions.Clear();
+            var knownRewards = 0L;
+
+            // predict valid species within the genus ...
+            if (this.organisms?.Count > 0)
+            {
+                foreach (var o in this.organisms)
+                {
+                    o.lookupMissingSpeciesIfNeeded();
+
+                    // if we know the species, keep its reward value and move on
+                    if (o.species != null)
+                    {
+                        knownRewards += /*this.firstFootFall ? o.reward * 5 :*/ o.reward;
+                        continue;
+                    }
+
+                    // otherwise predict within the genus
+                    var genusPredictions = PotentialOrganism.match(this, o.genus);
+                    foreach (var speciesName in genusPredictions)
+                    {
+                        var speciesRef = Game.codexRef.matchFromSpecies(speciesName);
+                        this.predictions[speciesName] = speciesRef;
+                    }
+                }
+            }
+
+            // predict the whole body if there are signals unaccounted for
+            var delta = this.bioSignalCount - (this.organisms?.Count ?? 0);
+            if (delta > 0)
+            {
+                var bodyPredictions = PotentialOrganism.match(this, null);
+                foreach (var speciesName in bodyPredictions)
+                {
+                    var match = Game.codexRef.matchFromSpecies2(speciesName);
+                    if (this.organisms != null)
+                    {
+                        // skip if a species is already known for this genus
+                        if (this.organisms.Any(o => o.genus == match.genus.name && o.species != null)) continue;
+                        // skip if genus are all known and this isn't one of them
+                        if (!this.organisms.Any(o => o.genus == match.genus.name)) continue;
+                    }
+
+                    this.predictions[speciesName] = match.species;
+                }
+            }
+
+            // after predictions, figure out what the min/max rewards are
+            delta = this.bioSignalCount - (this.organisms?.Count(o => o.species != null) ?? 0);
+
+            this.minBioRewards = knownRewards;
+            this.maxBioRewards = knownRewards;
+            if (this.predictions.Count > 0)
+            {
+                var sortedPredictions = this.predictions.OrderBy(_ => _.Value.reward).Select(_ => _.Value).ToList();
+                this.minBioRewards += this.getShortListSum(delta, sortedPredictions, true);
+                this.maxBioRewards += this.getShortListSum(delta, sortedPredictions, false);
+            }
+
+            Game.log($"predictSpecies: '{this.name}' predicted {predictions.Count} species: {this.minMaxBioRewards}\r\n> " + string.Join("\r\n> ", this.predictions.Keys));
+        }
+
+        private long getShortListSum(int delta, List<BioSpecies> sortedPredictions, bool minNotMax)
+        {
+            var idx = minNotMax ? 0 : sortedPredictions.Count - 1;
+
+            var list = new List<BioSpecies>();
+            while (list.Count < delta && idx >= 0 && idx < sortedPredictions.Count)
+            {
+                var next = sortedPredictions[idx];
+
+                // add if that genus is not already present
+                var genusMatch = list.Find(_ => _.genus == next.genus);
+                if (genusMatch == null)
+                {
+                    list.Add(next);
+                }
+                else if ((minNotMax && next.reward < genusMatch.reward) || (!minNotMax && next.reward > genusMatch.reward))
+                {
+                    list.Remove(genusMatch);
+                    list.Add(next);
+                }
+
+                if (minNotMax)
+                    idx++;
+                else
+                    idx--;
+            }
+
+            return list.Sum(_ => _.reward);
+        }
+
+        /// <summary>
+        /// Return the min or max predicted reward value for the given genus on this body
+        /// </summary>
+        public long getBioRewardForGenus(SystemOrganism org, bool minNotMax)
+        {
+            // if we know the species reward already - return that number
+            if (org.reward > 0) return org.reward;
+
+            // otherwise figure it out from the predictions
+            var reward = minNotMax ? 50_000_000 : -1L;
+
+            foreach (var bioRef in this.predictions.Values)
+            {
+                if (bioRef.genus.name != org.genus) continue;
+
+                if ((minNotMax && bioRef.reward < reward) || (!minNotMax && bioRef.reward > reward))
+                    reward = bioRef.reward;
+            }
+
+            if (minNotMax && reward == 50_000_000)
+                return 0;
+            else
+                return reward;
+        }
     }
 
     internal class SystemRing
@@ -2112,5 +2297,19 @@ namespace SrvSurvey.game
 
         [JsonIgnore]
         public int range { get => BioScan.ranges[this.genus]; }
+
+        public void lookupMissingSpeciesIfNeeded()
+        {
+            // look-up species name if we don't already know it
+            if (this.species == null && this.entryId > 0)
+            {
+                var match = Game.codexRef.matchFromEntryId(this.entryId).species;
+                this.species = match.name;
+                this.speciesLocalized = match.englishName;
+
+                if (this.reward == 0)
+                    this.reward = match.reward;
+            }
+        }
     }
 }

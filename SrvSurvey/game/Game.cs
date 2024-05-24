@@ -1054,6 +1054,8 @@ namespace SrvSurvey.game
 
             if (FormGenus.activeForm != null)
                 FormGenus.activeForm.deferPopulateGenus();
+
+            this.systemBody?.predictSpecies();
         }
 
         private void onJournalEntry(FSSAllBodiesFound entry)
@@ -1065,9 +1067,12 @@ namespace SrvSurvey.game
         {
             this.systemStatus.onJournalEntry(entry); // retire
 
-            //var bioSignals = entry.Signals.FirstOrDefault(_ => _.Type == "$SAA_SignalType_Biological;");
-            //if (bioSignals != null && FormGenus.activeForm != null)
-            //    FormGenus.activeForm.deferPopulateGenus();
+            if (FormGenus.activeForm != null)
+            {
+                var bioSignals = entry.Signals.FirstOrDefault(_ => _.Type == "$SAA_SignalType_Biological;");
+                if (bioSignals != null)
+                    FormGenus.activeForm.deferPopulateGenus();
+            }
         }
 
         private void onJournalEntry(Missions entry)
@@ -1959,12 +1964,12 @@ namespace SrvSurvey.game
                 data.lastVisited = entry.timestamp;
                 data.Save();
             }
-            else if (entry.SubCategory == "$Codex_SubCategory_Organic_Structures;" && entry.NearestDestination != "$Fixed_Event_Life_Cloud;" && entry.NearestDestination != "$Fixed_Event_Life_Ring;" && Game.activeGame?.status.hasLatLong == true)
+            else if (entry.SubCategory == "$Codex_SubCategory_Organic_Structures;" && entry.NearestDestination != "$Fixed_Event_Life_Cloud;" && entry.NearestDestination != "$Fixed_Event_Life_Ring;" && this.status?.hasLatLong == true)
             {
                 var match = Game.codexRef.matchFromEntryId(entry.EntryID);
 
                 // update FormGenus?
-                if (match != null && FormGenus.activeForm?.shouldRefresh(match.species.name) == true)
+                if (match != null && FormGenus.activeForm != null && systemBody?.findOrganism(match)?.species == null)
                     FormGenus.activeForm.deferPopulateGenus();
 
                 if (Game.settings.autoTrackCompBioScans)
@@ -2082,7 +2087,7 @@ namespace SrvSurvey.game
             fireUpdate(this._mode, true);
 
             // update FormGenus
-            if (FormGenus.activeForm != null && (FormGenus.activeForm.shouldRefresh(entry.Species) == true || entry.ScanType == ScanType.Analyse))
+            if (FormGenus.activeForm != null && entry.ScanType == ScanType.Analyse)
                 FormGenus.activeForm.deferPopulateGenus();
         }
 

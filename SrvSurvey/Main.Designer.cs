@@ -88,6 +88,7 @@ namespace SrvSurvey
             txtExplorationValue = new TextBox();
             textBox2 = new TextBox();
             txtBodies = new TextBox();
+            linkNewBuildAvailable = new LinkLabel();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
             groupBox3.SuspendLayout();
@@ -435,12 +436,13 @@ namespace SrvSurvey
             linkLabel1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             linkLabel1.Font = new Font("Lucida Sans Typewriter", 9F, FontStyle.Regular, GraphicsUnit.Point);
             linkLabel1.LinkArea = new LinkArea(13, 12);
-            linkLabel1.Location = new Point(10, 543);
+            linkLabel1.Location = new Point(12, 541);
             linkLabel1.Name = "linkLabel1";
             linkLabel1.Size = new Size(415, 18);
             linkLabel1.TabIndex = 17;
             linkLabel1.TabStop = true;
             linkLabel1.Text = "For guidance see the wiki on GitHub";
+            linkLabel1.TextAlign = ContentAlignment.MiddleLeft;
             linkLabel1.UseCompatibleTextRendering = true;
             linkLabel1.LinkClicked += linkLabel1_LinkClicked;
             // 
@@ -657,7 +659,7 @@ namespace SrvSurvey
             groupBox5.Size = new Size(413, 72);
             groupBox5.TabIndex = 28;
             groupBox5.TabStop = false;
-            groupBox5.Text = "Exploration:";
+            groupBox5.Text = "Exploration: (experimental)";
             // 
             // txtDistance
             // 
@@ -684,11 +686,11 @@ namespace SrvSurvey
             // label6
             // 
             label6.AutoSize = true;
-            label6.Location = new Point(81, 45);
+            label6.Location = new Point(67, 45);
             label6.Name = "label6";
-            label6.Size = new Size(40, 12);
+            label6.Size = new Size(54, 12);
             label6.TabIndex = 31;
-            label6.Text = "Body:";
+            label6.Text = "Bodies:";
             // 
             // label3
             // 
@@ -707,7 +709,7 @@ namespace SrvSurvey
             btnResetExploration.FlatStyle = FlatStyle.System;
             btnResetExploration.Location = new Point(13, 41);
             btnResetExploration.Name = "btnResetExploration";
-            btnResetExploration.Size = new Size(64, 21);
+            btnResetExploration.Size = new Size(49, 21);
             btnResetExploration.TabIndex = 29;
             btnResetExploration.Text = "Reset";
             btnResetExploration.UseVisualStyleBackColor = false;
@@ -763,12 +765,30 @@ namespace SrvSurvey
             txtBodies.TabIndex = 12;
             txtBodies.Text = "-";
             // 
+            // linkNewBuildAvailable
+            // 
+            linkNewBuildAvailable.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            linkNewBuildAvailable.BackColor = Color.Transparent;
+            linkNewBuildAvailable.Font = new Font("Lucida Sans Typewriter", 8.25F, FontStyle.Regular, GraphicsUnit.Point);
+            linkNewBuildAvailable.LinkArea = new LinkArea(1, 16);
+            linkNewBuildAvailable.Location = new Point(267, -1);
+            linkNewBuildAvailable.Name = "linkNewBuildAvailable";
+            linkNewBuildAvailable.Size = new Size(170, 18);
+            linkNewBuildAvailable.TabIndex = 29;
+            linkNewBuildAvailable.TabStop = true;
+            linkNewBuildAvailable.Text = "(update available)";
+            linkNewBuildAvailable.TextAlign = ContentAlignment.MiddleRight;
+            linkNewBuildAvailable.UseCompatibleTextRendering = true;
+            linkNewBuildAvailable.Visible = false;
+            linkNewBuildAvailable.LinkClicked += linkNewBuildAvailable_LinkClicked;
+            // 
             // Main
             // 
             AutoScaleDimensions = new SizeF(7F, 12F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = btnQuit2;
             ClientSize = new Size(437, 628);
+            Controls.Add(linkNewBuildAvailable);
             Controls.Add(groupBox5);
             Controls.Add(checkTempHide);
             Controls.Add(btnPublish);
@@ -869,5 +889,6 @@ namespace SrvSurvey
         private Label label3;
         private Button btnResetExploration;
         private TextBox txtDistance;
+        private LinkLabel linkNewBuildAvailable;
     }
 }

@@ -161,27 +161,29 @@ namespace SrvSurvey
         public List<string>? starClass;
         public List<string>? material;
 
-        public static List<string> match(SystemOrganism? org, SystemBody body, SystemData systemData)
+        public static List<string> match(SystemBody body, string? genus)
         {
             var potentials = new HashSet<string>();
 
-            var parentStarTypes = systemData.getParentStarTypes(body, true); //.Take(1).ToList();
+            var parentStarTypes = body.system.getParentStarTypes(body, true); //.Take(1).ToList();
             Game.log($"Body: {body.name} => parentStarClass: " + string.Join(',', parentStarTypes));
 
-            var genus = org?.genus;
             //var atmosSphere = body.atmosphereType?.Replace("thin ", "", StringComparison.OrdinalIgnoreCase) ?? ""; // too crude?
             //var atmosphere = body.atmosphereComposition.Keys;
 
             var galacticRegion = GalacticRegions.current.Replace(" ", "");
             var surfacePressure = body.surfacePressure / 10_000f;
 
+            //if (body.name.Contains("3 e")) Debugger.Break();
+
+
             foreach (var foo in stuff)
             {
                 if (genus != null && genus != foo.genus) continue;
+                //if (foo.speciesPart.Contains("Flam")) Debugger.Break();
 
-                //if (foo.speciesPart.Contains("Campestri")) Debugger.Break();
                 //if (body.name.Contains("AB 1 c")) Debugger.Break();
-                //if (body.name.Contains("AB 1 c") && foo.speciesPart.Contains("Conditivus")) Debugger.Break();
+                //if (body.name.Contains("3 e") && foo.speciesPart.Contains("Gelata")) Debugger.Break();
 
                 if (foo.galacticRegion?.Contains(galacticRegion) == false) continue;
                 if (foo.planetClass?.Any(pc => body.planetClass?.Contains(pc) == true) == false) continue;
@@ -216,19 +218,31 @@ namespace SrvSurvey
                     continue;
                 }
 
-                if (foo.material != null && !foo.material.Any(_ => body.materials?.ContainsKey(_) == true)) continue;
-                // TODO filter for color variants and ensure amount is > 0.0001
+                // material must be present and more than 0.0001
                 if (foo.material != null && !foo.material.Any(_ => body.materials?.ContainsKey(_) == true && body.materials.GetValueOrDefault(_) > 0.0001)) continue;
 
                 // special cases
-
-                if (foo.speciesPart == "Electricae Radialem" && GalacticNeblulae.distToClosest(systemData.starPos) > 100) continue;
+                if (foo.speciesPart == "Electricae Radialem" && GalacticNeblulae.distToClosest(body.system.starPos) > 100) continue;
                 if (foo.speciesPart == "Clypeus Speculumi" && body.distanceFromArrivalLS < 2000) continue; // not 2500 ?
                 if (foo.speciesPart == "Bacterium Tela" && surfacePressure > 0.1) continue;
+
+                // atmospheric special cases
+                if (foo.speciesPart.StartsWith("Recepta") && body.atmosphereComposition.GetValueOrDefault("SulphurDioxide") < 1f) continue;
+                if (foo.speciesPart.StartsWith("Tussock Cultro") && body.atmosphereComposition.GetValueOrDefault("Ammonia") != 100f) continue;
+                // Tussock may be wrong ?!
+                //if (foo.speciesPart.StartsWith("Tussock") && body.atmosphereComposition.GetValueOrDefault("SulphurDioxide") < 0.9f) continue;
+                if (foo.speciesPart.StartsWith("Frutexa Acus") || foo.speciesPart.StartsWith("Stratum Excutitus") || foo.speciesPart.StartsWith("Cactoida Cortexum"))
+                //if (foo.speciesPart.StartsWith("Stratum Limaxus"))
+                {
+                    var sulphurDioxide = body.atmosphereComposition.GetValueOrDefault("SulphurDioxide");
+                    var carbonDioxide = body.atmosphereComposition.GetValueOrDefault("CarbonDioxide");
+                    if (sulphurDioxide < 1f && carbonDioxide != 100) continue;
+                }
+
                 // TODO: add distance check for Brain Tree's
                 if (foo.speciesPart.Contains("Brain")) continue;
 
-                if (foo.speciesPart.Contains("Pluma")) Debugger.Break();
+                //if (foo.speciesPart.Contains("Tussock")) Debugger.Break();
                 //if (body.name.Contains("AB 1 c")) Debugger.Break();
                 potentials.Add(foo.speciesPart);
             }
@@ -394,14 +408,14 @@ namespace SrvSurvey
             { "Clypeus | Clypeus Speculumi  | Rocky | 0.63 | Water         | *    | 392 | 452 | B,A,F,G,K,M,L,T,D,N" },
 
             // 4x Concha - https://canonn.science/codex/Concha/ - https://ed-dsn.net/en/Concha_en/
-            //  genus | species           | body      | <g  | atmosType     | volcanism| >t  | <t  | star type |mats| galactic regions
-            { "Concha | Concha Aureolas   | HMC,Rocky | 2.7 | Ammonia       | *        | 152 | 177 | B,A,F,G,K,L,Y,W,D,N" },
-            { "Concha | Concha Biconcavis | HMC,Rocky | 2.7 | Nitrogen      | None     |  42 | 51  | * | ant+" },
-            { "Concha | Concha Labiata    | HMC,Rocky | 2.6 | CarbonDioxide | None     | 150 | 199 | B,A,F,G,K,L,Y,W,D,N" },
-            { "Concha | Concha Renibus    | HMC,Rocky | 2.7 | Ammonia       | Silicate | 163 | 177 | * | cad+" },
-            { "Concha | Concha Renibus    | HMC,Rocky | 2.7 | CarbonDioxide | None     | 180 | 196 | * | cad+" },
-            { "Concha | Concha Renibus    | HMC,Rocky | 2.7 | Methane       | Silicate |  79 | 102 | * | cad+" },
-            { "Concha | Concha Renibus    | HMC,Rocky | 2.7 | Water         | *        | 390 | 452 | * | cad+" },
+            //  genus  | species           | body      | <g  | atmosType     | volcanism| >t  | <t  | star type |mats| galactic regions
+            { "Conchas | Concha Aureolas   | HMC,Rocky | 2.7 | Ammonia       | *        | 152 | 177 | B,A,F,G,K,L,Y,W,D,N" },
+            { "Conchas | Concha Biconcavis | HMC,Rocky | 2.7 | Nitrogen      | None     |  42 | 51  | * | ant+" },
+            { "Conchas | Concha Labiata    | HMC,Rocky | 2.6 | CarbonDioxide | None     | 150 | 199 | B,A,F,G,K,L,Y,W,D,N" },
+            { "Conchas | Concha Renibus    | HMC,Rocky | 2.7 | Ammonia       | Silicate | 163 | 177 | * | cad+" },
+            { "Conchas | Concha Renibus    | HMC,Rocky | 2.7 | CarbonDioxide | None     | 180 | 196 | * | cad+" },
+            { "Conchas | Concha Renibus    | HMC,Rocky | 2.7 | Methane       | Silicate |  79 | 102 | * | cad+" },
+            { "Conchas | Concha Renibus    | HMC,Rocky | 2.7 | Water         | *        | 390 | 452 | * | cad+" },
 
             // 2x Electricae - https://canonn.science/codex/Electricae/ - https://ed-dsn.net/en/Electricae_en/
             //      genus | species             | bod | <g  | atmosType |vol| >t  | <t  | star  | mats | galactic regions
@@ -425,16 +439,16 @@ namespace SrvSurvey
             { "Fonticulus | Fonticulua Upupam      | Icy,RockyIce | 2.8 | ArgonRich | * |  60 | 121 | O,B,A,F,G,K,M,L,T,TTS,Ae,Y,W,D,N" },
 
             // 7x Frutexa - https://canonn.science/codex/Frutexa/ - https://ed-dsn.net/en/fruxeta_en/
-            //   genus | species            | body      | <g   | atmosType      | volc | >t  | <t  | star  | mats | galactic regions
-            { "Frutexa | Frutexa Acus       | Rocky     | 2.4  | CarbonDioxide  | None | 146 | 196 | O,B,F,G,M,L,TTS,W,D,N | * | ~OrionCygnusArm,Odin'sHold,GalacticCentre" },
-            { "Frutexa | Frutexa Collum     | HMC,Rocky | 2.8  | SulphurDioxide | *    | 132 | 167 | O,B,F,G,M,L,TTS,W,D,N" },
-            { "Frutexa | Frutexa Fera       | Rocky     | 2.4  | CarbonDioxide  | None | 146 | 196 | O,B,F,G,M,L,TTS,W,D,N | * | ~OuterArm,EmpyreanStraits,GalacticCentre" },
-            { "Frutexa | Frutexa Flabellum  | Rocky     | 2.7  | Ammonia        | *    | 152 | 177 | O,B,F,G,M,L,TTS,W,D,N | * | !~ScutumCentaurusArm" },
-            { "Frutexa | Frutexa Flammasis  | Rocky     | 2.7  | Ammonia        | *    | 152 | 186 | O,B,F,G,M,L,TTS,W,D,N | * | ~ScutumCentaurusArm,Odin'sHold,GalacticCenter,Orion-CygnusArm,InnerOrion-PerseusConflux" },
-            { "Frutexa | Frutexa Metallicum | HMC       | 2.8  | Ammonia        | None | 152 | 176 | O,B,F,G,M,L,TTS,W,D,N" },
-            { "Frutexa | Frutexa Metallicum | HMC       | 2.7  | CarbonDioxide  | None | 146 | 196 | O,B,F,G,M,L,TTS,W,D,N" },
-            { "Frutexa | Frutexa Metallicum | HMC       | 0.52 | Water          | None | 390 | 400 | O,B,F,G,M,L,TTS,W,D,N" },
-            { "Frutexa | Frutexa Sponsae    | Rocky     | 0.6  | Water          | *    | 392 | 452 | O,B,F,G,M,L,TTS,W,D,N" },
+            //  genus | species            | body      | <g   | atmosType      | volc | >t  | <t  | star  | mats | galactic regions
+            { "Shrubs | Frutexa Acus       | Rocky     | 2.4  | CarbonDioxide  | None | 146 | 196 | O,B,F,G,M,L,TTS,W,D,N | * | ~OrionCygnusArm,Odin'sHold,GalacticCentre" },
+            { "Shrubs | Frutexa Collum     | HMC,Rocky | 2.8  | SulphurDioxide | *    | 132 | 167 | O,B,F,G,M,L,TTS,W,D,N" },
+            { "Shrubs | Frutexa Fera       | Rocky     | 2.4  | CarbonDioxide  | None | 146 | 196 | O,B,F,G,M,L,TTS,W,D,N | * | ~OuterArm,EmpyreanStraits,GalacticCentre" },
+            { "Shrubs | Frutexa Flabellum  | Rocky     | 2.7  | Ammonia        | *    | 152 | 177 | O,B,F,G,M,L,TTS,W,D,N | * | !~ScutumCentaurusArm" },
+            { "Shrubs | Frutexa Flammasis  | Rocky     | 2.7  | Ammonia        | *    | 152 | 186 | O,B,F,G,M,L,TTS,W,D,N | * | ~ScutumCentaurusArm,Odin'sHold,GalacticCenter,Orion-CygnusArm,InnerOrion-PerseusConflux" },
+            { "Shrubs | Frutexa Metallicum | HMC       | 2.8  | Ammonia        | None | 152 | 176 | O,B,F,G,M,L,TTS,W,D,N" },
+            { "Shrubs | Frutexa Metallicum | HMC       | 2.7  | CarbonDioxide  | None | 146 | 196 | O,B,F,G,M,L,TTS,W,D,N" },
+            { "Shrubs | Frutexa Metallicum | HMC       | 0.52 | Water          | None | 390 | 400 | O,B,F,G,M,L,TTS,W,D,N" },
+            { "Shrubs | Frutexa Sponsae    | Rocky     | 0.6  | Water          | *    | 392 | 452 | O,B,F,G,M,L,TTS,W,D,N" },
 
             // 4x Fumerola - https://canonn.science/codex/Fumerola/ - https://ed-dsn.net/en/Fumerola_en/
             //     genus | species           | body               | <g  | atmosType      | volc                    | >t  | <t  |sta| mats | galactic regions
@@ -495,7 +509,7 @@ namespace SrvSurvey
             { "Recepta | Recepta Deltahedronix | *             | 2.8 | SulphurDioxide | *    | 132 | 272 | * | cad+" },
             { "Recepta | Recepta Umbrux        | *             | 2.8 | SulphurDioxide | *    | 132 | 273 | B,A,F,G,K,M,L,T,TTS,Ae,Y,D" },
             { "Recepta | Recepta Umbrux        | *             | 2.8 | CarbonDioxide  | *    | 132 | 273 | B,A,F,G,K,M,L,T,TTS,Ae,Y,D" }, // EvilHorse
-            // Maybe these need a minimum of SulphurDioxide in the atmospheric composition?
+            // Recepta needs SulphurDioxide >= 0.9 in Atmospheric composition
 
             // 8x Stratum - https://canonn.science/codex/stratum/ and https://ed-dsn.net/en/stratum_en/
             //   genus | species            | body  | <g  | atmosType         | volc | >t  | <t  | star type              |mat| galactic regions
@@ -562,6 +576,7 @@ namespace SrvSurvey
             { "Tussocks | Tussock Triticum  | HMC,Rocky      | 2.7 | CarbonDioxide  | None | 191 | 196 | * | * | ~SagittariusCarinaArm,~PerseusArm,Ryker'sHope" },
             { "Tussocks | Tussock Ventusa   | HMC,Rocky      | 1.6 | CarbonDioxide  | *    | 155 | 188 | * | * | ~SagittariusCarinaArm,~PerseusArm,Ryker'sHope" },
             { "Tussocks | Tussock Virgam    | HMC,Rocky      | 0.63 | Water          | *    | 390 | 450" },
+            // Tussock needs SulphurDioxide >= 0.9 in Atmospheric composition
 
             // 1x Amphora plant
             // Has special case for systems containing: Earth-like Worlds, Gas Giants with Water-Based Life, and Water Giants
