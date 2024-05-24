@@ -108,7 +108,7 @@ namespace SrvSurvey
                     this.mapImage.Dispose();
 
                 var folder = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "images");
-                var filepath = Directory.GetFiles(folder, $"{game!.humanSite!.economy}#{game.humanSite.subType}-*.png")?.FirstOrDefault();
+                var filepath = Directory.GetFiles(folder, $"{game!.humanSite!.economy}~{game.humanSite.subType}-*.png")?.FirstOrDefault();
                 if (filepath == null) return;
 
                 var nameParts = Path.GetFileNameWithoutExtension(filepath).Split('-', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);

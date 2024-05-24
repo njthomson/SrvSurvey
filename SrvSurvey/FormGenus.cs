@@ -145,7 +145,7 @@ namespace SrvSurvey
             }
 
             // populate known genus groups
-            if (filterIdx > 1 && this.targetBody.bioSignalCount == 0)
+            if (filterIdx > 1 && this.targetBody?.bioSignalCount == 0)
                 this.addWarningLabel("Current body has no detected bio signals.", "Change filter to system or everything?");
 
 
