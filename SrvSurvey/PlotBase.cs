@@ -961,13 +961,13 @@ namespace SrvSurvey
             adjust(PointF.Empty, -siteHeading, () =>
             {
                 // draw compass rose lines centered on the site origin
-                g.DrawLine(GameColors.penDarkRed2Ish, -this.Width * 2, 0, +this.Width * 20, 0);
-                g.DrawLine(GameColors.penDarkRed2Ish, 0, 0, 0, +this.Height * 20);
-                g.DrawLine(GameColors.penRed2Ish, 0, -this.Height * 20, 0, 0);
+                g.DrawLine(GameColors.penDarkRed2Ish, -500, 0, +500, 0);
+                g.DrawLine(GameColors.penDarkRed2Ish, 0, 0, 0, +500);
+                g.DrawLine(GameColors.penRed2Ish, 0, -500, 0, 0);
             });
 
             // and a line to represent "north" relative to the site - visualizing the site's rotation
-            g.DrawLine(GameColors.penGameOrange2DashedIsh, 0, -this.Height * 20, 0, 0);
+            g.DrawLine(GameColors.penGameOrange2DashedIsh, 0, -500, 0, 0);
         }
 
         protected void drawShipAndSrvLocation()

@@ -84,7 +84,7 @@ namespace SrvSurvey
             this.distance = Util.getSystemDistance(game.cmdr.sphereLimit.centerStarPos, lastSystem.StarPos);
 
             this.BeginInvoke(() => {
-                this.Invalidate();
+                this.Invalidate(true);
             });
         }
 

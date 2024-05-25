@@ -1607,10 +1607,10 @@ namespace SrvSurvey
 
             //GalacticNeblulae.lookupStarPos();
 
-            BioPrediction.testManyNewVsOld().ContinueWith((_) => { /* done */ });
+            //BioPrediction.testManyNewVsOld().ContinueWith((_) => { /* done */ });
 
 
-            //FormRamTah.show();
+            FormRamTah.show();
             //FormPostProcess.show();
 
             //game!.touchdownLocation = Util.adjustForCockpitOffset(game.status.PlanetRadius, game!.systemBody!.lastTouchdown!, game.shipType, 90);

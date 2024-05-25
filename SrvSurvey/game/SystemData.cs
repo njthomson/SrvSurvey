@@ -58,8 +58,9 @@ namespace SrvSurvey.game
                 body.shortName = body.name == systemData.name
                     ? "0"
                     : body.name.Replace(systemData.name, "").Replace(" ", "") ?? "";
+
                 // make predictions based on what we know
-                if (body.bioSignalCount > 0 && (body.organisms == null || body.organisms.Any(o => o.species == null)))
+                if (body.bioSignalCount > 0)
                     body.predictSpecies();
             }
 
@@ -2144,7 +2145,7 @@ namespace SrvSurvey.game
             }
 
             // predict the whole body if there are signals unaccounted for
-            var delta = this.bioSignalCount - (this.organisms?.Count ?? 0);
+            var delta = this.organisms == null ? this.bioSignalCount : this.organisms.Count(o => o.species == null);
             if (delta > 0)
             {
                 var bodyPredictions = PotentialOrganism.match(this, null);
@@ -2164,8 +2165,6 @@ namespace SrvSurvey.game
             }
 
             // after predictions, figure out what the min/max rewards are
-            delta = this.bioSignalCount - (this.organisms?.Count(o => o.species != null) ?? 0);
-
             this.minBioRewards = knownRewards;
             this.maxBioRewards = knownRewards;
             if (this.predictions.Count > 0)
@@ -2176,6 +2175,7 @@ namespace SrvSurvey.game
             }
 
             Game.log($"predictSpecies: '{this.name}' predicted {predictions.Count} species: {this.minMaxBioRewards}\r\n> " + string.Join("\r\n> ", this.predictions.Keys));
+            if (predictions.Count > 0) Game.log("> " + string.Join("\r\n> ", this.predictions.Keys));
         }
 
         private long getShortListSum(int delta, List<BioSpecies> sortedPredictions, bool minNotMax)

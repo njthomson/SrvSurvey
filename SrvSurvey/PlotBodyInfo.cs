@@ -118,7 +118,7 @@ namespace SrvSurvey
                 var subStatus = new List<string>();
                 if (body.terraformable)
                     subStatus.Add("Terraformable");
-                if (!body.wasDiscovered)
+                if (!body.wasDiscovered && !body.wasMapped)
                     subStatus.Add("Undiscovered");
                 else if (!body.wasMapped)
                     subStatus.Add("Unmapped");

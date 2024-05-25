@@ -162,12 +162,15 @@ namespace SrvSurvey
 
             try
             {
+                resetPlotter(g);
+
                 // footer
-                dtx = eight;
-                dty = eight;
                 this.drawTextAt($"{site!.name} - {site.economy} #{site.subType}");
                 var pf = Util.getOffset(this.radius, site.location, site.heading);
-                var footerTxt = $"cmdr offset: x: {(int)cmdrOffset.X}m, y: {(int)cmdrOffset.Y}m ({(int)pf.X}, {(int)pf.Y})";
+                // ☢ ♨ ⚡ ☎ ☏ ♫ ⚠ ⚽ ✋ ❕ ❗ 
+                // ❗❕❉✪✿❤➊➀⟐⟊➟✦✔⛶⛬⛭⛯⛣⛔⛌⛏⚴⚳⚱⚰⚚⚙⚗⚕⚑⚐⚜⚝⚛⚉⚇♥♦♖♜☸☗☯☍☉☄☁◬◊◈◍◉▣▢╳
+
+                var footerTxt = $"☍☄ cmdr offset: x: {(int)cmdrOffset.X}m, y: {(int)cmdrOffset.Y}m ({(int)pf.X}, {(int)pf.Y})";
                 this.drawFooterText(footerTxt);
                 clipToMiddle();
 
@@ -180,6 +183,10 @@ namespace SrvSurvey
 
                 this.drawLandingPads();
                 this.drawCompassLines();
+
+                // draw limit - outside which ships/taxi's an be requested
+                var zz = 500;
+                g.DrawEllipse(GameColors.newPen(Color.FromArgb(64, Color.Gray), 8, DashStyle.DashDotDot), -zz, -zz, zz * 2, zz * 2);
 
                 // relative to cmdr ...
                 this.resetMiddleRotated();
@@ -235,6 +242,46 @@ namespace SrvSurvey
                         var b = door.level == 0 ? Brushes.Green : Brushes.OrangeRed;
                         g.FillRectangle(b, -3, -2, 6, 3);
                         g.DrawRectangle(Pens.DeepSkyBlue, -3, -2, 6, 3);
+                    });
+                }
+            }
+
+            if (game!.humanSite!.template!.namedPoi != null)
+            {
+                foreach (var door in game!.humanSite!.template!.namedPoi)
+                {
+                    // site.heading - game.status.Heading
+                    adjust(door.offset, -site.heading + game.status.Heading, () =>
+                    {
+                        string txt = "⟑";
+                        switch (door.name)
+                        {
+                            case "Power": txt = "⭍"; break;
+                            case "Alarm": txt = "♨"; break;
+                            case "Auth": txt = "⨻"; break;
+                            case "Atmos": txt = "⦚"; break;
+                        }
+
+                        // ☢ ♨ ⚡ ☎ ☏ ♫ ⚠ ⚽ ✋ ❕ ❗  // -8 ??
+                        g.DrawString(txt, GameColors.fontSmall, Brushes.Yellow, -4, -6);
+                        //g.DrawEllipse(Pens.Yellow, -5, -5, 10, 10);
+                    });
+                }
+            }
+
+            if (game!.humanSite!.template!.dataTerminals != null)
+            {
+                foreach (var terminal in game!.humanSite!.template!.dataTerminals)
+                {
+                    // site.heading - game.status.Heading
+                    adjust(terminal.offset, -site.heading + game.status.Heading, () =>
+                    {
+                        // ❗❕❉✪✿❤➊➀⟐⟊➟✦✔⛶⛬⛭⛯⛣⛔⛌⛏⚴⚳⚱⚰⚚⚙⚗⚕⚑⚐⚜⚝⚛⚉⚇♥♦♖♜☸☗☯☍☉☄☁◬◊◈◍◉▣▢╳
+                        string txt = "ꊢ"; // ⦖⥣ꇗꊢꉄꇥꇗꇩꆜꄨꀜꀤꀡꀍ䷏〶〷〓〼〿⸙⸋⯒⭻⬨⬖⬘⬮⬯⫡⩸⩃⨟⨨⨱⨲⦼⧌⚼⦡⧲⛅ ⛍ ⛉ ❎ ⮔⮹ ⮺⯑⯳⯿⑅Ⓓⓓ▚▚▨▒◀◩ ⦡⦺⦹⦿⧳⧲⨹⨺⨻⨷⨳⨯⬙⭕⭍✉⛽✇⛳⛿✆⛋⚼"; ⛗ ⛘ ⛅ ⛍ ⛉ ❎ ⮔⮹ ⮺⯑⯳⯿⑅Ⓓⓓ▚▚▨▒◀◩ ⦡⦺⦹⦿⧳⧲⨝⨹⨺⨻⨷⨳⨯⬙⭕⭍
+
+                        // ☢ ♨ ⚡ ☎ ☏ ♫ ⚠ ⚽ ✋ ❕ ❗ 
+                        g.DrawString(txt, GameColors.fontSmall, Brushes.Yellow, -4, -6);
+                        //g.DrawEllipse(Pens.Yellow, -5, -5, 10, 10);
                     });
                 }
             }

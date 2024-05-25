@@ -302,6 +302,13 @@ namespace SrvSurvey
                         displayName = organism.variantLocalized.Replace(organism.genusLocalized + " ", "");
                     else if (!string.IsNullOrEmpty(organism.speciesLocalized))
                         displayName = organism.speciesLocalized.Replace(organism.genusLocalized + " ", "");
+                    else
+                    {
+                        // if we have a matching prediction - show the species name and that we don't know the variant
+                        var match = body.predictions.Values.First(p => p.genus.name == organism.genus);
+                        if (match != null)
+                            displayName = match.englishName.Replace(match.genus.englishName, "").Trim() + " - ?";
+                    }
 
                     // line 1
                     var sz2 = this.drawTextAt(twoEight, displayName, brush);
