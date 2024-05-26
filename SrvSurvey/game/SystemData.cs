@@ -1021,6 +1021,11 @@ namespace SrvSurvey.game
                     //body.starSubClass = int.Parse(entry.spectralClass[1]);
                 }
 
+                // if EDSM knows about the body (and not because of you)... assume it should be marked as "discovered"
+                // (this helps with bodies in the bubble that do not allow "wasDiscovered" to be true
+                if (!string.IsNullOrEmpty(entry.discovery?.commander) && entry.discovery.commander.Equals(Game.activeGame?.Commander, StringComparison.OrdinalIgnoreCase) == false)
+                    body.wasDiscovered = true;
+
                 if (entry.rings != null)
                 {
                     foreach (var newRing in entry.rings)
@@ -1066,6 +1071,8 @@ namespace SrvSurvey.game
             if (spanshSystem.id64 != this.address) { Game.log($"Unmatched system! Expected: `{this.name}`, got: {spanshSystem.name}"); return; }
             if (!Game.settings.useExternalData) return;
 
+            var shouldPredictBios = false;
+
             // update bodies from response
             foreach (var entry in spanshSystem.bodies)
             {
@@ -1098,6 +1105,11 @@ namespace SrvSurvey.game
                     body.starType = entry.subType[0].ToString();
                     //body.starSubClass = int.Parse(entry.spectralClass[1]);
                 }
+
+                // if there's a station that is not a Fleet Carrier ... assume it should be marked as "discovered"
+                // (this helps with bodies in the bubble that do not allow "wasDiscovered" to be true
+                if (entry.stations.Count > 0 && !entry.stations.Any(s => s.primaryEconomy != "Privvate Enterprise"))
+                    body.wasDiscovered = true;
 
                 // update rings
                 if (entry.rings != null)
@@ -1143,10 +1155,19 @@ namespace SrvSurvey.game
                                 genusLocalized = BioScan.genusNames[newGenus],
                             });
                             body.organisms = body.organisms.OrderBy(_ => _.genusLocalized).ToList();
+                            shouldPredictBios = true;
                         }
                     }
                 }
+            }
 
+            if (shouldPredictBios)
+            {
+                foreach (var body in this.bodies)
+                    body.predictSpecies();
+
+                if (Game.activeGame?.systemData == this)
+                    Program.invalidateActivePlotters();
             }
         }
 

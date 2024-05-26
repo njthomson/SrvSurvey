@@ -33,11 +33,14 @@ namespace SrvSurvey.net
                 Directory.CreateDirectory(Git.pubDataFolder);
                 Directory.CreateDirectory(Git.pubGuardianFolder);
 
-                var currentVersion = Version.Parse(Program.releaseVersion);
-                if (Program.isAppStoreBuild && pubData.msVer > currentVersion)
-                    updateAvailable = true;
-                else if (!Program.isAppStoreBuild && pubData.ghVer > currentVersion)
-                    updateAvailable = true;
+                if (!Debugger.IsAttached)
+                {
+                    var currentVersion = Version.Parse(Program.releaseVersion);
+                    if (Program.isAppStoreBuild && pubData.msVer > currentVersion)
+                        updateAvailable = true;
+                    else if (!Program.isAppStoreBuild && pubData.ghVer > currentVersion)
+                        updateAvailable = true;
+                }
 
                 if (pubData.codexRef > Game.settings.pubCodexRef)
                 {

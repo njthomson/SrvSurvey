@@ -164,6 +164,20 @@ namespace SrvSurvey.net
         // TODO? parents[]
 
         public List<ApiSystemDumpRing>? rings;
+        public List<ApiSystemDumpStation> stations;
+    }
+
+    internal class ApiSystemDumpStation
+    {
+        public long id;
+        public string government;
+        public string name;
+        public string type;
+        public string primaryEconomy;
+        public Dictionary<string, int> landingPads;
+        // TODO: market ?
+        // TODO: outfitting ?
+        public List<string> services;
     }
 
     internal class ApiSystemDumpSignals

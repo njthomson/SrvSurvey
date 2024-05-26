@@ -102,6 +102,12 @@ namespace SrvSurvey
             };
 
             if (body.bioSignalCount == 0 && newScan.reward < Game.settings.hideFssLowValueAmount && newScan.dssReward < Game.settings.hideFssLowValueAmount) return;
+
+            // show this body already present - pull it to the top
+            var existingScan = scans.Find(s => s.body == body);
+            if (existingScan != null)
+                scans.Remove(existingScan);
+
             scans.Insert(0, newScan);
 
             this.Invalidate();
@@ -153,7 +159,7 @@ namespace SrvSurvey
                     // 1st line: body name + type
                     var planetClass = scan.body.planetClass?.Replace("Sudarsky c", "C");
                     var prefix = scan.body.wasDiscovered ? "" : "*";
-                    var txt =  $"{prefix}{scan.body.shortName} - {planetClass}"; // ◌◎◉☆★☄☼☀⛀⛃✔✨✶✪❓❔❓⛬❗❕ * ❒❱✪❍❌✋❖⟡⦁⦂⧫
+                    var txt = $"{prefix}{scan.body.shortName} - {planetClass}"; // ◌◎◉☆★☄☼☀⛀⛃✔✨✶✪❓❔❓⛬❗❕ * ❒❱✪❍❌✋❖⟡⦁⦂⧫
                     if (scan.body.terraformable) txt += " (T)";
                     if (scan.body.type == SystemBodyType.Star)
                         txt = $"{prefix}{scan.body.shortName} - {scan.body.starType} Star";

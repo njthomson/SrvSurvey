@@ -173,6 +173,7 @@ namespace SrvSurvey
 
             var galacticRegion = GalacticRegions.current.Replace(" ", "");
             var surfacePressure = body.surfacePressure / 10_000f;
+            var surfaceGravity = body.surfaceGravity / 10;
 
             //if (body.name.Contains("3 e")) Debugger.Break();
 
@@ -183,11 +184,11 @@ namespace SrvSurvey
                 //if (foo.speciesPart.Contains("Flam")) Debugger.Break();
 
                 //if (body.name.Contains("AB 1 c")) Debugger.Break();
-                //if (body.name.Contains("3 e") && foo.speciesPart.Contains("Gelata")) Debugger.Break();
+                //if (body.name.Contains("2 f") && foo.speciesPart.Contains("Gelata")) Debugger.Break();
 
                 if (foo.galacticRegion?.Contains(galacticRegion) == false) continue;
                 if (foo.planetClass?.Any(pc => body.planetClass?.Contains(pc) == true) == false) continue;
-                if (foo.maxGravity > 0 && body.surfaceGravity > foo.maxGravity) continue;
+                if (foo.maxGravity > 0 && surfaceGravity > foo.maxGravity) continue;
 
                 if (body.atmosphereType == "None" && foo.atmosphereType?.FirstOrDefault() != "None") continue;
                 if (foo.atmosphereType?.Count > 0 && foo.atmosphereType?.Contains(body.atmosphereType) == false) continue;
@@ -231,8 +232,16 @@ namespace SrvSurvey
                 if (foo.speciesPart.StartsWith("Tussock Cultro") && body.atmosphereComposition.GetValueOrDefault("Ammonia") != 100f) continue;
                 // Tussock may be wrong ?!
                 //if (foo.speciesPart.StartsWith("Tussock") && body.atmosphereComposition.GetValueOrDefault("SulphurDioxide") < 0.9f) continue;
-                if (foo.speciesPart.StartsWith("Frutexa Acus") || foo.speciesPart.StartsWith("Stratum Excutitus") || foo.speciesPart.StartsWith("Cactoida Cortexum"))
-                //if (foo.speciesPart.StartsWith("Stratum Limaxus"))
+
+                var theseSpecies = new List<string>()
+                {
+                    "Frutexa Acus",
+                    "Fungoida Stabitis", // This needs to allow for Water and Ammonia
+                    "Stratum Excutitus",
+                    // "Stratum Limaxus" ??
+                    "Cactoida Cortexum",
+                };
+                if (theseSpecies.Any(_ => foo.speciesPart.StartsWith(_)))
                 {
                     var sulphurDioxide = body.atmosphereComposition.GetValueOrDefault("SulphurDioxide");
                     var carbonDioxide = body.atmosphereComposition.GetValueOrDefault("CarbonDioxide");

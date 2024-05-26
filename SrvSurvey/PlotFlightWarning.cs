@@ -48,31 +48,28 @@ namespace SrvSurvey
             this.Invalidate();
         }
 
-        int pad = scaled(15);
+        float pad = scaled(15);
 
         protected override void OnPaintBackground(PaintEventArgs e)
         {
             base.OnPaintBackground(e);
             try
             {
+                this.resetPlotter(g);
+                g.Clear(Color.Black);
                 if (this.IsDisposed || game.systemBody == null)
                 {
                     Program.closePlotter<PlotFlightWarning>();
                     return;
                 }
 
-                this.g = e.Graphics;
-                this.g.SmoothingMode = SmoothingMode.HighQuality;
-                g.Clear(Color.Black);
-
-
                 var bodyGrav = (game.systemBody!.surfaceGravity / 10).ToString("N2");
                 var txt = $"Warning: Surface gravity {bodyGrav}g";
 
                 var sz = g.MeasureString(txt, this.Font);
                 sz.Width += two;
-                this.Width = scaled((int)sz.Width + pad * 2);
-                this.Height = scaled((int)sz.Height + pad * 2);
+                this.Width = (int)(sz.Width + pad * 2);
+                this.Height = (int)(sz.Height + pad * 2);
 
                 PlotPos.reposition(this, Elite.getWindowRect());
 

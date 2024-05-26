@@ -1747,8 +1747,7 @@ namespace SrvSurvey.game
         {
             if (this.systemData == null || this.systemBody == null || this.canonnPoi?.codex == null) return false;
 
-            var currentBody = this.systemBody.name.Replace(this.systemData.name, "").Trim();
-            return this.canonnPoi.codex.Any(_ => _.body == currentBody && _.hud_category == "Biology" && _.latitude != null && _.longitude != null && (!Game.settings.hideMyOwnCanonnSignals || _.scanned == false));
+            return this.canonnPoi.codex.Any(_ => _.body == this.systemBody.shortName && _.hud_category == "Biology" && _.latitude != null && _.longitude != null && (!Game.settings.hideMyOwnCanonnSignals || _.scanned == false));
         }
 
         //public void showPriorScans()
@@ -2003,7 +2002,7 @@ namespace SrvSurvey.game
 
         private void onJournalEntry(ScanOrganic entry)
         {
-            this.systemStatus.onJournalEntry(entry);
+            this.systemStatus.onJournalEntry(entry); // TODO: retire!
             if (this.systemBody == null) throw new Exception($"Why no this.systemBody?");
 
             // are we changing organism before the 3rd scan?
@@ -2050,6 +2049,9 @@ namespace SrvSurvey.game
                 this.cmdr.scanOne = bioScan;
                 this.cmdr.scanTwo = null;
                 this.cmdr.Save();
+
+                // adjust predictions/rewards calculations for this body
+                this.systemBody.predictSpecies();
             }
             else if (this.cmdr.scanOne != null && this.cmdr.scanTwo == null)
             {
@@ -2081,6 +2083,9 @@ namespace SrvSurvey.game
                 this.cmdr.scanOne = null;
                 this.cmdr.scanTwo = null;
                 this.cmdr.Save();
+
+                // adjust predictions/rewards calculations for this body
+                this.systemBody.predictSpecies();
             }
 
             // force a mode change to update ux

@@ -617,15 +617,12 @@ namespace SrvSurvey
 
                 if (game.systemBody.firstFootFall) txtBodyBioValues.Text += " (FF)";
 
-                if (game.systemSite == null && game.systemBody?.organisms != null)
-                {
-                    if (Game.settings.autoShowBioSummary && (game.showBodyPlotters || game.mode == GameMode.SAA) && !game.showGuardianPlotters && !Program.isPlotter<PlotGuardians>())
-                        Program.showPlotter<PlotBioStatus>();
-                }
+                if (PlotBioStatus.allowPlotter)
+                    Program.showPlotter<PlotBioStatus>();
 
                 // show prior scan data only if present
-                var showPlotPriorScans = Game.settings.useExternalData && Game.settings.autoLoadPriorScans && (game.showBodyPlotters || game.mode == GameMode.SAA) && game.canonnPoiHasLocalBioSignals();
-                if (game.systemSite == null && showPlotPriorScans && !game.showGuardianPlotters && !Program.isPlotter<PlotGuardians>())
+                var showPlotPriorScans = PlotPriorScans.allowPlotter;
+                if (showPlotPriorScans)
                     Program.showPlotter<PlotPriorScans>();
 
                 if (game.showBodyPlotters && Game.settings.autoShowBioPlot && !this.game.showGuardianPlotters)

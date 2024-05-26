@@ -58,6 +58,19 @@ namespace SrvSurvey
             this.setPriorScans();
         }
 
+        public static bool allowPlotter
+        {
+            get => Game.settings.useExternalData &&
+                Game.settings.autoLoadPriorScans &&
+                Game.activeGame?.systemBody != null &&
+                !Game.activeGame.hidePlottersFromCombatSuits &&
+                Game.activeGame.isMode(GameMode.SuperCruising, GameMode.Flying, GameMode.Landed, GameMode.InSrv, GameMode.OnFoot, GameMode.GlideMode, GameMode.InFighter, GameMode.CommsPanel, GameMode.SAA) &&
+                !Game.activeGame.showGuardianPlotters && !Program.isPlotter<PlotGuardians>() &&
+                !PlotHumanSite.allowPlotter && !Program.isPlotter<PlotHumanSite>() &&
+                Game.activeGame.canonnPoiHasLocalBioSignals()
+                ;
+        }
+
         public override void reposition(Rectangle gameRect)
         {
             if (gameRect == Rectangle.Empty)
@@ -76,9 +89,9 @@ namespace SrvSurvey
         {
             if (this.IsDisposed) return;
 
-            var showPlotter = (game.showBodyPlotters || game.mode == GameMode.SAA || newMode == GameMode.Codex);
+            var showPlotter = PlotPriorScans.allowPlotter;
 
-            if (!showPlotter && game.systemBody != null && game.showBodyPlotters)
+            if (!showPlotter && game.systemBody != null && game.isMode(GameMode.SuperCruising, GameMode.Flying, GameMode.Landed, GameMode.InSrv, GameMode.OnFoot, GameMode.GlideMode, GameMode.InFighter, GameMode.CommsPanel, GameMode.SAA))
                 showPlotter = SystemData.isWithinLastDssDuration();
 
             showPlotter = showPlotter && (!force && this.signals.Count > 0); // keep plotter hidden if no more signals

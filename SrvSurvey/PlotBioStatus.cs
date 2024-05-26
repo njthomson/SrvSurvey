@@ -24,6 +24,19 @@ namespace SrvSurvey
             Elite.setFocusED();
         }
 
+        public static bool allowPlotter
+        {
+            get => Game.settings.autoShowBioSummary &&
+                Game.activeGame?.systemBody != null &&
+                !Game.activeGame.hidePlottersFromCombatSuits &&
+                !Game.activeGame.isShutdown &&
+                !Game.activeGame.atMainMenu &&
+                Game.activeGame.humanSite == null &&
+                !Game.activeGame.showGuardianPlotters && !Program.isPlotter<PlotGuardians>() &&
+                Game.activeGame.isMode(GameMode.SuperCruising, GameMode.Flying, GameMode.Landed, GameMode.InSrv, GameMode.OnFoot, GameMode.GlideMode, GameMode.InFighter, GameMode.CommsPanel, GameMode.SAA, GameMode.Codex) &&
+                !Game.activeGame.status.InTaxi;
+        }
+
         public void reposition(Rectangle gameRect)
         {
             if (gameRect == Rectangle.Empty)
@@ -101,19 +114,12 @@ namespace SrvSurvey
         {
             if (this.IsDisposed) return;
 
-            var showPlotter = newMode == GameMode.SAA || game.showBodyPlotters || newMode == GameMode.Codex;
-
-            if (!showPlotter && game.systemBody != null && game.showBodyPlotters)
-                showPlotter = SystemData.isWithinLastDssDuration();
+            var showPlotter = PlotBioStatus.allowPlotter || SystemData.isWithinLastDssDuration();
 
             if (this.Opacity > 0 && !showPlotter)
-            {
                 this.Opacity = 0;
-            }
             else if (this.Opacity == 0 && showPlotter)
-            {
                 this.reposition(Elite.getWindowRect());
-            }
 
             if (game.systemBody == null || game.systemBody.bioSignalCount == 0)
                 Program.closePlotter<PlotBioStatus>();

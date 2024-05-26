@@ -368,10 +368,10 @@ namespace SrvSurvey
             foreach (var body in game.systemData.bodies)
             {
                 if (body.bioSignalCount == 0) continue;
-                maxNameWidth = Math.Max(maxNameWidth, g.MeasureString(body.shortName, this.Font).Width);
+                maxNameWidth = Math.Max(maxNameWidth, g.MeasureString(body.shortName, GameColors.fontMiddle).Width);
                 maxBioCount = Math.Max(maxBioCount, body.bioSignalCount);
             }
-            var boxLeft = twoFour + maxNameWidth;
+            var boxLeft = oneTwo + maxNameWidth;
             var boxRight = boxLeft + (maxBioCount * oneTwo);
 
             // draw a row for each body
@@ -440,10 +440,10 @@ namespace SrvSurvey
             var ww = eight;
             var bb = highlight ? GameColors.brushCyan : GameColors.brushGameOrange;
             //var bb2 = new HatchBrush(HatchStyle.DarkUpwardDiagonal, highlight ? Color.FromArgb(200, GameColors.DarkCyan) : GameColors.Orange, Color.Black);
-            var bb2 = new SolidBrush(highlight ? Color.FromArgb(90, GameColors.DarkCyan) : GameColors.Orange);
-            var bb3 = new HatchBrush(HatchStyle.DarkDownwardDiagonal, highlight ? Color.FromArgb(255, GameColors.DarkCyan) : GameColors.Orange, Color.Black);
+            var bb2 = new SolidBrush(highlight ? Color.FromArgb(90, GameColors.DarkCyan) : GameColors.OrangeDim);
+            var bb3 = new HatchBrush(HatchStyle.DarkDownwardDiagonal, highlight ? Color.FromArgb(255, GameColors.DarkCyan) : GameColors.OrangeDim, Color.Black);
 
-            var pp = highlight ? Pens.DarkCyan : GameColors.penGameOrangeDim1;
+            var pp = highlight ? Pens.DarkCyan : GameColors.penGameOrange1;
             var pp2 = new Pen(Color.FromArgb(124, pp.Color));
 
             // draw outer dotted box

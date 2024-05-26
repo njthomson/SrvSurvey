@@ -88,8 +88,8 @@ namespace SrvSurvey
                 : game.systemBody;
             if (body == null || !PlotBodyInfo.allowPlotter)
             {
-                Game.log($"Hiding PlotBodyInfo - no valid target");
-                this.Opacity = 0;
+                Game.log($"Closing PlotBodyInfo - no valid target");
+                Program.closePlotter<PlotBodyInfo>();
                 return;
             }
 
@@ -188,6 +188,7 @@ namespace SrvSurvey
                 if (planetish)
                 {
                     var atmos = string.IsNullOrEmpty(body.atmosphere) || body.atmosphere == "No atmosphere" ? "None" : Util.camel(body.atmosphere.Replace(" atmosphere", ""));
+                    if (body.atmosphereType == "EarthLike") atmos = "Earth Like";
                     drawTextAt(eight, $"Atmosphere:");
                     drawTextAt(eightEight, atmos);
                     newLine(+two, true);

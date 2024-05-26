@@ -25,5 +25,6 @@
   "PlotSysStatus": "left:8, bottom:44",
   "PlotTrackTarget": "center:480, top:8",
   "PlotBodyInfo": "left:8, top:8",
-  "PlotGalMap": "left:8, top:8"
+  "PlotGalMap": "left:8, top:8",
+  "PlotFSSInfo": "left:8, top:8"
 }

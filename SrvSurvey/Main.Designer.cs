@@ -84,7 +84,6 @@ namespace SrvSurvey
             label3 = new Label();
             btnResetExploration = new Button();
             label1 = new Label();
-            button1 = new Button();
             txtExplorationValue = new TextBox();
             textBox2 = new TextBox();
             txtBodies = new TextBox();
@@ -650,7 +649,6 @@ namespace SrvSurvey
             groupBox5.Controls.Add(label3);
             groupBox5.Controls.Add(btnResetExploration);
             groupBox5.Controls.Add(label1);
-            groupBox5.Controls.Add(button1);
             groupBox5.Controls.Add(txtExplorationValue);
             groupBox5.Controls.Add(textBox2);
             groupBox5.Controls.Add(txtBodies);
@@ -723,16 +721,6 @@ namespace SrvSurvey
             label1.Size = new Size(117, 12);
             label1.TabIndex = 28;
             label1.Text = "Estimated value:";
-            // 
-            // button1
-            // 
-            button1.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            button1.Image = (Image)resources.GetObject("button1.Image");
-            button1.Location = new Point(501, 42);
-            button1.Name = "button1";
-            button1.Size = new Size(22, 22);
-            button1.TabIndex = 27;
-            button1.UseVisualStyleBackColor = true;
             // 
             // txtExplorationValue
             // 
@@ -880,7 +868,6 @@ namespace SrvSurvey
         private Button btnCopyLocation;
         private GroupBox groupBox5;
         private Label label1;
-        private Button button1;
         private TextBox txtExplorationValue;
         private TextBox textBox2;
         private TextBox txtBodies;
