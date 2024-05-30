@@ -320,6 +320,9 @@ namespace SrvSurvey.game
             // TODO: we could avoid flicker by updating the colors on labels, rather than destroying and recreating them.
 
             this.checkModeChange();
+
+            if (this._mode == GameMode.SystemMap && PlotBodyInfo.allowPlotter)
+                Program.showPlotter<PlotBodyInfo>();
         }
 
         private GameMode _mode;
@@ -708,7 +711,11 @@ namespace SrvSurvey.game
             // if we've been to this settlement before - load it and exit early
             this.humanSite = HumanSiteData.Load(systemData.address, lastApproachSettlement.MarketID);
 
-            if (this.humanSite != null) return;
+            if (this.humanSite != null)
+            {
+                cmdr.setMarketId(this.humanSite.marketId);
+                return;
+            }
 
             // replay entries forwards - starting with ApproachSettlement
             this.humanSite = new HumanSiteData(lastApproachSettlement);
@@ -725,6 +732,7 @@ namespace SrvSurvey.game
                 if (this.shipType == null) this.shipType = journals.FindEntryByType<LoadGame>(-1, true)?.Ship!;
 
                 humanSite.docked(lastDocked, status.Heading);
+                cmdr.setMarketId(lastDocked.MarketID);
             }
 
             // or if we touched down near a site
@@ -1798,7 +1806,7 @@ namespace SrvSurvey.game
                     // stop endless repeats
                     if (this._touchdownLocation == null)
                     {
-                        if (status.hasLatLong && systemBody != null && systemBody.name == status.BodyName)
+                        if (status.hasLatLong && systemBody != null && systemBody.name == status.BodyName && systemBody.lastTouchdown != null)
                         {
                             Game.log($"Last touchdown not found since ApproachBody - using last from systemBody");
                             this._touchdownLocation = systemBody.lastTouchdown;
@@ -1834,6 +1842,13 @@ namespace SrvSurvey.game
                     }
                     */
                 }
+
+                if (_touchdownLocation == null && cmdr.lastTouchdownLocation != null)
+                {
+                    Game.log($"Last touchdown not found anywhere - cmdr.lastTouchdownLocation: {cmdr.lastTouchdownLocation}");
+                    _touchdownLocation = cmdr.lastTouchdownLocation;
+                }
+
                 return _touchdownLocation!;
             }
             set
@@ -2052,6 +2067,7 @@ namespace SrvSurvey.game
 
                 // adjust predictions/rewards calculations for this body
                 this.systemBody.predictSpecies();
+                Program.invalidateActivePlotters();
             }
             else if (this.cmdr.scanOne != null && this.cmdr.scanTwo == null)
             {
@@ -2086,6 +2102,7 @@ namespace SrvSurvey.game
 
                 // adjust predictions/rewards calculations for this body
                 this.systemBody.predictSpecies();
+                Program.invalidateActivePlotters();
             }
 
             // force a mode change to update ux

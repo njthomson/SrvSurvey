@@ -213,6 +213,9 @@ namespace SrvSurvey
 
         public static void invalidateActivePlotters()
         {
+            if (Program.control.InvokeRequired)
+                Program.control.BeginInvoke(() => Program.invalidateActivePlotters());
+
             // Game.log($"Program.invalidateActivePlotters: {activePlotters.Count}");
 
             foreach (PlotterForm form in activePlotters.Values)

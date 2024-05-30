@@ -161,6 +161,7 @@ namespace SrvSurvey
                     var prefix = scan.body.wasDiscovered ? "" : "*";
                     var txt = $"{prefix}{scan.body.shortName} - {planetClass}"; // ◌◎◉☆★☄☼☀⛀⛃✔✨✶✪❓❔❓⛬❗❕ * ❒❱✪❍❌✋❖⟡⦁⦂⧫
                     if (scan.body.terraformable) txt += " (T)";
+                    if (scan.body.type == SystemBodyType.LandableBody) txt += " (L)";
                     if (scan.body.type == SystemBodyType.Star)
                         txt = $"{prefix}{scan.body.shortName} - {scan.body.starType} Star";
 

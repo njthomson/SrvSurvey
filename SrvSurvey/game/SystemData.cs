@@ -601,6 +601,12 @@ namespace SrvSurvey.game
             }
 
             if (this.bioSummaryActive) this.summarizeBioSystem();
+
+            if (body.bioSignalCount > 0)
+            {
+                body.predictSpecies();
+                if (Game.activeGame?.systemData == this) Program.invalidateActivePlotters();
+            }
         }
 
         private void applyMainStarHonkBonus()
@@ -688,7 +694,10 @@ namespace SrvSurvey.game
                 body.bioSignalCount = bioSignals.Count;
 
             if (bioSignals != null)
+            {
                 body.predictSpecies();
+                if (Game.activeGame?.systemData == this) Program.invalidateActivePlotters();
+            }
         }
 
         public void onJournalEntry(SAASignalsFound entry)
@@ -893,7 +902,7 @@ namespace SrvSurvey.game
             if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! Expected: `{this.address}`, got: {entry.SystemAddress}"); return; }
             var body = this.findOrCreate(entry.BodyName, entry.BodyID);
 
-            if (entry.Name.StartsWith("$Ancient") & Game.activeGame != null)
+            if (entry.Name.StartsWith("$Ancient") && Game.activeGame != null)
             {
                 // update settlements
                 if (body.settlements == null) body.settlements = new Dictionary<string, LatLong2>();
@@ -937,6 +946,8 @@ namespace SrvSurvey.game
             // update known organisms
             if (canonnPoi.codex != null)
             {
+                var shouldPredictBios = false;
+
                 foreach (var poi in canonnPoi.codex)
                 {
                     if (poi.hud_category != "Biology" || poi.latitude == null || poi.longitude == null || poi.entryid == null) continue;
@@ -975,7 +986,16 @@ namespace SrvSurvey.game
                         if (organism.species == null && match.species.name != null) organism.species = match.species.name;
                         if (organism.speciesLocalized == null && match.species.englishName != null) organism.speciesLocalized = match.species.englishName;
                         if (organism.variant == null && match.variant.name != null) organism.variant = match.variant.name;
+
+                        shouldPredictBios = true;
                     }
+                }
+
+                if (shouldPredictBios)
+                {
+                    foreach (var body in this.bodies)
+                        body.predictSpecies();
+                    if (Game.activeGame?.systemData == this) Program.invalidateActivePlotters();
                 }
             }
 
@@ -2138,6 +2158,8 @@ namespace SrvSurvey.game
 
         public void predictSpecies()
         {
+            if (this.bioSignalCount == 0) return;
+
             this.predictions.Clear();
             var knownRewards = 0L;
 
@@ -2195,7 +2217,7 @@ namespace SrvSurvey.game
                 this.maxBioRewards += this.getShortListSum(delta, sortedPredictions, false);
             }
 
-            Game.log($"predictSpecies: '{this.name}' predicted {predictions.Count} species: {this.minMaxBioRewards}\r\n> " + string.Join("\r\n> ", this.predictions.Keys));
+            Game.log($"predictSpecies: '{this.name}' predicted {predictions.Count} rewards: {this.minMaxBioRewards}");
             if (predictions.Count > 0) Game.log("> " + string.Join("\r\n> ", this.predictions.Keys));
         }
 

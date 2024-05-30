@@ -170,7 +170,8 @@ namespace SrvSurvey
                 // ☢ ♨ ⚡ ☎ ☏ ♫ ⚠ ⚽ ✋ ❕ ❗ 
                 // ❗❕❉✪✿❤➊➀⟐⟊➟✦✔⛶⛬⛭⛯⛣⛔⛌⛏⚴⚳⚱⚰⚚⚙⚗⚕⚑⚐⚜⚝⚛⚉⚇♥♦♖♜☸☗☯☍☉☄☁◬◊◈◍◉▣▢╳
 
-                var footerTxt = $"☍☄ cmdr offset: x: {(int)cmdrOffset.X}m, y: {(int)cmdrOffset.Y}m ({(int)pf.X}, {(int)pf.Y})";
+                var footerTxt = $"cmdr offset: x: {(int)cmdrOffset.X}m, y: {(int)cmdrOffset.Y}m";
+                if (this.mapImage != null) footerTxt += $" (☍{(int)pf.X}, {(int)pf.Y})";
                 this.drawFooterText(footerTxt);
                 clipToMiddle();
 
@@ -230,6 +231,10 @@ namespace SrvSurvey
                     //g.DrawEllipse(Pens.SlateGray, -5, -5, 10, 10);
                     g.DrawEllipse(Pens.SlateGray, -10, -10, 20, 20);
                     //g.DrawEllipse(Pens.SlateGray, -20, -20, 40, 40);
+
+                    // show pad # in corner
+                    var idx = game!.humanSite!.template!.landingPads.IndexOf(pad) + 1;
+                    g.DrawString($"{idx}", GameColors.fontSmall, Brushes.SlateGray, r.Left + four, r.Top + four);
                 });
             }
 

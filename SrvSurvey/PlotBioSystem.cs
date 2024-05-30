@@ -319,7 +319,7 @@ namespace SrvSurvey
                         g.DrawLine(GameColors.penGameOrange1, twoEight, y, dtx, y);
                         g.DrawLine(GameColors.penGameOrangeDim1, twoEight + 1, y + 1, dtx + 1, y + 1);
                     }
-                    newLine(+one);
+                    newLine(+one, true);
 
                     // 2nd line - right
                     if (body.firstFootFall)
@@ -327,7 +327,7 @@ namespace SrvSurvey
                         minReward *= 5;
                         maxReward *= 5;
                     }
-                    drawTextAt(
+                    var sz = drawTextAt(
                         this.ClientSize.Width - ten,
                         Util.getMinMaxCredits(minReward, maxReward),
                         highlight ? GameColors.brushCyan : GameColors.brushGameOrange,
@@ -338,6 +338,7 @@ namespace SrvSurvey
                         twoEight,
                         displayName != organism.genusLocalized ? organism.genusLocalized : "?",
                         highlight ? GameColors.brushCyan : GameColors.brushGameOrange);
+                    dtx += sz.Width + ten;
                     newLine(+eight, true);
                 }
             }
@@ -411,11 +412,30 @@ namespace SrvSurvey
                 }
 
                 // and draw more boxes for those we don't
-                for (var n = 0; n < signalCount; n++)
+                // using the first and last for the min/max of all the potentials
+                // and ? boxes for anything in between
+                if (signalCount == 1)
                 {
-                    // TODO: decide how to represent min/max values before we know the genus
-                    long min = -1;
-                    long max = -1;
+                    //long min = body.predictions.Count > 0 ? body.predictions.Values.Min(p => p.reward) : -1;
+                    long max = body.predictions.Count > 0 ? body.predictions.Values.Max(p => p.reward) : -1;
+                    this.drawVolumeBars(x, dty + oneFive, highlight, 0, max);
+                    x += oneTwo;
+                }
+                else if (signalCount > 1)
+                {
+                    // first is min
+                    long min = body.predictions.Count > 0 ? body.predictions.Values.Min(p => p.reward) : 0;
+                    this.drawVolumeBars(x, dty + oneFive, highlight, min);
+                    x += oneTwo;
+
+                    for (var n = 1; n < signalCount - 1; n++)
+                    {
+                        this.drawVolumeBars(x, dty + oneFive, highlight, -1, -1);
+                        x += oneTwo;
+                    }
+
+                    // last is max
+                    long max = body.predictions.Count > 0 ? body.predictions.Values.Max(p => p.reward) : 0;
                     this.drawVolumeBars(x, dty + oneFive, highlight, min, max);
                     x += oneTwo;
                 }
@@ -440,11 +460,11 @@ namespace SrvSurvey
             var ww = eight;
             var bb = highlight ? GameColors.brushCyan : GameColors.brushGameOrange;
             //var bb2 = new HatchBrush(HatchStyle.DarkUpwardDiagonal, highlight ? Color.FromArgb(200, GameColors.DarkCyan) : GameColors.Orange, Color.Black);
-            var bb2 = new SolidBrush(highlight ? Color.FromArgb(90, GameColors.DarkCyan) : GameColors.OrangeDim);
+            var bb2 = new SolidBrush(highlight ? Color.FromArgb(90, GameColors.DarkCyan) : Color.FromArgb(100, GameColors.OrangeDim)); //GameColors.OrangeDim);
             var bb3 = new HatchBrush(HatchStyle.DarkDownwardDiagonal, highlight ? Color.FromArgb(255, GameColors.DarkCyan) : GameColors.OrangeDim, Color.Black);
 
-            var pp = highlight ? Pens.DarkCyan : GameColors.penGameOrange1;
-            var pp2 = new Pen(Color.FromArgb(124, pp.Color));
+            var pp = highlight ? Pens.DarkCyan : GameColors.penGameOrangeDim1;
+            var pp2 = highlight ? Pens.DarkCyan : GameColors.newPen(Color.FromArgb(124, GameColors.Orange));
 
             // draw outer dotted box
             g.FillRectangle(Brushes.Black, x, y - 12, ww, 12);
@@ -464,16 +484,16 @@ namespace SrvSurvey
             }
             else
             {
-                if (reward == 0)
-                {
-                    if (maxReward == -1)
-                    {
-                        // we have no predictions - show the lowest bar populated
-                        g.FillRectangle(bb2, x, y, ww, three);
-                        g.DrawRectangle(pp, x, y, ww, three);
-                    }
-                    return;
-                }
+                //if (reward == 0)
+                //{
+                //    if (maxReward == -1)
+                //    {
+                //        // we have no predictions - show the lowest bar populated
+                //        g.FillRectangle(bb2, x, y, ww, three);
+                //        g.DrawRectangle(pp, x, y, ww, three);
+                //    }
+                //    return;
+                //}
 
                 // 1st/lowest bar
                 if (reward > 0)
@@ -484,7 +504,7 @@ namespace SrvSurvey
                 else if (maxReward > 0)
                 {
                     g.FillRectangle(bb2, x, y, ww, three);
-                    g.DrawRectangle(pp, x, y, ww, three);
+                    g.DrawRectangle(pp2, x, y, ww, three);
                 }
                 else return;
                 y -= 4;
@@ -498,7 +518,7 @@ namespace SrvSurvey
                 else if (maxReward > Game.settings.bioRingBucketOne * 1_000_000)
                 {
                     g.FillRectangle(bb2, x, y, ww, three);
-                    g.DrawRectangle(pp, x, y, ww, three);
+                    g.DrawRectangle(pp2, x, y, ww, three);
                 }
                 else return;
                 y -= 4;
@@ -512,7 +532,7 @@ namespace SrvSurvey
                 else if (maxReward > Game.settings.bioRingBucketTwo * 1_000_000)
                 {
                     g.FillRectangle(bb2, x, y, ww, three);
-                    g.DrawRectangle(pp, x, y, ww, three);
+                    g.DrawRectangle(pp2, x, y, ww, three);
                 }
                 else return;
                 y -= 4;
@@ -526,7 +546,7 @@ namespace SrvSurvey
                 else if (maxReward > Game.settings.bioRingBucketThree * 1_000_000)
                 {
                     g.FillRectangle(bb2, x, y, ww, three);
-                    g.DrawRectangle(pp, x, y, ww, three);
+                    g.DrawRectangle(pp2, x, y, ww, three);
                 }
                 else return;
             }

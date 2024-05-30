@@ -919,7 +919,8 @@ namespace SrvSurvey
             g.RotateTransform(siteHeading); // rotate by site heading
 
             // vertical rotation flips depending on north/south hemisphere?
-            //if (this.siteOrigin.Lat < 0)                g.RotateTransform(180);
+            //if (this.siteOrigin.Lat > 0) g.RotateTransform(180);
+            // Tkachenko Command / (+/+) "lat": 27.571095, / "long": 13.16864 / needs rotate 180° AND flip vertical ?!
         }
 
         /// <summary>

@@ -119,7 +119,8 @@ namespace SrvSurvey.game
                 // for other pads, we must apply their rotation to the ships heading
                 var padRot = this.template.landingPads[this.targetPad - 1].rot;
                 this.heading = shipHeading - padRot;
-                if (this.heading > 0) this.heading += 360;
+                if (this.heading > 0) this.heading -= 360;
+                if (this.heading < 0) this.heading += 360;
             }
 
             //// --- tmp ---
@@ -210,9 +211,9 @@ namespace SrvSurvey.game
         {
             { "Agriculture/Small:2, Medium:0, Large:1", 4 },
 
-            { "Military /Small:0, Medium:1, Large:0", 1 },
-            { "Military /Small:2, Medium:0, Large:1", 2 },
-            { "Military /Small:1, Medium:0, Large:0", 4 },
+            { "Military/Small:0, Medium:1, Large:0", 1 },
+            { "Military/Small:2, Medium:0, Large:1", 2 },
+            { "Military/Small:1, Medium:0, Large:0", 4 },
 
             { "Extraction/Small:0, Medium:0, Large:1", 3 },
             { "Extraction/Small:0, Medium:1, Large:0", 4 },

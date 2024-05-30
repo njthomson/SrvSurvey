@@ -145,7 +145,7 @@ namespace SrvSurvey
                 if (body.type != SystemBodyType.Asteroid)
                 {
                     dty += four;
-                    drawTextAt(eight, $"Temp: {temp}°K");
+                    drawTextAt(eight, $"Temp: {temp}K");
                     drawTextAt(oneTwenty, $" | {body.planetClass}");
                     newLine(true);
                 }
@@ -155,8 +155,8 @@ namespace SrvSurvey
                 {
                     var isHighGravity = body.surfaceGravity >= Game.settings.highGravityWarningLevel * 10;
                     drawTextAt(eight, $"Gravity: {gravity}g", isHighGravity ? GameColors.brushRed : null);
-                    var pressure = (body.surfacePressure / 100_000f).ToString("N2") + "(atm)";
-                    if (pressure == "0.00(atm)") pressure = "None";
+                    var pressure = (body.surfacePressure / 100_000f).ToString("N4") + "(atm)";
+                    if (pressure == "0.0000(atm)") pressure = "None";
                     drawTextAt(oneTwenty, $" | Pressure: {pressure}");
                     newLine(+four, true);
                 }

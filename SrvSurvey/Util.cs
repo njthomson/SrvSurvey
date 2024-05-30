@@ -198,6 +198,7 @@ namespace SrvSurvey
             { "krait_light", new PointM(0.6031567730891498506706891727, -29.808101534971506981430079248) },
             { "typex_3", new PointM(-0.1499968019864161648299420609, -23.326543081110057742124991058) }, // challenger
             { "empire_courier", new PointM(0, -14.442907807215595156071678409) },
+            { "python", new PointM(0.0242815204676919790218357202, -27.803238864751802112883958858) },
 
             // TODO: figure this out for all the other ships
         };

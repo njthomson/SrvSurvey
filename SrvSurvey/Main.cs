@@ -989,8 +989,9 @@ namespace SrvSurvey
                 // temp?
                 if (msg == "!")
                 {
+                    // set site origin as tracking target
                     Game.settings.targetLatLongActive = true;
-                    Game.settings.targetLatLong = siteLocation; // set site origin as tracking target
+                    Game.settings.targetLatLong = siteLocation;
                     Game.settings.Save();
 
                     this.setTargetLatLong();
@@ -998,7 +999,8 @@ namespace SrvSurvey
                 }
                 else if (msg == "@")
                 {
-                    Game.settings.targetLatLongActive = true;
+                    // set current location as tracking target
+                    // Game.settings.targetLatLongActive = true;
                     // Game.settings.targetLatLong = game.touchdownLocation;
                     Game.settings.targetLatLong = Status.here.clone(); // current location
                     Game.settings.Save();
@@ -1008,8 +1010,9 @@ namespace SrvSurvey
                 }
                 else if (msg == "@@")
                 {
-                    var po = Util.getOffset(game.status.PlanetRadius, Game.settings.targetLatLong, game.humanSite.heading);
-                    Game.log($"\"{game.shipType}\", new PointM({po.x}, {po.y})");
+                    // helper for ship cockpit offsets (from target lat/long)
+                    var po = Util.getOffset(game.status.PlanetRadius, Game.settings.targetLatLong, 0);
+                    Game.log($"cockpit offset: \"{game.shipType}\", new PointM({po.x}, {po.y})");
                     Util.mapShipCockpitOffsets[game.shipType] = po;
                     Clipboard.SetText($"\"{game.shipType}\", new PointM({po.x}, {po.y})");
                 }
@@ -1040,29 +1043,10 @@ namespace SrvSurvey
                 }
                 else if (msg == "..")
                 {
-                    //// measure dist/angle from site origin
-                    var radius = game.status.PlanetRadius;
-                    //var dist = Util.getDistance(siteLocation, Status.here, radius).ToString("N2");
-                    //var angle = Util.getBearing(siteLocation, Status.here) - siteHeading;
-                    //if (angle < 0) angle += 360;
-                    //var angleTxt = angle.ToString("N2");
-                    //// "dist": 67.2, "angle": 36.5
-                    //var txt = $"\"dist\": {dist}, \"angle\": {angleTxt}";
-                    //Game.log($"Relative to site origin:\r\n\r\n\t{txt}\r\n\r\n\tSite: {siteLocation} / {siteHeading}°\r\n\tcmdr: {Status.here} / {game.status.Heading}°\r\n");
-                    //Clipboard.SetText(txt);
                     // measure dist/angle from site origin
-
-                    //var radius = game.status.PlanetRadius;
-                    //var dist = Util.getDistance(siteLocation, Status.here, radius);
-                    //var angle = Util.getBearing(siteLocation, Status.here) - siteHeading;
-                    //if (angle < 0) angle += 360;
-                    //var pf = Util.rotateLine(180 - angle, dist);
+                    var radius = game.status.PlanetRadius;
                     var pf = Util.getOffset(radius, game.humanSite.location, game.humanSite.heading);
 
-                    //var distTxt = dist.ToString("N2");
-                    //var angleTxt = angle.ToString("N2");
-                    // "dist": 67.2, "angle": 36.5
-                    //var txt = $"new PointF({pf.X}f, {pf.Y}f),";
                     var txt = $"\"offset\": {{ \"X\": {pf.X}, \"Y\": {pf.Y} }}";
                     Game.log($"Relative to site origin:\r\n\r\n\t{txt}\r\n");
                     Clipboard.SetText(txt);
@@ -1078,16 +1062,9 @@ namespace SrvSurvey
                     if (angle < 0) angle += 360;
                     var pf = Util.rotateLine(180 - angle, dist);
 
-
-                    //var distTxt = dist.ToString("N2");
-                    //var angleTxt = angle.ToString("N2");
-                    // "dist": 67.2, "angle": 36.5
-                    //var txt = $"new PointF({pf.X}f, {pf.Y}f),";
                     var txt = $"\"offset\": {{ \"X\": {pf.X}, \"Y\": {pf.Y} }}";
                     var txt2 = $"\"offset\": {{ \"X\": {cmdrOffset.X}, \"Y\": {cmdrOffset.Y} }}";
-                    Game.log($"Relative1 to site origin:\r\n\r\n\t{txt}\r\nvs  {txt2}");
-                    //Game.log($"Relative2 to site origin:\r\n\r\n\t{txt2}\r\n");
-                    //Clipboard.SetText(txt);
+                    Game.log($"Relative to site origin:\r\n\r\n\t{txt}\r\nvs  {txt2}");
                 }
 
             }

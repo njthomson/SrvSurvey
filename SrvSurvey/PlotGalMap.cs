@@ -180,7 +180,7 @@ namespace SrvSurvey
                 ? game.navRoute.Route.Find(_ => _.StarSystem == game.fsdTarget) ?? game.navRoute.Route[1]
                 : game.navRoute.Route[1];
 
-            if (game.navRoute.Route.Count > 2)
+            if (game.navRoute.Route.Count > 2 && next.StarSystem != hops.FirstOrDefault()?.systemName)
                 this.hops.Add(RouteInfo.create(next, false));
 
             this.distanceJumped = 0;

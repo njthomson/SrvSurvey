@@ -310,7 +310,7 @@ namespace SrvSurvey
 
 
                 var txt = $"{body.shortName}: {body.bioSignalCount}x signals ({Util.lsToString(body.distanceFromArrivalLS)})" + "\r\n";
-                //txt += $"\r\n({foo.body.planetClass}, {foo.body.atmosphereType}, {(foo.body.surfaceGravity/10f).ToString("N2")}g, {foo.body.surfaceTemperature.ToString("N2")}°K ({(foo.body.surfacePressure / 100_000f).ToString("N4")}) (atm), volcanism [{foo.body.volcanism}]\r\nmats [{string.Join(", ", foo.body.materials.Keys)}])";
+                //txt += $"\r\n({foo.body.planetClass}, {foo.body.atmosphereType}, {(foo.body.surfaceGravity/10f).ToString("N2")}g, {foo.body.surfaceTemperature.ToString("N2")}K ({(foo.body.surfacePressure / 100_000f).ToString("N4")}) (atm), volcanism [{foo.body.volcanism}]\r\nmats [{string.Join(", ", foo.body.materials.Keys)}])";
 
                 // known species
                 if (body.organisms?.Any(o => o.species != null) == true)

@@ -184,7 +184,7 @@ namespace SrvSurvey
                 //if (foo.speciesPart.Contains("Flam")) Debugger.Break();
 
                 //if (body.name.Contains("AB 1 c")) Debugger.Break();
-                //if (body.name.Contains("2 f") && foo.speciesPart.Contains("Gelata")) Debugger.Break();
+                //if (body.name.Contains("1 d") && foo.speciesPart.Contains("Acus")) Debugger.Break();
 
                 if (foo.galacticRegion?.Contains(galacticRegion) == false) continue;
                 if (foo.planetClass?.Any(pc => body.planetClass?.Contains(pc) == true) == false) continue;
@@ -226,6 +226,8 @@ namespace SrvSurvey
                 if (foo.speciesPart == "Electricae Radialem" && GalacticNeblulae.distToClosest(body.system.starPos) > 100) continue;
                 if (foo.speciesPart == "Clypeus Speculumi" && body.distanceFromArrivalLS < 2000) continue; // not 2500 ?
                 if (foo.speciesPart == "Bacterium Tela" && surfacePressure > 0.1) continue;
+                if (foo.speciesPart == "Bacterium Tela" && body.atmosphere.Contains("thin ammonia") && surfaceGravity > 0.27f) continue;
+
 
                 // atmospheric special cases
                 if (foo.speciesPart.StartsWith("Recepta") && body.atmosphereComposition.GetValueOrDefault("SulphurDioxide") < 1f) continue;
@@ -245,7 +247,7 @@ namespace SrvSurvey
                 {
                     var sulphurDioxide = body.atmosphereComposition.GetValueOrDefault("SulphurDioxide");
                     var carbonDioxide = body.atmosphereComposition.GetValueOrDefault("CarbonDioxide");
-                    if (sulphurDioxide < 1f && carbonDioxide != 100) continue;
+                    if (sulphurDioxide < 0.99f && carbonDioxide != 100) continue;
                 }
 
                 // TODO: add distance check for Brain Tree's
@@ -392,7 +394,23 @@ namespace SrvSurvey
             { "Bacterial | Bacterium Scopulum  | Icy                | 6.1 | NeonRich       | CarbonDioxide,Methane |  20 |  65 | * | cad+" },
             { "Bacterial | Bacterium Scopulum  | Icy                | 2.6 | Nitrogen       | CarbonDioxide,Methane |  61 |  68 | * | cad+" },
             { "Bacterial | Bacterium Scopulum  | Icy                | 3.2 | Oxygen         | CarbonDioxide,Methane | 152 | 210 | * | cad+" },
-            { "Bacterial | Bacterium Tela      | *                  | 6.1 | *              | *                     |  20 | 607 | * | cad+" }, // todo? atmos: all but water
+            //{ "Bacterial | Bacterium Tela      | *                  | 6.1 | *              | *                     |  20 | 607 | * | cad+" }, // todo? atmos: all but water.
+            { "Bacterial | Bacterium Tela      | *                  | 6.1 | SulphurDioxide | *                     |  20 | 607 | * | cad+" },
+            { "Bacterial | Bacterium Tela      | *                  | 6.1 | CarbonDioxide  | *                     |  20 | 607 | * | cad+" },
+            { "Bacterial | Bacterium Tela      | *                  | 6.1 | Water          | *                     |  20 | 607 | * | cad+" },
+            { "Bacterial | Bacterium Tela      | *                  | 6.1 | Ammonia        | None                  |  20 | 607 | * | cad+" },
+            { "Bacterial | Bacterium Tela      | *                  | 6.1 | Argon          | None                  |  20 | 607 | * | cad+" },
+            { "Bacterial | Bacterium Tela      | *                  | 6.1 | Helium         | None                  |  20 | 607 | * | cad+" },
+            { "Bacterial | Bacterium Tela      | *                  | 6.1 | Methane        | None                  |  20 | 607 | * | cad+" },
+            { "Bacterial | Bacterium Tela      | *                  | 6.1 | Neon,NeonRich  | None                  |  20 | 607 | * | cad+" },
+            { "Bacterial | Bacterium Tela      | *                  | 6.1 | Methane        | None                  |  20 | 607 | * | cad+" },
+            { "Bacterial | Bacterium Tela      | *                  | 6.1 | Nitrogen       | None                  |  20 | 607 | * | cad+" },
+            { "Bacterial | Bacterium Tela      | *                  | 6.1 | Oxygen         | None                  |  20 | 607 | * | cad+" },
+            { "Bacterial | Bacterium Tela      | *                  | 6.1 | WaterRich      | None                  |  20 | 607 | * | cad+" },
+                                                                                    // These have another criteria that is not at all obvious.
+                                                                                    // Maybe Thin Ammonia has mas gravity of 0.27? - probably not?
+                                                                                    // OR Thin Neon or Ammonia MUST have Volcanism
+                                                                                    // OR rather: SulphurDioxide and CarbonDioxide ThinWater allow No Volcanism <<---
             { "Bacterial | Bacterium Verrata   | Icy,Rocky,RockyIce | 6.1 | *              | Water                 |  20 | 442 | * | cad+" }, // todo? atmos: all but SulphurDioxide
             { "Bacterial | Bacterium Vesicula  | *                  | 5.1 | Argon          | *                     |  50 | 267 | * | cad+" },
             { "Bacterial | Bacterium Volu      | *                  | 6.0 | Oxygen         | *                     | 143 | 246 | * | ant+" },
@@ -568,22 +586,22 @@ namespace SrvSurvey
          */
 
             // 15x Tussock - https://canonn.science/codex/tussock/ - https://ed-dsn.net/en/tussock_en/
-            //    genus | species           | body           | <g  | atmosType      | volc | >t  | <t  |sta|mat| galactic regions
-            { "Tussocks | Tussock Albata    | HMC,Rocky      | 2.7 | CarbonDioxide  | None | 175 | 180 | * | * | ~SagittariusCarinaArm,~PerseusArm,Ryker'sHope" },
+            //    genus | species           | body           | <g  | atmosType      | volc | >t  | <t  | star type          |mat| galactic regions
+            { "Tussocks | Tussock Albata    | HMC,Rocky      | 2.7 | CarbonDioxide  | None | 175 | 180 | F,G,K,M,L,T,Y,W,D | * | ~SagittariusCarinaArm,~PerseusArm,Ryker'sHope" },
             { "Tussocks | Tussock Capillum  | Rocky          | 2.8 | Argon          | *    |  80 | 129" },
             { "Tussocks | Tussock Capillum  | Rocky,RockyIce | 2.7 | Methane        | *    |  90 | 109" },
-            { "Tussocks | Tussock Caputus   | HMC,Rocky      | 2.7 | CarbonDioxide  | None | 181 | 190 | * | * | ~SagittariusCarinaArm,~PerseusArm,Ryker'sHope" },
-            { "Tussocks | Tussock Catena    | HMC,Rocky      | 2.7 | Ammonia        | *    | 152 | 177 | * | * | ~ScutumCentaurusArm,Orion-CygnusArm" },
-            { "Tussocks | Tussock Cultro    | HMC,Rocky      | 2.8 | Ammonia        | *    | 152 | 177 | * | * | ~OrionCygnusArm,Odin'sHold,EmpyreanStraits,GalacticCentre" },
-            { "Tussocks | Tussock Divisa    | HMC,Rocky      | 2.7 | Ammonia        | *    | 152 | 177 | * | * | ~PerseusArm,Ryker'sHope" },
-            { "Tussocks | Tussock Ignis     | HMC,Rocky      | 1.9 | CarbonDioxide  | None | 160 | 170 | * | * | ~SagittariusCarinaArm,~PerseusArm,Ryker'sHope" },
-            { "Tussocks | Tussock Pennata   | HMC,Rocky      | 0.9 | CarbonDioxide  | None | 145 | 154 | * | * | ~SagittariusCarinaArm,~PerseusArm,Ryker'sHope" },
-            { "Tussocks | Tussock Pennatis  | HMC,Rocky      | 2.7 | CarbonDioxide  | None | 147 | 196 | * | * | ~OuterArm,EmpyreanStraits,GalacticCentre" },
-            { "Tussocks | Tussock Propagito | HMC,Rocky      | 2.7 | CarbonDioxide  | None | 145 | 197 | * | * | ~ScutumCentaurusArm,Odin'sHold,GalacticCentre,Orion-CygnusArm" },
-            { "Tussocks | Tussock Serrati   | HMC,Rocky      | 2.3 | CarbonDioxide  | None | 171 | 178 | * | * | ~SagittariusCarinaArm,~PerseusArm,Ryker'sHope" },
+            { "Tussocks | Tussock Caputus   | HMC,Rocky      | 2.7 | CarbonDioxide  | None | 181 | 190 | F,G,K,M,L,T,Y,W,D | * | ~SagittariusCarinaArm,~PerseusArm,Ryker'sHope" },
+            { "Tussocks | Tussock Catena    | HMC,Rocky      | 2.7 | Ammonia        | *    | 152 | 177 | F,G,K,M,L,T,Y,W,D | * | ~ScutumCentaurusArm,Orion-CygnusArm" },
+            { "Tussocks | Tussock Cultro    | HMC,Rocky      | 2.8 | Ammonia        | *    | 152 | 177 | F,G,K,M,L,T,Y,W,D | * | ~OrionCygnusArm,Odin'sHold,EmpyreanStraits,GalacticCentre" },
+            { "Tussocks | Tussock Divisa    | HMC,Rocky      | 2.7 | Ammonia        | *    | 152 | 177 | F,G,K,M,L,T,Y,W,D | * | ~PerseusArm,Ryker'sHope" },
+            { "Tussocks | Tussock Ignis     | HMC,Rocky      | 1.9 | CarbonDioxide  | None | 160 | 170 | F,G,K,M,L,T,Y,W,D | * | ~SagittariusCarinaArm,~PerseusArm,Ryker'sHope" },
+            { "Tussocks | Tussock Pennata   | HMC,Rocky      | 0.9 | CarbonDioxide  | None | 145 | 154 | F,G,K,M,L,T,Y,W,D | * | ~SagittariusCarinaArm,~PerseusArm,Ryker'sHope" },
+            { "Tussocks | Tussock Pennatis  | HMC,Rocky      | 2.7 | CarbonDioxide  | None | 147 | 196 | F,G,K,M,L,T,Y,W,D | * | ~OuterArm,EmpyreanStraits,GalacticCentre" },
+            { "Tussocks | Tussock Propagito | HMC,Rocky      | 2.7 | CarbonDioxide  | None | 145 | 197 | F,G,K,M,L,T,Y,W,D | * | ~ScutumCentaurusArm,Odin'sHold,GalacticCentre,Orion-CygnusArm" },
+            { "Tussocks | Tussock Serrati   | HMC,Rocky      | 2.3 | CarbonDioxide  | None | 171 | 178 | F,G,K,M,L,T,Y,W,D | * | ~SagittariusCarinaArm,~PerseusArm,Ryker'sHope" },
             { "Tussocks | Tussock Stigmasis | HMC,Rocky      | 2.8 | SulphurDioxide | *    | 132 | 207" },
-            { "Tussocks | Tussock Triticum  | HMC,Rocky      | 2.7 | CarbonDioxide  | None | 191 | 196 | * | * | ~SagittariusCarinaArm,~PerseusArm,Ryker'sHope" },
-            { "Tussocks | Tussock Ventusa   | HMC,Rocky      | 1.6 | CarbonDioxide  | *    | 155 | 188 | * | * | ~SagittariusCarinaArm,~PerseusArm,Ryker'sHope" },
+            { "Tussocks | Tussock Triticum  | HMC,Rocky      | 2.7 | CarbonDioxide  | None | 191 | 196 | F,G,K,M,L,T,Y,W,D | * | ~SagittariusCarinaArm,~PerseusArm,Ryker'sHope" },
+            { "Tussocks | Tussock Ventusa   | HMC,Rocky      | 1.6 | CarbonDioxide  | None | 155 | 188 | F,G,K,M,L,T,Y,W,D | * | ~SagittariusCarinaArm,~PerseusArm,Ryker'sHope" },
             { "Tussocks | Tussock Virgam    | HMC,Rocky      | 0.63 | Water          | *    | 390 | 450" },
             // Tussock needs SulphurDioxide >= 0.9 in Atmospheric composition
 
