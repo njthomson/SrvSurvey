@@ -78,6 +78,18 @@ namespace SrvSurvey
             Program.closePlotter<PlotGuardianStatus>();
         }
 
+        public static bool allowPlotter
+        {
+            get => Game.settings.enableGuardianSites
+                && Game.activeGame?.systemBody != null
+                && !Game.activeGame.hidePlottersFromCombatSuits
+                && Game.activeGame.status.hasLatLong
+                && Game.activeGame.systemSite?.location != null
+                && Game.activeGame.isMode(GameMode.InSrv, GameMode.OnFoot, GameMode.Landed, GameMode.Flying, GameMode.InFighter)
+                        //&& this.status.SelectedWeapon != "$humanoid_sampletool_name;"
+                ;
+        }
+
         public override void reposition(Rectangle gameRect)
         {
             if (gameRect == Rectangle.Empty)

@@ -625,7 +625,7 @@ namespace SrvSurvey
                 if (showPlotPriorScans)
                     Program.showPlotter<PlotPriorScans>();
 
-                if (game.showBodyPlotters && Game.settings.autoShowBioPlot && !this.game.showGuardianPlotters)
+                if (PlotGrounded.allowPlotter)
                 {
                     // show trackers only if we have some
                     var showPlotTrackers = game.systemBody?.bookmarks?.Count > 0;
@@ -655,7 +655,7 @@ namespace SrvSurvey
                 lblTrackTargetStatus.Text = "Inactive";
                 Program.closePlotter<PlotTrackTarget>();
             }
-            else if (game.showBodyPlotters && (game.status!.Flags & StatusFlags.HasLatLong) > 0 && game.systemBody != null)
+            else if (PlotGrounded.allowPlotter)
             {
                 txtTargetLatLong.Text = Game.settings.targetLatLong.ToString();
                 lblTrackTargetStatus.Text = "Active";
@@ -702,7 +702,7 @@ namespace SrvSurvey
                     else
                         txtGuardianSite.Text = $"{this.game.systemSite.type}, {this.game.systemSite.siteHeading}°";
 
-                    if (game.showBodyPlotters && this.game.showGuardianPlotters)
+                    if (PlotGuardians.allowPlotter)
                     {
                         Program.showPlotter<PlotGuardians>();
                         Program.showPlotter<PlotGuardianStatus>();
@@ -715,8 +715,8 @@ namespace SrvSurvey
                         Program.closePlotter<PlotTrackers>();
                     }
 
-                    btnRuinsMap.Enabled = game.systemSite.siteHeading != -1 && this.game.showGuardianPlotters;
-                    btnRuinsOrigin.Enabled = game.systemSite.siteHeading != -1 && this.game.showGuardianPlotters;
+                    btnRuinsMap.Enabled = game.systemSite.siteHeading != -1 && PlotGuardians.allowPlotter;
+                    btnRuinsOrigin.Enabled = game.systemSite.siteHeading != -1 && PlotGuardians.allowPlotter;
                 }
             }
         }
@@ -745,32 +745,15 @@ namespace SrvSurvey
             this.removeGame();
         }
 
-        private void onJournalEntry(Disembark entry)
-        {
-            Game.log($"Main.Disembark {entry.Body}");
-
-            if (entry.OnPlanet && !entry.OnStation && game?.systemBody?.bioSignalCount > 0 && !game.showGuardianPlotters && !Program.isPlotter<PlotGuardians>())
-            {
-                if (Game.settings.autoShowBioSummary)
-                    Program.showPlotter<PlotBioStatus>();
-                if (Game.settings.autoShowBioPlot && !this.game.showGuardianPlotters)
-                    Program.showPlotter<PlotGrounded>();
-            }
-
-            // close these upon disembarking
-            if (!PlotSysStatus.allowPlotter) Program.closePlotter<PlotSysStatus>();
-            if (!PlotBioSystem.allowPlotter) Program.closePlotter<PlotBioSystem>();
-        }
-
         private void onJournalEntry(LaunchSRV entry)
         {
             Game.log($"Main.LaunchSRV {game?.status?.BodyName}");
 
-            if (game!.showBodyPlotters && game.systemBody?.bioSignalCount > 0 && !game.showGuardianPlotters && !Program.isPlotter<PlotGuardians>())
+            if (game?.systemBody?.bioSignalCount > 0)
             {
-                if (Game.settings.autoShowBioSummary)
+                if (PlotBioStatus.allowPlotter)
                     Program.showPlotter<PlotBioStatus>();
-                if (Game.settings.autoShowBioPlot && !this.game.showGuardianPlotters)
+                if (PlotGrounded.allowPlotter)
                     Program.showPlotter<PlotGrounded>();
             }
         }
@@ -779,16 +762,11 @@ namespace SrvSurvey
         {
             Game.log($"Main.ApproachBody {entry.Body}");
 
-            if (game!.showBodyPlotters && game.systemBody?.bioSignalCount > 0)
-            {
-                if (Game.settings.autoShowBioSummary)
-                    Program.showPlotter<PlotBioStatus>();
-            }
+            if (game?.systemBody?.bioSignalCount > 0 && PlotBioStatus.allowPlotter)
+                Program.showPlotter<PlotBioStatus>();
 
-            if (Game.settings.targetLatLongActive && game.showBodyPlotters)
-            {
+            if (Game.settings.targetLatLongActive && PlotTrackTarget.allowPlotter)
                 Program.showPlotter<PlotTrackTarget>();
-            }
         }
 
         private void onJournalEntry(SAASignalsFound entry)
@@ -954,7 +932,7 @@ namespace SrvSurvey
                 }
 
                 // force a re-render
-                if (game.showBodyPlotters)
+                if (PlotGrounded.allowPlotter)
                     Program.showPlotter<PlotTrackers>()?.prepTrackers();
             }
 
@@ -1011,7 +989,7 @@ namespace SrvSurvey
                 else if (msg == "@@")
                 {
                     // helper for ship cockpit offsets (from target lat/long)
-                    var po = Util.getOffset(game.status.PlanetRadius, Game.settings.targetLatLong, 0);
+                    var po = Util.getOffset(game.status.PlanetRadius, Game.settings.targetLatLong, game.status.Heading);
                     Game.log($"cockpit offset: \"{game.shipType}\", new PointM({po.x}, {po.y})");
                     Util.mapShipCockpitOffsets[game.shipType] = po;
                     Clipboard.SetText($"\"{game.shipType}\", new PointM({po.x}, {po.y})");
@@ -1104,7 +1082,7 @@ namespace SrvSurvey
             this.updateTrackTargetTexts();
 
             // show plotter if near a body
-            if (game?.systemBody != null && game.showBodyPlotters)
+            if (game?.systemBody != null && PlotTrackTarget.allowPlotter)
             {
                 var form = Program.showPlotter<PlotTrackTarget>();
                 form.targetLocation = Game.settings.targetLatLong;

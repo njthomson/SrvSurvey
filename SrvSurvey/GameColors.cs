@@ -180,6 +180,7 @@ namespace SrvSurvey
         public static Pen penGameOrangeDim1 = newPen(OrangeDim, 1);
         public static Pen penGameOrangeDim1b = newPen(Color.FromArgb(128, OrangeDim), 1);
         public static Pen penGameOrangeDim2 = newPen(OrangeDim, 2);
+        public static Pen penGameOrangeDim4 = newPen(OrangeDim, 4, LineCap.Triangle, LineCap.Triangle);
 
         public static Pen penGreen2 = newPen(Color.Green, 2);
         public static Pen penDarkGreen2 = newPen(Color.DarkGreen, 2);
@@ -199,6 +200,7 @@ namespace SrvSurvey
 
         public static Pen penRed2Ish = newPen(Color.FromArgb(128, Color.Red), 2);
         public static Pen penDarkRed2Ish = newPen(Color.FromArgb(128, Color.DarkRed), 2);
+        public static Pen penRed2DashedIsh = newPen(Color.FromArgb(128, Color.Red), 2, DashStyle.Dash);
 
         public static Pen penBlack3Dotted = newPen(Color.Black, 3, DashStyle.Dot);
         public static Pen penUnknownBioSignal = newPen(Color.FromArgb(255, 88, 88, 88), 1);
@@ -491,6 +493,10 @@ namespace SrvSurvey
         public static Font fontBigBold = new Font("Century Gothic", 22F * fontScaleFactor, FontStyle.Bold, GraphicsUnit.Point);
         public static Font font18 = new Font("Century Gothic", 18F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
         public static Font font14 = new Font("Century Gothic", 14F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
+
+        public static Font fontWingDings = new Font("Wingdings", 8F * fontScaleFactor, FontStyle.Bold, GraphicsUnit.Point);
+        public static Font fontWingDings2 = new Font("Wingdings 2", 8F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
+        //public static Font fontSmallFonts = new Font("Small Fonts", 8F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
 
         #endregion
 

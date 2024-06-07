@@ -175,6 +175,12 @@ namespace SrvSurvey
         [JsonIgnore]
         public bool OnFoot { get => (this.Flags2 & StatusFlags2.OnFoot) > 0; }
         [JsonIgnore]
+        public bool OnFootInside { get => (this.Flags2 & StatusFlags2.OnFoot) > 0 && (this.Flags2 & StatusFlags2.BreathableAtmosphere) > 0; }
+        [JsonIgnore]
+        public bool OnFootOutside { get => (this.Flags2 & StatusFlags2.OnFootExterior) > 0; }
+        [JsonIgnore]
+        public bool OnFootSocial { get => (this.Flags2 & StatusFlags2.OnFoot) > 0 && (this.Flags2 & StatusFlags2.OnFootSocialSpace) > 0; }
+        [JsonIgnore]
         public bool InSrv { get => (this.Flags & StatusFlags.InSRV) > 0; }
         [JsonIgnore]
         public bool InFighter { get => (this.Flags & StatusFlags.InFighter) > 0; }

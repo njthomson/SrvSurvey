@@ -149,6 +149,15 @@ namespace SrvSurvey
         public LandingPads LandingPads;
     }
 
+    class DockingDenied : JournalEntry
+    {
+        // { "timestamp":"2024-05-31T05:32:39Z", "event":"DockingDenied", "Reason":"NoSpace", "MarketID":3928216064, "StationName":"Ndaitwah Manufacturing Hub", "StationType":"OnFootSettlement" }
+
+        public string Reason;
+        public long MarketID;
+        public string StationName;
+    }
+
     class DockingGranted : JournalEntry
     {
         // { "timestamp":"2024-04-09T06:45:09Z", "event":"DockingGranted", "LandingPad":1, "MarketID":3888520448, "StationName":"Oyekan Prospecting Hub", "StationType":"OnFootSettlement" }

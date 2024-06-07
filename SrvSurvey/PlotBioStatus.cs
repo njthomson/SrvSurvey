@@ -26,15 +26,17 @@ namespace SrvSurvey
 
         public static bool allowPlotter
         {
-            get => Game.settings.autoShowBioSummary &&
-                Game.activeGame?.systemBody != null &&
-                !Game.activeGame.hidePlottersFromCombatSuits &&
-                !Game.activeGame.isShutdown &&
-                !Game.activeGame.atMainMenu &&
-                Game.activeGame.humanSite == null &&
-                !Game.activeGame.showGuardianPlotters && !Program.isPlotter<PlotGuardians>() &&
-                Game.activeGame.isMode(GameMode.SuperCruising, GameMode.Flying, GameMode.Landed, GameMode.InSrv, GameMode.OnFoot, GameMode.GlideMode, GameMode.InFighter, GameMode.CommsPanel, GameMode.SAA, GameMode.Codex) &&
-                !Game.activeGame.status.InTaxi;
+            get => Game.settings.autoShowBioSummary
+                && Game.activeGame?.systemBody != null
+                && Game.activeGame.systemBody.bioSignalCount > 0
+                && Game.activeGame.humanSite == null
+                && !Game.activeGame.hidePlottersFromCombatSuits
+                && !Game.activeGame.isShutdown
+                && !Game.activeGame.atMainMenu
+                && !Game.activeGame.status.OnFootSocial
+                && !Game.activeGame.status.InTaxi
+                && !PlotGuardians.allowPlotter && !Program.isPlotter<PlotGuardians>()
+                && Game.activeGame.isMode(GameMode.SuperCruising, GameMode.Flying, GameMode.Landed, GameMode.InSrv, GameMode.OnFoot, GameMode.GlideMode, GameMode.InFighter, GameMode.CommsPanel, GameMode.SAA, GameMode.Codex);
         }
 
         public void reposition(Rectangle gameRect)

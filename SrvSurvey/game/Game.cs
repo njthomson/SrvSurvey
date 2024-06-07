@@ -428,26 +428,16 @@ namespace SrvSurvey.game
                 && (this.currentSuitType == SuitType.dominator || this.currentSuitType == SuitType.maverick);
         }
 
-        public bool showBodyPlotters
+        public bool showBodyPlotters // TODO: retire!
         {
             get => !this.isShutdown
                 && !this.atMainMenu
+                && !this.status.OnFootSocial
                 && this.humanSite == null
                 && this.isMode(GameMode.SuperCruising, GameMode.Flying, GameMode.Landed, GameMode.InSrv, GameMode.OnFoot, GameMode.GlideMode, GameMode.InFighter, GameMode.CommsPanel)
                 && !this.hidePlottersFromCombatSuits
                 && this.status?.Altitude < 10_000
                 && !this.status.InTaxi;
-        }
-
-        public bool showGuardianPlotters
-        {
-            get => Game.settings.enableGuardianSites
-                && this.systemSite?.location != null
-                && this.isMode(GameMode.InSrv, GameMode.OnFoot, GameMode.Landed, GameMode.Flying, GameMode.InFighter)
-                && !this.hidePlottersFromCombatSuits
-                && this.systemBody != null
-            //&& this.status.SelectedWeapon != "$humanoid_sampletool_name;"
-            ;
         }
 
         public string targetBodyShortName { get => this.targetBody?.shortName ?? ""; }
@@ -1901,10 +1891,23 @@ namespace SrvSurvey.game
                     }
                 }
             }
-            else if (entry.MarketID > 0 && this.systemBody != null && Game.settings.autoShowHumanSitesTest)
+            else if (entry.MarketID > 0 && this.systemBody != null && Game.settings.autoShowHumanSitesTest && entry.StationServices?.Contains("socialspace") == false) // bigger settlements (Planetery ports) are not compatible
             {
-                // Human site
-                this.humanSite = new HumanSiteData(entry);
+                // Human site - load existing one?
+                this.humanSite = HumanSiteData.Load(this.systemData!.address, entry.MarketID);
+
+                // or create new
+                if (this.humanSite == null)
+                {
+                    Game.log($"Creating new HumanSiteData for '{entry.Name}' ({entry.MarketID}) ");
+                    this.humanSite = new HumanSiteData(entry);
+                }
+                else
+                {
+                    Game.log($"Loaded existing HumanSiteData for '{entry.Name}' ({entry.MarketID}) ");
+                }
+
+                Program.showPlotter<PlotHumanSite>();
             }
 
             // TODO: Thargoids?

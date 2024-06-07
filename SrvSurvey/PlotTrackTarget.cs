@@ -42,6 +42,19 @@ namespace SrvSurvey
             }
         }
 
+        public static bool allowPlotter
+        {
+            get => Game.activeGame?.systemBody != null
+                && !Game.activeGame.isShutdown // not needed?
+                && !Game.activeGame.atMainMenu // not needed?
+                && Game.activeGame.status != null
+                && Game.activeGame.status.hasLatLong
+                && !Game.activeGame.status.InTaxi
+                && !Game.activeGame.status.OnFootSocial
+                && !Game.activeGame.hidePlottersFromCombatSuits
+                && Game.activeGame.isMode(GameMode.SuperCruising, GameMode.Flying, GameMode.Landed, GameMode.InSrv, GameMode.OnFoot, GameMode.GlideMode, GameMode.InFighter, GameMode.CommsPanel);
+        }
+
         public override void reposition(Rectangle gameRect)
         {
             if (gameRect == Rectangle.Empty)

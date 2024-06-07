@@ -60,14 +60,15 @@ namespace SrvSurvey
 
         public static bool allowPlotter
         {
-            get => Game.settings.useExternalData &&
-                Game.settings.autoLoadPriorScans &&
-                Game.activeGame?.systemBody != null &&
-                !Game.activeGame.hidePlottersFromCombatSuits &&
-                Game.activeGame.isMode(GameMode.SuperCruising, GameMode.Flying, GameMode.Landed, GameMode.InSrv, GameMode.OnFoot, GameMode.GlideMode, GameMode.InFighter, GameMode.CommsPanel, GameMode.SAA) &&
-                !Game.activeGame.showGuardianPlotters && !Program.isPlotter<PlotGuardians>() &&
-                !PlotHumanSite.allowPlotter && !Program.isPlotter<PlotHumanSite>() &&
-                Game.activeGame.canonnPoiHasLocalBioSignals()
+            get => Game.settings.useExternalData
+                && Game.settings.autoLoadPriorScans
+                && Game.activeGame?.systemBody != null
+                && !Game.activeGame.hidePlottersFromCombatSuits
+                && !Game.activeGame.status.OnFootSocial
+                && !PlotGuardians.allowPlotter && !Program.isPlotter<PlotGuardians>()
+                && !PlotHumanSite.allowPlotter && !Program.isPlotter<PlotHumanSite>()
+                && Game.activeGame.canonnPoiHasLocalBioSignals()
+                && Game.activeGame.isMode(GameMode.SuperCruising, GameMode.Flying, GameMode.Landed, GameMode.InSrv, GameMode.OnFoot, GameMode.GlideMode, GameMode.InFighter, GameMode.CommsPanel, GameMode.SAA)
                 ;
         }
 

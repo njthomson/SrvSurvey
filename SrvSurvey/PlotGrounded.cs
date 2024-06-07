@@ -179,11 +179,30 @@ namespace SrvSurvey
 
         #endregion
 
+        public static bool allowPlotter
+        {
+            get => Game.settings.autoShowBioPlot
+                && Game.activeGame?.systemBody != null
+                && Game.activeGame.status != null
+                && !Game.activeGame.isShutdown // not needed?
+                && !Game.activeGame.atMainMenu // not needed?
+                && !Game.activeGame.status.OnFootSocial
+                && Game.activeGame.humanSite == null
+                && !Game.activeGame.hidePlottersFromCombatSuits
+                && Game.activeGame.status.hasLatLong
+                && Game.activeGame.status.Altitude < 10_000
+                && !Game.activeGame.status.InTaxi
+                && !PlotGuardians.allowPlotter
+                && Game.activeGame.isMode(GameMode.SuperCruising, GameMode.Flying, GameMode.Landed, GameMode.InSrv, GameMode.OnFoot, GameMode.GlideMode, GameMode.InFighter, GameMode.CommsPanel);
+            // TODO: include these?
+            // if (game.systemSite == null && !game.isMode(GameMode.SuperCruising, GameMode.GlideMode) && (game.isLanded || showPlotTrackers || showPlotPriorScans || game.cmdr.scanOne != null))
+        }
+
         private void Game_modeChanged(GameMode newMode, bool force)
         {
-            if (this.Opacity > 0 && !game.showBodyPlotters)
+            if (this.Opacity > 0 && !PlotGrounded.allowPlotter)
                 this.Opacity = 0;
-            else if (this.Opacity == 0 && game.showBodyPlotters)
+            else if (this.Opacity == 0 && PlotGrounded.allowPlotter)
                 this.reposition(Elite.getWindowRect());
 
             if (game.systemBody == null)

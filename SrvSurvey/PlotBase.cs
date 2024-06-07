@@ -199,7 +199,7 @@ namespace SrvSurvey
             //game.nearBody!.bioScanEvent += NearBody_bioScanEvent;
 
             // force a mode switch, that will initialize
-            this.Game_modeChanged(game.mode, true);
+            //this.Game_modeChanged(game.mode, true);
             this.Status_StatusChanged(false);
         }
 
@@ -359,6 +359,25 @@ namespace SrvSurvey
         }
 
         protected virtual void onJournalEntry(ScanOrganic entry)
+        {
+            // overridden as necessary
+        }
+
+        protected virtual void onJournalEntry(DockingRequested entry)
+        {
+            // overridden as necessary
+        }
+
+        protected virtual void onJournalEntry(DockingGranted entry)
+        {
+            // overridden as necessary
+        }
+        protected virtual void onJournalEntry(DockingDenied entry)
+        {
+            // overridden as necessary
+        }
+
+        protected virtual void onJournalEntry(Docked entry)
         {
             // overridden as necessary
         }
@@ -916,7 +935,7 @@ namespace SrvSurvey
             g.ScaleTransform(scale, scale); // apply display scale factor (zoom)
             g.RotateTransform(-game.status.Heading); // rotate by cmdr heading
             g.TranslateTransform(-cmdrOffset.X, cmdrOffset.Y); // shift relative to cmdr
-            g.RotateTransform(siteHeading); // rotate by site heading
+            g.RotateTransform(this.siteHeading); // rotate by site heading
 
             // vertical rotation flips depending on north/south hemisphere?
             //if (this.siteOrigin.Lat > 0) g.RotateTransform(180);
@@ -963,12 +982,14 @@ namespace SrvSurvey
             {
                 // draw compass rose lines centered on the site origin
                 g.DrawLine(GameColors.penDarkRed2Ish, -500, 0, +500, 0);
-                g.DrawLine(GameColors.penDarkRed2Ish, 0, 0, 0, +500);
-                g.DrawLine(GameColors.penRed2Ish, 0, -500, 0, 0);
+                g.DrawLine(GameColors.penDarkRed2Ish,  0, -500, 0, +500);
+                //g.DrawLine(GameColors.penRed2Ish, 0, -500, 0, 0);
             });
 
+
             // and a line to represent "north" relative to the site - visualizing the site's rotation
-            g.DrawLine(GameColors.penGameOrange2DashedIsh, 0, -500, 0, 0);
+            if (this.siteHeading >= 0)
+                g.DrawLine(GameColors.penRed2DashedIsh, 0, -500, 0, 0);
         }
 
         protected void drawShipAndSrvLocation()

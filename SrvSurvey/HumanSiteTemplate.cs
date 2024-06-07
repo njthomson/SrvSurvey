@@ -102,6 +102,9 @@ namespace SrvSurvey
 
     internal abstract class HumanSitePoi
     {
+        /// <summary>
+        /// Relative to site origin
+        /// </summary>
         public PointF offset;
 
         /// <summary>
@@ -112,11 +115,24 @@ namespace SrvSurvey
         /// OLD! The angle of this POI from the site origin
         /// </summary>
         public float angle;
+
         /// <summary>
         /// The rotation of this POI about it's center
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public float rot;
+
+        /// <summary>
+        /// The security level needed, either to access the relevant room or the device itself.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public int level;
+
+        /// <summary>
+        /// 1 if ground floor or 2+ if upstairs
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public int floor;
     }
 
     // For ad-hoc POIs, like the power regular or alarm console
@@ -128,31 +144,14 @@ namespace SrvSurvey
     internal class DataTerminal : HumanSitePoi
     {
         /// <summary>
-        /// The security level needed for the room or building, not the terminal itself
+        /// If the cmdr has already downloaded data from this terminal. Not saved.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-        public int level;
-
-        /// <summary>
-        /// Zero if ground floor or 1 if upstairs
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-        public bool floor;
+        [JsonIgnore]
+        public bool downloaded;
     }
 
     internal class SecureDoor : HumanSitePoi
     {
-        /// <summary>
-        /// The security level needed:, 1, 2, or 3
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-        public int level;
-
-        /// <summary>
-        /// True when this is an external door
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-        public bool airlock;
     }
 
     internal class LandingPad : HumanSitePoi

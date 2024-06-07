@@ -102,9 +102,9 @@ namespace SrvSurvey
         {
             if (this.IsDisposed) return;
             
-            if (this.Opacity > 0 && !game.showBodyPlotters)
+            if (this.Opacity > 0 && !PlotGrounded.allowPlotter)
                 this.Opacity = 0;
-            else if (this.Opacity == 0 && game.showBodyPlotters)
+            else if (this.Opacity == 0 && PlotGrounded.allowPlotter)
                 this.reposition(Elite.getWindowRect());
 
             if (game.systemBody == null)

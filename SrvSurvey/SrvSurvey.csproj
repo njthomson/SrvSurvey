@@ -50,6 +50,8 @@
     <None Remove="allRuins.json" />
     <None Remove="allStructures.json" />
     <None Remove="humanSiteTemplates.json" />
+    <None Remove="images\agriculture~1-s-1-x-200-y-200.png" />
+    <None Remove="images\agriculture~2-s-1-x-200-y-200.png" />
     <None Remove="images\alpha-background.png" />
     <None Remove="images\alpha-heading-guide.png" />
     <None Remove="images\bear-background.png" />
@@ -58,10 +60,13 @@
     <None Remove="images\bowl-background.png" />
     <None Remove="images\crossroads-heading-guide.png" />
     <None Remove="images\data-port-heading-guide.png" />
+    <None Remove="images\extraction~1-s-1-x-200-y-250.png" />
+    <None Remove="images\extraction~3-s-1-x-250-y-250.png" />
     <None Remove="images\extraction~5-s-1-x-200-y-200.png" />
     <None Remove="images\fistbump-heading-guide.png" />
     <None Remove="images\gamma-background.png" />
     <None Remove="images\gamma-heading-guide.png" />
+    <None Remove="images\industrial~2-s-1-x-240-y-200.png" />
     <None Remove="images\industrial~5-s-1-x-200-y-200.png" />
     <None Remove="images\lacrosse-heading-guide.png" />
     <None Remove="images\pulse.png" />
@@ -107,6 +112,12 @@
     <Content Include="images\data-port-heading-guide.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="images\extraction~1-s-1-x-200-y-250.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\extraction~3-s-1-x-250-y-250.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="images\extraction~5-s-1-x-200-y-200.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -118,6 +129,9 @@
     </Content>
     <Content Include="images\gamma-heading-guide.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\industrial~2-s-1-x-240-y-200.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="images\industrial~5-s-1-x-200-y-200.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -173,10 +187,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Resources\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Resources\" />
+    <Content Include="images\agriculture~1-s-1-x-200-y-200.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\agriculture~2-s-1-x-200-y-200.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

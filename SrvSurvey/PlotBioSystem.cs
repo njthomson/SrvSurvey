@@ -41,8 +41,11 @@ namespace SrvSurvey
             get => Game.settings.autoShowPlotBioSystemTest
                 && Game.activeGame?.status != null
                 && Game.activeGame.systemData != null
+                // && Game.activeGame.humanSite == null
                 && Game.activeGame.systemData.bioSignalsTotal > 0
-                && Game.activeGame.status?.InTaxi != true
+                && !Game.activeGame.status.InTaxi
+                && !Game.activeGame.status.OnFootSocial
+                && !Game.activeGame.hidePlottersFromCombatSuits
                 && (
                     Game.activeGame.isMode(GameMode.SuperCruising, GameMode.SAA, GameMode.FSS, GameMode.ExternalPanel, GameMode.Orrery, GameMode.SystemMap)
                     || (
@@ -436,6 +439,7 @@ namespace SrvSurvey
 
                     // last is max
                     long max = body.predictions.Count > 0 ? body.predictions.Values.Max(p => p.reward) : 0;
+
                     this.drawVolumeBars(x, dty + oneFive, highlight, min, max);
                     x += oneTwo;
                 }

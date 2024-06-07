@@ -10,7 +10,7 @@ namespace SrvSurvey.units
     /// </summary>
     struct Angle
     {
-        private const int limit = 360;
+        private const decimal limit = 360;
 
         public const double ratioDegreesToRadians = 180 / Math.PI;
 
@@ -22,7 +22,15 @@ namespace SrvSurvey.units
             return new Angle(degrees);
         }
 
-        public Angle(double a)
+        public Angle(double a) : this((decimal)a)
+        {
+        }
+
+        public Angle(int a) : this((decimal)a)
+        {
+        }
+
+        public Angle(decimal a) 
         {
             //Game.log($"a: {a}");
             // wrap around if too high
@@ -30,15 +38,7 @@ namespace SrvSurvey.units
             // wrap around if too low
             while (a < 0) a += limit;
 
-            this.n = (decimal)a;
-        }
-
-        public Angle(int n) : this((double)n)
-        {
-        }
-
-        public Angle(decimal n) : this((double)n)
-        {
+            this.n = a;
         }
 
         public override string ToString()

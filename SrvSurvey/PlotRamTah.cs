@@ -39,7 +39,7 @@ namespace SrvSurvey
         public static bool allowPlotter
         {
             // TODO: show this earlier, like on approach?
-            get => Game.settings.autoShowRamTah && Game.activeGame != null && Game.activeGame.showGuardianPlotters && Game.activeGame.cmdr.ramTahActive;
+            get => Game.settings.autoShowRamTah && Game.activeGame != null && PlotGuardians.allowPlotter && Game.activeGame.cmdr.ramTahActive;
         }
 
         protected override void Game_modeChanged(GameMode newMode, bool force)
