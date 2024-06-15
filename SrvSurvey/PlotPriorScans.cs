@@ -156,7 +156,7 @@ namespace SrvSurvey
                     var match = Game.codexRef.matchFromEntryId(poi.entryid.Value);
 
                     // TODO: handle Brain Tree's
-                    if (game.systemBody.bioScans?.Any(_ => _.status != BioScan.Status.Died && _.genus == genusName && Util.getDistance(_.location, location, game.systemBody.radius) < PlotTrackers.highlightDistance) == true)
+                    if (Game.settings.hideMyOwnCanonnSignals && game.systemBody.bioScans?.Any(_ => _.status != BioScan.Status.Died && _.genus == genusName && Util.getDistance(_.location, location, game.systemBody.radius) < PlotTrackers.highlightDistance) == true)
                         continue;
                     if (game.systemBody.bookmarks?.Any(marks => marks.Key == shortName && marks.Value.Any(_ => Util.getDistance(_, location, game.systemBody.radius) < PlotTrackers.highlightDistance)) == true)
                         continue;

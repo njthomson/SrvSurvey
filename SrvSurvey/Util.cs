@@ -9,6 +9,8 @@ namespace SrvSurvey
 {
     static class Util
     {
+        public static double[] sol = new double[] { 0, 0, 0 };
+
         public static double degToRad(double angle)
         {
             return angle / Angle.ratioDegreesToRadians;
@@ -189,19 +191,46 @@ namespace SrvSurvey
         public static Dictionary<string, PointM> mapShipCockpitOffsets = new Dictionary<string, PointM>()
         {
             // Determined by measuring difference between Docked lat/long and pad center lat/long, converted to meters.
-            { "dolphin", new PointM(0.24276978, -19.054316) },
-            { "diamondbackxl", new PointM(0.5462154, -18.501362) },
-            { "belugaliner", new PointM(-0.1590069086272495414747604156, -96.06768779190352971899572620) },
-            { "krait_mkii", new PointM(-0.4390055060502030101940869492, -28.642501220707376952320201527) },
-            { "cobramkiii", new PointM(000m, 000m) },
-            { "sidewinder", new PointM(0.0039735241560325261715803963, -1.8918079917214574007873715993) },
-            { "krait_light", new PointM(0.6031567730891498506706891727, -29.808101534971506981430079248) },
-            { "typex_3", new PointM(-0.1499968019864161648299420609, -23.326543081110057742124991058) }, // challenger
-            { "empire_courier", new PointM(0, -14.442907807215595156071678409) },
-            { "python", new PointM(0.0242815204676919790218357202, -27.803238864751802112883958858) },
-            { "python_nx", new PointM(-0.1985071274895448505330679553, -27.652575857555383324975206283) },
-
             // TODO: figure this out for all the other ships
+            { "sidewinder", new PointM(0.0039735241560325261715803963, -1.8918079917214574007873715993) }, // Sidewinder
+            // Eagle
+            { "hauler", new PointM(0.0969766998443601240987358377, -12.599239384408765342054135780) }, // Hauler
+            // Adder
+            // Imperial Eagle
+            { "viper", new PointM(0.1229161697432489848756919882, -7.1826149264813328843504872434) }, // Viper mk3
+            { "cobramkiii", new PointM(-0.1576497087354904399530401764, -9.031276393889643127040323461) }, // Cobra mk3
+            // Viper mk4
+            // Diamondback Scout
+            // Cobra mk4
+            { "type6", new PointM(0, -20.957581116002204026636899079) }, // Type 6
+            { "dolphin", new PointM(0.24276978, -19.054316) }, // Dolphin
+            { "diamondbackxl", new PointM(0.5462154, -18.501362) }, // Diamondback Explorer
+            { "empire_courier", new PointM(0, -14.442907807215595156071678409) }, // Imperial Courier
+            // Keelback
+            // Asp Scout
+            { "vulture", new PointM(0.2458256590423615571253037271, -16.131446806855020630091723412) }, // Vulture
+            // Asp Explorer
+            // Federal Dropship
+            // Type 7
+            // Alliance Chieftain
+            // Federal Assault ship
+            // Imperial Clipper
+            // Alliance Crusader
+            { "typex_3", new PointM(-0.1499968019864161648299420609, -23.326543081110057742124991058) }, // challenger
+            // Federal Gunship
+            { "krait_light", new PointM(0.6031567730891498506706891727, -29.808101534971506981430079248) }, // Krait Phantom
+            { "krait_mkii", new PointM(-0.4390055060502030101940869492, -28.642501220707376952320201527) }, // Krait mk2
+            // Orca
+            // Fer-de-lance
+            // Mamba
+            { "python", new PointM(0.0242815204676919790218357202, -27.803238864751802112883958858) }, // Python
+            { "python_nx", new PointM(-0.1985071274895448505330679553, -27.652575857555383324975206283) }, // Python mk2
+            // Type 9
+            { "belugaliner", new PointM(-0.1590069086272495414747604156, -96.06768779190352971899572620) },
+            // Type 10
+            // Anaconda
+            // Federal Corvette
+            // Imperial Cutter
         };
 
         public static PointM getOffset(decimal r, LatLong2 p1, float siteHeading = -1)

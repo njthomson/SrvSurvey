@@ -30,6 +30,8 @@ namespace SrvSurvey
         public bool autoShowPlotBodyInfoInMapTest = true;
         public bool autoShowPlotBodyInfoInOrbitTest = true;
 
+        // public int bodyInfoBubbleSize = 200;
+
         public bool skipGasGiantDSS = true;
         public bool skipRingsDSS = false;
         public bool skipLowValueDSS = true;

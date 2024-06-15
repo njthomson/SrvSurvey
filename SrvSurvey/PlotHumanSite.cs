@@ -11,6 +11,8 @@ namespace SrvSurvey
 
         private HumanSiteData site { get => game.humanSite!; }
 
+        private bool autoZoom = true;
+
         private PlotHumanSite() : base()
         {
             this.Width = scaled(500);
@@ -20,7 +22,8 @@ namespace SrvSurvey
             // these we get from current data
             this.siteOrigin = site.location;
             this.siteHeading = site.heading;
-            //this.scale = 9;
+            
+            if (!autoZoom) this.scale = 12;
 
             if (game.isMode(GameMode.OnFoot, GameMode.Docked, GameMode.InSrv, GameMode.Landed))
                 dockingState = DockingState.landed;
@@ -108,20 +111,21 @@ namespace SrvSurvey
             if (this.Opacity > 0 && !PlotHumanSite.keepPlotter)
                 Program.closePlotter<PlotHumanSite>(true);
 
-            //if (game.status.OnFootInside)
-            //    this.scale = 4;
-            //if (game.status.OnFootOutside)
-            //    this.scale = 2;
+
+            if (game.status.OnFootInside && autoZoom)
+                this.scale = 4;
+            if (game.status.OnFootOutside && autoZoom)
+                this.scale = 2;
 
             this.Invalidate();
         }
 
         private void setZoom(GameMode newMode)
         {
-            //if (newMode == GameMode.OnFoot)
-            //    this.scale = 2;
-            //if (newMode == GameMode.Docked || newMode == GameMode.Landed)
-            //    this.scale = 1;
+            if (newMode == GameMode.OnFoot && autoZoom)
+                this.scale = 2;
+            if ((newMode == GameMode.Docked || newMode == GameMode.Landed) && autoZoom)
+                this.scale = 1;
 
             this.Invalidate();
         }
@@ -330,11 +334,15 @@ namespace SrvSurvey
         private void drawPOI()
         {
             if (game?.humanSite?.template == null) return;
-            var wd2b = new Font("Wingdings 2", 6F, FontStyle.Bold, GraphicsUnit.Point);
+            var wd2b = new Font("Wingdings 2", 4F, FontStyle.Bold, GraphicsUnit.Point);
+            var wd6 = new Font("Wingdings", 6F, FontStyle.Bold, GraphicsUnit.Point);
+            var wd4 = new Font("Wingdings", 4F, FontStyle.Bold, GraphicsUnit.Point);
+            var fs4 = new Font("Lucida Sans Typewriter", 4F, FontStyle.Regular, GraphicsUnit.Pixel);
+            var fs6 = new Font("Lucida Sans Typewriter", 6F, FontStyle.Regular, GraphicsUnit.Pixel);
             var b0 = Brushes.Lime;
             var b1 = Brushes.SkyBlue;
             var b2 = Brushes.DarkOrange;
-            var b3 = Brushes.Red;
+            var b3 = (Brush)new SolidBrush(Color.FromArgb(200, Color.Red));
 
             var p0 = new Pen(Color.Lime, 0.5f) { EndCap = LineCap.Triangle, StartCap = LineCap.Triangle };
             var p1 = new Pen(Color.SkyBlue, 0.5f) { EndCap = LineCap.Triangle, StartCap = LineCap.Triangle };
@@ -385,21 +393,35 @@ namespace SrvSurvey
 
                         if (poi.name == "Atmos")
                         {
-                            g.DrawString("⚴", GameColors.fontSmall, b, -4, -6);
+                            g.DrawString("⚴", fs6, b, -2, -3);
+                            //
+                            //g.DrawString("⚴", GameColors.fontSmall, b, -4, -6);
                             x = 0.65f;
-                            y = -5.7f;
+                            y = -3.7f;
                         }
                         else if (poi.name == "Alarm")
                         {
-                            g.DrawString("%", GameColors.fontWingDings, b1, -4, -6);
-                            x = 2.5f;
-                            y = -3;
+                            g.DrawString("%", wd4, b, -4, -3);
+                            x = -0.8f;
+                            y = -4.4f;
                         }
                         else if (poi.name == "Auth")
                         {
-                            g.DrawString("⧌", GameColors.fontSmall, b, -4, -6);
-                            x = 2.3f;
-                            y = -5.5f;
+                            g.DrawString("⧌", fs6, b, -3.3f, -4f);
+                            x = 0.2f;
+                            y = -4.5f;
+                        }
+                        else if (poi.name == "Medkit")
+                        {
+                            g.DrawString("♥", fs4, b, -2, -3);
+                            x = 0.1f;
+                            y = -5f;
+                        }
+                        else if (poi.name == "Battery")
+                        {
+                            g.DrawString("+", fs6, b, -3f, -4.4f);
+                            x = 0.0f;
+                            y = -4.5f;
                         }
                         else if (poi.name == "Power")
                         {
@@ -413,7 +435,12 @@ namespace SrvSurvey
                         }
                         else
                         {
-                            string txt = "⛉⟑";
+                            g.DrawString("▨", fs4 /*GameColors.fontSmall*/, b, -2, -2);
+                            x = -0.3f;
+                            y = -3f;
+
+                            //
+                            //string txt = "⛉⟑";
                             //switch (poi.name)
                             //{
                             //    case "Power": txt = "⭍"; break;
@@ -428,13 +455,13 @@ namespace SrvSurvey
                             //return;
                         }
 
-                        // draw cherons to indicate upstairs
-                        if (poi.floor == 3) // 2
+                        // draw chevrons to indicate upstairs
+                        if (poi.floor == 3)
                         {
                             g.DrawLine(p, x, y, x + 1.5f, y + 1.5f);
                             g.DrawLine(p, x, y, x - 1.5f, y + 1.5f);
                         }
-                        if (poi.floor == 2) // 1
+                        if (poi.floor >= 2)
                         {
                             g.DrawLine(p, x, y + 1, x + 1.5f, y + 2.5f);
                             g.DrawLine(p, x, y + 1, x - 1.5f, y + 2.5f);
@@ -468,16 +495,16 @@ namespace SrvSurvey
                         //g.DrawString(txt, GameColors.fontSmall, Brushes.Yellow, -4, -6);
 
                         // :;<=
-                        g.DrawString("/", wd2b, b, -4, -4);
+                        g.DrawString("/", wd2b, b, -2.5f, -3);
                         var x = 0.25f;
-                        var y = -1f;
+                        var y = -5.4f;
 
                         if (terminal.floor == 3)
                         {
                             g.DrawLine(p, x, y, x + 1.5f, y + 1.5f);
                             g.DrawLine(p, x, y, x - 1.5f, y + 1.5f);
                         }
-                        if (terminal.floor == 2)
+                        if (terminal.floor >= 2)
                         {
                             g.DrawLine(p, x, y + 1, x + 1.5f, y + 2.5f);
                             g.DrawLine(p, x, y + 1, x - 1.5f, y + 2.5f);

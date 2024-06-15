@@ -379,7 +379,8 @@ namespace SrvSurvey
             var boxRight = boxLeft + (maxBioCount * oneTwo);
 
             // draw a row for each body
-            foreach (var body in game.systemData.bodies)
+            var sortedBodies = game.systemData.bodies.OrderBy(b => b.shortName).ToList();
+            foreach (var body in sortedBodies)
             {
                 if (body.bioSignalCount == 0) continue;
 
@@ -420,8 +421,9 @@ namespace SrvSurvey
                 if (signalCount == 1)
                 {
                     //long min = body.predictions.Count > 0 ? body.predictions.Values.Min(p => p.reward) : -1;
+                    long min = body.predictions.Count > 0 ? body.predictions.Values.Min(p => p.reward) : 0;
                     long max = body.predictions.Count > 0 ? body.predictions.Values.Max(p => p.reward) : -1;
-                    this.drawVolumeBars(x, dty + oneFive, highlight, 0, max);
+                    this.drawVolumeBars(x, dty + oneFive, highlight, min, max);
                     x += oneTwo;
                 }
                 else if (signalCount > 1)
@@ -464,8 +466,7 @@ namespace SrvSurvey
             var ww = eight;
             var bb = highlight ? GameColors.brushCyan : GameColors.brushGameOrange;
             //var bb2 = new HatchBrush(HatchStyle.DarkUpwardDiagonal, highlight ? Color.FromArgb(200, GameColors.DarkCyan) : GameColors.Orange, Color.Black);
-            var bb2 = new SolidBrush(highlight ? Color.FromArgb(90, GameColors.DarkCyan) : Color.FromArgb(100, GameColors.OrangeDim)); //GameColors.OrangeDim);
-            var bb3 = new HatchBrush(HatchStyle.DarkDownwardDiagonal, highlight ? Color.FromArgb(255, GameColors.DarkCyan) : GameColors.OrangeDim, Color.Black);
+            var bb2 = new SolidBrush(highlight ? Color.FromArgb(180, GameColors.DarkCyan) : Color.FromArgb(140, GameColors.OrangeDim)); //GameColors.OrangeDim);
 
             var pp = highlight ? Pens.DarkCyan : GameColors.penGameOrangeDim1;
             var pp2 = highlight ? Pens.DarkCyan : GameColors.newPen(Color.FromArgb(124, GameColors.Orange));

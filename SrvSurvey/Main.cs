@@ -990,9 +990,9 @@ namespace SrvSurvey
                 {
                     // helper for ship cockpit offsets (from target lat/long)
                     var po = Util.getOffset(game.status.PlanetRadius, Game.settings.targetLatLong, game.status.Heading);
-                    Game.log($"cockpit offset: \"{game.shipType}\", new PointM({po.x}, {po.y})");
+                    Game.log($"cockpit offset: {{ \"{game.shipType}\", new PointM({po.x}, {po.y}) }}");
                     Util.mapShipCockpitOffsets[game.shipType] = po;
-                    Clipboard.SetText($"\"{game.shipType}\", new PointM({po.x}, {po.y})");
+                    Clipboard.SetText($"{{ \"{game.shipType}\", new PointM({po.x}, {po.y}) }}, ");
                 }
                 else if (msg == "ll")
                 {
@@ -1025,7 +1025,7 @@ namespace SrvSurvey
                     var radius = game.status.PlanetRadius;
                     var pf = Util.getOffset(radius, game.humanSite.location, game.humanSite.heading);
 
-                    var txt = $"\"offset\": {{ \"X\": {pf.X}, \"Y\": {pf.Y} }}";
+                    var txt = $"{{ \"X\": {pf.X}, \"Y\": {pf.Y} }}";
                     Game.log($"Relative to site origin:\r\n\r\n\t{txt}\r\n");
                     Clipboard.SetText(txt);
                 }

@@ -496,7 +496,7 @@ namespace SrvSurvey
 
         public static Font fontWingDings = new Font("Wingdings", 8F * fontScaleFactor, FontStyle.Bold, GraphicsUnit.Point);
         public static Font fontWingDings2 = new Font("Wingdings 2", 8F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
-        //public static Font fontSmallFonts = new Font("Small Fonts", 8F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
+        public static Font fontSmallFonts = new Font("Small Fonts", 8F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
 
         #endregion
 

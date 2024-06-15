@@ -26,8 +26,10 @@ namespace SrvSurvey
         public static bool allowPlotter
         {
             get => Game.activeGame?.targetBody != null
+                && Game.activeGame.systemData != null
                 && Game.settings.autoShowPlotBodyInfoTest
                 && !PlotGuardianSystem.allowPlotter // hide if Guardian plotter is open
+                // && Util.getSystemDistance(Game.activeGame.systemData.starPos, Util.sol) > Game.settings.bodyInfoBubbleSize 
                 && (
                     // any time during DSS or ... 
                     Game.activeGame.mode == GameMode.SAA

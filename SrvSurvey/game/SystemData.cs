@@ -640,10 +640,13 @@ namespace SrvSurvey.game
             if (uncounted > 0)
                 bonus += uncounted * 500;
 
-            var mainStar = bodies.Find(_ => _.isMainStar)!;
-            var baseValue = Util.GetBodyValue(mainStar, false, false);
-            Game.log($"applyMainStarHonkBonus: baseValue: {baseValue}, bonus: {(int)bonus}");
-            mainStar.reward = baseValue + (int)bonus;
+            var mainStar = bodies.Find(_ => _.isMainStar);
+            if (mainStar != null)
+            {
+                var baseValue = Util.GetBodyValue(mainStar, false, false);
+                Game.log($"applyMainStarHonkBonus: baseValue: {baseValue}, bonus: {(int)bonus}");
+                mainStar.reward = baseValue + (int)bonus;
+            }
         }
 
         public void onJournalEntry(SAAScanComplete entry)

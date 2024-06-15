@@ -902,6 +902,8 @@ namespace SrvSurvey.game
             this.cmdr.lastOrganicScan = null;
             this.cmdr.currentMarketId = 0;
             this.cmdr.Save();
+
+            this.Status_StatusChanged(false);
         }
 
         private void onJournalEntry(Music entry)
@@ -1745,7 +1747,8 @@ namespace SrvSurvey.game
         {
             if (this.systemData == null || this.systemBody == null || this.canonnPoi?.codex == null) return false;
 
-            return this.canonnPoi.codex.Any(_ => _.body == this.systemBody.shortName && _.hud_category == "Biology" && _.latitude != null && _.longitude != null && (!Game.settings.hideMyOwnCanonnSignals || _.scanned == false));
+            var hasSignals = this.canonnPoi.codex.Any(_ => _.body.Replace(" ", "") == this.systemBody.shortName && _.hud_category == "Biology" && _.latitude != null && _.longitude != null && (!Game.settings.hideMyOwnCanonnSignals || _.scanned == false));
+            return hasSignals;
         }
 
         //public void showPriorScans()

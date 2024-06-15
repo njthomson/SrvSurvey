@@ -66,6 +66,7 @@
     <None Remove="images\fistbump-heading-guide.png" />
     <None Remove="images\gamma-background.png" />
     <None Remove="images\gamma-heading-guide.png" />
+    <None Remove="images\industrial~1-s-1-x-200-y-200.png" />
     <None Remove="images\industrial~2-s-1-x-240-y-200.png" />
     <None Remove="images\industrial~5-s-1-x-200-y-200.png" />
     <None Remove="images\lacrosse-heading-guide.png" />
@@ -129,6 +130,9 @@
     </Content>
     <Content Include="images\gamma-heading-guide.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\industrial~1-s-1-x-200-y-200.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="images\industrial~2-s-1-x-240-y-200.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

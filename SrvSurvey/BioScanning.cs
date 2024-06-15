@@ -184,7 +184,7 @@ namespace SrvSurvey
                 //if (foo.speciesPart.Contains("Flam")) Debugger.Break();
 
                 //if (body.name.Contains("AB 1 c")) Debugger.Break();
-                //if (body.name.Contains("1 d") && foo.speciesPart.Contains("Acus")) Debugger.Break();
+                //if (body.name.Contains("5 c") && foo.speciesPart.Contains("Pennata")) Debugger.Break();
 
                 if (foo.galacticRegion?.Contains(galacticRegion) == false) continue;
                 if (foo.planetClass?.Any(pc => body.planetClass?.Contains(pc) == true) == false) continue;
@@ -595,7 +595,7 @@ namespace SrvSurvey
             { "Tussocks | Tussock Cultro    | HMC,Rocky      | 2.8 | Ammonia        | *    | 152 | 177 | F,G,K,M,L,T,Y,W,D | * | ~OrionCygnusArm,Odin'sHold,EmpyreanStraits,GalacticCentre" },
             { "Tussocks | Tussock Divisa    | HMC,Rocky      | 2.7 | Ammonia        | *    | 152 | 177 | F,G,K,M,L,T,Y,W,D | * | ~PerseusArm,Ryker'sHope" },
             { "Tussocks | Tussock Ignis     | HMC,Rocky      | 1.9 | CarbonDioxide  | None | 160 | 170 | F,G,K,M,L,T,Y,W,D | * | ~SagittariusCarinaArm,~PerseusArm,Ryker'sHope" },
-            { "Tussocks | Tussock Pennata   | HMC,Rocky      | 0.9 | CarbonDioxide  | None | 145 | 154 | F,G,K,M,L,T,Y,W,D | * | ~SagittariusCarinaArm,~PerseusArm,Ryker'sHope" },
+            { "Tussocks | Tussock Pennata   | HMC,Rocky      | 0.9 | CarbonDioxide  | None | 145 | 154 | F,G,K,M,L,T,Y,W,D,N | * | ~SagittariusCarinaArm,~PerseusArm,Ryker'sHope" },
             { "Tussocks | Tussock Pennatis  | HMC,Rocky      | 2.7 | CarbonDioxide  | None | 147 | 196 | F,G,K,M,L,T,Y,W,D | * | ~OuterArm,EmpyreanStraits,GalacticCentre" },
             { "Tussocks | Tussock Propagito | HMC,Rocky      | 2.7 | CarbonDioxide  | None | 145 | 197 | F,G,K,M,L,T,Y,W,D | * | ~ScutumCentaurusArm,Odin'sHold,GalacticCentre,Orion-CygnusArm" },
             { "Tussocks | Tussock Serrati   | HMC,Rocky      | 2.3 | CarbonDioxide  | None | 171 | 178 | F,G,K,M,L,T,Y,W,D | * | ~SagittariusCarinaArm,~PerseusArm,Ryker'sHope" },
