@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using SrvSurvey.game;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO.Compression;
 
 namespace SrvSurvey.net
@@ -241,7 +242,7 @@ namespace SrvSurvey.net
                         }
                     }
 
-                    site.pubData.rth = string.Join(',', site.pubData.relicTowerHeadings.OrderBy(_ => int.Parse(_.Key.Substring(1))).Select(_ => $"{_.Key}:{_.Value}"));
+                    site.pubData.rth = string.Join(',', site.pubData.relicTowerHeadings.OrderBy(_ => int.Parse(_.Key.Substring(1), CultureInfo.InvariantCulture)).Select(_ => $"{_.Key}:{_.Value}"));
                 }
 
                 var poiPresent = string.IsNullOrEmpty(site.pubData.pp) ? new HashSet<string>() : new HashSet<string>(site.pubData.pp.Split(','));

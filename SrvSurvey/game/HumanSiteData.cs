@@ -1,9 +1,11 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Linq;
 using SrvSurvey.units;
 
 namespace SrvSurvey.game
 {
+    //[JsonConverter(typeof(HumanSiteData.JsonConverter))]
     internal class HumanSiteData : Data
     {
         #region static loading code
@@ -75,6 +77,17 @@ namespace SrvSurvey.game
         [JsonIgnore]
         public HumanSiteTemplate? template;
 
+        [JsonIgnore]
+        public long systemAddress
+        {
+            get
+            {
+                var filename = Path.GetFileName(this.filepath);
+                var address = filename.Substring(0, filename.IndexOf("-"));
+                return long.Parse(address);
+            }
+        }
+
         public void dockingRequested(DockingRequested entry)
         {
             this.landingPads = entry.LandingPads;
@@ -123,25 +136,6 @@ namespace SrvSurvey.game
                 if (this.heading < 0) this.heading += 360;
             }
 
-            //// --- tmp ---
-            //Game.log($"Docked at: pad #{this.targetPad} - {this.name} ({this.marketId})");
-            //Game.log($"Station location: {this.location}");
-            //Game.log($"Ship location: {Status.here}, heading: {shipHeading}°");
-
-            //var radius = Game.activeGame!.status.PlanetRadius;
-            //var dist = Util.getDistance(this.location, Status.here, radius);
-            //var bearing = Util.getBearing(this.location, Status.here);
-
-            //Game.log($"dist: {(int)dist}, bearing: {(int)bearing}");
-            //var foo = (int)(bearing - shipHeading);
-            //if (foo < 0) foo += 360;
-            //Game.log($"pad angle? {foo}°");
-
-            //Game.log($"site heading? {this.heading}°");
-            //var td = new TrackingDelta(radius, this.location);
-            //Game.log($"td: {td}");
-            //// --- tmp ---
-
             // Only save if we inferred the subType and have a real heading
             if (this.subType > 0 && this.heading != -1 && entry != null)
             {
@@ -160,7 +154,6 @@ namespace SrvSurvey.game
         /// <summary>
         /// Infer the subType by matching the pad we landed in
         /// </summary>
-        /// <param name="shipHeading"></param>
         private void inferSubtypeFromDocked(int shipHeading)
         {
             var game = Game.activeGame!;
@@ -205,6 +198,54 @@ namespace SrvSurvey.game
                 this.template = HumanSiteTemplate.get(this.economy, this.subType);
         }
 
+        /// <summary>
+        /// Infer the subType by matching the pad we are standing in
+        /// </summary>
+        public void inferSubtypeFromFoot(int heading)
+        {
+            var game = Game.activeGame!;
+            var radius = game.status.PlanetRadius;
+
+            foreach (var template in HumanSiteTemplate.templates)
+            {
+                if (template.economy != this.economy) continue; // wrong economy
+                var landPadSummary = template.landPadSummary(); // check pad configuration matches
+
+                foreach (var pad in template.landingPads)
+                {
+                    // are we within ~5m of the expected pad? Is ~5m enough?
+                    var offset = pad.offset - Util.getOffset(radius, this.location, heading - pad.rot);
+                    if (offset.dist < 5) // TODO: adjust by pad size?
+                    {
+                        this.subType = template.subType;
+                        this.template = HumanSiteTemplate.get(this.economy, this.subType);
+                        Game.log($"inferSubtypeFromFoot: matched {this.economy} #{template.subType} from pad #{this.targetPad}, shipDistFromPadCenter:" + Util.metersToString(offset.dist));
+                        this.template = HumanSiteTemplate.get(this.economy, this.subType);
+                        this.landingPads = LandingPads.fromTemplate(this.template!.landingPads);
+                        this.landingPads = landPadSummary;// confirm!
+
+                        this.heading = heading - pad.rot;
+                        if (this.heading > 0) this.heading -= 360;
+                        if (this.heading < 0) this.heading += 360;
+
+                        if (string.IsNullOrEmpty(this.filepath))
+                            this.filepath = Path.Combine(rootFolder, game.cmdr.fid, $"{game.systemData!.address}-{this.marketId}-{this.name}.json");
+
+                        this.Save();
+                        return;
+                    }
+                    else
+                    {
+                        // TODO: Remove once templates are populated
+                        Game.log($"not a match - {template.economy} #{template.subType}, pad #{this.targetPad} ({pad.size}): shipDistFromPadCenter: " + offset.dist.ToString("N2"));
+                    }
+                }
+            }
+
+            if (this.subType == 0)
+                Game.log($"inferSubtypeFromDocked: Doh! We should have been able to infer the subType by this point :(");
+        }
+
         #region static mappings
 
         private static Dictionary<string, int> mapLandingPadConfigToSubType = new Dictionary<string, int>()
@@ -233,6 +274,65 @@ namespace SrvSurvey.game
         };
 
         #endregion
+
+        // Not needed after all?
+        //class JsonConverter : Newtonsoft.Json.JsonConverter
+        //{
+        //    public override bool CanConvert(Type objectType)
+        //    {
+        //        return false;
+        //    }
+
+        //    public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
+        //    {
+        //        var obj = serializer.Deserialize<JToken>(reader);
+        //        if (obj == null || !obj.HasValues)
+        //            return null;
+
+        //        // read the simple fields
+        //        var data = new HumanSiteData(null)
+        //        {
+        //            name = obj[nameof(HumanSiteData.name)]!.Value<string>()!,
+        //            marketId = obj[nameof(HumanSiteData.marketId)]!.Value<long>()!,
+        //            stationType = Enum.Parse<StationType>(obj[nameof(HumanSiteData.stationType)]!.Value<string>()!),
+        //            subType = obj[nameof(HumanSiteData.subType)]!.Value<int>()!,
+        //            economy = Enum.Parse<Economy>(obj[nameof(HumanSiteData.economy)]!.Value<string>()!),
+        //            economyLocalized = obj[nameof(HumanSiteData.economyLocalized)]!.Value<string>()!,
+        //            location = obj[nameof(HumanSiteData.location)]!.ToObject<LatLong2>()!,
+        //            heading = obj[nameof(HumanSiteData.heading)]?.Value<float>() ?? -1,
+        //            landingPads = obj[nameof(HumanSiteData.landingPads)]?.ToObject<LandingPads>()!,
+        //            //buildings = new Dictionary<RectangleF, string>(obj[nameof(HumanSiteData.buildings)]?.ToObject<Dictionary<RectangleF, string>>()!),
+        //        };
+
+        //        //Game.log($"Reading: {data.bodyName} #{data.index}   ** ** ** ** {data.poiStatus.Count}");
+        //        return data;
+        //    }
+
+        //    public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
+        //    {
+        //        var data = value as HumanSiteData;
+
+        //        if (data == null)
+        //            throw new Exception($"Unexpected value: {value?.GetType().Name}");
+
+        //        var obj = new JObject
+        //        {
+        //            { nameof(HumanSiteData.name), data.name },
+        //            { nameof(HumanSiteData.marketId), data.marketId },
+        //            { nameof(HumanSiteData.stationType), data.stationType.ToString() },
+        //            { nameof(HumanSiteData.subType), data.subType },
+        //            { nameof(HumanSiteData.heading), JToken.FromObject(data.heading) },
+        //            { nameof(HumanSiteData.economy), data.economy.ToString() },
+        //            { nameof(HumanSiteData.economyLocalized), data.economyLocalized },
+        //            { nameof(HumanSiteData.location), JToken.FromObject(data.location) },
+        //            { nameof(HumanSiteData.landingPads), JToken.FromObject(data.landingPads) },
+        //            //{ nameof(HumanSiteData.buildings), new JObject(data.buildings) },
+        //        };
+
+        //        //Game.log($"Writing: {data.bodyName} #{data.index}   ** ** ** ** {data.poiStatus.Count}");
+        //        obj.WriteTo(writer);
+        //    }
+        //}
     }
 
     [JsonConverter(typeof(StringEnumConverter))]

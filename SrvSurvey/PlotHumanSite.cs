@@ -1,17 +1,21 @@
-﻿using SrvSurvey.game;
+﻿using DecimalMath;
+using SrvSurvey.game;
 using SrvSurvey.units;
 using System.Drawing.Drawing2D;
+using System.Globalization;
 
 namespace SrvSurvey
 {
     internal class PlotHumanSite : PlotBaseSite, PlotterForm
     {
+        public static bool autoZoom = true;
+
         private FileSystemWatcher? mapImageWatcher;
         private DockingState dockingState = DockingState.none;
+        private PointF buildingCorner;
+        private float buildingHeading;
 
         private HumanSiteData site { get => game.humanSite!; }
-
-        private bool autoZoom = true;
 
         private PlotHumanSite() : base()
         {
@@ -22,8 +26,8 @@ namespace SrvSurvey
             // these we get from current data
             this.siteOrigin = site.location;
             this.siteHeading = site.heading;
-            
-            if (!autoZoom) this.scale = 12;
+
+            if (!autoZoom) this.scale = 4;
 
             if (game.isMode(GameMode.OnFoot, GameMode.Docked, GameMode.InSrv, GameMode.Landed))
                 dockingState = DockingState.landed;
@@ -111,7 +115,6 @@ namespace SrvSurvey
             if (this.Opacity > 0 && !PlotHumanSite.keepPlotter)
                 Program.closePlotter<PlotHumanSite>(true);
 
-
             if (game.status.OnFootInside && autoZoom)
                 this.scale = 4;
             if (game.status.OnFootOutside && autoZoom)
@@ -150,7 +153,7 @@ namespace SrvSurvey
                     Game.log($"Bad filename format: {filepath}");
                     return;
                 }
-                this.mapScale = float.Parse(nameParts[2]);
+                this.mapScale = float.Parse(nameParts[2], CultureInfo.InvariantCulture);
                 this.mapCenter = new Point(int.Parse(nameParts[4]), int.Parse(nameParts[6]));
 
                 using (var fileImage = Image.FromFile(filepath))
@@ -216,32 +219,154 @@ namespace SrvSurvey
             });
         }
 
+        protected override void onJournalEntry(SendText entry)
+        {
+            if (this.IsDisposed) return;
+
+            var msg = entry.Message.ToLowerInvariant().Trim();
+            if (msg == "z ") autoZoom = false;
+
+            base.onJournalEntry(entry);
+
+            if (msg.StartsWith(MsgCmd.threat, StringComparison.OrdinalIgnoreCase))
+            {
+                int threatLevel;
+                if (int.TryParse(entry.Message.Substring(8), out threatLevel))
+                {
+                    Game.log($"threatLevel: {threatLevel}");
+                    if (game.matStatsTracker != null)
+                    {
+                        game.matStatsTracker.threatLevel = threatLevel;
+                        game.matStatsTracker.Save();
+                    }
+                }
+            }
+            else if (msg == MsgCmd.settlement)
+            {
+                Game.log($"Try infer site from heading: {game.status.Heading}");
+                this.site.inferSubtypeFromFoot(game.status.Heading);
+                this.Invalidate();
+            }
+            else if (msg == "./")
+            {
+                this.buildingCorner = (PointF)Util.getOffset(radius, siteOrigin, siteHeading);
+                this.buildingHeading = game.status.Heading - siteHeading;
+                if (this.buildingHeading < 0) this.buildingHeading += 360;
+
+                Game.log($"buildingCorner1: {buildingCorner}, {buildingHeading}°");
+                this.Invalidate();
+            }
+            else if (msg == "./-")
+            {
+                site.template!.buildings.RemoveAt(site.template!.buildings.Count - 1);
+                this.Invalidate();
+            }
+            else if (msg.StartsWith("./"))
+            {
+                var buildingType = msg.Substring(3).Trim();
+
+                var offset = (PointF)Util.getOffset(radius, siteOrigin, siteHeading);
+                var rf = getBldRectF(buildingCorner, offset, (decimal)buildingHeading);
+
+                var bld = new Building()
+                {
+                    rect = rf,
+                    rot = (int)buildingHeading,
+                    name = buildingType
+                };
+                site.template!.buildings.Add(bld);
+
+                Game.log($"new building: {bld}");
+                buildingCorner.X = 0;
+                this.Invalidate();
+            }
+        }
+
+        private RectangleF getBldRectF(PointF bldCorner, PointF cmdrOffset, decimal bldHeading)
+        {
+            var xx = cmdrOffset.X - bldCorner.X;
+            var yy = cmdrOffset.Y - bldCorner.Y;
+
+            var c = (decimal)Math.Sqrt(
+                Math.Pow(bldCorner.X - cmdrOffset.X, 2)
+                + Math.Pow(bldCorner.Y - cmdrOffset.Y, 2)
+                );
+
+            var aaa = Util.ToAngle(xx, yy) - (decimal)bldHeading;
+            if (aaa < 0) aaa += 360;
+
+            var dx = (float)(DecimalEx.Sin(DecimalEx.ToRad((decimal)aaa)) * c);
+            var dy = (float)(DecimalEx.Cos(DecimalEx.ToRad((decimal)aaa)) * c);
+
+
+            // when dx+ dy- (and nothing else)
+            var dxx = bldCorner.X;
+            var dyy = bldCorner.Y;
+
+            // when dx- dy-
+            if (dx < 0 && dy < 0)
+            {
+                dxx += xx;
+                dyy += yy;
+                dxx -= (float)(DecimalEx.Sin(DecimalEx.ToRad((decimal)bldHeading)) * (decimal)dy);
+                dyy -= (float)(DecimalEx.Cos(DecimalEx.ToRad((decimal)bldHeading)) * (decimal)dy);
+            }
+            // when: dx+ dy+
+            else if (dx > 0 && dy > 0)
+            {
+                dxx += (float)(DecimalEx.Sin(DecimalEx.ToRad((decimal)bldHeading)) * (decimal)dy);
+                dyy += (float)(DecimalEx.Cos(DecimalEx.ToRad((decimal)bldHeading)) * (decimal)dy);
+            }
+            // when dx- dy+
+            else if (dx < 0 && dy > 0)
+            {
+                dxx += xx;
+                dyy += yy;
+            }
+            Game.log($"---");
+            Game.log($"{dxx},{dyy} /{(int)aaa}°/ {dx},{dy}");
+
+            if (dx < 0) dx *= -1;
+            if (dy < 0) dy *= -1;
+            var rf3 = new RectangleF(dxx, dyy, dx, dy);
+            Game.log($"{rf3.Left},{rf3.Top} /{(int)aaa}°/ {rf3.Width},{rf3.Height}");
+
+            return rf3;
+        }
+
         protected override void OnPaintBackground(PaintEventArgs e)
         {
             base.OnPaintBackground(e);
-            if (this.IsDisposed) return;
+            if (this.IsDisposed || this.site == null) return;
 
             try
             {
                 resetPlotter(g);
 
-                var headerTxt = $"{site!.name} - {site.economy} ";
+                drawTextAt(this.ClientSize.Width - 8, $"Zoom: {this.scale.ToString("N1")}", GameColors.brushGameOrangeDim, GameColors.fontSmall, true);
+
+                // header
+                var headerTxt = $"{site.name} - {site.economy} ";
                 headerTxt += site.subType == 0 ? "??" : $"#{site.subType}";
+
+                var offset = (PointF)Util.getOffset(radius, siteOrigin, siteHeading);
+                var currentBld = site.template?.getCurrentBld(offset, this.siteHeading);
+                if (currentBld != null)
+                    headerTxt += $" - Building: {currentBld}";
+
                 drawTextAt(eight, headerTxt);
                 newLine(+ten, true);
 
-                var td = new TrackingDelta(this.radius, site.location);
                 var dg = Util.getDistance(site.location, Status.here, this.radius);
 
                 if (game.isMode(GameMode.Flying, GameMode.GlideMode))
                 {
                     this.drawOnApproach(dg);
-                    //return;
                 }
                 else
                 {
                     // footer
-                    var footerTxt = $"cmdr offset: x: {(int)cmdrOffset.X}m, y: {(int)cmdrOffset.Y}m";
+                    var footerTxt = $"cmdr offset: x: {(int)offset.X}m, y: {(int)offset.Y}m";
                     if (this.mapImage != null)
                     {
                         var pf = Util.getOffset(this.radius, site.location, Status.here.clone(), site.heading);
@@ -249,6 +374,24 @@ namespace SrvSurvey
                         pf.y = this.mapImage.Height - pf.y - this.mapCenter.Y;
                         footerTxt += $" (☍{(int)pf.X}, {(int)pf.Y})";
                     }
+                    //if (buildingCorner != null)
+                    //{
+                    //    var xx = offset.X - buildingCorner.X;
+                    //    var yy = offset.Y - buildingCorner.Y;
+
+                    //    var aaa = Util.ToAngle(xx, yy) - (decimal)buildingHeading;
+                    //    if (aaa < 0) aaa += 360;
+
+                    //    var c = (decimal)Math.Sqrt(
+                    //        Math.Pow(buildingCorner.X - offset.X, 2)
+                    //        + Math.Pow(buildingCorner.Y - offset.Y, 2)
+                    //        );
+
+                    //    var dx = (float)(DecimalEx.Sin(DecimalEx.ToRad((decimal)aaa)) * c);
+                    //    var dy = (float)(DecimalEx.Cos(DecimalEx.ToRad((decimal)aaa)) * c);
+
+                    //    footerTxt += $" [ {dx.ToString("n1")} , {dy.ToString("n1")} ]";
+                    //}
                     this.drawFooterText(footerTxt);
                 }
 
@@ -256,18 +399,17 @@ namespace SrvSurvey
                 // relative to site origin
                 this.resetMiddleSiteOrigin();
 
-                if (this.site?.heading >= 0)
+                if (this.site.heading >= 0)
                 {
-                    // header
-                    //this.drawTextAt($"{site!.name} - {site.economy} #{site.subType}");
-                    // ☢ ♨ ⚡ ☎ ☏ ♫ ⚠ ⚽ ✋ ❕ ❗ 
-                    // ❗❕❉✪✿❤➊➀⟐⟊➟✦✔⛶⛬⛭⛯⛣⛔⛌⛏⚴⚳⚱⚰⚚⚙⚗⚕⚑⚐⚜⚝⚛⚉⚇♥♦♖♜☸☗☯☍☉☄☁◬◊◈◍◉▣▢╳
-
-
-                    // map
+                    // draw map and POIs
                     this.drawMapImage();
+                    this.drawBuildings();
                     this.drawLandingPads();
                     this.drawPOI();
+
+                    // draw bounding box for pending building
+                    if (this.buildingCorner.X != 0)
+                        this.drawBuildingBox(offset);
                 }
 
                 this.drawCompassLines();
@@ -286,8 +428,8 @@ namespace SrvSurvey
                 // draw large arrow pointing to settlement origin if >300m away
                 if (dg > 300)
                 {
-                    float aa = td.angle;
-                    g.RotateTransform(180 - game.status.Heading + aa);
+                    var td = new TrackingDelta(this.radius, site.location);
+                    g.RotateTransform(180 - game.status.Heading + td.angle);
                     g.DrawLine(GameColors.penGameOrangeDim4, 0, 20, 0, 100);
                     g.DrawLine(GameColors.penGameOrangeDim4, 0, 100, 20, 80);
                     g.DrawLine(GameColors.penGameOrangeDim4, 0, 100, -20, 80);
@@ -329,6 +471,108 @@ namespace SrvSurvey
                 });
             }
 
+        }
+
+        private void drawBuildings()
+        {
+            if (game.humanSite?.template?.buildings == null) return;
+
+            var bb = GameColors.brushHumanBuilding;
+            foreach (var bld in game.humanSite.template.buildings)
+            {
+                adjust(bld.rect.X, bld.rect.Y, bld.rot, () =>
+                {
+                    g.FillRectangle(bb, 0, 0, bld.rect.Width, bld.rect.Height);
+                });
+            }
+        }
+
+        private void drawBuildingBox(PointF offset)
+        {
+            if (this.buildingCorner.X == 0) return;
+
+            g.DrawLine(Pens.Salmon, buildingCorner.X, -buildingCorner.Y, offset.X, -offset.Y);
+            g.DrawEllipse(Pens.Salmon, buildingCorner.X - 2, -buildingCorner.Y - 2, 4, 4);
+
+            var rf = getBldRectF(buildingCorner, offset, (decimal)buildingHeading);
+            adjust(rf.Left, rf.Top, buildingHeading, () =>
+            {
+                g.DrawRectangle(Pens.Yellow, 0, 0, rf.Width, rf.Height);
+            });
+
+            // --- OLD ---
+
+            //var o = (PointF)Util.getOffset(radius, siteOrigin, siteHeading);
+
+            //var xx = o.X - buildingCorner1.X;
+            ////xx = buildingCorner1.X - o.X;
+            //var yy = o.Y - buildingCorner1.Y;
+            ////yy = buildingCorner1.Y - o.Y;
+
+            //var c = (decimal)Math.Sqrt(
+            //    Math.Pow(buildingCorner1.X - o.X, 2)
+            //    + Math.Pow(buildingCorner1.Y - o.Y, 2)
+            //    );
+
+            ////var aa = DecimalEx.ToDeg((decimal) Math.Atan2(buildingCorner1.Y - o.Y, buildingCorner1.X - o.X));
+            //// buildingHeading - siteHeading
+            //var hh = buildingHeading; // game.status.Heading; // + buildingHeading;
+            //var hh2 = buildingHeading; // siteHeading + buildingHeading; // game.status.Heading; // + buildingHeading;
+            //var aaa = Util.ToAngle(xx, yy) - (decimal)buildingHeading;
+            //if (aaa < 0) aaa += 360;
+
+            //var p2 = Util.rotateLine((decimal)aaa, c);
+            //var dx = (float)(DecimalEx.Sin(DecimalEx.ToRad((decimal)aaa)) * c);
+            //var dy = (float)(DecimalEx.Cos(DecimalEx.ToRad((decimal)aaa)) * c);
+
+
+            ////g.DrawLine(Pens.Yellow, 0, 0, 0, -20);
+
+            //var rf2 = Util.getRectF(
+            //    this.buildingCorner1,
+            //    new PointF(buildingCorner1.X + dx, buildingCorner1.Y + dy));
+            ////rf2 = new RectangleF(buildingCorner1.X, buildingCorner1.Y, dx, dy);
+            ////g.DrawLine(Pens.Lime, rf2.Left, -rf2.Top, rf2.Width, rf2.Height);
+            //g.DrawLine(Pens.Salmon, buildingCorner1.X, -buildingCorner1.Y, o.X, -o.Y);
+            //g.DrawEllipse(Pens.Salmon, buildingCorner1.X - 2, -buildingCorner1.Y - 2, 4, 4);
+
+            //// when dx+ dy- (and nothing else)
+            //var dxx = buildingCorner1.X;
+            //var dyy = buildingCorner1.Y;
+
+            //// when dx- dy-
+            //if (dx < 0 && dy < 0)
+            //{
+            //    dxx += xx;
+            //    dyy += yy;
+            //    dxx -= (float)(DecimalEx.Sin(DecimalEx.ToRad((decimal)buildingHeading)) * (decimal)dy);
+            //    dyy -= (float)(DecimalEx.Cos(DecimalEx.ToRad((decimal)buildingHeading)) * (decimal)dy);
+            //}
+            //// when: dx+ dy+
+            //else if (dx > 0 && dy > 0)
+            //{
+            //    dxx += (float)(DecimalEx.Sin(DecimalEx.ToRad((decimal)buildingHeading)) * (decimal)dy);
+            //    dyy += (float)(DecimalEx.Cos(DecimalEx.ToRad((decimal)buildingHeading)) * (decimal)dy);
+            //}
+            //// when dx- dy+
+            //else if (dx < 0 && dy > 0)
+            //{
+            //    dxx += xx;
+            //    dyy += yy;
+            //}
+
+            //Game.log($"{xx},{yy} /{(int)aaa}°/ {dx},{dy} \\ {p2}");
+            //adjust(dxx, dyy, buildingHeading, () =>
+            //{
+            //    g.DrawRectangle(Pens.Brown, 0, 0, rf2.Width, rf2.Height);
+            //    g.DrawLine(Pens.Blue, 0f, 0f, (float)dx, 0);
+            //    g.DrawLine(Pens.Blue, 0f, 0f, 0, -(float)dy);
+
+            //    //g.DrawLine(Pens.Black, 0f, 0f, (float)p2.X, -(float)p2.Y);
+            //    //g.DrawLine(Pens.Cyan, 0f, 0f, 0, (float)p2.Y);
+            //    g.DrawLine(Pens.Yellow, 0, 0, 0, -4);
+
+            //});
         }
 
         private void drawPOI()

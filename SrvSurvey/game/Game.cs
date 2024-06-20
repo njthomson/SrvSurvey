@@ -128,6 +128,7 @@ namespace SrvSurvey.game
         public GuardianSiteData? systemSite;
         public HumanSiteData? humanSite;
         public string shipType;
+        public SettlementMatCollectionData? matStatsTracker;
 
         /// <summary>
         /// Distinct settings for the current commander
@@ -641,6 +642,8 @@ namespace SrvSurvey.game
                     if (dist < 1500)
                     {
                         this.humanSite = lastHumanSite;
+                        // This is probably a bad idea
+                        // if (Game.settings.collectMatsCollectionStatsTest) this.initMats(this.humanSite);
                         return;
                     }
                 }
@@ -704,6 +707,8 @@ namespace SrvSurvey.game
             if (this.humanSite != null)
             {
                 cmdr.setMarketId(this.humanSite.marketId);
+                // This is probably a bad idea
+                // if (Game.settings.collectMatsCollectionStatsTest) this.initMats(this.humanSite);
                 return;
             }
 
@@ -1747,7 +1752,7 @@ namespace SrvSurvey.game
         {
             if (this.systemData == null || this.systemBody == null || this.canonnPoi?.codex == null) return false;
 
-            var hasSignals = this.canonnPoi.codex.Any(_ => _.body.Replace(" ", "") == this.systemBody.shortName && _.hud_category == "Biology" && _.latitude != null && _.longitude != null && (!Game.settings.hideMyOwnCanonnSignals || _.scanned == false));
+            var hasSignals = this.canonnPoi.codex.Any(_ => _.body?.Replace(" ", "") == this.systemBody.shortName && _.hud_category == "Biology" && _.latitude != null && _.longitude != null && (!Game.settings.hideMyOwnCanonnSignals || _.scanned == false));
             return hasSignals;
         }
 
@@ -1920,7 +1925,6 @@ namespace SrvSurvey.game
         {
             if (entry.StationType == StationType.OnFootSettlement && this.humanSite?.marketId == entry.MarketID && Game.settings.autoShowHumanSitesTest)
                 this.humanSite.dockingRequested(entry);
-
         }
 
         private void onJournalEntry(DockingGranted entry)
@@ -1948,12 +1952,13 @@ namespace SrvSurvey.game
                 {
                     // try loading a file, it will exist if we have docked here before
                     this.humanSite = HumanSiteData.Load(this.systemData.address, entry.MarketID);
+                    if (Game.settings.collectMatsCollectionStatsTest && this.humanSite != null) this.initMats(this.humanSite);
                 }
                 else if (this.humanSite.marketId == entry.MarketID)
                 {
-
                     this.humanSite.docked(entry, this.status.Heading);
                     this.fireUpdate(true);
+                    if (Game.settings.collectMatsCollectionStatsTest) this.initMats(this.humanSite);
                 }
                 else
                 {
@@ -1965,7 +1970,99 @@ namespace SrvSurvey.game
         private void onJournalEntry(Undocked entry)
         {
             this.touchdownLocation = LatLong2.Empty;
+
+            if (Game.settings.collectMatsCollectionStatsTest && this.matStatsTracker != null)
+            {
+                // stop capturing stats once undocked
+                this.matStatsTracker.completed = true;
+                this.matStatsTracker.Save();
+                Game.log($"Stopped mats collection at: '{this.matStatsTracker.name}'\r\n${this.matStatsTracker.filepath}");
+            }
         }
+
+        private void initMats(HumanSiteData siteData)
+        {
+            if (this.matStatsTracker != null) Game.log("Why is matStatsTracker already something?");
+            Game.log($"initMats: '{siteData.name}' ({siteData.marketId}) ");
+
+            this.matStatsTracker = SettlementMatCollectionData.Load(siteData);
+
+            // populate things from the last ApproachSettlement
+            this.journals!.searchDeep((ApproachSettlement entry) =>
+            {
+                if (entry.BodyName != status.BodyName || entry.SystemAddress != this.systemData?.address) return true;
+
+                this.matStatsTracker.systemAddress = entry.SystemAddress;
+                this.matStatsTracker.bodyId = entry.BodyID;
+                if (!string.IsNullOrEmpty(entry.StationFaction?.Name)) this.matStatsTracker.factionName = entry.StationFaction.Name;
+                if (!string.IsNullOrEmpty(entry.StationGovernment)) this.matStatsTracker.stationGovernment = entry.StationGovernment;
+                if (!string.IsNullOrEmpty(entry.StationAllegiance)) this.matStatsTracker.stationAllegiance = entry.StationAllegiance;
+                if (!string.IsNullOrEmpty(entry.StationEconomy)) this.matStatsTracker.stationEconomy = entry.StationEconomy;
+
+                return true;
+            });
+
+            // populate things from the last FSDJump
+            this.journals!.searchDeep((FSDJump entry) =>
+            {
+                if (entry.SystemAddress != this.systemData?.address) return true;
+
+                this.matStatsTracker.systemAllegiance = entry.SystemAllegiance;
+                this.matStatsTracker.systemEconomy = entry.SystemEconomy;
+                this.matStatsTracker.systemSecondEconomy = entry.SystemSecondEconomy;
+                this.matStatsTracker.systemGovernment = entry.SystemGovernment;
+                this.matStatsTracker.systemSecurity = entry.SystemSecurity;
+                this.matStatsTracker.population = entry.Population;
+
+                this.matStatsTracker.systemFactionName = entry.SystemFaction.Name;
+                var systemFaction = entry.Factions.First(f => f.Name == entry.SystemFaction.Name);
+                this.matStatsTracker.systemFactionState = systemFaction.FactionState;
+
+                return true;
+            });
+
+            // Don't save until we pick up some item
+        }
+
+        private void onJournalEntry(BackpackChange entry)
+        {
+            if (!Game.settings.collectMatsCollectionStatsTest || this.matStatsTracker == null || this.humanSite == null || humanSite.heading == -1) return;
+
+            foreach (var item in entry.Added)
+            {
+                // Track location offset +1m by cmdr heading, to account for mats being in front of cmdr, not under their feet.
+                var cmdrOffset = Util.getOffset(status.PlanetRadius, humanSite.location, humanSite.heading);
+                var d = Util.rotateLine(status.Heading, 1);
+                var location = cmdrOffset + d;
+
+                var building = humanSite.template?.getCurrentBld((PointF)cmdrOffset, humanSite.heading);
+                this.matStatsTracker.track(item, (PointF)location, building);
+            }
+
+            this.matStatsTracker.Save();
+        }
+
+        //private void onJournalEntry(CollectItems entry)
+        //{
+        //    if (!Game.settings.collectMatsCollectionStats || this.matStatsTracker == null || this.humanSite == null) return;
+
+        //    // increment basic count of Mat type
+        //    if (!this.matStatsTracker.countMats.ContainsKey(entry.Name)) this.matStatsTracker.countMats[entry.Name] = 0;
+        //    this.matStatsTracker.countMats[entry.Name] += 1;
+
+        //    // Track location. Offset +1m by cmdr heading, to account for mats being in front of cmdr, not under their feet.
+        //    var feet = Util.getOffset(status.PlanetRadius, humanSite.location, humanSite.heading);
+        //    var d = Util.rotateLine(status.Heading, 1);
+        //    var location = feet + d;
+        //    this.matStatsTracker.matLocations.Add(new CollectedMaterial
+        //    {
+        //        name = entry.Name,
+        //        x = (float)location.x,
+        //        y = (float)location.y,
+        //    });
+
+        //    this.matStatsTracker.Save();
+        //}
 
         private void onJournalEntry(CodexEntry entry)
         {

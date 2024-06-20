@@ -200,6 +200,8 @@ namespace SrvSurvey
 
         private void Game_modeChanged(GameMode newMode, bool force)
         {
+            if (this.IsDisposed) return;
+
             if (this.Opacity > 0 && !PlotGrounded.allowPlotter)
                 this.Opacity = 0;
             else if (this.Opacity == 0 && PlotGrounded.allowPlotter)

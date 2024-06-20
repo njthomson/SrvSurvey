@@ -77,5 +77,10 @@
         public const string firstFoot = ".firstFoot";
         /// <summary> Main : Record that first footfall on current body </summary>
         public const string ff = ".ff";
+
+        /// <summary> PlotHumanSite : For manual entry of the threat level, eg: ".threat 1" </summary>
+        public const string threat = ".threat";
+        /// <summary> PlotHumanSite : For manually initializing a settlement's rotation. Cmdr must be centered on a landing pad first. </summary>
+        public const string settlement = ".settlement";
     }
 }

@@ -32,6 +32,12 @@ namespace SrvSurvey
 
         // public int bodyInfoBubbleSize = 200;
 
+        /// <summary>
+        /// For Human settlements ...
+        /// </summary>
+        [JsonIgnore]
+        public bool collectMatsCollectionStatsTest = false;
+
         public bool skipGasGiantDSS = true;
         public bool skipRingsDSS = false;
         public bool skipLowValueDSS = true;

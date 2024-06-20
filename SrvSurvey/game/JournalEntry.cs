@@ -2,8 +2,6 @@
 using Newtonsoft.Json.Converters;
 using SrvSurvey.game;
 
-#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-
 namespace SrvSurvey
 {
     // See details from:
@@ -122,6 +120,7 @@ namespace SrvSurvey
     {
         // { "timestamp":"2023-01-06T00:14:38Z", "event":"ApproachSettlement", "Name":"$Ancient_Tiny_001:#index=1;", "Name_Localised":"Guardian Structure", "SystemAddress":2881788519801, "BodyID":7, "BodyName":"Col 173 Sector IJ-G b27-1 A 1", "Latitude":-33.219879, "Longitude":87.628571 }
         // { "timestamp":"2024-04-09T06:44:33Z", "event":"ApproachSettlement", "Name":"Oyekan Prospecting Hub", "MarketID":3888520448, "StationFaction":{ "Name":"Yaurnai Jet Hand Gang" }, "StationGovernment":"$government_Anarchy;", "StationGovernment_Localised":"Anarchy", "StationServices":[ "dock", "autodock", "blackmarket", "commodities", "contacts", "missions", "refuel", "repair", "engineer", "missionsgenerated", "facilitator", "flightcontroller", "stationoperations", "stationMenu" ], "StationEconomy":"$economy_Extraction;", "StationEconomy_Localised":"Extraction", "StationEconomies":[ { "Name":"$economy_Extraction;", "Name_Localised":"Extraction", "Proportion":1.000000 } ], "SystemAddress":669612713401, "BodyID":8, "BodyName":"Yaurnai 1", "Latitude":47.955894, "Longitude":-107.683449 }
+        // { "timestamp":"2024-06-16T21:51:24Z", "event":"ApproachSettlement", "Name":"Omenuko Extraction Base", "MarketID":3928215040, "StationFaction":{ "Name":"Yami & Co" }, "StationGovernment":"$government_Corporate;", "StationGovernment_Localised":"Corporate", "StationAllegiance":"Federation", "StationServices":[ "dock", "autodock", "commodities", "contacts", "missions", "refuel", "repair", "engineer", "missionsgenerated", "facilitator", "flightcontroller", "stationoperations", "searchrescue", "stationMenu" ], "StationEconomy":"$economy_Extraction;", "StationEconomy_Localised":"Extraction", "StationEconomies":[ { "Name":"$economy_Extraction;", "Name_Localised":"Extraction", "Proportion":1.000000 } ], "SystemAddress":2868367467953, "BodyID":5, "BodyName":"Yami A 1", "Latitude":0.550911, "Longitude":-31.254198 }
 
         public string Name { get; set; }
         public string Name_Localised { get; set; }
@@ -130,13 +129,20 @@ namespace SrvSurvey
         public string BodyName { get; set; }
 
         public long MarketID;
-        // StationFaction ?
+        public NamedFaction StationFaction;
         public List<string>? StationServices;
         public string? StationGovernment;
         public string? StationGovernment_Localised;
+        public string? StationAllegiance;
         public string? StationEconomy;
         public string? StationEconomy_Localised;
         // StationEconomies ?
+    }
+
+    class NamedFaction
+    {
+        public string Name;
+        public string? FactionState;
     }
 
     class DockingRequested : JournalEntry
@@ -224,6 +230,24 @@ namespace SrvSurvey
         public override string ToString()
         {
             return $"Small:{this.Small}, Medium:{this.Medium}, Large:{this.Large}";
+        }
+
+        // TODO: remove?
+        public static LandingPads fromTemplate(List<LandingPad> pads)
+        {
+            var countPads = new LandingPads();
+
+            foreach (var pad in pads)
+            {
+                if (pad.size == LandingPadSize.Small)
+                    countPads.Small += 1;
+                else if (pad.size == LandingPadSize.Medium)
+                    countPads.Medium += 1;
+                else if (pad.size == LandingPadSize.Large)
+                    countPads.Large += 1;
+            }
+
+            return countPads;
         }
     }
 
@@ -371,6 +395,7 @@ namespace SrvSurvey
     class FSDJump : JournalEntry, ISystemAddress, ISystemDataStarter
     {
         // { "timestamp":"2023-01-24T05:07:01Z", "event":"FSDJump", "Taxi":false, "Multicrew":false, "StarSystem":"Maridwyn", "SystemAddress":13866167838129, "StarPos":[90.46875,16.40625,21.62500], "SystemAllegiance":"Federation", "SystemEconomy":"$economy_Agri;", "SystemEconomy_Localised":"Agriculture", "SystemSecondEconomy":"$economy_Refinery;", "SystemSecondEconomy_Localised":"Refinery", "SystemGovernment":"$government_Corporate;", "SystemGovernment_Localised":"Corporate", "SystemSecurity":"$SYSTEM_SECURITY_high;", "SystemSecurity_Localised":"High Security", "Population":4058074576, "Body":"Maridwyn A", "BodyID":1, "BodyType":"Star", "Powers":[ "Felicia Winters" ], "PowerplayState":"Exploited", "JumpDist":8.278, "FuelUsed":0.091548, "FuelLevel":13.458453, "Factions":[ { "Name":"Social Maridwyn Green Party", "FactionState":"None", "Government":"Democracy", "Influence":0.027559, "Allegiance":"Independent", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":0.000000 }, { "Name":"p Velorum Crimson Creative Int", "FactionState":"None", "Government":"Corporate", "Influence":0.059055, "Allegiance":"Federation", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":4.187500 }, { "Name":"Maridwyn Co", "FactionState":"None", "Government":"Corporate", "Influence":0.487205, "Allegiance":"Federation", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":0.000000, "RecoveringStates":[ { "State":"Boom", "Trend":0 } ] }, { "Name":"Maridwyn Constitution Party", "FactionState":"None", "Government":"Dictatorship", "Influence":0.041339, "Allegiance":"Independent", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":0.000000 }, { "Name":"Maridwyn Gold Electronics Ltd", "FactionState":"None", "Government":"Corporate", "Influence":0.021654, "Allegiance":"Independent", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":0.000000 }, { "Name":"United Maridwyn Law Party", "FactionState":"None", "Government":"Dictatorship", "Influence":0.040354, "Allegiance":"Independent", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":0.000000 }, { "Name":"Federal Reclamation Co", "FactionState":"Expansion", "Government":"Corporate", "Influence":0.322835, "Allegiance":"Federation", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":97.425003, "ActiveStates":[ { "State":"Expansion" } ] } ], "SystemFaction":{ "Name":"Maridwyn Co" } }
+        // { "timestamp":"2024-06-17T04:33:26Z", "event":"FSDJump", "Taxi":false, "Multicrew":false, "StarSystem":"HIP 82206", "SystemAddress":83651269338, "StarPos":[-111.25000,93.18750,18.21875], "SystemAllegiance":"Federation", "SystemEconomy":"$economy_Industrial;", "SystemEconomy_Localised":"Industrial", "SystemSecondEconomy":"$economy_Extraction;", "SystemSecondEconomy_Localised":"Extraction", "SystemGovernment":"$government_Corporate;", "SystemGovernment_Localised":"Corporate", "SystemSecurity":"$SYSTEM_SECURITY_medium;", "SystemSecurity_Localised":"Medium Security", "Population":4807913, "Body":"HIP 82206", "BodyID":0, "BodyType":"Star", "JumpDist":17.333, "FuelUsed":0.780109, "FuelLevel":11.299892, "Factions":[ { "Name":"HIP 82206 Transport Corporation", "FactionState":"None", "Government":"Corporate", "Influence":0.465932, "Allegiance":"Federation", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":47.840000 }, { "Name":"Ugrasin Purple Advanced Industry", "FactionState":"None", "Government":"Corporate", "Influence":0.103206, "Allegiance":"Federation", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":2.970000 }, { "Name":"Aobriguites Blue Bridge Corp", "FactionState":"Election", "Government":"Corporate", "Influence":0.065130, "Allegiance":"Independent", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":-48.794998 }, { "Name":"HIP 82206 Blue Crew", "FactionState":"None", "Government":"Anarchy", "Influence":0.063126, "Allegiance":"Independent", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":0.000000 }, { "Name":"Allied HIP 82206 Defence Force", "FactionState":"None", "Government":"Dictatorship", "Influence":0.063126, "Allegiance":"Independent", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":0.000000 }, { "Name":"HIP 82206 for Equality", "FactionState":"None", "Government":"Democracy", "Influence":0.092184, "Allegiance":"Independent", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":0.000000 }, { "Name":"Elite Secret Service", "FactionState":"None", "Government":"Corporate", "Influence":0.147295, "Allegiance":"Independent", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":-97.620003 } ], "SystemFaction":{ "Name":"HIP 82206 Transport Corporation" } }
 
         public bool Taxi { get; set; }
         public bool Multicrew { get; set; }
@@ -381,7 +406,7 @@ namespace SrvSurvey
         public string SystemEconomy { get; set; } //$economy_Agri;
         public string SystemEconomy_Localised { get; set; } // "Agriculture"
         public string SystemSecondEconomy { get; set; } // $economy_Refinery;
-                                                        // public string SystemSecondEconomy_Localised { get; set; } // Refinery
+        public string SystemSecondEconomy_Localised { get; set; } // Refinery
         public string SystemGovernment { get; set; }// $government_Corporate;
         public string SystemGovernment_Localised { get; set; } // Corporate
         public string SystemSecurity { get; set; } // $SYSTEM_SECURITY_high;
@@ -396,16 +421,43 @@ namespace SrvSurvey
         public float JumpDist { get; set; }// 8.278
         public float FuelUsed { get; set; } // 0.091548
         public float FuelLevel { get; set; } // 13.458453
-                                             // "Factions":[
-                                             //      { "Name":"Social Maridwyn Green Party", "FactionState":"None", "Government":"Democracy", "Influence":0.027559, "Allegiance":"Independent", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":0.000000 },
-                                             //      { "Name":"p Velorum Crimson Creative Int", "FactionState":"None", "Government":"Corporate", "Influence":0.059055, "Allegiance":"Federation", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":4.187500 },
-                                             //      { "Name":"Maridwyn Co", "FactionState":"None", "Government":"Corporate", "Influence":0.487205, "Allegiance":"Federation", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":0.000000, "RecoveringStates":[ { "State":"Boom", "Trend":0 } ] },
-                                             //      { "Name":"Maridwyn Constitution Party", "FactionState":"None", "Government":"Dictatorship", "Influence":0.041339, "Allegiance":"Independent", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":0.000000 },
-                                             //      { "Name":"Maridwyn Gold Electronics Ltd", "FactionState":"None", "Government":"Corporate", "Influence":0.021654, "Allegiance":"Independent", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":0.000000 },
-                                             //      { "Name":"United Maridwyn Law Party", "FactionState":"None", "Government":"Dictatorship", "Influence":0.040354, "Allegiance":"Independent", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":0.000000 },
-                                             //      { "Name":"Federal Reclamation Co", "FactionState":"Expansion", "Government":"Corporate", "Influence":0.322835, "Allegiance":"Federation", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":97.425003, "ActiveStates":[ { "State":"Expansion" } ] }
-                                             //  ],
-                                             // "SystemFaction":{ "Name":"Maridwyn Co" } }
+
+        public List<SystemFaction> Factions;
+        // "Factions":[
+        //      { "Name":"Social Maridwyn Green Party", "FactionState":"None", "Government":"Democracy", "Influence":0.027559, "Allegiance":"Independent", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":0.000000 },
+        //      { "Name":"p Velorum Crimson Creative Int", "FactionState":"None", "Government":"Corporate", "Influence":0.059055, "Allegiance":"Federation", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":4.187500 },
+        //      { "Name":"Maridwyn Co", "FactionState":"None", "Government":"Corporate", "Influence":0.487205, "Allegiance":"Federation", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":0.000000, "RecoveringStates":[ { "State":"Boom", "Trend":0 } ] },
+        //      { "Name":"Maridwyn Constitution Party", "FactionState":"None", "Government":"Dictatorship", "Influence":0.041339, "Allegiance":"Independent", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":0.000000 },
+        //      { "Name":"Maridwyn Gold Electronics Ltd", "FactionState":"None", "Government":"Corporate", "Influence":0.021654, "Allegiance":"Independent", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":0.000000 },
+        //      { "Name":"United Maridwyn Law Party", "FactionState":"None", "Government":"Dictatorship", "Influence":0.040354, "Allegiance":"Independent", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":0.000000 },
+        //      { "Name":"Federal Reclamation Co", "FactionState":"Expansion", "Government":"Corporate", "Influence":0.322835, "Allegiance":"Federation", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":97.425003, "ActiveStates":[ { "State":"Expansion" } ] }
+        //  ],
+        public NamedFaction SystemFaction;
+    }
+
+    class SystemFaction
+    {
+        // { "Name":"Social Maridwyn Green Party", "FactionState":"None", "Government":"Democracy", "Influence":0.027559, "Allegiance":"Independent", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":0.000000 }
+        // { "Name":"Federal Reclamation Co", "FactionState":"Expansion", "Government":"Corporate", "Influence":0.322835, "Allegiance":"Federation", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":97.425003, "ActiveStates":[ { "State":"Expansion" } ] }
+        // { "Name":"Maridwyn Co", "FactionState":"None", "Government":"Corporate", "Influence":0.487205, "Allegiance":"Federation", "Happiness":"$Faction_HappinessBand2;", "Happiness_Localised":"Happy", "MyReputation":0.000000, "RecoveringStates":[ { "State":"Boom", "Trend":0 } ] },
+        public string Name;
+        public string FactionState;
+        public string Government;
+        public double Influence;
+        public string Allegiance;
+        public string Happiness;
+        public string Happiness_Localised;
+        public double MyReputation;
+        public List<SystemFactionState>? RecoveringStates;
+        public List<SystemFactionState>? ActiveStates;
+    }
+
+    class SystemFactionState
+    {
+        // { "State":"Expansion" }
+        // { "State":"Boom", "Trend":0 }
+        public string State;
+        //public double Trend;
     }
 
     [JsonConverter(typeof(StringEnumConverter))]
@@ -1021,6 +1073,39 @@ namespace SrvSurvey
         public long TotalEarnings;
     }
 
-}
+    class BackpackChange : JournalEntry
+    {
+        // { "timestamp":"2024-06-16T06:06:47Z", "event":"BackpackChange", "Added":[ { "Name":"evacuationprotocols", "Name_Localised":"Evacuation Protocols", "OwnerID":0, "Count":2, "Type":"Data" } ] }
+        // { "timestamp":"2024-05-15T03:26:32Z", "event":"BackpackChange", "Removed":[ { "Name":"energycell", "Name_Localised":"Energy Cell", "OwnerID":0, "Count":1, "Type":"Consumable" } ] }
+        public List<BackpackChange_Entry> Added;
+        public List<BackpackChange_Entry> Removed;
+    }
 
-#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+    class BackpackChange_Entry
+    {
+        // { "Name":"energycell", "Name_Localised":"Energy Cell", "OwnerID":0, "Count":1, "Type":"Consumable" }
+        public string Name;
+        public string Name_Localised;
+        public long OwnerID;
+        public int Count;
+        public string Type;
+    }
+
+    class CollectItems : JournalEntry
+    {
+        // { "timestamp":"2024-06-16T22:49:59Z", "event":"CollectItems", "Name":"graphene", "Type":"Component", "OwnerID":0, "Count":1, "Stolen":true }
+        public string Name;
+        public string Type;
+        public long OwnerID;
+        public int Count;
+        public bool Stolen;
+    }
+
+    class UseConsumable : JournalEntry
+    {
+        // { "timestamp":"2024-05-15T03:26:32Z", "event":"UseConsumable", "Name":"energycell", "Name_Localised":"Energy Cell", "Type":"Consumable" }
+        public string Name;
+        public string Name_Localised;
+        public string Type;
+    }
+}

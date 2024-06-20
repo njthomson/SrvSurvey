@@ -950,14 +950,19 @@ namespace SrvSurvey
         /// <param name="func"></param>
         protected void adjust(PointF pf, float rot, Action func)
         {
+            adjust(pf.X, pf.Y, rot, func);
+        }
+
+        protected void adjust(float x, float y, float rot, Action func)
+        {
             // Y value only is inverted
-            g.TranslateTransform(+pf.X, -pf.Y);
+            g.TranslateTransform(+x, -y);
             g.RotateTransform(+rot);
 
             func();
 
             g.RotateTransform(-rot);
-            g.TranslateTransform(-pf.X, +pf.Y);
+            g.TranslateTransform(-x, +y);
         }
 
         protected void drawMapImage()
@@ -1353,7 +1358,7 @@ namespace SrvSurvey
             this.y = int.Parse(parts[3]);
             if (parts.Length >= 5)
             {
-                this.opacity = float.Parse(parts[4]);
+                this.opacity = float.Parse(parts[4]); // match culture
                 if (this.opacity < 0 || this.opacity > 1)
                     throw new ArgumentException("Opacity must be a decimal number between 0 and 1");
             }

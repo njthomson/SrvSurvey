@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using SrvSurvey.game;
+using System.Globalization;
 using System.Text;
 
 namespace SrvSurvey
@@ -60,7 +61,7 @@ namespace SrvSurvey
                     {
                         var key = GalacticRegions.mapRegions.First(rr => rr.Value == r).Key;
                         // eg: "$Codex_RegionName_1;"
-                        return int.Parse(key.Replace(";", "").Substring(18));
+                        return int.Parse(key.Replace(";", "").Substring(18), CultureInfo.InvariantCulture);
                     });
 
                     var color = _.name.Split(' ').Last();

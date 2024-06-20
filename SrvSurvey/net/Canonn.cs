@@ -3,6 +3,7 @@ using Newtonsoft.Json.Linq;
 using SrvSurvey.game;
 using SrvSurvey.net;
 using SrvSurvey.units;
+using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
@@ -897,8 +898,8 @@ namespace SrvSurvey.canonn
             if (topLegacyHit != null)
             {
                 var parts = topLegacyHit.Split(',');
-                ruins.legacyLatitude = double.Parse(parts[0]);
-                ruins.legacyLongitude = double.Parse(parts[1]);
+                ruins.legacyLatitude = double.Parse(parts[0], CultureInfo.InvariantCulture);
+                ruins.legacyLongitude = double.Parse(parts[1], CultureInfo.InvariantCulture);
                 dirty = true;
             }
 
@@ -911,8 +912,8 @@ namespace SrvSurvey.canonn
             if (topLiveHit != null)
             {
                 var parts = topLiveHit.Split(',');
-                ruins.latitude = double.Parse(parts[0]);
-                ruins.longitude = double.Parse(parts[1]);
+                ruins.latitude = double.Parse(parts[0], CultureInfo.InvariantCulture);
+                ruins.longitude = double.Parse(parts[1], CultureInfo.InvariantCulture);
                 dirty = true;
             }
 
@@ -942,8 +943,8 @@ namespace SrvSurvey.canonn
         {
             if (left == null || right == null || left == "NaN,NaN" || right == "NaN,NaN") return false;
 
-            var leftParts = left.Split(',').Select(_ => double.Parse(_)).ToList();
-            var rightParts = right.Split(',').Select(_ => double.Parse(_)).ToList();
+            var leftParts = left.Split(',').Select(_ => double.Parse(_, CultureInfo.InvariantCulture)).ToList();
+            var rightParts = right.Split(',').Select(_ => double.Parse(_, CultureInfo.InvariantCulture)).ToList();
 
             var dlat = (double)Math.Abs(Math.Round((decimal)leftParts[0], 3) - Math.Round((decimal)rightParts[0], 3));
             var dlong = (double)Math.Abs(Math.Round((decimal)leftParts[0], 3) - Math.Round((decimal)rightParts[0], 3));
@@ -1252,7 +1253,7 @@ namespace SrvSurvey.canonn
                             {
                                 systemName = site.systemName,
                                 bodyName = site.bodyName,
-                                distanceToArrival = double.Parse(cells[11].Value),
+                                distanceToArrival = double.Parse(cells[11].Value, CultureInfo.InvariantCulture),
                                 siteType = site.t.ToString(),
                                 idx = site.idx,
 
@@ -1271,16 +1272,16 @@ namespace SrvSurvey.canonn
                         {
                             ruinSummary.starPos = new double[3]
                             {
-                                double.Parse(cells[5].Value),
-                                double.Parse(cells[6].Value),
-                                double.Parse(cells[7].Value),
+                                double.Parse(cells[5].Value, CultureInfo.InvariantCulture),
+                                double.Parse(cells[6].Value, CultureInfo.InvariantCulture),
+                                double.Parse(cells[7].Value, CultureInfo.InvariantCulture),
                             };
                         }
                         // update legacy lat/long if missing
                         if (double.IsNaN(ruinSummary.legacyLatitude) || double.IsNaN(ruinSummary.legacyLongitude))
                         {
-                            ruinSummary.legacyLatitude = double.Parse(cells[17].Value);
-                            ruinSummary.legacyLongitude = double.Parse(cells[18].Value);
+                            ruinSummary.legacyLatitude = double.Parse(cells[17].Value, CultureInfo.InvariantCulture);
+                            ruinSummary.legacyLongitude = double.Parse(cells[18].Value, CultureInfo.InvariantCulture);
                         }
 
                         continue;
@@ -1506,8 +1507,8 @@ namespace SrvSurvey.canonn
                         var idx = 1;
                         var siteTypeCell = cells[17].Value;
                         var siteType = siteTypeCell.Split('-', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries).Last();
-                        var latitude = double.Parse(cells[15].Value);
-                        var longitude = double.Parse(cells[16].Value);
+                        var latitude = double.Parse(cells[15].Value, CultureInfo.InvariantCulture);
+                        var longitude = double.Parse(cells[16].Value, CultureInfo.InvariantCulture);
 
                         var pubPath = Path.Combine(@"D:\code\SrvSurvey\data\guardian", $"{systemName} {bodyName}-structure-{idx}.json");
                         if (File.Exists(pubPath))
@@ -1549,11 +1550,11 @@ namespace SrvSurvey.canonn
                                 // siteID is below
                                 systemName = site.systemName,
                                 bodyName = site.bodyName,
-                                distanceToArrival = double.Parse(cells[10].Value),
+                                distanceToArrival = double.Parse(cells[10].Value, CultureInfo.InvariantCulture),
                                 siteType = site.t.ToString(),
                                 idx = site.idx,
-                                latitude = double.Parse(cells[15].Value),
-                                longitude = double.Parse(cells[16].Value),
+                                latitude = double.Parse(cells[15].Value, CultureInfo.InvariantCulture),
+                                longitude = double.Parse(cells[16].Value, CultureInfo.InvariantCulture),
 
                                 // populated from pubData file ...
                                 //   siteHeading
@@ -1568,9 +1569,9 @@ namespace SrvSurvey.canonn
                         {
                             siteSummary.starPos = new double[3]
                             {
-                                double.Parse(cells[3].Value),
-                                double.Parse(cells[4].Value),
-                                double.Parse(cells[5].Value),
+                                double.Parse(cells[3].Value, CultureInfo.InvariantCulture),
+                                double.Parse(cells[4].Value, CultureInfo.InvariantCulture),
+                                double.Parse(cells[5].Value, CultureInfo.InvariantCulture),
                             };
                         }
 
@@ -1648,7 +1649,7 @@ namespace SrvSurvey.canonn
 
             var systemName = cells[0].Value;
             var bodyName = cells[2].Value;
-            var starPos = new double[3] /* x, y, z */ { double.Parse(cells[17].Value), double.Parse(cells[18].Value), double.Parse(cells[19].Value) };
+            var starPos = new double[3] /* x, y, z */ { double.Parse(cells[17].Value, CultureInfo.InvariantCulture), double.Parse(cells[18].Value, CultureInfo.InvariantCulture), double.Parse(cells[19].Value, CultureInfo.InvariantCulture) };
             var siteType = cells[4].Value;
 
             var summary = new GuardianSiteSummary

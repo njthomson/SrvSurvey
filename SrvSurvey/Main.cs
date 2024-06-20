@@ -3,6 +3,7 @@ using SrvSurvey.net.EDSM;
 using SrvSurvey.units;
 using System.Diagnostics;
 using System.Drawing.Imaging;
+using System.Globalization;
 
 namespace SrvSurvey
 {
@@ -996,6 +997,7 @@ namespace SrvSurvey
                 }
                 else if (msg == "ll")
                 {
+                    PlotHumanSite.autoZoom = false;
                     Program.closeAllPlotters();
                     Application.DoEvents();
                     HumanSiteTemplate.import(true);
@@ -1376,7 +1378,7 @@ namespace SrvSurvey
                     // measure distance from site origin (from the entry lat/long if possible)
                     var td = new TrackingDelta(game.systemBody!.radius, siteData.location);
                     if (!string.IsNullOrEmpty(entry.Latitude) && !string.IsNullOrEmpty(entry.Longitude))
-                        td.Current = new LatLong2(double.Parse(entry.Latitude), double.Parse(entry.Longitude));
+                        td.Current = new LatLong2(double.Parse(entry.Latitude, CultureInfo.InvariantCulture), double.Parse(entry.Longitude, CultureInfo.InvariantCulture));
 
                     // if we are within 50m of the origin, and altitude is between 500m and 2000 - this qualifies as an aerial screenshot
                     if (td.distance < 50 && game.status.Altitude > 500 && game.status.Altitude < 2000)
@@ -1413,7 +1415,7 @@ namespace SrvSurvey
                     extraTxt += $"\r\n  Lat: {latitude}° Long: {longitude}°\r\n  Heading: {heading}°:";
 
                     if (!string.IsNullOrEmpty(entry.Altitude))
-                        extraTxt += $"  Altitude: {(int)float.Parse(entry.Altitude)}m";
+                        extraTxt += $"  Altitude: {(int)float.Parse(entry.Altitude, CultureInfo.InvariantCulture)}m";
                 }
 
                 this.addBannerToScreenshot(entry, saveImage, extraTxt);

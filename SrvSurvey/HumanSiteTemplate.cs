@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using SrvSurvey.game;
+using System.Globalization;
 
 namespace SrvSurvey
 {
@@ -74,15 +75,18 @@ namespace SrvSurvey
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public List<LandingPad> landingPads;
-        
+
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public List<SecureDoor> secureDoors;
-        
+
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public List<DataTerminal> dataTerminals;
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public List<NamedPoi> namedPoi;
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public List<Building> buildings = new List<Building>();
 
         public LandingPads landPadSummary()
         {
@@ -97,6 +101,26 @@ namespace SrvSurvey
                     pads.Large++;
             }
             return pads;
+        }
+
+        public string? getCurrentBld(PointF cmdrOffset, float siteHeading)
+        {
+            if (this.buildings == null) return null;
+
+            foreach (var bld in this.buildings)
+            {
+                var rr = new Region(bld.rect);
+
+                var transformMatrix = new System.Drawing.Drawing2D.Matrix();
+                transformMatrix.RotateAt(siteHeading - bld.rot, bld.rect.Location);
+
+                rr.Transform(transformMatrix);
+
+                if (rr.IsVisible(cmdrOffset))
+                    return bld.name;
+            }
+
+            return null;
         }
     }
 
@@ -165,5 +189,58 @@ namespace SrvSurvey
         Small,
         Medium,
         Large
+    }
+
+    #region JSON serializer
+
+    [JsonConverter(typeof(Building.JsonConverter))]
+    internal class Building
+    {
+        public RectangleF rect;
+        public int rot;
+        public string name;
+
+        public override string ToString()
+        {
+            return $"{this.name}_{rect.Left.ToString(CultureInfo.InvariantCulture)}_{rect.Top.ToString(CultureInfo.InvariantCulture)}_{rect.Width.ToString(CultureInfo.InvariantCulture)}_{rect.Height.ToString(CultureInfo.InvariantCulture)}_{rot.ToString(CultureInfo.InvariantCulture)}";
+        }
+
+        class JsonConverter : Newtonsoft.Json.JsonConverter
+        {
+            public override bool CanConvert(Type objectType) { return false; }
+
+            public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
+            {
+                var txt = serializer.Deserialize<string>(reader);
+                if (string.IsNullOrEmpty(txt)) throw new Exception($"Unexpected value: {txt}");
+
+                // "{name}_{left}_{top}_{width}_{height}_{rot}"
+                // eg: "HAB_12.0_34.0_55.0_66.0_77"
+                var parts = txt.Split('_');
+                var pf = new PointF(float.Parse(parts[1], CultureInfo.InvariantCulture), float.Parse(parts[2], CultureInfo.InvariantCulture));
+                var sf = new SizeF(float.Parse(parts[3], CultureInfo.InvariantCulture), float.Parse(parts[4], CultureInfo.InvariantCulture));
+
+                var building = new Building()
+                {
+                    rect = new RectangleF(pf, sf),
+                    rot = int.Parse(parts[5], CultureInfo.InvariantCulture),
+                    name = parts[0],
+                };
+
+                return building;
+            }
+
+            public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
+            {
+                var data = value as Building;
+                if (data == null) throw new Exception($"Unexpected value: {value?.GetType().Name}");
+
+                // create a single string
+                var txt = data.ToString();
+                writer.WriteValue(txt);
+            }
+        }
+
+        #endregion
     }
 }

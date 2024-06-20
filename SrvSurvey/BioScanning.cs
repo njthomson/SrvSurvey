@@ -3,6 +3,7 @@ using Newtonsoft.Json.Converters;
 using SrvSurvey.game;
 using SrvSurvey.units;
 using System.Diagnostics;
+using System.Globalization;
 
 #pragma warning disable CS0649
 
@@ -280,7 +281,7 @@ namespace SrvSurvey
                 genus = $"$Codex_Ent_{parts[0]}_Genus_Name;",
                 speciesPart = parts[1],
                 planetClass = parts[2] == "*" ? null : parts[2].Split(",").ToList(),
-                maxGravity = parts[3] == "*" ? 0 : double.Parse(parts[3]),
+                maxGravity = parts[3] == "*" ? 0 : double.Parse(parts[3], CultureInfo.InvariantCulture),
                 atmosphereType = parts[4] == "*" ? null : parts[4].Split(",").Where(_ => !_.StartsWith("~")).ToList(),
             };
             foo.atmosphereComposition = parts[4] == "*" ? null : parts[4].Split(",").Where(_ => _.StartsWith("~")).ToList();
@@ -294,10 +295,10 @@ namespace SrvSurvey
             }
 
             if (parts.Length > 6 && parts[6] != "*")
-                foo.minTemperature = double.Parse(parts[6]);
+                foo.minTemperature = double.Parse(parts[6], CultureInfo.InvariantCulture);
 
             if (parts.Length > 7 && parts[7] != "*")
-                foo.maxTemperature = double.Parse(parts[7]);
+                foo.maxTemperature = double.Parse(parts[7], CultureInfo.InvariantCulture);
 
             if (parts.Length > 8 && parts[8] != "*")
                 foo.starClass = parts[8].Split(",").ToList();

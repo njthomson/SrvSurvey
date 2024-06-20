@@ -1,6 +1,5 @@
 ﻿using SrvSurvey.game;
 using SrvSurvey.units;
-using System.Net.NetworkInformation;
 using System.Text.RegularExpressions;
 
 namespace SrvSurvey
@@ -17,8 +16,8 @@ namespace SrvSurvey
             try
             {
                 Game.settings.targetLatLong = new LatLong2(
-                    double.Parse(txtLat.Text),
-                    double.Parse(txtLong.Text)
+                    double.Parse(txtLat.Text), // match culture
+                    double.Parse(txtLong.Text) // match culture
                     );
                 Game.settings.targetLatLongActive = true;
                 Game.settings.Save();

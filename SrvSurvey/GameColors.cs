@@ -169,6 +169,7 @@ namespace SrvSurvey
         public static Pen penGameOrange4 = newPen(Orange, 4);
         public static Pen penGameOrange8 = newPen(Orange, 8);
 
+        public static Pen penYellow1Dot = newPen(Color.Yellow, 2, DashStyle.Dot);
         public static Pen penYellow2 = newPen(Color.Yellow, 2, LineCap.Triangle, LineCap.Triangle);
         public static Pen penYellow4 = newPen(Color.Yellow, 4, LineCap.Triangle, LineCap.Triangle);
         public static Pen penYellow8 = newPen(Color.Yellow, 8, LineCap.Triangle, LineCap.Triangle);
@@ -247,6 +248,7 @@ namespace SrvSurvey
         public static Pen penMapEditGuideLineGreen = new Pen(Color.Green, 0.5f * scaleFactor) { DashStyle = DashStyle.Dash, EndCap = LineCap.ArrowAnchor, StartCap = LineCap.ArrowAnchor };
         public static Pen penMapEditGuideLineGreenYellow = new Pen(Color.GreenYellow, 0.5f * scaleFactor) { DashStyle = DashStyle.Dash, EndCap = LineCap.ArrowAnchor, StartCap = LineCap.ArrowAnchor };
 
+        public static Brush brushHumanBuilding = new SolidBrush(Color.FromArgb(48, Color.Green));
 
         internal static class PriorScans
         {
