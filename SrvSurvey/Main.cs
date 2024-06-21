@@ -327,8 +327,8 @@ namespace SrvSurvey
                 Program.showPlotter<PlotHumanSite>();
 
             // show high gravity warning
-            var isHighGravity = (game?.systemBody?.surfaceGravity ?? 0) >= Game.settings.highGravityWarningLevel * 10;
-            if (Game.settings.autoShowFlightWarnings && game?.systemBody != null && isHighGravity && game.isMode(GameMode.Landed, GameMode.SuperCruising, GameMode.GlideMode, GameMode.Flying, GameMode.InFighter, GameMode.InSrv))
+            var isLandableAndHighGravity = game?.systemBody?.type == SystemBodyType.LandableBody && game.systemBody.surfaceGravity >= Game.settings.highGravityWarningLevel * 10;            
+            if (Game.settings.autoShowFlightWarnings && game?.systemBody != null && isLandableAndHighGravity && game.isMode(GameMode.Landed, GameMode.SuperCruising, GameMode.GlideMode, GameMode.Flying, GameMode.InFighter, GameMode.InSrv))
                 Program.showPlotter<PlotFlightWarning>();
             else
                 Program.closePlotter<PlotFlightWarning>();
@@ -992,7 +992,7 @@ namespace SrvSurvey
                     // helper for ship cockpit offsets (from target lat/long)
                     var po = Util.getOffset(game.status.PlanetRadius, Game.settings.targetLatLong, game.status.Heading);
                     Game.log($"cockpit offset: {{ \"{game.shipType}\", new PointM({po.x}, {po.y}) }}");
-                    Util.mapShipCockpitOffsets[game.shipType] = po;
+                    ShipCenterOffsets.set(game.shipType, po);
                     Clipboard.SetText($"{{ \"{game.shipType}\", new PointM({po.x}, {po.y}) }}, ");
                 }
 

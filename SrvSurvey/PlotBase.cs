@@ -1009,7 +1009,7 @@ namespace SrvSurvey
                 var ship = Util.getOffset(game.systemBody.radius, shipLatLong, 180);
 
                 // adjust location by ship cockpit offset
-                var po = Util.mapShipCockpitOffsets.GetValueOrDefault(game.shipType);
+                var po = ShipCenterOffsets.get(game.shipType);
                 var pd = po.rotate(game.cmdr.lastTouchdownHeading);
                 ship += pd;
 
