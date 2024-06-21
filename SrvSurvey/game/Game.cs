@@ -628,7 +628,7 @@ namespace SrvSurvey.game
             }
         }
 
-        private void initHumanSite()
+        public void initHumanSite()
         {
             if (this.journals == null || this.systemData == null || !status.hasLatLong) return;
 
@@ -909,6 +909,8 @@ namespace SrvSurvey.game
             this.cmdr.Save();
 
             this.Status_StatusChanged(false);
+
+            this.exitMats();
         }
 
         private void onJournalEntry(Music entry)
@@ -921,6 +923,8 @@ namespace SrvSurvey.game
                 // if atMainMenu has changed - force a status change event
                 this.atMainMenu = newMainMenu;
                 this.Status_StatusChanged(false);
+                if (this.atMainMenu)
+                    this.exitMats();
             }
 
             var newCarrierMgmt = entry.MusicTrack == "FleetCarrier_Managment";
@@ -936,8 +940,6 @@ namespace SrvSurvey.game
                 // Are we at a Guardian site without realizing?
                 Program.control.BeginInvoke(new Action(this.setCurrentSite));
             }
-
-
         }
 
         private void onJournalEntry(Shutdown entry)
@@ -1974,9 +1976,7 @@ namespace SrvSurvey.game
             if (Game.settings.collectMatsCollectionStatsTest && this.matStatsTracker != null)
             {
                 // stop capturing stats once undocked
-                this.matStatsTracker.completed = true;
-                this.matStatsTracker.Save();
-                Game.log($"Stopped mats collection at: '{this.matStatsTracker.name}'\r\n${this.matStatsTracker.filepath}");
+                this.exitMats(true);
             }
         }
 
@@ -2024,19 +2024,35 @@ namespace SrvSurvey.game
             // Don't save until we pick up some item
         }
 
+        public void exitMats(bool complete = false)
+        {
+            if (this.matStatsTracker != null)
+            {
+                Game.log($"Stopped mats collection at: '{this.matStatsTracker.name}'\r\n${this.matStatsTracker.filepath}");
+                this.matStatsTracker.completed = complete;
+                if (this.matStatsTracker.totalMatCount > 0)
+                    this.matStatsTracker.Save();
+                this.matStatsTracker = null;
+            }
+        }
+
         private void onJournalEntry(BackpackChange entry)
         {
-            if (!Game.settings.collectMatsCollectionStatsTest || this.matStatsTracker == null || this.humanSite == null || humanSite.heading == -1) return;
+            if (!Game.settings.collectMatsCollectionStatsTest || this.matStatsTracker == null || this.humanSite == null || humanSite.heading == -1 || entry.Added == null) return;
 
             foreach (var item in entry.Added)
             {
-                // Track location offset +1m by cmdr heading, to account for mats being in front of cmdr, not under their feet.
+                // Track location offset +1m by cmdr heading, to account for mats being in front of cmdr
                 var cmdrOffset = Util.getOffset(status.PlanetRadius, humanSite.location, humanSite.heading);
-                var d = Util.rotateLine(status.Heading, 1);
+                var a = (decimal)humanSite.heading + status.Heading - 180;
+                if (a < 0) a += 360;
+                if (a > 360) a -= 360;
+                var d = Util.rotateLine(a, 1);
                 var location = cmdrOffset + d;
 
                 var building = humanSite.template?.getCurrentBld((PointF)cmdrOffset, humanSite.heading);
                 this.matStatsTracker.track(item, (PointF)location, building);
+                Program.getPlotter<PlotHumanSite>()?.Invalidate();
             }
 
             this.matStatsTracker.Save();

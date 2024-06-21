@@ -995,18 +995,7 @@ namespace SrvSurvey
                     Util.mapShipCockpitOffsets[game.shipType] = po;
                     Clipboard.SetText($"{{ \"{game.shipType}\", new PointM({po.x}, {po.y}) }}, ");
                 }
-                else if (msg == "ll")
-                {
-                    PlotHumanSite.autoZoom = false;
-                    Program.closeAllPlotters();
-                    Application.DoEvents();
-                    HumanSiteTemplate.import(true);
-                    Application.DoEvents();
-                    if (game.humanSite != null)
-                        game.humanSite.template = HumanSiteTemplate.get(game.humanSite.economy, game.humanSite.subType);
 
-                    game.fireUpdate(true);
-                }
                 else if (msg == "!!")
                 {
                     // get delta from tracking target
@@ -1047,6 +1036,18 @@ namespace SrvSurvey
                     Game.log($"Relative to site origin:\r\n\r\n\t{txt}\r\nvs  {txt2}");
                 }
 
+            }
+
+            if (game.humanSite == null && msg == MsgCmd.settlement)
+            {
+                Game.log($"Try infer site from heading: {game.status.Heading}");
+                game.initHumanSite();
+                if (game.humanSite != null && PlotHumanSite.allowPlotter)
+                {
+                    game.humanSite.inferSubtypeFromFoot(game.status.Heading);
+                    Program.showPlotter<PlotHumanSite>();
+                    game.cmdr.setMarketId(game.humanSite.marketId);
+                }
             }
         }
 

@@ -203,6 +203,7 @@ namespace SrvSurvey.game
         /// </summary>
         public void inferSubtypeFromFoot(int heading)
         {
+            Game.log($"Try infer site from heading: {heading}");
             var game = Game.activeGame!;
             var radius = game.status.PlanetRadius;
 
@@ -221,11 +222,20 @@ namespace SrvSurvey.game
                         this.template = HumanSiteTemplate.get(this.economy, this.subType);
                         Game.log($"inferSubtypeFromFoot: matched {this.economy} #{template.subType} from pad #{this.targetPad}, shipDistFromPadCenter:" + Util.metersToString(offset.dist));
                         this.template = HumanSiteTemplate.get(this.economy, this.subType);
-                        this.landingPads = LandingPads.fromTemplate(this.template!.landingPads);
-                        this.landingPads = landPadSummary;// confirm!
+                        this.landingPads = landPadSummary;
 
-                        this.heading = heading - pad.rot;
-                        if (this.heading > 0) this.heading -= 360;
+                        var padIdx = template.landingPads.IndexOf(pad);
+                        if (padIdx == 0)
+                        {
+                            this.heading = heading - pad.rot;
+                        }
+                        else
+                        {
+                            // for other pads, we must apply their rotation to the ships heading
+                            var padRot = this.template!.landingPads[padIdx].rot;
+                            this.heading = heading - padRot;
+                        }
+                        if (this.heading > 360) this.heading -= 360;
                         if (this.heading < 0) this.heading += 360;
 
                         if (string.IsNullOrEmpty(this.filepath))

@@ -248,7 +248,7 @@ namespace SrvSurvey
         public static Pen penMapEditGuideLineGreen = new Pen(Color.Green, 0.5f * scaleFactor) { DashStyle = DashStyle.Dash, EndCap = LineCap.ArrowAnchor, StartCap = LineCap.ArrowAnchor };
         public static Pen penMapEditGuideLineGreenYellow = new Pen(Color.GreenYellow, 0.5f * scaleFactor) { DashStyle = DashStyle.Dash, EndCap = LineCap.ArrowAnchor, StartCap = LineCap.ArrowAnchor };
 
-        public static Brush brushHumanBuilding = new SolidBrush(Color.FromArgb(48, Color.Green));
+        public static Brush brushHumanBuilding = new SolidBrush(Color.FromArgb(255, 0, 32, 0));
 
         internal static class PriorScans
         {

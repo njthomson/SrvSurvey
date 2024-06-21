@@ -35,7 +35,6 @@ namespace SrvSurvey
         /// <summary>
         /// For Human settlements ...
         /// </summary>
-        [JsonIgnore]
         public bool collectMatsCollectionStatsTest = false;
 
         public bool skipGasGiantDSS = true;

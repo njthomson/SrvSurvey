@@ -11,6 +11,7 @@ namespace SrvSurvey
         public static bool autoZoom = true;
 
         private FileSystemWatcher? mapImageWatcher;
+        private FileSystemWatcher? templateWatcher;
         private DockingState dockingState = DockingState.none;
         private PointF buildingCorner;
         private float buildingHeading;
@@ -42,6 +43,12 @@ namespace SrvSurvey
                     this.mapImageWatcher.Changed -= MapImageWatcher_Changed;
                     this.mapImageWatcher = null;
                 }
+                if (this.templateWatcher != null)
+                {
+                    this.templateWatcher.Changed -= TemplateWatcher_Changed;
+                    this.templateWatcher = null;
+                }
+
             }
 
             base.Dispose(disposing);
@@ -127,7 +134,7 @@ namespace SrvSurvey
         {
             if (newMode == GameMode.OnFoot && autoZoom)
                 this.scale = 2;
-            if ((newMode == GameMode.Docked || newMode == GameMode.Landed) && autoZoom)
+            if ((newMode == GameMode.InSrv || newMode == GameMode.Landed || newMode == GameMode.Docked || newMode == GameMode.Landed) && autoZoom)
                 this.scale = 1;
 
             this.Invalidate();
@@ -219,14 +226,38 @@ namespace SrvSurvey
             });
         }
 
+        private void loadTemplate()
+        {
+            Game.log("Loading humanSiteTemplates.json");
+            PlotHumanSite.autoZoom = false;
+            HumanSiteTemplate.import(true);
+            Application.DoEvents();
+            site.template = HumanSiteTemplate.get(game.humanSite!.economy, game.humanSite.subType);
+            this.Invalidate();
+
+            if (this.templateWatcher == null)
+            {
+                var folder = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "..\\..\\..\\.."));
+                this.templateWatcher = new FileSystemWatcher(folder, "humanSiteTemplates.json");
+                this.templateWatcher.Changed += TemplateWatcher_Changed;
+                this.templateWatcher.NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.Size;
+                this.templateWatcher.EnableRaisingEvents = true;
+            }
+        }
+
         protected override void onJournalEntry(SendText entry)
         {
-            if (this.IsDisposed) return;
+            if (this.IsDisposed || game?.humanSite == null) return;
 
             var msg = entry.Message.ToLowerInvariant().Trim();
             if (msg == "z ") autoZoom = false;
 
             base.onJournalEntry(entry);
+
+            if (msg == "ll")
+            {
+                this.loadTemplate();
+            }
 
             if (msg.StartsWith(MsgCmd.threat, StringComparison.OrdinalIgnoreCase))
             {
@@ -243,7 +274,6 @@ namespace SrvSurvey
             }
             else if (msg == MsgCmd.settlement)
             {
-                Game.log($"Try infer site from heading: {game.status.Heading}");
                 this.site.inferSubtypeFromFoot(game.status.Heading);
                 this.Invalidate();
             }
@@ -274,12 +304,26 @@ namespace SrvSurvey
                     rot = (int)buildingHeading,
                     name = buildingType
                 };
+
+                if (site.template!.buildings == null) site.template!.buildings = new List<Building>();
                 site.template!.buildings.Add(bld);
 
-                Game.log($"new building: {bld}");
+                Game.log($"all buildings:\r\n" + Newtonsoft.Json.JsonConvert.SerializeObject(site.template.buildings, Newtonsoft.Json.Formatting.Indented));
                 buildingCorner.X = 0;
                 this.Invalidate();
             }
+
+            if (msg == ".stop")
+            {
+                game.exitMats(true);
+                this.Invalidate();
+            }
+
+        }
+
+        private void TemplateWatcher_Changed(object sender, FileSystemEventArgs e)
+        {
+            this.loadTemplate();
         }
 
         private RectangleF getBldRectF(PointF bldCorner, PointF cmdrOffset, decimal bldHeading)
@@ -337,7 +381,8 @@ namespace SrvSurvey
         protected override void OnPaintBackground(PaintEventArgs e)
         {
             base.OnPaintBackground(e);
-            if (this.IsDisposed || this.site == null) return;
+            if (this.IsDisposed || this.site?.template == null) return;
+            //autoZoom = true;
 
             try
             {
@@ -350,7 +395,7 @@ namespace SrvSurvey
                 headerTxt += site.subType == 0 ? "??" : $"#{site.subType}";
 
                 var offset = (PointF)Util.getOffset(radius, siteOrigin, siteHeading);
-                var currentBld = site.template?.getCurrentBld(offset, this.siteHeading);
+                var currentBld = site.template.getCurrentBld(offset, this.siteHeading);
                 if (currentBld != null)
                     headerTxt += $" - Building: {currentBld}";
 
@@ -366,7 +411,9 @@ namespace SrvSurvey
                 else
                 {
                     // footer
-                    var footerTxt = $"cmdr offset: x: {(int)offset.X}m, y: {(int)offset.Y}m";
+                    var aaa = game.status.Heading - siteHeading;
+                    if (aaa < 0) aaa += 360;
+                    var footerTxt = $"cmdr offset: x: {(int)offset.X}m, y: {(int)offset.Y}m, {aaa}°";
                     if (this.mapImage != null)
                     {
                         var pf = Util.getOffset(this.radius, site.location, Status.here.clone(), site.heading);
@@ -392,6 +439,8 @@ namespace SrvSurvey
 
                     //    footerTxt += $" [ {dx.ToString("n1")} , {dy.ToString("n1")} ]";
                     //}
+                    if (game.matStatsTracker?.completed == false)
+                        footerTxt += ".";
                     this.drawFooterText(footerTxt);
                 }
 
@@ -405,7 +454,7 @@ namespace SrvSurvey
                     this.drawMapImage();
                     this.drawBuildings();
                     this.drawLandingPads();
-                    this.drawPOI();
+                    this.drawPOI(offset);
 
                     // draw bounding box for pending building
                     if (this.buildingCorner.X != 0)
@@ -429,10 +478,22 @@ namespace SrvSurvey
                 if (dg > 300)
                 {
                     var td = new TrackingDelta(this.radius, site.location);
-                    g.RotateTransform(180 - game.status.Heading + td.angle);
+                    g.RotateTransform(180f - game.status.Heading + (float)td.angle);
                     g.DrawLine(GameColors.penGameOrangeDim4, 0, 20, 0, 100);
                     g.DrawLine(GameColors.penGameOrangeDim4, 0, 100, 20, 80);
                     g.DrawLine(GameColors.penGameOrangeDim4, 0, 100, -20, 80);
+                }
+
+                if (this.site.heading == -1)
+                {
+                    g.ResetTransform();
+                    drawTextAt(eight, $"Settlement type unknown. To fix:");
+                    newLine(+ten, true);
+                    drawTextAt(eight, $"► Crouch in middle of any landing pad");
+                    newLine(+ten, true);
+                    drawTextAt(eight, $"► Face the right direction");
+                    newLine(+ten, true);
+                    drawTextAt(eight, $"► Send message '.settlement'");
                 }
             }
             catch (Exception ex)
@@ -476,14 +537,28 @@ namespace SrvSurvey
         private void drawBuildings()
         {
             if (game.humanSite?.template?.buildings == null) return;
-
-            var bb = GameColors.brushHumanBuilding;
+            var bb = Brushes.YellowGreen;
             foreach (var bld in game.humanSite.template.buildings)
             {
+                if (bld.name.StartsWith("HAB", StringComparison.OrdinalIgnoreCase))
+                    bb = new SolidBrush(Color.FromArgb(255, 0, 32, 0)); // green
+                else if (bld.name.StartsWith("CMD", StringComparison.OrdinalIgnoreCase))
+                    bb = new SolidBrush(Color.FromArgb(255, 48, 0, 0)); // red
+                else if (bld.name.StartsWith("POW", StringComparison.OrdinalIgnoreCase))
+                    bb = new SolidBrush(Color.FromArgb(255, 32, 32, 64)); // purple
+                else if (bld.name.StartsWith("EXT", StringComparison.OrdinalIgnoreCase))
+                    bb = new SolidBrush(Color.FromArgb(255, 0, 0, 72)); // blue
+                else if (bld.name.StartsWith("STO", StringComparison.OrdinalIgnoreCase))
+                    bb = new SolidBrush(Color.FromArgb(255, 50, 30, 20)); // brown
+                else if (bld.name.StartsWith("MED", StringComparison.OrdinalIgnoreCase))
+                    bb = new SolidBrush(Color.FromArgb(255, 32, 32, 32)); // grey
+                else
+                    bb = Brushes.YellowGreen;
+
                 adjust(bld.rect.X, bld.rect.Y, bld.rot, () =>
-                {
-                    g.FillRectangle(bb, 0, 0, bld.rect.Width, bld.rect.Height);
-                });
+            {
+                g.FillRectangle(bb, 0, 0, bld.rect.Width, bld.rect.Height);
+            });
             }
         }
 
@@ -575,7 +650,7 @@ namespace SrvSurvey
             //});
         }
 
-        private void drawPOI()
+        private void drawPOI(PointF offset)
         {
             if (game?.humanSite?.template == null) return;
             var wd2b = new Font("Wingdings 2", 4F, FontStyle.Bold, GraphicsUnit.Point);
@@ -756,6 +831,20 @@ namespace SrvSurvey
                         //g.DrawString("^", GameColors.fontSmall, b, +2, -6);
                         //g.DrawEllipse(Pens.Yellow, -5, -5, 10, 10);
                     });
+                }
+            }
+
+            if (game.matStatsTracker?.matLocations != null) // TODO: hide with a setting?
+            {
+                //game.matStatsTracker.matLocations.Clear();
+                //game.matStatsTracker.countBuildings.Clear();
+                //game.matStatsTracker.countMats.Clear();
+                //game.matStatsTracker.countTypes.Clear();
+                //game.matStatsTracker.Save();
+
+                foreach (var entry in game.matStatsTracker.matLocations)
+                {
+                    g.FillEllipse(Brushes.DarkOrchid, entry.x - 0.5f, -entry.y - 0.5f, 1f, 1f);
                 }
             }
         }

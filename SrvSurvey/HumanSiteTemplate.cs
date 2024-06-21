@@ -21,36 +21,42 @@ namespace SrvSurvey
 
         public static void import(bool devReload = false)
         {
-            // TODO: pubData distribute?
+            try
+            {
+                // TODO: pubData distribute?
 
-            // otherwise, use the file shipped with the app
-            string filepath;
-            if (devReload)
-            {
-                Game.log($"Using humanSiteTemplates.json, devReload:{devReload}");
-                filepath = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "..\\..\\..\\..", "humanSiteTemplates.json");
-            }
-            else
-            {
-                Game.log($"Using humanSiteTemplates.json app package");
-                filepath = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "humanSiteTemplates.json");
-            }
-
-            Game.log($"Reading humanSiteTemplates.json: {filepath}");
-            if (File.Exists(filepath))
-            {
-                using (var reader = new StreamReader(new FileStream(filepath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)))
+                // otherwise, use the file shipped with the app
+                string filepath;
+                if (devReload)
                 {
-                    var json = reader.ReadToEnd();
-                    var newSites = JsonConvert.DeserializeObject<List<HumanSiteTemplate>>(json)!;
-                    templates = newSites;
-
-                    Game.log($"HumanSiteTemplate.Imported {templates.Count} templates");
+                    Game.log($"Using humanSiteTemplates.json, devReload:{devReload}");
+                    filepath = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "..\\..\\..\\..", "humanSiteTemplates.json");
                 }
-            }
-            else
+                else
+                {
+                    Game.log($"Using humanSiteTemplates.json app package");
+                    filepath = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "humanSiteTemplates.json");
+                }
+
+                Game.log($"Reading humanSiteTemplates.json: {filepath}");
+                if (File.Exists(filepath))
+                {
+                    using (var reader = new StreamReader(new FileStream(filepath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)))
+                    {
+                        var json = reader.ReadToEnd();
+                        var newSites = JsonConvert.DeserializeObject<List<HumanSiteTemplate>>(json)!;
+                        templates = newSites;
+
+                        Game.log($"HumanSiteTemplate.Imported {templates.Count} templates");
+                    }
+                }
+                else
+                {
+                    Game.log($"Missing file: {filepath}");
+                }
+            } catch (Exception ex)
             {
-                Game.log($"Missing file: {filepath}");
+                Game.log($"Loading humanSiteTemplates.json failed:\r\n{ex}");
             }
         }
 

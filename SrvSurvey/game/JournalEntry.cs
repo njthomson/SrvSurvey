@@ -231,24 +231,6 @@ namespace SrvSurvey
         {
             return $"Small:{this.Small}, Medium:{this.Medium}, Large:{this.Large}";
         }
-
-        // TODO: remove?
-        public static LandingPads fromTemplate(List<LandingPad> pads)
-        {
-            var countPads = new LandingPads();
-
-            foreach (var pad in pads)
-            {
-                if (pad.size == LandingPadSize.Small)
-                    countPads.Small += 1;
-                else if (pad.size == LandingPadSize.Medium)
-                    countPads.Medium += 1;
-                else if (pad.size == LandingPadSize.Large)
-                    countPads.Large += 1;
-            }
-
-            return countPads;
-        }
     }
 
     class Touchdown : LocationEntry, ISystemAddress
