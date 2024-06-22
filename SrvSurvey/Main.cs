@@ -960,12 +960,34 @@ namespace SrvSurvey
                 game.toggleFirstFootfall(parts.Length == 2 ? parts[1] : null);
             }
 
+
+            if (msg == "@")
+            {
+                // set current location as tracking target
+                // Game.settings.targetLatLongActive = true;
+                // Game.settings.targetLatLong = game.touchdownLocation;
+                Game.settings.targetLatLong = Status.here.clone(); // current location
+                Game.settings.Save();
+
+                this.setTargetLatLong();
+                Game.log("Set current location as target");
+            }
+            else if (msg == "@@")
+            {
+                // helper for ship cockpit offsets (from target lat/long)
+                var po = Util.getOffset(game.status.PlanetRadius, Game.settings.targetLatLong, game.status.Heading);
+                Game.log($"cockpit offset: {{ \"{game.shipType}\", new PointM({po.x}, {po.y}) }}");
+                ShipCenterOffsets.set(game.shipType, po);
+                Clipboard.SetText($"{{ \"{game.shipType}\", new PointM({po.x}, {po.y}) }}, ");
+            }
+
             if (game.humanSite != null)
             {
                 var siteLocation = game.humanSite.location;
                 var siteHeading = (decimal)game.humanSite.heading;
 
                 // temp?
+
                 if (msg == "!")
                 {
                     // set site origin as tracking target
@@ -976,26 +998,6 @@ namespace SrvSurvey
                     this.setTargetLatLong();
                     Game.log("Set site origin location as target");
                 }
-                else if (msg == "@")
-                {
-                    // set current location as tracking target
-                    // Game.settings.targetLatLongActive = true;
-                    // Game.settings.targetLatLong = game.touchdownLocation;
-                    Game.settings.targetLatLong = Status.here.clone(); // current location
-                    Game.settings.Save();
-
-                    this.setTargetLatLong();
-                    Game.log("Set current location as target");
-                }
-                else if (msg == "@@")
-                {
-                    // helper for ship cockpit offsets (from target lat/long)
-                    var po = Util.getOffset(game.status.PlanetRadius, Game.settings.targetLatLong, game.status.Heading);
-                    Game.log($"cockpit offset: {{ \"{game.shipType}\", new PointM({po.x}, {po.y}) }}");
-                    ShipCenterOffsets.set(game.shipType, po);
-                    Clipboard.SetText($"{{ \"{game.shipType}\", new PointM({po.x}, {po.y}) }}, ");
-                }
-
                 else if (msg == "!!")
                 {
                     // get delta from tracking target

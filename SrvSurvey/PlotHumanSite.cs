@@ -13,6 +13,7 @@ namespace SrvSurvey
         private FileSystemWatcher? mapImageWatcher;
         private FileSystemWatcher? templateWatcher;
         private DockingState dockingState = DockingState.none;
+        private bool hasLanded = false;
         private PointF buildingCorner;
         private float buildingHeading;
 
@@ -84,10 +85,8 @@ namespace SrvSurvey
                 && Game.settings.autoShowHumanSitesTest
                 && !Game.activeGame.atMainMenu
                 && Game.activeGame.status.hasLatLong
-                //&& Game.activeGame.status.Altitude < 2000
                 && !Game.activeGame.hidePlottersFromCombatSuits
                 && Game.activeGame.humanSite != null;
-            //&& Game.activeGame.humanSite.subType > 0;
         }
 
         public static bool allowPlotter
@@ -111,6 +110,9 @@ namespace SrvSurvey
                 this.siteHeading = site.heading;
 
             this.setZoom(newMode);
+
+            if (this.mapImage == null && site?.template != null)
+                this.loadMapImage();
         }
 
         protected override void Status_StatusChanged(bool blink)
@@ -145,13 +147,15 @@ namespace SrvSurvey
             // load a background image, if found
             try
             {
+                if (game.humanSite?.template == null || game.humanSite.subType == -1) return;
+
                 if (this.mapImageWatcher != null)
                     this.mapImageWatcher.EnableRaisingEvents = false;
                 if (this.mapImage != null)
                     this.mapImage.Dispose();
 
                 var folder = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "images");
-                var filepath = Directory.GetFiles(folder, $"{game!.humanSite!.economy}~{game.humanSite.subType}-*.png")?.FirstOrDefault();
+                var filepath = Directory.GetFiles(folder, $"{game.humanSite.economy}~{game.humanSite.subType}-*.png")?.FirstOrDefault();
                 if (filepath == null) return;
 
                 var nameParts = Path.GetFileNameWithoutExtension(filepath).Split('-', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
@@ -198,32 +202,41 @@ namespace SrvSurvey
 
         protected override void onJournalEntry(DockingRequested entry)
         {
+            base.onJournalEntry(entry);
             this.dockingState = DockingState.requested;
             this.Invalidate();
         }
 
         protected override void onJournalEntry(DockingGranted entry)
         {
+            base.onJournalEntry(entry);
             this.dockingState = DockingState.approved;
             this.Invalidate();
         }
         protected override void onJournalEntry(DockingDenied entry)
         {
+            base.onJournalEntry(entry);
             this.dockingState = DockingState.denied;
             this.Invalidate();
         }
 
         protected override void onJournalEntry(Docked entry)
         {
-            // become full height
+            base.onJournalEntry(entry);
+
+            this.hasLanded = true;
             this.dockingState = DockingState.landed;
-            this.Height = scaled(600);
-            this.BackgroundImage = GameGraphics.getBackgroundForForm(this);
             this.BeginInvoke(() =>
             {
                 this.siteHeading = site.heading;
                 this.Invalidate();
             });
+        }
+
+        protected override void onJournalEntry(Touchdown entry)
+        {
+            base.onJournalEntry(entry);
+            this.hasLanded = true;
         }
 
         private void loadTemplate()
@@ -250,7 +263,8 @@ namespace SrvSurvey
             if (this.IsDisposed || game?.humanSite == null) return;
 
             var msg = entry.Message.ToLowerInvariant().Trim();
-            if (msg == "z ") autoZoom = false;
+            if (msg.StartsWith("z ")) autoZoom = false;
+            if (msg == ".az") autoZoom = !autoZoom;
 
             base.onJournalEntry(entry);
 
@@ -275,7 +289,6 @@ namespace SrvSurvey
             else if (msg == MsgCmd.settlement)
             {
                 this.site.inferSubtypeFromFoot(game.status.Heading);
-                this.Invalidate();
             }
             else if (msg == "./")
             {
@@ -284,12 +297,10 @@ namespace SrvSurvey
                 if (this.buildingHeading < 0) this.buildingHeading += 360;
 
                 Game.log($"buildingCorner1: {buildingCorner}, {buildingHeading}°");
-                this.Invalidate();
             }
             else if (msg == "./-")
             {
                 site.template!.buildings.RemoveAt(site.template!.buildings.Count - 1);
-                this.Invalidate();
             }
             else if (msg.StartsWith("./"))
             {
@@ -308,17 +319,17 @@ namespace SrvSurvey
                 if (site.template!.buildings == null) site.template!.buildings = new List<Building>();
                 site.template!.buildings.Add(bld);
 
-                Game.log($"all buildings:\r\n" + Newtonsoft.Json.JsonConvert.SerializeObject(site.template.buildings, Newtonsoft.Json.Formatting.Indented));
+                var json = Newtonsoft.Json.JsonConvert.SerializeObject(site.template.buildings, Newtonsoft.Json.Formatting.Indented);
+                Game.log($"all buildings:\r\n{json}");
+                Clipboard.SetText(json);
                 buildingCorner.X = 0;
-                this.Invalidate();
             }
 
             if (msg == ".stop")
             {
                 game.exitMats(true);
-                this.Invalidate();
             }
-
+            this.Invalidate();
         }
 
         private void TemplateWatcher_Changed(object sender, FileSystemEventArgs e)
@@ -381,21 +392,23 @@ namespace SrvSurvey
         protected override void OnPaintBackground(PaintEventArgs e)
         {
             base.OnPaintBackground(e);
-            if (this.IsDisposed || this.site?.template == null) return;
+            if (this.IsDisposed || this.site == null) return;
             //autoZoom = true;
 
             try
             {
                 resetPlotter(g);
 
-                drawTextAt(this.ClientSize.Width - 8, $"Zoom: {this.scale.ToString("N1")}", GameColors.brushGameOrangeDim, GameColors.fontSmall, true);
+                var zoomText = $"Zoom: {this.scale.ToString("N1")}";
+                if (autoZoom) zoomText += " (auto)";
+                drawTextAt(this.ClientSize.Width - 8, zoomText, GameColors.brushGameOrangeDim, GameColors.fontSmall, true);
 
                 // header
                 var headerTxt = $"{site.name} - {site.economy} ";
                 headerTxt += site.subType == 0 ? "??" : $"#{site.subType}";
 
                 var offset = (PointF)Util.getOffset(radius, siteOrigin, siteHeading);
-                var currentBld = site.template.getCurrentBld(offset, this.siteHeading);
+                var currentBld = site.template?.getCurrentBld(offset, this.siteHeading);
                 if (currentBld != null)
                     headerTxt += $" - Building: {currentBld}";
 
@@ -452,7 +465,7 @@ namespace SrvSurvey
                 {
                     // draw map and POIs
                     this.drawMapImage();
-                    this.drawBuildings();
+                    this.drawBuildings(offset);
                     this.drawLandingPads();
                     this.drawPOI(offset);
 
@@ -484,7 +497,7 @@ namespace SrvSurvey
                     g.DrawLine(GameColors.penGameOrangeDim4, 0, 100, -20, 80);
                 }
 
-                if (this.site.heading == -1)
+                if (this.site.heading == -1 && game.isMode(GameMode.Landed, GameMode.InSrv, GameMode.OnFoot))
                 {
                     g.ResetTransform();
                     drawTextAt(eight, $"Settlement type unknown. To fix:");
@@ -534,7 +547,7 @@ namespace SrvSurvey
 
         }
 
-        private void drawBuildings()
+        private void drawBuildings(PointF offset)
         {
             if (game.humanSite?.template?.buildings == null) return;
             var bb = Brushes.YellowGreen;
@@ -550,12 +563,16 @@ namespace SrvSurvey
                     bb = new SolidBrush(Color.FromArgb(255, 0, 0, 72)); // blue
                 else if (bld.name.StartsWith("STO", StringComparison.OrdinalIgnoreCase))
                     bb = new SolidBrush(Color.FromArgb(255, 50, 30, 20)); // brown
+                else if (bld.name.StartsWith("IND", StringComparison.OrdinalIgnoreCase))
+                    bb = new SolidBrush(Color.FromArgb(255, 60, 40, 10)); // brown
                 else if (bld.name.StartsWith("MED", StringComparison.OrdinalIgnoreCase))
                     bb = new SolidBrush(Color.FromArgb(255, 32, 32, 32)); // grey
+                else if (bld.name.StartsWith("LAB", StringComparison.OrdinalIgnoreCase))
+                    bb = new SolidBrush(Color.FromArgb(255, 0, 32, 32)); // dark green
                 else
                     bb = Brushes.YellowGreen;
 
-                adjust(bld.rect.X, bld.rect.Y, bld.rot, () =>
+            adjust(bld.rect.X, bld.rect.Y, bld.rot, () =>
             {
                 g.FillRectangle(bb, 0, 0, bld.rect.Width, bld.rect.Height);
             });
@@ -854,8 +871,10 @@ namespace SrvSurvey
             // distance to site
             var dh = game.status.Altitude;
             var d = new PointM(dg, dh).dist;
-
-            drawTextAt(eight, $"► on approach: {Util.metersToString(d)} to settlement ...", GameColors.fontMiddle);
+            if (this.hasLanded)
+                drawTextAt(eight, $"► departing: {Util.metersToString(d)} from settlement ...", GameColors.fontMiddle);
+            else
+                drawTextAt(eight, $"► on approach: {Util.metersToString(d)} to settlement ...", GameColors.fontMiddle);
             newLine(+ten, true);
 
             // docking status?
@@ -885,5 +904,4 @@ namespace SrvSurvey
         approved,
         landed,
     }
-
 }

@@ -1942,31 +1942,29 @@ namespace SrvSurvey.game
             if (entry.StationType != StationType.OnFootSettlement || this.systemData == null || !Game.settings.autoShowHumanSitesTest) return;
 
             // wait a bit for the status file to be written?
-            Task.Delay(10).ContinueWith((x) =>
-            {
-                // use current location as touchdown
-                // store the heading at the time of touchdown, so we can adjust the cockpit location to the center of the ship
-                var here = Status.here.clone();
-                this.cmdr.setTouchdown(here, this.status.Heading);
-                this.touchdownLocation = here;
 
-                if (this.humanSite == null)
-                {
-                    // try loading a file, it will exist if we have docked here before
-                    this.humanSite = HumanSiteData.Load(this.systemData.address, entry.MarketID);
-                    if (Game.settings.collectMatsCollectionStatsTest && this.humanSite != null) this.initMats(this.humanSite);
-                }
-                else if (this.humanSite.marketId == entry.MarketID)
-                {
-                    this.humanSite.docked(entry, this.status.Heading);
-                    this.fireUpdate(true);
-                    if (Game.settings.collectMatsCollectionStatsTest) this.initMats(this.humanSite);
-                }
-                else
-                {
-                    Game.log($"Mismatched name or marketId?! {entry.StationName} ({entry.MarketID})");
-                }
-            });
+            // use current location as touchdown
+            // store the heading at the time of touchdown, so we can adjust the cockpit location to the center of the ship
+            var here = Status.here.clone();
+            this.cmdr.setTouchdown(here, this.status.Heading);
+            this.touchdownLocation = here;
+
+            if (this.humanSite == null)
+            {
+                this.initHumanSite();
+                if (Game.settings.collectMatsCollectionStatsTest && this.humanSite != null) this.initMats(this.humanSite);
+            }
+            else if (this.humanSite.marketId == entry.MarketID)
+            {
+                this.humanSite.docked(entry, this.status.Heading);
+                if (Game.settings.collectMatsCollectionStatsTest) this.initMats(this.humanSite);
+            }
+            else
+            {
+                Game.log($"Mismatched name or marketId?! {entry.StationName} ({entry.MarketID})");
+            }
+
+            this.fireUpdate(true);
         }
 
         private void onJournalEntry(Undocked entry)
@@ -2039,6 +2037,8 @@ namespace SrvSurvey.game
         private void onJournalEntry(BackpackChange entry)
         {
             if (!Game.settings.collectMatsCollectionStatsTest || this.matStatsTracker == null || this.humanSite == null || humanSite.heading == -1 || entry.Added == null) return;
+
+            // TODO: Use BackpackChange only for Data, restore CollectItems for the others
 
             foreach (var item in entry.Added)
             {

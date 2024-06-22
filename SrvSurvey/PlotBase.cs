@@ -239,7 +239,7 @@ namespace SrvSurvey
 
         protected void onJournalEntry(JournalEntry entry) { /* ignore */ }
 
-        protected void onJournalEntry(Touchdown entry)
+        protected virtual void onJournalEntry(Touchdown entry)
         {
             if (this.touchdownLocation0 == null)
             {

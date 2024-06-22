@@ -118,11 +118,12 @@ namespace SrvSurvey
                 var rr = new Region(bld.rect);
 
                 var transformMatrix = new System.Drawing.Drawing2D.Matrix();
-                transformMatrix.RotateAt(siteHeading - bld.rot, bld.rect.Location);
-
+                transformMatrix.RotateAt(siteHeading, bld.rect.Location);
+                //transformMatrix.RotateAt(0, bld.rect.Location);
                 rr.Transform(transformMatrix);
 
-                if (rr.IsVisible(cmdrOffset))
+                var hit = rr.IsVisible(cmdrOffset);
+                if (hit)
                     return bld.name;
             }
 
