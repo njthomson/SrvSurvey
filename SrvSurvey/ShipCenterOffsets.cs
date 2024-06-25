@@ -1,9 +1,4 @@
 ﻿using SrvSurvey.units;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SrvSurvey
 {
@@ -11,6 +6,8 @@ namespace SrvSurvey
     {
         public static PointM get(string shipType)
         {
+            if (shipType == null) return PointM.Empty;
+
             return mapShipCockpitOffsets.GetValueOrDefault(shipType);
         }
 

@@ -283,7 +283,7 @@ namespace SrvSurvey
             groupBox3.Size = new Size(413, 130);
             groupBox3.TabIndex = 14;
             groupBox3.TabStop = false;
-            groupBox3.Text = "Bio scanning";
+            groupBox3.Text = "Bio scanning:";
             // 
             // btnBioSummary
             // 

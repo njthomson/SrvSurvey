@@ -208,6 +208,7 @@ namespace SrvSurvey
         FleetCarrier,
         OnFootSettlement,
         CraterOutpost,
+        CraterPort,
     }
 
     class Undocked : JournalEntry

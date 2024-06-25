@@ -16,6 +16,7 @@ namespace SrvSurvey
         private bool hasLanded = false;
         private PointF buildingCorner;
         private float buildingHeading;
+        private FormBuilder? builder { get => FormBuilder.activeForm;  }
 
         private HumanSiteData site { get => game.humanSite!; }
 
@@ -55,6 +56,14 @@ namespace SrvSurvey
             base.Dispose(disposing);
         }
 
+        protected override void OnClosed(EventArgs e)
+        {
+            base.OnClosed(e);
+
+            if (this.builder != null)
+                this.builder.Close();
+        }
+
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -92,6 +101,7 @@ namespace SrvSurvey
         public static bool allowPlotter
         {
             get => keepPlotter
+                && Game.activeGame?.atMainMenu == false
                 && Game.activeGame!.isMode(GameMode.OnFoot, GameMode.Flying, GameMode.Docked, GameMode.InSrv, GameMode.InTaxi, GameMode.Landed, GameMode.CommsPanel, GameMode.ExternalPanel, GameMode.GlideMode);
         }
 
@@ -113,6 +123,9 @@ namespace SrvSurvey
 
             if (this.mapImage == null && site?.template != null)
                 this.loadMapImage();
+
+            if (newMode == GameMode.MainMenu)
+                this.Close();
         }
 
         protected override void Status_StatusChanged(bool blink)
@@ -239,6 +252,13 @@ namespace SrvSurvey
             this.hasLanded = true;
         }
 
+        protected override void onJournalEntry(SupercruiseEntry entry)
+        {
+            base.onJournalEntry(entry);
+
+            Program.closePlotter<PlotHumanSite>();
+        }
+
         private void loadTemplate()
         {
             Game.log("Loading humanSiteTemplates.json");
@@ -290,44 +310,21 @@ namespace SrvSurvey
             {
                 this.site.inferSubtypeFromFoot(game.status.Heading);
             }
-            else if (msg == "./")
+
+            if (msg == ";;")
             {
-                this.buildingCorner = (PointF)Util.getOffset(radius, siteOrigin, siteHeading);
-                this.buildingHeading = game.status.Heading - siteHeading;
-                if (this.buildingHeading < 0) this.buildingHeading += 360;
-
-                Game.log($"buildingCorner1: {buildingCorner}, {buildingHeading}°");
-            }
-            else if (msg == "./-")
-            {
-                site.template!.buildings.RemoveAt(site.template!.buildings.Count - 1);
-            }
-            else if (msg.StartsWith("./"))
-            {
-                var buildingType = msg.Substring(3).Trim();
-
-                var offset = (PointF)Util.getOffset(radius, siteOrigin, siteHeading);
-                var rf = getBldRectF(buildingCorner, offset, (decimal)buildingHeading);
-
-                var bld = new Building()
-                {
-                    rect = rf,
-                    rot = (int)buildingHeading,
-                    name = buildingType
-                };
-
-                if (site.template!.buildings == null) site.template!.buildings = new List<Building>();
-                site.template!.buildings.Add(bld);
-
-                var json = Newtonsoft.Json.JsonConvert.SerializeObject(site.template.buildings, Newtonsoft.Json.Formatting.Indented);
-                Game.log($"all buildings:\r\n{json}");
-                Clipboard.SetText(json);
-                buildingCorner.X = 0;
+                this.loadTemplate();
+                if (builder == null)
+                    FormBuilder.show(this.site);
             }
 
             if (msg == ".stop")
             {
                 game.exitMats(true);
+            }
+            if (msg == ".start")
+            {
+                game.initMats(site);
             }
             this.Invalidate();
         }
@@ -393,7 +390,6 @@ namespace SrvSurvey
         {
             base.OnPaintBackground(e);
             if (this.IsDisposed || this.site == null) return;
-            //autoZoom = true;
 
             try
             {
@@ -454,6 +450,19 @@ namespace SrvSurvey
                     //}
                     if (game.matStatsTracker?.completed == false)
                         footerTxt += ".";
+
+                    if (builder != null && builder.nextPath != null)
+                    {
+                        var dx = builder.lastPoint.X - builder.offset.X;
+                        var dy = builder.lastPoint.Y - builder.offset.Y;
+                        var foo = (float)DecimalEx.ToDeg((decimal)Math.Atan2(dx, dy)); // - siteHeading;
+                        if (foo < 0) foo += 360;
+
+                        footerTxt += $"! {foo.ToString("N1")}°";
+                        //var pm = new PointM(builder.offset.X - builder.lastPoint.X, builder.offset.Y - builder.lastPoint.Y );
+                        //footerTxt += $"! {pm.angle.ToString("N1")}°";
+                    }
+
                     this.drawFooterText(footerTxt);
                 }
 
@@ -470,7 +479,8 @@ namespace SrvSurvey
                     this.drawPOI(offset);
 
                     // draw bounding box for pending building
-                    if (this.buildingCorner.X != 0)
+                    //if (this.buildingCorner.X != 0)
+                    if (this.builder != null)
                         this.drawBuildingBox(offset);
                 }
 
@@ -550,49 +560,90 @@ namespace SrvSurvey
         private void drawBuildings(PointF offset)
         {
             if (game.humanSite?.template?.buildings == null) return;
-            var bb = Brushes.YellowGreen;
-            foreach (var bld in game.humanSite.template.buildings)
-            {
-                if (bld.name.StartsWith("HAB", StringComparison.OrdinalIgnoreCase))
-                    bb = new SolidBrush(Color.FromArgb(255, 0, 32, 0)); // green
-                else if (bld.name.StartsWith("CMD", StringComparison.OrdinalIgnoreCase))
-                    bb = new SolidBrush(Color.FromArgb(255, 48, 0, 0)); // red
-                else if (bld.name.StartsWith("POW", StringComparison.OrdinalIgnoreCase))
-                    bb = new SolidBrush(Color.FromArgb(255, 32, 32, 64)); // purple
-                else if (bld.name.StartsWith("EXT", StringComparison.OrdinalIgnoreCase))
-                    bb = new SolidBrush(Color.FromArgb(255, 0, 0, 72)); // blue
-                else if (bld.name.StartsWith("STO", StringComparison.OrdinalIgnoreCase))
-                    bb = new SolidBrush(Color.FromArgb(255, 50, 30, 20)); // brown
-                else if (bld.name.StartsWith("IND", StringComparison.OrdinalIgnoreCase))
-                    bb = new SolidBrush(Color.FromArgb(255, 60, 40, 10)); // brown
-                else if (bld.name.StartsWith("MED", StringComparison.OrdinalIgnoreCase))
-                    bb = new SolidBrush(Color.FromArgb(255, 32, 32, 32)); // grey
-                else if (bld.name.StartsWith("LAB", StringComparison.OrdinalIgnoreCase))
-                    bb = new SolidBrush(Color.FromArgb(255, 0, 32, 32)); // dark green
-                else
-                    bb = Brushes.YellowGreen;
+            // draw commited buildings
+            if (site.template?.buildings != null)
+                foreach (var bld in site.template!.buildings)
+                    foreach (var p in bld.paths)
+                        g.FillPath(Brushes.SaddleBrown, p);
 
-            adjust(bld.rect.X, bld.rect.Y, bld.rot, () =>
-            {
-                g.FillRectangle(bb, 0, 0, bld.rect.Width, bld.rect.Height);
-            });
-            }
+            //if (game.humanSite?.template?.buildings == null) return;
+            //var bb = Brushes.YellowGreen;
+            //foreach (var bld in game.humanSite.template.buildings)
+            //{
+            //    if (bld.name.StartsWith("HAB", StringComparison.OrdinalIgnoreCase))
+            //        bb = new SolidBrush(Color.FromArgb(255, 0, 32, 0)); // green
+            //    else if (bld.name.StartsWith("CMD", StringComparison.OrdinalIgnoreCase))
+            //        bb = new SolidBrush(Color.FromArgb(255, 48, 0, 0)); // red
+            //    else if (bld.name.StartsWith("POW", StringComparison.OrdinalIgnoreCase))
+            //        bb = new SolidBrush(Color.FromArgb(255, 32, 32, 64)); // purple
+            //    else if (bld.name.StartsWith("EXT", StringComparison.OrdinalIgnoreCase))
+            //        bb = new SolidBrush(Color.FromArgb(255, 0, 0, 72)); // blue
+            //    else if (bld.name.StartsWith("STO", StringComparison.OrdinalIgnoreCase))
+            //        bb = new SolidBrush(Color.FromArgb(255, 50, 30, 20)); // brown
+            //    else if (bld.name.StartsWith("IND", StringComparison.OrdinalIgnoreCase))
+            //        bb = new SolidBrush(Color.FromArgb(255, 60, 40, 10)); // brown
+            //    else if (bld.name.StartsWith("MED", StringComparison.OrdinalIgnoreCase))
+            //        bb = new SolidBrush(Color.FromArgb(255, 32, 32, 32)); // grey
+            //    else if (bld.name.StartsWith("LAB", StringComparison.OrdinalIgnoreCase))
+            //        bb = new SolidBrush(Color.FromArgb(255, 0, 32, 32)); // dark green
+            //    else
+            //        bb = Brushes.YellowGreen;
+
+            //    adjust(bld.rect.X, bld.rect.Y, bld.rot, () =>
+            //    {
+            //        g.FillRectangle(bb, 0, 0, bld.rect.Width, bld.rect.Height);
+            //    });
+            //}
         }
 
         private void drawBuildingBox(PointF offset)
         {
-            if (this.buildingCorner.X == 0) return;
+            var of2 = offset;
+            of2.Y *= -1;
 
-            g.DrawLine(Pens.Salmon, buildingCorner.X, -buildingCorner.Y, offset.X, -offset.Y);
-            g.DrawEllipse(Pens.Salmon, buildingCorner.X - 2, -buildingCorner.Y - 2, 4, 4);
+            if (this.builder == null) return;
 
-            var rf = getBldRectF(buildingCorner, offset, (decimal)buildingHeading);
-            adjust(rf.Left, rf.Top, buildingHeading, () =>
+            // draw pending buildings
+            foreach (var p in builder.building.paths)
+                g.FillPath(Brushes.Navy, p);
+
+            // draw in-progress buildigs
+            if (builder.circle)
             {
-                g.DrawRectangle(Pens.Yellow, 0, 0, rf.Width, rf.Height);
-            });
+                var rf = new RectangleF(of2, new SizeF(builder.circleRadius * 2, builder.circleRadius * 2));
+                rf.Offset(-builder.circleRadius, -builder.circleRadius);
+                //rf.Inflate(builder.circleRadius * 2, builder.circleRadius * 2);
 
-            // --- OLD ---
+                g.FillEllipse(Brushes.SlateBlue, rf);
+            }
+            else if (builder.nextPath != null)
+            {
+                g.FillPath(Brushes.SlateBlue, builder.nextPath);
+                g.DrawPath(Pens.LightBlue, builder.nextPath);
+
+                if (builder.lastPoint != PointF.Empty)
+                    g.DrawLine(Pens.Yellow, builder.lastPoint, builder.offset);
+            }
+
+            //var rr = new Region(gp);
+            //g.FillRegion(Brushes.Navy, rr);
+
+            //g.DrawPath(Pens.Yellow, this.gp);
+
+            // --- OLDER ---
+
+            //if (this.buildingCorner.X == 0) return;
+
+            //g.DrawLine(Pens.Salmon, buildingCorner.X, -buildingCorner.Y, offset.X, -offset.Y);
+            //g.DrawEllipse(Pens.Salmon, buildingCorner.X - 2, -buildingCorner.Y - 2, 4, 4);
+
+            //var rf = getBldRectF(buildingCorner, offset, (decimal)buildingHeading);
+            //adjust(rf.Left, rf.Top, buildingHeading, () =>
+            //{
+            //    g.DrawRectangle(Pens.Yellow, 0, 0, rf.Width, rf.Height);
+            //});
+
+            // --- OLDER ---
 
             //var o = (PointF)Util.getOffset(radius, siteOrigin, siteHeading);
 
@@ -675,12 +726,12 @@ namespace SrvSurvey
             var wd4 = new Font("Wingdings", 4F, FontStyle.Bold, GraphicsUnit.Point);
             var fs4 = new Font("Lucida Sans Typewriter", 4F, FontStyle.Regular, GraphicsUnit.Pixel);
             var fs6 = new Font("Lucida Sans Typewriter", 6F, FontStyle.Regular, GraphicsUnit.Pixel);
-            var b0 = Brushes.Lime;
+            var b0 = Brushes.Green;
             var b1 = Brushes.SkyBlue;
             var b2 = Brushes.DarkOrange;
             var b3 = (Brush)new SolidBrush(Color.FromArgb(200, Color.Red));
 
-            var p0 = new Pen(Color.Lime, 0.5f) { EndCap = LineCap.Triangle, StartCap = LineCap.Triangle };
+            var p0 = new Pen(Color.Green, 0.5f) { EndCap = LineCap.Triangle, StartCap = LineCap.Triangle };
             var p1 = new Pen(Color.SkyBlue, 0.5f) { EndCap = LineCap.Triangle, StartCap = LineCap.Triangle };
             var p2 = new Pen(Color.DarkOrange, 0.5f) { EndCap = LineCap.Triangle, StartCap = LineCap.Triangle };
             var p3 = new Pen(Color.Red, 0.5f) { EndCap = LineCap.Triangle, StartCap = LineCap.Triangle };
@@ -724,7 +775,7 @@ namespace SrvSurvey
                         if (poi.level == 2) p = p2;
                         if (poi.level == 3) p = p3;
 
-                        // ❗❕❉✪✿❤➊➀⟐𖺋𖺋⟊➟✦✔⛶⛬⛭⛯⛣⛔⛌⛏⚴⚳⚱⚰⚚⚙⚗⚕⚑⚐⚜⚝⚛⚉⚇♥♦♖♜☸☗☯☍☉☄☁◬◊◈◍◉▣▢╳
+                        // ❗❕❉✪✿❤➊➀⟐𖺋𖺋⟊➟✦✔⛶⛬⛭⛯⛣⛔⛌⛏⚴⚳⚱⚰⚚⚙⚗⚕⚑⚐⚜⚝⚛⚉⚇♥♦♖♜☸☗☯☍☉☄☁◬◊◈◍◉▣▢╳☢
                         //string txt = "ꊢ"; // ⦖⥣ꇗꊢꉄꇥꇗꇩꆜꄨꀜꀤꀡꀍ䷏〶〷〓〼〿⸙⸋⯒⭻⬨⬖⬘⬮⬯⫡⩸⩃⨟⨨⨱⨲⦼⧌⚼⦡⧲⛅ ⛍ ⛉ ❎ ⮔⮹ ⮺⯑⯳⯿⑅Ⓓⓓ▚▚▨▒◀◩ ⦡⦺⦹⦿⧳⧲⨹⨺⨻⨷⨳⨯⬙⭕⭍✉⛽✇⛳⛿✆⛋⚼"; ⛗ ⛘ ⛅ ⛍ ⛉ ❎ ⮔⮹ ⮺⯑⯳⯿⑅Ⓓⓓ▚▚▨▒◀◩ ⦡⦺⦹⦿⧳⧲⨝⨹⨺⨻⨷⨳⨯⬙⭕⭍
 
                         if (poi.name == "Atmos")
@@ -861,7 +912,7 @@ namespace SrvSurvey
 
                 foreach (var entry in game.matStatsTracker.matLocations)
                 {
-                    g.FillEllipse(Brushes.DarkOrchid, entry.x - 0.5f, -entry.y - 0.5f, 1f, 1f);
+                    g.FillEllipse(Brushes.LightSalmon, entry.x - 0.5f, -entry.y - 0.5f, 1f, 1f);
                 }
             }
         }

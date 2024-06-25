@@ -1,13 +1,16 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Linq;
 using SrvSurvey.game;
+using System.Drawing.Drawing2D;
 using System.Globalization;
 
 namespace SrvSurvey
 {
+    //[JsonConverter(typeof(HumanSiteTemplate.JsonConverter))]
     internal class HumanSiteTemplate
     {
-        #region static loading code
+        #region static loading and saving code
 
         public static List<HumanSiteTemplate> templates = new List<HumanSiteTemplate>()
         {
@@ -15,7 +18,7 @@ namespace SrvSurvey
             {
                 economy = Economy.Tourist,
                 subType = 1,
-                landingPads = new List<LandingPad> {}
+                landingPads = new List<HumanSitePoi2> {}
             },
         };
 
@@ -54,7 +57,8 @@ namespace SrvSurvey
                 {
                     Game.log($"Missing file: {filepath}");
                 }
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 Game.log($"Loading humanSiteTemplates.json failed:\r\n{ex}");
             }
@@ -64,6 +68,14 @@ namespace SrvSurvey
         {
             var match = templates.Find(_ => _.economy == economy && _.subType == subType);
             return match;
+        }
+
+        public static void export(bool devReload = false)
+        {
+            var json = JsonConvert.SerializeObject(templates, Formatting.Indented)!;
+            var filepath = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "..\\..\\..\\..", "humanSiteTemplates.json");
+
+            File.WriteAllText(filepath, json);
         }
 
         public override string ToString()
@@ -80,19 +92,19 @@ namespace SrvSurvey
         /// Approx angle and distance each pad is from the site origin
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-        public List<LandingPad> landingPads;
+        public List<HumanSitePoi2> landingPads;
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-        public List<SecureDoor> secureDoors;
+        public List<HumanSitePoi2> secureDoors;
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-        public List<DataTerminal> dataTerminals;
+        public List<HumanSitePoi2> namedPoi;
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-        public List<NamedPoi> namedPoi;
+        public List<HumanSitePoi2> dataTerminals;
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-        public List<Building> buildings = new List<Building>();
+        public List<Building2> buildings = new List<Building2>();
 
         public LandingPads landPadSummary()
         {
@@ -113,24 +125,194 @@ namespace SrvSurvey
         {
             if (this.buildings == null) return null;
 
+            var offset2 = cmdrOffset;
+            offset2.Y *= -1;
+
             foreach (var bld in this.buildings)
-            {
-                var rr = new Region(bld.rect);
+                foreach (var gp in bld.paths)
+                    if (gp.IsVisible(offset2))
+                        return bld.name;
 
-                var transformMatrix = new System.Drawing.Drawing2D.Matrix();
-                transformMatrix.RotateAt(siteHeading, bld.rect.Location);
-                //transformMatrix.RotateAt(0, bld.rect.Location);
-                rr.Transform(transformMatrix);
+            //if (this.buildings == null) return null;
 
-                var hit = rr.IsVisible(cmdrOffset);
-                if (hit)
-                    return bld.name;
-            }
+            //foreach (var bld in this.buildings)
+            //{
+            //    var rr = new Region(bld.rect);
+
+            //    var transformMatrix = new System.Drawing.Drawing2D.Matrix();
+            //    transformMatrix.RotateAt(siteHeading, bld.rect.Location);
+            //    //transformMatrix.RotateAt(0, bld.rect.Location);
+            //    rr.Transform(transformMatrix);
+
+            //    var hit = rr.IsVisible(cmdrOffset);
+            //    if (hit)
+            //        return bld.name;
+            //}
 
             return null;
         }
+
+        //class JsonConverter : Newtonsoft.Json.JsonConverter
+        //{
+        //    public override bool CanConvert(Type objectType) { return false; }
+
+        //    public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
+        //    {
+        //        var obj = serializer.Deserialize<JToken>(reader);
+        //        if (obj == null || !obj.HasValues)
+        //            return null;
+
+        //        // read the simple fields
+        //        var data = new HumanSiteTemplate()
+        //        {
+        //            economy = Enum.Parse<Economy>(obj["economy"]!.Value<string>()!, true),
+        //            subType = obj["subType"]!.Value<int>()!,
+        //            landingPads = obj["landingPads"]!.ToObject<List<LandingPad>>()!,
+        //            secureDoors = obj["secureDoors"]?.ToObject<List<SecureDoor>>() ?? new List<SecureDoor>(),
+        //            namedPoi = obj["namedPoi"]?.ToObject<List<NamedPoi>>() ?? new List<NamedPoi>(),
+        //            dataTerminals = obj["dataTerminals"]?.ToObject<List<DataTerminal>>() ?? new List<DataTerminal>(),
+        //        };
+
+        //        return data;
+        //    }
+
+        //    public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
+        //    {
+        //        var data = value as HumanSiteTemplate;
+        //        if (data == null) throw new Exception($"Unexpected value: {value?.GetType().Name}");
+
+        //        //var txt = new StringBuilder();
+        //        //foreach(var pad in data.landingPads)
+        //        //    txt.AppendLine(JsonConvert.SerializeObject(pad));
+
+        //        //var obj = new JObject
+        //        //{
+        //        //    { nameof(HumanSiteTemplate.economy), data.economy.ToString() },
+        //        //    { nameof(HumanSiteTemplate.subType), data.subType },
+        //        //    { nameof(HumanSiteTemplate.landingPads), collapse(data.landingPads) },
+        //        //    { nameof(HumanSiteTemplate.secureDoors), collapse(data.secureDoors) },
+        //        //    { nameof(HumanSiteTemplate.namedPoi), collapse(data.namedPoi) },
+        //        //    { nameof(HumanSiteTemplate.dataTerminals), collapse(data.dataTerminals) },
+        //        //};
+        //        //obj.WriteTo(writer);
+
+        //        var lines = new List<string>();
+        //        lines.Add($"\"economy\": \"{data.economy.ToString()}\"");
+        //        lines.Add($"\"subType\": \"{data.subType}\"");
+
+        //        lines.Add($"\"landingPads\": [\r\n{collapse(data.landingPads)}\r\n]");
+
+        //        var json = string.Join("\r\n,", lines);
+
+        //        //json += $"\"subType\": \"{data.subType}\","
+        //        //if (poi.rot > 0 && (poi.type == POIType.pylon || poi.type == POIType.component || poi.type == POIType.relic || poi.type == POIType.obelisk || poi.type == POIType.brokeObelisk))
+        //        //    json += $", \"rot\": {poi.rot}";
+
+        //        writer.WriteRawValue("{ " + json + " }");
+
+        //    }
+
+        //    private List<string> collapse<T>(List<T> list)
+        //    {
+        //        var lines = new List<string>();
+        //        foreach (var entry in list)
+        //            lines.Add(JsonConvert.SerializeObject(entry));
+
+        //        return lines;
+        //    }
+        //}
     }
 
+    // ---
+
+    [JsonConverter(typeof(HumanSitePoi2.JsonConverter))]
+    internal class HumanSitePoi2
+    {
+        /// <summary>
+        /// Relative to site origin
+        /// </summary>
+        public PointF offset;
+
+        /// <summary>
+        /// The rotation of this POI about it's center
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public int rot;
+
+        /// <summary>
+        /// The security level needed, either to access the relevant room or the device itself.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public int level;
+
+        /// <summary>
+        /// 1 if ground floor or 2+ if upstairs
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public int floor;
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public string? name;
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public LandingPadSize size;
+
+        class JsonConverter : Newtonsoft.Json.JsonConverter
+        {
+            public override bool CanConvert(Type objectType) { return false; }
+
+            public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
+            {
+                var obj = serializer.Deserialize<JToken>(reader);
+                if (obj == null || !obj.HasValues) return null;
+
+                var data = new HumanSitePoi2
+                {
+                    offset = obj["offset"]!.ToObject<PointF>()!,
+                    floor = obj["floor"]?.Value<int>() ?? 0,
+                    level = obj["level"]?.Value<int>() ?? 0,
+                    rot = obj["rot"]?.Value<int>() ?? -1,
+                    name = obj["name"]?.Value<string>(),
+                    size = Enum.Parse<LandingPadSize>(obj["size"]?.Value<string>() ?? LandingPadSize.Unknown.ToString(), true),
+                };
+
+                return data;
+            }
+
+            public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
+            {
+                var data = value as HumanSitePoi2;
+                if (data == null) throw new Exception($"Unexpected value: {value?.GetType().Name}");
+
+                var obj = new JObject();
+
+                if (data.size > 0) obj["size"] = JToken.FromObject(data.size);
+                if (data.name != null) obj["name"] = JToken.FromObject(data.name);
+
+                obj["offset"] = new JObject
+                {
+                    {  "X", JToken.FromObject(data.offset.X) },
+                    {  "Y", JToken.FromObject(data.offset.Y) },
+                };
+
+                if (data.floor > 0) obj["floor"] = JToken.FromObject(data.floor);
+                if (data.size == 0) // all but landing pags
+                    obj["level"] = JToken.FromObject(data.level); 
+                if (data.rot > 0) obj["rot"] = JToken.FromObject(data.rot);
+
+                var json = JsonConvert.SerializeObject(obj); // no indentation
+                json = json.Replace("{", "{ ")
+                    .Replace("}", " }")
+                    .Replace(",", ", ")
+                    .Replace(":", ": ");
+                writer.WriteRawValue(json);
+            }
+        }
+    }
+
+    // ---
+
+    //[JsonConverter(typeof(HumanSitePoi.JsonConverter))]
     internal abstract class HumanSitePoi
     {
         /// <summary>
@@ -164,6 +346,50 @@ namespace SrvSurvey
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public int floor;
+
+        //class JsonConverter : Newtonsoft.Json.JsonConverter
+        //{
+        //    public override bool CanConvert(Type objectType) { return false; }
+
+        //    public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
+        //    {
+        //        var txt = serializer.Deserialize<string>(reader);
+        //        if (string.IsNullOrEmpty(txt)) throw new Exception($"Unexpected value: {txt}");
+
+        //        // "{name}_{left}_{top}_{width}_{height}_{rot}"
+        //        // eg: "HAB_12.0_34.0_55.0_66.0_77"
+        //        var parts = txt.Split('_');
+        //        var pf = new PointF(float.Parse(parts[1], CultureInfo.InvariantCulture), float.Parse(parts[2], CultureInfo.InvariantCulture));
+        //        var sf = new SizeF(float.Parse(parts[3], CultureInfo.InvariantCulture), float.Parse(parts[4], CultureInfo.InvariantCulture));
+
+        //        var building = new Building()
+        //        {
+        //            rect = new RectangleF(pf, sf),
+        //            rot = int.Parse(parts[5], CultureInfo.InvariantCulture),
+        //            name = parts[0],
+        //        };
+
+        //        return building;
+        //    }
+
+        //    public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
+        //    {
+        //        var data = value as HumanSitePoi;
+        //        if (data == null) throw new Exception($"Unexpected value: {value?.GetType().Name}");
+
+        //        // create a single string
+        //        var txt = data.toJson();
+        //        writer.WriteValue(txt);
+        //    }
+        //}
+
+        //protected string toJson()
+        //{
+        //    var obj = JObject.FromObject(this);
+        //    var json = JsonConvert.SerializeObject(obj);
+        //    return json;
+        //}
+
     }
 
     // For ad-hoc POIs, like the power regular or alarm console
@@ -193,6 +419,7 @@ namespace SrvSurvey
     [JsonConverter(typeof(StringEnumConverter))]
     internal enum LandingPadSize
     {
+        Unknown,
         Small,
         Medium,
         Large
@@ -249,5 +476,107 @@ namespace SrvSurvey
         }
 
         #endregion
+    }
+
+    [JsonConverter(typeof(Building2.JsonConverter))]
+    internal class Building2
+    {
+        public List<GraphicsPath> paths = new List<GraphicsPath>();
+        public string name;
+
+        class JsonConverter : Newtonsoft.Json.JsonConverter
+        {
+            public override bool CanConvert(Type objectType) { return false; }
+
+            public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
+            {
+                var obj = serializer.Deserialize<JToken>(reader);
+                if (obj == null || !obj.HasValues) return null;
+
+                //foreach(var pathObj in obj["paths"]!.Values<JObject>())
+                //{
+                //    var fillMode = pathObj["FillMode"]?.Value<int>() ?? 0;
+                //    var pts = pathObj["PathPoints"]!.ToObject<PointF[]>();
+                //    var types = pathObj["PathTypes"]!.ToObject<byte[]>();
+                //    var gp = new GraphicsPath(pts, types, (FillMode)fillMode);
+                //}
+
+                var data = new Building2
+                {
+                    name = obj["name"]!.Value<string>()!,
+                    //paths = obj["paths"]!.ToObject<List<GraphicsPath>>()!,
+                };
+
+                data.paths = new List<GraphicsPath>();
+                foreach (var pathObj in obj["paths"]!.Values<JObject>())
+                {
+                    var fillMode = pathObj!["FillMode"]?.Value<int>() ?? 0;
+                    var pts = pathObj["PathPoints"]!.ToObject<PointF[]>()!;
+                    var types = pathObj["PathTypes"]!.ToObject<byte[]>()!;
+                    if (types.Length > pts.Length)
+                    {
+                        var list = types.ToList();
+                        list.RemoveAt(list.Count - 1);
+                        types = list.ToArray();
+                    }
+                    var gp = new GraphicsPath(pts, types, (FillMode)fillMode);
+                    data.paths.Add(gp);
+                }
+
+
+                return data;
+            }
+
+            public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
+            {
+                var data = value as Building2;
+                if (data == null) throw new Exception($"Unexpected value: {value?.GetType().Name}");
+
+                //var obj2 = new JArray();
+                //foreach (var item in data.paths)
+                //    obj2.Add(JsonConvert.SerializeObject(item)); // no indentation
+
+                //var obj = new JObject();
+                //obj["name"] = JToken.FromObject(data.name);
+                //obj["paths"] = obj2; // JToken.FromObject(data.paths);
+
+                //var json = JsonConvert.SerializeObject(obj); // no indentation
+                //writer.WriteRawValue(json);
+
+                writer.WriteStartObject();
+
+                writer.WritePropertyName("name");
+                writer.WriteValue(data.name);
+
+                writer.WritePropertyName("paths");
+                writer.WriteStartArray();
+
+                foreach (var item in data.paths)
+                {
+                    if (item.PathData.Points?.Length > 0)
+                    {
+                        var pts = item.PathData.Points.Select(_ => new JObject
+                    {
+                        { "X", JToken.FromObject(float.Parse(_.X.ToString("N1"))) },
+                        { "Y", JToken.FromObject(float.Parse(_.Y.ToString("N1"))) },
+                    });
+
+                        var pathObj = new JObject
+                    {
+                        { "PathPoints", JToken.FromObject(pts) },
+                        { "PathTypes", JToken.FromObject(item.PathTypes) },
+                        { "FillMode", JToken.FromObject(item.FillMode) },
+                    };
+                        var js = JsonConvert.SerializeObject(pathObj); // no indentation
+                        writer.WriteRawValue(js);
+                    }
+                }
+
+                writer.WriteEndArray();
+
+                writer.WriteEndObject();
+
+            }
+        }
     }
 }

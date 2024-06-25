@@ -1789,6 +1789,11 @@ namespace SrvSurvey.game
         {
             get
             {
+                if (this._touchdownLocation == null && status.Docked && status.hasLatLong)
+                {
+                    this._touchdownLocation = Status.here.clone();
+                    Game.log($"Using current location as we're docked already: {_touchdownLocation}");
+                }
                 if (this._touchdownLocation == null && this.journals != null)
                 {
                     Game.log($"Searching journals for last touchdown location... (mode: {this.mode})");
@@ -1901,7 +1906,9 @@ namespace SrvSurvey.game
                     }
                 }
             }
-            else if (entry.MarketID > 0 && this.systemBody != null && Game.settings.autoShowHumanSitesTest && entry.StationServices?.Contains("socialspace") == false) // bigger settlements (Planetery ports) are not compatible
+            else if (entry.MarketID > 0 && this.systemBody != null && Game.settings.autoShowHumanSitesTest 
+                && entry.StationServices?.Contains("socialspace") == false  // bigger settlements (Planetery ports) are not compatible
+                && entry.StationServices.Count > 0) // horizons old settlements are not compatible
             {
                 // Human site - load existing one?
                 this.humanSite = HumanSiteData.Load(this.systemData!.address, entry.MarketID);
@@ -1978,7 +1985,7 @@ namespace SrvSurvey.game
             }
         }
 
-        private void initMats(HumanSiteData siteData)
+        public void initMats(HumanSiteData siteData)
         {
             if (this.matStatsTracker != null) Game.log("Why is matStatsTracker already something?");
             Game.log($"initMats: '{siteData.name}' ({siteData.marketId}) ");
@@ -2042,13 +2049,16 @@ namespace SrvSurvey.game
 
             foreach (var item in entry.Added)
             {
+                if (item.Type != "Data") continue;
+
                 // Track location offset +1m by cmdr heading, to account for mats being in front of cmdr
                 var cmdrOffset = Util.getOffset(status.PlanetRadius, humanSite.location, humanSite.heading);
+                //cmdrOffset.y *= -1;
                 var a = (decimal)humanSite.heading + status.Heading - 180;
                 if (a < 0) a += 360;
                 if (a > 360) a -= 360;
                 var d = Util.rotateLine(a, 1);
-                var location = cmdrOffset + d;
+                var location = cmdrOffset; // + d;
 
                 var building = humanSite.template?.getCurrentBld((PointF)cmdrOffset, humanSite.heading);
                 this.matStatsTracker.track(item, (PointF)location, building);
@@ -2058,27 +2068,32 @@ namespace SrvSurvey.game
             this.matStatsTracker.Save();
         }
 
-        //private void onJournalEntry(CollectItems entry)
-        //{
-        //    if (!Game.settings.collectMatsCollectionStats || this.matStatsTracker == null || this.humanSite == null) return;
+        private void onJournalEntry(CollectItems entry)
+        {
+            if (!Game.settings.collectMatsCollectionStatsTest || this.matStatsTracker == null || this.humanSite == null || humanSite.heading == -1) return;
 
-        //    // increment basic count of Mat type
-        //    if (!this.matStatsTracker.countMats.ContainsKey(entry.Name)) this.matStatsTracker.countMats[entry.Name] = 0;
-        //    this.matStatsTracker.countMats[entry.Name] += 1;
+            if (entry.Type == "Data") return;
 
-        //    // Track location. Offset +1m by cmdr heading, to account for mats being in front of cmdr, not under their feet.
-        //    var feet = Util.getOffset(status.PlanetRadius, humanSite.location, humanSite.heading);
-        //    var d = Util.rotateLine(status.Heading, 1);
-        //    var location = feet + d;
-        //    this.matStatsTracker.matLocations.Add(new CollectedMaterial
-        //    {
-        //        name = entry.Name,
-        //        x = (float)location.x,
-        //        y = (float)location.y,
-        //    });
+            // increment basic count of Mat type
+            if (!this.matStatsTracker.countMats.ContainsKey(entry.Name)) this.matStatsTracker.countMats[entry.Name] = 0;
+            this.matStatsTracker.countMats[entry.Name] += 1;
 
-        //    this.matStatsTracker.Save();
-        //}
+            // Track location offset +1m by cmdr heading, to account for mats being in front of cmdr
+            var cmdrOffset = Util.getOffset(status.PlanetRadius, humanSite.location, humanSite.heading);
+            //cmdrOffset.y *= -1;
+            var a = (decimal)humanSite.heading + status.Heading - 180;
+            if (a < 0) a += 360;
+            if (a > 360) a -= 360;
+            var d = Util.rotateLine(a, 1);
+            var location = cmdrOffset; // + d;
+
+            var building = humanSite.template?.getCurrentBld((PointF)cmdrOffset, humanSite.heading);
+
+            this.matStatsTracker.track(entry, (PointF)location, building);
+
+
+            this.matStatsTracker.Save();
+        }
 
         private void onJournalEntry(CodexEntry entry)
         {

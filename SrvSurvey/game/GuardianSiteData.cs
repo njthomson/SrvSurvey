@@ -696,8 +696,7 @@ namespace SrvSurvey.game
             public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
             {
                 var obj = serializer.Deserialize<JToken>(reader);
-                if (obj == null || !obj.HasValues)
-                    return null;
+                if (obj == null || !obj.HasValues) return null;
 
                 // read the simple fields
                 var data = new GuardianSiteData()

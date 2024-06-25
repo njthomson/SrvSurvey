@@ -122,7 +122,30 @@ namespace SrvSurvey.game
             }
 
             // and track the location
-            this.matLocations.Add(new CollectedMaterial(item, pf));
+            this.matLocations.Add(new CollectedMaterial(item.Name, item.Type, pf));
+        }
+
+        public void track(CollectItems entry, PointF pf, string? building)
+        {
+            this.totalMatCount += entry.Count;
+
+            // increment basic count of Mat
+            if (!this.countMats.ContainsKey(entry.Name)) this.countMats[entry.Name] = 0;
+            this.countMats[entry.Name] += entry.Count;
+
+            // increment count of Mat type
+            if (!this.countTypes.ContainsKey(entry.Type)) this.countTypes[entry.Type] = 0;
+            this.countTypes[entry.Type] += entry.Count;
+
+            // increment count per building
+            if (building != null)
+            {
+                if (!this.countBuildings.ContainsKey(building)) this.countBuildings[building] = 0;
+                this.countBuildings[building] += entry.Count;
+            }
+
+            // and track the location
+            this.matLocations.Add(new CollectedMaterial(entry.Name, entry.Type, pf));
         }
     }
 
@@ -138,10 +161,10 @@ namespace SrvSurvey.game
 
         public CollectedMaterial() { }
 
-        public CollectedMaterial(BackpackChange_Entry entry, PointF pf)
+        public CollectedMaterial(string name, string type, PointF pf)
         {
-            this.name = entry.Name;
-            this.type = entry.Type;
+            this.name = name;
+            this.type = type;
             this.x = pf.X;
             this.y = pf.Y;
         }

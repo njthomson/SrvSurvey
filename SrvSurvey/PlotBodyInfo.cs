@@ -68,6 +68,8 @@ namespace SrvSurvey
 
         protected override void Status_StatusChanged(bool blink)
         {
+            if (this.IsDisposed) return;
+
             base.Status_StatusChanged(blink);
 
             var destination = $"{game.status.Destination?.System}/{game.status.Destination?.Body}/{game.status.Destination?.Name}";

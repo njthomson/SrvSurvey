@@ -96,6 +96,7 @@ namespace SrvSurvey
         public Rectangle formRamTah;
         public Rectangle formGenusGuideLocation;
         public Rectangle formPostProcess;
+        public Rectangle formBuilder;
 
         public bool mapShowNotes = true;
 
