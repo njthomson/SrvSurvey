@@ -88,6 +88,7 @@ namespace SrvSurvey.game
         public int threatLevel = -1; // from system map, or from external panel: 0 = empty shield, 1 = half filled shield, 2 = filled shield
 
         // Auto-collected:
+        public int totalMatCount = 0;
 
         // Mats Collected 
         public Dictionary<string, int> countMats = new Dictionary<string, int>();
@@ -97,8 +98,6 @@ namespace SrvSurvey.game
 
         // Mat types Collected 
         public Dictionary<string, int> countBuildings= new Dictionary<string, int>();
-
-        public int totalMatCount = 0;
 
         public List<CollectedMaterial> matLocations = new List<CollectedMaterial>();
 

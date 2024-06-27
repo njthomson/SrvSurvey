@@ -323,6 +323,11 @@ namespace SrvSurvey
             // overridden as necessary
         }
 
+        protected virtual void onJournalEntry(BackpackChange entry)
+        {
+            // overridden as necessary
+        }
+
         protected virtual void onJournalEntry(SupercruiseEntry entry)
         {
             // overridden as necessary

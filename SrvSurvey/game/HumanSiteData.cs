@@ -82,6 +82,9 @@ namespace SrvSurvey.game
         {
             get
             {
+                if (this.filepath == null)
+                    return Game.activeGame?.systemData?.address ?? 0;
+
                 var filename = Path.GetFileName(this.filepath);
                 var address = filename.Substring(0, filename.IndexOf("-"));
                 return long.Parse(address);

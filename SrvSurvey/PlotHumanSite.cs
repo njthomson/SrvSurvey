@@ -16,7 +16,7 @@ namespace SrvSurvey
         private bool hasLanded = false;
         private PointF buildingCorner;
         private float buildingHeading;
-        private FormBuilder? builder { get => FormBuilder.activeForm;  }
+        private FormBuilder? builder { get => FormBuilder.activeForm; }
 
         private HumanSiteData site { get => game.humanSite!; }
 
@@ -30,7 +30,7 @@ namespace SrvSurvey
             this.siteOrigin = site.location;
             this.siteHeading = site.heading;
 
-            if (!autoZoom) this.scale = 4;
+            if (!autoZoom) this.scale = 6;
 
             if (game.isMode(GameMode.OnFoot, GameMode.Docked, GameMode.InSrv, GameMode.Landed))
                 dockingState = DockingState.landed;
@@ -137,9 +137,9 @@ namespace SrvSurvey
             if (this.Opacity > 0 && !PlotHumanSite.keepPlotter)
                 Program.closePlotter<PlotHumanSite>(true);
 
-            if (game.status.OnFootInside && autoZoom)
-                this.scale = 4;
-            if (game.status.OnFootOutside && autoZoom)
+            if ((game.status.SelectedWeapon == "$humanoid_companalyser_name;" || game.status.OnFootInside) && autoZoom)
+                this.scale = 6;
+            else if (game.status.OnFootOutside && autoZoom)
                 this.scale = 2;
 
             this.Invalidate();
@@ -257,6 +257,33 @@ namespace SrvSurvey
             base.onJournalEntry(entry);
 
             Program.closePlotter<PlotHumanSite>();
+        }
+
+        protected override void onJournalEntry(BackpackChange entry)
+        {
+            base.onJournalEntry(entry);
+            if (this.site.template?.dataTerminals == null) return;
+            if (entry.Added == null || !entry.Added.Any(_ => _.Type == "Data")) return;
+
+            var offset = Util.getOffset(radius, siteOrigin, siteHeading);
+
+            // find closest data terminal
+            HumanSitePoi2? terminal = null;
+            var closest = 1000m;
+            foreach (var dt in this.site.template.dataTerminals)
+            {
+                var dist = (offset - new PointM(dt.offset)).dist;
+                if (dist < closest) // TODO: make it first <5 m
+                {
+                    terminal = dt;
+                    closest = dist;
+                }
+            }
+
+            if (terminal == null) return;
+
+            terminal.processed = true;
+            this.Invalidate();
         }
 
         private void loadTemplate()
@@ -518,6 +545,10 @@ namespace SrvSurvey
                     newLine(+ten, true);
                     drawTextAt(eight, $"► Send message '.settlement'");
                 }
+
+                // show mat collection points on top of everything else
+                this.resetMiddleSiteOrigin();
+                this.drawCollectedMats();
             }
             catch (Exception ex)
             {
@@ -869,11 +900,13 @@ namespace SrvSurvey
                         if (terminal.level == 1) b = b1;
                         if (terminal.level == 2) b = b2;
                         if (terminal.level == 3) b = b3;
+                        if (terminal.processed) b = Brushes.Gray;
 
                         var p = p0;
                         if (terminal.level == 1) p = p1;
                         if (terminal.level == 2) p = p2;
                         if (terminal.level == 3) p = p3;
+                        if (terminal.processed) p = Pens.Gray;
 
                         // ❗❕❉✪✿❤➊➀⟐𖺋𖺋⟊➟✦✔⛶⛬⛭⛯⛣⛔⛌⛏⚴⚳⚱⚰⚚⚙⚗⚕⚑⚐⚜⚝⚛⚉⚇♥♦♖♜☸☗☯☍☉☄☁◬◊◈◍◉▣▢╳
                         //string txt = "ꊢ"; // ⦖⥣ꇗꊢꉄꇥꇗꇩꆜꄨꀜꀤꀡꀍ䷏〶〷〓〼〿⸙⸋⯒⭻⬨⬖⬘⬮⬯⫡⩸⩃⨟⨨⨱⨲⦼⧌⚼⦡⧲⛅ ⛍ ⛉ ❎ ⮔⮹ ⮺⯑⯳⯿⑅Ⓓⓓ▚▚▨▒◀◩ ⦡⦺⦹⦿⧳⧲⨹⨺⨻⨷⨳⨯⬙⭕⭍✉⛽✇⛳⛿✆⛋⚼"; ⛗ ⛘ ⛅ ⛍ ⛉ ❎ ⮔⮹ ⮺⯑⯳⯿⑅Ⓓⓓ▚▚▨▒◀◩ ⦡⦺⦹⦿⧳⧲⨝⨹⨺⨻⨷⨳⨯⬙⭕⭍
@@ -901,7 +934,10 @@ namespace SrvSurvey
                     });
                 }
             }
+        }
 
+        private void drawCollectedMats()
+        {
             if (game.matStatsTracker?.matLocations != null) // TODO: hide with a setting?
             {
                 //game.matStatsTracker.matLocations.Clear();
@@ -909,10 +945,12 @@ namespace SrvSurvey
                 //game.matStatsTracker.countMats.Clear();
                 //game.matStatsTracker.countTypes.Clear();
                 //game.matStatsTracker.Save();
+                var pp = new Pen(Color.Yellow, 0.2f);
 
                 foreach (var entry in game.matStatsTracker.matLocations)
                 {
-                    g.FillEllipse(Brushes.LightSalmon, entry.x - 0.5f, -entry.y - 0.5f, 1f, 1f);
+                    g.FillEllipse(Brushes.Black, entry.x - 0.5f, -entry.y - 0.5f, 1f, 1f);
+                    g.DrawEllipse(pp, entry.x - 0.5f, -entry.y - 0.5f, 1f, 1f);
                 }
             }
         }

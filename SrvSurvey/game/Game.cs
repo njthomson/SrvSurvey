@@ -643,7 +643,7 @@ namespace SrvSurvey.game
                     {
                         this.humanSite = lastHumanSite;
                         // This is probably a bad idea
-                        // if (Game.settings.collectMatsCollectionStatsTest) this.initMats(this.humanSite);
+                        if (Game.settings.collectMatsCollectionStatsTest) this.initMats(this.humanSite);
                         return;
                     }
                 }
@@ -708,7 +708,7 @@ namespace SrvSurvey.game
             {
                 cmdr.setMarketId(this.humanSite.marketId);
                 // This is probably a bad idea
-                // if (Game.settings.collectMatsCollectionStatsTest) this.initMats(this.humanSite);
+                if (Game.settings.collectMatsCollectionStatsTest) this.initMats(this.humanSite);
                 return;
             }
 
@@ -1906,7 +1906,7 @@ namespace SrvSurvey.game
                     }
                 }
             }
-            else if (entry.MarketID > 0 && this.systemBody != null && Game.settings.autoShowHumanSitesTest 
+            else if (entry.MarketID > 0 && this.systemBody != null && Game.settings.autoShowHumanSitesTest
                 && entry.StationServices?.Contains("socialspace") == false  // bigger settlements (Planetery ports) are not compatible
                 && entry.StationServices.Count > 0) // horizons old settlements are not compatible
             {
@@ -2044,6 +2044,7 @@ namespace SrvSurvey.game
         private void onJournalEntry(BackpackChange entry)
         {
             if (!Game.settings.collectMatsCollectionStatsTest || this.matStatsTracker == null || this.humanSite == null || humanSite.heading == -1 || entry.Added == null) return;
+            Application.DoEvents();
 
             // TODO: Use BackpackChange only for Data, restore CollectItems for the others
 
@@ -2053,26 +2054,25 @@ namespace SrvSurvey.game
 
                 // Track location offset +1m by cmdr heading, to account for mats being in front of cmdr
                 var cmdrOffset = Util.getOffset(status.PlanetRadius, humanSite.location, humanSite.heading);
-                //cmdrOffset.y *= -1;
-                var a = (decimal)humanSite.heading + status.Heading - 180;
+                var a = status.Heading - (decimal)humanSite.heading;
                 if (a < 0) a += 360;
                 if (a > 360) a -= 360;
                 var d = Util.rotateLine(a, 1);
-                var location = cmdrOffset; // + d;
+                var location = cmdrOffset + d;
 
                 var building = humanSite.template?.getCurrentBld((PointF)cmdrOffset, humanSite.heading);
                 this.matStatsTracker.track(item, (PointF)location, building);
-                Program.getPlotter<PlotHumanSite>()?.Invalidate();
             }
 
+            Program.getPlotter<PlotHumanSite>()?.Invalidate();
             this.matStatsTracker.Save();
         }
 
         private void onJournalEntry(CollectItems entry)
         {
             if (!Game.settings.collectMatsCollectionStatsTest || this.matStatsTracker == null || this.humanSite == null || humanSite.heading == -1) return;
-
             if (entry.Type == "Data") return;
+            Application.DoEvents();
 
             // increment basic count of Mat type
             if (!this.matStatsTracker.countMats.ContainsKey(entry.Name)) this.matStatsTracker.countMats[entry.Name] = 0;
@@ -2080,18 +2080,16 @@ namespace SrvSurvey.game
 
             // Track location offset +1m by cmdr heading, to account for mats being in front of cmdr
             var cmdrOffset = Util.getOffset(status.PlanetRadius, humanSite.location, humanSite.heading);
-            //cmdrOffset.y *= -1;
-            var a = (decimal)humanSite.heading + status.Heading - 180;
+            var a = status.Heading - (decimal)humanSite.heading;
             if (a < 0) a += 360;
             if (a > 360) a -= 360;
             var d = Util.rotateLine(a, 1);
-            var location = cmdrOffset; // + d;
+            var location = cmdrOffset + d;
 
             var building = humanSite.template?.getCurrentBld((PointF)cmdrOffset, humanSite.heading);
-
             this.matStatsTracker.track(entry, (PointF)location, building);
 
-
+            Program.getPlotter<PlotHumanSite>()?.Invalidate();
             this.matStatsTracker.Save();
         }
 

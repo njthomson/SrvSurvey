@@ -257,6 +257,12 @@ namespace SrvSurvey
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public LandingPadSize size;
 
+        /// <summary>
+        /// Not saved. If the cmdr has already downloaded data from this terminal, emptied this thing, etc.
+        /// </summary>
+        [JsonIgnore]
+        public bool processed;
+
         class JsonConverter : Newtonsoft.Json.JsonConverter
         {
             public override bool CanConvert(Type objectType) { return false; }
@@ -295,9 +301,13 @@ namespace SrvSurvey
                     {  "Y", JToken.FromObject(data.offset.Y) },
                 };
 
-                if (data.floor > 0) obj["floor"] = JToken.FromObject(data.floor);
-                if (data.size == 0) // all but landing pags
-                    obj["level"] = JToken.FromObject(data.level); 
+                if (data.size == 0)
+                {
+                    // all but landing pags
+                    obj["floor"] = JToken.FromObject(data.floor);
+                    obj["level"] = JToken.FromObject(data.level);
+                }
+
                 if (data.rot > 0) obj["rot"] = JToken.FromObject(data.rot);
 
                 var json = JsonConvert.SerializeObject(obj); // no indentation

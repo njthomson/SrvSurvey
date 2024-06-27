@@ -41,16 +41,16 @@ namespace SrvSurvey
             get => Game.settings.autoShowPlotBioSystemTest
                 && Game.activeGame?.status != null
                 && Game.activeGame.systemData != null
-                // && Game.activeGame.humanSite == null
                 && Game.activeGame.systemData.bioSignalsTotal > 0
                 && !Game.activeGame.status.InTaxi
                 && !Game.activeGame.status.OnFootSocial
                 && !Game.activeGame.hidePlottersFromCombatSuits
+                && (Game.activeGame.humanSite == null || Game.activeGame.mode == GameMode.ExternalPanel) // why was this commented? For external panel?
                 && (
                     Game.activeGame.isMode(GameMode.SuperCruising, GameMode.SAA, GameMode.FSS, GameMode.ExternalPanel, GameMode.Orrery, GameMode.SystemMap)
                     || (
                             Game.activeGame.systemBody?.bioSignalCount > 0
-                            && Game.activeGame?.status?.hasLatLong == true
+                            && Game.activeGame.status.hasLatLong == true
                             && Game.activeGame.isMode(GameMode.GlideMode, GameMode.Flying, GameMode.Landed, GameMode.OnFoot, GameMode.CommsPanel, GameMode.InSrv)
                         )
                 );
