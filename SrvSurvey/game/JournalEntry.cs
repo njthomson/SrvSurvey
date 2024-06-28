@@ -177,6 +177,7 @@ namespace SrvSurvey
     class Docked : JournalEntry
     {
         // { "timestamp":"2024-04-09T06:45:51Z", "event":"Docked", "StationName":"Oyekan Prospecting Hub", "StationType":"OnFootSettlement", "Taxi":false, "Multicrew":false, "StarSystem":"Yaurnai", "SystemAddress":669612713401, "MarketID":3888520448, "StationFaction":{ "Name":"Yaurnai Jet Hand Gang" }, "StationGovernment":"$government_Anarchy;", "StationGovernment_Localised":"Anarchy", "StationServices":[ "dock", "autodock", "blackmarket", "commodities", "contacts", "missions", "refuel", "repair", "engineer", "missionsgenerated", "facilitator", "flightcontroller", "stationoperations", "stationMenu" ], "StationEconomy":"$economy_Extraction;", "StationEconomy_Localised":"Extraction", "StationEconomies":[ { "Name":"$economy_Extraction;", "Name_Localised":"Extraction", "Proportion":1.000000 } ], "DistFromStarLS":18.841609, "LandingPads":{ "Small":1, "Medium":0, "Large":0 } }
+        // { "timestamp":"2024-06-28T02:10:59Z", "event":"Docked", "StationName":"Crellin Genetics Installation", "StationType":"OnFootSettlement", "Taxi":false, "Multicrew":false, "StarSystem":"Lacaille 9352", "SystemAddress":11666070709673, "MarketID":3854458880, "StationFaction":{ "Name":"Quam Singulari" }, "StationGovernment":"$government_Democracy;", "StationGovernment_Localised":"Democracy", "StationAllegiance":"Federation", "StationServices":[ "dock", "autodock", "blackmarket", "commodities", "contacts", "exploration", "missions", "refuel", "repair", "engineer", "missionsgenerated", "facilitator", "flightcontroller", "stationoperations", "searchrescue", "stationMenu" ], "StationEconomy":"$economy_HighTech;", "StationEconomy_Localised":"High Tech", "StationEconomies":[ { "Name":"$economy_HighTech;", "Name_Localised":"High Tech", "Proportion":1.000000 } ], "DistFromStarLS":1062.028204, "Wanted":true, "ActiveFine":true, "LandingPads":{ "Small":1, "Medium":0, "Large":0 } }
 
         public string StationName;
         public StationType StationType;
@@ -193,6 +194,8 @@ namespace SrvSurvey
         public string? StationEconomy_Localised;
         // StationEconomies ?
         public double DistFromStarLS;
+        public bool Wanted;
+        public bool ActiveFine;
         public LandingPads LandingPads;
     }
 

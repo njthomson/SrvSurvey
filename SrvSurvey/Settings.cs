@@ -36,6 +36,10 @@ namespace SrvSurvey
         /// For Human settlements ...
         /// </summary>
         public bool collectMatsCollectionStatsTest = false;
+        /// <summary>
+        /// Whether to show dots at the locations we collected mats at a human settlement.
+        /// </summary>
+        public bool showMatsCollectionDots = true;
 
         public bool skipGasGiantDSS = true;
         public bool skipRingsDSS = false;

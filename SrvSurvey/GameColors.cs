@@ -208,9 +208,9 @@ namespace SrvSurvey
         public static Brush brushUnknownBioSignal = new SolidBrush(Color.FromArgb(255, 88, 88, 88));
 
         public static Pen penGameOrange1Dotted = newPen(Orange, 1, DashStyle.Dot);
-        public static Pen penGameOrange1Dashed= newPen(Orange, 1, DashStyle.Dash);
+        public static Pen penGameOrange1Dashed = newPen(Orange, 1, DashStyle.Dash);
         public static Pen penGameOrange2Dotted = newPen(Orange, 2, DashStyle.Dot);
-        public static Pen penGameOrange2Dashed= newPen(Orange, 2, DashStyle.Dash);
+        public static Pen penGameOrange2Dashed = newPen(Orange, 2, DashStyle.Dash);
         public static Pen penGameOrange2DashedIsh = newPen(Color.FromArgb(128, Orange), 2, DashStyle.Dash);
 
         public static Pen penNearestUnknownSitePOI = newPen(Color.FromArgb(96, Color.DarkCyan), 15, LineCap.RoundAnchor, LineCap.Round);
@@ -464,6 +464,35 @@ namespace SrvSurvey
             };
         }
 
+        public static Pen penCollectedMatDot = new Pen(Color.Yellow, 0.2f);
+
+        public static Dictionary<int, SiteColors> siteLevel = new Dictionary<int, SiteColors>
+        {
+            { 0, new SiteColors(Color.Green) },
+            { 1, new SiteColors(Color.SkyBlue) },
+            { 2, new SiteColors(Color.DarkOrange) },
+            { 3, new SiteColors(Color.Red) },
+
+            // For processed POIs, like DataTerminals that have already been scanned
+            { -1, new SiteColors(Color.Gray) },
+        };
+
+        /// <summary>
+        /// Colors for buildings at human settlements
+        /// </summary>
+        public static class Building
+        {
+            public static Brush HAB = new SolidBrush(Color.FromArgb(255, 0, 32, 0)); // green
+            public static Brush CMD = new SolidBrush(Color.FromArgb(255, 48, 0, 0)); // red
+            public static Brush POW = new SolidBrush(Color.FromArgb(255, 32, 32, 64)); // purple
+            public static Brush EXT = new SolidBrush(Color.FromArgb(255, 0, 0, 72)); // blue
+            public static Brush STO = new SolidBrush(Color.FromArgb(255, 50, 30, 20)); // brown
+            public static Brush RES = new SolidBrush(Color.FromArgb(255, 50, 20, 10)); // darker brown?
+            public static Brush IND = new SolidBrush(Color.FromArgb(255, 60, 40, 10)); // lighter brown
+            public static Brush MED = new SolidBrush(Color.FromArgb(255, 32, 32, 32)); // grey
+            public static Brush LAB = new SolidBrush(Color.FromArgb(255, 0, 32, 32)); // dark green
+        }
+
         #region Fonts
 
         public static void resetFontScale()
@@ -496,9 +525,16 @@ namespace SrvSurvey
         public static Font font18 = new Font("Century Gothic", 18F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
         public static Font font14 = new Font("Century Gothic", 14F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
 
-        public static Font fontWingDings = new Font("Wingdings", 8F * fontScaleFactor, FontStyle.Bold, GraphicsUnit.Point);
-        public static Font fontWingDings2 = new Font("Wingdings 2", 8F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
-        public static Font fontSmallFonts = new Font("Small Fonts", 8F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
+        internal static class Fonts
+        {
+            public static Font wingdings_4B = new Font("Wingdings", 4F * fontScaleFactor, FontStyle.Bold, GraphicsUnit.Point);
+            public static Font wingdings2_2B = new Font("Wingdings 2", 8F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
+            public static Font fontSmallFonts = new Font("Small Fonts", 8F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
+
+            // TODO: confirm these Pixel sized fonts scale properly with large fonts
+            public static Font typewriter_p4 = new Font("Lucida Sans Typewriter", 4F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Pixel);
+            public static Font typewriter_p6 = new Font("Lucida Sans Typewriter", 6F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Pixel);
+        }
 
         #endregion
 
@@ -533,5 +569,22 @@ namespace SrvSurvey
                 EndCap = endCap,
             };
         }
+    }
+
+    /// <summary>
+    /// Details for Human settlement POIs
+    /// </summary>
+    internal class SiteColors
+    {
+        public SiteColors(Color color)
+        {
+            this.color = color;
+            this.brush = new SolidBrush(color);
+            this.pen = GameColors.newPen(color, 0.5f, LineCap.Triangle, LineCap.Triangle);
+        }
+
+        public readonly Color color;
+        public readonly Brush brush;
+        public readonly Pen pen;
     }
 }
