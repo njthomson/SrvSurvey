@@ -14,8 +14,7 @@ namespace SrvSurvey
         private FileSystemWatcher? templateWatcher;
         private DockingState dockingState = DockingState.none;
         private bool hasLanded = false;
-        private PointF buildingCorner;
-        private float buildingHeading;
+
         private FormBuilder? builder { get => FormBuilder.activeForm; }
 
         private HumanSiteData site { get => game.humanSite!; }
@@ -268,17 +267,7 @@ namespace SrvSurvey
             var offset = Util.getOffset(radius, siteOrigin, siteHeading);
 
             // find closest data terminal
-            HumanSitePoi2? terminal = null;
-            var closest = 1000m;
-            foreach (var dt in this.site.template.dataTerminals)
-            {
-                var dist = (offset - new PointM(dt.offset)).dist;
-                if (dist < closest) // TODO: make it first <5 m
-                {
-                    terminal = dt;
-                    closest = dist;
-                }
-            }
+            var terminal = this.site.template.dataTerminals.FirstOrDefault(dt => (offset - new PointM(dt.offset)).dist < 10);
 
             if (terminal == null) return;
 
@@ -336,6 +325,7 @@ namespace SrvSurvey
             else if (msg == MsgCmd.settlement)
             {
                 this.site.inferSubtypeFromFoot(game.status.Heading);
+                this.siteHeading = this.site.heading;
             }
 
             if (msg == ";;")
@@ -760,13 +750,14 @@ namespace SrvSurvey
             var b0 = Brushes.Green;
             var b1 = Brushes.SkyBlue;
             var b2 = Brushes.DarkOrange;
-            var b3 = (Brush)new SolidBrush(Color.FromArgb(200, Color.Red));
+            var b3 = (Brush)new SolidBrush(Color.FromArgb(200, Color.Red)); 
+            var b4 = Brushes.Gray;
 
             var p0 = new Pen(Color.Green, 0.5f) { EndCap = LineCap.Triangle, StartCap = LineCap.Triangle };
             var p1 = new Pen(Color.SkyBlue, 0.5f) { EndCap = LineCap.Triangle, StartCap = LineCap.Triangle };
             var p2 = new Pen(Color.DarkOrange, 0.5f) { EndCap = LineCap.Triangle, StartCap = LineCap.Triangle };
             var p3 = new Pen(Color.Red, 0.5f) { EndCap = LineCap.Triangle, StartCap = LineCap.Triangle };
-
+            var p4 = new Pen(Color.Gray, 0.5f) { EndCap = LineCap.Triangle, StartCap = LineCap.Triangle };
 
             if (game.humanSite.template.secureDoors != null)
             {
@@ -900,13 +891,13 @@ namespace SrvSurvey
                         if (terminal.level == 1) b = b1;
                         if (terminal.level == 2) b = b2;
                         if (terminal.level == 3) b = b3;
-                        if (terminal.processed) b = Brushes.Gray;
+                        if (terminal.processed) b = b4;
 
                         var p = p0;
                         if (terminal.level == 1) p = p1;
                         if (terminal.level == 2) p = p2;
                         if (terminal.level == 3) p = p3;
-                        if (terminal.processed) p = Pens.Gray;
+                        if (terminal.processed) p =p4;
 
                         // ❗❕❉✪✿❤➊➀⟐𖺋𖺋⟊➟✦✔⛶⛬⛭⛯⛣⛔⛌⛏⚴⚳⚱⚰⚚⚙⚗⚕⚑⚐⚜⚝⚛⚉⚇♥♦♖♜☸☗☯☍☉☄☁◬◊◈◍◉▣▢╳
                         //string txt = "ꊢ"; // ⦖⥣ꇗꊢꉄꇥꇗꇩꆜꄨꀜꀤꀡꀍ䷏〶〷〓〼〿⸙⸋⯒⭻⬨⬖⬘⬮⬯⫡⩸⩃⨟⨨⨱⨲⦼⧌⚼⦡⧲⛅ ⛍ ⛉ ❎ ⮔⮹ ⮺⯑⯳⯿⑅Ⓓⓓ▚▚▨▒◀◩ ⦡⦺⦹⦿⧳⧲⨹⨺⨻⨷⨳⨯⬙⭕⭍✉⛽✇⛳⛿✆⛋⚼"; ⛗ ⛘ ⛅ ⛍ ⛉ ❎ ⮔⮹ ⮺⯑⯳⯿⑅Ⓓⓓ▚▚▨▒◀◩ ⦡⦺⦹⦿⧳⧲⨝⨹⨺⨻⨷⨳⨯⬙⭕⭍

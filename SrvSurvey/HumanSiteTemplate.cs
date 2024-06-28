@@ -7,7 +7,6 @@ using System.Globalization;
 
 namespace SrvSurvey
 {
-    //[JsonConverter(typeof(HumanSiteTemplate.JsonConverter))]
     internal class HumanSiteTemplate
     {
         #region static loading and saving code
@@ -152,75 +151,6 @@ namespace SrvSurvey
             return null;
         }
 
-        //class JsonConverter : Newtonsoft.Json.JsonConverter
-        //{
-        //    public override bool CanConvert(Type objectType) { return false; }
-
-        //    public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
-        //    {
-        //        var obj = serializer.Deserialize<JToken>(reader);
-        //        if (obj == null || !obj.HasValues)
-        //            return null;
-
-        //        // read the simple fields
-        //        var data = new HumanSiteTemplate()
-        //        {
-        //            economy = Enum.Parse<Economy>(obj["economy"]!.Value<string>()!, true),
-        //            subType = obj["subType"]!.Value<int>()!,
-        //            landingPads = obj["landingPads"]!.ToObject<List<LandingPad>>()!,
-        //            secureDoors = obj["secureDoors"]?.ToObject<List<SecureDoor>>() ?? new List<SecureDoor>(),
-        //            namedPoi = obj["namedPoi"]?.ToObject<List<NamedPoi>>() ?? new List<NamedPoi>(),
-        //            dataTerminals = obj["dataTerminals"]?.ToObject<List<DataTerminal>>() ?? new List<DataTerminal>(),
-        //        };
-
-        //        return data;
-        //    }
-
-        //    public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
-        //    {
-        //        var data = value as HumanSiteTemplate;
-        //        if (data == null) throw new Exception($"Unexpected value: {value?.GetType().Name}");
-
-        //        //var txt = new StringBuilder();
-        //        //foreach(var pad in data.landingPads)
-        //        //    txt.AppendLine(JsonConvert.SerializeObject(pad));
-
-        //        //var obj = new JObject
-        //        //{
-        //        //    { nameof(HumanSiteTemplate.economy), data.economy.ToString() },
-        //        //    { nameof(HumanSiteTemplate.subType), data.subType },
-        //        //    { nameof(HumanSiteTemplate.landingPads), collapse(data.landingPads) },
-        //        //    { nameof(HumanSiteTemplate.secureDoors), collapse(data.secureDoors) },
-        //        //    { nameof(HumanSiteTemplate.namedPoi), collapse(data.namedPoi) },
-        //        //    { nameof(HumanSiteTemplate.dataTerminals), collapse(data.dataTerminals) },
-        //        //};
-        //        //obj.WriteTo(writer);
-
-        //        var lines = new List<string>();
-        //        lines.Add($"\"economy\": \"{data.economy.ToString()}\"");
-        //        lines.Add($"\"subType\": \"{data.subType}\"");
-
-        //        lines.Add($"\"landingPads\": [\r\n{collapse(data.landingPads)}\r\n]");
-
-        //        var json = string.Join("\r\n,", lines);
-
-        //        //json += $"\"subType\": \"{data.subType}\","
-        //        //if (poi.rot > 0 && (poi.type == POIType.pylon || poi.type == POIType.component || poi.type == POIType.relic || poi.type == POIType.obelisk || poi.type == POIType.brokeObelisk))
-        //        //    json += $", \"rot\": {poi.rot}";
-
-        //        writer.WriteRawValue("{ " + json + " }");
-
-        //    }
-
-        //    private List<string> collapse<T>(List<T> list)
-        //    {
-        //        var lines = new List<string>();
-        //        foreach (var entry in list)
-        //            lines.Add(JsonConvert.SerializeObject(entry));
-
-        //        return lines;
-        //    }
-        //}
     }
 
     // ---
@@ -277,7 +207,7 @@ namespace SrvSurvey
                     offset = obj["offset"]!.ToObject<PointF>()!,
                     floor = obj["floor"]?.Value<int>() ?? 0,
                     level = obj["level"]?.Value<int>() ?? 0,
-                    rot = obj["rot"]?.Value<int>() ?? -1,
+                    rot = obj["rot"]?.Value<int>() ?? 0,
                     name = obj["name"]?.Value<string>(),
                     size = Enum.Parse<LandingPadSize>(obj["size"]?.Value<string>() ?? LandingPadSize.Unknown.ToString(), true),
                 };
@@ -322,7 +252,6 @@ namespace SrvSurvey
 
     // ---
 
-    //[JsonConverter(typeof(HumanSitePoi.JsonConverter))]
     internal abstract class HumanSitePoi
     {
         /// <summary>
@@ -356,49 +285,6 @@ namespace SrvSurvey
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public int floor;
-
-        //class JsonConverter : Newtonsoft.Json.JsonConverter
-        //{
-        //    public override bool CanConvert(Type objectType) { return false; }
-
-        //    public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
-        //    {
-        //        var txt = serializer.Deserialize<string>(reader);
-        //        if (string.IsNullOrEmpty(txt)) throw new Exception($"Unexpected value: {txt}");
-
-        //        // "{name}_{left}_{top}_{width}_{height}_{rot}"
-        //        // eg: "HAB_12.0_34.0_55.0_66.0_77"
-        //        var parts = txt.Split('_');
-        //        var pf = new PointF(float.Parse(parts[1], CultureInfo.InvariantCulture), float.Parse(parts[2], CultureInfo.InvariantCulture));
-        //        var sf = new SizeF(float.Parse(parts[3], CultureInfo.InvariantCulture), float.Parse(parts[4], CultureInfo.InvariantCulture));
-
-        //        var building = new Building()
-        //        {
-        //            rect = new RectangleF(pf, sf),
-        //            rot = int.Parse(parts[5], CultureInfo.InvariantCulture),
-        //            name = parts[0],
-        //        };
-
-        //        return building;
-        //    }
-
-        //    public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
-        //    {
-        //        var data = value as HumanSitePoi;
-        //        if (data == null) throw new Exception($"Unexpected value: {value?.GetType().Name}");
-
-        //        // create a single string
-        //        var txt = data.toJson();
-        //        writer.WriteValue(txt);
-        //    }
-        //}
-
-        //protected string toJson()
-        //{
-        //    var obj = JObject.FromObject(this);
-        //    var json = JsonConvert.SerializeObject(obj);
-        //    return json;
-        //}
 
     }
 
@@ -503,18 +389,9 @@ namespace SrvSurvey
                 var obj = serializer.Deserialize<JToken>(reader);
                 if (obj == null || !obj.HasValues) return null;
 
-                //foreach(var pathObj in obj["paths"]!.Values<JObject>())
-                //{
-                //    var fillMode = pathObj["FillMode"]?.Value<int>() ?? 0;
-                //    var pts = pathObj["PathPoints"]!.ToObject<PointF[]>();
-                //    var types = pathObj["PathTypes"]!.ToObject<byte[]>();
-                //    var gp = new GraphicsPath(pts, types, (FillMode)fillMode);
-                //}
-
                 var data = new Building2
                 {
                     name = obj["name"]!.Value<string>()!,
-                    //paths = obj["paths"]!.ToObject<List<GraphicsPath>>()!,
                 };
 
                 data.paths = new List<GraphicsPath>();
@@ -533,7 +410,6 @@ namespace SrvSurvey
                     data.paths.Add(gp);
                 }
 
-
                 return data;
             }
 
@@ -541,17 +417,6 @@ namespace SrvSurvey
             {
                 var data = value as Building2;
                 if (data == null) throw new Exception($"Unexpected value: {value?.GetType().Name}");
-
-                //var obj2 = new JArray();
-                //foreach (var item in data.paths)
-                //    obj2.Add(JsonConvert.SerializeObject(item)); // no indentation
-
-                //var obj = new JObject();
-                //obj["name"] = JToken.FromObject(data.name);
-                //obj["paths"] = obj2; // JToken.FromObject(data.paths);
-
-                //var json = JsonConvert.SerializeObject(obj); // no indentation
-                //writer.WriteRawValue(json);
 
                 writer.WriteStartObject();
 
@@ -585,7 +450,6 @@ namespace SrvSurvey
                 writer.WriteEndArray();
 
                 writer.WriteEndObject();
-
             }
         }
     }

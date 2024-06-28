@@ -191,6 +191,8 @@ namespace SrvSurvey
 
             btnCommitBuilding.Enabled = false;
             txtBuildingName.Enabled = false;
+
+            HumanSiteTemplate.export();
         }
 
         private void btnStartCircle_Click(object sender, EventArgs e)
@@ -267,6 +269,7 @@ namespace SrvSurvey
             site.template.namedPoi.Add(poi);
 
             refreshPlotter();
+            HumanSiteTemplate.export();
         }
 
         private void btnNamedPoi_Click(object sender, EventArgs e)
@@ -289,6 +292,7 @@ namespace SrvSurvey
             site.template.dataTerminals.Add(poi);
 
             refreshPlotter();
+            HumanSiteTemplate.export();
         }
 
         private void btnDoor(object sender, EventArgs e)
@@ -309,6 +313,7 @@ namespace SrvSurvey
             site.template.secureDoors.Add(poi);
 
             refreshPlotter();
+            HumanSiteTemplate.export();
         }
 
         private void button14_Click(object sender, EventArgs e)
@@ -326,6 +331,8 @@ namespace SrvSurvey
             levelOne.Checked = this.level == 1;
             levelTwo.Checked = this.level == 2;
             levelThree.Checked = this.level == 3;
+
+            refreshPlotter();
         }
 
         private void floorOne_CheckedChanged(object sender, EventArgs e)
@@ -337,6 +344,8 @@ namespace SrvSurvey
             floorOne.Checked = this.floor == 1;
             floorTwo.Checked = this.floor == 2;
             floorThree.Checked = this.floor == 3;
+
+            refreshPlotter();
         }
     }
 }

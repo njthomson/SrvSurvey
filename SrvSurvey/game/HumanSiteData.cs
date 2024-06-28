@@ -217,13 +217,14 @@ namespace SrvSurvey.game
 
                 foreach (var pad in template.landingPads)
                 {
-                    // are we within ~5m of the expected pad? Is ~5m enough?
-                    var offset = pad.offset - Util.getOffset(radius, this.location, heading - pad.rot);
-                    if (offset.dist < 5) // TODO: adjust by pad size?
+                    // are we within ~25m of the expected pad? Is ~5m enough?
+                    var cmdrOffset = Util.getOffset(radius, this.location, heading - pad.rot);
+                    var delta = pad.offset - cmdrOffset;
+                    if (delta.dist < 25) // TODO: adjust by pad size?
                     {
                         this.subType = template.subType;
                         this.template = HumanSiteTemplate.get(this.economy, this.subType);
-                        Game.log($"inferSubtypeFromFoot: matched {this.economy} #{template.subType} from pad #{this.targetPad}, shipDistFromPadCenter:" + Util.metersToString(offset.dist));
+                        Game.log($"inferSubtypeFromFoot: matched {this.economy} #{template.subType} from pad #{this.targetPad}, shipDistFromPadCenter:" + Util.metersToString(delta.dist));
                         this.template = HumanSiteTemplate.get(this.economy, this.subType);
                         this.landingPads = landPadSummary;
 
@@ -250,7 +251,7 @@ namespace SrvSurvey.game
                     else
                     {
                         // TODO: Remove once templates are populated
-                        Game.log($"not a match - {template.economy} #{template.subType}, pad #{this.targetPad} ({pad.size}): shipDistFromPadCenter: " + offset.dist.ToString("N2"));
+                        Game.log($"not a match - {template.economy} #{template.subType}, pad #{this.targetPad} ({pad.size}): shipDistFromPadCenter: " + delta.dist.ToString("N2"));
                     }
                 }
             }

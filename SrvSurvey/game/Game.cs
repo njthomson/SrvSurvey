@@ -2050,8 +2050,6 @@ namespace SrvSurvey.game
 
             foreach (var item in entry.Added)
             {
-                if (item.Type != "Data") continue;
-
                 // Track location offset +1m by cmdr heading, to account for mats being in front of cmdr
                 var cmdrOffset = Util.getOffset(status.PlanetRadius, humanSite.location, humanSite.heading);
                 var a = status.Heading - (decimal)humanSite.heading;
@@ -2063,31 +2061,6 @@ namespace SrvSurvey.game
                 var building = humanSite.template?.getCurrentBld((PointF)cmdrOffset, humanSite.heading);
                 this.matStatsTracker.track(item, (PointF)location, building);
             }
-
-            Program.getPlotter<PlotHumanSite>()?.Invalidate();
-            this.matStatsTracker.Save();
-        }
-
-        private void onJournalEntry(CollectItems entry)
-        {
-            if (!Game.settings.collectMatsCollectionStatsTest || this.matStatsTracker == null || this.humanSite == null || humanSite.heading == -1) return;
-            if (entry.Type == "Data") return;
-            Application.DoEvents();
-
-            // increment basic count of Mat type
-            if (!this.matStatsTracker.countMats.ContainsKey(entry.Name)) this.matStatsTracker.countMats[entry.Name] = 0;
-            this.matStatsTracker.countMats[entry.Name] += 1;
-
-            // Track location offset +1m by cmdr heading, to account for mats being in front of cmdr
-            var cmdrOffset = Util.getOffset(status.PlanetRadius, humanSite.location, humanSite.heading);
-            var a = status.Heading - (decimal)humanSite.heading;
-            if (a < 0) a += 360;
-            if (a > 360) a -= 360;
-            var d = Util.rotateLine(a, 1);
-            var location = cmdrOffset + d;
-
-            var building = humanSite.template?.getCurrentBld((PointF)cmdrOffset, humanSite.heading);
-            this.matStatsTracker.track(entry, (PointF)location, building);
 
             Program.getPlotter<PlotHumanSite>()?.Invalidate();
             this.matStatsTracker.Save();
