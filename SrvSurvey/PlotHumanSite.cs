@@ -32,7 +32,10 @@ namespace SrvSurvey
             if (!autoZoom) this.scale = 6;
 
             if (game.isMode(GameMode.OnFoot, GameMode.Docked, GameMode.InSrv, GameMode.Landed))
-                dockingState = DockingState.landed;
+            {
+                this.dockingState = DockingState.landed;
+                this.hasLanded = true;
+            }
         }
 
         protected override void Dispose(bool disposing)
@@ -267,7 +270,7 @@ namespace SrvSurvey
             var offset = Util.getOffset(radius, siteOrigin, siteHeading);
 
             // find closest data terminal
-            var terminal = this.site.template.dataTerminals.FirstOrDefault(dt => (offset - new PointM(dt.offset)).dist < 10);
+            var terminal = this.site.template.dataTerminals.FirstOrDefault(dt => (offset - new PointM(dt.offset)).dist < 5);
 
             if (terminal == null) return;
 
