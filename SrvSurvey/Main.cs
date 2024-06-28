@@ -425,7 +425,7 @@ namespace SrvSurvey
                 Task.Run(new Action(() =>
                 {
                     if (!newGame.cmdr.migratedScannedOrganicsInEntryId)
-                        BodyData.migrate_ScannedOrganics_Into_ScannedBioEntryIds(newGame.cmdr);
+                        BodyDataOld.migrate_ScannedOrganics_Into_ScannedBioEntryIds(newGame.cmdr);
 
                     if (!newGame.cmdr.migratedNonSystemDataOrganics)
                         SystemData.migrate_BodyData_Into_SystemData(newGame.cmdr).ConfigureAwait(false);
@@ -935,22 +935,6 @@ namespace SrvSurvey
                 // force a re-render
                 if (PlotGrounded.allowPlotter)
                     Program.showPlotter<PlotTrackers>()?.prepTrackers();
-            }
-
-            // submit a Landscape survey
-            if (msg.StartsWith(MsgCmd.visited, StringComparison.OrdinalIgnoreCase))
-            {
-                var bodyName = entry.Message.Substring(MsgCmd.visited.Length).Trim();
-                game.systemStatus.visitedTargetBody(bodyName);
-            }
-            else if (msg.StartsWith(MsgCmd.submit, StringComparison.OrdinalIgnoreCase))
-            {
-                var notes = entry.Message.Substring(MsgCmd.submit.Length).Trim();
-                game.systemStatus.submitSurvey(notes);
-            }
-            else if (msg.Equals(MsgCmd.nextSystem, StringComparison.OrdinalIgnoreCase))
-            {
-                game.systemStatus.nextSystem().ConfigureAwait(false);
             }
 
             // first foot fall

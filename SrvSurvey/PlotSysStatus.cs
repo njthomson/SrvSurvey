@@ -103,8 +103,8 @@ namespace SrvSurvey
                 this.dtx = scaled(6.0f);
                 this.dty = scaled(19.0f);
 
-                var sys = this.game.systemStatus;
-                var destinationBody = game.status.Destination?.Name?.Replace(sys.name, "").Replace(" ", "");
+                // reduce destination to it's short name
+                var destinationBody = game.status.Destination?.Name?.Replace(game.systemData.name, "").Replace(" ", "");
 
                 if (this.nextSystem != null)
                 {

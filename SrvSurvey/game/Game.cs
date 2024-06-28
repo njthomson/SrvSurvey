@@ -121,7 +121,6 @@ namespace SrvSurvey.game
         public CargoFile cargoFile { get; private set; }
         public bool guardianMatsFull;
 
-        public SystemStatus systemStatus;
 
         public SystemData? systemData;
         public SystemBody? systemBody;
@@ -572,8 +571,6 @@ namespace SrvSurvey.game
 
                 log($"Game.initializeFromJournal: system: '{cmdr.currentSystem}' (id:{cmdr.currentSystemAddress}), body: '{this.systemBody?.name}' (id:{this.systemBody?.id}, r: {Util.metersToString(this.systemBody?.radius ?? -1)})");
 
-                this.systemStatus = new SystemStatus(cmdr.currentSystem, cmdr.currentSystemAddress);
-                this.systemStatus.initFromJournal(this);
             }
 
             // if we have landed, we need to find the last Touchdown location
@@ -879,16 +876,10 @@ namespace SrvSurvey.game
             // Happens when game has loaded after being at the main menu
             // Or player resurrects at a station
 
-            //this.starSystem = entry.StarSystem;
-            //this.systemLocation = Util.getLocationString(entry.StarSystem, entry.Body);
-
             // rely on previously tracked locations?
 
             this.setLocations(entry);
 
-            // start a new SystemStatus
-            this.systemStatus = new SystemStatus(entry.StarSystem, entry.SystemAddress);
-            this.systemStatus.initFromJournal(this);
         }
 
         private void onJournalEntry(Loadout entry)
@@ -1005,9 +996,6 @@ namespace SrvSurvey.game
 
             this.setLocations(entry);
 
-            // start a new SystemStatus
-            this.systemStatus = new SystemStatus(entry.StarSystem, entry.SystemAddress);
-            this.systemStatus.initFromJournal(this);
 
             this.checkModeChange();
 
@@ -1024,9 +1012,6 @@ namespace SrvSurvey.game
 
             this.setLocations(entry);
 
-            // start a new SystemStatus
-            this.systemStatus = new SystemStatus(entry.StarSystem, entry.SystemAddress);
-            this.systemStatus.initFromJournal(this);
 
             this.checkModeChange();
         }
@@ -1038,7 +1023,6 @@ namespace SrvSurvey.game
 
         private void onJournalEntry(FSSDiscoveryScan entry)
         {
-            this.systemStatus.onJournalEntry(entry); // retire
 
             if (FormGenus.activeForm != null)
                 FormGenus.activeForm.deferPopulateGenus();
@@ -1046,7 +1030,6 @@ namespace SrvSurvey.game
 
         private void onJournalEntry(Scan entry)
         {
-            this.systemStatus.onJournalEntry(entry); // retire
 
             if (FormGenus.activeForm != null)
                 FormGenus.activeForm.deferPopulateGenus();
@@ -1054,7 +1037,6 @@ namespace SrvSurvey.game
 
         private void onJournalEntry(SAAScanComplete entry)
         {
-            this.systemStatus.onJournalEntry(entry); // retire
 
             this.setCurrentBody(entry.BodyID);
             this.fireUpdate();
@@ -1067,12 +1049,10 @@ namespace SrvSurvey.game
 
         private void onJournalEntry(FSSAllBodiesFound entry)
         {
-            this.systemStatus.onJournalEntry(entry); // retire
         }
 
         private void onJournalEntry(FSSBodySignals entry)
         {
-            this.systemStatus.onJournalEntry(entry); // retire
 
             if (FormGenus.activeForm != null)
             {
@@ -1715,9 +1695,6 @@ namespace SrvSurvey.game
                         if (foo)
                             shouldRefreshGuardianSystemStatus = true;
 
-                        // TODO: retire
-                        if (this.systemStatus != null)
-                            this.systemStatus.mergeCanonnPoi(this.canonnPoi);
                     }
                     else if ((response.Exception?.InnerException as HttpRequestException)?.StatusCode == System.Net.HttpStatusCode.NotFound || Util.isFirewallProblem(response.Exception))
                     {
@@ -2145,7 +2122,6 @@ namespace SrvSurvey.game
 
         private void onJournalEntry(ScanOrganic entry)
         {
-            this.systemStatus.onJournalEntry(entry); // TODO: retire!
             if (this.systemBody == null) throw new Exception($"Why no this.systemBody?");
 
             // are we changing organism before the 3rd scan?

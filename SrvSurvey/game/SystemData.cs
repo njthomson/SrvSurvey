@@ -154,7 +154,7 @@ namespace SrvSurvey.game
 
         #region migrate data from individual body files
 
-        private static SystemData From(BodyData bodyData, CommanderSettings cmdr)
+        private static SystemData From(BodyDataOld bodyData, CommanderSettings cmdr)
         {
             lock (cache)
             {
@@ -197,7 +197,7 @@ namespace SrvSurvey.game
             {
                 var filepath = Path.Combine(folder, filename);
                 Game.log($"Reading: {filepath}");
-                var bodyData = Data.Load<BodyData>(filepath)!;
+                var bodyData = Data.Load<BodyDataOld>(filepath)!;
 
                 var systemData = SystemData.From(bodyData, cmdr);
                 if (systemData.starPos == null)

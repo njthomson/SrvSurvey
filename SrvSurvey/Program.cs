@@ -306,7 +306,7 @@ namespace SrvSurvey
                 Game.log($">> mergeScannedBioEntryIds: {cmdrFile}");
 
                 // merge prior scans, both types, and update total
-                BodyData.migrate_ScannedOrganics_Into_ScannedBioEntryIds(oldCmdr);
+                BodyDataOld.migrate_ScannedOrganics_Into_ScannedBioEntryIds(oldCmdr);
                 foreach (var old in oldCmdr.scannedBioEntryIds)
                     newCmdr.scannedBioEntryIds.Add(old);
 
