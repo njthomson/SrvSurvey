@@ -320,6 +320,10 @@ namespace SrvSurvey.canonn
         public long? reward; //          1593700
         public string sub_category; // "$Codex_SubCategory_Organic_Structures;"
         public string sub_class; //    "Brain Tree"
+
+        public string dump; // a url to download a .csv file
+        public string image_cmdr;
+        public string image_url;
     }
 
     internal class GRSitesData

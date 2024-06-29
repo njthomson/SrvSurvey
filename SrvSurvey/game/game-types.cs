@@ -276,6 +276,12 @@ namespace SrvSurvey.game
         public string name;   // $Codex_Ent_Stratum_07_M_Name;
         public string englishName; // Stratum Tectonicas - Green
         public string entryIdSuffix; // 03
+        
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public string imageUrl;
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public string imageCmdr;
 
         public override string ToString()
         {

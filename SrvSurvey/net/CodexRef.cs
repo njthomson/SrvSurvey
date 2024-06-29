@@ -16,7 +16,11 @@ namespace SrvSurvey.canonn
 
         public async Task init(bool reset)
         {
-            Game.log($"CodexRef init (reset: {reset}) ...");
+            var duration = DateTime.Now - Game.settings.lastCodexRefDownload;
+            Game.log($"CodexRef init (reset: {reset}, last downloaded: {duration.TotalDays.ToString("N3")} days ago) ...");
+
+            // force a download and re-processing once a week
+            if (duration.TotalDays > 7) reset = true;
 
             // remove cached files if we are resetting
             if (reset)
@@ -45,6 +49,7 @@ namespace SrvSurvey.canonn
                 json = await new HttpClient().GetStringAsync("https://us-central1-canonn-api-236217.cloudfunctions.net/query/codex/ref");
                 File.WriteAllText(codexRefPath, json);
                 Game.log("loadCodexRef: complete");
+                Game.settings.lastCodexRefDownload = DateTime.Now;
             }
             else
             {
@@ -196,6 +201,8 @@ namespace SrvSurvey.canonn
                             name = variantName,
                             englishName = variantEnglishName,
                             entryIdSuffix = thing.entryid.Substring(5),
+                            imageUrl = thing.image_url,
+                            imageCmdr = thing.image_cmdr,
                         };
                         speciesRef.variants.Add(variantRef);
                     };
