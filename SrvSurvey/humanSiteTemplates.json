@@ -659,6 +659,7 @@
       { "name": "Medkit", "offset": { "X": -247.41528, "Y": 158.8785 }, "floor": 2, "level": 2 },
       { "name": "Sample Containment Unit", "offset": { "X": -242.94662, "Y": 170.54613 }, "floor": 2, "level": 2 },
       { "name": "Alarm", "offset": { "X": -243.04588, "Y": 60.324177 }, "floor": 2, "level": 1 },
+      { "name": "Auth", "offset": { "X": -247.11975, "Y": 58.65677 }, "floor": 2, "level": 1 },
       { "name": "Atmos", "offset": { "X": 54.71635, "Y": -54.266987 }, "floor": 2, "level": 2 },
       { "name": "Battery", "offset": { "X": 14.696947, "Y": -52.181698 }, "floor": 2, "level": 1 },
       { "name": "Medkit", "offset": { "X": 36.692722, "Y": -57.841755 }, "floor": 2, "level": 1 },
