@@ -174,7 +174,7 @@ namespace SrvSurvey
 
             var galacticRegion = GalacticRegions.current.Replace(" ", "");
             var surfacePressure = body.surfacePressure / 100_000f;
-            var surfaceGravity = body.surfaceGravity / 10;
+            var surfaceGravity = body.surfaceGravity; //  TODO: do "/ 10" once the table below has been adjusted to match;
 
             //if (body.name.Contains("3 e")) Debugger.Break();
 
@@ -182,7 +182,7 @@ namespace SrvSurvey
             foreach (var foo in stuff)
             {
                 if (genus != null && genus != foo.genus) continue;
-                //if (foo.speciesPart.Contains("aleas")) Debugger.Break();
+                //if (foo.speciesPart.Contains("Tussock Propagito")) Debugger.Break();
 
                 //if (body.name.Contains("AB 1 c")) Debugger.Break();
                 //if (body.name.Contains("5 c") && foo.speciesPart.Contains("Tela")) Debugger.Break();
@@ -226,6 +226,7 @@ namespace SrvSurvey
                 // special cases
                 if (foo.speciesPart == "Electricae Radialem" && GalacticNeblulae.distToClosest(body.system.starPos) > 100) continue;
                 if (foo.speciesPart == "Clypeus Speculumi" && body.distanceFromArrivalLS < 2000) continue; // not 2500 ?
+                if (foo.speciesPart == "Tussock Serrati" && (surfacePressure < 0.0106 || surfacePressure > 0.0704)) continue;
                 if (foo.speciesPart == "Bacterium Tela" && (surfacePressure < 0.001 || surfacePressure > 0.0076)) continue;
                 if (foo.speciesPart == "Bacterium Tela" && body.atmosphere.Contains("thin ammonia") && surfaceGravity > 0.27f) continue;
 

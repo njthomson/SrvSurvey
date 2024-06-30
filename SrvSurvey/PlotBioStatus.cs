@@ -267,6 +267,7 @@ namespace SrvSurvey
             // left circle - always filled
             var twoFour = PlotBase.scaled(24);
             var eight = PlotBase.scaled(8);
+            var threeTwo = PlotBase.scaled(32);
             var r = new RectangleF(eight, y, twoFour, twoFour);
             g.FillEllipse(GameColors.brushGameOrangeDim, r);
             g.DrawEllipse(GameColors.penGameOrange2, r);
@@ -292,9 +293,9 @@ namespace SrvSurvey
             var f = GameColors.fontBig;
             var sz = g.MeasureString(txt, f);
             var oneOhFour = false && Game.settings.autoShowPlotBioSystemTest ? PlotBase.scaled(104 + 42) : PlotBase.scaled(104);
-            if (sz.Width > this.Width - oneOhFour - eight) f = GameColors.font18;
+            if (sz.Width > this.Width - oneOhFour - eight - threeTwo) f = GameColors.font18;
             sz = g.MeasureString(txt, f);
-            if (sz.Width > this.Width - oneOhFour - eight) f = GameColors.font14;
+            if (sz.Width > this.Width - oneOhFour - eight - threeTwo) f = GameColors.font14;
 
             var x = oneOhFour;
             if (false && Game.settings.autoShowPlotBioSystemTest)

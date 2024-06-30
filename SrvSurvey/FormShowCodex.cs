@@ -102,13 +102,14 @@ namespace SrvSurvey
         public async void showEntryId(string entryId)
         {
             this.panelSubmit.Hide();
+            //this.panelSubmit.Show();
             this.img = null;
             this.entryId = entryId;
             this.match = Game.codexRef.matchFromEntryId(entryId);
             this.lblTitle.Text = match.variant.englishName;
 
             // attempt to download if we don't have a file already
-            var filepath = Path.Combine(CodexRef.codexImagesFolder, $"{match.entryId}.jpg");
+            var filepath = Path.Combine(CodexRef.codexImagesFolder, $"{match.entryId}.png");
             if (!File.Exists(filepath))
             {
                 if (match.variant.imageUrl == null)
@@ -116,6 +117,7 @@ namespace SrvSurvey
                     // we have no url
                     this.panelSubmit.Show();
                     this.toolImageCredit.Text = "";
+                    this.Invalidate();
                     return;
                 }
 

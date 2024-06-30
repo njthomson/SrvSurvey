@@ -1130,7 +1130,7 @@ namespace SrvSurvey
         {
             // a periodic timer to check the location of the game window, repositioning plotters if needed
             var rect = Elite.getWindowRect();
-            var hasFocus = rect != Rectangle.Empty && rect.X != -32000;
+            var hasFocus = rect != Rectangle.Empty && rect.X > -30000;
 
             if (this.lastWindowHasFocus != hasFocus)
             {
