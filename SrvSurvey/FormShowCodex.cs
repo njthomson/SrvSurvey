@@ -62,8 +62,11 @@ namespace SrvSurvey
             if (this.scale < 0.1) this.scale = 0.1f;
             if (this.scale > 10) this.scale = 10f;
 
-            w = img.Width * scale;
-            h = img.Height * scale;
+            if (img != null)
+            {
+                w = img.Width * scale;
+                h = img.Height * scale;
+            }
 
             mx = (this.ClientRectangle.Width / 2f) - (w / 2f);
             my = (this.ClientRectangle.Height / 2f) - (h / 2);
@@ -172,7 +175,7 @@ namespace SrvSurvey
 
         private void linkSubmitImage_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            var url = $"https://docs.google.com/forms/d/e/1FAIpQLSdtS-78k6MDb_L2RodLnVGoB3r2958SA5ARnufAEZxLeoRbhA/viewform?entry.987977054={Uri.EscapeDataString(Game.settings.lastCommander)}&entry.1282362439={Uri.EscapeDataString(match.variant.englishName)}&entry.468337930={Uri.EscapeDataString(match.entryId.ToString())}";
+            var url = $"https://docs.google.com/forms/d/e/1FAIpQLSdtS-78k6MDb_L2RodLnVGoB3r2958SA5ARnufAEZxLeoRbhA/viewform?entry.987977054={Uri.EscapeDataString(Game.settings.lastCommander!)}&entry.1282362439={Uri.EscapeDataString(match.variant.englishName)}&entry.468337930={Uri.EscapeDataString(match.entryId.ToString())}";
             Util.openLink(url);
         }
 
