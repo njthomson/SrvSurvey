@@ -20,8 +20,11 @@ namespace SrvSurvey
         private Dictionary<string, Screenshot> pendingScreenshots = new Dictionary<string, Screenshot>();
         private bool wasWithinDssDuration;
 
+        public static Main form;
+
         public Main()
         {
+            form = this;
             InitializeComponent();
             lblNotInstalled.BringToFront();
             lblFullScreen.BringToFront();
@@ -247,6 +250,7 @@ namespace SrvSurvey
                             this.newGame();
 
                         foreach (Control ctrl in this.Controls) ctrl.Enabled = true;
+                        btnCodexShow.Enabled = false;
                         btnSphereLimit.Enabled = false;
 
                         this.timer1.Interval = 200;
@@ -301,6 +305,8 @@ namespace SrvSurvey
             this.updateTrackTargetTexts();
             this.updateGuardianTexts();
             this.updateSphereLimit();
+
+            Main.form.btnCodexShow.Enabled = PlotBioStatus.lastEntryId != null;
 
             var gameIsActive = game != null && Elite.isGameRunning && game.Commander != null;
 
@@ -1594,6 +1600,12 @@ namespace SrvSurvey
         private void btnBioSummary_Click(object sender, EventArgs e)
         {
             FormGenus.show();
+        }
+
+        private void btnCodexShow_Click(object sender, EventArgs e)
+        {
+            if (PlotBioStatus.lastEntryId != null)
+                FormShowCodex.show(PlotBioStatus.lastEntryId);
         }
     }
 }

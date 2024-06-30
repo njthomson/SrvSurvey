@@ -101,6 +101,7 @@ namespace SrvSurvey
         public Rectangle formGenusGuideLocation;
         public Rectangle formPostProcess;
         public Rectangle formBuilder;
+        public Rectangle formShowCodex;
 
         public bool mapShowNotes = true;
 

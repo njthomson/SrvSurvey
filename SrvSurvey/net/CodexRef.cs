@@ -9,6 +9,7 @@ namespace SrvSurvey.canonn
         private static string speciesRewardPath = Path.Combine(Program.dataFolder, "speciesRewards.json");
         private static string entryIdRewardPath = Path.Combine(Program.dataFolder, "entryIdRewards.json");
         private static string bioRefPath = Path.Combine(Program.dataFolder, "bioRef.json");
+        public static string codexImagesFolder= Path.Combine(Program.dataFolder, "codexImages");
 
         private Dictionary<string, long>? rewards;
         private Dictionary<string, long>? rewardsByEntryId;
@@ -36,6 +37,9 @@ namespace SrvSurvey.canonn
             var codexRef = await loadCodexRef();
             prepBioRef(codexRef);
             loadOrganicRewards(codexRef); // todo: retire
+
+            if (!Directory.Exists(CodexRef.codexImagesFolder))
+                Directory.CreateDirectory(CodexRef.codexImagesFolder);
 
             Game.log("CodexRef init - complete");
         }

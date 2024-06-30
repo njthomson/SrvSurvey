@@ -198,6 +198,7 @@ namespace SrvSurvey
         public static Pen penRed2 = newPen(Color.Red, 2);
         public static Pen penDarkRed2 = newPen(Color.DarkRed, 2);
         public static Pen penDarkRed3 = newPen(Color.DarkRed, 3);
+        public static Pen penDarkRed4 = newPen(Color.DarkRed, 4);
 
         public static Pen penRed2Ish = newPen(Color.FromArgb(128, Color.Red), 2);
         public static Pen penDarkRed2Ish = newPen(Color.FromArgb(128, Color.DarkRed), 2);

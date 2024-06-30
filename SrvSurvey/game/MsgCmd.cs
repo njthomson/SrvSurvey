@@ -64,8 +64,8 @@
         public const string trackRemoveName = "--";
         /// <summary> Main : Remove all bookmarks on current body </summary>
         public const string trackRemoveAll = "---";
-        /// <summary> PlotTrackers: write debug diagnostics to traces to help solve distance calculations </summary>
-        public const string dbgDump = ".dbgdump";
+        /// <summary> PlotTrackers: show a picture of the current thing </summary>
+        public const string show = ".show";
 
         /// <summary> Main : Record that a particular body has been visited </summary>
         public const string visited = ".visited";

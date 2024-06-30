@@ -135,48 +135,6 @@ namespace SrvSurvey
             }
         }
 
-        private void onJournalEntry(SendText entry)
-        {
-            if (entry.Message.ToLower() == MsgCmd.dbgDump)
-            {
-                var str = new StringBuilder($"Distance diagnostics from here: {Status.here}, systemBody.radius: {game.systemBody?.radius.ToString("N0")}\r\n");
-
-                if (game.systemBody?.bioScans != null)
-                {
-                    foreach (var scan in game.systemBody.bioScans)
-                    {
-                        str.AppendLine($"\r\n> Species: {scan.species} ({scan.status})");
-                        str.AppendLine($"      radius: " + scan.radius.ToString("N0"));
-                        str.AppendLine($"      location: {scan.location}");
-                    }
-                }
-
-                if (game.cmdr.scanOne != null)
-                    str.AppendLine($"ScanOne: radius: {game.cmdr.scanOne.radius.ToString("N0")}, location: {game.cmdr.scanOne.location}");
-                if (game.cmdr.scanTwo != null)
-                    str.AppendLine($"ScanTwo: radius: {game.cmdr.scanTwo.radius.ToString("N0")}, location: {game.cmdr.scanTwo.location}");
-
-                var form = Program.getPlotter<PlotTrackers>();
-                if (form != null)
-                {
-                    foreach (var foo in form.trackers)
-                    {
-                        str.AppendLine($"\r\n> Key: {foo.Key}");
-                        foreach (var bar in foo.Value)
-                        {
-                            str.AppendLine($" --> {bar}");
-                            str.AppendLine($"      radius: " + bar.radius.ToString("N0"));
-                            str.AppendLine($"      target: {bar.Target}");
-                            str.AppendLine($"      current: {bar.Current}");
-                        }
-                    }
-                }
-
-                Game.log(str.ToString());
-            }
-        }
-
-
         #endregion
 
         public static bool allowPlotter

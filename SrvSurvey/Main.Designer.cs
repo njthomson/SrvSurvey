@@ -58,6 +58,7 @@ namespace SrvSurvey
             lblBodyBio = new Label();
             txtBioRewards = new TextBox();
             label4 = new Label();
+            btnCodexShow = new Button();
             timer1 = new System.Windows.Forms.Timer(components);
             btnLogs = new Button();
             btnSettings = new Button();
@@ -290,11 +291,11 @@ namespace SrvSurvey
             btnBioSummary.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnBioSummary.BackColor = SystemColors.ControlLight;
             btnBioSummary.FlatStyle = FlatStyle.System;
-            btnBioSummary.Location = new Point(283, 103);
+            btnBioSummary.Location = new Point(313, 103);
             btnBioSummary.Name = "btnBioSummary";
-            btnBioSummary.Size = new Size(123, 21);
+            btnBioSummary.Size = new Size(93, 21);
             btnBioSummary.TabIndex = 28;
-            btnBioSummary.Text = "Bio Summary";
+            btnBioSummary.Text = "Predictions";
             btnBioSummary.UseVisualStyleBackColor = false;
             btnBioSummary.Click += btnBioSummary_Click;
             // 
@@ -398,6 +399,19 @@ namespace SrvSurvey
             label4.Size = new Size(131, 12);
             label4.TabIndex = 14;
             label4.Text = "Unclaimed rewards:";
+            // 
+            // btnCodexShow
+            // 
+            btnCodexShow.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnCodexShow.BackColor = SystemColors.ControlLight;
+            btnCodexShow.Enabled = false;
+            btnCodexShow.Image = (Image)resources.GetObject("btnCodexShow.Image");
+            btnCodexShow.Location = new Point(379, 517);
+            btnCodexShow.Name = "btnCodexShow";
+            btnCodexShow.Size = new Size(46, 36);
+            btnCodexShow.TabIndex = 29;
+            btnCodexShow.UseVisualStyleBackColor = false;
+            btnCodexShow.Click += btnCodexShow_Click;
             // 
             // timer1
             // 
@@ -657,7 +671,7 @@ namespace SrvSurvey
             groupBox5.Size = new Size(413, 72);
             groupBox5.TabIndex = 28;
             groupBox5.TabStop = false;
-            groupBox5.Text = "Exploration: (experimental)";
+            groupBox5.Text = "Exploration trip counter: (experimental)";
             // 
             // txtDistance
             // 
@@ -776,6 +790,7 @@ namespace SrvSurvey
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = btnQuit2;
             ClientSize = new Size(437, 628);
+            Controls.Add(btnCodexShow);
             Controls.Add(linkNewBuildAvailable);
             Controls.Add(groupBox5);
             Controls.Add(checkTempHide);
@@ -877,5 +892,6 @@ namespace SrvSurvey
         private Button btnResetExploration;
         private TextBox txtDistance;
         private LinkLabel linkNewBuildAvailable;
+        public Button btnCodexShow;
     }
 }

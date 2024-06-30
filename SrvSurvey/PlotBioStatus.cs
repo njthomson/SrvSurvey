@@ -1,4 +1,6 @@
 ﻿using SrvSurvey.game;
+using SrvSurvey.Properties;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing.Drawing2D;
 
@@ -8,6 +10,8 @@ namespace SrvSurvey
     {
         private Game game = Game.activeGame!;
         private string? lastCodexScan;
+        public static string? lastEntryId;
+        private bool hasImage;
 
         private PlotBioStatus()
         {
@@ -16,12 +20,27 @@ namespace SrvSurvey
             this.Height = PlotBase.scaled(80);
             this.Width = PlotBase.scaled(480);
             this.Cursor = Cursors.Cross;
+
+            if (game.cmdr.scanOne?.entryId > 0)
+            {
+                lastEntryId = game.cmdr.scanOne.entryId.ToString();
+
+                var match = Game.codexRef.matchFromEntryId(lastEntryId);
+                this.hasImage = match.variant.imageUrl != null;
+            }
         }
 
         protected override void OnActivated(EventArgs e)
         {
             base.OnActivated(e);
             Elite.setFocusED();
+        }
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            base.OnClosing(e);
+            Main.form.btnCodexShow.Enabled = false;
+            PlotBioStatus.lastEntryId = null;
         }
 
         public static bool allowPlotter
@@ -55,6 +74,9 @@ namespace SrvSurvey
         {
             this.initialize();
             this.reposition(Elite.getWindowRect(true));
+
+            if (lastEntryId != null)
+                Main.form.btnCodexShow.Enabled = true;
         }
 
         private void initialize()
@@ -88,26 +110,50 @@ namespace SrvSurvey
 
         private void onJournalEntry(CodexEntry entry)
         {
-            if (entry.Category == "$Codex_Category_Biology;" && game.systemBody?.organisms != null)
+            if (entry.Category == "$Codex_Category_Biology;" && game.systemBody != null)
             {
-                var organism = game.systemBody.organisms?.FirstOrDefault(_ => _.variant == entry.Name);
-                if (organism != null)
-                {
-                    this.lastCodexScan = $"{entry.Name_Localised}";
-                    if (game.systemBody.firstFootFall)
-                        this.lastCodexScan += $" {Util.credits(organism.reward * 5)} (FF bonus)";
-                    else
-                        this.lastCodexScan += $" {Util.credits(organism.reward)}";
+                lastEntryId = entry.EntryID.ToString();
+                var match = Game.codexRef.matchFromEntryId(lastEntryId);
+                if (game.cmdr.scanOne == null)
+                    this.hasImage = match.variant.imageUrl != null;
 
-                    this.Invalidate();
-                }
+                this.lastCodexScan = entry.Name_Localised;
+                if (game.systemBody.firstFootFall)
+                    this.lastCodexScan += $" {Util.credits(match.species.reward * 5)} (FF bonus)";
+                else
+                    this.lastCodexScan += $" {Util.credits(match.species.reward)}";
+
+                this.Invalidate();
+
+                if (FormShowCodex.activeForm != null)
+                    FormShowCodex.activeForm.showEntryId(lastEntryId);
+
+                Main.form.btnCodexShow.Enabled = true;
             }
         }
-
+        
         private void onJournalEntry(ScanOrganic entry)
         {
             this.lastCodexScan = null;
+            var match = Game.codexRef.matchFromVariant(entry.Variant);
+            lastEntryId = match.entryId.ToString();
+            this.hasImage = match.variant.imageUrl != null;
+
             this.Invalidate();
+
+            if (FormShowCodex.activeForm != null)
+                FormShowCodex.activeForm.showEntryId(lastEntryId);
+        }
+
+        private void onJournalEntry(SendText entry)
+        {
+            var msg = entry.Message.ToLowerInvariant();
+
+            // show picture, if we have an entryId
+            if (msg == MsgCmd.show && lastEntryId != null)
+            {
+                FormShowCodex.show(lastEntryId);
+            }
         }
 
         #endregion
@@ -195,7 +241,11 @@ namespace SrvSurvey
                 else if (allScanned)
                     this.drawFooterText(g, "All signals scanned", GameColors.brushGameOrange);
                 else if (this.lastCodexScan != null)
+                {
                     this.drawFooterText(g, this.lastCodexScan, GameColors.brushCyan);
+                    if (lastEntryId != null)
+                        this.drawHasImage(g, this.Width - PlotBase.scaled(36), this.Height - PlotBase.scaled(36));
+                }
                 else if (game.systemBody.firstFootFall)
                     this.drawFooterText(g, "Applying first footfall bonus", GameColors.brushCyan);
                 else if (!game.systemBody.wasMapped && game.systemBody.countAnalyzedBioSignals == 0 && Game.settings.useExternalData && Game.settings.autoLoadPriorScans && Program.getPlotter<PlotPriorScans>() == null)
@@ -271,6 +321,20 @@ namespace SrvSurvey
             }
 
             this.drawScale(g, organism.range);
+
+            if (lastEntryId != null)
+                this.drawHasImage(g, this.Width - PlotBase.scaled(34), PlotBase.scaled(24));
+        }
+
+        private void drawHasImage(Graphics g, int x, int y)
+        {
+            g.DrawIcon(Resources.picture, x, y);
+            if (!this.hasImage)
+            {
+                y += PlotBase.scaled(2);
+                g.DrawLine(GameColors.penDarkRed4, x, y, x + PlotBase.scaled(30), y + PlotBase.scaled(28));
+                g.DrawLine(GameColors.penDarkRed4, x, y + PlotBase.scaled(28), x + PlotBase.scaled(30), y);
+            }
         }
 
         private void drawScale(Graphics g, float dist)

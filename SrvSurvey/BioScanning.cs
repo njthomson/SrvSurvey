@@ -173,7 +173,7 @@ namespace SrvSurvey
             //var atmosphere = body.atmosphereComposition.Keys;
 
             var galacticRegion = GalacticRegions.current.Replace(" ", "");
-            var surfacePressure = body.surfacePressure / 10_000f;
+            var surfacePressure = body.surfacePressure / 100_000f;
             var surfaceGravity = body.surfaceGravity / 10;
 
             //if (body.name.Contains("3 e")) Debugger.Break();
@@ -182,10 +182,10 @@ namespace SrvSurvey
             foreach (var foo in stuff)
             {
                 if (genus != null && genus != foo.genus) continue;
-                //if (foo.speciesPart.Contains("Flam")) Debugger.Break();
+                //if (foo.speciesPart.Contains("aleas")) Debugger.Break();
 
                 //if (body.name.Contains("AB 1 c")) Debugger.Break();
-                //if (body.name.Contains("5 c") && foo.speciesPart.Contains("Pennata")) Debugger.Break();
+                //if (body.name.Contains("5 c") && foo.speciesPart.Contains("Tela")) Debugger.Break();
 
                 if (foo.galacticRegion?.Contains(galacticRegion) == false) continue;
                 if (foo.planetClass?.Any(pc => body.planetClass?.Contains(pc) == true) == false) continue;
@@ -226,7 +226,7 @@ namespace SrvSurvey
                 // special cases
                 if (foo.speciesPart == "Electricae Radialem" && GalacticNeblulae.distToClosest(body.system.starPos) > 100) continue;
                 if (foo.speciesPart == "Clypeus Speculumi" && body.distanceFromArrivalLS < 2000) continue; // not 2500 ?
-                if (foo.speciesPart == "Bacterium Tela" && surfacePressure > 0.1) continue;
+                if (foo.speciesPart == "Bacterium Tela" && (surfacePressure < 0.001 || surfacePressure > 0.0076)) continue;
                 if (foo.speciesPart == "Bacterium Tela" && body.atmosphere.Contains("thin ammonia") && surfaceGravity > 0.27f) continue;
 
 
@@ -403,7 +403,7 @@ namespace SrvSurvey
             { "Bacterial | Bacterium Tela      | *                  | 6.1 | Argon          | None                  |  20 | 607 | * | cad+" },
             { "Bacterial | Bacterium Tela      | *                  | 6.1 | Helium         | None                  |  20 | 607 | * | cad+" },
             { "Bacterial | Bacterium Tela      | *                  | 6.1 | Methane        | None                  |  20 | 607 | * | cad+" },
-            { "Bacterial | Bacterium Tela      | *                  | 6.1 | Neon,NeonRich  | None                  |  20 | 607 | * | cad+" },
+            { "Bacterial | Bacterium Tela      | *                  | 6.1 | Neon,NeonRich  | Some                  |  20 | 607 | * | cad+" }, // EvilHorse
             { "Bacterial | Bacterium Tela      | *                  | 6.1 | Methane        | None                  |  20 | 607 | * | cad+" },
             { "Bacterial | Bacterium Tela      | *                  | 6.1 | Nitrogen       | None                  |  20 | 607 | * | cad+" },
             { "Bacterial | Bacterium Tela      | *                  | 6.1 | Oxygen         | None                  |  20 | 607 | * | cad+" },
@@ -562,7 +562,7 @@ namespace SrvSurvey
             { "Stratum | Stratum Paleas     | Rocky | 5.9 | CarbonDioxideRich | *    | 186 | 257 | F,K,M,L,T,TTS,Ae,Y,W,D" },
             { "Stratum | Stratum Paleas     | Rocky | 5.8 | Oxygen            | *    | 169 | 246 | F,K,M,L,T,TTS,Ae,Y,W,D" },
             { "Stratum | Stratum Paleas     | Rocky | 0.6 | SulphurDioxide    | *    | 394 | 450 | F,K,M,L,T,TTS,Ae,Y,W,D" },
-            // { "Stratum | Stratum Paleas     | Rocky | 0.6 | Water | *    | 394 | 450 | F,K,M,L,T,TTS,Ae,Y,W,D" }, // EvilHorse
+            { "Stratum | Stratum Paleas     | Rocky | 0.6 | Water             | *    | 394 | 450 | F,K,M,L,T,TTS,Ae,Y,W,D" }, // EvilHorse
             { "Stratum | Stratum Tectonicas | HMC   | 3.7 | Ammonia           | *    | 165 | 177 | F,K,M,L,T,TTS,Ae,Y,W,D" },
             { "Stratum | Stratum Tectonicas | HMC   | 5.2 | Argon             | *    | 173 | 182 | F,K,M,L,T,TTS,Ae,Y,W,D" },
             { "Stratum | Stratum Tectonicas | HMC   | 5.6 | ArgonRich         | *    | 167 | 232 | F,K,M,L,T,TTS,Ae,Y,W,D" },

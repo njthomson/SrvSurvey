@@ -308,7 +308,7 @@ namespace SrvSurvey
                     else
                     {
                         // if we have a matching prediction - show the species name and that we don't know the variant
-                        var match = body.predictions.Values.First(p => p.genus.name == organism.genus);
+                        var match = body.predictions.Values.FirstOrDefault(p => p.genus.name == organism.genus);
                         if (match != null)
                             displayName = match.englishName.Replace(match.genus.englishName, "").Trim() + " - ?";
                     }

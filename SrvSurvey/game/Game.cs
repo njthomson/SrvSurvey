@@ -2152,6 +2152,7 @@ namespace SrvSurvey.game
 
             // add to bio scan locations. Skip for ScanType == ScanType.Analyse as a Sample event happens right before at the same location
             // add a new bio-scan - assuming we don't have one at this position already
+            var match = Game.codexRef.matchFromVariant(entry.Variant);
             var bioScan = new BioScan
             {
                 location = Status.here.clone(),
@@ -2159,7 +2160,9 @@ namespace SrvSurvey.game
                 species = entry.Species,
                 radius = BioScan.ranges[entry.Genus],
                 status = BioScan.Status.Active,
+                entryId = match.entryId,
             };
+
             Game.log($"new bio scan: {bioScan} ({entry.ScanType}) | current location: {Status.here}");
 
             if (entry.ScanType == ScanType.Log)
@@ -2247,8 +2250,6 @@ namespace SrvSurvey.game
                     Game.log($"Error when selling: {data.Species_Localised} for {data.Value} Cr:\r\n{e}");
                     continue;
                 }
-
-
             }
 
             cmdr.reCalcOrganicRewards();

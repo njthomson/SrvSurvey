@@ -154,6 +154,8 @@ namespace SrvSurvey
 
         public static string getMinMaxCredits(long min, long max)
         {
+            if (min <= 0 && max <= 0) return "";
+
             return min == max
                 ? Util.credits(min, true)
                 : Util.credits(min, true) + " ~ " + Util.credits(max, true);
