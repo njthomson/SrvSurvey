@@ -55,7 +55,7 @@ namespace SrvSurvey
         public static bool allowPlotter
         {
             get => Game.activeGame?.cmdr != null
-                && Game.settings.autoShowPlotFSSInfoTest
+                && Game.settings.autoShowPlotFSSInfo
                 && Game.activeGame.isMode(GameMode.FSS);
         }
 

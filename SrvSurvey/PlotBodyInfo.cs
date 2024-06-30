@@ -27,16 +27,16 @@ namespace SrvSurvey
         {
             get => Game.activeGame?.targetBody != null
                 && Game.activeGame.systemData != null
-                && Game.settings.autoShowPlotBodyInfoTest
+                && Game.settings.autoShowPlotBodyInfo
                 && !PlotGuardianSystem.allowPlotter // hide if Guardian plotter is open
-                // && Util.getSystemDistance(Game.activeGame.systemData.starPos, Util.sol) > Game.settings.bodyInfoBubbleSize 
+                && (!Game.settings.autoHidePlotBodyInfoInBubble || Util.getSystemDistance(Game.activeGame.systemData.starPos, Util.sol) > Game.settings.bodyInfoBubbleSize)
                 && (
                     // any time during DSS or ... 
                     Game.activeGame.mode == GameMode.SAA
                     // ... or in the SystemMap and sub-setting allows
-                    || (Game.activeGame.isMode(GameMode.SystemMap, GameMode.Orrery) && Game.settings.autoShowPlotBodyInfoInMapTest)
+                    || (Game.activeGame.isMode(GameMode.SystemMap, GameMode.Orrery) && Game.settings.autoShowPlotBodyInfoInMap)
                     // ... or when super cruising/gliding close to a body and sub-setting allows
-                    || (Game.activeGame.isMode(GameMode.SuperCruising, GameMode.GlideMode) && Game.activeGame.status.hasLatLong && Game.settings.autoShowPlotBodyInfoInOrbitTest)
+                    || (Game.activeGame.isMode(GameMode.SuperCruising, GameMode.GlideMode) && Game.activeGame.status.hasLatLong && Game.settings.autoShowPlotBodyInfoInOrbit)
                 );
         }
 

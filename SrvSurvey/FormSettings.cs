@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using SrvSurvey.game;
+﻿using SrvSurvey.game;
 using System.Diagnostics;
 using System.Reflection;
 
@@ -32,10 +31,8 @@ namespace SrvSurvey
             // keep these hidden from official app-store builds for now
             if (Program.isAppStoreBuild)
             {
-                checkBioSystemPlotter.Visible = false;
-                checkGalMapPlotter.Visible = false;
-                checkHumanSitePlotter.Visible = false;
-                groupRingBuckets.Visible = false;
+                // Human settlements aren't ready for App store yet
+                tabControl1.Controls.Remove(tabSettlements);
             }
         }
 
@@ -44,6 +41,7 @@ namespace SrvSurvey
             updateFormFromSettings(this);
 
             // disable controls based on settings
+            checkUseBioData.Enabled = checkUseSystemData.Checked;
             checkShowPriorScans.Enabled = checkUseSystemData.Checked;
             checkSkipCheapSignals.Enabled = checkUseSystemData.Checked && checkShowPriorScans.Checked;
             numPriorScanMinValue.Enabled = checkUseSystemData.Checked && checkShowPriorScans.Checked && checkSkipCheapSignals.Checked;
@@ -52,6 +50,8 @@ namespace SrvSurvey
             checkShowCanonnOnRadar.Enabled = checkUseSystemData.Checked && checkShowPriorScans.Checked;
             radioUseSmall.Enabled = checkUseSystemData.Checked && checkShowPriorScans.Checked && checkShowCanonnOnRadar.Checked;
             radioUseRadius.Enabled = checkUseSystemData.Checked && checkShowPriorScans.Checked && checkShowCanonnOnRadar.Checked;
+            checkGalMapPlotter.Enabled = checkUseSystemData.Checked;
+            checkHideMyOwnCanonnSignals.Enabled = checkUseSystemData.Checked;
 
             checkBodyInfoMap.Enabled = checkBodyInfoOrbit.Enabled = checkBodyInfo.Checked;
 
@@ -269,6 +269,8 @@ namespace SrvSurvey
             foreach (Control ctrl in senderCheckbox.Parent!.Controls)
                 if (ctrl != senderCheckbox)
                     ctrl.Enabled = senderCheckbox.Checked;
+
+            checkGalMapPlotter.Enabled = senderCheckbox.Checked;
         }
 
         private void chooseScreenshotFolder(LinkLabel linkLabel, string title)
@@ -397,22 +399,26 @@ namespace SrvSurvey
 
         private void picBucket1_Paint(object sender, PaintEventArgs e)
         {
-            PlotBase.drawBioRing(e.Graphics, "$Codex_Ent_Tussocks_Genus_Name;", 3, 3, 1, false, 38);
+            e.Graphics.ScaleTransform(2, 2);
+            PlotBioSystem.drawVolumeBars(e.Graphics, 7.5f, 16.5f, false, 1);
         }
 
         private void picBucket2_Paint(object sender, PaintEventArgs e)
         {
-            PlotBase.drawBioRing(e.Graphics, "$Codex_Ent_Tussocks_Genus_Name;", 3, 3, 1 + (long)Game.settings.bioRingBucketOne * 1_000_000, false, 38);
+            e.Graphics.ScaleTransform(2, 2);
+            PlotBioSystem.drawVolumeBars(e.Graphics, 7.5f, 16.5f, false, (long)Game.settings.bioRingBucketTwo * 1_000_000);
         }
 
         private void picBucket3_Paint(object sender, PaintEventArgs e)
         {
-            PlotBase.drawBioRing(e.Graphics, "$Codex_Ent_Tussocks_Genus_Name;", 3, 3, 1 + (long)Game.settings.bioRingBucketTwo * 1_000_000, false, 38);
+            e.Graphics.ScaleTransform(2, 2);
+            PlotBioSystem.drawVolumeBars(e.Graphics, 7.5f, 16.5f, false, (long)Game.settings.bioRingBucketThree * 1_000_000);
         }
 
         private void picBucket4_Paint(object sender, PaintEventArgs e)
         {
-            PlotBase.drawBioRing(e.Graphics, "$Codex_Ent_Tussocks_Genus_Name;", 3, 3, 1 + (long)Game.settings.bioRingBucketThree * 1_000_000, false, 38);
+            e.Graphics.ScaleTransform(2, 2);
+            PlotBioSystem.drawVolumeBars(e.Graphics, 7.5f, 16.5f, false, 1 + (long)Game.settings.bioRingBucketThree * 1_000_000);
         }
 
         private void checkBodyInfo_CheckedChanged(object sender, EventArgs e)

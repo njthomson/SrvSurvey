@@ -69,7 +69,7 @@ namespace SrvSurvey
             btnPublish.Visible = Debugger.IsAttached;
 
             // keep these hidden from official app-store builds for now
-            btnBioSummary.Visible = !Program.isAppStoreBuild && Game.settings.autoShowPlotBioSystemTest;
+            btnBioSummary.Visible = !Program.isAppStoreBuild && Game.settings.autoShowPlotBioSystem;
         }
 
         private void Main_Load(object sender, EventArgs e)
@@ -345,7 +345,7 @@ namespace SrvSurvey
             else
                 Program.closePlotter<PlotGuardianSystem>();
 
-            if (Game.settings.autoShowPlotGalMapTest && PlotGalMap.allowPlotter)
+            if (Game.settings.autoShowPlotGalMap && PlotGalMap.allowPlotter)
                 Program.showPlotter<PlotGalMap>();
             else
                 Program.closePlotter<PlotGalMap>();
@@ -1194,7 +1194,7 @@ namespace SrvSurvey
             // force opacity changes to take immediate effect
             Program.showActivePlotters();
 
-            btnBioSummary.Visible = Game.settings.autoShowPlotBioSystemTest;
+            btnBioSummary.Visible = !Program.isAppStoreBuild && Game.settings.autoShowPlotBioSystem;
         }
 
         private void linkNewBuildAvailable_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

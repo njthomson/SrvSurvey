@@ -18,19 +18,19 @@ namespace SrvSurvey
         public bool autoShowBioSummary = true;
         public bool autoShowBioPlot = true;
         public bool autoShowPlotFSS = true;
-        public bool autoShowPlotFSSInfoTest = true;
+        public bool autoShowPlotFSSInfo = true;
         public bool autoShowGuardianSummary = true;
         public bool autoShowRamTah = true;
         public bool autoShowPlotSysStatus = true;
-        public bool autoShowPlotBioSystemTest = true;
-        public bool autoShowPlotGalMapTest = true;
+        public bool autoShowPlotBioSystem = true;
+        public bool autoShowPlotGalMap = true;
         public bool autoShowHumanSitesTest = false;
 
-        public bool autoShowPlotBodyInfoTest = true;
-        public bool autoShowPlotBodyInfoInMapTest = true;
-        public bool autoShowPlotBodyInfoInOrbitTest = true;
-
-        // public int bodyInfoBubbleSize = 200;
+        public bool autoShowPlotBodyInfo = true;
+        public bool autoShowPlotBodyInfoInMap = true;
+        public bool autoShowPlotBodyInfoInOrbit = true;
+        public bool autoHidePlotBodyInfoInBubble = true;
+        public int bodyInfoBubbleSize = 200;
 
         /// <summary>
         /// For Human settlements ...
@@ -140,7 +140,7 @@ namespace SrvSurvey
         public DateTime lastCodexRefDownload = DateTime.MinValue;
 
         public bool keepBioPlottersVisibleEnabled = true;
-        public int keepBioPlottersVisibleDuration = 30;
+        public int keepBioPlottersVisibleDuration = 120;
 
         public int formGenusFilter = 0;
         public int formGenusFontSize = 1;

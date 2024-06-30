@@ -38,7 +38,7 @@ namespace SrvSurvey
 
         public static bool allowPlotter
         {
-            get => Game.settings.autoShowPlotBioSystemTest
+            get => Game.settings.autoShowPlotBioSystem
                 && Game.activeGame?.status != null
                 && Game.activeGame.systemData != null
                 && Game.activeGame.systemData.bioSignalsTotal > 0
@@ -297,7 +297,7 @@ namespace SrvSurvey
 
                     var minReward = body.getBioRewardForGenus(organism, true);
                     var maxReward = body.getBioRewardForGenus(organism, false);
-                    drawVolumeBars(oneTwo, dty + oneSix, highlight, minReward, maxReward);
+                    drawVolumeBars(g, oneTwo, dty + oneSix, highlight, minReward, maxReward);
 
                     // displayName is either genus, or species/variant without the genus prefix
                     var displayName = organism.genusLocalized;
@@ -409,7 +409,7 @@ namespace SrvSurvey
                     {
                         var min = body.getBioRewardForGenus(org, true);
                         var max = body.getBioRewardForGenus(org, false);
-                        this.drawVolumeBars(x, dty + oneFive, highlight, min, max);
+                        drawVolumeBars(g, x, dty + oneFive, highlight, min, max);
                         x += oneTwo;
                     }
                     signalCount -= body.organisms.Count;
@@ -423,26 +423,26 @@ namespace SrvSurvey
                     //long min = body.predictions.Count > 0 ? body.predictions.Values.Min(p => p.reward) : -1;
                     long min = body.predictions.Count > 0 ? body.predictions.Values.Min(p => p.reward) : 0;
                     long max = body.predictions.Count > 0 ? body.predictions.Values.Max(p => p.reward) : -1;
-                    this.drawVolumeBars(x, dty + oneFive, highlight, min, max);
+                    drawVolumeBars(g, x, dty + oneFive, highlight, min, max);
                     x += oneTwo;
                 }
                 else if (signalCount > 1)
                 {
                     // first is min
                     long min = body.predictions.Count > 0 ? body.predictions.Values.Min(p => p.reward) : 0;
-                    this.drawVolumeBars(x, dty + oneFive, highlight, min);
+                    drawVolumeBars(g, x, dty + oneFive, highlight, min);
                     x += oneTwo;
 
                     for (var n = 1; n < signalCount - 1; n++)
                     {
-                        this.drawVolumeBars(x, dty + oneFive, highlight, -1, -1);
+                        drawVolumeBars(g, x, dty + oneFive, highlight, -1, -1);
                         x += oneTwo;
                     }
 
                     // last is max
                     long max = body.predictions.Count > 0 ? body.predictions.Values.Max(p => p.reward) : 0;
 
-                    this.drawVolumeBars(x, dty + oneFive, highlight, min, max);
+                    drawVolumeBars(g, x, dty + oneFive, highlight, min, max);
                     x += oneTwo;
                 }
 
@@ -461,7 +461,7 @@ namespace SrvSurvey
             formAdjustSize(+ten, +six);
         }
 
-        private void drawVolumeBars(float x, float y, bool highlight, long reward, long maxReward = -1)
+        public static void drawVolumeBars(Graphics g, float x, float y, bool highlight, long reward, long maxReward = -1)
         {
             var ww = eight;
             var bb = highlight ? GameColors.brushCyan : GameColors.brushGameOrange;
@@ -478,14 +478,14 @@ namespace SrvSurvey
                 : GameColors.newPen(Color.FromArgb(96, GameColors.Orange), 1.9f, DashStyle.Dot);
             g.DrawRectangle(ppp, x, y - oneTwo, ww, oneFive);
 
-            if (reward < 0)
+            if (reward <= 0)
             {
                 // negative reward means we don't know anything about this yet
                 //g.FillRectangle(highlight ? GameColors.brushDarkCyan : GameColors.brushGameOrangeDim, x, y, ww, 3);
                 //g.DrawRectangle(pp, x, y - 12, ww, 15);
 
                 // (don't use drawTextAt as that messes with dtx/dty)
-                g.DrawString("?", GameColors.fontSmallBold, bb, x - 0.5f, this.dty + four);
+                g.DrawString("?", GameColors.fontSmallBold, bb, x - 0.5f, y - oneOne);
             }
             else
             {
