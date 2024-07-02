@@ -1,0 +1,84 @@
+{
+  "genus": "Bacterium",
+  "query": [],
+  "children": [
+    {
+      "species": "Aurasus",
+      "query": [
+        "      body [HMC,Rocky]",
+        "atmosphere [CarbonDioxide]",
+        "      temp [145 ~ 400]"
+      ],
+      "children": [
+        { "variant": "Turquoise", "query": [ "star [O]" ] },
+        { "variant": "Gray", "query": [ "     star [B]" ] },
+        { "variant": "Yellow", "query": [ "   star [A]" ] },
+        { "variant": "Lime", "query": [ "     star [F]" ] },
+        { "variant": "Emerald", "query": [ "  star [G]" ] },
+        { "variant": "Green", "query": [ "    star [K]" ] },
+        { "variant": "Teal", "query": [ "     star [M]" ] },
+        { "variant": "Sage", "query": [ "     star [L]" ] },
+        { "variant": "Red", "query": [ "      star [T]" ] },
+        { "variant": "Maroon", "query": [ "   star [TTS]" ] },
+        { "variant": "Orange", "query": [ "   star [Ae]" ] },
+        { "variant": "Mauve", "query": [ "    star [Y]" ] },
+        { "variant": "Amethyst", "query": [ " star [W]" ] },
+        { "variant": "Ochre", "query": [ "    star [D]" ] },
+        { "variant": "Indigo", "query": [ "   star [N]" ] }
+  ]
+    },
+
+    {
+      "species": "Tela",
+      "query": [
+          "atmosphere [Thin Ammonia]",
+          "   gravity [0.27 ~ ]",
+          "      temp [20 ~ 607]",
+          "  pressure [0.001 ~ 0.0076]",
+      ],
+      "children": [
+        { "name": "Gold", "query": [ "   mats [Cadmium]" ] },
+        { "name": "Orange", "query": [ " mats [Mercuty]" ] },
+        { "name": "Yellow", "query": [ " mats [Molybdenum]" ] },
+        { "name": "Magenta", "query": [ "mats [Niobium]" ] },
+        { "name": "Cobalt", "query": [ " mats [Tin]" ] },
+        { "name": "Green", "query": [ "  mats [Tungsten]" ] }
+      ]
+    },
+    {
+      "species": "Tela",
+      "query": [
+          "atmosType [CarbonDioxide,SulphurDioxide,Water]",
+          "  gravity [ ~ 0.61]",
+          "     temp [20 ~ 607]",
+          " pressure [0.001 ~ 0.0076]",
+      ],
+      "children": [
+        { "name": "Gold", "query": [ "   mats [Cadmium]" ] },
+        { "name": "Orange", "query": [ " mats [Mercuty]" ] },
+        { "name": "Yellow", "query": [ " mats [Molybdenum]" ] },
+        { "name": "Magenta", "query": [ "mats [Niobium]" ] },
+        { "name": "Cobalt", "query": [ " mats [Tin]" ] },
+        { "name": "Green", "query": [ "  mats [Tungsten]" ] }
+      ]
+    },
+    {
+      "species": "Tela",
+      "query": [
+          "# any other atmosphere",
+          "   gravity [ ~ 0.61]",
+          "      temp [20 ~ 607]",
+          "  pressure [0.001 ~ 0.0076]",
+          " volcanism [None]"
+      ],
+      "children": [
+        { "name": "Gold", "query": [ "   mats [Cadmium]" ] },
+        { "name": "Orange", "query": [ " mats [Mercuty]" ] },
+        { "name": "Yellow", "query": [ " mats [Molybdenum]" ] },
+        { "name": "Magenta", "query": [ "mats [Niobium]" ] },
+        { "name": "Cobalt", "query": [ " mats [Tin]" ] },
+        { "name": "Green", "query": [ "  mats [Tungsten]" ] }
+      ]
+    }
+  ]
+}

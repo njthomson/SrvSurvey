@@ -1,0 +1,48 @@
+  {
+    "genus": "Conchas",
+    "query": [
+      "body [HMC,Rocky]"
+    ],
+    "children": [
+      {
+        "species": "Aureolas",
+        "query": [
+            "atmosType [Ammonia]",
+            "  gravity [ ~ 0.27]",
+            "     temp [152 ~ 177]"
+        ],
+        "children": [
+          { "variant": "Indigo", "query": [ "   star [B]" ] },
+          { "variant": "Teal", "query": [ "     star [A]" ] },
+          { "variant": "Grey", "query": [ "     star [F]" ] },
+          { "variant": "Turquoise", "query": [ "star [G]" ] },
+          { "variant": "Red", "query": [ "      star [K]" ] },
+          { "variant": "Orange", "query": [ "   star [L]" ] },
+          { "variant": "Yellow", "query": [ "   star [Y]" ] },
+          { "variant": "Green", "query": [ "    star [D]" ] },
+          { "variant": "Emerald", "query": [ "  star [N]" ] }
+        ]
+      },
+      {
+        "species": "Labiata",
+        "query": [
+            "atmosType [CarbonDioxide]",
+            "  gravity [ ~ 0.26]",
+            "     temp [150 ~ 199]",
+            "volcanism [None]"
+          ],
+        "children": [
+          { "variant": "Indigo", "query": [ "   star [B]" ] },
+          { "variant": "Teal", "query": [ "     star [A]" ] },
+          { "variant": "Grey", "query": [ "     star [F]" ] },
+          { "variant": "Turquoise", "query": [ "star [G]" ] },
+          { "variant": "Red", "query": [ "      star [K]" ] },
+          { "variant": "Orange", "query": [ "   star [L]" ] },
+          { "variant": "Yellow", "query": [ "   star [Y]" ] },
+          { "variant": "Lime", "query": [ "     star [W]" ] },
+          { "variant": "Green", "query": [ "    star [D]" ] },
+          { "variant": "Emerald", "query": [ "  star [N]" ] }
+        ]
+      }
+    ]
+  }
