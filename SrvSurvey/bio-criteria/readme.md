@@ -92,7 +92,7 @@ In this example:
 
 - **Nebulae**
 
-    `nebulae` works like a numberic match, specifying a maximum distance, in light years, the system must be from some nebula. It is assumed code will download/maintain a list of all known nebulae.
+    `nebulae` works like a numeric match, specifying a maximum distance, in light years, the system must be from some nebula. It is assumed code will download/maintain a list of all known nebulae.
 
     Eg: For Electricae, which must be within 100ly of some nebulae the clause would be: `"nebulae [ ~ 100]"`
 
