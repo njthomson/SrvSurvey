@@ -110,7 +110,7 @@ namespace SrvSurvey
 
         private void onJournalEntry(CodexEntry entry)
         {
-            if (entry.Category == "$Codex_Category_Biology;" && game.systemBody != null)
+            if (entry.SubCategory == "$Codex_SubCategory_Organic_Structures;" && game.systemBody != null && game.status.hasLatLong)
             {
                 lastEntryId = entry.EntryID.ToString();
                 var match = Game.codexRef.matchFromEntryId(lastEntryId);
