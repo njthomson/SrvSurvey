@@ -1,0 +1,52 @@
+{
+  "genus": "Frutexa",
+  "children": [
+    {
+      "species": "Acus",
+      "query": [
+          "      body [Rocky]",
+          "atmosphere [CarbonDioxide]",
+          "   gravity [ ~ 0.24]",
+          "      temp [146 ~ 196]",
+          " volcanism [None]",
+          "   regions [1, 3, 7, 8, 16, 17, 18, 35]"
+      ],
+      "children": [
+        { "variant": "Yellow", "query": [ " star [O]" ] },
+        { "variant": "Lime", "query": [ "   star [B]" ] },
+        { "variant": "Green", "query": [ "  star [F]" ] },
+        { "variant": "Emerald", "query": [ "star [G]" ] },
+        { "variant": "Grey", "query": [ "   star [M]" ] },
+        { "variant": "Teal", "query": [ "   star [L]" ] },
+        { "variant": "Mauve", "query": [ "  star [TTS]" ] },
+        { "variant": "Orange", "query": [ " star [W]" ] },
+        { "variant": "Indigo", "query": [ " star [D]" ] },
+        { "variant": "Red", "query": [ "    star [N]" ] }
+      ]
+    },
+    
+    {
+      "species": "Collum",
+      "query": [
+          "      body [HMC,Rocky]",
+          "atmosphere [SulphurDioxide]",
+          "   gravity [ ~ 0.28]",
+          "      temp [132 ~ 167]",
+          "   regions [1, 3, 7, 8, 16, 17, 18, 35]"
+      ],
+      "children": [
+        { "variant": "Yellow", "query": [ " star [O]" ] },
+        { "variant": "Lime", "query": [ "   star [B]" ] },
+        { "variant": "Green", "query": [ "  star [F]" ] },
+        { "variant": "Emerald", "query": [ "star [G]" ] },
+        { "variant": "Grey", "query": [ "   star [M]" ] },
+        { "variant": "Teal", "query": [ "   star [L]" ] },
+        { "variant": "Mauve", "query": [ "  star [TTS]" ] },
+        { "variant": "Orange", "query": [ " star [W]" ] },
+        { "variant": "Indigo", "query": [ " star [D]" ] },
+        { "variant": "Red", "query": [ "    star [N]" ] }
+      ]
+    }
+  ]
+}
+

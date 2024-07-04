@@ -1,0 +1,201 @@
+{
+  "genus": "Fonticulua",
+  "children": [
+    {
+      "species": "Campestris",
+      "query": [
+        "      body [Icy,RockyIce]",
+        "atmosphere [Thin Argon]",
+        "   gravity [0.03 ~ 0.28]",
+        "      temp [43 ~ 195]",
+        "  pressure [0.0009 ~ 0.099]"
+      ],
+      "children": [
+        { "variant": "Grey", "query": [ "     star [O]" ] },
+        { "variant": "Lime", "query": [ "     star [B]" ] },
+        { "variant": "Green", "query": [ "    star [A]" ] },
+        { "variant": "Yellow", "query": [ "   star [F]" ] },
+        { "variant": "Teal", "query": [ "     star [G]" ] },
+        { "variant": "Emerald", "query": [ "  star [K]" ] },
+        { "variant": "Amethyst", "query": [ " star [M]" ] },
+        { "variant": "Mauve", "query": [ "    star [L]" ] },
+        { "variant": "Orange", "query": [ "   star [T]" ] },
+        { "variant": "Red", "query": [ "      star [TTS]" ] },
+        { "variant": "Maroon", "query": [ "   star [Ae]" ] },
+        { "variant": "Ocher", "query": [ "    star [Y]" ] },
+        { "variant": "Indigo", "query": [ "   star [W]" ] },
+        { "variant": "Turquoise", "query": [ "star [D]" ] },
+        { "variant": "Sage", "query": [ "     star [N]" ] }
+      ]
+    },
+
+    {
+      "species": "Digitos",
+      "query": [
+        "      body [Icy,RockyIce]",
+        "atmosphere [Thin Methane]",
+        "   gravity [0.03 ~ 0.06]",
+        "      temp [83 ~ 109]",
+        "  pressure [0.03 ~ 0.099]",
+        " volcanism [None,Minor Methane Magma]"
+      ],
+      "children": [
+        { "variant": "Grey", "query": [ "     star [O]" ] },
+        { "variant": "Lime", "query": [ "     star [B]" ] },
+        { "variant": "Green", "query": [ "    star [A]" ] },
+        { "variant": "Yellow", "query": [ "   star [F]" ] },
+        { "variant": "Teal", "query": [ "     star [G]" ] },
+        { "variant": "Emerald", "query": [ "  star [K]" ] },
+        { "variant": "Amethyst", "query": [ " star [M]" ] },
+        { "variant": "Mauve", "query": [ "    star [L]" ] },
+        { "variant": "Orange", "query": [ "   star [T]" ] },
+        { "variant": "Red", "query": [ "      star [TTS]" ] },
+        { "variant": "Maroon", "query": [ "   star [Ae]" ] },
+        { "variant": "Ocher", "query": [ "    star [Y]" ] },
+        { "variant": "Indigo", "query": [ "   star [W]" ] },
+        { "variant": "Turquoise", "query": [ "star [D]" ] },
+        { "variant": "Sage", "query": [ "     star [N]" ] }
+      ]
+    },
+
+    {
+      "species": "Fluctus",
+      "query": [
+        "      body [Icy]",
+        "atmosphere [Thin Oxygen]",
+        "   gravity [0.24 ~ 0.27]",
+        "      temp [143 ~ 200]",
+        "  pressure [0.012 ~ 0.081]"
+      ],
+      "children": [
+        { "variant": "Grey", "query": [ "     star [O]" ] },
+        { "variant": "Lime", "query": [ "     star [B]" ] },
+        { "variant": "Green", "query": [ "    star [A]" ] },
+        { "variant": "Yellow", "query": [ "   star [F]" ] },
+        { "variant": "Teal", "query": [ "     star [G]" ] },
+        { "variant": "Emerald", "query": [ "  star [K]" ] },
+        { "variant": "Amethyst", "query": [ " star [M]" ] },
+        { "variant": "Mauve", "query": [ "    star [L]" ] },
+        { "variant": "Orange", "query": [ "   star [T]" ] },
+        { "variant": "Red", "query": [ "      star [TTS]" ] },
+        { "variant": "Maroon", "query": [ "   star [Ae]" ] },
+        { "variant": "Ocher", "query": [ "    star [Y]" ] },
+        { "variant": "Indigo", "query": [ "   star [W]" ] },
+        { "variant": "Turquoise", "query": [ "star [D]" ] },
+        { "variant": "Sage", "query": [ "     star [N]" ] }
+      ]
+    },
+
+    {
+      "species": "Lapida",
+      "query": [
+        "      body [Icy]",
+        "atmosphere [Thin Nitrogen]",
+        "   gravity [0.04 ~ 0.28]",
+        "      temp [50 ~ 90]",
+        "  pressure [0.0009 ~ 0.099]"
+      ],
+      "children": [
+        { "variant": "Grey", "query": [ "     star [O]" ] },
+        { "variant": "Lime", "query": [ "     star [B]" ] },
+        { "variant": "Green", "query": [ "    star [A]" ] },
+        { "variant": "Yellow", "query": [ "   star [F]" ] },
+        { "variant": "Teal", "query": [ "     star [G]" ] },
+        { "variant": "Emerald", "query": [ "  star [K]" ] },
+        { "variant": "Amethyst", "query": [ " star [M]" ] },
+        { "variant": "Mauve", "query": [ "    star [L]" ] },
+        { "variant": "Orange", "query": [ "   star [T]" ] },
+        { "variant": "Red", "query": [ "      star [TTS]" ] },
+        { "variant": "Maroon", "query": [ "   star [Ae]" ] },
+        { "variant": "Ocher", "query": [ "    star [Y]" ] },
+        { "variant": "Indigo", "query": [ "   star [W]" ] },
+        { "variant": "Turquoise", "query": [ "star [D]" ] },
+        { "variant": "Sage", "query": [ "     star [N]" ] }
+      ]
+    },
+
+    {
+      "species": "Segmentatus",
+      "query": [
+        "      body [Icy]",
+        "atmosphere [Thin Neon]",
+        "   gravity [0.26 ~ 0.27]",
+        "      temp [50 ~ 57]",
+        "  pressure [0.0009 ~ 0.0012]"
+      ],
+      "children": [
+        { "variant": "Grey", "query": [ "     star [O]" ] },
+        { "variant": "Lime", "query": [ "     star [B]" ] },
+        { "variant": "Green", "query": [ "    star [A]" ] },
+        { "variant": "Yellow", "query": [ "   star [F]" ] },
+        { "variant": "Teal", "query": [ "     star [G]" ] },
+        { "variant": "Emerald", "query": [ "  star [K]" ] },
+        { "variant": "Amethyst", "query": [ " star [M]" ] },
+        { "variant": "Mauve", "query": [ "    star [L]" ] },
+        { "variant": "Orange", "query": [ "   star [T]" ] },
+        { "variant": "Red", "query": [ "      star [TTS]" ] },
+        { "variant": "Maroon", "query": [ "   star [Ae]" ] },
+        { "variant": "Ocher", "query": [ "    star [Y]" ] },
+        { "variant": "Indigo", "query": [ "   star [W]" ] },
+        { "variant": "Turquoise", "query": [ "star [D]" ] },
+        { "variant": "Sage", "query": [ "     star [N]" ] }
+      ]
+    },
+    {
+      "species": "Segmentatus",
+      "query": [
+        "      body [Icy]",
+        "atmosphere [Thin Neon rich]",
+        "   gravity [0.25 ~ 0.28]",
+        "      temp [58 ~ 75]",
+        "  pressure [0.001 ~ 0.028]"
+      ],
+      "children": [
+        { "variant": "Grey", "query": [ "     star [O]" ] },
+        { "variant": "Lime", "query": [ "     star [B]" ] },
+        { "variant": "Green", "query": [ "    star [A]" ] },
+        { "variant": "Yellow", "query": [ "   star [F]" ] },
+        { "variant": "Teal", "query": [ "     star [G]" ] },
+        { "variant": "Emerald", "query": [ "  star [K]" ] },
+        { "variant": "Amethyst", "query": [ " star [M]" ] },
+        { "variant": "Mauve", "query": [ "    star [L]" ] },
+        { "variant": "Orange", "query": [ "   star [T]" ] },
+        { "variant": "Red", "query": [ "      star [TTS]" ] },
+        { "variant": "Maroon", "query": [ "   star [Ae]" ] },
+        { "variant": "Ocher", "query": [ "    star [Y]" ] },
+        { "variant": "Indigo", "query": [ "   star [W]" ] },
+        { "variant": "Turquoise", "query": [ "star [D]" ] },
+        { "variant": "Sage", "query": [ "     star [N]" ] }
+      ]
+    },
+
+    {
+      "species": "Upupam",
+      "query": [
+        "      body [Icy]",
+        "atmosphere [Thin Argon rich]",
+        "   gravity [0.08 ~ 0.28]",
+        "      temp [60 ~ 124]",
+        "  pressure [0.019 ~ 0.099]"
+      ],
+      "children": [
+        { "variant": "Grey", "query": [ "     star [O]" ] },
+        { "variant": "Lime", "query": [ "     star [B]" ] },
+        { "variant": "Green", "query": [ "    star [A]" ] },
+        { "variant": "Yellow", "query": [ "   star [F]" ] },
+        { "variant": "Teal", "query": [ "     star [G]" ] },
+        { "variant": "Emerald", "query": [ "  star [K]" ] },
+        { "variant": "Amethyst", "query": [ " star [M]" ] },
+        { "variant": "Mauve", "query": [ "    star [L]" ] },
+        { "variant": "Orange", "query": [ "   star [T]" ] },
+        { "variant": "Red", "query": [ "      star [TTS]" ] },
+        { "variant": "Maroon", "query": [ "   star [Ae]" ] },
+        { "variant": "Ocher", "query": [ "    star [Y]" ] },
+        { "variant": "Indigo", "query": [ "   star [W]" ] },
+        { "variant": "Turquoise", "query": [ "star [D]" ] },
+        { "variant": "Sage", "query": [ "     star [N]" ] }
+      ]
+    }
+
+  ]
+}

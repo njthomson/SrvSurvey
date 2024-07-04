@@ -1,0 +1,147 @@
+{
+  "genus": "Clypeus",
+  "children": [
+    {
+      "species": "Lacrimam",
+      "query": [
+        "      body [Rocky]",
+        "atmosphere [Thin Carbon dioxide]",
+        "   gravity [0.04 ~ 0.24]",
+        "      temp [190 ~ 199]",
+        "  pressure [0.054 ~ 0.099]",
+        " volcanism [None]"
+      ],
+      "children": [
+        { "variant": "Maroon", "query": [ "   star [B]" ] },
+        { "variant": "Orange", "query": [ "   star [A]" ] },
+        { "variant": "Mauve", "query": [ "    star [F]" ] },
+        { "variant": "Amethyst", "query": [ " star [G]" ] },
+        { "variant": "Grey", "query": [ "     star [K]" ] },
+        { "variant": "Turquoise", "query": [ "star [M]" ] },
+        { "variant": "Teal", "query": [ "     star [L]" ] },
+        { "variant": "Green", "query": [ "    star [Y]" ] },
+        { "variant": "Lime", "query": [ "     star [D]" ] },
+        { "variant": "Yellow", "query": [ "   star [N]" ] }
+      ]
+    },
+    {
+      "species": "Lacrimam",
+      "query": [
+        "      body [Rocky]",
+        "atmosphere [Thin Carbon dioxide]",
+        "   gravity [0.04 ~ 0.06]",
+        "      temp [394 ~ 452]",
+        "  pressure [0.053 ~ 0.099]",
+        " volcanism [None, Minor Water Magma]"
+      ],
+      "children": [
+        { "variant": "Maroon", "query": [ "   star [B]" ] },
+        { "variant": "Orange", "query": [ "   star [A]" ] },
+        { "variant": "Mauve", "query": [ "    star [F]" ] },
+        { "variant": "Amethyst", "query": [ " star [G]" ] },
+        { "variant": "Grey", "query": [ "     star [K]" ] },
+        { "variant": "Turquoise", "query": [ "star [M]" ] },
+        { "variant": "Teal", "query": [ "     star [L]" ] },
+        { "variant": "Green", "query": [ "    star [Y]" ] },
+        { "variant": "Lime", "query": [ "     star [D]" ] },
+        { "variant": "Yellow", "query": [ "   star [N]" ] }
+      ]
+    },
+
+    {
+      "species": "Margaritus",
+      "query": [
+        "      body [HMC]",
+        "atmosphere [Thin Carbon dioxide]",
+        "   gravity [0.06 ~ 0.26]",
+        "      temp [190 ~ 196]",
+        "  pressure [0.054 ~ 0.099]",
+        " volcanism [None]"
+      ],
+      "children": [
+        { "variant": "Maroon", "query": [ "   star [B]" ] },
+        { "variant": "Orange", "query": [ "   star [A]" ] },
+        { "variant": "Mauve", "query": [ "    star [F]" ] },
+        { "variant": "Amethyst", "query": [ " star [G]" ] },
+        { "variant": "Grey", "query": [ "     star [K]" ] },
+        { "variant": "Turquoise", "query": [ "star [M]" ] },
+        { "variant": "Teal", "query": [ "     star [L]" ] },
+        { "variant": "Green", "query": [ "    star [Y]" ] },
+        { "variant": "Lime", "query": [ "     star [D]" ] },
+        { "variant": "Yellow", "query": [ "   star [N]" ] }
+      ]
+    },
+    {
+      "species": "Margaritus",
+      "query": [
+        "      body [HMC]",
+        "atmosphere [Thin Water]",
+        "   gravity [0.04 ~ 0.06]",
+        "      temp [390 ~ 452]",
+        "  pressure [0.050 ~ 0.099]",
+        " volcanism [None]"
+      ],
+      "children": [
+        { "variant": "Maroon", "query": [ "   star [B]" ] },
+        { "variant": "Orange", "query": [ "   star [A]" ] },
+        { "variant": "Mauve", "query": [ "    star [F]" ] },
+        { "variant": "Amethyst", "query": [ " star [G]" ] },
+        { "variant": "Grey", "query": [ "     star [K]" ] },
+        { "variant": "Turquoise", "query": [ "star [M]" ] },
+        { "variant": "Teal", "query": [ "     star [L]" ] },
+        { "variant": "Green", "query": [ "    star [Y]" ] },
+        { "variant": "Lime", "query": [ "     star [D]" ] },
+        { "variant": "Yellow", "query": [ "   star [N]" ] }
+      ]
+    },
+
+    {
+      "species": "Speculumi",
+      "query": [
+        "      body [Rocky]",
+        "atmosphere [Thin Carbon dioxide]",
+        "   gravity [0.04 ~ 0.24]",
+        "      temp [190 ~ 196]",
+        "  pressure [0.054 ~ 0.099]",
+        " volcanism [None]"
+      ],
+      "children": [
+        { "variant": "Maroon", "query": [ "   star [B]" ] },
+        { "variant": "Orange", "query": [ "   star [A]" ] },
+        { "variant": "Mauve", "query": [ "    star [F]" ] },
+        { "variant": "Amethyst", "query": [ " star [G]" ] },
+        { "variant": "Grey", "query": [ "     star [K]" ] },
+        { "variant": "Turquoise", "query": [ "star [M]" ] },
+        { "variant": "Teal", "query": [ "     star [L]" ] },
+        { "variant": "Green", "query": [ "    star [Y]" ] },
+        { "variant": "Lime", "query": [ "     star [D]" ] },
+        { "variant": "Yellow", "query": [ "   star [N]" ] }
+      ]
+    },
+    {
+      "species": "Speculumi",
+      "query": [
+        "      body [Rocky]",
+        "atmosphere [Thin Water]",
+        "   gravity [0.04 ~ 0.06]",
+        "      temp [392 ~ 452]",
+        "  pressure [0.052 ~ 0.099]",
+        " volcanism [None]"
+      ],
+      "children": [
+        { "variant": "Maroon", "query": [ "   star [B]" ] },
+        { "variant": "Orange", "query": [ "   star [A]" ] },
+        { "variant": "Mauve", "query": [ "    star [F]" ] },
+        { "variant": "Amethyst", "query": [ " star [G]" ] },
+        { "variant": "Grey", "query": [ "     star [K]" ] },
+        { "variant": "Turquoise", "query": [ "star [M]" ] },
+        { "variant": "Teal", "query": [ "     star [L]" ] },
+        { "variant": "Green", "query": [ "    star [Y]" ] },
+        { "variant": "Lime", "query": [ "     star [D]" ] },
+        { "variant": "Yellow", "query": [ "   star [N]" ] }
+      ]
+    }
+
+  ]
+}
+

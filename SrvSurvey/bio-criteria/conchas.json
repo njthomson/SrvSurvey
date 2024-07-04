@@ -1,48 +1,144 @@
-  {
-    "genus": "Conchas",
-    "query": [
-      "body [HMC,Rocky]"
-    ],
-    "children": [
-      {
-        "species": "Aureolas",
-        "query": [
-            "atmosType [Ammonia]",
-            "  gravity [ ~ 0.27]",
-            "     temp [152 ~ 177]"
+{
+  "genus": "Concha",
+  "query": [
+    "body [HMC,Rocky]"
+  ],
+  "children": [
+    {
+      "species": "Aureolas",
+      "query": [
+        "atmosphere [Thin Ammonia]",
+        "   gravity [0.04 ~ 0.27]",
+        "      temp [152 ~ 177]",
+        "  pressure [0.00098 ~ 0.0134]"
+      ],
+      "children": [
+        { "variant": "Indigo", "query": [ "   star [B]" ] },
+        { "variant": "Teal", "query": [ "     star [A]" ] },
+        { "variant": "Grey", "query": [ "     star [F]" ] },
+        { "variant": "Turquoise", "query": [ "star [G]" ] },
+        { "variant": "Red", "query": [ "      star [K]" ] },
+        { "variant": "Orange", "query": [ "   star [L]" ] },
+        { "variant": "Yellow", "query": [ "   star [Y]" ] },
+        { "variant": "Green", "query": [ "    star [D]" ] },
+        { "variant": "Emerald", "query": [ "  star [N]" ] }
+      ]
+    },
+
+    {
+      "species": "Biconcavis",
+      "query": [
+          "atmosphere [Thin Nitrogen]",
+          "   gravity [0.05 ~ 0.26]",
+          "      temp [42 ~ 51]",
+          "  pressure [0.0009 ~ 0.0047]",
+          " volcanism [None]"
         ],
-        "children": [
-          { "variant": "Indigo", "query": [ "   star [B]" ] },
-          { "variant": "Teal", "query": [ "     star [A]" ] },
-          { "variant": "Grey", "query": [ "     star [F]" ] },
-          { "variant": "Turquoise", "query": [ "star [G]" ] },
-          { "variant": "Red", "query": [ "      star [K]" ] },
-          { "variant": "Orange", "query": [ "   star [L]" ] },
-          { "variant": "Yellow", "query": [ "   star [Y]" ] },
-          { "variant": "Green", "query": [ "    star [D]" ] },
-          { "variant": "Emerald", "query": [ "  star [N]" ] }
-        ]
-      },
-      {
-        "species": "Labiata",
-        "query": [
-            "atmosType [CarbonDioxide]",
-            "  gravity [ ~ 0.26]",
-            "     temp [150 ~ 199]",
-            "volcanism [None]"
-          ],
-        "children": [
-          { "variant": "Indigo", "query": [ "   star [B]" ] },
-          { "variant": "Teal", "query": [ "     star [A]" ] },
-          { "variant": "Grey", "query": [ "     star [F]" ] },
-          { "variant": "Turquoise", "query": [ "star [G]" ] },
-          { "variant": "Red", "query": [ "      star [K]" ] },
-          { "variant": "Orange", "query": [ "   star [L]" ] },
-          { "variant": "Yellow", "query": [ "   star [Y]" ] },
-          { "variant": "Lime", "query": [ "     star [W]" ] },
-          { "variant": "Green", "query": [ "    star [D]" ] },
-          { "variant": "Emerald", "query": [ "  star [N]" ] }
-        ]
-      }
-    ]
-  }
+      "children": [
+        { "variant": "White", "query": [ " mats [Technetium]" ] },
+        { "variant": "Yellow", "query": [ "mats [Tellurium]" ] },
+        { "variant": "Red", "query": [ "   mats [Polonium]" ] },
+        { "variant": "Orange", "query": [ "mats [Ruthenium]" ] },
+        { "variant": "Peach", "query": [ " mats [Antimony]" ] },
+        { "variant": "Gold", "query": [ "  mats [Yttrium]" ] }
+      ]
+    },
+
+    {
+      "species": "Labiata",
+      "query": [
+          "atmosType [CarbonDioxide]",
+          "  gravity [0.04 ~ 0.26]",
+          "     temp [150 ~ 199]",
+          " pressure [0.002 ~ 0.098]",
+          "volcanism [None]"
+        ],
+      "children": [
+        { "variant": "Indigo", "query": [ "   star [B]" ] },
+        { "variant": "Teal", "query": [ "     star [A]" ] },
+        { "variant": "Grey", "query": [ "     star [F]" ] },
+        { "variant": "Turquoise", "query": [ "star [G]" ] },
+        { "variant": "Red", "query": [ "      star [K]" ] },
+        { "variant": "Orange", "query": [ "   star [L]" ] },
+        { "variant": "Yellow", "query": [ "   star [Y]" ] },
+        { "variant": "Lime", "query": [ "     star [W]" ] },
+        { "variant": "Green", "query": [ "    star [D]" ] },
+        { "variant": "Emerald", "query": [ "  star [N]" ] }
+      ]
+    },
+
+    {
+      "species": "Renibus",
+      "query": [
+          "atmosphere [Thin Ammonia]",
+          "   gravity [0.04 ~ 0.05]",
+          "      temp [163 ~ 177]",
+          "  pressure [0.009 ~ 0.0132]",
+          " volcanism [Major Silicate Vapour Geysers]"
+        ],
+      "children": [
+        { "variant": "Mulberry", "query": [ "  mats [Mercury]" ] },
+        { "variant": "Blue", "query": [ "      mats [Niobium]" ] },
+        { "variant": "Aquamarine", "query": [ "mats [Tin]" ] },
+        { "variant": "White", "query": [ "     mats [Tungsten]" ] },
+        { "variant": "Peach", "query": [ "     mats [Molybdenum]" ] },
+        { "variant": "Red", "query": [ "       mats [Cadmium]" ] }
+      ]
+    },
+    {
+      "species": "Renibus",
+      "query": [
+          "atmosphere [Thin Carbon dioxide]",
+          "   gravity [0.04 ~ 0.27]",
+          "      temp [180 ~ 196]",
+          "  pressure [0.025 ~ 0.099]",
+          " volcanism [None]"
+        ],
+      "children": [
+        { "variant": "Mulberry", "query": [ "  mats [Mercury]" ] },
+        { "variant": "Blue", "query": [ "      mats [Niobium]" ] },
+        { "variant": "Aquamarine", "query": [ "mats [Tin]" ] },
+        { "variant": "White", "query": [ "     mats [Tungsten]" ] },
+        { "variant": "Peach", "query": [ "     mats [Molybdenum]" ] },
+        { "variant": "Red", "query": [ "       mats [Cadmium]" ] }
+      ]
+    },
+    {
+      "species": "Renibus",
+      "query": [
+          "atmosphere [Thin Methane]",
+          "   gravity [0.04 ~ 0.11]",
+          "      temp [79 ~ 102]",
+          "  pressure [0.012 ~ 0.082]",
+          " volcanism [Major Silicate Vapour Geysers]"
+        ],
+      "children": [
+        { "variant": "Mulberry", "query": [ "  mats [Mercury]" ] },
+        { "variant": "Blue", "query": [ "      mats [Niobium]" ] },
+        { "variant": "Aquamarine", "query": [ "mats [Tin]" ] },
+        { "variant": "White", "query": [ "     mats [Tungsten]" ] },
+        { "variant": "Peach", "query": [ "     mats [Molybdenum]" ] },
+        { "variant": "Red", "query": [ "       mats [Cadmium]" ] }
+      ]
+    },
+    {
+      "species": "Renibus",
+      "query": [
+          "atmosphere [Thin Water]",
+          "   gravity [0.04 ~ 0.06]",
+          "      temp [390 ~ 452]",
+          "  pressure [0.052 ~ 0.099]",
+          " volcanism [None,Minor Water Magma]"
+        ],
+      "children": [
+        { "variant": "Mulberry", "query": [ "  mats [Mercury]" ] },
+        { "variant": "Blue", "query": [ "      mats [Niobium]" ] },
+        { "variant": "Aquamarine", "query": [ "mats [Tin]" ] },
+        { "variant": "White", "query": [ "     mats [Tungsten]" ] },
+        { "variant": "Peach", "query": [ "     mats [Molybdenum]" ] },
+        { "variant": "Red", "query": [ "       mats [Cadmium]" ] }
+      ]
+    }
+
+  ]
+}

@@ -1,0 +1,132 @@
+{
+  "genus": "Recepta",
+  "children": [
+    {
+      "species": "Conditivus",
+      "query": [
+        "      body [Icy,Rocky]",
+        "atmosphere [Thin Carbon dioxide]",
+        "   gravity [0.04 ~ 0.27]",
+        "      temp [150 ~ 194]",
+        "  pressure [0.0013 ~ 0.093]",
+        " volcanism [None]"
+      ],
+      "children": [
+        { "variant": "Aquamarine", "query": [ "mats [Technetium]" ] },
+        { "variant": "Cyan", "query": [ "      mats [Tellurium]" ] },
+        { "variant": "White", "query": [ "     mats [Polonium]" ] },
+        { "variant": "Yellow", "query": [ "    mats [Ruthenium]" ] },
+        { "variant": "Lime", "query": [ "      mats [Antimony]" ] },
+        { "variant": "Green", "query": [ "     mats [Yttrium]" ] }
+      ]
+    },
+    {
+      "species": "Conditivus",
+      "query": [
+        "      body [Icy]",
+        "atmosphere [Thin Oxygen]",
+        "   gravity [0.04 ~ 0.27]",
+        "      temp [154 ~ 159]",
+        "  pressure [0.019 ~ 0.044]",
+        " volcanism [None]"
+      ],
+      "children": [
+        { "variant": "Aquamarine", "query": [ "mats [Technetium]" ] },
+        { "variant": "Cyan", "query": [ "      mats [Tellurium]" ] },
+        { "variant": "White", "query": [ "     mats [Polonium]" ] },
+        { "variant": "Yellow", "query": [ "    mats [Ruthenium]" ] },
+        { "variant": "Lime", "query": [ "      mats [Antimony]" ] },
+        { "variant": "Green", "query": [ "     mats [Yttrium]" ] }
+      ]
+    },
+    {
+      "species": "Conditivus",
+      "query": [
+        "atmosphere [Thin Sulphur dioxide]",
+        "   gravity [0.04 ~ 0.28]",
+        "      temp [132 ~ 273]",
+        "  pressure [0.0009 ~ 0.099]",
+        " volcanism [None]"
+      ],
+      "children": [
+        { "variant": "Aquamarine", "query": [ "mats [Technetium]" ] },
+        { "variant": "Cyan", "query": [ "      mats [Tellurium]" ] },
+        { "variant": "White", "query": [ "     mats [Polonium]" ] },
+        { "variant": "Yellow", "query": [ "    mats [Ruthenium]" ] },
+        { "variant": "Lime", "query": [ "      mats [Antimony]" ] },
+        { "variant": "Green", "query": [ "     mats [Yttrium]" ] }
+      ]
+    },
+
+    {
+      "species": "Deltahedronix",
+      "query": [
+        "      body [HMC,Icy,Rocky]",
+        "atmosphere [Thin Carbon dioxide]",
+        "   gravity [0.04 ~ 0.27]",
+        "      temp [150 ~ 195]",
+        "  pressure [0.005 ~ 0.098]",
+        " volcanism [None]"
+      ],
+      "children": [
+        { "variant": "Cyan", "query": [ "    mats [Mercury]" ] },
+        { "variant": "Mulberry", "query": [ "mats [Niobium]" ] },
+        { "variant": "Orange", "query": [ "  mats [Tin]" ] },
+        { "variant": "Red", "query": [ "     mats [Tungsten]" ] },
+        { "variant": "Gold", "query": [ "    mats [Molybdenum]" ] },
+        { "variant": "Lime", "query": [ "    mats [Cadmium]" ] }
+      ]
+    },
+
+    {
+      "species": "Umbrux",
+      "query": [
+        "atmosphere [Thin Sulphur dioxide]",
+        "   gravity [0.04 ~ 0.28]",
+        "      temp [132 ~ 273]",
+        "  pressure [0.0009 ~ 0.099]"
+      ],
+      "children": [
+        { "variant": "Turquoise", "query": [ "star [B]" ] },
+        { "variant": "Amethyst", "query": [ " star [A]" ] },
+        { "variant": "Mauve", "query": [ "    star [F]" ] },
+        { "variant": "Orange", "query": [ "   star [G]" ] },
+        { "variant": "Red", "query": [ "      star [K]" ] },
+        { "variant": "Maroon", "query": [ "   star [M]" ] },
+        { "variant": "Ocher", "query": [ "    star [L]" ] },
+        { "variant": "Teal", "query": [ "     star [T]" ] },
+        { "variant": "Sage", "query": [ "     star [TTS]" ] },
+        { "variant": "Grey", "query": [ "     star [Ae]" ] },
+        { "variant": "Lime", "query": [ "     star [Y]" ] },
+        { "variant": "Yellow", "query": [ "   star [D]" ] },
+        { "variant": "Emerald", "query": [ "  star [N]" ] }
+      ]
+    },
+    {
+      "species": "Umbrux",
+      "query": [
+        "atmosphere [Thin Carbon dioxide]",
+        "   gravity [0.04 ~ 0.27]",
+        "      temp [149 ~ 201]",
+        "  pressure [0.001 ~ 0.097]"
+      ],
+      "children": [
+        { "variant": "Turquoise", "query": [ "star [B]" ] },
+        { "variant": "Amethyst", "query": [ " star [A]" ] },
+        { "variant": "Mauve", "query": [ "    star [F]" ] },
+        { "variant": "Orange", "query": [ "   star [G]" ] },
+        { "variant": "Red", "query": [ "      star [K]" ] },
+        { "variant": "Maroon", "query": [ "   star [M]" ] },
+        { "variant": "Ocher", "query": [ "    star [L]" ] },
+        { "variant": "Teal", "query": [ "     star [T]" ] },
+        { "variant": "Sage", "query": [ "     star [TTS]" ] },
+        { "variant": "Grey", "query": [ "     star [Ae]" ] },
+        { "variant": "Lime", "query": [ "     star [Y]" ] },
+        { "variant": "Yellow", "query": [ "   star [D]" ] },
+        { "variant": "Emerald", "query": [ "  star [N]" ] }
+      ]
+    },
+
+  ]
+}
+

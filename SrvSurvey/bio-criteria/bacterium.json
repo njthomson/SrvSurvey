@@ -3,11 +3,27 @@
   "query": [],
   "children": [
     {
-      "species": "Aurasus",
+      "species": "Acies",
       "query": [
-        "      body [HMC,Rocky]",
-        "atmosphere [CarbonDioxide]",
-        "      temp [145 ~ 400]"
+        "atmosType [Neon]",
+        "      temp [20 ~ 61]"
+      ],
+      "children": [
+        { "variant": "Lime", "query": [ "      mats [Technetium]" ] },
+        { "variant": "White", "query": [ "     mats [Tellurium]" ] },
+        { "variant": "Magenta", "query": [ "   mats [Polonium]" ] },
+        { "variant": "Cobalt", "query": [ "    mats [Ruthenium]" ] },
+        { "variant": "Cyan", "query": [ "      mats [Antimony]" ] },
+        { "variant": "Aquamarine", "query": [ "mats [Yttrium]" ] }
+      ]
+    },
+
+    {
+      "species": "Alcyoneum",
+      "query": [
+        "     body [HMC,Rocky]",
+        "atmosType [Ammonia]",
+        "     temp [152 ~ 177]"
       ],
       "children": [
         { "variant": "Turquoise", "query": [ "star [O]" ] },
@@ -23,61 +39,503 @@
         { "variant": "Orange", "query": [ "   star [Ae]" ] },
         { "variant": "Mauve", "query": [ "    star [Y]" ] },
         { "variant": "Amethyst", "query": [ " star [W]" ] },
-        { "variant": "Ochre", "query": [ "    star [D]" ] },
+        { "variant": "Ocher", "query": [ "    star [D]" ] },
         { "variant": "Indigo", "query": [ "   star [N]" ] }
-  ]
+      ]
+    },
+
+    {
+      "species": "Aurasus",
+      "query": [
+        "     body [HMC,Rocky]",
+        "atmosType [CarbonDioxide]",
+        "     temp [145 ~ 400]"
+      ],
+      "children": [
+        { "variant": "Turquoise", "query": [ "star [O]" ] },
+        { "variant": "Gray", "query": [ "     star [B]" ] },
+        { "variant": "Yellow", "query": [ "   star [A]" ] },
+        { "variant": "Lime", "query": [ "     star [F]" ] },
+        { "variant": "Emerald", "query": [ "  star [G]" ] },
+        { "variant": "Green", "query": [ "    star [K]" ] },
+        { "variant": "Teal", "query": [ "     star [M]" ] },
+        { "variant": "Sage", "query": [ "     star [L]" ] },
+        { "variant": "Red", "query": [ "      star [T]" ] },
+        { "variant": "Maroon", "query": [ "   star [TTS]" ] },
+        { "variant": "Orange", "query": [ "   star [Ae]" ] },
+        { "variant": "Mauve", "query": [ "    star [Y]" ] },
+        { "variant": "Amethyst", "query": [ " star [W]" ] },
+        { "variant": "Ocher", "query": [ "    star [D]" ] },
+        { "variant": "Indigo", "query": [ "   star [N]" ] }
+      ]
+    },
+
+    {
+      "species": "Bullaris",
+      "query": [
+        "atmosType [Methane]",
+        "     temp [67 ~ 109]"
+      ],
+      "children": [
+        { "variant": "Gold", "query": [ "      mats [Technetium]" ] },
+        { "variant": "Lime", "query": [ "      mats [Tellurium]" ] },
+        { "variant": "Yellow", "query": [ "    mats [Polonium]" ] },
+        { "variant": "Aquamarine", "query": [ "mats [Ruthenium]" ] },
+        { "variant": "Cobalt", "query": [ "    mats [Antimony]" ] },
+        { "variant": "Red", "query": [ "       mats [Yttrium]" ] }
+      ]
+    },
+    {
+      "species": "Bullaris",
+      "query": [
+        "     body [HMC,Rocky]",
+        "atmosType [MethaneRich]",
+        "     temp [73 ~ 141]"
+      ],
+      "children": [
+        { "variant": "Gold", "query": [ "      mats [Technetium]" ] },
+        { "variant": "Lime", "query": [ "      mats [Tellurium]" ] },
+        { "variant": "Yellow", "query": [ "    mats [Polonium]" ] },
+        { "variant": "Aquamarine", "query": [ "mats [Ruthenium]" ] },
+        { "variant": "Cobalt", "query": [ "    mats [Antimony]" ] },
+        { "variant": "Red", "query": [ "       mats [Yttrium]" ] }
+      ]
+    },
+
+    {
+      "species": "Cerbrus",
+      "query": [
+        "     body [HMC,Rocky,RockyIce]",
+        "atmosType [SulphurDioxide]",
+        "     temp [132 ~ 500]"
+      ],
+      "children": [
+        { "variant": "Turquoise", "query": [ "star [O]" ] },
+        { "variant": "Gray", "query": [ "     star [B]" ] },
+        { "variant": "Yellow", "query": [ "   star [A]" ] },
+        { "variant": "Lime", "query": [ "     star [F]" ] },
+        { "variant": "Emerald", "query": [ "  star [G]" ] },
+        { "variant": "Green", "query": [ "    star [K]" ] },
+        { "variant": "Teal", "query": [ "     star [M]" ] },
+        { "variant": "Sage", "query": [ "     star [L]" ] },
+        { "variant": "Red", "query": [ "      star [T]" ] },
+        { "variant": "Maroon", "query": [ "   star [TTS]" ] },
+        { "variant": "Orange", "query": [ "   star [Ae]" ] },
+        { "variant": "Mauve", "query": [ "    star [Y]" ] },
+        { "variant": "Amethyst", "query": [ " star [W]" ] },
+        { "variant": "Ocher", "query": [ "    star [D]" ] },
+        { "variant": "Indigo", "query": [ "   star [N]" ] }
+      ]
+    },
+    {
+      "species": "Cerbrus",
+      "query": [
+        "     body [HMC,Rocky]",
+        "atmosType [Water]",
+        "     temp [392 ~ 452]"
+      ],
+      "children": [
+        { "variant": "Turquoise", "query": [ "star [O]" ] },
+        { "variant": "Gray", "query": [ "     star [B]" ] },
+        { "variant": "Yellow", "query": [ "   star [A]" ] },
+        { "variant": "Lime", "query": [ "     star [F]" ] },
+        { "variant": "Emerald", "query": [ "  star [G]" ] },
+        { "variant": "Green", "query": [ "    star [K]" ] },
+        { "variant": "Teal", "query": [ "     star [M]" ] },
+        { "variant": "Sage", "query": [ "     star [L]" ] },
+        { "variant": "Red", "query": [ "      star [T]" ] },
+        { "variant": "Maroon", "query": [ "   star [TTS]" ] },
+        { "variant": "Orange", "query": [ "   star [Ae]" ] },
+        { "variant": "Mauve", "query": [ "    star [Y]" ] },
+        { "variant": "Amethyst", "query": [ " star [W]" ] },
+        { "variant": "Ocher", "query": [ "    star [D]" ] },
+        { "variant": "Indigo", "query": [ "   star [N]" ] }
+      ]
+    },
+    {
+      "species": "Cerbrus",
+      "query": [
+        "     body [RockyIce]",
+        "atmosType [WaterRich]",
+        "     temp [231 ~ 315]",
+        "volcanism [None]"
+      ],
+      "children": [
+        { "variant": "Turquoise", "query": [ "star [O]" ] },
+        { "variant": "Gray", "query": [ "     star [B]" ] },
+        { "variant": "Yellow", "query": [ "   star [A]" ] },
+        { "variant": "Lime", "query": [ "     star [F]" ] },
+        { "variant": "Emerald", "query": [ "  star [G]" ] },
+        { "variant": "Green", "query": [ "    star [K]" ] },
+        { "variant": "Teal", "query": [ "     star [M]" ] },
+        { "variant": "Sage", "query": [ "     star [L]" ] },
+        { "variant": "Red", "query": [ "      star [T]" ] },
+        { "variant": "Maroon", "query": [ "   star [TTS]" ] },
+        { "variant": "Orange", "query": [ "   star [Ae]" ] },
+        { "variant": "Mauve", "query": [ "    star [Y]" ] },
+        { "variant": "Amethyst", "query": [ " star [W]" ] },
+        { "variant": "Ocher", "query": [ "    star [D]" ] },
+        { "variant": "Indigo", "query": [ "   star [N]" ] }
+      ]
+    },
+
+    {
+      "species": "Informem",
+      "query": [
+        "atmosType [Nitrogen]",
+        "     temp [43 ~ 150]"
+      ],
+      "children": [
+        { "variant": "Aquamarine", "query": [ "mats [Technetium]" ] },
+        { "variant": "Yellow", "query": [ "    mats [Tellurium]" ] },
+        { "variant": "Lime", "query": [ "      mats [Polonium]" ] },
+        { "variant": "Gold", "query": [ "      mats [Ruthenium]" ] },
+        { "variant": "Red", "query": [ "       mats [Antimony]" ] },
+        { "variant": "Cobalt", "query": [ "    mats [Yttrium]" ] }
+      ]
+    },
+
+    {
+      "species": "Nebulus",
+      "query": [
+        "     body [Icy]",
+        "atmosType [Helium]",
+        "     temp [19 ~ 21]"
+      ],
+      "children": [
+        { "variant": "Aquamarine", "query": [ "mats [Technetium]" ] },
+        { "variant": "Yellow", "query": [ "    mats [Tellurium]" ] },
+        { "variant": "Lime", "query": [ "      mats [Polonium]" ] },
+        { "variant": "Gold", "query": [ "      mats [Ruthenium]" ] },
+        { "variant": "Red", "query": [ "       mats [Antimony]" ] },
+        { "variant": "Cobalt", "query": [ "    mats [Yttrium]" ] }
+      ]
+    },
+
+    {
+      "species": "Omentum",
+      "query": [
+        "     body [Icy]",
+        "volcanism [Nitrogen,Ammonia]"
+      ],
+      "children": [
+        {
+          "species": "Omentum",
+          "query": [
+            "atmosType [Argon]",
+            "     temp [50 ~ 172]"
+          ],
+          "children": [
+            { "variant": "White", "query": [ "     mats [Mercury]" ] },
+            { "variant": "Peach", "query": [ "     mats [Niobium]" ] },
+            { "variant": "Red", "query": [ "       mats [Tin]" ] },
+            { "variant": "Blue", "query": [ "      mats [Tungsten]" ] },
+            { "variant": "Aquamarine", "query": [ "mats [Molybdenum]" ] },
+            { "variant": "Lime", "query": [ "      mats [Cadmium]" ] }
+          ]
+        },
+        {
+          "species": "Omentum",
+          "query": [
+            "atmosType [ArgonRich]",
+            "     temp [80 ~ 87]"
+          ],
+          "children": [
+            { "variant": "White", "query": [ "     mats [Mercury]" ] },
+            { "variant": "Peach", "query": [ "     mats [Niobium]" ] },
+            { "variant": "Red", "query": [ "       mats [Tin]" ] },
+            { "variant": "Blue", "query": [ "      mats [Tungsten]" ] },
+            { "variant": "Aquamarine", "query": [ "mats [Molybdenum]" ] },
+            { "variant": "Lime", "query": [ "      mats [Cadmium]" ] }
+          ]
+        },
+        {
+          "species": "Omentum",
+          "query": [
+            "atmosType [Helium]",
+            "     temp [20 ~ 21]"
+          ],
+          "children": [
+            { "variant": "White", "query": [ "     mats [Mercury]" ] },
+            { "variant": "Peach", "query": [ "     mats [Niobium]" ] },
+            { "variant": "Red", "query": [ "       mats [Tin]" ] },
+            { "variant": "Blue", "query": [ "      mats [Tungsten]" ] },
+            { "variant": "Aquamarine", "query": [ "mats [Molybdenum]" ] },
+            { "variant": "Lime", "query": [ "      mats [Cadmium]" ] }
+          ]
+        },
+        {
+          "species": "Omentum",
+          "query": [
+            "atmosType [Methane]",
+            "     temp [84 ~ 108]"
+          ],
+          "children": [
+            { "variant": "White", "query": [ "     mats [Mercury]" ] },
+            { "variant": "Peach", "query": [ "     mats [Niobium]" ] },
+            { "variant": "Red", "query": [ "       mats [Tin]" ] },
+            { "variant": "Blue", "query": [ "      mats [Tungsten]" ] },
+            { "variant": "Aquamarine", "query": [ "mats [Molybdenum]" ] },
+            { "variant": "Lime", "query": [ "      mats [Cadmium]" ] }
+          ]
+        },
+        {
+          "species": "Omentum",
+          "query": [
+            "atmosType [Neon]",
+            "     temp [20 ~ 61]"
+          ],
+          "children": [
+            { "variant": "White", "query": [ "     mats [Mercury]" ] },
+            { "variant": "Peach", "query": [ "     mats [Niobium]" ] },
+            { "variant": "Red", "query": [ "       mats [Tin]" ] },
+            { "variant": "Blue", "query": [ "      mats [Tungsten]" ] },
+            { "variant": "Aquamarine", "query": [ "mats [Molybdenum]" ] },
+            { "variant": "Lime", "query": [ "      mats [Cadmium]" ] }
+          ]
+        },
+        {
+          "species": "Omentum",
+          "query": [
+            "atmosType [NeonRich]",
+            "     temp [20 ~ 93]"
+          ],
+          "children": [
+            { "variant": "White", "query": [ "     mats [Mercury]" ] },
+            { "variant": "Peach", "query": [ "     mats [Niobium]" ] },
+            { "variant": "Red", "query": [ "       mats [Tin]" ] },
+            { "variant": "Blue", "query": [ "      mats [Tungsten]" ] },
+            { "variant": "Aquamarine", "query": [ "mats [Molybdenum]" ] },
+            { "variant": "Lime", "query": [ "      mats [Cadmium]" ] }
+          ]
+        },
+        {
+          "species": "Omentum",
+          "query": [
+            "atmosType [Nitrogen]",
+            "     temp [60 ~ 64]"
+          ],
+          "children": [
+            { "variant": "White", "query": [ "     mats [Mercury]" ] },
+            { "variant": "Peach", "query": [ "     mats [Niobium]" ] },
+            { "variant": "Red", "query": [ "       mats [Tin]" ] },
+            { "variant": "Blue", "query": [ "      mats [Tungsten]" ] },
+            { "variant": "Aquamarine", "query": [ "mats [Molybdenum]" ] },
+            { "variant": "Lime", "query": [ "      mats [Cadmium]" ] }
+          ]
+        },
+        {
+          "species": "Omentum",
+          "query": [
+            "atmosType [WaterRich]",
+            "     temp [240 ~ 307]"
+          ],
+          "children": [
+            { "variant": "White", "query": [ "     mats [Mercury]" ] },
+            { "variant": "Peach", "query": [ "     mats [Niobium]" ] },
+            { "variant": "Red", "query": [ "       mats [Tin]" ] },
+            { "variant": "Blue", "query": [ "      mats [Tungsten]" ] },
+            { "variant": "Aquamarine", "query": [ "mats [Molybdenum]" ] },
+            { "variant": "Lime", "query": [ "      mats [Cadmium]" ] }
+          ]
+        }
+      ]
+    },
+
+    {
+      "species": "Scopulum",
+      "query": [
+        "     body [Icy,RockyIce]",
+        "  gravity [ ~ 0.25]",
+        "atmosType [Argon]",
+        "     temp [57 ~ 146]",
+        "volcanism [CarbonDioxide,Methane]"
+      ],
+      "children": [
+        { "variant": "Peach", "query": [ "     mats [Mercury]" ] },
+        { "variant": "Red", "query": [ "       mats [Niobium]" ] },
+        { "variant": "Mulberry", "query": [ "  mats [Tin]" ] },
+        { "variant": "Aquamarine", "query": [ "mats [Tungsten]" ] },
+        { "variant": "Lime", "query": [ "      mats [Molybdenum]" ] },
+        { "variant": "White", "query": [ "     mats [Cadmium]" ] }
+      ]
+    },
+    {
+      "species": "Scopulum",
+      "query": [
+        "     body [Icy]",
+        "  gravity [ ~ 0.51]",
+        "atmosType [Helium]",
+        "     temp [57 ~ 146]",
+        "volcanism [Methane]"
+      ],
+      "children": [
+        { "variant": "Peach", "query": [ "     mats [Mercury]" ] },
+        { "variant": "Red", "query": [ "       mats [Niobium]" ] },
+        { "variant": "Mulberry", "query": [ "  mats [Tin]" ] },
+        { "variant": "Aquamarine", "query": [ "mats [Tungsten]" ] },
+        { "variant": "Lime", "query": [ "      mats [Molybdenum]" ] },
+        { "variant": "White", "query": [ "     mats [Cadmium]" ] }
+      ]
+    },
+    {
+      "species": "Scopulum",
+      "query": [
+        "     body [Icy]",
+        "  gravity [ ~ 0.05]",
+        "atmosType [Methane]",
+        "     temp [84 ~ 108]",
+        "volcanism [Methane]"
+      ],
+      "children": [
+        { "variant": "Peach", "query": [ "     mats [Mercury]" ] },
+        { "variant": "Red", "query": [ "       mats [Niobium]" ] },
+        { "variant": "Mulberry", "query": [ "  mats [Tin]" ] },
+        { "variant": "Aquamarine", "query": [ "mats [Tungsten]" ] },
+        { "variant": "Lime", "query": [ "      mats [Molybdenum]" ] },
+        { "variant": "White", "query": [ "     mats [Cadmium]" ] }
+      ]
+    },
+    {
+      "species": "Scopulum",
+      "query": [
+        "     body [Icy,RockyIce]",
+        "  gravity [ ~ 0.60]",
+        "atmosType [Neon]",
+        "     temp [20 ~ 52]",
+        "volcanism [CarbonDioxide,Methane]"
+      ],
+      "children": [
+        { "variant": "Peach", "query": [ "     mats [Mercury]" ] },
+        { "variant": "Red", "query": [ "       mats [Niobium]" ] },
+        { "variant": "Mulberry", "query": [ "  mats [Tin]" ] },
+        { "variant": "Aquamarine", "query": [ "mats [Tungsten]" ] },
+        { "variant": "Lime", "query": [ "      mats [Molybdenum]" ] },
+        { "variant": "White", "query": [ "     mats [Cadmium]" ] }
+      ]
+    },
+    {
+      "species": "Scopulum",
+      "query": [
+        "     body [Icy]",
+        "  gravity [ ~ 0.61]",
+        "atmosType [NeonRich]",
+        "     temp [20 ~ 65]",
+        "volcanism [CarbonDioxide,Methane]"
+      ],
+      "children": [
+        { "variant": "Peach", "query": [ "     mats [Mercury]" ] },
+        { "variant": "Red", "query": [ "       mats [Niobium]" ] },
+        { "variant": "Mulberry", "query": [ "  mats [Tin]" ] },
+        { "variant": "Aquamarine", "query": [ "mats [Tungsten]" ] },
+        { "variant": "Lime", "query": [ "      mats [Molybdenum]" ] },
+        { "variant": "White", "query": [ "     mats [Cadmium]" ] }
+      ]
+    },
+    {
+      "species": "Scopulum",
+      "query": [
+        "     body [Icy]",
+        "  gravity [ ~ 0.26]",
+        "atmosType [Nitrogen]",
+        "     temp [61 ~ 68]",
+        "volcanism [CarbonDioxide,Methane]"
+      ],
+      "children": [
+        { "variant": "Peach", "query": [ "     mats [Mercury]" ] },
+        { "variant": "Red", "query": [ "       mats [Niobium]" ] },
+        { "variant": "Mulberry", "query": [ "  mats [Tin]" ] },
+        { "variant": "Aquamarine", "query": [ "mats [Tungsten]" ] },
+        { "variant": "Lime", "query": [ "      mats [Molybdenum]" ] },
+        { "variant": "White", "query": [ "     mats [Cadmium]" ] }
+      ]
+    },
+    {
+      "species": "Scopulum",
+      "query": [
+        "     body [Icy]",
+        "  gravity [ ~ 0.32]",
+        "atmosType [Oxygen]",
+        "     temp [152 ~ 210]",
+        "volcanism [CarbonDioxide,Methane]"
+      ],
+      "children": [
+        { "variant": "Peach", "query": [ "     mats [Mercury]" ] },
+        { "variant": "Red", "query": [ "       mats [Niobium]" ] },
+        { "variant": "Mulberry", "query": [ "  mats [Tin]" ] },
+        { "variant": "Aquamarine", "query": [ "mats [Tungsten]" ] },
+        { "variant": "Lime", "query": [ "      mats [Molybdenum]" ] },
+        { "variant": "White", "query": [ "     mats [Cadmium]" ] }
+      ]
     },
 
     {
       "species": "Tela",
       "query": [
-          "atmosphere [Thin Ammonia]",
-          "   gravity [0.27 ~ ]",
-          "      temp [20 ~ 607]",
-          "  pressure [0.001 ~ 0.0076]",
-      ],
-      "children": [
-        { "name": "Gold", "query": [ "   mats [Cadmium]" ] },
-        { "name": "Orange", "query": [ " mats [Mercuty]" ] },
-        { "name": "Yellow", "query": [ " mats [Molybdenum]" ] },
-        { "name": "Magenta", "query": [ "mats [Niobium]" ] },
-        { "name": "Cobalt", "query": [ " mats [Tin]" ] },
-        { "name": "Green", "query": [ "  mats [Tungsten]" ] }
-      ]
-    },
-    {
-      "species": "Tela",
-      "query": [
-          "atmosType [CarbonDioxide,SulphurDioxide,Water]",
-          "  gravity [ ~ 0.61]",
+          "  gravity [0.03 ~ 0.62]",
           "     temp [20 ~ 607]",
-          " pressure [0.001 ~ 0.0076]",
+          " pressure [0.00098 ~ 0.099]",
+          "volcanism [Some]"
       ],
       "children": [
-        { "name": "Gold", "query": [ "   mats [Cadmium]" ] },
-        { "name": "Orange", "query": [ " mats [Mercuty]" ] },
-        { "name": "Yellow", "query": [ " mats [Molybdenum]" ] },
-        { "name": "Magenta", "query": [ "mats [Niobium]" ] },
-        { "name": "Cobalt", "query": [ " mats [Tin]" ] },
-        { "name": "Green", "query": [ "  mats [Tungsten]" ] }
+        { "variant": "Orange", "query": [ " mats [Mercury]" ] },
+        { "variant": "Magenta", "query": [ "mats [Niobium]" ] },
+        { "variant": "Cobalt", "query": [ " mats [Tin]" ] },
+        { "variant": "Green", "query": [ "  mats [Tungsten]" ] },
+        { "variant": "Yellow", "query": [ " mats [Molybdenum]" ] },
+        { "variant": "Gold", "query": [ "   mats [Cadmium]" ] }
       ]
     },
+
     {
-      "species": "Tela",
+      "species": "Verrata",
       "query": [
-          "# any other atmosphere",
-          "   gravity [ ~ 0.61]",
-          "      temp [20 ~ 607]",
-          "  pressure [0.001 ~ 0.0076]",
-          " volcanism [None]"
+        "     body [Icy,Rocky,RockyIce]",
+        "  gravity [ ~ 0.61]",
+        "     temp [20 ~ 442]",
+        "volcanism [Water]"
       ],
       "children": [
-        { "name": "Gold", "query": [ "   mats [Cadmium]" ] },
-        { "name": "Orange", "query": [ " mats [Mercuty]" ] },
-        { "name": "Yellow", "query": [ " mats [Molybdenum]" ] },
-        { "name": "Magenta", "query": [ "mats [Niobium]" ] },
-        { "name": "Cobalt", "query": [ " mats [Tin]" ] },
-        { "name": "Green", "query": [ "  mats [Tungsten]" ] }
+        { "variant": "Orange", "query": [ " mats [Mercury]" ] },
+        { "variant": "Magenta", "query": [ "mats [Niobium]" ] },
+        { "variant": "Cobalt", "query": [ " mats [Tin]" ] },
+        { "variant": "Green", "query": [ "  mats [Tungsten]" ] },
+        { "variant": "Yellow", "query": [ " mats [Molybdenum]" ] },
+        { "variant": "Gold", "query": [ "   mats [Cadmium]" ] }
+      ]
+    },
+
+    {
+      "species": "Vesicula",
+      "query": [
+        "  gravity [ ~ 0.51]",
+        "atmosType [Argon]",
+        "     temp [50 ~ 267]"
+      ],
+      "children": [
+        { "variant": "Gold", "query": [ "    mats [Technetium]" ] },
+        { "variant": "Red", "query": [ "     mats [Tellurium]" ] },
+        { "variant": "Orange", "query": [ "  mats [Polonium]" ] },
+        { "variant": "Mulberry", "query": [ "mats [Ruthenium]" ] },
+        { "variant": "Cyan", "query": [ "    mats [Antimony]" ] },
+        { "variant": "Lime", "query": [ "    mats [Yttrium]" ] }
+      ]
+    },
+    
+    {
+      "species": "Volu",
+      "query": [
+          "  gravity [ ~ 0.60]",
+          "atmosType [Oxygen]",
+          "     temp [143 ~ 246]"
+      ],
+      "children": [
+        { "variant": "Lime", "query": [ "      mats [Technetium]" ] },
+        { "variant": "Cyan", "query": [ "      mats [Tellurium]" ] },
+        { "variant": "Aquamarine", "query": [ "mats [Polonium]" ] },
+        { "variant": "Cobalt", "query": [ "    mats [Ruthenium]" ] },
+        { "variant": "Red", "query": [ "       mats [Antimony]" ] },
+        { "variant": "Gold", "query": [ "      mats [Yttrium]" ] }
       ]
     }
   ]
