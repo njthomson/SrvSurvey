@@ -66,6 +66,8 @@ namespace SrvSurvey
                 this.reposition(Elite.getWindowRect());
 
             this.Invalidate();
+
+            if (newMode == GameMode.MainMenu) this.Close();
         }
 
         protected override void OnPaintBackground(PaintEventArgs e)
@@ -307,10 +309,10 @@ namespace SrvSurvey
                         displayName = organism.speciesLocalized.Replace(organism.genusLocalized + " ", "");
                     else
                     {
-                        // if we have a matching prediction - show the species name and that we don't know the variant
-                        var match = body.predictions.Values.FirstOrDefault(p => p.genus.name == organism.genus);
+                        // if we have a matching prediction - show the variant name without the genus prefix
+                        var match = body.predictions.Values.FirstOrDefault(p => p.species.genus.name == organism.genus);
                         if (match != null)
-                            displayName = match.englishName.Replace(match.genus.englishName, "").Trim() + " - ?";
+                            displayName = match.englishName.Replace(match.species.genus.englishName, "").Trim() + "?";
                     }
 
                     // line 1
@@ -384,8 +386,6 @@ namespace SrvSurvey
             {
                 if (body.bioSignalCount == 0) continue;
 
-                var bodyGroup = game.systemData.bioSummary?.bodyGroups.Find(_ => _.body == body);
-
                 var highlight = body.shortName == destinationBody || (body.countAnalyzedBioSignals != body.bioSignalCount && body.countAnalyzedBioSignals > 0); // || !anyFoo); // body.countAnalyzedBioSignals == body.bioSignalCount || bodyName == "1 f";
                 dty = (float)Math.Round(dty);
 
@@ -447,7 +447,7 @@ namespace SrvSurvey
                 }
 
                 // credits
-                drawTextAt(this.ClientSize.Width - ten, body.minMaxBioRewards, highlight ? GameColors.brushCyan : GameColors.brushGameOrange, GameColors.fontMiddle, true);
+                drawTextAt(this.ClientSize.Width - ten, " " + body.minMaxBioRewards, highlight ? GameColors.brushCyan : GameColors.brushGameOrange, GameColors.fontMiddle, true);
                 dtx = lastTextSize.Width + boxRight + ten;
                 newLine(+four, true);
             }

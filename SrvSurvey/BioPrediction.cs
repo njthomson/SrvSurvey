@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using BioCriteria;
+using Newtonsoft.Json;
 using SrvSurvey.game;
 using System.Globalization;
 using System.Text;
@@ -165,7 +166,7 @@ namespace SrvSurvey
             var surfacePressure = body.surfacePressure / 10_000f;
             var bodyHasVolcanism = string.IsNullOrEmpty(body.volcanism) && body.volcanism == "No volcanism";
 
-            var parentStarTypes = systemData.getParentStarTypes(body, true);
+            var parentStarTypes = systemData.getParentStarTypes(body, false);
             Game.log($"Body: {body.name} => parentStarClass: " + string.Join(',', parentStarTypes));
 
             //string? parentStarClass = systemData!.getParentStarType(body, true);
@@ -440,7 +441,7 @@ namespace SrvSurvey
                     txt.AppendLine($"  > " + string.Join("\r\n  > ", missed));
                 }
 
-                var list2 = PotentialOrganism.match(targetBody, null);
+                var list2 = Predictor.predict(targetBody); // PotentialOrganism.match(targetBody, null);
                 row.Add(list2.Count.ToString()); // method2 predicted count
                 txt.AppendLine($"\r\nMethod 2:");
                 countMatch = 0;

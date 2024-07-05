@@ -14,8 +14,6 @@ namespace SrvSurvey
             if (activeForm == null)
                 FormShowCodex.activeForm = new FormShowCodex();
 
-            FormShowCodex.activeForm.entryId = entryId;
-
             Util.showForm(FormShowCodex.activeForm);
             FormShowCodex.activeForm.showEntryId(entryId);
             return FormShowCodex.activeForm;
@@ -30,30 +28,46 @@ namespace SrvSurvey
         private bool dragging = false;
         private Point mouseDownPoint;
 
-
         private FormShowCodex()
         {
             this.ForeColor = GameColors.Orange;
             InitializeComponent();
             this.DoubleBuffered = true;
-            this.toolImageCredit.ForeColor = SystemColors.ControlText;
 
-            this.MouseWheel += FormShowCodex_MouseWheel;
+            foreach (ToolStripItem item in this.statusStrip.Items)
+                item.ForeColor = SystemColors.ControlText;
 
-            // can we fit in our last location
+            // use our last location
             Util.useLastLocation(this, Game.settings.formShowCodex);
         }
 
         private void FormShowCodex_Load(object sender, EventArgs e)
         {
-            this.showEntryId(this.entryId);
-
-            mx = (this.ClientRectangle.Width / 2f) - (w / 2f);
-            my = (this.ClientRectangle.Height / 2f) - (h / 2);
+            this.BeginInvoke(() =>
+            {
+                this.showEntryId(this.entryId);
+            });
         }
 
-        private void FormShowCodex_MouseWheel(object? sender, MouseEventArgs e)
+        private void calcSizes(bool middle, bool imgSize)
         {
+            if (imgSize && this.img != null)
+            {
+                w = img.Width * scale;
+                h = img.Height * scale;
+            }
+
+            if (middle)
+            {
+                this.mx = (this.ClientRectangle.Width / 2f) - (w / 2f);
+                this.my = (this.ClientRectangle.Height / 2f) - (h / 2f);
+            }
+        }
+
+        protected override void OnMouseWheel(MouseEventArgs e)
+        {
+            base.OnMouseWheel(e);
+
             if (e.Delta > 0)
                 this.scale *= 1.1f;
             else
@@ -62,15 +76,7 @@ namespace SrvSurvey
             if (this.scale < 0.1) this.scale = 0.1f;
             if (this.scale > 10) this.scale = 10f;
 
-            if (img != null)
-            {
-                w = img.Width * scale;
-                h = img.Height * scale;
-            }
-
-            mx = (this.ClientRectangle.Width / 2f) - (w / 2f);
-            my = (this.ClientRectangle.Height / 2f) - (h / 2);
-
+            this.calcSizes(true, true);
             this.Invalidate();
         }
 
@@ -90,9 +96,7 @@ namespace SrvSurvey
         {
             base.OnResize(e);
 
-            mx = (this.ClientRectangle.Width / 2f) - (w / 2f);
-            my = (this.ClientRectangle.Height / 2f) - (h / 2);
-
+            this.calcSizes(true, false);
             this.Invalidate();
         }
 
@@ -104,27 +108,54 @@ namespace SrvSurvey
 
         public async void showEntryId(string entryId)
         {
+            Game.log($"showEntryId: {entryId}");
+            // also find any other things we can show images for
+            this.prepAllSpecies();
+            if (entryId == this.entryId) return;
+
+            this.lblLoading.Show();
             this.panelSubmit.Hide();
             //this.panelSubmit.Show();
             this.img = null;
             this.entryId = entryId;
             this.match = Game.codexRef.matchFromEntryId(entryId);
             this.lblTitle.Text = match.variant.englishName;
+            this.lblCmdr.Text = $"cmdr: {match.variant.imageCmdr}";
 
             // attempt to download if we don't have a file already
             var filepath = Path.Combine(CodexRef.codexImagesFolder, $"{match.entryId}.png");
-            if (!File.Exists(filepath))
+            if (File.Exists(filepath))
+            {
+                // download images once a week
+                var duration = DateTime.Now.Subtract(File.GetLastWriteTime(filepath));
+                if (duration.TotalDays < 7)
+                {
+                    // load the cached image - quickly, so as not to lock the file
+                    using (var imgTmp = Bitmap.FromFile(filepath))
+                        this.img = new Bitmap(imgTmp);
+                }
+                else
+                {
+                    // too old, delete and we'll download again below
+                    File.Delete(filepath);
+                }
+            }
+
+            if (this.img == null || !File.Exists(filepath))
             {
                 if (match.variant.imageUrl == null)
                 {
                     // we have no url
                     this.panelSubmit.Show();
-                    this.toolImageCredit.Text = "";
+                    this.lblCmdr.Text = "";
                     this.Invalidate();
+                    this.lblLoading.Hide();
                     return;
                 }
 
                 Game.log($"Downloading: {match.variant.imageUrl}");
+                this.Invalidate();
+                Application.DoEvents();
                 using (var stream = await new HttpClient().GetStreamAsync(match.variant.imageUrl))
                 {
                     using (var imgTmp = Image.FromStream(stream))
@@ -134,21 +165,64 @@ namespace SrvSurvey
                     }
                 }
             }
-            else
+
+            // calc scale to make the width fit
+            this.scale = (float)this.ClientRectangle.Width / (float)img.Width;
+            this.calcSizes(true, true);
+            this.Invalidate(true);
+            this.lblLoading.Hide();
+        }
+
+        private void prepAllSpecies()
+        {
+            if (Game.activeGame?.systemBody?.organisms == null) return;
+            toolChange.DropDownItems.Clear();
+
+            if (Game.activeGame.systemBody.organisms.Any(o => o.variantLocalized != null))
             {
-                // load the cached image - quickly, so as not to lock the file
-                using (var imgTmp = Bitmap.FromFile(filepath))
-                    this.img = new Bitmap(imgTmp);
+                // show confirmed variants
+                toolChange.DropDownItems.Add(new ToolStripMenuItem("Confirmed:") { Enabled = false });
+                foreach (var org in Game.activeGame.systemBody.organisms)
+                {
+                    if (string.IsNullOrEmpty(org.variantLocalized)) continue;
+
+                    var entryId = org.entryId.ToString();
+                    var item = new ToolStripMenuItem(org.variantLocalized, null, this.Item_Click, entryId);
+
+                    // show a check if there's a picture available
+                    var match = Game.codexRef.matchFromEntryId(entryId);
+                    item.Checked = match.variant.imageUrl != null;
+
+                    toolChange.DropDownItems.Add(item);
+                }
             }
 
-            w = img.Width * scale;
-            h = img.Height * scale;
+            if (Game.activeGame.systemBody.predictions.Count > 0)
+            {
+                // show predictions
+                toolChange.DropDownItems.Add(new ToolStripMenuItem("Predicted:") { Enabled = false });
 
-            mx = (this.ClientRectangle.Width / 2f) - (w / 2f);
-            my = (this.ClientRectangle.Height / 2f) - (h / 2);
+                foreach (var foo in Game.activeGame.systemBody.predictions.Values)
+                {
+                    // skip if that entryId is already present
+                    if (toolChange.DropDownItems.ContainsKey(foo.entryId)) continue;
 
-            this.toolImageCredit.Text = $"cmdr: {match.variant.imageCmdr}";
-            this.Invalidate();
+                    var item = new ToolStripMenuItem(foo.englishName, null, this.Item_Click, foo.entryId);
+
+                    // show a check if there's a picture available
+                    item.Checked = foo.imageUrl != null;
+
+                    toolChange.DropDownItems.Add(item);
+                }
+            }
+        }
+
+        private void Item_Click(object? sender, EventArgs e)
+        {
+            var item = sender as ToolStripMenuItem;
+            if (item == null) return;
+
+            this.showEntryId(item.Name);
         }
 
         protected override void OnPaintBackground(PaintEventArgs e)
@@ -157,15 +231,6 @@ namespace SrvSurvey
 
             e.Graphics.Clear(BackColor);
             if (this.img == null) return;
-
-            //w = img.Width * scale;
-            //h = img.Height * scale;
-
-            //mx = (this.ClientRectangle.Width / 2f) - (w / 2f);
-            //my = (this.ClientRectangle.Height / 2f) - (h / 2);
-
-            //mx -= dragOffset.X;
-            //my -= dragOffset.Y;
 
             var x = mx - dragOffset.X * this.scale;
             var y = my - dragOffset.Y * this.scale;

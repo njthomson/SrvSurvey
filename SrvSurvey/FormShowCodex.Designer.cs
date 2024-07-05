@@ -29,28 +29,20 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormShowCodex));
-            panelTop = new Panel();
             lblTitle = new Label();
+            lblCmdr = new Label();
             lblNoImage = new Label();
             linkSubmitImage = new LinkLabel();
             panelSubmit = new Panel();
             toolOpenCanonn = new ToolStripStatusLabel();
-            statusStrip1 = new StatusStrip();
+            statusStrip = new StatusStrip();
+            toolChange = new ToolStripDropDownButton();
+            somethingToolStripMenuItem = new ToolStripMenuItem();
             toolFiller = new ToolStripStatusLabel();
-            toolImageCredit = new ToolStripStatusLabel();
-            panelTop.SuspendLayout();
+            lblLoading = new Label();
             panelSubmit.SuspendLayout();
-            statusStrip1.SuspendLayout();
+            statusStrip.SuspendLayout();
             SuspendLayout();
-            // 
-            // panelTop
-            // 
-            panelTop.Controls.Add(lblTitle);
-            panelTop.Dock = DockStyle.Top;
-            panelTop.Location = new Point(0, 0);
-            panelTop.Name = "panelTop";
-            panelTop.Size = new Size(584, 31);
-            panelTop.TabIndex = 3;
             // 
             // lblTitle
             // 
@@ -61,6 +53,17 @@
             lblTitle.Size = new Size(177, 28);
             lblTitle.TabIndex = 4;
             lblTitle.Text = "Aleoida Arcus";
+            // 
+            // lblCmdr
+            // 
+            lblCmdr.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            lblCmdr.AutoSize = true;
+            lblCmdr.Location = new Point(0, 345);
+            lblCmdr.Name = "lblCmdr";
+            lblCmdr.Size = new Size(67, 17);
+            lblCmdr.TabIndex = 10;
+            lblCmdr.Text = "cmdr: Foo";
+            lblCmdr.TextAlign = ContentAlignment.MiddleRight;
             // 
             // lblNoImage
             // 
@@ -108,40 +111,62 @@
             toolOpenCanonn.Text = "View on Canonn Research";
             toolOpenCanonn.Click += toolStripStatusLabel1_Click;
             // 
-            // statusStrip1
+            // statusStrip
             // 
-            statusStrip1.BackColor = SystemColors.Control;
-            statusStrip1.Items.AddRange(new ToolStripItem[] { toolOpenCanonn, toolFiller, toolImageCredit });
-            statusStrip1.Location = new Point(0, 339);
-            statusStrip1.Name = "statusStrip1";
-            statusStrip1.Size = new Size(584, 22);
-            statusStrip1.TabIndex = 4;
-            statusStrip1.Text = "statusStrip1";
+            statusStrip.AllowMerge = false;
+            statusStrip.BackColor = SystemColors.Control;
+            statusStrip.Items.AddRange(new ToolStripItem[] { toolChange, toolFiller, toolOpenCanonn });
+            statusStrip.Location = new Point(0, 365);
+            statusStrip.Name = "statusStrip";
+            statusStrip.Size = new Size(561, 22);
+            statusStrip.TabIndex = 4;
+            statusStrip.Text = "statusStrip1";
+            // 
+            // toolChange
+            // 
+            toolChange.DropDownItems.AddRange(new ToolStripItem[] { somethingToolStripMenuItem });
+            toolChange.Image = (Image)resources.GetObject("toolChange.Image");
+            toolChange.ImageTransparentColor = Color.Magenta;
+            toolChange.Name = "toolChange";
+            toolChange.Size = new Size(113, 20);
+            toolChange.Text = "Change image";
+            // 
+            // somethingToolStripMenuItem
+            // 
+            somethingToolStripMenuItem.Name = "somethingToolStripMenuItem";
+            somethingToolStripMenuItem.Size = new Size(131, 22);
+            somethingToolStripMenuItem.Text = "something";
             // 
             // toolFiller
             // 
             toolFiller.Name = "toolFiller";
-            toolFiller.Size = new Size(366, 17);
+            toolFiller.Overflow = ToolStripItemOverflow.Never;
+            toolFiller.Size = new Size(289, 17);
             toolFiller.Spring = true;
             toolFiller.Text = " ";
             // 
-            // toolImageCredit
+            // lblLoading
             // 
-            toolImageCredit.Name = "toolImageCredit";
-            toolImageCredit.Size = new Size(59, 17);
-            toolImageCredit.Text = "cmdr: foo";
-            toolImageCredit.TextAlign = ContentAlignment.MiddleRight;
+            lblLoading.Anchor = AnchorStyles.None;
+            lblLoading.Location = new Point(246, 187);
+            lblLoading.Name = "lblLoading";
+            lblLoading.Size = new Size(68, 17);
+            lblLoading.TabIndex = 9;
+            lblLoading.Text = "Loading ...";
             // 
             // FormShowCodex
             // 
             AutoScaleDimensions = new SizeF(7F, 17F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.Black;
-            ClientSize = new Size(584, 361);
+            ClientSize = new Size(561, 387);
+            Controls.Add(lblTitle);
+            Controls.Add(lblLoading);
             Controls.Add(panelSubmit);
-            Controls.Add(statusStrip1);
-            Controls.Add(panelTop);
+            Controls.Add(statusStrip);
+            Controls.Add(lblCmdr);
             Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            ForeColor = Color.DarkOrange;
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "FormShowCodex";
             Text = "Canonn Codex";
@@ -149,25 +174,25 @@
             MouseDown += FormShowCodex_MouseDown;
             MouseMove += FormShowCodex_MouseMove;
             MouseUp += FormShowCodex_MouseUp;
-            panelTop.ResumeLayout(false);
-            panelTop.PerformLayout();
             panelSubmit.ResumeLayout(false);
             panelSubmit.PerformLayout();
-            statusStrip1.ResumeLayout(false);
-            statusStrip1.PerformLayout();
+            statusStrip.ResumeLayout(false);
+            statusStrip.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
-        private Panel panelTop;
         private Label lblTitle;
         private Label lblNoImage;
         private LinkLabel linkSubmitImage;
         private Panel panelSubmit;
         private ToolStripStatusLabel toolOpenCanonn;
-        private StatusStrip statusStrip1;
+        private StatusStrip statusStrip;
         private ToolStripStatusLabel toolFiller;
-        private ToolStripStatusLabel toolImageCredit;
+        private ToolStripDropDownButton toolChange;
+        private Label lblLoading;
+        private Label lblCmdr;
+        private ToolStripMenuItem somethingToolStripMenuItem;
     }
 }

@@ -1,5 +1,8 @@
 {
   "genus": "Recepta",
+  "query": [
+    "atmosComp [SulphurDioxide > 1]"
+  ],
   "children": [
     {
       "species": "Conditivus",

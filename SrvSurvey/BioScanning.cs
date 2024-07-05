@@ -1,8 +1,8 @@
-﻿using Newtonsoft.Json;
+﻿using BioCriteria;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using SrvSurvey.game;
 using SrvSurvey.units;
-using System.Diagnostics;
 using System.Globalization;
 
 #pragma warning disable CS0649
@@ -166,7 +166,7 @@ namespace SrvSurvey
         {
             var potentials = new HashSet<string>();
 
-            var parentStarTypes = body.system.getParentStarTypes(body, true); //.Take(1).ToList();
+            var parentStarTypes = body.system.getParentStarTypes(body, false); //.Take(1).ToList();
             Game.log($"Body: {body.name} => parentStarClass: " + string.Join(',', parentStarTypes));
 
             //var atmosSphere = body.atmosphereType?.Replace("thin ", "", StringComparison.OrdinalIgnoreCase) ?? ""; // too crude?
@@ -221,18 +221,18 @@ namespace SrvSurvey
                 }
 
                 // material must be present and more than 0.0001
-                if (foo.material != null && !foo.material.Any(_ => body.materials?.ContainsKey(_) == true && body.materials.GetValueOrDefault(_) > 0.0001)) continue;
+                if (foo.material != null && !foo.material.Any(_ => body.materials?.ContainsKey(_) == true && body.materials.GetValueOrDefault(_) > 0.0001)) continue; // migrated
 
                 // special cases
                 if (foo.speciesPart == "Electricae Radialem" && GalacticNeblulae.distToClosest(body.system.starPos) > 100) continue;
-                if (foo.speciesPart == "Clypeus Speculumi" && body.distanceFromArrivalLS < 2000) continue; // not 2500 ?
+                if (foo.speciesPart == "Clypeus Speculumi" && body.distanceFromArrivalLS < 2000) continue; // not 2500 ? // migrated
                 if (foo.speciesPart == "Tussock Serrati" && (surfacePressure < 0.0106 || surfacePressure > 0.0704)) continue;
                 if (foo.speciesPart == "Bacterium Tela" && (surfacePressure < 0.001 || surfacePressure > 0.0076)) continue;
                 if (foo.speciesPart == "Bacterium Tela" && body.atmosphere.Contains("thin ammonia") && surfaceGravity > 0.27f) continue;
 
 
                 // atmospheric special cases
-                if (foo.speciesPart.StartsWith("Recepta") && body.atmosphereComposition.GetValueOrDefault("SulphurDioxide") < 1f) continue;
+                if (foo.speciesPart.StartsWith("Recepta") && body.atmosphereComposition.GetValueOrDefault("SulphurDioxide") < 1f) continue; // migrated
                 if (foo.speciesPart.StartsWith("Tussock Cultro") && body.atmosphereComposition.GetValueOrDefault("Ammonia") != 100f) continue;
                 // Tussock may be wrong ?!
                 //if (foo.speciesPart.StartsWith("Tussock") && body.atmosphereComposition.GetValueOrDefault("SulphurDioxide") < 0.9f) continue;
@@ -381,14 +381,14 @@ namespace SrvSurvey
             { "Bacterial | Bacterium Cerbrus   | RockyIce           | *   | WaterRich      | None                  | 231 | 315 | O,B,A,F,G,K,M,L,T,TTS,Ae,Y,W,D,N" },
             { "Bacterial | Bacterium Informem  | *                  | *   | Nitrogen       | *                     |  43 | 150 | * | ant+" },
             { "Bacterial | Bacterium Nebulus   | Icy                | *   | Helium         | *                     |  19 |  21 | * | ant+" },
-            { "Bacterial | Bacterium Omentum   | Icy                | *   | Argon          | Nitrogen,Ammonia      |  50 | 172 | * | cad+" },
-            { "Bacterial | Bacterium Omentum   | Icy                | *   | ArgonRich      | Nitrogen,Ammonia      |  80 |  87 | * | cad+" },
-            { "Bacterial | Bacterium Omentum   | Icy                | *   | Helium         | Nitrogen,Ammonia      |  20 |  21 | * | cad+" },
-            { "Bacterial | Bacterium Omentum   | Icy                | *   | Methane        | Nitrogen,Ammonia      |  84 | 108 | * | cad+" },
-            { "Bacterial | Bacterium Omentum   | Icy                | *   | Neon           | Nitrogen,Ammonia      |  20 |  61 | * | cad+" },
-            { "Bacterial | Bacterium Omentum   | Icy                | *   | NeonRich       | Nitrogen,Ammonia      |  20 |  93 | * | cad+" },
-            { "Bacterial | Bacterium Omentum   | Icy                | *   | Nitrogen       | Nitrogen,Ammonia      |  60 |  64 | * | cad+" },
-            { "Bacterial | Bacterium Omentum   | Icy                | *   | WaterRich      | Nitrogen,Ammonia      | 240 | 307 | * | cad+" },
+            { "Bacterial | Bacterium Omentum   | Icy                | *   | Argon          | Nitrogen,Ammonia      |  50 | 172 | * | ant+" },
+            { "Bacterial | Bacterium Omentum   | Icy                | *   | ArgonRich      | Nitrogen,Ammonia      |  80 |  87 | * | ant+" },
+            { "Bacterial | Bacterium Omentum   | Icy                | *   | Helium         | Nitrogen,Ammonia      |  20 |  21 | * | ant+" },
+            { "Bacterial | Bacterium Omentum   | Icy                | *   | Methane        | Nitrogen,Ammonia      |  84 | 108 | * | ant+" },
+            { "Bacterial | Bacterium Omentum   | Icy                | *   | Neon           | Nitrogen,Ammonia      |  20 |  61 | * | ant+" },
+            { "Bacterial | Bacterium Omentum   | Icy                | *   | NeonRich       | Nitrogen,Ammonia      |  20 |  93 | * | ant+" },
+            { "Bacterial | Bacterium Omentum   | Icy                | *   | Nitrogen       | Nitrogen,Ammonia      |  60 |  64 | * | ant+" },
+            { "Bacterial | Bacterium Omentum   | Icy                | *   | WaterRich      | Nitrogen,Ammonia      | 240 | 307 | * | ant+" },
             { "Bacterial | Bacterium Scopulum  | Icy,RockyIce       | 2.5 | Argon          | CarbonDioxide,Methane |  57 | 146 | * | cad+" },
             { "Bacterial | Bacterium Scopulum  | Icy                | 5.1 | Helium         | Methane               |  57 | 146 | * | cad+" },
             { "Bacterial | Bacterium Scopulum  | Icy                | 0.5 | Methane        | Methane               |  84 | 108 | * | cad+" },
@@ -421,7 +421,7 @@ namespace SrvSurvey
             //   genus | species             | body      | <g  | atmosType      | vol  | >t  | <t  | star type         |mts| galactic regions
             { "Cactoid | Cactoida Cortexum   | Rocky,HMC | 2.7 | CarbonDioxide  | None | 180 | 196 | O,A,F,G,M,L,T,TTS,Y,W,D,N | * | ~OrionCygnusArm,Odin'sHold,GalacticCentre" },
             { "Cactoid | Cactoida Lapis      | Rocky,HMC | 2.8 | Ammonia        | *    | 160 | 187 | O,A,F,G,M,L,T,TTS,Y,W,D,N | * | ~OrionCygnusArm,~SagittariusCarinaArm,Odin'sHold,GalacticCentre" },
-            { "Cactoid | Cactoida Peperatis  | Rocky,HMC | 2.8 | Ammonia        | *    | 160 | 186 | O,A,F,G,M,L,T,TTS,Y,W,D,N | * | ~ScutumCentaurusArm,Odin'sHold,GalacticCenter,Orion-CygnusArm" },
+            { "Cactoid | Cactoida Peperatis  | Rocky,HMC | 2.8 | Ammonia        | *    | 160 | 186 | O,A,F,G,M,L,T,TTS,Y,W,D,N | * | ~ScutumCentaurusArm,Odin'sHold,GalacticCentre,Orion-CygnusArm" },
             { "Cactoid | Cactoida Pullulanta | Rocky,HMC | 2.7 | CarbonDioxide  | None | 180 | 196 | O,A,F,G,M,L,T,TTS,Y,W,D,N | * | ~PerseusArm,Ryker'sHope,GalacticCentre" },
             { "Cactoid | Cactoida Vermis     | Rocky     | 2.7 | SulphurDioxide | *    | 160 | 207 | O,A,F,G,M,L,T,TTS,Y,W,D,N | * | *" },
             { "Cactoid | Cactoida Vermis     | Rocky,HMC | 2.7 | Water          | None | 390 | 450 | O,A,F,G,M,L,T,TTS,Y,W,D,N | * | *" },
@@ -575,8 +575,8 @@ namespace SrvSurvey
 
             // 5x Tubus - https://canonn.science/codex/Tubus/ - https://ed-dsn.net/en/tubus_en/
             // genus | species          | body  | <g  | atmosType     | volc | >t  | <t  | star type                   |mats| galactic regions
-            { "Tubus | Tubus Cavas      | Rocky | 1.5 | CarbonDioxide | None | 160 | 197 | O,B,A,F,G,K,M,L,T,TTS,W,D,N | * | ~ScutumCentaurusArm,Odin'sHold,GalacticCentre,,,EmpyreanStraits,NormaArm,InnerOrion-PerseusConflux,TempleElysianShore,SanguineousRim,Orion-CygnusArm" },
-            { "Tubus | Tubus Compagibus | Rocky | 1.5 | CarbonDioxide | None | 160 | 197 | O,B,A,F,G,K,M,L,T,TTS,W,D,N | * | ~SagittariusCarinaArm,Odin'sHold,GalacticCentre,EmpyreanStraits,NormaArm,InnerOrion-PerseusConflux,TempleElysianShore,SanguineousRim,InnerScutum-CentaurusArm" },
+            { "Tubus | Tubus Cavas      | Rocky | 1.5 | CarbonDioxide | None | 160 | 197 | O,B,A,F,G,K,M,L,T,TTS,W,D,N | * | ~ScutumCentaurusArm,Odin'sHold,GalacticCentre,EmpyreanStraits,NormaArm,InnerOrion-PerseusConflux,Temple,ElysianShore,SanguineousRim,Orion-CygnusArm" },
+            { "Tubus | Tubus Compagibus | Rocky | 1.5 | CarbonDioxide | None | 160 | 197 | O,B,A,F,G,K,M,L,T,TTS,W,D,N | * | ~SagittariusCarinaArm,Odin'sHold,GalacticCentre,EmpyreanStraits,NormaArm,InnerOrion-PerseusConflux,Temple,ElysianShore,SanguineousRim,InnerScutum-CentaurusArm" },
             { "Tubus | Tubus Conifer    | Rocky | 1.5 | CarbonDioxide | None | 160 | 196 | O,B,A,F,G,K,M,L,T,TTS,W,D,N | * | ~PerseusArm,Ryker'sHope,GalacticCentre" },
             { "Tubus | Tubus Rosarium   | Rocky | 1.6 | Ammonia       | *    | 160 | 177 | O,B,A,F,G,K,M,L,T,TTS,W,D,N" },
             { "Tubus | Tubus Sororibus  | HMC   | 1.6 | Ammonia       | None | 160 | 177 | O,B,A,F,G,K,M,L,T,TTS,W,D,N" },
@@ -588,7 +588,7 @@ namespace SrvSurvey
          */
 
             // 15x Tussock - https://canonn.science/codex/tussock/ - https://ed-dsn.net/en/tussock_en/
-            //    genus | species           | body           | <g  | atmosType      | volc | >t  | <t  | star type          |mat| galactic regions
+            //    genus | species           | body           | <g  | atmosType      | volc | >t  | <t  | star type         |mat| galactic regions
             { "Tussocks | Tussock Albata    | HMC,Rocky      | 2.7 | CarbonDioxide  | None | 175 | 180 | F,G,K,M,L,T,Y,W,D | * | ~SagittariusCarinaArm,~PerseusArm,Ryker'sHope" },
             { "Tussocks | Tussock Capillum  | Rocky          | 2.8 | Argon          | *    |  80 | 129" },
             { "Tussocks | Tussock Capillum  | Rocky,RockyIce | 2.7 | Methane        | *    |  90 | 109" },

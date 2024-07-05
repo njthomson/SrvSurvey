@@ -103,7 +103,8 @@
         "   gravity [0.04 ~ 0.24]",
         "      temp [190 ~ 196]",
         "  pressure [0.054 ~ 0.099]",
-        " volcanism [None]"
+        " volcanism [None]",
+        "      dist [ 2500 ~ ]"
       ],
       "children": [
         { "variant": "Maroon", "query": [ "   star [B]" ] },
@@ -126,7 +127,8 @@
         "   gravity [0.04 ~ 0.06]",
         "      temp [392 ~ 452]",
         "  pressure [0.052 ~ 0.099]",
-        " volcanism [None]"
+        " volcanism [None]",
+        "      dist [ 2500 ~ ]"
       ],
       "children": [
         { "variant": "Maroon", "query": [ "   star [B]" ] },

@@ -93,6 +93,41 @@ namespace SrvSurvey.game
             return int.Parse(name.Replace(";", "").Substring(18));
         }
 
+        public static string getIdxFromNames(string names)
+        {
+            var regions = new List<string>();
+
+            foreach (var region in names.Split(","))
+            {
+                if (region.StartsWith("!~"))
+                {
+                    var excludeRegions = GalacticRegions.mapArms[region.Substring(1)];
+                    var includeRegions = GalacticRegions.mapRegions.Values.Where(_ => !excludeRegions.Contains(_.Replace(" ", "")));
+                    regions.AddRange(includeRegions.Select(_ => _.Replace(" ", "")));
+
+                }
+                else if (region.StartsWith("~"))
+                {
+                    regions.AddRange(GalacticRegions.mapArms[region].Split(','));
+                }
+                else
+                {
+                    regions.Add(region);
+                }
+            }
+
+            var foo = regions.Select(reg =>
+            {
+                var match = mapRegions.FirstOrDefault(_ => _.Value.Replace(" ", "") == reg);
+                if (match.Key == null) return 0;
+                return getIdxFromName(match.Key);
+            })
+                .OrderBy(id => id);
+
+            // eg: "$Codex_RegionName_1;"
+            return string.Join(",", foo);
+        }
+
         //public static int currentIdx;
 
         public static int currentIdx
@@ -158,7 +193,7 @@ namespace SrvSurvey.game
         public static Dictionary<string, string> mapArms = new Dictionary<string, string>()
         {
             { "~OrionCygnusArm", "Izanami,InnerOrion-PerseusConflux,InnerScutum-CentaurusArm,Orion-CygnusArm,Temple,InnerOrionSpur,ElysianShore,SanguineousRim,OuterOrionSpur" },
-            { "~OuterArm", "NormaArm,ArcadianStream,Newton'sVault,TheConduit,OuterArm,ErrantMarches,FormidineRift,Xibalba,Kepler'sCrest" },
+            { "~OuterArm", "NormaArm,ArcadianStream,Newton'sVault,TheConduit,OuterArm,ErrantMarches,TheFormidineRift,Xibalba,Kepler'sCrest" },
             { "~ScutumCentaurusArm", "InnerScutum-CentaurusArm,NormaExpanse,TrojanBelt,TheVeils,FormorianFrontier,HieronymusDelta,OuterScutum-CentaurusArm,Aquila'sHalo,TheVoid" },
             { "~PerseusArm", "Izanami,OuterOrion-PerseusConflux,PerseusArm,VulcanGate,ElysianShore,SanguineousRim,Achilles'sAltar,Lyra'sSong,Tenebrae" },
             { "~SagittariusCarinaArm", "InnerOrion-PerseusConflux,Orion-CygnusArm,Temple,InnerOrionSpur,Hawking'sGap,Dryman'sPoint,Sagittarius-CarinaArm,MareSomnia,Acheron,OuterOrionSpur,TheAbyss" },

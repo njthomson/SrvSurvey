@@ -1,4 +1,5 @@
-﻿using SrvSurvey.game;
+﻿using BioCriteria;
+using SrvSurvey.game;
 using SrvSurvey.net.EDSM;
 using SrvSurvey.units;
 using System.Diagnostics;
@@ -306,7 +307,10 @@ namespace SrvSurvey
             this.updateGuardianTexts();
             this.updateSphereLimit();
 
-            Main.form.btnCodexShow.Enabled = PlotBioStatus.lastEntryId != null;
+            // ShowCodex button and form
+            Main.form.btnCodexShow.Enabled = game?.systemBody?.organisms?.Count > 0 || game?.systemBody?.predictions?.Count > 0;
+            if (!Main.form.btnCodexShow.Enabled && FormShowCodex.activeForm != null)
+                FormShowCodex.activeForm.Close();
 
             var gameIsActive = game != null && Elite.isGameRunning && game.Commander != null;
 
@@ -573,9 +577,9 @@ namespace SrvSurvey
             var systemScanned = game.systemData.bodies.Sum(_ => _.countAnalyzedBioSignals);
             txtSystemBioSignals.Text = $"{systemScanned} of {systemTotal}";
 
-            var sysEstimate = game.systemData.bodies.Sum(_ => _.sumPotentialEstimate);
+            //var sysEstimate = game.systemData.bodies.Sum(_ => _.sumPotentialEstimate);
             var sysActual = game.systemData.bodies.Sum(_ => _.sumAnalyzed);
-            txtSystemBioValues.Text = $" {Util.credits(sysActual, true)} of {Util.credits(sysEstimate, true)}";
+            txtSystemBioValues.Text = $" {Util.credits(sysActual, true)} of {Util.credits(game.systemData.maxBioRewards, true)}";
             if (game.systemData.bodies.Any(_ => _.bioSignalCount > 0 && _.organisms?.All(o => o.species != null) != true))
                 txtSystemBioValues.Text += "?";
 
@@ -1539,6 +1543,10 @@ namespace SrvSurvey
             new FormSphereLimit().ShowDialog(this);
             this.updateSphereLimit();
 
+            //var txt = GalacticRegions.getIdxFromNames(Clipboard.GetText());
+            //Clipboard.SetText(txt);
+            //Game.log(txt);
+
             //GalacticNeblulae.lookupStarPos();
 
             // revert touchdown location
@@ -1550,14 +1558,14 @@ namespace SrvSurvey
 
         private void btnRamTah_Click(object sender, EventArgs e)
         {
+            FormRamTah.show();
+
+
+
             //BioPrediction.buildPredictionMap();
-
             //GalacticNeblulae.lookupStarPos();
-
             //BioPrediction.testManyNewVsOld().ContinueWith((_) => { /* done */ });
 
-
-            FormRamTah.show();
             //FormPostProcess.show();
 
             //game!.touchdownLocation = Util.adjustForCockpitOffset(game.status.PlanetRadius, game!.systemBody!.lastTouchdown!, game.shipType, 90);
@@ -1596,7 +1604,6 @@ namespace SrvSurvey
             // */
         }
 
-
         private void btnBioSummary_Click(object sender, EventArgs e)
         {
             FormGenus.show();
@@ -1604,8 +1611,16 @@ namespace SrvSurvey
 
         private void btnCodexShow_Click(object sender, EventArgs e)
         {
-            if (PlotBioStatus.lastEntryId != null)
-                FormShowCodex.show(PlotBioStatus.lastEntryId);
+            var entryId = PlotBioStatus.lastEntryId;
+            // use the first known organism?
+            if (entryId == null)
+                entryId = game?.systemBody?.organisms?.FirstOrDefault(o => o.entryId > 0)?.entryId.ToString();
+            // use the first prediction?
+            if (entryId == null)
+                entryId = game?.systemBody?.predictions.Values.First().entryId;
+
+            if (entryId != null)
+                FormShowCodex.show(entryId);
         }
     }
 }

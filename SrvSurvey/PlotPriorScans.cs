@@ -134,13 +134,14 @@ namespace SrvSurvey
             this.signals.Clear();
             foreach (var poi in bioPoi)
             {
-                // skip anything with value is too low
-                var reward = Game.codexRef.getRewardForEntryId(poi.entryid.ToString()!);
-                if (Game.settings.skipPriorScansLowValue && reward < Game.settings.skipPriorScansLowValueAmount)
-                    continue;
-
                 if (poi.latitude != null && poi.longitude != null && poi.entryid != null)
                 {
+                    // skip anything with value is too low
+                    var match = Game.codexRef.matchFromEntryId(poi.entryid.Value);
+                    var reward = match.species.reward;
+                    if (Game.settings.skipPriorScansLowValue && reward < Game.settings.skipPriorScansLowValueAmount)
+                        continue;
+
                     // extract genus name 
                     var name = poi.english_name;
                     var nameParts = name.Split(' ', 2);
@@ -153,7 +154,6 @@ namespace SrvSurvey
 
                     // skip anything too close to our own scans or or own trackers
                     var location = new LatLong2((double)poi.latitude, (double)poi.longitude);
-                    var match = Game.codexRef.matchFromEntryId(poi.entryid.Value);
 
                     // TODO: handle Brain Tree's
                     if (Game.settings.hideMyOwnCanonnSignals && game.systemBody.bioScans?.Any(_ => _.status != BioScan.Status.Died && _.genus == genusName && Util.getDistance(_.location, location, game.systemBody.radius) < PlotTrackers.highlightDistance) == true)

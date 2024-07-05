@@ -6,13 +6,9 @@ namespace SrvSurvey.canonn
     internal class CodexRef
     {
         private static string codexRefPath = Path.Combine(Program.dataFolder, "codexRef.json");
-        private static string speciesRewardPath = Path.Combine(Program.dataFolder, "speciesRewards.json");
-        private static string entryIdRewardPath = Path.Combine(Program.dataFolder, "entryIdRewards.json");
         private static string bioRefPath = Path.Combine(Program.dataFolder, "bioRef.json");
-        public static string codexImagesFolder= Path.Combine(Program.dataFolder, "codexImages");
+        public static string codexImagesFolder = Path.Combine(Program.dataFolder, "codexImages");
 
-        private Dictionary<string, long>? rewards;
-        private Dictionary<string, long>? rewardsByEntryId;
         public List<BioGenus> genus;
 
         public async Task init(bool reset)
@@ -23,20 +19,9 @@ namespace SrvSurvey.canonn
             // force a download and re-processing once a week
             if (duration.TotalDays > 7) reset = true;
 
-            // remove cached files if we are resetting
-            if (reset)
-            {
-                if (File.Exists(codexRefPath)) File.Delete(codexRefPath);
-                if (File.Exists(bioRefPath)) File.Delete(bioRefPath);
-
-                if (File.Exists(speciesRewardPath)) File.Delete(speciesRewardPath);
-                if (File.Exists(entryIdRewardPath)) File.Delete(entryIdRewardPath);
-            }
-
             // get CodexRef ready first, before running these in parallel
-            var codexRef = await loadCodexRef();
-            prepBioRef(codexRef);
-            loadOrganicRewards(codexRef); // todo: retire
+            var codexRef = await loadCodexRef(reset);
+            prepBioRef(codexRef, reset);
 
             if (!Directory.Exists(CodexRef.codexImagesFolder))
                 Directory.CreateDirectory(CodexRef.codexImagesFolder);
@@ -44,10 +29,10 @@ namespace SrvSurvey.canonn
             Game.log("CodexRef init - complete");
         }
 
-        public async Task<Dictionary<string, RefCodexEntry>> loadCodexRef()
+        public async Task<Dictionary<string, RefCodexEntry>> loadCodexRef(bool reset = false)
         {
             string json;
-            if (!File.Exists(codexRefPath))
+            if (!File.Exists(codexRefPath) || reset)
             {
                 Game.log("loadCodexRef: preparing from network ...");
                 json = await new HttpClient().GetStringAsync("https://us-central1-canonn-api-236217.cloudfunctions.net/query/codex/ref");
@@ -65,58 +50,11 @@ namespace SrvSurvey.canonn
             return codexRef;
         }
 
-        public void loadOrganicRewards(Dictionary<string, RefCodexEntry> codexRef)
+        public void prepBioRef(Dictionary<string, RefCodexEntry> codexRef, bool reset = false)
         {
-            if (!File.Exists(speciesRewardPath) || !File.Exists(entryIdRewardPath))
+            if (!File.Exists(bioRefPath) || reset)
             {
-                Game.log("loadOrganicRewards: preparing ...");
-                var organicStuff = codexRef!.Values
-                    .Where(_ => _.sub_category == "$Codex_SubCategory_Organic_Structures;" && _.reward > 0);
-
-                rewards = new Dictionary<string, long>();
-                rewardsByEntryId = new Dictionary<string, long>();
-                foreach (var _ in organicStuff)
-                {
-                    // extract the species prefix from the name, without the color variant part
-                    var species = Util.getSpeciesPrefix(_.name);
-
-                    if (!rewards.ContainsKey(species))
-                    {
-                        rewards.Add(species, (long)_.reward!);
-                    }
-                    else if (rewards[species] != (long)_.reward!)
-                    {
-                        Game.log($"BAD? {_.name} / {species} {rewards[species]} vs {(long)_.reward!}");
-                    }
-
-                    var entryIdKey = _.entryid.Substring(0, 5);
-                    if (!rewardsByEntryId.ContainsKey(entryIdKey))
-                    {
-                        rewardsByEntryId.Add(entryIdKey, (long)_.reward!);
-                    }
-                    else if (rewardsByEntryId[entryIdKey] != (long)_.reward!)
-                    {
-                        Game.log($"BAD? {_.name} / {species} {rewardsByEntryId[entryIdKey]} vs {(long)_.reward!}");
-                    }
-                }
-
-                File.WriteAllText(speciesRewardPath, JsonConvert.SerializeObject(rewards));
-                File.WriteAllText(entryIdRewardPath, JsonConvert.SerializeObject(rewardsByEntryId));
-                Game.log("loadOrganicRewards: complete");
-            }
-            else
-            {
-                Game.log("loadOrganicRewards: reading organic rewards from disk");
-                this.rewards = JsonConvert.DeserializeObject<Dictionary<string, long>>(File.ReadAllText(speciesRewardPath))!;
-                this.rewardsByEntryId = JsonConvert.DeserializeObject<Dictionary<string, long>>(File.ReadAllText(entryIdRewardPath))!;
-            }
-        }
-
-        public void prepBioRef(Dictionary<string, RefCodexEntry> codexRef)
-        {
-            if (!File.Exists(bioRefPath))
-            {
-                Game.log("prepBioRef: preparing from network ...");
+                Game.log("prepBioRef: (re)building from whole CodexRef ...");
                 this.genus = new List<BioGenus>();
                 var organicStuff = codexRef!.Values
                     .Where(_ => _.sub_category == "$Codex_SubCategory_Organic_Structures;" && _.reward > 0);
@@ -264,16 +202,36 @@ namespace SrvSurvey.canonn
         {
             if (this.genus == null || this.genus.Count == 0) throw new Exception($"BioRef is not loaded.");
 
-            var speciesName = Util.getSpeciesPrefix(variantName); // + "Name;";
+            var speciesName = Util.getSpeciesPrefix(variantName);
 
             foreach (var genusRef in this.genus)
                 foreach (var speciesRef in genusRef.species)
-                    if (speciesRef.name.StartsWith(speciesName)) // == speciesName)
+                    if (speciesRef.name.StartsWith(speciesName))
                         foreach (var variantRef in speciesRef.variants)
                             if (variantRef.name == variantName)
                                 return new BioMatch(genusRef, speciesRef, variantRef);
 
             throw new Exception($"Unexpected variantName: '{variantName}' (speciesName: '{speciesName}')");
+        }
+
+        public BioMatch matchFromVariantDisplayName(string variantDisplayName)
+        {
+            if (this.genus == null || this.genus.Count == 0) throw new Exception($"BioRef is not loaded.");
+
+            var parts = variantDisplayName.Split(' ', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+            var genus = parts[0];
+            var species = $"{parts[0]} {parts[1]}";
+            var variant = parts[3];
+
+            foreach (var genusRef in this.genus)
+                if (genusRef.englishName == genus)
+                    foreach (var speciesRef in genusRef.species)
+                        if (speciesRef.englishName == species)
+                            foreach (var variantRef in speciesRef.variants)
+                                if (variantRef.englishName == variantDisplayName)
+                                    return new BioMatch(genusRef, speciesRef, variantRef);
+
+            throw new Exception($"Unexpected variantName: '{variantDisplayName}'");
         }
 
         public BioSpecies matchFromSpecies(string speciesName)
@@ -319,25 +277,6 @@ namespace SrvSurvey.canonn
 
             var genusRef = Game.codexRef.genus.FirstOrDefault(genusRef => genusRef.species.Any(_ => _.name == speciesName) || genusRef.name == genusName);
             return genusRef?.odyssey == false;
-        }
-
-        public long getRewardForSpecies(string name)
-        {
-
-            var key = rewards!.Keys.FirstOrDefault(_ => name.StartsWith(_));
-            if (key != null && rewards.ContainsKey(key))
-                return rewards[key];
-            else
-                return -1;
-        }
-
-        public long getRewardForEntryId(string entryId)
-        {
-            entryId = entryId.Substring(0, 5);
-            if (rewardsByEntryId!.ContainsKey(entryId))
-                return rewardsByEntryId[entryId];
-            else
-                return -1;
         }
 
         private static List<SummaryGenus>? codexRefSummary = null;
