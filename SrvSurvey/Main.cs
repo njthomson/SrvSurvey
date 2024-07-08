@@ -71,6 +71,7 @@ namespace SrvSurvey
 
             // keep these hidden from official app-store builds for now
             btnBioSummary.Visible = !Program.isAppStoreBuild && Game.settings.autoShowPlotBioSystem;
+            btnTest.Visible = Debugger.IsAttached;
         }
 
         private void Main_Load(object sender, EventArgs e)
@@ -1559,49 +1560,6 @@ namespace SrvSurvey
         private void btnRamTah_Click(object sender, EventArgs e)
         {
             FormRamTah.show();
-
-
-
-            //BioPrediction.buildPredictionMap();
-            //GalacticNeblulae.lookupStarPos();
-            //BioPrediction.testManyNewVsOld().ContinueWith((_) => { /* done */ });
-
-            //FormPostProcess.show();
-
-            //game!.touchdownLocation = Util.adjustForCockpitOffset(game.status.PlanetRadius, game!.systemBody!.lastTouchdown!, game.shipType, 90);
-            //Program.getPlotter<PlotHumanSite>()!.Invalidate();
-
-            /*
-            var radius = game!.status.PlanetRadius; // in meters
-            var shipHeading = game.status.Heading;
-
-            //// Not quite ready :/
-            var ll1 = game!.systemBody!.lastTouchdown!.clone();
-            ////var pd = Util.rotateLine(shipHeading, 19m);
-
-            //var pd0 = Util.mapShipCockpitOffsets["dolphin"];
-            ////Math.Atan
-            //var dd = Math.Sqrt(Math.Pow(pd0.X, 2) + Math.Pow(pd0.Y, 2));
-            //var aa = DecimalMath.DecimalEx.ToDeg( DecimalMath.DecimalEx.ATan2((decimal)pd0.X, (decimal) pd0.Y) ) + shipHeading;
-            //Game.log($"{aa} / {dd}");
-
-            //var pd = Util.rotateLine(aa, (decimal)dd);
-
-
-            //var dl = (DecimalMath.DecimalEx.TwoPi * radius) / 360m; // meters per degree
-            //dl = 1 / dl; // degrees per meter
-            var ll2 = Util.adjustForCockpitOffset(radius, ll1, game.shipType, shipHeading);
-            //ll2.Lat += (double)((decimal)pd.Y * dl);
-            //ll2.Long += (double)((decimal)pd.X * dl);
-
-            //Game.log($"pd: {pd}");
-            //Game.log($"ll1: {ll1} / ll2: {ll2} / dl: {dl}");
-
-            //game.touchdownLocation = ll2;
-            var plotter = Program.getPlotter<PlotHumanSite>();
-            plotter.touchdownLocation0!.Target = ll2;
-            plotter.Invalidate();
-            // */
         }
 
         private void btnBioSummary_Click(object sender, EventArgs e)
@@ -1621,6 +1579,20 @@ namespace SrvSurvey
 
             if (entryId != null)
                 FormShowCodex.show(entryId);
+        }
+
+        private void btnTest_Click(object sender, EventArgs e)
+        {
+            Predictor.testSystems().ContinueWith(task =>
+            {
+                Game.log($"testSystems => {task.Status}");
+            });
+
+            //BioPrediction.buildPredictionMap();
+            //GalacticNeblulae.lookupStarPos();
+            //BioPrediction.testManyNewVsOld().ContinueWith((_) => { /* done */ });
+
+            //FormPostProcess.show();
         }
     }
 }

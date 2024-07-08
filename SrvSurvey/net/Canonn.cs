@@ -92,17 +92,13 @@ namespace SrvSurvey.canonn
         }
 
 
-        public static async void biostats0(long systemAddress, int bodyId)
+        public async Task<CanonnBodyBioStats> systemBioStats(long systemAddress)
         {
             var json = await client.GetStringAsync($"https://us-central1-canonn-api-236217.cloudfunctions.net/query/codex/biostats?id={systemAddress}");
+            var obj = JsonConvert.DeserializeObject<JObject>(json)!;
+            var stats = obj["system"]!.ToObject<CanonnBodyBioStats>()!;
+            return stats;
 
-            JToken biostats = JsonConvert.DeserializeObject<JToken>(json)!;
-
-            var bodies = biostats["system"]!["bodies"]!.Value<JArray>()!;
-
-            var body = bodies[bodyId - 1].ToObject<Planet>()!;
-
-            Game.log(body);
         }
 
         #endregion
@@ -1977,4 +1973,57 @@ namespace SrvSurvey.canonn
 
         #endregion
     }
+
+    internal class CanonnBodyBioStats
+    {
+        public List<CanonnBodyBioStatsBody> bodies;
+        public int bodyCount;
+        public long id64;
+        public string name;
+
+    }
+
+    internal class CanonnBodyBioStatsBody
+    {
+        public double argOfPeriapsis; // 51.386976
+        public double ascendingNode; // 150.542857
+        public Dictionary<string, float> atmosphereComposition; //	{…}
+        public string atmosphereType; // "Thin Ammonia"
+        public double axialTilt; // -0.113032
+        public int bodyId; // 52
+        public double distanceToArrival; //4883.334776
+        public double earthMasses; // 0.004436
+        public double gravity; // 0.135979096563679
+        public long id64; //1873499860443664100
+        public bool isLandable; // true
+        public Dictionary<string, float> materials; // {…}
+        public double meanAnomaly; // 72.999493
+        public string name; // "Graea Hypue AA-Z d70 AB 6 c"
+        public double orbitalEccentricity; // 0.000627
+        public double orbitalInclination; // 0.811855
+        public double orbitalPeriod; // 4.61596367811343
+        // TODO: parents	[…]
+        public double radius; // 1151.512875
+        public double rotationalPeriod; // 4.61602240966435
+        public bool rotationalPeriodTidallyLocked; // true
+        public double semiMajorAxis; // 0.0093306383208345
+        public CanonnBodyBioStatsSignals signals; // {…}
+        public Dictionary<string, float> solidComposition; // {…}
+        // TODO? stations	[]
+        public string subType; // "Rocky body"
+        public double surfacePressure; // 0.00113836642487047
+        public double surfaceTemperature; // 158.876053
+        public string terraformingState; // "Not terraformable"
+        // TODO? timestamps	{…}
+        public string type; // "Planet"
+    }
+
+    internal class CanonnBodyBioStatsSignals
+    {
+        public List<string> biology;
+        public List<string> genuses;
+        public List<string> guesses;
+        public Dictionary<string, int> signals;
+    }
+
 }

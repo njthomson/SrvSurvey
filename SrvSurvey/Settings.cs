@@ -6,6 +6,9 @@ namespace SrvSurvey
 {
     class Settings
     {
+        public Color defaultOrange = Color.FromArgb(255, 255, 111, 0);
+        public Color defaultOrangeDim = Color.FromArgb(255, 95, 48, 3);
+
         public string? preferredCommander = null;
         public string? lastCommander = null;
         public string? lastFid = null;

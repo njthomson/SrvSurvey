@@ -1,237 +1,196 @@
 {
   "genus": "Fungoida",
   "children": [
+
     {
       "species": "Bullarum",
-      "query": [
-        "      body [HMC,Rocky,RockyIce]",
-        "atmosphere [Thin Argon]",
-        "   gravity [0.06 ~ 0.28]",
-        "      temp [50 ~ 132]",
-        "  pressure [0.0009 ~ 0.099]",
-        " volcanism [None]"
-      ],
-      "children": [
+      "commonChildren": [
         { "variant": "Peach", "query": [ "   mats [Technetium]" ] },
         { "variant": "Gold", "query": [ "    mats [Tellurium]" ] },
         { "variant": "Mulberry", "query": [ "mats [Polonium]" ] },
         { "variant": "Magenta", "query": [ " mats [Ruthenium]" ] },
         { "variant": "Red", "query": [ "     mats [Antimony]" ] },
         { "variant": "Orange", "query": [ "  mats [Yttrium]" ] }
-      ]
-    },
-    {
-      "species": "Bullarum",
+      ],
       "query": [
-        "      body [HMC,Rocky,RockyIce]",
-        "atmosphere [Thin Nitrogen]",
-        "   gravity [0.09 ~ 0.27]",
-        "      temp [50 ~ 70]",
-        "  pressure [0.0009 ~ 0.099]",
-        " volcanism [None]"
+        "body [HMC,Rocky,RockyIce]"
       ],
       "children": [
-        { "variant": "Peach", "query": [ "   mats [Technetium]" ] },
-        { "variant": "Gold", "query": [ "    mats [Tellurium]" ] },
-        { "variant": "Mulberry", "query": [ "mats [Polonium]" ] },
-        { "variant": "Magenta", "query": [ " mats [Ruthenium]" ] },
-        { "variant": "Red", "query": [ "     mats [Antimony]" ] },
-        { "variant": "Orange", "query": [ "  mats [Yttrium]" ] }
+        {
+          "useCommonChildren": true,
+          "query": [
+            "atmosType [Argon]",
+            "  gravity [0.06 ~ 0.28]",
+            "     temp [50 ~ 132]",
+            " pressure [0.0009 ~ 0.099]",
+            "volcanism [None]"
+          ]
+        },
+        {
+          "useCommonChildren": true,
+          "query": [
+            "atmosType [Nitrogen]",
+            "  gravity [0.09 ~ 0.27]",
+            "     temp [50 ~ 70]",
+            " pressure [0.0009 ~ 0.099]",
+            "volcanism [None]"
+          ]
+        }
       ]
     },
 
     {
       "species": "Gelata",
-      "query": [
-        "      body [HMC,Rocky,RockyIce]",
-        "atmosphere [Thin Ammonia]",
-        "   gravity [0.04 ~ 0.07]",
-        "      temp [161 ~ 177]",
-        "  pressure [0.002 ~ 0.0134]",
-        " volcanism [Major Silicate Vapour Geysers]"
-      ],
-      "children": [
+      "commonChildren": [
         { "variant": "Lime", "query": [ "    mats [Mercury]" ] },
         { "variant": "Green", "query": [ "   mats [Niobium]" ] },
         { "variant": "Red", "query": [ "     mats [Tin]" ] },
         { "variant": "Orange", "query": [ "  mats [Tungsten]" ] },
         { "variant": "Mulberry", "query": [ "mats [Molybdenum]" ] },
         { "variant": "Cyan", "query": [ "    mats [Cadmium]" ] }
-      ]
-    },
-    {
-      "species": "Gelata",
-      "query": [
-        "      body [HMC,Rocky,RockyIce]",
-        "atmosphere [Thin Carbon dioxide]",
-        "   gravity [0.04 ~ 0.27]",
-        "      temp [180 ~ 199]",
-        "  pressure [0.025 ~ 0.099]",
-        " volcanism [None]"
       ],
       "children": [
-        { "variant": "Lime", "query": [ "    mats [Mercury]" ] },
-        { "variant": "Green", "query": [ "   mats [Niobium]" ] },
-        { "variant": "Red", "query": [ "     mats [Tin]" ] },
-        { "variant": "Orange", "query": [ "  mats [Tungsten]" ] },
-        { "variant": "Mulberry", "query": [ "mats [Molybdenum]" ] },
-        { "variant": "Cyan", "query": [ "    mats [Cadmium]" ] }
-      ]
-    },
-    {
-      "species": "Gelata",
-      "query": [
-        "      body [Rocky]",
-        "atmosphere [Thin Methane]",
-        "   gravity [0.04 ~ 0.12]",
-        "      temp [79 ~ 107]",
-        "  pressure [0.012 ~ 0.096]",
-        " volcanism [Major Silicate Vapour Geysers]"
-      ],
-      "children": [
-        { "variant": "Lime", "query": [ "    mats [Mercury]" ] },
-        { "variant": "Green", "query": [ "   mats [Niobium]" ] },
-        { "variant": "Red", "query": [ "     mats [Tin]" ] },
-        { "variant": "Orange", "query": [ "  mats [Tungsten]" ] },
-        { "variant": "Mulberry", "query": [ "mats [Molybdenum]" ] },
-        { "variant": "Cyan", "query": [ "    mats [Cadmium]" ] }
-      ]
-    },
-    {
-      "species": "Gelata",
-      "query": [
-        "      body [HMC,Rocky]",
-        "atmosphere [Thin Water]",
-        "   gravity [0.04 ~ 0.06]",
-        "      temp [390 ~ 453]",
-        "  pressure [0.05 ~ 0.099]",
-        " volcanism [None]"
-      ],
-      "children": [
-        { "variant": "Lime", "query": [ "    mats [Mercury]" ] },
-        { "variant": "Green", "query": [ "   mats [Niobium]" ] },
-        { "variant": "Red", "query": [ "     mats [Tin]" ] },
-        { "variant": "Orange", "query": [ "  mats [Tungsten]" ] },
-        { "variant": "Mulberry", "query": [ "mats [Molybdenum]" ] },
-        { "variant": "Cyan", "query": [ "    mats [Cadmium]" ] }
+        {
+          "useCommonChildren": true,
+          "query": [
+            "     body [HMC,Rocky,RockyIce]",
+            "atmosType [Ammonia]",
+            "  gravity [0.04 ~ 0.07]",
+            "     temp [161 ~ 177]",
+            " pressure [0.002 ~ 0.0134]",
+            "volcanism [Major Silicate Vapour Geysers]"
+          ]
+        },
+        {
+          "useCommonChildren": true,
+          "query": [
+            "     body [HMC,Rocky,RockyIce]",
+            "atmosType [CarbonDioxide]",
+            "  gravity [0.04 ~ 0.27]",
+            "     temp [180 ~ 199]",
+            " pressure [0.025 ~ 0.099]",
+            "volcanism [None]"
+          ]
+        },
+        {
+          "useCommonChildren": true,
+          "query": [
+            "     body [Rocky]",
+            "atmosType [Methane]",
+            "  gravity [0.04 ~ 0.12]",
+            "     temp [79 ~ 107]",
+            " pressure [0.012 ~ 0.096]",
+            "volcanism [Major Silicate Vapour Geysers]"
+          ]
+        },
+        {
+          "useCommonChildren": true,
+          "query": [
+            "     body [HMC,Rocky]",
+            "atmosType [Water]",
+            "  gravity [0.04 ~ 0.06]",
+            "     temp [390 ~ 453]",
+            " pressure [0.05 ~ 0.099]",
+            "volcanism [None]"
+          ]
+        }
       ]
     },
 
     {
       "species": "Setisis",
-      "query": [
-        "      body [HMC,Rocky,RockyIce]",
-        "atmosphere [Thin Ammonia]",
-        "   gravity [0.04 ~ 0.27]",
-        "      temp [152 ~ 177]",
-        "  pressure [0.0009 ~ 0.0132]"
-      ],
-      "children": [
+      "commonChildren": [
         { "variant": "Lime", "query": [ "  mats [Technetium]" ] },
         { "variant": "Yellow", "query": [ "mats [Tellurium]" ] },
         { "variant": "White", "query": [ " mats [Polonium]" ] },
         { "variant": "Gold", "query": [ "  mats [Ruthenium]" ] },
         { "variant": "Peach", "query": [ " mats [Antimony]" ] },
         { "variant": "Orange", "query": [ "mats [Yttrium]" ] }
-      ]
-    },
-    {
-      "species": "Setisis",
+      ],
       "query": [
-        "      body [HMC,Rocky,RockyIce]",
-        "atmosphere [Thin Methane]",
-        "   gravity [0.03 ~ 0.27]",
-        "      temp [67 ~ 109]",
-        "  pressure [0.00098 ~ 0.099]"
+        "body [HMC,Rocky,RockyIce]"
       ],
       "children": [
-        { "variant": "Lime", "query": [ "  mats [Technetium]" ] },
-        { "variant": "Yellow", "query": [ "mats [Tellurium]" ] },
-        { "variant": "White", "query": [ " mats [Polonium]" ] },
-        { "variant": "Gold", "query": [ "  mats [Ruthenium]" ] },
-        { "variant": "Peach", "query": [ " mats [Antimony]" ] },
-        { "variant": "Orange", "query": [ "mats [Yttrium]" ] }
+        {
+          "useCommonChildren": true,
+          "query": [
+            "atmosType [Ammonia]",
+            "  gravity [0.04 ~ 0.27]",
+            "     temp [152 ~ 177]",
+            " pressure [0.0009 ~ 0.0132]"
+          ]
+        },
+        {
+          "useCommonChildren": true,
+          "query": [
+            "atmosType [Methane]",
+            "  gravity [0.03 ~ 0.27]",
+            "     temp [67 ~ 109]",
+            " pressure [0.00098 ~ 0.099]"
+          ]
+        }
       ]
     },
 
     {
       "species": "Stabitis",
-      "query": [
-        "      body [Rocky,RockyIce]",
-        "atmosphere [Thin Ammonia]",
-        "   gravity [0.04 ~ 0.05]",
-        "      temp [158 ~ 177]",
-        "  pressure [0.004 ~ 0.0133]",
-        " volcanism [Major Silicate Vapour Geysers]",
-        "   regions [1,4,7,8,9,16,17,18,33,34,35]"
+      "commonChildren": [
+        { "variant": "Green", "query": [ "  mats [Mercury]" ] },
+        { "variant": "White", "query": [ "  mats [Niobium]" ] },
+        { "variant": "Orange", "query": [ " mats [Tin]" ] },
+        { "variant": "Peach", "query": [ "  mats [Tungsten]" ] },
+        { "variant": "Magenta", "query": [ "mats [Molybdenum]" ] },
+        { "variant": "Blue", "query": [ "   mats [Cadmium]" ] }
       ],
       "children": [
-        { "variant": "Lime", "query": [ "  mats [Technetium]" ] },
-        { "variant": "Yellow", "query": [ "mats [Tellurium]" ] },
-        { "variant": "White", "query": [ " mats [Polonium]" ] },
-        { "variant": "Gold", "query": [ "  mats [Ruthenium]" ] },
-        { "variant": "Peach", "query": [ " mats [Antimony]" ] },
-        { "variant": "Orange", "query": [ "mats [Yttrium]" ] }
-      ]
-    },
-    {
-      "species": "Stabitis",
-      "query": [
-        "      body [HMC,Rocky]",
-        "atmosphere [Thin Carbon dioxide]",
-        "   gravity [0.04 ~ 0.27]",
-        "      temp [180 ~ 196]",
-        "  pressure [0.025 ~ 0.099]",
-        " volcanism [None]",
-        "   regions [1,4,7,8,9,16,17,18,33,34,35]"
-      ],
-      "children": [
-        { "variant": "Lime", "query": [ "  mats [Technetium]" ] },
-        { "variant": "Yellow", "query": [ "mats [Tellurium]" ] },
-        { "variant": "White", "query": [ " mats [Polonium]" ] },
-        { "variant": "Gold", "query": [ "  mats [Ruthenium]" ] },
-        { "variant": "Peach", "query": [ " mats [Antimony]" ] },
-        { "variant": "Orange", "query": [ "mats [Yttrium]" ] }
-      ]
-    },
-    {
-      "species": "Stabitis",
-      "query": [
-        "      body [Rocky]",
-        "atmosphere [Thin Methane]",
-        "   gravity [0.04 ~ 0.13]",
-        "      temp [78 ~ 109]",
-        "  pressure [0.012 ~ 0.097]",
-        " volcanism [Major Silicate Vapour Geysers]",
-        "   regions [1,4,7,8,9,16,17,18,33,34,35]"
-      ],
-      "children": [
-        { "variant": "Lime", "query": [ "  mats [Technetium]" ] },
-        { "variant": "Yellow", "query": [ "mats [Tellurium]" ] },
-        { "variant": "White", "query": [ " mats [Polonium]" ] },
-        { "variant": "Gold", "query": [ "  mats [Ruthenium]" ] },
-        { "variant": "Peach", "query": [ " mats [Antimony]" ] },
-        { "variant": "Orange", "query": [ "mats [Yttrium]" ] }
-      ]
-    },
-    {
-      "species": "Stabitis",
-      "query": [
-        "      body [HMC,Rocky]",
-        "atmosphere [Thin Water]",
-        "   gravity [0.04 ~ 0.06]",
-        "      temp [392 ~ 452]",
-        "  pressure [0.052 ~ 0.099]",
-        " volcanism [None]",
-        "   regions [1,4,7,8,9,16,17,18,33,34,35]"
-      ],
-      "children": [
-        { "variant": "Lime", "query": [ "  mats [Technetium]" ] },
-        { "variant": "Yellow", "query": [ "mats [Tellurium]" ] },
-        { "variant": "White", "query": [ " mats [Polonium]" ] },
-        { "variant": "Gold", "query": [ "  mats [Ruthenium]" ] },
-        { "variant": "Peach", "query": [ " mats [Antimony]" ] },
-        { "variant": "Orange", "query": [ "mats [Yttrium]" ] }
+        {
+          "useCommonChildren": true,
+          "query": [
+            "     body [Rocky,RockyIce]",
+            "atmosType [Ammonia]",
+            "  gravity [0.04 ~ 0.05]",
+            "     temp [158 ~ 177]",
+            " pressure [0.004 ~ 0.0133]",
+            "volcanism [Major Silicate Vapour Geysers]",
+            "  regions [1,4,7,8,9,16,17,18,33,34,35]"
+          ]
+        },
+        {
+          "useCommonChildren": true,
+          "query": [
+            "     body [HMC,Rocky]",
+            "atmosType [CarbonDioxide]",
+            "  gravity [0.04 ~ 0.27]",
+            "     temp [180 ~ 196]",
+            " pressure [0.025 ~ 0.099]",
+            "volcanism [None]",
+            "  regions [1,4,7,8,9,16,17,18,33,34,35]"
+          ]
+        },
+        {
+          "useCommonChildren": true,
+          "query": [
+            "     body [Rocky]",
+            "atmosType [Methane]",
+            "  gravity [0.04 ~ 0.13]",
+            "     temp [78 ~ 109]",
+            " pressure [0.012 ~ 0.097]",
+            "volcanism [Major Silicate Vapour Geysers]",
+            "  regions [1,4,7,8,9,16,17,18,33,34,35]"
+          ]
+        },
+        {
+          "useCommonChildren": true,
+          "query": [
+            "     body [HMC,Rocky]",
+            "atmosType [Water]",
+            "  gravity [0.04 ~ 0.06]",
+            "     temp [392 ~ 452]",
+            " pressure [0.052 ~ 0.099]",
+            "volcanism [None]",
+            "  regions [1,4,7,8,9,16,17,18,33,34,35]"
+          ]
+        }
       ]
     }
 

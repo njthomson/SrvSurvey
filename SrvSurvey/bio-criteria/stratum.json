@@ -1,17 +1,28 @@
 {
   "genus": "Stratum",
+  "commonChildren": [
+    { "variant": "Emerald", "query": [ "  star [F]" ] },
+    { "variant": "Lime", "query": [ "     star [K]" ] },
+    { "variant": "Green", "query": [ "    star [M]" ] },
+    { "variant": "Turquoise", "query": [ "star [L]" ] },
+    { "variant": "Grey", "query": [ "     star [T]" ] },
+    { "variant": "Amethyst", "query": [ " star [TTS]" ] },
+    { "variant": "Teal", "query": [ "     star [Ae]" ] },
+    { "variant": "Indigo", "query": [ "   star [Y]" ] },
+    { "variant": "Red", "query": [ "      star [W]" ] },
+    { "variant": "Mauve", "query": [ "    star [D]" ] }
+  ],
   "children": [
+
     { 
       "species": "Araneamus",
+      "useCommonChildren": true,
       "query": [
-        "      body [Rocky]",
-        "atmosphere [Thin Sulphur dioxide]",
-        "   gravity [0.26 ~ 0.55]",
-        "      temp [165 ~ 373]",
-        "  pressure [0.0009 ~ 0.099]"
-      ],
-      "children": [
-        { "variant": "Emerald", "query": [ "  star [F]" ] }
+        "     body [Rocky]",
+        "atmosType [SulphurDioxide]",
+        "  gravity [0.26 ~ 0.55]",
+        "     temp [165 ~ 373]",
+        " pressure [0.0009 ~ 0.099]"
       ]
     },
 
@@ -23,88 +34,40 @@
       ],
       "children": [
         {
-          "species": "Cucumisis",
+          "useCommonChildren": true,
           "query": [
-            "atmosphere [Thin Carbon dioxide]",
-            "   gravity [0.04 ~ 0.59]",
-            "      temp [191 ~ 371]",
-            "  pressure [0.001 ~ 0.099]"
-          ],
-          "children": [
-            { "variant": "Emerald", "query": [ "  star [F]" ] },
-            { "variant": "Lime", "query": [ "     star [K]" ] },
-            { "variant": "Green", "query": [ "    star [M]" ] },
-            { "variant": "Turquoise", "query": [ "star [L]" ] },
-            { "variant": "Grey", "query": [ "     star [T]" ] },
-            { "variant": "Amethyst", "query": [ " star [TTS]" ] },
-            { "variant": "Teal", "query": [ "     star [Ae]" ] },
-            { "variant": "Indigo", "query": [ "   star [Y]" ] },
-            { "variant": "Red", "query": [ "      star [W]" ] },
-            { "variant": "Mauve", "query": [ "    star [D]" ] }
+            "atmosType [CarbonDioxide]",
+            "  gravity [0.04 ~ 0.59]",
+            "     temp [191 ~ 371]",
+            "pressure [0.001 ~ 0.099]"
           ]
         },
         {
-          "species": "Cucumisis",
+          "useCommonChildren": true,
           "query": [
-            "atmosphere [Thin Carbon dioxide rich]",
-            "   gravity [0.45 ~ 0.56]",
-            "      temp [217 ~ 246]",
-            "  pressure [0.023 ~ 0.099]",
-            " volcanism [None]"
-          ],
-          "children": [
-            { "variant": "Emerald", "query": [ "  star [F]" ] },
-            { "variant": "Lime", "query": [ "     star [K]" ] },
-            { "variant": "Green", "query": [ "    star [M]" ] },
-            { "variant": "Turquoise", "query": [ "star [L]" ] },
-            { "variant": "Grey", "query": [ "     star [T]" ] },
-            { "variant": "Amethyst", "query": [ " star [TTS]" ] },
-            { "variant": "Teal", "query": [ "     star [Ae]" ] },
-            { "variant": "Indigo", "query": [ "   star [Y]" ] },
-            { "variant": "Red", "query": [ "      star [W]" ] },
-            { "variant": "Mauve", "query": [ "    star [D]" ] }
+            "atmosType [CarbonDioxideRich]",
+            "  gravity [0.45 ~ 0.56]",
+            "     temp [217 ~ 246]",
+            " pressure [0.023 ~ 0.099]",
+            "volcanism [None]"
           ]
         },
         {
-          "species": "Cucumisis",
+          "useCommonChildren": true,
           "query": [
-            "atmosphere [Thin Oxygen]",
-            "   gravity [0.40 ~ 0.58]",
-            "      temp [200 ~ 245]",
-            "  pressure [0.028 ~ 0.099]"
-          ],
-          "children": [
-            { "variant": "Emerald", "query": [ "  star [F]" ] },
-            { "variant": "Lime", "query": [ "     star [K]" ] },
-            { "variant": "Green", "query": [ "    star [M]" ] },
-            { "variant": "Turquoise", "query": [ "star [L]" ] },
-            { "variant": "Grey", "query": [ "     star [T]" ] },
-            { "variant": "Amethyst", "query": [ " star [TTS]" ] },
-            { "variant": "Teal", "query": [ "     star [Ae]" ] },
-            { "variant": "Indigo", "query": [ "   star [Y]" ] },
-            { "variant": "Red", "query": [ "      star [W]" ] },
-            { "variant": "Mauve", "query": [ "    star [D]" ] }
+            "atmosType [Oxygen]",
+            "  gravity [0.40 ~ 0.58]",
+            "     temp [200 ~ 245]",
+            " pressure [0.028 ~ 0.099]"
           ]
         },
         {
-          "species": "Cucumisis",
+          "useCommonChildren": true,
           "query": [
-            "atmosphere [Thin Sulphur dioxide]",
-            "   gravity [0.27 ~ 0.54]",
-            "      temp [191 ~ 373]",
-            "  pressure [0.00099 ~ 0.099]"
-          ],
-          "children": [
-            { "variant": "Emerald", "query": [ "  star [F]" ] },
-            { "variant": "Lime", "query": [ "     star [K]" ] },
-            { "variant": "Green", "query": [ "    star [M]" ] },
-            { "variant": "Turquoise", "query": [ "star [L]" ] },
-            { "variant": "Grey", "query": [ "     star [T]" ] },
-            { "variant": "Amethyst", "query": [ " star [TTS]" ] },
-            { "variant": "Teal", "query": [ "     star [Ae]" ] },
-            { "variant": "Indigo", "query": [ "   star [Y]" ] },
-            { "variant": "Red", "query": [ "      star [W]" ] },
-            { "variant": "Mauve", "query": [ "    star [D]" ] }
+            "atmosType [SulphurDioxide]",
+            "  gravity [0.27 ~ 0.54]",
+            "     temp [191 ~ 373]",
+            " pressure [0.00099 ~ 0.099]"
           ]
         }
       ]
@@ -112,523 +75,303 @@
 
     { 
       "species": "Excutitus",
-      "query": [
-        "      body [Rocky]",
-        "atmosphere [Thin Carbon dioxide]",
-        "   gravity [0.04 ~ 0.47]",
-        "      temp [165 ~ 190]",
-        "  pressure [0.0037 ~ 0.099]",
-        " volcanism [None]",
-        "regions [1,4,7,8,9,16,17,18,33,34,35]"
-      ],
       "children": [
-        { "variant": "Emerald", "query": [ "  star [F]" ] },
-        { "variant": "Lime", "query": [ "     star [K]" ] },
-        { "variant": "Green", "query": [ "    star [M]" ] },
-        { "variant": "Turquoise", "query": [ "star [L]" ] },
-        { "variant": "Grey", "query": [ "     star [T]" ] },
-        { "variant": "Amethyst", "query": [ " star [TTS]" ] },
-        { "variant": "Teal", "query": [ "     star [Ae]" ] },
-        { "variant": "Indigo", "query": [ "   star [Y]" ] },
-        { "variant": "Red", "query": [ "      star [W]" ] },
-        { "variant": "Mauve", "query": [ "    star [D]" ] }
-      ]
-    },
-    { 
-      "species": "Excutitus",
-      "query": [
-        "      body [Rocky]",
-        "atmosphere [Thin Sulphur dioxide]",
-        "   gravity [0.27 ~ 0.41]",
-        "      temp [165 ~ 190]",
-        "  pressure [0.00099 ~ 0.094]",
-        " volcanism [None]",
-        "regions [1,4,7,8,9,16,17,18,33,34,35]"
-      ],
-      "children": [
-        { "variant": "Emerald", "query": [ "  star [F]" ] },
-        { "variant": "Lime", "query": [ "     star [K]" ] },
-        { "variant": "Green", "query": [ "    star [M]" ] },
-        { "variant": "Turquoise", "query": [ "star [L]" ] },
-        { "variant": "Grey", "query": [ "     star [T]" ] },
-        { "variant": "Amethyst", "query": [ " star [TTS]" ] },
-        { "variant": "Teal", "query": [ "     star [Ae]" ] },
-        { "variant": "Indigo", "query": [ "   star [Y]" ] },
-        { "variant": "Red", "query": [ "      star [W]" ] },
-        { "variant": "Mauve", "query": [ "    star [D]" ] }
+        {
+          "useCommonChildren": true,
+          "query": [
+            "     body [Rocky]",
+            "atmosType [CarbonDioxide]",
+            "  gravity [0.04 ~ 0.47]",
+            "     temp [165 ~ 190]",
+            " pressure [0.0037 ~ 0.099]",
+            "volcanism [None]",
+            "  regions [1,4,7,8,9,16,17,18,33,34,35]"
+          ]
+        },
+        {
+          "useCommonChildren": true,
+          "query": [
+            "     body [Rocky]",
+            "atmosType [ArgonRich]",
+            "  gravity [0.27 ~ 0.30]",
+            "     temp [80 ~ 90]",
+            " pressure [0.03 ~ 0.05]",
+            "volcanism [None]"
+          ]
+        },
+        { 
+          "useCommonChildren": true,
+          "query": [
+            "     body [Rocky]",
+            "atmosType [SulphurDioxide]",
+            "  gravity [0.27 ~ 0.41]",
+            "     temp [165 ~ 190]",
+            " pressure [0.00099 ~ 0.094]",
+            "volcanism [None]",
+            "  regions [1,4,7,8,9,16,17,18,33,34,35]"
+          ]
+        }
       ]
     },
 
     { 
       "species": "Frigus",
       "query": [
-        "      body [Rocky]",
-        "atmosphere [Thin Sulphur dioxide]",
-        "   gravity [0.04 ~ 0.54]",
-        "      temp [191 ~ 377]",
-        "  pressure [0.001 ~ 0.094]",
-        " volcanism [None]",
-        "regions [3,7,15,30,32,33,34,36,38,39]"
+        "body [Rocky]"
       ],
       "children": [
-        { "variant": "Emerald", "query": [ "  star [F]" ] },
-        { "variant": "Lime", "query": [ "     star [K]" ] },
-        { "variant": "Green", "query": [ "    star [M]" ] },
-        { "variant": "Turquoise", "query": [ "star [L]" ] },
-        { "variant": "Grey", "query": [ "     star [T]" ] },
-        { "variant": "Amethyst", "query": [ " star [TTS]" ] },
-        { "variant": "Teal", "query": [ "     star [Ae]" ] },
-        { "variant": "Indigo", "query": [ "   star [Y]" ] },
-        { "variant": "Red", "query": [ "      star [W]" ] },
-        { "variant": "Mauve", "query": [ "    star [D]" ] }
-      ]
-    },
-    { 
-      "species": "Frigus",
-      "query": [
-        "      body [Rocky]",
-        "atmosphere [Thin Carbon dioxide]",
-        "   gravity [0.45 ~ 0.55]",
-        "      temp [205 ~ 246]",
-        "  pressure [0.037 ~ 0.096]",
-        " volcanism [None]",
-        "regions [3,7,15,30,32,33,34,36,38,39]"
-      ],
-      "children": [
-        { "variant": "Emerald", "query": [ "  star [F]" ] },
-        { "variant": "Lime", "query": [ "     star [K]" ] },
-        { "variant": "Green", "query": [ "    star [M]" ] },
-        { "variant": "Turquoise", "query": [ "star [L]" ] },
-        { "variant": "Grey", "query": [ "     star [T]" ] },
-        { "variant": "Amethyst", "query": [ " star [TTS]" ] },
-        { "variant": "Teal", "query": [ "     star [Ae]" ] },
-        { "variant": "Indigo", "query": [ "   star [Y]" ] },
-        { "variant": "Red", "query": [ "      star [W]" ] },
-        { "variant": "Mauve", "query": [ "    star [D]" ] }
-      ]
-    },
-    { 
-      "species": "Frigus",
-      "query": [
-        "      body [Rocky]",
-        "atmosphere [Thin Carbon dioxide rich]",
-        "   gravity [0.45 ~ 0.55]",
-        "      temp [205 ~ 246]",
-        "  pressure [0.037 ~ 0.096]",
-        " volcanism [None]",
-        "regions [3,7,15,30,32,33,34,36,38,39]"
-      ],
-      "children": [
-        { "variant": "Emerald", "query": [ "  star [F]" ] },
-        { "variant": "Lime", "query": [ "     star [K]" ] },
-        { "variant": "Green", "query": [ "    star [M]" ] },
-        { "variant": "Turquoise", "query": [ "star [L]" ] },
-        { "variant": "Grey", "query": [ "     star [T]" ] },
-        { "variant": "Amethyst", "query": [ " star [TTS]" ] },
-        { "variant": "Teal", "query": [ "     star [Ae]" ] },
-        { "variant": "Indigo", "query": [ "   star [Y]" ] },
-        { "variant": "Red", "query": [ "      star [W]" ] },
-        { "variant": "Mauve", "query": [ "    star [D]" ] }
-      ]
-    },
-    { 
-      "species": "Frigus",
-      "query": [
-        "      body [Rocky]",
-        "atmosphere [Thin Oxygen]",
-        "   gravity [0.41 ~ 0.45]",
-        "      temp [207 ~ 237]",
-        "  pressure [0.026 ~ 0.096]",
-        "regions [3,7,15,30,32,33,34,36,38,39]"
-      ],
-      "children": [
-        { "variant": "Emerald", "query": [ "  star [F]" ] },
-        { "variant": "Lime", "query": [ "     star [K]" ] },
-        { "variant": "Green", "query": [ "    star [M]" ] },
-        { "variant": "Turquoise", "query": [ "star [L]" ] },
-        { "variant": "Grey", "query": [ "     star [T]" ] },
-        { "variant": "Amethyst", "query": [ " star [TTS]" ] },
-        { "variant": "Teal", "query": [ "     star [Ae]" ] },
-        { "variant": "Indigo", "query": [ "   star [Y]" ] },
-        { "variant": "Red", "query": [ "      star [W]" ] },
-        { "variant": "Mauve", "query": [ "    star [D]" ] }
+        {
+          "useCommonChildren": true,
+          "query": [
+            " atmosType [SulphurDioxide]",
+            "   gravity [0.04 ~ 0.54]",
+            "      temp [191 ~ 377]",
+            "  pressure [0.001 ~ 0.094]",
+            " volcanism [None]",
+            "regions [3,7,15,30,32,33,34,36,38,39]"
+          ]
+        },
+        { 
+          "useCommonChildren": true,
+          "query": [
+            "atmosType [CarbonDioxide]",
+            "  gravity [0.45 ~ 0.55]",
+            "     temp [205 ~ 246]",
+            " pressure [0.037 ~ 0.096]",
+            "volcanism [None]",
+            "  regions [3,7,15,30,32,33,34,36,38,39]"
+          ]
+        },
+        { 
+          "useCommonChildren": true,
+          "query": [
+            "atmosType [CarbonDioxideRich]",
+            "  gravity [0.45 ~ 0.55]",
+            "     temp [205 ~ 246]",
+            " pressure [0.037 ~ 0.096]",
+            "volcanism [None]",
+            "  regions [3,7,15,30,32,33,34,36,38,39]"
+          ]
+        },
+        { 
+          "useCommonChildren": true,
+          "query": [
+            "atmosType [Oxygen]",
+            "  gravity [0.41 ~ 0.45]",
+            "     temp [207 ~ 237]",
+            " pressure [0.026 ~ 0.096]",
+            "  regions [3,7,15,30,32,33,34,36,38,39]"
+          ]
+        }
       ]
     },
 
     { 
       "species": "Laminamus",
-      "query": [
-        "      body [Rocky]",
-        "atmosphere [Thin Sulphur dioxide]",
-        "   gravity [0.04 ~ 0.34]",
-        "      temp [57 ~ 177]",
-        "  pressure [0.0009 ~ 0.0134]",
-        "regions [1,4,7,8,9,16,17,18,33,34,35]"
-      ],
       "children": [
-        { "variant": "Emerald", "query": [ "  star [F]" ] },
-        { "variant": "Lime", "query": [ "     star [K]" ] },
-        { "variant": "Green", "query": [ "    star [M]" ] },
-        { "variant": "Turquoise", "query": [ "star [L]" ] },
-        { "variant": "Grey", "query": [ "     star [T]" ] },
-        { "variant": "Amethyst", "query": [ " star [TTS]" ] },
-        { "variant": "Teal", "query": [ "     star [Ae]" ] },
-        { "variant": "Indigo", "query": [ "   star [Y]" ] },
-        { "variant": "Red", "query": [ "      star [W]" ] },
-        { "variant": "Mauve", "query": [ "    star [D]" ] }
-      ]
-    },
-
-    { 
-      "species": "Limaxus",
-      "query": [
-        "      body [Rocky]",
-        "atmosphere [Thin Carbon dioxide]",
-        "   gravity [0.04 ~ 0.39]",
-        "      temp [165 ~ 190]",
-        "  pressure [0.005 ~ 0.099]",
-        "regions [9,10,11,12,16,24,25,26,28,42]"
-      ],
-      "children": [
-        { "variant": "Emerald", "query": [ "  star [F]" ] },
-        { "variant": "Lime", "query": [ "     star [K]" ] },
-        { "variant": "Green", "query": [ "    star [M]" ] },
-        { "variant": "Turquoise", "query": [ "star [L]" ] },
-        { "variant": "Grey", "query": [ "     star [T]" ] },
-        { "variant": "Amethyst", "query": [ " star [TTS]" ] },
-        { "variant": "Teal", "query": [ "     star [Ae]" ] },
-        { "variant": "Indigo", "query": [ "   star [Y]" ] },
-        { "variant": "Red", "query": [ "      star [W]" ] },
-        { "variant": "Mauve", "query": [ "    star [D]" ] }
-      ]
-    },
-    { 
-      "species": "Limaxus",
-      "query": [
-        "      body [Rocky]",
-        "atmosphere [Thin Oxygen]",
-        "   gravity [0.04 ~ 0.39]",
-        "      temp [165 ~ 190]",
-        "  pressure [0.005 ~ 0.099]",
-        "regions [9,10,11,12,16,24,25,26,28,42]"
-      ],
-      "children": [
-        { "variant": "Emerald", "query": [ "  star [F]" ] },
-        { "variant": "Lime", "query": [ "     star [K]" ] },
-        { "variant": "Green", "query": [ "    star [M]" ] },
-        { "variant": "Turquoise", "query": [ "star [L]" ] },
-        { "variant": "Grey", "query": [ "     star [T]" ] },
-        { "variant": "Amethyst", "query": [ " star [TTS]" ] },
-        { "variant": "Teal", "query": [ "     star [Ae]" ] },
-        { "variant": "Indigo", "query": [ "   star [Y]" ] },
-        { "variant": "Red", "query": [ "      star [W]" ] },
-        { "variant": "Mauve", "query": [ "    star [D]" ] }
-      ]
-    },
-    { 
-      "species": "Limaxus",
-      "query": [
-        "      body [Rocky]",
-        "atmosphere [Thin Sulphur dioxide]",
-        "   gravity [0.27 ~ 0.40]",
-        "      temp [165 ~ 190]",
-        "  pressure [0.001 ~ 0.094]",
-        "regions [9,10,11,12,16,24,25,26,28,42]"
-      ],
-      "children": [
-        { "variant": "Emerald", "query": [ "  star [F]" ] },
-        { "variant": "Lime", "query": [ "     star [K]" ] },
-        { "variant": "Green", "query": [ "    star [M]" ] },
-        { "variant": "Turquoise", "query": [ "star [L]" ] },
-        { "variant": "Grey", "query": [ "     star [T]" ] },
-        { "variant": "Amethyst", "query": [ " star [TTS]" ] },
-        { "variant": "Teal", "query": [ "     star [Ae]" ] },
-        { "variant": "Indigo", "query": [ "   star [Y]" ] },
-        { "variant": "Red", "query": [ "      star [W]" ] },
-        { "variant": "Mauve", "query": [ "    star [D]" ] }
-      ]
-    },
-
-    { 
-      "species": "Paleas",
-      "query": [
-        "      body [Rocky]",
-        "atmosphere [Thin Ammonia]",
-        "   gravity [0.04 ~ 0.34]",
-        "      temp [158 ~ 177]",
-        "  pressure [0.0009 ~ 0.0134]"
-      ],
-      "children": [
-        { "variant": "Emerald", "query": [ "  star [F]" ] },
-        { "variant": "Lime", "query": [ "     star [K]" ] },
-        { "variant": "Green", "query": [ "    star [M]" ] },
-        { "variant": "Turquoise", "query": [ "star [L]" ] },
-        { "variant": "Grey", "query": [ "     star [T]" ] },
-        { "variant": "Amethyst", "query": [ " star [TTS]" ] },
-        { "variant": "Teal", "query": [ "     star [Ae]" ] },
-        { "variant": "Indigo", "query": [ "   star [Y]" ] },
-        { "variant": "Red", "query": [ "      star [W]" ] },
-        { "variant": "Mauve", "query": [ "    star [D]" ] }
-      ]
-    },
-    { 
-      "species": "Paleas",
-      "query": [
-        "      body [Rocky]",
-        "atmosphere [Thin Carbon dioxide]",
-        "   gravity [0.04 ~ 0.58]",
-        "      temp [165 ~ 419]",
-        "  pressure [0.001 ~ 0.099]",
-        " volcanism [None]"
-      ],
-      "children": [
-        { "variant": "Emerald", "query": [ "  star [F]" ] },
-        { "variant": "Lime", "query": [ "     star [K]" ] },
-        { "variant": "Green", "query": [ "    star [M]" ] },
-        { "variant": "Turquoise", "query": [ "star [L]" ] },
-        { "variant": "Grey", "query": [ "     star [T]" ] },
-        { "variant": "Amethyst", "query": [ " star [TTS]" ] },
-        { "variant": "Teal", "query": [ "     star [Ae]" ] },
-        { "variant": "Indigo", "query": [ "   star [Y]" ] },
-        { "variant": "Red", "query": [ "      star [W]" ] },
-        { "variant": "Mauve", "query": [ "    star [D]" ] }
-      ]
-    },
-    { 
-      "species": "Paleas",
-      "query": [
-        "      body [Rocky]",
-        "atmosphere [Thin Carbon dioxide rich]",
-        "   gravity [0.44 ~ 0.59]",
-        "      temp [186 ~ 257]",
-        "  pressure [0.015 ~ 0.098]",
-        " volcanism [None]"
-      ],
-      "children": [
-        { "variant": "Emerald", "query": [ "  star [F]" ] },
-        { "variant": "Lime", "query": [ "     star [K]" ] },
-        { "variant": "Green", "query": [ "    star [M]" ] },
-        { "variant": "Turquoise", "query": [ "star [L]" ] },
-        { "variant": "Grey", "query": [ "     star [T]" ] },
-        { "variant": "Amethyst", "query": [ " star [TTS]" ] },
-        { "variant": "Teal", "query": [ "     star [Ae]" ] },
-        { "variant": "Indigo", "query": [ "   star [Y]" ] },
-        { "variant": "Red", "query": [ "      star [W]" ] },
-        { "variant": "Mauve", "query": [ "    star [D]" ] }
-      ]
-    },
-    { 
-      "species": "Paleas",
-      "query": [
-        "      body [Rocky]",
-        "atmosphere [Thin Oxygen]",
-        "   gravity [0.40 ~ 0.58]",
-        "      temp [169 ~ 246]",
-        "  pressure [0.023 ~ 0.098]"
-      ],
-      "children": [
-        { "variant": "Emerald", "query": [ "  star [F]" ] },
-        { "variant": "Lime", "query": [ "     star [K]" ] },
-        { "variant": "Green", "query": [ "    star [M]" ] },
-        { "variant": "Turquoise", "query": [ "star [L]" ] },
-        { "variant": "Grey", "query": [ "     star [T]" ] },
-        { "variant": "Amethyst", "query": [ " star [TTS]" ] },
-        { "variant": "Teal", "query": [ "     star [Ae]" ] },
-        { "variant": "Indigo", "query": [ "   star [Y]" ] },
-        { "variant": "Red", "query": [ "      star [W]" ] },
-        { "variant": "Mauve", "query": [ "    star [D]" ] }
-      ]
-    },
-    { 
-      "species": "Paleas",
-      "query": [
-        "      body [Rocky]",
-        "atmosphere [Thin Oxygen]",
-        "   gravity [0.04 ~ 0.06]",
-        "      temp [394 ~ 450]",
-        "  pressure [0.055 ~ 0.098]"
-      ],
-      "children": [
-        { "variant": "Emerald", "query": [ "  star [F]" ] },
-        { "variant": "Lime", "query": [ "     star [K]" ] },
-        { "variant": "Green", "query": [ "    star [M]" ] },
-        { "variant": "Turquoise", "query": [ "star [L]" ] },
-        { "variant": "Grey", "query": [ "     star [T]" ] },
-        { "variant": "Amethyst", "query": [ " star [TTS]" ] },
-        { "variant": "Teal", "query": [ "     star [Ae]" ] },
-        { "variant": "Indigo", "query": [ "   star [Y]" ] },
-        { "variant": "Red", "query": [ "      star [W]" ] },
-        { "variant": "Mauve", "query": [ "    star [D]" ] }
-      ]
-    },
-
-    {
-        "species": "Tectonicas",
-        "query": [
-          "     body [HMC]",
-          "  gravity [ ~ 0.37]",
-          "atmosType [Ammonia]",
-          "     temp [167 ~ 177]"
-        ],
-        "children": [
-          { "variant": "Emerald", "query": [ "  star [F]" ] },
-          { "variant": "Lime", "query": [ "     star [K]" ] },
-          { "variant": "Green", "query": [ "    star [M]" ] },
-          { "variant": "Turquoise", "query": [ "star [L]" ] },
-          { "variant": "Grey", "query": [ "     star [T]" ] },
-          { "variant": "Amethyst", "query": [ " star [TTS]" ] },
-          { "variant": "Teal", "query": [ "     star [Ae]" ] },
-          { "variant": "Indigo", "query": [ "   star [Y]" ] },
-          { "variant": "Red", "query": [ "      star [W]" ] },
-          { "variant": "Mauve", "query": [ "    star [D]" ] }
-        ]
-    },
-    {
-        "species": "Tectonicas",
-        "query": [
-          "     body [HMC]",
-          "  gravity [ ~ 0.52]",
-          "atmosType [Argon]",
-          "     temp [173 ~ 182]"
-        ],
-        "children": [
-          { "variant": "Emerald", "query": [ "  star [F]" ] },
-          { "variant": "Lime", "query": [ "     star [K]" ] },
-          { "variant": "Green", "query": [ "    star [M]" ] },
-          { "variant": "Turquoise", "query": [ "star [L]" ] },
-          { "variant": "Grey", "query": [ "     star [T]" ] },
-          { "variant": "Amethyst", "query": [ " star [TTS]" ] },
-          { "variant": "Teal", "query": [ "     star [Ae]" ] },
-          { "variant": "Indigo", "query": [ "   star [Y]" ] },
-          { "variant": "Red", "query": [ "      star [W]" ] },
-          { "variant": "Mauve", "query": [ "    star [D]" ] }
-        ]
-    },
-    {
-    "species": "Tectonicas",
-    "query": [
-        "      body [HMC]",
-        "   gravity [ ~ 0.56]",
-        "atmosphere [Thin Argon rich]",
-        "      temp [167 ~ 232]"
-    ],
-    "children": [
-        { "variant": "Emerald", "query": [ "  star [F]" ] },
-        { "variant": "Lime", "query": [ "     star [K]" ] },
-        { "variant": "Green", "query": [ "    star [M]" ] },
-        { "variant": "Turquoise", "query": [ "star [L]" ] },
-        { "variant": "Grey", "query": [ "     star [T]" ] },
-        { "variant": "Amethyst", "query": [ " star [TTS]" ] },
-        { "variant": "Teal", "query": [ "     star [Ae]" ] },
-        { "variant": "Indigo", "query": [ "   star [Y]" ] },
-        { "variant": "Red", "query": [ "      star [W]" ] },
-        { "variant": "Mauve", "query": [ "    star [D]" ] }
-    ]
-    },
-    {
-    "species": "Tectonicas",
-    "query": [
-        "     body [HMC]",
-        "  gravity [ ~ 0.61]",
-        "atmosType [CarbonDioxide]",
-        "     temp [165 ~ 430]"
-    ],
-    "children": [
-        { "variant": "Emerald", "query": [ "  star [F]" ] },
-        { "variant": "Lime", "query": [ "     star [K]" ] },
-        { "variant": "Green", "query": [ "    star [M]" ] },
-        { "variant": "Turquoise", "query": [ "star [L]" ] },
-        { "variant": "Grey", "query": [ "     star [T]" ] },
-        { "variant": "Amethyst", "query": [ " star [TTS]" ] },
-        { "variant": "Teal", "query": [ "     star [Ae]" ] },
-        { "variant": "Indigo", "query": [ "   star [Y]" ] },
-        { "variant": "Red", "query": [ "      star [W]" ] },
-        { "variant": "Mauve", "query": [ "    star [D]" ] }
-    ]
-    },
-    {
-    "species": "Tectonicas",
-    "query": [
-        "     body [HMC]",
-        "  gravity [ ~ 0.61]",
-        "atmosphere [Thin Carbon dioxide rich]",
-        "     temp [165 ~ 260]"
-    ],
-    "children": [
-        { "variant": "Emerald", "query": [ "  star [F]" ] },
-        { "variant": "Lime", "query": [ "     star [K]" ] },
-        { "variant": "Green", "query": [ "    star [M]" ] },
-        { "variant": "Turquoise", "query": [ "star [L]" ] },
-        { "variant": "Grey", "query": [ "     star [T]" ] },
-        { "variant": "Amethyst", "query": [ " star [TTS]" ] },
-        { "variant": "Teal", "query": [ "     star [Ae]" ] },
-        { "variant": "Indigo", "query": [ "   star [Y]" ] },
-        { "variant": "Red", "query": [ "      star [W]" ] },
-        { "variant": "Mauve", "query": [ "    star [D]" ] }
-    ]
-    },
-    {
-        "species": "Tectonicas",
-        "query": [
-            "     body [HMC]",
-            "  gravity [ ~ 0.51]",
-            "atmosType [Oxygen]",
-            "     temp [165 ~ 246]"
-        ],
-        "children": [
-            { "variant": "Emerald", "query": [ "  star [F]" ] },
-            { "variant": "Lime", "query": [ "     star [K]" ] },
-            { "variant": "Green", "query": [ "    star [M]" ] },
-            { "variant": "Turquoise", "query": [ "star [L]" ] },
-            { "variant": "Grey", "query": [ "     star [T]" ] },
-            { "variant": "Amethyst", "query": [ " star [TTS]" ] },
-            { "variant": "Teal", "query": [ "     star [Ae]" ] },
-            { "variant": "Indigo", "query": [ "   star [Y]" ] },
-            { "variant": "Red", "query": [ "      star [W]" ] },
-            { "variant": "Mauve", "query": [ "    star [D]" ] }
-        ]
-    },
-    {
-        "species": "Tectonicas",
-        "query": [
-            "     body [HMC]",
-            "  gravity [ ~ 0.61]",
+        {
+          "useCommonChildren": true,
+          "query": [
+            "     body [Rocky]",
             "atmosType [SulphurDioxide]",
-            "     temp [165 ~ 450]"
-        ],
-        "children": [
-            { "variant": "Emerald", "query": [ "  star [F]" ] },
-            { "variant": "Lime", "query": [ "     star [K]" ] },
-            { "variant": "Green", "query": [ "    star [M]" ] },
-            { "variant": "Turquoise", "query": [ "star [L]" ] },
-            { "variant": "Grey", "query": [ "     star [T]" ] },
-            { "variant": "Amethyst", "query": [ " star [TTS]" ] },
-            { "variant": "Teal", "query": [ "     star [Ae]" ] },
-            { "variant": "Indigo", "query": [ "   star [Y]" ] },
-            { "variant": "Red", "query": [ "      star [W]" ] },
-            { "variant": "Mauve", "query": [ "    star [D]" ] }
-        ]
+            "  gravity [0.04 ~ 0.34]",
+            "     temp [57 ~ 177]",
+            " pressure [0.0009 ~ 0.0134]",
+            "  regions [1,4,7,8,9,16,17,18,33,34,35]"
+          ]
+        },
+        {
+          "useCommonChildren": true,
+          "query": [
+            "     body [Rocky]",
+            "atmosType [Ammonia]",
+            "  gravity [0.04 ~ 0.34]",
+            "     temp [161 ~ 177]",
+            " pressure [0.0009 ~ 0.0134]",
+            "  regions [1,4,7,8,9,16,17,18,33,34,35]"
+          ]
+        }
+      ]
     },
+
+    { 
+      "species": "Limaxus",
+      "children": [
+        {
+          "useCommonChildren": true,
+          "query": [
+            "     body [Rocky]",
+            "atmosType [CarbonDioxide]",
+            "  gravity [0.04 ~ 0.39]",
+            "     temp [165 ~ 190]",
+            " pressure [0.005 ~ 0.099]",
+            "  regions [9,10,11,12,16,24,25,26,28,42]"
+          ]
+        },
+        { 
+          "useCommonChildren": true,
+          "query": [
+            "     body [Rocky]",
+            "atmosType [Oxygen]",
+            "  gravity [0.04 ~ 0.39]",
+            "     temp [165 ~ 190]",
+            " pressure [0.005 ~ 0.099]",
+            "  regions [9,10,11,12,16,24,25,26,28,42]"
+          ]
+        },
+        { 
+          "useCommonChildren": true,
+          "query": [
+            "     body [Rocky]",
+            "atmosType [SulphurDioxide]",
+            "  gravity [0.27 ~ 0.40]",
+            "     temp [165 ~ 190]",
+            " pressure [0.001 ~ 0.094]",
+            "  regions [9,10,11,12,16,24,25,26,28,42]"
+          ]
+        }
+      ]
+    },
+
+    { 
+      "species": "Paleas",
+      "children": [
+        {
+          "useCommonChildren": true,
+          "query": [
+            "     body [Rocky]",
+            "atmosType [Ammonia]",
+            "  gravity [0.04 ~ 0.34]",
+            "     temp [158 ~ 177]",
+            " pressure [0.0009 ~ 0.0134]"
+          ]
+        },
+        { 
+          "useCommonChildren": true,
+          "query": [
+            "     body [Rocky]",
+            "atmosType [CarbonDioxide]",
+            "  gravity [0.04 ~ 0.58]",
+            "     temp [165 ~ 419]",
+            " pressure [0.001 ~ 0.099]",
+            "volcanism [None]"
+          ]
+        },
+        { 
+          "useCommonChildren": true,
+          "query": [
+            "     body [Rocky]",
+            "atmosType [CarbonDioxideRich]",
+            "  gravity [0.44 ~ 0.59]",
+            "     temp [186 ~ 257]",
+            " pressure [0.015 ~ 0.098]",
+            "volcanism [None]"
+          ]
+        },
+        { 
+          "useCommonChildren": true,
+          "query": [
+            "     body [Rocky]",
+            "atmosType [Oxygen]",
+            "  gravity [0.40 ~ 0.58]",
+            "     temp [169 ~ 246]",
+            " pressure [0.023 ~ 0.098]"
+          ]
+        },
+        { 
+          "useCommonChildren": true,
+          "query": [
+            "     body [Rocky]",
+            "atmosType [Oxygen]",
+            "  gravity [0.04 ~ 0.06]",
+            "     temp [394 ~ 450]",
+            " pressure [0.055 ~ 0.098]"
+          ]
+        }
+      ]
+    },
+
     {
-        "species": "Tectonicas",
+      "species": "Tectonicas",
+      "query": [
+        "body [HMC]"
+      ],
+      "children": [
+        {
+          "useCommonChildren": true,
+          "query": [
+            "atmosType [Ammonia]",
+            "  gravity [0.05 ~ 0.37]",
+            "     temp [165 ~ 177]",
+            " pressure [0.0009 ~ 0.013]"
+          ]
+        },
+        {
+          "useCommonChildren": true,
+          "query": [
+            "atmosType [Argon]",
+            "  gravity [0.50 ~ 0.52]",
+            "     temp [173 ~ 182]",
+            " pressure [0.073 ~ 0.09]"
+          ]
+        },
+        {
+          "useCommonChildren": true,
+          "query": [
+            "atmosType [ArgonRich]",
+            "  gravity [0.49 ~ 0.56]",
+            "     temp [166 ~ 232]",
+            "pressure [0.003 ~ 0.089]"
+          ]
+        },
+        {
+        "useCommonChildren": true,
         "query": [
-            "     body [HMC]",
-            "  gravity [ ~ 0.063]",
+            "atmosType [CarbonDioxide]",
+            "  gravity [0.05 ~ 0.61]",
+            "     temp [165 ~ 430]",
+            " pressure [0.0009 ~ 0.099]"
+          ]
+        },
+        {
+          "useCommonChildren": true,
+          "query": [
+            "atmosType [CarbonDioxideRich]",
+            "  gravity [0.36 ~ 0.61]",
+            "     temp [165 ~ 260]",
+            " pressure [0.007 ~ 0.099]"
+          ]
+        },
+        {
+          "useCommonChildren": true,
+          "query": [
+            "atmosType [Oxygen]",
+            "  gravity [0.50 ~ 0.51]",
+            "     temp [165 ~ 246]",
+            " pressure [0.021 ~ 0.099]"
+          ]
+        },
+        {
+          "useCommonChildren": true,
+          "query": [
+            "atmosType [SulphurDioxide]",
+            "  gravity [0.29 ~ 0.61]",
+            "     temp [165 ~ 450]",
+            " pressure [0.0009 ~ 0.099]"
+          ]
+        },
+        {
+          "useCommonChildren": true,
+          "query": [
             "atmosType [Water]",
-            "     temp [392 ~ 450]"
-        ],
-        "children": [
-            { "variant": "Emerald", "query": [ "  star [F]" ] },
-            { "variant": "Lime", "query": [ "     star [K]" ] },
-            { "variant": "Green", "query": [ "    star [M]" ] },
-            { "variant": "Turquoise", "query": [ "star [L]" ] },
-            { "variant": "Grey", "query": [ "     star [T]" ] },
-            { "variant": "Amethyst", "query": [ " star [TTS]" ] },
-            { "variant": "Teal", "query": [ "     star [Ae]" ] },
-            { "variant": "Indigo", "query": [ "   star [Y]" ] },
-            { "variant": "Red", "query": [ "      star [W]" ] },
-            { "variant": "Mauve", "query": [ "    star [D]" ] }
-        ]
+            "  gravity [0.04 ~ 0.063]",
+            "     temp [392 ~ 450]",
+            " pressure [0.052 ~ 0.099]",
+            "volcanism [None]"
+          ]
+        }
+      ]
     }
+
   ]
 }

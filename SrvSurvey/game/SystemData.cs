@@ -549,7 +549,8 @@ namespace SrvSurvey.game
                 body.terraformable = entry.TerraformState == "Terraformable";
             body.mass = entry.MassEM > 0 ? entry.MassEM : entry.StellarMass; // mass
             body.distanceFromArrivalLS = entry.DistanceFromArrivalLS;
-            //body.semiMajorAxis = entry.SemiMajorAxis;
+            body.semiMajorAxis = entry.SemiMajorAxis;
+            body.absoluteMagnitude = entry.AbsoluteMagnitude;
             body.radius = entry.Radius;
             body.parents = entry.Parents;
             body.wasDiscovered = entry.WasDiscovered;
@@ -1024,6 +1025,8 @@ namespace SrvSurvey.game
                 else
                     body.type = SystemBody.typeFrom(null!, entry.subType!, entry.isLandable);
                 if (body.distanceFromArrivalLS == 0) body.distanceFromArrivalLS = entry.distanceToArrival;
+                if (body.semiMajorAxis == 0) body.semiMajorAxis = (entry.semiMajorAxis ?? 0) * 1.4960E+11;
+                if (body.absoluteMagnitude == 0) body.absoluteMagnitude = entry.absoluteMagnitude;
                 if (body.radius == 0 && entry.radius > 0) body.radius = entry.radius * 1000;
                 if (body.planetClass == null) body.planetClass = entry.subType;
                 if (body.parents == null && entry.parents != null) body.parents = entry.parents;
@@ -1032,12 +1035,13 @@ namespace SrvSurvey.game
                 if (body.mass == 0) body.mass = entry.earthMasses > 0 ? entry.earthMasses : entry.solarMasses; // mass
                 if (body.surfaceGravity == 0 && entry.gravity > 0) body.surfaceGravity = entry.gravity.Value * 10; // gravity
                 if (body.surfaceTemperature == 0 && entry.surfaceTemperature > 0) body.surfaceTemperature = entry.surfaceTemperature;
-                if (body.surfacePressure == 0 && entry.surfacePressure > 0) body.surfacePressure = entry.surfacePressure.Value;
+                if (body.surfacePressure == 0 && entry.surfacePressure > 0) body.surfacePressure = entry.surfacePressure.Value * 100_000f;
                 if (body.atmosphereType == null && entry.atmosphereType != null) body.atmosphereType = this.getAtmosphereTypeFromExternal(entry.atmosphereType);
+                if (body.atmosphere == null && body.atmosphereType == "None") body.atmosphere = "";
                 if (body.atmosphere == null && entry.atmosphereType != null) body.atmosphere = entry.atmosphereType;
                 if (body.atmosphereComposition == null && entry.atmosphereComposition != null) body.atmosphereComposition = entry.atmosphereComposition;
                 if (body.materials == null && entry.materials != null) body.materials = entry.materials.ToDictionary(_ => _.Key.ToLowerInvariant(), _ => _.Value);
-                if (body.volcanism == null && entry.volcanismType != null) body.volcanism = entry.volcanismType;
+                if (body.volcanism == null && entry.volcanismType != null) body.volcanism = entry.volcanismType == "No volcanism" ? "" : entry.volcanismType;
                 if (body.starType == null && entry.type == "Star" && entry.subType != null)
                 {
                     body.starType = entry.subType[0].ToString();
@@ -1109,6 +1113,8 @@ namespace SrvSurvey.game
                 else
                     body.type = SystemBody.typeFrom(null!, entry.subType!, entry.isLandable ?? false);
                 if (body.distanceFromArrivalLS == 0) body.distanceFromArrivalLS = entry.distanceToArrival ?? 0;
+                if (body.semiMajorAxis == 0) body.semiMajorAxis = (entry.semiMajorAxis ?? 0) * 1.4960E+11;
+                if (body.absoluteMagnitude == 0) body.absoluteMagnitude = entry.absoluteMagnitude ?? 0;
                 if (body.radius == 0 && entry.radius != null) body.radius = entry.radius.Value * 1000;
                 if (body.parents == null && entry.parents != null) body.parents = entry.parents;
                 if (body.planetClass == null) body.planetClass = entry.subType;
@@ -1117,12 +1123,12 @@ namespace SrvSurvey.game
                 if (body.mass == 0) body.mass = (entry.earthMasses > 0 ? entry.earthMasses : entry.solarMasses) ?? 0; // mass
                 if (body.surfaceGravity == 0 && entry.gravity > 0) body.surfaceGravity = entry.gravity.Value * 10; // gravity
                 if (body.surfaceTemperature == 0 && entry.surfaceTemperature > 0) body.surfaceTemperature = entry.surfaceTemperature.Value;
-                if (body.surfacePressure == 0 && entry.surfacePressure > 0) body.surfacePressure = entry.surfacePressure.Value;
+                if (body.surfacePressure == 0 && entry.surfacePressure > 0) body.surfacePressure = entry.surfacePressure.Value * 100_000f;
                 if (body.atmosphereType == null && entry.atmosphereType != null) body.atmosphereType = this.getAtmosphereTypeFromExternal(entry.atmosphereType);
                 if (body.atmosphere == null && entry.atmosphereType != null) body.atmosphereType = entry.atmosphereType;
                 if (body.atmosphereComposition == null && entry.atmosphereComposition != null) body.atmosphereComposition = entry.atmosphereComposition;
                 if (body.materials == null && entry.materials != null) body.materials = entry.materials;
-                if (body.volcanism == null && entry.volcanismType != null) body.volcanism = entry.volcanismType;
+                if (body.volcanism == null && entry.volcanismType != null) body.volcanism = entry.volcanismType == "No volcanism" ? "" : entry.volcanismType;
                 if (body.starType == null && entry.subType != null)
                 {
                     body.starType = entry.subType[0].ToString();
@@ -1475,6 +1481,56 @@ namespace SrvSurvey.game
                     .ToList();
 
             return parentStarTypes;
+        }
+
+        public string getBrightestParentStarType(SystemBody body)
+        {
+            var parentStars = this.getParentStars(body, false);
+            var mpau = 1.4960E+11;
+
+            SystemBody brightestStar = null!;
+            var brightestValue = 0d;
+            foreach (var star in parentStars)
+            {
+                var dd = body.distanceFromArrivalLS - star.distanceFromArrivalLS;
+                var dds = Math.Abs(Math.Pow(dd, 1));
+                var ams = star.surfaceTemperature;
+                var foo = ams; // * (1 / dds);
+                if (foo > brightestValue)
+                {
+                    brightestValue = foo;
+                    brightestStar = star;
+                }
+            }
+
+            var ddss = parentStars.Select(star =>
+            {
+                var dd = body.distanceFromArrivalLS - star.distanceFromArrivalLS;
+                return Math.Abs(Math.Pow(dd, 1));
+            }).ToList();
+
+            var foos = parentStars.Select(star =>
+            {
+                var dd = body.distanceFromArrivalLS - star.distanceFromArrivalLS;
+                var dds = Math.Abs(Math.Pow(dd, 2));
+                var ams = star.surfaceTemperature;
+                var foo = ams * (1 / dds);
+                var mag = dds.ToString().Length;
+                foo = ams / mag;
+                return foo;
+            }).ToList();
+            var starType0 = brightestStar.starType!;
+
+            var idx = foos.IndexOf(foos.Max());
+            var starType1 = parentStars.ToList()[idx].starType;
+
+            var starType = starType1;
+
+            // flatten
+            if (starType.StartsWith("D"))
+                return "D";
+            else
+                return starType;
         }
 
         public HashSet<SystemBody> getStarsByParent(int bodyId)
@@ -1929,8 +1985,11 @@ namespace SrvSurvey.game
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public long distanceFromArrivalLS;
 
-        //[JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-        //public double semiMajorAxis;
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public double semiMajorAxis;
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public double absoluteMagnitude;
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public string? starType;
@@ -2033,7 +2092,7 @@ namespace SrvSurvey.game
 
         public override string ToString()
         {
-            return $"'{this.name}' ({this.id}, {this.type})";
+            return $"'{this.name}' ({this.id}, {this.type} {this.starType})";
         }
 
         [JsonIgnore]

@@ -1,18 +1,18 @@
 {
   "genus": "Recepta",
   "query": [
-    "atmosComp [SulphurDioxide > 1]"
+    "atmosComp [Sulphur dioxide >= 1]"
   ],
   "children": [
     {
       "species": "Conditivus",
       "query": [
-        "      body [Icy,Rocky]",
-        "atmosphere [Thin Carbon dioxide]",
-        "   gravity [0.04 ~ 0.27]",
-        "      temp [150 ~ 194]",
-        "  pressure [0.0013 ~ 0.093]",
-        " volcanism [None]"
+        "     body [Icy,Rocky]",
+        "atmosType [CarbonDioxide]",
+        "  gravity [0.04 ~ 0.27]",
+        "     temp [150 ~ 194]",
+        " pressure [0.0013 ~ 0.093]",
+        "volcanism [None]"
       ],
       "children": [
         { "variant": "Aquamarine", "query": [ "mats [Technetium]" ] },
@@ -26,12 +26,12 @@
     {
       "species": "Conditivus",
       "query": [
-        "      body [Icy]",
-        "atmosphere [Thin Oxygen]",
-        "   gravity [0.04 ~ 0.27]",
-        "      temp [154 ~ 159]",
-        "  pressure [0.019 ~ 0.044]",
-        " volcanism [None]"
+        "     body [Icy]",
+        "atmosType [Oxygen]",
+        "  gravity [0.04 ~ 0.27]",
+        "     temp [154 ~ 159]",
+        " pressure [0.019 ~ 0.044]",
+        "volcanism [None]"
       ],
       "children": [
         { "variant": "Aquamarine", "query": [ "mats [Technetium]" ] },
@@ -45,11 +45,11 @@
     {
       "species": "Conditivus",
       "query": [
-        "atmosphere [Thin Sulphur dioxide]",
-        "   gravity [0.04 ~ 0.28]",
-        "      temp [132 ~ 273]",
-        "  pressure [0.0009 ~ 0.099]",
-        " volcanism [None]"
+        "atmosType [Sulphur dioxide]",
+        "  gravity [0.04 ~ 0.28]",
+        "     temp [132 ~ 273]",
+        " pressure [0.0009 ~ 0.099]",
+        "volcanism [None]"
       ],
       "children": [
         { "variant": "Aquamarine", "query": [ "mats [Technetium]" ] },
@@ -64,12 +64,12 @@
     {
       "species": "Deltahedronix",
       "query": [
-        "      body [HMC,Icy,Rocky]",
-        "atmosphere [Thin Carbon dioxide]",
-        "   gravity [0.04 ~ 0.27]",
-        "      temp [150 ~ 195]",
-        "  pressure [0.005 ~ 0.098]",
-        " volcanism [None]"
+        "     body [HMC,Icy,Rocky]",
+        "atmosType [CarbonDioxide]",
+        "  gravity [0.04 ~ 0.27]",
+        "     temp [150 ~ 195]",
+        " pressure [0.005 ~ 0.098]",
+        "volcanism [None]"
       ],
       "children": [
         { "variant": "Cyan", "query": [ "    mats [Mercury]" ] },
@@ -84,10 +84,10 @@
     {
       "species": "Umbrux",
       "query": [
-        "atmosphere [Thin Sulphur dioxide]",
-        "   gravity [0.04 ~ 0.28]",
-        "      temp [132 ~ 273]",
-        "  pressure [0.0009 ~ 0.099]"
+        "atmosType [SulphurDioxide]",
+        "  gravity [0.04 ~ 0.28]",
+        "     temp [132 ~ 273]",
+        " pressure [0.0009 ~ 0.099]"
       ],
       "children": [
         { "variant": "Turquoise", "query": [ "star [B]" ] },
@@ -108,10 +108,10 @@
     {
       "species": "Umbrux",
       "query": [
-        "atmosphere [Thin Carbon dioxide]",
-        "   gravity [0.04 ~ 0.27]",
-        "      temp [149 ~ 201]",
-        "  pressure [0.001 ~ 0.097]"
+        "atmosType [CarbonDioxide]",
+        "  gravity [0.04 ~ 0.27]",
+        "     temp [149 ~ 201]",
+        " pressure [0.001 ~ 0.097]"
       ],
       "children": [
         { "variant": "Turquoise", "query": [ "star [B]" ] },
@@ -128,7 +128,7 @@
         { "variant": "Yellow", "query": [ "   star [D]" ] },
         { "variant": "Emerald", "query": [ "  star [N]" ] }
       ]
-    },
+    }
 
   ]
 }

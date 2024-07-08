@@ -132,6 +132,7 @@ namespace SrvSurvey
             // TODO: handle radio's better?
             radioUseRadius.Checked = !radioUseSmall.Checked;
             panelBannerColor.BackColor = Game.settings.screenshotBannerColor;
+            panelTheme.BackColor = Game.settings.defaultOrange;
         }
 
         private void updateSettingsFromForm(Control parentControl)
@@ -182,9 +183,6 @@ namespace SrvSurvey
                     updateSettingsFromForm(ctrl);
             }
 
-            // special case for comboCmdrs
-            Game.settings.preferredCommander = comboCmdr.SelectedIndex > 0 ? comboCmdr.Text : null;
-            Game.settings.screenshotBannerColor = panelBannerColor.BackColor;
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -196,9 +194,28 @@ namespace SrvSurvey
             var restartApp = !sameCmdr
                 || comboOverlayScale.SelectedIndex != Game.settings.plotterScale
                 || this.checkEnableGuardianFeatures.Checked != Game.settings.enableGuardianSites
-                || this.linkJournalFolder.Text != Game.settings.watchedJournalFolder;
+                || this.linkJournalFolder.Text != Game.settings.watchedJournalFolder
+                || this.panelTheme.BackColor != Game.settings.defaultOrange;
 
             updateSettingsFromForm(this);
+
+            // special case for comboCmdrs
+            Game.settings.preferredCommander = comboCmdr.SelectedIndex > 0 ? comboCmdr.Text : null;
+            Game.settings.screenshotBannerColor = panelBannerColor.BackColor;
+            if (Game.settings.defaultOrange != panelTheme.BackColor
+                // but not if we're resetting
+                && panelTheme.BackColor != Color.FromArgb(255, 255, 111, 0))
+            {
+                // generate a new dimmer colour
+                Game.settings.defaultOrangeDim = Color.FromArgb(
+                    255,
+                    (int)((float)panelTheme.BackColor.R * 0.6),
+                    (int)((float)panelTheme.BackColor.G * 0.6),
+                    (int)((float)panelTheme.BackColor.B * 0.6)
+                );
+            }
+            Game.settings.defaultOrange = panelTheme.BackColor;
+
             Game.settings.Save();
             this.DialogResult = DialogResult.OK;
 
@@ -384,6 +401,7 @@ namespace SrvSurvey
         private void button2_Click(object sender, EventArgs e)
         {
             colorDialog.Color = panelBannerColor.BackColor;
+            colorDialog.FullOpen = true;
 
             var rslt = colorDialog.ShowDialog(this);
             if (rslt == DialogResult.OK)
@@ -424,6 +442,29 @@ namespace SrvSurvey
         private void checkBodyInfo_CheckedChanged(object sender, EventArgs e)
         {
             checkBodyInfoMap.Enabled = checkBodyInfoOrbit.Enabled = checkBodyInfo.Checked;
+        }
+
+        private void linkResetWatchFolder_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            linkJournalFolder.Text = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), @"Saved Games\Frontier Developments\Elite Dangerous\");
+        }
+
+        private void btnTheme_Click(object sender, EventArgs e)
+        {
+            colorTheme.Color = panelBannerColor.BackColor;
+            colorTheme.FullOpen = true;
+
+            var rslt = colorTheme.ShowDialog(this);
+            if (rslt == DialogResult.OK)
+            {
+                panelTheme.BackColor = colorTheme.Color;
+            }
+        }
+
+        private void linkResetTheme_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            panelTheme.BackColor = Color.FromArgb(255, 255, 111, 0);
+            Game.settings.defaultOrangeDim = Color.FromArgb(255, 95, 48, 3);
         }
     }
 }

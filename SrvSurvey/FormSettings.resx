@@ -143,7 +143,7 @@
   <data name="pictureBox12.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAKYAAABwCAIAAAAbjZwSAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        vgAADr4B6kKxwAAAWIRJREFUeF7lvQecZUd5J1rp5HNz6r65b+c8PT2puydPT855pFHOOaOMIpLQAiIJ
+        vAAADrwBlbxySQAAWIRJREFUeF7lvQecZUd5J1rp5HNz6r65b+c8PT2puydPT855pFHOOaOMIpLQAiIJ
         ZQkQCJODMZhgg22CbQzYXjCWvdh+mF17nXb34U1vd716/6/q3Nu3u2dGowTse/X79+k63/kq11f1fVV1
         zmWD5dJQuTT8CjFYKo5UygD8xmP8Q6UiMZTKg+WI+ApRGqqURyuVCNUToVwZqVTANlat1LPZ6Z7GttHB
         5fXK2u6uajIpOe/KZbsKucFiZ6tcOtrqUKUyfIpoq5WhcmVYR76AfkKMVJGB6qtHpQnjx7VmUMF1vFYz
@@ -3599,7 +3599,7 @@ Screenshots need to be within 50m of site origin, with an altitude between 500m 
   <data name="pictureBox11.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAG4AAAClCAIAAAAyFl/bAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        vwAADr8BOAVTJAAAQhVJREFUeF7VvQeQHcl1JXrTVb33uvu196+99/a19wbeew/MwPuBHXhgBsAAmAHG
+        vAAADrwBlbxySQAAQhVJREFUeF7VvQeQHcl1JXrTVb33uvu196+99/a19wbeew/MwPuBHXhgBsAAmAHG
         z3A4HHqKpChxSe5qSYrUkkuKclxJKylW0sbG7g/9L33Fl4mviP0bG/E39IP/3Kzq7tcWwKAfKR4kqm+a
         ypt5K+/Nm1VZ9QhQSmlt1DxBKJ2alh5KSJRKz8harCCkSkvPiCsL1JySmpaQFI4HC0BKyaIkEkoSghRz
         B6W4wIzExQ1Gc2NmJC5uQC/iwUJLEkJ4cgTEW6Pi+5vFtzfOFTaI39ysvrNJzkxfxLCBvrdFx5mF+G58
@@ -3887,7 +3887,7 @@ Screenshots need to be within 50m of site origin, with an altitude between 500m 
   <data name="pictureBox10.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAKYAAABZCAIAAAA7LsjsAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        vwAADr8BOAVTJAAAS+xJREFUeF69vQmUJUd1Jpwvl8j1vVf7vrytlrfVq62Xqq7u6uq1uruqq3rfJHWr
+        vAAADrwBlbxySQAAS+xJREFUeF69vQmUJUd1Jpwvl8j1vVf7vrytlrfVq62Xqq7u6uq1uruqq3rfJHWr
         JaHdCBAyAgksQCxCYEmgBSRWiU1CgBAgiR1jvILBczxj4xmbGXN+POP/2HPs3//89pzjo/+7NyLz5XtV
         AmZ+zn/rVuSNGzdu3IjMjLw3MzKfVilVJ0qV0cJIPpsDFrL5AqWSIMxn8zkqymcz+C/kkM0QM5/JZ4eG
         C+PF0VI5P5yFTC5DYlKYtSkNUpvUz0XAQj5LVfKZXDbDpUhzIAr5QmFkbGx0rDRaJM2j5Qql4+OjI6OF
@@ -6204,6 +6204,9 @@ Finally to Brammmers for his dedication and patience whilst we ironed out the bu
   </data>
   <metadata name="colorDialog.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
+  </metadata>
+  <metadata name="colorTheme.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>131, 17</value>
   </metadata>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>

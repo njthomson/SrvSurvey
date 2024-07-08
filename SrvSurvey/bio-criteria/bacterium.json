@@ -6,7 +6,7 @@
       "species": "Acies",
       "query": [
         "atmosType [Neon]",
-        "      temp [20 ~ 61]"
+        "     temp [20 ~ 61]"
       ],
       "children": [
         { "variant": "Lime", "query": [ "      mats [Technetium]" ] },
@@ -21,7 +21,7 @@
     {
       "species": "Alcyoneum",
       "query": [
-        "     body [HMC,Rocky]",
+        "     body [HMC,Rocky,RockyIce]",
         "atmosType [Ammonia]",
         "     temp [152 ~ 177]"
       ],
@@ -474,8 +474,24 @@
       "query": [
           "  gravity [0.03 ~ 0.62]",
           "     temp [20 ~ 607]",
-          " pressure [0.00098 ~ 0.099]",
-          "volcanism [Some]"
+          " pressure [0.00098 ~ 0.099]"
+      ],
+      "children": [
+        { "variant": "Orange", "query": [ " mats [Mercury]" ] },
+        { "variant": "Magenta", "query": [ "mats [Niobium]" ] },
+        { "variant": "Cobalt", "query": [ " mats [Tin]" ] },
+        { "variant": "Green", "query": [ "  mats [Tungsten]" ] },
+        { "variant": "Yellow", "query": [ " mats [Molybdenum]" ] },
+        { "variant": "Gold", "query": [ "   mats [Cadmium]" ] }
+      ]
+    },
+    {
+      "species": "Tela",
+      "query": [
+          "  gravity [0.18 ~ 0.62]",
+          "atmosType [SulphurDioxide]",
+          "     temp [148 ~ 499]",
+          " pressure [0.00098 ~ 0.099]"
       ],
       "children": [
         { "variant": "Orange", "query": [ " mats [Mercury]" ] },

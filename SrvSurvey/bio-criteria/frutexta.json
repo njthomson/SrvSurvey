@@ -1,219 +1,132 @@
 {
   "genus": "Frutexa",
+  "commonChildren": [
+    { "variant": "Yellow", "query": [ " star [O]" ] },
+    { "variant": "Lime", "query": [ "   star [B]" ] },
+    { "variant": "Green", "query": [ "  star [F]" ] },
+    { "variant": "Emerald", "query": [ "star [G]" ] },
+    { "variant": "Grey", "query": [ "   star [M]" ] },
+    { "variant": "Teal", "query": [ "   star [L]" ] },
+    { "variant": "Mauve", "query": [ "  star [TTS]" ] },
+    { "variant": "Orange", "query": [ " star [W]" ] },
+    { "variant": "Indigo", "query": [ " star [D]" ] },
+    { "variant": "Red", "query": [ "    star [N]" ] }
+  ],
   "children": [
     {
       "species": "Acus",
       "query": [
-          "      body [Rocky]",
-          "atmosphere [Thin Carbon dioxide]",
-          "   gravity [0.04 ~ 0.24]",
-          "      temp [56 ~ 196]",
-          "  pressure [0.0013 ~ 0.099]",
-          " volcanism [None]",
-          "   regions [1,4,7,8,9,16,17,18,33,34,35]"
+        "     body [Rocky]",
+        "atmosType [CarbonDioxide]",
+        "  gravity [0.04 ~ 0.24]",
+        "     temp [56 ~ 196]",
+        " pressure [0.0013 ~ 0.099]",
+        "volcanism [None]",
+        "  regions [1,4,7,8,9,16,17,18,33,34,35]"
       ],
-      "children": [
-        { "variant": "Yellow", "query": [ " star [O]" ] },
-        { "variant": "Lime", "query": [ "   star [B]" ] },
-        { "variant": "Green", "query": [ "  star [F]" ] },
-        { "variant": "Emerald", "query": [ "star [G]" ] },
-        { "variant": "Grey", "query": [ "   star [M]" ] },
-        { "variant": "Teal", "query": [ "   star [L]" ] },
-        { "variant": "Mauve", "query": [ "  star [TTS]" ] },
-        { "variant": "Orange", "query": [ " star [W]" ] },
-        { "variant": "Indigo", "query": [ " star [D]" ] },
-        { "variant": "Red", "query": [ "    star [N]" ] }
-      ]
+      "useCommonChildren": true
     },
 
     {
       "species": "Collum",
       "query": [
-          "      body [HMC,Rocky]",
-          "atmosphere [Thin Sulphur dioxide]",
-          "   gravity [0.04 ~ 0.28]",
-          "      temp [132 ~ 167]",
-          "  pressure [0.0009 ~ 0.025]"
+        "     body [HMC,Rocky]",
+        "atmosType [SulphurDioxide]",
+        "  gravity [0.04 ~ 0.28]",
+        "     temp [132 ~ 167]",
+        " pressure [0.0009 ~ 0.025]"
       ],
-      "children": [
-        { "variant": "Yellow", "query": [ " star [O]" ] },
-        { "variant": "Lime", "query": [ "   star [B]" ] },
-        { "variant": "Green", "query": [ "  star [F]" ] },
-        { "variant": "Emerald", "query": [ "star [G]" ] },
-        { "variant": "Grey", "query": [ "   star [M]" ] },
-        { "variant": "Teal", "query": [ "   star [L]" ] },
-        { "variant": "Mauve", "query": [ "  star [TTS]" ] },
-        { "variant": "Orange", "query": [ " star [W]" ] },
-        { "variant": "Indigo", "query": [ " star [D]" ] },
-        { "variant": "Red", "query": [ "    star [N]" ] }
-      ]
+      "useCommonChildren": true
     },
 
     {
       "species": "Fera",
       "query": [
-          "      body [Rocky]",
-          "atmosphere [Thin Carbon dioxide]",
-          "   gravity [0.04 ~ 0.24]",
-          "      temp [146 ~ 196]",
-          "  pressure [0.003 ~ 0.099]",
-          " volcanism [None]",
-          "   regions [1,2,5,6,13,14,27,29,31,37,41]"
+          "     body [Rocky]",
+          "atmosType [CarbonDioxide]",
+          "  gravity [0.04 ~ 0.24]",
+          "     temp [146 ~ 196]",
+          " pressure [0.003 ~ 0.099]",
+          "volcanism [None]",
+          "  regions [1,2,5,6,13,14,27,29,31,37,41]"
       ],
-      "children": [
-        { "variant": "Yellow", "query": [ " star [O]" ] },
-        { "variant": "Lime", "query": [ "   star [B]" ] },
-        { "variant": "Green", "query": [ "  star [F]" ] },
-        { "variant": "Emerald", "query": [ "star [G]" ] },
-        { "variant": "Grey", "query": [ "   star [M]" ] },
-        { "variant": "Teal", "query": [ "   star [L]" ] },
-        { "variant": "Mauve", "query": [ "  star [TTS]" ] },
-        { "variant": "Orange", "query": [ " star [W]" ] },
-        { "variant": "Indigo", "query": [ " star [D]" ] },
-        { "variant": "Red", "query": [ "    star [N]" ] }
-      ]
+      "useCommonChildren": true
     },
 
     {
       "species": "Flabellum",
       "query": [
-          "      body [Rocky]",
-          "atmosphere [Thin Ammonia]",
-          "   gravity [0.04 ~ 0.27]",
-          "      temp [152 ~ 177]",
-          "  pressure [0.0009 ~ 0.0132]",
-          "   regions [1,2,3,4,5,6,7,8,13,14,15,16,17,18,19,20,21,22,23,27,29,30,31,32,33,34,35,36,37,38,39,40,41]"
+          "     body [Rocky]",
+          "atmosType [Ammonia]",
+          "  gravity [0.04 ~ 0.27]",
+          "     temp [152 ~ 177]",
+          " pressure [0.0009 ~ 0.0132]",
+          "  regions [1,2,3,4,5,6,7,8,13,14,15,16,17,18,19,20,21,22,23,27,29,30,31,32,33,34,35,36,37,38,39,40,41]"
       ],
-      "children": [
-        { "variant": "Yellow", "query": [ " star [O]" ] },
-        { "variant": "Lime", "query": [ "   star [B]" ] },
-        { "variant": "Green", "query": [ "  star [F]" ] },
-        { "variant": "Emerald", "query": [ "star [G]" ] },
-        { "variant": "Grey", "query": [ "   star [M]" ] },
-        { "variant": "Teal", "query": [ "   star [L]" ] },
-        { "variant": "Mauve", "query": [ "  star [TTS]" ] },
-        { "variant": "Orange", "query": [ " star [W]" ] },
-        { "variant": "Indigo", "query": [ " star [D]" ] },
-        { "variant": "Red", "query": [ "    star [N]" ] }
-      ]
+      "useCommonChildren": true
     },
 
     {
       "species": "Flammasis",
       "query": [
-          "      body [Rocky]",
-          "atmosphere [Thin Ammonia]",
-          "   gravity [0.04 ~ 0.27]",
-          "      temp [152 ~ 177]",
-          "  pressure [0.0009 ~ 0.0134]",
-          "   regions [0,4,8,9,10,11,12,16,24,25,26,28,42]"
+          "     body [Rocky]",
+          "atmosType [Ammonia]",
+          "  gravity [0.04 ~ 0.27]",
+          "     temp [152 ~ 177]",
+          " pressure [0.0009 ~ 0.0134]",
+          "  regions [0,4,8,9,10,11,12,16,24,25,26,28,42]"
       ],
-      "children": [
-        { "variant": "Yellow", "query": [ " star [O]" ] },
-        { "variant": "Lime", "query": [ "   star [B]" ] },
-        { "variant": "Green", "query": [ "  star [F]" ] },
-        { "variant": "Emerald", "query": [ "star [G]" ] },
-        { "variant": "Grey", "query": [ "   star [M]" ] },
-        { "variant": "Teal", "query": [ "   star [L]" ] },
-        { "variant": "Mauve", "query": [ "  star [TTS]" ] },
-        { "variant": "Orange", "query": [ " star [W]" ] },
-        { "variant": "Indigo", "query": [ " star [D]" ] },
-        { "variant": "Red", "query": [ "    star [N]" ] }
-      ]
+      "useCommonChildren": true
     },
 
     {
       "species": "Metallicum",
       "query": [
-          "      body [HMC]",
-          "atmosphere [Thin Ammonia]",
-          "   gravity [0.04 ~ 0.27]",
-          "      temp [152 ~ 177]",
-          "  pressure [0.0009 ~ 0.0096]",
-          " volcanism [None]"
+          "     body [HMC]",
+          "atmosType [Ammonia]",
+          "  gravity [0.04 ~ 0.27]",
+          "     temp [152 ~ 177]",
+          " pressure [0.0009 ~ 0.0096]",
+          "volcanism [None]"
       ],
-      "children": [
-        { "variant": "Yellow", "query": [ " star [O]" ] },
-        { "variant": "Lime", "query": [ "   star [B]" ] },
-        { "variant": "Green", "query": [ "  star [F]" ] },
-        { "variant": "Emerald", "query": [ "star [G]" ] },
-        { "variant": "Grey", "query": [ "   star [M]" ] },
-        { "variant": "Teal", "query": [ "   star [L]" ] },
-        { "variant": "Mauve", "query": [ "  star [TTS]" ] },
-        { "variant": "Orange", "query": [ " star [W]" ] },
-        { "variant": "Indigo", "query": [ " star [D]" ] },
-        { "variant": "Red", "query": [ "    star [N]" ] }
-      ]
+      "useCommonChildren": true
     },
     {
       "species": "Metallicum",
       "query": [
-          "      body [HMC]",
-          "atmosphere [Thin Carbon dioxide]",
-          "   gravity [0.04 ~ 0.27]",
-          "      temp [146 ~ 196]",
-          "  pressure [0.002 ~ 0.099]",
-          " volcanism [None]"
+          "     body [HMC]",
+          "atmosType [CarbonDioxide]",
+          "  gravity [0.04 ~ 0.27]",
+          "     temp [146 ~ 196]",
+          " pressure [0.002 ~ 0.099]",
+          "volcanism [None]"
       ],
-      "children": [
-        { "variant": "Yellow", "query": [ " star [O]" ] },
-        { "variant": "Lime", "query": [ "   star [B]" ] },
-        { "variant": "Green", "query": [ "  star [F]" ] },
-        { "variant": "Emerald", "query": [ "star [G]" ] },
-        { "variant": "Grey", "query": [ "   star [M]" ] },
-        { "variant": "Teal", "query": [ "   star [L]" ] },
-        { "variant": "Mauve", "query": [ "  star [TTS]" ] },
-        { "variant": "Orange", "query": [ " star [W]" ] },
-        { "variant": "Indigo", "query": [ " star [D]" ] },
-        { "variant": "Red", "query": [ "    star [N]" ] }
-      ]
+      "useCommonChildren": true
     },
     {
       "species": "Metallicum",
       "query": [
-          "      body [HMC]",
-          "atmosphere [Thin Water]",
-          "   gravity [0.04 ~ 0.06]",
-          "      temp [390 ~ 400]",
-          "  pressure [0.052 ~ 0.068]",
-          " volcanism [None]"
+          "     body [HMC]",
+          "atmosType [Water]",
+          "  gravity [0.04 ~ 0.06]",
+          "     temp [390 ~ 400]",
+          " pressure [0.052 ~ 0.068]",
+          "volcanism [None]"
       ],
-      "children": [
-        { "variant": "Yellow", "query": [ " star [O]" ] },
-        { "variant": "Lime", "query": [ "   star [B]" ] },
-        { "variant": "Green", "query": [ "  star [F]" ] },
-        { "variant": "Emerald", "query": [ "star [G]" ] },
-        { "variant": "Grey", "query": [ "   star [M]" ] },
-        { "variant": "Teal", "query": [ "   star [L]" ] },
-        { "variant": "Mauve", "query": [ "  star [TTS]" ] },
-        { "variant": "Orange", "query": [ " star [W]" ] },
-        { "variant": "Indigo", "query": [ " star [D]" ] },
-        { "variant": "Red", "query": [ "    star [N]" ] }
-      ]
+      "useCommonChildren": true
     },
 
     {
-      "species": "Metallicum",
+      "species": "Sponsae",
       "query": [
-          "      body [Rocky]",
-          "atmosphere [Thin Water]",
-          "   gravity [0.04 ~ 0.06]",
-          "      temp [392 ~ 452]",
-          "  pressure [0.052 ~ 0.099]",
-          " volcanism [None,Minor Water Magma]"
+          "     body [Rocky]",
+          "atmosType [Water]",
+          "  gravity [0.04 ~ 0.06]",
+          "     temp [392 ~ 452]",
+          " pressure [0.052 ~ 0.099]",
+          "volcanism [None,Minor Water Magma]"
       ],
-      "children": [
-        { "variant": "Yellow", "query": [ " star [O]" ] },
-        { "variant": "Lime", "query": [ "   star [B]" ] },
-        { "variant": "Green", "query": [ "  star [F]" ] },
-        { "variant": "Emerald", "query": [ "star [G]" ] },
-        { "variant": "Grey", "query": [ "   star [M]" ] },
-        { "variant": "Teal", "query": [ "   star [L]" ] },
-        { "variant": "Mauve", "query": [ "  star [TTS]" ] },
-        { "variant": "Orange", "query": [ " star [W]" ] },
-        { "variant": "Indigo", "query": [ " star [D]" ] },
-        { "variant": "Red", "query": [ "    star [N]" ] }
-      ]
+      "useCommonChildren": true
     }
 
   ]

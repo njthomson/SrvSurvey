@@ -93,6 +93,12 @@ namespace SrvSurvey.game
             return int.Parse(name.Replace(";", "").Substring(18));
         }
 
+        public static int getIdxFromDisplayName(string name)
+        {
+            var match = GalacticRegions.mapRegions.FirstOrDefault(_ => _.Value == name);
+            return int.Parse(match.Key.Replace(";", "").Substring(18));
+        }
+
         public static string getIdxFromNames(string names)
         {
             var regions = new List<string>();
@@ -128,13 +134,16 @@ namespace SrvSurvey.game
             return string.Join(",", foo);
         }
 
-        //public static int currentIdx;
+        public static int? currentIdxOverride { private get; set; }
 
         public static int currentIdx
         {
             get
             {
-                if (Game.activeGame?.cmdr.galacticRegion == null) return 9; // tmp!  -1;
+                // use override if set (for testing purposes)
+                if (currentIdxOverride != null) return currentIdxOverride.Value;
+
+                if (Game.activeGame?.cmdr.galacticRegion == null) return 9; // default is 9 'Inner Scutum-Centaurus Arm'
 
                 var idx = getIdxFromName(Game.activeGame.cmdr.galacticRegion);
                 return idx;

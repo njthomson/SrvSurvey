@@ -1,15 +1,72 @@
 ﻿using Newtonsoft.Json;
+using SrvSurvey.game;
 using System.Text.RegularExpressions;
 
 namespace BioCriteria
 {
     class Criteria
     {
+
         public string? genus;
         public string? species;
         public string? variant;
         public List<Clause> query;
+
         public List<Criteria> children;
+
+        public bool useCommonChildren;
+        public List<Criteria>? commonChildren;
+
+        #region static loading code
+
+        private static string rootFolder = @"D:\code\SrvSurvey\SrvSurvey\bio-criteria\";
+
+        public readonly static List<Criteria> allCriteria = new List<Criteria>();
+
+        public override string ToString()
+        {
+            return $"{genus}{species}{variant} q:{query?.Count}";
+        }
+
+        public static void readCriteria()
+        {
+            Game.log("readCriteria");
+            var files = Directory.GetFiles(rootFolder, "*.json");
+
+            foreach (var filepath in files)
+            {
+                var json = File.ReadAllText(filepath);
+
+                try
+                {
+                    var criteria = JsonConvert.DeserializeObject<Criteria>(json)!;
+                    allCriteria.Add(criteria);
+                }
+                catch (Exception ex)
+                {
+                    Game.log($"{filepath} => {ex}");
+                }
+            }
+
+            // post process all criteria, confirming no node has children and useCommonChildren
+            foreach (var criteria in allCriteria)
+                checkChildren(criteria);
+        }
+
+        private static void checkChildren(Criteria criteria)
+        {
+            if (criteria.children?.Count > 0)
+            {
+                // confirm we do not have useCommonChildren AND children
+                if (criteria.useCommonChildren)
+                    throw new Exception($"Bad criteria has both 'children' and 'useCommonChildren': " + JsonConvert.SerializeObject(criteria));
+
+                foreach (var child in criteria.children)
+                    checkChildren(child);
+            }
+        }
+
+        #endregion
     }
 
     [JsonConverter(typeof(Clause.JsonConverter))]
@@ -44,6 +101,7 @@ namespace BioCriteria
                 // eg: "pressure [0.01 ~ ]"
                 // eg: "atmosphere [Thin Ammonia]"
                 // eg: "atmosType [CarbonDioxide,SulphurDioxide,Water]"
+                // eg: "atmosComp [SulphurDioxide > 0.99]"
 
                 var r0 = new Regex(@"\s*(\w+)\s*!?\[(.+)\]");
                 var m0 = r0.Match(txt);
@@ -72,13 +130,15 @@ namespace BioCriteria
                     // compositions
                     clause.op = Op.Composition;
                     clause.compositions = new Dictionary<string, float>();
-                    var regCompo = new Regex(@"(\w+)\s*(.*?)\s*([\.\d]+)");
+                    var regCompo = new Regex(@"([\w\s]+)(>=)\s*([\.\d]+)");
 
                     var parts = valTxt.Split(',', StringSplitOptions.TrimEntries);
                     foreach (var part in parts)
                     {
                         var matches = regCompo.Match(part);
-                        var thing = matches.Groups[1].Value;
+                        if (matches.Groups.Count < 4) throw new Exception($"Bad Composition clause: {part}");
+                        if (matches.Groups[2].Value != ">=") throw new Exception($"Unsupported Composition operand: {matches.Groups[2].Value}");
+                        var thing = matches.Groups[1].Value.Trim();
                         var amount = float.Parse(matches.Groups[3].Value);
                         // TODO: do we need anything other than >= ?
                         clause.compositions.Add(thing, amount);
@@ -175,7 +235,7 @@ namespace BioCriteria
             { "Icy", "Icy body" },
             { "Rocky", "Rocky body" },
             { "RockyIce", "Rocky ice body" },
-            { "HMC", "High metal content body" },
+            { "HMC", "High metal content " }, // might be "... body" or "... world"
         };
     }
 }

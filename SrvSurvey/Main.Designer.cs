@@ -89,6 +89,7 @@ namespace SrvSurvey
             textBox2 = new TextBox();
             txtBodies = new TextBox();
             linkNewBuildAvailable = new LinkLabel();
+            btnTest = new Button();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
             groupBox3.SuspendLayout();
@@ -784,12 +785,24 @@ namespace SrvSurvey
             linkNewBuildAvailable.Visible = false;
             linkNewBuildAvailable.LinkClicked += linkNewBuildAvailable_LinkClicked;
             // 
+            // btnTest
+            // 
+            btnTest.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            btnTest.Location = new Point(255, 593);
+            btnTest.Name = "btnTest";
+            btnTest.Size = new Size(75, 23);
+            btnTest.TabIndex = 30;
+            btnTest.Text = "Test";
+            btnTest.UseVisualStyleBackColor = true;
+            btnTest.Click += btnTest_Click;
+            // 
             // Main
             // 
             AutoScaleDimensions = new SizeF(7F, 12F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = btnQuit2;
             ClientSize = new Size(437, 628);
+            Controls.Add(btnTest);
             Controls.Add(btnCodexShow);
             Controls.Add(linkNewBuildAvailable);
             Controls.Add(groupBox5);
@@ -893,5 +906,6 @@ namespace SrvSurvey
         private TextBox txtDistance;
         private LinkLabel linkNewBuildAvailable;
         public Button btnCodexShow;
+        private Button btnTest;
     }
 }

@@ -35,6 +35,8 @@ namespace SrvSurvey
             btnSave = new Button();
             btnCancel = new Button();
             tabPage1 = new TabPage();
+            panelTheme = new Panel();
+            btnTheme = new Button();
             label14 = new Label();
             comboOverlayScale = new ComboBox();
             btnResetOverlays = new Button();
@@ -57,6 +59,7 @@ namespace SrvSurvey
             label2 = new Label();
             trackOpacity = new TrackBar();
             label1 = new Label();
+            linkResetWatchFolder = new LinkLabel();
             tabControl1 = new TabControl();
             tabPage4 = new TabPage();
             pictureBox12 = new PictureBox();
@@ -161,6 +164,8 @@ namespace SrvSurvey
             linkAboutTwo = new LinkLabel();
             linkAboutOne = new LinkLabel();
             colorDialog = new ColorDialog();
+            colorTheme = new ColorDialog();
+            linkResetTheme = new LinkLabel();
             panel1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numGravityWarningLevel).BeginInit();
@@ -253,6 +258,9 @@ namespace SrvSurvey
             // tabPage1
             // 
             tabPage1.BorderStyle = BorderStyle.Fixed3D;
+            tabPage1.Controls.Add(linkResetTheme);
+            tabPage1.Controls.Add(panelTheme);
+            tabPage1.Controls.Add(btnTheme);
             tabPage1.Controls.Add(label14);
             tabPage1.Controls.Add(comboOverlayScale);
             tabPage1.Controls.Add(btnResetOverlays);
@@ -275,6 +283,7 @@ namespace SrvSurvey
             tabPage1.Controls.Add(label2);
             tabPage1.Controls.Add(trackOpacity);
             tabPage1.Controls.Add(label1);
+            tabPage1.Controls.Add(linkResetWatchFolder);
             tabPage1.Location = new Point(4, 24);
             tabPage1.Margin = new Padding(4, 3, 4, 3);
             tabPage1.Name = "tabPage1";
@@ -282,6 +291,27 @@ namespace SrvSurvey
             tabPage1.Size = new Size(612, 420);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "General";
+            // 
+            // panelTheme
+            // 
+            panelTheme.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            panelTheme.BackColor = Color.DarkOrange;
+            panelTheme.BorderStyle = BorderStyle.Fixed3D;
+            panelTheme.Location = new Point(562, 103);
+            panelTheme.Name = "panelTheme";
+            panelTheme.Size = new Size(32, 32);
+            panelTheme.TabIndex = 36;
+            // 
+            // btnTheme
+            // 
+            btnTheme.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnTheme.Location = new Point(447, 103);
+            btnTheme.Name = "btnTheme";
+            btnTheme.Size = new Size(108, 45);
+            btnTheme.TabIndex = 35;
+            btnTheme.Text = "Change primary color";
+            btnTheme.UseVisualStyleBackColor = true;
+            btnTheme.Click += btnTheme_Click;
             // 
             // label14
             // 
@@ -528,6 +558,19 @@ namespace SrvSurvey
             label1.Size = new Size(430, 18);
             label1.TabIndex = 0;
             label1.Text = "Preferred Commander: (others will be ignored)";
+            // 
+            // linkResetWatchFolder
+            // 
+            linkResetWatchFolder.AutoSize = true;
+            linkResetWatchFolder.LinkArea = new LinkArea(1, 5);
+            linkResetWatchFolder.Location = new Point(129, 202);
+            linkResetWatchFolder.Name = "linkResetWatchFolder";
+            linkResetWatchFolder.Size = new Size(39, 21);
+            linkResetWatchFolder.TabIndex = 33;
+            linkResetWatchFolder.TabStop = true;
+            linkResetWatchFolder.Text = "(reset)";
+            linkResetWatchFolder.UseCompatibleTextRendering = true;
+            linkResetWatchFolder.LinkClicked += linkResetWatchFolder_LinkClicked;
             // 
             // tabControl1
             // 
@@ -1830,6 +1873,20 @@ namespace SrvSurvey
             // 
             colorDialog.Color = Color.Yellow;
             // 
+            // linkResetTheme
+            // 
+            linkResetTheme.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            linkResetTheme.AutoSize = true;
+            linkResetTheme.LinkArea = new LinkArea(1, 5);
+            linkResetTheme.Location = new Point(559, 138);
+            linkResetTheme.Name = "linkResetTheme";
+            linkResetTheme.Size = new Size(39, 21);
+            linkResetTheme.TabIndex = 37;
+            linkResetTheme.TabStop = true;
+            linkResetTheme.Text = "(reset)";
+            linkResetTheme.UseCompatibleTextRendering = true;
+            linkResetTheme.LinkClicked += linkResetTheme_LinkClicked;
+            // 
             // FormSettings
             // 
             AcceptButton = btnSave;
@@ -2032,5 +2089,10 @@ namespace SrvSurvey
         private PictureBox pictureBox11;
         private PictureBox pictureBox10;
         private PictureBox pictureBox12;
+        private LinkLabel linkResetWatchFolder;
+        private ColorDialog colorTheme;
+        private Button btnTheme;
+        private Panel panelTheme;
+        private LinkLabel linkResetTheme;
     }
 }

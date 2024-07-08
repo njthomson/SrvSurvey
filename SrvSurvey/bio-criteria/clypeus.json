@@ -4,12 +4,12 @@
     {
       "species": "Lacrimam",
       "query": [
-        "      body [Rocky]",
-        "atmosphere [Thin Carbon dioxide]",
-        "   gravity [0.04 ~ 0.24]",
-        "      temp [190 ~ 199]",
-        "  pressure [0.054 ~ 0.099]",
-        " volcanism [None]"
+        "     body [Rocky]",
+        "atmosType [CarbonDioxide]",
+        "  gravity [0.04 ~ 0.24]",
+        "     temp [190 ~ 199]",
+        " pressure [0.054 ~ 0.099]",
+        "volcanism [None]"
       ],
       "children": [
         { "variant": "Maroon", "query": [ "   star [B]" ] },
@@ -27,12 +27,12 @@
     {
       "species": "Lacrimam",
       "query": [
-        "      body [Rocky]",
-        "atmosphere [Thin Carbon dioxide]",
-        "   gravity [0.04 ~ 0.06]",
-        "      temp [394 ~ 452]",
-        "  pressure [0.053 ~ 0.099]",
-        " volcanism [None, Minor Water Magma]"
+        "     body [Rocky]",
+        "atmosType [Water]",
+        "  gravity [0.04 ~ 0.06]",
+        "     temp [394 ~ 452]",
+        " pressure [0.053 ~ 0.099]",
+        "volcanism [None, Minor Water Magma]"
       ],
       "children": [
         { "variant": "Maroon", "query": [ "   star [B]" ] },
@@ -51,12 +51,12 @@
     {
       "species": "Margaritus",
       "query": [
-        "      body [HMC]",
-        "atmosphere [Thin Carbon dioxide]",
-        "   gravity [0.06 ~ 0.26]",
-        "      temp [190 ~ 196]",
-        "  pressure [0.054 ~ 0.099]",
-        " volcanism [None]"
+        "     body [HMC]",
+        "atmosType [CarbonDioxide]",
+        "  gravity [0.06 ~ 0.26]",
+        "     temp [190 ~ 196]",
+        " pressure [0.054 ~ 0.099]",
+        "volcanism [None]"
       ],
       "children": [
         { "variant": "Maroon", "query": [ "   star [B]" ] },
@@ -74,12 +74,12 @@
     {
       "species": "Margaritus",
       "query": [
-        "      body [HMC]",
-        "atmosphere [Thin Water]",
-        "   gravity [0.04 ~ 0.06]",
-        "      temp [390 ~ 452]",
-        "  pressure [0.050 ~ 0.099]",
-        " volcanism [None]"
+        "     body [HMC]",
+        "atmosType [Water]",
+        "  gravity [0.04 ~ 0.06]",
+        "     temp [390 ~ 452]",
+        " pressure [0.050 ~ 0.099]",
+        "volcanism [None]"
       ],
       "children": [
         { "variant": "Maroon", "query": [ "   star [B]" ] },
@@ -98,13 +98,13 @@
     {
       "species": "Speculumi",
       "query": [
-        "      body [Rocky]",
-        "atmosphere [Thin Carbon dioxide]",
-        "   gravity [0.04 ~ 0.24]",
-        "      temp [190 ~ 196]",
-        "  pressure [0.054 ~ 0.099]",
-        " volcanism [None]",
-        "      dist [ 2500 ~ ]"
+        "     body [Rocky]",
+        "atmosType [CarbonDioxide]",
+        "  gravity [0.04 ~ 0.24]",
+        "     temp [190 ~ 196]",
+        " pressure [0.054 ~ 0.099]",
+        "volcanism [None]",
+        "     dist [2500 ~ ]"
       ],
       "children": [
         { "variant": "Maroon", "query": [ "   star [B]" ] },
@@ -122,13 +122,13 @@
     {
       "species": "Speculumi",
       "query": [
-        "      body [Rocky]",
-        "atmosphere [Thin Water]",
-        "   gravity [0.04 ~ 0.06]",
-        "      temp [392 ~ 452]",
-        "  pressure [0.052 ~ 0.099]",
-        " volcanism [None]",
-        "      dist [ 2500 ~ ]"
+        "     body [Rocky]",
+        "atmosType [Water]",
+        "  gravity [0.04 ~ 0.06]",
+        "     temp [392 ~ 452]",
+        " pressure [0.052 ~ 0.099]",
+        "volcanism [None]",
+        "     dist [2500 ~ ]"
       ],
       "children": [
         { "variant": "Maroon", "query": [ "   star [B]" ] },

@@ -206,7 +206,7 @@
       "query": [
           "     body [HMC,Rocky]",
           "  gravity [0.04 ~ 0.27]",
-          "atmosComp [SulphurDioxide > 0.9901]",
+          "atmosComp [Sulphur dioxide >= 0.99]",
           "volcanism [None]",
           " pressure [0.0029 ~ 0.099]",
           "     temp [147 ~ 196]",
@@ -363,12 +363,14 @@
     },
 
     {
-      "species": "Water",
+      "species": "Virgam",
       "query": [
           "     body [HMC,Rocky]",
-          "  gravity [ ~ 0.16]",
-          "atmosType [CarbonDioxide]",
-          "     temp [390 ~ 450]"
+          "  gravity [0.04 ~ 0.06]",
+          "atmosType [Water]",
+          "     temp [390 ~ 450]",
+          " pressure [0.050 ~ 0.099]",
+          "volcanism [None,Minor Water Magma]"
       ],
       "children": [
         { "variant": "Yellow", "query": [ " star [F,N]" ] },

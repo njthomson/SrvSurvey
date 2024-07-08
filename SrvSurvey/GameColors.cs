@@ -5,6 +5,11 @@ namespace SrvSurvey
 {
     static class GameColors
     {
+        public static Color Orange = Game.settings.defaultOrange; // Color.FromArgb(255, 255, 111, 0);
+        public static Color OrangeDim = Game.settings.defaultOrangeDim; // Color.FromArgb(255, 95, 48, 3);
+        public static Color Cyan = Color.FromArgb(255, 84, 223, 237);
+        public static Color DarkCyan = Color.DarkCyan;
+
         // IMPORTANT: figure out scaling and fontScaling before anything else
 
         private static float getScaleFactor()
@@ -155,11 +160,6 @@ namespace SrvSurvey
         public static PathGradientBrush shiningCmdrBrush;
 
         public static Color LimeIsh = Color.FromArgb(200, Color.Lime);
-        public static Color Orange = Color.FromArgb(255, 255, 111, 0);
-        //Color.FromArgb(255, 240, 109, 29);
-        public static Color OrangeDim = Color.FromArgb(255, 95, 48, 3);
-        public static Color Cyan = Color.FromArgb(255, 84, 223, 237);
-        public static Color DarkCyan = Color.DarkCyan;
 
         public static Pen penBackgroundStripe = newPen(Color.FromArgb(255, 12, 12, 12));
 
