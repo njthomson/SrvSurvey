@@ -451,7 +451,7 @@ namespace SrvSurvey
 
         private void btnTheme_Click(object sender, EventArgs e)
         {
-            colorTheme.Color = panelBannerColor.BackColor;
+            colorTheme.Color = panelTheme.BackColor;
             colorTheme.FullOpen = true;
 
             var rslt = colorTheme.ShowDialog(this);

@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using SrvSurvey.game;
+using System.Diagnostics;
 using System.Text.RegularExpressions;
 
 namespace BioCriteria
@@ -19,7 +20,7 @@ namespace BioCriteria
 
         #region static loading code
 
-        private static string rootFolder = @"D:\code\SrvSurvey\SrvSurvey\bio-criteria\";
+        private static string rootFolder = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "bio-criteria");
 
         public readonly static List<Criteria> allCriteria = new List<Criteria>();
 
@@ -31,7 +32,12 @@ namespace BioCriteria
         public static void readCriteria()
         {
             Game.log("readCriteria");
-            var files = Directory.GetFiles(rootFolder, "*.json");
+
+            // use source files if debugging, otherwise built files
+            var folder = Debugger.IsAttached
+                ? Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "..\\..\\..\\..", "bio-criteria")
+                : rootFolder;
+            var files = Directory.GetFiles(folder, "*.json");
 
             foreach (var filepath in files)
             {
