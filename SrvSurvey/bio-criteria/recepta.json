@@ -4,60 +4,50 @@
     "atmosComp [Sulphur dioxide >= 1]"
   ],
   "children": [
+
     {
       "species": "Conditivus",
-      "query": [
-        "     body [Icy,Rocky]",
-        "atmosType [CarbonDioxide]",
-        "  gravity [0.04 ~ 0.27]",
-        "     temp [150 ~ 194]",
-        " pressure [0.0013 ~ 0.093]",
-        "volcanism [None]"
-      ],
-      "children": [
+      "commonChildren": [
         { "variant": "Aquamarine", "query": [ "mats [Technetium]" ] },
         { "variant": "Cyan", "query": [ "      mats [Tellurium]" ] },
         { "variant": "White", "query": [ "     mats [Polonium]" ] },
         { "variant": "Yellow", "query": [ "    mats [Ruthenium]" ] },
         { "variant": "Lime", "query": [ "      mats [Antimony]" ] },
         { "variant": "Green", "query": [ "     mats [Yttrium]" ] }
-      ]
-    },
-    {
-      "species": "Conditivus",
-      "query": [
-        "     body [Icy]",
-        "atmosType [Oxygen]",
-        "  gravity [0.04 ~ 0.27]",
-        "     temp [154 ~ 159]",
-        " pressure [0.019 ~ 0.044]",
-        "volcanism [None]"
       ],
       "children": [
-        { "variant": "Aquamarine", "query": [ "mats [Technetium]" ] },
-        { "variant": "Cyan", "query": [ "      mats [Tellurium]" ] },
-        { "variant": "White", "query": [ "     mats [Polonium]" ] },
-        { "variant": "Yellow", "query": [ "    mats [Ruthenium]" ] },
-        { "variant": "Lime", "query": [ "      mats [Antimony]" ] },
-        { "variant": "Green", "query": [ "     mats [Yttrium]" ] }
-      ]
-    },
-    {
-      "species": "Conditivus",
-      "query": [
-        "atmosType [Sulphur dioxide]",
-        "  gravity [0.04 ~ 0.28]",
-        "     temp [132 ~ 273]",
-        " pressure [0.0009 ~ 0.099]",
-        "volcanism [None]"
-      ],
-      "children": [
-        { "variant": "Aquamarine", "query": [ "mats [Technetium]" ] },
-        { "variant": "Cyan", "query": [ "      mats [Tellurium]" ] },
-        { "variant": "White", "query": [ "     mats [Polonium]" ] },
-        { "variant": "Yellow", "query": [ "    mats [Ruthenium]" ] },
-        { "variant": "Lime", "query": [ "      mats [Antimony]" ] },
-        { "variant": "Green", "query": [ "     mats [Yttrium]" ] }
+        {
+          "useCommonChildren": true,
+          "query": [
+            "     body [Icy,Rocky]",
+            "atmosType [CarbonDioxide]",
+            "  gravity [0.04 ~ 0.27]",
+            "     temp [150 ~ 194]",
+            " pressure [0.0013 ~ 0.093]",
+            "volcanism [None]"
+          ]
+        },
+        {
+          "useCommonChildren": true,
+          "query": [
+            "     body [Icy]",
+            "atmosType [Oxygen]",
+            "  gravity [0.04 ~ 0.27]",
+            "     temp [154 ~ 159]",
+            " pressure [0.019 ~ 0.044]",
+            "volcanism [None]"
+          ]
+        },
+        {
+          "useCommonChildren": true,
+          "query": [
+            "atmosType [Sulphur dioxide]",
+            "  gravity [0.04 ~ 0.28]",
+            "     temp [132 ~ 273]",
+            " pressure [0.0009 ~ 0.099]",
+            "volcanism [None]"
+          ]
+        }
       ]
     },
 
@@ -83,13 +73,7 @@
 
     {
       "species": "Umbrux",
-      "query": [
-        "atmosType [SulphurDioxide]",
-        "  gravity [0.04 ~ 0.28]",
-        "     temp [132 ~ 273]",
-        " pressure [0.0009 ~ 0.099]"
-      ],
-      "children": [
+      "commonChildren": [
         { "variant": "Turquoise", "query": [ "star [B]" ] },
         { "variant": "Amethyst", "query": [ " star [A]" ] },
         { "variant": "Mauve", "query": [ "    star [F]" ] },
@@ -103,30 +87,26 @@
         { "variant": "Lime", "query": [ "     star [Y]" ] },
         { "variant": "Yellow", "query": [ "   star [D]" ] },
         { "variant": "Emerald", "query": [ "  star [N]" ] }
-      ]
-    },
-    {
-      "species": "Umbrux",
-      "query": [
-        "atmosType [CarbonDioxide]",
-        "  gravity [0.04 ~ 0.27]",
-        "     temp [149 ~ 201]",
-        " pressure [0.001 ~ 0.097]"
       ],
       "children": [
-        { "variant": "Turquoise", "query": [ "star [B]" ] },
-        { "variant": "Amethyst", "query": [ " star [A]" ] },
-        { "variant": "Mauve", "query": [ "    star [F]" ] },
-        { "variant": "Orange", "query": [ "   star [G]" ] },
-        { "variant": "Red", "query": [ "      star [K]" ] },
-        { "variant": "Maroon", "query": [ "   star [M]" ] },
-        { "variant": "Ocher", "query": [ "    star [L]" ] },
-        { "variant": "Teal", "query": [ "     star [T]" ] },
-        { "variant": "Sage", "query": [ "     star [TTS]" ] },
-        { "variant": "Grey", "query": [ "     star [Ae]" ] },
-        { "variant": "Lime", "query": [ "     star [Y]" ] },
-        { "variant": "Yellow", "query": [ "   star [D]" ] },
-        { "variant": "Emerald", "query": [ "  star [N]" ] }
+        {
+          "useCommonChildren": true,
+          "query": [
+            "atmosType [SulphurDioxide]",
+            "  gravity [0.04 ~ 0.28]",
+            "     temp [132 ~ 273]",
+            " pressure [0.0009 ~ 0.099]"
+          ]
+        },
+        {
+          "useCommonChildren": true,
+          "query": [
+            "atmosType [CarbonDioxide]",
+            "  gravity [0.04 ~ 0.27]",
+            "     temp [149 ~ 201]",
+            " pressure [0.001 ~ 0.097]"
+          ]
+        }
       ]
     }
 

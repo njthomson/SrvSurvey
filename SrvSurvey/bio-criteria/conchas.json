@@ -4,11 +4,12 @@
     "body [HMC,Rocky]"
   ],
   "children": [
+
     {
       "species": "Aureolas",
       "query": [
         "atmosType [Ammonia]",
-        "  gravity [0.04 ~ 0.27]",
+        "  gravity [0.04 ~ 0.28]",
         "     temp [152 ~ 177]",
         " pressure [0.00098 ~ 0.0134]"
       ],
@@ -29,7 +30,7 @@
       "species": "Biconcavis",
       "query": [
           "atmosType [Nitrogen]",
-          "  gravity [0.05 ~ 0.26]",
+          "  gravity [0.05 ~ 0.27]",
           "     temp [42 ~ 51]",
           " pressure [0.0009 ~ 0.0047]",
           "volcanism [None]"
@@ -48,7 +49,7 @@
       "species": "Labiata",
       "query": [
           "atmosType [CarbonDioxide]",
-          "  gravity [0.04 ~ 0.26]",
+          "  gravity [0.04 ~ 0.27]",
           "     temp [150 ~ 199]",
           " pressure [0.002 ~ 0.098]",
           "volcanism [None]"
@@ -69,74 +70,55 @@
 
     {
       "species": "Renibus",
-      "query": [
-          "atmosType [Ammonia]",
-          "  gravity [0.04 ~ 0.05]",
-          "     temp [163 ~ 177]",
-          " pressure [0.009 ~ 0.0132]",
-          "volcanism [Major Silicate Vapour Geysers]"
-        ],
-      "children": [
+      "commonChildren": [
         { "variant": "Mulberry", "query": [ "  mats [Mercury]" ] },
         { "variant": "Blue", "query": [ "      mats [Niobium]" ] },
         { "variant": "Aquamarine", "query": [ "mats [Tin]" ] },
         { "variant": "White", "query": [ "     mats [Tungsten]" ] },
         { "variant": "Peach", "query": [ "     mats [Molybdenum]" ] },
         { "variant": "Red", "query": [ "       mats [Cadmium]" ] }
-      ]
-    },
-    {
-      "species": "Renibus",
-      "query": [
-          "atmosType [CarbonDioxide]",
-          "  gravity [0.04 ~ 0.27]",
-          "     temp [180 ~ 196]",
-          " pressure [0.025 ~ 0.099]",
-          "volcanism [None]"
-        ],
+      ],
       "children": [
-        { "variant": "Mulberry", "query": [ "  mats [Mercury]" ] },
-        { "variant": "Blue", "query": [ "      mats [Niobium]" ] },
-        { "variant": "Aquamarine", "query": [ "mats [Tin]" ] },
-        { "variant": "White", "query": [ "     mats [Tungsten]" ] },
-        { "variant": "Peach", "query": [ "     mats [Molybdenum]" ] },
-        { "variant": "Red", "query": [ "       mats [Cadmium]" ] }
-      ]
-    },
-    {
-      "species": "Renibus",
-      "query": [
-          "atmosType [Methane]",
-          "  gravity [0.04 ~ 0.11]",
-          "     temp [79 ~ 102]",
-          " pressure [0.012 ~ 0.082]",
-          "volcanism [Major Silicate Vapour Geysers]"
-        ],
-      "children": [
-        { "variant": "Mulberry", "query": [ "  mats [Mercury]" ] },
-        { "variant": "Blue", "query": [ "      mats [Niobium]" ] },
-        { "variant": "Aquamarine", "query": [ "mats [Tin]" ] },
-        { "variant": "White", "query": [ "     mats [Tungsten]" ] },
-        { "variant": "Peach", "query": [ "     mats [Molybdenum]" ] },
-        { "variant": "Red", "query": [ "       mats [Cadmium]" ] }
-      ]
-    },
-    {
-      "species": "Renibus",
-      "query": [
-          "atmosType [Water]",
-          "   gravity [0.04 ~ 0.06]",
-          "      temp [390 ~ 452]",
-          "  pressure [0.052 ~ 0.099]",
-          " volcanism [None,Minor Water Magma]"
-        ],
-      "children": [
-        { "variant": "Mulberry", "query": [ "  mats [Mercury]" ] },
-        { "variant": "Blue", "query": [ "      mats [Niobium]" ] },
-        { "variant": "Aquamarine", "query": [ "mats [Tin]" ] },
-        { "variant": "White", "query": [ "     mats [Tungsten]" ] },
-        { "variant": "Peach", "query": [ "     mats [Molybdenum]" ] },
-        { "variant": "Red", "query": [ "       mats [Cadmium]" ] }
+        {
+          "useCommonChildren": true,
+          "query": [
+            "atmosType [Ammonia]",
+            "  gravity [0.04 ~ 0.06]",
+            "     temp [163 ~ 177]",
+            " pressure [0.009 ~ 0.0132]",
+            "volcanism [Major Silicate Vapour Geysers]"
+          ]
+        },
+        {
+          "useCommonChildren": true,
+          "query": [
+            "atmosType [CarbonDioxide]",
+            "  gravity [0.04 ~ 0.28]",
+            "     temp [180 ~ 196]",
+            " pressure [0.025 ~ 0.099]",
+            "volcanism [None]"
+          ]
+        },
+        {
+          "useCommonChildren": true,
+          "query": [
+            "atmosType [Methane]",
+            "  gravity [0.04 ~ 0.12]",
+            "     temp [79 ~ 102]",
+            " pressure [0.012 ~ 0.082]",
+            "volcanism [Major Silicate Vapour Geysers]"
+          ]
+        },
+        {
+          "useCommonChildren": true,
+          "query": [
+            "atmosType [Water]",
+            "  gravity [0.04 ~ 0.07]",
+            "     temp [390 ~ 452]",
+            " pressure [0.052 ~ 0.099]",
+            "volcanism [None,Minor Water Magma]"
+          ]
+        }
       ]
     }
 

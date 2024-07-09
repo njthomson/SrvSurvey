@@ -1,8 +1,22 @@
 {
   "genus": "Clypeus",
+  "commonChildren": [
+    { "variant": "Maroon", "query": [ "   star [B]" ] },
+    { "variant": "Orange", "query": [ "   star [A]" ] },
+    { "variant": "Mauve", "query": [ "    star [F]" ] },
+    { "variant": "Amethyst", "query": [ " star [G]" ] },
+    { "variant": "Grey", "query": [ "     star [K]" ] },
+    { "variant": "Turquoise", "query": [ "star [M]" ] },
+    { "variant": "Teal", "query": [ "     star [L]" ] },
+    { "variant": "Green", "query": [ "    star [Y]" ] },
+    { "variant": "Lime", "query": [ "     star [D]" ] },
+    { "variant": "Yellow", "query": [ "   star [N]" ] }
+  ],
   "children": [
+
     {
       "species": "Lacrimam",
+      "useCommonChildren": true,
       "query": [
         "     body [Rocky]",
         "atmosType [CarbonDioxide]",
@@ -10,137 +24,70 @@
         "     temp [190 ~ 199]",
         " pressure [0.054 ~ 0.099]",
         "volcanism [None]"
-      ],
-      "children": [
-        { "variant": "Maroon", "query": [ "   star [B]" ] },
-        { "variant": "Orange", "query": [ "   star [A]" ] },
-        { "variant": "Mauve", "query": [ "    star [F]" ] },
-        { "variant": "Amethyst", "query": [ " star [G]" ] },
-        { "variant": "Grey", "query": [ "     star [K]" ] },
-        { "variant": "Turquoise", "query": [ "star [M]" ] },
-        { "variant": "Teal", "query": [ "     star [L]" ] },
-        { "variant": "Green", "query": [ "    star [Y]" ] },
-        { "variant": "Lime", "query": [ "     star [D]" ] },
-        { "variant": "Yellow", "query": [ "   star [N]" ] }
       ]
     },
     {
       "species": "Lacrimam",
+      "useCommonChildren": true,
       "query": [
         "     body [Rocky]",
         "atmosType [Water]",
-        "  gravity [0.04 ~ 0.06]",
+        "  gravity [0.04 ~ 0.07]",
         "     temp [394 ~ 452]",
         " pressure [0.053 ~ 0.099]",
         "volcanism [None, Minor Water Magma]"
-      ],
-      "children": [
-        { "variant": "Maroon", "query": [ "   star [B]" ] },
-        { "variant": "Orange", "query": [ "   star [A]" ] },
-        { "variant": "Mauve", "query": [ "    star [F]" ] },
-        { "variant": "Amethyst", "query": [ " star [G]" ] },
-        { "variant": "Grey", "query": [ "     star [K]" ] },
-        { "variant": "Turquoise", "query": [ "star [M]" ] },
-        { "variant": "Teal", "query": [ "     star [L]" ] },
-        { "variant": "Green", "query": [ "    star [Y]" ] },
-        { "variant": "Lime", "query": [ "     star [D]" ] },
-        { "variant": "Yellow", "query": [ "   star [N]" ] }
       ]
     },
 
     {
       "species": "Margaritus",
+      "useCommonChildren": true,
       "query": [
         "     body [HMC]",
         "atmosType [CarbonDioxide]",
-        "  gravity [0.06 ~ 0.26]",
+        "  gravity [0.06 ~ 0.27]",
         "     temp [190 ~ 196]",
         " pressure [0.054 ~ 0.099]",
         "volcanism [None]"
-      ],
-      "children": [
-        { "variant": "Maroon", "query": [ "   star [B]" ] },
-        { "variant": "Orange", "query": [ "   star [A]" ] },
-        { "variant": "Mauve", "query": [ "    star [F]" ] },
-        { "variant": "Amethyst", "query": [ " star [G]" ] },
-        { "variant": "Grey", "query": [ "     star [K]" ] },
-        { "variant": "Turquoise", "query": [ "star [M]" ] },
-        { "variant": "Teal", "query": [ "     star [L]" ] },
-        { "variant": "Green", "query": [ "    star [Y]" ] },
-        { "variant": "Lime", "query": [ "     star [D]" ] },
-        { "variant": "Yellow", "query": [ "   star [N]" ] }
       ]
     },
     {
       "species": "Margaritus",
+      "useCommonChildren": true,
       "query": [
         "     body [HMC]",
         "atmosType [Water]",
-        "  gravity [0.04 ~ 0.06]",
+        "  gravity [0.04 ~ 0.07]",
         "     temp [390 ~ 452]",
         " pressure [0.050 ~ 0.099]",
         "volcanism [None]"
-      ],
-      "children": [
-        { "variant": "Maroon", "query": [ "   star [B]" ] },
-        { "variant": "Orange", "query": [ "   star [A]" ] },
-        { "variant": "Mauve", "query": [ "    star [F]" ] },
-        { "variant": "Amethyst", "query": [ " star [G]" ] },
-        { "variant": "Grey", "query": [ "     star [K]" ] },
-        { "variant": "Turquoise", "query": [ "star [M]" ] },
-        { "variant": "Teal", "query": [ "     star [L]" ] },
-        { "variant": "Green", "query": [ "    star [Y]" ] },
-        { "variant": "Lime", "query": [ "     star [D]" ] },
-        { "variant": "Yellow", "query": [ "   star [N]" ] }
       ]
     },
 
     {
       "species": "Speculumi",
+      "useCommonChildren": true,
       "query": [
         "     body [Rocky]",
         "atmosType [CarbonDioxide]",
-        "  gravity [0.04 ~ 0.24]",
+        "  gravity [0.04 ~ 0.25]",
         "     temp [190 ~ 196]",
         " pressure [0.054 ~ 0.099]",
         "volcanism [None]",
         "     dist [2500 ~ ]"
-      ],
-      "children": [
-        { "variant": "Maroon", "query": [ "   star [B]" ] },
-        { "variant": "Orange", "query": [ "   star [A]" ] },
-        { "variant": "Mauve", "query": [ "    star [F]" ] },
-        { "variant": "Amethyst", "query": [ " star [G]" ] },
-        { "variant": "Grey", "query": [ "     star [K]" ] },
-        { "variant": "Turquoise", "query": [ "star [M]" ] },
-        { "variant": "Teal", "query": [ "     star [L]" ] },
-        { "variant": "Green", "query": [ "    star [Y]" ] },
-        { "variant": "Lime", "query": [ "     star [D]" ] },
-        { "variant": "Yellow", "query": [ "   star [N]" ] }
       ]
     },
     {
       "species": "Speculumi",
+      "useCommonChildren": true,
       "query": [
         "     body [Rocky]",
         "atmosType [Water]",
-        "  gravity [0.04 ~ 0.06]",
+        "  gravity [0.04 ~ 0.07]",
         "     temp [392 ~ 452]",
         " pressure [0.052 ~ 0.099]",
-        "volcanism [None]",
+        "volcanism [None,Minor Water Magma]",
         "     dist [2500 ~ ]"
-      ],
-      "children": [
-        { "variant": "Maroon", "query": [ "   star [B]" ] },
-        { "variant": "Orange", "query": [ "   star [A]" ] },
-        { "variant": "Mauve", "query": [ "    star [F]" ] },
-        { "variant": "Amethyst", "query": [ " star [G]" ] },
-        { "variant": "Grey", "query": [ "     star [K]" ] },
-        { "variant": "Turquoise", "query": [ "star [M]" ] },
-        { "variant": "Teal", "query": [ "     star [L]" ] },
-        { "variant": "Green", "query": [ "    star [Y]" ] },
-        { "variant": "Lime", "query": [ "     star [D]" ] },
-        { "variant": "Yellow", "query": [ "   star [N]" ] }
       ]
     }
 

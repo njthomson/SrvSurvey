@@ -20,7 +20,7 @@
           "useCommonChildren": true,
           "query": [
             "atmosType [Argon]",
-            "  gravity [0.06 ~ 0.28]",
+            "  gravity [0.06 ~ 0.29]",
             "     temp [50 ~ 132]",
             " pressure [0.0009 ~ 0.099]",
             "volcanism [None]"
@@ -30,7 +30,7 @@
           "useCommonChildren": true,
           "query": [
             "atmosType [Nitrogen]",
-            "  gravity [0.09 ~ 0.27]",
+            "  gravity [0.09 ~ 0.28]",
             "     temp [50 ~ 70]",
             " pressure [0.0009 ~ 0.099]",
             "volcanism [None]"
@@ -55,7 +55,7 @@
           "query": [
             "     body [HMC,Rocky,RockyIce]",
             "atmosType [Ammonia]",
-            "  gravity [0.04 ~ 0.07]",
+            "  gravity [0.04 ~ 0.08]",
             "     temp [161 ~ 177]",
             " pressure [0.002 ~ 0.0134]",
             "volcanism [Major Silicate Vapour Geysers]"
@@ -66,7 +66,7 @@
           "query": [
             "     body [HMC,Rocky,RockyIce]",
             "atmosType [CarbonDioxide]",
-            "  gravity [0.04 ~ 0.27]",
+            "  gravity [0.04 ~ 0.28]",
             "     temp [180 ~ 199]",
             " pressure [0.025 ~ 0.099]",
             "volcanism [None]"
@@ -77,7 +77,7 @@
           "query": [
             "     body [Rocky]",
             "atmosType [Methane]",
-            "  gravity [0.04 ~ 0.12]",
+            "  gravity [0.04 ~ 0.13]",
             "     temp [79 ~ 107]",
             " pressure [0.012 ~ 0.096]",
             "volcanism [Major Silicate Vapour Geysers]"
@@ -88,7 +88,7 @@
           "query": [
             "     body [HMC,Rocky]",
             "atmosType [Water]",
-            "  gravity [0.04 ~ 0.06]",
+            "  gravity [0.04 ~ 0.07]",
             "     temp [390 ~ 453]",
             " pressure [0.05 ~ 0.099]",
             "volcanism [None]"
@@ -115,7 +115,7 @@
           "useCommonChildren": true,
           "query": [
             "atmosType [Ammonia]",
-            "  gravity [0.04 ~ 0.27]",
+            "  gravity [0.04 ~ 0.28]",
             "     temp [152 ~ 177]",
             " pressure [0.0009 ~ 0.0132]"
           ]
@@ -124,7 +124,7 @@
           "useCommonChildren": true,
           "query": [
             "atmosType [Methane]",
-            "  gravity [0.03 ~ 0.27]",
+            "  gravity [0.03 ~ 0.28]",
             "     temp [67 ~ 109]",
             " pressure [0.00098 ~ 0.099]"
           ]
@@ -148,7 +148,7 @@
           "query": [
             "     body [Rocky,RockyIce]",
             "atmosType [Ammonia]",
-            "  gravity [0.04 ~ 0.05]",
+            "  gravity [0.04 ~ 0.06]",
             "     temp [158 ~ 177]",
             " pressure [0.004 ~ 0.0133]",
             "volcanism [Major Silicate Vapour Geysers]",
@@ -160,7 +160,7 @@
           "query": [
             "     body [HMC,Rocky]",
             "atmosType [CarbonDioxide]",
-            "  gravity [0.04 ~ 0.27]",
+            "  gravity [0.04 ~ 0.28]",
             "     temp [180 ~ 196]",
             " pressure [0.025 ~ 0.099]",
             "volcanism [None]",
@@ -172,7 +172,7 @@
           "query": [
             "     body [Rocky]",
             "atmosType [Methane]",
-            "  gravity [0.04 ~ 0.13]",
+            "  gravity [0.04 ~ 0.14]",
             "     temp [78 ~ 109]",
             " pressure [0.012 ~ 0.097]",
             "volcanism [Major Silicate Vapour Geysers]",
@@ -184,7 +184,7 @@
           "query": [
             "     body [HMC,Rocky]",
             "atmosType [Water]",
-            "  gravity [0.04 ~ 0.06]",
+            "  gravity [0.04 ~ 0.07]",
             "     temp [392 ~ 452]",
             " pressure [0.052 ~ 0.099]",
             "volcanism [None]",

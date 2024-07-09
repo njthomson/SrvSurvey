@@ -240,7 +240,7 @@ namespace BioCriteria
         {
             { "Icy", "Icy body" },
             { "Rocky", "Rocky body" },
-            { "RockyIce", "Rocky ice body" },
+            { "RockyIce", "Rocky ice " }, // might be "... body" or "... world"
             { "HMC", "High metal content " }, // might be "... body" or "... world"
         };
     }

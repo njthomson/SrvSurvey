@@ -1,85 +1,58 @@
 {
   "genus": "Cactoida",
-  "query": [
-    "body [HMC,Rocky]"
+  "commonChildren": [
+    { "variant": "Grey", "query": [ "     star [O]" ] },
+    { "variant": "Green", "query": [ "    star [A]" ] },
+    { "variant": "Yellow", "query": [ "   star [F]" ] },
+    { "variant": "Teal", "query": [ "     star [G]" ] },
+    { "variant": "Amethyst", "query": [ " star [M]" ] },
+    { "variant": "Mauve", "query": [ "    star [L]" ] },
+    { "variant": "Orange", "query": [ "   star [T]" ] },
+    { "variant": "Red", "query": [ "      star [TTS]" ] },
+    { "variant": "Ocher", "query": [ "    star [Y]" ] },
+    { "variant": "Indigo", "query": [ "   star [W]" ] },
+    { "variant": "Turquoise", "query": [ "star [D]" ] },
+    { "variant": "Sage", "query": [ "     star [N]" ] }
   ],
   "children": [
+
     {
       "species": "Cortexum",
+      "useCommonChildren": true,
       "query": [
         "     body [Rocky,HMC]",
         "atmosType [CarbonDioxide]",
-        "  gravity [0.04 ~ 0.27]",
+        "  gravity [0.04 ~ 0.28]",
         "     temp [180 ~ 196]",
         " pressure [0.025 ~ 0.099]",
         "  regions [1,4,7,8,9,16,17,18,33,34,35]",
         "volcanism [None]"
-      ],
-      "children": [
-        { "variant": "Grey", "query": [ "     star [O]" ] },
-        { "variant": "Green", "query": [ "    star [A]" ] },
-        { "variant": "Yellow", "query": [ "   star [F]" ] },
-        { "variant": "Teal", "query": [ "     star [G]" ] },
-        { "variant": "Amethyst", "query": [ " star [M]" ] },
-        { "variant": "Mauve", "query": [ "    star [L]" ] },
-        { "variant": "Orange", "query": [ "   star [T]" ] },
-        { "variant": "Red", "query": [ "      star [TTS]" ] },
-        { "variant": "Ocher", "query": [ "    star [Y]" ] },
-        { "variant": "Indigo", "query": [ "   star [W]" ] },
-        { "variant": "Turquoise", "query": [ "star [D]" ] },
-        { "variant": "Sage", "query": [ "     star [N]" ] }
       ]
     },
 
     {
       "species": "Lapis",
+      "useCommonChildren": true,
       "query": [
         "     body [Rocky,HMC]",
         "atmosType [Ammonia]",
-        "  gravity [0.04 ~ 0.28]",
+        "  gravity [0.04 ~ 0.29]",
         "     temp [160 ~ 177]",
         " pressure [0.00098 ~ 0.0133]",
         "  regions [1,4,7,8,8,9,16,16,17,17,18,18,19,20,21,22,23,33,34,35,35,40]"
-      ],
-      "children": [
-        { "variant": "Grey", "query": [ "     star [O]" ] },
-        { "variant": "Green", "query": [ "    star [A]" ] },
-        { "variant": "Yellow", "query": [ "   star [F]" ] },
-        { "variant": "Teal", "query": [ "     star [G]" ] },
-        { "variant": "Amethyst", "query": [ " star [M]" ] },
-        { "variant": "Mauve", "query": [ "    star [L]" ] },
-        { "variant": "Orange", "query": [ "   star [T]" ] },
-        { "variant": "Red", "query": [ "      star [TTS]" ] },
-        { "variant": "Ocher", "query": [ "    star [Y]" ] },
-        { "variant": "Indigo", "query": [ "   star [W]" ] },
-        { "variant": "Turquoise", "query": [ "star [D]" ] },
-        { "variant": "Sage", "query": [ "     star [N]" ] }
       ]
     },
 
     {
       "species": "Peperatis",
+      "useCommonChildren": true,
       "query": [
         "     body [Rocky,HMC]",
         "atmosType [Ammonia]",
-        "  gravity [0.04 ~ 0.28]",
+        "  gravity [0.04 ~ 0.29]",
         "     temp [160 ~ 177]",
         " pressure [0.00098 ~ 0.0134]",
         "  regions [1,4,9,10,11,12,16,24,25,26,28,42]"
-      ],
-      "children": [
-        { "variant": "Grey", "query": [ "     star [O]" ] },
-        { "variant": "Green", "query": [ "    star [A]" ] },
-        { "variant": "Yellow", "query": [ "   star [F]" ] },
-        { "variant": "Teal", "query": [ "     star [G]" ] },
-        { "variant": "Amethyst", "query": [ " star [M]" ] },
-        { "variant": "Mauve", "query": [ "    star [L]" ] },
-        { "variant": "Orange", "query": [ "   star [T]" ] },
-        { "variant": "Red", "query": [ "      star [TTS]" ] },
-        { "variant": "Ocher", "query": [ "    star [Y]" ] },
-        { "variant": "Indigo", "query": [ "   star [W]" ] },
-        { "variant": "Turquoise", "query": [ "star [D]" ] },
-        { "variant": "Sage", "query": [ "     star [N]" ] }
       ]
     },
 
@@ -88,7 +61,7 @@
       "query": [
         "     body [Rocky,HMC]",
         "atmosType [CarbonDioxide]",
-        "  gravity [0.04 ~ 0.27]",
+        "  gravity [0.04 ~ 0.28]",
         "     temp [180 ~ 196]",
         " pressure [0.025 ~ 0.099]",
         "volcanism [None]",
@@ -112,106 +85,55 @@
 
     {
       "species": "Vermis",
-      "query": [
-        "     body [Rocky,HMC]",
-        "atmosType [Water]",
-        "  gravity [0.04 ~ 0.06]",
-        "     temp [390 ~ 450]",
-        " pressure [0.05 ~ 0.099]",
-        "volcanism [None,Minor Water Magma]"
-      ],
-      "children": [
-        { "variant": "Grey", "query": [ "     star [O]" ] },
-        { "variant": "Green", "query": [ "    star [A]" ] },
-        { "variant": "Yellow", "query": [ "   star [F]" ] },
-        { "variant": "Teal", "query": [ "     star [G]" ] },
-        { "variant": "Amethyst", "query": [ " star [M]" ] },
-        { "variant": "Mauve", "query": [ "    star [L]" ] },
-        { "variant": "Orange", "query": [ "   star [T]" ] },
-        { "variant": "Red", "query": [ "      star [TTS]" ] },
-        { "variant": "Ocher", "query": [ "    star [Y]" ] },
-        { "variant": "Indigo", "query": [ "   star [W]" ] },
-        { "variant": "Turquoise", "query": [ "star [D]" ] },
-        { "variant": "Sage", "query": [ "     star [N]" ] }
-      ]
-    },
-    {
-      "species": "Vermis",
-      "query": [
-        "     body [Rocky]",
-        "atmosType [SulphurDioxide]",
-        "  gravity [0.04 ~ 0.27]",
-        "     temp [160 ~ 207]",
-        " pressure [0.001 ~ 0.0035]"
-      ],
-      "children": [
-        { "variant": "Grey", "query": [ "     star [O]" ] },
-        { "variant": "Green", "query": [ "    star [A]" ] },
-        { "variant": "Yellow", "query": [ "   star [F]" ] },
-        { "variant": "Teal", "query": [ "     star [G]" ] },
-        { "variant": "Amethyst", "query": [ " star [M]" ] },
-        { "variant": "Mauve", "query": [ "    star [L]" ] },
-        { "variant": "Orange", "query": [ "   star [T]" ] },
-        { "variant": "Red", "query": [ "      star [TTS]" ] },
-        { "variant": "Ocher", "query": [ "    star [Y]" ] },
-        { "variant": "Indigo", "query": [ "   star [W]" ] },
-        { "variant": "Turquoise", "query": [ "star [D]" ] },
-        { "variant": "Sage", "query": [ "     star [N]" ] }
-      ]
-    },
-    {
-      "species": "Vermis",
-      "query": [
-        "     body [Rocky,HMC]",
-        "atmosType [CarbonDioxide]",
-        "atmosComp [Sulphur dioxide >= 0.99]",
-        "  gravity [0.05 ~ 0.26]",
-        "     temp [180 ~ 196]",
-        " pressure [0.026 ~ 0.097]",
-        "volcanism [None]"
-      ],
       "children": [
         {
-          "species": "Vermis",
+          "useCommonChildren": true,
           "query": [
-            "atmosComp [Sulphur dioxide >= 0.99]"
-          ],
-          "children": [
-            { "variant": "Grey", "query": [ "     star [O]" ] },
-            { "variant": "Green", "query": [ "    star [A]" ] },
-            { "variant": "Yellow", "query": [ "   star [F]" ] },
-            { "variant": "Teal", "query": [ "     star [G]" ] },
-            { "variant": "Amethyst", "query": [ " star [M]" ] },
-            { "variant": "Mauve", "query": [ "    star [L]" ] },
-            { "variant": "Orange", "query": [ "   star [T]" ] },
-            { "variant": "Red", "query": [ "      star [TTS]" ] },
-            { "variant": "Ocher", "query": [ "    star [Y]" ] },
-            { "variant": "Indigo", "query": [ "   star [W]" ] },
-            { "variant": "Turquoise", "query": [ "star [D]" ] },
-            { "variant": "Sage", "query": [ "     star [N]" ] }
+            "     body [Rocky,HMC]",
+            "atmosType [Water]",
+            "  gravity [0.04 ~ 0.07]",
+            "     temp [390 ~ 450]",
+            " pressure [0.05 ~ 0.099]",
+            "volcanism [None,Minor Water Magma]"
           ]
         },
         {
-          "species": "Vermis",
+          "useCommonChildren": true,
           "query": [
-            "atmosComp [Carbon dioxide >= 100]"
+            "     body [Rocky]",
+            "atmosType [SulphurDioxide]",
+            "  gravity [0.04 ~ 0.28]",
+            "     temp [160 ~ 207]",
+            " pressure [0.001 ~ 0.0035]"
+          ]
+        },
+        {
+          "query": [
+            "     body [Rocky,HMC]",
+            "atmosType [CarbonDioxide]",
+            "atmosComp [Sulphur dioxide >= 0.99]",
+            "  gravity [0.05 ~ 0.27]",
+            "     temp [180 ~ 196]",
+            " pressure [0.026 ~ 0.097]",
+            "volcanism [None]"
           ],
           "children": [
-            { "variant": "Grey", "query": [ "     star [O]" ] },
-            { "variant": "Green", "query": [ "    star [A]" ] },
-            { "variant": "Yellow", "query": [ "   star [F]" ] },
-            { "variant": "Teal", "query": [ "     star [G]" ] },
-            { "variant": "Amethyst", "query": [ " star [M]" ] },
-            { "variant": "Mauve", "query": [ "    star [L]" ] },
-            { "variant": "Orange", "query": [ "   star [T]" ] },
-            { "variant": "Red", "query": [ "      star [TTS]" ] },
-            { "variant": "Ocher", "query": [ "    star [Y]" ] },
-            { "variant": "Indigo", "query": [ "   star [W]" ] },
-            { "variant": "Turquoise", "query": [ "star [D]" ] },
-            { "variant": "Sage", "query": [ "     star [N]" ] }
+            {
+              "useCommonChildren": true,
+              "query": [
+                "atmosComp [Sulphur dioxide >= 0.99]"
+              ]
+            },
+            {
+              "useCommonChildren": true,
+              "query": [
+                "atmosComp [Carbon dioxide >= 100]"
+              ]
+            }
           ]
         }
       ]
     }
+
   ]
 }

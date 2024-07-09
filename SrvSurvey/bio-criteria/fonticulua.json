@@ -25,7 +25,7 @@
       "query": [
         "     body [Icy,RockyIce]",
         "atmosType [Argon]",
-        "  gravity [0.03 ~ 0.28]",
+        "  gravity [0.03 ~ 0.29]",
         "     temp [43 ~ 195]",
         " pressure [0.0009 ~ 0.099]"
       ]
@@ -37,7 +37,7 @@
       "query": [
         "     body [Icy,RockyIce]",
         "atmosType [Methane]",
-        "  gravity [0.03 ~ 0.06]",
+        "  gravity [0.03 ~ 0.07]",
         "     temp [83 ~ 109]",
         " pressure [0.03 ~ 0.099]",
         "volcanism [None,Minor Methane Magma]"
@@ -50,7 +50,7 @@
       "query": [
         "     body [Icy]",
         "atmosType [Oxygen]",
-        "  gravity [0.24 ~ 0.27]",
+        "  gravity [0.24 ~ 0.28]",
         "     temp [143 ~ 200]",
         " pressure [0.012 ~ 0.081]"
       ]
@@ -62,7 +62,7 @@
       "query": [
         "     body [Icy]",
         "atmosType [Nitrogen]",
-        "  gravity [0.04 ~ 0.28]",
+        "  gravity [0.04 ~ 0.29]",
         "     temp [50 ~ 90]",
         " pressure [0.0009 ~ 0.099]"
       ]
@@ -76,7 +76,7 @@
             "query": [
             "     body [Icy]",
             "atmosType [Neon]",
-            "  gravity [0.26 ~ 0.27]",
+            "  gravity [0.26 ~ 0.28]",
             "     temp [50 ~ 57]",
             " pressure [0.0009 ~ 0.0012]"
           ]
@@ -86,7 +86,7 @@
           "query": [
             "     body [Icy]",
             "atmosType [NeonRich]",
-            "  gravity [0.25 ~ 0.28]",
+            "  gravity [0.25 ~ 0.29]",
             "     temp [58 ~ 75]",
             " pressure [0.001 ~ 0.028]"
           ]
@@ -100,7 +100,7 @@
       "query": [
         "     body [Icy]",
         "atmosType [ArgonRich]",
-        "  gravity [0.08 ~ 0.28]",
+        "  gravity [0.08 ~ 0.29]",
         "     temp [60 ~ 124]",
         " pressure [0.019 ~ 0.099]"
       ]

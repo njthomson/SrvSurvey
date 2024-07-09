@@ -13,6 +13,8 @@ This json format uses a tree structure, where clauses of parent nodes apply to t
 
 Some clauses require some special logic, see [Special cases](#special-cases) below for more details.
 
+To reduce file sizes and repeating clauses for colour variants, a parent node may declare an array `commonChildren`, where any child node may use `useCommonChildren: true` to use those common children instead of it's own direct children. Nodes must not contains `useCommonChildren` and a `children` array.
+
 ## Examples of basic clauses
 
 | Clause | Description |

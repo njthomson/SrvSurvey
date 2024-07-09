@@ -1,12 +1,13 @@
 {
   "genus": "Fumerola",
   "children": [
+
     {
       "species": "Aquatis",
       "query": [
         "      body [Icy,Rocky,RockyIce]",
         "atmosphere ![Thin Helium]",
-        "   gravity [0.03 ~ 0.27]",
+        "   gravity [0.03 ~ 0.28]",
         "      temp [20 ~ 447]",
         "  pressure [0.0009 ~ 0.099]",
         " volcanism [Water]"
@@ -23,308 +24,219 @@
 
     {
       "species": "Carbosis",
-      "query": [
-        "      body [Icy,Rocky]",
-        "atmosphere [Thin Argon]",
-        "   gravity [0.03 ~ 0.27]",
-        "      temp [56 ~ 147]",
-        "  pressure [0.0009 ~ 0.097]",
-        " volcanism [Carbon Dioxide Geysers, Minor Carbon Dioxide Geysers, Minor Methane Magma]"
-      ],
-      "children": [
+      "commonChildren": [
         { "variant": "Magenta", "query": [ "mats [Mercury]" ] },
         { "variant": "Cobalt", "query": [ " mats [Niobium]" ] },
         { "variant": "Cyan", "query": [ "   mats [Tin]" ] },
         { "variant": "Yellow", "query": [ " mats [Tungsten]" ] },
         { "variant": "Gold", "query": [ "   mats [Molybdenum]" ] },
         { "variant": "Orange", "query": [ " mats [Cadmium]" ] }
-      ]
-    },
-    {
-      "species": "Carbosis",
-      "query": [
-        "      body [Icy]",
-        "atmosphere [Thin Methane]",
-        "   gravity [0.03 ~ 0.05]",
-        "      temp [84 ~ 109]",
-        "  pressure [0.031 ~ 0.099]",
-        " volcanism [Carbon Dioxide Geysers, Minor Carbon Dioxide Geysers, Minor Methane Magma]"
       ],
       "children": [
-        { "variant": "Magenta", "query": [ "mats [Mercury]" ] },
-        { "variant": "Cobalt", "query": [ " mats [Niobium]" ] },
-        { "variant": "Cyan", "query": [ "   mats [Tin]" ] },
-        { "variant": "Yellow", "query": [ " mats [Tungsten]" ] },
-        { "variant": "Gold", "query": [ "   mats [Molybdenum]" ] },
-        { "variant": "Orange", "query": [ " mats [Cadmium]" ] }
-      ]
-    },
-    {
-      "species": "Carbosis",
-      "query": [
-        "      body [Icy]",
-        "atmosphere [Thin Neon]",
-        "   gravity [0.26 ~ 0.27]",
-        "      temp [40 ~ 52]",
-        "  pressure [0.001 ~ 0.099]",
-        " volcanism [Carbon Dioxide Geysers, Minor Carbon Dioxide Geysers, Minor Methane Magma]"
-      ],
-      "children": [
-        { "variant": "Magenta", "query": [ "mats [Mercury]" ] },
-        { "variant": "Cobalt", "query": [ " mats [Niobium]" ] },
-        { "variant": "Cyan", "query": [ "   mats [Tin]" ] },
-        { "variant": "Yellow", "query": [ " mats [Tungsten]" ] },
-        { "variant": "Gold", "query": [ "   mats [Molybdenum]" ] },
-        { "variant": "Orange", "query": [ " mats [Cadmium]" ] }
-      ]
-    },
-    {
-      "species": "Carbosis",
-      "query": [
-        "      body [Icy]",
-        "atmosphere [Thin Nitrogen]",
-        "   gravity [0.21 ~ 0.26]",
-        "      temp [57 ~ 75]",
-        "  pressure [0.001 ~ 0.099]",
-        " volcanism [Carbon Dioxide Geysers, Minor Carbon Dioxide Geysers, Minor Methane Magma]"
-      ],
-      "children": [
-        { "variant": "Magenta", "query": [ "mats [Mercury]" ] },
-        { "variant": "Cobalt", "query": [ " mats [Niobium]" ] },
-        { "variant": "Cyan", "query": [ "   mats [Tin]" ] },
-        { "variant": "Yellow", "query": [ " mats [Tungsten]" ] },
-        { "variant": "Gold", "query": [ "   mats [Molybdenum]" ] },
-        { "variant": "Orange", "query": [ " mats [Cadmium]" ] }
-      ]
-    },
-    {
-      "species": "Carbosis",
-      "query": [
-        "      body [Icy]",
-        "atmosphere [Thin Oxygen]",
-        "   gravity [0.26 ~ 0.27]",
-        "      temp [156 ~ 177]",
-        "  pressure [0.02 ~ 0.099]",
-        " volcanism [Carbon Dioxide Geysers, Minor Carbon Dioxide Geysers, Minor Methane Magma]"
-      ],
-      "children": [
-        { "variant": "Magenta", "query": [ "mats [Mercury]" ] },
-        { "variant": "Cobalt", "query": [ " mats [Niobium]" ] },
-        { "variant": "Cyan", "query": [ "   mats [Tin]" ] },
-        { "variant": "Yellow", "query": [ " mats [Tungsten]" ] },
-        { "variant": "Gold", "query": [ "   mats [Molybdenum]" ] },
-        { "variant": "Orange", "query": [ " mats [Cadmium]" ] }
-      ]
-    },
-    {
-      "species": "Carbosis",
-      "query": [
-        "      body [Icy]",
-        "atmosphere [Thin Sulphur dioxide]",
-        "   gravity [0.19 ~ 0.27]",
-        "      temp [149 ~ 272]",
-        "  pressure [0.0014 ~ 0.099]",
-        " volcanism [Carbon Dioxide Geysers, Minor Carbon Dioxide Geysers, Minor Methane Magma]"
-      ],
-      "children": [
-        { "variant": "Magenta", "query": [ "mats [Mercury]" ] },
-        { "variant": "Cobalt", "query": [ " mats [Niobium]" ] },
-        { "variant": "Cyan", "query": [ "   mats [Tin]" ] },
-        { "variant": "Yellow", "query": [ " mats [Tungsten]" ] },
-        { "variant": "Gold", "query": [ "   mats [Molybdenum]" ] },
-        { "variant": "Orange", "query": [ " mats [Cadmium]" ] }
+        {
+          "useCommonChildren": true,
+          "query": [
+            "      body [Icy,Rocky]",
+            "atmosphere [Thin Argon]",
+            "   gravity [0.03 ~ 0.27]",
+            "      temp [56 ~ 147]",
+            "  pressure [0.0009 ~ 0.097]",
+            " volcanism [Carbon Dioxide Geysers, Minor Carbon Dioxide Geysers, Minor Methane Magma]"
+          ]
+        },
+        {
+          "useCommonChildren": true,
+          "query": [
+            "      body [Icy]",
+            "atmosphere [Thin Methane]",
+            "   gravity [0.03 ~ 0.05]",
+            "      temp [84 ~ 109]",
+            "  pressure [0.031 ~ 0.099]",
+            " volcanism [Carbon Dioxide Geysers, Minor Carbon Dioxide Geysers, Minor Methane Magma]"
+          ]
+        },
+        {
+          "useCommonChildren": true,
+          "query": [
+            "      body [Icy]",
+            "atmosphere [Thin Neon]",
+            "   gravity [0.26 ~ 0.27]",
+            "      temp [40 ~ 52]",
+            "  pressure [0.001 ~ 0.099]",
+            " volcanism [Carbon Dioxide Geysers, Minor Carbon Dioxide Geysers, Minor Methane Magma]"
+          ]
+        },
+        {
+          "useCommonChildren": true,
+          "query": [
+            "      body [Icy]",
+            "atmosphere [Thin Nitrogen]",
+            "   gravity [0.21 ~ 0.26]",
+            "      temp [57 ~ 75]",
+            "  pressure [0.001 ~ 0.099]",
+            " volcanism [Carbon Dioxide Geysers, Minor Carbon Dioxide Geysers, Minor Methane Magma]"
+          ]
+        },
+        {
+          "useCommonChildren": true,
+          "query": [
+            "      body [Icy]",
+            "atmosphere [Thin Oxygen]",
+            "   gravity [0.26 ~ 0.27]",
+            "      temp [156 ~ 177]",
+            "  pressure [0.02 ~ 0.099]",
+            " volcanism [Carbon Dioxide Geysers, Minor Carbon Dioxide Geysers, Minor Methane Magma]"
+          ]
+        },
+        {
+          "useCommonChildren": true,
+          "query": [
+            "      body [Icy]",
+            "atmosphere [Thin Sulphur dioxide]",
+            "   gravity [0.19 ~ 0.27]",
+            "      temp [149 ~ 272]",
+            "  pressure [0.0014 ~ 0.099]",
+            " volcanism [Carbon Dioxide Geysers, Minor Carbon Dioxide Geysers, Minor Methane Magma]"
+          ]
+        }
       ]
     },
 
     {
       "species": "Extremus",
-      "query": [
-        "      body [HMC,Rocky,RockyIce]",
-        "atmosphere [Thin Ammonia]",
-        "   gravity [0.04 ~ 0.08]",
-        "      temp [161 ~ 177]",
-        "  pressure [0.0017 ~ 0.0134]",
-        " volcanism [Some]"
+      "commonChildren": [
+        { "variant": "Lime", "query": [ "      mats [Mercury]" ] },
+        { "variant": "White", "query": [ "     mats [Niobium]" ] },
+        { "variant": "Peach", "query": [ "     mats [Tin]" ] },
+        { "variant": "Mulberry", "query": [ "  mats [Tungsten]" ] },
+        { "variant": "Blue", "query": [ "      mats [Molybdenum]" ] },
+        { "variant": "Aquamarine", "query": [ "mats [Cadmium]" ] }
       ],
-      "children": [
-        { "variant": "Magenta", "query": [ "mats [Mercury]" ] },
-        { "variant": "Cobalt", "query": [ " mats [Niobium]" ] },
-        { "variant": "Cyan", "query": [ "   mats [Tin]" ] },
-        { "variant": "Yellow", "query": [ " mats [Tungsten]" ] },
-        { "variant": "Gold", "query": [ "   mats [Molybdenum]" ] },
-        { "variant": "Orange", "query": [ " mats [Cadmium]" ] }
-      ]
-    },
-    {
-      "species": "Extremus",
-      "query": [
-        "      body [Rocky,RockyIce]",
-        "atmosphere [Thin Argon]",
-        "   gravity [0.07 ~ 0.27]",
-        "      temp [54 ~ 121]",
-        "  pressure [0.001 ~ 0.081]",
-        " volcanism [Some]"
-      ],
-      "children": [
-        { "variant": "Magenta", "query": [ "mats [Mercury]" ] },
-        { "variant": "Cobalt", "query": [ " mats [Niobium]" ] },
-        { "variant": "Cyan", "query": [ "   mats [Tin]" ] },
-        { "variant": "Yellow", "query": [ " mats [Tungsten]" ] },
-        { "variant": "Gold", "query": [ "   mats [Molybdenum]" ] },
-        { "variant": "Orange", "query": [ " mats [Cadmium]" ] }
-      ]
-    },
-    {
-      "species": "Extremus",
-      "query": [
-        "      body [HMC,Rocky]",
-        "atmosphere [Thin Methane]",
-        "   gravity [0.04 ~ 0.13]",
-        "      temp [77 ~ 109]",
-        "  pressure [0.011 ~ 0.099]",
-        " volcanism [Some]"
-      ],
-      "children": [
-        { "variant": "Magenta", "query": [ "mats [Mercury]" ] },
-        { "variant": "Cobalt", "query": [ " mats [Niobium]" ] },
-        { "variant": "Cyan", "query": [ "   mats [Tin]" ] },
-        { "variant": "Yellow", "query": [ " mats [Tungsten]" ] },
-        { "variant": "Gold", "query": [ "   mats [Molybdenum]" ] },
-        { "variant": "Orange", "query": [ " mats [Cadmium]" ] }
-      ]
-    },
-    {
-      "species": "Extremus",
-      "query": [
-        "      body [Rocky,RockyIce]",
-        "atmosphere [Thin Sulphur dioxide]",
-        "   gravity [0.23 ~ 0.27]",
-        "      temp [147 ~ 204]",
-        "  pressure [0.0012 ~ 0.036]",
-        " volcanism [Some]"
-      ],
-      "children": [
-        { "variant": "Magenta", "query": [ "mats [Mercury]" ] },
-        { "variant": "Cobalt", "query": [ " mats [Niobium]" ] },
-        { "variant": "Cyan", "query": [ "   mats [Tin]" ] },
-        { "variant": "Yellow", "query": [ " mats [Tungsten]" ] },
-        { "variant": "Gold", "query": [ "   mats [Molybdenum]" ] },
-        { "variant": "Orange", "query": [ " mats [Cadmium]" ] }
+      "children":[
+        {
+          "useCommonChildren": true,
+          "query": [
+            "      body [HMC,Rocky,RockyIce]",
+            "atmosphere [Thin Ammonia]",
+            "   gravity [0.04 ~ 0.08]",
+            "      temp [161 ~ 177]",
+            "  pressure [0.0017 ~ 0.0134]",
+            " volcanism [Some]"
+          ]
+        },
+        {
+          "useCommonChildren": true,
+          "query": [
+            "      body [Rocky,RockyIce]",
+            "atmosphere [Thin Argon]",
+            "   gravity [0.07 ~ 0.27]",
+            "      temp [54 ~ 121]",
+            "  pressure [0.001 ~ 0.081]",
+            " volcanism [Some]"
+          ]
+        },
+        {
+          "useCommonChildren": true,
+          "query": [
+            "      body [HMC,Rocky]",
+            "atmosphere [Thin Methane]",
+            "   gravity [0.04 ~ 0.13]",
+            "      temp [77 ~ 109]",
+            "  pressure [0.011 ~ 0.099]",
+            " volcanism [Some]"
+          ]
+        },
+        {
+          "useCommonChildren": true,
+          "query": [
+            "      body [Rocky,RockyIce]",
+            "atmosphere [Thin Sulphur dioxide]",
+            "   gravity [0.23 ~ 0.27]",
+            "      temp [147 ~ 204]",
+            "  pressure [0.0012 ~ 0.036]",
+            " volcanism [Some]"
+          ]
+        }
       ]
     },
 
     {
       "species": "Nitris",
-      "query": [
-        "      body [Icy]",
-        "atmosphere [Thin Argon]",
-        "   gravity [0.04 ~ 0.27]",
-        "      temp [50 ~ 141]",
-        "  pressure [0.0009 ~ 0.089]",
-        " volcanism [Minor Ammonia Magma, Minor Nitrogen Magma]"
-      ],
-      "children": [
+      "commonChildren": [
         { "variant": "Magenta", "query": [ "mats [Mercury]" ] },
         { "variant": "Cobalt", "query": [ " mats [Niobium]" ] },
         { "variant": "Cyan", "query": [ "   mats [Tin]" ] },
         { "variant": "Yellow", "query": [ " mats [Tungsten]" ] },
         { "variant": "Gold", "query": [ "   mats [Molybdenum]" ] },
         { "variant": "Orange", "query": [ " mats [Cadmium]" ] }
-      ]
-    },
-    {
-      "species": "Nitris",
-      "query": [
-        "      body [Icy]",
-        "atmosphere [Thin Argon rich]",
-        "   gravity [0.24 ~ 0.27]",
-        "      temp [81 ~ 109]",
-        "  pressure [0.07 ~ 0.089]",
-        " volcanism [Minor Nitrogen Magma]"
       ],
       "children": [
-        { "variant": "Magenta", "query": [ "mats [Mercury]" ] },
-        { "variant": "Cobalt", "query": [ " mats [Niobium]" ] },
-        { "variant": "Cyan", "query": [ "   mats [Tin]" ] },
-        { "variant": "Yellow", "query": [ " mats [Tungsten]" ] },
-        { "variant": "Gold", "query": [ "   mats [Molybdenum]" ] },
-        { "variant": "Orange", "query": [ " mats [Cadmium]" ] }
-      ]
-    },
-    {
-      "species": "Nitris",
-      "query": [
-        "      body [Icy]",
-        "atmosphere [Thin Methane]",
-        "   gravity [0.24 ~ 0.27]",
-        "      temp [83 ~ 109]",
-        "  pressure [0.032 ~ 0.099]",
-        " volcanism [Minor Nitrogen Magma]"
-      ],
-      "children": [
-        { "variant": "Magenta", "query": [ "mats [Mercury]" ] },
-        { "variant": "Cobalt", "query": [ " mats [Niobium]" ] },
-        { "variant": "Cyan", "query": [ "   mats [Tin]" ] },
-        { "variant": "Yellow", "query": [ " mats [Tungsten]" ] },
-        { "variant": "Gold", "query": [ "   mats [Molybdenum]" ] },
-        { "variant": "Orange", "query": [ " mats [Cadmium]" ] }
-      ]
-    },
-    {
-      "species": "Nitris",
-      "query": [
-        "      body [Icy]",
-        "atmosphere [Thin Neon rich]",
-        "   gravity [0.24 ~ 0.27]",
-        "      temp [60 ~ 67]",
-        "  pressure [0.002 ~ 0.005]",
-        " volcanism [Minor Nitrogen Magma]"
-      ],
-      "children": [
-        { "variant": "Magenta", "query": [ "mats [Mercury]" ] },
-        { "variant": "Cobalt", "query": [ " mats [Niobium]" ] },
-        { "variant": "Cyan", "query": [ "   mats [Tin]" ] },
-        { "variant": "Yellow", "query": [ " mats [Tungsten]" ] },
-        { "variant": "Gold", "query": [ "   mats [Molybdenum]" ] },
-        { "variant": "Orange", "query": [ " mats [Cadmium]" ] }
-      ]
-    },
-    {
-      "species": "Nitris",
-      "query": [
-        "      body [Icy]",
-        "atmosphere [Thin Nitrogen]",
-        "   gravity [0.21 ~ 0.27]",
-        "      temp [60 ~ 81]",
-        "  pressure [0.0018 ~ 0.044]",
-        " volcanism [Minor Ammonia Magma,Minor Nitrogen Magma]"
-      ],
-      "children": [
-        { "variant": "Magenta", "query": [ "mats [Mercury]" ] },
-        { "variant": "Cobalt", "query": [ " mats [Niobium]" ] },
-        { "variant": "Cyan", "query": [ "   mats [Tin]" ] },
-        { "variant": "Yellow", "query": [ " mats [Tungsten]" ] },
-        { "variant": "Gold", "query": [ "   mats [Molybdenum]" ] },
-        { "variant": "Orange", "query": [ " mats [Cadmium]" ] }
-      ]
-    },
-    {
-      "species": "Nitris",
-      "query": [
-        "      body [Icy]",
-        "atmosphere [Thin Sulphur dioxide]",
-        "   gravity [0.21 ~ 0.27]",
-        "      temp [151 ~ 249]",
-        "  pressure [0.0009 ~ 0.095]",
-        " volcanism [Minor Ammonia Magma,Minor Nitrogen Magma]"
-      ],
-      "children": [
-        { "variant": "Magenta", "query": [ "mats [Mercury]" ] },
-        { "variant": "Cobalt", "query": [ " mats [Niobium]" ] },
-        { "variant": "Cyan", "query": [ "   mats [Tin]" ] },
-        { "variant": "Yellow", "query": [ " mats [Tungsten]" ] },
-        { "variant": "Gold", "query": [ "   mats [Molybdenum]" ] },
-        { "variant": "Orange", "query": [ " mats [Cadmium]" ] }
+        {
+          "useCommonChildren": true,
+          "query": [
+            "      body [Icy]",
+            "atmosphere [Thin Argon]",
+            "   gravity [0.04 ~ 0.27]",
+            "      temp [50 ~ 141]",
+            "  pressure [0.0009 ~ 0.089]",
+            " volcanism [Minor Ammonia Magma, Minor Nitrogen Magma]"
+          ]
+        },
+        {
+          "useCommonChildren": true,
+          "query": [
+            "      body [Icy]",
+            "atmosphere [Thin Argon rich]",
+            "   gravity [0.24 ~ 0.27]",
+            "      temp [81 ~ 109]",
+            "  pressure [0.07 ~ 0.089]",
+            " volcanism [Minor Nitrogen Magma]"
+          ]
+        },
+        {
+          "useCommonChildren": true,
+          "query": [
+            "      body [Icy]",
+            "atmosphere [Thin Methane]",
+            "   gravity [0.24 ~ 0.27]",
+            "      temp [83 ~ 109]",
+            "  pressure [0.032 ~ 0.099]",
+            " volcanism [Minor Nitrogen Magma]"
+          ]
+        },
+        {
+          "useCommonChildren": true,
+          "query": [
+            "      body [Icy]",
+            "atmosphere [Thin Neon rich]",
+            "   gravity [0.24 ~ 0.27]",
+            "      temp [60 ~ 67]",
+            "  pressure [0.002 ~ 0.005]",
+            " volcanism [Minor Nitrogen Magma]"
+          ]
+        },
+        {
+          "useCommonChildren": true,
+          "query": [
+            "      body [Icy]",
+            "atmosphere [Thin Nitrogen]",
+            "   gravity [0.21 ~ 0.27]",
+            "      temp [60 ~ 81]",
+            "  pressure [0.0018 ~ 0.044]",
+            " volcanism [Minor Ammonia Magma,Minor Nitrogen Magma]"
+          ]
+        },
+        {
+          "useCommonChildren": true,
+          "query": [
+            "      body [Icy]",
+            "atmosphere [Thin Sulphur dioxide]",
+            "   gravity [0.21 ~ 0.27]",
+            "      temp [151 ~ 249]",
+            "  pressure [0.0009 ~ 0.095]",
+            " volcanism [Minor Ammonia Magma,Minor Nitrogen Magma]"
+          ]
+        }
       ]
     }
 

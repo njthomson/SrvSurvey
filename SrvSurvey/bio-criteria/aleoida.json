@@ -1,129 +1,79 @@
 {
   "genus": "Aleoida",
+  "commonChildren": [
+    { "variant": "Yellow", "query": [ "   star [B]" ] },
+    { "variant": "Green", "query": [ "    star [A]" ] },
+    { "variant": "Teal", "query": [ "     star [F]" ] },
+    { "variant": "Turquoise", "query": [ "star [K]" ] },
+    { "variant": "Emerald", "query": [ "  star [M]" ] },
+    { "variant": "Lime", "query": [ "     star [L]" ] },
+    { "variant": "Sage", "query": [ "     star [T]" ] },
+    { "variant": "Mauve", "query": [ "    star [TTS]" ] },
+    { "variant": "Amethyst", "query": [ " star [Y]" ] },
+    { "variant": "Grey", "query": [ "     star [W]" ] },
+    { "variant": "Indigo", "query": [ "   star [D]" ] },
+    { "variant": "Ocher", "query": [ "    star [N]" ] }
+  ],
   "query": [
     "   body [HMC,Rocky]"
   ],
   "children": [
+
     {
       "species": "Arcus",
+      "useCommonChildren": true,
       "query": [
         "atmosType [CarbonDioxide]",
         "  gravity [0.04 ~ 0.26]",
         "     temp [175 ~ 190]",
         " pressure [0.016 ~ 0.099]",
         "volcanism [None]"
-      ],
-      "children": [
-        { "variant": "Yellow", "query": [ "   star [B]" ] },
-        { "variant": "Green", "query": [ "    star [A]" ] },
-        { "variant": "Teal", "query": [ "     star [F]" ] },
-        { "variant": "Turquoise", "query": [ "star [K]" ] },
-        { "variant": "Emerald", "query": [ "  star [M]" ] },
-        { "variant": "Lime", "query": [ "     star [L]" ] },
-        { "variant": "Sage", "query": [ "     star [T]" ] },
-        { "variant": "Mauve", "query": [ "    star [TTS]" ] },
-        { "variant": "Amethyst", "query": [ " star [Y]" ] },
-        { "variant": "Grey", "query": [ "     star [W]" ] },
-        { "variant": "Indigo", "query": [ "   star [D]" ] },
-        { "variant": "Ocher", "query": [ "    star [N]" ] }
       ]
     },
 
     {
       "species": "Coronamus",
+      "useCommonChildren": true,
       "query": [
           "atmosType [CarbonDioxide]",
           "  gravity [0.04 ~ 0.27]",
           "     temp [180 ~ 190]",
           " pressure [0.0017 ~ 0.099]",
           "volcanism [None]"
-      ],
-      "children": [
-        { "variant": "Yellow", "query": [ "   star [B]" ] },
-        { "variant": "Green", "query": [ "    star [A]" ] },
-        { "variant": "Teal", "query": [ "     star [F]" ] },
-        { "variant": "Turquoise", "query": [ "star [K]" ] },
-        { "variant": "Emerald", "query": [ "  star [M]" ] },
-        { "variant": "Lime", "query": [ "     star [L]" ] },
-        { "variant": "Sage", "query": [ "     star [T]" ] },
-        { "variant": "Mauve", "query": [ "    star [TTS]" ] },
-        { "variant": "Amethyst", "query": [ " star [Y]" ] },
-        { "variant": "Grey", "query": [ "     star [W]" ] },
-        { "variant": "Indigo", "query": [ "   star [D]" ] },
-        { "variant": "Ocher", "query": [ "    star [N]" ] }
       ]
     },
 
     {
       "species": "Gravis",
+      "useCommonChildren": true,
       "query": [
           "atmosType [CarbonDioxide]",
           "  gravity [0.04 ~ 0.27]",
           "     temp [190 ~ 196]",
           " pressure [0.054 ~ 0.099]",
           "volcanism [None]"
-      ],
-      "children": [
-        { "variant": "Yellow", "query": [ "   star [B]" ] },
-        { "variant": "Green", "query": [ "    star [A]" ] },
-        { "variant": "Teal", "query": [ "     star [F]" ] },
-        { "variant": "Turquoise", "query": [ "star [K]" ] },
-        { "variant": "Emerald", "query": [ "  star [M]" ] },
-        { "variant": "Lime", "query": [ "     star [L]" ] },
-        { "variant": "Sage", "query": [ "     star [T]" ] },
-        { "variant": "Mauve", "query": [ "    star [TTS]" ] },
-        { "variant": "Amethyst", "query": [ " star [Y]" ] },
-        { "variant": "Grey", "query": [ "     star [W]" ] },
-        { "variant": "Indigo", "query": [ "   star [D]" ] },
-        { "variant": "Ocher", "query": [ "    star [N]" ] }
       ]
     },
 
     {
       "species": "Laminiae",
+      "useCommonChildren": true,
       "query": [
           "atmosType [Ammonia]",
           "  gravity [0.04 ~ 0.28]",
           "     temp [152 ~ 182]",
           " pressure [0.0009 ~ 0.0134]"
-      ],
-      "children": [
-        { "variant": "Yellow", "query": [ "   star [B]" ] },
-        { "variant": "Green", "query": [ "    star [A]" ] },
-        { "variant": "Teal", "query": [ "     star [F]" ] },
-        { "variant": "Turquoise", "query": [ "star [K]" ] },
-        { "variant": "Emerald", "query": [ "  star [M]" ] },
-        { "variant": "Lime", "query": [ "     star [L]" ] },
-        { "variant": "Sage", "query": [ "     star [T]" ] },
-        { "variant": "Mauve", "query": [ "    star [TTS]" ] },
-        { "variant": "Amethyst", "query": [ " star [Y]" ] },
-        { "variant": "Grey", "query": [ "     star [W]" ] },
-        { "variant": "Indigo", "query": [ "   star [D]" ] },
-        { "variant": "Ocher", "query": [ "    star [N]" ] }
       ]
     },
 
     {
       "species": "Spica",
+      "useCommonChildren": true,
       "query": [
         "atmosType [Ammonia]",
         "  gravity [0.04 ~ 0.28]",
         "     temp [170 ~ 177]",
         " pressure [0.0009 ~ 0.013]"
-    ],
-      "children": [
-        { "variant": "Yellow", "query": [ "   star [B]" ] },
-        { "variant": "Green", "query": [ "    star [A]" ] },
-        { "variant": "Teal", "query": [ "     star [F]" ] },
-        { "variant": "Turquoise", "query": [ "star [K]" ] },
-        { "variant": "Emerald", "query": [ "  star [M]" ] },
-        { "variant": "Lime", "query": [ "     star [L]" ] },
-        { "variant": "Sage", "query": [ "     star [T]" ] },
-        { "variant": "Mauve", "query": [ "    star [TTS]" ] },
-        { "variant": "Amethyst", "query": [ " star [Y]" ] },
-        { "variant": "Grey", "query": [ "     star [W]" ] },
-        { "variant": "Indigo", "query": [ "   star [D]" ] },
-        { "variant": "Ocher", "query": [ "    star [N]" ] }
       ]
     }
 
