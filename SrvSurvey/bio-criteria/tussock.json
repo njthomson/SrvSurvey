@@ -21,7 +21,7 @@
         "atmosType [CarbonDioxide]",
         "  gravity [0.04 ~ 0.28]",
         "     temp [172 ~ 190]",
-        " pressure [0.016 ~ 0.099]",
+        " pressure [0.016 ~ ]",
         "volcanism [None]",
         "  regions [3,7,8,15,16,17,18,19,20,21,22,23,30,32,33,34,35,36,38,39,40]"
       ]
@@ -37,7 +37,7 @@
             "atmosType [Argon]",
             "  gravity [0.22 ~ 0.28]",
             "     temp [80 ~ 129]",
-            " pressure [0.0009 ~ 0.099]"
+            " pressure [0.0009 ~ ]"
           ]
         },
         {
@@ -47,7 +47,7 @@
               "atmosType [Methane]",
               "  gravity [0.03 ~ 0.28]",
               "     temp [90 ~ 109]",
-              " pressure [0.0014 ~ 0.099]"
+              " pressure [0.0014 ~ ]"
           ]
         }
       ]
@@ -62,7 +62,7 @@
           "  gravity [0.04 ~ 0.30]",
           "     temp [181 ~ 191]",
           "volcanism [None]",
-          " pressure [0.027 ~ 0.099]",
+          " pressure [0.027 ~ ]",
           "  regions [3,7,8,15,16,17,18,19,20,21,22,23,30,32,33,34,35,36,38,39,40]"
       ]
     },
@@ -141,7 +141,7 @@
           "  gravity [0.04 ~ 0.28]",
           "atmosComp [Sulphur dioxide >= 0.99]",
           "volcanism [None]",
-          " pressure [0.0029 ~ 0.099]",
+          " pressure [0.0029 ~ ]",
           "     temp [147 ~ 196]",
           "  regions [1,2,5,6,13,14,27,29,31,37,41]"
       ]
@@ -156,7 +156,7 @@
           "atmosType [CarbonDioxide]",
           "volcanism [None]",
           "     temp [145 ~ 197]",
-          " pressure [0.0029 ~ 0.099]",
+          " pressure [0.0029 ~ ]",
           "  regions [1,4,9,10,11,12,16,24,25,26,28,42]"
       ]
     },
@@ -196,7 +196,7 @@
           "  gravity [0.04 ~ 0.28]",
           "volcanism [None]",
           "     temp [191 ~ 196]",
-          " pressure [0.058 ~ 0.099]",
+          " pressure [0.058 ~ ]",
           "  regions [3,7,8,15,16,17,18,19,20,21,22,23,30,32,33,34,35,36,38,39,40]"
       ]
     },
@@ -223,7 +223,7 @@
           "  gravity [0.04 ~ 0.07]",
           "atmosType [Water]",
           "     temp [390 ~ 450]",
-          " pressure [0.050 ~ 0.099]",
+          " pressure [0.050 ~ ]",
           "volcanism [None,Minor Water Magma]"
       ]
     }

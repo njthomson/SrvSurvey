@@ -11,7 +11,7 @@ namespace BioCriteria
             if (body.type != SystemBodyType.LandableBody) return new List<string>();
             if (Criteria.allCriteria.Count == 0) Criteria.readCriteria();
 
-            //logOrganism = "Digitos";
+            //logOrganism = "Pluma";
 
             var knownGenus = body.organisms?.Select(o => o.genusLocalized).ToList();
 
@@ -28,14 +28,14 @@ namespace BioCriteria
                 { "Atmosphere", body.atmosphere.Replace(" atmosphere", "") },
                 { "AtmosphereType", body.atmosphereType },
                 { "AtmosphereComposition", body.atmosphereComposition },
-                { "DistanceFromArrivalLS", body.distanceFromArrivalLS },
+                { "DistanceFromArrivalLS", (double)body.distanceFromArrivalLS },
                 { "Volcanism", string.IsNullOrEmpty(body.volcanism) ? "None" : body.volcanism },
                 { "Materials", body.materials },
                 { "Region", GalacticRegions.currentIdx.ToString() },
                 // Take the first parent star(s) AND the "relative hottest" from the parent chain
                 { "Star", new List<string>() { parentStar, brightestParentStar } },
                 // TODO: add code to measure distance to the nearest nebulae
-                { "Nebulae", 50 },
+                { "Nebulae", 150d },
 
             };
             var predictor = new Predictor(body.name, bodyProps, knownGenus);
@@ -106,6 +106,7 @@ namespace BioCriteria
                 foreach (var clause in query)
                 {
                     if (clause == null) continue;
+                    //if (clause.ToString().Contains("nebulae")) Debugger.Break();
 
                     var propName = Map.properties.GetValueOrDefault(clause.property) ?? clause.property;
                     if (!bodyProps.ContainsKey(propName)) throw new Exception($"Unexpected property: {propName} ({clause.property})");
@@ -174,6 +175,10 @@ namespace BioCriteria
                                 continue;
                             }
                         }
+                        else
+                        {
+                            throw new Exception($"Non-numeric body property '{bodyValue}' ({bodyValue?.GetType().Name}) for clause '{clause}'");
+                        }
 
                         continue;
                     }
@@ -226,6 +231,11 @@ namespace BioCriteria
 
             // load system data from EDSM
             var system = await Game.edsm.getSystems(systemName);
+            if (system.Count() == 0)
+            {
+                Game.log($"Unknown system: {systemName}");
+                return;
+            }
             var starPos = system.First().coords.starPos;
 
             var bodies = await Game.edsm.getBodies(systemName);
@@ -271,93 +281,97 @@ namespace BioCriteria
             var testSystems = new Dictionary<string, string>()
             {
                 /* these are good */
-                //{ "Prua Phoe JR-U d3-91", "Inner Scutum-Centaurus Arm" },
-                //{ "Prua Phoe LX-S d4-211", "Inner Scutum-Centaurus Arm" },
-                //{ "Prua Phoe IR-U d3-178", "Inner Scutum-Centaurus Arm" },
-                //{ "Prua Phoe UO-N c8-22", "Inner Scutum-Centaurus Arm" },
-                //{ "Prua Phoe PD-R d5-185", "Inner Scutum-Centaurus Arm" },
-                //{ "Prua Phoe WI-B d8", "Inner Scutum-Centaurus Arm" },
-                //{ "Graea Hypue AA-Z d70", "Norma Expanse" },
-                //{ "Graea Hypue AA-Z d67", "Norma Expanse" },
-                //{ "Graea Hypue AA-Z d58", "Norma Expanse" },
-                //{ "Graea Hypue AA-Z d50", "Norma Expanse" },
-                //{ "Graea Hypue AA-Z d48", "Norma Expanse" },
-                //{ "Graea Hypue AA-Z d39", "Norma Expanse" },
+                { "Prua Phoe JR-U d3-91", "Inner Scutum-Centaurus Arm" },
+                { "Prua Phoe LX-S d4-211", "Inner Scutum-Centaurus Arm" },
+                { "Prua Phoe IR-U d3-178", "Inner Scutum-Centaurus Arm" },
+                { "Prua Phoe UO-N c8-22", "Inner Scutum-Centaurus Arm" },
+                { "Prua Phoe PD-R d5-185", "Inner Scutum-Centaurus Arm" },
+                { "Prua Phoe WI-B d8", "Inner Scutum-Centaurus Arm" },
+                { "Graea Hypue AA-Z d70", "Norma Expanse" },
+                { "Graea Hypue AA-Z d67", "Norma Expanse" },
+                { "Graea Hypue AA-Z d58", "Norma Expanse" },
+                { "Graea Hypue AA-Z d50", "Norma Expanse" },
+                { "Graea Hypue AA-Z d48", "Norma Expanse" },
+                { "Graea Hypue AA-Z d39", "Norma Expanse" },
 
                 /* more from me */
-                //{ "Graea Hypue AA-Z d33", "Norma Expanse" },
-                //{ "Swoiwns OE-O d7-48", "Inner Orion Spur" },
-                //{ "Wregoe JA-Z d9", "Inner Orion Spur" },
-                //{ "Nyeajeou VP-G b56-0", "Temple" },
-                //{ "HIP 17694", "Inner Orion Spur" },
-                //{ "BD+47 2267", "Inner Orion Spur" },
-                //{ "2MASS J05334575-0441245", "Sanguineous Rim" },
-                //{ "Graea Hypue AA-Z d85", "Norma Expanse" },
-                //{ "Bleethuae LN-B d1172", "Izanami" },
-                //{ "HIP 76045", "Inner Orion Spur" },
-                //{ "HIP 97950", "Inner Orion Spur" },
-                //{ "GD 140", "Inner Orion Spur" },
-                //{ "HR 5716", "Inner Orion Spur" },
+                { "Graea Hypue AA-Z d33", "Norma Expanse" },
+                { "Swoiwns OE-O d7-48", "Inner Orion Spur" },
+                { "Wregoe JA-Z d9", "Inner Orion Spur" },
+                { "Nyeajeou VP-G b56-0", "Temple" },
+                { "HIP 17694", "Inner Orion Spur" },
+                { "BD+47 2267", "Inner Orion Spur" },
+                { "2MASS J05334575-0441245", "Sanguineous Rim" },
+                { "Graea Hypue AA-Z d85", "Norma Expanse" },
+                { "Bleethuae LN-B d1172", "Izanami" },
+                { "HIP 76045", "Inner Orion Spur" },
+                { "HIP 97950", "Inner Orion Spur" },
+                { "GD 140", "Inner Orion Spur" },
+                { "HR 5716", "Inner Orion Spur" },
 
                 /* New places to try */
-                //{ "Outorst OC-M d7-4", "Elysian Shore" },
-                //{ "Cyoidai VI-B d2", "Sanguineous Rim" },
-                //{ "Graea Hypue IS-R d5-235", "Norma Expanse" },
-                //{ "Bleae Phlai AK-I d9-1", "Errant Marches" },
-                //{ "Eor Audst LM-W f1-20", "Odin's Hold" },
-                //{ "Phroi Pri GM-W a1-13", "Galactic Centre" },
-                //{ "Synuefe FO-T c19-7", "Inner Orion Spur" },
-                //{ "Hypaa Bliae ND-H d11-153", "Outer Orion-Perseus Conflux" },
-                //{ "Pidgio GS-H d11-0", "Errant Marches" },
-                //{ "Blua Eaec ED-H d11-1491", "Inner Scutum-Centaurus Arm" },
-                //{ "Col 173 Sector VV-D b28-0", "Inner Orion Spur" },
-                //{ "Blu Euq NH-L d8-3", "Inner Orion Spur" },
-                //{ "Stuemeae FG-Y d8897", "Galactic Centre" },
-                //{ "Heguae NL-P d5-5", "Sanguineous Rim" },
+                { "Outorst OC-M d7-4", "Elysian Shore" },
+                { "Cyoidai VI-B d2", "Sanguineous Rim" },
+                { "Graea Hypue IS-R d5-235", "Norma Expanse" },
+                { "Bleae Phlai AK-I d9-1", "Errant Marches" },
+                { "Eor Audst LM-W f1-20", "Odin's Hold" },
+                { "Phroi Pri GM-W a1-13", "Galactic Centre" },
+                { "Synuefe FO-T c19-7", "Inner Orion Spur" },
+                { "Hypaa Bliae ND-H d11-153", "Outer Orion-Perseus Conflux" },
+                { "Pidgio GS-H d11-0", "Errant Marches" },
+                { "Blua Eaec ED-H d11-1491", "Inner Scutum-Centaurus Arm" },
+                { "Col 173 Sector VV-D b28-0", "Inner Orion Spur" },
+                { "Blu Euq NH-L d8-3", "Inner Orion Spur" },
+                { "Stuemeae FG-Y d8897", "Galactic Centre" },
+                { "Heguae NL-P d5-5", "Sanguineous Rim" },
 
                 /* top 20 bodies */
-                //{ "Aucoks RX-S d4-6", "Inner Orion Spur" },
+                { "Aucoks RX-S d4-6", "Inner Orion Spur" },
                 /* { "Hyuedau LV-Y d34", "Achilles's Altar" }, // Did someone really see Tussock Virgam - Emerald, not Yellow? */
-                //{ "Drojau BG-W d2-1", "Inner Orion Spur" },
-                //{ "Athaiwyg EG-Y c8", "Arcadian Stream" },
-                //{ "Flyooe Eohn CS-H b43-0", "Sanguineous Rim" },
-                //{ "Lyncis Sector CL-Y c14", "Inner Orion Spur" },
-                //{ "Blaa Drye WC-F b58-5", "Temple" },
-                //{ "Blau Eur RZ-O c19-41", "Hawking's Gap" },
-                //{ "Slegeae SU-R b24-0", "Sanguineous Rim" },
-                //{ "Outotz ZQ-K b22-0", "Sanguineous Rim" },
-                //{ "Hegou FB-S c6-0", "Sanguineous Rim" },
-                //{ "Oochoss NM-K b42-1", "Elysian Shore" },
-                //{ "Byoomao CG-D a108-65", "Galactic Centre" },
-                //{ "Groem BL-E c25-0", "Kepler's Crest" },
-                //{ "Wruetheia NL-U b46-0", "Formorian Frontier" },
-                //{ "Blie Eup RQ-O b47-2", "Elysian Shore" },
-                //{ "Dryaa Bloae II-N b54-0", "Outer Arm" },
-                //{ "Nyeakeia ZA-V b33-0", "Hawking's Gap" },
-                //{ "Hegoo FW-E d11-18", "Sanguineous Rim" },
-                //{ "Choomee IF-R c4-7189", "Empyrean Straits" },
+                { "Drojau BG-W d2-1", "Inner Orion Spur" },
+                { "Athaiwyg EG-Y c8", "Arcadian Stream" },
+                { "Flyooe Eohn CS-H b43-0", "Sanguineous Rim" },
+                { "Lyncis Sector CL-Y c14", "Inner Orion Spur" },
+                { "Blaa Drye WC-F b58-5", "Temple" },
+                { "Blau Eur RZ-O c19-41", "Hawking's Gap" },
+                { "Slegeae SU-R b24-0", "Sanguineous Rim" },
+                { "Outotz ZQ-K b22-0", "Sanguineous Rim" },
+                { "Hegou FB-S c6-0", "Sanguineous Rim" },
+                { "Oochoss NM-K b42-1", "Elysian Shore" },
+                { "Byoomao CG-D a108-65", "Galactic Centre" },
+                { "Groem BL-E c25-0", "Kepler's Crest" },
+                { "Wruetheia NL-U b46-0", "Formorian Frontier" },
+                { "Blie Eup RQ-O b47-2", "Elysian Shore" },
+                { "Dryaa Bloae II-N b54-0", "Outer Arm" },
+                { "Nyeakeia ZA-V b33-0", "Hawking's Gap" },
+                { "Hegoo FW-E d11-18", "Sanguineous Rim" },
+                { "Choomee IF-R c4-7189", "Empyrean Straits" },
 
                 /* top 20 systems */
-                //{ "Col 285 Sector BS-I c10-11", "Inner Orion Spur" },
-                //{ "Kyloagh PE-G d11-86", "Orion-Cygnus Arm" },
-                //{ "Eol Prou QS-T d3-483", "Inner Scutum-Centaurus Arm" },
-                //{ "Synuefai MW-U c19-4", "Inner Orion Spur" },
+                { "Col 285 Sector BS-I c10-11", "Inner Orion Spur" },
+                { "Kyloagh PE-G d11-86", "Orion-Cygnus Arm" },
+                { "Eol Prou QS-T d3-483", "Inner Scutum-Centaurus Arm" },
+                { "Synuefai MW-U c19-4", "Inner Orion Spur" },
                 /* { "HIP 82068", "Inner Orion Spur" }, // HIP 82068 9 f is missing an atmosphere */
-                //{ "76 Leonis", "Inner Orion Spur" },
-                //{ "Hypio Flyao XP-P e5-54", "Arcadian Stream" },
-                //{ "HIP 56843", "Inner Orion Spur" },
-                //{ "HD 221180", "Inner Orion Spur" },
-                //{ "Phaa Audst GW-W e1-844", "Odin's Hold" },
-                //{ "Pru Aim GR-D d12-2676", "Inner Scutum-Centaurus Arm" },
-                //{ "Phua Aub WU-X e1-3527", "Galactic Centre" },
-                //{ "Scheau Bluae JC-B d1-13", "Odin's Hold" },
-                //{ "Synuefue ZX-F d12-49", "Inner Orion Spur" },
-                //{ "Dryio Flyuae IY-Q d5-789", "Inner Scutum-Centaurus Arm" },
-                //{ "Skaude GD-Q d6-29", "Inner Scutum-Centaurus Arm" },
-                //{ "Flyooe Hypue FT-O d7-23", "Inner Orion Spur" },
-                //{ "Byoi Aip VE-R d4-58", "Norma Arm" },
-                //{ "Clooku HI-R d5-410", "Inner Scutum-Centaurus Arm" },
-                //{ "Dumbio GN-B d13-5111", "Odin's Hold" },
+                { "76 Leonis", "Inner Orion Spur" },
+                { "Hypio Flyao XP-P e5-54", "Arcadian Stream" },
+                { "HIP 56843", "Inner Orion Spur" },
+                { "HD 221180", "Inner Orion Spur" },
+                { "Phaa Audst GW-W e1-844", "Odin's Hold" },
+                { "Pru Aim GR-D d12-2676", "Inner Scutum-Centaurus Arm" }, // revisit ABCD 1 a - Clypeus Speculumi distance calculation needs fixing
+                { "Phua Aub WU-X e1-3527", "Galactic Centre" },
+                { "Scheau Bluae JC-B d1-13", "Odin's Hold" },
+                { "Synuefue ZX-F d12-49", "Inner Orion Spur" },
+                { "Dryio Flyuae IY-Q d5-789", "Inner Scutum-Centaurus Arm" },
+                { "Skaude GD-Q d6-29", "Inner Scutum-Centaurus Arm" },
+                { "Flyooe Hypue FT-O d7-23", "Inner Orion Spur" },
+                { "Byoi Aip VE-R d4-58", "Norma Arm" },
+                { "Clooku HI-R d5-410", "Inner Scutum-Centaurus Arm" },
+                { "Dumbio GN-B d13-5111", "Odin's Hold" },
+
+                // Ushosts LC-M d7-0 AB 1 e
+                { "Ushosts LC-M d7-0", "Elysian Shore" },
+
 
             };
 

@@ -22,7 +22,7 @@
         "atmosType [CarbonDioxide]",
         "  gravity [0.04 ~ 0.25]",
         "     temp [56 ~ 196]",
-        " pressure [0.0013 ~ 0.099]",
+        " pressure [0.0013 ~ ]",
         "volcanism [None]",
         "  regions [1,4,7,8,9,16,17,18,33,34,35]"
       ]
@@ -48,7 +48,7 @@
           "atmosType [CarbonDioxide]",
           "  gravity [0.04 ~ 0.25]",
           "     temp [146 ~ 196]",
-          " pressure [0.003 ~ 0.099]",
+          " pressure [0.003 ~ ]",
           "volcanism [None]",
           "  regions [1,2,5,6,13,14,27,29,31,37,41]"
       ]
@@ -101,7 +101,7 @@
               "atmosType [CarbonDioxide]",
               "  gravity [0.04 ~ 0.28]",
               "     temp [146 ~ 196]",
-              " pressure [0.002 ~ 0.099]",
+              " pressure [0.002 ~ ]",
               "volcanism [None]"
           ]
         },
@@ -127,7 +127,7 @@
           "atmosType [Water]",
           "  gravity [0.04 ~ 0.07]",
           "     temp [392 ~ 452]",
-          " pressure [0.052 ~ 0.099]",
+          " pressure [0.052 ~ ]",
           "volcanism [None,Minor Water Magma]"
       ]
     }

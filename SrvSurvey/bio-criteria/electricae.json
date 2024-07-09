@@ -24,7 +24,7 @@
             "atmosType [Argon]",
             "  gravity [0.03 ~ 0.28]",
             "     temp [50 ~ 150]",
-            " pressure [0.0009 ~ 0.099]"
+            " pressure [0.0009 ~ ]"
           ]
         },
         {
@@ -33,7 +33,7 @@
             "atmosType [ArgonRich]",
             "  gravity [0.22 ~ 0.28]",
             "     temp [63 ~ 121]",
-            " pressure [0.0209 ~ 0.099]"
+            " pressure [0.0209 ~ ]"
           ]
         },
         {
@@ -75,7 +75,7 @@
             "atmosType [Argon]",
             "  gravity [0.03 ~ 0.28]",
             "     temp [50 ~ 149]",
-            " pressure [0.009 ~ 0.099]"
+            " pressure [0.009 ~ ]"
           ]
         },
         {
@@ -84,7 +84,7 @@
             "atmosType [ArgonRich]",
             "  gravity [0.21 ~ 0.28]",
             "     temp [61 ~ 110]",
-            " pressure [0.021 ~ 0.099]",
+            " pressure [0.021 ~ ]",
             "volcanism [None]"
           ]
         },

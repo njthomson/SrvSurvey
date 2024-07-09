@@ -26,7 +26,7 @@
         "atmosType [CarbonDioxide]",
         "  gravity [0.04 ~ 0.26]",
         "     temp [175 ~ 190]",
-        " pressure [0.016 ~ 0.099]",
+        " pressure [0.016 ~ ]",
         "volcanism [None]"
       ]
     },
@@ -38,7 +38,7 @@
           "atmosType [CarbonDioxide]",
           "  gravity [0.04 ~ 0.27]",
           "     temp [180 ~ 190]",
-          " pressure [0.0017 ~ 0.099]",
+          " pressure [0.0017 ~ ]",
           "volcanism [None]"
       ]
     },
@@ -50,7 +50,7 @@
           "atmosType [CarbonDioxide]",
           "  gravity [0.04 ~ 0.27]",
           "     temp [190 ~ 196]",
-          " pressure [0.054 ~ 0.099]",
+          " pressure [0.054 ~ ]",
           "volcanism [None]"
       ]
     },

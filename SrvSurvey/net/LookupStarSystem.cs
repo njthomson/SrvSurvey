@@ -1,15 +1,9 @@
 ﻿using SrvSurvey.game;
 using SrvSurvey.net.EDSM;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SrvSurvey.net
 {
     delegate void StarSystemMatch(StarSystem? starSystem);
-
 
     internal class LookupStarSystem
     {

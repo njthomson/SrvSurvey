@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using SrvSurvey.game;
 using SrvSurvey.units;
+using System.Numerics;
 
 namespace SrvSurvey.canonn
 {
@@ -27,6 +28,37 @@ namespace SrvSurvey.canonn
     {
         public string name;
         public int region;
+    }
+
+    internal class StellarPOIs
+    {
+        public List<List<string>> markers;
+    }
+
+    internal class StellarPOI
+    {
+        public float d;
+        public float x;
+        public float y;
+        public float z;
+        public string title;
+        public string type;
+
+        public StellarPOI(List<string> parts)
+        {
+            this.d = float.Parse(parts[0]);
+            this.x = float.Parse(parts[1]);
+            this.y = float.Parse(parts[2]);
+            this.z = float.Parse(parts[3]);
+
+            this.title = parts[4];
+            this.type = parts[5];
+        }
+
+        public Vector3 toVector()
+        {
+            return new Vector3(this.x, this.y, this.z);
+        }
     }
 
     internal class Timestamps

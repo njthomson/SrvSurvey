@@ -1486,47 +1486,26 @@ namespace SrvSurvey.game
         public string getBrightestParentStarType(SystemBody body)
         {
             var parentStars = this.getParentStars(body, false);
-            var mpau = 1.4960E+11;
 
-            SystemBody brightestStar = null!;
-            var brightestValue = 0d;
+            SystemBody chosenStar = null!;
+            double maxValue = 0;
             foreach (var star in parentStars)
             {
-                var dd = body.distanceFromArrivalLS - star.distanceFromArrivalLS;
-                var dds = Math.Abs(Math.Pow(dd, 1));
-                var ams = star.surfaceTemperature;
-                var foo = ams; // * (1 / dds);
-                if (foo > brightestValue)
+                var dist = body.distanceFromArrivalLS - star.distanceFromArrivalLS;
+                var dist2 = Math.Pow(dist, 2);
+                var distMag = dist2.ToString().Length;
+                var relativeHeat = star.surfaceTemperature / distMag;
+
+                if (relativeHeat > maxValue)
                 {
-                    brightestValue = foo;
-                    brightestStar = star;
+                    maxValue = relativeHeat;
+                    chosenStar = star;
                 }
             }
 
-            var ddss = parentStars.Select(star =>
-            {
-                var dd = body.distanceFromArrivalLS - star.distanceFromArrivalLS;
-                return Math.Abs(Math.Pow(dd, 1));
-            }).ToList();
+            var starType = chosenStar.starType!;
 
-            var foos = parentStars.Select(star =>
-            {
-                var dd = body.distanceFromArrivalLS - star.distanceFromArrivalLS;
-                var dds = Math.Abs(Math.Pow(dd, 2));
-                var ams = star.surfaceTemperature;
-                var foo = ams * (1 / dds);
-                var mag = dds.ToString().Length;
-                foo = ams / mag;
-                return foo;
-            }).ToList();
-            var starType0 = brightestStar.starType!;
-
-            var idx = foos.IndexOf(foos.Max());
-            var starType1 = parentStars.ToList()[idx].starType;
-
-            var starType = starType1;
-
-            // flatten
+            // flatten?
             if (starType.StartsWith("D"))
                 return "D";
             else

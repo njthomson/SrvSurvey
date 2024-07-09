@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using SrvSurvey.game;
+using System.Numerics;
 
 namespace SrvSurvey.canonn
 {
@@ -8,6 +9,7 @@ namespace SrvSurvey.canonn
         private static string codexRefPath = Path.Combine(Program.dataFolder, "codexRef.json");
         private static string bioRefPath = Path.Combine(Program.dataFolder, "bioRef.json");
         public static string codexImagesFolder = Path.Combine(Program.dataFolder, "codexImages");
+        private static string nebulaePath = Path.Combine(Program.dataFolder, "nebulae.json");
 
         public List<BioGenus> genus;
 
@@ -25,6 +27,8 @@ namespace SrvSurvey.canonn
 
             if (!Directory.Exists(CodexRef.codexImagesFolder))
                 Directory.CreateDirectory(CodexRef.codexImagesFolder);
+
+            //await prepNebulae(reset);
 
             Game.log("CodexRef init - complete");
         }
@@ -172,6 +176,34 @@ namespace SrvSurvey.canonn
                     foreach (var variantRef in speciesRef.variants)
                         variantRef.species = speciesRef;
                 }
+            }
+        }
+
+        private async Task prepNebulae(bool reset = false)
+        {
+            // StellarPOIs
+            if (!File.Exists(nebulaePath) || reset)
+            {
+                // https://edastro.b-cdn.net/galmap/POI0.json?20240709-023111 ... POI3
+                Game.log("prepNebulae: preparing from network ...");
+                var json = await new HttpClient().GetStringAsync("https://edastro.b-cdn.net/galmap/POI0.json?20240709-023111");
+                Game.log("prepNebulae: complete");
+
+                // extract nebulae
+                var allPOI = JsonConvert.DeserializeObject<StellarPOIs>(json)!;
+                var vectors = allPOI.markers
+                    .Where(m => m.Count >= 6 && (m[5] == "N" || m[5] == "PN"))
+                    .Select(m => new StellarPOI(m).toVector())
+                    .ToList();
+
+                File.WriteAllText(nebulaePath, JsonConvert.SerializeObject(vectors));
+            }
+            else
+            {
+                Game.log("prepNebulae: reading from disk");
+                var json = File.ReadAllText(nebulaePath);
+                var vectors = JsonConvert.DeserializeObject<List<Vector3>>(json);
+                Game.log(vectors);
             }
         }
 

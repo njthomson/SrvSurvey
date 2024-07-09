@@ -22,7 +22,7 @@
         "atmosType [SulphurDioxide]",
         "  gravity [0.26 ~ 0.55]",
         "     temp [165 ~ 373]",
-        " pressure [0.0009 ~ 0.099]"
+        " pressure [0.0009 ~ ]"
       ]
     },
 
@@ -39,7 +39,7 @@
             "atmosType [CarbonDioxide]",
             "  gravity [0.04 ~ 0.59]",
             "     temp [191 ~ 371]",
-            "pressure [0.001 ~ 0.099]"
+            "pressure [0.001 ~ ]"
           ]
         },
         {
@@ -48,7 +48,7 @@
             "atmosType [CarbonDioxideRich]",
             "  gravity [0.45 ~ 0.56]",
             "     temp [217 ~ 246]",
-            " pressure [0.023 ~ 0.099]",
+            " pressure [0.023 ~ ]",
             "volcanism [None]"
           ]
         },
@@ -58,7 +58,7 @@
             "atmosType [Oxygen]",
             "  gravity [0.40 ~ 0.58]",
             "     temp [200 ~ 245]",
-            " pressure [0.028 ~ 0.099]"
+            " pressure [0.028 ~ ]"
           ]
         },
         {
@@ -67,7 +67,7 @@
             "atmosType [SulphurDioxide]",
             "  gravity [0.27 ~ 0.54]",
             "     temp [191 ~ 373]",
-            " pressure [0.00099 ~ 0.099]"
+            " pressure [0.00099 ~ ]"
           ]
         }
       ]
@@ -83,7 +83,7 @@
             "atmosType [CarbonDioxide]",
             "  gravity [0.04 ~ 0.47]",
             "     temp [165 ~ 190]",
-            " pressure [0.0037 ~ 0.099]",
+            " pressure [0.0037 ~ ]",
             "volcanism [None]",
             "  regions [1,4,7,8,9,16,17,18,33,34,35]"
           ]
@@ -204,7 +204,7 @@
             "atmosType [CarbonDioxide]",
             "  gravity [0.04 ~ 0.39]",
             "     temp [165 ~ 190]",
-            " pressure [0.005 ~ 0.099]",
+            " pressure [0.005 ~ ]",
             "  regions [9,10,11,12,16,24,25,26,28,42]"
           ]
         },
@@ -215,7 +215,7 @@
             "atmosType [Oxygen]",
             "  gravity [0.04 ~ 0.39]",
             "     temp [165 ~ 190]",
-            " pressure [0.005 ~ 0.099]",
+            " pressure [0.005 ~ ]",
             "  regions [9,10,11,12,16,24,25,26,28,42]"
           ]
         },
@@ -253,7 +253,7 @@
             "atmosType [CarbonDioxide]",
             "  gravity [0.04 ~ 0.58]",
             "     temp [165 ~ 419]",
-            " pressure [0.001 ~ 0.099]",
+            " pressure [0.001 ~ ]",
             "volcanism [None]"
           ]
         },
@@ -264,7 +264,7 @@
             "atmosType [CarbonDioxideRich]",
             "  gravity [0.44 ~ 0.59]",
             "     temp [186 ~ 257]",
-            " pressure [0.015 ~ 0.098]",
+            " pressure [0.015 ~ ]",
             "volcanism [None]"
           ]
         },
@@ -275,7 +275,7 @@
             "atmosType [Oxygen]",
             "  gravity [0.40 ~ 0.58]",
             "     temp [169 ~ 246]",
-            " pressure [0.023 ~ 0.098]"
+            " pressure [0.023 ~ ]"
           ]
         },
         { 
@@ -285,7 +285,7 @@
             "atmosType [Water]",
             "  gravity [0.04 ~ 0.06]",
             "     temp [394 ~ 450]",
-            " pressure [0.055 ~ 0.099]"
+            " pressure [0.055 ~ ]"
           ]
         }
       ]
@@ -330,7 +330,7 @@
             "atmosType [CarbonDioxide]",
             "  gravity [0.05 ~ 0.61]",
             "     temp [165 ~ 430]",
-            " pressure [0.0009 ~ 0.099]"
+            " pressure [0.0009 ~ ]"
           ]
         },
         {
@@ -339,7 +339,7 @@
             "atmosType [CarbonDioxideRich]",
             "  gravity [0.36 ~ 0.61]",
             "     temp [165 ~ 260]",
-            " pressure [0.007 ~ 0.099]"
+            " pressure [0.007 ~ ]"
           ]
         },
         {
@@ -348,7 +348,7 @@
             "atmosType [Oxygen]",
             "  gravity [0.50 ~ 0.51]",
             "     temp [165 ~ 246]",
-            " pressure [0.021 ~ 0.099]"
+            " pressure [0.021 ~ ]"
           ]
         },
         {
@@ -357,7 +357,7 @@
             "atmosType [SulphurDioxide]",
             "  gravity [0.29 ~ 0.61]",
             "     temp [165 ~ 450]",
-            " pressure [0.0009 ~ 0.099]"
+            " pressure [0.0009 ~ ]"
           ]
         },
         {
@@ -366,7 +366,7 @@
             "atmosType [Water]",
             "  gravity [0.04 ~ 0.063]",
             "     temp [392 ~ 450]",
-            " pressure [0.052 ~ 0.099]",
+            " pressure [0.052 ~ ]",
             "volcanism [None]"
           ]
         }

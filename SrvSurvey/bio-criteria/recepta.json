@@ -41,10 +41,10 @@
         {
           "useCommonChildren": true,
           "query": [
-            "atmosType [Sulphur dioxide]",
+            "atmosType [SulphurDioxide]",
             "  gravity [0.04 ~ 0.28]",
             "     temp [132 ~ 273]",
-            " pressure [0.0009 ~ 0.099]",
+            " pressure [0.0009 ~ ]",
             "volcanism [None]"
           ]
         }
@@ -58,7 +58,7 @@
         "atmosType [CarbonDioxide]",
         "  gravity [0.04 ~ 0.27]",
         "     temp [150 ~ 195]",
-        " pressure [0.005 ~ 0.098]",
+        " pressure [0.005 ~ ]",
         "volcanism [None]"
       ],
       "children": [
@@ -95,7 +95,7 @@
             "atmosType [SulphurDioxide]",
             "  gravity [0.04 ~ 0.28]",
             "     temp [132 ~ 273]",
-            " pressure [0.0009 ~ 0.099]"
+            " pressure [0.0009 ~ ]"
           ]
         },
         {
