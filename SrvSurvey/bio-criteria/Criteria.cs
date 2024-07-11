@@ -226,8 +226,11 @@ namespace BioCriteria
             // Property values are an array of numbers matching galactic regions or NOT matching, eg: [1, 2, 3] or ![1, 2, 3]
             { "regions", "Region" },
 
-            // The direct parent star(s)
+            // Some parent star(s)
             { "star", "Star" },
+
+            // The primary star for the system
+            { "primaryStar", "PrimaryStar" },
 
             // Property value is distance from a known nebula in LY, eg: [~ 100]
             { "nebulae", "Nebulae" },

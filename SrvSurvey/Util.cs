@@ -27,12 +27,30 @@ namespace SrvSurvey
             return angle / ratioDegreesToRadians;
         }
 
-        public static string lsToString(decimal m)
+        public static string lsToString(double m)
         {
             if (m > 1000)
                 return (m / 1000).ToString("N1") + "k LS";
             else
                 return m.ToString("N0") + " LS";
+        }
+
+        public static double lsToM(double ls)
+        {
+            // 149597870691 M per LS
+            return 149_597_870_691d * ls;
+        }
+
+        public static double mToLS(double ls)
+        {
+            // 149597870691 M per LS
+            return ls / 149_597_870_691d;
+        }
+
+        public static double auToM(double ls)
+        {
+            // 299792458 M per AU
+            return 299_792_458d * ls;
         }
 
         public static string metersToString(decimal m, bool asDelta = false)
@@ -471,6 +489,19 @@ namespace SrvSurvey
             {
                 return StarSystem.Sol;
             }
+        }
+
+        public static string flattenStarType(string starType)
+        {
+            if (starType == null) return null!;
+            // Collapse these:
+            //  D DA DAB DAO DAZ DAV DB DBZ DBV DO DOV DQ DC DCV DX
+            //  W WN WNC WC WO
+            //  CS C CN CJ CH CHd
+            if (starType[0] == 'D' || starType[0] == 'W' || starType[0] == 'C')
+                return starType[0].ToString();
+            else
+                return starType;
         }
 
         public static void showForm(Form form, Form? parent = null)

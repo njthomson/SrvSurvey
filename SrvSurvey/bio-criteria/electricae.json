@@ -1,8 +1,7 @@
 {
   "genus": "Electricae",
   "query": [
-    "   body [Icy]",
-    "nebulae [ ~ 100]"
+    "body [Icy]"
   ],
   "children": [
 
@@ -16,11 +15,13 @@
         { "variant": "Cobalt", "query": [ "  mats [Antimony]" ] },
         { "variant": "Mulberry", "query": [ "mats [Yttrium]" ] }
       ],
+      "query": [
+        "primaryStar [A,B,D,H,N,W]"
+      ],
       "children": [
         {
           "useCommonChildren": true,
           "query": [
-            "     body [Icy]",
             "atmosType [Argon]",
             "  gravity [0.03 ~ 0.28]",
             "     temp [50 ~ 150]",
@@ -68,6 +69,9 @@
         { "variant": "Cyan", "query": [ "      mats [Antimony]" ] },
         { "variant": "Green", "query": [ "     mats [Yttrium]" ] }
       ],
+      "query": [
+        "nebulae [ ~ 100]"
+      ],
       "children": [
         {
           "useCommonChildren": true,
@@ -75,7 +79,7 @@
             "atmosType [Argon]",
             "  gravity [0.03 ~ 0.28]",
             "     temp [50 ~ 149]",
-            " pressure [0.009 ~ ]"
+            " pressure [0.0009 ~ ]"
           ]
         },
         {

@@ -148,7 +148,6 @@ namespace SrvSurvey.game
 
             return parents;
         }
-
     }
 
     internal enum SystemBodyType
@@ -160,6 +159,7 @@ namespace SrvSurvey.game
         LandableBody,
         Asteroid,
         PlanetaryRing,
+        Barycentre,
     }
 
     public enum SuitType

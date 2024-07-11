@@ -99,7 +99,7 @@
           "query": [
             "  gravity [0.04 ~ 0.23]",
             " pressure [0.025 ~ 0.067]",
-            "atmosComp [Carbon dioxide >= 100 ]"
+            "atmosComp [CarbonDioxide >= 100 ]"
           ]
         },
         {
@@ -107,7 +107,7 @@
           "query": [
             "  gravity [0.04 ~ 0.28]",
             " pressure [0.032 ~ ]",
-            "atmosComp [Sulphur dioxide >= 0.99]"
+            "atmosComp [SulphurDioxide >= 0.99]"
           ]
         }
       ]

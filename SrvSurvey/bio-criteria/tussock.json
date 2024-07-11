@@ -9,7 +9,7 @@
     { "variant": "Teal", "query": [ "   star [T]" ] },
     { "variant": "Red", "query": [ "    star [Y]" ] },
     { "variant": "Orange", "query": [ " star [W]" ] },
-    { "variant": "Mauve", "query": [ "  star [D]" ] }
+    { "variant": "Maroon", "query": [ " star [D]" ] }
   ],
   "children": [
 
@@ -139,7 +139,7 @@
       "query": [
           "     body [HMC,Rocky]",
           "  gravity [0.04 ~ 0.28]",
-          "atmosComp [Sulphur dioxide >= 0.99]",
+          "atmosComp [SulphurDioxide >= 0.99]",
           "volcanism [None]",
           " pressure [0.0029 ~ ]",
           "     temp [147 ~ 196]",

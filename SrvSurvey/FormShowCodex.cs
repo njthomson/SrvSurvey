@@ -124,6 +124,7 @@ namespace SrvSurvey
 
             // attempt to download if we don't have a file already
             var filepath = Path.Combine(CodexRef.codexImagesFolder, $"{match.entryId}.png");
+
             if (File.Exists(filepath))
             {
                 // download images once a week

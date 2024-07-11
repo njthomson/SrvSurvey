@@ -1707,6 +1707,9 @@ namespace SrvSurvey.game
 
                     if (spanshFinished && edsmFinished && canonnFinished) this.fetchSystemDataEnd(shouldRefreshGuardianSystemStatus);
                 });
+
+                // measure distance to closest nebula
+                this.systemData.getNebulaDist().ContinueWith(response => { });
             }
             finally
             {

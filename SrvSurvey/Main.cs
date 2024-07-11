@@ -1586,13 +1586,11 @@ namespace SrvSurvey
             Predictor.testSystems().ContinueWith(task =>
             {
                 Game.log($"testSystems => {task.Status}");
+                if (task.Exception != null)
+                {
+                    Game.log(task.Exception);
+                }
             });
-
-            //BioPrediction.buildPredictionMap();
-            //GalacticNeblulae.lookupStarPos();
-            //BioPrediction.testManyNewVsOld().ContinueWith((_) => { /* done */ });
-
-            //FormPostProcess.show();
         }
     }
 }

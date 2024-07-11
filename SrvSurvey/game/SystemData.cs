@@ -5,6 +5,7 @@ using SrvSurvey.canonn;
 using SrvSurvey.net;
 using SrvSurvey.net.EDSM;
 using SrvSurvey.units;
+using System.Text.RegularExpressions;
 
 namespace SrvSurvey.game
 {
@@ -147,6 +148,24 @@ namespace SrvSurvey.game
             };
 
             data.onEdsmResponse(edsmBodies);
+
+            return data;
+        }
+
+        public static SystemData From(ApiSystemDumpSystem dump, string fid, string cmdrName)
+        {
+            fid = fid ?? Game.activeGame!.fid!;
+
+            var data = new SystemData()
+            {
+                filepath = Path.Combine(Program.dataFolder, "systems", fid, $"{dump.name}_{dump.id64}.json"),
+                name = dump.name,
+                address = dump.id64,
+                starPos = new double[3] { dump.coords.x, dump.coords.y, dump.coords.z },
+                commander = cmdrName,
+            };
+
+            data.onSpanshResponse(dump);
 
             return data;
         }
@@ -1025,7 +1044,7 @@ namespace SrvSurvey.game
                 else
                     body.type = SystemBody.typeFrom(null!, entry.subType!, entry.isLandable);
                 if (body.distanceFromArrivalLS == 0) body.distanceFromArrivalLS = entry.distanceToArrival;
-                if (body.semiMajorAxis == 0) body.semiMajorAxis = (entry.semiMajorAxis ?? 0) * 1.4960E+11;
+                if (body.semiMajorAxis == 0) body.semiMajorAxis = Util.lsToM(entry.semiMajorAxis ?? 0); // convert from LS to M
                 if (body.absoluteMagnitude == 0) body.absoluteMagnitude = entry.absoluteMagnitude;
                 if (body.radius == 0 && entry.radius > 0) body.radius = entry.radius * 1000;
                 if (body.planetClass == null) body.planetClass = entry.subType;
@@ -1036,15 +1055,16 @@ namespace SrvSurvey.game
                 if (body.surfaceGravity == 0 && entry.gravity > 0) body.surfaceGravity = entry.gravity.Value * 10; // gravity
                 if (body.surfaceTemperature == 0 && entry.surfaceTemperature > 0) body.surfaceTemperature = entry.surfaceTemperature;
                 if (body.surfacePressure == 0 && entry.surfacePressure > 0) body.surfacePressure = entry.surfacePressure.Value * 100_000f;
-                if (body.atmosphereType == null && entry.atmosphereType != null) body.atmosphereType = this.getAtmosphereTypeFromExternal(entry.atmosphereType);
+                if (body.atmosphereType == null) body.atmosphereType = this.getAtmosphereTypeFromExternal(entry.atmosphereType);
                 if (body.atmosphere == null && body.atmosphereType == "None") body.atmosphere = "";
                 if (body.atmosphere == null && entry.atmosphereType != null) body.atmosphere = entry.atmosphereType;
-                if (body.atmosphereComposition == null && entry.atmosphereComposition != null) body.atmosphereComposition = entry.atmosphereComposition;
+                if (body.atmosphereComposition == null && entry.atmosphereComposition != null)
+                    body.atmosphereComposition = entry.atmosphereComposition.ToDictionary(_ => parseAtmosphereCompositionKey(_.Key), _ => _.Value);
                 if (body.materials == null && entry.materials != null) body.materials = entry.materials.ToDictionary(_ => _.Key.ToLowerInvariant(), _ => _.Value);
                 if (body.volcanism == null && entry.volcanismType != null) body.volcanism = entry.volcanismType == "No volcanism" ? "" : entry.volcanismType;
                 if (body.starType == null && entry.type == "Star" && entry.subType != null)
                 {
-                    body.starType = entry.subType[0].ToString();
+                    body.starType = parseStarType(entry.subType);
                     //body.starSubClass = int.Parse(entry.spectralClass[1]);
                 }
 
@@ -1073,9 +1093,9 @@ namespace SrvSurvey.game
             }
         }
 
-        private string getAtmosphereTypeFromExternal(string externalAtmosphereType)
+        private string getAtmosphereTypeFromExternal(string? externalAtmosphereType)
         {
-            if (externalAtmosphereType == "No atmosphere")
+            if (externalAtmosphereType == "No atmosphere" || externalAtmosphereType == null)
             {
                 return "None";
             }
@@ -1089,8 +1109,29 @@ namespace SrvSurvey.game
                     .Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
                     .Select(s => char.ToUpperInvariant(s[0]) + s.Substring(1));
 
-                return string.Join("", parts);
+                var atmosType = string.Join("", parts);
+                return atmosType;
             }
+        }
+
+        private string parseAtmosphereCompositionKey(string key)
+        {
+            // as needed, change "Sulphur dioxide" into "SulphurDioxide"
+            var i = key.IndexOf(' ');
+            if (i < 0)
+                return key;
+            else
+                return key.Substring(0, i) + key.Substring(i + 1, 1).ToUpperInvariant() + key.Substring(i + 2);
+        }
+
+        private string parseStarType(string starType)
+        {
+            var r = new Regex(@"\((.*)\)", RegexOptions.Compiled);
+            var m = r.Match(starType);
+            if (m.Groups.Count == 2 && m.Groups[1].Value.Length <= 3)
+                return m.Groups[1].Value;
+            else
+                return starType[0].ToString();
         }
 
         public void onSpanshResponse(ApiSystemDumpSystem spanshSystem)
@@ -1109,11 +1150,12 @@ namespace SrvSurvey.game
                 if (entry.type == "Star")
                     body.type = SystemBodyType.Star;
                 else if (entry.type == "Barycentre")
-                    continue;
+                    body.type = SystemBodyType.Barycentre;
                 else
                     body.type = SystemBody.typeFrom(null!, entry.subType!, entry.isLandable ?? false);
+
                 if (body.distanceFromArrivalLS == 0) body.distanceFromArrivalLS = entry.distanceToArrival ?? 0;
-                if (body.semiMajorAxis == 0) body.semiMajorAxis = (entry.semiMajorAxis ?? 0) * 1.4960E+11;
+                if (body.semiMajorAxis == 0) body.semiMajorAxis = Util.lsToM(entry.semiMajorAxis ?? 0); // convert from LS to M
                 if (body.absoluteMagnitude == 0) body.absoluteMagnitude = entry.absoluteMagnitude ?? 0;
                 if (body.radius == 0 && entry.radius != null) body.radius = entry.radius.Value * 1000;
                 if (body.parents == null && entry.parents != null) body.parents = entry.parents;
@@ -1124,14 +1166,16 @@ namespace SrvSurvey.game
                 if (body.surfaceGravity == 0 && entry.gravity > 0) body.surfaceGravity = entry.gravity.Value * 10; // gravity
                 if (body.surfaceTemperature == 0 && entry.surfaceTemperature > 0) body.surfaceTemperature = entry.surfaceTemperature.Value;
                 if (body.surfacePressure == 0 && entry.surfacePressure > 0) body.surfacePressure = entry.surfacePressure.Value * 100_000f;
-                if (body.atmosphereType == null && entry.atmosphereType != null) body.atmosphereType = this.getAtmosphereTypeFromExternal(entry.atmosphereType);
-                if (body.atmosphere == null && entry.atmosphereType != null) body.atmosphereType = entry.atmosphereType;
-                if (body.atmosphereComposition == null && entry.atmosphereComposition != null) body.atmosphereComposition = entry.atmosphereComposition;
+                if (body.atmosphereType == null) body.atmosphereType = this.getAtmosphereTypeFromExternal(entry.atmosphereType);
+                if (body.atmosphere == null && body.atmosphereType == "None") body.atmosphere = "";
+                if (body.atmosphere == null && entry.atmosphereType != null) body.atmosphere = entry.atmosphereType;
+                if (body.atmosphereComposition == null && entry.atmosphereComposition != null)
+                    body.atmosphereComposition = entry.atmosphereComposition.ToDictionary(_ => parseAtmosphereCompositionKey(_.Key), _ => _.Value);
                 if (body.materials == null && entry.materials != null) body.materials = entry.materials;
                 if (body.volcanism == null && entry.volcanismType != null) body.volcanism = entry.volcanismType == "No volcanism" ? "" : entry.volcanismType;
                 if (body.starType == null && entry.subType != null)
                 {
-                    body.starType = entry.subType[0].ToString();
+                    body.starType = parseStarType(entry.subType);
                     //body.starSubClass = int.Parse(entry.spectralClass[1]);
                 }
 
@@ -1465,18 +1509,13 @@ namespace SrvSurvey.game
 
         public List<string> getParentStarTypes(SystemBody body, bool onlyFirst)
         {
-            var flatten = true;
             var parentStars = this.getParentStars(body, onlyFirst);
 
             var parentStarTypes = parentStars
                     .Select(_ =>
                     {
                         if (_.starType == null) throw new Exception("Why no parent starType?");
-
-                        if (flatten && _.starType.StartsWith("D") == true)
-                            return "D";
-                        else
-                            return _.starType;
+                        return Util.flattenStarType(_.starType);
                     })
                     .ToList();
 
@@ -1505,11 +1544,7 @@ namespace SrvSurvey.game
 
             var starType = chosenStar.starType!;
 
-            // flatten?
-            if (starType.StartsWith("D"))
-                return "D";
-            else
-                return starType;
+            return Util.flattenStarType(starType);
         }
 
         public HashSet<SystemBody> getStarsByParent(int bodyId)
@@ -1527,6 +1562,9 @@ namespace SrvSurvey.game
                 else if (body.hasParent(bodyId))
                     stars.Add(body);
 
+                //var newValue = body.hasParent(bodyId);
+                //var oldValue = body.parents.Any(_ => _.id == bodyId);
+                //if (newValue != oldValue) Debugger.Break();
 
                 //// walk the parents of that star
                 //foreach (var parent in body.parents)
@@ -1601,6 +1639,15 @@ namespace SrvSurvey.game
             // only assign the class member at the end of the process
             this.bioSummary = summary;
             return summary;
+        }
+
+        [JsonIgnore]
+        public double nebulaDist { get; private set; }
+
+        public async Task<double> getNebulaDist()
+        {
+            this.nebulaDist = await Game.codexRef.getDistToClosestNebula(this.starPos);
+            return nebulaDist;
         }
     }
 
@@ -1939,7 +1986,7 @@ namespace SrvSurvey.game
             else if (!string.IsNullOrEmpty(starType))
                 return SystemBodyType.Star;
             else if (string.IsNullOrEmpty(starType) && string.IsNullOrEmpty(planetClass))
-                return SystemBodyType.Asteroid; // TODO BaryCenter?
+                return SystemBodyType.Barycentre;
             else if (planetClass?.Contains("giant", StringComparison.OrdinalIgnoreCase) == true)
                 return SystemBodyType.Giant;
             else
@@ -1962,7 +2009,7 @@ namespace SrvSurvey.game
         public SystemBodyType type;
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-        public long distanceFromArrivalLS;
+        public double distanceFromArrivalLS;
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public double semiMajorAxis;
@@ -2094,9 +2141,41 @@ namespace SrvSurvey.game
             }
         }
 
-        public bool hasParent(int bodyId)
+        public bool hasParent(int targetBodyId)
         {
-            return this.parents.Any(_ => _.id == bodyId);
+            // must be direct parent, or have only barycenters between it and the target
+            foreach (var parent in parents)
+            {
+                if (parent.id == targetBodyId)
+                    return true;
+                if (parent.type != ParentBodyType.Null)
+                    return false;
+            }
+
+            return false;
+        }
+
+        [JsonIgnore]
+        public List<SystemBody> parentBodies
+        {
+            get => this.parents
+                .Select(p => this.system.bodies.FirstOrDefault(b => b.id == p.id))
+                .Where(b => b != null)
+                .ToList()!;
+        }
+
+        public double sumSemiMajorAxis(int targetBodyId)
+        {
+            // start with our own distance, then sum our parents until we reach (and include) the target
+            var dist = this.semiMajorAxis;
+
+            foreach (var parent in this.parentBodies)
+            {
+                dist += parent.semiMajorAxis;
+                if (parent.id == targetBodyId) break;
+            }
+
+            return dist;
         }
 
         [JsonIgnore]
@@ -2227,7 +2306,8 @@ namespace SrvSurvey.game
                     foreach (var speciesName in genusPredictions)
                     {
                         var match = Game.codexRef.matchFromVariantDisplayName(speciesName);
-                        this.predictions[speciesName] = match.variant;
+                        if (match != null)
+                            this.predictions[speciesName] = match.variant;
                     }
                 }
             }
@@ -2240,6 +2320,7 @@ namespace SrvSurvey.game
                 foreach (var speciesName in bodyPredictions)
                 {
                     var match = Game.codexRef.matchFromVariantDisplayName(speciesName);
+                    if (match == null) continue;
                     if (this.organisms != null)
                     {
                         // skip if a species is already known for this genus

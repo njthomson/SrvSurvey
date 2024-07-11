@@ -131,8 +131,8 @@ namespace SrvSurvey.net
         public long? age;
         public double? axialTilt;
         public int bodyId;
-        public long? distanceToArrival;
-        public long? semiMajorAxis;
+        public double? distanceToArrival;
+        public double? semiMajorAxis;
         public long? id64;
         public string luminosity;
         public bool? mainStar;

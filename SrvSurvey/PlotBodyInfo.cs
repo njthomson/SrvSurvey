@@ -150,7 +150,7 @@ namespace SrvSurvey
                 {
                     dty += four;
                     drawTextAt(eight, $"Temp: {temp}K");
-                    drawTextAt(oneTwenty, $" | {body.planetClass}");
+                    drawTextAt(oneTwenty, body.type == SystemBodyType.Star ? $"Class: {body.starType}" : body.planetClass);
                     newLine(true);
                 }
 
@@ -161,7 +161,7 @@ namespace SrvSurvey
                     drawTextAt(eight, $"Gravity: {gravity}g", isHighGravity ? GameColors.brushRed : null);
                     var pressure = (body.surfacePressure / 100_000f).ToString("N4") + "(atm)";
                     if (pressure == "0.0000(atm)") pressure = "None";
-                    drawTextAt(oneTwenty, $" | Pressure: {pressure}");
+                    drawTextAt(oneTwenty, $"Pressure: {pressure}");
                     newLine(+four, true);
                 }
 
@@ -226,6 +226,12 @@ namespace SrvSurvey
                         }
                     }
                     dty += four;
+                }
+
+                // star stuff?
+                if (body.starType != null)
+                {
+                    // ?
                 }
 
                 // rings

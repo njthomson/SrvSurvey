@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 using SrvSurvey.game;
-using System.Numerics;
+using System.Text.RegularExpressions;
 
 namespace SrvSurvey.canonn
 {
@@ -12,6 +12,8 @@ namespace SrvSurvey.canonn
         private static string nebulaePath = Path.Combine(Program.dataFolder, "nebulae.json");
 
         public List<BioGenus> genus;
+        private List<double[]>? allNebula;
+        private double[] lastNebulaPos;
 
         public async Task init(bool reset)
         {
@@ -19,7 +21,11 @@ namespace SrvSurvey.canonn
             Game.log($"CodexRef init (reset: {reset}, last downloaded: {duration.TotalDays.ToString("N3")} days ago) ...");
 
             // force a download and re-processing once a week
-            if (duration.TotalDays > 7) reset = true;
+            if (duration.TotalDays > 7)
+            {
+                reset = true;
+                if (File.Exists(nebulaePath)) File.Delete(nebulaePath);
+            }
 
             // get CodexRef ready first, before running these in parallel
             var codexRef = await loadCodexRef(reset);
@@ -28,7 +34,7 @@ namespace SrvSurvey.canonn
             if (!Directory.Exists(CodexRef.codexImagesFolder))
                 Directory.CreateDirectory(CodexRef.codexImagesFolder);
 
-            //await prepNebulae(reset);
+            await this.prepNebulae(reset);
 
             Game.log("CodexRef init - complete");
         }
@@ -178,35 +184,6 @@ namespace SrvSurvey.canonn
                 }
             }
         }
-
-        private async Task prepNebulae(bool reset = false)
-        {
-            // StellarPOIs
-            if (!File.Exists(nebulaePath) || reset)
-            {
-                // https://edastro.b-cdn.net/galmap/POI0.json?20240709-023111 ... POI3
-                Game.log("prepNebulae: preparing from network ...");
-                var json = await new HttpClient().GetStringAsync("https://edastro.b-cdn.net/galmap/POI0.json?20240709-023111");
-                Game.log("prepNebulae: complete");
-
-                // extract nebulae
-                var allPOI = JsonConvert.DeserializeObject<StellarPOIs>(json)!;
-                var vectors = allPOI.markers
-                    .Where(m => m.Count >= 6 && (m[5] == "N" || m[5] == "PN"))
-                    .Select(m => new StellarPOI(m).toVector())
-                    .ToList();
-
-                File.WriteAllText(nebulaePath, JsonConvert.SerializeObject(vectors));
-            }
-            else
-            {
-                Game.log("prepNebulae: reading from disk");
-                var json = File.ReadAllText(nebulaePath);
-                var vectors = JsonConvert.DeserializeObject<List<Vector3>>(json);
-                Game.log(vectors);
-            }
-        }
-
         public BioMatch matchFromEntryId(long entryId)
         {
             return matchFromEntryId(entryId.ToString());
@@ -246,7 +223,7 @@ namespace SrvSurvey.canonn
             throw new Exception($"Unexpected variantName: '{variantName}' (speciesName: '{speciesName}')");
         }
 
-        public BioMatch matchFromVariantDisplayName(string variantDisplayName)
+        public BioMatch? matchFromVariantDisplayName(string variantDisplayName)
         {
             if (this.genus == null || this.genus.Count == 0) throw new Exception($"BioRef is not loaded.");
 
@@ -263,7 +240,7 @@ namespace SrvSurvey.canonn
                                 if (variantRef.englishName == variantDisplayName)
                                     return new BioMatch(genusRef, speciesRef, variantRef);
 
-            throw new Exception($"Unexpected variantName: '{variantDisplayName}'");
+            return null;
         }
 
         public BioSpecies matchFromSpecies(string speciesName)
@@ -333,5 +310,89 @@ namespace SrvSurvey.canonn
 
             return codexRefSummary;
         }
+
+        #region nebula
+
+        private async Task<List<double[]>> prepNebulae(bool reset = false)
+        {
+            if (this.allNebula != null)
+            {
+                Game.log("prepNebulae: from memory ...");
+                return this.allNebula;
+            }
+
+            // StellarPOIs
+            if (!File.Exists(nebulaePath) || reset)
+            {
+                Game.log("prepNebulae: from network ...");
+
+                var csv = await new HttpClient().GetStringAsync("https://edastro.b-cdn.net/mapcharts/files/nebulae-coordinates.csv");
+                this.allNebula = csv.Split("\n", StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)
+                    .Skip(1)
+                    .Select(line =>
+                    {
+                        var parts = line.Split(',');
+                        return new double[3]
+                        {
+                            // Columns are: Name, System, X, Y, Z, Type
+                            double.Parse(parts[2]), // x
+                            double.Parse(parts[3]), // y
+                            double.Parse(parts[4]), // z
+                        };
+                    })
+                    .ToList();
+                File.WriteAllText(nebulaePath, JsonConvert.SerializeObject(this.allNebula));
+
+                Game.log("prepNebulae: complete");
+                return this.allNebula;
+            }
+            else
+            {
+                Game.log("prepNebulae: from disk ...");
+                var json = File.ReadAllText(nebulaePath);
+                this.allNebula = JsonConvert.DeserializeObject<List<double[]>>(json)!;
+                return this.allNebula;
+            }
+        }
+
+        private async Task<Tuple<string, string>> getPoiUrlDetails()
+        {
+            // fetch HTML and JS files to get the expected timestamp
+            var html = await new HttpClient().GetStringAsync("https://edastro.com/galmap/");
+
+            var r0 = new Regex(@"<script src=""/galmap/galmap.js\?ver=(.*?)""></script>", RegexOptions.Compiled);
+            var m0 = r0.Match(html);
+            var jsTimestamp = m0.Groups[1].Value;
+
+
+            var jsCode = await new HttpClient().GetStringAsync($"https://edastro.com/galmap/galmap.js?ver={jsTimestamp}");
+            var r1 = new Regex("var cdn = 'https://(.*?)';");
+            var r2 = new Regex("var timestamp = '(.*?)';", RegexOptions.Compiled);
+
+            var m1 = r1.Match(jsCode);
+            var m2 = r2.Match(jsCode);
+
+            return new Tuple<string, string>(
+                m1.Groups[1].Value,
+                m2.Groups[1].Value
+            );
+        }
+
+        public async Task<double> getDistToClosestNebula(double[] systemPOs, int maxDistance = 100)
+        {
+            // if we had a hit previously, use that first
+            if (lastNebulaPos != null)
+            {
+                var d1 = Util.getSystemDistance(systemPOs, lastNebulaPos);
+                if (d1 < maxDistance)
+                    return d1;
+            }
+
+            var vectors = await prepNebulae(false);
+            var nebularDist = vectors.Min(v => Util.getSystemDistance(systemPOs, v));
+            return nebularDist;
+        }
+
+        #endregion
     }
 }

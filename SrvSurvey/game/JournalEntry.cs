@@ -615,6 +615,21 @@ namespace SrvSurvey
         public int Count;
     }
 
+    class ScanBaryCentre : JournalEntry
+    {
+        // { "timestamp":"2023-11-08T06:03:27Z", "event":"ScanBaryCentre", "StarSystem":"Graea Hypue AA-Z d58", "SystemAddress":2003140677259, "BodyID":2, "SemiMajorAxis":57069017887115.476563, "Eccentricity":0.042389, "OrbitalInclination":-11.191447, "Periapsis":322.189732, "OrbitalPeriod":330483412742.614746, "AscendingNode":105.734586, "MeanAnomaly":159.496060 }
+        public string StarSystem;
+        public long SystemAddress;
+        public int BodyID;
+        public double SemiMajorAxis;
+        public double Eccentricity;
+        public double OrbitalInclination;
+        public double Periapsis;
+        public double OrbitalPeriod;
+        public double AscendingNode;
+        public double MeanAnomaly;
+    }
+
     class Scan : JournalEntry, ISystemAddress
     {
         // See: https://elite-journal.readthedocs.io/en/latest/Exploration/#scan

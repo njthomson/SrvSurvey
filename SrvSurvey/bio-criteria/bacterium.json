@@ -161,12 +161,12 @@
         " pressure [0.031 ~ ]"
       ],
       "children": [
-        { "variant": "Aquamarine", "query": [ "mats [Technetium]" ] },
-        { "variant": "Yellow", "query": [ "    mats [Tellurium]" ] },
-        { "variant": "Lime", "query": [ "      mats [Polonium]" ] },
-        { "variant": "Gold", "query": [ "      mats [Ruthenium]" ] },
-        { "variant": "Red", "query": [ "       mats [Antimony]" ] },
-        { "variant": "Cobalt", "query": [ "    mats [Yttrium]" ] }
+        { "variant": "Cyan", "query": [ "   mats [Technetium]" ] },
+        { "variant": "Green", "query": [ "  mats [Tellurium]" ] },
+        { "variant": "Gold", "query": [ "   mats [Polonium]" ] },
+        { "variant": "Orange", "query": [ " mats [Ruthenium]" ] },
+        { "variant": "Magenta", "query": [ "mats [Antimony]" ] },
+        { "variant": "Cobalt", "query": [ " mats [Yttrium]" ] }
       ]
     },
 

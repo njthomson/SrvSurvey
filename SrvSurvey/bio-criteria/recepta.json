@@ -1,7 +1,7 @@
 {
   "genus": "Recepta",
   "query": [
-    "atmosComp [Sulphur dioxide >= 1]"
+    "atmosComp [SulphurDioxide >= 1]"
   ],
   "children": [
 

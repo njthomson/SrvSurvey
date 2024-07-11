@@ -16,7 +16,7 @@
 
     { 
       "species": "Araneamus",
-      "useCommonChildren": true,
+      "variant": "Emerald",
       "query": [
         "     body [Rocky]",
         "atmosType [SulphurDioxide]",

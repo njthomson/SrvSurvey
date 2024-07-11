@@ -312,7 +312,7 @@ namespace SrvSurvey
                         // if we have a matching prediction - show the variant name without the genus prefix
                         var match = body.predictions.Values.FirstOrDefault(p => p.species.genus.name == organism.genus);
                         if (match != null)
-                            displayName = "? " + match.englishName.Replace(match.species.genus.englishName, "").Trim() + " ?";
+                            displayName = match.englishName.Replace(match.species.genus.englishName, "").Trim() + " ???";
                     }
 
                     // line 1

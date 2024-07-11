@@ -321,7 +321,7 @@ namespace SrvSurvey
                         .Select(o =>
                     {
                         var prefix = o.analyzed ? "- " : "■ ";
-                        return $"\t{prefix}{o.speciesLocalized} {Util.credits(o.reward, true)}";
+                        return $"\t{prefix}{o.variantLocalized} {Util.credits(o.reward, true)}";
                         //return $"\t{prefix}{(_.predicted ? "? " : "")}{_.bioRef.englishName} {Util.credits(_.reward, true)}";
                     })) + "\r\n";
                 }

@@ -23,7 +23,10 @@ namespace SrvSurvey
             this.initialize();
             this.reposition(Elite.getWindowRect(true));
 
-            measureDistanceToSystem();
+            this.BeginInvoke(() =>
+            {
+                measureDistanceToSystem();
+            });
         }
 
         public static bool allowPlotter
@@ -83,9 +86,7 @@ namespace SrvSurvey
             this.targetSystemName = lastSystem.StarSystem;
             this.distance = Util.getSystemDistance(game.cmdr.sphereLimit.centerStarPos, lastSystem.StarPos);
 
-            this.BeginInvoke(() => {
-                this.Invalidate(true);
-            });
+            this.Invalidate(true);
         }
 
         protected override void OnPaintBackground(PaintEventArgs e)
