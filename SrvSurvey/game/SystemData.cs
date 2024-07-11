@@ -60,6 +60,12 @@ namespace SrvSurvey.game
                 body.shortName = body.name == systemData.name
                     ? "0"
                     : body.name.Replace(systemData.name, "").Replace(" ", "") ?? "";
+                // correct Barycenters from Asteroid
+                if (body.type == SystemBodyType.Asteroid && body.name.Contains("barycentre", StringComparison.OrdinalIgnoreCase))
+                    body.type = SystemBodyType.Barycentre;
+                // null out unnecessarily populated members
+                if (body.bookmarks?.Count == 0) body.bookmarks = null;
+                if (body.bioScans?.Count == 0) body.bioScans = null;
 
                 // make predictions based on what we know
                 if (body.bioSignalCount > 0)
@@ -225,7 +231,7 @@ namespace SrvSurvey.game
                     // we need a starPos before we can create the file...
                     // get starPos from EDSM or Spansh, or fail :(
                     var edsmResult = await Game.edsm.getSystems(systemData.name);
-                    systemData.starPos = edsmResult?.FirstOrDefault()?.coords?.starPos!;
+                    systemData.starPos = edsmResult?.FirstOrDefault()?.coords!;
                 }
                 if (systemData.starPos == null)
                 {
@@ -489,7 +495,7 @@ namespace SrvSurvey.game
 
                 if (body == null)
                 {
-                    // create a sub if not
+                    // create a stub if not
                     body = new SystemBody()
                     {
                         system = this,
@@ -519,6 +525,7 @@ namespace SrvSurvey.game
             nameof(CodexEntry),
             nameof(ScanOrganic),
             nameof(ApproachSettlement),
+            nameof(ScanBaryCentre),
         };
 
         public void Journals_onJournalEntry(JournalEntry entry) { this.onJournalEntry((dynamic)entry); }
@@ -562,7 +569,7 @@ namespace SrvSurvey.game
 
             // update fields
             body.scanned = true;
-            body.type = SystemBody.typeFrom(entry.StarType, entry.PlanetClass, entry.Landable);
+            body.type = SystemBody.typeFrom(entry.StarType, entry.PlanetClass, entry.Landable, entry.Bodyname);
             body.planetClass = entry.PlanetClass;
             if (!string.IsNullOrEmpty(entry.TerraformState))
                 body.terraformable = entry.TerraformState == "Terraformable";
@@ -606,7 +613,8 @@ namespace SrvSurvey.game
                 }
             }
 
-            if (Game.activeGame?.systemData == this && body.type != SystemBodyType.Asteroid && entry.ScanType != "NavBeaconDetail")
+            // add to system exploration rewards?
+            if (Game.activeGame?.systemData == this && entry.ScanType != "NavBeaconDetail" && body.hasValue)
             {
                 var reward = Util.GetBodyValue(entry, false);
                 if (body.reward < reward)
@@ -628,6 +636,17 @@ namespace SrvSurvey.game
                 body.predictSpecies();
                 if (Game.activeGame?.systemData == this) Program.invalidateActivePlotters();
             }
+        }
+
+        public void onJournalEntry(ScanBaryCentre entry)
+        {
+            if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! Expected: `{this.name}`, got: {entry.StarSystem}"); return; }
+            var body = this.findOrCreate($"{this.name} barycentre {entry.BodyID}", entry.BodyID);
+
+            // update fields
+            body.scanned = true;
+            body.type = SystemBodyType.Barycentre;
+            body.semiMajorAxis = entry.SemiMajorAxis;
         }
 
         private void applyMainStarHonkBonus()
@@ -1042,7 +1061,7 @@ namespace SrvSurvey.game
                 if (entry.type == "Star")
                     body.type = SystemBodyType.Star;
                 else
-                    body.type = SystemBody.typeFrom(null!, entry.subType!, entry.isLandable);
+                    body.type = SystemBody.typeFrom(null!, entry.subType!, entry.isLandable, entry.name);
                 if (body.distanceFromArrivalLS == 0) body.distanceFromArrivalLS = entry.distanceToArrival;
                 if (body.semiMajorAxis == 0) body.semiMajorAxis = Util.lsToM(entry.semiMajorAxis ?? 0); // convert from LS to M
                 if (body.absoluteMagnitude == 0) body.absoluteMagnitude = entry.absoluteMagnitude;
@@ -1152,7 +1171,7 @@ namespace SrvSurvey.game
                 else if (entry.type == "Barycentre")
                     body.type = SystemBodyType.Barycentre;
                 else
-                    body.type = SystemBody.typeFrom(null!, entry.subType!, entry.isLandable ?? false);
+                    body.type = SystemBody.typeFrom(null!, entry.subType!, entry.isLandable ?? false, entry.name);
 
                 if (body.distanceFromArrivalLS == 0) body.distanceFromArrivalLS = entry.distanceToArrival ?? 0;
                 if (body.semiMajorAxis == 0) body.semiMajorAxis = Util.lsToM(entry.semiMajorAxis ?? 0); // convert from LS to M
@@ -1272,7 +1291,7 @@ namespace SrvSurvey.game
         }
 
         [JsonIgnore]
-        public int fssBodyCount { get => this.bodies.Count(_ => _.type != SystemBodyType.Asteroid && _.type != SystemBodyType.Unknown); }
+        public int fssBodyCount { get => this.bodies.Count(_ => _.type != SystemBodyType.Asteroid && _.type != SystemBodyType.Unknown && _.type != SystemBodyType.Barycentre); }
 
         /// <summary> Returns True when all non-star/non-asteroid bodies have been found with FSS </summary>
         [JsonIgnore]
@@ -1978,13 +1997,15 @@ namespace SrvSurvey.game
 
     internal class SystemBody
     {
-        public static SystemBodyType typeFrom(string starType, string planetClass, bool landable)
+        public static SystemBodyType typeFrom(string starType, string planetClass, bool landable, string bodyName)
         {
             // choose type
             if (landable)
                 return SystemBodyType.LandableBody;
             else if (!string.IsNullOrEmpty(starType))
                 return SystemBodyType.Star;
+            else if (bodyName.Contains("cluster", StringComparison.OrdinalIgnoreCase))
+                return SystemBodyType.Asteroid;
             else if (string.IsNullOrEmpty(starType) && string.IsNullOrEmpty(planetClass))
                 return SystemBodyType.Barycentre;
             else if (planetClass?.Contains("giant", StringComparison.OrdinalIgnoreCase) == true)
@@ -2094,11 +2115,11 @@ namespace SrvSurvey.game
 
         /// <summary> Locations of all bio scans or Codex scans performed on this body </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-        public List<BioScan>? bioScans = new List<BioScan>();
+        public List<BioScan>? bioScans;
 
         /// <summary> Locations of named bookmarks on this body </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-        public Dictionary<string, List<LatLong2>>? bookmarks = new Dictionary<string, List<LatLong2>>();
+        public Dictionary<string, List<LatLong2>>? bookmarks;
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public int bioSignalCount;
@@ -2129,6 +2150,10 @@ namespace SrvSurvey.game
 
         [JsonIgnore]
         public bool hasRings { get => this.rings?.Count > 0; }
+
+        [JsonIgnore]
+        public bool hasValue { get => valuables.Contains(this.type); }
+        private readonly SystemBodyType[] valuables = { SystemBodyType.Star, SystemBodyType.LandableBody, SystemBodyType.Giant, SystemBodyType.SolidBody };
 
         [JsonIgnore]
         public bool isMainStar

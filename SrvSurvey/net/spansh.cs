@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using SrvSurvey.canonn;
 using SrvSurvey.game;
+using SrvSurvey.units;
 using System.Text;
 
 namespace SrvSurvey.net
@@ -114,7 +115,7 @@ namespace SrvSurvey.net
         public string allegiance;
         public int bodyCount;
         public List<ApiSystemDumpBody> bodies;
-        public Coords coords;
+        public StarPos coords;
         public DateTimeOffset date;
         public string government;
         public long id64;

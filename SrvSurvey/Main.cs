@@ -351,7 +351,10 @@ namespace SrvSurvey
                 Program.closePlotter<PlotGuardianSystem>();
 
             if (Game.settings.autoShowPlotGalMap && PlotGalMap.allowPlotter)
-                Program.showPlotter<PlotGalMap>();
+            {
+                // Why does showing PlotGalMap make PlotSphericalSearch fail to paint?
+                Task.Delay(10).ContinueWith(_ => this.BeginInvoke(() => Program.showPlotter<PlotGalMap>()));
+            }
             else
                 Program.closePlotter<PlotGalMap>();
 
@@ -859,12 +862,7 @@ namespace SrvSurvey
             {
                 name = entry.StarSystem,
                 id64 = entry.SystemAddress,
-                coords = new SystemCoords()
-                {
-                    x = entry.StarPos[0],
-                    y = entry.StarPos[1],
-                    z = entry.StarPos[2],
-                },
+                coords = entry.StarPos,
             };
 
             if (FormAllRuins.activeForm != null)

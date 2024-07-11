@@ -1,6 +1,7 @@
 ﻿using SrvSurvey.canonn;
 using SrvSurvey.game;
 using SrvSurvey.net;
+using SrvSurvey.units;
 using System.ComponentModel;
 using System.Data;
 
@@ -10,7 +11,7 @@ namespace SrvSurvey
     {
         internal static FormAllRuins? activeForm;
 
-        private double[] currentSystem;
+        private StarPos currentSystem;
 
         public static void show()
         {
@@ -99,7 +100,7 @@ namespace SrvSurvey
             else
             {
                 // update currentSystem
-                this.currentSystem = match.coords.starPos;
+                this.currentSystem = match.coords;
             }
 
             // and recalculate distances

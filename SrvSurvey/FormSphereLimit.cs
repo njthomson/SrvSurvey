@@ -1,5 +1,6 @@
 ﻿using SrvSurvey.game;
 using SrvSurvey.net.EDSM;
+using SrvSurvey.units;
 using System.Data;
 
 namespace SrvSurvey
@@ -9,7 +10,7 @@ namespace SrvSurvey
         protected Game game = Game.activeGame!;
 
         private Dictionary<string, StarSystem> matchedSystems = new Dictionary<string, StarSystem>();
-        private double[]? targetStarPos;
+        private StarPos? targetStarPos;
         private string lastSearch = "";
         private int interruptCount;
 
@@ -22,10 +23,10 @@ namespace SrvSurvey
             // populate controls from settings
             numRadius.Value = (decimal)game.cmdr.sphereLimit.radius;
             comboSystemName.Text = game.cmdr.sphereLimit.centerSystemName;
-            targetStarPos = game.cmdr.sphereLimit.centerStarPos;
+            targetStarPos = game.cmdr.sphereLimit.centerStarPos ?? new StarPos();
             if (targetStarPos != null)
             {
-                txtStarPos.Text = $"[ {targetStarPos[0]} , {targetStarPos[1]} , {targetStarPos[2]} ]";
+                txtStarPos.Text = targetStarPos.ToString();
                 var dist = Util.getSystemDistance(game.cmdr.starPos, targetStarPos).ToString("N2");
                 txtCurrentDistance.Text = $"{dist}ly";
             }
@@ -132,7 +133,7 @@ namespace SrvSurvey
             game.cmdr.sphereLimit.active = true;
             game.cmdr.sphereLimit.radius = (double)numRadius.Value;
             game.cmdr.sphereLimit.centerSystemName = comboSystemName.Text;
-            game.cmdr.sphereLimit.centerStarPos = targetStarPos;
+            game.cmdr.sphereLimit.centerStarPos = targetStarPos!;
             game.cmdr.Save();
 
             this.Close();
@@ -171,7 +172,7 @@ namespace SrvSurvey
         {
             if (targetSystem != null)
             {
-                targetStarPos = targetSystem.coords.starPos;
+                targetStarPos = targetSystem.coords;
                 txtStarPos.Text = $"[ {targetSystem.coords.x} , {targetSystem.coords.y} , {targetSystem.coords.z} ]";
 
                 var dist = Util.getSystemDistance(game.cmdr.starPos, targetStarPos).ToString("N2");

@@ -1043,9 +1043,9 @@ namespace SrvSurvey.canonn
                         return;
 
                     var rslt = await Game.edsm.getSystems(structureSystem);
-                    var structPos = rslt.FirstOrDefault()?.coords.starPos;
+                    var structPos = rslt.FirstOrDefault()?.coords;
 
-                    if (structPos == null || structPos.Length == 0)
+                    if (structPos == null)
                         return;
 
                     var dist = Util.getSystemDistance(beaconPos, structPos);
@@ -1980,7 +1980,8 @@ namespace SrvSurvey.canonn
         public int bodyCount;
         public long id64;
         public string name;
-
+        
+        public StarPos coords;
     }
 
     internal class CanonnBodyBioStatsBody

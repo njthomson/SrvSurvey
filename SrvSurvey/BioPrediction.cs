@@ -354,7 +354,7 @@ namespace SrvSurvey
 
             var bodies = await Game.edsm.getBodies(systemName);
             var system = await Game.edsm.getSystems(systemName);
-            var starPos = system.First().coords.starPos;
+            var starPos = system.First().coords;
 
             var systemData = SystemData.From(bodies, starPos, fid, cmdr);
 

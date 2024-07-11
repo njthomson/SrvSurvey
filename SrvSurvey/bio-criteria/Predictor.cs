@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
 using SrvSurvey;
 using SrvSurvey.game;
-using System.Text;
 
 namespace BioCriteria
 {
@@ -9,7 +8,7 @@ namespace BioCriteria
     {
         public static List<string> predict(SystemBody body)
         {
-            if (body.type != SystemBodyType.LandableBody) return new List<string>();
+            if (body.type != SystemBodyType.LandableBody || body.parents == null || body.parents.Count == 0) return new List<string>();
             if (Criteria.allCriteria.Count == 0) Criteria.readCriteria();
             //logOrganism = "Pluma";
 
@@ -229,26 +228,22 @@ namespace BioCriteria
             return failures;
         }
 
-        public static async Task testSystem(string systemName, string galacticRegion)
+        public static async Task testSystem(long address)
         {
             var cmdr = "none";
             var fid = "F101";
 
+            // load known bio signals from Canonn, and body data from Spansh
+            var pendingBioStats = Game.canonn.systemBioStats(address);
+            var pendingSpanshDump = Game.spansh.getSystemDump(address);
+            await Task.WhenAll(pendingBioStats);
+
+            var bioStats = pendingBioStats.Result;
+            var systemData = SystemData.From(pendingSpanshDump.Result, fid, cmdr);
+
             // force current region to be the one for this test
-            GalacticRegions.currentIdxOverride = GalacticRegions.getIdxFromDisplayName(galacticRegion);
-
-            // load system data from EDSM
-            var system = await Game.edsm.getSystems(systemName);
-            if (system.Count() == 0)
-            {
-                Game.log($"Unknown system: {systemName}");
-                return;
-            }
-            var address = system.First().id64;
-            var spanshDump = await Game.spansh.getSystemDump(address);
-            var systemData = SystemData.From(spanshDump, fid, cmdr);
-
-            var bioStats = await Game.canonn.systemBioStats(systemData.address);
+            var region = EliteDangerousRegionMap.RegionMap.FindRegion(bioStats.coords.x, bioStats.coords.y, bioStats.coords.z);
+            GalacticRegions.currentIdxOverride = region.Id;
 
             if (systemData.nebulaDist == 0)
                 await systemData.getNebulaDist();
@@ -284,124 +279,151 @@ namespace BioCriteria
                 }
             }
 
-            Game.log($"Done: {systemName}");
+            Game.log($"Done: {systemData.name} ({address})");
         }
 
         public static async Task testSystems()
         {
-            var testSystems = new Dictionary<string, string>()
+            var testSystems = new List<long>()
             {
-                /* these are good */
-                //{ "Prua Phoe JR-U d3-91", "Inner Scutum-Centaurus Arm" },
-                //{ "Prua Phoe LX-S d4-211", "Inner Scutum-Centaurus Arm" },
-                //{ "Prua Phoe IR-U d3-178", "Inner Scutum-Centaurus Arm" },
-                //{ "Prua Phoe UO-N c8-22", "Inner Scutum-Centaurus Arm" },
-                //{ "Prua Phoe PD-R d5-185", "Inner Scutum-Centaurus Arm" },
-                //{ "Prua Phoe WI-B d8", "Inner Scutum-Centaurus Arm" },
-                //{ "Graea Hypue AA-Z d70", "Norma Expanse" },
-                //{ "Graea Hypue AA-Z d67", "Norma Expanse" },
-                //{ "Graea Hypue AA-Z d58", "Norma Expanse" },
-                //{ "Graea Hypue AA-Z d50", "Norma Expanse" },
-                //{ "Graea Hypue AA-Z d48", "Norma Expanse" },
-                //{ "Graea Hypue AA-Z d39", "Norma Expanse" },
+                ///* these are good */
+                //3136055823779, //    Prua Phoe JR-U d3-91     - Inner Scutum-Centaurus Arm
+                //7259190873515, //    Prua Phoe LX-S d4-211    - Inner Scutum-Centaurus Arm
+                //6125336284579, //    Prua Phoe IR-U d3-178    - Inner Scutum-Centaurus Arm
+                //6121703676746, //    Prua Phoe UO-N c8-22     - Inner Scutum-Centaurus Arm
+                //6365837675955, //    Prua Phoe PD-R d5-185    - Inner Scutum-Centaurus Arm
+                //284180729219, //     Prua Phoe WI-B d8        - Inner Scutum-Centaurus Arm
+                //2415457537675, //    Graea Hypue AA-Z d70     - Norma Expanse
+                //2312378322571, //    Graea Hypue AA-Z d67     - Norma Expanse
+                //2003140677259, //    Graea Hypue AA-Z d58     - Norma Expanse
+                //1728262770315, //    Graea Hypue AA-Z d50     - Norma Expanse
+                //1659543293579, //    Graea Hypue AA-Z d48     - Norma Expanse
+                //1350305648267, //    Graea Hypue AA-Z d39     - Norma Expanse
+                //7373867459, //       Ushosts LC-M d7-0        - Elysian Shore
+                //113170581619, //     Slegi XV-C d13-3         - Elysian Shore
+                //8055311831762, //    NLTT 55164               - Inner Orion Spur
+                //721911088556658, //  Eorld Byoe BQ-G c13-2626 - Ryker's Hope
+                //1005802506067, //    Heart Sector ZE-A d29    - Elysian Shore
+                //2789153444971, //    Phimbo GC-D d12-81       - Perseus Arm
+                //33682769023907, //   Phroi Pra PP-V d3-980    - Galactic Centre
 
-                /* more from me */
-                //{ "Graea Hypue AA-Z d33", "Norma Expanse" },
-                //{ "Swoiwns OE-O d7-48", "Inner Orion Spur" },
-                //{ "Wregoe JA-Z d9", "Inner Orion Spur" },
-                //{ "Nyeajeou VP-G b56-0", "Temple" },
-                //{ "HIP 17694", "Inner Orion Spur" },
-                //{ "BD+47 2267", "Inner Orion Spur" },
-                //{ "2MASS J05334575-0441245", "Sanguineous Rim" },
-                //{ "Graea Hypue AA-Z d85", "Norma Expanse" },
-                //{ "Bleethuae LN-B d1172", "Izanami" },
-                //{ "HIP 76045", "Inner Orion Spur" },
-                //{ "HIP 97950", "Inner Orion Spur" },
-                //{ "GD 140", "Inner Orion Spur" },
-                //{ "HR 5716", "Inner Orion Spur" },
+                ///* more from me */
+                //1144147218059, //    Graea Hypue AA-Z d33     - Norma Expanse
+                //1659576977859, //    Swoiwns OE-O d7-48       - Inner Orion Spur
+                //319933188363, //     Wregoe JA-Z d9           - Inner Orion Spur
+                //546399072737, //     Nyeajeou VP-G b56-0      - Temple
+                //241824687268, //     HIP 17694                - Inner Orion Spur
+                //83718378202, //      BD+47 2267               - Inner Orion Spur
+                //2878029308905, //    2MASS J05334575-0441245  - Sanguineous Rim
+                //2930853613195, //    Graea Hypue AA-Z d85     - Norma Expanse
+                //40280107390979, //   Bleethuae LN-B d1172     - Izanami
+                //83718410970, //      HIP 76045                - Inner Orion Spur
+                //2557619442410, //    HIP 97950                - Inner Orion Spur
+                //52850328756, //      GD 140                   - Inner Orion Spur
+                //125860586676, //     HR 5716                  - Inner Orion Spur
+                //7373867459, //       Ushosts LC-M d7-0        - Elysian Shore
+                //113170581619, //     Slegi XV-C d13-3         - Elysian Shore
+                //8055311831762, //    NLTT 55164               - Inner Orion Spur
+                //721911088556658, //  Eorld Byoe BQ-G c13-2626 - Ryker's Hope
+                //1005802506067, //    Heart Sector ZE-A d29    - Elysian Shore
+                //2789153444971, //    Phimbo GC-D d12-81       - Perseus Arm
+                //33682769023907, //   Phroi Pra PP-V d3-980    - Galactic Centre
 
-                /* New places to try */
-                //{ "Outorst OC-M d7-4", "Elysian Shore" },
-                //{ "Cyoidai VI-B d2", "Sanguineous Rim" },
-                //{ "Graea Hypue IS-R d5-235", "Norma Expanse" },
-                //{ "Bleae Phlai AK-I d9-1", "Errant Marches" },
-                //{ "Eor Audst LM-W f1-20", "Odin's Hold" },
-                //{ "Phroi Pri GM-W a1-13", "Galactic Centre" },
-                //{ "Synuefe FO-T c19-7", "Inner Orion Spur" },
-                //{ "Hypaa Bliae ND-H d11-153", "Outer Orion-Perseus Conflux" },
-                //{ "Pidgio GS-H d11-0", "Errant Marches" },
-                //{ "Blua Eaec ED-H d11-1491", "Inner Scutum-Centaurus Arm" },
-                //{ "Col 173 Sector VV-D b28-0", "Inner Orion Spur" },
-                //{ "Blu Euq NH-L d8-3", "Inner Orion Spur" },
-                //{ "Stuemeae FG-Y d8897", "Galactic Centre" },
-                //{ "Heguae NL-P d5-5", "Sanguineous Rim" },
+                ///* New places to try */
+                //147547244739, //     Outorst OC-M d7-4         - Elysian Shore
+                //79347697283, //      Cyoidai VI-B d2           - Sanguineous Rim
+                //8084881608371, //    Graea Hypue IS-R d5-235   - Norma Expanse
+                //37790682707, //      Bleae Phlai AK-I d9-1     - Errant Marches
+                //10887906389, //      Eor Audst LM-W f1-20      - Odin's Hold
+                //234056927058952, //  Phroi Pri GM-W a1-13      - Galactic Centre
+                //2009339794090, //    Synuefe FO-T c19-7        - Inner Orion Spur
+                //5264816150115, //    Hypaa Bliae ND-H d11-153  - Outer Orion-Perseus Conflux
+                //3464481251, //       Pidgio GS-H d11-0         - Errant Marches
+                //51239337267043, //   Blua Eaec ED-H d11-1491   - Inner Scutum-Centaurus Arm
+                //683033437569, //     Col 173 Sector VV-D b28-0 - Inner Orion Spur
+                //113808345931, //     Blu Euq NH-L d8-3         - Inner Orion Spur
+                //305709086413707, //  Stuemeae FG-Y d8897       - Galactic Centre
+                //184943642675, //     Heguae NL-P d5-5          - Sanguineous Rim
+                //7373867459, //       Ushosts LC-M d7-0         - Elysian Shore
+                //113170581619, //     Slegi XV-C d13-3          - Elysian Shore
+                //8055311831762, //    NLTT 55164                - Inner Orion Spur
+                //721911088556658, //  Eorld Byoe BQ-G c13-2626  - Ryker's Hope
+                //1005802506067, //    Heart Sector ZE-A d29     - Elysian Shore
+                //2789153444971, //    Phimbo GC-D d12-81        - Perseus Arm
+                //33682769023907, //   Phroi Pra PP-V d3-980     - Galactic Centre
 
                 ///* top 20 bodies */
-                //{ "Aucoks RX-S d4-6", "Inner Orion Spur" },
-                ///* { "Hyuedau LV-Y d34", "Achilles's Altar" }, // Did someone really see Tussock Virgam - Emerald, not Yellow? Otherwise this is good */
-                //{ "Drojau BG-W d2-1", "Inner Orion Spur" },
-                //{ "Athaiwyg EG-Y c8", "Arcadian Stream" },
-                //{ "Flyooe Eohn CS-H b43-0", "Sanguineous Rim" },
-                //{ "Lyncis Sector CL-Y c14", "Inner Orion Spur" },
-                //{ "Blaa Drye WC-F b58-5", "Temple" },
-                //{ "Blau Eur RZ-O c19-41", "Hawking's Gap" },
-                //{ "Slegeae SU-R b24-0", "Sanguineous Rim" },
-                //{ "Outotz ZQ-K b22-0", "Sanguineous Rim" },
-                //{ "Hegou FB-S c6-0", "Sanguineous Rim" },
-                //{ "Oochoss NM-K b42-1", "Elysian Shore" },
-                //{ "Byoomao CG-D a108-65", "Galactic Centre" },
-                //{ "Groem BL-E c25-0", "Kepler's Crest" },
-                //{ "Wruetheia NL-U b46-0", "Formorian Frontier" },
-                //{ "Blie Eup RQ-O b47-2", "Elysian Shore" },
-                //{ "Dryaa Bloae II-N b54-0", "Outer Arm" },
-                //{ "Nyeakeia ZA-V b33-0", "Hawking's Gap" },
-                //{ "Hegoo FW-E d11-18", "Sanguineous Rim" },
-                //{ "Choomee IF-R c4-7189", "Empyrean Straits" },
+                //216887347755, //     Aucoks RX-S d4-6         - Inner Orion Spur
+                ///* 1182953163019,*///Hyuedau LV-Y d34         - Achilles's Altar - Did someone really see Tussock Virgam - Emerald, not Yellow? Otherwise this is good */
+                //43847125659, //      Drojau BG-W d2-1         - Inner Orion Spur
+                //2302134985738, //    Athaiwyg EG-Y c8         - Arcadian Stream
+                //672833020273, //     Flyooe Eohn CS-H b43-0   - Sanguineous Rim
+                //3931941933746, //    Lyncis Sector CL-Y c14   - Inner Orion Spur
+                //11548763827697, //   Blaa Drye WC-F b58-5     - Temple
+                //11360960255658, //   Blau Eur RZ-O c19-41     - Hawking's Gap
+                //721151664337, //     Slegeae SU-R b24-0       - Sanguineous Rim
+                //674712855233, //     Outotz ZQ-K b22-0        - Sanguineous Rim
+                //102509547578, //     Hegou FB-S c6-0          - Sanguineous Rim
+                //2851187073897, //    Oochoss NM-K b42-1       - Elysian Shore
+                //1148829126400920, // Byoomao CG-D a108-65     - Galactic Centre
+                //111098727130, //     Groem BL-E c25-0         - Kepler's Crest
+                //612973965713, //     Wruetheia NL-U b46-0     - Formorian Frontier
+                //4879485709721, //    Blie Eup RQ-O b47-2      - Elysian Shore
+                //265348273105, //     Dryaa Bloae II-N b54-0   - Outer Arm
+                //787453456673, //     Nyeakeia ZA-V b33-0      - Hawking's Gap
+                //629372094563, //     Hegoo FW-E d11-18        - Sanguineous Rim
+                //1976177703003690, // Choomee IF-R c4-7189     - Empyrean Straits
+                //7373867459, //       Ushosts LC-M d7-0        - Elysian Shore
+                //113170581619, //     Slegi XV-C d13-3         - Elysian Shore
+                //8055311831762, //    NLTT 55164               - Inner Orion Spur
+                //721911088556658, //  Eorld Byoe BQ-G c13-2626 - Ryker's Hope
+                //1005802506067, //    Heart Sector ZE-A d29    - Elysian Shore
+                //2789153444971, //    Phimbo GC-D d12-81       - Perseus Arm
+                //33682769023907, //   Phroi Pra PP-V d3-980    - Galactic Centre
 
                 ///* top 20 systems */
-                //{ "Col 285 Sector BS-I c10-11", "Inner Orion Spur" },
-                //{ "Kyloagh PE-G d11-86", "Orion-Cygnus Arm" },
-                //{ "Eol Prou QS-T d3-483", "Inner Scutum-Centaurus Arm" },
-                //{ "Synuefai MW-U c19-4", "Inner Orion Spur" },
-                ///* { "HIP 82068", "Inner Orion Spur" }, // HIP 82068 9 f is missing an atmosphere */
-                //{ "76 Leonis", "Inner Orion Spur" },
-                //{ "Hypio Flyao XP-P e5-54", "Arcadian Stream" },
-                //{ "HIP 56843", "Inner Orion Spur" },
-                //{ "HD 221180", "Inner Orion Spur" },
-                //{ "Phaa Audst GW-W e1-844", "Odin's Hold" },
-                //{ "Pru Aim GR-D d12-2676", "Inner Scutum-Centaurus Arm" }, // revisit ABCD 1 a - Clypeus Speculumi distance calculation needs fixing
-                //{ "Phua Aub WU-X e1-3527", "Galactic Centre" },
-                //{ "Scheau Bluae JC-B d1-13", "Odin's Hold" },
-                //{ "Synuefue ZX-F d12-49", "Inner Orion Spur" },
-                //{ "Dryio Flyuae IY-Q d5-789", "Inner Scutum-Centaurus Arm" },
-                //{ "Skaude GD-Q d6-29", "Inner Scutum-Centaurus Arm" },
-                //{ "Flyooe Hypue FT-O d7-23", "Inner Orion Spur" },
-                //{ "Byoi Aip VE-R d4-58", "Norma Arm" },
-                //{ "Clooku HI-R d5-410", "Inner Scutum-Centaurus Arm" },
-                //{ "Dumbio GN-B d13-5111", "Odin's Hold" },
+                //3107241202402, //    Col 285 Sector BS-I c10-11 - Inner Orion Spur
+                //2962579378659, //    Kyloagh PE-G d11-86        - Orion-Cygnus Arm
+                //16604217544995, //   Eol Prou QS-T d3-483       - Inner Scutum-Centaurus Arm
+                //1182223274666, //    Synuefai MW-U c19-4        - Inner Orion Spur
+                //1453569624435, //    HIP 82068                  - Inner Orion Spur - HIP 82068 9 f is missing an atmosphere
+                //358999069386, //     76 Leonis                  - Inner Orion Spur
+                //233444419892, //     Hypio Flyao XP-P e5-54     - Arcadian Stream
+                //10612427019, //      HIP 56843                  - Inner Orion Spur
+                //10376464763, //      HD 221180                  - Inner Orion Spur
+                //3626137373140, //    Phaa Audst GW-W e1-844     - Odin's Hold
+                //91956533317099, //   Pru Aim GR-D d12-2676      - Inner Scutum-Centaurus Arm - revisit ABCD 1 a - Clypeus Speculumi distance calculation needs fixing
+                //15149635267028, //   Phua Aub WU-X e1-3527      - Galactic Centre
+                //455962777099, //     Scheau Bluae JC-B d1-13    - Odin's Hold
+                //1693617998187, //    Synuefue ZX-F d12-49       - Inner Orion Spur
+                //27118431768755, //   Dryio Flyuae IY-Q d5-789   - Inner Scutum-Centaurus Arm
+                //1005903105339, //    Skaude GD-Q d6-29          - Inner Scutum-Centaurus Arm
+                //800801672259, //     Flyooe Hypue FT-O d7-23    - Inner Orion Spur
+                //2004164284331, //    Byoi Aip VE-R d4-58        - Norma Arm
+                //14096678161971, //   Clooku HI-R d5-410         - Inner Scutum-Centaurus Arm
+                //175621288252019, //  Dumbio GN-B d13-5111       - Odin's Hold
 
-                ///* more ad-hoc systems */
-                //{ "Ushosts LC-M d7-0", "Elysian Shore" },
-                //{ "Slegi XV-C d13-3", "Elysian Shore" },
-
-                //{ "NLTT 55164", "Inner Orion Spur" },
-                //{ "Eorld Byoe BQ-G c13-2626", "Ryker's Hope" },
-                //{ "Heart Sector ZE-A d29", "Elysian Shore" },
-                //{ "Phimbo GC-D d12-81", "Perseus Arm" },
-                //{ "Phroi Pra PP-V d3-980", "Galactic Centre" },
+                /* more ad-hoc systems */
+                7373867459, //       Ushosts LC-M d7-0        - Elysian Shore
+                113170581619, //     Slegi XV-C d13-3         - Elysian Shore
+                8055311831762, //    NLTT 55164               - Inner Orion Spur
+                721911088556658, //  Eorld Byoe BQ-G c13-2626 - Ryker's Hope
+                1005802506067, //    Heart Sector ZE-A d29    - Elysian Shore
+                2789153444971, //    Phimbo GC-D d12-81       - Perseus Arm
+                33682769023907, //   Phroi Pra PP-V d3-980    - Galactic Centre
             };
 
+            Game.log($"Testing {testSystems.Count} systems ...");
             var startTime = DateTime.Now;
-            var allResults = new StringBuilder();
-            foreach (var pair in testSystems)
-            {
-                await testSystem(pair.Key, pair.Value);
-            }
 
-            File.WriteAllText(@"d:\bioBulkResults100.csv", allResults.ToString());
+            // in series
+            foreach (var address in testSystems) await testSystem(address);
+
+            //// in parallel
+            //await Task.WhenAll(testSystems.Select(a => testSystem(a)));
+
             Game.log($"All done: everything - count: {testSystems.Count}, duration: {DateTime.Now - startTime}");
         }
-
     }
 
     internal class ClauseFailure

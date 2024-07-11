@@ -8,7 +8,6 @@ using static SrvSurvey.game.GuardianSiteData;
 
 namespace SrvSurvey.game
 {
-
     /// <summary>
     /// Which vehicle are we currently in?
     /// </summary>
@@ -148,6 +147,8 @@ namespace SrvSurvey.game
 
             return parents;
         }
+
+        // TODO: add a custom json serializer so it looks the same way as in journal entries?
     }
 
     internal enum SystemBodyType

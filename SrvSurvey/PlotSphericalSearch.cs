@@ -10,14 +10,15 @@ namespace SrvSurvey
 
         private PlotSphericalSearch() : base()
         {
-            this.Width = scaled(400);
-            this.Height = scaled(80);
-
+            this.Size = Size.Empty;
             this.Font = GameColors.fontMiddle;
         }
 
         protected override void OnLoad(EventArgs e)
         {
+            this.Width = scaled(400);
+            this.Height = scaled(80);
+
             base.OnLoad(e);
 
             this.initialize();
@@ -86,7 +87,7 @@ namespace SrvSurvey
             this.targetSystemName = lastSystem.StarSystem;
             this.distance = Util.getSystemDistance(game.cmdr.sphereLimit.centerStarPos, lastSystem.StarPos);
 
-            this.Invalidate(true);
+            this.Invalidate();
         }
 
         protected override void OnPaintBackground(PaintEventArgs e)

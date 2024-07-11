@@ -1,64 +1,25 @@
 ﻿using Newtonsoft.Json;
 using SrvSurvey.game;
 using SrvSurvey.units;
-using System.Numerics;
 
 namespace SrvSurvey.canonn
 {
     internal class StarSystem
     {
         public string systemName;
-        public double[] pos;
+        public StarPos pos;
 
         public static StarSystem Sol = new StarSystem
         {
             systemName = "Sol",
-            pos = new double[3] { 0, 0, 0 },
+            pos = new StarPos(0, 0, 0),
         };
-    }
-
-    internal class Coords
-    {
-        public double x;
-        public double y;
-        public double z;
     }
 
     internal class Region
     {
         public string name;
         public int region;
-    }
-
-    internal class StellarPOIs
-    {
-        public List<List<string>> markers;
-    }
-
-    internal class StellarPOI
-    {
-        public float d;
-        public float x;
-        public float y;
-        public float z;
-        public string title;
-        public string type;
-
-        public StellarPOI(List<string> parts)
-        {
-            this.d = float.Parse(parts[0]);
-            this.x = float.Parse(parts[1]);
-            this.y = float.Parse(parts[2]);
-            this.z = float.Parse(parts[3]);
-
-            this.title = parts[4];
-            this.type = parts[5];
-        }
-
-        public Vector3 toVector()
-        {
-            return new Vector3(this.x, this.y, this.z);
-        }
     }
 
     internal class Timestamps
@@ -218,7 +179,7 @@ namespace SrvSurvey.canonn
         public string allegiance;
         public List<BodyBase> bodies;
         public int bodyCount;
-        public Coords coords;
+        public StarPos coords;
         public DateTimeOffset date;
         public string government;
         public long id64;

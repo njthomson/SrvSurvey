@@ -449,7 +449,7 @@ namespace SrvSurvey
     [JsonConverter(typeof(StringEnumConverter))]
     enum FSDJumpBodyType
     {
-        BaryCenter,
+        BaryCentre,
         Star,
         Planet,
         PlanetaryRing,

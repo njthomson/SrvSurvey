@@ -366,7 +366,7 @@ namespace SrvSurvey
                 this.star = new canonn.StarSystem
                 {
                     systemName = match.name,
-                    pos = match.coords.starPos
+                    pos = match.coords,
                 };
             }
 

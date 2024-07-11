@@ -8,15 +8,15 @@ namespace SrvSurvey
 
         private PlotBodyInfo() : base()
         {
-            this.Width = scaled(320);
-            this.Height = scaled(88);
-            this.BackgroundImageLayout = ImageLayout.Stretch;
-
+            this.Size = Size.Empty;
             this.Font = GameColors.fontSmall2;
         }
 
         protected override void OnLoad(EventArgs e)
         {
+            this.Width = scaled(320);
+            this.Height = scaled(88);
+
             base.OnLoad(e);
 
             this.initialize();
@@ -150,7 +150,7 @@ namespace SrvSurvey
                 {
                     dty += four;
                     drawTextAt(eight, $"Temp: {temp}K");
-                    drawTextAt(oneTwenty, body.type == SystemBodyType.Star ? $"Class: {body.starType}" : body.planetClass);
+                    drawTextAt(oneTwenty, body.type == SystemBodyType.Star ? $"Class: {body.starType}" : body.planetClass!);
                     newLine(true);
                 }
 

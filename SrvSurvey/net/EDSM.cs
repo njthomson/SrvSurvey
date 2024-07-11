@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using SrvSurvey.game;
+using SrvSurvey.units;
 
 namespace SrvSurvey.net.EDSM
 {
@@ -27,16 +28,6 @@ namespace SrvSurvey.net.EDSM
 
     }
 
-    internal class SystemCoords
-    {
-        public double x;
-        public double y;
-        public double z;
-
-        [JsonIgnore]
-        public double[] starPos { get => new double[] { this.x, this.y, this.z }; }
-    }
-
     internal class StarSystem
     {
         // [{"name":"Colonia","id":3384966,"id64":3238296097059,"coords":{"x":-9530.5,"y":-910.28125,"z":19808.125},"coordsLocked":true}]
@@ -44,7 +35,7 @@ namespace SrvSurvey.net.EDSM
         public string name;
         public long id;
         public long id64;
-        public SystemCoords coords;
+        public StarPos coords;
         public bool coordsLocked;
 
         public override string ToString()
