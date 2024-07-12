@@ -10,7 +10,6 @@ namespace BioCriteria
         {
             if (body.type != SystemBodyType.LandableBody || body.parents == null || body.parents.Count == 0) return new List<string>();
             if (Criteria.allCriteria.Count == 0) Criteria.readCriteria();
-            //logOrganism = "Pluma";
 
             var parentStar = body.system.getParentStarTypes(body, true).First();
             var brightestParentStar = body.system.getBrightestParentStarType(body);
@@ -39,6 +38,7 @@ namespace BioCriteria
                 { "Region", GalacticRegions.currentIdx.ToString() },
                 // Take the first parent star(s) AND the "relative hottest" from the parent chain
                 { "Star", new List<string>() { parentStar, brightestParentStar } },
+                { "ParentStar", parentStar },
                 { "PrimaryStar", primaryStarType },
                 // TODO: add code to measure distance to the nearest nebulae
                 { "Nebulae", body.system.nebulaDist },
@@ -62,8 +62,6 @@ namespace BioCriteria
         public readonly List<string>? knownGenus;
         private HashSet<string> predictions = new HashSet<string>();
 
-        /// <summary> Trace extra diagnostics for a given body </summary>
-        public static string? logBody;
         /// <summary> Trace extra diagnostics for a genus, species or variant </summary>
         public static string? logOrganism;
 
@@ -215,10 +213,8 @@ namespace BioCriteria
             // trace extra diagnostics?
             if (failures.Count > 0)
             {
-                if (logBody == "*" || (!string.IsNullOrWhiteSpace(logBody) && this.bodyName.Contains(logBody, StringComparison.OrdinalIgnoreCase)))
-                    Game.log($"Prediction failures for body: {bodyName} / {currentName}\r\n > " + string.Join("\r\n > ", failures));
 
-                if (logOrganism == "*" || (!string.IsNullOrWhiteSpace(logOrganism) && currentName.Contains(logOrganism, StringComparison.OrdinalIgnoreCase)))
+                if (logOrganism == "*" || (!string.IsNullOrWhiteSpace(logOrganism) && currentName.EndsWith(logOrganism, StringComparison.OrdinalIgnoreCase)))
                 {
                     var queryTxt = "\t" + string.Join("\r\n\t", query!);
                     Game.log($"Prediction failures for organism: {logOrganism} / {currentName}\r\n{queryTxt}\r\n > " + string.Join("\r\n > ", failures));
@@ -251,7 +247,6 @@ namespace BioCriteria
             // predict this system
             foreach (var body in systemData.bodies)
             {
-                Predictor.logBody = "";
                 Predictor.logOrganism = "";
                 var predictions = Predictor.predict(body);
 
@@ -404,13 +399,13 @@ namespace BioCriteria
                 //175621288252019, //  Dumbio GN-B d13-5111       - Odin's Hold
 
                 /* more ad-hoc systems */
-                7373867459, //       Ushosts LC-M d7-0        - Elysian Shore
+                //7373867459, //       Ushosts LC-M d7-0        - Elysian Shore
                 113170581619, //     Slegi XV-C d13-3         - Elysian Shore
-                8055311831762, //    NLTT 55164               - Inner Orion Spur
-                721911088556658, //  Eorld Byoe BQ-G c13-2626 - Ryker's Hope
-                1005802506067, //    Heart Sector ZE-A d29    - Elysian Shore
-                2789153444971, //    Phimbo GC-D d12-81       - Perseus Arm
-                33682769023907, //   Phroi Pra PP-V d3-980    - Galactic Centre
+                //8055311831762, //    NLTT 55164               - Inner Orion Spur
+                //721911088556658, //  Eorld Byoe BQ-G c13-2626 - Ryker's Hope
+                //1005802506067, //    Heart Sector ZE-A d29    - Elysian Shore
+                //2789153444971, //    Phimbo GC-D d12-81       - Perseus Arm
+                //33682769023907, //   Phroi Pra PP-V d3-980    - Galactic Centre
             };
 
             Game.log($"Testing {testSystems.Count} systems ...");

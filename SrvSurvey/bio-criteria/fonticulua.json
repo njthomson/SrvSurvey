@@ -37,7 +37,7 @@
       "query": [
         "     body [Icy,RockyIce]",
         "atmosType [Methane]",
-        "  gravity [0.03 ~ 0.07]",
+        "  gravity [0.025 ~ 0.07]",
         "     temp [83 ~ 109]",
         " pressure [0.03 ~ ]",
         "volcanism [None,Minor Methane Magma]"
@@ -61,8 +61,8 @@
       "useCommonChildren": true,
       "query": [
         "     body [Icy]",
-        "atmosType [Nitrogen]",
-        "  gravity [0.04 ~ 0.29]",
+        "atmosComp [Nitrogen >= 100 ]",
+        "  gravity [0.19 ~ 0.29]",
         "     temp [50 ~ 90]",
         " pressure [0.0009 ~ ]"
       ]

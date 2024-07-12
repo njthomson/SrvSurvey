@@ -290,6 +290,16 @@ namespace SrvSurvey.game
         [JsonIgnore]
         public long reward { get => this.species.reward; }
 
+        [JsonIgnore]
+        public string localImgName
+        {
+            get
+            {
+                var parts = this.englishName.Split(' ', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+                return $"{parts[0]}-{parts[1]}-{parts[3]}".ToLowerInvariant();
+            }
+        }
+
         public override string ToString()
         {
             return $"'{this.name}' ({this.englishName}";

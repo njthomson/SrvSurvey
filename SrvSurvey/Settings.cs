@@ -149,6 +149,8 @@ namespace SrvSurvey
         public int formGenusFontSize = 1;
         public bool formGenusShowRingGuide = true;
 
+        public string? localFloraFolder = null;
+
         #region loading /saving
 
         static readonly string settingsPath = Path.Combine(Program.dataFolder, "settings.json");

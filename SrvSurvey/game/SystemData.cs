@@ -2369,7 +2369,7 @@ namespace SrvSurvey.game
             }
 
             Game.log($"predictSpecies: '{this.name}' predicted {predictions.Count} rewards: {this.minMaxBioRewards}");
-            if (predictions.Count > 0) Game.log("> " + string.Join("\r\n> ", this.predictions.Keys));
+            if (predictions.Count > 0) Game.log("\r\n> " + string.Join("\r\n> ", this.predictions.Keys.Select(k => $"{k} ({predictions[k].entryId})")));
         }
 
         private long getShortListSum(int delta, List<BioVariant> sortedPredictions, bool minNotMax)

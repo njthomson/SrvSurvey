@@ -7,7 +7,6 @@ namespace BioCriteria
 {
     class Criteria
     {
-
         public string? genus;
         public string? species;
         public string? variant;
@@ -32,6 +31,7 @@ namespace BioCriteria
         public static void readCriteria()
         {
             Game.log("readCriteria");
+            allCriteria.Clear();
 
             // use source files if debugging, otherwise built files
             var folder = Debugger.IsAttached
@@ -228,6 +228,9 @@ namespace BioCriteria
 
             // Some parent star(s)
             { "star", "Star" },
+
+            // The immediate parent star(s) for the body
+            { "parentStar", "ParentStar" },
 
             // The primary star for the system
             { "primaryStar", "PrimaryStar" },

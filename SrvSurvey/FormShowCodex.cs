@@ -122,10 +122,23 @@ namespace SrvSurvey
             this.lblTitle.Text = match.variant.englishName;
             this.lblCmdr.Text = $"cmdr: {match.variant.imageCmdr}";
 
-            // attempt to download if we don't have a file already
             var filepath = Path.Combine(CodexRef.codexImagesFolder, $"{match.entryId}.png");
 
-            if (File.Exists(filepath))
+            // do we have a local image?
+            if (!string.IsNullOrEmpty(Game.settings.localFloraFolder))
+            {
+                var localFilepath = Path.Combine(Game.settings.localFloraFolder, $"{match.variant.localImgName}.png");
+                if (File.Exists(localFilepath))
+                {
+                    // load the cached image - quickly, so as not to lock the file
+                    using (var imgTmp = Bitmap.FromFile(localFilepath))
+                        this.img = new Bitmap(imgTmp);
+
+                    this.lblCmdr.Text = "(local image)";
+                }
+            }
+
+            if (this.img == null && File.Exists(filepath))
             {
                 // download images once a week
                 var duration = DateTime.Now.Subtract(File.GetLastWriteTime(filepath));
@@ -142,6 +155,7 @@ namespace SrvSurvey
                 }
             }
 
+            // download if we don't have a file already
             if (this.img == null || !File.Exists(filepath))
             {
                 if (match.variant.imageUrl == null)

@@ -77,7 +77,7 @@
           "useCommonChildren": true,
           "query": [
             "atmosType [Methane]",
-            "  gravity [0.03 ~ 0.60]",
+            "  gravity [0.025 ~ 0.60]",
             "     temp [67 ~ 109]",
             " pressure [0.0009 ~ ]"
           ]

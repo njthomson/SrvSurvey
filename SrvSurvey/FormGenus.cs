@@ -122,9 +122,16 @@ namespace SrvSurvey
 
             if (game?.systemData == null) return;
 
-            foreach(var body in game.systemData.bodies)
-                if (body.bioSignalCount > 0)
-                    body.predictSpecies();
+            if (filterIdx < 2)
+            {
+                foreach (var body in game.systemData.bodies)
+                    if (body.bioSignalCount > 0)
+                        body.predictSpecies();
+            }
+            else
+            {
+                targetBody.predictSpecies();
+            }
 
             // show something if no bio signals
             if (game.systemData.bioSignalsTotal == 0)

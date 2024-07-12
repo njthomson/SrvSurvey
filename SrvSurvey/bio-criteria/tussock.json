@@ -138,8 +138,8 @@
       "useCommonChildren": true,
       "query": [
           "     body [HMC,Rocky]",
+          "atmosType [CarbonDioxide]",
           "  gravity [0.04 ~ 0.28]",
-          "atmosComp [SulphurDioxide >= 0.99]",
           "volcanism [None]",
           " pressure [0.0029 ~ ]",
           "     temp [147 ~ 196]",
