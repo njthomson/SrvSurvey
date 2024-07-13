@@ -852,6 +852,11 @@ namespace SrvSurvey.game
             organism.variant = entry.Name;
             organism.variantLocalized = entry.Name_Localised;
             organism.reward = match.species.reward;
+            if (organism.novel == Novelty.no && entry.IsNewEntry)
+            {
+                // TODO: look-up if the cmdr has ever seen this before
+                organism.novel = Novelty.regionFirst;
+            }
 
             if (organism.species == null) organism.species = match.species.name;
             if (organism.speciesLocalized == null) organism.speciesLocalized = match.species.englishName;
@@ -2103,9 +2108,6 @@ namespace SrvSurvey.game
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public List<SystemRing> rings;
 
-        /// <summary> Locations of all bio scans or Codex scans performed on this body </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-        public List<BioScan>? bioScans;
 
         /// <summary> Locations of named bookmarks on this body </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
@@ -2124,6 +2126,10 @@ namespace SrvSurvey.game
         /// <summary> A of settlements known on this body. /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public Dictionary<string, LatLong2> settlements;
+
+        /// <summary> Locations of all bio scans or Codex scans performed on this body </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public List<BioScan>? bioScans;
 
         #endregion
 
@@ -2473,6 +2479,8 @@ namespace SrvSurvey.game
         public long reward;
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public bool analyzed;
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public Novelty novel;
 
         public override string ToString()
         {

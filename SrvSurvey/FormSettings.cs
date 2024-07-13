@@ -257,7 +257,6 @@ namespace SrvSurvey
             Program.hideActivePlotters();
 
             // increment process idx and make plotters adjust
-            //Game.settings.processIdx++;
             Elite.nextWindow();
             Application.DoEvents();
             Elite.setFocusED();

@@ -155,8 +155,8 @@ namespace SrvSurvey
                 }
             }
 
-            // download if we don't have a file already
-            if (this.img == null || !File.Exists(filepath))
+            // download if we don't have an imagefile already
+            if (this.img == null)
             {
                 if (match.variant.imageUrl == null)
                 {

@@ -20,8 +20,6 @@ namespace BioCriteria
             //var sumSemiMajorAxis = body.sumSemiMajorAxis(0);
             //var sumSemiMajorAxisLs = Util.mToLS(sumSemiMajorAxis);
 
-            var knownGenus = body.organisms?.Select(o => o.genusLocalized).ToList();
-
             // prepare members, converting to suitable units
             var bodyProps = new Dictionary<string, object>
             {
@@ -43,7 +41,27 @@ namespace BioCriteria
                 { "Nebulae", body.system.nebulaDist },
 
             };
-            var predictor = new BioPredictor(body.name, bodyProps, knownGenus);
+            var predictor = new BioPredictor(body.name, bodyProps);
+
+            // add known genus and species names
+            if (body.organisms?.Count > 0)
+            {
+                foreach (var org in body.organisms)
+                {
+                    if (org.genus != null)
+                    {
+                        var match = Game.codexRef.matchFromGenus(org.genus)!;
+                        predictor.knownGenus.Add(match.englishName);
+                    }
+
+                    if (org.species != null)
+                    {
+                        var match = Game.codexRef.matchFromSpecies2(org.species);
+                        // TODO: handle Brain Tree's
+                        predictor.knownSpecies[match.genus.englishName] = match.species.englishName;
+                    }
+                }
+            }
 
             // log extra diagnostics?
             //logBody = "Renibus";
@@ -58,16 +76,16 @@ namespace BioCriteria
 
         public readonly string bodyName;
         public readonly Dictionary<string, object> bodyProps;
-        public readonly List<string>? knownGenus;
-        private HashSet<string> predictions = new HashSet<string>();
+        public readonly List<string> knownGenus = new List<string>();
+        public readonly Dictionary<string, string> knownSpecies = new Dictionary<string, string>();
+        private readonly HashSet<string> predictions = new HashSet<string>();
 
         /// <summary> Trace extra diagnostics for a genus, species or variant </summary>
         public static string? logOrganism;
 
-        private BioPredictor(string bodyName, Dictionary<string, object>? bodyProps, List<string>? knownGenus)
+        private BioPredictor(string bodyName, Dictionary<string, object>? bodyProps)
         {
             this.bodyName = bodyName;
-            this.knownGenus = knownGenus;
             this.bodyProps = bodyProps ?? new Dictionary<string, object>();
         }
 
@@ -81,6 +99,9 @@ namespace BioCriteria
 
             // stop here if genus names are known and this criteria isn't one of them
             if (genus != null && knownGenus?.Count > 0 && !knownGenus.Contains(genus)) return;
+            // or stop here if we already scanned some species from this genus
+            // TODO: handle Brain Tree's
+            if (genus != null && knownSpecies?.Count > 0 && !knownSpecies.ContainsKey(genus)) return;
 
             // evaluate current query
             var currentName = $"{genus} {species} - {variant}";

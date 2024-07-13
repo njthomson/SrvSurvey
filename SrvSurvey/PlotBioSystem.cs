@@ -66,8 +66,6 @@ namespace SrvSurvey
                 this.reposition(Elite.getWindowRect());
 
             this.Invalidate();
-
-            if (newMode == GameMode.MainMenu) this.Close();
         }
 
         protected override void OnPaintBackground(PaintEventArgs e)
@@ -299,7 +297,7 @@ namespace SrvSurvey
 
                     var minReward = body.getBioRewardForGenus(organism, true);
                     var maxReward = body.getBioRewardForGenus(organism, false);
-                    drawVolumeBars(g, oneTwo, dty + oneSix, highlight, minReward, maxReward);
+                    drawVolumeBars(g, oneTwo, dty + oneSix, highlight, minReward, maxReward, organism.novel);
 
                     // displayName is either genus, or species/variant without the genus prefix
                     var displayName = organism.genusLocalized;
@@ -314,6 +312,9 @@ namespace SrvSurvey
                         if (match != null)
                             displayName = match.englishName.Replace(match.species.genus.englishName, "").Trim() + " ???";
                     }
+
+                    //if (organism.novel == Novelty.cmdrFirst) displayName = "⚑ " + displayName;
+                    //if (organism.novel == Novelty.regionFirst) displayName = "⚐ " + displayName;
 
                     // line 1
                     var sz2 = this.drawTextAt(twoEight, displayName, brush);
@@ -339,9 +340,12 @@ namespace SrvSurvey
                         null, true);
 
                     // 2nd line - left
+                    var leftText = displayName != organism.genusLocalized ? organism.genusLocalized : "?";
+                    if (organism.novel == Novelty.cmdrFirst) leftText = "⚑ " + leftText;
+                    if (organism.novel == Novelty.regionFirst) leftText = "⚐ " + leftText;
                     drawTextAt(
                         twoEight,
-                        displayName != organism.genusLocalized ? organism.genusLocalized : "?",
+                        leftText,
                         highlight ? GameColors.brushCyan : GameColors.brushGameOrange);
                     dtx += sz.Width + ten;
                     newLine(+eight, true);
@@ -386,7 +390,10 @@ namespace SrvSurvey
             {
                 if (body.bioSignalCount == 0) continue;
 
-                var highlight = body.shortName == destinationBody || (body.countAnalyzedBioSignals != body.bioSignalCount && body.countAnalyzedBioSignals > 0); // || !anyFoo); // body.countAnalyzedBioSignals == body.bioSignalCount || bodyName == "1 f";
+                var highlight = body.shortName == destinationBody //|| (body.countAnalyzedBioSignals != body.bioSignalCount && body.countAnalyzedBioSignals > 0);
+                    || (body == game.systemBody && game.status.hasLatLong);
+                // || !anyFoo); // body.countAnalyzedBioSignals == body.bioSignalCount || bodyName == "1 f";
+
                 dty = (float)Math.Round(dty);
 
                 // draw body name
@@ -409,7 +416,7 @@ namespace SrvSurvey
                     {
                         var min = body.getBioRewardForGenus(org, true);
                         var max = body.getBioRewardForGenus(org, false);
-                        drawVolumeBars(g, x, dty + oneFive, highlight, min, max);
+                        drawVolumeBars(g, x, dty + oneFive, highlight, min, max, org.novel);
                         x += oneTwo;
                     }
                     signalCount -= body.organisms.Count;
@@ -461,7 +468,7 @@ namespace SrvSurvey
             formAdjustSize(+ten, +six);
         }
 
-        public static void drawVolumeBars(Graphics g, float x, float y, bool highlight, long reward, long maxReward = -1)
+        public static void drawVolumeBars(Graphics g, float x, float y, bool highlight, long reward, long maxReward = -1, Novelty novel = Novelty.no)
         {
             var ww = eight;
             var bb = highlight ? GameColors.brushCyan : GameColors.brushGameOrange;
@@ -476,6 +483,14 @@ namespace SrvSurvey
             var ppp = highlight
                 ? GameColors.newPen(Color.FromArgb(96, GameColors.DarkCyan), 1.9f, DashStyle.Dot)
                 : GameColors.newPen(Color.FromArgb(96, GameColors.Orange), 1.9f, DashStyle.Dot);
+
+            if (novel != Novelty.no)
+            {
+                bb = (SolidBrush)Brushes.DarkGoldenrod;
+                pp = Pens.Gold;
+                ppp = GameColors.newPen(Color.FromArgb(96, Color.Gold), 1.9f, DashStyle.Dot);
+            }
+
             g.DrawRectangle(ppp, x, y - oneTwo, ww, oneFive);
 
             if (reward <= 0)

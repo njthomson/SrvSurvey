@@ -151,6 +151,7 @@ namespace SrvSurvey.game
         // TODO: add a custom json serializer so it looks the same way as in journal entries?
     }
 
+    [JsonConverter(typeof(StringEnumConverter))]
     internal enum SystemBodyType
     {
         Unknown,
@@ -161,6 +162,24 @@ namespace SrvSurvey.game
         Asteroid,
         PlanetaryRing,
         Barycentre,
+    }
+
+    [JsonConverter(typeof(StringEnumConverter))]
+    internal enum Novelty
+    {
+        /// <summary>
+        /// This has been seen before
+        /// </summary>
+        no,
+        /// <summary>
+        /// The cmdr has not seen this anywhere before
+        /// </summary>
+        cmdrFirst, 
+        /// <summary>
+        /// The cmdr has not seen this within this region before
+        /// </summary>
+        regionFirst,
+        // firstEver,
     }
 
     public enum SuitType

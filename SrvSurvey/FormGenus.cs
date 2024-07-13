@@ -315,9 +315,10 @@ namespace SrvSurvey
                 if (this.filterIdx > 1 && this.targetBody != null && this.targetBody != body) continue;
                 if (body.bioSignalCount == 0) continue;
 
-
                 var txt = $"{body.shortName}: {body.bioSignalCount}x signals ({Util.lsToString(body.distanceFromArrivalLS)})" + "\r\n";
                 //txt += $"\r\n({foo.body.planetClass}, {foo.body.atmosphereType}, {(foo.body.surfaceGravity/10f).ToString("N2")}g, {foo.body.surfaceTemperature.ToString("N2")}K ({(foo.body.surfacePressure / 100_000f).ToString("N4")}) (atm), volcanism [{foo.body.volcanism}]\r\nmats [{string.Join(", ", foo.body.materials.Keys)}])";
+
+                // ⚐⚑ ☐⮽☒⮽ ✅❎❎ ✔✘ ⦿⦾
 
                 // known species
                 if (body.organisms?.Any(o => o.species != null) == true)
@@ -327,19 +328,26 @@ namespace SrvSurvey
                         .OrderBy(o => o.genus)
                         .Select(o =>
                     {
-                        var prefix = o.analyzed ? "- " : "■ ";
-                        return $"\t{prefix}{o.variantLocalized} {Util.credits(o.reward, true)}";
+                        var prefix = o.analyzed ? " " : " ";
+                        var suffix = "";
+                        if (o.novel == Novelty.cmdrFirst) suffix = "⚑";
+                        if (o.novel == Novelty.regionFirst) suffix = "⚐";
+                        prefix += suffix;
+                        return $"\t{prefix}{o.variantLocalized} {suffix}           {Util.credits(o.reward, true)}";
                         //return $"\t{prefix}{(_.predicted ? "? " : "")}{_.bioRef.englishName} {Util.credits(_.reward, true)}";
                     })) + "\r\n";
                 }
                 // predicted species
                 if (body.predictions != null)
                 {
-                    txt += "  " + string.Join("\r\n  ", body.predictions.OrderBy(_ => _.Value.name).Select(_ =>
-                    {
-                        return $"\t■ ? {_.Value.englishName} - {Util.credits(_.Value.reward, true)}";
-                        //return $"\t{prefix}{(_.predicted ? "? " : "")}{_.bioRef.englishName} {Util.credits(_.reward, true)}";
-                    }));
+                    txt += "  " + string.Join("\r\n  ", body.predictions
+                        .Where(p => body.organisms?.Any(o => o.species == p.Value.species.name) == false)
+                        .OrderBy(p => p.Value.name)
+                        .Select(p =>
+                        {
+                            return $"\t ? {p.Value.englishName}        {Util.credits(p.Value.reward, true)}";
+                            //return $"\t{prefix}{(_.predicted ? "? " : "")}{_.bioRef.englishName} {Util.credits(_.reward, true)}";
+                        }));
                 }
 
                 var lbl = new Label()

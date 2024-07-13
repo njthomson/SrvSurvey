@@ -312,6 +312,12 @@ namespace SrvSurvey
             if (!Main.form.btnCodexShow.Enabled && FormShowCodex.activeForm != null)
                 FormShowCodex.activeForm.Close();
 
+            if (newMode == GameMode.MainMenu)
+            {
+                Program.closeAllPlotters(true);
+                return;
+            }
+
             var gameIsActive = game != null && Elite.isGameRunning && game.Commander != null;
 
             if (gameIsActive && Game.settings.autoShowPlotFSS && (newMode == GameMode.FSS || game?.mode == GameMode.FSS))
