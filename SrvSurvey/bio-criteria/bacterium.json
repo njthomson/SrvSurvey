@@ -24,6 +24,7 @@
       "query": [
         "     body [Icy,RockyIce]",
         "atmosType [Neon]",
+        "atmosComp [Neon >= 50]",
         "  gravity [0.26 ~ 0.62]",
         "     temp [20 ~ 61]",
         " pressure [0.0009 ~ 0.0082]"
@@ -44,6 +45,7 @@
       "query": [
         "     body [HMC,Rocky,RockyIce]",
         "atmosType [Ammonia]",
+        "atmosComp [Ammonia >= 62.39]",
         "  gravity [0.04 ~ 0.39]",
         "     temp [152 ~ 177]",
         " pressure [0.0009 ~ 0.015]"
@@ -57,6 +59,7 @@
         "     body [HMC,Rocky]",
         "  gravity [0.04 ~ 0.62]",
         "atmosType [CarbonDioxide]",
+        "atmosComp [CarbonDioxide >= 39.44]",
         "     temp [145 ~ 400]",
         " pressure [0.0009 ~ ]"
       ]
@@ -77,6 +80,7 @@
           "useCommonChildren": true,
           "query": [
             "atmosType [Methane]",
+            "atmosComp [Methane >= 50]",
             "  gravity [0.025 ~ 0.60]",
             "     temp [67 ~ 109]",
             " pressure [0.0009 ~ ]"
@@ -103,6 +107,7 @@
           "query": [
             "     body [HMC,Rocky,RockyIce]",
             "atmosType [SulphurDioxide]",
+            "atmosComp [SulphurDioxide >= 50]",
             "  gravity [0.04 ~ 0.62]",
             "     temp [132 ~ 500]",
             " pressure [0.0009 ~ ]"
@@ -113,10 +118,11 @@
           "query": [
             "     body [HMC,Rocky]",
             "atmosType [Water]",
+            "atmosComp [Water >= 100]",
             "  gravity [0.04 ~ 0.07]",
             "     temp [390 ~ 453]",
             " pressure [0.050 ~ ]",
-            "volcanism [None, Minor Water Magma]"
+            "volcanism [None,Minor Water Magma]"
           ]
         },
         {
@@ -137,6 +143,7 @@
       "species": "Informem",
       "query": [
         "atmosType [Nitrogen]",
+        "atmosComp [Nitrogen >= 50]",
         "  gravity [0.04 ~ 0.60]",
         "     temp [43 ~ 151]",
         " pressure [0.0009 ~ ]"
@@ -157,6 +164,7 @@
         "     body [Icy]",
         "  gravity [0.40 ~ 0.55]",
         "atmosType [Helium]",
+        "atmosComp [Helium >= 100]",
         "     temp [19 ~ 21]",
         " pressure [0.031 ~ ]"
       ],
@@ -189,6 +197,7 @@
           "useCommonChildren": true,
           "query": [
             "atmosType [Argon]",
+            "atmosComp [Argon >= 75]",
             "  gravity [0.04 ~ 0.45]",
             "     temp [50 ~ 172]",
             " pressure [0.0009 ~ 0.090]"
@@ -207,6 +216,7 @@
           "useCommonChildren": true,
           "query": [
             "atmosType [Helium]",
+            "atmosComp [Helium >= 100]",
             "  gravity [0.49 ~ 0.52]",
             "     temp [20 ~ 21]",
              " pressure [0.066 ~ ]"
@@ -216,6 +226,7 @@
           "useCommonChildren": true,
           "query": [
             "atmosType [Methane]",
+            "atmosComp [Methane >= 100]",
             "  gravity [0.03 ~ 0.06]",
             "     temp [84 ~ 108]",
             " pressure [0.034 ~ ]"
@@ -225,6 +236,7 @@
           "useCommonChildren": true,
           "query": [
             "atmosType [Neon]",
+            "atmosComp [Neon >= 50]",
             "  gravity [0.30 ~ 0.33]",
             "     temp [20 ~ 21]",
             " pressure [0.001 ~ 0.002]"
@@ -243,6 +255,7 @@
           "useCommonChildren": true,
           "query": [
             "atmosType [Nitrogen]",
+            "atmosComp [Nitrogen >= 100]",
             "  gravity [0.21 ~ 0.26]",
             "     temp [60 ~ 64]",
             " pressure [0.018 ~ 0.044]"
@@ -276,6 +289,7 @@
           "query": [
             "     body [Icy]",
             "atmosType [Argon]",
+            "atmosComp [Argon >= 100]",
             "  gravity [0.04 ~ 0.26]",
             "     temp [57 ~ 146]",
             " pressure [0.009 ~ 0.089]",
@@ -288,6 +302,7 @@
             "     body [Icy]",
             "  gravity [0.47 ~ 0.52]",
             "atmosType [Helium]",
+            "atmosComp [Helium >= 100]",
             "     temp [20 ~ 21]",
             " pressure [0.069 ~ ]",
             "volcanism [Methane]"
@@ -297,8 +312,9 @@
           "useCommonChildren": true,
           "query": [
             "     body [Icy]",
-            "  gravity [0.04 ~ 0.06]",
             "atmosType [Methane]",
+            "atmosComp [Methane >= 100]",
+            "  gravity [0.04 ~ 0.06]",
             "     temp [84 ~ 108]",
             " pressure [0.03 ~ ]",
             "volcanism [Methane]"
@@ -310,6 +326,7 @@
             "     body [Icy,RockyIce]",
             "  gravity [0.27 ~ 0.61]",
             "atmosType [Neon]",
+            "atmosComp [Neon >= 50]",
             "     temp [20 ~ 52]",
             " pressure [0.001 ~ 0.008]",
             "volcanism [CarbonDioxide,Methane]"
@@ -332,6 +349,7 @@
             "     body [Icy]",
             "  gravity [0.21 ~ 0.27]",
             "atmosType [Nitrogen]",
+            "atmosComp [Nitrogen >= 100]",
             "     temp [61 ~ 68]",
             " pressure [0.002 ~ 0.06]",
             "volcanism [CarbonDioxide,Methane]"
@@ -343,6 +361,7 @@
             "     body [Icy]",
             "  gravity [0.28 ~ 0.38]",
             "atmosType [Oxygen]",
+            "atmosComp [Oxygen >= 100]",
             "     temp [152 ~ 220]",
             " pressure [0.03 ~ 0.082]",
             "volcanism [CarbonDioxide,Methane]"
@@ -372,6 +391,7 @@
           "query": [
             "     body [Icy,RockyIce]",
             "atmosType [Argon]",
+            "atmosComp [Argon >= 50]",
             "  gravity [0.05 ~ 0.45]",
             "     temp [50 ~ 170]",
             " pressure [0.00098 ~ ]"
@@ -382,6 +402,7 @@
           "query": [
             "     body [HMC,Rocky]",
             "atmosType [CarbonDioxide]",
+            "atmosComp [CarbonDioxide >= 50]",
             "  gravity [0.26 ~ 0.62]",
             "     temp [167 ~ 483]",
             " pressure [0.001 ~ ]"
@@ -392,6 +413,7 @@
           "query": [
             "     body [Icy,Rocky]",
             "atmosType [Helium]",
+            "atmosComp [Helium >= 100]",
             "  gravity [0.49 ~ 0.53]",
             "     temp [20 ~ 21]",
             " pressure [0.067 ~ ]",
@@ -403,6 +425,7 @@
           "query": [
             "     body [Icy,Rocky]",
             "atmosType [Methane]",
+            "atmosComp [Methane >= 100]",
             "  gravity [0.03 ~ 0.14]",
             "     temp [78 ~ 109]",
             " pressure [0.012 ~ ]",
@@ -414,6 +437,7 @@
           "query": [
             "     body [Icy,RockyIce]",
             "atmosType [Neon]",
+            "atmosComp [Neon >= 50]",
             "  gravity [0.28 ~ 0.62]",
             "     temp [20 ~ 71]",
             " pressure [0.001 ~ 0.008]",
@@ -435,6 +459,7 @@
           "useCommonChildren": true,
           "query": [
             "atmosType [SulphurDioxide]",
+            "atmosComp [SulphurDioxide >= 50]",
             "  gravity [0.18 ~ 0.62]",
             "     temp [148 ~ 500]",
             " pressure [0.00098 ~ ]"
@@ -445,6 +470,7 @@
           "query": [
             "     body [HMC,Rocky]",
             "atmosType [Water]",
+            "atmosComp [Water >= 100]",
             "  gravity [0.04 ~ 0.07]",
             "     temp [392 ~ 452]",
             " pressure [0.052 ~ ]",
@@ -455,6 +481,7 @@
           "useCommonChildren": true,
           "query": [
             "atmosType [Oxygen]",
+            "atmosComp [Oxygen >= 79.89]",
             "  gravity [0.24 ~ 0.53]",
             "     temp [152 ~ 240]",
             " pressure [0.017 ~ ]",
@@ -465,6 +492,7 @@
           "useCommonChildren": true,
           "query": [
             "atmosType [Ammonia]",
+            "atmosComp [Ammonia >= 100]",
             "  gravity [0.03 ~ 0.34]",
             "     temp [164 ~ 177]",
             " pressure [0.0022 ~ 0.0157]",
@@ -490,6 +518,7 @@
           "query": [
             "     body [Icy,Rocky,RockyIce]",
             "atmosType [Argon]",
+            "atmosComp [Argon >= 60]",
             "  gravity [0.17 ~ 0.34]",
             "     temp [58 ~ 229]",
             " pressure [0.0009 ~ ]",
@@ -501,6 +530,7 @@
           "query": [
             "     body [Icy,RockyIce]",
             "atmosType [Neon]",
+            "atmosComp [Neon >= 50]",
             "  gravity [0.27 ~ 0.61]",
             "     temp [20 ~ 51]",
             " pressure [0.0009 ~ 0.008]",
@@ -523,6 +553,7 @@
           "query": [
             "     body [Icy]",
             "atmosType [Helium]",
+            "atmosComp [Helium >= 100]",
             "  gravity [0.50 ~ 0.54]",
             "     temp [20 ~ 21]",
             " pressure [0.06 ~ ]",
@@ -534,6 +565,7 @@
           "query": [
             "     body [Icy,Rocky,RockyIce]",
             "atmosType [Ammonia]",
+            "atmosComp [Ammonia >= 100]",
             "  gravity [0.04 ~ 0.10]",
             "     temp [161 ~ 176]",
             " pressure [0.002 ~ 0.014]",
@@ -545,6 +577,7 @@
           "query": [
             "     body [Icy]",
             "atmosType [Nitrogen]",
+            "atmosComp [Nitrogen >= 100]",
             "  gravity [0.21 ~ 0.25]",
             "     temp [59 ~ 80]",
             " pressure [0.002 ~ ]",
@@ -556,6 +589,7 @@
           "query": [
             "     body [Icy,RockyIce]",
             "atmosType [Oxygen]",
+            "atmosComp [Oxygen >= 57.84]",
             "  gravity [0.24 ~ 0.39]",
             "     temp [154 ~ 220]",
             " pressure [0.019 ~ ]",
@@ -567,6 +601,7 @@
           "query": [
             "     body [Rocky]",
             "atmosType [Water]",
+            "atmosComp [Water >= 100]",
             "  gravity [0.04 ~ 0.06]",
             "     temp [406 ~ 442]",
             " pressure [0.06 ~ ]",
@@ -580,6 +615,7 @@
       "species": "Vesicula",
       "query": [
         "atmosType [Argon]",
+        "atmosComp [Argon >= 50]",
         "  gravity [0.03 ~ 0.52]",
         "     temp [50 ~ 267]",
         " pressure [0.0009 ~ ]"
@@ -598,6 +634,7 @@
       "species": "Volu",
       "query": [
           "atmosType [Oxygen]",
+          "atmosComp [Oxygen >= 65.98]",
           "  gravity [0.05 ~ 0.61]",
           "     temp [143 ~ 246]",
           " pressure [0.004 ~ ]"

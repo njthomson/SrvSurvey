@@ -24,6 +24,7 @@
       "useCommonChildren": true,
       "query": [
         "atmosType [CarbonDioxide]",
+        "atmosComp [CarbonDioxide >= 97.5]",
         "  gravity [0.04 ~ 0.26]",
         "     temp [175 ~ 190]",
         " pressure [0.016 ~ ]",
@@ -36,6 +37,7 @@
       "useCommonChildren": true,
       "query": [
           "atmosType [CarbonDioxide]",
+          "atmosComp [CarbonDioxide >= 97.5]",
           "  gravity [0.04 ~ 0.27]",
           "     temp [180 ~ 190]",
           " pressure [0.0017 ~ ]",
@@ -48,6 +50,7 @@
       "useCommonChildren": true,
       "query": [
           "atmosType [CarbonDioxide]",
+          "atmosComp [CarbonDioxide >= 97.5]",
           "  gravity [0.04 ~ 0.27]",
           "     temp [190 ~ 196]",
           " pressure [0.054 ~ ]",
@@ -60,6 +63,7 @@
       "useCommonChildren": true,
       "query": [
           "atmosType [Ammonia]",
+          "atmosComp [Ammonia >= 100]",
           "  gravity [0.04 ~ 0.28]",
           "     temp [152 ~ 182]",
           " pressure [0.0009 ~ 0.0134]"
@@ -71,6 +75,7 @@
       "useCommonChildren": true,
       "query": [
         "atmosType [Ammonia]",
+        "atmosComp [Ammonia >= 100]",
         "  gravity [0.04 ~ 0.28]",
         "     temp [170 ~ 177]",
         " pressure [0.0009 ~ 0.013]"

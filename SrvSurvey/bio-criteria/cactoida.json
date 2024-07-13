@@ -22,6 +22,7 @@
       "query": [
         "     body [Rocky,HMC]",
         "atmosType [CarbonDioxide]",
+        "atmosComp [CarbonDioxide >= 97.5]",
         "  gravity [0.04 ~ 0.28]",
         "     temp [180 ~ 196]",
         " pressure [0.025 ~ ]",
@@ -36,6 +37,7 @@
       "query": [
         "     body [Rocky,HMC]",
         "atmosType [Ammonia]",
+        "atmosComp [Ammonia >= 100]",
         "  gravity [0.04 ~ 0.29]",
         "     temp [160 ~ 177]",
         " pressure [0.00098 ~ 0.0133]",
@@ -49,6 +51,7 @@
       "query": [
         "     body [Rocky,HMC]",
         "atmosType [Ammonia]",
+        "atmosComp [Ammonia >= 100]",
         "  gravity [0.04 ~ 0.29]",
         "     temp [160 ~ 177]",
         " pressure [0.00098 ~ 0.0134]",
@@ -61,6 +64,7 @@
       "query": [
         "     body [Rocky,HMC]",
         "atmosType [CarbonDioxide]",
+        "atmosComp [CarbonDioxide >= 97.5]",
         "  gravity [0.04 ~ 0.28]",
         "     temp [180 ~ 196]",
         " pressure [0.025 ~ ]",
@@ -91,6 +95,7 @@
           "query": [
             "     body [Rocky,HMC]",
             "atmosType [Water]",
+            "atmosComp [Water >= 100]",
             "  gravity [0.04 ~ 0.07]",
             "     temp [390 ~ 450]",
             " pressure [0.05 ~ ]",
@@ -102,6 +107,7 @@
           "query": [
             "     body [Rocky]",
             "atmosType [SulphurDioxide]",
+            "atmosComp [SulphurDioxide >= 100]",
             "  gravity [0.04 ~ 0.28]",
             "     temp [160 ~ 207]",
             " pressure [0.001 ~ 0.0035]"
@@ -111,7 +117,6 @@
           "query": [
             "     body [Rocky,HMC]",
             "atmosType [CarbonDioxide]",
-            "atmosComp [SulphurDioxide >= 0.99]",
             "  gravity [0.05 ~ 0.27]",
             "     temp [180 ~ 196]",
             " pressure [0.026 ~ 0.097]",

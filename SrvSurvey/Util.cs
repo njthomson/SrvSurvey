@@ -763,6 +763,16 @@ namespace SrvSurvey
                 return char.ToUpperInvariant(txt[0]) + txt.Substring(1);
         }
 
+        public static string compositionToCamel(string key)
+        {
+            // as needed, change "Sulphur dioxide" into "SulphurDioxide"
+            var i = key.IndexOf(' ');
+            if (i < 0)
+                return key;
+            else
+                return key.Substring(0, i) + key.Substring(i + 1, 1).ToUpperInvariant() + key.Substring(i + 2);
+        }
+
         public static bool isMatLevelThree(string matName)
         {
             switch (matName.ToLowerInvariant())

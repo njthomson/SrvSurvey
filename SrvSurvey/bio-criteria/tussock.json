@@ -19,6 +19,7 @@
       "query": [
         "     body [HMC,Rocky]",
         "atmosType [CarbonDioxide]",
+        "atmosComp [CarbonDioxide >= 97.5]",
         "  gravity [0.04 ~ 0.28]",
         "     temp [172 ~ 190]",
         " pressure [0.016 ~ ]",
@@ -35,6 +36,7 @@
           "query": [
             "     body [RockyIce]",
             "atmosType [Argon]",
+            "atmosComp [Argon >= 59.7]",
             "  gravity [0.22 ~ 0.28]",
             "     temp [80 ~ 129]",
             " pressure [0.0009 ~ ]"
@@ -45,6 +47,7 @@
           "query": [
               "     body [Rocky,RockyIce]",
               "atmosType [Methane]",
+              "atmosComp [Methane >= 100]",
               "  gravity [0.03 ~ 0.28]",
               "     temp [90 ~ 109]",
               " pressure [0.0014 ~ ]"
@@ -59,10 +62,11 @@
       "query": [
           "     body [HMC,Rocky]",
           "atmosType [CarbonDioxide]",
+          "atmosComp [CarbonDioxide >= 97.5]",
           "  gravity [0.04 ~ 0.30]",
           "     temp [181 ~ 191]",
-          "volcanism [None]",
           " pressure [0.027 ~ ]",
+          "volcanism [None]",
           "  regions [3,7,8,15,16,17,18,19,20,21,22,23,30,32,33,34,35,36,38,39,40]"
       ]
     },
@@ -73,6 +77,7 @@
       "query": [
           "     body [HMC,Rocky]",
           "atmosType [Ammonia]",
+          "atmosComp [Ammonia >= 100]",
           "  gravity [0.04 ~ 0.28]",
           "     temp [152 ~ 177]",
           " pressure [0.0009 ~ 0.0134]",
@@ -86,6 +91,7 @@
       "query": [
           "     body [HMC,Rocky]",
           "atmosType [Ammonia]",
+          "atmosComp [Ammonia >= 100]",
           "  gravity [0.04 ~ 0.28]",
           "     temp [152 ~ 177]",
           "  regions [1,2,4,7,8,9,16,17,18,33,34,35]"
@@ -98,6 +104,7 @@
       "query": [
           "     body [HMC,Rocky]",
           "atmosType [Ammonia]",
+          "atmosComp [Ammonia >= 100]",
           "  gravity [0.04 ~ 0.28]",
           "     temp [152 ~ 177]",
           " pressure [0.0009 ~ 0.071]",
@@ -111,10 +118,11 @@
       "query": [
           "     body [HMC,Rocky]",
           "atmosType [CarbonDioxide]",
+          "atmosComp [CarbonDioxide >= 97.5]",
           "  gravity [0.04 ~ 0.20]",
-          "volcanism [None]",
           "     temp [160 ~ 170]",
           " pressure [0.0028 ~ .053]",
+          "volcanism [None]",
           "  regions [3,7,8,15,16,17,18,19,20,21,22,23,30,32,33,34,35,36,38,39,40]"
       ]
     },
@@ -125,10 +133,11 @@
       "query": [
           "     body [HMC,Rocky]",
           "atmosType [CarbonDioxide]",
+          "atmosComp [CarbonDioxide >= 97.5]",
           "  gravity [0.04 ~ 0.10]",
-          "volcanism [None]",
           "     temp [145 ~ 154]",
           " pressure [0.0028 ~ 0.0113]",
+          "volcanism [None]",
           "  regions [3,7,8,15,16,17,18,19,20,21,22,23,30,32,33,34,35,36,38,39,40]"
       ]
     },
@@ -139,10 +148,11 @@
       "query": [
           "     body [HMC,Rocky]",
           "atmosType [CarbonDioxide]",
+          "atmosComp [CarbonDioxide >= 97.5]",
           "  gravity [0.04 ~ 0.28]",
-          "volcanism [None]",
-          " pressure [0.0029 ~ ]",
           "     temp [147 ~ 196]",
+          " pressure [0.0029 ~ ]",
+          "volcanism [None]",
           "  regions [1,2,5,6,13,14,27,29,31,37,41]"
       ]
     },
@@ -152,11 +162,12 @@
       "useCommonChildren": true,
       "query": [
           "     body [HMC,Rocky]",
-          "  gravity [0.04 ~ 0.28]",
           "atmosType [CarbonDioxide]",
-          "volcanism [None]",
+          "atmosComp [CarbonDioxide >= 97.5]",
+          "  gravity [0.04 ~ 0.28]",
           "     temp [145 ~ 197]",
           " pressure [0.0029 ~ ]",
+          "volcanism [None]",
           "  regions [1,4,9,10,11,12,16,24,25,26,28,42]"
       ]
     },
@@ -167,6 +178,7 @@
       "query": [
           "     body [HMC,Rocky]",
           "atmosType [CarbonDioxide]",
+          "atmosComp [CarbonDioxide >= 97.5]",
           "  gravity [0.04 ~ 0.24]",
           "     temp [171 ~ 178]",
           " pressure [0.0106 ~ 0.0704]",
@@ -180,8 +192,9 @@
       "useCommonChildren": true,
       "query": [
           "     body [HMC,Rocky]",
-          "  gravity [0.04 ~ 0.28]",
           "atmosType [SulphurDioxide]",
+          "atmosComp [SulphurDioxide >= 100]",
+          "  gravity [0.04 ~ 0.28]",
           "     temp [132 ~ 207]",
           " pressure [0.0009 ~ 0.022]"
       ]
@@ -193,6 +206,7 @@
       "query": [
           "     body [HMC,Rocky]",
           "atmosType [CarbonDioxide]",
+          "atmosComp [CarbonDioxide >= 97.5]",
           "  gravity [0.04 ~ 0.28]",
           "volcanism [None]",
           "     temp [191 ~ 196]",
@@ -207,6 +221,7 @@
       "query": [
           "     body [HMC,Rocky]",
           "atmosType [CarbonDioxide]",
+          "atmosComp [CarbonDioxide >= 97.5]",
           "  gravity [0.04 ~ 0.17]",
           "volcanism [None]",
           "     temp [155 ~ 188]",
@@ -220,8 +235,9 @@
       "useCommonChildren": true,
       "query": [
           "     body [HMC,Rocky]",
-          "  gravity [0.04 ~ 0.07]",
           "atmosType [Water]",
+          "atmosComp [Water >= 100]",
+          "  gravity [0.04 ~ 0.07]",
           "     temp [390 ~ 450]",
           " pressure [0.050 ~ ]",
           "volcanism [None,Minor Water Magma]"

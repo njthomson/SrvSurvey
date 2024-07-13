@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using SrvSurvey.canonn;
 using SrvSurvey.game;
 using SrvSurvey.units;
@@ -51,10 +52,7 @@ namespace SrvSurvey.net
             var factionsTxt = string.Join(",", factions.Select(_ => $"\"{_}\""));
             var json = "{\"filters\":{\"minor_faction_presences\":{\"value\":[" + factionsTxt + "]}},\"sort\":[{\"distance\":{\"direction\":\"asc\"}}],\"size\":200,\"page\":0,\"reference_system\":\"Banka\"}";
 
-            var body = new StringContent(
-                json,
-                Encoding.ASCII,
-                "application/json");
+            var body = new StringContent(json, Encoding.ASCII, "application/json");
 
             var response = await Spansh.client.PostAsync($"https://spansh.co.uk/api/systems/search", body);
             var responseText = await response.Content.ReadAsStringAsync();
@@ -103,6 +101,46 @@ namespace SrvSurvey.net
 
             Game.log($"Processed {results.size} of {results.count} results");
         }
+
+        public async Task getClause(string genus, string species, string gas)
+        {
+            Game.log($"Querying ");
+            var txt = File.ReadAllText(@"d:\query.json");
+            var query = JsonConvert.DeserializeObject<JObject>(txt);
+
+            query["filters"]["landmarks"][0]["type"] = genus;
+            query["filters"]["landmarks"][0]["subtype"][0] = $"{genus} {species}";
+
+            query["filters"]["atmosphere"]["value"][0] = $"Thin {gas}";
+
+            query["sort"][0]["atmosphere_composition"][0]["name"] = gas;
+
+
+            var json = JsonConvert.SerializeObject(query);
+            var body = new StringContent(json, Encoding.ASCII, "application/json");
+
+            var response = await Spansh.client.PostAsync($"https://spansh.co.uk/api/bodies/search", body);
+            var responseText = await response.Content.ReadAsStringAsync();
+            var results = JsonConvert.DeserializeObject<SystemsSearchResults>(responseText)!;
+            var obj = JsonConvert.DeserializeObject<JObject>(responseText)!;
+
+            if (obj["count"].Value<int>() == 0)
+            {
+                Game.log("No results?");
+                return;
+            }
+
+            var atmosComp = obj["results"].ToArray().First()["atmosphere_composition"].First(ac => ac["name"].Value<string>() == gas)!;
+            var name = Util.compositionToCamel(atmosComp["name"].Value<string>()!);
+            var value = atmosComp["share"].Value<float>()!.ToString("n2");
+            if (value == "100.00") value = "100";
+
+            var clause = $"\"atmosComp [{name} >= {value}]\",";
+
+            Game.log($"'{gas}' clause for '{genus} {species}' : {clause}");
+            Clipboard.SetText(clause);
+        }
+
     }
 
     internal class ApiSystemDump
@@ -216,6 +254,8 @@ namespace SrvSurvey.net
         public long population;
         public List<MinorFactionPresence> minor_faction_presences;
     }
+
+
 
     class MinorFactionSystem
     {

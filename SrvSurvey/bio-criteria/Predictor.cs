@@ -256,19 +256,29 @@ namespace BioCriteria
                     if (realBody?.signals?.biology != null)
                     {
                         var countSuccess = predictions.Count(p => realBody.signals.biology.Contains(p));
-                        var missed = realBody.signals.biology.Where(b => !predictions.Contains(b)).ToList();
+                        var missed = realBody.signals.biology.Where(b => !predictions.Contains(b)).Order().ToList();
+                        var wrong = predictions.Where(p => !realBody.signals.biology.Contains(p)).Order().ToList();
                         var countWrong = predictions.Count - countSuccess;
-                        var txt = $"\r\n** '{body.name}' ** count: {realBody.signals.biology.Count}, success: {countSuccess}, missed: {missed.Count}, wrong: {countWrong}\r\nREAL:\r\n\t" + string.Join("\r\n\t", realBody.signals.biology) + $"\r\nPREDICTED:\r\n\t" + string.Join("\r\n\t", predictions) + "\r\n";
-                        Game.log(txt);
+                        var txt = $"\r\n** {body.system.address} '{body.name}' ({body.id}) - actual count: {realBody.signals.biology.Count}, success: {countSuccess}, missed: {missed.Count}, wrong: {wrong.Count} **\r\nREAL:\r\n\t" + string.Join("\r\n\t", realBody.signals.biology) + $"\r\nPREDICTED WRONG:\r\n\t" + string.Join("\r\n\t", wrong) + "\r\n";
+
                         if (missed.Count > 0)
                         {
-                            Game.log($"Missed: {body.system.address} / '{body.name}' - {body.id}\r\n\t" + string.Join("\r\n\t", missed));
+                            txt += $"MISSED: \r\n\t" + string.Join("\r\n\t", missed);
                             Predictor.logOrganism = missed.First().Split(" ")[1];
+                            Game.log(txt);
+                        }
+                        else if (wrong.Count > 5)
+                        {
+                            Game.log(txt);
+                        }
+                        else
+                        {
+                            Game.log(txt);
                         }
                     }
                     else
                     {
-                        Game.log($"\r\n** '{body.name}' predicted: **\r\n\t" + string.Join("\r\n\t", predictions) + "\r\n");
+                        //Game.log($"\r\n** {body.system.address} '{body.name}' ({body.id}) predicted: **\r\n\t" + string.Join("\r\n\t", predictions) + "\r\n");
                     }
 
                 }
@@ -398,14 +408,22 @@ namespace BioCriteria
                 //14096678161971, //   Clooku HI-R d5-410         - Inner Scutum-Centaurus Arm
                 //175621288252019, //  Dumbio GN-B d13-5111       - Odin's Hold
 
-                /* more ad-hoc systems */
+                ///* more ad-hoc systems */
                 //7373867459, //       Ushosts LC-M d7-0        - Elysian Shore
-                113170581619, //     Slegi XV-C d13-3         - Elysian Shore
+                //113170581619, //     Slegi XV-C d13-3         - Elysian Shore
                 //8055311831762, //    NLTT 55164               - Inner Orion Spur
                 //721911088556658, //  Eorld Byoe BQ-G c13-2626 - Ryker's Hope
                 //1005802506067, //    Heart Sector ZE-A d29    - Elysian Shore
                 //2789153444971, //    Phimbo GC-D d12-81       - Perseus Arm
                 //33682769023907, //   Phroi Pra PP-V d3-980    - Galactic Centre
+                //27011785954, //     Cumbou YH-F c26-0
+
+                ///* Aleoida Coronamus - Lime (L star systems) */
+                //2492825675329, // Pra Dryoo UL-X b7-1
+                //633272537650, // Synuefai EA-U c5-2
+                //962207294841, // Hyuedeae UG-W b43-0
+                //1726677521610, // Bleae Thaa XX-H c23-6
+                //516869988849, // Slegue TP-Z b57-0
             };
 
             Game.log($"Testing {testSystems.Count} systems ...");

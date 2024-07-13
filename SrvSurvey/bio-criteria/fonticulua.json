@@ -25,6 +25,7 @@
       "query": [
         "     body [Icy,RockyIce]",
         "atmosType [Argon]",
+        "atmosComp [Argon >= 50]",
         "  gravity [0.03 ~ 0.29]",
         "     temp [43 ~ 195]",
         " pressure [0.0009 ~ ]"
@@ -37,6 +38,7 @@
       "query": [
         "     body [Icy,RockyIce]",
         "atmosType [Methane]",
+        "atmosComp [Methane >= 100]",
         "  gravity [0.025 ~ 0.07]",
         "     temp [83 ~ 109]",
         " pressure [0.03 ~ ]",
@@ -50,6 +52,7 @@
       "query": [
         "     body [Icy]",
         "atmosType [Oxygen]",
+        "atmosComp [Oxygen >= 57.84]",
         "  gravity [0.24 ~ 0.28]",
         "     temp [143 ~ 200]",
         " pressure [0.012 ~ 0.081]"
@@ -71,15 +74,16 @@
     {
       "species": "Segmentatus",
       "children": [
-          {
-            "useCommonChildren": true,
-            "query": [
+        {
+          "useCommonChildren": true,
+          "query": [
             "     body [Icy]",
             "atmosType [Neon]",
+            "atmosComp [Neon >= 100]",
             "  gravity [0.26 ~ 0.28]",
             "     temp [50 ~ 57]",
             " pressure [0.0009 ~ 0.0012]"
-          ]
+        ]
         },
         {
           "useCommonChildren": true,

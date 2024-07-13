@@ -20,6 +20,7 @@
       "query": [
         "     body [Rocky]",
         "atmosType [CarbonDioxide]",
+        "atmosComp [CarbonDioxide >= 97.5]",
         "  gravity [0.04 ~ 0.24]",
         "     temp [190 ~ 199]",
         " pressure [0.054 ~ ]",
@@ -32,6 +33,7 @@
       "query": [
         "     body [Rocky]",
         "atmosType [Water]",
+        "atmosComp [Water >= 100]",
         "  gravity [0.04 ~ 0.07]",
         "     temp [394 ~ 452]",
         " pressure [0.053 ~ ]",
@@ -45,6 +47,7 @@
       "query": [
         "     body [HMC]",
         "atmosType [CarbonDioxide]",
+        "atmosComp [CarbonDioxide >= 97.5]",
         "  gravity [0.06 ~ 0.27]",
         "     temp [190 ~ 196]",
         " pressure [0.054 ~ ]",
@@ -57,6 +60,7 @@
       "query": [
         "     body [HMC]",
         "atmosType [Water]",
+        "atmosComp [Water >= 100]",
         "  gravity [0.04 ~ 0.07]",
         "     temp [390 ~ 452]",
         " pressure [0.050 ~ ]",
@@ -70,6 +74,7 @@
       "query": [
         "     body [Rocky]",
         "atmosType [CarbonDioxide]",
+        "atmosComp [CarbonDioxide >= 97.5]",
         "  gravity [0.04 ~ 0.25]",
         "     temp [190 ~ 196]",
         " pressure [0.054 ~ ]",
@@ -83,6 +88,7 @@
       "query": [
         "     body [Rocky]",
         "atmosType [Water]",
+        "atmosComp [Water >= 100]",
         "  gravity [0.04 ~ 0.07]",
         "     temp [392 ~ 452]",
         " pressure [0.052 ~ ]",

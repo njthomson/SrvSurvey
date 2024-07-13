@@ -38,6 +38,7 @@
           "query": [
             "     body [Icy,Rocky]",
             "atmosType [Argon]",
+            "atmosComp [Argon >= 61.52]",
             "  gravity [0.03 ~ 0.27]",
             "     temp [56 ~ 147]",
             " pressure [0.0009 ~ 0.097]",
@@ -49,6 +50,7 @@
           "query": [
             "     body [Icy]",
             "atmosType [Methane]",
+            "atmosComp [Methane >= 100]",
             "  gravity [0.03 ~ 0.05]",
             "     temp [84 ~ 109]",
             " pressure [0.031 ~ ]",
@@ -60,6 +62,7 @@
           "query": [
             "     body [Icy]",
             "atmosType [Neon]",
+            "atmosComp [Neon >= 100]",
             "  gravity [0.26 ~ 0.27]",
             "     temp [40 ~ 52]",
             " pressure [0.001 ~ ]",
@@ -71,6 +74,7 @@
           "query": [
             "     body [Icy]",
             "atmosType [Nitrogen]",
+            "atmosComp [Nitrogen >= 100]",
             "  gravity [0.21 ~ 0.26]",
             "     temp [57 ~ 75]",
             " pressure [0.001 ~ ]",
@@ -82,6 +86,7 @@
           "query": [
             "     body [Icy]",
             "atmosType [Oxygen]",
+            "atmosComp [Oxygen >= 100]",
             "  gravity [0.26 ~ 0.27]",
             "     temp [156 ~ 177]",
             " pressure [0.02 ~ ]",
@@ -93,6 +98,7 @@
           "query": [
             "     body [Icy]",
             "atmosType [SulphurDioxide]",
+            "atmosComp [SulphurDioxide >= 71.05]",
             "  gravity [0.19 ~ 0.27]",
             "     temp [149 ~ 272]",
             " pressure [0.0014 ~ ]",
@@ -118,6 +124,7 @@
           "query": [
             "     body [HMC,Rocky,RockyIce]",
             "atmosType [Ammonia]",
+            "atmosComp [Ammonia >= 100]",
             "  gravity [0.04 ~ 0.08]",
             "     temp [161 ~ 177]",
             " pressure [0.0017 ~ 0.0134]",
@@ -129,6 +136,7 @@
           "query": [
             "     body [Rocky,RockyIce]",
             "atmosType [Argon]",
+            "atmosComp [Argon >= 100]",
             "  gravity [0.07 ~ 0.27]",
             "     temp [54 ~ 121]",
             " pressure [0.001 ~ 0.081]",
@@ -140,6 +148,7 @@
           "query": [
             "     body [HMC,Rocky]",
             "atmosType [Methane]",
+            "atmosComp [Methane >= 100]",
             "  gravity [0.04 ~ 0.13]",
             "     temp [77 ~ 109]",
             " pressure [0.011 ~ ]",
@@ -151,6 +160,7 @@
           "query": [
             "     body [Rocky,RockyIce]",
             "atmosType [SulphurDioxide]",
+            "atmosComp [SulphurDioxide >= 100]",
             "  gravity [0.23 ~ 0.27]",
             "     temp [147 ~ 204]",
             " pressure [0.0012 ~ 0.036]",
@@ -176,6 +186,7 @@
           "query": [
             "     body [Icy]",
             "atmosType [Argon]",
+            "atmosComp [Argon >= 57.35]",
             "  gravity [0.04 ~ 0.27]",
             "     temp [50 ~ 141]",
             " pressure [0.0009 ~ 0.089]",
@@ -198,6 +209,7 @@
           "query": [
             "     body [Icy]",
             "atmosType [Methane]",
+            "atmosComp [Methane >= 100]",
             "  gravity [0.24 ~ 0.27]",
             "     temp [83 ~ 109]",
             " pressure [0.032 ~ ]",
@@ -220,6 +232,7 @@
           "query": [
             "     body [Icy]",
             "atmosType [Nitrogen]",
+            "atmosComp [Nitrogen >= 100]",
             "  gravity [0.21 ~ 0.27]",
             "     temp [60 ~ 81]",
             " pressure [0.0018 ~ 0.044]",
@@ -231,6 +244,7 @@
           "query": [
             "     body [Icy]",
             "atmosType [SulphurDioxide]",
+            "atmosComp [SulphurDioxide >= 100]",
             "  gravity [0.21 ~ 0.27]",
             "     temp [151 ~ 249]",
             " pressure [0.0009 ~ 0.095]",

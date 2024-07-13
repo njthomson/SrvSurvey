@@ -9,6 +9,7 @@
       "species": "Aureolas",
       "query": [
         "atmosType [Ammonia]",
+        "atmosComp [Ammonia >= 100]",
         "  gravity [0.04 ~ 0.28]",
         "     temp [152 ~ 177]",
         " pressure [0.00098 ~ 0.0134]"
@@ -29,12 +30,13 @@
     {
       "species": "Biconcavis",
       "query": [
-          "atmosType [Nitrogen]",
-          "  gravity [0.05 ~ 0.27]",
-          "     temp [42 ~ 51]",
-          " pressure [0.0009 ~ 0.0047]",
-          "volcanism [None]"
-        ],
+        "atmosType [Nitrogen]",
+        "atmosComp [Nitrogen >= 100]",
+        "  gravity [0.05 ~ 0.27]",
+        "     temp [42 ~ 51]",
+        " pressure [0.0009 ~ 0.0047]",
+        "volcanism [None]"
+      ],
       "children": [
         { "variant": "White", "query": [ " mats [Technetium]" ] },
         { "variant": "Yellow", "query": [ "mats [Tellurium]" ] },
@@ -48,12 +50,13 @@
     {
       "species": "Labiata",
       "query": [
-          "atmosType [CarbonDioxide]",
-          "  gravity [0.04 ~ 0.27]",
-          "     temp [150 ~ 199]",
-          " pressure [0.002 ~ ]",
-          "volcanism [None]"
-        ],
+        "atmosType [CarbonDioxide]",
+        "atmosComp [CarbonDioxide >= 97.5]",
+        "  gravity [0.04 ~ 0.27]",
+        "     temp [150 ~ 199]",
+        " pressure [0.002 ~ ]",
+        "volcanism [None]"
+      ],
       "children": [
         { "variant": "Indigo", "query": [ "   star [B]" ] },
         { "variant": "Teal", "query": [ "     star [A]" ] },
@@ -83,6 +86,7 @@
           "useCommonChildren": true,
           "query": [
             "atmosType [Ammonia]",
+            "atmosComp [Ammonia >= 100]",
             "  gravity [0.04 ~ 0.06]",
             "     temp [163 ~ 177]",
             " pressure [0.009 ~ 0.0132]",
@@ -93,6 +97,7 @@
           "useCommonChildren": true,
           "query": [
             "atmosType [CarbonDioxide]",
+            "atmosComp [CarbonDioxide >= 97.5]",
             "  gravity [0.04 ~ 0.28]",
             "     temp [180 ~ 196]",
             " pressure [0.025 ~ ]",
@@ -103,6 +108,7 @@
           "useCommonChildren": true,
           "query": [
             "atmosType [Methane]",
+            "atmosComp [Methane >= 100]",
             "  gravity [0.04 ~ 0.12]",
             "     temp [79 ~ 102]",
             " pressure [0.012 ~ 0.082]",
@@ -113,6 +119,7 @@
           "useCommonChildren": true,
           "query": [
             "atmosType [Water]",
+            "atmosComp [Water >= 100]",
             "  gravity [0.04 ~ 0.07]",
             "     temp [390 ~ 452]",
             " pressure [0.052 ~ ]",

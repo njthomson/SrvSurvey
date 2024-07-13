@@ -23,6 +23,7 @@
           "useCommonChildren": true,
           "query": [
             "atmosType [Argon]",
+            "atmosComp [Argon >= 50]",
             "  gravity [0.03 ~ 0.28]",
             "     temp [50 ~ 150]",
             " pressure [0.0009 ~ ]"
@@ -41,6 +42,7 @@
           "useCommonChildren": true,
           "query": [
             "atmosType [Neon]",
+            "atmosComp [Neon >= 100]",
             "  gravity [0.27 ~ 0.28]",
             "     temp [20 ~ 41]",
             " pressure [0.0009 ~ 0.002]"
@@ -77,6 +79,7 @@
           "useCommonChildren": true,
           "query": [
             "atmosType [Argon]",
+            "atmosComp [Argon >= 50]",
             "  gravity [0.03 ~ 0.28]",
             "     temp [50 ~ 149]",
             " pressure [0.0009 ~ ]"

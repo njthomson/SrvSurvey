@@ -37,6 +37,7 @@
           "useCommonChildren": true,
           "query": [
             "atmosType [CarbonDioxide]",
+            "atmosComp [CarbonDioxide >= 50]",
             "  gravity [0.04 ~ 0.59]",
             "     temp [191 ~ 371]",
             "pressure [0.001 ~ ]"
@@ -56,6 +57,7 @@
           "useCommonChildren": true,
           "query": [
             "atmosType [Oxygen]",
+            "atmosComp [Oxygen >= 100]",
             "  gravity [0.40 ~ 0.58]",
             "     temp [200 ~ 245]",
             " pressure [0.028 ~ ]"
@@ -65,6 +67,7 @@
           "useCommonChildren": true,
           "query": [
             "atmosType [SulphurDioxide]",
+            "atmosComp [SulphurDioxide >= 50]",
             "  gravity [0.27 ~ 0.54]",
             "     temp [191 ~ 373]",
             " pressure [0.00099 ~ ]"
@@ -81,6 +84,7 @@
           "query": [
             "     body [Rocky]",
             "atmosType [CarbonDioxide]",
+            "atmosComp [CarbonDioxide >= 50]",
             "  gravity [0.04 ~ 0.47]",
             "     temp [165 ~ 190]",
             " pressure [0.0037 ~ ]",
@@ -104,6 +108,7 @@
           "query": [
             "     body [Rocky]",
             "atmosType [SulphurDioxide]",
+            "atmosComp [SulphurDioxide >= 50]",
             "  gravity [0.27 ~ 0.41]",
             "     temp [165 ~ 190]",
             " pressure [0.00099 ~ 0.094]",
@@ -124,6 +129,7 @@
           "useCommonChildren": true,
           "query": [
             " atmosType [SulphurDioxide]",
+            "atmosComp [SulphurDioxide >= 50.24]",
             "   gravity [0.04 ~ 0.54]",
             "      temp [191 ~ 377]",
             "  pressure [0.001 ~ 0.094]",
@@ -135,6 +141,7 @@
           "useCommonChildren": true,
           "query": [
             "atmosType [CarbonDioxide]",
+            "atmosComp [CarbonDioxide >= 50]",
             "  gravity [0.45 ~ 0.55]",
             "     temp [205 ~ 246]",
             " pressure [0.037 ~ 0.096]",
@@ -157,6 +164,7 @@
           "useCommonChildren": true,
           "query": [
             "atmosType [Oxygen]",
+            "atmosComp [Oxygen >= 99.46]",
             "  gravity [0.41 ~ 0.45]",
             "     temp [207 ~ 237]",
             " pressure [0.026 ~ 0.096]",
@@ -173,18 +181,8 @@
           "useCommonChildren": true,
           "query": [
             "     body [Rocky]",
-            "atmosType [SulphurDioxide]",
-            "  gravity [0.04 ~ 0.34]",
-            "     temp [57 ~ 177]",
-            " pressure [0.0009 ~ 0.0134]",
-            "  regions [1,4,7,8,9,16,17,18,33,34,35]"
-          ]
-        },
-        {
-          "useCommonChildren": true,
-          "query": [
-            "     body [Rocky]",
             "atmosType [Ammonia]",
+            "atmosComp [Ammonia >= 76.91]",
             "  gravity [0.04 ~ 0.34]",
             "     temp [161 ~ 177]",
             " pressure [0.0009 ~ 0.0134]",
@@ -202,6 +200,7 @@
           "query": [
             "     body [Rocky]",
             "atmosType [CarbonDioxide]",
+            "atmosComp [CarbonDioxide >= 60]",
             "  gravity [0.04 ~ 0.39]",
             "     temp [165 ~ 190]",
             " pressure [0.005 ~ ]",
@@ -213,6 +212,7 @@
           "query": [
             "     body [Rocky]",
             "atmosType [Oxygen]",
+            "atmosComp [Oxygen >= 100]",
             "  gravity [0.04 ~ 0.39]",
             "     temp [165 ~ 190]",
             " pressure [0.005 ~ ]",
@@ -224,6 +224,7 @@
           "query": [
             "     body [Rocky]",
             "atmosType [SulphurDioxide]",
+            "atmosComp [SulphurDioxide >= 50]",
             "  gravity [0.27 ~ 0.40]",
             "     temp [165 ~ 190]",
             " pressure [0.001 ~ 0.094]",
@@ -241,6 +242,7 @@
           "query": [
             "     body [Rocky]",
             "atmosType [Ammonia]",
+            "atmosComp [Ammonia >= 74.36]",
             "  gravity [0.04 ~ 0.34]",
             "     temp [158 ~ 177]",
             " pressure [0.0009 ~ 0.0134]"
@@ -251,6 +253,7 @@
           "query": [
             "     body [Rocky]",
             "atmosType [CarbonDioxide]",
+            "atmosComp [CarbonDioxide >= 50]",
             "  gravity [0.04 ~ 0.58]",
             "     temp [165 ~ 419]",
             " pressure [0.001 ~ ]",
@@ -273,6 +276,7 @@
           "query": [
             "     body [Rocky]",
             "atmosType [Oxygen]",
+            "atmosComp [Oxygen >= 69.5]",
             "  gravity [0.40 ~ 0.58]",
             "     temp [169 ~ 246]",
             " pressure [0.023 ~ ]"
@@ -283,6 +287,7 @@
           "query": [
             "     body [Rocky]",
             "atmosType [Water]",
+            "atmosComp [Water >= 100]",
             "  gravity [0.04 ~ 0.06]",
             "     temp [394 ~ 450]",
             " pressure [0.055 ~ ]"
@@ -301,6 +306,7 @@
           "useCommonChildren": true,
           "query": [
             "atmosType [Ammonia]",
+            "atmosComp [Ammonia >= 100]",
             "  gravity [0.05 ~ 0.37]",
             "     temp [165 ~ 177]",
             " pressure [0.0009 ~ 0.013]"
@@ -310,6 +316,7 @@
           "useCommonChildren": true,
           "query": [
             "atmosType [Argon]",
+            "atmosComp [Argon >= 47.25]",
             "  gravity [0.50 ~ 0.52]",
             "     temp [173 ~ 182]",
             " pressure [0.073 ~ 0.09]"
@@ -328,6 +335,7 @@
         "useCommonChildren": true,
         "query": [
             "atmosType [CarbonDioxide]",
+            "atmosComp [CarbonDioxide >= 50]",
             "  gravity [0.05 ~ 0.61]",
             "     temp [165 ~ 430]",
             " pressure [0.0009 ~ ]"
@@ -346,6 +354,7 @@
           "useCommonChildren": true,
           "query": [
             "atmosType [Oxygen]",
+            "atmosComp [Oxygen >= 79.56]",
             "  gravity [0.50 ~ 0.51]",
             "     temp [165 ~ 246]",
             " pressure [0.021 ~ ]"
@@ -355,6 +364,7 @@
           "useCommonChildren": true,
           "query": [
             "atmosType [SulphurDioxide]",
+            "atmosComp [SulphurDioxide >= 50]",
             "  gravity [0.29 ~ 0.61]",
             "     temp [165 ~ 450]",
             " pressure [0.0009 ~ ]"
@@ -364,6 +374,7 @@
           "useCommonChildren": true,
           "query": [
             "atmosType [Water]",
+            "atmosComp [Water >= 100]",
             "  gravity [0.04 ~ 0.063]",
             "     temp [392 ~ 450]",
             " pressure [0.052 ~ ]",

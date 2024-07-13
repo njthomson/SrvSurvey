@@ -18,6 +18,7 @@
       "query": [
         "     body [HMC,Rocky]",
         "atmosType [CarbonDioxide]",
+        "atmosComp [CarbonDioxide >= 97.5]",
         "  gravity [0.04 ~ 0.28]",
         "     temp [180 ~ 196]",
         " pressure [0.025 ~ ]",
@@ -42,6 +43,7 @@
           "query": [
             "     body [HMC,Rocky,RockyIce]",
             "atmosType [Ammonia]",
+            "atmosComp [Ammonia >= 100.00]",
             "  gravity [0.04 ~ 0.10]",
             "     temp [161 ~ 177]",
             " pressure [0.0017 ~ 0.0133]",
@@ -53,6 +55,7 @@
           "query": [
             "     body [RockyIce]",
             "atmosType [Argon]",
+            "atmosComp [Argon >= 100]",
             "  gravity [0.23 ~ 0.28]",
             "     temp [68 ~ 119]",
             " pressure [0.0013 ~ 0.081]",
@@ -64,6 +67,7 @@
           "query": [
             "     body [Rocky]",
             "atmosType [Methane]",
+            "atmosComp [Methane >= 100]",
             "  gravity [0.04 ~ 0.14]",
             "     temp [78 ~ 109]",
             " pressure [0.012 ~ ]",
@@ -75,6 +79,7 @@
           "query": [
             "     body [HMC,Rocky]",
             "atmosType [Water]",
+            "atmosComp [Water >= 100]",
             "  gravity [0.04 ~ 0.07]",
             "     temp [390 ~ 452]",
             " pressure [0.052 ~ ]",
@@ -89,6 +94,7 @@
       "query": [
         "     body [HMC,Rocky]",
         "atmosType [CarbonDioxide]",
+        "atmosComp [CarbonDioxide >= 97.5]",
         "     temp [180 ~ 190]",
         "volcanism [None]",
         "regions [1,2,3,4,5,6,8,9,10,11,12,13,14,16,17,18,19,20,21,22,23,24,25,26,27,28,29,31,35,37,40,41,42]"
@@ -119,6 +125,7 @@
       "query": [
         "     body [HMC,Rocky]",
         "atmosType [CarbonDioxide]",
+        "atmosComp [CarbonDioxide >= 97.5]",
         "  gravity [0.04 ~ 0.28]",
         "     temp [191 ~ 197]",
         " pressure [0.058 ~ ]",
@@ -143,6 +150,7 @@
           "query": [
             "     body [HMC,Rocky,RockyIce]",
             "atmosType [Argon]",
+            "atmosComp [Argon >= 50]",
             "  gravity [0.06 ~ 0.29]",
             "     temp [50 ~ 134]",
             " pressure [0.0009 ~ ]"
@@ -164,6 +172,7 @@
           "query": [
             "     body [HMC,Rocky]",
             "atmosType [Methane]",
+            "atmosComp [Methane >= 100]",
             "  gravity [0.03 ~ 0.28]",
             "     temp [67 ~ 109]",
             " pressure [0.00098 ~ ]"
@@ -174,6 +183,7 @@
           "query": [
             "     body [HMC,Rocky,RockyIce]",
             "atmosType [Nitrogen]",
+            "atmosComp [Nitrogen >= 100]",
             "  gravity [0.05 ~ 0.28]",
             "     temp [42 ~ 71]",
             " pressure [0.00098 ~ ]",
@@ -189,6 +199,7 @@
       "query": [
         "     body [HMC,Rocky,RockyIce]",
         "atmosType [Ammonia]",
+        "atmosComp [Ammonia >= 93.64]",
         "  gravity [0.04 ~ 0.29]",
         "     temp [160 ~ 177]",
         " pressure [0.0009 ~ 0.0145]"

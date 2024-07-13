@@ -1581,6 +1581,7 @@ namespace SrvSurvey
 
         private void btnTest_Click(object sender, EventArgs e)
         {
+            //var species = Clipboard.GetText(); Game.spansh.getClause("Bacterium", species, "Sulphur dioxide").ContinueWith(task =>
             Predictor.testSystems().ContinueWith(task =>
             {
                 Game.log($"testSystems => {task.Status}");

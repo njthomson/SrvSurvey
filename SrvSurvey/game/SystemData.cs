@@ -1078,7 +1078,7 @@ namespace SrvSurvey.game
                 if (body.atmosphere == null && body.atmosphereType == "None") body.atmosphere = "";
                 if (body.atmosphere == null && entry.atmosphereType != null) body.atmosphere = entry.atmosphereType;
                 if (body.atmosphereComposition == null && entry.atmosphereComposition != null)
-                    body.atmosphereComposition = entry.atmosphereComposition.ToDictionary(_ => parseAtmosphereCompositionKey(_.Key), _ => _.Value);
+                    body.atmosphereComposition = entry.atmosphereComposition.ToDictionary(_ => Util.compositionToCamel(_.Key), _ => _.Value);
                 if (body.materials == null && entry.materials != null) body.materials = entry.materials.ToDictionary(_ => _.Key.ToLowerInvariant(), _ => _.Value);
                 if (body.volcanism == null && entry.volcanismType != null) body.volcanism = entry.volcanismType == "No volcanism" ? "" : entry.volcanismType;
                 if (body.starType == null && entry.type == "Star" && entry.subType != null)
@@ -1133,16 +1133,6 @@ namespace SrvSurvey.game
             }
         }
 
-        private string parseAtmosphereCompositionKey(string key)
-        {
-            // as needed, change "Sulphur dioxide" into "SulphurDioxide"
-            var i = key.IndexOf(' ');
-            if (i < 0)
-                return key;
-            else
-                return key.Substring(0, i) + key.Substring(i + 1, 1).ToUpperInvariant() + key.Substring(i + 2);
-        }
-
         private string parseStarType(string starType)
         {
             var r = new Regex(@"\((.*)\)", RegexOptions.Compiled);
@@ -1189,7 +1179,7 @@ namespace SrvSurvey.game
                 if (body.atmosphere == null && body.atmosphereType == "None") body.atmosphere = "";
                 if (body.atmosphere == null && entry.atmosphereType != null) body.atmosphere = entry.atmosphereType;
                 if (body.atmosphereComposition == null && entry.atmosphereComposition != null)
-                    body.atmosphereComposition = entry.atmosphereComposition.ToDictionary(_ => parseAtmosphereCompositionKey(_.Key), _ => _.Value);
+                    body.atmosphereComposition = entry.atmosphereComposition.ToDictionary(_ => Util.compositionToCamel(_.Key), _ => _.Value);
                 if (body.materials == null && entry.materials != null) body.materials = entry.materials;
                 if (body.volcanism == null && entry.volcanismType != null) body.volcanism = entry.volcanismType == "No volcanism" ? "" : entry.volcanismType;
                 if (body.starType == null && entry.subType != null)
