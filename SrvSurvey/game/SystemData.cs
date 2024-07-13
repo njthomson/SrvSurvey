@@ -1733,7 +1733,7 @@ namespace SrvSurvey.game
                 else
                 {
                     // predict valid species within the genus ...
-                    var predictions = Predictor.predict(body);
+                    var predictions = BioPredictor.predict(body);
                     foreach (var prediction in predictions)
                     {
                         var genusRef = Game.codexRef.matchFromGenus(org.genus)!;
@@ -1756,7 +1756,7 @@ namespace SrvSurvey.game
 
         public int predictBody(SystemBody body, SystemData systemData)
         {
-            var predictions = Predictor.predict(body);
+            var predictions = BioPredictor.predict(body);
             var allGenusKnown = body.bioSignalCount == body.organisms?.Count;
 
             foreach (var prediction in predictions)
@@ -2317,7 +2317,7 @@ namespace SrvSurvey.game
                     }
 
                     // otherwise predict within the genus
-                    var genusPredictions = Predictor.predict(this);
+                    var genusPredictions = BioPredictor.predict(this);
                     foreach (var speciesName in genusPredictions)
                     {
                         var match = Game.codexRef.matchFromVariantDisplayName(speciesName);
@@ -2331,7 +2331,7 @@ namespace SrvSurvey.game
             var delta = this.organisms == null ? this.bioSignalCount : this.organisms.Count(o => o.species == null);
             if (delta > 0)
             {
-                var bodyPredictions = Predictor.predict(this);
+                var bodyPredictions = BioPredictor.predict(this);
                 foreach (var speciesName in bodyPredictions)
                 {
                     var match = Game.codexRef.matchFromVariantDisplayName(speciesName);

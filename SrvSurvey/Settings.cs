@@ -136,6 +136,7 @@ namespace SrvSurvey
 
         public bool dataFolder1100 = false;
 
+        public int pubBioCriteria = 0;
         public int pubCodexRef = 0;
         public int pubDataSettlementTemplate = 0;
         public int pubDataGuardian = 0;

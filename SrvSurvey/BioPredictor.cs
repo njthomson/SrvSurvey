@@ -4,12 +4,12 @@ using SrvSurvey.game;
 
 namespace BioCriteria
 {
-    internal class Predictor
+    internal class BioPredictor
     {
         public static List<string> predict(SystemBody body)
         {
             if (body.type != SystemBodyType.LandableBody || body.parents == null || body.parents.Count == 0) return new List<string>();
-            if (Criteria.allCriteria.Count == 0) Criteria.readCriteria();
+            if (BioCriteria.allCriteria.Count == 0) BioCriteria.readCriteria();
 
             var parentStar = body.system.getParentStarTypes(body, true).First();
             var brightestParentStar = body.system.getBrightestParentStarType(body);
@@ -40,18 +40,17 @@ namespace BioCriteria
                 { "Star", new List<string>() { parentStar, brightestParentStar } },
                 { "ParentStar", parentStar },
                 { "PrimaryStar", primaryStarType },
-                // TODO: add code to measure distance to the nearest nebulae
                 { "Nebulae", body.system.nebulaDist },
 
             };
-            var predictor = new Predictor(body.name, bodyProps, knownGenus);
+            var predictor = new BioPredictor(body.name, bodyProps, knownGenus);
 
             // log extra diagnostics?
             //logBody = "Renibus";
             //logOrganism = "Renibus";
 
             // predict each criteria recusrively from the master list
-            foreach (var criteria in Criteria.allCriteria)
+            foreach (var criteria in BioCriteria.allCriteria)
                 predictor.predict(criteria, null, null, null, null);
 
             return predictor.predictions.ToList();
@@ -65,14 +64,14 @@ namespace BioCriteria
         /// <summary> Trace extra diagnostics for a genus, species or variant </summary>
         public static string? logOrganism;
 
-        private Predictor(string bodyName, Dictionary<string, object>? bodyProps, List<string>? knownGenus)
+        private BioPredictor(string bodyName, Dictionary<string, object>? bodyProps, List<string>? knownGenus)
         {
             this.bodyName = bodyName;
             this.knownGenus = knownGenus;
             this.bodyProps = bodyProps ?? new Dictionary<string, object>();
         }
 
-        public void predict(Criteria criteria, string? genus, string? species, string? variant, List<Criteria>? commonChildren)
+        public void predict(BioCriteria criteria, string? genus, string? species, string? variant, List<BioCriteria>? commonChildren)
         {
             // accumulate values from current node or prior stack frames
             commonChildren = criteria.commonChildren ?? commonChildren;
@@ -247,8 +246,8 @@ namespace BioCriteria
             // predict this system
             foreach (var body in systemData.bodies)
             {
-                Predictor.logOrganism = "";
-                var predictions = Predictor.predict(body);
+                BioPredictor.logOrganism = "";
+                var predictions = BioPredictor.predict(body);
 
                 if (predictions.Count > 0)
                 {
@@ -264,7 +263,7 @@ namespace BioCriteria
                         if (missed.Count > 0)
                         {
                             txt += $"MISSED: \r\n\t" + string.Join("\r\n\t", missed);
-                            Predictor.logOrganism = missed.First().Split(" ")[1];
+                            BioPredictor.logOrganism = missed.First().Split(" ")[1];
                             Game.log(txt);
                         }
                         else if (wrong.Count > 5)
@@ -423,7 +422,7 @@ namespace BioCriteria
                 //633272537650, // Synuefai EA-U c5-2
                 //962207294841, // Hyuedeae UG-W b43-0
                 //1726677521610, // Bleae Thaa XX-H c23-6
-                //516869988849, // Slegue TP-Z b57-0
+                516869988849, // Slegue TP-Z b57-0
             };
 
             Game.log($"Testing {testSystems.Count} systems ...");

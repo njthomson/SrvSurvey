@@ -10,6 +10,7 @@ namespace SrvSurvey.net
     {
         public static string pubDataFolder = Path.Combine(Program.dataFolder, "pub");
         public static string pubGuardianFolder = Path.Combine(pubDataFolder, "guardian");
+        public static string pubBioCriteriaFolder = Path.Combine(pubDataFolder, "bio-criteria");
 
         private static HttpClient client;
 
@@ -50,6 +51,16 @@ namespace SrvSurvey.net
 
                     // update settings to current level
                     Game.settings.pubCodexRef = pubData.codexRef;
+                    Game.settings.Save();
+                }
+
+                if (pubData.bioCriteria > Game.settings.pubBioCriteria)
+                {
+                    Game.log($"Updating bio-criteria ...");
+                    await this.updateBioCriteria();
+
+                    // update settings to current level
+                    Game.settings.pubBioCriteria = pubData.bioCriteria;
                     Game.settings.Save();
                 }
 
@@ -373,12 +384,40 @@ namespace SrvSurvey.net
 
             ZipFile.CreateFromDirectory(sourceFolder, targetZipFile, CompressionLevel.SmallestSize, false);
         }
+
+        public void publishBioCriteria()
+        {
+            Game.log($"publishBioCriteria ...");
+
+            var srcRootFolder = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "..\\..\\..\\..");
+            var criteriaFolder = Path.Combine(srcRootFolder, "bio-criteria");
+            var targetZipFile = Path.Combine(srcRootFolder, "..", "data", "bio-criteria.zip");
+            if (File.Exists(targetZipFile)) File.Delete(targetZipFile);
+
+            ZipFile.CreateFromDirectory(criteriaFolder, targetZipFile, CompressionLevel.SmallestSize, false);
+
+            Game.log($"publishBioCriteria - complete");
+        }
+
+        public async Task updateBioCriteria()
+        {
+            Game.log($"Downloading bio-criteria.zip ...");
+            var url = $"https://raw.githubusercontent.com/njthomson/SrvSurvey/main/data/bio-criteria.zip";
+            var filepath = Path.Combine(Git.pubDataFolder, "bio-criteria.zip");
+            Game.log($"{url} => {filepath}");
+
+            var bytes = await Git.client.GetByteArrayAsync(url);
+            await File.WriteAllBytesAsync(filepath, bytes);
+            ZipFile.ExtractToDirectory(filepath, pubBioCriteriaFolder, true);
+        }
+
     }
 
     internal class GitDataIndex
     {
         public Version ghVer;
         public Version msVer;
+        public int bioCriteria;
         public int codexRef;
         public int settlementTemplate;
         public int guardian;

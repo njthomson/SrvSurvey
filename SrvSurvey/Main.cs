@@ -1,6 +1,5 @@
 ﻿using BioCriteria;
 using SrvSurvey.game;
-using SrvSurvey.net.EDSM;
 using SrvSurvey.units;
 using System.Diagnostics;
 using System.Drawing.Imaging;
@@ -1511,6 +1510,12 @@ namespace SrvSurvey
 
         private void btnPublish_Click(object sender, EventArgs e)
         {
+            //this.publishGuardians();
+            Game.git.publishBioCriteria();
+        }
+
+        private void publishGuardians()
+        { 
             btnPublish.Enabled = false;
             SiteTemplate.publish();
             Game.canonn.init(true);
@@ -1582,7 +1587,7 @@ namespace SrvSurvey
         private void btnTest_Click(object sender, EventArgs e)
         {
             //var species = Clipboard.GetText(); Game.spansh.getClause("Bacterium", species, "Sulphur dioxide").ContinueWith(task =>
-            Predictor.testSystems().ContinueWith(task =>
+            BioPredictor.testSystems().ContinueWith(task =>
             {
                 Game.log($"testSystems => {task.Status}");
                 if (task.Exception != null)

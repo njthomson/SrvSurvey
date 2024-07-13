@@ -1,31 +1,33 @@
 ﻿using Newtonsoft.Json;
+using SrvSurvey;
 using SrvSurvey.game;
+using SrvSurvey.net;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 
 namespace BioCriteria
 {
-    class Criteria
+    class BioCriteria
     {
         public string? genus;
         public string? species;
         public string? variant;
         public List<Clause> query;
 
-        public List<Criteria> children;
+        public List<BioCriteria> children;
 
         public bool useCommonChildren;
-        public List<Criteria>? commonChildren;
+        public List<BioCriteria>? commonChildren;
 
         #region static loading code
 
-        private static string rootFolder = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "bio-criteria");
+        private static string devSrcFolder = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "..\\..\\..\\..", "bio-criteria");
 
-        public readonly static List<Criteria> allCriteria = new List<Criteria>();
+        public readonly static List<BioCriteria> allCriteria = new List<BioCriteria>();
 
         public override string ToString()
         {
-            return $"{genus}{species}{variant} q:{query?.Count}";
+            return $"{genus}{species}{variant} queries:{query?.Count}";
         }
 
         public static void readCriteria()
@@ -33,24 +35,24 @@ namespace BioCriteria
             Game.log("readCriteria");
             allCriteria.Clear();
 
-            // use source files if debugging, otherwise built files
-            var folder = Debugger.IsAttached
-                ? Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "..\\..\\..\\..", "bio-criteria")
-                : rootFolder;
+            // use source files if debugging, otherwise published files
+            var folder = Debugger.IsAttached ? devSrcFolder : Git.pubBioCriteriaFolder;
             var files = Directory.GetFiles(folder, "*.json");
 
             foreach (var filepath in files)
             {
                 var json = File.ReadAllText(filepath);
-
                 try
                 {
-                    var criteria = JsonConvert.DeserializeObject<Criteria>(json)!;
+                    var criteria = JsonConvert.DeserializeObject<BioCriteria>(json)!;
                     allCriteria.Add(criteria);
                 }
                 catch (Exception ex)
                 {
-                    Game.log($"{filepath} => {ex}");
+                    // One of the .json files failed to parse?
+                    Game.log($"Bad json in '{filepath}': {ex}");
+                    Debugger.Break();
+                    FormErrorSubmit.Show(ex);
                 }
             }
 
@@ -59,7 +61,7 @@ namespace BioCriteria
                 checkChildren(criteria);
         }
 
-        private static void checkChildren(Criteria criteria)
+        private static void checkChildren(BioCriteria criteria)
         {
             if (criteria.children?.Count > 0)
             {

@@ -105,15 +105,14 @@ namespace SrvSurvey.net
         public async Task getClause(string genus, string species, string gas)
         {
             Game.log($"Querying ");
-            var txt = File.ReadAllText(@"d:\query.json");
-            var query = JsonConvert.DeserializeObject<JObject>(txt);
+            var queryJson = @"{ ""filters"": { ""atmosphere"": { ""value"": [ ""Thin Carbon dioxide"" ] }, ""landmarks"": [ { ""type"": ""Stratum"", ""subtype"": [ ""Stratum Tectonicas"" ] } ] }, ""sort"": [ { ""atmosphere_composition"": [ { ""name"": ""Carbon dioxide"", ""direction"": ""asc"" } ] } ], ""size"": 1, ""page"": 0 }";
+            var query = JsonConvert.DeserializeObject<JObject>(queryJson)!;
 
-            query["filters"]["landmarks"][0]["type"] = genus;
-            query["filters"]["landmarks"][0]["subtype"][0] = $"{genus} {species}";
-
-            query["filters"]["atmosphere"]["value"][0] = $"Thin {gas}";
-
-            query["sort"][0]["atmosphere_composition"][0]["name"] = gas;
+            // replace key parts with parameters
+            query["filters"]!["landmarks"]![0]!["type"] = genus;
+            query["filters"]!["landmarks"]![0]!["subtype"]![0] = $"{genus} {species}";
+            query["filters"]!["atmosphere"]!["value"]![0] = $"Thin {gas}";
+            query["sort"]![0]!["atmosphere_composition"]![0]!["name"] = gas;
 
 
             var json = JsonConvert.SerializeObject(query);
@@ -124,15 +123,15 @@ namespace SrvSurvey.net
             var results = JsonConvert.DeserializeObject<SystemsSearchResults>(responseText)!;
             var obj = JsonConvert.DeserializeObject<JObject>(responseText)!;
 
-            if (obj["count"].Value<int>() == 0)
+            if (obj["count"]!.Value<int>() == 0)
             {
                 Game.log("No results?");
                 return;
             }
 
-            var atmosComp = obj["results"].ToArray().First()["atmosphere_composition"].First(ac => ac["name"].Value<string>() == gas)!;
-            var name = Util.compositionToCamel(atmosComp["name"].Value<string>()!);
-            var value = atmosComp["share"].Value<float>()!.ToString("n2");
+            var atmosComp = obj["results"]!.ToArray().First()["atmosphere_composition"]!.First(ac => ac["name"]!.Value<string>() == gas)!;
+            var name = Util.compositionToCamel(atmosComp["name"]!.Value<string>()!);
+            var value = atmosComp["share"]!.Value<float>()!.ToString("n2");
             if (value == "100.00") value = "100";
 
             var clause = $"\"atmosComp [{name} >= {value}]\",";
