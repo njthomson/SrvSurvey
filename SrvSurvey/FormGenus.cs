@@ -330,11 +330,11 @@ namespace SrvSurvey
                     {
                         var prefix = o.analyzed ? " " : " ";
                         var suffix = "";
-                        if (o.novel == Novelty.cmdrFirst) suffix = "⚑";
-                        if (o.novel == Novelty.regionFirst) suffix = "⚐";
+                        if (o.isCmdrFirst) suffix = "⚑";
+                        else if (o.isNewEntry) suffix = "⚐";
                         prefix += suffix;
                         return $"\t{prefix}{o.variantLocalized} {suffix}           {Util.credits(o.reward, true)}";
-                        //return $"\t{prefix}{(_.predicted ? "? " : "")}{_.bioRef.englishName} {Util.credits(_.reward, true)}";
+                        // TODO: remove reward from here and render  on the right hand side
                     })) + "\r\n";
                 }
                 // predicted species
@@ -346,7 +346,7 @@ namespace SrvSurvey
                         .Select(p =>
                         {
                             return $"\t ? {p.Value.englishName}        {Util.credits(p.Value.reward, true)}";
-                            //return $"\t{prefix}{(_.predicted ? "? " : "")}{_.bioRef.englishName} {Util.credits(_.reward, true)}";
+                            // TODO: remove reward from here and render  on the right hand side
                         }));
                 }
 

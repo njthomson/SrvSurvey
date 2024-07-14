@@ -212,6 +212,8 @@ namespace SrvSurvey
         OnFootSettlement,
         CraterOutpost,
         CraterPort,
+        AsteroidBase,
+        SurfaceStation,
     }
 
     class Undocked : JournalEntry
@@ -317,7 +319,7 @@ namespace SrvSurvey
 
         public string System { get; set; }
         public long SystemAddress { get; set; }
-        public int BodyID { get; set; }
+        public int? BodyID { get; set; }
 
         public string NearestDestination { get; set; }
         public string NearestDestination_Localised { get; set; }
@@ -460,6 +462,7 @@ namespace SrvSurvey
         /// BaryCenter
         /// </summary>
         Null,
+        SmallBody,
     }
 
 

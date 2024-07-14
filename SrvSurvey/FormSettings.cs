@@ -271,7 +271,7 @@ namespace SrvSurvey
             {
                 Game.log($"Clearing in {game.cmdr.organicRewards} unclaimed rewards.");
                 game.cmdr.organicRewards = 0;
-                game.cmdr.scannedOrganics.Clear(); // retire?
+                game.cmdr.scannedOrganics?.Clear(); // retire?
                 game.cmdr.scannedBioEntryIds.Clear();
                 game.cmdr.Save();
             }
@@ -464,6 +464,11 @@ namespace SrvSurvey
         {
             panelTheme.BackColor = Color.FromArgb(255, 255, 111, 0);
             Game.settings.defaultOrangeDim = Color.FromArgb(255, 95, 48, 3);
+        }
+
+        private void btnPostProcess_Click(object sender, EventArgs e)
+        {
+            FormPostProcess.show();
         }
     }
 }

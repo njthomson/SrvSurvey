@@ -43,7 +43,7 @@ namespace SrvSurvey.game
                     filepath = filepath,
                     systemAddress = entry.SystemAddress,
                     systemName = entry.System,
-                    bodyId = entry.BodyID,
+                    bodyId = entry.BodyID ?? -1,
                     bodyName = bodyName,
                     firstVisited = DateTimeOffset.UtcNow,
                     lastVisited = DateTimeOffset.UtcNow,

@@ -5,6 +5,7 @@ using SrvSurvey.canonn;
 using SrvSurvey.net;
 using SrvSurvey.net.EDSM;
 using SrvSurvey.units;
+using System.Globalization;
 using System.Text.RegularExpressions;
 
 namespace SrvSurvey.game
@@ -57,9 +58,10 @@ namespace SrvSurvey.game
                 // make all bodies aware of their parent system
                 body.system = systemData;
                 // short names
+                if (body.name == null && body.id == 0) body.name = systemData.name;
                 body.shortName = body.name == systemData.name
                     ? "0"
-                    : body.name.Replace(systemData.name, "").Replace(" ", "") ?? "";
+                    : body.name!.Replace(systemData.name, "").Replace(" ", "") ?? "";
                 // correct Barycenters from Asteroid
                 if (body.type == SystemBodyType.Asteroid && body.name.Contains("barycentre", StringComparison.OrdinalIgnoreCase))
                     body.type = SystemBodyType.Barycentre;
@@ -67,9 +69,15 @@ namespace SrvSurvey.game
                 if (body.bookmarks?.Count == 0) body.bookmarks = null;
                 if (body.bioScans?.Count == 0) body.bioScans = null;
 
-                // make predictions based on what we know
                 if (body.bioSignalCount > 0)
-                    body.predictSpecies();
+                {
+                    // make all entries aware of their parent body
+                    body.organisms?.ForEach(org => org.body = body);
+
+                    // make predictions based on what we know
+                    if (Game.activeGame != null && Game.activeGame.fid == fid)
+                        body.predictSpecies();
+                }
             }
 
             return systemData;
@@ -736,7 +744,7 @@ namespace SrvSurvey.game
             if (bioSignals != null && body.bioSignalCount < bioSignals.Count)
                 body.bioSignalCount = bioSignals.Count;
 
-            if (bioSignals != null && body.planetClass != null)
+            if (bioSignals != null && body.planetClass != null && Game.activeGame != null)
             {
                 body.predictSpecies();
                 if (Game.activeGame?.systemData == this) Program.invalidateActivePlotters();
@@ -823,11 +831,22 @@ namespace SrvSurvey.game
 
         public void onJournalEntry(CodexEntry entry)
         {
+            // track if this is a personal first discovery
+            Game.activeGame?.cmdrCodex.trackCodex(entry.EntryID, entry.timestamp, entry.SystemAddress, entry.BodyID);
+
             if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! Expected: `{this.address}`, got: {entry.SystemAddress}"); return; }
             // ignore non bio or Notable stellar phenomena entries
-            if (entry.SubCategory != "$Codex_SubCategory_Organic_Structures;" || entry.NearestDestination == "$Fixed_Event_Life_Cloud;" || entry.NearestDestination == "$Fixed_Event_Life_Ring;" || Game.activeGame?.status.hasLatLong == false) return;
+            if (entry.SubCategory != "$Codex_SubCategory_Organic_Structures;" || entry.NearestDestination == "$Fixed_Event_Life_Cloud;" || entry.NearestDestination == "$Fixed_Event_Life_Ring;" || entry.Latitude == 0 || entry.Longitude == 0) return;
+
+            if (entry.BodyID == null)
+            {
+                // alas, not much we can do if there's no bodyId, but we might have it  on the post-processing form?
+                if (FormPostProcess.activeForm == null || FormPostProcess.activeForm.lastSystemAddress != entry.SystemAddress) return;
+                entry.BodyID = FormPostProcess.activeForm.lastBodyId;
+            }
 
             var body = this.bodies.FirstOrDefault(_ => _.id == entry.BodyID);
+            if (body == null) return;
             if (body!.organisms == null) body.organisms = new List<SystemOrganism>();
 
 
@@ -852,11 +871,7 @@ namespace SrvSurvey.game
             organism.variant = entry.Name;
             organism.variantLocalized = entry.Name_Localised;
             organism.reward = match.species.reward;
-            if (organism.novel == Novelty.no && entry.IsNewEntry)
-            {
-                // TODO: look-up if the cmdr has ever seen this before
-                organism.novel = Novelty.regionFirst;
-            }
+            organism.isNewEntry = entry.IsNewEntry;
 
             if (organism.species == null) organism.species = match.species.name;
             if (organism.speciesLocalized == null) organism.speciesLocalized = match.species.englishName;
@@ -2001,6 +2016,8 @@ namespace SrvSurvey.game
                 return SystemBodyType.Star;
             else if (bodyName.Contains("cluster", StringComparison.OrdinalIgnoreCase))
                 return SystemBodyType.Asteroid;
+            else if (bodyName.EndsWith("Ring", StringComparison.OrdinalIgnoreCase))
+                return SystemBodyType.PlanetaryRing;
             else if (string.IsNullOrEmpty(starType) && string.IsNullOrEmpty(planetClass))
                 return SystemBodyType.Barycentre;
             else if (planetClass?.Contains("giant", StringComparison.OrdinalIgnoreCase) == true)
@@ -2303,7 +2320,7 @@ namespace SrvSurvey.game
 
         public void predictSpecies()
         {
-            if (this.bioSignalCount == 0) return;
+            if (this.bioSignalCount == 0 || Game.activeGame == null) return;
 
             this.predictions.Clear();
             var knownRewards = 0L;
@@ -2480,12 +2497,46 @@ namespace SrvSurvey.game
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public bool analyzed;
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-        public Novelty novel;
+        public bool isNewEntry;
+
+        [JsonIgnore]
+        public SystemBody body;
+
+        [JsonIgnore]
+        private bool? _cmdrFirst;
 
         public override string ToString()
         {
             return $"{this.speciesLocalized ?? this.species ?? this.genusLocalized ?? this.genus} ({this.entryId})";
         }
+
+        /// <summary>
+        /// Returns true if this is a cmdr first discovery
+        /// </summary>
+        [JsonIgnore]
+        public bool isCmdrFirst
+        {
+            get
+            {
+                // look-up entryId if we don't already know it
+                if (this.entryId == 0 && this.variant != null)
+                {
+                    var match = Game.codexRef.matchFromVariant(this.variant);
+                    this.entryId = long.Parse(match.variant.entryId, CultureInfo.InvariantCulture);
+                }
+
+                if (this._cmdrFirst == null && this.entryId > 0)
+                    this._cmdrFirst = Game.activeGame?.cmdrCodex?.isPersonalFirstDiscovery(this.entryId, this.body.system.address, this.body.id);
+
+                return this._cmdrFirst ?? false;
+            }
+        }
+
+        /// <summary>
+        /// Returns true if this is a regional or cmdr first discovery
+        /// </summary>
+        [JsonIgnore]
+        public bool isFirst { get => this.isNewEntry || this.isCmdrFirst; }
 
         [JsonIgnore]
         public int range { get => BioScan.ranges[this.genus]; }

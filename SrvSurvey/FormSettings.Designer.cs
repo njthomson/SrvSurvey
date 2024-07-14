@@ -35,6 +35,7 @@ namespace SrvSurvey
             btnSave = new Button();
             btnCancel = new Button();
             tabPage1 = new TabPage();
+            linkResetTheme = new LinkLabel();
             panelTheme = new Panel();
             btnTheme = new Button();
             label14 = new Label();
@@ -165,7 +166,7 @@ namespace SrvSurvey
             linkAboutOne = new LinkLabel();
             colorDialog = new ColorDialog();
             colorTheme = new ColorDialog();
-            linkResetTheme = new LinkLabel();
+            btnPostProcess = new Button();
             panel1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numGravityWarningLevel).BeginInit();
@@ -258,6 +259,7 @@ namespace SrvSurvey
             // tabPage1
             // 
             tabPage1.BorderStyle = BorderStyle.Fixed3D;
+            tabPage1.Controls.Add(btnPostProcess);
             tabPage1.Controls.Add(linkResetTheme);
             tabPage1.Controls.Add(panelTheme);
             tabPage1.Controls.Add(btnTheme);
@@ -291,6 +293,20 @@ namespace SrvSurvey
             tabPage1.Size = new Size(612, 420);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "General";
+            // 
+            // linkResetTheme
+            // 
+            linkResetTheme.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            linkResetTheme.AutoSize = true;
+            linkResetTheme.LinkArea = new LinkArea(1, 5);
+            linkResetTheme.Location = new Point(559, 138);
+            linkResetTheme.Name = "linkResetTheme";
+            linkResetTheme.Size = new Size(39, 21);
+            linkResetTheme.TabIndex = 37;
+            linkResetTheme.TabStop = true;
+            linkResetTheme.Text = "(reset)";
+            linkResetTheme.UseCompatibleTextRendering = true;
+            linkResetTheme.LinkClicked += linkResetTheme_LinkClicked;
             // 
             // panelTheme
             // 
@@ -1873,19 +1889,16 @@ namespace SrvSurvey
             // 
             colorDialog.Color = Color.Yellow;
             // 
-            // linkResetTheme
+            // btnPostProcess
             // 
-            linkResetTheme.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            linkResetTheme.AutoSize = true;
-            linkResetTheme.LinkArea = new LinkArea(1, 5);
-            linkResetTheme.Location = new Point(559, 138);
-            linkResetTheme.Name = "linkResetTheme";
-            linkResetTheme.Size = new Size(39, 21);
-            linkResetTheme.TabIndex = 37;
-            linkResetTheme.TabStop = true;
-            linkResetTheme.Text = "(reset)";
-            linkResetTheme.UseCompatibleTextRendering = true;
-            linkResetTheme.LinkClicked += linkResetTheme_LinkClicked;
+            btnPostProcess.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnPostProcess.Location = new Point(418, 381);
+            btnPostProcess.Name = "btnPostProcess";
+            btnPostProcess.Size = new Size(184, 29);
+            btnPostProcess.TabIndex = 38;
+            btnPostProcess.Text = "Scan all old journal files";
+            btnPostProcess.UseVisualStyleBackColor = true;
+            btnPostProcess.Click += btnPostProcess_Click;
             // 
             // FormSettings
             // 
@@ -2094,5 +2107,6 @@ namespace SrvSurvey
         private Button btnTheme;
         private Panel panelTheme;
         private LinkLabel linkResetTheme;
+        private Button btnPostProcess;
     }
 }

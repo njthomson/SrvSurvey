@@ -432,8 +432,8 @@ namespace SrvSurvey
                     {
                         var pts = item.PathData.Points.Select(_ => new JObject
                     {
-                        { "X", JToken.FromObject(float.Parse(_.X.ToString("N1"))) },
-                        { "Y", JToken.FromObject(float.Parse(_.Y.ToString("N1"))) },
+                        { "X", JToken.FromObject(float.Parse(_.X.ToString("N1"), CultureInfo.InvariantCulture)) },
+                        { "Y", JToken.FromObject(float.Parse(_.Y.ToString("N1"), CultureInfo.InvariantCulture)) },
                     });
 
                         var pathObj = new JObject

@@ -3,6 +3,7 @@ using SrvSurvey;
 using SrvSurvey.game;
 using SrvSurvey.net;
 using System.Diagnostics;
+using System.Globalization;
 using System.Text.RegularExpressions;
 
 namespace BioCriteria
@@ -129,9 +130,9 @@ namespace BioCriteria
                     clause.op = Op.Range;
                     var parts = valTxt.Split('~', StringSplitOptions.TrimEntries);
                     if (!string.IsNullOrEmpty(parts[0]))
-                        clause.min = double.Parse(parts[0]);
+                        clause.min = double.Parse(parts[0], CultureInfo.InvariantCulture);
                     if (!string.IsNullOrEmpty(parts[1]))
-                        clause.max = double.Parse(parts[1]);
+                        clause.max = double.Parse(parts[1], CultureInfo.InvariantCulture);
                 }
                 else if (valTxt.Contains('<') || valTxt.Contains('>'))
                 {
@@ -147,7 +148,7 @@ namespace BioCriteria
                         if (matches.Groups.Count < 4) throw new Exception($"Bad Composition clause: {part}");
                         if (matches.Groups[2].Value != ">=") throw new Exception($"Unsupported Composition operand: {matches.Groups[2].Value}");
                         var thing = matches.Groups[1].Value.Trim();
-                        var amount = float.Parse(matches.Groups[3].Value);
+                        var amount = float.Parse(matches.Groups[3].Value, CultureInfo.InvariantCulture);
                         // TODO: do we need anything other than >= ?
                         clause.compositions.Add(thing, amount);
                     }

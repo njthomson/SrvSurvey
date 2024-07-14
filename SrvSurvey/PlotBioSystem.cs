@@ -297,7 +297,7 @@ namespace SrvSurvey
 
                     var minReward = body.getBioRewardForGenus(organism, true);
                     var maxReward = body.getBioRewardForGenus(organism, false);
-                    drawVolumeBars(g, oneTwo, dty + oneSix, highlight, minReward, maxReward, organism.novel);
+                    drawVolumeBars(g, oneTwo, dty + oneSix, highlight, minReward, maxReward, organism.isFirst);
 
                     // displayName is either genus, or species/variant without the genus prefix
                     var displayName = organism.genusLocalized;
@@ -341,8 +341,8 @@ namespace SrvSurvey
 
                     // 2nd line - left
                     var leftText = displayName != organism.genusLocalized ? organism.genusLocalized : "?";
-                    if (organism.novel == Novelty.cmdrFirst) leftText = "⚑ " + leftText;
-                    if (organism.novel == Novelty.regionFirst) leftText = "⚐ " + leftText;
+                    if (organism.isCmdrFirst) leftText = "⚑ " + leftText;
+                    else if (organism.isNewEntry) leftText = "⚐ " + leftText;
                     drawTextAt(
                         twoEight,
                         leftText,
@@ -416,7 +416,7 @@ namespace SrvSurvey
                     {
                         var min = body.getBioRewardForGenus(org, true);
                         var max = body.getBioRewardForGenus(org, false);
-                        drawVolumeBars(g, x, dty + oneFive, highlight, min, max, org.novel);
+                        drawVolumeBars(g, x, dty + oneFive, highlight, min, max, org.isFirst);
                         x += oneTwo;
                     }
                     signalCount -= body.organisms.Count;
@@ -468,7 +468,7 @@ namespace SrvSurvey
             formAdjustSize(+ten, +six);
         }
 
-        public static void drawVolumeBars(Graphics g, float x, float y, bool highlight, long reward, long maxReward = -1, Novelty novel = Novelty.no)
+        public static void drawVolumeBars(Graphics g, float x, float y, bool highlight, long reward, long maxReward = -1, bool isNewEntry = false)
         {
             var ww = eight;
             var bb = highlight ? GameColors.brushCyan : GameColors.brushGameOrange;
@@ -484,7 +484,7 @@ namespace SrvSurvey
                 ? GameColors.newPen(Color.FromArgb(96, GameColors.DarkCyan), 1.9f, DashStyle.Dot)
                 : GameColors.newPen(Color.FromArgb(96, GameColors.Orange), 1.9f, DashStyle.Dot);
 
-            if (novel != Novelty.no)
+            if (isNewEntry)
             {
                 bb = (SolidBrush)Brushes.DarkGoldenrod;
                 pp = Pens.Gold;

@@ -41,7 +41,8 @@ namespace SrvSurvey.game
 
         public static void migrate_ScannedOrganics_Into_ScannedBioEntryIds(CommanderSettings cmdr) // keep for migration purposes
         {
-            Game.log($"Migrate cmdr 'scannedOrganics' into 'scannedBioEntryIds', scannedOrganics: {cmdr.scannedOrganics.Count}, scannedBioEntryIds: {cmdr.scannedBioEntryIds.Count} ...");
+            Game.log($"Migrate cmdr 'scannedOrganics' into 'scannedBioEntryIds', scannedOrganics: {cmdr.scannedOrganics?.Count}, scannedBioEntryIds: {cmdr.scannedBioEntryIds.Count} ...");
+            if (!(cmdr.scannedOrganics?.Count > 0)) return;
 
             // first migrate any 'scannedBioEntryIds' entries without rewards or firstFoot entries
             var foo = cmdr.scannedBioEntryIds.Select(oldEntry =>

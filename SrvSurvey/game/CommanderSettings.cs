@@ -54,35 +54,12 @@ namespace SrvSurvey.game
         public decimal currentBodyRadius;
         public double[] starPos;
         public string galacticRegion = "$Codex_RegionName_18;"; // default to Inner Orion Spur
+        public long currentMarketId;
 
         public string? lastOrganicScan;
         public BioScan? scanOne;
         public BioScan? scanTwo;
         public long organicRewards;
-        public List<ScannedOrganic> scannedOrganics = new List<ScannedOrganic>();
-        /// <summary>
-        /// A HashSet of union strings of "{systemAddress}_{bodyId}_{entryId}". Used to efficiently track final scans of bio signals, that can be undone upon death.
-        /// </summary>
-        public HashSet<string> scannedBioEntryIds = new HashSet<string>();
-
-        // spherical searching
-        public SphereLimit sphereLimit = new SphereLimit();
-
-        public Dictionary<string, List<LatLong2>>? trackTargets;
-
-        public bool migratedNonSystemDataOrganics = false;
-        public bool migratedScannedOrganicsInEntryId = false;
-
-        public long currentMarketId;
-
-        public void applyExplReward(long reward, string reason)
-        {
-            Game.log($"Gained: +{reward.ToString("N0")} for {reason}");
-            this.explRewards += reward;
-
-            Game.activeGame?.fireUpdate(true);
-            this.Save();
-        }
 
         public long explRewards;
         public double distanceTravelled;
@@ -99,6 +76,32 @@ namespace SrvSurvey.game
         /// The location of the ship when we last touched down, or docked
         /// </summary>
         public LatLong2? lastTouchdownLocation;
+
+        public bool migratedNonSystemDataOrganics = false;
+        public bool migratedScannedOrganicsInEntryId = false;
+
+        // spherical searching
+        public SphereLimit sphereLimit = new SphereLimit();
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public List<ScannedOrganic> scannedOrganics; // retire?
+
+        /// <summary>
+        /// A HashSet of union strings of "{systemAddress}_{bodyId}_{entryId}". Used to efficiently track final scans of bio signals, that can be undone upon death.
+        /// </summary>
+        public HashSet<string> scannedBioEntryIds = new HashSet<string>();
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public Dictionary<string, List<LatLong2>>? trackTargets; // retire?
+
+        public void applyExplReward(long reward, string reason)
+        {
+            Game.log($"Gained: +{reward.ToString("N0")} for {reason}");
+            this.explRewards += reward;
+
+            Game.activeGame?.fireUpdate(true);
+            this.Save();
+        }
 
         public void setMarketId(long newMarketId)
         {

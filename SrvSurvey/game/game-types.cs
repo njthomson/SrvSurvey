@@ -164,24 +164,6 @@ namespace SrvSurvey.game
         Barycentre,
     }
 
-    [JsonConverter(typeof(StringEnumConverter))]
-    internal enum Novelty
-    {
-        /// <summary>
-        /// This has been seen before
-        /// </summary>
-        no,
-        /// <summary>
-        /// The cmdr has not seen this anywhere before
-        /// </summary>
-        cmdrFirst, 
-        /// <summary>
-        /// The cmdr has not seen this within this region before
-        /// </summary>
-        regionFirst,
-        // firstEver,
-    }
-
     public enum SuitType
     {
         flightSuite,

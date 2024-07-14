@@ -133,6 +133,7 @@ namespace SrvSurvey.game
         /// Distinct settings for the current commander
         /// </summary>
         public CommanderSettings cmdr;
+        public CommanderCodex cmdrCodex;
 
         public SystemPoi? canonnPoi = null;
 
@@ -502,7 +503,10 @@ namespace SrvSurvey.game
             }
 
             if (loadEntry != null)
+            {
                 this.cmdr = CommanderSettings.Load(loadEntry.FID, loadEntry.Odyssey, loadEntry.Commander);
+                this.cmdrCodex = CommanderCodex.Load(loadEntry.FID, loadEntry.Commander);
+            }
 
             // if we have MainMenu music - we know we're not actively playing
             var lastMusic = journals.FindEntryByType<Music>(-1, true);
@@ -892,7 +896,7 @@ namespace SrvSurvey.game
             Game.log($"You died. Clearing ${Util.credits(this.cmdr.organicRewards)} from {this.cmdr.scannedBioEntryIds.Count} organisms.");
             // revisit all active bio-scan entries per body and mark them as Died
 
-            this.cmdr.scannedOrganics.Clear();
+            this.cmdr.scannedOrganics?.Clear(); // retire?
             this.cmdr.scanOne = null;
             this.cmdr.scanTwo = null;
             this.cmdr.lastOrganicScan = null;

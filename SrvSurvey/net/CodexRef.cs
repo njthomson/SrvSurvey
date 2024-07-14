@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using SrvSurvey.game;
+using System.Globalization;
 using System.Text.RegularExpressions;
 
 namespace SrvSurvey.canonn
@@ -335,9 +336,9 @@ namespace SrvSurvey.canonn
                         return new double[3]
                         {
                             // Columns are: Name, System, X, Y, Z, Type
-                            double.Parse(parts[2]), // x
-                            double.Parse(parts[3]), // y
-                            double.Parse(parts[4]), // z
+                            double.Parse(parts[2], CultureInfo.InvariantCulture), // x
+                            double.Parse(parts[3], CultureInfo.InvariantCulture), // y
+                            double.Parse(parts[4], CultureInfo.InvariantCulture), // z
                         };
                     })
                     .ToList();
