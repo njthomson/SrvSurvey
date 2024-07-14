@@ -178,9 +178,12 @@ namespace SrvSurvey
                 this.lblCmdr.Text = "";
             }
 
-            // calc scale to make the width fit
-            this.scale = (float)this.ClientRectangle.Width / (float)img.Width;
-            this.calcSizes(true, true);
+            if (this.img != null)
+            {
+                // calc scale to make the width fit
+                this.scale = (float)this.ClientRectangle.Width / (float)img.Width;
+                this.calcSizes(true, true);
+            }
             this.Invalidate(true);
             this.lblLoading.Hide();
         }
