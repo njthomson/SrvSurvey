@@ -297,7 +297,20 @@ namespace SrvSurvey.game
             get
             {
                 var parts = this.englishName.Split(' ', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
-                return $"{parts[0]}-{parts[1]}-{parts[3]}".ToLowerInvariant();
+                if (parts.Length == 4)
+                    return $"{parts[0]}-{parts[1]}-{parts[3]}".ToLowerInvariant();
+                else
+                    return $"{parts.Last()}-{parts.First()}".ToLowerInvariant();
+            }
+        }
+
+        [JsonIgnore]
+        public string colorName
+        {
+            get
+            {
+                var parts = this.englishName.Split(' ', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+                return parts.Last();
             }
         }
 

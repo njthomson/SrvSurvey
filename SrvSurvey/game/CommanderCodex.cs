@@ -55,6 +55,10 @@ namespace SrvSurvey.game
             return match?.address == systemAddress && match?.bodyId == bodyId;
         }
 
+        public bool isDiscovered(string entryId)
+        {
+            return this.codexFirsts?.ContainsKey(long.Parse(entryId)) ?? false;
+        }
     }
 
 

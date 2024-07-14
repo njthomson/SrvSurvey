@@ -156,18 +156,8 @@ namespace SrvSurvey
             }
 
             // download if we don't have an imagefile already
-            if (this.img == null)
+            if (this.img == null && match.variant.imageUrl != null)
             {
-                if (match.variant.imageUrl == null)
-                {
-                    // we have no url
-                    this.panelSubmit.Show();
-                    this.lblCmdr.Text = "";
-                    this.Invalidate();
-                    this.lblLoading.Hide();
-                    return;
-                }
-
                 Game.log($"Downloading: {match.variant.imageUrl}");
                 this.Invalidate();
                 Application.DoEvents();
@@ -179,6 +169,13 @@ namespace SrvSurvey
                         imgTmp.Save(filepath, ImageFormat.Png);
                     }
                 }
+            }
+
+            if (match.variant.imageUrl == null)
+            {
+                // we have no url
+                this.panelSubmit.Show();
+                this.lblCmdr.Text = "";
             }
 
             // calc scale to make the width fit

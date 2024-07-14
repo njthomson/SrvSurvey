@@ -363,6 +363,7 @@ namespace SrvSurvey.game
                                         Game.log($"Variant missing, adding genus only for: '{bodyOrg.species ?? bodyOrg.genus}' on '{bodyData.bodyName}' ({bodyData.bodyId})");
                                         systemOrg = new SystemOrganism()
                                         {
+                                            body = systemBody,
                                             genus = bodyOrg.genus,
                                             genusLocalized = bodyOrg.genusLocalized!,
                                         };
@@ -388,6 +389,7 @@ namespace SrvSurvey.game
                         {
                             systemOrg = new SystemOrganism()
                             {
+                                body = systemBody,
                                 genus = bioMatch.genus.name,
                             };
                             Game.log($"add organism '{bioMatch.variant.name}' ({bioMatch.entryId}) to '{systemBody.name}' ({systemBody.id})");
@@ -774,6 +776,7 @@ namespace SrvSurvey.game
                             Game.log($"add organism '{genusEntry.Genus_Localised ?? genusEntry.Genus}' to '{body.name}' ({body.id})");
                             body.organisms.Add(new SystemOrganism()
                             {
+                                body = body,
                                 genus = genusEntry.Genus,
                                 genusLocalized = genusEntry.Genus_Localised!,
                             });
@@ -858,6 +861,7 @@ namespace SrvSurvey.game
             {
                 organism = new SystemOrganism()
                 {
+                    body = body,
                     genus = match.genus.name,
                 };
                 Game.log($"add organism '{match.variant.name}' ({match.entryId}) to '{body.name}' ({body.id})");
@@ -871,7 +875,7 @@ namespace SrvSurvey.game
             organism.variant = entry.Name;
             organism.variantLocalized = entry.Name_Localised;
             organism.reward = match.species.reward;
-            organism.isNewEntry = entry.IsNewEntry;
+            if (entry.IsNewEntry) organism.isNewEntry = true;
 
             if (organism.species == null) organism.species = match.species.name;
             if (organism.speciesLocalized == null) organism.speciesLocalized = match.species.englishName;
@@ -897,6 +901,7 @@ namespace SrvSurvey.game
             {
                 organism = new SystemOrganism()
                 {
+                    body = body,
                     genus = entry.Genus,
                     genusLocalized = entry.Genus_Localized,
                 };
@@ -1024,6 +1029,7 @@ namespace SrvSurvey.game
                         {
                             organism = new SystemOrganism()
                             {
+                                body = poiBody,
                                 genus = match.genus.name,
                                 genusLocalized = match.genus.englishName,
                                 species = match.species.name,
@@ -1253,6 +1259,7 @@ namespace SrvSurvey.game
                             if (body.organisms == null) body.organisms = new List<SystemOrganism>();
                             body.organisms.Add(new SystemOrganism()
                             {
+                                body = body,
                                 genus = newGenus,
                                 genusLocalized = BioScan.genusNames[newGenus],
                             });

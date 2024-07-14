@@ -1584,7 +1584,7 @@ namespace SrvSurvey
                 entryId = game?.systemBody?.organisms?.FirstOrDefault(o => o.entryId > 0)?.entryId.ToString();
             // use the first prediction?
             if (entryId == null)
-                entryId = game?.systemBody?.predictions.Values.First().entryId;
+                entryId = game?.systemBody?.predictions.Values.FirstOrDefault()?.entryId;
 
             if (entryId != null)
                 FormShowCodex.show(entryId);

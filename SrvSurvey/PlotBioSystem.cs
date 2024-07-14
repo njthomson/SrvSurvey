@@ -288,6 +288,10 @@ namespace SrvSurvey
                 {
                     var highlight = !organism.analyzed && (game.cmdr.scanOne?.genus == organism.genus || game.cmdr.scanOne?.genus == null);
                     var brush = highlight ? GameColors.brushCyan : GameColors.brushGameOrange;
+
+                    var predictions = body.predictions.Values.Where(p => p.species.genus.name == organism.genus).ToList();
+                    var potentialFirstDiscovery = predictions.Any(p => !game.cmdrCodex.isDiscovered(p.entryId));
+
                     dty = (int)dty;
 
                     if (first)
@@ -297,7 +301,7 @@ namespace SrvSurvey
 
                     var minReward = body.getBioRewardForGenus(organism, true);
                     var maxReward = body.getBioRewardForGenus(organism, false);
-                    drawVolumeBars(g, oneTwo, dty + oneSix, highlight, minReward, maxReward, organism.isFirst);
+                    drawVolumeBars(g, oneTwo, dty + oneSix, highlight, minReward, maxReward, organism.isFirst || potentialFirstDiscovery);
 
                     // displayName is either genus, or species/variant without the genus prefix
                     var displayName = organism.genusLocalized;
@@ -308,16 +312,50 @@ namespace SrvSurvey
                     else
                     {
                         // if we have a matching prediction - show the variant name without the genus prefix
-                        var match = body.predictions.Values.FirstOrDefault(p => p.species.genus.name == organism.genus);
-                        if (match != null)
-                            displayName = match.englishName.Replace(match.species.genus.englishName, "").Trim() + " ???";
+                        if (predictions.Count > 0)
+                        {
+
+                            var firstColor = true;
+                            var lastSpecies = "";
+                            foreach (var match in predictions)
+                            {
+                                if (match.species.name != lastSpecies)
+                                {
+                                    if (lastSpecies != "") newLine(+one);
+                                    var speciesName = match.species.englishName.Replace(match.species.genus.englishName, "").Trim() + ":";
+                                    this.drawTextAt(twoEight, speciesName, brush);
+                                    lastSpecies = match.species.name;
+                                    firstColor = true;
+                                }
+
+                                if (firstColor)
+                                    firstColor = false;
+                                else
+                                {
+                                    dtx -= four;
+                                    this.drawTextAt(",", brush);
+                                }
+
+                                var notDiscovered = !game.cmdrCodex.isDiscovered(match.entryId);
+                                dtx -= two;
+                                if (notDiscovered)
+                                    this.drawTextAt("⚑" + match.colorName, highlight ? brush : Brushes.Gold);
+                                else
+                                    this.drawTextAt(match.colorName, brush);
+                            }
+                            this.drawTextAt("?", brush);
+
+                            // TODO: show colour blocks or something?
+                            displayName = ""; // string.Join("/", matches.Select(m => m.colorName.Substring(0, 2)));
+                        }
                     }
 
                     //if (organism.novel == Novelty.cmdrFirst) displayName = "⚑ " + displayName;
                     //if (organism.novel == Novelty.regionFirst) displayName = "⚐ " + displayName;
 
                     // line 1
-                    var sz2 = this.drawTextAt(twoEight, displayName, brush);
+                    if (displayName.Length > 0)
+                        this.drawTextAt(twoEight, displayName, brush);
                     if (organism.analyzed)
                     {
                         // strike-through if already analyzed
@@ -340,13 +378,16 @@ namespace SrvSurvey
                         null, true);
 
                     // 2nd line - left
+                    brush = highlight ? GameColors.brushCyan : GameColors.brushGameOrange;
+                    if (!highlight && (organism.isFirst || potentialFirstDiscovery)) brush = (SolidBrush)Brushes.Gold;
+
                     var leftText = displayName != organism.genusLocalized ? organism.genusLocalized : "?";
-                    if (organism.isCmdrFirst) leftText = "⚑ " + leftText;
+                    if (organism.isCmdrFirst || potentialFirstDiscovery) leftText = "⚑ " + leftText;
                     else if (organism.isNewEntry) leftText = "⚐ " + leftText;
                     drawTextAt(
                         twoEight,
                         leftText,
-                        highlight ? GameColors.brushCyan : GameColors.brushGameOrange);
+                        brush);
                     dtx += sz.Width + ten;
                     newLine(+eight, true);
                 }
@@ -389,6 +430,7 @@ namespace SrvSurvey
             foreach (var body in sortedBodies)
             {
                 if (body.bioSignalCount == 0) continue;
+                var potentialFirstDiscovery = body.predictions.Values.Any(p => !game.cmdrCodex.isDiscovered(p.entryId));
 
                 var highlight = body.shortName == destinationBody //|| (body.countAnalyzedBioSignals != body.bioSignalCount && body.countAnalyzedBioSignals > 0);
                     || (body == game.systemBody && game.status.hasLatLong);
@@ -397,7 +439,9 @@ namespace SrvSurvey
                 dty = (float)Math.Round(dty);
 
                 // draw body name
-                var sz2 = this.drawTextAt(eight, body.shortName, highlight ? GameColors.brushCyan : GameColors.brushGameOrange, GameColors.fontMiddle);
+                var b = highlight ? GameColors.brushCyan : GameColors.brushGameOrange;
+                //if (!highlight && potentialFirstDiscovery) b = (SolidBrush)Brushes.Gold;
+                var sz2 = this.drawTextAt(eight, body.shortName, b, GameColors.fontMiddle);
                 if (body.bioSignalCount == body.countAnalyzedBioSignals)
                 {
                     // strike-through if already analyzed
@@ -422,7 +466,7 @@ namespace SrvSurvey
                     signalCount -= body.organisms.Count;
                 }
 
-                // and draw more boxes for those we don't
+                // ... and draw more boxes for those we don't
                 // using the first and last for the min/max of all the potentials
                 // and ? boxes for anything in between
                 if (signalCount == 1)
@@ -430,7 +474,7 @@ namespace SrvSurvey
                     //long min = body.predictions.Count > 0 ? body.predictions.Values.Min(p => p.reward) : -1;
                     long min = body.predictions.Count > 0 ? body.predictions.Values.Min(p => p.reward) : 0;
                     long max = body.predictions.Count > 0 ? body.predictions.Values.Max(p => p.reward) : -1;
-                    drawVolumeBars(g, x, dty + oneFive, highlight, min, max);
+                    drawVolumeBars(g, x, dty + oneFive, highlight, min, max, potentialFirstDiscovery);
                     x += oneTwo;
                 }
                 else if (signalCount > 1)
@@ -448,13 +492,15 @@ namespace SrvSurvey
 
                     // last is max
                     long max = body.predictions.Count > 0 ? body.predictions.Values.Max(p => p.reward) : 0;
-
-                    drawVolumeBars(g, x, dty + oneFive, highlight, min, max);
+                    drawVolumeBars(g, x, dty + oneFive, highlight, min, max, potentialFirstDiscovery);
                     x += oneTwo;
                 }
 
                 // credits
-                drawTextAt(this.ClientSize.Width - ten, " " + body.minMaxBioRewards, highlight ? GameColors.brushCyan : GameColors.brushGameOrange, GameColors.fontMiddle, true);
+                b = highlight ? GameColors.brushCyan : GameColors.brushGameOrange;
+                //if (!highlight && potentialFirstDiscovery) b = (SolidBrush)Brushes.Gold;
+
+                drawTextAt(this.ClientSize.Width - ten, " " + body.minMaxBioRewards, b, GameColors.fontMiddle, true);
                 dtx = lastTextSize.Width + boxRight + ten;
                 newLine(+four, true);
             }
@@ -489,6 +535,7 @@ namespace SrvSurvey
                 bb = (SolidBrush)Brushes.DarkGoldenrod;
                 pp = Pens.Gold;
                 ppp = GameColors.newPen(Color.FromArgb(96, Color.Gold), 1.9f, DashStyle.Dot);
+                bb2 = (SolidBrush)Brushes.DarkGoldenrod;
             }
 
             g.DrawRectangle(ppp, x, y - oneTwo, ww, oneFive);

@@ -84,7 +84,7 @@ namespace SrvSurvey
         {
             var hwndED = Elite.getWindowHandle();
             var hwndActive = Elite.GetForegroundWindow();
-            var weHaveFocus = hwndActive == Main.ActiveForm?.Handle || System.Diagnostics.Debugger.IsAttached;
+            var weHaveFocus = (!Program.control.InvokeRequired && hwndActive == Main.ActiveForm?.Handle) || System.Diagnostics.Debugger.IsAttached;
 
             // hide plotters when game is not active (unless we are debugging or forced)
             if (!force && (hwndED != hwndActive || hwndED == IntPtr.Zero) && !weHaveFocus)

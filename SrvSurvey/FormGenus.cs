@@ -128,7 +128,7 @@ namespace SrvSurvey
                     if (body.bioSignalCount > 0)
                         body.predictSpecies();
             }
-            else
+            else if (targetBody != null)
             {
                 targetBody.predictSpecies();
             }
@@ -328,12 +328,10 @@ namespace SrvSurvey
                         .OrderBy(o => o.genus)
                         .Select(o =>
                     {
-                        var prefix = o.analyzed ? " " : " ";
-                        var suffix = "";
-                        if (o.isCmdrFirst) suffix = "⚑";
-                        else if (o.isNewEntry) suffix = "⚐";
-                        prefix += suffix;
-                        return $"\t{prefix}{o.variantLocalized} {suffix}           {Util.credits(o.reward, true)}";
+                        var prefix = o.analyzed ? "✅ " : "☐ ";
+                        if (o.isCmdrFirst) prefix += "⚑ ";
+                        else if (o.isNewEntry) prefix += "⚐ ";
+                        return $"\t{prefix}{o.variantLocalized}           {Util.credits(o.reward, true)}";
                         // TODO: remove reward from here and render  on the right hand side
                     })) + "\r\n";
                 }
@@ -341,11 +339,13 @@ namespace SrvSurvey
                 if (body.predictions != null)
                 {
                     txt += "  " + string.Join("\r\n  ", body.predictions
-                        .Where(p => body.organisms?.Any(o => o.species == p.Value.species.name) == false)
+                        .Where(p => body.organisms?.Any(o => o.species == p.Value.species.name) != true)
                         .OrderBy(p => p.Value.name)
                         .Select(p =>
                         {
-                            return $"\t ? {p.Value.englishName}        {Util.credits(p.Value.reward, true)}";
+                            // TODO: add tracking for regional firsts?
+                            var prefix = game.cmdrCodex.isDiscovered(p.Value.entryId) ? "": "⚑ ";
+                            return $"\t☐ {prefix}{p.Value.englishName} ?        {Util.credits(p.Value.reward, true)}";
                             // TODO: remove reward from here and render  on the right hand side
                         }));
                 }

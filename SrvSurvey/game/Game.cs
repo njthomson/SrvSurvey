@@ -2397,7 +2397,7 @@ namespace SrvSurvey.game
         private void onJournalEntry(Backpack entry)
         {
             log($"Backpack - this.onPlanet: {this.onPlanet}, firstFootfall: {this.systemBody?.firstFootFall}");
-            if (this.onPlanet) // && this.systemBody?.firstFootFall == false)
+            if (this.onPlanet && this.systemBody?.firstFootFall == false)
                 this.inferFirstFootFall();
         }
 

@@ -101,7 +101,8 @@ namespace BioCriteria
             if (genus != null && knownGenus?.Count > 0 && !knownGenus.Contains(genus)) return;
             // or stop here if we already scanned some species from this genus
             // TODO: handle Brain Tree's
-            if (genus != null && knownSpecies?.Count > 0 && !knownSpecies.ContainsKey(genus)) return;
+            if (genus != null && species != null && knownSpecies?.Count > 0 && knownSpecies.ContainsKey(genus) && !knownSpecies[genus].EndsWith(species))
+                return;
 
             // evaluate current query
             var currentName = $"{genus} {species} - {variant}";
