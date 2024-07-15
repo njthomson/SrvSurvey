@@ -28,7 +28,8 @@ namespace SrvSurvey
         public bool autoShowPlotBioSystem = true;
         public bool autoShowPlotGalMap = true;
         public bool autoShowHumanSitesTest = false;
-
+        public bool autoShowPlotJumpInfoTest = true;
+        
         public bool autoShowPlotBodyInfo = true;
         public bool autoShowPlotBodyInfoInMap = true;
         public bool autoShowPlotBodyInfoInOrbit = true;
