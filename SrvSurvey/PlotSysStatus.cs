@@ -10,34 +10,20 @@ namespace SrvSurvey
 
         private PlotSysStatus() : base()
         {
-            this.Width = scaled(48);
-            this.Height = scaled(48);
-            this.BackgroundImageLayout = ImageLayout.Stretch;
-            this.Name = nameof(PlotSysStatus);
-
+            this.Size = Size.Empty;
             this.Font = GameColors.fontMiddle;
         }
 
+        public override bool allow { get => PlotSysStatus.allowPlotter; }
+
         protected override void OnLoad(EventArgs e)
         {
+            this.Width = scaled(48);
+            this.Height = scaled(48);
             base.OnLoad(e);
 
-            this.initialize();
+            this.initializeOnLoad();
             this.reposition(Elite.getWindowRect(true));
-        }
-
-        public override void reposition(Rectangle gameRect)
-        {
-            if (gameRect == Rectangle.Empty)
-            {
-                this.Opacity = 0;
-                return;
-            }
-
-            this.Opacity = PlotPos.getOpacity(this);
-            PlotPos.reposition(this, gameRect);
-
-            this.Invalidate();
         }
 
         public static bool allowPlotter
@@ -49,19 +35,6 @@ namespace SrvSurvey
                 // show only after honking or we have Canonn data
                 && Game.activeGame.systemData != null
                 && (Game.activeGame.systemData.honked || Game.activeGame.canonnPoi != null);
-        }
-
-        protected override void Game_modeChanged(GameMode newMode, bool force)
-        {
-            if (this.IsDisposed) return;
-
-            //var targetMode = this.game.isMode(GameMode.SuperCruising, GameMode.SAA, GameMode.FSS, GameMode.ExternalPanel, GameMode.Orrery, GameMode.SystemMap, GameMode.CommsPanel);
-            if (this.Opacity > 0 && !PlotSysStatus.allowPlotter)
-                this.Opacity = 0;
-            else if (this.Opacity == 0 && PlotSysStatus.allowPlotter)
-                this.reposition(Elite.getWindowRect());
-
-            this.Invalidate();
         }
 
         protected override void onJournalEntry(FSSBodySignals entry)
@@ -84,14 +57,12 @@ namespace SrvSurvey
             this.Invalidate();
         }
 
-        protected override void OnPaintBackground(PaintEventArgs e)
+        protected override void onPaintPlotter(PaintEventArgs e)
         {
-            base.OnPaintBackground(e);
-
             var minViableWidth = scaled(170);
             try
             {
-                if (this.IsDisposed || game?.systemData == null || game.status == null || !PlotSysStatus.allowPlotter)
+                if (game?.systemData == null || game.status == null || !PlotSysStatus.allowPlotter)
                 {
                     this.Opacity = 0;
                     return;
@@ -168,10 +139,6 @@ namespace SrvSurvey
                     //headerTxt += ")";
                 }
                 g.DrawString($"System survey remaining: {headerTxt}", GameColors.fontSmall, GameColors.brushGameOrange, scaled(4), scaled(7));
-            }
-            catch (Exception ex)
-            {
-                Game.log($"PlotSysStatus.OnPaintBackground error: {ex}");
             }
             finally
             {

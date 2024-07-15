@@ -61,6 +61,8 @@ namespace SrvSurvey
             this.nextMode();
         }
 
+        public override bool allow { get => PlotGuardians.allowPlotter; }
+
         public void devRefreshBackground(string imagePath)
         {
             if (this.template == null) return;
@@ -86,22 +88,8 @@ namespace SrvSurvey
                 && Game.activeGame.status.hasLatLong
                 && Game.activeGame.systemSite?.location != null
                 && Game.activeGame.isMode(GameMode.InSrv, GameMode.OnFoot, GameMode.Landed, GameMode.Flying, GameMode.InFighter)
-                        //&& this.status.SelectedWeapon != "$humanoid_sampletool_name;"
+                //&& this.status.SelectedWeapon != "$humanoid_sampletool_name;"
                 ;
-        }
-
-        public override void reposition(Rectangle gameRect)
-        {
-            if (gameRect == Rectangle.Empty)
-            {
-                this.Opacity = 0;
-                return;
-            }
-
-            this.Opacity = PlotPos.getOpacity(this);
-            PlotPos.reposition(this, gameRect);
-
-            this.Invalidate();
         }
 
         private void PlotGuardians_Load(object sender, EventArgs e)
@@ -112,17 +100,11 @@ namespace SrvSurvey
             Program.closePlotter<PlotPriorScans>();
             Program.closePlotter<PlotTrackers>();
 
-            this.initialize();
-            this.reposition(Elite.getWindowRect(true));
-        }
-
-        protected override void initialize()
-        {
-            base.initialize();
-
+            this.initializeOnLoad();
             this.siteData.loadPub();
 
             this.nextMode();
+            this.reposition(Elite.getWindowRect(true));
         }
 
         private void nextMode()
@@ -857,14 +839,25 @@ namespace SrvSurvey
 
         protected override void onJournalEntry(Embark entry)
         {
-            base.onJournalEntry(entry);
+            if (entry.SRV && this.srvLocation0 != null)
+            {
+                this.srvLocation0 = null;
+                this.Invalidate();
+            }
+
 
             this.setMapScale();
         }
 
         protected override void onJournalEntry(Disembark entry)
         {
-            base.onJournalEntry(entry);
+            if (entry.SRV && this.srvLocation0 == null)
+            {
+                this.srvLocation0 = new TrackingDelta(
+                    game.systemBody!.radius,
+                    Status.here.clone());
+                this.Invalidate();
+            }
 
             this.scale = 2f;
             this.Invalidate();
@@ -1225,38 +1218,27 @@ namespace SrvSurvey
             }, true);
         }
 
-        protected override void OnPaintBackground(PaintEventArgs e)
+        protected override void onPaintPlotter(PaintEventArgs e)
         {
-            base.OnPaintBackground(e);
-            try
+            if (this.IsDisposed || game.isShutdown || this.siteData == null) return;
+
+            switch (this.mode)
             {
-                if (this.IsDisposed || game.isShutdown || this.siteData == null) return;
+                case Mode.siteType:
+                    this.drawSiteTypeHelper();
+                    return;
 
-                this.g = e.Graphics;
+                case Mode.heading:
+                    this.drawSiteHeadingHelper();
+                    return;
 
-                g.SmoothingMode = SmoothingMode.HighQuality;
-                switch (this.mode)
-                {
-                    case Mode.siteType:
-                        this.drawSiteTypeHelper();
-                        return;
+                case Mode.origin:
+                    this.drawTrackOrigin();
+                    return;
 
-                    case Mode.heading:
-                        this.drawSiteHeadingHelper();
-                        return;
-
-                    case Mode.origin:
-                        this.drawTrackOrigin();
-                        return;
-
-                    case Mode.map:
-                        this.drawSiteMap();
-                        return;
-                }
-            }
-            catch (Exception ex)
-            {
-                Game.log($"PlotGuardians.OnPaintBackground error: {ex}");
+                case Mode.map:
+                    this.drawSiteMap();
+                    return;
             }
         }
 

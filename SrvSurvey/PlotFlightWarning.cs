@@ -1,5 +1,4 @@
 ﻿using SrvSurvey.game;
-using System.Drawing.Drawing2D;
 
 namespace SrvSurvey
 {
@@ -7,83 +6,58 @@ namespace SrvSurvey
     {
         private PlotFlightWarning() : base()
         {
-            this.Width = 0;
-            this.Height = 0;
+            this.Size = Size.Empty;
             this.Font = GameColors.fontSmall;
+        }
+
+        public override bool allow { get => PlotFlightWarning.allowPlotter; }
+
+        public static bool allowPlotter
+        {
+            get => Game.settings.autoShowFlightWarnings
+                && Game.activeGame?.systemBody != null
+                && Game.activeGame.systemBody.type == SystemBodyType.LandableBody
+                && Game.activeGame.systemBody.surfaceGravity >= Game.settings.highGravityWarningLevel * 10
+                && Game.activeGame.isMode(GameMode.Landed, GameMode.SuperCruising, GameMode.GlideMode, GameMode.Flying, GameMode.InFighter, GameMode.InSrv)
+                ;
         }
 
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
 
-            this.initialize();
+            this.initializeOnLoad();
             this.reposition(Elite.getWindowRect(true));
             this.BackgroundImage = null;
         }
 
-        public override void reposition(Rectangle gameRect)
+        float pad = scaled(15);
+
+        protected override void onPaintPlotter(PaintEventArgs e)
         {
-            if (gameRect == Rectangle.Empty)
+            g.Clear(Color.Black);
+            if (this.IsDisposed || game.systemBody == null)
             {
-                this.Opacity = 0;
+                Program.closePlotter<PlotFlightWarning>();
                 return;
             }
 
-            this.Opacity = PlotPos.getOpacity(this);
-            PlotPos.reposition(this, gameRect);
+            var bodyGrav = (game.systemBody!.surfaceGravity / 10).ToString("N2");
+            var txt = $"Warning: Surface gravity {bodyGrav}g";
 
-            this.Invalidate();
-        }
+            var sz = g.MeasureString(txt, this.Font);
+            sz.Width += two;
+            this.Width = (int)(sz.Width + pad * 2);
+            this.Height = (int)(sz.Height + pad * 2);
 
-        protected override void Game_modeChanged(GameMode newMode, bool force)
-        {
-            if (this.IsDisposed) return;
+            PlotPos.reposition(this, Elite.getWindowRect());
 
-            var showPlotter = game.isMode(GameMode.Landed, GameMode.SuperCruising, GameMode.GlideMode, GameMode.Flying, GameMode.InFighter, GameMode.InSrv);
-            if (this.Opacity > 0 && !showPlotter)
-                this.Opacity = 0;
-            else if (this.Opacity == 0 && showPlotter)
-                this.reposition(Elite.getWindowRect());
+            var rect = new RectangleF(0, 0, sz.Width + pad * 2, sz.Height + pad * 2);
+            g.FillRectangle(GameColors.brushShipDismissWarning, rect);
 
-            this.Invalidate();
-        }
-
-        float pad = scaled(15);
-
-        protected override void OnPaintBackground(PaintEventArgs e)
-        {
-            base.OnPaintBackground(e);
-            try
-            {
-                this.resetPlotter(g);
-                g.Clear(Color.Black);
-                if (this.IsDisposed || game.systemBody == null)
-                {
-                    Program.closePlotter<PlotFlightWarning>();
-                    return;
-                }
-
-                var bodyGrav = (game.systemBody!.surfaceGravity / 10).ToString("N2");
-                var txt = $"Warning: Surface gravity {bodyGrav}g";
-
-                var sz = g.MeasureString(txt, this.Font);
-                sz.Width += two;
-                this.Width = (int)(sz.Width + pad * 2);
-                this.Height = (int)(sz.Height + pad * 2);
-
-                PlotPos.reposition(this, Elite.getWindowRect());
-
-                var rect = new RectangleF(0, 0, sz.Width + pad * 2, sz.Height + pad * 2);
-                g.FillRectangle(GameColors.brushShipDismissWarning, rect);
-
-                rect.Inflate(-10, -10);
-                g.FillRectangle(Brushes.Black, rect);
-                g.DrawString(txt, this.Font, Brushes.Red, pad + one, pad + one);
-            }
-            catch (Exception ex)
-            {
-                Game.log($"PlotFlightWarning.OnPaintBackground error: {ex}");
-            }
+            rect.Inflate(-10, -10);
+            g.FillRectangle(Brushes.Black, rect);
+            g.DrawString(txt, this.Font, Brushes.Red, pad + one, pad + one);
         }
     }
 }

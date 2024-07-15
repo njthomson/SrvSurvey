@@ -17,23 +17,26 @@ namespace SrvSurvey
 
         private PlotTrackTarget()
         {
-            this.Width = scaled(120);
-            this.Height = scaled(108);
+            this.Size = Size.Empty;
 
             this.plotPrep();
         }
 
+        public override bool allow { get => PlotTrackTarget.allowPlotter; }
+
         protected override void OnLoad(EventArgs e)
         {
+            this.Width = scaled(120);
+            this.Height = scaled(108);
             base.OnLoad(e);
 
-            this.initialize();
+            this.initializeOnLoad();
             this.reposition(Elite.getWindowRect(true));
         }
 
-        protected override void initialize()
+        protected override void initializeOnLoad()
         {
-            base.initialize();
+            base.initializeOnLoad();
 
             if (game.systemBody != null && game.status != null)
             {
@@ -54,48 +57,6 @@ namespace SrvSurvey
                 && !Game.activeGame.hidePlottersFromCombatSuits
                 && Game.activeGame.isMode(GameMode.SuperCruising, GameMode.Flying, GameMode.Landed, GameMode.InSrv, GameMode.OnFoot, GameMode.GlideMode, GameMode.InFighter, GameMode.CommsPanel);
         }
-
-        public override void reposition(Rectangle gameRect)
-        {
-            if (gameRect == Rectangle.Empty)
-            {
-                this.Opacity = 0;
-                return;
-            }
-
-            this.Opacity = PlotPos.getOpacity(this);
-            PlotPos.reposition(this, gameRect);
-
-            this.Invalidate();
-        }
-
-        #region mouse handlers
-
-        protected override void OnMouseEnter(EventArgs e)
-        {
-            base.OnMouseEnter(e);
-
-            if (Debugger.IsAttached)
-            {
-                // use a different cursor if debugging
-                this.Cursor = Cursors.No;
-            }
-            else if (Game.settings.hideOverlaysFromMouse)
-            {
-                // move the mouse outside the overlay
-                System.Windows.Forms.Cursor.Position = Elite.gameCenter;
-            }
-        }
-
-        protected override void OnMouseDown(MouseEventArgs e)
-        {
-            base.OnMouseDown(e);
-
-            this.Invalidate();
-            Elite.setFocusED();
-        }
-
-        #endregion
 
         protected override void Status_StatusChanged(bool blink)
         {
@@ -137,15 +98,10 @@ namespace SrvSurvey
             tt.PathPoints[1].X += scaled(20);
         }
 
-        protected override void OnPaintBackground(PaintEventArgs e)
+        protected override void onPaintPlotter(PaintEventArgs e)
         {
-            base.OnPaintBackground(e);
-            try
-            {
-                if (this.IsDisposed || game.systemBody == null || this.td == null) return;
+                if (game.systemBody == null || this.td == null) return;
 
-                this.g = e.Graphics;
-                this.g.SmoothingMode = SmoothingMode.HighQuality;
 
                 float hw = this.Width / 2;
                 float hh = this.Height / 2;
@@ -183,11 +139,6 @@ namespace SrvSurvey
                 // draw thd rest unclipped
                 g.Clip = new Region();
                 g.DrawPath(GameColors.penGameOrange8, pp);
-            }
-            catch (Exception ex)
-            {
-                Game.log($"PlotTrackTarget.OnPaintBackground error: {ex}");
-            }
         }
     }
 }

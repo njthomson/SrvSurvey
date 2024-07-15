@@ -1,7 +1,6 @@
 ﻿using SrvSurvey.game;
 using SrvSurvey.units;
 using System.Drawing.Drawing2D;
-using System.Text;
 
 namespace SrvSurvey
 {
@@ -14,8 +13,16 @@ namespace SrvSurvey
 
         private PlotTrackers() : base()
         {
-            this.Width = scaled(380);
-            this.Height = scaled(100);
+            this.Size = Size.Empty;
+        }
+
+        public override bool allow { get => PlotTrackers.allowPlotter; }
+
+        public static bool allowPlotter
+        {
+            get => PlotGrounded.allowPlotter
+                // same as PlotGrounded + do we have any bookmarks?
+                && Game.activeGame?.systemBody?.bookmarks?.Count > 0;
         }
 
         private void setNewHeight()
@@ -35,13 +42,13 @@ namespace SrvSurvey
 
         protected override void OnLoad(EventArgs e)
         {
+            this.Width = scaled(380);
+            this.Height = scaled(100);
             base.OnLoad(e);
-            var gameRect = Elite.getWindowRect(true);
 
             this.prepTrackers();
             this.setNewHeight();
-            this.initialize();
-            this.reposition(gameRect);
+            this.initializeOnLoad();
         }
 
         public void prepTrackers()
@@ -81,18 +88,21 @@ namespace SrvSurvey
                 return;
             }
 
-            this.Opacity = Game.settings.Opacity;
+            // match opacity of PlotGrounded
+            this.Opacity = PlotPos.getOpacity(nameof(PlotGrounded));
 
+            // position ourself under PlotGrounded, if it exists
             var plotGrounded = Program.getPlotter<PlotGrounded>();
             if (plotGrounded != null)
             {
                 this.Width = plotGrounded.Width;
                 this.Left = gameRect.Right - this.Width - (gameRect.Width - plotGrounded.Right);
-                this.Top = plotGrounded.Bottom + 4;
+                this.Top = plotGrounded.Bottom + (int)four;
             }
             else
             {
-                Elite.floatRightMiddle(this, gameRect, 8);
+                // otherwise position ourself where PlotGrounded would be
+                PlotPos.reposition(this, gameRect, nameof(PlotGrounded));
             }
 
             this.Invalidate();
@@ -101,7 +111,7 @@ namespace SrvSurvey
         protected override void Game_modeChanged(GameMode newMode, bool force)
         {
             if (this.IsDisposed) return;
-            
+
             if (this.Opacity > 0 && !PlotGrounded.allowPlotter)
                 this.Opacity = 0;
             else if (this.Opacity == 0 && PlotGrounded.allowPlotter)
@@ -152,65 +162,58 @@ namespace SrvSurvey
             }
         }
 
-        protected override void OnPaintBackground(PaintEventArgs e)
+        protected override void onPaintPlotter(PaintEventArgs e)
         {
-            try
+            if (game?.systemData == null || game.systemBody == null || game.systemBody.bookmarks == null || game.systemBody.bookmarks?.Count == 0) return;
+
+            this.g = e.Graphics;
+            this.g.SmoothingMode = SmoothingMode.HighQuality;
+            base.OnPaintBackground(e);
+
+            g.DrawString($"Tracking {game.systemBody.bookmarks?.Count} targets:", GameColors.fontSmall, GameColors.brushGameOrange, scaled(4), scaled(8));
+
+            var indent = scaled(220 + 80);
+            var y = scaled(12);
+            foreach (var name in this.trackers.Keys)
             {
-                if (this.IsDisposed || game?.systemData == null || game.systemBody == null || game.systemBody.bookmarks == null || game.systemBody.bookmarks?.Count == 0) return;
+                y += rowHeight;
 
-                this.g = e.Graphics;
-                this.g.SmoothingMode = SmoothingMode.HighQuality;
-                base.OnPaintBackground(e);
+                var x = (float)this.Width - indent;
 
-                g.DrawString($"Tracking {game.systemBody.bookmarks?.Count} targets:", GameColors.fontSmall, GameColors.brushGameOrange, scaled(4), scaled(8));
-
-                var indent = scaled(220 + 80);
-                var y = scaled(12);
-                foreach (var name in this.trackers.Keys)
+                BioScan.prefixes.TryGetValue(name, out var fullName);
+                var isActive = game.cmdr.scanOne?.genus == null || game.cmdr.scanOne?.genus == fullName;
+                var isClose = false;
+                var bearingWidth = scaled(75);
+                Brush brush;
+                foreach (var dd in this.trackers[name])
                 {
-                    y += rowHeight;
+                    var deg = dd.angle - game.status!.Heading;
+                    //var radius = BioScan.ranges.ContainsKey(name) ? BioScan.ranges[name] : highlightDistance;
 
-                    var x = (float)this.Width - indent;
-
-                    BioScan.prefixes.TryGetValue(name, out var fullName);
-                    var isActive = game.cmdr.scanOne?.genus == null || game.cmdr.scanOne?.genus == fullName;
-                    var isClose = false;
-                    var bearingWidth = scaled(75);
-                    Brush brush;
-                    foreach (var dd in this.trackers[name])
-                    {
-                        var deg = dd.angle - game.status!.Heading;
-                        //var radius = BioScan.ranges.ContainsKey(name) ? BioScan.ranges[name] : highlightDistance;
-
-                        isClose |= dd.distance < highlightDistance;
-                        brush = isActive ? GameColors.brushGameOrange : GameColors.brushGameOrangeDim;
-                        if (dd.distance < highlightDistance) brush = isActive ? GameColors.brushCyan : Brushes.DarkCyan;
-
-                        var pen = isActive ? GameColors.penGameOrange2 : GameColors.penGameOrangeDim2;
-                        if (dd.distance < highlightDistance) pen = isActive ? GameColors.penCyan2 : Pens.DarkCyan;
-
-                        this.drawBearingTo(x, y, "", (double)dd.distance, (double)deg, brush, pen);
-                        x += bearingWidth;
-                    }
-
-                    string? displayName;
-                    if (!BioScan.prefixes.ContainsKey(name) || !BioScan.genusNames.TryGetValue(BioScan.prefixes[name], out displayName))
-                        displayName = name;
-
-                    var sz = g.MeasureString(displayName, GameColors.fontSmall);
+                    isClose |= dd.distance < highlightDistance;
                     brush = isActive ? GameColors.brushGameOrange : GameColors.brushGameOrangeDim;
-                    if (isClose) brush = isActive ? GameColors.brushCyan : Brushes.DarkCyan;
+                    if (dd.distance < highlightDistance) brush = isActive ? GameColors.brushCyan : Brushes.DarkCyan;
 
-                    g.DrawString(
-                        displayName,
-                        GameColors.fontSmall,
-                        brush,
-                        this.Width - indent - sz.Width + scaled(3), y);
+                    var pen = isActive ? GameColors.penGameOrange2 : GameColors.penGameOrangeDim2;
+                    if (dd.distance < highlightDistance) pen = isActive ? GameColors.penCyan2 : Pens.DarkCyan;
+
+                    this.drawBearingTo(x, y, "", (double)dd.distance, (double)deg, brush, pen);
+                    x += bearingWidth;
                 }
-            }
-            catch (Exception ex)
-            {
-                Game.log($"PlotTrackers.OnPaintBackground error: {ex}");
+
+                string? displayName;
+                if (!BioScan.prefixes.ContainsKey(name) || !BioScan.genusNames.TryGetValue(BioScan.prefixes[name], out displayName))
+                    displayName = name;
+
+                var sz = g.MeasureString(displayName, GameColors.fontSmall);
+                brush = isActive ? GameColors.brushGameOrange : GameColors.brushGameOrangeDim;
+                if (isClose) brush = isActive ? GameColors.brushCyan : Brushes.DarkCyan;
+
+                g.DrawString(
+                    displayName,
+                    GameColors.fontSmall,
+                    brush,
+                    this.Width - indent - sz.Width + scaled(3), y);
             }
         }
     }

@@ -21,8 +21,7 @@ namespace SrvSurvey
 
         private PlotHumanSite() : base()
         {
-            this.Width = scaled(500);
-            this.Height = scaled(600);
+            this.Size = Size.Empty;
             this.Font = GameColors.fontSmall;
 
             // these we get from current data
@@ -37,6 +36,8 @@ namespace SrvSurvey
                 this.hasLanded = true;
             }
         }
+
+        public override bool allow { get => PlotHumanSite.allowPlotter; }
 
         protected override void Dispose(bool disposing)
         {
@@ -68,26 +69,14 @@ namespace SrvSurvey
 
         protected override void OnLoad(EventArgs e)
         {
+            this.Width = scaled(500);
+            this.Height = scaled(600);
             base.OnLoad(e);
 
-            this.initialize();
+            this.initializeOnLoad();
             this.reposition(Elite.getWindowRect(true));
 
             this.loadMapImage();
-        }
-
-        public override void reposition(Rectangle gameRect)
-        {
-            if (gameRect == Rectangle.Empty)
-            {
-                this.Opacity = 0;
-                return;
-            }
-
-            this.Opacity = PlotPos.getOpacity(this);
-            PlotPos.reposition(this, gameRect);
-
-            this.Invalidate();
         }
 
         public static bool keepPlotter
@@ -111,6 +100,7 @@ namespace SrvSurvey
         {
             if (this.IsDisposed) return;
 
+            // revisit this
             if (this.Opacity > 0 && !PlotHumanSite.keepPlotter)
                 Program.closePlotter<PlotHumanSite>(true);
             else if (this.Opacity > 0 && !PlotHumanSite.allowPlotter)
@@ -409,129 +399,119 @@ namespace SrvSurvey
             return rf3;
         }
 
-        protected override void OnPaintBackground(PaintEventArgs e)
+        protected override void onPaintPlotter(PaintEventArgs e)
         {
-            base.OnPaintBackground(e);
-            if (this.IsDisposed || this.site == null) return;
+            if (this.site == null) return;
 
-            try
+            var zoomText = $"Zoom: {this.scale.ToString("N1")}";
+            if (autoZoom) zoomText += " (auto)";
+            drawTextAt(this.ClientSize.Width - 8, zoomText, GameColors.brushGameOrangeDim, GameColors.fontSmall, true);
+
+            // header
+            var headerTxt = $"{site.name} - {site.economy} ";
+            headerTxt += site.subType == 0 ? "??" : $"#{site.subType}";
+
+            var offset = (PointF)Util.getOffset(radius, siteOrigin, siteHeading);
+            var currentBld = site.template?.getCurrentBld(offset, this.siteHeading);
+            if (currentBld != null)
+                headerTxt += $" - Building: {currentBld}";
+
+            drawTextAt(eight, headerTxt);
+            newLine(+ten, true);
+
+            var distToSiteOrigin = Util.getDistance(site.location, Status.here, this.radius);
+
+            if (game.isMode(GameMode.Flying, GameMode.GlideMode))
             {
-                resetPlotter(g);
+                this.drawOnApproach(distToSiteOrigin);
+            }
+            else
+            {
+                // footer
+                var aaa = game.status.Heading - siteHeading;
+                if (aaa < 0) aaa += 360;
+                var footerTxt = $"cmdr offset: x: {(int)offset.X}m, y: {(int)offset.Y}m, {aaa}°";
+                if (this.mapImage != null)
+                {
+                    var pf = Util.getOffset(this.radius, site.location, Status.here.clone(), site.heading);
+                    pf.x += this.mapCenter.X;
+                    pf.y = this.mapImage.Height - pf.y - this.mapCenter.Y;
+                    footerTxt += $" (☍{(int)pf.X}, {(int)pf.Y})";
+                }
 
-                var zoomText = $"Zoom: {this.scale.ToString("N1")}";
-                if (autoZoom) zoomText += " (auto)";
-                drawTextAt(this.ClientSize.Width - 8, zoomText, GameColors.brushGameOrangeDim, GameColors.fontSmall, true);
+                if (game.matStatsTracker?.completed == false)
+                    footerTxt += ".";
 
-                // header
-                var headerTxt = $"{site.name} - {site.economy} ";
-                headerTxt += site.subType == 0 ? "??" : $"#{site.subType}";
+                if (builder != null && builder.nextPath != null)
+                {
+                    var lastPoint = builder.lastPoint;
+                    var dx = lastPoint.X - builder.offset.X;
+                    var dy = lastPoint.Y - builder.offset.Y;
+                    var foo = (float)DecimalEx.ToDeg((decimal)Math.Atan2(dx, dy));
+                    if (foo < 0) foo += 360;
 
-                var offset = (PointF)Util.getOffset(radius, siteOrigin, siteHeading);
-                var currentBld = site.template?.getCurrentBld(offset, this.siteHeading);
-                if (currentBld != null)
-                    headerTxt += $" - Building: {currentBld}";
+                    footerTxt += $"! {foo.ToString("N1")}°";
+                }
 
-                drawTextAt(eight, headerTxt);
+                this.drawFooterText(footerTxt);
+            }
+
+            clipToMiddle();
+            // relative to site origin
+            this.resetMiddleSiteOrigin();
+
+            if (this.site.heading >= 0)
+            {
+                // draw map and POIs
+                this.drawMapImage();
+                this.drawBuildings(offset);
+                this.drawLandingPads();
+                this.drawPOI(offset);
+
+                // draw/fill polygon for building being assembled in the editor
+                if (this.builder != null)
+                    this.drawBuildingBox(offset);
+            }
+
+            this.drawCompassLines();
+
+            // draw limit circle outside which ships/taxi's an be requested
+            var zz = 500;
+            g.DrawEllipse(GameColors.newPen(Color.FromArgb(64, Color.Gray), 8, DashStyle.DashDotDot), -zz, -zz, zz * 2, zz * 2);
+
+            // relative to cmdr ...
+            this.resetMiddleRotated();
+            this.drawShipAndSrvLocation();
+
+            this.resetMiddle();
+            this.drawCommander();
+
+            // draw large arrow pointing to settlement origin if >300m away
+            if (distToSiteOrigin > 300)
+            {
+                var td = new TrackingDelta(this.radius, site.location);
+                g.RotateTransform(180f - game.status.Heading + (float)td.angle);
+                g.DrawLine(GameColors.penGameOrangeDim4, 0, 20, 0, 100);
+                g.DrawLine(GameColors.penGameOrangeDim4, 0, 100, 20, 80);
+                g.DrawLine(GameColors.penGameOrangeDim4, 0, 100, -20, 80);
+            }
+
+            // show guidance if we're at a settlement but don't know what type it is
+            if (this.site.heading == -1 && game.isMode(GameMode.Landed, GameMode.InSrv, GameMode.OnFoot))
+            {
+                g.ResetTransform();
+                drawTextAt(eight, $"Settlement type unknown. To fix:");
                 newLine(+ten, true);
-
-                var distToSiteOrigin = Util.getDistance(site.location, Status.here, this.radius);
-
-                if (game.isMode(GameMode.Flying, GameMode.GlideMode))
-                {
-                    this.drawOnApproach(distToSiteOrigin);
-                }
-                else
-                {
-                    // footer
-                    var aaa = game.status.Heading - siteHeading;
-                    if (aaa < 0) aaa += 360;
-                    var footerTxt = $"cmdr offset: x: {(int)offset.X}m, y: {(int)offset.Y}m, {aaa}°";
-                    if (this.mapImage != null)
-                    {
-                        var pf = Util.getOffset(this.radius, site.location, Status.here.clone(), site.heading);
-                        pf.x += this.mapCenter.X;
-                        pf.y = this.mapImage.Height - pf.y - this.mapCenter.Y;
-                        footerTxt += $" (☍{(int)pf.X}, {(int)pf.Y})";
-                    }
-
-                    if (game.matStatsTracker?.completed == false)
-                        footerTxt += ".";
-
-                    if (builder != null && builder.nextPath != null)
-                    {
-                        var lastPoint = builder.lastPoint;
-                        var dx = lastPoint.X - builder.offset.X;
-                        var dy = lastPoint.Y - builder.offset.Y;
-                        var foo = (float)DecimalEx.ToDeg((decimal)Math.Atan2(dx, dy));
-                        if (foo < 0) foo += 360;
-
-                        footerTxt += $"! {foo.ToString("N1")}°";
-                    }
-
-                    this.drawFooterText(footerTxt);
-                }
-
-                clipToMiddle();
-                // relative to site origin
-                this.resetMiddleSiteOrigin();
-
-                if (this.site.heading >= 0)
-                {
-                    // draw map and POIs
-                    this.drawMapImage();
-                    this.drawBuildings(offset);
-                    this.drawLandingPads();
-                    this.drawPOI(offset);
-
-                    // draw/fill polygon for building being assembled in the editor
-                    if (this.builder != null)
-                        this.drawBuildingBox(offset);
-                }
-
-                this.drawCompassLines();
-
-                // draw limit circle outside which ships/taxi's an be requested
-                var zz = 500;
-                g.DrawEllipse(GameColors.newPen(Color.FromArgb(64, Color.Gray), 8, DashStyle.DashDotDot), -zz, -zz, zz * 2, zz * 2);
-
-                // relative to cmdr ...
-                this.resetMiddleRotated();
-                this.drawShipAndSrvLocation();
-
-                this.resetMiddle();
-                this.drawCommander();
-
-                // draw large arrow pointing to settlement origin if >300m away
-                if (distToSiteOrigin > 300)
-                {
-                    var td = new TrackingDelta(this.radius, site.location);
-                    g.RotateTransform(180f - game.status.Heading + (float)td.angle);
-                    g.DrawLine(GameColors.penGameOrangeDim4, 0, 20, 0, 100);
-                    g.DrawLine(GameColors.penGameOrangeDim4, 0, 100, 20, 80);
-                    g.DrawLine(GameColors.penGameOrangeDim4, 0, 100, -20, 80);
-                }
-
-                // show guidance if we're at a settlement but don't know what type it is
-                if (this.site.heading == -1 && game.isMode(GameMode.Landed, GameMode.InSrv, GameMode.OnFoot))
-                {
-                    g.ResetTransform();
-                    drawTextAt(eight, $"Settlement type unknown. To fix:");
-                    newLine(+ten, true);
-                    drawTextAt(eight, $"► Crouch in middle of any landing pad");
-                    newLine(+ten, true);
-                    drawTextAt(eight, $"► Face the right direction");
-                    newLine(+ten, true);
-                    drawTextAt(eight, $"► Send message '.settlement'");
-                }
-
-                // show mat collection points on top of everything else
-                this.resetMiddleSiteOrigin();
-                this.drawCollectedMats();
+                drawTextAt(eight, $"► Crouch in middle of any landing pad");
+                newLine(+ten, true);
+                drawTextAt(eight, $"► Face the right direction");
+                newLine(+ten, true);
+                drawTextAt(eight, $"► Send message '.settlement'");
             }
-            catch (Exception ex)
-            {
-                Game.log($"PlotHumanSite.OnPaintBackground error: {ex}");
-            }
+
+            // show mat collection points on top of everything else
+            this.resetMiddleSiteOrigin();
+            this.drawCollectedMats();
         }
 
         private void drawLandingPads()

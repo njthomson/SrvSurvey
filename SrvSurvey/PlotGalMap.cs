@@ -27,12 +27,14 @@ namespace SrvSurvey
             this.Font = GameColors.fontSmall2;
         }
 
+        public override bool allow { get => PlotGalMap.allowPlotter; }
+
         protected override void OnLoad(EventArgs e)
         {
             this.MinimumSize = new Size(scaled(96), scaled(44));
             base.OnLoad(e);
 
-            this.initialize();
+            this.initializeOnLoad();
 
             this.reposition(Elite.getWindowRect(true));
             this.onJournalEntry(new NavRoute());
@@ -44,32 +46,6 @@ namespace SrvSurvey
                 && Game.activeGame.mode == GameMode.GalaxyMap
                 && Game.settings.useExternalData;
         }
-
-        public override void reposition(Rectangle gameRect)
-        {
-            if (gameRect == Rectangle.Empty)
-            {
-                this.Opacity = 0;
-                return;
-            }
-
-
-            this.Opacity = PlotPos.getOpacity(this);
-            PlotPos.reposition(this, gameRect);
-            this.Invalidate();
-        }
-
-        protected override void Game_modeChanged(GameMode newMode, bool force)
-        {
-            if (this.IsDisposed) return;
-
-            var showPlotter = PlotGalMap.allowPlotter;
-            if (this.Opacity > 0 && !showPlotter)
-                Program.closePlotter<PlotGalMap>();
-            else if (this.Opacity == 0 && showPlotter)
-                this.reposition(Elite.getWindowRect());
-        }
-
         protected override void onJournalEntry(NavRoute entry)
         {
             if (this.IsDisposed) return;
@@ -130,38 +106,29 @@ namespace SrvSurvey
             this.Invalidate();
         }
 
-        protected override void OnPaintBackground(PaintEventArgs e)
+        protected override void onPaintPlotter(PaintEventArgs e)
         {
-            base.OnPaintBackground(e);
-            if (this.IsDisposed) return;
-            try
+            this.resetPlotter(g);
+
+            if (this.hops.Count == 0)
             {
-                this.resetPlotter(g);
-
-                if (this.hops.Count == 0)
-                {
-                    this.drawTextAt(eight, $"No route set");
-                    this.newLine(+ten, true);
-                }
-                else
-                {
-                    foreach (var hop in this.hops)
-                        drawSystemSummary(hop);// "Next jump", nextSystem, nextStatus, nextSubStatus);
-
-
-                    this.drawTextAt(eight, $"Total jumps: {game.navRoute.Route.Count - 1} ► Distance: {this.distanceJumped.ToString("N1")} ly", GameColors.brushGameOrange);
-                    this.newLine(true);
-
-                    this.drawTextAt(eight, $"Data from: edsm.net + spansh.co.uk", GameColors.brushGameOrangeDim);
-                    this.newLine(true);
-                }
-
-                this.formAdjustSize(+ten, +ten);
+                this.drawTextAt(eight, $"No route set");
+                this.newLine(+ten, true);
             }
-            catch (Exception ex)
+            else
             {
-                Game.log($"PlotGalMap.OnPaintBackground error: {ex}");
+                foreach (var hop in this.hops)
+                    drawSystemSummary(hop);// "Next jump", nextSystem, nextStatus, nextSubStatus);
+
+
+                this.drawTextAt(eight, $"Total jumps: {game.navRoute.Route.Count - 1} ► Distance: {this.distanceJumped.ToString("N1")} ly", GameColors.brushGameOrange);
+                this.newLine(true);
+
+                this.drawTextAt(eight, $"Data from: edsm.net + spansh.co.uk", GameColors.brushGameOrangeDim);
+                this.newLine(true);
             }
+
+            this.formAdjustSize(+ten, +ten);
         }
 
         private void drawSystemSummary(RouteInfo hop)

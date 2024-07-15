@@ -7,18 +7,12 @@ using System.Reflection;
 
 namespace SrvSurvey
 {
+    /// <summary>
+    /// A base class for all plotters
+    /// </summary>
     internal abstract class PlotBase : Form, PlotterForm, IDisposable
     {
-        protected Game game = Game.activeGame!;
-        public TrackingDelta? touchdownLocation0; // TODO: move to PlotSurfaceBase // make protected again
-        protected TrackingDelta? srvLocation0; // TODO: move to PlotSurfaceBase
-
-        /// <summary> The center point on this plotter. </summary>
-        protected Size mid;
-        protected Graphics g;
-
-        public float scale = 1.0f;
-        public float customScale = -1.0f;
+        #region scaling
 
         protected static float one = scaled(1f);
         protected static float two = scaled(2f);
@@ -57,6 +51,71 @@ namespace SrvSurvey
         protected static float oneNinety = scaled(190f);
         protected static float twoThirty = scaled(230f);
 
+        public static int scaled(int n)
+        {
+            return (int)(n * GameColors.scaleFactor);
+        }
+
+        public static float scaled(float n)
+        {
+            return (n * GameColors.scaleFactor);
+        }
+
+        public static Rectangle scaled(Rectangle r)
+        {
+            r.X = scaled(r.X);
+            r.Y = scaled(r.Y);
+            r.Width = scaled(r.Width);
+            r.Height = scaled(r.Height);
+
+            return r;
+        }
+
+        public static RectangleF scaled(RectangleF r)
+        {
+            r.X = scaled(r.X);
+            r.Y = scaled(r.Y);
+            r.Width = scaled(r.Width);
+            r.Height = scaled(r.Height);
+
+            return r;
+        }
+
+        public static Point scaled(Point pt)
+        {
+            pt.X = scaled(pt.X);
+            pt.Y = scaled(pt.Y);
+
+            return pt;
+        }
+
+        public static SizeF scaled(SizeF sz)
+        {
+            sz.Width = scaled(sz.Width);
+            sz.Height = scaled(sz.Height);
+
+            return sz;
+        }
+
+        #endregion
+
+        protected Game game = Game.activeGame!;
+        public TrackingDelta? touchdownLocation0; // TODO: move to PlotSurfaceBase // make protected again
+        protected TrackingDelta? srvLocation0; // TODO: move to PlotSurfaceBase
+
+        /// <summary> The center point on this plotter. </summary>
+        protected Size mid;
+        protected Graphics g;
+
+        /// <summary>
+        /// A automatically set scaling factor to apply to plotter rendering
+        /// </summary>
+        public float scale = 1.0f;
+        /// <summary>
+        /// A manually set scaling factor given by users with the `z` command.
+        /// </summary>
+        public float customScale = -1.0f;
+
         protected PlotBase()
         {
             this.BackColor = Color.Black;
@@ -85,6 +144,7 @@ namespace SrvSurvey
 
         protected override void OnActivated(EventArgs e)
         {
+            // plotters are not suppose to receive focus - force it back onto the game if we do
             base.OnActivated(e);
             Elite.setFocusED();
             this.Invalidate();
@@ -136,55 +196,23 @@ namespace SrvSurvey
 
         #endregion
 
-        public abstract void reposition(Rectangle gameRect);
-
-        public static int scaled(int n)
+        public virtual void reposition(Rectangle gameRect)
         {
-            return (int)(n * GameColors.scaleFactor);
+            // Hide ourself if game is not active
+            if (gameRect == Rectangle.Empty)
+            {
+                this.Opacity = 0;
+                return;
+            }
+
+            // restore opacity, reposition ourself according to plotters.json rules, then re-render
+            this.Opacity = PlotPos.getOpacity(this);
+            PlotPos.reposition(this, gameRect);
+
+            this.Invalidate();
         }
 
-        public static float scaled(float n)
-        {
-            return (n * GameColors.scaleFactor);
-        }
-
-        public static Rectangle scaled(Rectangle r)
-        {
-            r.X = scaled(r.X);
-            r.Y = scaled(r.Y);
-            r.Width = scaled(r.Width);
-            r.Height = scaled(r.Height);
-
-            return r;
-        }
-
-        public static RectangleF scaled(RectangleF r)
-        {
-            r.X = scaled(r.X);
-            r.Y = scaled(r.Y);
-            r.Width = scaled(r.Width);
-            r.Height = scaled(r.Height);
-
-            return r;
-        }
-
-        public static Point scaled(Point pt)
-        {
-            pt.X = scaled(pt.X);
-            pt.Y = scaled(pt.Y);
-
-            return pt;
-        }
-
-        public static SizeF scaled(SizeF sz)
-        {
-            sz.Width = scaled(sz.Width);
-            sz.Height = scaled(sz.Height);
-
-            return sz;
-        }
-
-        protected virtual void initialize()
+        protected virtual void initializeOnLoad()
         {
             if (this.IsDisposed) return;
 
@@ -196,20 +224,22 @@ namespace SrvSurvey
             Game.update += Game_modeChanged;
             game.status!.StatusChanged += Status_StatusChanged;
             game.journals!.onJournalEntry += Journals_onJournalEntry;
-            //game.nearBody!.bioScanEvent += NearBody_bioScanEvent;
 
-            // force a mode switch, that will initialize
-            //this.Game_modeChanged(game.mode, true);
             this.Status_StatusChanged(false);
         }
+
+        /// <summary>
+        /// Returns True if this plotter is allowed to exist currently
+        /// </summary>
+        public abstract bool allow { get; }
 
         protected virtual void Game_modeChanged(GameMode newMode, bool force)
         {
             if (this.IsDisposed) return;
 
-            if (this.Opacity > 0 && !game.showBodyPlotters)
+            if (this.Opacity > 0 && !this.allow)
                 this.Opacity = 0;
-            else if (this.Opacity == 0 && game.showBodyPlotters)
+            else if (this.Opacity == 0 && this.allow)
                 this.reposition(Elite.getWindowRect());
 
             this.Invalidate();
@@ -219,9 +249,11 @@ namespace SrvSurvey
         {
             if (this.IsDisposed) return;
 
+            // TODO: retire
             if (this.touchdownLocation0 != null)
                 this.touchdownLocation0.Current = Status.here;
 
+            // TODO: retire
             if (this.srvLocation0 != null)
                 this.srvLocation0.Current = Status.here;
 
@@ -234,18 +266,20 @@ namespace SrvSurvey
         {
             if (this.IsDisposed) return;
 
+            // We need a strongly typed stub in this base class for any journal event any derived class would like to receive
             this.onJournalEntry((dynamic)entry);
         }
 
-        protected void onJournalEntry(JournalEntry entry) { /* ignore */ }
+        protected void onJournalEntry(JournalEntry entry) { /* no-op */ }
 
         protected virtual void onJournalEntry(Touchdown entry)
         {
+            // TODO: retire
             if (this.touchdownLocation0 == null)
             {
                 this.touchdownLocation0 = new TrackingDelta(
                     game.systemBody!.radius,
-                    entry); // Really? LatLong2.Empty);
+                    entry);
             }
             else
             {
@@ -254,29 +288,8 @@ namespace SrvSurvey
 
             this.Invalidate();
         }
-
-        protected virtual void onJournalEntry(Disembark entry)
-        {
-            //Game.log($"Disembark srvLocation {Status.here}");
-            if (entry.SRV && this.srvLocation0 == null)
-            {
-                this.srvLocation0 = new TrackingDelta(
-                    game.systemBody!.radius,
-                    Status.here.clone());
-                this.Invalidate();
-            }
-        }
-
-        protected virtual void onJournalEntry(Embark entry)
-        {
-            //Game.log($"Embark {Status.here}");
-            if (entry.SRV && this.srvLocation0 != null)
-            {
-                this.srvLocation0 = null;
-                this.Invalidate();
-            }
-        }
-
+        protected virtual void onJournalEntry(Disembark entry) { /* overridden as necessary */ }
+        protected virtual void onJournalEntry(Embark entry) { /* overridden as necessary */ }
         protected virtual void onJournalEntry(SendText entry)
         {
             var msg = entry.Message.ToLowerInvariant().Trim();
@@ -302,104 +315,51 @@ namespace SrvSurvey
                 }
             }
         }
-
-        protected virtual void onJournalEntry(CodexEntry entry)
-        {
-            // overridden as necessary
-        }
-
-        protected virtual void onJournalEntry(FSDTarget entry)
-        {
-            // overridden as necessary
-        }
-
-        protected virtual void onJournalEntry(Screenshot entry)
-        {
-            // overridden as necessary
-        }
-
-        protected virtual void onJournalEntry(DataScanned entry)
-        {
-            // overridden as necessary
-        }
-
-        protected virtual void onJournalEntry(BackpackChange entry)
-        {
-            // overridden as necessary
-        }
-
-        protected virtual void onJournalEntry(SupercruiseEntry entry)
-        {
-            // overridden as necessary
-        }
-
-        protected virtual void onJournalEntry(FSDJump entry)
-        {
-            // overridden as necessary
-        }
-
-        protected virtual void onJournalEntry(NavRoute entry)
-        {
-            // overridden as necessary
-        }
-
-        protected virtual void onJournalEntry(NavRouteClear entry)
-        {
-            // overridden as necessary
-        }
-
-        protected virtual void onJournalEntry(FSSDiscoveryScan entry)
-        {
-            // overridden as necessary
-        }
-
-        protected virtual void onJournalEntry(Scan entry)
-        {
-            // overridden as necessary
-        }
-
-        protected virtual void onJournalEntry(FSSBodySignals entry)
-        {
-            // overridden as necessary
-        }
-
-        protected virtual void onJournalEntry(ScanOrganic entry)
-        {
-            // overridden as necessary
-        }
-
-        protected virtual void onJournalEntry(DockingRequested entry)
-        {
-            // overridden as necessary
-        }
-
-        protected virtual void onJournalEntry(DockingGranted entry)
-        {
-            // overridden as necessary
-        }
-        protected virtual void onJournalEntry(DockingDenied entry)
-        {
-            // overridden as necessary
-        }
-
-        protected virtual void onJournalEntry(Docked entry)
-        {
-            // overridden as necessary
-        }
+        protected virtual void onJournalEntry(CodexEntry entry) { /* overridden as necessary */ }
+        protected virtual void onJournalEntry(FSDTarget entry) { /* overridden as necessary */ }
+        protected virtual void onJournalEntry(Screenshot entry) { /* overridden as necessary */ }
+        protected virtual void onJournalEntry(DataScanned entry) { /* overridden as necessary */ }
+        protected virtual void onJournalEntry(BackpackChange entry) { /* overridden as necessary */ }
+        protected virtual void onJournalEntry(SupercruiseEntry entry) { /* overridden as necessary */ }
+        protected virtual void onJournalEntry(FSDJump entry) { /* overridden as necessary */ }
+        protected virtual void onJournalEntry(NavRoute entry) { /* overridden as necessary */ }
+        protected virtual void onJournalEntry(NavRouteClear entry) { /* overridden as necessary */ }
+        protected virtual void onJournalEntry(FSSDiscoveryScan entry) { /* overridden as necessary */ }
+        protected virtual void onJournalEntry(Scan entry) { /* overridden as necessary */ }
+        protected virtual void onJournalEntry(FSSBodySignals entry) { /* overridden as necessary */ }
+        protected virtual void onJournalEntry(ScanOrganic entry) { /* overridden as necessary */ }
+        protected virtual void onJournalEntry(DockingRequested entry) { /* overridden as necessary */ }
+        protected virtual void onJournalEntry(DockingGranted entry) { /* overridden as necessary */ }
+        protected virtual void onJournalEntry(DockingDenied entry) { /* overridden as necessary */ }
+        protected virtual void onJournalEntry(Docked entry) { /* overridden as necessary */ }
+        protected virtual void onJournalEntry(MaterialCollected entry) { /* overridden as necessary */ }
 
         #endregion
-
-        protected virtual void onJournalEntry(MaterialCollected entry)
-        {
-            // overridden as necessary
-        }
 
         protected override void OnPaintBackground(PaintEventArgs e)
         {
             base.OnPaintBackground(e);
-            this.g = e.Graphics;
-            this.g.SmoothingMode = SmoothingMode.HighQuality;
+            if (this.IsDisposed || game == null || game.isShutdown) return;
+
+            try
+            {
+                //this.resetPlotter(e.Graphics);
+                this.g = e.Graphics;
+                this.g.SmoothingMode = SmoothingMode.HighQuality;
+                this.formSize = new SizeF();
+                this.dtx = eight;
+                this.dty = ten;
+
+
+                onPaintPlotter(e);
+            }
+            catch (Exception ex)
+            {
+                Game.log($"{this.GetType().Name}.OnPaintBackground error: {ex}");
+            }
         }
+
+        protected virtual void onPaintPlotter(PaintEventArgs e) { /* TODO: make abstract */ }
 
         protected void drawCommander0()
         {
@@ -992,7 +952,7 @@ namespace SrvSurvey
             {
                 // draw compass rose lines centered on the site origin
                 g.DrawLine(GameColors.penDarkRed2Ish, -500, 0, +500, 0);
-                g.DrawLine(GameColors.penDarkRed2Ish,  0, -500, 0, +500);
+                g.DrawLine(GameColors.penDarkRed2Ish, 0, -500, 0, +500);
                 //g.DrawLine(GameColors.penRed2Ish, 0, -500, 0, 0);
             });
 
@@ -1077,7 +1037,7 @@ namespace SrvSurvey
         {
             base.OnLoad(e);
 
-            this.initialize();
+            this.initializeOnLoad();
             this.reposition(Elite.getWindowRect(true));
 
             const int blockWidth = 100;
@@ -1105,7 +1065,7 @@ namespace SrvSurvey
                 return;
             }
 
-            this.Opacity = Game.settings.Opacity;
+            this.Opacity = PlotPos.getOpacity(this);
             Elite.floatCenterTop(this, gameRect, 0);
 
             this.Invalidate();
@@ -1290,9 +1250,14 @@ namespace SrvSurvey
 
         public static float getOpacity(PlotterForm form, float defaultValue = -1)
         {
+            return getOpacity(form.GetType().Name, defaultValue);
+        }
+
+        public static float getOpacity(string formTypeName, float defaultValue = -1)
+        {
             if (Program.tempHideAllPlotters) return 0;
 
-            var pp = plotterPositions.GetValueOrDefault(form.GetType().Name);
+            var pp = plotterPositions.GetValueOrDefault(formTypeName);
 
             if (pp?.opacity.HasValue == true)
                 return pp.opacity.Value;
@@ -1302,9 +1267,10 @@ namespace SrvSurvey
                 return Game.settings.Opacity;
         }
 
-        public static void reposition(PlotterForm form, Rectangle rect)
+        public static void reposition(PlotterForm form, Rectangle rect, string? formTypeName = null)
         {
-            var pt = getPlotterLocation(form.GetType().Name, form.Size, rect);
+            formTypeName = formTypeName ?? form.GetType().Name;
+            var pt = getPlotterLocation(formTypeName, form.Size, rect);
             if (pt != Point.Empty)
                 form.Location = pt;
         }

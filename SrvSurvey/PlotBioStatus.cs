@@ -17,9 +17,7 @@ namespace SrvSurvey
         {
             InitializeComponent();
 
-            this.Height = PlotBase.scaled(80);
-            this.Width = PlotBase.scaled(480);
-            this.Cursor = Cursors.Cross;
+            this.Size = Size.Empty;
 
             if (game.cmdr.scanOne?.entryId > 0)
             {
@@ -29,6 +27,8 @@ namespace SrvSurvey
                 this.hasImage = match.variant.imageUrl != null;
             }
         }
+
+        // public override bool allow { get => PlotGrounded.allowPlotter; }
 
         protected override void OnActivated(EventArgs e)
         {
@@ -72,6 +72,8 @@ namespace SrvSurvey
 
         private void PlotBioStatus_Load(object sender, EventArgs e)
         {
+            this.Height = PlotBase.scaled(80);
+            this.Width = PlotBase.scaled(480);
             this.initialize();
             this.reposition(Elite.getWindowRect(true));
 

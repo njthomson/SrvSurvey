@@ -10,21 +10,21 @@
    * Edits to this file will take immediate effect.
    */
   "PlotBioStatus": "center:0, top:8",
+  "PlotBioSystem": "left:8, bottom:144",
+  "PlotBodyInfo": "left:8, top:8",
   "PlotFlightWarning": "center:0, top:90",
   "PlotFSS": "center:0, top:8",
+  "PlotFSSInfo": "left:8, top:8",
+  "PlotGalMap": "left:8, top:8",
   "PlotGrounded": "right:8, middle:0",
   "PlotGuardians": "left:8, middle:0",
-  "PlotHumanSite": "left:8, middle:0",
   "PlotGuardianStatus": "center:0, top:8",
   "PlotGuardianSystem": "left:10, top:8",
+  "PlotHumanSite": "left:8, middle:0",
   "PlotPriorScans": "left:8, middle:0",
   "PlotPulse": "left:8, bottom:8",
   "PlotRamTah": "right:8, middle:0",
   "PlotSphericalSearch": "right:8, top:8",
-  "PlotBioSystem": "left:8, bottom:144",
   "PlotSysStatus": "left:8, bottom:44",
-  "PlotTrackTarget": "center:480, top:8",
-  "PlotBodyInfo": "left:8, top:8",
-  "PlotGalMap": "left:8, top:8",
-  "PlotFSSInfo": "left:8, top:8"
+  "PlotTrackTarget": "center:480, top:8"
 }

@@ -1,8 +1,5 @@
 ﻿using SrvSurvey.game;
-using SrvSurvey.units;
-using System.Drawing;
 using System.Drawing.Drawing2D;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace SrvSurvey
 {
@@ -18,30 +15,20 @@ namespace SrvSurvey
 
         private PlotFSS() : base()
         {
-            this.Width = scaled(420);
-            this.Height = scaled(96);
+            this.Size = Size.Empty;
         }
+
+        public override bool allow { get => PlotFSS.allowPlotter; }
 
         protected override void OnLoad(EventArgs e)
         {
+            this.Width = scaled(420);
+            this.Height = scaled(96);
+
             base.OnLoad(e);
 
-            this.initialize();
+            this.initializeOnLoad();
             this.reposition(Elite.getWindowRect(true));
-        }
-
-        public override void reposition(Rectangle gameRect)
-        {
-            if (gameRect == Rectangle.Empty)
-            {
-                this.Opacity = 0;
-                return;
-            }
-
-            this.Opacity = PlotPos.getOpacity(this);
-            PlotPos.reposition(this, gameRect);
-
-            this.Invalidate();
         }
 
         public static bool allowPlotter
@@ -49,18 +36,6 @@ namespace SrvSurvey
             get => Game.activeGame?.cmdr != null
                 && Game.settings.autoShowPlotFSS
                 && Game.activeGame.isMode(GameMode.FSS);
-        }
-
-        protected override void Game_modeChanged(GameMode newMode, bool force)
-        {
-            if (this.IsDisposed) return;
-
-            if (this.Opacity > 0 && !PlotFSS.allowPlotter)
-                this.Opacity = 0;
-            else if (this.Opacity == 0 && PlotFSS.allowPlotter)
-                this.reposition(Elite.getWindowRect());
-
-            this.Invalidate();
         }
 
         protected override void onJournalEntry(FSSBodySignals entry)
@@ -107,46 +82,36 @@ namespace SrvSurvey
             this.Invalidate();
         }
 
-        protected override void OnPaintBackground(PaintEventArgs e)
+        protected override void onPaintPlotter(PaintEventArgs e)
         {
-            base.OnPaintBackground(e);
-            try
+            this.g = e.Graphics;
+            this.g.SmoothingMode = SmoothingMode.HighQuality;
+
+            var brush = this.lastWasDiscovered ? GameColors.brushGameOrange : GameColors.brushCyan;
+
+            g.DrawString($"Last scan:    {this.lastBodyName}", GameColors.fontSmaller, brush, four, eight);
+
+            if (!string.IsNullOrEmpty(this.lastBodyName))
             {
-                if (this.IsDisposed) return;
+                //if (!this.lastWasDiscovered)
+                //    g.DrawString("(undiscovered)", GameColors.fontSmall2, GameColors.brushCyan, 330, 8);
 
-                this.g = e.Graphics;
-                this.g.SmoothingMode = SmoothingMode.HighQuality;
+                var msg = $"Estimated value:    {this.lastInitialValue} cr\r\nWith surface scan:    {this.lastMappedValue} cr";
+                g.DrawString(msg, GameColors.fontMiddle, brush, oneEight, twoEight);
 
-                var brush = this.lastWasDiscovered ? GameColors.brushGameOrange : GameColors.brushCyan;
-
-                g.DrawString($"Last scan:    {this.lastBodyName}", GameColors.fontSmaller, brush, four, eight);
-
-                if (!string.IsNullOrEmpty(this.lastBodyName))
+                if (!string.IsNullOrEmpty(this.lastNotes))
                 {
-                    //if (!this.lastWasDiscovered)
-                    //    g.DrawString("(undiscovered)", GameColors.fontSmall2, GameColors.brushCyan, 330, 8);
-
-                    var msg = $"Estimated value:    {this.lastInitialValue} cr\r\nWith surface scan:    {this.lastMappedValue} cr";
-                    g.DrawString(msg, GameColors.fontMiddle, brush, oneEight, twoEight);
-
-                    if (!string.IsNullOrEmpty(this.lastNotes))
+                    var txt = this.lastNotes;
+                    var bodySummary = game.systemData?.bioSummary?.bodyGroups.Find(_ => _.body.name == this.lastBodyName);
+                    if (bodySummary != null)
                     {
-                        var txt = this.lastNotes;
-                        var bodySummary = game.systemData?.bioSummary?.bodyGroups.Find(_ => _.body.name == this.lastBodyName);
-                        if (bodySummary != null)
-                        {
-                            txt += $" ~{Util.credits(bodySummary.minReward, true)}";
-                            if (bodySummary.minReward != bodySummary.maxReward)
-                                txt += $" ~{Util.credits(bodySummary.maxReward, true)}";
-                        }
-
-                        g.DrawString(txt, GameColors.fontMiddle, GameColors.brushCyan, oneEight, sixFive);
+                        txt += $" ~{Util.credits(bodySummary.minReward, true)}";
+                        if (bodySummary.minReward != bodySummary.maxReward)
+                            txt += $" ~{Util.credits(bodySummary.maxReward, true)}";
                     }
+
+                    g.DrawString(txt, GameColors.fontMiddle, GameColors.brushCyan, oneEight, sixFive);
                 }
-            }
-            catch (Exception ex)
-            {
-                Game.log($"PlotFSS.OnPaintBackground error: {ex}");
             }
         }
     }

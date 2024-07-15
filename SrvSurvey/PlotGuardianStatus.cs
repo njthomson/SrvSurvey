@@ -19,6 +19,8 @@ namespace SrvSurvey
             timer.Tick += Timer_Tick;
         }
 
+        public override bool allow { get => PlotGuardians.allowPlotter; }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -33,7 +35,7 @@ namespace SrvSurvey
         {
             base.OnLoad(e);
 
-            this.initialize();
+            this.initializeOnLoad();
             this.reposition(Elite.getWindowRect(true));
 
             int blockWidth = scaled(100);
@@ -52,20 +54,6 @@ namespace SrvSurvey
                 new Point((int)(this.mid.Width - (blockWidth * 0.5f)) - letterOffset, blockTop - letterOffset),
                 new Point((int)(this.mid.Width + (blockWidth * 0.5f)) - letterOffset, blockTop - letterOffset)
             };
-        }
-
-        public override void reposition(Rectangle gameRect)
-        {
-            if (gameRect == Rectangle.Empty)
-            {
-                this.Opacity = 0;
-                return;
-            }
-
-            this.Opacity = PlotPos.getOpacity(this);
-            PlotPos.reposition(this, gameRect);
-
-            this.Invalidate();
         }
 
         protected override void Status_StatusChanged(bool blink)
@@ -96,78 +84,70 @@ namespace SrvSurvey
             this.Invalidate();
         }
 
-        protected override void OnPaintBackground(PaintEventArgs e)
+        protected override void onPaintPlotter(PaintEventArgs e)
         {
-            base.OnPaintBackground(e);
-            try
+            if (PlotGuardians.instance == null || game.systemSite == null) return;
+
+            this.g = e.Graphics;
+            g.SmoothingMode = SmoothingMode.HighQuality;
+
+            switch (PlotGuardians.instance.mode)
             {
-                if (this.IsDisposed || PlotGuardians.instance == null || this.game.isShutdown || game.systemSite == null) return;
+                case Mode.siteType:
+                    drawSiteType();
+                    return;
 
-                this.g = e.Graphics;
-                g.SmoothingMode = SmoothingMode.HighQuality;
+                case Mode.heading:
+                    drawCenterMessage("\r\nAlign with buttress");
+                    showSelectionCue();
+                    return;
 
-                switch (PlotGuardians.instance.mode)
-                {
-                    case Mode.siteType:
-                        drawSiteType();
-                        return;
-
-                    case Mode.heading:
-                        drawCenterMessage("\r\nAlign with buttress");
-                        showSelectionCue();
-                        return;
-
-                    case Mode.origin:
-                        var alt = Util.targetAltitudeForSite(game.systemSite!.type).ToString("N0");
-                        drawCenterMessage($"Align with site origin and rise to target altitude: {alt}m");
-                        drawFooterText("(toggle lights to force update)");
-                        return;
-                }
-
-                if (PlotGuardians.instance.nearestPoi != null && (PlotGuardians.instance.nearestPoi.type == POIType.obelisk || PlotGuardians.instance.nearestPoi.type == POIType.brokeObelisk))
-                {
-                    drawNearObelisk();
-                }
-                else if (game.vehicle == ActiveVehicle.Foot)
-                {
-                    if (game.status.SelectedWeapon == "$humanoid_companalyser_name;" && !string.IsNullOrEmpty(PlotGuardians.instance.nearestPoi?.name))
-                    {
-                        var msg = "Toggle shields to set Relic Tower heading.";
-                        var angle = game.systemSite.getRelicHeading(PlotGuardians.instance.nearestPoi!.name);
-                        if (game.systemSite.isRuins && game.systemSite.relicTowerHeading != -1)
-                            msg += $"\r\nRecorded heading: {game.systemSite!.relicTowerHeading}°";
-                        else if (!game.systemSite.isRuins && angle != null)
-                            msg += $"\r\nRecorded heading: {angle}°";
-                        else
-                            msg += "\r\nFace the side with a single large left facing triangle.";
-                        drawCenterMessage(msg);
-                    }
-                    else
-                    {
-                        drawCenterMessage("Use Profile Analyser near Relic Towers for aiming assistance.\r\nFace the side with a single large left facing triangle.");
-                    }
-
-                    drawFooterText("(toggle weapon to force location update)");
-                }
-                else if (PlotGuardians.instance.nearestPoi == null)
-                {
-                    drawHeaderText("Move within ~75m to select an item");
+                case Mode.origin:
+                    var alt = Util.targetAltitudeForSite(game.systemSite!.type).ToString("N0");
+                    drawCenterMessage($"Align with site origin and rise to target altitude: {alt}m");
                     drawFooterText("(toggle lights to force update)");
-                    drawOptions(
-                        "Present",
-                        "Absent",
-                        "Empty",
-                        -2
-                    );
+                    return;
+            }
+
+            if (PlotGuardians.instance.nearestPoi != null && (PlotGuardians.instance.nearestPoi.type == POIType.obelisk || PlotGuardians.instance.nearestPoi.type == POIType.brokeObelisk))
+            {
+                drawNearObelisk();
+            }
+            else if (game.vehicle == ActiveVehicle.Foot)
+            {
+                if (game.status.SelectedWeapon == "$humanoid_companalyser_name;" && !string.IsNullOrEmpty(PlotGuardians.instance.nearestPoi?.name))
+                {
+                    var msg = "Toggle shields to set Relic Tower heading.";
+                    var angle = game.systemSite.getRelicHeading(PlotGuardians.instance.nearestPoi!.name);
+                    if (game.systemSite.isRuins && game.systemSite.relicTowerHeading != -1)
+                        msg += $"\r\nRecorded heading: {game.systemSite!.relicTowerHeading}°";
+                    else if (!game.systemSite.isRuins && angle != null)
+                        msg += $"\r\nRecorded heading: {angle}°";
+                    else
+                        msg += "\r\nFace the side with a single large left facing triangle.";
+                    drawCenterMessage(msg);
                 }
                 else
                 {
-                    drawSelectedItem();
+                    drawCenterMessage("Use Profile Analyser near Relic Towers for aiming assistance.\r\nFace the side with a single large left facing triangle.");
                 }
+
+                drawFooterText("(toggle weapon to force location update)");
             }
-            catch (Exception ex)
+            else if (PlotGuardians.instance.nearestPoi == null)
             {
-                Game.log($"PlotGuardianStatus.OnPaintBackground error: {ex}");
+                drawHeaderText("Move within ~75m to select an item");
+                drawFooterText("(toggle lights to force update)");
+                drawOptions(
+                    "Present",
+                    "Absent",
+                    "Empty",
+                    -2
+                );
+            }
+            else
+            {
+                drawSelectedItem();
             }
         }
 
@@ -359,17 +339,15 @@ namespace SrvSurvey
             this.relatedStructure = Game.canonn.allBeacons.Find(_ => _.systemAddress == game.cmdr.currentSystemAddress)?.relatedStructure!;
         }
 
-        protected override void Game_modeChanged(GameMode newMode, bool force)
+        public override bool allow { get => PlotGuardianBeaconStatus.allowPlotter; }
+
+        public static bool allowPlotter
         {
-            if (this.IsDisposed) return;
-
-            var targetMode = game.isMode(GameMode.Flying, GameMode.CommsPanel);
-            if (this.Opacity > 0 && !targetMode)
-                this.Opacity = 0;
-            else if (this.Opacity == 0 && targetMode)
-                this.reposition(Elite.getWindowRect());
-
-            this.Invalidate();
+            get => Game.settings.enableGuardianSites
+                && Game.activeGame != null
+                && Game.activeGame.isMode(GameMode.Flying, GameMode.CommsPanel)
+                // TODO: there must be more criteria for this?
+                ;
         }
 
         protected override void Status_StatusChanged(bool blink)
@@ -415,59 +393,46 @@ namespace SrvSurvey
             Program.closePlotter<PlotGuardianBeaconStatus>();
         }
 
-        protected override void OnPaintBackground(PaintEventArgs e)
+        protected override void onPaintPlotter(PaintEventArgs e)
         {
-            base.OnPaintBackground(e);
-            try
+            if (!this.dataLinkScanned)
             {
-                if (this.IsDisposed) return;
-
-                this.g = e.Graphics;
-                g.SmoothingMode = SmoothingMode.HighQuality;
-
-                if (!this.dataLinkScanned)
+                drawHeaderText("Guardian Beacon");
+                drawCenterMessage($"Please activate and scan with Data Link Scanner", GameColors.brushCyan);
+            }
+            else if (this.different)
+            {
+                drawHeaderText($"Target body changed!", GameColors.brushCyan);
+                drawCenterMessage("Please share a screenshot of your inbox message!", GameColors.brushCyan);
+            }
+            else if (game.mode == GameMode.CommsPanel)
+            {
+                if (!this.confirmed)
                 {
-                    drawHeaderText("Guardian Beacon");
-                    drawCenterMessage($"Please activate and scan with Data Link Scanner", GameColors.brushCyan);
+                    drawHeaderText($"Confirm: {this.relatedStructure} ?", GameColors.brushCyan);
+                    drawOptions("Yes", "No", null, game.status.FireGroup
+                    );
                 }
-                else if (this.different)
+                else if (!this.different)
                 {
-                    drawHeaderText($"Target body changed!", GameColors.brushCyan);
-                    drawCenterMessage("Please share a screenshot of your inbox message!", GameColors.brushCyan);
-                }
-                else if (game.mode == GameMode.CommsPanel)
-                {
-                    if (!this.confirmed)
-                    {
-                        drawHeaderText($"Confirm: {this.relatedStructure} ?", GameColors.brushCyan);
-                        drawOptions("Yes", "No", null, game.status.FireGroup
-                        );
-                    }
-                    else if (!this.different)
-                    {
-                        drawHeaderText($"Confirm: {this.relatedStructure}");
-                        drawCenterMessage($"Confirmed");
-                        drawFooterText("(thank you)");
-                    }
-                }
-                else
-                {
-                    drawHeaderText("Guardian Beacon scanned");
-
-                    if (!this.confirmed)
-                    {
-                        drawCenterMessage($"Please confirm target body:\r\n{this.relatedStructure}");
-                        drawFooterText("(check your inbox)", GameColors.brushCyan);
-                    }
-                    else if (!this.different)
-                    {
-                        drawCenterMessage($"Confirmed target body:\r\n{this.relatedStructure}");
-                    }
+                    drawHeaderText($"Confirm: {this.relatedStructure}");
+                    drawCenterMessage($"Confirmed");
+                    drawFooterText("(thank you)");
                 }
             }
-            catch (Exception ex)
+            else
             {
-                Game.log($"PlotGuardianBeaconStatus.OnPaintBackground error: {ex}");
+                drawHeaderText("Guardian Beacon scanned");
+
+                if (!this.confirmed)
+                {
+                    drawCenterMessage($"Please confirm target body:\r\n{this.relatedStructure}");
+                    drawFooterText("(check your inbox)", GameColors.brushCyan);
+                }
+                else if (!this.different)
+                {
+                    drawCenterMessage($"Confirmed target body:\r\n{this.relatedStructure}");
+                }
             }
         }
     }

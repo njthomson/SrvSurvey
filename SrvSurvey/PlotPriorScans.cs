@@ -16,11 +16,12 @@ namespace SrvSurvey
 
         private PlotPriorScans() : base()
         {
-            this.Width = scaled(380);
-            this.Height = scaled(300);
+            this.Size = Size.Empty;
             this.Font = GameColors.fontSmall;
             this.boldFont = new Font(this.Font, FontStyle.Bold);
         }
+
+        public override bool allow { get => PlotPriorScans.allowPlotter; }
 
         private void setNewHeight()
         {
@@ -49,10 +50,12 @@ namespace SrvSurvey
 
         protected override void OnLoad(EventArgs e)
         {
+            this.Width = scaled(380);
+            this.Height = scaled(300);
             base.OnLoad(e);
 
             this.setNewHeight();
-            this.initialize();
+            this.initializeOnLoad();
             this.reposition(Elite.getWindowRect(true));
 
             this.setPriorScans();
@@ -70,20 +73,6 @@ namespace SrvSurvey
                 && Game.activeGame.canonnPoiHasLocalBioSignals()
                 && Game.activeGame.isMode(GameMode.SuperCruising, GameMode.Flying, GameMode.Landed, GameMode.InSrv, GameMode.OnFoot, GameMode.GlideMode, GameMode.InFighter, GameMode.CommsPanel, GameMode.SAA)
                 ;
-        }
-
-        public override void reposition(Rectangle gameRect)
-        {
-            if (gameRect == Rectangle.Empty)
-            {
-                this.Opacity = 0;
-                return;
-            }
-
-            this.Opacity = PlotPos.getOpacity(this);
-            PlotPos.reposition(this, gameRect);
-
-            this.Invalidate();
         }
 
         protected override void Game_modeChanged(GameMode newMode, bool force)
@@ -236,163 +225,155 @@ namespace SrvSurvey
             }
         }
 
-        protected override void OnPaintBackground(PaintEventArgs e)
+        protected override void onPaintPlotter(PaintEventArgs e)
         {
-            base.OnPaintBackground(e);
-            try
+            if (game?.systemBody == null) return;
+
+            this.resetPlotter(g);
+
+            this.drawFooterText("(Tracked locations may not be that close to signals)", GameColors.brushGameOrangeDim, this.Font);
+
+            this.dtx = four;
+            this.dty = eight;
+
+            var txt = $"Tracking {this.signals.Count} signals from Canonn:";
+            if (Game.settings.skipPriorScansLowValue)
+                txt += $" (> {Util.credits(Game.settings.skipPriorScansLowValueAmount)})";
+            base.drawTextAt(txt, GameColors.brushGameOrange, GameColors.fontSmall);
+
+            if (this.signals.Count == 0)
             {
-                if (this.IsDisposed || game?.systemBody == null || game.isShutdown == true) return;
-
-                this.resetPlotter(g);
-
-                this.drawFooterText("(Tracked locations may not be that close to signals)", GameColors.brushGameOrangeDim, this.Font);
-
-                this.dtx = four;
-                this.dty = eight;
-
-                var txt = $"Tracking {this.signals.Count} signals from Canonn:";
-                if (Game.settings.skipPriorScansLowValue)
-                    txt += $" (> {Util.credits(Game.settings.skipPriorScansLowValueAmount)})";
-                base.drawTextAt(txt, GameColors.brushGameOrange, GameColors.fontSmall);
-
-                if (this.signals.Count == 0)
-                {
-                    g.DrawString("No un-scanned signals meet criteria", this.Font, GameColors.brushGameOrange, 16f, 36f);
-                    return;
-                }
-
-                var indent = scaled(70f);
-                if (false && Game.settings.autoShowPlotBioSystem) indent += threeFour;
-                var bearingWidth = scaled(75);
-
-                this.dty = scaled(8f);
-                var sortedSignals = this.signals.OrderByDescending(_ => _.reward);
-                foreach (var signal in sortedSignals)
-                {
-                    var analyzed = game.systemBody?.organisms?.FirstOrDefault(_ => _.genus == signal.genusName)?.analyzed == true;
-                    var isActive = game.cmdr.scanOne?.genus == signal.genusName || (game.cmdr.scanOne?.genus == null);
-                    Brush brush;
-
-                    // keep this y value for the label below
-                    var ly = this.dty += rowHeight;
-
-                    // but adjust the general x/y for trackers
-                    this.dtx = indent;
-                    this.dty += rowHeight;
-                    var isClose = false;
-
-                    var r = new Rectangle(scaled(8), 0, this.Width - scaled(16), scaled(14));
-                    foreach (var dd in signal.trackers)
-                    {
-                        if (dtx + bearingWidth > this.Width - 8)
-                        {
-                            // render next tracker on a new line if need be
-                            this.dtx = indent;
-                            this.dty += rowHeight;
-                        }
-
-                        var isTooCloseToScan = Util.isCloseToScan(dd.Target, signal.genusName);
-
-                        isClose |= dd.distance < highlightDistance && !analyzed && !isTooCloseToScan;
-                        var deg = dd.angle - game.status!.Heading;
-
-                        brush = isActive ? GameColors.PriorScans.Active.brush : GameColors.PriorScans.Inactive.brush;
-                        var pen = isActive ? GameColors.PriorScans.Active.pen : GameColors.PriorScans.Inactive.pen;
-
-                        if (dd.distance > 1_000_000) // within 1,000km
-                        {
-                            brush = GameColors.PriorScans.FarAway.brush;
-                            pen = GameColors.PriorScans.FarAway.pen;
-                        }
-
-                        if (dd.distance < PlotTrackers.highlightDistance)
-                        {
-                            brush = isActive ? GameColors.PriorScans.CloseActive.brush : GameColors.PriorScans.CloseInactive.brush;
-                            pen = isActive ? GameColors.PriorScans.CloseActive.pen : GameColors.PriorScans.CloseInactive.pen;
-                        }
-
-                        if (analyzed || isTooCloseToScan)
-                        {
-                            brush = GameColors.PriorScans.Analyzed.brush;
-                            pen = GameColors.PriorScans.Analyzed.pen;
-                        }
-
-                        if (signal.trackers.IndexOf(dd) == 0 && game.isMode(GameMode.SuperCruising, GameMode.GlideMode))
-                        {
-                            if ((deg > 330 || deg < 30))
-                                pen = GameColors.penCyan2;
-                            else if (deg > 90 && deg < 270)
-                                pen = GameColors.penDarkRed2;
-                            else if (deg > 60 && deg < 300)
-                                pen = GameColors.penRed2;
-                        }
-
-                        this.drawBearingTo(dtx, dty, "", (double)dd.distance, (double)deg, brush, pen);
-                        dtx += bearingWidth;
-                    }
-
-                    // draw label above trackers - color depending on if any of them are close
-                    brush = GameColors.brushGameOrangeDim;
-                    if (isActive) brush = GameColors.PriorScans.CloseActive.brush;
-                    if (isClose) brush = isActive ? GameColors.PriorScans.CloseActive.brush : GameColors.PriorScans.CloseInactive.brush;
-                    if (analyzed) brush = Brushes.DarkSlateGray;
-
-                    var f = this.Font;
-                    if (isActive) f = this.boldFont;
-
-                    r.Y = (int)ly;
-
-                    if (false && Game.settings.autoShowPlotBioSystem)
-                    {
-                        PlotBase.drawBioRing(g, signal.genusName, r.X, r.Y - 2, signal.reward, isActive, 24);
-                        r.X += 28;
-                        r.Width -= 28;
-                    }
-
-                    TextRenderer.DrawText(g, signal.poiName, f, r, ((SolidBrush)brush).Color, TextFormatFlags.NoPadding | TextFormatFlags.Left);
-                    TextRenderer.DrawText(g, signal.credits, f, r, ((SolidBrush)brush).Color, TextFormatFlags.NoPadding | TextFormatFlags.Right);
-
-                    // strike-through if already analyzed
-                    // ??
-
-                    if (game.status.Altitude > 500) //game.isMode(GameMode.SuperCruising, GameMode.GlideMode))
-                    {
-                        // calculate angle of decline for the nearest location
-                        r.Y += rowHeight;
-                        var aa = DecimalEx.ToDeg(DecimalEx.ATan(game.status.Altitude / signal.trackers[0].distance));
-                        // choose color based on ...
-                        if (aa < 10) // .. 0
-                            continue; // brush = Brushes.Transparent; // it's probably around the curve of the planet
-                        else if (aa < 30) // .. 10
-                            brush = Brushes.Orange;
-                        else if (aa < 50) // .. 30
-                            brush = Brushes.Cyan;
-                        else if (aa < 60) // .. 50
-                            brush = Brushes.Red;
-                        else // > 60
-                            brush = Brushes.DarkRed;
-
-                        // draw angle of attack - pie
-                        var deg = signal.trackers[0].angle - game.status!.Heading;
-                        var attackAngle = deg > 90 && deg < 270 ? 180 - aa : aa;
-                        GraphicsPath path = new GraphicsPath();
-                        path.AddPie(r.X, r.Y - 22, 36, 36, 180, -(int)attackAngle);
-                        g.FillPath(brush, path);
-                        var pp = new Pen(brush, 2.2f * GameColors.scaleFactor);
-                        g.DrawPath(pp, path);
-
-                        // draw angle of attack - text
-                        r.X += scaled(38);
-
-                        r.Width = scaled(r.Width);
-                        r.Height = scaled(r.Height);
-                        TextRenderer.DrawText(g, $"-{(int)aa}°", f, r, ((SolidBrush)brush).Color, TextFormatFlags.NoPadding | TextFormatFlags.Left);
-                    }
-                }
+                g.DrawString("No un-scanned signals meet criteria", this.Font, GameColors.brushGameOrange, 16f, 36f);
+                return;
             }
-            catch (Exception ex)
+
+            var indent = scaled(70f);
+            if (false && Game.settings.autoShowPlotBioSystem) indent += threeFour;
+            var bearingWidth = scaled(75);
+
+            this.dty = scaled(8f);
+            var sortedSignals = this.signals.OrderByDescending(_ => _.reward);
+            foreach (var signal in sortedSignals)
             {
-                Game.log($"PlotPriorScans.OnPaintBackground error: {ex}");
+                var analyzed = game.systemBody?.organisms?.FirstOrDefault(_ => _.genus == signal.genusName)?.analyzed == true;
+                var isActive = game.cmdr.scanOne?.genus == signal.genusName || (game.cmdr.scanOne?.genus == null);
+                Brush brush;
+
+                // keep this y value for the label below
+                var ly = this.dty += rowHeight;
+
+                // but adjust the general x/y for trackers
+                this.dtx = indent;
+                this.dty += rowHeight;
+                var isClose = false;
+
+                var r = new Rectangle(scaled(8), 0, this.Width - scaled(16), scaled(14));
+                foreach (var dd in signal.trackers)
+                {
+                    if (dtx + bearingWidth > this.Width - 8)
+                    {
+                        // render next tracker on a new line if need be
+                        this.dtx = indent;
+                        this.dty += rowHeight;
+                    }
+
+                    var isTooCloseToScan = Util.isCloseToScan(dd.Target, signal.genusName);
+
+                    isClose |= dd.distance < highlightDistance && !analyzed && !isTooCloseToScan;
+                    var deg = dd.angle - game.status!.Heading;
+
+                    brush = isActive ? GameColors.PriorScans.Active.brush : GameColors.PriorScans.Inactive.brush;
+                    var pen = isActive ? GameColors.PriorScans.Active.pen : GameColors.PriorScans.Inactive.pen;
+
+                    if (dd.distance > 1_000_000) // within 1,000km
+                    {
+                        brush = GameColors.PriorScans.FarAway.brush;
+                        pen = GameColors.PriorScans.FarAway.pen;
+                    }
+
+                    if (dd.distance < PlotTrackers.highlightDistance)
+                    {
+                        brush = isActive ? GameColors.PriorScans.CloseActive.brush : GameColors.PriorScans.CloseInactive.brush;
+                        pen = isActive ? GameColors.PriorScans.CloseActive.pen : GameColors.PriorScans.CloseInactive.pen;
+                    }
+
+                    if (analyzed || isTooCloseToScan)
+                    {
+                        brush = GameColors.PriorScans.Analyzed.brush;
+                        pen = GameColors.PriorScans.Analyzed.pen;
+                    }
+
+                    if (signal.trackers.IndexOf(dd) == 0 && game.isMode(GameMode.SuperCruising, GameMode.GlideMode))
+                    {
+                        if ((deg > 330 || deg < 30))
+                            pen = GameColors.penCyan2;
+                        else if (deg > 90 && deg < 270)
+                            pen = GameColors.penDarkRed2;
+                        else if (deg > 60 && deg < 300)
+                            pen = GameColors.penRed2;
+                    }
+
+                    this.drawBearingTo(dtx, dty, "", (double)dd.distance, (double)deg, brush, pen);
+                    dtx += bearingWidth;
+                }
+
+                // draw label above trackers - color depending on if any of them are close
+                brush = GameColors.brushGameOrangeDim;
+                if (isActive) brush = GameColors.PriorScans.CloseActive.brush;
+                if (isClose) brush = isActive ? GameColors.PriorScans.CloseActive.brush : GameColors.PriorScans.CloseInactive.brush;
+                if (analyzed) brush = Brushes.DarkSlateGray;
+
+                var f = this.Font;
+                if (isActive) f = this.boldFont;
+
+                r.Y = (int)ly;
+
+                if (false && Game.settings.autoShowPlotBioSystem)
+                {
+                    PlotBase.drawBioRing(g, signal.genusName, r.X, r.Y - 2, signal.reward, isActive, 24);
+                    r.X += 28;
+                    r.Width -= 28;
+                }
+
+                TextRenderer.DrawText(g, signal.poiName, f, r, ((SolidBrush)brush).Color, TextFormatFlags.NoPadding | TextFormatFlags.Left);
+                TextRenderer.DrawText(g, signal.credits, f, r, ((SolidBrush)brush).Color, TextFormatFlags.NoPadding | TextFormatFlags.Right);
+
+                // strike-through if already analyzed
+                // ??
+
+                if (game.status.Altitude > 500) //game.isMode(GameMode.SuperCruising, GameMode.GlideMode))
+                {
+                    // calculate angle of decline for the nearest location
+                    r.Y += rowHeight;
+                    var aa = DecimalEx.ToDeg(DecimalEx.ATan(game.status.Altitude / signal.trackers[0].distance));
+                    // choose color based on ...
+                    if (aa < 10) // .. 0
+                        continue; // brush = Brushes.Transparent; // it's probably around the curve of the planet
+                    else if (aa < 30) // .. 10
+                        brush = Brushes.Orange;
+                    else if (aa < 50) // .. 30
+                        brush = Brushes.Cyan;
+                    else if (aa < 60) // .. 50
+                        brush = Brushes.Red;
+                    else // > 60
+                        brush = Brushes.DarkRed;
+
+                    // draw angle of attack - pie
+                    var deg = signal.trackers[0].angle - game.status!.Heading;
+                    var attackAngle = deg > 90 && deg < 270 ? 180 - aa : aa;
+                    GraphicsPath path = new GraphicsPath();
+                    path.AddPie(r.X, r.Y - 22, 36, 36, 180, -(int)attackAngle);
+                    g.FillPath(brush, path);
+                    var pp = new Pen(brush, 2.2f * GameColors.scaleFactor);
+                    g.DrawPath(pp, path);
+
+                    // draw angle of attack - text
+                    r.X += scaled(38);
+
+                    r.Width = scaled(r.Width);
+                    r.Height = scaled(r.Height);
+                    TextRenderer.DrawText(g, $"-{(int)aa}°", f, r, ((SolidBrush)brush).Color, TextFormatFlags.NoPadding | TextFormatFlags.Left);
+                }
             }
         }
     }

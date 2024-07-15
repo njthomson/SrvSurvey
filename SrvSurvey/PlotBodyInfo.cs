@@ -12,6 +12,8 @@ namespace SrvSurvey
             this.Font = GameColors.fontSmall2;
         }
 
+        public override bool allow { get => PlotBodyInfo.allowPlotter; }
+
         protected override void OnLoad(EventArgs e)
         {
             this.Width = scaled(320);
@@ -19,7 +21,7 @@ namespace SrvSurvey
 
             base.OnLoad(e);
 
-            this.initialize();
+            this.initializeOnLoad();
             this.reposition(Elite.getWindowRect(true));
         }
 
@@ -40,32 +42,6 @@ namespace SrvSurvey
                 );
         }
 
-        public override void reposition(Rectangle gameRect)
-        {
-            if (gameRect == Rectangle.Empty)
-            {
-                this.Opacity = 0;
-                return;
-            }
-
-            this.Opacity = PlotPos.getOpacity(this);
-            PlotPos.reposition(this, gameRect);
-
-            this.Invalidate();
-        }
-
-        protected override void Game_modeChanged(GameMode newMode, bool force)
-        {
-            if (this.IsDisposed) return;
-
-            if (this.Opacity > 0 && !PlotBodyInfo.allowPlotter)
-                this.Opacity = 0;
-            else if (this.Opacity == 0 && PlotBodyInfo.allowPlotter)
-                this.reposition(Elite.getWindowRect());
-
-            this.Invalidate();
-        }
-
         protected override void Status_StatusChanged(bool blink)
         {
             if (this.IsDisposed) return;
@@ -81,9 +57,8 @@ namespace SrvSurvey
             }
         }
 
-        protected override void OnPaintBackground(PaintEventArgs e)
+        protected override void onPaintPlotter(PaintEventArgs e)
         {
-            base.OnPaintBackground(e);
             if (this.IsDisposed || game == null) return;
 
             // use current body, or targetBody if in SystemMap
@@ -100,8 +75,6 @@ namespace SrvSurvey
             var temp = body.surfaceTemperature.ToString("N0");
             var gravity = (body.surfaceGravity / 10f).ToString("N2");
 
-            try
-            {
                 this.resetPlotter(e.Graphics);
 
                 // body name
@@ -248,11 +221,6 @@ namespace SrvSurvey
 
                 // resize window as necessary
                 formAdjustSize(+ten, +oneFour);
-            }
-            catch (Exception ex)
-            {
-                Game.log($"PlotGalMap.OnPaintBackground error: {ex}");
-            }
         }
 
     }

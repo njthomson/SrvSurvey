@@ -22,14 +22,14 @@ namespace SrvSurvey
         {
             InitializeComponent();
 
-            this.Height = PlotBase.scaled(500);
-            this.Width = PlotBase.scaled(380);
-
+            this.Size = Size.Empty;
             this.scale = 0.25f;
             this.mw = this.Width / 2;
             this.mh = this.Height / 2;
             this.Cursor = Cursors.Cross;
         }
+
+        //public override bool allow { get => PlotGrounded.allowPlotter; }
 
         protected override void OnActivated(EventArgs e)
         {
@@ -51,7 +51,9 @@ namespace SrvSurvey
 
         private void PlotGrounded_Load(object sender, EventArgs e)
         {
-            this.initialize();
+            this.Height = PlotBase.scaled(500);
+            this.Width = PlotBase.scaled(380);
+            this.initializeOnLoad();
             var gameRect = Elite.getWindowRect(true);
             this.reposition(gameRect);
 
@@ -63,7 +65,7 @@ namespace SrvSurvey
             }
         }
 
-        private void initialize()
+        private void initializeOnLoad()
         {
             this.BackgroundImage = GameGraphics.getBackgroundForForm(this);
 

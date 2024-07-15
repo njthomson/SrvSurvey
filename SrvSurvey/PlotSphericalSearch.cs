@@ -14,6 +14,8 @@ namespace SrvSurvey
             this.Font = GameColors.fontMiddle;
         }
 
+        public override bool allow { get => PlotSphericalSearch.allowPlotter; }
+
         protected override void OnLoad(EventArgs e)
         {
             this.Width = scaled(400);
@@ -21,7 +23,7 @@ namespace SrvSurvey
 
             base.OnLoad(e);
 
-            this.initialize();
+            this.initializeOnLoad();
             this.reposition(Elite.getWindowRect(true));
 
             this.BeginInvoke(() =>
@@ -35,20 +37,6 @@ namespace SrvSurvey
             get => Game.activeGame != null
                 && Game.activeGame.mode == GameMode.GalaxyMap
                 && Game.activeGame.cmdr.sphereLimit.active;
-        }
-
-        public override void reposition(Rectangle gameRect)
-        {
-            if (gameRect == Rectangle.Empty)
-            {
-                this.Opacity = 0;
-                return;
-            }
-
-            this.Opacity = PlotPos.getOpacity(this);
-            PlotPos.reposition(this, gameRect);
-
-            this.Invalidate();
         }
 
         protected override void onJournalEntry(NavRoute entry)
@@ -90,19 +78,8 @@ namespace SrvSurvey
             this.Invalidate();
         }
 
-        protected override void OnPaintBackground(PaintEventArgs e)
+        protected override void onPaintPlotter(PaintEventArgs e)
         {
-            base.OnPaintBackground(e);
-            if (this.IsDisposed) return;
-
-            try
-            {
-                this.g = e.Graphics;
-                this.g.SmoothingMode = SmoothingMode.HighQuality;
-
-                this.dtx = eight;
-                this.dty = ten;
-
                 this.dty += this.drawTextAt($"From: {game.cmdr.sphereLimit.centerSystemName}").Height;
                 this.dtx = eight;
                 this.dty += this.drawTextAt($"To: {this.targetSystemName}").Height;
@@ -117,11 +94,6 @@ namespace SrvSurvey
                     this.dtx = eight;
                     this.drawTextAt($"Distance: {dist}ly - {verb} {limitDist} ly", tc);
                 }
-            }
-            catch (Exception ex)
-            {
-                Game.log($"PlotSphericalSearch.OnPaintBackground error: {ex}");
-            }
         }
     }
 

@@ -194,6 +194,8 @@ namespace SrvSurvey
         public bool Docked { get => (this.Flags & StatusFlags.Docked) > 0; }
         [JsonIgnore]
         public bool ShieldsUp { get => (this.Flags & StatusFlags.ShieldsUp) > 0; }
+        [JsonIgnore]
+        public bool FsdCharging { get => (this.Flags & StatusFlags.FsdCharging) > 0; }
     }
 
     class FuelStatus

@@ -9,17 +9,13 @@ namespace SrvSurvey
 
         private PlotFSSInfo() : base()
         {
-            this.Width = scaled(320);
-            this.Height = scaled(88);
-            this.BackgroundImageLayout = ImageLayout.Stretch;
-
+            this.Size = Size.Empty;
             this.Font = GameColors.fontSmall2;
 
             if (systemName != game?.systemData?.name)
             {
                 // if we've switched systems, clear and add in any stars
                 PlotFSSInfo.scans.Clear();
-
             }
 
             // add any bodies discovered whilst outside of FSS
@@ -44,11 +40,16 @@ namespace SrvSurvey
             systemName = game?.systemData?.name;
         }
 
+        public override bool allow { get => PlotFSSInfo.allowPlotter; }
+
         protected override void OnLoad(EventArgs e)
         {
+            this.Width = scaled(320);
+            this.Height = scaled(88);
+
             base.OnLoad(e);
 
-            this.initialize();
+            this.initializeOnLoad();
             this.reposition(Elite.getWindowRect(true));
         }
 
@@ -57,32 +58,6 @@ namespace SrvSurvey
             get => Game.activeGame?.cmdr != null
                 && Game.settings.autoShowPlotFSSInfo
                 && Game.activeGame.isMode(GameMode.FSS);
-        }
-
-        public override void reposition(Rectangle gameRect)
-        {
-            if (gameRect == Rectangle.Empty)
-            {
-                this.Opacity = 0;
-                return;
-            }
-
-            this.Opacity = PlotPos.getOpacity(this);
-            PlotPos.reposition(this, gameRect);
-
-            this.Invalidate();
-        }
-
-        protected override void Game_modeChanged(GameMode newMode, bool force)
-        {
-            if (this.IsDisposed) return;
-
-            if (this.Opacity > 0 && !PlotFSSInfo.allowPlotter)
-                this.Opacity = 0;
-            else if (this.Opacity == 0 && PlotFSSInfo.allowPlotter)
-                this.reposition(Elite.getWindowRect());
-
-            this.Invalidate();
         }
 
         protected override void onJournalEntry(Scan entry)
@@ -113,94 +88,86 @@ namespace SrvSurvey
             this.Invalidate();
         }
 
-        protected override void OnPaintBackground(PaintEventArgs e)
+        protected override void onPaintPlotter(PaintEventArgs e)
         {
-            base.OnPaintBackground(e);
             if (this.IsDisposed || game?.systemData == null) return;
 
-            try
+            this.resetPlotter(e.Graphics);
+
+            // 1st line: system name
+            drawTextAt(game.systemData.name, GameColors.fontSmallBold);
+            newLine(+eight, true);
+
+            // 2nd line body count / values
+            var bodyCount = game.systemData.bodies.Count(_ => _.scanned && _.type != SystemBodyType.Asteroid);
+            drawTextAt(eight, $"Scanned {bodyCount} bodies: {Util.credits(game.systemData.sumRewards())}");
+            newLine(true);
+            drawTextAt(eight, $"( Hiding bodies < {Util.credits(Game.settings.hideFssLowValueAmount)} )", GameColors.brushGameOrangeDim);
+            newLine(+eight, true);
+
+            if (scans.Count == 0)
             {
-                this.resetPlotter(e.Graphics);
-
-                // 1st line: system name
-                drawTextAt(game.systemData.name, GameColors.fontSmallBold);
-                newLine(+eight, true);
-
-                // 2nd line body count / values
-                var bodyCount = game.systemData.bodies.Count(_ => _.scanned && _.type != SystemBodyType.Asteroid);
-                drawTextAt(eight, $"Scanned {bodyCount} bodies: {Util.credits(game.systemData.sumRewards())}");
+                drawTextAt(eight, "(scan to populate)");
                 newLine(true);
-                drawTextAt(eight, $"( Hiding bodies < {Util.credits(Game.settings.hideFssLowValueAmount)} )", GameColors.brushGameOrangeDim);
-                newLine(+eight, true);
+            }
 
-                if (scans.Count == 0)
+            foreach (var scan in scans)
+            {
+                var hasBioSignals = scan.body.bioSignalCount > 0;
+
+                // highlight if DSS value above threshold
+                var dssWorthy = Game.settings.skipLowValueDSS && scan.dssReward > Game.settings.skipLowValueAmount;
+                // unless it's too far away
+                if (dssWorthy && Game.settings.skipHighDistanceDSS && scan.body.distanceFromArrivalLS > Game.settings.skipHighDistanceDSSValue)
+                    dssWorthy = false;
+                // or a gas giant
+                if (dssWorthy && Game.settings.skipGasGiantDSS && scan.body.type == SystemBodyType.Giant)
+                    dssWorthy = false;
+                if (scan.body.type == SystemBodyType.Star)
+                    dssWorthy = false;
+
+                var highlight = dssWorthy | hasBioSignals;
+
+                // 1st line: body name + type
+                var planetClass = scan.body.planetClass?.Replace("Sudarsky c", "C");
+                var prefix = scan.body.wasDiscovered ? "" : "*";
+                var txt = $"{prefix}{scan.body.shortName} - {planetClass}"; // ◌◎◉☆★☄☼☀⛀⛃✔✨✶✪❓❔❓⛬❗❕ * ❒❱✪❍❌✋❖⟡⦁⦂⧫
+                if (scan.body.terraformable) txt += " (T)";
+                if (scan.body.type == SystemBodyType.LandableBody) txt += " (L)";
+                if (scan.body.type == SystemBodyType.Star)
+                    txt = $"{prefix}{scan.body.shortName} - {scan.body.starType} Star";
+
+                drawTextAt(oneSix, txt, highlight ? GameColors.brushCyan : null, GameColors.fontSmall2);
+                newLine(true);
+
+                // 2nd line: scan values
+                var reward = scan.body.reward.ToString("N0"); // scan.reward ?
+                drawTextAt(thirty, $"{reward}", dssWorthy ? GameColors.brushCyan : null);
+                if (scan.body.type != SystemBodyType.Star && !scan.body.dssComplete)
                 {
-                    drawTextAt(eight, "(scan to populate)");
-                    newLine(true);
+                    drawTextAt("| ", GameColors.brushGameOrangeDim);
+                    drawTextAt(scan.dssReward.ToString("N0"), dssWorthy ? GameColors.brushCyan : null);
                 }
 
-                foreach (var scan in scans)
+                if (scan.body.bioSignalCount > 0)
                 {
-                    var hasBioSignals = scan.body.bioSignalCount > 0;
-
-                    // highlight if DSS value above threshold
-                    var dssWorthy = Game.settings.skipLowValueDSS && scan.dssReward > Game.settings.skipLowValueAmount;
-                    // unless it's too far away
-                    if (dssWorthy && Game.settings.skipHighDistanceDSS && scan.body.distanceFromArrivalLS > Game.settings.skipHighDistanceDSSValue)
-                        dssWorthy = false;
-                    // or a gas giant
-                    if (dssWorthy && Game.settings.skipGasGiantDSS && scan.body.type == SystemBodyType.Giant)
-                        dssWorthy = false;
-                    if (scan.body.type == SystemBodyType.Star)
-                        dssWorthy = false;
-
-                    var highlight = dssWorthy | hasBioSignals;
-
-                    // 1st line: body name + type
-                    var planetClass = scan.body.planetClass?.Replace("Sudarsky c", "C");
-                    var prefix = scan.body.wasDiscovered ? "" : "*";
-                    var txt = $"{prefix}{scan.body.shortName} - {planetClass}"; // ◌◎◉☆★☄☼☀⛀⛃✔✨✶✪❓❔❓⛬❗❕ * ❒❱✪❍❌✋❖⟡⦁⦂⧫
-                    if (scan.body.terraformable) txt += " (T)";
-                    if (scan.body.type == SystemBodyType.LandableBody) txt += " (L)";
-                    if (scan.body.type == SystemBodyType.Star)
-                        txt = $"{prefix}{scan.body.shortName} - {scan.body.starType} Star";
-
-                    drawTextAt(oneSix, txt, highlight ? GameColors.brushCyan : null, GameColors.fontSmall2);
-                    newLine(true);
-
-                    // 2nd line: scan values
-                    var reward = scan.body.reward.ToString("N0"); // scan.reward ?
-                    drawTextAt(thirty, $"{reward}", dssWorthy ? GameColors.brushCyan : null);
-                    if (scan.body.type != SystemBodyType.Star && !scan.body.dssComplete)
-                    {
-                        drawTextAt("| ", GameColors.brushGameOrangeDim);
-                        drawTextAt(scan.dssReward.ToString("N0"), dssWorthy ? GameColors.brushCyan : null);
-                    }
-
-                    if (scan.body.bioSignalCount > 0)
-                    {
-                        drawTextAt("| ", GameColors.brushGameOrangeDim);
-                        drawTextAt($"{scan.body.bioSignalCount} Genus", GameColors.brushCyan);
-                    }
-                    newLine(+four, true);
-
-                    var plotSysStatusTop = Program.getPlotter<PlotSysStatus>()?.Top;
-                    var plotBioSysTop = Program.getPlotter<PlotBioSystem>()?.Top;
-                    if (dty > plotSysStatusTop - hundred || dty > plotBioSysTop - hundred)
-                        break;
+                    drawTextAt("| ", GameColors.brushGameOrangeDim);
+                    drawTextAt($"{scan.body.bioSignalCount} Genus", GameColors.brushCyan);
                 }
+                newLine(+four, true);
 
-                drawTextAt(eight, "Scan value | DSS value", GameColors.brushGameOrangeDim);
-                newLine(true);
-                drawTextAt(eight, "* Undiscovered | T Terraformable", GameColors.brushGameOrangeDim);
-                newLine(true);
+                var plotSysStatusTop = Program.getPlotter<PlotSysStatus>()?.Top;
+                var plotBioSysTop = Program.getPlotter<PlotBioSystem>()?.Top;
+                if (dty > plotSysStatusTop - hundred || dty > plotBioSysTop - hundred)
+                    break;
+            }
 
-                this.formAdjustSize(+oneEight, +ten);
-            }
-            catch (Exception ex)
-            {
-                Game.log($"PlotGalMap.OnPaintBackground error: {ex}");
-            }
+            drawTextAt(eight, "Scan value | DSS value", GameColors.brushGameOrangeDim);
+            newLine(true);
+            drawTextAt(eight, "* Undiscovered | T Terraformable", GameColors.brushGameOrangeDim);
+            newLine(true);
+
+            this.formAdjustSize(+oneEight, +ten);
         }
 
     }
