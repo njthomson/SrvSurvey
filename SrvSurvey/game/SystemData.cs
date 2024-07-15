@@ -1332,8 +1332,8 @@ namespace SrvSurvey.game
                 // skip things already scanned
                 if (_.dssComplete) continue;
 
-                // skip stars and asteroids
-                if (_.type == SystemBodyType.Star || _.type == SystemBodyType.Asteroid) continue;
+                // skip anything except Scannable plannets
+                if (_.type != SystemBodyType.Giant && _.type != SystemBodyType.SolidBody && _.type != SystemBodyType.LandableBody) continue;
 
                 // inject rings
                 if (!Game.settings.skipRingsDSS && _.hasRings)

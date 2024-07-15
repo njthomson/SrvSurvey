@@ -536,6 +536,7 @@ namespace SrvSurvey
                 pp = Pens.Gold;
                 ppp = GameColors.newPen(Color.FromArgb(96, Color.Gold), 1.9f, DashStyle.Dot);
                 bb2 = (SolidBrush)Brushes.DarkGoldenrod;
+                //pp2 = Pens.Gold;
             }
 
             g.DrawRectangle(ppp, x, y - oneTwo, ww, oneFive);
