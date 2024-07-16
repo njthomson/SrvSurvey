@@ -24,8 +24,6 @@ namespace SrvSurvey
 
             this.Size = Size.Empty;
             this.scale = 0.25f;
-            this.mw = this.Width / 2;
-            this.mh = this.Height / 2;
             this.Cursor = Cursors.Cross;
         }
 
@@ -53,6 +51,8 @@ namespace SrvSurvey
         {
             this.Height = PlotBase.scaled(500);
             this.Width = PlotBase.scaled(380);
+            this.mw = this.Width / 2;
+            this.mh = this.Height / 2;
             this.initializeOnLoad();
             var gameRect = Elite.getWindowRect(true);
             this.reposition(gameRect);

@@ -16,7 +16,7 @@
       ],
       "children": [
         { "variant": "Indigo", "query": [ "   star [B]" ] },
-        { "variant": "Teal", "query": [ "     star [A]" ] },
+        { "variant": "Teal", "query": [ "     star [A]", "body [Rocky]" ] },
         { "variant": "Grey", "query": [ "     star [F]" ] },
         { "variant": "Turquoise", "query": [ "star [G]" ] },
         { "variant": "Red", "query": [ "      star [K]" ] },

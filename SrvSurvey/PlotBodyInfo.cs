@@ -73,7 +73,7 @@ namespace SrvSurvey
             }
 
             var temp = body.surfaceTemperature.ToString("N0");
-            var gravity = (body.surfaceGravity / 10f).ToString("N2");
+            var gravity = (body.surfaceGravity / 10f).ToString("N3");
 
                 this.resetPlotter(e.Graphics);
 

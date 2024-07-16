@@ -582,7 +582,7 @@ namespace SrvSurvey
         /// <summary>
         /// Draws text at the location of ( dtx, dty ) incrementing dtx by the width of the rendered string.
         /// </summary>
-        protected SizeF drawTextAt(float tx, string txt, Brush? brush = null, Font? font = null, bool right = false)
+        protected SizeF drawTextAt(float tx, string txt, Brush? brush = null, Font? font = null, bool rightAlign = false)
         {
             this.dtx = tx;
 
@@ -590,7 +590,7 @@ namespace SrvSurvey
             font = font ?? this.Font;
             this.lastTextSize = g.MeasureString(txt, font);
 
-            if (right)
+            if (rightAlign)
             {
                 var x = dtx - this.lastTextSize.Width;
                 g.DrawString(txt, font, brush, x, this.dty);

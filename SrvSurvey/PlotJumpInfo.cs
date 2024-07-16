@@ -11,13 +11,14 @@ namespace SrvSurvey
         private RouteInfo nextHop;
         private int nextHopIdx;
         private List<float> hopDistances = new List<float>();
+        private List<bool> hopScoops = new List<bool>();
         private float totalDistance;
 
         private PlotJumpInfo() : base()
         {
             this.Size = Size.Empty;
             this.Font = GameColors.fontSmall;
-            Game.log("******************************************");
+            //Game.log("******************************************");
         }
 
         private JumpInfo info { get => systemsCache[nextSystem]; }
@@ -33,6 +34,7 @@ namespace SrvSurvey
                     Game.activeGame.status.FsdChargingJump
                     // whilst in whitch space, jumping to next system
                     || Game.activeGame.mode == GameMode.FSDJumping
+                 //|| Game.activeGame.mode == GameMode.RolePanel // debugging helper
                 );
         }
 
@@ -70,6 +72,8 @@ namespace SrvSurvey
                 var d = (float)Util.getSystemDistance(route[n - 1].StarPos, route[n].StarPos);
                 this.hopDistances.Add(d);
                 this.totalDistance += d;
+                var scoopable = "KGBFOAM".Contains(route[n].StarClass);
+                this.hopScoops.Add(scoopable);
             }
 
             // did we get POIs for this system already?
@@ -207,76 +211,81 @@ namespace SrvSurvey
         private void drawJumpLine()
         {
             if (hopDistances.Count == 0) return;
+            dty += six;
+            // draw text for `#1 of 2` on left, and total distance travelled on the right
+            var szLeft = drawTextAt(eight, $"#{nextHopIdx + 1} of {hopDistances.Count}");
+            var szRight = drawTextAt(this.Width - four, $"{totalDistance.ToString("N1")}LY", null, null, true);
 
-            drawTextAt(eight, $"#{nextHopIdx + 1} of {hopDistances.Count}");
-            var left = dtx + eight;
-            var sz = drawTextAt(this.Width - four, $"{totalDistance.ToString("N1")}LY", null, null, true);
-
-            var lineWidth = this.Width - left - sz.Width - twenty;
+            // calc left edge of line + whole line width to fix between rendered text
+            var left = szLeft.Width + oneSix;
+            var lineWidth = this.Width - left - szRight.Width - twenty;
             var pixelsPerLY = lineWidth / this.totalDistance;
-            //Game.log($"pixelsPerLY: {pixelsPerLY}");
 
-            var dotRadius = five;
+            // prep pixel coords for parts of the line
             var x = left + lineWidth + four;
-            var y = dty + (sz.Height / 2) - two;
+            var y = dty + (szRight.Height / 2) - two;
 
-            // the whole line
-            if (this.totalDistance > 1000)
+            // draw the whole line if we are travelling a long way (as drawing it in parts looks poor)
+            var limitExcessDistance = 1000;
+            if (this.totalDistance > limitExcessDistance)
                 g.DrawLine(GameColors.Route.penBehind, x, y, x - lineWidth, y);
 
+            // prep rectangles for drawing dots and scoop arcs above them
+            var dotRadius = five;
+            var r = new RectangleF(x - dotRadius, y - dotRadius, dotRadius * 2, dotRadius * 2);
+            var r2 = new RectangleF(r.Location, r.Size);
+            r2.Inflate(dotRadius, dotRadius);
+
             // draw line in pieces, from right to left
-            var r = new RectangleF(x - dotRadius, y, dotRadius * 2, dotRadius * 2);
-            r.Y -= dotRadius;
+            var limitPixelsPerLY = 0.3f;
             for (var n = hopDistances.Count - 1; n >= 0; n--)
             {
-                // right side marker - tick or dot
-                if (pixelsPerLY < 0.3)
-                    g.DrawLine(n < nextHopIdx ? GameColors.penGameOrangeDim1 : GameColors.penGameOrange1, x - 1, y - four, x - 1, y + four); // tick
-                //else
-                //    g.FillEllipse(GameColors.brushGameOrange, r); // dot
+                // (before drawing line parts, if dots are too close together) draw a TICK for each system
+                if (pixelsPerLY < limitPixelsPerLY)
+                {
+                    // render scoopable stars a ticker and taller
+                    if (hopScoops[n])
+                        g.DrawLine(n < nextHopIdx ? GameColors.penGameOrangeDim2 : GameColors.penGameOrange2, x - 1, y - ten, x - 1, y + four);
+                    else
+                        g.DrawLine(n < nextHopIdx ? GameColors.penGameOrangeDim1 : GameColors.penGameOrange1, x - 1, y - four, x - 1, y + four);
+                }
 
                 var d = hopDistances[n];
                 var w = d * pixelsPerLY;
 
-                // draw line to the left (higlight any neutron assisted jumps)
+                // draw line part from right to left, highlighting if Neutron and/or if next, ahead or behind
                 if (n == nextHopIdx)
                     g.DrawLine(GameColors.Route.penNext, x - one, y, x - w, y);
                 else if (n < nextHopIdx && d > game.shipMaxJump)
                     g.DrawLine(GameColors.Route.penNeutronBehind, x, y, x - w, y);
                 else if (n < nextHopIdx)
                     g.DrawLine(GameColors.Route.penBehind, x, y, x - w, y);
-                else if (d > game.shipMaxJump && this.totalDistance < 1000)
+                else if (d > game.shipMaxJump && this.totalDistance < limitExcessDistance)
                     g.DrawLine(GameColors.Route.penNeutronAhead, x, y, x - w, y);
-                else if (this.totalDistance < 1000)
+                else if (this.totalDistance < limitExcessDistance)
                     g.DrawLine(GameColors.Route.penAhead, x, y, x - w, y);
 
-                // right side marker - tick or dot
-                if (pixelsPerLY > 0.3)
-                    g.FillEllipse(GameColors.brushGameOrange, r); // dot
+                // (before drawing line parts, if not too close together) draw a DOT for each system
+                if (pixelsPerLY > limitPixelsPerLY)
+                {
+                    g.FillEllipse(GameColors.brushGameOrange, r);
 
+                    // and render a little arc above scoopable stars
+                    if (hopScoops[n])
+                    {
+                        r2.X = r.X - dotRadius;
+                        g.DrawArc(n + 1 == nextHopIdx ? GameColors.penCyan2 : GameColors.penGameOrange2, r2, 270 - 50, 100);
+                    }
+                }
 
-                //var p = (d > 90) ? GameColors.Route.penNeutron : GameColors.Route.penBehind;
-                //if (n == nextHopIdx) p = GameColors.Route.penNext;
-                //if (n <= nextHopIdx)
-                //    g.DrawLine(p, x - 1, y, x - w, y);
-
-                // redraw dot for next jump
+                // redraw dot for next jump, as it got clipped by a line on the last iteration
                 if (n + 1 == nextHopIdx) g.FillEllipse(GameColors.brushCyan, r);
 
                 r.X -= w;
                 x -= w;
             }
 
-            // highlight line potion for the next hop
-            var x1 = hopDistances.Take(nextHopIdx).Sum() * pixelsPerLY;
-
-            //+ (this.distBeforeCurrentHop * pixelsPerLY);
-            var x2 = hopDistances[nextHopIdx] * pixelsPerLY;
-            //g.DrawLine(GameColors.penCyan4, left + x1, y, left + x1 + x2, y);
-
-            y -= dotRadius;
-
-            // the starting dot
+            // finally, draw the left most the starting dot
             g.FillEllipse(nextHopIdx == 0 ? GameColors.brushCyan : GameColors.brushGameOrange, r);
 
             newLine(+four);

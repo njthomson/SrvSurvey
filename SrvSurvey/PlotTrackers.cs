@@ -166,10 +166,6 @@ namespace SrvSurvey
         {
             if (game?.systemData == null || game.systemBody == null || game.systemBody.bookmarks == null || game.systemBody.bookmarks?.Count == 0) return;
 
-            this.g = e.Graphics;
-            this.g.SmoothingMode = SmoothingMode.HighQuality;
-            base.OnPaintBackground(e);
-
             g.DrawString($"Tracking {game.systemBody.bookmarks?.Count} targets:", GameColors.fontSmall, GameColors.brushGameOrange, scaled(4), scaled(8));
 
             var indent = scaled(220 + 80);

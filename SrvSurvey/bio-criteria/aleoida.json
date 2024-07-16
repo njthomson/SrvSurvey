@@ -2,7 +2,7 @@
   "genus": "Aleoida",
   "commonChildren": [
     { "variant": "Yellow", "query": [ "   star [B]" ] },
-    { "variant": "Green", "query": [ "    star [A]" ] },
+    { "variant": "Green", "query": [ "    star [A]", "body [Rocky]" ] },
     { "variant": "Teal", "query": [ "     star [F]" ] },
     { "variant": "Turquoise", "query": [ "star [K]" ] },
     { "variant": "Emerald", "query": [ "  star [M]" ] },
