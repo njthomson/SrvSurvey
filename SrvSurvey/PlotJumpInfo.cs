@@ -17,6 +17,7 @@ namespace SrvSurvey
         {
             this.Size = Size.Empty;
             this.Font = GameColors.fontSmall;
+            Game.log("******************************************");
         }
 
         private JumpInfo info { get => systemsCache[nextSystem]; }
@@ -104,7 +105,7 @@ namespace SrvSurvey
                 }
 
                 // how many stations are there?
-                if (response.Result.stations.Count > 0)
+                if (response.Result.stations?.Count > 0)
                 {
                     var countFC = 0;
                     var countSettlements = 0;
@@ -179,7 +180,7 @@ namespace SrvSurvey
             newLine(+one, true);
 
             // traffic (if known)
-            if (this.info.traffic != null)
+            if (this.info.traffic?.traffic != null)
             {
                 var lineThree = $"► Traffic last 24 hours: {this.info.traffic.traffic.day.ToString("n0")}, week: {this.info.traffic.traffic.week.ToString("n0")}, ever: {this.info.traffic.traffic.total.ToString("n0")}";
                 drawTextAt(eight, lineThree);

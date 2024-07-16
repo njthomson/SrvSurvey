@@ -69,7 +69,7 @@ namespace SrvSurvey
 
                 this.dtx = six;
                 this.dty = oneNine;
-                this.formSize.Height = 48;
+                this.formSize = new SizeF(minViableWidth, 48);
 
                 // reduce destination to it's short name
                 var destinationBody = game.status.Destination?.Name?.Replace(game.systemData.name, "").Replace(" ", "");
@@ -102,7 +102,6 @@ namespace SrvSurvey
                 {
                     this.drawTextAt("No DSS meet criteria");
                 }
-                newLine(true);
 
                 if (!Game.settings.autoShowPlotBioSystem)
                 {
