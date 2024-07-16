@@ -26,6 +26,26 @@ namespace SrvSurvey.net.EDSM
             return JsonConvert.DeserializeObject<EdsmSystem>(json)!;
         }
 
+        public async Task<EdsmSystemTraffic> getSystemTraffic(string systemName)
+        {
+            // docs: https://www.edsm.net/en/api-system-v1
+            // https://www.edsm.net/api-system-v1/traffic?systemName=Colonia
+            Game.log($"Getting system bodies by name: {systemName}");
+
+            var json = await new HttpClient().GetStringAsync($"https://www.edsm.net/api-system-v1/traffic?systemName={Uri.EscapeDataString(systemName)}");
+            return JsonConvert.DeserializeObject<EdsmSystemTraffic>(json)!;
+        }
+
+        public async Task<EdsmSystemStations> getSystemStations(string systemName)
+        {
+            // docs: https://www.edsm.net/en/api-system-v1
+            // https://www.edsm.net/api-system-v1/stations?systemName=Colonia
+            Game.log($"Getting system bodies by name: {systemName}");
+
+            var json = await new HttpClient().GetStringAsync($"https://www.edsm.net/api-system-v1/stations?systemName={Uri.EscapeDataString(systemName)}");
+            return JsonConvert.DeserializeObject<EdsmSystemStations>(json)!;
+        }
+
     }
 
     internal class StarSystem
@@ -103,9 +123,9 @@ namespace SrvSurvey.net.EDSM
 
     internal class EdsmSystem
     {
-        public string name;
         public long id;
         public long id64;
+        public string name;
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public int bodyCount;
         public List<EdsmBody> bodies;
@@ -114,6 +134,75 @@ namespace SrvSurvey.net.EDSM
         {
             return $"{name} ({id64})";
         }
+    }
+
+    internal class EdsmSystemTraffic
+    {
+        public long id;
+        public long id64;
+        public string name;
+        public string url;
+        public Discovery discovery;
+        public Traffic traffic;
+        public Dictionary<string, int> breakdown;
+
+        internal class Discovery
+        {
+            public string commander;
+            public DateTime date;
+        }
+
+        internal class Traffic
+        {
+            public int total;
+            public int week;
+            public int day;
+        }
+    }
+
+    internal class EdsmSystemStations
+    {
+        public long id;
+        public long id64;
+        public string name;
+        public string url;
+        public List<Station> stations;
+
+        public class Station
+        {
+            public long id;
+            public long marketId;
+            public string type;
+            public string name;
+            public double distanceToArrival;
+
+            public string allegiance;
+            public string government;
+            public string economy;
+            public string secondEconomy;
+
+            public bool haveMarket;
+            public bool haveShipyard;
+            public bool haveOutfitting;
+
+            public List<string> otherServices;
+
+            // TODO: controllingFaction
+            // TODO: updateTime
+        }
+
+        /// <summary>
+        /// Station types that have large pads, excluding FC and dockable mega-ships
+        /// </summary>
+        public static readonly List<string> Starports = new List<string>()
+        {
+            "Coriolis Starport",
+            "Orbis Starport",
+            "Ocellus Starport",
+            "Asteroid base",
+            "Planetary Port", // CraterPort?
+            "Planetary Outpost", // These have large pads
+        };
     }
 
 }

@@ -196,6 +196,8 @@ namespace SrvSurvey
         public bool ShieldsUp { get => (this.Flags & StatusFlags.ShieldsUp) > 0; }
         [JsonIgnore]
         public bool FsdCharging { get => (this.Flags & StatusFlags.FsdCharging) > 0; }
+        [JsonIgnore]
+        public bool FsdChargingJump { get => (this.Flags2 & StatusFlags2.FsdChargingJump) > 0; }
     }
 
     class FuelStatus
@@ -282,6 +284,7 @@ namespace SrvSurvey
         BreathableAtmosphere = 0x_0001_0000,
         TelepresenceMulticrew = 0x_0002_0000,
         PhysicalMulticrew = 0x_0004_0000,
+        FsdChargingJump = 0x_0008_0000,
     }
 
     enum GuiFocus

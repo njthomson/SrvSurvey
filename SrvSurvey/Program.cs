@@ -177,7 +177,7 @@ namespace SrvSurvey
             return activePlotters.ContainsKey(typeof(T).Name) ? activePlotters[typeof(T).Name] as T : null;
         }
 
-        public static void closeAllPlotters(bool exceptPlotPulse = false)
+        public static void closeAllPlotters(bool exceptPlotPulse = false, bool exceptJumpInfo = false)
         {
             Game.log($"Program.CloseAllPlotters");
 
@@ -185,6 +185,7 @@ namespace SrvSurvey
             foreach (string name in names)
             {
                 if (name == nameof(PlotPulse) && exceptPlotPulse) continue;
+                if (name == nameof(PlotJumpInfo) && exceptJumpInfo) continue;
                 Program.closePlotter(name);
             }
         }

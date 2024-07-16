@@ -35,6 +35,7 @@ namespace SrvSurvey
             btnSave = new Button();
             btnCancel = new Button();
             tabPage1 = new TabPage();
+            btnPostProcess = new Button();
             linkResetTheme = new LinkLabel();
             panelTheme = new Panel();
             btnTheme = new Button();
@@ -146,6 +147,7 @@ namespace SrvSurvey
             pictureBox4 = new PictureBox();
             checkBox4 = new CheckBox();
             tabPage7 = new TabPage();
+            checkBox19 = new CheckBox();
             checkUseBioData = new CheckBox();
             radioUseRadius = new RadioButton();
             radioUseSmall = new RadioButton();
@@ -166,7 +168,6 @@ namespace SrvSurvey
             linkAboutOne = new LinkLabel();
             colorDialog = new ColorDialog();
             colorTheme = new ColorDialog();
-            btnPostProcess = new Button();
             panel1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numGravityWarningLevel).BeginInit();
@@ -293,6 +294,17 @@ namespace SrvSurvey
             tabPage1.Size = new Size(612, 420);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "General";
+            // 
+            // btnPostProcess
+            // 
+            btnPostProcess.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnPostProcess.Location = new Point(418, 381);
+            btnPostProcess.Name = "btnPostProcess";
+            btnPostProcess.Size = new Size(184, 29);
+            btnPostProcess.TabIndex = 38;
+            btnPostProcess.Text = "Scan all old journal files";
+            btnPostProcess.UseVisualStyleBackColor = true;
+            btnPostProcess.Click += btnPostProcess_Click;
             // 
             // linkResetTheme
             // 
@@ -1655,6 +1667,7 @@ namespace SrvSurvey
             // 
             // tabPage7
             // 
+            tabPage7.Controls.Add(checkBox19);
             tabPage7.Controls.Add(checkUseBioData);
             tabPage7.Controls.Add(radioUseRadius);
             tabPage7.Controls.Add(radioUseSmall);
@@ -1674,6 +1687,17 @@ namespace SrvSurvey
             tabPage7.Size = new Size(612, 420);
             tabPage7.TabIndex = 6;
             tabPage7.Text = "External Data";
+            // 
+            // checkBox19
+            // 
+            checkBox19.AutoSize = true;
+            checkBox19.Location = new Point(28, 399);
+            checkBox19.Name = "checkBox19";
+            checkBox19.Size = new Size(362, 19);
+            checkBox19.TabIndex = 37;
+            checkBox19.Tag = "autoShowPlotJumpInfoTest";
+            checkBox19.Text = "Show next system summary before FSD jumping (experimental)";
+            checkBox19.UseVisualStyleBackColor = true;
             // 
             // checkUseBioData
             // 
@@ -1889,17 +1913,6 @@ namespace SrvSurvey
             // 
             colorDialog.Color = Color.Yellow;
             // 
-            // btnPostProcess
-            // 
-            btnPostProcess.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnPostProcess.Location = new Point(418, 381);
-            btnPostProcess.Name = "btnPostProcess";
-            btnPostProcess.Size = new Size(184, 29);
-            btnPostProcess.TabIndex = 38;
-            btnPostProcess.Text = "Scan all old journal files";
-            btnPostProcess.UseVisualStyleBackColor = true;
-            btnPostProcess.Click += btnPostProcess_Click;
-            // 
             // FormSettings
             // 
             AcceptButton = btnSave;
@@ -2108,5 +2121,6 @@ namespace SrvSurvey
         private Panel panelTheme;
         private LinkLabel linkResetTheme;
         private Button btnPostProcess;
+        private CheckBox checkBox19;
     }
 }

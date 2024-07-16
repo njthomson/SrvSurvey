@@ -860,8 +860,8 @@ namespace SrvSurvey
         {
             if (entry.JumpType == "Hyperspace")
             {
-                // close everything when entering hyperspace (except PlotPulse)
-                Program.closeAllPlotters(true);
+                // close everything when entering hyperspace (except PlotPulse and PlotJumpInfo)
+                Program.closeAllPlotters(true, true);
             }
         }
 

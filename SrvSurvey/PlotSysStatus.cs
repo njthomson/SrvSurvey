@@ -1,5 +1,4 @@
 ﻿using SrvSurvey.game;
-using System.Drawing.Drawing2D;
 
 namespace SrvSurvey
 {
@@ -68,11 +67,9 @@ namespace SrvSurvey
                     return;
                 }
 
-                this.g = e.Graphics;
-                this.g.SmoothingMode = SmoothingMode.HighQuality;
-
-                this.dtx = scaled(6.0f);
-                this.dty = scaled(19.0f);
+                this.dtx = six;
+                this.dty = oneNine;
+                this.formSize.Height = 48;
 
                 // reduce destination to it's short name
                 var destinationBody = game.status.Destination?.Name?.Replace(game.systemData.name, "").Replace(" ", "");
@@ -105,6 +102,7 @@ namespace SrvSurvey
                 {
                     this.drawTextAt("No DSS meet criteria");
                 }
+                newLine(true);
 
                 if (!Game.settings.autoShowPlotBioSystem)
                 {
@@ -139,9 +137,12 @@ namespace SrvSurvey
                     //headerTxt += ")";
                 }
                 g.DrawString($"System survey remaining: {headerTxt}", GameColors.fontSmall, GameColors.brushGameOrange, scaled(4), scaled(7));
+                newLine(true);
             }
             finally
             {
+                this.formAdjustSize();
+
                 // resize window to fit as necessary
                 this.Width = Math.Max((int)this.dtx, minViableWidth);
             }

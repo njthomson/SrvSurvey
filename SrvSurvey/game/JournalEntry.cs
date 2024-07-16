@@ -109,6 +109,7 @@ namespace SrvSurvey
         public int ShipID;
         public string ShipName;
         public string ShipIDent;
+        public float MaxJumpRange;
     }
 
     class Died : JournalEntry

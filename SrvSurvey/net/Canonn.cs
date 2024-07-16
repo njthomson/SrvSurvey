@@ -1980,7 +1980,7 @@ namespace SrvSurvey.canonn
         public int bodyCount;
         public long id64;
         public string name;
-        
+
         public StarPos coords;
     }
 
@@ -2010,13 +2010,20 @@ namespace SrvSurvey.canonn
         public double semiMajorAxis; // 0.0093306383208345
         public CanonnBodyBioStatsSignals signals; // {…}
         public Dictionary<string, float> solidComposition; // {…}
-        // TODO? stations	[]
+        public List<Station> stations;
         public string subType; // "Rocky body"
         public double surfacePressure; // 0.00113836642487047
         public double surfaceTemperature; // 158.876053
         public string terraformingState; // "Not terraformable"
         // TODO? timestamps	{…}
         public string type; // "Planet"
+
+        public class Station : ApiSystemDumpSystem.Station
+        {
+            public string allegiance;
+            public double latitude;
+            public double longitude;
+        }
     }
 
     internal class CanonnBodyBioStatsSignals

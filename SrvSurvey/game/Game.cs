@@ -127,6 +127,7 @@ namespace SrvSurvey.game
         public GuardianSiteData? systemSite;
         public HumanSiteData? humanSite;
         public string shipType;
+        public float shipMaxJump;
         public SettlementMatCollectionData? matStatsTracker;
 
         /// <summary>
@@ -322,8 +323,15 @@ namespace SrvSurvey.game
 
             this.checkModeChange();
 
+            // show some plotters?
+
             if (this._mode == GameMode.SystemMap && PlotBodyInfo.allowPlotter)
                 Program.showPlotter<PlotBodyInfo>();
+
+            if (PlotJumpInfo.allowPlotter)
+                Program.showPlotter<PlotJumpInfo>();
+            else
+                Program.closePlotter<PlotJumpInfo>();
         }
 
         private GameMode _mode;
@@ -610,7 +618,10 @@ namespace SrvSurvey.game
             // which ship are we in?
             var lastLoadout = journals.FindEntryByType<Loadout>(-1, true);
             if (lastLoadout != null)
+            {
                 this.shipType = lastLoadout.Ship;
+                this.shipMaxJump = lastLoadout.MaxJumpRange;
+            }
 
             // clear old touchdown location but we're no longer on a planet
             if (cmdr?.lastTouchdownLocation != null && !status.hasLatLong) cmdr.clearTouchdown();
@@ -661,7 +672,11 @@ namespace SrvSurvey.game
             this.journals.walkDeep(-1, true, (entry) =>
             {
                 var loadout = entry as Loadout;
-                if (loadout != null && this.shipType == null) this.shipType = loadout.Ship;
+                if (loadout != null && this.shipType == null)
+                {
+                    this.shipType = loadout.Ship;
+                    this.shipMaxJump = loadout.MaxJumpRange;
+                }
 
                 // keep the first Docked event we find, unless we touched down
                 var docked = entry as Docked;
@@ -889,6 +904,7 @@ namespace SrvSurvey.game
         private void onJournalEntry(Loadout entry)
         {
             this.shipType = entry.Ship;
+            this.shipMaxJump = entry.MaxJumpRange;
         }
 
         private void onJournalEntry(Died entry)

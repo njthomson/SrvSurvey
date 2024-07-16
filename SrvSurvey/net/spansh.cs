@@ -160,7 +160,24 @@ namespace SrvSurvey.net
         public string primaryEconomy;
         public string secondaryEconomy;
         public string security;
-        // TODO: Stations[]
+        public List<Station> stations;
+
+        public class Station
+        {
+            public string controllingFaction;
+            public string controllingFactionState;
+            public double distanceToArrival;
+            // TODO: economies
+            public string government;
+            public long id;
+            public LandingPads landingPads;
+            // TODO: market
+            public string name;
+            public string primaryEconomy;
+            public List<string> services;
+            public string type;
+            public DateTime updateTime;
+        }
     }
 
     internal class ApiSystemDumpBody

@@ -494,6 +494,15 @@ namespace SrvSurvey
             public static Brush LAB = new SolidBrush(Color.FromArgb(255, 0, 32, 32)); // dark green
         }
 
+        public static class Route
+        {
+            public static Pen penNext = newPen(Color.Cyan, 4, LineCap.Triangle, LineCap.Triangle);
+            public static Pen penNeutronAhead = newPen(Color.DarkCyan, 4, LineCap.Triangle, LineCap.Triangle, DashStyle.Dash);
+            public static Pen penNeutronBehind = newPen(Color.DarkCyan, 4, LineCap.Triangle, LineCap.Triangle);
+            public static Pen penAhead = newPen(OrangeDim, 4, DashStyle.Dot);
+            public static Pen penBehind = newPen(OrangeDim, 4, LineCap.Triangle, LineCap.Triangle);
+        }
+
         #region Fonts
 
         public static void resetFontScale()
@@ -568,6 +577,16 @@ namespace SrvSurvey
             {
                 StartCap = startCap,
                 EndCap = endCap,
+            };
+        }
+
+        public static Pen newPen(Color color, float width = 1, LineCap startCap = LineCap.Flat, LineCap endCap = LineCap.Flat, DashStyle dashStyle = DashStyle.Dot)
+        {
+            return new Pen(color, width * GameColors.scaleFactor)
+            {
+                StartCap = startCap,
+                EndCap = endCap,
+                DashStyle = dashStyle,
             };
         }
     }

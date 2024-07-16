@@ -122,7 +122,7 @@ namespace SrvSurvey
     {
         // { "StarSystem":"Wregoe BU-Y b2-0", "SystemAddress":685451322393, "StarPos":[1077.37500,400.56250,-993.37500], "StarClass":"M" }, 
         public string StarSystem { get; set; }
-        public double SystemAddress { get; set; }
+        public long SystemAddress { get; set; }
         public double[] StarPos { get; set; }
         public string StarClass { get; set; }
     }

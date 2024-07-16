@@ -46,6 +46,7 @@ namespace SrvSurvey
                 && Game.activeGame.mode == GameMode.GalaxyMap
                 && Game.settings.useExternalData;
         }
+
         protected override void onJournalEntry(NavRoute entry)
         {
             if (this.IsDisposed) return;
@@ -55,10 +56,10 @@ namespace SrvSurvey
             if (game.navRoute.Route.Count < 2)
                 return;
 
-            // the desintation is last
+            // the destination is always last entry
             this.hops.Add(RouteInfo.create(game.navRoute.Route.Last(), true));
 
-
+            // find next hop by fsdTarget?
             var next = game.fsdTarget != null
                 ? game.navRoute.Route.Find(_ => _.StarSystem == game.fsdTarget) ?? game.navRoute.Route[1]
                 : game.navRoute.Route[1];
@@ -205,14 +206,14 @@ namespace SrvSurvey
         private void lookupSystem()
         {
             // lookup in EDSM
-            Game.edsm.getBodies(systemName).ContinueWith(result => Program.crashGuard(() =>
+            Game.edsm.getBodies(systemName).ContinueWith(response => Program.crashGuard(() =>
             {
-                if (result.Exception != null)
+                if (response.Exception != null)
                 {
-                    Util.isFirewallProblem(result.Exception);
+                    Util.isFirewallProblem(response.Exception);
                     return;
                 }
-                var edsmResult = result.Result;
+                var edsmResult = response.Result;
 
                 if (edsmResult.name == null || edsmResult.id64 == 0)
                 {
