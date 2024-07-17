@@ -192,6 +192,7 @@ namespace SrvSurvey
         public bool highlight;
         public bool destination;
         public int sumGenus;
+        public DateTime? discoveredDate;
 
         public RouteInfo(RouteEntry entry, bool destination)
         {
@@ -236,6 +237,7 @@ namespace SrvSurvey
 
                     var discCmdr = edsmResult.bodies.FirstOrDefault()?.discovery?.commander;
                     var discDate = edsmResult.bodies.FirstOrDefault()?.discovery?.date.ToShortDateString();
+                    this.discoveredDate = edsmResult.bodies.FirstOrDefault()?.discovery?.date;
                     if (discCmdr != null && discDate != null)
                         subStatus = $"By {discCmdr}, {discDate}";
                 }

@@ -409,6 +409,8 @@ namespace SrvSurvey
                 Game.update -= Game_modeChanged;
                 if (this.game.journals != null)
                     this.game.journals.onJournalEntry -= Journals_onJournalEntry;
+                if (this.game.status != null)
+                    this.game.status.StatusChanged -= Status_StatusChanged;
                 this.game.Dispose();
             }
             this.game = null;
@@ -437,6 +439,7 @@ namespace SrvSurvey
 
             Game.update += Game_modeChanged;
             this.game.journals!.onJournalEntry += Journals_onJournalEntry;
+            this.game.status.StatusChanged += Status_StatusChanged;
 
             if (!Game.settings.hideJournalWriteTimer)
                 Program.showPlotter<PlotPulse>();
@@ -457,6 +460,20 @@ namespace SrvSurvey
                     Game.log($"Cmdr migrations complete!");
                 }));
             }
+        }
+
+        private void Status_StatusChanged(bool blink)
+        {
+            // show some plotters based on changing status values?
+            if (game == null || game.isShutdown) return;
+
+            if (game.mode == GameMode.SystemMap && PlotBodyInfo.allowPlotter)
+                Program.showPlotter<PlotBodyInfo>();
+
+            if (PlotJumpInfo.allowPlotter)
+                Program.showPlotter<PlotJumpInfo>();
+            else
+                Program.closePlotter<PlotJumpInfo>();
         }
 
         private void Game_modeChanged(GameMode newMode, bool force)

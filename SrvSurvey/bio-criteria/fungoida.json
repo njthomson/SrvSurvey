@@ -17,14 +17,39 @@
       ],
       "children": [
         {
-          "useCommonChildren": true,
           "query": [
             "atmosType [Argon]",
-            "atmosComp [Argon >= 50]",
-            "  gravity [0.06 ~ 0.29]",
-            "     temp [50 ~ 132]",
-            " pressure [0.0009 ~ ]",
             "volcanism [None]"
+          ],
+          "children": [
+            {
+              "useCommonChildren": true,
+              "query": [
+                "     body [HMC]",
+                "atmosComp [Argon >= 100]",
+                "  gravity [0.14~ 0.28]",
+                "     temp [53 ~ 79]",
+                " pressure [0.001 ~ 0.071]"
+              ]
+            },
+            {
+              "useCommonChildren": true,
+              "query": [
+                "     body [Rocky]",
+                "atmosComp [Argon >= 100]",
+                "  gravity [0.12 ~ 0.28]",
+                "     temp [54 ~ 93]",
+                " pressure [0.001 ~ 0.39]"
+              ]
+            },
+            {
+              "useCommonChildren": true,
+              "query": [
+                "     body [RockyIce]",
+                "  gravity [0.06 ~ 0.29]",
+                "     temp [50 ~ 132]"
+              ]
+            }
           ]
         },
         {

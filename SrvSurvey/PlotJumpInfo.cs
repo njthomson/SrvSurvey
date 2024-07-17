@@ -18,7 +18,6 @@ namespace SrvSurvey
         {
             this.Size = Size.Empty;
             this.Font = GameColors.fontSmall;
-            //Game.log("******************************************");
         }
 
         private JumpInfo info { get => systemsCache[nextSystem]; }
@@ -31,10 +30,10 @@ namespace SrvSurvey
                 && Game.settings.autoShowPlotJumpInfoTest
                 && (
                     // when FSD is charging for a jump, or ...
-                    Game.activeGame.status.FsdChargingJump
+                    (Game.activeGame.status.FsdChargingJump && Game.activeGame.isMode(GameMode.Flying, GameMode.SuperCruising))
                     // whilst in whitch space, jumping to next system
                     || Game.activeGame.mode == GameMode.FSDJumping
-                 //|| Game.activeGame.mode == GameMode.RolePanel // debugging helper
+                    // || Game.activeGame.mode == GameMode.RolePanel // debugging helper
                 );
         }
 
@@ -57,7 +56,7 @@ namespace SrvSurvey
             var route = game.navRoute.Route.Skip(1).ToList();
 
             // find next hop in route
-            nextSystem = game.fsdTarget ?? game.status.Destination.Name;
+            nextSystem = game.fsdTarget ?? game.status.Destination?.Name;
             var next = route.Find(r => r.StarSystem == nextSystem);
             if (next == null) return;
             this.nextHop = RouteInfo.create(next, false);
@@ -144,6 +143,9 @@ namespace SrvSurvey
                     return;
                 }
 
+                if (response.Result.date != null && response.Result.bodies.Count > 0)
+                    systemsCache[nextSystem].lastUpdated = response.Result.date;
+
                 foreach (var body in response.Result.bodies)
                 {
                     var bioSignals = body.signals?.signals?.GetValueOrDefault("$SAA_SignalType_Biological;") ?? 0;
@@ -179,12 +181,16 @@ namespace SrvSurvey
             var lineTwo = string.IsNullOrEmpty(nextHop.subStatus)
                 ? "► " + nextHop.status
                 : "► Discovered by" + nextHop.subStatus.Substring(2);
+
+            var lastUpdated = systemsCache[nextSystem].lastUpdated;
+            if (lastUpdated != null && lastUpdated.Value != nextHop.discoveredDate)
+                lineTwo += $", last updated: " + lastUpdated.Value.ToShortDateString();
             drawTextAt(eight, lineTwo);
             drawTextAt("(EDSM)", GameColors.brushGameOrangeDim);
             newLine(+one, true);
 
             // traffic (if known)
-            if (this.info.traffic?.traffic != null)
+            if (this.info.traffic?.traffic != null && this.info.traffic.traffic.total > 0)
             {
                 var lineThree = $"► Traffic last 24 hours: {this.info.traffic.traffic.day.ToString("n0")}, week: {this.info.traffic.traffic.week.ToString("n0")}, ever: {this.info.traffic.traffic.total.ToString("n0")}";
                 drawTextAt(eight, lineThree);
@@ -245,7 +251,7 @@ namespace SrvSurvey
                 {
                     // render scoopable stars a ticker and taller
                     if (hopScoops[n])
-                        g.DrawLine(n < nextHopIdx ? GameColors.penGameOrangeDim2 : GameColors.penGameOrange2, x - 1, y - ten, x - 1, y + four);
+                        g.DrawLine(n < nextHopIdx ? GameColors.penGameOrangeDim1 : GameColors.penGameOrange1, x - 1, y - six, x - 1, y + six);
                     else
                         g.DrawLine(n < nextHopIdx ? GameColors.penGameOrangeDim1 : GameColors.penGameOrange1, x - 1, y - four, x - 1, y + four);
                 }
@@ -260,8 +266,10 @@ namespace SrvSurvey
                     g.DrawLine(GameColors.Route.penNeutronBehind, x, y, x - w, y);
                 else if (n < nextHopIdx)
                     g.DrawLine(GameColors.Route.penBehind, x, y, x - w, y);
-                else if (d > game.shipMaxJump && this.totalDistance < limitExcessDistance)
-                    g.DrawLine(GameColors.Route.penNeutronAhead, x, y, x - w, y);
+                else if (d > game.shipMaxJump && this.totalDistance <= limitExcessDistance)
+                    g.DrawLine(GameColors.Route.penNeutronAhead, x - two, y, x - w, y);
+                else if (d > game.shipMaxJump && this.totalDistance > limitExcessDistance)
+                    g.DrawLine(GameColors.Route.penNeutronBehind, x - two, y, x - w, y);
                 else if (this.totalDistance < limitExcessDistance)
                     g.DrawLine(GameColors.Route.penAhead, x, y, x - w, y);
 
@@ -274,7 +282,7 @@ namespace SrvSurvey
                     if (hopScoops[n])
                     {
                         r2.X = r.X - dotRadius;
-                        g.DrawArc(n + 1 == nextHopIdx ? GameColors.penCyan2 : GameColors.penGameOrange2, r2, 270 - 50, 100);
+                        g.DrawArc(n + 1 == nextHopIdx ? GameColors.penCyan2 : GameColors.penGameOrange2, r2, 270 - 40, 80);
                     }
                 }
 
@@ -295,6 +303,8 @@ namespace SrvSurvey
 
     internal class JumpInfo
     {
+        public DateTime? lastUpdated;
+
         public EdsmSystemTraffic? traffic;
 
         public Dictionary<string, int> countPOI = new Dictionary<string, int>()

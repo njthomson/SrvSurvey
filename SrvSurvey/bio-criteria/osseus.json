@@ -198,11 +198,11 @@
       "useCommonChildren": true,
       "query": [
         "     body [HMC,Rocky,RockyIce]",
-        "atmosType [Ammonia]",
-        "atmosComp [Ammonia >= 93.64]",
+        "atmosComp [Ammonia >= 100]",
         "  gravity [0.04 ~ 0.29]",
         "     temp [160 ~ 177]",
-        " pressure [0.0009 ~ 0.0145]"
+        "volcanism [None]",
+        " pressure [0.0009 ~ 0.0123]"
       ]
     }
 

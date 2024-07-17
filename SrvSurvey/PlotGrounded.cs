@@ -22,8 +22,11 @@ namespace SrvSurvey
         {
             InitializeComponent();
 
-            this.Size = Size.Empty;
+            this.Height = PlotBase.scaled(500);
+            this.Width = PlotBase.scaled(380);
             this.scale = 0.25f;
+            this.mw = this.Width / 2;
+            this.mh = this.Height / 2;
             this.Cursor = Cursors.Cross;
         }
 
@@ -152,6 +155,7 @@ namespace SrvSurvey
                 && Game.activeGame.status.hasLatLong
                 && Game.activeGame.status.Altitude < 10_000
                 && !Game.activeGame.status.InTaxi
+                && !Game.activeGame.status.FsdChargingJump
                 && !PlotGuardians.allowPlotter
                 && Game.activeGame.isMode(GameMode.SuperCruising, GameMode.Flying, GameMode.Landed, GameMode.InSrv, GameMode.OnFoot, GameMode.GlideMode, GameMode.InFighter, GameMode.CommsPanel);
             // TODO: include these?

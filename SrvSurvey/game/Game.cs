@@ -322,16 +322,6 @@ namespace SrvSurvey.game
             // TODO: we could avoid flicker by updating the colors on labels, rather than destroying and recreating them.
 
             this.checkModeChange();
-
-            // show some plotters?
-
-            if (this._mode == GameMode.SystemMap && PlotBodyInfo.allowPlotter)
-                Program.showPlotter<PlotBodyInfo>();
-
-            if (PlotJumpInfo.allowPlotter)
-                Program.showPlotter<PlotJumpInfo>();
-            else
-                Program.closePlotter<PlotJumpInfo>();
         }
 
         private GameMode _mode;

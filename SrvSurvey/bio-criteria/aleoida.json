@@ -21,7 +21,6 @@
 
     {
       "species": "Arcus",
-      "useCommonChildren": true,
       "query": [
         "atmosType [CarbonDioxide]",
         "atmosComp [CarbonDioxide >= 97.5]",
@@ -29,6 +28,21 @@
         "     temp [175 ~ 190]",
         " pressure [0.016 ~ ]",
         "volcanism [None]"
+      ],
+      "children": [
+        {
+          "useCommonChildren": true,
+          "query": [
+            "body [HMC]",
+            "temp [175 ~ 180]"
+          ]
+        },
+        {
+          "useCommonChildren": true,
+          "query": [
+            "body [Rocky]"
+          ]
+        }
       ]
     },
 

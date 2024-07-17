@@ -54,6 +54,7 @@ namespace SrvSurvey
                 && !Game.activeGame.atMainMenu
                 && !Game.activeGame.status.OnFootSocial
                 && !Game.activeGame.status.InTaxi
+                && !Game.activeGame.status.FsdChargingJump
                 && !PlotGuardians.allowPlotter && !Program.isPlotter<PlotGuardians>()
                 && Game.activeGame.isMode(GameMode.SuperCruising, GameMode.Flying, GameMode.Landed, GameMode.InSrv, GameMode.OnFoot, GameMode.GlideMode, GameMode.InFighter, GameMode.CommsPanel, GameMode.SAA, GameMode.Codex);
         }
@@ -97,6 +98,18 @@ namespace SrvSurvey
             this.Game_modeChanged(game.mode, true);
 
             game.journals!.onJournalEntry += Journals_onJournalEntry;
+            game.status.StatusChanged += Status_StatusChanged;
+        }
+
+        private void Status_StatusChanged(bool blink)
+        {
+            if (this.IsDisposed) return;
+
+            // hide ourself whilst FSD is charging to jump systems
+            if (game.status.FsdChargingJump)
+                this.Opacity = 0;
+            else if (this.Opacity == 0 && !game.status.FsdChargingJump)
+                this.Opacity = PlotPos.getOpacity(this);
         }
 
         #region journal events
@@ -133,7 +146,7 @@ namespace SrvSurvey
                 Main.form.btnCodexShow.Enabled = true;
             }
         }
-        
+
         private void onJournalEntry(ScanOrganic entry)
         {
             this.lastCodexScan = null;

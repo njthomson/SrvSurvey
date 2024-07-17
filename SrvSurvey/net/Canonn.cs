@@ -1980,6 +1980,7 @@ namespace SrvSurvey.canonn
         public int bodyCount;
         public long id64;
         public string name;
+        public DateTime? date;
 
         public StarPos coords;
     }

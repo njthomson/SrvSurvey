@@ -1,7 +1,7 @@
 ﻿using SrvSurvey.game;
 using System.ComponentModel;
 using System.Data;
-using System.Text;
+using System.Diagnostics;
 
 namespace SrvSurvey
 {
@@ -125,7 +125,7 @@ namespace SrvSurvey
             if (filterIdx < 2)
             {
                 foreach (var body in game.systemData.bodies)
-                    if (body.bioSignalCount > 0)
+                    if (body.bioSignalCount > 0 || (Debugger.IsAttached && (body.type == SystemBodyType.LandableBody || body.type == SystemBodyType.SolidBody) && body.atmosphereType != "None"))
                         body.predictSpecies();
             }
             else if (targetBody != null)

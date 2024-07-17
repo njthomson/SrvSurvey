@@ -24,8 +24,8 @@ namespace SrvSurvey
             Game.update -= Game_modeChanged;
             if (game?.journals != null)
                 game.journals.onJournalEntry -= Journals_onJournalEntry;
-            //if (game?.nearBody != null) // retire
-                //game.nearBody.bioScanEvent -= NearBody_bioScanEvent; // retire
+            if (game?.status != null)
+                game.status.StatusChanged -= Status_StatusChanged;
 
             this.game = null;
 

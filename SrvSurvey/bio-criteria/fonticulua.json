@@ -21,14 +21,26 @@
 
     {
       "species": "Campestris",
-      "useCommonChildren": true,
       "query": [
-        "     body [Icy,RockyIce]",
-        "atmosType [Argon]",
-        "atmosComp [Argon >= 50]",
-        "  gravity [0.03 ~ 0.29]",
-        "     temp [43 ~ 195]",
-        " pressure [0.0009 ~ ]"
+        "atmosType [Argon]"
+      ],
+      "children":[
+        {
+          "useCommonChildren": true,
+          "query": [
+            "     body [Icy]",
+            "  gravity [0.03 ~ 0.29]",
+            "     temp [50 ~ 150]"
+          ]
+        },
+        {
+          "useCommonChildren": true,
+          "query": [
+            "     body [RockyIce]",
+            "  gravity [0.06 ~ 0.29]",
+            "     temp [50 ~ 132]"
+          ]
+        }
       ]
     },
 

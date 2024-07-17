@@ -8,7 +8,8 @@ namespace BioCriteria
     {
         public static List<string> predict(SystemBody body)
         {
-            if (body.type != SystemBodyType.LandableBody || body.parents == null || body.parents.Count == 0 || Game.activeGame == null) return new List<string>();
+            if (body.type != SystemBodyType.LandableBody) return new List<string>();
+            if (body.parents == null || body.parents.Count == 0 || Game.activeGame == null) return new List<string>();
             if (BioCriteria.allCriteria.Count == 0) BioCriteria.readCriteria();
 
             var parentStar = body.system.getParentStarTypes(body, true).First();
@@ -67,7 +68,7 @@ namespace BioCriteria
             //logBody = "Renibus";
             //logOrganism = "Renibus";
 
-            // predict each criteria recusrively from the master list
+            // predict each criteria recursively from the master list
             foreach (var criteria in BioCriteria.allCriteria)
                 predictor.predict(criteria, null, null, null, null);
 
