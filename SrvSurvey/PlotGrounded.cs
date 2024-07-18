@@ -22,11 +22,7 @@ namespace SrvSurvey
         {
             InitializeComponent();
 
-            this.Height = PlotBase.scaled(500);
-            this.Width = PlotBase.scaled(380);
             this.scale = 0.25f;
-            this.mw = this.Width / 2;
-            this.mh = this.Height / 2;
             this.Cursor = Cursors.Cross;
         }
 
@@ -223,6 +219,9 @@ namespace SrvSurvey
             var eight = PlotBase.scaled(8);
             var ten = PlotBase.scaled(10);
             var sixFour = PlotBase.scaled(64f);
+
+            this.mw = this.Width / 2;
+            this.mh = this.Height / 2;
 
             var g = e.Graphics;
             g.SmoothingMode = SmoothingMode.HighQuality;
