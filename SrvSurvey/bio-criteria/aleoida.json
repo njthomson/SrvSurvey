@@ -22,25 +22,38 @@
     {
       "species": "Arcus",
       "query": [
-        "atmosType [CarbonDioxide]",
-        "atmosComp [CarbonDioxide >= 97.5]",
-        "  gravity [0.04 ~ 0.26]",
-        "     temp [175 ~ 190]",
-        " pressure [0.016 ~ ]",
-        "volcanism [None]"
+        "# hit count: 8127"
       ],
       "children": [
         {
-          "useCommonChildren": true,
           "query": [
-            "body [HMC]",
-            "temp [175 ~ 180]"
-          ]
-        },
-        {
-          "useCommonChildren": true,
-          "query": [
-            "body [Rocky]"
+            "# hit count: 8127",
+            "atmosType [CarbonDioxide]",
+            "volcanism [None]"
+          ],
+          "children": [
+            {
+              "useCommonChildren": true,
+              "query": [
+                "# hit count: 7876",
+                "     body [Rocky]",
+                "  gravity [0.042 ~ 0.237]",
+                "     temp [175 ~ 190]",
+                " pressure [0.0163 ~ ]",
+                "atmosComp [CarbonDioxide >= 97.5]"
+              ]
+            },
+            {
+              "useCommonChildren": true,
+              "query": [
+                "# hit count: 251",
+                "     body [HMC]",
+                "  gravity [0.051 ~ 0.265]",
+                "     temp [175 ~ 180]",
+                " pressure [0.0161 ~ 0.0964]",
+                "atmosComp [CarbonDioxide >= 100]"
+              ]
+            }
           ]
         }
       ]
@@ -48,51 +61,154 @@
 
     {
       "species": "Coronamus",
-      "useCommonChildren": true,
       "query": [
-          "atmosType [CarbonDioxide]",
-          "atmosComp [CarbonDioxide >= 97.5]",
-          "  gravity [0.04 ~ 0.27]",
-          "     temp [180 ~ 190]",
-          " pressure [0.0017 ~ ]",
-          "volcanism [None]"
+        "# hit count: 10000"
+      ],
+      "children": [
+        {
+          "query": [
+            "# hit count: 10000",
+            "atmosType [CarbonDioxide]",
+            "volcanism [None]"
+          ],
+          "children": [
+            {
+              "useCommonChildren": true,
+              "query": [
+                "# hit count: 10000",
+                "     body [Rocky]",
+                "  gravity [0.041 ~ 0.238]",
+                "     temp [179 ~ 190]",
+                " pressure [0.0244 ~ ]",
+                "atmosComp [CarbonDioxide >= 97.5]"
+              ]
+            },
+            {
+              "useCommonChildren": true,
+              "query": [
+                "# hit count: 566",
+                "     body [HMC]",
+                "  gravity [0.052 ~ 0.27]",
+                "     temp [180 ~ 190]",
+                " pressure [0.0264 ~ ]",
+                "atmosComp [CarbonDioxide >= 100]"
+              ]
+            }
+          ]
+        }
       ]
     },
 
     {
       "species": "Gravis",
-      "useCommonChildren": true,
       "query": [
-          "atmosType [CarbonDioxide]",
-          "atmosComp [CarbonDioxide >= 97.5]",
-          "  gravity [0.04 ~ 0.27]",
-          "     temp [190 ~ 196]",
-          " pressure [0.054 ~ ]",
-          "volcanism [None]"
+        "# hit count: 4433"
+      ],
+      "children": [
+        {
+          "query": [
+            "# hit count: 4432",
+            "atmosType [CarbonDioxide]",
+            "volcanism [None]",
+            "     temp [190 ~ 197]",
+            " pressure [0.0545 ~ ]",
+            "atmosComp [CarbonDioxide >= 97.5]"
+          ],
+          "children": [
+            {
+              "useCommonChildren": true,
+              "query": [
+                "# hit count: 3000",
+                "   body [Rocky]",
+                "gravity [0.04 ~ 0.237]"
+              ]
+            },
+            {
+              "useCommonChildren": true,
+              "query": [
+                "# hit count: 1432",
+                "   body [HMC]",
+                "gravity [0.2 ~ 0.271]"
+              ]
+            }
+          ]
+        }
       ]
     },
 
     {
       "species": "Laminiae",
-      "useCommonChildren": true,
       "query": [
-          "atmosType [Ammonia]",
-          "atmosComp [Ammonia >= 100]",
-          "  gravity [0.04 ~ 0.28]",
-          "     temp [152 ~ 182]",
-          " pressure [0.0009 ~ 0.0134]"
+        "# hit count: 9875"
+      ],
+      "children": [
+        {
+          "query": [
+            "# hit count: 9874",
+            "atmosType [Ammonia]",
+            "     temp [152 ~ 177]",
+            "atmosComp [Ammonia >= 100]"
+          ],
+          "children": [
+            {
+              "useCommonChildren": true,
+              "query": [
+                "# hit count: 8799",
+                "    body [Rocky]",
+                " gravity [0.04 ~ 0.275]",
+                "pressure [ ~ 0.0134]"
+              ]
+            },
+            {
+              "useCommonChildren": true,
+              "query": [
+                "# hit count: 1075",
+                "     body [HMC]",
+                "  gravity [0.056 ~ 0.276]",
+                " pressure [ ~ 0.0073]",
+                "volcanism [None]"
+              ]
+            }
+          ]
+        }
       ]
     },
 
     {
       "species": "Spica",
-      "useCommonChildren": true,
       "query": [
-        "atmosType [Ammonia]",
-        "atmosComp [Ammonia >= 100]",
-        "  gravity [0.04 ~ 0.28]",
-        "     temp [170 ~ 177]",
-        " pressure [0.0009 ~ 0.013]"
+        "# hit count: 5526"
+      ],
+      "children": [
+        {
+          "query": [
+            "# hit count: 5525",
+            "atmosType [Ammonia]",
+            "     temp [170 ~ 177]",
+            "atmosComp [Ammonia >= 100]"
+          ],
+          "children": [
+            {
+              "useCommonChildren": true,
+              "query": [
+                "# hit count: 3810",
+                "    body [Rocky]",
+                " gravity [ ~ 0.276]",
+                "pressure [ ~ 0.013]"
+              ]
+            },
+            {
+              "useCommonChildren": true,
+              "query": [
+                "# hit count: 1715",
+                "     body [HMC]",
+                "  gravity [0.065 ~ 0.275]",
+                " pressure [ ~ 0.0106]",
+                "volcanism [None]"
+              ]
+            }
+          ]
+        }
       ]
     }
 

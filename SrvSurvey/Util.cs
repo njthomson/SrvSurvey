@@ -765,7 +765,8 @@ namespace SrvSurvey
 
         public static string compositionToCamel(string key)
         {
-            // as needed, change "Sulphur dioxide" into "SulphurDioxide"
+            // as needed, change "Sulphur dioxide" into "SulphurDioxide" or "Carbon dioxide-rich" into "CarbonDioxideRich"
+            key = key.Replace("-rich", "Rich");
             var i = key.IndexOf(' ');
             if (i < 0)
                 return key;

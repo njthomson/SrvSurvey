@@ -2,7 +2,7 @@
 using SrvSurvey;
 using SrvSurvey.game;
 
-namespace BioCriteria
+namespace BioCriterias
 {
     internal class BioPredictor
     {

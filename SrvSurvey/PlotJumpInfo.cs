@@ -56,7 +56,9 @@ namespace SrvSurvey
             var route = game.navRoute.Route.Skip(1).ToList();
 
             // find next hop in route
-            nextSystem = game.fsdTarget ?? game.status.Destination?.Name;
+            nextSystem = game.fsdTarget ?? game.status.Destination?.Name!;
+            if (nextSystem == null) return;
+
             var next = route.Find(r => r.StarSystem == nextSystem);
             if (next == null) return;
             this.nextHop = RouteInfo.create(next, false);

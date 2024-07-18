@@ -1,4 +1,4 @@
-﻿using BioCriteria;
+﻿using BioCriterias;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using SrvSurvey.canonn;
