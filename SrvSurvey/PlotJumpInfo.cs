@@ -33,7 +33,7 @@ namespace SrvSurvey
                     (Game.activeGame.status.FsdChargingJump && Game.activeGame.isMode(GameMode.Flying, GameMode.SuperCruising))
                     // whilst in whitch space, jumping to next system
                     || Game.activeGame.mode == GameMode.FSDJumping
-                    // || Game.activeGame.mode == GameMode.RolePanel // debugging helper
+                // || Game.activeGame.mode == GameMode.RolePanel // debugging helper
                 );
         }
 
@@ -49,6 +49,10 @@ namespace SrvSurvey
             // determine next system
             if (game.navRoute.Route.Count > 1)
                 this.initFromRoute();
+
+            // make sure these are closed
+            Program.closePlotter<PlotBioStatus>();
+            Program.closePlotter<PlotGuardianStatus>();
         }
 
         private void initFromRoute()
@@ -179,7 +183,7 @@ namespace SrvSurvey
 
             this.drawJumpLine();
 
-            // 2nd line: discovered, unvisited, etc
+            // 2nd line: discovered vs unvisited + discovered and update dates
             var lineTwo = string.IsNullOrEmpty(nextHop.subStatus)
                 ? "► " + nextHop.status
                 : "► Discovered by" + nextHop.subStatus.Substring(2);
@@ -187,7 +191,7 @@ namespace SrvSurvey
             var lastUpdated = systemsCache[nextSystem].lastUpdated;
             if (lastUpdated != null && lastUpdated.Value != nextHop.discoveredDate)
                 lineTwo += $", last updated: " + lastUpdated.Value.ToShortDateString();
-            drawTextAt(eight, lineTwo);
+            drawTextAt(eight, lineTwo, nextHop.highlight ? GameColors.brushCyan : null);
             drawTextAt("(EDSM)", GameColors.brushGameOrangeDim);
             newLine(+one, true);
 
@@ -225,12 +229,12 @@ namespace SrvSurvey
             var szRight = drawTextAt(this.Width - four, $"{totalDistance.ToString("N1")}LY", null, null, true);
 
             // calc left edge of line + whole line width to fix between rendered text
-            var left = szLeft.Width + oneSix;
-            var lineWidth = this.Width - left - szRight.Width - twenty;
+            var left = szLeft.Width + oneFour;
+            var lineWidth = this.Width - left - szRight.Width - ten;
             var pixelsPerLY = lineWidth / this.totalDistance;
 
             // prep pixel coords for parts of the line
-            var x = left + lineWidth + four;
+            var x = left + lineWidth;
             var y = dty + (szRight.Height / 2) - two;
 
             // draw the whole line if we are travelling a long way (as drawing it in parts looks poor)
@@ -246,6 +250,7 @@ namespace SrvSurvey
 
             // draw line in pieces, from right to left
             var limitPixelsPerLY = 0.3f;
+            var xNow = left;
             for (var n = hopDistances.Count - 1; n >= 0; n--)
             {
                 // (before drawing line parts, if dots are too close together) draw a TICK for each system
@@ -288,15 +293,33 @@ namespace SrvSurvey
                     }
                 }
 
-                // redraw dot for next jump, as it got clipped by a line on the last iteration
-                if (n + 1 == nextHopIdx) g.FillEllipse(GameColors.brushCyan, r);
+                // save the x value for drawing later
+                if (n + 1 == nextHopIdx) 
+                    xNow = x;
 
                 r.X -= w;
                 x -= w;
             }
 
-            // finally, draw the left most the starting dot
-            g.FillEllipse(nextHopIdx == 0 ? GameColors.brushCyan : GameColors.brushGameOrange, r);
+            // draw the left most the starting dot/tick
+            if (this.totalDistance > limitExcessDistance)
+                g.DrawLine(GameColors.penGameOrange1, x - 1, y - four, x - 1, y + four);
+            else
+                g.FillEllipse(nextHopIdx == 0 ? GameColors.brushCyan : GameColors.brushGameOrange, r);
+
+
+            // finally redraw dot for next jump, as it got clipped by prior rendering
+            if (this.totalDistance > limitExcessDistance)
+            {
+                g.DrawLine(GameColors.penCyan4, xNow - 1, y - ten, xNow - 1, y + ten);
+                //g.DrawLine(GameColors.penCyan2, xNow, y, xNow - six, y - ten);
+                //g.DrawLine(GameColors.penCyan2, xNow, y, xNow - six, y + ten);
+            }
+            else if (nextHopIdx > 0)
+            {
+                r.X = xNow - dotRadius;
+                g.FillEllipse(GameColors.brushCyan, r);
+            }
 
             newLine(+four);
         }

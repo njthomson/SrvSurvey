@@ -235,14 +235,14 @@ namespace BioCriterias
                 if (!string.IsNullOrEmpty(parts[1]))
                     clause.max = float.Parse(parts[1], CultureInfo.InvariantCulture);
             }
-            else if (valTxt.Contains('<') || valTxt.Contains('>'))
+            else if (valTxt.Contains(">="))
             {
                 // compositions
                 clause.op = Op.Composition;
                 clause.compositions = new Dictionary<string, float>();
                 var regCompo = new Regex(@"([\w\s]+)(>=)\s*([\.\d]+)");
 
-                var parts = valTxt.Split(',', StringSplitOptions.TrimEntries);
+                var parts = valTxt.Split('|', StringSplitOptions.TrimEntries);
                 foreach (var part in parts)
                 {
                     var matches = regCompo.Match(part);

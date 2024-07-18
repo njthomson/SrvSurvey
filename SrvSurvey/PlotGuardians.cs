@@ -87,6 +87,7 @@ namespace SrvSurvey
                 && !Game.activeGame.hidePlottersFromCombatSuits
                 && Game.activeGame.status.hasLatLong
                 && Game.activeGame.systemSite?.location != null
+                && !Game.activeGame.status.FsdChargingJump
                 && Game.activeGame.isMode(GameMode.InSrv, GameMode.OnFoot, GameMode.Landed, GameMode.Flying, GameMode.InFighter)
                 //&& this.status.SelectedWeapon != "$humanoid_sampletool_name;"
                 ;

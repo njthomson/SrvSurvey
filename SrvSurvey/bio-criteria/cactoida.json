@@ -256,21 +256,8 @@
                 "# hit count: 20",
                 "     body [HMC]",
                 "  gravity [0.19 ~ 0.27]",
-                " pressure [0.0415 ~ 0.096]"
-              ],
-              "children": [
-                {
-                  "useCommonChildren": true,
-                  "query": [
-                    "atmosComp [SulphurDioxide >= 0.99]"
-                  ]
-                },
-                {
-                  "useCommonChildren": true,
-                  "query": [
-                    "atmosComp [CarbonDioxide >= 100]"
-                  ]
-                }
+                " pressure [0.0415 ~ 0.096]",
+                "atmosComp [CarbonDioxide >= 100 | SulphurDioxide >= 0.99]"
               ]
             }
           ]

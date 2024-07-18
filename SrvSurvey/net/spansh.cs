@@ -228,28 +228,40 @@ namespace SrvSurvey.net
         public static int limitMinCount = 5;
         public static double limitMinRatio = 0.2d;
 
-        public async static Task<string> buildWholeSet(string species)
+        public static void buildWholeSet()
         {
             // define ...
+            var species = "Stratum Araneamus";
             var atmosTypes = new List<string>()
             {
-                "Ammonia",
+                //"Ammonia",
                 //"Ammonia-rich",
                 //"Argon",
                 //"ArgonRich",
-                "Carbon dioxide",
+                //"Carbon dioxide",
                 //"Carbon dioxide-rich",
                 //"Helium",
-                "Methane",
+                //"Methane",
                 //"Methane-rich",
                 //"Neon",
                 //"Neon-rich",
                 //"Nitrogen",
                 //"Oxygen",
-                //"Sulphur dioxide",
-                "Water",
+                "Sulphur dioxide",
+                //"Water",
                 //"Water-rich",
             };
+
+            CriteriaBuilder.buildSpecies(species, atmosTypes).ContinueWith(task =>
+            {
+                Game.log($"CriteriaBuilder.buildWholeSet => {task.Status}");
+                if (task.Exception != null) Game.log(task.Exception);
+                Game.log($"Done: {species}");
+            });
+        }
+
+        public async static Task<string> buildSpecies(string species, List<string> atmosTypes)
+        {
             var bodyTypes = new List<string>()
             {
                 "Icy body",

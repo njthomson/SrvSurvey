@@ -93,9 +93,9 @@ namespace SrvSurvey
 
         #region plotter tracking
 
-        private static Dictionary<string, Form> activePlotters = new Dictionary<string, Form>();
+        private static Dictionary<string, PlotterForm> activePlotters = new Dictionary<string, PlotterForm>();
 
-        public static T showPlotter<T>() where T : Form
+        public static T showPlotter<T>() where T : PlotterForm
         {
             var formType = typeof(T);
 
@@ -133,6 +133,7 @@ namespace SrvSurvey
             if (!form.Visible)
             {
                 Game.log($"Program.Showing plotter: {formType.Name}");
+                form.reposition(Elite.getWindowRect());
                 form.Show();
             }
 
@@ -474,10 +475,14 @@ namespace SrvSurvey
         void reposition(Rectangle gameRect);
         double Opacity { get; set; }
         void Invalidate();
-
         int Width { get; set; }
         int Height { get; set; }
         Point Location { get; set; }
         Size Size { get; set; }
+        bool Visible { get; set; }
+        string Name { get; set; }
+        bool IsDisposed { get; }
+        void Close();
+        void Show();
     }
 }

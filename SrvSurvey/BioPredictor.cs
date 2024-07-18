@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using SrvSurvey;
 using SrvSurvey.game;
+using System.Diagnostics;
 
 namespace BioCriterias
 {
@@ -10,7 +11,7 @@ namespace BioCriterias
         {
             if (body.type != SystemBodyType.LandableBody) return new List<string>();
             if (body.parents == null || body.parents.Count == 0 || Game.activeGame == null) return new List<string>();
-            if (BioCriteria.allCriteria.Count == 0) BioCriteria.readCriteria();
+            if (BioCriteria.allCriteria.Count == 0 || Debugger.IsAttached) BioCriteria.readCriteria();
 
             var parentStar = body.system.getParentStarTypes(body, true).First();
             var brightestParentStar = body.system.getBrightestParentStarType(body);
@@ -210,23 +211,28 @@ namespace BioCriterias
                         continue;
                     }
 
-                    // match compositions - ONLY greater-than-or-equals - other operands not supported (and may not be needed)
+                    // match compositions - ONLY greater-than-or-equals - other operands not yet supported (and may not be needed)
                     if (clause.op == Op.Composition)
                     {
                         var bodyCompositions = bodyValue as Dictionary<string, float>;
                         if (bodyCompositions != null)
                         {
+                            // multiple composition clauses should be OR'd (unlike other clauses that use AND)
+                            var localFailures = new List<ClauseFailure>();
                             foreach (var clauseComposition in clause.compositions!)
                             {
                                 if (!bodyCompositions.ContainsKey(clauseComposition.Key))
                                 {
-                                    failures.Add(new ClauseFailure(bodyName, $"'{clauseComposition.Key}' not present", clause, JsonConvert.SerializeObject(bodyCompositions)));
+                                    localFailures.Add(new ClauseFailure(bodyName, $"'{clauseComposition.Key}' not present", clause, JsonConvert.SerializeObject(bodyCompositions)));
                                 }
                                 else if (bodyCompositions[clauseComposition.Key] < clauseComposition.Value)
                                 {
-                                    failures.Add(new ClauseFailure(bodyName, $"'{clauseComposition.Key}' too low", clause, JsonConvert.SerializeObject(bodyCompositions)));
+                                    localFailures.Add(new ClauseFailure(bodyName, $"'{clauseComposition.Key}' too low", clause, JsonConvert.SerializeObject(bodyCompositions)));
                                 }
                             }
+                            // we need all these composition conditions to fail for this whole clause to fail
+                            if (localFailures.Count == clause.compositions.Count)
+                                failures.AddRange(localFailures);
                         }
                     }
                 }

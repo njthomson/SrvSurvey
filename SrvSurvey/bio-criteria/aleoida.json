@@ -80,7 +80,7 @@
                 "  gravity [0.041 ~ 0.238]",
                 "     temp [179 ~ 190]",
                 " pressure [0.0244 ~ ]",
-                "atmosComp [CarbonDioxide >= 97.5]"
+                "atmosComp [SulphurDioxide >= 0.99]"
               ]
             },
             {
@@ -91,7 +91,7 @@
                 "  gravity [0.052 ~ 0.27]",
                 "     temp [180 ~ 190]",
                 " pressure [0.0264 ~ ]",
-                "atmosComp [CarbonDioxide >= 100]"
+                "atmosComp [SulphurDioxide >= 0.99]"
               ]
             }
           ]

@@ -1629,18 +1629,7 @@ namespace SrvSurvey
 
             //var t = Game.spansh.buildQuery("Thin Carbon dioxide", "Rocky body", "Bacterium Tela", "atmosphere_composition/Sulphur dioxide", net.SortOrder.asc);
 
-            CriteriaBuilder.buildWholeSet("Concha Renibus").ContinueWith(task =>
-            {
-                Game.log($"CriteriaBuilder.buildWholeSet => {task.Status}");
-                if (task.Exception != null)
-                {
-                    Game.log(task.Exception);
-                }
-
-                var json = task.Result.ToString();
-                //Game.log("\r\n" + json);
-                Game.log("Done");
-            });
+            CriteriaBuilder.buildWholeSet();
         }
     }
 }

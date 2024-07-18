@@ -310,7 +310,8 @@ namespace SrvSurvey
                 Padding = new Padding(0),
             });
 
-            foreach (var body in game.systemData.bodies)
+            var bodies = game.systemData.bodies.OrderBy(b => b.shortName);
+            foreach (var body in bodies)
             {
                 if (this.filterIdx > 1 && this.targetBody != null && this.targetBody != body) continue;
                 if (body.bioSignalCount == 0) continue;
@@ -325,7 +326,7 @@ namespace SrvSurvey
                 {
                     txt += "  " + string.Join("\r\n  ", body.organisms
                         .Where(o => o.reward > 0)
-                        .OrderBy(o => o.genus)
+                        .OrderBy(o => o.genusLocalized)
                         .Select(o =>
                     {
                         var prefix = o.analyzed ? "✅ " : "☐ ";
@@ -340,7 +341,7 @@ namespace SrvSurvey
                 {
                     txt += "  " + string.Join("\r\n  ", body.predictions
                         .Where(p => body.organisms?.Any(o => o.species == p.Value.species.name) != true)
-                        .OrderBy(p => p.Value.name)
+                        .OrderBy(p => p.Value.englishName)
                         .Select(p =>
                         {
                             // TODO: add tracking for regional firsts?

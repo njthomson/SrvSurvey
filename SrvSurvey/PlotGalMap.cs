@@ -193,6 +193,8 @@ namespace SrvSurvey
         public bool destination;
         public int sumGenus;
         public DateTime? discoveredDate;
+        public bool allBodiesFound;
+        public int countBodies;
 
         public RouteInfo(RouteEntry entry, bool destination)
         {
@@ -230,7 +232,9 @@ namespace SrvSurvey
                 }
                 else
                 {
-                    if (edsmResult.bodyCount == edsmResult.bodies.Count)
+                    this.countBodies = edsmResult.bodyCount;
+                    this.allBodiesFound = edsmResult.bodyCount == edsmResult.bodies.Count;
+                    if (this.allBodiesFound)
                         status = $"Discovered, {edsmResult.bodyCount} bodies";
                     else
                         status = $"Discovered ({edsmResult.bodies.Count} of {edsmResult.bodyCount} bodies)";

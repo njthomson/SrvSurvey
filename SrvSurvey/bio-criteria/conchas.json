@@ -144,7 +144,7 @@
                 "  gravity [ ~ 0.265]",
                 "     temp [150 ~ 196]",
                 " pressure [0.002 ~ 0.097]",
-                "atmosComp [CarbonDioxide >= 100]"
+                "atmosComp [CarbonDioxide >= 100 | SulphurDioxide >= 0.99]"
               ]
             }
           ]
@@ -211,7 +211,7 @@
                 "     body [HMC]",
                 "  gravity [0.076 ~ 0.269]",
                 " pressure [0.0258 ~ ]",
-                "atmosComp [CarbonDioxide >= 100]"
+                "atmosComp [CarbonDioxide >= 100 | SulphurDioxide >= 0.99]"
               ]
             }
           ]
