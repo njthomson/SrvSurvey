@@ -64,6 +64,7 @@ namespace SrvSurvey
                 if (game?.systemData == null || game.status == null || !PlotSysStatus.allowPlotter)
                 {
                     this.Opacity = 0;
+                    this.BeginInvoke(() => Program.closePlotter<PlotSysStatus>());
                     return;
                 }
 
@@ -140,10 +141,13 @@ namespace SrvSurvey
             }
             finally
             {
-                this.formAdjustSize();
+                if (!this.IsDisposed)
+                {
+                    this.formAdjustSize();
 
-                // resize window to fit as necessary
-                this.Width = Math.Max((int)this.dtx, minViableWidth);
+                    // resize window to fit as necessary
+                    this.Width = Math.Max((int)this.dtx, minViableWidth);
+                }
             }
         }
 

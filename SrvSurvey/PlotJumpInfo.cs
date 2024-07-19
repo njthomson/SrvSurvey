@@ -55,6 +55,14 @@ namespace SrvSurvey
             Program.closePlotter<PlotGuardianStatus>();
         }
 
+        protected override void OnFormClosed(FormClosedEventArgs e)
+        {
+            base.OnFormClosed(e);
+
+            // we may have closed plotters on opening, force a mode change event to bring them back
+            game.fireUpdate(true);
+        }
+
         private void initFromRoute()
         {
             var route = game.navRoute.Route.Skip(1).ToList();
@@ -179,7 +187,8 @@ namespace SrvSurvey
             if (nextHop == null) return;
 
             drawTextAt(nextHop.systemName, GameColors.fontMiddleBold);
-            newLine(+two, true);
+            drawTextAt(this.Width - four, $"class: {nextHop.entry.StarClass}", null, null, true);
+            newLine(+eight, true);
 
             this.drawJumpLine();
 
@@ -294,7 +303,7 @@ namespace SrvSurvey
                 }
 
                 // save the x value for drawing later
-                if (n + 1 == nextHopIdx) 
+                if (n + 1 == nextHopIdx)
                     xNow = x;
 
                 r.X -= w;
@@ -311,7 +320,7 @@ namespace SrvSurvey
             // finally redraw dot for next jump, as it got clipped by prior rendering
             if (this.totalDistance > limitExcessDistance)
             {
-                g.DrawLine(GameColors.penCyan4, xNow - 1, y - ten, xNow - 1, y + ten);
+                g.DrawLine(GameColors.Route.penNext, xNow - 1, y - eight, xNow - 1, y + eight);
                 //g.DrawLine(GameColors.penCyan2, xNow, y, xNow - six, y - ten);
                 //g.DrawLine(GameColors.penCyan2, xNow, y, xNow - six, y + ten);
             }

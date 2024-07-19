@@ -67,7 +67,7 @@ namespace BioCriterias
 
             // log extra diagnostics?
             //logBody = "Renibus";
-            //logOrganism = "Renibus";
+            //logOrganism = "Coronamus";
 
             // predict each criteria recursively from the master list
             foreach (var criteria in BioCriteria.allCriteria)
@@ -109,6 +109,8 @@ namespace BioCriterias
             // evaluate current query
             var currentName = $"{genus} {species} - {variant}";
             var failures = testQuery(criteria.query, $"{genus} {species} {variant}".Trim());
+
+            //if (this.bodyName.Contains("ABCD 1 e") && species?.Contains("Coronamus") == true) Debugger.Break();
 
             // add a prediction if no failures and we have genus, species AND variant
             if (failures.Count == 0 && genus != null && species != null && variant != null)
