@@ -16,43 +16,36 @@
         { "variant": "Mulberry", "query": [ "mats [Yttrium]" ] }
       ],
       "query": [
+        "# hit count: 2594",
         "primaryStar [A,B,D,H,N,W]"
       ],
       "children": [
         {
           "useCommonChildren": true,
           "query": [
+            "# hit count: 2458",
             "atmosType [Argon]",
-            "atmosComp [Argon >= 50]",
-            "  gravity [0.03 ~ 0.28]",
-            "     temp [50 ~ 150]",
-            " pressure [0.0009 ~ ]"
+            "  gravity [ ~ 0.275]",
+            "     temp [50 ~ 150]"
           ]
         },
         {
           "useCommonChildren": true,
           "query": [
+            "# hit count: 110",
             "atmosType [ArgonRich]",
-            "  gravity [0.22 ~ 0.28]",
+            "  gravity [0.218 ~ 0.275]",
             "     temp [63 ~ 121]",
-            " pressure [0.0209 ~ ]"
+            " pressure [0.0209 ~ ]",
+            "volcanism [None]"
           ]
         },
         {
           "useCommonChildren": true,
           "query": [
-            "atmosType [Neon]",
-            "atmosComp [Neon >= 100]",
-            "  gravity [0.27 ~ 0.28]",
-            "     temp [20 ~ 41]",
-            " pressure [0.0009 ~ 0.002]"
-          ]
-        },
-        {
-          "useCommonChildren": true,
-          "query": [
+            "# hit count: 22",
             "atmosType [NeonRich]",
-            "  gravity [0.26 ~ 0.29]",
+            "  gravity [0.262 ~ 0.276]",
             "     temp [61 ~ 69]",
             " pressure [0.0017 ~ 0.0053]",
             "volcanism [None]"
@@ -72,34 +65,37 @@
         { "variant": "Green", "query": [ "     mats [Yttrium]" ] }
       ],
       "query": [
+        "# hit count: 7714",
         "nebulae [ ~ 100]"
       ],
       "children": [
         {
           "useCommonChildren": true,
           "query": [
+            "# hit count: 7476",
             "atmosType [Argon]",
-            "atmosComp [Argon >= 50]",
-            "  gravity [0.03 ~ 0.28]",
+            "  gravity [ ~ 0.275]",
             "     temp [50 ~ 149]",
-            " pressure [0.0009 ~ ]"
+            "volcanism [None,Carbon Dioxide Geysers,Major Water Geysers,Major Water Magma,Minor Nitrogen Magma,Water Geysers]"
           ]
         },
         {
           "useCommonChildren": true,
           "query": [
+            "# hit count: 200",
             "atmosType [ArgonRich]",
-            "  gravity [0.21 ~ 0.28]",
+            "  gravity [0.212 ~ 0.275]",
             "     temp [61 ~ 110]",
-            " pressure [0.021 ~ ]",
+            " pressure [0.0214 ~ ]",
             "volcanism [None]"
           ]
         },
         {
           "useCommonChildren": true,
           "query": [
+            "# hit count: 35",
             "atmosType [NeonRich]",
-            "  gravity [0.26 ~ 0.28]",
+            "  gravity [0.261 ~ 0.274]",
             "     temp [61 ~ 68]",
             " pressure [0.0016 ~ 0.0048]",
             "volcanism [None]"

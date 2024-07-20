@@ -990,11 +990,11 @@ namespace SrvSurvey.game
             fireUpdate(true);
         }
 
-        public string? fsdTarget;
+        public FSDTarget? fsdTarget;
 
         private void onJournalEntry(FSDTarget entry)
         {
-            this.fsdTarget = entry.Name;
+            this.fsdTarget = entry;
         }
 
         private void onJournalEntry(FSDJump entry)

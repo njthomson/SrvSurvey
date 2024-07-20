@@ -4,6 +4,7 @@ using Newtonsoft.Json.Linq;
 using SrvSurvey.canonn;
 using SrvSurvey.game;
 using SrvSurvey.units;
+using System.Diagnostics;
 using System.Text;
 
 namespace SrvSurvey.net
@@ -227,36 +228,38 @@ namespace SrvSurvey.net
     {
         public static int limitMinCount = 5;
         public static double limitMinRatio = 0.2d;
+        public static double limitVolcanismTypes = 5;
 
         public static void buildWholeSet()
         {
             // define ...
-            var species = "Stratum Araneamus";
+            var species = "Electricae Radialem";
             var atmosTypes = new List<string>()
             {
                 //"Ammonia",
                 //"Ammonia-rich",
-                //"Argon",
-                //"ArgonRich",
+                "Argon",
+                "Argon-rich",
                 //"Carbon dioxide",
                 //"Carbon dioxide-rich",
                 //"Helium",
                 //"Methane",
                 //"Methane-rich",
-                //"Neon",
-                //"Neon-rich",
+                "Neon",
+                "Neon-rich",
                 //"Nitrogen",
                 //"Oxygen",
-                "Sulphur dioxide",
+                //"Sulphur dioxide",
                 //"Water",
                 //"Water-rich",
             };
 
+            var start = DateTime.Now;
             CriteriaBuilder.buildSpecies(species, atmosTypes).ContinueWith(task =>
             {
                 Game.log($"CriteriaBuilder.buildWholeSet => {task.Status}");
                 if (task.Exception != null) Game.log(task.Exception);
-                Game.log($"Done: {species}");
+                Game.log($"** Done: {species} ** {DateTime.Now.Subtract(start)}");
             });
         }
 
@@ -305,9 +308,16 @@ namespace SrvSurvey.net
                         atmos.children.Add(child);
                 }
 
-                // shift common nodes up to the parent?
-                if (atmos.children.Count > 1)
+                if (atmos.children.Count == 1)
                 {
+                    // we don't need to use the children array if there is only one
+                    atmos.query.AddRange(atmos.children.First().query);
+                    atmos.useCommonChildren = true;
+                    atmos.children.Clear();
+                }
+                else if (atmos.children.Count > 1)
+                {
+                    // shift common clauses up to the parent?
                     var commonClauses = new List<Clause>();
                     foreach (var clause in atmos.children.First().query)
                     {
@@ -326,6 +336,16 @@ namespace SrvSurvey.net
                         atmos.children.ForEach(child => child.query.RemoveAll(q => q.ToString() == txt));
                     }
                 }
+            }
+
+            if (parent.children.Count == 1)
+            {
+                // we don't need to use the children array if there is only one
+                var firstChild = parent.children.First();
+                parent.query.AddRange(firstChild.query);
+                parent.useCommonChildren = firstChild.useCommonChildren;
+                parent.children.Clear();
+                parent.children.AddRange(firstChild.children);
             }
 
             var json = JsonConvert.SerializeObject(parent, Formatting.Indented) + ",";
@@ -412,7 +432,6 @@ namespace SrvSurvey.net
             }
             else if (value > 97 && value < 98)
             {
-                // This is common for Carbon dioxide
                 value = 97.5f;
             }
             else
@@ -420,6 +439,38 @@ namespace SrvSurvey.net
                 // otherwise round down to nearest 5
                 var d = value % 5;
                 value = value - d;
+            }
+
+            // Check for Sulphur dioxide too? This is common for Carbon dioxide
+            if (atmosType == "Carbon dioxide" && value >= 97.5f)
+            {
+                response = await Game.spansh.runQuery(buildQuery(filters, $"atmosphere_composition/{atmosType}", SortOrder.desc));
+                fullCount = response["count"]!.Value<int>();
+                if (fullCount > 0)
+                {
+                    atmosComp = response["results"]!.ToArray().First()["atmosphere_composition"]!.FirstOrDefault(ac => ac["name"]!.Value<string>() == atmosType)!;
+                    value = atmosComp["share"]!.Value<float>();
+
+                    var response2 = await Game.spansh.runQuery(buildQuery(filters, $"atmosphere_composition/Sulphur dioxide", SortOrder.asc));
+                    var fullCount2 = response2["count"]!.Value<int>();
+                    if (fullCount2 > limitMinCount)
+                    {
+                        var atmosComp2 = response2["results"]!.ToArray().First()["atmosphere_composition"]!.FirstOrDefault(ac => ac["name"]!.Value<string>() == "Sulphur dioxide")!;
+                        var value2 = atmosComp2["share"]!.Value<float>();
+                        if (value2 > 2.5f) Debugger.Break();
+
+                        var compositions = new Dictionary<string, float>();
+                        compositions.Add("CarbonDioxide", floor(value, 2));
+
+                        if (value2 >= 0.98f && value2 <= 2.5f)
+                        {
+                            compositions.Add("SulphurDioxide", floor(value2, 2));
+                            return Clause.createCompositions("atmosComp", compositions);
+                        }
+                        else
+                            Debugger.Break();
+                    }
+                }
             }
 
             var clause = Clause.createCompositions("atmosComp", new Dictionary<string, float>() { { name, value } });
@@ -439,7 +490,7 @@ namespace SrvSurvey.net
             // any hits with "No volcanism" ?
             filters["volcanism_type"] = "No volcanism";
             var response = await Game.spansh.runQuery(buildQuery(filters, "volcanism_type", SortOrder.asc));
-            var withNoVolcanism = response["results"]!.ToList();
+            var countNoVolcanism = response["count"]!.Value<int>();
 
             // any hits with anything but "No volcanism" ?
             filters["volcanism_type"] = string.Join(',', allVolcanisms);
@@ -448,47 +499,83 @@ namespace SrvSurvey.net
             var withSomeVolcanism = response["results"]!.ToList();
 
             // zero record with any volcanism
-            if (withNoVolcanism.Count > 0 && withSomeVolcanism.Count == 0)
+            if (countNoVolcanism > 0 && withSomeVolcanism.Count == 0)
             {
                 return Clause.createIs("volcanism", "None");
             }
 
-            // We saw some volcanism, find the rest of them
+            // We saw some volcanism, find which specific kinds
             var matchedVolcanism = new HashSet<string>();
             if (withSomeVolcanism.Count > 0)
             {
+                var potentialVolcanism = new HashSet<string>(allVolcanisms);
                 var moreVolcanism = withSomeVolcanism;
-                string volcanism;
+                var totalCount = response["count"]!.Value<float>();
+                var lastCount = totalCount;
+
+                // extract the first ...
+                string volcanism = moreVolcanism.First()["volcanism_type"]!.Value<string>()!;
                 do
                 {
-                    volcanism = moreVolcanism.First()["volcanism_type"]!.Value<string>()!;
-                    matchedVolcanism.Add(volcanism);
-
-                    // query again without that
-                    filters["volcanism_type"] = string.Join(',', allVolcanisms.Where(v => !matchedVolcanism.Contains(v)));
-                    //Game.log(filters["volcanism_type"]);
+                    // ... query again without that
+                    potentialVolcanism.Remove(volcanism);
+                    filters["volcanism_type"] = string.Join(',', potentialVolcanism);
                     response = await Game.spansh.runQuery(buildQuery(filters, "volcanism_type", SortOrder.asc));
                     moreVolcanism = response["results"]!.ToList();
 
-                    // just say "Some" if more than 4
-                    if (matchedVolcanism.Count > 4)
+                    var count = response["count"]!.Value<float>();
+                    var delta = lastCount - count;
+                    var ratio = 100f / totalCount * delta;
+                    Game.log($"{species}/{atmosType}/{bodyType} => {volcanism} => {delta} ({ratio.ToString("n1")}%)");
+                    if (ratio > 5 && delta > 3)
+                        matchedVolcanism.Add(volcanism);
+
+                    // just say "Some" if more than .. ?
+                    if (matchedVolcanism.Count > limitVolcanismTypes)
                     {
                         matchedVolcanism.Clear();
                         matchedVolcanism.Add("Some");
                         break;
                     }
 
-                } while (moreVolcanism.Count > 0);
+                    // take the next first
+                    lastCount = count;
+                    volcanism = moreVolcanism.FirstOrDefault()?["volcanism_type"]?.Value<string>()!;
+
+                } while (volcanism != null);
             }
 
-            if (withNoVolcanism.Count == 0 && matchedVolcanism.Count > 0)
+            if (countNoVolcanism > 0 && matchedVolcanism.FirstOrDefault() != "Some")
             {
-                var clause = Clause.createIs("volcanism", matchedVolcanism.ToList());
+                // alpha sort but add None first
+                var list = matchedVolcanism.Order().ToList();
+                list.Insert(0, "None");
+                var clause = Clause.createIs("volcanism", list);
+                return clause;
+            }
+
+            if (countNoVolcanism == 0 && matchedVolcanism.Count > 0)
+            {
+                var clause = Clause.createIs("volcanism", matchedVolcanism.Order().ToList());
                 return clause;
             }
 
             // otherwise, it appears volcanism is not a factor
             return null;
+        }
+
+        private static float floor(float value, int decimals)
+        {
+            var q = Math.Pow(10, decimals);
+            var newValue = Math.Floor(value * q) / q;
+            return (float)newValue;
+        }
+
+        private static float ceiling(float value, int decimals)
+        {
+            var q = Math.Pow(10, decimals);
+            var newValue = Math.Ceiling(value * q) / q;
+            return (float)newValue;
         }
 
         private static async Task<Clause?> buildRangeClause(string species, string atmosType, string bodyType, string property, float minLimit, float maxLimit)
@@ -506,15 +593,15 @@ namespace SrvSurvey.net
             if (property == "gravity")
             {
                 // round to nearest 3 decimal places
-                minRaw = (float)Math.Floor(minRaw * 1_000) / 1_000;
-                maxRaw = (float)Math.Ceiling(maxRaw * 1_000) / 1_000;
+                minRaw = floor(minRaw, 3);
+                maxRaw = ceiling(maxRaw, 3);
             }
 
             if (property == "surface_pressure")
             {
-                // round to nearest 3 decimal places
-                minRaw = (float)Math.Floor(minRaw * 10_000) / 10_000;
-                maxRaw = (float)Math.Ceiling(maxRaw * 10_000) / 10_000;
+                // round to nearest 4 decimal places
+                minRaw = floor(minRaw, 4);
+                maxRaw = ceiling(maxRaw, 4);
             }
 
             if (property == "surface_temperature")

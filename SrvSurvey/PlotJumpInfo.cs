@@ -47,7 +47,7 @@ namespace SrvSurvey
             this.reposition(Elite.getWindowRect(true));
 
             // determine next system
-            if (game.navRoute.Route.Count > 1)
+            if (game.fsdTarget != null || game.navRoute.Route.Count > 1)
                 this.initFromRoute();
 
             // make sure these are closed
@@ -187,7 +187,7 @@ namespace SrvSurvey
             if (nextHop == null) return;
 
             drawTextAt(nextHop.systemName, GameColors.fontMiddleBold);
-            drawTextAt(this.Width - four, $"class: {nextHop.entry.StarClass}", null, null, true);
+            drawTextAt(this.Width - eight, $"class: {nextHop.entry.StarClass}", null, null, true);
             newLine(+eight, true);
 
             this.drawJumpLine();
@@ -235,11 +235,11 @@ namespace SrvSurvey
             dty += six;
             // draw text for `#1 of 2` on left, and total distance travelled on the right
             var szLeft = drawTextAt(eight, $"#{nextHopIdx + 1} of {hopDistances.Count}");
-            var szRight = drawTextAt(this.Width - four, $"{totalDistance.ToString("N1")}LY", null, null, true);
+            var szRight = drawTextAt(this.Width - eight, $"{totalDistance.ToString("N1")}LY", null, null, true);
 
             // calc left edge of line + whole line width to fix between rendered text
             var left = szLeft.Width + oneFour;
-            var lineWidth = this.Width - left - szRight.Width - ten;
+            var lineWidth = this.Width - left - szRight.Width - oneSix;
             var pixelsPerLY = lineWidth / this.totalDistance;
 
             // prep pixel coords for parts of the line

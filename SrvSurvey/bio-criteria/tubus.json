@@ -21,13 +21,14 @@
       "species": "Cavas",
       "useCommonChildren": true,
       "query": [
-        "     body [Rocky]",
+        "# hit count: 10000",
         "atmosType [CarbonDioxide]",
-        "atmosComp [CarbonDioxide >= 97.5]",
-        "  gravity [0.04 ~ 0.15]",
+        "     body [Rocky]",
+        "  gravity [0.041 ~ 0.153]",
         "     temp [160 ~ 197]",
-        " pressure [0.003 ~ ]",
+        " pressure [0.0032 ~ ]",
         "volcanism [None]",
+        "atmosComp [CarbonDioxide >= 100 | SulphurDioxide >= 0.99]",
         "  regions [1,2,4,5,8,9,10,11,12,16,17,24,25,26,28,33,34,42]"
       ]
     },
@@ -36,13 +37,14 @@
       "species": "Compagibus",
       "useCommonChildren": true,
       "query": [
-        "     body [Rocky]",
+        "# hit count: 10000",
         "atmosType [CarbonDioxide]",
-        "atmosComp [CarbonDioxide >= 97.5]",
+        "     body [Rocky]",
         "  gravity [0.04 ~ 0.16]",
-        "     temp [96 ~ 197]",
+        "     temp [150 ~ 197]",
         " pressure [0.003 ~ ]",
         "volcanism [None]",
+        "atmosComp [CarbonDioxide >= 100 | SulphurDioxide >= 0.99]",
         "  regions [1,2,4,5,8,8,9,16,17,17,18,19,20,21,22,23,33,34,35,40]"
       ]
     },
@@ -51,13 +53,14 @@
       "species": "Conifer",
       "useCommonChildren": true,
       "query": [
-        "     body [Rocky]",
+        "# hit count: 8876",
         "atmosType [CarbonDioxide]",
-        "atmosComp [CarbonDioxide >= 97.5]",
-        "  gravity [0.04 ~ 0.16]",
+        "     body [Rocky]",
+        "  gravity [0.041 ~ 0.152]",
         "     temp [160 ~ 196]",
-        " pressure [0.003 ~ ]",
+        " pressure [0.0031 ~ ]",
         "volcanism [None]",
+        "atmosComp [CarbonDioxide >= 100 | SulphurDioxide >= 0.99]",
         "  regions [1,3,7,15,30,32,33,34,36,38,39]"
       ]
     },
@@ -66,41 +69,46 @@
       "species": "Rosarium",
       "useCommonChildren": true,
       "query": [
-        "     body [Rocky]",
+        "# hit count: 9787",
         "atmosType [Ammonia]",
-        "atmosComp [Ammonia >= 100]",
-        "  gravity [0.04 ~ 0.16]",
+        "     body [Rocky]",
+        "  gravity [ ~ 0.164]",
         "     temp [160 ~ 177]",
-        " pressure [0.0009 ~ 0.0134]",
-        "volcanism [None]",
+        " pressure [ ~ 0.0134]",
+        "atmosComp [Ammonia >= 100]",
         "# More volcanism is likely but only on certain variants?"
       ]
     },
 
     {
       "species": "Sororibus",
-      "useCommonChildren": true,
       "query": [
+        "# hit count: 5615",
         "     body [HMC]",
-        "atmosType [Ammonia]",
-        "atmosComp [Ammonia >= 100]",
-        "  gravity [0.05 ~ 0.15]",
-        "     temp [160 ~ 177]",
-        " pressure [0.0009 ~ 0.013]",
+        "  gravity [0.045 ~ 0.153]",
         "volcanism [None]"
-      ]
-    },
-    {
-      "species": "Sororibus",
-      "useCommonChildren": true,
-      "query": [
-        "     body [HMC]",
-        "atmosType [CarbonDioxide]",
-        "atmosComp [CarbonDioxide >= 98.5]",
-        "  gravity [0.05 ~ 0.15]",
-        "     temp [160 ~ 194]",
-        " pressure [0.0028 ~ ]",
-        "volcanism [None]"
+      ],
+      "children": [
+        {
+          "useCommonChildren": true,
+          "query": [
+            "# hit count: 159",
+            "atmosType [Ammonia]",
+            "     temp [160 ~ 177]",
+            " pressure [ ~ 0.013]",
+            "atmosComp [Ammonia >= 100]"
+          ]
+        },
+        {
+          "useCommonChildren": true,
+          "query": [
+            "# hit count: 5456",
+            "atmosType [CarbonDioxide]",
+            "     temp [160 ~ 194]",
+            " pressure [0.0028 ~ ]",
+            "atmosComp [CarbonDioxide >= 100 | SulphurDioxide >= 0.99]"
+          ]
+        }
       ]
     }
 

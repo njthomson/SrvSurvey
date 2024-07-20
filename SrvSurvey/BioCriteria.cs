@@ -195,7 +195,7 @@ namespace BioCriterias
         {
             var clause = new Clause()
             {
-                raw = $"{property} [{string.Join(',', compositions.Select(c => $"{c.Key} >= {c.Value}"))}]",
+                raw = $"{property} [{string.Join(" | ", compositions.Select(c => $"{c.Key} >= {c.Value}"))}]",
                 property = property,
                 op = Op.Composition,
                 compositions = compositions,
@@ -292,7 +292,7 @@ namespace BioCriterias
                 else if (data.op == Op.Not)
                     txt = $"{data.property} ![{string.Join(',', data.values!)}]";
                 else if (data.op == Op.Composition)
-                    txt = $"{data.property} [{string.Join(',', data.compositions!.Select(p => $"{p.Key} => {p.Value}"))}]";
+                    txt = $"{data.property} [{string.Join(" | ", data.compositions!.Select(p => $"{p.Key} => {p.Value}"))}]";
                 else
                     txt = $"{data.property} [{data.min} ~ {data.max}]";
 

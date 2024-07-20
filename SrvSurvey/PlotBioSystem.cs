@@ -194,9 +194,17 @@ namespace SrvSurvey
 
             this.dty += two;
             var footerTxt = $"Rewards: {body.minMaxBioRewards}";
-            if (body.firstFootFall) footerTxt += " (FF bonus)";
+//            if (body.firstFootFall) footerTxt += "\r\n(Applying FF bonus)";
             drawTextAt(eight, footerTxt, GameColors.brushGameOrange);
             newLine(true);
+
+            if (body.firstFootFall)
+            {
+                this.dty += two;
+                var sz = drawTextAt(this.Width - eight, "(Applying FF bonus)", GameColors.brushCyan, null, true);
+                dtx = 0;
+                newLine(true);
+            }
 
             // resize window as necessary
             formAdjustSize(+ten, +ten);

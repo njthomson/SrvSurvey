@@ -61,7 +61,7 @@ namespace SrvSurvey
 
             // find next hop by fsdTarget?
             var next = game.fsdTarget != null
-                ? game.navRoute.Route.Find(_ => _.StarSystem == game.fsdTarget) ?? game.navRoute.Route[1]
+                ? game.navRoute.Route.Find(_ => _.StarSystem == game.fsdTarget?.Name) ?? game.navRoute.Route[1]
                 : game.navRoute.Route[1];
 
             if (game.navRoute.Route.Count > 2 && next.StarSystem != hops.FirstOrDefault()?.systemName)

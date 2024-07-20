@@ -22,23 +22,28 @@
     {
       "species": "Campestris",
       "query": [
+        "# hit count: 10000",
         "atmosType [Argon]"
       ],
-      "children":[
+      "children": [
         {
           "useCommonChildren": true,
           "query": [
+            "# hit count: 10000",
             "     body [Icy]",
-            "  gravity [0.03 ~ 0.29]",
-            "     temp [50 ~ 150]"
+            "  gravity [ ~ 0.276]",
+            "     temp [50 ~ 150]",
+            "volcanism [None,Carbon Dioxide Geysers,Major Water Geysers,Minor Carbon Dioxide Geysers,Minor Nitrogen Magma]"
           ]
         },
         {
           "useCommonChildren": true,
           "query": [
+            "# hit count: 4185",
             "     body [RockyIce]",
-            "  gravity [0.06 ~ 0.29]",
-            "     temp [50 ~ 132]"
+            "  gravity [0.059 ~ 0.276]",
+            "     temp [50 ~ 132]",
+            "volcanism [None]"
           ]
         }
       ]
@@ -46,15 +51,33 @@
 
     {
       "species": "Digitos",
-      "useCommonChildren": true,
       "query": [
-        "     body [Icy,RockyIce]",
+        "# hit count: 10000",
         "atmosType [Methane]",
-        "atmosComp [Methane >= 100]",
-        "  gravity [0.025 ~ 0.07]",
         "     temp [83 ~ 109]",
-        " pressure [0.03 ~ ]",
-        "volcanism [None,Minor Methane Magma]"
+        "atmosComp [Methane >= 100]"
+      ],
+      "children": [
+        {
+          "useCommonChildren": true,
+          "query": [
+            "# hit count: 10000",
+            "     body [Icy]",
+            "  gravity [ ~ 0.058]",
+            " pressure [0.0304 ~ ]",
+            "volcanism [None,Minor Methane Magma,Minor Nitrogen Magma]"
+          ]
+        },
+        {
+          "useCommonChildren": true,
+          "query": [
+            "# hit count: 72",
+            "     body [RockyIce]",
+            "  gravity [ ~ 0.065]",
+            " pressure [0.0386 ~ ]",
+            "volcanism [None]"
+          ]
+        }
       ]
     },
 
@@ -62,49 +85,74 @@
       "species": "Fluctus",
       "useCommonChildren": true,
       "query": [
-        "     body [Icy]",
+        "# hit count: 328",
         "atmosType [Oxygen]",
-        "atmosComp [Oxygen >= 57.84]",
-        "  gravity [0.24 ~ 0.28]",
+        "     body [Icy]",
+        "  gravity [0.237 ~ 0.275]",
         "     temp [143 ~ 200]",
-        " pressure [0.012 ~ 0.081]"
+        " pressure [0.0124 ~ 0.0801]",
+        "volcanism [None,Carbon Dioxide Geysers,Major Water Geysers]"
       ]
     },
 
     {
       "species": "Lapida",
-      "useCommonChildren": true,
       "query": [
-        "     body [Icy]",
-        "atmosComp [Nitrogen >= 100 ]",
-        "  gravity [0.19 ~ 0.29]",
-        "     temp [50 ~ 90]",
-        " pressure [0.0009 ~ ]"
+        "# hit count: 10000",
+        "atmosType [Nitrogen]",
+        "atmosComp [Nitrogen >= 100]"
+      ],
+      "children": [
+        {
+          "useCommonChildren": true,
+          "query": [
+            "# hit count: 10000",
+            "   body [Icy]",
+            "gravity [0.189 ~ 0.276]",
+            "   temp [50 ~ 81]"
+          ]
+        },
+        {
+          "useCommonChildren": true,
+          "query": [
+            "# hit count: 178",
+            "     body [RockyIce]",
+            "  gravity [0.23 ~ 0.275]",
+            "     temp [50 ~ 70]",
+            "volcanism [None]"
+          ]
+        }
       ]
     },
 
     {
       "species": "Segmentatus",
+      "query": [
+        "# hit count: 766"
+      ],
       "children": [
         {
           "useCommonChildren": true,
           "query": [
-            "     body [Icy]",
+            "# hit count: 12",
             "atmosType [Neon]",
-            "atmosComp [Neon >= 100]",
-            "  gravity [0.26 ~ 0.28]",
+            "     body [Icy]",
+            "  gravity [0.258 ~ 0.274]",
             "     temp [50 ~ 57]",
-            " pressure [0.0009 ~ 0.0012]"
-        ]
+            " pressure [ ~ 0.0012]",
+            "atmosComp [Neon >= 100]"
+          ]
         },
         {
           "useCommonChildren": true,
           "query": [
-            "     body [Icy]",
+            "# hit count: 754",
             "atmosType [NeonRich]",
-            "  gravity [0.25 ~ 0.29]",
+            "     body [Icy]",
+            "  gravity [0.251 ~ 0.276]",
             "     temp [58 ~ 75]",
-            " pressure [0.001 ~ 0.028]"
+            " pressure [0.0013 ~ 0.0271]",
+            "volcanism [None]"
           ]
         }
       ]
@@ -112,13 +160,33 @@
 
     {
       "species": "Upupam",
-      "useCommonChildren": true,
       "query": [
-        "     body [Icy]",
-        "atmosType [ArgonRich]",
-        "  gravity [0.08 ~ 0.29]",
-        "     temp [60 ~ 124]",
-        " pressure [0.019 ~ ]"
+        "# hit count: 4393",
+        "atmosType [ArgonRich]"
+      ],
+      "children": [
+        {
+          "useCommonChildren": true,
+          "query": [
+            "# hit count: 4280",
+            "     body [Icy]",
+            "  gravity [0.209 ~ 0.276]",
+            "     temp [60 ~ 124]",
+            " pressure [0.0191 ~ ]",
+            "volcanism [None,Major Water Geysers,Minor Nitrogen Magma]"
+          ]
+        },
+        {
+          "useCommonChildren": true,
+          "query": [
+            "# hit count: 113",
+            "     body [RockyIce]",
+            "  gravity [0.253 ~ 0.275]",
+            "     temp [61 ~ 79]",
+            " pressure [0.0352 ~ ]",
+            "volcanism [None]"
+          ]
+        }
       ]
     }
 
