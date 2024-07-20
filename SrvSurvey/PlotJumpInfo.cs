@@ -68,11 +68,12 @@ namespace SrvSurvey
             var route = game.navRoute.Route.Skip(1).ToList();
 
             // find next hop in route
-            nextSystem = game.fsdTarget ?? game.status.Destination?.Name!;
-            if (nextSystem == null) return;
+            this.nextSystem = game.fsdTarget?.Name ?? game.status.Destination?.Name!;
+            if (this.nextSystem == null) return;
 
             var next = route.Find(r => r.StarSystem == nextSystem);
             if (next == null) return;
+
             this.nextHop = RouteInfo.create(next, false);
             this.nextHopIdx = route.IndexOf(next);
 
@@ -157,17 +158,32 @@ namespace SrvSurvey
                     return;
                 }
 
-                if (response.Result.date != null && response.Result.bodies.Count > 0)
-                    systemsCache[nextSystem].lastUpdated = response.Result.date;
-
-                foreach (var body in response.Result.bodies)
+                if (response?.Result != null)
                 {
-                    var bioSignals = body.signals?.signals?.GetValueOrDefault("$SAA_SignalType_Biological;") ?? 0;
-                    if (bioSignals > 0) this.info.countPOI["Genus"] += bioSignals;
+                    if (response.Result.date != null && response.Result.bodies.Count > 0)
+                        systemsCache[nextSystem].lastUpdated = response.Result.date;
+
+                    foreach (var body in response.Result.bodies)
+                    {
+                        var bioSignals = body.signals?.signals?.GetValueOrDefault("$SAA_SignalType_Biological;") ?? 0;
+                        if (bioSignals > 0) this.info.countPOI["Genus"] += bioSignals;
+                    }
                 }
 
                 Program.control.BeginInvoke(() => this.Invalidate());
             }));
+        }
+
+        protected override void onJournalEntry(NavRouteClear entry)
+        {
+            // remove this plotter once we arrive in some system
+            Program.closePlotter<PlotJumpInfo>();
+        }
+
+        protected override void onJournalEntry(FSDTarget entry)
+        {
+            // remove this plotter once we arrive in some system
+            Program.closePlotter<PlotJumpInfo>();
         }
 
         protected override void onJournalEntry(FSDJump entry)
@@ -178,17 +194,18 @@ namespace SrvSurvey
 
         protected override void onPaintPlotter(PaintEventArgs e)
         {
-            if (nextHop == null) return;
+            if (game.fsdTarget == null) return;
 
             // 1st line the name of the system we are jumping to
             dty += two;
             drawTextAt(eight, $"Next jump: ");
             dty -= two;
-            if (nextHop == null) return;
 
-            drawTextAt(nextHop.systemName, GameColors.fontMiddleBold);
-            drawTextAt(this.Width - eight, $"class: {nextHop.entry.StarClass}", null, null, true);
+            drawTextAt(game.fsdTarget.Name, GameColors.fontMiddleBold);
+            drawTextAt(this.Width - eight, $"class: {game.fsdTarget.StarClass}", null, null, true);
             newLine(+eight, true);
+
+            if (nextHop == null) return;
 
             this.drawJumpLine();
 

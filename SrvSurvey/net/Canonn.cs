@@ -96,9 +96,8 @@ namespace SrvSurvey.canonn
         {
             var json = await client.GetStringAsync($"https://us-central1-canonn-api-236217.cloudfunctions.net/query/codex/biostats?id={systemAddress}");
             var obj = JsonConvert.DeserializeObject<JObject>(json)!;
-            var stats = obj["system"]!.ToObject<CanonnBodyBioStats>()!;
+            var stats = obj["system"]?.ToObject<CanonnBodyBioStats>()!;
             return stats;
-
         }
 
         #endregion
