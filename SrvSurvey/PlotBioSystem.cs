@@ -239,8 +239,8 @@ namespace SrvSurvey
                 if (body.bioSignalCount == 0) continue;
                 var potentialFirstDiscovery = body.predictions.Values.Any(p => !game.cmdrCodex.isDiscovered(p.entryId));
 
-                //var highlight = body.shortName == destinationBody || (body.countAnalyzedBioSignals != body.bioSignalCount && body.countAnalyzedBioSignals > 0);
-                var highlight = (body == game.systemBody && game.status.hasLatLong) || (game.systemBody == null && body.shortName == destinationBody);
+                var highlight = body.shortName == destinationBody || (body.countAnalyzedBioSignals != body.bioSignalCount && body.countAnalyzedBioSignals > 0);
+                //var highlight = (body == game.systemBody && game.status.hasLatLong) || (game.systemBody == null && body.shortName == destinationBody);
                 // || !anyFoo); // body.countAnalyzedBioSignals == body.bioSignalCount || bodyName == "1 f";
 
                 dty = (float)Math.Round(dty);

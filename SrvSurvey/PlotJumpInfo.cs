@@ -177,32 +177,35 @@ namespace SrvSurvey
         protected override void onJournalEntry(NavRouteClear entry)
         {
             // remove this plotter once we arrive in some system
-            Program.closePlotter<PlotJumpInfo>();
+            //Program.closePlotter<PlotJumpInfo>();
         }
 
         protected override void onJournalEntry(FSDTarget entry)
         {
             // remove this plotter once we arrive in some system
-            Program.closePlotter<PlotJumpInfo>();
+            //Program.closePlotter<PlotJumpInfo>();
         }
 
         protected override void onJournalEntry(FSDJump entry)
         {
-            // remove this plotter once we arrive in some system
-            Program.closePlotter<PlotJumpInfo>();
+            // remove this plotter 3 seconds after we arrive in some system
+            //Task.Delay(5000).ContinueWith(t =>Program.closePlotter<PlotJumpInfo>())
+            //{
+            //    Program.closePlotter<PlotJumpInfo>();
+            //});
         }
 
         protected override void onPaintPlotter(PaintEventArgs e)
         {
-            if (game.fsdTarget == null) return;
+            if (this.nextHop == null) return;
 
             // 1st line the name of the system we are jumping to
             dty += two;
             drawTextAt(eight, $"Next jump: ");
             dty -= two;
 
-            drawTextAt(game.fsdTarget.Name, GameColors.fontMiddleBold);
-            drawTextAt(this.Width - eight, $"class: {game.fsdTarget.StarClass}", null, null, true);
+            drawTextAt(this.nextHop.systemName, GameColors.fontMiddleBold);
+            drawTextAt(this.Width - eight, $"class: {nextHop.entry.StarClass}", nextHop.entry.StarClass == "N" ? GameColors.brushCyan : null, null, true);
             newLine(+eight, true);
 
             if (nextHop == null) return;
