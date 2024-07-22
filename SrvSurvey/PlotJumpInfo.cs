@@ -219,7 +219,7 @@ namespace SrvSurvey
 
             var lastUpdated = systemsCache[nextSystem].lastUpdated;
             if (lastUpdated != null && lastUpdated.Value != nextHop.discoveredDate)
-                lineTwo += $", last updated: " + lastUpdated.Value.ToShortDateString();
+                lineTwo += $", last updated: " + lastUpdated.Value.ToLocalTime().ToString("d");
             drawTextAt(eight, lineTwo, nextHop.highlight ? GameColors.brushCyan : null);
             drawTextAt("(EDSM)", GameColors.brushGameOrangeDim);
             newLine(+one, true);
@@ -357,7 +357,7 @@ namespace SrvSurvey
 
     internal class JumpInfo
     {
-        public DateTime? lastUpdated;
+        public DateTimeOffset? lastUpdated;
 
         public EdsmSystemTraffic? traffic;
 

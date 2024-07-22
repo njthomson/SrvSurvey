@@ -233,20 +233,20 @@ namespace SrvSurvey.net
         public static void buildWholeSet()
         {
             // define ...
-            var species = "Electricae Radialem";
+            var species = "Bacterium Acies";
             var atmosTypes = new List<string>()
             {
                 //"Ammonia",
                 //"Ammonia-rich",
-                "Argon",
-                "Argon-rich",
+                //"Argon",
+                //"Argon-rich",
                 //"Carbon dioxide",
                 //"Carbon dioxide-rich",
                 //"Helium",
                 //"Methane",
                 //"Methane-rich",
                 "Neon",
-                "Neon-rich",
+                //"Neon-rich",
                 //"Nitrogen",
                 //"Oxygen",
                 //"Sulphur dioxide",
@@ -407,6 +407,7 @@ namespace SrvSurvey.net
                 { "atmosphere", $"Thin {atmosType}" },
                 { "subtype", bodyType },
                 { "landmarks", $"{type}/{species}" },
+                //{ "surface_temperature", "160.00 <=> 177.00" }, // TODO: Support one day
             };
 
             var response = await Game.spansh.runQuery(buildQuery(filters, $"atmosphere_composition/{atmosType}", SortOrder.asc));
@@ -496,19 +497,20 @@ namespace SrvSurvey.net
             filters["volcanism_type"] = string.Join(',', allVolcanisms);
             //Game.log(filters["volcanism_type"]);
             response = await Game.spansh.runQuery(buildQuery(filters, "volcanism_type", SortOrder.asc));
+            var countWithVolcanism = response["count"]!.Value<int>();
             var withSomeVolcanism = response["results"]!.ToList();
 
             // zero record with any volcanism
-            if (countNoVolcanism > 0 && withSomeVolcanism.Count == 0)
+            if (countNoVolcanism > 0 && countWithVolcanism == 0)
             {
                 return Clause.createIs("volcanism", "None");
             }
 
             // We saw some volcanism, find which specific kinds
             var matchedVolcanism = new HashSet<string>();
+            var potentialVolcanism = new HashSet<string>(allVolcanisms);
             if (withSomeVolcanism.Count > 0)
             {
-                var potentialVolcanism = new HashSet<string>(allVolcanisms);
                 var moreVolcanism = withSomeVolcanism;
                 var totalCount = response["count"]!.Value<float>();
                 var lastCount = totalCount;
@@ -531,7 +533,7 @@ namespace SrvSurvey.net
                         matchedVolcanism.Add(volcanism);
 
                     // just say "Some" if more than .. ?
-                    if (matchedVolcanism.Count > limitVolcanismTypes)
+                    if (false && matchedVolcanism.Count > limitVolcanismTypes)
                     {
                         matchedVolcanism.Clear();
                         matchedVolcanism.Add("Some");
@@ -554,10 +556,20 @@ namespace SrvSurvey.net
                 return clause;
             }
 
-            if (countNoVolcanism == 0 && matchedVolcanism.Count > 0)
+            if (countNoVolcanism == 0 && countWithVolcanism > 0)
             {
-                var clause = Clause.createIs("volcanism", matchedVolcanism.Order().ToList());
-                return clause;
+                if (matchedVolcanism.Count > 0)
+                {
+                    var clause = Clause.createIs("volcanism", matchedVolcanism.Order().ToList());
+                    return clause;
+                }
+                else
+                {
+                    // This happens with counts too low for ratios, etc above, but there was some volcanism still
+                    var allSeenVolcanism = allVolcanisms.Where(v => !potentialVolcanism.Contains(v)).Order().ToList();
+                    var clause = Clause.createIs("volcanism", allSeenVolcanism); // , "Some");
+                    return clause;
+                }
             }
 
             // otherwise, it appears volcanism is not a factor

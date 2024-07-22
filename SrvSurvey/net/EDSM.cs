@@ -118,7 +118,7 @@ namespace SrvSurvey.net.EDSM
     internal class EdsmDiscoverer
     {
         public string commander;
-        public DateTime date;
+        public DateTimeOffset date;
     }
 
     internal class EdsmSystem

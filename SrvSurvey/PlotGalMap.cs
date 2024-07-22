@@ -192,7 +192,7 @@ namespace SrvSurvey
         public bool highlight;
         public bool destination;
         public int sumGenus;
-        public DateTime? discoveredDate;
+        public DateTimeOffset? discoveredDate;
         public bool allBodiesFound;
         public int countBodies;
 
@@ -240,7 +240,7 @@ namespace SrvSurvey
                         status = $"Discovered ({edsmResult.bodies.Count} of {edsmResult.bodyCount} bodies)";
 
                     var discCmdr = edsmResult.bodies.FirstOrDefault()?.discovery?.commander;
-                    var discDate = edsmResult.bodies.FirstOrDefault()?.discovery?.date.ToShortDateString();
+                    var discDate = edsmResult.bodies.FirstOrDefault()?.discovery?.date.ToLocalTime().ToString("d");
                     this.discoveredDate = edsmResult.bodies.FirstOrDefault()?.discovery?.date;
                     if (discCmdr != null && discDate != null)
                         subStatus = $"By {discCmdr}, {discDate}";
