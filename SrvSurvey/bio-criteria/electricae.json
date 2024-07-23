@@ -16,17 +16,19 @@
         { "variant": "Mulberry", "query": [ "mats [Yttrium]" ] }
       ],
       "query": [
-        "# hit count: 2594",
+        "# hit count: 2597",
         "primaryStar [A,B,D,H,N,W]"
       ],
       "children": [
         {
           "useCommonChildren": true,
           "query": [
-            "# hit count: 2458",
+            "# hit count: 2461",
             "atmosType [Argon]",
             "  gravity [ ~ 0.275]",
-            "     temp [50 ~ 150]"
+            "     temp [50 ~ 150]",
+            "volcanism [None,Carbon Dioxide Geysers,Major Water Geysers,Major Water Magma,Minor Carbon Dioxide Geysers,Minor Nitrogen Magma,Water Geysers]",
+            "atmosComp [Argon >= 100 | Nitrogen >= 0.06]"
           ]
         },
         {
@@ -37,7 +39,8 @@
             "  gravity [0.218 ~ 0.275]",
             "     temp [63 ~ 121]",
             " pressure [0.0209 ~ ]",
-            "volcanism [None]"
+            "volcanism [None]",
+            "atmosComp [Nitrogen >= 50]"
           ]
         },
         {
@@ -48,7 +51,8 @@
             "  gravity [0.262 ~ 0.276]",
             "     temp [61 ~ 69]",
             " pressure [0.0017 ~ 0.0053]",
-            "volcanism [None]"
+            "volcanism [None]",
+            "atmosComp [Nitrogen >= 87]"
           ]
         }
       ]
@@ -76,7 +80,8 @@
             "atmosType [Argon]",
             "  gravity [ ~ 0.275]",
             "     temp [50 ~ 149]",
-            "volcanism [None,Carbon Dioxide Geysers,Major Water Geysers,Major Water Magma,Minor Nitrogen Magma,Water Geysers]"
+            "volcanism [None,Carbon Dioxide Geysers,Major Water Geysers,Major Water Magma,Minor Nitrogen Magma,Water Geysers]",
+            "atmosComp [Argon >= 100 | Nitrogen >= 0.06]"
           ]
         },
         {
@@ -87,7 +92,8 @@
             "  gravity [0.212 ~ 0.275]",
             "     temp [61 ~ 110]",
             " pressure [0.0214 ~ ]",
-            "volcanism [None]"
+            "volcanism [None]",
+            "atmosComp [Nitrogen >= 50]"
           ]
         },
         {
@@ -98,7 +104,8 @@
             "  gravity [0.261 ~ 0.274]",
             "     temp [61 ~ 68]",
             " pressure [0.0016 ~ 0.0048]",
-            "volcanism [None]"
+            "volcanism [None]",
+            "atmosComp [Nitrogen >= 80]"
           ]
         }
       ]

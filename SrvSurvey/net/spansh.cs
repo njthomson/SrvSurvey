@@ -233,25 +233,25 @@ namespace SrvSurvey.net
         public static void buildWholeSet()
         {
             // define ...
-            var species = "Bacterium Acies";
+            var species = "Bacterium Tela";
             var atmosTypes = new List<string>()
             {
-                //"Ammonia",
-                //"Ammonia-rich",
-                //"Argon",
-                //"Argon-rich",
-                //"Carbon dioxide",
-                //"Carbon dioxide-rich",
-                //"Helium",
-                //"Methane",
-                //"Methane-rich",
+                "Ammonia",
+                "Ammonia-rich",
+                "Argon",
+                "Argon-rich",
+                "Carbon dioxide",
+                "Carbon dioxide-rich",
+                "Helium",
+                "Methane",
+                "Methane-rich",
                 "Neon",
-                //"Neon-rich",
-                //"Nitrogen",
-                //"Oxygen",
-                //"Sulphur dioxide",
-                //"Water",
-                //"Water-rich",
+                "Neon-rich",
+                "Nitrogen",
+                "Oxygen",
+                "Sulphur dioxide",
+                "Water",
+                "Water-rich",
             };
 
             var start = DateTime.Now;
@@ -463,7 +463,7 @@ namespace SrvSurvey.net
                         var compositions = new Dictionary<string, float>();
                         compositions.Add("CarbonDioxide", floor(value, 2));
 
-                        if (value2 >= 0.98f && value2 <= 2.5f)
+                        if (value2 >= 0.96f && value2 <= 2.5f)
                         {
                             compositions.Add("SulphurDioxide", floor(value2, 2));
                             return Clause.createCompositions("atmosComp", compositions);

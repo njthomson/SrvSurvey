@@ -148,7 +148,8 @@
         {
           "query": [
             "# hit count: 856",
-            "atmosType [SulphurDioxide]"
+            "atmosType [SulphurDioxide]",
+            "atmosComp [SulphurDioxide >= 100]"
           ],
           "children": [
             {
@@ -158,8 +159,7 @@
                 "     body [Icy]",
                 "  gravity [0.188 ~ 0.274]",
                 "     temp [149 ~ 272]",
-                "volcanism [Carbon Dioxide Geysers,Major Water Geysers,Major Water Magma,Minor Carbon Dioxide Geysers,Water Geysers]",
-                "atmosComp [SulphurDioxide >= 70]"
+                "volcanism [Carbon Dioxide Geysers,Major Water Geysers,Major Water Magma,Minor Carbon Dioxide Geysers,Water Geysers]"
               ]
             },
             {
@@ -170,8 +170,7 @@
                 "  gravity [0.04 ~ 0.275]",
                 "     temp [132 ~ 207]",
                 " pressure [ ~ 0.0594]",
-                "volcanism [None,Major Silicate Vapour Geysers,Metallic Magma,Minor Metallic Magma,Minor Silicate Vapour Geysers]",
-                "atmosComp [SulphurDioxide >= 100]"
+                "volcanism [None,Major Silicate Vapour Geysers,Metallic Magma,Minor Metallic Magma,Minor Silicate Vapour Geysers]"
               ]
             },
             {
@@ -182,8 +181,7 @@
                 "  gravity [0.227 ~ 0.275]",
                 "     temp [152 ~ 221]",
                 " pressure [0.0013 ~ 0.0968]",
-                "volcanism [Some]",
-                "atmosComp [SulphurDioxide >= 100]"
+                "volcanism [Major Water Magma,Water Geysers]"
               ]
             },
             {
@@ -194,8 +192,7 @@
                 "  gravity [0.265 ~ 0.276]",
                 "     temp [132 ~ 135]",
                 " pressure [ ~ 0.0011]",
-                "volcanism [None]",
-                "atmosComp [SulphurDioxide >= 100]"
+                "volcanism [None]"
               ]
             }
           ]

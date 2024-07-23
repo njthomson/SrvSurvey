@@ -23,7 +23,8 @@
       "species": "Campestris",
       "query": [
         "# hit count: 10000",
-        "atmosType [Argon]"
+        "atmosType [Argon]",
+        "atmosComp [Argon >= 100 | Nitrogen >= 0.06]"
       ],
       "children": [
         {
@@ -33,13 +34,13 @@
             "     body [Icy]",
             "  gravity [ ~ 0.276]",
             "     temp [50 ~ 150]",
-            "volcanism [None,Carbon Dioxide Geysers,Major Water Geysers,Minor Carbon Dioxide Geysers,Minor Nitrogen Magma]"
+            "volcanism [None,Carbon Dioxide Geysers,Major Water Geysers,Major Water Magma,Minor Carbon Dioxide Geysers,Minor Nitrogen Magma]"
           ]
         },
         {
           "useCommonChildren": true,
           "query": [
-            "# hit count: 4185",
+            "# hit count: 4194",
             "     body [RockyIce]",
             "  gravity [0.059 ~ 0.276]",
             "     temp [50 ~ 132]",
@@ -85,13 +86,14 @@
       "species": "Fluctus",
       "useCommonChildren": true,
       "query": [
-        "# hit count: 328",
+        "# hit count: 329",
         "atmosType [Oxygen]",
         "     body [Icy]",
         "  gravity [0.237 ~ 0.275]",
         "     temp [143 ~ 200]",
         " pressure [0.0124 ~ 0.0801]",
-        "volcanism [None,Carbon Dioxide Geysers,Major Water Geysers]"
+        "volcanism [None,Carbon Dioxide Geysers,Major Water Geysers]",
+        "atmosComp [Oxygen >= 100 | SulphurDioxide >= 0.06]"
       ]
     },
 
@@ -107,15 +109,16 @@
           "useCommonChildren": true,
           "query": [
             "# hit count: 10000",
-            "   body [Icy]",
-            "gravity [0.189 ~ 0.276]",
-            "   temp [50 ~ 81]"
+            "     body [Icy]",
+            "  gravity [0.189 ~ 0.276]",
+            "     temp [50 ~ 81]",
+            "volcanism [None,Carbon Dioxide Geysers,Major Water Geysers,Major Water Magma,Minor Carbon Dioxide Geysers,Minor Methane Magma,Minor Nitrogen Magma,Water Geysers]"
           ]
         },
         {
           "useCommonChildren": true,
           "query": [
-            "# hit count: 178",
+            "# hit count: 179",
             "     body [RockyIce]",
             "  gravity [0.23 ~ 0.275]",
             "     temp [50 ~ 70]",
@@ -152,7 +155,8 @@
             "  gravity [0.251 ~ 0.276]",
             "     temp [58 ~ 75]",
             " pressure [0.0013 ~ 0.0271]",
-            "volcanism [None]"
+            "volcanism [None]",
+            "atmosComp [Nitrogen >= 74]"
           ]
         }
       ]
@@ -162,7 +166,8 @@
       "species": "Upupam",
       "query": [
         "# hit count: 4393",
-        "atmosType [ArgonRich]"
+        "atmosType [ArgonRich]",
+        "atmosComp [Nitrogen >= 50]"
       ],
       "children": [
         {
