@@ -136,7 +136,7 @@ namespace SrvSurvey
                     //}
                     //headerTxt += ")";
                 }
-                g.DrawString($"System survey remaining: {headerTxt}", GameColors.fontSmall, GameColors.brushGameOrange, scaled(4), scaled(7));
+                g.DrawString($"System survey remaining: {headerTxt}", GameColors.fontSmall, GameColors.brushGameOrange, four, eight);
                 newLine(true);
             }
             finally

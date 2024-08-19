@@ -57,6 +57,18 @@ namespace SrvSurvey
                     return 2.4f;
                 case 19: // force 250%
                     return 2.5f;
+                case 20: // force 90%
+                    return 0.9f;
+                case 21: // force 80%
+                    return 0.8f;
+                case 22: // force 75%
+                    return 0.75f;
+                case 23: // force 70%
+                    return 0.7f;
+                case 24: // force 60%
+                    return 0.6f;
+                case 25: // force 50%
+                    return 0.5f;
             }
         }
         public static float scaleFactor = GameColors.getScaleFactor();
@@ -107,6 +119,18 @@ namespace SrvSurvey
                     return 2.4f * osScaleFactor;
                 case 19: // force 250%
                     return 2.5f * osScaleFactor;
+                case 20: // force 90%
+                    return 0.9f * osScaleFactor;
+                case 21: // force 80%
+                    return 0.8f * osScaleFactor;
+                case 22: // force 75%
+                    return 0.75f * osScaleFactor;
+                case 23: // force 70%
+                    return 0.7f * osScaleFactor;
+                case 24: // force 60%
+                    return 0.6f * osScaleFactor;
+                case 25: // force 50%
+                    return 0.5f * osScaleFactor;
             }
         }
         public static float fontScaleFactor = GameColors.getFontScaleFactor();
