@@ -95,8 +95,9 @@ namespace SrvSurvey
             var plotGrounded = Program.getPlotter<PlotGrounded>();
             if (plotGrounded != null)
             {
+                plotGrounded.reposition(gameRect);
                 this.Width = plotGrounded.Width;
-                this.Left = gameRect.Right - this.Width - (gameRect.Width - plotGrounded.Right);
+                this.Left = plotGrounded.Left;
                 this.Top = plotGrounded.Bottom + (int)four;
             }
             else

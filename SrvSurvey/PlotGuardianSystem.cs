@@ -1,5 +1,4 @@
 ﻿using SrvSurvey.game;
-using System.Drawing.Drawing2D;
 
 namespace SrvSurvey
 {

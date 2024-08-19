@@ -690,7 +690,7 @@ namespace SrvSurvey
 
                 g.TranslateTransform(-dx, -dy);
             }
-            else
+            else if (itemPoiTypeMap.ContainsKey(item))
             {
                 var r = new RectangleF(this.dtx + dx, this.dty + dy, ten, ten);
                 var poiType = itemPoiTypeMap[item];

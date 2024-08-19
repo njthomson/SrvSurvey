@@ -172,6 +172,13 @@ namespace SrvSurvey
 
                 Program.control.BeginInvoke(() => this.Invalidate());
             }));
+
+            // Guardian stuff?
+            var countRuins = Game.canonn.loadAllRuins().Count(r => r.systemAddress == next.SystemAddress);
+            var countStructures = Game.canonn.loadAllStructures().Count(r => r.systemAddress == next.SystemAddress);
+            var countBeacons = Game.canonn.loadAllBeacons().Count(r => r.systemAddress == next.SystemAddress);
+            this.info.countPOI["Guardian"] = countRuins + countStructures + countBeacons;
+            if (this.info.countPOI["Guardian"] > 0) this.Invalidate();
         }
 
         protected override void onJournalEntry(NavRouteClear entry)
@@ -312,13 +319,16 @@ namespace SrvSurvey
                 // (before drawing line parts, if not too close together) draw a DOT for each system
                 if (pixelsPerLY > limitPixelsPerLY)
                 {
-                    g.FillEllipse(GameColors.brushGameOrange, r);
+                    g.FillEllipse(n < nextHopIdx ? GameColors.brushGameOrangeDim : GameColors.brushGameOrange, r);
 
                     // and render a little arc above scoopable stars
                     if (hopScoops[n])
                     {
                         r2.X = r.X - dotRadius;
-                        g.DrawArc(n + 1 == nextHopIdx ? GameColors.penCyan2 : GameColors.penGameOrange2, r2, 270 - 40, 80);
+                        var b = n < nextHopIdx ? GameColors.penGameOrangeDim2 : GameColors.penGameOrange2;
+                        if (n + 1 == nextHopIdx)
+                            b = GameColors.penCyan2;
+                        g.DrawArc(b, r2, 270 - 40, 80);
                     }
                 }
 
@@ -334,7 +344,7 @@ namespace SrvSurvey
             if (this.totalDistance > limitExcessDistance)
                 g.DrawLine(GameColors.penGameOrange1, x - 1, y - four, x - 1, y + four);
             else
-                g.FillEllipse(nextHopIdx == 0 ? GameColors.brushCyan : GameColors.brushGameOrange, r);
+                g.FillEllipse(nextHopIdx == 0 ? GameColors.brushCyan : GameColors.brushGameOrangeDim, r);
 
 
             // finally redraw dot for next jump, as it got clipped by prior rendering
@@ -364,6 +374,7 @@ namespace SrvSurvey
         public Dictionary<string, int> countPOI = new Dictionary<string, int>()
         {
             // (these are rendered in this order)
+            { "Guardian", 0 }, // Total count for the system
             { "Genus", 0 }, // Total count for the system
             { "Star ports", 0 }, // Anything with a large pad
             { "Outposts", 0 },
