@@ -1,5 +1,4 @@
-﻿using BioCriterias;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using SrvSurvey.game;
 using SrvSurvey.units;
@@ -22,6 +21,8 @@ namespace SrvSurvey
         public Status status;
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public long entryId;
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public string body;
 
         public override string ToString()
         {

@@ -303,11 +303,21 @@ namespace SrvSurvey
                 this.drawBearingTo(g, four + mw, eight, "SRV:", this.srvLocation.Target);
 
             float y = this.Height - PlotBase.scaled(24);
-            if (game.cmdr!.scanOne != null)
-                this.drawBearingTo(g, ten, y, "Scan one:", game.cmdr.scanOne.location!);
+            if (game.cmdr.scanOne != null)
+            {
+                if (game.cmdr.scanOne.body != game.systemBody.name && game.cmdr.scanOne.body != null)
+                    g.DrawString("Scan one: invalid", GameColors.fontSmall, GameColors.brushRed, ten, y);
+                else
+                    this.drawBearingTo(g, ten, y, "Scan one:", game.cmdr.scanOne.location!);
+            }
 
             if (game.cmdr.scanTwo != null)
-                this.drawBearingTo(g, ten + mw, y, "Scan two:", game.cmdr.scanTwo.location!);
+            {
+                if (game.cmdr.scanTwo.body != game.systemBody.name && game.cmdr.scanTwo.body != null)
+                    g.DrawString("Scan two: invalid", GameColors.fontSmall, GameColors.brushRed, ten + mw, y);
+                else
+                    this.drawBearingTo(g, ten + mw, y, "Scan two:", game.cmdr.scanTwo.location!);
+            }
 
             // TODO: fix bug where warning shown and ship already departed
             if (!shipDeparted && this.td?.distance > 1800 && (game.vehicle == ActiveVehicle.SRV || game.vehicle == ActiveVehicle.Foot))
@@ -385,13 +395,10 @@ namespace SrvSurvey
 
             // draw active scans top most
             if (game.cmdr.scanOne != null)
-            {
                 drawBioScan(g, d, game.cmdr.scanOne);
-            }
+
             if (game.cmdr.scanTwo != null)
-            {
                 drawBioScan(g, d, game.cmdr.scanTwo);
-            }
 
             g.ResetTransform();
         }
@@ -500,6 +507,8 @@ namespace SrvSurvey
 
         private void drawBioScan(Graphics g, TrackingDelta d, BioScan scan)
         {
+            if (scan.body != null && scan.body != game.systemBody?.name) return;
+
             d.Target = scan.location!;
             var radius = scan.radius * 1f;
 

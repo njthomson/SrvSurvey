@@ -2174,6 +2174,7 @@ namespace SrvSurvey.game
                 radius = BioScan.ranges[entry.Genus],
                 status = BioScan.Status.Active,
                 entryId = match.entryId,
+                body = systemBody.name,
             };
 
             Game.log($"new bio scan: {bioScan} ({entry.ScanType}) | current location: {Status.here}");

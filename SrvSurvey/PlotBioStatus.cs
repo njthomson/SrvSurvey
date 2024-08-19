@@ -223,16 +223,24 @@ namespace SrvSurvey
             var g = e.Graphics;
             g.SmoothingMode = SmoothingMode.HighQuality;
 
+            var scanOne = game.cmdr.scanOne;
             if (game.systemBody.organisms?.Count > 0)
             {
                 g.DrawString(
                     $"Biological signals: {game.systemBody.bioSignalCount} | Analyzed: {game.systemBody.countAnalyzedBioSignals}",
                     GameColors.fontSmall, GameColors.brushGameOrange, PlotBase.scaled(4), PlotBase.scaled(8));
 
-                if (game.cmdr.scanOne == null)
+                var organism = scanOne == null ? null : game.systemBody?.organisms?.FirstOrDefault(_ => _.species == scanOne.species);
+                if (organism == null)
+                {
                     this.showAllGenus(g);
+
+                    // warn if scan is from another body
+                    if (scanOne?.body != null && scanOne.body != game.systemBody?.name)
+                        this.drawFooterText(g, $"Current scans are from {scanOne.body}", GameColors.brushRed);
+                }
                 else
-                    this.showCurrentGenus(g);
+                    this.showCurrentGenus(g, organism);
 
                 this.drawValueCompletion(g);
             }
@@ -248,7 +256,7 @@ namespace SrvSurvey
                 g.DrawString(msg, GameColors.fontMiddle, GameColors.brushCyan, tx, ty);
             }
 
-            if (game.cmdr.scanOne == null)
+            if (scanOne == null)
             {
                 var allScanned = game.systemBody!.countAnalyzedBioSignals == game.systemBody.bioSignalCount;
                 if (allScanned && game.systemBody.firstFootFall)
@@ -268,15 +276,8 @@ namespace SrvSurvey
             }
         }
 
-        private void showCurrentGenus(Graphics g)
+        private void showCurrentGenus(Graphics g, SystemOrganism organism)
         {
-            var organism = game.systemBody?.organisms?.FirstOrDefault(_ => _.species == game.cmdr.scanOne!.species)!;
-            if (organism == null)
-            {
-                Game.log($"Why no organism found for scan one: {game.cmdr.scanOne!.species}");
-                return;
-            }
-
             float y = PlotBase.scaled(28);
 
             // left circle - always filled
