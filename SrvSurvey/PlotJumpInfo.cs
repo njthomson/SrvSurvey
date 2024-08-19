@@ -67,6 +67,21 @@ namespace SrvSurvey
         {
             var route = game.navRoute.Route.Skip(1).ToList();
 
+            if (route.Count == 0 && game.fsdTarget?.Name != null)
+            {
+                Game.log($"Faking route for: {game.fsdTarget.Name}");
+
+                // create a route if we have a single hop
+                var destination = new RouteEntry()
+                {
+                    StarClass = game.fsdTarget.StarClass,
+                    // no StarPos it is not part of FSDTarget journal entries
+                    StarSystem = game.fsdTarget.Name,
+                    SystemAddress = game.fsdTarget.SystemAddress,
+                };
+                route.Add(destination);
+            }
+
             // find next hop in route
             this.nextSystem = game.fsdTarget?.Name ?? game.status.Destination?.Name!;
             if (this.nextSystem == null) return;
@@ -95,6 +110,8 @@ namespace SrvSurvey
             {
                 // ... yes
                 this.Invalidate();
+                if (this.totalDistance == 0)
+                    this.calculateSingleHopDistances();
                 return;
             }
 
@@ -168,6 +185,13 @@ namespace SrvSurvey
                         var bioSignals = body.signals?.signals?.GetValueOrDefault("$SAA_SignalType_Biological;") ?? 0;
                         if (bioSignals > 0) this.info.countPOI["Genus"] += bioSignals;
                     }
+
+                    // inject missing StarPos if needed
+                    if (nextHop.entry.StarPos == null)
+                    {
+                        nextHop.entry.StarPos = response.Result.coords;
+                        this.calculateSingleHopDistances();
+                    }
                 }
 
                 Program.control.BeginInvoke(() => this.Invalidate());
@@ -179,6 +203,18 @@ namespace SrvSurvey
             var countBeacons = Game.canonn.loadAllBeacons().Count(r => r.systemAddress == next.SystemAddress);
             this.info.countPOI["Guardian"] = countRuins + countStructures + countBeacons;
             if (this.info.countPOI["Guardian"] > 0) this.Invalidate();
+        }
+
+        private void calculateSingleHopDistances()
+        {
+            // measure distance from current system to next
+            this.hopDistances.Clear();
+
+            var d = (float)Util.getSystemDistance(game.cmdr.starPos, nextHop.entry.StarPos);
+            this.hopDistances.Add(d);
+            this.totalDistance = d;
+            var scoopable = "KGBFOAM".Contains(nextHop.entry.StarClass);
+            this.hopScoops.Add(scoopable);
         }
 
         protected override void onJournalEntry(NavRouteClear entry)
@@ -204,7 +240,12 @@ namespace SrvSurvey
 
         protected override void onPaintPlotter(PaintEventArgs e)
         {
-            if (this.nextHop == null) return;
+            if (this.nextHop == null)
+            {
+                // avoid showing an empty plotter
+                this.Opacity = 0;
+                return;
+            }
 
             // 1st line the name of the system we are jumping to
             dty += two;
@@ -214,8 +255,6 @@ namespace SrvSurvey
             drawTextAt(this.nextHop.systemName, GameColors.fontMiddleBold);
             drawTextAt(this.Width - eight, $"class: {nextHop.entry.StarClass}", nextHop.entry.StarClass == "N" ? GameColors.brushCyan : null, null, true);
             newLine(+eight, true);
-
-            if (nextHop == null) return;
 
             this.drawJumpLine();
 
@@ -381,5 +420,7 @@ namespace SrvSurvey
             { "Settlements", 0 }, // Odyssey settlements
             { "FC", 0 }, // Fleet carriers
         };
+
+        //public RouteInfo info;
     }
 }

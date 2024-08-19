@@ -2144,21 +2144,15 @@ namespace SrvSurvey.game
                 if (this.systemBody.bioScans == null) this.systemBody.bioScans = new List<BioScan>();
 
                 // yes - mark current scans as abandoned and start over
-                if (this.cmdr.scanOne != null)
+                if (this.cmdr.scanOne != null && cmdr.scanOne.body == systemBody.name)
                 {
                     var genusMatch = Game.codexRef.matchFromGenus(cmdr.scanOne.genus)!;
                     this.addBookmark(genusMatch.shortName, cmdr.scanOne.location);
-
-                    this.cmdr.scanOne.status = BioScan.Status.Abandoned;
-                    this.systemBody.bioScans.Add(this.cmdr.scanOne);
                 }
-                if (this.cmdr.scanTwo != null)
+                if (this.cmdr.scanTwo != null && cmdr.scanTwo.body == systemBody.name)
                 {
                     var genusMatch = Game.codexRef.matchFromGenus(cmdr.scanTwo.genus)!;
                     this.addBookmark(genusMatch.shortName, cmdr.scanTwo.location);
-
-                    this.cmdr.scanTwo.status = BioScan.Status.Abandoned;
-                    this.systemBody.bioScans.Add(this.cmdr.scanTwo);
                 }
 
                 this.cmdr.scanOne = null;
@@ -2340,6 +2334,8 @@ namespace SrvSurvey.game
             // TODO: limit to only 4?
             //Game.log($"Group '{name}' has too many entries. Ignoring location: {location}");
             this.systemData.Save();
+
+            Program.showPlotter<PlotTrackers>()?.prepTrackers();
         }
 
         public void clearAllBookmarks()

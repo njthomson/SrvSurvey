@@ -28,7 +28,7 @@ namespace SrvSurvey
             }
         }
 
-        // public override bool allow { get => PlotGrounded.allowPlotter; }
+        public /*override*/ bool allow { get => PlotBioStatus.allowPlotter; }
 
         protected override void OnActivated(EventArgs e)
         {
@@ -84,6 +84,8 @@ namespace SrvSurvey
 
         private void initialize()
         {
+            if (this.IsDisposed) return;
+
             this.BackgroundImage = GameGraphics.getBackgroundForForm(this);
 
             if (game.systemBody == null)
@@ -106,7 +108,7 @@ namespace SrvSurvey
             if (this.IsDisposed) return;
 
             // hide ourself whilst FSD is charging to jump systems
-            if (game.status.FsdChargingJump)
+            if (game.status.FsdChargingJump || !this.allow)
                 this.Opacity = 0;
             else if (this.Opacity == 0 && !game.status.FsdChargingJump)
                 this.Opacity = PlotPos.getOpacity(this);

@@ -523,10 +523,8 @@ namespace SrvSurvey
             else if (scan.status == BioScan.Status.Abandoned)
             {
                 // grey colors for abandoned scans
-                //b = GameColors.brushExclusionAbandoned;
-                //p = GameColors.penExclusionAbandoned;
-                b = GameColors.brushTrackInactive;
-                p = GameColors.penTrackInactive;
+                b = GameColors.brushExclusionAbandoned;
+                p = GameColors.penExclusionAbandoned;
 
             }
             else if (scan.status == BioScan.Status.Died)

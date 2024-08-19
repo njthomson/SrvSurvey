@@ -252,14 +252,14 @@ namespace SrvSurvey
 
             }));
 
-            Game.spansh.getSystemDump((long)entry.SystemAddress).ContinueWith(result => Program.crashGuard(() =>
+            Game.spansh.getSystemDump((long)entry.SystemAddress).ContinueWith(response => Program.crashGuard(() =>
             {
-                if (result.Exception != null)
+                if (response.Exception != null)
                 {
-                    Util.isFirewallProblem(result.Exception);
+                    Util.isFirewallProblem(response.Exception);
                     return;
                 }
-                var spanshResult = result.Result;
+                var spanshResult = response.Result;
                 this.sumGenus = spanshResult.bodies.Sum(_ => _.signals?.genuses?.Count ?? 0);
 
             }));
