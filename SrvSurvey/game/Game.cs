@@ -2146,14 +2146,17 @@ namespace SrvSurvey.game
                 // yes - mark current scans as abandoned and start over
                 if (this.cmdr.scanOne != null)
                 {
-                    // TODO: make this a regular tracked locations
-                    //game.cmdr.trackTargets.Add(game.cmdr.scanOne.genus, )
+                    var genusMatch = Game.codexRef.matchFromGenus(cmdr.scanOne.genus)!;
+                    this.addBookmark(genusMatch.shortName, cmdr.scanOne.location);
+
                     this.cmdr.scanOne.status = BioScan.Status.Abandoned;
                     this.systemBody.bioScans.Add(this.cmdr.scanOne);
                 }
                 if (this.cmdr.scanTwo != null)
                 {
-                    // TODO: make this a regular tracked locations
+                    var genusMatch = Game.codexRef.matchFromGenus(cmdr.scanTwo.genus)!;
+                    this.addBookmark(genusMatch.shortName, cmdr.scanTwo.location);
+
                     this.cmdr.scanTwo.status = BioScan.Status.Abandoned;
                     this.systemBody.bioScans.Add(this.cmdr.scanTwo);
                 }
@@ -2177,7 +2180,7 @@ namespace SrvSurvey.game
                 body = systemBody.name,
             };
 
-            Game.log($"new bio scan: {bioScan} ({entry.ScanType}) | current location: {Status.here}");
+            Game.log($"new bio scan: {bioScan} ({entry.ScanType}) | current location: {Status.here} {this.systemBody.name}");
 
             if (entry.ScanType == ScanType.Log)
             {
@@ -2195,6 +2198,16 @@ namespace SrvSurvey.game
                 // populate 2nd
                 this.cmdr.scanTwo = bioScan;
                 this.cmdr.Save();
+            }
+            else if (this.cmdr.scanOne == null && entry.ScanType == ScanType.Sample)
+            {
+                // we missed the first scan somehow?
+                this.cmdr.scanOne = bioScan;
+                this.cmdr.Save();
+
+                // adjust predictions/rewards calculations for this body
+                this.systemBody.predictSpecies();
+                Program.invalidateActivePlotters();
             }
             else if (entry.ScanType == ScanType.Analyse)
             {

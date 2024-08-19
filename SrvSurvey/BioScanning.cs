@@ -15,8 +15,8 @@ namespace SrvSurvey
     {
         public LatLong2 location;
         public float radius;
-        public string? genus;
-        public string? species;
+        public string genus;
+        public string species;
         [JsonConverter(typeof(StringEnumConverter))]
         public Status status;
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]

@@ -277,7 +277,7 @@ namespace SrvSurvey.canonn
             if (this.genus == null || this.genus.Count == 0) throw new Exception($"BioRef is not loaded.");
             if (string.IsNullOrEmpty(genusName)) throw new Exception($"Missing genus name!");
 
-            var genusRef = Game.codexRef.genus.FirstOrDefault(genusRef => genusRef.species.Any(_ => genusRef.name == genusName));
+            var genusRef = Game.codexRef.genus.FirstOrDefault(genusRef => genusRef.name == genusName);
             return genusRef;
         }
 
