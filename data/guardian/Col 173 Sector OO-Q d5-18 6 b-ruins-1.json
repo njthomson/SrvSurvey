@@ -4,6 +4,10 @@
   "sh": -1,
   "t": "Gamma",
   "rh": -1,
+  "ll": {
+    "lat": -33.013981,
+    "long": 13.29487
+  },
   "og": "CDEFHLOPS",
   "ao": [
     "C04-to,ur-C17-",

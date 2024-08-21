@@ -4,6 +4,10 @@
   "sh": -1,
   "t": "Alpha",
   "rh": -1,
+  "ll": {
+    "lat": 32.805458,
+    "long": -138.399338
+  },
   "og": "BCFGHIJKLMNO",
   "ao": [
     "B15-to,ur-C4-",
@@ -11,6 +15,7 @@
     "C02-to,ur-C4-",
     "C13-to,re-C1-",
     "F09-ur,ca-B3-",
+    "F10-ur,ca-B3-",
     "F13-ur,ca-B3-",
     "G01-ca,ca-H2-",
     "H05-ca-H1-",

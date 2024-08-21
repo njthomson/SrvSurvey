@@ -4,6 +4,10 @@
   "sh": -1,
   "t": "Alpha",
   "rh": -1,
+  "ll": {
+    "lat": 45.641048,
+    "long": 174.069275
+  },
   "og": "ADGHIJKLMOQ",
   "ao": [
     "A08-ur,ta-B4-",
@@ -21,6 +25,7 @@
     "L07-ca,to-H6-",
     "M04-ta,ur-L4-",
     "M12-ta,ur-L4-",
+    "M13-ta,or-L5-",
     "M24-ta,re-L7-",
     "O05-or,ta-T5-",
     "O07-or-T1-",

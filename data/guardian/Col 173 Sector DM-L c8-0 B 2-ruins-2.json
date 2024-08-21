@@ -4,6 +4,10 @@
   "sh": -1,
   "t": "Alpha",
   "rh": -1,
+  "ll": {
+    "lat": -32.054241,
+    "long": -3.798693
+  },
   "og": "CFJKLMNOQ",
   "ao": [
     "C02-to,ur-C4-",

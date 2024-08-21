@@ -4,6 +4,10 @@
   "sh": -1,
   "t": "Gamma",
   "rh": -1,
+  "ll": {
+    "lat": -58.607151,
+    "long": -171.629257
+  },
   "og": "ADEFGHIJPRS",
   "ao": [
     "A21-ur,re-B19-",

@@ -4,6 +4,10 @@
   "sh": -1,
   "t": "Alpha",
   "rh": -1,
+  "ll": {
+    "lat": -12.738662,
+    "long": -151.08493
+  },
   "og": "ABCDEFKLMNQ",
   "ao": [
     "A10-to,to-C2-",

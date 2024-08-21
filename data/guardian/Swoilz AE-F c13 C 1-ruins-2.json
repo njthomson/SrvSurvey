@@ -4,6 +4,10 @@
   "sh": -1,
   "t": "Gamma",
   "rh": -1,
+  "ll": {
+    "lat": 22.152439,
+    "long": -54.10141
+  },
   "og": "CDFHKLNOPS",
   "ao": [
     "C02-to,or-C19-",

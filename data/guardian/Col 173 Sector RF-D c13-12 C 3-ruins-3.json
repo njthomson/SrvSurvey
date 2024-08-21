@@ -4,11 +4,16 @@
   "sh": -1,
   "t": "Alpha",
   "rh": -1,
+  "ll": {
+    "lat": 49.625275,
+    "long": -44.74371
+  },
   "og": "ABCDFJNO",
   "ao": [
     "A01-ta-L1-",
     "A06-ur,ur-B2-",
     "A18-or,or-T2-",
+    "B12-to,ur-C4-",
     "B15-to,ur-C4-",
     "B18-to,re-C1-",
     "C02-to,ur-C4-",

@@ -4,6 +4,10 @@
   "sh": -1,
   "t": "Gamma",
   "rh": -1,
+  "ll": {
+    "lat": -18.872185,
+    "long": -36.644917
+  },
   "og": "ABCDEFIJKMOR",
   "ao": [
     "A22-ur,to-B18-",
@@ -22,6 +26,7 @@
     "K04-or-T14-",
     "K11-or,ur-T17-",
     "M01-to,re-C20-",
+    "M08-to,ca-C16-",
     "M09-to,ca-C16-",
     "O07-ca,ca-H18-",
     "R10-to-C14-",

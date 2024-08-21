@@ -1074,9 +1074,9 @@ namespace SrvSurvey.canonn
             var doc = XDocument.Load(@"d:\code\Guardian Ruin Survey.xml");
 
             var obeliskGroupings = new Dictionary<string, string>();
-            parseRuinObeliskGroupings(doc, "Alpha - Groups Present", obeliskGroupings);
-            parseRuinObeliskGroupings(doc, "Beta - Groups Present", obeliskGroupings);
-            parseRuinObeliskGroupings(doc, "Gamma - Groups Present", obeliskGroupings);
+            parseRuinObeliskGroupings(doc, "Alpha - Groups", obeliskGroupings);
+            parseRuinObeliskGroupings(doc, "Beta - Groups", obeliskGroupings);
+            parseRuinObeliskGroupings(doc, "Gamma - Groups", obeliskGroupings);
 
             var sites = parseGRRuins(doc, obeliskGroupings);
             Game.log($"Writing {sites.Count} pubData Ruins files");
@@ -1253,8 +1253,6 @@ namespace SrvSurvey.canonn
                                 idx = site.idx,
 
                                 // populated from pubData file ...
-                                //   latitude
-                                //   longitude
                                 //   siteHeading
                                 //   relicTowerHeading
                             };
@@ -1277,6 +1275,19 @@ namespace SrvSurvey.canonn
                         {
                             ruinSummary.legacyLatitude = double.Parse(cells[17].Value, CultureInfo.InvariantCulture);
                             ruinSummary.legacyLongitude = double.Parse(cells[18].Value, CultureInfo.InvariantCulture);
+                        }
+                        // update live lat/long if missing
+                        if (site.ll == null && cells[19].Value != "" && cells[20].Value != "")
+                        {
+                            site.ll = new LatLong2(
+                                double.Parse(cells[19].Value, CultureInfo.InvariantCulture),
+                                double.Parse(cells[20].Value, CultureInfo.InvariantCulture)
+                            );
+                        }
+                        if (site.ll != null && (double.IsNaN(ruinSummary.latitude) || double.IsNaN(ruinSummary.longitude)))
+                        {
+                            ruinSummary.latitude = (double)site.ll.Lat;
+                            ruinSummary.longitude = (double)site.ll.Long;
                         }
 
                         continue;
