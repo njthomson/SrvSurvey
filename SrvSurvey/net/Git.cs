@@ -287,28 +287,30 @@ namespace SrvSurvey.net
                 var sitePP = string.Join(',', poiPresent.Order());
                 var sitePA = string.Join(',', poiAbsent.Order());
                 var sitePE = string.Join(',', poiEmpty.Order());
-                //if (site.pubData.sid == "GS098") Debugger.Break();
+                //if (site.pubData.sid == "GR134") Debugger.Break();
 
                 var sumSitePoi = poiPresent.Count + poiAbsent.Count + poiEmpty.Count;
-                var sumPubDataPoi = (site.pubData.pp?.Split(",").Length ?? 0) + (site.pubData.pa?.Split(",").Length ?? 0) + (site.pubData.pe?.Split(",").Length ?? 0);
-                if (sumSitePoi < sumPubDataPoi)
-                    Game.log($"Skipping poiStatus due suspicious counts - sumSitePoi:{sumSitePoi} vs sumPubDataPoi:{sumPubDataPoi}");
+                if (sumSitePoi != template.poiSurvey.Count)
+                {
+                    Game.log($"Skipping poiStatus due suspicious counts - sumSitePoi:{sumSitePoi} vs sumPubDataPoi:{template.poiSurvey.Count}, {template.name}, {Path.GetFileName(site.filepath)}");
+                    Debugger.Break();
+                }
                 else
                 {
-                    if (site.pubData.pp != sitePP && !string.IsNullOrWhiteSpace(sitePP))
+                    if (site.pubData.pp != sitePP)
                     {
                         diff = true;
-                        site.pubData.pp = sitePP;
+                        site.pubData.pp = string.IsNullOrWhiteSpace(sitePP) ? null! : sitePP;
                     }
-                    if (site.pubData.pa != sitePA && !string.IsNullOrWhiteSpace(sitePA))
+                    if (site.pubData.pa != sitePA)
                     {
                         diff = true;
-                        site.pubData.pa = sitePA;
+                        site.pubData.pa = string.IsNullOrWhiteSpace(sitePA) ? null! : sitePA;
                     }
-                    if (site.pubData.pe != sitePE && !string.IsNullOrWhiteSpace(sitePE))
+                    if (site.pubData.pe != sitePE)
                     {
                         diff = true;
-                        site.pubData.pe = sitePE;
+                        site.pubData.pe = string.IsNullOrWhiteSpace(sitePE) ? null! : sitePE;
                     }
                 }
 

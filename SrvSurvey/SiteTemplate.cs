@@ -145,6 +145,9 @@ namespace SrvSurvey
         [JsonIgnore]
         public List<SitePOI> poiObelisks;
 
+        /// <summary>
+        /// POI without obelisk or brokeObelisk
+        /// </summary>
         [JsonIgnore]
         public List<SitePOI> poiSurvey;
 
