@@ -522,7 +522,9 @@ namespace SrvSurvey.game
             if (pubData.ll == null && this.location != null) return true;
 
             // we have some POI status not in pubData or is different
-            if (this.poiStatus.Keys.Any(_ => !pubData.poiStatus.ContainsKey(_) || pubData.poiStatus[_] != this.poiStatus[_])) return true;
+            var diffPoiStatus = this.poiStatus.Where(_ => !pubData.poiStatus.ContainsKey(_.Key) || pubData.poiStatus[_.Key] != this.poiStatus[_.Key]).ToDictionary(_ => _.Key, _ => _.Value);
+            var alt = pubData.poiStatus.Where(_ => diffPoiStatus.ContainsKey(_.Key)).ToDictionary(_ => _.Key, _ => _.Value);
+            if (diffPoiStatus.Any()) return true;
 
             // we have some relic heading not in pubData (ignore number differences at this time)
             if (this.relicHeadings.Keys.Any(_ => !pubData.relicTowerHeadings.ContainsKey(_))) return true;

@@ -256,9 +256,9 @@ namespace SrvSurvey.net
                     site.pubData.rth = string.Join(',', site.pubData.relicTowerHeadings.OrderBy(_ => int.Parse(_.Key.Substring(1), CultureInfo.InvariantCulture)).Select(_ => $"{_.Key}:{_.Value}"));
                 }
 
-                var poiPresent = string.IsNullOrEmpty(site.pubData.pp) ? new HashSet<string>() : new HashSet<string>(site.pubData.pp.Split(','));
-                var poiAbsent = string.IsNullOrEmpty(site.pubData.pa) ? new HashSet<string>() : new HashSet<string>(site.pubData.pa.Split(','));
-                var poiEmpty = string.IsNullOrEmpty(site.pubData.pe) ? new HashSet<string>() : new HashSet<string>(site.pubData.pe.Split(','));
+                var poiPresent = new HashSet<string>(template.poi.Where(p => site.getPoiStatus(p.name) == SitePoiStatus.present).Select(p => p.name));
+                var poiAbsent = new HashSet<string>(template.poi.Where(p => site.getPoiStatus(p.name) == SitePoiStatus.absent).Select(p => p.name));
+                var poiEmpty = new HashSet<string>(template.poi.Where(p => site.getPoiStatus(p.name) == SitePoiStatus.empty).Select(p => p.name));
                 foreach (var _ in site.poiStatus)
                 {
                     var poi = template.poi.FirstOrDefault(pt => pt.name == _.Key);
@@ -282,15 +282,12 @@ namespace SrvSurvey.net
                         Clipboard.SetText(site.bodyName);
                         Debugger.Break();
                     }
-
-                    // (use the func, so it reads into site.pubData intentionally)
-                    if (site.getPoiStatus(_.Key) == SitePoiStatus.present) poiPresent.Add(_.Key);
-                    if (site.getPoiStatus(_.Key) == SitePoiStatus.absent) poiAbsent.Add(_.Key);
-                    if (site.getPoiStatus(_.Key) == SitePoiStatus.empty) poiEmpty.Add(_.Key);
                 }
+
                 var sitePP = string.Join(',', poiPresent.Order());
                 var sitePA = string.Join(',', poiAbsent.Order());
                 var sitePE = string.Join(',', poiEmpty.Order());
+                //if (site.pubData.sid == "GS098") Debugger.Break();
 
                 var sumSitePoi = poiPresent.Count + poiAbsent.Count + poiEmpty.Count;
                 var sumPubDataPoi = (site.pubData.pp?.Split(",").Length ?? 0) + (site.pubData.pa?.Split(",").Length ?? 0) + (site.pubData.pe?.Split(",").Length ?? 0);
