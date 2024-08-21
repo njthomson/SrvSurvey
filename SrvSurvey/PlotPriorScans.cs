@@ -27,7 +27,7 @@ namespace SrvSurvey
         {
             var rows = this.signals.Sum(_ =>
             {
-                var r = 2 + ((_.trackers.Count - 1) / 4);
+                var r = 2 + ((_.trackers.Count - 1) / 3);
                 return r;
             });
 
@@ -50,7 +50,7 @@ namespace SrvSurvey
 
         protected override void OnLoad(EventArgs e)
         {
-            this.Width = scaled(380);
+            this.Width = scaled(308);
             this.Height = scaled(300);
             base.OnLoad(e);
 
@@ -231,7 +231,7 @@ namespace SrvSurvey
 
             this.resetPlotter(g);
 
-            this.drawFooterText("(Tracked locations may not be that close to signals)", GameColors.brushGameOrangeDim, this.Font);
+            this.drawFooterText("(Locations may not be that close to signals)", GameColors.brushGameOrangeDim, this.Font);
 
             this.dtx = four;
             this.dty = eight;

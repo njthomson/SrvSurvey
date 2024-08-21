@@ -78,9 +78,15 @@
         /// <summary> Main : Record that first footfall on current body </summary>
         public const string ff = ".ff";
 
-        /// <summary> PlotHumanSite : For manual entry of the threat level, eg: ".threat 1" </summary>
-        public const string threat = ".threat";
         /// <summary> PlotHumanSite : For manually initializing a settlement's rotation. Cmdr must be centered on a landing pad first. </summary>
         public const string settlement = ".settlement";
+        /// <summary> PlotHumanSite : For manual entry of the threat level, eg: ".threat 1" </summary>
+        public const string threat = ".threat";
+        /// <summary> PlotHumanSite : Invoked the settlement map editor</summary>
+        public const string edit = ".edit";
+        /// <summary> PlotHumanSite : Begin survey, tracking settlement mats</summary>
+        public const string start = ".start";
+        /// <summary> PlotHumanSite : End survey, tracking settlement mats</summary>
+        public const string stop = ".stop";
     }
 }

@@ -864,7 +864,14 @@ namespace SrvSurvey
     {
         protected LatLong2 siteOrigin;
         protected float siteHeading;
+        /// <summary>The cmdr's distance from the site origin</summary>
+        protected decimal distToSiteOrigin;
+        /// <summary>The cmdr's offset against the site origin ignoring site.heading</summary>
+        protected PointF offsetWithoutHeading;
+        /// <summary>The cmdr's offset against the site origin including site.heading</summary>
         protected PointF cmdrOffset;
+        /// <summary>The cmdr's heading relative to the site.heading</summary>
+        protected float cmdrHeading;
 
         protected Image? mapImage;
         protected Point mapCenter;
@@ -875,7 +882,10 @@ namespace SrvSurvey
             if (this.IsDisposed || game?.status == null || game.systemBody == null) return;
             base.Status_StatusChanged(blink);
 
-            this.cmdrOffset = (PointF)Util.getOffset(this.radius, this.siteOrigin); // explicitly NOT including site.heading
+            this.distToSiteOrigin = Util.getDistance(siteOrigin, Status.here, this.radius);
+            this.offsetWithoutHeading = (PointF)Util.getOffset(this.radius, this.siteOrigin); // explicitly EXCLUDING site.heading
+            this.cmdrOffset = (PointF)Util.getOffset(radius, siteOrigin, siteHeading); // explicitly INCLUDING site.heading
+            this.cmdrHeading = game.status.Heading - siteHeading;
         }
 
         //protected PointF getSiteOffset()
@@ -901,7 +911,7 @@ namespace SrvSurvey
             g.TranslateTransform(mid.Width, mid.Height); // shift to center of window
             g.ScaleTransform(scale, scale); // apply display scale factor (zoom)
             g.RotateTransform(-game.status.Heading); // rotate by cmdr heading
-            g.TranslateTransform(-cmdrOffset.X, cmdrOffset.Y); // shift relative to cmdr
+            g.TranslateTransform(-offsetWithoutHeading.X, offsetWithoutHeading.Y); // shift relative to cmdr
             g.RotateTransform(this.siteHeading); // rotate by site heading
 
             // vertical rotation flips depending on north/south hemisphere?

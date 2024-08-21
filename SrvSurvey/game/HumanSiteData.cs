@@ -251,13 +251,13 @@ namespace SrvSurvey.game
                     else
                     {
                         // TODO: Remove once templates are populated
-                        Game.log($"not a match - {template.economy} #{template.subType}, pad #{this.targetPad} ({pad.size}): shipDistFromPadCenter: " + delta.dist.ToString("N2"));
+                        Game.log($"inferSubtypeFromFoot: not a match - {template.economy} #{template.subType}, pad #{this.targetPad} ({pad.size}): shipDistFromPadCenter: " + delta.dist.ToString("N2"));
                     }
                 }
             }
 
             if (this.subType == 0)
-                Game.log($"inferSubtypeFromDocked: Doh! We should have been able to infer the subType by this point :(");
+                Game.log($"inferSubtypeFromFoot: Doh! We should have been able to infer the subType by this point :(");
         }
 
         #region static mappings

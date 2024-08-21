@@ -306,7 +306,7 @@ namespace SrvSurvey
             {
                 public static Color color = Color.FromArgb(32, GameColors.DarkCyan);
                 public static Brush brush = Brushes.DarkCyan;
-                public static Pen pen = Pens.DarkCyan;
+                public static Pen pen = newPen(Color.DarkCyan);
                 public static Pen penRadar = new Pen(Color.FromArgb(80, GameColors.DarkCyan)) { Width = 8, DashStyle = DashStyle.Dot };
             }
             /// <summary> orange dim </summary>
@@ -319,7 +319,7 @@ namespace SrvSurvey
             internal static class Analyzed
             {
                 public static Brush brush = Brushes.DarkSlateGray;
-                public static Pen pen = Pens.DarkSlateGray;
+                public static Pen pen = newPen(Color.DarkSlateGray);
             }
         }
 
@@ -368,6 +368,7 @@ namespace SrvSurvey
         public static Brush brushAroundPoiUnknown = new SolidBrush(Color.FromArgb(160, Color.DarkSlateBlue));
         public static Pen penAroundPoiUnknown = newPen(Color.FromArgb(96, Color.Cyan), 1f, DashStyle.Dot);
 
+        /// <summary Guardian map related </summary>
         internal static class Map
         {
             internal static class Legend
@@ -491,16 +492,35 @@ namespace SrvSurvey
 
         public static Pen penCollectedMatDot = new Pen(Color.Yellow, 0.2f);
 
-        public static Dictionary<int, SiteColors> siteLevel = new Dictionary<int, SiteColors>
+        /// <summary>
+        /// For PlotHumanSite
+        /// </summary>
+        public static class HumanSite
         {
-            { 0, new SiteColors(Color.Green) },
-            { 1, new SiteColors(Color.SkyBlue) },
-            { 2, new SiteColors(Color.DarkOrange) },
-            { 3, new SiteColors(Color.Red) },
+            public static PenBrush powerIcon = new PenBrush(
+                newPen(Color.Cyan, 0.5f, LineCap.Triangle, LineCap.Triangle),
+                Brushes.Cyan);
 
-            // For processed POIs, like DataTerminals that have already been scanned
-            { -1, new SiteColors(Color.Gray) },
-        };
+            public static Pen penDoorEdge = newPen(Color.Navy);
+
+            public static Dictionary<int, SiteColors> siteLevel = new Dictionary<int, SiteColors>
+            {
+                { 0, new SiteColors(Color.Green) },
+                { 1, new SiteColors(Color.SkyBlue) },
+                { 2, new SiteColors(Color.DarkOrange) },
+                { 3, new SiteColors(Color.Red) },
+
+                // For processed POIs, like DataTerminals that have already been scanned
+                { -1, new SiteColors(Color.Gray) },
+            };
+
+            public static PenBrush landingPad = new PenBrush(
+                newPen(Color.SlateGray),
+                Brushes.SlateGray);
+
+            public static Pen penOuterLimit = newPen(Color.FromArgb(64, Color.Gray), 8, DashStyle.DashDotDot);
+            public static Pen penOuterLimitWarningArrow = penGameOrangeDim4;
+        }
 
         /// <summary>
         /// Colors for buildings at human settlements
@@ -518,6 +538,9 @@ namespace SrvSurvey
             public static Brush LAB = new SolidBrush(Color.FromArgb(255, 0, 32, 32)); // dark green
         }
 
+        /// <summary>
+        /// Colors for PlotJumpInfo
+        /// </summary>
         public static class Route
         {
             public static Pen penNext = newPen(Color.Cyan, 4, LineCap.Triangle, LineCap.Triangle);
@@ -630,5 +653,20 @@ namespace SrvSurvey
         public readonly Color color;
         public readonly Brush brush;
         public readonly Pen pen;
+    }
+
+    /// <summary>
+    /// A related Pen and Brush
+    /// </summary>
+    internal class PenBrush
+    {
+        public Pen pen;
+        public Brush brush;
+
+        public PenBrush(Pen pen, Brush brush)
+        {
+            this.pen = pen;
+            this.brush = brush;
+        }
     }
 }

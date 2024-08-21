@@ -1,7 +1,7 @@
 ﻿using DecimalMath;
 using SrvSurvey.game;
 using SrvSurvey.units;
-using System.Drawing.Drawing2D;
+using System.Diagnostics;
 using System.Globalization;
 
 namespace SrvSurvey
@@ -9,6 +9,11 @@ namespace SrvSurvey
     internal class PlotHumanSite : PlotBaseSite, PlotterForm
     {
         public static bool autoZoom = true;
+        /// <summary>Distance of outer circle, outside which ships and shuttles can be ordered</summary>
+        public static float limitDist = 500;
+        /// <summary>Distance from settlement origin to begin showing arrow pointing back to settlement origin</summary>
+        public static decimal limitWarnDist = 300;
+        public static bool showMapPixelOffsets = false;
 
         private FileSystemWatcher? mapImageWatcher;
         private FileSystemWatcher? templateWatcher;
@@ -27,6 +32,8 @@ namespace SrvSurvey
             // these we get from current data
             this.siteOrigin = site.location;
             this.siteHeading = site.heading;
+
+            if (site.location.Lat == 0 || site.location.Long == 0) Debugger.Break(); // Does this ever happen?
 
             if (!autoZoom) this.scale = 6;
 
@@ -79,20 +86,25 @@ namespace SrvSurvey
             this.loadMapImage();
         }
 
+        /// <summary>
+        /// Conditions when plotter can exist (but potentially hidden)
+        /// </summary>
         public static bool keepPlotter
         {
-            get => Game.activeGame?.status != null
-                && Game.settings.autoShowHumanSitesTest
+            get => Game.settings.autoShowHumanSitesTest
+                && Game.activeGame?.status != null
                 && !Game.activeGame.atMainMenu
                 && Game.activeGame.status.hasLatLong
                 && !Game.activeGame.hidePlottersFromCombatSuits
                 && Game.activeGame.humanSite != null;
         }
 
+        /// <summary>
+        /// Conditions when plotter can be visible
+        /// </summary>
         public static bool allowPlotter
         {
             get => keepPlotter
-                && Game.activeGame?.atMainMenu == false
                 && Game.activeGame!.isMode(GameMode.OnFoot, GameMode.Flying, GameMode.Docked, GameMode.InSrv, GameMode.InTaxi, GameMode.Landed, GameMode.CommsPanel, GameMode.ExternalPanel, GameMode.GlideMode);
         }
 
@@ -100,7 +112,7 @@ namespace SrvSurvey
         {
             if (this.IsDisposed) return;
 
-            // revisit this
+            // revisit this (why does opacity matter?)
             if (this.Opacity > 0 && !PlotHumanSite.keepPlotter)
                 Program.closePlotter<PlotHumanSite>(true);
             else if (this.Opacity > 0 && !PlotHumanSite.allowPlotter)
@@ -108,16 +120,16 @@ namespace SrvSurvey
             else if (this.Opacity == 0 && PlotHumanSite.keepPlotter)
                 this.reposition(Elite.getWindowRect());
 
+            // update if the site recently gained it
             if (this.siteHeading == -1 && site?.heading >= 0)
                 this.siteHeading = site.heading;
 
-            this.setZoom(newMode);
-
+            // load missing map image if the template was recently set
             if (this.mapImage == null && site?.template != null)
                 this.loadMapImage();
 
-            if (newMode == GameMode.MainMenu)
-                this.Close();
+            // auto-adjust zoom?
+            this.setZoom(newMode);
         }
 
         protected override void Status_StatusChanged(bool blink)
@@ -125,24 +137,30 @@ namespace SrvSurvey
             if (this.IsDisposed || game?.status == null || game.systemBody == null) return;
             base.Status_StatusChanged(blink);
 
-            // so we close once exceeding a certain altitude
-            if (this.Opacity > 0 && !PlotHumanSite.keepPlotter)
-                Program.closePlotter<PlotHumanSite>(true);
-
-            if ((game.status.SelectedWeapon == "$humanoid_companalyser_name;" || game.status.OnFootInside) && autoZoom)
-                this.scale = 6;
-            else if (game.status.OnFootOutside && autoZoom)
-                this.scale = 2;
-
-            this.Invalidate();
+            // auto-adjust zoom?
+            this.setZoom(game.mode);
         }
 
-        private void setZoom(GameMode newMode)
+        private void setZoom(GameMode mode)
         {
-            if (newMode == GameMode.OnFoot && autoZoom)
-                this.scale = 2;
-            if ((newMode == GameMode.InSrv || newMode == GameMode.Landed || newMode == GameMode.Docked || newMode == GameMode.Landed) && autoZoom)
-                this.scale = 1;
+            if (autoZoom)
+            {
+                if (game.status.OnFootInside || game.status.SelectedWeapon == "$humanoid_companalyser_name;")
+                {
+                    // zoom in LOTS if inside a building or using the Profile analyzer tool
+                    this.scale = 6;
+                }
+                else if (mode == GameMode.OnFoot || game.status.OnFootOutside)
+                {
+                    // zoom in SOME if on foot outside
+                    this.scale = 2;
+                }
+                else if (mode == GameMode.InSrv || mode == GameMode.Landed || mode == GameMode.Docked || mode == GameMode.Flying)
+                {
+                    // zoom out if in some vehicle
+                    this.scale = 1;
+                }
+            }
 
             this.Invalidate();
         }
@@ -260,15 +278,14 @@ namespace SrvSurvey
             if (this.site.template?.dataTerminals == null) return;
             if (entry.Added == null || !entry.Added.Any(_ => _.Type == "Data")) return;
 
+            // find closest data terminal, mark it as "processed" (so it renders differently)
             var offset = Util.getOffset(radius, siteOrigin, siteHeading);
-
-            // find closest data terminal
             var terminal = this.site.template.dataTerminals.FirstOrDefault(dt => (offset - new PointM(dt.offset)).dist < 5);
-
-            if (terminal == null) return;
-
-            terminal.processed = true;
-            this.Invalidate();
+            if (terminal != null)
+            {
+                terminal.processed = true;
+                this.Invalidate();
+            }
         }
 
         private void loadTemplate()
@@ -280,6 +297,7 @@ namespace SrvSurvey
             site.template = HumanSiteTemplate.get(game.humanSite!.economy, game.humanSite.subType);
             this.Invalidate();
 
+            // start watching template file changes (if not already)
             if (this.templateWatcher == null)
             {
                 var folder = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "..\\..\\..\\.."));
@@ -295,18 +313,35 @@ namespace SrvSurvey
             if (this.IsDisposed || game?.humanSite == null) return;
 
             var msg = entry.Message.ToLowerInvariant().Trim();
-            if (msg.StartsWith("z ")) autoZoom = false;
-            if (msg == ".az") autoZoom = !autoZoom;
+            if (msg.StartsWith("z "))
+            {
+                autoZoom = false;
+                // (base class will handle setting the zoom level)
+            }
+            else if (msg == "z")
+            {
+                autoZoom = true;
+                this.setZoom(game.mode);
+            }
 
             base.onJournalEntry(entry);
 
+            if (msg == MsgCmd.settlement && game.status.OnFootOutside)
+            {
+                // reset settlement sub-type and heading calculations
+                this.site.inferSubtypeFromFoot(game.status.Heading);
+                this.siteHeading = this.site.heading;
+            }
+
             if (msg == "ll")
             {
+                // force reload the template
                 this.loadTemplate();
             }
 
             if (msg.StartsWith(MsgCmd.threat, StringComparison.OrdinalIgnoreCase))
             {
+                // set the settlement threat level for surveys
                 int threatLevel;
                 if (int.TryParse(entry.Message.Substring(8), out threatLevel))
                 {
@@ -318,195 +353,215 @@ namespace SrvSurvey
                     }
                 }
             }
-            else if (msg == MsgCmd.settlement)
-            {
-                this.site.inferSubtypeFromFoot(game.status.Heading);
-                this.siteHeading = this.site.heading;
-            }
 
-            if (msg == ";;")
+            if (msg == MsgCmd.edit)
             {
+                // open settlement map editor
                 this.loadTemplate();
                 if (builder == null)
                     FormBuilder.show(this.site);
             }
-
-            if (msg == ".stop")
+            if (msg == MsgCmd.start)
             {
-                game.exitMats(true);
-            }
-            if (msg == ".start")
-            {
+                // begin settlement mats survey
                 game.initMats(site);
             }
+            if (msg == MsgCmd.stop)
+            {
+                // end settlement mats survey
+                game.exitMats(true);
+            }
+
             this.Invalidate();
         }
 
         private void TemplateWatcher_Changed(object sender, FileSystemEventArgs e)
         {
+            Game.log("TemplateWatcher_Changed");
             this.loadTemplate();
         }
 
-        private RectangleF getBldRectF(PointF bldCorner, PointF cmdrOffset, decimal bldHeading)
-        {
-            var xx = cmdrOffset.X - bldCorner.X;
-            var yy = cmdrOffset.Y - bldCorner.Y;
+        //private RectangleF getBldRectF(PointF bldCorner, PointF cmdrOffset, decimal bldHeading)
+        //{
+        //    var xx = cmdrOffset.X - bldCorner.X;
+        //    var yy = cmdrOffset.Y - bldCorner.Y;
 
-            var c = (decimal)Math.Sqrt(
-                Math.Pow(bldCorner.X - cmdrOffset.X, 2)
-                + Math.Pow(bldCorner.Y - cmdrOffset.Y, 2)
-                );
+        //    var c = (decimal)Math.Sqrt(
+        //        Math.Pow(bldCorner.X - cmdrOffset.X, 2)
+        //        + Math.Pow(bldCorner.Y - cmdrOffset.Y, 2)
+        //        );
 
-            var aaa = Util.ToAngle(xx, yy) - (decimal)bldHeading;
-            if (aaa < 0) aaa += 360;
+        //    var aaa = Util.ToAngle(xx, yy) - (decimal)bldHeading;
+        //    if (aaa < 0) aaa += 360;
 
-            var dx = (float)(DecimalEx.Sin(DecimalEx.ToRad((decimal)aaa)) * c);
-            var dy = (float)(DecimalEx.Cos(DecimalEx.ToRad((decimal)aaa)) * c);
+        //    var dx = (float)(DecimalEx.Sin(DecimalEx.ToRad((decimal)aaa)) * c);
+        //    var dy = (float)(DecimalEx.Cos(DecimalEx.ToRad((decimal)aaa)) * c);
 
 
-            // when dx+ dy- (and nothing else)
-            var dxx = bldCorner.X;
-            var dyy = bldCorner.Y;
+        //    // when dx+ dy- (and nothing else)
+        //    var dxx = bldCorner.X;
+        //    var dyy = bldCorner.Y;
 
-            // when dx- dy-
-            if (dx < 0 && dy < 0)
-            {
-                dxx += xx;
-                dyy += yy;
-                dxx -= (float)(DecimalEx.Sin(DecimalEx.ToRad((decimal)bldHeading)) * (decimal)dy);
-                dyy -= (float)(DecimalEx.Cos(DecimalEx.ToRad((decimal)bldHeading)) * (decimal)dy);
-            }
-            // when: dx+ dy+
-            else if (dx > 0 && dy > 0)
-            {
-                dxx += (float)(DecimalEx.Sin(DecimalEx.ToRad((decimal)bldHeading)) * (decimal)dy);
-                dyy += (float)(DecimalEx.Cos(DecimalEx.ToRad((decimal)bldHeading)) * (decimal)dy);
-            }
-            // when dx- dy+
-            else if (dx < 0 && dy > 0)
-            {
-                dxx += xx;
-                dyy += yy;
-            }
-            Game.log($"---");
-            Game.log($"{dxx},{dyy} /{(int)aaa}°/ {dx},{dy}");
+        //    // when dx- dy-
+        //    if (dx < 0 && dy < 0)
+        //    {
+        //        dxx += xx;
+        //        dyy += yy;
+        //        dxx -= (float)(DecimalEx.Sin(DecimalEx.ToRad((decimal)bldHeading)) * (decimal)dy);
+        //        dyy -= (float)(DecimalEx.Cos(DecimalEx.ToRad((decimal)bldHeading)) * (decimal)dy);
+        //    }
+        //    // when: dx+ dy+
+        //    else if (dx > 0 && dy > 0)
+        //    {
+        //        dxx += (float)(DecimalEx.Sin(DecimalEx.ToRad((decimal)bldHeading)) * (decimal)dy);
+        //        dyy += (float)(DecimalEx.Cos(DecimalEx.ToRad((decimal)bldHeading)) * (decimal)dy);
+        //    }
+        //    // when dx- dy+
+        //    else if (dx < 0 && dy > 0)
+        //    {
+        //        dxx += xx;
+        //        dyy += yy;
+        //    }
+        //    Game.log($"---");
+        //    Game.log($"{dxx},{dyy} /{(int)aaa}°/ {dx},{dy}");
 
-            if (dx < 0) dx *= -1;
-            if (dy < 0) dy *= -1;
-            var rf3 = new RectangleF(dxx, dyy, dx, dy);
-            Game.log($"{rf3.Left},{rf3.Top} /{(int)aaa}°/ {rf3.Width},{rf3.Height}");
+        //    if (dx < 0) dx *= -1;
+        //    if (dy < 0) dy *= -1;
+        //    var rf3 = new RectangleF(dxx, dyy, dx, dy);
+        //    Game.log($"{rf3.Left},{rf3.Top} /{(int)aaa}°/ {rf3.Width},{rf3.Height}");
 
-            return rf3;
-        }
+        //    return rf3;
+        //}
 
         protected override void onPaintPlotter(PaintEventArgs e)
         {
             if (this.site == null) return;
 
+            // first, draw headers and footers (before we start clipping)
+
+            // header - right
             var zoomText = $"Zoom: {this.scale.ToString("N1")}";
             if (autoZoom) zoomText += " (auto)";
             drawTextAt(this.ClientSize.Width - 8, zoomText, GameColors.brushGameOrangeDim, GameColors.fontSmall, true);
 
-            // header
+            // header - left
             var headerTxt = $"{site.name} - {site.economy} ";
             headerTxt += site.subType == 0 ? "??" : $"#{site.subType}";
 
-            var offset = (PointF)Util.getOffset(radius, siteOrigin, siteHeading);
-            var currentBld = site.template?.getCurrentBld(offset, this.siteHeading);
-            if (currentBld != null)
-                headerTxt += $" - Building: {currentBld}";
-
+            //var currentBld = site.template?.getCurrentBld(cmdrOffset, this.siteHeading);
+            //if (currentBld != null) headerTxt += $", inside: {currentBld}";
             drawTextAt(eight, headerTxt);
             newLine(+ten, true);
 
             var distToSiteOrigin = Util.getDistance(site.location, Status.here, this.radius);
-
             if (game.isMode(GameMode.Flying, GameMode.GlideMode))
-            {
                 this.drawOnApproach(distToSiteOrigin);
-            }
             else
-            {
-                // footer
-                var aaa = game.status.Heading - siteHeading;
-                if (aaa < 0) aaa += 360;
-                var footerTxt = $"cmdr offset: x: {(int)offset.X}m, y: {(int)offset.Y}m, {aaa}°";
-                if (this.mapImage != null)
-                {
-                    var pf = Util.getOffset(this.radius, site.location, Status.here.clone(), site.heading);
-                    pf.x += this.mapCenter.X;
-                    pf.y = this.mapImage.Height - pf.y - this.mapCenter.Y;
-                    footerTxt += $" (☍{(int)pf.X}, {(int)pf.Y})";
-                }
-
-                if (game.matStatsTracker?.completed == false)
-                    footerTxt += ".";
-
-                if (builder != null && builder.nextPath != null)
-                {
-                    var lastPoint = builder.lastPoint;
-                    var dx = lastPoint.X - builder.offset.X;
-                    var dy = lastPoint.Y - builder.offset.Y;
-                    var foo = (float)DecimalEx.ToDeg((decimal)Math.Atan2(dx, dy));
-                    if (foo < 0) foo += 360;
-
-                    footerTxt += $"! {foo.ToString("N1")}°";
-                }
-
-                this.drawFooterText(footerTxt);
-            }
+                this.drawFooterAtSettlement();
 
             clipToMiddle();
-            // relative to site origin
+
+            if (this.siteHeading >= 0)
+            {
+                // when we know the settlement type and heading
+                this.drawKnownSettlement(distToSiteOrigin);
+            }
+            else if (this.site.heading == -1 && game.isMode(GameMode.Landed, GameMode.InSrv, GameMode.OnFoot))
+            {
+                // otherwise, show guidance to manually set it
+                g.ResetTransform();
+                drawTextAt(eight, $"Settlement type unknown. To identify:");
+                newLine(+ten, true);
+                drawTextAt(eight, $"► Crouch in middle of any landing pad");
+                newLine(+ten, true);
+                drawTextAt(eight, $"► Face the EXACT pad direction");
+                newLine(+ten, true);
+                drawTextAt(eight, $"► Send message '.settlement'");
+            }
+        }
+
+        private void drawFooterAtSettlement()
+        {
+            // TODO: improve this?
+
+            // footer - cmdr's location heading RELATIVE TO SITE
+            var aaa = game.status.Heading - siteHeading; // TODO: replace `aaa` with `cmdrHeading`
+            if (aaa < 0) aaa += 360;
+            var footerTxt = $"x: {(int)cmdrOffset.X}m, y: {(int)cmdrOffset.Y}m, {aaa}°";
+
+            // are we inside a building?
+            var currentBld = site.template?.getCurrentBld(cmdrOffset, this.siteHeading);
+            if (currentBld != null) footerTxt += $", inside: {currentBld}";
+
+            // Pixel offset relative to background map image - an aide for creating map images
+            if (showMapPixelOffsets && this.mapImage != null)
+            {
+                var pf = Util.getOffset(this.radius, site.location, Status.here.clone(), site.heading);
+                // TODO: confirm this is actually identical to `cmdrOffset`
+                pf.x += this.mapCenter.X;
+                pf.y = this.mapImage.Height - pf.y - this.mapCenter.Y;
+                footerTxt += $" (☍{(int)pf.X}, {(int)pf.Y})";
+                // TODO: remove this? Isn't it the same as we already render?
+            }
+
+            if (game.matStatsTracker?.completed == false)
+                footerTxt += ".";
+
+            if (builder != null && builder.nextPath != null)
+            {
+                // if creating a new building in the editor ...
+                var lastPoint = builder.lastPoint;
+                var dx = lastPoint.X - builder.offset.X;
+                var dy = lastPoint.Y - builder.offset.Y;
+                var foo = (float)DecimalEx.ToDeg((decimal)Math.Atan2(dx, dy));
+                if (foo < 0) foo += 360;
+                footerTxt += $"! {foo.ToString("N1")}°";
+            }
+
+            g.DrawString(footerTxt, this.Font, GameColors.brushGameOrange, eight, this.ClientSize.Height - twenty);
+        }
+
+        private void drawKnownSettlement(decimal distToSiteOrigin)
+        {
+            // draw relative to site origin
             this.resetMiddleSiteOrigin();
 
-            if (this.site.heading >= 0)
-            {
-                // draw map and POIs
-                this.drawMapImage();
-                this.drawBuildings(offset);
-                this.drawLandingPads();
-                this.drawPOI(offset);
+            // For use with font based symbols, keeping them up-right no matter the site or cmdr heading
+            var adjustedHeading = -site.heading + game.status.Heading;
 
-                // draw/fill polygon for building being assembled in the editor
-                if (this.builder != null)
-                    this.drawBuildingBox(offset);
-            }
+            // draw background map and POIs
+            this.drawMapImage();
+            this.drawBuildings();
+            this.drawLandingPads();
+            this.drawSecureDoors();
+            this.drawNamedPOI(adjustedHeading);
+            this.drawDataTerminals(adjustedHeading);
+
+            // draw/fill polygon for building being assembled in the editor
+            if (this.builder != null)
+                this.drawBuildingBox(cmdrOffset);
 
             this.drawCompassLines();
 
-            // draw limit circle outside which ships/taxi's an be requested
-            var zz = 500;
-            g.DrawEllipse(GameColors.newPen(Color.FromArgb(64, Color.Gray), 8, DashStyle.DashDotDot), -zz, -zz, zz * 2, zz * 2);
+            // draw limit circle outside which ships/taxi's can be requested
+            g.DrawEllipse(GameColors.HumanSite.penOuterLimit, -limitDist, -limitDist, limitDist * 2, limitDist * 2);
 
-            // relative to cmdr ...
+            // draw relative to cmdr's location ...
             this.resetMiddleRotated();
             this.drawShipAndSrvLocation();
 
+            // draw relative to center of window ...
             this.resetMiddle();
             this.drawCommander();
 
             // draw large arrow pointing to settlement origin if >300m away
-            if (distToSiteOrigin > 300)
+            if (distToSiteOrigin > limitWarnDist)
             {
                 var td = new TrackingDelta(this.radius, site.location);
                 g.RotateTransform(180f - game.status.Heading + (float)td.angle);
-                g.DrawLine(GameColors.penGameOrangeDim4, 0, 20, 0, 100);
-                g.DrawLine(GameColors.penGameOrangeDim4, 0, 100, 20, 80);
-                g.DrawLine(GameColors.penGameOrangeDim4, 0, 100, -20, 80);
-            }
-
-            // show guidance if we're at a settlement but don't know what type it is
-            if (this.site.heading == -1 && game.isMode(GameMode.Landed, GameMode.InSrv, GameMode.OnFoot))
-            {
-                g.ResetTransform();
-                drawTextAt(eight, $"Settlement type unknown. To fix:");
-                newLine(+ten, true);
-                drawTextAt(eight, $"► Crouch in middle of any landing pad");
-                newLine(+ten, true);
-                drawTextAt(eight, $"► Face the right direction");
-                newLine(+ten, true);
-                drawTextAt(eight, $"► Send message '.settlement'");
+                g.DrawLine(GameColors.HumanSite.penOuterLimitWarningArrow, 0, 20, 0, 100);
+                g.DrawLine(GameColors.HumanSite.penOuterLimitWarningArrow, 0, 100, 20, 80);
+                g.DrawLine(GameColors.HumanSite.penOuterLimitWarningArrow, 0, 100, -20, 80);
             }
 
             // show mat collection points on top of everything else
@@ -517,7 +572,6 @@ namespace SrvSurvey
         private void drawLandingPads()
         {
             if (game?.humanSite?.template == null) return;
-
 
             foreach (var pad in game.humanSite.template.landingPads)
             {
@@ -531,22 +585,22 @@ namespace SrvSurvey
                     else // if (pad.size == LandingPadSize.Large) // 90 x 170
                         r = new RectangleF(-45, -85, 90, 170);
 
-                    g.DrawRectangle(Pens.SlateGray, r);
-                    g.DrawLine(Pens.SlateGray, r.Left, r.Bottom, 0, r.Top);
-                    g.DrawLine(Pens.SlateGray, r.Right, r.Bottom, 0, r.Top);
-                    //g.DrawEllipse(Pens.SlateGray, -5, -5, 10, 10);
-                    g.DrawEllipse(Pens.SlateGray, -10, -10, 20, 20);
-                    //g.DrawEllipse(Pens.SlateGray, -20, -20, 40, 40);
+                    g.DrawRectangle(GameColors.HumanSite.landingPad.pen, r);
+                    g.DrawLine(GameColors.HumanSite.landingPad.pen, r.Left, r.Bottom, 0, r.Top);
+                    g.DrawLine(GameColors.HumanSite.landingPad.pen, r.Right, r.Bottom, 0, r.Top);
+                    //g.DrawEllipse(GameColors.HumanSite.penLandingPad, -5, -5, 10, 10);
+                    g.DrawEllipse(GameColors.HumanSite.landingPad.pen, -10, -10, 20, 20);
+                    //g.DrawEllipse(GameColors.HumanSite.penLandingPad, -20, -20, 40, 40);
 
                     // show pad # in corner
                     var idx = game.humanSite.template.landingPads.IndexOf(pad) + 1;
-                    g.DrawString($"{idx}", GameColors.fontSmall, Brushes.SlateGray, r.Left + four, r.Top + four);
+                    g.DrawString($"{idx}", GameColors.fontSmall, GameColors.HumanSite.landingPad.brush, r.Left + four, r.Top + four);
                 });
             }
 
         }
 
-        private void drawBuildings(PointF offset)
+        private void drawBuildings()
         {
             if (game.humanSite?.template?.buildings == null) return;
 
@@ -609,131 +663,129 @@ namespace SrvSurvey
             }
         }
 
-        private void drawPOI(PointF offset)
+        private void drawSecureDoors()
         {
-            if (game?.humanSite?.template == null) return;
+            if (game.humanSite?.template?.secureDoors == null) return;
 
-            // For use with font based symbols, keeping them up-right no matter the site or cmdr heading
-            var adjustedHeading = -site.heading + game.status.Heading;
-
-            if (game.humanSite.template.secureDoors != null)
+            foreach (var door in game.humanSite.template.secureDoors)
             {
-                foreach (var door in game.humanSite.template.secureDoors)
+                adjust(door.offset, door.rot, () =>
                 {
-                    adjust(door.offset, door.rot, () =>
-                    {
-                        // adjust the colour according to security level
-                        var b = GameColors.siteLevel[door.level].brush;
+                    // adjust the colour according to security level
+                    var b = GameColors.HumanSite.siteLevel[door.level].brush;
 
-                        g.FillRectangle(b, -3, -2, 6, 3);
-                        g.DrawRectangle(Pens.Navy, -3, -2, 6, 3);
-                    });
-                }
+                    g.FillRectangle(b, -3, -2, 6, 3);
+                    g.DrawRectangle(GameColors.HumanSite.penDoorEdge, -3, -2, 6, 3);
+                });
             }
+        }
 
-            if (game.humanSite.template.namedPoi != null)
+        private void drawNamedPOI(float adjustedHeading)
+        {
+            if (game.humanSite?.template?.namedPoi == null) return;
+
+            foreach (var poi in game.humanSite.template.namedPoi)
             {
-                foreach (var poi in game.humanSite.template.namedPoi)
+                adjust(poi.offset, adjustedHeading, () =>
                 {
-                    adjust(poi.offset, adjustedHeading, () =>
+                    var x = 0f;
+                    var y = 0f;
+
+                    var b = GameColors.HumanSite.siteLevel[poi.level].brush;
+                    var p = GameColors.HumanSite.siteLevel[poi.level].pen;
+
+                    // ❗❕❉✪✿❤➊➀⟐𖺋𖺋⟊➟✦✔⛶⛬⛭⛯⛣⛔⛌⛏⚴⚳⚱⚰⚚⚙⚗⚕⚑⚐⚜⚝⚛⚉⚇♥♦♖♜☸☗☯☍☉☄☁◬◊◈◍◉▣▢╳☢
+                    // ꊢ ⦖⥣ꇗꊢꉄꇥꇗꇩꆜꄨꀜꀤꀡꀍ䷏〶〷〓〼〿⸙⸋⯒⭻⬨⬖⬘⬮⬯⫡⩸⩃⨟⨨⨱⨲⦼⧌⚼⦡⧲⛅ ⛍ ⛉ ❎ ⮔⮹ ⮺⯑⯳⯿⑅Ⓓⓓ▚▚▨▒◀◩ ⦡⦺⦹⦿⧳⧲⨹⨺⨻⨷⨳⨯⬙⭕⭍✉⛽✇⛳⛿✆⛋⚼
+                    // ⛗ ⛘ ⛅ ⛍ ⛉ ❎ ⮔⮹ ⮺⯑⯳⯿⑅Ⓓⓓ▚▚▨▒◀◩ ⦡⦺⦹⦿⧳⧲⨝⨹⨺⨻⨷⨳⨯⬙⭕⭍
+                    // ☢ ♨ ⚡ ☎ ☏ ♫ ⚠ ⚽ ✋ ❕ ❗ 
+
+                    if (poi.name == "Atmos")
                     {
-                        var x = 0f;
-                        var y = 0f;
+                        g.DrawString("⚴", GameColors.Fonts.typewriter_p6, b, -2, -3);
+                        x = 0.65f; y = -3.7f;
+                    }
+                    else if (poi.name == "Alarm")
+                    {
+                        g.DrawString("%", GameColors.Fonts.wingdings_4B, b, -4, -3);
+                        x = -0.8f; y = -4.4f;
+                    }
+                    else if (poi.name == "Auth")
+                    {
+                        g.DrawString("⧌", GameColors.Fonts.typewriter_p6, b, -3.3f, -4f);
+                        x = 0.2f; y = -4.5f;
+                    }
+                    else if (poi.name == "Medkit")
+                    {
+                        g.DrawString("♥", GameColors.Fonts.typewriter_p4, b, -2, -3);
+                        x = 0.1f; y = -5f;
+                    }
+                    else if (poi.name == "Battery")
+                    {
+                        g.DrawString("+", GameColors.Fonts.typewriter_p6, b, -3f, -4.4f);
+                        x = 0.0f; y = -4.5f;
+                    }
+                    else if (poi.name == "Power")
+                    {
+                        // power symbol is always blue
+                        b = GameColors.HumanSite.powerIcon.brush;
+                        p = GameColors.HumanSite.powerIcon.pen;
 
-                        var b = GameColors.siteLevel[poi.level].brush;
-                        var p = GameColors.siteLevel[poi.level].pen;
+                        g.DrawString("⭍", GameColors.fontSmall, b, -4, -6);
+                        x = 2.5f; y = -6f;
+                    }
+                    else
+                    {
+                        // we're not sure what POI this is
+                        g.DrawString("▨", GameColors.Fonts.typewriter_p4, b, -2, -2);
+                        x = -0.3f; y = -3f;
+                    }
 
-                        // ❗❕❉✪✿❤➊➀⟐𖺋𖺋⟊➟✦✔⛶⛬⛭⛯⛣⛔⛌⛏⚴⚳⚱⚰⚚⚙⚗⚕⚑⚐⚜⚝⚛⚉⚇♥♦♖♜☸☗☯☍☉☄☁◬◊◈◍◉▣▢╳☢
-                        // ꊢ ⦖⥣ꇗꊢꉄꇥꇗꇩꆜꄨꀜꀤꀡꀍ䷏〶〷〓〼〿⸙⸋⯒⭻⬨⬖⬘⬮⬯⫡⩸⩃⨟⨨⨱⨲⦼⧌⚼⦡⧲⛅ ⛍ ⛉ ❎ ⮔⮹ ⮺⯑⯳⯿⑅Ⓓⓓ▚▚▨▒◀◩ ⦡⦺⦹⦿⧳⧲⨹⨺⨻⨷⨳⨯⬙⭕⭍✉⛽✇⛳⛿✆⛋⚼
-                        // ⛗ ⛘ ⛅ ⛍ ⛉ ❎ ⮔⮹ ⮺⯑⯳⯿⑅Ⓓⓓ▚▚▨▒◀◩ ⦡⦺⦹⦿⧳⧲⨝⨹⨺⨻⨷⨳⨯⬙⭕⭍
-                        // ☢ ♨ ⚡ ☎ ☏ ♫ ⚠ ⚽ ✋ ❕ ❗ 
-
-                        if (poi.name == "Atmos")
-                        {
-                            g.DrawString("⚴", GameColors.Fonts.typewriter_p6, b, -2, -3);
-                            x = 0.65f; y = -3.7f;
-                        }
-                        else if (poi.name == "Alarm")
-                        {
-                            g.DrawString("%", GameColors.Fonts.wingdings_4B, b, -4, -3);
-                            x = -0.8f; y = -4.4f;
-                        }
-                        else if (poi.name == "Auth")
-                        {
-                            g.DrawString("⧌", GameColors.Fonts.typewriter_p6, b, -3.3f, -4f);
-                            x = 0.2f; y = -4.5f;
-                        }
-                        else if (poi.name == "Medkit")
-                        {
-                            g.DrawString("♥", GameColors.Fonts.typewriter_p4, b, -2, -3);
-                            x = 0.1f; y = -5f;
-                        }
-                        else if (poi.name == "Battery")
-                        {
-                            g.DrawString("+", GameColors.Fonts.typewriter_p6, b, -3f, -4.4f);
-                            x = 0.0f; y = -4.5f;
-                        }
-                        else if (poi.name == "Power")
-                        {
-                            // power symbol is always blue
-                            b = Brushes.Cyan;
-                            p = new Pen(Color.Cyan, 0.5f) { EndCap = LineCap.Triangle, StartCap = LineCap.Triangle };
-
-                            g.DrawString("⭍", GameColors.fontSmall, b, -4, -6);
-                            x = 2.5f; y = -6;
-                        }
-                        else
-                        {
-                            // we're not sure what POI this is
-                            g.DrawString("▨", GameColors.Fonts.typewriter_p4, b, -2, -2);
-                            x = -0.3f; y = -3f;
-                        }
-
-                        // draw chevrons to indicate upstairs
-                        if (poi.floor == 3)
-                        {
-                            g.DrawLine(p, x, y, x + 1.5f, y + 1.5f);
-                            g.DrawLine(p, x, y, x - 1.5f, y + 1.5f);
-                        }
-                        if (poi.floor >= 2)
-                        {
-                            g.DrawLine(p, x, y + 1, x + 1.5f, y + 2.5f);
-                            g.DrawLine(p, x, y + 1, x - 1.5f, y + 2.5f);
-                        }
-                    });
-                }
+                    // draw chevrons to indicate upstairs
+                    if (poi.floor == 3)
+                    {
+                        g.DrawLine(p, x, y, x + 1.5f, y + 1.5f);
+                        g.DrawLine(p, x, y, x - 1.5f, y + 1.5f);
+                    }
+                    if (poi.floor >= 2)
+                    {
+                        g.DrawLine(p, x, y + 1, x + 1.5f, y + 2.5f);
+                        g.DrawLine(p, x, y + 1, x - 1.5f, y + 2.5f);
+                    }
+                });
             }
+        }
 
-            if (game.humanSite.template.dataTerminals != null)
+        private void drawDataTerminals(float adjustedHeading)
+        {
+            if (game.humanSite?.template?.dataTerminals == null) return;
+
+            foreach (var terminal in game.humanSite.template.dataTerminals)
             {
-                foreach (var terminal in game.humanSite.template.dataTerminals)
+                adjust(terminal.offset, adjustedHeading, () =>
                 {
-                    adjust(terminal.offset, adjustedHeading, () =>
+                    var b = terminal.processed
+                        ? GameColors.HumanSite.siteLevel[-1].brush
+                        : GameColors.HumanSite.siteLevel[terminal.level].brush;
+
+                    var p = terminal.processed
+                        ? GameColors.HumanSite.siteLevel[-1].pen
+                        : GameColors.HumanSite.siteLevel[terminal.level].pen;
+
+                    g.DrawString("/", GameColors.Fonts.wingdings2_2B, b, -2.5f, -3);
+                    var x = 0.25f; var y = -5.4f;
+
+                    // draw chevrons to indicate upstairs
+                    if (terminal.floor == 3)
                     {
-                        var b = terminal.processed
-                            ? GameColors.siteLevel[-1].brush
-                            : GameColors.siteLevel[terminal.level].brush;
-
-                        var p = terminal.processed
-                            ? GameColors.siteLevel[-1].pen
-                            : GameColors.siteLevel[terminal.level].pen;
-
-                        g.DrawString("/", GameColors.Fonts.wingdings2_2B, b, -2.5f, -3);
-                        var x = 0.25f; var y = -5.4f;
-
-                        // draw chevrons to indicate upstairs
-                        if (terminal.floor == 3)
-                        {
-                            g.DrawLine(p, x, y, x + 1.5f, y + 1.5f);
-                            g.DrawLine(p, x, y, x - 1.5f, y + 1.5f);
-                        }
-                        if (terminal.floor >= 2)
-                        {
-                            g.DrawLine(p, x, y + 1, x + 1.5f, y + 2.5f);
-                            g.DrawLine(p, x, y + 1, x - 1.5f, y + 2.5f);
-                        }
-                    });
-                }
+                        g.DrawLine(p, x, y, x + 1.5f, y + 1.5f);
+                        g.DrawLine(p, x, y, x - 1.5f, y + 1.5f);
+                    }
+                    if (terminal.floor >= 2)
+                    {
+                        g.DrawLine(p, x, y + 1, x + 1.5f, y + 2.5f);
+                        g.DrawLine(p, x, y + 1, x - 1.5f, y + 2.5f);
+                    }
+                });
             }
         }
 

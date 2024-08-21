@@ -633,6 +633,7 @@ namespace SrvSurvey.game
         public void initHumanSite()
         {
             if (this.journals == null || this.systemData == null || !status.hasLatLong) return;
+            Game.log($"initHumanSite: currentMarketId: {cmdr.currentMarketId}");
 
             // load this MarketId if it is close enough
             if (cmdr.currentMarketId > 0)
@@ -720,6 +721,7 @@ namespace SrvSurvey.game
 
             // replay entries forwards - starting with ApproachSettlement
             this.humanSite = new HumanSiteData(lastApproachSettlement);
+            Game.log($"initHumanSite: create: '{lastApproachSettlement.Name}' ({lastApproachSettlement.MarketID})");
 
             // docking requested/granted we can use regardless
             if (lastDockingRequested != null) humanSite.dockingRequested(lastDockingRequested);
