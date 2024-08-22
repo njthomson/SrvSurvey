@@ -212,12 +212,23 @@ namespace SrvSurvey.net
         //    return queryJson;
         //}
 
-        public async Task<JObject> runQuery(string queryJson)
+        public async Task<JObject> queryBodies(string queryJson)
         {
             //Game.log($"Querying ");
             var body = new StringContent(queryJson, Encoding.ASCII, "application/json");
 
             var response = await Spansh.client.PostAsync($"https://spansh.co.uk/api/bodies/search", body);
+            var responseText = await response.Content.ReadAsStringAsync();
+            var obj = JsonConvert.DeserializeObject<JObject>(responseText)!;
+            return obj;
+        }
+
+        public async Task<JObject> querySystems(string queryJson)
+        {
+            //Game.log($"Querying ");
+            var body = new StringContent(queryJson, Encoding.ASCII, "application/json");
+
+            var response = await Spansh.client.PostAsync($"https://spansh.co.uk/api/systems/search", body);
             var responseText = await response.Content.ReadAsStringAsync();
             var obj = JsonConvert.DeserializeObject<JObject>(responseText)!;
             return obj;
@@ -410,7 +421,7 @@ namespace SrvSurvey.net
                 //{ "surface_temperature", "160.00 <=> 177.00" }, // TODO: Support one day
             };
 
-            var response = await Game.spansh.runQuery(buildQuery(filters, $"atmosphere_composition/{atmosType}", SortOrder.asc));
+            var response = await Game.spansh.queryBodies(buildQuery(filters, $"atmosphere_composition/{atmosType}", SortOrder.asc));
             var fullCount = response["count"]!.Value<int>();
             if (fullCount == 0) return null;
 
@@ -445,14 +456,14 @@ namespace SrvSurvey.net
             // Check for Sulphur dioxide too? This is common for Carbon dioxide
             if (atmosType == "Carbon dioxide" && value >= 97.5f)
             {
-                response = await Game.spansh.runQuery(buildQuery(filters, $"atmosphere_composition/{atmosType}", SortOrder.desc));
+                response = await Game.spansh.queryBodies(buildQuery(filters, $"atmosphere_composition/{atmosType}", SortOrder.desc));
                 fullCount = response["count"]!.Value<int>();
                 if (fullCount > 0)
                 {
                     atmosComp = response["results"]!.ToArray().First()["atmosphere_composition"]!.FirstOrDefault(ac => ac["name"]!.Value<string>() == atmosType)!;
                     value = atmosComp["share"]!.Value<float>();
 
-                    var response2 = await Game.spansh.runQuery(buildQuery(filters, $"atmosphere_composition/Sulphur dioxide", SortOrder.asc));
+                    var response2 = await Game.spansh.queryBodies(buildQuery(filters, $"atmosphere_composition/Sulphur dioxide", SortOrder.asc));
                     var fullCount2 = response2["count"]!.Value<int>();
                     if (fullCount2 > limitMinCount)
                     {
@@ -490,13 +501,13 @@ namespace SrvSurvey.net
 
             // any hits with "No volcanism" ?
             filters["volcanism_type"] = "No volcanism";
-            var response = await Game.spansh.runQuery(buildQuery(filters, "volcanism_type", SortOrder.asc));
+            var response = await Game.spansh.queryBodies(buildQuery(filters, "volcanism_type", SortOrder.asc));
             var countNoVolcanism = response["count"]!.Value<int>();
 
             // any hits with anything but "No volcanism" ?
             filters["volcanism_type"] = string.Join(',', allVolcanisms);
             //Game.log(filters["volcanism_type"]);
-            response = await Game.spansh.runQuery(buildQuery(filters, "volcanism_type", SortOrder.asc));
+            response = await Game.spansh.queryBodies(buildQuery(filters, "volcanism_type", SortOrder.asc));
             var countWithVolcanism = response["count"]!.Value<int>();
             var withSomeVolcanism = response["results"]!.ToList();
 
@@ -522,7 +533,7 @@ namespace SrvSurvey.net
                     // ... query again without that
                     potentialVolcanism.Remove(volcanism);
                     filters["volcanism_type"] = string.Join(',', potentialVolcanism);
-                    response = await Game.spansh.runQuery(buildQuery(filters, "volcanism_type", SortOrder.asc));
+                    response = await Game.spansh.queryBodies(buildQuery(filters, "volcanism_type", SortOrder.asc));
                     moreVolcanism = response["results"]!.ToList();
 
                     var count = response["count"]!.Value<float>();
@@ -593,11 +604,11 @@ namespace SrvSurvey.net
         private static async Task<Clause?> buildRangeClause(string species, string atmosType, string bodyType, string property, float minLimit, float maxLimit)
         {
             // get min and max values
-            var objMin = await Game.spansh.runQuery(buildQuery(atmosType, bodyType, species, property, SortOrder.asc));
+            var objMin = await Game.spansh.queryBodies(buildQuery(atmosType, bodyType, species, property, SortOrder.asc));
             if (objMin["count"]!.Value<int>() == 0) return null;
             var minRaw = objMin["results"]!.ToArray().First()[property]!.Value<float>();
 
-            var objMax = await Game.spansh.runQuery(buildQuery(atmosType, bodyType, species, property, SortOrder.desc));
+            var objMax = await Game.spansh.queryBodies(buildQuery(atmosType, bodyType, species, property, SortOrder.desc));
             var maxRaw = objMax["results"]!.ToArray().First()[property]!.Value<float>();
 
             // special processing?
@@ -637,7 +648,7 @@ namespace SrvSurvey.net
         private static async Task<int> getSpeciesTotalCount(string species, string? atmosType = null, string? bodyType = null)
         {
             // get a count of species without atmosphere or body filters. Exit early if this is below 1%
-            var response = await Game.spansh.runQuery(buildQuery(atmosType, bodyType, species, "gravity", SortOrder.asc));
+            var response = await Game.spansh.queryBodies(buildQuery(atmosType, bodyType, species, "gravity", SortOrder.asc));
             var totalCount = response["count"]!.Value<int>();
             return totalCount;
         }
@@ -658,27 +669,36 @@ namespace SrvSurvey.net
             return buildQuery(filters, sortField, sortOrder);
         }
 
-        private static string buildQuery(Dictionary<string, string> filters, string sortField, SortOrder sortOrder)
+        private static string buildQuery(Dictionary<string, string> filters, string sortField, SortOrder sortOrder, string referenceSystem = "")
         {
             // filters ...
             var partFilters = new List<string>();
 
-            foreach (var f in filters.Where(f => !f.Value.Contains("/")))
+            foreach (var f in filters)
             {
-                // eg: ""atmosphere"": { ""value"": [ ""Thin Carbon dioxide"" ] }
-                var values = JsonConvert.SerializeObject(f.Value.Split(','));
-                var clause = $"\"{f.Key}\":{{\"value\":{values}}}";
-                partFilters.Add(clause);
-            }
-
-            foreach (var f1 in filters.Where(f => f.Value.Contains("/")))
-            {
-                var fs = f1.Value.Split(',');
-                foreach (var f2 in fs)
+                if (f.Value.Contains('/'))
                 {
-                    // eg: ""landmarks"": [ { ""type"": ""Stratum"", ""subtype"": [ ""Stratum Tectonicas"" ] } ]
-                    var parts = f2.Split("/", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-                    var clause = $"\"{f1.Key}\":[{{\"type\":\"{parts[0]}\",\"subtype\":[\"{parts[1]}\"]}}]";
+                    var fs = f.Value.Split(',');
+                    foreach (var f2 in fs)
+                    {
+                        // eg: "landmarks":[{"type":"Stratum","subtype":["Stratum Tectonicas"]}]
+                        var parts = f2.Split("/", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+                        var clause = $"\"{f.Key}\":[{{\"type\":\"{parts[0]}\",\"subtype\":[\"{parts[1]}\"]}}]";
+                        partFilters.Add(clause);
+                    }
+                }
+                else if (f.Value.Contains('~'))
+                {
+                    // eg: "distance":{"min":"0","max":"100"}
+                    var values = f.Value.Split('~');
+                    var clause = $"\"{f.Key}\":{{\"min\":{values.First()},\"max\":{values.Last()}}}";
+                    partFilters.Add(clause);
+                }
+                else
+                {
+                    // eg: "atmosphere":{"value":["Thin Carbon dioxide"]}
+                    var values = JsonConvert.SerializeObject(f.Value.Split(','));
+                    var clause = $"\"{f.Key}\":{{\"value\":{values}}}";
                     partFilters.Add(clause);
                 }
             }
@@ -698,15 +718,21 @@ namespace SrvSurvey.net
                 jsonSorts = $"{{\"{sortField}\":{{\"direction\":\"{dir}\"}}}}";
             }
 
+            if (referenceSystem != "")
+                referenceSystem = $",\"reference_system\":\"{referenceSystem}\"";
+
             // final result ...
             // eg: {"filters":{"subtype":{"value":["Rocky body"]},"atmosphere":{"value":["Thin Carbon dioxide"]},"volcanism_type":{"value":["No volcanism"]},"landmarks":[{"type":"Bacterium","subtype":["Bacterium Tela"]}]},"sort":[{"materials":[{"name":"Carbon","direction":"desc"}]}],"size":10,"page":0}
             var jsonFilters = string.Join(",", partFilters);
-            var queryJson = $"{{\"filters\":{{{jsonFilters}}},\"sort\":[{jsonSorts}],\"size\":1,\"page\":0}}";
+            var queryJson = $"{{\"filters\":{{{jsonFilters}}},\"sort\":[{jsonSorts}],\"size\":1,\"page\":0{referenceSystem}}}";
             return queryJson;
         }
 
         private static List<string> allVolcanisms = new List<string>()
-        { "Carbon Dioxide Geysers", "Major Carbon Dioxide Geysers", "Major Metallic Magma", "Major Rocky Magma", "Major Silicate Vapour Geysers", "Major Water Geysers", "Major Water Magma", "Metallic Magma", "Minor Ammonia Magma", "Minor Carbon Dioxide Geysers", "Minor Metallic Magma", "Minor Methane Magma", "Minor Nitrogen Magma", "Minor Rocky Magma", "Minor Silicate Vapour Geysers", "Minor Water Geysers", "Minor Water Magma", "Rocky Magma", "Silicate Vapour Geysers", "Water Geysers", "Water Magma" };
+        {
+            "Carbon Dioxide Geysers", "Major Carbon Dioxide Geysers", "Major Metallic Magma", "Major Rocky Magma", "Major Silicate Vapour Geysers", "Major Water Geysers", "Major Water Magma", "Metallic Magma", "Minor Ammonia Magma", "Minor Carbon Dioxide Geysers", "Minor Metallic Magma", "Minor Methane Magma", "Minor Nitrogen Magma", "Minor Rocky Magma", "Minor Silicate Vapour Geysers", "Minor Water Geysers", "Minor Water Magma", "Rocky Magma", "Silicate Vapour Geysers", "Water Geysers", "Water Magma"
+        };
+
         private static Dictionary<string, string> propMap = new Dictionary<string, string>()
         {
             { "gravity", "gravity" },
@@ -714,6 +740,7 @@ namespace SrvSurvey.net
             { "surface_pressure", "pressure" },
             { "HMC", "High metal content world" },
         };
+
         private static Dictionary<string, string> bodyMap = new Dictionary<string, string>()
         {
             { "Icy body", "Icy" },
@@ -721,6 +748,69 @@ namespace SrvSurvey.net
             { "Rocky Ice world", "RockyIce" },
             { "High metal content world", "HMC" },
         };
+
+        public static void countNebularSystems()
+        {
+            var start = DateTime.Now;
+            countNebularSystemsAsync().ContinueWith(task =>
+            {
+                Game.log($"CriteriaBuilder.buildWholeSet => {task.Status}");
+                if (task.Exception != null) Game.log(task.Exception);
+                Game.log($"** Done ** {DateTime.Now.Subtract(start)}");
+            });
+        }
+
+        private static async Task countNebularSystemsAsync()
+        {
+            // get relevant nebula
+            var csv = File.ReadAllText(@"d:\code\nebulae-coordinates.csv");
+            var nebula = csv.Split("\n", StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)
+                .Skip(1)
+                //.Take(50) // tmp!!
+                .Select(line => line.Split(','))
+                .ToDictionary(_ => _[1], _ => _[5]); // planetary, procgen, real
+
+            var filters = new Dictionary<string, string>()
+            {
+                { "distance", $"0~100" },
+            };
+            Game.log($"Nebula count: {nebula.Count}");
+
+            var txt = new StringBuilder();
+            var n = 0;
+            var skipping = true;
+            foreach (var neb in nebula.AsParallel()) // .SkipWhile(_ => skipping = _.Key != "Dryi Auscs FV-Y e1478"))
+            {
+                var name = neb.Key;
+                if (name[0] == '"') name = name.Substring(1, name.Length - 2);
+                Game.log($"#{++n} of {nebula.Count}: {name} ({neb.Value})");
+                if (skipping) skipping = !name.Equals("Scaulia zu-y e6560", StringComparison.OrdinalIgnoreCase);
+                if (skipping) continue;
+                if (neb.Value != "planetary") continue;
+
+                try
+                {
+                    var q = buildQuery(filters, "distance", SortOrder.desc, name);
+                    var response = await Game.spansh.querySystems(q);
+                    var countSystems = response["count"]!.Value<int>();
+                    var maxDistance = response["results"]!.First()["distance"]!.Value<double>();
+
+                    txt.AppendLine($"{name}, {neb.Value}, {countSystems}, {maxDistance}\r\n");
+                    File.AppendAllText(@"d:\code\nebulae-counts.csv", $"{name}, {neb.Value}, {countSystems}, {maxDistance}\r\n");
+                }
+                catch (Exception ex)
+                {
+                    //Game.log($"{neb.Key} => {ex.Message}");
+                    Game.log(name + " => " + ex.Message);
+                    Debugger.Break();
+                }
+            }
+            // {"filters":{"distance":{"min":"0","max":"100"}},"sort":[],"size":10,"page":0,"reference_system":"Oumbaiqs WE-R d4-1"}:
+
+            Game.log("----");
+            Game.log("Nebulae results:\r\n\r\n" + txt + "\r\n");
+            Game.log("----");
+        }
     }
 
     internal class ApiSystemDump

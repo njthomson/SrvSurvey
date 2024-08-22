@@ -1615,21 +1615,9 @@ namespace SrvSurvey
 
         private void btnTest_Click(object sender, EventArgs e)
         {
-            ////var species = Clipboard.GetText(); Game.spansh.getClause("Bacterium", species, "Sulphur dioxide").ContinueWith(task =>
-            //BioPredictor.testSystems().ContinueWith(task =>
-            //{
-            //    Game.log($"testSystems => {task.Status}");
-            //    if (task.Exception != null)
-            //    {
-            //        Game.log(task.Exception);
-            //    }
-            //});
+            BioPredictor.testSystems();
 
-            // eg: {"filters":{"subtype":{"value":["Rocky body"]},"atmosphere":{"value":["Thin Carbon dioxide"]},"volcanism_type":{"value":["No volcanism"]},"landmarks":[{"type":"Bacterium","subtype":["Bacterium Tela"]}]},"sort":[{"atmosphere_composition":[{"name":"Sulphur dioxide","direction":"asc"}]}],"size":10,"page":0}
-
-            //var t = Game.spansh.buildQuery("Thin Carbon dioxide", "Rocky body", "Bacterium Tela", "atmosphere_composition/Sulphur dioxide", net.SortOrder.asc);
-
-            CriteriaBuilder.buildWholeSet();
+            //CriteriaBuilder.buildWholeSet();
         }
     }
 }
