@@ -248,7 +248,6 @@ namespace SrvSurvey
             }
 
             var indent = scaled(70f);
-            if (false && Game.settings.autoShowPlotBioSystem) indent += threeFour;
             var bearingWidth = scaled(75);
 
             this.dty = scaled(8f);
@@ -327,13 +326,6 @@ namespace SrvSurvey
                 if (isActive) f = this.boldFont;
 
                 r.Y = (int)ly;
-
-                if (false && Game.settings.autoShowPlotBioSystem)
-                {
-                    PlotBase.drawBioRing(g, signal.genusName, r.X, r.Y - 2, signal.reward, isActive, 24);
-                    r.X += 28;
-                    r.Width -= 28;
-                }
 
                 TextRenderer.DrawText(g, signal.poiName, f, r, ((SolidBrush)brush).Color, TextFormatFlags.NoPadding | TextFormatFlags.Left);
                 TextRenderer.DrawText(g, signal.credits, f, r, ((SolidBrush)brush).Color, TextFormatFlags.NoPadding | TextFormatFlags.Right);

@@ -672,7 +672,7 @@ namespace SrvSurvey
             groupBox5.Size = new Size(413, 72);
             groupBox5.TabIndex = 28;
             groupBox5.TabStop = false;
-            groupBox5.Text = "Exploration trip counter: (experimental)";
+            groupBox5.Text = "Exploration trip counter:";
             // 
             // txtDistance
             // 

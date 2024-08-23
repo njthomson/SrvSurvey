@@ -132,8 +132,10 @@ namespace SrvSurvey
                 var planetClass = scan.body.planetClass?.Replace("Sudarsky c", "C");
                 var prefix = scan.body.wasDiscovered ? "" : "*";
                 var txt = $"{prefix}{scan.body.shortName} - {planetClass}"; // ◌◎◉☆★☄☼☀⛀⛃✔✨✶✪❓❔❓⛬❗❕ * ❒❱✪❍❌✋❖⟡⦁⦂⧫
-                if (scan.body.terraformable) txt += " (T)";
-                if (scan.body.type == SystemBodyType.LandableBody) txt += " (L)";
+                var suffixes = new List<string>();
+                if (scan.body.terraformable) suffixes.Add("T");
+                if (scan.body.type == SystemBodyType.LandableBody) suffixes.Add("L");
+                if (suffixes.Count > 0) txt += $" ({string.Join(',', suffixes)})";
                 if (scan.body.type == SystemBodyType.Star)
                     txt = $"{prefix}{scan.body.shortName} - {scan.body.starType} Star";
 
@@ -164,7 +166,7 @@ namespace SrvSurvey
 
             drawTextAt(eight, "Scan value | DSS value", GameColors.brushGameOrangeDim);
             newLine(true);
-            drawTextAt(eight, "* Undiscovered | T Terraformable", GameColors.brushGameOrangeDim);
+            drawTextAt(eight, "* Undiscovered", GameColors.brushGameOrangeDim);
             newLine(true);
 
             this.formAdjustSize(+oneEight, +ten);

@@ -16,10 +16,7 @@ namespace SrvSurvey
             if (activeForm == null)
                 FormRuins.activeForm = new FormRuins(siteData);
 
-            if (FormRuins.activeForm.Visible == false)
-                FormRuins.activeForm.Show();
-            else
-                FormRuins.activeForm.Activate();
+            Util.showForm(FormRuins.activeForm);
         }
         protected override void OnClosing(CancelEventArgs e)
         {

@@ -1,22 +1,17 @@
 ﻿using SrvSurvey.game;
 using SrvSurvey.Properties;
-using System.ComponentModel;
 using System.Diagnostics;
-using System.Drawing.Drawing2D;
 
 namespace SrvSurvey
 {
-    public partial class PlotBioStatus : Form, PlotterForm
+    internal partial class PlotBioStatus : PlotBase, PlotterForm
     {
-        private Game game = Game.activeGame!;
         private string? lastCodexScan;
         public static string? lastEntryId;
         private bool hasImage;
 
-        private PlotBioStatus()
+        private PlotBioStatus() : base()
         {
-            InitializeComponent();
-
             this.Size = Size.Empty;
 
             if (game.cmdr.scanOne?.entryId > 0)
@@ -28,24 +23,12 @@ namespace SrvSurvey
             }
         }
 
-        public /*override*/ bool allow { get => PlotBioStatus.allowPlotter; }
-
-        protected override void OnActivated(EventArgs e)
-        {
-            base.OnActivated(e);
-            Elite.setFocusED();
-        }
-
-        protected override void OnClosing(CancelEventArgs e)
-        {
-            base.OnClosing(e);
-            Main.form.btnCodexShow.Enabled = false;
-            PlotBioStatus.lastEntryId = null;
-        }
+        public override bool allow { get => PlotBioStatus.allowPlotter; }
 
         public static bool allowPlotter
         {
-            get => Game.settings.autoShowBioSummary
+            get => SystemData.isWithinLastDssDuration() 
+                || Game.settings.autoShowBioSummary
                 && Game.activeGame?.systemBody != null
                 && Game.activeGame.systemBody.bioSignalCount > 0
                 && Game.activeGame.humanSite == null
@@ -59,51 +42,14 @@ namespace SrvSurvey
                 && Game.activeGame.isMode(GameMode.SuperCruising, GameMode.Flying, GameMode.Landed, GameMode.InSrv, GameMode.OnFoot, GameMode.GlideMode, GameMode.InFighter, GameMode.CommsPanel, GameMode.SAA, GameMode.Codex);
         }
 
-        public void reposition(Rectangle gameRect)
-        {
-            if (gameRect == Rectangle.Empty)
-            {
-                this.Opacity = 0;
-                return;
-            }
-
-            this.Opacity = PlotPos.getOpacity(this);
-            PlotPos.reposition(this, gameRect);
-        }
-
         private void PlotBioStatus_Load(object sender, EventArgs e)
         {
             this.Height = PlotBase.scaled(80);
             this.Width = PlotBase.scaled(480);
-            this.initialize();
-            this.reposition(Elite.getWindowRect(true));
-
-            if (lastEntryId != null)
-                Main.form.btnCodexShow.Enabled = true;
+            this.initializeOnLoad();
         }
 
-        private void initialize()
-        {
-            if (this.IsDisposed) return;
-
-            this.BackgroundImage = GameGraphics.getBackgroundForForm(this);
-
-            if (game.systemBody == null)
-            {
-                Game.log("PlotBioStatus_Load bad!");
-                return;
-            }
-
-            Game.update += Game_modeChanged;
-
-            // force a mode switch, that will initialize
-            this.Game_modeChanged(game.mode, true);
-
-            game.journals!.onJournalEntry += Journals_onJournalEntry;
-            game.status.StatusChanged += Status_StatusChanged;
-        }
-
-        private void Status_StatusChanged(bool blink)
+        protected override void Status_StatusChanged(bool blink)
         {
             if (this.IsDisposed) return;
 
@@ -116,16 +62,7 @@ namespace SrvSurvey
 
         #region journal events
 
-        private void Journals_onJournalEntry(JournalEntry entry, int index)
-        {
-            if (this.IsDisposed) return;
-
-            this.onJournalEntry((dynamic)entry);
-        }
-
-        private void onJournalEntry(JournalEntry entry) { /* ignore */ }
-
-        private void onJournalEntry(CodexEntry entry)
+        protected override void onJournalEntry(CodexEntry entry)
         {
             if (entry.SubCategory == "$Codex_SubCategory_Organic_Structures;" && game.systemBody != null && game.status.hasLatLong)
             {
@@ -141,15 +78,10 @@ namespace SrvSurvey
                     this.lastCodexScan += $" {Util.credits(match.species.reward)}";
 
                 this.Invalidate();
-
-                if (FormShowCodex.activeForm != null)
-                    FormShowCodex.activeForm.showEntryId(lastEntryId);
-
-                Main.form.btnCodexShow.Enabled = true;
             }
         }
 
-        private void onJournalEntry(ScanOrganic entry)
+        protected override void onJournalEntry(ScanOrganic entry)
         {
             this.lastCodexScan = null;
             var match = Game.codexRef.matchFromVariant(entry.Variant);
@@ -157,12 +89,9 @@ namespace SrvSurvey
             this.hasImage = match.variant.imageUrl != null;
 
             this.Invalidate();
-
-            if (FormShowCodex.activeForm != null)
-                FormShowCodex.activeForm.showEntryId(lastEntryId);
         }
 
-        private void onJournalEntry(SendText entry)
+        protected override void onJournalEntry(SendText entry)
         {
             var msg = entry.Message.ToLowerInvariant();
 
@@ -175,62 +104,30 @@ namespace SrvSurvey
 
         #endregion
 
-        private void Game_modeChanged(GameMode newMode, bool force)
+        protected override void Game_modeChanged(GameMode newMode, bool force)
         {
             if (this.IsDisposed) return;
 
-            var showPlotter = PlotBioStatus.allowPlotter || SystemData.isWithinLastDssDuration();
-
-            if (this.Opacity > 0 && !showPlotter)
-                this.Opacity = 0;
-            else if (this.Opacity == 0 && showPlotter)
-                this.reposition(Elite.getWindowRect());
+            base.Game_modeChanged(newMode, force);
 
             if (game.systemBody == null || game.systemBody.bioSignalCount == 0)
+            {
+                // TODO: still needed?
+                Debugger.Break();
                 Program.closePlotter<PlotBioStatus>();
-        }
-
-        #region mouse handlers
-
-        protected override void OnMouseEnter(EventArgs e)
-        {
-            base.OnMouseEnter(e);
-
-            if (Debugger.IsAttached)
-            {
-                // use a different cursor if debugging
-                this.Cursor = Cursors.No;
-            }
-            else if (Game.settings.hideOverlaysFromMouse)
-            {
-                // move the mouse outside the overlay
-                System.Windows.Forms.Cursor.Position = Elite.gameCenter;
             }
         }
 
-        protected override void OnMouseDown(MouseEventArgs e)
+        protected override void onPaintPlotter(PaintEventArgs e)
         {
-            base.OnMouseDown(e);
-
-            this.Invalidate();
-            Elite.setFocusED();
-        }
-
-        #endregion
-
-        private void PlotBioStatus_Paint(object sender, PaintEventArgs e)
-        {
-            if (this.IsDisposed || game?.systemBody == null) return;
-
-            var g = e.Graphics;
-            g.SmoothingMode = SmoothingMode.HighQuality;
+            if (game?.systemBody == null) return;
 
             var scanOne = game.cmdr.scanOne;
             if (game.systemBody.organisms?.Count > 0)
             {
                 g.DrawString(
                     $"Biological signals: {game.systemBody.bioSignalCount} | Analyzed: {game.systemBody.countAnalyzedBioSignals}",
-                    GameColors.fontSmall, GameColors.brushGameOrange, PlotBase.scaled(4), PlotBase.scaled(8));
+                    GameColors.fontSmall, GameColors.brushGameOrange, four, eight);
 
                 var organism = scanOne == null ? null : game.systemBody?.organisms?.FirstOrDefault(_ => _.species == scanOne.species);
                 if (organism == null)
@@ -254,7 +151,7 @@ namespace SrvSurvey
                 var font = GameColors.fontSmall;
                 var sz = g.MeasureString(msg, GameColors.fontMiddle);
                 var tx = mid.Width - (sz.Width / 2);
-                var ty = PlotBase.scaled(16);
+                var ty = oneSix;
                 g.DrawString(msg, GameColors.fontMiddle, GameColors.brushCyan, tx, ty);
             }
 
@@ -269,7 +166,7 @@ namespace SrvSurvey
                 {
                     this.drawFooterText(g, this.lastCodexScan, GameColors.brushCyan);
                     if (lastEntryId != null)
-                        this.drawHasImage(g, this.Width - PlotBase.scaled(36), this.Height - PlotBase.scaled(36));
+                        this.drawHasImage(g, this.Width - threeSix, this.Height - threeSix);
                 }
                 else if (game.systemBody.firstFootFall)
                     this.drawFooterText(g, "Applying first footfall bonus", GameColors.brushCyan);
@@ -280,18 +177,15 @@ namespace SrvSurvey
 
         private void showCurrentGenus(Graphics g, SystemOrganism organism)
         {
-            float y = PlotBase.scaled(28);
+            float y = twoEight;
 
             // left circle - always filled
-            var twoFour = PlotBase.scaled(24);
-            var eight = PlotBase.scaled(8);
-            var threeTwo = PlotBase.scaled(32);
             var r = new RectangleF(eight, y, twoFour, twoFour);
             g.FillEllipse(GameColors.brushGameOrangeDim, r);
             g.DrawEllipse(GameColors.penGameOrange2, r);
 
             // middle circle - filled after scan two
-            r = new RectangleF(PlotBase.scaled(40), y, twoFour, twoFour);
+            r = new RectangleF(forty, y, twoFour, twoFour);
             if (game.cmdr.scanTwo != null)
             {
                 g.FillEllipse(GameColors.brushGameOrangeDim, r);
@@ -303,25 +197,18 @@ namespace SrvSurvey
             }
 
             // right circle - always empty
-            r = new RectangleF(PlotBase.scaled(72), y, twoFour, twoFour);
+            r = new RectangleF(sevenTwo, y, twoFour, twoFour);
             g.DrawEllipse(GameColors.penGameOrange2, r);
 
             // Species name
             var txt = $"{organism.variantLocalized}"; // or species?
             var f = GameColors.fontBig;
             var sz = g.MeasureString(txt, f);
-            var oneOhFour = false && Game.settings.autoShowPlotBioSystem ? PlotBase.scaled(104 + 42) : PlotBase.scaled(104);
             if (sz.Width > this.Width - oneOhFour - eight - threeTwo) f = GameColors.font18;
             sz = g.MeasureString(txt, f);
             if (sz.Width > this.Width - oneOhFour - eight - threeTwo) f = GameColors.font14;
 
             var x = oneOhFour;
-            if (false && Game.settings.autoShowPlotBioSystem)
-            {
-                var reward = organism.reward;
-                PlotBase.drawBioRing(g, organism.genus, 104, y - 7, reward, true, 38);
-            }
-
             g.DrawString(
                 txt,
                 f, GameColors.brushCyan,
@@ -336,35 +223,34 @@ namespace SrvSurvey
                 g.DrawString(
                     txt2,
                     GameColors.fontSmall, GameColors.brushCyan,
-                    PlotBase.scaled(4), PlotBase.scaled(62));
+                    four, sixTwo);
             }
 
             this.drawScale(g, organism.range);
 
             if (lastEntryId != null)
-                this.drawHasImage(g, this.Width - PlotBase.scaled(34), PlotBase.scaled(24));
+                this.drawHasImage(g, this.Width - threeFour, twoFour);
         }
 
-        private void drawHasImage(Graphics g, int x, int y)
+        private void drawHasImage(Graphics g, float x, float y)
         {
-            g.DrawIcon(Resources.picture, x, y);
+            g.DrawIcon(Resources.picture, (int)x, (int)y);
             if (!this.hasImage)
             {
-                y += PlotBase.scaled(2);
-                g.DrawLine(GameColors.penDarkRed4, x, y, x + PlotBase.scaled(30), y + PlotBase.scaled(28));
-                g.DrawLine(GameColors.penDarkRed4, x, y + PlotBase.scaled(28), x + PlotBase.scaled(30), y);
+                y += two;
+                g.DrawLine(GameColors.penDarkRed4, x, y, x + thirty, y + twoEight);
+                g.DrawLine(GameColors.penDarkRed4, x, y + twoEight, x + thirty, y);
             }
         }
 
         private void drawScale(Graphics g, float dist)
         {
-            float pad = PlotBase.scaled(8);
+            float pad = eight;
 
             g.ResetTransform();
 
             var txt = Util.metersToString(dist);
             var txtSz = g.MeasureString(txt, GameColors.fontSmall);
-            var two = PlotBase.scaled(2);
             var x = this.Width - pad - txtSz.Width;
             var y = this.Height - pad - txtSz.Height + two;
 
@@ -377,7 +263,6 @@ namespace SrvSurvey
 
             var bar = PlotBase.scaled(dist * 0.25f);
 
-            var four = PlotBase.scaled(4);
             g.DrawLine(GameColors.penCyan2, x, y, x - bar, y); // bar
             g.DrawLine(GameColors.penCyan2, x, y - four, x, y + four); // right edge
             g.DrawLine(GameColors.penCyan2, x - bar, y - four, x - bar, y + four); // left edge
@@ -385,7 +270,7 @@ namespace SrvSurvey
 
         private void drawValueCompletion(Graphics g)
         {
-            float pad = PlotBase.scaled(8);
+            float pad = eight;
 
             g.ResetTransform();
 
@@ -401,28 +286,28 @@ namespace SrvSurvey
                 x, y,
                 StringFormat.GenericTypographic);
 
-            float length = PlotBase.scaled(100f);
+            float length = hundred;
             //var scannedLength = 20; // ratio * data.sumAnalyzed;
 
             x = this.Width - pad - txtSz.Width - length;
-            y += pad - PlotBase.scaled(2);
+            y += pad - two;
 
             // known un-scanned - solid blue line
             g.DrawLine(GameColors.penCyan4, x, y, x + length, y);
 
             // already scanned value - orange bar
-            g.FillRectangle(GameColors.brushGameOrange, x, PlotBase.scaled(9), PlotBase.scaled(percent), PlotBase.scaled(10));
+            g.FillRectangle(GameColors.brushGameOrange, x, nine, PlotBase.scaled(percent), ten);
 
             // active scan organism value - solid blue bar
             if (game.cmdr.scanOne != null)
-                g.FillRectangle(GameColors.brushCyan, x + PlotBase.scaled(percent), PlotBase.scaled(10), length / (float)game.systemBody!.bioSignalCount, PlotBase.scaled(8));
+                g.FillRectangle(GameColors.brushCyan, x + PlotBase.scaled(percent), ten, length / (float)game.systemBody!.bioSignalCount, eight);
         }
 
         private void showAllGenus(Graphics g)
         {
             // all the Genus names
-            float x = PlotBase.scaled(24);
-            float y = PlotBase.scaled(22);
+            float x = twoFour;
+            float y = twoTwo;
 
             if (game.systemBody?.organisms == null || game.systemBody.organisms.Count == 0)
             {
@@ -461,17 +346,10 @@ namespace SrvSurvey
                 // */
 
                 var sz = g.MeasureString(txt, GameColors.fontSmall);
-                if (x + sz.Width > this.Width - PlotBase.scaled(16))
+                if (x + sz.Width > this.Width - oneSix)
                 {
-                    x = PlotBase.scaled(24);
+                    x = twoFour;
                     y += sz.Height;
-                }
-
-                if (false && Game.settings.autoShowPlotBioSystem)
-                {
-                    var reward = -1; // organism.reward;
-                    PlotBase.drawBioRing(g, organism.genus, x, y - 2, reward, false, 12);
-                    x += 13;
                 }
 
                 g.DrawString(
@@ -488,7 +366,7 @@ namespace SrvSurvey
                     g.DrawLine(GameColors.penGameOrangeDim1, x + 1, ly + 1, x + sz.Width + 1, ly + 1);
                 }
 
-                x += sz.Width + PlotBase.scaled(8);
+                x += sz.Width + eight;
             }
         }
 

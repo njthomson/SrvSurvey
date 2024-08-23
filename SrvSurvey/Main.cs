@@ -1575,18 +1575,6 @@ namespace SrvSurvey
             Program.closePlotter<PlotSphericalSearch>();
             new FormSphereLimit().ShowDialog(this);
             this.updateSphereLimit();
-
-            //var txt = GalacticRegions.getIdxFromNames(Clipboard.GetText());
-            //Clipboard.SetText(txt);
-            //Game.log(txt);
-
-            //GalacticNeblulae.lookupStarPos();
-
-            // revert touchdown location
-            /*
-            game!.touchdownLocation = game!.systemBody!.lastTouchdown!.clone();
-            Program.getPlotter<PlotHumanSite>()!.Invalidate();
-            // */
         }
 
         private void btnRamTah_Click(object sender, EventArgs e)

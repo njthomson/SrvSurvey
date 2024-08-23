@@ -2,49 +2,25 @@
 using SrvSurvey.units;
 using System.Diagnostics;
 using System.Drawing.Drawing2D;
-using System.Text;
 
 namespace SrvSurvey
 {
-    public partial class PlotGrounded : Form, PlotterForm
+    internal partial class PlotGrounded : PlotBase, PlotterForm
     {
-        private Game game = Game.activeGame!;
-
         private TrackingDelta? srvLocation;
 
         private TrackingDelta? td;
 
-        private float scale;
         private float mw;
         private float mh;
 
         private PlotGrounded()
         {
-            InitializeComponent();
-
+            this.Size = Size.Empty;
             this.scale = 0.25f;
-            this.Cursor = Cursors.Cross;
         }
 
-        //public override bool allow { get => PlotGrounded.allowPlotter; }
-
-        protected override void OnActivated(EventArgs e)
-        {
-            base.OnActivated(e);
-            Elite.setFocusED();
-        }
-
-        public void reposition(Rectangle gameRect)
-        {
-            if (gameRect == Rectangle.Empty)
-            {
-                this.Opacity = 0;
-                return;
-            }
-
-            this.Opacity = PlotPos.getOpacity(this);
-            PlotPos.reposition(this, gameRect);
-        }
+        public override bool allow { get => PlotGrounded.allowPlotter; }
 
         private void PlotGrounded_Load(object sender, EventArgs e)
         {
@@ -64,18 +40,9 @@ namespace SrvSurvey
             }
         }
 
-        private void initializeOnLoad()
+        protected override void initializeOnLoad()
         {
-            this.BackgroundImage = GameGraphics.getBackgroundForForm(this);
-
-            game.status!.StatusChanged += Status_StatusChanged;
-            Game.update += Game_modeChanged;
-
-            // force a mode switch, that will initialize
-            this.Game_modeChanged(game.mode, true);
-            this.Status_StatusChanged(false);
-
-            game.journals!.onJournalEntry += Journals_onJournalEntry;
+            base.initializeOnLoad();
 
             // get landing location
             Game.log($"initialize here: {Status.here}, touchdownLocation: {game.touchdownLocation}, radius: {game.systemBody!.radius.ToString("N0")}");
@@ -83,6 +50,8 @@ namespace SrvSurvey
             if (game.touchdownLocation == null)
             {
                 Game.log("Why no touchdownLocation?");
+                Debugger.Break();
+                // TODO: still needed?
                 return;
             }
 
@@ -94,19 +63,9 @@ namespace SrvSurvey
 
         #region journal events
 
-        private void Journals_onJournalEntry(JournalEntry entry, int index)
-        {
-            if (this.IsDisposed) return;
-
-            this.onJournalEntry((dynamic)entry);
-        }
-
-        private void onJournalEntry(JournalEntry entry) { /* ignore */ }
-
-        private void onJournalEntry(Touchdown entry)
+        protected override void onJournalEntry(Touchdown entry)
         {
             var newLocation = new LatLong2(entry);
-            Game.log($"re-touchdownLocation: {newLocation}");
 
             if (this.td == null) return;
 
@@ -116,9 +75,8 @@ namespace SrvSurvey
             this.Invalidate();
         }
 
-        private void onJournalEntry(Disembark entry)
+        protected override void onJournalEntry(Disembark entry)
         {
-            Game.log($"Disembark srvLocation {Status.here}");
             if (entry.SRV && this.srvLocation == null)
             {
                 this.srvLocation = new TrackingDelta(game.systemBody!.radius, Status.here.clone());
@@ -126,9 +84,8 @@ namespace SrvSurvey
             }
         }
 
-        private void onJournalEntry(Embark entry)
+        protected override void onJournalEntry(Embark entry)
         {
-            Game.log($"Embark {Status.here}");
             if (entry.SRV && this.srvLocation != null)
             {
                 this.srvLocation = null;
@@ -158,23 +115,23 @@ namespace SrvSurvey
             // if (game.systemSite == null && !game.isMode(GameMode.SuperCruising, GameMode.GlideMode) && (game.isLanded || showPlotTrackers || showPlotPriorScans || game.cmdr.scanOne != null))
         }
 
-        private void Game_modeChanged(GameMode newMode, bool force)
+        protected override void Game_modeChanged(GameMode newMode, bool force)
         {
             if (this.IsDisposed) return;
-
-            if (this.Opacity > 0 && !PlotGrounded.allowPlotter)
-                this.Opacity = 0;
-            else if (this.Opacity == 0 && PlotGrounded.allowPlotter)
-                this.reposition(Elite.getWindowRect());
+            base.Game_modeChanged(newMode, force);
 
             if (game.systemBody == null)
+            {
+                // TODO: still needed?
+                Debugger.Break();
                 Program.closePlotter<PlotGrounded>();
-            else
-                this.Invalidate();
+            }
         }
 
-        private void Status_StatusChanged(bool blink)
+        protected override void Status_StatusChanged(bool blink)
         {
+            base.Status_StatusChanged(blink);
+
             if (this.td != null)
                 this.td.Current = Status.here;
 
@@ -184,51 +141,17 @@ namespace SrvSurvey
             this.Invalidate();
         }
 
-        #region mouse handlers
-
-        protected override void OnMouseEnter(EventArgs e)
+        protected override void onPaintPlotter(PaintEventArgs e)
         {
-            base.OnMouseEnter(e);
-
-            if (Debugger.IsAttached)
-            {
-                // use a different cursor if debugging
-                this.Cursor = Cursors.No;
-            }
-            else if (Game.settings.hideOverlaysFromMouse)
-            {
-                // move the mouse outside the overlay
-                System.Windows.Forms.Cursor.Position = Elite.gameCenter;
-            }
-        }
-
-        protected override void OnMouseDown(MouseEventArgs e)
-        {
-            base.OnMouseDown(e);
-
-            this.Invalidate();
-            Elite.setFocusED();
-        }
-
-        #endregion
-
-        private void PlotGrounded_Paint(object sender, PaintEventArgs e)
-        {
-            if (this.IsDisposed || game.systemBody == null || game.status == null) return;
-            var four = PlotBase.scaled(4);
-            var eight = PlotBase.scaled(8);
-            var ten = PlotBase.scaled(10);
-            var sixFour = PlotBase.scaled(64f);
+            if (game.systemBody == null || game.status == null) return;
 
             this.mw = this.Width / 2;
             this.mh = this.Height / 2;
 
-            var g = e.Graphics;
-            g.SmoothingMode = SmoothingMode.HighQuality;
             // clip to preserve top/bottom text area
 
-            var bottomClip = PlotBase.scaled(game.cmdr.scanOne == null ? 34 : 52);
-            g.Clip = new Region(new RectangleF(4, 24, this.Width - 8, this.Height - bottomClip));
+            var bottomClip = game.cmdr.scanOne == null ? threeFour : fiveTwo;
+            g.Clip = new Region(new RectangleF(four, twoFour, this.Width - eight, this.Height - bottomClip));
 
             // draw basic compass cross hairs centered in the window
             this.drawCompassLines(g);
@@ -249,7 +172,6 @@ namespace SrvSurvey
                 g.RotateTransform(360 - game.status!.Heading);
 
 
-                float touchdownSize = sixFour;
                 var rect = PlotBase.scaled(new RectangleF((float)td.dx - 64, (float)-td.dy - 64, 128, 128));
                 var b = shipDeparted ? GameColors.brushShipFormerLocation : GameColors.brushShipLocation;
                 g.FillEllipse(b, rect);
@@ -286,7 +208,7 @@ namespace SrvSurvey
             g.TranslateTransform(mw, mh);
             g.RotateTransform(360 - game.status!.Heading);
 
-            var locSz = PlotBase.scaled(5f);
+            var locSz = five;
             g.DrawEllipse(GameColors.penLime2, -locSz, -locSz, locSz * 2, locSz * 2);
             var dx = (float)Math.Sin(Util.degToRad(game.status.Heading)) * locSz * 2;
             var dy = (float)Math.Cos(Util.degToRad(game.status.Heading)) * locSz * 2;
@@ -302,7 +224,7 @@ namespace SrvSurvey
             if (this.srvLocation != null)
                 this.drawBearingTo(g, four + mw, eight, "SRV:", this.srvLocation.Target);
 
-            float y = this.Height - PlotBase.scaled(24);
+            float y = this.Height - twoFour;
             if (game.cmdr.scanOne != null)
             {
                 if (game.cmdr.scanOne.body != game.systemBody.name && game.cmdr.scanOne.body != null)
@@ -326,7 +248,7 @@ namespace SrvSurvey
                 var font = GameColors.fontSmall;
                 var sz = g.MeasureString(msg, font);
                 var tx = mw - (sz.Width / 2);
-                var ty = PlotBase.scaled(42);
+                var ty = fourTwo;
 
                 int pad = 14;
                 var rect = new RectangleF(tx - pad, ty - pad, sz.Width + pad * 2, sz.Height + pad * 2);
@@ -573,15 +495,14 @@ namespace SrvSurvey
 
             var txtSz = g.MeasureString(txt, GameColors.fontSmall);
 
-            var sz = PlotBase.scaled(6);
-            x += txtSz.Width + PlotBase.scaled(8);
+            var sz = six;
+            x += txtSz.Width + eight;
             var r = new RectangleF(x, y, sz * 2, sz * 2);
             g.DrawEllipse(GameColors.penGameOrange2, r);
 
             var dd = new TrackingDelta(game.systemBody!.radius, location);
 
             Angle deg = dd.angle - game.status!.Heading;
-            var ten = PlotBase.scaled(10f);
             var dx = (float)Math.Sin(Util.degToRad(deg)) * ten;
             var dy = (float)Math.Cos(Util.degToRad(deg)) * ten;
             g.DrawLine(GameColors.penGameOrange2, x + sz, y + sz, x + sz + dx, y + sz - dy);
