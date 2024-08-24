@@ -9,7 +9,6 @@ namespace SrvSurvey
 
         private PlotFSSInfo() : base()
         {
-            this.Size = Size.Empty;
             this.Font = GameColors.fontSmall2;
 
             if (systemName != game?.systemData?.name)
@@ -44,8 +43,7 @@ namespace SrvSurvey
 
         protected override void OnLoad(EventArgs e)
         {
-            this.Width = scaled(320);
-            this.Height = scaled(88);
+            // Size set during paint
 
             base.OnLoad(e);
 

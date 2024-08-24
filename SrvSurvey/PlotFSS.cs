@@ -7,15 +7,25 @@ namespace SrvSurvey
     {
         private FSSBodySignals? lastFSSBodySignals;
 
-        private string? lastBodyName;
-        private string? lastInitialValue;
-        private string? lastMappedValue;
-        private string? lastNotes;
-        private bool lastWasDiscovered;
+        private static long lastSystemAddress;
+        private static string? lastBodyName;
+        private static string? lastInitialValue;
+        private static string? lastMappedValue;
+        private static string? lastNotes;
+        private static bool lastWasDiscovered;
 
         private PlotFSS() : base()
         {
-            this.Size = Size.Empty;
+            if (lastSystemAddress > 0 && lastSystemAddress != game.systemData!.address)
+            {
+                lastBodyName = null;
+                lastInitialValue = null;
+                lastInitialValue = null;
+                lastMappedValue = null;
+                lastNotes = null;
+            }
+
+            lastSystemAddress = game.systemData!.address;
         }
 
         public override bool allow { get => PlotFSS.allowPlotter; }
@@ -52,11 +62,11 @@ namespace SrvSurvey
             if (entry.Bodyname.Contains("Belt Cluster") || !string.IsNullOrEmpty(entry.StarType))
                 return;
 
-            this.lastBodyName = entry.Bodyname;
-            this.lastWasDiscovered = entry.WasDiscovered;
-            this.lastInitialValue = Util.GetBodyValue(entry, false).ToString("N0"); // 123.ToString("#.## M");
-            this.lastMappedValue = Util.GetBodyValue(entry, true).ToString("N0"); // 456.ToString("#.## M");
-            this.lastNotes = "";
+            lastBodyName = entry.Bodyname;
+            lastWasDiscovered = entry.WasDiscovered;
+            lastInitialValue = Util.GetBodyValue(entry, false).ToString("N0"); // 123.ToString("#.## M");
+            lastMappedValue = Util.GetBodyValue(entry, true).ToString("N0"); // 456.ToString("#.## M");
+            lastNotes = "";
 
             if (this.lastFSSBodySignals?.BodyID == entry.BodyID)
             {
@@ -64,20 +74,20 @@ namespace SrvSurvey
 
                 if (bioSignal != null)
                 {
-                    this.lastNotes = $"{bioSignal.Count} bio signals";
+                    lastNotes = $"{bioSignal.Count} bio signals";
 
                     var hasVulcanism = !string.IsNullOrEmpty(entry.Volcanism);
                     // TODO: consider check for zero or low atmosphere?
                     // var lowAtmosphere = this.lastScan?.AtmosphereType == "None";
                     if (hasVulcanism) // && lowAtmosphere)
                     {
-                        this.lastNotes += " | Candidate for Brain Trees";
+                        lastNotes += " | Candidate for Brain Trees";
                     }
                 }
             }
 
             if (!entry.WasDiscovered)
-                this.lastBodyName += " (undiscovered)";
+                lastBodyName += " (undiscovered)";
 
             this.Invalidate();
         }
@@ -87,22 +97,22 @@ namespace SrvSurvey
             this.g = e.Graphics;
             this.g.SmoothingMode = SmoothingMode.HighQuality;
 
-            var brush = this.lastWasDiscovered ? GameColors.brushGameOrange : GameColors.brushCyan;
+            var brush = lastWasDiscovered ? GameColors.brushGameOrange : GameColors.brushCyan;
 
-            g.DrawString($"Last scan:    {this.lastBodyName}", GameColors.fontSmaller, brush, four, eight);
+            g.DrawString($"Last scan:    {lastBodyName}", GameColors.fontSmaller, brush, four, eight);
 
-            if (!string.IsNullOrEmpty(this.lastBodyName))
+            if (!string.IsNullOrEmpty(lastBodyName))
             {
                 //if (!this.lastWasDiscovered)
                 //    g.DrawString("(undiscovered)", GameColors.fontSmall2, GameColors.brushCyan, 330, 8);
 
-                var msg = $"Estimated value:    {this.lastInitialValue} cr\r\nWith surface scan:    {this.lastMappedValue} cr";
+                var msg = $"Estimated value:    {lastInitialValue} cr\r\nWith surface scan:    {lastMappedValue} cr";
                 g.DrawString(msg, GameColors.fontMiddle, brush, oneEight, twoEight);
 
-                if (!string.IsNullOrEmpty(this.lastNotes))
+                if (!string.IsNullOrEmpty(lastNotes))
                 {
-                    var txt = this.lastNotes;
-                    var bodySummary = game.systemData?.bioSummary?.bodyGroups.Find(_ => _.body.name == this.lastBodyName);
+                    var txt = lastNotes;
+                    var bodySummary = game.systemData?.bioSummary?.bodyGroups.Find(_ => _.body.name == lastBodyName);
                     if (bodySummary != null)
                     {
                         txt += $" ~{Util.credits(bodySummary.minReward, true)}";

@@ -2467,7 +2467,7 @@ namespace SrvSurvey.game
                 case "Rocky":
                 case "eRingClass_Rocky":
                     return "Rocky";
-                case "Metalic":
+                case "Metallic":
                 case "eRingClass_Metalic":
                     return "Matalic";
 

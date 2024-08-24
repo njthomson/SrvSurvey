@@ -15,6 +15,7 @@ namespace SrvSurvey
 
         private int count = 20;
         private DateTime lastchanged;
+        public bool didFirstPaint { get; set; }
 
         private PlotPulse()
         {

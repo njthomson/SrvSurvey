@@ -23,7 +23,6 @@ namespace SrvSurvey
 
         private PlotGalMap() : base()
         {
-            this.Size = Size.Empty;
             this.Font = GameColors.fontSmall2;
         }
 
@@ -31,7 +30,8 @@ namespace SrvSurvey
 
         protected override void OnLoad(EventArgs e)
         {
-            this.MinimumSize = new Size(scaled(96), scaled(44));
+            // Size set during paint
+
             base.OnLoad(e);
 
             this.initializeOnLoad();
@@ -113,6 +113,7 @@ namespace SrvSurvey
 
             if (this.hops.Count == 0)
             {
+                // TODO: keep hidden until we have a route?
                 this.drawTextAt(eight, $"No route set");
                 this.newLine(+ten, true);
             }

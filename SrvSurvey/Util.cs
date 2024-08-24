@@ -508,6 +508,17 @@ namespace SrvSurvey
         {
             if (form.Visible == false)
             {
+                //// NO! fade in if form doesn't exist yet
+                //if (true && !form.IsHandleCreated)
+                //{
+                //    form.Opacity = 0;
+                //    form.Load += new EventHandler((object? sender, EventArgs e) =>
+                //    {
+                //        // using the quicker fade-out duration
+                //        Util.fadeOpacity(form, 1, Game.settings.fadeOutDuration); // 100ms
+                //    });
+                //}
+
                 if (parent == null)
                     form.Show();
                 else
@@ -520,6 +531,103 @@ namespace SrvSurvey
 
                 form.Activate();
             }
+        }
+
+        public static void fadeOpacity(Form form, float targetOpacity, float durationMs = 0)
+        {
+            if (targetOpacity < 0 || targetOpacity > 1) throw new ArgumentOutOfRangeException(nameof(targetOpacity));
+            Debug.WriteLine($"!START! {form.Name} {form.Size} {durationMs}ms / {form.Opacity} => {targetOpacity}");
+
+            // exit early if no-op
+            if (targetOpacity == form.Opacity) return;
+
+            // don't animate if duration is zero
+            if (durationMs == 0)
+                form.Opacity = targetOpacity;
+            else
+            {
+                var started = DateTime.Now.Ticks;
+                var s1 = DateTime.Now;
+
+                var delta = 1f / durationMs;
+                fadeNext(form, targetOpacity, 0, delta);
+                //Application.DoEvents();
+
+                //var fadeTimer = new System.Windows.Forms.Timer()
+                //{
+                //    Interval = 50,
+                //};
+                //delta *= fadeTimer.Interval;
+                //var nn = 0;
+
+                //fadeTimer.Tick += new EventHandler((object? sender, EventArgs e) =>
+                //{
+                //    var dd = (DateTime.Now.Ticks - started) / 10_000;
+                //    //Debug.WriteLine($"? {dd}");
+
+                //    var wasOpacity = form.Opacity;
+                //    var wasSmaller = form.Opacity < targetOpacity;
+
+                //    var newOpacity = form.Opacity + (wasSmaller ? delta : -delta);
+                //    var isSmaller = newOpacity < targetOpacity;
+                //    ++nn;
+
+                //    //Debug.WriteLine($"{dd} {form.Name} #{++nn} delta:{delta}, junk.Opacity:{wasOpacity}, this.targetOpacity:{targetOpacity}, wasSmaller:{wasSmaller}, isSmaller:{isSmaller}");
+
+                //    // end animation when we reach target
+                //    if (wasSmaller != isSmaller || form.Opacity == targetOpacity)
+                //    {
+                //        fadeTimer.Stop();
+                //        Debug.WriteLine($"{dd} {form.Name} #{nn} delta:{delta}, junk.Opacity:{wasOpacity}, this.targetOpacity:{targetOpacity}, wasSmaller:{wasSmaller}, isSmaller:{isSmaller}");
+                //        form.Opacity = targetOpacity;
+                //        Debug.WriteLine($"!STOP! ({nn}) {form.Name} {DateTime.Now.Subtract(s1).TotalMilliseconds}");
+                //    }
+                //    else
+                //    {
+                //        form.Opacity = newOpacity;
+                //    }
+                //});
+
+                //fadeTimer.Start();
+            }
+        }
+
+        private static void fadeNext(Form form, float targetOpacity, long lastTick, float delta)
+        {
+            if (form.IsDisposed) return;
+
+            var wasOpacity = form.Opacity;
+            var wasSmaller = form.Opacity < targetOpacity;
+
+            // (there are 10,000 ticks in a millisecond)
+            var nextTick = lastTick + 10_000;
+
+            if (nextTick < DateTime.Now.Ticks)
+            {
+                var newOpacity = form.Opacity + (wasSmaller ? delta : -delta);
+                var isSmaller = newOpacity < targetOpacity;
+
+                //Debug.WriteLine($"! delta:{delta}, junk.Opacity:{wasOpacity}, this.targetOpacity:{targetOpacity}, wasSmaller:{wasSmaller}, isSmaller:{isSmaller}");
+
+                // end animation when we reach target
+                if (wasSmaller != isSmaller || form.Opacity == targetOpacity)
+                {
+                    if (form.Opacity != newOpacity)
+                        form.Opacity = targetOpacity;
+                    Debug.WriteLine($"!STOP! {form.Name} {form.Size} {form.Opacity}");
+                    form.Invalidate();
+                    return;
+                }
+
+                form.Opacity = newOpacity;
+                lastTick = DateTime.Now.Ticks;
+            }
+            else
+            {
+                //Debug.WriteLine($"~ delta:{delta}, junk.Opacity:{wasOpacity}, this.targetOpacity:{targetOpacity}, skip! {lastTick} // {nextTick} < {DateTime.Now.Ticks}");
+            }
+
+            Program.control.BeginInvoke(() => fadeNext(form, targetOpacity, lastTick, delta));
         }
 
         public static bool isOdyssey = Game.activeGame?.journals == null || Game.activeGame.journals.isOdyssey;

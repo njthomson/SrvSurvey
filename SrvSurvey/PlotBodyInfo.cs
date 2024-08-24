@@ -8,7 +8,6 @@ namespace SrvSurvey
 
         private PlotBodyInfo() : base()
         {
-            this.Size = Size.Empty;
             this.Font = GameColors.fontSmall2;
         }
 
@@ -17,7 +16,7 @@ namespace SrvSurvey
         protected override void OnLoad(EventArgs e)
         {
             this.Width = scaled(320);
-            this.Height = scaled(88);
+            this.Height = scaled(480);
 
             base.OnLoad(e);
 
@@ -34,7 +33,7 @@ namespace SrvSurvey
                 && (!Game.settings.autoHidePlotBodyInfoInBubble || Util.getSystemDistance(Game.activeGame.systemData.starPos, Util.sol) > Game.settings.bodyInfoBubbleSize)
                 && (
                     // any time during DSS or ... 
-                    Game.activeGame.mode == GameMode.SAA
+                    (Game.activeGame.mode == GameMode.SAA && Game.activeGame.systemBody != null)
                     // ... or in the SystemMap and sub-setting allows
                     || (Game.activeGame.isMode(GameMode.SystemMap, GameMode.Orrery) && Game.settings.autoShowPlotBodyInfoInMap)
                     // ... or when super cruising/gliding close to a body and sub-setting allows

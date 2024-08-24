@@ -12,8 +12,6 @@ namespace SrvSurvey
 
         private PlotBioStatus() : base()
         {
-            this.Size = Size.Empty;
-
             if (game.cmdr.scanOne?.entryId > 0)
             {
                 lastEntryId = game.cmdr.scanOne.entryId.ToString();
@@ -42,10 +40,10 @@ namespace SrvSurvey
                 && Game.activeGame.isMode(GameMode.SuperCruising, GameMode.Flying, GameMode.Landed, GameMode.InSrv, GameMode.OnFoot, GameMode.GlideMode, GameMode.InFighter, GameMode.CommsPanel, GameMode.SAA, GameMode.Codex);
         }
 
-        private void PlotBioStatus_Load(object sender, EventArgs e)
+        protected override void OnLoad(EventArgs e)
         {
-            this.Height = PlotBase.scaled(80);
             this.Width = PlotBase.scaled(480);
+            this.Height = PlotBase.scaled(80);
             this.initializeOnLoad();
         }
 
@@ -111,11 +109,7 @@ namespace SrvSurvey
             base.Game_modeChanged(newMode, force);
 
             if (game.systemBody == null || game.systemBody.bioSignalCount == 0)
-            {
-                // TODO: still needed?
-                Debugger.Break();
                 Program.closePlotter<PlotBioStatus>();
-            }
         }
 
         protected override void onPaintPlotter(PaintEventArgs e)

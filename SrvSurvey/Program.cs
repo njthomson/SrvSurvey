@@ -114,6 +114,21 @@ namespace SrvSurvey
                 form = (T)ctor.Invoke(null);
                 form.Name = formType.Name;
 
+                //// have new plotters fade in
+                ////form.Size = Size.Empty;
+                ////form.Opacity = 0;
+                //form.Load += new EventHandler((object? sender, EventArgs e) =>
+                //{
+                //    // using the quicker fade-out duration
+                //    //form.Opacity = 0;
+                //    control.BeginInvoke(() =>
+                //    {
+                //        Util.fadeOpacity((Form)(object)form, 1, Game.settings.fadeInDuration);
+                //    });
+
+                //    //Util.fadeOpacity((Form)(object)form, 1, 500); // 100ms
+                //});
+
                 // add to list, then show
                 activePlotters.Add(formType.Name, form);
             }
@@ -484,5 +499,7 @@ namespace SrvSurvey
         bool IsDisposed { get; }
         void Close();
         void Show();
+        event EventHandler? Load;
+        bool didFirstPaint { get; set; }
     }
 }

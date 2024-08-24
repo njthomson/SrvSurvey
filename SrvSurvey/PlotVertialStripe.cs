@@ -21,6 +21,7 @@ namespace SrvSurvey
         public static double targetAltitude;
 
         protected Game game = Game.activeGame!;
+        public bool didFirstPaint { get; set; }
 
         private PlotVertialStripe()
         {

@@ -16,13 +16,12 @@ namespace SrvSurvey
 
         private PlotGrounded()
         {
-            this.Size = Size.Empty;
             this.scale = 0.25f;
         }
 
         public override bool allow { get => PlotGrounded.allowPlotter; }
 
-        private void PlotGrounded_Load(object sender, EventArgs e)
+        protected override void OnLoad(EventArgs e)
         {
             this.Height = PlotBase.scaled(500);
             this.Width = PlotBase.scaled(380);

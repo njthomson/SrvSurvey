@@ -18,6 +18,8 @@ namespace SrvSurvey
         public LatLong2 targetLatLong = LatLong2.Empty;
         public bool targetLatLongActive = false;
 
+        public int fadeInDuration = 150;
+
         public bool autoShowBioSummary = true;
         public bool autoShowBioPlot = true;
         public bool autoShowPlotFSS = true;

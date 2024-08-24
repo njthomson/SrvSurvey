@@ -336,6 +336,8 @@ namespace SrvSurvey
 
             if (gameIsActive && PlotBioSystem.allowPlotter)
                 Program.showPlotter<PlotBioSystem>();
+            else
+                Program.closePlotter<PlotBioSystem>();
 
             if (gameIsActive && PlotBodyInfo.allowPlotter)
                 Program.showPlotter<PlotBodyInfo>();
@@ -1529,12 +1531,6 @@ namespace SrvSurvey
         private void btnRuins_Click(object sender, EventArgs e)
         {
             FormRuins.show();
-
-            //game!.systemData!.prepSettlements();
-            //Program.invalidateActivePlotters();
-
-            //if (game?.systemData?.bodies != null)
-            //    Game.log(string.Join("\r\n", game.systemData.bodies.Select(_ => $"'{_.name}' ({_.id}) : {Util.credits((long)_.rewardEstimate)}")));
         }
 
         private void btnPublish_Click(object sender, EventArgs e)
@@ -1544,7 +1540,7 @@ namespace SrvSurvey
         }
 
         private void publishGuardians()
-        { 
+        {
             btnPublish.Enabled = false;
             SiteTemplate.publish();
             Game.canonn.init(true);
@@ -1604,7 +1600,6 @@ namespace SrvSurvey
         private void btnTest_Click(object sender, EventArgs e)
         {
             BioPredictor.testSystems();
-
             //CriteriaBuilder.buildWholeSet();
         }
     }

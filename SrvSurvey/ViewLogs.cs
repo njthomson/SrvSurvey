@@ -11,17 +11,7 @@ namespace SrvSurvey
             if (activeForm == null)
                 ViewLogs.activeForm = new ViewLogs(logs);
 
-            if (ViewLogs.activeForm.Visible == false)
-            {
-                ViewLogs.activeForm.Show();
-            }
-            else
-            {
-                if (ViewLogs.activeForm.WindowState == FormWindowState.Minimized)
-                    ViewLogs.activeForm.WindowState = FormWindowState.Normal;
-
-                ViewLogs.activeForm.Activate();
-            }
+            Util.showForm(ViewLogs.activeForm);
         }
 
         /// <summary>

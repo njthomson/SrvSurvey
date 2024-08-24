@@ -16,7 +16,6 @@ namespace SrvSurvey
 
         private PlotJumpInfo() : base()
         {
-            this.Size = Size.Empty;
             this.Font = GameColors.fontSmall;
         }
 
@@ -39,8 +38,8 @@ namespace SrvSurvey
 
         protected override void OnLoad(EventArgs e)
         {
-            this.Width = scaled(540);
-            this.Height = scaled(88);
+            // Size set during paint
+
             base.OnLoad(e);
 
             this.initializeOnLoad();

@@ -125,6 +125,8 @@ namespace SrvSurvey
         /// A manually set scaling factor given by users with the `z` command.
         /// </summary>
         public float customScale = -1.0f;
+        public bool didFirstPaint { get; set; }
+        private bool forceRepaint;
 
         protected PlotBase()
         {
@@ -135,9 +137,14 @@ namespace SrvSurvey
             this.MinimizeBox = false;
             this.MaximizeBox = false;
             this.FormBorderStyle = FormBorderStyle.None;
-            this.Opacity = Game.settings.Opacity;
+            this.Opacity = 0;
             this.DoubleBuffered = true;
             this.Text = this.GetType().Name;
+            this.ResizeRedraw = true;
+            if (Game.settings.fadeInDuration == 0)
+                this.Size = Size.Empty;
+            else
+                this.Size = new Size(640, 640);
 
             this.TopMost = true;
             this.Cursor = Cursors.Cross;
@@ -216,7 +223,12 @@ namespace SrvSurvey
             }
 
             // restore opacity, reposition ourself according to plotters.json rules, then re-render
-            this.Opacity = PlotPos.getOpacity(this);
+            var newOpacity = PlotPos.getOpacity(this);
+            if (this.Opacity == 0 && newOpacity > 0)
+                Util.fadeOpacity(this, newOpacity, Game.settings.fadeInDuration);
+            else if (this.Opacity != newOpacity)
+                this.Opacity = newOpacity;
+
             PlotPos.reposition(this, gameRect);
 
             this.Invalidate();
@@ -359,9 +371,38 @@ namespace SrvSurvey
                 this.formSize = new SizeF();
                 this.dtx = eight;
                 this.dty = ten;
+                this.forceRepaint = false;
 
+                //Game.log($"Paint {this.Name} {this.Size} // {this.BackgroundImage!.Size}");
 
+                // force draw the background as there may be a visible delay when the form size changes
+                g.DrawImage(this.BackgroundImage!, 0, 0);
                 onPaintPlotter(e);
+
+                //Game.log($"FirstPaint? {this.Name} {firstPaint} {this.Opacity} {this.Size} (doRepaint: {doRepaint}) // {this.BackgroundImage!.Size}");
+
+                if (forceRepaint)
+                {
+                    g.Clear(Color.Transparent);
+                    this.formSize = new SizeF();
+                    this.dtx = eight;
+                    this.dty = ten;
+                    g.DrawImage(this.BackgroundImage!, 0, 0);
+                    onPaintPlotter(e);
+                }
+
+                if (!didFirstPaint)
+                {
+                    didFirstPaint = true;
+                    var targetOpacity = PlotPos.getOpacity(this);
+                    if (targetOpacity != this.Opacity)
+                    {
+                        BeginInvoke(() =>
+                        {
+                            Util.fadeOpacity(this, targetOpacity, Game.settings.fadeInDuration);
+                        });
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -658,12 +699,13 @@ namespace SrvSurvey
             this.formSize.Width += dx;
             this.formSize.Height += dy;
 
-            if (this.Size != this.formSize.ToSize())
+            if (this.Size != this.formSize.ToSize() && !forceRepaint)
             {
+                //Game.log($"formAdjustSize: {this.Name} - {this.Size} => {this.formSize.ToSize()}");
                 this.Size = this.formSize.ToSize();
                 this.BackgroundImage = GameGraphics.getBackgroundForForm(this);
-                this.Invalidate();
                 this.reposition(Elite.getWindowRect());
+                forceRepaint = true;
             }
         }
 
@@ -1077,20 +1119,6 @@ namespace SrvSurvey
             };
         }
 
-        public override void reposition(Rectangle gameRect)
-        {
-            if (gameRect == Rectangle.Empty)
-            {
-                this.Opacity = 0;
-                return;
-            }
-
-            this.Opacity = PlotPos.getOpacity(this);
-            Elite.floatCenterTop(this, gameRect, 0);
-
-            this.Invalidate();
-        }
-
         protected override void Status_StatusChanged(bool blink)
         {
             if (this.IsDisposed) return;
@@ -1270,6 +1298,8 @@ namespace SrvSurvey
 
         public static float getOpacity(PlotterForm form, float defaultValue = -1)
         {
+            if (!form.didFirstPaint) return 0;
+
             return getOpacity(form.GetType().Name, defaultValue);
         }
 

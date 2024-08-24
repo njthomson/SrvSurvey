@@ -1,4 +1,5 @@
 ﻿using SrvSurvey.game;
+using System.Diagnostics;
 using System.Drawing.Drawing2D;
 
 namespace SrvSurvey
@@ -7,8 +8,7 @@ namespace SrvSurvey
     {
         private PlotBioSystem() : base()
         {
-            this.Size = Size.Empty;
-            this.BackgroundImageLayout = ImageLayout.Stretch;
+            //this.BackgroundImageLayout = ImageLayout.Stretch;
 
             this.Font = GameColors.fontSmall;
         }
@@ -17,8 +17,7 @@ namespace SrvSurvey
 
         protected override void OnLoad(EventArgs e)
         {
-            this.Width = scaled(420);
-            this.Height = scaled(88);
+            // Size set during paint
 
             base.OnLoad(e);
 
@@ -51,6 +50,7 @@ namespace SrvSurvey
             if (this.IsDisposed || game.systemData == null || game.status == null || !PlotBioSystem.allowPlotter)
             {
                 this.Opacity = 0;
+                Debugger.Break();
                 return;
             }
 
@@ -194,7 +194,7 @@ namespace SrvSurvey
 
             this.dty += two;
             var footerTxt = $"Rewards: {body.minMaxBioRewards}";
-//            if (body.firstFootFall) footerTxt += "\r\n(Applying FF bonus)";
+            //            if (body.firstFootFall) footerTxt += "\r\n(Applying FF bonus)";
             drawTextAt(eight, footerTxt, GameColors.brushGameOrange);
             newLine(true);
 

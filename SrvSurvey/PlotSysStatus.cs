@@ -9,7 +9,6 @@ namespace SrvSurvey
 
         private PlotSysStatus() : base()
         {
-            this.Size = Size.Empty;
             this.Font = GameColors.fontMiddle;
         }
 
@@ -17,8 +16,8 @@ namespace SrvSurvey
 
         protected override void OnLoad(EventArgs e)
         {
-            this.Width = scaled(48);
-            this.Height = scaled(48);
+            // Size set during paint
+
             base.OnLoad(e);
 
             this.initializeOnLoad();
@@ -64,7 +63,7 @@ namespace SrvSurvey
                 if (game?.systemData == null || game.status == null || !PlotSysStatus.allowPlotter)
                 {
                     this.Opacity = 0;
-                    this.BeginInvoke(() => Program.closePlotter<PlotSysStatus>());
+                    Program.control.BeginInvoke(() => Program.closePlotter<PlotSysStatus>());
                     return;
                 }
 
