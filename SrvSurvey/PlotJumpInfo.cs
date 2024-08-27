@@ -386,11 +386,9 @@ namespace SrvSurvey
 
 
             // finally redraw dot for next jump, as it got clipped by prior rendering
-            if (this.totalDistance > limitExcessDistance)
+            if (pixelsPerLY < limitPixelsPerLY)
             {
                 g.DrawLine(GameColors.Route.penNext, xNow - 1, y - eight, xNow - 1, y + eight);
-                //g.DrawLine(GameColors.penCyan2, xNow, y, xNow - six, y - ten);
-                //g.DrawLine(GameColors.penCyan2, xNow, y, xNow - six, y + ten);
             }
             else if (nextHopIdx > 0)
             {

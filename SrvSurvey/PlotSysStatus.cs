@@ -69,7 +69,7 @@ namespace SrvSurvey
 
                 this.dtx = six;
                 this.dty = oneNine;
-                this.formSize = new SizeF(minViableWidth, 48);
+                this.formSize = new SizeF(48, 48);
 
                 // reduce destination to it's short name
                 var destinationBody = game.status.Destination?.Name?.Replace(game.systemData.name, "").Replace(" ", "");
@@ -91,14 +91,16 @@ namespace SrvSurvey
                 else if (!game.systemData.fssComplete)
                 {
                     var fssProgress = 100.0 / (float)game.systemData.bodyCount * (float)game.systemData.fssBodyCount;
-                    this.drawTextAt($"FSS {(int)fssProgress}% complete", GameColors.brushCyan);
+                    var txt = $"FSS {(int)fssProgress}%";
+                    if (dssRemaining.Count == 0) txt += " complete";
+                    this.drawTextAt(txt, GameColors.brushCyan);
                 }
-                else if (dssRemaining.Count > 0)
+                if (dssRemaining.Count > 0)
                 {
                     this.drawTextAt($"{dssRemaining.Count}x bodies: ");
                     this.drawRemainingBodies(destinationBody, dssRemaining);
                 }
-                else
+                else if (game.systemData.fssComplete)
                 {
                     this.drawTextAt("No DSS meet criteria");
                 }
@@ -135,17 +137,14 @@ namespace SrvSurvey
                     //}
                     //headerTxt += ")";
                 }
-                g.DrawString($"System survey remaining: {headerTxt}", GameColors.fontSmall, GameColors.brushGameOrange, four, eight);
+                g.DrawString($"System survey: {headerTxt}", GameColors.fontSmall, GameColors.brushGameOrange, four, eight);
                 newLine(true);
             }
             finally
             {
                 if (!this.IsDisposed)
                 {
-                    this.formAdjustSize();
-
-                    // resize window to fit as necessary
-                    this.Width = Math.Max((int)this.dtx, minViableWidth);
+                    this.formAdjustSize(six);
                 }
             }
         }

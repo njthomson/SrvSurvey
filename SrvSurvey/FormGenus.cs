@@ -573,7 +573,7 @@ namespace SrvSurvey
                 {
                     TextRenderer.DrawText(
                         g,
-                        Util.getMinMaxCredits(systemData.minBioRewards, systemData.maxBioRewards),
+                        Util.getMinMaxCredits(systemData.getMinBioRewards(false), systemData.getMaxBioRewards(false)),
                         title.Font,
                         new Rectangle(this.Width - 204, title.Top + title.Padding.Top, 200, title.Height),
                         title.ForeColor,
@@ -593,7 +593,7 @@ namespace SrvSurvey
 
                     TextRenderer.DrawText(
                         g,
-                        body.minMaxBioRewards,
+                        body.getMinMaxBioRewards(false),
                         lbl.Font,
                         new Rectangle(this.Width - 204, lbl.Top + lbl.Padding.Top, 200, lbl.Height),
                         lbl.ForeColor,

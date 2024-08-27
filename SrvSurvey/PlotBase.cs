@@ -376,18 +376,20 @@ namespace SrvSurvey
                 //Game.log($"Paint {this.Name} {this.Size} // {this.BackgroundImage!.Size}");
 
                 // force draw the background as there may be a visible delay when the form size changes
-                g.DrawImage(this.BackgroundImage!, 0, 0);
+                if (this.BackgroundImage != null)
+                    g.DrawImage(this.BackgroundImage, 0, 0);
                 onPaintPlotter(e);
 
-                //Game.log($"FirstPaint? {this.Name} {firstPaint} {this.Opacity} {this.Size} (doRepaint: {doRepaint}) // {this.BackgroundImage!.Size}");
+                //Game.log($"FirstPaint? {this.Name} {firstPaint} {this.Opacity} {this.Size} (doRepaint: {doRepaint}) // {this.BackgroundImage?.Size}");
 
                 if (forceRepaint)
                 {
-                    g.Clear(Color.Transparent);
+                    g.Clear(Color.Black);
                     this.formSize = new SizeF();
                     this.dtx = eight;
                     this.dty = ten;
-                    g.DrawImage(this.BackgroundImage!, 0, 0);
+                    if (this.BackgroundImage != null)
+                        g.DrawImage(this.BackgroundImage, 0, 0);
                     onPaintPlotter(e);
                 }
 
@@ -397,7 +399,7 @@ namespace SrvSurvey
                     var targetOpacity = PlotPos.getOpacity(this);
                     if (targetOpacity != this.Opacity)
                     {
-                        BeginInvoke(() =>
+                        Program.control.BeginInvoke(() =>
                         {
                             Util.fadeOpacity(this, targetOpacity, Game.settings.fadeInDuration);
                         });

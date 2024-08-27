@@ -358,7 +358,7 @@
             "  gravity [0.189 ~ 0.438]",
             "     temp [50 ~ 82]",
             "volcanism [None,Major Water Geysers]",
-            "atmosComp [Nitrogen >= 100]"
+            "atmosComp [Nitrogen >= 99.9]"
           ]
         },
         {

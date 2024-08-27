@@ -1,5 +1,4 @@
 ﻿using SrvSurvey.game;
-using System.Diagnostics;
 using System.Drawing.Drawing2D;
 
 namespace SrvSurvey
@@ -36,7 +35,7 @@ namespace SrvSurvey
                 && !Game.activeGame.hidePlottersFromCombatSuits
                 && (Game.activeGame.humanSite == null || Game.activeGame.mode == GameMode.ExternalPanel) // why was this commented? For external panel?
                 && (
-                    Game.activeGame.isMode(GameMode.SuperCruising, GameMode.SAA, GameMode.FSS, GameMode.ExternalPanel, GameMode.Orrery, GameMode.SystemMap)
+                    Game.activeGame.isMode(GameMode.SuperCruising, GameMode.SAA, GameMode.FSS, GameMode.ExternalPanel, GameMode.Orrery, GameMode.SystemMap, GameMode.RolePanel)
                     || (
                             Game.activeGame.systemBody?.bioSignalCount > 0
                             && Game.activeGame.status.hasLatLong == true
@@ -50,7 +49,6 @@ namespace SrvSurvey
             if (this.IsDisposed || game.systemData == null || game.status == null || !PlotBioSystem.allowPlotter)
             {
                 this.Opacity = 0;
-                Debugger.Break();
                 return;
             }
 
@@ -113,14 +111,17 @@ namespace SrvSurvey
                         // if we have a matching prediction - show the variant name without the genus prefix
                         if (predictions.Count > 0)
                         {
-
                             var firstColor = true;
                             var lastSpecies = "";
                             foreach (var match in predictions)
                             {
                                 if (match.species.name != lastSpecies)
                                 {
-                                    if (lastSpecies != "") newLine(+one);
+                                    if (lastSpecies != "")
+                                    {
+                                        this.drawTextAt("?", brush);
+                                        newLine(+one);
+                                    }
                                     var speciesName = match.species.englishName.Replace(match.species.genus.englishName, "").Trim() + ":";
                                     this.drawTextAt(twoEight, speciesName, brush);
                                     lastSpecies = match.species.name;
@@ -161,15 +162,12 @@ namespace SrvSurvey
                         var y = dty + six;
                         g.DrawLine(GameColors.penGameOrange1, twoEight, y, dtx, y);
                         g.DrawLine(GameColors.penGameOrangeDim1, twoEight + 1, y + 1, dtx + 1, y + 1);
+                        //g.DrawLine(GameColors.penGameOrange1, twoEight, y, this.ClientSize.Width - oneTwo, y);
+                        //g.DrawLine(GameColors.penGameOrangeDim1, twoEight + 1, y + 1, this.ClientSize.Width - oneTwo + 1, y + 1);
                     }
                     newLine(+one, true);
 
                     // 2nd line - right
-                    if (body.firstFootFall)
-                    {
-                        minReward *= 5;
-                        maxReward *= 5;
-                    }
                     var sz = drawTextAt(
                         this.ClientSize.Width - ten,
                         Util.getMinMaxCredits(minReward, maxReward),
@@ -193,7 +191,7 @@ namespace SrvSurvey
             }
 
             this.dty += two;
-            var footerTxt = $"Rewards: {body.minMaxBioRewards}";
+            var footerTxt = $"Rewards: {body.getMinMaxBioRewards(false)}";
             //            if (body.firstFootFall) footerTxt += "\r\n(Applying FF bonus)";
             drawTextAt(eight, footerTxt, GameColors.brushGameOrange);
             newLine(true);
@@ -201,8 +199,8 @@ namespace SrvSurvey
             if (body.firstFootFall)
             {
                 this.dty += two;
-                var sz = drawTextAt(this.Width - eight, "(Applying FF bonus)", GameColors.brushCyan, null, true);
-                dtx = 0;
+                drawTextAt(this.Width - eight, $"(FF bonus: {body.getMinMaxBioRewards(true)})", GameColors.brushCyan, null, true);
+                dtx = lastTextSize.Width;
                 newLine(true);
             }
 
@@ -234,9 +232,11 @@ namespace SrvSurvey
 
             // draw a row for each body
             var sortedBodies = game.systemData.bodies.OrderBy(b => b.shortName).ToList();
+            var anyFF = false;
             foreach (var body in sortedBodies)
             {
                 if (body.bioSignalCount == 0) continue;
+                anyFF |= body.firstFootFall;
                 var potentialFirstDiscovery = body.predictions.Values.Any(p => !game.cmdrCodex.isDiscovered(p.entryId));
 
                 var highlight = body.shortName == destinationBody || (body.countAnalyzedBioSignals != body.bioSignalCount && body.countAnalyzedBioSignals > 0);
@@ -307,16 +307,25 @@ namespace SrvSurvey
                 b = highlight ? GameColors.brushCyan : GameColors.brushGameOrange;
                 //if (!highlight && potentialFirstDiscovery) b = (SolidBrush)Brushes.Gold;
 
-                drawTextAt(this.ClientSize.Width - ten, " " + body.minMaxBioRewards, b, GameColors.fontMiddle, true);
-                dtx = lastTextSize.Width + boxRight + ten;
+                var txt = body.getMinMaxBioRewards(false);
+                if (txt == "") txt = " ";
+                drawTextAt(this.ClientSize.Width - ten, txt, b, GameColors.fontMiddle, true);
+
+                dtx = lastTextSize.Width + boxRight + oneTwo;
                 newLine(+four, true);
             }
 
             this.dty += four;
-            var footerTxt = $"Rewards: {Util.getMinMaxCredits(game.systemData.minBioRewards, game.systemData.maxBioRewards)}";
+            var footerTxt = $"Rewards: {Util.getMinMaxCredits(game.systemData.getMinBioRewards(false), game.systemData.getMaxBioRewards(false))}";
             this.drawTextAt(six, footerTxt, GameColors.brushGameOrange, GameColors.fontSmall);
             newLine(+two, true);
 
+            if (anyFF)
+            {
+                drawTextAt(this.Width - eight, $"(FF bonus: {Util.getMinMaxCredits(game.systemData.getMinBioRewards(true), game.systemData.getMaxBioRewards(true))})", GameColors.brushCyan, null, true);
+                dtx = lastTextSize.Width;
+                newLine(+two, true);
+            }
 
             formAdjustSize(+ten, +six);
         }

@@ -611,9 +611,9 @@ namespace SrvSurvey
             var systemScanned = game.systemData.bodies.Sum(_ => _.countAnalyzedBioSignals);
             txtSystemBioSignals.Text = $"{systemScanned} of {systemTotal}";
 
-            //var sysEstimate = game.systemData.bodies.Sum(_ => _.sumPotentialEstimate);
-            var sysActual = game.systemData.bodies.Sum(_ => _.sumAnalyzed);
-            txtSystemBioValues.Text = $" {Util.credits(sysActual, true)} of {Util.credits(game.systemData.maxBioRewards, true)}";
+            var sysEstimate = game.systemData.bodies.Sum(body => body.firstFootFall ? body.maxBioRewards * 5 : body.maxBioRewards);
+            var sysActual = game.systemData.bodies.Sum(body => body.sumAnalyzed);
+            txtSystemBioValues.Text = $" {Util.credits(sysActual, true)} of {Util.credits(sysEstimate, true)}";
             if (game.systemData.bodies.Any(_ => _.bioSignalCount > 0 && _.organisms?.All(o => o.species != null) != true))
                 txtSystemBioValues.Text += "?";
 
@@ -833,6 +833,9 @@ namespace SrvSurvey
                 Application.DoEvents();
                 this.updateAllControls();
             }
+
+            if (FormShowCodex.activeForm != null)
+                FormShowCodex.activeForm.prepAllSpecies();
         }
 
         private void onJournalEntry(CodexEntry entry)
@@ -843,6 +846,9 @@ namespace SrvSurvey
                 Game.log($"Scanned Guardian Beacon in: {entry.System}");
                 Program.showPlotter<PlotGuardianBeaconStatus>();
             }
+
+            if (FormShowCodex.activeForm != null)
+                FormShowCodex.activeForm.prepAllSpecies();
         }
 
         private void onJournalEntry(SupercruiseDestinationDrop entry)

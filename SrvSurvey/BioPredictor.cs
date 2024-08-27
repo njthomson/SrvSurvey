@@ -66,8 +66,7 @@ namespace BioCriterias
             }
 
             // log extra diagnostics?
-            //logBody = "Renibus";
-            //logOrganism = "Coronamus";
+            //logOrganism = "Informem";
 
             // predict each criteria recursively from the master list
             foreach (var criteria in BioCriteria.allCriteria)
@@ -103,7 +102,7 @@ namespace BioCriterias
             if (genus != null && knownGenus?.Count > 0 && !knownGenus.Contains(genus)) return;
             // or stop here if we already scanned some species from this genus
             // TODO: handle Brain Tree's
-            if (genus != null && species != null && knownSpecies?.Count > 0 && knownSpecies.ContainsKey(genus) && !knownSpecies[genus].EndsWith(species))
+            if (genus != null && species != null && knownSpecies?.Count > 0 && knownSpecies.ContainsKey(genus))
                 return;
 
             // evaluate current query
@@ -136,7 +135,7 @@ namespace BioCriterias
                 {
                     if (clause == null) continue;
                     //if (clause.ToString().Contains("star")) System.Diagnostics.Debugger.Break();
-                    //if (currentName.Contains("pluma", StringComparison.OrdinalIgnoreCase)) System.Diagnostics.Debugger.Break();
+                    //if (currentName.Contains("informem", StringComparison.OrdinalIgnoreCase)) System.Diagnostics.Debugger.Break();
 
                     var propName = Map.properties.GetValueOrDefault(clause.property) ?? clause.property;
                     if (!bodyProps.ContainsKey(propName)) throw new Exception($"Unexpected property: {propName} ({clause.property})");

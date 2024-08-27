@@ -26,7 +26,7 @@ namespace SrvSurvey
 
         protected override void OnLoad(EventArgs e)
         {
-            this.Width = scaled(120);
+            this.Width = scaled(128);
             this.Height = scaled(108);
             base.OnLoad(e);
 

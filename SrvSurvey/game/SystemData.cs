@@ -1621,10 +1621,9 @@ namespace SrvSurvey.game
             return stars;
         }
 
-        [JsonIgnore]
-        public long minBioRewards { get => this.bodies.Sum(b => b.firstFootFall ? b.minBioRewards * 5 : b.minBioRewards); }
-        [JsonIgnore]
-        public long maxBioRewards { get => this.bodies.Sum(b => b.firstFootFall ? b.maxBioRewards * 5 : b.maxBioRewards); }
+        public long getMinBioRewards(bool applyFF) { return this.bodies.Sum(b => applyFF && b.firstFootFall ? b.minBioRewards * 5 : b.minBioRewards); }
+
+        public long getMaxBioRewards(bool applyFF) { return this.bodies.Sum(b => applyFF && b.firstFootFall ? b.maxBioRewards * 5 : b.maxBioRewards); }
 
         [JsonIgnore]
         private bool bioSummaryActive;
@@ -2240,12 +2239,11 @@ namespace SrvSurvey.game
         [JsonIgnore]
         public long maxBioRewards;
 
-        [JsonIgnore]
-        public string minMaxBioRewards
+        public string getMinMaxBioRewards(bool applyFF)
         {
-            get => Util.getMinMaxCredits(
-                this.firstFootFall ? this.minBioRewards * 5 : this.minBioRewards,
-                this.firstFootFall ? this.maxBioRewards * 5 : this.maxBioRewards);
+            return Util.getMinMaxCredits(
+                applyFF && this.firstFootFall ? this.minBioRewards * 5 : this.minBioRewards,
+                applyFF && this.firstFootFall ? this.maxBioRewards * 5 : this.maxBioRewards);
         }
 
         /// <summary>
@@ -2335,14 +2333,14 @@ namespace SrvSurvey.game
             // predict valid species within the genus ...
             if (this.organisms?.Count > 0)
             {
-                foreach (var o in this.organisms)
+                foreach (var org in this.organisms)
                 {
-                    o.lookupMissingSpeciesIfNeeded();
+                    org.lookupMissingSpeciesIfNeeded();
 
                     // if we know the species, keep its reward value and move on
-                    if (o.species != null)
+                    if (org.species != null)
                     {
-                        knownRewards += /*this.firstFootFall ? o.reward * 5 :*/ o.reward;
+                        knownRewards += /*this.firstFootFall ? o.reward * 5 :*/ org.reward;
                         continue;
                     }
 
@@ -2388,7 +2386,7 @@ namespace SrvSurvey.game
                 this.maxBioRewards += this.getShortListSum(delta, sortedPredictions, false);
             }
 
-            Game.log($"predictSpecies: '{this.name}' predicted {predictions.Count} rewards: {this.minMaxBioRewards}");
+            Game.log($"predictSpecies: '{this.name}' predicted {predictions.Count} rewards: {this.getMinMaxBioRewards(false)}");
             if (predictions.Count > 0) Game.log("\r\n> " + string.Join("\r\n> ", this.predictions.Keys.Select(k => $"{k} ({predictions[k].entryId})")));
         }
 

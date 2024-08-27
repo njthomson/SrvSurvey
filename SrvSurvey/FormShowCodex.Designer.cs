@@ -39,6 +39,8 @@
             toolChange = new ToolStripDropDownButton();
             somethingToolStripMenuItem = new ToolStripMenuItem();
             toolFiller = new ToolStripStatusLabel();
+            toolStripStatusLabel1 = new ToolStripStatusLabel();
+            toolOpenBioforge = new ToolStripStatusLabel();
             lblLoading = new Label();
             panelSubmit.SuspendLayout();
             statusStrip.SuspendLayout();
@@ -53,6 +55,7 @@
             lblTitle.Size = new Size(177, 28);
             lblTitle.TabIndex = 4;
             lblTitle.Text = "Aleoida Arcus";
+            lblTitle.DoubleClick += lblTitle_DoubleClick;
             // 
             // lblCmdr
             // 
@@ -115,7 +118,7 @@
             // 
             statusStrip.AllowMerge = false;
             statusStrip.BackColor = SystemColors.Control;
-            statusStrip.Items.AddRange(new ToolStripItem[] { toolChange, toolFiller, toolOpenCanonn });
+            statusStrip.Items.AddRange(new ToolStripItem[] { toolChange, toolFiller, toolOpenCanonn, toolStripStatusLabel1, toolOpenBioforge });
             statusStrip.Location = new Point(0, 365);
             statusStrip.Name = "statusStrip";
             statusStrip.Size = new Size(561, 22);
@@ -141,9 +144,23 @@
             // 
             toolFiller.Name = "toolFiller";
             toolFiller.Overflow = ToolStripItemOverflow.Never;
-            toolFiller.Size = new Size(289, 17);
+            toolFiller.Size = new Size(225, 17);
             toolFiller.Spring = true;
             toolFiller.Text = " ";
+            // 
+            // toolStripStatusLabel1
+            // 
+            toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            toolStripStatusLabel1.Size = new Size(12, 17);
+            toolStripStatusLabel1.Text = "/";
+            // 
+            // toolOpenBioforge
+            // 
+            toolOpenBioforge.IsLink = true;
+            toolOpenBioforge.Name = "toolOpenBioforge";
+            toolOpenBioforge.Size = new Size(52, 17);
+            toolOpenBioforge.Text = "Bioforge";
+            toolOpenBioforge.Click += toolOpenBioforge_Click;
             // 
             // lblLoading
             // 
@@ -194,5 +211,7 @@
         private Label lblLoading;
         private Label lblCmdr;
         private ToolStripMenuItem somethingToolStripMenuItem;
+        private ToolStripStatusLabel toolOpenBioforge;
+        private ToolStripStatusLabel toolStripStatusLabel1;
     }
 }

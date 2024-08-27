@@ -106,7 +106,7 @@ namespace SrvSurvey
             FormShowCodex.activeForm = null;
         }
 
-        public async void showEntryId(string entryId)
+        public async void showEntryId(string entryId, bool forceRemoteImage = false)
         {
             Game.log($"showEntryId: {entryId}");
             // also find any other things we can show images for
@@ -115,7 +115,6 @@ namespace SrvSurvey
 
             this.lblLoading.Show();
             this.panelSubmit.Hide();
-            //this.panelSubmit.Show();
             this.img = null;
             this.entryId = entryId;
             this.match = Game.codexRef.matchFromEntryId(entryId);
@@ -125,7 +124,7 @@ namespace SrvSurvey
             var filepath = Path.Combine(CodexRef.codexImagesFolder, $"{match.entryId}.png");
 
             // do we have a local image?
-            if (!string.IsNullOrEmpty(Game.settings.localFloraFolder))
+            if (!string.IsNullOrEmpty(Game.settings.localFloraFolder) && !forceRemoteImage)
             {
                 var localFilepath = Path.Combine(Game.settings.localFloraFolder, $"{match.variant.localImgName}.png");
                 if (File.Exists(localFilepath))
@@ -140,9 +139,9 @@ namespace SrvSurvey
 
             if (this.img == null && File.Exists(filepath))
             {
-                // download images once a week
+                // download images once a month
                 var duration = DateTime.Now.Subtract(File.GetLastWriteTime(filepath));
-                if (duration.TotalDays < 7)
+                if (duration.TotalDays < 30)
                 {
                     // load the cached image - quickly, so as not to lock the file
                     using (var imgTmp = Bitmap.FromFile(filepath))
@@ -188,7 +187,7 @@ namespace SrvSurvey
             this.lblLoading.Hide();
         }
 
-        private void prepAllSpecies()
+        public void prepAllSpecies()
         {
             if (Game.activeGame?.systemBody?.organisms == null) return;
             toolChange.DropDownItems.Clear();
@@ -202,7 +201,12 @@ namespace SrvSurvey
                     if (string.IsNullOrEmpty(org.variantLocalized)) continue;
 
                     var entryId = org.entryId.ToString();
-                    var item = new ToolStripMenuItem(org.variantLocalized, null, this.Item_Click, entryId);
+                    var item = new ToolStripMenuItem()
+                    {
+                        Name = entryId,
+                        Text = org.variantLocalized,
+                    };
+                    item.MouseUp += this.Item_MouseDown;
 
                     // show a check if there's a picture available
                     var match = Game.codexRef.matchFromEntryId(entryId);
@@ -217,27 +221,33 @@ namespace SrvSurvey
                 // show predictions
                 toolChange.DropDownItems.Add(new ToolStripMenuItem("Predicted:") { Enabled = false });
 
-                foreach (var foo in Game.activeGame.systemBody.predictions.Values)
+                foreach (var bioVariant in Game.activeGame.systemBody.predictions.Values)
                 {
                     // skip if that entryId is already present
-                    if (toolChange.DropDownItems.ContainsKey(foo.entryId)) continue;
+                    if (toolChange.DropDownItems.ContainsKey(bioVariant.entryId)) continue;
 
-                    var item = new ToolStripMenuItem(foo.englishName, null, this.Item_Click, foo.entryId);
+                    var item = new ToolStripMenuItem()
+                    {
+                        Name = bioVariant.entryId,
+                        Text = bioVariant.englishName,
+                    };
+                    item.MouseUp += this.Item_MouseDown;
 
-                    // show a check if there's a picture available
-                    item.Checked = foo.imageUrl != null;
+                    // show a check if there's a picture available from Canonn
+                    item.Checked = bioVariant.imageUrl != null;
 
                     toolChange.DropDownItems.Add(item);
                 }
             }
         }
 
-        private void Item_Click(object? sender, EventArgs e)
+        private void Item_MouseDown(object? sender, MouseEventArgs e)
         {
             var item = sender as ToolStripMenuItem;
             if (item == null) return;
 
-            this.showEntryId(item.Name);
+            var forceRemoteImage = e.Button == MouseButtons.Right;
+            this.showEntryId(item.Name, forceRemoteImage);
         }
 
         protected override void OnPaintBackground(PaintEventArgs e)
@@ -253,8 +263,18 @@ namespace SrvSurvey
             e.Graphics.DrawImage(this.img, x, y, w, h);
         }
 
+        private void lblTitle_DoubleClick(object sender, EventArgs e)
+        {
+            this.openImageSurveyPage();
+        }
+
         private void linkSubmitImage_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
+            this.openImageSurveyPage();
+        }
+
+        private void openImageSurveyPage()
+        { 
             var url = $"https://docs.google.com/forms/d/e/1FAIpQLSdtS-78k6MDb_L2RodLnVGoB3r2958SA5ARnufAEZxLeoRbhA/viewform?entry.987977054={Uri.EscapeDataString(Game.settings.lastCommander!)}&entry.1282362439={Uri.EscapeDataString(match.variant.englishName)}&entry.468337930={Uri.EscapeDataString(match.entryId.ToString())}";
             Util.openLink(url);
         }
@@ -262,6 +282,12 @@ namespace SrvSurvey
         private void toolStripStatusLabel1_Click(object sender, EventArgs e)
         {
             var url = $"https://canonn-science.github.io/Codex-Regions/?entryid={Uri.EscapeDataString(match.entryId.ToString())}&hud_category=Biology";
+            Util.openLink(url);
+        }
+
+        private void toolOpenBioforge_Click(object sender, EventArgs e)
+        {
+            var url = $"https://bioforge.canonn.tech/?entryid={Uri.EscapeDataString(match.variant.englishName)}";
             Util.openLink(url);
         }
 
