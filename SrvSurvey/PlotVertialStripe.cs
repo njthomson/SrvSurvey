@@ -14,7 +14,8 @@ namespace SrvSurvey
             Beta,
             Gamma,
             RelicTower,
-            Robolobster
+            Robolobster,
+            Hammerbot,
         }
 
         public static Mode mode;
@@ -47,7 +48,7 @@ namespace SrvSurvey
             this.BackColor = Color.Red;
             this.TransparencyKey = Color.Red;
             this.AllowTransparency = true;
-            
+
             game.status.StatusChanged += Status_StatusChanged;
         }
 
@@ -195,6 +196,9 @@ namespace SrvSurvey
                     this.drawRobolobsterTarget(g);
                     break;
 
+                case Mode.Hammerbot:
+                    this.drawHammerbotTarget(g);
+                    break;
                 case Mode.Buttress:
                 default:
                     this.drawButtressTarget(g);
@@ -441,7 +445,7 @@ namespace SrvSurvey
             drawCircle(g, x, y, 30);
 
             drawLine(g, x - 30, y, x - w * 0.50f, y);
-            drawLine(g, x + 22, y-4, x + 30, y-4);
+            drawLine(g, x + 22, y - 4, x + 30, y - 4);
 
             drawLine(g, x, y + 30, x, y + 50);
             drawLine(g, x - 19, y + 25, x - 30, y + 42);
@@ -516,7 +520,6 @@ namespace SrvSurvey
             g.DrawLine(GameColors.penBlack2Dash, w - w2, t + 180, w + w2, t + 180);
         }
 
-
         private void drawRobolobsterTarget(Graphics g)
         {
             var er = Elite.getWindowRect();
@@ -564,6 +567,28 @@ namespace SrvSurvey
             //x = w + ew * 1;
             //y = eh * 24;
             //drawCircle(g, x, y, 60);
+        }
+
+        private void drawHammerbotTarget(Graphics g)
+        {
+            var er = Elite.getWindowRect();
+
+            var ex = er.Width * 0.01f;
+            var w = (this.Width / 2f);
+            var h = (this.Height / 2f);
+
+            drawLine(g, w - ex, h - 10, w+ex, h - 10);
+
+            drawLine(g, w, h + 100, w, h + 400);
+
+
+            //ex = 0;
+            var ex2 = er.Width * 0.007f;
+            var ey = er.Height * 0.03f;
+            drawLine(g, w - ex - ex2, h + ey, w - ex, h + ey + ey);
+
+            //ex -= er.Width * 0.02f;
+            drawLine(g, w + ex + ex2, h + ey, w + ex, h + ey + ey);
         }
 
     }

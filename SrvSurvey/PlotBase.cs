@@ -475,28 +475,35 @@ namespace SrvSurvey
             // draw touchdown marker
             if (this.touchdownLocation0 != null)
             {
-                const float touchdownSize = 24f; // 64f;
-                var rect = new RectangleF(
-                    (float)touchdownLocation0.dx - touchdownSize,
-                    (float)-touchdownLocation0.dy - touchdownSize,
-                    touchdownSize * 2,
-                    touchdownSize * 2);
+                const float shipSize = 24f;
+                var shipLatLong = game.cmdr.lastTouchdownLocation!;
+                var ship = Util.getOffset(game.systemBody.radius, shipLatLong, 180);
 
-                var isFormerTouchdownLocation = game.touchdownLocation == null || game.touchdownLocation == LatLong2.Empty || (game.vehicle == ActiveVehicle.MainShip && game.mode == GameMode.Flying);
-                var brush = isFormerTouchdownLocation ? GameColors.brushShipFormerLocation : GameColors.brushShipLocation;
+                // adjust location by ship cockpit offset
+                var po = ShipCenterOffsets.get(game.shipType);
+                var pd = po.rotate(game.cmdr.lastTouchdownHeading);
+                ship += pd;
+
+                var rect = new RectangleF(
+                    (float)ship.X - shipSize,
+                    (float)-ship.Y - shipSize,
+                    shipSize * 2,
+                    shipSize * 2);
+
+                var shipDeparted = game.touchdownLocation == null || game.touchdownLocation == LatLong2.Empty;
+                var brush = shipDeparted ? GameColors.brushShipFormerLocation : GameColors.brushShipLocation;
+
                 g.FillEllipse(brush, rect);
             }
 
             // draw SRV marker
             if (game.srvLocation != null)
             {
-                var offset = Util.getOffset(game.status.PlanetRadius, game.srvLocation);
+                var offset = Util.getOffset(game.status.PlanetRadius, game.srvLocation, 180);
                 const float srvSize = 10f;
                 var rect = new RectangleF(
-                    //(float)srvLocation0.dx - srvSize,
-                    //(float)-srvLocation0.dy - srvSize,
                     (float)offset.X - srvSize,
-                    (float)offset.Y - srvSize,
+                    (float)-offset.Y - srvSize,
                     srvSize * 2,
                     srvSize * 2);
 

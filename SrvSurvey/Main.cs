@@ -1541,8 +1541,8 @@ namespace SrvSurvey
 
         private void btnPublish_Click(object sender, EventArgs e)
         {
-            //this.publishGuardians();
-            Game.git.publishBioCriteria();
+            this.publishGuardians();
+            //Game.git.publishBioCriteria();
         }
 
         private void publishGuardians()

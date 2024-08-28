@@ -219,6 +219,11 @@ namespace SrvSurvey
                     PlotVertialStripe.mode = PlotVertialStripe.Mode.Robolobster;
                     PlotVertialStripe.targetAltitude = 1500;// TODO: Game.settings.aerialAltGamma;
                     break;
+
+                case SiteType.Hammerbot:
+                    PlotVertialStripe.mode = PlotVertialStripe.Mode.Hammerbot;
+                    PlotVertialStripe.targetAltitude = 650;// TODO: Game.settings.aerialAltGamma;
+                    break;
             }
 
             // assume onFoot only means Relic Towers

@@ -2302,8 +2302,8 @@
   "Hammerbot": {
     "name": "$Ancient_Small_001:#index=1;",
     "backgroundImage": "",
-    "imageOffset": "0, 0",
-    "scaleFactor": 1.0,
+    "imageOffset": "559, 432",
+    "scaleFactor": 0.87,
     "poi": [
       { "name": "A01", "type": "obelisk", "angle": 283.642726233397, "dist": 97.98944306113899136597174602, "rot": 86 },
       { "name": "A02", "type": "obelisk", "angle": 290.324321822775, "dist": 110.57965223814757355965140569, "rot": 151 },
@@ -2411,8 +2411,8 @@
       },
       "C": {
         "IsEmpty": false,
-        "X": 170.0,
-        "Y": 120.0
+        "X": 164.0,
+        "Y": 110.0
       },
       "B": {
         "IsEmpty": false,
@@ -2424,8 +2424,8 @@
   "Bowl": {
     "name": "$Ancient_Small_003:#index=1;",
     "backgroundImage": "",
-    "imageOffset": "456, 498",
-    "scaleFactor": 0.73,
+    "imageOffset": "456, 487",
+    "scaleFactor": 0.75,
     "poi": [
       { "name": "A01", "type": "obelisk", "angle": 340.802430980534, "dist": 187.25278991277349333285935171, "rot": 325 },
       { "name": "A02", "type": "brokeObelisk", "angle": 338.90234358966, "dist": 185.98684739787936815683058753, "rot": 209 },
@@ -2471,7 +2471,7 @@
       { "name": "p5", "type": "casket", "angle": 114.142551728545, "dist": 159.65393510030905457076691992 },
       { "name": "p6", "type": "urn", "angle": 240.164498850641, "dist": 101.56790308422073461094434753 },
       { "name": "p7", "type": "tablet", "angle": 264.791089744217, "dist": 184.37424372087614076924652202 },
-      { "name": "p8", "type": "unknown", "angle": 274.580210667754, "dist": 164.05489095340259101433038950 },
+      { "name": "p8", "type": "orb", "angle": 274.580210667754, "dist": 164.05489095340259101433038950 },
       { "name": "p9", "type": "tablet", "angle": 179.121556624484, "dist": 149.01239949460185777016945496 },
       { "name": "p10", "type": "totem", "angle": 4.63895588316401, "dist": 120.36968030994250254840211658 },
       { "name": "p11", "type": "totem", "angle": 34.6425080638418, "dist": 191.67679261492077483756305304 },
@@ -2501,8 +2501,8 @@
       { "name": "py7", "type": "pylon", "angle": 80.3258595721893, "dist": 213.22585465008822646261934378, "rot": 56 },
       { "name": "py8", "type": "pylon", "angle": 183.147244952616, "dist": 132.910791034949, "rot": 331 },
       { "name": "py9", "type": "pylon", "angle": 201.759202082407, "dist": 142.587570577579, "rot": 31 },
-      { "name": "py10", "type": "pylon", "angle": 258.948161454228, "dist": 304.291012724731, "rot": 278 },
-      { "name": "py11", "type": "pylon", "angle": 344.603724947131, "dist": 132.874430775077, "rot": 180 },
+      { "name": "py10", "type": "pylon", "angle": 258.948161454228, "dist": 304.291012724731, "rot": 98.00 },
+      { "name": "py11", "type": "pylon", "angle": 346.603724947131, "dist": 146.874430775077, "rot": 180 },
       { "name": "py12", "type": "pylon", "angle": 83.3069776883239, "dist": 143.895299273498, "rot": 145 },
       { "name": "py13", "type": "pylon", "angle": 156.791977801841, "dist": 81.6263002883263, "rot": 60 },
       { "name": "py14", "type": "pylon", "angle": 231.013339273228, "dist": 124.191074140612, "rot": 302 },
