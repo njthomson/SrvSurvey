@@ -23,8 +23,6 @@
         public const string tower = ".tower";
         /// <summary> PlotGuardians : Signal an empty puddle </summary>
         public const string empty = ".empty";
-        /// <summary> PlotGuardians : Toggle aiming assistance overlay </summary>
-        public const string aim = ".aim";
         /// <summary> PlotGuardians : Append message to site notes </summary>
         public const string note = ".note";
         /// <summary> PlotGuardians : Active Obelisk Groups - set which obelisk groups exist at this site, expecting a comma separated list of letters </summary>

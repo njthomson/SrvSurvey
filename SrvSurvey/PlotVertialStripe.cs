@@ -7,17 +7,34 @@ namespace SrvSurvey
 {
     internal class PlotVertialStripe : Form, PlotterForm, IDisposable
     {
+        public static PlotVertialStripe? show(PlotVertialStripe.Mode mode, double targetAltitude)
+        {
+            if (Game.settings.disableAerialAlignmentGrid) return null;
+
+            PlotVertialStripe.targetAltitude = targetAltitude;
+            PlotVertialStripe.mode = mode;
+            return Program.showPlotter<PlotVertialStripe>();
+        }
+
         public enum Mode
         {
             Buttress,
+            RelicTower,
+
             Alpha,
             Beta,
             Gamma,
-            RelicTower,
-            Robolobster,
-            Hammerbot,
+
+            Bear,
             Bowl,
+            Crossroads,
             Fistbump,
+            Hammerbot,
+            Lacrosse,
+            Robolobster,
+            Squid,
+            Stickyhand,
+            Turtle,
         }
 
         public static Mode mode;
@@ -26,10 +43,12 @@ namespace SrvSurvey
         protected Game game = Game.activeGame!;
         public bool didFirstPaint { get; set; }
 
+        private Rectangle er;
+        private float mw;
+        private float mh;
+
         private PlotVertialStripe()
         {
-            this.Text = "";
-
             this.StartPosition = FormStartPosition.Manual;
             this.Width = 800;
             this.Height = 200;
@@ -100,7 +119,6 @@ namespace SrvSurvey
 
         private void Status_StatusChanged(bool blink)
         {
-            //if (this.Opacity > 0)
             this.Opacity = getOpacity() * Game.settings.Opacity;
 
             this.Invalidate();
@@ -122,15 +140,6 @@ namespace SrvSurvey
                 return 0.8;
             else
                 return (220 - (delta)) / 200f;
-
-
-            //const float limit = 200;
-            //if (game.status.Altitude > limit + 100)
-            //    return 0;
-            //else if (game.status.Altitude < 100)
-            //    return 1;
-            //else
-            //    return 1f - ((game.status.Altitude - 100) / limit);
         }
 
         protected override void OnShown(EventArgs e)
@@ -173,6 +182,10 @@ namespace SrvSurvey
 
         protected override void OnPaint(PaintEventArgs e)
         {
+            this.er = Elite.getWindowRect();
+            this.mw = (this.Width / 2f);
+            this.mh = (this.Height / 2f);
+
             var g = e.Graphics;
             g.SmoothingMode = SmoothingMode.HighQuality;
             g.Clear(Color.Red);
@@ -181,47 +194,40 @@ namespace SrvSurvey
 
             switch (mode)
             {
-                case Mode.Alpha:
-                    this.drawAlphaSiteTarget(g);
-                    break;
-                case Mode.Beta:
-                    this.drawBetaSiteTarget(g);
-                    break;
-                case Mode.Gamma:
-                    this.drawGammaSiteTarget(g);
-                    break;
-                case Mode.RelicTower:
-                    this.drawRelicTowerTarget(g);
-                    break;
-                case Mode.Robolobster:
-                    this.drawRobolobsterTarget(g);
-                    break;
-                case Mode.Hammerbot:
-                    this.drawHammerbotTarget(g);
-                    break;
-                case Mode.Bowl:
-                    this.drawBowlTarget(g);
-                    break;
-                case Mode.Fistbump:
-                    this.drawFistbumpTarget(g);
-                    break;
-                case Mode.Buttress:
+                case Mode.Buttress: this.drawButtressTarget(g); break;
+                case Mode.RelicTower: this.drawRelicTowerTarget(g); break;
+
+                case Mode.Alpha: this.drawAlphaSiteTarget(g); break;
+                case Mode.Beta: this.drawBetaSiteTarget(g); break;
+                case Mode.Gamma: this.drawGammaSiteTarget(g); break;
+
+                case Mode.Bear: this.drawBearTarget(g); break;
+                case Mode.Bowl: this.drawBowlTarget(g); break;
+                case Mode.Crossroads: this.drawCrossroadsTarget(g); break;
+                case Mode.Fistbump: this.drawFistbumpTarget(g); break;
+                case Mode.Hammerbot: this.drawHammerbotTarget(g); break;
+                case Mode.Lacrosse: this.drawLacrosseTarget(g); break;
+                case Mode.Robolobster: this.drawRobolobsterTarget(g); break;
+                case Mode.Squid: this.drawSquidTarget(g); break;
+                case Mode.Stickyhand: this.drawStickyhandTarget(g); break;
+                case Mode.Turtle: this.drawTurtleTarget(g); break;
+
                 default:
-                    this.drawButtressTarget(g);
+                    Game.log($"Unexpected mode: {mode}");
+                    this.Opacity = 0;
                     break;
             }
         }
 
         private void drawAngleString(Graphics g)
         {
-            var w = (this.Width / 2f);
             var y = 1;
-            g.FillRectangle(Brushes.Black, w - 45, 5 + y, 85, 30);
+            g.FillRectangle(Brushes.Black, mw - 45, 5 + y, 85, 30);
 
             var txt = $"{new Angle(game.status.Heading)}";
             var sz = g.MeasureString(txt, GameColors.fontBig);
 
-            var x = (this.Width / 2f) - (sz.Width / 2);
+            var x = mw - (sz.Width / 2);
             g.DrawString(txt, GameColors.fontBig, Brushes.Yellow, x, y);
         }
 
@@ -233,411 +239,202 @@ namespace SrvSurvey
 
         private void drawCircle(Graphics g, float x, float y, float r)
         {
-            var p1 = GameColors.penYellow4;
-            var p2 = GameColors.penBlack2Dash;
-
             var rect = new RectangleF(x - r, y - r, r * 2, r * 2);
-            g.DrawEllipse(p1, rect);
-            g.DrawEllipse(p2, rect);
+            g.DrawEllipse(GameColors.penYellow4, rect);
+            g.DrawEllipse(GameColors.penBlack2Dash, rect);
         }
 
         private void drawAlphaSiteTarget(Graphics g)
         {
-            var w = (this.Width / 2f);
-            var h = (this.Height / 2f);
-
             // pit circles
-            var x = w;
-            var y = h - (h * 0.05f);
-            drawCircle(g, x, y, h * 0.10f);
-            drawCircle(g, x, y, h * 0.22f);
-            drawCircle(g, x, y, h * 0.30f);
+            var y = mh - (mh * 0.05f);
+            drawCircle(g, mw, y, mh * 0.10f);
+            drawCircle(g, mw, y, mh * 0.22f);
+            drawCircle(g, mw, y, mh * 0.30f);
 
             // pit spike
-            var d = h * 0.20f;
-
-            x += d;
+            var d = mh * 0.20f;
             y += d * 0.8f;
-            drawLine(g, x, y, this.Width - 5, y);
-
-            return;
-            //rect.Inflate(40, 40);
-            //g.DrawEllipse(GameColors.penYellow8, rect);
-            //g.DrawEllipse(pp, rect);
-
-            //rect.Inflate(-d * 0.4f, -d * 0.4f);
-            //g.DrawEllipse(GameColors.penYellow8, rect);
-            //g.DrawEllipse(pp, rect);
-
+            drawLine(g, mw + d, y, this.Width - 5, y);
         }
 
         private void drawBetaSiteTarget(Graphics g)
         {
-            var w = (this.Width / 2f);
-
-            //var d = 120f;
-            //var x = w - (d / 2f);
-            //var y = this.Height * 0.255f;
-            //var rect = new RectangleF(x, y, d, d);
-            //g.FillEllipse(Brushes.Yellow, rect);
-            //g.FillRectangle(Brushes.Yellow, w - 5, y, 10, 460);
-
-            //rect.Inflate(-10, -10);
-            //g.DrawEllipse(pp, rect);
-            var er = Elite.getWindowRect();
-            var ew = er.Width * 0.01f;
-            var eh = er.Height * 0.01f;
-
-            var x = w;
             var y = this.Height * 0.33f;
-            drawCircle(g, x, y, 50);
-            //drawCircle(g, x, y, 90);
-            //drawCircle(g, x, y, 150);
+            drawCircle(g, mw, y, 50);
 
+            var eh = er.Height * 0.01f;
             y += eh * 2.0f;
-            drawLine(g, 10, y, w - 140, y);
-            drawLine(g, w + 140, y, this.Width - 10, y);
+            drawLine(g, 10, y, mw - 140, y);
+            drawLine(g, mw + 140, y, this.Width - 10, y);
 
             y += 20;
-            drawLine(g, w, y, w, y + 240);
-
-            //g.FillRectangle(Brushes.Yellow, w - 5, y, 10, 460);
-            //g.DrawLine(pp, w, y + d, w, y + 456);
+            drawLine(g, mw, y, mw, y + 240);
         }
 
         private void drawRelicTowerTarget(Graphics g)
         {
-            var er = Elite.getWindowRect();
             var eh = er.Height * 0.01f;
-
-            var d = 0f;
-            var x = 0f;
-            var y = 0f;
-            var w = (this.Width / 2f);
-            var h = (this.Height / 2f);
-
-            // rock marker
-            x = w;
-            y = this.Height * 0.65f;
 
             // tops
             //*
-            d = eh * 1.5f;
-            x = w - d;
-            y = h - eh * 4;
+            var d = eh * 1.5f;
+            var x = mw - d;
+            var y = mh - eh * 4;
             drawLine(g, x, y, x - eh * 1f, y);
-            drawLine(g, x, y + 100, x, y + 100 + eh * 20); // h - eh*12);
+            drawLine(g, x, y + 100, x, y + 100 + eh * 20);
 
-            x = w + d;
+            x = mw + d;
             drawLine(g, x, y, x + eh * 1f, y);
-            drawLine(g, x, y + 100, x, y + 100 + eh * 20); // h - eh*12);
-
-
-            //drawLine(g, w, 4, w, 500); // h - eh*12);
-            //drawLine(g, 0, h, 1000, h);
-
-            // rock marker
-            //x = w - ew*7;
-            //y = this.Height * 0.8f;
-            //drawLine(g, x, this.Height * 0.7f, x, this.Height - 20);
-
-            //x = w + ew * 5;
-            //drawLine(g, x, h, x, h + eh * 20);
-
-            //x = w - ew * 5;
-            //y = this.Height * 0.6f;
-            //drawCircle(g, x, y, 80);
-
-            //x = w + ew * 1;
-            //y = eh * 24;
-            //drawCircle(g, x, y, 60);
-        }
-
-        private void drawRelicTowerTarget2(Graphics g)
-        {
-            var er = Elite.getWindowRect();
-            var r = (float)er.Width / (float)er.Height;
-            var ew = er.Width * 0.01f;
-            var eh = er.Height * 0.01f;
-
-            var d = 0f;
-            var x = 0f;
-            var y = 0f;
-
-            var w = (this.Width / 2f);
-            var h = (this.Height / 2f);
-            //drawLine(g, w, 4, w, 500); // h - eh*12);
-            //drawLine(g, 0, h, 1000, h);
-
-            // rock marker
-            x = w;
-            y = this.Height * 0.8f;
-            drawLine(g, w, this.Height * 0.7f, w, this.Height - 20); // h - eh*12);
-
-            // horiz
-            x = w;
-            y = h + eh * 5;
-            drawLine(g, x - 200, y, x + 200, y);
-
-            // knob
-            /*
-            var d = eh * 1.9f;
-            x = w - d;
-            y = h;
-            drawLine(g, x, y, x - eh * 0.9f, y + eh * 5);
-            x = w + d + ew * 0.01f;
-            drawLine(g, x, y, x + eh * 0.9f, y + eh * 5);
-            */
-
-            // tops
-            /*
-            d = eh * 2;
-            x = w - d;
-            drawLine(g, x, eh, x - eh * 0.2f, eh * 7);
-            x = w + d;
-            drawLine(g, x, eh, x + eh * 0.2f, eh * 7);
-            // */
-
-
-            // tops
-            //*
-            d = eh * 2;
-            x = w - d;
-            y = h - eh * 24;
-            drawLine(g, x, y, x - eh * 2f, y);
-            x = w + d;
-            drawLine(g, x, y, x + eh * 2f, y);
-            // */
-
-            //x = w + d + eh * 10.5f;
-            //drawLine(g, x, y, x - 8, y + eh * 5);
-
-
-            //// upper
-            //d = 122;
-            //x = w - d;
-            //y = h - 350;
-            //drawLine(g, x, y, x-22, y + 420);
-            //x = w + d;
-            //drawLine(g, x, y, x+22, y + 420);
-
-            //// lower
-            //d = 192;
-            //x = w - d;
-            //y = h + 120;
-            //drawLine(g, x, y, x - 16, y + 500);
-            //x = w + d;
-            //drawLine(g, x, y, x + 16, y + 500);
-
-            // triangle
-            //x = w - r * 54f;             y = h + r * 188f; // ratio
-            //x = w - eh * 8f; y = h + eh * 23f; // eh only
-            //x = w - eh * 6f; y = h + ew * 15f; // inverse
-            x = w - ew * 3f; y = h + eh * 23f; // matching
-            drawLine(g, x, y, x + eh * 10, y - eh * 5);
-            drawLine(g, x, y, x + eh * 4f, y + eh * 2.8f);
-            //x = w + 152;
-            //drawLine(g, x, h + 40, x + 16, h + 440);
-
+            drawLine(g, x, y + 100, x, y + 100 + eh * 20);
         }
 
         private void drawGammaSiteTarget(Graphics g)
         {
-            var w = (this.Width / 2f);
-            var h = (this.Height / 2f);
-
-            var x = w * 1.4f;
-            var y = h * 0.535f;
+            var x = mw * 1.4f;
+            var y = mh * 0.535f;
             drawCircle(g, x, y, 30);
 
-            drawLine(g, x - 30, y, x - w * 0.50f, y);
+            drawLine(g, x - 30, y, x - mw * 0.50f, y);
             drawLine(g, x + 22, y - 4, x + 30, y - 4);
 
             drawLine(g, x, y + 30, x, y + 50);
             drawLine(g, x - 19, y + 25, x - 30, y + 42);
             drawLine(g, x - 26, y + 12, x - 45, y + 25);
-
-            //var rect = new RectangleF(x, y, d, d);
-            //g.DrawEllipse(GameColors.penYellow8, rect);
-            //g.DrawEllipse(pp, rect);
-
-            //rect.Inflate(35, 35);
-            //g.DrawEllipse(GameColors.penYellow8, rect);
-            //g.DrawEllipse(pp, rect);
-
-            //rect.Inflate(30, 30);
-            //g.DrawEllipse(GameColors.penYellow8, rect);
-            //g.DrawEllipse(pp, rect);
-
-            //y += 25;
-            //g.DrawLine(GameColors.penYellow8, x, y, x - 160, y);
-            //g.DrawLine(pp, x, y, x - 160, y);
-
-            //x = w * 1.23f;
-            //y = h * 0.675f;
-            //drawLine(g, x, y, x - w * 0.22f, y + h * 0.150f);
-
-            //drawLine(g, x, y, x - 120, y + 140);
-
-            //x = w + 60;
-            //y = h - 734;
-            //g.DrawLine(GameColors.penYellow8, x, y, x - 120, y + 140);
-            //g.DrawLine(pp, x, y, x - 120, y + 140);
-
-
-            //rect.Inflate(-10, -10);
-            //g.DrawEllipse(pp, rect);
-
-            //g.FillRectangle(Brushes.Yellow, w - 5, y, 10, 460);
-            //g.DrawLine(pp, w, y + d, w, y + 456);
         }
 
         private void drawButtressTarget(Graphics g)
         {
-            // top / height
-            var t = this.Height / 2f;
-            var h = (this.Height - t) * 0.8f;
-
             var nightVision = true; // (game.status.Flags & StatusFlags.NightVision) == 0;
 
             // central thick line
-            var w = (this.Width / 2);
-            g.DrawLine(nightVision ? GameColors.penYellow8 : GameColors.penCyan8, w, t, w, t + h);
-            g.DrawLine(GameColors.penBlack4Dash, w, t, w, t + h);
+            var h = mh * 0.8f;
+            g.DrawLine(nightVision ? GameColors.penYellow8 : GameColors.penCyan8, mw, mh, mw, mh + h);
+            g.DrawLine(GameColors.penBlack4Dash, mw, mh, mw, mh + h);
 
             // thinner lines
             var w1 = 40; // width one
-            g.DrawLine(nightVision ? GameColors.penYellow4 : GameColors.penCyan4, w - w1, t + 40, w - w1, t + 220);
-            g.DrawLine(GameColors.penBlack2Dash, w - w1, t + 40, w - w1, t + 220);
-            g.DrawLine(nightVision ? GameColors.penYellow4 : GameColors.penCyan4, w + w1, t + 40, w + w1, t + 220);
-            g.DrawLine(GameColors.penBlack2Dash, w + w1, t + 40, w + w1, t + 220);
+            g.DrawLine(nightVision ? GameColors.penYellow4 : GameColors.penCyan4, mw - w1, mh + 40, mw - w1, mh + 220);
+            g.DrawLine(GameColors.penBlack2Dash, mw - w1, mh + 40, mw - w1, mh + 220);
+            g.DrawLine(nightVision ? GameColors.penYellow4 : GameColors.penCyan4, mw + w1, mh + 40, mw + w1, mh + 220);
+            g.DrawLine(GameColors.penBlack2Dash, mw + w1, mh + 40, mw + w1, mh + 220);
 
             var w2 = 70; // width two
-            g.DrawLine(nightVision ? GameColors.penYellow4 : GameColors.penCyan2, w - w2, t + 60, w - w2, t + 200);
-            g.DrawLine(GameColors.penBlack2Dash, w - w2, t + 60, w - w2, t + 200);
-            g.DrawLine(nightVision ? GameColors.penYellow4 : GameColors.penCyan2, w + w2, t + 60, w + w2, t + 200);
-            g.DrawLine(GameColors.penBlack2Dash, w + w2, t + 60, w + w2, t + 200);
+            g.DrawLine(nightVision ? GameColors.penYellow4 : GameColors.penCyan2, mw - w2, mh + 60, mw - w2, mh + 200);
+            g.DrawLine(GameColors.penBlack2Dash, mw - w2, mh + 60, mw - w2, mh + 200);
+            g.DrawLine(nightVision ? GameColors.penYellow4 : GameColors.penCyan2, mw + w2, mh + 60, mw + w2, mh + 200);
+            g.DrawLine(GameColors.penBlack2Dash, mw + w2, mh + 60, mw + w2, mh + 200);
 
-            g.DrawLine(nightVision ? GameColors.penYellow4 : GameColors.penCyan2, w - w2, t + 80, w + w2, t + 80);
-            g.DrawLine(GameColors.penBlack2Dash, w - w2, t + 80, w + w2, t + 80);
-            g.DrawLine(nightVision ? GameColors.penYellow4 : GameColors.penCyan2, w - w2 - 50, t + 130, w + w2 + 50, t + 130);
-            g.DrawLine(GameColors.penBlack2Dash, w - w2 - 50, t + 130, w + w2 + 50, t + 130);
-            g.DrawLine(nightVision ? GameColors.penYellow4 : GameColors.penCyan2, w - w2, t + 180, w + w2, t + 180);
-            g.DrawLine(GameColors.penBlack2Dash, w - w2, t + 180, w + w2, t + 180);
+            g.DrawLine(nightVision ? GameColors.penYellow4 : GameColors.penCyan2, mw - w2, mh + 80, mw + w2, mh + 80);
+            g.DrawLine(GameColors.penBlack2Dash, mw - w2, mh + 80, mw + w2, mh + 80);
+            g.DrawLine(nightVision ? GameColors.penYellow4 : GameColors.penCyan2, mw - w2 - 50, mh + 130, mw + w2 + 50, mh + 130);
+            g.DrawLine(GameColors.penBlack2Dash, mw - w2 - 50, mh + 130, mw + w2 + 50, mh + 130);
+            g.DrawLine(nightVision ? GameColors.penYellow4 : GameColors.penCyan2, mw - w2, mh + 180, mw + w2, mh + 180);
+            g.DrawLine(GameColors.penBlack2Dash, mw - w2, mh + 180, mw + w2, mh + 180);
         }
 
         private void drawRobolobsterTarget(Graphics g)
         {
-            var er = Elite.getWindowRect();
-            var eh = er.Height * 0.01f;
-
-            var d = 0f;
-            var x = 0f;
-            var y = 0f;
-            var w = (this.Width / 2f);
-            var h = (this.Height / 2f);
-
-            // rock marker
-            x = w;
-            y = this.Height * 0.65f;
-            //drawLine(g, w, y, w, y + 100); // h - eh*12);
-
             // tops
-            //*
-            d = eh * 1.5f;
-            x = w - d;
-            y = h - eh * 4;
+            var eh = er.Height * 0.01f;
+            var d = eh * 1.5f;
+            var x = mw - d;
+            var y = mh - eh * 4;
             drawLine(g, x, y, x - eh * 1f, y);
-            drawLine(g, x, y + 100, x, y + 100 + eh * 20); // h - eh*12);
+            drawLine(g, x, y + 100, x, y + 100 + eh * 20);
 
-            x = w + d;
+            x = mw + d;
             drawLine(g, x, y, x + eh * 1f, y);
-            drawLine(g, x, y + 100, x, y + 100 + eh * 20); // h - eh*12);
-
-
-            //drawLine(g, w, 4, w, 500); // h - eh*12);
-            //drawLine(g, 0, h, 1000, h);
-
-            // rock marker
-            //x = w - ew*7;
-            //y = this.Height * 0.8f;
-            //drawLine(g, x, this.Height * 0.7f, x, this.Height - 20);
-
-            //x = w + ew * 5;
-            //drawLine(g, x, h, x, h + eh * 20);
-
-            //x = w - ew * 5;
-            //y = this.Height * 0.6f;
-            //drawCircle(g, x, y, 80);
-
-            //x = w + ew * 1;
-            //y = eh * 24;
-            //drawCircle(g, x, y, 60);
+            drawLine(g, x, y + 100, x, y + 100 + eh * 20);
         }
 
         private void drawHammerbotTarget(Graphics g)
         {
-            var er = Elite.getWindowRect();
-
             var ex = er.Width * 0.01f;
-            var w = (this.Width / 2f);
-            var h = (this.Height / 2f);
 
             // horiz
-            drawLine(g, w - ex, h - 10, w + ex, h - 10);
+            drawLine(g, mw - ex, mh - 10, mw + ex, mh - 10);
 
-            drawLine(g, w - 6 * ex, h + 10, w - 4 * ex, h + 10);
-            drawLine(g, w + 6 * ex, h + 10, w + 4 * ex, h + 10);
+            drawLine(g, mw - 6 * ex, mh + 10, mw - 4 * ex, mh + 10);
+            drawLine(g, mw + 6 * ex, mh + 10, mw + 4 * ex, mh + 10);
 
             // vert
-            drawLine(g, w, h + 100, w, h + 400);
+            drawLine(g, mw, mh + 100, mw, mh + 400);
 
-
-            //ex = 0;
+            // others
             var ex2 = er.Width * 0.007f;
             var ey = er.Height * 0.03f;
-            drawLine(g, w - ex - ex2, h + ey, w - ex, h + ey + ey);
-
-            //ex -= er.Width * 0.02f;
-            drawLine(g, w + ex + ex2, h + ey, w + ex, h + ey + ey);
+            drawLine(g, mw - ex - ex2, mh + ey, mw - ex, mh + ey + ey);
+            drawLine(g, mw + ex + ex2, mh + ey, mw + ex, mh + ey + ey);
         }
 
         private void drawBowlTarget(Graphics g)
         {
-            var er = Elite.getWindowRect();
-
-            var w = (this.Width / 2f);
-            var h = (this.Height / 2f);
-
             // horiz
             var ey = er.Height * 0.1f;
-            drawLine(g, 100, h - ey, this.Width - 100, h - ey);
+            drawLine(g, 100, mh - ey, this.Width - 100, mh - ey);
 
             // vert
-            drawLine(g, w, 200, w, this.Height - 100);
+            drawLine(g, mw, 200, mw, this.Height - 100);
 
             // circles
             var ee = this.Height / 7f;
-            drawCircle(g, w, h + ee, ee);
-            drawCircle(g, w, h + ee, ee * 1.3f);
+            drawCircle(g, mw, mh + ee, ee);
+            drawCircle(g, mw, mh + ee, ee * 1.3f);
         }
 
         private void drawFistbumpTarget(Graphics g)
         {
-            var er = Elite.getWindowRect();
-
-            var w = (this.Width / 2f);
-            var h = (this.Height / 2f);
-
-            // cross
+            // diagonal cross
             var ey = er.Height * 0.1f;
             var d = 100;
-            drawLine(g, w - d, h - ey - d, w + d, h - ey + d);
-            drawLine(g, w + d, h - ey - d, w - d, h - ey + d);
+            drawLine(g, mw - d, mh - ey - d, mw + d, mh - ey + d);
+            drawLine(g, mw + d, mh - ey - d, mw - d, mh - ey + d);
 
             // vert
-            drawLine(g, w, h - 2 * d, w, h - 4 * d);
+            drawLine(g, mw, mh - 2 * d, mw, mh - 4 * d);
         }
 
+        private void drawBearTarget(Graphics g)
+        {
+            // vert
+            var d = 100;
+            drawLine(g, mw, mh - 2 * d, mw, mh - 4 * d);
+        }
+
+        private void drawCrossroadsTarget(Graphics g)
+        {
+            // vert
+            var d = 100;
+            drawLine(g, mw, mh - 2 * d, mw, mh - 4 * d);
+        }
+
+        private void drawLacrosseTarget(Graphics g)
+        {
+            // vert
+            var d = 100;
+            drawLine(g, mw, mh - 2 * d, mw, mh - 4 * d);
+        }
+
+        private void drawSquidTarget(Graphics g)
+        {
+            // vert
+            var d = 100;
+            drawLine(g, mw, mh - 2 * d, mw, mh - 4 * d);
+        }
+
+        private void drawStickyhandTarget(Graphics g)
+        {
+            // vert
+            var d = 100;
+            drawLine(g, mw, mh - 2 * d, mw, mh - 4 * d);
+        }
+
+        private void drawTurtleTarget(Graphics g)
+        {
+            // vert
+            var d = 100;
+            drawLine(g, mw, mh - 2 * d, mw, mh - 4 * d);
+        }
     }
 }

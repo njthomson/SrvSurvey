@@ -9,10 +9,14 @@ namespace SrvSurvey
 {
     public enum Mode
     {
-        siteType,   // ask about site type
-        heading,    // ask about site heading
-        map,        // show site map
-        origin,     // show alignment to site origin
+        /// <summary> ask about site type </summary>
+        siteType,
+        /// <summary> ask about site heading </summary>
+        heading,
+        /// <summary> show site map </summary>
+        map,
+        /// <summary> aerial assist, show alignment to site origin </summary>
+        origin,
     }
 
     internal partial class PlotGuardians : PlotBase, IDisposable
@@ -160,11 +164,7 @@ namespace SrvSurvey
             if (!Game.settings.disableRuinsMeasurementGrid)
             {
                 if (this.mode == Mode.heading)
-                {
-                    PlotVertialStripe.targetAltitude = 20;
-                    PlotVertialStripe.mode = PlotVertialStripe.mode = PlotVertialStripe.Mode.Buttress;
-                    Program.showPlotter<PlotVertialStripe>();
-                }
+                    PlotVertialStripe.show(PlotVertialStripe.Mode.Buttress, 20);
                 else
                     Program.closePlotter<PlotVertialStripe>();
             }
@@ -175,11 +175,8 @@ namespace SrvSurvey
 
             if (this.mode == Mode.origin)
             {
-                if (!Game.settings.disableAerialAlignmentGrid)
-                {
-                    PlotVertialStripe.targetAltitude = 20;
-                    showAiming();
-                }
+                // show aiming assistance suitable for this site type
+                showAimingBySiteType();
             }
             else if (this.mode != Mode.heading)
             {
@@ -188,61 +185,48 @@ namespace SrvSurvey
             }
         }
 
-        private void showAiming()
+        private PlotVertialStripe? showAimingBySiteType()
         {
             // close existing
             Program.closePlotter<PlotVertialStripe>();
-            if (Game.settings.disableAerialAlignmentGrid) return;
+            if (Game.settings.disableAerialAlignmentGrid) return null;
 
             if (game.vehicle == ActiveVehicle.SRV)
             {
                 Game.log("showAiming: not in SRV");
-                return;
-            }
-
-            switch (this.siteData.type)
-            {
-                case SiteType.Alpha:
-                    PlotVertialStripe.mode = PlotVertialStripe.Mode.Alpha;
-                    PlotVertialStripe.targetAltitude = Game.settings.aerialAltAlpha;
-                    break;
-                case SiteType.Beta:
-                    PlotVertialStripe.mode = PlotVertialStripe.Mode.Beta;
-                    PlotVertialStripe.targetAltitude = Game.settings.aerialAltBeta;
-                    break;
-                case SiteType.Gamma:
-                    PlotVertialStripe.mode = PlotVertialStripe.Mode.Gamma;
-                    PlotVertialStripe.targetAltitude = Game.settings.aerialAltGamma;
-                    break;
-
-                case SiteType.Robolobster:
-                    PlotVertialStripe.mode = PlotVertialStripe.Mode.Robolobster;
-                    PlotVertialStripe.targetAltitude = 1500;
-                    break;
-
-                case SiteType.Hammerbot:
-                    PlotVertialStripe.mode = PlotVertialStripe.Mode.Hammerbot;
-                    PlotVertialStripe.targetAltitude = 650;
-                    break;
-                case SiteType.Bowl:
-                    PlotVertialStripe.mode = PlotVertialStripe.Mode.Bowl;
-                    PlotVertialStripe.targetAltitude = 650;
-                    break;
-                case SiteType.Fistbump:
-                    PlotVertialStripe.mode = PlotVertialStripe.Mode.Fistbump;
-                    PlotVertialStripe.targetAltitude = 450;
-                    break;
+                return null;
             }
 
             // assume onFoot only means Relic Towers
             if (game.vehicle == ActiveVehicle.Foot)
             {
-                PlotVertialStripe.mode = PlotVertialStripe.Mode.RelicTower;
-                PlotVertialStripe.targetAltitude = 0;
+                // TODO: does this ever happen?
+                Debugger.Break();
+                return PlotVertialStripe.show(PlotVertialStripe.Mode.RelicTower, 0);
             }
 
+            switch (this.siteData.type)
+            {
+                case SiteType.Alpha: return PlotVertialStripe.show(PlotVertialStripe.Mode.Alpha, Game.settings.aerialAltAlpha);
+                case SiteType.Beta: return PlotVertialStripe.show(PlotVertialStripe.Mode.Beta, Game.settings.aerialAltBeta);
+                case SiteType.Gamma: return PlotVertialStripe.show(PlotVertialStripe.Mode.Gamma, Game.settings.aerialAltGamma);
+
+                case SiteType.Bear: return PlotVertialStripe.show(PlotVertialStripe.Mode.Bear, 650);
+                case SiteType.Bowl: return PlotVertialStripe.show(PlotVertialStripe.Mode.Bowl, 650);
+                case SiteType.Crossroads: return PlotVertialStripe.show(PlotVertialStripe.Mode.Crossroads, 650);
+                case SiteType.Fistbump: return PlotVertialStripe.show(PlotVertialStripe.Mode.Fistbump, 450);
+                case SiteType.Hammerbot: return PlotVertialStripe.show(PlotVertialStripe.Mode.Hammerbot, 650);
+                case SiteType.Lacrosse: return PlotVertialStripe.show(PlotVertialStripe.Mode.Lacrosse, 650);
+                case SiteType.Robolobster: return PlotVertialStripe.show(PlotVertialStripe.Mode.Robolobster, 1500);
+                case SiteType.Squid: return PlotVertialStripe.show(PlotVertialStripe.Mode.Squid, 650);
+                case SiteType.Stickyhand: return PlotVertialStripe.show(PlotVertialStripe.Mode.Stickyhand, 650);
+                case SiteType.Turtle: return PlotVertialStripe.show(PlotVertialStripe.Mode.Turtle, 650);
+            }
+
+            // TODO: does this ever happen?
+            Debugger.Break();
             Game.log($"showAiming: {PlotVertialStripe.mode}");
-            Program.showPlotter<PlotVertialStripe>();
+            return Program.showPlotter<PlotVertialStripe>();
         }
 
         protected override void onJournalEntry(SendText entry)
@@ -265,14 +249,6 @@ namespace SrvSurvey
             if (msg == MsgCmd.map)
             {
                 this.setMode(Mode.map);
-                return;
-            }
-            if (msg == MsgCmd.aim)
-            {
-                if (Program.isPlotter<PlotVertialStripe>())
-                    Program.closePlotter<PlotVertialStripe>();
-                else
-                    this.showAiming();
                 return;
             }
             if (msg.StartsWith(MsgCmd.note, StringComparison.InvariantCultureIgnoreCase))
@@ -1044,10 +1020,7 @@ namespace SrvSurvey
                 if (game.status.SelectedWeapon == "$humanoid_companalyser_name;")
                 {
                     if (!isVerticalVisible)
-                    {
-                        PlotVertialStripe.mode = PlotVertialStripe.Mode.RelicTower;
-                        Program.showPlotter<PlotVertialStripe>();
-                    }
+                        PlotVertialStripe.show(PlotVertialStripe.Mode.RelicTower, 0);
                 }
                 else if (isVerticalVisible)
                 {
