@@ -447,28 +447,17 @@ namespace SrvSurvey
 
         public static double targetAltitudeForSite(GuardianSiteData.SiteType siteType)
         {
-            var targetAlt = 0d;
             switch (siteType)
             {
-                case GuardianSiteData.SiteType.Alpha:
-                    targetAlt = Game.settings.aerialAltAlpha;
-                    break;
-                case GuardianSiteData.SiteType.Beta:
-                    targetAlt = Game.settings.aerialAltBeta;
-                    break;
-                case GuardianSiteData.SiteType.Gamma:
-                    targetAlt = Game.settings.aerialAltGamma;
-                    break;
-                case GuardianSiteData.SiteType.Robolobster:
-                    targetAlt = 1500d; // TODO: setting?
-                    break;
-                default:
-                    targetAlt = 650d;
-                    break;
-                    // crossroads: 500
+                case GuardianSiteData.SiteType.Alpha: return Game.settings.aerialAltAlpha;
+                case GuardianSiteData.SiteType.Beta: return Game.settings.aerialAltBeta;
+                case GuardianSiteData.SiteType.Gamma: return Game.settings.aerialAltGamma;
+                // TODO: add settings?
+                case GuardianSiteData.SiteType.Robolobster: return 1500d;
+                case GuardianSiteData.SiteType.Crossroads: return 500d;
+                case GuardianSiteData.SiteType.Fistbump: return 450d;
+                default: return 650d;
             }
-
-            return targetAlt;
         }
 
         public static StarSystem getRecentStarSystem()

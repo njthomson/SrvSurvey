@@ -228,6 +228,10 @@ namespace SrvSurvey
                     PlotVertialStripe.mode = PlotVertialStripe.Mode.Bowl;
                     PlotVertialStripe.targetAltitude = 650;
                     break;
+                case SiteType.Fistbump:
+                    PlotVertialStripe.mode = PlotVertialStripe.Mode.Fistbump;
+                    PlotVertialStripe.targetAltitude = 450;
+                    break;
             }
 
             // assume onFoot only means Relic Towers

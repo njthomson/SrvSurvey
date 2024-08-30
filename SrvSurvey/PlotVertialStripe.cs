@@ -17,6 +17,7 @@ namespace SrvSurvey
             Robolobster,
             Hammerbot,
             Bowl,
+            Fistbump,
         }
 
         public static Mode mode;
@@ -200,6 +201,9 @@ namespace SrvSurvey
                     break;
                 case Mode.Bowl:
                     this.drawBowlTarget(g);
+                    break;
+                case Mode.Fistbump:
+                    this.drawFistbumpTarget(g);
                     break;
                 case Mode.Buttress:
                 default:
@@ -616,6 +620,23 @@ namespace SrvSurvey
             var ee = this.Height / 7f;
             drawCircle(g, w, h + ee, ee);
             drawCircle(g, w, h + ee, ee * 1.3f);
+        }
+
+        private void drawFistbumpTarget(Graphics g)
+        {
+            var er = Elite.getWindowRect();
+
+            var w = (this.Width / 2f);
+            var h = (this.Height / 2f);
+
+            // cross
+            var ey = er.Height * 0.1f;
+            var d = 100;
+            drawLine(g, w - d, h - ey - d, w + d, h - ey + d);
+            drawLine(g, w + d, h - ey - d, w - d, h - ey + d);
+
+            // vert
+            drawLine(g, w, h - 2 * d, w, h - 4 * d);
         }
 
     }
