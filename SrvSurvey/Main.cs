@@ -219,7 +219,6 @@ namespace SrvSurvey
             txtLocation.Text = "This is a (mostly) one time thing";
             this.txtMode.Text = "";
 
-
             Task.Factory.StartNew(new Action(async () =>
             {
                 try

@@ -186,9 +186,9 @@ namespace SrvSurvey
             }
 
             // reset some numbers
+            splitter.Panel2Collapsed = this.siteData == null || !Game.settings.mapShowNotes;
             this.dragOffset.X = -map.Width / 2f;
             this.dragOffset.Y = -map.Height / 2f;
-            splitter.Panel2Collapsed = this.siteData == null || !Game.settings.mapShowNotes;
             txtNotes.Text = this.siteData?.notes;
 
             showStatus();
@@ -275,8 +275,14 @@ namespace SrvSurvey
                 {
                     var prefix = $"{survey.systemAddress} {survey.bodyId}";
                     var name = survey.isRuins
-                        ? $"{survey.bodyName ?? prefix}, ruins #{survey.index} - {survey.type}"
-                        : $"{survey.bodyName ?? prefix} - {survey.type}";
+                        ? $"{survey.bodyName ?? prefix}, ruins #{survey.index}"
+                        : $"{survey.bodyName ?? prefix}";
+
+                    if (targetType == GuardianSiteData.SiteType.Unknown)
+                        name += $" - {survey.type}";
+
+                    if (game?.systemSite?.displayName == survey.displayName)
+                        name += " [ active survey ]";
 
                     if (filteredSites.ContainsKey(name))
                         Game.log($"Why is {name} here twice?");
@@ -546,6 +552,16 @@ namespace SrvSurvey
             g.InterpolationMode = InterpolationMode.Bicubic;
             g.CompositingQuality = CompositingQuality.HighQuality;
 
+            if (this.img.Width < 50)
+            {
+                // indicate that we have no map to render for this site type
+                var txt = $"[ Map not available for {GuardianSiteData.getStructureTypeFromName(template.name)} ]";
+                var sz = g.MeasureString(txt, this.Font);
+                var x = (map.Width / 2) - (sz.Width / 2);
+                var y = map.Height - sz.Height;
+                g.DrawString(txt, this.Font, Brushes.Red, x, y);
+            }
+
             g.TranslateTransform(mapCenter.X - dragOffset.X, mapCenter.Y - dragOffset.Y);
             g.ScaleTransform(this.scale, this.scale);
 
@@ -593,7 +609,7 @@ namespace SrvSurvey
             if (checkShowLegend.Checked)
                 drawLegend(g);
 
-            if (game?.systemSite?.type == this.siteType)
+            if (game?.systemSite?.displayName == this.siteData?.displayName)
                 drawCommander(g);
         }
 
@@ -602,8 +618,8 @@ namespace SrvSurvey
             if (game?.systemSite == null || game?.status == null || game.isShutdown || this.siteData == null) return;
 
             // indicate that we're actively surveying this site
-            var sz = g.MeasureString("[survey active]", this.Font);
-            g.DrawString("[survey active]", this.Font, Brushes.Lime, map.Width - sz.Width, 0);
+            var sz = g.MeasureString("[ survey active ]", this.Font);
+            g.DrawString("[ survey active ]", this.Font, Brushes.Lime, map.Width - sz.Width, 0);
 
             g.ResetTransform();
             g.TranslateTransform(mapCenter.X - dragOffset.X, mapCenter.Y - dragOffset.Y);
@@ -692,7 +708,7 @@ namespace SrvSurvey
                 else if (poi.type == POIType.component)
                     drawComponent(g, pt.X, pt.Y, poi.rot, poiStatus);
                 else if (poi.type == POIType.obelisk || poi.type == POIType.brokeObelisk)
-                    drawObelisk(g, pt);
+                    drawObelisk(g, pt.X, pt.Y, (float)poi.rot, siteData?.getActiveObelisk(poi.name));
                 else if (Util.isBasicPoi(poi.type))
                     drawPuddle(g, pt, poi.type, poiStatus);
                 else
@@ -770,22 +786,34 @@ namespace SrvSurvey
             g.RotateTransform(-180);
         }
 
-        private static void drawObelisk(Graphics g, PointF pt)
+        private static PointF[] obeliskPoints = new PointF[]
+        {
+            new PointF(+1 - 1.5f, +4 - 1.5f),
+            new PointF(+0 - 1.5f, +0 - 1.5f),
+            new PointF(+4 - 1.5f, +1 - 1.5f),
+            new PointF(+1 - 1.5f, +4 - 1.5f),
+            new PointF(+0 - 1.5f, +0 - 1.5f)
+            //new PointF(pt.X +.5f, pt.Y +-1.5f),
+        };
+
+        private static void drawObelisk(Graphics g, float x, float y, float rot, ActiveObelisk? activeObelisk = null)
         {
             // TODO: Account for obelisk rotation
             var brush = Brushes.Blue;
             var pen = Pens.DarkCyan;
 
-            var points = new PointF[] {
-                    new PointF(pt.X +1 - 1.5f, pt.Y +4 - 1.5f),
-                    new PointF(pt.X +0 - 1.5f, pt.Y +0 - 1.5f),
-                    new PointF(pt.X +4 - 1.5f, pt.Y +1 - 1.5f),
-                    new PointF(pt.X +1 - 1.5f, pt.Y +4 - 1.5f),
-                    //new PointF(pt.X +.5f, pt.Y +-1.5f),
-                };
+            g.Adjust(x, -y, rot + 180, () =>
+            {
+                // show dithered arc for active obelisks - changing the colour if scanned or is relevant for Ram Tah
+                if (activeObelisk != null)
+                {
+                    GameColors.shiningBrush.CenterColor = GameColors.Orange;
+                    g.FillPath(GameColors.shiningBrush, GameColors.shiningPath);
+                }
 
-            g.FillPolygon(brush, points);
-            g.DrawLines(pen, points);
+                g.FillPolygon(brush, obeliskPoints);
+                g.DrawLines(pen, obeliskPoints);
+            });
         }
 
         private static PointF[] pylonPoints =
@@ -851,7 +879,7 @@ namespace SrvSurvey
 
             var rect = new RectangleF(tp.X - 5, tp.Y - 5,
                 isRuins ? 114 : 130,
-                isRuins ? 230 : 255);
+                isRuins ? 236 : 270);
 
             g.FillRectangle(GameColors.Map.legend.brush, rect);
             g.DrawRectangle(GameColors.Map.legend.pen, rect);
@@ -879,6 +907,9 @@ namespace SrvSurvey
 
             drawString(g, "Empty puddle");
             drawPuddle(g, new PointF(tp.X - 10, tp.Y - 10), POIType.totem, SitePoiStatus.empty, true);
+
+            drawString(g, "Obelisk");
+            drawObelisk(g, tp.X - 10, tp.Y - 10, 0, null);
 
             if (!isRuins)
             {
@@ -912,6 +943,7 @@ namespace SrvSurvey
             Game.settings.Save();
 
             splitter.Panel2Collapsed = this.siteData == null || !Game.settings.mapShowNotes;
+            this.Invalidate();
         }
 
         private void checkShowLegend_CheckedChanged(object sender, EventArgs e)
@@ -957,7 +989,6 @@ namespace SrvSurvey
             siteData.poiStatus[name] = newStatus;
 
             // update footer counts
-
             this.showSurveyProgress();
 
             siteData.Save();

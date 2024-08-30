@@ -1425,7 +1425,7 @@
     }
   },
   "Bear": {
-    "name": "Bear",
+    "name": "$Ancient_Small_002:#index=1;",
     "backgroundImage": "",
     "imageOffset": "510, 542",
     "scaleFactor": 0.65,
@@ -1570,7 +1570,7 @@
     }
   },
   "Fistbump": {
-    "name": "Fistbump",
+    "name": "$Ancient_Tiny_003:#index=1;",
     "backgroundImage": "",
     "imageOffset": "347, 461",
     "scaleFactor": 0.31,
@@ -1652,7 +1652,7 @@
     }
   },
   "Robolobster": {
-    "name": "Robolobster",
+    "name": "$Ancient_Medium_001:#index=1;",
     "backgroundImage": "",
     "imageOffset": "498, 529",
     "scaleFactor": 1.16,
@@ -2262,7 +2262,7 @@
       { "name": "p14", "type": "orb", "angle": 184.697456858528, "dist": 131.77650483203687806094211721 },
       { "name": "p15", "type": "casket", "angle": 33.0200621669252, "dist": 51.413634887113541845479325330 },
       { "name": "p16", "type": "casket", "angle": 350.260366469453, "dist": 77.153801641376887614188873816 },
-      { "name": "p17", "type": "unknown", "angle": 5.69911206032893, "dist": 153.27442463944509205008451956 },
+      { "name": "p17", "type": "orb", "angle": 5.69911206032893, "dist": 153.27442463944509205008451956 },
       { "name": "p18", "type": "tablet", "angle": 68.4599731882172, "dist": 10.093877155279675255534647120 },
       { "name": "p19", "type": "tablet", "angle": 95.1338650204277, "dist": 104.05377438927993908408553117 },
       { "name": "p20", "type": "orb", "angle": 6.63748557423638, "dist": 152.789954803028 },
@@ -2498,6 +2498,7 @@
       { "name": "p27", "type": "casket", "angle": 52.4961001898129, "dist": 130.811195341067 },
       { "name": "p28", "type": "urn", "angle": 359.024721529373, "dist": 215.751702126582 },
       { "name": "p29", "type": "tablet", "angle": 281.434990915078, "dist": 117.341702949161 },
+      { "name": "p30", "type": "casket", "angle": 251.97300255082, "dist": 223.368107230556 },
       { "name": "py1", "type": "pylon", "angle": 190.198798098702, "dist": 190.67085866595710377272087507, "rot": 178 },
       { "name": "py2", "type": "pylon", "angle": 256.61468869429, "dist": 242.38095076568101933590665754, "rot": 276 },
       { "name": "py3", "type": "pylon", "angle": 209.455996414888, "dist": 71.518316911190518937583057824, "rot": 176 },
