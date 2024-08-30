@@ -88,7 +88,7 @@ namespace SrvSurvey
                 && Game.activeGame.status.hasLatLong
                 && Game.activeGame.systemSite?.location != null
                 && !Game.activeGame.status.FsdChargingJump
-                && Game.activeGame.isMode(GameMode.InSrv, GameMode.OnFoot, GameMode.Landed, GameMode.Flying, GameMode.InFighter)
+                && Game.activeGame.isMode(GameMode.InSrv, GameMode.OnFoot, GameMode.Landed, GameMode.Flying, GameMode.InFighter, GameMode.CommsPanel, GameMode.RolePanel)
                 //&& this.status.SelectedWeapon != "$humanoid_sampletool_name;"
                 ;
         }
@@ -217,12 +217,16 @@ namespace SrvSurvey
 
                 case SiteType.Robolobster:
                     PlotVertialStripe.mode = PlotVertialStripe.Mode.Robolobster;
-                    PlotVertialStripe.targetAltitude = 1500;// TODO: Game.settings.aerialAltGamma;
+                    PlotVertialStripe.targetAltitude = 1500;
                     break;
 
                 case SiteType.Hammerbot:
                     PlotVertialStripe.mode = PlotVertialStripe.Mode.Hammerbot;
-                    PlotVertialStripe.targetAltitude = 650;// TODO: Game.settings.aerialAltGamma;
+                    PlotVertialStripe.targetAltitude = 650;
+                    break;
+                case SiteType.Bowl:
+                    PlotVertialStripe.mode = PlotVertialStripe.Mode.Bowl;
+                    PlotVertialStripe.targetAltitude = 650;
                     break;
             }
 
@@ -1630,7 +1634,12 @@ namespace SrvSurvey
                 if (isObelisk && d < this.nearestObeliskDist)
                     this.nearestObeliskDist = d;
 
-                var selectPoi = d < nearestDist && (isRuinsPoi(poi.type, true) || (Game.settings.enableEarlyGuardianStructures) && poi.type != POIType.brokeObelisk);
+                var selectPoi = false;
+                if (game.status.SelectedWeapon != "$humanoid_companalyser_name;")
+                    selectPoi = d < nearestDist && (/*isRuinsPoi(poi.type, true) &&*/ poi.type != POIType.brokeObelisk);
+                else
+                    selectPoi = d < nearestDist && (poi.type == POIType.relic);
+
                 if (forcePoi != null)
                     selectPoi = forcePoi == poi; // force selection in map editor if present
                 if (selectPoi && poi.type == POIType.obelisk && siteData.getActiveObelisk(poi.name) == null && formEditMap == null)
@@ -1694,7 +1703,6 @@ namespace SrvSurvey
                 switch (siteData.type)
                 {
                     case SiteType.Crossroads:
-                    case SiteType.Hammerbot:
                     case SiteType.Lacrosse:
                     case SiteType.Squid:
                     case SiteType.Stickyhand:
@@ -1725,8 +1733,6 @@ namespace SrvSurvey
                 }
 
                 var poiStatus = siteData.getPoiStatus(this.nearestPoi.name);
-
-                var nextStatus = (SitePoiStatus)(game.status.FireGroup % 3) + 1;
 
                 var action = "";
 

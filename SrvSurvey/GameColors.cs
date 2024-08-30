@@ -343,7 +343,6 @@ namespace SrvSurvey
         public static Font fontScreenshotBannerBig = new Font("Century Gothic", 14F, FontStyle.Bold, GraphicsUnit.Point);
         public static Font fontScreenshotBannerSmall = new Font("Century Gothic", 10F, FontStyle.Regular, GraphicsUnit.Point);
 
-
         public static Pen penPoiRelicUnconfirmed = newPen(Color.Cyan, 4, DashStyle.Dash); // CornflowerBlue ?
         public static Pen penPoiRelicPresent = newPen(Cyan, 2f);
         public static Pen penPoiRelicMissing = newPen(Color.FromArgb(128, 128, 128, 128));
@@ -371,11 +370,9 @@ namespace SrvSurvey
         /// <summary Guardian map related </summary>
         internal static class Map
         {
-            internal static class Legend
-            {
-                public static Pen pen = newPen(Color.DarkGray, 4);
-                public static Brush brush = Brushes.LightGray;
-            }
+            public static PenBrush legend = new PenBrush(
+                newPen(Color.DarkGray, 4),
+                Brushes.Black);
 
             public static Pen penCentralCompass = newPen(Color.FromArgb(128, Color.DarkRed), 4, LineCap.Round, LineCap.RoundAnchor);
             public static Pen penCentralRelicTowerHeading = newPen(Color.FromArgb(128, relicBlue), 4, LineCap.Round, LineCap.RoundAnchor);
@@ -487,6 +484,31 @@ namespace SrvSurvey
                     { SitePoiStatus.present, new SolidBrush(Color.FromArgb(255, 100, 0, 0) /* red */) },
                     { SitePoiStatus.absent, brushAbsent },
                     { SitePoiStatus.empty, brushEmpty } } },
+            };
+
+            public static Pen penComponentUnknown = new Pen(colorUnknown)
+            {
+                Width = 1 * GameColors.scaleFactor,
+                DashStyle = DashStyle.Dash,
+                LineJoin = LineJoin.Bevel,
+                StartCap = LineCap.Triangle,
+                EndCap = LineCap.Triangle,
+            };
+            public static Pen penComponentPresent = new Pen(Color.Lime)
+            {
+                Width = 1 * GameColors.scaleFactor,
+                DashStyle = DashStyle.Dash,
+                LineJoin = LineJoin.Bevel,
+                StartCap = LineCap.Triangle,
+                EndCap = LineCap.Triangle,
+            };
+            public static Pen penComponentAbsent= new Pen(colorAbsent)
+            {
+                Width = 1 * GameColors.scaleFactor,
+                DashStyle = DashStyle.Dash,
+                LineJoin = LineJoin.Bevel,
+                StartCap = LineCap.Triangle,
+                EndCap = LineCap.Triangle,
             };
         }
 

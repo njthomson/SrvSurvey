@@ -155,7 +155,7 @@ namespace SrvSurvey
         public List<SitePOI> poiRelics;
 
         [JsonIgnore]
-        public int countPuddles{ get; private set; }
+        public int countPuddles { get; private set; }
 
         public string nextNameForNewPoi(POIType poiType)
         {
@@ -301,6 +301,17 @@ namespace SrvSurvey
         public override string ToString()
         {
             return $"{type} {name} {angle}° {dist}m rot:{rot}°";
+        }
+
+        [JsonIgnore]
+        public string displayType
+        {
+            get
+            {
+                var foo = this.type.ToString();
+                foo = foo[0].ToString().ToUpperInvariant() + foo.Substring(1);
+                return foo;
+            }
         }
 
         [JsonIgnore]

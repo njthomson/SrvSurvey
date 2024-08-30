@@ -31,7 +31,7 @@ namespace SrvSurvey
         public bool autoShowPlotGalMap = true;
         public bool autoShowHumanSitesTest = false;
         public bool autoShowPlotJumpInfoTest = true;
-        
+
         public bool autoShowPlotBodyInfo = true;
         public bool autoShowPlotBodyInfoInMap = true;
         public bool autoShowPlotBodyInfoInOrbit = true;
@@ -109,7 +109,9 @@ namespace SrvSurvey
         public Rectangle formBuilder;
         public Rectangle formShowCodex;
 
+        // FormRuins settings
         public bool mapShowNotes = true;
+        public bool mapShowLegend = true;
 
         public StatusFlags blinkTigger = StatusFlags.HudInAnalysisMode;
         public int blinkDuration = 3000;

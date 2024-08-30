@@ -16,6 +16,7 @@ namespace SrvSurvey
             RelicTower,
             Robolobster,
             Hammerbot,
+            Bowl,
         }
 
         public static Mode mode;
@@ -191,13 +192,14 @@ namespace SrvSurvey
                 case Mode.RelicTower:
                     this.drawRelicTowerTarget(g);
                     break;
-
                 case Mode.Robolobster:
                     this.drawRobolobsterTarget(g);
                     break;
-
                 case Mode.Hammerbot:
                     this.drawHammerbotTarget(g);
+                    break;
+                case Mode.Bowl:
+                    this.drawBowlTarget(g);
                     break;
                 case Mode.Buttress:
                 default:
@@ -577,8 +579,13 @@ namespace SrvSurvey
             var w = (this.Width / 2f);
             var h = (this.Height / 2f);
 
-            drawLine(g, w - ex, h - 10, w+ex, h - 10);
+            // horiz
+            drawLine(g, w - ex, h - 10, w + ex, h - 10);
 
+            drawLine(g, w - 6 * ex, h + 10, w - 4 * ex, h + 10);
+            drawLine(g, w + 6 * ex, h + 10, w + 4 * ex, h + 10);
+
+            // vert
             drawLine(g, w, h + 100, w, h + 400);
 
 
@@ -589,6 +596,26 @@ namespace SrvSurvey
 
             //ex -= er.Width * 0.02f;
             drawLine(g, w + ex + ex2, h + ey, w + ex, h + ey + ey);
+        }
+
+        private void drawBowlTarget(Graphics g)
+        {
+            var er = Elite.getWindowRect();
+
+            var w = (this.Width / 2f);
+            var h = (this.Height / 2f);
+
+            // horiz
+            var ey = er.Height * 0.1f;
+            drawLine(g, 100, h - ey, this.Width - 100, h - ey);
+
+            // vert
+            drawLine(g, w, 200, w, this.Height - 100);
+
+            // circles
+            var ee = this.Height / 7f;
+            drawCircle(g, w, h + ee, ee);
+            drawCircle(g, w, h + ee, ee * 1.3f);
         }
 
     }

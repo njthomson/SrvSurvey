@@ -295,23 +295,20 @@ namespace SrvSurvey.net
                     Game.log($"Skipping poiStatus due suspicious counts - sumSitePoi:{sumSitePoi} vs sumPubDataPoi:{template.poiSurvey.Count}, {template.name}, {Path.GetFileName(site.filepath)}");
                     Debugger.Break();
                 }
-                else
+                if (site.pubData.pp != sitePP)
                 {
-                    if (site.pubData.pp != sitePP)
-                    {
-                        diff = true;
-                        site.pubData.pp = string.IsNullOrWhiteSpace(sitePP) ? null! : sitePP;
-                    }
-                    if (site.pubData.pa != sitePA)
-                    {
-                        diff = true;
-                        site.pubData.pa = string.IsNullOrWhiteSpace(sitePA) ? null! : sitePA;
-                    }
-                    if (site.pubData.pe != sitePE)
-                    {
-                        diff = true;
-                        site.pubData.pe = string.IsNullOrWhiteSpace(sitePE) ? null! : sitePE;
-                    }
+                    diff = true;
+                    site.pubData.pp = string.IsNullOrWhiteSpace(sitePP) ? null! : sitePP;
+                }
+                if (site.pubData.pa != sitePA)
+                {
+                    diff = true;
+                    site.pubData.pa = string.IsNullOrWhiteSpace(sitePA) ? null! : sitePA;
+                }
+                if (site.pubData.pe != sitePE)
+                {
+                    diff = true;
+                    site.pubData.pe = string.IsNullOrWhiteSpace(sitePE) ? null! : sitePE;
                 }
 
                 // active obelisks

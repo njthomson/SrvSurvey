@@ -97,6 +97,8 @@ namespace SrvSurvey
             this.showFilteredSites(siteData ?? game?.systemSite);
 
             checkNotes.Checked = Game.settings.mapShowNotes;
+            checkShowLegend.Checked = Game.settings.mapShowLegend;
+
             splitter.Panel2Collapsed = this.siteData == null || !Game.settings.mapShowNotes;
 
             map.BackColor = Color.Black;
@@ -121,6 +123,8 @@ namespace SrvSurvey
 
             this.loadMap(newSite);
         }
+
+        public bool isRuins { get => siteType == GuardianSiteData.SiteType.Alpha || siteType == GuardianSiteData.SiteType.Beta || siteType == GuardianSiteData.SiteType.Gamma; }
 
         private void loadMap(GuardianSiteData? newSite)
         {
@@ -191,6 +195,11 @@ namespace SrvSurvey
             map.Invalidate();
 
             lblObeliskGroups.Text = "Obelisk groups: " + (siteData?.obeliskGroups == null ? "" : string.Join("", siteData!.obeliskGroups));
+            if (newSite != null)
+            {
+                lblLastVisited.Text = newSite.lastVisited.ToString("d");
+            }
+            checkNotes.Enabled = newSite != null;
 
             this.showSurveyProgress();
         }
@@ -338,6 +347,8 @@ namespace SrvSurvey
                 this.dragOffset.X += mouseDownPoint.X - e.Location.X;
                 this.dragOffset.Y += mouseDownPoint.Y - e.Location.Y;
                 mouseDownPoint = e.Location;
+
+                map.Invalidate();
             }
             else
             {
@@ -345,9 +356,46 @@ namespace SrvSurvey
                     e.X - mapCenter.X,
                     e.Y - mapCenter.Y
                 );
+                var poi0 = this.nearestPoi;
+                findNearestArtifact(this.mousePos);
+                if (poi0 != this.nearestPoi)
+                {
+                    showStatus();
+                    map.Invalidate();
+                }
             }
-            showStatus();
-            map.Invalidate();
+        }
+
+        private void findNearestArtifact(PointF mPos)
+        {
+            this.nearestDist = double.MaxValue;
+            this.nearestPoi = null!;
+
+            var poiToRender = siteData?.rawPoi == null
+                ? this.template.poi
+                : this.template.poi.Union(siteData.rawPoi);
+
+            foreach (var poi in poiToRender)
+            {
+                // skip obelisks in groups not in this site
+                if (siteData?.obeliskGroups?.Count > 0 && (poi.type == POIType.obelisk || poi.type == POIType.brokeObelisk) && !siteData.obeliskGroups.Contains(poi.name[0])) continue;
+
+                // calculate render point for POI
+                var pt = (PointF)Util.rotateLine(
+                    360 - (decimal)poi.angle,
+                    poi.dist);
+
+                // is this the closest POI?
+                var x = pt.X * this.scale - mPos.X - dragOffset.X;
+                var y = pt.Y * this.scale - mPos.Y - dragOffset.Y;
+                var d = Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
+
+                if (!this.dragging && d < this.nearestDist && d < 30)
+                {
+                    this.nearestDist = d;
+                    this.nearestPoi = poi;
+                }
+            }
         }
 
         private void map_Click(object sender, EventArgs e)
@@ -358,7 +406,7 @@ namespace SrvSurvey
         private void map_DoubleClick(object sender, EventArgs e)
         {
             // do nothing if these don't match
-            if (game.systemSite != null && game.systemSite != this.siteData)
+            if (game?.systemSite == null || game.systemSite != this.siteData)
                 return;
 
             if (this.nearestDist < 30 && this.siteData != null)
@@ -389,6 +437,7 @@ namespace SrvSurvey
             }
             else
             {
+                // start dragging
                 mouseDownPoint = e.Location;
                 dragging = true;
                 map.Cursor = Cursors.SizeAll;
@@ -398,6 +447,7 @@ namespace SrvSurvey
 
         private void map_MouseUp(object sender, MouseEventArgs e)
         {
+            // stop dragging
             dragging = false;
             map.Cursor = Cursors.Hand;
             showStatus();
@@ -408,8 +458,7 @@ namespace SrvSurvey
             if (this.nearestDist > 30 || this.siteData == null) return;
             if (this.nearestPoi.type == POIType.brokeObelisk || this.nearestPoi.type == POIType.obelisk || this.nearestPoi.type == POIType.emptyPuddle || this.nearestPoi.name.StartsWith('x')) return;
 
-            mnuName.Text = $"Name: {this.nearestPoi.name}";
-            mnuType.Text = $"Type: {this.nearestPoi.type}";
+            mnuName.Text = $"{this.nearestPoi.displayType} ({this.nearestPoi.name})";
 
             mnuUnknown.Checked = mnuPresent.Checked = mnuAbsent.Checked = mnuEmpty.Checked = false;
 
@@ -421,6 +470,18 @@ namespace SrvSurvey
                 mnuAbsent.Checked = true;
             else if (this.siteData!.getPoiStatus(this.nearestPoi.name) == SitePoiStatus.empty)
                 mnuEmpty.Checked = true;
+
+            var couldBeEmpty = false;
+            switch (this.nearestPoi.type)
+            {
+                case POIType.casket:
+                case POIType.orb:
+                case POIType.tablet:
+                case POIType.totem:
+                    couldBeEmpty = true; break;
+            }
+
+            mnuEmpty.Visible = couldBeEmpty;
 
             mapContext.Show(this.map, e.X, e.Y - (mnuName.Height * 2));
         }
@@ -461,9 +522,14 @@ namespace SrvSurvey
 
         private void showStatus()
         {
-            var poi = this.nearestPoi!;
+            var poi = this.nearestPoi;
             if (poi != null)
-                lblSelectedItem.Text = $"{poi.name} ({poi.type}): {siteData?.getPoiStatus(poi.name)}";
+            {
+                if (poi.type == POIType.obelisk || poi.type == POIType.brokeObelisk)
+                    lblSelectedItem.Text = $"{poi.displayType} : {poi.name}";
+                else
+                    lblSelectedItem.Text = $"{poi.displayType} : {poi.name} : {siteData?.getPoiStatus(poi.name)}";
+            }
             else
                 lblSelectedItem.Text = "";
 
@@ -524,7 +590,8 @@ namespace SrvSurvey
 
             drawArtifacts(g);
 
-            drawLegend(g);
+            if (checkShowLegend.Checked)
+                drawLegend(g);
 
             if (game?.systemSite?.type == this.siteType)
                 drawCommander(g);
@@ -533,6 +600,10 @@ namespace SrvSurvey
         private void drawCommander(Graphics g)
         {
             if (game?.systemSite == null || game?.status == null || game.isShutdown || this.siteData == null) return;
+
+            // indicate that we're actively surveying this site
+            var sz = g.MeasureString("[survey active]", this.Font);
+            g.DrawString("[survey active]", this.Font, Brushes.Lime, map.Width - sz.Width, 0);
 
             g.ResetTransform();
             g.TranslateTransform(mapCenter.X - dragOffset.X, mapCenter.Y - dragOffset.Y);
@@ -550,8 +621,11 @@ namespace SrvSurvey
             g.RotateTransform(game.status.Heading - siteData.siteHeading - 180);
             g.FillPath(GameColors.shiningCmdrBrush, GameColors.shiningCmdrPath);
 
-            g.DrawEllipse(GameColors.penLime4, -10, -10, 20, 20);
-            g.DrawLine(GameColors.penLime4, 0, 0, 0, 20);
+            var d = isRuins ? 10f : 4f;
+            var dd = d * 2;
+            var p = isRuins ? GameColors.penLime4 : GameColors.penLime2;
+            g.DrawEllipse(p, -d, -d, dd, dd);
+            g.DrawLine(p, 0, 0, 0, dd);
         }
 
         private void drawArtifacts(Graphics g)
@@ -585,7 +659,7 @@ namespace SrvSurvey
 
             foreach (var poi in poiToRender)
             {
-                // skip obelisks in groups not in this site
+                // skip obelisks in groups not in this site TODO: unnecessary?
                 if (siteData?.obeliskGroups?.Count > 0 && (poi.type == POIType.obelisk || poi.type == POIType.brokeObelisk) && !siteData.obeliskGroups.Contains(poi.name[0])) continue;
 
                 // calculate render point for POI
@@ -607,16 +681,20 @@ namespace SrvSurvey
 
                 var poiStatus = siteData?.getPoiStatus(poi.name) ?? SitePoiStatus.present;
 
+                // anything unknown gets a blue circle underneath with dots
+                if (poiStatus == SitePoiStatus.unknown && poi.type != POIType.obelisk && poi.type != POIType.brokeObelisk)
+                    drawUnknownCircle(g, pt.X, -pt.Y, poi.type, this.isRuins);
+
                 if (poi.type == POIType.relic)
                     drawRelicTower(g, pt, poi, siteData, poiStatus);
                 else if (poi.type == POIType.pylon)
-                    drawPylon(g, pt, poi, siteData, poiStatus);
+                    drawPylon(g, pt, poi.rot, poiStatus);
                 else if (poi.type == POIType.component)
-                    drawComponent(g, pt, poi, siteData, poiStatus);
+                    drawComponent(g, pt.X, pt.Y, poi.rot, poiStatus);
                 else if (poi.type == POIType.obelisk || poi.type == POIType.brokeObelisk)
-                    drawObelisk(g, pt, poiStatus);
+                    drawObelisk(g, pt);
                 else if (Util.isBasicPoi(poi.type))
-                    drawPuddle(g, pt, poi.type, this.siteData, poiStatus);
+                    drawPuddle(g, pt, poi.type, poiStatus);
                 else
                 {
                     Game.log($"Unexpected poi.type: {poi.type}");
@@ -625,23 +703,43 @@ namespace SrvSurvey
 
             // draw highlight over closest POI
             if (this.nearestPoi != null)
-                g.DrawEllipse(GameColors.penCyan4, nearestPt.X - 14, nearestPt.Y - 14, 28, 28);
+                g.DrawEllipse(GameColors.penLime4Dot, nearestPt.X - 14, nearestPt.Y - 14, 28, 28);
         }
 
-        private void drawPuddle(Graphics g, PointF pt, POIType poiType, GuardianSiteData? siteData = null, SitePoiStatus? poiStatus = SitePoiStatus.present)
+        private static void drawUnknownCircle(Graphics g, float x, float y, POIType poiType, bool isRuins)
+        {
+            g.Adjust(x, y, 0, () =>
+            {
+                var d = 10f;
+                if (poiType == POIType.relic) d = 16f;
+                if (isRuins) d *= 1.6f;
+                var dd = d / 2f;
+
+                // anything unknown gets a blue circle underneath with dots
+                g.FillEllipse(GameColors.brushAroundPoiUnknown, -dd - 5, -dd - 5, d + 10, d + 10);
+                g.DrawEllipse(GameColors.penAroundPoiUnknown, -dd - 4, -dd - 4, d + 8, d + 8);
+            });
+        }
+
+        private void drawPuddle(Graphics g, PointF pt, POIType poiType, SitePoiStatus? poiStatus = SitePoiStatus.present, bool forLegend = false)
         {
             var brush = GameColors.Map.brushes[poiType][poiStatus ?? SitePoiStatus.present];
             var pen = GameColors.Map.pens[poiType][poiStatus ?? SitePoiStatus.present];
 
-            var isRuins = siteType == GuardianSiteData.SiteType.Alpha || siteType == GuardianSiteData.SiteType.Beta || siteType == GuardianSiteData.SiteType.Gamma;
-            var d = isRuins && poiStatus != SitePoiStatus.unknown ? 8 : 5;
+            var d = this.isRuins && poiStatus != SitePoiStatus.unknown && !forLegend ? 8 : 5;
             var rect = new RectangleF(pt.X - d, pt.Y - d, d * 2, d * 2);
-            g.FillEllipse(brush, rect);
 
+            g.FillEllipse(brush, rect);
             g.DrawEllipse(pen, rect);
-            if (poiStatus == SitePoiStatus.unknown)
-                g.DrawEllipse(GameColors.penPoiPuddleUnconfirmed, rect);
         }
+
+        private static PointF[] relicPoints =
+        {
+            new PointF(0, 0 - 8),
+            new PointF(0 + 8, 0 + 8),
+            new PointF(0 - 8, 0 + 8),
+            new PointF(0, 0 - 8),
+        };
 
         private static void drawRelicTower(Graphics g, PointF pt, SitePOI? poi, GuardianSiteData? siteData, SitePoiStatus? poiStatus = SitePoiStatus.present)
         {
@@ -650,25 +748,11 @@ namespace SrvSurvey
             if (siteData != null && poi != null && rot != null)
                 rot = rot - siteData.siteHeading - 180;
 
-            PointF[] points =
-            {
-                new PointF(0, 0 - 8),
-                new PointF(0 + 8, 0 + 8),
-                new PointF(0 - 8, 0 + 8),
-                new PointF(0, 0 - 8),
-            };
 
             var brush = GameColors.Map.brushes[POIType.relic][poiStatus ?? SitePoiStatus.present];
             var pen = GameColors.Map.pens[POIType.relic][poiStatus ?? SitePoiStatus.present];
 
             g.TranslateTransform(-pt.X, -pt.Y);
-
-            if (poiStatus == SitePoiStatus.unknown)
-            {
-                var d = 15.7f;
-                var rect = new RectangleF(-d, -d, d * 2, d * 2);
-                g.DrawEllipse(GameColors.penPoiRelicUnconfirmed, rect);
-            }
 
             if (rot != null)
             {
@@ -676,8 +760,8 @@ namespace SrvSurvey
                 g.DrawLine(GameColors.Map.penRelicTowerHeading, 0, -2000, 0, 2000);
             }
 
-            g.FillPolygon(brush, points);
-            g.DrawLines(pen, points);
+            g.FillPolygon(brush, relicPoints);
+            g.DrawLines(pen, relicPoints);
 
             if (rot != null)
                 g.RotateTransform((float)-rot);
@@ -686,7 +770,7 @@ namespace SrvSurvey
             g.RotateTransform(-180);
         }
 
-        private static void drawObelisk(Graphics g, PointF pt, SitePoiStatus? poiStatus = SitePoiStatus.present)
+        private static void drawObelisk(Graphics g, PointF pt)
         {
             // TODO: Account for obelisk rotation
             var brush = Brushes.Blue;
@@ -704,18 +788,17 @@ namespace SrvSurvey
             g.DrawLines(pen, points);
         }
 
-        private static void drawPylon(Graphics g, PointF pt, SitePOI poi, GuardianSiteData? siteData, SitePoiStatus? poiStatus = SitePoiStatus.present)
+        private static PointF[] pylonPoints =
         {
-            g.RotateTransform(+180);
-            var rot = poi.rot + 180;
+            new PointF(0, -3),
+            new PointF(+6, 0),
+            new PointF(0, +3),
+            new PointF(-6, 0),
+            new PointF(0, -3),
+        };
 
-            PointF[] points = {
-                    new PointF(0, -3),
-                    new PointF(+6, 0),
-                    new PointF(0, +3),
-                    new PointF(-6, 0),
-                    new PointF(0, -3),
-                };
+        private static void drawPylon(Graphics g, PointF pt, decimal rot, SitePoiStatus? poiStatus = SitePoiStatus.present)
+        {
             var pp = new Pen(GameColors.Map.colorUnknown)
             {
                 Width = 2 * GameColors.scaleFactor,
@@ -730,58 +813,34 @@ namespace SrvSurvey
                 case SitePoiStatus.absent: pp.Color = GameColors.Map.colorAbsent; break;
             }
 
-            g.TranslateTransform(-pt.X, -pt.Y);
-            g.RotateTransform((float)+rot);
-
-            g.DrawLines(pp, points);
-            g.DrawLine(pp, 0, 0, 0, 3);
-
-            g.RotateTransform((float)-rot);
-            g.TranslateTransform(+pt.X, +pt.Y);
-
-            g.RotateTransform(-180);
+            g.Adjust(180, -pt.X, pt.Y, (float)rot + 180f, () =>
+            {
+                g.DrawLines(pp, pylonPoints);
+                g.DrawLine(pp, 0, 0, 0, 3);
+            });
         }
 
-        private static void drawComponent(Graphics g, PointF pt, SitePOI poi, GuardianSiteData? siteData, SitePoiStatus? poiStatus = SitePoiStatus.present)
+        private static PointF[] componentPoints =
         {
-            g.RotateTransform(+180);
-            var rot = poi.rot + 180;
+            new PointF(0, +1),
+            new PointF(-2, -2),
+            new PointF(+2, -2),
+            new PointF(0, +1),
+            new PointF(0, +4),
+            new PointF(-5, -4),
+            new PointF(+5, -4),
+            new PointF(0, +4),
+        };
 
-            PointF[] points = {
-                    new PointF(0, +1),
-                    new PointF(-2, -2),
-                    new PointF(+2, -2),
-                    new PointF(0, +1),
-                    new PointF(0, +4),
-                    new PointF(-5, -4),
-                    new PointF(+5, -4),
-                    new PointF(0, +4),
-                };
-            var pp = new Pen(GameColors.Map.colorUnknown)
+        private static void drawComponent(Graphics g, float x, float y, decimal rot, SitePoiStatus poiStatus = SitePoiStatus.present)
+        {
+            var pp = GameColors.Map.pens[POIType.component][poiStatus];
+            if (poiStatus == SitePoiStatus.unknown) pp = GameColors.Map.penComponentUnknown;
+
+            g.Adjust(180, -x, y, (float)rot - 45f + 180f, () =>
             {
-                Width = 1 * GameColors.scaleFactor,
-                DashStyle = DashStyle.Dash,
-                LineJoin = LineJoin.Bevel,
-                StartCap = LineCap.Triangle,
-                EndCap = LineCap.Triangle,
-            };
-
-            switch (poiStatus)
-            {
-                case SitePoiStatus.present: pp.Color = Color.Lime; break;
-                case SitePoiStatus.absent: pp.Color = GameColors.Map.colorAbsent; break;
-            }
-
-            rot -= 45;
-            g.TranslateTransform(-pt.X, -pt.Y);
-            g.RotateTransform((float)+rot);
-
-            g.DrawLines(pp, points);
-
-            g.RotateTransform((float)-rot);
-            g.TranslateTransform(+pt.X, +pt.Y);
-
-            g.RotateTransform(-180);
+                g.DrawLines(pp, componentPoints);
+            });
         }
 
         private void drawLegend(Graphics g)
@@ -789,46 +848,61 @@ namespace SrvSurvey
             tp.X = 20;
             tp.Y = 20;
             g.ResetTransform();
-            var rect = new RectangleF(tp.X - 5, tp.Y - 5, 114, 209);
 
-            g.FillRectangle(GameColors.Map.Legend.brush, rect);
-            g.DrawRectangle(GameColors.Map.Legend.pen, rect);
+            var rect = new RectangleF(tp.X - 5, tp.Y - 5,
+                isRuins ? 114 : 130,
+                isRuins ? 230 : 255);
+
+            g.FillRectangle(GameColors.Map.legend.brush, rect);
+            g.DrawRectangle(GameColors.Map.legend.pen, rect);
 
             drawString(g, "Legend:");
-            tp.X += PlotBase.scaled(20);
+            tp.X += PlotBase.scaled(21);
 
             drawString(g, "Relic Tower");
             drawRelicTower(g, new PointF(tp.X - 10, tp.Y - 10), null, null);
 
-            drawString(g, "\r\nOrb");
-            drawPuddle(g, new PointF(tp.X - 10, tp.Y - 10), POIType.orb);
+            drawString(g, "Orb");
+            drawPuddle(g, new PointF(tp.X - 10, tp.Y - 10), POIType.orb, SitePoiStatus.present, true);
 
             drawString(g, "Casket");
-            drawPuddle(g, new PointF(tp.X - 10, tp.Y - 10), POIType.casket);
+            drawPuddle(g, new PointF(tp.X - 10, tp.Y - 10), POIType.casket, SitePoiStatus.present, true);
 
             drawString(g, "Tablet");
-            drawPuddle(g, new PointF(tp.X - 10, tp.Y - 10), POIType.tablet);
+            drawPuddle(g, new PointF(tp.X - 10, tp.Y - 10), POIType.tablet, SitePoiStatus.present, true);
 
             drawString(g, "Totem");
-            drawPuddle(g, new PointF(tp.X - 10, tp.Y - 10), POIType.totem);
+            drawPuddle(g, new PointF(tp.X - 10, tp.Y - 10), POIType.totem, SitePoiStatus.present, true);
 
             drawString(g, "Urn");
-            drawPuddle(g, new PointF(tp.X - 10, tp.Y - 10), POIType.urn);
+            drawPuddle(g, new PointF(tp.X - 10, tp.Y - 10), POIType.urn, SitePoiStatus.present, true);
 
             drawString(g, "Empty puddle");
-            drawPuddle(g, new PointF(tp.X - 10, tp.Y - 10), POIType.totem, null, SitePoiStatus.empty);
+            drawPuddle(g, new PointF(tp.X - 10, tp.Y - 10), POIType.totem, SitePoiStatus.empty, true);
+
+            if (!isRuins)
+            {
+                drawString(g, "Energy pylon");
+                drawPylon(g, new PointF(tp.X - 10, tp.Y - 10), 0, SitePoiStatus.present);
+
+                drawString(g, "Component tower");
+                drawComponent(g, tp.X - 10, tp.Y - 10, 0, SitePoiStatus.present);
+            }
 
             drawString(g, "Site heading");
-            g.DrawLine(GameColors.Map.penCentralCompass, tp.X - 15, tp.Y - 6, tp.X - 5, tp.Y - 14);
+            g.DrawLine(GameColors.Map.penCentralCompass, tp.X - 16, tp.Y - 6, tp.X - 6, tp.Y - 14);
 
             drawString(g, "Tower heading");
-            g.DrawLine(GameColors.Map.penCentralRelicTowerHeading, tp.X - 15, tp.Y - 6, tp.X - 5, tp.Y - 14);
+            g.DrawLine(GameColors.Map.penCentralRelicTowerHeading, tp.X - 16, tp.Y - 6, tp.X - 6, tp.Y - 14);
+
+            drawString(g, "Survey needed");
+            drawUnknownCircle(g, tp.X - 11, -tp.Y + 8, POIType.totem, isRuins);
         }
 
         private void drawString(Graphics g, string msg)
         {
             var sz = g.MeasureString(msg, this.Font);
-            g.DrawString(msg, this.Font, Brushes.Black, tp);
+            g.DrawString(msg, this.Font, Brushes.Wheat, tp);
             tp.Y += sz.Height + PlotBase.scaled(1);
         }
 
@@ -838,6 +912,14 @@ namespace SrvSurvey
             Game.settings.Save();
 
             splitter.Panel2Collapsed = this.siteData == null || !Game.settings.mapShowNotes;
+        }
+
+        private void checkShowLegend_CheckedChanged(object sender, EventArgs e)
+        {
+            Game.settings.mapShowLegend = checkShowLegend.Checked;
+            Game.settings.Save();
+
+            map.Invalidate();
         }
 
         private void btnSaveNotes_Click(object sender, EventArgs e)

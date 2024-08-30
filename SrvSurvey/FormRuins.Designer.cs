@@ -37,13 +37,11 @@
             map = new PictureBox();
             mapContext = new ContextMenuStrip(components);
             mnuName = new ToolStripMenuItem();
-            mnuType = new ToolStripMenuItem();
             toolStripSeparator1 = new ToolStripSeparator();
             mnuPresent = new ToolStripMenuItem();
             mnuAbsent = new ToolStripMenuItem();
             mnuEmpty = new ToolStripMenuItem();
             mnuUnknown = new ToolStripMenuItem();
-            toolStripSeparator2 = new ToolStripSeparator();
             statusStrip1 = new StatusStrip();
             lblSelectedItem = new ToolStripStatusLabel();
             lblStatus = new ToolStripStatusLabel();
@@ -55,6 +53,7 @@
             label4 = new Label();
             comboSiteType = new ComboBox();
             panel1 = new Panel();
+            checkShowLegend = new CheckBox();
             checkNotes = new CheckBox();
             splitter = new SplitContainer();
             panelEdit = new Panel();
@@ -67,8 +66,10 @@
             numScale = new NumericUpDown();
             numY = new NumericUpDown();
             numX = new NumericUpDown();
-            txtNotes = new TextBox();
             btnSaveNotes = new Button();
+            lblLastVisited = new Label();
+            label6 = new Label();
+            txtNotes = new TextBox();
             ((System.ComponentModel.ISupportInitialize)map).BeginInit();
             mapContext.SuspendLayout();
             statusStrip1.SuspendLayout();
@@ -92,7 +93,7 @@
             map.Dock = DockStyle.Fill;
             map.Location = new Point(0, 0);
             map.Name = "map";
-            map.Size = new Size(657, 483);
+            map.Size = new Size(666, 482);
             map.TabIndex = 1;
             map.TabStop = false;
             map.Click += map_Click;
@@ -104,9 +105,9 @@
             // 
             // mapContext
             // 
-            mapContext.Items.AddRange(new ToolStripItem[] { mnuName, mnuType, toolStripSeparator1, mnuPresent, mnuAbsent, mnuEmpty, mnuUnknown, toolStripSeparator2 });
+            mapContext.Items.AddRange(new ToolStripItem[] { mnuName, toolStripSeparator1, mnuPresent, mnuAbsent, mnuEmpty, mnuUnknown });
             mapContext.Name = "mapContext";
-            mapContext.Size = new Size(126, 148);
+            mapContext.Size = new Size(126, 120);
             // 
             // mnuName
             // 
@@ -114,13 +115,6 @@
             mnuName.Name = "mnuName";
             mnuName.Size = new Size(125, 22);
             mnuName.Text = "Name:";
-            // 
-            // mnuType
-            // 
-            mnuType.Enabled = false;
-            mnuType.Name = "mnuType";
-            mnuType.Size = new Size(125, 22);
-            mnuType.Text = "Type:";
             // 
             // toolStripSeparator1
             // 
@@ -157,17 +151,12 @@
             mnuUnknown.Text = "Unknown";
             mnuUnknown.Click += mnuUnknown_Click;
             // 
-            // toolStripSeparator2
-            // 
-            toolStripSeparator2.Name = "toolStripSeparator2";
-            toolStripSeparator2.Size = new Size(122, 6);
-            // 
             // statusStrip1
             // 
             statusStrip1.Items.AddRange(new ToolStripItem[] { lblSelectedItem, lblStatus, lblObeliskGroups, lblSurveyCompletion, progressSurvey, lblZoom });
-            statusStrip1.Location = new Point(0, 535);
+            statusStrip1.Location = new Point(0, 534);
             statusStrip1.Name = "statusStrip1";
-            statusStrip1.Size = new Size(870, 24);
+            statusStrip1.Size = new Size(882, 24);
             statusStrip1.TabIndex = 2;
             statusStrip1.Text = "statusStrip1";
             // 
@@ -185,7 +174,7 @@
             lblStatus.BorderStyle = Border3DStyle.Sunken;
             lblStatus.DisplayStyle = ToolStripItemDisplayStyle.Text;
             lblStatus.Name = "lblStatus";
-            lblStatus.Size = new Size(442, 19);
+            lblStatus.Size = new Size(423, 19);
             lblStatus.Spring = true;
             lblStatus.Text = "...";
             lblStatus.TextAlign = ContentAlignment.MiddleLeft;
@@ -231,7 +220,7 @@
             comboSite.Items.AddRange(new object[] { "Alpha template", "Beta template", "Gamma template", "Bear template", "----------------" });
             comboSite.Location = new Point(239, 9);
             comboSite.Name = "comboSite";
-            comboSite.Size = new Size(420, 23);
+            comboSite.Size = new Size(432, 23);
             comboSite.TabIndex = 2;
             comboSite.SelectedIndexChanged += comboSite_SelectedIndexChanged;
             // 
@@ -259,6 +248,7 @@
             // 
             // panel1
             // 
+            panel1.Controls.Add(checkShowLegend);
             panel1.Controls.Add(checkNotes);
             panel1.Controls.Add(label4);
             panel1.Controls.Add(comboSite);
@@ -266,14 +256,26 @@
             panel1.Dock = DockStyle.Top;
             panel1.Location = new Point(0, 0);
             panel1.Name = "panel1";
-            panel1.Size = new Size(870, 48);
+            panel1.Size = new Size(882, 48);
             panel1.TabIndex = 0;
+            // 
+            // checkShowLegend
+            // 
+            checkShowLegend.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            checkShowLegend.AutoSize = true;
+            checkShowLegend.Location = new Point(691, 11);
+            checkShowLegend.Name = "checkShowLegend";
+            checkShowLegend.Size = new Size(94, 19);
+            checkShowLegend.TabIndex = 4;
+            checkShowLegend.Text = "Show legend";
+            checkShowLegend.UseVisualStyleBackColor = true;
+            checkShowLegend.CheckedChanged += checkShowLegend_CheckedChanged;
             // 
             // checkNotes
             // 
             checkNotes.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             checkNotes.AutoSize = true;
-            checkNotes.Location = new Point(779, 11);
+            checkNotes.Location = new Point(791, 11);
             checkNotes.Name = "checkNotes";
             checkNotes.Size = new Size(87, 19);
             checkNotes.TabIndex = 3;
@@ -295,11 +297,13 @@
             // 
             // splitter.Panel2
             // 
-            splitter.Panel2.Controls.Add(txtNotes);
             splitter.Panel2.Controls.Add(btnSaveNotes);
+            splitter.Panel2.Controls.Add(lblLastVisited);
+            splitter.Panel2.Controls.Add(label6);
+            splitter.Panel2.Controls.Add(txtNotes);
             splitter.Panel2.Padding = new Padding(2);
-            splitter.Size = new Size(870, 487);
-            splitter.SplitterDistance = 661;
+            splitter.Size = new Size(882, 486);
+            splitter.SplitterDistance = 670;
             splitter.TabIndex = 1;
             // 
             // panelEdit
@@ -315,7 +319,7 @@
             panelEdit.Controls.Add(numScale);
             panelEdit.Controls.Add(numY);
             panelEdit.Controls.Add(numX);
-            panelEdit.Location = new Point(3, 446);
+            panelEdit.Location = new Point(3, 445);
             panelEdit.Name = "panelEdit";
             panelEdit.Size = new Size(416, 34);
             panelEdit.TabIndex = 4;
@@ -412,33 +416,50 @@
             numX.Value = new decimal(new int[] { 555, 0, 0, 0 });
             numX.ValueChanged += numX_ValueChanged;
             // 
-            // txtNotes
-            // 
-            txtNotes.BorderStyle = BorderStyle.None;
-            txtNotes.Dock = DockStyle.Fill;
-            txtNotes.Location = new Point(2, 25);
-            txtNotes.Multiline = true;
-            txtNotes.Name = "txtNotes";
-            txtNotes.ScrollBars = ScrollBars.Both;
-            txtNotes.Size = new Size(197, 456);
-            txtNotes.TabIndex = 1;
-            // 
             // btnSaveNotes
             // 
-            btnSaveNotes.Dock = DockStyle.Top;
-            btnSaveNotes.Location = new Point(2, 2);
+            btnSaveNotes.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            btnSaveNotes.Location = new Point(5, 20);
             btnSaveNotes.Name = "btnSaveNotes";
-            btnSaveNotes.Size = new Size(197, 23);
+            btnSaveNotes.Size = new Size(195, 23);
             btnSaveNotes.TabIndex = 0;
             btnSaveNotes.Text = "Save notes";
             btnSaveNotes.UseVisualStyleBackColor = true;
             btnSaveNotes.Click += btnSaveNotes_Click;
             // 
+            // lblLastVisited
+            // 
+            lblLastVisited.AutoSize = true;
+            lblLastVisited.Location = new Point(79, 2);
+            lblLastVisited.Name = "lblLastVisited";
+            lblLastVisited.Size = new Size(85, 15);
+            lblLastVisited.TabIndex = 3;
+            lblLastVisited.Text = "April 40th 2099";
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Location = new Point(5, 2);
+            label6.Name = "label6";
+            label6.Size = new Size(68, 15);
+            label6.TabIndex = 2;
+            label6.Text = "Last visited:";
+            // 
+            // txtNotes
+            // 
+            txtNotes.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            txtNotes.Location = new Point(2, 49);
+            txtNotes.Multiline = true;
+            txtNotes.Name = "txtNotes";
+            txtNotes.ScrollBars = ScrollBars.Both;
+            txtNotes.Size = new Size(200, 431);
+            txtNotes.TabIndex = 1;
+            // 
             // FormRuins
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(870, 559);
+            ClientSize = new Size(882, 558);
             Controls.Add(splitter);
             Controls.Add(panel1);
             Controls.Add(statusStrip1);
@@ -488,13 +509,11 @@
         private Button btnSaveNotes;
         private ContextMenuStrip mapContext;
         private ToolStripMenuItem mnuName;
-        private ToolStripMenuItem mnuType;
         private ToolStripSeparator toolStripSeparator1;
         private ToolStripMenuItem mnuPresent;
         private ToolStripMenuItem mnuAbsent;
         private ToolStripMenuItem mnuEmpty;
         private ToolStripMenuItem mnuUnknown;
-        private ToolStripSeparator toolStripSeparator2;
         private ToolStripStatusLabel lblObeliskGroups;
         private ToolStripProgressBar progressSurvey;
         private Panel panelEdit;
@@ -507,5 +526,8 @@
         private Label label3;
         private Label label2;
         private Label label1;
+        private Label label6;
+        private Label lblLastVisited;
+        private CheckBox checkShowLegend;
     }
 }

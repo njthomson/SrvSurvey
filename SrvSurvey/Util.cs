@@ -978,4 +978,48 @@ namespace SrvSurvey
             }
         }
     }
+
+    internal static class ExtensionMethods
+    {
+        /// <summary>
+        /// Adjust graphics transform, calls the lambda then reverses the adjustments.
+        /// </summary>
+        public static void Adjust(this Graphics g, float rot, Action func)
+        {
+            ExtensionMethods.Adjust(g, 0, 0, 0, rot, func);
+        }
+
+        /// <summary>
+        /// Adjust graphics transform, calls the lambda then reverses the adjustments.
+        /// </summary>
+        public static void Adjust(this Graphics g, PointF pf, float rot, Action func)
+        {
+            ExtensionMethods.Adjust(g, 0, pf.X, pf.Y, rot, func);
+        }
+        /// <summary>
+        /// Adjust graphics transform, calls the lambda then reverses the adjustments.
+        /// </summary>
+        public static void Adjust(this Graphics g, float x, float y, float rot, Action func)
+        {
+            ExtensionMethods.Adjust(g, 0, x, y, rot, func);
+        }
+
+        /// <summary>
+        /// Adjust graphics transform, calls the lambda then reverses the adjustments.
+        /// </summary>
+        public static void Adjust(this Graphics g, float rot1, float x, float y, float rot2, Action func)
+        {
+            g.RotateTransform(+rot1);
+            // Y value only is inverted
+            g.TranslateTransform(+x, -y);
+            g.RotateTransform(+rot2);
+
+            func();
+
+            g.RotateTransform(-rot2);
+            g.TranslateTransform(-x, +y);
+            g.RotateTransform(-rot1);
+        }
+
+    }
 }

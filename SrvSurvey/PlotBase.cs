@@ -473,10 +473,10 @@ namespace SrvSurvey
             g.RotateTransform(360 - game.status!.Heading);
 
             // draw touchdown marker
-            if (this.touchdownLocation0 != null)
+            if (game.touchdownLocation != null && game.systemBody != null)
             {
                 const float shipSize = 24f;
-                var shipLatLong = game.cmdr.lastTouchdownLocation!;
+                var shipLatLong = game.touchdownLocation;
                 var ship = Util.getOffset(game.systemBody.radius, shipLatLong, 180);
 
                 // adjust location by ship cockpit offset

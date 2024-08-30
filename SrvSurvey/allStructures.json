@@ -1021,7 +1021,7 @@
     "siteType": "Hammerbot",
     "latitude": 39.116386,
     "longitude": 166.909653,
-    "siteHeading": -1,
+    "siteHeading": 280,
     "idx": 0,
     "surveyComplete": false
   },
@@ -1116,7 +1116,7 @@
     "siteType": "Hammerbot",
     "latitude": 11.428931,
     "longitude": -30.32794,
-    "siteHeading": -1,
+    "siteHeading": 73,
     "idx": 0,
     "surveyComplete": false
   },
@@ -2370,7 +2370,7 @@
     "siteType": "Hammerbot",
     "latitude": -45.083519,
     "longitude": 44.343475,
-    "siteHeading": -1,
+    "siteHeading": 78,
     "idx": 0,
     "surveyComplete": false
   },
@@ -2693,7 +2693,7 @@
     "siteType": "Bowl",
     "latitude": -27.743124,
     "longitude": -15.290405,
-    "siteHeading": -1,
+    "siteHeading": 89,
     "idx": 0,
     "surveyComplete": false
   },
