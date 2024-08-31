@@ -99,8 +99,7 @@ namespace SrvSurvey.canonn
                         speciesName = variantName;
                         speciesEnglishName = variantEnglishName;
 
-                        var parts = thing.english_name.Split(' ', 2); // StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
-                        genusEnglishName = parts[1]; // TODO: "Brain Tree" vs "Brain Trees" ?!
+                        genusEnglishName = thing.english_name; // TODO: "Brain Tree" vs "Brain Trees" ?!
 
                         switch (thing.sub_class)
                         {
@@ -229,17 +228,29 @@ namespace SrvSurvey.canonn
             if (this.genus == null || this.genus.Count == 0) throw new Exception($"BioRef is not loaded.");
 
             var parts = variantDisplayName.Split(' ', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
-            var genus = parts[0];
-            var species = $"{parts[0]} {parts[1]}";
-            var variant = parts[3];
 
+            if (parts.Length == 4)
+            {
+                // for Odyssey organisms, search more efficiently
+                var genus = parts[0];
+                var species = $"{parts[0]} {parts[1]}";
+
+                foreach (var genusRef in this.genus)
+                    if (genusRef.englishName == genus)
+                        foreach (var speciesRef in genusRef.species)
+                            if (speciesRef.englishName == species)
+                                foreach (var variantRef in speciesRef.variants)
+                                    if (variantRef.englishName == variantDisplayName)
+                                        return new BioMatch(genusRef, speciesRef, variantRef);
+            }
+
+            // for legacy organisms, search less efficiently
             foreach (var genusRef in this.genus)
-                if (genusRef.englishName == genus)
+                if (!genusRef.odyssey)
                     foreach (var speciesRef in genusRef.species)
-                        if (speciesRef.englishName == species)
-                            foreach (var variantRef in speciesRef.variants)
-                                if (variantRef.englishName == variantDisplayName)
-                                    return new BioMatch(genusRef, speciesRef, variantRef);
+                        foreach (var variantRef in speciesRef.variants)
+                            if (variantRef.englishName == variantDisplayName)
+                                return new BioMatch(genusRef, speciesRef, variantRef);
 
             return null;
         }

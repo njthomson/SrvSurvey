@@ -106,10 +106,11 @@ namespace BioCriterias
                 return;
 
             // evaluate current query
-            var currentName = $"{genus} {species} - {variant}";
+            var currentName = (variant == "" ? $"{genus} {species}" : $"{genus} {species} - {variant}").Trim();
             var failures = testQuery(criteria.query, $"{genus} {species} {variant}".Trim());
 
-            //if (this.bodyName.Contains("ABCD 1 e") && species?.Contains("Coronamus") == true) Debugger.Break();
+            //if (this.bodyName.Contains("A 3") && genus?.Contains("Amphora") == true) Debugger.Break();
+            //if (genus?.Contains("Amphora") == true) Debugger.Break();
 
             // add a prediction if no failures and we have genus, species AND variant
             if (failures.Count == 0 && genus != null && species != null && variant != null)
@@ -295,6 +296,7 @@ namespace BioCriterias
                             txt += $"MISSED: \r\n\t" + string.Join("\r\n\t", missed);
                             BioPredictor.logOrganism = missed.First().Split(" ")[1];
                             Game.log(txt);
+                            Debugger.Break();
                         }
                         else if (wrong.Count > 5)
                         {
@@ -307,7 +309,7 @@ namespace BioCriterias
                     }
                     else
                     {
-                        //Game.log($"\r\n** {body.system.address} '{body.name}' ({body.id}) predicted: **\r\n\t" + string.Join("\r\n\t", predictions) + "\r\n");
+                        // Game.log($"\r\n** {body.system.address} '{body.name}' ({body.id}) nothing real, but predicted: **\r\n\t" + string.Join("\r\n\t", predictions) + "\r\n");
                     }
 
                 }
@@ -461,7 +463,16 @@ namespace BioCriterias
                 //633272537650, // Synuefai EA-U c5-2
                 //962207294841, // Hyuedeae UG-W b43-0
                 //1726677521610, // Bleae Thaa XX-H c23-6
-                516869988849, // Slegue TP-Z b57-0
+                //516869988849, // Slegue TP-Z b57-0
+
+                ///* Bark Mounds */
+                //13876099622273, // Pencil Sector MR-W b1-6
+                //2036007784483, // Eulail RX-T d3-59
+                //869487643043, // IC 4604 Sector DL-Y d25
+
+                // Amphora Plant
+                13648186819, // Eifoqs XZ-N d7-0
+                82032053243, // Pyroifa DX-A d14-2
             };
 
             Game.log($"Testing {testSystems.Count} systems ...");

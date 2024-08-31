@@ -35,7 +35,7 @@ namespace BioCriterias
 
         public static void readCriteria()
         {
-            Game.log("readCriteria");
+            //Game.log("readCriteria");
             allCriteria.Clear();
 
             // use source files if debugging, otherwise published files
@@ -371,6 +371,7 @@ namespace BioCriterias
             { "Rocky", "Rocky body" },
             { "RockyIce", "Rocky ice " }, // might be "... body" or "... world"
             { "HMC", "High metal content " }, // might be "... body" or "... world"
+            { "MRB", "Metal rich body" },
         };
     }
 }

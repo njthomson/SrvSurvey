@@ -1092,7 +1092,7 @@ namespace SrvSurvey.game
                 if (body.semiMajorAxis == 0) body.semiMajorAxis = Util.lsToM(entry.semiMajorAxis ?? 0); // convert from LS to M
                 if (body.absoluteMagnitude == 0) body.absoluteMagnitude = entry.absoluteMagnitude;
                 if (body.radius == 0 && entry.radius > 0) body.radius = entry.radius * 1000;
-                if (body.planetClass == null) body.planetClass = entry.subType;
+                if (body.planetClass == null) body.planetClass = getPlanetClassFromExternal(entry.subType);
                 if (body.parents == null && entry.parents != null) body.parents = entry.parents;
                 if (!string.IsNullOrEmpty(entry.terraformingState))
                     body.terraformable = entry.terraformingState == "Candidate for terraforming";
@@ -1136,6 +1136,14 @@ namespace SrvSurvey.game
                     }
                 }
             }
+        }
+
+        private string? getPlanetClassFromExternal(string? externalPlanetClass)
+        {
+            if (externalPlanetClass == "Metal-rich body")
+                return "Metal rich body";
+            else
+                return externalPlanetClass;
         }
 
         private string getAtmosphereTypeFromExternal(string? externalAtmosphereType)
@@ -1194,7 +1202,7 @@ namespace SrvSurvey.game
                 if (body.absoluteMagnitude == 0) body.absoluteMagnitude = entry.absoluteMagnitude ?? 0;
                 if (body.radius == 0 && entry.radius != null) body.radius = entry.radius.Value * 1000;
                 if (body.parents == null && entry.parents != null) body.parents = entry.parents;
-                if (body.planetClass == null) body.planetClass = entry.subType;
+                if (body.planetClass == null) body.planetClass = getPlanetClassFromExternal(entry.subType);
                 if (!string.IsNullOrEmpty(entry.terraformingState))
                     body.terraformable = entry.terraformingState == "Candidate for terraforming";
                 if (body.mass == 0) body.mass = (entry.earthMasses > 0 ? entry.earthMasses : entry.solarMasses) ?? 0; // mass
@@ -1216,7 +1224,7 @@ namespace SrvSurvey.game
 
                 // if there's a station that is not a Fleet Carrier ... assume it should be marked as "discovered"
                 // (this helps with bodies in the bubble that do not allow "wasDiscovered" to be true
-                if (entry.stations.Count > 0 && !entry.stations.Any(s => s.primaryEconomy != "Privvate Enterprise"))
+                if (entry.stations.Count > 0 && !entry.stations.Any(s => s.primaryEconomy != "Private Enterprise"))
                     body.wasDiscovered = true;
 
                 // update rings

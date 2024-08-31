@@ -1,0 +1,57 @@
+{
+  "genus": "Bark Mounds",
+  "species": "",
+  "query": [
+    "# hit count: 3429",
+    "# hit count: 3317",
+    "atmosType [None]"
+  ],
+  "children": [
+    {
+      "variant": "",
+          "query": [
+        "# hit count: 54",
+        "     body [Icy]",
+        "  gravity [ ~ 2.217]",
+        "     temp [201 ~ 361]",
+        " pressure [ ~ 0]",
+        "volcanism [None,Carbon Dioxide Geysers,Major Water Geysers,Major Water Magma,Minor Carbon Dioxide Geysers,Water Geysers]"
+      ]
+    },
+    {
+      "variant": "",
+          "query": [
+        "# hit count: 2422",
+        "     body [Rocky]",
+        "  gravity [ ~ 0.448]",
+        "     temp [200 ~ 440]",
+        " pressure [ ~ 0.0009]",
+        "volcanism [None,Major Silicate Vapour Geysers,Metallic Magma,Minor Metallic Magma,Minor Silicate Vapour Geysers]"
+      ]
+    },
+    {
+      "variant": "",
+          "query": [
+        "# hit count: 17",
+        "     body [RockyIce]",
+        "  gravity [ ~ 0.404]",
+        "     temp [200 ~ 249]",
+        " pressure [ ~ 0.0001]",
+        "volcanism [None,Water Geysers]"
+      ]
+    },
+    {
+      "variant": "",
+          "query": [
+        "# hit count: 824",
+        "     body [HMC]",
+        "  gravity [ ~ 3.462]",
+        "     temp [200 ~ 440]",
+        " pressure [ ~ 0.0009]",
+        "volcanism [None,Major Rocky Magma,Major Silicate Vapour Geysers,Metallic Magma,Minor Metallic Magma,Minor Silicate Vapour Geysers]"
+      ]
+    }
+  ]
+
+}
+

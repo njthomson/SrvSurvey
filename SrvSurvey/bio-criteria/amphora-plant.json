@@ -1,0 +1,16 @@
+{
+  "genus": "Amphora Plant",
+  "species": "",
+  "variant": "",
+  "query": [
+    "# hit count: 449",
+    "atmosType [None]",
+    "     body [MRB]",
+    "  gravity [0.042 ~ 4.473]",
+    "     temp [1000 ~ 1736]",
+    " pressure [ ~ 0]",
+    "volcanism [Major Metallic Magma,Major Rocky Magma,Major Silicate Vapour Geysers]"
+  ]
+
+}
+

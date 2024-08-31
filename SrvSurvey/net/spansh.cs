@@ -244,25 +244,26 @@ namespace SrvSurvey.net
         public static void buildWholeSet()
         {
             // define ...
-            var species = "Bacterium Tela";
+            var species = "Bark_Mounds";
             var atmosTypes = new List<string>()
             {
-                "Ammonia",
-                "Ammonia-rich",
-                "Argon",
-                "Argon-rich",
-                "Carbon dioxide",
-                "Carbon dioxide-rich",
-                "Helium",
-                "Methane",
-                "Methane-rich",
-                "Neon",
-                "Neon-rich",
-                "Nitrogen",
-                "Oxygen",
-                "Sulphur dioxide",
-                "Water",
-                "Water-rich",
+                "No atmosphere",
+                //"Ammonia",
+                //"Ammonia-rich",
+                //"Argon",
+                //"Argon-rich",
+                //"Carbon dioxide",
+                //"Carbon dioxide-rich",
+                //"Helium",
+                //"Methane",
+                //"Methane-rich",
+                //"Neon",
+                //"Neon-rich",
+                //"Nitrogen",
+                //"Oxygen",
+                //"Sulphur dioxide",
+                //"Water",
+                //"Water-rich",
             };
 
             var start = DateTime.Now;
@@ -282,6 +283,7 @@ namespace SrvSurvey.net
                 "Rocky body",
                 "Rocky Ice world",
                 "High metal content world",
+                "Metal-rich body",
             };
 
             // build ...
@@ -308,7 +310,8 @@ namespace SrvSurvey.net
                 Game.log($"Atmos count: {species}/{atmosType} => {atmosCount}");
                 if (atmosCount < limitMinCount) continue;
                 atmos.query.Add(Clause.createComment($"hit count: {atmosCount}"));
-                atmos.query.Add(Clause.createIs("atmosType", Util.compositionToCamel(atmosType)));
+                var atmosTypeValue = atmosType == "No atmosphere" ? "None" : Util.compositionToCamel(atmosType);
+                atmos.query.Add(Clause.createIs("atmosType", atmosTypeValue));
                 parent.children.Add(atmos);
 
                 // ... and a node for each body
@@ -415,9 +418,9 @@ namespace SrvSurvey.net
             var type = species.Split(' ').First();
             var filters = new Dictionary<string, string>()
             {
-                { "atmosphere", $"Thin {atmosType}" },
+                { "atmosphere", getAtmosphereFilterValue(atmosType) },
                 { "subtype", bodyType },
-                { "landmarks", $"{type}/{species}" },
+                { "landmarks", getLandmarksFilterValue(species) },
                 //{ "surface_temperature", "160.00 <=> 177.00" }, // TODO: Support one day
             };
 
@@ -425,7 +428,7 @@ namespace SrvSurvey.net
             var fullCount = response["count"]!.Value<int>();
             if (fullCount == 0) return null;
 
-            var atmosComp = response["results"]!.ToArray().First()["atmosphere_composition"]!.FirstOrDefault(ac => ac["name"]!.Value<string>() == atmosType)!;
+            var atmosComp = response["results"]!.ToArray().First()["atmosphere_composition"]?.FirstOrDefault(ac => ac["name"]!.Value<string>() == atmosType)!;
             if (atmosComp == null) return null;
 
             var name = Util.compositionToCamel(atmosComp["name"]!.Value<string>()!);
@@ -494,9 +497,9 @@ namespace SrvSurvey.net
             var type = species.Split(' ').First();
             var filters = new Dictionary<string, string>()
             {
-                { "atmosphere", $"Thin {atmosType}" },
+                { "atmosphere", getAtmosphereFilterValue(atmosType) },
                 { "subtype", bodyType },
-                { "landmarks", $"{type}/{species}" },
+                { "landmarks", getLandmarksFilterValue(species) },
             };
 
             // any hits with "No volcanism" ?
@@ -653,16 +656,31 @@ namespace SrvSurvey.net
             return totalCount;
         }
 
+        private static string getLandmarksFilterValue(string speciesType)
+        {
+            var parts = speciesType.Split(' ').ToList();
+            speciesType = speciesType.Replace('_', ' ');
+            var typeValue = parts.Count == 1 ? speciesType : $"{parts[0]}/{speciesType}";
+            return typeValue;
+        }
+
+        private static string getAtmosphereFilterValue(string atmosType)
+        {
+            if (atmosType == "No atmosphere")
+                return atmosType;
+            else
+                return $"Thin {atmosType}";
+        }
+
         private static string buildQuery(string? atmosType, string? bodyType, string speciesType, string sortField, SortOrder sortOrder)
         {
-            var type = speciesType.Split(' ').First();
             var filters = new Dictionary<string, string>()
             {
-                { "landmarks", $"{type}/{speciesType}" },
+                { "landmarks", getLandmarksFilterValue(speciesType) },
             };
 
             if (atmosType != null)
-                filters.Add("atmosphere", $"Thin {atmosType}");
+                filters.Add("atmosphere", getAtmosphereFilterValue(atmosType));
             if (bodyType != null)
                 filters.Add("subtype", bodyType);
 
@@ -698,7 +716,8 @@ namespace SrvSurvey.net
                 {
                     // eg: "atmosphere":{"value":["Thin Carbon dioxide"]}
                     var values = JsonConvert.SerializeObject(f.Value.Split(','));
-                    var clause = $"\"{f.Key}\":{{\"value\":{values}}}";
+                    var valueKey = f.Key == "landmarks" ? "type" : "value";
+                    var clause = $"\"{f.Key}\":{{\"{valueKey}\":{values}}}";
                     partFilters.Add(clause);
                 }
             }
@@ -747,6 +766,7 @@ namespace SrvSurvey.net
             { "Rocky body", "Rocky" },
             { "Rocky Ice world", "RockyIce" },
             { "High metal content world", "HMC" },
+            { "Metal-rich body", "MRB" },
         };
 
         public static void countNebularSystems()
