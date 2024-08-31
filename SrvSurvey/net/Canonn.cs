@@ -1453,19 +1453,21 @@ namespace SrvSurvey.canonn
                     siteSummary.systemAddress = this.allStructures.FirstOrDefault(_ => _.systemName == siteSummary.systemName)?.systemAddress ?? -1;
 
                 // match some Ruins?
-                if (siteSummary.bodyId < 0)
+                if (siteSummary.bodyId <= 0)
                     siteSummary.bodyId = this.allRuins.FirstOrDefault(_ => _.systemName == siteSummary.systemName && _.bodyName == siteSummary.bodyName)?.bodyId ?? -1;
-                if (siteSummary.bodyId < 0)
+                if (siteSummary.bodyId <= 0)
                     siteSummary.bodyId = this.allStructures.FirstOrDefault(_ => _.systemName == siteSummary.systemName && _.bodyName == siteSummary.bodyName)?.bodyId ?? -1;
 
                 if (siteSummary.systemAddress < 0 || siteSummary.bodyId < 0)
                 {
                     var rslt = await Game.edsm.getBodies(siteSummary.systemName);
                     siteSummary.systemAddress = rslt.id64;
-                    siteSummary.bodyId = rslt.bodies.FirstOrDefault(_ => _.name == $"{siteSummary.systemName} {siteSummary.bodyName}")?.bodyId ?? -1;
+                    var body = rslt.bodies.FirstOrDefault(_ => _.name == $"{siteSummary.systemName} {siteSummary.bodyName}");
+                    siteSummary.bodyId = body?.bodyId ?? -1;
+                    siteSummary.distanceToArrival = body?.distanceToArrival ?? -1;
                 }
 
-                if (siteSummary.systemAddress < 0 || siteSummary.bodyId < 0)
+                if (siteSummary.systemAddress <= 0 || siteSummary.bodyId <= 0)
                     throw new Exception("Why?!");
             }
 
@@ -1791,7 +1793,7 @@ namespace SrvSurvey.canonn
                     dirty = true;
                 }
 
-                if (ruins.bodyId < 0 || ruins.distanceToArrival < 0 && ruins.systemName != "HIP 41730")
+                if (ruins.bodyId < 0 || ruins.distanceToArrival < 0)
                 {
                     // find a match in EDSM?
                     Game.log($"EDSM lookup bodies: {ruins.systemName}");

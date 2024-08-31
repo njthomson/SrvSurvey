@@ -289,8 +289,12 @@ namespace SrvSurvey.net
                 var sitePE = string.Join(',', poiEmpty.Order());
                 //if (site.pubData.sid == "GR134") Debugger.Break();
 
+                // recalc known surveyable POIs if the template changed
+                if (templateChanged)
+                    template.poiSurvey = template.poi.Where(_ => _.type != POIType.obelisk && _.type != POIType.brokeObelisk).ToList();
+
                 var sumSitePoi = poiPresent.Count + poiAbsent.Count + poiEmpty.Count;
-                if (sumSitePoi != template.poiSurvey.Count)
+                if (sumSitePoi > template.poiSurvey.Count)
                 {
                     Game.log($"Skipping poiStatus due suspicious counts\r\n\tsumSitePoi:{sumSitePoi} vs sumPubDataPoi:{template.poiSurvey.Count}, {template.name}, {Path.GetFileName(site.filepath)}");
                     Debugger.Break();

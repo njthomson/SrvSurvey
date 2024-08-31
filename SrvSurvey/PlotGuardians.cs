@@ -2064,7 +2064,6 @@ namespace SrvSurvey
                 {
                     case SiteType.Crossroads:
                     case SiteType.Fistbump:
-                    case SiteType.Hammerbot:
                     case SiteType.Lacrosse:
                     case SiteType.Squid:
                     case SiteType.Stickyhand:

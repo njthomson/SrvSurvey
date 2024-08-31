@@ -227,8 +227,8 @@ namespace SrvSurvey
                 }
                 else if (edsmResult.bodyCount == 0)
                 {
-                    // system is known from routes but it has not been visited
-                    status = "Unvisited system";
+                    // system is known from routes but it has not been visited or scanned
+                    status = "Unscanned system";
                     highlight = true;
                 }
                 else

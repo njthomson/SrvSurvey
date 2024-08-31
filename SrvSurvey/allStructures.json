@@ -1087,8 +1087,8 @@
     "systemName": "HIP 41730",
     "systemAddress": 57166267564,
     "bodyName": "13 g a",
-    "bodyId": 0,
-    "distanceToArrival": -1.0,
+    "bodyId": 93,
+    "distanceToArrival": 4252.0,
     "starPos": [
       818.375,
       -7.90625,
@@ -1249,7 +1249,7 @@
     "siteType": "Hammerbot",
     "latitude": 51.103813,
     "longitude": -81.72084,
-    "siteHeading": -1,
+    "siteHeading": 269,
     "idx": 0,
     "surveyComplete": false
   },
@@ -1403,7 +1403,7 @@
     "longitude": -17.166643,
     "siteHeading": 327,
     "idx": 0,
-    "surveyComplete": false
+    "surveyComplete": true
   },
   {
     "siteID": 49,
@@ -2275,7 +2275,7 @@
     "siteType": "Hammerbot",
     "latitude": -57.501709,
     "longitude": 142.130188,
-    "siteHeading": -1,
+    "siteHeading": 266,
     "idx": 0,
     "surveyComplete": false
   },
@@ -2351,7 +2351,7 @@
     "siteType": "Hammerbot",
     "latitude": -28.255943,
     "longitude": 18.774065,
-    "siteHeading": -1,
+    "siteHeading": 66,
     "idx": 0,
     "surveyComplete": false
   },

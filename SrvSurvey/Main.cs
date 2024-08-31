@@ -879,6 +879,8 @@ namespace SrvSurvey
             Program.closePlotter<PlotGuardians>();
             Program.closePlotter<PlotGuardianStatus>();
             Program.closePlotter<PlotRamTah>();
+
+            FormRuins.activeForm?.showFilteredSites();
         }
 
         private void onJournalEntry(StartJump entry)

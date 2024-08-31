@@ -9,7 +9,7 @@ namespace SrvSurvey
     {
         #region showing and position tracking 
 
-        private static FormRuins? activeForm;
+        public static FormRuins? activeForm { get; private set; }
 
         public static void show(GuardianSiteData? siteData = null)
         {
@@ -232,7 +232,7 @@ namespace SrvSurvey
             this.surveyedSites = GuardianSiteData.loadAllSites(false);
         }
 
-        private void showFilteredSites(GuardianSiteData? siteData = null)
+        public void showFilteredSites(GuardianSiteData? siteData = null)
         {
             if (string.IsNullOrEmpty(comboSiteType.Text) || comboSiteType.Enabled == false) return;
 
@@ -617,11 +617,12 @@ namespace SrvSurvey
         {
             if (game?.systemSite == null || game?.status == null || game.isShutdown || this.siteData == null) return;
 
+            g.ResetTransform();
+
             // indicate that we're actively surveying this site
             var sz = g.MeasureString("[ survey active ]", this.Font);
             g.DrawString("[ survey active ]", this.Font, Brushes.Lime, map.Width - sz.Width, 0);
 
-            g.ResetTransform();
             g.TranslateTransform(mapCenter.X - dragOffset.X, mapCenter.Y - dragOffset.Y);
             g.ScaleTransform(this.scale, this.scale);
 
