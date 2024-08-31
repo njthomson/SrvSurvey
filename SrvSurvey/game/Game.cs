@@ -1345,19 +1345,22 @@ namespace SrvSurvey.game
         public string? getNearestSettlement()
         {
             // must be near a body and under 4km
-            if (this.systemBody == null || this.status.Altitude > 4000)
+            if (this.systemBody == null || !(this.systemBody.settlements?.Count > 0) || this.status.Altitude > 4000)
                 return null;
 
-            return this.systemBody.settlements?.Keys.FirstOrDefault(_ =>
+            decimal minDist = decimal.MaxValue;
+            string? minSite = null;
+            foreach (var site in this.systemBody.settlements.Keys)
             {
-                if (_.StartsWith("$Ancient:") || (_.StartsWith("$Ancient_") && Game.settings.enableEarlyGuardianStructures))
+                var dist = Util.getDistance(this.systemBody.settlements[site], Status.here, this.systemBody.radius);
+                // TODO: Keep 4000m rule?
+                if (dist < minDist)
                 {
-                    var dist = Util.getDistance(this.systemBody.settlements[_], Status.here, this.systemBody.radius);
-                    return dist < 4000;
+                    minDist = dist;
+                    minSite = site;
                 }
-
-                return false;
-            });
+            }
+            return minSite;
         }
 
         private void setCurrentSite()
@@ -1886,7 +1889,7 @@ namespace SrvSurvey.game
             if (entry.Name.StartsWith("$Ancient"))
             {
                 // Guardian site
-                GuardianSiteData.Load(entry);
+                PlotGuardianStatus.glideSite = GuardianSiteData.Load(entry);
                 this.setCurrentSite();
 
                 if (systemSite != null)
@@ -1897,6 +1900,14 @@ namespace SrvSurvey.game
                         this.systemSite.Save();
                     }
                 }
+                //Game.log($"AAA: {this.mode}");
+
+                //// show this early so we can remind folks to have 3 fire groups set
+                //Program.control.BeginInvoke(() =>
+                //{
+                //    Game.log($"BBB: {this.mode}");
+                //    Program.showPlotter<PlotGuardianStatus>();
+                //});
             }
             else if (entry.MarketID > 0 && this.systemBody != null && Game.settings.autoShowHumanSitesTest
                 && entry.StationServices?.Contains("socialspace") == false  // bigger settlements (Planetery ports) are not compatible

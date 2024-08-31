@@ -2148,7 +2148,7 @@ namespace SrvSurvey.game
 
         /// <summary> A of settlements known on this body. /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-        public Dictionary<string, LatLong2> settlements;
+        public Dictionary<string, LatLong2>? settlements;
 
         /// <summary> Locations of all bio scans or Codex scans performed on this body </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]

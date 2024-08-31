@@ -525,7 +525,7 @@ namespace SrvSurvey
         public static void fadeOpacity(Form form, float targetOpacity, float durationMs = 0)
         {
             if (targetOpacity < 0 || targetOpacity > 1) throw new ArgumentOutOfRangeException(nameof(targetOpacity));
-            Debug.WriteLine($"!START! {form.Name} {form.Size} {durationMs}ms / {form.Opacity} => {targetOpacity}");
+            //Debug.WriteLine($"!START! {form.Name} {form.Size} {durationMs}ms / {form.Opacity} => {targetOpacity}");
 
             // exit early if no-op
             if (targetOpacity == form.Opacity) return;
@@ -603,7 +603,7 @@ namespace SrvSurvey
                 {
                     if (form.Opacity != newOpacity)
                         form.Opacity = targetOpacity;
-                    Debug.WriteLine($"!STOP! {form.Name} {form.Size} {form.Opacity}");
+                    //Debug.WriteLine($"!STOP! {form.Name} {form.Size} {form.Opacity}");
                     form.Invalidate();
                     return;
                 }

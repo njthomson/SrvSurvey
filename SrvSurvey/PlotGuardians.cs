@@ -93,7 +93,6 @@ namespace SrvSurvey
                 && Game.activeGame.systemSite?.location != null
                 && !Game.activeGame.status.FsdChargingJump
                 && Game.activeGame.isMode(GameMode.InSrv, GameMode.OnFoot, GameMode.Landed, GameMode.Flying, GameMode.InFighter, GameMode.CommsPanel, GameMode.RolePanel)
-                //&& this.status.SelectedWeapon != "$humanoid_sampletool_name;"
                 ;
         }
 

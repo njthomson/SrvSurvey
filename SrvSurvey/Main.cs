@@ -304,7 +304,7 @@ namespace SrvSurvey
             this.updateCommanderTexts();
             this.updateBioTexts();
             this.updateTrackTargetTexts();
-            this.updateGuardianTexts();
+            this.updateGuardianTexts(newMode);
             this.updateSphereLimit();
 
             // ShowCodex button and form
@@ -713,9 +713,9 @@ namespace SrvSurvey
             }
         }
 
-        private void updateGuardianTexts()
+        private void updateGuardianTexts(GameMode? newMode = null)
         {
-            if (!groupBox4.Visible || game == null || game.atMainMenu || !Elite.isGameRunning || !game.initialized)
+            if (game == null || game.atMainMenu || !Elite.isGameRunning || !game.initialized)
             {
                 lblGuardianCount.Text = "";
                 txtGuardianSite.Text = "";
@@ -763,6 +763,9 @@ namespace SrvSurvey
                     btnRuinsOrigin.Enabled = game.systemSite.siteHeading != -1 && PlotGuardians.allowPlotter;
                 }
             }
+
+            if (PlotGuardianStatus.allowPlotter && PlotGuardianStatus.glideSite != null && (newMode == GameMode.GlideMode))
+                Program.showPlotter<PlotGuardianStatus>();
         }
 
         private void updateSphereLimit()

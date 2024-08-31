@@ -570,7 +570,7 @@ namespace SrvSurvey
             var font = GameColors.fontMiddle;
             var sz = g.MeasureString(msg, font);
             var tx = mid.Width - (sz.Width / 2);
-            var ty = 4;
+            var ty = 5;
 
             g.DrawString(msg, font, brush ?? GameColors.brushGameOrange, tx, ty);
         }
@@ -586,7 +586,7 @@ namespace SrvSurvey
             font = font ?? GameColors.fontMiddle;
             var sz = g.MeasureString(msg, font);
             var tx = mid.Width - (sz.Width / 2);
-            var ty = this.Height - sz.Height - 5;
+            var ty = this.Height - sz.Height - 6;
 
             g.DrawString(msg, font, brush ?? GameColors.brushGameOrange, tx, ty);
         }

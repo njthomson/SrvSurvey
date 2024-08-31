@@ -1,5 +1,4 @@
 ﻿using SrvSurvey.game;
-using System.Drawing.Drawing2D;
 
 namespace SrvSurvey
 {
@@ -10,6 +9,7 @@ namespace SrvSurvey
         private Point[] ptLetter;
         private System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer(); // TODO: remove? It's in the base class
         private bool highlightBlink = false;
+        public static GuardianSiteData? glideSite;
 
         private PlotGuardianStatus() : base()
         {
@@ -19,7 +19,16 @@ namespace SrvSurvey
             timer.Tick += Timer_Tick;
         }
 
-        public override bool allow { get => PlotGuardians.allowPlotter; }
+        public override bool allow { get => PlotGuardianStatus.allowPlotter; }
+
+        public static bool allowPlotter
+        {
+            get => PlotGuardians.allowPlotter
+                || (
+                    Game.activeGame?.mode == GameMode.GlideMode
+                    && PlotGuardianStatus.glideSite != null
+                );
+        }
 
         protected override void Dispose(bool disposing)
         {
@@ -56,6 +65,16 @@ namespace SrvSurvey
             };
         }
 
+        protected override void Game_modeChanged(GameMode newMode, bool force)
+        {
+            if (this.IsDisposed) return;
+
+            if (PlotGuardianStatus.glideSite != null && newMode != GameMode.GlideMode)
+                PlotGuardianStatus.glideSite = null;
+
+            base.Game_modeChanged(newMode, force);
+        }
+
         protected override void Status_StatusChanged(bool blink)
         {
             if (this.IsDisposed) return;
@@ -86,10 +105,13 @@ namespace SrvSurvey
 
         protected override void onPaintPlotter(PaintEventArgs e)
         {
-            if (PlotGuardians.instance == null || game.systemSite == null) return;
+            if (PlotGuardianStatus.glideSite != null && game.mode == GameMode.GlideMode)
+            {
+                this.drawOnApproach();
+                return;
+            }
 
-            this.g = e.Graphics;
-            g.SmoothingMode = SmoothingMode.HighQuality;
+            if (PlotGuardians.instance == null || game.systemSite == null) return;
 
             switch (PlotGuardians.instance.mode)
             {
@@ -324,6 +346,24 @@ namespace SrvSurvey
                 "Gamma",
                 game.status.FireGroup
             );
+        }
+
+        private void drawOnApproach()
+        {
+            var site = PlotGuardianStatus.glideSite;
+            if (site == null) return;
+
+            if (site.isRuins)
+            {
+                drawHeaderText("Approaching Guardian Ruins ...");
+                drawCenterMessage($"{site.displayName}", GameColors.brushCyan);
+            }
+            else
+            {
+                drawHeaderText("Approaching Guardian Structure ...");
+                drawCenterMessage($"{site.displayName}", GameColors.brushCyan);
+            }
+            drawFooterText("( Don't forget to set 3 fire groups in ships and SRVs )", null);
         }
     }
 
