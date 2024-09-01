@@ -423,20 +423,9 @@ namespace SrvSurvey.game
         public bool hidePlottersFromCombatSuits
         {
             get => Game.settings.hidePlottersFromCombatSuits
+                && this.status != null
                 && (this.status.Flags2 & StatusFlags2.OnFoot) > 0
                 && (this.currentSuitType == SuitType.dominator || this.currentSuitType == SuitType.maverick);
-        }
-
-        public bool showBodyPlotters // TODO: retire!
-        {
-            get => !this.isShutdown
-                && !this.atMainMenu
-                && !this.status.OnFootSocial
-                && this.humanSite == null
-                && this.isMode(GameMode.SuperCruising, GameMode.Flying, GameMode.Landed, GameMode.InSrv, GameMode.OnFoot, GameMode.GlideMode, GameMode.InFighter, GameMode.CommsPanel)
-                && !this.hidePlottersFromCombatSuits
-                && this.status?.Altitude < 10_000
-                && !this.status.InTaxi;
         }
 
         public string targetBodyShortName { get => this.targetBody?.shortName ?? ""; }

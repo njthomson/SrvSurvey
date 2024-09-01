@@ -594,6 +594,8 @@ namespace SrvSurvey
                 this.siteData.Save();
                 this.Invalidate();
             }
+
+            FormRuins.activeForm?.Invalidate(true);
         }
 
         private string getPoiPrefix(POIType poiType)

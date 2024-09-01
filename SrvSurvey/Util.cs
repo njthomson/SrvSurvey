@@ -480,7 +480,7 @@ namespace SrvSurvey
             }
         }
 
-        public static string flattenStarType(string starType)
+        public static string flattenStarType(string? starType)
         {
             if (starType == null) return null!;
             // Collapse these:

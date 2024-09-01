@@ -13,11 +13,22 @@ namespace BioCriterias
             if (body.parents == null || body.parents.Count == 0 || Game.activeGame == null) return new List<string>();
             if (BioCriteria.allCriteria.Count == 0 || Debugger.IsAttached) BioCriteria.readCriteria();
 
-            var parentStar = body.system.getParentStarTypes(body, true).First();
+            var parentStar = body.system.getParentStarTypes(body, true).FirstOrDefault();
+            if (parentStar == null)
+            {
+                Game.log($"Why null from getParentStarTypes? For {body.name}");
+                parentStar = "";
+            }
             var brightestParentStar = body.system.getBrightestParentStarType(body);
 
-            var primaryStar = body.system.bodies.First(b => b.isMainStar);
-            var primaryStarType = Util.flattenStarType(primaryStar.starType!);
+            var primaryStar = body.system.bodies.FirstOrDefault(b => b.isMainStar);
+            if (primaryStar == null)
+                Game.log($"Why null from bodies.Find(b => b.isMainStar)? For {body.name}");
+            var primaryStarType = Util.flattenStarType(primaryStar?.starType);
+
+            var parentStars = new List<string>() { parentStar, brightestParentStar }
+                .Where(s => !string.IsNullOrEmpty(s))
+                .ToList();
 
             //var sumSemiMajorAxis = body.sumSemiMajorAxis(0);
             //var sumSemiMajorAxisLs = Util.mToLS(sumSemiMajorAxis);
@@ -37,7 +48,7 @@ namespace BioCriterias
                 { "Materials", body.materials },
                 { "Region", GalacticRegions.currentIdx.ToString() },
                 // Take the first parent star(s) AND the "relative hottest" from the parent chain
-                { "Star", new List<string>() { parentStar, brightestParentStar } },
+                { "Star", parentStars },
                 { "ParentStar", parentStar },
                 { "PrimaryStar", primaryStarType },
                 { "Nebulae", body.system.nebulaDist },
