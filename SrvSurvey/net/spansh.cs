@@ -244,7 +244,7 @@ namespace SrvSurvey.net
         public static void buildWholeSet()
         {
             // define ...
-            var species = "Bark_Mounds";
+            var species = "Anemone/Roseum Bioluminescent Anemone";
             var atmosTypes = new List<string>()
             {
                 "No atmosphere",
@@ -658,6 +658,9 @@ namespace SrvSurvey.net
 
         private static string getLandmarksFilterValue(string speciesType)
         {
+            if (speciesType.Contains('/'))
+                return speciesType;
+
             var parts = speciesType.Split(' ').ToList();
             speciesType = speciesType.Replace('_', ' ');
             var typeValue = parts.Count == 1 ? speciesType : $"{parts[0]}/{speciesType}";

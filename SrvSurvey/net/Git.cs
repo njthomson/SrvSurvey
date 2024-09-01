@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using BioCriterias;
+using Newtonsoft.Json;
 using SrvSurvey.game;
 using System.Diagnostics;
 using System.Globalization;
@@ -54,7 +55,7 @@ namespace SrvSurvey.net
                     Game.settings.Save();
                 }
 
-                if (pubData.bioCriteria > Game.settings.pubBioCriteria)
+                if (pubData.bioCriteria > Game.settings.pubBioCriteria && BioCriteria.engVer >= pubData.bioEngine)
                 {
                     Game.log($"Updating bio-criteria ...");
                     await this.updateBioCriteria();
@@ -406,6 +407,9 @@ namespace SrvSurvey.net
             var filepath = Path.Combine(Git.pubDataFolder, "bio-criteria.zip");
             Game.log($"{url} => {filepath}");
 
+            // Make a backup of the prior criteria (in case there's a code bug with the new ones)
+            File.Copy(filepath, Path.Combine(Git.pubDataFolder, "bio-criteria-prior.zip"));
+
             var bytes = await Git.client.GetByteArrayAsync(url);
             await File.WriteAllBytesAsync(filepath, bytes);
             ZipFile.ExtractToDirectory(filepath, pubBioCriteriaFolder, true);
@@ -418,6 +422,7 @@ namespace SrvSurvey.net
         public Version ghVer;
         public Version msVer;
         public int bioCriteria;
+        public int bioEngine;
         public int codexRef;
         public int settlementTemplate;
         public int guardian;

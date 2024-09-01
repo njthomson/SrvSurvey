@@ -1609,8 +1609,8 @@ namespace SrvSurvey
 
         private void btnTest_Click(object sender, EventArgs e)
         {
-            BioPredictor.testSystems();
-            //CriteriaBuilder.buildWholeSet();
+            //BioPredictor.testSystems();
+            CriteriaBuilder.buildWholeSet();
         }
     }
 }

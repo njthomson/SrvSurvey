@@ -12,6 +12,12 @@ namespace BioCriterias
     [JsonConverter(typeof(BioCriteria.JsonConverter))]
     class BioCriteria
     {
+        /// <summary>
+        /// The "predictor engine" version - used to defend against future criteria not understood by older builds.
+        /// Increment this any time breaking changes are added to criteria
+        /// </summary>
+        public static int engVer = 1;
+
         public string? genus;
         public string? species;
         public string? variant;

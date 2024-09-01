@@ -98,8 +98,10 @@ namespace BioCriterias
             species = criteria.species ?? species;
             variant = criteria.variant ?? variant;
 
+            //if (species?.Contains("Anemone") == true) Debugger.Break();
+
             // stop here if genus names are known and this criteria isn't one of them
-            if (genus != null && knownGenus?.Count > 0 && !knownGenus.Contains(genus)) return;
+            if (!string.IsNullOrEmpty(genus) && knownGenus?.Count > 0 && !knownGenus.Contains(genus)) return;
             // or stop here if we already scanned some species from this genus
             // TODO: handle Brain Tree's
             if (genus != null && species != null && knownSpecies?.Count > 0 && knownSpecies.ContainsKey(genus))
@@ -110,7 +112,7 @@ namespace BioCriterias
             var failures = testQuery(criteria.query, $"{genus} {species} {variant}".Trim());
 
             //if (this.bodyName.Contains("A 3") && genus?.Contains("Amphora") == true) Debugger.Break();
-            //if (genus?.Contains("Amphora") == true) Debugger.Break();
+            //if (genus?.Contains("Anemone") == true) Debugger.Break();
 
             // add a prediction if no failures and we have genus, species AND variant
             if (failures.Count == 0 && genus != null && species != null && variant != null)
@@ -470,9 +472,14 @@ namespace BioCriterias
                 //2036007784483, // Eulail RX-T d3-59
                 //869487643043, // IC 4604 Sector DL-Y d25
 
-                // Amphora Plant
-                13648186819, // Eifoqs XZ-N d7-0
-                82032053243, // Pyroifa DX-A d14-2
+                //// Amphora Plant
+                //13648186819, // Eifoqs XZ-N d7-0
+                //82032053243, // Pyroifa DX-A d14-2
+
+                /* Luteolum Anemone */
+                //52837737636, // HR 326
+                4998038101, // HIP 42398
+                1238889013, // HD 37127
             };
 
             Game.log($"Testing {testSystems.Count} systems ...");

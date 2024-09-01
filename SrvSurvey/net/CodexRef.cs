@@ -99,7 +99,8 @@ namespace SrvSurvey.canonn
                         speciesName = variantName;
                         speciesEnglishName = variantEnglishName;
 
-                        genusEnglishName = thing.english_name; // TODO: "Brain Tree" vs "Brain Trees" ?!
+                        var parts = thing.english_name.Split(' ', 2); // StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+                        genusEnglishName = parts[1]; // TODO: "Brain Tree" vs "Brain Trees" ?!
 
                         switch (thing.sub_class)
                         {
@@ -160,9 +161,13 @@ namespace SrvSurvey.canonn
                     };
                 }
 
-                // special case for Brain Tree genus name
-                var trouble = this.genus.FirstOrDefault(_ => _.englishName == "Brain Tree");
-                if (trouble != null) trouble.englishName = "Brain Trees";
+                // special case for Legacy Genus names
+                this.genus.First(_ => _.englishName == "Brain Tree").englishName = "Brain Trees";
+                this.genus.First(_ => _.englishName == "Mounds").englishName = "Bark Mounds";
+                this.genus.First(_ => _.englishName == "Anemone").englishName = "Luteolum Anemone";
+                this.genus.First(_ => _.englishName == "Plant").englishName = "Amphora Plant";
+                this.genus.First(_ => _.englishName == "Sinuous Tubers").englishName = "Tubers";
+                this.genus.First(_ => _.englishName == "Shards").englishName = "Crystalline Shards";
 
                 File.WriteAllText(bioRefPath, JsonConvert.SerializeObject(this.genus));
                 Game.log("prepBioRef: complete");

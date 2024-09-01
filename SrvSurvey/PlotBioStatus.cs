@@ -130,7 +130,10 @@ namespace SrvSurvey
 
                     // warn if scan is from another body
                     if (scanOne?.body != null && scanOne.body != game.systemBody?.name)
-                        this.drawFooterText(g, $"Current scans are from {scanOne.body}", GameColors.brushRed);
+                    {
+                        var match = Game.codexRef.matchFromGenus(scanOne.genus);
+                        this.drawFooterText(g, $"WARNING: Incomplete {match?.englishName} scans from {scanOne.body}", GameColors.brushRed);
+                    }
                 }
                 else
                     this.showCurrentGenus(g, organism);

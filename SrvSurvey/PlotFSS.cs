@@ -81,7 +81,7 @@ namespace SrvSurvey
                     // var lowAtmosphere = this.lastScan?.AtmosphereType == "None";
                     if (hasVulcanism) // && lowAtmosphere)
                     {
-                        lastNotes += " | Candidate for Brain Trees";
+                        lastNotes += " | Candidate for Brain Trees?";
                     }
                 }
             }

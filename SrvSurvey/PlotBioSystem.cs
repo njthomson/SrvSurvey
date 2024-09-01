@@ -115,12 +115,31 @@ namespace SrvSurvey
                             var lastSpecies = "";
                             foreach (var match in predictions)
                             {
+                                var notDiscovered = !game.cmdrCodex.isDiscovered(match.entryId);
+                                var isLegacy = !match.species.genus.odyssey;
+                                if (isLegacy)
+                                {
+                                    if (match.species.name != lastSpecies && lastSpecies != "")
+                                    {
+                                        this.drawTextAt("?", brush);
+                                        newLine(+one, true);
+                                    }
+
+                                    if (notDiscovered)
+                                        this.drawTextAt(twoEight, "⚑" + match.species.englishName, highlight ? brush : Brushes.Gold);
+                                    else
+                                        this.drawTextAt(twoEight, match.species.englishName, brush);
+
+                                    lastSpecies = match.species.name;
+                                    continue;
+                                }
+
                                 if (match.species.name != lastSpecies)
                                 {
                                     if (lastSpecies != "")
                                     {
                                         this.drawTextAt("?", brush);
-                                        newLine(+one);
+                                        newLine(+one, true);
                                     }
                                     var speciesName = match.species.englishName.Replace(match.species.genus.englishName, "").Trim() + ":";
                                     this.drawTextAt(twoEight, speciesName, brush);
@@ -136,7 +155,6 @@ namespace SrvSurvey
                                     this.drawTextAt(",", brush);
                                 }
 
-                                var notDiscovered = !game.cmdrCodex.isDiscovered(match.entryId);
                                 dtx -= two;
                                 if (notDiscovered)
                                     this.drawTextAt("⚑" + match.colorName, highlight ? brush : Brushes.Gold);
@@ -178,7 +196,7 @@ namespace SrvSurvey
                     brush = highlight ? GameColors.brushCyan : GameColors.brushGameOrange;
                     if (!highlight && (organism.isFirst || potentialFirstDiscovery)) brush = (SolidBrush)Brushes.Gold;
 
-                    var leftText = displayName != organism.genusLocalized ? organism.genusLocalized : "?";
+                    var leftText = displayName != organism.genusLocalized || organism.entryId > 0 ? organism.genusLocalized : "?";
                     if (organism.isCmdrFirst || potentialFirstDiscovery) leftText = "⚑ " + leftText;
                     else if (organism.isNewEntry) leftText = "⚐ " + leftText;
                     drawTextAt(
