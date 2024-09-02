@@ -78,7 +78,7 @@ namespace SrvSurvey
             { "tus", "$Codex_Ent_Tussocks_Genus_Name;" }, // Tussock
             // From Horizons
             { "amp", "$Codex_Ent_Vents_Name;"}, // Amphora Plant
-            { "ane", "$Codex_Ent_Sphere_Name;"}, // Anemone
+            { "lut", "$Codex_Ent_Sphere_Name;"}, // Anemone
             { "bar", "$Codex_Ent_Cone_Name;"}, // Bark Mounds
             { "bra", "$Codex_Ent_Brancae_Name;"}, // Brain Tree
             { "cry", "$Codex_Ent_Ground_Struct_Ice_Name;"}, // Crystalline Shards

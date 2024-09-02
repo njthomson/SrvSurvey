@@ -89,7 +89,7 @@ namespace SrvSurvey
             get => Game.settings.enableGuardianSites
                 && Game.activeGame?.systemBody != null
                 && !Game.activeGame.hidePlottersFromCombatSuits
-                && Game.activeGame.status.hasLatLong
+                && Game.activeGame.status?.hasLatLong == true
                 && Game.activeGame.systemSite?.location != null
                 && !Game.activeGame.status.FsdChargingJump
                 && Game.activeGame.isMode(GameMode.InSrv, GameMode.OnFoot, GameMode.Landed, GameMode.Flying, GameMode.InFighter, GameMode.CommsPanel, GameMode.RolePanel)

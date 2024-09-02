@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using SrvSurvey.game;
+using SrvSurvey.units;
 using System.Globalization;
 using System.Text.RegularExpressions;
 
@@ -395,19 +396,50 @@ namespace SrvSurvey.canonn
             );
         }
 
-        public async Task<double> getDistToClosestNebula(double[] systemPOs, int maxDistance = 100)
+        public async Task<double> getDistToClosestNebula(double[] systemPos, int maxDistance = 100)
         {
             // if we had a hit previously, use that first
             if (lastNebulaPos != null)
             {
-                var d1 = Util.getSystemDistance(systemPOs, lastNebulaPos);
+                var d1 = Util.getSystemDistance(systemPos, lastNebulaPos);
                 if (d1 < maxDistance)
                     return d1;
             }
 
             var vectors = await prepNebulae(false);
-            var nebularDist = vectors.Min(v => Util.getSystemDistance(systemPOs, v));
+            var nebularDist = vectors.Min(v => Util.getSystemDistance(systemPos, v));
             return nebularDist;
+        }
+
+        private static List<double[]> smallGuardianBubbles = new List<double[]>()
+        {
+            new double[] { -9298.6875, -419.40625, 7911.15625 }, // Prai Hypoo OK-I b0
+            new double[] { -5479.28125, -574.84375, 10468.96875 }, // Prua Phoe US-B d58 
+            new double[] { 1228.1875, -694.5625, 12341.65625 }, // Blaa Hypai EK-C c14-1
+            new double[] { 4961.1875, 158.09375, 20642.65625 }, // Eorl Auwsy SY-Z d13-3643
+            new double[] { 14602.75, -237.90625, 3561.875 }, // NGC 3199 Sector JH-V c2-0
+            new double[] { 8649.125, -154.71875, 2686.03125 }, // Eta Carina Sector EL-Y d1
+        };
+
+        public bool isWithinGuardianBubble(double[] systemPos)
+        {
+            // two big bubbles - 750ly
+            var gammaVelorum = new StarPos(1099.21875, -146.6875, -133.59375);
+            var dist = Util.getSystemDistance(systemPos, gammaVelorum);
+            if (dist < 750) return true;
+
+            var hen2333 = new StarPos(-840.65625, -561.15625, 13361.8125);
+            dist = Util.getSystemDistance(systemPos, hen2333);
+            if (dist < 750) return true;
+
+            // six small bubbles - 100ly
+            foreach(var bubblePos in smallGuardianBubbles)
+            {
+                dist = Util.getSystemDistance(systemPos, bubblePos);
+                if (dist < 100) return true;
+            }
+
+            return false;
         }
 
         #endregion

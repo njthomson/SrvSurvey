@@ -33,6 +33,9 @@ namespace BioCriterias
             //var sumSemiMajorAxis = body.sumSemiMajorAxis(0);
             //var sumSemiMajorAxisLs = Util.mToLS(sumSemiMajorAxis);
 
+            // calc distance to nearest Guardian bubble
+            var withinGuardianBubble = Game.codexRef.isWithinGuardianBubble(body.system.starPos);
+
             // prepare members, converting to suitable units
             var bodyProps = new Dictionary<string, object>
             {
@@ -52,6 +55,7 @@ namespace BioCriterias
                 { "ParentStar", parentStar },
                 { "PrimaryStar", primaryStarType },
                 { "Nebulae", body.system.nebulaDist },
+                { "Guardian", withinGuardianBubble.ToString() },
 
             };
             var predictor = new BioPredictor(body.name, bodyProps);
@@ -101,7 +105,7 @@ namespace BioCriterias
             this.bodyProps = bodyProps ?? new Dictionary<string, object>();
         }
 
-        public void predict(BioCriteria criteria, string? genus, string? species, string? variant, List<BioCriteria>? commonChildren)
+        private void predict(BioCriteria criteria, string? genus, string? species, string? variant, List<BioCriteria>? commonChildren)
         {
             // accumulate values from current node or prior stack frames
             commonChildren = criteria.commonChildren ?? commonChildren;

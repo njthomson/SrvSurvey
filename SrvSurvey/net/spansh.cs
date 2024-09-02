@@ -244,7 +244,7 @@ namespace SrvSurvey.net
         public static void buildWholeSet()
         {
             // define ...
-            var species = "Anemone/Roseum Bioluminescent Anemone";
+            var species = "Brain Tree/Roseum Brain Tree";
             var atmosTypes = new List<string>()
             {
                 "No atmosphere",

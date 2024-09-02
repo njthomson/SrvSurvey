@@ -332,7 +332,7 @@ namespace SrvSurvey
                         var prefix = o.analyzed ? "✅ " : "☐ ";
                         if (o.isCmdrFirst) prefix += "⚑ ";
                         else if (o.isNewEntry) prefix += "⚐ ";
-                        return $"\t{prefix}{o.variantLocalized}           {Util.credits(o.reward, true)}";
+                        return $"\t{prefix}{o.variantLocalized ?? o.speciesLocalized}           {Util.credits(o.reward, true)}";
                         // TODO: remove reward from here and render  on the right hand side
                     })) + "\r\n";
                 }

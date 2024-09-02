@@ -16,7 +16,9 @@ namespace BioCriterias
         /// The "predictor engine" version - used to defend against future criteria not understood by older builds.
         /// Increment this any time breaking changes are added to criteria
         /// </summary>
-        public static int engVer = 1;
+        public static int engVer = 2;
+        // v1 : initial support, with legacy species recently added and incomplete
+        // v2 : support for Brain Tree's with "Guardian" criteria
 
         public string? genus;
         public string? species;
@@ -367,7 +369,7 @@ namespace BioCriterias
             // Property value is distance from a known nebula in LY, eg: [~ 100]
             { "nebulae", "Nebulae" },
 
-            // Property value is not needed. The condition is if we're within a known Guardian bubble., eg: []
+            // Property value is not needed. The condition is if we're within a known Guardian bubble, eg: []
             { "guardian", "Guardian" },
         };
 

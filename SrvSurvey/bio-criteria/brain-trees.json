@@ -1,0 +1,235 @@
+{
+  "genus": "",
+  "query": [
+    "guardian [true]"
+  ],
+  
+  "children": [
+
+    {
+      "species": "Roseum Brain Tree",
+      "query": [
+        "# hit count: 8553",
+        "atmosType [None]"
+      ],
+      "children": [
+        {
+          "variant": "",
+          "query": [
+            "# hit count: 165",
+            "     body [Icy]",
+            "  gravity [ ~ 0.327]",
+            "     temp [200 ~ 249]",
+            " pressure [ ~ 0.0002]",
+            "volcanism [Major Water Geysers,Major Water Magma,Minor Carbon Dioxide Geysers,Water Geysers]"
+          ]
+        },
+        {
+          "variant": "",
+          "query": [
+            "# hit count: 4724",
+            "     body [Rocky]",
+            "  gravity [ ~ 1.261]",
+            "     temp [200 ~ 500]",
+            " pressure [ ~ 0.001]",
+            "volcanism [Major Silicate Vapour Geysers,Metallic Magma,Minor Metallic Magma,Minor Silicate Vapour Geysers]"
+          ]
+        },
+        {
+          "variant": "",
+          "query": [
+            "# hit count: 43",
+            "     body [RockyIce]",
+            "  gravity [0.05 ~ 0.267]",
+            "     temp [200 ~ 251]",
+            " pressure [ ~ 0]",
+            "volcanism [Major Water Geysers,Major Water Magma,Minor Carbon Dioxide Geysers]"
+          ]
+        },
+        {
+          "variant": "",
+          "query": [
+            "# hit count: 3621",
+            "     body [HMC]",
+            "  gravity [ ~ 4.202]",
+            "     temp [200 ~ 500]",
+            " pressure [ ~ 0.0007]",
+            "volcanism [Major Rocky Magma,Major Silicate Vapour Geysers,Metallic Magma,Minor Metallic Magma,Minor Silicate Vapour Geysers,Rocky Magma]"
+          ]
+        }
+      ]
+    },
+
+    {
+      "species": "Gypseeum Brain Tree",
+      "variant": "",
+      "query": [
+        "# hit count: 826",
+        "atmosType [None]",
+        "     body [Rocky]",
+        "  gravity [0.042 ~ 0.319]",
+        "     temp [200 ~ 330]",
+        " pressure [ ~ 0]",
+        "volcanism [Metallic Magma,Minor Metallic Magma,Minor Rocky Magma,Minor Silicate Vapour Geysers]"
+      ]
+    },
+
+    {
+      "species": "Ostrinum Brain Tree",
+      "query": [
+        "# hit count: 1743",
+        "atmosType [None]"
+      ],
+      "children": [
+        {
+          "variant": "",
+          "query": [
+            "# hit count: 1493",
+            "     body [HMC]",
+            "  gravity [ ~ 2.28]",
+            "     temp [91 ~ 1000]",
+            " pressure [ ~ 0.0007]",
+            "volcanism [Metallic Magma,Minor Metallic Magma,Minor Rocky Magma,Minor Silicate Vapour Geysers,Rocky Magma]"
+          ]
+        },
+        {
+          "variant": "",
+          "query": [
+            "# hit count: 250",
+            "     body [MRB]",
+            "  gravity [ ~ 2.342]",
+            "     temp [1000 ~ 1795]",
+            " pressure [ ~ 0]",
+            "volcanism [Metallic Magma,Minor Metallic Magma,Minor Rocky Magma,Rocky Magma,Silicate Vapour Geysers]"
+          ]
+        }
+      ]
+    },
+
+    {
+      "species": "Viride Brain Tree",
+      "variant": "",
+      "query": [
+        "# hit count: 243",
+        "atmosType [None]",
+        "     body [RockyIce]",
+        "  gravity [ ~ 0.389]",
+        "     temp [100 ~ 245]",
+        " pressure [ ~ 0.0001]",
+        "volcanism [Major Rocky Magma,Major Silicate Vapour Geysers,Major Water Geysers,Minor Carbon Dioxide Geysers,Minor Metallic Magma,Water Geysers]"
+      ]
+    },
+
+    {
+      "species": "Lividum Brain Tree",
+      "variant": "",
+      "query": [
+        "# hit count: 1433",
+        "atmosType [None]",
+        "     body [Rocky]",
+        "  gravity [ ~ 0.454]",
+        "     temp [300 ~ 500]",
+        " pressure [ ~ 0]",
+        "volcanism [None,Major Silicate Vapour Geysers,Metallic Magma,Minor Metallic Magma,Minor Silicate Vapour Geysers]"
+      ]
+    },
+
+    {
+      "species": "Aureum Brain Tree",
+      "query": [
+        "# hit count: 398",
+        "atmosType [None]"
+      ],
+      "children": [
+        {
+          "variant": "",
+          "query": [
+            "# hit count: 118",
+            "     body [Rocky]",
+            "  gravity [0.044 ~ 0.431]",
+            "     temp [303 ~ 497]",
+            " pressure [ ~ 0]",
+            "volcanism [Major Silicate Vapour Geysers,Metallic Magma,Minor Metallic Magma,Minor Silicate Vapour Geysers]"
+          ]
+        },
+        {
+          "variant": "",
+          "query": [
+            "# hit count: 280",
+            "     body [HMC]",
+            "  gravity [ ~ 3.884]",
+            "     temp [302 ~ 500]",
+            " pressure [ ~ 0.001]",
+            "volcanism [Major Rocky Magma,Major Silicate Vapour Geysers,Metallic Magma,Rocky Magma]"
+          ]
+        }
+      ]
+    },
+
+    {
+      "species": "Puniceum Brain Tree",
+      "query": [
+        "# hit count: 1498",
+        "atmosType [None]"
+      ],
+      "children": [
+        {
+          "variant": "",
+          "query": [
+            "# hit count: 1141",
+            "     body [HMC]",
+            "  gravity [0.042 ~ 3.873]",
+            "     temp [117 ~ 1000]",
+            " pressure [ ~ 0.0007]",
+            "volcanism [Major Rocky Magma,Major Silicate Vapour Geysers,Metallic Magma,Minor Metallic Magma,Minor Silicate Vapour Geysers]"
+          ]
+        },
+        {
+          "variant": "",
+          "query": [
+            "# hit count: 357",
+            "     body [MRB]",
+            "  gravity [0.041 ~ 2.814]",
+            "     temp [1000 ~ 1768]",
+            " pressure [ ~ 0]",
+            "volcanism [Major Metallic Magma,Major Rocky Magma,Major Silicate Vapour Geysers,Metallic Magma,Minor Metallic Magma,Minor Rocky Magma,Rocky Magma,Silicate Vapour Geysers]"
+          ]
+        }
+      ]
+    },
+
+    {
+      "species": "Lindigoticum Brain Tree",
+      "query": [
+        "# hit count: 35",
+        "atmosType [None]",
+        " pressure [ ~ 0]"
+      ],
+      "children": [
+        {
+          "variant": "",
+          "query": [
+            "# hit count: 14",
+            "     body [Rocky]",
+            "  gravity [0.047 ~ 0.245]",
+            "     temp [309 ~ 500]",
+            "volcanism [Major Silicate Vapour Geysers,Metallic Magma]"
+          ]
+        },
+        {
+          "variant": "",
+          "query": [
+            "# hit count: 21",
+            "     body [HMC]",
+            "  gravity [0.051 ~ 2.277]",
+            "     temp [308 ~ 481]",
+            "volcanism [Major Rocky Magma,Major Silicate Vapour Geysers]"
+          ]
+        }
+      ]
+    }
+
+  ]
+
+}
+

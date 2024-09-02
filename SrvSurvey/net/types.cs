@@ -560,6 +560,8 @@ namespace SrvSurvey.canonn
         public int siteHeading = -1;
         public int idx;
         public bool surveyComplete;
+        // TODO: Let everyone know the progress, even if they haven't been there before?
+        //public int surveyProgress;
 
         [JsonIgnore]
         public bool isRuins { get => siteType == "Alpha" || siteType == "Beta" || siteType == "Gamma"; }
