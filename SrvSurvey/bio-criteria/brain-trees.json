@@ -3,14 +3,15 @@
   "query": [
     "guardian [true]"
   ],
-  
+
   "children": [
 
     {
       "species": "Roseum Brain Tree",
       "query": [
         "# hit count: 8553",
-        "atmosType [None]"
+        "atmosType [None]",
+        "  regions [2,9,10,17,18,35]"
       ],
       "children": [
         {
@@ -70,7 +71,8 @@
         "  gravity [0.042 ~ 0.319]",
         "     temp [200 ~ 330]",
         " pressure [ ~ 0]",
-        "volcanism [Metallic Magma,Minor Metallic Magma,Minor Rocky Magma,Minor Silicate Vapour Geysers]"
+        "volcanism [Metallic Magma,Minor Metallic Magma,Minor Rocky Magma,Minor Silicate Vapour Geysers]",
+        "  regions [2,9,10,17,18,35]"
       ]
     },
 
@@ -78,7 +80,8 @@
       "species": "Ostrinum Brain Tree",
       "query": [
         "# hit count: 1743",
-        "atmosType [None]"
+        "atmosType [None]",
+        "  regions [2,17,18,35]"
       ],
       "children": [
         {
@@ -116,7 +119,8 @@
         "  gravity [ ~ 0.389]",
         "     temp [100 ~ 245]",
         " pressure [ ~ 0.0001]",
-        "volcanism [Major Rocky Magma,Major Silicate Vapour Geysers,Major Water Geysers,Minor Carbon Dioxide Geysers,Minor Metallic Magma,Water Geysers]"
+        "volcanism [Major Rocky Magma,Major Silicate Vapour Geysers,Major Water Geysers,Minor Carbon Dioxide Geysers,Minor Metallic Magma,Water Geysers]",
+        "  regions [2,9,10,17,18,35]"
       ]
     },
 
@@ -130,7 +134,8 @@
         "  gravity [ ~ 0.454]",
         "     temp [300 ~ 500]",
         " pressure [ ~ 0]",
-        "volcanism [None,Major Silicate Vapour Geysers,Metallic Magma,Minor Metallic Magma,Minor Silicate Vapour Geysers]"
+        "volcanism [None,Major Silicate Vapour Geysers,Metallic Magma,Minor Metallic Magma,Minor Silicate Vapour Geysers]",
+        "  regions [2,9,10,17,18,35]"
       ]
     },
 
@@ -138,7 +143,8 @@
       "species": "Aureum Brain Tree",
       "query": [
         "# hit count: 398",
-        "atmosType [None]"
+        "atmosType [None]",
+        "  regions [2,9,10,17,18,35]"
       ],
       "children": [
         {
@@ -170,7 +176,8 @@
       "species": "Puniceum Brain Tree",
       "query": [
         "# hit count: 1498",
-        "atmosType [None]"
+        "atmosType [None]",
+        "  regions [9,10,35]"
       ],
       "children": [
         {
@@ -203,7 +210,8 @@
       "query": [
         "# hit count: 35",
         "atmosType [None]",
-        " pressure [ ~ 0]"
+        " pressure [ ~ 0]",
+        "  regions [2,9,10,17,18,35]"
       ],
       "children": [
         {

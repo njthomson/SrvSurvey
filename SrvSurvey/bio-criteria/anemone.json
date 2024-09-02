@@ -12,7 +12,8 @@
         "  gravity [0.042 ~ 1.277]",
         "     temp [200 ~ 440]",
         " pressure [ ~ 0.0007]",
-        "volcanism [Major Silicate Vapour Geysers,Metallic Magma,Minor Metallic Magma,Minor Silicate Vapour Geysers]"
+        "volcanism [Major Silicate Vapour Geysers,Metallic Magma,Minor Metallic Magma,Minor Silicate Vapour Geysers]",
+        "  regions [7,8,13,14,15,16,17,18,27,30,32]"
       ]
     },
 
@@ -26,7 +27,8 @@
         "  gravity [0.042 ~ 0.37]",
         "     temp [202 ~ 440]",
         " pressure [ ~ 0]",
-        "volcanism [Major Silicate Vapour Geysers,Metallic Magma,Minor Metallic Magma,Minor Silicate Vapour Geysers]"
+        "volcanism [Major Silicate Vapour Geysers,Metallic Magma,Minor Metallic Magma,Minor Silicate Vapour Geysers]",
+        "  regions [7,8,13,14,15,16,17,18,27,30,32]"
       ]
     },
 
@@ -40,12 +42,13 @@
         "  gravity [0.178 ~ 2.601]",
         "     temp [75 ~ 860]",
         " pressure [ ~ 0]",
-        "volcanism [None]"
+        "volcanism [None]",
+        "  regions [7,8,13,14,15,16,17,18,27,30,32]"
       ]
     },
 
     {
-      "species": "Puniceum Anemone",
+      "species": "Roseum Anemone",
       "variant": "",
       "query": [
         "# hit count: 211",
@@ -54,7 +57,8 @@
         "  gravity [0.044 ~ 0.386]",
         "     temp [201 ~ 440]",
         " pressure [ ~ 0]",
-        "volcanism [Major Silicate Vapour Geysers,Metallic Magma,Minor Metallic Magma,Minor Silicate Vapour Geysers]"
+        "volcanism [Major Silicate Vapour Geysers,Metallic Magma,Minor Metallic Magma,Minor Silicate Vapour Geysers]",
+        "  regions [7,8,13,14,15,16,17,18,27,30,32]"
       ]
     },
 
@@ -69,7 +73,8 @@
             "  gravity [0.136 ~ 8.721]",
             "     temp [213 ~ 1362]",
             " pressure [ ~ 0.0006]",
-            "volcanism [Major Rocky Magma,Major Silicate Vapour Geysers,Metallic Magma,Minor Metallic Magma,Minor Silicate Vapour Geysers]"
+            "volcanism [Major Rocky Magma,Major Silicate Vapour Geysers,Metallic Magma,Minor Metallic Magma,Minor Silicate Vapour Geysers]",
+            "  regions [7,8,13,14,15,16,17,18,27,30,32]"
           ]
         },
         {
@@ -80,7 +85,8 @@
             "  gravity [ ~ 6.44]",
             "     temp [804 ~ 5178]",
             " pressure [ ~ 0]",
-            "volcanism [Major Metallic Magma,Major Rocky Magma,Major Silicate Vapour Geysers,Metallic Magma,Minor Metallic Magma,Rocky Magma,Silicate Vapour Geysers]"
+            "volcanism [Major Metallic Magma,Major Rocky Magma,Major Silicate Vapour Geysers,Metallic Magma,Minor Metallic Magma,Rocky Magma,Silicate Vapour Geysers]",
+            "  regions [7,8,13,14,15,16,17,18,27,30,32]"
           ]
         }
       ]

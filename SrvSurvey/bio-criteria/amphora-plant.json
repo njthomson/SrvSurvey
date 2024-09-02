@@ -9,7 +9,8 @@
     "  gravity [0.042 ~ 4.473]",
     "     temp [1000 ~ 1736]",
     " pressure [ ~ 0]",
-    "volcanism [Major Metallic Magma,Major Rocky Magma,Major Silicate Vapour Geysers]"
+    "volcanism [Major Metallic Magma,Major Rocky Magma,Major Silicate Vapour Geysers]",
+    "  regions [1,2,3,4,5,6,7,8,9,10,11,18,19]"
   ]
 
 }
