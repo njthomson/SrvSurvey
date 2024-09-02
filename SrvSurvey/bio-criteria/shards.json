@@ -1,0 +1,57 @@
+{
+  "genus": "Crystalline Shards",
+  "species": "",
+  "query": [
+    "# hit count: 2221",
+    "atmosType [None]",
+    "  regions [14,21,22,23,24,25,26,27,28,29,34,36,37,38,39,40,41,42]"
+  ],
+  "children": [
+    {
+      "variant": "",
+      "query": [
+        "# hit count: 1421",
+        "     body [Icy]",
+        "  gravity [ ~ 0.209]",
+        "     temp [27 ~ 208]",
+        " pressure [ ~ 0.0009]",
+        "volcanism [Minor Ammonia Magma,Minor Carbon Dioxide Geysers,Minor Methane Magma,Minor Nitrogen Magma,Minor Water Magma]"
+      ]
+    },
+    {
+      "variant": "",
+      "query": [
+        "# hit count: 626",
+        "     body [Rocky]",
+        "  gravity [0.043 ~ 0.251]",
+        "     temp [43 ~ 251]",
+        " pressure [ ~ 0]",
+        "volcanism [Minor Metallic Magma,Minor Rocky Magma,Minor Silicate Vapour Geysers]"
+      ]
+    },
+    {
+      "variant": "",
+      "query": [
+        "# hit count: 58",
+        "     body [RockyIce]",
+        "  gravity [ ~ 0.203]",
+        "     temp [86 ~ 240]",
+        " pressure [ ~ 0]",
+        "volcanism [Minor Carbon Dioxide Geysers,Minor Metallic Magma,Minor Silicate Vapour Geysers,Minor Water Geysers]"
+      ]
+    },
+    {
+      "variant": "",
+      "query": [
+        "# hit count: 116",
+        "     body [HMC]",
+        "  gravity [0.056 ~ 1.459]",
+        "     temp [89 ~ 249]",
+        " pressure [ ~ 0.0007]",
+        "volcanism [Minor Metallic Magma,Minor Silicate Vapour Geysers]"
+      ]
+    }
+  ]
+
+}
+
