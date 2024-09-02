@@ -1097,7 +1097,7 @@
     "siteType": "Bowl",
     "latitude": 24.304094,
     "longitude": -65.507484,
-    "siteHeading": -1,
+    "siteHeading": 13,
     "idx": 0,
     "surveyComplete": false
   },
@@ -1344,7 +1344,7 @@
     "siteType": "Hammerbot",
     "latitude": -48.604752,
     "longitude": 121.875587,
-    "siteHeading": -1,
+    "siteHeading": 234,
     "idx": 0,
     "surveyComplete": false
   },
@@ -1648,7 +1648,7 @@
     "siteType": "Hammerbot",
     "latitude": 19.272213,
     "longitude": 67.520538,
-    "siteHeading": -1,
+    "siteHeading": 113,
     "idx": 0,
     "surveyComplete": false
   },

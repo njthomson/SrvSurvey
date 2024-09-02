@@ -1879,6 +1879,7 @@ namespace SrvSurvey.game
             {
                 // Guardian site
                 PlotGuardianStatus.glideSite = GuardianSiteData.Load(entry);
+                PlotGuardianStatus.glideSite.loadPub();
                 this.setCurrentSite();
 
                 if (systemSite != null)
