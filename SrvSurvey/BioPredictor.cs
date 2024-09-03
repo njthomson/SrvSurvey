@@ -113,7 +113,7 @@ namespace BioCriterias
             species = criteria.species ?? species;
             variant = criteria.variant ?? variant;
 
-            //if (species?.Contains("Anemone") == true) Debugger.Break();
+            //if (currentName?.Contains("Brain") == true) Debugger.Break();
 
             // stop here if genus names are known and this criteria isn't one of them
             if (!string.IsNullOrEmpty(genus) && knownGenus?.Count > 0 && !knownGenus.Contains(genus)) return;
@@ -123,11 +123,11 @@ namespace BioCriterias
                 return;
 
             // evaluate current query
-            var currentName = (variant == "" ? $"{genus} {species}" : $"{genus} {species} - {variant}").Trim();
+            var currentName = (variant == "" ? species! : $"{genus} {species} - {variant}").Trim();
             var failures = testQuery(criteria.query, $"{genus} {species} {variant}".Trim());
 
             //if (this.bodyName.Contains("A 3") && genus?.Contains("Amphora") == true) Debugger.Break();
-            //if (genus?.Contains("Anemone") == true) Debugger.Break();
+            //if (currentName?.Contains("Anemone") == true) Debugger.Break();
 
             // add a prediction if no failures and we have genus, species AND variant
             if (failures.Count == 0 && genus != null && species != null && variant != null)
@@ -160,7 +160,7 @@ namespace BioCriterias
 
                     var bodyValue = bodyProps.GetValueOrDefault(propName);
 
-                    // match some string(s)
+                    // match SOME string(s)
                     if (clause.op == Op.Is)
                     {
                         if (clause.values == null) throw new Exception("Missing clause values?");
@@ -201,6 +201,76 @@ namespace BioCriterias
 
                         if (bodyValues != null && !clause.values.Any(v => bodyValues.Any(bv => bv.Equals(v, StringComparison.OrdinalIgnoreCase))))
                             failures.Add(new ClauseFailure(bodyName, "no match found5", clause, string.Join(',', bodyValues)));
+
+                        continue;
+                    }
+
+                    // match ALL string(s)
+                    if (clause.op == Op.All)
+                    {
+                        if (clause.values == null) throw new Exception("Missing clause values?");
+
+                        // match a single string
+                        if (bodyValue is string)
+                        {
+                            Debugger.Break();
+                            //var bodyValueString = (string)bodyValue;
+                            //if (clause.property == "body")
+                            //{
+                            //    // special case for 'body' clauses to use `StartsWith` not `Equals`
+                            //    if (!clause.values.All(cv => bodyValueString.StartsWith(cv, StringComparison.OrdinalIgnoreCase)))
+                            //        failures.Add(new ClauseFailure(bodyName, "no match found1", clause, bodyValueString));
+                            //}
+                            //else if (!clause.values.All(cv => bodyValueString.Equals(cv, StringComparison.OrdinalIgnoreCase)))
+                            //{
+                            //    failures.Add(new ClauseFailure(bodyName, "no match found4", clause, bodyValueString));
+                            //}
+
+                            continue;
+                        }
+
+                        // match any value from a set of strings
+                        var bodyValues = bodyValue as List<string>;
+                        if (bodyValue is Dictionary<string, float>)
+                            bodyValues = ((Dictionary<string, float>)bodyValue).Keys.ToList();
+
+                        if (bodyValues != null && !clause.values.All(v => bodyValues.Any(bv => bv.Equals(v, StringComparison.OrdinalIgnoreCase))))
+                            failures.Add(new ClauseFailure(bodyName, "not all found", clause, string.Join(',', bodyValues)));
+
+                        continue;
+                    }
+
+                    // match NONE string(s)
+                    if (clause.op == Op.Not)
+                    {
+                        if (clause.values == null) throw new Exception("Missing clause values?");
+
+                        // match a single string
+                        if (bodyValue is string)
+                        {
+                            Debugger.Break();
+                            //var bodyValueString = (string)bodyValue;
+                            //if (clause.property == "body")
+                            //{
+                            //    // special case for 'body' clauses to use `StartsWith` not `Equals`
+                            //    if (!clause.values.All(cv => bodyValueString.StartsWith(cv, StringComparison.OrdinalIgnoreCase)))
+                            //        failures.Add(new ClauseFailure(bodyName, "no match found1", clause, bodyValueString));
+                            //}
+                            //else if (!clause.values.All(cv => bodyValueString.Equals(cv, StringComparison.OrdinalIgnoreCase)))
+                            //{
+                            //    failures.Add(new ClauseFailure(bodyName, "no match found4", clause, bodyValueString));
+                            //}
+
+                            continue;
+                        }
+
+                        // match any value from a set of strings
+                        var bodyValues = bodyValue as List<string>;
+                        if (bodyValue is Dictionary<string, float>)
+                            bodyValues = ((Dictionary<string, float>)bodyValue).Keys.ToList();
+
+                        if (bodyValues != null && clause.values.Any(v => bodyValues.Any(bv => bv.Equals(v, StringComparison.OrdinalIgnoreCase))))
+                            failures.Add(new ClauseFailure(bodyName, "one of found", clause, string.Join(',', bodyValues)));
 
                         continue;
                     }
@@ -253,7 +323,11 @@ namespace BioCriterias
                             if (localFailures.Count == clause.compositions.Count)
                                 failures.AddRange(localFailures);
                         }
+                        continue;
                     }
+
+                    // Oops - we forgot a clause?
+                    Debugger.Break();
                 }
             }
 

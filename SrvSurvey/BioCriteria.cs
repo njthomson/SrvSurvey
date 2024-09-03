@@ -16,9 +16,10 @@ namespace BioCriterias
         /// The "predictor engine" version - used to defend against future criteria not understood by older builds.
         /// Increment this any time breaking changes are added to criteria
         /// </summary>
-        public static int engVer = 2;
+        public static int engVer = 3;
         // v1 : initial support, with legacy species recently added and incomplete
         // v2 : support for Brain Tree's with "Guardian" criteria
+        // v3 : support for &[] for matches ALL and ![] matches NONE
 
         public string? genus;
         public string? species;
@@ -185,8 +186,6 @@ namespace BioCriterias
 
         public static Clause createIs(string property, List<string> values)
         {
-            //var mappedValues = values.Select(v => Map.values.ContainsKey(v) ? Map.values[v] : v);
-
             var mappedValues = values.Select(v => Map.values.ContainsValue(v) ? Map.values.First(p => p.Value == v).Key : v);
 
             var clause = new Clause()
@@ -194,6 +193,20 @@ namespace BioCriterias
                 raw = $"{property} [{string.Join(',', mappedValues)}]",
                 property = property,
                 op = Op.Is,
+                values = values,
+            };
+            return clause;
+        }
+
+        public static Clause createAll(string property, List<string> values)
+        {
+            var mappedValues = values.Select(v => Map.values.ContainsValue(v) ? Map.values.First(p => p.Value == v).Key : v);
+
+            var clause = new Clause()
+            {
+                raw = $"{property} [{string.Join(',', mappedValues)}]",
+                property = property,
+                op = Op.All,
                 values = values,
             };
             return clause;
@@ -221,7 +234,7 @@ namespace BioCriterias
             // eg: "atmosType [CarbonDioxide,SulphurDioxide,Water]"
             // eg: "atmosComp [SulphurDioxide > 0.99]"
 
-            var r0 = new Regex(@"\s*(\w+)\s*!?\[(.+)\]");
+            var r0 = new Regex(@"\s*(\w+)\s*[&!]?\[(.+)\]");
             var m0 = r0.Match(txt);
 
             var property = m0.Groups[1].Value;
@@ -265,7 +278,12 @@ namespace BioCriterias
             else
             {
                 // sets of strings
-                clause.op = txt.Contains("![") ? Op.Not : Op.Is;
+                if (txt.Contains("!["))
+                    clause.op = Op.Not;
+                else if (txt.Contains("&["))
+                    clause.op = Op.All;
+                else clause.op = Op.Is;
+
                 clause.values = valTxt.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)
                     .Select(v => Map.values.ContainsKey(v) ? Map.values[v]! : v)
                     .ToList();
@@ -297,6 +315,8 @@ namespace BioCriterias
                 string txt;
                 if (data.op == Op.Is)
                     txt = $"{data.property} [{string.Join(',', data.values!)}]";
+                else if (data.op == Op.All)
+                    txt = $"{data.property} &[{string.Join(',', data.values!)}]";
                 else if (data.op == Op.Not)
                     txt = $"{data.property} ![{string.Join(',', data.values!)}]";
                 else if (data.op == Op.Composition)
@@ -315,6 +335,10 @@ namespace BioCriterias
         /// String property value is one of the values
         /// </summary>
         Is,
+        /// <summary>
+        /// String property values is one of the values
+        /// </summary>
+        All,
         /// <summary>
         /// String property value is NOT one of the values
         /// </summary>

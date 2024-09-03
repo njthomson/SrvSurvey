@@ -1086,12 +1086,12 @@
         "# hit count: 2295"
       ],
       "commonChildren": [
-        { "variant": "Orange", "query": [ " mats [Mercury]" ] },
-        { "variant": "Magenta", "query": [ "mats [Niobium]" ] },
-        { "variant": "Cobalt", "query": [ " mats [Tin]" ] },
-        { "variant": "Green", "query": [ "  mats [Tungsten]" ] },
-        { "variant": "Yellow", "query": [ " mats [Molybdenum]" ] },
-        { "variant": "Gold", "query": [ "   mats [Cadmium]" ] }
+        { "variant": "Red", "query": [ " mats [Mercury]" ] },
+        { "variant": "Mulberry", "query": [ "mats [Niobium]" ] },
+        { "variant": "Blue", "query": [ " mats [Tin]" ] },
+        { "variant": "Lime", "query": [ "  mats [Tungsten]" ] },
+        { "variant": "White", "query": [ " mats [Molybdenum]" ] },
+        { "variant": "Peach", "query": [ "   mats [Cadmium]" ] }
       ],
       "children": [
         {

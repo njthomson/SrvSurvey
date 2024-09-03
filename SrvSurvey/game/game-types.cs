@@ -296,6 +296,9 @@ namespace SrvSurvey.game
         {
             get
             {
+                if (!this.species.genus.odyssey)
+                    return $"{this.species.genus.englishName}-{this.species.englishName}".Replace(' ', '-');
+
                 var parts = this.englishName.Split(' ', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
                 if (parts.Length == 4)
                     return $"{parts[0]}-{parts[1]}-{parts[3]}".ToLowerInvariant();

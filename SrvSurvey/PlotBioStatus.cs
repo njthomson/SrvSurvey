@@ -324,6 +324,7 @@ namespace SrvSurvey
                 allScanned &= organism.analyzed;
                 var txt = organism.genusLocalized;
                 if (txt == null && organism.variantLocalized != null) txt = Util.getGenusDisplayNameFromVariant(organism.variantLocalized);
+                if (organism.genus == "$Codex_Ent_Brancae_Name;" && organism.speciesLocalized != null) txt = organism.speciesLocalized;
                 if (organism.range > 0 && !organism.analyzed)
                 {
                     allScanned &= false;

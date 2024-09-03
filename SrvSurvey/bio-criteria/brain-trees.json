@@ -1,5 +1,5 @@
 {
-  "genus": "",
+  "genus": "Brain Trees",
   "query": [
     "guardian [true]"
   ],
@@ -11,7 +11,8 @@
       "query": [
         "# hit count: 8553",
         "atmosType [None]",
-        "  regions [2,9,10,17,18,35]"
+        "  regions [2,9,10,17,18,35]",
+        "     mats &[Carbon,Iron,Nickel,Phosphorus,Sulphur]"
       ],
       "children": [
         {
@@ -71,6 +72,7 @@
         "  gravity [0.042 ~ 0.319]",
         "     temp [200 ~ 330]",
         " pressure [ ~ 0]",
+        "     mats &[Carbon,Iron,Nickel,Phosphorus,Sulphur]",
         "volcanism [Metallic Magma,Minor Metallic Magma,Minor Rocky Magma,Minor Silicate Vapour Geysers]",
         "  regions [2,9,10,17,18,35]"
       ]
@@ -81,7 +83,8 @@
       "query": [
         "# hit count: 1743",
         "atmosType [None]",
-        "  regions [2,17,18,35]"
+        "  regions [2,17,18,35]",
+        "     mats &[Iron,Nickel]"
       ],
       "children": [
         {
@@ -119,6 +122,7 @@
         "  gravity [ ~ 0.389]",
         "     temp [100 ~ 245]",
         " pressure [ ~ 0.0001]",
+        "     mats &[Carbon,Iron,Nickel,Phosphorus,Sulphur]",
         "volcanism [Major Rocky Magma,Major Silicate Vapour Geysers,Major Water Geysers,Minor Carbon Dioxide Geysers,Minor Metallic Magma,Water Geysers]",
         "  regions [2,9,10,17,18,35]"
       ]
@@ -144,7 +148,8 @@
       "query": [
         "# hit count: 398",
         "atmosType [None]",
-        "  regions [2,9,10,17,18,35]"
+        "  regions [2,9,10,17,18,35]",
+        "     mats &[Carbon,Iron,Nickel,Phosphorus,Sulphur]"
       ],
       "children": [
         {
@@ -177,7 +182,8 @@
       "query": [
         "# hit count: 1498",
         "atmosType [None]",
-        "  regions [9,10,35]"
+        "  regions [9,10,35]",
+        "     mats &[Iron,Nickel]"
       ],
       "children": [
         {

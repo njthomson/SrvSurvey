@@ -103,7 +103,10 @@ namespace SrvSurvey
                     // displayName is either genus, or species/variant without the genus prefix
                     var displayName = organism.genusLocalized;
                     if (!string.IsNullOrEmpty(organism.variantLocalized))
+                    {
                         displayName = organism.variantLocalized.Replace(organism.genusLocalized + " ", "");
+                        if (displayName.EndsWith("Anemone")) displayName = displayName.Replace("Anemone", "");
+                    }
                     else if (!string.IsNullOrEmpty(organism.speciesLocalized))
                         displayName = organism.speciesLocalized.Replace(organism.genusLocalized + " ", "");
                     else
@@ -124,11 +127,12 @@ namespace SrvSurvey
                                         this.drawTextAt("?", brush);
                                         newLine(+one, true);
                                     }
-
+                                    var legacyEnglishName = match.species.englishName;
+                                    if (legacyEnglishName.EndsWith("Anemone")) legacyEnglishName = legacyEnglishName.Replace("Anemone", "");
                                     if (notDiscovered)
-                                        this.drawTextAt(twoEight, "⚑" + match.species.englishName, highlight ? brush : Brushes.Gold);
+                                        this.drawTextAt(twoEight, "⚑" + legacyEnglishName, highlight ? brush : Brushes.Gold);
                                     else
-                                        this.drawTextAt(twoEight, match.species.englishName, brush);
+                                        this.drawTextAt(twoEight, legacyEnglishName, brush);
 
                                     lastSpecies = match.species.name;
                                     continue;

@@ -323,7 +323,7 @@ namespace SrvSurvey
             r2.Inflate(dotRadius, dotRadius);
 
             // draw line in pieces, from right to left
-            var limitPixelsPerLY = 0.3f;
+            var limitPixelsPerLY = 0.25f;
             var xNow = left;
             for (var n = hopDistances.Count - 1; n >= 0; n--)
             {

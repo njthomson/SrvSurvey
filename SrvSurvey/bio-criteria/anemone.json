@@ -1,5 +1,5 @@
 {
-  "genus": "",
+  "genus": "Luteolum Anemone",
   "children": [
 
     {
@@ -13,7 +13,8 @@
         "     temp [200 ~ 440]",
         " pressure [ ~ 0.0007]",
         "volcanism [Major Silicate Vapour Geysers,Metallic Magma,Minor Metallic Magma,Minor Silicate Vapour Geysers]",
-        "  regions [7,8,13,14,15,16,17,18,27,30,32]"
+        "  regions [7,8,13,14,15,16,17,18,27,30,32]",
+        "     mats &[Iron,Nickel]"
       ]
     },
 
@@ -28,7 +29,8 @@
         "     temp [202 ~ 440]",
         " pressure [ ~ 0]",
         "volcanism [Major Silicate Vapour Geysers,Metallic Magma,Minor Metallic Magma,Minor Silicate Vapour Geysers]",
-        "  regions [7,8,13,14,15,16,17,18,27,30,32]"
+        "  regions [7,8,13,14,15,16,17,18,27,30,32]",
+        "     mats &[Carbon,Iron,Nickel,Phosphorus,Sulphur]"
       ]
     },
 
@@ -43,7 +45,8 @@
         "     temp [75 ~ 860]",
         " pressure [ ~ 0]",
         "volcanism [None]",
-        "  regions [7,8,13,14,15,16,17,18,27,30,32]"
+        "  regions [7,8,13,14,15,16,17,18,27,30,32]",
+        "     mats &[Carbon,Iron,Nickel,Phosphorus,Sulphur]"
       ]
     },
 
@@ -64,6 +67,10 @@
 
     {
       "species": "Blatteum Bioluminescent Anemone",
+      "query": [
+        "atmosType [None]",
+        "     mats &[Iron,Nickel]"
+      ],
       "children": [
         {
           "variant": "",
@@ -94,6 +101,10 @@
 
     {
       "species": "Rubeum Bioluminescent Anemone",
+      "query": [
+        "atmosType [None]",
+        "     mats &[Iron,Nickel]"
+      ],
       "children": [
         {
           "variant": "",
@@ -122,6 +133,10 @@
 
     {
       "species": "Prasinum Bioluminescent Anemone",
+      "query": [
+        "atmosType [None]",
+        "     mats &[Iron,Nickel]"
+      ],
       "children": [
         {
           "variant": "",
@@ -161,6 +176,10 @@
 
     {
       "species": "Roseum Bioluminescent Anemone",
+      "query": [
+        "atmosType [None]",
+        "     mats &[Iron,Nickel]"
+      ],
       "children": [
         {
           "variant": "",

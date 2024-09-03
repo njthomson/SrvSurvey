@@ -248,6 +248,8 @@ namespace SrvSurvey.canonn
                                 foreach (var variantRef in speciesRef.variants)
                                     if (variantRef.englishName == variantDisplayName)
                                         return new BioMatch(genusRef, speciesRef, variantRef);
+
+                return null;
             }
 
             // for legacy organisms, search less efficiently

@@ -1,6 +1,6 @@
 {
   "genus": "Amphora Plant",
-  "species": "",
+  "species": "Amphora Plant",
   "variant": "",
   "query": [
     "# hit count: 449",
@@ -10,7 +10,8 @@
     "     temp [1000 ~ 1736]",
     " pressure [ ~ 0]",
     "volcanism [Major Metallic Magma,Major Rocky Magma,Major Silicate Vapour Geysers]",
-    "  regions [1,2,3,4,5,6,7,8,9,10,11,18,19]"
+    "  regions [1,2,3,4,5,6,7,8,9,10,11,18,19]",
+    "     mats &[Iron,Nickel]"
   ]
 
 }
