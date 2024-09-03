@@ -109,7 +109,7 @@
             "  gravity [0.227 ~ 0.273]",
             "     temp [68 ~ 119]",
             " pressure [0.0013 ~ 0.0802]",
-            "volcanism [Water Geysers]",
+            "volcanism [Major Rocky Magma,Water Geysers]",
             "atmosComp [Argon >= 100]"
           ]
         },

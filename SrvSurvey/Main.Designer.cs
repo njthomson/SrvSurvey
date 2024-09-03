@@ -641,7 +641,7 @@ namespace SrvSurvey
             btnPublish.Text = "Publish";
             btnPublish.UseVisualStyleBackColor = true;
             btnPublish.Visible = false;
-            btnPublish.Click += btnPublish_Click;
+            btnPublish.MouseDown += BtnPublish_MouseDown;
             // 
             // checkTempHide
             // 
@@ -794,7 +794,7 @@ namespace SrvSurvey
             btnTest.TabIndex = 30;
             btnTest.Text = "Test";
             btnTest.UseVisualStyleBackColor = true;
-            btnTest.Click += btnTest_Click;
+            btnTest.MouseDown += btnTest_MouseDown;
             // 
             // Main
             // 

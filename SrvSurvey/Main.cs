@@ -1543,12 +1543,6 @@ namespace SrvSurvey
             FormRuins.show();
         }
 
-        private void btnPublish_Click(object sender, EventArgs e)
-        {
-            this.publishGuardians();
-            //Game.git.publishBioCriteria();
-        }
-
         private void publishGuardians()
         {
             btnPublish.Enabled = false;
@@ -1607,10 +1601,20 @@ namespace SrvSurvey
                 FormShowCodex.show(entryId);
         }
 
-        private void btnTest_Click(object sender, EventArgs e)
+        private void BtnPublish_MouseDown(object sender, MouseEventArgs e)
         {
-            //BioPredictor.testSystems();
-            CriteriaBuilder.buildWholeSet();
+            if (e.Button == MouseButtons.Left)
+                this.publishGuardians(); // left click - publish Guardian stuff
+            else
+                Game.git.publishBioCriteria(); // right click - publish bio criteria
+        }
+
+        private void btnTest_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+                BioPredictor.testSystems(); // left click - test things
+            else
+                CriteriaBuilder.buildWholeSet(); // right click - create criteria
         }
     }
 }

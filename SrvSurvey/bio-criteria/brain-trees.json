@@ -34,7 +34,7 @@
             "  gravity [ ~ 1.261]",
             "     temp [200 ~ 500]",
             " pressure [ ~ 0.001]",
-            "volcanism [Major Silicate Vapour Geysers,Metallic Magma,Minor Metallic Magma,Minor Silicate Vapour Geysers]"
+            "volcanism [Major Silicate Vapour Geysers,Metallic Magma,Minor Metallic Magma,Minor Rocky Magma,Minor Silicate Vapour Geysers]"
           ]
         },
         {
@@ -56,7 +56,7 @@
             "  gravity [ ~ 4.202]",
             "     temp [200 ~ 500]",
             " pressure [ ~ 0.0007]",
-            "volcanism [Major Rocky Magma,Major Silicate Vapour Geysers,Metallic Magma,Minor Metallic Magma,Minor Silicate Vapour Geysers,Rocky Magma]"
+            "volcanism [Major Rocky Magma,Major Silicate Vapour Geysers,Metallic Magma,Minor Metallic Magma,Minor Rocky Magma,Minor Silicate Vapour Geysers,Rocky Magma]"
           ]
         }
       ]
@@ -138,7 +138,7 @@
         "  gravity [ ~ 0.454]",
         "     temp [300 ~ 500]",
         " pressure [ ~ 0]",
-        "volcanism [None,Major Silicate Vapour Geysers,Metallic Magma,Minor Metallic Magma,Minor Silicate Vapour Geysers]",
+        "volcanism [None,Major Silicate Vapour Geysers,Metallic Magma,Minor Metallic Magma,Minor Rocky Magma,Minor Silicate Vapour Geysers]",
         "  regions [2,9,10,17,18,35]"
       ]
     },

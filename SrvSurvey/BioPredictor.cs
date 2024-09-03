@@ -7,6 +7,9 @@ namespace BioCriterias
 {
     internal class BioPredictor
     {
+        public static bool useTestCache = false;
+        public static string testCacheFolder = Path.Combine(Program.dataFolder, "testCache");
+
         public static List<string> predict(SystemBody body)
         {
             if (body.type != SystemBodyType.LandableBody) return new List<string>();
@@ -113,7 +116,7 @@ namespace BioCriterias
             species = criteria.species ?? species;
             variant = criteria.variant ?? variant;
 
-            //if (currentName?.Contains("Brain") == true) Debugger.Break();
+            //if (species?.Contains("Araneamus") == true) Debugger.Break();
 
             // stop here if genus names are known and this criteria isn't one of them
             if (!string.IsNullOrEmpty(genus) && knownGenus?.Count > 0 && !knownGenus.Contains(genus)) return;
@@ -127,7 +130,7 @@ namespace BioCriterias
             var failures = testQuery(criteria.query, $"{genus} {species} {variant}".Trim());
 
             //if (this.bodyName.Contains("A 3") && genus?.Contains("Amphora") == true) Debugger.Break();
-            //if (currentName?.Contains("Anemone") == true) Debugger.Break();
+            //if (currentName?.Contains("Araneamus") == true) Debugger.Break();
 
             // add a prediction if no failures and we have genus, species AND variant
             if (failures.Count == 0 && genus != null && species != null && variant != null)
@@ -160,181 +163,28 @@ namespace BioCriterias
 
                     var bodyValue = bodyProps.GetValueOrDefault(propName);
 
-                    // match SOME string(s)
-                    if (clause.op == Op.Is)
+                    switch (clause.op)
                     {
-                        if (clause.values == null) throw new Exception("Missing clause values?");
-
-                        // match a single string
-                        if (bodyValue is string)
-                        {
-                            var bodyValueString = (string)bodyValue;
-                            if (clause.property == "body")
-                            {
-                                // special case for 'body' clauses to use `StartsWith` not `Equals`
-                                if (!clause.values.Any(cv => bodyValueString.StartsWith(cv, StringComparison.OrdinalIgnoreCase)))
-                                    failures.Add(new ClauseFailure(bodyName, "no match found1", clause, bodyValueString));
-                            }
-                            else if (clause.property == "volcanism")
-                            {
-                                // special case for 'volcanism' clauses to use `Contains` not `Equals`
-                                if (clause.values[0] == "Some")
-                                {
-                                    if (bodyValueString == "None")
-                                        failures.Add(new ClauseFailure(bodyName, "no match found2", clause, bodyValueString));
-                                }
-                                else if (!clause.values.Any(cv => bodyValueString.Contains(cv, StringComparison.OrdinalIgnoreCase)))
-                                    failures.Add(new ClauseFailure(bodyName, "no match found3", clause, bodyValueString));
-                            }
-                            else if (!clause.values.Any(cv => bodyValueString.Equals(cv, StringComparison.OrdinalIgnoreCase)))
-                            {
-                                failures.Add(new ClauseFailure(bodyName, "no match found4", clause, bodyValueString));
-                            }
-
-                            continue;
-                        }
-
-                        // match any value from a set of strings
-                        var bodyValues = bodyValue as List<string>;
-                        if (bodyValue is Dictionary<string, float>)
-                            bodyValues = ((Dictionary<string, float>)bodyValue).Keys.ToList();
-
-                        if (bodyValues != null && !clause.values.Any(v => bodyValues.Any(bv => bv.Equals(v, StringComparison.OrdinalIgnoreCase))))
-                            failures.Add(new ClauseFailure(bodyName, "no match found5", clause, string.Join(',', bodyValues)));
-
-                        continue;
+                        // match SOME string(s)
+                        case Op.Is: this.testIsQuery(clause, bodyValue, failures); break;
+                        // match ALL string(s)
+                        case Op.All: this.testAllQuery(clause, bodyValue, failures); break;
+                        // match NO string(s)
+                        case Op.Not: this.testNotQuery(clause, bodyValue, failures); break;
+                        // match min/max
+                        case Op.Range: this.testRangeQuery(clause, bodyValue, failures); break;
+                        // match compositions - ONLY greater-than-or-equals - other operands not yet supported (and may not be needed)
+                        case Op.Composition: this.testCompositionQuery(clause, bodyValue, failures); break;
+                        case Op.Comment: /* no-op */ break;
+                        default:
+                            throw new Exception($"Unexpected clause operation: {clause.op}");
                     }
-
-                    // match ALL string(s)
-                    if (clause.op == Op.All)
-                    {
-                        if (clause.values == null) throw new Exception("Missing clause values?");
-
-                        // match a single string
-                        if (bodyValue is string)
-                        {
-                            Debugger.Break();
-                            //var bodyValueString = (string)bodyValue;
-                            //if (clause.property == "body")
-                            //{
-                            //    // special case for 'body' clauses to use `StartsWith` not `Equals`
-                            //    if (!clause.values.All(cv => bodyValueString.StartsWith(cv, StringComparison.OrdinalIgnoreCase)))
-                            //        failures.Add(new ClauseFailure(bodyName, "no match found1", clause, bodyValueString));
-                            //}
-                            //else if (!clause.values.All(cv => bodyValueString.Equals(cv, StringComparison.OrdinalIgnoreCase)))
-                            //{
-                            //    failures.Add(new ClauseFailure(bodyName, "no match found4", clause, bodyValueString));
-                            //}
-
-                            continue;
-                        }
-
-                        // match any value from a set of strings
-                        var bodyValues = bodyValue as List<string>;
-                        if (bodyValue is Dictionary<string, float>)
-                            bodyValues = ((Dictionary<string, float>)bodyValue).Keys.ToList();
-
-                        if (bodyValues != null && !clause.values.All(v => bodyValues.Any(bv => bv.Equals(v, StringComparison.OrdinalIgnoreCase))))
-                            failures.Add(new ClauseFailure(bodyName, "not all found", clause, string.Join(',', bodyValues)));
-
-                        continue;
-                    }
-
-                    // match NONE string(s)
-                    if (clause.op == Op.Not)
-                    {
-                        if (clause.values == null) throw new Exception("Missing clause values?");
-
-                        // match a single string
-                        if (bodyValue is string)
-                        {
-                            Debugger.Break();
-                            //var bodyValueString = (string)bodyValue;
-                            //if (clause.property == "body")
-                            //{
-                            //    // special case for 'body' clauses to use `StartsWith` not `Equals`
-                            //    if (!clause.values.All(cv => bodyValueString.StartsWith(cv, StringComparison.OrdinalIgnoreCase)))
-                            //        failures.Add(new ClauseFailure(bodyName, "no match found1", clause, bodyValueString));
-                            //}
-                            //else if (!clause.values.All(cv => bodyValueString.Equals(cv, StringComparison.OrdinalIgnoreCase)))
-                            //{
-                            //    failures.Add(new ClauseFailure(bodyName, "no match found4", clause, bodyValueString));
-                            //}
-
-                            continue;
-                        }
-
-                        // match any value from a set of strings
-                        var bodyValues = bodyValue as List<string>;
-                        if (bodyValue is Dictionary<string, float>)
-                            bodyValues = ((Dictionary<string, float>)bodyValue).Keys.ToList();
-
-                        if (bodyValues != null && clause.values.Any(v => bodyValues.Any(bv => bv.Equals(v, StringComparison.OrdinalIgnoreCase))))
-                            failures.Add(new ClauseFailure(bodyName, "one of found", clause, string.Join(',', bodyValues)));
-
-                        continue;
-                    }
-
-                    // match min/max
-                    if (clause.op == Op.Range)
-                    {
-                        if (bodyValue is double)
-                        {
-                            var doubleValue = (double)bodyValue;
-                            if (clause.min != null && doubleValue < clause.min)
-                            {
-                                failures.Add(new ClauseFailure(bodyName, "below min", clause, doubleValue.ToString("n6")));
-                                continue;
-                            }
-                            if (clause.max != null && doubleValue > clause.max)
-                            {
-                                failures.Add(new ClauseFailure(bodyName, "above max", clause, doubleValue.ToString("n6")));
-                                continue;
-                            }
-                        }
-                        else
-                        {
-                            throw new Exception($"Non-numeric body property '{bodyValue}' ({bodyValue?.GetType().Name}) for clause '{clause}'");
-                        }
-
-                        continue;
-                    }
-
-                    // match compositions - ONLY greater-than-or-equals - other operands not yet supported (and may not be needed)
-                    if (clause.op == Op.Composition)
-                    {
-                        var bodyCompositions = bodyValue as Dictionary<string, float>;
-                        if (bodyCompositions != null)
-                        {
-                            // multiple composition clauses should be OR'd (unlike other clauses that use AND)
-                            var localFailures = new List<ClauseFailure>();
-                            foreach (var clauseComposition in clause.compositions!)
-                            {
-                                if (!bodyCompositions.ContainsKey(clauseComposition.Key))
-                                {
-                                    localFailures.Add(new ClauseFailure(bodyName, $"'{clauseComposition.Key}' not present", clause, JsonConvert.SerializeObject(bodyCompositions)));
-                                }
-                                else if (bodyCompositions[clauseComposition.Key] < clauseComposition.Value)
-                                {
-                                    localFailures.Add(new ClauseFailure(bodyName, $"'{clauseComposition.Key}' too low", clause, JsonConvert.SerializeObject(bodyCompositions)));
-                                }
-                            }
-                            // we need all these composition conditions to fail for this whole clause to fail
-                            if (localFailures.Count == clause.compositions.Count)
-                                failures.AddRange(localFailures);
-                        }
-                        continue;
-                    }
-
-                    // Oops - we forgot a clause?
-                    Debugger.Break();
                 }
             }
 
             // trace extra diagnostics?
             if (failures.Count > 0)
             {
-
                 if (logOrganism == "*" || (!string.IsNullOrWhiteSpace(logOrganism) && currentName.EndsWith(logOrganism, StringComparison.OrdinalIgnoreCase)))
                 {
                     var queryTxt = "\t" + string.Join("\r\n\t", query!);
@@ -345,7 +195,146 @@ namespace BioCriterias
             return failures;
         }
 
-        public static async Task testSystem(long address)
+        private void testIsQuery(Clause clause, object? bodyValue, List<ClauseFailure> failures)
+        {
+            if (clause.values == null) throw new Exception("Missing clause values?");
+
+            // match any clause value from a set of bodyValue strings
+            var bodyValues = bodyValue as List<string>;
+            if (bodyValue is Dictionary<string, float>)
+                bodyValues = ((Dictionary<string, float>)bodyValue).Keys.ToList();
+
+            if (bodyValues != null)
+            {
+                if (!clause.values.Any(v => bodyValues.Any(bv => bv.Equals(v, StringComparison.OrdinalIgnoreCase))))
+                    failures.Add(new ClauseFailure(bodyName, "No multi match found", clause, string.Join(',', bodyValues)));
+
+                return;
+            }
+
+            // otherwise ...
+            // match any clause value to a singular string bodyValue
+            if (bodyValue is string)
+            {
+                var bodyValueString = (string)bodyValue;
+                if (clause.property == "body") // body type
+                {
+                    // special case for 'body' clauses to use `StartsWith` not `Equals`
+                    if (!clause.values.Any(cv => bodyValueString.StartsWith(cv, StringComparison.OrdinalIgnoreCase)))
+                        failures.Add(new ClauseFailure(bodyName, "No startsWith match body", clause, bodyValueString));
+                }
+                else if (clause.property == "volcanism")
+                {
+                    // special case for 'volcanism' clauses to use `Contains` not `Equals`
+                    if (clause.values[0] == "Some")
+                    {
+                        if (bodyValueString == "None")
+                            failures.Add(new ClauseFailure(bodyName, "No match Volcanism Some vs None", clause, bodyValueString));
+                    }
+                    else if (!clause.values.Any(cv => bodyValueString.Contains(cv, StringComparison.OrdinalIgnoreCase)))
+                        failures.Add(new ClauseFailure(bodyName, "No match Volcanism parts", clause, bodyValueString));
+                }
+                else if (!clause.values.Any(cv => bodyValueString.Equals(cv, StringComparison.OrdinalIgnoreCase)))
+                {
+                    failures.Add(new ClauseFailure(bodyName, "No single match found", clause, bodyValueString));
+                }
+
+                return;
+            }
+
+            Game.log($"Unexpected bodyValue type: {bodyValue?.GetType().Name}");
+            Debugger.Break();
+        }
+
+        private void testAllQuery(Clause clause, object? bodyValue, List<ClauseFailure> failures)
+        {
+            if (clause.values == null) throw new Exception("Missing clause values?");
+
+            // convert singular bodyValue strings into a list
+            if (bodyValue is string)
+                bodyValue = new List<string>() { (string)bodyValue };
+
+            // match ALL clause values from a set of bodyValue strings
+            var bodyValues = bodyValue as List<string>;
+            if (bodyValue is Dictionary<string, float>)
+                bodyValues = ((Dictionary<string, float>)bodyValue).Keys.ToList();
+
+            if (bodyValues != null)
+            {
+                if (bodyValues != null && !clause.values.All(v => bodyValues.Any(bv => bv.Equals(v, StringComparison.OrdinalIgnoreCase))))
+                    failures.Add(new ClauseFailure(bodyName, "Not ALL found", clause, string.Join(',', bodyValues)));
+
+                return;
+            }
+
+            Game.log($"Unexpected bodyValue type: {bodyValue?.GetType().Name}");
+            Debugger.Break();
+        }
+
+        private void testNotQuery(Clause clause, object? bodyValue, List<ClauseFailure> failures)
+        {
+            if (clause.values == null) throw new Exception("Missing clause values?");
+
+            // convert singular bodyValue strings into a list
+            if (bodyValue is string)
+                bodyValue = new List<string>() { (string)bodyValue };
+
+            // match NO value from a set of strings
+            var bodyValues = bodyValue as List<string>;
+            if (bodyValue is Dictionary<string, float>)
+                bodyValues = ((Dictionary<string, float>)bodyValue).Keys.ToList();
+
+            if (bodyValues != null && clause.values.Any(v => bodyValues.Any(bv => bv.Equals(v, StringComparison.OrdinalIgnoreCase))))
+                failures.Add(new ClauseFailure(bodyName, "Must NOT have", clause, string.Join(',', bodyValues)));
+        }
+
+        private void testRangeQuery(Clause clause, object? bodyValue, List<ClauseFailure> failures)
+        {
+            if (bodyValue is double)
+            {
+                var doubleValue = (double)bodyValue;
+                if (clause.min != null && doubleValue < clause.min)
+                {
+                    failures.Add(new ClauseFailure(bodyName, "Below min", clause, doubleValue.ToString("n6")));
+                    return;
+                }
+                if (clause.max != null && doubleValue > clause.max)
+                {
+                    failures.Add(new ClauseFailure(bodyName, "Above max", clause, doubleValue.ToString("n6")));
+                    return;
+                }
+            }
+            else
+            {
+                throw new Exception($"Non-numeric body property '{bodyValue}' ({bodyValue?.GetType().Name}) for clause '{clause}'");
+            }
+        }
+
+        private void testCompositionQuery(Clause clause, object? bodyValue, List<ClauseFailure> failures)
+        {
+            var bodyCompositions = bodyValue as Dictionary<string, float>;
+            if (bodyCompositions != null)
+            {
+                // multiple composition clauses should be OR'd (unlike other clauses that use AND)
+                var localFailures = new List<ClauseFailure>();
+                foreach (var clauseComposition in clause.compositions!)
+                {
+                    if (!bodyCompositions.ContainsKey(clauseComposition.Key))
+                    {
+                        localFailures.Add(new ClauseFailure(bodyName, $"'{clauseComposition.Key}' not present", clause, JsonConvert.SerializeObject(bodyCompositions)));
+                    }
+                    else if (bodyCompositions[clauseComposition.Key] < clauseComposition.Value)
+                    {
+                        localFailures.Add(new ClauseFailure(bodyName, $"'{clauseComposition.Key}' too low", clause, JsonConvert.SerializeObject(bodyCompositions)));
+                    }
+                }
+                // we need all these composition conditions to fail for this whole clause to fail
+                if (localFailures.Count == clause.compositions.Count)
+                    failures.AddRange(localFailures);
+            }
+        }
+
+        private static async Task testSystem(long address)
         {
             var cmdr = "none";
             var fid = "F101";
@@ -369,7 +358,7 @@ namespace BioCriterias
             foreach (var body in systemData.bodies)
             {
                 BioPredictor.logOrganism = "";
-                var predictions = BioPredictor.predict(body);
+                var predictions = BioPredictor.predict(body); // <---
 
                 if (predictions.Count > 0)
                 {
@@ -385,7 +374,7 @@ namespace BioCriterias
                         if (missed.Count > 0)
                         {
                             txt += $"MISSED: \r\n\t" + string.Join("\r\n\t", missed);
-                            BioPredictor.logOrganism = missed.First().Split(" ")[1];
+                            BioPredictor.logOrganism = missed.First().Split(" ")[1]; // revert for non-legacy organisms
                             Game.log(txt);
                             Debugger.Break();
                         }
@@ -400,7 +389,8 @@ namespace BioCriterias
                     }
                     else
                     {
-                        // Game.log($"\r\n** {body.system.address} '{body.name}' ({body.id}) nothing real, but predicted: **\r\n\t" + string.Join("\r\n\t", predictions) + "\r\n");
+                        Game.log($"\r\n** {body.system.address} '{body.name}' ({body.id}) nothing real, but predicted: **\r\n\t" + string.Join("\r\n\t", predictions) + "\r\n");
+                        //Debugger.Break();
                     }
 
                 }
@@ -468,7 +458,7 @@ namespace BioCriterias
                 ///* New places to try */
                 //147547244739, //     Outorst OC-M d7-4         - Elysian Shore
                 //79347697283, //      Cyoidai VI-B d2           - Sanguineous Rim
-                //8084881608371, //    Graea Hypue IS-R d5-235   - Norma Expanse
+                //8084881608371, //    Graea Hypue IS-R d5-235   - Norma Expanse // legacy in atmosphere :/
                 //37790682707, //      Bleae Phlai AK-I d9-1     - Errant Marches
                 //10887906389, //      Eor Audst LM-W f1-20      - Odin's Hold
                 //234056927058952, //  Phroi Pri GM-W a1-13      - Galactic Centre
@@ -535,7 +525,7 @@ namespace BioCriterias
                 //27118431768755, //   Dryio Flyuae IY-Q d5-789   - Inner Scutum-Centaurus Arm
                 //1005903105339, //    Skaude GD-Q d6-29          - Inner Scutum-Centaurus Arm
                 //800801672259, //     Flyooe Hypue FT-O d7-23    - Inner Orion Spur
-                //2004164284331, //    Byoi Aip VE-R d4-58        - Norma Arm
+                //2004164284331, //    Byoi Aip VE-R d4-58        - Norma Arm // Stratum Emerald star F vs N ??
                 //14096678161971, //   Clooku HI-R d5-410         - Inner Scutum-Centaurus Arm
                 //175621288252019, //  Dumbio GN-B d13-5111       - Odin's Hold
 
@@ -556,7 +546,8 @@ namespace BioCriterias
                 //1726677521610, // Bleae Thaa XX-H c23-6
                 //516869988849, // Slegue TP-Z b57-0
 
-                ///* Bark Mounds */
+                /* Bark Mounds */
+                // resume here !!!
                 //13876099622273, // Pencil Sector MR-W b1-6
                 //2036007784483, // Eulail RX-T d3-59
                 //869487643043, // IC 4604 Sector DL-Y d25
@@ -564,22 +555,45 @@ namespace BioCriterias
                 //// Amphora Plant
                 //13648186819, // Eifoqs XZ-N d7-0
                 //82032053243, // Pyroifa DX-A d14-2
+                //320570575667, // Blaa Dryou FN-R d5-9
+                //150969781115, // Blaea Euq OO-Z d13-4
 
-                /* Luteolum Anemone */
+                ///* Luteolum Anemone */
                 //52837737636, // HR 326
-                4998038101, // HIP 42398
-                1238889013, // HD 37127
+                //4998038101, // HIP 42398
+                //1238889013, // HD 37127
+
+                ///* Prasinum Bioluminescent Anemone */
+                //284175090653, // Floawns OS-U f2-529
+                //36011151, // GCRV 950
+
+                ///* Brain Trees */
+                //802563263091, // Eta Carina Sector EL-Y d23
+                //835329116475, // Col 132 Sector BM-M d7-24
+                //1797418617131, // Col 140 Sector BQ-Y d52
+
+                ///* Tubers */
+                //143518344886673, // Blua Hypa PI-A b47-65 (partially useful)
+
+                ///* Shards */
+                //100562634522, // Aidoms MT-U c2-0 (partially useful)
             };
 
             Game.log($"Testing {testSystems.Count} systems ...");
             var startTime = DateTime.Now;
+            useTestCache = true;
+            try
+            {
+                // in series
+                foreach (var address in testSystems) await testSystem(address);
 
-            // in series
-            foreach (var address in testSystems) await testSystem(address);
-
-            //// in parallel
-            //await Task.WhenAll(testSystems.Select(a => testSystem(a)));
-
+                //// in parallel
+                //await Task.WhenAll(testSystems.Select(a => testSystem(a)));
+            }
+            finally
+            {
+                useTestCache = false;
+            }
             Game.log($"All done: everything - count: {testSystems.Count}, duration: {DateTime.Now - startTime}");
         }
     }

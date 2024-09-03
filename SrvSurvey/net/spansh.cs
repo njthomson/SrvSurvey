@@ -31,9 +31,23 @@ namespace SrvSurvey.net
 
         public async Task<ApiSystemDumpSystem> getSystemDump(long systemAddress)
         {
-            Game.log($"Requesting getSystem: {systemAddress}");
+            var cacheFilename = Path.Combine(BioPredictor.testCacheFolder, $"getSystemDump-{systemAddress}.json");
+            string json;
+            if (BioPredictor.useTestCache && File.Exists(cacheFilename))
+            {
+                json = File.ReadAllText(cacheFilename);
+            }
+            else
+            {
+                Game.log($"Requesting getSystem: {systemAddress}");
+                json = await Spansh.client.GetStringAsync($"https://spansh.co.uk/api/dump/{systemAddress}/");
+                if (BioPredictor.useTestCache)
+                {
+                    Directory.CreateDirectory(BioPredictor.testCacheFolder);
+                    File.WriteAllText(cacheFilename, json);
+                }
+            }
 
-            var json = await Spansh.client.GetStringAsync($"https://spansh.co.uk/api/dump/{systemAddress}/");
             var systemDump = JsonConvert.DeserializeObject<ApiSystemDump>(json)!;
             return systemDump.system;
         }

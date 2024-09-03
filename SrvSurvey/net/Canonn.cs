@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using BioCriterias;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SrvSurvey.game;
 using SrvSurvey.net;
@@ -91,10 +92,24 @@ namespace SrvSurvey.canonn
             return biostats;
         }
 
-
         public async Task<CanonnBodyBioStats> systemBioStats(long systemAddress)
         {
-            var json = await client.GetStringAsync($"https://us-central1-canonn-api-236217.cloudfunctions.net/query/codex/biostats?id={systemAddress}");
+            var cacheFilename = Path.Combine(BioPredictor.testCacheFolder, $"systemBioStats-{systemAddress}.json");
+            string json;
+            if (BioPredictor.useTestCache && File.Exists(cacheFilename))
+            {
+                json = File.ReadAllText(cacheFilename);
+            }
+            else
+            {
+                json = await client.GetStringAsync($"https://us-central1-canonn-api-236217.cloudfunctions.net/query/codex/biostats?id={systemAddress}");
+                if (BioPredictor.useTestCache)
+                {
+                    Directory.CreateDirectory(BioPredictor.testCacheFolder);
+                    File.WriteAllText(cacheFilename, json);
+                }
+            }
+
             var obj = JsonConvert.DeserializeObject<JObject>(json)!;
             var stats = obj["system"]?.ToObject<CanonnBodyBioStats>()!;
             return stats;

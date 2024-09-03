@@ -2,6 +2,7 @@
   "ghVer": "1.1.3.125",
   "msVer": "1.1.3.0",
   "bioCriteria": 3,
+  "bioEngine": 3,
   "codexRef": 4,
   "settlementTemplate": 33,
   "guardian": 33
