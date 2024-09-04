@@ -40,43 +40,53 @@
             dateTimePicker = new DateTimePicker();
             comboCmdr = new ComboBox();
             btnLongAgo = new Button();
+            label1 = new Label();
+            label2 = new Label();
+            label3 = new Label();
+            label4 = new Label();
+            txtJumpCount = new TextBox();
+            txtDistance = new TextBox();
+            txtBodyCount = new TextBox();
+            txtOrgCount = new TextBox();
             SuspendLayout();
             // 
             // btnStart
             // 
-            btnStart.Location = new Point(565, 127);
+            btnStart.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            btnStart.Location = new Point(94, 197);
             btnStart.Name = "btnStart";
-            btnStart.Size = new Size(223, 23);
-            btnStart.TabIndex = 1;
+            btnStart.Size = new Size(400, 23);
+            btnStart.TabIndex = 7;
             btnStart.Text = "Process journals";
             btnStart.UseVisualStyleBackColor = true;
             btnStart.Click += btnStart_Click;
             // 
             // progress
             // 
-            progress.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            progress.Location = new Point(12, 181);
+            progress.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            progress.Location = new Point(12, 253);
             progress.Name = "progress";
-            progress.Size = new Size(776, 23);
-            progress.TabIndex = 2;
+            progress.Size = new Size(481, 23);
+            progress.TabIndex = 9;
             // 
             // lblProgress
             // 
+            lblProgress.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             lblProgress.AutoSize = true;
-            lblProgress.Location = new Point(12, 154);
+            lblProgress.Location = new Point(12, 227);
             lblProgress.Name = "lblProgress";
             lblProgress.Size = new Size(130, 15);
-            lblProgress.TabIndex = 3;
+            lblProgress.TabIndex = 8;
             lblProgress.Text = "Processing ? of ? files ...";
             // 
             // btnSystems
             // 
-            btnSystems.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnSystems.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnSystems.Enabled = false;
-            btnSystems.Location = new Point(678, 39);
+            btnSystems.Location = new Point(12, 316);
             btnSystems.Name = "btnSystems";
-            btnSystems.Size = new Size(110, 23);
-            btnSystems.TabIndex = 4;
+            btnSystems.Size = new Size(41, 23);
+            btnSystems.TabIndex = 18;
             btnSystems.Text = "Process systems";
             btnSystems.UseVisualStyleBackColor = true;
             btnSystems.Visible = false;
@@ -84,72 +94,172 @@
             // 
             // lblDesc
             // 
+            lblDesc.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             lblDesc.Location = new Point(12, 9);
             lblDesc.Name = "lblDesc";
-            lblDesc.Size = new Size(776, 38);
-            lblDesc.TabIndex = 6;
+            lblDesc.Size = new Size(481, 97);
+            lblDesc.TabIndex = 0;
             lblDesc.Text = resources.GetString("lblDesc.Text");
             // 
             // linkLabel1
             // 
             linkLabel1.AutoSize = true;
-            linkLabel1.Location = new Point(12, 47);
+            linkLabel1.Location = new Point(12, 106);
             linkLabel1.Name = "linkLabel1";
             linkLabel1.Size = new Size(124, 15);
-            linkLabel1.TabIndex = 7;
+            linkLabel1.TabIndex = 1;
             linkLabel1.TabStop = true;
             linkLabel1.Text = "Learn more in the wiki";
+            linkLabel1.LinkClicked += linkLabel1_LinkClicked;
             // 
             // lblCmdr
             // 
+            lblCmdr.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             lblCmdr.AutoSize = true;
-            lblCmdr.Location = new Point(12, 78);
+            lblCmdr.Location = new Point(12, 142);
             lblCmdr.Name = "lblCmdr";
             lblCmdr.Size = new Size(77, 15);
-            lblCmdr.TabIndex = 8;
+            lblCmdr.TabIndex = 2;
             lblCmdr.Text = "Commander:";
             // 
             // lblStartDate
             // 
+            lblStartDate.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             lblStartDate.AutoSize = true;
-            lblStartDate.Location = new Point(29, 107);
+            lblStartDate.Location = new Point(29, 171);
             lblStartDate.Name = "lblStartDate";
             lblStartDate.Size = new Size(60, 15);
-            lblStartDate.TabIndex = 9;
+            lblStartDate.TabIndex = 4;
             lblStartDate.Text = "Start date:";
             // 
             // dateTimePicker
             // 
-            dateTimePicker.Location = new Point(95, 104);
+            dateTimePicker.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            dateTimePicker.Location = new Point(95, 168);
             dateTimePicker.Name = "dateTimePicker";
             dateTimePicker.Size = new Size(223, 23);
-            dateTimePicker.TabIndex = 10;
+            dateTimePicker.TabIndex = 5;
             dateTimePicker.ValueChanged += dateTimePicker_ValueChanged;
             // 
             // comboCmdr
             // 
+            comboCmdr.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             comboCmdr.DropDownStyle = ComboBoxStyle.DropDownList;
             comboCmdr.FormattingEnabled = true;
-            comboCmdr.Location = new Point(95, 75);
+            comboCmdr.Location = new Point(95, 139);
             comboCmdr.Name = "comboCmdr";
             comboCmdr.Size = new Size(398, 23);
-            comboCmdr.TabIndex = 11;
+            comboCmdr.TabIndex = 3;
             // 
             // btnLongAgo
             // 
-            btnLongAgo.Location = new Point(324, 104);
+            btnLongAgo.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            btnLongAgo.Location = new Point(325, 168);
             btnLongAgo.Name = "btnLongAgo";
             btnLongAgo.Size = new Size(169, 23);
-            btnLongAgo.TabIndex = 12;
+            btnLongAgo.TabIndex = 6;
             btnLongAgo.Text = "Set beginning of time";
             btnLongAgo.UseVisualStyleBackColor = true;
             btnLongAgo.Click += btnLongAgo_Click;
             // 
+            // label1
+            // 
+            label1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            label1.AutoSize = true;
+            label1.Location = new Point(93, 285);
+            label1.Name = "label1";
+            label1.Size = new Size(67, 15);
+            label1.TabIndex = 10;
+            label1.Text = "FSD Jumps:";
+            // 
+            // label2
+            // 
+            label2.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            label2.AutoSize = true;
+            label2.Location = new Point(290, 285);
+            label2.Name = "label2";
+            label2.Size = new Size(126, 15);
+            label2.TabIndex = 12;
+            label2.Text = "Distance travelled (LY):";
+            // 
+            // label3
+            // 
+            label3.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            label3.AutoSize = true;
+            label3.Location = new Point(93, 314);
+            label3.Name = "label3";
+            label3.Size = new Size(111, 15);
+            label3.TabIndex = 14;
+            label3.Text = "Bodies approached:";
+            // 
+            // label4
+            // 
+            label4.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            label4.AutoSize = true;
+            label4.Location = new Point(290, 314);
+            label4.Name = "label4";
+            label4.Size = new Size(114, 15);
+            label4.TabIndex = 16;
+            label4.Text = "Organisms scanned:";
+            // 
+            // txtJumpCount
+            // 
+            txtJumpCount.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            txtJumpCount.Location = new Point(213, 282);
+            txtJumpCount.Name = "txtJumpCount";
+            txtJumpCount.ReadOnly = true;
+            txtJumpCount.Size = new Size(71, 23);
+            txtJumpCount.TabIndex = 11;
+            txtJumpCount.Text = "0";
+            txtJumpCount.TextAlign = HorizontalAlignment.Center;
+            // 
+            // txtDistance
+            // 
+            txtDistance.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            txtDistance.Location = new Point(422, 282);
+            txtDistance.Name = "txtDistance";
+            txtDistance.ReadOnly = true;
+            txtDistance.Size = new Size(71, 23);
+            txtDistance.TabIndex = 13;
+            txtDistance.Text = "0";
+            txtDistance.TextAlign = HorizontalAlignment.Center;
+            // 
+            // txtBodyCount
+            // 
+            txtBodyCount.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            txtBodyCount.Location = new Point(213, 311);
+            txtBodyCount.Name = "txtBodyCount";
+            txtBodyCount.ReadOnly = true;
+            txtBodyCount.Size = new Size(71, 23);
+            txtBodyCount.TabIndex = 15;
+            txtBodyCount.Text = "0";
+            txtBodyCount.TextAlign = HorizontalAlignment.Center;
+            // 
+            // txtOrgCount
+            // 
+            txtOrgCount.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            txtOrgCount.Location = new Point(422, 311);
+            txtOrgCount.Name = "txtOrgCount";
+            txtOrgCount.ReadOnly = true;
+            txtOrgCount.Size = new Size(71, 23);
+            txtOrgCount.TabIndex = 17;
+            txtOrgCount.Text = "0";
+            txtOrgCount.TextAlign = HorizontalAlignment.Center;
+            // 
             // FormPostProcess
             // 
+            AcceptButton = btnStart;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 216);
+            ClientSize = new Size(505, 351);
+            Controls.Add(txtOrgCount);
+            Controls.Add(txtBodyCount);
+            Controls.Add(txtDistance);
+            Controls.Add(txtJumpCount);
+            Controls.Add(label4);
+            Controls.Add(label3);
+            Controls.Add(label2);
+            Controls.Add(label1);
             Controls.Add(btnLongAgo);
             Controls.Add(comboCmdr);
             Controls.Add(dateTimePicker);
@@ -165,7 +275,8 @@
             Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             Name = "FormPostProcess";
-            Text = "Post Process Journals";
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "SrvSurvey - Old Journal Processor";
             ResumeLayout(false);
             PerformLayout();
         }
@@ -182,5 +293,13 @@
         private DateTimePicker dateTimePicker;
         private ComboBox comboCmdr;
         private Button btnLongAgo;
+        private Label label1;
+        private Label label2;
+        private Label label3;
+        private Label label4;
+        private TextBox txtJumpCount;
+        private TextBox txtDistance;
+        private TextBox txtBodyCount;
+        private TextBox txtOrgCount;
     }
 }

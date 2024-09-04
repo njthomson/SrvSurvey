@@ -34,6 +34,8 @@ namespace SrvSurvey
         public readonly string? cmdrName;
         public readonly bool isOdyssey;
 
+        public bool isShutdown { get; private set; }
+
         public JournalFile(string filepath, string? targetCmdr = null)
         {
             Game.log($"Reading: {Path.GetFileName(filepath)}");
@@ -74,7 +76,10 @@ namespace SrvSurvey
             var entry = this.parseNextEntry();
 
             if (entry != null)
+            {
                 this.Entries.Add(entry);
+                if (entry.@event == nameof(Shutdown)) this.isShutdown = true;
+            }
 
             return entry;
         }

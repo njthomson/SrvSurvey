@@ -27,7 +27,7 @@ namespace SrvSurvey
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
@@ -51,7 +51,9 @@ namespace SrvSurvey
 
             try
             {
-                Application.Run(new Main());
+                var invokePostProcessor = args.Any(s => s == FormPostProcess.cmdArg);
+                Form mainForm = invokePostProcessor ? new FormPostProcess() : new Main();
+                Application.Run(mainForm);
             }
             catch (Exception ex)
             {

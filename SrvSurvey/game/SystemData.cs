@@ -101,6 +101,21 @@ namespace SrvSurvey.game
             }
         }
 
+        public static void CloseAll()
+        {
+            Game.log($"Closing and saving {cache.Count} entries");
+            lock (cache)
+            {
+                // ensure data is saved then remove from the cache
+                while (cache.Any())
+                {
+                    var data = cache.First().Value;
+                    data.Save();
+                    cache.Remove(data.address);
+                }
+            }
+        }
+
         public static SystemData From(ISystemDataStarter entry, string? fid = null, string? cmdrName = null)
         {
             lock (cache)

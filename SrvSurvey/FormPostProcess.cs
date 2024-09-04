@@ -1,12 +1,12 @@
 ﻿using Newtonsoft.Json;
 using SrvSurvey.game;
 using System.ComponentModel;
-using System.Diagnostics;
 
 namespace SrvSurvey
 {
     public partial class FormPostProcess : Form
     {
+        public static string cmdArg = "-scan-old";
         public static FormPostProcess? activeForm;
 
         public static void show()
@@ -30,10 +30,11 @@ namespace SrvSurvey
         public long lastSystemAddress;
         public int? lastBodyId;
 
-        private FormPostProcess()
+        public FormPostProcess()
         {
             InitializeComponent();
             Util.useLastLocation(this, Game.settings!.formPostProcess, true);
+            FormPostProcess.activeForm = this;
 
             // load potential cmdr's
             this.allCmdrs = CommanderSettings.getAllCmdrs();
@@ -43,7 +44,22 @@ namespace SrvSurvey
             dateTimePicker.Value = DateTime.Now.Subtract(new TimeSpan(6, 23, 59, 59) + DateTime.Now.TimeOfDay);
             this.targetStartTime = dateTimePicker.Value;
 
-            btnStart.Enabled = !Elite.isGameRunning;
+            btnStart.Enabled = false;
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+
+            // async initialize things, block process starting until they are done
+            this.BeginInvoke(() =>
+            {
+                Game.codexRef.init(false).ContinueWith(t => this.BeginInvoke(() =>
+                {
+                    btnStart.Enabled = true;
+                    btnStart.Focus();
+                }));
+            });
         }
 
         protected override void OnResizeEnd(EventArgs e)
@@ -113,6 +129,7 @@ namespace SrvSurvey
             {
                 this.cancelprocessing = true;
                 btnStart.Text = "Stopping";
+                btnStart.Enabled = false;
             }
         }
 
@@ -135,8 +152,10 @@ namespace SrvSurvey
             this.processingFiles = true;
             var lastDate = "";
             var countJumps = 0;
+            var countDistance = 0d;
             var countBodies = 0;
             var countOrganisms = 0;
+            var startTime = DateTime.Now;
             try
             {
                 // get list of files to process, date filtered and ordered oldest first
@@ -150,17 +169,29 @@ namespace SrvSurvey
 
                 this.Invoke(new Action(() =>
                 {
-                    lblProgress.Text = $"Processing #{0} of {files.Length} journal files ... (~?, jumps: {countJumps}, approached bodies: {countBodies}, organisms scanned: {countOrganisms})";
+                    lblProgress.Text = $"Processing #{0} of {files.Length} journal files ... (from: ?, elapsed: )";
+                    txtJumpCount.Text = countJumps.ToString("N0");
+                    txtDistance.Text = countDistance.ToString("N0");
+                    txtBodyCount.Text = countBodies.ToString("N0");
+                    txtOrgCount.Text = countOrganisms.ToString("N0");
+
                     progress.Maximum = files.Length;
                     progress.Value = 0;
+                    Data.suppressLoadingMsg = true;
                 }));
 
                 // read each journal file...
                 for (var n = 0; n < files.Length; n++)
                 {
+                    if (this.cancelprocessing) break;
                     this.Invoke(new Action(() =>
                     {
-                        lblProgress.Text = $"Processing #{n} of {files.Length} journal files ... (~{lastDate}, jumps: {countJumps}, approached bodies: {countBodies}, organisms scanned: {countOrganisms})";
+                        var elapsed = DateTime.Now - startTime;
+                        lblProgress.Text = $"Processing #{n} of {files.Length} journal files ... (from: {lastDate}, elapsed: {elapsed.ToString("mm\\:ss")})";
+                        txtJumpCount.Text = countJumps.ToString("N0");
+                        txtDistance.Text = countDistance.ToString("N0");
+                        txtBodyCount.Text = countBodies.ToString("N0");
+                        txtOrgCount.Text = countOrganisms.ToString("N0");
                         progress.Maximum = files.Length;
                         progress.Value = n;
 
@@ -168,8 +199,6 @@ namespace SrvSurvey
                             lblProgress.Text = "Stopped. " + lblProgress.Text;
                     }));
 
-                    if (Elite.isGameRunning) this.cancelprocessing = true;
-                    if (this.cancelprocessing) break;
 
                     // skip if wrong cmdr
                     var filepath = files[n];
@@ -180,6 +209,8 @@ namespace SrvSurvey
 
                     var journal = new JournalFile(filepath, this.targetCmdrName);
                     if (journal.cmdrName != this.targetCmdrName) continue;
+                    if (!journal.isShutdown) continue;
+
                     lastDate = journal.timestamp.ToShortDateString();
 
                     if (journal.isOdyssey)
@@ -188,7 +219,13 @@ namespace SrvSurvey
                         SystemData? sysData = null;
                         foreach (var entry in journal.Entries)
                         {
-                            if (entry.@event == nameof(FSDJump)) countJumps++;
+                            if (this.cancelprocessing) break;
+
+                            if (entry.@event == nameof(FSDJump))
+                            {
+                                countJumps++;
+                                countDistance += ((FSDJump)entry).JumpDist;
+                            }
                             if (entry.@event == nameof(ApproachBody)) countBodies++;
                             if (entry.@event == nameof(ScanOrganic) && ((ScanOrganic)entry).ScanType == ScanType.Analyse) countOrganisms++;
 
@@ -198,17 +235,9 @@ namespace SrvSurvey
                                 if (sysData != null)
                                 {
                                     sysData.Save();
-                                    SystemData.Close(sysData);
                                 }
 
                                 sysData = SystemData.From(starterEvent, this.targetCmdrFid, this.targetCmdrName);
-                            }
-
-                            var locationEvent = entry as SrvSurvey.Location;
-                            if (sysData != null && locationEvent != null && locationEvent.SystemAddress != sysData.address)
-                            {
-                                sysData.Save();
-                                SystemData.Close(sysData);
                             }
 
                             // process play-forward entry
@@ -239,11 +268,26 @@ namespace SrvSurvey
                     {
                         // for pre-Odyssey - we're only going to process Codex events for first finds
                         double[] lastStarPos = new double[0];
+                        var lastBodyId = 0;
                         foreach (var entry in journal.Entries)
                         {
-                            if (entry.@event == nameof(FSDJump)) countJumps++;
-                            if (entry.@event == nameof(ApproachBody)) countBodies++;
+                            if (this.cancelprocessing) break;
+
+                            if (entry.@event == nameof(FSDJump))
+                            {
+                                countJumps++;
+                                countDistance += ((FSDJump)entry).JumpDist;
+                            }
+                            if (entry.@event == nameof(ApproachBody))
+                            {
+                                countBodies++;
+                                lastBodyId = ((ApproachBody)entry).BodyID;
+                            }
                             if (entry.@event == nameof(ScanOrganic) && ((ScanOrganic)entry).ScanType == ScanType.Analyse) countOrganisms++;
+                            if (entry.@event == nameof(LeaveBody))
+                                lastBodyId = 0;
+                            if (entry.@event == nameof(Location))
+                                lastBodyId = ((Location)entry).BodyID;
 
                             // take the last StarPos value from anything that has it
                             var propStarPos = entry.GetType().GetProperty("StarPos");
@@ -262,14 +306,16 @@ namespace SrvSurvey
                                     ? EliteDangerousRegionMap.RegionMap.FindRegion(lastStarPos).Id
                                     : GalacticRegions.getIdxFromName(codexEntry.Region);
 
-                                if (codexEntry.SubCategory_Localised == "Organic structures" && (codexEntry.BodyID == null || codexEntry.BodyID == 0))
-                                    Debugger.Break(); // TODO: Does this ever happen?
+                                //if (codexEntry.SubCategory_Localised == "Organic structures" && (codexEntry.BodyID == null || codexEntry.BodyID == 0) && lastBodyId == 0)
+                                //    Debugger.Break(); // TODO: Does this ever happen?
 
-                                cmdrCodex.trackCodex(codexEntry.Name_Localised, codexEntry.EntryID, codexEntry.timestamp, codexEntry.SystemAddress, codexEntry.BodyID, galacticRegionId);
+                                cmdrCodex.trackCodex(codexEntry.Name_Localised, codexEntry.EntryID, codexEntry.timestamp, codexEntry.SystemAddress, codexEntry.BodyID ?? lastBodyId, galacticRegionId);
                             }
 
                         }
                     }
+
+                    SystemData.CloseAll();
                 }
             }
             finally
@@ -279,15 +325,21 @@ namespace SrvSurvey
 
                 this.BeginInvoke(new Action(() =>
                 {
-                    //lblProgress.Text = $"Completed journal processing.";
-                    lblProgress.Text = $"Final tally: ~{lastDate}, jumps: {countJumps}, approached bodies: {countBodies}, organisms scanned: {countOrganisms}";
+                    var elapsed = DateTime.Now - startTime;
+                    lblProgress.Text = $"Final entry: from: {lastDate}, elapsed: {elapsed.ToString("mm\\:ss")}";
+                    txtJumpCount.Text = countJumps.ToString("N0");
+                    txtDistance.Text = countDistance.ToString("N0");
+                    txtBodyCount.Text = countBodies.ToString("N0");
+                    txtOrgCount.Text = countOrganisms.ToString("N0");
 
                     btnStart.Text = "Begin";
+                    btnStart.Enabled = true;
                     btnSystems.Enabled = true;
-                    progress.Value = progress.Minimum;
+                    progress.Value = progress.Maximum;
                     comboCmdr.Enabled = true;
                     dateTimePicker.Enabled = true;
                     btnLongAgo.Enabled = true;
+                    Data.suppressLoadingMsg = false;
                 }));
             }
         }
@@ -393,6 +445,11 @@ namespace SrvSurvey
                     progress.Value = progress.Minimum;
                 }));
             }
+        }
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Util.openLink("https://github.com/njthomson/SrvSurvey/wiki/Old-Journal-Processor");
         }
     }
 

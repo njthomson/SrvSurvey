@@ -468,7 +468,7 @@ namespace SrvSurvey
 
         private void btnPostProcess_Click(object sender, EventArgs e)
         {
-            FormPostProcess.show();
+            Process.Start(Application.ExecutablePath, FormPostProcess.cmdArg);
         }
     }
 }
