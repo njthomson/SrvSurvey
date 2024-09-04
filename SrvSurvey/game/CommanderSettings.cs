@@ -122,16 +122,16 @@ namespace SrvSurvey.game
             this.setTouchdown(null, -1);
         }
 
-        public void setGalacticRegion(string region)
+        public void setGalacticRegion(StarPos starPos)
         {
-            if (this.galacticRegion != region)
-            {
-                var regionName = GalacticRegions.mapRegions.GetValueOrDefault(region) ?? "??";
-                Game.log($"Congratulations for entering: {regionName} ({region})");
-            }
+            var region = EliteDangerousRegionMap.RegionMap.FindRegion(starPos.x, starPos.y, starPos.z);
+            var regionId = GalacticRegions.getNameFromIdx(region.Id);
 
-            this.galacticRegion = region;
-            this.Save();
+            if (this.galacticRegion != regionId)
+            {
+                Game.log($"Congratulations for entering: {region.Name} ({regionId})");
+                this.galacticRegion = regionId;
+            }
         }
 
         /// <summary>

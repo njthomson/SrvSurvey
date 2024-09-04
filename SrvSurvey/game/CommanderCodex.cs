@@ -1,10 +1,5 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SrvSurvey.game
 {
@@ -23,24 +18,63 @@ namespace SrvSurvey.game
                 };
         }
 
+        private static CommanderCodex LoadRegion(string fid, string commanderName, int regionId)
+        {
+            var filepath = Path.Combine(Program.dataFolder, $"{fid}-codex-{regionId}.json");
+
+            return Data.Load<CommanderCodex>(filepath)
+                ?? new CommanderCodex()
+                {
+                    filepath = filepath,
+                    commander = commanderName,
+                    fid = fid,
+                    region = GalacticRegions.getDisplayNameFromIdx(regionId),
+                };
+        }
+
         public string fid;
         public string commander;
+        public string? region;
 
         /// <summary>
         /// The timestamp, system address and body Id each entryId was first encountered
         /// </summary>
-        public Dictionary<long, CodexFirst>? codexFirsts = new Dictionary<long, CodexFirst>();
+        public Dictionary<long, CodexFirst> codexFirsts = new Dictionary<long, CodexFirst>();
 
-        public void trackCodex(long entryId, DateTime timestamp, long systemAddress, int? bodyId)
+        /// <summary>
+        /// The timestamp, system address and body Id each entryId was first encountered, per galactic region
+        /// </summary>
+        [JsonIgnore]
+        public Dictionary<int, CommanderCodex> regionalFirsts = new Dictionary<int, CommanderCodex>();
+
+        private CommanderCodex getRegionalTracker(int regionId)
         {
-            if (this.codexFirsts == null) this.codexFirsts = new Dictionary<long, CodexFirst>();
+            // load if not in memory
+            if (!this.regionalFirsts.ContainsKey(regionId))
+                this.regionalFirsts[regionId] = LoadRegion(this.fid, this.commander, regionId);
 
+            return this.regionalFirsts[regionId];
+        }
+
+        public void trackCodex(string displayName, long entryId, DateTime timestamp, long systemAddress, int? bodyId, int regionId)
+        {
+            // check galactic firsts
+            this.trackCodex(displayName, entryId, timestamp, systemAddress, bodyId);
+
+            // then check regional firsts
+            var regionalTracker = this.getRegionalTracker(regionId);
+            regionalTracker.trackCodex(displayName, entryId, timestamp, systemAddress, bodyId);
+        }
+
+        private void trackCodex(string displayName, long entryId, DateTime timestamp, long systemAddress, int? bodyId)
+        {
             // exit early if this is not new
-            if (this.codexFirsts.ContainsKey(entryId) && timestamp > this.codexFirsts[entryId].time) return;
+            if (this.codexFirsts.ContainsKey(entryId) && timestamp >= this.codexFirsts[entryId].time) return;
 
             // add/update list and save
             this.codexFirsts[entryId] = new CodexFirst(timestamp, systemAddress, bodyId ?? -1);
-            Game.log($"New first CodexEntry! {entryId} at systemAddress: {systemAddress}, bodyId: {bodyId}");
+            var scope = this.region ?? "cmdr";
+            Game.log($"New first CodexEntry for {scope}! {displayName} ({entryId}) at systemAddress: {systemAddress}, bodyId: {bodyId}");
 
             // sort by entryId before saving
             this.codexFirsts = this.codexFirsts.OrderBy(_ => _.Key).ToDictionary(_ => _.Key, _ => _.Value);
@@ -49,7 +83,7 @@ namespace SrvSurvey.game
 
         public bool isPersonalFirstDiscovery(long entryId, long systemAddress, int bodyId)
         {
-            var match = this.codexFirsts?.GetValueOrDefault(entryId);
+            var match = this.codexFirsts.GetValueOrDefault(entryId);
 
             // return true if entryId, systemAddress AND bodyId all match
             return match?.address == systemAddress && match?.bodyId == bodyId;
@@ -57,10 +91,23 @@ namespace SrvSurvey.game
 
         public bool isDiscovered(string entryId)
         {
-            return this.codexFirsts?.ContainsKey(long.Parse(entryId)) ?? false;
+            var exists = this.codexFirsts.ContainsKey(long.Parse(entryId));
+            return exists;
+        }
+
+        public bool isDiscoveredInRegion(string entryId, string region)
+        {
+            var regionId = GalacticRegions.getIdxFromName(region);
+            return isDiscoveredInRegion(entryId, regionId);
+        }
+
+        public bool isDiscoveredInRegion(string entryId, int regionId)
+        {
+            var regionalTracker = this.getRegionalTracker(regionId);
+            var exists = regionalTracker.codexFirsts.ContainsKey(long.Parse(entryId));
+            return exists;
         }
     }
-
 
     [JsonConverter(typeof(CodexFirst.JsonConverter))]
     internal class CodexFirst
@@ -90,16 +137,11 @@ namespace SrvSurvey.game
 
             public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
             {
-                //var obj = serializer.Deserialize<JToken>(reader);
-                //if (obj == null || !obj.HasValues) return null;
-
-
-
                 var txt = serializer.Deserialize<string>(reader);
                 if (string.IsNullOrEmpty(txt)) throw new Exception($"Unexpected value: {txt}");
 
                 // "{time}_{address}_{bodyId}"
-                // eg: "xxx"
+                // eg: "2022-08-31T05:38:57_669611992529_11"
                 var parts = txt.Split('_', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 
                 var time = DateTime.Parse(parts[0], CultureInfo.InvariantCulture);
@@ -109,27 +151,12 @@ namespace SrvSurvey.game
                 var data = new CodexFirst(time, addr, body);
 
                 return data;
-
             }
 
             public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
             {
                 var data = value as CodexFirst;
                 if (data == null) throw new Exception($"Unexpected value: {value?.GetType().Name}");
-
-
-                //var obj = new JObject();
-
-                //obj["t"] = JToken.FromObject(data.time.ToString("s", System.Globalization.CultureInfo.InvariantCulture));
-                //obj["a"] = JToken.FromObject(data.address);
-                //obj["b"] = JToken.FromObject(data.bodyId);
-
-                //var json = JsonConvert.SerializeObject(obj); // no indentation
-                //json = json.Replace("{", "{ ")
-                //    .Replace("}", " }")
-                //    .Replace(",", ", ")
-                //    .Replace("\":", "\": ");
-                //writer.WriteRawValue(json);
 
                 var txt = data.ToString();
                 writer.WriteValue(txt);

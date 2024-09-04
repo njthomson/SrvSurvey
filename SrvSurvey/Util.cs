@@ -157,14 +157,6 @@ namespace SrvSurvey
             else
                 txt = (credits / 1_000_000_000d).ToString("#.###") + " B";
 
-            //var millions = credits / 1000000.0D;
-            //if (millions == 0)
-            //    txt = "0 M";
-            //else if (millions < 1000)
-            //    txt = millions.ToString("#.## M");
-            //else
-            //    txt = (millions / 1000).ToString("#.### B");
-
             if (!hideUnits)
                 txt += " CR";
             return txt;
@@ -206,7 +198,6 @@ namespace SrvSurvey
             Game.log($"Adjusting landing location for: {shipType}, dist: {dist}, angle: {angle}\r\npd:{pd}, po:{po} (alt: {Game.activeGame?.status?.Altitude})\r\n{location} =>\r\n{newLocation}");
             return newLocation;
         }
-
 
         public static PointM getOffset(decimal r, LatLong2 p1, float siteHeading = -1)
         {

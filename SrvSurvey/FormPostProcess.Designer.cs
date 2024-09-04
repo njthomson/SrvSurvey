@@ -39,6 +39,7 @@
             lblStartDate = new Label();
             dateTimePicker = new DateTimePicker();
             comboCmdr = new ComboBox();
+            btnLongAgo = new Button();
             SuspendLayout();
             // 
             // btnStart
@@ -70,9 +71,9 @@
             // 
             // btnSystems
             // 
-            btnSystems.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            btnSystems.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnSystems.Enabled = false;
-            btnSystems.Location = new Point(12, 104);
+            btnSystems.Location = new Point(678, 39);
             btnSystems.Name = "btnSystems";
             btnSystems.Size = new Size(110, 23);
             btnSystems.TabIndex = 4;
@@ -111,7 +112,7 @@
             // lblStartDate
             // 
             lblStartDate.AutoSize = true;
-            lblStartDate.Location = new Point(499, 78);
+            lblStartDate.Location = new Point(29, 107);
             lblStartDate.Name = "lblStartDate";
             lblStartDate.Size = new Size(60, 15);
             lblStartDate.TabIndex = 9;
@@ -119,7 +120,7 @@
             // 
             // dateTimePicker
             // 
-            dateTimePicker.Location = new Point(565, 75);
+            dateTimePicker.Location = new Point(95, 104);
             dateTimePicker.Name = "dateTimePicker";
             dateTimePicker.Size = new Size(223, 23);
             dateTimePicker.TabIndex = 10;
@@ -134,11 +135,22 @@
             comboCmdr.Size = new Size(398, 23);
             comboCmdr.TabIndex = 11;
             // 
+            // btnLongAgo
+            // 
+            btnLongAgo.Location = new Point(324, 104);
+            btnLongAgo.Name = "btnLongAgo";
+            btnLongAgo.Size = new Size(169, 23);
+            btnLongAgo.TabIndex = 12;
+            btnLongAgo.Text = "Set beginning of time";
+            btnLongAgo.UseVisualStyleBackColor = true;
+            btnLongAgo.Click += btnLongAgo_Click;
+            // 
             // FormPostProcess
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 216);
+            Controls.Add(btnLongAgo);
             Controls.Add(comboCmdr);
             Controls.Add(dateTimePicker);
             Controls.Add(lblStartDate);
@@ -169,5 +181,6 @@
         private Label lblStartDate;
         private DateTimePicker dateTimePicker;
         private ComboBox comboCmdr;
+        private Button btnLongAgo;
     }
 }

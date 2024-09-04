@@ -51,6 +51,11 @@ namespace EliteDangerousRegionMap
         private const double y0 = -40985;
         private const double z0 = -24105;
 
+        public static Region FindRegion(double[] starPos)
+        {
+            return FindRegion(starPos[0], starPos[1], starPos[2]);
+        }
+
         public static Region FindRegion(double x, double y, double z)
         {
             var px = (int)((x - x0) * 83 / 4096);

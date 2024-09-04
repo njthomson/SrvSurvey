@@ -59,7 +59,10 @@ namespace SrvSurvey.units
 
         public static implicit operator StarPos(double[] pos)
         {
-            return new StarPos(pos);
+            if (pos == null)
+                return null!;
+            else
+                return new StarPos(pos);
         }
     }
 }

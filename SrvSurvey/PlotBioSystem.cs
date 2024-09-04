@@ -89,6 +89,11 @@ namespace SrvSurvey
                     var predictions = body.predictions.Values.Where(p => p.species.genus.name == organism.genus).ToList();
                     var potentialFirstDiscovery = predictions.Any(p => !game.cmdrCodex.isDiscovered(p.entryId));
 
+                    // do we already know if this is a first discovery?
+                    string? discoveryPrefix = null;
+                    if (organism.isCmdrFirst) discoveryPrefix = "⚑ ";
+                    else if (organism.isNewEntry) discoveryPrefix = "⚐ ";
+
                     dty = (int)dty;
 
                     if (first)
@@ -96,9 +101,10 @@ namespace SrvSurvey
                     else
                         g.DrawLine(GameColors.penGameOrangeDim1, four, dty - four, this.ClientSize.Width - eight, dty - four);
 
-                    var minReward = body.getBioRewardForGenus(organism, true);
-                    var maxReward = body.getBioRewardForGenus(organism, false);
-                    drawVolumeBars(g, oneTwo, dty + oneSix, highlight, minReward, maxReward, organism.isFirst || potentialFirstDiscovery);
+                    //var minReward = body.getBioRewardForGenus(organism, true);
+                    //var maxReward = body.getBioRewardForGenus(organism, false);
+                    //drawVolumeBars(g, oneTwo, dty + oneSix, highlight, minReward, maxReward, discoveryPrefix != null);
+                    var yy = dty;
 
                     // displayName is either genus, or species/variant without the genus prefix
                     var displayName = organism.genusLocalized;
@@ -118,7 +124,18 @@ namespace SrvSurvey
                             var lastSpecies = "";
                             foreach (var match in predictions)
                             {
-                                var notDiscovered = !game.cmdrCodex.isDiscovered(match.entryId);
+                                string? prefix = null;
+                                if (!game.cmdrCodex.isDiscovered(match.entryId))
+                                {
+                                    prefix = "⚑";
+                                    discoveryPrefix = "⚑ ";
+                                }
+                                if (!game.cmdrCodex.isDiscoveredInRegion(match.entryId, game.cmdr.galacticRegion))
+                                {
+                                    prefix = "⚐";
+                                    if (discoveryPrefix == null) discoveryPrefix = "⚐ ";
+                                }
+
                                 var isLegacy = !match.species.genus.odyssey;
                                 if (isLegacy)
                                 {
@@ -129,8 +146,8 @@ namespace SrvSurvey
                                     }
                                     var legacyEnglishName = match.species.englishName;
                                     if (legacyEnglishName.EndsWith("Anemone")) legacyEnglishName = legacyEnglishName.Replace("Anemone", "");
-                                    if (notDiscovered)
-                                        this.drawTextAt(twoEight, "⚑" + legacyEnglishName, highlight ? brush : Brushes.Gold);
+                                    if (prefix != null)
+                                        this.drawTextAt(twoEight, prefix + legacyEnglishName, highlight ? brush : Brushes.Gold);
                                     else
                                         this.drawTextAt(twoEight, legacyEnglishName, brush);
 
@@ -160,8 +177,8 @@ namespace SrvSurvey
                                 }
 
                                 dtx -= two;
-                                if (notDiscovered)
-                                    this.drawTextAt("⚑" + match.colorName, highlight ? brush : Brushes.Gold);
+                                if (prefix != null)
+                                    this.drawTextAt(prefix + match.colorName, highlight ? brush : Brushes.Gold);
                                 else
                                     this.drawTextAt(match.colorName, brush);
                             }
@@ -174,6 +191,11 @@ namespace SrvSurvey
 
                     //if (organism.novel == Novelty.cmdrFirst) displayName = "⚑ " + displayName;
                     //if (organism.novel == Novelty.regionFirst) displayName = "⚐ " + displayName;
+
+                    var minReward = body.getBioRewardForGenus(organism, true);
+                    var maxReward = body.getBioRewardForGenus(organism, false);
+                    // or yy ??
+                    drawVolumeBars(g, oneTwo, dty + oneSix, highlight, minReward, maxReward, discoveryPrefix != null);
 
                     // line 1
                     if (displayName.Length > 0)
@@ -198,11 +220,11 @@ namespace SrvSurvey
 
                     // 2nd line - left
                     brush = highlight ? GameColors.brushCyan : GameColors.brushGameOrange;
-                    if (!highlight && (organism.isFirst || potentialFirstDiscovery)) brush = (SolidBrush)Brushes.Gold;
+                    if (!highlight && discoveryPrefix != null) brush = (SolidBrush)Brushes.Gold;
 
-                    var leftText = displayName != organism.genusLocalized || organism.entryId > 0 ? organism.genusLocalized : "?";
-                    if (organism.isCmdrFirst || potentialFirstDiscovery) leftText = "⚑ " + leftText;
-                    else if (organism.isNewEntry) leftText = "⚐ " + leftText;
+                    var leftText = displayName != organism.genusLocalized || organism.entryId > 0 
+                        ? discoveryPrefix + organism.genusLocalized 
+                        : "?";
                     drawTextAt(
                         twoEight,
                         leftText,
@@ -259,7 +281,7 @@ namespace SrvSurvey
             {
                 if (body.bioSignalCount == 0) continue;
                 anyFF |= body.firstFootFall;
-                var potentialFirstDiscovery = body.predictions.Values.Any(p => !game.cmdrCodex.isDiscovered(p.entryId));
+                var potentialFirstDiscovery = body.predictions.Values.Any(p => !game.cmdrCodex.isDiscoveredInRegion(p.entryId, game.cmdr.galacticRegion) || !game.cmdrCodex.isDiscovered(p.entryId));
 
                 var highlight = body.shortName == destinationBody || (body.countAnalyzedBioSignals != body.bioSignalCount && body.countAnalyzedBioSignals > 0);
                 //var highlight = (body == game.systemBody && game.status.hasLatLong) || (game.systemBody == null && body.shortName == destinationBody);

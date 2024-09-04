@@ -1,8 +1,7 @@
 ﻿using Newtonsoft.Json;
 using SrvSurvey.game;
 using System.ComponentModel;
-using System.Security.Cryptography;
-using System.Text;
+using System.Diagnostics;
 
 namespace SrvSurvey
 {
@@ -88,6 +87,12 @@ namespace SrvSurvey
             this.targetStartTime = dateTimePicker.Value;
         }
 
+        private void btnLongAgo_Click(object sender, EventArgs e)
+        {
+            // Original release date for Elite Dangerous
+            dateTimePicker.Value = new DateTime(2014, 12, 15);
+        }
+
         private void btnStart_Click(object sender, EventArgs e)
         {
             if (!this.processingFiles)
@@ -96,6 +101,9 @@ namespace SrvSurvey
                 this.targetCmdrName = comboCmdr.Text;
                 this.targetCmdrFid = this.allCmdrs.First(_ => _.Value == this.targetCmdrName).Key;
 
+                comboCmdr.Enabled = false;
+                dateTimePicker.Enabled = false;
+                btnLongAgo.Enabled = false;
                 btnSystems.Enabled = false;
                 btnStart.Text = "Stop";
 
@@ -104,6 +112,7 @@ namespace SrvSurvey
             else
             {
                 this.cancelprocessing = true;
+                btnStart.Text = "Stopping";
             }
         }
 
@@ -141,7 +150,7 @@ namespace SrvSurvey
 
                 this.Invoke(new Action(() =>
                 {
-                    lblProgress.Text = $"Processing #{0} of {files.Length} journal files ... (~?, jumps: {countJumps}, bodies: {countBodies}, organisms: {countOrganisms})";
+                    lblProgress.Text = $"Processing #{0} of {files.Length} journal files ... (~?, jumps: {countJumps}, approached bodies: {countBodies}, organisms scanned: {countOrganisms})";
                     progress.Maximum = files.Length;
                     progress.Value = 0;
                 }));
@@ -151,7 +160,7 @@ namespace SrvSurvey
                 {
                     this.Invoke(new Action(() =>
                     {
-                        lblProgress.Text = $"Processing #{n} of {files.Length} journal files ... (~{lastDate}, jumps: {countJumps}, bodies: {countBodies}, organisms: {countOrganisms})";
+                        lblProgress.Text = $"Processing #{n} of {files.Length} journal files ... (~{lastDate}, jumps: {countJumps}, approached bodies: {countBodies}, organisms scanned: {countOrganisms})";
                         progress.Maximum = files.Length;
                         progress.Value = n;
 
@@ -214,27 +223,49 @@ namespace SrvSurvey
                                 this.lastBodyId = approachBodyEntry.BodyID;
                             }
 
-                            // special case for tracking codex first entries, as the natural code path will not handle them
+                            // special case for tracking codex first entries, as the natural code path will not handle them (as there is no `Game.activeGame`)
                             var codexEntry = entry as SrvSurvey.CodexEntry;
                             if (codexEntry != null)
-                                cmdrCodex.trackCodex(codexEntry.EntryID, codexEntry.timestamp, codexEntry.SystemAddress, codexEntry.BodyID);
+                            {
+                                var galacticRegionId = sysData != null
+                                        ? EliteDangerousRegionMap.RegionMap.FindRegion(sysData.starPos).Id
+                                        : GalacticRegions.getIdxFromName(codexEntry.Region);
+
+                                cmdrCodex.trackCodex(codexEntry.Name_Localised, codexEntry.EntryID, codexEntry.timestamp, codexEntry.SystemAddress, codexEntry.BodyID, galacticRegionId);
+                            }
                         }
                     }
                     else
                     {
-                        // for pre-Odyssey - we're only going to handle Codex events
+                        // for pre-Odyssey - we're only going to process Codex events for first finds
+                        double[] lastStarPos = new double[0];
                         foreach (var entry in journal.Entries)
                         {
                             if (entry.@event == nameof(FSDJump)) countJumps++;
                             if (entry.@event == nameof(ApproachBody)) countBodies++;
                             if (entry.@event == nameof(ScanOrganic) && ((ScanOrganic)entry).ScanType == ScanType.Analyse) countOrganisms++;
 
-                            // special case for tracking codex first entries, as the natural code path will not handle them
+                            // take the last StarPos value from anything that has it
+                            var propStarPos = entry.GetType().GetProperty("StarPos");
+                            if (propStarPos != null)
+                            {
+                                var starPos = propStarPos.GetValue(entry) as double[];
+                                if (starPos?.Length > 0)
+                                    lastStarPos = starPos;
+                            }
+
+                            // check/track if this is a first discovery
                             var codexEntry = entry as SrvSurvey.CodexEntry;
                             if (codexEntry != null)
                             {
-                                // TODO: try to figure out what body we were on?
-                                cmdrCodex.trackCodex(codexEntry.EntryID, codexEntry.timestamp, codexEntry.SystemAddress, codexEntry.BodyID);
+                                var galacticRegionId = lastStarPos.Length > 0
+                                    ? EliteDangerousRegionMap.RegionMap.FindRegion(lastStarPos).Id
+                                    : GalacticRegions.getIdxFromName(codexEntry.Region);
+
+                                if (codexEntry.SubCategory_Localised == "Organic structures" && (codexEntry.BodyID == null || codexEntry.BodyID == 0))
+                                    Debugger.Break(); // TODO: Does this ever happen?
+
+                                cmdrCodex.trackCodex(codexEntry.Name_Localised, codexEntry.EntryID, codexEntry.timestamp, codexEntry.SystemAddress, codexEntry.BodyID, galacticRegionId);
                             }
 
                         }
@@ -249,11 +280,14 @@ namespace SrvSurvey
                 this.BeginInvoke(new Action(() =>
                 {
                     //lblProgress.Text = $"Completed journal processing.";
-                    lblProgress.Text = $"Final tally: ~{lastDate}, jumps: {countJumps}, bodies: {countBodies}, organisms: {countOrganisms}";
+                    lblProgress.Text = $"Final tally: ~{lastDate}, jumps: {countJumps}, approached bodies: {countBodies}, organisms scanned: {countOrganisms}";
 
                     btnStart.Text = "Begin";
                     btnSystems.Enabled = true;
                     progress.Value = progress.Minimum;
+                    comboCmdr.Enabled = true;
+                    dateTimePicker.Enabled = true;
+                    btnLongAgo.Enabled = true;
                 }));
             }
         }

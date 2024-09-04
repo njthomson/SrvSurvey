@@ -99,6 +99,16 @@ namespace SrvSurvey.game
             return int.Parse(match.Key.Replace(";", "").Substring(18));
         }
 
+        public static string getNameFromIdx(int regionId)
+        {
+            return $"$Codex_RegionName_{regionId};";
+        }
+
+        public static string getDisplayNameFromIdx(int regionId)
+        {
+            return mapRegions[$"$Codex_RegionName_{regionId};"];
+        }
+
         public static string getIdxFromNames(string names)
         {
             var regions = new List<string>();

@@ -835,7 +835,11 @@ namespace SrvSurvey.game
         public void onJournalEntry(CodexEntry entry)
         {
             // track if this is a personal first discovery
-            Game.activeGame?.cmdrCodex.trackCodex(entry.EntryID, entry.timestamp, entry.SystemAddress, entry.BodyID);
+            if (Game.activeGame != null)
+            {
+                var galacticRegion = EliteDangerousRegionMap.RegionMap.FindRegion(this.starPos);
+                Game.activeGame.cmdrCodex.trackCodex(entry.Name_Localised, entry.EntryID, entry.timestamp, entry.SystemAddress, entry.BodyID, galacticRegion.Id);
+            }
 
             if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! Expected: `{this.address}`, got: {entry.SystemAddress}"); return; }
             // ignore non bio or Notable stellar phenomena entries

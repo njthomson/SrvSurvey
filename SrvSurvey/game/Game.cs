@@ -997,7 +997,6 @@ namespace SrvSurvey.game
 
             this.setLocations(entry);
 
-
             this.checkModeChange();
 
             // update FormGenus?
@@ -1440,6 +1439,9 @@ namespace SrvSurvey.game
             cmdr.starPos = entry.StarPos;
             this.systemData = SystemData.From(entry);
 
+            // update our region
+            cmdr.setGalacticRegion(entry.StarPos);
+
             if (entry.BodyType == FSDJumpBodyType.Planet)
             {
                 // would this ever happen?
@@ -1547,6 +1549,9 @@ namespace SrvSurvey.game
             cmdr.currentSystemAddress = entry.SystemAddress;
             cmdr.starPos = entry.StarPos;
             this.systemData = SystemData.From(entry);
+
+            // update our region
+            cmdr.setGalacticRegion(entry.StarPos);
 
             if (entry.BodyType == FSDJumpBodyType.Planet)
             {
@@ -2084,10 +2089,6 @@ namespace SrvSurvey.game
 
         private void onJournalEntry(CodexEntry entry)
         {
-            // update our region
-            // TODO: is there any other way to know this? Like from a StarPos?
-            this.cmdr.setGalacticRegion(entry.Region);
-
             if (entry.Name == "$Codex_Ent_Guardian_Beacons_Name;")
             {
                 // A Guardian Beacon
