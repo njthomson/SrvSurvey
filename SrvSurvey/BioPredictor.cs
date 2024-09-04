@@ -33,6 +33,30 @@ namespace BioCriterias
                 .Where(s => !string.IsNullOrEmpty(s))
                 .ToList();
 
+            // --- alternate "brightest" ---
+            var parentStars2 = body.system.getParentStars(body, false);
+            if (parentStars2.Count > 0)
+            {
+                var parentsByBrightness = parentStars2
+                    .ToDictionary(s => s, s => s.getRelativeBrightness(body.distanceFromArrivalLS))
+                    .OrderByDescending(s => s.Value)
+                    .Take(2);
+
+                var brightest = parentsByBrightness.First();
+                parentStars.Clear();
+                parentStars.Add(brightestParentStar);
+
+                if (parentStars2.Count == 2)
+                {
+                    var nextBrightest = parentsByBrightness.Last();
+                    var delta = nextBrightest.Value / brightest.Value;
+                    Game.log($"{brightest.Key.name}: {brightest.Value} vs {nextBrightest.Key.name}: {nextBrightest.Value} => {delta}");
+
+                    if (delta > 0.8d)
+                        parentStars.Add(Util.flattenStarType(nextBrightest.Key.starType));
+                }
+            }
+
             //var sumSemiMajorAxis = body.sumSemiMajorAxis(0);
             //var sumSemiMajorAxisLs = Util.mToLS(sumSemiMajorAxis);
 

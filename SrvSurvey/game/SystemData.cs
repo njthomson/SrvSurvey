@@ -2143,7 +2143,6 @@ namespace SrvSurvey.game
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public List<SystemRing> rings;
 
-
         /// <summary> Locations of named bookmarks on this body </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public Dictionary<string, List<LatLong2>>? bookmarks;
@@ -2218,6 +2217,18 @@ namespace SrvSurvey.game
                 .Select(p => this.system.bodies.FirstOrDefault(b => b.id == p.id))
                 .Where(b => b != null)
                 .ToList()!;
+        }
+
+        public double getRelativeBrightness(double bodyDistanceFromArrivalLS)
+        {
+            if (this.starType == null) return 0;
+
+            var dist = bodyDistanceFromArrivalLS - this.distanceFromArrivalLS;
+            var dist2 = Math.Pow(dist, 2);
+            var distMag = dist2.ToString().Length;
+            var relativeHeat = this.surfaceTemperature / distMag;
+
+            return relativeHeat;
         }
 
         public double sumSemiMajorAxis(int targetBodyId)

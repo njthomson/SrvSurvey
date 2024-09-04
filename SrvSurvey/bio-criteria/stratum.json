@@ -186,8 +186,9 @@
       "species": "Limaxus",
       "query": [
         "# hit count: 4012",
-        "body [Rocky]",
-        "temp [165 ~ 190]"
+        "   body [Rocky]",
+        "   temp [165 ~ 190]",
+        "regions [9,10,11,12,24,25,26,28,42]"
       ],
       "children": [
         {
