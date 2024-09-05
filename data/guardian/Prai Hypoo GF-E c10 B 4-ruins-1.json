@@ -3,27 +3,26 @@
   "idx": 1,
   "sh": 146,
   "t": "Gamma",
-  "rh": 56,
+  "rh": -1,
   "ll": {
     "lat": 31.968714,
     "long": -94.988426
   },
-  "pa": "p13,p14,p17,p18,p2,p23,p25,p26,p28,p3,p31,p33,p36,p39,p40,p42,p43,p5,p9,t1,t8,t9",
-  "pp": "p1,p10,p11,p12,p15,p16,p19,p20,p21,p22,p24,p27,p29,p30,p32,p34,p35,p37,p38,p4,p41,p6,p7,p8,t2,t3,t4,t5,t6,t7",
+  "pa": "p2,p9",
+  "pp": "p12",
   "og": "ACEFMOP",
   "ao": [
     "A09-ur-B13-",
-    "A15-ur,ta-B16-b,d",
-    "C04-to,ur-C17-a",
-    "C15-to,ca-C16-b",
-    "E04-ca,ur-H19-d",
-    "F05-or-T14-g,d",
-    "F09-or,or-T15-b",
-    "M09-to,ca-C16-b",
-    "M10-to,ta-C18-e,d",
-    "O03-ca,to-H17-g,d",
-    "P09-to-C14-e,a",
-    "P15-to,ur-C17-e,b"
-  ],
-  "rth": "t2:56"
+    "A15-ur,ta-B16-",
+    "C04-to,ur-C17-",
+    "C15-to,ca-C16-",
+    "E04-ca,ur-H19-",
+    "F05-or-T14-",
+    "F09-or,or-T15-",
+    "M09-to,ca-C16-",
+    "M10-to,ta-C18-",
+    "O03-ca,to-H17-",
+    "P09-to-C14-",
+    "P15-to,ur-C17-"
+  ]
 }
