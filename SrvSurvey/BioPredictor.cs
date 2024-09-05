@@ -223,6 +223,15 @@ namespace BioCriterias
         {
             if (clause.values == null) throw new Exception("Missing clause values?");
 
+            if (clause.property == "mats" && bodyValue is Dictionary<string, float>)
+            {
+                var bodyMats = (Dictionary<string, float>)bodyValue;
+                if (!clause.values.Any(v => bodyMats.Any(bv => bv.Key.Equals(v, StringComparison.OrdinalIgnoreCase) && bv.Value > 1f)))
+                    failures.Add(new ClauseFailure(bodyName, "No mats multi match found", clause, string.Join(',', bodyMats)));
+
+                return;
+            }
+
             // match any clause value from a set of bodyValue strings
             var bodyValues = bodyValue as List<string>;
             if (bodyValue is Dictionary<string, float>)

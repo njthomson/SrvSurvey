@@ -255,13 +255,16 @@ namespace SrvSurvey.net
         public static double limitMinRatio = 0.2d;
         public static double limitVolcanismTypes = 5;
 
+        private static bool shouldForceVolcanismNone = false;
+        private static bool forceVolcanismNone = false;
+
         public static void buildWholeSet()
         {
             // define ...
-            var species = "Tubers/Viride Sinuous Tubers";
+            var species = "Bacterium/Bacterium Tela";
             var atmosTypes = new List<string>()
             {
-                "No atmosphere",
+                //"No atmosphere",
                 //"Ammonia",
                 //"Ammonia-rich",
                 //"Argon",
@@ -275,7 +278,7 @@ namespace SrvSurvey.net
                 //"Neon-rich",
                 //"Nitrogen",
                 //"Oxygen",
-                //"Sulphur dioxide",
+                "Sulphur dioxide",
                 //"Water",
                 //"Water-rich",
             };
@@ -297,7 +300,7 @@ namespace SrvSurvey.net
                 "Rocky body",
                 "Rocky Ice world",
                 "High metal content world",
-                "Metal-rich body",
+                //"Metal-rich body",
             };
 
             // build ...
@@ -331,9 +334,27 @@ namespace SrvSurvey.net
                 // ... and a node for each body
                 foreach (var bodyType in bodyTypes)
                 {
+                    shouldForceVolcanismNone = false;
                     var child = await buildForBodyType(species, atmosType, bodyType, atmosCount);
                     if (child != null)
+                    {
                         atmos.children.Add(child);
+
+                        if (shouldForceVolcanismNone)
+                        {
+                            child.query.Add(Clause.createComment("Excluding volcanism:none"));
+
+                            // generate a sibling clause that has `volcanism:none` in all criteria
+                            forceVolcanismNone = true;
+                            var child2 = await buildForBodyType(species, atmosType, bodyType, atmosCount);
+                            if (child2 != null)
+                            {
+                                atmos.children.Add(child2);
+                                child2.query.Add(Clause.createComment("Forcing only volcanism:none"));
+                            }
+                            forceVolcanismNone = false;
+                        }
+                    }
                 }
 
                 if (atmos.children.Count == 1)
@@ -508,6 +529,9 @@ namespace SrvSurvey.net
 
         private static async Task<Clause?> buildVolcanismClause(string species, string atmosType, string bodyType)
         {
+            if (forceVolcanismNone)
+                return Clause.createIs("volcanism", "None");
+
             var type = species.Split(' ').First();
             var filters = new Dictionary<string, string>()
             {
@@ -556,7 +580,7 @@ namespace SrvSurvey.net
                     var count = response["count"]!.Value<float>();
                     var delta = lastCount - count;
                     var ratio = 100f / totalCount * delta;
-                    Game.log($"{species}/{atmosType}/{bodyType} => {volcanism} => {delta} ({ratio.ToString("n1")}%)");
+                    Game.log($"{species}/{atmosType}/{bodyType} => {volcanism} => {delta} ({ratio.ToString("n1")}% of {countWithVolcanism})");
                     if (ratio > 5 && delta > 3)
                         matchedVolcanism.Add(volcanism);
 
@@ -579,7 +603,17 @@ namespace SrvSurvey.net
             {
                 // alpha sort but add None first
                 var list = matchedVolcanism.Order().ToList();
-                list.Insert(0, "None");
+
+                Game.log($"shouldForceVolcanismNone? countNoVolcanism:{countNoVolcanism} vs countWithVolcanism: {countWithVolcanism}, list.count:{list.Count}");
+                if (countNoVolcanism > (countWithVolcanism / 10f) && list.Count > 0)
+                {
+                    shouldForceVolcanismNone = true;
+                }
+                else
+                {
+                    list.Insert(0, "None");
+                }
+
                 var clause = Clause.createIs("volcanism", list);
                 return clause;
             }
@@ -700,6 +734,9 @@ namespace SrvSurvey.net
                 filters.Add("atmosphere", getAtmosphereFilterValue(atmosType));
             if (bodyType != null)
                 filters.Add("subtype", bodyType);
+
+            if (forceVolcanismNone)
+                filters.Add("volcanism_type", "No volcanism");
 
             return buildQuery(filters, sortField, sortOrder);
         }
