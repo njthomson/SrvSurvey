@@ -900,8 +900,7 @@ namespace SrvSurvey
 
             this.template = SiteTemplate.sites[siteData.type];
 
-            var folder = Path.GetDirectoryName(Application.ExecutablePath)!;
-            var filepath = imagePath ?? Path.Combine(folder, "images", $"{siteData.type}-background.png".ToLowerInvariant());
+            var filepath = imagePath ?? Path.Combine(Application.StartupPath, "images", $"{siteData.type}-background.png".ToLowerInvariant());
             Game.log($"Loading image: {filepath}");
             if (File.Exists(filepath))
                 this.siteMap = Bitmap.FromFile(filepath);
@@ -945,7 +944,7 @@ namespace SrvSurvey
                 this.headingGuidance = null;
             }
 
-            var filepath = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "images", $"{siteData.type}-heading-guide.png");
+            var filepath = Path.Combine(Application.StartupPath, "images", $"{siteData.type}-heading-guide.png");
             if (File.Exists(filepath))
             {
                 using (var img = Bitmap.FromFile(filepath))
@@ -953,7 +952,7 @@ namespace SrvSurvey
             }
             else if (siteData.name.StartsWith("$Ancient_Medium") || siteData.name.StartsWith("$Ancient_Small"))
             {
-                filepath = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "images", $"data-port-heading-guide.png");
+                filepath = Path.Combine(Application.StartupPath, "images", $"data-port-heading-guide.png");
                 using (var img = Bitmap.FromFile(filepath))
                     this.headingGuidance = new Bitmap(img);
             }
@@ -1179,10 +1178,10 @@ namespace SrvSurvey
 
         private void devFileWatcher()
         {
-            string filepath = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "settlementTemplates.json");
+            string filepath = Path.Combine(Application.StartupPath, "settlementTemplates.json");
 
             if (Debugger.IsAttached)
-                filepath = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "..\\..\\..\\..\\", "settlementTemplates.json");
+                filepath = Path.Combine(Application.StartupPath, "..\\..\\..\\..\\", "settlementTemplates.json");
 
             Game.log($"Dev watching: {filepath}");
 

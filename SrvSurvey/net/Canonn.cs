@@ -22,13 +22,13 @@ namespace SrvSurvey.canonn
         }
 
         private static HttpClient client;
-        private static string allRuinsStaticPathDbg = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "..\\..\\..\\..", "allRuins.json");//"D:\\code\\SrvSurvey\\SrvSurvey\\allRuins.json";
-        //private static string allRuinsStaticPath = Debugger.IsAttached ? allRuinsStaticPathDbg : Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "allRuins.json");
-        private static string allRuinsStaticPath = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "allRuins.json");
-        private static string allBeaconsStaticPath = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "allBeacons.json");
-        private static string allStructuresStaticPathDbg = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "..\\..\\..\\..", "allStructures.json"); //"D:\\code\\SrvSurvey\\SrvSurvey\\allStructures.json";
-        //private static string allStructuresStaticPath = Debugger.IsAttached ? allStructuresStaticPathDbg : Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "allStructures.json");
-        private static string allStructuresStaticPath = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "allStructures.json");
+        private static string allRuinsStaticPathDbg = Path.Combine(Application.StartupPath, "..\\..\\..\\..", "allRuins.json");
+        //private static string allRuinsStaticPath = Debugger.IsAttached ? allRuinsStaticPathDbg : Path.Combine(Application.StartupPath, "allRuins.json");
+        private static string allRuinsStaticPath = Path.Combine(Application.StartupPath, "allRuins.json");
+        private static string allBeaconsStaticPath = Path.Combine(Application.StartupPath, "allBeacons.json");
+        private static string allStructuresStaticPathDbg = Path.Combine(Application.StartupPath, "..\\..\\..\\..", "allStructures.json");
+        //private static string allStructuresStaticPath = Debugger.IsAttached ? allStructuresStaticPathDbg : Path.Combine(Application.StartupPath, "allStructures.json");
+        private static string allStructuresStaticPath = Path.Combine(Application.StartupPath, "allStructures.json");
         public List<GuardianRuinSummary> allRuins { get; private set; }
         public List<GuardianBeaconSummary> allBeacons { get; private set; }
         public List<GuardianSiteSummary> allStructures { get; private set; }

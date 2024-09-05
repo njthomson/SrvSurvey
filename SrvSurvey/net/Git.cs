@@ -390,7 +390,7 @@ namespace SrvSurvey.net
         {
             Game.log($"publishBioCriteria ...");
 
-            var srcRootFolder = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "..\\..\\..\\..");
+            var srcRootFolder = Path.Combine(Application.StartupPath, "..\\..\\..\\..");
             var criteriaFolder = Path.Combine(srcRootFolder, "bio-criteria");
             var targetZipFile = Path.Combine(srcRootFolder, "..", "data", "bio-criteria.zip");
             if (File.Exists(targetZipFile)) File.Delete(targetZipFile);

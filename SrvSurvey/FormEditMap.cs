@@ -23,8 +23,7 @@ namespace SrvSurvey
             plotter.formEditMap = this;
 
             // default the background image path to the default file
-            var folder = Path.GetDirectoryName(Application.ExecutablePath)!;
-            var filepath = Path.Combine(folder, "images", $"{siteData.type}-background.png".ToLowerInvariant());
+            var filepath = Path.Combine(Application.StartupPath, "images", $"{siteData.type}-background.png".ToLowerInvariant());
             txtBackgroundImage.Text = filepath;
 
             Util.useLastLocation(this, Game.settings.formMapEditor);

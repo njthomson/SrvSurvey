@@ -32,12 +32,12 @@ namespace SrvSurvey
                 if (devReload)
                 {
                     Game.log($"Using humanSiteTemplates.json, devReload:{devReload}");
-                    filepath = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "..\\..\\..\\..", "humanSiteTemplates.json");
+                    filepath = Path.Combine(Application.StartupPath, "..\\..\\..\\..", "humanSiteTemplates.json");
                 }
                 else
                 {
                     Game.log($"Using humanSiteTemplates.json app package");
-                    filepath = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "humanSiteTemplates.json");
+                    filepath = Path.Combine(Application.StartupPath, "humanSiteTemplates.json");
                 }
 
                 Game.log($"Reading humanSiteTemplates.json: {filepath}");
@@ -72,7 +72,7 @@ namespace SrvSurvey
         public static void export(bool devReload = false)
         {
             var json = JsonConvert.SerializeObject(templates, Formatting.Indented)!;
-            var filepath = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "..\\..\\..\\..", "humanSiteTemplates.json");
+            var filepath = Path.Combine(Application.StartupPath, "..\\..\\..\\..", "humanSiteTemplates.json");
 
             File.WriteAllText(filepath, json);
         }

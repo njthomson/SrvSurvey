@@ -1203,7 +1203,7 @@ namespace SrvSurvey
         #region static loading
 
         private static string customPlotterPositionPath = Path.Combine(Program.dataFolder, "plotters.json");
-        private static string defaultPlotterPositionPath = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "plotters.json");
+        private static string defaultPlotterPositionPath = Path.Combine(Application.StartupPath, "plotters.json");
 
         private static Dictionary<string, PlotPos> plotterPositions = new Dictionary<string, PlotPos>();
 

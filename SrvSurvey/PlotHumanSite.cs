@@ -177,7 +177,7 @@ namespace SrvSurvey
                 if (this.mapImage != null)
                     this.mapImage.Dispose();
 
-                var folder = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "images");
+                var folder = Path.Combine(Application.StartupPath, "images");
                 var filepath = Directory.GetFiles(folder, $"{game.humanSite.economy}~{game.humanSite.subType}-*.png")?.FirstOrDefault();
                 if (filepath == null) return;
 
@@ -300,7 +300,7 @@ namespace SrvSurvey
             // start watching template file changes (if not already)
             if (this.templateWatcher == null)
             {
-                var folder = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "..\\..\\..\\.."));
+                var folder = Path.GetFullPath(Path.Combine(Application.StartupPath, "..\\..\\..\\.."));
                 this.templateWatcher = new FileSystemWatcher(folder, "humanSiteTemplates.json");
                 this.templateWatcher.Changed += TemplateWatcher_Changed;
                 this.templateWatcher.NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.Size;

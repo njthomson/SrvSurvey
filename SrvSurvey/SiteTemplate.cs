@@ -24,7 +24,7 @@ namespace SrvSurvey
             if (devReload)
             {
                 Game.log($"Using settlementTemplates.json, devReload:{devReload}");
-                filepath = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "..\\..\\..\\..", "settlementTemplates.json");
+                filepath = Path.Combine(Application.StartupPath, "..\\..\\..\\..", "settlementTemplates.json");
             }
             else if (File.Exists(editableFilepath))
             {
@@ -42,7 +42,7 @@ namespace SrvSurvey
             {
                 // otherwise, use the file shipped with the app
                 Game.log($"Using settlementTemplates.json app package");
-                filepath = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "settlementTemplates.json");
+                filepath = Path.Combine(Application.StartupPath, "settlementTemplates.json");
             }
 
             Game.log($"Reading settlementTemplates.json: {filepath}");

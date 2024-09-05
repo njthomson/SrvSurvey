@@ -162,7 +162,7 @@ namespace SrvSurvey
             if (siteType != GuardianSiteData.SiteType.Unknown)
             {
                 var filename = $"{siteType}-background.png".ToLowerInvariant();
-                var filepath = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath)!, "images", filename);
+                var filepath = Path.Combine(Application.StartupPath, "images", filename);
                 if (File.Exists(filepath))
                 {
                     using (var img = Bitmap.FromFile(filepath))
