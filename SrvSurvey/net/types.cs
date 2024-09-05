@@ -415,6 +415,10 @@ namespace SrvSurvey.canonn
         public double longitude = double.NaN;
         public int siteHeading = -1;
         public int relicTowerHeading = -1;
+        ///// <summary> A percentage of completion </summary>
+        //public int surveyProgress;
+        //[JsonIgnore]
+        //public bool surveyComplete { get => surveyProgress == 100; }
         public bool surveyComplete = false;
 
         // properties whose values differ live from legacy
@@ -489,6 +493,7 @@ namespace SrvSurvey.canonn
                 base.legacyLongitude = summary.legacyLongitude;
                 base.legacySiteHeading = summary.legacySiteHeading;
                 base.legacyRelicTowerHeading = summary.legacyRelicTowerHeading;
+                //base.surveyProgress = summary.surveyProgress;
                 base.surveyComplete = summary.surveyComplete;
             }
         }
@@ -559,9 +564,9 @@ namespace SrvSurvey.canonn
         public double longitude = double.NaN;
         public int siteHeading = -1;
         public int idx;
-        public bool surveyComplete;
-        // TODO: Let everyone know the progress, even if they haven't been there before?
         //public int surveyProgress;
+        //public bool surveyComplete { get => this.surveyProgress == 100; }
+        public bool surveyComplete;
 
         [JsonIgnore]
         public bool isRuins { get => siteType == "Alpha" || siteType == "Beta" || siteType == "Gamma"; }
@@ -620,6 +625,7 @@ namespace SrvSurvey.canonn
                 base.siteType = summary.siteType;
                 base.latitude = summary.latitude;
                 base.longitude = summary.longitude;
+                //base.surveyProgress = summary.surveyProgress;
                 base.surveyComplete = summary.surveyComplete;
             }
         }
@@ -639,6 +645,7 @@ namespace SrvSurvey.canonn
                 base.starPos = summary.starPos;
                 base.latitude = summary.latitude;
                 base.longitude = summary.longitude;
+                //base.surveyProgress = summary.surveyProgress;
                 base.surveyComplete = summary.surveyComplete;
             }
         }
@@ -660,6 +667,7 @@ namespace SrvSurvey.canonn
             if (!this.surveyComplete)
             {
                 this.surveyStatus = data.getCompletionStatus();
+                //this.surveyProgress = this.surveyStatus.progress;
                 this.surveyComplete = this.surveyStatus.isComplete;
             }
 

@@ -209,6 +209,11 @@ namespace SrvSurvey.game
             }
         }
 
+        public override string ToString()
+        {
+            return this.displayName;
+        }
+
         #region data members
 
         public string name;
@@ -678,7 +683,7 @@ namespace SrvSurvey.game
 
             var files = Directory.GetFiles(GuardianSiteData.rootFolder, "*.json", SearchOption.AllDirectories)
                     .Where(_ => !_.Contains("beacon") && !_.Contains("legacy"))
-                    .Where(_ => !onlySubmittedData || _.Contains("surveys-")) // skip non-submitted data for now
+                    .Where(_ => !onlySubmittedData || _.Contains("guardian\\surveys-")) // skip non-submitted data for now
                     .ToArray();
 
             Game.log($"Reading {files.Length} guardian sites files from disk");

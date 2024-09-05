@@ -31,7 +31,9 @@ namespace SrvSurvey.net
             {
                 var json = await Git.client.GetStringAsync($"https://raw.githubusercontent.com/njthomson/SrvSurvey/main/data.json");
                 var pubData = JsonConvert.DeserializeObject<GitDataIndex>(json)!;
-                Game.log($"pubDataSettlementTemplate - local: {Game.settings.pubDataSettlementTemplate}, remote: {pubData.settlementTemplate}");
+
+                var hadNoPubFolder = !Directory.Exists(pubDataFolder);
+                Game.log($"pubDataSettlementTemplate - local: {Game.settings.pubDataSettlementTemplate}, remote: {pubData.settlementTemplate}, hadNoPubFolder: {hadNoPubFolder}");
 
                 Directory.CreateDirectory(Git.pubDataFolder);
                 Directory.CreateDirectory(Git.pubGuardianFolder);
@@ -55,7 +57,7 @@ namespace SrvSurvey.net
                     Game.settings.Save();
                 }
 
-                if (pubData.bioCriteria > Game.settings.pubBioCriteria && BioCriteria.engVer >= pubData.bioEngine)
+                if (hadNoPubFolder || (pubData.bioCriteria > Game.settings.pubBioCriteria && BioCriteria.engVer >= pubData.bioEngine))
                 {
                     Game.log($"Updating bio-criteria ...");
                     await this.updateBioCriteria();
@@ -65,7 +67,7 @@ namespace SrvSurvey.net
                     Game.settings.Save();
                 }
 
-                if (pubData.settlementTemplate > Game.settings.pubDataSettlementTemplate)
+                if (hadNoPubFolder || (pubData.settlementTemplate > Game.settings.pubDataSettlementTemplate))
                 {
                     Game.log($"Downloading settlementTemplates.json");
                     var json2 = await Git.client.GetStringAsync($"https://raw.githubusercontent.com/njthomson/SrvSurvey/main/SrvSurvey/settlementTemplates.json");
@@ -79,7 +81,7 @@ namespace SrvSurvey.net
                 }
 
                 Game.log($"pubDataGuardian - local: {Game.settings.pubDataGuardian}, remote: {pubData.guardian}");
-                if (pubData.guardian > Game.settings.pubDataGuardian)
+                if (hadNoPubFolder || (pubData.guardian > Game.settings.pubDataGuardian))
                 {
                     Game.log($"Downloading allRuins.json");
                     var json3 = await Git.client.GetStringAsync($"https://raw.githubusercontent.com/njthomson/SrvSurvey/main/SrvSurvey/allRuins.json");
@@ -89,13 +91,17 @@ namespace SrvSurvey.net
                     var json4 = await Git.client.GetStringAsync($"https://raw.githubusercontent.com/njthomson/SrvSurvey/main/SrvSurvey/allStructures.json");
                     File.WriteAllText(Path.Combine(Git.pubDataFolder, "allStructures.json"), json4);
 
+                    // Remove folder, to remove any orphan files
+                    if (Directory.Exists(Git.pubGuardianFolder))
+                        Directory.Delete(Git.pubGuardianFolder, true);
+
                     Game.log($"Downloading guardian.zip ...");
                     var url = $"https://raw.githubusercontent.com/njthomson/SrvSurvey/main/data/guardian.zip";
                     var filepath = Path.Combine(Git.pubDataFolder, "guardian.zip");
                     Game.log($"{url} => {filepath}");
                     var bytes = await Git.client.GetByteArrayAsync(url);
                     await File.WriteAllBytesAsync(filepath, bytes);
-                    ZipFile.ExtractToDirectory(filepath, pubGuardianFolder, true);
+                    ZipFile.ExtractToDirectory(filepath, Git.pubGuardianFolder, true);
 
                     // update settings to current level
                     Game.settings.pubDataGuardian = pubData.guardian;
@@ -408,7 +414,12 @@ namespace SrvSurvey.net
             Game.log($"{url} => {filepath}");
 
             // Make a backup of the prior criteria (in case there's a code bug with the new ones)
-            File.Copy(filepath, Path.Combine(Git.pubDataFolder, "bio-criteria-prior.zip"));
+            if (File.Exists(filepath))
+                File.Copy(filepath, Path.Combine(Git.pubDataFolder, "bio-criteria-prior.zip"), true);
+
+            // Remove folder, to remove any orphan files
+            if (Directory.Exists(Git.pubBioCriteriaFolder))
+                Directory.Delete(Git.pubBioCriteriaFolder, true);
 
             var bytes = await Git.client.GetByteArrayAsync(url);
             await File.WriteAllBytesAsync(filepath, bytes);

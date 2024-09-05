@@ -545,10 +545,9 @@ namespace SrvSurvey.game
 
             status.score += status.countPoiConfirmed;
             if (this.sh != -1) status.score += 1;
-            if (this.ll != null) status.score += 1;
 
             // compute max score
-            status.maxScore = template.poiSurvey.Count() + 2; // +1 for site heading, +1 for location
+            status.maxScore = template.poiSurvey.Count() + 1; // +1 for site heading
             status.maxPuddles = template.poi.Count(_ => Util.isBasicPoi(_.type));
 
             if (this.isRuins)

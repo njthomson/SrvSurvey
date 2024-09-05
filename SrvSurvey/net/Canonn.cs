@@ -1129,61 +1129,9 @@ namespace SrvSurvey.canonn
                     ruinSummary.relicTowerHeading = site.rh;
 
                 // re-compute surveyComplete
-                /*
-                {
-                    // The survey is complete when we know:
-                    var complete = true;
 
-                    // the site and relic tower headings
-                    complete &= ruinSummary.siteHeading >= 0;
-                    complete &= ruinSummary.relicTowerHeading >= 0;
-                    // live lat / long
-                    complete &= !double.IsNaN(ruinSummary.latitude);
-                    complete &= !double.IsNaN(ruinSummary.longitude);
-                    // status of all POI
-                    var allPoi = new List<string>();
-                    if (site.pp != null) allPoi.AddRange(site.pp.Split(","));
-                    if (site.pa != null) allPoi.AddRange(site.pa.Split(","));
-                    if (site.pe != null) allPoi.AddRange(site.pe.Split(","));
-                    var allPoiHash = allPoi.ToHashSet();
-                    if (allPoiHash.Count != allPoi.Count)
-                    {
-                        Game.log($"Bad data? {pubPath}");
-                        Game.log(string.Join(',', allPoiHash.Order()));
-                        Game.log(string.Join(',', allPoi.Order()));
-                        Debugger.Break();
-                    }
-
-                    var template = SiteTemplate.sites[site.t];
-                    var totalPoiCount = template.poi.Count(_ => _.type != POIType.obelisk && _.type != POIType.brokeObelisk);
-                    if (allPoi.Count > totalPoiCount)
-                    {
-                        Game.log($"Bad data? {pubPath}");
-                        Clipboard.SetText(pubPath);
-                        Debugger.Break();
-                    }
-
-                    var allPoiMatched = template.poi
-                        .Where(_ => _.type != POIType.obelisk && _.type != POIType.brokeObelisk)
-                        .All(_ => allPoiHash.Contains(_.name));
-                    complete &= allPoiMatched;
-
-                    if (string.IsNullOrEmpty(site.og))
-                    {
-                        complete &= false;
-                    }
-                    else
-                    {
-                        // every obelisk group has at least 1 active obelisk
-                        foreach (var g in site.og)
-                            complete &= site.ao.Any(_ => _.name.StartsWith(g.ToString().ToUpperInvariant()));
-                    }
-
-                    ruinSummary.surveyComplete = complete;
-                }
-                if (ruinSummary.surveyComplete != site.isSurveyComplete())
-                    Debugger.Break();
-                */
+                //var completionStatus = site.getCompletionStatus();
+                //ruinSummary.surveyProgress = completionStatus.progress;
                 ruinSummary.surveyComplete = site.isSurveyComplete();
 
 
@@ -1425,39 +1373,9 @@ namespace SrvSurvey.canonn
                     siteSummary.siteID = int.Parse(site.sid.Substring(2));
 
                 // recompute surveyComplete
-                /*
-                {
-                    // The survey is complete when we know:
-                    var complete = true;
 
-                    // the site heading
-                    complete &= siteSummary.siteHeading >= 0;
-
-                    // live lat / long
-                    complete &= !double.IsNaN(siteSummary.latitude);
-                    complete &= !double.IsNaN(siteSummary.longitude);
-
-                    // status of all POI
-                    if (!SiteTemplate.sites.ContainsKey(site.t))
-                        complete = false;
-                    else
-                    {
-                        var template = SiteTemplate.sites[site.t];
-                        var sumCountNonObelisks = template.poi
-                            .Where(_ => _.type != POIType.obelisk && _.type != POIType.brokeObelisk)
-                            .Count();
-                        var sumCountPOI = (site.pp?.Split(",").Length ?? 0) + (site.pa?.Split(",").Length ?? 0) + (site.pe?.Split(",").Length ?? 0);
-                        complete &= sumCountPOI == sumCountNonObelisks; // TODO: Compare with template count
-                    }
-                    // every obelisk group has at least 1 active obelisk
-                    foreach (var g in site.og)
-                        complete &= site.ao.Any(_ => _.name.StartsWith(g.ToString().ToUpperInvariant()));
-
-                    siteSummary.surveyComplete = complete;
-                }
-                if (siteSummary.surveyComplete != site.isSurveyComplete())
-                    Debugger.Break();
-                */
+                //var completionStatus = site.getCompletionStatus();
+                //siteSummary.surveyProgress = completionStatus.progress;
                 siteSummary.surveyComplete = site.isSurveyComplete();
 
                 // match some Ruins?
