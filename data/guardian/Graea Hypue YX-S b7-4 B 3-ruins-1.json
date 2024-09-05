@@ -12,16 +12,16 @@
   "pp": "p1,p11,p12,p14,p15,p16,p20,p21,p22,p24,p26,p28,p29,p30,p31,p32,p33,p4,p40,p5,p6,p7,p8,t1,t2,t3,t5",
   "og": "DEKMNQR",
   "ao": [
-    "D12-ta,to-L20-",
-    "E04-ca,ur-H19-",
-    "K04-or-T14-",
-    "K14-or-T14-",
-    "M08-to,ca-C16-",
-    "M09-to,ca-C16-",
-    "N05-or-T14-",
-    "N11-or,or-T15-",
-    "Q04-ca,ur-H19-",
-    "R07-to,re-C20-",
-    "R25-to,re-C20-"
+    "D12-ta,to-L20",
+    "E04-ca,ur-H19",
+    "K04-or-T14",
+    "K14-or-T14",
+    "M08-to,ca-C16",
+    "M09-to,ca-C16",
+    "N05-or-T14",
+    "N11-or,or-T15",
+    "Q04-ca,ur-H19",
+    "R07-to,re-C20",
+    "R25-to,re-C20"
   ]
 }

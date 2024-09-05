@@ -12,18 +12,18 @@
   "pp": "p10,p11,p12,p15,p16,p19,p20,p21,p22,p24,p27,p29,p30,p32,p34,p35,p37,p38,p4,p41,p6,p7,p8,t2,t3,t4,t5,t6,t7",
   "og": "ACEFMOP",
   "ao": [
-    "A09-ur-B13-",
-    "A15-ur,ta-B16-b,d",
-    "C04-to,ur-C17-a",
-    "C15-to,ca-C16-b",
-    "E04-ca,ur-H19-d",
-    "F05-or-T14-g,d",
-    "F09-or,or-T15-b",
-    "M09-to,ca-C16-b",
-    "M10-to,ta-C18-e,d",
-    "O03-ca,to-H17-g,d",
-    "P09-to-C14-e,a",
-    "P15-to,ur-C17-e,b"
+    "A09-ur-B13",
+    "A15-ur,ta-B16",
+    "C04-to,ur-C17",
+    "C15-to,ca-C16",
+    "E04-ca,ur-H19",
+    "F05-or-T14",
+    "F09-or,or-T15",
+    "M09-to,ca-C16",
+    "M10-to,ta-C18",
+    "O03-ca,to-H17",
+    "P09-to-C14",
+    "P15-to,ur-C17"
   ],
   "rth": "t2:56"
 }

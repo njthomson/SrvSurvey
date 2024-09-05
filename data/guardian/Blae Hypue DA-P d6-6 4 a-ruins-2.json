@@ -10,16 +10,16 @@
   },
   "og": "DEFIKLNS",
   "ao": [
-    "D02-ca,ur-H10-",
-    "E13-to,ur-C10-",
-    "E19-ta-L8-",
-    "F02-ca,ta-H11-",
-    "I02-to,ur-C10-",
-    "K21-to,or-C12-",
-    "K22-to,ta-C11-",
-    "L06-or,re-T13-",
-    "N19-ta,re-L14-",
-    "N23-ta,re-L14-",
-    "S03-or,re-T13-"
+    "D02-ca,ur-H10",
+    "E13-to,ur-C10",
+    "E19-ta-L8",
+    "F02-ca,ta-H11",
+    "I02-to,ur-C10",
+    "K21-to,or-C12",
+    "K22-to,ta-C11",
+    "L06-or,re-T13",
+    "N19-ta,re-L14",
+    "N23-ta,re-L14",
+    "S03-or,re-T13"
   ]
 }

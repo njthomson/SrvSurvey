@@ -12,13 +12,13 @@
   "pp": "p11,p12,p13,p15,p17,p19,p20,p23,p25,p29,p30,p31,p34,p40,p5,p6,p7,t1,t2,t3,t4,t7,t8",
   "og": "AEJMU",
   "ao": [
-    "A04-ca-H8-",
-    "E02-or,or-T8-",
-    "E05-or,ta-T11-",
-    "J05-or,ca-T9-",
-    "M02-or-T7-",
-    "U28-ur,ca-B9-",
-    "U45-ur,ca-B9-",
-    "U54-or,ca-T9-"
+    "A04-ca-H8",
+    "E02-or,or-T8",
+    "E05-or,ta-T11",
+    "J05-or,ca-T9",
+    "M02-or-T7",
+    "U28-ur,ca-B9",
+    "U45-ur,ca-B9",
+    "U54-or,ca-T9"
   ]
 }

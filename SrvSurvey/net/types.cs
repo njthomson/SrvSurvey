@@ -415,11 +415,10 @@ namespace SrvSurvey.canonn
         public double longitude = double.NaN;
         public int siteHeading = -1;
         public int relicTowerHeading = -1;
-        ///// <summary> A percentage of completion </summary>
-        //public int surveyProgress;
-        //[JsonIgnore]
-        //public bool surveyComplete { get => surveyProgress == 100; }
-        public bool surveyComplete = false;
+        /// <summary> A percentage of completion </summary>
+        public int surveyProgress;
+        [JsonIgnore]
+        public bool surveyComplete { get => surveyProgress == 100; }
 
         // properties whose values differ live from legacy
         public double legacyLatitude = double.NaN;
@@ -493,8 +492,7 @@ namespace SrvSurvey.canonn
                 base.legacyLongitude = summary.legacyLongitude;
                 base.legacySiteHeading = summary.legacySiteHeading;
                 base.legacyRelicTowerHeading = summary.legacyRelicTowerHeading;
-                //base.surveyProgress = summary.surveyProgress;
-                base.surveyComplete = summary.surveyComplete;
+                base.surveyProgress = summary.surveyProgress;
             }
         }
 
@@ -563,10 +561,12 @@ namespace SrvSurvey.canonn
         public double latitude = double.NaN;
         public double longitude = double.NaN;
         public int siteHeading = -1;
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public int idx;
-        //public int surveyProgress;
-        //public bool surveyComplete { get => this.surveyProgress == 100; }
-        public bool surveyComplete;
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public int surveyProgress;
+        [JsonIgnore]
+        public bool surveyComplete { get => this.surveyProgress == 100; }
 
         [JsonIgnore]
         public bool isRuins { get => siteType == "Alpha" || siteType == "Beta" || siteType == "Gamma"; }
@@ -607,6 +607,7 @@ namespace SrvSurvey.canonn
                 this.relatedStructureDist = summary.relatedStructureDist;
                 base.siteType = "Beacon";
                 this.notes = $"Structure: {summary.relatedStructure}, dist: " + summary.relatedStructureDist.ToString("N2") + " ly";
+                base.surveyProgress = summary.surveyProgress;
             }
         }
 
@@ -625,8 +626,7 @@ namespace SrvSurvey.canonn
                 base.siteType = summary.siteType;
                 base.latitude = summary.latitude;
                 base.longitude = summary.longitude;
-                //base.surveyProgress = summary.surveyProgress;
-                base.surveyComplete = summary.surveyComplete;
+                base.surveyProgress = summary.surveyProgress;
             }
         }
 
@@ -645,8 +645,7 @@ namespace SrvSurvey.canonn
                 base.starPos = summary.starPos;
                 base.latitude = summary.latitude;
                 base.longitude = summary.longitude;
-                //base.surveyProgress = summary.surveyProgress;
-                base.surveyComplete = summary.surveyComplete;
+                base.surveyProgress = summary.surveyProgress;
             }
         }
 
@@ -667,8 +666,7 @@ namespace SrvSurvey.canonn
             if (!this.surveyComplete)
             {
                 this.surveyStatus = data.getCompletionStatus();
-                //this.surveyProgress = this.surveyStatus.progress;
-                this.surveyComplete = this.surveyStatus.isComplete;
+                this.surveyProgress = this.surveyStatus.progress;
             }
 
             this.filepath = data.filepath;

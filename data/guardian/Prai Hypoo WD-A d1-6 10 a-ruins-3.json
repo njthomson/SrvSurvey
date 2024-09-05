@@ -12,18 +12,18 @@
   "pp": "p1,p11,p13,p17,p23,p26,p27,p29,p3,p32,p4,p40,p42,p5,p8,t1,t3,t4,t5,t6,t7,t8",
   "og": "DFGKLPSU",
   "ao": [
-    "D01-ca,or-H12-",
-    "F03-ca,ca-H9-",
-    "G13-ca,or-H12-",
-    "G17-ca,ur-H10-",
-    "K21-to,or-C12-",
-    "K25-to,to-C8-",
-    "L03-or,ta-T11-",
-    "P21-to,to-C8-",
-    "P25-to,or-C12-",
-    "S03-or,re-T13-",
-    "U20-ur,to-B12-",
-    "U43-ur,ta-B10-",
-    "U54-or,ca-T9-"
+    "D01-ca,or-H12",
+    "F03-ca,ca-H9",
+    "G13-ca,or-H12",
+    "G17-ca,ur-H10",
+    "K21-to,or-C12",
+    "K25-to,to-C8",
+    "L03-or,ta-T11",
+    "P21-to,to-C8",
+    "P25-to,or-C12",
+    "S03-or,re-T13",
+    "U20-ur,to-B12",
+    "U43-ur,ta-B10",
+    "U54-or,ca-T9"
   ]
 }

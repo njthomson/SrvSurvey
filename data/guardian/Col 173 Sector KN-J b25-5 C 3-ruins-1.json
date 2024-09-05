@@ -10,14 +10,14 @@
   },
   "og": "DOQSTU",
   "ao": [
-    "D04-ca,to-H13-",
-    "O02-or,re-T13-",
-    "Q05-or,ur-T10-",
-    "S02-or,re-T12-",
-    "T08-ca,to-H15-",
-    "T16-ca,to-H13-",
-    "U46-ur,ca-B9-",
-    "U49-ur,ur-B8-",
-    "U51-ur,re-B7-"
+    "D04-ca,to-H13",
+    "O02-or,re-T13",
+    "Q05-or,ur-T10",
+    "S02-or,re-T12",
+    "T08-ca,to-H15",
+    "T16-ca,to-H13",
+    "U46-ur,ca-B9",
+    "U49-ur,ur-B8",
+    "U51-ur,re-B7"
   ]
 }

@@ -12,13 +12,13 @@
   "pp": "p1,p10,p11,p13,p14,p15,p19,p26,p28,p30,p34,p6,p8,p9,t1,t4,t5,t7",
   "og": "IKMOQR",
   "ao": [
-    "I04-ca,ur-H10-",
-    "K18-to,or-C12-",
-    "K23-to,ur-C10-",
-    "M02-or-T7-",
-    "O02-or,re-T13-",
-    "Q05-or,ur-T10-",
-    "R02-to,ur-C10-",
-    "R17-ca,to-H15-"
+    "I04-ca,ur-H10",
+    "K18-to,or-C12",
+    "K23-to,ur-C10",
+    "M02-or-T7",
+    "O02-or,re-T13",
+    "Q05-or,ur-T10",
+    "R02-to,ur-C10",
+    "R17-ca,to-H15"
   ]
 }

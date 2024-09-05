@@ -12,16 +12,16 @@
   "pp": "p1,p11,p13,p15,p19,p2,p26,p30,p31,p32,p34,p37,p38,p5,p6,p7,t1,t2,t4,t5,t6,t8",
   "og": "CDLMOQRU",
   "ao": [
-    "C09-ta,or-L12-",
-    "C21-ta-L8-",
-    "D08-ca,ta-H11-",
-    "L01-or,ca-T9-",
-    "M01-or-T7-",
-    "O01-or,re-T13-",
-    "Q01-or-T7-",
-    "R10-to,re-C13-",
-    "R18-to,to-C8-",
-    "U04-ur,or-B11-",
-    "U20-ur,to-B12-"
+    "C09-ta,or-L12",
+    "C21-ta-L8",
+    "D08-ca,ta-H11",
+    "L01-or,ca-T9",
+    "M01-or-T7",
+    "O01-or,re-T13",
+    "Q01-or-T7",
+    "R10-to,re-C13",
+    "R18-to,to-C8",
+    "U04-ur,or-B11",
+    "U20-ur,to-B12"
   ]
 }

@@ -10,19 +10,19 @@
   },
   "og": "BCEHIKLM",
   "ao": [
-    "B01-to,ca-C3-",
-    "B17-to,to-C2-",
-    "C06-to,ta-C5-",
-    "C07-to,ta-C5-",
-    "E01-ca,ur-H3-",
-    "H01-ca,ta-H4-",
-    "I08-ur,ur-B2-",
-    "I09-ur,or-B5-",
-    "K09-ca-H1-",
-    "K21-to,or-C6-",
-    "L01-ca,ur-H3-",
-    "M04-ta,ur-L4-",
-    "M09-ta-L1-",
-    "M14-ta,ta-L6-"
+    "B01-to,ca-C3",
+    "B17-to,to-C2",
+    "C06-to,ta-C5",
+    "C07-to,ta-C5",
+    "E01-ca,ur-H3",
+    "H01-ca,ta-H4",
+    "I08-ur,ur-B2",
+    "I09-ur,or-B5",
+    "K09-ca-H1",
+    "K21-to,or-C6",
+    "L01-ca,ur-H3",
+    "M04-ta,ur-L4",
+    "M09-ta-L1",
+    "M14-ta,ta-L6"
   ]
 }

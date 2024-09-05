@@ -12,12 +12,12 @@
   "pp": "p13,p22,p23,p24,p27,p28,p29,p3,p31,p34,p37,p39,p40,p7,p8,t2,t4,t6,t8",
   "og": "CHINO",
   "ao": [
-    "C17-ta-L8-",
-    "C20-ta,ta-L9-",
-    "H08-or,ca-T9-",
-    "I03-ta,ur-L11-",
-    "N10-ta,re-L14-",
-    "N25-ta,or-L12-",
-    "O03-or,re-T13-"
+    "C17-ta-L8",
+    "C20-ta,ta-L9",
+    "H08-or,ca-T9",
+    "I03-ta,ur-L11",
+    "N10-ta,re-L14",
+    "N25-ta,or-L12",
+    "O03-or,re-T13"
   ]
 }

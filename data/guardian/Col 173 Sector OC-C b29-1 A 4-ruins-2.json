@@ -12,12 +12,12 @@
   "pp": "p1,p10,p11,p17,p20,p24,p27,p28,p3,p32,p37,p38,p39,p4,p40,p42,p5,t1,t3,t4,t7,t8",
   "og": "BEJOR",
   "ao": [
-    "B04-or,ca-T9-",
-    "E02-or,or-T8-",
-    "E10-to-C7-",
-    "J05-or,ca-T9-",
-    "O02-or,re-T13-",
-    "R02-to,ur-C10-",
-    "R10-to,re-C13-"
+    "B04-or,ca-T9",
+    "E02-or,or-T8",
+    "E10-to-C7",
+    "J05-or,ca-T9",
+    "O02-or,re-T13",
+    "R02-to,ur-C10",
+    "R10-to,re-C13"
   ]
 }

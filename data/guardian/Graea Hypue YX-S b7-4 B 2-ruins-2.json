@@ -12,16 +12,16 @@
   "pp": "p1,p12,p13,p15,p17,p20,p21,p22,p23,p27,p30,p36,p4,p41,p7,p8,t1,t3,t4,t5,t8",
   "og": "ACIJKLNO",
   "ao": [
-    "A06-ca-H8-",
-    "C14-ta,ur-L11-",
-    "C15-ta,ca-L10-",
-    "I11-to-C7-",
-    "J07-or,ur-T10-",
-    "K08-to-C7-",
-    "K24-to,ca-C9-",
-    "L02-or,ur-T10-",
-    "N03-ta,to-L13-",
-    "N17-ta,or-L12-",
-    "O01-or,re-T13-"
+    "A06-ca-H8",
+    "C14-ta,ur-L11",
+    "C15-ta,ca-L10",
+    "I11-to-C7",
+    "J07-or,ur-T10",
+    "K08-to-C7",
+    "K24-to,ca-C9",
+    "L02-or,ur-T10",
+    "N03-ta,to-L13",
+    "N17-ta,or-L12",
+    "O01-or,re-T13"
   ]
 }

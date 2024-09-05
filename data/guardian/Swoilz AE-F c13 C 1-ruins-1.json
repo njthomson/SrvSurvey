@@ -10,18 +10,18 @@
   },
   "og": "BCFHKLNO",
   "ao": [
-    "B15-to,ur-C4-",
-    "B17-to,to-C2-",
-    "C03-to,ca-C3-",
-    "C07-to,ta-C5-",
-    "F10-ur,ca-B3-",
-    "F17-ur,to-B6-",
-    "H01-ca,ta-H4-",
-    "K10-ca,or-H5-",
-    "K17-to,re-C1-",
-    "L01-ca,ur-H3-",
-    "N01-ca,ur-H3-",
-    "O06-or,to-T6-",
-    "O15-or,or-T2-"
+    "B15-to,ur-C4",
+    "B17-to,to-C2",
+    "C03-to,ca-C3",
+    "C07-to,ta-C5",
+    "F10-ur,ca-B3",
+    "F17-ur,to-B6",
+    "H01-ca,ta-H4",
+    "K10-ca,or-H5",
+    "K17-to,re-C1",
+    "L01-ca,ur-H3",
+    "N01-ca,ur-H3",
+    "O06-or,to-T6",
+    "O15-or,or-T2"
   ]
 }

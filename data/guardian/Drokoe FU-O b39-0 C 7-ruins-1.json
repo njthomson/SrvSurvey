@@ -12,15 +12,15 @@
   "pp": "p10,p11,p12,p15,p22,p3,p31,p32,p38,p40,p41,p5,p8,t2,t3,t4,t5,t6",
   "og": "EHMOPR",
   "ao": [
-    "E09-ur,or-B11-",
-    "E20-ta,ta-L9-",
-    "H08-or,ca-T9-",
-    "M03-or,or-T8-",
-    "O03-or,re-T13-",
-    "P02-to,re-C13-",
-    "P17-to,re-C13-",
-    "R09-to,ca-C9-",
-    "R20-ur,re-B7-"
+    "E09-ur,or-B11",
+    "E20-ta,ta-L9",
+    "H08-or,ca-T9",
+    "M03-or,or-T8",
+    "O03-or,re-T13",
+    "P02-to,re-C13",
+    "P17-to,re-C13",
+    "R09-to,ca-C9",
+    "R20-ur,re-B7"
   ],
   "rth": "t2:119,t4:120,t5:120,t6:119"
 }

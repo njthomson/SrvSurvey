@@ -384,6 +384,7 @@ namespace SrvSurvey.game
         public string sid;
 
         /// <summary> Index of ruins </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public int idx;
 
         /// <summary> Site heading </summary>
@@ -531,7 +532,7 @@ namespace SrvSurvey.game
                     {
                         status.countRelicsPresent += 1;
 
-                        if (this.relicTowerHeadings.ContainsKey(poi.name))
+                        if (!this.relicTowerHeadings.ContainsKey(poi.name))
                             status.countRelicsNeedingHeading += 1;
                         else if (!this.isRuins)
                             status.score += 1;

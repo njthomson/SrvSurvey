@@ -10,15 +10,15 @@
   },
   "og": "BEGHJLNO",
   "ao": [
-    "B18-to,re-C1-",
-    "B19-to,ca-C3-",
-    "E03-ca,or-H5-",
-    "G03-ca,or-H5-",
-    "H01-ca,ta-H4-",
-    "J02-ca,re-H7-",
-    "L03-ca,or-H5-",
-    "N03-ca,or-H5-",
-    "O07-or-T1-",
-    "O09-or,ca-T3-"
+    "B18-to,re-C1",
+    "B19-to,ca-C3",
+    "E03-ca,or-H5",
+    "G03-ca,or-H5",
+    "H01-ca,ta-H4",
+    "J02-ca,re-H7",
+    "L03-ca,or-H5",
+    "N03-ca,or-H5",
+    "O07-or-T1",
+    "O09-or,ca-T3"
   ]
 }

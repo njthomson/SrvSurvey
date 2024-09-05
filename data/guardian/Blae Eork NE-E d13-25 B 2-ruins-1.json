@@ -10,15 +10,15 @@
   },
   "og": "GKMRU",
   "ao": [
-    "G05-ca,ca-H9-",
-    "G09-ca,to-H15-",
-    "K05-to,ur-C10-",
-    "K16-to,to-C8-",
-    "M02-or-T7-",
-    "R05-ur,to-B6-",
-    "R23-ca,or-H12-",
-    "U07-ur,ta-B10-",
-    "U27-ur,ca-B9-",
-    "U35-or-T7-"
+    "G05-ca,ca-H9",
+    "G09-ca,to-H15",
+    "K05-to,ur-C10",
+    "K16-to,to-C8",
+    "M02-or-T7",
+    "R05-ur,to-B6",
+    "R23-ca,or-H12",
+    "U07-ur,ta-B10",
+    "U27-ur,ca-B9",
+    "U35-or-T7"
   ]
 }

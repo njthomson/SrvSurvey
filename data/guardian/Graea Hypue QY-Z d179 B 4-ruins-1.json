@@ -13,18 +13,18 @@
   "pe": "p22",
   "og": "BCEFHJKP",
   "ao": [
-    "B04-to,ca-C3-",
-    "B17-to,to-C2-",
-    "C07-to,ta-C5-",
-    "C11-to,or-C6-",
-    "E01-ca,ur-H3-",
-    "F09-ur,ca-B3-",
-    "F22-ur,or-B5-",
-    "H01-ca,ta-H4-",
-    "J02-ca,re-H7-",
-    "K09-ca-H1-",
-    "K22-to,or-C6-",
-    "P02-or,to-T6-",
-    "P04-or,ta-T5-"
+    "B04-to,ca-C3",
+    "B17-to,to-C2",
+    "C07-to,ta-C5",
+    "C11-to,or-C6",
+    "E01-ca,ur-H3",
+    "F09-ur,ca-B3",
+    "F22-ur,or-B5",
+    "H01-ca,ta-H4",
+    "J02-ca,re-H7",
+    "K09-ca-H1",
+    "K22-to,or-C6",
+    "P02-or,to-T6",
+    "P04-or,ta-T5"
   ]
 }

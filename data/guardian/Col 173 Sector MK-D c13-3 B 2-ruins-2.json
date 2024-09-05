@@ -10,16 +10,16 @@
   },
   "og": "BCDIJNO",
   "ao": [
-    "B12-ur,re-B19-",
-    "B23-ur,or-B17-",
-    "C03-to,ta-C18-",
-    "C09-to,ur-C17-",
-    "D12-ta,to-L20-",
-    "I04-ur,to-B18-",
-    "I12-ur,ur-B14-",
-    "J09-ca,ur-H19-",
-    "N06-or,or-T15-",
-    "N12-or,ca-T16-",
-    "O03-ca,to-H17-"
+    "B12-ur,re-B19",
+    "B23-ur,or-B17",
+    "C03-to,ta-C18",
+    "C09-to,ur-C17",
+    "D12-ta,to-L20",
+    "I04-ur,to-B18",
+    "I12-ur,ur-B14",
+    "J09-ca,ur-H19",
+    "N06-or,or-T15",
+    "N12-or,ca-T16",
+    "O03-ca,to-H17"
   ]
 }

@@ -10,19 +10,19 @@
   },
   "og": "ABDEJLMNO",
   "ao": [
-    "A07-ur,ca-B15-",
-    "A22-ur,to-B18-",
-    "B07-ur,ca-B15-",
-    "B22-ur,to-B18-",
-    "D08-ta,ta-L16-",
-    "E08-ca,ca-H18-",
-    "J03-ca,or-H21-",
-    "L08-or,ta-T18-",
-    "L10-or,re-T20-",
-    "M08-to,ca-C16-",
-    "M11-to,ta-C18-",
-    "N05-or-T14-",
-    "N07-or,ca-T16-",
-    "O07-ca,ca-H18-"
+    "A07-ur,ca-B15",
+    "A22-ur,to-B18",
+    "B07-ur,ca-B15",
+    "B22-ur,to-B18",
+    "D08-ta,ta-L16",
+    "E08-ca,ca-H18",
+    "J03-ca,or-H21",
+    "L08-or,ta-T18",
+    "L10-or,re-T20",
+    "M08-to,ca-C16",
+    "M11-to,ta-C18",
+    "N05-or-T14",
+    "N07-or,ca-T16",
+    "O07-ca,ca-H18"
   ]
 }

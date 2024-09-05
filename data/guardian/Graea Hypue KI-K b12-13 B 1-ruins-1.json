@@ -12,15 +12,15 @@
   "pp": "p11,p13,p14,p15,p16,p17,p23,p24,p29,p37,p5,p6,p8,p9,t2,t3,t6,t7,t8",
   "og": "FKPRU",
   "ao": [
-    "F05-ca,re-H14-",
-    "K14-to,ur-C10-",
-    "K18-to,or-C12-",
-    "P14-to,ur-C10-",
-    "P18-to,ta-C11-",
-    "R06-to,ur-C10-",
-    "R08-to-C7-",
-    "U23-ur,or-B11-",
-    "U29-ur,ca-B9-",
-    "U48-ur,ur-B8-"
+    "F05-ca,re-H14",
+    "K14-to,ur-C10",
+    "K18-to,or-C12",
+    "P14-to,ur-C10",
+    "P18-to,ta-C11",
+    "R06-to,ur-C10",
+    "R08-to-C7",
+    "U23-ur,or-B11",
+    "U29-ur,ca-B9",
+    "U48-ur,ur-B8"
   ]
 }

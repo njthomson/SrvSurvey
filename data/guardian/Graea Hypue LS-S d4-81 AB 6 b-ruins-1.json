@@ -13,18 +13,18 @@
   "pe": "p36,p38,p4,p40",
   "og": "CDEGJKLNO",
   "ao": [
-    "C12-to,or-C6-",
-    "C13-to,re-C1-",
-    "D12-to,ta-C5-",
-    "D13-or,to-T6-",
-    "E01-ca,ur-H3-",
-    "G03-ca,or-H5-",
-    "J01-ca-H1-",
-    "K04-or-T1-",
-    "K12-ca,ta-H4-",
-    "L01-ca,ur-H3-",
-    "N01-ca,ur-H3-",
-    "O06-or,to-T6-",
-    "O15-or,or-T2-"
+    "C12-to,or-C6",
+    "C13-to,re-C1",
+    "D12-to,ta-C5",
+    "D13-or,to-T6",
+    "E01-ca,ur-H3",
+    "G03-ca,or-H5",
+    "J01-ca-H1",
+    "K04-or-T1",
+    "K12-ca,ta-H4",
+    "L01-ca,ur-H3",
+    "N01-ca,ur-H3",
+    "O06-or,to-T6",
+    "O15-or,or-T2"
   ]
 }

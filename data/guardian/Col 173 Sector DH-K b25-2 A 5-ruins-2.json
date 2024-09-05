@@ -12,11 +12,11 @@
   "pp": "p1,p12,p17,p19,p23,p26,p29,p3,p34,p39,p4,p40,p41,p5,p6,p9,t2,t3,t4,t6",
   "og": "CHIOQ",
   "ao": [
-    "C10-ta,ca-L10-",
-    "C17-ta-L8-",
-    "H05-or,ta-T11-",
-    "I05-to,ca-C9-",
-    "O02-or,re-T13-",
-    "Q04-or,ca-T9-"
+    "C10-ta,ca-L10",
+    "C17-ta-L8",
+    "H05-or,ta-T11",
+    "I05-to,ca-C9",
+    "O02-or,re-T13",
+    "Q04-or,ca-T9"
   ]
 }

@@ -12,15 +12,15 @@
   "pp": "t6",
   "og": "ABFKOPT",
   "ao": [
-    "A08-ca,ca-H9-",
-    "B06-or,ta-T11-",
-    "F06-ca,to-H13-",
-    "K06-to,ca-C9-",
-    "K22-to,ta-C11-",
-    "O03-or,re-T13-",
-    "P06-to,ta-C11-",
-    "P22-to,ca-C9-",
-    "T04-ca,to-H13-",
-    "T16-ca,to-H13-"
+    "A08-ca,ca-H9",
+    "B06-or,ta-T11",
+    "F06-ca,to-H13",
+    "K06-to,ca-C9",
+    "K22-to,ta-C11",
+    "O03-or,re-T13",
+    "P06-to,ta-C11",
+    "P22-to,ca-C9",
+    "T04-ca,to-H13",
+    "T16-ca,to-H13"
   ]
 }

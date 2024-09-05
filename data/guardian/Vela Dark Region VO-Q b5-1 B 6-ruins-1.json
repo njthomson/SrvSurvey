@@ -10,16 +10,16 @@
   },
   "og": "BEFGIPU",
   "ao": [
-    "B02-or,or-T8-",
-    "E10-to-C7-",
-    "E24-ta,to-L13-",
-    "F08-ca,re-H16-",
-    "G01-ca,re-H14-",
-    "G06-ca,ca-H9-",
-    "I11-to-C7-",
-    "P07-to,or-C12-",
-    "P12-to,to-C8-",
-    "U24-ur,or-B11-",
-    "U54-or,ca-T9-"
+    "B02-or,or-T8",
+    "E10-to-C7",
+    "E24-ta,to-L13",
+    "F08-ca,re-H16",
+    "G01-ca,re-H14",
+    "G06-ca,ca-H9",
+    "I11-to-C7",
+    "P07-to,or-C12",
+    "P12-to,to-C8",
+    "U24-ur,or-B11",
+    "U54-or,ca-T9"
   ]
 }

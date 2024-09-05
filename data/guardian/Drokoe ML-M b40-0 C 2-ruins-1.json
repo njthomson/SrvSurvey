@@ -12,18 +12,18 @@
   "pp": "p10,p12,p14,p17,p19,p20,p25,p29,p30,p35,p37,p39,p4,p40,p6,p8,t2,t3,t4,t5,t6,t8",
   "og": "BEIKM",
   "ao": [
-    "B01-or-T7-",
-    "B06-or,ta-T11-",
-    "E06-or,re-T12-",
-    "E10-to-C7-",
-    "E22-ta,ur-L11-",
-    "I02-to,ur-C10-",
-    "I03-ta,ur-L11-",
-    "K12-to,or-C12-",
-    "K14-to,ur-C10-",
-    "K19-to,re-C13-",
-    "M02-or-T7-",
-    "M03-or,or-T8-"
+    "B01-or-T7",
+    "B06-or,ta-T11",
+    "E06-or,re-T12",
+    "E10-to-C7",
+    "E22-ta,ur-L11",
+    "I02-to,ur-C10",
+    "I03-ta,ur-L11",
+    "K12-to,or-C12",
+    "K14-to,ur-C10",
+    "K19-to,re-C13",
+    "M02-or-T7",
+    "M03-or,or-T8"
   ],
   "rth": "t2:173,t3:173,t4:173,t5:173,t6:173,t8:175"
 }

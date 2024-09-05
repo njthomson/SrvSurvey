@@ -10,17 +10,17 @@
   },
   "og": "DFILMOP",
   "ao": [
-    "D06-ta,re-L21-",
-    "F06-or,ta-T18-",
-    "F10-or-T14-",
-    "I07-ur,ur-B14-",
-    "I16-ur,or-B17-",
-    "L02-or,ur-T17-",
-    "L14-or,re-T20-",
-    "M01-to,re-C20-",
-    "M14-to-C14-",
-    "O04-ca,or-H21-",
-    "P04-to,or-C19-",
-    "P27-to-C14-"
+    "D06-ta,re-L21",
+    "F06-or,ta-T18",
+    "F10-or-T14",
+    "I07-ur,ur-B14",
+    "I16-ur,or-B17",
+    "L02-or,ur-T17",
+    "L14-or,re-T20",
+    "M01-to,re-C20",
+    "M14-to-C14",
+    "O04-ca,or-H21",
+    "P04-to,or-C19",
+    "P27-to-C14"
   ]
 }

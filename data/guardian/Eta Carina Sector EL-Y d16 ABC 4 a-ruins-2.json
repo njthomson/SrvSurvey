@@ -10,18 +10,18 @@
   },
   "og": "CEIMNPRS",
   "ao": [
-    "C05-ta,or-L12-",
-    "C14-ta,ur-L11-",
-    "E17-ur,ta-B10-",
-    "E25-ta,re-L14-",
-    "I08-to,to-C8-",
-    "M01-or-T7-",
-    "N01-ta,to-L13-",
-    "N12-ta,or-L12-",
-    "P08-to,re-C13-",
-    "P27-to-C7-",
-    "R17-ca,to-H15-",
-    "R25-to,ur-C10-",
-    "S01-or,re-T13-"
+    "C05-ta,or-L12",
+    "C14-ta,ur-L11",
+    "E17-ur,ta-B10",
+    "E25-ta,re-L14",
+    "I08-to,to-C8",
+    "M01-or-T7",
+    "N01-ta,to-L13",
+    "N12-ta,or-L12",
+    "P08-to,re-C13",
+    "P27-to-C7",
+    "R17-ca,to-H15",
+    "R25-to,ur-C10",
+    "S01-or,re-T13"
   ]
 }

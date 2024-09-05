@@ -12,19 +12,19 @@
   "pp": "p10,p11,p15,p17,p19,p2,p20,p23,p34,p35,p37,p39,p4,p40,p6,t2,t3,t4,t7,t8",
   "og": "CEHIMNPU",
   "ao": [
-    "C10-ta,ca-L10-",
-    "C20-ta,ta-L9-",
-    "E03-or,ca-T9-",
-    "E20-ta,ta-L9-",
-    "H05-or,ta-T11-",
-    "I05-to,ca-C9-",
-    "M02-or-T7-",
-    "N08-ta,or-L12-",
-    "N25-ta,or-L12-",
-    "P02-to,re-C13-",
-    "P23-to,ur-C10-",
-    "U12-ur,ur-B8-",
-    "U15-ur,re-B7-",
-    "U46-ur,ca-B9-"
+    "C10-ta,ca-L10",
+    "C20-ta,ta-L9",
+    "E03-or,ca-T9",
+    "E20-ta,ta-L9",
+    "H05-or,ta-T11",
+    "I05-to,ca-C9",
+    "M02-or-T7",
+    "N08-ta,or-L12",
+    "N25-ta,or-L12",
+    "P02-to,re-C13",
+    "P23-to,ur-C10",
+    "U12-ur,ur-B8",
+    "U15-ur,re-B7",
+    "U46-ur,ca-B9"
   ]
 }

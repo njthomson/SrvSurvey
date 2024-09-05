@@ -10,6 +10,7 @@ namespace SrvSurvey.game
     [JsonConverter(typeof(GuardianSiteData.JsonConverter))]
     internal class GuardianSiteData : Data
     {
+        [JsonConverter(typeof(StringEnumConverter))]
         public enum SiteType
         {
             // ruins ...
@@ -578,10 +579,9 @@ namespace SrvSurvey.game
 
             status.score += status.countPoiConfirmed;
             if (this.siteHeading != -1) status.score += 1;
-            if (this.location != null) status.score += 1;
 
             // compute max score
-            status.maxScore = poiToProcess.Count() + 2; // +1 for site heading, +1 for location
+            status.maxScore = poiToProcess.Count() + 1; // +1 for site heading
             status.maxPuddles = template.poi.Count(_ => Util.isBasicPoi(_.type));
 
             if (this.isRuins)
@@ -776,7 +776,6 @@ namespace SrvSurvey.game
                                 name = foo.Key,
                                 items = foo.Value.items,
                                 msg = foo.Value.msg,
-                                data = foo.Value.data,
                                 scanned = foo.Value.scanned,
                             })
                             .ToList();
@@ -915,8 +914,6 @@ namespace SrvSurvey.game
         [JsonIgnore]
         public List<ObeliskItem> items = new List<ObeliskItem>();
         [JsonIgnore]
-        public HashSet<ObeliskData> data = new HashSet<ObeliskData>();
-        [JsonIgnore]
         public string msg;
         [JsonIgnore]
         public bool scanned;
@@ -938,12 +935,7 @@ namespace SrvSurvey.game
 
         public override string ToString()
         {
-            return this.ToString(false);
-        }
-
-        public string ToString(bool excludeData)
-        {
-            // "{name}-{item1},{item2}-{msg}-{data1},{data2},{data3}"
+            // "{name}-{item1},{item2}-{msg}"
             var txt = new StringBuilder(this.name);
             if (this.scanned) txt.Append("!");
 
@@ -952,10 +944,6 @@ namespace SrvSurvey.game
 
             txt.Append("-");
             txt.Append(msg);
-
-            txt.Append("-");
-            if (!excludeData && this.data != null)
-                txt.Append(string.Join(',', this.data.Select(_ => _.ToString()[0])));
 
             return txt.ToString();
         }
@@ -1018,10 +1006,6 @@ namespace SrvSurvey.game
                     .Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)
                     .Select(_ => mapObeliskItems[_])
                     .ToList();
-                var data = parts[3]
-                    .Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)
-                    .Select(_ => mapObeliskData[_])
-                    .ToHashSet();
 
                 var obelisk = new ActiveObelisk()
                 {
@@ -1030,7 +1014,6 @@ namespace SrvSurvey.game
                     scanned = scanned,
                     items = items,
                     msg = parts[2],
-                    data = data,
                 };
 
                 return obelisk;

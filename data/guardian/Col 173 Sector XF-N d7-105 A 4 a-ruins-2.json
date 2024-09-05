@@ -10,17 +10,17 @@
   },
   "og": "CEKLPRS",
   "ao": [
-    "C07-to,ta-C18-",
-    "C09-to,ur-C17-",
-    "E02-ca,ta-H20-",
-    "K12-or,ca-T16-",
-    "K15-or,re-T20-",
-    "L07-or,ur-T17-",
-    "L09-or,to-T19-",
-    "P13-to,or-C19-",
-    "P25-to,ca-C16-",
-    "R02-to,to-C15-",
-    "R22-to,ur-C17-",
-    "S01-ca,ca-H18-"
+    "C07-to,ta-C18",
+    "C09-to,ur-C17",
+    "E02-ca,ta-H20",
+    "K12-or,ca-T16",
+    "K15-or,re-T20",
+    "L07-or,ur-T17",
+    "L09-or,to-T19",
+    "P13-to,or-C19",
+    "P25-to,ca-C16",
+    "R02-to,to-C15",
+    "R22-to,ur-C17",
+    "S01-ca,ca-H18"
   ]
 }

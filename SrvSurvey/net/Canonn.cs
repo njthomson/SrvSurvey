@@ -1129,11 +1129,8 @@ namespace SrvSurvey.canonn
                     ruinSummary.relicTowerHeading = site.rh;
 
                 // re-compute surveyComplete
-
-                //var completionStatus = site.getCompletionStatus();
-                //ruinSummary.surveyProgress = completionStatus.progress;
-                ruinSummary.surveyComplete = site.isSurveyComplete();
-
+                var completionStatus = site.getCompletionStatus();
+                ruinSummary.surveyProgress = completionStatus.progress;
 
                 if (ruinSummary.bodyId == -1)
                 {
@@ -1305,11 +1302,11 @@ namespace SrvSurvey.canonn
                         activeObelisk.items.Add(Enum.Parse<ObeliskItem>(item2, true));
 
                     // remove any prior entries of the same name but otherwise different
-                    var existingButDiff = site.ao.FirstOrDefault(_ => _.name == activeObelisk.name && _.ToString(true) != activeObelisk.ToString(true));
+                    var existingButDiff = site.ao.FirstOrDefault(_ => _.name == activeObelisk.name && _.ToString() != activeObelisk.ToString());
                     if (existingButDiff != null)
                         site.ao.Remove(existingButDiff);
 
-                    if (!site.ao.Any(_ => _.ToString(true) == activeObelisk.ToString(true)))
+                    if (!site.ao.Any(_ => _.ToString() == activeObelisk.ToString()))
                         site.ao.Add(activeObelisk);
                 }
                 catch (Exception ex)
@@ -1373,10 +1370,9 @@ namespace SrvSurvey.canonn
                     siteSummary.siteID = int.Parse(site.sid.Substring(2));
 
                 // recompute surveyComplete
-
-                //var completionStatus = site.getCompletionStatus();
-                //siteSummary.surveyProgress = completionStatus.progress;
-                siteSummary.surveyComplete = site.isSurveyComplete();
+                //if (siteSummary.systemName == "HIP 39768") Debugger.Break();
+                var completionStatus = site.getCompletionStatus();
+                siteSummary.surveyProgress = completionStatus.progress;
 
                 // match some Ruins?
                 if (siteSummary.systemAddress < 0)
@@ -1549,11 +1545,11 @@ namespace SrvSurvey.canonn
                         activeObelisk.items.Add(Enum.Parse<ObeliskItem>(item2, true));
 
                     // remove any prior entries of the same name but otherwise different
-                    var existingButDiff = site.ao.FirstOrDefault(_ => _.name == activeObelisk.name && _.ToString(true) != activeObelisk.ToString(true));
+                    var existingButDiff = site.ao.FirstOrDefault(_ => _.name == activeObelisk.name && _.ToString() != activeObelisk.ToString());
                     if (existingButDiff != null)
                         site.ao.Remove(existingButDiff);
 
-                    if (!site.ao.Any(_ => _.ToString(true) == activeObelisk.ToString(true)))
+                    if (!site.ao.Any(_ => _.ToString() == activeObelisk.ToString()))
                         site.ao.Add(activeObelisk);
                 }
                 catch (Exception ex)

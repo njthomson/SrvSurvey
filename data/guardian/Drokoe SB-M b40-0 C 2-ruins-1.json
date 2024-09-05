@@ -12,14 +12,14 @@
   "pp": "p1,p15,p17,p29,p30,p31,p32,p34,p37,p40,p41,p8,p9,t1,t2,t4,t5,t7",
   "og": "DEKMR",
   "ao": [
-    "D03-ca-H8-",
-    "E10-to-C7-",
-    "E20-ta,ta-L9-",
-    "K02-to,re-C13-",
-    "K03-to,or-C12-",
-    "M03-or,or-T8-",
-    "R10-to,re-C13-",
-    "R20-ur,re-B7-"
+    "D03-ca-H8",
+    "E10-to-C7",
+    "E20-ta,ta-L9",
+    "K02-to,re-C13",
+    "K03-to,or-C12",
+    "M03-or,or-T8",
+    "R10-to,re-C13",
+    "R20-ur,re-B7"
   ],
   "rth": "t1:298,t2:297,t4:297,t5:298,t7:298"
 }

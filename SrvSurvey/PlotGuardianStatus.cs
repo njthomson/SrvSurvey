@@ -193,19 +193,11 @@ namespace SrvSurvey
             {
                 headerTxt += "Active";
 
-                // show the material reward, or a hint to scan it
-                if (obelisk.scanned || (obelisk.data != null && obelisk.data.Count > 0))
-                {
-                    headerTxt += " - " + string.Join(", ", obelisk.data).ToUpperInvariant();
-                    if (obelisk.scanned)
-                        this.drawFooterText("You have scanned this obelisk");
-                    else
-                        this.drawFooterText("You have not scanned this obelisk", GameColors.brushCyan);
-                }
+                // show hint to scan it
+                if (obelisk.scanned)
+                    this.drawFooterText("You have scanned this obelisk");
                 else
-                {
-                    this.drawFooterText("Scan to populate data material", GameColors.brushCyan);
-                }
+                    this.drawFooterText("You have not scanned this obelisk", GameColors.brushCyan);
 
                 this.drawTextAt("Requires:", brush, GameColors.fontMiddle);
                 if (obelisk.items == null)

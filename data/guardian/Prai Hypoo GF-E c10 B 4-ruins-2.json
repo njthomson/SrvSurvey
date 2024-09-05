@@ -12,17 +12,17 @@
   "pp": "p1,p11,p12,p14,p16,p17,p19,p21,p22,p23,p24,p25,p29,p30,p32,p33,p34,p36,p4,p40,p6,p7,p8,p9,t3,t4,t5,t7,t9",
   "og": "BCDNPQRS",
   "ao": [
-    "B02-ur,re-B19-d",
-    "B19-ur,to-B18-e,d",
-    "C03-to,ta-C18-",
-    "C08-to,or-C19-",
-    "D08-ta,ta-L16-b,d",
-    "N07-or,ca-T16-",
-    "N12-or,ca-T16-",
-    "Q07-ca,ta-H20-e",
-    "R15-to,or-C19-a",
-    "R24-to,or-C19-e",
-    "S05-ca,ur-H19-b,d"
+    "B02-ur,re-B19",
+    "B19-ur,to-B18",
+    "C03-to,ta-C18",
+    "C08-to,or-C19",
+    "D08-ta,ta-L16",
+    "N07-or,ca-T16",
+    "N12-or,ca-T16",
+    "Q07-ca,ta-H20",
+    "R15-to,or-C19",
+    "R24-to,or-C19",
+    "S05-ca,ur-H19"
   ],
   "rth": "t3:160,t4:282"
 }

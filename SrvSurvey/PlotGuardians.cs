@@ -406,102 +406,6 @@ namespace SrvSurvey
                     Game.log($"Setting obelisk groups: " + string.Join(", ", letters));
                     this.siteData.Save();
                 }
-                else if (msg.StartsWith(MsgCmd.aod, StringComparison.OrdinalIgnoreCase))
-                {
-                    var obelisk = this.siteData.getActiveObelisk(this.nearestPoi.name, true)!;
-
-                    var parts = msg
-                        .ToLowerInvariant()
-                        .Substring(4)
-                        .Trim()
-                        .Split(' ', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)
-                        .ToList();
-
-                    if (parts.Count == 1 && parts[0] == "none")
-                    {
-                        // clear ...
-                        Game.log($"Clearing active obelisk '{this.nearestPoi.name}' data");
-                        obelisk.data.Clear();
-                    }
-                    else
-                    {
-                        foreach (var part in parts)
-                        {
-                            switch (part)
-                            {
-                                case "a":
-                                case nameof(ObeliskData.alpha):
-                                    obelisk.data.Add(ObeliskData.alpha);
-                                    break;
-
-                                case "b":
-                                case nameof(ObeliskData.beta):
-                                    obelisk.data.Add(ObeliskData.beta);
-                                    break;
-
-                                case "d":
-                                case nameof(ObeliskData.delta):
-                                    obelisk.data.Add(ObeliskData.delta);
-                                    break;
-
-                                case "e":
-                                case nameof(ObeliskData.epsilon):
-                                    obelisk.data.Add(ObeliskData.epsilon);
-                                    break;
-
-                                case "g":
-                                case nameof(ObeliskData.gamma):
-                                    obelisk.data.Add(ObeliskData.gamma);
-                                    break;
-                            }
-                        }
-                        Game.log($"Marking active obelisk '{this.nearestPoi.name}' as yielding data: " + string.Join(", ", obelisk.data));
-                    }
-                    siteData.Save();
-                    Program.getPlotter<PlotGuardianStatus>()?.Invalidate();
-                    this.Invalidate();
-                }
-                else if (msg.StartsWith(MsgCmd.aom, StringComparison.OrdinalIgnoreCase))
-                {
-                    var obelisk = this.siteData.getActiveObelisk(this.nearestPoi.name, true)!;
-
-                    var obeliskMsg = msg.Substring(4).Trim().ToUpperInvariant();
-                    if (obeliskMsg == "NONE")
-                    {
-                        Game.log($"Clearing active obelisk '{this.nearestPoi.name}' msg");
-                        obelisk.msg = "";
-                        siteData.Save();
-                        Program.getPlotter<PlotGuardianStatus>()?.Invalidate();
-                        this.Invalidate();
-                        return;
-                    }
-
-                    if (!int.TryParse(obeliskMsg.Substring(1), out var n))
-                    {
-                        Game.log($"Bad format: '{obeliskMsg}', expecting something like '.aom T12'");
-                        return;
-                    }
-
-                    switch (obeliskMsg[0])
-                    {
-                        case 'B': // biology
-                        case 'C': // culture
-                        case 'H': // history
-                        case 'L': // language
-                        case 'T': // technology
-                                  // these are okay
-                            obelisk.msg = obeliskMsg;
-                            Game.log($"Setting active obelisk '{this.nearestPoi.name}' to yield msg: {obeliskMsg}");
-                            siteData.Save();
-                            Program.getPlotter<PlotGuardianStatus>()?.Invalidate();
-                            this.Invalidate();
-                            break;
-
-                        default:
-                            Game.log($"Bad format: '{obeliskMsg}', expecting something like '.aom T12'");
-                            break;
-                    }
-                }
                 else if (msg == MsgCmd.os)
                 {
                     siteData.toggleObeliskScanned();
@@ -800,27 +704,6 @@ namespace SrvSurvey
             var obelisk = siteData.getActiveObelisk(this.nearestPoi.name, true)!;
             Game.log($"Marking active obelisk '{this.nearestPoi.name}' as scanned, yielding: {entry.Name_Localised} ({entry.Name})");
 
-            if (obelisk.data == null)
-                obelisk.data = new HashSet<ObeliskData>();
-
-            switch (entry.Name)
-            {
-                case "ancientbiologicaldata":
-                    obelisk.data.Add(ObeliskData.alpha);
-                    break;
-                case "ancientlanguagedata":
-                    obelisk.data.Add(ObeliskData.delta);
-                    break;
-                case "ancientculturaldata":
-                    obelisk.data.Add(ObeliskData.beta);
-                    break;
-                case "ancienttechnologicaldata":
-                    obelisk.data.Add(ObeliskData.epsilon);
-                    break;
-                case "ancienthistoricaldata":
-                    obelisk.data.Add(ObeliskData.gamma);
-                    break;
-            }
             siteData.setObeliskScanned(obelisk, true);
 
             siteData.Save();

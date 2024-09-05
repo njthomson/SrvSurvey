@@ -12,15 +12,15 @@
   "pp": "p10,p11,p12,p13,p14,p15,p20,p21,p22,p26,p27,p4,p40,p42,p5,p7,p8,t1,t2,t4,t5,t6,t7",
   "og": "AEFKNO",
   "ao": [
-    "A08-ca,ca-H9-",
-    "E06-or,re-T12-",
-    "E11-to,to-C8-",
-    "F06-ca,to-H13-",
-    "K14-to,ur-C10-",
-    "K24-to,ca-C9-",
-    "N04-ta,or-L12-",
-    "N15-ta,re-L14-",
-    "O03-or,re-T13-"
+    "A08-ca,ca-H9",
+    "E06-or,re-T12",
+    "E11-to,to-C8",
+    "F06-ca,to-H13",
+    "K14-to,ur-C10",
+    "K24-to,ca-C9",
+    "N04-ta,or-L12",
+    "N15-ta,re-L14",
+    "O03-or,re-T13"
   ],
   "rth": "t1:23,t2:23,t4:23,t5:23,t6:23,t7:23"
 }

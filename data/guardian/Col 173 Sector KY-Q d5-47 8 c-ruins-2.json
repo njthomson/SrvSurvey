@@ -12,14 +12,14 @@
   "pp": "p1,p10,p12,p15,p17,p19,p20,p22,p24,p27,p29,p30,p8,p9,t2,t3,t6,t7",
   "og": "CHILMQR",
   "ao": [
-    "C01-ta,or-L12-",
-    "C18-ta,ur-L11-",
-    "H07-or,ur-T10-",
-    "I07-ca,ca-H9-",
-    "L02-or,ur-T10-",
-    "M01-or-T7-",
-    "Q03-or,ca-T9-",
-    "R08-to-C7-",
-    "R23-ca,or-H12-"
+    "C01-ta,or-L12",
+    "C18-ta,ur-L11",
+    "H07-or,ur-T10",
+    "I07-ca,ca-H9",
+    "L02-or,ur-T10",
+    "M01-or-T7",
+    "Q03-or,ca-T9",
+    "R08-to-C7",
+    "R23-ca,or-H12"
   ]
 }

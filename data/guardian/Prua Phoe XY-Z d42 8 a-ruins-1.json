@@ -12,19 +12,19 @@
   "pp": "p10,p12,p13,p15,p17,p20,p21,p23,p24,p27,p28,p31,p35,p37,p40,p7,p9,t1,t11,t5,t6,t7,t8,t9",
   "og": "BCDGJNOP",
   "ao": [
-    "B19-to,ca-C3-",
-    "B20-to,to-C2-",
-    "C06-to,ta-C5-",
-    "C07-to,ta-C5-",
-    "D06-to,or-C6-",
-    "D07-to,ta-C5-",
-    "G03-ca,or-H5-",
-    "J01-ca-H1-",
-    "N01-ca,ur-H3-",
-    "O07-or-T1-",
-    "O15-or,or-T2-",
-    "P07-or,ca-T3-",
-    "P12-or-T1-"
+    "B19-to,ca-C3",
+    "B20-to,to-C2",
+    "C06-to,ta-C5",
+    "C07-to,ta-C5",
+    "D06-to,or-C6",
+    "D07-to,ta-C5",
+    "G03-ca,or-H5",
+    "J01-ca-H1",
+    "N01-ca,ur-H3",
+    "O07-or-T1",
+    "O15-or,or-T2",
+    "P07-or,ca-T3",
+    "P12-or-T1"
   ],
   "rth": "t1:161,t5:161,t6:164,t7:160,t8:161,t9:161,t11:161"
 }

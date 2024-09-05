@@ -12,16 +12,16 @@
   "pp": "p13,p15,p21,p41,p5,p9,t4,t5,t7",
   "og": "AGHIOPU",
   "ao": [
-    "A09-ca,ur-H10-",
-    "G01-ca,re-H14-",
-    "G09-ca,to-H15-",
-    "H08-or,ca-T9-",
-    "I01-ca,ta-H11-",
-    "O03-or,re-T13-",
-    "P03-to,to-C8-",
-    "P05-to,ur-C10-",
-    "U27-ur,ca-B9-",
-    "U51-ur,re-B7-",
-    "U55-or,or-T8-"
+    "A09-ca,ur-H10",
+    "G01-ca,re-H14",
+    "G09-ca,to-H15",
+    "H08-or,ca-T9",
+    "I01-ca,ta-H11",
+    "O03-or,re-T13",
+    "P03-to,to-C8",
+    "P05-to,ur-C10",
+    "U27-ur,ca-B9",
+    "U51-ur,re-B7",
+    "U55-or,or-T8"
   ]
 }

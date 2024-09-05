@@ -171,7 +171,10 @@ namespace SrvSurvey
 
                 var hasImages = siteHasImages(entry);
 
-                var surveyComplete = entry.surveyComplete ? "complete" : entry.surveyStatus?.percent ?? "";
+                var surveyComplete = entry.surveyComplete ? "complete" : "";
+                if (entry.surveyProgress > 0)
+                    surveyComplete = entry.surveyProgress.ToString("0") + "%";
+
                 if (entry.hasDiscoveredData)
                 {
                     countNewData++;

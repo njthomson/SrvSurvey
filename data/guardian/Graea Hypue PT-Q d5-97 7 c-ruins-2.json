@@ -12,12 +12,12 @@
   "pp": "p1,p10,p12,p13,p25,p26,p27,p28,p3,p35,p38,p5,p7,t4,t5,t6,t7",
   "og": "HIKOU",
   "ao": [
-    "H09-or,or-T8-",
-    "I10-ca-H8-",
-    "K09-to,re-C13-",
-    "O02-or,re-T13-",
-    "U04-ur,or-B11-",
-    "U42-ur,or-B11-b",
-    "U43-ur,ta-B10-"
+    "H09-or,or-T8",
+    "I10-ca-H8",
+    "K09-to,re-C13",
+    "O02-or,re-T13",
+    "U04-ur,or-B11",
+    "U42-ur,or-B11",
+    "U43-ur,ta-B10"
   ]
 }

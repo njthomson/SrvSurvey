@@ -10,14 +10,14 @@
   },
   "og": "ABCDPR",
   "ao": [
-    "A04-ca-H8-",
-    "B06-or,ta-T11-",
-    "C15-ta,ca-L10-",
-    "C21-ta-L8-",
-    "D05-ca,ta-H11-",
-    "P03-to,to-C8-",
-    "P24-to,ta-C11-",
-    "R01-to,ur-C10-",
-    "R12-ur,ur-B8-"
+    "A04-ca-H8",
+    "B06-or,ta-T11",
+    "C15-ta,ca-L10",
+    "C21-ta-L8",
+    "D05-ca,ta-H11",
+    "P03-to,to-C8",
+    "P24-to,ta-C11",
+    "R01-to,ur-C10",
+    "R12-ur,ur-B8"
   ]
 }

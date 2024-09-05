@@ -12,17 +12,17 @@
   "pp": "p12,p13,p17,p21,p27,p29,p3,p32,p34,p38,p39,p41,p6,p8,p9,t3,t5,t6,t7,t8",
   "og": "AFGKOPST",
   "ao": [
-    "A06-ca-H8-",
-    "F04-ca,or-H12-",
-    "G06-ca,ca-H9-",
-    "G11-ca,ur-H10-",
-    "K07-to,to-C8-",
-    "K17-to-C7-",
-    "O01-or,re-T13-",
-    "P07-to,or-C12-",
-    "P17-to,re-C13-",
-    "S01-or,re-T13-",
-    "T06-ca,ta-H11-",
-    "T11-ca,or-H12-"
+    "A06-ca-H8",
+    "F04-ca,or-H12",
+    "G06-ca,ca-H9",
+    "G11-ca,ur-H10",
+    "K07-to,to-C8",
+    "K17-to-C7",
+    "O01-or,re-T13",
+    "P07-to,or-C12",
+    "P17-to,re-C13",
+    "S01-or,re-T13",
+    "T06-ca,ta-H11",
+    "T11-ca,or-H12"
   ]
 }
