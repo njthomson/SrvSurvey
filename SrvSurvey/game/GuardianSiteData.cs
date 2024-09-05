@@ -308,12 +308,8 @@ namespace SrvSurvey.game
                 return this.poiStatus[name];
 
             // otherwise check pub data
-            if (this.pubData?.pp?.Contains(name) == true)
-                return SitePoiStatus.present;
-            if (this.pubData?.pa?.Contains(name) == true)
-                return SitePoiStatus.absent;
-            if (this.pubData?.pe?.Contains(name) == true)
-                return SitePoiStatus.empty;
+            if (this.pubData?.poiStatus.ContainsKey(name) == true)
+                return this.pubData.poiStatus[name];
 
             // otherwise check rawPoi
             if (this.rawPoi?.Any(_ => _.name == name) == true)
