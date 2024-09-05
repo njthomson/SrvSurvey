@@ -34,7 +34,8 @@
             "     body [Icy]",
             "  gravity [ ~ 0.276]",
             "     temp [50 ~ 150]",
-            "volcanism [None,Carbon Dioxide Geysers,Major Water Geysers,Major Water Magma,Minor Carbon Dioxide Geysers,Minor Nitrogen Magma]"
+            "volcanism [None,Carbon Dioxide Geysers,Major Water Geysers,Major Water Magma,Minor Carbon Dioxide Geysers,Minor Nitrogen Magma]",
+            " matsComp [Selenium >= 3.2]"
           ]
         },
         {
@@ -44,7 +45,8 @@
             "     body [RockyIce]",
             "  gravity [0.059 ~ 0.276]",
             "     temp [50 ~ 132]",
-            "volcanism [None]"
+            "volcanism [None]",
+            " matsComp [Selenium >= 2.8]"
           ]
         }
       ]

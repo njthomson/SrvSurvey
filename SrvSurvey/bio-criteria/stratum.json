@@ -16,15 +16,33 @@
 
     {
       "species": "Araneamus",
-      "useCommonChildren": true,
-      "query": [
-        "# hit count: 4061",
-        "atmosType [SulphurDioxide]",
-        "     body [Rocky]",
-        "  gravity [0.263 ~ 0.551]",
-        "     temp [165 ~ 373]",
-        "volcanism [None,Major Silicate Vapour Geysers,Metallic Magma,Minor Metallic Magma,Minor Silicate Vapour Geysers]",
-        "atmosComp [SulphurDioxide >= 100 | CarbonDioxide >= 1.2]"
+      "children": [
+        {
+          "variant": "Emerald",
+          "query": [
+            "# hit count: 4061",
+            "atmosType [SulphurDioxide]",
+            "     body [Rocky]",
+            "  gravity [0.263 ~ 0.551]",
+            "     temp [165 ~ 373]",
+            "volcanism [Major Silicate Vapour Geysers,Metallic Magma,Minor Metallic Magma,Minor Silicate Vapour Geysers]",
+            "atmosComp [SulphurDioxide >= 100 | CarbonDioxide >= 1.2]",
+            "# Excluding volcanism:none"
+          ]
+        },
+        {
+          "variant": "Emerald",
+          "query": [
+            "# hit count: 511",
+            "atmosType [SulphurDioxide]",
+            "     body [Rocky]",
+            "  gravity [0.29 ~ 0.551]",
+            "     temp [165 ~ 370]",
+            "volcanism [None]",
+            "atmosComp [SulphurDioxide >= 100 | CarbonDioxide >= 28]",
+            "# Forcing only volcanism:none"
+          ]
+        }
       ]
     },
 

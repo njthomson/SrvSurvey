@@ -13,7 +13,7 @@ namespace BioCriterias
         public static List<string> predict(SystemBody body)
         {
             if (body.type != SystemBodyType.LandableBody) return new List<string>();
-            if (body.parents == null || body.parents.Count == 0 || Game.activeGame == null) return new List<string>();
+            if (body.parents == null || body.parents.Count == 0) return new List<string>();
             if (BioCriteria.allCriteria.Count == 0 || Debugger.IsAttached) BioCriteria.readCriteria();
 
             var parentStar = body.system.getParentStarTypes(body, true).FirstOrDefault();
@@ -44,15 +44,15 @@ namespace BioCriterias
 
                 var brightest = parentsByBrightness.First();
                 parentStars.Clear();
-                parentStars.Add(brightestParentStar);
+                parentStars.Add(Util.flattenStarType(brightest.Key.starType));
 
-                if (parentStars2.Count == 2)
+                if (parentStars2.Count >= 2)
                 {
                     var nextBrightest = parentsByBrightness.Last();
                     var delta = nextBrightest.Value / brightest.Value;
                     Game.log($"{brightest.Key.name}: {brightest.Value} vs {nextBrightest.Key.name}: {nextBrightest.Value} => {delta}");
 
-                    if (delta > 0.8d)
+                    if (delta > 0.93d)
                         parentStars.Add(Util.flattenStarType(nextBrightest.Key.starType));
                 }
             }
@@ -153,8 +153,8 @@ namespace BioCriterias
             var currentName = (variant == "" ? species! : $"{genus} {species} - {variant}").Trim();
             var failures = testQuery(criteria.query, $"{genus} {species} {variant}".Trim());
 
-            //if (this.bodyName.Contains("A 3") && genus?.Contains("Amphora") == true) Debugger.Break();
-            //if (currentName?.Contains("Araneamus") == true) Debugger.Break();
+            //if (this.bodyName.Contains("A 3") && currentName?.Contains("Campestris") == true) Debugger.Break();
+            //if (currentName?.Contains("Informem") == true) Debugger.Break();
 
             // add a prediction if no failures and we have genus, species AND variant
             if (failures.Count == 0 && genus != null && species != null && variant != null)
@@ -226,7 +226,7 @@ namespace BioCriterias
             if (clause.property == "mats" && bodyValue is Dictionary<string, float>)
             {
                 var bodyMats = (Dictionary<string, float>)bodyValue;
-                if (!clause.values.Any(v => bodyMats.Any(bv => bv.Key.Equals(v, StringComparison.OrdinalIgnoreCase) && bv.Value > 1f)))
+                if (!clause.values.Any(v => bodyMats.Any(bv => bv.Key.Equals(v, StringComparison.OrdinalIgnoreCase) && bv.Value > 0.9f)))
                     failures.Add(new ClauseFailure(bodyName, "No mats multi match found", clause, string.Join(',', bodyMats)));
 
                 return;
@@ -610,6 +610,9 @@ namespace BioCriterias
 
                 ///* Shards */
                 //100562634522, // Aidoms MT-U c2-0 (partially useful)
+
+                /* Fonticulua Campestris */
+                77409424274, // Prae Drye XN-W c16-0 A 3
             };
 
             Game.log($"Testing {testSystems.Count} systems ...");

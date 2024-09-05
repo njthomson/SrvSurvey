@@ -94,9 +94,6 @@ namespace SrvSurvey
 
         protected override void onPaintPlotter(PaintEventArgs e)
         {
-            this.g = e.Graphics;
-            this.g.SmoothingMode = SmoothingMode.HighQuality;
-
             var brush = lastWasDiscovered ? GameColors.brushGameOrange : GameColors.brushCyan;
 
             g.DrawString($"Last scan:    {lastBodyName}", GameColors.fontSmaller, brush, four, eight);
@@ -111,16 +108,7 @@ namespace SrvSurvey
 
                 if (!string.IsNullOrEmpty(lastNotes))
                 {
-                    var txt = lastNotes;
-                    var bodySummary = game.systemData?.bioSummary?.bodyGroups.Find(_ => _.body.name == lastBodyName);
-                    if (bodySummary != null)
-                    {
-                        txt += $" ~{Util.credits(bodySummary.minReward, true)}";
-                        if (bodySummary.minReward != bodySummary.maxReward)
-                            txt += $" ~{Util.credits(bodySummary.maxReward, true)}";
-                    }
-
-                    g.DrawString(txt, GameColors.fontMiddle, GameColors.brushCyan, oneEight, sixFive);
+                    g.DrawString(lastNotes, GameColors.fontMiddle, GameColors.brushCyan, oneEight, sixFive);
                 }
             }
         }

@@ -564,8 +564,6 @@ namespace SrvSurvey.game
             // Discovery scan a.k.a. honk
             this.honked = true;
             this.bodyCount = entry.BodyCount;
-
-            if (this.bioSummaryActive) this.summarizeBioSystem(); // TODO: retire?
         }
 
         public void onJournalEntry(FSSAllBodiesFound entry)
@@ -653,8 +651,6 @@ namespace SrvSurvey.game
                         this.applyMainStarHonkBonus();
                 }
             }
-
-            if (this.bioSummaryActive) this.summarizeBioSystem(); // TODO: retire?
 
             if (body.bioSignalCount > 0)
             {
@@ -899,8 +895,6 @@ namespace SrvSurvey.game
             if (organism.species == null) organism.species = match.species.name;
             if (organism.speciesLocalized == null) organism.speciesLocalized = match.species.englishName;
             if (organism.genusLocalized == null) organism.genusLocalized = match.genus.englishName;
-
-            if (this.bioSummaryActive) this.summarizeBioSystem(); // TODO: retire?
         }
 
         public void onJournalEntry(ScanOrganic entry)
@@ -978,9 +972,6 @@ namespace SrvSurvey.game
                 else if (cmdr != null)
                     Game.log($"BAD! Why entryId for organism '{entry.Variant_Localised ?? entry.Variant}' to '{body.name}' ({body.id})");
             }
-
-            // We cannot log locations here because we do not know if the event is tracked live or retrospectively during playback (where the status file cannot be trusted)
-            if (this.bioSummaryActive) this.summarizeBioSystem(); // TODO: retire?
         }
 
         public void onJournalEntry(ApproachSettlement entry)
@@ -1653,286 +1644,12 @@ namespace SrvSurvey.game
         public long getMaxBioRewards(bool applyFF) { return this.bodies.Sum(b => applyFF && b.firstFootFall ? b.maxBioRewards * 5 : b.maxBioRewards); }
 
         [JsonIgnore]
-        private bool bioSummaryActive;
-
-        [JsonIgnore]
-        public SystemBioSummary bioSummary { get; private set; } // TODO: retire?
-
-        public SystemBioSummary summarizeBioSystem() // TODO: retire?
-        {
-            Game.log($"summarizeBioSystem: {this.name} ({this.address})");
-
-            var summary = new SystemBioSummary(this.name);
-
-            foreach (var body in this.bodies)
-            {
-                if (body.organisms != null)
-                {
-                    foreach (var org in body.organisms)
-                    {
-                        // look-up species name if we don't already know it
-                        if (org.species == null && org.entryId > 0)
-                        {
-                            var match = Game.codexRef.matchFromEntryId(org.entryId).species;
-                            org.species = match.name;
-                            org.speciesLocalized = match.englishName;
-
-                            if (org.reward == 0)
-                                org.reward = match.reward;
-                        }
-
-                        summary.processOrganism(org, body, this);
-                    }
-                }
-
-                // we know there's something there but not what it is
-                var bioCount = body.bioSignalCount;
-                if (body.organisms != null) bioCount -= body.organisms.Count;
-
-                // predict the body if there are signals unaccounted for
-                if (body.type == SystemBodyType.LandableBody && body.bioSignalCount > 0)
-                    bioCount -= summary.predictBody(body, this);
-
-                // if we still have unknowns...
-                if (body.bioSignalCount > 0 && (body.organisms == null || body.organisms.Count < body.bioSignalCount))
-                    summary.bodiesWithUnknowns.Add(body);
-            }
-
-            // only assign the class member at the end of the process
-            this.bioSummary = summary;
-            return summary;
-        }
-
-        [JsonIgnore]
         public double nebulaDist { get; private set; }
 
         public async Task<double> getNebulaDist()
         {
             this.nebulaDist = await Game.codexRef.getDistToClosestNebula(this.starPos);
             return nebulaDist;
-        }
-    }
-
-    internal class SystemBioSummary
-    {
-        public static string unknown = "Unknown";
-
-        public string systemName;
-        public List<SummaryGenus> genusGroups = new List<SummaryGenus>();
-        public List<SummaryBody> bodyGroups = new List<SummaryBody>();
-        public List<SystemBody> bodiesWithUnknowns = new List<SystemBody>();
-
-        public long minReward;
-        public long maxReward;
-
-        public SystemBioSummary(string systemName)
-        {
-            this.systemName = systemName;
-        }
-
-        private SummaryGenus findGenus(string genusName, string displayName)
-        {
-            var genus = genusGroups.Find(_ => _.name == genusName);
-            if (genus == null)
-            {
-                var bioRef = Game.codexRef.matchFromGenus(genusName);
-                if (bioRef == null) throw new Exception($"Unknown genus: '{genusName}' ?!");
-                genus = new SummaryGenus(bioRef, displayName);
-                genusGroups.Add(genus);
-            }
-
-            return genus;
-        }
-
-        private SummaryBody trackSpeciesOnBody(SystemBody body, SummarySpecies species)
-        {
-            var bodyTracker = bodyGroups.Find(_ => _.body == body);
-            if (bodyTracker == null)
-            {
-                bodyTracker = new SummaryBody(body);
-                bodyGroups.Add(bodyTracker);
-            }
-
-            // skip adding predicted species if we have confirmed ones
-            if (!species.predicted && !bodyTracker.species.Any(_ => _.predicted == false && _.bioRef == species.bioRef))
-                bodyTracker.species.Add(species);
-            // skip if that species is already present
-            else if (!bodyTracker.species.Any(_ => _.bioRef == species.bioRef))
-                bodyTracker.species.Add(species);
-
-            return bodyTracker;
-        }
-
-        public void processOrganism(SystemOrganism? org, SystemBody body, SystemData systemData)
-        {
-            if (org != null)
-            {
-                // find/create the genus group
-                var genusGroup = this.findGenus(org.genus, org.genusLocalized);
-
-                // when we know the species already ...
-                if (org.species != null)
-                {
-                    // find/create the species
-                    var shortSpeciesName = org.speciesLocalized?.Replace(org.genusLocalized, "")?.Trim() ?? "EEK";
-                    var species = genusGroup.findSpecies(org.species, shortSpeciesName);
-
-                    // add this body to that list
-                    species.bodies.Add(body);
-
-                    // and track species by body
-                    trackSpeciesOnBody(body, species);
-                }
-                else
-                {
-                    // predict valid species within the genus ...
-                    var predictions = BioPredictor.predict(body);
-                    foreach (var prediction in predictions)
-                    {
-                        var genusRef = Game.codexRef.matchFromGenus(org.genus)!;
-                        if (genusRef == null) throw new Exception($"Unknown genus: '{org.genus}' ?!");
-
-                        var speciesRef = genusRef.matchSpecies(prediction);
-                        if (speciesRef != null)
-                        {
-                            var shortSpeciesName = speciesRef.englishName.Replace(genusRef.englishName, "").Trim();
-                            var species = genusGroup.findSpecies(speciesRef.name, shortSpeciesName, true);
-                            species.bodies.Add(body);
-
-                            // and track species by body
-                            trackSpeciesOnBody(body, species);
-                        }
-                    }
-                }
-            }
-        }
-
-        public int predictBody(SystemBody body, SystemData systemData)
-        {
-            var predictions = BioPredictor.predict(body);
-            var allGenusKnown = body.bioSignalCount == body.organisms?.Count;
-
-            foreach (var prediction in predictions)
-            {
-                //if (!species.predicted && !bodyTracker.species.Any(_ => _.bioRef == species.bioRef))
-                //    bodyTracker.species.Add(species);
-
-                //if (!bodyTracker.species.Any(_ => _.bioRef.genus == species.bioRef.genus))
-                //    bodyTracker.species.Add(species);
-
-
-                var match = Game.codexRef.matchFromSpecies2(prediction);
-                if (body.organisms?.Any(o => o.species == match.species.name) == true)
-                    // species already known on this body - no need to predict it
-                    continue;
-                // skip if genus is known and this isn't one of them
-                if (allGenusKnown && body.organisms?.Any(_ => _.genus == match.genus.name) == false)
-                    continue;
-                // skip if species is known
-                if (allGenusKnown && body.organisms?.Any(_ => _.genus == match.genus.name && _.species != null) == true)
-                    continue;
-
-                if (match?.genus != null && match?.species != null)
-                {
-                    var genusGroup = this.findGenus(match.genus.name, match.genus.englishName);
-
-                    var shortSpeciesName = match.species.englishName.Replace(match.genus.englishName, "").Trim();
-                    var species = genusGroup.findSpecies(match.species.name, shortSpeciesName, true);
-                    species.bodies.Add(body);
-
-                    // and track species by body
-                    trackSpeciesOnBody(body, species);
-                }
-                else
-                {
-                    Game.log($"Failed to find a match for prediction: {prediction}");
-                }
-            }
-
-            return predictions.Count;
-        }
-
-        public void calcMinMax(SystemBody? currentBody)
-        {
-            this.minReward = 0;
-            this.maxReward = 0;
-
-            // prepare a map of each body and the signals on it
-            foreach (var tracker in this.bodyGroups)
-            {
-                if (currentBody != null && currentBody != tracker.body)
-                    continue;
-
-                var rewardKnown = 0L;
-                var countKnown = 0;
-                var predicted = new List<SummarySpecies>();
-
-                foreach (var species in tracker.species)
-                {
-                    if (species.predicted)
-                    {
-                        // make a list of predictions
-                        predicted.Add(species);
-                    }
-                    else
-                    {
-                        // sum rewards for non-predicted species 
-                        tracker.minReward += species.reward;
-                        tracker.maxReward += species.reward;
-                        rewardKnown += species.reward;
-                        countKnown++;
-                    }
-                }
-
-                // how many predictions are needed to reach the signal count?
-                var delta = tracker.body.bioSignalCount - countKnown;
-                var sortedPredictions = predicted.OrderBy(_ => _.reward).ToList();
-
-                // take that many from the bottom for min per body
-                var list = this.getShortList(delta, sortedPredictions, true);
-                var sum = list.Sum(_ => _.reward);
-                tracker.minReward += sum;
-                //tracker.minReward += sortedPredictions.Take(delta).Sum(_ => _.reward);
-                this.minReward += tracker.minReward;
-
-                // take that many from the top for max per body
-                list = this.getShortList(delta, sortedPredictions, false);
-                sum = list.Sum(_ => _.reward);
-                tracker.maxReward = rewardKnown + sum;
-                //tracker.maxReward = sortedPredictions.TakeLast(delta).Sum(_ => _.reward);
-                this.maxReward += tracker.maxReward;
-            }
-        }
-
-        private List<SummarySpecies> getShortList(int delta, List<SummarySpecies> sortedPredictions, bool minNotMax)
-        {
-            var idx = minNotMax ? 0 : sortedPredictions.Count - 1;
-
-            var list = new List<SummarySpecies>();
-            while (list.Count < delta && idx >= 0 && idx < sortedPredictions.Count)
-            {
-                var next = sortedPredictions[idx];
-                // add if that genus is not already present
-                var genusMatch = list.Find(_ => _.bioRef.genus == next.bioRef.genus);
-                if (genusMatch == null)
-                    list.Add(next);
-                else if (minNotMax && next.reward < genusMatch.reward)
-                {
-                    list.Remove(genusMatch);
-                    list.Add(next);
-                }
-                else if (!minNotMax && next.reward > genusMatch.reward)
-                {
-                    list.Remove(genusMatch);
-                    list.Add(next);
-                }
-                if (minNotMax)
-                    idx++;
-                else
-                    idx--;
-            }
-
-            return list;
         }
     }
 

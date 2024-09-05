@@ -16,10 +16,11 @@ namespace BioCriterias
         /// The "predictor engine" version - used to defend against future criteria not understood by older builds.
         /// Increment this any time breaking changes are added to criteria
         /// </summary>
-        public static int engVer = 3;
+        public static int engVer = 4;
         // v1 : initial support, with legacy species recently added and incomplete
         // v2 : support for Brain Tree's with "Guardian" criteria
         // v3 : support for &[] for matches ALL and ![] matches NONE
+        // v4 : support `matsComp` for Material composition testing
 
         public string? genus;
         public string? species;
@@ -232,10 +233,13 @@ namespace BioCriterias
             // eg: "pressure [0.01 ~ ]"
             // eg: "atmosphere [Thin Ammonia]"
             // eg: "atmosType [CarbonDioxide,SulphurDioxide,Water]"
-            // eg: "atmosComp [SulphurDioxide > 0.99]"
+            // eg: "atmosComp [SulphurDioxide >= 0.99 | Neon >= 3]"
+            // eg: "matsComp [Sulphur >= 0.99]"
 
             var r0 = new Regex(@"\s*(\w+)\s*[&!]?\[(.+)\]");
             var m0 = r0.Match(txt);
+
+            if (m0.Groups.Count != 3) throw new Exception($"Bad criteria: {txt}");
 
             var property = m0.Groups[1].Value;
             var valTxt = m0.Groups[2].Value;
@@ -290,6 +294,8 @@ namespace BioCriterias
             }
 
             if (clause.values == null && clause.min == null && clause.max == null && clause.compositions == null) throw new Exception($"Bad criteria: {txt}");
+            if (string.IsNullOrEmpty(clause.property)) throw new Exception($"Bad criteria: {txt}");
+            if (clause.op == Op.Is && (clause.values == null || clause.values.Count == 0)) throw new Exception($"Bad criteria: {txt}");
             return clause;
         }
 
@@ -372,6 +378,7 @@ namespace BioCriterias
             { "atmosphere", "Atmosphere" },
             { "atmosType", "AtmosphereType" },
             { "atmosComp", "AtmosphereComposition" },
+            { "matsComp", "Materials" },
 
             { "dist", "DistanceFromArrivalLS" },
 

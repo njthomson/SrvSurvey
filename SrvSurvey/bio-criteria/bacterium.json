@@ -987,8 +987,8 @@
                 "  gravity [0.261 ~ 0.587]",
                 "     temp [148 ~ 493]",
                 "volcanism [Major Silicate Vapour Geysers,Metallic Magma,Minor Metallic Magma,Minor Rocky Magma,Minor Silicate Vapour Geysers]",
-                "# Excluding volcanism:none",
-                "atmosComp [SulphurDioxide >= 100 | CarbonDioxide >= 34]"
+                "atmosComp [SulphurDioxide >= 100 | CarbonDioxide >= 34]",
+                "# Excluding volcanism:none"
               ]
             },
             {
@@ -1000,8 +1000,8 @@
                 "     temp [300 ~ 478]",
                 " pressure [0.001 ~ 0.0934]",
                 "volcanism [None]",
-                "# Forcing only volcanism:none",
-                "atmosComp [SulphurDioxide >= 100 | CarbonDioxide >= 37]"
+                "atmosComp [SulphurDioxide >= 100 | CarbonDioxide >= 37]",
+                "# Forcing only volcanism:none"
               ]
             },
             {
@@ -1024,7 +1024,7 @@
                 "  gravity [0.289 ~ 0.607]",
                 "     temp [153 ~ 500]",
                 "volcanism [Major Rocky Magma,Major Silicate Vapour Geysers,Metallic Magma,Minor Metallic Magma,Minor Silicate Vapour Geysers,Rocky Magma]",
-                "atmosComp [SulphurDioxide >= 100",
+                "atmosComp [SulphurDioxide >= 100]",
                 "# Excluding volcanism:none"
               ]
             },
