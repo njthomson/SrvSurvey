@@ -226,7 +226,7 @@ namespace BioCriterias
             if (clause.property == "mats" && bodyValue is Dictionary<string, float>)
             {
                 var bodyMats = (Dictionary<string, float>)bodyValue;
-                if (!clause.values.Any(v => bodyMats.Any(bv => bv.Key.Equals(v, StringComparison.OrdinalIgnoreCase) && bv.Value > 0.9f)))
+                if (!clause.values.Any(v => bodyMats.Any(bv => bv.Key.Equals(v, StringComparison.OrdinalIgnoreCase) && bv.Value > 0.5f)))
                     failures.Add(new ClauseFailure(bodyName, "No mats multi match found", clause, string.Join(',', bodyMats)));
 
                 return;

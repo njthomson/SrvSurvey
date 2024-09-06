@@ -91,8 +91,8 @@ namespace SrvSurvey
 
                     // do we already know if this is a first discovery?
                     string? discoveryPrefix = null;
-                    if (organism.isCmdrFirst) discoveryPrefix = "⚑ ";
-                    else if (organism.isNewEntry) discoveryPrefix = "⚐ ";
+                    if (organism.isCmdrFirst) discoveryPrefix = "⚑";
+                    else if (organism.isNewEntry) discoveryPrefix = "⚐";
 
                     dty = (int)dty;
 
@@ -112,6 +112,7 @@ namespace SrvSurvey
                     {
                         displayName = organism.variantLocalized.Replace(organism.genusLocalized + " ", "");
                         if (displayName.EndsWith("Anemone")) displayName = displayName.Replace("Anemone", "");
+                        if (displayName.EndsWith("Brain Tree")) displayName = displayName.Replace("Brain Tree", "");
                     }
                     else if (!string.IsNullOrEmpty(organism.speciesLocalized))
                         displayName = organism.speciesLocalized.Replace(organism.genusLocalized + " ", "");
@@ -128,12 +129,12 @@ namespace SrvSurvey
                                 if (!game.cmdrCodex.isDiscovered(match.entryId))
                                 {
                                     prefix = "⚑";
-                                    discoveryPrefix = "⚑ ";
+                                    discoveryPrefix = "⚑";
                                 }
-                                if (!game.cmdrCodex.isDiscoveredInRegion(match.entryId, game.cmdr.galacticRegion))
+                                else if (!game.cmdrCodex.isDiscoveredInRegion(match.entryId, game.cmdr.galacticRegion))
                                 {
                                     prefix = "⚐";
-                                    if (discoveryPrefix == null) discoveryPrefix = "⚐ ";
+                                    if (discoveryPrefix == null) discoveryPrefix = "⚐";
                                 }
 
                                 var isLegacy = !match.species.genus.odyssey;
@@ -146,6 +147,7 @@ namespace SrvSurvey
                                     }
                                     var legacyEnglishName = match.species.englishName;
                                     if (legacyEnglishName.EndsWith("Anemone")) legacyEnglishName = legacyEnglishName.Replace("Anemone", "");
+                                    if (legacyEnglishName.EndsWith("Brain Tree")) legacyEnglishName = legacyEnglishName.Replace("Brain Tree", "");
                                     if (prefix != null)
                                         this.drawTextAt(twoEight, prefix + legacyEnglishName, highlight ? brush : Brushes.Gold);
                                     else
@@ -222,8 +224,8 @@ namespace SrvSurvey
                     brush = highlight ? GameColors.brushCyan : GameColors.brushGameOrange;
                     if (!highlight && discoveryPrefix != null) brush = (SolidBrush)Brushes.Gold;
 
-                    var leftText = displayName != organism.genusLocalized || organism.entryId > 0 
-                        ? discoveryPrefix + organism.genusLocalized 
+                    var leftText = displayName != organism.genusLocalized || organism.entryId > 0
+                        ? discoveryPrefix + organism.genusLocalized
                         : "?";
                     drawTextAt(
                         twoEight,

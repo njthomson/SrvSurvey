@@ -1023,7 +1023,6 @@ namespace SrvSurvey.game
 
         private void onJournalEntry(FSSDiscoveryScan entry)
         {
-
             if (FormGenus.activeForm != null)
                 FormGenus.activeForm.deferPopulateGenus();
         }
@@ -1031,8 +1030,8 @@ namespace SrvSurvey.game
         private void onJournalEntry(Scan entry)
         {
 
-            if (FormGenus.activeForm != null)
-                FormGenus.activeForm.deferPopulateGenus();
+            //if (FormGenus.activeForm != null)
+            //    FormGenus.activeForm.deferPopulateGenus();
         }
 
         private void onJournalEntry(SAAScanComplete entry)
