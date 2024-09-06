@@ -224,18 +224,21 @@ namespace SrvSurvey.net
                 if (site.siteHeading != -1 && !Util.isClose(site.pubData!.sh, site.siteHeading, 1m))
                 {
                     diff = true;
+                    Game.log($"DIFF: {site.displayName}: site heading\r\n\t> {site.pubData.sh}\r\n\t> {site.siteHeading}");
                     site.pubData.sh = site.siteHeading;
                 }
                 // relic tower heading
                 if (site.relicTowerHeading != -1 && !Util.isClose(site.pubData!.rh, site.relicTowerHeading, 1m))
                 {
                     diff = true;
+                    Game.log($"DIFF: {site.displayName}: relic heading\r\n\t> {site.pubData.rh}\r\n\t> {site.relicTowerHeading}");
                     site.pubData.rh = site.relicTowerHeading;
                 }
                 // location
                 if (site.location != null && (site.pubData.ll == null || !Util.isClose(site.pubData.ll.Lat, site.location.Lat, 0.0001m) || !Util.isClose(site.pubData.ll.Long, site.location.Long, 0.0001m)))
                 {
                     diff = true;
+                    Game.log($"DIFF: {site.displayName}: location\r\n\t> {site.pubData.ll}\r\n\t> {site.location}");
                     site.pubData.ll = site.location;
                 }
 
@@ -244,6 +247,7 @@ namespace SrvSurvey.net
                 if (site.pubData.og != siteOG)
                 {
                     diff = true;
+                    Game.log($"DIFF: {site.displayName}: obelisk groups\r\n\t> {site.pubData.og}\r\n\t> {siteOG}");
                     site.pubData.og = siteOG;
                 }
 
@@ -306,19 +310,22 @@ namespace SrvSurvey.net
                     Game.log($"Skipping poiStatus due suspicious counts\r\n\tsumSitePoi:{sumSitePoi} vs sumPubDataPoi:{template.poiSurvey.Count}, {template.name}, {Path.GetFileName(site.filepath)}");
                     Debugger.Break();
                 }
-                if (site.pubData.pp != sitePP)
+                if ((site.pubData.pp ?? "") != sitePP)
                 {
                     diff = true;
+                    Game.log($"DIFF: {site.displayName}: poiPresent\r\n\t> {site.pubData.pp}\r\n\t> {sitePP}");
                     site.pubData.pp = string.IsNullOrWhiteSpace(sitePP) ? null! : sitePP;
                 }
-                if (site.pubData.pa != sitePA)
+                if ((site.pubData.pa ?? "") != sitePA)
                 {
                     diff = true;
+                    Game.log($"DIFF: {site.displayName}: poiAbsent\r\n\t> {site.pubData.pa}\r\n\t> {sitePA}");
                     site.pubData.pa = string.IsNullOrWhiteSpace(sitePA) ? null! : sitePA;
                 }
-                if (site.pubData.pe != sitePE)
+                if ((site.pubData.pe ?? "") != sitePE)
                 {
                     diff = true;
+                    Game.log($"DIFF: {site.displayName}: poiEmpty\r\n\t> {site.pubData.pe}\r\n\t> {sitePE}");
                     site.pubData.pe = string.IsNullOrWhiteSpace(sitePE) ? null! : sitePE;
                 }
 
@@ -345,6 +352,7 @@ namespace SrvSurvey.net
                 if (siteObelisks != null && siteObelisksJson != pubDataObelisksJson && siteObelisks.Count >= site.pubData.ao.Count && siteObelisksJson.Length > pubDataObelisksJson.Length)
                 {
                     diff = true;
+                    Game.log($"DIFF: {site.displayName}: obelisks\r\n\t> {pubDataObelisksJson}\r\n\t> {siteObelisksJson}");
                     site.pubData.ao = siteObelisks.ToHashSet();
                     foreach (var ao in site.pubData.ao) ao.scanned = false;
                 }
@@ -352,11 +360,13 @@ namespace SrvSurvey.net
                 if (site.pubData.sh == 0)
                 {
                     diff = true;
+                    Game.log($"DIFF: {site.displayName}: site heading\r\nwas zero?");
                     site.pubData.sh = -1;
                 }
                 if (site.pubData.rh == 0)
                 {
                     diff = true;
+                    Game.log($"DIFF: {site.displayName}: relic heading\r\nwas zero?");
                     site.pubData.rh = -1;
                 }
 

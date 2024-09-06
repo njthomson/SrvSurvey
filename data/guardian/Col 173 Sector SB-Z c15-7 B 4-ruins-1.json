@@ -10,14 +10,14 @@
   },
   "og": "EIJMOU",
   "ao": [
-    "E21-ta,ca-L10",
-    "E27-ur,ur-B8",
-    "I06-ta,ca-L10",
-    "J03-or,or-T8",
-    "M03-or,or-T8",
-    "O03-or,re-T13",
-    "U05-ur,or-B11",
-    "U31-ur,ur-B8",
-    "U48-ur,ur-B8"
+    "E21-ta,ca-L10-",
+    "E27-ur,ur-B8-",
+    "I06-ta,ca-L10-",
+    "J03-or,or-T8-",
+    "M03-or,or-T8-",
+    "O03-or,re-T13-",
+    "U05-ur,or-B11-",
+    "U31-ur,ur-B8-",
+    "U48-ur,ur-B8-"
   ]
 }

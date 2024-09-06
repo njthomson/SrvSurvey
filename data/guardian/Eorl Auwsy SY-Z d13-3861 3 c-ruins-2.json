@@ -10,18 +10,18 @@
   },
   "og": "BEGIMNPT",
   "ao": [
-    "B04-or,ca-T9",
-    "E07-or,re-T13",
-    "E16-to,re-C13",
-    "G02-ca,to-H15",
-    "G08-ca,re-H16",
-    "I04-ca,ur-H10",
-    "M02-or-T7",
-    "N06-ta,re-L14",
-    "N17-ta,or-L12",
-    "P08-to,re-C13",
-    "P13-to,ca-C9",
-    "T02-ca,to-H15",
-    "T08-ca,to-H15"
+    "B04-or,ca-T9-",
+    "E07-or,re-T13-",
+    "E16-to,re-C13-",
+    "G02-ca,to-H15-",
+    "G08-ca,re-H16-",
+    "I04-ca,re-H10-",
+    "M02-or-T7-",
+    "N06-ta,re-L14-",
+    "N17-ta,or-L12-",
+    "P08-to,re-C13-",
+    "P13-to,ca-C9-",
+    "T02-ca,to-H15-",
+    "T08-ca,to-H15-"
   ]
 }

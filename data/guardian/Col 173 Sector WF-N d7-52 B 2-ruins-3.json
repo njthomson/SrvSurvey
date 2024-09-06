@@ -10,16 +10,16 @@
   },
   "og": "BDFHLPRU",
   "ao": [
-    "B03-or,ur-T10",
-    "D09-ca,ca-H9",
-    "F07-ca,to-H15",
-    "H10-or-T7",
-    "L01-or,ca-T9",
-    "P24-to,ta-C11",
-    "P26-to,re-C13",
-    "R11-ca,ca-H9",
-    "R27-ca,re-H16",
-    "U20-ur,to-B12",
-    "U50-ur,re-B7"
+    "B03-or,ur-T10-",
+    "D09-ca,ca-H9-",
+    "F07-ca,to-H15-",
+    "H10-or-T7-",
+    "L01-or,ca-T9-",
+    "P24-to,ta-C11-",
+    "P26-to,re-C13-",
+    "R11-ca,ca-H9-",
+    "R27-ca,re-H16-",
+    "U20-ur,to-B12-",
+    "U50-ur,re-B7-"
   ]
 }

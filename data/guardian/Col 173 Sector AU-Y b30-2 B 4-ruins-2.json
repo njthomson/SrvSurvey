@@ -10,12 +10,12 @@
   },
   "og": "ACFNS",
   "ao": [
-    "A09-ca,ur-H10",
-    "C20-ta,ta-L9",
-    "C23-ta,ca-L10",
-    "F03-ca,ca-H9",
-    "N04-ta,or-L12",
-    "N20-ta,to-L13",
-    "S03-or,re-T13"
+    "A09-ca,re-H10-",
+    "C20-ta,ta-L9-",
+    "C23-ta,ca-L10-",
+    "F03-ca,ca-H9-",
+    "N04-ta,or-L12-",
+    "N20-ta,to-L13-",
+    "S03-or,re-T13-"
   ]
 }

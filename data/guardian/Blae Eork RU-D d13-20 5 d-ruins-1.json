@@ -10,11 +10,11 @@
   },
   "og": "ABCFL",
   "ao": [
-    "A02-ca,to-H15",
-    "B04-or,ca-T9",
-    "C16-ta,ta-L9",
-    "C17-ta-L8",
-    "F05-ca,re-H14",
-    "L05-or,re-T12"
+    "A02-ca,to-H15-",
+    "B04-or,ca-T9-",
+    "C16-ta,ta-L9-",
+    "C17-ta-L8-",
+    "F05-ca,re-H14-",
+    "L05-or,re-T12-"
   ]
 }

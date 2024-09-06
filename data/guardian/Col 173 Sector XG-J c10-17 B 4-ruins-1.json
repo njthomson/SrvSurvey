@@ -10,12 +10,12 @@
   },
   "og": "AFHOPQ",
   "ao": [
-    "A02-ca,to-H15",
-    "F05-ca,re-H14",
-    "H05-or,ta-T11",
-    "O02-or,re-T13",
-    "P07-to,or-C12",
-    "P13-to,ca-C9",
-    "Q05-or,ur-T10"
+    "A02-ca,to-H15-",
+    "F05-ca,re-H14-",
+    "H05-or,ta-T11-",
+    "O02-or,re-T13-",
+    "P07-to,or-C12-",
+    "P13-to,ca-C9-",
+    "Q05-or,ur-T10-"
   ]
 }

@@ -25,10 +25,6 @@
         public const string empty = ".empty";
         /// <summary> PlotGuardians : Append message to site notes </summary>
         public const string note = ".note";
-        /// <summary> PlotGuardians : Active Obelisk Groups - set which obelisk groups exist at this site, expecting a comma separated list of letters </summary>
-        public const string aog = ".aog";
-        /// <summary> PlotGuardians : Active Obelisk - set which items an obelisk is asking for, eg: '.ao ca or' </summary>
-        public const string ao = ".ao "; // (the trailing space is necessary)
         /// <summary> PlotGuardians : Target Obelisk - set a specific obelisk as the target to aim for </summary>
         public const string to = ".to";
         /// <summary> PlotGuardians : Obelisk Scanned - toggles that an obelisk has been scanned (mostly for Ram Tah mission) </summary>

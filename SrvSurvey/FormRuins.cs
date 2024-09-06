@@ -18,6 +18,7 @@ namespace SrvSurvey
 
             Util.showForm(FormRuins.activeForm);
         }
+
         protected override void OnClosing(CancelEventArgs e)
         {
             base.OnClosing(e);
@@ -80,6 +81,9 @@ namespace SrvSurvey
         private readonly Dictionary<string, GuardianSiteData?> filteredSites = new();
         private GuardianSiteData? siteData;
         private float angle = 0f;
+        private bool populatingCombos = false;
+
+        private GuardianSiteData? initialData;
 
         public FormRuins(GuardianSiteData? siteData)
         {
@@ -92,8 +96,7 @@ namespace SrvSurvey
 
             this.getAllSurveyedRuins();
 
-            comboSiteType.SelectedIndex = 0;
-            comboSite.SelectedIndex = 0;
+            this.initialData = siteData;
             this.showFilteredSites(siteData ?? game?.systemSite);
 
             checkNotes.Checked = Game.settings.mapShowNotes;
@@ -199,7 +202,7 @@ namespace SrvSurvey
             {
                 lblLastVisited.Text = newSite.lastVisited.ToString("d");
             }
-            checkNotes.Enabled = newSite != null;
+            checkNotes.Enabled = newSite?.filepath != null;
 
             this.showSurveyProgress();
         }
@@ -234,7 +237,8 @@ namespace SrvSurvey
 
         public void showFilteredSites(GuardianSiteData? siteData = null)
         {
-            if (string.IsNullOrEmpty(comboSiteType.Text) || comboSiteType.Enabled == false) return;
+            if (comboSiteType.Enabled == false) return;
+            populatingCombos = true;
 
             Enum.TryParse<GuardianSiteData.SiteType>(comboSiteType.Text, true, out GuardianSiteData.SiteType targetType);
 
@@ -291,6 +295,20 @@ namespace SrvSurvey
                 }
             }
 
+            if (this.initialData != null && !filteredSites.Values.Any(s => s?.displayName == this.initialData.displayName) && (targetType == GuardianSiteData.SiteType.Unknown || initialData.type == targetType))
+            {
+                var prefix = $"{initialData.systemAddress} {initialData.bodyId}";
+                var name = initialData.isRuins
+                    ? $"{initialData.bodyName ?? prefix}, ruins #{initialData.index}"
+                    : $"{initialData.bodyName ?? prefix}";
+
+                if (targetType == GuardianSiteData.SiteType.Unknown)
+                    name += $" - {initialData.type}";
+
+                filteredSites.Add(name, initialData);
+                comboSite.Text = initialData.displayName;
+            }
+
             comboSite.DataSource = filteredSites.Keys.ToList();
 
             // pre-load current site, if we're in one
@@ -298,21 +316,31 @@ namespace SrvSurvey
             {
                 //this.loadMap(game.nearBody?.siteData);
                 var match = this.filteredSites.FirstOrDefault(_ => _.Value != null && _.Value.systemAddress == siteData.systemAddress && _.Value.bodyId == siteData.bodyId && _.Value.index == siteData.index);
-
                 comboSite.Text = match.Key;
             }
-
-            if (string.IsNullOrEmpty(comboSite.Text) && comboSite.Items.Count > 0)
+            else if (string.IsNullOrEmpty(comboSite.Text) && comboSite.Items.Count > 0)
+            {
                 comboSite.SelectedIndex = 0;
+            }
+            else
+            {
+                comboSiteType.SelectedIndex = 0;
+                comboSite.SelectedIndex = 0;
+            }
+
+            loadMap(comboSite.Text);
+            populatingCombos = false;
         }
 
         private void comboSite_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (populatingCombos) return;
             this.loadMap(comboSite.Text);
         }
 
         private void comboSiteType_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (populatingCombos) return;
             this.showFilteredSites();
         }
 
@@ -374,6 +402,8 @@ namespace SrvSurvey
 
         private void findNearestArtifact(PointF mPos)
         {
+            if (this.template == null) return;
+
             this.nearestDist = double.MaxValue;
             this.nearestPoi = null!;
 
@@ -412,7 +442,7 @@ namespace SrvSurvey
         private void map_DoubleClick(object sender, EventArgs e)
         {
             // do nothing if these don't match
-            if (game?.systemSite == null || game.systemSite != this.siteData)
+            if (game?.systemSite == null || game.systemSite != this.siteData || siteData?.filepath == null)
                 return;
 
             if (this.nearestDist < 30 && this.siteData != null)
@@ -430,7 +460,7 @@ namespace SrvSurvey
 
         private void map_MouseDown(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Right)
+            if (e.Button == MouseButtons.Right && siteData?.filepath != null)
             {
                 this.mousePos = new PointF(
                     e.X - mapCenter.X,
@@ -985,7 +1015,7 @@ namespace SrvSurvey
 
         private void setPoiStatus(string name, SitePoiStatus newStatus)
         {
-            if (siteData == null) return;
+            if (siteData?.filepath == null) return;
 
             siteData.poiStatus[name] = newStatus;
 

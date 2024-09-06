@@ -39,7 +39,7 @@ namespace SrvSurvey.canonn
             var pubAllRuinsPath = Path.Combine(Git.pubDataFolder, "allRuins.json");
             this.allRuins = File.Exists(pubAllRuinsPath) && !devReload
                     ? JsonConvert.DeserializeObject<List<GuardianRuinSummary>>(File.ReadAllText(pubAllRuinsPath))!
-                     : JsonConvert.DeserializeObject<List<GuardianRuinSummary>>(File.ReadAllText(Canonn.allRuinsStaticPath))!;
+                    : JsonConvert.DeserializeObject<List<GuardianRuinSummary>>(File.ReadAllText(Canonn.allRuinsStaticPath))!;
             this.allBeacons = JsonConvert.DeserializeObject<List<GuardianBeaconSummary>>(File.ReadAllText(Canonn.allBeaconsStaticPath))!;
 
             var pubAllStructuresPath = Path.Combine(Git.pubDataFolder, "allStructures.json");
@@ -1297,9 +1297,6 @@ namespace SrvSurvey.canonn
                         name = bank.ToUpperInvariant() + int.Parse(bankIdx).ToString("00"),
                         msg = $"{msgType.ToUpperInvariant()[0]}{msgNum}",
                     };
-                    activeObelisk.items.Add(Enum.Parse<ObeliskItem>(item1, true));
-                    if (!string.IsNullOrEmpty(item2) && item2 != "-")
-                        activeObelisk.items.Add(Enum.Parse<ObeliskItem>(item2, true));
 
                     // remove any prior entries of the same name but otherwise different
                     var existingButDiff = site.ao.FirstOrDefault(_ => _.name == activeObelisk.name && _.ToString() != activeObelisk.ToString());
@@ -1540,9 +1537,6 @@ namespace SrvSurvey.canonn
                         name = bank.ToUpperInvariant() + int.Parse(bankIdx).ToString("00"),
                         msg = $"#{msgNum}",
                     };
-                    activeObelisk.items.Add(Enum.Parse<ObeliskItem>(item1, true));
-                    if (!string.IsNullOrEmpty(item2) && item2 != "-")
-                        activeObelisk.items.Add(Enum.Parse<ObeliskItem>(item2, true));
 
                     // remove any prior entries of the same name but otherwise different
                     var existingButDiff = site.ao.FirstOrDefault(_ => _.name == activeObelisk.name && _.ToString() != activeObelisk.ToString());

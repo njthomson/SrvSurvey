@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Text;
+using static SrvSurvey.game.GuardianSiteData;
 
 namespace SrvSurvey
 {
@@ -72,9 +73,12 @@ namespace SrvSurvey
             this.star = Util.getRecentStarSystem();
             comboCurrentSystem.Text = star.systemName;
 
-            this.beginPrepareAllRows().ContinueWith((rslt) =>
+            this.BeginInvoke(() =>
             {
-                // no-op
+                this.beginPrepareAllRows().ContinueWith((rslt) =>
+                {
+                    // no-op
+                });
             });
         }
 
@@ -277,6 +281,7 @@ namespace SrvSurvey
                     keep &= entry.systemName.Contains(txtFilter.Text, StringComparison.OrdinalIgnoreCase) // system
                         || row.SubItems[row.SubItems.Count - 1].Text.Contains(txtFilter.Text, StringComparison.OrdinalIgnoreCase) // notes
                         || row.SubItems[6].Text.Contains(txtFilter.Text, StringComparison.OrdinalIgnoreCase) // site type
+                        || row.SubItems[0].Text.Contains(txtFilter.Text, StringComparison.OrdinalIgnoreCase) // site Canonn ID
                         || entry.systemAddress.ToString().Contains(txtFilter.Text, StringComparison.OrdinalIgnoreCase) // numeric system address
                         || (checkRamTah.Checked && entry.ramTahLogs.Contains(txtFilter.Text, StringComparison.OrdinalIgnoreCase)); // Ram Tah logs
                 }
@@ -403,7 +408,7 @@ namespace SrvSurvey
                 var entry = item.Tag as GuardianGridEntry;
                 if (entry == null) return;
 
-                menuOpenSiteSurvey.Enabled = entry.siteType != "Beacon" && entry.lastVisited != DateTimeOffset.MinValue;
+                menuOpenSiteSurvey.Enabled = entry.siteType != "Beacon";
                 menuOpenDataFile.Enabled = File.Exists(entry.filepath);
                 notesToolStripMenuItem.Enabled = !string.IsNullOrEmpty(entry.notes);
 
@@ -584,9 +589,28 @@ namespace SrvSurvey
         {
             if (this.grid.SelectedItems.Count == 0) return;
             var entry = (GuardianGridEntry)this.grid.SelectedItems[0].Tag;
-            if (entry.siteType == "Beacon" || entry.lastVisited == DateTimeOffset.MinValue) return;
+            if (entry.siteType == "Beacon") return;
 
             var siteData = GuardianSiteData.Load($"{entry.systemName} {entry.bodyName}", entry.idx, entry.isRuins);
+
+            if (siteData == null)
+            {
+                // contruct a new siteData from what we have here and it's pubData
+                var siteType = Enum.Parse<SiteType>(entry.siteType);
+                siteData = new GuardianSiteData()
+                {
+                    type = siteType,
+                    index = entry.idx,
+                    location = new units.LatLong2(entry.latitude, entry.longitude),
+                    systemAddress = entry.systemAddress,
+                    systemName = entry.systemName,
+                    bodyId = entry.bodyId,
+                    bodyName = $"{entry.systemName} {entry.bodyName}",
+                    poiStatus = new Dictionary<string, SitePoiStatus>(),
+                };
+                siteData.loadPub();
+            }
+
             FormRuins.show(siteData);
         }
 

@@ -10,15 +10,15 @@
   },
   "og": "CEIRST",
   "ao": [
-    "C01-ta,or-L12",
-    "C10-ta,ca-L10",
-    "E03-or,ca-T9",
-    "E08-ur,to-B12",
-    "I07-ca,ca-H9",
-    "R03-ca,ur-H10",
-    "R08-to-C7",
-    "S01-or,re-T13",
-    "T10-ca,to-H13",
-    "T11-ca,or-H12"
+    "C01-ta,or-L12-",
+    "C10-ta,ca-L10-",
+    "E03-or,ca-T9-",
+    "E08-ur,to-B12-",
+    "I07-ca,ca-H9-",
+    "R03-ca,re-H10-",
+    "R08-to-C7-",
+    "S01-or,re-T13-",
+    "T10-ca,to-H13-",
+    "T11-ca,or-H12-"
   ]
 }

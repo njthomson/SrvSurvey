@@ -12,19 +12,19 @@
   "pp": "p11,p13,p15,p17,p20,p21,p25,p28,p30,p31,p35,p4,p41,p42,p9,t1,t3,t4,t8",
   "og": "LPQRT",
   "ao": [
-    "L01-or,ca-T9",
-    "L06-or,re-T13",
-    "P19-to-C7",
-    "P22-to,ca-C9",
-    "P25-to,or-C12",
-    "Q01-or-T7",
-    "Q04-or,ca-T9",
-    "R13-ca,ta-H11",
-    "R22-to,ur-C10",
-    "R26-ur,or-B5",
-    "T04-ca,to-H13",
-    "T14-ca,to-H15",
-    "T17-ca,or-H12"
+    "L01-or,ca-T9-",
+    "L06-or,re-T13-",
+    "P19-to-C7-",
+    "P22-to,ca-C9-",
+    "P25-to,or-C12-",
+    "Q01-or-T7-",
+    "Q04-or,ca-T9-",
+    "R13-ca,ta-H11-",
+    "R22-to,ur-C10-",
+    "R26-ur,or-B5-",
+    "T04-ca,to-H13-",
+    "T14-ca,to-H15-",
+    "T17-ca,or-H12-"
   ],
   "rth": "t1:128,t3:127,t4:128,t8:129"
 }

@@ -13,16 +13,16 @@
   "pe": "p1",
   "og": "DEFIJMO",
   "ao": [
-    "D13-ta,to-L20",
-    "E01-ca,ur-H19",
-    "F07-or,ur-T17",
-    "F12-or,ur-T17",
-    "I02-ur,ta-B16",
-    "I08-ur,ca-B15",
-    "J08-ca,to-H17",
-    "M02-to,re-C20",
-    "M07-to,or-C19",
-    "O01-ca,ur-H19"
+    "D13-ta,to-L20-",
+    "E01-ca,ur-H19-",
+    "F07-or,ur-T17-",
+    "F12-or,ur-T17-",
+    "I02-ur,ta-B16-",
+    "I08-ur,ca-B15-",
+    "J08-ca,to-H17-",
+    "M02-to,re-C20-",
+    "M07-to,or-C19-",
+    "O01-ca,ur-H19-"
   ],
   "rth": "t3:203,t4:203,t6:215,t9:203"
 }

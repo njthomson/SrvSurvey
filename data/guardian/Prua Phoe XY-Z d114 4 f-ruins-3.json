@@ -12,17 +12,17 @@
   "pp": "p1,p11,p12,p15,p16,p19,p20,p21,p22,p24,p26,p27,p29,p31,p32,p35,p37,p38,p4,p40,p41,p5,p6,p7,p8,t1,t4,t5,t6",
   "og": "ACFKOPS",
   "ao": [
-    "A19-ur,ur-B14",
-    "A23-ur,or-B17",
-    "C08-to,or-C19",
-    "C09-to,ur-C17",
-    "F08-or,ca-T16",
-    "F14-or,or-T15",
-    "K08-or,or-T15",
-    "K15-or,re-T20",
-    "O04-ca,or-H21",
-    "P23-to,ta-C18",
-    "S01-ca,ca-H18"
+    "A19-ur,ur-B14-",
+    "A23-ur,or-B17-",
+    "C08-to,or-C19-",
+    "C09-to,ur-C17-",
+    "F08-or,ca-T16-",
+    "F14-or,or-T15-",
+    "K08-or,or-T15-",
+    "K15-or,re-T20-",
+    "O04-ca,or-H21-",
+    "P23-to,ta-C18-",
+    "S01-ca,ca-H18-"
   ],
   "rth": "t6:240,t5:226,t4:224,t1:347"
 }

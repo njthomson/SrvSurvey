@@ -11,19 +11,19 @@
   "pp": "p11,p12,p8,p9",
   "og": "BEHJLRS",
   "ao": [
-    "B03-ur,re-B19",
-    "B21-ur,re-B19",
-    "E09-ca,to-H17",
-    "H20-ta-L15",
-    "H24-ta,ur-L18",
-    "H27-ta,re-L21",
-    "H30-ta-L15",
-    "H55-ta,ta-L16",
-    "J07-ca,or-H21",
-    "L12-or,ta-T18",
-    "L13-or,to-T19",
-    "R08-ca,ta-H20",
-    "R09-ca,ur-H19",
-    "S06-ca,ur-H19"
+    "B03-ur,re-B19-",
+    "B21-ur,re-B19-",
+    "E09-ca,to-H17-",
+    "H20-ta-L15-",
+    "H24-ta,ur-L18-",
+    "H27-ta,re-L21-",
+    "H30-ta-L15-",
+    "H55-ta,ta-L16-",
+    "J07-ca,or-H21-",
+    "L12-or,ta-T18-",
+    "L13-or,to-T19-",
+    "R08-ca,ta-H20-",
+    "R09-ca,ur-H19-",
+    "S06-ca,ur-H19-"
   ]
 }

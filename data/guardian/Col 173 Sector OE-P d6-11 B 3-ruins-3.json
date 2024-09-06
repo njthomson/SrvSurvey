@@ -12,18 +12,18 @@
   "pp": "p12,p14,p21,p23,p25,p26,p27,p28,p29,p3,p38,p39,p42,p8,p9,t2,t3,t5,t7,t8",
   "og": "DEFGILNT",
   "ao": [
-    "D06-ca,ca-H9",
-    "E13-to,ur-C10",
-    "E22-ta,ur-L11",
-    "F02-ca,ta-H11",
-    "G04-ca,re-H14",
-    "G14-ca,re-H16",
-    "I06-ta,ca-L10",
-    "L06-or,re-T13",
-    "N02-ta,re-L14",
-    "N24-ta,to-L13",
-    "T04-ca,to-H13",
-    "T14-ca,to-H15"
+    "D06-ca,ca-H9-",
+    "E13-to,ur-C10-",
+    "E22-ta,ur-L11-",
+    "F02-ca,ta-H11-",
+    "G04-ca,re-H14-",
+    "G14-ca,re-H16-",
+    "I06-ta,ca-L10-",
+    "L06-or,re-T13-",
+    "N02-ta,re-L14-",
+    "N24-ta,to-L13-",
+    "T04-ca,to-H13-",
+    "T14-ca,to-H15-"
   ],
   "rth": "t2:49,t3:49,t5:49,t7:49,t8:49"
 }

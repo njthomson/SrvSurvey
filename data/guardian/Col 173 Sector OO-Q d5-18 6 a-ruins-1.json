@@ -10,17 +10,17 @@
   },
   "og": "ABDEINQU",
   "ao": [
-    "A06-ca-H8",
-    "B02-or,or-T8",
-    "D07-ca,to-H13",
-    "E01-or-T7",
-    "E23-ta,or-L12",
-    "I07-ca,ca-H9",
-    "N21-ta,or-L12",
-    "N22-ta,ta-L9",
-    "Q03-or,ca-T9",
-    "U08-ur,ta-B10",
-    "U26-ur,ta-B10",
-    "U55-or,or-T8"
+    "A06-ca-H8-",
+    "B02-or,or-T8-",
+    "D07-ca,to-H13-",
+    "E01-or-T7-",
+    "E23-ta,or-L12-",
+    "I07-ca,ca-H9-",
+    "N21-ta,or-L12-",
+    "N22-ta,ta-L9-",
+    "Q03-or,ca-T9-",
+    "U08-ur,ta-B10-",
+    "U26-ur,ta-B10-",
+    "U55-or,or-T8-"
   ]
 }

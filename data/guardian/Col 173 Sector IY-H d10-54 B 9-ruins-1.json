@@ -10,17 +10,17 @@
   },
   "og": "BCDEGOU",
   "ao": [
-    "B04-or,ca-T9",
-    "C11-ta,ta-L9",
-    "C22-ta,ur-L11",
-    "D04-ca,to-H13",
-    "E02-or,or-T8",
-    "E25-ta,re-L14",
-    "G06-ca,ca-H9",
-    "G15-ca,re-H16",
-    "O02-or,re-T13",
-    "U14-ur,re-B7",
-    "U24-ur,or-B11",
-    "U33-ur,re-B7"
+    "B04-or,ca-T9-",
+    "C11-ta,ta-L9-",
+    "C22-ta,ur-L11-",
+    "D04-ca,to-H13-",
+    "E02-or,or-T8-",
+    "E25-ta,re-L14-",
+    "G06-ca,ca-H9-",
+    "G15-ca,re-H16-",
+    "O02-or,re-T13-",
+    "U14-ur,re-B7-",
+    "U24-ur,or-B11-",
+    "U33-ur,re-B7-"
   ]
 }

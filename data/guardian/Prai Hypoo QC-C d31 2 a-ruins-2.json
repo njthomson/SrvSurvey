@@ -13,17 +13,17 @@
   "pe": "p38,p40",
   "og": "CDGHKLNP",
   "ao": [
-    "C07-to,ta-C5",
-    "C08-to,to-C2",
-    "D07-to,ta-C5",
-    "D08-or,ta-T5",
-    "G03-ca,or-H5",
-    "H01-ca,ta-H4",
-    "K11-ca,or-H5",
-    "K17-to,re-C1",
-    "L01-ca,ur-H3",
-    "N01-ca,ur-H3",
-    "P02-or,to-T6",
-    "P11-or,or-T2"
+    "C07-to,ta-C5-",
+    "C08-to,to-C2-",
+    "D07-to,ta-C5-",
+    "D08-or,ta-T5-",
+    "G03-ca,or-H5-",
+    "H01-ca,ta-H4-",
+    "K11-ca,or-H5-",
+    "K17-to,re-C1-",
+    "L01-ca,ur-H3-",
+    "N01-ca,ur-H3-",
+    "P02-or,to-T6-",
+    "P11-or,or-T2-"
   ]
 }

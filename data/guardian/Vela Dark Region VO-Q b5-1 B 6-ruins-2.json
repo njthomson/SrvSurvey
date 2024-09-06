@@ -10,18 +10,18 @@
   },
   "og": "CEGLNOQRS",
   "ao": [
-    "C09-to,ur-C17",
-    "C13-to,re-C20",
-    "E09-ca,to-H17",
-    "G12-or,re-T20",
-    "L09-or,to-T19",
-    "L12-or,ta-T18",
-    "N03-or,ca-T16",
-    "N06-or,or-T15",
-    "O06-ca,or-H21",
-    "Q09-ca,to-H17",
-    "R09-ca,ur-H19",
-    "R25-to,re-C20",
-    "S06-ca,ur-H19"
+    "C09-to,ur-C17-",
+    "C13-to,re-C20-",
+    "E09-ca,to-H17-",
+    "G12-or,re-T20-",
+    "L09-or,to-T19-",
+    "L12-or,ta-T18-",
+    "N03-or,ca-T16-",
+    "N06-or,or-T15-",
+    "O06-ca,or-H21-",
+    "Q09-ca,to-H17-",
+    "R09-ca,ur-H19-",
+    "R25-to,re-C20-",
+    "S06-ca,ur-H19-"
   ]
 }

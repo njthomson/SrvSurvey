@@ -10,18 +10,18 @@
   },
   "og": "BCDFJKNS",
   "ao": [
-    "B05-ur,or-B17",
-    "B25-ur,ca-B15",
-    "C07-to,ta-C18",
-    "C15-to,ca-C16",
-    "D11-ca,or-H21",
-    "F10-or-T14",
-    "F12-or,ur-T17",
-    "J04-ca,ca-H18",
-    "K10-or,re-T20",
-    "K12-or,ca-T16",
-    "N01-or-T14",
-    "N08-or,ur-T17",
-    "S08-ca,ta-H20"
+    "B05-ur,or-B17-",
+    "B25-ur,ca-B15-",
+    "C07-to,ta-C18-",
+    "C15-to,ca-C16-",
+    "D11-ca,or-H21-",
+    "F10-or-T14-",
+    "F12-or,ur-T17-",
+    "J04-ca,ca-H18-",
+    "K10-or,re-T20-",
+    "K12-or,ca-T16-",
+    "N01-or-T14-",
+    "N08-or,ur-T17-",
+    "S08-ca,ta-H20-"
   ]
 }

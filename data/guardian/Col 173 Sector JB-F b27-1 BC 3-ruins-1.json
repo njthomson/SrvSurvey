@@ -12,13 +12,13 @@
   "pp": "p1,p11,p12,p13,p14,p15,p20,p32,p39,p40,p41,p9,t1,t4,t6,t7,t8",
   "og": "FHLMPT",
   "ao": [
-    "F08-ca,re-H16",
-    "H07-or,ur-T10",
-    "L02-or,ur-T10",
-    "M01-or-T7",
-    "P07-to,or-C12",
-    "P13-to,ca-C9",
-    "T06-ca,ta-H11",
-    "T15-ca,re-H14"
+    "F08-ca,re-H16-",
+    "H07-or,ur-T10-",
+    "L02-or,ur-T10-",
+    "M01-or-T7-",
+    "P07-to,or-C12-",
+    "P13-to,ca-C9-",
+    "T06-ca,ta-H11-",
+    "T15-ca,re-H14-"
   ]
 }

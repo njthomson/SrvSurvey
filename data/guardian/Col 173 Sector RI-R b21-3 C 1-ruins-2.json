@@ -12,17 +12,17 @@
   "pp": "p12,p13,p15,p19,p2,p20,p23,p25,p31,p35,p37,p39,p42,p7,p8,t1,t2,t6,t8",
   "og": "BCGJKPS",
   "ao": [
-    "B06-or,ta-T11",
-    "C20-ta,ta-L9",
-    "C23-ta,ca-L10",
-    "G04-ca,re-H14",
-    "G07-ca,to-H13",
-    "J03-or,or-T8",
-    "K02-to,re-C13",
-    "K06-to,ca-C9",
-    "P02-to,re-C13",
-    "P06-to,ta-C11",
-    "S03-or,re-T13"
+    "B06-or,ta-T11-",
+    "C20-ta,ta-L9-",
+    "C23-ta,ca-L10-",
+    "G04-ca,re-H14-",
+    "G07-ca,to-H13-",
+    "J03-or,or-T8-",
+    "K02-to,re-C13-",
+    "K06-to,ca-C9-",
+    "P02-to,re-C13-",
+    "P06-to,ta-C11-",
+    "S03-or,re-T13-"
   ],
   "rth": "t1:172,t2:171,t6:171,t8:172"
 }

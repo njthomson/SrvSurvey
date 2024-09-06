@@ -12,16 +12,16 @@
   "pp": "p11,p13,p14,p15,p2,p20,p22,p24,p26,p31,p32,p35,p5,p6,p7,t2,t3,t4,t6,t7,t8",
   "og": "FGJLMRT",
   "ao": [
-    "F04-ca,or-H12",
-    "G06-ca,ca-H9",
-    "G10-ca,re-H14",
-    "J07-or,ur-T10",
-    "L02-or,ur-T10",
-    "M01-or-T7",
-    "R03-ca,ur-H10",
-    "R25-to,ur-C10",
-    "T06-ca,ta-H11",
-    "T10-ca,to-H13"
+    "F04-ca,or-H12-",
+    "G06-ca,ca-H9-",
+    "G10-ca,re-H14-",
+    "J07-or,ur-T10-",
+    "L02-or,ur-T10-",
+    "M01-or-T7-",
+    "R03-ca,re-H10-",
+    "R25-to,ur-C10-",
+    "T06-ca,ta-H11-",
+    "T10-ca,to-H13-"
   ],
   "rth": "t2:290,t3:290,t4:290,t6:290,t7:290,t8:290"
 }

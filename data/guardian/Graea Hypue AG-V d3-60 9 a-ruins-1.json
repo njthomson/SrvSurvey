@@ -12,15 +12,15 @@
   "pp": "p9,t5",
   "og": "JKNSTU",
   "ao": [
-    "J10-or,re-T13",
-    "K18-to,or-C12",
-    "N01-ta,to-L13",
-    "N05-ta,re-L14",
-    "S01-or,re-T13",
-    "T12-ca,ta-H11",
-    "T18-ca,ta-H11",
-    "U03-ur,to-B12",
-    "U22-ur,to-B12",
-    "U55-or,or-T8"
+    "J10-or,re-T13-",
+    "K18-to,or-C12-",
+    "N01-ta,to-L13-",
+    "N05-ta,re-L14-",
+    "S01-or,re-T13-",
+    "T12-ca,ta-H11-",
+    "T18-ca,ta-H11-",
+    "U03-ur,to-B12-",
+    "U22-ur,to-B12-",
+    "U55-or,or-T8-"
   ]
 }

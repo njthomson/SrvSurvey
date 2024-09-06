@@ -12,19 +12,19 @@
   "pp": "p10,p11,p15,p17,p18,p19,p21,p23,p29,p34,p37,p41,p9,t1,t10,t2,t3,t7",
   "og": "BEFGLOPQ",
   "ao": [
-    "B05-to,to-C2",
-    "B18-to,re-C1",
-    "E01-ca,ur-H3",
-    "F09-ur,ca-B3",
-    "F15-ur,ta-B4",
-    "G03-ca,or-H5",
-    "L01-ca,ur-H3",
-    "O03-or,ca-T3",
-    "O19-or,ta-T5",
-    "P02-or,to-T6",
-    "P09-or,ur-T4",
-    "Q07-ta,ta-L6",
-    "Q14-ta,ca-L3",
-    "Q15-ta,ur-L4"
+    "B05-to,to-C2-",
+    "B18-to,re-C1-",
+    "E01-ca,ur-H3-",
+    "F09-ur,ca-B3-",
+    "F15-ur,ta-B4-",
+    "G03-ca,or-H5-",
+    "L01-ca,ur-H3-",
+    "O03-or,ca-T3-",
+    "O19-or,ta-T5-",
+    "P02-or,to-T6-",
+    "P09-or,ur-T4-",
+    "Q07-ta,ta-L6-",
+    "Q14-ta,ca-L3-",
+    "Q15-ta,ur-L4-"
   ]
 }

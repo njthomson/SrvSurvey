@@ -10,13 +10,13 @@
   },
   "og": "CDJMPQ",
   "ao": [
-    "C10-ta,ca-L10",
-    "C20-ta,ta-L9",
-    "D03-ca-H8",
-    "J08-or,ta-T11",
-    "M03-or,or-T8",
-    "P02-to,re-C13",
-    "P23-to,ur-C10",
-    "Q06-or,ta-T11"
+    "C10-ta,ca-L10-",
+    "C20-ta,ta-L9-",
+    "D03-ca-H8-",
+    "J08-or,ta-T11-",
+    "M03-or,or-T8-",
+    "P02-to,re-C13-",
+    "P23-to,ur-C10-",
+    "Q06-or,ta-T11-"
   ]
 }

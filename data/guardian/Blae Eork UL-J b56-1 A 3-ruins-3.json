@@ -10,16 +10,16 @@
   },
   "og": "CGLOPU",
   "ao": [
-    "C10-ta,ca-L10",
-    "C11-ta,ta-L9",
-    "G08-ca,re-H16",
-    "G15-ca,re-H16",
-    "L06-or,re-T13",
-    "O02-or,re-T13",
-    "P13-to,ca-C9",
-    "P23-to,ur-C10",
-    "U12-ur,ur-B8",
-    "U46-ur,ca-B9",
-    "U47-ur,ur-B8"
+    "C10-ta,ca-L10-",
+    "C11-ta,ta-L9-",
+    "G08-ca,re-H16-",
+    "G15-ca,re-H16-",
+    "L06-or,re-T13-",
+    "O02-or,re-T13-",
+    "P13-to,ca-C9-",
+    "P23-to,ur-C10-",
+    "U12-ur,ur-B8-",
+    "U46-ur,ca-B9-",
+    "U47-ur,ur-B8-"
   ]
 }

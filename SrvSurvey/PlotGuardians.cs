@@ -387,29 +387,9 @@ namespace SrvSurvey
             }
 
             // set obelisk items
-            if (this.nearestPoi?.type == POIType.obelisk)
+            if (msg == MsgCmd.os && this.nearestPoi?.type == POIType.obelisk)
             {
-                if (msg.StartsWith(MsgCmd.ao, StringComparison.OrdinalIgnoreCase))
-                {
-                    this.parseActiveObelisk(msg.Substring(3).Trim().ToLowerInvariant());
-                }
-                else if (msg.StartsWith(MsgCmd.aog, StringComparison.OrdinalIgnoreCase))
-                {
-                    var letters = msg.Substring(4)
-                        .Trim()
-                        .ToUpperInvariant()
-                        .Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.RemoveEmptyEntries)
-                        .ToList();
-                    letters.Sort();
-                    this.siteData.obeliskGroups.Clear();
-                    letters.ForEach(_ => this.siteData.obeliskGroups.Add(_[0]));
-                    Game.log($"Setting obelisk groups: " + string.Join(", ", letters));
-                    this.siteData.Save();
-                }
-                else if (msg == MsgCmd.os)
-                {
-                    siteData.toggleObeliskScanned();
-                }
+                siteData.toggleObeliskScanned();
             }
 
             // target a specific obelisk
@@ -604,77 +584,6 @@ namespace SrvSurvey
                 this.highlightPoi = msg.Substring(2).Trim();
                 Game.log($"Highlighting POI: '{this.highlightPoi}'");
                 this.Invalidate();
-            }
-        }
-
-        private void parseActiveObelisk(string msg)
-        {
-            var parts = msg.Split(' ');
-            if (this.nearestPoi.type != POIType.obelisk || parts.Length == 0) return;
-
-            // add or retreive obelisk
-            var obelisk = this.siteData.getActiveObelisk(this.nearestPoi.name, true)!;
-
-            obelisk.items = new List<ObeliskItem>();
-
-            var item1 = parseActiveObeliskItem(parts[0]);
-            if (item1 != ObeliskItem.unknown) obelisk.items.Add(item1);
-
-            if (parts.Length == 2)
-            {
-                var item2 = parseActiveObeliskItem(parts[1]);
-                if (item2 != ObeliskItem.unknown) obelisk.items.Add(item2);
-            }
-            Game.log($"Updating active obelisk '{this.nearestPoi.name}' to need items: " + string.Join(',', obelisk.items));
-            siteData.Save();
-            this.Invalidate();
-        }
-
-        private ObeliskItem parseActiveObeliskItem(string txt)
-        {
-            switch (txt)
-            {
-                case "ca":
-                case "casket":
-                    return ObeliskItem.casket;
-                case "or":
-                case "orb":
-                    return ObeliskItem.orb;
-                case "re":
-                case "relic":
-                    return ObeliskItem.relic;
-                case "ta":
-                case "tablet":
-                    return ObeliskItem.tablet;
-                case "to":
-                case "totem":
-                    return ObeliskItem.totem;
-                case "ur":
-                case "urn":
-                    return ObeliskItem.urn;
-
-                case "se":
-                case "sensor":
-                    return ObeliskItem.sensor;
-                case "pr":
-                case "probe":
-                    return ObeliskItem.probe;
-                case "li":
-                case "link":
-                    return ObeliskItem.link;
-                case "cy":
-                case "cyclops":
-                    return ObeliskItem.cyclops;
-                case "ba":
-                case "basilisk":
-                    return ObeliskItem.basilisk;
-                case "me":
-                case "medusa":
-                    return ObeliskItem.medusa;
-
-                default:
-                    Game.log($"Unspected item for obelisk: {txt}");
-                    return ObeliskItem.unknown;
             }
         }
 

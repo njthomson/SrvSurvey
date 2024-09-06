@@ -417,7 +417,7 @@ namespace SrvSurvey.canonn
         public int relicTowerHeading = -1;
         /// <summary> A percentage of completion </summary>
         public int surveyProgress;
-        [JsonIgnore]
+        //[JsonIgnore] // TODO: Remove once enough people are on recent builds?
         public bool surveyComplete { get => surveyProgress == 100; }
 
         // properties whose values differ live from legacy
@@ -565,7 +565,7 @@ namespace SrvSurvey.canonn
         public int idx;
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public int surveyProgress;
-        [JsonIgnore]
+        //[JsonIgnore] // TODO: Remove once enough people are on recent builds?
         public bool surveyComplete { get => this.surveyProgress == 100; }
 
         [JsonIgnore]

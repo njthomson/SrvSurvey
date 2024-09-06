@@ -12,14 +12,14 @@
   "pp": "p10,p12,p13,p14,p17,p2,p20,p22,p24,p25,p26,p27,p30,p32,p41,p7,p8,p9,t3,t4,t6,t7,t8",
   "og": "DFHIJKO",
   "ao": [
-    "D12-ca-H8",
-    "F05-ca,re-H14",
-    "H09-or,or-T8",
-    "I12-ta-L8",
-    "J09-or,re-T12",
-    "K05-to,ur-C10",
-    "K22-to,ta-C11",
-    "O02-or,re-T13"
+    "D12-ca-H8-",
+    "F05-ca,re-H14-",
+    "H09-or,or-T8-",
+    "I12-ta-L8-",
+    "J09-or,re-T12-",
+    "K05-to,ur-C10-",
+    "K22-to,ta-C11-",
+    "O02-or,re-T13-"
   ],
   "rth": "t7:37"
 }

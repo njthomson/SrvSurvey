@@ -10,17 +10,17 @@
   },
   "og": "DEGMORSU",
   "ao": [
-    "D01-ca,or-H12",
-    "E10-to-C7",
-    "E27-ur,ur-B8",
-    "G01-ca,re-H14",
-    "G17-ca,ur-H10",
-    "M03-or,or-T8",
-    "O03-or,re-T13",
-    "R10-to,re-C13",
-    "R27-ca,re-H16",
-    "S03-or,re-T13",
-    "U20-ur,to-B12",
-    "U24-ur,or-B11"
+    "D01-ca,or-H12-",
+    "E10-to-C7-",
+    "E27-ur,ur-B8-",
+    "G01-ca,re-H14-",
+    "G17-ca,re-H10-",
+    "M03-or,or-T8-",
+    "O03-or,re-T13-",
+    "R10-to,re-C13-",
+    "R27-ca,re-H16-",
+    "S03-or,re-T13-",
+    "U20-ur,to-B12-",
+    "U24-ur,or-B11-"
   ]
 }

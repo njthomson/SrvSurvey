@@ -12,17 +12,17 @@
   "pp": "p10,p11,p12,p15,p17,p22,p23,p25,p26,p28,p29,p32,p35,p37,p4,p5,p9,t1,t3,t4,t5,t6,t7,t8",
   "og": "CINOPST",
   "ao": [
-    "C21-ta-L8",
-    "C25-ta-L8",
-    "I02-to,ur-C10",
-    "N20-ta,to-L13",
-    "N23-ta,re-L14",
-    "O03-or,re-T13",
-    "P12-to,to-C8",
-    "P19-to-C7",
-    "S03-or,re-T13",
-    "T01-ca,re-H16",
-    "T14-ca,to-H15"
+    "C21-ta-L8-",
+    "C25-ta-L8-",
+    "I02-to,ur-C10-",
+    "N20-ta,to-L13-",
+    "N23-ta,re-L14-",
+    "O03-or,re-T13-",
+    "P12-to,to-C8-",
+    "P19-to-C7-",
+    "S03-or,re-T13-",
+    "T01-ca,re-H16-",
+    "T14-ca,to-H15-"
   ],
   "rth": "t5:76"
 }

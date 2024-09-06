@@ -10,14 +10,14 @@
   },
   "og": "CEHLMT",
   "ao": [
-    "C05-ta,or-L12",
-    "C16-ta,ta-L9",
-    "E05-or,ta-T11",
-    "E08-ur,to-B12",
-    "H10-or-T7",
-    "L01-or,ca-T9",
-    "M01-or-T7",
-    "T09-ca,re-H14",
-    "T12-ca,ta-H11"
+    "C05-ta,or-L12-",
+    "C16-ta,ta-L9-",
+    "E05-or,ta-T11-",
+    "E08-ur,to-B12-",
+    "H10-or-T7-",
+    "L01-or,ca-T9-",
+    "M01-or-T7-",
+    "T09-ca,re-H14-",
+    "T12-ca,ta-H11-"
   ]
 }

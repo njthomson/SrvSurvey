@@ -10,10 +10,10 @@
   },
   "og": "ADFLS",
   "ao": [
-    "A02-ca,to-H15",
-    "D12-ca-H8",
-    "F05-ca,re-H14",
-    "L05-or,re-T12",
-    "S02-or,re-T12"
+    "A02-ca,to-H15-",
+    "D12-ca-H8-",
+    "F05-ca,re-H14-",
+    "L05-or,re-T12-",
+    "S02-or,re-T12-"
   ]
 }

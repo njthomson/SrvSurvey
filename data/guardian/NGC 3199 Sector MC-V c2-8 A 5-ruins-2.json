@@ -12,14 +12,14 @@
   "pp": "p1,p14,p15,p20,p21,p30,p31,p34,p39,p7,p8,t1,t3,t4,t5,t6",
   "og": "ABCDFHO",
   "ao": [
-    "A03-ca,re-H14",
-    "B03-or,ur-T10",
-    "C09-ta,or-L12",
-    "C15-ta,ca-L10",
-    "D09-ca,ca-H9",
-    "F07-ca,to-H15",
-    "H10-or-T7",
-    "O01-or,re-T13"
+    "A03-ca,re-H14-",
+    "B03-or,ur-T10-",
+    "C09-ta,or-L12-",
+    "C15-ta,ca-L10-",
+    "D09-ca,ca-H9-",
+    "F07-ca,to-H15-",
+    "H10-or-T7-",
+    "O01-or,re-T13-"
   ],
   "rth": "t1:350,t3:350,t4:350,t5:350,t6:350"
 }

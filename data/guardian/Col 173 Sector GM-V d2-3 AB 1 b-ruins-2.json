@@ -10,14 +10,14 @@
   },
   "og": "ADGHLST",
   "ao": [
-    "A01-ca,re-H16",
-    "D07-ca,to-H13",
-    "G11-ca,ur-H10",
-    "G14-ca,re-H16",
-    "H07-or,ur-T10",
-    "L02-or,ur-T10",
-    "S01-or,re-T13",
-    "T11-ca,or-H12",
-    "T14-ca,to-H15"
+    "A01-ca,re-H16-",
+    "D07-ca,to-H13-",
+    "G11-ca,re-H10-",
+    "G14-ca,re-H16-",
+    "H07-or,ur-T10-",
+    "L02-or,ur-T10-",
+    "S01-or,re-T13-",
+    "T11-ca,or-H12-",
+    "T14-ca,to-H15-"
   ]
 }

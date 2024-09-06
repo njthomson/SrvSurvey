@@ -12,10 +12,10 @@
   "pp": "p5,p6,p7,p8,py1,py2,py3,py4,py5,py6,t1,t2",
   "og": "ABCDEF",
   "ao": [
-    "A11-ur,to-#26",
-    "B03-re,ta-#17",
-    "C12-re,ta-#17",
-    "D09-re,to-#14"
+    "A11-ur,to-#26-",
+    "B03-re,ta-#17-",
+    "C12-re,ta-#17-",
+    "D09-re,to-#14-"
   ],
   "rth": "t1:156,t2:181"
 }

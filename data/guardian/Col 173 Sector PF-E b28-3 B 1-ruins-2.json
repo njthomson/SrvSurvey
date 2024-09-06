@@ -12,13 +12,13 @@
   "pp": "p10,p13,p15,p20,p22,p23,p26,p27,p37,p39,p40,p42,p7,p9,t1,t2,t3,t4,t7,t8",
   "og": "CJLSU",
   "ao": [
-    "C19-ta,ca-L10",
-    "C20-ta,ta-L9",
-    "J08-or,ta-T11",
-    "L03-or,ta-T11",
-    "S03-or,re-T13",
-    "U17-or,or-T8",
-    "U18-or,ta-T11",
-    "U47-ur,ur-B8"
+    "C19-ta,ca-L10-",
+    "C20-ta,ta-L9-",
+    "J08-or,ta-T11-",
+    "L03-or,ta-T11-",
+    "S03-or,re-T13-",
+    "U17-or,or-T8-",
+    "U18-or,ta-T11-",
+    "U47-ur,ur-B8-"
   ]
 }

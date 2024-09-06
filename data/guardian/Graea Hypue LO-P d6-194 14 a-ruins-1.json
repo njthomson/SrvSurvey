@@ -12,12 +12,12 @@
   "pp": "p11,p12,p13,p15,p19,p20,p24,p25,p27,p28,p31,p38,p39,p40,p5,p7,p8,t1,t2,t3,t4,t7,t8",
   "og": "GIJPQ",
   "ao": [
-    "G07-ca,to-H13",
-    "G14-ca,re-H16",
-    "I02-to,ur-C10",
-    "J03-or,or-T8",
-    "P02-to,re-C13",
-    "P13-to,ca-C9",
-    "Q06-or,ta-T11"
+    "G07-ca,to-H13-",
+    "G14-ca,re-H16-",
+    "I02-to,ur-C10-",
+    "J03-or,or-T8-",
+    "P02-to,re-C13-",
+    "P13-to,ca-C9-",
+    "Q06-or,ta-T11-"
   ]
 }

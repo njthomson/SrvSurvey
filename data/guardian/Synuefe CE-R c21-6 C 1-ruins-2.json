@@ -12,12 +12,12 @@
   "pp": "p1,p13,p17,p19,p2,p20,p25,p29,p30,p37,p40,p41,p7,t1,t2,t4,t6,t8",
   "og": "ACELO",
   "ao": [
-    "A05-ca,to-H13",
-    "C12-ta-L8",
-    "C17-ta-L8",
-    "E05-or,ta-T11",
-    "E15-to,or-C12",
-    "L02-or,ur-T10",
-    "O02-or,re-T13"
+    "A05-ca,to-H13-",
+    "C12-ta-L8-",
+    "C17-ta-L8-",
+    "E05-or,ta-T11-",
+    "E15-to,or-C12-",
+    "L02-or,ur-T10-",
+    "O02-or,re-T13-"
   ]
 }

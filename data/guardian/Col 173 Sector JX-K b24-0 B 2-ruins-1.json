@@ -12,19 +12,19 @@
   "pp": "p1,p10,p11,p12,p13,p14,p15,p16,p21,p22,p23,p24,p29,p3,p30,p32,p34,p35,p37,p38,p39,p4,p43,p5,p6,p7,p8,p9,t1,t2,t3,t5,t9",
   "og": "AGILMNOQ",
   "ao": [
-    "A02-ur-B13",
-    "A23-ur,or-B17",
-    "G03-or,re-T20",
-    "I04-ur,to-B18",
-    "I12-ur,ur-B14",
-    "L03-or,ta-T18",
-    "L09-or,to-T19",
-    "M03-to,ur-C17",
-    "M09-to,ca-C16",
-    "N06-or,or-T15",
-    "N12-or,ca-T16",
-    "O07-ca,ca-H18",
-    "Q07-ca,ta-H20"
+    "A02-ur-B13-",
+    "A23-ur,or-B17-",
+    "G03-or,re-T20-",
+    "I04-ur,to-B18-",
+    "I12-ur,ur-B14-",
+    "L03-or,ta-T18-",
+    "L09-or,to-T19-",
+    "M03-to,ur-C17-",
+    "M09-to,ca-C16-",
+    "N06-or,or-T15-",
+    "N12-or,ca-T16-",
+    "O07-ca,ca-H18-",
+    "Q07-ca,ta-H20-"
   ],
   "rth": "t3:76"
 }

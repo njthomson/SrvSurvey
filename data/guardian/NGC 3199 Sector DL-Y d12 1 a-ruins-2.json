@@ -12,19 +12,19 @@
   "pp": "p15,p17,p19,p21,p23,p25,p29,p3,p30,p32,p34,p4,p5,p7,p9,t1,t5,t6,t7,t8",
   "og": "CDGKQ",
   "ao": [
-    "C14-ta,ur-L11",
-    "C16-ta,ta-L9",
-    "C23-ta,ca-L10",
-    "D04-ca,to-H13",
-    "D10-ca,or-H12",
-    "G02-ca,to-H15",
-    "G08-ca,re-H16",
-    "G16-ca,ur-H10",
-    "K06-to,ca-C9",
-    "K08-to-C7",
-    "K14-to,ur-C10",
-    "Q03-or,ca-T9",
-    "Q05-or,ur-T10"
+    "C14-ta,ur-L11-",
+    "C16-ta,ta-L9-",
+    "C23-ta,ca-L10-",
+    "D04-ca,to-H13-",
+    "D10-ca,or-H12-",
+    "G02-ca,to-H15-",
+    "G08-ca,re-H16-",
+    "G16-ca,re-H10-",
+    "K06-to,ca-C9-",
+    "K08-to-C7-",
+    "K14-to,ur-C10-",
+    "Q03-or,ca-T9-",
+    "Q05-or,ur-T10-"
   ],
   "rth": "t1:301,t5:302,t6:301,t7:301,t8:302"
 }

@@ -12,14 +12,14 @@
   "pp": "p11,p8,p9,t7",
   "og": "ABIKLSU",
   "ao": [
-    "A08-ca,ca-H9",
-    "B06-or,ta-T11",
-    "I06-ta,ca-L10",
-    "K03-to,or-C12",
-    "K06-to,ca-C9",
-    "L06-or,re-T13",
-    "S03-or,re-T13",
-    "U48-ur,ur-B8",
-    "U52-or,ca-T9"
+    "A08-ca,ca-H9-",
+    "B06-or,ta-T11-",
+    "I06-ta,ca-L10-",
+    "K03-to,or-C12-",
+    "K06-to,ca-C9-",
+    "L06-or,re-T13-",
+    "S03-or,re-T13-",
+    "U48-ur,ur-B8-",
+    "U52-or,ca-T9-"
   ]
 }

@@ -10,15 +10,15 @@
   },
   "og": "ACEMOQR",
   "ao": [
-    "A02-ca,to-H15",
-    "C11-ta,ta-L9",
-    "C23-ta,ca-L10",
-    "E07-or,re-T13",
-    "E11-to,to-C8",
-    "M02-or-T7",
-    "O02-or,re-T13",
-    "Q05-or,ur-T10",
-    "R07-ca,re-H14",
-    "R11-ca,ca-H9"
+    "A02-ca,to-H15-",
+    "C11-ta,ta-L9-",
+    "C23-ta,ca-L10-",
+    "E07-or,re-T13-",
+    "E11-to,to-C8-",
+    "M02-or-T7-",
+    "O02-or,re-T13-",
+    "Q05-or,ur-T10-",
+    "R07-ca,re-H14-",
+    "R11-ca,ca-H9-"
   ]
 }

@@ -12,14 +12,14 @@
   "pp": "p10,p11,p12,p14,p17,p21,p22,p23,p24,p3,p30,p37,p5,p6,p7,p9,t1,t4,t5,t8",
   "og": "ADJKNS",
   "ao": [
-    "A03-ca,re-H14",
-    "D09-ca,ca-H9",
-    "J10-or,re-T13",
-    "K02-to,re-C13",
-    "K26-to-C7",
-    "N09-ta,ca-L10",
-    "N25-ta,or-L12",
-    "S01-or,re-T13"
+    "A03-ca,re-H14-",
+    "D09-ca,ca-H9-",
+    "J10-or,re-T13-",
+    "K02-to,re-C13-",
+    "K26-to-C7-",
+    "N09-ta,ca-L10-",
+    "N25-ta,or-L12-",
+    "S01-or,re-T13-"
   ],
   "rth": "t1:196,t4:196,t5:196,t8:196"
 }

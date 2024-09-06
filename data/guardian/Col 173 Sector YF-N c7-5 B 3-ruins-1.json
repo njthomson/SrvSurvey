@@ -10,12 +10,12 @@
   },
   "og": "BFILRS",
   "ao": [
-    "B03-or,ur-T10",
-    "F07-ca,to-H15",
-    "I09-ta,ta-L9",
-    "L01-or,ca-T9",
-    "R02-to,ur-C10",
-    "R27-ca,re-H16",
-    "S01-or,re-T13"
+    "B03-or,ur-T10-",
+    "F07-ca,to-H15-",
+    "I09-ta,ta-L9-",
+    "L01-or,ca-T9-",
+    "R02-to,ur-C10-",
+    "R27-ca,re-H16-",
+    "S01-or,re-T13-"
   ]
 }

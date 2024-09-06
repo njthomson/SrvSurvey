@@ -774,7 +774,6 @@ namespace SrvSurvey.game
                             .Select(foo => new ActiveObelisk()
                             {
                                 name = foo.Key,
-                                items = foo.Value.items,
                                 msg = foo.Value.msg,
                                 scanned = foo.Value.scanned,
                             })
@@ -912,7 +911,8 @@ namespace SrvSurvey.game
         [JsonIgnore]
         public string name;
         [JsonIgnore]
-        public List<ObeliskItem> items = new List<ObeliskItem>();
+        public List<ObeliskItem> items { get => mapMsgItems[this.msg]; }
+
         [JsonIgnore]
         public string msg;
         [JsonIgnore]
@@ -965,23 +965,6 @@ namespace SrvSurvey.game
                 return false;
             }
 
-            private static Dictionary<string, ObeliskItem> mapObeliskItems = new Dictionary<string, ObeliskItem>()
-            {
-                { "ca", ObeliskItem.casket },
-                { "or", ObeliskItem.orb },
-                { "re", ObeliskItem.relic },
-                { "ta", ObeliskItem.tablet },
-                { "to", ObeliskItem.totem },
-                { "ur", ObeliskItem.urn },
-
-                { "se", ObeliskItem.sensor },
-                { "pr", ObeliskItem.probe },
-                { "li", ObeliskItem.link },
-                { "cy", ObeliskItem.cyclops },
-                { "ba", ObeliskItem.basilisk },
-                { "me", ObeliskItem.medusa },
-            };
-
             private static Dictionary<string, ObeliskData> mapObeliskData = new Dictionary<string, ObeliskData>()
             {
                 { "a", ObeliskData.alpha },
@@ -1012,7 +995,6 @@ namespace SrvSurvey.game
                     // drop the trailing '!' if scanned
                     name = name,
                     scanned = scanned,
-                    items = items,
                     msg = parts[2],
                 };
 
@@ -1026,10 +1008,201 @@ namespace SrvSurvey.game
                 if (obelisk == null)
                     throw new Exception($"Unexpected value: {value?.GetType().Name}");
 
-                // create a single string
-                var txt = obelisk.ToString();
+                // create a single string (we need that trailing dash or older builds will fail to parse it)
+                var txt = obelisk.ToString() + "-";
                 writer.WriteValue(txt);
             }
+        }
+
+        private static Dictionary<string, ObeliskItem> mapObeliskItems = new Dictionary<string, ObeliskItem>()
+        {
+            { "ca", ObeliskItem.casket },
+            { "or", ObeliskItem.orb },
+            { "re", ObeliskItem.relic },
+            { "ta", ObeliskItem.tablet },
+            { "to", ObeliskItem.totem },
+            { "ur", ObeliskItem.urn },
+
+            { "se", ObeliskItem.sensor },
+            { "pr", ObeliskItem.probe },
+            { "li", ObeliskItem.link },
+            { "cy", ObeliskItem.cyclops },
+            { "ba", ObeliskItem.basilisk },
+            { "me", ObeliskItem.medusa },
+        };
+
+        private static Dictionary<string, List<ObeliskItem>> mapMsgItems = prepLogItems();
+
+        private static Dictionary<string, List<ObeliskItem>> prepLogItems()
+        {
+            var source = new List<string>()
+            {
+                // Alpha - Biological
+                { "B1-ur-re" },
+                { "B2-ur-ur" },
+                { "B3-ur-ca" },
+                { "B4-ur-ta" },
+                { "B5-ur-or" },
+                { "B6-ur-to" },
+                // Beta - Biological
+                { "B7-ur-re" },
+                { "B8-ur-ur" },
+                { "B9-ur-ca" },
+                { "B10-ur-ta" },
+                { "B11-ur-or" },
+                { "B12-ur-to" },
+                // Gamma - Biological
+                { "B13-ur" },
+                { "B14-ur-ur" },
+                { "B15-ur-ca" },
+                { "B16-ur-ta" },
+                { "B17-ur-or" },
+                { "B18-ur-to" },
+                { "B19-ur-re" },
+                // Alpha - Cultural
+                { "C1-to-re" },
+                { "C2-to-to" },
+                { "C3-to-ca" },
+                { "C4-to-ur" },
+                { "C5-to-ta" },
+                { "C6-to-or" },
+                // Beta - Cultural
+                { "C7-to" },
+                { "C8-to-to" },
+                { "C9-to-ca" },
+                { "C10-to-ur" },
+                { "C11-to-ta" },
+                { "C12-to-or" },
+                { "C13-to-re" },
+                // Gamma - Cultural
+                { "C14-to" },
+                { "C15-to-to" },
+                { "C16-to-ca" },
+                { "C17-to-ur" },
+                { "C18-to-ta" },
+                { "C19-to-or" },
+                { "C20-to-re" },
+                // Alpha - Historical
+                { "H1-ca" },
+                { "H2-ca-ca" },
+                { "H3-ca-ur" },
+                { "H4-ca-ta" },
+                { "H5-ca-or" },
+                { "H6-ca-to" },
+                { "H7-ca-re" },
+                // Beta - Historical
+                { "H8-ca" },
+                { "H9-ca-ca" },
+                { "H10-ca-re" },
+                { "H11-ca-ta" },
+                { "H12-ca-or" },
+                { "H13-ca-to" },
+                { "H14-ca-re" },
+                { "H15-ca-to" },
+                { "H16-ca-re" },
+                // Gamma - Historical
+                { "H17-ca-to" },
+                { "H18-ca-ca" },
+                { "H19-ca-ur" },
+                { "H20-ca-ta" },
+                { "H21-ca-or" },  
+                // Alpha - Language
+                { "L1-ta" },
+                { "L2-ta-ta" },
+                { "L3-ta-ca" },
+                { "L4-ta-ur" },
+                { "L5-ta-or" },
+                { "L6-ta-ta" },
+                { "L7-ta-re" },
+                // Beta - Language
+                { "L8-ta" },
+                { "L9-ta-ta" },
+                { "L10-ta-ca" },
+                { "L11-ta-ur" },
+                { "L12-ta-or" },
+                { "L13-ta-to" },
+                { "L14-ta-re" },
+                // Gamma - Language
+                { "L15-ta" },
+                { "L16-ta-ta" },
+                { "L17-ta-ca" },
+                { "L18-ta-ur" },
+                { "L19-ta-or" },
+                { "L20-ta-to" },
+                { "L21-ta-re" },  
+                // Alpha - Language
+                { "T1-or" },
+                { "T2-or-or" },
+                { "T3-or-ca" },
+                { "T4-or-ur" },
+                { "T5-or-ta" },
+                { "T6-or-to" },
+                // Beta - Language
+                { "T7-or" },
+                { "T8-or-or" },
+                { "T9-or-ca" },
+                { "T10-or-ur" },
+                { "T11-or-ta" },
+                { "T12-or-re" },
+                { "T13-or-re" },
+                // Gamma - Language
+                { "T14-or" },
+                { "T15-or-or" },
+                { "T16-or-ca" },
+                { "T17-or-ur" },
+                { "T18-or-ta" },
+                { "T19-or-to" },
+                { "T20-or-re" },
+                // Thargoid logs
+                { "#1-se-cy" },
+                { "#2-se-ba" },
+                { "#3-se-li" },
+                { "#4-se-pr" },
+                { "#5-se-me" },
+                // Civil war logs
+                { "#6-ca-or" },
+                { "#7-ca-ta" },
+                { "#8-ca-to" },
+                { "#9-ca-re" },
+                { "#10-ca-ur" },
+                // Technology logs
+                { "#11-or-re" },
+                { "#12-or-or" },
+                { "#13-or-ca" },
+                { "#14-re-to" },
+                { "#15-re-ca" },
+                { "#16-re-ur" },
+                { "#17-re-ta" },
+                { "#18-or-to" },
+                { "#19-or-ca" },
+                { "#20-re-or" },
+                { "#21-or-ur" },
+                { "#22-or-ta" },
+                { "#23-or-re" },
+                // Language logs
+                { "#24-ta-to" },
+                // Body protectorate logs
+                { "#25-ur-or" },
+                { "#26-ur-to" },
+                { "#27-ur-ta" },
+                { "#28-ur-ca" },
+            };
+
+            var map = new Dictionary<string, List<ObeliskItem>>();
+            foreach (var txt in source)
+            {
+                var parts = txt.Split('-', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+                var logMsg = parts[0];
+                var items = new List<ObeliskItem>();
+
+                items.Add(mapObeliskItems.GetValueOrDefault(parts[1]));
+                if (parts.Length > 2)
+                    items.Add(mapObeliskItems.GetValueOrDefault(parts[2]));
+
+                map.Add(logMsg, items);
+            }
+
+            return map;
         }
     }
 

@@ -10,15 +10,15 @@
   },
   "og": "DGIORU",
   "ao": [
-    "D07-ca,to-H13",
-    "G10-ca,re-H14",
-    "G11-ca,ur-H10",
-    "I07-ca,ca-H9",
-    "O01-or,re-T13",
-    "R08-to-C7",
-    "R12-ur,ur-B8",
-    "U32-ur,re-B7",
-    "U35-or-T7",
-    "U41-ur,or-B11"
+    "D07-ca,to-H13-",
+    "G10-ca,re-H14-",
+    "G11-ca,re-H10-",
+    "I07-ca,ca-H9-",
+    "O01-or,re-T13-",
+    "R08-to-C7-",
+    "R12-ur,ur-B8-",
+    "U32-ur,re-B7-",
+    "U35-or-T7-",
+    "U41-ur,or-B11-"
   ]
 }

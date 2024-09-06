@@ -12,17 +12,17 @@
   "pp": "p10,p11,p15,p19,p20,p22,p23,p25,p29,p30,p32,p35,p37,p39,p4,p8,p9,t2,t5,t6,t8",
   "og": "HIJOQRTU",
   "ao": [
-    "H08-or,ca-T9",
-    "I03-ta,ur-L11",
-    "J08-or,ta-T11",
-    "O03-or,re-T13",
-    "Q06-or,ta-T11",
-    "R02-to,ur-C10",
-    "R10-to,re-C13",
-    "T01-ca,re-H16",
-    "T15-ca,re-H14",
-    "U14-ur,re-B7",
-    "U36-or,ur-T10"
+    "H08-or,ca-T9-",
+    "I03-ta,ur-L11-",
+    "J08-or,ta-T11-",
+    "O03-or,re-T13-",
+    "Q06-or,ta-T11-",
+    "R02-to,ur-C10-",
+    "R10-to,re-C13-",
+    "T01-ca,re-H16-",
+    "T15-ca,re-H14-",
+    "U14-ur,re-B7-",
+    "U36-or,ur-T10-"
   ],
   "rth": "t5:250,t8:252"
 }

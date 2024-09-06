@@ -49,6 +49,8 @@ namespace SrvSurvey.game
 
         public void Save()
         {
+            if (this.filepath == null) return;
+
             var folder = Path.GetDirectoryName(this.filepath)!;
             Directory.CreateDirectory(folder);
 

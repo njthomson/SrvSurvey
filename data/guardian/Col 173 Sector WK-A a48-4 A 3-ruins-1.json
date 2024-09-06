@@ -12,15 +12,15 @@
   "pp": "p1,p12,p15,p17,p20,p22,p24,p26,p3,p32,p39,p4,p6,p7,p8,p9,t1,t2,t5,t6,t7",
   "og": "EIMNOST",
   "ao": [
-    "E13-to,ur-C10",
-    "E17-ur,ta-B10",
-    "I02-to,ur-C10",
-    "M03-or,or-T8",
-    "N01-ta,to-L13",
-    "N23-ta,re-L14",
-    "O03-or,re-T13",
-    "S03-or,re-T13",
-    "T04-ca,to-H13",
-    "T12-ca,ta-H11"
+    "E13-to,ur-C10-",
+    "E17-ur,ta-B10-",
+    "I02-to,ur-C10-",
+    "M03-or,or-T8-",
+    "N01-ta,to-L13-",
+    "N23-ta,re-L14-",
+    "O03-or,re-T13-",
+    "S03-or,re-T13-",
+    "T04-ca,to-H13-",
+    "T12-ca,ta-H11-"
   ]
 }

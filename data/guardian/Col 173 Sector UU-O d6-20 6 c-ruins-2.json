@@ -11,16 +11,16 @@
   "pp": "t7",
   "og": "DEGLOQR",
   "ao": [
-    "D12-ca-H8",
-    "E05-or,ta-T11",
-    "E13-to,ur-C10",
-    "G04-ca,re-H14",
-    "G09-ca,to-H15",
-    "L05-or,re-T12",
-    "O02-or,re-T13",
-    "Q05-or,ur-T10",
-    "R05-ur,to-B6",
-    "R13-ca,ta-H11"
+    "D12-ca-H8-",
+    "E05-or,ta-T11-",
+    "E13-to,ur-C10-",
+    "G04-ca,re-H14-",
+    "G09-ca,to-H15-",
+    "L05-or,re-T12-",
+    "O02-or,re-T13-",
+    "Q05-or,ur-T10-",
+    "R05-ur,to-B6-",
+    "R13-ca,ta-H11-"
   ],
   "rth": "t7:224"
 }

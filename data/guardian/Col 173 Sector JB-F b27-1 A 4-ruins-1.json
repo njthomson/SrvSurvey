@@ -10,13 +10,13 @@
   },
   "og": "AJOTU",
   "ao": [
-    "A09-ca,ur-H10",
-    "J08-or,ta-T11",
-    "O03-or,re-T13",
-    "T13-ca,re-H16",
-    "T18-ca,ta-H11",
-    "U05-ur,or-B11",
-    "U36-or,ur-T10",
-    "U45-ur,ca-B9"
+    "A09-ca,re-H10-",
+    "J08-or,ta-T11-",
+    "O03-or,re-T13-",
+    "T13-ca,re-H16-",
+    "T18-ca,ta-H11-",
+    "U05-ur,or-B11-",
+    "U36-or,ur-T10-",
+    "U45-ur,ca-B9-"
   ]
 }

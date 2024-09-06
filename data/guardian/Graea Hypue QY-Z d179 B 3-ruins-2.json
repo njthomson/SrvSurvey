@@ -12,15 +12,15 @@
   "pp": "p11,p12,p13,p19,p2,p21,p22,p23,p25,p26,p32,p37,p39,p4,p5,p7,t1,t3,t6,t8",
   "og": "JKLOQSU",
   "ao": [
-    "J09-or,re-T12",
-    "K14-to,ur-C10",
-    "K22-to,ta-C11",
-    "L05-or,re-T12",
-    "O02-or,re-T13",
-    "Q05-or,ur-T10",
-    "S02-or,re-T12",
-    "U04-ur,or-B11",
-    "U29-ur,ca-B9",
-    "U53-or,re-T12"
+    "J09-or,re-T12-",
+    "K14-to,ur-C10-",
+    "K22-to,ta-C11-",
+    "L05-or,re-T12-",
+    "O02-or,re-T13-",
+    "Q05-or,ur-T10-",
+    "S02-or,re-T12-",
+    "U04-ur,or-B11-",
+    "U29-ur,ca-B9-",
+    "U53-or,re-T12-"
   ]
 }

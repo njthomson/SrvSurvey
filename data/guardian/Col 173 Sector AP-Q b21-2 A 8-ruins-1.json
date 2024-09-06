@@ -10,14 +10,14 @@
   },
   "og": "BDIJKMT",
   "ao": [
-    "B04-or,ca-T9",
-    "D04-ca,to-H13",
-    "I04-ca,ur-H10",
-    "J05-or,ca-T9",
-    "K13-to,ta-C11",
-    "K24-to,ca-C9",
-    "M02-or-T7",
-    "T08-ca,to-H15",
-    "T16-ca,to-H13"
+    "B04-or,ca-T9-",
+    "D04-ca,to-H13-",
+    "I04-ca,re-H10-",
+    "J05-or,ca-T9-",
+    "K13-to,ta-C11-",
+    "K24-to,ca-C9-",
+    "M02-or-T7-",
+    "T08-ca,to-H15-",
+    "T16-ca,to-H13-"
   ]
 }

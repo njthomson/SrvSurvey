@@ -10,17 +10,17 @@
   },
   "og": "FIJMOPRU",
   "ao": [
-    "F08-ca,re-H16",
-    "I07-ca,ca-H9",
-    "J07-or,ur-T10",
-    "M01-or-T7",
-    "O01-or,re-T13",
-    "P14-to,ur-C10",
-    "P17-to,re-C13",
-    "R06-to,ur-C10",
-    "R08-to-C7",
-    "U01-ur,re-B7",
-    "U28-ur,ca-B9",
-    "U41-ur,or-B11"
+    "F08-ca,re-H16-",
+    "I07-ca,ca-H9-",
+    "J07-or,ur-T10-",
+    "M01-or-T7-",
+    "O01-or,re-T13-",
+    "P14-to,ur-C10-",
+    "P17-to,re-C13-",
+    "R06-to,ur-C10-",
+    "R08-to-C7-",
+    "U01-ur,re-B7-",
+    "U28-ur,ca-B9-",
+    "U41-ur,or-B11-"
   ]
 }

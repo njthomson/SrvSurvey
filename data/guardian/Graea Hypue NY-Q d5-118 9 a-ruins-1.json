@@ -12,10 +12,10 @@
   "pp": "p10,p11,p15,p2,p20,p22,p25,p27,p29,p30,p31,p34,p39,p42,p5,t1,t2,t3,t4,t7,t8",
   "og": "BDFMQ",
   "ao": [
-    "B03-or,ur-T10",
-    "D09-ca,ca-H9",
-    "F07-ca,to-H15",
-    "M01-or-T7",
-    "Q01-or-T7"
+    "B03-or,ur-T10-",
+    "D09-ca,ca-H9-",
+    "F07-ca,to-H15-",
+    "M01-or-T7-",
+    "Q01-or-T7-"
   ]
 }

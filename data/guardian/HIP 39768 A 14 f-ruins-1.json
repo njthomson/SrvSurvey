@@ -12,13 +12,13 @@
   "pp": "p10,p11,p13,p14,p22,p24,p29,p3,p32,p38,p39,p40,p6,t2,t4,t5,t6,t7",
   "og": "BGILPQ",
   "ao": [
-    "B03-or,ur-T10",
-    "G02-ca,to-H15",
-    "G18-ca-H8",
-    "I08-to,to-C8",
-    "L01-or,ca-T9",
-    "P09-to,or-C12",
-    "P27-to-C7",
-    "Q01-or-T7"
+    "B03-or,ur-T10-",
+    "G02-ca,to-H15-",
+    "G18-ca-H8-",
+    "I08-to,to-C8-",
+    "L01-or,ca-T9-",
+    "P09-to,or-C12-",
+    "P27-to-C7-",
+    "Q01-or-T7-"
   ]
 }

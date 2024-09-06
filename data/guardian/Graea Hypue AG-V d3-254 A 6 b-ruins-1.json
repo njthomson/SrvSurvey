@@ -12,15 +12,15 @@
   "pp": "p12,p13,p14,p20,p21,p22,p25,p28,p29,p3,p32,p38,p39,p4,p40,p5,p8,t6",
   "og": "EGHLNR",
   "ao": [
-    "E05-or,ta-T11",
-    "E11-to,to-C8",
-    "G09-ca,to-H15",
-    "G16-ca,ur-H10",
-    "H03-or,re-T12",
-    "L06-or,re-T13",
-    "N04-ta,or-L12",
-    "N10-ta,re-L14",
-    "R05-ur,to-B6",
-    "R11-ca,ca-H9"
+    "E05-or,ta-T11-",
+    "E11-to,to-C8-",
+    "G09-ca,to-H15-",
+    "G16-ca,re-H10-",
+    "H03-or,re-T12-",
+    "L06-or,re-T13-",
+    "N04-ta,or-L12-",
+    "N10-ta,re-L14-",
+    "R05-ur,to-B6-",
+    "R11-ca,ca-H9-"
   ]
 }
