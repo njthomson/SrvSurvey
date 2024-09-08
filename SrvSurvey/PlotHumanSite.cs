@@ -21,6 +21,7 @@ namespace SrvSurvey
         private DockingState dockingState = DockingState.none;
         private int grantedPad;
         private bool hasLanded = false;
+        private string deniedReason;
 
         private FormBuilder? builder { get => FormBuilder.activeForm; }
 
@@ -242,14 +243,34 @@ namespace SrvSurvey
         protected override void onJournalEntry(DockingGranted entry)
         {
             base.onJournalEntry(entry);
-            this.dockingState = DockingState.approved;
-            this.grantedPad = entry.LandingPad;
-            this.Invalidate();
+            Task.Delay(1500).ContinueWith(t => this.BeginInvoke(() =>
+            {
+                this.dockingState = DockingState.approved;
+                this.grantedPad = entry.LandingPad;
+                this.Invalidate();
+            }));
         }
+
         protected override void onJournalEntry(DockingDenied entry)
         {
             base.onJournalEntry(entry);
-            this.dockingState = DockingState.denied;
+            this.deniedReason = entry.Reason;
+
+            Task.Delay(1500).ContinueWith(t => this.BeginInvoke(() =>
+            {
+                this.dockingState = DockingState.denied;
+                this.Invalidate();
+            }));
+        }
+
+        protected override void onJournalEntry(DockingCancelled entry)
+        {
+            this.dockingState = DockingState.none;
+            this.Invalidate();
+        }
+
+        protected override void onJournalEntry(Music entry)
+        {
             this.Invalidate();
         }
 
@@ -456,7 +477,7 @@ namespace SrvSurvey
             newLine(+ten, true);
 
             var distToSiteOrigin = Util.getDistance(siteLocation, Status.here, this.radius);
-            if (game.isMode(GameMode.Flying, GameMode.GlideMode))
+            if (game.isMode(GameMode.Flying, GameMode.GlideMode, GameMode.ExternalPanel) || siteHeading == -1)
                 this.drawOnApproach(distToSiteOrigin);
             else
                 this.drawFooterAtSettlement();
@@ -805,29 +826,80 @@ namespace SrvSurvey
 
         private void drawOnApproach(decimal distToSiteOrigin)
         {
-            // distance to site, triangulated with altitude
-            var d = new PointM(distToSiteOrigin, game.status.Altitude).dist;
-            if (this.hasLanded)
-                drawTextAt(eight, $"► departing: {Util.metersToString(d)} from settlement ...", GameColors.fontMiddle);
-            else
-                drawTextAt(eight, $"► on approach: {Util.metersToString(d)} to settlement ...", GameColors.fontMiddle);
-            newLine(+ten, true);
+            if (!this.hasLanded)
+            {
+                // distance to site, triangulated with altitude 
+                var d = new PointM(distToSiteOrigin, game.status.Altitude).dist;
+                drawTextAt(eight, $"► On approach: {Util.metersToString(d)} to settlement ...", GameColors.fontMiddle);
+                newLine(+ten, true);
+            }
 
-            // docking status?
-            if (this.dockingState == DockingState.requested || this.dockingState == DockingState.approved || this.dockingState == DockingState.denied)
+            if (station.subType == 0 && station.heading == -1)
             {
-                drawTextAt(eight, $"► docking requested ...", GameColors.fontMiddle);
+                drawTextAt(eight, $"❓ Unknown settlement type and heading", GameColors.fontMiddle);
                 newLine(+ten, true);
             }
-            if (this.dockingState == DockingState.denied)
+            else if (station.heading == -1)
             {
-                drawTextAt(eight, $"► docking denied ...", GameColors.fontMiddle);
+                drawTextAt(eight, $"❓ Unknown settlement heading", GameColors.fontMiddle);
                 newLine(+ten, true);
             }
-            if (this.dockingState == DockingState.approved)
+
+            if (game.dockingInProgress)
             {
-                drawTextAt(eight, $"► docking approved: pad #{this.grantedPad} ...", GameColors.fontMiddle);
+                // docking status?
+                if (this.dockingState == DockingState.requested || this.dockingState == DockingState.approved || this.dockingState == DockingState.denied)
+                {
+                    drawTextAt(eight, $"► Docking requested ...", GameColors.fontMiddle);
+                    newLine(+ten, true);
+                }
+                if (this.dockingState == DockingState.approved)
+                {
+                    drawTextAt(eight, $"► Docking approved: pad #{this.grantedPad} ...", GameColors.fontMiddle);
+                    newLine(+ten, true);
+                }
+            }
+            else if (this.dockingState == DockingState.denied)
+            {
+                drawTextAt(eight, $"⛔ Docking denied ...", GameColors.fontMiddle);
                 newLine(+ten, true);
+                if (this.deniedReason == "Distance")
+                    drawTextAt(eight, $"➟ Too far away", GameColors.fontMiddle);
+                else if (this.deniedReason == "Distance")
+                    drawTextAt(eight, $"❌ Hostile", GameColors.fontMiddle);
+                newLine(+ten, true);
+            }
+
+            if (game.dockingInProgress && siteHeading == -1)
+            {
+                this.dty = this.Height - sevenTwo;
+
+                // auto docking
+                if (game.musicTrack == "DockingComputer")
+                {
+                    drawTextAt(eight, $"⛳", GameColors.brushLimeIsh, GameColors.fontBig);
+                    drawTextAt(fiveTwo, $"► Auto dock in progress", GameColors.brushLimeIsh, GameColors.fontMiddle);
+                    newLine();
+                    drawTextAt(fiveTwo, $"► Settlement auto-identification supported", GameColors.brushLimeIsh, GameColors.fontMiddleBold);
+                    newLine();
+                    drawTextAt(fiveTwo, $"► Do not switch to external camera", GameColors.brushLimeIsh, GameColors.fontMiddle);
+                }
+                else
+                {
+                    drawTextAt(eight, $"✋", GameColors.fontBig);
+
+                    // manual docking
+                    drawTextAt(fiveTwo, $"► Manual docking in progress", GameColors.fontMiddle);
+                    newLine();
+                    drawTextAt(fiveTwo, $"❎ Settlement identification will be delayed", GameColors.fontMiddle);
+                    newLine();
+                    drawTextAt(fiveTwo, $"► Auto dock recommended", GameColors.fontMiddleBold);
+                }
+            }
+            else if (this.hasLanded && siteHeading == -1)
+            {
+                drawTextAt(eight, $"► Settlement will be identified after next action", GameColors.fontMiddle);
+
             }
         }
     }

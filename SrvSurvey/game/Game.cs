@@ -121,7 +121,8 @@ namespace SrvSurvey.game
         public NavRouteFile navRoute { get; private set; }
         public CargoFile cargoFile { get; private set; }
         public bool guardianMatsFull;
-        private bool processDockedOnNextStatusChange = false;
+        public bool processDockedOnNextStatusChange = false;
+        public bool dockingInProgress = false;
 
         public SystemData? systemData;
         public SystemBody? systemBody;
@@ -2029,7 +2030,11 @@ namespace SrvSurvey.game
         {
             // stop here if not an Odyssey settlement
             if (entry.StationType != StationType.OnFootSettlement) return;
-            if (this.systemStation == null || this.systemStation.marketId != entry.MarketID) { Debugger.Break(); return; }
+            if (this.systemStation == null || this.systemStation.marketId != entry.MarketID)
+            {
+                Debugger.Break();
+                return;
+            }
 
             // new ...
             this.systemStation.stationType = entry.StationType;
@@ -2042,11 +2047,22 @@ namespace SrvSurvey.game
             //}
         }
 
+        private void onJournalEntry(DockingCancelled entry)
+        {
+            this.dockingInProgress = false;
+        }
+
+        private void onJournalEntry(DockingDenied entry)
+        {
+            this.dockingInProgress = false;
+        }
+
         private void onJournalEntry(DockingGranted entry)
         {
             // stop here if not an Odyssey settlement
+            this.dockingInProgress = true;
             if (entry.StationType != StationType.OnFootSettlement || systemData == null) return;
-            if (this.systemStation == null || this.systemStation.marketId != entry.MarketID) { Debugger.Break(); return; }
+            if (this.systemStation == null || this.systemStation.marketId != entry.MarketID) { return; }
 
             // new ...
             this.systemStation.stationType = entry.StationType;
@@ -2066,6 +2082,7 @@ namespace SrvSurvey.game
         {
             // store that we've docked here
             this.cmdr.setMarketId(entry.MarketID);
+            this.dockingInProgress = false;
             if (entry.StationType != StationType.OnFootSettlement || this.systemData == null) return;
 
             // new ...

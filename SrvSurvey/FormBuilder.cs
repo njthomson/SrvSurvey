@@ -168,12 +168,12 @@ namespace SrvSurvey
 
         private void btnCommitBuilding_Click(object sender, EventArgs e)
         {
-            if (this.template!.buildings == null)
-                this.template.buildings = new List<Building2>();
+            if (station.template!.buildings == null)
+                station.template.buildings = new List<Building2>();
 
             // commit building to templates
             this.building.name = txtBuildingName.Text;
-            this.template!.buildings.Add(this.building);
+            station.template!.buildings.Add(this.building);
 
             //var json = JsonConvert.SerializeObject(building);
 
@@ -257,8 +257,8 @@ namespace SrvSurvey
             };
             poi.offset.Y *= -1;
 
-            if (this.template!.namedPoi == null) this.template.namedPoi = new List<HumanSitePoi2>();
-            this.template.namedPoi.Add(poi);
+            if (station.template!.namedPoi == null) station.template.namedPoi = new List<HumanSitePoi2>();
+            station.template.namedPoi.Add(poi);
 
             refreshPlotter();
             HumanSiteTemplate.export();
@@ -280,8 +280,8 @@ namespace SrvSurvey
             };
             poi.offset.Y *= -1;
 
-            if (this.template!.dataTerminals == null) this.template.dataTerminals = new List<HumanSitePoi2>();
-            this.template.dataTerminals.Add(poi);
+            if (station.template!.dataTerminals == null) station.template.dataTerminals = new List<HumanSitePoi2>();
+            station.template.dataTerminals.Add(poi);
 
             refreshPlotter();
             HumanSiteTemplate.export();
@@ -301,8 +301,8 @@ namespace SrvSurvey
             };
             poi.offset.Y *= -1;
 
-            if (this.template!.secureDoors == null) this.template.secureDoors = new List<HumanSitePoi2>();
-            this.template.secureDoors.Add(poi);
+            if (station.template!.secureDoors == null) station.template.secureDoors = new List<HumanSitePoi2>();
+            station.template.secureDoors.Add(poi);
 
             refreshPlotter();
             HumanSiteTemplate.export();

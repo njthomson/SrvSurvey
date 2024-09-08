@@ -112,6 +112,7 @@ namespace SrvSurvey
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public List<Building2> buildings = new List<Building2>();
 
+        [JsonIgnore]
         public string landingPadSummary 
         {  
             get

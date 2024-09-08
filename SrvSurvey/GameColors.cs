@@ -244,6 +244,7 @@ namespace SrvSurvey
         public static Pen penLime2Dot = newPen(Color.FromArgb(64, GameColors.LimeIsh), 2, DashStyle.Dash);
         public static Pen penLime4 = newPen(LimeIsh, 4);
         public static Pen penLime4Dot = newPen(Color.FromArgb(128, GameColors.LimeIsh), 4, DashStyle.Dash);
+        public static Brush brushLimeIsh = new SolidBrush(GameColors.LimeIsh);
 
         public static Pen penOrangeStripe3;
 

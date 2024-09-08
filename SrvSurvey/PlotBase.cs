@@ -45,6 +45,7 @@ namespace SrvSurvey
         protected static float fourSix = scaled(46f);
         protected static float fifty = scaled(50f);
         protected static float fiveTwo = scaled(52f);
+        protected static float sixty = scaled(60f);
         protected static float sixTwo = scaled(62f);
         protected static float sixFour = scaled(64f);
         protected static float sixFive = scaled(65f);
@@ -353,8 +354,10 @@ namespace SrvSurvey
         protected virtual void onJournalEntry(DockingRequested entry) { /* overridden as necessary */ }
         protected virtual void onJournalEntry(DockingGranted entry) { /* overridden as necessary */ }
         protected virtual void onJournalEntry(DockingDenied entry) { /* overridden as necessary */ }
+        protected virtual void onJournalEntry(DockingCancelled entry) { /* overridden as necessary */ }
         protected virtual void onJournalEntry(Docked entry) { /* overridden as necessary */ }
         protected virtual void onJournalEntry(MaterialCollected entry) { /* overridden as necessary */ }
+        protected virtual void onJournalEntry(Music entry) { /* overridden as necessary */ }
 
         #endregion
 

@@ -175,6 +175,15 @@ namespace SrvSurvey
         public StationType StationType;
     }
 
+    class DockingCancelled : JournalEntry
+    {
+        // { "timestamp":"2024-09-08T05:09:39Z", "event":"DockingCancelled", "MarketID":3928215040, "StationName":"Omenuko Extraction Base", "StationType":"OnFootSettlement" }
+
+        public long MarketID;
+        public string StationName;
+        public StationType StationType;
+    }
+
     class Docked : JournalEntry
     {
         // { "timestamp":"2024-04-09T06:45:51Z", "event":"Docked", "StationName":"Oyekan Prospecting Hub", "StationType":"OnFootSettlement", "Taxi":false, "Multicrew":false, "StarSystem":"Yaurnai", "SystemAddress":669612713401, "MarketID":3888520448, "StationFaction":{ "Name":"Yaurnai Jet Hand Gang" }, "StationGovernment":"$government_Anarchy;", "StationGovernment_Localised":"Anarchy", "StationServices":[ "dock", "autodock", "blackmarket", "commodities", "contacts", "missions", "refuel", "repair", "engineer", "missionsgenerated", "facilitator", "flightcontroller", "stationoperations", "stationMenu" ], "StationEconomy":"$economy_Extraction;", "StationEconomy_Localised":"Extraction", "StationEconomies":[ { "Name":"$economy_Extraction;", "Name_Localised":"Extraction", "Proportion":1.000000 } ], "DistFromStarLS":18.841609, "LandingPads":{ "Small":1, "Medium":0, "Large":0 } }
