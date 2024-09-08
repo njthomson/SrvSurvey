@@ -1,16 +1,7 @@
-﻿using Newtonsoft.Json;
+﻿using SrvSurvey.canonn;
 using SrvSurvey.game;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Xml.Linq;
 
 namespace SrvSurvey
 {
@@ -18,17 +9,18 @@ namespace SrvSurvey
     {
         public static FormBuilder? activeForm;
 
-        public static FormBuilder show(HumanSiteData site)
+        public static FormBuilder show(CanonnStation station)
         {
             if (activeForm == null)
-                FormBuilder.activeForm = new FormBuilder(site);
+                FormBuilder.activeForm = new FormBuilder(station);
 
             Util.showForm(FormBuilder.activeForm);
             return FormBuilder.activeForm;
         }
 
-        public HumanSiteData site;
         protected Game game = Game.activeGame!;
+        public CanonnStation station;
+        public HumanSiteTemplate template;
 
         public Building2 building = new Building2();
 
@@ -41,10 +33,10 @@ namespace SrvSurvey
         private int floor = 1;
         private int level = 0;
 
-        public FormBuilder(HumanSiteData site)
+        public FormBuilder(CanonnStation station)
         {
             InitializeComponent();
-            this.site = site;
+            this.station = station;
 
             // can we fit in our last location
             Util.useLastLocation(this, Game.settings.formBuilder.Location);
@@ -90,7 +82,7 @@ namespace SrvSurvey
         {
             get
             {
-                var pf = (PointF)Util.getOffset(radius, site.location, site.heading);
+                var pf = (PointF)Util.getOffset(radius, station.location, station.heading);
                 pf.Y *= -1;
                 return pf;
             }
@@ -176,12 +168,12 @@ namespace SrvSurvey
 
         private void btnCommitBuilding_Click(object sender, EventArgs e)
         {
-            if (this.site.template!.buildings == null)
-                this.site.template.buildings = new List<Building2>();
+            if (this.template!.buildings == null)
+                this.template.buildings = new List<Building2>();
 
             // commit building to templates
             this.building.name = txtBuildingName.Text;
-            this.site.template!.buildings.Add(this.building);
+            this.template!.buildings.Add(this.building);
 
             //var json = JsonConvert.SerializeObject(building);
 
@@ -265,8 +257,8 @@ namespace SrvSurvey
             };
             poi.offset.Y *= -1;
 
-            if (site.template!.namedPoi == null) site.template.namedPoi = new List<HumanSitePoi2>();
-            site.template.namedPoi.Add(poi);
+            if (this.template!.namedPoi == null) this.template.namedPoi = new List<HumanSitePoi2>();
+            this.template.namedPoi.Add(poi);
 
             refreshPlotter();
             HumanSiteTemplate.export();
@@ -288,8 +280,8 @@ namespace SrvSurvey
             };
             poi.offset.Y *= -1;
 
-            if (site.template!.dataTerminals == null) site.template.dataTerminals = new List<HumanSitePoi2>();
-            site.template.dataTerminals.Add(poi);
+            if (this.template!.dataTerminals == null) this.template.dataTerminals = new List<HumanSitePoi2>();
+            this.template.dataTerminals.Add(poi);
 
             refreshPlotter();
             HumanSiteTemplate.export();
@@ -297,7 +289,7 @@ namespace SrvSurvey
 
         private void btnDoor(object sender, EventArgs e)
         {
-            var aaa = game.status.Heading - site.heading;
+            var aaa = game.status.Heading - station.heading;
             if (aaa < 0) aaa += 360;
 
             var poi = new HumanSitePoi2()
@@ -309,8 +301,8 @@ namespace SrvSurvey
             };
             poi.offset.Y *= -1;
 
-            if (site.template!.secureDoors == null) site.template.secureDoors = new List<HumanSitePoi2>();
-            site.template.secureDoors.Add(poi);
+            if (this.template!.secureDoors == null) this.template.secureDoors = new List<HumanSitePoi2>();
+            this.template.secureDoors.Add(poi);
 
             refreshPlotter();
             HumanSiteTemplate.export();

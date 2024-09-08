@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
+using SrvSurvey.canonn;
 using SrvSurvey.game;
 using System.Drawing.Drawing2D;
 using System.Globalization;
@@ -63,6 +64,12 @@ namespace SrvSurvey
             }
         }
 
+        public static HumanSiteTemplate? get(CanonnStation station)
+        {
+            var stationEconomy = Util.toEconomy(station.stationEconomy);
+            return get(stationEconomy, station.subType);
+        }
+
         public static HumanSiteTemplate? get(Economy economy, int subType)
         {
             var match = templates.Find(_ => _.economy == economy && _.subType == subType);
@@ -104,6 +111,24 @@ namespace SrvSurvey
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public List<Building2> buildings = new List<Building2>();
+
+        public string landingPadSummary 
+        {  
+            get
+            {
+                var pads = new LandingPads();
+                foreach (var pad in this.landingPads)
+                {
+                    if (pad.size == LandingPadSize.Small)
+                        pads.Small++;
+                    if (pad.size == LandingPadSize.Medium)
+                        pads.Medium++;
+                    else if (pad.size == LandingPadSize.Large)
+                        pads.Large++;
+                }
+                return pads.ToString();
+            }
+        }
 
         public LandingPads landPadSummary()
         {

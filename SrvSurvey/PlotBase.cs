@@ -921,7 +921,7 @@ namespace SrvSurvey
     /// </summary>
     internal abstract class PlotBaseSite : PlotBaseSurface
     {
-        protected LatLong2 siteOrigin;
+        protected LatLong2 siteLocation;
         protected float siteHeading;
         /// <summary>The cmdr's distance from the site origin</summary>
         protected decimal distToSiteOrigin;
@@ -941,9 +941,9 @@ namespace SrvSurvey
             if (this.IsDisposed || game?.status == null || game.systemBody == null) return;
             base.Status_StatusChanged(blink);
 
-            this.distToSiteOrigin = Util.getDistance(siteOrigin, Status.here, this.radius);
-            this.offsetWithoutHeading = (PointF)Util.getOffset(this.radius, this.siteOrigin); // explicitly EXCLUDING site.heading
-            this.cmdrOffset = (PointF)Util.getOffset(radius, siteOrigin, siteHeading); // explicitly INCLUDING site.heading
+            this.distToSiteOrigin = Util.getDistance(siteLocation, Status.here, this.radius);
+            this.offsetWithoutHeading = (PointF)Util.getOffset(this.radius, this.siteLocation); // explicitly EXCLUDING site.heading
+            this.cmdrOffset = (PointF)Util.getOffset(radius, siteLocation, siteHeading); // explicitly INCLUDING site.heading
             this.cmdrHeading = game.status.Heading - siteHeading;
         }
 

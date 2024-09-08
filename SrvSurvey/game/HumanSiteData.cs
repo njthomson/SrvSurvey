@@ -5,7 +5,6 @@ using SrvSurvey.units;
 
 namespace SrvSurvey.game
 {
-    //[JsonConverter(typeof(HumanSiteData.JsonConverter))]
     internal class HumanSiteData : Data
     {
         #region static loading code
@@ -288,65 +287,6 @@ namespace SrvSurvey.game
         };
 
         #endregion
-
-        // Not needed after all?
-        //class JsonConverter : Newtonsoft.Json.JsonConverter
-        //{
-        //    public override bool CanConvert(Type objectType)
-        //    {
-        //        return false;
-        //    }
-
-        //    public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
-        //    {
-        //        var obj = serializer.Deserialize<JToken>(reader);
-        //        if (obj == null || !obj.HasValues)
-        //            return null;
-
-        //        // read the simple fields
-        //        var data = new HumanSiteData(null)
-        //        {
-        //            name = obj[nameof(HumanSiteData.name)]!.Value<string>()!,
-        //            marketId = obj[nameof(HumanSiteData.marketId)]!.Value<long>()!,
-        //            stationType = Enum.Parse<StationType>(obj[nameof(HumanSiteData.stationType)]!.Value<string>()!),
-        //            subType = obj[nameof(HumanSiteData.subType)]!.Value<int>()!,
-        //            economy = Enum.Parse<Economy>(obj[nameof(HumanSiteData.economy)]!.Value<string>()!),
-        //            economyLocalized = obj[nameof(HumanSiteData.economyLocalized)]!.Value<string>()!,
-        //            location = obj[nameof(HumanSiteData.location)]!.ToObject<LatLong2>()!,
-        //            heading = obj[nameof(HumanSiteData.heading)]?.Value<float>() ?? -1,
-        //            landingPads = obj[nameof(HumanSiteData.landingPads)]?.ToObject<LandingPads>()!,
-        //            //buildings = new Dictionary<RectangleF, string>(obj[nameof(HumanSiteData.buildings)]?.ToObject<Dictionary<RectangleF, string>>()!),
-        //        };
-
-        //        //Game.log($"Reading: {data.bodyName} #{data.index}   ** ** ** ** {data.poiStatus.Count}");
-        //        return data;
-        //    }
-
-        //    public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
-        //    {
-        //        var data = value as HumanSiteData;
-
-        //        if (data == null)
-        //            throw new Exception($"Unexpected value: {value?.GetType().Name}");
-
-        //        var obj = new JObject
-        //        {
-        //            { nameof(HumanSiteData.name), data.name },
-        //            { nameof(HumanSiteData.marketId), data.marketId },
-        //            { nameof(HumanSiteData.stationType), data.stationType.ToString() },
-        //            { nameof(HumanSiteData.subType), data.subType },
-        //            { nameof(HumanSiteData.heading), JToken.FromObject(data.heading) },
-        //            { nameof(HumanSiteData.economy), data.economy.ToString() },
-        //            { nameof(HumanSiteData.economyLocalized), data.economyLocalized },
-        //            { nameof(HumanSiteData.location), JToken.FromObject(data.location) },
-        //            { nameof(HumanSiteData.landingPads), JToken.FromObject(data.landingPads) },
-        //            //{ nameof(HumanSiteData.buildings), new JObject(data.buildings) },
-        //        };
-
-        //        //Game.log($"Writing: {data.bodyName} #{data.index}   ** ** ** ** {data.poiStatus.Count}");
-        //        obj.WriteTo(writer);
-        //    }
-        //}
     }
 
     [JsonConverter(typeof(StringEnumConverter))]

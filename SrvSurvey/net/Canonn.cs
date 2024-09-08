@@ -1,5 +1,6 @@
 ﻿using BioCriterias;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 using SrvSurvey.game;
 using SrvSurvey.net;
@@ -117,6 +118,48 @@ namespace SrvSurvey.canonn
 
         #endregion
 
+        #region stations
+
+        public async Task<string> submitStation(CanonnStation station)
+        {
+            station.clientVer = Version.Parse(Program.releaseVersion);
+            Game.log($"~~submitStation:\r\n" + JsonConvert.SerializeObject(station, Formatting.Indented));
+
+            var json = JsonConvert.SerializeObject(station, Formatting.Indented);
+            var body = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = await client.PostAsync("https://us-central1-canonn-api-236217.cloudfunctions.net/postEvent/srvsurvey/stations", body);
+
+            var responseText = await response.Content.ReadAsStringAsync();
+            return responseText;
+        }
+
+        public async Task<List<CanonnStation>> getStations(long systemAddress)
+        {
+            Game.log($"Requesting queryStations: {systemAddress}");
+
+            // TODO: hook this up once it exists
+            var json1 = await client.GetStringAsync($"https://us-central1-canonn-api-236217.cloudfunctions.net/query/srvsurvey/system/{systemAddress}");
+
+            var list = JsonConvert.DeserializeObject<JArray>(json1)!;
+            var stations = new List<CanonnStation>();
+
+            foreach (var obj in list)
+            {
+                var json2 = obj["raw_json"]?.Value<string>();
+                if (json2 != null)
+                {
+                    var station = JsonConvert.DeserializeObject<CanonnStation>(json2)!;
+                    stations.Add(station);
+                }
+
+            }
+
+            return stations;
+        }
+
+        #endregion
+
+
         #region get all Guardian Ruins from GRSites
 
         private static string allRuinsRefPath = Path.Combine(Program.dataFolder, "allRuins.json");
@@ -175,8 +218,6 @@ namespace SrvSurvey.canonn
             var obj = JsonConvert.DeserializeObject<GRReportsData>(json)!;
             return obj.data.grreports;
         }
-
-
 
         /// <summary>
         /// Read raw GRSites data either from file or from a network request.

@@ -1,4 +1,5 @@
 ﻿using BioCriterias;
+using SrvSurvey.canonn;
 using SrvSurvey.game;
 using SrvSurvey.net;
 using SrvSurvey.units;
@@ -224,7 +225,7 @@ namespace SrvSurvey
                 try
                 {
                     SiteTemplate.Import();
-                    HumanSiteTemplate.import();
+                    HumanSiteTemplate.import(Debugger.IsAttached);
                     await Game.git.refreshPublishedData().ContinueWith(_ =>
                     {
                         // show update available link as needed
@@ -537,8 +538,8 @@ namespace SrvSurvey
             var gameMode = game.cmdr.isOdyssey ? "live" : "legacy";
             this.txtCommander.Text = $"{game.Commander} (FID:{game.fid}, mode:{gameMode})";
             this.txtMode.Text = game.mode.ToString();
-            if (game.mode == GameMode.Docked && game.humanSite != null)
-                this.txtMode.Text += ": " + game.humanSite.name;
+            if (game.mode == GameMode.Docked && game.systemStation != null)
+                this.txtMode.Text += ": " + game.systemStation.name;
 
             if (game.atMainMenu)
             {
@@ -1014,10 +1015,10 @@ namespace SrvSurvey
                 Clipboard.SetText($"{{ \"{game.shipType}\", new PointM({po.x}, {po.y}) }}, ");
             }
 
-            if (game.humanSite != null)
+            if (game.systemStation != null)
             {
-                var siteLocation = game.humanSite.location;
-                var siteHeading = (decimal)game.humanSite.heading;
+                var siteLocation = game.systemStation.location;
+                var siteHeading = (decimal)game.systemStation.heading;
 
                 // temp?
 
@@ -1035,10 +1036,10 @@ namespace SrvSurvey
                 {
                     // get delta from tracking target
                     var radius = game.status.PlanetRadius;
-                    var pf = Util.getOffset(radius, Game.settings.targetLatLong, game.humanSite.heading);
+                    var pf = Util.getOffset(radius, Game.settings.targetLatLong, game.systemStation.heading);
 
-                    var txt = $"\"offset\": {{ \"X\": {pf.X}, \"Y\": {pf.Y} }}";
-                    var dh = game.status.Heading - game.humanSite.heading;
+                    var txt = $"\"offset\": {{ \"X\": {(float)pf.X}, \"Y\": {(float)pf.Y} }}";
+                    var dh = game.status.Heading - game.systemStation.heading;
                     if (dh < 0) dh += 360;
                     if (dh != 0) txt += $", \"rot\": {dh}";
 
@@ -1049,7 +1050,7 @@ namespace SrvSurvey
                 {
                     // measure dist/angle from site origin
                     var radius = game.status.PlanetRadius;
-                    var pf = Util.getOffset(radius, game.humanSite.location, game.humanSite.heading);
+                    var pf = Util.getOffset(radius, game.systemStation.location, game.systemStation.heading);
 
                     var txt = $"{{ \"X\": {pf.X}, \"Y\": {pf.Y} }}";
                     Game.log($"Relative to site origin:\r\n\r\n\t{txt}\r\n");
@@ -1059,7 +1060,7 @@ namespace SrvSurvey
                 {
                     // measure dist/angle from site origin
                     var radius = game.status.PlanetRadius;
-                    var cmdrOffset = Util.getOffset(radius, game.humanSite.location, Status.here, game.humanSite.heading);
+                    var cmdrOffset = Util.getOffset(radius, game.systemStation.location, Status.here, game.systemStation.heading);
 
                     var dist = Util.getDistance(siteLocation, Status.here, radius);
                     var angle = Util.getBearing(siteLocation, Status.here) - siteHeading;
@@ -1073,15 +1074,28 @@ namespace SrvSurvey
 
             }
 
-            if (game.humanSite == null && msg == MsgCmd.settlement)
+            if (msg == MsgCmd.settlement && Game.settings.autoShowHumanSitesTest)
             {
                 Game.log($"Try infer site from heading: {game.status.Heading}");
-                game.initHumanSite();
-                if (game.humanSite != null && PlotHumanSite.allowPlotter)
+                // TODO: still needed or unhelpful?
+                // game.initHumanSite();
+                if (game.systemData != null && game.systemStation != null && PlotHumanSite.allowPlotter)
                 {
-                    game.humanSite.inferSubtypeFromFoot(game.status.Heading);
-                    Program.showPlotter<PlotHumanSite>();
-                    game.cmdr.setMarketId(game.humanSite.marketId);
+                    var changed = false;
+                    if (game.status.OnFootOutside)
+                        changed = game.systemStation.inferFromFoot(game.status.Heading, game.status.Latitude, game.status.Longitude, (double)game.status.PlanetRadius);
+                    else if (game.status.Docked)
+                        changed = game.systemStation.inferFromShip(game.status.Heading, game.status.Latitude, game.status.Longitude, game.shipType, (double)game.status.PlanetRadius, CalcMethod.AutoDock);
+                    else
+                        return;
+
+                    if (changed)
+                        game.systemData.Save();
+
+                    var plotter = Program.showPlotter<PlotHumanSite>()!;
+                    plotter.template = game.systemStation.template; // TODO: needed, really?
+                    plotter.Invalidate();
+                    game.cmdr.setMarketId(game.systemStation.marketId);
                 }
             }
         }

@@ -5,10 +5,13 @@ namespace SrvSurvey
     internal class PlotBodyInfo : PlotBase, PlotterForm
     {
         private string lastDestination;
+        private bool withinHumanBubble;
 
         private PlotBodyInfo() : base()
         {
             this.Font = GameColors.fontSmall2;
+            if (Game.activeGame?.systemData != null)
+                this.withinHumanBubble = Util.getSystemDistance(Game.activeGame.systemData.starPos, Util.sol) < Game.settings.bodyInfoBubbleSize;
         }
 
         public override bool allow { get => PlotBodyInfo.allowPlotter; }
@@ -96,7 +99,7 @@ namespace SrvSurvey
                 subStatus.Add("Terraformable");
             if (!body.wasDiscovered && !body.wasMapped)
                 subStatus.Add("Undiscovered");
-            else if (!body.wasMapped)
+            else if (!body.wasMapped && !this.withinHumanBubble)
                 subStatus.Add("Unmapped");
 
             if (subStatus.Count > 0)

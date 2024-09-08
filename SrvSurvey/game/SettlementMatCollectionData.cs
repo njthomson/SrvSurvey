@@ -1,7 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
-using SrvSurvey.units;
-using System.Security.Policy;
+﻿using Newtonsoft.Json;
+using SrvSurvey.canonn;
 using System.Globalization;
 
 namespace SrvSurvey.game
@@ -17,14 +15,14 @@ namespace SrvSurvey.game
             return $"{entry.SystemAddress}-{entry.MarketID}-{entry.Name}.json";
         }
 
-        public static SettlementMatCollectionData Load(HumanSiteData siteData)
+        public static SettlementMatCollectionData Load(CanonnStation station)
         {
             var fid = Game.activeGame?.fid ?? Game.settings.lastFid!;
             var folder = Path.Combine(rootFolder, fid!);
             if (!Util.isOdyssey) folder = Path.Combine(folder, "legacy");
 
             Directory.CreateDirectory(folder);
-            var filepath = Directory.GetFiles(folder, $"{siteData.systemAddress}-{siteData.marketId}-*.json").LastOrDefault();
+            var filepath = Directory.GetFiles(folder, $"{station.systemAddress}-{station.marketId}-*.json").LastOrDefault();
 
             // attempt to load latest entry
             SettlementMatCollectionData? data = null;
@@ -44,10 +42,10 @@ namespace SrvSurvey.game
                 // if needed, create an empty object
                 data = new SettlementMatCollectionData()
                 {
-                    filepath = Path.Combine(folder, $"{siteData.systemAddress}-{siteData.marketId}-{timestamp}.json"),
-                    name = siteData.name,
-                    marketId = siteData.marketId,
-                    subType = siteData.subType,
+                    filepath = Path.Combine(folder, $"{station.systemAddress}-{station.marketId}-{timestamp}.json"),
+                    name = station.name,
+                    marketId = station.marketId,
+                    subType = station.subType,
                 };
             }
 

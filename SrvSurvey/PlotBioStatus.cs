@@ -29,7 +29,7 @@ namespace SrvSurvey
                 || Game.settings.autoShowBioSummary
                 && Game.activeGame?.systemBody != null
                 && Game.activeGame.systemBody.bioSignalCount > 0
-                && Game.activeGame.humanSite == null
+                && Game.activeGame.systemStation == null
                 && !Game.activeGame.hidePlottersFromCombatSuits
                 && !Game.activeGame.isShutdown
                 && !Game.activeGame.atMainMenu

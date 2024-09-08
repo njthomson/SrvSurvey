@@ -33,7 +33,7 @@ namespace SrvSurvey
                 && !Game.activeGame.status.InTaxi
                 && !Game.activeGame.status.OnFootSocial
                 && !Game.activeGame.hidePlottersFromCombatSuits
-                && (Game.activeGame.humanSite == null || Game.activeGame.mode == GameMode.ExternalPanel) // why was this commented? For external panel?
+                && (Game.activeGame.systemStation == null || Game.activeGame.mode == GameMode.ExternalPanel) // why was this commented? For external panel?
                 && (
                     Game.activeGame.isMode(GameMode.SuperCruising, GameMode.SAA, GameMode.FSS, GameMode.ExternalPanel, GameMode.Orrery, GameMode.SystemMap, GameMode.RolePanel)
                     || (

@@ -1,4 +1,5 @@
 ﻿using DecimalMath;
+using SrvSurvey.canonn;
 using SrvSurvey.game;
 using SrvSurvey.units;
 using System.Diagnostics;
@@ -18,11 +19,13 @@ namespace SrvSurvey
         private FileSystemWatcher? mapImageWatcher;
         private FileSystemWatcher? templateWatcher;
         private DockingState dockingState = DockingState.none;
+        private int grantedPad;
         private bool hasLanded = false;
 
         private FormBuilder? builder { get => FormBuilder.activeForm; }
 
-        private HumanSiteData site { get => game.humanSite!; }
+        private CanonnStation station;
+        public HumanSiteTemplate? template;
 
         private PlotHumanSite() : base()
         {
@@ -30,10 +33,13 @@ namespace SrvSurvey
             this.Font = GameColors.fontSmall;
 
             // these we get from current data
-            this.siteOrigin = site.location;
-            this.siteHeading = site.heading;
+            if (game?.systemStation == null) throw new Exception("Why no systemStation?");
+            this.station = game.systemStation;
+            this.template = HumanSiteTemplate.get(this.station);
+            this.siteLocation = this.station.location;
+            this.siteHeading = this.station.heading;
 
-            if (site.location.Lat == 0 || site.location.Long == 0) Debugger.Break(); // Does this ever happen?
+            if (siteLocation.Lat == 0 || siteLocation.Long == 0) Debugger.Break(); // Does this ever happen?
 
             if (!autoZoom) this.scale = 6;
 
@@ -96,7 +102,7 @@ namespace SrvSurvey
                 && !Game.activeGame.atMainMenu
                 && Game.activeGame.status.hasLatLong
                 && !Game.activeGame.hidePlottersFromCombatSuits
-                && Game.activeGame.humanSite != null;
+                && Game.activeGame.systemStation != null;
         }
 
         /// <summary>
@@ -105,7 +111,7 @@ namespace SrvSurvey
         public static bool allowPlotter
         {
             get => keepPlotter
-                && Game.activeGame!.isMode(GameMode.OnFoot, GameMode.Flying, GameMode.Docked, GameMode.InSrv, GameMode.InTaxi, GameMode.Landed, GameMode.CommsPanel, GameMode.ExternalPanel, GameMode.GlideMode);
+                && Game.activeGame!.isMode(GameMode.OnFoot, GameMode.Flying, GameMode.Docked, GameMode.InSrv, GameMode.InTaxi, GameMode.Landed, GameMode.CommsPanel, GameMode.ExternalPanel, GameMode.GlideMode, GameMode.RolePanel);
         }
 
         protected override void Game_modeChanged(GameMode newMode, bool force)
@@ -121,11 +127,14 @@ namespace SrvSurvey
                 this.reposition(Elite.getWindowRect());
 
             // update if the site recently gained it
-            if (this.siteHeading == -1 && site?.heading >= 0)
-                this.siteHeading = site.heading;
+            if (this.siteHeading == -1 && station.heading != -1)
+                this.siteHeading = station.heading;
+
+            if (this.template == null && station.template != null)
+                this.template = station.template;
 
             // load missing map image if the template was recently set
-            if (this.mapImage == null && site?.template != null)
+            if (this.mapImage == null && this.template != null)
                 this.loadMapImage();
 
             // auto-adjust zoom?
@@ -170,7 +179,7 @@ namespace SrvSurvey
             // load a background image, if found
             try
             {
-                if (game.humanSite?.template == null || game.humanSite.subType == -1) return;
+                if (this.station.template == null || this.station.subType == -1) return;
 
                 if (this.mapImageWatcher != null)
                     this.mapImageWatcher.EnableRaisingEvents = false;
@@ -178,7 +187,7 @@ namespace SrvSurvey
                     this.mapImage.Dispose();
 
                 var folder = Path.Combine(Application.StartupPath, "images");
-                var filepath = Directory.GetFiles(folder, $"{game.humanSite.economy}~{game.humanSite.subType}-*.png")?.FirstOrDefault();
+                var filepath = Directory.GetFiles(folder, $"{this.station.economy}~{this.station.subType}-*.png")?.FirstOrDefault();
                 if (filepath == null) return;
 
                 var nameParts = Path.GetFileNameWithoutExtension(filepath).Split('-', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
@@ -234,6 +243,7 @@ namespace SrvSurvey
         {
             base.onJournalEntry(entry);
             this.dockingState = DockingState.approved;
+            this.grantedPad = entry.LandingPad;
             this.Invalidate();
         }
         protected override void onJournalEntry(DockingDenied entry)
@@ -252,11 +262,12 @@ namespace SrvSurvey
 
             this.hasLanded = true;
             this.dockingState = DockingState.landed;
-            this.BeginInvoke(() =>
-            {
-                this.siteHeading = site.heading;
-                this.Invalidate();
-            });
+            // invalidate from game.cs?
+            //this.BeginInvoke(() =>
+            //{
+            //    this.siteHeading = site.heading;
+            //    this.Invalidate();
+            //});
         }
 
         protected override void onJournalEntry(Touchdown entry)
@@ -275,12 +286,12 @@ namespace SrvSurvey
         protected override void onJournalEntry(BackpackChange entry)
         {
             base.onJournalEntry(entry);
-            if (this.site.template?.dataTerminals == null) return;
+            if (this.template?.dataTerminals == null) return;
             if (entry.Added == null || !entry.Added.Any(_ => _.Type == "Data")) return;
 
             // find closest data terminal, mark it as "processed" (so it renders differently)
-            var offset = Util.getOffset(radius, siteOrigin, siteHeading);
-            var terminal = this.site.template.dataTerminals.FirstOrDefault(dt => (offset - new PointM(dt.offset)).dist < 5);
+            var offset = Util.getOffset(radius, siteLocation, siteHeading);
+            var terminal = this.template.dataTerminals.FirstOrDefault(dt => (offset - new PointM(dt.offset)).dist < 5);
             if (terminal != null)
             {
                 terminal.processed = true;
@@ -294,7 +305,7 @@ namespace SrvSurvey
             PlotHumanSite.autoZoom = false;
             HumanSiteTemplate.import(true);
             Application.DoEvents();
-            site.template = HumanSiteTemplate.get(game.humanSite!.economy, game.humanSite.subType);
+            this.template = this.station.template;
             this.Invalidate();
 
             // start watching template file changes (if not already)
@@ -310,7 +321,7 @@ namespace SrvSurvey
 
         protected override void onJournalEntry(SendText entry)
         {
-            if (this.IsDisposed || game?.humanSite == null) return;
+            if (this.IsDisposed || game?.systemStation == null) return;
 
             var msg = entry.Message.ToLowerInvariant().Trim();
             if (msg.StartsWith("z "))
@@ -325,13 +336,6 @@ namespace SrvSurvey
             }
 
             base.onJournalEntry(entry);
-
-            if (msg == MsgCmd.settlement && game.status.OnFootOutside)
-            {
-                // reset settlement sub-type and heading calculations
-                this.site.inferSubtypeFromFoot(game.status.Heading);
-                this.siteHeading = this.site.heading;
-            }
 
             if (msg == "ll")
             {
@@ -359,12 +363,12 @@ namespace SrvSurvey
                 // open settlement map editor
                 this.loadTemplate();
                 if (builder == null)
-                    FormBuilder.show(this.site);
+                    FormBuilder.show(this.station);
             }
             if (msg == MsgCmd.start)
             {
                 // begin settlement mats survey
-                game.initMats(site);
+                game.initMats(this.station);
             }
             if (msg == MsgCmd.stop)
             {
@@ -435,8 +439,6 @@ namespace SrvSurvey
 
         protected override void onPaintPlotter(PaintEventArgs e)
         {
-            if (this.site == null) return;
-
             // first, draw headers and footers (before we start clipping)
 
             // header - right
@@ -445,15 +447,15 @@ namespace SrvSurvey
             drawTextAt(this.ClientSize.Width - 8, zoomText, GameColors.brushGameOrangeDim, GameColors.fontSmall, true);
 
             // header - left
-            var headerTxt = $"{site.name} - {site.economy} ";
-            headerTxt += site.subType == 0 ? "??" : $"#{site.subType}";
+            var headerTxt = $"{station.name} - {station.economy} ";
+            headerTxt += station.subType == 0 ? "??" : $"#{station.subType}";
 
             //var currentBld = site.template?.getCurrentBld(cmdrOffset, this.siteHeading);
             //if (currentBld != null) headerTxt += $", inside: {currentBld}";
             drawTextAt(eight, headerTxt);
             newLine(+ten, true);
 
-            var distToSiteOrigin = Util.getDistance(site.location, Status.here, this.radius);
+            var distToSiteOrigin = Util.getDistance(siteLocation, Status.here, this.radius);
             if (game.isMode(GameMode.Flying, GameMode.GlideMode))
                 this.drawOnApproach(distToSiteOrigin);
             else
@@ -466,7 +468,7 @@ namespace SrvSurvey
                 // when we know the settlement type and heading
                 this.drawKnownSettlement(distToSiteOrigin);
             }
-            else if (this.site.heading == -1 && game.isMode(GameMode.Landed, GameMode.InSrv, GameMode.OnFoot))
+            else if (this.siteHeading == -1 && game.isMode(GameMode.Landed, GameMode.InSrv, GameMode.OnFoot))
             {
                 // otherwise, show guidance to manually set it
                 g.ResetTransform();
@@ -490,13 +492,13 @@ namespace SrvSurvey
             var footerTxt = $"x: {(int)cmdrOffset.X}m, y: {(int)cmdrOffset.Y}m, {aaa}°";
 
             // are we inside a building?
-            var currentBld = site.template?.getCurrentBld(cmdrOffset, this.siteHeading);
+            var currentBld = this.template?.getCurrentBld(cmdrOffset, this.siteHeading);
             if (currentBld != null) footerTxt += $", inside: {currentBld}";
 
             // Pixel offset relative to background map image - an aide for creating map images
             if (showMapPixelOffsets && this.mapImage != null)
             {
-                var pf = Util.getOffset(this.radius, site.location, Status.here.clone(), site.heading);
+                var pf = Util.getOffset(this.radius, siteLocation, Status.here.clone(), siteHeading);
                 // TODO: confirm this is actually identical to `cmdrOffset`
                 pf.x += this.mapCenter.X;
                 pf.y = this.mapImage.Height - pf.y - this.mapCenter.Y;
@@ -527,7 +529,7 @@ namespace SrvSurvey
             this.resetMiddleSiteOrigin();
 
             // For use with font based symbols, keeping them up-right no matter the site or cmdr heading
-            var adjustedHeading = -site.heading + game.status.Heading;
+            var adjustedHeading = -siteHeading + game.status.Heading;
 
             // draw background map and POIs
             this.drawMapImage();
@@ -557,7 +559,7 @@ namespace SrvSurvey
             // draw large arrow pointing to settlement origin if >300m away
             if (distToSiteOrigin > limitWarnDist)
             {
-                var td = new TrackingDelta(this.radius, site.location);
+                var td = new TrackingDelta(this.radius, siteLocation);
                 g.RotateTransform(180f - game.status.Heading + (float)td.angle);
                 g.DrawLine(GameColors.HumanSite.penOuterLimitWarningArrow, 0, 20, 0, 100);
                 g.DrawLine(GameColors.HumanSite.penOuterLimitWarningArrow, 0, 100, 20, 80);
@@ -571,9 +573,9 @@ namespace SrvSurvey
 
         private void drawLandingPads()
         {
-            if (game?.humanSite?.template == null) return;
+            if (this.template == null) return;
 
-            foreach (var pad in game.humanSite.template.landingPads)
+            foreach (var pad in this.template.landingPads)
             {
                 adjust(pad.offset, pad.rot, () =>
                 {
@@ -593,7 +595,7 @@ namespace SrvSurvey
                     //g.DrawEllipse(GameColors.HumanSite.penLandingPad, -20, -20, 40, 40);
 
                     // show pad # in corner
-                    var idx = game.humanSite.template.landingPads.IndexOf(pad) + 1;
+                    var idx = this.template.landingPads.IndexOf(pad) + 1;
                     g.DrawString($"{idx}", GameColors.fontSmall, GameColors.HumanSite.landingPad.brush, r.Left + four, r.Top + four);
                 });
             }
@@ -602,10 +604,10 @@ namespace SrvSurvey
 
         private void drawBuildings()
         {
-            if (game.humanSite?.template?.buildings == null) return;
+            if (this.template?.buildings == null) return;
 
             // draw buildings from template
-            foreach (var bld in site.template!.buildings)
+            foreach (var bld in this.template!.buildings)
             {
                 var bb = Brushes.SaddleBrown;
 
@@ -665,9 +667,9 @@ namespace SrvSurvey
 
         private void drawSecureDoors()
         {
-            if (game.humanSite?.template?.secureDoors == null) return;
+            if (this.template?.secureDoors == null) return;
 
-            foreach (var door in game.humanSite.template.secureDoors)
+            foreach (var door in this.template.secureDoors)
             {
                 adjust(door.offset, door.rot, () =>
                 {
@@ -682,9 +684,9 @@ namespace SrvSurvey
 
         private void drawNamedPOI(float adjustedHeading)
         {
-            if (game.humanSite?.template?.namedPoi == null) return;
+            if (this.template?.namedPoi == null) return;
 
-            foreach (var poi in game.humanSite.template.namedPoi)
+            foreach (var poi in this.template.namedPoi)
             {
                 adjust(poi.offset, adjustedHeading, () =>
                 {
@@ -757,9 +759,9 @@ namespace SrvSurvey
 
         private void drawDataTerminals(float adjustedHeading)
         {
-            if (game.humanSite?.template?.dataTerminals == null) return;
+            if (this.template?.dataTerminals == null) return;
 
-            foreach (var terminal in game.humanSite.template.dataTerminals)
+            foreach (var terminal in this.template.dataTerminals)
             {
                 adjust(terminal.offset, adjustedHeading, () =>
                 {
@@ -824,7 +826,7 @@ namespace SrvSurvey
             }
             if (this.dockingState == DockingState.approved)
             {
-                drawTextAt(eight, $"► docking approved: pad #{site.targetPad} ...", GameColors.fontMiddle);
+                drawTextAt(eight, $"► docking approved: pad #{this.grantedPad} ...", GameColors.fontMiddle);
                 newLine(+ten, true);
             }
         }

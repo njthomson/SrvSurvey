@@ -1,4 +1,5 @@
-﻿using SrvSurvey.canonn;
+﻿using Newtonsoft.Json;
+using SrvSurvey.canonn;
 using SrvSurvey.net;
 using SrvSurvey.net.EDSM;
 using SrvSurvey.units;
@@ -120,12 +121,12 @@ namespace SrvSurvey.game
         public NavRouteFile navRoute { get; private set; }
         public CargoFile cargoFile { get; private set; }
         public bool guardianMatsFull;
-
+        private bool processDockedOnNextStatusChange = false;
 
         public SystemData? systemData;
         public SystemBody? systemBody;
         public GuardianSiteData? systemSite;
-        public HumanSiteData? humanSite;
+        public CanonnStation? systemStation;
         public string shipType;
         public float shipMaxJump;
         public SettlementMatCollectionData? matStatsTracker;
@@ -236,6 +237,9 @@ namespace SrvSurvey.game
         public bool atCarrierMgmt = false;
         public bool fsdJumping = false;
         public bool isShutdown = false;
+        /// <summary>
+        /// The name of the system for which we're requesting data for
+        /// </summary>
         private string? fetchedSystemData = null;
 
         /// <summary>
@@ -320,6 +324,13 @@ namespace SrvSurvey.game
             //if (FormGenus.activeForm != null && FormGenus.activeForm.targetBody != this.targetBody)
             //    FormGenus.activeForm.populateGenus();
             // TODO: we could avoid flicker by updating the colors on labels, rather than destroying and recreating them.
+
+            if (this.processDockedOnNextStatusChange)
+            {
+                this.processDockedOnNextStatusChange = false;
+                if (status.Docked)
+                    onDockedWhenSafe(CalcMethod.ManualDock, false);
+            }
 
             this.checkModeChange();
         }
@@ -508,8 +519,8 @@ namespace SrvSurvey.game
                 if (status.hasLatLong && (cmdr.currentMarketId > 0 || status.Docked))
                 {
                     this.initHumanSite();
-                    if (this.humanSite != null)
-                        log($"HumanSite matched: {humanSite.name} ({humanSite.marketId}) - {humanSite.economy} #{humanSite.subType}");
+                    if (this.systemStation != null)
+                        log($"HumanSite matched: {systemStation.name} ({systemStation.marketId}) - {systemStation.economy} #{systemStation.subType}");
                 }
 
                 LeaveBody? leaveBodyEvent = null;
@@ -624,22 +635,34 @@ namespace SrvSurvey.game
             if (this.journals == null || this.systemData == null || !status.hasLatLong) return;
             Game.log($"initHumanSite: currentMarketId: {cmdr.currentMarketId}");
 
-            // load this MarketId if it is close enough
-            if (cmdr.currentMarketId > 0)
+            // do we have an existing match, that has a heading already?
+            if (cmdr.currentMarketId > 0) // new
             {
-                var lastHumanSite = HumanSiteData.Load(systemData.address, cmdr.currentMarketId);
-                if (lastHumanSite != null)
-                {
-                    var dist = Util.getDistance(Status.here, lastHumanSite.location, status.PlanetRadius);
-                    if (dist < 1500)
-                    {
-                        this.humanSite = lastHumanSite;
-                        // This is probably a bad idea
-                        if (Game.settings.collectMatsCollectionStatsTest) this.initMats(this.humanSite);
-                        return;
-                    }
-                }
+                this.systemStation = systemData?.stations?.Find(s => s.marketId == cmdr.currentMarketId);
+                if (this.systemStation != null && this.systemStation.heading != -1)
+                    return;
+
+                // TODO: Keep this?
+                //if (Game.settings.collectMatsCollectionStatsTest) this.initMats(this.systemStation);
+
             }
+
+            //// load this MarketId if it is close enough
+            //if (cmdr.currentMarketId > 0) // old
+            //{
+            //    var lastHumanSite = HumanSiteData.Load(systemData.address, cmdr.currentMarketId);
+            //    if (lastHumanSite != null)
+            //    {
+            //        var dist = Util.getDistance(Status.here, lastHumanSite.location, status.PlanetRadius);
+            //        if (dist < 1500)
+            //        {
+            //            this.humanSite = lastHumanSite;
+            //            // This is probably a bad idea
+            //            if (Game.settings.collectMatsCollectionStatsTest) this.initMats(this.humanSite);
+            //            return;
+            //        }
+            //    }
+            //} // old
 
             // Otherwise, walk journals backwards collecting relevant entries for us to replay forwards
             ApproachSettlement? lastApproachSettlement = null;
@@ -697,33 +720,20 @@ namespace SrvSurvey.game
             if (lastApproachSettlement == null || lastApproachSettlement.BodyName != status.BodyName) return;
             if (Util.getDistance(Status.here, lastApproachSettlement, status.PlanetRadius) > 500) return;
 
-            // if we've been to this settlement before - load it and exit early
-            this.humanSite = HumanSiteData.Load(systemData.address, lastApproachSettlement.MarketID);
+            // new ...
 
-            if (this.humanSite != null)
-            {
-                cmdr.setMarketId(this.humanSite.marketId);
-                // This is probably a bad idea
-                if (Game.settings.collectMatsCollectionStatsTest) this.initMats(this.humanSite);
-                return;
-            }
+            // we'll need a shipType first, which may be much earlier than we already walked
+            if (this.shipType == null) this.shipType = journals.FindEntryByType<Loadout>(-1, true)?.Ship!;
+            if (this.shipType == null) this.shipType = journals.FindEntryByType<LoadGame>(-1, true)?.Ship!;
 
-            // replay entries forwards - starting with ApproachSettlement
-            this.humanSite = new HumanSiteData(lastApproachSettlement);
-            Game.log($"initHumanSite: create: '{lastApproachSettlement.Name}' ({lastApproachSettlement.MarketID})");
-
-            // docking requested/granted we can use regardless
-            if (lastDockingRequested != null) humanSite.dockingRequested(lastDockingRequested);
-            if (lastDockingGranted != null) humanSite.dockingGranted(lastDockingGranted);
+            onJournalEntry(lastApproachSettlement);
+            if (lastDockingRequested != null) onJournalEntry(lastDockingRequested);
+            if (lastDockingGranted != null) onJournalEntry(lastDockingGranted);
 
             // but we can only use the Docked event if we are still docked at that same pad
-            if (lastDocked != null && status.Docked)
+            if (lastDocked != null && status.Docked && systemStation?.heading == -1)
             {
-                // we'll need a shipType first, which may be much earlier than we already walked
-                if (this.shipType == null) this.shipType = journals.FindEntryByType<Loadout>(-1, true)?.Ship!;
-                if (this.shipType == null) this.shipType = journals.FindEntryByType<LoadGame>(-1, true)?.Ship!;
-
-                humanSite.docked(lastDocked, status.Heading);
+                onJournalEntry(lastDocked);
                 cmdr.setMarketId(lastDocked.MarketID);
             }
 
@@ -731,7 +741,45 @@ namespace SrvSurvey.game
             if (lastDocked == null && lastTouchdown?.NearestDestination == lastApproachSettlement.Name)
             {
                 // not sure if we really need this.
+                Debugger.Break();
             }
+
+            //// old ...
+            //// if we've been to this settlement before - load it and exit early
+            //this.humanSite = HumanSiteData.Load(systemData.address, lastApproachSettlement.MarketID);
+
+            //if (this.humanSite != null)
+            //{
+            //    cmdr.setMarketId(this.humanSite.marketId);
+            //    // This is probably a bad idea
+            //    if (Game.settings.collectMatsCollectionStatsTest) this.initMats(this.humanSite);
+            //    return;
+            //}
+
+            //// replay entries forwards - starting with ApproachSettlement
+            //this.humanSite = new HumanSiteData(lastApproachSettlement);
+            //Game.log($"initHumanSite: create: '{lastApproachSettlement.Name}' ({lastApproachSettlement.MarketID})");
+
+            //// docking requested/granted we can use regardless
+            //if (lastDockingRequested != null) humanSite.dockingRequested(lastDockingRequested);
+            //if (lastDockingGranted != null) humanSite.dockingGranted(lastDockingGranted);
+
+            //// but we can only use the Docked event if we are still docked at that same pad
+            //if (lastDocked != null && status.Docked)
+            //{
+            //    // we'll need a shipType first, which may be much earlier than we already walked
+            //    if (this.shipType == null) this.shipType = journals.FindEntryByType<Loadout>(-1, true)?.Ship!;
+            //    if (this.shipType == null) this.shipType = journals.FindEntryByType<LoadGame>(-1, true)?.Ship!;
+
+            //    humanSite.docked(lastDocked, status.Heading);
+            //    cmdr.setMarketId(lastDocked.MarketID);
+            //}
+
+            //// or if we touched down near a site
+            //if (lastDocked == null && lastTouchdown?.NearestDestination == lastApproachSettlement.Name)
+            //{
+            //    // not sure if we really need this.
+            //}
         }
 
         private void initSystemData()
@@ -975,8 +1023,8 @@ namespace SrvSurvey.game
 
             // we are certainly no longer at any humanSite
             this.cmdr.setMarketId(0);
-            if (this.humanSite != null)
-                this.humanSite = null;
+            if (this.systemStation != null)
+                this.systemStation = null;
 
             fireUpdate(true);
         }
@@ -1609,11 +1657,13 @@ namespace SrvSurvey.game
         /// </summary>
         private void fetchSystemData(string systemName, long systemAddress)
         {
+            // exit early if we're already processing this system
             if (this.fetchedSystemData == systemName) return;
+
             try
             {
                 this.fetchedSystemData = systemName;
-                Game.log($"this.fetchedSystemData = '{systemName}'");
+                Game.log($"this.fetchedSystemData = '{systemName}' - begin");
 
                 if (!Game.settings.useExternalData || this.canonnPoi?.system == systemName || this.systemData == null)
                 {
@@ -1625,16 +1675,14 @@ namespace SrvSurvey.game
                     this.canonnPoi = null;
                 }
 
-                var spanshFinished = false;
-                var edsmFinished = false;
-                var canonnFinished = false;
                 var shouldRefreshGuardianSystemStatus = false;
 
                 // lookup system from Spansh
                 Game.log($"Searching Spansh for '{systemName}' ({systemAddress})...");
-                Game.spansh.getSystemDump(systemAddress).ContinueWith(response =>
+                var taskSpansh = Game.spansh.getSystemDump(systemAddress).ContinueWith(response =>
                 {
-                    spanshFinished = true;
+                    if (this.systemData == null || this.fetchedSystemData != systemName) return;
+
                     if (response.IsCompletedSuccessfully)
                     {
                         var spanshSystem = response.Result;
@@ -1658,15 +1706,14 @@ namespace SrvSurvey.game
                     {
                         Game.log($"Spansh call failed? {response.Exception}");
                     }
-
-                    if (spanshFinished && edsmFinished && canonnFinished) this.fetchSystemDataEnd(shouldRefreshGuardianSystemStatus);
                 });
 
                 // lookup system from EDSM
                 Game.log($"Searching EDSM for '{systemName}'...");
-                Game.edsm.getBodies(systemName).ContinueWith(response =>
+                var taskEDSM = Game.edsm.getBodies(systemName).ContinueWith(response =>
                 {
-                    edsmFinished = true;
+                    if (this.systemData == null || this.fetchedSystemData != systemName) return;
+
                     if (response.IsCompletedSuccessfully)
                     {
                         var edsmData = response.Result;
@@ -1682,21 +1729,19 @@ namespace SrvSurvey.game
                     {
                         Game.log($"EDSM call failed? {response.Exception}");
                     }
-                    if (spanshFinished && edsmFinished && canonnFinished) this.fetchSystemDataEnd(shouldRefreshGuardianSystemStatus);
                 });
 
-                // make a call for system POIs and pre-load trackers for known bio-signals
+                // make a call for Canonn system POIs and pre-load trackers for known bio-signals
                 Game.log($"Searching for system POI from Canonn...");
-                Game.canonn.getSystemPoi(systemName, this.cmdr.commander).ContinueWith(response =>
+                var taskCanonnPoi = Game.canonn.getSystemPoi(systemName, this.cmdr.commander).ContinueWith(response =>
                 {
-                    canonnFinished = true;
+                    if (this.systemData == null || this.fetchedSystemData != systemName) return;
+
                     if (response.IsCompletedSuccessfully)
                     {
-                        if (this.systemData == null) return;
-
                         this.canonnPoi = response.Result;
                         Game.log($"Found system POI from Canonn for: {systemName}");
-                        this.systemData.onCanonnData(this.canonnPoi);
+                        this.systemData.onCanonnPoiData(this.canonnPoi);
 
                         // update Guardian system status if any there are some Guardian signals
                         var foo = this.canonnPoi.SAAsignals?.Any(_ => _.hud_category == "Guardian") == true;
@@ -1710,10 +1755,36 @@ namespace SrvSurvey.game
                     }
                     else
                     {
-                        Game.log($"Canonn call failed? {response.Exception}");
+                        Game.log($"Canonn getSystemPoi failed? {response.Exception}");
                     }
+                });
 
-                    if (spanshFinished && edsmFinished && canonnFinished) this.fetchSystemDataEnd(shouldRefreshGuardianSystemStatus);
+                // make a call for Canonn stations
+                var taskCanonnStations = Game.canonn.getStations(systemAddress).ContinueWith(response =>
+                {
+                    if (this.systemData == null || this.fetchedSystemData != systemName) return;
+
+                    if (response.IsCompletedSuccessfully)
+                    {
+                        var stations = response.Result;
+                        Game.log($"Found {stations.Count} stations from Canonn in: {systemName}");
+                        if (stations != null)
+                            this.systemData.onCanonnStationData(stations);
+
+                    }
+                    else if ((response.Exception?.InnerException as HttpRequestException)?.StatusCode == System.Net.HttpStatusCode.NotFound || Util.isFirewallProblem(response.Exception))
+                    {
+                        // ignore NotFound responses
+                    }
+                    else
+                    {
+                        Game.log($"Canonn getStations failed? {response.Exception}");
+                    }
+                });
+
+                Task.WhenAll(taskSpansh, taskEDSM, taskCanonnPoi, taskCanonnStations).ContinueWith(response =>
+                {
+                    this.fetchSystemDataEnd(shouldRefreshGuardianSystemStatus);
                 });
 
                 // measure distance to closest nebula
@@ -1722,7 +1793,6 @@ namespace SrvSurvey.game
             finally
             {
                 Game.log($"this.fetchedSystemData = '{systemName}' - complete");
-                this.fetchedSystemData = systemName;
             }
         }
 
@@ -1894,58 +1964,156 @@ namespace SrvSurvey.game
                         this.systemSite.Save();
                     }
                 }
-                //Game.log($"AAA: {this.mode}");
-
-                //// show this early so we can remind folks to have 3 fire groups set
-                //Program.control.BeginInvoke(() =>
-                //{
-                //    Game.log($"BBB: {this.mode}");
-                //    Program.showPlotter<PlotGuardianStatus>();
-                //});
+                return;
             }
-            else if (entry.MarketID > 0 && this.systemBody != null && Game.settings.autoShowHumanSitesTest
-                && entry.StationServices?.Contains("socialspace") == false  // bigger settlements (Planetery ports) are not compatible
-                && entry.StationServices.Count > 0) // horizons old settlements are not compatible
+
+            // new ...
+            if (this.systemStation != null && systemStation.marketId != entry.MarketID) Debugger.Break(); // Would this ever happen?
+            if (this.systemData == null) return;
+
+            if (entry.StationServices == null
+                || entry.StationServices.Count == 0 // horizons old settlements are not compatible
+                || entry.StationServices.Contains("socialspace") // bigger settlements (Planetary ports) are not compatible
+            ) return;
+
+            // use known station reference if this station is known, or start creating a new one
+            this.systemStation = systemData.getStation(entry.MarketID);
+            if (this.systemStation == null)
             {
-                // Human site - load existing one?
-                this.humanSite = HumanSiteData.Load(this.systemData!.address, entry.MarketID);
-
-                // or create new
-                if (this.humanSite == null)
+                Game.log($"Creating new CanonnStation for '{entry.Name}' ({entry.MarketID}) ");
+                this.systemStation = new CanonnStation()
                 {
-                    Game.log($"Creating new HumanSiteData for '{entry.Name}' ({entry.MarketID}) ");
-                    this.humanSite = new HumanSiteData(entry);
-                }
-                else
-                {
-                    Game.log($"Loaded existing HumanSiteData for '{entry.Name}' ({entry.MarketID}) ");
-                }
+                    name = entry.Name,
+                    marketId = entry.MarketID,
+                    systemAddress = entry.SystemAddress,
+                    bodyId = entry.BodyID,
+                    bodyRadius = (double)(systemBody?.radius ?? 0),
+                    stationEconomy = entry.StationEconomy!,
+                    // stationType is from Docked
+                    lat = entry.Latitude,
+                    @long = entry.Longitude,
+                };
 
-                Program.showPlotter<PlotHumanSite>();
+                if (systemData.stations == null) systemData.stations = new List<CanonnStation>();
+                systemData.stations.Add(systemStation);
+                systemData.Save();
             }
+            Game.log($"~~ApproachSettlement: " + JsonConvert.SerializeObject(this.systemStation, Formatting.Indented));
+
+            //// old ...
+            //if (entry.MarketID > 0 && this.systemBody != null
+            //    && entry.StationServices?.Contains("socialspace") == false  // bigger settlements (Planetery ports) are not compatible
+            //    && entry.StationServices.Count > 0) // horizons old settlements are not compatible
+            //{
+            //    // Human site - load existing one?
+            //    this.systemStation = HumanSiteData.Load(this.systemData!.address, entry.MarketID);
+
+            //    // or create new
+            //    if (this.systemStation == null)
+            //    {
+            //        Game.log($"Creating new HumanSiteData for '{entry.Name}' ({entry.MarketID}) ");
+            //        this.systemStation = new HumanSiteData(entry);
+            //    }
+            //    else
+            //    {
+            //        Game.log($"Loaded existing HumanSiteData for '{entry.Name}' ({entry.MarketID}) ");
+            //    }
+
+            //    Program.showPlotter<PlotHumanSite>();
+            //}
 
             // TODO: Thargoids?
         }
 
         private void onJournalEntry(DockingRequested entry)
         {
-            if (entry.StationType == StationType.OnFootSettlement && this.humanSite?.marketId == entry.MarketID && Game.settings.autoShowHumanSitesTest)
-                this.humanSite.dockingRequested(entry);
+            // stop here if not an Odyssey settlement
+            if (entry.StationType != StationType.OnFootSettlement) return;
+            if (this.systemStation == null || this.systemStation.marketId != entry.MarketID) { Debugger.Break(); return; }
+
+            // new ...
+            this.systemStation.stationType = entry.StationType;
+            this.systemStation.availblePads = entry.LandingPads;
+
+            //// old ...
+            //if (entry.StationType == StationType.OnFootSettlement && this.humanSite?.marketId == entry.MarketID && Game.settings.autoShowHumanSitesTest)
+            //{
+            //    this.humanSite.dockingRequested(entry); // old
+            //}
         }
 
         private void onJournalEntry(DockingGranted entry)
         {
-            if (entry.StationType == StationType.OnFootSettlement && this.humanSite?.marketId == entry.MarketID && Game.settings.autoShowHumanSitesTest)
-                this.humanSite.dockingGranted(entry);
+            // stop here if not an Odyssey settlement
+            if (entry.StationType != StationType.OnFootSettlement || systemData == null) return;
+            if (this.systemStation == null || this.systemStation.marketId != entry.MarketID) { Debugger.Break(); return; }
+
+            // new ...
+            this.systemStation.stationType = entry.StationType;
+            this.systemStation.cmdrPad = entry.LandingPad;
+            // some subTypes can be inferred from just the economy and pad configuration...
+            var changed = CanonnStation.inferOdysseySettlementFromPads(this.systemStation);
+            if (changed) systemData.Save();
+
+            //// old ...
+            //if (entry.StationType == StationType.OnFootSettlement && this.humanSite?.marketId == entry.MarketID && Game.settings.autoShowHumanSitesTest)
+            //{
+            //    this.humanSite.dockingGranted(entry); // old
+            //}
         }
 
         private void onJournalEntry(Docked entry)
         {
             // store that we've docked here
             this.cmdr.setMarketId(entry.MarketID);
-            if (entry.StationType != StationType.OnFootSettlement || this.systemData == null || !Game.settings.autoShowHumanSitesTest) return;
+            if (entry.StationType != StationType.OnFootSettlement || this.systemData == null) return;
 
-            // wait a bit for the status file to be written?
+            // new ...
+            if (this.systemStation == null || this.systemStation.marketId != entry.MarketID) { Debugger.Break(); return; }
+
+            if (this._mode == GameMode.NoFocus && status.Docked)
+            {
+                // when called from initHumanSite during initialization, delay not needed
+                onDockedWhenSafe(CalcMethod.AutoDock, false);
+            }
+            else if (this.musicTrack != "DockingComputer")
+            {
+                // wait for a mode change - as Heading in status file does not update until something else happens
+                Task.Delay(3000).ContinueWith(t =>
+                {
+                    Game.log($"~~enqueue onDockedWhenSafe: alt: {status.Altitude} / {status.Heading}");
+                    this.processDockedOnNextStatusChange = true;
+                });
+            }
+            else
+            {
+                // delay a little
+                Task.Delay(500).ContinueWith(t => onDockedWhenSafe(CalcMethod.AutoDock, entry.Taxi));
+            }
+
+            //// old ...
+            //// wait a bit for the status file to be written?
+            //if (this.humanSite == null)
+            //{
+            //    this.initHumanSite();
+            //    if (Game.settings.collectMatsCollectionStatsTest && this.humanSite != null) this.initMats(this.humanSite);
+            //}
+            //else if (this.humanSite.marketId == entry.MarketID)
+            //{
+            //    this.humanSite.docked(entry, this.status.Heading);
+            //    if (Game.settings.collectMatsCollectionStatsTest) this.initMats(this.humanSite);
+            //}
+            //else
+            //{
+            //    Game.log($"Mismatched name or marketId?! {entry.StationName} ({entry.MarketID})");
+            //}
+
+        }
+
+        private void onDockedWhenSafe(CalcMethod calcMethod, bool inTaxi)
+        {
+            Game.log($"~~onDockedWhenSafe: alt: {status.Altitude}, heading: {status.Heading}, docked: {status.Docked} / {calcMethod} / {inTaxi}");
+            if (systemStation == null || systemData == null || !status.Docked) return;
 
             // use current location as touchdown
             // store the heading at the time of touchdown, so we can adjust the cockpit location to the center of the ship
@@ -1953,19 +2121,20 @@ namespace SrvSurvey.game
             this.cmdr.setTouchdown(here, this.status.Heading);
             this.touchdownLocation = here;
 
-            if (this.humanSite == null)
+            var changed = systemStation.inferFromShip(
+                status.Heading,
+                this.status.Latitude,
+                this.status.Longitude,
+                inTaxi ? "taxi" : this.shipType,
+                (double)status.PlanetRadius,
+                calcMethod);
+
+            if (changed)
             {
-                this.initHumanSite();
-                if (Game.settings.collectMatsCollectionStatsTest && this.humanSite != null) this.initMats(this.humanSite);
-            }
-            else if (this.humanSite.marketId == entry.MarketID)
-            {
-                this.humanSite.docked(entry, this.status.Heading);
-                if (Game.settings.collectMatsCollectionStatsTest) this.initMats(this.humanSite);
-            }
-            else
-            {
-                Game.log($"Mismatched name or marketId?! {entry.StationName} ({entry.MarketID})");
+                systemData.Save();
+
+                // Restore?
+                // if (Game.settings.collectMatsCollectionStatsTest && this.humanSite != null) this.initMats(this.humanSite);
             }
 
             this.fireUpdate(true);
@@ -1982,12 +2151,12 @@ namespace SrvSurvey.game
             }
         }
 
-        public void initMats(HumanSiteData siteData)
+        public void initMats(CanonnStation station)
         {
             if (this.matStatsTracker != null) Game.log("Why is matStatsTracker already something?");
-            Game.log($"initMats: '{siteData.name}' ({siteData.marketId}) ");
+            Game.log($"initMats: '{station.name}' ({station.marketId}) ");
 
-            this.matStatsTracker = SettlementMatCollectionData.Load(siteData);
+            this.matStatsTracker = SettlementMatCollectionData.Load(station);
 
             // populate things from the last ApproachSettlement
             this.journals!.searchDeep((ApproachSettlement entry) =>
@@ -2040,7 +2209,7 @@ namespace SrvSurvey.game
 
         private void onJournalEntry(BackpackChange entry)
         {
-            if (!Game.settings.collectMatsCollectionStatsTest || this.matStatsTracker == null || this.humanSite == null || humanSite.heading == -1 || entry.Added == null) return;
+            if (!Game.settings.collectMatsCollectionStatsTest || this.matStatsTracker == null || this.systemStation == null || systemStation.heading == -1 || entry.Added == null) return;
             Application.DoEvents();
 
             // TODO: Use BackpackChange only for Data, restore CollectItems for the others
@@ -2050,14 +2219,14 @@ namespace SrvSurvey.game
                 if (item.Type != "Data") continue;
 
                 // Track location offset +1m by cmdr heading, to account for mats being in front of cmdr
-                var cmdrOffset = Util.getOffset(status.PlanetRadius, humanSite.location, humanSite.heading);
-                var a = status.Heading - (decimal)humanSite.heading;
+                var cmdrOffset = Util.getOffset(status.PlanetRadius, systemStation.location, systemStation.heading);
+                var a = status.Heading - (decimal)systemStation.heading;
                 if (a < 0) a += 360;
                 if (a > 360) a -= 360;
                 var d = Util.rotateLine(a, 1);
                 var location = cmdrOffset + d;
 
-                var building = humanSite.template?.getCurrentBld((PointF)cmdrOffset, humanSite.heading);
+                var building = systemStation.template?.getCurrentBld((PointF)cmdrOffset, systemStation.heading);
                 this.matStatsTracker.track(item, (PointF)location, building);
             }
 
@@ -2067,19 +2236,19 @@ namespace SrvSurvey.game
 
         private void onJournalEntry(CollectItems entry)
         {
-            if (!Game.settings.collectMatsCollectionStatsTest || this.matStatsTracker == null || this.humanSite == null || humanSite.heading == -1) return;
+            if (!Game.settings.collectMatsCollectionStatsTest || this.matStatsTracker == null || this.systemStation == null || systemStation.heading == -1) return;
             if (entry.Type == "Data") return;
             Application.DoEvents();
 
             // Track location offset +1m by cmdr heading, to account for mats being in front of cmdr
-            var cmdrOffset = Util.getOffset(status.PlanetRadius, humanSite.location, humanSite.heading);
-            var a = status.Heading - (decimal)humanSite.heading;
+            var cmdrOffset = Util.getOffset(status.PlanetRadius, systemStation.location, systemStation.heading);
+            var a = status.Heading - (decimal)systemStation.heading;
             if (a < 0) a += 360;
             if (a > 360) a -= 360;
             var d = Util.rotateLine(a, 1);
             var location = cmdrOffset + d;
 
-            var building = humanSite.template?.getCurrentBld((PointF)cmdrOffset, humanSite.heading);
+            var building = systemStation.template?.getCurrentBld((PointF)cmdrOffset, systemStation.heading);
             this.matStatsTracker.track(entry, (PointF)location, building);
 
             Program.getPlotter<PlotHumanSite>()?.Invalidate();

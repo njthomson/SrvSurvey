@@ -161,8 +161,8 @@
     "economy": "Agriculture",
     "subType": 3,
     "landingPads": [
-      { "size": "Large", "offset": { "X": -63.49616, "Y": -205.83366 } },
-      { "size": "Small", "offset": { "X": -177.263, "Y": 258.76108 }, "rot": 13 }
+      { "size": "Large", "offset": { "X": 31.664541, "Y": -212.03784 }, "rot": 359 },
+      { "size": "Small", "offset": { "X": -275.38696, "Y": 146.14957 }, "rot": 344 }
     ],
     "secureDoors": [
       { "offset": { "X": 126.87172, "Y": -312.0216 }, "floor": 1, "level": 0, "rot": 25 },
@@ -381,7 +381,7 @@
     "subType": 1,
     "landingPads": [
       { "size": "Small", "offset": { "X": -159.42699, "Y": -59.51028 } },
-      { "size": "Large", "offset": { "X": 50.454197, "Y": 51.39838 }, "rot": 136 }
+      { "size": "Large", "offset": { "X": 50.31549, "Y": 51.459305 }, "rot": 135 }
     ],
     "secureDoors": [
       { "offset": { "X": -37.577934, "Y": 3.7017343 }, "floor": 1, "level": 2, "rot": 315 },
@@ -770,7 +770,7 @@
     "economy": "Extraction",
     "subType": 5,
     "landingPads": [
-      { "size": "Small", "offset": { "X": -58.98437, "Y": -3.0885863 } }
+      { "size": "Small", "offset": { "X": -58.965805, "Y": 2.9790258 } }
     ],
     "secureDoors": [
       { "offset": { "X": 31.311964, "Y": -30.545034 }, "floor": 1, "level": 2, "rot": 180 },

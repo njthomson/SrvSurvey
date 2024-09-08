@@ -507,6 +507,10 @@ namespace SrvSurvey.game
         /// <summary> A list of all bodies detected in this system </summary>
         public List<SystemBody> bodies = new List<SystemBody>();
 
+        /// <summary> A list of known stations in this system. (Just Odyssey settlements for now) </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public List<CanonnStation>? stations;
+
         #endregion
 
         #region journal processing
@@ -996,7 +1000,7 @@ namespace SrvSurvey.game
             }
         }
 
-        public void onCanonnData(SystemPoi canonnPoi)
+        public void onCanonnPoiData(SystemPoi canonnPoi)
         {
             if (canonnPoi.system != this.name) { Game.log($"Unmatched system! Expected: `{this.name}`, got: {canonnPoi.system}"); return; }
             if (!Game.settings.useExternalData || !Game.settings.useExternalBioData) return;
@@ -1079,6 +1083,26 @@ namespace SrvSurvey.game
 
             if (FormGenus.activeForm != null)
                 FormGenus.activeForm.deferPopulateGenus();
+        }
+
+        public void onCanonnStationData(List<CanonnStation> newStations)
+        {
+            if (newStations == null || newStations.Count == 0) return;
+
+            // merge update stations with results
+            if (this.stations == null) this.stations = new List<CanonnStation>();
+
+            foreach (var newStation in newStations)
+            {
+                var match = this.stations.Find(s => s.marketId == newStation.marketId);
+
+                // add if not seen before
+                if (match == null)
+                    this.stations.Add(newStation);
+
+                //TODO: merge or replace if CalcMethod is better?
+            }
+
         }
 
         public void onEdsmResponse(EdsmSystem edsmSystem)
@@ -1650,6 +1674,11 @@ namespace SrvSurvey.game
         {
             this.nebulaDist = await Game.codexRef.getDistToClosestNebula(this.starPos);
             return nebulaDist;
+        }
+
+        public CanonnStation? getStation(long marketId)
+        {
+            return this.stations?.Find(s => s.marketId == marketId);
         }
     }
 

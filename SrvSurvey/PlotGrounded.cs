@@ -102,7 +102,7 @@ namespace SrvSurvey
                 && !Game.activeGame.isShutdown // not needed?
                 && !Game.activeGame.atMainMenu // not needed?
                 && !Game.activeGame.status.OnFootSocial
-                && Game.activeGame.humanSite == null
+                && Game.activeGame.systemStation == null
                 && !Game.activeGame.hidePlottersFromCombatSuits
                 && Game.activeGame.status.hasLatLong
                 && Game.activeGame.status.Altitude < 10_000
