@@ -182,7 +182,7 @@ namespace SrvSurvey.canonn
             foreach (var template in HumanSiteTemplate.templates)
             {
                 if (template.economy != station.economy) continue; // wrong economy
-                if (station.availblePads.ToString() != template.landingPadSummary) continue; // wrong pad configuration
+                if (station.availblePads != null && station.availblePads.ToString() != template.landingPadSummary) continue; // wrong pad configuration
 
                 foreach (var pad in template.landingPads)
                 {
@@ -195,8 +195,8 @@ namespace SrvSurvey.canonn
                     var cmdrOffset = Util.getOffset(bodyRadius, station.location, padLocation, cmdrHeading - pad.rot);
                     var delta = pad.offset - cmdrOffset;
 
-                    // are we within ~25m of the expected pad? Is ~5m enough?
-                    if (delta.dist < 25) // TODO: adjust by pad size?
+                    // are we within ~10m of the expected pad? Is ~5m enough?
+                    if (delta.dist < 10) // TODO: adjust by pad size?
                     {
                         station.subType = template.subType;
 

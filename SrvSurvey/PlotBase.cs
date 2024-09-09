@@ -1033,7 +1033,7 @@ namespace SrvSurvey
 
             // and a line to represent "north" relative to the site - visualizing the site's rotation
             if (this.siteHeading >= 0)
-                g.DrawLine(GameColors.penRed2DashedIsh, 0, -500, 0, 0);
+                g.DrawLine(GameColors.penRed2DashedIshIsh, 0, -500, 0, 0);
         }
 
         protected void drawShipAndSrvLocation()

@@ -66,8 +66,7 @@ namespace SrvSurvey
 
         public static HumanSiteTemplate? get(CanonnStation station)
         {
-            var stationEconomy = Util.toEconomy(station.stationEconomy);
-            return get(stationEconomy, station.subType);
+            return get(station.economy, station.subType);
         }
 
         public static HumanSiteTemplate? get(Economy economy, int subType)

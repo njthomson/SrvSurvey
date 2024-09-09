@@ -704,7 +704,9 @@
       { "offset": { "X": -166.19423, "Y": 14.908168 }, "floor": 2, "level": 2, "rot": 22 },
       { "offset": { "X": -122.11625, "Y": 17.483862 }, "floor": 1, "level": 2, "rot": 25 },
       { "offset": { "X": -123.031784, "Y": 40.89752 }, "floor": 1, "level": 3, "rot": 25 },
-      { "offset": { "X": -122.19138, "Y": 61.348145 }, "floor": 1, "level": 3, "rot": 205 }
+      { "offset": { "X": -122.19138, "Y": 61.348145 }, "floor": 1, "level": 3, "rot": 205 },
+      { "offset": { "X": -86.77176, "Y": 46.626446 }, "floor": 1, "level": 2, "rot": 293 },
+      { "offset": { "X": -172.97275, "Y": -2.512088 }, "floor": 1, "level": 0, "rot": 21 }
     ],
     "namedPoi": [
       { "name": "Personel", "offset": { "X": 13.385301, "Y": 6.0963826 }, "floor": 2, "level": 2 },
@@ -737,7 +739,8 @@
       { "name": "Auth", "offset": { "X": -123.09324, "Y": 68.024925 }, "floor": 2, "level": 1 },
       { "name": "Alarm", "offset": { "X": -124.2569, "Y": 68.33185 }, "floor": 2, "level": 1 },
       { "name": "Medkit", "offset": { "X": -94.71604, "Y": -115.25213 }, "floor": 1, "level": 0 },
-      { "name": "Medkit", "offset": { "X": 3.1251266, "Y": -8.160908 }, "floor": 1, "level": 1 }
+      { "name": "Medkit", "offset": { "X": 3.1251266, "Y": -8.160908 }, "floor": 1, "level": 1 },
+      { "name": "Catalyst Management Unit", "offset": { "X": 14.438637, "Y": 14.138537 }, "floor": 2, "level": 2 }
     ],
     "dataTerminals": [
       { "offset": { "X": -46.032543, "Y": -120.54418 }, "floor": 2, "level": 1 },
@@ -1383,7 +1386,7 @@
     "economy": "HighTech",
     "subType": 3,
     "landingPads": [
-      { "size": "Small", "offset": { "X": 139.07481, "Y": 0.37096992 } }
+      { "size": "Small", "offset": { "X": 139.24341, "Y": -2.6053946 } }
     ],
     "secureDoors": [
       { "offset": { "X": 60.556347, "Y": 0.30598566 }, "floor": 1, "level": 0, "rot": 271 },

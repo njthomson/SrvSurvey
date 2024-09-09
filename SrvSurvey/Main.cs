@@ -1092,9 +1092,7 @@ namespace SrvSurvey
                     if (changed)
                         game.systemData.Save();
 
-                    var plotter = Program.showPlotter<PlotHumanSite>()!;
-                    plotter.template = game.systemStation.template; // TODO: needed, really?
-                    plotter.Invalidate();
+                    Program.showPlotter<PlotHumanSite>();
                     game.cmdr.setMarketId(game.systemStation.marketId);
                 }
             }

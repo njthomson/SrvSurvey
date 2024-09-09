@@ -2129,8 +2129,8 @@ namespace SrvSurvey.game
 
         private void onDockedWhenSafe(CalcMethod calcMethod, bool inTaxi)
         {
-            Game.log($"~~onDockedWhenSafe: alt: {status.Altitude}, heading: {status.Heading}, docked: {status.Docked} / {calcMethod} / {inTaxi}");
-            if (systemStation == null || systemData == null || !status.Docked) return;
+            Game.log($"~~onDockedWhenSafe: alt: {status.Altitude}, heading: {status.Heading}, docked: {status.Docked} / {calcMethod} / {inTaxi}\r\n{status.Flags}\r\n{status.Flags2}");
+            if (systemStation == null || systemData == null || (calcMethod == CalcMethod.ManualDock && !status.Docked)) return;
 
             // use current location as touchdown
             // store the heading at the time of touchdown, so we can adjust the cockpit location to the center of the ship

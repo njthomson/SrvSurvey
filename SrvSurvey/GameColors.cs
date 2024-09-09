@@ -227,6 +227,7 @@ namespace SrvSurvey
         public static Pen penRed2Ish = newPen(Color.FromArgb(128, Color.Red), 2);
         public static Pen penDarkRed2Ish = newPen(Color.FromArgb(128, Color.DarkRed), 2);
         public static Pen penRed2DashedIsh = newPen(Color.FromArgb(128, Color.Red), 2, DashStyle.Dash);
+        public static Pen penRed2DashedIshIsh = newPen(Color.FromArgb(64, Color.Red), 2, DashStyle.Dash);
 
         public static Pen penBlack3Dotted = newPen(Color.Black, 3, DashStyle.Dot);
         public static Pen penUnknownBioSignal = newPen(Color.FromArgb(255, 88, 88, 88), 1);

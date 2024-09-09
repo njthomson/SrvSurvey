@@ -137,13 +137,15 @@ namespace SrvSurvey
             else
             {
                 form = (T)activePlotters[formType.Name];
-            }
 
-            // don't try showing a disposed form
-            if (form.IsDisposed)
-            {
-                activePlotters.Remove(formType.Name);
-                return showPlotter<T>();
+                // don't try showing a disposed form
+                if (form.IsDisposed)
+                {
+                    activePlotters.Remove(formType.Name);
+                    return showPlotter<T>();
+                }
+
+                form.Invalidate();
             }
 
             // show form if not visible
