@@ -346,7 +346,7 @@ namespace SrvSurvey
                         {
                             var prefix = "";
                             if (!game.cmdrCodex.isDiscovered(p.Value.entryId)) prefix = "⚑ ";
-                            if (!game.cmdrCodex.isDiscoveredInRegion(p.Value.entryId, game.cmdr.galacticRegion)) prefix = "⚐ ";
+                            else if (!game.cmdrCodex.isDiscoveredInRegion(p.Value.entryId, game.cmdr.galacticRegion)) prefix = "⚐ ";
                             return $"\t☐ {prefix}{p.Value.englishName} ?        {Util.credits(p.Value.reward, true)}";
                             // TODO: remove reward from here and render  on the right hand side
                         }));

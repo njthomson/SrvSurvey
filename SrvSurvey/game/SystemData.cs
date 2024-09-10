@@ -5,6 +5,7 @@ using SrvSurvey.canonn;
 using SrvSurvey.net;
 using SrvSurvey.net.EDSM;
 using SrvSurvey.units;
+using System.Diagnostics;
 using System.Globalization;
 using System.Text.RegularExpressions;
 
@@ -2018,6 +2019,9 @@ namespace SrvSurvey.game
         public Dictionary<string, BioVariant> predictions = new Dictionary<string, BioVariant>();
 
         [JsonIgnore]
+        public Dictionary<BioGenus, Dictionary<BioSpecies, List<BioVariant>>> genusPredictions = new Dictionary<BioGenus, Dictionary<BioSpecies, List<BioVariant>>>();
+
+        [JsonIgnore]
         public long minBioRewards;
 
         [JsonIgnore]
@@ -2172,6 +2176,23 @@ namespace SrvSurvey.game
 
             Game.log($"predictSpecies: '{this.name}' predicted {predictions.Count} rewards: {this.getMinMaxBioRewards(false)}");
             if (predictions.Count > 0) Game.log("\r\n> " + string.Join("\r\n> ", this.predictions.Keys.Select(k => $"{k} ({predictions[k].entryId})")));
+
+            // bucket by genus
+            this.genusPredictions.Clear();
+            foreach(var foo in this.predictions)
+            {
+                var genus = foo.Value.species.genus;
+                if (!genusPredictions.ContainsKey(genus)) genusPredictions[genus] = new Dictionary<BioSpecies, List<BioVariant>>();
+
+                var species = foo.Value.species;
+                if (!genusPredictions[genus].ContainsKey(species)) genusPredictions[genus][species] = new List<BioVariant>();
+
+                var variantName = foo.Value.name;
+                if (genusPredictions[genus][species].Any(v => v.name == variantName))
+                    Debugger.Break(); // Does this ever happen?
+                else
+                    genusPredictions[genus][species].Add(foo.Value);
+            }
         }
 
         private long getShortListSum(int delta, List<BioVariant> sortedPredictions, bool minNotMax)

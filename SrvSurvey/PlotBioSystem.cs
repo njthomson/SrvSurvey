@@ -92,8 +92,15 @@ namespace SrvSurvey
 
             if (body.organisms == null)
             {
-                this.drawTextAt(ten, $"DSS required", GameColors.brushCyan);
-                newLine(+eight, true);
+                if (Game.settings.drawBodyBiosOnlyWhenNear)
+                {
+                    this.drawTextAt(ten, $"DSS required", GameColors.brushCyan);
+                    newLine(+eight, true);
+                }
+                else
+                {
+                    this.drawBodyPredictions(body);
+                }
             }
             else
             {
@@ -119,9 +126,6 @@ namespace SrvSurvey
                     else
                         g.DrawLine(GameColors.penGameOrangeDim1, four, dty - four, this.ClientSize.Width - eight, dty - four);
 
-                    //var minReward = body.getBioRewardForGenus(organism, true);
-                    //var maxReward = body.getBioRewardForGenus(organism, false);
-                    //drawVolumeBars(g, oneTwo, dty + oneSix, highlight, minReward, maxReward, discoveryPrefix != null);
                     var yy = dty;
 
                     // displayName is either genus, or species/variant without the genus prefix
@@ -137,7 +141,13 @@ namespace SrvSurvey
                     else
                     {
                         // if we have a matching prediction - show the variant name without the genus prefix
-                        if (predictions.Count > 0)
+                        if (predictions.Count < 0)
+                        {
+                            var genus = Game.codexRef.matchFromGenus(organism.genus)!;
+                            drawBodyPredictionsRow(genus, body.genusPredictions[genus], false);
+                            // maybe?
+                        }
+                        else if (predictions.Count > 0)
                         {
                             var firstColor = true;
                             var lastSpecies = "";
@@ -209,13 +219,9 @@ namespace SrvSurvey
                         }
                     }
 
-                    //if (organism.novel == Novelty.cmdrFirst) displayName = "⚑ " + displayName;
-                    //if (organism.novel == Novelty.regionFirst) displayName = "⚐ " + displayName;
-
                     var minReward = body.getBioRewardForGenus(organism, true);
                     var maxReward = body.getBioRewardForGenus(organism, false);
-                    // or yy ??
-                    drawVolumeBars(g, oneTwo, dty + oneSix, highlight, minReward, maxReward, discoveryPrefix != null);
+                    drawVolumeBars(g, oneTwo, yy + oneSix, highlight, minReward, maxReward, discoveryPrefix != null);
 
                     // line 1
                     if (displayName.Length > 0)
@@ -270,6 +276,82 @@ namespace SrvSurvey
 
             // resize window as necessary
             formAdjustSize(+ten, +ten);
+        }
+
+        private void drawBodyPredictions(SystemBody body)
+        {
+            if (body.predictions == null || body.predictions.Count == 0) return;
+
+            var first = true;
+            foreach (var genus in body.genusPredictions)
+            {
+                if (first)
+                    first = false;
+                else
+                    g.DrawLine(GameColors.penGameOrangeDim1, four, dty - six, this.ClientSize.Width - eight, dty - six);
+
+                drawBodyPredictionsRow(genus.Key, genus.Value, false);
+            }
+        }
+
+        private void drawBodyPredictionsRow(BioGenus genus, Dictionary<BioSpecies, List<BioVariant>> predictedSpecies, bool highlight)
+        {
+            var yy = dty;
+            var min = 20_000_000L;
+            var max = 0L;
+            var genusName = genus.englishName;
+            string? genusPrefix = null;
+            Brush b;
+            foreach (var species in predictedSpecies)
+            {
+                b = highlight ? GameColors.brushCyan : GameColors.brushGameOrange;
+                var speciesName = species.Key.englishName.Replace(genusName, "").Trim();
+                drawTextAt(twoEight, $"{speciesName}:", b);
+
+                if (species.Key.reward < min) min = species.Key.reward;
+                if (species.Key.reward > max) max = species.Key.reward;
+
+                foreach (var variant in species.Value)
+                {
+                    b = highlight ? GameColors.brushCyan : GameColors.brushGameOrange;
+                    if (!game.cmdrCodex.isDiscovered(variant.entryId))
+                    {
+                        if (!highlight) b = Brushes.Gold;
+                        drawTextAt("⚑", b);
+                        genusPrefix = "⚑";
+                    }
+                    else if (!game.cmdrCodex.isDiscoveredInRegion(variant.entryId, game.cmdr.galacticRegion))
+                    {
+                        if (!highlight) b = Brushes.Gold;
+                        drawTextAt($"⚐", b);
+                        if (genusPrefix == null)
+                            genusPrefix = "⚐";
+                    }
+
+                    drawTextAt($"{variant.colorName}", b);
+                }
+
+                //b = highlight ? GameColors.brushCyan : GameColors.brushGameOrange;
+                //drawTextAt("?", b);
+                newLine(+one, true);
+            }
+
+            drawVolumeBars(g, oneTwo, yy + oneSix, false, min, max, genusPrefix != null);
+
+            // 2nd/last line Right - credit range
+            b = highlight ? GameColors.brushCyan : GameColors.brushGameOrange;
+            var txtRight = " " + Util.getMinMaxCredits(min, max);
+            drawTextAt(this.Width - eight, txtRight, b, null, true);
+
+            // 2nd/last line LEFT - genus name
+            dtx = twoEight;
+            if (genusPrefix != null)
+            {
+                if (!highlight) b = Brushes.Gold;
+                drawTextAt(genusPrefix, b);
+            }
+            drawTextAt($"{genus.englishName}", b);
+            newLine(+ten, true);
         }
 
         private void drawSystemBios2()
