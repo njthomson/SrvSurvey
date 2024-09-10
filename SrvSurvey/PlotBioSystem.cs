@@ -24,6 +24,34 @@ namespace SrvSurvey
             this.reposition(Elite.getWindowRect(true));
         }
 
+        public static SystemBody? targetBody
+        {
+            get
+            {
+                var game = Game.activeGame;
+                if (game == null || game.isShutdown)
+                    return null;
+
+                // assuming we're not in any of these modes ...
+                if (game.isMode(GameMode.ExternalPanel, GameMode.SystemMap, GameMode.Orrery))
+                    return null;
+
+                SystemBody? body = null;
+                var targetBody = game.targetBody;
+
+                if (!Game.settings.drawBodyBiosOnlyWhenNear)
+                    body = targetBody ?? game.systemBody; // new behaviour: use target body, or local if no target
+                else if (targetBody == null || targetBody == game.systemBody)
+                    body = game.systemBody; // old behaviour: use local body, unless target body is something and different (then use use system mode)
+
+                // ignore body if it has no bio signals
+                if (body != null && body.bioSignalCount == 0)
+                    body = null;
+
+                return body;
+            }
+        }
+
         public static bool allowPlotter
         {
             get => Game.settings.autoShowPlotBioSystem
@@ -33,14 +61,12 @@ namespace SrvSurvey
                 && !Game.activeGame.status.InTaxi
                 && !Game.activeGame.status.OnFootSocial
                 && !Game.activeGame.hidePlottersFromCombatSuits
-                && (Game.activeGame.systemStation == null || Game.activeGame.mode == GameMode.ExternalPanel) // why was this commented? For external panel?
                 && (
-                    Game.activeGame.isMode(GameMode.SuperCruising, GameMode.SAA, GameMode.FSS, GameMode.ExternalPanel, GameMode.Orrery, GameMode.SystemMap, GameMode.RolePanel)
+                    Game.activeGame.isMode(GameMode.SuperCruising, GameMode.SAA, GameMode.FSS, GameMode.ExternalPanel, GameMode.Orrery, GameMode.SystemMap)
                     || (
-                            Game.activeGame.systemBody?.bioSignalCount > 0
-                            && Game.activeGame.status.hasLatLong == true
-                            && Game.activeGame.isMode(GameMode.GlideMode, GameMode.Flying, GameMode.Landed, GameMode.OnFoot, GameMode.CommsPanel, GameMode.InSrv)
-                        )
+                        PlotBioSystem.targetBody?.bioSignalCount > 0
+                        && Game.activeGame.isMode(GameMode.GlideMode, GameMode.Flying, GameMode.Landed, GameMode.OnFoot, GameMode.CommsPanel, GameMode.InSrv, GameMode.RolePanel)
+                    )
                 );
         }
 
@@ -52,23 +78,15 @@ namespace SrvSurvey
                 return;
             }
 
-            resetPlotter(e.Graphics);
-            var showBodyBios = !game.isMode(GameMode.ExternalPanel, GameMode.SystemMap, GameMode.Orrery)
-                && game.status.hasLatLong
-                && game.systemBody?.bioSignalCount > 0
-                && (game.targetBody == null || game.targetBody == game.systemBody);
-
-            if (showBodyBios)
-                this.drawBodyBios2();
+            var body = PlotBioSystem.targetBody;
+            if (body != null)
+                this.drawBodyBios2(body);
             else
                 this.drawSystemBios2();
         }
 
-        private void drawBodyBios2()
+        private void drawBodyBios2(SystemBody body)
         {
-            if (game?.systemBody == null) return;
-            var body = game.systemBody;
-
             drawTextAt(eight, $"Body {body.shortName} bio signals: {body.bioSignalCount}", GameColors.brushGameOrange);
             newLine(+eight, true);
 

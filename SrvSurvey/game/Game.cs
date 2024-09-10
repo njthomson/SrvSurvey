@@ -448,24 +448,24 @@ namespace SrvSurvey.game
             {
                 if (this.systemData == null || this.status == null) return null;
 
-                // ignore if target is outside our system
-                if (status.Destination?.System > 0 && status.Destination.System != this.systemData.address)
-                    return null;
-
-                // use target if it's in our system
-                if (status.Destination?.System == this.systemData.address && status.Destination.Body >= 0)
+                if (status.Destination != null)
                 {
-                    var body = systemData.bodies.Find(_ => _.id == status.Destination.Body);
-                    // but ignore if the name doesn't match (eg: when targetting a station around a planet)
-                    if (body?.name == status.Destination.Name)
-                        return body;
+                    // ignore if target is outside our system
+                    if (status.Destination.System != this.systemData.address)
+                        return null;
+
+                    if (status.Destination.Body >= 0)
+                    {
+                        var body = systemData.bodies.Find(_ => _.id == status.Destination.Body);
+                        // but ignore if the name doesn't match (eg: when targetting a station around a planet)
+                        if (body?.name == status.Destination.Name)
+                            return body;
+                    }
                 }
 
-                // use current body if we are landed
+                // otherwise, use current body if we are close to one
                 if (status.hasLatLong && this.systemBody != null)
-                {
                     return this.systemBody;
-                }
 
                 return null;
             }

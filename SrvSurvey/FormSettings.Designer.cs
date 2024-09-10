@@ -168,6 +168,7 @@ namespace SrvSurvey
             linkAboutOne = new LinkLabel();
             colorDialog = new ColorDialog();
             colorTheme = new ColorDialog();
+            checkBox20 = new CheckBox();
             panel1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numGravityWarningLevel).BeginInit();
@@ -620,6 +621,7 @@ namespace SrvSurvey
             // 
             // tabPage4
             // 
+            tabPage4.Controls.Add(checkBox20);
             tabPage4.Controls.Add(pictureBox12);
             tabPage4.Controls.Add(label15);
             tabPage4.Controls.Add(numMinBioDuration);
@@ -692,7 +694,7 @@ namespace SrvSurvey
             checkBioSystemPlotter.AutoSize = true;
             checkBioSystemPlotter.Checked = true;
             checkBioSystemPlotter.CheckState = CheckState.Checked;
-            checkBioSystemPlotter.Location = new Point(10, 256);
+            checkBioSystemPlotter.Location = new Point(10, 246);
             checkBioSystemPlotter.Margin = new Padding(4, 3, 4, 3);
             checkBioSystemPlotter.Name = "checkBioSystemPlotter";
             checkBioSystemPlotter.Size = new Size(227, 19);
@@ -836,7 +838,7 @@ namespace SrvSurvey
             groupRingBuckets.Controls.Add(picBucket1);
             groupRingBuckets.Controls.Add(numRingBucket1);
             groupRingBuckets.Controls.Add(label16);
-            groupRingBuckets.Location = new Point(10, 289);
+            groupRingBuckets.Location = new Point(10, 299);
             groupRingBuckets.Name = "groupRingBuckets";
             groupRingBuckets.Size = new Size(470, 95);
             groupRingBuckets.TabIndex = 24;
@@ -1913,6 +1915,20 @@ namespace SrvSurvey
             // 
             colorDialog.Color = Color.Yellow;
             // 
+            // checkBox20
+            // 
+            checkBox20.AutoSize = true;
+            checkBox20.Checked = true;
+            checkBox20.CheckState = CheckState.Checked;
+            checkBox20.Location = new Point(40, 271);
+            checkBox20.Margin = new Padding(4, 3, 4, 3);
+            checkBox20.Name = "checkBox20";
+            checkBox20.Size = new Size(326, 19);
+            checkBox20.TabIndex = 33;
+            checkBox20.Tag = "drawBodyBiosOnlyWhenNear";
+            checkBox20.Text = "Show body bio signals only when target body is close by.";
+            checkBox20.UseVisualStyleBackColor = true;
+            // 
             // FormSettings
             // 
             AcceptButton = btnSave;
@@ -2122,5 +2138,6 @@ namespace SrvSurvey
         private LinkLabel linkResetTheme;
         private Button btnPostProcess;
         private CheckBox checkBox19;
+        private CheckBox checkBox20;
     }
 }

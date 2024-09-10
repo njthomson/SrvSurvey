@@ -28,6 +28,7 @@ namespace SrvSurvey
         public bool autoShowRamTah = true;
         public bool autoShowPlotSysStatus = true;
         public bool autoShowPlotBioSystem = true;
+        public bool drawBodyBiosOnlyWhenNear = true;
         public bool autoShowPlotGalMap = true;
         public bool autoShowHumanSitesTest = false;
         public bool autoShowPlotJumpInfoTest = true;
