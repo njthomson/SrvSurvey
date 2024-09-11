@@ -308,6 +308,8 @@ namespace SrvSurvey
             this.updateGuardianTexts(newMode);
             this.updateSphereLimit();
 
+            groupCodex.Invalidate();
+
             // ShowCodex button and form
             Main.form.btnCodexShow.Enabled = game?.systemBody?.organisms?.Count > 0 || game?.systemBody?.predictions?.Count > 0;
             if (!Main.form.btnCodexShow.Enabled && FormShowCodex.activeForm != null)
@@ -373,6 +375,15 @@ namespace SrvSurvey
 
             // Why was this necessary? (Which plotter is getting missed now?)
             //Program.invalidateActivePlotters();
+        }
+
+
+        private void groupCodex_Paint(object sender, PaintEventArgs e)
+        {
+            e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+            var txt = game?.cmdrCodex?.progress.ToString("p0") ?? "?%";
+            var r = new Rectangle(4, 8, groupCodex.Width, 40);
+            TextRenderer.DrawText(e.Graphics, txt, GameColors.fontBigBold, r, Color.Black);
         }
 
         private void settingsFolderWatcher_Changed(object sender, FileSystemEventArgs e)
@@ -1628,6 +1639,13 @@ namespace SrvSurvey
             else
                 CriteriaBuilder.buildWholeSet(); // right click - create criteria
         }
+
+        private void btnCodexBingo_Click(object sender, EventArgs e)
+        {
+            FormCodexBingo.activeForm?.Close();
+            FormCodexBingo.show();
+        }
+
     }
 }
 

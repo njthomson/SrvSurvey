@@ -109,6 +109,7 @@ namespace SrvSurvey
         public Rectangle formPostProcess;
         public Rectangle formBuilder;
         public Rectangle formShowCodex;
+        public Rectangle formCodexBingo;
 
         // FormRuins settings
         public bool mapShowNotes = true;

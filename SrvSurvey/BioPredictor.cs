@@ -8,7 +8,7 @@ namespace BioCriterias
     internal class BioPredictor
     {
         public static bool useTestCache = false;
-        public static string testCacheFolder = Path.Combine(Program.dataFolder, "testCache");
+        public static string netCache = Path.Combine(Program.dataFolder, "netCache");
 
         public static List<string> predict(SystemBody body)
         {
@@ -226,7 +226,7 @@ namespace BioCriterias
             if (clause.property == "mats" && bodyValue is Dictionary<string, float>)
             {
                 var bodyMats = (Dictionary<string, float>)bodyValue;
-                if (!clause.values.Any(v => bodyMats.Any(bv => bv.Key.Equals(v, StringComparison.OrdinalIgnoreCase) && bv.Value > 0.5f)))
+                if (!clause.values.Any(v => bodyMats.Any(bv => bv.Key.Equals(v, StringComparison.OrdinalIgnoreCase) && bv.Value > 0.25f)))
                     failures.Add(new ClauseFailure(bodyName, "No mats multi match found", clause, string.Join(',', bodyMats)));
 
                 return;

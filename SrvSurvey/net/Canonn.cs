@@ -95,7 +95,7 @@ namespace SrvSurvey.canonn
 
         public async Task<CanonnBodyBioStats> systemBioStats(long systemAddress)
         {
-            var cacheFilename = Path.Combine(BioPredictor.testCacheFolder, $"systemBioStats-{systemAddress}.json");
+            var cacheFilename = Path.Combine(BioPredictor.netCache, $"systemBioStats-{systemAddress}.json");
             string json;
             if (BioPredictor.useTestCache && File.Exists(cacheFilename))
             {
@@ -106,7 +106,7 @@ namespace SrvSurvey.canonn
                 json = await client.GetStringAsync($"https://us-central1-canonn-api-236217.cloudfunctions.net/query/codex/biostats?id={systemAddress}");
                 if (BioPredictor.useTestCache)
                 {
-                    Directory.CreateDirectory(BioPredictor.testCacheFolder);
+                    Directory.CreateDirectory(BioPredictor.netCache);
                     File.WriteAllText(cacheFilename, json);
                 }
             }

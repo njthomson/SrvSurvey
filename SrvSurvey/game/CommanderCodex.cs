@@ -47,6 +47,8 @@ namespace SrvSurvey.game
         [JsonIgnore]
         public Dictionary<int, CommanderCodex> regionalFirsts = new Dictionary<int, CommanderCodex>();
 
+        public float progress { get => 1f / 1028f * codexFirsts.Count; }
+
         private CommanderCodex getRegionalTracker(int regionId)
         {
             // load if not in memory
@@ -103,10 +105,24 @@ namespace SrvSurvey.game
 
         public bool isDiscoveredInRegion(string entryId, int regionId)
         {
-            var regionalTracker = this.getRegionalTracker(regionId);
+            var regionalTracker = regionId == 0
+                ? this
+                : this.getRegionalTracker(regionId);
+
             var exists = regionalTracker.codexFirsts.ContainsKey(long.Parse(entryId));
             return exists;
         }
+
+        public CodexFirst? getEntry(string entryId, int regionId)
+        {
+            var regionalTracker = regionId == 0
+                ? this
+                : this.getRegionalTracker(regionId);
+
+            var entry = regionalTracker.codexFirsts.GetValueOrDefault(long.Parse(entryId));
+            return entry;
+        }
+
     }
 
     [JsonConverter(typeof(CodexFirst.JsonConverter))]

@@ -90,11 +90,14 @@ namespace SrvSurvey
             txtBodies = new TextBox();
             linkNewBuildAvailable = new LinkLabel();
             btnTest = new Button();
+            groupCodex = new GroupBox();
+            btnCodexBingo = new Button();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
             groupBox3.SuspendLayout();
             groupBox4.SuspendLayout();
             groupBox5.SuspendLayout();
+            groupCodex.SuspendLayout();
             SuspendLayout();
             // 
             // btnGroundTarget
@@ -102,11 +105,11 @@ namespace SrvSurvey
             btnGroundTarget.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnGroundTarget.BackColor = SystemColors.ControlLight;
             btnGroundTarget.FlatStyle = FlatStyle.System;
-            btnGroundTarget.Location = new Point(127, 44);
+            btnGroundTarget.Location = new Point(94, 44);
             btnGroundTarget.Name = "btnGroundTarget";
-            btnGroundTarget.Size = new Size(91, 27);
+            btnGroundTarget.Size = new Size(37, 27);
             btnGroundTarget.TabIndex = 3;
-            btnGroundTarget.Text = "Set target";
+            btnGroundTarget.Text = "Set";
             btnGroundTarget.UseVisualStyleBackColor = false;
             btnGroundTarget.Click += btnGroundTarget_Click;
             // 
@@ -126,10 +129,10 @@ namespace SrvSurvey
             // txtTargetLatLong
             // 
             txtTargetLatLong.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            txtTargetLatLong.Location = new Point(16, 19);
+            txtTargetLatLong.Location = new Point(14, 19);
             txtTargetLatLong.Name = "txtTargetLatLong";
             txtTargetLatLong.ReadOnly = true;
-            txtTargetLatLong.Size = new Size(285, 20);
+            txtTargetLatLong.Size = new Size(200, 20);
             txtTargetLatLong.TabIndex = 11;
             txtTargetLatLong.Text = "<none>";
             // 
@@ -146,9 +149,9 @@ namespace SrvSurvey
             btnClearTarget.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnClearTarget.BackColor = SystemColors.ControlLight;
             btnClearTarget.FlatStyle = FlatStyle.System;
-            btnClearTarget.Location = new Point(222, 44);
+            btnClearTarget.Location = new Point(137, 44);
             btnClearTarget.Name = "btnClearTarget";
-            btnClearTarget.Size = new Size(53, 27);
+            btnClearTarget.Size = new Size(51, 27);
             btnClearTarget.TabIndex = 13;
             btnClearTarget.Text = "Hide";
             btnClearTarget.UseVisualStyleBackColor = false;
@@ -162,9 +165,9 @@ namespace SrvSurvey
             groupBox1.Controls.Add(btnClearTarget);
             groupBox1.Controls.Add(btnGroundTarget);
             groupBox1.Controls.Add(txtTargetLatLong);
-            groupBox1.Location = new Point(12, 433);
+            groupBox1.Location = new Point(99, 433);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(307, 78);
+            groupBox1.Size = new Size(220, 78);
             groupBox1.TabIndex = 14;
             groupBox1.TabStop = false;
             groupBox1.Text = "Target lat/Long:";
@@ -173,7 +176,7 @@ namespace SrvSurvey
             // 
             btnPasteLatLong.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnPasteLatLong.Image = (Image)resources.GetObject("btnPasteLatLong.Image");
-            btnPasteLatLong.Location = new Point(279, 44);
+            btnPasteLatLong.Location = new Point(192, 44);
             btnPasteLatLong.Name = "btnPasteLatLong";
             btnPasteLatLong.Size = new Size(23, 27);
             btnPasteLatLong.TabIndex = 26;
@@ -496,9 +499,9 @@ namespace SrvSurvey
             btnGuardianThings.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnGuardianThings.BackColor = SystemColors.ControlLight;
             btnGuardianThings.FlatStyle = FlatStyle.System;
-            btnGuardianThings.Location = new Point(282, 16);
+            btnGuardianThings.Location = new Point(279, 16);
             btnGuardianThings.Name = "btnGuardianThings";
-            btnGuardianThings.Size = new Size(124, 33);
+            btnGuardianThings.Size = new Size(127, 33);
             btnGuardianThings.TabIndex = 19;
             btnGuardianThings.Text = "All Guardian Sites";
             btnGuardianThings.UseVisualStyleBackColor = false;
@@ -509,9 +512,9 @@ namespace SrvSurvey
             btnRuins.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnRuins.BackColor = SystemColors.ControlLight;
             btnRuins.FlatStyle = FlatStyle.System;
-            btnRuins.Location = new Point(283, 55);
+            btnRuins.Location = new Point(279, 55);
             btnRuins.Name = "btnRuins";
-            btnRuins.Size = new Size(123, 35);
+            btnRuins.Size = new Size(127, 35);
             btnRuins.TabIndex = 18;
             btnRuins.Text = "Survey Maps";
             btnRuins.UseVisualStyleBackColor = false;
@@ -523,7 +526,7 @@ namespace SrvSurvey
             btnRuinsMap.FlatStyle = FlatStyle.System;
             btnRuinsMap.Location = new Point(16, 57);
             btnRuinsMap.Name = "btnRuinsMap";
-            btnRuinsMap.Size = new Size(86, 21);
+            btnRuinsMap.Size = new Size(93, 21);
             btnRuinsMap.TabIndex = 16;
             btnRuinsMap.Text = "Show map";
             btnRuinsMap.UseVisualStyleBackColor = false;
@@ -534,9 +537,9 @@ namespace SrvSurvey
             btnRuinsOrigin.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnRuinsOrigin.BackColor = SystemColors.ControlLight;
             btnRuinsOrigin.FlatStyle = FlatStyle.System;
-            btnRuinsOrigin.Location = new Point(151, 57);
+            btnRuinsOrigin.Location = new Point(115, 57);
             btnRuinsOrigin.Name = "btnRuinsOrigin";
-            btnRuinsOrigin.Size = new Size(126, 21);
+            btnRuinsOrigin.Size = new Size(115, 21);
             btnRuinsOrigin.TabIndex = 15;
             btnRuinsOrigin.Text = "Aerial assist";
             btnRuinsOrigin.UseVisualStyleBackColor = false;
@@ -548,7 +551,7 @@ namespace SrvSurvey
             txtGuardianSite.Location = new Point(16, 31);
             txtGuardianSite.Name = "txtGuardianSite";
             txtGuardianSite.ReadOnly = true;
-            txtGuardianSite.Size = new Size(260, 20);
+            txtGuardianSite.Size = new Size(256, 20);
             txtGuardianSite.TabIndex = 14;
             txtGuardianSite.Text = "<Guardian site>";
             // 
@@ -796,12 +799,36 @@ namespace SrvSurvey
             btnTest.UseVisualStyleBackColor = true;
             btnTest.MouseDown += btnTest_MouseDown;
             // 
+            // groupCodex
+            // 
+            groupCodex.Controls.Add(btnCodexBingo);
+            groupCodex.Location = new Point(6, 433);
+            groupCodex.Name = "groupCodex";
+            groupCodex.Size = new Size(87, 78);
+            groupCodex.TabIndex = 31;
+            groupCodex.TabStop = false;
+            groupCodex.Text = "Codex";
+            groupCodex.Paint += groupCodex_Paint;
+            // 
+            // btnCodexBingo
+            // 
+            btnCodexBingo.BackColor = SystemColors.ControlLight;
+            btnCodexBingo.FlatStyle = FlatStyle.System;
+            btnCodexBingo.Location = new Point(6, 51);
+            btnCodexBingo.Name = "btnCodexBingo";
+            btnCodexBingo.Size = new Size(75, 21);
+            btnCodexBingo.TabIndex = 20;
+            btnCodexBingo.Text = "Bingo";
+            btnCodexBingo.UseVisualStyleBackColor = false;
+            btnCodexBingo.Click += btnCodexBingo_Click;
+            // 
             // Main
             // 
             AutoScaleDimensions = new SizeF(7F, 12F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = btnQuit2;
             ClientSize = new Size(437, 628);
+            Controls.Add(groupCodex);
             Controls.Add(btnTest);
             Controls.Add(btnCodexShow);
             Controls.Add(linkNewBuildAvailable);
@@ -843,6 +870,7 @@ namespace SrvSurvey
             groupBox4.PerformLayout();
             groupBox5.ResumeLayout(false);
             groupBox5.PerformLayout();
+            groupCodex.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -907,5 +935,7 @@ namespace SrvSurvey
         private LinkLabel linkNewBuildAvailable;
         public Button btnCodexShow;
         private Button btnTest;
+        private GroupBox groupCodex;
+        private Button btnCodexBingo;
     }
 }

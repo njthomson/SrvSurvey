@@ -29,11 +29,12 @@ namespace SrvSurvey.net
             return systems;
         }
 
-        public async Task<ApiSystemDumpSystem> getSystemDump(long systemAddress)
+        public async Task<ApiSystemDumpSystem> getSystemDump(long systemAddress, bool useCache = false)
         {
-            var cacheFilename = Path.Combine(BioPredictor.testCacheFolder, $"getSystemDump-{systemAddress}.json");
+            var cacheFilename = Path.Combine(BioPredictor.netCache, $"getSystemDump-{systemAddress}.json");
             string json;
-            if (BioPredictor.useTestCache && File.Exists(cacheFilename))
+            useCache = useCache || BioPredictor.useTestCache;
+            if (useCache && File.Exists(cacheFilename))
             {
                 json = File.ReadAllText(cacheFilename);
             }
@@ -41,9 +42,9 @@ namespace SrvSurvey.net
             {
                 Game.log($"Requesting getSystem: {systemAddress}");
                 json = await Spansh.client.GetStringAsync($"https://spansh.co.uk/api/dump/{systemAddress}/");
-                if (BioPredictor.useTestCache)
+                if (useCache)
                 {
-                    Directory.CreateDirectory(BioPredictor.testCacheFolder);
+                    Directory.CreateDirectory(BioPredictor.netCache);
                     File.WriteAllText(cacheFilename, json);
                 }
             }

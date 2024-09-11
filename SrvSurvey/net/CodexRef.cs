@@ -167,7 +167,7 @@ namespace SrvSurvey.canonn
                 this.genus.First(_ => _.englishName == "Mounds").englishName = "Bark Mounds";
                 this.genus.First(_ => _.englishName == "Anemone").englishName = "Luteolum Anemone";
                 this.genus.First(_ => _.englishName == "Plant").englishName = "Amphora Plant";
-                this.genus.First(_ => _.englishName == "Sinuous Tubers").englishName = "Tubers";
+                //this.genus.First(_ => _.englishName == "Sinuous Tubers").englishName = "Tubers";
                 this.genus.First(_ => _.englishName == "Shards").englishName = "Crystalline Shards";
 
                 File.WriteAllText(bioRefPath, JsonConvert.SerializeObject(this.genus));
@@ -195,7 +195,7 @@ namespace SrvSurvey.canonn
             return matchFromEntryId(entryId.ToString());
         }
 
-        public BioMatch matchFromEntryId(string entryId)
+        public BioMatch matchFromEntryId(string entryId, bool allowNull = false)
         {
             if (this.genus == null || this.genus.Count == 0) throw new Exception($"BioRef is not loaded.");
 
@@ -210,6 +210,7 @@ namespace SrvSurvey.canonn
                             if (variantRef.entryIdSuffix == entryIdSuffix)
                                 return new BioMatch(genusRef, speciesRef, variantRef);
 
+            if (allowNull) return null!;
             throw new Exception($"Unexpected entryId: '{entryId}'");
         }
 

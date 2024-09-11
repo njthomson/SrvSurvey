@@ -963,20 +963,20 @@ namespace SrvSurvey
             switch (economy)
             {
                 case Economy.Agriculture: return "$economy_Agri;";
-                case Economy.Colony: return  "$economy_Colony;";
+                case Economy.Colony: return "$economy_Colony;";
                 case Economy.Damaged: return "$economy_Damaged;";
-                case Economy.Extraction: return  "$economy_Extraction;";
-                case Economy.HighTech: return  "$economy_HighTech;";
-                case Economy.Industrial: return  "$economy_Industrial;";
+                case Economy.Extraction: return "$economy_Extraction;";
+                case Economy.HighTech: return "$economy_HighTech;";
+                case Economy.Industrial: return "$economy_Industrial;";
                 case Economy.Military: return "$economy_Military;";
-                case Economy.Prison: return  "$economy_Prison;";
+                case Economy.Prison: return "$economy_Prison;";
                 case Economy.PrivateEnterprise: return "$economy_Carrier;";
-                case Economy.Refinery: return  "$economy_Refinery;";
+                case Economy.Refinery: return "$economy_Refinery;";
                 case Economy.Repair: return "$economy_Repair;";
                 case Economy.Rescue: return "$economy_Rescue;";
                 case Economy.Service: return "$economy_Service;";
-                case Economy.Terraforming: return  "$economy_Terraforming;";
-                case Economy.Tourist: return  "$economy_Tourism;";
+                case Economy.Terraforming: return "$economy_Terraforming;";
+                case Economy.Tourist: return "$economy_Tourism;";
 
                 default: throw new Exception($"Unexpected: {economy}");
             }
@@ -1023,6 +1023,37 @@ namespace SrvSurvey
             g.RotateTransform(-rot2);
             g.TranslateTransform(-x, +y);
             g.RotateTransform(-rot1);
+        }
+
+        public static TreeNode Set(this TreeNodeCollection nodes, string key, string text)
+        {
+            if (!nodes.ContainsKey(key))
+                return nodes.Add(key, text);
+            else
+                return nodes[key];
+        }
+
+        public static int CountChecked(this TreeNodeCollection nodes)
+        {
+            int count = 0;
+
+            foreach (TreeNode node in nodes)
+                if (node.Checked) count++;
+
+            return count;
+        }
+
+        public static bool HasChildren(this TreeNode node)
+        {
+            return node.Nodes.Count > 0;
+        }
+
+        public static bool HasGrandChildren(this TreeNode node)
+        {
+            foreach (TreeNode child in node.Nodes)
+                if (child.HasChildren()) return true;
+
+            return false;
         }
 
     }
