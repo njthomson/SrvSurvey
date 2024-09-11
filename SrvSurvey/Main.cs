@@ -381,7 +381,7 @@ namespace SrvSurvey
         private void groupCodex_Paint(object sender, PaintEventArgs e)
         {
             e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-            var txt = game?.cmdrCodex?.progress.ToString("p0") ?? "?%";
+            var txt = game?.cmdrCodex?.completionProgress.ToString("p0") ?? "?%";
             var r = new Rectangle(4, 8, groupCodex.Width, 40);
             TextRenderer.DrawText(e.Graphics, txt, GameColors.fontBigBold, r, Color.Black);
         }

@@ -47,7 +47,24 @@ namespace SrvSurvey.game
         [JsonIgnore]
         public Dictionary<int, CommanderCodex> regionalFirsts = new Dictionary<int, CommanderCodex>();
 
-        public float progress { get => 1f / 1028f * codexFirsts.Count; }
+        /// <summary>
+        /// EntryID's for Green Gas Giants present in CodexRef
+        /// </summary>
+        private static List<long> entryIdGGGs = new List<long>() { 1200102, 1200302, 1200402, 1200502, 1200602, 1200702, 1200802, 1200902 };
+
+        public float completionProgress
+        {
+            get
+            {
+                if (Game.codexRef.codexRefCount == 0) return 0;
+
+                // disregard discoveries for things not in CodexRef
+                const long minBio = 1400102;
+                var countValid = codexFirsts.Keys.Count(k => k >= minBio || entryIdGGGs.Contains(k));
+
+                return 1f / Game.codexRef.codexRefCount * countValid;
+            }
+        }
 
         private CommanderCodex getRegionalTracker(int regionId)
         {
@@ -81,6 +98,9 @@ namespace SrvSurvey.game
             // sort by entryId before saving
             this.codexFirsts = this.codexFirsts.OrderBy(_ => _.Key).ToDictionary(_ => _.Key, _ => _.Value);
             this.Save();
+
+            // If the Codex Bingo form is open - make it re-calculate
+            FormCodexBingo.activeForm?.calcCompletions();
         }
 
         public bool isPersonalFirstDiscovery(long entryId, long systemAddress, int bodyId)

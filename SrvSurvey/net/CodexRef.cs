@@ -16,6 +16,7 @@ namespace SrvSurvey.canonn
         public List<BioGenus> genus;
         private List<double[]>? allNebula;
         private double[] lastNebulaPos;
+        public int codexRefCount { get; private set; }
 
         public async Task init(bool reset)
         {
@@ -59,6 +60,7 @@ namespace SrvSurvey.canonn
             }
 
             var codexRef = JsonConvert.DeserializeObject<Dictionary<string, RefCodexEntry>>(json)!;
+            this.codexRefCount = codexRef.Count;
             return codexRef;
         }
 

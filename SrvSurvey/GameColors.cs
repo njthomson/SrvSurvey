@@ -198,6 +198,7 @@ namespace SrvSurvey
         public static Pen penYellow4 = newPen(Color.Yellow, 4, LineCap.Triangle, LineCap.Triangle);
         public static Pen penYellow8 = newPen(Color.Yellow, 8, LineCap.Triangle, LineCap.Triangle);
 
+        public static Pen penBlack2 = newPen(Color.Black, 2);
         public static Pen penBlack2Dash = newPen(Color.Black, 2, DashStyle.Dash);
         public static Pen penBlack2Dot = newPen(Color.Black, 2, DashStyle.Dot);
         public static Pen penBlack4Dash = newPen(Color.Black, 4, DashStyle.Dash);

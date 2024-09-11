@@ -37,7 +37,6 @@ namespace SrvSurvey
             FormPostProcess.activeForm = this;
 
             // load potential cmdr's
-            this.allCmdrs = CommanderSettings.getAllCmdrs();
             this.findCmdrs();
 
             // default to 7 days ago, at midnight
@@ -82,6 +81,7 @@ namespace SrvSurvey
 
         private void findCmdrs()
         {
+            this.allCmdrs = CommanderSettings.getAllCmdrs();
             var cmdrs = this.allCmdrs
                 .Values
                 .Order()

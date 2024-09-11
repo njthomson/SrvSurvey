@@ -47,14 +47,14 @@
             tree = new TreeView();
             images = new ImageList(components);
             panel1 = new Panel();
+            comboCmdr = new ComboBox();
             label2 = new Label();
             comboRegion = new ComboBox();
-            txtCommander = new TextBox();
             label1 = new Label();
             contextMenu = new ContextMenuStrip(components);
             menuCopyName = new ToolStripMenuItem();
             menuCopyEntryId = new ToolStripMenuItem();
-            menuCanonnSeperator = new ToolStripSeparator();
+            menuCanonnSeparator = new ToolStripSeparator();
             menuCanonnBioforge = new ToolStripMenuItem();
             menuCanonnResearch = new ToolStripMenuItem();
             menuEDAstro = new ToolStripMenuItem();
@@ -147,15 +147,26 @@
             // panel1
             // 
             panel1.BackColor = SystemColors.ControlDark;
+            panel1.Controls.Add(comboCmdr);
             panel1.Controls.Add(label2);
             panel1.Controls.Add(comboRegion);
-            panel1.Controls.Add(txtCommander);
             panel1.Controls.Add(label1);
             panel1.Dock = DockStyle.Top;
             panel1.Location = new Point(0, 0);
             panel1.Name = "panel1";
             panel1.Size = new Size(800, 31);
             panel1.TabIndex = 2;
+            // 
+            // comboCmdr
+            // 
+            comboCmdr.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            comboCmdr.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboCmdr.FormattingEnabled = true;
+            comboCmdr.Location = new Point(86, 4);
+            comboCmdr.Name = "comboCmdr";
+            comboCmdr.Size = new Size(424, 23);
+            comboCmdr.TabIndex = 4;
+            comboCmdr.SelectedIndexChanged += comboCmdr_SelectedIndexChanged;
             // 
             // label2
             // 
@@ -179,15 +190,6 @@
             comboRegion.TabIndex = 2;
             comboRegion.SelectedIndexChanged += comboRegion_SelectedIndexChanged;
             // 
-            // txtCommander
-            // 
-            txtCommander.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            txtCommander.Location = new Point(86, 3);
-            txtCommander.Name = "txtCommander";
-            txtCommander.ReadOnly = true;
-            txtCommander.Size = new Size(424, 23);
-            txtCommander.TabIndex = 1;
-            // 
             // label1
             // 
             label1.AutoSize = true;
@@ -199,7 +201,7 @@
             // 
             // contextMenu
             // 
-            contextMenu.Items.AddRange(new ToolStripItem[] { menuCopyName, menuCopyEntryId, menuCanonnSeperator, menuCanonnBioforge, menuCanonnResearch, menuEDAstro });
+            contextMenu.Items.AddRange(new ToolStripItem[] { menuCopyName, menuCopyEntryId, menuCanonnSeparator, menuCanonnBioforge, menuCanonnResearch, menuEDAstro });
             contextMenu.Name = "contextMenuStrip";
             contextMenu.Size = new Size(212, 120);
             // 
@@ -217,10 +219,10 @@
             menuCopyEntryId.Text = "Copy entry Id";
             menuCopyEntryId.Click += menuCopyEntryId_Click;
             // 
-            // menuCanonnSeperator
+            // menuCanonnSeparator
             // 
-            menuCanonnSeperator.Name = "menuCanonnSeperator";
-            menuCanonnSeperator.Size = new Size(208, 6);
+            menuCanonnSeparator.Name = "menuCanonnSeparator";
+            menuCanonnSeparator.Size = new Size(208, 6);
             // 
             // menuCanonnBioforge
             // 
@@ -270,20 +272,14 @@
         private StatusStrip statusStrip1;
         private TreeView tree;
         private ImageList images;
-        private Button button1;
         private ContextMenuStrip contextMenu;
         private ToolStripMenuItem menuCopyName;
         private ToolStripMenuItem menuCopyEntryId;
-        private ToolStripSeparator menuCanonnSeparator;
         private Panel panel1;
-        private TextBox txtCommander;
         private Label label1;
-        private ToolStripMenuItem copyNameToolStripMenuItem;
-        private ToolStripMenuItem copyEntryIdToolStripMenuItem;
-        private ToolStripMenuItem viewOnCanonn;
         private ToolStripMenuItem menuCanonnBioforge;
         private ToolStripMenuItem menuCanonnResearch;
-        private ToolStripSeparator menuCanonnSeperator;
+        private ToolStripSeparator menuCanonnSeparator;
         private ToolStripMenuItem menuEDAstro;
         private Label label2;
         private ComboBox comboRegion;
@@ -291,5 +287,6 @@
         private ToolStripStatusLabel toolDiscoveryDate;
         private ToolStripStatusLabel toolFiller;
         private ToolStripStatusLabel toolBodyName;
+        private ComboBox comboCmdr;
     }
 }

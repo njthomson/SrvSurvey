@@ -79,6 +79,11 @@ namespace SrvSurvey
             }
 
             var body = PlotBioSystem.targetBody;
+
+            // if we're FSS'ing - show predictions for the last body scanned, if it has any bio signals
+            if (game.mode == GameMode.FSS && game.systemData.lastFssBody?.bioSignalCount > 0)
+                body = game.systemData.lastFssBody;
+
             if (body != null)
                 this.drawBodyBios2(body);
             else
@@ -260,6 +265,7 @@ namespace SrvSurvey
                 }
             }
 
+            // summary footer
             this.dty += two;
             var footerTxt = $"Rewards: {body.getMinMaxBioRewards(false)}";
             //            if (body.firstFootFall) footerTxt += "\r\n(Applying FF bonus)";
@@ -341,7 +347,7 @@ namespace SrvSurvey
             // 2nd/last line Right - credit range
             b = highlight ? GameColors.brushCyan : GameColors.brushGameOrange;
             var txtRight = " " + Util.getMinMaxCredits(min, max);
-            drawTextAt(this.Width - eight, txtRight, b, null, true);
+            var sz = drawTextAt(this.Width - eight, txtRight, b, null, true);
 
             // 2nd/last line LEFT - genus name
             dtx = twoEight;
@@ -351,6 +357,7 @@ namespace SrvSurvey
                 drawTextAt(genusPrefix, b);
             }
             drawTextAt($"{genus.englishName}", b);
+            dtx += sz.Width;
             newLine(+ten, true);
         }
 

@@ -657,6 +657,10 @@ namespace SrvSurvey.game
                 }
             }
 
+            // track which body was FSS'd last
+            if (entry.ScanType == "Detailed")
+                this.lastFssBody = body;
+
             if (body.bioSignalCount > 0)
             {
                 body.predictSpecies();
@@ -1413,6 +1417,9 @@ namespace SrvSurvey.game
 
             return names;
         }
+
+        [JsonIgnore]
+        public SystemBody? lastFssBody;
 
         [JsonIgnore]
         private List<SystemSettlementSummary>? _settlements;
