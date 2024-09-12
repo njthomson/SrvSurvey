@@ -5,11 +5,22 @@ namespace SrvSurvey
 {
     internal class PlotBioSystem : PlotBase, PlotterForm
     {
+        private string? lastDestination;
+        private SystemBody? durationBody;
+        private System.Windows.Forms.Timer durationTimer;
+
         private PlotBioSystem() : base()
         {
             //this.BackgroundImageLayout = ImageLayout.Stretch;
 
             this.Font = GameColors.fontSmall;
+
+            durationTimer = new System.Windows.Forms.Timer()
+            {
+                Interval = 5_000,
+                Enabled = false,
+            };
+            durationTimer.Tick += DurationTimer_Tick;
         }
 
         public override bool allow { get => PlotBioSystem.allowPlotter; }
@@ -70,6 +81,43 @@ namespace SrvSurvey
                 );
         }
 
+        protected override void Status_StatusChanged(bool blink)
+        {
+            if (this.IsDisposed) return;
+            base.Status_StatusChanged(blink);
+
+            // if the targetBody has recent changed ...
+            var targetBody = game.targetBody;
+            if (game.status.Destination?.Name != this.lastDestination)
+            {
+                this.lastDestination = game.status.Destination?.Name;
+                if (this.durationTimer.Enabled)
+                {
+                    Game.log($"Kill duration timer, from: {this.durationBody?.name}");
+                    this.durationTimer.Stop();
+                    this.durationBody = null;
+                }
+
+                // ... and it has bio signals ...
+                if (targetBody?.bioSignalCount > 0)
+                {
+                    // ... show it's details for ~5 seconds
+                    this.durationBody = targetBody;
+                    this.durationTimer.Start();
+                    Game.log($"Start duration timer, for: {this.durationBody?.name}");
+                    this.Invalidate();
+                }
+            }
+        }
+
+        private void DurationTimer_Tick(object? sender, EventArgs e)
+        {
+            Game.log($"End duration timer, from: {this.durationBody?.name}");
+            this.durationTimer.Stop();
+            this.durationBody = null;
+            this.Invalidate();
+        }
+
         protected override void onPaintPlotter(PaintEventArgs e)
         {
             if (this.IsDisposed || game.systemData == null || game.status == null || !PlotBioSystem.allowPlotter)
@@ -83,6 +131,10 @@ namespace SrvSurvey
             // if we're FSS'ing - show predictions for the last body scanned, if it has any bio signals
             if (game.mode == GameMode.FSS && game.systemData.lastFssBody?.bioSignalCount > 0)
                 body = game.systemData.lastFssBody;
+
+            // keep showing the body we recently switched to, if within ~5 seconds
+            if (this.durationBody != null && this.durationTimer.Enabled)
+                body = this.durationBody;
 
             if (body != null)
                 this.drawBodyBios2(body);
@@ -100,12 +152,10 @@ namespace SrvSurvey
                 if (Game.settings.drawBodyBiosOnlyWhenNear)
                 {
                     this.drawTextAt(ten, $"DSS required", GameColors.brushCyan);
-                    newLine(+eight, true);
+                    newLine(+four, true);
                 }
-                else
-                {
-                    this.drawBodyPredictions(body);
-                }
+
+                this.drawBodyPredictions(body);
             }
             else
             {
@@ -131,6 +181,14 @@ namespace SrvSurvey
                     else
                         g.DrawLine(GameColors.penGameOrangeDim1, four, dty - four, this.ClientSize.Width - eight, dty - four);
 
+                    // if we have predictions - use that renderer
+                    if (predictions.Count > 0)
+                    {
+                        var genus = Game.codexRef.matchFromGenus(organism.genus)!;
+                        drawBodyPredictionsRow(genus, body.genusPredictions[genus], highlight);
+                        continue;
+                    }
+
                     var yy = dty;
 
                     // displayName is either genus, or species/variant without the genus prefix
@@ -145,11 +203,12 @@ namespace SrvSurvey
                         displayName = organism.speciesLocalized.Replace(organism.genusLocalized + " ", "");
                     else
                     {
+                        /*
                         // if we have a matching prediction - show the variant name without the genus prefix
                         if (predictions.Count < 0)
                         {
                             var genus = Game.codexRef.matchFromGenus(organism.genus)!;
-                            drawBodyPredictionsRow(genus, body.genusPredictions[genus], false);
+                            drawBodyPredictionsRow(genus, body.genusPredictions[genus], highlight);
                             // maybe?
                         }
                         else if (predictions.Count > 0)
@@ -222,6 +281,7 @@ namespace SrvSurvey
                             // TODO: show colour blocks or something?
                             displayName = ""; // string.Join("/", matches.Select(m => m.colorName.Substring(0, 2)));
                         }
+                        */
                     }
 
                     var minReward = body.getBioRewardForGenus(organism, true);
@@ -253,13 +313,14 @@ namespace SrvSurvey
                     brush = highlight ? GameColors.brushCyan : GameColors.brushGameOrange;
                     if (!highlight && discoveryPrefix != null) brush = (SolidBrush)Brushes.Gold;
 
+                    dtx = twoEight;
+                    if (discoveryPrefix != null)
+                        drawTextAt(discoveryPrefix, brush);
+
                     var leftText = displayName != organism.genusLocalized || organism.entryId > 0
-                        ? discoveryPrefix + organism.genusLocalized
+                        ? organism.genusLocalized
                         : "?";
-                    drawTextAt(
-                        twoEight,
-                        leftText,
-                        brush);
+                    drawTextAt(leftText, brush);
                     dtx += sz.Width + ten;
                     newLine(+eight, true);
                 }
@@ -296,7 +357,7 @@ namespace SrvSurvey
                 else
                     g.DrawLine(GameColors.penGameOrangeDim1, four, dty - six, this.ClientSize.Width - eight, dty - six);
 
-                drawBodyPredictionsRow(genus.Key, genus.Value, false);
+                drawBodyPredictionsRow(genus.Key, genus.Value, body == this.durationBody);
             }
         }
 
