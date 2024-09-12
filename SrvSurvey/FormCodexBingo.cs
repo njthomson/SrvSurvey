@@ -1,6 +1,7 @@
 ﻿using SrvSurvey.canonn;
 using SrvSurvey.game;
 using SrvSurvey.Properties;
+using System.Collections;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing.Drawing2D;
@@ -35,6 +36,7 @@ namespace SrvSurvey
             InitializeComponent();
             tree.Nodes.Clear();
             tree.MouseWheel += Tree_MouseWheel;
+            tree.TreeViewNodeSorter = new NodeSorter();
 
             // can we fit in our last location
             Util.useLastLocation(this, Game.settings.formCodexBingo);
@@ -152,7 +154,6 @@ namespace SrvSurvey
             };
             root.Expand();
 
-            await Game.codexRef.init(false); // tmp?
             // hierarchy: /hud_category/sub_class/species/color
 
             // build the hierarchy
@@ -621,4 +622,13 @@ namespace SrvSurvey
         public bool isComplete { get => this.completion == 1f; }
     }
 
+    public class NodeSorter : IComparer
+    {
+        public int Compare(object? left, object? right)
+        {
+            var leftNode = (TreeNode?)left;
+            var rightNode = (TreeNode?)right;
+            return string.Compare(leftNode?.Text ?? "", rightNode?.Text ?? "");
+        }
+    }
 }

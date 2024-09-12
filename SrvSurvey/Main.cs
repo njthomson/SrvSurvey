@@ -1642,7 +1642,6 @@ namespace SrvSurvey
 
         private void btnCodexBingo_Click(object sender, EventArgs e)
         {
-            FormCodexBingo.activeForm?.Close();
             FormCodexBingo.show();
         }
 

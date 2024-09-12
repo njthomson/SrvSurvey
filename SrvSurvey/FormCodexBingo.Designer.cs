@@ -282,7 +282,7 @@
             Controls.Add(statusStrip1);
             DoubleBuffered = true;
             Icon = (Icon)resources.GetObject("$this.Icon");
-            //MinimumSize = new Size(640, 480);
+            MinimumSize = new Size(640, 480);
             Name = "FormCodexBingo";
             Text = "Codex Bingo";
             statusStrip1.ResumeLayout(false);
