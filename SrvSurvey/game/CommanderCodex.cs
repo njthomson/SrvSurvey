@@ -32,6 +32,16 @@ namespace SrvSurvey.game
                 };
         }
 
+        public void reload()
+        {
+            // reload relevant data from file
+            var data = Data.Load<CommanderCodex>(this.filepath)!;
+            if (data?.codexFirsts == null) return;
+
+            this.codexFirsts = data.codexFirsts;
+            this.regionalFirsts.Clear();
+        }
+
         public string fid;
         public string commander;
         public string? region;
@@ -88,7 +98,7 @@ namespace SrvSurvey.game
         private void trackCodex(string displayName, long entryId, DateTime timestamp, long systemAddress, int? bodyId)
         {
             // exit early if this is not new
-            if (this.codexFirsts.ContainsKey(entryId) && timestamp >= this.codexFirsts[entryId].time) return;
+            if (this.codexFirsts.ContainsKey(entryId) && timestamp >= this.codexFirsts[entryId].time && this.codexFirsts[entryId].address != -1) return;
 
             // add/update list and save
             this.codexFirsts[entryId] = new CodexFirst(timestamp, systemAddress, bodyId ?? -1);

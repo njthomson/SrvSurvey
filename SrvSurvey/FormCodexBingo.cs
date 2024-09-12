@@ -50,11 +50,6 @@ namespace SrvSurvey
             toolBodyName.Text = "";
             toolRegionName.Text = "Select a codex discovery...";
             toolDiscoveryDate.Text = "";
-
-            // and add this button as we stupidly cannot do it through the designer
-            var toolScanOld = new ToolStripButton("Scan old journal files?");
-            toolScanOld.Click += ToolScanOld_Click;
-            this.statusStrip1.Items.Add(toolScanOld);
         }
 
         private void findCmdrs()
@@ -91,11 +86,6 @@ namespace SrvSurvey
             fillRegionMenuItems();
 
             this.calcCompletions();
-        }
-
-        private void ToolScanOld_Click(object? sender, EventArgs e)
-        {
-            Process.Start(Application.ExecutablePath, FormPostProcess.cmdArg);
         }
 
         private void fillRegionMenuItems()
@@ -162,6 +152,7 @@ namespace SrvSurvey
             };
             root.Expand();
 
+            await Game.codexRef.init(false); // tmp?
             // hierarchy: /hud_category/sub_class/species/color
 
             // build the hierarchy
@@ -229,7 +220,6 @@ namespace SrvSurvey
             {
                 var root = calcNodeCompletion(tree.Nodes[0]);
                 this.Text = "Codex Bingo - " + root.completion.ToString("p1");
-
                 tree.Invalidate();
             }
         }
@@ -399,6 +389,7 @@ namespace SrvSurvey
         private void tree_AfterSelect(object sender, TreeViewEventArgs e)
         {
             toolRegionName.Text = "Select a codex discovery...";
+            toolBodyName.IsLink = false;
             toolBodyName.Text = null;
             toolBodyName.Tag = null;
             toolDiscoveryDate.Text = null;
@@ -410,20 +401,47 @@ namespace SrvSurvey
             var entry = cmdrCodex.getEntry(codexTag.entry.entryid, this.regionIdx);
             if (entry == null) return;
 
-            // show data and start (cached) Spansh lookup for the system name from systemAddress/bodyId
-            toolDiscoveryDate.Text = entry.time.ToString();
-            toolBodyName.Text = "...";
-            toolRegionName.Text = "...";
+
+            if (entry.address == -1)
+            {
+                // data imported from Canonn Challenge - not much we can do with this
+                toolBodyName.IsLink = false;
+                toolBodyName.Text = "?";
+                toolRegionName.Text = "Imported from Canonn Challenge";
+                toolDiscoveryDate.Text = "?";
+                return;
+            }
+            else
+            {
+                // show data and start (cached) Spansh lookup for the system name from systemAddress/bodyId
+                toolDiscoveryDate.Text = entry.time.ToString();
+                toolBodyName.Text = $"{entry.address} / {entry.bodyId} ...";
+                toolRegionName.Text = "..?";
+            }
 
             Game.spansh.getSystemDump(entry.address, true).ContinueWith(t =>
             {
                 if (t.IsCompletedSuccessfully)
                 {
-                    var body = t.Result.bodies?.Find(b => b.bodyId == entry.bodyId);
-                    if (body == null)
+                    string bodyName;
+                    string url;
+                    if (entry.bodyId >= 0)
                     {
-                        Debugger.Break();
-                        return;
+                        var body = t.Result.bodies?.Find(b => b.bodyId == entry.bodyId);
+                        if (body?.id64 == null)
+                        {
+                            Debugger.Break();
+                            return;
+                        }
+                        // link to the body
+                        bodyName = body.name ?? $"{entry.address} #{entry.bodyId}";
+                        url = $"https://spansh.co.uk/body/{Uri.EscapeDataString(body.id64.Value.ToString())}";
+                    }
+                    else
+                    {
+                        // link to just the system
+                        bodyName = $"{t.Result.name} ?";
+                        url = $"https://spansh.co.uk/system/{Uri.EscapeDataString(entry.address.ToString())}";
                     }
 
                     this.BeginInvoke(() =>
@@ -434,19 +452,92 @@ namespace SrvSurvey
                         toolRegionName.Text = region.Name;
 
                         // set body name, with URL for clicking
-                        toolBodyName.Text = body?.name ?? $"{entry.address} #{entry.bodyId}";
-                        if (entry.bodyId > 0 && body?.id64.HasValue == true)
-                            toolBodyName.Tag = $"https://spansh.co.uk/body/{Uri.EscapeDataString(body.id64.Value.ToString())}";
+                        toolBodyName.Text = bodyName;
+                        if (!string.IsNullOrEmpty(url))
+                        {
+                            toolBodyName.IsLink = true;
+                            toolBodyName.Tag = url;
+                        }
                     });
                 }
                 else if (t.Exception?.InnerException is HttpRequestException { StatusCode: System.Net.HttpStatusCode.NotFound } || Util.isFirewallProblem(t.Exception))
-                        {
-                            this.BeginInvoke(() =>
+                {
+                    this.BeginInvoke(() =>
                     {
                         // ignore NotFound responses
                         toolBodyName.Text = $"Unknown system: {entry.address}?";
                     });
                 }
+            });
+        }
+
+        private void toolImportFromJournal_Click(object sender, EventArgs e)
+        {
+            // start watching for file changes first
+            var watcher = this.reactToOldJournalChanges();
+
+            // spawn child process to do the importing
+            var proc = Process.Start(Application.ExecutablePath, $"{FormPostProcess.cmdArg} {cmdrCodex.fid}");
+
+            // when that child process ends, reload + silently re-calculate one more time
+            proc.WaitForExitAsync().ContinueWith(t =>
+            {
+                this.BeginInvoke(() =>
+                {
+                    Game.log($"Process old journals child processed ended, re-calculating completions for cmdr: {cmdrCodex.commander}");
+                    watcher.EnableRaisingEvents = false;
+                    watcher.Dispose();
+                    cmdrCodex.reload();
+                    this.calcCompletions();
+                });
+            });
+        }
+
+        private FileSystemWatcher reactToOldJournalChanges()
+        {
+            var watcher = new FileSystemWatcher(Program.dataFolder, $"{cmdrCodex.fid}-codex*.json");
+
+            var lastChangeTime = DateTime.Now;
+            watcher.Changed += new FileSystemEventHandler((object sender, FileSystemEventArgs e) =>
+            {
+                Program.crashGuard(() =>
+                {
+                    if (!this.IsHandleCreated || this.IsDisposed) return;
+
+                    // ignore changes for other cmdrs
+                    var fileFID = e.Name?.Split('-', 2)?.FirstOrDefault();
+                    if (fileFID != cmdrCodex.fid) return;
+
+                    // ignore if we updated within the last second
+                    var duration = DateTime.Now - lastChangeTime;
+                    if (duration.TotalSeconds < 1) return;
+
+                    // silently reload and re-calculate completions
+                    Game.log($"Process old journals child processed touched files, re-calculating completions for cmdr: {cmdrCodex.commander}");
+                    cmdrCodex.reload();
+                    this.calcCompletions();
+                    lastChangeTime = DateTime.Now;
+                }, true);
+            });
+
+            Game.log($"Watching: {watcher.Filter}");
+            watcher.EnableRaisingEvents = true;
+            return watcher;
+        }
+
+        private void toolImportFromCanonn_Click(object sender, EventArgs e)
+        {
+            this.Enabled = false;
+            Game.canonn.importCanonnChallenge(this.cmdrCodex).ContinueWith(t =>
+            {
+                this.BeginInvoke(() =>
+                {
+                    // re-calculate completions
+                    this.calcCompletions();
+                    this.Enabled = true;
+
+                    MessageBox.Show(this, $"Added {t.Result} new entries from Canonn Challenge data for commander: {cmdrCodex.commander}", "SrvSurvey", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                });
             });
         }
 
@@ -506,6 +597,7 @@ namespace SrvSurvey
                 }
             }
         }
+
     }
 
     internal class CodexTag

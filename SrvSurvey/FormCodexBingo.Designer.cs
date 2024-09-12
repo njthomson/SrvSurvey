@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormCodexBingo));
             TreeNode treeNode1 = new TreeNode("Node3");
             TreeNode treeNode2 = new TreeNode("Node4");
             TreeNode treeNode3 = new TreeNode("Node0", new TreeNode[] { treeNode1, treeNode2 });
@@ -38,12 +39,14 @@
             TreeNode treeNode7 = new TreeNode("Node7");
             TreeNode treeNode8 = new TreeNode("Node8");
             TreeNode treeNode9 = new TreeNode("Node2", new TreeNode[] { treeNode6, treeNode7, treeNode8 });
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormCodexBingo));
             statusStrip1 = new StatusStrip();
             toolBodyName = new ToolStripStatusLabel();
             toolRegionName = new ToolStripStatusLabel();
             toolDiscoveryDate = new ToolStripStatusLabel();
             toolFiller = new ToolStripStatusLabel();
+            toolImport = new ToolStripDropDownButton();
+            toolImportFromCanonn = new ToolStripMenuItem();
+            toolImportFromJournal = new ToolStripMenuItem();
             tree = new TreeView();
             images = new ImageList(components);
             panel1 = new Panel();
@@ -65,7 +68,7 @@
             // 
             // statusStrip1
             // 
-            statusStrip1.Items.AddRange(new ToolStripItem[] { toolBodyName, toolRegionName, toolDiscoveryDate, toolFiller });
+            statusStrip1.Items.AddRange(new ToolStripItem[] { toolBodyName, toolRegionName, toolDiscoveryDate, toolFiller, toolImport });
             statusStrip1.Location = new Point(0, 426);
             statusStrip1.Name = "statusStrip1";
             statusStrip1.Size = new Size(800, 24);
@@ -100,6 +103,30 @@
             toolFiller.Name = "toolFiller";
             toolFiller.Size = new Size(10, 19);
             toolFiller.Text = " ";
+            // 
+            // toolImport
+            // 
+            toolImport.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            toolImport.DropDownItems.AddRange(new ToolStripItem[] { toolImportFromCanonn, toolImportFromJournal });
+            toolImport.Image = (Image)resources.GetObject("toolImport.Image");
+            toolImport.ImageTransparentColor = Color.Magenta;
+            toolImport.Name = "toolImport";
+            toolImport.Size = new Size(104, 22);
+            toolImport.Text = "Missing entries?";
+            // 
+            // toolImportFromCanonn
+            // 
+            toolImportFromCanonn.Name = "toolImportFromCanonn";
+            toolImportFromCanonn.Size = new Size(240, 22);
+            toolImportFromCanonn.Text = "Import from Canonn Challenge";
+            toolImportFromCanonn.Click += toolImportFromCanonn_Click;
+            // 
+            // toolImportFromJournal
+            // 
+            toolImportFromJournal.Name = "toolImportFromJournal";
+            toolImportFromJournal.Size = new Size(240, 22);
+            toolImportFromJournal.Text = "Import old journal files ...";
+            toolImportFromJournal.Click += toolImportFromJournal_Click;
             // 
             // tree
             // 
@@ -255,7 +282,7 @@
             Controls.Add(statusStrip1);
             DoubleBuffered = true;
             Icon = (Icon)resources.GetObject("$this.Icon");
-            MinimumSize = new Size(640, 480);
+            //MinimumSize = new Size(640, 480);
             Name = "FormCodexBingo";
             Text = "Codex Bingo";
             statusStrip1.ResumeLayout(false);
@@ -288,5 +315,8 @@
         private ToolStripStatusLabel toolFiller;
         private ToolStripStatusLabel toolBodyName;
         private ComboBox comboCmdr;
+        private ToolStripDropDownButton toolImport;
+        private ToolStripMenuItem toolImportFromCanonn;
+        private ToolStripMenuItem toolImportFromJournal;
     }
 }

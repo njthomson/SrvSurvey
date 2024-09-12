@@ -52,7 +52,7 @@ namespace SrvSurvey
             try
             {
                 var invokePostProcessor = args.Any(s => s == FormPostProcess.cmdArg);
-                Form mainForm = invokePostProcessor ? new FormPostProcess() : new Main();
+                Form mainForm = invokePostProcessor ? new FormPostProcess(args.LastOrDefault()) : new Main();
                 Application.Run(mainForm);
             }
             catch (Exception ex)

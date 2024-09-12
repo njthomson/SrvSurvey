@@ -5,6 +5,7 @@ using Newtonsoft.Json.Linq;
 using SrvSurvey.game;
 using SrvSurvey.net;
 using SrvSurvey.units;
+using System.Diagnostics;
 using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -137,7 +138,6 @@ namespace SrvSurvey.canonn
         {
             Game.log($"Requesting queryStations: {systemAddress}");
 
-            // TODO: hook this up once it exists
             var json1 = await client.GetStringAsync($"https://us-central1-canonn-api-236217.cloudfunctions.net/query/srvsurvey/system/{systemAddress}");
 
             var list = JsonConvert.DeserializeObject<JArray>(json1)!;
@@ -158,7 +158,6 @@ namespace SrvSurvey.canonn
         }
 
         #endregion
-
 
         #region get all Guardian Ruins from GRSites
 
@@ -1945,6 +1944,59 @@ namespace SrvSurvey.canonn
 
             // max count of each POI type from templates
             public Dictionary<POIType, int> poiCounts = new Dictionary<POIType, int>();
+        }
+
+        #endregion
+
+        #region Import from Canonn Challenge
+
+        public async Task<int> importCanonnChallenge(CommanderCodex cmdrCodex)
+        {
+            var codexRef = await Game.codexRef.loadCodexRef();
+
+            Game.log($"importCanonnChallenge: requesting for: {cmdrCodex.commander}");
+            var json = await client.GetStringAsync($"https://us-central1-canonn-api-236217.cloudfunctions.net/query/challenge/status?cmdr={cmdrCodex.commander}");
+            var data = JsonConvert.DeserializeObject<Dictionary<string, ChallengeData>>(json)!;
+
+            Game.log($"importCanonnChallenge: Importing {data.Count} entries...");
+            var count = 0;
+            foreach (var challengeEntry in data)
+            {
+                if (challengeEntry.Value.types_found == null) continue;
+
+                foreach (var foundType in challengeEntry.Value.types_found)
+                {
+                    // find corresponding entryId...
+                    var match = codexRef.Values.FirstOrDefault(e => e.english_name == foundType);
+                    if (match == null) continue;
+                    if (match.hud_category != challengeEntry.Value.hud_category) Debugger.Break();
+                    var entryId = long.Parse(match.entryid);
+
+                    // skip things we already know about
+                    if (cmdrCodex.codexFirsts.ContainsKey(entryId))
+                        continue;
+
+                    // add a new entry, though we don't know the date or location
+                    Game.log($"importCanonnChallenge: Importing {challengeEntry.Value.hud_category}/{foundType}");
+                    count++;
+                    cmdrCodex.codexFirsts[entryId] = new CodexFirst(DateTime.MaxValue, -1, -1);
+                }
+            }
+            Game.log($"importCanonnChallenge: complete, added {count} new entries");
+
+            cmdrCodex.Save();
+            return count;
+        }
+
+        internal class ChallengeData
+        {
+            public int available;
+            public string hud_category;
+            public float percentage;
+            public List<string>? types_available;
+            public List<string>? types_found;
+            public List<string>? types_missing;
+            public int visited;
         }
 
         #endregion

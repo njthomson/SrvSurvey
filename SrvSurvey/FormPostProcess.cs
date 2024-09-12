@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using SrvSurvey.game;
 using System.ComponentModel;
+using System.Diagnostics;
 
 namespace SrvSurvey
 {
@@ -8,14 +9,6 @@ namespace SrvSurvey
     {
         public static string cmdArg = "-scan-old";
         public static FormPostProcess? activeForm;
-
-        public static void show()
-        {
-            if (activeForm == null)
-                FormPostProcess.activeForm = new FormPostProcess();
-
-            Util.showForm(FormPostProcess.activeForm);
-        }
 
         private Dictionary<string, string> allCmdrs;
 
@@ -30,14 +23,14 @@ namespace SrvSurvey
         public long lastSystemAddress;
         public int? lastBodyId;
 
-        public FormPostProcess()
+        public FormPostProcess(string? fid)
         {
             InitializeComponent();
             Util.useLastLocation(this, Game.settings!.formPostProcess, true);
             FormPostProcess.activeForm = this;
 
             // load potential cmdr's
-            this.findCmdrs();
+            this.findCmdrs(fid);
 
             // default to 7 days ago, at midnight
             dateTimePicker.Value = DateTime.Now.Subtract(new TimeSpan(6, 23, 59, 59) + DateTime.Now.TimeOfDay);
@@ -79,7 +72,7 @@ namespace SrvSurvey
             FormPostProcess.activeForm = null;
         }
 
-        private void findCmdrs()
+        private void findCmdrs(string? fid)
         {
             this.allCmdrs = CommanderSettings.getAllCmdrs();
             var cmdrs = this.allCmdrs
@@ -90,7 +83,9 @@ namespace SrvSurvey
             comboCmdr.Items.Clear();
             comboCmdr.Items.AddRange(cmdrs);
 
-            if (!string.IsNullOrEmpty(Game.settings.preferredCommander))
+            if (!string.IsNullOrEmpty(fid) && allCmdrs.ContainsKey(fid))
+                comboCmdr.SelectedItem = allCmdrs[fid];
+            else if (!string.IsNullOrEmpty(Game.settings.preferredCommander))
                 comboCmdr.SelectedItem = Game.settings.preferredCommander;
             else if (!string.IsNullOrEmpty(Game.settings.lastCommander))
                 comboCmdr.SelectedItem = Game.settings.lastCommander;
@@ -147,6 +142,15 @@ namespace SrvSurvey
             }
         }
 
+        private DateTimeOffset getTimeFromFilepath(string filepath)
+        {
+            var parts = filepath.Split('.');
+            var time = filepath.Contains('-')
+                ? DateTimeOffset.ParseExact(parts[1], "yyyy-MM-ddTHHmmss", null)
+                : DateTimeOffset.ParseExact(parts[1], "yyMMddHHmmss", null);
+            return time;
+        }
+
         private void postProcessJournals()
         {
             this.processingFiles = true;
@@ -160,8 +164,8 @@ namespace SrvSurvey
             {
                 // get list of files to process, date filtered and ordered oldest first
                 var files = Directory.GetFiles(JournalFile.journalFolder, "*.log")
-                    .Where(filepath => File.GetLastWriteTime(filepath) > this.targetStartTime)
-                    .OrderBy(filepath => File.GetLastWriteTime(filepath))
+                    .Where(filepath => getTimeFromFilepath(filepath) > this.targetStartTime)
+                    .OrderBy(filepath => getTimeFromFilepath(filepath))
                     .ToArray();
 
                 var cmdr = CommanderSettings.Load(this.targetCmdrFid!, true, this.targetCmdrName!);
@@ -209,7 +213,8 @@ namespace SrvSurvey
 
                     var journal = new JournalFile(filepath, this.targetCmdrName);
                     if (journal.cmdrName != this.targetCmdrName) continue;
-                    if (!journal.isShutdown) continue;
+                    // ignore files that are not shutdown, unless they were opened more than 2 days ago - we will process those                    
+                    if (!journal.isShutdown && journal.timestamp > DateTime.Now.AddDays(-2)) continue;
 
                     lastDate = journal.timestamp.ToShortDateString();
 
