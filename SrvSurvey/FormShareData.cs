@@ -25,6 +25,7 @@ namespace SrvSurvey
         private FormShareData()
         {
             InitializeComponent();
+            Util.applyTheme(this);
         }
 
         private void btnClose_Click(object sender, EventArgs e)

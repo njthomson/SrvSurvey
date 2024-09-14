@@ -62,11 +62,11 @@
             label2 = new Label();
             label1 = new Label();
             numA = new NumericUpDown();
-            button1 = new Button();
+            button1 = new FlatButton();
             numScale = new NumericUpDown();
             numY = new NumericUpDown();
             numX = new NumericUpDown();
-            btnSaveNotes = new Button();
+            btnSaveNotes = new FlatButton();
             lblLastVisited = new Label();
             label6 = new Label();
             txtNotes = new TextBox();
@@ -96,6 +96,7 @@
             map.Size = new Size(666, 482);
             map.TabIndex = 1;
             map.TabStop = false;
+            map.Tag = "NoTheme";
             map.Click += map_Click;
             map.Paint += map_Paint;
             map.DoubleClick += map_DoubleClick;
@@ -174,7 +175,7 @@
             lblStatus.BorderStyle = Border3DStyle.Sunken;
             lblStatus.DisplayStyle = ToolStripItemDisplayStyle.Text;
             lblStatus.Name = "lblStatus";
-            lblStatus.Size = new Size(423, 19);
+            lblStatus.Size = new Size(454, 19);
             lblStatus.Spring = true;
             lblStatus.Text = "...";
             lblStatus.TextAlign = ContentAlignment.MiddleLeft;
@@ -506,7 +507,7 @@
         private SplitContainer splitter;
         private TextBox txtNotes;
         private CheckBox checkNotes;
-        private Button btnSaveNotes;
+        private FlatButton btnSaveNotes;
         private ContextMenuStrip mapContext;
         private ToolStripMenuItem mnuName;
         private ToolStripSeparator toolStripSeparator1;
@@ -520,7 +521,7 @@
         private NumericUpDown numScale;
         private NumericUpDown numY;
         private NumericUpDown numX;
-        private Button button1;
+        private FlatButton button1;
         private NumericUpDown numA;
         private Label label5;
         private Label label3;

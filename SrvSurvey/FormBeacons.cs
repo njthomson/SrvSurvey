@@ -47,6 +47,8 @@ namespace SrvSurvey
             // hide this from everyone else
             menuOpenDataFile.Visible = Debugger.IsAttached;
             menuOpenPubData.Visible = Debugger.IsAttached;
+
+            Util.applyTheme(this);
         }
 
         protected override void OnClosing(CancelEventArgs e)
@@ -161,7 +163,7 @@ namespace SrvSurvey
                     new ListViewItem.ListViewSubItem { Text = entry.notes ?? "" },
                 };
 
-                var row = new ListViewItem(subItems, 0) { Tag = entry, };
+                var row = new ListViewItem(subItems, 0) { Tag = entry, BackColor = grid.BackColor };
                 this.rows.Add(row);
             }
 
@@ -202,7 +204,7 @@ namespace SrvSurvey
                     new ListViewItem.ListViewSubItem { Text = entry.notes ?? "" },
                 };
 
-                var row = new ListViewItem(subItems, 0) { Tag = entry, };
+                var row = new ListViewItem(subItems, 0) { Tag = entry, BackColor = grid.BackColor, };
                 this.rows.Add(row);
             }
 
@@ -386,6 +388,8 @@ namespace SrvSurvey
 
         private void grid_ColumnClick(object sender, ColumnClickEventArgs e)
         {
+            if (panelSiteTypes.Visible) return;
+
             if (this.sortColumn == e.Column)
                 this.sortUp = !this.sortUp;
             else
@@ -401,6 +405,8 @@ namespace SrvSurvey
 
         private void grid_MouseClick(object sender, MouseEventArgs e)
         {
+            if (panelSiteTypes.Visible) return;
+
             if (e.Button == MouseButtons.Right && grid.SelectedItems.Count > 0)
             {
                 // show right-click context menu, when clicking on some item
@@ -439,9 +445,20 @@ namespace SrvSurvey
         {
             panelSiteTypes.Visible = show;
 
+            if (Game.settings.darkTheme)
+            {
+                if (show)
+                    foreach (ListViewItem item in grid.SelectedItems)
+                        item.Selected = false;
+            }
+            else
+            {
+                this.grid.Enabled = !show;
+            }
+
             // disable everything else whilst tree view is up
             foreach (Control ctrl in this.Controls)
-                if (ctrl != this.panelSiteTypes)
+                if (ctrl != this.panelSiteTypes && ctrl != this.grid)
                     ctrl.Enabled = !show;
         }
 
@@ -587,7 +604,7 @@ namespace SrvSurvey
 
         private void menuOpenSiteSurvey_Click(object sender, EventArgs e)
         {
-            if (this.grid.SelectedItems.Count == 0) return;
+            if (this.grid.SelectedItems.Count == 0 || panelSiteTypes.Visible) return;
             var entry = (GuardianGridEntry)this.grid.SelectedItems[0].Tag;
             if (entry.siteType == "Beacon") return;
 
@@ -658,5 +675,14 @@ namespace SrvSurvey
             FormShareData.show(this);
         }
 
+
+        private void grid_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (panelSiteTypes.Visible)
+            {
+                foreach (ListViewItem item in grid.SelectedItems)
+                    item.Selected = false;
+            }
+        }
     }
 }

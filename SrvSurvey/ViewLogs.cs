@@ -45,6 +45,8 @@ namespace SrvSurvey
 
             // can we fit in our last location
             Util.useLastLocation(this, Game.settings.formLogsLocation);
+
+            // Not themed
         }
 
         private void btnClose_Click(object sender, EventArgs e)
@@ -100,6 +102,11 @@ namespace SrvSurvey
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Util.openLink(Game.logFolder);
+        }
+
+        private void btnOpenFolder_Click(object sender, EventArgs e)
         {
             Util.openLink(Game.logFolder);
         }

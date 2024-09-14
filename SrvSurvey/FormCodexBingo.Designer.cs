@@ -68,6 +68,7 @@
             // 
             // statusStrip1
             // 
+            statusStrip1.BackColor = SystemColors.ControlDark;
             statusStrip1.Items.AddRange(new ToolStripItem[] { toolBodyName, toolRegionName, toolDiscoveryDate, toolFiller, toolImport });
             statusStrip1.Location = new Point(0, 426);
             statusStrip1.Name = "statusStrip1";
@@ -77,16 +78,22 @@
             // 
             // toolBodyName
             // 
+            toolBodyName.AutoToolTip = true;
             toolBodyName.BorderSides = ToolStripStatusLabelBorderSides.Left | ToolStripStatusLabelBorderSides.Top | ToolStripStatusLabelBorderSides.Right | ToolStripStatusLabelBorderSides.Bottom;
+            toolBodyName.BorderStyle = Border3DStyle.SunkenInner;
+            toolBodyName.ForeColor = SystemColors.ControlText;
             toolBodyName.IsLink = true;
             toolBodyName.Name = "toolBodyName";
             toolBodyName.Size = new Size(20, 19);
             toolBodyName.Text = "...";
+            toolBodyName.ToolTipText = "Click to open on Spansh";
             toolBodyName.Click += toolBodyName_Click;
             // 
             // toolRegionName
             // 
             toolRegionName.BorderSides = ToolStripStatusLabelBorderSides.Left | ToolStripStatusLabelBorderSides.Top | ToolStripStatusLabelBorderSides.Right | ToolStripStatusLabelBorderSides.Bottom;
+            toolRegionName.BorderStyle = Border3DStyle.SunkenInner;
+            toolRegionName.ForeColor = SystemColors.ControlText;
             toolRegionName.Name = "toolRegionName";
             toolRegionName.Size = new Size(20, 19);
             toolRegionName.Text = "...";
@@ -94,6 +101,8 @@
             // toolDiscoveryDate
             // 
             toolDiscoveryDate.BorderSides = ToolStripStatusLabelBorderSides.Left | ToolStripStatusLabelBorderSides.Top | ToolStripStatusLabelBorderSides.Right | ToolStripStatusLabelBorderSides.Bottom;
+            toolDiscoveryDate.BorderStyle = Border3DStyle.SunkenInner;
+            toolDiscoveryDate.ForeColor = SystemColors.ControlText;
             toolDiscoveryDate.Name = "toolDiscoveryDate";
             toolDiscoveryDate.Size = new Size(20, 19);
             toolDiscoveryDate.Text = "...";
@@ -108,11 +117,13 @@
             // 
             toolImport.DisplayStyle = ToolStripItemDisplayStyle.Text;
             toolImport.DropDownItems.AddRange(new ToolStripItem[] { toolImportFromCanonn, toolImportFromJournal });
+            toolImport.ForeColor = SystemColors.ControlText;
             toolImport.Image = (Image)resources.GetObject("toolImport.Image");
             toolImport.ImageTransparentColor = Color.Magenta;
             toolImport.Name = "toolImport";
             toolImport.Size = new Size(104, 22);
             toolImport.Text = "Missing entries?";
+            toolImport.ToolTipText = "Click to open on Spansh";
             // 
             // toolImportFromCanonn
             // 
@@ -131,6 +142,7 @@
             // tree
             // 
             tree.BackColor = SystemColors.WindowFrame;
+            tree.BorderStyle = BorderStyle.None;
             tree.Dock = DockStyle.Fill;
             tree.DrawMode = TreeViewDrawMode.OwnerDrawText;
             tree.ForeColor = SystemColors.Info;
@@ -173,7 +185,6 @@
             // 
             // panel1
             // 
-            panel1.BackColor = SystemColors.ControlDark;
             panel1.Controls.Add(comboCmdr);
             panel1.Controls.Add(label2);
             panel1.Controls.Add(comboRegion);
@@ -276,6 +287,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = SystemColors.ControlDark;
             ClientSize = new Size(800, 450);
             Controls.Add(tree);
             Controls.Add(panel1);

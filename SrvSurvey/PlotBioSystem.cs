@@ -8,16 +8,17 @@ namespace SrvSurvey
         private string? lastDestination;
         private SystemBody? durationBody;
         private System.Windows.Forms.Timer durationTimer;
+        private float durationCount;
+        private float durationTotal;
 
         private PlotBioSystem() : base()
         {
-            //this.BackgroundImageLayout = ImageLayout.Stretch;
-
             this.Font = GameColors.fontSmall;
+            this.lastDestination = game.status.Destination?.Name;
 
             durationTimer = new System.Windows.Forms.Timer()
             {
-                Interval = 5_000,
+                Interval = 25,
                 Enabled = false,
             };
             durationTimer.Tick += DurationTimer_Tick;
@@ -86,6 +87,12 @@ namespace SrvSurvey
             if (this.IsDisposed) return;
             base.Status_StatusChanged(blink);
 
+            if (!Game.settings.drawBodyBiosOnlyWhenNear && this.durationTimer.Enabled && game.mode != GameMode.ExternalPanel)
+            {
+                this.stopTimer();
+                this.Invalidate();
+            }
+
             // if the targetBody has recent changed ...
             var targetBody = game.targetBody;
             if (game.status.Destination?.Name != this.lastDestination)
@@ -103,6 +110,11 @@ namespace SrvSurvey
                 {
                     // ... show it's details for ~5 seconds
                     this.durationBody = targetBody;
+                    var signalCount = targetBody.predictions.Count;
+                    if (signalCount == 0 && targetBody.organisms != null)
+                        signalCount = targetBody.organisms.Count;
+                    this.durationTotal = 2_000 * signalCount;
+                    this.durationCount = this.durationTotal;
                     this.durationTimer.Start();
                     Game.log($"Start duration timer, for: {this.durationBody?.name}");
                     this.Invalidate();
@@ -110,11 +122,21 @@ namespace SrvSurvey
             }
         }
 
-        private void DurationTimer_Tick(object? sender, EventArgs e)
+        private void stopTimer()
         {
-            Game.log($"End duration timer, from: {this.durationBody?.name}");
+            this.durationCount = 0;
             this.durationTimer.Stop();
             this.durationBody = null;
+        }
+
+        private void DurationTimer_Tick(object? sender, EventArgs e)
+        {
+            this.durationCount -= this.durationTimer.Interval;
+            //Game.log($"Poll duration timer, from: {this.durationBody?.name} ({this.durationCount})");
+
+            if (this.durationCount <= 0)
+                this.stopTimer();
+
             this.Invalidate();
         }
 
@@ -147,10 +169,14 @@ namespace SrvSurvey
             drawTextAt(eight, $"Body {body.shortName} bio signals: {body.bioSignalCount}", GameColors.brushGameOrange);
             newLine(+eight, true);
 
+            if (this.durationTimer.Enabled && this.durationCount > 0)
+                this.drawTimerBar();
+
             if (body.organisms == null)
             {
-                if (Game.settings.drawBodyBiosOnlyWhenNear)
+                if (!body.dssComplete)
                 {
+                    dty -= four;
                     this.drawTextAt(ten, $"DSS required", GameColors.brushCyan);
                     newLine(+four, true);
                 }
@@ -179,10 +205,10 @@ namespace SrvSurvey
                     if (first)
                         first = false;
                     else
-                        g.DrawLine(GameColors.penGameOrangeDim1, four, dty - four, this.ClientSize.Width - eight, dty - four);
+                        g.DrawLine(GameColors.penGameOrangeDim1, eight, dty - four, this.ClientSize.Width - eight, dty - four);
 
                     // if we have predictions - use that renderer
-                    if (predictions.Count > 0)
+                    if (organism.variant == null && predictions.Count > 0)
                     {
                         var genus = Game.codexRef.matchFromGenus(organism.genus)!;
                         drawBodyPredictionsRow(genus, body.genusPredictions[genus], highlight);
@@ -345,6 +371,26 @@ namespace SrvSurvey
             formAdjustSize(+ten, +ten);
         }
 
+        private void drawTimerBar()
+        {
+            var r = 1f / this.durationTotal * this.durationCount;
+
+            var x = two;
+            var y = this.Height - one;
+            var w = (this.Width - x - x);
+            //Game.log($"r: {r}, w: {w}");
+            g.DrawLine(GameColors.penGameOrangeDim2, x, y, x + w * r, y);
+            g.DrawLine(GameColors.penGameOrangeDim2, x, one, x + w * r, one);
+
+            //var x = four;
+            //var y = ClientSize.Height - oneTwo;
+            //var h = this.Height - twoFour;
+            //g.DrawLine(GameColors.penGameOrangeDim4, x, y, x, y - h * r);
+
+            dty += two;
+            this.formGrow(false, true);
+        }
+
         private void drawBodyPredictions(SystemBody body)
         {
             if (body.predictions == null || body.predictions.Count == 0) return;
@@ -355,9 +401,9 @@ namespace SrvSurvey
                 if (first)
                     first = false;
                 else
-                    g.DrawLine(GameColors.penGameOrangeDim1, four, dty - six, this.ClientSize.Width - eight, dty - six);
+                    g.DrawLine(GameColors.penGameOrangeDim1, eight, dty - six, this.ClientSize.Width - eight, dty - six);
 
-                drawBodyPredictionsRow(genus.Key, genus.Value, body == this.durationBody);
+                drawBodyPredictionsRow(genus.Key, genus.Value, false);
             }
         }
 

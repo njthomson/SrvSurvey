@@ -31,16 +31,17 @@ namespace SrvSurvey
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ViewLogs));
             txtLogs = new TextBox();
-            btnClose = new Button();
-            btnClear = new Button();
+            btnClose = new FlatButton();
+            btnClear = new FlatButton();
             panel1 = new Panel();
-            btnCopy = new Button();
-            linkLabel1 = new LinkLabel();
+            btnOpenFolder = new FlatButton();
+            btnCopy = new FlatButton();
             panel1.SuspendLayout();
             SuspendLayout();
             // 
             // txtLogs
             // 
+            txtLogs.BackColor = SystemColors.ScrollBar;
             txtLogs.BorderStyle = BorderStyle.FixedSingle;
             txtLogs.CausesValidation = false;
             txtLogs.Dock = DockStyle.Fill;
@@ -57,6 +58,7 @@ namespace SrvSurvey
             // btnClose
             // 
             btnClose.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnClose.FlatStyle = FlatStyle.Flat;
             btnClose.Location = new Point(842, 7);
             btnClose.Margin = new Padding(4, 3, 4, 3);
             btnClose.Name = "btnClose";
@@ -69,6 +71,7 @@ namespace SrvSurvey
             // btnClear
             // 
             btnClear.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            btnClear.FlatStyle = FlatStyle.Flat;
             btnClear.Location = new Point(4, 7);
             btnClear.Margin = new Padding(4, 3, 4, 3);
             btnClear.Name = "btnClear";
@@ -80,7 +83,8 @@ namespace SrvSurvey
             // 
             // panel1
             // 
-            panel1.Controls.Add(linkLabel1);
+            panel1.BackColor = SystemColors.ControlDark;
+            panel1.Controls.Add(btnOpenFolder);
             panel1.Controls.Add(btnCopy);
             panel1.Controls.Add(btnClear);
             panel1.Controls.Add(btnClose);
@@ -91,9 +95,23 @@ namespace SrvSurvey
             panel1.Size = new Size(933, 40);
             panel1.TabIndex = 3;
             // 
+            // btnOpenFolder
+            // 
+            btnOpenFolder.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            btnOpenFolder.FlatStyle = FlatStyle.Flat;
+            btnOpenFolder.Location = new Point(196, 7);
+            btnOpenFolder.Margin = new Padding(4, 3, 4, 3);
+            btnOpenFolder.Name = "btnOpenFolder";
+            btnOpenFolder.Size = new Size(135, 27);
+            btnOpenFolder.TabIndex = 5;
+            btnOpenFolder.Text = "&Open logs folder";
+            btnOpenFolder.UseVisualStyleBackColor = true;
+            btnOpenFolder.Click += btnOpenFolder_Click;
+            // 
             // btnCopy
             // 
             btnCopy.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            btnCopy.FlatStyle = FlatStyle.Flat;
             btnCopy.Location = new Point(100, 7);
             btnCopy.Margin = new Padding(4, 3, 4, 3);
             btnCopy.Name = "btnCopy";
@@ -102,17 +120,6 @@ namespace SrvSurvey
             btnCopy.Text = "C&opy";
             btnCopy.UseVisualStyleBackColor = true;
             btnCopy.Click += btnCopy_Click;
-            // 
-            // linkLabel1
-            // 
-            linkLabel1.AutoSize = true;
-            linkLabel1.Location = new Point(195, 13);
-            linkLabel1.Name = "linkLabel1";
-            linkLabel1.Size = new Size(95, 15);
-            linkLabel1.TabIndex = 4;
-            linkLabel1.TabStop = true;
-            linkLabel1.Text = "Open logs folder";
-            linkLabel1.LinkClicked += linkLabel1_LinkClicked;
             // 
             // ViewLogs
             // 
@@ -135,7 +142,6 @@ namespace SrvSurvey
             Shown += ViewLogs_Shown;
             ResizeEnd += ViewLogs_ResizeEnd;
             panel1.ResumeLayout(false);
-            panel1.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -143,10 +149,10 @@ namespace SrvSurvey
         #endregion
 
         private TextBox txtLogs;
-        private Button btnClose;
-        private Button btnClear;
+        private FlatButton btnClose;
+        private FlatButton btnClear;
         private Panel panel1;
-        private Button btnCopy;
-        private LinkLabel linkLabel1;
+        private FlatButton btnCopy;
+        private FlatButton btnOpenFolder;
     }
 }

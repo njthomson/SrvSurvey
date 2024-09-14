@@ -31,24 +31,24 @@ namespace SrvSurvey
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormSettings));
             panel1 = new Panel();
-            btnNextProc = new Button();
-            btnSave = new Button();
-            btnCancel = new Button();
+            btnNextProc = new FlatButton();
+            btnSave = new FlatButton();
+            btnCancel = new FlatButton();
             tabPage1 = new TabPage();
-            btnPostProcess = new Button();
+            btnPostProcess = new FlatButton();
             linkResetTheme = new LinkLabel();
             panelTheme = new Panel();
-            btnTheme = new Button();
+            btnTheme = new FlatButton();
             label14 = new Label();
             comboOverlayScale = new ComboBox();
-            btnResetOverlays = new Button();
+            btnResetOverlays = new FlatButton();
             comboCmdr = new ComboBox();
             label12 = new Label();
             numGravityWarningLevel = new NumericUpDown();
             checkBox13 = new CheckBox();
             pictureBox6 = new PictureBox();
             checkHideJournalTimer = new CheckBox();
-            btnChooseJournalFolder = new Button();
+            btnChooseJournalFolder = new FlatButton();
             linkJournalFolder = new LinkLabel();
             label11 = new Label();
             linkDataFiles = new LinkLabel();
@@ -64,17 +64,18 @@ namespace SrvSurvey
             linkResetWatchFolder = new LinkLabel();
             tabControl1 = new TabControl();
             tabPage4 = new TabPage();
+            checkBox20 = new CheckBox();
             pictureBox12 = new PictureBox();
             label15 = new Label();
             numMinBioDuration = new NumericUpDown();
             checkBox18 = new CheckBox();
             checkBioSystemPlotter = new CheckBox();
             linkLabel1 = new LinkLabel();
-            btnClearTrackers = new Button();
+            btnClearTrackers = new FlatButton();
             checkBox7 = new CheckBox();
             checkBox6 = new CheckBox();
             checkBox5 = new CheckBox();
-            btnClearUnclaimed = new Button();
+            btnClearUnclaimed = new FlatButton();
             pictureBox2 = new PictureBox();
             pictureBox1 = new PictureBox();
             checkBox1 = new CheckBox();
@@ -113,12 +114,12 @@ namespace SrvSurvey
             checkLocalTime = new CheckBox();
             panelBannerColor = new Panel();
             label3 = new Label();
-            btnBannerColor = new Button();
+            btnBannerColor = new FlatButton();
             checkDeleteScreenshotOriginal = new CheckBox();
             pictureBox3 = new PictureBox();
             checkUseGuardianAerialScreenshotsFolder = new CheckBox();
-            btnChooseScreenshotSourceFolder = new Button();
-            btnChooseScreenshotTargetFolder = new Button();
+            btnChooseScreenshotSourceFolder = new FlatButton();
+            btnChooseScreenshotTargetFolder = new FlatButton();
             linkScreenshotSourceFolder = new LinkLabel();
             checkAddBanner = new CheckBox();
             checkProcessScreenshots = new CheckBox();
@@ -168,7 +169,7 @@ namespace SrvSurvey
             linkAboutOne = new LinkLabel();
             colorDialog = new ColorDialog();
             colorTheme = new ColorDialog();
-            checkBox20 = new CheckBox();
+            checkDarkTheme = new CheckBox();
             panel1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numGravityWarningLevel).BeginInit();
@@ -261,6 +262,7 @@ namespace SrvSurvey
             // tabPage1
             // 
             tabPage1.BorderStyle = BorderStyle.Fixed3D;
+            tabPage1.Controls.Add(checkDarkTheme);
             tabPage1.Controls.Add(btnPostProcess);
             tabPage1.Controls.Add(linkResetTheme);
             tabPage1.Controls.Add(panelTheme);
@@ -644,6 +646,20 @@ namespace SrvSurvey
             tabPage4.Size = new Size(612, 420);
             tabPage4.TabIndex = 3;
             tabPage4.Text = "Bio Scanning";
+            // 
+            // checkBox20
+            // 
+            checkBox20.AutoSize = true;
+            checkBox20.Checked = true;
+            checkBox20.CheckState = CheckState.Checked;
+            checkBox20.Location = new Point(40, 271);
+            checkBox20.Margin = new Padding(4, 3, 4, 3);
+            checkBox20.Name = "checkBox20";
+            checkBox20.Size = new Size(326, 19);
+            checkBox20.TabIndex = 33;
+            checkBox20.Tag = "drawBodyBiosOnlyWhenNear";
+            checkBox20.Text = "Show body bio signals only when target body is close by.";
+            checkBox20.UseVisualStyleBackColor = true;
             // 
             // pictureBox12
             // 
@@ -1915,19 +1931,17 @@ namespace SrvSurvey
             // 
             colorDialog.Color = Color.Yellow;
             // 
-            // checkBox20
+            // checkDarkTheme
             // 
-            checkBox20.AutoSize = true;
-            checkBox20.Checked = true;
-            checkBox20.CheckState = CheckState.Checked;
-            checkBox20.Location = new Point(40, 271);
-            checkBox20.Margin = new Padding(4, 3, 4, 3);
-            checkBox20.Name = "checkBox20";
-            checkBox20.Size = new Size(326, 19);
-            checkBox20.TabIndex = 33;
-            checkBox20.Tag = "drawBodyBiosOnlyWhenNear";
-            checkBox20.Text = "Show body bio signals only when target body is close by.";
-            checkBox20.UseVisualStyleBackColor = true;
+            checkDarkTheme.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            checkDarkTheme.AutoSize = true;
+            checkDarkTheme.Location = new Point(447, 171);
+            checkDarkTheme.Name = "checkDarkTheme";
+            checkDarkTheme.Size = new Size(87, 19);
+            checkDarkTheme.TabIndex = 39;
+            checkDarkTheme.Tag = "darkTheme";
+            checkDarkTheme.Text = "Dark theme";
+            checkDarkTheme.UseVisualStyleBackColor = true;
             // 
             // FormSettings
             // 
@@ -2001,8 +2015,8 @@ namespace SrvSurvey
 
         #endregion
         private Panel panel1;
-        private Button btnSave;
-        private Button btnCancel;
+        private FlatButton btnSave;
+        private FlatButton btnCancel;
         private TabPage tabPage1;
         private NumericUpDown numOpacity;
         private Label label2;
@@ -2015,11 +2029,11 @@ namespace SrvSurvey
         private LinkLabel linkAboutTwo;
         private TabPage tabPage3;
         private CheckBox checkEnableGuardianFeatures;
-        private Button btnNextProc;
+        private FlatButton btnNextProc;
         private CheckBox checkRuinsMeasurementGrid;
         private CheckBox checkHidePlottersFromWeapons;
         private TabPage tabPage4;
-        private Button btnClearUnclaimed;
+        private FlatButton btnClearUnclaimed;
         private PictureBox pictureBox2;
         private PictureBox pictureBox1;
         private CheckBox checkBox1;
@@ -2027,8 +2041,8 @@ namespace SrvSurvey
         private TabPage tabPage5;
         private CheckBox checkUseGuardianAerialScreenshotsFolder;
         private LinkLabel linkTargetScreenshotFolder;
-        private Button btnChooseScreenshotSourceFolder;
-        private Button btnChooseScreenshotTargetFolder;
+        private FlatButton btnChooseScreenshotSourceFolder;
+        private FlatButton btnChooseScreenshotTargetFolder;
         private Label lblScreenshotSource;
         private Label lblScreenshotTarget;
         private LinkLabel linkScreenshotSourceFolder;
@@ -2065,12 +2079,12 @@ namespace SrvSurvey
         private NumericUpDown numMinScanValue;
         private Label label10;
         private CheckBox checkBox12;
-        private Button btnChooseJournalFolder;
+        private FlatButton btnChooseJournalFolder;
         private Label label11;
         private LinkLabel linkJournalFolder;
         private PictureBox pictureBox6;
         private CheckBox checkHideJournalTimer;
-        private Button btnClearTrackers;
+        private FlatButton btnClearTrackers;
         private LinkLabel linkLabel1;
         private TabPage tabPage7;
         private CheckBox checkUseSystemData;
@@ -2091,9 +2105,9 @@ namespace SrvSurvey
         private CheckBox checkBox14;
         private CheckBox checkBox15;
         private ComboBox comboCmdr;
-        private Button btnResetOverlays;
+        private FlatButton btnResetOverlays;
         private ColorDialog colorDialog;
-        private Button btnBannerColor;
+        private FlatButton btnBannerColor;
         private Panel panelBannerColor;
         private Label label3;
         private CheckBox checkLocalTime;
@@ -2133,11 +2147,12 @@ namespace SrvSurvey
         private PictureBox pictureBox12;
         private LinkLabel linkResetWatchFolder;
         private ColorDialog colorTheme;
-        private Button btnTheme;
+        private FlatButton btnTheme;
         private Panel panelTheme;
         private LinkLabel linkResetTheme;
-        private Button btnPostProcess;
+        private FlatButton btnPostProcess;
         private CheckBox checkBox19;
         private CheckBox checkBox20;
+        private CheckBox checkDarkTheme;
     }
 }

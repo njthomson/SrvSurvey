@@ -980,6 +980,44 @@ namespace SrvSurvey
 
                 default: throw new Exception($"Unexpected: {economy}");
             }
+
+        }
+
+        public static void applyTheme(Control ctrl)
+        {
+            applyTheme(ctrl, Game.settings.darkTheme);
+        }
+
+        public static void applyTheme(Control ctrl, bool dark)
+        {
+            if (ctrl is Button)
+            {
+                ctrl.BackColor = dark ? SystemColors.ControlDark : SystemColors.ControlLight;
+            }
+            else if (ctrl is TextBox)
+            {
+                ctrl.BackColor = dark ? SystemColors.AppWorkspace : SystemColors.Control;
+            }
+            else if (ctrl is ListView)
+            {
+                ctrl.BackColor = dark ? SystemColors.WindowFrame : SystemColors.Window;
+                ctrl.ForeColor = dark ? SystemColors.Info : SystemColors.ControlText;
+            }
+            else if (ctrl is ListBox)
+            {
+                ctrl.BackColor = dark ? SystemColors.ScrollBar : SystemColors.Window;
+            }
+            else
+            {
+                ctrl.BackColor = dark ? SystemColors.AppWorkspace : SystemColors.Window;
+            }
+
+            foreach (Control child in ctrl.Controls)
+            {
+                if (child.Tag is string && child.Tag.ToString() == "NoTheme") continue;
+
+                applyTheme(child, dark);
+            }
         }
     }
 

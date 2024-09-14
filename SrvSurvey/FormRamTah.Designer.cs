@@ -61,7 +61,7 @@ namespace SrvSurvey
             linkLabel2 = new LinkLabel();
             tabControl1 = new TabControl();
             tabPage1 = new TabPage();
-            listRuins = new ListView();
+            listLogs = new ListView();
             columnHeader1 = new ColumnHeader();
             columnHeader2 = new ColumnHeader();
             columnHeader3 = new ColumnHeader();
@@ -102,11 +102,11 @@ namespace SrvSurvey
             checkLog28 = new CheckBox();
             checkLog26 = new CheckBox();
             checkLog27 = new CheckBox();
-            btnQuit = new Button();
-            btnResetRuins = new Button();
-            btnResetLogs = new Button();
+            btnQuit = new FlatButton();
+            btnResetRuins = new FlatButton();
+            btnResetLogs = new FlatButton();
             lblObelisk = new Label();
-            btnToggleObelisk = new Button();
+            btnToggleObelisk = new FlatButton();
             txtObelisk = new TextBox();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
@@ -138,6 +138,7 @@ namespace SrvSurvey
             // 
             // txtRuinsMissionActive
             // 
+            txtRuinsMissionActive.BorderStyle = BorderStyle.FixedSingle;
             txtRuinsMissionActive.Location = new Point(241, 33);
             txtRuinsMissionActive.Name = "txtRuinsMissionActive";
             txtRuinsMissionActive.ReadOnly = true;
@@ -149,6 +150,7 @@ namespace SrvSurvey
             // txtLogsMissionActive
             // 
             txtLogsMissionActive.BackColor = Color.Turquoise;
+            txtLogsMissionActive.BorderStyle = BorderStyle.FixedSingle;
             txtLogsMissionActive.Location = new Point(241, 61);
             txtLogsMissionActive.Name = "txtLogsMissionActive";
             txtLogsMissionActive.ReadOnly = true;
@@ -207,7 +209,7 @@ namespace SrvSurvey
             // 
             // tabPage1
             // 
-            tabPage1.Controls.Add(listRuins);
+            tabPage1.Controls.Add(listLogs);
             tabPage1.Location = new Point(4, 24);
             tabPage1.Name = "tabPage1";
             tabPage1.Padding = new Padding(3);
@@ -215,14 +217,14 @@ namespace SrvSurvey
             tabPage1.TabIndex = 0;
             tabPage1.Text = "Mission 1";
             // 
-            // listRuins
+            // listLogs
             // 
-            listRuins.BackColor = SystemColors.Control;
-            listRuins.CausesValidation = false;
-            listRuins.Columns.AddRange(new ColumnHeader[] { columnHeader1, columnHeader2, columnHeader3, columnHeader4, columnHeader5, columnHeader6 });
-            listRuins.Dock = DockStyle.Fill;
-            listRuins.FullRowSelect = true;
-            listRuins.HeaderStyle = ColumnHeaderStyle.Nonclickable;
+            listLogs.BackColor = SystemColors.Control;
+            listLogs.CausesValidation = false;
+            listLogs.Columns.AddRange(new ColumnHeader[] { columnHeader1, columnHeader2, columnHeader3, columnHeader4, columnHeader5, columnHeader6 });
+            listLogs.Dock = DockStyle.Fill;
+            listLogs.FullRowSelect = true;
+            listLogs.HeaderStyle = ColumnHeaderStyle.Nonclickable;
             listViewItem1.StateImageIndex = 0;
             listViewItem2.StateImageIndex = 0;
             listViewItem3.StateImageIndex = 0;
@@ -234,18 +236,18 @@ namespace SrvSurvey
             listViewItem9.StateImageIndex = 0;
             listViewItem11.ToolTipText = "11";
             listViewItem12.ToolTipText = "12";
-            listRuins.Items.AddRange(new ListViewItem[] { listViewItem1, listViewItem2, listViewItem3, listViewItem4, listViewItem5, listViewItem6, listViewItem7, listViewItem8, listViewItem9, listViewItem10, listViewItem11, listViewItem12, listViewItem13, listViewItem14, listViewItem15, listViewItem16, listViewItem17, listViewItem18, listViewItem19, listViewItem20, listViewItem21 });
-            listRuins.Location = new Point(3, 3);
-            listRuins.Name = "listRuins";
-            listRuins.OwnerDraw = true;
-            listRuins.Size = new Size(458, 435);
-            listRuins.TabIndex = 0;
-            listRuins.UseCompatibleStateImageBehavior = false;
-            listRuins.View = View.Details;
-            listRuins.DrawColumnHeader += listView1_DrawColumnHeader;
-            listRuins.DrawItem += listView1_DrawItem;
-            listRuins.DrawSubItem += listView1_DrawSubItem;
-            listRuins.MouseClick += listRuins_MouseClick;
+            listLogs.Items.AddRange(new ListViewItem[] { listViewItem1, listViewItem2, listViewItem3, listViewItem4, listViewItem5, listViewItem6, listViewItem7, listViewItem8, listViewItem9, listViewItem10, listViewItem11, listViewItem12, listViewItem13, listViewItem14, listViewItem15, listViewItem16, listViewItem17, listViewItem18, listViewItem19, listViewItem20, listViewItem21 });
+            listLogs.Location = new Point(3, 3);
+            listLogs.Name = "listLogs";
+            listLogs.OwnerDraw = true;
+            listLogs.Size = new Size(458, 435);
+            listLogs.TabIndex = 0;
+            listLogs.UseCompatibleStateImageBehavior = false;
+            listLogs.View = View.Details;
+            listLogs.DrawColumnHeader += listLogs_DrawColumnHeader;
+            listLogs.DrawItem += listLogs_DrawItem;
+            listLogs.DrawSubItem += listLogs_DrawSubItem;
+            listLogs.MouseClick += listRuins_MouseClick;
             // 
             // columnHeader1
             // 
@@ -711,9 +713,10 @@ namespace SrvSurvey
             // btnQuit
             // 
             btnQuit.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnQuit.Location = new Point(405, 566);
+            btnQuit.FlatStyle = FlatStyle.Flat;
+            btnQuit.Location = new Point(405, 565);
             btnQuit.Name = "btnQuit";
-            btnQuit.Size = new Size(75, 23);
+            btnQuit.Size = new Size(75, 25);
             btnQuit.TabIndex = 0;
             btnQuit.Text = "&Close";
             btnQuit.UseVisualStyleBackColor = true;
@@ -721,6 +724,7 @@ namespace SrvSurvey
             // 
             // btnResetRuins
             // 
+            btnResetRuins.FlatStyle = FlatStyle.Flat;
             btnResetRuins.Location = new Point(432, 32);
             btnResetRuins.Name = "btnResetRuins";
             btnResetRuins.Size = new Size(45, 23);
@@ -731,6 +735,7 @@ namespace SrvSurvey
             // 
             // btnResetLogs
             // 
+            btnResetLogs.FlatStyle = FlatStyle.Flat;
             btnResetLogs.Location = new Point(432, 60);
             btnResetLogs.Name = "btnResetLogs";
             btnResetLogs.Size = new Size(45, 23);
@@ -752,9 +757,11 @@ namespace SrvSurvey
             // btnToggleObelisk
             // 
             btnToggleObelisk.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnToggleObelisk.Location = new Point(302, 566);
+            btnToggleObelisk.FlatStyle = FlatStyle.Flat;
+            btnToggleObelisk.Location = new Point(302, 565);
+            btnToggleObelisk.Margin = new Padding(0);
             btnToggleObelisk.Name = "btnToggleObelisk";
-            btnToggleObelisk.Size = new Size(96, 23);
+            btnToggleObelisk.Size = new Size(96, 25);
             btnToggleObelisk.TabIndex = 11;
             btnToggleObelisk.Text = "Toggle obelisk";
             btnToggleObelisk.UseVisualStyleBackColor = true;
@@ -763,6 +770,7 @@ namespace SrvSurvey
             // txtObelisk
             // 
             txtObelisk.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            txtObelisk.BorderStyle = BorderStyle.FixedSingle;
             txtObelisk.Location = new Point(67, 566);
             txtObelisk.Name = "txtObelisk";
             txtObelisk.ReadOnly = true;
@@ -858,13 +866,13 @@ namespace SrvSurvey
         private CheckBox checkLog3;
         private CheckBox checkLog2;
         private CheckBox checkLog1;
-        private Button btnQuit;
-        private Button btnResetRuins;
-        private Button btnResetLogs;
+        private FlatButton btnQuit;
+        private FlatButton btnResetRuins;
+        private FlatButton btnResetLogs;
         private Label lblObelisk;
-        private Button btnToggleObelisk;
+        private FlatButton btnToggleObelisk;
         public TextBox txtObelisk;
-        public ListView listRuins;
+        public ListView listLogs;
         private GroupBox groupTech;
         private GroupBox groupLang;
         private GroupBox groupWar;

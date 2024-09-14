@@ -34,6 +34,8 @@ namespace SrvSurvey
             {
                 txtCurrentDistance.Text = $"-";
             }
+
+            Util.applyTheme(this);
         }
 
         private async Task lookupSystem(string searchName)

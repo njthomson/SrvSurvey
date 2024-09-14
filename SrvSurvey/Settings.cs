@@ -159,6 +159,8 @@ namespace SrvSurvey
 
         public string? localFloraFolder = null;
 
+        public bool darkTheme = true;
+
         #region loading /saving
 
         static readonly string settingsPath = Path.Combine(Program.dataFolder, "settings.json");

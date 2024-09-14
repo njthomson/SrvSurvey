@@ -29,17 +29,16 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormPostProcess));
-            btnStart = new Button();
+            btnStart = new FlatButton();
             progress = new ProgressBar();
             lblProgress = new Label();
-            btnSystems = new Button();
+            btnSystems = new FlatButton();
             lblDesc = new Label();
             linkLabel1 = new LinkLabel();
             lblCmdr = new Label();
             lblStartDate = new Label();
             dateTimePicker = new DateTimePicker();
             comboCmdr = new ComboBox();
-            btnLongAgo = new Button();
             label1 = new Label();
             label2 = new Label();
             label3 = new Label();
@@ -48,14 +47,16 @@
             txtDistance = new TextBox();
             txtBodyCount = new TextBox();
             txtOrgCount = new TextBox();
+            btnLongAgo = new FlatButton();
             SuspendLayout();
             // 
             // btnStart
             // 
             btnStart.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            btnStart.FlatStyle = FlatStyle.Flat;
             btnStart.Location = new Point(94, 197);
             btnStart.Name = "btnStart";
-            btnStart.Size = new Size(400, 23);
+            btnStart.Size = new Size(400, 25);
             btnStart.TabIndex = 7;
             btnStart.Text = "Process journals";
             btnStart.UseVisualStyleBackColor = true;
@@ -83,6 +84,7 @@
             // 
             btnSystems.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnSystems.Enabled = false;
+            btnSystems.FlatStyle = FlatStyle.Flat;
             btnSystems.Location = new Point(12, 316);
             btnSystems.Name = "btnSystems";
             btnSystems.Size = new Size(41, 23);
@@ -136,6 +138,7 @@
             // 
             dateTimePicker.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             dateTimePicker.Location = new Point(95, 168);
+            dateTimePicker.MinDate = new DateTime(2014, 12, 15, 0, 0, 0, 0);
             dateTimePicker.Name = "dateTimePicker";
             dateTimePicker.Size = new Size(223, 23);
             dateTimePicker.TabIndex = 5;
@@ -150,17 +153,6 @@
             comboCmdr.Name = "comboCmdr";
             comboCmdr.Size = new Size(398, 23);
             comboCmdr.TabIndex = 3;
-            // 
-            // btnLongAgo
-            // 
-            btnLongAgo.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            btnLongAgo.Location = new Point(325, 168);
-            btnLongAgo.Name = "btnLongAgo";
-            btnLongAgo.Size = new Size(169, 23);
-            btnLongAgo.TabIndex = 6;
-            btnLongAgo.Text = "Set beginning of time";
-            btnLongAgo.UseVisualStyleBackColor = true;
-            btnLongAgo.Click += btnLongAgo_Click;
             // 
             // label1
             // 
@@ -205,6 +197,7 @@
             // txtJumpCount
             // 
             txtJumpCount.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            txtJumpCount.BorderStyle = BorderStyle.FixedSingle;
             txtJumpCount.Location = new Point(213, 282);
             txtJumpCount.Name = "txtJumpCount";
             txtJumpCount.ReadOnly = true;
@@ -216,6 +209,7 @@
             // txtDistance
             // 
             txtDistance.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            txtDistance.BorderStyle = BorderStyle.FixedSingle;
             txtDistance.Location = new Point(422, 282);
             txtDistance.Name = "txtDistance";
             txtDistance.ReadOnly = true;
@@ -227,6 +221,7 @@
             // txtBodyCount
             // 
             txtBodyCount.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            txtBodyCount.BorderStyle = BorderStyle.FixedSingle;
             txtBodyCount.Location = new Point(213, 311);
             txtBodyCount.Name = "txtBodyCount";
             txtBodyCount.ReadOnly = true;
@@ -238,6 +233,7 @@
             // txtOrgCount
             // 
             txtOrgCount.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            txtOrgCount.BorderStyle = BorderStyle.FixedSingle;
             txtOrgCount.Location = new Point(422, 311);
             txtOrgCount.Name = "txtOrgCount";
             txtOrgCount.ReadOnly = true;
@@ -246,12 +242,24 @@
             txtOrgCount.Text = "0";
             txtOrgCount.TextAlign = HorizontalAlignment.Center;
             // 
+            // btnLongAgo
+            // 
+            btnLongAgo.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            btnLongAgo.FlatStyle = FlatStyle.Flat;
+            btnLongAgo.Location = new Point(324, 167);
+            btnLongAgo.Name = "btnLongAgo";
+            btnLongAgo.Size = new Size(169, 25);
+            btnLongAgo.TabIndex = 19;
+            btnLongAgo.Text = "Set beginning of time";
+            btnLongAgo.UseVisualStyleBackColor = true;
+            btnLongAgo.Click += btnLongAgo_Click;
+            // 
             // FormPostProcess
             // 
-            AcceptButton = btnStart;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(505, 351);
+            Controls.Add(btnLongAgo);
             Controls.Add(txtOrgCount);
             Controls.Add(txtBodyCount);
             Controls.Add(txtDistance);
@@ -260,7 +268,6 @@
             Controls.Add(label3);
             Controls.Add(label2);
             Controls.Add(label1);
-            Controls.Add(btnLongAgo);
             Controls.Add(comboCmdr);
             Controls.Add(dateTimePicker);
             Controls.Add(lblStartDate);
@@ -277,22 +284,22 @@
             Name = "FormPostProcess";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "SrvSurvey - Old Journal Processor";
+            Click += btnLongAgo_Click;
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
-        private Button btnStart;
+        private FlatButton btnStart;
         private ProgressBar progress;
         private Label lblProgress;
-        private Button btnSystems;
+        private FlatButton btnSystems;
         private Label lblDesc;
         private LinkLabel linkLabel1;
         private Label lblCmdr;
         private Label lblStartDate;
         private DateTimePicker dateTimePicker;
         private ComboBox comboCmdr;
-        private Button btnLongAgo;
         private Label label1;
         private Label label2;
         private Label label3;
@@ -301,5 +308,6 @@
         private TextBox txtDistance;
         private TextBox txtBodyCount;
         private TextBox txtOrgCount;
+        private FlatButton btnLongAgo;
     }
 }

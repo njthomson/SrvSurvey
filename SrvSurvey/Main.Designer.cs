@@ -103,8 +103,10 @@ namespace SrvSurvey
             // btnGroundTarget
             // 
             btnGroundTarget.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnGroundTarget.BackColor = SystemColors.ControlLight;
-            btnGroundTarget.FlatStyle = FlatStyle.System;
+            btnGroundTarget.BackColor = SystemColors.ControlDark;
+            btnGroundTarget.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
+            btnGroundTarget.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
+            btnGroundTarget.FlatStyle = FlatStyle.Flat;
             btnGroundTarget.Location = new Point(94, 44);
             btnGroundTarget.Name = "btnGroundTarget";
             btnGroundTarget.Size = new Size(37, 27);
@@ -116,19 +118,24 @@ namespace SrvSurvey
             // btnQuit2
             // 
             btnQuit2.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnQuit2.BackColor = SystemColors.ControlDark;
             btnQuit2.DialogResult = DialogResult.Cancel;
-            btnQuit2.FlatStyle = FlatStyle.System;
+            btnQuit2.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
+            btnQuit2.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
+            btnQuit2.FlatStyle = FlatStyle.Flat;
             btnQuit2.Location = new Point(350, 593);
             btnQuit2.Name = "btnQuit2";
             btnQuit2.Size = new Size(75, 23);
             btnQuit2.TabIndex = 8;
             btnQuit2.Text = "&Quit";
-            btnQuit2.UseVisualStyleBackColor = true;
+            btnQuit2.UseVisualStyleBackColor = false;
             btnQuit2.Click += btnQuit_Click;
             // 
             // txtTargetLatLong
             // 
             txtTargetLatLong.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            txtTargetLatLong.BackColor = SystemColors.AppWorkspace;
+            txtTargetLatLong.BorderStyle = BorderStyle.FixedSingle;
             txtTargetLatLong.Location = new Point(14, 19);
             txtTargetLatLong.Name = "txtTargetLatLong";
             txtTargetLatLong.ReadOnly = true;
@@ -147,8 +154,10 @@ namespace SrvSurvey
             // btnClearTarget
             // 
             btnClearTarget.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnClearTarget.BackColor = SystemColors.ControlLight;
-            btnClearTarget.FlatStyle = FlatStyle.System;
+            btnClearTarget.BackColor = SystemColors.ControlDark;
+            btnClearTarget.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
+            btnClearTarget.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
+            btnClearTarget.FlatStyle = FlatStyle.Flat;
             btnClearTarget.Location = new Point(137, 44);
             btnClearTarget.Name = "btnClearTarget";
             btnClearTarget.Size = new Size(51, 27);
@@ -175,18 +184,22 @@ namespace SrvSurvey
             // btnPasteLatLong
             // 
             btnPasteLatLong.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnPasteLatLong.BackColor = SystemColors.ControlDark;
+            btnPasteLatLong.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
+            btnPasteLatLong.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
+            btnPasteLatLong.FlatStyle = FlatStyle.Flat;
             btnPasteLatLong.Image = (Image)resources.GetObject("btnPasteLatLong.Image");
             btnPasteLatLong.Location = new Point(192, 44);
             btnPasteLatLong.Name = "btnPasteLatLong";
             btnPasteLatLong.Size = new Size(23, 27);
             btnPasteLatLong.TabIndex = 26;
-            btnPasteLatLong.UseVisualStyleBackColor = true;
+            btnPasteLatLong.UseVisualStyleBackColor = false;
             btnPasteLatLong.Click += btnPasteLatLong_Click;
             // 
             // lblTrackTargetStatus
             // 
             lblTrackTargetStatus.AutoSize = true;
-            lblTrackTargetStatus.BorderStyle = BorderStyle.Fixed3D;
+            lblTrackTargetStatus.BorderStyle = BorderStyle.FixedSingle;
             lblTrackTargetStatus.Location = new Point(14, 49);
             lblTrackTargetStatus.Name = "lblTrackTargetStatus";
             lblTrackTargetStatus.Size = new Size(63, 14);
@@ -212,27 +225,35 @@ namespace SrvSurvey
             // btnCopyLocation
             // 
             btnCopyLocation.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnCopyLocation.BackColor = SystemColors.ControlDark;
+            btnCopyLocation.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
+            btnCopyLocation.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
+            btnCopyLocation.FlatStyle = FlatStyle.Flat;
             btnCopyLocation.Image = (Image)resources.GetObject("btnCopyLocation.Image");
-            btnCopyLocation.Location = new Point(288, 42);
+            btnCopyLocation.Location = new Point(288, 43);
             btnCopyLocation.Name = "btnCopyLocation";
-            btnCopyLocation.Size = new Size(22, 22);
+            btnCopyLocation.Size = new Size(20, 20);
             btnCopyLocation.TabIndex = 27;
-            btnCopyLocation.UseVisualStyleBackColor = true;
+            btnCopyLocation.UseVisualStyleBackColor = false;
             btnCopyLocation.Click += btnCopyLocation_Click;
             // 
             // txtCommander
             // 
             txtCommander.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            txtCommander.BackColor = SystemColors.ActiveCaption;
+            txtCommander.BorderStyle = BorderStyle.FixedSingle;
             txtCommander.Location = new Point(16, 19);
             txtCommander.Name = "txtCommander";
             txtCommander.ReadOnly = true;
             txtCommander.Size = new Size(390, 20);
             txtCommander.TabIndex = 10;
-            txtCommander.Text = "<cmdr name>";
+            txtCommander.Text = "GRINNING2002 ?";
             // 
             // txtNearBody
             // 
             txtNearBody.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            txtNearBody.BackColor = SystemColors.AppWorkspace;
+            txtNearBody.BorderStyle = BorderStyle.FixedSingle;
             txtNearBody.Location = new Point(313, 43);
             txtNearBody.Name = "txtNearBody";
             txtNearBody.ReadOnly = true;
@@ -243,6 +264,8 @@ namespace SrvSurvey
             // txtMode
             // 
             txtMode.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            txtMode.BackColor = SystemColors.AppWorkspace;
+            txtMode.BorderStyle = BorderStyle.FixedSingle;
             txtMode.Location = new Point(108, 69);
             txtMode.Name = "txtMode";
             txtMode.ReadOnly = true;
@@ -253,15 +276,19 @@ namespace SrvSurvey
             // txtLocation
             // 
             txtLocation.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            txtLocation.BackColor = SystemColors.AppWorkspace;
+            txtLocation.BorderStyle = BorderStyle.FixedSingle;
             txtLocation.Location = new Point(16, 43);
             txtLocation.Name = "txtLocation";
             txtLocation.ReadOnly = true;
-            txtLocation.Size = new Size(272, 20);
+            txtLocation.Size = new Size(270, 20);
             txtLocation.TabIndex = 12;
             txtLocation.Text = "<location>";
             // 
             // txtVehicle
             // 
+            txtVehicle.BackColor = SystemColors.AppWorkspace;
+            txtVehicle.BorderStyle = BorderStyle.FixedSingle;
             txtVehicle.Location = new Point(16, 69);
             txtVehicle.Name = "txtVehicle";
             txtVehicle.ReadOnly = true;
@@ -293,8 +320,10 @@ namespace SrvSurvey
             // btnBioSummary
             // 
             btnBioSummary.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnBioSummary.BackColor = SystemColors.ControlLight;
-            btnBioSummary.FlatStyle = FlatStyle.System;
+            btnBioSummary.BackColor = SystemColors.ControlDark;
+            btnBioSummary.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
+            btnBioSummary.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
+            btnBioSummary.FlatStyle = FlatStyle.Flat;
             btnBioSummary.Location = new Point(313, 103);
             btnBioSummary.Name = "btnBioSummary";
             btnBioSummary.Size = new Size(93, 21);
@@ -319,6 +348,8 @@ namespace SrvSurvey
             // txtBodyBioValues
             // 
             txtBodyBioValues.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            txtBodyBioValues.BackColor = SystemColors.AppWorkspace;
+            txtBodyBioValues.BorderStyle = BorderStyle.FixedSingle;
             txtBodyBioValues.Enabled = false;
             txtBodyBioValues.Location = new Point(143, 81);
             txtBodyBioValues.Name = "txtBodyBioValues";
@@ -328,6 +359,8 @@ namespace SrvSurvey
             // 
             // txtBodyBioSignals
             // 
+            txtBodyBioSignals.BackColor = SystemColors.AppWorkspace;
+            txtBodyBioSignals.BorderStyle = BorderStyle.FixedSingle;
             txtBodyBioSignals.Enabled = false;
             txtBodyBioSignals.Location = new Point(69, 81);
             txtBodyBioSignals.Name = "txtBodyBioSignals";
@@ -349,6 +382,8 @@ namespace SrvSurvey
             // txtSystemBioValues
             // 
             txtSystemBioValues.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            txtSystemBioValues.BackColor = SystemColors.AppWorkspace;
+            txtSystemBioValues.BorderStyle = BorderStyle.FixedSingle;
             txtSystemBioValues.Enabled = false;
             txtSystemBioValues.Location = new Point(143, 55);
             txtSystemBioValues.Name = "txtSystemBioValues";
@@ -358,6 +393,8 @@ namespace SrvSurvey
             // 
             // txtSystemBioSignals
             // 
+            txtSystemBioSignals.BackColor = SystemColors.AppWorkspace;
+            txtSystemBioSignals.BorderStyle = BorderStyle.FixedSingle;
             txtSystemBioSignals.Enabled = false;
             txtSystemBioSignals.Location = new Point(69, 55);
             txtSystemBioSignals.Name = "txtSystemBioSignals";
@@ -389,6 +426,8 @@ namespace SrvSurvey
             // txtBioRewards
             // 
             txtBioRewards.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            txtBioRewards.BackColor = SystemColors.AppWorkspace;
+            txtBioRewards.BorderStyle = BorderStyle.FixedSingle;
             txtBioRewards.Location = new Point(143, 13);
             txtBioRewards.Name = "txtBioRewards";
             txtBioRewards.ReadOnly = true;
@@ -407,8 +446,11 @@ namespace SrvSurvey
             // btnCodexShow
             // 
             btnCodexShow.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnCodexShow.BackColor = SystemColors.ControlLight;
+            btnCodexShow.BackColor = SystemColors.ControlDark;
             btnCodexShow.Enabled = false;
+            btnCodexShow.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
+            btnCodexShow.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
+            btnCodexShow.FlatStyle = FlatStyle.Flat;
             btnCodexShow.Image = (Image)resources.GetObject("btnCodexShow.Image");
             btnCodexShow.Location = new Point(379, 517);
             btnCodexShow.Name = "btnCodexShow";
@@ -425,27 +467,33 @@ namespace SrvSurvey
             // btnLogs
             // 
             btnLogs.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            btnLogs.BackColor = SystemColors.ControlDark;
             btnLogs.DialogResult = DialogResult.Cancel;
-            btnLogs.FlatStyle = FlatStyle.System;
+            btnLogs.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
+            btnLogs.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
+            btnLogs.FlatStyle = FlatStyle.Flat;
             btnLogs.Location = new Point(93, 593);
             btnLogs.Name = "btnLogs";
             btnLogs.Size = new Size(75, 23);
             btnLogs.TabIndex = 15;
             btnLogs.Text = "&Logs";
-            btnLogs.UseVisualStyleBackColor = true;
+            btnLogs.UseVisualStyleBackColor = false;
             btnLogs.Click += btnViewLogs_Click;
             // 
             // btnSettings
             // 
             btnSettings.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            btnSettings.BackColor = SystemColors.ControlDark;
             btnSettings.DialogResult = DialogResult.Cancel;
-            btnSettings.FlatStyle = FlatStyle.System;
+            btnSettings.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
+            btnSettings.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
+            btnSettings.FlatStyle = FlatStyle.Flat;
             btnSettings.Location = new Point(12, 593);
             btnSettings.Name = "btnSettings";
             btnSettings.Size = new Size(75, 23);
             btnSettings.TabIndex = 16;
             btnSettings.Text = "&Settings";
-            btnSettings.UseVisualStyleBackColor = true;
+            btnSettings.UseVisualStyleBackColor = false;
             btnSettings.Click += btnSettings_Click;
             // 
             // linkLabel1
@@ -497,11 +545,13 @@ namespace SrvSurvey
             // btnGuardianThings
             // 
             btnGuardianThings.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnGuardianThings.BackColor = SystemColors.ControlLight;
-            btnGuardianThings.FlatStyle = FlatStyle.System;
-            btnGuardianThings.Location = new Point(279, 16);
+            btnGuardianThings.BackColor = SystemColors.ControlDark;
+            btnGuardianThings.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
+            btnGuardianThings.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
+            btnGuardianThings.FlatStyle = FlatStyle.Flat;
+            btnGuardianThings.Location = new Point(279, 15);
             btnGuardianThings.Name = "btnGuardianThings";
-            btnGuardianThings.Size = new Size(127, 33);
+            btnGuardianThings.Size = new Size(127, 35);
             btnGuardianThings.TabIndex = 19;
             btnGuardianThings.Text = "All Guardian Sites";
             btnGuardianThings.UseVisualStyleBackColor = false;
@@ -510,8 +560,10 @@ namespace SrvSurvey
             // btnRuins
             // 
             btnRuins.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnRuins.BackColor = SystemColors.ControlLight;
-            btnRuins.FlatStyle = FlatStyle.System;
+            btnRuins.BackColor = SystemColors.ControlDark;
+            btnRuins.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
+            btnRuins.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
+            btnRuins.FlatStyle = FlatStyle.Flat;
             btnRuins.Location = new Point(279, 55);
             btnRuins.Name = "btnRuins";
             btnRuins.Size = new Size(127, 35);
@@ -522,8 +574,10 @@ namespace SrvSurvey
             // 
             // btnRuinsMap
             // 
-            btnRuinsMap.BackColor = SystemColors.ControlLight;
-            btnRuinsMap.FlatStyle = FlatStyle.System;
+            btnRuinsMap.BackColor = SystemColors.ControlDark;
+            btnRuinsMap.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
+            btnRuinsMap.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
+            btnRuinsMap.FlatStyle = FlatStyle.Flat;
             btnRuinsMap.Location = new Point(16, 57);
             btnRuinsMap.Name = "btnRuinsMap";
             btnRuinsMap.Size = new Size(93, 21);
@@ -535,8 +589,10 @@ namespace SrvSurvey
             // btnRuinsOrigin
             // 
             btnRuinsOrigin.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnRuinsOrigin.BackColor = SystemColors.ControlLight;
-            btnRuinsOrigin.FlatStyle = FlatStyle.System;
+            btnRuinsOrigin.BackColor = SystemColors.ControlDark;
+            btnRuinsOrigin.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
+            btnRuinsOrigin.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
+            btnRuinsOrigin.FlatStyle = FlatStyle.Flat;
             btnRuinsOrigin.Location = new Point(115, 57);
             btnRuinsOrigin.Name = "btnRuinsOrigin";
             btnRuinsOrigin.Size = new Size(115, 21);
@@ -548,6 +604,8 @@ namespace SrvSurvey
             // txtGuardianSite
             // 
             txtGuardianSite.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            txtGuardianSite.BackColor = SystemColors.AppWorkspace;
+            txtGuardianSite.BorderStyle = BorderStyle.FixedSingle;
             txtGuardianSite.Location = new Point(16, 31);
             txtGuardianSite.Name = "txtGuardianSite";
             txtGuardianSite.ReadOnly = true;
@@ -596,9 +654,11 @@ namespace SrvSurvey
             // btnSphereLimit
             // 
             btnSphereLimit.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnSphereLimit.BackColor = SystemColors.ControlLight;
+            btnSphereLimit.BackColor = SystemColors.ControlDark;
             btnSphereLimit.Enabled = false;
-            btnSphereLimit.FlatStyle = FlatStyle.System;
+            btnSphereLimit.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
+            btnSphereLimit.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
+            btnSphereLimit.FlatStyle = FlatStyle.Flat;
             btnSphereLimit.Location = new Point(325, 478);
             btnSphereLimit.Name = "btnSphereLimit";
             btnSphereLimit.Size = new Size(100, 33);
@@ -624,11 +684,13 @@ namespace SrvSurvey
             // btnRamTah
             // 
             btnRamTah.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnRamTah.BackColor = SystemColors.ControlLight;
-            btnRamTah.FlatStyle = FlatStyle.System;
+            btnRamTah.BackColor = SystemColors.ControlDark;
+            btnRamTah.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
+            btnRamTah.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
+            btnRamTah.FlatStyle = FlatStyle.Flat;
             btnRamTah.Location = new Point(325, 438);
             btnRamTah.Name = "btnRamTah";
-            btnRamTah.Size = new Size(100, 33);
+            btnRamTah.Size = new Size(100, 35);
             btnRamTah.TabIndex = 24;
             btnRamTah.Text = "Ram Tah Missions";
             btnRamTah.UseVisualStyleBackColor = false;
@@ -637,12 +699,16 @@ namespace SrvSurvey
             // btnPublish
             // 
             btnPublish.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            btnPublish.BackColor = SystemColors.ControlDark;
+            btnPublish.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
+            btnPublish.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
+            btnPublish.FlatStyle = FlatStyle.Flat;
             btnPublish.Location = new Point(174, 593);
             btnPublish.Name = "btnPublish";
             btnPublish.Size = new Size(75, 23);
             btnPublish.TabIndex = 25;
             btnPublish.Text = "Publish";
-            btnPublish.UseVisualStyleBackColor = true;
+            btnPublish.UseVisualStyleBackColor = false;
             btnPublish.Visible = false;
             btnPublish.MouseDown += BtnPublish_MouseDown;
             // 
@@ -680,6 +746,8 @@ namespace SrvSurvey
             // txtDistance
             // 
             txtDistance.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            txtDistance.BackColor = SystemColors.AppWorkspace;
+            txtDistance.BorderStyle = BorderStyle.FixedSingle;
             txtDistance.Location = new Point(313, 16);
             txtDistance.Name = "txtDistance";
             txtDistance.ReadOnly = true;
@@ -691,6 +759,8 @@ namespace SrvSurvey
             // txtJumps
             // 
             txtJumps.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            txtJumps.BackColor = SystemColors.AppWorkspace;
+            txtJumps.BorderStyle = BorderStyle.FixedSingle;
             txtJumps.Location = new Point(255, 16);
             txtJumps.Name = "txtJumps";
             txtJumps.ReadOnly = true;
@@ -720,9 +790,11 @@ namespace SrvSurvey
             // btnResetExploration
             // 
             btnResetExploration.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnResetExploration.BackColor = SystemColors.ControlLight;
+            btnResetExploration.BackColor = SystemColors.ControlDark;
             btnResetExploration.Enabled = false;
-            btnResetExploration.FlatStyle = FlatStyle.System;
+            btnResetExploration.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
+            btnResetExploration.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
+            btnResetExploration.FlatStyle = FlatStyle.Flat;
             btnResetExploration.Location = new Point(13, 41);
             btnResetExploration.Name = "btnResetExploration";
             btnResetExploration.Size = new Size(49, 21);
@@ -743,6 +815,8 @@ namespace SrvSurvey
             // txtExplorationValue
             // 
             txtExplorationValue.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            txtExplorationValue.BackColor = SystemColors.AppWorkspace;
+            txtExplorationValue.BorderStyle = BorderStyle.FixedSingle;
             txtExplorationValue.Location = new Point(127, 16);
             txtExplorationValue.Name = "txtExplorationValue";
             txtExplorationValue.ReadOnly = true;
@@ -764,6 +838,8 @@ namespace SrvSurvey
             // txtBodies
             // 
             txtBodies.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            txtBodies.BackColor = SystemColors.AppWorkspace;
+            txtBodies.BorderStyle = BorderStyle.FixedSingle;
             txtBodies.Location = new Point(127, 42);
             txtBodies.Name = "txtBodies";
             txtBodies.ReadOnly = true;
@@ -791,12 +867,16 @@ namespace SrvSurvey
             // btnTest
             // 
             btnTest.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            btnTest.BackColor = SystemColors.ControlDark;
+            btnTest.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
+            btnTest.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
+            btnTest.FlatStyle = FlatStyle.Flat;
             btnTest.Location = new Point(255, 593);
             btnTest.Name = "btnTest";
             btnTest.Size = new Size(75, 23);
             btnTest.TabIndex = 30;
             btnTest.Text = "Test";
-            btnTest.UseVisualStyleBackColor = true;
+            btnTest.UseVisualStyleBackColor = false;
             btnTest.MouseDown += btnTest_MouseDown;
             // 
             // groupCodex
@@ -812,8 +892,10 @@ namespace SrvSurvey
             // 
             // btnCodexBingo
             // 
-            btnCodexBingo.BackColor = SystemColors.ControlLight;
-            btnCodexBingo.FlatStyle = FlatStyle.System;
+            btnCodexBingo.BackColor = SystemColors.ControlDark;
+            btnCodexBingo.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
+            btnCodexBingo.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
+            btnCodexBingo.FlatStyle = FlatStyle.Flat;
             btnCodexBingo.Location = new Point(6, 51);
             btnCodexBingo.Name = "btnCodexBingo";
             btnCodexBingo.Size = new Size(75, 21);
@@ -826,6 +908,7 @@ namespace SrvSurvey
             // 
             AutoScaleDimensions = new SizeF(7F, 12F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = SystemColors.AppWorkspace;
             CancelButton = btnQuit2;
             ClientSize = new Size(437, 628);
             Controls.Add(groupCodex);

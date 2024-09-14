@@ -47,13 +47,13 @@
             TreeNode treeNode16 = new TreeNode("Stickyhand");
             TreeNode treeNode17 = new TreeNode("All Structures", new TreeNode[] { treeNode7, treeNode8, treeNode9, treeNode10, treeNode11, treeNode12, treeNode13, treeNode14, treeNode15, treeNode16 });
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormBeacons));
-            btnShare = new Button();
+            btnShare = new FlatButton();
             statusStrip1 = new StatusStrip();
             lblStatus = new ToolStripStatusLabel();
             comboCurrentSystem = new ComboBox();
             label1 = new Label();
             txtFilter = new TextBox();
-            btnFilter = new Button();
+            btnFilter = new FlatButton();
             colNotes = new ColumnHeader();
             colLastVisited = new ColumnHeader();
             colArrival = new ColumnHeader();
@@ -69,11 +69,11 @@
             colRamTah = new ColumnHeader();
             comboVisited = new ComboBox();
             checkRamTah = new CheckBox();
-            btnSiteTypes = new Button();
+            btnSiteTypes = new FlatButton();
             txtSiteTypes = new TextBox();
             treeSiteTypes = new TreeView();
             panelSiteTypes = new Panel();
-            btnSetSiteTypes = new Button();
+            btnSetSiteTypes = new FlatButton();
             contextMenu = new ContextMenuStrip(components);
             menuOpenSiteSurvey = new ToolStripMenuItem();
             toolStripSeparator3 = new ToolStripSeparator();
@@ -97,6 +97,7 @@
             // 
             // btnShare
             // 
+            btnShare.FlatStyle = FlatStyle.Flat;
             btnShare.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
             btnShare.Location = new Point(736, 36);
             btnShare.Name = "btnShare";
@@ -127,6 +128,7 @@
             // 
             // comboCurrentSystem
             // 
+            comboCurrentSystem.BackColor = SystemColors.ScrollBar;
             comboCurrentSystem.FormattingEnabled = true;
             comboCurrentSystem.Location = new Point(549, 6);
             comboCurrentSystem.Name = "comboCurrentSystem";
@@ -151,6 +153,7 @@
             // 
             // btnFilter
             // 
+            btnFilter.FlatStyle = FlatStyle.Flat;
             btnFilter.Location = new Point(12, 7);
             btnFilter.Name = "btnFilter";
             btnFilter.Size = new Size(50, 23);
@@ -197,7 +200,6 @@
             grid.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             grid.Columns.AddRange(new ColumnHeader[] { colId, colSystem, colBody, colDistance, colArrival, colLastVisited, colSiteType, colIndex, colImages, colSurveyComplete, colRamTah, colNotes });
             grid.FullRowSelect = true;
-            grid.GridLines = true;
             grid.Location = new Point(0, 65);
             grid.Name = "grid";
             grid.ShowGroups = false;
@@ -206,6 +208,7 @@
             grid.UseCompatibleStateImageBehavior = false;
             grid.View = View.Details;
             grid.ColumnClick += grid_ColumnClick;
+            grid.SelectedIndexChanged += grid_SelectedIndexChanged;
             grid.DoubleClick += menuOpenSiteSurvey_Click;
             grid.MouseClick += grid_MouseClick;
             // 
@@ -266,6 +269,7 @@
             // 
             // btnSiteTypes
             // 
+            btnSiteTypes.FlatStyle = FlatStyle.Flat;
             btnSiteTypes.Location = new Point(12, 36);
             btnSiteTypes.Name = "btnSiteTypes";
             btnSiteTypes.Size = new Size(50, 23);
@@ -361,6 +365,7 @@
             // 
             // btnSetSiteTypes
             // 
+            btnSetSiteTypes.FlatStyle = FlatStyle.Flat;
             btnSetSiteTypes.Location = new Point(3, 3);
             btnSetSiteTypes.Name = "btnSetSiteTypes";
             btnSetSiteTypes.Size = new Size(75, 23);
@@ -479,6 +484,7 @@
             AcceptButton = btnFilter;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = SystemColors.AppWorkspace;
             ClientSize = new Size(1176, 453);
             Controls.Add(panelSiteTypes);
             Controls.Add(txtSiteTypes);
@@ -506,12 +512,12 @@
 
         #endregion
 
-        private Button btnShare;
+        private FlatButton btnShare;
         private StatusStrip statusStrip1;
         private ToolStripStatusLabel lblStatus;
         private Label label1;
         private TextBox txtFilter;
-        private Button btnFilter;
+        private FlatButton btnFilter;
         private ColumnHeader colNotes;
         private ColumnHeader colLastVisited;
         private ColumnHeader colArrival;
@@ -523,11 +529,11 @@
         public ComboBox comboCurrentSystem;
         private ComboBox comboVisited;
         private CheckBox checkRamTah;
-        private Button btnSiteTypes;
+        private FlatButton btnSiteTypes;
         private TextBox txtSiteTypes;
         private TreeView treeSiteTypes;
         private Panel panelSiteTypes;
-        private Button btnSetSiteTypes;
+        private FlatButton btnSetSiteTypes;
         private ColumnHeader colRamTah;
         private ColumnHeader colId;
         private ColumnHeader colIndex;

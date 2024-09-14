@@ -1789,7 +1789,16 @@ namespace SrvSurvey.game
                 });
 
                 // measure distance to closest nebula
-                this.systemData.getNebulaDist().ContinueWith(response => { });
+                this.systemData.getNebulaDist().ContinueWith(response =>
+                {
+                    // re-predict now we know this distance 
+                    foreach(var body in this.systemData.bodies)
+                    {
+                        if (body.bioSignalCount > 0)
+                            body.predictSpecies();
+                    }
+
+                });
             }
             finally
             {

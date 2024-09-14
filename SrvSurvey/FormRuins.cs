@@ -108,6 +108,8 @@ namespace SrvSurvey
 
             if (game?.status != null)
                 game.status.StatusChanged += Status_StatusChanged;
+
+            Util.applyTheme(this);
         }
 
         private void Status_StatusChanged(bool blink)
@@ -211,7 +213,8 @@ namespace SrvSurvey
         {
             if (siteData == null)
             {
-                lblSurveyCompletion.Text = $"";
+                lblSurveyCompletion.Text = null;
+                lblStatus.Text = null;
                 progressSurvey.Value = 0;
                 return;
             }

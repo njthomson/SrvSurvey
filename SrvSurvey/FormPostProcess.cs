@@ -33,10 +33,11 @@ namespace SrvSurvey
             this.findCmdrs(fid);
 
             // default to 7 days ago, at midnight
-            dateTimePicker.Value = DateTime.Now.Subtract(new TimeSpan(6, 23, 59, 59) + DateTime.Now.TimeOfDay);
+            this.dateTimePicker.Value = DateTime.Now.Subtract(new TimeSpan(6, 23, 59, 59) + DateTime.Now.TimeOfDay);
             this.targetStartTime = dateTimePicker.Value;
+            this.btnStart.Enabled = false;
 
-            btnStart.Enabled = false;
+            Util.applyTheme(this);
         }
 
         protected override void OnLoad(EventArgs e)

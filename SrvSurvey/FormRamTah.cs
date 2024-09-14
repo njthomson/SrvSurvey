@@ -53,6 +53,8 @@ namespace SrvSurvey
             var only2ndMissionActive = this.cmdr?.decodeTheRuinsMissionActive != TahMissionStatus.Active && this.cmdr?.decodeTheLogsMissionActive == TahMissionStatus.Active;
             if (only2ndMissionActive || Game.activeGame?.systemSite?.isRuins == false)
                 tabControl1.SelectedIndex = 1;
+
+            Util.applyTheme(this);
         }
 
         protected override void OnResizeEnd(EventArgs e)
@@ -132,7 +134,7 @@ namespace SrvSurvey
         private void prepRuinsRows()
         {
             // inject 21 rows with cmdr's state
-            listRuins.Items.Clear();
+            listLogs.Items.Clear();
             for (int n = 1; n <= 21; n++)
             {
                 var subItems = new ListViewItem.ListViewSubItem[]
@@ -150,7 +152,7 @@ namespace SrvSurvey
                 if (n > 20) { subItems[2].Name = null; subItems[5].Name = null; } // Biology + Technology end at 20
 
                 var item = new ListViewItem(subItems, 0);
-                listRuins.Items.Add(item);
+                listLogs.Items.Add(item);
             }
         }
 
@@ -158,7 +160,7 @@ namespace SrvSurvey
         {
             if (this.cmdr == null || Elite.isGameRunning != true) return;
 
-            var row = listRuins.GetItemAt(e.X, e.Y);
+            var row = listLogs.GetItemAt(e.X, e.Y);
             if (row != null)
             {
                 var subItem = row.GetSubItemAt(e.X, e.Y);
@@ -170,7 +172,7 @@ namespace SrvSurvey
                         cmdr.decodeTheRuins.Add(subItem.Name);
 
                     //listRuins.Invalidate(new Rectangle(0, subItem.Bounds.Y, subItem.Bounds.Width, 24));
-                    listRuins.Invalidate();
+                    listLogs.Invalidate();
 
                     if (this.cmdr?.decodeTheRuinsMissionActive == TahMissionStatus.Active)
                     {
@@ -192,7 +194,7 @@ namespace SrvSurvey
             return pt;
         }
 
-        private void listView1_DrawSubItem(object sender, DrawListViewSubItemEventArgs e)
+        private void listLogs_DrawSubItem(object sender, DrawListViewSubItemEventArgs e)
         {
             var name = e.Item?.SubItems[e.ColumnIndex].Name;
             // background + edges;
@@ -209,7 +211,8 @@ namespace SrvSurvey
             }
             else if (e.ItemIndex % 2 == 1)
             {
-                e.Graphics.FillRectangle(SystemBrushes.ControlLight, e.Bounds);
+                var b = Game.settings.darkTheme ? SystemBrushes.ControlDark : SystemBrushes.ControlLight;
+                e.Graphics.FillRectangle(b, e.Bounds);
             }
             else
             {
@@ -230,7 +233,7 @@ namespace SrvSurvey
 
             if (e.ColumnIndex == 0)
             {
-                TextRenderer.DrawText(e.Graphics, e.SubItem?.Text, this.Font, e.Bounds, SystemColors.WindowText, TextFormatFlags.Right | TextFormatFlags.VerticalCenter);
+                TextRenderer.DrawText(e.Graphics, e.SubItem?.Text, this.Font, e.Bounds, listLogs.ForeColor, TextFormatFlags.Right | TextFormatFlags.VerticalCenter);
             }
             else
             {
@@ -253,12 +256,10 @@ namespace SrvSurvey
             { 'T', 20 },
         };
 
-        private void listView1_DrawColumnHeader(object sender, DrawListViewColumnHeaderEventArgs e)
+        private void listLogs_DrawColumnHeader(object sender, DrawListViewColumnHeaderEventArgs e)
         {
-            if (this.cmdr == null) return;
-
-            var txt = listRuins.Columns[e.ColumnIndex].Text;
-            var countCompleted = this.cmdr.decodeTheRuins.Count(_ => _[0] == txt[0]);
+            var txt = listLogs.Columns[e.ColumnIndex].Text;
+            var countCompleted = this.cmdr == null ? 0 : this.cmdr.decodeTheRuins.Count(_ => _[0] == txt[0]);
             if (completedCounts.ContainsKey(txt[0]) && countCompleted >= completedCounts[txt[0]])
                 e.Graphics.FillRectangle(Brushes.Lime, e.Bounds);
             else
@@ -271,7 +272,7 @@ namespace SrvSurvey
             TextRenderer.DrawText(e.Graphics, txt, this.Font, e.Bounds, SystemColors.WindowText, flags);
         }
 
-        private void listView1_DrawItem(object sender, DrawListViewItemEventArgs e)
+        private void listLogs_DrawItem(object sender, DrawListViewItemEventArgs e)
         {
             e.DrawDefault = false;
         }
@@ -366,7 +367,7 @@ namespace SrvSurvey
 
         public void updateChecks()
         {
-            this.listRuins.Invalidate();
+            this.listLogs.Invalidate();
             this.prepLogCheckboxes();
 
             if (this.cmdr?.decodeTheRuinsMissionActive == TahMissionStatus.Active)

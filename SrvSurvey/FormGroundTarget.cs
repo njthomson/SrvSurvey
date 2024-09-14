@@ -9,6 +9,8 @@ namespace SrvSurvey
         public FormGroundTarget()
         {
             InitializeComponent();
+
+            Util.applyTheme(this);
         }
 
         private void btnBegin_Click(object sender, EventArgs e)

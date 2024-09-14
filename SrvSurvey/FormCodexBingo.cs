@@ -13,6 +13,7 @@ namespace SrvSurvey
         #region static form loading
 
         public static FormCodexBingo? activeForm;
+        private Brush treeBackBrush;
 
         public static void show()
         {
@@ -34,6 +35,7 @@ namespace SrvSurvey
         public FormCodexBingo()
         {
             InitializeComponent();
+            treeBackBrush = new SolidBrush(tree.BackColor);
             tree.Nodes.Clear();
             tree.MouseWheel += Tree_MouseWheel;
             tree.TreeViewNodeSorter = new NodeSorter();
@@ -52,6 +54,8 @@ namespace SrvSurvey
             toolBodyName.Text = "";
             toolRegionName.Text = "Select a codex discovery...";
             toolDiscoveryDate.Text = "";
+
+            // Not themed - this is always dark.
         }
 
         private void findCmdrs()
@@ -556,7 +560,7 @@ namespace SrvSurvey
 
             // completion pie icon
             var rPie = new Rectangle(e.Bounds.X - 17, e.Bounds.Y + 2, 13, 13);
-            g.FillRectangle(SystemBrushes.WindowFrame, rPie);
+            g.FillRectangle(this.treeBackBrush, rPie);
             var fillAngle = 360f * codexTag.completion;
             g.FillPie(b, rPie, -90, fillAngle);
             g.DrawEllipse(GameColors.penBlack2, rPie);
@@ -566,7 +570,7 @@ namespace SrvSurvey
 
             // percent complete text
             var pt = new Point(e.Bounds.Right, e.Bounds.Top);
-            g.FillRectangle(SystemBrushes.WindowFrame, pt.X, pt.Y, 60, e.Bounds.Height - 4);
+            g.FillRectangle(this.treeBackBrush, pt.X, pt.Y, 60, e.Bounds.Height - 4);
             TextRenderer.DrawText(g, $" ({codexTag.completion.ToString("p1")})", tree.Font, pt, tree.ForeColor);
 
             // completion right bar

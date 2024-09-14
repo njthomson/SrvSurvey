@@ -29,16 +29,16 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormShareData));
-            btnClose = new Button();
+            btnClose = new FlatButton();
             label1 = new Label();
             list = new ListBox();
             label2 = new Label();
             linkDiscordChannel = new LinkLabel();
-            btnCopyZipFile = new Button();
-            btnViewZipFile = new Button();
+            btnCopyZipFile = new FlatButton();
+            btnViewZipFile = new FlatButton();
             txtZipFile = new TextBox();
-            btnOpenDiscord = new Button();
-            button1 = new Button();
+            btnOpenDiscord = new FlatButton();
+            button1 = new FlatButton();
             SuspendLayout();
             // 
             // btnClose
@@ -180,15 +180,15 @@
 
         #endregion
 
-        private Button btnClose;
+        private FlatButton btnClose;
         private Label label1;
         private ListBox list;
         private Label label2;
         private LinkLabel linkDiscordChannel;
-        private Button btnCopyZipFile;
-        private Button btnViewZipFile;
+        private FlatButton btnCopyZipFile;
+        private FlatButton btnViewZipFile;
         private TextBox txtZipFile;
-        private Button btnOpenDiscord;
-        private Button button1;
+        private FlatButton btnOpenDiscord;
+        private FlatButton button1;
     }
 }

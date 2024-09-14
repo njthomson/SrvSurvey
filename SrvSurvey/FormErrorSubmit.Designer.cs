@@ -33,14 +33,14 @@
             label2 = new Label();
             txtStack = new TextBox();
             txtSteps = new TextBox();
-            btnSubmit = new Button();
+            btnSubmit = new FlatButton();
             checkIncludeLogs = new CheckBox();
-            btnLogs = new Button();
-            btnClose = new Button();
+            btnLogs = new FlatButton();
+            btnClose = new FlatButton();
             linkToDiscord = new LinkLabel();
             linkJournal = new LinkLabel();
-            btnCopyJournalPath = new Button();
-            btnCopyStack = new Button();
+            btnCopyJournalPath = new FlatButton();
+            btnCopyStack = new FlatButton();
             SuspendLayout();
             // 
             // linkMain
@@ -95,10 +95,12 @@
             // btnSubmit
             // 
             btnSubmit.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnSubmit.Location = new Point(203, 443);
+            btnSubmit.AutoSize = true;
+            btnSubmit.FlatStyle = FlatStyle.Flat;
+            btnSubmit.Location = new Point(203, 442);
             btnSubmit.Margin = new Padding(4, 3, 4, 3);
             btnSubmit.Name = "btnSubmit";
-            btnSubmit.Size = new Size(224, 23);
+            btnSubmit.Size = new Size(224, 24);
             btnSubmit.TabIndex = 3;
             btnSubmit.Text = "&Create issue on GitHub.com";
             btnSubmit.UseVisualStyleBackColor = true;
@@ -118,9 +120,11 @@
             // btnLogs
             // 
             btnLogs.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            btnLogs.Location = new Point(14, 443);
+            btnLogs.AutoSize = true;
+            btnLogs.FlatStyle = FlatStyle.Flat;
+            btnLogs.Location = new Point(14, 442);
             btnLogs.Name = "btnLogs";
-            btnLogs.Size = new Size(110, 23);
+            btnLogs.Size = new Size(110, 24);
             btnLogs.TabIndex = 2;
             btnLogs.Text = "View logs";
             btnLogs.UseVisualStyleBackColor = true;
@@ -129,11 +133,13 @@
             // btnClose
             // 
             btnClose.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnClose.AutoSize = true;
             btnClose.DialogResult = DialogResult.Cancel;
-            btnClose.Location = new Point(435, 443);
+            btnClose.FlatStyle = FlatStyle.Flat;
+            btnClose.Location = new Point(435, 442);
             btnClose.Margin = new Padding(4, 3, 4, 3);
             btnClose.Name = "btnClose";
-            btnClose.Size = new Size(112, 23);
+            btnClose.Size = new Size(112, 24);
             btnClose.TabIndex = 4;
             btnClose.Text = "Close";
             btnClose.UseVisualStyleBackColor = true;
@@ -170,6 +176,7 @@
             // btnCopyJournalPath
             // 
             btnCopyJournalPath.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            btnCopyJournalPath.FlatStyle = FlatStyle.Flat;
             btnCopyJournalPath.Image = (Image)resources.GetObject("btnCopyJournalPath.Image");
             btnCopyJournalPath.Location = new Point(394, 375);
             btnCopyJournalPath.Name = "btnCopyJournalPath";
@@ -181,6 +188,7 @@
             // btnCopyStack
             // 
             btnCopyStack.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnCopyStack.FlatStyle = FlatStyle.Flat;
             btnCopyStack.Image = (Image)resources.GetObject("btnCopyStack.Image");
             btnCopyStack.Location = new Point(503, 43);
             btnCopyStack.Name = "btnCopyStack";
@@ -226,13 +234,13 @@
         private Label label2;
         private TextBox txtStack;
         private TextBox txtSteps;
-        private Button btnSubmit;
+        private FlatButton btnSubmit;
         private CheckBox checkIncludeLogs;
-        private Button btnLogs;
-        private Button btnClose;
+        private FlatButton btnLogs;
+        private FlatButton btnClose;
         private LinkLabel linkToDiscord;
         private LinkLabel linkJournal;
-        private Button btnCopyJournalPath;
-        private Button btnCopyStack;
+        private FlatButton btnCopyJournalPath;
+        private FlatButton btnCopyStack;
     }
 }

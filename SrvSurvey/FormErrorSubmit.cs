@@ -30,6 +30,8 @@ namespace SrvSurvey
             // for privacy reasons, this must be unchecked by default
             txtSteps.Height = txtStack.Height;
             checkIncludeLogs.Checked = false;
+
+            // Not themes
         }
 
         private void ErrorSubmit_Load(object sender, EventArgs e)

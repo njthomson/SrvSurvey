@@ -73,6 +73,8 @@ namespace SrvSurvey
             // keep these hidden from official app-store builds for now
             btnBioSummary.Visible = !Program.isAppStoreBuild && Game.settings.autoShowPlotBioSystem;
             btnTest.Visible = Debugger.IsAttached;
+
+            Util.applyTheme(this);
         }
 
         private void Main_Load(object sender, EventArgs e)
@@ -381,7 +383,7 @@ namespace SrvSurvey
         private void groupCodex_Paint(object sender, PaintEventArgs e)
         {
             e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-            var txt = game?.cmdrCodex?.completionProgress.ToString("p0") ?? "?%";
+            var txt = game?.cmdrCodex?.completionProgress.ToString("p0") ?? "?";
             var r = new Rectangle(4, 8, groupCodex.Width, 40);
             TextRenderer.DrawText(e.Graphics, txt, GameColors.fontBigBold, r, Color.Black);
         }
@@ -917,11 +919,6 @@ namespace SrvSurvey
                 coords = entry.StarPos,
             };
 
-            if (FormAllRuins.activeForm != null)
-            {
-                FormAllRuins.activeForm.comboCurrentSystem.Text = systemMatch.name;
-                FormAllRuins.activeForm.StarSystemLookup_starSystemMatch(systemMatch);
-            }
             if (FormBeacons.activeForm != null)
             {
                 FormBeacons.activeForm.comboCurrentSystem.Text = systemMatch.name;
@@ -1252,15 +1249,20 @@ namespace SrvSurvey
 
         private void btnSettings_Click(object sender, EventArgs e)
         {
-            new FormSettings().ShowDialog(this);
+            var form = new FormSettings();
+            var rslt = form.ShowDialog(this);
 
-            // force update form controls
-            this.updateAllControls();
+            if (rslt == DialogResult.OK)
+            {
+                // force update form controls
+                this.updateAllControls();
 
-            // force opacity changes to take immediate effect
-            Program.showActivePlotters();
+                // force opacity changes to take immediate effect
+                Program.showActivePlotters();
+                Util.applyTheme(this);
+                btnBioSummary.Visible = !Program.isAppStoreBuild && Game.settings.autoShowPlotBioSystem;
 
-            btnBioSummary.Visible = !Program.isAppStoreBuild && Game.settings.autoShowPlotBioSystem;
+            }
         }
 
         private void linkNewBuildAvailable_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

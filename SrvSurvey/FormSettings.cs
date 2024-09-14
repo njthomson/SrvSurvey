@@ -34,6 +34,8 @@ namespace SrvSurvey
                 // Human settlements aren't ready for App store yet
                 tabControl1.Controls.Remove(tabSettlements);
             }
+
+            // Not themed - this is always light.
         }
 
         private void FormSettings_Load(object sender, EventArgs e)

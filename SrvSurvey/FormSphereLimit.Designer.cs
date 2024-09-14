@@ -31,14 +31,14 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormSphereLimit));
             label1 = new Label();
             label2 = new Label();
-            btnCancel = new Button();
+            btnCancel = new FlatButton();
             txtStarPos = new TextBox();
             label3 = new Label();
             numRadius = new NumericUpDown();
-            btnAccept = new Button();
+            btnAccept = new FlatButton();
             label4 = new Label();
             comboSystemName = new ComboBox();
-            btnDisable = new Button();
+            btnDisable = new FlatButton();
             label5 = new Label();
             label6 = new Label();
             txtCurrentSystem = new TextBox();
@@ -67,10 +67,12 @@
             // btnCancel
             // 
             btnCancel.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnCancel.AutoSize = true;
             btnCancel.DialogResult = DialogResult.Cancel;
-            btnCancel.Location = new Point(417, 215);
+            btnCancel.FlatStyle = FlatStyle.Flat;
+            btnCancel.Location = new Point(417, 211);
             btnCancel.Name = "btnCancel";
-            btnCancel.Size = new Size(75, 23);
+            btnCancel.Size = new Size(75, 27);
             btnCancel.TabIndex = 5;
             btnCancel.Text = "&Cancel";
             btnCancel.UseVisualStyleBackColor = true;
@@ -78,6 +80,7 @@
             // 
             // txtStarPos
             // 
+            txtStarPos.BorderStyle = BorderStyle.FixedSingle;
             txtStarPos.Location = new Point(134, 85);
             txtStarPos.Name = "txtStarPos";
             txtStarPos.ReadOnly = true;
@@ -109,9 +112,11 @@
             // btnAccept
             // 
             btnAccept.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnAccept.Location = new Point(255, 215);
+            btnAccept.AutoSize = true;
+            btnAccept.FlatStyle = FlatStyle.Flat;
+            btnAccept.Location = new Point(255, 211);
             btnAccept.Name = "btnAccept";
-            btnAccept.Size = new Size(75, 23);
+            btnAccept.Size = new Size(75, 27);
             btnAccept.TabIndex = 9;
             btnAccept.Text = "&Activate";
             btnAccept.UseVisualStyleBackColor = true;
@@ -140,9 +145,11 @@
             // btnDisable
             // 
             btnDisable.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnDisable.Location = new Point(336, 215);
+            btnDisable.AutoSize = true;
+            btnDisable.FlatStyle = FlatStyle.Flat;
+            btnDisable.Location = new Point(336, 211);
             btnDisable.Name = "btnDisable";
-            btnDisable.Size = new Size(75, 23);
+            btnDisable.Size = new Size(75, 27);
             btnDisable.TabIndex = 12;
             btnDisable.Text = "&Disable";
             btnDisable.UseVisualStyleBackColor = true;
@@ -168,6 +175,7 @@
             // 
             // txtCurrentSystem
             // 
+            txtCurrentSystem.BorderStyle = BorderStyle.FixedSingle;
             txtCurrentSystem.Location = new Point(134, 143);
             txtCurrentSystem.Name = "txtCurrentSystem";
             txtCurrentSystem.ReadOnly = true;
@@ -176,6 +184,7 @@
             // 
             // txtCurrentDistance
             // 
+            txtCurrentDistance.BorderStyle = BorderStyle.FixedSingle;
             txtCurrentDistance.Location = new Point(134, 172);
             txtCurrentDistance.Name = "txtCurrentDistance";
             txtCurrentDistance.ReadOnly = true;
@@ -220,14 +229,14 @@
 
         private Label label1;
         private Label label2;
-        private Button btnCancel;
+        private FlatButton btnCancel;
         private TextBox txtStarPos;
         private Label label3;
         private NumericUpDown numRadius;
-        private Button btnAccept;
+        private FlatButton btnAccept;
         private Label label4;
         private ComboBox comboSystemName;
-        private Button btnDisable;
+        private FlatButton btnDisable;
         private Label label5;
         private Label label6;
         private TextBox txtCurrentSystem;

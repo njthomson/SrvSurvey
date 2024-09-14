@@ -27,6 +27,8 @@ namespace SrvSurvey
             txtBackgroundImage.Text = filepath;
 
             Util.useLastLocation(this, Game.settings.formMapEditor);
+
+            Util.applyTheme(this);
         }
 
         private void FormEditMap_FormClosed(object sender, FormClosedEventArgs e)
