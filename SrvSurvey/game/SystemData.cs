@@ -2353,7 +2353,7 @@ namespace SrvSurvey.game
         /// Returns true if this is a regional or cmdr first discovery
         /// </summary>
         [JsonIgnore]
-        public bool isFirst { get => this.isNewEntry || this.isCmdrFirst; }
+        public bool isFirst { get => (this.isNewEntry && Game.settings.highlightRegionalFirsts) || this.isCmdrFirst; }
 
         [JsonIgnore]
         public int range { get => BioScan.ranges[this.genus]; }

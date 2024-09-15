@@ -9,7 +9,7 @@ using System.Globalization;
 
 namespace SrvSurvey
 {
-    internal partial class Main : Form
+    internal partial class Main : DraggableForm
     {
         private Game? game;
         private FileSystemWatcher? logFolderWatcher;

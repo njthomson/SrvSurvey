@@ -239,6 +239,7 @@ namespace SrvSurvey
             {
                 // close all plotters (except PlotPulse)
                 Program.closeAllPlotters(true);
+                Program.getPlotter<PlotPulse>()?.reposition(Elite.getWindowRect());
             }
         }
 

@@ -123,7 +123,7 @@
         "     temp [100 ~ 245]",
         " pressure [ ~ 0.0001]",
         "     mats &[Carbon,Iron,Nickel,Phosphorus,Sulphur]",
-        "volcanism [Major Rocky Magma,Major Silicate Vapour Geysers,Major Water Geysers,Minor Carbon Dioxide Geysers,Minor Metallic Magma,Water Geysers]",
+        "volcanism [Major Rocky Magma,Major Silicate Vapour Geysers,Major Water Geysers,Minor Carbon Dioxide Geysers,Minor Rocky Magma,Minor Metallic Magma,Water Geysers]",
         "  regions [2,9,10,17,18,35]"
       ]
     },

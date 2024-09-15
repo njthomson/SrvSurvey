@@ -120,10 +120,10 @@
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="btnPaste.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
-        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAB4SURBVFhH7ZOBCsAgCET9Nr+q/YC/3bhhsMGMGhkM7kFU
-        Jt4VJoSQ32FmVVUrZg/to5TjEm4GsPejfCDahO8zhqfkgFs2od5Iew0U92WX0bxpaCCt8CiRgag5lzcj
-        ivrywWz8MzRAA2/djngkFMWXs+0bEkJILiIn6CSGYvR2om8AAAAASUVORK5CYII=
+        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        vAAADrwBlbxySQAAAHhJREFUWEftk4EKwCAIRP02v6r9gL/duGGwwYwaGQzuQVQm3hUmhJDfYWZVVStm
+        D+2jlOMSbgaw96N8INqE7zOGp+SAWzah3kh7DRT3ZZfRvGloIK3wKJGBqDmXNyOK+vLBbPwzNEADb92O
+        eCQUxZez7RsSQkguIifoJIZi9HaibwAAAABJRU5ErkJggg==
 </value>
   </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">

@@ -181,7 +181,11 @@ namespace SrvSurvey
                 if (entry.platform == "legacy" || entry.hud_category != "Biology")
                 {
                     // hierarchy: /hud_category/sub_class/entryId
-                    var leaf = subClass.Nodes.Set(entry.entryid, entry.english_name);
+                    var leafName = entry.english_name;
+                    if (leafName.EndsWith(" " + subClass.Text) && leafName != subClass.Text && subClass.Text != "Tubers")
+                        leafName = leafName.Replace(" " + subClass.Text, "");
+
+                    var leaf = subClass.Nodes.Set(entry.entryid, leafName);
                     var leafTag = new CodexTag(entry.english_name, entry);
                     leaf.Tag = leafTag;
 
@@ -428,21 +432,19 @@ namespace SrvSurvey
             {
                 if (t.IsCompletedSuccessfully)
                 {
-                    string bodyName;
-                    string url;
+                    string? bodyName = null;
+                    string? url = null;
                     if (entry.bodyId >= 0)
                     {
                         var body = t.Result.bodies?.Find(b => b.bodyId == entry.bodyId);
-                        if (body?.id64 == null)
+                        if (body?.id64 != null)
                         {
-                            Debugger.Break();
-                            return;
+                            // link to the body
+                            bodyName = body.name ?? $"{entry.address} #{entry.bodyId}";
+                            url = $"https://spansh.co.uk/body/{Uri.EscapeDataString(body.id64.Value.ToString())}";
                         }
-                        // link to the body
-                        bodyName = body.name ?? $"{entry.address} #{entry.bodyId}";
-                        url = $"https://spansh.co.uk/body/{Uri.EscapeDataString(body.id64.Value.ToString())}";
                     }
-                    else
+                    if (bodyName == null || url == null)
                     {
                         // link to just the system
                         bodyName = $"{t.Result.name} ?";

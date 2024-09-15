@@ -107,7 +107,7 @@ namespace SrvSurvey
             btnGroundTarget.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
             btnGroundTarget.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
             btnGroundTarget.FlatStyle = FlatStyle.Flat;
-            btnGroundTarget.Location = new Point(94, 44);
+            btnGroundTarget.Location = new Point(88, 44);
             btnGroundTarget.Name = "btnGroundTarget";
             btnGroundTarget.Size = new Size(37, 27);
             btnGroundTarget.TabIndex = 3;
@@ -117,7 +117,6 @@ namespace SrvSurvey
             // 
             // btnQuit2
             // 
-            btnQuit2.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnQuit2.BackColor = SystemColors.ControlDark;
             btnQuit2.DialogResult = DialogResult.Cancel;
             btnQuit2.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
@@ -139,7 +138,7 @@ namespace SrvSurvey
             txtTargetLatLong.Location = new Point(14, 19);
             txtTargetLatLong.Name = "txtTargetLatLong";
             txtTargetLatLong.ReadOnly = true;
-            txtTargetLatLong.Size = new Size(200, 20);
+            txtTargetLatLong.Size = new Size(194, 20);
             txtTargetLatLong.TabIndex = 11;
             txtTargetLatLong.Text = "<none>";
             // 
@@ -158,7 +157,7 @@ namespace SrvSurvey
             btnClearTarget.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
             btnClearTarget.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
             btnClearTarget.FlatStyle = FlatStyle.Flat;
-            btnClearTarget.Location = new Point(137, 44);
+            btnClearTarget.Location = new Point(131, 44);
             btnClearTarget.Name = "btnClearTarget";
             btnClearTarget.Size = new Size(51, 27);
             btnClearTarget.TabIndex = 13;
@@ -168,15 +167,14 @@ namespace SrvSurvey
             // 
             // groupBox1
             // 
-            groupBox1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             groupBox1.Controls.Add(btnPasteLatLong);
             groupBox1.Controls.Add(lblTrackTargetStatus);
             groupBox1.Controls.Add(btnClearTarget);
             groupBox1.Controls.Add(btnGroundTarget);
             groupBox1.Controls.Add(txtTargetLatLong);
-            groupBox1.Location = new Point(99, 433);
+            groupBox1.Location = new Point(105, 433);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(220, 78);
+            groupBox1.Size = new Size(214, 78);
             groupBox1.TabIndex = 14;
             groupBox1.TabStop = false;
             groupBox1.Text = "Target lat/Long:";
@@ -189,7 +187,7 @@ namespace SrvSurvey
             btnPasteLatLong.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
             btnPasteLatLong.FlatStyle = FlatStyle.Flat;
             btnPasteLatLong.Image = (Image)resources.GetObject("btnPasteLatLong.Image");
-            btnPasteLatLong.Location = new Point(192, 44);
+            btnPasteLatLong.Location = new Point(186, 44);
             btnPasteLatLong.Name = "btnPasteLatLong";
             btnPasteLatLong.Size = new Size(23, 27);
             btnPasteLatLong.TabIndex = 26;
@@ -208,7 +206,6 @@ namespace SrvSurvey
             // 
             // groupBox2
             // 
-            groupBox2.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             groupBox2.Controls.Add(btnCopyLocation);
             groupBox2.Controls.Add(txtCommander);
             groupBox2.Controls.Add(txtNearBody);
@@ -240,12 +237,12 @@ namespace SrvSurvey
             // txtCommander
             // 
             txtCommander.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            txtCommander.BackColor = SystemColors.ActiveCaption;
+            txtCommander.BackColor = SystemColors.AppWorkspace;
             txtCommander.BorderStyle = BorderStyle.FixedSingle;
-            txtCommander.Location = new Point(16, 19);
+            txtCommander.Location = new Point(6, 19);
             txtCommander.Name = "txtCommander";
             txtCommander.ReadOnly = true;
-            txtCommander.Size = new Size(390, 20);
+            txtCommander.Size = new Size(400, 20);
             txtCommander.TabIndex = 10;
             txtCommander.Text = "GRINNING2002 ?";
             // 
@@ -278,10 +275,10 @@ namespace SrvSurvey
             txtLocation.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             txtLocation.BackColor = SystemColors.AppWorkspace;
             txtLocation.BorderStyle = BorderStyle.FixedSingle;
-            txtLocation.Location = new Point(16, 43);
+            txtLocation.Location = new Point(6, 43);
             txtLocation.Name = "txtLocation";
             txtLocation.ReadOnly = true;
-            txtLocation.Size = new Size(270, 20);
+            txtLocation.Size = new Size(280, 20);
             txtLocation.TabIndex = 12;
             txtLocation.Text = "<location>";
             // 
@@ -289,16 +286,15 @@ namespace SrvSurvey
             // 
             txtVehicle.BackColor = SystemColors.AppWorkspace;
             txtVehicle.BorderStyle = BorderStyle.FixedSingle;
-            txtVehicle.Location = new Point(16, 69);
+            txtVehicle.Location = new Point(6, 69);
             txtVehicle.Name = "txtVehicle";
             txtVehicle.ReadOnly = true;
-            txtVehicle.Size = new Size(86, 20);
+            txtVehicle.Size = new Size(96, 20);
             txtVehicle.TabIndex = 11;
             txtVehicle.Text = "<vehicle>";
             // 
             // groupBox3
             // 
-            groupBox3.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             groupBox3.Controls.Add(btnBioSummary);
             groupBox3.Controls.Add(checkFirstFootFall);
             groupBox3.Controls.Add(txtBodyBioValues);
@@ -445,7 +441,6 @@ namespace SrvSurvey
             // 
             // btnCodexShow
             // 
-            btnCodexShow.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnCodexShow.BackColor = SystemColors.ControlDark;
             btnCodexShow.Enabled = false;
             btnCodexShow.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
@@ -466,7 +461,6 @@ namespace SrvSurvey
             // 
             // btnLogs
             // 
-            btnLogs.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnLogs.BackColor = SystemColors.ControlDark;
             btnLogs.DialogResult = DialogResult.Cancel;
             btnLogs.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
@@ -482,7 +476,6 @@ namespace SrvSurvey
             // 
             // btnSettings
             // 
-            btnSettings.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnSettings.BackColor = SystemColors.ControlDark;
             btnSettings.DialogResult = DialogResult.Cancel;
             btnSettings.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
@@ -498,7 +491,6 @@ namespace SrvSurvey
             // 
             // linkLabel1
             // 
-            linkLabel1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             linkLabel1.Font = new Font("Lucida Sans Typewriter", 9F, FontStyle.Regular, GraphicsUnit.Point);
             linkLabel1.LinkArea = new LinkArea(13, 12);
             linkLabel1.Location = new Point(12, 541);
@@ -527,7 +519,6 @@ namespace SrvSurvey
             // 
             // groupBox4
             // 
-            groupBox4.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             groupBox4.Controls.Add(btnGuardianThings);
             groupBox4.Controls.Add(btnRuins);
             groupBox4.Controls.Add(btnRuinsMap);
@@ -653,7 +644,6 @@ namespace SrvSurvey
             // 
             // btnSphereLimit
             // 
-            btnSphereLimit.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnSphereLimit.BackColor = SystemColors.ControlDark;
             btnSphereLimit.Enabled = false;
             btnSphereLimit.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
@@ -669,7 +659,6 @@ namespace SrvSurvey
             // 
             // linkLabel2
             // 
-            linkLabel2.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             linkLabel2.Font = new Font("Lucida Sans Typewriter", 9F, FontStyle.Regular, GraphicsUnit.Point);
             linkLabel2.LinkArea = new LinkArea(17, 22);
             linkLabel2.Location = new Point(10, 561);
@@ -683,7 +672,6 @@ namespace SrvSurvey
             // 
             // btnRamTah
             // 
-            btnRamTah.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnRamTah.BackColor = SystemColors.ControlDark;
             btnRamTah.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
             btnRamTah.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
@@ -698,7 +686,6 @@ namespace SrvSurvey
             // 
             // btnPublish
             // 
-            btnPublish.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnPublish.BackColor = SystemColors.ControlDark;
             btnPublish.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
             btnPublish.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
@@ -714,8 +701,6 @@ namespace SrvSurvey
             // 
             // checkTempHide
             // 
-            checkTempHide.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            checkTempHide.AutoSize = true;
             checkTempHide.Location = new Point(12, 517);
             checkTempHide.Name = "checkTempHide";
             checkTempHide.Size = new Size(227, 16);
@@ -726,7 +711,6 @@ namespace SrvSurvey
             // 
             // groupBox5
             // 
-            groupBox5.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             groupBox5.Controls.Add(txtDistance);
             groupBox5.Controls.Add(txtJumps);
             groupBox5.Controls.Add(label6);
@@ -866,7 +850,6 @@ namespace SrvSurvey
             // 
             // btnTest
             // 
-            btnTest.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnTest.BackColor = SystemColors.ControlDark;
             btnTest.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
             btnTest.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
@@ -882,7 +865,7 @@ namespace SrvSurvey
             // groupCodex
             // 
             groupCodex.Controls.Add(btnCodexBingo);
-            groupCodex.Location = new Point(6, 433);
+            groupCodex.Location = new Point(12, 433);
             groupCodex.Name = "groupCodex";
             groupCodex.Size = new Size(87, 78);
             groupCodex.TabIndex = 31;

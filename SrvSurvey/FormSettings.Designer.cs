@@ -35,6 +35,7 @@ namespace SrvSurvey
             btnSave = new FlatButton();
             btnCancel = new FlatButton();
             tabPage1 = new TabPage();
+            checkDarkTheme = new CheckBox();
             btnPostProcess = new FlatButton();
             linkResetTheme = new LinkLabel();
             panelTheme = new Panel();
@@ -169,7 +170,7 @@ namespace SrvSurvey
             linkAboutOne = new LinkLabel();
             colorDialog = new ColorDialog();
             colorTheme = new ColorDialog();
-            checkDarkTheme = new CheckBox();
+            checkBox21 = new CheckBox();
             panel1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numGravityWarningLevel).BeginInit();
@@ -226,6 +227,7 @@ namespace SrvSurvey
             // 
             // btnNextProc
             // 
+            btnNextProc.FlatStyle = FlatStyle.Flat;
             btnNextProc.Location = new Point(4, 16);
             btnNextProc.Name = "btnNextProc";
             btnNextProc.Size = new Size(243, 23);
@@ -238,6 +240,7 @@ namespace SrvSurvey
             // btnSave
             // 
             btnSave.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnSave.FlatStyle = FlatStyle.Flat;
             btnSave.Location = new Point(424, 14);
             btnSave.Margin = new Padding(4, 3, 4, 3);
             btnSave.Name = "btnSave";
@@ -251,6 +254,7 @@ namespace SrvSurvey
             // 
             btnCancel.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnCancel.DialogResult = DialogResult.Cancel;
+            btnCancel.FlatStyle = FlatStyle.Flat;
             btnCancel.Location = new Point(518, 14);
             btnCancel.Margin = new Padding(4, 3, 4, 3);
             btnCancel.Name = "btnCancel";
@@ -298,9 +302,22 @@ namespace SrvSurvey
             tabPage1.TabIndex = 0;
             tabPage1.Text = "General";
             // 
+            // checkDarkTheme
+            // 
+            checkDarkTheme.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            checkDarkTheme.AutoSize = true;
+            checkDarkTheme.Location = new Point(447, 171);
+            checkDarkTheme.Name = "checkDarkTheme";
+            checkDarkTheme.Size = new Size(87, 19);
+            checkDarkTheme.TabIndex = 39;
+            checkDarkTheme.Tag = "darkTheme";
+            checkDarkTheme.Text = "Dark theme";
+            checkDarkTheme.UseVisualStyleBackColor = true;
+            // 
             // btnPostProcess
             // 
             btnPostProcess.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnPostProcess.FlatStyle = FlatStyle.Flat;
             btnPostProcess.Location = new Point(418, 381);
             btnPostProcess.Name = "btnPostProcess";
             btnPostProcess.Size = new Size(184, 29);
@@ -336,6 +353,7 @@ namespace SrvSurvey
             // btnTheme
             // 
             btnTheme.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnTheme.FlatStyle = FlatStyle.Flat;
             btnTheme.Location = new Point(447, 103);
             btnTheme.Name = "btnTheme";
             btnTheme.Size = new Size(108, 45);
@@ -367,6 +385,7 @@ namespace SrvSurvey
             // btnResetOverlays
             // 
             btnResetOverlays.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnResetOverlays.FlatStyle = FlatStyle.Flat;
             btnResetOverlays.Location = new Point(418, 260);
             btnResetOverlays.Name = "btnResetOverlays";
             btnResetOverlays.Size = new Size(182, 32);
@@ -446,6 +465,7 @@ namespace SrvSurvey
             // 
             // btnChooseJournalFolder
             // 
+            btnChooseJournalFolder.FlatStyle = FlatStyle.Flat;
             btnChooseJournalFolder.Location = new Point(10, 220);
             btnChooseJournalFolder.Name = "btnChooseJournalFolder";
             btnChooseJournalFolder.Size = new Size(26, 37);
@@ -623,6 +643,7 @@ namespace SrvSurvey
             // 
             // tabPage4
             // 
+            tabPage4.Controls.Add(checkBox21);
             tabPage4.Controls.Add(checkBox20);
             tabPage4.Controls.Add(pictureBox12);
             tabPage4.Controls.Add(label15);
@@ -732,6 +753,7 @@ namespace SrvSurvey
             // 
             // btnClearTrackers
             // 
+            btnClearTrackers.FlatStyle = FlatStyle.Flat;
             btnClearTrackers.Location = new Point(10, 121);
             btnClearTrackers.Name = "btnClearTrackers";
             btnClearTrackers.Size = new Size(156, 23);
@@ -784,6 +806,7 @@ namespace SrvSurvey
             // 
             // btnClearUnclaimed
             // 
+            btnClearUnclaimed.FlatStyle = FlatStyle.Flat;
             btnClearUnclaimed.Location = new Point(10, 92);
             btnClearUnclaimed.Name = "btnClearUnclaimed";
             btnClearUnclaimed.Size = new Size(156, 23);
@@ -1257,6 +1280,7 @@ namespace SrvSurvey
             // 
             // btnBannerColor
             // 
+            btnBannerColor.FlatStyle = FlatStyle.Flat;
             btnBannerColor.Location = new Point(10, 242);
             btnBannerColor.Name = "btnBannerColor";
             btnBannerColor.Size = new Size(100, 23);
@@ -1309,6 +1333,7 @@ namespace SrvSurvey
             // 
             // btnChooseScreenshotSourceFolder
             // 
+            btnChooseScreenshotSourceFolder.FlatStyle = FlatStyle.Flat;
             btnChooseScreenshotSourceFolder.Location = new Point(10, 47);
             btnChooseScreenshotSourceFolder.Name = "btnChooseScreenshotSourceFolder";
             btnChooseScreenshotSourceFolder.Size = new Size(26, 35);
@@ -1319,6 +1344,7 @@ namespace SrvSurvey
             // 
             // btnChooseScreenshotTargetFolder
             // 
+            btnChooseScreenshotTargetFolder.FlatStyle = FlatStyle.Flat;
             btnChooseScreenshotTargetFolder.Location = new Point(10, 104);
             btnChooseScreenshotTargetFolder.Name = "btnChooseScreenshotTargetFolder";
             btnChooseScreenshotTargetFolder.Size = new Size(26, 35);
@@ -1931,17 +1957,19 @@ namespace SrvSurvey
             // 
             colorDialog.Color = Color.Yellow;
             // 
-            // checkDarkTheme
+            // checkBox21
             // 
-            checkDarkTheme.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            checkDarkTheme.AutoSize = true;
-            checkDarkTheme.Location = new Point(447, 171);
-            checkDarkTheme.Name = "checkDarkTheme";
-            checkDarkTheme.Size = new Size(87, 19);
-            checkDarkTheme.TabIndex = 39;
-            checkDarkTheme.Tag = "darkTheme";
-            checkDarkTheme.Text = "Dark theme";
-            checkDarkTheme.UseVisualStyleBackColor = true;
+            checkBox21.AutoSize = true;
+            checkBox21.Checked = true;
+            checkBox21.CheckState = CheckState.Checked;
+            checkBox21.Location = new Point(10, 399);
+            checkBox21.Margin = new Padding(4, 3, 4, 3);
+            checkBox21.Name = "checkBox21";
+            checkBox21.Size = new Size(190, 19);
+            checkBox21.TabIndex = 34;
+            checkBox21.Tag = "highlightRegionalFirsts";
+            checkBox21.Text = "Highlight regional firsts in gold";
+            checkBox21.UseVisualStyleBackColor = true;
             // 
             // FormSettings
             // 
@@ -2154,5 +2182,6 @@ namespace SrvSurvey
         private CheckBox checkBox19;
         private CheckBox checkBox20;
         private CheckBox checkDarkTheme;
+        private CheckBox checkBox21;
     }
 }

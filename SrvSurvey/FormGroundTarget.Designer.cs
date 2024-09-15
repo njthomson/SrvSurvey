@@ -44,7 +44,6 @@ namespace SrvSurvey
             // 
             // label2
             // 
-            label2.AutoSize = true;
             label2.Location = new Point(56, 79);
             label2.Margin = new Padding(4, 0, 4, 0);
             label2.Name = "label2";
@@ -54,7 +53,6 @@ namespace SrvSurvey
             // 
             // label3
             // 
-            label3.AutoSize = true;
             label3.Location = new Point(42, 109);
             label3.Margin = new Padding(4, 0, 4, 0);
             label3.Name = "label3";
@@ -111,11 +109,10 @@ namespace SrvSurvey
             // label6
             // 
             label6.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            label6.AutoSize = true;
             label6.Location = new Point(14, 10);
             label6.Margin = new Padding(4, 0, 4, 0);
             label6.Name = "label6";
-            label6.Size = new Size(464, 45);
+            label6.Size = new Size(480, 64);
             label6.TabIndex = 6;
             label6.Text = "Got a tip from a mysterious stranger to go to some Lat/Long on some planet or moon?\r\n\r\nEnter some Lat/Long position and guidance will appear when you approach.";
             // 

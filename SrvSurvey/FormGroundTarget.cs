@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 
 namespace SrvSurvey
 {
-    internal partial class FormGroundTarget : Form
+    internal partial class FormGroundTarget : DraggableForm
     {
         public FormGroundTarget()
         {
@@ -78,4 +78,5 @@ namespace SrvSurvey
             }
         }
     }
+
 }

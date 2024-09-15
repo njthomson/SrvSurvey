@@ -221,6 +221,16 @@ namespace SrvSurvey.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] copy {
+            get {
+                object obj = ResourceManager.GetObject("copy", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap coral_18 {
@@ -341,6 +351,16 @@ namespace SrvSurvey.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] logo2 {
+            get {
+                object obj = ResourceManager.GetObject("logo2", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap osseus_18 {
@@ -357,6 +377,16 @@ namespace SrvSurvey.Properties {
             get {
                 object obj = ResourceManager.GetObject("osseus38", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] paste {
+            get {
+                object obj = ResourceManager.GetObject("paste", resourceCulture);
+                return ((byte[])(obj));
             }
         }
         

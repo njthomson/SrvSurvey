@@ -342,7 +342,7 @@ namespace SrvSurvey
 
                 // draw line part from right to left, highlighting if Neutron and/or if next, ahead or behind
                 if (n == nextHopIdx)
-                    g.DrawLine(GameColors.Route.penNext, x - one, y, x - w, y);
+                    g.DrawLine(GameColors.Route.penNext4, x - one, y, x - w, y);
                 else if (n < nextHopIdx && d > game.shipMaxJump)
                     g.DrawLine(GameColors.Route.penNeutronBehind, x, y, x - w, y);
                 else if (n < nextHopIdx)
@@ -371,8 +371,23 @@ namespace SrvSurvey
                 }
 
                 // save the x value for drawing later
-                if (n + 1 == nextHopIdx)
+                if (n == nextHopIdx)
+                {
+                    if (pixelsPerLY < limitPixelsPerLY)
+                    {
+                        g.DrawLine(GameColors.Route.penNext2, x - two, y, x - oneTwo, y - ten);
+                        g.DrawLine(GameColors.Route.penNext2, x - two, y, x - oneTwo, y + ten);
+                    }
+                    else
+                    {
+                        g.DrawLine(GameColors.Route.penNext2, x - dotRadius, y, x - ten - dotRadius, y - ten);
+                        g.DrawLine(GameColors.Route.penNext2, x - dotRadius, y, x - ten - dotRadius, y + ten);
+                    }
+                }
+                else if (n + 1 == nextHopIdx)
+                {
                     xNow = x;
+                }
 
                 r.X -= w;
                 x -= w;
@@ -388,7 +403,7 @@ namespace SrvSurvey
             // finally redraw dot for next jump, as it got clipped by prior rendering
             if (pixelsPerLY < limitPixelsPerLY)
             {
-                g.DrawLine(GameColors.Route.penNext, xNow - 1, y - eight, xNow - 1, y + eight);
+                g.DrawLine(GameColors.Route.penNext2, xNow, y - six, xNow, y + six);
             }
             else if (nextHopIdx > 0)
             {

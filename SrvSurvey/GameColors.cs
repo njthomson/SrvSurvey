@@ -568,7 +568,8 @@ namespace SrvSurvey
         /// </summary>
         public static class Route
         {
-            public static Pen penNext = newPen(Color.Cyan, 4, LineCap.Triangle, LineCap.Triangle);
+            public static Pen penNext2 = newPen(Color.Cyan, 2, LineCap.Triangle, LineCap.Triangle);
+            public static Pen penNext4 = newPen(Color.Cyan, 4, LineCap.Triangle, LineCap.Triangle);
             public static Pen penNeutronAhead = newPen(Color.DarkCyan, 4, LineCap.Triangle, LineCap.Triangle, DashStyle.Dash);
             public static Pen penNeutronBehind = newPen(Color.DarkCyan, 4, LineCap.Triangle, LineCap.Triangle);
             public static Pen penAhead = newPen(OrangeDim, 4, DashStyle.Dot);

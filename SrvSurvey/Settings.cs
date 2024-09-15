@@ -29,6 +29,7 @@ namespace SrvSurvey
         public bool autoShowPlotSysStatus = true;
         public bool autoShowPlotBioSystem = true;
         public bool drawBodyBiosOnlyWhenNear = true;
+        public bool highlightRegionalFirsts = false;
         public bool autoShowPlotGalMap = true;
         public bool autoShowHumanSitesTest = false;
         public bool autoShowPlotJumpInfoTest = true;
@@ -159,7 +160,7 @@ namespace SrvSurvey
 
         public string? localFloraFolder = null;
 
-        public bool darkTheme = true;
+        public bool darkTheme = false;
 
         #region loading /saving
 

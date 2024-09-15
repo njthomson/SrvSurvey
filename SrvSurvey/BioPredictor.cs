@@ -153,8 +153,8 @@ namespace BioCriterias
             var currentName = (variant == "" ? species! : $"{genus} {species} - {variant}").Trim();
             var failures = testQuery(criteria.query, $"{genus} {species} {variant}".Trim());
 
-            //if (this.bodyName.Contains("A 3") && currentName?.Contains("Campestris") == true) Debugger.Break();
-            //if (currentName?.Contains("Informem") == true) Debugger.Break();
+            //if (this.bodyName.Contains("A 4 b") && currentName?.Contains("Viride") == true) Debugger.Break();
+            //if (currentName?.Contains("Brain") == true) Debugger.Break();
 
             // add a prediction if no failures and we have genus, species AND variant
             if (failures.Count == 0 && genus != null && species != null && variant != null)

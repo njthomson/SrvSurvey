@@ -172,7 +172,7 @@ namespace SrvSurvey.canonn
                 //this.genus.First(_ => _.englishName == "Sinuous Tubers").englishName = "Tubers";
                 this.genus.First(_ => _.englishName == "Shards").englishName = "Crystalline Shards";
 
-                File.WriteAllText(bioRefPath, JsonConvert.SerializeObject(this.genus));
+                File.WriteAllText(bioRefPath, JsonConvert.SerializeObject(this.genus, Formatting.Indented));
                 Game.log("prepBioRef: complete");
             }
             else

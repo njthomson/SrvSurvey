@@ -4,7 +4,7 @@ using System.Windows.Forms.VisualStyles;
 
 namespace SrvSurvey
 {
-    public partial class FormRamTah : Form
+    public partial class FormRamTah : DraggableForm
     {
         public static FormRamTah? activeForm;
         private Color checkedColor = Color.Turquoise;
