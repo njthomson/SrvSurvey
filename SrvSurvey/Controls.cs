@@ -237,8 +237,6 @@ namespace SrvSurvey
             }
         }
 
-        private StatusStrip? doHijack;
-
         private void hijack(StatusStrip ctrl)
         {
             if (ctrl == null) return;

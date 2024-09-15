@@ -1009,7 +1009,7 @@ namespace SrvSurvey
             }
             else
             {
-                ctrl.BackColor = dark ? SystemColors.AppWorkspace : SystemColors.Window;
+                ctrl.BackColor = dark ? SystemColors.AppWorkspace : SystemColors.Control;
             }
 
             foreach (Control child in ctrl.Controls)
