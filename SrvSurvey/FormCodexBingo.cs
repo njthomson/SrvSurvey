@@ -180,6 +180,11 @@ namespace SrvSurvey
                 var match = Game.codexRef.matchFromEntryId(entry.entryid, true);
                 if (entry.platform == "legacy" || entry.hud_category != "Biology")
                 {
+                    if (entry.english_name.Contains("Mollusc"))
+                    {
+                        // TODO: add an extra node to split the types of various Molluscs
+
+                    }
                     // hierarchy: /hud_category/sub_class/entryId
                     var leafName = entry.english_name;
                     if (leafName.EndsWith(" " + subClass.Text) && leafName != subClass.Text && subClass.Text != "Tubers")

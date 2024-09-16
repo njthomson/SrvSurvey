@@ -2066,8 +2066,8 @@
   "Turtle": {
     "name": "$Ancient_Small_005:#index=1;",
     "backgroundImage": "",
-    "imageOffset": "508, 585",
-    "scaleFactor": 0.57,
+    "imageOffset": "520, 509",
+    "scaleFactor": 0.66,
     "poi": [
       { "name": "A01", "type": "brokeObelisk", "angle": 18.3196440145841, "dist": 165.68542318913287157227375677, "rot": 262 },
       { "name": "A02", "type": "brokeObelisk", "angle": 19.874091463679, "dist": 154.54293905725556585549091322, "rot": 241 },
