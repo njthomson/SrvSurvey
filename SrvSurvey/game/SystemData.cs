@@ -771,6 +771,10 @@ namespace SrvSurvey.game
                 body.predictSpecies();
                 if (Game.activeGame?.systemData == this) Program.invalidateActivePlotters();
             }
+
+            var geoSignals = entry.Signals.FirstOrDefault(_ => _.Type == "$SAA_SignalType_Geological;");
+            if (geoSignals != null && body.geoSignalCount < geoSignals.Count)
+                body.geoSignalCount = geoSignals.Count;
         }
 
         public void onJournalEntry(SAASignalsFound entry)
@@ -806,6 +810,10 @@ namespace SrvSurvey.game
                     }
                 }
             }
+
+            var geoSignals = entry.Signals.FirstOrDefault(_ => _.Type == "$SAA_SignalType_Geological;");
+            if (geoSignals != null && body.geoSignalCount < geoSignals.Count)
+                body.geoSignalCount = geoSignals.Count;
         }
 
         public void onJournalEntry(ApproachBody entry)
@@ -837,21 +845,6 @@ namespace SrvSurvey.game
             body.lastTouchdown = entry;
         }
 
-        public void onJournalEntry(Disembark entry)
-        {
-            // this doesn't work very well
-            //if (entry.OnPlanet)
-            //{
-            //    // assume first footfall if body was not discovered previously
-            //    var body = this.findOrCreate(entry.Body, entry.BodyID);
-            //    if (!body.wasDiscovered)
-            //    {
-            //        Game.log($"Assuming first footfall when disembarking an undiscovered body: '{body.name}' ({body.id})");
-            //        body.firstFootFall = true;
-            //    }
-            //}
-        }
-
         public void onJournalEntry(CodexEntry entry)
         {
             // track if this is a personal first discovery
@@ -862,7 +855,30 @@ namespace SrvSurvey.game
             }
 
             if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! Expected: `{this.address}`, got: {entry.SystemAddress}"); return; }
-            // ignore non bio or Notable stellar phenomena entries
+
+            var body = this.bodies.FirstOrDefault(_ => _.id == entry.BodyID);
+            if (body == null) return;
+
+            // process geo signals
+            if (entry.SubCategory == "$Codex_SubCategory_Geology_and_Anomalies;" && entry.Latitude != 0 && entry.Longitude != 0)
+            {
+                if (body.geoSignals == null) body.geoSignals = new List<SystemGeoSignal>();
+                // add if not already present, and not within 25m
+                var geoSignal = body.geoSignals.Find(s => s.entryId == entry.EntryID && Util.getDistance(s.location, entry, body.radius) < 25);
+                if (geoSignal == null)
+                {
+                    geoSignal = new SystemGeoSignal()
+                    {
+                        entryId = entry.EntryID,
+                        name = entry.Name,
+                        nameLocalized = entry.Name_Localised,
+                        location = entry,
+                    };
+                    body.geoSignals.Add(geoSignal);
+                }
+            }
+
+            // otherwise, ignore non bio or Notable stellar phenomena entries
             if (entry.SubCategory != "$Codex_SubCategory_Organic_Structures;" || entry.NearestDestination == "$Fixed_Event_Life_Cloud;" || entry.NearestDestination == "$Fixed_Event_Life_Ring;" || entry.Latitude == 0 || entry.Longitude == 0) return;
 
             if (entry.BodyID == null)
@@ -872,10 +888,7 @@ namespace SrvSurvey.game
                 entry.BodyID = FormPostProcess.activeForm.lastBodyId;
             }
 
-            var body = this.bodies.FirstOrDefault(_ => _.id == entry.BodyID);
-            if (body == null) return;
             if (body!.organisms == null) body.organisms = new List<SystemOrganism>();
-
 
             // find by first variant or entryId, then genusName
             var match = Game.codexRef.matchFromEntryId(entry.EntryID);
@@ -1924,6 +1937,12 @@ namespace SrvSurvey.game
         public List<SystemOrganism>? organisms;
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public int geoSignalCount;
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public List<SystemGeoSignal> geoSignals;
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public bool firstFootFall;
 
         /// <summary> A of settlements known on this body. /// </summary>
@@ -2186,7 +2205,7 @@ namespace SrvSurvey.game
 
             // bucket by genus
             this.genusPredictions.Clear();
-            foreach(var foo in this.predictions)
+            foreach (var foo in this.predictions)
             {
                 var genus = foo.Value.species.genus;
                 if (!genusPredictions.ContainsKey(genus)) genusPredictions[genus] = new Dictionary<BioSpecies, List<BioVariant>>();
@@ -2371,5 +2390,13 @@ namespace SrvSurvey.game
                     this.reward = match.reward;
             }
         }
+    }
+
+    internal class SystemGeoSignal
+    {
+        public long entryId;
+        public string name;
+        public string nameLocalized;
+        public LatLong2 location;
     }
 }
