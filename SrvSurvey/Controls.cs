@@ -199,8 +199,8 @@ namespace SrvSurvey
                         BackColor = SystemColors.ControlDarkDark,
                     };
                     fakeMinimize.FlatAppearance.BorderSize = 0;
-                    fakeMinimize.FlatAppearance.MouseOverBackColor = Color.SkyBlue;
-                    fakeMinimize.FlatAppearance.MouseDownBackColor = Color.DeepSkyBlue;
+                    fakeMinimize.FlatAppearance.MouseOverBackColor = Color.CadetBlue;
+                    fakeMinimize.FlatAppearance.MouseDownBackColor = Color.SteelBlue;
                     fakeMinimize.Click += new EventHandler((object? sender, EventArgs args) => this.WindowState = FormWindowState.Minimized);
                     this.Controls.Add(fakeMinimize);
                 }

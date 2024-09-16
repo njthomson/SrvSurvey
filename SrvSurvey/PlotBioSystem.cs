@@ -493,7 +493,7 @@ namespace SrvSurvey
                     if (isLegacy)
                     {
                         displayName = species.Key.englishName;
-                        foreach(var tail in legacyTailTrimList)
+                        foreach (var tail in legacyTailTrimList)
                             if (displayName.EndsWith(tail)) displayName = displayName.Replace(tail, "");
                     }
 
@@ -657,21 +657,27 @@ namespace SrvSurvey
 
         public static void drawVolumeBars(Graphics g, float x, float y, bool highlight, long reward, long maxReward = -1, bool isNewEntry = false)
         {
+            var col = highlight ? VolColor.Blue : VolColor.Orange;
+            if (isNewEntry) col = VolColor.Gold;
+
+            drawVolumeBars(g, x, y, col, reward, maxReward);
+        }
+
+        public static void drawVolumeBars(Graphics g, float x, float y, VolColor col, long reward, long maxReward = -1)
+        {
             var ww = eight;
-            var bb = highlight ? GameColors.brushCyan : GameColors.brushGameOrange;
-            //var bb2 = new HatchBrush(HatchStyle.DarkUpwardDiagonal, highlight ? Color.FromArgb(200, GameColors.DarkCyan) : GameColors.Orange, Color.Black);
-            var bb2 = new SolidBrush(highlight ? Color.FromArgb(180, GameColors.DarkCyan) : Color.FromArgb(140, GameColors.OrangeDim)); //GameColors.OrangeDim);
+            Brush bb, bb2;
+            Pen pp, pp2, ppp;
 
-            var pp = highlight ? Pens.DarkCyan : GameColors.penGameOrangeDim1;
-            var pp2 = highlight ? Pens.DarkCyan : GameColors.newPen(Color.FromArgb(124, GameColors.Orange));
-
-            // draw outer dotted box
-            g.FillRectangle(Brushes.Black, x, y - 12, ww, 12);
-            var ppp = highlight
-                ? GameColors.newPen(Color.FromArgb(96, GameColors.DarkCyan), 1.9f, DashStyle.Dot)
-                : GameColors.newPen(Color.FromArgb(96, GameColors.Orange), 1.9f, DashStyle.Dot);
-
-            if (isNewEntry)
+            if (col == VolColor.Blue)
+            {
+                bb = GameColors.brushCyan;
+                bb2 = new SolidBrush(Color.FromArgb(180, GameColors.DarkCyan));
+                ppp = GameColors.newPen(Color.FromArgb(96, GameColors.DarkCyan), 1.9f, DashStyle.Dot);
+                pp = Pens.DarkCyan;
+                pp2 = Pens.DarkCyan;
+            }
+            else if (col == VolColor.Gold)
             {
                 bb = (SolidBrush)Brushes.DarkGoldenrod;
                 pp = Pens.Gold;
@@ -679,6 +685,25 @@ namespace SrvSurvey
                 bb2 = (SolidBrush)Brushes.DarkGoldenrod;
                 pp2 = Pens.Gold;
             }
+            else if (col == VolColor.Grey)
+            {
+                bb = new SolidBrush(Color.FromArgb(255, 76, 76, 76));
+                bb2 = new SolidBrush(Color.FromArgb(140, 38, 38, 38));
+                ppp = GameColors.newPen(Color.FromArgb(96, 142, 142, 142), 1.9f, DashStyle.Dot);
+                pp = GameColors.newPen(Color.FromArgb(255, 54, 54, 54));
+                pp2 = GameColors.newPen(Color.FromArgb(124, 96, 96, 96));
+            }
+            else // Orange
+            {
+                bb = GameColors.brushGameOrange;
+                bb2 = new SolidBrush(Color.FromArgb(140, GameColors.OrangeDim));
+                ppp = GameColors.newPen(Color.FromArgb(96, GameColors.Orange), 1.9f, DashStyle.Dot);
+                pp = GameColors.penGameOrangeDim1;
+                pp2 = GameColors.newPen(Color.FromArgb(124, GameColors.Orange));
+            }
+
+            // draw outer dotted box
+            g.FillRectangle(Brushes.Black, x, y - 12, ww, 12);
 
             g.DrawRectangle(ppp, x, y - oneTwo, ww, oneFive);
 
@@ -760,6 +785,14 @@ namespace SrvSurvey
                 else return;
             }
         }
+    }
+
+    public enum VolColor
+    {
+        Orange,
+        Blue,
+        Gold,
+        Grey
     }
 }
 

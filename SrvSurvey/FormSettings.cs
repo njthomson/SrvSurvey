@@ -420,25 +420,25 @@ namespace SrvSurvey
         private void picBucket1_Paint(object sender, PaintEventArgs e)
         {
             e.Graphics.ScaleTransform(2, 2);
-            PlotBioSystem.drawVolumeBars(e.Graphics, 7.5f, 16.5f, false, 1);
+            PlotBioSystem.drawVolumeBars(e.Graphics, 7.5f, 16.5f, VolColor.Orange, 1);
         }
 
         private void picBucket2_Paint(object sender, PaintEventArgs e)
         {
             e.Graphics.ScaleTransform(2, 2);
-            PlotBioSystem.drawVolumeBars(e.Graphics, 7.5f, 16.5f, false, (long)Game.settings.bioRingBucketTwo * 1_000_000);
+            PlotBioSystem.drawVolumeBars(e.Graphics, 7.5f, 16.5f, VolColor.Orange, (long)Game.settings.bioRingBucketTwo * 1_000_000);
         }
 
         private void picBucket3_Paint(object sender, PaintEventArgs e)
         {
             e.Graphics.ScaleTransform(2, 2);
-            PlotBioSystem.drawVolumeBars(e.Graphics, 7.5f, 16.5f, false, (long)Game.settings.bioRingBucketThree * 1_000_000);
+            PlotBioSystem.drawVolumeBars(e.Graphics, 7.5f, 16.5f, VolColor.Orange, (long)Game.settings.bioRingBucketThree * 1_000_000);
         }
 
         private void picBucket4_Paint(object sender, PaintEventArgs e)
         {
             e.Graphics.ScaleTransform(2, 2);
-            PlotBioSystem.drawVolumeBars(e.Graphics, 7.5f, 16.5f, false, 1 + (long)Game.settings.bioRingBucketThree * 1_000_000);
+            PlotBioSystem.drawVolumeBars(e.Graphics, 7.5f, 16.5f, VolColor.Orange, 1 + (long)Game.settings.bioRingBucketThree * 1_000_000);
         }
 
         private void checkBodyInfo_CheckedChanged(object sender, EventArgs e)

@@ -1,9 +1,9 @@
 {
   "ghVer": "1.1.3.143",
   "msVer": "1.1.3.0",
-  "bioCriteria": 3,
-  "bioEngine": 3,
-  "codexRef": 5,
-  "settlementTemplate": 37,
-  "guardian": 37
+  "bioCriteria": 4,
+  "bioEngine": 4,
+  "codexRef": 6,
+  "settlementTemplate": 38,
+  "guardian": 38
 }
