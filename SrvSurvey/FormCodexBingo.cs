@@ -180,27 +180,31 @@ namespace SrvSurvey
                 var match = Game.codexRef.matchFromEntryId(entry.entryid, true);
                 if (entry.platform == "legacy" || entry.hud_category != "Biology")
                 {
+                    var leafParent = subClass;
                     if (entry.english_name.Contains("Mollusc"))
                     {
-                        // TODO: add an extra node to split the types of various Molluscs
-
+                        // Add an extra node to split apart the many types Molluscs
+                        var groupName = entry.english_name.Substring(entry.english_name.IndexOf(' ') + 1);
+                        leafParent = subClass.Nodes.Set(groupName, groupName);
+                        leafParent.Tag = new CodexTag(groupName) { species = groupName };
                     }
+
                     // hierarchy: /hud_category/sub_class/entryId
                     var leafName = entry.english_name;
-                    if (leafName.EndsWith(" " + subClass.Text) && leafName != subClass.Text && subClass.Text != "Tubers")
-                        leafName = leafName.Replace(" " + subClass.Text, "");
+                    if (leafName.EndsWith(" " + leafParent.Text) && leafName != leafParent.Text && leafParent.Text != "Tubers")
+                        leafName = leafName.Replace(" " + leafParent.Text, "");
 
-                    var leaf = subClass.Nodes.Set(entry.entryid, leafName);
+                    var leaf = leafParent.Nodes.Set(entry.entryid, leafName);
                     var leafTag = new CodexTag(entry.english_name, entry);
                     leaf.Tag = leafTag;
 
                     if (match?.genus != null && subClassTag.genus == null)
-                        subClassTag.genus = match.genus;
+                        subClassTag.genus = match.genus.englishName;
                 }
                 else
                 {
                     if (subClassTag.genus == null)
-                        subClassTag.genus = match.genus;
+                        subClassTag.genus = match.genus.englishName;
 
                     // hierarchy: /hud_category/sub_class/species
                     // extract species name and colour variant
@@ -209,10 +213,10 @@ namespace SrvSurvey
 
                     var species = subClass.Nodes.Set(parts[1], parts[1]);
                     if (species.Tag == null)
-                        species.Tag = new CodexTag(parts[1]) { species = match.species };
+                        species.Tag = new CodexTag(parts[1]) { species = match.species.englishName };
 
                     var variant = species.Nodes.Set(entry.entryid, parts[3]);
-                    variant.Tag = new CodexTag(parts[3], entry) { variant = match.variant };
+                    variant.Tag = new CodexTag(parts[3], entry) { variant = match.variant.englishName };
                 }
             }
 
@@ -335,9 +339,9 @@ namespace SrvSurvey
             var codexTag = getSelectedNodeCodexTag();
 
             if (codexTag?.variant != null)
-                Clipboard.SetText(codexTag.variant.englishName);
+                Clipboard.SetText(codexTag.variant);
             else if (codexTag?.species != null)
-                Clipboard.SetText(codexTag.species.englishName);
+                Clipboard.SetText(codexTag.species);
             else if (tree.SelectedNode != null)
                 Clipboard.SetText(tree.SelectedNode.Text);
         }
@@ -366,9 +370,9 @@ namespace SrvSurvey
 
             string txt;
             if (codexTag.variant != null)
-                txt = codexTag.variant.englishName;
+                txt = codexTag.variant;
             else if (codexTag.species != null)
-                txt = codexTag.species.englishName;
+                txt = codexTag.species;
             else
                 txt = codexTag.text;
 
@@ -383,7 +387,7 @@ namespace SrvSurvey
             var codexTag = getSelectedNodeCodexTag();
             if (codexTag?.genus == null) return;
 
-            var genusName = codexTag.genus.englishName.Replace(' ', '-').ToLowerInvariant();
+            var genusName = codexTag.genus.Replace(' ', '-').ToLowerInvariant();
 
             // some special cases
             if (genusName.EndsWith("anemone")) genusName = "anemone";
@@ -553,6 +557,11 @@ namespace SrvSurvey
             });
         }
 
+        private void toolCanonnChallenge_Click(object sender, EventArgs e)
+        {
+            Util.openLink("https://canonn.science/codex/canonn-challenge/");
+        }
+
         private void tree_DrawNode(object sender, DrawTreeNodeEventArgs e)
         {
             e.DrawDefault = true;
@@ -609,7 +618,6 @@ namespace SrvSurvey
                 }
             }
         }
-
     }
 
     internal class CodexTag
@@ -617,9 +625,9 @@ namespace SrvSurvey
         public string text;
         public RefCodexEntry? entry;
         public float completion;
-        public BioVariant? variant;
-        public BioSpecies? species;
-        public BioGenus? genus;
+        public string? variant;
+        public string? species;
+        public string? genus;
 
         public int countTotal;
         public int countDiscovered;

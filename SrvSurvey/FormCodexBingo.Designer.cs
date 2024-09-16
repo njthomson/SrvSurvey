@@ -61,6 +61,8 @@
             menuCanonnBioforge = new ToolStripMenuItem();
             menuCanonnResearch = new ToolStripMenuItem();
             menuEDAstro = new ToolStripMenuItem();
+            toolStripSeparator1 = new ToolStripSeparator();
+            toolCanonnChallenge = new ToolStripMenuItem();
             statusStrip1.SuspendLayout();
             panel1.SuspendLayout();
             contextMenu.SuspendLayout();
@@ -116,7 +118,7 @@
             // toolImport
             // 
             toolImport.DisplayStyle = ToolStripItemDisplayStyle.Text;
-            toolImport.DropDownItems.AddRange(new ToolStripItem[] { toolImportFromCanonn, toolImportFromJournal });
+            toolImport.DropDownItems.AddRange(new ToolStripItem[] { toolCanonnChallenge, toolStripSeparator1, toolImportFromCanonn, toolImportFromJournal });
             toolImport.ForeColor = SystemColors.ControlText;
             toolImport.Image = (Image)resources.GetObject("toolImport.Image");
             toolImport.ImageTransparentColor = Color.Magenta;
@@ -128,14 +130,14 @@
             // toolImportFromCanonn
             // 
             toolImportFromCanonn.Name = "toolImportFromCanonn";
-            toolImportFromCanonn.Size = new Size(240, 22);
+            toolImportFromCanonn.Size = new Size(268, 22);
             toolImportFromCanonn.Text = "Import from Canonn Challenge";
             toolImportFromCanonn.Click += toolImportFromCanonn_Click;
             // 
             // toolImportFromJournal
             // 
             toolImportFromJournal.Name = "toolImportFromJournal";
-            toolImportFromJournal.Size = new Size(240, 22);
+            toolImportFromJournal.Size = new Size(268, 22);
             toolImportFromJournal.Text = "Import old journal files ...";
             toolImportFromJournal.Click += toolImportFromJournal_Click;
             // 
@@ -283,6 +285,19 @@
             menuEDAstro.Text = "View on ED Astro";
             menuEDAstro.Click += menuEDAstro_Click;
             // 
+            // toolStripSeparator1
+            // 
+            toolStripSeparator1.Name = "toolStripSeparator1";
+            toolStripSeparator1.Size = new Size(265, 6);
+            // 
+            // toolCanonnChallenge
+            // 
+            toolCanonnChallenge.Name = "toolCanonnChallenge";
+            toolCanonnChallenge.Size = new Size(268, 22);
+            toolCanonnChallenge.Text = "Will you take the Canonn Challenge?";
+            toolCanonnChallenge.ToolTipText = "Will you take the Canonn Challenge?";
+            toolCanonnChallenge.Click += toolCanonnChallenge_Click;
+            // 
             // FormCodexBingo
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -330,5 +345,7 @@
         private ToolStripDropDownButton toolImport;
         private ToolStripMenuItem toolImportFromCanonn;
         private ToolStripMenuItem toolImportFromJournal;
+        private ToolStripMenuItem toolCanonnChallenge;
+        private ToolStripSeparator toolStripSeparator1;
     }
 }
