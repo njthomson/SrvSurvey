@@ -1101,7 +1101,6 @@ namespace SrvSurvey.game
 
         private void onJournalEntry(FSSBodySignals entry)
         {
-
             if (FormGenus.activeForm != null)
             {
                 var bioSignals = entry.Signals.FirstOrDefault(_ => _.Type == "$SAA_SignalType_Biological;");
@@ -2328,6 +2327,10 @@ namespace SrvSurvey.game
                         Game.log($"Organism '{entry.Name_Localised}' not found from: '{entry.Name_Localised}' ({entry.EntryID})");
                     }
                 }
+
+                // re-predict species, to clean-up any excess predictions
+                Application.DoEvents();
+                systemBody?.predictSpecies();
             }
         }
 

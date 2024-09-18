@@ -1,5 +1,4 @@
 ﻿using SrvSurvey.game;
-using System.Drawing.Drawing2D;
 
 namespace SrvSurvey
 {
@@ -16,16 +15,29 @@ namespace SrvSurvey
 
         private PlotFSS() : base()
         {
-            if (lastSystemAddress > 0 && lastSystemAddress != game.systemData!.address)
+            if (game.systemData == null) throw new Exception("Why no SystemData when creating PlotFSS?");
+            // game.systemData.lastFssBody = game.systemData.bodies.Find(b => b.shortName == "1a"); // tmp
+            var lastFssBody = game.systemData.lastFssBody;
+
+            if (lastFssBody != null)
+            {
+                lastBodyName = lastFssBody.name;
+                if (!lastFssBody.wasDiscovered) lastBodyName += " (undiscovered)";
+
+                lastInitialValue = Util.GetBodyValue(lastFssBody, false, false).ToString("N0");
+                lastMappedValue = Util.GetBodyValue(lastFssBody, true, true).ToString("N0");
+                if (lastFssBody.bioSignalCount > 0)
+                    lastNotes = $"{lastFssBody.bioSignalCount} bio signals:";
+            }
+            else if (lastSystemAddress > 0 && lastSystemAddress != game.systemData!.address)
             {
                 lastBodyName = null;
-                lastInitialValue = null;
                 lastInitialValue = null;
                 lastMappedValue = null;
                 lastNotes = null;
             }
 
-            lastSystemAddress = game.systemData!.address;
+            lastSystemAddress = game.systemData.address;
         }
 
         public override bool allow { get => PlotFSS.allowPlotter; }
@@ -74,15 +86,15 @@ namespace SrvSurvey
 
                 if (bioSignal != null)
                 {
-                    lastNotes = $"{bioSignal.Count} bio signals";
+                    lastNotes = $"{bioSignal.Count} bio signals:";
 
-                    var hasVulcanism = !string.IsNullOrEmpty(entry.Volcanism);
-                    // TODO: consider check for zero or low atmosphere?
-                    // var lowAtmosphere = this.lastScan?.AtmosphereType == "None";
-                    if (hasVulcanism) // && lowAtmosphere)
-                    {
-                        lastNotes += " | Candidate for Brain Trees?";
-                    }
+                    //var hasVulcanism = !string.IsNullOrEmpty(entry.Volcanism);
+                    //// TODO: consider check for zero or low atmosphere?
+                    //// var lowAtmosphere = this.lastScan?.AtmosphereType == "None";
+                    //if (hasVulcanism) // && lowAtmosphere)
+                    //{
+                    //    lastNotes += " | Candidate for Brain Trees?";
+                    //}
                 }
             }
 
@@ -96,19 +108,29 @@ namespace SrvSurvey
         {
             var brush = lastWasDiscovered ? GameColors.brushGameOrange : GameColors.brushCyan;
 
-            g.DrawString($"Last scan:    {lastBodyName}", GameColors.fontSmaller, brush, four, eight);
+            dty = 8;
+            drawTextAt(four, $"Last scan:    {lastBodyName}", brush, GameColors.fontSmaller);
 
             if (!string.IsNullOrEmpty(lastBodyName))
             {
-                //if (!this.lastWasDiscovered)
-                //    g.DrawString("(undiscovered)", GameColors.fontSmall2, GameColors.brushCyan, 330, 8);
-
                 var msg = $"Estimated value:    {lastInitialValue} cr\r\nWith surface scan:    {lastMappedValue} cr";
-                g.DrawString(msg, GameColors.fontMiddle, brush, oneEight, twoEight);
+                dty = twoSix;
+                drawTextAt(oneEight, msg, GameColors.brushGameOrange, GameColors.fontMiddle);
 
                 if (!string.IsNullOrEmpty(lastNotes))
                 {
-                    g.DrawString(lastNotes, GameColors.fontMiddle, GameColors.brushCyan, oneEight, sixFive);
+                    dty = sixFour;
+                    drawTextAt(oneEight, lastNotes, GameColors.brushCyan, GameColors.fontMiddle);
+
+                    // draw volume bars from predictions
+                    if (game?.systemData?.lastFssBody?.genusPredictions != null)
+                    {
+                        dtx += six;
+                        dtx += PlotBioSystem.drawBodyBars(g, game.systemData.lastFssBody, dtx, dty + two, true);
+
+                        var txt = " " + game.systemData.lastFssBody.getMinMaxBioRewards(false);
+                        drawTextAt(txt, GameColors.brushCyan, GameColors.fontMiddle);
+                    }
                 }
             }
         }

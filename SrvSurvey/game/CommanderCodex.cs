@@ -113,6 +113,11 @@ namespace SrvSurvey.game
             FormCodexBingo.activeForm?.calcCompletions();
         }
 
+        public bool isPersonalFirstDiscovery(string entryId, long systemAddress, int bodyId)
+        {
+            return isPersonalFirstDiscovery(long.Parse(entryId), systemAddress, bodyId);
+        }
+
         public bool isPersonalFirstDiscovery(long entryId, long systemAddress, int bodyId)
         {
             var match = this.codexFirsts.GetValueOrDefault(entryId);

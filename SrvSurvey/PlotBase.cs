@@ -31,6 +31,7 @@ namespace SrvSurvey
         protected static float oneEight = scaled(18f);
         protected static float oneNine = scaled(19f);
         protected static float twenty = scaled(20f);
+        protected static float twoOne = scaled(21f);
         protected static float twoTwo = scaled(22f);
         protected static float twoFour = scaled(24f);
         protected static float twoSix = scaled(26f);

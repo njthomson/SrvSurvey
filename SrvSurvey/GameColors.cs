@@ -204,6 +204,8 @@ namespace SrvSurvey
         public static Pen penBlack4Dash = newPen(Color.Black, 4, DashStyle.Dash);
 
         public static Pen penGameOrangeDim1 = newPen(OrangeDim, 1);
+        public static Pen penGameOrangeDim1Dashed = newPen(OrangeDim, 1, DashStyle.Dash);
+        public static Pen penGameOrangeDim1Dotted = newPen(OrangeDim, 1, DashStyle.Dot);
         public static Pen penGameOrangeDim1b = newPen(Color.FromArgb(128, OrangeDim), 1);
         public static Pen penGameOrangeDim2 = newPen(OrangeDim, 2);
         public static Pen penGameOrangeDim4 = newPen(OrangeDim, 4, LineCap.Triangle, LineCap.Triangle);
@@ -214,6 +216,7 @@ namespace SrvSurvey
 
         public static Pen penCyan1 = newPen(Cyan, 1);
         public static Pen penCyan2 = newPen(Cyan, 2);
+        public static Pen penCyan1Dotted = newPen(Cyan, 1, DashStyle.Dot);
         public static Pen penCyan2Dotted = newPen(Cyan, 2, DashStyle.Dot);
         public static Pen penCyan4 = newPen(Cyan, 4);
         public static Pen penCyan8 = newPen(Cyan, 8);
@@ -505,7 +508,7 @@ namespace SrvSurvey
                 StartCap = LineCap.Triangle,
                 EndCap = LineCap.Triangle,
             };
-            public static Pen penComponentAbsent= new Pen(colorAbsent)
+            public static Pen penComponentAbsent = new Pen(colorAbsent)
             {
                 Width = 1 * GameColors.scaleFactor,
                 DashStyle = DashStyle.Dash,

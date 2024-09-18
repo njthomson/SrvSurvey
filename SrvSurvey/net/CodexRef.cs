@@ -324,10 +324,7 @@ namespace SrvSurvey.canonn
                     codexRefSummary.Add(summary);
 
                     foreach (var speciesRef in genusRef.species)
-                    {
-                        var shortSpeciesName = speciesRef.englishName.Replace(genusRef.englishName, "").Trim();
-                        summary.species.Add(new SummarySpecies(speciesRef, shortSpeciesName));
-                    }
+                        summary.species.Add(new SummarySpecies(speciesRef, speciesRef.displayName));
                 }
             }
 

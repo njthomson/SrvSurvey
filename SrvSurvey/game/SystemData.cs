@@ -2045,7 +2045,7 @@ namespace SrvSurvey.game
         public Dictionary<string, BioVariant> predictions = new Dictionary<string, BioVariant>();
 
         [JsonIgnore]
-        public Dictionary<BioGenus, Dictionary<BioSpecies, List<BioVariant>>> genusPredictions = new Dictionary<BioGenus, Dictionary<BioSpecies, List<BioVariant>>>();
+        public List<SystemGenusPrediction> genusPredictions = new List<SystemGenusPrediction>();
 
         [JsonIgnore]
         public long minBioRewards;
@@ -2203,22 +2203,35 @@ namespace SrvSurvey.game
             Game.log($"predictSpecies: '{this.name}' predicted {predictions.Count} rewards: {this.getMinMaxBioRewards(false)}");
             if (predictions.Count > 0) Game.log("\r\n> " + string.Join("\r\n> ", this.predictions.Keys.Select(k => $"{k} ({predictions[k].entryId})")));
 
-            // bucket by genus
+            // bucket by genus // here!
+            var game = Game.activeGame;
             this.genusPredictions.Clear();
-            foreach (var foo in this.predictions)
+            foreach (var variant in this.predictions.Values)
             {
-                var genus = foo.Value.species.genus;
-                if (!genusPredictions.ContainsKey(genus)) genusPredictions[genus] = new Dictionary<BioSpecies, List<BioVariant>>();
+                var genusPrediction = genusPredictions.Find(g => g.genus == variant.species.genus);
+                if (genusPrediction == null)
+                {
+                    genusPrediction = new SystemGenusPrediction(variant.species.genus);
+                    genusPredictions.Add(genusPrediction);
+                }
 
-                var species = foo.Value.species;
-                if (!genusPredictions[genus].ContainsKey(species)) genusPredictions[genus][species] = new List<BioVariant>();
+                if (!genusPrediction.species.ContainsKey(variant.species)) genusPrediction.species[variant.species] = new List<SystemVariantPrediction>();
 
-                var variantName = foo.Value.name;
-                if (genusPredictions[genus][species].Any(v => v.name == variantName))
-                    Debugger.Break(); // Does this ever happen?
-                else
-                    genusPredictions[genus][species].Add(foo.Value);
+                // is this something we've not seen yet?
+                var isCmdrNew = !game.cmdrCodex.isDiscovered(variant.entryId);
+                if (isCmdrNew) genusPrediction.hasCmdrNew = true;
+                var isRegionalNew = !game.cmdrCodex.isDiscoveredInRegion(variant.entryId, game.cmdr.galacticRegion);
+                if (isRegionalNew) genusPrediction.hasRegionalNew = true;
+
+                var variantPrediction = new SystemVariantPrediction(variant, isCmdrNew, isRegionalNew);
+                genusPrediction.species[variant.species].Add(variantPrediction);
+
+                if (variant.species.reward < genusPrediction.min) genusPrediction.min = variant.reward;
+                if (variant.species.reward > genusPrediction.max) genusPrediction.max = variant.reward;
             }
+
+            if (FormShowCodex.activeForm != null)
+                FormShowCodex.activeForm.prepAllSpecies();
         }
 
         private long getShortListSum(int delta, List<BioVariant> sortedPredictions, bool minNotMax)
@@ -2399,4 +2412,39 @@ namespace SrvSurvey.game
         public string nameLocalized;
         public LatLong2 location;
     }
+
+    internal class SystemGenusPrediction
+    {
+        public BioGenus genus;
+        public Dictionary<BioSpecies, List<SystemVariantPrediction>> species;
+        public long min = 50_000_000;
+        public long max = 0;
+        public bool hasCmdrNew;
+        public bool hasRegionalNew;
+
+        public SystemGenusPrediction(BioGenus genus)
+        {
+            this.genus = genus;
+            this.species = new Dictionary<BioSpecies, List<SystemVariantPrediction>>();
+        }
+
+        public bool isGold { get => hasCmdrNew || (Game.settings.highlightRegionalFirsts && hasRegionalNew); }
+    }
+
+    internal class SystemVariantPrediction
+    {
+        public readonly BioVariant variant;
+        public readonly bool isCmdrNew;
+        public readonly bool isRegionalNew;
+
+        public SystemVariantPrediction(BioVariant variant, bool isCmdrNew, bool isRegionalNew)
+        {
+            this.variant = variant;
+            this.isCmdrNew = isCmdrNew;
+            this.isRegionalNew = isRegionalNew;
+        }
+
+        public bool isGold { get => isCmdrNew || (Game.settings.highlightRegionalFirsts && isRegionalNew); }
+    }
+
 }

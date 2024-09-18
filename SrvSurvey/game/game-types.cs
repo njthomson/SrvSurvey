@@ -268,6 +268,20 @@ namespace SrvSurvey.game
         {
             return $"'{this.name}' ({this.englishName}";
         }
+
+        /// <summary>
+        /// The englishName value without the genus part
+        /// </summary>
+        public string displayName
+        {
+            get
+            {
+                if (this.englishName != genus.englishName)
+                    return this.englishName.Replace(genus.englishName, "").Trim();
+                else
+                    return this.englishName;
+            }
+        }
     }
 
     internal class BioVariant
@@ -297,7 +311,7 @@ namespace SrvSurvey.game
             get
             {
                 if (!this.species.genus.odyssey)
-                    return $"{this.species.genus.englishName}-{this.species.englishName}".Replace(' ', '-');
+                    return $"{this.species.genus.englishName}-{this.species.displayName}".Replace(' ', '-');
 
                 var parts = this.englishName.Split(' ', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
                 if (parts.Length == 4)

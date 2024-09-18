@@ -169,6 +169,7 @@ namespace SrvSurvey
                 {
                     Anchor = AnchorStyles.Top | AnchorStyles.Right,
                     Text = "X",
+                    Font = GameColors.fontMiddle,
                     AutoSize = false,
                     Width = titleHeight,
                     Height = titleHeight,
@@ -190,6 +191,7 @@ namespace SrvSurvey
                     {
                         Anchor = AnchorStyles.Top | AnchorStyles.Right,
                         Text = "_",
+                        Font = GameColors.fontMiddle,
                         AutoSize = false,
                         Width = titleHeight,
                         Height = titleHeight,
