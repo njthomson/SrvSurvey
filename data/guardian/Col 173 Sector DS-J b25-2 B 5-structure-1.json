@@ -8,8 +8,8 @@
     "lat": 44.620869,
     "long": 111.888855
   },
-  "pa": "c1,c2,c3,c5,c6,c7,p1,p12,p5,p6,p7,p8,py1,py2,py3,py4,py5,py6,t1,t3",
-  "pp": "c10,c11,c12,c4,c8,c9,p10,p11,p14,p15,p16,p17,p2,p20,p21,p24,p25,p3,p4,p9,py10,py11,py12,py7,py8,py9,t2,t5,t6",
+  "pa": "c1,c13,c14,c2,c3,c5,c6,c7,p1,p12,p13,p18,p22,p23,p24,p26,p27,p29,p5,p6,p7,p8,py1,py2,py3,py4,py5,py6,t1,t3,t4,t7,t8",
+  "pp": "c10,c11,c12,c15,c4,c8,c9,p10,p11,p14,p15,p16,p17,p19,p2,p20,p21,p25,p28,p3,p30,p4,p9,py10,py11,py12,py7,py8,py9,t2,t5,t6",
   "og": "ABCD",
   "ao": [
     "A11-or,ca-#19-",
