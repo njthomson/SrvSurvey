@@ -223,6 +223,7 @@ namespace SrvSurvey
             // 
             btnCopyLocation.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnCopyLocation.BackColor = SystemColors.ControlDark;
+            btnCopyLocation.Enabled = false;
             btnCopyLocation.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
             btnCopyLocation.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
             btnCopyLocation.FlatStyle = FlatStyle.Flat;

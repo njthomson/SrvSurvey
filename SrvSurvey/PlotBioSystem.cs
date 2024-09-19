@@ -360,6 +360,8 @@ namespace SrvSurvey
 
         private void drawBodyPredictionsRow(SystemGenusPrediction prediction, bool highlight)
         {
+            dtx = (float)Math.Round(dtx);
+            dty = (float)Math.Round(dty);
             var yy = dty;
             var genusName = prediction.genus.englishName;
             Brush b;
@@ -587,7 +589,7 @@ namespace SrvSurvey
 
             // draw outer box indicating how many signals match the body signal count
             g.SmoothingMode = SmoothingMode.Default;
-            var w = (body.bioSignalCount * oneTwo) + three;
+            var w = (body.bioSignalCount * oneTwo) + two;
             g.DrawRectangle(highlight ? GameColors.penCyan1Dotted : GameColors.penGameOrange1Dotted,
                 x - three, y - oneFive,
                 w, twoOne);
@@ -650,6 +652,17 @@ namespace SrvSurvey
                 signalCount--;
             }
 
+            if (signalCount > 0)
+            {
+                var volCol = highlight ? VolColor.Blue : defaultVolCol;
+                while (signalCount > 0)
+                {
+                    drawVolumeBars(g, x, y, volCol, -1, -1, false);
+                    x += oneTwo;
+                    signalCount--;
+                }
+            }
+
             if (signalCount < 0) x -= two;
             return x - ix;
         }
@@ -671,6 +684,13 @@ namespace SrvSurvey
             g.FillRectangle(Brushes.Black, x, y - oneTwo, ww, oneTwo);
             g.DrawRectangle(GameColors.Bio.volEdge[col], x, y - oneTwo, ww, oneFive);
 
+            if (reward <= 0)
+            {
+                // (don't use drawTextAt as that messes with dtx/dty)
+                g.DrawString("?", GameColors.fontSmallBold, GameColors.Bio.brushPrediction, x - 0.7f, y - oneOne);
+                return;
+            }
+
             foreach (var bucket in buckets)
             {
                 if (reward > bucket)
@@ -687,9 +707,10 @@ namespace SrvSurvey
             }
 
             // draw a grey hatch effect if we're drawing a prediction
-            if (col == VolColor.Grey || prediction)
+            if (prediction)
             {
-                g.FillRectangle(GameColors.Bio.brushPredictionHatch, x + one, y + four, ww - one, oneSix);
+                g.FillRectangle(GameColors.Bio.brushPredictionHatch, x + one, y + five, ww - one, oneFour);
+                //g.FillRectangle(GameColors.Bio.brushPredictionHatch, x, y + four, ww + one, oneSix);
             }
             g.SmoothingMode = SmoothingMode.HighQuality;
         }

@@ -348,14 +348,25 @@ namespace SrvSurvey
             if (site.isRuins)
             {
                 drawHeaderText("Approaching Guardian Ruins ...");
-                drawCenterMessage($"{site.displayName}", GameColors.brushCyan);
+                drawCenterMessage($"Ruins #{site.index} - {site.type}", GameColors.brushCyan);
             }
             else
             {
                 drawHeaderText("Approaching Guardian Structure ...");
-                drawCenterMessage($"{site.displayName}", GameColors.brushCyan);
+                var msg = $"{site.type} ";
+
+                if (site.type == GuardianSiteData.SiteType.Robolobster || site.type == GuardianSiteData.SiteType.Squid || site.type == GuardianSiteData.SiteType.Stickyhand)
+                    msg += "- blue print: fighter";
+                else if (site.type == GuardianSiteData.SiteType.Turtle)
+                    msg += "- blue print: module";
+                else if (site.type == GuardianSiteData.SiteType.Bear || site.type == GuardianSiteData.SiteType.Hammerbot || site.type == GuardianSiteData.SiteType.Bowl)
+                    msg += "- blue print: weapon";
+                else
+                    msg += "- no blue print";
+
+                drawCenterMessage(msg, GameColors.brushCyan);
             }
-            drawFooterText("( Don't forget to set 3 fire groups in ships and SRVs )", null);
+            drawFooterText("( Don't forget to set 3 fire groups in ships and SRVs )");
         }
     }
 

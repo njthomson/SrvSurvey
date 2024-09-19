@@ -20,7 +20,7 @@ namespace SrvSurvey.net
             Spansh.client.DefaultRequestHeaders.Add("user-agent", Program.userAgent);
         }
 
-        public async Task<GetSystemResponse> getSystem(string systemName)
+        public async Task<GetSystemResponse> getSystems(string systemName)
         {
             Game.log($"Requesting api/systems: {systemName}");
 
@@ -29,7 +29,16 @@ namespace SrvSurvey.net
             return systems;
         }
 
-        public async Task<ApiSystemDumpSystem> getSystemDump(long systemAddress, bool useCache = false)
+        public async Task<ApiSystem.Record> getSystem(long systemAddress)
+        {
+            Game.log($"Requesting api/system: {systemAddress}");
+
+            var json = await Spansh.client.GetStringAsync($"https://spansh.co.uk/api/system/{systemAddress}");
+            var system = JsonConvert.DeserializeObject<ApiSystem>(json)!;
+            return system.record;
+        }
+
+        public async Task<ApiSystemDump.System> getSystemDump(long systemAddress, bool useCache = false)
         {
             var cacheFilename = Path.Combine(BioPredictor.netCache, $"getSystemDump-{systemAddress}.json");
             string json;
@@ -890,84 +899,87 @@ namespace SrvSurvey.net
 
     internal class ApiSystemDump
     {
-        public ApiSystemDumpSystem system;
-    }
+        public System system;
 
-    internal class ApiSystemDumpSystem
-    {
-        public string allegiance;
-        public int bodyCount;
-        public List<ApiSystemDumpBody> bodies;
-        public StarPos coords;
-        public DateTimeOffset date;
-        public string government;
-        public long id64;
-        public string name;
-        public string primaryEconomy;
-        public string secondaryEconomy;
-        public string security;
-        public List<Station> stations;
-
-        public class Station
+        internal class System
         {
-            public string controllingFaction;
-            public string controllingFactionState;
-            public double distanceToArrival;
-            // TODO: economies
+            public string allegiance;
+            public int bodyCount;
+            public List<Body> bodies;
+            public StarPos coords;
+            public DateTimeOffset date;
             public string government;
-            public long id;
-            public LandingPads landingPads;
-            // TODO: market
+            public long id64;
             public string name;
             public string primaryEconomy;
-            public List<string> services;
-            public string type;
-            public DateTime updateTime;
+            public string secondaryEconomy;
+            public string security;
+            public List<Station> stations;
+            public List<MinorFactionPresence> factions;
+
+            public class Body
+            {
+                public double? absoluteMagnitude;
+                public long? age;
+                public double? axialTilt;
+                public int bodyId;
+                public double? distanceToArrival;
+                public double? semiMajorAxis;
+                public long? id64;
+                public string luminosity;
+                public bool? mainStar;
+                public string name;
+                public double? rotationalPeriod;
+                public bool? rotationalPeriodTidallyLocked;
+                public double? solarMasses;
+                public double? solarRadius;
+                public List<Dictionary<ParentBodyType, int>> parents;
+                public string? spectralClass;
+                // TODO stations[]
+                public string subType;
+                public double? surfaceTemperature;
+                public double? surfacePressure;
+                public string type;
+                public DateTimeOffset updateTime;
+
+                public double? earthMasses;
+                public decimal? radius;
+                public double? gravity;
+                public string? atmosphereType;
+                public Dictionary<string, float>? atmosphereComposition;
+                public Dictionary<string, float>? materials;
+                public string? volcanismType;
+                public bool? isLandable;
+                public string? terraformingState;
+
+                public ApiSystemDumpSignals? signals;
+
+                // TODO? parents[]
+
+                public List<ApiSystemDumpRing>? rings;
+                public List<ApiSystemDumpStation> stations;
+            }
+
+            public class Station
+            {
+                public string controllingFaction;
+                public string controllingFactionState;
+                public double distanceToArrival;
+                // TODO: economies
+                public string government;
+                public long id;
+                public LandingPads landingPads;
+                // TODO: market
+                public string name;
+                public string primaryEconomy;
+                public List<string> services;
+                public string type;
+                public DateTime updateTime;
+            }
         }
+
     }
 
-    internal class ApiSystemDumpBody
-    {
-        public double? absoluteMagnitude;
-        public long? age;
-        public double? axialTilt;
-        public int bodyId;
-        public double? distanceToArrival;
-        public double? semiMajorAxis;
-        public long? id64;
-        public string luminosity;
-        public bool? mainStar;
-        public string name;
-        public double? rotationalPeriod;
-        public bool? rotationalPeriodTidallyLocked;
-        public double? solarMasses;
-        public double? solarRadius;
-        public List<Dictionary<ParentBodyType, int>> parents;
-        public string? spectralClass;
-        // TODO stations[]
-        public string subType;
-        public double? surfaceTemperature;
-        public double? surfacePressure;
-        public string type;
-        public DateTimeOffset updateTime;
-
-        public double? earthMasses;
-        public decimal? radius;
-        public double? gravity;
-        public string? atmosphereType;
-        public Dictionary<string, float>? atmosphereComposition;
-        public Dictionary<string, float>? materials;
-        public string? volcanismType;
-        public bool? isLandable;
-        public string? terraformingState;
-
-        public ApiSystemDumpSignals? signals;
-
-        // TODO? parents[]
-
-        public List<ApiSystemDumpRing>? rings;
-        public List<ApiSystemDumpStation> stations;
-    }
 
     internal class ApiSystemDumpStation
     {
@@ -1030,6 +1042,8 @@ namespace SrvSurvey.net
         public float influence;
         public string name;
         public string state;
+        public string? government;
+        public string? allegiance;
     }
 
     internal class MinorFactionSystemCoords
@@ -1043,5 +1057,62 @@ namespace SrvSurvey.net
     {
         asc,
         desc,
+    }
+
+    internal class ApiSystem
+    {
+        public Record record;
+
+        internal class Record
+        {
+            public string allegiance;
+            public int body_count;
+            public List<Body> bodies;
+            public double x;
+            public double y;
+            public double z;
+            public DateTimeOffset? updated_at;
+            public string government;
+            public long id64;
+            public string name;
+            public string primary_economy;
+            public string secondary_economy;
+            public string security;
+            public List<Station>? stations;
+            public List<MinorFactionPresence>? minor_faction_presences;
+
+            public class Body
+            {
+                [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+                public double distance_to_arrival;
+                [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+                public long estimated_mapping_value;
+                [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+                public long estimated_scan_value;
+                public long id;
+                public long id64;
+                [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+                public bool is_main_star;
+                public string name;
+                public string subtype;
+                public string terraforming_state;
+                public string type;
+            }
+
+            internal class Station
+            {
+                public double distance_to_arrival;
+                public bool has_large_pads;
+                public bool has_market;
+                public bool has_outfitting;
+                public bool has_shipyard;
+                public int large_pads;
+                public string market_id;
+                public int medium_pads;
+                public string name;
+                public int small_pads;
+                public string type;
+            }
+        }
     }
 }

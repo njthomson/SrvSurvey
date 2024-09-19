@@ -57,6 +57,12 @@ namespace BioCriterias
                 }
             }
 
+            if (parentStars.All(s => s == null))
+            {
+                Game.log($"Parent stars are not right?! body: {body.name}");
+                return new List<string>();
+            }
+
             //var sumSemiMajorAxis = body.sumSemiMajorAxis(0);
             //var sumSemiMajorAxisLs = Util.mToLS(sumSemiMajorAxis);
 
@@ -153,7 +159,7 @@ namespace BioCriterias
             var currentName = (variant == "" ? species! : $"{genus} {species} - {variant}").Trim();
             var failures = testQuery(criteria.query, $"{genus} {species} {variant}".Trim());
 
-            //if (this.bodyName.Contains("A 4 b") && currentName?.Contains("Viride") == true) Debugger.Break();
+            //if (this.bodyName.Contains(" 6") && currentName?.Contains("Stabitis") == true) Debugger.Break();
             //if (currentName?.Contains("Brain") == true) Debugger.Break();
 
             // add a prediction if no failures and we have genus, species AND variant

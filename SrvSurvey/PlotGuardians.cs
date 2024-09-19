@@ -1475,7 +1475,6 @@ namespace SrvSurvey
                     case SiteType.Lacrosse:
                     case SiteType.Squid:
                     case SiteType.Stickyhand:
-                    case SiteType.Turtle:
                         // there is no map for these
                         footerTxt = $"(There is no map yet for: {siteData.type})";
                         break;
@@ -1859,7 +1858,6 @@ namespace SrvSurvey
                     case SiteType.Lacrosse:
                     case SiteType.Squid:
                     case SiteType.Stickyhand:
-                    case SiteType.Turtle:
                         // there is no map for these
                         msg += $"\r\n\r\n■ Note: there is no map yet for: {siteData.type}";
                         break;

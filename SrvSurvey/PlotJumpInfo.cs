@@ -117,69 +117,80 @@ namespace SrvSurvey
             systemsCache[nextSystem] = new JumpInfo();
 
             // make EDSM request for next system traffic
-            Game.edsm.getSystemTraffic(next.StarSystem).ContinueWith(response => Program.crashGuard(() =>
+            Game.edsm.getSystemTraffic(next.StarSystem).ContinueWith(task => Program.crashGuard(() =>
             {
-                if (response.Exception != null)
+                if (task.Exception != null)
                 {
-                    Util.isFirewallProblem(response.Exception);
+                    Util.isFirewallProblem(task.Exception);
                     return;
                 }
 
-                this.info.traffic = response.Result;
+                this.info.traffic = task.Result;
                 Program.control.BeginInvoke(() => this.Invalidate());
             }));
 
-            // make EDSM request for system stations
-            Game.edsm.getSystemStations(next.StarSystem).ContinueWith(response => Program.crashGuard(() =>
+            // make Spansh request to get faction states and ports
+            Game.spansh.getSystem(next.SystemAddress).ContinueWith(task => Program.crashGuard(() =>
             {
-                if (response.Exception != null)
+                if (task.Exception != null)
                 {
-                    Util.isFirewallProblem(response.Exception);
+                    Util.isFirewallProblem(task.Exception);
                     return;
                 }
 
+                var data = task.Result;
+                if (data == null) return;
+
+                // last updated
+                if (data.updated_at != null && task.Result.bodies.Count > 0)
+                    systemsCache[nextSystem].lastUpdated = data.updated_at;
+
                 // how many stations are there?
-                if (response.Result.stations?.Count > 0)
+                if (data.stations?.Count > 0)
                 {
                     var countFC = 0;
                     var countSettlements = 0;
                     var countStarports = 0;
                     var countOutposts = 0;
-                    foreach (var sta in response.Result.stations)
+                    foreach (var sta in data.stations)
                     {
                         if (sta.type == "Drake-Class Carrier") countFC++;
-                        if (sta.type == "Odyssey Settlement") countSettlements++;
+                        if (sta.type == "Settlement") countSettlements++;
                         if (sta.type == "Outpost") countOutposts++;
                         if (EdsmSystemStations.Starports.Contains(sta.type)) countStarports++;
-                        // Include dockable mega ships with Starports
-                        if (sta.type == "Mega ship" && (sta.haveMarket || sta.haveShipyard || sta.haveOutfitting || sta.otherServices?.Count > 0)) countStarports++;
+                        // Include dockable mega ships with shipyards
+                        if (sta.type == "Mega ship" && sta.has_shipyard) countStarports++;
                     }
 
                     var parts = new List<string>();
                     if (countStarports > 0) this.info.countPOI["FC"] = countFC;
                     if (countSettlements > 0) this.info.countPOI["Settlements"] = countSettlements;
-                    if (countStarports > 0) this.info.countPOI["Outposts"] = countStarports;
+                    if (countOutposts > 0) this.info.countPOI["Outposts"] = countOutposts;
                     if (countStarports > 0) this.info.countPOI["Star ports"] = countStarports;
 
                     Program.control.BeginInvoke(() => this.Invalidate());
                 }
+
+                // Any factions at war?
+                var countWars = data.minor_faction_presences?.Count(f => f.state == "War" || f.state == "Civil War") ?? 0;
+                if (countWars > 0)
+                    this.info.countPOI["Wars"] = countWars / 2;
+
+                Program.control.BeginInvoke(() => this.Invalidate());
             }));
 
             // make Canonn request for exo biology
-            Game.canonn.systemBioStats(next.SystemAddress).ContinueWith(response => Program.crashGuard(() =>
+            Game.canonn.systemBioStats(next.SystemAddress).ContinueWith(task => Program.crashGuard(() =>
             {
-                if (response.Exception != null)
+                if (task.Exception != null)
                 {
-                    Util.isFirewallProblem(response.Exception);
+                    Util.isFirewallProblem(task.Exception);
                     return;
                 }
 
-                if (response?.Result != null)
+                if (task?.Result != null)
                 {
-                    if (response.Result.date != null && response.Result.bodies.Count > 0)
-                        systemsCache[nextSystem].lastUpdated = response.Result.date;
-
-                    foreach (var body in response.Result.bodies)
+                    foreach (var body in task.Result.bodies)
                     {
                         var bioSignals = body.signals?.signals?.GetValueOrDefault("$SAA_SignalType_Biological;") ?? 0;
                         if (bioSignals > 0) this.info.countPOI["Genus"] += bioSignals;
@@ -188,7 +199,7 @@ namespace SrvSurvey
                     // inject missing StarPos if needed
                     if (nextHop.entry.StarPos == null)
                     {
-                        nextHop.entry.StarPos = response.Result.coords;
+                        nextHop.entry.StarPos = task.Result.coords;
                         this.calculateSingleHopDistances();
                     }
                 }
@@ -216,26 +227,6 @@ namespace SrvSurvey
             this.hopScoops.Add(scoopable);
         }
 
-        protected override void onJournalEntry(NavRouteClear entry)
-        {
-            // remove this plotter once we arrive in some system
-            //Program.closePlotter<PlotJumpInfo>();
-        }
-
-        protected override void onJournalEntry(FSDTarget entry)
-        {
-            // remove this plotter once we arrive in some system
-            //Program.closePlotter<PlotJumpInfo>();
-        }
-
-        protected override void onJournalEntry(FSDJump entry)
-        {
-            // remove this plotter 3 seconds after we arrive in some system
-            //Task.Delay(5000).ContinueWith(t =>Program.closePlotter<PlotJumpInfo>())
-            //{
-            //    Program.closePlotter<PlotJumpInfo>();
-            //});
-        }
 
         protected override void onPaintPlotter(PaintEventArgs e)
         {
@@ -263,7 +254,7 @@ namespace SrvSurvey
                 : "► Discovered by" + nextHop.subStatus.Substring(2);
 
             var lastUpdated = systemsCache[nextSystem].lastUpdated;
-            if (lastUpdated != null && lastUpdated.Value != nextHop.discoveredDate)
+            if (lastUpdated != null && lastUpdated.Value > nextHop.discoveredDate)
                 lineTwo += $", last updated: " + lastUpdated.Value.ToLocalTime().ToString("d");
             drawTextAt(eight, lineTwo, nextHop.highlight ? GameColors.brushCyan : null);
             drawTextAt("(EDSM)", GameColors.brushGameOrangeDim);
@@ -431,6 +422,7 @@ namespace SrvSurvey
             { "Outposts", 0 },
             { "Settlements", 0 }, // Odyssey settlements
             { "FC", 0 }, // Fleet carriers
+            { "Wars", 0 }, // Count of wars - (Count of factions in War or Civil-War state / 2)
         };
 
         //public RouteInfo info;

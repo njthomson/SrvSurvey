@@ -507,7 +507,8 @@ namespace SrvSurvey
 
         private void btnCopyLocation_Click(object sender, EventArgs e)
         {
-            Clipboard.SetText(txtLocation.Text);
+            if (!string.IsNullOrEmpty( txtLocation.Text))
+                Clipboard.SetText(txtLocation.Text);
         }
 
         private void btnResetExploration_Click(object sender, EventArgs e)
@@ -570,6 +571,7 @@ namespace SrvSurvey
             this.txtVehicle.Text = game.vehicle.ToString();
 
             this.txtLocation.Text = game.systemBody?.name ?? $"{game.systemData?.name}" ?? "";
+            btnCopyLocation.Enabled = !string.IsNullOrEmpty(this.txtLocation.Text);
 
             if (game.fsdJumping)
             {

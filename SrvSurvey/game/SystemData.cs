@@ -182,7 +182,7 @@ namespace SrvSurvey.game
             return data;
         }
 
-        public static SystemData From(ApiSystemDumpSystem dump, string fid, string cmdrName)
+        public static SystemData From(ApiSystemDump.System dump, string fid, string cmdrName)
         {
             fid = fid ?? Game.activeGame!.fid!;
 
@@ -259,7 +259,7 @@ namespace SrvSurvey.game
                 }
                 if (systemData.starPos == null)
                 {
-                    var spanshResult = await Game.spansh.getSystem(systemData.name);
+                    var spanshResult = await Game.spansh.getSystems(systemData.name);
                     var matchedSystem = spanshResult.min_max.FirstOrDefault(_ => _.name.Equals(systemData.name, StringComparison.OrdinalIgnoreCase));
                     if (matchedSystem != null)
                         systemData.starPos = new double[] { matchedSystem.x, matchedSystem.y, matchedSystem.z };
@@ -1225,11 +1225,13 @@ namespace SrvSurvey.game
             var m = r.Match(starType);
             if (m.Groups.Count == 2 && m.Groups[1].Value.Length <= 3)
                 return m.Groups[1].Value;
+            else if (starType == "T Tauri Star")
+                return "TTS";
             else
                 return starType[0].ToString();
         }
 
-        public void onSpanshResponse(ApiSystemDumpSystem spanshSystem)
+        public void onSpanshResponse(ApiSystemDump.System spanshSystem)
         {
             if (spanshSystem.id64 != this.address) { Game.log($"Unmatched system! Expected: `{this.name}`, got: {spanshSystem.name}"); return; }
             if (!Game.settings.useExternalData) return;
@@ -1300,11 +1302,14 @@ namespace SrvSurvey.game
 
                 // update bio counts
                 DateTime liveLegacySplitDate = new DateTime(2022, 11, 29);
-                if (entry.signals?.signals?.ContainsKey("$SAA_SignalType_Biological;") == true && entry.signals.updateTime > liveLegacySplitDate && Game.settings.useExternalBioData)
+                if (entry.signals?.signals?.ContainsKey("$SAA_SignalType_Biological;") == true && entry.signals.updateTime > liveLegacySplitDate) 
                 {
                     var newCount = entry.signals.signals["$SAA_SignalType_Biological;"];
                     if (body.bioSignalCount < newCount)
+                    {
                         body.bioSignalCount = newCount;
+                        shouldPredictBios = true;
+                    }
                 }
 
                 // update genus if not already known
@@ -1611,12 +1616,12 @@ namespace SrvSurvey.game
             var parentStars = this.getParentStars(body, onlyFirst);
 
             var parentStarTypes = parentStars
-                    .Select(_ =>
-                    {
-                        if (_.starType == null) throw new Exception("Why no parent starType?");
-                        return Util.flattenStarType(_.starType);
-                    })
-                    .ToList();
+                .Select(_ =>
+                {
+                    //if (_.starType == null) Debugger.Break(); //throw new Exception("Why no parent starType?");
+                    return Util.flattenStarType(_.starType);
+                })
+                .ToList();
 
             return parentStarTypes;
         }
@@ -1945,7 +1950,7 @@ namespace SrvSurvey.game
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public bool firstFootFall;
 
-        /// <summary> A of settlements known on this body. /// </summary>
+        /// <summary> A of settlements known on this body. </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public Dictionary<string, LatLong2>? settlements;
 

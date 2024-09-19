@@ -70,7 +70,7 @@
       ],
       "query": [
         "# hit count: 7714",
-        "nebulae [ ~ 100]"
+        "nebulae [ ~ 150]"
       ],
       "children": [
         {

@@ -172,8 +172,9 @@ namespace SrvSurvey
                 category.Tag = new CodexTag(hudCategory);
 
                 // hierarchy: /hud_category/sub_class
-                TreeNode subClass;
-                subClass = category.Nodes.Set(entry.sub_class, entry.sub_class);
+                var subClassText = entry.sub_class;
+                if (subClassText == "Shrubs") subClassText += " (Frutexa)";
+                var subClass = category.Nodes.Set(entry.sub_class, subClassText);
                 subClass.Tag = new CodexTag(entry.sub_class);
                 var subClassTag = (CodexTag)subClass.Tag;
 

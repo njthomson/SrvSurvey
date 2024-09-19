@@ -434,7 +434,7 @@ namespace SrvSurvey.game
                 if (neb.starPos[0] == 0)
                 {
                     Game.log($"{neb.designation} {neb.name} ...");
-                    var rslt = await Game.spansh.getSystem(neb.systemName);
+                    var rslt = await Game.spansh.getSystems(neb.systemName);
                     var row = rslt.min_max.First();
                     var pos = new double[] { row.x, row.y, row.z };
                     txt.AppendLine($"            {{ new GalacticNeblulae(\"{neb.designation}\", \"{neb.name}\", {neb.regionIdx}, \"{neb.systemName}\", new double[] {{ {pos[0]}, {pos[1]}, {pos[2]} }}) }},");

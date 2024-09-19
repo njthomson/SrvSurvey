@@ -141,7 +141,7 @@ namespace SrvSurvey
                     // draw volume bars from predictions
                     if (game?.systemData?.lastFssBody?.genusPredictions != null)
                     {
-                        dtx += six;
+                        dtx = (float)Math.Round(dtx) + six;
                         dtx += PlotBioSystem.drawBodyBars(g, game.systemData.lastFssBody, dtx, dty + two, true);
 
                         var txt = " " + game.systemData.lastFssBody.getMinMaxBioRewards(false);

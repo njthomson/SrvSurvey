@@ -54,7 +54,7 @@ namespace SrvSurvey
             // hide ourself whilst FSD is charging to jump systems
             if (game.status.FsdChargingJump || !this.allow)
                 this.Opacity = 0;
-            else if (this.Opacity == 0 && !game.status.FsdChargingJump && Elite.getWindowRect().Y > -30000)
+            else if (this.Opacity == 0 && this.allow && Elite.getWindowRect().Y > -30000)
                 this.Opacity = PlotPos.getOpacity(this);
         }
 
@@ -167,8 +167,10 @@ namespace SrvSurvey
                 }
                 else if (game.systemBody.firstFootFall)
                     this.drawFooterText(g, "Applying first footfall bonus", GameColors.brushCyan);
-                else if (!game.systemBody.wasMapped && game.systemBody.countAnalyzedBioSignals == 0 && Game.settings.useExternalData && Game.settings.autoLoadPriorScans && Program.getPlotter<PlotPriorScans>() == null)
-                    this.drawFooterText(g, "Potential first footfall - send '.ff' to confirm", GameColors.brushCyan);
+                //else if (!game.systemBody.wasMapped && game.systemBody.countAnalyzedBioSignals == 0 && Game.settings.useExternalData && Game.settings.autoLoadPriorScans && Program.getPlotter<PlotPriorScans>() == null)
+                //    this.drawFooterText(g, "Potential first footfall - send '.ff' to confirm", GameColors.brushCyan);
+                else
+                    this.drawFooterText(g, "Use Composition Scanner to set bookmarks");
             }
         }
 

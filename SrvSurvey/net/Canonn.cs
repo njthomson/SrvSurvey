@@ -827,7 +827,7 @@ namespace SrvSurvey.canonn
 
                 // find a match in Spansh?
                 Game.log($"Spansh lookup system: {ruins.systemName}");
-                var spanshResponse = await Game.spansh.getSystem(ruins.systemName);
+                var spanshResponse = await Game.spansh.getSystems(ruins.systemName);
                 matchedSystemAddress = spanshResponse.min_max.FirstOrDefault(_ => _.name.Equals(ruins.systemName, StringComparison.OrdinalIgnoreCase))?.id64;
                 if (matchedSystemAddress > 0)
                 {
@@ -1719,7 +1719,7 @@ namespace SrvSurvey.canonn
 
                 // find a match in Spansh?
                 Game.log($"Spansh lookup system: {ruins.systemName}");
-                var spanshResponse = await Game.spansh.getSystem(ruins.systemName);
+                var spanshResponse = await Game.spansh.getSystems(ruins.systemName);
                 matchedSystemAddress = spanshResponse.min_max.FirstOrDefault(_ => _.name.Equals(ruins.systemName, StringComparison.OrdinalIgnoreCase))?.id64;
                 if (matchedSystemAddress > 0)
                 {
@@ -2047,7 +2047,7 @@ namespace SrvSurvey.canonn
         // TODO? timestamps	{…}
         public string type; // "Planet"
 
-        public class Station : ApiSystemDumpSystem.Station
+        public class Station : ApiSystemDump.System.Station
         {
             public string allegiance;
             public double latitude;

@@ -30,7 +30,7 @@ namespace SrvSurvey
                 && Game.settings.autoShowGuardianSummary
                 && Game.activeGame?.systemData != null
                 && Game.activeGame.systemData.settlements.Count > 0
-                && Game.activeGame.isMode(GameMode.SuperCruising, GameMode.FSS, GameMode.ExternalPanel, GameMode.Orrery, GameMode.SystemMap);
+                && Game.activeGame.isMode(GameMode.SuperCruising, GameMode.ExternalPanel, GameMode.Orrery, GameMode.SystemMap);
         }
 
         protected override void Game_modeChanged(GameMode newMode, bool force)
