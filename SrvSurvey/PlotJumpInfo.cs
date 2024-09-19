@@ -119,7 +119,7 @@ namespace SrvSurvey
             // make EDSM request for next system traffic
             Game.edsm.getSystemTraffic(next.StarSystem).ContinueWith(task => Program.crashGuard(() =>
             {
-                if (task.Exception != null)
+                if (task.Exception != null || !task.IsCompletedSuccessfully)
                 {
                     Util.isFirewallProblem(task.Exception);
                     return;
@@ -132,7 +132,7 @@ namespace SrvSurvey
             // make Spansh request to get faction states and ports
             Game.spansh.getSystem(next.SystemAddress).ContinueWith(task => Program.crashGuard(() =>
             {
-                if (task.Exception != null)
+                if (task.Exception != null || !task.IsCompletedSuccessfully)
                 {
                     Util.isFirewallProblem(task.Exception);
                     return;
@@ -182,7 +182,7 @@ namespace SrvSurvey
             // make Canonn request for exo biology
             Game.canonn.systemBioStats(next.SystemAddress).ContinueWith(task => Program.crashGuard(() =>
             {
-                if (task.Exception != null)
+                if (task.Exception != null || !task.IsCompletedSuccessfully)
                 {
                     Util.isFirewallProblem(task.Exception);
                     return;

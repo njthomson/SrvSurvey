@@ -210,14 +210,14 @@ namespace SrvSurvey
         private void lookupSystem()
         {
             // lookup in EDSM
-            Game.edsm.getBodies(systemName).ContinueWith(response => Program.crashGuard(() =>
+            Game.edsm.getBodies(systemName).ContinueWith(task => Program.crashGuard(() =>
             {
-                if (response.Exception != null)
+                if (task.Exception != null || !task.IsCompletedSuccessfully)
                 {
-                    Util.isFirewallProblem(response.Exception);
+                    Util.isFirewallProblem(task.Exception);
                     return;
                 }
-                var edsmResult = response.Result;
+                var edsmResult = task.Result;
 
                 if (edsmResult.name == null || edsmResult.id64 == 0)
                 {

@@ -746,6 +746,7 @@ namespace SrvSurvey
 
         public static bool isFirewallProblem(Exception? ex)
         {
+            if (ex == null) return false;
             if (ex != null) Game.log($"isFirewallProblem?\r\n{ex}");
             if (ex?.Message.Contains("An attempt was made to access a socket in a way forbidden by its access permissions") == true
                 || ex?.Message.Contains("A socket operation was attempted to an unreachable network") == true)
