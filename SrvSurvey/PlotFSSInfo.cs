@@ -93,7 +93,11 @@ namespace SrvSurvey
             this.resetPlotter(e.Graphics);
 
             // 1st line: system name
-            drawTextAt(game.systemData.name, GameColors.fontSmallBold);
+            var undiscoveredSystem = game.systemData.bodies.Find(b => b.isMainStar)?.wasDiscovered == false;
+            var systemName = undiscoveredSystem
+                ? $"♦ {game.systemData.name}"
+                : game.systemData.name;
+            drawTextAt(systemName, undiscoveredSystem ? GameColors.brushCyan : null, GameColors.fontSmallBold);
             newLine(+eight, true);
 
             // 2nd line body count / values
@@ -128,8 +132,8 @@ namespace SrvSurvey
 
                 // 1st line: body name + type
                 var planetClass = scan.body.planetClass?.Replace("Sudarsky c", "C");
-                var prefix = scan.body.wasDiscovered ? "" : "*";
-                var txt = $"{prefix}{scan.body.shortName} - {planetClass}"; // ◌◎◉☆★☄☼☀⛀⛃✔✨✶✪❓❔❓⛬❗❕ * ❒❱✪❍❌✋❖⟡⦁⦂⧫
+                var prefix = scan.body.wasDiscovered ? "" : "♦ ";
+                var txt = $"{prefix}{scan.body.shortName} - {planetClass}"; // ◌◎◉☆★☄☼☀⛀⛃✔✨✶✪❓❔❓⛬❗❕ * ❒❱✪❍❌✋❖⟡⦁⦂⧫⇲
                 var suffixes = new List<string>();
                 if (scan.body.terraformable) suffixes.Add("T");
                 if (scan.body.type == SystemBodyType.LandableBody) suffixes.Add("L");
@@ -164,7 +168,7 @@ namespace SrvSurvey
 
             drawTextAt(eight, "Scan value | DSS value", GameColors.brushGameOrangeDim);
             newLine(true);
-            drawTextAt(eight, "* Undiscovered", GameColors.brushGameOrangeDim);
+            drawTextAt(eight, "♦ Undiscovered", GameColors.brushGameOrangeDim);
             newLine(true);
 
             this.formAdjustSize(+oneEight, +ten);

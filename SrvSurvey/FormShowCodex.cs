@@ -111,7 +111,7 @@ namespace SrvSurvey
             Game.log($"showEntryId: {entryId}");
             // also find any other things we can show images for
             this.prepAllSpecies();
-            if (entryId == this.entryId) return;
+            if (entryId == this.entryId && !forceRemoteImage) return;
 
             this.lblLoading.Show();
             this.panelSubmit.Hide();

@@ -172,6 +172,8 @@ namespace SrvSurvey
 
         private void drawBodyBios2(SystemBody body)
         {
+            if (game == null) return;
+
             drawTextAt(eight, $"Body {body.shortName} bio signals: {body.bioSignalCount}", GameColors.brushGameOrange);
             newLine(+eight, true);
 
@@ -244,7 +246,7 @@ namespace SrvSurvey
                     var maxReward = body.getBioRewardForGenus(organism, false);
                     var volCol = /*highlight ? VolColor.Blue :*/ VolColor.Orange;
                     if (shouldBeGold(discoveryPrefix)) volCol = VolColor.Gold;
-                    drawVolumeBars(g, oneTwo, yy + oneSix, volCol, minReward, maxReward);
+                    drawVolumeBars(g, oneTwo, yy + oneSix, volCol, minReward, maxReward, false);
 
                     // line 1
                     if (displayName.Length > 0)
@@ -282,7 +284,7 @@ namespace SrvSurvey
                     dtx += sz.Width + ten;
                     newLine(+eight, true);
 
-                    if (organism.genus == game.cmdr?.scanOne?.genus)
+                    if (organism.genus == game.cmdr.scanOne?.genus)
                     {
                         // draw side-bars to highlight this is what we're currently scanning
                         g.DrawLine(GameColors.penCyan4, four, yy - one, four, dty - eight);
@@ -365,11 +367,14 @@ namespace SrvSurvey
             {
                 b = highlight ? GameColors.brushCyan : GameColors.brushGameOrange;
 
+
+                // draw an initial ? for predictions
+                dtx = twoEight;
+                drawTextAt("?", GameColors.Bio.brushPrediction);
+
                 var isLegacy = !species.Key.genus.odyssey;
-                if (isLegacy)
-                    dtx = twoEight;
-                else
-                    drawTextAt(twoEight, $"{species.Key.displayName}:", b);
+                if (!isLegacy)
+                    drawTextAt($"{species.Key.displayName}:", b);
 
                 // TODO: handle legacy species better - put them on the same line as if they were variants
                 foreach (var variant in species.Value)
@@ -385,20 +390,26 @@ namespace SrvSurvey
                     {
                         displayName = species.Key.englishName;
                         foreach (var tail in legacyTailTrimList)
-                            if (displayName.EndsWith(tail)) displayName = displayName.Replace(tail, "");
+                        {
+                            if (displayName.EndsWith(tail))
+                            {
+                                displayName = displayName.Replace(tail, "");
+                                break;
+                            }
+                        }
                     }
 
                     if (!highlight && variant.isGold) b = Brushes.Gold;
                     drawTextAt(displayName, b);
                 }
 
-                //b = highlight ? GameColors.brushCyan : GameColors.brushGameOrange;
-                drawTextAt("?", GameColors.brushCyan);
+                // draw a trailing ? for predictions
+                drawTextAt("?", GameColors.Bio.brushPrediction);
                 newLine(+one, true);
             }
 
             var volCol = prediction.isGold ? VolColor.Gold : VolColor.Grey;
-            drawVolumeBars(g, oneTwo, yy + oneSix, volCol, prediction.min, prediction.max);
+            drawVolumeBars(g, oneTwo, yy + oneSix, volCol, prediction.min, prediction.max, true);
 
             // 2nd/last line Right - credit range
             b = highlight ? GameColors.brushCyan : GameColors.brushGameOrange;
@@ -576,9 +587,9 @@ namespace SrvSurvey
 
             // draw outer box indicating how many signals match the body signal count
             g.SmoothingMode = SmoothingMode.Default;
-            var w = (body.bioSignalCount * oneTwo) + two;
+            var w = (body.bioSignalCount * oneTwo) + three;
             g.DrawRectangle(highlight ? GameColors.penCyan1Dotted : GameColors.penGameOrange1Dotted,
-                x - two, y - oneFive,
+                x - three, y - oneFive,
                 w, twoOne);
             g.SmoothingMode = SmoothingMode.HighQuality;
 
@@ -595,7 +606,7 @@ namespace SrvSurvey
                         if (org.isFirst) volCol = VolColor.Gold;
                         var min = body.getBioRewardForGenus(org, true);
                         var max = body.getBioRewardForGenus(org, false);
-                        drawVolumeBars(g, x, y, volCol, min, max);
+                        drawVolumeBars(g, x, y, volCol, min, max, false);
                     }
                     else
                     {
@@ -607,7 +618,7 @@ namespace SrvSurvey
                             continue;
                         }
                         volCol = genusPrediction.isGold ? VolColor.Gold : VolColor.Grey;
-                        drawVolumeBars(g, x, y, volCol, genusPrediction.min, genusPrediction.max);
+                        drawVolumeBars(g, x, y, volCol, genusPrediction.min, genusPrediction.max, true);
                     }
 
                     x += oneTwo;
@@ -632,9 +643,9 @@ namespace SrvSurvey
                 if (genusPrediction.isGold) volCol = VolColor.Gold;
 
                 // skip a few pixels to cross the dotted box
-                if (signalCount == 0) x += four;
+                if (signalCount == 0) x += three;
 
-                drawVolumeBars(g, x, y, volCol, genusPrediction.min, genusPrediction.max);
+                drawVolumeBars(g, x, y, volCol, genusPrediction.min, genusPrediction.max, true);
                 x += oneTwo;
                 signalCount--;
             }
@@ -643,156 +654,44 @@ namespace SrvSurvey
             return x - ix;
         }
 
-        public static void drawVolumeBars(Graphics g, float x, float y, bool highlight, long reward, long maxReward = -1, bool isNewEntry = false)
+        public static void drawVolumeBars(Graphics g, float x, float y, VolColor col, long reward, long maxReward = -1, bool prediction = false)
         {
-            var col = highlight ? VolColor.Blue : VolColor.Orange;
-            if (isNewEntry) col = VolColor.Gold;
-
-            drawVolumeBars(g, x, y, col, reward, maxReward);
-        }
-
-        public static void drawVolumeBars(Graphics g, float x, float y, VolColor col, long reward, long maxReward = -1)
-        {
+            g.SmoothingMode = SmoothingMode.Default;
             var ww = eight;
-            Brush minFill, maxFill;
-            Pen minEdge, maxEdge, outerEdge;
 
-            if (col == VolColor.Grey)
-                col = VolColor.Blue;
-
-            if (col == VolColor.Blue)
+            var buckets = new List<long>()
             {
-                minFill = GameColors.brushCyan;
-                maxFill = new SolidBrush(Color.FromArgb(180, GameColors.DarkCyan));
-                outerEdge = GameColors.newPen(Color.FromArgb(96, GameColors.DarkCyan), 1.9f, DashStyle.Dot);
-                minEdge = Pens.DarkCyan;
-                maxEdge = Pens.DarkCyan;
-            }
-            else if (col == VolColor.Gold)
-            {
-                minFill = (SolidBrush)Brushes.DarkGoldenrod;
-                minEdge = Pens.Gold;
-                outerEdge = GameColors.newPen(Color.FromArgb(96, Color.Gold), 1.9f, DashStyle.Dot);
-                maxFill = (SolidBrush)Brushes.DarkGoldenrod;
-                maxEdge = Pens.Gold;
-            }
-            else if (col == VolColor.Grey)
-            {
-                // gray
-                minFill = new SolidBrush(Color.FromArgb(255, 86, 86, 86));
-                maxFill = new SolidBrush(Color.FromArgb(140, 38, 38, 38));
-                outerEdge = GameColors.newPen(Color.FromArgb(96, 182, 182, 182), 1.9f, DashStyle.Dot);
-                minEdge = GameColors.newPen(Color.FromArgb(255, 44, 44, 44));
-                maxEdge = GameColors.newPen(Color.FromArgb(124, 96, 96, 96));
-            }
-            else // Orange
-            {
-                //// dim orange?
-                //minFill = GameColors.brushGameOrangeDim;
-                //maxFill = new SolidBrush(Color.FromArgb(140, GameColors.OrangeDim));
-                //outerEdge = GameColors.newPen(Color.FromArgb(96, GameColors.Orange), 1.9f, DashStyle.Dot);
-                //minEdge = GameColors.newPen(Color.FromArgb(124, 45, 28, 3), 1);
-                //maxEdge = GameColors.penGameOrangeDim1;
-
-                // regular orange
-                minFill = GameColors.brushGameOrange;
-                maxFill = new SolidBrush(Color.FromArgb(140, GameColors.OrangeDim));
-                outerEdge = GameColors.newPen(Color.FromArgb(96, GameColors.Orange), 1.9f, DashStyle.Dot);
-                minEdge = GameColors.penGameOrangeDim1;
-                maxEdge = GameColors.newPen(Color.FromArgb(124, GameColors.Orange));
-            }
+                0,
+                (long)Game.settings.bioRingBucketOne * 1_000_000,
+                (long)Game.settings.bioRingBucketTwo * 1_000_000,
+                (long)Game.settings.bioRingBucketThree * 1_000_000,
+            };
 
             // draw outer dotted box
-            g.FillRectangle(Brushes.Black, x, y - 12, ww, 12);
+            g.FillRectangle(Brushes.Black, x, y - oneTwo, ww, oneTwo);
+            g.DrawRectangle(GameColors.Bio.volEdge[col], x, y - oneTwo, ww, oneFive);
 
-            g.DrawRectangle(outerEdge, x, y - oneTwo, ww, oneFive);
-
-            if (reward <= 0)
+            foreach (var bucket in buckets)
             {
-                // negative reward means we don't know anything about this yet
-                //g.FillRectangle(highlight ? GameColors.brushDarkCyan : GameColors.brushGameOrangeDim, x, y, ww, 3);
-                //g.DrawRectangle(pp, x, y - 12, ww, 15);
-
-                // (don't use drawTextAt as that messes with dtx/dty)
-                g.DrawString("?", GameColors.fontSmallBold, minFill, x - 0.5f, y - oneOne);
+                if (reward > bucket)
+                {
+                    g.FillRectangle(GameColors.Bio.volMin[col].brush, x, y, ww, three);
+                    g.DrawRectangle(GameColors.Bio.volMin[col].pen, x, y, ww, three);
+                }
+                else if (maxReward > bucket)
+                {
+                    g.FillRectangle(GameColors.Bio.volMax[col].brush, x, y, ww, three);
+                    g.DrawRectangle(GameColors.Bio.volMax[col].pen, x, y, ww, three);
+                }
+                y -= four;
             }
-            else
+
+            // draw a grey hatch effect if we're drawing a prediction
+            if (col == VolColor.Grey || prediction)
             {
-                //if (reward == 0)
-                //{
-                //    if (maxReward == -1)
-                //    {
-                //        // we have no predictions - show the lowest bar populated
-                //        g.FillRectangle(bb2, x, y, ww, three);
-                //        g.DrawRectangle(pp, x, y, ww, three);
-                //    }
-                //    return;
-                //}
-
-                // 1st/lowest bar
-                if (reward > 0)
-                {
-                    g.FillRectangle(minFill, x, y, ww, three);
-                    g.DrawRectangle(minEdge, x, y, ww, three);
-                }
-                else if (maxReward > 0)
-                {
-                    g.FillRectangle(maxFill, x, y, ww, three);
-                    g.DrawRectangle(maxEdge, x, y, ww, three);
-                }
-                else return;
-                y -= 4;
-
-                // 2nd bar up
-                if (reward > Game.settings.bioRingBucketOne * 1_000_000)
-                {
-                    g.FillRectangle(minFill, x, y, ww, three);
-                    g.DrawRectangle(minEdge, x, y, ww, three);
-                }
-                else if (maxReward > Game.settings.bioRingBucketOne * 1_000_000)
-                {
-                    g.FillRectangle(maxFill, x, y, ww, three);
-                    g.DrawRectangle(maxEdge, x, y, ww, three);
-                }
-                else return;
-                y -= 4;
-
-                // 3rd bar
-                if (reward > Game.settings.bioRingBucketTwo * 1_000_000)
-                {
-                    g.FillRectangle(minFill, x, y, ww, three);
-                    g.DrawRectangle(minEdge, x, y, ww, three);
-                }
-                else if (maxReward > Game.settings.bioRingBucketTwo * 1_000_000)
-                {
-                    g.FillRectangle(maxFill, x, y, ww, three);
-                    g.DrawRectangle(maxEdge, x, y, ww, three);
-                }
-                else return;
-                y -= 4;
-
-                // 4th bar
-                if (reward > Game.settings.bioRingBucketThree * 1_000_000)
-                {
-                    g.FillRectangle(minFill, x, y, ww, three);
-                    g.DrawRectangle(minEdge, x, y, ww, three);
-                }
-                else if (maxReward > Game.settings.bioRingBucketThree * 1_000_000)
-                {
-                    g.FillRectangle(maxFill, x, y, ww, three);
-                    g.DrawRectangle(maxEdge, x, y, ww, three);
-                }
-                else return;
+                g.FillRectangle(GameColors.Bio.brushPredictionHatch, x + one, y + four, ww - one, oneSix);
             }
+            g.SmoothingMode = SmoothingMode.HighQuality;
         }
     }
-
-    public enum VolColor
-    {
-        Orange,
-        Blue,
-        Gold,
-        Grey
-    }
 }
-

@@ -80,7 +80,10 @@ namespace SrvSurvey
             this.resetPlotter(e.Graphics);
 
             // body name
-            drawTextAt($"{body.name}", GameColors.fontMiddleBold);
+            var bodyName = body.wasDiscovered
+                ? body.name
+                : $"♦ {body.name}";
+            drawTextAt(bodyName, GameColors.fontMiddleBold);
             newLine(+2, true);
             var planetish = body.type != SystemBodyType.Star && body.type != SystemBodyType.Asteroid;
 

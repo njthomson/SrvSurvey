@@ -323,6 +323,9 @@ namespace SrvSurvey
                 return;
             }
 
+            if (newMode == GameMode.ExternalPanel)
+                Program.getPlotter<PlotPulse>()?.reposition(Elite.getWindowRect());
+
             var gameIsActive = game != null && Elite.isGameRunning && game.Commander != null;
 
             if (gameIsActive && Game.settings.autoShowPlotFSS && (newMode == GameMode.FSS || game?.mode == GameMode.FSS))
@@ -693,7 +696,7 @@ namespace SrvSurvey
                         Program.showPlotter<PlotTrackers>();
 
                     // show radar if we have trackers, prior scans, we landed or started scanning already
-                    if (game.systemSite == null && !game.isMode(GameMode.SuperCruising, GameMode.GlideMode) && (game.isLanded || showPlotTrackers || showPlotPriorScans || game.cmdr.scanOne != null))
+                    if (game.systemSite == null && !game.isMode(GameMode.SuperCruising, GameMode.GlideMode) && (game.isLanded || showPlotTrackers || showPlotPriorScans || game.cmdr.scanOne != null || (game.status.Altitude < 1000 && game.systemBody?.bioScans?.Count > 0)))
                         Program.showPlotter<PlotGrounded>();
                     else
                         Program.closePlotter<PlotGrounded>();

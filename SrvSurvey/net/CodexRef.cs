@@ -445,5 +445,12 @@ namespace SrvSurvey.canonn
         }
 
         #endregion
+
+        #region missing codex items
+
+        // https://docs.google.com/spreadsheets/d/1TpPZUFd61KUQWy1sV8VhScZiVbRWJ435wTN8xjN0Qv0/gviz/tq?tqx=out:csv&sheet=Individual+Items
+        // Found==0,NotExpectedToBeFound==0
+
+        #endregion
     }
 }

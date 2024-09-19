@@ -658,7 +658,7 @@ namespace SrvSurvey.game
             }
 
             // track which body was FSS'd last
-            if (entry.ScanType == "Detailed")
+            if (entry.ScanType == "Detailed" && (body.type == SystemBodyType.LandableBody || body.type == SystemBodyType.SolidBody || body.type == SystemBodyType.Giant))
                 this.lastFssBody = body;
 
             if (body.bioSignalCount > 0)
@@ -1626,7 +1626,7 @@ namespace SrvSurvey.game
             var parentStars = this.getParentStars(body, false);
 
             SystemBody chosenStar = null!;
-            double maxValue = 0;
+            double maxValue = -1;
             foreach (var star in parentStars)
             {
                 var dist = body.distanceFromArrivalLS - star.distanceFromArrivalLS;
@@ -2230,8 +2230,14 @@ namespace SrvSurvey.game
                 if (variant.species.reward > genusPrediction.max) genusPrediction.max = variant.reward;
             }
 
-            if (FormShowCodex.activeForm != null)
-                FormShowCodex.activeForm.prepAllSpecies();
+            Program.control.BeginInvoke(() =>
+            {
+                if (FormShowCodex.activeForm != null)
+                    FormShowCodex.activeForm.prepAllSpecies();
+                // if (FormGenus.activeForm.populateGenus() // TODO: enable this without causing infinite loops
+
+                Program.invalidateActivePlotters();
+            });
         }
 
         private long getShortListSum(int delta, List<BioVariant> sortedPredictions, bool minNotMax)

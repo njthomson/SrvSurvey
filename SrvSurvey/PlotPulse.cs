@@ -24,6 +24,7 @@ namespace SrvSurvey
             this.Cursor = Cursors.Cross;
             this.Name = nameof(PlotPulse);
             this.Text = this.Name;
+            this.didFirstPaint = true;
 
             this.BackColor = Color.Black;
             this.ShowIcon = false;

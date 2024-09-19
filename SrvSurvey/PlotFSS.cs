@@ -7,7 +7,7 @@ namespace SrvSurvey
         private FSSBodySignals? lastFSSBodySignals;
 
         private static long lastSystemAddress;
-        private static string? lastBodyName;
+        private static string lastBodyName;
         private static string? lastInitialValue;
         private static string? lastMappedValue;
         private static string? lastNotes;
@@ -22,16 +22,23 @@ namespace SrvSurvey
             if (lastFssBody != null)
             {
                 lastBodyName = lastFssBody.name;
-                if (!lastFssBody.wasDiscovered) lastBodyName += " (undiscovered)";
+                if (!lastFssBody.wasDiscovered) lastBodyName = $"♦ {lastBodyName}";
+
+                var suffixes = new List<string>();
+                if (lastFssBody.terraformable) suffixes.Add("T");
+                if (lastFssBody.type == SystemBodyType.LandableBody) suffixes.Add("L");
+                if (suffixes.Count > 0) lastBodyName += $" ({string.Join(',', suffixes)})";
 
                 lastInitialValue = Util.GetBodyValue(lastFssBody, false, false).ToString("N0");
                 lastMappedValue = Util.GetBodyValue(lastFssBody, true, true).ToString("N0");
                 if (lastFssBody.bioSignalCount > 0)
                     lastNotes = $"{lastFssBody.bioSignalCount} bio signals:";
+                else
+                    lastNotes = "";
             }
             else if (lastSystemAddress > 0 && lastSystemAddress != game.systemData!.address)
             {
-                lastBodyName = null;
+                lastBodyName = null!;
                 lastInitialValue = null;
                 lastMappedValue = null;
                 lastNotes = null;
@@ -70,14 +77,25 @@ namespace SrvSurvey
         {
             Game.log($"PlotFSS: Scan event: {entry.Bodyname}");
 
+            lastInitialValue = "";
+            lastMappedValue = "";
+            lastNotes = "";
+
             // ignore Belt Clusters
             if (entry.Bodyname.Contains("Belt Cluster") || !string.IsNullOrEmpty(entry.StarType))
                 return;
 
             lastBodyName = entry.Bodyname;
             lastWasDiscovered = entry.WasDiscovered;
-            lastInitialValue = Util.GetBodyValue(entry, false).ToString("N0"); // 123.ToString("#.## M");
-            lastMappedValue = Util.GetBodyValue(entry, true).ToString("N0"); // 456.ToString("#.## M");
+            if (!entry.WasDiscovered) lastBodyName = $"♦ {lastBodyName}";
+
+            var suffixes = new List<string>();
+            if (entry.TerraformState == "Terraformable") suffixes.Add("T");
+            if (entry.Landable) suffixes.Add("L");
+            if (suffixes.Count > 0) lastBodyName += $" ({string.Join(',', suffixes)})";
+
+            lastInitialValue = Util.GetBodyValue(entry, false).ToString("N0");
+            lastMappedValue = Util.GetBodyValue(entry, true).ToString("N0");
             lastNotes = "";
 
             if (this.lastFSSBodySignals?.BodyID == entry.BodyID)
@@ -98,9 +116,6 @@ namespace SrvSurvey
                 }
             }
 
-            if (!entry.WasDiscovered)
-                lastBodyName += " (undiscovered)";
-
             this.Invalidate();
         }
 
@@ -109,7 +124,8 @@ namespace SrvSurvey
             var brush = lastWasDiscovered ? GameColors.brushGameOrange : GameColors.brushCyan;
 
             dty = 8;
-            drawTextAt(four, $"Last scan:    {lastBodyName}", brush, GameColors.fontSmaller);
+            drawTextAt(four, $"Last scan: ", brush, GameColors.fontSmaller);
+            drawTextAt(lastBodyName, brush, GameColors.fontSmaller);
 
             if (!string.IsNullOrEmpty(lastBodyName))
             {

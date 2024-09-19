@@ -253,6 +253,52 @@ namespace SrvSurvey
 
         public static Pen penOrangeStripe3;
 
+        internal class Bio
+        {
+            public static Brush brushPrediction = Brushes.DimGray;
+            public static Brush brushPredictionHatch = new HatchBrush(HatchStyle.DarkUpwardDiagonal, Color.FromArgb(242, 64, 64, 64), Color.Transparent);
+
+            // NOTE: Grey intentionally matches Blue
+
+            public static Dictionary<VolColor, Pen> volEdge = new Dictionary<VolColor, Pen>()
+            {
+                { VolColor.Blue, newPen(Color.FromArgb(96, DarkCyan), 1.9f, DashStyle.Dot) },
+                { VolColor.Gold, newPen(Color.FromArgb(96, Color.Gold), 1.9f, DashStyle.Dot) },
+                { VolColor.Grey, newPen(Color.FromArgb(96, DarkCyan), 1.9f, DashStyle.Dot) },
+                { VolColor.Orange, newPen(Color.FromArgb(96, Orange), 1.9f, DashStyle.Dot) },
+            };
+
+            public static Dictionary<VolColor, PenBrush> volMin = new Dictionary<VolColor, PenBrush>()
+            {
+                { VolColor.Blue, new PenBrush(newPen(Color.DarkCyan, 1), brushCyan) },
+                { VolColor.Gold, new PenBrush(newPen(Color.Gold, 1), Brushes.DarkGoldenrod) },
+                { VolColor.Grey, new PenBrush(newPen(Color.DarkCyan, 1), brushCyan) },
+                { VolColor.Orange, new PenBrush(newPen(OrangeDim, 1), GameColors.brushGameOrange) },
+            };
+
+            public static Dictionary<VolColor, PenBrush> volMax = new Dictionary<VolColor, PenBrush>()
+            {
+                { VolColor.Blue, new PenBrush(newPen(Color.DarkCyan, 1), new SolidBrush(Color.FromArgb(180, DarkCyan))) },
+                { VolColor.Gold, new PenBrush(newPen(Color.FromArgb(144, 214, 164, 11), 1), new SolidBrush(Color.FromArgb(144, 184, 134, 11))) },
+                { VolColor.Grey, new PenBrush(newPen(Color.DarkCyan, 1), new SolidBrush(Color.FromArgb(180, DarkCyan))) },
+                { VolColor.Orange, new PenBrush(newPen(Color.FromArgb(124, GameColors.Orange)), new SolidBrush(Color.FromArgb(140, OrangeDim))) },
+            };
+
+            //// gray
+            //minFill = new SolidBrush(Color.FromArgb(255, 86, 86, 86));
+            //maxFill = new SolidBrush(Color.FromArgb(140, 38, 38, 38));
+            //outerEdge = GameColors.newPen(Color.FromArgb(96, 182, 182, 182), 1.9f, DashStyle.Dot);
+            //minEdge = GameColors.newPen(Color.FromArgb(255, 44, 44, 44));
+            //maxEdge = GameColors.newPen(Color.FromArgb(124, 96, 96, 96));
+
+            //// dim orange?
+            //minFill = GameColors.brushGameOrangeDim;
+            //maxFill = new SolidBrush(Color.FromArgb(140, GameColors.OrangeDim));
+            //outerEdge = GameColors.newPen(Color.FromArgb(96, GameColors.Orange), 1.9f, DashStyle.Dot);
+            //minEdge = GameColors.newPen(Color.FromArgb(124, 45, 28, 3), 1);
+            //maxEdge = GameColors.penGameOrangeDim1;
+        }
+
         public static Brush brushExclusionActive = new HatchBrush(HatchStyle.ZigZag, Color.DarkGreen, Color.Transparent);
         public static Pen penExclusionActive = newPen(Color.FromArgb(96, Color.Green), 20);
         public static Brush brushExclusionDenied = new HatchBrush(HatchStyle.ZigZag, Color.DarkRed, Color.Transparent);
@@ -697,5 +743,13 @@ namespace SrvSurvey
             this.pen = pen;
             this.brush = brush;
         }
+    }
+
+    public enum VolColor
+    {
+        Orange,
+        Blue,
+        Gold,
+        Grey
     }
 }
