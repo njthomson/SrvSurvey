@@ -266,7 +266,7 @@ namespace SrvSurvey.game
 
         public override string ToString()
         {
-            return $"'{this.name}' ({this.englishName}";
+            return $"'{name}' ({englishName}";
         }
 
         /// <summary>
@@ -276,10 +276,10 @@ namespace SrvSurvey.game
         {
             get
             {
-                if (this.englishName != genus.englishName)
-                    return this.englishName.Replace(genus.englishName, "").Trim();
+                if (genus != null && englishName != genus.englishName)
+                    return englishName.Replace(genus.englishName, "").Trim();
                 else
-                    return this.englishName;
+                    return englishName;
             }
         }
     }
