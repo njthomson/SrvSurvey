@@ -122,9 +122,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="images\agriculture~1-s-1-x-200-y-200.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="images\agriculture~2-s-1-x-200-y-200.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
