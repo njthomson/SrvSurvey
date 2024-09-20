@@ -142,7 +142,7 @@ namespace SrvSurvey
                 if (data == null) return;
 
                 // last updated
-                if (data.updated_at != null && task.Result.bodies.Count > 0)
+                if (data.updated_at != null && task.Result.bodies?.Count > 0)
                     systemsCache[nextSystem].lastUpdated = data.updated_at;
 
                 // how many stations are there?
