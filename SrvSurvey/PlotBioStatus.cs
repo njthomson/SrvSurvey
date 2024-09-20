@@ -33,7 +33,6 @@ namespace SrvSurvey
                 && !Game.activeGame.hidePlottersFromCombatSuits
                 && !Game.activeGame.isShutdown
                 && !Game.activeGame.atMainMenu
-                && !Game.activeGame.status.OnFootSocial
                 && !Game.activeGame.status.InTaxi
                 && !Game.activeGame.status.FsdChargingJump
                 && !PlotGuardians.allowPlotter && !Program.isPlotter<PlotGuardians>()

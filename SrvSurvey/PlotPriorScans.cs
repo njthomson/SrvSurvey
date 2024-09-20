@@ -67,7 +67,6 @@ namespace SrvSurvey
                 && Game.settings.autoLoadPriorScans
                 && Game.activeGame?.systemBody != null
                 && !Game.activeGame.hidePlottersFromCombatSuits
-                && !Game.activeGame.status.OnFootSocial
                 && !PlotGuardians.allowPlotter && !Program.isPlotter<PlotGuardians>()
                 && !PlotHumanSite.allowPlotter && !Program.isPlotter<PlotHumanSite>()
                 && Game.activeGame.canonnPoiHasLocalBioSignals()

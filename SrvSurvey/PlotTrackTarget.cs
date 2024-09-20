@@ -53,7 +53,6 @@ namespace SrvSurvey
                 && Game.activeGame.status != null
                 && Game.activeGame.status.hasLatLong
                 && !Game.activeGame.status.InTaxi
-                && !Game.activeGame.status.OnFootSocial
                 && !Game.activeGame.hidePlottersFromCombatSuits
                 && Game.activeGame.isMode(GameMode.SuperCruising, GameMode.Flying, GameMode.Landed, GameMode.InSrv, GameMode.OnFoot, GameMode.GlideMode, GameMode.InFighter, GameMode.CommsPanel);
         }

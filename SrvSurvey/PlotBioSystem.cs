@@ -72,7 +72,6 @@ namespace SrvSurvey
                 && Game.activeGame.systemData != null
                 && Game.activeGame.systemData.bioSignalsTotal > 0
                 && !Game.activeGame.status.InTaxi
-                && !Game.activeGame.status.OnFootSocial
                 && !Game.activeGame.hidePlottersFromCombatSuits
                 && (
                     Game.activeGame.isMode(GameMode.SuperCruising, GameMode.SAA, GameMode.FSS, GameMode.ExternalPanel, GameMode.Orrery, GameMode.SystemMap)

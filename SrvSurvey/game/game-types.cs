@@ -51,7 +51,10 @@ namespace SrvSurvey.game
         InFighter,
         InSrv,
         InTaxi,
-        OnFoot, // at this level the following are simply "docked": Hangars, SocialSpace or in space or on foot in ground or space stations
+        /// <summary> Not in a station </summary>
+        OnFoot,
+        /// <summary> Walking around in a station, social spaces, landing pads - within some enclosed space </summary>
+        OnFootInStation,
 
         // Commander is in main ship, that is ...
         SuperCruising,
@@ -62,11 +65,8 @@ namespace SrvSurvey.game
         // in the MainShip but not flying
         Landed,
 
-        // At a landing pad or on foot within some enclosed space
+        // At a landing pad
         Docked,
-
-        // At a landing pad or on foot within some enclosed space
-        Social,
 
         MainMenu,
         FSDJumping,

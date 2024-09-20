@@ -319,6 +319,8 @@ namespace SrvSurvey.game
                 this.fireUpdate(false);
             }
 
+            //Game.log($"Status\r\n flags: {status.Flags}\r\nflags2: {status.Flags2}\r\n\t?\t{status.Flags2 & (StatusFlags2.OnFootInHangar | StatusFlags2.OnFootInStation | StatusFlags2.OnFootSocialSpace)}");
+
             // set or clear 'systemSite'
             this.setCurrentSite();
 
@@ -365,6 +367,8 @@ namespace SrvSurvey.game
                     return GameMode.InSrv;
                 if (activeVehicle == ActiveVehicle.Taxi)
                     return GameMode.InTaxi;
+                if ((status.Flags2 & (StatusFlags2.OnFootInHangar | StatusFlags2.OnFootInStation | StatusFlags2.OnFootSocialSpace)) > 0)
+                    return GameMode.OnFootInStation;
                 if ((this.status.Flags2 & StatusFlags2.OnFootOnPlanet) > 0)
                     return GameMode.OnFoot;
 
@@ -380,10 +384,6 @@ namespace SrvSurvey.game
                 // or we maybe ...
                 if ((this.status.Flags & StatusFlags.Docked) > 0)
                     return GameMode.Docked;
-                if ((this.status.Flags2 & StatusFlags2.OnFootInStation) > 0)
-                    return GameMode.Docked;
-                if ((this.status.Flags2 & StatusFlags2.OnFootSocialSpace) > 0)
-                    return GameMode.Social;
 
                 // otherwise we must be ...
                 if (activeVehicle == ActiveVehicle.MainShip)
