@@ -382,15 +382,14 @@ namespace SrvSurvey
             //Program.invalidateActivePlotters();
         }
 
-
         private void groupCodex_Paint(object sender, PaintEventArgs e)
         {
             e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
             var txt = game?.cmdrCodex?.completionProgress > 0
                 ? $"{Math.Floor(game.cmdrCodex.completionProgress * 100)}%" // truncate not round
                 : "?";
-            var r = new Rectangle(4, 8, groupCodex.Width, 40);
-            TextRenderer.DrawText(e.Graphics, txt, GameColors.fontBigBold, r, Color.Black);
+            var r = new Rectangle(scaleBy(4), scaleBy(8), groupCodex.Width, scaleBy(40));
+            TextRenderer.DrawText(e.Graphics, txt, lblBig.Font, r, Color.Black);
         }
 
         private void settingsFolderWatcher_Changed(object sender, FileSystemEventArgs e)
@@ -507,7 +506,7 @@ namespace SrvSurvey
 
         private void btnCopyLocation_Click(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty( txtLocation.Text))
+            if (!string.IsNullOrEmpty(txtLocation.Text))
                 Clipboard.SetText(txtLocation.Text);
         }
 
@@ -1242,15 +1241,6 @@ namespace SrvSurvey
             if (game?.journals != null) game.journals.poke();
         }
 
-        private void Main_ResizeEnd(object sender, EventArgs e)
-        {
-            if (Game.settings.formMainLocation != this.Location)
-            {
-                Game.settings.formMainLocation = this.Location;
-                Game.settings.Save();
-            }
-        }
-
         private void btnSettings_Click(object sender, EventArgs e)
         {
             var form = new FormSettings();
@@ -1297,10 +1287,14 @@ namespace SrvSurvey
             }
         }
 
-        private void Main_FormClosed(object sender, FormClosedEventArgs e)
+        private void Main_FormClosing(object sender, FormClosingEventArgs e)
         {
             Game.log("Saving settings on close...");
             this.game?.cmdr?.Save();
+
+            if (Game.settings.formMainLocation != this.Location)
+                Game.settings.formMainLocation = this.Location;
+
             Game.settings.Save();
             Game.log("Closed without errors");
         }
@@ -1650,7 +1644,6 @@ namespace SrvSurvey
         {
             FormCodexBingo.show();
         }
-
     }
 }
 

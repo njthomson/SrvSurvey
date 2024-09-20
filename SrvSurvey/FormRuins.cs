@@ -699,7 +699,7 @@ namespace SrvSurvey
 
                 //g.DrawLine(Pens.DarkBlue, 0,0, -pt.X, -pt.Y);
                 var sz = g.MeasureString(foo.Key, GameColors.fontBigBold);
-                g.DrawString(foo.Key, GameColors.fontBig, Brushes.DarkCyan, -pt.X - (sz.Width / 2) + 2, -pt.Y - (sz.Height / 2) + 2);
+                g.DrawString(foo.Key, GameColors.fontBig, GameColors.brushDarkCyan, -pt.X - (sz.Width / 2) + 2, -pt.Y - (sz.Height / 2) + 2);
             }
 
             // and draw all the POIs
@@ -834,7 +834,7 @@ namespace SrvSurvey
         {
             // TODO: Account for obelisk rotation
             var brush = Brushes.Blue;
-            var pen = Pens.DarkCyan;
+            var pen = GameColors.penDarkCyan1;
 
             g.Adjust(x, -y, rot + 180, () =>
             {
@@ -912,8 +912,8 @@ namespace SrvSurvey
             g.ResetTransform();
 
             var rect = new RectangleF(tp.X - 5, tp.Y - 5,
-                isRuins ? 114 : 130,
-                isRuins ? 236 : 270);
+                PlotBase.scaled(isRuins ? 114 : 130),
+                PlotBase.scaled(isRuins ? 236 : 270));
 
             g.FillRectangle(GameColors.Map.legend.brush, rect);
             g.DrawRectangle(GameColors.Map.legend.pen, rect);

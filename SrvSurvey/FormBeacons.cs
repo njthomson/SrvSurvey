@@ -360,7 +360,7 @@ namespace SrvSurvey
 
                 default:
                     Game.log($"Unexpected sort column: {this.sortColumn}");
-                    return rows.OrderBy(row => ((GuardianRuinEntry)row.Tag).systemName);
+                    return rows.OrderBy(row => ((GuardianRuinSummary)row.Tag).systemName);
             }
         }
 

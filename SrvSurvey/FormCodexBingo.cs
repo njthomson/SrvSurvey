@@ -563,6 +563,11 @@ namespace SrvSurvey
             Util.openLink("https://canonn.science/codex/canonn-challenge/");
         }
 
+        protected int scaleBy(int n)
+        {
+            return (int)(this.DeviceDpi / 96f * n);
+        }
+
         private void tree_DrawNode(object sender, DrawTreeNodeEventArgs e)
         {
             e.DrawDefault = true;
@@ -576,7 +581,7 @@ namespace SrvSurvey
             var b = codexTag.isComplete ? brushComplete : brushPartial;
 
             // completion pie icon
-            var rPie = new Rectangle(e.Bounds.X - 17, e.Bounds.Y + 2, 13, 13);
+            var rPie = new Rectangle(e.Bounds.X - 17, e.Bounds.Y + scaleBy(3), 13, 13);
             g.FillRectangle(this.treeBackBrush, rPie);
             var fillAngle = 360f * codexTag.completion;
             g.FillPie(b, rPie, -90, fillAngle);

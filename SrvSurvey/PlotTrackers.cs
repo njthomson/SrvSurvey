@@ -188,10 +188,10 @@ namespace SrvSurvey
 
                     isClose |= dd.distance < highlightDistance;
                     brush = isActive ? GameColors.brushGameOrange : GameColors.brushGameOrangeDim;
-                    if (dd.distance < highlightDistance) brush = isActive ? GameColors.brushCyan : Brushes.DarkCyan;
+                    if (dd.distance < highlightDistance) brush = isActive ? GameColors.brushCyan : GameColors.brushDarkCyan;
 
                     var pen = isActive ? GameColors.penGameOrange2 : GameColors.penGameOrangeDim2;
-                    if (dd.distance < highlightDistance) pen = isActive ? GameColors.penCyan2 : Pens.DarkCyan;
+                    if (dd.distance < highlightDistance) pen = isActive ? GameColors.penCyan2 : GameColors.penDarkCyan1;
 
                     this.drawBearingTo(x, y, "", (double)dd.distance, (double)deg, brush, pen);
                     x += bearingWidth;
@@ -203,7 +203,7 @@ namespace SrvSurvey
 
                 var sz = g.MeasureString(displayName, GameColors.fontSmall);
                 brush = isActive ? GameColors.brushGameOrange : GameColors.brushGameOrangeDim;
-                if (isClose) brush = isActive ? GameColors.brushCyan : Brushes.DarkCyan;
+                if (isClose) brush = isActive ? GameColors.brushCyan : GameColors.brushDarkCyan;
 
                 g.DrawString(
                     displayName,

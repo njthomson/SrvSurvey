@@ -1,7 +1,5 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using Newtonsoft.Json.Linq;
-using SrvSurvey.canonn;
 using SrvSurvey.net;
 using SrvSurvey.units;
 using static SrvSurvey.game.GuardianSiteData;

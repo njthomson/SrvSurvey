@@ -1294,7 +1294,7 @@ namespace SrvSurvey
 
                     // draw group name character
                     var sz = g.MeasureString(foo.Key, GameColors.fontBigBold);
-                    var brush = this.formEditMap?.tabs.SelectedIndex == 2 ? Brushes.Lime : Brushes.DarkCyan; // game.cmdr.ramTahActive ? Brushes.SlateGray : Brushes.DarkCyan;
+                    var brush = this.formEditMap?.tabs.SelectedIndex == 2 ? Brushes.Lime : GameColors.brushDarkCyan;
 
                     // we must re-translate/rotate otherwise the text will be rotated too
                     g.TranslateTransform(-pt.X, -pt.Y);

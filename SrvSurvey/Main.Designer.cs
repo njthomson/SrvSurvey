@@ -92,6 +92,7 @@ namespace SrvSurvey
             btnTest = new Button();
             groupCodex = new GroupBox();
             btnCodexBingo = new Button();
+            lblBig = new Label();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
             groupBox3.SuspendLayout();
@@ -838,7 +839,7 @@ namespace SrvSurvey
             linkNewBuildAvailable.BackColor = Color.Transparent;
             linkNewBuildAvailable.Font = new Font("Lucida Sans Typewriter", 8.25F, FontStyle.Regular, GraphicsUnit.Point);
             linkNewBuildAvailable.LinkArea = new LinkArea(1, 16);
-            linkNewBuildAvailable.Location = new Point(267, -1);
+            linkNewBuildAvailable.Location = new Point(267, 0);
             linkNewBuildAvailable.Name = "linkNewBuildAvailable";
             linkNewBuildAvailable.Size = new Size(170, 18);
             linkNewBuildAvailable.TabIndex = 29;
@@ -888,6 +889,17 @@ namespace SrvSurvey
             btnCodexBingo.UseVisualStyleBackColor = false;
             btnCodexBingo.Click += btnCodexBingo_Click;
             // 
+            // lblBig
+            // 
+            lblBig.AutoSize = true;
+            lblBig.Font = new Font("Century Gothic", 21.75F, FontStyle.Bold, GraphicsUnit.Point);
+            lblBig.Location = new Point(300, 517);
+            lblBig.Name = "lblBig";
+            lblBig.Size = new Size(72, 36);
+            lblBig.TabIndex = 32;
+            lblBig.Text = "20%";
+            lblBig.Visible = false;
+            // 
             // Main
             // 
             AutoScaleDimensions = new SizeF(7F, 12F);
@@ -895,6 +907,7 @@ namespace SrvSurvey
             BackColor = SystemColors.AppWorkspace;
             CancelButton = btnQuit2;
             ClientSize = new Size(437, 628);
+            Controls.Add(lblBig);
             Controls.Add(groupCodex);
             Controls.Add(btnTest);
             Controls.Add(btnCodexShow);
@@ -923,9 +936,8 @@ namespace SrvSurvey
             Name = "Main";
             StartPosition = FormStartPosition.CenterParent;
             Text = "Srv Survey";
-            FormClosed += Main_FormClosed;
+            FormClosing += Main_FormClosing;
             Load += Main_Load;
-            ResizeEnd += Main_ResizeEnd;
             SizeChanged += Main_SizeChanged;
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
@@ -1004,5 +1016,6 @@ namespace SrvSurvey
         private Button btnTest;
         private GroupBox groupCodex;
         private Button btnCodexBingo;
+        private Label lblBig;
     }
 }

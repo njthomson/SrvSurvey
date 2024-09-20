@@ -5,15 +5,25 @@ namespace SrvSurvey
 {
     static class GameColors
     {
-        public static Color Orange = Game.settings.defaultOrange; // Color.FromArgb(255, 255, 111, 0);
-        public static Color OrangeDim = Game.settings.defaultOrangeDim; // Color.FromArgb(255, 95, 48, 3);
-        public static Color Cyan = Color.FromArgb(255, 84, 223, 237);
-        public static Color DarkCyan = Color.DarkCyan;
+        public static Color Orange = Game.settings.defaultOrange;
+        public static Color OrangeDim = Game.settings.defaultOrangeDim;
+        public static Color Cyan = Game.settings.defaultCyan;
+        public static Color DarkCyan = Game.settings.defaultDarkCyan;
+
+        public static class Defaults
+        {
+            public static Color Orange = Color.FromArgb(255, 255, 111, 0);
+            public static Color OrangeDim = Color.FromArgb(255, 95, 48, 3);
+            public static Color Cyan = Color.FromArgb(255, 84, 223, 237);
+            public static Color DarkCyan = Color.DarkCyan;
+        }
 
         // IMPORTANT: figure out scaling and fontScaling before anything else
 
         private static float getScaleFactor()
         {
+            if (Program.control == null || Game.settings == null) return 1f;
+
             switch (Game.settings.plotterScale)
             {
                 default:
@@ -75,6 +85,8 @@ namespace SrvSurvey
 
         private static float getFontScaleFactor()
         {
+            if (Program.control == null || Game.settings == null) return 1f;
+
             var osScaleFactor = 96f / Program.control.DeviceDpi;
             switch (Game.settings.plotterScale)
             {
@@ -162,7 +174,7 @@ namespace SrvSurvey
 
             GameColors.shiningBrush = new PathGradientBrush(shiningPath)
             {
-                CenterColor = Color.Cyan,
+                CenterColor = Cyan,
                 SurroundColors = new Color[] { Color.Transparent },
                 CenterPoint = new PointF(0, 0)
             };
@@ -220,8 +232,8 @@ namespace SrvSurvey
         public static Pen penCyan2Dotted = newPen(Cyan, 2, DashStyle.Dot);
         public static Pen penCyan4 = newPen(Cyan, 4);
         public static Pen penCyan8 = newPen(Cyan, 8);
-        public static Pen penDarkCyan1 = newPen(Color.DarkCyan, 1);
-        public static Pen penDarkCyan4 = newPen(Color.DarkCyan, 4);
+        public static Pen penDarkCyan1 = newPen(DarkCyan, 1);
+        public static Pen penDarkCyan4 = newPen(DarkCyan, 4);
 
         public static Pen penRed2 = newPen(Color.Red, 2);
         public static Pen penDarkRed2 = newPen(Color.DarkRed, 2);
@@ -243,7 +255,7 @@ namespace SrvSurvey
         public static Pen penGameOrange2Dashed = newPen(Orange, 2, DashStyle.Dash);
         public static Pen penGameOrange2DashedIsh = newPen(Color.FromArgb(128, Orange), 2, DashStyle.Dash);
 
-        public static Pen penNearestUnknownSitePOI = newPen(Color.FromArgb(96, Color.DarkCyan), 15, LineCap.RoundAnchor, LineCap.Round);
+        public static Pen penNearestUnknownSitePOI = newPen(Color.FromArgb(96, DarkCyan), 15, LineCap.RoundAnchor, LineCap.Round);
 
         public static Pen penLime2 = newPen(LimeIsh, 2);
         public static Pen penLime2Dot = newPen(Color.FromArgb(64, GameColors.LimeIsh), 2, DashStyle.Dash);
@@ -270,17 +282,17 @@ namespace SrvSurvey
 
             public static Dictionary<VolColor, PenBrush> volMin = new Dictionary<VolColor, PenBrush>()
             {
-                { VolColor.Blue, new PenBrush(newPen(Color.DarkCyan, 1), brushCyan) },
+                { VolColor.Blue, new PenBrush(newPen(DarkCyan, 1), brushCyan) },
                 { VolColor.Gold, new PenBrush(newPen(Color.Gold, 1), Brushes.DarkGoldenrod) },
-                { VolColor.Grey, new PenBrush(newPen(Color.DarkCyan, 1), brushCyan) },
+                { VolColor.Grey, new PenBrush(newPen(DarkCyan, 1), brushCyan) },
                 { VolColor.Orange, new PenBrush(newPen(OrangeDim, 1), GameColors.brushGameOrange) },
             };
 
             public static Dictionary<VolColor, PenBrush> volMax = new Dictionary<VolColor, PenBrush>()
             {
-                { VolColor.Blue, new PenBrush(newPen(Color.DarkCyan, 1), new SolidBrush(Color.FromArgb(180, DarkCyan))) },
+                { VolColor.Blue, new PenBrush(newPen(DarkCyan, 1), new SolidBrush(Color.FromArgb(180, DarkCyan))) },
                 { VolColor.Gold, new PenBrush(newPen(Color.FromArgb(144, 214, 164, 11), 1), new SolidBrush(Color.FromArgb(144, 184, 134, 11))) },
-                { VolColor.Grey, new PenBrush(newPen(Color.DarkCyan, 1), new SolidBrush(Color.FromArgb(180, DarkCyan))) },
+                { VolColor.Grey, new PenBrush(newPen(DarkCyan, 1), new SolidBrush(Color.FromArgb(180, DarkCyan))) },
                 { VolColor.Orange, new PenBrush(newPen(Color.FromArgb(124, GameColors.Orange)), new SolidBrush(Color.FromArgb(140, OrangeDim))) },
             };
 
@@ -316,8 +328,8 @@ namespace SrvSurvey
         public static Pen penTrackerActive = newPen(Color.FromArgb(32, GameColors.Orange), 16, DashStyle.Solid);
         public static Pen penTrackerInactive = newPen(Color.FromArgb(48, Color.SlateGray), 8, DashStyle.Solid);
 
-        public static Brush brushTrackerClose = new SolidBrush(Color.FromArgb(32, Color.DarkCyan));
-        public static Pen penTrackerClose = newPen(Color.FromArgb(36, Color.Cyan), 12);
+        public static Brush brushTrackerClose = new SolidBrush(Color.FromArgb(32, DarkCyan));
+        public static Pen penTrackerClose = newPen(Color.FromArgb(36, Cyan), 12);
 
         public static Pen penShipDepartFar = newPen(Color.FromArgb(64, Color.Red), 32, DashStyle.DashDotDot);
         public static Pen penShipDepartNear = newPen(Color.FromArgb(255, Color.Red), 32, DashStyle.DashDotDot);
@@ -348,18 +360,18 @@ namespace SrvSurvey
             /// <summary> cyan </summary>
             internal static class CloseActive
             {
-                public static Color color = Color.FromArgb(32, GameColors.Cyan);
+                public static Color color = Color.FromArgb(32, Cyan);
                 public static Brush brush = GameColors.brushCyan;
                 public static Pen pen = GameColors.penCyan2;
-                public static Pen penRadar = new Pen(Color.FromArgb(48, GameColors.Cyan)) { Width = 16, DashStyle = DashStyle.Solid };
+                public static Pen penRadar = new Pen(Color.FromArgb(48, Cyan)) { Width = 16, DashStyle = DashStyle.Solid };
             }
             /// <summary> dark cyan </summary>
             internal static class CloseInactive
             {
-                public static Color color = Color.FromArgb(32, GameColors.DarkCyan);
-                public static Brush brush = Brushes.DarkCyan;
-                public static Pen pen = newPen(Color.DarkCyan);
-                public static Pen penRadar = new Pen(Color.FromArgb(80, GameColors.DarkCyan)) { Width = 8, DashStyle = DashStyle.Dot };
+                public static Color color = Color.FromArgb(32, DarkCyan);
+                public static Brush brush = brushDarkCyan;
+                public static Pen pen = newPen(DarkCyan);
+                public static Pen penRadar = new Pen(Color.FromArgb(80, DarkCyan)) { Width = 8, DashStyle = DashStyle.Dot };
             }
             /// <summary> orange dim </summary>
             internal static class FarAway
@@ -385,7 +397,7 @@ namespace SrvSurvey
         public static Brush brushGameOrangeDim = new SolidBrush(OrangeDim); //  Color.FromArgb(255, 255, 113, 00));
 
         public static SolidBrush brushCyan = new SolidBrush(Cyan); //  Color.FromArgb(255, 255, 113, 00));
-        public static Brush brushDarkCyan = new SolidBrush(DarkCyan);
+        public static SolidBrush brushDarkCyan = new SolidBrush(DarkCyan);
 
         public static Brush brushOnTarget = new HatchBrush(HatchStyle.Percent50, OrangeDim, Color.Transparent);
         public static Brush brushOffTarget = new HatchBrush(HatchStyle.Percent25, OrangeDim, Color.Transparent);
@@ -395,16 +407,16 @@ namespace SrvSurvey
         public static Font fontScreenshotBannerBig = new Font("Century Gothic", 14F, FontStyle.Bold, GraphicsUnit.Point);
         public static Font fontScreenshotBannerSmall = new Font("Century Gothic", 10F, FontStyle.Regular, GraphicsUnit.Point);
 
-        public static Pen penPoiRelicUnconfirmed = newPen(Color.Cyan, 4, DashStyle.Dash); // CornflowerBlue ?
+        public static Pen penPoiRelicUnconfirmed = newPen(Cyan, 4, DashStyle.Dash); // CornflowerBlue ?
         public static Pen penPoiRelicPresent = newPen(Cyan, 2f);
         public static Pen penPoiRelicMissing = newPen(Color.FromArgb(128, 128, 128, 128));
 
-        public static Pen penPoiPuddleUnconfirmed = newPen(Color.Cyan, 3, DashStyle.Dot); // PeachPuff ?
+        public static Pen penPoiPuddleUnconfirmed = newPen(Cyan, 3, DashStyle.Dot); // PeachPuff ?
         public static Pen penPoiPuddlePresent = newPen(Color.Orange, 3, DashStyle.Solid);
         public static Pen penPoiPuddleMissing = newPen(Color.DarkRed, 3, DashStyle.Solid);
 
-        public static Pen penObelisk = new Pen(Color.DarkCyan, 0.5f * scaleFactor) { LineJoin = LineJoin.Bevel, StartCap = LineCap.Triangle, EndCap = LineCap.Triangle };
-        public static Pen penObeliskActive = new Pen(Color.Cyan, 0.5f * scaleFactor) { LineJoin = LineJoin.Bevel, StartCap = LineCap.Triangle, EndCap = LineCap.Triangle };
+        public static Pen penObelisk = new Pen(DarkCyan, 0.5f * scaleFactor) { LineJoin = LineJoin.Bevel, StartCap = LineCap.Triangle, EndCap = LineCap.Triangle };
+        public static Pen penObeliskActive = new Pen(Cyan, 0.5f * scaleFactor) { LineJoin = LineJoin.Bevel, StartCap = LineCap.Triangle, EndCap = LineCap.Triangle };
 
         public static Brush brushShipDismissWarning = new HatchBrush(HatchStyle.WideUpwardDiagonal, Color.Red, Color.Black);
 
@@ -417,7 +429,7 @@ namespace SrvSurvey
         public static Pen penPoiMissing = newPen(Color.FromArgb(128, 128, 128, 128));
 
         public static Brush brushAroundPoiUnknown = new SolidBrush(Color.FromArgb(160, Color.DarkSlateBlue));
-        public static Pen penAroundPoiUnknown = newPen(Color.FromArgb(96, Color.Cyan), 1f, DashStyle.Dot);
+        public static Pen penAroundPoiUnknown = newPen(Color.FromArgb(96, Cyan), 1f, DashStyle.Dot);
 
         /// <summary Guardian map related </summary>
         internal static class Map
@@ -502,7 +514,7 @@ namespace SrvSurvey
             {
                 { POIType.relic, new Dictionary<SitePoiStatus, Brush> {
                     { SitePoiStatus.unknown, brushUnknown },
-                    { SitePoiStatus.present, new SolidBrush(Color.Cyan) },
+                    { SitePoiStatus.present, new SolidBrush(Cyan) },
                     { SitePoiStatus.absent, brushAbsent },
                     { SitePoiStatus.empty, brushEmpty } } },
 
@@ -572,8 +584,8 @@ namespace SrvSurvey
         public static class HumanSite
         {
             public static PenBrush powerIcon = new PenBrush(
-                newPen(Color.Cyan, 0.5f, LineCap.Triangle, LineCap.Triangle),
-                Brushes.Cyan);
+                newPen(Cyan, 0.5f, LineCap.Triangle, LineCap.Triangle),
+                brushCyan);
 
             public static Pen penDoorEdge = newPen(Color.Navy);
 
@@ -617,10 +629,10 @@ namespace SrvSurvey
         /// </summary>
         public static class Route
         {
-            public static Pen penNext2 = newPen(Color.Cyan, 2, LineCap.Triangle, LineCap.Triangle);
-            public static Pen penNext4 = newPen(Color.Cyan, 4, LineCap.Triangle, LineCap.Triangle);
-            public static Pen penNeutronAhead = newPen(Color.DarkCyan, 4, LineCap.Triangle, LineCap.Triangle, DashStyle.Dash);
-            public static Pen penNeutronBehind = newPen(Color.DarkCyan, 4, LineCap.Triangle, LineCap.Triangle);
+            public static Pen penNext2 = newPen(Cyan, 2, LineCap.Triangle, LineCap.Triangle);
+            public static Pen penNext4 = newPen(Cyan, 4, LineCap.Triangle, LineCap.Triangle);
+            public static Pen penNeutronAhead = newPen(DarkCyan, 4, LineCap.Triangle, LineCap.Triangle, DashStyle.Dash);
+            public static Pen penNeutronBehind = newPen(DarkCyan, 4, LineCap.Triangle, LineCap.Triangle);
             public static Pen penAhead = newPen(OrangeDim, 4, DashStyle.Dot);
             public static Pen penBehind = newPen(OrangeDim, 4, LineCap.Triangle, LineCap.Triangle);
         }

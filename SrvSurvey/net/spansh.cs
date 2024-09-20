@@ -259,6 +259,23 @@ namespace SrvSurvey.net
         }
     }
 
+    internal class GetSystemResponse
+    {
+        // {"min_max":[{"id64":10477373803,"name":"Sol","x":0.0,"y":0.0,"z":0.0},{"id64":1458376315610,"name":"Solati","x":66.53125,"y":29.1875,"z":34.6875},{"id64":5059379007779,"name":"Solitude","x":-9497.65625,"y":-911.0,"z":19807.625},{"id64":5267550898539,"name":"Solibamba","x":99.5625,"y":40.125,"z":26.8125},{"id64":11538024121505,"name":"Sollaro","x":-9528.625,"y":-885.59375,"z":19815.4375}],"values":["Sol","Solati","Solitude","Solibamba","Sollaro"]}
+
+        public List<MinMax> min_max;
+        public List<string> values;
+
+        internal class MinMax
+        {
+            public long id64;
+            public string name;
+            public double x;
+            public double y;
+            public double z;
+        }
+    }
+
     internal class CriteriaBuilder
     {
         public static int limitMinCount = 5;
@@ -979,7 +996,6 @@ namespace SrvSurvey.net
         }
 
     }
-
 
     internal class ApiSystemDumpStation
     {

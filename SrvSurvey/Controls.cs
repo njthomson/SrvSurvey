@@ -12,37 +12,16 @@ namespace SrvSurvey
             this.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
             this.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
         }
-
-        protected override void OnPaint(PaintEventArgs pevent)
-        {
-            base.OnPaint(pevent);
-
-            //var g = pevent.Graphics;
-
-            //g.Clear(this.BackColor);
-
-            //var sz = TextRenderer.MeasureText(g, this.Text, this.Font, this.ClientSize, TextFormatFlags.Default);
-            //var h = (ClientSize.Height / 2f) - (sz.Height / 2f);
-            //var pt = new Point(0, (int)h);
-
-            ////var bb = new SolidBrush(Color.FromArgb(255, this.BackColor));
-            ////g.FillRectangle(bb, 0, (int)h, sz.Width, sz.Height);
-
-            //////g.SmoothingMode = SmoothingMode.HighQuality;
-            //var r1 = new Rectangle(1, (int)h, sz.Width, sz.Height);
-            ////ControlPaint.DrawMenuGlyph(g, r1, MenuGlyph.Checkmark, this.ForeColor, this.BackColor);
-
-            //g.DrawRectangle(Pens.Black, 0, (int)h, sz.Width, sz.Height);
-            ////ControlPaint.DrawCheckBox()
-
-            //TextRenderer.DrawText(g, this.Text, this.Font, pt, this.ForeColor);
-
-        }
     }
 
     public class DraggableForm : Form
     {
-        const int titleHeight = 24;
+        protected int scaleBy(int n)
+        {
+            return (int)(this.DeviceDpi / 96f * n);
+        }
+
+        private int titleHeight = 24;
 
         public bool renderOwnTitleBar = true;
 
@@ -51,7 +30,8 @@ namespace SrvSurvey
 
         public DraggableForm()
         {
-            this.Margin = new Padding(0, 40, 0, 0);
+            titleHeight = scaleBy(titleHeight); 
+            this.Margin = new Padding(0, scaleBy(40), 0, 0);
         }
 
         #region mouse dragging
@@ -310,7 +290,7 @@ namespace SrvSurvey
                 g.DrawIcon(logo2, new Rectangle(0, 0, titleHeight, titleHeight));
 
                 // fake title
-                var pt = new Point(28, 2);
+                var pt = new Point(scaleBy(28), scaleBy(2));
                 TextRenderer.DrawText(g, this.Text ?? this.Text, GameColors.fontMiddleBold, pt, SystemColors.ControlLight);
             }
         }

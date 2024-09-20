@@ -22,8 +22,7 @@ namespace SrvSurvey
             InitializeComponent();
             this.TopMost = true;
             this.Cursor = Cursors.Cross;
-            this.Name = nameof(PlotPulse);
-            this.Text = this.Name;
+            this.Text = this.GetType().Name;
             this.didFirstPaint = true;
 
             this.BackColor = Color.Black;

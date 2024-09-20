@@ -9,6 +9,7 @@ namespace SrvSurvey
         private Game? game = Game.activeGame;
 
         private readonly Dictionary<string, FieldInfo> map = new Dictionary<string, FieldInfo>();
+        private Color colorScreenshotBanner = Game.settings.screenshotBannerColor;
 
         public FormSettings()
         {
@@ -22,8 +23,6 @@ namespace SrvSurvey
             var procED = Process.GetProcessesByName("EliteDangerous64");
             btnNextProc.Visible = procED.Length > 1;
             this.Text += $" ({Program.releaseVersion})";
-
-            this.linkDataFiles.Visible = Debugger.IsAttached;
 
             var osScaleFactor = (this.DeviceDpi / 96f * 100).ToString("0");
             this.comboOverlayScale.Items[0] = $"Match Windows OS scale ({osScaleFactor}%)";
@@ -53,6 +52,7 @@ namespace SrvSurvey
             radioUseSmall.Enabled = checkUseSystemData.Checked && checkShowPriorScans.Checked && checkShowCanonnOnRadar.Checked;
             radioUseRadius.Enabled = checkUseSystemData.Checked && checkShowPriorScans.Checked && checkShowCanonnOnRadar.Checked;
             checkGalMapPlotter.Enabled = checkUseSystemData.Checked;
+            checkPlotJumpInfo.Enabled = checkUseSystemData.Checked;
             checkHideMyOwnCanonnSignals.Enabled = checkUseSystemData.Checked;
 
             checkBodyInfoMap.Enabled = checkBodyInfoOrbit.Enabled = checkBodyInfo.Checked;
@@ -133,8 +133,9 @@ namespace SrvSurvey
 
             // TODO: handle radio's better?
             radioUseRadius.Checked = !radioUseSmall.Checked;
-            panelBannerColor.BackColor = Game.settings.screenshotBannerColor;
+            colorScreenshotBanner = Game.settings.screenshotBannerColor;
             panelTheme.BackColor = Game.settings.defaultOrange;
+            panelTheme2.BackColor = Game.settings.defaultCyan;
         }
 
         private void updateSettingsFromForm(Control parentControl)
@@ -197,26 +198,46 @@ namespace SrvSurvey
                 || comboOverlayScale.SelectedIndex != Game.settings.plotterScale
                 || this.checkEnableGuardianFeatures.Checked != Game.settings.enableGuardianSites
                 || this.linkJournalFolder.Text != Game.settings.watchedJournalFolder
+                || this.panelTheme2.BackColor != Game.settings.defaultCyan
                 || this.panelTheme.BackColor != Game.settings.defaultOrange;
 
             updateSettingsFromForm(this);
 
             // special case for comboCmdrs
             Game.settings.preferredCommander = comboCmdr.SelectedIndex > 0 ? comboCmdr.Text : null;
-            Game.settings.screenshotBannerColor = panelBannerColor.BackColor;
+            Game.settings.screenshotBannerColor = colorScreenshotBanner;
+
+            // ratio for darker colours
+            var rr = 0.5f;
+            // primary theme color
             if (Game.settings.defaultOrange != panelTheme.BackColor
                 // but not if we're resetting
-                && panelTheme.BackColor != Color.FromArgb(255, 255, 111, 0))
+                && panelTheme.BackColor != GameColors.Defaults.Orange)
             {
                 // generate a new dimmer colour
                 Game.settings.defaultOrangeDim = Color.FromArgb(
                     255,
-                    (int)((float)panelTheme.BackColor.R * 0.6),
-                    (int)((float)panelTheme.BackColor.G * 0.6),
-                    (int)((float)panelTheme.BackColor.B * 0.6)
+                    (int)((float)panelTheme.BackColor.R * rr),
+                    (int)((float)panelTheme.BackColor.G * rr),
+                    (int)((float)panelTheme.BackColor.B * rr)
                 );
             }
             Game.settings.defaultOrange = panelTheme.BackColor;
+
+            // secondary theme color
+            if (Game.settings.defaultCyan != panelTheme2.BackColor
+                // but not if we're resetting
+                && panelTheme2.BackColor != GameColors.Defaults.Cyan)
+            {
+                // generate a new dimmer colour
+                Game.settings.defaultDarkCyan = Color.FromArgb(
+                    255,
+                    (int)((float)panelTheme2.BackColor.R * rr),
+                    (int)((float)panelTheme2.BackColor.G * rr),
+                    (int)((float)panelTheme2.BackColor.B * rr)
+                );
+            }
+            Game.settings.defaultCyan = panelTheme2.BackColor;
 
             Game.settings.Save();
             this.DialogResult = DialogResult.OK;
@@ -290,6 +311,7 @@ namespace SrvSurvey
                     ctrl.Enabled = senderCheckbox.Checked;
 
             checkGalMapPlotter.Enabled = senderCheckbox.Checked;
+            checkPlotJumpInfo.Enabled = senderCheckbox.Checked;
         }
 
         private void chooseScreenshotFolder(LinkLabel linkLabel, string title)
@@ -321,11 +343,6 @@ namespace SrvSurvey
             var linkLabel = (LinkLabel)sender;
             Game.log($"Opening screenshot folder:\r\n{linkLabel.Text}");
             Util.openLink(linkLabel.Text);
-        }
-
-        private void linkDataFiles_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            Util.openLink(Program.dataFolder);
         }
 
         private void btnChooseJournalFolder_Click(object sender, EventArgs e)
@@ -402,14 +419,37 @@ namespace SrvSurvey
 
         private void button2_Click(object sender, EventArgs e)
         {
-            colorDialog.Color = panelBannerColor.BackColor;
+            colorDialog.Color = colorScreenshotBanner;
             colorDialog.FullOpen = true;
 
             var rslt = colorDialog.ShowDialog(this);
             if (rslt == DialogResult.OK)
             {
-                panelBannerColor.BackColor = colorDialog.Color;
+                colorScreenshotBanner = colorDialog.Color;
+                pictureBox3.Invalidate();
             }
+        }
+
+        private void pictureBox3_Paint(object sender, PaintEventArgs e)
+        {
+            var g = e.Graphics;
+            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+
+            pictureBox3.BorderStyle = BorderStyle.Fixed3D;
+            var r = new Rectangle(1, 1, pictureBox3.Width - 4, pictureBox3.Height - 4);
+            g.FillRectangle(Brushes.Black, r);
+
+            var pt = new Point(5, 0);
+            var bigTxt = "Body: <nearest body name>";
+            TextRenderer.DrawText(g, bigTxt, GameColors.fontScreenshotBannerBig, pt, colorScreenshotBanner);
+
+            var sz = TextRenderer.MeasureText(g, bigTxt, GameColors.fontScreenshotBannerBig);
+            pt.Y += sz.Height;
+
+            var txt = $"System: <system name>\r\nCmdr: <commander name>  -  <time stamp>"
+                + "\r\n  Ancient Ruins #<n> - <site type>"
+                + "\r\n  Lat: +123.456789° Long: -12.345678°";
+            TextRenderer.DrawText(g, txt, GameColors.fontScreenshotBannerSmall, pt, colorScreenshotBanner, TextFormatFlags.Default);
         }
 
         private void checkBox18_CheckedChanged(object sender, EventArgs e)
@@ -463,10 +503,28 @@ namespace SrvSurvey
             }
         }
 
+        private void btnTheme2_Click(object sender, EventArgs e)
+        {
+            colorTheme.Color = panelTheme2.BackColor;
+            colorTheme.FullOpen = true;
+
+            var rslt = colorTheme.ShowDialog(this);
+            if (rslt == DialogResult.OK)
+            {
+                panelTheme2.BackColor = colorTheme.Color;
+            }
+        }
+
         private void linkResetTheme_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            panelTheme.BackColor = Color.FromArgb(255, 255, 111, 0);
-            Game.settings.defaultOrangeDim = Color.FromArgb(255, 95, 48, 3);
+            panelTheme.BackColor = GameColors.Defaults.Orange;
+            Game.settings.defaultOrangeDim = GameColors.Defaults.OrangeDim;
+        }
+
+        private void linkResetTheme2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            panelTheme2.BackColor = GameColors.Defaults.Cyan;
+            Game.settings.defaultDarkCyan = GameColors.Defaults.DarkCyan;
         }
 
         private void btnPostProcess_Click(object sender, EventArgs e)

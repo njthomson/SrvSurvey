@@ -35,9 +35,10 @@ namespace SrvSurvey
             btnSave = new FlatButton();
             btnCancel = new FlatButton();
             tabPage1 = new TabPage();
+            panelTheme2 = new Panel();
+            btnTheme2 = new FlatButton();
             checkDarkTheme = new CheckBox();
             btnPostProcess = new FlatButton();
-            linkResetTheme = new LinkLabel();
             panelTheme = new Panel();
             btnTheme = new FlatButton();
             label14 = new Label();
@@ -52,7 +53,6 @@ namespace SrvSurvey
             btnChooseJournalFolder = new FlatButton();
             linkJournalFolder = new LinkLabel();
             label11 = new Label();
-            linkDataFiles = new LinkLabel();
             checkMinimizeOnStart = new CheckBox();
             checkHideOverlayOnMouseOver = new CheckBox();
             label4 = new Label();
@@ -63,8 +63,11 @@ namespace SrvSurvey
             trackOpacity = new TrackBar();
             label1 = new Label();
             linkResetWatchFolder = new LinkLabel();
+            linkResetTheme2 = new LinkLabel();
+            linkResetTheme = new LinkLabel();
             tabControl1 = new TabControl();
             tabPage4 = new TabPage();
+            checkBox21 = new CheckBox();
             checkBox20 = new CheckBox();
             pictureBox12 = new PictureBox();
             label15 = new Label();
@@ -78,7 +81,6 @@ namespace SrvSurvey
             checkBox5 = new CheckBox();
             btnClearUnclaimed = new FlatButton();
             pictureBox2 = new PictureBox();
-            pictureBox1 = new PictureBox();
             checkBox1 = new CheckBox();
             checkBioStatusAutoShow = new CheckBox();
             groupRingBuckets = new GroupBox();
@@ -94,10 +96,10 @@ namespace SrvSurvey
             picBucket1 = new PictureBox();
             numRingBucket1 = new NumericUpDown();
             label16 = new Label();
+            pictureBox1 = new PictureBox();
             tabPage3 = new TabPage();
             checkBox15 = new CheckBox();
             checkBox14 = new CheckBox();
-            checkBox12 = new CheckBox();
             checkBox3 = new CheckBox();
             label9 = new Label();
             comboGuardianWindowSize = new ComboBox();
@@ -113,8 +115,6 @@ namespace SrvSurvey
             checkEnableGuardianFeatures = new CheckBox();
             tabPage5 = new TabPage();
             checkLocalTime = new CheckBox();
-            panelBannerColor = new Panel();
-            label3 = new Label();
             btnBannerColor = new FlatButton();
             checkDeleteScreenshotOriginal = new CheckBox();
             pictureBox3 = new PictureBox();
@@ -129,6 +129,8 @@ namespace SrvSurvey
             lblScreenshotTarget = new Label();
             tabPage6 = new TabPage();
             pictureBox11 = new PictureBox();
+            checkPlotJumpInfo = new CheckBox();
+            pictureBox13 = new PictureBox();
             pictureBox10 = new PictureBox();
             checkHideBodyInfoInBubble = new CheckBox();
             checkBodyInfoOrbit = new CheckBox();
@@ -149,20 +151,19 @@ namespace SrvSurvey
             pictureBox4 = new PictureBox();
             checkBox4 = new CheckBox();
             tabPage7 = new TabPage();
-            checkBox19 = new CheckBox();
+            pictureBox7 = new PictureBox();
             checkUseBioData = new CheckBox();
             radioUseRadius = new RadioButton();
             radioUseSmall = new RadioButton();
-            pictureBox9 = new PictureBox();
-            pictureBox8 = new PictureBox();
             checkShowCanonnOnRadar = new CheckBox();
             checkUseSystemData = new CheckBox();
-            pictureBox7 = new PictureBox();
             lblPriorScansCredits = new Label();
             checkSkipCheapSignals = new CheckBox();
             numPriorScanMinValue = new NumericUpDown();
             checkShowPriorScans = new CheckBox();
             checkHideMyOwnCanonnSignals = new CheckBox();
+            pictureBox9 = new PictureBox();
+            pictureBox8 = new PictureBox();
             tabSettlements = new TabPage();
             checkHumanSitePlotter = new CheckBox();
             tabPage2 = new TabPage();
@@ -170,7 +171,6 @@ namespace SrvSurvey
             linkAboutOne = new LinkLabel();
             colorDialog = new ColorDialog();
             colorTheme = new ColorDialog();
-            checkBox21 = new CheckBox();
             panel1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numGravityWarningLevel).BeginInit();
@@ -182,7 +182,6 @@ namespace SrvSurvey
             ((System.ComponentModel.ISupportInitialize)pictureBox12).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numMinBioDuration).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             groupRingBuckets.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)picBucket4).BeginInit();
             ((System.ComponentModel.ISupportInitialize)picBucket3).BeginInit();
@@ -191,6 +190,7 @@ namespace SrvSurvey
             ((System.ComponentModel.ISupportInitialize)numRingBucket2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)picBucket1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numRingBucket1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numAltGamma).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numAltBeta).BeginInit();
@@ -199,16 +199,17 @@ namespace SrvSurvey
             ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
             tabPage6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox11).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox13).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox10).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numMinScanValue).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox5).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox4).BeginInit();
             tabPage7.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox9).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox8).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox7).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numPriorScanMinValue).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox9).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox8).BeginInit();
             tabSettlements.SuspendLayout();
             tabPage2.SuspendLayout();
             SuspendLayout();
@@ -228,9 +229,9 @@ namespace SrvSurvey
             // btnNextProc
             // 
             btnNextProc.FlatStyle = FlatStyle.Flat;
-            btnNextProc.Location = new Point(4, 16);
+            btnNextProc.Location = new Point(4, 14);
             btnNextProc.Name = "btnNextProc";
-            btnNextProc.Size = new Size(243, 23);
+            btnNextProc.Size = new Size(243, 27);
             btnNextProc.TabIndex = 2;
             btnNextProc.Text = "Use alternate EliteDangerous window";
             btnNextProc.UseVisualStyleBackColor = true;
@@ -266,9 +267,10 @@ namespace SrvSurvey
             // tabPage1
             // 
             tabPage1.BorderStyle = BorderStyle.Fixed3D;
+            tabPage1.Controls.Add(panelTheme2);
+            tabPage1.Controls.Add(btnTheme2);
             tabPage1.Controls.Add(checkDarkTheme);
             tabPage1.Controls.Add(btnPostProcess);
-            tabPage1.Controls.Add(linkResetTheme);
             tabPage1.Controls.Add(panelTheme);
             tabPage1.Controls.Add(btnTheme);
             tabPage1.Controls.Add(label14);
@@ -283,7 +285,6 @@ namespace SrvSurvey
             tabPage1.Controls.Add(btnChooseJournalFolder);
             tabPage1.Controls.Add(linkJournalFolder);
             tabPage1.Controls.Add(label11);
-            tabPage1.Controls.Add(linkDataFiles);
             tabPage1.Controls.Add(checkMinimizeOnStart);
             tabPage1.Controls.Add(checkHideOverlayOnMouseOver);
             tabPage1.Controls.Add(label4);
@@ -294,6 +295,8 @@ namespace SrvSurvey
             tabPage1.Controls.Add(trackOpacity);
             tabPage1.Controls.Add(label1);
             tabPage1.Controls.Add(linkResetWatchFolder);
+            tabPage1.Controls.Add(linkResetTheme2);
+            tabPage1.Controls.Add(linkResetTheme);
             tabPage1.Location = new Point(4, 24);
             tabPage1.Margin = new Padding(4, 3, 4, 3);
             tabPage1.Name = "tabPage1";
@@ -302,13 +305,36 @@ namespace SrvSurvey
             tabPage1.TabIndex = 0;
             tabPage1.Text = "General";
             // 
+            // panelTheme2
+            // 
+            panelTheme2.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            panelTheme2.BackColor = Color.Cyan;
+            panelTheme2.BorderStyle = BorderStyle.Fixed3D;
+            panelTheme2.Location = new Point(565, 182);
+            panelTheme2.Name = "panelTheme2";
+            panelTheme2.Size = new Size(32, 32);
+            panelTheme2.TabIndex = 41;
+            // 
+            // btnTheme2
+            // 
+            btnTheme2.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnTheme2.FlatStyle = FlatStyle.Flat;
+            btnTheme2.Location = new Point(439, 182);
+            btnTheme2.Name = "btnTheme2";
+            btnTheme2.Size = new Size(119, 45);
+            btnTheme2.TabIndex = 40;
+            btnTheme2.Text = "Change secondary color";
+            btnTheme2.UseVisualStyleBackColor = true;
+            btnTheme2.Click += btnTheme2_Click;
+            // 
             // checkDarkTheme
             // 
             checkDarkTheme.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             checkDarkTheme.AutoSize = true;
-            checkDarkTheme.Location = new Point(447, 171);
+            checkDarkTheme.FlatStyle = FlatStyle.System;
+            checkDarkTheme.Location = new Point(503, 98);
             checkDarkTheme.Name = "checkDarkTheme";
-            checkDarkTheme.Size = new Size(87, 19);
+            checkDarkTheme.Size = new Size(93, 20);
             checkDarkTheme.TabIndex = 39;
             checkDarkTheme.Tag = "darkTheme";
             checkDarkTheme.Text = "Dark theme";
@@ -318,34 +344,20 @@ namespace SrvSurvey
             // 
             btnPostProcess.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnPostProcess.FlatStyle = FlatStyle.Flat;
-            btnPostProcess.Location = new Point(418, 381);
+            btnPostProcess.Location = new Point(401, 381);
             btnPostProcess.Name = "btnPostProcess";
-            btnPostProcess.Size = new Size(184, 29);
+            btnPostProcess.Size = new Size(201, 29);
             btnPostProcess.TabIndex = 38;
             btnPostProcess.Text = "Scan all old journal files";
             btnPostProcess.UseVisualStyleBackColor = true;
             btnPostProcess.Click += btnPostProcess_Click;
-            // 
-            // linkResetTheme
-            // 
-            linkResetTheme.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            linkResetTheme.AutoSize = true;
-            linkResetTheme.LinkArea = new LinkArea(1, 5);
-            linkResetTheme.Location = new Point(559, 138);
-            linkResetTheme.Name = "linkResetTheme";
-            linkResetTheme.Size = new Size(39, 21);
-            linkResetTheme.TabIndex = 37;
-            linkResetTheme.TabStop = true;
-            linkResetTheme.Text = "(reset)";
-            linkResetTheme.UseCompatibleTextRendering = true;
-            linkResetTheme.LinkClicked += linkResetTheme_LinkClicked;
             // 
             // panelTheme
             // 
             panelTheme.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             panelTheme.BackColor = Color.DarkOrange;
             panelTheme.BorderStyle = BorderStyle.Fixed3D;
-            panelTheme.Location = new Point(562, 103);
+            panelTheme.Location = new Point(564, 124);
             panelTheme.Name = "panelTheme";
             panelTheme.Size = new Size(32, 32);
             panelTheme.TabIndex = 36;
@@ -354,9 +366,9 @@ namespace SrvSurvey
             // 
             btnTheme.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnTheme.FlatStyle = FlatStyle.Flat;
-            btnTheme.Location = new Point(447, 103);
+            btnTheme.Location = new Point(439, 124);
             btnTheme.Name = "btnTheme";
-            btnTheme.Size = new Size(108, 45);
+            btnTheme.Size = new Size(118, 45);
             btnTheme.TabIndex = 35;
             btnTheme.Text = "Change primary color";
             btnTheme.UseVisualStyleBackColor = true;
@@ -386,9 +398,9 @@ namespace SrvSurvey
             // 
             btnResetOverlays.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnResetOverlays.FlatStyle = FlatStyle.Flat;
-            btnResetOverlays.Location = new Point(418, 260);
+            btnResetOverlays.Location = new Point(401, 277);
             btnResetOverlays.Name = "btnResetOverlays";
-            btnResetOverlays.Size = new Size(182, 32);
+            btnResetOverlays.Size = new Size(199, 32);
             btnResetOverlays.TabIndex = 29;
             btnResetOverlays.Text = "Reset custom overlay positions";
             btnResetOverlays.UseVisualStyleBackColor = true;
@@ -407,7 +419,7 @@ namespace SrvSurvey
             // label12
             // 
             label12.AutoSize = true;
-            label12.Location = new Point(31, 295);
+            label12.Location = new Point(31, 314);
             label12.Name = "label12";
             label12.Size = new Size(156, 15);
             label12.TabIndex = 27;
@@ -417,7 +429,7 @@ namespace SrvSurvey
             // 
             numGravityWarningLevel.DecimalPlaces = 2;
             numGravityWarningLevel.Increment = new decimal(new int[] { 1, 0, 0, 65536 });
-            numGravityWarningLevel.Location = new Point(191, 293);
+            numGravityWarningLevel.Location = new Point(191, 312);
             numGravityWarningLevel.Maximum = new decimal(new int[] { 50, 0, 0, 0 });
             numGravityWarningLevel.Name = "numGravityWarningLevel";
             numGravityWarningLevel.Size = new Size(50, 23);
@@ -431,10 +443,11 @@ namespace SrvSurvey
             checkBox13.AutoSize = true;
             checkBox13.Checked = true;
             checkBox13.CheckState = CheckState.Checked;
-            checkBox13.Location = new Point(10, 273);
+            checkBox13.FlatStyle = FlatStyle.System;
+            checkBox13.Location = new Point(10, 292);
             checkBox13.Margin = new Padding(4, 3, 4, 3);
             checkBox13.Name = "checkBox13";
-            checkBox13.Size = new Size(137, 19);
+            checkBox13.Size = new Size(143, 20);
             checkBox13.TabIndex = 25;
             checkBox13.Tag = "autoShowFlightWarnings";
             checkBox13.Text = "Show flight warnings";
@@ -452,12 +465,14 @@ namespace SrvSurvey
             // 
             // checkHideJournalTimer
             // 
+            checkHideJournalTimer.AutoSize = true;
             checkHideJournalTimer.Checked = true;
             checkHideJournalTimer.CheckState = CheckState.Checked;
+            checkHideJournalTimer.FlatStyle = FlatStyle.System;
             checkHideJournalTimer.Location = new Point(10, 175);
             checkHideJournalTimer.Margin = new Padding(4, 3, 4, 3);
             checkHideJournalTimer.Name = "checkHideJournalTimer";
-            checkHideJournalTimer.Size = new Size(431, 19);
+            checkHideJournalTimer.Size = new Size(226, 20);
             checkHideJournalTimer.TabIndex = 23;
             checkHideJournalTimer.Tag = "hideJournalWriteTimer";
             checkHideJournalTimer.Text = "Hide 5 second journal file write timer";
@@ -466,7 +481,7 @@ namespace SrvSurvey
             // btnChooseJournalFolder
             // 
             btnChooseJournalFolder.FlatStyle = FlatStyle.Flat;
-            btnChooseJournalFolder.Location = new Point(10, 220);
+            btnChooseJournalFolder.Location = new Point(10, 237);
             btnChooseJournalFolder.Name = "btnChooseJournalFolder";
             btnChooseJournalFolder.Size = new Size(26, 37);
             btnChooseJournalFolder.TabIndex = 22;
@@ -478,7 +493,7 @@ namespace SrvSurvey
             // 
             linkJournalFolder.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             linkJournalFolder.BorderStyle = BorderStyle.FixedSingle;
-            linkJournalFolder.Location = new Point(39, 222);
+            linkJournalFolder.Location = new Point(39, 239);
             linkJournalFolder.Name = "linkJournalFolder";
             linkJournalFolder.Size = new Size(561, 35);
             linkJournalFolder.TabIndex = 20;
@@ -490,33 +505,22 @@ namespace SrvSurvey
             // label11
             // 
             label11.AutoSize = true;
-            label11.Location = new Point(5, 202);
+            label11.Location = new Point(5, 219);
             label11.Name = "label11";
             label11.Size = new Size(118, 15);
             label11.TabIndex = 21;
             label11.Text = "Watch journal folder:";
             // 
-            // linkDataFiles
-            // 
-            linkDataFiles.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            linkDataFiles.AutoSize = true;
-            linkDataFiles.Location = new Point(577, 3);
-            linkDataFiles.Name = "linkDataFiles";
-            linkDataFiles.Size = new Size(30, 15);
-            linkDataFiles.TabIndex = 12;
-            linkDataFiles.TabStop = true;
-            linkDataFiles.Text = "data";
-            linkDataFiles.Visible = false;
-            linkDataFiles.LinkClicked += linkDataFiles_LinkClicked;
-            // 
             // checkMinimizeOnStart
             // 
+            checkMinimizeOnStart.AutoSize = true;
             checkMinimizeOnStart.Checked = true;
             checkMinimizeOnStart.CheckState = CheckState.Checked;
+            checkMinimizeOnStart.FlatStyle = FlatStyle.System;
             checkMinimizeOnStart.Location = new Point(10, 129);
             checkMinimizeOnStart.Margin = new Padding(4, 3, 4, 3);
             checkMinimizeOnStart.Name = "checkMinimizeOnStart";
-            checkMinimizeOnStart.Size = new Size(431, 19);
+            checkMinimizeOnStart.Size = new Size(317, 20);
             checkMinimizeOnStart.TabIndex = 10;
             checkMinimizeOnStart.Tag = "focusGameOnStart";
             checkMinimizeOnStart.Text = "Set focus on Elite Dangerous when starting Srv Survey.";
@@ -525,9 +529,10 @@ namespace SrvSurvey
             // checkHideOverlayOnMouseOver
             // 
             checkHideOverlayOnMouseOver.AutoSize = true;
-            checkHideOverlayOnMouseOver.Location = new Point(10, 376);
+            checkHideOverlayOnMouseOver.FlatStyle = FlatStyle.System;
+            checkHideOverlayOnMouseOver.Location = new Point(10, 396);
             checkHideOverlayOnMouseOver.Name = "checkHideOverlayOnMouseOver";
-            checkHideOverlayOnMouseOver.Size = new Size(246, 19);
+            checkHideOverlayOnMouseOver.Size = new Size(252, 20);
             checkHideOverlayOnMouseOver.TabIndex = 9;
             checkHideOverlayOnMouseOver.Tag = "hideOverlaysFromMouse";
             checkHideOverlayOnMouseOver.Text = "Prevent mouse entering overlay windows.";
@@ -535,7 +540,7 @@ namespace SrvSurvey
             // 
             // label4
             // 
-            label4.Location = new Point(6, 319);
+            label4.Location = new Point(6, 338);
             label4.Name = "label4";
             label4.Size = new Size(477, 34);
             label4.TabIndex = 8;
@@ -543,12 +548,14 @@ namespace SrvSurvey
             // 
             // checkHidePlottersFromWeapons
             // 
+            checkHidePlottersFromWeapons.AutoSize = true;
             checkHidePlottersFromWeapons.Checked = true;
             checkHidePlottersFromWeapons.CheckState = CheckState.Checked;
-            checkHidePlottersFromWeapons.Location = new Point(10, 356);
+            checkHidePlottersFromWeapons.FlatStyle = FlatStyle.System;
+            checkHidePlottersFromWeapons.Location = new Point(10, 375);
             checkHidePlottersFromWeapons.Margin = new Padding(4, 3, 4, 3);
             checkHidePlottersFromWeapons.Name = "checkHidePlottersFromWeapons";
-            checkHidePlottersFromWeapons.Size = new Size(431, 19);
+            checkHidePlottersFromWeapons.Size = new Size(367, 20);
             checkHidePlottersFromWeapons.TabIndex = 7;
             checkHidePlottersFromWeapons.Tag = "hidePlottersFromCombatSuits";
             checkHidePlottersFromWeapons.Text = "Disable overlays when on foot in Maverick and Dominator suits.";
@@ -556,12 +563,14 @@ namespace SrvSurvey
             // 
             // checkFocusOnMinimize
             // 
+            checkFocusOnMinimize.AutoSize = true;
             checkFocusOnMinimize.Checked = true;
             checkFocusOnMinimize.CheckState = CheckState.Checked;
+            checkFocusOnMinimize.FlatStyle = FlatStyle.System;
             checkFocusOnMinimize.Location = new Point(10, 152);
             checkFocusOnMinimize.Margin = new Padding(4, 3, 4, 3);
             checkFocusOnMinimize.Name = "checkFocusOnMinimize";
-            checkFocusOnMinimize.Size = new Size(431, 19);
+            checkFocusOnMinimize.Size = new Size(337, 20);
             checkFocusOnMinimize.TabIndex = 2;
             checkFocusOnMinimize.Tag = "focusGameOnMinimize";
             checkFocusOnMinimize.Text = "Set focus on Elite Dangerous when minimizing Srv Survey.";
@@ -608,13 +617,13 @@ namespace SrvSurvey
             label1.Name = "label1";
             label1.Size = new Size(430, 18);
             label1.TabIndex = 0;
-            label1.Text = "Preferred Commander: (others will be ignored)";
+            label1.Text = "Preferred Commander: (use to force a specific account)";
             // 
             // linkResetWatchFolder
             // 
             linkResetWatchFolder.AutoSize = true;
             linkResetWatchFolder.LinkArea = new LinkArea(1, 5);
-            linkResetWatchFolder.Location = new Point(129, 202);
+            linkResetWatchFolder.Location = new Point(129, 219);
             linkResetWatchFolder.Name = "linkResetWatchFolder";
             linkResetWatchFolder.Size = new Size(39, 21);
             linkResetWatchFolder.TabIndex = 33;
@@ -622,6 +631,34 @@ namespace SrvSurvey
             linkResetWatchFolder.Text = "(reset)";
             linkResetWatchFolder.UseCompatibleTextRendering = true;
             linkResetWatchFolder.LinkClicked += linkResetWatchFolder_LinkClicked;
+            // 
+            // linkResetTheme2
+            // 
+            linkResetTheme2.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            linkResetTheme2.AutoSize = true;
+            linkResetTheme2.LinkArea = new LinkArea(1, 5);
+            linkResetTheme2.Location = new Point(562, 213);
+            linkResetTheme2.Name = "linkResetTheme2";
+            linkResetTheme2.Size = new Size(39, 21);
+            linkResetTheme2.TabIndex = 42;
+            linkResetTheme2.TabStop = true;
+            linkResetTheme2.Text = "(reset)";
+            linkResetTheme2.UseCompatibleTextRendering = true;
+            linkResetTheme2.LinkClicked += linkResetTheme2_LinkClicked;
+            // 
+            // linkResetTheme
+            // 
+            linkResetTheme.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            linkResetTheme.AutoSize = true;
+            linkResetTheme.LinkArea = new LinkArea(1, 5);
+            linkResetTheme.Location = new Point(561, 155);
+            linkResetTheme.Name = "linkResetTheme";
+            linkResetTheme.Size = new Size(39, 21);
+            linkResetTheme.TabIndex = 37;
+            linkResetTheme.TabStop = true;
+            linkResetTheme.Text = "(reset)";
+            linkResetTheme.UseCompatibleTextRendering = true;
+            linkResetTheme.LinkClicked += linkResetTheme_LinkClicked;
             // 
             // tabControl1
             // 
@@ -643,6 +680,7 @@ namespace SrvSurvey
             // 
             // tabPage4
             // 
+            tabPage4.Controls.Add(pictureBox1);
             tabPage4.Controls.Add(checkBox21);
             tabPage4.Controls.Add(checkBox20);
             tabPage4.Controls.Add(pictureBox12);
@@ -657,7 +695,6 @@ namespace SrvSurvey
             tabPage4.Controls.Add(checkBox5);
             tabPage4.Controls.Add(btnClearUnclaimed);
             tabPage4.Controls.Add(pictureBox2);
-            tabPage4.Controls.Add(pictureBox1);
             tabPage4.Controls.Add(checkBox1);
             tabPage4.Controls.Add(checkBioStatusAutoShow);
             tabPage4.Controls.Add(groupRingBuckets);
@@ -668,15 +705,31 @@ namespace SrvSurvey
             tabPage4.TabIndex = 3;
             tabPage4.Text = "Bio Scanning";
             // 
+            // checkBox21
+            // 
+            checkBox21.AutoSize = true;
+            checkBox21.Checked = true;
+            checkBox21.CheckState = CheckState.Checked;
+            checkBox21.FlatStyle = FlatStyle.System;
+            checkBox21.Location = new Point(10, 399);
+            checkBox21.Margin = new Padding(4, 3, 4, 3);
+            checkBox21.Name = "checkBox21";
+            checkBox21.Size = new Size(208, 20);
+            checkBox21.TabIndex = 34;
+            checkBox21.Tag = "highlightRegionalFirsts";
+            checkBox21.Text = "Highlight ⚐ regional firsts in gold";
+            checkBox21.UseVisualStyleBackColor = true;
+            // 
             // checkBox20
             // 
             checkBox20.AutoSize = true;
             checkBox20.Checked = true;
             checkBox20.CheckState = CheckState.Checked;
+            checkBox20.FlatStyle = FlatStyle.System;
             checkBox20.Location = new Point(40, 271);
             checkBox20.Margin = new Padding(4, 3, 4, 3);
             checkBox20.Name = "checkBox20";
-            checkBox20.Size = new Size(326, 19);
+            checkBox20.Size = new Size(332, 20);
             checkBox20.TabIndex = 33;
             checkBox20.Tag = "drawBodyBiosOnlyWhenNear";
             checkBox20.Text = "Show body bio signals only when target body is close by.";
@@ -704,7 +757,7 @@ namespace SrvSurvey
             // numMinBioDuration
             // 
             numMinBioDuration.Enabled = false;
-            numMinBioDuration.Location = new Point(273, 220);
+            numMinBioDuration.Location = new Point(275, 220);
             numMinBioDuration.Maximum = new decimal(new int[] { 600, 0, 0, 0 });
             numMinBioDuration.Name = "numMinBioDuration";
             numMinBioDuration.Size = new Size(51, 23);
@@ -717,9 +770,10 @@ namespace SrvSurvey
             // checkBox18
             // 
             checkBox18.AutoSize = true;
+            checkBox18.FlatStyle = FlatStyle.System;
             checkBox18.Location = new Point(10, 221);
             checkBox18.Name = "checkBox18";
-            checkBox18.Size = new Size(257, 19);
+            checkBox18.Size = new Size(263, 20);
             checkBox18.TabIndex = 17;
             checkBox18.Tag = "keepBioPlottersVisibleEnabled";
             checkBox18.Text = "Keep bio overlays visible after DSS scans for:";
@@ -731,13 +785,14 @@ namespace SrvSurvey
             checkBioSystemPlotter.AutoSize = true;
             checkBioSystemPlotter.Checked = true;
             checkBioSystemPlotter.CheckState = CheckState.Checked;
+            checkBioSystemPlotter.FlatStyle = FlatStyle.System;
             checkBioSystemPlotter.Location = new Point(10, 246);
             checkBioSystemPlotter.Margin = new Padding(4, 3, 4, 3);
             checkBioSystemPlotter.Name = "checkBioSystemPlotter";
-            checkBioSystemPlotter.Size = new Size(227, 19);
+            checkBioSystemPlotter.Size = new Size(395, 20);
             checkBioSystemPlotter.TabIndex = 16;
             checkBioSystemPlotter.Tag = "autoShowPlotBioSystem";
-            checkBioSystemPlotter.Text = "Show whole system exo bio status -->";
+            checkBioSystemPlotter.Text = "Show whole system exo bio status ➟➟➟➟➟➟➟➟➟➟➟➟➟➟➟";
             checkBioSystemPlotter.UseVisualStyleBackColor = true;
             // 
             // linkLabel1
@@ -767,10 +822,11 @@ namespace SrvSurvey
             checkBox7.AutoSize = true;
             checkBox7.Checked = true;
             checkBox7.CheckState = CheckState.Checked;
+            checkBox7.FlatStyle = FlatStyle.System;
             checkBox7.Location = new Point(10, 196);
             checkBox7.Margin = new Padding(4, 3, 4, 3);
             checkBox7.Name = "checkBox7";
-            checkBox7.Size = new Size(372, 19);
+            checkBox7.Size = new Size(378, 20);
             checkBox7.TabIndex = 13;
             checkBox7.Tag = "autoRemoveTrackerOnSampling";
             checkBox7.Text = "Auto remove tracker location sampling an organism within 250m.";
@@ -781,10 +837,11 @@ namespace SrvSurvey
             checkBox6.AutoSize = true;
             checkBox6.Checked = true;
             checkBox6.CheckState = CheckState.Checked;
+            checkBox6.FlatStyle = FlatStyle.System;
             checkBox6.Location = new Point(40, 171);
             checkBox6.Margin = new Padding(4, 3, 4, 3);
             checkBox6.Name = "checkBox6";
-            checkBox6.Size = new Size(295, 19);
+            checkBox6.Size = new Size(301, 20);
             checkBox6.TabIndex = 12;
             checkBox6.Tag = "skipAnalyzedCompBioScans";
             checkBox6.Text = "But not if that organism has already been analyzed.";
@@ -795,10 +852,11 @@ namespace SrvSurvey
             checkBox5.AutoSize = true;
             checkBox5.Checked = true;
             checkBox5.CheckState = CheckState.Checked;
+            checkBox5.FlatStyle = FlatStyle.System;
             checkBox5.Location = new Point(10, 149);
             checkBox5.Margin = new Padding(4, 3, 4, 3);
             checkBox5.Name = "checkBox5";
-            checkBox5.Size = new Size(376, 19);
+            checkBox5.Size = new Size(382, 20);
             checkBox5.TabIndex = 11;
             checkBox5.Tag = "autoTrackCompBioScans";
             checkBox5.Text = "Auto add tracker location when Composition scanning organisms.";
@@ -819,34 +877,25 @@ namespace SrvSurvey
             // 
             pictureBox2.BackgroundImage = (Image)resources.GetObject("pictureBox2.BackgroundImage");
             pictureBox2.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureBox2.Location = new Point(373, 11);
+            pictureBox2.Location = new Point(399, 11);
             pictureBox2.Name = "pictureBox2";
             pictureBox2.Size = new Size(109, 132);
             pictureBox2.TabIndex = 8;
             pictureBox2.TabStop = false;
-            // 
-            // pictureBox1
-            // 
-            pictureBox1.BackgroundImage = (Image)resources.GetObject("pictureBox1.BackgroundImage");
-            pictureBox1.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureBox1.Location = new Point(212, 11);
-            pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(154, 50);
-            pictureBox1.TabIndex = 7;
-            pictureBox1.TabStop = false;
             // 
             // checkBox1
             // 
             checkBox1.AutoSize = true;
             checkBox1.Checked = true;
             checkBox1.CheckState = CheckState.Checked;
+            checkBox1.FlatStyle = FlatStyle.System;
             checkBox1.Location = new Point(10, 67);
             checkBox1.Margin = new Padding(4, 3, 4, 3);
             checkBox1.Name = "checkBox1";
-            checkBox1.Size = new Size(230, 19);
+            checkBox1.Size = new Size(398, 20);
             checkBox1.TabIndex = 5;
             checkBox1.Tag = "autoShowBioPlot";
-            checkBox1.Text = "Show sample scan exclusion zones -->";
+            checkBox1.Text = "Show sample scan exclusion zones ➟➟➟➟➟➟➟➟➟➟➟➟➟➟➟";
             checkBox1.UseVisualStyleBackColor = true;
             // 
             // checkBioStatusAutoShow
@@ -854,13 +903,14 @@ namespace SrvSurvey
             checkBioStatusAutoShow.AutoSize = true;
             checkBioStatusAutoShow.Checked = true;
             checkBioStatusAutoShow.CheckState = CheckState.Checked;
+            checkBioStatusAutoShow.FlatStyle = FlatStyle.System;
             checkBioStatusAutoShow.Location = new Point(10, 11);
             checkBioStatusAutoShow.Margin = new Padding(4, 3, 4, 3);
             checkBioStatusAutoShow.Name = "checkBioStatusAutoShow";
-            checkBioStatusAutoShow.Size = new Size(197, 19);
+            checkBioStatusAutoShow.Size = new Size(218, 20);
             checkBioStatusAutoShow.TabIndex = 4;
             checkBioStatusAutoShow.Tag = "autoShowBioSummary";
-            checkBioStatusAutoShow.Text = "Show biological signal summary";
+            checkBioStatusAutoShow.Text = "Show biological signal summary ➟";
             checkBioStatusAutoShow.UseVisualStyleBackColor = true;
             // 
             // groupRingBuckets
@@ -1010,12 +1060,21 @@ namespace SrvSurvey
             label16.TabIndex = 7;
             label16.Text = "Choose the reward level per group by millons of credits:";
             // 
+            // pictureBox1
+            // 
+            pictureBox1.BackgroundImage = (Image)resources.GetObject("pictureBox1.BackgroundImage");
+            pictureBox1.BackgroundImageLayout = ImageLayout.Zoom;
+            pictureBox1.Location = new Point(228, 11);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new Size(154, 50);
+            pictureBox1.TabIndex = 7;
+            pictureBox1.TabStop = false;
+            // 
             // tabPage3
             // 
             tabPage3.BorderStyle = BorderStyle.Fixed3D;
             tabPage3.Controls.Add(checkBox15);
             tabPage3.Controls.Add(checkBox14);
-            tabPage3.Controls.Add(checkBox12);
             tabPage3.Controls.Add(checkBox3);
             tabPage3.Controls.Add(label9);
             tabPage3.Controls.Add(comboGuardianWindowSize);
@@ -1041,10 +1100,11 @@ namespace SrvSurvey
             checkBox15.AutoSize = true;
             checkBox15.Checked = true;
             checkBox15.CheckState = CheckState.Checked;
+            checkBox15.FlatStyle = FlatStyle.System;
             checkBox15.Location = new Point(35, 56);
             checkBox15.Margin = new Padding(4, 3, 4, 3);
             checkBox15.Name = "checkBox15";
-            checkBox15.Size = new Size(206, 19);
+            checkBox15.Size = new Size(212, 20);
             checkBox15.TabIndex = 17;
             checkBox15.Tag = "autoShowRamTah";
             checkBox15.Text = "Show helper for Ram Tah missions";
@@ -1055,40 +1115,26 @@ namespace SrvSurvey
             checkBox14.AutoSize = true;
             checkBox14.Checked = true;
             checkBox14.CheckState = CheckState.Checked;
+            checkBox14.FlatStyle = FlatStyle.System;
             checkBox14.Location = new Point(35, 31);
             checkBox14.Margin = new Padding(4, 3, 4, 3);
             checkBox14.Name = "checkBox14";
-            checkBox14.Size = new Size(199, 19);
+            checkBox14.Size = new Size(205, 20);
             checkBox14.TabIndex = 16;
             checkBox14.Tag = "autoShowGuardianSummary";
             checkBox14.Text = "Show summary of Guardian sites";
             checkBox14.UseVisualStyleBackColor = true;
-            // 
-            // checkBox12
-            // 
-            checkBox12.AutoSize = true;
-            checkBox12.Checked = true;
-            checkBox12.CheckState = CheckState.Checked;
-            checkBox12.Enabled = false;
-            checkBox12.Location = new Point(10, 375);
-            checkBox12.Margin = new Padding(4, 3, 4, 3);
-            checkBox12.Name = "checkBox12";
-            checkBox12.Size = new Size(474, 19);
-            checkBox12.TabIndex = 15;
-            checkBox12.Tag = "";
-            checkBox12.Text = "-- Enable Guardian structures features (experimental) /enableEarlyGuardianStructures";
-            checkBox12.UseVisualStyleBackColor = true;
-            checkBox12.Visible = false;
             // 
             // checkBox3
             // 
             checkBox3.AutoSize = true;
             checkBox3.Checked = true;
             checkBox3.CheckState = CheckState.Checked;
+            checkBox3.FlatStyle = FlatStyle.System;
             checkBox3.Location = new Point(11, 262);
             checkBox3.Margin = new Padding(4, 3, 4, 3);
             checkBox3.Name = "checkBox3";
-            checkBox3.Size = new Size(289, 19);
+            checkBox3.Size = new Size(295, 20);
             checkBox3.TabIndex = 14;
             checkBox3.Tag = "rotateAndTruncateAlphaAerialScreenshots";
             checkBox3.Text = "Rotate Alpha site screenshots by 90° and truncate.";
@@ -1119,10 +1165,11 @@ namespace SrvSurvey
             checkBox2.AutoSize = true;
             checkBox2.Checked = true;
             checkBox2.CheckState = CheckState.Checked;
+            checkBox2.FlatStyle = FlatStyle.System;
             checkBox2.Location = new Point(10, 208);
             checkBox2.Margin = new Padding(4, 3, 4, 3);
             checkBox2.Name = "checkBox2";
-            checkBox2.Size = new Size(256, 19);
+            checkBox2.Size = new Size(262, 20);
             checkBox2.TabIndex = 11;
             checkBox2.Tag = "disableAerialAlignmentGrid";
             checkBox2.Text = "Disable aerial screenshot alignment overlay.";
@@ -1202,10 +1249,11 @@ namespace SrvSurvey
             checkRuinsMeasurementGrid.AutoSize = true;
             checkRuinsMeasurementGrid.Checked = true;
             checkRuinsMeasurementGrid.CheckState = CheckState.Checked;
+            checkRuinsMeasurementGrid.FlatStyle = FlatStyle.System;
             checkRuinsMeasurementGrid.Location = new Point(10, 183);
             checkRuinsMeasurementGrid.Margin = new Padding(4, 3, 4, 3);
             checkRuinsMeasurementGrid.Name = "checkRuinsMeasurementGrid";
-            checkRuinsMeasurementGrid.Size = new Size(231, 19);
+            checkRuinsMeasurementGrid.Size = new Size(237, 20);
             checkRuinsMeasurementGrid.TabIndex = 3;
             checkRuinsMeasurementGrid.Tag = "disableRuinsMeasurementGrid";
             checkRuinsMeasurementGrid.Text = "Disable site heading assistance overlay.";
@@ -1216,10 +1264,11 @@ namespace SrvSurvey
             checkEnableGuardianFeatures.AutoSize = true;
             checkEnableGuardianFeatures.Checked = true;
             checkEnableGuardianFeatures.CheckState = CheckState.Checked;
+            checkEnableGuardianFeatures.FlatStyle = FlatStyle.System;
             checkEnableGuardianFeatures.Location = new Point(10, 6);
             checkEnableGuardianFeatures.Margin = new Padding(4, 3, 4, 3);
             checkEnableGuardianFeatures.Name = "checkEnableGuardianFeatures";
-            checkEnableGuardianFeatures.Size = new Size(189, 19);
+            checkEnableGuardianFeatures.Size = new Size(195, 20);
             checkEnableGuardianFeatures.TabIndex = 1;
             checkEnableGuardianFeatures.Tag = "enableGuardianSites";
             checkEnableGuardianFeatures.Text = "Enable Guardian Ruins features";
@@ -1228,9 +1277,6 @@ namespace SrvSurvey
             // 
             // tabPage5
             // 
-            tabPage5.Controls.Add(checkLocalTime);
-            tabPage5.Controls.Add(panelBannerColor);
-            tabPage5.Controls.Add(label3);
             tabPage5.Controls.Add(btnBannerColor);
             tabPage5.Controls.Add(checkDeleteScreenshotOriginal);
             tabPage5.Controls.Add(pictureBox3);
@@ -1243,6 +1289,7 @@ namespace SrvSurvey
             tabPage5.Controls.Add(linkTargetScreenshotFolder);
             tabPage5.Controls.Add(lblScreenshotSource);
             tabPage5.Controls.Add(lblScreenshotTarget);
+            tabPage5.Controls.Add(checkLocalTime);
             tabPage5.Location = new Point(4, 24);
             tabPage5.Name = "tabPage5";
             tabPage5.Padding = new Padding(3);
@@ -1253,37 +1300,21 @@ namespace SrvSurvey
             // checkLocalTime
             // 
             checkLocalTime.AutoSize = true;
-            checkLocalTime.Location = new Point(7, 271);
+            checkLocalTime.FlatStyle = FlatStyle.System;
+            checkLocalTime.Location = new Point(7, 228);
             checkLocalTime.Name = "checkLocalTime";
-            checkLocalTime.Size = new Size(100, 19);
+            checkLocalTime.Size = new Size(106, 20);
             checkLocalTime.TabIndex = 27;
             checkLocalTime.Tag = "screenshotBannerLocalTime";
             checkLocalTime.Text = "Use local time";
             checkLocalTime.UseVisualStyleBackColor = true;
             // 
-            // panelBannerColor
-            // 
-            panelBannerColor.BorderStyle = BorderStyle.Fixed3D;
-            panelBannerColor.Location = new Point(42, 213);
-            panelBannerColor.Name = "panelBannerColor";
-            panelBannerColor.Size = new Size(26, 23);
-            panelBannerColor.TabIndex = 26;
-            // 
-            // label3
-            // 
-            label3.AutoSize = true;
-            label3.Location = new Point(10, 195);
-            label3.Name = "label3";
-            label3.Size = new Size(100, 15);
-            label3.TabIndex = 25;
-            label3.Text = "Banner text color:";
-            // 
             // btnBannerColor
             // 
             btnBannerColor.FlatStyle = FlatStyle.Flat;
-            btnBannerColor.Location = new Point(10, 242);
+            btnBannerColor.Location = new Point(7, 195);
             btnBannerColor.Name = "btnBannerColor";
-            btnBannerColor.Size = new Size(100, 23);
+            btnBannerColor.Size = new Size(103, 27);
             btnBannerColor.TabIndex = 24;
             btnBannerColor.Text = "Change color";
             btnBannerColor.UseVisualStyleBackColor = true;
@@ -1295,6 +1326,7 @@ namespace SrvSurvey
             checkDeleteScreenshotOriginal.CheckAlign = ContentAlignment.TopLeft;
             checkDeleteScreenshotOriginal.Checked = true;
             checkDeleteScreenshotOriginal.CheckState = CheckState.Checked;
+            checkDeleteScreenshotOriginal.FlatStyle = FlatStyle.System;
             checkDeleteScreenshotOriginal.Location = new Point(7, 145);
             checkDeleteScreenshotOriginal.Margin = new Padding(4, 3, 4, 3);
             checkDeleteScreenshotOriginal.Name = "checkDeleteScreenshotOriginal";
@@ -1306,13 +1338,15 @@ namespace SrvSurvey
             // 
             // pictureBox3
             // 
-            pictureBox3.BackgroundImage = (Image)resources.GetObject("pictureBox3.BackgroundImage");
+            pictureBox3.BackColor = Color.Black;
             pictureBox3.BackgroundImageLayout = ImageLayout.None;
+            pictureBox3.BorderStyle = BorderStyle.Fixed3D;
             pictureBox3.Location = new Point(116, 195);
             pictureBox3.Name = "pictureBox3";
-            pictureBox3.Size = new Size(364, 104);
+            pictureBox3.Size = new Size(364, 110);
             pictureBox3.TabIndex = 22;
             pictureBox3.TabStop = false;
+            pictureBox3.Paint += pictureBox3_Paint;
             // 
             // checkUseGuardianAerialScreenshotsFolder
             // 
@@ -1321,7 +1355,8 @@ namespace SrvSurvey
             checkUseGuardianAerialScreenshotsFolder.CheckAlign = ContentAlignment.TopLeft;
             checkUseGuardianAerialScreenshotsFolder.Checked = true;
             checkUseGuardianAerialScreenshotsFolder.CheckState = CheckState.Checked;
-            checkUseGuardianAerialScreenshotsFolder.Location = new Point(7, 305);
+            checkUseGuardianAerialScreenshotsFolder.FlatStyle = FlatStyle.System;
+            checkUseGuardianAerialScreenshotsFolder.Location = new Point(7, 311);
             checkUseGuardianAerialScreenshotsFolder.Margin = new Padding(4, 3, 4, 3);
             checkUseGuardianAerialScreenshotsFolder.Name = "checkUseGuardianAerialScreenshotsFolder";
             checkUseGuardianAerialScreenshotsFolder.Size = new Size(595, 66);
@@ -1372,6 +1407,7 @@ namespace SrvSurvey
             checkAddBanner.CheckAlign = ContentAlignment.TopLeft;
             checkAddBanner.Checked = true;
             checkAddBanner.CheckState = CheckState.Checked;
+            checkAddBanner.FlatStyle = FlatStyle.System;
             checkAddBanner.Location = new Point(7, 170);
             checkAddBanner.Margin = new Padding(4, 3, 4, 3);
             checkAddBanner.Name = "checkAddBanner";
@@ -1387,6 +1423,7 @@ namespace SrvSurvey
             checkProcessScreenshots.CheckAlign = ContentAlignment.TopLeft;
             checkProcessScreenshots.Checked = true;
             checkProcessScreenshots.CheckState = CheckState.Checked;
+            checkProcessScreenshots.FlatStyle = FlatStyle.System;
             checkProcessScreenshots.Location = new Point(7, 6);
             checkProcessScreenshots.Margin = new Padding(4, 3, 4, 3);
             checkProcessScreenshots.Name = "checkProcessScreenshots";
@@ -1431,8 +1468,10 @@ namespace SrvSurvey
             // tabPage6
             // 
             tabPage6.BackColor = SystemColors.Control;
-            tabPage6.Controls.Add(pictureBox11);
             tabPage6.Controls.Add(pictureBox10);
+            tabPage6.Controls.Add(pictureBox11);
+            tabPage6.Controls.Add(checkPlotJumpInfo);
+            tabPage6.Controls.Add(pictureBox13);
             tabPage6.Controls.Add(checkHideBodyInfoInBubble);
             tabPage6.Controls.Add(checkBodyInfoOrbit);
             tabPage6.Controls.Add(checkBodyInfoMap);
@@ -1468,11 +1507,33 @@ namespace SrvSurvey
             pictureBox11.TabIndex = 32;
             pictureBox11.TabStop = false;
             // 
+            // checkPlotJumpInfo
+            // 
+            checkPlotJumpInfo.AutoSize = true;
+            checkPlotJumpInfo.FlatStyle = FlatStyle.System;
+            checkPlotJumpInfo.Location = new Point(10, 346);
+            checkPlotJumpInfo.Name = "checkPlotJumpInfo";
+            checkPlotJumpInfo.Size = new Size(393, 20);
+            checkPlotJumpInfo.TabIndex = 38;
+            checkPlotJumpInfo.Tag = "autoShowPlotJumpInfoTest";
+            checkPlotJumpInfo.Text = "Show next system summary before FSD jumping (uses external data)";
+            checkPlotJumpInfo.UseVisualStyleBackColor = true;
+            // 
+            // pictureBox13
+            // 
+            pictureBox13.BackgroundImage = (Image)resources.GetObject("pictureBox13.BackgroundImage");
+            pictureBox13.BackgroundImageLayout = ImageLayout.None;
+            pictureBox13.Location = new Point(31, 368);
+            pictureBox13.Name = "pictureBox13";
+            pictureBox13.Size = new Size(329, 49);
+            pictureBox13.TabIndex = 33;
+            pictureBox13.TabStop = false;
+            // 
             // pictureBox10
             // 
             pictureBox10.BackgroundImage = (Image)resources.GetObject("pictureBox10.BackgroundImage");
             pictureBox10.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureBox10.Location = new Point(362, 325);
+            pictureBox10.Location = new Point(423, 321);
             pictureBox10.Name = "pictureBox10";
             pictureBox10.Size = new Size(166, 89);
             pictureBox10.TabIndex = 31;
@@ -1483,10 +1544,11 @@ namespace SrvSurvey
             checkHideBodyInfoInBubble.AutoSize = true;
             checkHideBodyInfoInBubble.Checked = true;
             checkHideBodyInfoInBubble.CheckState = CheckState.Checked;
+            checkHideBodyInfoInBubble.FlatStyle = FlatStyle.System;
             checkHideBodyInfoInBubble.Location = new Point(31, 296);
             checkHideBodyInfoInBubble.Margin = new Padding(4, 3, 4, 3);
             checkHideBodyInfoInBubble.Name = "checkHideBodyInfoInBubble";
-            checkHideBodyInfoInBubble.Size = new Size(316, 19);
+            checkHideBodyInfoInBubble.Size = new Size(322, 20);
             checkHideBodyInfoInBubble.TabIndex = 30;
             checkHideBodyInfoInBubble.Tag = "autoHidePlotBodyInfoInBubble";
             checkHideBodyInfoInBubble.Text = "But keep it hidden when in the bubble <200ly from Sol.";
@@ -1497,10 +1559,11 @@ namespace SrvSurvey
             checkBodyInfoOrbit.AutoSize = true;
             checkBodyInfoOrbit.Checked = true;
             checkBodyInfoOrbit.CheckState = CheckState.Checked;
+            checkBodyInfoOrbit.FlatStyle = FlatStyle.System;
             checkBodyInfoOrbit.Location = new Point(163, 271);
             checkBodyInfoOrbit.Margin = new Padding(4, 3, 4, 3);
             checkBodyInfoOrbit.Name = "checkBodyInfoOrbit";
-            checkBodyInfoOrbit.Size = new Size(144, 19);
+            checkBodyInfoOrbit.Size = new Size(150, 20);
             checkBodyInfoOrbit.TabIndex = 29;
             checkBodyInfoOrbit.Tag = "autoShowPlotBodyInfoInOrbit";
             checkBodyInfoOrbit.Text = "In orbit around a body";
@@ -1511,10 +1574,11 @@ namespace SrvSurvey
             checkBodyInfoMap.AutoSize = true;
             checkBodyInfoMap.Checked = true;
             checkBodyInfoMap.CheckState = CheckState.Checked;
+            checkBodyInfoMap.FlatStyle = FlatStyle.System;
             checkBodyInfoMap.Location = new Point(31, 271);
             checkBodyInfoMap.Margin = new Padding(4, 3, 4, 3);
             checkBodyInfoMap.Name = "checkBodyInfoMap";
-            checkBodyInfoMap.Size = new Size(124, 19);
+            checkBodyInfoMap.Size = new Size(130, 20);
             checkBodyInfoMap.TabIndex = 28;
             checkBodyInfoMap.Tag = "autoShowPlotBodyInfoInMap";
             checkBodyInfoMap.Text = "In the System Map";
@@ -1525,13 +1589,14 @@ namespace SrvSurvey
             checkBodyInfo.AutoSize = true;
             checkBodyInfo.Checked = true;
             checkBodyInfo.CheckState = CheckState.Checked;
+            checkBodyInfo.FlatStyle = FlatStyle.System;
             checkBodyInfo.Location = new Point(10, 246);
             checkBodyInfo.Margin = new Padding(4, 3, 4, 3);
             checkBodyInfo.Name = "checkBodyInfo";
-            checkBodyInfo.Size = new Size(204, 19);
+            checkBodyInfo.Size = new Size(420, 20);
             checkBodyInfo.TabIndex = 27;
             checkBodyInfo.Tag = "autoShowPlotBodyInfo";
-            checkBodyInfo.Text = "Show body information panel -->";
+            checkBodyInfo.Text = "Show body information panel ➟➟➟➟➟➟➟➟➟➟➟➟➟➟➟➟➟➟➟";
             checkBodyInfo.UseVisualStyleBackColor = true;
             checkBodyInfo.CheckedChanged += checkBodyInfo_CheckedChanged;
             // 
@@ -1539,10 +1604,11 @@ namespace SrvSurvey
             // 
             checkBox17.Checked = true;
             checkBox17.CheckState = CheckState.Checked;
+            checkBox17.FlatStyle = FlatStyle.System;
             checkBox17.Location = new Point(31, 31);
             checkBox17.Margin = new Padding(4, 3, 4, 3);
             checkBox17.Name = "checkBox17";
-            checkBox17.Size = new Size(167, 41);
+            checkBox17.Size = new Size(174, 41);
             checkBox17.TabIndex = 26;
             checkBox17.Tag = "autoShowPlotFSSInfo";
             checkBox17.Text = "Show exploration values list";
@@ -1553,13 +1619,14 @@ namespace SrvSurvey
             checkGalMapPlotter.AutoSize = true;
             checkGalMapPlotter.Checked = true;
             checkGalMapPlotter.CheckState = CheckState.Checked;
-            checkGalMapPlotter.Location = new Point(10, 395);
+            checkGalMapPlotter.FlatStyle = FlatStyle.System;
+            checkGalMapPlotter.Location = new Point(10, 321);
             checkGalMapPlotter.Margin = new Padding(4, 3, 4, 3);
             checkGalMapPlotter.Name = "checkGalMapPlotter";
-            checkGalMapPlotter.Size = new Size(345, 19);
+            checkGalMapPlotter.Size = new Size(414, 20);
             checkGalMapPlotter.TabIndex = 24;
             checkGalMapPlotter.Tag = "autoShowPlotGalMap";
-            checkGalMapPlotter.Text = "Show exploration preview in Galaxy Map (uses external data)";
+            checkGalMapPlotter.Text = "Show exploration preview in Galaxy Map (uses external data) ➟➟➟➟➟";
             checkGalMapPlotter.UseVisualStyleBackColor = true;
             // 
             // label13
@@ -1576,9 +1643,10 @@ namespace SrvSurvey
             checkBox16.AutoSize = true;
             checkBox16.Checked = true;
             checkBox16.CheckState = CheckState.Checked;
+            checkBox16.FlatStyle = FlatStyle.System;
             checkBox16.Location = new Point(31, 209);
             checkBox16.Name = "checkBox16";
-            checkBox16.Size = new Size(146, 19);
+            checkBox16.Size = new Size(152, 20);
             checkBox16.TabIndex = 22;
             checkBox16.Tag = "skipHighDistanceDSS";
             checkBox16.Text = "Skip bodies exceeding:";
@@ -1611,9 +1679,10 @@ namespace SrvSurvey
             checkBox11.AutoSize = true;
             checkBox11.Checked = true;
             checkBox11.CheckState = CheckState.Checked;
+            checkBox11.FlatStyle = FlatStyle.System;
             checkBox11.Location = new Point(31, 184);
             checkBox11.Name = "checkBox11";
-            checkBox11.Size = new Size(236, 19);
+            checkBox11.Size = new Size(242, 20);
             checkBox11.TabIndex = 19;
             checkBox11.Tag = "skipLowValueDSS";
             checkBox11.Text = "Skip bodies with estimated value below:";
@@ -1638,10 +1707,11 @@ namespace SrvSurvey
             checkBox10.AutoSize = true;
             checkBox10.Checked = true;
             checkBox10.CheckState = CheckState.Checked;
+            checkBox10.FlatStyle = FlatStyle.System;
             checkBox10.Location = new Point(31, 159);
             checkBox10.Margin = new Padding(4, 3, 4, 3);
             checkBox10.Name = "checkBox10";
-            checkBox10.Size = new Size(114, 19);
+            checkBox10.Size = new Size(120, 20);
             checkBox10.TabIndex = 16;
             checkBox10.Tag = "skipRingsDSS";
             checkBox10.Text = "Skip DSS of rings";
@@ -1652,10 +1722,11 @@ namespace SrvSurvey
             checkBox9.AutoSize = true;
             checkBox9.Checked = true;
             checkBox9.CheckState = CheckState.Checked;
+            checkBox9.FlatStyle = FlatStyle.System;
             checkBox9.Location = new Point(31, 134);
             checkBox9.Margin = new Padding(4, 3, 4, 3);
             checkBox9.Name = "checkBox9";
-            checkBox9.Size = new Size(141, 19);
+            checkBox9.Size = new Size(147, 20);
             checkBox9.TabIndex = 15;
             checkBox9.Tag = "skipGasGiantDSS";
             checkBox9.Text = "Skip DSS of gas giants";
@@ -1665,7 +1736,7 @@ namespace SrvSurvey
             // 
             pictureBox5.BackgroundImage = (Image)resources.GetObject("pictureBox5.BackgroundImage");
             pictureBox5.BackgroundImageLayout = ImageLayout.None;
-            pictureBox5.Location = new Point(192, 104);
+            pictureBox5.Location = new Point(219, 104);
             pictureBox5.Name = "pictureBox5";
             pictureBox5.Size = new Size(256, 49);
             pictureBox5.TabIndex = 14;
@@ -1676,20 +1747,21 @@ namespace SrvSurvey
             checkBox8.AutoSize = true;
             checkBox8.Checked = true;
             checkBox8.CheckState = CheckState.Checked;
+            checkBox8.FlatStyle = FlatStyle.System;
             checkBox8.Location = new Point(10, 109);
             checkBox8.Margin = new Padding(4, 3, 4, 3);
             checkBox8.Name = "checkBox8";
-            checkBox8.Size = new Size(175, 19);
+            checkBox8.Size = new Size(208, 20);
             checkBox8.TabIndex = 13;
             checkBox8.Tag = "autoShowPlotSysStatus";
-            checkBox8.Text = "Show system DSS remaining";
+            checkBox8.Text = "Show system DSS remaining ➟➟";
             checkBox8.UseVisualStyleBackColor = true;
             // 
             // pictureBox4
             // 
             pictureBox4.BackgroundImage = (Image)resources.GetObject("pictureBox4.BackgroundImage");
             pictureBox4.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureBox4.Location = new Point(212, 6);
+            pictureBox4.Location = new Point(220, 6);
             pictureBox4.Name = "pictureBox4";
             pictureBox4.Size = new Size(198, 84);
             pictureBox4.TabIndex = 12;
@@ -1700,31 +1772,31 @@ namespace SrvSurvey
             checkBox4.AutoSize = true;
             checkBox4.Checked = true;
             checkBox4.CheckState = CheckState.Checked;
+            checkBox4.FlatStyle = FlatStyle.System;
             checkBox4.Location = new Point(10, 6);
             checkBox4.Margin = new Padding(4, 3, 4, 3);
             checkBox4.Name = "checkBox4";
-            checkBox4.Size = new Size(188, 19);
+            checkBox4.Size = new Size(209, 20);
             checkBox4.TabIndex = 11;
             checkBox4.Tag = "autoShowPlotFSS";
-            checkBox4.Text = "Show exploration values in FSS";
+            checkBox4.Text = "Show exploration values in FSS ➟";
             checkBox4.UseVisualStyleBackColor = true;
             // 
             // tabPage7
             // 
-            tabPage7.Controls.Add(checkBox19);
+            tabPage7.Controls.Add(pictureBox7);
             tabPage7.Controls.Add(checkUseBioData);
             tabPage7.Controls.Add(radioUseRadius);
             tabPage7.Controls.Add(radioUseSmall);
-            tabPage7.Controls.Add(pictureBox9);
-            tabPage7.Controls.Add(pictureBox8);
             tabPage7.Controls.Add(checkShowCanonnOnRadar);
             tabPage7.Controls.Add(checkUseSystemData);
-            tabPage7.Controls.Add(pictureBox7);
             tabPage7.Controls.Add(lblPriorScansCredits);
             tabPage7.Controls.Add(checkSkipCheapSignals);
             tabPage7.Controls.Add(numPriorScanMinValue);
             tabPage7.Controls.Add(checkShowPriorScans);
             tabPage7.Controls.Add(checkHideMyOwnCanonnSignals);
+            tabPage7.Controls.Add(pictureBox9);
+            tabPage7.Controls.Add(pictureBox8);
             tabPage7.Location = new Point(4, 24);
             tabPage7.Name = "tabPage7";
             tabPage7.Padding = new Padding(3);
@@ -1732,23 +1804,23 @@ namespace SrvSurvey
             tabPage7.TabIndex = 6;
             tabPage7.Text = "External Data";
             // 
-            // checkBox19
+            // pictureBox7
             // 
-            checkBox19.AutoSize = true;
-            checkBox19.Location = new Point(28, 399);
-            checkBox19.Name = "checkBox19";
-            checkBox19.Size = new Size(362, 19);
-            checkBox19.TabIndex = 37;
-            checkBox19.Tag = "autoShowPlotJumpInfoTest";
-            checkBox19.Text = "Show next system summary before FSD jumping (experimental)";
-            checkBox19.UseVisualStyleBackColor = true;
+            pictureBox7.BackgroundImage = (Image)resources.GetObject("pictureBox7.BackgroundImage");
+            pictureBox7.BackgroundImageLayout = ImageLayout.Zoom;
+            pictureBox7.Location = new Point(374, 47);
+            pictureBox7.Name = "pictureBox7";
+            pictureBox7.Size = new Size(228, 131);
+            pictureBox7.TabIndex = 28;
+            pictureBox7.TabStop = false;
             // 
             // checkUseBioData
             // 
             checkUseBioData.AutoSize = true;
+            checkUseBioData.FlatStyle = FlatStyle.System;
             checkUseBioData.Location = new Point(28, 31);
             checkUseBioData.Name = "checkUseBioData";
-            checkUseBioData.Size = new Size(298, 19);
+            checkUseBioData.Size = new Size(304, 20);
             checkUseBioData.TabIndex = 36;
             checkUseBioData.Tag = "useExternalBioData";
             checkUseBioData.Text = "Use downloaded bio data from Canonn and Spansh";
@@ -1757,9 +1829,9 @@ namespace SrvSurvey
             // radioUseRadius
             // 
             radioUseRadius.CheckAlign = ContentAlignment.TopLeft;
-            radioUseRadius.Location = new Point(257, 222);
+            radioUseRadius.Location = new Point(196, 243);
             radioUseRadius.Name = "radioUseRadius";
-            radioUseRadius.Size = new Size(99, 37);
+            radioUseRadius.Size = new Size(153, 21);
             radioUseRadius.TabIndex = 34;
             radioUseRadius.TabStop = true;
             radioUseRadius.Text = "Use bio signal radius";
@@ -1768,42 +1840,23 @@ namespace SrvSurvey
             // radioUseSmall
             // 
             radioUseSmall.CheckAlign = ContentAlignment.TopLeft;
-            radioUseSmall.Location = new Point(28, 222);
+            radioUseSmall.Location = new Point(50, 243);
             radioUseSmall.Name = "radioUseSmall";
-            radioUseSmall.Size = new Size(83, 37);
+            radioUseSmall.Size = new Size(128, 21);
             radioUseSmall.TabIndex = 33;
             radioUseSmall.TabStop = true;
             radioUseSmall.Tag = "useSmallCirclesWithCanonn";
             radioUseSmall.Text = "Use small circles";
             radioUseSmall.UseVisualStyleBackColor = true;
             // 
-            // pictureBox9
-            // 
-            pictureBox9.BackgroundImage = (Image)resources.GetObject("pictureBox9.BackgroundImage");
-            pictureBox9.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureBox9.Location = new Point(117, 222);
-            pictureBox9.Name = "pictureBox9";
-            pictureBox9.Size = new Size(128, 150);
-            pictureBox9.TabIndex = 32;
-            pictureBox9.TabStop = false;
-            // 
-            // pictureBox8
-            // 
-            pictureBox8.BackgroundImage = (Image)resources.GetObject("pictureBox8.BackgroundImage");
-            pictureBox8.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureBox8.Location = new Point(362, 222);
-            pictureBox8.Name = "pictureBox8";
-            pictureBox8.Size = new Size(128, 150);
-            pictureBox8.TabIndex = 31;
-            pictureBox8.TabStop = false;
-            // 
             // checkShowCanonnOnRadar
             // 
             checkShowCanonnOnRadar.AutoSize = true;
             checkShowCanonnOnRadar.CheckAlign = ContentAlignment.TopLeft;
+            checkShowCanonnOnRadar.FlatStyle = FlatStyle.System;
             checkShowCanonnOnRadar.Location = new Point(28, 197);
             checkShowCanonnOnRadar.Name = "checkShowCanonnOnRadar";
-            checkShowCanonnOnRadar.Size = new Size(255, 19);
+            checkShowCanonnOnRadar.Size = new Size(261, 20);
             checkShowCanonnOnRadar.TabIndex = 30;
             checkShowCanonnOnRadar.Tag = "showCanonnSignalsOnRadar";
             checkShowCanonnOnRadar.Text = "Show bio signals from Canonn on the radar";
@@ -1814,9 +1867,10 @@ namespace SrvSurvey
             // 
             checkUseSystemData.AutoSize = true;
             checkUseSystemData.CheckAlign = ContentAlignment.TopLeft;
+            checkUseSystemData.FlatStyle = FlatStyle.System;
             checkUseSystemData.Location = new Point(8, 6);
             checkUseSystemData.Name = "checkUseSystemData";
-            checkUseSystemData.Size = new Size(489, 19);
+            checkUseSystemData.Size = new Size(495, 20);
             checkUseSystemData.TabIndex = 29;
             checkUseSystemData.Tag = "useExternalData";
             checkUseSystemData.Text = "Download star system, bodies and organic signals data from EDSM, Spansh and Canonn";
@@ -1824,20 +1878,10 @@ namespace SrvSurvey
             checkUseSystemData.UseVisualStyleBackColor = true;
             checkUseSystemData.CheckedChanged += disableEverythingElse_CheckedChanged;
             // 
-            // pictureBox7
-            // 
-            pictureBox7.BackgroundImage = (Image)resources.GetObject("pictureBox7.BackgroundImage");
-            pictureBox7.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureBox7.Location = new Point(258, 60);
-            pictureBox7.Name = "pictureBox7";
-            pictureBox7.Size = new Size(228, 131);
-            pictureBox7.TabIndex = 28;
-            pictureBox7.TabStop = false;
-            // 
             // lblPriorScansCredits
             // 
             lblPriorScansCredits.AutoSize = true;
-            lblPriorScansCredits.Location = new Point(196, 129);
+            lblPriorScansCredits.Location = new Point(326, 85);
             lblPriorScansCredits.Name = "lblPriorScansCredits";
             lblPriorScansCredits.Size = new Size(42, 15);
             lblPriorScansCredits.TabIndex = 27;
@@ -1848,9 +1892,11 @@ namespace SrvSurvey
             checkSkipCheapSignals.AutoSize = true;
             checkSkipCheapSignals.Checked = true;
             checkSkipCheapSignals.CheckState = CheckState.Checked;
-            checkSkipCheapSignals.Location = new Point(50, 102);
+            checkSkipCheapSignals.FlatStyle = FlatStyle.System;
+            checkSkipCheapSignals.Location = new Point(47, 83);
+            checkSkipCheapSignals.Margin = new Padding(0);
             checkSkipCheapSignals.Name = "checkSkipCheapSignals";
-            checkSkipCheapSignals.Size = new Size(190, 19);
+            checkSkipCheapSignals.Size = new Size(196, 20);
             checkSkipCheapSignals.TabIndex = 26;
             checkSkipCheapSignals.Tag = "skipPriorScansLowValue";
             checkSkipCheapSignals.Text = "Skip signals with reward below:";
@@ -1860,10 +1906,10 @@ namespace SrvSurvey
             // numPriorScanMinValue
             // 
             numPriorScanMinValue.Increment = new decimal(new int[] { 100000, 0, 0, 0 });
-            numPriorScanMinValue.Location = new Point(102, 127);
+            numPriorScanMinValue.Location = new Point(244, 83);
             numPriorScanMinValue.Maximum = new decimal(new int[] { 6000000, 0, 0, 0 });
             numPriorScanMinValue.Name = "numPriorScanMinValue";
-            numPriorScanMinValue.Size = new Size(88, 23);
+            numPriorScanMinValue.Size = new Size(80, 23);
             numPriorScanMinValue.TabIndex = 25;
             numPriorScanMinValue.Tag = "skipPriorScansLowValueAmount";
             numPriorScanMinValue.TextAlign = HorizontalAlignment.Right;
@@ -1872,26 +1918,50 @@ namespace SrvSurvey
             // 
             // checkShowPriorScans
             // 
+            checkShowPriorScans.AutoSize = true;
+            checkShowPriorScans.BackColor = Color.Transparent;
             checkShowPriorScans.CheckAlign = ContentAlignment.TopLeft;
+            checkShowPriorScans.FlatStyle = FlatStyle.System;
             checkShowPriorScans.Location = new Point(28, 60);
             checkShowPriorScans.Name = "checkShowPriorScans";
-            checkShowPriorScans.Size = new Size(224, 35);
+            checkShowPriorScans.Size = new Size(351, 20);
             checkShowPriorScans.TabIndex = 24;
             checkShowPriorScans.Tag = "autoLoadPriorScans";
-            checkShowPriorScans.Text = "Show aiming guidance to bio signals from Canonn";
-            checkShowPriorScans.UseVisualStyleBackColor = true;
+            checkShowPriorScans.Text = "Show aiming guidance to bio signals from Canonn ➟➟➟➟";
+            checkShowPriorScans.UseVisualStyleBackColor = false;
             checkShowPriorScans.CheckedChanged += checkShowPriorScans_CheckedChanged;
             // 
             // checkHideMyOwnCanonnSignals
             // 
             checkHideMyOwnCanonnSignals.AutoSize = true;
-            checkHideMyOwnCanonnSignals.Location = new Point(28, 379);
+            checkHideMyOwnCanonnSignals.FlatStyle = FlatStyle.System;
+            checkHideMyOwnCanonnSignals.Location = new Point(50, 218);
             checkHideMyOwnCanonnSignals.Name = "checkHideMyOwnCanonnSignals";
-            checkHideMyOwnCanonnSignals.Size = new Size(328, 19);
+            checkHideMyOwnCanonnSignals.Size = new Size(334, 20);
             checkHideMyOwnCanonnSignals.TabIndex = 35;
             checkHideMyOwnCanonnSignals.Tag = "hideMyOwnCanonnSignals";
             checkHideMyOwnCanonnSignals.Text = "Hide my own scans. Uncheck to revisit signals after dying";
             checkHideMyOwnCanonnSignals.UseVisualStyleBackColor = true;
+            // 
+            // pictureBox9
+            // 
+            pictureBox9.BackgroundImage = (Image)resources.GetObject("pictureBox9.BackgroundImage");
+            pictureBox9.BackgroundImageLayout = ImageLayout.Zoom;
+            pictureBox9.Location = new Point(50, 264);
+            pictureBox9.Name = "pictureBox9";
+            pictureBox9.Size = new Size(128, 150);
+            pictureBox9.TabIndex = 32;
+            pictureBox9.TabStop = false;
+            // 
+            // pictureBox8
+            // 
+            pictureBox8.BackgroundImage = (Image)resources.GetObject("pictureBox8.BackgroundImage");
+            pictureBox8.BackgroundImageLayout = ImageLayout.Zoom;
+            pictureBox8.Location = new Point(196, 264);
+            pictureBox8.Name = "pictureBox8";
+            pictureBox8.Size = new Size(128, 150);
+            pictureBox8.TabIndex = 31;
+            pictureBox8.TabStop = false;
             // 
             // tabSettlements
             // 
@@ -1907,9 +1977,10 @@ namespace SrvSurvey
             // checkHumanSitePlotter
             // 
             checkHumanSitePlotter.AutoSize = true;
+            checkHumanSitePlotter.FlatStyle = FlatStyle.System;
             checkHumanSitePlotter.Location = new Point(8, 6);
             checkHumanSitePlotter.Name = "checkHumanSitePlotter";
-            checkHumanSitePlotter.Size = new Size(237, 19);
+            checkHumanSitePlotter.Size = new Size(243, 20);
             checkHumanSitePlotter.TabIndex = 26;
             checkHumanSitePlotter.Tag = "autoShowHumanSitesTest";
             checkHumanSitePlotter.Text = "Human settlement maps (experimental)";
@@ -1957,20 +2028,6 @@ namespace SrvSurvey
             // 
             colorDialog.Color = Color.Yellow;
             // 
-            // checkBox21
-            // 
-            checkBox21.AutoSize = true;
-            checkBox21.Checked = true;
-            checkBox21.CheckState = CheckState.Checked;
-            checkBox21.Location = new Point(10, 399);
-            checkBox21.Margin = new Padding(4, 3, 4, 3);
-            checkBox21.Name = "checkBox21";
-            checkBox21.Size = new Size(190, 19);
-            checkBox21.TabIndex = 34;
-            checkBox21.Tag = "highlightRegionalFirsts";
-            checkBox21.Text = "Highlight regional firsts in gold";
-            checkBox21.UseVisualStyleBackColor = true;
-            // 
             // FormSettings
             // 
             AcceptButton = btnSave;
@@ -2003,7 +2060,6 @@ namespace SrvSurvey
             ((System.ComponentModel.ISupportInitialize)pictureBox12).EndInit();
             ((System.ComponentModel.ISupportInitialize)numMinBioDuration).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             groupRingBuckets.ResumeLayout(false);
             groupRingBuckets.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)picBucket4).EndInit();
@@ -2013,6 +2069,7 @@ namespace SrvSurvey
             ((System.ComponentModel.ISupportInitialize)numRingBucket2).EndInit();
             ((System.ComponentModel.ISupportInitialize)picBucket1).EndInit();
             ((System.ComponentModel.ISupportInitialize)numRingBucket1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             tabPage3.ResumeLayout(false);
             tabPage3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numAltGamma).EndInit();
@@ -2024,6 +2081,7 @@ namespace SrvSurvey
             tabPage6.ResumeLayout(false);
             tabPage6.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox11).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox13).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox10).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).EndInit();
             ((System.ComponentModel.ISupportInitialize)numMinScanValue).EndInit();
@@ -2031,10 +2089,10 @@ namespace SrvSurvey
             ((System.ComponentModel.ISupportInitialize)pictureBox4).EndInit();
             tabPage7.ResumeLayout(false);
             tabPage7.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox9).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox8).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox7).EndInit();
             ((System.ComponentModel.ISupportInitialize)numPriorScanMinValue).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox9).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox8).EndInit();
             tabSettlements.ResumeLayout(false);
             tabSettlements.PerformLayout();
             tabPage2.ResumeLayout(false);
@@ -2081,7 +2139,6 @@ namespace SrvSurvey
         private CheckBox checkHideOverlayOnMouseOver;
         private Label label4;
         private CheckBox checkMinimizeOnStart;
-        private LinkLabel linkDataFiles;
         private NumericUpDown numAltGamma;
         private NumericUpDown numAltBeta;
         private NumericUpDown numAltAlpha;
@@ -2106,7 +2163,6 @@ namespace SrvSurvey
         private CheckBox checkBox11;
         private NumericUpDown numMinScanValue;
         private Label label10;
-        private CheckBox checkBox12;
         private FlatButton btnChooseJournalFolder;
         private Label label11;
         private LinkLabel linkJournalFolder;
@@ -2136,8 +2192,6 @@ namespace SrvSurvey
         private FlatButton btnResetOverlays;
         private ColorDialog colorDialog;
         private FlatButton btnBannerColor;
-        private Panel panelBannerColor;
-        private Label label3;
         private CheckBox checkLocalTime;
         private Label label13;
         private CheckBox checkBox16;
@@ -2179,9 +2233,13 @@ namespace SrvSurvey
         private Panel panelTheme;
         private LinkLabel linkResetTheme;
         private FlatButton btnPostProcess;
-        private CheckBox checkBox19;
         private CheckBox checkBox20;
         private CheckBox checkDarkTheme;
         private CheckBox checkBox21;
+        private CheckBox checkPlotJumpInfo;
+        private PictureBox pictureBox13;
+        private LinkLabel linkResetTheme2;
+        private Panel panelTheme2;
+        private FlatButton btnTheme2;
     }
 }

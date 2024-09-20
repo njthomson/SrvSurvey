@@ -165,7 +165,7 @@ namespace SrvSurvey.canonn
         private static string ruinSummariesPath = Path.Combine(Program.dataFolder, "ruinSummaries.json");
         //public IEnumerable<GuardianRuinSummary> ruinSummaries { get; private set; }
 
-        public async Task<List<GRReport>> getRuinsReports(string bodyName, int idx, bool descending, string? cmdr = null)
+        public async Task<List<GRReports.Data.Report>> getRuinsReports(string bodyName, int idx, bool descending, string? cmdr = null)
         {
             var fields = "updated_at\\n type\\n latitude\\n longitude\\n";
             var filter = $"bodyName:\\\"{bodyName}\\\", frontierID:{idx}";
@@ -189,11 +189,11 @@ namespace SrvSurvey.canonn
             else
                 Game.log(json);
 
-            var obj = JsonConvert.DeserializeObject<GRReportsData>(json)!;
+            var obj = JsonConvert.DeserializeObject<GRReports>(json)!;
             return obj.data.grreports;
         }
 
-        public async Task<List<GRReport>> getRuinsReportsByCmdr(string cmdrName)
+        public async Task<List<GRReports.Data.Report>> getRuinsReportsByCmdr(string cmdrName)
         {
             var fields = "updated_at\\n type\\n latitude\\n longitude\\n bodyName\\n frontierID\\n";
             var filter = $"cmdrName:\\\"{cmdrName}\\\"";
@@ -214,7 +214,7 @@ namespace SrvSurvey.canonn
             else
                 Game.log(json);
 
-            var obj = JsonConvert.DeserializeObject<GRReportsData>(json)!;
+            var obj = JsonConvert.DeserializeObject<GRReports>(json)!;
             return obj.data.grreports;
         }
 
@@ -921,7 +921,7 @@ namespace SrvSurvey.canonn
 
         private readonly DateTimeOffset odysseyReleaseDate = DateTimeOffset.Parse("2021-05-19T00:00:00Z");
 
-        private bool getLatLong(List<GRReport> reports, GuardianRuinSummary ruins)
+        private bool getLatLong(List<GRReports.Data.Report> reports, GuardianRuinSummary ruins)
         {
             // ignore anything from "EDMC-Canonn.6.9.7" ???
 

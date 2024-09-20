@@ -57,21 +57,18 @@ namespace SrvSurvey
             Util.applyTheme(this);
         }
 
-        protected override void OnResizeEnd(EventArgs e)
+        protected override void OnClosing(CancelEventArgs e)
         {
-            base.OnResizeEnd(e);
+            base.OnClosing(e);
 
+            // update location
             var rect = new Rectangle(this.Location, this.Size);
             if (Game.settings.formRamTah != rect)
             {
                 Game.settings.formRamTah = rect;
                 Game.settings.Save();
             }
-        }
 
-        protected override void OnClosing(CancelEventArgs e)
-        {
-            base.OnClosing(e);
             FormRamTah.activeForm = null;
         }
 

@@ -34,7 +34,7 @@ namespace SrvSurvey
             ApplicationConfiguration.Initialize();
 
             Application.EnableVisualStyles();
-            Application.SetHighDpiMode(HighDpiMode.SystemAware);
+            Application.SetHighDpiMode(HighDpiMode.PerMonitor);
             Application.SetCompatibleTextRenderingDefault(true);
             Application.ThreadException += Application_ThreadException;
 

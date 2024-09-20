@@ -69,14 +69,14 @@ namespace SrvSurvey
                     var isCurrentObelisk = bar.Value.Any(_ => _ == game.systemSite.currentObelisk?.name);
                     var brush = GameColors.brushGameOrange;
                     if (isTargetObelisk && !isCurrentObelisk && game.systemSite.currentObelisk != null)
-                        brush = Brushes.DarkCyan as SolidBrush;
+                        brush = GameColors.brushDarkCyan;
                     else if (isCurrentObelisk || isTargetObelisk)
                         brush = GameColors.brushCyan;
 
                     // change colours if items are missing? Perhaps overkill?
                     //var brush = (hasItem1 && hasItem2)
                     //    ? isTargetObelisk ? GameColors.brushCyan : GameColors.brushGameOrange
-                    //    : isTargetObelisk ? Brushes.DarkCyan : GameColors.brushGameOrangeDim;
+                    //    : isTargetObelisk ? GameColors.brushDarkCyan : GameColors.brushGameOrangeDim;
 
                     // draw main text (bigger font)
                     this.dtx = oneFour;
