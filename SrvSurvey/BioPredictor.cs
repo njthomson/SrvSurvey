@@ -7,6 +7,7 @@ namespace BioCriterias
 {
     internal class BioPredictor
     {
+        public static float matsMinimalThreshold = 0.25f;
         public static bool useTestCache = false;
         public static string netCache = Path.Combine(Program.dataFolder, "netCache");
 
@@ -232,7 +233,7 @@ namespace BioCriterias
             if (clause.property == "mats" && bodyValue is Dictionary<string, float>)
             {
                 var bodyMats = (Dictionary<string, float>)bodyValue;
-                if (!clause.values.Any(v => bodyMats.Any(bv => bv.Key.Equals(v, StringComparison.OrdinalIgnoreCase) && bv.Value > 0.25f)))
+                if (!clause.values.Any(v => bodyMats.Any(bv => bv.Key.Equals(v, StringComparison.OrdinalIgnoreCase) && bv.Value > matsMinimalThreshold)))
                     failures.Add(new ClauseFailure(bodyName, "No mats multi match found", clause, string.Join(',', bodyMats)));
 
                 return;
@@ -281,7 +282,7 @@ namespace BioCriterias
                 return;
             }
 
-            Game.log($"Unexpected bodyValue type: {bodyValue?.GetType().Name}");
+            Game.log($"testIsQuery: Unexpected bodyValue type: {bodyValue?.GetType().Name ?? "(is null)"}");
             Debugger.Break();
         }
 
@@ -302,12 +303,12 @@ namespace BioCriterias
             {
                 if (bodyValues != null && !clause.values.All(v => bodyValues.Any(bv => bv.Equals(v, StringComparison.OrdinalIgnoreCase))))
                     failures.Add(new ClauseFailure(bodyName, "Not ALL found", clause, string.Join(',', bodyValues)));
-
-                return;
             }
-
-            Game.log($"Unexpected bodyValue type: {bodyValue?.GetType().Name}");
-            Debugger.Break();
+            else
+            {
+                Game.log($"testAllQuery: Unexpected bodyValue type: {bodyValue?.GetType().Name ?? "(is null)"}");
+                Debugger.Break();
+            }
         }
 
         private void testNotQuery(Clause clause, object? bodyValue, List<ClauseFailure> failures)
@@ -323,8 +324,16 @@ namespace BioCriterias
             if (bodyValue is Dictionary<string, float>)
                 bodyValues = ((Dictionary<string, float>)bodyValue).Keys.ToList();
 
-            if (bodyValues != null && clause.values.Any(v => bodyValues.Any(bv => bv.Equals(v, StringComparison.OrdinalIgnoreCase))))
-                failures.Add(new ClauseFailure(bodyName, "Must NOT have", clause, string.Join(',', bodyValues)));
+            if (bodyValues != null)
+            {
+                if (clause.values.Any(v => bodyValues.Any(bv => bv.Equals(v, StringComparison.OrdinalIgnoreCase))))
+                    failures.Add(new ClauseFailure(bodyName, "Must NOT have", clause, string.Join(',', bodyValues)));
+            }
+            else
+            {
+                Game.log($"testNotQuery: Unexpected bodyValue type: {bodyValue?.GetType().Name ?? "(is null)"}");
+                Debugger.Break();
+            }
         }
 
         private void testRangeQuery(Clause clause, object? bodyValue, List<ClauseFailure> failures)
@@ -371,7 +380,14 @@ namespace BioCriterias
                 if (localFailures.Count == clause.compositions.Count)
                     failures.AddRange(localFailures);
             }
+            else
+            {
+                Game.log($"testCompositionQuery: Unexpected bodyValue type: {bodyValue?.GetType().Name ?? "(is null)"}");
+                Debugger.Break();
+            }
         }
+
+        #region automated tests
 
         private static async Task testSystem(long address)
         {
@@ -638,6 +654,8 @@ namespace BioCriterias
             }
             Game.log($"All done: everything - count: {testSystems.Count}, duration: {DateTime.Now - startTime}");
         }
+
+        #endregion
     }
 
     internal class ClauseFailure
