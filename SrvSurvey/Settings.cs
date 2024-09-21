@@ -90,6 +90,7 @@ namespace SrvSurvey
         public bool disableRuinsMeasurementGrid = false;
         public bool disableAerialAlignmentGrid = false;
         public bool hidePlottersFromCombatSuits = false;
+        public bool hidePlottersFromMaverickSuits = false;
         public bool hideOverlaysFromMouse = true;
 
         public bool autoShowFlightWarnings = true;

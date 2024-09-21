@@ -35,6 +35,8 @@ namespace SrvSurvey
             btnSave = new FlatButton();
             btnCancel = new FlatButton();
             tabPage1 = new TabPage();
+            checkHidePlottersFromDominator = new CheckBox();
+            label3 = new Label();
             panelTheme2 = new Panel();
             btnTheme2 = new FlatButton();
             checkDarkTheme = new CheckBox();
@@ -56,7 +58,7 @@ namespace SrvSurvey
             checkMinimizeOnStart = new CheckBox();
             checkHideOverlayOnMouseOver = new CheckBox();
             label4 = new Label();
-            checkHidePlottersFromWeapons = new CheckBox();
+            checkHidePlottersFromMaverick = new CheckBox();
             checkFocusOnMinimize = new CheckBox();
             numOpacity = new NumericUpDown();
             label2 = new Label();
@@ -67,6 +69,7 @@ namespace SrvSurvey
             linkResetTheme = new LinkLabel();
             tabControl1 = new TabControl();
             tabPage4 = new TabPage();
+            pictureBox1 = new PictureBox();
             checkBox21 = new CheckBox();
             checkBox20 = new CheckBox();
             pictureBox12 = new PictureBox();
@@ -96,7 +99,6 @@ namespace SrvSurvey
             picBucket1 = new PictureBox();
             numRingBucket1 = new NumericUpDown();
             label16 = new Label();
-            pictureBox1 = new PictureBox();
             tabPage3 = new TabPage();
             checkBox15 = new CheckBox();
             checkBox14 = new CheckBox();
@@ -114,7 +116,6 @@ namespace SrvSurvey
             checkRuinsMeasurementGrid = new CheckBox();
             checkEnableGuardianFeatures = new CheckBox();
             tabPage5 = new TabPage();
-            checkLocalTime = new CheckBox();
             btnBannerColor = new FlatButton();
             checkDeleteScreenshotOriginal = new CheckBox();
             pictureBox3 = new PictureBox();
@@ -127,11 +128,12 @@ namespace SrvSurvey
             linkTargetScreenshotFolder = new LinkLabel();
             lblScreenshotSource = new Label();
             lblScreenshotTarget = new Label();
+            checkLocalTime = new CheckBox();
             tabPage6 = new TabPage();
+            pictureBox10 = new PictureBox();
             pictureBox11 = new PictureBox();
             checkPlotJumpInfo = new CheckBox();
             pictureBox13 = new PictureBox();
-            pictureBox10 = new PictureBox();
             checkHideBodyInfoInBubble = new CheckBox();
             checkBodyInfoOrbit = new CheckBox();
             checkBodyInfoMap = new CheckBox();
@@ -179,6 +181,7 @@ namespace SrvSurvey
             ((System.ComponentModel.ISupportInitialize)trackOpacity).BeginInit();
             tabControl1.SuspendLayout();
             tabPage4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox12).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numMinBioDuration).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
@@ -190,7 +193,6 @@ namespace SrvSurvey
             ((System.ComponentModel.ISupportInitialize)numRingBucket2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)picBucket1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numRingBucket1).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numAltGamma).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numAltBeta).BeginInit();
@@ -198,9 +200,9 @@ namespace SrvSurvey
             tabPage5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
             tabPage6.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox10).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox11).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox13).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox10).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numMinScanValue).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox5).BeginInit();
@@ -267,6 +269,8 @@ namespace SrvSurvey
             // tabPage1
             // 
             tabPage1.BorderStyle = BorderStyle.Fixed3D;
+            tabPage1.Controls.Add(checkHidePlottersFromDominator);
+            tabPage1.Controls.Add(label3);
             tabPage1.Controls.Add(panelTheme2);
             tabPage1.Controls.Add(btnTheme2);
             tabPage1.Controls.Add(checkDarkTheme);
@@ -288,7 +292,7 @@ namespace SrvSurvey
             tabPage1.Controls.Add(checkMinimizeOnStart);
             tabPage1.Controls.Add(checkHideOverlayOnMouseOver);
             tabPage1.Controls.Add(label4);
-            tabPage1.Controls.Add(checkHidePlottersFromWeapons);
+            tabPage1.Controls.Add(checkHidePlottersFromMaverick);
             tabPage1.Controls.Add(checkFocusOnMinimize);
             tabPage1.Controls.Add(numOpacity);
             tabPage1.Controls.Add(label2);
@@ -304,6 +308,32 @@ namespace SrvSurvey
             tabPage1.Size = new Size(612, 420);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "General";
+            // 
+            // checkHidePlottersFromDominator
+            // 
+            checkHidePlottersFromDominator.AutoSize = true;
+            checkHidePlottersFromDominator.Checked = true;
+            checkHidePlottersFromDominator.CheckState = CheckState.Checked;
+            checkHidePlottersFromDominator.FlatStyle = FlatStyle.System;
+            checkHidePlottersFromDominator.Location = new Point(305, 393);
+            checkHidePlottersFromDominator.Margin = new Padding(4, 3, 4, 3);
+            checkHidePlottersFromDominator.Name = "checkHidePlottersFromDominator";
+            checkHidePlottersFromDominator.Size = new Size(111, 20);
+            checkHidePlottersFromDominator.TabIndex = 43;
+            checkHidePlottersFromDominator.Tag = "hidePlottersFromCombatSuits";
+            checkHidePlottersFromDominator.Text = "Dominator suit";
+            checkHidePlottersFromDominator.UseVisualStyleBackColor = true;
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.FlatStyle = FlatStyle.System;
+            label3.Location = new Point(10, 395);
+            label3.Margin = new Padding(0);
+            label3.Name = "label3";
+            label3.Size = new Size(181, 15);
+            label3.TabIndex = 2;
+            label3.Text = "Disable overlays when on foot in:";
             // 
             // panelTheme2
             // 
@@ -344,9 +374,9 @@ namespace SrvSurvey
             // 
             btnPostProcess.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnPostProcess.FlatStyle = FlatStyle.Flat;
-            btnPostProcess.Location = new Point(401, 381);
+            btnPostProcess.Location = new Point(439, 381);
             btnPostProcess.Name = "btnPostProcess";
-            btnPostProcess.Size = new Size(201, 29);
+            btnPostProcess.Size = new Size(163, 29);
             btnPostProcess.TabIndex = 38;
             btnPostProcess.Text = "Scan all old journal files";
             btnPostProcess.UseVisualStyleBackColor = true;
@@ -530,7 +560,7 @@ namespace SrvSurvey
             // 
             checkHideOverlayOnMouseOver.AutoSize = true;
             checkHideOverlayOnMouseOver.FlatStyle = FlatStyle.System;
-            checkHideOverlayOnMouseOver.Location = new Point(10, 396);
+            checkHideOverlayOnMouseOver.Location = new Point(10, 372);
             checkHideOverlayOnMouseOver.Name = "checkHideOverlayOnMouseOver";
             checkHideOverlayOnMouseOver.Size = new Size(252, 20);
             checkHideOverlayOnMouseOver.TabIndex = 9;
@@ -542,24 +572,24 @@ namespace SrvSurvey
             // 
             label4.Location = new Point(6, 338);
             label4.Name = "label4";
-            label4.Size = new Size(477, 34);
+            label4.Size = new Size(358, 34);
             label4.TabIndex = 8;
             label4.Text = "Players using mouse and keyboard have reported some issues with overlay windows trapping focus from the game.";
             // 
-            // checkHidePlottersFromWeapons
+            // checkHidePlottersFromMaverick
             // 
-            checkHidePlottersFromWeapons.AutoSize = true;
-            checkHidePlottersFromWeapons.Checked = true;
-            checkHidePlottersFromWeapons.CheckState = CheckState.Checked;
-            checkHidePlottersFromWeapons.FlatStyle = FlatStyle.System;
-            checkHidePlottersFromWeapons.Location = new Point(10, 375);
-            checkHidePlottersFromWeapons.Margin = new Padding(4, 3, 4, 3);
-            checkHidePlottersFromWeapons.Name = "checkHidePlottersFromWeapons";
-            checkHidePlottersFromWeapons.Size = new Size(367, 20);
-            checkHidePlottersFromWeapons.TabIndex = 7;
-            checkHidePlottersFromWeapons.Tag = "hidePlottersFromCombatSuits";
-            checkHidePlottersFromWeapons.Text = "Disable overlays when on foot in Maverick and Dominator suits.";
-            checkHidePlottersFromWeapons.UseVisualStyleBackColor = true;
+            checkHidePlottersFromMaverick.AutoSize = true;
+            checkHidePlottersFromMaverick.Checked = true;
+            checkHidePlottersFromMaverick.CheckState = CheckState.Checked;
+            checkHidePlottersFromMaverick.FlatStyle = FlatStyle.System;
+            checkHidePlottersFromMaverick.Location = new Point(195, 393);
+            checkHidePlottersFromMaverick.Margin = new Padding(4, 3, 4, 3);
+            checkHidePlottersFromMaverick.Name = "checkHidePlottersFromMaverick";
+            checkHidePlottersFromMaverick.Size = new Size(102, 20);
+            checkHidePlottersFromMaverick.TabIndex = 7;
+            checkHidePlottersFromMaverick.Tag = "hidePlottersFromMaverickSuits";
+            checkHidePlottersFromMaverick.Text = "Maverick suit";
+            checkHidePlottersFromMaverick.UseVisualStyleBackColor = true;
             // 
             // checkFocusOnMinimize
             // 
@@ -704,6 +734,16 @@ namespace SrvSurvey
             tabPage4.Size = new Size(612, 420);
             tabPage4.TabIndex = 3;
             tabPage4.Text = "Bio Scanning";
+            // 
+            // pictureBox1
+            // 
+            pictureBox1.BackgroundImage = (Image)resources.GetObject("pictureBox1.BackgroundImage");
+            pictureBox1.BackgroundImageLayout = ImageLayout.Zoom;
+            pictureBox1.Location = new Point(228, 11);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new Size(154, 50);
+            pictureBox1.TabIndex = 7;
+            pictureBox1.TabStop = false;
             // 
             // checkBox21
             // 
@@ -1060,16 +1100,6 @@ namespace SrvSurvey
             label16.TabIndex = 7;
             label16.Text = "Choose the reward level per group by millons of credits:";
             // 
-            // pictureBox1
-            // 
-            pictureBox1.BackgroundImage = (Image)resources.GetObject("pictureBox1.BackgroundImage");
-            pictureBox1.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureBox1.Location = new Point(228, 11);
-            pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(154, 50);
-            pictureBox1.TabIndex = 7;
-            pictureBox1.TabStop = false;
-            // 
             // tabPage3
             // 
             tabPage3.BorderStyle = BorderStyle.Fixed3D;
@@ -1297,18 +1327,6 @@ namespace SrvSurvey
             tabPage5.TabIndex = 4;
             tabPage5.Text = "Screenshots";
             // 
-            // checkLocalTime
-            // 
-            checkLocalTime.AutoSize = true;
-            checkLocalTime.FlatStyle = FlatStyle.System;
-            checkLocalTime.Location = new Point(7, 228);
-            checkLocalTime.Name = "checkLocalTime";
-            checkLocalTime.Size = new Size(106, 20);
-            checkLocalTime.TabIndex = 27;
-            checkLocalTime.Tag = "screenshotBannerLocalTime";
-            checkLocalTime.Text = "Use local time";
-            checkLocalTime.UseVisualStyleBackColor = true;
-            // 
             // btnBannerColor
             // 
             btnBannerColor.FlatStyle = FlatStyle.Flat;
@@ -1465,6 +1483,18 @@ namespace SrvSurvey
             lblScreenshotTarget.TabIndex = 16;
             lblScreenshotTarget.Text = "Save converted screenshots in folder:";
             // 
+            // checkLocalTime
+            // 
+            checkLocalTime.AutoSize = true;
+            checkLocalTime.FlatStyle = FlatStyle.System;
+            checkLocalTime.Location = new Point(7, 228);
+            checkLocalTime.Name = "checkLocalTime";
+            checkLocalTime.Size = new Size(106, 20);
+            checkLocalTime.TabIndex = 27;
+            checkLocalTime.Tag = "screenshotBannerLocalTime";
+            checkLocalTime.Text = "Use local time";
+            checkLocalTime.UseVisualStyleBackColor = true;
+            // 
             // tabPage6
             // 
             tabPage6.BackColor = SystemColors.Control;
@@ -1497,6 +1527,16 @@ namespace SrvSurvey
             tabPage6.TabIndex = 5;
             tabPage6.Text = "Exploration";
             // 
+            // pictureBox10
+            // 
+            pictureBox10.BackgroundImage = (Image)resources.GetObject("pictureBox10.BackgroundImage");
+            pictureBox10.BackgroundImageLayout = ImageLayout.Zoom;
+            pictureBox10.Location = new Point(423, 321);
+            pictureBox10.Name = "pictureBox10";
+            pictureBox10.Size = new Size(166, 89);
+            pictureBox10.TabIndex = 31;
+            pictureBox10.TabStop = false;
+            // 
             // pictureBox11
             // 
             pictureBox11.BackgroundImage = (Image)resources.GetObject("pictureBox11.BackgroundImage");
@@ -1528,16 +1568,6 @@ namespace SrvSurvey
             pictureBox13.Size = new Size(329, 49);
             pictureBox13.TabIndex = 33;
             pictureBox13.TabStop = false;
-            // 
-            // pictureBox10
-            // 
-            pictureBox10.BackgroundImage = (Image)resources.GetObject("pictureBox10.BackgroundImage");
-            pictureBox10.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureBox10.Location = new Point(423, 321);
-            pictureBox10.Name = "pictureBox10";
-            pictureBox10.Size = new Size(166, 89);
-            pictureBox10.TabIndex = 31;
-            pictureBox10.TabStop = false;
             // 
             // checkHideBodyInfoInBubble
             // 
@@ -2057,6 +2087,7 @@ namespace SrvSurvey
             tabControl1.ResumeLayout(false);
             tabPage4.ResumeLayout(false);
             tabPage4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox12).EndInit();
             ((System.ComponentModel.ISupportInitialize)numMinBioDuration).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
@@ -2069,7 +2100,6 @@ namespace SrvSurvey
             ((System.ComponentModel.ISupportInitialize)numRingBucket2).EndInit();
             ((System.ComponentModel.ISupportInitialize)picBucket1).EndInit();
             ((System.ComponentModel.ISupportInitialize)numRingBucket1).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             tabPage3.ResumeLayout(false);
             tabPage3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numAltGamma).EndInit();
@@ -2080,9 +2110,9 @@ namespace SrvSurvey
             ((System.ComponentModel.ISupportInitialize)pictureBox3).EndInit();
             tabPage6.ResumeLayout(false);
             tabPage6.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox10).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox11).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox13).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox10).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).EndInit();
             ((System.ComponentModel.ISupportInitialize)numMinScanValue).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox5).EndInit();
@@ -2117,7 +2147,7 @@ namespace SrvSurvey
         private CheckBox checkEnableGuardianFeatures;
         private FlatButton btnNextProc;
         private CheckBox checkRuinsMeasurementGrid;
-        private CheckBox checkHidePlottersFromWeapons;
+        private CheckBox checkHidePlottersFromMaverick;
         private TabPage tabPage4;
         private FlatButton btnClearUnclaimed;
         private PictureBox pictureBox2;
@@ -2241,5 +2271,7 @@ namespace SrvSurvey
         private LinkLabel linkResetTheme2;
         private Panel panelTheme2;
         private FlatButton btnTheme2;
+        private Label label3;
+        private CheckBox checkHidePlottersFromDominator;
     }
 }

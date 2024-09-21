@@ -434,10 +434,12 @@ namespace SrvSurvey.game
 
         public bool hidePlottersFromCombatSuits
         {
-            get => Game.settings.hidePlottersFromCombatSuits
-                && this.status != null
+            get => this.status != null
                 && (this.status.Flags2 & StatusFlags2.OnFoot) > 0
-                && (this.currentSuitType == SuitType.dominator || this.currentSuitType == SuitType.maverick);
+                && (
+                    (this.currentSuitType == SuitType.dominator && Game.settings.hidePlottersFromCombatSuits)
+                    || (this.currentSuitType == SuitType.maverick && Game.settings.hidePlottersFromMaverickSuits)
+                );
         }
 
         public string targetBodyShortName { get => this.targetBody?.shortName ?? ""; }
@@ -1791,7 +1793,7 @@ namespace SrvSurvey.game
                 this.systemData.getNebulaDist().ContinueWith(response =>
                 {
                     // re-predict now we know this distance 
-                    foreach(var body in this.systemData.bodies)
+                    foreach (var body in this.systemData.bodies)
                     {
                         if (body.bioSignalCount > 0)
                             body.predictSpecies();
