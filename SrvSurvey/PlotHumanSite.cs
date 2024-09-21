@@ -184,7 +184,10 @@ namespace SrvSurvey
                 if (this.mapImageWatcher != null)
                     this.mapImageWatcher.EnableRaisingEvents = false;
                 if (this.mapImage != null)
+                {
                     this.mapImage.Dispose();
+                    this.mapImage = null;
+                }
 
                 var folder = Path.Combine(Application.StartupPath, "images");
                 var filepath = Directory.GetFiles(folder, $"{this.station.economy}~{this.station.subType}-*.png")?.FirstOrDefault();
@@ -545,7 +548,8 @@ namespace SrvSurvey
 
             // draw background map and POIs
             this.drawMapImage();
-            this.drawBuildings();
+            if (this.mapImage == null)
+                this.drawBuildings();
             this.drawLandingPads();
             this.drawSecureDoors();
             this.drawNamedPOI(adjustedHeading);
