@@ -858,6 +858,8 @@ namespace SrvSurvey
                     drawTextAt(eight, $"➟ Too far away", GameColors.fontMiddle);
                 else if (this.deniedReason == "Distance")
                     drawTextAt(eight, $"❌ Hostile", GameColors.fontMiddle);
+                else if (this.deniedReason == "TooLarge")
+                    drawTextAt(eight, $"❌ Ship too large", GameColors.fontMiddle);
                 newLine(+ten, true);
             }
 
@@ -871,9 +873,9 @@ namespace SrvSurvey
                     drawTextAt(eight, $"⛳", GameColors.brushLimeIsh, GameColors.fontBig);
                     drawTextAt(fiveTwo, $"► Auto dock in progress", GameColors.brushLimeIsh, GameColors.fontMiddle);
                     newLine();
-                    drawTextAt(fiveTwo, $"► Settlement auto-identification supported", GameColors.brushLimeIsh, GameColors.fontMiddleBold);
+                    drawTextAt(fiveTwo, $"► Settlement auto-identification supported", GameColors.brushLimeIsh, GameColors.fontMiddle);
                     newLine();
-                    drawTextAt(fiveTwo, $"► Do not switch to external camera", GameColors.brushLimeIsh, GameColors.fontMiddle);
+                    drawTextAt(fiveTwo, $"► Do not switch to external camera", GameColors.brushLimeIsh, GameColors.fontMiddleBold);
                 }
                 else
                 {

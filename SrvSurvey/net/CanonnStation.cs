@@ -59,7 +59,7 @@ namespace SrvSurvey.canonn
             if (station.subType > 0) return false;
 
             // some subTypes can be inferred from just the economy and pad configuration...
-            var mappingKey = $"{station.stationEconomy}/{station.availblePads}";
+            var mappingKey = $"{station.economy}/{station.availblePads}";
             station.subType = mapLandingPadConfigToSubType.GetValueOrDefault(mappingKey);
             if (station.subType > 0)
             {
@@ -349,6 +349,7 @@ namespace SrvSurvey.canonn
             { "mamba", new PointM(-0.3384479441319697171254213427, -17.016087432359903431927706572) }, // Mamba
             { "python", new PointM(0.0242815204676919790218357202, -27.803238864751802112883958858) }, // Python
             { "python_nx", new PointM(-0.1985071274895448505330679553, -27.652575857555383324975206283) }, // Python mk2
+            { "type8", new PointM(-0.2930102086841760233627355918, -19.568625297953935329160185297) }, // Type 8
             { "type9", new PointM(0, -41.976621414162772124132252950) }, // Type 9
             { "belugaliner", new PointM(-0.1590069086272495414747604156, -96.06768779190352971899572620) }, // Beluga
             { "type9_military", new PointM(0, -41.976621414162772124132252950) }, // Type 10

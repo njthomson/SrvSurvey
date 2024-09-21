@@ -1009,8 +1009,7 @@ namespace SrvSurvey
             if (msg == "@")
             {
                 // set current location as tracking target
-                // Game.settings.targetLatLongActive = true;
-                // Game.settings.targetLatLong = game.touchdownLocation;
+                Game.settings.targetLatLongActive = true;
                 Game.settings.targetLatLong = Status.here.clone(); // current location
                 Game.settings.Save();
 
