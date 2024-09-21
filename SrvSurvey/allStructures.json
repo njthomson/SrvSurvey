@@ -1501,7 +1501,7 @@
     "latitude": -14.499706,
     "longitude": 145.032257,
     "siteHeading": 290,
-    "surveyProgress": 97,
+    "surveyProgress": 98,
     "surveyComplete": false
   },
   {
@@ -1926,7 +1926,8 @@
     "siteType": "Bowl",
     "latitude": 42.97744,
     "longitude": 42.669018,
-    "siteHeading": -1,
+    "siteHeading": 57,
+    "surveyProgress": 69,
     "surveyComplete": false
   },
   {
