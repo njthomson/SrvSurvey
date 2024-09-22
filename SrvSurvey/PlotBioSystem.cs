@@ -581,6 +581,8 @@ namespace SrvSurvey
 
         public static float drawBodyBars(Graphics g, SystemBody body, float x, float y, bool highlight)
         {
+            x = (int)x;
+            y = (int)y;
             var ix = x;
             if (body.bioSignalCount == 0) return 0;
             var signalCount = body.bioSignalCount;

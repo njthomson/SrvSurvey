@@ -117,6 +117,14 @@ namespace SrvSurvey
         // { "timestamp":"2023-11-13T11:24:26Z", "event":"Died" }
     }
 
+    class Resurrect : JournalEntry
+    {
+        // { "timestamp":"2024-09-22T04:56:50Z", "event":"Resurrect", "Option":"handin", "Cost":5400, "Bankrupt":false }
+        public string Option;
+        public long Cost;
+        public bool Bankrupt;
+    }
+
     class ApproachSettlement : LocationEntry, ISystemAddress
     {
         // { "timestamp":"2023-01-06T00:14:38Z", "event":"ApproachSettlement", "Name":"$Ancient_Tiny_001:#index=1;", "Name_Localised":"Guardian Structure", "SystemAddress":2881788519801, "BodyID":7, "BodyName":"Col 173 Sector IJ-G b27-1 A 1", "Latitude":-33.219879, "Longitude":87.628571 }

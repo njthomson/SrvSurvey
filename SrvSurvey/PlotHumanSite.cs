@@ -789,7 +789,7 @@ namespace SrvSurvey
                         ? GameColors.HumanSite.siteLevel[-1].pen
                         : GameColors.HumanSite.siteLevel[terminal.level].pen;
 
-                    g.DrawString("/", GameColors.Fonts.wingdings2_2B, b, -2.5f, -3);
+                    g.DrawString("/", GameColors.Fonts.wingdings2_4, b, -2.5f, -3);
                     var x = 0.25f; var y = -5.4f;
 
                     // draw chevrons to indicate upstairs
@@ -864,6 +864,8 @@ namespace SrvSurvey
                     drawTextAt(eight, $"❌ Hostile", GameColors.fontMiddle);
                 else if (this.deniedReason == "TooLarge")
                     drawTextAt(eight, $"❌ Ship too large", GameColors.fontMiddle);
+                else if (this.deniedReason == "NoSpace")
+                    drawTextAt(eight, $"❌ No landing pads available", GameColors.fontMiddle);
                 newLine(+ten, true);
             }
 

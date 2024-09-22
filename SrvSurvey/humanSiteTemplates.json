@@ -483,6 +483,23 @@
       { "size": "Large", "offset": { "X": 9.86343, "Y": -114.56022 }, "rot": 90 },
       { "size": "Small", "offset": { "X": 2.438311, "Y": 48.5146 }, "rot": 180 }
     ],
+    "secureDoors": [
+      { "offset": { "X": -37.040874, "Y": 47.610836 }, "floor": 1, "level": 0, "rot": 270 },
+      { "offset": { "X": -37.337917, "Y": 137.85403 }, "floor": 1, "level": 0, "rot": 268 },
+      { "offset": { "X": 76.210495, "Y": 93.63114 }, "floor": 1, "level": 1, "rot": 89 }
+    ],
+    "namedPoi": [
+      { "name": "Medkit", "offset": { "X": -83.99656, "Y": 50.852787 }, "floor": 1, "level": 0 },
+      { "name": "Medkit", "offset": { "X": -50.24232, "Y": 73.09869 }, "floor": 1, "level": 0 },
+      { "name": "Medkit", "offset": { "X": -55.20871, "Y": 27.696804 }, "floor": 1, "level": 0 },
+      { "name": "Medkit", "offset": { "X": -55.289833, "Y": 117.904236 }, "floor": 1, "level": 0 },
+      { "name": "Atmos", "offset": { "X": -60.02222, "Y": 111.31287 }, "floor": 1, "level": 2 },
+      { "name": "Medkit", "offset": { "X": -49.797226, "Y": 163.37646 }, "floor": 1, "level": 0 }
+    ],
+    "dataTerminals": [
+      { "offset": { "X": -50.769306, "Y": 24.716816 }, "floor": 1, "level": 0 },
+      { "offset": { "X": -55.91671, "Y": 136.81866 }, "floor": 1, "level": 0 }
+    ],
     "buildings": [
       {
         "name": "HAB #1",
@@ -550,6 +567,81 @@
     "landingPads": [
       { "size": "Medium", "offset": { "X": 45.697353, "Y": -121.225655 } },
       { "size": "Small", "offset": { "X": -82.05029, "Y": 105.92611 }, "rot": 270 }
+    ],
+    "secureDoors": [
+      { "offset": { "X": 63.002876, "Y": 37.397675 }, "floor": 2, "level": 0, "rot": 180 },
+      { "offset": { "X": 71.61797, "Y": 21.178513 }, "floor": 2, "level": 1, "rot": 90 },
+      { "offset": { "X": 81.62229, "Y": 31.11382 }, "floor": 2, "level": 1, "rot": 180 },
+      { "offset": { "X": 47.699802, "Y": 39.144 }, "floor": 1, "level": 0, "rot": 90 },
+      { "offset": { "X": 16.952665, "Y": 42.953407 }, "floor": 1, "level": 1, "rot": 270 },
+      { "offset": { "X": 11.442457, "Y": 79.85625 }, "floor": 1, "level": 1 },
+      { "offset": { "X": 19.701366, "Y": 113.230576 }, "floor": 1, "level": 3, "rot": 90 },
+      { "offset": { "X": 26.062195, "Y": 95.19885 }, "floor": 1, "level": 2, "rot": 90 },
+      { "offset": { "X": -6.505292, "Y": 129.36371 }, "floor": 1, "level": 1, "rot": 180 },
+      { "offset": { "X": 2.6866279, "Y": 113.49101 }, "floor": 2, "level": 3, "rot": 270 },
+      { "offset": { "X": 3.0628633, "Y": 95.357864 }, "floor": 2, "level": 3, "rot": 270 },
+      { "offset": { "X": 20.07763, "Y": 95.09755 }, "floor": 2, "level": 2, "rot": 90 },
+      { "offset": { "X": 29.24024, "Y": 110.197296 }, "floor": 1, "level": 3, "rot": 0 },
+      { "offset": { "X": 33.759308, "Y": 91.05908 }, "floor": 1, "level": 3, "rot": 90 },
+      { "offset": { "X": 80.74041, "Y": 88.697586 }, "floor": 1, "level": 3 },
+      { "offset": { "X": 64.545166, "Y": 104.7726 }, "floor": 1, "level": 3, "rot": 90 }
+    ],
+    "namedPoi": [
+      { "name": "Medkit", "offset": { "X": 64.841064, "Y": 28.448786 }, "floor": 2, "level": 0 },
+      { "name": "Battery", "offset": { "X": 58.577785, "Y": 31.674097 }, "floor": 1, "level": 0 },
+      { "name": "Atmos", "offset": { "X": 64.40569, "Y": 60.09431 }, "floor": 1, "level": 2 },
+      { "name": "Battery", "offset": { "X": 83.529655, "Y": 38.8189 }, "floor": 1, "level": 0 },
+      { "name": "Medkit", "offset": { "X": 82.63685, "Y": 53.147507 }, "floor": 1, "level": 0 },
+      { "name": "Medkit", "offset": { "X": 63.553967, "Y": 25.928232 }, "floor": 1, "level": 0 },
+      { "name": "Medkit", "offset": { "X": -53.748245, "Y": 39.80099 }, "floor": 1, "level": 1 },
+      { "name": "Atmos", "offset": { "X": -36.443245, "Y": 3.8820746 }, "floor": 1, "level": 2 },
+      { "name": "Atmos", "offset": { "X": 13.0652275, "Y": 110.53249 }, "floor": 1, "level": 2 },
+      { "name": "Medkit", "offset": { "X": 12.123776, "Y": 115.20823 }, "floor": 1, "level": 1 },
+      { "name": "Battery", "offset": { "X": 14.315062, "Y": 109.10664 }, "floor": 1, "level": 1 },
+      { "name": "Medkit", "offset": { "X": 9.527276, "Y": 99.24167 }, "floor": 2, "level": 1 },
+      { "name": "Alarm", "offset": { "X": -13.382916, "Y": 107.76057 }, "floor": 2, "level": 1 },
+      { "name": "Auth", "offset": { "X": -13.428115, "Y": 108.16303 }, "floor": 2, "level": 1 },
+      { "name": "Personel", "offset": { "X": -4.6693377, "Y": 92.0299 }, "floor": 2, "level": 2 },
+      { "name": "Turrets", "offset": { "X": -6.854359, "Y": 91.5764 }, "floor": 2, "level": 2 },
+      { "name": "Ship", "offset": { "X": -7.788033, "Y": 91.90334 }, "floor": 2, "level": 2 },
+      { "name": "Auth", "offset": { "X": 34.949825, "Y": 87.85048 }, "floor": 2, "level": 2 },
+      { "name": "Alarm", "offset": { "X": 34.78106, "Y": 106.53778 }, "floor": 1, "level": 1 },
+      { "name": "Atmos", "offset": { "X": 85.1141, "Y": 101.37839 }, "floor": 1, "level": 2 },
+      { "name": "Power", "offset": { "X": 77.59108, "Y": 100.8108 }, "floor": 1, "level": 3 }
+    ],
+    "dataTerminals": [
+      { "offset": { "X": 79.05864, "Y": 18.202454 }, "floor": 1, "level": 0 },
+      { "offset": { "X": 81.57136, "Y": 53.36655 }, "floor": 1, "level": 0 },
+      { "offset": { "X": -24.809837, "Y": 13.47847 }, "floor": 2, "level": 1 },
+      { "offset": { "X": 28.231556, "Y": 104.34994 }, "floor": 1, "level": 2 }
+    ],
+    "buildings": [
+      {
+        "name": "HAB",
+        "paths": [
+          {"PathPoints":[{"X":91.1,"Y":-11.9},{"X":71.3,"Y":-11.8},{"X":71.3,"Y":-11.8}],"PathTypes":"AAEB","FillMode":0},
+          {"PathPoints":[{"X":90.7,"Y":-11.6},{"X":53.4,"Y":-11.5},{"X":53.9,"Y":-35.4},{"X":47.0,"Y":-35.3},{"X":47.0,"Y":-54.0},{"X":54.2,"Y":-53.6},{"X":53.7,"Y":-67.2},{"X":99.8,"Y":-67.0},{"X":99.5,"Y":-56.3},{"X":90.7,"Y":-57.1}],"PathTypes":"AAEBAQEBAQEBAQ==","FillMode":0}
+        ]
+      },
+      {
+        "name": "POW",
+        "paths": [
+          {"PathPoints":[{"X":93.1,"Y":-106.2},{"X":93.8,"Y":-86.1},{"X":86.1,"Y":-85.8},{"X":86.2,"Y":-88.0},{"X":77.1,"Y":-88.2},{"X":77.2,"Y":-94.9},{"X":71.0,"Y":-94.6},{"X":71.3,"Y":-95.7},{"X":64.2,"Y":-95.4},{"X":64.6,"Y":-113.5},{"X":90.4,"Y":-113.8},{"X":90.6,"Y":-106.4}],"PathTypes":"AAEBAQEBAQEBAQEB","FillMode":0}
+        ]
+      },
+      {
+        "name": "CMD",
+        "paths": [
+          {"PathPoints":[{"X":44.6,"Y":-122.9},{"X":44.5,"Y":-82.7},{"X":26.4,"Y":-82.7},{"X":26.3,"Y":-86.1},{"X":20.2,"Y":-86.0},{"X":20.6,"Y":-79.2},{"X":1.8,"Y":-79.3},{"X":1.8,"Y":-86.1},{"X":-21.8,"Y":-86.1},{"X":-22.3,"Y":-120.3},{"X":-15.8,"Y":-119.9},{"X":-16.3,"Y":-128.8},{"X":2.9,"Y":-128.5},{"X":2.9,"Y":-122.8}],"PathTypes":"AAEBAQEBAQEBAQEBAQE=","FillMode":0}
+        ]
+      },
+      {
+        "name": "STO",
+        "paths": [
+          {"PathPoints":[{"X":16.9,"Y":-51.2},{"X":17.4,"Y":-15.7},{"X":-7.0,"Y":-15.4},{"X":-7.9,"Y":9.1},{"X":-12.6,"Y":9.3},{"X":-12.8,"Y":21.7},{"X":-43.9,"Y":21.1},{"X":-44.0,"Y":18.6},{"X":-50.7,"Y":18.2},{"X":-50.3,"Y":-3.0},{"X":-43.9,"Y":-2.0},{"X":-44.6,"Y":-15.2},{"X":-62.2,"Y":-15.1},{"X":-62.1,"Y":-51.8}],"PathTypes":"AAEBAQEBAQEBAQEBAQE=","FillMode":0},
+          {"PathPoints":[{"X":-28.4,"Y":-63.8},{"X":-28.1,"Y":-49.9},{"X":-51.6,"Y":-48.1},{"X":-50.6,"Y":-59.2},{"X":-36.0,"Y":-59.2},{"X":-35.9,"Y":-64.1}],"PathTypes":"AAEBAQEB","FillMode":0}
+        ]
+      }
     ]
   },
   {

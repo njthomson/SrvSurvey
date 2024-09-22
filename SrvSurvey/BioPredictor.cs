@@ -283,7 +283,7 @@ namespace BioCriterias
             }
 
             Game.log($"testIsQuery: Unexpected bodyValue type: {bodyValue?.GetType().Name ?? "(is null)"}");
-            Debugger.Break();
+            //Debugger.Break();
         }
 
         private void testAllQuery(Clause clause, object? bodyValue, List<ClauseFailure> failures)

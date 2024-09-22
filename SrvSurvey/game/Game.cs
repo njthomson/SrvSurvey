@@ -930,7 +930,19 @@ namespace SrvSurvey.game
             // rely on previously tracked locations?
 
             this.setLocations(entry);
+        }
 
+        private void onJournalEntry(Resurrect entry)
+        {
+            this.fsdJumping = true;
+            SystemData.Close(this.systemData);
+            this.canonnPoi = null;
+            this.systemBody = null;
+            this.systemData = null;
+            this.systemStation = null;
+            this.fetchedSystemData = null;
+            this.checkModeChange();
+            this.Status_StatusChanged(false);
         }
 
         private void onJournalEntry(Loadout entry)
@@ -1005,6 +1017,7 @@ namespace SrvSurvey.game
                 this.canonnPoi = null;
                 this.systemBody = null;
                 this.systemData = null;
+                this.systemStation = null;
                 this.fetchedSystemData = null;
                 this.checkModeChange();
                 this.Status_StatusChanged(false);

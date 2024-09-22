@@ -672,7 +672,9 @@ namespace SrvSurvey
         internal static class Fonts
         {
             public static Font wingdings_4B = new Font("Wingdings", 4F * fontScaleFactor, FontStyle.Bold, GraphicsUnit.Point);
-            public static Font wingdings2_2B = new Font("Wingdings 2", 8F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
+            public static Font wingdings2_8 = new Font("Wingdings 2", 8F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
+            public static Font wingdings2_6 = new Font("Wingdings 2", 6F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
+            public static Font wingdings2_4 = new Font("Wingdings 2", 4F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
             public static Font fontSmallFonts = new Font("Small Fonts", 8F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
 
             // TODO: confirm these Pixel sized fonts scale properly with large fonts
