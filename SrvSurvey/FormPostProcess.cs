@@ -145,11 +145,19 @@ namespace SrvSurvey
 
         private DateTimeOffset getTimeFromFilepath(string filepath)
         {
-            var parts = filepath.Split('.');
-            var time = filepath.Contains('-')
-                ? DateTimeOffset.ParseExact(parts[1], "yyyy-MM-ddTHHmmss", null)
-                : DateTimeOffset.ParseExact(parts[1], "yyMMddHHmmss", null);
-            return time;
+            try
+            {
+                var parts = filepath.Split('.');
+                var time = filepath.Contains('-')
+                    ? DateTimeOffset.ParseExact(parts[1], "yyyy-MM-ddTHHmmss", null)
+                    : DateTimeOffset.ParseExact(parts[1], "yyMMddHHmmss", null);
+                return time;
+            }
+            catch (Exception ex)
+            {
+                Game.log(ex);
+                return DateTimeOffset.MinValue; // returning this means the file will be filtered out
+            }
         }
 
         private void postProcessJournals()
@@ -164,7 +172,7 @@ namespace SrvSurvey
             try
             {
                 // get list of files to process, date filtered and ordered oldest first
-                var files = Directory.GetFiles(JournalFile.journalFolder, "*.log")
+                var files = Directory.GetFiles(JournalFile.journalFolder, "Journal.*.log")
                     .Where(filepath => getTimeFromFilepath(filepath) > this.targetStartTime)
                     .OrderBy(filepath => getTimeFromFilepath(filepath))
                     .ToArray();

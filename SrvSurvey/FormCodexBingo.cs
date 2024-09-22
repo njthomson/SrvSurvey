@@ -84,7 +84,7 @@ namespace SrvSurvey
             Game.log($"Loading completions for: {commander} ({fid})");
 
             // prep cmdr's codex, using live one if present
-            if (Game.activeGame?.cmdrCodex.fid == fid)
+            if (Game.activeGame?.cmdrCodex?.fid == fid)
                 this.cmdrCodex = Game.activeGame.cmdrCodex;
             else
                 this.cmdrCodex = CommanderCodex.Load(fid, commander);
