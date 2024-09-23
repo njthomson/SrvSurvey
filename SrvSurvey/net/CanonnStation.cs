@@ -195,8 +195,8 @@ namespace SrvSurvey.canonn
                     var cmdrOffset = Util.getOffset(bodyRadius, station.location, padLocation, cmdrHeading - pad.rot);
                     var delta = pad.offset - cmdrOffset;
 
-                    // are we within ~10m of the expected pad? Is ~5m enough?
-                    if (delta.dist < 10) // TODO: adjust by pad size?
+                    // are we within ~15m of the expected pad? Is ~5m enough?
+                    if (delta.dist < 15) // TODO: adjust by pad size?
                     {
                         station.subType = template.subType;
 
@@ -241,7 +241,7 @@ namespace SrvSurvey.canonn
                 }
             }
 
-            if (station.subType == 0)
+            if (station.subType == 0 || station.heading == -1)
             {
                 Game.log($"~~inferOdysseySettlementFromAnyPad: Doh! We should have been able to infer the subType by this point :(");
                 Debugger.Break();
@@ -281,7 +281,7 @@ namespace SrvSurvey.canonn
             { "HighTech/Small:3, Medium:0, Large:0", 4 },
 
             { "Tourist/Small:2, Medium:0, Large:2", 1 },
-            { "Tourist/Small:0, Medium:2, Large:0", 2 },
+            { "Tourist/Small:0, Medium:1, Large:0", 2 },
             { "Tourist/Small:2, Medium:0, Large:1", 3 },
             { "Tourist/Small:1, Medium:0, Large:1", 4 },
         };
