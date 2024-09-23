@@ -997,7 +997,10 @@ namespace SrvSurvey
             }
             else if (ctrl is TextBox)
             {
-                ctrl.BackColor = dark ? SystemColors.AppWorkspace : SystemColors.Control;
+                if (!ctrl.Enabled || ((TextBox)ctrl).ReadOnly)
+                    ctrl.BackColor = dark ? SystemColors.AppWorkspace : SystemColors.Control;
+                else
+                    ctrl.BackColor = dark ? SystemColors.ScrollBar : SystemColors.Window;
             }
             else if (ctrl is ListView)
             {

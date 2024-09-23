@@ -78,7 +78,7 @@ namespace SrvSurvey
             if (entry != null)
             {
                 this.Entries.Add(entry);
-                if (entry.@event == nameof(Shutdown)) this.isShutdown = true;
+                if (entry.@event == nameof(Shutdown) && !Program.useLastIfShutdown) this.isShutdown = true;
             }
 
             return entry;

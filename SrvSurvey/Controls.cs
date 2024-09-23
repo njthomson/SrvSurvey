@@ -97,7 +97,6 @@ namespace SrvSurvey
 
             foreach (Control child in ctrl.Controls)
                 adjustChildren(child);
-
         }
 
         protected override void OnLoad(EventArgs e)

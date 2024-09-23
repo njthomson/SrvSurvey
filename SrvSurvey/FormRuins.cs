@@ -195,6 +195,7 @@ namespace SrvSurvey
             this.dragOffset.X = -map.Width / 2f;
             this.dragOffset.Y = -map.Height / 2f;
             txtNotes.Text = this.siteData?.notes;
+            txtSystem.Text = this.siteData?.bodyName;
 
             showStatus();
             map.Invalidate();

@@ -66,6 +66,7 @@
             numScale = new NumericUpDown();
             numY = new NumericUpDown();
             numX = new NumericUpDown();
+            txtSystem = new TextBox();
             btnSaveNotes = new FlatButton();
             lblLastVisited = new Label();
             label6 = new Label();
@@ -298,6 +299,7 @@
             // 
             // splitter.Panel2
             // 
+            splitter.Panel2.Controls.Add(txtSystem);
             splitter.Panel2.Controls.Add(btnSaveNotes);
             splitter.Panel2.Controls.Add(lblLastVisited);
             splitter.Panel2.Controls.Add(label6);
@@ -375,6 +377,7 @@
             // 
             // button1
             // 
+            button1.FlatStyle = FlatStyle.Flat;
             button1.Location = new Point(367, 1);
             button1.Name = "button1";
             button1.Size = new Size(38, 23);
@@ -417,10 +420,21 @@
             numX.Value = new decimal(new int[] { 555, 0, 0, 0 });
             numX.ValueChanged += numX_ValueChanged;
             // 
+            // txtSystem
+            // 
+            txtSystem.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            txtSystem.BorderStyle = BorderStyle.FixedSingle;
+            txtSystem.Location = new Point(5, 5);
+            txtSystem.Name = "txtSystem";
+            txtSystem.ReadOnly = true;
+            txtSystem.Size = new Size(197, 23);
+            txtSystem.TabIndex = 4;
+            // 
             // btnSaveNotes
             // 
             btnSaveNotes.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            btnSaveNotes.Location = new Point(5, 20);
+            btnSaveNotes.FlatStyle = FlatStyle.Flat;
+            btnSaveNotes.Location = new Point(5, 53);
             btnSaveNotes.Name = "btnSaveNotes";
             btnSaveNotes.Size = new Size(195, 23);
             btnSaveNotes.TabIndex = 0;
@@ -431,7 +445,7 @@
             // lblLastVisited
             // 
             lblLastVisited.AutoSize = true;
-            lblLastVisited.Location = new Point(79, 2);
+            lblLastVisited.Location = new Point(76, 33);
             lblLastVisited.Name = "lblLastVisited";
             lblLastVisited.Size = new Size(85, 15);
             lblLastVisited.TabIndex = 3;
@@ -440,7 +454,7 @@
             // label6
             // 
             label6.AutoSize = true;
-            label6.Location = new Point(5, 2);
+            label6.Location = new Point(2, 33);
             label6.Name = "label6";
             label6.Size = new Size(68, 15);
             label6.TabIndex = 2;
@@ -449,11 +463,12 @@
             // txtNotes
             // 
             txtNotes.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            txtNotes.Location = new Point(2, 49);
+            txtNotes.BorderStyle = BorderStyle.FixedSingle;
+            txtNotes.Location = new Point(5, 82);
             txtNotes.Multiline = true;
             txtNotes.Name = "txtNotes";
             txtNotes.ScrollBars = ScrollBars.Both;
-            txtNotes.Size = new Size(200, 431);
+            txtNotes.Size = new Size(197, 398);
             txtNotes.TabIndex = 1;
             // 
             // FormRuins
@@ -530,5 +545,6 @@
         private Label label6;
         private Label lblLastVisited;
         private CheckBox checkShowLegend;
+        private TextBox txtSystem;
     }
 }
