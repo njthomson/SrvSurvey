@@ -141,9 +141,6 @@ namespace SrvSurvey
                 var data = task.Result;
                 if (data == null) return;
 
-                // last updated
-                if (data.updated_at != null && task.Result.bodies?.Count > 0)
-                    systemsCache[nextSystem].lastUpdated = data.updated_at;
 
                 // how many stations are there?
                 if (data.stations?.Count > 0)
@@ -188,21 +185,25 @@ namespace SrvSurvey
                     return;
                 }
 
-                if (task?.Result != null)
-                {
-                    foreach (var body in task.Result.bodies)
-                    {
-                        var bioSignals = body.signals?.signals?.GetValueOrDefault("$SAA_SignalType_Biological;") ?? 0;
-                        if (bioSignals > 0) this.info.countPOI["Genus"] += bioSignals;
-                    }
+                if (task?.Result == null) return;
 
-                    // inject missing StarPos if needed
-                    if (nextHop.entry.StarPos == null)
-                    {
-                        nextHop.entry.StarPos = task.Result.coords;
-                        this.calculateSingleHopDistances();
-                    }
+                foreach (var body in task.Result.bodies)
+                {
+                    var bioSignals = body.signals?.signals?.GetValueOrDefault("$SAA_SignalType_Biological;") ?? 0;
+                    if (bioSignals > 0) this.info.countPOI["Genus"] += bioSignals;
                 }
+
+                // inject missing StarPos if needed
+                if (nextHop.entry.StarPos == null)
+                {
+                    nextHop.entry.StarPos = task.Result.coords;
+                    this.calculateSingleHopDistances();
+                }
+
+
+                // last updated
+                if (task.Result.date != null && task.Result.bodies?.Count > 0)
+                    systemsCache[nextSystem].lastUpdated = task.Result.date;
 
                 Program.control.BeginInvoke(() => this.Invalidate());
             }));

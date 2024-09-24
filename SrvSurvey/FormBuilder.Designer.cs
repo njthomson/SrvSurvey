@@ -396,7 +396,6 @@
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "FormBuilder";
             Text = "Human site builder";
-            TopMost = true;
             ((System.ComponentModel.ISupportInitialize)numCircle).EndInit();
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
