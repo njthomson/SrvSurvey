@@ -12,11 +12,13 @@ namespace SrvSurvey.canonn
         private static string bioRefPath = Path.Combine(Program.dataFolder, "bioRef.json");
         public static string codexImagesFolder = Path.Combine(Program.dataFolder, "codexImages");
         private static string nebulaePath = Path.Combine(Program.dataFolder, "nebulae.json");
+        private static string codexNotFoundPath = Path.Combine(Program.dataFolder, "codexNotFound.json");
 
         public List<BioGenus> genus;
         private List<double[]>? allNebula;
         private double[] lastNebulaPos;
         public int codexRefCount { get; private set; }
+        public Dictionary<string, List<CodexNotFound>> codexNotFound;
 
         public async Task init(bool reset)
         {
@@ -38,6 +40,8 @@ namespace SrvSurvey.canonn
                 Directory.CreateDirectory(CodexRef.codexImagesFolder);
 
             await this.prepNebulae(reset);
+
+            await this.prepCodexNotFounds(reset);
 
             Game.log("CodexRef init - complete");
         }
@@ -435,7 +439,7 @@ namespace SrvSurvey.canonn
             if (dist < 750) return true;
 
             // six small bubbles - 100ly
-            foreach(var bubblePos in smallGuardianBubbles)
+            foreach (var bubblePos in smallGuardianBubbles)
             {
                 dist = Util.getSystemDistance(systemPos, bubblePos);
                 if (dist < 100) return true;
@@ -448,8 +452,176 @@ namespace SrvSurvey.canonn
 
         #region missing codex items
 
-        // https://docs.google.com/spreadsheets/d/1TpPZUFd61KUQWy1sV8VhScZiVbRWJ435wTN8xjN0Qv0/gviz/tq?tqx=out:csv&sheet=Individual+Items
-        // Found==0,NotExpectedToBeFound==0
+        public bool isRegionalNewDiscovery(string galacticRegion, string entryId)
+        {
+            return isRegionalNewDiscovery(galacticRegion, long.Parse(entryId));
+        }
+
+        public bool isRegionalNewDiscovery(string galacticRegion, long entryId)
+        {
+            var isNewDiscovery = this.codexNotFound[galacticRegion].Any(e => e.entryId == entryId);
+            return isNewDiscovery;
+        }
+
+        private async Task<Dictionary<string, List<CodexNotFound>>> prepCodexNotFounds(bool reset)
+        {
+            if (!File.Exists(codexNotFoundPath) || reset)
+            {
+                Game.log("prepCodexNotFounds: preparing from network ...");
+                var csv = await new HttpClient().GetStringAsync("https://docs.google.com/spreadsheets/d/1TpPZUFd61KUQWy1sV8VhScZiVbRWJ435wTN8xjN0Qv0/gviz/tq?tqx=out:csv&sheet=Individual+Items");
+
+                this.codexNotFound = parseNotFountCsv(csv);
+                var json = JsonConvert.SerializeObject(this.codexNotFound, Formatting.Indented);
+                File.WriteAllText(codexNotFoundPath, json);
+
+                Game.log("prepCodexNotFounds: complete");
+                Game.settings.lastCodexNotFoundDownload = DateTime.Now;
+                return this.codexNotFound;
+            }
+            else
+            {
+                Game.log("prepCodexNotFounds: reading from disk");
+                var json = File.ReadAllText(codexNotFoundPath)!;
+                this.codexNotFound = JsonConvert.DeserializeObject<Dictionary<string, List<CodexNotFound>>>(json)!;
+                return this.codexNotFound;
+            }
+        }
+
+        private Dictionary<string, List<CodexNotFound>> parseNotFountCsv(string csv)
+        {
+            var lines = csv.Split("\n", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+            var parsed = lines
+                .Skip(1)
+                .Select(line => CodexNotFoundRow.parse(line))
+                // Found==0,NotExpectedToBeFound==0
+                .Where(entry => !entry.Found && !entry.NotExpectedToBeFound);
+
+            var data = new Dictionary<string, List<CodexNotFound>>();
+            foreach (var entry in parsed)
+            {
+                var regionName = GalacticRegions.getNameFromIdx(entry.RegionID);
+                if (!data.ContainsKey(regionName)) data[regionName] = new List<CodexNotFound>();
+                data[regionName].Add(new CodexNotFound() { entryId = entry.EntryID, variant = entry.Varient });
+            }
+
+            // sort the lists of entryId's
+            foreach (var regionName in data.Keys)
+            {
+                var sorted = data[regionName].OrderBy(entry => entry.entryId).ToList();
+                data[regionName] = sorted;
+            }
+
+            // sort the dictionary
+            data = data.OrderBy(_ => GalacticRegions.getIdxFromName(_.Key))
+                .ToDictionary(_ => _.Key, _ => _.Value);
+
+            return data;
+        }
+
+        [JsonConverter(typeof(CodexNotFound.JsonConverter))]
+        public class CodexNotFound
+        {
+            public long entryId;
+            public string variant;
+
+            public override string ToString()
+            {
+                return $"{entryId}_{variant}";
+            }
+
+            class JsonConverter : Newtonsoft.Json.JsonConverter
+            {
+                public override bool CanConvert(Type objectType) { return false; }
+
+                public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
+                {
+                    var txt = serializer.Deserialize<string>(reader);
+                    if (string.IsNullOrEmpty(txt)) throw new Exception($"Unexpected value: {txt}");
+
+                    // "{entryId}_{variant}"
+                    // eg: "2310111_Wolf Rayet"
+                    var parts = txt.Split('_');
+
+                    var data = new CodexNotFound()
+                    {
+                        entryId = long.Parse(parts[0]),
+                        variant = parts[1],
+                    };
+
+                    return data;
+                }
+
+                public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
+                {
+                    var data = value as CodexNotFound;
+                    if (data == null) throw new Exception($"Unexpected value: {value?.GetType().Name}");
+
+                    // create a single string
+                    var txt = data.ToString();
+                    writer.WriteValue(txt);
+                }
+            }
+        }
+
+        public class CodexNotFoundRow
+        {
+            public int RegionID;
+            public string RegionName;
+            public string EnglishName;
+            public bool Found;
+            public bool NotExpectedToBeFound;
+            public long EntryID;
+            public string Name;
+            public string Varient;
+
+            public static CodexNotFoundRow parse(string line)
+            {
+                try
+                {
+                    var txt = line.Substring(1) + ",";
+                    var parts = txt.Split("\",\"", StringSplitOptions.TrimEntries);
+
+                    long entryId;
+                    string name;
+                    if (string.IsNullOrEmpty(parts[5]))
+                    {
+                        var match = Game.codexRef.matchFromVariantDisplayName(parts[2])!;
+                        entryId = match.entryId;
+                        name = match.variant.name;
+                    }
+                    else
+                    {
+                        entryId = long.Parse(parts[5]);
+                        name = parts[6];
+                    }
+
+                    var entry = new CodexNotFoundRow()
+                    {
+                        RegionID = int.Parse(parts[0]),
+                        RegionName = parts[1],
+                        EnglishName = parts[2],
+                        Found = parts[3] == "1",
+                        NotExpectedToBeFound = parts[4] == "1",
+                        EntryID = entryId,
+                        Name = name,
+                        Varient = parts[7],
+                    };
+                    return entry;
+                }
+                catch (Exception ex)
+                {
+                    Game.log($"Failed to parse: {ex.Message}\r\n{line}");
+#pragma warning disable CA2200 // Rethrow to preserve stack details
+                    throw ex;
+#pragma warning restore CA2200 // Rethrow to preserve stack details
+                }
+            }
+
+            public override string ToString()
+            {
+                return $"{EnglishName} / {RegionName} / found:{Found}, notExpected:{NotExpectedToBeFound}, variant: {Varient}";
+            }
+        }
 
         #endregion
     }

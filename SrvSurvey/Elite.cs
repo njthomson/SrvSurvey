@@ -59,6 +59,7 @@ namespace SrvSurvey
         {
             get
             {
+                if (Program.useLastIfShutdown) return true;
                 return getGameProc() != null;
             }
         }
@@ -82,6 +83,11 @@ namespace SrvSurvey
         /// </summary>
         public static Rectangle getWindowRect(bool force = false)
         {
+            if (Program.useLastIfShutdown)
+            {
+                return new Rectangle(80, 80, 640, 480);
+            }
+
             var hwndED = Elite.getWindowHandle();
             var hwndActive = Elite.GetForegroundWindow();
             var weHaveFocus = (!Program.control.InvokeRequired && hwndActive == Main.ActiveForm?.Handle) || System.Diagnostics.Debugger.IsAttached;

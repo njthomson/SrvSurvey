@@ -29,7 +29,7 @@ namespace SrvSurvey
                 || Game.settings.autoShowBioSummary
                 && Game.activeGame?.systemBody != null
                 && Game.activeGame.systemBody.bioSignalCount > 0
-                && Game.activeGame.systemStation == null
+                && (Game.activeGame.systemStation == null || !Game.settings.autoShowHumanSitesTest)
                 && !Game.activeGame.hidePlottersFromCombatSuits
                 && !Game.activeGame.isShutdown
                 && !Game.activeGame.atMainMenu
@@ -164,7 +164,7 @@ namespace SrvSurvey
                     if (lastEntryId != null)
                         this.drawHasImage(g, this.Width - threeSix, this.Height - threeSix);
                 }
-                else if (game.systemBody.firstFootFall)
+                else if (game.systemBody.firstFootFall && Random.Shared.NextDouble() > 0.5d)
                     this.drawFooterText(g, "Applying first footfall bonus", GameColors.brushCyan);
                 //else if (!game.systemBody.wasMapped && game.systemBody.countAnalyzedBioSignals == 0 && Game.settings.useExternalData && Game.settings.autoLoadPriorScans && Program.getPlotter<PlotPriorScans>() == null)
                 //    this.drawFooterText(g, "Potential first footfall - send '.ff' to confirm", GameColors.brushCyan);

@@ -269,6 +269,8 @@ namespace SrvSurvey
         {
             public static Brush brushPrediction = Brushes.DimGray;
             public static Brush brushPredictionHatch = new HatchBrush(HatchStyle.DarkUpwardDiagonal, Color.FromArgb(242, 64, 64, 64), Color.Transparent);
+            public static Brush brushGold = Brushes.Gold;
+            public static Brush brushWhite = Brushes.White;
 
             // NOTE: Grey intentionally matches Blue
 
@@ -276,7 +278,7 @@ namespace SrvSurvey
             {
                 { VolColor.Blue, newPen(Color.FromArgb(96, DarkCyan), 1.9f, DashStyle.Dot) },
                 { VolColor.Gold, newPen(Color.FromArgb(96, Color.Gold), 1.9f, DashStyle.Dot) },
-                { VolColor.Grey, newPen(Color.FromArgb(96, DarkCyan), 1.9f, DashStyle.Dot) },
+                { VolColor.White, newPen(Color.FromArgb(96, Color.White), 1.9f, DashStyle.Dot) },
                 { VolColor.Orange, newPen(Color.FromArgb(96, Orange), 1.9f, DashStyle.Dot) },
             };
 
@@ -284,7 +286,7 @@ namespace SrvSurvey
             {
                 { VolColor.Blue, new PenBrush(newPen(DarkCyan, 1), brushCyan) },
                 { VolColor.Gold, new PenBrush(newPen(Color.Gold, 1), Brushes.DarkGoldenrod) },
-                { VolColor.Grey, new PenBrush(newPen(DarkCyan, 1), brushCyan) },
+                { VolColor.White, new PenBrush(newPen(Color.Gray, 1), new SolidBrush(Color.FromArgb(255, 244, 244, 244))) },
                 { VolColor.Orange, new PenBrush(newPen(OrangeDim, 1), GameColors.brushGameOrange) },
             };
 
@@ -292,7 +294,7 @@ namespace SrvSurvey
             {
                 { VolColor.Blue, new PenBrush(newPen(DarkCyan, 1), new SolidBrush(Color.FromArgb(180, DarkCyan))) },
                 { VolColor.Gold, new PenBrush(newPen(Color.FromArgb(144, 214, 164, 11), 1), new SolidBrush(Color.FromArgb(144, 184, 134, 11))) },
-                { VolColor.Grey, new PenBrush(newPen(DarkCyan, 1), new SolidBrush(Color.FromArgb(180, DarkCyan))) },
+                { VolColor.White, new PenBrush(newPen(Color.FromArgb(144, Color.White), 1), new SolidBrush(Color.FromArgb(140, 184, 184, 184))) },
                 { VolColor.Orange, new PenBrush(newPen(Color.FromArgb(124, GameColors.Orange)), new SolidBrush(Color.FromArgb(140, OrangeDim))) },
             };
 
@@ -764,6 +766,6 @@ namespace SrvSurvey
         Orange,
         Blue,
         Gold,
-        Grey
+        White,
     }
 }

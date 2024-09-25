@@ -354,7 +354,9 @@ namespace SrvSurvey.game
 
                 // use GuiFocus if it is interesting
                 if (this.status?.GuiFocus != GuiFocus.NoFocus)
-                    return (GameMode)(int)this.status!.GuiFocus;
+                    return this.status == null
+                        ? GameMode.Unknown
+                        : (GameMode)(int)this.status.GuiFocus;
 
                 if (this.fsdJumping)
                     return GameMode.FSDJumping;
@@ -744,7 +746,7 @@ namespace SrvSurvey.game
             if (lastDocked == null && lastTouchdown?.NearestDestination == lastApproachSettlement.Name)
             {
                 // not sure if we really need this.
-                Debugger.Break();
+                //Debugger.Break();
             }
 
             //// old ...

@@ -153,6 +153,7 @@ namespace SrvSurvey
         public int pubDataGuardian = 0;
 
         public DateTime lastCodexRefDownload = DateTime.MinValue;
+        public DateTime lastCodexNotFoundDownload = DateTime.MinValue;
 
         public bool keepBioPlottersVisibleEnabled = true;
         public int keepBioPlottersVisibleDuration = 120;

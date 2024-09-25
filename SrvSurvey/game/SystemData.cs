@@ -2225,10 +2225,14 @@ namespace SrvSurvey.game
                 // is this something we've not seen yet?
                 var isCmdrNew = !game.cmdrCodex.isDiscovered(variant.entryId);
                 if (isCmdrNew) genusPrediction.hasCmdrNew = true;
-                var isRegionalNew = !game.cmdrCodex.isDiscoveredInRegion(variant.entryId, game.cmdr.galacticRegion);
+                var isCmdrRegionalNew = !game.cmdrCodex.isDiscoveredInRegion(variant.entryId, game.cmdr.galacticRegion);
+                if (isCmdrRegionalNew) genusPrediction.hasCmdrRegionalNew = true;
+
+                // is this something no one has ever seen?
+                var isRegionalNew = Game.codexRef.isRegionalNewDiscovery(game.cmdr.galacticRegion, variant.entryId);
                 if (isRegionalNew) genusPrediction.hasRegionalNew = true;
 
-                var variantPrediction = new SystemVariantPrediction(variant, isCmdrNew, isRegionalNew);
+                var variantPrediction = new SystemVariantPrediction(variant, isRegionalNew, isCmdrNew, isCmdrRegionalNew);
                 genusPrediction.species[variant.species].Add(variantPrediction);
 
                 if (variant.species.reward < genusPrediction.min) genusPrediction.min = variant.reward;
@@ -2430,8 +2434,9 @@ namespace SrvSurvey.game
         public Dictionary<BioSpecies, List<SystemVariantPrediction>> species;
         public long min = 50_000_000;
         public long max = 0;
-        public bool hasCmdrNew;
         public bool hasRegionalNew;
+        public bool hasCmdrNew;
+        public bool hasCmdrRegionalNew;
 
         public SystemGenusPrediction(BioGenus genus)
         {
@@ -2439,23 +2444,25 @@ namespace SrvSurvey.game
             this.species = new Dictionary<BioSpecies, List<SystemVariantPrediction>>();
         }
 
-        public bool isGold { get => hasCmdrNew || (Game.settings.highlightRegionalFirsts && hasRegionalNew); }
+        public bool isGold { get => hasCmdrNew || (Game.settings.highlightRegionalFirsts && hasCmdrRegionalNew); }
     }
 
     internal class SystemVariantPrediction
     {
         public readonly BioVariant variant;
-        public readonly bool isCmdrNew;
         public readonly bool isRegionalNew;
+        public readonly bool isCmdrNew;
+        public readonly bool isCmdrRegionalNew;
 
-        public SystemVariantPrediction(BioVariant variant, bool isCmdrNew, bool isRegionalNew)
+        public SystemVariantPrediction(BioVariant variant, bool isRegionalNew, bool isCmdrNew, bool isCmdrRegionalNew)
         {
             this.variant = variant;
-            this.isCmdrNew = isCmdrNew;
             this.isRegionalNew = isRegionalNew;
+            this.isCmdrNew = isCmdrNew;
+            this.isCmdrRegionalNew = isCmdrRegionalNew;
         }
 
-        public bool isGold { get => isCmdrNew || (Game.settings.highlightRegionalFirsts && isRegionalNew); }
+        public bool isGold { get => isCmdrNew || (Game.settings.highlightRegionalFirsts && isCmdrRegionalNew); }
     }
 
 }

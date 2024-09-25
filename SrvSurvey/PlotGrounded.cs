@@ -101,7 +101,7 @@ namespace SrvSurvey
                 && Game.activeGame.status != null
                 && !Game.activeGame.isShutdown // not needed?
                 && !Game.activeGame.atMainMenu // not needed?
-                && Game.activeGame.systemStation == null
+                && (Game.activeGame.systemStation == null || !Game.settings.autoShowHumanSitesTest)
                 && !Game.activeGame.hidePlottersFromCombatSuits
                 && Game.activeGame.status.hasLatLong
                 && Game.activeGame.status.Altitude < 10_000

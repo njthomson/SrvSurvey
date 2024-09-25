@@ -1642,6 +1642,7 @@ namespace SrvSurvey
         private void btnCodexBingo_Click(object sender, EventArgs e)
         {
             FormCodexBingo.show();
+            //Program.showPlotter<PlotSphericalSearch>();
         }
     }
 }

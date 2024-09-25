@@ -270,11 +270,11 @@ namespace SrvSurvey
 
                     // 2nd line - left
                     brush = highlight ? GameColors.brushCyan : GameColors.brushGameOrange;
-                    if (!highlight && shouldBeGold(discoveryPrefix)) brush = Brushes.Gold;
+                    if (!highlight && shouldBeGold(discoveryPrefix)) brush = GameColors.Bio.brushGold;
 
                     dtx = twoEight;
                     if (discoveryPrefix != null)
-                        drawTextAt(discoveryPrefix, shouldBeGold(discoveryPrefix) ? Brushes.Gold : brush);
+                        drawTextAt(discoveryPrefix, shouldBeGold(discoveryPrefix) ? GameColors.Bio.brushGold : brush);
 
                     var leftText = displayName != organism.genusLocalized || organism.entryId > 0
                         ? organism.genusLocalized
@@ -380,11 +380,16 @@ namespace SrvSurvey
                 // TODO: handle legacy species better - put them on the same line as if they were variants
                 foreach (var variant in species.Value)
                 {
+                    //  🎂 🧁 🍥 ‡† ⁑ ⁂ ※ ⁜‼•🟎 🟂🟎🟒🟈⚑⚐⛿🏁🎌⛳🏴🏳🟎✩✭✪𓇽𓇼 🚕🛺🚐🚗🚜🚛🛬🚀🛩️☀️🌀☄️🔥⚡🌩️🌠☀️
+                    // 💫 🧭🧭🌍🌐🌏🌎🗽♨️🌅
+                    // 💎🪐🎁🍥🍪🧊⛩️🌋⛰️🗻❄️🎉🧨🎁🧿🎲🕹️📣🎨🧵🔇🔕🎚️🎛️📻📱📺💻🖥️💾📕📖📦📍📎✂️📌📐📈💼🔰🛡️🔨🗡️🔧🧪🚷🧴📵🧽➰🔻🔺🔔🔘🔳🔲🏁🚩🏴✔️✖️❌➕➖➗ℹ️📛⭕☑️📶🔅🔆⚠️⛔🚫🧻↘️⚰️🧯🧰📡🧬⚗️🔩⚙️🔓🗝️🗄️📩🧾📒📰🗞️🏷️📑🔖💡🔋🏮🕯🔌📞☎️💍👑🧶🎯🔮🧿🎈🏆🎖️🌌💫🚧💰
                     b = highlight ? GameColors.brushCyan : GameColors.brushGameOrange;
-                    if (variant.isCmdrNew)
-                        drawTextAt("⚑", Brushes.Gold);
-                    else if (variant.isRegionalNew)
-                        drawTextAt($"⚐", variant.isGold ? Brushes.Gold : b);
+                    if (variant.isRegionalNew)
+                        drawTextAt("☀", GameColors.Bio.brushWhite);
+                    else if (variant.isCmdrNew)
+                        drawTextAt("⚑", GameColors.Bio.brushGold);
+                    else if (variant.isCmdrRegionalNew)
+                        drawTextAt($"⚐", variant.isGold ? GameColors.Bio.brushGold : b);
 
                     var displayName = variant.variant.colorName;
                     if (isLegacy)
@@ -400,8 +405,9 @@ namespace SrvSurvey
                         }
                     }
 
-                    if (!highlight && variant.isGold) b = Brushes.Gold;
-                    drawTextAt(displayName, b);
+                    if (variant.isRegionalNew) b = GameColors.Bio.brushWhite;
+                    else if (!highlight && variant.isGold) b = GameColors.Bio.brushGold;
+                    drawTextAt(displayName, b, variant.isRegionalNew ? GameColors.fontSmallBold : null);
                 }
 
                 // draw a trailing ? for predictions
@@ -409,7 +415,8 @@ namespace SrvSurvey
                 newLine(+one, true);
             }
 
-            var volCol = prediction.isGold ? VolColor.Gold : VolColor.Grey;
+            var volCol = prediction.isGold ? VolColor.Gold : VolColor.Blue;
+            if (prediction.hasRegionalNew) volCol = VolColor.White;
             drawVolumeBars(g, oneTwo, yy + oneSix, volCol, prediction.min, prediction.max, true);
 
             // 2nd/last line Right - credit range
@@ -419,13 +426,16 @@ namespace SrvSurvey
 
             // 2nd/last line LEFT - genus name
             dtx = twoEight;
-            if (prediction.hasCmdrNew)
-                drawTextAt("⚑", Brushes.Gold);
-            else if (prediction.hasRegionalNew)
-                drawTextAt("⚐", prediction.isGold ? Brushes.Gold : b);
+            if (prediction.hasRegionalNew)
+                drawTextAt("☀", GameColors.Bio.brushWhite);
+            else if (prediction.hasCmdrNew)
+                drawTextAt("⚑", GameColors.Bio.brushGold);
+            else if (prediction.hasCmdrRegionalNew)
+                drawTextAt("⚐", prediction.isGold ? GameColors.Bio.brushGold : b);
 
-            if (!highlight && prediction.isGold) b = Brushes.Gold;
-            drawTextAt($"{prediction.genus.englishName}", b);
+            if (prediction.hasRegionalNew) b = GameColors.Bio.brushWhite;
+            else if (!highlight && prediction.isGold) b = GameColors.Bio.brushGold;
+            drawTextAt($"{prediction.genus.englishName}", b, prediction.hasRegionalNew ? GameColors.fontSmallBold : null);
             dtx += sz.Width;
             newLine(+ten, true);
         }
@@ -470,7 +480,7 @@ namespace SrvSurvey
 
                 // draw body name
                 var b = highlight ? GameColors.brushCyan : GameColors.brushGameOrange;
-                //if (!highlight && potentialFirstDiscovery) b = (SolidBrush)Brushes.Gold;
+                //if (!highlight && potentialFirstDiscovery) b = (SolidBrush)GameColors.Bio.brushGold;
                 var sz2 = this.drawTextAt(eight, body.shortName, b, GameColors.fontMiddle);
                 if (body.bioSignalCount == body.countAnalyzedBioSignals)
                 {
@@ -554,7 +564,7 @@ namespace SrvSurvey
 
                 // credits
                 b = highlight ? GameColors.brushCyan : GameColors.brushGameOrange;
-                //if (!highlight && potentialFirstDiscovery) b = (SolidBrush)Brushes.Gold;
+                //if (!highlight && potentialFirstDiscovery) b = (SolidBrush)GameColors.Bio.brushGold;
 
                 var txt = body.getMinMaxBioRewards(false);
                 if (txt == "") txt = " ";
@@ -601,8 +611,7 @@ namespace SrvSurvey
             {
                 foreach (var org in body.organisms)
                 {
-                    var volCol = highlight ? VolColor.Blue : VolColor.Orange;
-                    volCol = VolColor.Orange;
+                    var volCol = /* highlight ? VolColor.Blue : */ VolColor.Orange;
                     // genus was scanned
                     if (org.entryId > 0)
                     {
@@ -620,7 +629,9 @@ namespace SrvSurvey
                             Debugger.Break();
                             continue;
                         }
-                        volCol = genusPrediction.isGold ? VolColor.Gold : VolColor.Grey;
+                        if (genusPrediction.hasRegionalNew) volCol = VolColor.White;
+                        else if (genusPrediction.isGold) volCol = VolColor.Gold;
+                        else volCol = VolColor.Blue;
                         drawVolumeBars(g, x, y, volCol, genusPrediction.min, genusPrediction.max, true);
                     }
 
@@ -634,7 +645,7 @@ namespace SrvSurvey
 
             // if the count of predicted genus matches the body bio signal count - show bars in orange, otherwise gray
             var countMatches = body.bioSignalCount == body.genusPredictions.Count;
-            var defaultVolCol = /*countMatches ? VolColor.Orange :*/ VolColor.Grey;
+            var defaultVolCol = /*countMatches ? VolColor.Orange :*/ VolColor.Blue;
 
             // otherwise, draw boxes for all the predicted genus
             foreach (var genusPrediction in body.genusPredictions)
@@ -643,7 +654,8 @@ namespace SrvSurvey
                 if (body.organisms?.Any(o => o.genus == genusPrediction.genus.name) == true) continue;
 
                 var volCol = /*highlight ? VolColor.Blue : */ defaultVolCol;
-                if (genusPrediction.isGold) volCol = VolColor.Gold;
+                if (genusPrediction.hasRegionalNew) volCol = VolColor.White;
+                else if (genusPrediction.isGold) volCol = VolColor.Gold;
 
                 // skip a few pixels to cross the dotted box
                 if (signalCount == 0) x += three;
@@ -672,6 +684,7 @@ namespace SrvSurvey
         {
             g.SmoothingMode = SmoothingMode.Default;
             var ww = eight;
+            var yy = y;
 
             var buckets = new List<long>()
             {
@@ -713,6 +726,13 @@ namespace SrvSurvey
                 g.FillRectangle(GameColors.Bio.brushPredictionHatch, x + one, y + five, ww - one, oneFour);
                 //g.FillRectangle(GameColors.Bio.brushPredictionHatch, x, y + four, ww + one, oneSix);
             }
+
+            if (col == VolColor.White)
+            {
+                g.DrawRectangle(GameColors.Bio.volEdge[col], x, yy - oneTwo, ww, oneFive);
+                g.DrawRectangle(GameColors.Bio.volEdge[col], x, yy - oneTwo, ww, oneFive);
+            }
+
             g.SmoothingMode = SmoothingMode.HighQuality;
         }
     }
