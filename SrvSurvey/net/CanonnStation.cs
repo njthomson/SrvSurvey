@@ -169,7 +169,7 @@ namespace SrvSurvey.canonn
 
         public static bool inferOdysseySettlementFromAnyPad(CanonnStation station)
         {
-            var wasHeadingUnknown = station.heading == -1;
+            var publishUpdate = station.heading == -1;
 
             Game.log($"~~inferOdysseySettlementFromAnyPad:\r\n" + JsonConvert.SerializeObject(station, Formatting.Indented));
             var cmdrHeading = station.cmdrHeading;
@@ -218,10 +218,14 @@ namespace SrvSurvey.canonn
                         if (delta.dist > 5) Debugger.Break(); // why is the distance this high?
 
                         // only update heading if not previously known and we're not manually dockign at this time
-                        if (wasHeadingUnknown || station.calcMethod != CalcMethod.ManualDock)
+                        if (publishUpdate || (station.calcMethod != CalcMethod.ManualDock && station.heading != newHeading))
+                        {
+                            Game.log($"~~inferOdysseySettlementFromAnyPad: set new heading: {newHeading}°, was: {station.heading}°");
                             station.heading = newHeading;
+                            publishUpdate = true;
+                        }
 
-                        if (wasHeadingUnknown)
+                        if (publishUpdate)
                         {
                             // TODO: submit data if the calc method this time around is stronger than before?
 
