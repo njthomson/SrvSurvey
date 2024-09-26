@@ -191,7 +191,7 @@ namespace SrvSurvey
                 }
 
                 // try publish folder
-                var folder =  Git.pubSettlementsFolder;
+                var folder = Git.pubSettlementsFolder;
                 var filepath = Directory.GetFiles(folder, $"{this.station.economy}~{this.station.subType}-*.png")?.FirstOrDefault();
 
                 // try install folder
@@ -723,8 +723,10 @@ namespace SrvSurvey
                     var b = GameColors.HumanSite.siteLevel[poi.level].brush;
                     var p = GameColors.HumanSite.siteLevel[poi.level].pen;
 
-                    // ❗❕❉✪✿❤➊➀⟐𖺋𖺋⟊➟✦✔⛶⛬⛭⛯⛣⛔⛌⛏⚴⚳⚱⚰⚚⚙⚗⚕⚑⚐⚜⚝⚛⚉⚇♥♦♖♜☸☗☯☍☉☄☁◬◊◈◍◉▣▢╳☢
-                    // ꊢ ⦖⥣ꇗꊢꉄꇥꇗꇩꆜꄨꀜꀤꀡꀍ䷏〶〷〓〼〿⸙⸋⯒⭻⬨⬖⬘⬮⬯⫡⩸⩃⨟⨨⨱⨲⦼⧌⚼⦡⧲⛅ ⛍ ⛉ ❎ ⮔⮹ ⮺⯑⯳⯿⑅Ⓓⓓ▚▚▨▒◀◩ ⦡⦺⦹⦿⧳⧲⨹⨺⨻⨷⨳⨯⬙⭕⭍✉⛽✇⛳⛿✆⛋⚼
+                    // ❗❕❉✪✿❤➊➀⟐𖺋𖺋⟊➟✦✔⛶⛬⛭⛯⛣⛔⛌⛏⚴⚳⚱⚰⚚⚙⚗⚕⚑⚐⚜⚝⚛
+                    // ⚉⚇♥♦♖♜☸☗☯☍☉☄☁◬◊◈◍◉▣▢╳☢
+                    // ꊢ ⦖⥣ꇗꊢꉄꇥꇗꇩꆜꄨꀜꀤꀡꀍ䷏〶〷〓〼〿⸙⸋⯒⭻⬨⬖⬘⬮⬯⫡⩸⩃⨟⨨⨱⨲⦼⧌⚼⦡⧲⛅
+                    // ⛍ ⛉ ❎ ⮔⮹ ⮺⯑⯳⯿⑅Ⓓⓓ▚▚▨▒◀◩ ⦡⦺⦹⦿⧳⧲⨹⨺⨻⨷⨳⨯⬙⭕⭍✉⛽✇⛳⛿✆⛋⚼
                     // ⛗ ⛘ ⛅ ⛍ ⛉ ❎ ⮔⮹ ⮺⯑⯳⯿⑅Ⓓⓓ▚▚▨▒◀◩ ⦡⦺⦹⦿⧳⧲⨝⨹⨺⨻⨷⨳⨯⬙⭕⭍
                     // ☢ ♨ ⚡ ☎ ☏ ♫ ⚠ ⚽ ✋ ❕ ❗ 
 
@@ -747,7 +749,7 @@ namespace SrvSurvey
                     if (poi.name == "Atmos")
                     {
                         g.DrawString("⚴", GameColors.Fonts.typewriter_p6, b, -2, -3);
-                        x = 0.65f; y = -3.7f;
+                        x = 0.6f; y = -3.7f;
                     }
                     else if (poi.name == "Alarm")
                     {
@@ -775,8 +777,8 @@ namespace SrvSurvey
                         b = GameColors.HumanSite.powerIcon.brush;
                         p = GameColors.HumanSite.powerIcon.pen;
 
-                        g.DrawString("⭍", GameColors.fontSmall, b, -4, -6);
-                        x = 2.5f; y = -6f;
+                        g.DrawString("⭍", GameColors.Fonts.typewriter_p6, b, -3, -4);
+                        x = 0.6f; y = -5f;
                     }
                     else
                     {

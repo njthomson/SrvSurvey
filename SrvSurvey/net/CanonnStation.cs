@@ -362,7 +362,7 @@ namespace SrvSurvey.canonn
             { "cutter", new PointM(0, -78.975049073498041219641152452) }, // Imperial Cutter
 
             { "foot", new PointM(0d, 0d) }, // No offset applied when on foot
-            { "taxi", new PointM(+1.0448119356622934101273911152, -11.715904797681276720908616160) }, // Taxi is an Adder but with X inverted
+            { "taxi", new PointM(-0.9996653405051110150258470637, -11.913859432190865089645580760) }, // Taxi is an Adder but matching seat #2
         };
 
         #endregion

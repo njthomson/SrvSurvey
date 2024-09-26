@@ -2113,12 +2113,15 @@ namespace SrvSurvey.game
             // new ...
             if (this.systemStation == null || this.systemStation.marketId != entry.MarketID) { Debugger.Break(); return; }
 
+            if (this.systemStation.availblePads == null)
+                this.systemStation.availblePads = entry.LandingPads;
+
             if (this._mode == GameMode.NoFocus && status.Docked)
             {
                 // when called from initHumanSite during initialization, delay not needed
                 onDockedWhenSafe(CalcMethod.AutoDock, false);
             }
-            else if (this.musicTrack != "DockingComputer")
+            else if (this.musicTrack != "DockingComputer" && !entry.Taxi)
             {
                 // wait for a mode change - as Heading in status file does not update until something else happens
                 Task.Delay(3000).ContinueWith(t =>
