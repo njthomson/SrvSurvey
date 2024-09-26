@@ -9,56 +9,57 @@ namespace SrvSurvey
     /// <summary>
     /// Represents a class of Guardian Ruin or Structure. Eg: Alpha, Beta, Fistbump, etc
     /// </summary>
-    class SiteTemplate
+    class GuardianSiteTemplate
     {
         #region static loading code
 
-        public static readonly Dictionary<GuardianSiteData.SiteType, SiteTemplate> sites = new Dictionary<GuardianSiteData.SiteType, SiteTemplate>();
+        public static readonly Dictionary<GuardianSiteData.SiteType, GuardianSiteTemplate> sites = new Dictionary<GuardianSiteData.SiteType, GuardianSiteTemplate>();
 
-        private static string editableFilepath = Path.Combine(Program.dataFolder, "settlementTemplates.json");
-        private static string pubDataFilepath = Path.Combine(Git.pubDataFolder, "settlementTemplates.json");
+        public static string filename = "guardianSiteTemplates.json";
+        private static string editableFilepath = Path.Combine(Program.dataFolder, GuardianSiteTemplate.filename);
+        private static string pubDataFilepath = Path.Combine(Git.pubDataFolder, GuardianSiteTemplate.filename);
 
         public static void Import(bool devReload = false)
         {
             string filepath;
-            if (devReload)
+            if (devReload && Debugger.IsAttached)
             {
-                Game.log($"Using settlementTemplates.json, devReload:{devReload}");
-                filepath = Path.Combine(Application.StartupPath, "..\\..\\..\\..", "settlementTemplates.json");
+                Game.log($"Using {GuardianSiteTemplate.filename}, devReload:{devReload}");
+                filepath = Path.Combine(Git.srcRootFolder, "SrvSurvey", GuardianSiteTemplate.filename);
             }
             else if (File.Exists(editableFilepath))
             {
                 // load map editor version?
-                Game.log($"Using settlementTemplates.json from editor");
+                Game.log($"Using {GuardianSiteTemplate.filename} from editor");
                 filepath = editableFilepath;
             }
             else if (File.Exists(pubDataFilepath))
             {
                 // load pub data version?
-                Game.log($"Using settlementTemplates.json from pubData");
+                Game.log($"Using {GuardianSiteTemplate.filename} from pubData");
                 filepath = pubDataFilepath;
             }
             else
             {
                 // otherwise, use the file shipped with the app
-                Game.log($"Using settlementTemplates.json app package");
-                filepath = Path.Combine(Application.StartupPath, "settlementTemplates.json");
+                Game.log($"Using {GuardianSiteTemplate.filename} app package");
+                filepath = Path.Combine(Application.StartupPath, GuardianSiteTemplate.filename);
             }
 
-            Game.log($"Reading settlementTemplates.json: {filepath}");
+            Game.log($"Reading {GuardianSiteTemplate.filename}: {filepath}");
             if (File.Exists(filepath))
             {
                 using (var reader = new StreamReader(new FileStream(filepath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)))
                 {
                     var json = reader.ReadToEnd();
-                    var newSites = JsonConvert.DeserializeObject<Dictionary<GuardianSiteData.SiteType, SiteTemplate>>(json)!;
+                    var newSites = JsonConvert.DeserializeObject<Dictionary<GuardianSiteData.SiteType, GuardianSiteTemplate>>(json)!;
                     foreach (var _ in newSites)
                     {
                         _.Value.init();
-                        SiteTemplate.sites[_.Key] = _.Value;
+                        GuardianSiteTemplate.sites[_.Key] = _.Value;
                     }
 
-                    Game.log($"SiteTemplate.Imported {SiteTemplate.sites.Count} templates");
+                    Game.log($"SiteTemplate.Imported {GuardianSiteTemplate.sites.Count} templates");
                 }
             }
             else
@@ -72,10 +73,10 @@ namespace SrvSurvey
             Game.log($"Saving edits to SiteTemplates: {editableFilepath}");
 
             // alpha sort all POIs by their name
-            foreach (var template in SiteTemplate.sites.Values)
+            foreach (var template in GuardianSiteTemplate.sites.Values)
                 template.poi = template.poi.OrderBy(_ => _.sortName).ToList();
 
-            var json = JsonConvert.SerializeObject(SiteTemplate.sites, Formatting.Indented);
+            var json = JsonConvert.SerializeObject(GuardianSiteTemplate.sites, Formatting.Indented);
             File.WriteAllText(editableFilepath, json);
         }
 
@@ -83,11 +84,23 @@ namespace SrvSurvey
         {
             if (File.Exists(editableFilepath))
             {
-                Game.log($"Publishing edited settlementTemplates.json");
-                File.Copy(editableFilepath, @"D:\code\SrvSurvey\SrvSurvey\settlementTemplates.json", true);
+                var srcFilepath = Path.GetFullPath(Path.Combine(Git.srcRootFolder, "SrvSurvey", GuardianSiteTemplate.filename));
+                var oldContent = File.ReadAllText(srcFilepath);
+                var newContent = File.ReadAllText(editableFilepath);
+                if (oldContent != newContent)
+                {
+                    Game.log($"Publishing edited {GuardianSiteTemplate.filename}");
+                    File.Copy(editableFilepath, srcFilepath, true);
+
+                    // and copy to the original file name (back-compat for older builds)
+                    var srcFilepathOld = Path.GetFullPath(Path.Combine(Git.srcRootFolder, "SrvSurvey", "settlementTemplates.json"));
+                    File.Copy(editableFilepath, srcFilepathOld, true);
+
+                    Git.updateDevGitData(_ => _.settlementTemplate++);
+                }
             }
 
-            SiteTemplate.Import(true);
+            GuardianSiteTemplate.Import(true);
         }
 
         #endregion
@@ -112,7 +125,7 @@ namespace SrvSurvey
 
         #endregion
 
-        public void init()
+        private void init()
         {
             this.relicTowerNames = new List<string>();
             this.poiObelisks = new List<SitePOI>();
@@ -324,7 +337,7 @@ namespace SrvSurvey
                     return "_" + name;
 
                 // make the number parts always be padded with 2 zero's 
-                var idx = SiteTemplate.getPoiPrefix(this.type).Length;
+                var idx = GuardianSiteTemplate.getPoiPrefix(this.type).Length;
                 return name.Substring(0, idx) + name.Substring(idx).PadLeft(2, '0');
             }
         }

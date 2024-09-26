@@ -151,6 +151,7 @@ namespace SrvSurvey
         public int pubCodexRef = 0;
         public int pubDataSettlementTemplate = 0;
         public int pubDataGuardian = 0;
+        public int pubSettlements = 0;
 
         public DateTime lastCodexRefDownload = DateTime.MinValue;
         public DateTime lastCodexNotFoundDownload = DateTime.MinValue;

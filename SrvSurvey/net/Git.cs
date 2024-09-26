@@ -12,6 +12,10 @@ namespace SrvSurvey.net
         public static string pubDataFolder = Path.Combine(Program.dataFolder, "pub");
         public static string pubGuardianFolder = Path.Combine(pubDataFolder, "guardian");
         public static string pubBioCriteriaFolder = Path.Combine(pubDataFolder, "bio-criteria");
+        public static string pubSettlementsFolder = Path.Combine(pubDataFolder, "settlements");
+
+        public static string srcRootFolder = Path.Combine(Application.StartupPath, "..\\..\\..\\..\\..");
+        private static string devGitDataFilepath = Path.Combine(srcRootFolder, "data.json");
 
         private static HttpClient client;
 
@@ -38,6 +42,7 @@ namespace SrvSurvey.net
                 Directory.CreateDirectory(Git.pubDataFolder);
                 Directory.CreateDirectory(Git.pubGuardianFolder);
 
+                // decide if an update is available
                 if (!Debugger.IsAttached)
                 {
                     var currentVersion = Version.Parse(Program.releaseVersion);
@@ -67,13 +72,28 @@ namespace SrvSurvey.net
                     Game.settings.Save();
                 }
 
+                if (hadNoPubFolder || pubData.settlements > Game.settings.pubSettlements)
+                {
+                    Game.log($"Updating settlements ...");
+                    await this.updateHumanSettlements();
+
+                    // then re-import
+                    HumanSiteTemplate.import(Debugger.IsAttached);
+
+                    // update settings to current level
+                    Game.settings.pubSettlements = pubData.settlements;
+                    Game.settings.Save();
+                }
+
                 if (hadNoPubFolder || (pubData.settlementTemplate > Game.settings.pubDataSettlementTemplate))
                 {
-                    Game.log($"Downloading settlementTemplates.json");
-                    var json2 = await Git.client.GetStringAsync($"https://raw.githubusercontent.com/njthomson/SrvSurvey/main/SrvSurvey/settlementTemplates.json");
-                    File.WriteAllText(Path.Combine(Git.pubDataFolder, "settlementTemplates.json"), json2);
+                    Game.log($"Downloading {GuardianSiteTemplate.filename}");
+                    var json2 = await Git.client.GetStringAsync($"https://raw.githubusercontent.com/njthomson/SrvSurvey/main/SrvSurvey/{GuardianSiteTemplate.filename}");
+                    File.WriteAllText(Path.Combine(Git.pubDataFolder, GuardianSiteTemplate.filename), json2);
 
                     this.updateRawPoiAfterRefresh();
+                    // then re-import
+                    GuardianSiteTemplate.Import();
 
                     // update settings to current level
                     Game.settings.pubDataSettlementTemplate = pubData.settlementTemplate;
@@ -132,6 +152,20 @@ namespace SrvSurvey.net
             return updateAvailable;
         }
 
+        public static void updateDevGitData(Action<GitDataIndex> func)
+        {
+            // read
+            var pubJson = File.ReadAllText(devGitDataFilepath);
+            var pubData = JsonConvert.DeserializeObject<GitDataIndex>(pubJson)!;
+
+            // allow calling code to manipulate
+            func(pubData);
+
+            // write
+            var newPubJson = JsonConvert.SerializeObject(pubData, Formatting.Indented);
+            File.WriteAllText(devGitDataFilepath, newPubJson);
+        }
+
         private void updateRawPoiAfterRefresh()
         {
             if (string.IsNullOrEmpty(Game.settings.lastFid)) return;
@@ -141,7 +175,7 @@ namespace SrvSurvey.net
             foreach (var site in sites)
             {
                 if (site.rawPoi == null || site.rawPoi.Count == 0) continue;
-                var template = SiteTemplate.sites[site.type];
+                var template = GuardianSiteTemplate.sites[site.type];
 
                 var initialRawCount = site.rawPoi.Count;
                 for (var n = 0; n < site.rawPoi.Count; n++)
@@ -184,7 +218,7 @@ namespace SrvSurvey.net
                 }
 
                 // POI status
-                var template = SiteTemplate.sites[site.type];
+                var template = GuardianSiteTemplate.sites[site.type];
 
                 // first - handle any rawPOIs ...
                 if (site.rawPoi != null)
@@ -374,7 +408,7 @@ namespace SrvSurvey.net
                 {
                     diffCount++;
                     var roughType = site.isRuins ? "ruins" : "structure";
-                    var filepath = Path.Combine(@"D:\code\SrvSurvey\data\guardian", $"{site.bodyName}-{roughType}-{site.index}.json");
+                    var filepath = Path.GetFullPath(Path.Combine(srcRootFolder, "data", "guardian", $"{site.bodyName}-{roughType}-{site.index}.json"));
                     Game.log($"Updating pubData for: '{site.displayName}' into: {filepath}");
 
                     var json = JsonConvert.SerializeObject(site.pubData, Formatting.Indented);
@@ -384,34 +418,36 @@ namespace SrvSurvey.net
 
             if (templateChanged)
             {
-                SiteTemplate.SaveEdits();
-                SiteTemplate.publish();
+                GuardianSiteTemplate.SaveEdits();
+                GuardianSiteTemplate.publish();
             }
             Game.log($"publishLocalData - complete, diffCount: {diffCount}");
             if (diffCount > 0)
-                this.prepNextZip();
-        }
+            {
+                var sourceFolder = Path.GetFullPath(Path.Combine(srcRootFolder, "data", "guardian"));
+                var targetZipFile = Path.GetFullPath(Path.Combine(srcRootFolder, "data", "guardian.zip"));
 
-        public void prepNextZip()
-        {
-            Game.log($"Updating guardian.zip");
-            var sourceFolder = @"D:\code\SrvSurvey\data\guardian";
-            var targetZipFile = @"D:\code\SrvSurvey\data\guardian.zip";
-            if (File.Exists(targetZipFile)) File.Delete(targetZipFile);
+                if (File.Exists(targetZipFile)) File.Delete(targetZipFile);
+                ZipFile.CreateFromDirectory(sourceFolder, targetZipFile, CompressionLevel.SmallestSize, false);
 
-            ZipFile.CreateFromDirectory(sourceFolder, targetZipFile, CompressionLevel.SmallestSize, false);
+                // increment version in data.json
+                Git.updateDevGitData(pubData => pubData.guardian++);
+            }
         }
 
         public void publishBioCriteria()
         {
             Game.log($"publishBioCriteria ...");
 
-            var srcRootFolder = Path.Combine(Application.StartupPath, "..\\..\\..\\..");
-            var criteriaFolder = Path.Combine(srcRootFolder, "bio-criteria");
-            var targetZipFile = Path.Combine(srcRootFolder, "..", "data", "bio-criteria.zip");
-            if (File.Exists(targetZipFile)) File.Delete(targetZipFile);
+            var criteriaFolder = Path.GetFullPath(Path.Combine(srcRootFolder, "SrvSurvey", "bio-criteria"));
+            var targetZipFile = Path.GetFullPath(Path.Combine(srcRootFolder, "data", "bio-criteria.zip"));
 
+            // update .zip file
+            if (File.Exists(targetZipFile)) File.Delete(targetZipFile);
             ZipFile.CreateFromDirectory(criteriaFolder, targetZipFile, CompressionLevel.SmallestSize, false);
+
+            // increment version in data.json
+            Git.updateDevGitData(pubData => pubData.bioCriteria++);
 
             Game.log($"publishBioCriteria - complete");
         }
@@ -421,7 +457,9 @@ namespace SrvSurvey.net
             Game.log($"Downloading bio-criteria.zip ...");
             var url = $"https://raw.githubusercontent.com/njthomson/SrvSurvey/main/data/bio-criteria.zip";
             var filepath = Path.Combine(Git.pubDataFolder, "bio-criteria.zip");
+
             Game.log($"{url} => {filepath}");
+            var bytes = await Git.client.GetByteArrayAsync(url);
 
             // Make a backup of the prior criteria (in case there's a code bug with the new ones)
             if (File.Exists(filepath))
@@ -431,11 +469,47 @@ namespace SrvSurvey.net
             if (Directory.Exists(Git.pubBioCriteriaFolder))
                 Directory.Delete(Git.pubBioCriteriaFolder, true);
 
-            var bytes = await Git.client.GetByteArrayAsync(url);
             await File.WriteAllBytesAsync(filepath, bytes);
-            ZipFile.ExtractToDirectory(filepath, pubBioCriteriaFolder, true);
+            ZipFile.ExtractToDirectory(filepath, Git.pubBioCriteriaFolder, true);
         }
 
+        public void publishHumanSettlements()
+        {
+            Game.log($"publishHumanSettlements ...");
+
+            var settlementsFolder = Path.GetFullPath(Path.Combine(srcRootFolder, "SrvSurvey", "settlements"));
+            var targetZipFile = Path.GetFullPath(Path.Combine(srcRootFolder, "data", "settlements.zip"));
+
+            // update .zip file
+            if (File.Exists(targetZipFile)) File.Delete(targetZipFile);
+            ZipFile.CreateFromDirectory(settlementsFolder, targetZipFile, CompressionLevel.SmallestSize, false);
+
+            // increment version in data.json
+            Git.updateDevGitData(pubData => pubData.settlements++);
+
+            Game.log($"publishHumanSettlements - complete");
+        }
+
+        public async Task updateHumanSettlements()
+        {
+            Game.log($"Downloading settlements.zip ...");
+            var url = $"https://raw.githubusercontent.com/njthomson/SrvSurvey/main/data/settlements.zip";
+            var filepath = Path.Combine(Git.pubDataFolder, "settlements.zip");
+
+            Game.log($"{url} => {filepath}");
+            var bytes = await Git.client.GetByteArrayAsync(url);
+
+            // Make a backup of the prior criteria (in case there's a code bug with the new ones)
+            if (File.Exists(filepath))
+                File.Copy(filepath, Path.Combine(Git.pubDataFolder, "settlements-prior.zip"), true);
+
+            // Remove folder, to remove any orphan files
+            if (Directory.Exists(Git.pubSettlementsFolder))
+                Directory.Delete(Git.pubSettlementsFolder, true);
+
+            await File.WriteAllBytesAsync(filepath, bytes);
+            ZipFile.ExtractToDirectory(filepath, Git.pubSettlementsFolder, true);
+        }
     }
 
     internal class GitDataIndex
@@ -447,5 +521,6 @@ namespace SrvSurvey.net
         public int codexRef;
         public int settlementTemplate;
         public int guardian;
+        public int settlements;
     }
 }

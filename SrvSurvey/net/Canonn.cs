@@ -24,11 +24,11 @@ namespace SrvSurvey.canonn
         }
 
         private static HttpClient client;
-        private static string allRuinsStaticPathDbg = Path.Combine(Application.StartupPath, "..\\..\\..\\..", "allRuins.json");
+        private static string allRuinsStaticPathDbg = Path.Combine(Git.srcRootFolder, "SrvSurvey", "allRuins.json");
         //private static string allRuinsStaticPath = Debugger.IsAttached ? allRuinsStaticPathDbg : Path.Combine(Application.StartupPath, "allRuins.json");
         private static string allRuinsStaticPath = Path.Combine(Application.StartupPath, "allRuins.json");
         private static string allBeaconsStaticPath = Path.Combine(Application.StartupPath, "allBeacons.json");
-        private static string allStructuresStaticPathDbg = Path.Combine(Application.StartupPath, "..\\..\\..\\..", "allStructures.json");
+        private static string allStructuresStaticPathDbg = Path.Combine(Git.srcRootFolder, "SrvSurvey", "allStructures.json");
         //private static string allStructuresStaticPath = Debugger.IsAttached ? allStructuresStaticPathDbg : Path.Combine(Application.StartupPath, "allStructures.json");
         private static string allStructuresStaticPath = Path.Combine(Application.StartupPath, "allStructures.json");
         public List<GuardianRuinSummary> allRuins { get; private set; }
@@ -1815,7 +1815,7 @@ namespace SrvSurvey.canonn
                 if (pubData == null) throw new Exception($"Why no pubData for: {site.fullBodyName}");
 
                 var siteType = Enum.Parse<GuardianSiteData.SiteType>(site.siteType);
-                var template = SiteTemplate.sites[siteType];
+                var template = GuardianSiteTemplate.sites[siteType];
 
                 var status = pubData.getCompletionStatus();
                 var siteHeading = site.siteHeading == -1 ? "" : $"{site.siteHeading}";

@@ -1,6 +1,7 @@
 ﻿using DecimalMath;
 using SrvSurvey.canonn;
 using SrvSurvey.game;
+using SrvSurvey.net;
 using SrvSurvey.units;
 using System.Diagnostics;
 using System.Globalization;
@@ -189,8 +190,18 @@ namespace SrvSurvey
                     this.mapImage = null;
                 }
 
-                var folder = Path.Combine(Application.StartupPath, "images");
+                // try publish folder
+                var folder =  Git.pubSettlementsFolder;
                 var filepath = Directory.GetFiles(folder, $"{this.station.economy}~{this.station.subType}-*.png")?.FirstOrDefault();
+
+                // try install folder
+                if (filepath == null || Debugger.IsAttached)
+                {
+                    folder = Path.Combine(Application.StartupPath, "settlements");
+                    filepath = Directory.GetFiles(folder, $"{this.station.economy}~{this.station.subType}-*.png")?.FirstOrDefault();
+                }
+
+                // stop trying
                 if (filepath == null) return;
 
                 var nameParts = Path.GetFileNameWithoutExtension(filepath).Split('-', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
@@ -322,9 +333,9 @@ namespace SrvSurvey
             }
         }
 
-        private void loadTemplate()
+        private void reloadTemplate()
         {
-            Game.log("Loading humanSiteTemplates.json");
+            Game.log("Loading " + HumanSiteTemplate.humanSiteTemplates);
             PlotHumanSite.autoZoom = false;
             HumanSiteTemplate.import(true);
             Application.DoEvents();
@@ -333,8 +344,8 @@ namespace SrvSurvey
             // start watching template file changes (if not already)
             if (this.templateWatcher == null)
             {
-                var folder = Path.GetFullPath(Path.Combine(Application.StartupPath, "..\\..\\..\\.."));
-                this.templateWatcher = new FileSystemWatcher(folder, "humanSiteTemplates.json");
+                var folder = Path.GetFullPath(Path.Combine(Git.srcRootFolder, "SrvSurvey", "settlements"));
+                this.templateWatcher = new FileSystemWatcher(folder, HumanSiteTemplate.humanSiteTemplates);
                 this.templateWatcher.Changed += TemplateWatcher_Changed;
                 this.templateWatcher.NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.Size;
                 this.templateWatcher.EnableRaisingEvents = true;
@@ -362,7 +373,7 @@ namespace SrvSurvey
             if (msg == "ll")
             {
                 // force reload the template
-                this.loadTemplate();
+                this.reloadTemplate();
             }
 
             if (msg.StartsWith(MsgCmd.threat, StringComparison.OrdinalIgnoreCase))
@@ -383,7 +394,7 @@ namespace SrvSurvey
             if (msg == MsgCmd.edit)
             {
                 // open settlement map editor
-                this.loadTemplate();
+                this.reloadTemplate();
                 if (builder == null)
                     FormBuilder.show(this.station);
             }
@@ -409,7 +420,7 @@ namespace SrvSurvey
         private void TemplateWatcher_Changed(object sender, FileSystemEventArgs e)
         {
             Game.log("TemplateWatcher_Changed");
-            this.loadTemplate();
+            this.reloadTemplate();
         }
 
         //private RectangleF getBldRectF(PointF bldCorner, PointF cmdrOffset, decimal bldHeading)

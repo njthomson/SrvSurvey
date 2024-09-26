@@ -76,7 +76,7 @@ namespace SrvSurvey
             btnSphereLimit = new Button();
             linkLabel2 = new LinkLabel();
             btnRamTah = new Button();
-            btnPublish = new Button();
+            btnPublishGuardian = new Button();
             checkTempHide = new CheckBox();
             groupBox5 = new GroupBox();
             txtDistance = new TextBox();
@@ -93,6 +93,8 @@ namespace SrvSurvey
             groupCodex = new GroupBox();
             btnCodexBingo = new Button();
             lblBig = new Label();
+            btnPublishBio = new Button();
+            btnPublishHuman = new Button();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
             groupBox3.SuspendLayout();
@@ -686,20 +688,20 @@ namespace SrvSurvey
             btnRamTah.UseVisualStyleBackColor = false;
             btnRamTah.Click += btnRamTah_Click;
             // 
-            // btnPublish
+            // btnPublishGuardian
             // 
-            btnPublish.BackColor = SystemColors.ControlDark;
-            btnPublish.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
-            btnPublish.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
-            btnPublish.FlatStyle = FlatStyle.Flat;
-            btnPublish.Location = new Point(174, 593);
-            btnPublish.Name = "btnPublish";
-            btnPublish.Size = new Size(75, 23);
-            btnPublish.TabIndex = 25;
-            btnPublish.Text = "Publish";
-            btnPublish.UseVisualStyleBackColor = false;
-            btnPublish.Visible = false;
-            btnPublish.MouseDown += BtnPublish_MouseDown;
+            btnPublishGuardian.BackColor = SystemColors.ControlDark;
+            btnPublishGuardian.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
+            btnPublishGuardian.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
+            btnPublishGuardian.FlatStyle = FlatStyle.Flat;
+            btnPublishGuardian.Location = new Point(174, 593);
+            btnPublishGuardian.Name = "btnPublishGuardian";
+            btnPublishGuardian.Size = new Size(37, 23);
+            btnPublishGuardian.TabIndex = 25;
+            btnPublishGuardian.Text = "P.G";
+            btnPublishGuardian.UseVisualStyleBackColor = false;
+            btnPublishGuardian.Visible = false;
+            btnPublishGuardian.Click += btnPublishGuardian_Click;
             // 
             // checkTempHide
             // 
@@ -856,9 +858,9 @@ namespace SrvSurvey
             btnTest.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
             btnTest.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
             btnTest.FlatStyle = FlatStyle.Flat;
-            btnTest.Location = new Point(255, 593);
+            btnTest.Location = new Point(300, 593);
             btnTest.Name = "btnTest";
-            btnTest.Size = new Size(75, 23);
+            btnTest.Size = new Size(44, 23);
             btnTest.TabIndex = 30;
             btnTest.Text = "Test";
             btnTest.UseVisualStyleBackColor = false;
@@ -900,6 +902,36 @@ namespace SrvSurvey
             lblBig.Text = "20%";
             lblBig.Visible = false;
             // 
+            // btnPublishBio
+            // 
+            btnPublishBio.BackColor = SystemColors.ControlDark;
+            btnPublishBio.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
+            btnPublishBio.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
+            btnPublishBio.FlatStyle = FlatStyle.Flat;
+            btnPublishBio.Location = new Point(217, 593);
+            btnPublishBio.Name = "btnPublishBio";
+            btnPublishBio.Size = new Size(37, 23);
+            btnPublishBio.TabIndex = 33;
+            btnPublishBio.Text = "P.B";
+            btnPublishBio.UseVisualStyleBackColor = false;
+            btnPublishBio.Visible = false;
+            btnPublishBio.Click += btnPublishBio_Click;
+            // 
+            // btnPublishHuman
+            // 
+            btnPublishHuman.BackColor = SystemColors.ControlDark;
+            btnPublishHuman.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
+            btnPublishHuman.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
+            btnPublishHuman.FlatStyle = FlatStyle.Flat;
+            btnPublishHuman.Location = new Point(260, 593);
+            btnPublishHuman.Name = "btnPublishHuman";
+            btnPublishHuman.Size = new Size(37, 23);
+            btnPublishHuman.TabIndex = 34;
+            btnPublishHuman.Text = "P.H";
+            btnPublishHuman.UseVisualStyleBackColor = false;
+            btnPublishHuman.Visible = false;
+            btnPublishHuman.Click += btnPublishHuman_Click;
+            // 
             // Main
             // 
             AutoScaleDimensions = new SizeF(7F, 12F);
@@ -907,6 +939,8 @@ namespace SrvSurvey
             BackColor = SystemColors.AppWorkspace;
             CancelButton = btnQuit2;
             ClientSize = new Size(437, 628);
+            Controls.Add(btnPublishHuman);
+            Controls.Add(btnPublishBio);
             Controls.Add(lblBig);
             Controls.Add(groupCodex);
             Controls.Add(btnTest);
@@ -914,7 +948,7 @@ namespace SrvSurvey
             Controls.Add(linkNewBuildAvailable);
             Controls.Add(groupBox5);
             Controls.Add(checkTempHide);
-            Controls.Add(btnPublish);
+            Controls.Add(btnPublishGuardian);
             Controls.Add(btnRamTah);
             Controls.Add(linkLabel2);
             Controls.Add(btnSphereLimit);
@@ -996,7 +1030,7 @@ namespace SrvSurvey
         private LinkLabel linkLabel2;
         private CheckBox checkFirstFootFall;
         private Button btnRamTah;
-        private Button btnPublish;
+        private Button btnPublishGuardian;
         private Button btnPasteLatLong;
         private CheckBox checkTempHide;
         private Button btnBioSummary;
@@ -1017,5 +1051,7 @@ namespace SrvSurvey
         private GroupBox groupCodex;
         private Button btnCodexBingo;
         private Label lblBig;
+        private Button btnPublishBio;
+        private Button btnPublishHuman;
     }
 }

@@ -50,6 +50,7 @@
     <None Remove="allRuins.json" />
     <None Remove="allStructures.json" />
     <None Remove="bio-criteria\*.json" />
+    <None Remove="guardianSiteTemplates.json" />
     <None Remove="humanSiteTemplates.json" />
     <None Remove="images\*.png" />
     
@@ -70,14 +71,20 @@
     <Content Include="bio-criteria\*.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="humanSiteTemplates.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <Content Include="guardianSiteTemplates.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="images\*.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="plotters.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="settlements\humanSiteTemplates.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="settlements\*.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="settlementTemplates.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -119,12 +126,6 @@
 
   <ItemGroup>
     <Folder Include="Resources\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="images\agriculture~2-s-1-x-200-y-200.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
 
 </Project>

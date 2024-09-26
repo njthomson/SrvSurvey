@@ -70,7 +70,7 @@ namespace SrvSurvey
 
         private GuardianSiteData.SiteType siteType = GuardianSiteData.SiteType.Unknown;
 
-        private SiteTemplate template;
+        private GuardianSiteTemplate template;
 
         private PointF tp;
 
@@ -180,7 +180,7 @@ namespace SrvSurvey
                 }
 
                 // load template
-                this.template = SiteTemplate.sites[siteType];
+                this.template = GuardianSiteTemplate.sites[siteType];
                 this.numX.Value = this.template.imageOffset.X;
                 this.numY.Value = this.template.imageOffset.Y;
                 this.numScale.Value = (decimal)this.template.scaleFactor;
@@ -1084,7 +1084,7 @@ namespace SrvSurvey
 
         private void button1_Click(object sender, EventArgs e)
         {
-            SiteTemplate.SaveEdits();
+            GuardianSiteTemplate.SaveEdits();
         }
 
         private void numA_ValueChanged(object sender, EventArgs e)

@@ -68,11 +68,13 @@ namespace SrvSurvey
                 txtBodyBioValues,
             };
 
-            btnPublish.Visible = Debugger.IsAttached;
+            btnTest.Visible = Debugger.IsAttached;
+            btnPublishBio.Visible = Debugger.IsAttached;
+            btnPublishHuman.Visible = Debugger.IsAttached;
+            btnPublishGuardian.Visible = Debugger.IsAttached;
 
             // keep these hidden from official app-store builds for now
             btnBioSummary.Visible = !Program.isAppStoreBuild && Game.settings.autoShowPlotBioSystem;
-            btnTest.Visible = Debugger.IsAttached;
 
             Util.applyTheme(this);
         }
@@ -226,7 +228,7 @@ namespace SrvSurvey
             {
                 try
                 {
-                    SiteTemplate.Import();
+                    GuardianSiteTemplate.Import();
                     HumanSiteTemplate.import(Debugger.IsAttached);
                     await Game.git.refreshPublishedData().ContinueWith(_ =>
                     {
@@ -1567,8 +1569,8 @@ namespace SrvSurvey
 
         private void publishGuardians()
         {
-            btnPublish.Enabled = false;
-            SiteTemplate.publish();
+            btnPublishGuardian.Enabled = false;
+            GuardianSiteTemplate.publish();
             Game.canonn.init(true);
 
             Game.git.publishLocalData(); // 1st: for updating publish data from local surveys
@@ -1577,7 +1579,7 @@ namespace SrvSurvey
                 .ContinueWith(task =>
                 {
                     Game.log("\r\n****\r\n**** Publishing all complete\r\n****");
-                    this.Invoke(() => { btnPublish.Enabled = true; });
+                    this.Invoke(() => { btnPublishGuardian.Enabled = true; });
                 });
         }
 
@@ -1623,12 +1625,19 @@ namespace SrvSurvey
                 FormShowCodex.show(entryId);
         }
 
-        private void BtnPublish_MouseDown(object sender, MouseEventArgs e)
+        private void btnPublishGuardian_Click(object sender, EventArgs e)
         {
-            if (e.Button == MouseButtons.Left)
-                this.publishGuardians(); // left click - publish Guardian stuff
-            else
-                Game.git.publishBioCriteria(); // right click - publish bio criteria
+            this.publishGuardians();
+        }
+
+        private void btnPublishBio_Click(object sender, EventArgs e)
+        {
+            Game.git.publishBioCriteria();
+        }
+
+        private void btnPublishHuman_Click(object sender, EventArgs e)
+        {
+            Game.git.publishHumanSettlements();
         }
 
         private void btnTest_MouseDown(object sender, MouseEventArgs e)

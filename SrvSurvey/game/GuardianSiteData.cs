@@ -494,7 +494,7 @@ namespace SrvSurvey.game
 
         public bool isSurveyComplete()
         {
-            if (this.type == SiteType.Unknown || !SiteTemplate.sites.ContainsKey(this.type)) return false;
+            if (this.type == SiteType.Unknown || !GuardianSiteTemplate.sites.ContainsKey(this.type)) return false;
 
             // the site heading
             if (this.siteHeading == -1) return false;
@@ -543,7 +543,7 @@ namespace SrvSurvey.game
         {
             this.loadPub();
             var status = new SurveyCompletionStatus();
-            var template = SiteTemplate.sites[this.type];
+            var template = GuardianSiteTemplate.sites[this.type];
 
             // process all POIs from template and raw
             var poiToProcess = this.rawPoi == null
@@ -864,7 +864,7 @@ namespace SrvSurvey.game
                 foreach (var _ in data.poiStatus)
                 {
                     // ignore any obelisks
-                    var poiType = SiteTemplate.sites[data.type].poi.FirstOrDefault(poi => poi.name == _.Key)?.type;
+                    var poiType = GuardianSiteTemplate.sites[data.type].poi.FirstOrDefault(poi => poi.name == _.Key)?.type;
                     if (poiType == null) { Game.log($"Unknown POI? '{_.Key}' at '{data.displayName}'"); poiToRemove.Add(_.Key); continue; }
                     else if (poiType == POIType.obelisk || poiType == POIType.brokeObelisk) { Game.log($"Ignoring obelisk POI? '{_.Key}' at '{data.displayName}'"); poiToRemove.Add(_.Key); continue; }
                     if (_.Value == SitePoiStatus.present) poiPresent.Add(_.Key);

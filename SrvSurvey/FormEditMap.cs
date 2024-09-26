@@ -10,7 +10,7 @@ namespace SrvSurvey
 
         private GuardianSiteData siteData { get => game?.systemSite!; }
         private PlotGuardians plotter { get => Program.getPlotter<PlotGuardians>()!; }
-        private SiteTemplate template { get => plotter.template!; }
+        private GuardianSiteTemplate template { get => plotter.template!; }
 
         public FormEditMap()
         {
@@ -177,7 +177,7 @@ namespace SrvSurvey
         private void btnSaveEdits_Click(object sender, EventArgs e)
         {
             // save stuff to a clone template file
-            SiteTemplate.SaveEdits();
+            GuardianSiteTemplate.SaveEdits();
             this.siteData.Save();
 
             listPoi.Sort();

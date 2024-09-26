@@ -34,7 +34,7 @@ namespace BioCriterias
 
         #region static loading code
 
-        private static string devSrcFolder = Path.Combine(Application.StartupPath, "..\\..\\..\\..", "bio-criteria");
+        private static string devSrcFolder = Path.Combine(Git.srcRootFolder, "SrvSurvey", "bio-criteria");
 
         public readonly static List<BioCriteria> allCriteria = new List<BioCriteria>();
 

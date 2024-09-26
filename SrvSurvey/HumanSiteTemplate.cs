@@ -3,6 +3,8 @@ using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 using SrvSurvey.canonn;
 using SrvSurvey.game;
+using SrvSurvey.net;
+using System.Diagnostics;
 using System.Drawing.Drawing2D;
 using System.Globalization;
 
@@ -11,6 +13,9 @@ namespace SrvSurvey
     internal class HumanSiteTemplate
     {
         #region static loading and saving code
+
+        public static string humanSiteTemplates = "humanSiteTemplates.json";
+        public static string pubDataFilepath = Path.Combine(Git.pubSettlementsFolder, humanSiteTemplates);
 
         public static List<HumanSiteTemplate> templates = new List<HumanSiteTemplate>()
         {
@@ -26,22 +31,27 @@ namespace SrvSurvey
         {
             try
             {
-                // TODO: pubData distribute?
-
                 // otherwise, use the file shipped with the app
                 string filepath;
-                if (devReload)
+                if (devReload && Debugger.IsAttached)
                 {
-                    Game.log($"Using humanSiteTemplates.json, devReload:{devReload}");
-                    filepath = Path.Combine(Application.StartupPath, "..\\..\\..\\..", "humanSiteTemplates.json");
+                    Game.log($"Using {humanSiteTemplates}, devReload:{devReload}");
+                    filepath = Path.GetFullPath(Path.Combine(Git.srcRootFolder, "SrvSurvey", "settlements", humanSiteTemplates));
+                }
+                else if (File.Exists(pubDataFilepath))
+                {
+                    // load pub data version?
+                    Game.log($"Using {humanSiteTemplates} from pubData");
+                    filepath = pubDataFilepath;
                 }
                 else
                 {
-                    Game.log($"Using humanSiteTemplates.json app package");
-                    filepath = Path.Combine(Application.StartupPath, "humanSiteTemplates.json");
+                    // otherwise, use the file shipped with the app
+                    Game.log($"Using {humanSiteTemplates} app package");
+                    filepath = Path.Combine(Application.StartupPath, "settlements", humanSiteTemplates);
                 }
 
-                Game.log($"Reading humanSiteTemplates.json: {filepath}");
+                Game.log($"Reading {humanSiteTemplates}: {filepath}");
                 if (File.Exists(filepath))
                 {
                     using (var reader = new StreamReader(new FileStream(filepath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)))
@@ -60,7 +70,7 @@ namespace SrvSurvey
             }
             catch (Exception ex)
             {
-                Game.log($"Loading humanSiteTemplates.json failed:\r\n{ex}");
+                Game.log($"Loading {humanSiteTemplates} failed:\r\n{ex}");
             }
         }
 
@@ -77,8 +87,12 @@ namespace SrvSurvey
 
         public static void export(bool devReload = false)
         {
+            if (!Debugger.IsAttached) return;
+
+            // TODO: allow people to update from deplopyed code?
+
             var json = JsonConvert.SerializeObject(templates, Formatting.Indented)!;
-            var filepath = Path.Combine(Application.StartupPath, "..\\..\\..\\..", "humanSiteTemplates.json");
+            var filepath = Path.Combine(Git.srcRootFolder, "SrvSurvey", "settlements", humanSiteTemplates);
 
             File.WriteAllText(filepath, json);
         }
@@ -112,8 +126,8 @@ namespace SrvSurvey
         public List<Building2> buildings = new List<Building2>();
 
         [JsonIgnore]
-        public string landingPadSummary 
-        {  
+        public string landingPadSummary
+        {
             get
             {
                 var pads = new LandingPads();

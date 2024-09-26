@@ -1,5 +1,6 @@
 ﻿using DecimalMath;
 using SrvSurvey.game;
+using SrvSurvey.net;
 using SrvSurvey.units;
 using System.Diagnostics;
 using System.Drawing.Drawing2D;
@@ -21,7 +22,7 @@ namespace SrvSurvey
 
     internal partial class PlotGuardians : PlotBase, IDisposable
     {
-        public SiteTemplate? template;
+        public GuardianSiteTemplate? template;
         private Image? siteMap;
         //private Image? trails;
         private Image? underlay;
@@ -462,7 +463,7 @@ namespace SrvSurvey
                 Game.log($"Added new {poiType} named '{newPoi.name}' as present: {newPoi}");
                 template.poi.Add(newPoi);
                 siteData.poiStatus[newPoi.name] = SitePoiStatus.present;
-                SiteTemplate.SaveEdits();
+                GuardianSiteTemplate.SaveEdits();
                 this.siteData.Save();
                 this.Invalidate();
             }
@@ -554,7 +555,7 @@ namespace SrvSurvey
             if (msg == "ll")
             {
                 Game.log("Reloading site template");
-                SiteTemplate.Import(true);
+                GuardianSiteTemplate.Import(true);
                 this.loadSiteTemplate();
                 this.Invalidate();
             }
@@ -680,17 +681,17 @@ namespace SrvSurvey
         {
             if (siteData == null || siteData.type == GuardianSiteData.SiteType.Unknown) return;
 
-            if (!SiteTemplate.sites.ContainsKey(siteData.type))
+            if (!GuardianSiteTemplate.sites.ContainsKey(siteData.type))
             {
                 // create an empty site if needed
                 Game.log($"Creating empty site for: {siteData.type}");
-                SiteTemplate.sites[siteData.type] = new SiteTemplate()
+                GuardianSiteTemplate.sites[siteData.type] = new GuardianSiteTemplate()
                 {
                     name = siteData.name
                 };
             }
 
-            this.template = SiteTemplate.sites[siteData.type];
+            this.template = GuardianSiteTemplate.sites[siteData.type];
 
             var filepath = imagePath ?? Path.Combine(Application.StartupPath, "images", $"{siteData.type}-background.png".ToLowerInvariant());
             Game.log($"Loading image: {filepath}");
@@ -970,15 +971,14 @@ namespace SrvSurvey
 
         private void devFileWatcher()
         {
-            string filepath = Path.Combine(Application.StartupPath, "settlementTemplates.json");
+            string filepath = Path.Combine(Application.StartupPath, GuardianSiteTemplate.filename);
 
             if (Debugger.IsAttached)
-                filepath = Path.Combine(Application.StartupPath, "..\\..\\..\\..\\", "settlementTemplates.json");
+                filepath = Path.Combine(Git.srcRootFolder, "SrvSurvey", GuardianSiteTemplate.filename);
 
             Game.log($"Dev watching: {filepath}");
 
-
-            this.watcher = new FileSystemWatcher(Path.GetFullPath(Path.GetDirectoryName(filepath)!), "settlementTemplates.json");
+            this.watcher = new FileSystemWatcher(Path.GetFullPath(Path.GetDirectoryName(filepath)!), GuardianSiteTemplate.filename);
             this.watcher.Changed += Watcher_Changed;
             this.watcher.NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.Size;
             this.watcher.EnableRaisingEvents = true;
@@ -991,7 +991,7 @@ namespace SrvSurvey
             {
                 Game.log("Reloading watched site template");
                 Application.DoEvents(); Application.DoEvents(); Application.DoEvents(); Application.DoEvents();
-                SiteTemplate.Import(true);
+                GuardianSiteTemplate.Import(true);
                 this.loadSiteTemplate();
                 this.Invalidate();
             }, true);

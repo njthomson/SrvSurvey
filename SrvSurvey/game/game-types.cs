@@ -502,8 +502,8 @@ namespace SrvSurvey.game
 
         public bool isSurveyComplete()
         {
-            if (this.t == SiteType.Unknown || !SiteTemplate.sites.ContainsKey(this.t)) return false;
-            var template = SiteTemplate.sites[this.t];
+            if (this.t == SiteType.Unknown || !GuardianSiteTemplate.sites.ContainsKey(this.t)) return false;
+            var template = GuardianSiteTemplate.sites[this.t];
 
             // the site heading
             if (this.sh == -1) return false;
@@ -526,7 +526,7 @@ namespace SrvSurvey.game
         public SurveyCompletionStatus getCompletionStatus()
         {
             var status = new SurveyCompletionStatus();
-            var template = SiteTemplate.sites[this.t];
+            var template = GuardianSiteTemplate.sites[this.t];
 
             foreach (var poi in template.poiSurvey)
             {
