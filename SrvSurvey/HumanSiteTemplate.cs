@@ -162,13 +162,11 @@ namespace SrvSurvey
         public string? getCurrentBld(PointF cmdrOffset, float siteHeading)
         {
             if (this.buildings == null) return null;
-
-            var offset2 = cmdrOffset;
-            offset2.Y *= -1;
+            cmdrOffset.Y *= -1;
 
             foreach (var bld in this.buildings)
                 foreach (var gp in bld.paths)
-                    if (gp.IsVisible(offset2))
+                    if (gp.IsVisible(cmdrOffset))
                         return bld.name;
 
             //if (this.buildings == null) return null;

@@ -494,6 +494,7 @@ namespace SrvSurvey.game
 
                 Game.settings.lastCommander = this.Commander;
                 Game.settings.lastFid = this.fid;
+                log($"Game.initializeFromJournal: USING {this.Commander} (FID:{this.fid}), journals.Count:{journals?.Count}");
             }
 
             // exit early if we are shutdown
@@ -919,7 +920,7 @@ namespace SrvSurvey.game
         private void onJournalEntry(LoadGame entry)
         {
             if (this.Commander == null)
-                this.initializeFromJournal();
+                this.initializeFromJournal(entry);
 
             this.shipType = entry.Ship;
         }

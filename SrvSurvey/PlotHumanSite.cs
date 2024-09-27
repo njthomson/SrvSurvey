@@ -486,7 +486,7 @@ namespace SrvSurvey
 
             // header - left
             var headerTxt = $"{station.name} - {station.economy} ";
-            headerTxt += station.subType == 0 ? "??" : $"#{station.subType}";
+            headerTxt += station.subType == 0 ? "?" : $"#{station.subType}";
 
             //var currentBld = site.template?.getCurrentBld(cmdrOffset, this.siteHeading);
             //if (currentBld != null) headerTxt += $", inside: {currentBld}";
@@ -519,7 +519,7 @@ namespace SrvSurvey
 
             // are we inside a building?
             var currentBld = station.template?.getCurrentBld(cmdrOffset, this.siteHeading);
-            if (currentBld != null) footerTxt += $", inside: {currentBld}";
+            if (currentBld != null) footerTxt += $"| {currentBld}";
 
             // Pixel offset relative to background map image - an aide for creating map images
             if (showMapPixelOffsets && this.mapImage != null)
@@ -617,9 +617,9 @@ namespace SrvSurvey
                     g.DrawRectangle(GameColors.HumanSite.landingPad.pen, r);
                     g.DrawLine(GameColors.HumanSite.landingPad.pen, r.Left, r.Bottom, 0, r.Top);
                     g.DrawLine(GameColors.HumanSite.landingPad.pen, r.Right, r.Bottom, 0, r.Top);
-                    //g.DrawEllipse(GameColors.HumanSite.penLandingPad, -5, -5, 10, 10);
+                    g.DrawEllipse(GameColors.HumanSite.landingPad.pen, -2, -2, 4, 4);
                     g.DrawEllipse(GameColors.HumanSite.landingPad.pen, -10, -10, 20, 20);
-                    //g.DrawEllipse(GameColors.HumanSite.penLandingPad, -20, -20, 40, 40);
+                    //g.DrawEllipse(GameColors.HumanSite.landingPad.pen, -20, -20, 40, 40);
 
                     // show pad # in corner
                     var idx = station.template.landingPads.IndexOf(pad) + 1;

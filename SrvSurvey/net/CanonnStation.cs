@@ -217,8 +217,8 @@ namespace SrvSurvey.canonn
 
                         if (delta.dist > 5) Debugger.Break(); // why is the distance this high?
 
-                        // only update heading if not previously known and we're not manually dockign at this time
-                        if (publishUpdate || (station.calcMethod != CalcMethod.ManualDock && station.heading != newHeading))
+                        // only update heading if not previously known and we're not manually docking at this time
+                        if (station.heading == -1 || (station.calcMethod != CalcMethod.ManualDock && !Util.isClose(station.heading, newHeading, 1)))
                         {
                             Game.log($"~~inferOdysseySettlementFromAnyPad: set new heading: {newHeading}°, was: {station.heading}°");
                             station.heading = newHeading;

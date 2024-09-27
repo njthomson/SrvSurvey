@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SrvSurvey.game;
+using System.Diagnostics;
 using System.Reflection;
 
 namespace SrvSurvey
@@ -31,7 +32,7 @@ namespace SrvSurvey
         protected StreamReader reader;
         public readonly string filepath;
         public readonly DateTime timestamp;
-        public readonly string? cmdrName;
+        public string? cmdrName { get; private set; }
         public readonly bool isOdyssey;
 
         public bool isShutdown { get; private set; }
@@ -47,12 +48,10 @@ namespace SrvSurvey
 
             this.readEntries(targetCmdr);
 
-            var entry = this.FindEntryByType<Commander>(0, false);
-            this.cmdrName = entry?.Name;
 
             // assume Odyssey if we don't have the Fileheader line yet.
             this.isOdyssey = true;
-            if (this.Entries.Count > 0 && this.Entries[0] is Fileheader)
+            if (this.Entries.Count > 0 && this.Entries[0].@event == nameof(Fileheader))
                 this.isOdyssey = ((Fileheader)this.Entries[0]).Odyssey;
         }
 
@@ -79,6 +78,12 @@ namespace SrvSurvey
             {
                 this.Entries.Add(entry);
                 if (entry.@event == nameof(Shutdown) && !Program.useLastIfShutdown) this.isShutdown = true;
+
+                if (this.cmdrName == null && entry.@event == nameof(Commander))
+                {
+                    var commanderEntry = (Commander)entry;
+                    this.cmdrName = commanderEntry.Name;
+                }
             }
 
             return entry;
@@ -176,6 +181,8 @@ namespace SrvSurvey
 
         public void walkDeep(int index, bool searchUp, Func<JournalEntry, bool> func, Func<JournalFile, bool>? finishWhen = null)
         {
+            if (string.IsNullOrEmpty(this.cmdrName)) Debugger.Break();
+
             var count = 0;
             var journal = this;
 
