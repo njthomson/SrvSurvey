@@ -642,33 +642,29 @@ namespace SrvSurvey.game
             Game.log($"initHumanSite: currentMarketId: {cmdr.currentMarketId}");
 
             // do we have an existing match, that has a heading already?
-            if (cmdr.currentMarketId > 0) // new
+            if (cmdr.currentMarketId > 0)
             {
                 this.systemStation = systemData?.stations?.Find(s => s.marketId == cmdr.currentMarketId);
                 if (this.systemStation != null && this.systemStation.heading != -1)
+                {
+                    // get details about the station faction
+                    this.journals.walkDeep(-1, true, (entry) =>
+                    {
+                        var lastApproachSettlement = entry as ApproachSettlement;
+                        if (lastApproachSettlement != null)
+                        {
+                            this.systemStation.applyNonSavedSettlementValues(lastApproachSettlement, this.journals);
+                            return true;
+                        }
+                        return false;
+                    });
                     return;
+                }
 
                 // TODO: Keep this?
                 //if (Game.settings.collectMatsCollectionStatsTest) this.initMats(this.systemStation);
 
             }
-
-            //// load this MarketId if it is close enough
-            //if (cmdr.currentMarketId > 0) // old
-            //{
-            //    var lastHumanSite = HumanSiteData.Load(systemData.address, cmdr.currentMarketId);
-            //    if (lastHumanSite != null)
-            //    {
-            //        var dist = Util.getDistance(Status.here, lastHumanSite.location, status.PlanetRadius);
-            //        if (dist < 1500)
-            //        {
-            //            this.humanSite = lastHumanSite;
-            //            // This is probably a bad idea
-            //            if (Game.settings.collectMatsCollectionStatsTest) this.initMats(this.humanSite);
-            //            return;
-            //        }
-            //    }
-            //} // old
 
             // Otherwise, walk journals backwards collecting relevant entries for us to replay forwards
             ApproachSettlement? lastApproachSettlement = null;
@@ -724,7 +720,7 @@ namespace SrvSurvey.game
 
             // exit early if there was no ApproachSettlement or we're not near that settlement any more
             if (lastApproachSettlement == null || lastApproachSettlement.BodyName != status.BodyName) return;
-            if (Util.getDistance(Status.here, lastApproachSettlement, status.PlanetRadius) > 500) return;
+            if (Util.getDistance(lastApproachSettlement, Status.here, status.PlanetRadius) > 7_500) return;
 
             // new ...
 
@@ -795,7 +791,7 @@ namespace SrvSurvey.game
 
             log($"Game.initSystemData: rewind to last FSDJump or CarrierJump");
 
-            var playForwards = new List<JournalEntry>();
+            var playForwards = new List<IJournalEntry>();
 
             Location? lastLocation = null;
             this.journals.walkDeep(-1, true, (entry) =>
@@ -2025,31 +2021,13 @@ namespace SrvSurvey.game
                 systemData.stations.Add(systemStation);
                 systemData.Save();
             }
+
+            // apply non-persisted values
+            this.systemStation.applyNonSavedSettlementValues(entry, this.journals);
+
             Game.log($"~~ApproachSettlement: " + JsonConvert.SerializeObject(this.systemStation, Formatting.Indented));
 
-            //// old ...
-            //if (entry.MarketID > 0 && this.systemBody != null
-            //    && entry.StationServices?.Contains("socialspace") == false  // bigger settlements (Planetery ports) are not compatible
-            //    && entry.StationServices.Count > 0) // horizons old settlements are not compatible
-            //{
-            //    // Human site - load existing one?
-            //    this.systemStation = HumanSiteData.Load(this.systemData!.address, entry.MarketID);
-
-            //    // or create new
-            //    if (this.systemStation == null)
-            //    {
-            //        Game.log($"Creating new HumanSiteData for '{entry.Name}' ({entry.MarketID}) ");
-            //        this.systemStation = new HumanSiteData(entry);
-            //    }
-            //    else
-            //    {
-            //        Game.log($"Loaded existing HumanSiteData for '{entry.Name}' ({entry.MarketID}) ");
-            //    }
-
-            //    Program.showPlotter<PlotHumanSite>();
-            //}
-
-            // TODO: Thargoids?
+            // TODO: Thargoid sites?
         }
 
         private void onJournalEntry(DockingRequested entry)
@@ -2058,7 +2036,7 @@ namespace SrvSurvey.game
             if (entry.StationType != StationType.OnFootSettlement) return;
             if (this.systemStation == null || this.systemStation.marketId != entry.MarketID)
             {
-                Debugger.Break();
+                this.initHumanSite();
                 return;
             }
 
@@ -2112,7 +2090,11 @@ namespace SrvSurvey.game
             if (entry.StationType != StationType.OnFootSettlement || this.systemData == null) return;
 
             // new ...
-            if (this.systemStation == null || this.systemStation.marketId != entry.MarketID) { Debugger.Break(); return; }
+            if (this.systemStation == null || this.systemStation.marketId != entry.MarketID)
+            {
+                this.initHumanSite();
+                return;
+            }
 
             if (this.systemStation.availblePads == null)
                 this.systemStation.availblePads = entry.LandingPads;

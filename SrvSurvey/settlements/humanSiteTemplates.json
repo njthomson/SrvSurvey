@@ -1388,7 +1388,9 @@
       { "offset": { "X": -144.88403, "Y": 29.126446 }, "floor": 1, "level": 2 },
       { "offset": { "X": -78.945656, "Y": 78.30581 }, "floor": 1, "level": 2 },
       { "offset": { "X": -119.1136, "Y": -96.53043 }, "floor": 1, "level": 2 },
-      { "offset": { "X": -59.51239, "Y": -70.971176 }, "floor": 1, "level": 0 }
+      { "offset": { "X": -59.51239, "Y": -70.971176 }, "floor": 1, "level": 0 },
+      { "offset": { "X": -118.487976, "Y": -107.94727 }, "floor": 1, "level": 2 },
+      { "offset": { "X": -91.16819, "Y": 94.91442 }, "floor": 2, "level": 1 }
     ],
     "buildings": [
       {
@@ -1720,7 +1722,8 @@
       { "name": "Medkit", "offset": { "X": -90.00749, "Y": 12.689213 }, "floor": 1, "level": 0 },
       { "name": "Battery", "offset": { "X": -113.666245, "Y": 48.917583 }, "floor": 1, "level": 3 },
       { "name": "Battery", "offset": { "X": 11.307118, "Y": 98.22737 }, "floor": 1, "level": 0 },
-      { "name": "Medkit", "offset": { "X": 54.240025, "Y": 52.614456 }, "floor": 1, "level": 0 }
+      { "name": "Medkit", "offset": { "X": 54.240025, "Y": 52.614456 }, "floor": 1, "level": 0 },
+      { "name": "Battery", "offset": { "X": -90.70277, "Y": -27.19142 }, "floor": 1, "level": 0 }
     ],
     "dataTerminals": [
       { "offset": { "X": -49.701294, "Y": 76.48073 }, "floor": 2, "level": 2 },

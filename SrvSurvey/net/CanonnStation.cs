@@ -48,6 +48,26 @@ namespace SrvSurvey.canonn
 
         #endregion
 
+        #region non-saved data members
+
+        [JsonIgnore]
+        public string factionName;
+        [JsonIgnore]
+        public string factionState;
+        [JsonIgnore]
+        public double? influence;
+        [JsonIgnore]
+        public double? reputation;
+        [JsonIgnore]
+        public string government;
+        [JsonIgnore]
+        public string governmentLocalized;
+
+        [JsonIgnore]
+        public List<string>? stationServices;
+
+        #endregion
+
         public override string ToString()
         {
             return $"{name} ({marketId}/{systemAddress}/{bodyId})";
@@ -255,6 +275,35 @@ namespace SrvSurvey.canonn
         }
 
         #region static mappings and helpers
+
+        public void applyNonSavedSettlementValues(ApproachSettlement entry, JournalFile? journals)
+        {
+            this.factionName = entry.StationFaction.Name;
+            this.factionState = entry.StationFaction.FactionState!;
+
+            this.government = entry.StationGovernment!;
+            this.governmentLocalized = entry.StationGovernment_Localised!;
+
+            this.stationServices = entry.StationServices;
+
+            // find cmdr's reputation with this faction
+            journals?.walk(-1, true, entry =>
+            {
+                var factionsEntry = entry as IFactions;
+                if (factionsEntry?.Factions != null)
+                {
+                    if (factionsEntry.SystemAddress == this.systemAddress)
+                    {
+                        var faction = factionsEntry.Factions.Find(f => f.Name == this.factionName)!;
+                        this.reputation = faction?.MyReputation;
+                        this.influence = faction?.Influence;
+                    }
+                    return true;
+                }
+
+                return false;
+            });
+        }
 
         [JsonIgnore]
         public LatLong2 location { get => new LatLong2(this.lat, this.@long); }

@@ -652,14 +652,63 @@ namespace SrvSurvey
             font = font ?? this.Font;
             this.lastTextSize = g.MeasureString(txt, font);
 
+            var stringFormat = StringFormat.GenericDefault;
+
+            if (font.Bold)
+            {
+                dty++;
+                stringFormat = StringFormat.GenericTypographic;
+            }
+
             if (rightAlign)
             {
                 var x = dtx - this.lastTextSize.Width;
-                g.DrawString(txt, font, brush, x, this.dty);
+                g.DrawString(txt, font, brush, x, this.dty, stringFormat);
             }
             else
             {
-                g.DrawString(txt, font, brush, this.dtx, this.dty);
+                g.DrawString(txt, font, brush, this.dtx, this.dty, stringFormat);
+                this.dtx += this.lastTextSize.Width;
+            }
+
+            if (font.Bold) dty--;
+
+
+            return this.lastTextSize;
+        }
+
+
+        protected SizeF drawTextAt2(string txt, Font? font = null)
+        {
+            return drawTextAt2(dtx, txt, null, font);
+        }
+        protected SizeF drawTextAt2(float tx, string txt, Font? font = null)
+        {
+            return drawTextAt2(tx, txt, null, font);
+        }
+
+        protected SizeF drawTextAt2(string txt, Color? col = null, Font? font = null)
+        {
+            return drawTextAt2(this.dtx, txt, col, font);
+        }
+
+        protected SizeF drawTextAt2(float tx, string txt, Color? col, Font? font = null, bool rightAlign = false)
+        {
+            this.dtx = tx;
+
+            col = col ?? GameColors.Orange;
+            font = font ?? this.Font;
+            this.lastTextSize = TextRenderer.MeasureText(txt, font);
+
+            var pt = new Point((int)this.dtx, (int)this.dty);
+            if (rightAlign)
+            {
+                pt.X = (int)(dtx - this.lastTextSize.Width);
+                TextRenderer.DrawText(g, txt, font, pt, col.Value, TextFormatFlags.NoPadding | TextFormatFlags.PreserveGraphicsTranslateTransform);
+            }
+            else
+            {
+                TextRenderer.DrawText(g, txt, font, pt, col.Value, TextFormatFlags.NoPadding | TextFormatFlags.PreserveGraphicsTranslateTransform);
                 this.dtx += this.lastTextSize.Width;
             }
 

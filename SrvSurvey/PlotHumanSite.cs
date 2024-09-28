@@ -513,7 +513,7 @@ namespace SrvSurvey
             newLine(+ten, true);
 
             var distToSiteOrigin = Util.getDistance(siteLocation, Status.here, this.radius);
-            if (game.isMode(GameMode.Flying, GameMode.GlideMode, GameMode.ExternalPanel) || this.station.heading == -1)
+            if (this.station.heading == -1 || game.status.GlideMode || (game.mode == GameMode.Flying && !this.hasLanded))
                 this.drawOnApproach(distToSiteOrigin);
             else
                 this.drawFooterAtSettlement();
@@ -534,7 +534,7 @@ namespace SrvSurvey
             // footer - cmdr's location heading RELATIVE TO SITE
             var aaa = game.status.Heading - siteHeading; // TODO: replace `aaa` with `cmdrHeading`
             if (aaa < 0) aaa += 360;
-            var footerTxt = $"x: {(int)cmdrOffset.X}m, y: {(int)cmdrOffset.Y}m, {aaa}°";
+            var footerTxt = $"x: {Util.metersToString(cmdrOffset.X, true)}, y: {Util.metersToString(cmdrOffset.Y, true)}, {aaa}°";
 
             // are we inside a building?
             var currentBld = station.template?.getCurrentBld(cmdrOffset, this.siteHeading);
@@ -873,47 +873,72 @@ namespace SrvSurvey
             {
                 // distance to site, triangulated with altitude 
                 var d = new PointM(distToSiteOrigin, game.status.Altitude).dist;
-                drawTextAt(eight, $"► On approach: {Util.metersToString(d)} to settlement ...", GameColors.fontMiddle);
+                drawApproachText("►", $"On approach: {Util.metersToString(d)}");
+
+                drawTextAt2(eight, "►", GameColors.fontMiddle);
+                drawTextAt2(threeTwo, "Faction:", GameColors.fontMiddle);
+                var txt = $"{station.factionName}\r\nInfluence: " + station.influence?.ToString("p0");
+                if (station.factionState != null) txt += $"| {station.factionState}";
+                drawTextAt2(txt, GameColors.fontMiddleBold);
                 newLine(+ten, true);
+
+                if (station.government == "$government_Anarchy;")
+                    drawApproachText("🏴‍☠️", $"Government: {station.governmentLocalized}");
+
+                if (station.reputation.HasValue)
+                {
+                    var col = GameColors.Orange;
+                    var prefix = "🔹";
+                    if (station.reputation <= -35)
+                    {
+                        col = GameColors.red;
+                        prefix = "✋";
+                    }
+                    else if (station.reputation > 35)
+                    {
+                        col = GameColors.LimeIsh;
+                        prefix = "✔️";
+                    }
+
+                    var rep = Util.getReputationText(station.reputation.Value);
+                    drawApproachText(prefix, $"Your reputation: {rep}", col);
+                }
+
+                if (station.stationServices?.Contains("facilitator") == true)
+                    drawApproachText("🙂", "Interstellar Factions available");
             }
 
             if (station.subType == 0 && station.heading == -1)
-            {
-                drawTextAt(eight, $"❓ Unknown settlement type and heading", GameColors.fontMiddle);
-                newLine(+ten, true);
-            }
+                drawApproachText("❓", "Unknown settlement type and heading");
             else if (station.heading == -1)
-            {
-                drawTextAt(eight, $"❓ Unknown settlement heading", GameColors.fontMiddle);
-                newLine(+ten, true);
-            }
+                drawApproachText("❓", "Unknown settlement heading");
 
             if (game.dockingInProgress)
             {
                 // docking status?
                 if (this.dockingState == DockingState.requested || this.dockingState == DockingState.approved || this.dockingState == DockingState.denied)
-                {
-                    drawTextAt(eight, $"► Docking requested ...", GameColors.fontMiddle);
-                    newLine(+ten, true);
-                }
+                    drawApproachText("►", "Docking requested");
                 if (this.dockingState == DockingState.approved)
-                {
-                    drawTextAt(eight, $"► Docking approved: pad #{this.grantedPad} ...", GameColors.fontMiddle);
-                    newLine(+ten, true);
-                }
+                    drawApproachText("►", $"Docking approved: pad #{this.grantedPad}");
             }
             else if (this.dockingState == DockingState.denied)
             {
-                drawTextAt(eight, $"⛔ Docking denied ...", GameColors.fontMiddle);
+                drawTextAt2(eight, $"⛔ Docking denied", GameColors.fontMiddle);
                 newLine(+ten, true);
                 if (this.deniedReason == "Distance")
-                    drawTextAt(eight, $"➟ Too far away", GameColors.fontMiddle);
-                else if (this.deniedReason == "Distance")
-                    drawTextAt(eight, $"❌ Hostile", GameColors.fontMiddle);
+                    drawTextAt2(threeTwo, $"➟ Too far away", GameColors.fontMiddle);
+                else if (this.deniedReason == "Hostile")
+                    drawTextAt2(threeTwo, $"💀 Hostile", GameColors.fontMiddle);
                 else if (this.deniedReason == "TooLarge")
-                    drawTextAt(eight, $"❌ Ship too large", GameColors.fontMiddle);
+                    drawTextAt2(threeTwo, $"🔷 Ship too large", GameColors.fontMiddle);
                 else if (this.deniedReason == "NoSpace")
-                    drawTextAt(eight, $"❌ No landing pads available", GameColors.fontMiddle);
+                    drawTextAt2(threeTwo, $"❎ No pads available", GameColors.fontMiddle);
+                else if (this.deniedReason == "Offenses")
+                    drawTextAt2(threeTwo, $"🧻 Offenses", GameColors.fontMiddle);
+                else if (this.deniedReason == "ActiveFighter")
+                    drawTextAt2(threeTwo, $"🛩️ Fighter is active", GameColors.fontMiddle);
+                else
+                    drawTextAt2(threeTwo, $"🚫 Unknown", GameColors.fontMiddle);
                 newLine(+ten, true);
             }
 
@@ -975,6 +1000,13 @@ namespace SrvSurvey
                     }
                 }
             }
+        }
+
+        private void drawApproachText(string prefix, string txt, Color? col = null)
+        {
+            drawTextAt2(eight, prefix, col, GameColors.fontMiddle);
+            drawTextAt2(threeTwo, txt, col, GameColors.fontMiddle);
+            newLine(+ten, true);
         }
     }
 

@@ -101,7 +101,6 @@ namespace SrvSurvey
             m = m / 1000;
             // over one 1 million
             return prefix + m.ToString("#.##") + "mm";
-
         }
 
         public static string timeSpanToString(TimeSpan ago)
@@ -1022,6 +1021,22 @@ namespace SrvSurvey
 
                 applyTheme(child, dark);
             }
+        }
+
+        public static string getReputationText(double reputation)
+        {
+            if (reputation <= -90)
+                return "Hostile";
+            else if (reputation <= -35)
+                return "Unfriendly";
+            else if (reputation <= +4)
+                return "Neutral";
+            else if (reputation <= +35)
+                return "Cordial";
+            else if (reputation <= +90)
+                return "Friendly";
+            else
+                return "Allied";
         }
     }
 

@@ -198,6 +198,8 @@ namespace SrvSurvey
         public bool FsdCharging { get => (this.Flags & StatusFlags.FsdCharging) > 0; }
         [JsonIgnore]
         public bool FsdChargingJump { get => (this.Flags2 & StatusFlags2.FsdChargingJump) > 0; }
+        [JsonIgnore]
+        public bool GlideMode { get => (this.Flags2 & StatusFlags2.GlideMode) > 0; }
     }
 
     class FuelStatus

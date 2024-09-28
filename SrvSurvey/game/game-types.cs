@@ -82,9 +82,22 @@ namespace SrvSurvey.game
         double Latitude { get; set; }
     }
 
-    interface ISystemAddress
+    public interface IJournalEntry
+    {
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public DateTime timestamp { get; set; }
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public string @event { get; set; }
+    }
+
+    interface ISystemAddress : IJournalEntry
     {
         public long SystemAddress { get; set; }
+    }
+
+    interface IFactions : ISystemAddress
+    {
+        public List<SystemFaction>? Factions { get; set; }
     }
 
     interface ISystemDataStarter

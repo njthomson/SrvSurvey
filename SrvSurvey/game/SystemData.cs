@@ -558,7 +558,7 @@ namespace SrvSurvey.game
             nameof(ScanBaryCentre),
         };
 
-        public void Journals_onJournalEntry(JournalEntry entry) { this.onJournalEntry((dynamic)entry); }
+        public void Journals_onJournalEntry(IJournalEntry entry) { this.onJournalEntry((dynamic)entry); }
 
         private void onJournalEntry(JournalEntry entry) { /* ignore */ }
 

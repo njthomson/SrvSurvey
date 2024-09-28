@@ -27,7 +27,7 @@ namespace SrvSurvey
                 typeMap.Add(journalType.Name, journalType);
         }
 
-        public List<JournalEntry> Entries { get; } = new List<JournalEntry>();
+        public List<IJournalEntry> Entries { get; } = new List<IJournalEntry>();
 
         protected StreamReader reader;
         public readonly string filepath;
@@ -112,7 +112,7 @@ namespace SrvSurvey
             return null;
         }
 
-        public T? FindEntryByType<T>(int index, bool searchUp) where T : JournalEntry
+        public T? FindEntryByType<T>(int index, bool searchUp) where T : IJournalEntry
         {
             if (index == -1) index = this.Entries.Count - 1;
 
@@ -121,12 +121,12 @@ namespace SrvSurvey
             {
                 if (this.Entries[n].GetType() == typeof(T))
                 {
-                    return this.Entries[n] as T;
+                    return (T)this.Entries[n];
                 }
                 n += searchUp ? -1 : +1;
             }
 
-            return null;
+            return default(T);
         }
 
         public bool search<T>(Func<T, bool> func) where T : JournalEntry
@@ -179,7 +179,7 @@ namespace SrvSurvey
             Game.log($"searchJournalsDeep: count: {count}");
         }
 
-        public void walkDeep(int index, bool searchUp, Func<JournalEntry, bool> func, Func<JournalFile, bool>? finishWhen = null)
+        public void walkDeep(int index, bool searchUp, Func<IJournalEntry, bool> func, Func<JournalFile, bool>? finishWhen = null)
         {
             if (string.IsNullOrEmpty(this.cmdrName)) Debugger.Break();
 
@@ -207,7 +207,7 @@ namespace SrvSurvey
             Game.log($"walkDeep: count: {count}");
         }
 
-        public bool walk(int index, bool searchUp, Func<JournalEntry, bool> func)
+        public bool walk(int index, bool searchUp, Func<IJournalEntry, bool> func)
         {
             int idx = index;
             if (idx == -1)
