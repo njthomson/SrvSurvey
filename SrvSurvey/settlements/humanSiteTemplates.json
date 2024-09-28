@@ -128,7 +128,9 @@
       { "name": "Environmental Regulation Unit", "offset": { "X": 49.90939, "Y": 105.749535 }, "floor": 1, "level": 2 },
       { "name": "Sample Containment Unit", "offset": { "X": 62.819023, "Y": 80.86402 }, "floor": 1, "level": 2 },
       { "name": "Medkit", "offset": { "X": -7.865106, "Y": 91.070045 }, "floor": 1, "level": 0 },
-      { "name": "Sample Containment Unit", "offset": { "X": 59.312782, "Y": 97.32917 }, "floor": 1, "level": 2 }
+      { "name": "Sample Containment Unit", "offset": { "X": 59.312782, "Y": 97.32917 }, "floor": 1, "level": 2 },
+      { "name": "Medkit", "offset": { "X": 53.296005, "Y": -1.1795564 }, "floor": 1, "level": 0 },
+      { "name": "Medkit", "offset": { "X": 85.81056, "Y": -0.52255785 }, "floor": 1, "level": 0 }
     ],
     "dataTerminals": [
       { "offset": { "X": -54.568905, "Y": 37.125652 }, "floor": 1, "level": 1 },
@@ -171,13 +173,13 @@
       { "offset": { "X": -236.35028, "Y": 64.071175 }, "floor": 1, "level": 1, "rot": 255 },
       { "offset": { "X": -204.08699, "Y": 53.2872 }, "floor": 1, "level": 1, "rot": 211 },
       { "offset": { "X": 250.20589, "Y": -223.98083 }, "floor": 1, "level": 1 },
-      { "offset": { "X": 144.49857, "Y": -172.69339 }, "floor": 1, "level": 2, "rot": 92 },
+      { "offset": { "X": 144.49857, "Y": -172.69339 }, "floor": 1, "level": 2, "rot": 90 },
       { "offset": { "X": 144.49857, "Y": -172.69339 }, "floor": 2, "level": 2, "rot": 90 },
       { "offset": { "X": 181.62628, "Y": -172.93102 }, "floor": 2, "level": 2, "rot": 270 },
       { "offset": { "X": 172.024, "Y": -163.4541 }, "floor": 2, "level": 2, "rot": 180 },
-      { "offset": { "X": 172.24162, "Y": -110.12509 }, "floor": 1, "level": 0, "rot": 3 },
-      { "offset": { "X": 208.38098, "Y": -104.616806 }, "floor": 1, "level": 3, "rot": 272 },
-      { "offset": { "X": 189.17412, "Y": -111.30243 }, "floor": 1, "level": 3, "rot": 91 }
+      { "offset": { "X": 172.24162, "Y": -110.12509 }, "floor": 1, "level": 0 },
+      { "offset": { "X": 208.38098, "Y": -104.616806 }, "floor": 1, "level": 3, "rot": 270 },
+      { "offset": { "X": 189.17412, "Y": -111.30243 }, "floor": 1, "level": 3, "rot": 90 }
     ],
     "namedPoi": [
       { "name": "Environmental Regulation Unit", "offset": { "X": 253.65887, "Y": -199.75293 }, "floor": 1, "level": 2 },

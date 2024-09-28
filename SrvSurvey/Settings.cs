@@ -33,7 +33,6 @@ namespace SrvSurvey
         public bool drawBodyBiosOnlyWhenNear = true;
         public bool highlightRegionalFirsts = false;
         public bool autoShowPlotGalMap = true;
-        public bool autoShowHumanSitesTest = false;
         public bool autoShowPlotJumpInfoTest = true;
 
         public bool autoShowPlotBodyInfo = true;
@@ -42,14 +41,24 @@ namespace SrvSurvey
         public bool autoHidePlotBodyInfoInBubble = true;
         public int bodyInfoBubbleSize = 200;
 
+        public bool autoShowHumanSitesTest = false;
+        public float humanSiteZoomShip = 1;
+        public float humanSiteZoomSRV = 1.5f;
+        public float humanSiteZoomFoot = 2;
+        public bool humanSiteAutoZoomInside = true;
+        public float humanSiteZoomInside = 4;
+        public bool humanSiteAutoZoomTool = true;
+        public float humanSiteZoomTool = 6;
+
+        /// <summary>
+        /// Whether to show dots at the locations we collected mats at a human settlement.
+        /// </summary>
+        public bool humanSiteDotsOnCollection = true;
+
         /// <summary>
         /// For Human settlements ...
         /// </summary>
         public bool collectMatsCollectionStatsTest = false;
-        /// <summary>
-        /// Whether to show dots at the locations we collected mats at a human settlement.
-        /// </summary>
-        public bool showMatsCollectionDots = true;
 
         public bool skipGasGiantDSS = true;
         public bool skipRingsDSS = false;

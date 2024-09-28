@@ -2199,10 +2199,18 @@ namespace SrvSurvey.game
 
         public void initMats(CanonnStation station)
         {
-            if (this.matStatsTracker != null) Game.log("Why is matStatsTracker already something?");
             Game.log($"initMats: '{station.name}' ({station.marketId}) ");
 
-            this.matStatsTracker = SettlementMatCollectionData.Load(station);
+            if (this.matStatsTracker != null && Game.settings.collectMatsCollectionStatsTest)
+                this.matStatsTracker.Save();
+
+            if (this.matStatsTracker == null || matStatsTracker.marketId != station.marketId)
+                this.matStatsTracker = SettlementMatCollectionData.Load(station);
+        }
+
+        public void startMats()
+        {
+            if (this.matStatsTracker == null) return;
 
             // populate things from the last ApproachSettlement
             this.journals!.searchDeep((ApproachSettlement entry) =>
@@ -2243,7 +2251,7 @@ namespace SrvSurvey.game
 
         public void exitMats(bool complete = false)
         {
-            if (this.matStatsTracker != null)
+            if (this.matStatsTracker != null && Game.settings.collectMatsCollectionStatsTest)
             {
                 Game.log($"Stopped mats collection at: '{this.matStatsTracker.name}'\r\n${this.matStatsTracker.filepath}");
                 this.matStatsTracker.completed = complete;
@@ -2255,7 +2263,7 @@ namespace SrvSurvey.game
 
         private void onJournalEntry(BackpackChange entry)
         {
-            if (!Game.settings.collectMatsCollectionStatsTest || this.matStatsTracker == null || this.systemStation == null || systemStation.heading == -1 || entry.Added == null) return;
+            if (this.matStatsTracker == null || this.systemStation == null || systemStation.heading == -1 || entry.Added == null) return;
             Application.DoEvents();
 
             // TODO: Use BackpackChange only for Data, restore CollectItems for the others
@@ -2277,12 +2285,13 @@ namespace SrvSurvey.game
             }
 
             Program.getPlotter<PlotHumanSite>()?.Invalidate();
-            this.matStatsTracker.Save();
+            if (Game.settings.collectMatsCollectionStatsTest)
+                this.matStatsTracker.Save();
         }
 
         private void onJournalEntry(CollectItems entry)
         {
-            if (!Game.settings.collectMatsCollectionStatsTest || this.matStatsTracker == null || this.systemStation == null || systemStation.heading == -1) return;
+            if (this.matStatsTracker == null || this.systemStation == null || systemStation.heading == -1) return;
             if (entry.Type == "Data") return;
             Application.DoEvents();
 
@@ -2298,7 +2307,9 @@ namespace SrvSurvey.game
             this.matStatsTracker.track(entry, (PointF)location, building);
 
             Program.getPlotter<PlotHumanSite>()?.Invalidate();
-            this.matStatsTracker.Save();
+
+            if (Game.settings.collectMatsCollectionStatsTest)
+                this.matStatsTracker.Save();
         }
 
         private void onJournalEntry(CodexEntry entry)

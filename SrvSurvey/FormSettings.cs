@@ -159,8 +159,10 @@ namespace SrvSurvey
                             break;
 
                         case nameof(NumericUpDown):
-                            if (((NumericUpDown)ctrl).DecimalPlaces == 0)
+                            if (map[name].FieldType == typeof(int))
                                 val = Convert.ToInt32(((NumericUpDown)ctrl).Value);
+                            else if (map[name].FieldType == typeof(float))
+                                val = Convert.ToSingle(((NumericUpDown)ctrl).Value);
                             else
                                 val = Convert.ToDouble(((NumericUpDown)ctrl).Value);
                             break;
@@ -530,6 +532,16 @@ namespace SrvSurvey
         private void btnPostProcess_Click(object sender, EventArgs e)
         {
             Process.Start(Application.ExecutablePath, FormPostProcess.cmdArg);
+        }
+
+        private void checkHumanSitePlotter_CheckedChanged(object sender, EventArgs e)
+        {
+            var senderCheckbox = sender as CheckBox;
+            if (senderCheckbox?.Parent == null) return;
+
+            foreach (Control ctrl in senderCheckbox.Parent!.Controls)
+                if (ctrl != senderCheckbox)
+                    ctrl.Enabled = senderCheckbox.Checked;
         }
     }
 }

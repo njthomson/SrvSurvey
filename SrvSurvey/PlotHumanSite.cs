@@ -41,13 +41,15 @@ namespace SrvSurvey
 
             if (siteLocation.Lat == 0 || siteLocation.Long == 0) Debugger.Break(); // Does this ever happen?
 
-            if (!autoZoom) this.scale = 6;
+            if (!PlotHumanSite.autoZoom) this.scale = 6;
 
             if (game.isMode(GameMode.OnFoot, GameMode.Docked, GameMode.InSrv, GameMode.Landed))
             {
                 this.dockingState = DockingState.landed;
                 this.hasLanded = true;
             }
+
+            game.initMats(this.station);
         }
 
         public override bool allow { get => PlotHumanSite.allowPlotter; }
@@ -155,20 +157,30 @@ namespace SrvSurvey
         {
             if (autoZoom)
             {
-                if (game.status.OnFootInside || game.status.SelectedWeapon == "$humanoid_companalyser_name;")
+                if (game.status.SelectedWeapon == "$humanoid_companalyser_name;")
                 {
                     // zoom in LOTS if inside a building or using the Profile analyzer tool
-                    this.scale = 6;
+                    this.scale = Game.settings.humanSiteZoomTool;
+                }
+                else if (game.status.OnFootInside)
+                {
+                    // zoom in LOTS if inside a building or using the Profile analyzer tool
+                    this.scale = Game.settings.humanSiteZoomInside;
                 }
                 else if (mode == GameMode.OnFoot || game.status.OnFootOutside)
                 {
                     // zoom in SOME if on foot outside
-                    this.scale = 2;
+                    this.scale = Game.settings.humanSiteZoomFoot;
                 }
-                else if (mode == GameMode.InSrv || mode == GameMode.Landed || mode == GameMode.Docked || mode == GameMode.Flying)
+                else if (mode == GameMode.InSrv)
                 {
                     // zoom out if in some vehicle
-                    this.scale = 1;
+                    this.scale = Game.settings.humanSiteZoomSRV;
+                }
+                else if (mode == GameMode.Landed || mode == GameMode.Docked || mode == GameMode.Flying)
+                {
+                    // zoom out if in some vehicle
+                    this.scale = Game.settings.humanSiteZoomShip;
                 }
             }
 
@@ -194,12 +206,19 @@ namespace SrvSurvey
                 var folder = Git.pubSettlementsFolder;
                 var filepath = Directory.GetFiles(folder, $"{this.station.economy}~{this.station.subType}-*.png")?.FirstOrDefault();
 
-                // try install folder
-                if (filepath == null || Debugger.IsAttached)
+                if (Debugger.IsAttached)
                 {
+                    // use source code folder
+                    folder = Path.GetFullPath(Path.Combine(Git.srcRootFolder, "SrvSurvey", "settlements"));
+                    filepath = Directory.GetFiles(folder, $"{this.station.economy}~{this.station.subType}-*.png")?.FirstOrDefault();
+                }
+                else if (filepath == null)
+                {
+                    // try install folder
                     folder = Path.Combine(Application.StartupPath, "settlements");
                     filepath = Directory.GetFiles(folder, $"{this.station.economy}~{this.station.subType}-*.png")?.FirstOrDefault();
                 }
+
 
                 // stop trying
                 if (filepath == null) return;
@@ -401,7 +420,7 @@ namespace SrvSurvey
             if (msg == MsgCmd.start)
             {
                 // begin settlement mats survey
-                game.initMats(this.station);
+                game.startMats();
             }
             if (msg == MsgCmd.stop)
             {
@@ -532,7 +551,7 @@ namespace SrvSurvey
                 // TODO: remove this? Isn't it the same as we already render?
             }
 
-            if (game.matStatsTracker?.completed == false)
+            if (Game.settings.collectMatsCollectionStatsTest && game.matStatsTracker?.completed == false)
                 footerTxt += ".";
 
             if (builder != null && builder.nextPath != null)
@@ -737,7 +756,7 @@ namespace SrvSurvey
                     // 🔇🔕🎚️🎛️📻📱📺💻🖥️💾📕📖📦📍📎✂️📌📐📈💼🔰🛡️
                     // 🔨🗡️🔧🧪🚷🧴📵🧽➰🔻🔺🔔🔘🔳🔲🏁🚩🏴✔️✖️
                     // ❌➕➖➗ℹ️📛⭕☑️📶🔅🔆⚠️⛔🚫🧻↘️⚰️🧯🧰📡🧬⚗️
-                    // 🔩⚙️🔓🗝️🗄️📩🧾📒📰🗞️🏷️📑🔖💡🔋🏮🕯🔌📞☎️💍👑
+                    // 🔩⚙️🔓🗝️🗄️📩🧾📒📰🗞️🏷️📑🔖💡🔋🏮🕯🔌📞☎️💍👑 ☠️💀
 
                     // 🔔 alarm ?
                     // 🗝️ auth?
@@ -838,7 +857,7 @@ namespace SrvSurvey
 
         private void drawCollectedMats()
         {
-            if (game.matStatsTracker?.matLocations != null && Game.settings.showMatsCollectionDots)
+            if (game.matStatsTracker?.matLocations != null && Game.settings.humanSiteDotsOnCollection)
             {
                 foreach (var entry in game.matStatsTracker.matLocations)
                 {

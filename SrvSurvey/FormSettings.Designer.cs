@@ -167,6 +167,17 @@ namespace SrvSurvey
             pictureBox9 = new PictureBox();
             pictureBox8 = new PictureBox();
             tabSettlements = new TabPage();
+            checkBox22 = new CheckBox();
+            numericUpDown6 = new NumericUpDown();
+            checkBox19 = new CheckBox();
+            numericUpDown5 = new NumericUpDown();
+            label23 = new Label();
+            numericUpDown4 = new NumericUpDown();
+            label22 = new Label();
+            numericUpDown3 = new NumericUpDown();
+            label21 = new Label();
+            numericUpDown2 = new NumericUpDown();
+            checkBox12 = new CheckBox();
             checkHumanSitePlotter = new CheckBox();
             tabPage2 = new TabPage();
             linkAboutTwo = new LinkLabel();
@@ -213,6 +224,11 @@ namespace SrvSurvey
             ((System.ComponentModel.ISupportInitialize)pictureBox9).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox8).BeginInit();
             tabSettlements.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown6).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown5).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown4).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown3).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown2).BeginInit();
             tabPage2.SuspendLayout();
             SuspendLayout();
             // 
@@ -1996,6 +2012,17 @@ namespace SrvSurvey
             // tabSettlements
             // 
             tabSettlements.BackColor = SystemColors.Control;
+            tabSettlements.Controls.Add(checkBox22);
+            tabSettlements.Controls.Add(numericUpDown6);
+            tabSettlements.Controls.Add(checkBox19);
+            tabSettlements.Controls.Add(numericUpDown5);
+            tabSettlements.Controls.Add(label23);
+            tabSettlements.Controls.Add(numericUpDown4);
+            tabSettlements.Controls.Add(label22);
+            tabSettlements.Controls.Add(numericUpDown3);
+            tabSettlements.Controls.Add(label21);
+            tabSettlements.Controls.Add(numericUpDown2);
+            tabSettlements.Controls.Add(checkBox12);
             tabSettlements.Controls.Add(checkHumanSitePlotter);
             tabSettlements.Location = new Point(4, 24);
             tabSettlements.Name = "tabSettlements";
@@ -2003,6 +2030,144 @@ namespace SrvSurvey
             tabSettlements.Size = new Size(612, 420);
             tabSettlements.TabIndex = 7;
             tabSettlements.Text = "Settlements";
+            // 
+            // checkBox22
+            // 
+            checkBox22.AutoSize = true;
+            checkBox22.FlatStyle = FlatStyle.System;
+            checkBox22.Location = new Point(8, 123);
+            checkBox22.Name = "checkBox22";
+            checkBox22.Size = new Size(573, 20);
+            checkBox22.TabIndex = 37;
+            checkBox22.Tag = "humanSiteDotsOnCollection";
+            checkBox22.Text = "Show dots when some material is collected. (Note: this is subject to lag when collecting things quickly)";
+            checkBox22.UseVisualStyleBackColor = true;
+            // 
+            // numericUpDown6
+            // 
+            numericUpDown6.DecimalPlaces = 2;
+            numericUpDown6.Increment = new decimal(new int[] { 5, 0, 0, 65536 });
+            numericUpDown6.Location = new Point(472, 78);
+            numericUpDown6.Maximum = new decimal(new int[] { 10, 0, 0, 0 });
+            numericUpDown6.Minimum = new decimal(new int[] { 5, 0, 0, 65536 });
+            numericUpDown6.Name = "numericUpDown6";
+            numericUpDown6.Size = new Size(50, 23);
+            numericUpDown6.TabIndex = 36;
+            numericUpDown6.Tag = "humanSiteZoomTool";
+            numericUpDown6.TextAlign = HorizontalAlignment.Right;
+            numericUpDown6.ThousandsSeparator = true;
+            numericUpDown6.Value = new decimal(new int[] { 6, 0, 0, 0 });
+            // 
+            // checkBox19
+            // 
+            checkBox19.AutoSize = true;
+            checkBox19.FlatStyle = FlatStyle.System;
+            checkBox19.Location = new Point(274, 78);
+            checkBox19.Name = "checkBox19";
+            checkBox19.Size = new Size(192, 20);
+            checkBox19.TabIndex = 35;
+            checkBox19.Tag = "humanSiteAutoZoomTool";
+            checkBox19.Text = "Auto-zoom with analyzer tool:";
+            checkBox19.UseVisualStyleBackColor = true;
+            // 
+            // numericUpDown5
+            // 
+            numericUpDown5.DecimalPlaces = 2;
+            numericUpDown5.Increment = new decimal(new int[] { 5, 0, 0, 65536 });
+            numericUpDown5.Location = new Point(206, 78);
+            numericUpDown5.Maximum = new decimal(new int[] { 10, 0, 0, 0 });
+            numericUpDown5.Minimum = new decimal(new int[] { 5, 0, 0, 65536 });
+            numericUpDown5.Name = "numericUpDown5";
+            numericUpDown5.Size = new Size(50, 23);
+            numericUpDown5.TabIndex = 34;
+            numericUpDown5.Tag = "humanSiteZoomInside";
+            numericUpDown5.TextAlign = HorizontalAlignment.Right;
+            numericUpDown5.ThousandsSeparator = true;
+            numericUpDown5.Value = new decimal(new int[] { 6, 0, 0, 0 });
+            // 
+            // label23
+            // 
+            label23.AutoSize = true;
+            label23.Location = new Point(353, 40);
+            label23.Name = "label23";
+            label23.Size = new Size(113, 15);
+            label23.TabIndex = 33;
+            label23.Text = "On-foot zoom level:";
+            // 
+            // numericUpDown4
+            // 
+            numericUpDown4.DecimalPlaces = 2;
+            numericUpDown4.Increment = new decimal(new int[] { 5, 0, 0, 65536 });
+            numericUpDown4.Location = new Point(472, 38);
+            numericUpDown4.Maximum = new decimal(new int[] { 10, 0, 0, 0 });
+            numericUpDown4.Minimum = new decimal(new int[] { 5, 0, 0, 65536 });
+            numericUpDown4.Name = "numericUpDown4";
+            numericUpDown4.Size = new Size(50, 23);
+            numericUpDown4.TabIndex = 32;
+            numericUpDown4.Tag = "humanSiteZoomFoot";
+            numericUpDown4.TextAlign = HorizontalAlignment.Right;
+            numericUpDown4.ThousandsSeparator = true;
+            numericUpDown4.Value = new decimal(new int[] { 2, 0, 0, 0 });
+            // 
+            // label22
+            // 
+            label22.AutoSize = true;
+            label22.Location = new Point(175, 40);
+            label22.Name = "label22";
+            label22.Size = new Size(90, 15);
+            label22.TabIndex = 31;
+            label22.Text = "SRV zoom level:";
+            // 
+            // numericUpDown3
+            // 
+            numericUpDown3.DecimalPlaces = 2;
+            numericUpDown3.Increment = new decimal(new int[] { 5, 0, 0, 65536 });
+            numericUpDown3.Location = new Point(274, 38);
+            numericUpDown3.Maximum = new decimal(new int[] { 10, 0, 0, 0 });
+            numericUpDown3.Minimum = new decimal(new int[] { 5, 0, 0, 65536 });
+            numericUpDown3.Name = "numericUpDown3";
+            numericUpDown3.Size = new Size(50, 23);
+            numericUpDown3.TabIndex = 30;
+            numericUpDown3.Tag = "humanSiteZoomSRV";
+            numericUpDown3.TextAlign = HorizontalAlignment.Right;
+            numericUpDown3.ThousandsSeparator = true;
+            numericUpDown3.Value = new decimal(new int[] { 1, 0, 0, 0 });
+            // 
+            // label21
+            // 
+            label21.AutoSize = true;
+            label21.Location = new Point(8, 38);
+            label21.Name = "label21";
+            label21.Size = new Size(93, 15);
+            label21.TabIndex = 29;
+            label21.Text = "Ship zoom level:";
+            // 
+            // numericUpDown2
+            // 
+            numericUpDown2.DecimalPlaces = 2;
+            numericUpDown2.Increment = new decimal(new int[] { 5, 0, 0, 65536 });
+            numericUpDown2.Location = new Point(107, 36);
+            numericUpDown2.Maximum = new decimal(new int[] { 10, 0, 0, 0 });
+            numericUpDown2.Minimum = new decimal(new int[] { 5, 0, 0, 65536 });
+            numericUpDown2.Name = "numericUpDown2";
+            numericUpDown2.Size = new Size(50, 23);
+            numericUpDown2.TabIndex = 28;
+            numericUpDown2.Tag = "humanSiteZoomShip";
+            numericUpDown2.TextAlign = HorizontalAlignment.Right;
+            numericUpDown2.ThousandsSeparator = true;
+            numericUpDown2.Value = new decimal(new int[] { 1, 0, 0, 0 });
+            // 
+            // checkBox12
+            // 
+            checkBox12.AutoSize = true;
+            checkBox12.FlatStyle = FlatStyle.System;
+            checkBox12.Location = new Point(8, 78);
+            checkBox12.Name = "checkBox12";
+            checkBox12.Size = new Size(192, 20);
+            checkBox12.TabIndex = 27;
+            checkBox12.Tag = "humanSiteAutoZoomInside";
+            checkBox12.Text = "Auto-zoom if inside buildings:";
+            checkBox12.UseVisualStyleBackColor = true;
             // 
             // checkHumanSitePlotter
             // 
@@ -2015,6 +2180,7 @@ namespace SrvSurvey
             checkHumanSitePlotter.Tag = "autoShowHumanSitesTest";
             checkHumanSitePlotter.Text = "Human settlement maps (experimental)";
             checkHumanSitePlotter.UseVisualStyleBackColor = true;
+            checkHumanSitePlotter.CheckedChanged += checkHumanSitePlotter_CheckedChanged;
             // 
             // tabPage2
             // 
@@ -2125,6 +2291,11 @@ namespace SrvSurvey
             ((System.ComponentModel.ISupportInitialize)pictureBox8).EndInit();
             tabSettlements.ResumeLayout(false);
             tabSettlements.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown6).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown5).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown4).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown3).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown2).EndInit();
             tabPage2.ResumeLayout(false);
             ResumeLayout(false);
         }
@@ -2273,5 +2444,16 @@ namespace SrvSurvey
         private FlatButton btnTheme2;
         private Label label3;
         private CheckBox checkHidePlottersFromDominator;
+        private Label label23;
+        private NumericUpDown numericUpDown4;
+        private Label label22;
+        private NumericUpDown numericUpDown3;
+        private Label label21;
+        private NumericUpDown numericUpDown2;
+        private CheckBox checkBox12;
+        private NumericUpDown numericUpDown5;
+        private NumericUpDown numericUpDown6;
+        private CheckBox checkBox19;
+        private CheckBox checkBox22;
     }
 }
