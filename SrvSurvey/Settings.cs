@@ -26,6 +26,7 @@ namespace SrvSurvey
         public bool autoShowBioPlot = true;
         public bool autoShowPlotFSS = true;
         public bool autoShowPlotFSSInfo = true;
+        public bool autoShowPlotFSSInfoInSystemMap = false;
         public bool autoShowGuardianSummary = true;
         public bool autoShowRamTah = true;
         public bool autoShowPlotSysStatus = true;
@@ -40,6 +41,7 @@ namespace SrvSurvey
         public bool autoShowPlotBodyInfoInOrbit = true;
         public bool autoHidePlotBodyInfoInBubble = true;
         public int bodyInfoBubbleSize = 200;
+        public bool autoShowPlotBodyInfoAtSurface = false;
 
         public bool autoShowHumanSitesTest = false;
         public float humanSiteZoomShip = 1;

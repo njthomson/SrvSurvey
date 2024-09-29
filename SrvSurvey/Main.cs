@@ -489,7 +489,7 @@ namespace SrvSurvey
             // show some plotters based on changing status values?
             if (game == null || game.isShutdown) return;
 
-            if (game.mode == GameMode.SystemMap && PlotBodyInfo.allowPlotter)
+            if (game.isMode(GameMode.SystemMap, GameMode.Flying, GameMode.Landed, GameMode.InSrv) && PlotBodyInfo.allowPlotter)
                 Program.showPlotter<PlotBodyInfo>();
 
             if (PlotJumpInfo.allowPlotter)

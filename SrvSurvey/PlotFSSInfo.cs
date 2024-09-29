@@ -55,7 +55,10 @@ namespace SrvSurvey
         {
             get => Game.activeGame?.cmdr != null
                 && Game.settings.autoShowPlotFSSInfo
-                && Game.activeGame.isMode(GameMode.FSS);
+                && (
+                    Game.activeGame.mode == GameMode.FSS
+                    || (Game.activeGame.mode == GameMode.SystemMap && Game.settings.autoShowPlotFSSInfoInSystemMap && !PlotGuardianSystem.allowPlotter) // hide if Guardian plotter is open
+                );
         }
 
         protected override void onJournalEntry(Scan entry)

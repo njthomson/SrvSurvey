@@ -130,6 +130,7 @@ namespace SrvSurvey
             lblScreenshotTarget = new Label();
             checkLocalTime = new CheckBox();
             tabPage6 = new TabPage();
+            checkBox23 = new CheckBox();
             pictureBox10 = new PictureBox();
             pictureBox11 = new PictureBox();
             checkPlotJumpInfo = new CheckBox();
@@ -184,6 +185,7 @@ namespace SrvSurvey
             linkAboutOne = new LinkLabel();
             colorDialog = new ColorDialog();
             colorTheme = new ColorDialog();
+            checkBox24 = new CheckBox();
             panel1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numGravityWarningLevel).BeginInit();
@@ -1514,6 +1516,8 @@ namespace SrvSurvey
             // tabPage6
             // 
             tabPage6.BackColor = SystemColors.Control;
+            tabPage6.Controls.Add(checkBox24);
+            tabPage6.Controls.Add(checkBox23);
             tabPage6.Controls.Add(pictureBox10);
             tabPage6.Controls.Add(pictureBox11);
             tabPage6.Controls.Add(checkPlotJumpInfo);
@@ -1543,6 +1547,21 @@ namespace SrvSurvey
             tabPage6.TabIndex = 5;
             tabPage6.Text = "Exploration";
             // 
+            // checkBox23
+            // 
+            checkBox23.AutoSize = true;
+            checkBox23.Checked = true;
+            checkBox23.CheckState = CheckState.Checked;
+            checkBox23.FlatStyle = FlatStyle.System;
+            checkBox23.Location = new Point(31, 275);
+            checkBox23.Margin = new Padding(0);
+            checkBox23.Name = "checkBox23";
+            checkBox23.Size = new Size(290, 20);
+            checkBox23.TabIndex = 39;
+            checkBox23.Tag = "autoShowPlotBodyInfoAtSurface";
+            checkBox23.Text = "When at planet surface and not in Combat mode";
+            checkBox23.UseVisualStyleBackColor = true;
+            // 
             // pictureBox10
             // 
             pictureBox10.BackgroundImage = (Image)resources.GetObject("pictureBox10.BackgroundImage");
@@ -1557,7 +1576,7 @@ namespace SrvSurvey
             // 
             pictureBox11.BackgroundImage = (Image)resources.GetObject("pictureBox11.BackgroundImage");
             pictureBox11.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureBox11.Location = new Point(423, 159);
+            pictureBox11.Location = new Point(423, 152);
             pictureBox11.Name = "pictureBox11";
             pictureBox11.Size = new Size(105, 148);
             pictureBox11.TabIndex = 32;
@@ -1591,7 +1610,7 @@ namespace SrvSurvey
             checkHideBodyInfoInBubble.Checked = true;
             checkHideBodyInfoInBubble.CheckState = CheckState.Checked;
             checkHideBodyInfoInBubble.FlatStyle = FlatStyle.System;
-            checkHideBodyInfoInBubble.Location = new Point(31, 296);
+            checkHideBodyInfoInBubble.Location = new Point(31, 298);
             checkHideBodyInfoInBubble.Margin = new Padding(4, 3, 4, 3);
             checkHideBodyInfoInBubble.Name = "checkHideBodyInfoInBubble";
             checkHideBodyInfoInBubble.Size = new Size(322, 20);
@@ -1606,7 +1625,7 @@ namespace SrvSurvey
             checkBodyInfoOrbit.Checked = true;
             checkBodyInfoOrbit.CheckState = CheckState.Checked;
             checkBodyInfoOrbit.FlatStyle = FlatStyle.System;
-            checkBodyInfoOrbit.Location = new Point(163, 271);
+            checkBodyInfoOrbit.Location = new Point(163, 252);
             checkBodyInfoOrbit.Margin = new Padding(4, 3, 4, 3);
             checkBodyInfoOrbit.Name = "checkBodyInfoOrbit";
             checkBodyInfoOrbit.Size = new Size(150, 20);
@@ -1621,7 +1640,7 @@ namespace SrvSurvey
             checkBodyInfoMap.Checked = true;
             checkBodyInfoMap.CheckState = CheckState.Checked;
             checkBodyInfoMap.FlatStyle = FlatStyle.System;
-            checkBodyInfoMap.Location = new Point(31, 271);
+            checkBodyInfoMap.Location = new Point(31, 252);
             checkBodyInfoMap.Margin = new Padding(4, 3, 4, 3);
             checkBodyInfoMap.Name = "checkBodyInfoMap";
             checkBodyInfoMap.Size = new Size(130, 20);
@@ -1636,7 +1655,7 @@ namespace SrvSurvey
             checkBodyInfo.Checked = true;
             checkBodyInfo.CheckState = CheckState.Checked;
             checkBodyInfo.FlatStyle = FlatStyle.System;
-            checkBodyInfo.Location = new Point(10, 246);
+            checkBodyInfo.Location = new Point(10, 226);
             checkBodyInfo.Margin = new Padding(4, 3, 4, 3);
             checkBodyInfo.Name = "checkBodyInfo";
             checkBodyInfo.Size = new Size(420, 20);
@@ -1648,13 +1667,14 @@ namespace SrvSurvey
             // 
             // checkBox17
             // 
+            checkBox17.AutoSize = true;
             checkBox17.Checked = true;
             checkBox17.CheckState = CheckState.Checked;
             checkBox17.FlatStyle = FlatStyle.System;
-            checkBox17.Location = new Point(31, 31);
+            checkBox17.Location = new Point(31, 32);
             checkBox17.Margin = new Padding(4, 3, 4, 3);
             checkBox17.Name = "checkBox17";
-            checkBox17.Size = new Size(174, 41);
+            checkBox17.Size = new Size(178, 20);
             checkBox17.TabIndex = 26;
             checkBox17.Tag = "autoShowPlotFSSInfo";
             checkBox17.Text = "Show exploration values list";
@@ -1666,7 +1686,7 @@ namespace SrvSurvey
             checkGalMapPlotter.Checked = true;
             checkGalMapPlotter.CheckState = CheckState.Checked;
             checkGalMapPlotter.FlatStyle = FlatStyle.System;
-            checkGalMapPlotter.Location = new Point(10, 321);
+            checkGalMapPlotter.Location = new Point(10, 324);
             checkGalMapPlotter.Margin = new Padding(4, 3, 4, 3);
             checkGalMapPlotter.Name = "checkGalMapPlotter";
             checkGalMapPlotter.Size = new Size(414, 20);
@@ -1678,7 +1698,7 @@ namespace SrvSurvey
             // label13
             // 
             label13.AutoSize = true;
-            label13.Location = new Point(277, 210);
+            label13.Location = new Point(277, 203);
             label13.Name = "label13";
             label13.Size = new Size(114, 15);
             label13.TabIndex = 23;
@@ -1690,7 +1710,7 @@ namespace SrvSurvey
             checkBox16.Checked = true;
             checkBox16.CheckState = CheckState.Checked;
             checkBox16.FlatStyle = FlatStyle.System;
-            checkBox16.Location = new Point(31, 209);
+            checkBox16.Location = new Point(31, 202);
             checkBox16.Name = "checkBox16";
             checkBox16.Size = new Size(152, 20);
             checkBox16.TabIndex = 22;
@@ -1701,7 +1721,7 @@ namespace SrvSurvey
             // numericUpDown1
             // 
             numericUpDown1.Increment = new decimal(new int[] { 10000, 0, 0, 0 });
-            numericUpDown1.Location = new Point(183, 208);
+            numericUpDown1.Location = new Point(183, 201);
             numericUpDown1.Maximum = new decimal(new int[] { 6000000, 0, 0, 0 });
             numericUpDown1.Name = "numericUpDown1";
             numericUpDown1.Size = new Size(88, 23);
@@ -1714,7 +1734,7 @@ namespace SrvSurvey
             // label10
             // 
             label10.AutoSize = true;
-            label10.Location = new Point(375, 185);
+            label10.Location = new Point(375, 178);
             label10.Name = "label10";
             label10.Size = new Size(42, 15);
             label10.TabIndex = 20;
@@ -1726,7 +1746,7 @@ namespace SrvSurvey
             checkBox11.Checked = true;
             checkBox11.CheckState = CheckState.Checked;
             checkBox11.FlatStyle = FlatStyle.System;
-            checkBox11.Location = new Point(31, 184);
+            checkBox11.Location = new Point(31, 177);
             checkBox11.Name = "checkBox11";
             checkBox11.Size = new Size(242, 20);
             checkBox11.TabIndex = 19;
@@ -1738,7 +1758,7 @@ namespace SrvSurvey
             // numMinScanValue
             // 
             numMinScanValue.Increment = new decimal(new int[] { 100000, 0, 0, 0 });
-            numMinScanValue.Location = new Point(281, 183);
+            numMinScanValue.Location = new Point(281, 176);
             numMinScanValue.Maximum = new decimal(new int[] { 6000000, 0, 0, 0 });
             numMinScanValue.Name = "numMinScanValue";
             numMinScanValue.Size = new Size(88, 23);
@@ -1754,7 +1774,7 @@ namespace SrvSurvey
             checkBox10.Checked = true;
             checkBox10.CheckState = CheckState.Checked;
             checkBox10.FlatStyle = FlatStyle.System;
-            checkBox10.Location = new Point(31, 159);
+            checkBox10.Location = new Point(31, 152);
             checkBox10.Margin = new Padding(4, 3, 4, 3);
             checkBox10.Name = "checkBox10";
             checkBox10.Size = new Size(120, 20);
@@ -1769,7 +1789,7 @@ namespace SrvSurvey
             checkBox9.Checked = true;
             checkBox9.CheckState = CheckState.Checked;
             checkBox9.FlatStyle = FlatStyle.System;
-            checkBox9.Location = new Point(31, 134);
+            checkBox9.Location = new Point(31, 127);
             checkBox9.Margin = new Padding(4, 3, 4, 3);
             checkBox9.Name = "checkBox9";
             checkBox9.Size = new Size(147, 20);
@@ -1782,7 +1802,7 @@ namespace SrvSurvey
             // 
             pictureBox5.BackgroundImage = (Image)resources.GetObject("pictureBox5.BackgroundImage");
             pictureBox5.BackgroundImageLayout = ImageLayout.None;
-            pictureBox5.Location = new Point(219, 104);
+            pictureBox5.Location = new Point(219, 97);
             pictureBox5.Name = "pictureBox5";
             pictureBox5.Size = new Size(256, 49);
             pictureBox5.TabIndex = 14;
@@ -1794,7 +1814,7 @@ namespace SrvSurvey
             checkBox8.Checked = true;
             checkBox8.CheckState = CheckState.Checked;
             checkBox8.FlatStyle = FlatStyle.System;
-            checkBox8.Location = new Point(10, 109);
+            checkBox8.Location = new Point(10, 102);
             checkBox8.Margin = new Padding(4, 3, 4, 3);
             checkBox8.Name = "checkBox8";
             checkBox8.Size = new Size(208, 20);
@@ -2224,6 +2244,21 @@ namespace SrvSurvey
             // 
             colorDialog.Color = Color.Yellow;
             // 
+            // checkBox24
+            // 
+            checkBox24.AutoSize = true;
+            checkBox24.Checked = true;
+            checkBox24.CheckState = CheckState.Checked;
+            checkBox24.FlatStyle = FlatStyle.System;
+            checkBox24.Location = new Point(50, 58);
+            checkBox24.Margin = new Padding(4, 3, 4, 3);
+            checkBox24.Name = "checkBox24";
+            checkBox24.Size = new Size(159, 20);
+            checkBox24.TabIndex = 40;
+            checkBox24.Tag = "autoShowPlotFSSInfoInSystemMap";
+            checkBox24.Text = "Show list in system map";
+            checkBox24.UseVisualStyleBackColor = true;
+            // 
             // FormSettings
             // 
             AcceptButton = btnSave;
@@ -2455,5 +2490,7 @@ namespace SrvSurvey
         private NumericUpDown numericUpDown6;
         private CheckBox checkBox19;
         private CheckBox checkBox22;
+        private CheckBox checkBox23;
+        private CheckBox checkBox24;
     }
 }

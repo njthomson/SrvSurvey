@@ -38,9 +38,10 @@ namespace SrvSurvey
                     // any time during DSS or ... 
                     (Game.activeGame.mode == GameMode.SAA && Game.activeGame.systemBody != null)
                     // ... or in the SystemMap and sub-setting allows
-                    || (Game.activeGame.isMode(GameMode.SystemMap, GameMode.Orrery) && Game.settings.autoShowPlotBodyInfoInMap)
+                    || (Game.activeGame.isMode(GameMode.SystemMap, GameMode.Orrery) && Game.settings.autoShowPlotBodyInfoInMap && !Game.settings.autoShowPlotFSSInfoInSystemMap)
                     // ... or when super cruising/gliding close to a body and sub-setting allows
                     || (Game.activeGame.isMode(GameMode.SuperCruising, GameMode.GlideMode) && Game.activeGame.status.hasLatLong && Game.settings.autoShowPlotBodyInfoInOrbit)
+                    || (Game.activeGame.isMode(GameMode.Flying, GameMode.Landed, GameMode.InSrv) && Game.activeGame.status.hasLatLong && Game.settings.autoShowPlotBodyInfoAtSurface && Game.activeGame.status.hudInAnalysisMode)
                 );
         }
 
@@ -57,6 +58,9 @@ namespace SrvSurvey
                 this.lastDestination = destination;
                 this.Invalidate();
             }
+
+            if (!this.allow)
+                Program.closePlotter<PlotBodyInfo>();
         }
 
         protected override void onPaintPlotter(PaintEventArgs e)
@@ -69,7 +73,7 @@ namespace SrvSurvey
                 : game.systemBody;
             if (body == null || !PlotBodyInfo.allowPlotter)
             {
-                Game.log($"Closing PlotBodyInfo - no valid target");
+                Game.log($"Closing PlotBodyInfo");
                 Program.closePlotter<PlotBodyInfo>();
                 return;
             }
