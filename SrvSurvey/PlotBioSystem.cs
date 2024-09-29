@@ -626,7 +626,7 @@ namespace SrvSurvey
                         var genusPrediction = body.genusPredictions.Find(g => g.genus.name == org.genus);
                         if (genusPrediction == null)
                         {
-                            Debugger.Break();
+                            //Debugger.Break();
                             continue;
                         }
                         if (genusPrediction.hasRegionalNew) volCol = VolColor.White;

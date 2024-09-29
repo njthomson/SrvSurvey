@@ -684,5 +684,20 @@ namespace SrvSurvey
                     item.Selected = false;
             }
         }
+
+        private void srvSurveyRamTahHelpersToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Util.openLink("https://github.com/njthomson/SrvSurvey/wiki/Ram-Tah-Missions");
+        }
+
+        private void decodingTheAncientRuinsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Util.openLink("https://canonn.science/codex/ram-tahs-mission/");
+        }
+
+        private void ramTah2DecryptingTheGuardianLogsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Util.openLink("https://canonn.science/codex/ram-tah-decrypting-the-guardian-logs/");
+        }
     }
 }

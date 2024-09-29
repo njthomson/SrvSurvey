@@ -90,6 +90,10 @@
             menuOpenImagesFolder = new ToolStripMenuItem();
             menuOpenDataFile = new ToolStripMenuItem();
             menuOpenPubData = new ToolStripMenuItem();
+            toolStripDropDownButton1 = new ToolStripDropDownButton();
+            decodingTheAncientRuinsToolStripMenuItem = new ToolStripMenuItem();
+            ramTah2DecryptingTheGuardianLogsToolStripMenuItem = new ToolStripMenuItem();
+            srvSurveyRamTahHelpersToolStripMenuItem = new ToolStripMenuItem();
             statusStrip1.SuspendLayout();
             panelSiteTypes.SuspendLayout();
             contextMenu.SuspendLayout();
@@ -110,7 +114,7 @@
             // 
             // statusStrip1
             // 
-            statusStrip1.Items.AddRange(new ToolStripItem[] { lblStatus });
+            statusStrip1.Items.AddRange(new ToolStripItem[] { lblStatus, toolStripDropDownButton1 });
             statusStrip1.Location = new Point(0, 431);
             statusStrip1.Name = "statusStrip1";
             statusStrip1.Size = new Size(1176, 22);
@@ -121,7 +125,7 @@
             // 
             lblStatus.DisplayStyle = ToolStripItemDisplayStyle.Text;
             lblStatus.Name = "lblStatus";
-            lblStatus.Size = new Size(1161, 17);
+            lblStatus.Size = new Size(1033, 17);
             lblStatus.Spring = true;
             lblStatus.Text = "...";
             lblStatus.TextAlign = ContentAlignment.MiddleLeft;
@@ -479,6 +483,37 @@
             menuOpenPubData.Text = "Open pubData file";
             menuOpenPubData.Click += menuOpenPubData_Click;
             // 
+            // toolStripDropDownButton1
+            // 
+            toolStripDropDownButton1.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            toolStripDropDownButton1.DropDownItems.AddRange(new ToolStripItem[] { srvSurveyRamTahHelpersToolStripMenuItem, decodingTheAncientRuinsToolStripMenuItem, ramTah2DecryptingTheGuardianLogsToolStripMenuItem });
+            toolStripDropDownButton1.Image = (Image)resources.GetObject("toolStripDropDownButton1.Image");
+            toolStripDropDownButton1.ImageTransparentColor = Color.Magenta;
+            toolStripDropDownButton1.Name = "toolStripDropDownButton1";
+            toolStripDropDownButton1.Size = new Size(97, 20);
+            toolStripDropDownButton1.Text = "Guidance links";
+            // 
+            // decodingTheAncientRuinsToolStripMenuItem
+            // 
+            decodingTheAncientRuinsToolStripMenuItem.Name = "decodingTheAncientRuinsToolStripMenuItem";
+            decodingTheAncientRuinsToolStripMenuItem.Size = new Size(303, 22);
+            decodingTheAncientRuinsToolStripMenuItem.Text = "Ram Tah #1 - Decoding the Ancient Ruins";
+            decodingTheAncientRuinsToolStripMenuItem.Click += decodingTheAncientRuinsToolStripMenuItem_Click;
+            // 
+            // ramTah2DecryptingTheGuardianLogsToolStripMenuItem
+            // 
+            ramTah2DecryptingTheGuardianLogsToolStripMenuItem.Name = "ramTah2DecryptingTheGuardianLogsToolStripMenuItem";
+            ramTah2DecryptingTheGuardianLogsToolStripMenuItem.Size = new Size(303, 22);
+            ramTah2DecryptingTheGuardianLogsToolStripMenuItem.Text = "Ram Tah #2 - Decrypting the Guardian Logs";
+            ramTah2DecryptingTheGuardianLogsToolStripMenuItem.Click += ramTah2DecryptingTheGuardianLogsToolStripMenuItem_Click;
+            // 
+            // srvSurveyRamTahHelpersToolStripMenuItem
+            // 
+            srvSurveyRamTahHelpersToolStripMenuItem.Name = "srvSurveyRamTahHelpersToolStripMenuItem";
+            srvSurveyRamTahHelpersToolStripMenuItem.Size = new Size(303, 22);
+            srvSurveyRamTahHelpersToolStripMenuItem.Text = "SrvSurvey Ram Tah helpers";
+            srvSurveyRamTahHelpersToolStripMenuItem.Click += srvSurveyRamTahHelpersToolStripMenuItem_Click;
+            // 
             // FormBeacons
             // 
             AcceptButton = btnFilter;
@@ -555,5 +590,9 @@
         private ToolStripMenuItem menuOpenImagesFolder;
         private ToolStripMenuItem systemAddressToolStripMenuItem;
         private ToolStripMenuItem menuOpenPubData;
+        private ToolStripDropDownButton toolStripDropDownButton1;
+        private ToolStripMenuItem decodingTheAncientRuinsToolStripMenuItem;
+        private ToolStripMenuItem ramTah2DecryptingTheGuardianLogsToolStripMenuItem;
+        private ToolStripMenuItem srvSurveyRamTahHelpersToolStripMenuItem;
     }
 }
