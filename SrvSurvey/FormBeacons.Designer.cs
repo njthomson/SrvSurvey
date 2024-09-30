@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormBeacons));
             TreeNode treeNode1 = new TreeNode("All Sites");
             TreeNode treeNode2 = new TreeNode("Beacons");
             TreeNode treeNode3 = new TreeNode("Alpha");
@@ -46,10 +47,13 @@
             TreeNode treeNode15 = new TreeNode("Squid");
             TreeNode treeNode16 = new TreeNode("Stickyhand");
             TreeNode treeNode17 = new TreeNode("All Structures", new TreeNode[] { treeNode7, treeNode8, treeNode9, treeNode10, treeNode11, treeNode12, treeNode13, treeNode14, treeNode15, treeNode16 });
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormBeacons));
             btnShare = new FlatButton();
             statusStrip1 = new StatusStrip();
             lblStatus = new ToolStripStatusLabel();
+            toolStripDropDownButton1 = new ToolStripDropDownButton();
+            srvSurveyRamTahHelpersToolStripMenuItem = new ToolStripMenuItem();
+            decodingTheAncientRuinsToolStripMenuItem = new ToolStripMenuItem();
+            ramTah2DecryptingTheGuardianLogsToolStripMenuItem = new ToolStripMenuItem();
             comboCurrentSystem = new ComboBox();
             label1 = new Label();
             txtFilter = new TextBox();
@@ -90,10 +94,7 @@
             menuOpenImagesFolder = new ToolStripMenuItem();
             menuOpenDataFile = new ToolStripMenuItem();
             menuOpenPubData = new ToolStripMenuItem();
-            toolStripDropDownButton1 = new ToolStripDropDownButton();
-            decodingTheAncientRuinsToolStripMenuItem = new ToolStripMenuItem();
-            ramTah2DecryptingTheGuardianLogsToolStripMenuItem = new ToolStripMenuItem();
-            srvSurveyRamTahHelpersToolStripMenuItem = new ToolStripMenuItem();
+            checkOnlyNeeded = new CheckBox();
             statusStrip1.SuspendLayout();
             panelSiteTypes.SuspendLayout();
             contextMenu.SuspendLayout();
@@ -125,10 +126,41 @@
             // 
             lblStatus.DisplayStyle = ToolStripItemDisplayStyle.Text;
             lblStatus.Name = "lblStatus";
-            lblStatus.Size = new Size(1033, 17);
+            lblStatus.Size = new Size(1064, 17);
             lblStatus.Spring = true;
             lblStatus.Text = "...";
             lblStatus.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // toolStripDropDownButton1
+            // 
+            toolStripDropDownButton1.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            toolStripDropDownButton1.DropDownItems.AddRange(new ToolStripItem[] { srvSurveyRamTahHelpersToolStripMenuItem, decodingTheAncientRuinsToolStripMenuItem, ramTah2DecryptingTheGuardianLogsToolStripMenuItem });
+            toolStripDropDownButton1.Image = (Image)resources.GetObject("toolStripDropDownButton1.Image");
+            toolStripDropDownButton1.ImageTransparentColor = Color.Magenta;
+            toolStripDropDownButton1.Name = "toolStripDropDownButton1";
+            toolStripDropDownButton1.Size = new Size(97, 20);
+            toolStripDropDownButton1.Text = "Guidance links";
+            // 
+            // srvSurveyRamTahHelpersToolStripMenuItem
+            // 
+            srvSurveyRamTahHelpersToolStripMenuItem.Name = "srvSurveyRamTahHelpersToolStripMenuItem";
+            srvSurveyRamTahHelpersToolStripMenuItem.Size = new Size(303, 22);
+            srvSurveyRamTahHelpersToolStripMenuItem.Text = "SrvSurvey Ram Tah helpers";
+            srvSurveyRamTahHelpersToolStripMenuItem.Click += srvSurveyRamTahHelpersToolStripMenuItem_Click;
+            // 
+            // decodingTheAncientRuinsToolStripMenuItem
+            // 
+            decodingTheAncientRuinsToolStripMenuItem.Name = "decodingTheAncientRuinsToolStripMenuItem";
+            decodingTheAncientRuinsToolStripMenuItem.Size = new Size(303, 22);
+            decodingTheAncientRuinsToolStripMenuItem.Text = "Ram Tah #1 - Decoding the Ancient Ruins";
+            decodingTheAncientRuinsToolStripMenuItem.Click += decodingTheAncientRuinsToolStripMenuItem_Click;
+            // 
+            // ramTah2DecryptingTheGuardianLogsToolStripMenuItem
+            // 
+            ramTah2DecryptingTheGuardianLogsToolStripMenuItem.Name = "ramTah2DecryptingTheGuardianLogsToolStripMenuItem";
+            ramTah2DecryptingTheGuardianLogsToolStripMenuItem.Size = new Size(303, 22);
+            ramTah2DecryptingTheGuardianLogsToolStripMenuItem.Text = "Ram Tah #2 - Decrypting the Guardian Logs";
+            ramTah2DecryptingTheGuardianLogsToolStripMenuItem.Click += ramTah2DecryptingTheGuardianLogsToolStripMenuItem_Click;
             // 
             // comboCurrentSystem
             // 
@@ -263,7 +295,7 @@
             // checkRamTah
             // 
             checkRamTah.AutoSize = true;
-            checkRamTah.Location = new Point(736, 8);
+            checkRamTah.Location = new Point(736, 9);
             checkRamTah.Name = "checkRamTah";
             checkRamTah.Size = new Size(131, 19);
             checkRamTah.TabIndex = 19;
@@ -483,36 +515,17 @@
             menuOpenPubData.Text = "Open pubData file";
             menuOpenPubData.Click += menuOpenPubData_Click;
             // 
-            // toolStripDropDownButton1
+            // checkOnlyNeeded
             // 
-            toolStripDropDownButton1.DisplayStyle = ToolStripItemDisplayStyle.Text;
-            toolStripDropDownButton1.DropDownItems.AddRange(new ToolStripItem[] { srvSurveyRamTahHelpersToolStripMenuItem, decodingTheAncientRuinsToolStripMenuItem, ramTah2DecryptingTheGuardianLogsToolStripMenuItem });
-            toolStripDropDownButton1.Image = (Image)resources.GetObject("toolStripDropDownButton1.Image");
-            toolStripDropDownButton1.ImageTransparentColor = Color.Magenta;
-            toolStripDropDownButton1.Name = "toolStripDropDownButton1";
-            toolStripDropDownButton1.Size = new Size(97, 20);
-            toolStripDropDownButton1.Text = "Guidance links";
-            // 
-            // decodingTheAncientRuinsToolStripMenuItem
-            // 
-            decodingTheAncientRuinsToolStripMenuItem.Name = "decodingTheAncientRuinsToolStripMenuItem";
-            decodingTheAncientRuinsToolStripMenuItem.Size = new Size(303, 22);
-            decodingTheAncientRuinsToolStripMenuItem.Text = "Ram Tah #1 - Decoding the Ancient Ruins";
-            decodingTheAncientRuinsToolStripMenuItem.Click += decodingTheAncientRuinsToolStripMenuItem_Click;
-            // 
-            // ramTah2DecryptingTheGuardianLogsToolStripMenuItem
-            // 
-            ramTah2DecryptingTheGuardianLogsToolStripMenuItem.Name = "ramTah2DecryptingTheGuardianLogsToolStripMenuItem";
-            ramTah2DecryptingTheGuardianLogsToolStripMenuItem.Size = new Size(303, 22);
-            ramTah2DecryptingTheGuardianLogsToolStripMenuItem.Text = "Ram Tah #2 - Decrypting the Guardian Logs";
-            ramTah2DecryptingTheGuardianLogsToolStripMenuItem.Click += ramTah2DecryptingTheGuardianLogsToolStripMenuItem_Click;
-            // 
-            // srvSurveyRamTahHelpersToolStripMenuItem
-            // 
-            srvSurveyRamTahHelpersToolStripMenuItem.Name = "srvSurveyRamTahHelpersToolStripMenuItem";
-            srvSurveyRamTahHelpersToolStripMenuItem.Size = new Size(303, 22);
-            srvSurveyRamTahHelpersToolStripMenuItem.Text = "SrvSurvey Ram Tah helpers";
-            srvSurveyRamTahHelpersToolStripMenuItem.Click += srvSurveyRamTahHelpersToolStripMenuItem_Click;
+            checkOnlyNeeded.AutoSize = true;
+            checkOnlyNeeded.Location = new Point(873, 9);
+            checkOnlyNeeded.Name = "checkOnlyNeeded";
+            checkOnlyNeeded.Size = new Size(123, 19);
+            checkOnlyNeeded.TabIndex = 28;
+            checkOnlyNeeded.Text = "Show only needed";
+            checkOnlyNeeded.UseVisualStyleBackColor = true;
+            checkOnlyNeeded.Visible = false;
+            checkOnlyNeeded.CheckedChanged += checkOnlyNeeded_CheckedChanged;
             // 
             // FormBeacons
             // 
@@ -521,6 +534,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.AppWorkspace;
             ClientSize = new Size(1176, 453);
+            Controls.Add(checkOnlyNeeded);
             Controls.Add(panelSiteTypes);
             Controls.Add(txtSiteTypes);
             Controls.Add(btnSiteTypes);
@@ -594,5 +608,6 @@
         private ToolStripMenuItem decodingTheAncientRuinsToolStripMenuItem;
         private ToolStripMenuItem ramTah2DecryptingTheGuardianLogsToolStripMenuItem;
         private ToolStripMenuItem srvSurveyRamTahHelpersToolStripMenuItem;
+        private CheckBox checkOnlyNeeded;
     }
 }

@@ -231,9 +231,9 @@ namespace SrvSurvey
                     this.dtx = ten;
                     this.dty = fourSix;
                     if (ramTahNeeded)
-                        this.drawTextAt($"> Needed for Ram Tah mission", brush, GameColors.fontMiddle);
+                        this.drawTextAt($"► Needed for Ram Tah mission", brush, GameColors.fontMiddle);
                     else
-                        this.drawTextAt($"> Log already acquired", brush, GameColors.fontMiddle);
+                        this.drawTextAt($"► Log already acquired", brush, GameColors.fontMiddle);
                 }
 
                 if (game.guardianMatsFull)

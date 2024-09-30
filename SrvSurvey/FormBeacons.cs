@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Text;
+using static SrvSurvey.canonn.Canonn;
 using static SrvSurvey.game.GuardianSiteData;
 
 namespace SrvSurvey
@@ -48,6 +49,9 @@ namespace SrvSurvey
             menuOpenDataFile.Visible = Debugger.IsAttached;
             menuOpenPubData.Visible = Debugger.IsAttached;
 
+            if (Game.activeGame?.cmdr.decodeTheRuinsMissionActive == TahMissionStatus.Active || Game.activeGame?.cmdr.decodeTheLogsMissionActive == TahMissionStatus.Active)
+                checkOnlyNeeded.Checked = true;
+
             Util.applyTheme(this);
         }
 
@@ -89,8 +93,26 @@ namespace SrvSurvey
             // ignore events whilst checkbox is disabled
             if (!checkRamTah.Enabled) return Task.CompletedTask;
             checkRamTah.Enabled = false;
+            checkOnlyNeeded.Enabled = false;
 
-            var incRamTahLogs = checkRamTah.Checked;
+            var incRamTah = checkRamTah.Checked;
+
+            var eitherMissionActive = Game.activeGame?.cmdr.decodeTheRuinsMissionActive == TahMissionStatus.Active
+                || Game.activeGame?.cmdr.decodeTheLogsMissionActive == TahMissionStatus.Active;
+
+            var incRamTahRuins = Canonn.ShowLogs.None;
+            var incRamTahLogs = Canonn.ShowLogs.None;
+            if (checkRamTah.Checked)
+            {
+                incRamTahRuins = ShowLogs.All;
+                incRamTahLogs = ShowLogs.All;
+                if (eitherMissionActive && checkOnlyNeeded.Checked)
+                {
+                    incRamTahRuins = Game.activeGame?.cmdr.decodeTheRuinsMissionActive == TahMissionStatus.Active ? ShowLogs.Needed : ShowLogs.None;
+                    incRamTahLogs = Game.activeGame?.cmdr.decodeTheLogsMissionActive == TahMissionStatus.Active ? ShowLogs.Needed : ShowLogs.None;
+                }
+            }
+
             // the first load of Ram Tah data can be slow and needs to be async
             checkRamTah.ThreeState = true;
             checkRamTah.CheckState = CheckState.Indeterminate;
@@ -102,7 +124,7 @@ namespace SrvSurvey
                 {
                     // reload all Ruins, optionally including Ram Tah logs
                     allSites.AddRange(Game.canonn.loadAllStructures(incRamTahLogs));
-                    allSites.AddRange(Game.canonn.loadAllRuins(incRamTahLogs));
+                    allSites.AddRange(Game.canonn.loadAllRuins(incRamTahRuins));
 
                     this.Invoke(() =>
                     {
@@ -110,12 +132,14 @@ namespace SrvSurvey
 
                         checkRamTah.ThreeState = false;
                         this.grid.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
-                        if (!incRamTahLogs) this.grid.Columns[10].Width = 0;
+                        if (!incRamTah) this.grid.Columns[10].Width = 0;
 
                         this.BeginInvoke(() =>
                         {
-                            checkRamTah.CheckState = incRamTahLogs ? CheckState.Checked : CheckState.Unchecked;
+                            checkRamTah.CheckState = incRamTah ? CheckState.Checked : CheckState.Unchecked;
                             checkRamTah.Enabled = true;
+                            checkOnlyNeeded.Enabled = true;
+                            checkOnlyNeeded.Visible = checkRamTah.Checked;
                         });
 
                     });
@@ -426,6 +450,12 @@ namespace SrvSurvey
         }
 
         private void checkRamTah_CheckedChanged(object sender, EventArgs e)
+        {
+            checkOnlyNeeded.Visible = checkRamTah.Checked;
+            this.beginPrepareAllRows();
+        }
+
+        private void checkOnlyNeeded_CheckedChanged(object sender, EventArgs e)
         {
             this.beginPrepareAllRows();
         }

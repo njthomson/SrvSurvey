@@ -29,10 +29,12 @@ namespace SrvSurvey
         {
             // TODO: show this earlier, like on approach?
             get => Game.settings.autoShowRamTah
-                && Game.activeGame != null
+                && Game.settings.enableGuardianSites
+                && Game.activeGame?.systemBody != null
                 && Game.activeGame.cmdr.ramTahActive
                 && !Game.activeGame.hidePlottersFromCombatSuits
-                && PlotGuardians.allowPlotter
+                && Game.activeGame.status?.hasLatLong == true
+                && Game.activeGame.systemSite?.location != null
                 && Game.activeGame.isMode(GameMode.InSrv, GameMode.OnFoot, GameMode.Landed, GameMode.Flying, GameMode.InFighter, GameMode.CommsPanel, GameMode.InternalPanel)
                 ;
         }
@@ -67,11 +69,13 @@ namespace SrvSurvey
 
                     var isTargetObelisk = targetObelisk != null && bar.Value.Contains(targetObelisk);
                     var isCurrentObelisk = bar.Value.Any(_ => _ == game.systemSite.currentObelisk?.name);
-                    var brush = GameColors.brushGameOrange;
+                    Brush brush = GameColors.brushGameOrange;
                     if (isTargetObelisk && !isCurrentObelisk && game.systemSite.currentObelisk != null)
                         brush = GameColors.brushDarkCyan;
                     else if (isCurrentObelisk || isTargetObelisk)
                         brush = GameColors.brushCyan;
+                    else if (!hasItem1 || !hasItem2)
+                        brush = GameColors.brushRed;
 
                     // change colours if items are missing? Perhaps overkill?
                     //var brush = (hasItem1 && hasItem2)
@@ -85,14 +89,14 @@ namespace SrvSurvey
                     this.dty += six;
 
                     this.drawRamTahDot(0, 0, item1);
-                    this.drawTextAt(item1, hasItem1 ? brush : Brushes.Red, GameColors.fontSmall);
+                    this.drawTextAt(item1, hasItem1 ? GameColors.brushGameOrange : Brushes.Red, GameColors.fontSmall);
 
                     if (item2 != null)
                     {
                         this.drawTextAt("+", brush, GameColors.fontSmall);
                         this.dtx += two;
                         this.drawRamTahDot(0, 0, item2);
-                        this.drawTextAt(item2, hasItem2 ? brush : Brushes.Red, GameColors.fontSmall);
+                        this.drawTextAt(item2, hasItem2 ? GameColors.brushGameOrange : Brushes.Red, GameColors.fontSmall);
                     }
 
                     if (this.dtx > sz.Width) sz.Width = this.dtx;
@@ -105,7 +109,7 @@ namespace SrvSurvey
                         if (targetObelisk == ob || game.systemSite.currentObelisk?.name == ob)
                             this.drawTextAt(ob, brush, GameColors.fontSmallBold);
                         else
-                            this.drawTextAt(ob, GameColors.fontSmall);
+                            this.drawTextAt(ob, brush, GameColors.fontSmall);
                     }
 
                     this.dty += oneFour;
@@ -120,7 +124,7 @@ namespace SrvSurvey
             else
             {
                 this.dtx = twoFour;
-                this.dty += this.drawTextAt($"All logs at this site have\r\nalready been scanned.", GameColors.brushGameOrange, GameColors.fontMiddle).Height;
+                this.dty += this.drawTextAt($"No new logs available", GameColors.brushGameOrange, GameColors.fontMiddle).Height;
                 if (this.dtx > sz.Width) sz.Width = this.dtx;
             }
 

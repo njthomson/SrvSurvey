@@ -654,12 +654,6 @@ namespace SrvSurvey
 
             var stringFormat = StringFormat.GenericDefault;
 
-            if (font.Bold)
-            {
-                dty++;
-                stringFormat = StringFormat.GenericTypographic;
-            }
-
             if (rightAlign)
             {
                 var x = dtx - this.lastTextSize.Width;
@@ -670,9 +664,6 @@ namespace SrvSurvey
                 g.DrawString(txt, font, brush, this.dtx, this.dty, stringFormat);
                 this.dtx += this.lastTextSize.Width;
             }
-
-            if (font.Bold) dty--;
-
 
             return this.lastTextSize;
         }

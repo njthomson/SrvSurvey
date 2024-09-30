@@ -128,7 +128,12 @@ namespace SrvSurvey.game
 
         public bool isDiscovered(string entryId)
         {
-            var exists = this.codexFirsts.ContainsKey(long.Parse(entryId));
+            return isDiscovered(long.Parse(entryId));
+        }
+
+        public bool isDiscovered(long entryId)
+        {
+            var exists = this.codexFirsts.ContainsKey(entryId);
             return exists;
         }
 
@@ -138,13 +143,24 @@ namespace SrvSurvey.game
             return isDiscoveredInRegion(entryId, regionId);
         }
 
+        public bool isDiscoveredInRegion(long entryId, string region)
+        {
+            var regionId = GalacticRegions.getIdxFromName(region);
+            return isDiscoveredInRegion(entryId, regionId);
+        }
+
         public bool isDiscoveredInRegion(string entryId, int regionId)
+        {
+            return isDiscoveredInRegion(long.Parse(entryId), regionId);
+        }
+
+        public bool isDiscoveredInRegion(long entryId, int regionId)
         {
             var regionalTracker = regionId == 0
                 ? this
                 : this.getRegionalTracker(regionId);
 
-            var exists = regionalTracker.codexFirsts.ContainsKey(long.Parse(entryId));
+            var exists = regionalTracker.codexFirsts.ContainsKey(entryId);
             return exists;
         }
 

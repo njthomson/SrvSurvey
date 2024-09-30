@@ -333,10 +333,17 @@ namespace SrvSurvey.canonn
             return summaries;
         }
 
-        public List<GuardianGridEntry> loadAllRuins(bool incRamTahLogs = false)
+        public enum ShowLogs
+        {
+            All,
+            Needed,
+            None
+        }
+
+        public List<GuardianGridEntry> loadAllRuins(ShowLogs showLogs = ShowLogs.None)
         {
             Data.suppressLoadingMsg = true;
-            Game.log($"loadAllRuins: incRamTahLogs: {incRamTahLogs}");
+            Game.log($"loadAllRuins: showLogs: {showLogs}");
             if (this.allRuins == null)
             {
                 Game.log("Why no ruinSummaries?");
@@ -347,13 +354,19 @@ namespace SrvSurvey.canonn
             var allRuinEntries = this.allRuins.Select(_ => new GuardianGridEntry(_)).ToList();
 
             // optionally include Ram Tah logs available at each Ruins
-            if (incRamTahLogs)
+            if (showLogs != ShowLogs.None)
             {
                 foreach (var entry in allRuinEntries)
                 {
                     var pubData = GuardianSitePub.Load(entry.fullBodyName, entry.idx, entry.siteType);
                     // set notes as Ram Tah logs
-                    entry.ramTahLogs = ActiveObelisk.orderedRamTahLogs(pubData?.ao)!;
+                    var obelisks = pubData?.ao;
+                    if (showLogs == ShowLogs.Needed && Game.activeGame?.cmdr.decodeTheRuins.Count > 0 && obelisks != null)
+                    {
+                        var o2 = obelisks.Where(o => !Game.activeGame.cmdr.decodeTheRuins.Contains(o.msg)).ToHashSet();
+                        obelisks = o2;
+                    }
+                    entry.ramTahLogs = ActiveObelisk.orderedRamTahLogs(obelisks)!;
                 }
             }
 
@@ -422,8 +435,7 @@ namespace SrvSurvey.canonn
             return allRuinEntries;
         }
 
-
-        public List<GuardianGridEntry> loadAllStructures(bool incRamTahLogs = false)
+        public List<GuardianGridEntry> loadAllStructures(ShowLogs showLogs = ShowLogs.None)
         {
             var newEntries = new List<GuardianGridEntry>();
 
@@ -431,13 +443,19 @@ namespace SrvSurvey.canonn
             var allStructures = this.allStructures.Select(_ => new GuardianGridEntry(_)).ToList();
 
             // optionally include Ram Tah logs available at each Ruins
-            if (incRamTahLogs)
+            if (showLogs != ShowLogs.None)
             {
                 foreach (var entry in allStructures)
                 {
                     var pubData = GuardianSitePub.Load(entry.fullBodyName, 1, entry.siteType);
                     // set notes as Ram Tah logs
-                    entry.ramTahLogs = ActiveObelisk.orderedRamTahLogs(pubData?.ao)!;
+                    var obelisks = pubData?.ao;
+                    if (showLogs == ShowLogs.Needed && Game.activeGame?.cmdr.decodeTheRuins.Count > 0 && obelisks != null)
+                    {
+                        var o2 = obelisks.Where(o => !Game.activeGame.cmdr.decodeTheRuins.Contains(o.msg)).ToHashSet();
+                        obelisks = o2;
+                    }
+                    entry.ramTahLogs = ActiveObelisk.orderedRamTahLogs(obelisks)!;
                 }
             }
 

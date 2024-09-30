@@ -1086,6 +1086,7 @@ namespace SrvSurvey.game
                         if (organism.species == null && match.species.name != null) organism.species = match.species.name;
                         if (organism.speciesLocalized == null && match.species.englishName != null) organism.speciesLocalized = match.species.englishName;
                         if (organism.variant == null && match.variant.name != null) organism.variant = match.variant.name;
+                        if (organism.variantLocalized == null && match.variant.englishName != null) organism.variantLocalized = match.variant.englishName;
 
                         shouldPredictBios = true;
                     }

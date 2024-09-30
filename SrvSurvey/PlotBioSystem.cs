@@ -245,6 +245,19 @@ namespace SrvSurvey
                     var maxReward = body.getBioRewardForGenus(organism, false);
                     var volCol = /*highlight ? VolColor.Blue :*/ VolColor.Orange;
                     if (shouldBeGold(discoveryPrefix)) volCol = VolColor.Gold;
+                    else if (!organism.analyzed)
+                    {
+                        if (Game.activeGame?.cmdrCodex.isDiscovered(organism.entryId) == false)
+                        {
+                            discoveryPrefix = "⚑";
+                            volCol = VolColor.Gold;
+                        }
+                        else if (Game.activeGame?.cmdrCodex.isDiscoveredInRegion(organism.entryId, game.cmdr.galacticRegion) == false)
+                        {
+                            discoveryPrefix = "⚐";
+                            if (Game.settings.highlightRegionalFirsts) volCol = VolColor.Gold;
+                        }
+                    }
                     drawVolumeBars(g, oneTwo, yy + oneSix, volCol, minReward, maxReward, false);
 
                     // line 1
@@ -616,6 +629,7 @@ namespace SrvSurvey
                     if (org.entryId > 0)
                     {
                         if (org.isFirst) volCol = VolColor.Gold;
+                        else if (!org.analyzed && Game.activeGame?.cmdrCodex.isDiscovered(org.entryId) == false) volCol = VolColor.Gold;
                         var min = body.getBioRewardForGenus(org, true);
                         var max = body.getBioRewardForGenus(org, false);
                         drawVolumeBars(g, x, y, volCol, min, max, false);
