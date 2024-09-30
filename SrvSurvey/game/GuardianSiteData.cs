@@ -411,6 +411,7 @@ namespace SrvSurvey.game
             if (plot?.targetObelisk == obelisk.name)
                 plot.setTargetObelisk(null);
 
+            FormBeacons.activeForm?.beginPrepareAllRows();
             FormRamTah.activeForm?.updateChecks();
             Program.invalidateActivePlotters();
         }
@@ -473,7 +474,7 @@ namespace SrvSurvey.game
             if (this.pubData != null)
                 return;
 
-            this.pubData = GuardianSitePub.Load(this.bodyName, this.index, this.type);
+            this.pubData = GuardianSitePub.Load(this.bodyName, this.index, this.isRuins);
             if (this.pubData == null)
             {
                 Game.log($"Why no pubData for '{this.bodyName}' / '{this.name}'? (Newly discovered Ruins?)\r\nSee: {this.filepath}");

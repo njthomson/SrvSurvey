@@ -382,7 +382,7 @@ namespace BioCriterias
             }
             else
             {
-                Game.log($"testCompositionQuery: Unexpected bodyValue type: {bodyValue?.GetType().Name ?? "(is null)"}");
+                Game.log($"testCompositionQuery: Unexpected bodyValue type: {bodyValue?.GetType().Name ?? "(is null)"} ({clause})");
                 Debugger.Break();
             }
         }

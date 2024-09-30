@@ -358,6 +358,11 @@ namespace SrvSurvey.game
         public static GuardianSitePub? Load(string bodyName, int index, SiteType siteType)
         {
             var isRuins = siteType == SiteType.Alpha || siteType == SiteType.Beta || siteType == SiteType.Gamma;
+            return Load(bodyName, index, isRuins);
+        }
+
+        public static GuardianSitePub? Load(string bodyName, int index, bool isRuins)
+        {
             var filename = GuardianSiteData.getFilename(bodyName, index, isRuins);
 
             var pubPath = Path.Combine(Git.pubGuardianFolder, filename);
@@ -368,7 +373,7 @@ namespace SrvSurvey.game
             }
 
             if (!Data.suppressLoadingMsg)
-                Game.log($"Reading pubData for '{bodyName}' #{index} ({siteType})");
+                Game.log($"Reading pubData for '{bodyName}' #{index} - " + (isRuins ? "Ruins" : "Structure"));
             var json = File.ReadAllText(pubPath);
 
             var pubData = JsonConvert.DeserializeObject<GuardianSitePub>(json);

@@ -88,7 +88,7 @@ namespace SrvSurvey
             });
         }
 
-        private Task beginPrepareAllRows()
+        public Task beginPrepareAllRows()
         {
             // ignore events whilst checkbox is disabled
             if (!checkRamTah.Enabled) return Task.CompletedTask;

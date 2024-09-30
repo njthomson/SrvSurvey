@@ -601,6 +601,7 @@ namespace SrvSurvey
                 siteData.poiStatus[this.nearestPoi.name] = SitePoiStatus.present;
                 siteData.Save();
                 this.Invalidate();
+                FormBeacons.activeForm?.beginPrepareAllRows();
             }
         }
 
@@ -772,6 +773,7 @@ namespace SrvSurvey
             siteData.poiStatus[this.nearestPoi.name] = poiStatus;
             siteData.Save();
             this.Invalidate();
+            FormBeacons.activeForm?.beginPrepareAllRows();
             // update GuardianSystemStatus entry
             game.systemData.prepSettlements();
             /* TODO: test this when next at Guardian sites...

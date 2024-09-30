@@ -2222,8 +2222,9 @@ namespace SrvSurvey.game
                 this.matStatsTracker.population = entry.Population;
 
                 this.matStatsTracker.systemFactionName = entry.SystemFaction.Name;
-                var systemFaction = entry.Factions.First(f => f.Name == entry.SystemFaction.Name);
-                this.matStatsTracker.systemFactionState = systemFaction.FactionState;
+                var systemFaction = entry.Factions?.FirstOrDefault(f => f.Name == entry.SystemFaction.Name);
+                if (systemFaction != null)
+                    this.matStatsTracker.systemFactionState = systemFaction.FactionState;
 
                 return true;
             });

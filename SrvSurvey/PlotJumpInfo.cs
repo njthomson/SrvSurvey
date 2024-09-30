@@ -141,6 +141,9 @@ namespace SrvSurvey
                 var data = task.Result;
                 if (data == null) return;
 
+                // last updated
+                if (data.updated_at != null && data.bodies?.Count > 0)
+                    systemsCache[nextSystem].lastUpdated = data.updated_at;
 
                 // how many stations are there?
                 if (data.stations?.Count > 0)
@@ -200,10 +203,9 @@ namespace SrvSurvey
                     this.calculateSingleHopDistances();
                 }
 
-
-                // last updated
-                if (task.Result.date != null && task.Result.bodies?.Count > 0)
-                    systemsCache[nextSystem].lastUpdated = task.Result.date;
+                //// last updated
+                //if (task.Result.date != null && task.Result.bodies?.Count > 0)
+                //    systemsCache[nextSystem].lastUpdated = task.Result.date;
 
                 Program.control.BeginInvoke(() => this.Invalidate());
             }));
