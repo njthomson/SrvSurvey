@@ -65,9 +65,9 @@ namespace SrvSurvey
             { "$Codex_Ent_Ground_Struct_Ice_Name;",        100 }, // Crystalline Shards
             { "$Codex_Ent_Tube_Name;",                     100 }, // Sinuous Tubers
             // Odyssey Thargoid
-            { "$Codex_Ent_Barnacles_Name;",                50 }, // Mega Barnacles
-            { "$Codex_Ent_Thargoid_Coral_Name;",           50 }, // Coral Roots
-            { "$Codex_Ent_Thargoid_Tower_Name;",           50 }, // Spire Towers
+            { "$Codex_Ent_Barnacles_Name;",                85 }, // Mega Barnacles
+            { "$Codex_Ent_Thargoid_Coral_Name;",           85 }, // Coral Roots
+            { "$Codex_Ent_Thargoid_Tower_Name;",           85 }, // Spire Towers
         };
 
         public static Dictionary<string, string> prefixes = new Dictionary<string, string>()

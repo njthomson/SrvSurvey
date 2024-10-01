@@ -75,7 +75,7 @@ namespace SrvSurvey.canonn
                 Game.log("prepBioRef: (re)building from whole CodexRef ...");
                 this.genus = new List<BioGenus>();
                 var organicStuff = codexRef!.Values
-                    .Where(_ => _.reward > 0 || _.entryid == "3100600"); // special case, working around bad data from CodexRef?
+                    .Where(_ => _.reward > 0);
 
                 foreach (var thing in organicStuff)
                 {
@@ -148,13 +148,6 @@ namespace SrvSurvey.canonn
                             case "$Codex_Ent_Thargoid_Tower_ExtraHigh_Name;":
                                 genusName = "$Codex_Ent_Thargoid_Tower_Name;"; 
                                 break;
-                        }
-
-                        // special case, working around bad data from CodexRef?
-                        if (thing.entryid == "3100600")
-                        {
-                            variantName = "$Codex_Ent_Thargoid_Coral_Tree_Name;";
-                            speciesName = "$Codex_Ent_Thargoid_Coral_Tree_Name;";
                         }
 
                         if (genusName == null) throw new Exception($"Oops: {thing.sub_class}?");
