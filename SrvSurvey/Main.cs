@@ -17,7 +17,7 @@ namespace SrvSurvey
         private FileSystemWatcher? screenshotWatcher;
 
         private Rectangle lastWindowRect;
-        private bool lastWindowHasFocus;
+        public bool lastWindowHasFocus;
         private List<Control> bioCtrls;
         private Dictionary<string, Screenshot> pendingScreenshots = new Dictionary<string, Screenshot>();
         private bool wasWithinDssDuration;

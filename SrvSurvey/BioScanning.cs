@@ -29,7 +29,15 @@ namespace SrvSurvey
             return $"{species} ({radius}m): @{location}";
         }
 
-        public static Dictionary<string, int> ranges = new Dictionary<string, int>()
+        public static int getRange(string? genus)
+        {
+            if (genus != null && ranges.ContainsKey(genus))
+                return ranges[genus];
+            else
+                return 50;
+        }
+
+        private static Dictionary<string, int> ranges = new Dictionary<string, int>()
         {
             // Distances from https://elite-dangerous.fandom.com/wiki/Genetic_Sampler
 
@@ -56,6 +64,10 @@ namespace SrvSurvey
             { "$Codex_Ent_Brancae_Name;",                  100 }, // Brain Tree
             { "$Codex_Ent_Ground_Struct_Ice_Name;",        100 }, // Crystalline Shards
             { "$Codex_Ent_Tube_Name;",                     100 }, // Sinuous Tubers
+            // Odyssey Thargoid
+            { "$Codex_Ent_Barnacles_Name;",                50 }, // Mega Barnacles
+            { "$Codex_Ent_Thargoid_Coral_Name;",           50 }, // Coral Roots
+            { "$Codex_Ent_Thargoid_Tower_Name;",           50 }, // Spire Towers
         };
 
         public static Dictionary<string, string> prefixes = new Dictionary<string, string>()
@@ -83,6 +95,10 @@ namespace SrvSurvey
             { "bra", "$Codex_Ent_Brancae_Name;"}, // Brain Tree
             { "cry", "$Codex_Ent_Ground_Struct_Ice_Name;"}, // Crystalline Shards
             { "sin", "$Codex_Ent_Tube_Name;"}, // Sinuous Tubers
+            // Odyssey Thargoid
+            { "mat", "$Codex_Ent_Barnacles_Name;"}, // Mega Barnacles
+            { "root", "$Codex_Ent_Thargoid_Coral_Name;"}, // Coral Roots
+            { "tow", "$Codex_Ent_Thargoid_Tower_Name;"}, // Spire Towers
         };
 
         public static Dictionary<string, string> genusNames = new Dictionary<string, string>()

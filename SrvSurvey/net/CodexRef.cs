@@ -75,18 +75,19 @@ namespace SrvSurvey.canonn
                 Game.log("prepBioRef: (re)building from whole CodexRef ...");
                 this.genus = new List<BioGenus>();
                 var organicStuff = codexRef!.Values
-                    .Where(_ => _.sub_category == "$Codex_SubCategory_Organic_Structures;" && _.reward > 0);
+                    .Where(_ => _.reward > 0 || _.entryid == "3100600"); // special case, working around bad data from CodexRef?
 
                 foreach (var thing in organicStuff)
                 {
                     if (thing.entryid.Length != 7) throw new Exception("Bad EntryId length!");
 
                     // extract/create various names
-                    string variantName, variantEnglishName, speciesName, speciesEnglishName, genusName, genusEnglishName;
+                    string variantName, variantEnglishName, speciesName, speciesEnglishName, genusName = null!, genusEnglishName;
 
-                    if (thing.platform == "odyssey")
+                    // scannable Thargoid things - treat like legacy?
+                    if (thing.platform == "odyssey" && thing.hud_category != "Thargoid")
                     {
-                        // extract/create various names
+                        // regular odyssey things - extract/create various names
                         variantName = thing.name;
                         variantEnglishName = thing.english_name;
 
@@ -106,9 +107,17 @@ namespace SrvSurvey.canonn
                         speciesName = variantName;
                         speciesEnglishName = variantEnglishName;
 
-                        var parts = thing.english_name.Split(' ', 2); // StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
-                        genusEnglishName = parts[1]; // TODO: "Brain Tree" vs "Brain Trees" ?!
+                        if (thing.sub_category == "$Codex_SubCategory_Thargoid;")
+                        {
+                            genusEnglishName = variantEnglishName;
+                        }
+                        else
+                        {
+                            var parts = thing.english_name.Split(' ', 2); // StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+                            genusEnglishName = parts[1]; // TODO: "Brain Tree" vs "Brain Trees" ?!
+                        }
 
+                        // special cases for legacy things
                         switch (thing.sub_class)
                         {
                             case "Anemone": genusName = "$Codex_Ent_Sphere_Name;"; break;
@@ -117,9 +126,38 @@ namespace SrvSurvey.canonn
                             case "Brain Tree": genusName = "$Codex_Ent_Brancae_Name;"; break;
                             case "Shards": genusName = "$Codex_Ent_Ground_Struct_Ice_Name;"; break;
                             case "Tubers": genusName = "$Codex_Ent_Tube_Name;"; break;
-                            default:
-                                throw new Exception($"Oops: {thing.sub_class}?");
                         }
+                        // special cases for scannable Thargoid things
+                        switch (thing.name)
+                        {
+                            case "$Codex_Ent_Thargoid_Coral_Root_Name;":
+                            case "$Codex_Ent_Thargoid_Coral_Tree_Name;":
+                            case "$Codex_Ent_Thargoid_Coral_Name;": // TODO: Remove this once Coral Tree is present?
+                                genusName = "$Codex_Ent_Thargoid_Coral_Name;"; 
+                                break;
+
+                            case "$Codex_Ent_Thargoid_Barnacle_Matrix_Name;":
+                                genusName = "$Codex_Ent_Barnacles_Name;";
+                                break;
+
+                            // all the Spires?
+                            case "$Codex_Ent_Thargoid_Tower_Name;":
+                            case "$Codex_Ent_Thargoid_Tower_Low_Name;":
+                            case "$Codex_Ent_Thargoid_Tower_Med_Name;":
+                            case "$Codex_Ent_Thargoid_Tower_High_Name;":
+                            case "$Codex_Ent_Thargoid_Tower_ExtraHigh_Name;":
+                                genusName = "$Codex_Ent_Thargoid_Tower_Name;"; 
+                                break;
+                        }
+
+                        // special case, working around bad data from CodexRef?
+                        if (thing.entryid == "3100600")
+                        {
+                            variantName = "$Codex_Ent_Thargoid_Coral_Tree_Name;";
+                            speciesName = "$Codex_Ent_Thargoid_Coral_Tree_Name;";
+                        }
+
+                        if (genusName == null) throw new Exception($"Oops: {thing.sub_class}?");
                     }
 
                     // match or create the Genus
@@ -130,7 +168,7 @@ namespace SrvSurvey.canonn
                         {
                             name = genusName,
                             englishName = genusEnglishName,
-                            dist = BioScan.ranges[genusName],
+                            dist = BioScan.getRange(genusName),
                             odyssey = thing.platform == "odyssey",
                             species = new List<BioSpecies>(),
                         };

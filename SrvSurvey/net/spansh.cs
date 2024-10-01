@@ -140,7 +140,6 @@ namespace SrvSurvey.net
             query["filters"]!["atmosphere"]!["value"]![0] = $"Thin {gas}";
             query["sort"]![0]!["atmosphere_composition"]![0]!["name"] = gas;
 
-
             var json = JsonConvert.SerializeObject(query);
             var body = new StringContent(json, Encoding.ASCII, "application/json");
 

@@ -153,7 +153,7 @@ namespace SrvSurvey
                     //var radius = BioScan.ranges.ContainsKey(entry.Genus) ? BioScan.ranges[entry.Genus] : highlightDistance;
                     if (td.distance < highlightDistance && Game.settings.autoRemoveTrackerOnSampling)
                     {
-                        Game.log($"Auto removing tracker for: '{BioScan.genusNames[entry.Genus]}'/'{entry.Genus}'");
+                        Game.log($"Auto removing tracker for: '{entry.Species_Localised}'/'{entry.Genus}'");
                         game.removeBookmark(prefix, Status.here.clone(), true);
                         this.prepTrackers();
                         // processCommand($"-{prefix}", Status.here.clone()); // TODO: retire

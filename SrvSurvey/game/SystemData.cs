@@ -2404,7 +2404,7 @@ namespace SrvSurvey.game
         public bool isFirst { get => (this.isNewEntry && Game.settings.highlightRegionalFirsts) || this.isCmdrFirst; }
 
         [JsonIgnore]
-        public int range { get => BioScan.ranges[this.genus]; }
+        public int range { get => BioScan.getRange(this.genus); }
 
         public void lookupMissingSpeciesIfNeeded()
         {

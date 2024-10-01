@@ -933,7 +933,7 @@ namespace SrvSurvey.game
 
         private void onJournalEntry(Resurrect entry)
         {
-            this.fsdJumping = true;
+            this.fsdJumping = false;
             SystemData.Close(this.systemData);
             this.canonnPoi = null;
             this.systemBody = null;
@@ -2384,7 +2384,7 @@ namespace SrvSurvey.game
                 location = Status.here.clone(),
                 genus = entry.Genus,
                 species = entry.Species,
-                radius = BioScan.ranges[entry.Genus],
+                radius = BioScan.getRange(entry.Genus),
                 status = BioScan.Status.Active,
                 entryId = match.entryId,
                 body = systemBody.name,

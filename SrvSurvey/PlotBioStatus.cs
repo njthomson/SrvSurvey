@@ -53,7 +53,7 @@ namespace SrvSurvey
             // hide ourself whilst FSD is charging to jump systems
             if (game.status.FsdChargingJump || !this.allow)
                 this.Opacity = 0;
-            else if (this.Opacity == 0 && this.allow && Elite.getWindowRect().Y > -30000)
+            else if (this.Opacity == 0 && this.allow && Elite.getWindowRect().Y > -30000 && Main.form.lastWindowHasFocus)
                 this.Opacity = PlotPos.getOpacity(this);
         }
 

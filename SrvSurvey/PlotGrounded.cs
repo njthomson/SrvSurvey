@@ -334,7 +334,7 @@ namespace SrvSurvey
                 var isActive = (game.cmdr.scanOne?.genus == null && !analyzed) || game.cmdr.scanOne?.genus == signal.genusName;
 
                 // default range to 50m unless name matches a Genus
-                var radius = signal.genusName != null && BioScan.ranges.ContainsKey(signal.genusName) ? BioScan.ranges[signal.genusName] : 50;
+                var radius = BioScan.getRange(signal.genusName);
 
                 // draw radar circles for this group, and lines
                 foreach (var tt in signal.trackers)
@@ -395,7 +395,7 @@ namespace SrvSurvey
 
                 // default range to 50m unless name matches a Genus
                 BioScan.prefixes.TryGetValue(name, out var fullName);
-                var radius = fullName != null && BioScan.ranges.ContainsKey(fullName) ? BioScan.ranges[fullName] : 50;
+                var radius = BioScan.getRange(fullName);
 
                 // draw radar circles for this group, and lines
                 foreach (var tt in form.trackers[name])

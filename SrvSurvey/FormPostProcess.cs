@@ -5,7 +5,7 @@ using System.Diagnostics;
 
 namespace SrvSurvey
 {
-    public partial class FormPostProcess : Form
+    public partial class FormPostProcess : DraggableForm
     {
         public static string cmdArg = "-scan-old";
         public static FormPostProcess? activeForm;
@@ -118,6 +118,7 @@ namespace SrvSurvey
                 btnLongAgo.Enabled = false;
                 btnSystems.Enabled = false;
                 btnStart.Text = "Stop";
+                btnClose.Enabled = false;
 
                 Task.Run(() => Program.crashGuard(() => this.postProcessJournals()));
             }
@@ -348,6 +349,7 @@ namespace SrvSurvey
 
                     btnStart.Text = "Begin";
                     btnStart.Enabled = true;
+                    btnClose.Enabled = true;
                     btnSystems.Enabled = true;
                     progress.Value = progress.Maximum;
                     comboCmdr.Enabled = true;
@@ -456,6 +458,7 @@ namespace SrvSurvey
                     //lblProgress.Text = $"Completed journal processing.";
                     btnSystems.Text = "Begin";
                     btnStart.Enabled = true;
+                    btnClose.Enabled = true;
                     progress.Value = progress.Minimum;
                 }));
             }
@@ -464,6 +467,11 @@ namespace SrvSurvey
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Util.openLink("https://github.com/njthomson/SrvSurvey/wiki/Old-Journal-Processor");
+        }
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 

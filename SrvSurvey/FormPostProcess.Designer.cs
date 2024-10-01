@@ -48,6 +48,7 @@
             txtBodyCount = new TextBox();
             txtOrgCount = new TextBox();
             btnLongAgo = new FlatButton();
+            btnClose = new FlatButton();
             SuspendLayout();
             // 
             // btnStart
@@ -56,7 +57,7 @@
             btnStart.FlatStyle = FlatStyle.Flat;
             btnStart.Location = new Point(94, 197);
             btnStart.Name = "btnStart";
-            btnStart.Size = new Size(400, 25);
+            btnStart.Size = new Size(293, 25);
             btnStart.TabIndex = 7;
             btnStart.Text = "Process journals";
             btnStart.UseVisualStyleBackColor = true;
@@ -148,6 +149,7 @@
             // 
             comboCmdr.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             comboCmdr.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboCmdr.FlatStyle = FlatStyle.System;
             comboCmdr.FormattingEnabled = true;
             comboCmdr.Location = new Point(95, 139);
             comboCmdr.Name = "comboCmdr";
@@ -254,11 +256,24 @@
             btnLongAgo.UseVisualStyleBackColor = true;
             btnLongAgo.Click += btnLongAgo_Click;
             // 
+            // btnClose
+            // 
+            btnClose.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            btnClose.FlatStyle = FlatStyle.Flat;
+            btnClose.Location = new Point(393, 197);
+            btnClose.Name = "btnClose";
+            btnClose.Size = new Size(100, 25);
+            btnClose.TabIndex = 20;
+            btnClose.Text = "&Close";
+            btnClose.UseVisualStyleBackColor = true;
+            btnClose.Click += btnClose_Click;
+            // 
             // FormPostProcess
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(505, 351);
+            Controls.Add(btnClose);
             Controls.Add(btnLongAgo);
             Controls.Add(txtOrgCount);
             Controls.Add(txtBodyCount);
@@ -309,5 +324,6 @@
         private TextBox txtBodyCount;
         private TextBox txtOrgCount;
         private FlatButton btnLongAgo;
+        private FlatButton btnClose;
     }
 }
