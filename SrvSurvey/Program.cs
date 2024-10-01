@@ -153,7 +153,16 @@ namespace SrvSurvey
             {
                 Game.log($"Program.Showing plotter: {formType.Name}");
                 form.reposition(Elite.getWindowRect());
-                form.Show();
+
+                form.showing = true;
+                try
+                {
+                    form.Show();
+                }
+                finally
+                {
+                    form.showing = false;
+                }
             }
 
             return form;
@@ -505,5 +514,6 @@ namespace SrvSurvey
         void Show();
         event EventHandler? Load;
         bool didFirstPaint { get; set; }
+        bool showing { get; set; }
     }
 }

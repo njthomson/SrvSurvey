@@ -929,6 +929,9 @@ namespace SrvSurvey
                 FormBeacons.activeForm.comboCurrentSystem.Text = systemMatch.name;
                 FormBeacons.activeForm.StarSystemLookup_starSystemMatch(systemMatch);
             }
+
+            if (Game.settings.focusGameAfterFsdJump)
+                Elite.setFocusED();
         }
 
         private void onJournalEntry(SendText entry)

@@ -94,6 +94,7 @@ namespace SrvSurvey
 
         public bool focusGameOnStart = true;
         public bool focusGameOnMinimize = true;
+        public bool focusGameAfterFsdJump = false;
 
         public bool enableGuardianSites = true;
         [JsonIgnore]

@@ -42,6 +42,7 @@ namespace SrvSurvey
 
         protected Game game = Game.activeGame!;
         public bool didFirstPaint { get; set; }
+        public bool showing { get; set; }
 
         private Rectangle er;
         private float mw;
@@ -76,7 +77,11 @@ namespace SrvSurvey
         protected override void OnActivated(EventArgs e)
         {
             base.OnActivated(e);
-            Elite.setFocusED();
+
+            if (!this.showing)
+            {
+                Elite.setFocusED();
+            }
         }
 
         protected override void Dispose(bool disposing)

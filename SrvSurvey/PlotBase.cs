@@ -129,6 +129,7 @@ namespace SrvSurvey
         public float customScale = -1.0f;
         public bool didFirstPaint { get; set; }
         private bool forceRepaint;
+        public bool showing { get; set; }
 
         protected PlotBase()
         {
@@ -165,8 +166,12 @@ namespace SrvSurvey
         {
             // plotters are not suppose to receive focus - force it back onto the game if we do
             base.OnActivated(e);
-            Elite.setFocusED();
-            this.Invalidate();
+
+            if (!this.showing)
+            {
+                Elite.setFocusED();
+                this.Invalidate();
+            }
         }
 
         protected override void Dispose(bool disposing)

@@ -16,6 +16,7 @@ namespace SrvSurvey
         private int count = 20;
         private DateTime lastchanged;
         public bool didFirstPaint { get; set; }
+        public bool showing { get; set; }
 
         private PlotPulse()
         {
@@ -104,7 +105,11 @@ namespace SrvSurvey
         protected override void OnActivated(EventArgs e)
         {
             base.OnActivated(e);
-            Elite.setFocusED();
+
+            if (!this.showing)
+            {
+                Elite.setFocusED();
+            }
         }
 
         private void PlotPulse_Paint(object sender, PaintEventArgs e)
