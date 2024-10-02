@@ -1209,12 +1209,12 @@ namespace SrvSurvey
 
             if (Elite.gameHasFocus != hasFocus)
             {
+                Elite.gameHasFocus = hasFocus;
+
                 if (hasFocus)
                     Program.showActivePlotters();
                 else
                     Program.hideActivePlotters();
-
-                Elite.gameHasFocus = hasFocus;
             }
             else if (rect != this.lastWindowRect && hasFocus)
             {
