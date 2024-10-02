@@ -31,6 +31,7 @@ namespace SrvSurvey
         private Dictionary<string, string> allCmdrs;
         private CommanderCodex cmdrCodex;
         private int regionIdx;
+        private float onePoint;
 
         public FormCodexBingo()
         {
@@ -238,7 +239,9 @@ namespace SrvSurvey
             if (!this.IsDisposed && tree.Nodes.Count > 0)
             {
                 var root = calcNodeCompletion(tree.Nodes[0]);
-                this.Text = "Codex Bingo - " + root.completion.ToString("p1");
+                this.Text = "Codex Bingo - " + root.completion.ToString("p2");
+                this.onePoint = 1f / root.countTotal;
+                toolFiller.Text = $"(one entry is " + this.onePoint.ToString("p2") + ")";
                 tree.Invalidate();
             }
         }
@@ -593,7 +596,10 @@ namespace SrvSurvey
             // percent complete text
             var pt = new Point(e.Bounds.Right, e.Bounds.Top);
             g.FillRectangle(this.treeBackBrush, pt.X, pt.Y, 60, e.Bounds.Height - 4);
-            TextRenderer.DrawText(g, $" ({codexTag.completion.ToString("p1")})", tree.Font, pt, tree.ForeColor);
+            var txt = $" ({codexTag.completion.ToString("p1")})";
+            if (e.Node == tree.Nodes[0])
+                txt = $" ({codexTag.completion.ToString("p2")})";
+            TextRenderer.DrawText(g, txt, tree.Font, pt, tree.ForeColor);
 
             // completion right bar
             b = codexTag.completion == 1 ? brushComplete : brushPartial;
