@@ -222,13 +222,6 @@ namespace SrvSurvey
 
         public virtual void reposition(Rectangle gameRect)
         {
-            // Hide ourself if game is not active
-            if (gameRect == Rectangle.Empty)
-            {
-                this.Opacity = 0;
-                return;
-            }
-
             // restore opacity, reposition ourself according to plotters.json rules, then re-render
             var newOpacity = PlotPos.getOpacity(this);
             if (this.Opacity == 0 && newOpacity > 0)
@@ -236,9 +229,11 @@ namespace SrvSurvey
             else if (this.Opacity != newOpacity)
                 this.Opacity = newOpacity;
 
-            PlotPos.reposition(this, gameRect);
-
-            this.Invalidate();
+            if (gameRect != Rectangle.Empty)
+            {
+                PlotPos.reposition(this, gameRect);
+                this.Invalidate();
+            }
         }
 
         protected virtual void initializeOnLoad()
@@ -1363,7 +1358,7 @@ namespace SrvSurvey
 
         public static float getOpacity(string formTypeName, float defaultValue = -1)
         {
-            if (Program.tempHideAllPlotters) return 0;
+            if (Program.tempHideAllPlotters || !Elite.gameHasFocus) return 0;
 
             var pp = plotterPositions.GetValueOrDefault(formTypeName);
 

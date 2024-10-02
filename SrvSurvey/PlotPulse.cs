@@ -15,7 +15,7 @@ namespace SrvSurvey
 
         private int count = 20;
         private DateTime lastchanged;
-        public bool didFirstPaint { get; set; }
+        public bool didFirstPaint { get; set; } = true;
         public bool showing { get; set; }
 
         private PlotPulse()
@@ -24,7 +24,6 @@ namespace SrvSurvey
             this.TopMost = true;
             this.Cursor = Cursors.Cross;
             this.Text = this.GetType().Name;
-            this.didFirstPaint = true;
 
             this.BackColor = Color.Black;
             this.ShowIcon = false;
@@ -48,14 +47,9 @@ namespace SrvSurvey
 
         public void reposition(Rectangle gameRect)
         {
-            if (gameRect == Rectangle.Empty)
-            {
-                this.Opacity = 0;
-                return;
-            }
-
             this.Opacity = PlotPos.getOpacity(this);
-            PlotPos.reposition(this, gameRect);
+            if (gameRect != Rectangle.Empty)
+                PlotPos.reposition(this, gameRect);
         }
 
         private void timer_Tick(object sender, EventArgs e)

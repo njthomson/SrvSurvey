@@ -41,7 +41,7 @@ namespace SrvSurvey
         public static double targetAltitude;
 
         protected Game game = Game.activeGame!;
-        public bool didFirstPaint { get; set; }
+        public bool didFirstPaint { get; set; } = true;
         public bool showing { get; set; }
 
         private Rectangle er;
@@ -99,26 +99,23 @@ namespace SrvSurvey
 
         public void reposition(Rectangle gameRect)
         {
-            if (gameRect == Rectangle.Empty)
-            {
-                this.Opacity = 0;
-                return;
-            }
-
             this.Opacity = getOpacity() * Game.settings.Opacity;
 
             // float center, spanning whole height
-            this.Width = 600;
-            this.Left = gameRect.Left + (gameRect.Width / 2) - (this.Width / 2);
-
-            this.Top = gameRect.Top;
-            this.Height = gameRect.Height - 10;
-
-            var mode = Elite.getGraphicsMode();
-            if (mode == 0)
+            if (gameRect != Rectangle.Empty)
             {
-                // if window'd
-                this.Left += 8;
+                this.Width = 600;
+                this.Left = gameRect.Left + (gameRect.Width / 2) - (this.Width / 2);
+
+                this.Top = gameRect.Top;
+                this.Height = gameRect.Height - 10;
+
+                var mode = Elite.getGraphicsMode();
+                if (mode == GraphicsMode.Windowed)
+                {
+                    // if window'd
+                    this.Left += 8;
+                }
             }
         }
 
@@ -131,6 +128,9 @@ namespace SrvSurvey
 
         private double getOpacity()
         {
+            if (Program.tempHideAllPlotters || !Elite.gameHasFocus)
+                return 0;
+
             if (game.mode == GameMode.Landed)
                 return 0;
 

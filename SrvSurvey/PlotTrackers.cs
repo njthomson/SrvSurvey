@@ -81,31 +81,28 @@ namespace SrvSurvey
 
         public override void reposition(Rectangle gameRect)
         {
-            if (gameRect == Rectangle.Empty)
-            {
-                this.Opacity = 0;
-                return;
-            }
-
             // match opacity of PlotGrounded
             this.Opacity = PlotPos.getOpacity(nameof(PlotGrounded));
 
-            // position ourself under PlotGrounded, if it exists
-            var plotGrounded = Program.getPlotter<PlotGrounded>();
-            if (plotGrounded != null)
+            if (gameRect != Rectangle.Empty)
             {
-                plotGrounded.reposition(gameRect);
-                this.Width = plotGrounded.Width;
-                this.Left = plotGrounded.Left;
-                this.Top = plotGrounded.Bottom + (int)four;
-            }
-            else
-            {
-                // otherwise position ourself where PlotGrounded would be
-                PlotPos.reposition(this, gameRect, nameof(PlotGrounded));
-            }
+                // position ourself under PlotGrounded, if it exists
+                var plotGrounded = Program.getPlotter<PlotGrounded>();
+                if (plotGrounded != null)
+                {
+                    plotGrounded.reposition(gameRect);
+                    this.Width = plotGrounded.Width;
+                    this.Left = plotGrounded.Left;
+                    this.Top = plotGrounded.Bottom + (int)four;
+                }
+                else
+                {
+                    // otherwise position ourself where PlotGrounded would be
+                    PlotPos.reposition(this, gameRect, nameof(PlotGrounded));
+                }
 
-            this.Invalidate();
+                this.Invalidate();
+            }
         }
 
         protected override void Game_modeChanged(GameMode newMode, bool force)

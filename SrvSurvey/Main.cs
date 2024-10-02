@@ -17,7 +17,6 @@ namespace SrvSurvey
         private FileSystemWatcher? screenshotWatcher;
 
         private Rectangle lastWindowRect;
-        public bool lastWindowHasFocus;
         private List<Control> bioCtrls;
         private Dictionary<string, Screenshot> pendingScreenshots = new Dictionary<string, Screenshot>();
         private bool wasWithinDssDuration;
@@ -251,6 +250,9 @@ namespace SrvSurvey
 
                         this.updateCommanderTexts();
                         Application.DoEvents();
+
+                        // do this once first so we know the window location
+                        timer1_Tick(null!, null!);
 
                         if (Elite.isGameRunning || Program.useLastIfShutdown)
                             this.newGame();
@@ -1205,14 +1207,14 @@ namespace SrvSurvey
             var rect = Elite.getWindowRect();
             var hasFocus = rect != Rectangle.Empty && rect.X > -30000;
 
-            if (this.lastWindowHasFocus != hasFocus)
+            if (Elite.gameHasFocus != hasFocus)
             {
                 if (hasFocus)
                     Program.showActivePlotters();
                 else
                     Program.hideActivePlotters();
 
-                this.lastWindowHasFocus = hasFocus;
+                Elite.gameHasFocus = hasFocus;
             }
             else if (rect != this.lastWindowRect && hasFocus)
             {

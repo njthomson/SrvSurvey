@@ -102,7 +102,7 @@ namespace SrvSurvey
             var formType = typeof(T);
 
             // exit early if the game does not have focus
-            if (!SrvSurvey.Main.form.lastWindowHasFocus)
+            if (!Elite.gameHasFocus)
                 return (T?)activePlotters.GetValueOrDefault(formType.Name);
 
             // only create if missing
@@ -241,12 +241,12 @@ namespace SrvSurvey
 
         public static void showActivePlotters()
         {
-            if (Program.tempHideAllPlotters) return;
+            if (Program.tempHideAllPlotters || !Elite.gameHasFocus) return;
 
             //Game.log($"Program.showActivePlotters: {activePlotters.Count}");
 
             foreach (PlotterForm form in activePlotters.Values)
-                form.Opacity = Game.settings.Opacity;
+                form.Opacity = PlotPos.getOpacity(form);
         }
 
         public static void invalidateActivePlotters()

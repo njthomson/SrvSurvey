@@ -574,6 +574,12 @@ namespace SrvSurvey
         private static void fadeNext(Form form, float targetOpacity, long lastTick, float delta)
         {
             if (form.IsDisposed) return;
+            if (!Elite.gameHasFocus)
+            {
+                // stop early and hide form if the game loses focus
+                form.Opacity = 0;
+                return;
+            }
 
             var wasOpacity = form.Opacity;
             var wasSmaller = form.Opacity < targetOpacity;

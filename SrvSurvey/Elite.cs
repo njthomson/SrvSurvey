@@ -76,7 +76,10 @@ namespace SrvSurvey
                 Game.log("setFocusED: got Zero!");
         }
 
-
+        /// <summary>
+        /// Will be true when we know the game currently has focus. This is checked/updated every 200ms.
+        /// </summary>
+        public static bool gameHasFocus;
 
         /// <summary>
         /// Return the rectangle of the game window
