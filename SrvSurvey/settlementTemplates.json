@@ -107,9 +107,9 @@
       { "name": "F20", "type": "obelisk", "angle": 301.518310285813, "dist": 578.97591158645083439050052520, "rot": 240.0 },
       { "name": "F21", "type": "obelisk", "angle": 305.576687154042, "dist": 589.42173033563377465605590925, "rot": 330.0 },
       { "name": "F22", "type": "obelisk", "angle": 305.277109516469, "dist": 589.03412563158189375662552035, "rot": 150.0 },
-      { "name": "G01", "type": "obelisk", "angle": 45.65, "dist": 740.4833, "rot": 50.0 },
+      { "name": "G01", "type": "obelisk", "angle": 45.4, "dist": 739.4208, "rot": 230.0 },
       { "name": "G02", "type": "obelisk", "angle": 44.95, "dist": 759.6326, "rot": 235.0 },
-      { "name": "G03", "type": "obelisk", "angle": 45.4, "dist": 739.4208, "rot": 230.0 },
+      { "name": "G03", "type": "obelisk", "angle": 45.65, "dist": 740.4833, "rot": 50.0 },
       { "name": "G04", "type": "brokeObelisk", "angle": 45.2, "dist": 761.0331, "rot": 57.0 },
       { "name": "H01", "type": "obelisk", "angle": 340.6760324179, "dist": 92.77842475667144588040164836, "rot": 300.00 },
       { "name": "H02", "type": "brokeObelisk", "angle": 345.65132372163, "dist": 123.70815720188073773858887233, "rot": 245.00 },
@@ -1572,8 +1572,8 @@
   "Fistbump": {
     "name": "$Ancient_Tiny_003:#index=1;",
     "backgroundImage": "",
-    "imageOffset": "347, 461",
-    "scaleFactor": 0.31,
+    "imageOffset": "401, 531",
+    "scaleFactor": 0.37,
     "poi": [
       { "name": "A01", "type": "obelisk", "angle": 253.448271258295, "dist": 147.05841999639248563018965107, "rot": 126 },
       { "name": "A02", "type": "brokeObelisk", "angle": 258.772218519344, "dist": 153.39285038726204530673505429, "rot": 330 },
@@ -1960,8 +1960,8 @@
   "Lacrosse": {
     "name": "$Ancient_Tiny_001:#index=1;",
     "backgroundImage": "",
-    "imageOffset": "0, 0",
-    "scaleFactor": 1.0,
+    "imageOffset": "498, 525",
+    "scaleFactor": 0.42,
     "poi": [
       { "name": "A01", "type": "brokeObelisk", "angle": 281.916821386465, "dist": 181.00734964390740233710506039, "rot": 23.0 },
       { "name": "A02", "type": "obelisk", "angle": 285.194895848163, "dist": 179.66654234098484029476531055, "rot": 325.0 },
@@ -2205,8 +2205,8 @@
   "Crossroads": {
     "name": "$Ancient_Tiny_002:#index=1;",
     "backgroundImage": "",
-    "imageOffset": "0, 0",
-    "scaleFactor": 1.0,
+    "imageOffset": "439, 650",
+    "scaleFactor": 0.335,
     "poi": [
       { "name": "A01", "type": "obelisk", "angle": 238.897883258003, "dist": 130.59878435828166112167298439, "rot": 60 },
       { "name": "A02", "type": "brokeObelisk", "angle": 242.679353511794, "dist": 134.46905407424037369143177101, "rot": 240 },

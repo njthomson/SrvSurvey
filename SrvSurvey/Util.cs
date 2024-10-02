@@ -433,6 +433,14 @@ namespace SrvSurvey
 
             form.StartPosition = FormStartPosition.Manual;
             form.Location = pt;
+
+            // Don't allow the form to be larger than the screen itself
+            var screen = Screen.GetWorkingArea(form);
+            if (form.Width > screen.Width && form.Height > screen.Height)
+            {
+                form.Width = screen.Width;
+                form.Height = screen.Height;
+            }
         }
 
         public static double targetAltitudeForSite(GuardianSiteData.SiteType siteType)

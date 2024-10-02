@@ -19,13 +19,16 @@ namespace SrvSurvey.game
             Beta,
             Gamma,
             // structures ...
+            //    Tiny
             Lacrosse,
             Crossroads,
             Fistbump,
+            //    Small
             Hammerbot,
             Bear,
             Bowl,
             Turtle,
+            //    Medium
             Robolobster,
             Squid,
             Stickyhand,
@@ -1233,10 +1236,9 @@ namespace SrvSurvey.game
             // show survey status if not complete
             if (!site.surveyComplete)
             {
-                var siteData = GuardianSiteData.Load(body.name, idx, true);
-                if (siteData == null)
+                if (site.surveyProgress == 0)
                     summary.status = "Survey: not started";
-                else if (!siteData.isSurveyComplete())
+                else
                     summary.status = "Survey: incomplete";
             }
 
@@ -1285,10 +1287,9 @@ namespace SrvSurvey.game
             // show survey status if not complete
             if (!site.surveyComplete)
             {
-                var siteData = GuardianSiteData.Load(body.name, summary.name);
-                if (siteData == null)
+                if (site.surveyProgress == 0)
                     summary.status = "Survey: not started";
-                else if (!siteData.isSurveyComplete())
+                else
                     summary.status = "Survey: incomplete";
             }
 

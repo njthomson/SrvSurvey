@@ -1473,8 +1473,6 @@ namespace SrvSurvey
 
                 switch (siteData.type)
                 {
-                    case SiteType.Crossroads:
-                    case SiteType.Lacrosse:
                     case SiteType.Squid:
                     case SiteType.Stickyhand:
                         // there is no map for these
@@ -1855,9 +1853,6 @@ namespace SrvSurvey
             {
                 switch (siteData.type)
                 {
-                    case SiteType.Crossroads:
-                    case SiteType.Fistbump:
-                    case SiteType.Lacrosse:
                     case SiteType.Squid:
                     case SiteType.Stickyhand:
                         // there is no map for these
