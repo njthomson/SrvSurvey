@@ -1853,7 +1853,7 @@ namespace SrvSurvey.game
         //        // show prior scans overlay
         //        Program.control.Invoke(new Action(() =>
         //        {
-        //            Program.showPlotter<PlotPriorScans>().setPriorScans();
+        //            Program.showPlotter<PlotPriorScans>()?.setPriorScans();
         //        }));
         //    }
 
@@ -2332,7 +2332,7 @@ namespace SrvSurvey.game
                         else
                         {
                             this.addBookmark(match.genus.shortName, entry);
-                            Program.showPlotter<PlotTrackers>().prepTrackers();
+                            Program.showPlotter<PlotTrackers>()?.prepTrackers();
                             Game.log($"Auto-adding tracker from CodexEntry: {entry.Name_Localised} ({entry.EntryID})");
                             this.fireUpdate(true);
                         }

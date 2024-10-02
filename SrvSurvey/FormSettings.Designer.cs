@@ -288,6 +288,8 @@ namespace SrvSurvey
             // tabPage1
             // 
             tabPage1.BorderStyle = BorderStyle.Fixed3D;
+            tabPage1.Controls.Add(numOpacity);
+            tabPage1.Controls.Add(numGravityWarningLevel);
             tabPage1.Controls.Add(checkFocusAfterFsdJump);
             tabPage1.Controls.Add(checkHidePlottersFromDominator);
             tabPage1.Controls.Add(label3);
@@ -302,7 +304,6 @@ namespace SrvSurvey
             tabPage1.Controls.Add(btnResetOverlays);
             tabPage1.Controls.Add(comboCmdr);
             tabPage1.Controls.Add(label12);
-            tabPage1.Controls.Add(numGravityWarningLevel);
             tabPage1.Controls.Add(checkBox13);
             tabPage1.Controls.Add(pictureBox6);
             tabPage1.Controls.Add(checkHideJournalTimer);
@@ -314,7 +315,6 @@ namespace SrvSurvey
             tabPage1.Controls.Add(label4);
             tabPage1.Controls.Add(checkHidePlottersFromMaverick);
             tabPage1.Controls.Add(checkFocusOnMinimize);
-            tabPage1.Controls.Add(numOpacity);
             tabPage1.Controls.Add(label2);
             tabPage1.Controls.Add(trackOpacity);
             tabPage1.Controls.Add(label1);
@@ -383,7 +383,7 @@ namespace SrvSurvey
             // btnTheme2
             // 
             btnTheme2.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnTheme2.FlatStyle = FlatStyle.Flat;
+            btnTheme2.FlatStyle = FlatStyle.System;
             btnTheme2.Location = new Point(439, 182);
             btnTheme2.Name = "btnTheme2";
             btnTheme2.Size = new Size(119, 45);
@@ -408,7 +408,7 @@ namespace SrvSurvey
             // btnPostProcess
             // 
             btnPostProcess.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnPostProcess.FlatStyle = FlatStyle.Flat;
+            btnPostProcess.FlatStyle = FlatStyle.System;
             btnPostProcess.Location = new Point(439, 381);
             btnPostProcess.Name = "btnPostProcess";
             btnPostProcess.Size = new Size(163, 29);
@@ -430,7 +430,7 @@ namespace SrvSurvey
             // btnTheme
             // 
             btnTheme.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnTheme.FlatStyle = FlatStyle.Flat;
+            btnTheme.FlatStyle = FlatStyle.System;
             btnTheme.Location = new Point(439, 124);
             btnTheme.Name = "btnTheme";
             btnTheme.Size = new Size(118, 45);
@@ -442,6 +442,7 @@ namespace SrvSurvey
             // label14
             // 
             label14.AutoSize = true;
+            label14.FlatStyle = FlatStyle.System;
             label14.Location = new Point(10, 103);
             label14.Name = "label14";
             label14.Size = new Size(79, 15);
@@ -462,7 +463,7 @@ namespace SrvSurvey
             // btnResetOverlays
             // 
             btnResetOverlays.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnResetOverlays.FlatStyle = FlatStyle.Flat;
+            btnResetOverlays.FlatStyle = FlatStyle.System;
             btnResetOverlays.Location = new Point(401, 291);
             btnResetOverlays.Name = "btnResetOverlays";
             btnResetOverlays.Size = new Size(199, 32);
@@ -484,6 +485,7 @@ namespace SrvSurvey
             // label12
             // 
             label12.AutoSize = true;
+            label12.FlatStyle = FlatStyle.System;
             label12.Location = new Point(31, 314);
             label12.Name = "label12";
             label12.Size = new Size(156, 15);
@@ -545,7 +547,7 @@ namespace SrvSurvey
             // 
             // btnChooseJournalFolder
             // 
-            btnChooseJournalFolder.FlatStyle = FlatStyle.Flat;
+            btnChooseJournalFolder.FlatStyle = FlatStyle.System;
             btnChooseJournalFolder.Location = new Point(10, 251);
             btnChooseJournalFolder.Name = "btnChooseJournalFolder";
             btnChooseJournalFolder.Size = new Size(26, 37);
@@ -570,6 +572,7 @@ namespace SrvSurvey
             // label11
             // 
             label11.AutoSize = true;
+            label11.FlatStyle = FlatStyle.System;
             label11.Location = new Point(5, 233);
             label11.Name = "label11";
             label11.Size = new Size(118, 15);
@@ -605,6 +608,7 @@ namespace SrvSurvey
             // 
             // label4
             // 
+            label4.FlatStyle = FlatStyle.System;
             label4.Location = new Point(6, 338);
             label4.Name = "label4";
             label4.Size = new Size(358, 34);
@@ -654,6 +658,7 @@ namespace SrvSurvey
             // label2
             // 
             label2.AutoSize = true;
+            label2.FlatStyle = FlatStyle.System;
             label2.Location = new Point(8, 70);
             label2.Margin = new Padding(4, 0, 4, 0);
             label2.Name = "label2";
@@ -677,6 +682,7 @@ namespace SrvSurvey
             // 
             // label1
             // 
+            label1.FlatStyle = FlatStyle.System;
             label1.Location = new Point(6, 12);
             label1.Margin = new Padding(4, 0, 4, 0);
             label1.Name = "label1";
@@ -745,12 +751,12 @@ namespace SrvSurvey
             // 
             // tabPage4
             // 
+            tabPage4.Controls.Add(numMinBioDuration);
             tabPage4.Controls.Add(pictureBox1);
             tabPage4.Controls.Add(checkBox21);
             tabPage4.Controls.Add(checkBox20);
             tabPage4.Controls.Add(pictureBox12);
             tabPage4.Controls.Add(label15);
-            tabPage4.Controls.Add(numMinBioDuration);
             tabPage4.Controls.Add(checkBox18);
             tabPage4.Controls.Add(checkBioSystemPlotter);
             tabPage4.Controls.Add(linkLabel1);
@@ -1002,6 +1008,7 @@ namespace SrvSurvey
             groupRingBuckets.Controls.Add(picBucket1);
             groupRingBuckets.Controls.Add(numRingBucket1);
             groupRingBuckets.Controls.Add(label16);
+            groupRingBuckets.FlatStyle = FlatStyle.System;
             groupRingBuckets.Location = new Point(10, 299);
             groupRingBuckets.Name = "groupRingBuckets";
             groupRingBuckets.Size = new Size(470, 95);
@@ -1129,6 +1136,7 @@ namespace SrvSurvey
             // label16
             // 
             label16.AutoSize = true;
+            label16.FlatStyle = FlatStyle.System;
             label16.Location = new Point(6, 19);
             label16.Name = "label16";
             label16.Size = new Size(301, 15);
@@ -1138,15 +1146,15 @@ namespace SrvSurvey
             // tabPage3
             // 
             tabPage3.BorderStyle = BorderStyle.Fixed3D;
+            tabPage3.Controls.Add(numAltGamma);
+            tabPage3.Controls.Add(numAltBeta);
+            tabPage3.Controls.Add(numAltAlpha);
             tabPage3.Controls.Add(checkBox15);
             tabPage3.Controls.Add(checkBox14);
             tabPage3.Controls.Add(checkBox3);
             tabPage3.Controls.Add(label9);
             tabPage3.Controls.Add(comboGuardianWindowSize);
             tabPage3.Controls.Add(checkBox2);
-            tabPage3.Controls.Add(numAltGamma);
-            tabPage3.Controls.Add(numAltBeta);
-            tabPage3.Controls.Add(numAltAlpha);
             tabPage3.Controls.Add(label8);
             tabPage3.Controls.Add(label7);
             tabPage3.Controls.Add(label6);
@@ -1208,6 +1216,7 @@ namespace SrvSurvey
             // label9
             // 
             label9.AutoSize = true;
+            label9.FlatStyle = FlatStyle.System;
             label9.Location = new Point(11, 236);
             label9.Name = "label9";
             label9.Size = new Size(72, 15);
@@ -1217,6 +1226,7 @@ namespace SrvSurvey
             // comboGuardianWindowSize
             // 
             comboGuardianWindowSize.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboGuardianWindowSize.FlatStyle = FlatStyle.System;
             comboGuardianWindowSize.FormattingEnabled = true;
             comboGuardianWindowSize.Items.AddRange(new object[] { "Small - 300 x 400", "Medium - 500 x 500", "Large - 600 x 700", "Huge - 800 x 1000", "Massive - 1200 x 1200" });
             comboGuardianWindowSize.Location = new Point(89, 233);
@@ -1275,6 +1285,7 @@ namespace SrvSurvey
             // label8
             // 
             label8.AutoSize = true;
+            label8.FlatStyle = FlatStyle.System;
             label8.Location = new Point(235, 156);
             label8.Name = "label8";
             label8.Size = new Size(52, 15);
@@ -1284,6 +1295,7 @@ namespace SrvSurvey
             // label7
             // 
             label7.AutoSize = true;
+            label7.FlatStyle = FlatStyle.System;
             label7.Location = new Point(139, 156);
             label7.Name = "label7";
             label7.Size = new Size(33, 15);
@@ -1294,6 +1306,7 @@ namespace SrvSurvey
             // label6
             // 
             label6.AutoSize = true;
+            label6.FlatStyle = FlatStyle.System;
             label6.Location = new Point(35, 156);
             label6.Name = "label6";
             label6.Size = new Size(41, 15);
@@ -1303,6 +1316,7 @@ namespace SrvSurvey
             // label5
             // 
             label5.AutoSize = true;
+            label5.FlatStyle = FlatStyle.System;
             label5.Location = new Point(10, 120);
             label5.Name = "label5";
             label5.Size = new Size(382, 30);
@@ -1503,6 +1517,7 @@ namespace SrvSurvey
             // lblScreenshotSource
             // 
             lblScreenshotSource.AutoSize = true;
+            lblScreenshotSource.FlatStyle = FlatStyle.System;
             lblScreenshotSource.Location = new Point(7, 31);
             lblScreenshotSource.Name = "lblScreenshotSource";
             lblScreenshotSource.Size = new Size(164, 15);
@@ -1512,6 +1527,7 @@ namespace SrvSurvey
             // lblScreenshotTarget
             // 
             lblScreenshotTarget.AutoSize = true;
+            lblScreenshotTarget.FlatStyle = FlatStyle.System;
             lblScreenshotTarget.Location = new Point(10, 86);
             lblScreenshotTarget.Name = "lblScreenshotTarget";
             lblScreenshotTarget.Size = new Size(202, 15);
@@ -1533,12 +1549,16 @@ namespace SrvSurvey
             // tabPage6
             // 
             tabPage6.BackColor = SystemColors.Control;
+            tabPage6.Controls.Add(pictureBox13);
+            tabPage6.Controls.Add(pictureBox10);
+            tabPage6.Controls.Add(numericUpDown1);
+            tabPage6.Controls.Add(numMinScanValue);
+            tabPage6.Controls.Add(pictureBox11);
+            tabPage6.Controls.Add(pictureBox5);
+            tabPage6.Controls.Add(pictureBox4);
             tabPage6.Controls.Add(checkBox24);
             tabPage6.Controls.Add(checkBox23);
-            tabPage6.Controls.Add(pictureBox10);
-            tabPage6.Controls.Add(pictureBox11);
             tabPage6.Controls.Add(checkPlotJumpInfo);
-            tabPage6.Controls.Add(pictureBox13);
             tabPage6.Controls.Add(checkHideBodyInfoInBubble);
             tabPage6.Controls.Add(checkBodyInfoOrbit);
             tabPage6.Controls.Add(checkBodyInfoMap);
@@ -1547,15 +1567,11 @@ namespace SrvSurvey
             tabPage6.Controls.Add(checkGalMapPlotter);
             tabPage6.Controls.Add(label13);
             tabPage6.Controls.Add(checkBox16);
-            tabPage6.Controls.Add(numericUpDown1);
             tabPage6.Controls.Add(label10);
             tabPage6.Controls.Add(checkBox11);
-            tabPage6.Controls.Add(numMinScanValue);
             tabPage6.Controls.Add(checkBox10);
             tabPage6.Controls.Add(checkBox9);
-            tabPage6.Controls.Add(pictureBox5);
             tabPage6.Controls.Add(checkBox8);
-            tabPage6.Controls.Add(pictureBox4);
             tabPage6.Controls.Add(checkBox4);
             tabPage6.Location = new Point(4, 24);
             tabPage6.Name = "tabPage6";
@@ -2064,16 +2080,16 @@ namespace SrvSurvey
             // tabSettlements
             // 
             tabSettlements.BackColor = SystemColors.Control;
-            tabSettlements.Controls.Add(checkBox22);
-            tabSettlements.Controls.Add(numericUpDown6);
-            tabSettlements.Controls.Add(checkBox19);
             tabSettlements.Controls.Add(numericUpDown5);
-            tabSettlements.Controls.Add(label23);
+            tabSettlements.Controls.Add(numericUpDown6);
             tabSettlements.Controls.Add(numericUpDown4);
-            tabSettlements.Controls.Add(label22);
             tabSettlements.Controls.Add(numericUpDown3);
-            tabSettlements.Controls.Add(label21);
             tabSettlements.Controls.Add(numericUpDown2);
+            tabSettlements.Controls.Add(checkBox22);
+            tabSettlements.Controls.Add(checkBox19);
+            tabSettlements.Controls.Add(label23);
+            tabSettlements.Controls.Add(label22);
+            tabSettlements.Controls.Add(label21);
             tabSettlements.Controls.Add(checkBox12);
             tabSettlements.Controls.Add(checkHumanSitePlotter);
             tabSettlements.Location = new Point(4, 24);
@@ -2140,6 +2156,7 @@ namespace SrvSurvey
             // label23
             // 
             label23.AutoSize = true;
+            label23.FlatStyle = FlatStyle.System;
             label23.Location = new Point(353, 40);
             label23.Name = "label23";
             label23.Size = new Size(113, 15);
@@ -2164,6 +2181,7 @@ namespace SrvSurvey
             // label22
             // 
             label22.AutoSize = true;
+            label22.FlatStyle = FlatStyle.System;
             label22.Location = new Point(175, 40);
             label22.Name = "label22";
             label22.Size = new Size(90, 15);
@@ -2188,6 +2206,7 @@ namespace SrvSurvey
             // label21
             // 
             label21.AutoSize = true;
+            label21.FlatStyle = FlatStyle.System;
             label21.Location = new Point(8, 38);
             label21.Name = "label21";
             label21.Size = new Size(93, 15);
@@ -2509,7 +2528,6 @@ namespace SrvSurvey
         private CheckBox checkBox22;
         private CheckBox checkBox23;
         private CheckBox checkBox24;
-        private CheckBox checkBox25;
         private CheckBox checkFocusAfterFsdJump;
     }
 }

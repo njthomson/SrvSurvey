@@ -1150,8 +1150,11 @@ namespace SrvSurvey
             if (game?.systemBody != null && PlotTrackTarget.allowPlotter)
             {
                 var form = Program.showPlotter<PlotTrackTarget>();
-                form.targetLocation = Game.settings.targetLatLong;
-                form.calculate(Game.settings.targetLatLong); // TODO: retire
+                if (form != null)
+                {
+                    form.targetLocation = Game.settings.targetLatLong;
+                    form.calculate(Game.settings.targetLatLong); // TODO: retire
+                }
             }
         }
 

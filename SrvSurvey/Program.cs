@@ -97,9 +97,13 @@ namespace SrvSurvey
 
         private static Dictionary<string, PlotterForm> activePlotters = new Dictionary<string, PlotterForm>();
 
-        public static T showPlotter<T>() where T : PlotterForm
+        public static T? showPlotter<T>() where T : PlotterForm
         {
             var formType = typeof(T);
+
+            // exit early if the game does not have focus
+            if (!SrvSurvey.Main.form.lastWindowHasFocus)
+                return (T?)activePlotters.GetValueOrDefault(formType.Name);
 
             // only create if missing
             T form;
