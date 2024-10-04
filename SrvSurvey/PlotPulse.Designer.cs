@@ -61,7 +61,6 @@ namespace SrvSurvey
             StartPosition = FormStartPosition.Manual;
             TopMost = true;
             TransparencyKey = Color.Red;
-            Load += PlotPulse_Load;
             Paint += PlotPulse_Paint;
             ResumeLayout(false);
         }

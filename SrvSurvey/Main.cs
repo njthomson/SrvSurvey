@@ -104,7 +104,7 @@ namespace SrvSurvey
             }
 
             if (Game.settings.focusGameOnStart)
-                Elite.setFocusED();
+                this.BeginInvoke(() => Elite.setFocusED());
 
             this.updateAllControls();
 

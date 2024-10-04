@@ -379,10 +379,5 @@ namespace SrvSurvey
                 txtLogsMissionActive.Text = $"{this.cmdr?.decodeTheLogsMissionActive} - {logsProgress}%";
             }
         }
-
-        private void FormRamTah_Load(object sender, EventArgs e)
-        {
-            Elite.setFocusED();
-        }
     }
 }

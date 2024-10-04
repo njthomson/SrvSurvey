@@ -23,21 +23,23 @@ namespace SrvSurvey
             InitializeComponent();
             this.TopMost = true;
             this.Cursor = Cursors.Cross;
-            this.Text = this.GetType().Name;
-
+            this.Name = this.GetType().Name;
             this.BackColor = Color.Black;
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = FormStartPosition.Manual;
             this.MinimizeBox = false;
             this.MaximizeBox = false;
+            this.ControlBox = false;
             this.FormBorderStyle = FormBorderStyle.None;
-            this.Opacity = Game.settings.Opacity;
+            this.Opacity = 0;
             this.DoubleBuffered = true;
         }
 
-        private void PlotPulse_Load(object sender, EventArgs e)
+        protected override void OnLoad(EventArgs e)
         {
+            base.OnLoad(e);
+            this.FormBorderStyle = FormBorderStyle.None;
             this.Width = 32;
             this.Height = 32;
 

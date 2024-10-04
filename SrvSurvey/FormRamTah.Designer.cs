@@ -802,7 +802,6 @@ namespace SrvSurvey
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "FormRamTah";
             Text = "Ram Tah Missions";
-            Load += FormRamTah_Load;
             tabControl1.ResumeLayout(false);
             tabPage1.ResumeLayout(false);
             tabPage2.ResumeLayout(false);

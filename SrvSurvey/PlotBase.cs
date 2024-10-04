@@ -133,24 +133,24 @@ namespace SrvSurvey
 
         protected PlotBase()
         {
+            this.TopMost = true;
+            this.Cursor = Cursors.Cross;
             this.BackColor = Color.Black;
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = FormStartPosition.Manual;
             this.MinimizeBox = false;
             this.MaximizeBox = false;
+            this.ControlBox = false;
             this.FormBorderStyle = FormBorderStyle.None;
             this.Opacity = 0;
             this.DoubleBuffered = true;
-            this.Text = this.GetType().Name;
+            this.Name = this.GetType().Name;
             this.ResizeRedraw = true;
             if (Game.settings.fadeInDuration == 0)
                 this.Size = Size.Empty;
             else
                 this.Size = new Size(640, 640);
-
-            this.TopMost = true;
-            this.Cursor = Cursors.Cross;
 
             if (this.game == null) throw new Exception("Why no active game?");
 
@@ -160,6 +160,12 @@ namespace SrvSurvey
                     game.systemBody.radius,
                     game.touchdownLocation ?? LatLong2.Empty);
             }
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+            this.FormBorderStyle = FormBorderStyle.None;
         }
 
         protected override void OnActivated(EventArgs e)
