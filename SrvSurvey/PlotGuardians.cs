@@ -651,9 +651,12 @@ namespace SrvSurvey
         private void setMapScale()
         {
             var newScale = this.scale;
+
             if (this.customScale != -1f)
                 newScale = this.customScale;
-            else if (this.nearestObeliskDist < 30 && (game.vehicle == ActiveVehicle.SRV || game.vehicle == ActiveVehicle.Foot))
+            else if (Game.settings.autoZoomGuardianInTurret && game.status.UsingSrvTurret)
+                newScale = 3f;
+            else if (Game.settings.autoZoomGuardianNearObelisks && this.nearestObeliskDist < 30 && (game.vehicle == ActiveVehicle.SRV || game.vehicle == ActiveVehicle.Foot))
                 newScale = 3f;
             else if (game.vehicle == ActiveVehicle.Foot)
                 newScale = 2f;
@@ -1372,10 +1375,8 @@ namespace SrvSurvey
                     deg,
                     dist);
 
-                // work in progress - only render if a RUINS poi
-                if (this.isRuinsPoi(poi.type, true, true) || Game.settings.enableEarlyGuardianStructures)
-                    // render it
-                    this.drawSitePoi(poi, (PointF)pt);
+                // render POI
+                this.drawSitePoi(poi, (PointF)pt);
 
                 // is this the closest POI?
                 var x = pt.X - commanderOffset.X;
@@ -1384,7 +1385,6 @@ namespace SrvSurvey
 
                 // status is unknown, it's closer and not an obelisk
                 var validNearestUnknown = poiStatus == SitePoiStatus.unknown && d < nearestUnknownDist && !isObelisk;
-                // && (isRuinsPoi(poi.type, false) || (Game.settings.enableEarlyGuardianStructures && !siteData.isRuins && poi.type != POIType.obelisk && poi.type != POIType.brokeObelisk));
                 // only target Relic Towers when in SRV
                 if (validNearestUnknown && poi.type == POIType.relic && game.vehicle != ActiveVehicle.SRV)
                     validNearestUnknown = false;
@@ -1495,7 +1495,7 @@ namespace SrvSurvey
                     // use a smaller circle for obelisks
                     g.DrawEllipse(GameColors.penLime2Dot, -nearestPt.X - 8, -nearestPt.Y - 8, 16, 16);
                 }
-                else if ((nearestPoi == forcePoi) || isRuinsPoi(nearestPoi.type, false) || siteData.activeObelisks.ContainsKey(nearestPoi.name) || (!siteData.isRuins && Game.settings.enableEarlyGuardianStructures))
+                else if ((nearestPoi == forcePoi) || isRuinsPoi(nearestPoi.type, false) || siteData.activeObelisks.ContainsKey(nearestPoi.name) || (!siteData.isRuins))
                 {
                     g.DrawEllipse(GameColors.penLime4Dot, -nearestPt.X - 13, -nearestPt.Y - 13, 26, 26);
                 }

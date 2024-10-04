@@ -76,7 +76,7 @@ namespace SrvSurvey.game
                     body.organisms?.ForEach(org => org.body = body);
 
                     // make predictions based on what we know
-                    if (Game.activeGame != null && Game.activeGame.fid == fid)
+                    if (Game.ready && Game.activeGame?.fid == fid)
                         body.predictSpecies();
                 }
             }
@@ -663,8 +663,11 @@ namespace SrvSurvey.game
 
             if (body.bioSignalCount > 0)
             {
-                body.predictSpecies();
-                if (Game.activeGame?.systemData == this) Program.invalidateActivePlotters();
+                if (Game.activeGame?.systemData == this)
+                {
+                    Game.activeGame.deferPredictSpecies(body);
+                    Program.invalidateActivePlotters();
+                }
             }
         }
 
@@ -766,10 +769,10 @@ namespace SrvSurvey.game
             if (bioSignals != null && body.bioSignalCount < bioSignals.Count)
                 body.bioSignalCount = bioSignals.Count;
 
-            if (bioSignals != null && body.planetClass != null && Game.activeGame != null)
+            if (bioSignals != null && body.planetClass != null && Game.ready)
             {
-                body.predictSpecies();
-                if (Game.activeGame?.systemData == this) Program.invalidateActivePlotters();
+                if (Game.activeGame?.systemData == this)
+                    Game.activeGame.deferPredictSpecies(body);
             }
 
             var geoSignals = entry.Signals.FirstOrDefault(_ => _.Type == "$SAA_SignalType_Geological;");
@@ -1094,9 +1097,11 @@ namespace SrvSurvey.game
 
                 if (shouldPredictBios)
                 {
-                    foreach (var body in this.bodies)
-                        body.predictSpecies();
-                    if (Game.activeGame?.systemData == this) Program.invalidateActivePlotters();
+                    if (Game.activeGame?.systemData == this)
+                    {
+                        Game.activeGame.predictSystemSpecies();
+                        Program.invalidateActivePlotters();
+                    }
                 }
             }
 
@@ -1303,7 +1308,7 @@ namespace SrvSurvey.game
 
                 // update bio counts
                 DateTime liveLegacySplitDate = new DateTime(2022, 11, 29);
-                if (entry.signals?.signals?.ContainsKey("$SAA_SignalType_Biological;") == true && entry.signals.updateTime > liveLegacySplitDate) 
+                if (entry.signals?.signals?.ContainsKey("$SAA_SignalType_Biological;") == true && entry.signals.updateTime > liveLegacySplitDate)
                 {
                     var newCount = entry.signals.signals["$SAA_SignalType_Biological;"];
                     if (body.bioSignalCount < newCount)
@@ -1336,13 +1341,13 @@ namespace SrvSurvey.game
                 }
             }
 
-            if (shouldPredictBios)
+            if (shouldPredictBios && Game.ready)
             {
-                foreach (var body in this.bodies)
-                    body.predictSpecies();
-
                 if (Game.activeGame?.systemData == this)
+                {
+                    Game.activeGame?.predictSystemSpecies();
                     Program.invalidateActivePlotters();
+                }
             }
         }
 
@@ -1457,6 +1462,8 @@ namespace SrvSurvey.game
 
         public void prepSettlements()
         {
+            if (!Game.settings.enableGuardianSites) return;
+
             var sites = GuardianSitePub.Find(this.name);
             Game.log($"prepSettlements: for: '{this.name}' ({this.address}), sites.Count: {sites.Count}");
             this._settlements = new List<SystemSettlementSummary>();
@@ -2145,7 +2152,8 @@ namespace SrvSurvey.game
 
         public void predictSpecies()
         {
-            if (this.bioSignalCount == 0 || Game.activeGame == null) return;
+            if (this.bioSignalCount == 0 || Game.activeGame == null || !Game.ready) return;
+            Game.log($"predictSpecies: '{this.name}'...");
 
             this.predictions.Clear();
             var knownRewards = 0L;
@@ -2242,10 +2250,8 @@ namespace SrvSurvey.game
 
             Program.control.BeginInvoke(() =>
             {
-                if (FormShowCodex.activeForm != null)
-                    FormShowCodex.activeForm.prepAllSpecies();
-                // if (FormGenus.activeForm.populateGenus() // TODO: enable this without causing infinite loops
-
+                FormShowCodex.activeForm?.prepAllSpecies();
+                FormGenus.activeForm?.populateGenus();
                 Program.invalidateActivePlotters();
             });
         }

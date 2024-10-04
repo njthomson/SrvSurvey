@@ -22,7 +22,7 @@ namespace SrvSurvey
             if (lastFssBody != null)
             {
                 lastBodyName = lastFssBody.name;
-                if (!lastFssBody.wasDiscovered) lastBodyName = $"♦ {lastBodyName}";
+                if (!lastFssBody.wasDiscovered) lastBodyName = $"⚑ {lastBodyName}";
 
                 var suffixes = new List<string>();
                 if (lastFssBody.terraformable) suffixes.Add("T");
@@ -87,7 +87,7 @@ namespace SrvSurvey
 
             lastBodyName = entry.Bodyname;
             lastWasDiscovered = entry.WasDiscovered;
-            if (!entry.WasDiscovered) lastBodyName = $"♦ {lastBodyName}";
+            if (!entry.WasDiscovered) lastBodyName = $"⚑ {lastBodyName}";
 
             var suffixes = new List<string>();
             if (entry.TerraformState == "Terraformable") suffixes.Add("T");

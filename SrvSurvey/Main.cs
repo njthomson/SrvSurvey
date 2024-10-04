@@ -1216,7 +1216,7 @@ namespace SrvSurvey
                 else
                     Program.hideActivePlotters();
             }
-            else if (rect != this.lastWindowRect && hasFocus)
+            if (rect != this.lastWindowRect && hasFocus)
             {
                 Game.log($"EliteDangerous window reposition: {this.lastWindowRect} => {rect}");
                 this.lastWindowRect = rect;

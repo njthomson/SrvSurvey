@@ -1,5 +1,4 @@
 ﻿using SrvSurvey.game;
-using System.Drawing.Drawing2D;
 
 namespace SrvSurvey
 {
@@ -74,19 +73,29 @@ namespace SrvSurvey
                         brush = GameColors.brushDarkCyan;
                     else if (isCurrentObelisk || isTargetObelisk)
                         brush = GameColors.brushCyan;
-                    else if (!hasItem1 || !hasItem2)
-                        brush = GameColors.brushRed;
-
                     // change colours if items are missing? Perhaps overkill?
-                    //var brush = (hasItem1 && hasItem2)
-                    //    ? isTargetObelisk ? GameColors.brushCyan : GameColors.brushGameOrange
-                    //    : isTargetObelisk ? GameColors.brushDarkCyan : GameColors.brushGameOrangeDim;
+                    //else if (!hasItem1 || !hasItem2)
+                    //    brush = GameColors.brushRed;
 
                     // draw main text (bigger font)
                     this.dtx = oneFour;
                     var logName = $"{Util.getLogNameFromChar(bar.Key[0])} #{bar.Key.Substring(1)}:";
-                    this.drawTextAt(logName, brush, GameColors.fontMiddle);
+                    var sz2 = this.drawTextAt(logName, brush, GameColors.fontMiddle);
                     this.dty += six;
+                    if (!hasItem1 || !hasItem2)
+                    {
+                        // strike-through the log name if we do not have suffient items
+                        var p1 = GameColors.penGameOrange1;
+                        var p2 = GameColors.penGameOrangeDim1;
+                        if (isCurrentObelisk || isTargetObelisk)
+                        {
+                            p1 = GameColors.penCyan1;
+                            p2 = GameColors.penDarkCyan1;
+                        }
+
+                        g.DrawLine(p1, dtx - eight, dty + sz.Height - 1, dtx - sz2.Width, dty + sz.Height - 1);
+                        g.DrawLine(p1, dtx - eight + 1, dty + sz.Height, dtx - sz2.Width + 1, dty + sz.Height);
+                    }
 
                     this.drawRamTahDot(0, 0, item1);
                     this.drawTextAt(item1, hasItem1 ? GameColors.brushGameOrange : Brushes.Red, GameColors.fontSmall);

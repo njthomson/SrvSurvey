@@ -233,7 +233,7 @@ namespace SrvSurvey
                     if (ramTahNeeded)
                         this.drawTextAt($"► Needed for Ram Tah mission", brush, GameColors.fontMiddle);
                     else
-                        this.drawTextAt($"► Log already acquired", brush, GameColors.fontMiddle);
+                        this.drawTextAt($"► Log has been acquired", brush, GameColors.fontMiddle);
                 }
 
                 if (game.guardianMatsFull)

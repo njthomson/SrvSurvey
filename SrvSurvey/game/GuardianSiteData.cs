@@ -1236,9 +1236,10 @@ namespace SrvSurvey.game
             // show survey status if not complete
             if (!site.surveyComplete)
             {
-                if (site.surveyProgress == 0)
+                var siteData = GuardianSiteData.Load(body.name, idx, true);
+                if (site.surveyProgress == 0 && siteData == null)
                     summary.status = "Survey: not started";
-                else
+                else if (siteData?.isSurveyComplete() == false)
                     summary.status = "Survey: incomplete";
             }
 
@@ -1287,9 +1288,10 @@ namespace SrvSurvey.game
             // show survey status if not complete
             if (!site.surveyComplete)
             {
-                if (site.surveyProgress == 0)
+                var siteData = GuardianSiteData.Load(body.name, summary.name);
+                if (site.surveyProgress == 0 && siteData == null)
                     summary.status = "Survey: not started";
-                else
+                else if (siteData?.isSurveyComplete() == false)
                     summary.status = "Survey: incomplete";
             }
 

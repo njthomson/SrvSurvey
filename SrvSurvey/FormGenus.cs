@@ -122,17 +122,6 @@ namespace SrvSurvey
 
             if (game?.systemData == null) return;
 
-            if (filterIdx < 2)
-            {
-                foreach (var body in game.systemData.bodies)
-                    if (body.bioSignalCount > 0 || (Debugger.IsAttached && (body.type == SystemBodyType.LandableBody || body.type == SystemBodyType.SolidBody) && body.atmosphereType != "None"))
-                        body.predictSpecies();
-            }
-            else if (targetBody != null)
-            {
-                targetBody.predictSpecies();
-            }
-
             // show something if no bio signals
             if (game.systemData.bioSignalsTotal == 0)
                 this.addWarningLabel("Current system has no detected bio signals.");
@@ -428,8 +417,7 @@ namespace SrvSurvey
         private void toolStripStatusLabel1_Click(object sender, EventArgs e)
         {
             // cheap & cheerful refresh
-            this.populateGenus();
-            game?.systemBody?.predictSpecies();
+            game.predictSystemSpecies();
         }
 
         private void menuOpenEDSM_Click(object sender, EventArgs e)

@@ -97,8 +97,9 @@ namespace SrvSurvey
         public bool focusGameAfterFsdJump = false;
 
         public bool enableGuardianSites = true;
-        [JsonIgnore]
-        public bool enableEarlyGuardianStructures = true;
+        public bool autoZoomGuardianNearObelisks = true;
+        public bool autoZoomGuardianInTurret = false;
+
         public bool disableRuinsMeasurementGrid = false;
         public bool disableAerialAlignmentGrid = false;
         public bool hidePlottersFromCombatSuits = false;

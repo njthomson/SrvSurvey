@@ -235,7 +235,9 @@ namespace SrvSurvey
         public static Pen penDarkCyan1 = newPen(DarkCyan, 1);
         public static Pen penDarkCyan4 = newPen(DarkCyan, 4);
 
+        public static Pen penRed1 = newPen(Color.Red, 1);
         public static Pen penRed2 = newPen(Color.Red, 2);
+        public static Pen penDarkRed1 = newPen(Color.DarkRed, 1);
         public static Pen penDarkRed2 = newPen(Color.DarkRed, 2);
         public static Pen penDarkRed3 = newPen(Color.DarkRed, 3);
         public static Pen penDarkRed4 = newPen(Color.DarkRed, 4);

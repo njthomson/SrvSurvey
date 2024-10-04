@@ -6,8 +6,7 @@ namespace SrvSurvey
     {
         private PlotGuardianSystem() : base()
         {
-            this.Width = scaled(420);
-            this.Height = scaled(88);
+            this.Size = Size.Empty;
             this.BackgroundImageLayout = ImageLayout.Stretch;
 
             this.Font = GameColors.fontMiddle;
@@ -17,6 +16,8 @@ namespace SrvSurvey
 
         protected override void OnLoad(EventArgs e)
         {
+            this.Width = scaled(420);
+            this.Height = scaled(88);
             base.OnLoad(e);
 
             this.initializeOnLoad();

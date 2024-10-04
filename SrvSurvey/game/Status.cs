@@ -189,6 +189,8 @@ namespace SrvSurvey
         [JsonIgnore]
         public bool hasLatLong { get => (this.Flags & StatusFlags.HasLatLong) > 0; }
         [JsonIgnore]
+        public bool UsingSrvTurret { get => (this.Flags & StatusFlags.SrvUsingTurretView) > 0; }
+        [JsonIgnore]
         public bool InTaxi { get => (this.Flags2 & StatusFlags2.InTaxi) > 0; }
         [JsonIgnore]
         public bool Docked { get => (this.Flags & StatusFlags.Docked) > 0; }

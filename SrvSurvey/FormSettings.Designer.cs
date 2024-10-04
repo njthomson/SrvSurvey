@@ -35,6 +35,8 @@ namespace SrvSurvey
             btnSave = new FlatButton();
             btnCancel = new FlatButton();
             tabPage1 = new TabPage();
+            numOpacity = new NumericUpDown();
+            numGravityWarningLevel = new NumericUpDown();
             checkFocusAfterFsdJump = new CheckBox();
             checkHidePlottersFromDominator = new CheckBox();
             label3 = new Label();
@@ -49,7 +51,6 @@ namespace SrvSurvey
             btnResetOverlays = new FlatButton();
             comboCmdr = new ComboBox();
             label12 = new Label();
-            numGravityWarningLevel = new NumericUpDown();
             checkBox13 = new CheckBox();
             pictureBox6 = new PictureBox();
             checkHideJournalTimer = new CheckBox();
@@ -61,7 +62,6 @@ namespace SrvSurvey
             label4 = new Label();
             checkHidePlottersFromMaverick = new CheckBox();
             checkFocusOnMinimize = new CheckBox();
-            numOpacity = new NumericUpDown();
             label2 = new Label();
             trackOpacity = new TrackBar();
             label1 = new Label();
@@ -70,12 +70,12 @@ namespace SrvSurvey
             linkResetTheme = new LinkLabel();
             tabControl1 = new TabControl();
             tabPage4 = new TabPage();
+            numMinBioDuration = new NumericUpDown();
             pictureBox1 = new PictureBox();
             checkBox21 = new CheckBox();
             checkBox20 = new CheckBox();
             pictureBox12 = new PictureBox();
             label15 = new Label();
-            numMinBioDuration = new NumericUpDown();
             checkBox18 = new CheckBox();
             checkBioSystemPlotter = new CheckBox();
             linkLabel1 = new LinkLabel();
@@ -101,15 +101,15 @@ namespace SrvSurvey
             numRingBucket1 = new NumericUpDown();
             label16 = new Label();
             tabPage3 = new TabPage();
+            numAltGamma = new NumericUpDown();
+            numAltBeta = new NumericUpDown();
+            numAltAlpha = new NumericUpDown();
             checkBox15 = new CheckBox();
             checkBox14 = new CheckBox();
             checkBox3 = new CheckBox();
             label9 = new Label();
             comboGuardianWindowSize = new ComboBox();
             checkBox2 = new CheckBox();
-            numAltGamma = new NumericUpDown();
-            numAltBeta = new NumericUpDown();
-            numAltAlpha = new NumericUpDown();
             label8 = new Label();
             label7 = new Label();
             label6 = new Label();
@@ -131,12 +131,16 @@ namespace SrvSurvey
             lblScreenshotTarget = new Label();
             checkLocalTime = new CheckBox();
             tabPage6 = new TabPage();
+            pictureBox13 = new PictureBox();
+            pictureBox10 = new PictureBox();
+            numericUpDown1 = new NumericUpDown();
+            numMinScanValue = new NumericUpDown();
+            pictureBox11 = new PictureBox();
+            pictureBox5 = new PictureBox();
+            pictureBox4 = new PictureBox();
             checkBox24 = new CheckBox();
             checkBox23 = new CheckBox();
-            pictureBox10 = new PictureBox();
-            pictureBox11 = new PictureBox();
             checkPlotJumpInfo = new CheckBox();
-            pictureBox13 = new PictureBox();
             checkHideBodyInfoInBubble = new CheckBox();
             checkBodyInfoOrbit = new CheckBox();
             checkBodyInfoMap = new CheckBox();
@@ -145,15 +149,11 @@ namespace SrvSurvey
             checkGalMapPlotter = new CheckBox();
             label13 = new Label();
             checkBox16 = new CheckBox();
-            numericUpDown1 = new NumericUpDown();
             label10 = new Label();
             checkBox11 = new CheckBox();
-            numMinScanValue = new NumericUpDown();
             checkBox10 = new CheckBox();
             checkBox9 = new CheckBox();
-            pictureBox5 = new PictureBox();
             checkBox8 = new CheckBox();
-            pictureBox4 = new PictureBox();
             checkBox4 = new CheckBox();
             tabPage7 = new TabPage();
             pictureBox7 = new PictureBox();
@@ -170,16 +170,16 @@ namespace SrvSurvey
             pictureBox9 = new PictureBox();
             pictureBox8 = new PictureBox();
             tabSettlements = new TabPage();
-            checkBox22 = new CheckBox();
-            numericUpDown6 = new NumericUpDown();
-            checkBox19 = new CheckBox();
             numericUpDown5 = new NumericUpDown();
-            label23 = new Label();
+            numericUpDown6 = new NumericUpDown();
             numericUpDown4 = new NumericUpDown();
-            label22 = new Label();
             numericUpDown3 = new NumericUpDown();
-            label21 = new Label();
             numericUpDown2 = new NumericUpDown();
+            checkBox22 = new CheckBox();
+            checkBox19 = new CheckBox();
+            label23 = new Label();
+            label22 = new Label();
+            label21 = new Label();
             checkBox12 = new CheckBox();
             checkHumanSitePlotter = new CheckBox();
             tabPage2 = new TabPage();
@@ -187,17 +187,19 @@ namespace SrvSurvey
             linkAboutOne = new LinkLabel();
             colorDialog = new ColorDialog();
             colorTheme = new ColorDialog();
+            checkBox25 = new CheckBox();
+            checkBox26 = new CheckBox();
             panel1.SuspendLayout();
             tabPage1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numOpacity).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numGravityWarningLevel).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox6).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)numOpacity).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackOpacity).BeginInit();
             tabControl1.SuspendLayout();
             tabPage4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numMinBioDuration).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox12).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)numMinBioDuration).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             groupRingBuckets.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)picBucket4).BeginInit();
@@ -214,11 +216,11 @@ namespace SrvSurvey
             tabPage5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
             tabPage6.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox10).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox11).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox13).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox10).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numMinScanValue).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox11).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox5).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox4).BeginInit();
             tabPage7.SuspendLayout();
@@ -227,8 +229,8 @@ namespace SrvSurvey
             ((System.ComponentModel.ISupportInitialize)pictureBox9).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox8).BeginInit();
             tabSettlements.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)numericUpDown6).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown5).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown6).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown4).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown3).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown2).BeginInit();
@@ -328,6 +330,29 @@ namespace SrvSurvey
             tabPage1.Size = new Size(612, 420);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "General";
+            // 
+            // numOpacity
+            // 
+            numOpacity.Location = new Point(109, 68);
+            numOpacity.Margin = new Padding(4, 3, 4, 3);
+            numOpacity.Name = "numOpacity";
+            numOpacity.Size = new Size(61, 23);
+            numOpacity.TabIndex = 3;
+            numOpacity.Tag = "plotterOpacity";
+            numOpacity.ValueChanged += numOpacity_ValueChanged;
+            // 
+            // numGravityWarningLevel
+            // 
+            numGravityWarningLevel.DecimalPlaces = 2;
+            numGravityWarningLevel.Increment = new decimal(new int[] { 1, 0, 0, 65536 });
+            numGravityWarningLevel.Location = new Point(191, 312);
+            numGravityWarningLevel.Maximum = new decimal(new int[] { 50, 0, 0, 0 });
+            numGravityWarningLevel.Name = "numGravityWarningLevel";
+            numGravityWarningLevel.Size = new Size(50, 23);
+            numGravityWarningLevel.TabIndex = 17;
+            numGravityWarningLevel.Tag = "highGravityWarningLevel";
+            numGravityWarningLevel.TextAlign = HorizontalAlignment.Right;
+            numGravityWarningLevel.Value = new decimal(new int[] { 50, 0, 0, 0 });
             // 
             // checkFocusAfterFsdJump
             // 
@@ -492,19 +517,6 @@ namespace SrvSurvey
             label12.TabIndex = 16;
             label12.Text = "When body gravity is above:";
             // 
-            // numGravityWarningLevel
-            // 
-            numGravityWarningLevel.DecimalPlaces = 2;
-            numGravityWarningLevel.Increment = new decimal(new int[] { 1, 0, 0, 65536 });
-            numGravityWarningLevel.Location = new Point(191, 312);
-            numGravityWarningLevel.Maximum = new decimal(new int[] { 50, 0, 0, 0 });
-            numGravityWarningLevel.Name = "numGravityWarningLevel";
-            numGravityWarningLevel.Size = new Size(50, 23);
-            numGravityWarningLevel.TabIndex = 17;
-            numGravityWarningLevel.Tag = "highGravityWarningLevel";
-            numGravityWarningLevel.TextAlign = HorizontalAlignment.Right;
-            numGravityWarningLevel.Value = new decimal(new int[] { 50, 0, 0, 0 });
-            // 
             // checkBox13
             // 
             checkBox13.AutoSize = true;
@@ -645,16 +657,6 @@ namespace SrvSurvey
             checkFocusOnMinimize.Text = "Set focus on Elite Dangerous when minimizing Srv Survey.";
             checkFocusOnMinimize.UseVisualStyleBackColor = true;
             // 
-            // numOpacity
-            // 
-            numOpacity.Location = new Point(109, 68);
-            numOpacity.Margin = new Padding(4, 3, 4, 3);
-            numOpacity.Name = "numOpacity";
-            numOpacity.Size = new Size(61, 23);
-            numOpacity.TabIndex = 3;
-            numOpacity.Tag = "plotterOpacity";
-            numOpacity.ValueChanged += numOpacity_ValueChanged;
-            // 
             // label2
             // 
             label2.AutoSize = true;
@@ -776,6 +778,19 @@ namespace SrvSurvey
             tabPage4.TabIndex = 3;
             tabPage4.Text = "Bio Scanning";
             // 
+            // numMinBioDuration
+            // 
+            numMinBioDuration.Enabled = false;
+            numMinBioDuration.Location = new Point(275, 220);
+            numMinBioDuration.Maximum = new decimal(new int[] { 600, 0, 0, 0 });
+            numMinBioDuration.Name = "numMinBioDuration";
+            numMinBioDuration.Size = new Size(51, 23);
+            numMinBioDuration.TabIndex = 9;
+            numMinBioDuration.Tag = "keepBioPlottersVisibleDuration";
+            numMinBioDuration.TextAlign = HorizontalAlignment.Right;
+            numMinBioDuration.ThousandsSeparator = true;
+            numMinBioDuration.Value = new decimal(new int[] { 555, 0, 0, 0 });
+            // 
             // pictureBox1
             // 
             pictureBox1.BackgroundImage = (Image)resources.GetObject("pictureBox1.BackgroundImage");
@@ -834,19 +849,6 @@ namespace SrvSurvey
             label15.Size = new Size(53, 15);
             label15.TabIndex = 10;
             label15.Text = "seconds.";
-            // 
-            // numMinBioDuration
-            // 
-            numMinBioDuration.Enabled = false;
-            numMinBioDuration.Location = new Point(275, 220);
-            numMinBioDuration.Maximum = new decimal(new int[] { 600, 0, 0, 0 });
-            numMinBioDuration.Name = "numMinBioDuration";
-            numMinBioDuration.Size = new Size(51, 23);
-            numMinBioDuration.TabIndex = 9;
-            numMinBioDuration.Tag = "keepBioPlottersVisibleDuration";
-            numMinBioDuration.TextAlign = HorizontalAlignment.Right;
-            numMinBioDuration.ThousandsSeparator = true;
-            numMinBioDuration.Value = new decimal(new int[] { 555, 0, 0, 0 });
             // 
             // checkBox18
             // 
@@ -1146,6 +1148,8 @@ namespace SrvSurvey
             // tabPage3
             // 
             tabPage3.BorderStyle = BorderStyle.Fixed3D;
+            tabPage3.Controls.Add(checkBox26);
+            tabPage3.Controls.Add(checkBox25);
             tabPage3.Controls.Add(numAltGamma);
             tabPage3.Controls.Add(numAltBeta);
             tabPage3.Controls.Add(numAltAlpha);
@@ -1167,6 +1171,38 @@ namespace SrvSurvey
             tabPage3.Size = new Size(612, 420);
             tabPage3.TabIndex = 2;
             tabPage3.Text = "Guardian sites";
+            // 
+            // numAltGamma
+            // 
+            numAltGamma.Increment = new decimal(new int[] { 10, 0, 0, 0 });
+            numAltGamma.Location = new Point(293, 173);
+            numAltGamma.Maximum = new decimal(new int[] { 5000, 0, 0, 0 });
+            numAltGamma.Name = "numAltGamma";
+            numAltGamma.Size = new Size(51, 23);
+            numAltGamma.TabIndex = 9;
+            numAltGamma.Tag = "aerialAltGamma";
+            numAltGamma.Value = new decimal(new int[] { 1500, 0, 0, 0 });
+            // 
+            // numAltBeta
+            // 
+            numAltBeta.Increment = new decimal(new int[] { 10, 0, 0, 0 });
+            numAltBeta.Location = new Point(178, 173);
+            numAltBeta.Maximum = new decimal(new int[] { 5000, 0, 0, 0 });
+            numAltBeta.Name = "numAltBeta";
+            numAltBeta.Size = new Size(51, 23);
+            numAltBeta.TabIndex = 7;
+            numAltBeta.Tag = "aerialAltBeta";
+            numAltBeta.Value = new decimal(new int[] { 1400, 0, 0, 0 });
+            // 
+            // numAltAlpha
+            // 
+            numAltAlpha.Location = new Point(82, 173);
+            numAltAlpha.Maximum = new decimal(new int[] { 5000, 0, 0, 0 });
+            numAltAlpha.Name = "numAltAlpha";
+            numAltAlpha.Size = new Size(51, 23);
+            numAltAlpha.TabIndex = 5;
+            numAltAlpha.Tag = "aerialAltAlpha";
+            numAltAlpha.Value = new decimal(new int[] { 1200, 0, 0, 0 });
             // 
             // checkBox15
             // 
@@ -1204,7 +1240,7 @@ namespace SrvSurvey
             checkBox3.Checked = true;
             checkBox3.CheckState = CheckState.Checked;
             checkBox3.FlatStyle = FlatStyle.System;
-            checkBox3.Location = new Point(11, 262);
+            checkBox3.Location = new Point(11, 281);
             checkBox3.Margin = new Padding(4, 3, 4, 3);
             checkBox3.Name = "checkBox3";
             checkBox3.Size = new Size(295, 20);
@@ -1217,7 +1253,7 @@ namespace SrvSurvey
             // 
             label9.AutoSize = true;
             label9.FlatStyle = FlatStyle.System;
-            label9.Location = new Point(11, 236);
+            label9.Location = new Point(11, 255);
             label9.Name = "label9";
             label9.Size = new Size(72, 15);
             label9.TabIndex = 12;
@@ -1229,7 +1265,7 @@ namespace SrvSurvey
             comboGuardianWindowSize.FlatStyle = FlatStyle.System;
             comboGuardianWindowSize.FormattingEnabled = true;
             comboGuardianWindowSize.Items.AddRange(new object[] { "Small - 300 x 400", "Medium - 500 x 500", "Large - 600 x 700", "Huge - 800 x 1000", "Massive - 1200 x 1200" });
-            comboGuardianWindowSize.Location = new Point(89, 233);
+            comboGuardianWindowSize.Location = new Point(89, 252);
             comboGuardianWindowSize.Name = "comboGuardianWindowSize";
             comboGuardianWindowSize.Size = new Size(177, 23);
             comboGuardianWindowSize.TabIndex = 13;
@@ -1241,7 +1277,7 @@ namespace SrvSurvey
             checkBox2.Checked = true;
             checkBox2.CheckState = CheckState.Checked;
             checkBox2.FlatStyle = FlatStyle.System;
-            checkBox2.Location = new Point(10, 208);
+            checkBox2.Location = new Point(10, 227);
             checkBox2.Margin = new Padding(4, 3, 4, 3);
             checkBox2.Name = "checkBox2";
             checkBox2.Size = new Size(262, 20);
@@ -1250,43 +1286,11 @@ namespace SrvSurvey
             checkBox2.Text = "Disable aerial screenshot alignment overlay.";
             checkBox2.UseVisualStyleBackColor = true;
             // 
-            // numAltGamma
-            // 
-            numAltGamma.Increment = new decimal(new int[] { 10, 0, 0, 0 });
-            numAltGamma.Location = new Point(293, 154);
-            numAltGamma.Maximum = new decimal(new int[] { 5000, 0, 0, 0 });
-            numAltGamma.Name = "numAltGamma";
-            numAltGamma.Size = new Size(51, 23);
-            numAltGamma.TabIndex = 9;
-            numAltGamma.Tag = "aerialAltGamma";
-            numAltGamma.Value = new decimal(new int[] { 1500, 0, 0, 0 });
-            // 
-            // numAltBeta
-            // 
-            numAltBeta.Increment = new decimal(new int[] { 10, 0, 0, 0 });
-            numAltBeta.Location = new Point(178, 154);
-            numAltBeta.Maximum = new decimal(new int[] { 5000, 0, 0, 0 });
-            numAltBeta.Name = "numAltBeta";
-            numAltBeta.Size = new Size(51, 23);
-            numAltBeta.TabIndex = 7;
-            numAltBeta.Tag = "aerialAltBeta";
-            numAltBeta.Value = new decimal(new int[] { 1400, 0, 0, 0 });
-            // 
-            // numAltAlpha
-            // 
-            numAltAlpha.Location = new Point(82, 154);
-            numAltAlpha.Maximum = new decimal(new int[] { 5000, 0, 0, 0 });
-            numAltAlpha.Name = "numAltAlpha";
-            numAltAlpha.Size = new Size(51, 23);
-            numAltAlpha.TabIndex = 5;
-            numAltAlpha.Tag = "aerialAltAlpha";
-            numAltAlpha.Value = new decimal(new int[] { 1200, 0, 0, 0 });
-            // 
             // label8
             // 
             label8.AutoSize = true;
             label8.FlatStyle = FlatStyle.System;
-            label8.Location = new Point(235, 156);
+            label8.Location = new Point(235, 175);
             label8.Name = "label8";
             label8.Size = new Size(52, 15);
             label8.TabIndex = 8;
@@ -1296,7 +1300,7 @@ namespace SrvSurvey
             // 
             label7.AutoSize = true;
             label7.FlatStyle = FlatStyle.System;
-            label7.Location = new Point(139, 156);
+            label7.Location = new Point(139, 175);
             label7.Name = "label7";
             label7.Size = new Size(33, 15);
             label7.TabIndex = 6;
@@ -1307,7 +1311,7 @@ namespace SrvSurvey
             // 
             label6.AutoSize = true;
             label6.FlatStyle = FlatStyle.System;
-            label6.Location = new Point(35, 156);
+            label6.Location = new Point(35, 175);
             label6.Name = "label6";
             label6.Size = new Size(41, 15);
             label6.TabIndex = 4;
@@ -1317,7 +1321,7 @@ namespace SrvSurvey
             // 
             label5.AutoSize = true;
             label5.FlatStyle = FlatStyle.System;
-            label5.Location = new Point(10, 120);
+            label5.Location = new Point(10, 139);
             label5.Name = "label5";
             label5.Size = new Size(382, 30);
             label5.TabIndex = 3;
@@ -1329,7 +1333,7 @@ namespace SrvSurvey
             checkRuinsMeasurementGrid.Checked = true;
             checkRuinsMeasurementGrid.CheckState = CheckState.Checked;
             checkRuinsMeasurementGrid.FlatStyle = FlatStyle.System;
-            checkRuinsMeasurementGrid.Location = new Point(10, 183);
+            checkRuinsMeasurementGrid.Location = new Point(10, 202);
             checkRuinsMeasurementGrid.Margin = new Padding(4, 3, 4, 3);
             checkRuinsMeasurementGrid.Name = "checkRuinsMeasurementGrid";
             checkRuinsMeasurementGrid.Size = new Size(237, 20);
@@ -1580,6 +1584,82 @@ namespace SrvSurvey
             tabPage6.TabIndex = 5;
             tabPage6.Text = "Exploration";
             // 
+            // pictureBox13
+            // 
+            pictureBox13.BackgroundImage = (Image)resources.GetObject("pictureBox13.BackgroundImage");
+            pictureBox13.BackgroundImageLayout = ImageLayout.None;
+            pictureBox13.Location = new Point(31, 368);
+            pictureBox13.Name = "pictureBox13";
+            pictureBox13.Size = new Size(329, 49);
+            pictureBox13.TabIndex = 33;
+            pictureBox13.TabStop = false;
+            // 
+            // pictureBox10
+            // 
+            pictureBox10.BackgroundImage = (Image)resources.GetObject("pictureBox10.BackgroundImage");
+            pictureBox10.BackgroundImageLayout = ImageLayout.Zoom;
+            pictureBox10.Location = new Point(423, 321);
+            pictureBox10.Name = "pictureBox10";
+            pictureBox10.Size = new Size(166, 89);
+            pictureBox10.TabIndex = 31;
+            pictureBox10.TabStop = false;
+            // 
+            // numericUpDown1
+            // 
+            numericUpDown1.Increment = new decimal(new int[] { 10000, 0, 0, 0 });
+            numericUpDown1.Location = new Point(183, 201);
+            numericUpDown1.Maximum = new decimal(new int[] { 6000000, 0, 0, 0 });
+            numericUpDown1.Name = "numericUpDown1";
+            numericUpDown1.Size = new Size(88, 23);
+            numericUpDown1.TabIndex = 10;
+            numericUpDown1.Tag = "skipHighDistanceDSSValue";
+            numericUpDown1.TextAlign = HorizontalAlignment.Right;
+            numericUpDown1.ThousandsSeparator = true;
+            numericUpDown1.Value = new decimal(new int[] { 2000000, 0, 0, 0 });
+            // 
+            // numMinScanValue
+            // 
+            numMinScanValue.Increment = new decimal(new int[] { 100000, 0, 0, 0 });
+            numMinScanValue.Location = new Point(281, 176);
+            numMinScanValue.Maximum = new decimal(new int[] { 6000000, 0, 0, 0 });
+            numMinScanValue.Name = "numMinScanValue";
+            numMinScanValue.Size = new Size(88, 23);
+            numMinScanValue.TabIndex = 7;
+            numMinScanValue.Tag = "skipLowValueAmount";
+            numMinScanValue.TextAlign = HorizontalAlignment.Right;
+            numMinScanValue.ThousandsSeparator = true;
+            numMinScanValue.Value = new decimal(new int[] { 2000000, 0, 0, 0 });
+            // 
+            // pictureBox11
+            // 
+            pictureBox11.BackgroundImage = (Image)resources.GetObject("pictureBox11.BackgroundImage");
+            pictureBox11.BackgroundImageLayout = ImageLayout.Zoom;
+            pictureBox11.Location = new Point(423, 152);
+            pictureBox11.Name = "pictureBox11";
+            pictureBox11.Size = new Size(105, 148);
+            pictureBox11.TabIndex = 32;
+            pictureBox11.TabStop = false;
+            // 
+            // pictureBox5
+            // 
+            pictureBox5.BackgroundImage = (Image)resources.GetObject("pictureBox5.BackgroundImage");
+            pictureBox5.BackgroundImageLayout = ImageLayout.None;
+            pictureBox5.Location = new Point(219, 97);
+            pictureBox5.Name = "pictureBox5";
+            pictureBox5.Size = new Size(256, 49);
+            pictureBox5.TabIndex = 14;
+            pictureBox5.TabStop = false;
+            // 
+            // pictureBox4
+            // 
+            pictureBox4.BackgroundImage = (Image)resources.GetObject("pictureBox4.BackgroundImage");
+            pictureBox4.BackgroundImageLayout = ImageLayout.Zoom;
+            pictureBox4.Location = new Point(220, 6);
+            pictureBox4.Name = "pictureBox4";
+            pictureBox4.Size = new Size(198, 84);
+            pictureBox4.TabIndex = 12;
+            pictureBox4.TabStop = false;
+            // 
             // checkBox24
             // 
             checkBox24.AutoSize = true;
@@ -1610,26 +1690,6 @@ namespace SrvSurvey
             checkBox23.Text = "When at planet surface and not in Combat mode";
             checkBox23.UseVisualStyleBackColor = true;
             // 
-            // pictureBox10
-            // 
-            pictureBox10.BackgroundImage = (Image)resources.GetObject("pictureBox10.BackgroundImage");
-            pictureBox10.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureBox10.Location = new Point(423, 321);
-            pictureBox10.Name = "pictureBox10";
-            pictureBox10.Size = new Size(166, 89);
-            pictureBox10.TabIndex = 31;
-            pictureBox10.TabStop = false;
-            // 
-            // pictureBox11
-            // 
-            pictureBox11.BackgroundImage = (Image)resources.GetObject("pictureBox11.BackgroundImage");
-            pictureBox11.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureBox11.Location = new Point(423, 152);
-            pictureBox11.Name = "pictureBox11";
-            pictureBox11.Size = new Size(105, 148);
-            pictureBox11.TabIndex = 32;
-            pictureBox11.TabStop = false;
-            // 
             // checkPlotJumpInfo
             // 
             checkPlotJumpInfo.AutoSize = true;
@@ -1641,16 +1701,6 @@ namespace SrvSurvey
             checkPlotJumpInfo.Tag = "autoShowPlotJumpInfoTest";
             checkPlotJumpInfo.Text = "Show next system summary before FSD jumping (uses external data)";
             checkPlotJumpInfo.UseVisualStyleBackColor = true;
-            // 
-            // pictureBox13
-            // 
-            pictureBox13.BackgroundImage = (Image)resources.GetObject("pictureBox13.BackgroundImage");
-            pictureBox13.BackgroundImageLayout = ImageLayout.None;
-            pictureBox13.Location = new Point(31, 368);
-            pictureBox13.Name = "pictureBox13";
-            pictureBox13.Size = new Size(329, 49);
-            pictureBox13.TabIndex = 33;
-            pictureBox13.TabStop = false;
             // 
             // checkHideBodyInfoInBubble
             // 
@@ -1766,19 +1816,6 @@ namespace SrvSurvey
             checkBox16.Text = "Skip bodies exceeding:";
             checkBox16.UseVisualStyleBackColor = true;
             // 
-            // numericUpDown1
-            // 
-            numericUpDown1.Increment = new decimal(new int[] { 10000, 0, 0, 0 });
-            numericUpDown1.Location = new Point(183, 201);
-            numericUpDown1.Maximum = new decimal(new int[] { 6000000, 0, 0, 0 });
-            numericUpDown1.Name = "numericUpDown1";
-            numericUpDown1.Size = new Size(88, 23);
-            numericUpDown1.TabIndex = 10;
-            numericUpDown1.Tag = "skipHighDistanceDSSValue";
-            numericUpDown1.TextAlign = HorizontalAlignment.Right;
-            numericUpDown1.ThousandsSeparator = true;
-            numericUpDown1.Value = new decimal(new int[] { 2000000, 0, 0, 0 });
-            // 
             // label10
             // 
             label10.AutoSize = true;
@@ -1802,19 +1839,6 @@ namespace SrvSurvey
             checkBox11.Text = "Skip bodies with estimated value below:";
             checkBox11.UseVisualStyleBackColor = true;
             checkBox11.CheckedChanged += checkBox11_CheckedChanged;
-            // 
-            // numMinScanValue
-            // 
-            numMinScanValue.Increment = new decimal(new int[] { 100000, 0, 0, 0 });
-            numMinScanValue.Location = new Point(281, 176);
-            numMinScanValue.Maximum = new decimal(new int[] { 6000000, 0, 0, 0 });
-            numMinScanValue.Name = "numMinScanValue";
-            numMinScanValue.Size = new Size(88, 23);
-            numMinScanValue.TabIndex = 7;
-            numMinScanValue.Tag = "skipLowValueAmount";
-            numMinScanValue.TextAlign = HorizontalAlignment.Right;
-            numMinScanValue.ThousandsSeparator = true;
-            numMinScanValue.Value = new decimal(new int[] { 2000000, 0, 0, 0 });
             // 
             // checkBox10
             // 
@@ -1846,16 +1870,6 @@ namespace SrvSurvey
             checkBox9.Text = "Skip DSS of gas giants";
             checkBox9.UseVisualStyleBackColor = true;
             // 
-            // pictureBox5
-            // 
-            pictureBox5.BackgroundImage = (Image)resources.GetObject("pictureBox5.BackgroundImage");
-            pictureBox5.BackgroundImageLayout = ImageLayout.None;
-            pictureBox5.Location = new Point(219, 97);
-            pictureBox5.Name = "pictureBox5";
-            pictureBox5.Size = new Size(256, 49);
-            pictureBox5.TabIndex = 14;
-            pictureBox5.TabStop = false;
-            // 
             // checkBox8
             // 
             checkBox8.AutoSize = true;
@@ -1870,16 +1884,6 @@ namespace SrvSurvey
             checkBox8.Tag = "autoShowPlotSysStatus";
             checkBox8.Text = "Show system DSS remaining ➟➟";
             checkBox8.UseVisualStyleBackColor = true;
-            // 
-            // pictureBox4
-            // 
-            pictureBox4.BackgroundImage = (Image)resources.GetObject("pictureBox4.BackgroundImage");
-            pictureBox4.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureBox4.Location = new Point(220, 6);
-            pictureBox4.Name = "pictureBox4";
-            pictureBox4.Size = new Size(198, 84);
-            pictureBox4.TabIndex = 12;
-            pictureBox4.TabStop = false;
             // 
             // checkBox4
             // 
@@ -2099,17 +2103,20 @@ namespace SrvSurvey
             tabSettlements.TabIndex = 7;
             tabSettlements.Text = "Settlements";
             // 
-            // checkBox22
+            // numericUpDown5
             // 
-            checkBox22.AutoSize = true;
-            checkBox22.FlatStyle = FlatStyle.System;
-            checkBox22.Location = new Point(8, 123);
-            checkBox22.Name = "checkBox22";
-            checkBox22.Size = new Size(573, 20);
-            checkBox22.TabIndex = 11;
-            checkBox22.Tag = "humanSiteDotsOnCollection";
-            checkBox22.Text = "Show dots when some material is collected. (Note: this is subject to lag when collecting things quickly)";
-            checkBox22.UseVisualStyleBackColor = true;
+            numericUpDown5.DecimalPlaces = 2;
+            numericUpDown5.Increment = new decimal(new int[] { 5, 0, 0, 65536 });
+            numericUpDown5.Location = new Point(206, 78);
+            numericUpDown5.Maximum = new decimal(new int[] { 10, 0, 0, 0 });
+            numericUpDown5.Minimum = new decimal(new int[] { 5, 0, 0, 65536 });
+            numericUpDown5.Name = "numericUpDown5";
+            numericUpDown5.Size = new Size(50, 23);
+            numericUpDown5.TabIndex = 8;
+            numericUpDown5.Tag = "humanSiteZoomInside";
+            numericUpDown5.TextAlign = HorizontalAlignment.Right;
+            numericUpDown5.ThousandsSeparator = true;
+            numericUpDown5.Value = new decimal(new int[] { 6, 0, 0, 0 });
             // 
             // numericUpDown6
             // 
@@ -2126,43 +2133,6 @@ namespace SrvSurvey
             numericUpDown6.ThousandsSeparator = true;
             numericUpDown6.Value = new decimal(new int[] { 6, 0, 0, 0 });
             // 
-            // checkBox19
-            // 
-            checkBox19.AutoSize = true;
-            checkBox19.FlatStyle = FlatStyle.System;
-            checkBox19.Location = new Point(274, 78);
-            checkBox19.Name = "checkBox19";
-            checkBox19.Size = new Size(192, 20);
-            checkBox19.TabIndex = 9;
-            checkBox19.Tag = "humanSiteAutoZoomTool";
-            checkBox19.Text = "Auto-zoom with analyzer tool:";
-            checkBox19.UseVisualStyleBackColor = true;
-            // 
-            // numericUpDown5
-            // 
-            numericUpDown5.DecimalPlaces = 2;
-            numericUpDown5.Increment = new decimal(new int[] { 5, 0, 0, 65536 });
-            numericUpDown5.Location = new Point(206, 78);
-            numericUpDown5.Maximum = new decimal(new int[] { 10, 0, 0, 0 });
-            numericUpDown5.Minimum = new decimal(new int[] { 5, 0, 0, 65536 });
-            numericUpDown5.Name = "numericUpDown5";
-            numericUpDown5.Size = new Size(50, 23);
-            numericUpDown5.TabIndex = 8;
-            numericUpDown5.Tag = "humanSiteZoomInside";
-            numericUpDown5.TextAlign = HorizontalAlignment.Right;
-            numericUpDown5.ThousandsSeparator = true;
-            numericUpDown5.Value = new decimal(new int[] { 6, 0, 0, 0 });
-            // 
-            // label23
-            // 
-            label23.AutoSize = true;
-            label23.FlatStyle = FlatStyle.System;
-            label23.Location = new Point(353, 40);
-            label23.Name = "label23";
-            label23.Size = new Size(113, 15);
-            label23.TabIndex = 5;
-            label23.Text = "On-foot zoom level:";
-            // 
             // numericUpDown4
             // 
             numericUpDown4.DecimalPlaces = 2;
@@ -2177,16 +2147,6 @@ namespace SrvSurvey
             numericUpDown4.TextAlign = HorizontalAlignment.Right;
             numericUpDown4.ThousandsSeparator = true;
             numericUpDown4.Value = new decimal(new int[] { 2, 0, 0, 0 });
-            // 
-            // label22
-            // 
-            label22.AutoSize = true;
-            label22.FlatStyle = FlatStyle.System;
-            label22.Location = new Point(175, 40);
-            label22.Name = "label22";
-            label22.Size = new Size(90, 15);
-            label22.TabIndex = 3;
-            label22.Text = "SRV zoom level:";
             // 
             // numericUpDown3
             // 
@@ -2203,16 +2163,6 @@ namespace SrvSurvey
             numericUpDown3.ThousandsSeparator = true;
             numericUpDown3.Value = new decimal(new int[] { 1, 0, 0, 0 });
             // 
-            // label21
-            // 
-            label21.AutoSize = true;
-            label21.FlatStyle = FlatStyle.System;
-            label21.Location = new Point(8, 38);
-            label21.Name = "label21";
-            label21.Size = new Size(93, 15);
-            label21.TabIndex = 1;
-            label21.Text = "Ship zoom level:";
-            // 
             // numericUpDown2
             // 
             numericUpDown2.DecimalPlaces = 2;
@@ -2227,6 +2177,60 @@ namespace SrvSurvey
             numericUpDown2.TextAlign = HorizontalAlignment.Right;
             numericUpDown2.ThousandsSeparator = true;
             numericUpDown2.Value = new decimal(new int[] { 1, 0, 0, 0 });
+            // 
+            // checkBox22
+            // 
+            checkBox22.AutoSize = true;
+            checkBox22.FlatStyle = FlatStyle.System;
+            checkBox22.Location = new Point(8, 123);
+            checkBox22.Name = "checkBox22";
+            checkBox22.Size = new Size(573, 20);
+            checkBox22.TabIndex = 11;
+            checkBox22.Tag = "humanSiteDotsOnCollection";
+            checkBox22.Text = "Show dots when some material is collected. (Note: this is subject to lag when collecting things quickly)";
+            checkBox22.UseVisualStyleBackColor = true;
+            // 
+            // checkBox19
+            // 
+            checkBox19.AutoSize = true;
+            checkBox19.FlatStyle = FlatStyle.System;
+            checkBox19.Location = new Point(274, 78);
+            checkBox19.Name = "checkBox19";
+            checkBox19.Size = new Size(192, 20);
+            checkBox19.TabIndex = 9;
+            checkBox19.Tag = "humanSiteAutoZoomTool";
+            checkBox19.Text = "Auto-zoom with analyzer tool:";
+            checkBox19.UseVisualStyleBackColor = true;
+            // 
+            // label23
+            // 
+            label23.AutoSize = true;
+            label23.FlatStyle = FlatStyle.System;
+            label23.Location = new Point(353, 40);
+            label23.Name = "label23";
+            label23.Size = new Size(113, 15);
+            label23.TabIndex = 5;
+            label23.Text = "On-foot zoom level:";
+            // 
+            // label22
+            // 
+            label22.AutoSize = true;
+            label22.FlatStyle = FlatStyle.System;
+            label22.Location = new Point(175, 40);
+            label22.Name = "label22";
+            label22.Size = new Size(90, 15);
+            label22.TabIndex = 3;
+            label22.Text = "SRV zoom level:";
+            // 
+            // label21
+            // 
+            label21.AutoSize = true;
+            label21.FlatStyle = FlatStyle.System;
+            label21.Location = new Point(8, 38);
+            label21.Name = "label21";
+            label21.Size = new Size(93, 15);
+            label21.TabIndex = 1;
+            label21.Text = "Ship zoom level:";
             // 
             // checkBox12
             // 
@@ -2295,6 +2299,36 @@ namespace SrvSurvey
             // 
             colorDialog.Color = Color.Yellow;
             // 
+            // checkBox25
+            // 
+            checkBox25.AutoSize = true;
+            checkBox25.Checked = true;
+            checkBox25.CheckState = CheckState.Checked;
+            checkBox25.FlatStyle = FlatStyle.System;
+            checkBox25.Location = new Point(35, 82);
+            checkBox25.Margin = new Padding(4, 3, 4, 3);
+            checkBox25.Name = "checkBox25";
+            checkBox25.Size = new Size(249, 20);
+            checkBox25.TabIndex = 15;
+            checkBox25.Tag = "autoZoomGuardianNearObelisks";
+            checkBox25.Text = "Auto zoom map if within 30m of obelisks";
+            checkBox25.UseVisualStyleBackColor = true;
+            // 
+            // checkBox26
+            // 
+            checkBox26.AutoSize = true;
+            checkBox26.Checked = true;
+            checkBox26.CheckState = CheckState.Checked;
+            checkBox26.FlatStyle = FlatStyle.System;
+            checkBox26.Location = new Point(35, 108);
+            checkBox26.Margin = new Padding(4, 3, 4, 3);
+            checkBox26.Name = "checkBox26";
+            checkBox26.Size = new Size(237, 20);
+            checkBox26.TabIndex = 16;
+            checkBox26.Tag = "autoZoomGuardianInTurret";
+            checkBox26.Text = "Auto zoom map when using SRV turret";
+            checkBox26.UseVisualStyleBackColor = true;
+            // 
             // FormSettings
             // 
             AcceptButton = btnSave;
@@ -2317,16 +2351,16 @@ namespace SrvSurvey
             panel1.ResumeLayout(false);
             tabPage1.ResumeLayout(false);
             tabPage1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numOpacity).EndInit();
             ((System.ComponentModel.ISupportInitialize)numGravityWarningLevel).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox6).EndInit();
-            ((System.ComponentModel.ISupportInitialize)numOpacity).EndInit();
             ((System.ComponentModel.ISupportInitialize)trackOpacity).EndInit();
             tabControl1.ResumeLayout(false);
             tabPage4.ResumeLayout(false);
             tabPage4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numMinBioDuration).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox12).EndInit();
-            ((System.ComponentModel.ISupportInitialize)numMinBioDuration).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
             groupRingBuckets.ResumeLayout(false);
             groupRingBuckets.PerformLayout();
@@ -2347,11 +2381,11 @@ namespace SrvSurvey
             ((System.ComponentModel.ISupportInitialize)pictureBox3).EndInit();
             tabPage6.ResumeLayout(false);
             tabPage6.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox10).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox11).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox13).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox10).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).EndInit();
             ((System.ComponentModel.ISupportInitialize)numMinScanValue).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox11).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox5).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox4).EndInit();
             tabPage7.ResumeLayout(false);
@@ -2362,8 +2396,8 @@ namespace SrvSurvey
             ((System.ComponentModel.ISupportInitialize)pictureBox8).EndInit();
             tabSettlements.ResumeLayout(false);
             tabSettlements.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)numericUpDown6).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown5).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown6).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown4).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown3).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown2).EndInit();
@@ -2529,5 +2563,7 @@ namespace SrvSurvey
         private CheckBox checkBox23;
         private CheckBox checkBox24;
         private CheckBox checkFocusAfterFsdJump;
+        private CheckBox checkBox25;
+        private CheckBox checkBox26;
     }
 }

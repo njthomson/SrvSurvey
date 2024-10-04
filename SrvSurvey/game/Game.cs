@@ -140,6 +140,11 @@ namespace SrvSurvey.game
 
         public SystemPoi? canonnPoi = null;
 
+        /// <summary>
+        /// Becomes True once the game has completed initializing
+        /// </summary>
+        public static bool ready { get; private set; } = false;
+
         public Game(string? cmdr)
         {
             log($"Game .ctor, targetCmdr: {cmdr}");
@@ -173,6 +178,9 @@ namespace SrvSurvey.game
             // now listen for changes
             this.journals.onJournalEntry += Journals_onJournalEntry;
             this.status.StatusChanged += Status_StatusChanged;
+
+            Game.ready = true;
+            this.predictSystemSpecies();
 
             Status_StatusChanged(false);
         }
@@ -520,7 +528,7 @@ namespace SrvSurvey.game
             // try to find a location from recent journal items
             if (cmdr != null)
             {
-                this.initSystemData();
+                this.initSystemData(cmdr.fid, cmdr.commander);
 
                 if (status.hasLatLong && (cmdr.currentMarketId > 0 || status.Docked))
                 {
@@ -535,7 +543,7 @@ namespace SrvSurvey.game
                     var locationEvent = entry as Location;
                     if (locationEvent != null)
                     {
-                        this.setLocations(locationEvent);
+                        this.setLocations(locationEvent, cmdr.fid, cmdr.commander);
                         return true;
                     }
 
@@ -578,7 +586,6 @@ namespace SrvSurvey.game
                     log($"Oops - bad systemBody ?!");
 
                 log($"Game.initializeFromJournal: system: '{cmdr.currentSystem}' (id:{cmdr.currentSystemAddress}), body: '{this.systemBody?.name}' (id:{this.systemBody?.id}, r: {Util.metersToString(this.systemBody?.radius ?? -1)})");
-
             }
 
             // if we have landed, we need to find the last Touchdown location
@@ -784,7 +791,7 @@ namespace SrvSurvey.game
             //}
         }
 
-        private void initSystemData()
+        private void initSystemData(string fid, string cmdrName)
         {
             // try to find a location from recent journal items
             if (cmdr == null || this.journals == null) return;
@@ -819,7 +826,7 @@ namespace SrvSurvey.game
                 if (starterEvent != null && starterEvent.@event != nameof(Location))
                 {
                     log($"Game.initSystemData: found last {starterEvent.@event}, to '{starterEvent.StarSystem}' ({starterEvent.SystemAddress})");
-                    this.systemData = SystemData.From(starterEvent);
+                    this.systemData = SystemData.From(starterEvent, fid, cmdrName);
                     return true;
                 }
 
@@ -915,10 +922,12 @@ namespace SrvSurvey.game
 
         private void onJournalEntry(LoadGame entry)
         {
+            this.shipType = entry.Ship;
+
             if (this.Commander == null)
                 this.initializeFromJournal(entry);
-
-            this.shipType = entry.Ship;
+            else
+                this.fireUpdate(true);
         }
 
         private void onJournalEntry(Location entry)
@@ -1075,7 +1084,6 @@ namespace SrvSurvey.game
 
             this.setLocations(entry);
 
-
             this.checkModeChange();
         }
 
@@ -1084,44 +1092,62 @@ namespace SrvSurvey.game
             this.setLocations(entry);
         }
 
+        private int deferPredictSpeciesPending;
+
+        public void deferPredictSpecies(SystemBody? body)
+        {
+            if (body == null) return;
+
+            ++deferPredictSpeciesPending;
+
+            Task.Delay(100).ContinueWith(t => Program.control.BeginInvoke(() =>
+            {
+                if (--deferPredictSpeciesPending <= 0)
+                {
+                    body.predictSpecies();
+                }
+            }));
+        }
+
+        public void predictSystemSpecies()
+        {
+            if (this.systemData == null) return;
+
+            // re-predict everything in the current system
+            foreach (var body in this.systemData.bodies)
+            {
+                if (body.bioSignalCount > 0)
+                    body.predictSpecies();
+            }
+        }
+
         private void onJournalEntry(FSSDiscoveryScan entry)
         {
-            if (FormGenus.activeForm != null)
-                FormGenus.activeForm.deferPopulateGenus();
         }
 
         private void onJournalEntry(Scan entry)
         {
-
-            //if (FormGenus.activeForm != null)
-            //    FormGenus.activeForm.deferPopulateGenus();
         }
 
         private void onJournalEntry(SAAScanComplete entry)
         {
-
             this.setCurrentBody(entry.BodyID);
             this.fireUpdate();
 
-            if (FormGenus.activeForm != null)
-                FormGenus.activeForm.deferPopulateGenus();
 
-            this.systemBody?.predictSpecies();
+            //this.systemBody?.predictSpecies();
+            this.deferPredictSpecies(this.systemBody);
         }
 
-        private void onJournalEntry(FSSAllBodiesFound entry)
-        {
-        }
-
-        private void onJournalEntry(FSSBodySignals entry)
-        {
-            if (FormGenus.activeForm != null)
-            {
-                var bioSignals = entry.Signals.FirstOrDefault(_ => _.Type == "$SAA_SignalType_Biological;");
-                if (bioSignals != null)
-                    FormGenus.activeForm.deferPopulateGenus();
-            }
-        }
+        //private void onJournalEntry(FSSBodySignals entry)
+        //{
+        //    if (FormGenus.activeForm != null)
+        //    {
+        //        var hasBioSignals = entry.Signals.Any(_ => _.Type == "$SAA_SignalType_Biological;");
+        //        if (hasBioSignals)
+        //            this.deferPredictSpecies(this.systemBody);
+        //    }
+        //}
 
         private void onJournalEntry(Missions entry)
         {
@@ -1602,14 +1628,14 @@ namespace SrvSurvey.game
                 this.fetchSystemData(entry.Starsystem, entry.SystemAddress);
         }
 
-        public void setLocations(Location entry)
+        public void setLocations(Location entry, string? fid = null, string? cmdrName = null)
         {
             Game.log($"setLocations: from Location: {entry.StarSystem} / {entry.Body} ({entry.BodyType})");
 
             cmdr.currentSystem = entry.StarSystem;
             cmdr.currentSystemAddress = entry.SystemAddress;
             cmdr.starPos = entry.StarPos;
-            this.systemData = SystemData.From(entry);
+            this.systemData = SystemData.From(entry, fid, cmdrName);
 
             // update our region
             cmdr.setGalacticRegion(entry.StarPos);
@@ -1804,13 +1830,7 @@ namespace SrvSurvey.game
                 // measure distance to closest nebula
                 this.systemData.getNebulaDist().ContinueWith(response =>
                 {
-                    // re-predict now we know this distance 
-                    foreach (var body in this.systemData.bodies)
-                    {
-                        if (body.bioSignalCount > 0)
-                            body.predictSpecies();
-                    }
-
+                    this.predictSystemSpecies();
                 });
             }
             finally
@@ -2344,8 +2364,7 @@ namespace SrvSurvey.game
                 }
 
                 // re-predict species, to clean-up any excess predictions
-                Application.DoEvents();
-                systemBody?.predictSpecies();
+                this.deferPredictSpecies(this.systemBody);
             }
         }
 
@@ -2400,8 +2419,7 @@ namespace SrvSurvey.game
                 this.cmdr.Save();
 
                 // adjust predictions/rewards calculations for this body
-                this.systemBody.predictSpecies();
-                Program.invalidateActivePlotters();
+                this.deferPredictSpecies(this.systemBody);
             }
             else if (this.cmdr.scanOne != null && this.cmdr.scanTwo == null)
             {
@@ -2416,8 +2434,7 @@ namespace SrvSurvey.game
                 this.cmdr.Save();
 
                 // adjust predictions/rewards calculations for this body
-                this.systemBody.predictSpecies();
-                Program.invalidateActivePlotters();
+                this.deferPredictSpecies(this.systemBody);
             }
             else if (entry.ScanType == ScanType.Analyse)
             {
@@ -2445,16 +2462,12 @@ namespace SrvSurvey.game
                 this.cmdr.Save();
 
                 // adjust predictions/rewards calculations for this body
-                this.systemBody.predictSpecies();
-                Program.invalidateActivePlotters();
+                this.deferPredictSpecies(this.systemBody);
             }
 
             // force a mode change to update ux
             fireUpdate(this._mode, true);
 
-            // update FormGenus
-            if (FormGenus.activeForm != null && entry.ScanType == ScanType.Analyse)
-                FormGenus.activeForm.deferPopulateGenus();
         }
 
         private void onJournalEntry(SellOrganicData entry)
