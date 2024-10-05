@@ -109,6 +109,7 @@ namespace SrvSurvey.net.EDSM
         public bool rotationalPeriodTidallyLocked;
         public double? axialTilt;
         public string? terraformingState;
+        public DateTimeOffset? updateTime;
 
         public List<EdsmRing> rings;
 

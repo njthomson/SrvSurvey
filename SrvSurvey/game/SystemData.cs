@@ -1105,8 +1105,7 @@ namespace SrvSurvey.game
                 }
             }
 
-            if (FormGenus.activeForm != null)
-                FormGenus.activeForm.deferPopulateGenus();
+            FormGenus.activeForm?.deferPopulateGenus();
         }
 
         public void onCanonnStationData(List<CanonnStation> newStations)

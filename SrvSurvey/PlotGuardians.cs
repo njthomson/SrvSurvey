@@ -50,7 +50,6 @@ namespace SrvSurvey
             }
 
             PlotGuardians.instance = this;
-            InitializeComponent();
 
             // set window size based on setting
             switch (Game.settings.idxGuardianPlotter)
@@ -157,7 +156,7 @@ namespace SrvSurvey
             }
 
             this.mode = newMode;
-            this.Invalidate();
+            Program.invalidateActivePlotters();
             game.fireUpdate();
 
             // show or hide the heading vertical stripe helper

@@ -141,6 +141,8 @@ namespace SrvSurvey
                 var data = task.Result;
                 if (data == null) return;
 
+                this.info.countPOI["Bodies"] = data.body_count;
+
                 // last updated
                 if (data.updated_at != null && data.bodies?.Count > 0)
                     systemsCache[nextSystem].lastUpdated = data.updated_at;
@@ -163,7 +165,7 @@ namespace SrvSurvey
                     }
 
                     var parts = new List<string>();
-                    if (countStarports > 0) this.info.countPOI["FC"] = countFC;
+                    if (countFC > 0) this.info.countPOI["FC"] = countFC;
                     if (countSettlements > 0) this.info.countPOI["Settlements"] = countSettlements;
                     if (countOutposts > 0) this.info.countPOI["Outposts"] = countOutposts;
                     if (countStarports > 0) this.info.countPOI["Star ports"] = countStarports;
@@ -230,7 +232,6 @@ namespace SrvSurvey
             this.hopScoops.Add(scoopable);
         }
 
-
         protected override void onPaintPlotter(PaintEventArgs e)
         {
             if (this.nextHop == null)
@@ -242,44 +243,44 @@ namespace SrvSurvey
 
             // 1st line the name of the system we are jumping to
             dty += two;
-            drawTextAt(eight, $"Next jump: ");
+            drawTextAt2(eight, $"Next jump: ");
             dty -= two;
 
-            drawTextAt(this.nextHop.systemName, GameColors.fontMiddleBold);
-            drawTextAt(this.Width - eight, $"class: {nextHop.entry.StarClass}", nextHop.entry.StarClass == "N" ? GameColors.brushCyan : null, null, true);
+            drawTextAt2(this.nextHop.systemName, GameColors.fontMiddleBold);
+            drawTextAt2(this.Width - eight, $"class: {nextHop.entry.StarClass}", nextHop.entry.StarClass == "N" ? GameColors.Cyan : null, null, true);
             newLine(+eight, true);
 
             this.drawJumpLine();
 
             // 2nd line: discovered vs unvisited + discovered and update dates
             var lineTwo = string.IsNullOrEmpty(nextHop.subStatus)
-                ? "► " + nextHop.status
-                : "► Discovered by" + nextHop.subStatus.Substring(2);
+                ? "▶️ " + nextHop.status
+                : "▶️ Discovered by" + nextHop.subStatus.Substring(2);
 
             var lastUpdated = systemsCache[nextSystem].lastUpdated;
-            if (lastUpdated != null && lastUpdated.Value > nextHop.discoveredDate)
-                lineTwo += $", last updated: " + lastUpdated.Value.ToLocalTime().ToString("d");
-            drawTextAt(eight, lineTwo, nextHop.highlight ? GameColors.brushCyan : null);
-            drawTextAt("(EDSM)", GameColors.brushGameOrangeDim);
+            if (lastUpdated != null && nextHop.lastUpdated > nextHop.discoveredDate)
+                lineTwo += $", last updated: " + nextHop.lastUpdated.Value.ToLocalTime().ToString("d");
+                drawTextAt2(eight, lineTwo, nextHop.highlight ? GameColors.Cyan : null);
+            drawTextAt2("(EDSM)", GameColors.OrangeDim);
             newLine(+one, true);
 
             // traffic (if known)
             if (this.info.traffic?.traffic != null && this.info.traffic.traffic.total > 0)
             {
-                var lineThree = $"► Traffic last 24 hours: {this.info.traffic.traffic.day.ToString("n0")}, week: {this.info.traffic.traffic.week.ToString("n0")}, ever: {this.info.traffic.traffic.total.ToString("n0")}";
-                drawTextAt(eight, lineThree);
-                drawTextAt("(EDSM)", GameColors.brushGameOrangeDim);
+                var lineThree = $"▶️ Traffic last 24 hours: {this.info.traffic.traffic.day.ToString("n0")}, week: {this.info.traffic.traffic.week.ToString("n0")}, ever: {this.info.traffic.traffic.total.ToString("n0")}";
+                drawTextAt2(eight, lineThree);
+                drawTextAt2("(EDSM)", GameColors.OrangeDim);
                 newLine(+one, true);
             }
 
-            // 3rd line: POI: ports, genus, etc
+            // 3rd line: count of ports, genus, etc
             var POIs = this.info.countPOI
                 .Where(_ => _.Value > 0)
                 .Select(_ => $"{_.Key}: {_.Value}");
             if (POIs.Any())
             {
-                var lineFive = "► POI: " + string.Join(", ", POIs);
-                drawTextAt(eight, lineFive);
+                var lineFive = "▶️ " + string.Join(", ", POIs);
+                drawTextAt2(eight, lineFive);
                 newLine(+one, true);
             }
 
@@ -419,6 +420,7 @@ namespace SrvSurvey
         public Dictionary<string, int> countPOI = new Dictionary<string, int>()
         {
             // (these are rendered in this order)
+            { "Bodies", 0 }, // Count of bodies in system
             { "Guardian", 0 }, // Total count for the system
             { "Genus", 0 }, // Total count for the system
             { "Star ports", 0 }, // Anything with a large pad
@@ -427,7 +429,5 @@ namespace SrvSurvey
             { "FC", 0 }, // Fleet carriers
             { "Wars", 0 }, // Count of wars - (Count of factions in War or Civil-War state / 2)
         };
-
-        //public RouteInfo info;
     }
 }

@@ -937,7 +937,6 @@ namespace SrvSurvey
             AutoScaleDimensions = new SizeF(7F, 12F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.AppWorkspace;
-            CancelButton = btnQuit2;
             ClientSize = new Size(437, 628);
             Controls.Add(btnPublishHuman);
             Controls.Add(btnPublishBio);

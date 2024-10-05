@@ -194,6 +194,7 @@ namespace SrvSurvey
         public bool destination;
         public int sumGenus;
         public DateTimeOffset? discoveredDate;
+        public DateTimeOffset? lastUpdated;
         public bool allBodiesFound;
         public int countBodies;
 
@@ -247,6 +248,8 @@ namespace SrvSurvey
                         subStatus = $"By {discCmdr}, {discDate}";
                 }
 
+                this.lastUpdated = edsmResult.bodies.Max(b => b.updateTime);
+
                 var plotter = Program.getPlotter<PlotGalMap>();
                 if (plotter != null && plotter.Created)
                     plotter.BeginInvoke(() => plotter.Invalidate());
@@ -266,7 +269,6 @@ namespace SrvSurvey
             }));
 
             // TODO: maybe lookup in Canonn for bio data too?
-
         }
 
     }

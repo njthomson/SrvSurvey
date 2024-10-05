@@ -2,8 +2,6 @@
 using SrvSurvey.game;
 using SrvSurvey.units;
 
-#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-
 namespace SrvSurvey
 {
 
@@ -95,10 +93,10 @@ namespace SrvSurvey
                 return;
             }
 
-            // read the file contents ...
-            using (var sr = new StreamReader(new FileStream(Status.Filepath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)))
+            try
             {
-                try
+                // read the file contents ...
+                using (var sr = new StreamReader(new FileStream(Status.Filepath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)))
                 {
                     var json = sr.ReadToEnd();
                     if (json == null || json == "") return;
@@ -106,34 +104,30 @@ namespace SrvSurvey
                     // ... parse into tmp object ...
                     var obj = JsonConvert.DeserializeObject<Status>(json);
 
-                    // ... assign all property values from tmp object 
+                    // ... assign all property values from tmp object
                     var allProps = typeof(Status).GetProperties(Program.InstanceProps);
                     foreach (var prop in allProps)
-                    {
                         if (prop.CanWrite)
-                        {
                             prop.SetValue(this, prop.GetValue(obj));
-                        }
-                    }
-
-                    // update singleton location
-                    Status.here.Lat = this.Latitude;
-                    Status.here.Long = this.Longitude;
-
-                    // work-around negative headings that sometimes occur when on-foot
-                    if (this.Heading < 0)
-                        this.Heading += 360;
-
-                    var blink = this.trackBlinks();
-
-                    // fire the event for external code on the UI thread
-                    if (this.StatusChanged != null)
-                        Program.control.Invoke(() => this.StatusChanged(blink));
                 }
-                catch (Exception)
-                {
-                    // ignore any errors
-                }
+
+                // update singleton location
+                Status.here.Lat = this.Latitude;
+                Status.here.Long = this.Longitude;
+
+                // work-around negative headings that sometimes occur when on-foot
+                if (this.Heading < 0)
+                    this.Heading += 360;
+
+                var blink = this.trackBlinks();
+
+                // fire the event for external code on the UI thread
+                if (this.StatusChanged != null)
+                    Program.control.Invoke(() => this.StatusChanged(blink));
+            }
+            catch (Exception ex)
+            {
+                Game.log($"parseStatusFile: {ex}");
             }
         }
 
@@ -175,11 +169,15 @@ namespace SrvSurvey
         [JsonIgnore]
         public bool OnFoot { get => (this.Flags2 & StatusFlags2.OnFoot) > 0; }
         [JsonIgnore]
-        public bool OnFootInside { get => (this.Flags2 & StatusFlags2.OnFoot) > 0 && (this.Flags2 & StatusFlags2.BreathableAtmosphere) > 0; }
+        public bool OnFootOnPlanet { get => (this.Flags2 & StatusFlags2.OnFootOnPlanet) > 0; }
+        [JsonIgnore]
+        public bool OnFootInside { get => (this.Flags2 & (StatusFlags2.OnFoot | StatusFlags2.BreathableAtmosphere)) > 0; }
         [JsonIgnore]
         public bool OnFootOutside { get => (this.Flags2 & StatusFlags2.OnFootExterior) > 0; }
         [JsonIgnore]
-        public bool OnFootSocial { get => (this.Flags2 & StatusFlags2.OnFoot) > 0 && (this.Flags2 & StatusFlags2.OnFootSocialSpace) > 0; }
+        public bool OnFootSocial { get => (this.Flags2 & (StatusFlags2.OnFoot | StatusFlags2.OnFootSocialSpace)) > 0; }
+        [JsonIgnore]
+        public bool OnFootInStation { get => (this.Flags2 & (StatusFlags2.OnFootInHangar | StatusFlags2.OnFootInStation | StatusFlags2.OnFootSocialSpace)) > 0; }
         [JsonIgnore]
         public bool InSrv { get => (this.Flags & StatusFlags.InSRV) > 0; }
         [JsonIgnore]
@@ -310,5 +308,3 @@ namespace SrvSurvey
     }
 
 }
-
-#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.

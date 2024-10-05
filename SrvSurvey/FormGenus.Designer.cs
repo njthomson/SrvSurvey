@@ -280,7 +280,7 @@
             Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             Name = "FormGenus";
-            Text = "Exo Biology Genus Guide";
+            Text = "System Bio Signals";
             Load += FormGenus_Load;
             uberPanel.ResumeLayout(false);
             groupBox1.ResumeLayout(false);

@@ -223,19 +223,12 @@ namespace SrvSurvey.game
         public void fireUpdate(bool force = false)
         {
             if (Program.control.InvokeRequired)
-            {
-                Program.control.Invoke(new Action(() =>
-                {
-                    this.fireUpdate(this.mode, force);
-                }));
-            }
+                Program.control.Invoke(() => this.fireUpdate(this.mode, force));
             else
-            {
                 this.fireUpdate(this.mode, force);
-            }
         }
 
-        public void fireUpdate(GameMode newMode, bool force)
+        private void fireUpdate(GameMode newMode, bool force)
         {
             if (Game.update != null) Game.update(newMode, force);
         }
@@ -263,13 +256,14 @@ namespace SrvSurvey.game
         private void checkModeChange()
         {
             // check various things we actively need to know have changed
-            if (this._mode != this.mode)
+            var newMode = this.mode;
+            if (this._mode != newMode)
             {
-                log($"Mode change {this._mode} => {this.mode}");
-                this._mode = this.mode;
+                log($"Mode change {this._mode} => {newMode}");
+                this._mode = newMode;
 
                 // fire event!
-                fireUpdate(this._mode, false);
+                fireUpdate(newMode, false);
             }
         }
 
@@ -346,12 +340,11 @@ namespace SrvSurvey.game
             this.checkModeChange();
         }
 
-        private GameMode _mode;
         public GameMode mode
         {
             get
             {
-                if (!Elite.isGameRunning || this.isShutdown)
+                if (!Elite.isGameRunning || this.isShutdown || this.status == null)
                     return GameMode.Offline;
 
                 if (this.atMainMenu || this.Commander == null)
@@ -361,10 +354,8 @@ namespace SrvSurvey.game
                     return GameMode.CarrierMgmt;
 
                 // use GuiFocus if it is interesting
-                if (this.status?.GuiFocus != GuiFocus.NoFocus)
-                    return this.status == null
-                        ? GameMode.Unknown
-                        : (GameMode)(int)this.status.GuiFocus;
+                if (this.status.GuiFocus != GuiFocus.NoFocus)
+                    return (GameMode)(int)this.status.GuiFocus;
 
                 if (this.fsdJumping)
                     return GameMode.FSDJumping;
@@ -377,7 +368,7 @@ namespace SrvSurvey.game
                     return GameMode.InSrv;
                 if (activeVehicle == ActiveVehicle.Taxi)
                     return GameMode.InTaxi;
-                if ((status.Flags2 & (StatusFlags2.OnFootInHangar | StatusFlags2.OnFootInStation | StatusFlags2.OnFootSocialSpace)) > 0)
+                if (this.status.OnFootInStation)
                     return GameMode.OnFootInStation;
                 if ((this.status.Flags2 & StatusFlags2.OnFootOnPlanet) > 0)
                     return GameMode.OnFoot;
@@ -387,7 +378,6 @@ namespace SrvSurvey.game
                     return GameMode.SuperCruising;
                 if ((this.status.Flags2 & StatusFlags2.GlideMode) > 0)
                     return GameMode.GlideMode;
-
                 if ((this.status.Flags & StatusFlags.Landed) > 0)
                     return GameMode.Landed;
 
@@ -399,14 +389,16 @@ namespace SrvSurvey.game
                 if (activeVehicle == ActiveVehicle.MainShip)
                     return GameMode.Flying;
 
-                // if we're here and these are zero ...
+                // if we're still here and these are zero ...
                 if (status.Flags == 0 && status.Flags2 == 0)
                     return GameMode.Offline;
 
                 Game.log($"Unknown game mode? status.Flags: {status.Flags}, status.Flags2: {status.Flags2}");
+                Debugger.Break();
                 return GameMode.Unknown;
             }
         }
+        private GameMode _mode;
 
         public bool isMode(params GameMode[] modes)
         {
@@ -419,18 +411,17 @@ namespace SrvSurvey.game
             {
                 if (this.status == null)
                     return ActiveVehicle.Unknown;
-                else if ((this.status.Flags & StatusFlags.InMainShip) > 0)
+                else if (this.status.InMainShip)
                     return ActiveVehicle.MainShip;
-                else if ((this.status.Flags & StatusFlags.InFighter) > 0)
+                else if (this.status.InFighter)
                     return ActiveVehicle.Fighter;
-                else if ((this.status.Flags & StatusFlags.InSRV) > 0)
+                else if (this.status.InSrv)
                     return ActiveVehicle.SRV;
-                else if ((this.status.Flags2 & StatusFlags2.OnFoot) > 0)
+                else if (this.status.OnFoot)
                     return ActiveVehicle.Foot;
-                else if ((this.status.Flags2 & StatusFlags2.InTaxi) > 0)
+                else if (this.status.InTaxi)
                     return ActiveVehicle.Taxi;
                 else
-                    //return ActiveVehicle.Docked;
                     return ActiveVehicle.Unknown;
 
                 // TODO: do we care about telepresence?
@@ -949,7 +940,6 @@ namespace SrvSurvey.game
             this.systemData = null;
             this.systemStation = null;
             this.fetchedSystemData = null;
-            this.checkModeChange();
             this.Status_StatusChanged(false);
         }
 
@@ -1027,7 +1017,6 @@ namespace SrvSurvey.game
                 this.systemData = null;
                 this.systemStation = null;
                 this.fetchedSystemData = null;
-                this.checkModeChange();
                 this.Status_StatusChanged(false);
 
                 // clear the nextSystem displayed when jumping to some other system
@@ -1039,8 +1028,7 @@ namespace SrvSurvey.game
                 }
 
                 // update FormGenus?
-                if (FormGenus.activeForm != null)
-                    FormGenus.activeForm.startingJump($"{entry.StarSystem}, star class: {entry.StarClass}");
+                FormGenus.activeForm?.startingJump($"{entry.StarSystem}, star class: {entry.StarClass}");
             }
 
             // for either FSD type ...
@@ -1069,11 +1057,8 @@ namespace SrvSurvey.game
 
             this.setLocations(entry);
 
-            this.checkModeChange();
-
             // update FormGenus?
-            if (FormGenus.activeForm != null)
-                FormGenus.activeForm.deferPopulateGenus();
+            FormGenus.activeForm?.deferPopulateGenus();
         }
 
         private void onJournalEntry(CarrierJump entry)
@@ -1083,8 +1068,6 @@ namespace SrvSurvey.game
             this.statusBodyName = null;
 
             this.setLocations(entry);
-
-            this.checkModeChange();
         }
 
         private void onJournalEntry(SupercruiseExit entry)
@@ -2466,7 +2449,7 @@ namespace SrvSurvey.game
             }
 
             // force a mode change to update ux
-            fireUpdate(this._mode, true);
+            fireUpdate(true);
 
         }
 
@@ -2506,7 +2489,7 @@ namespace SrvSurvey.game
             cmdr.Save();
             Game.log($"SellOrganicData: post-sale total: {this.cmdr.organicRewards} (from {cmdr.scannedBioEntryIds.Count} sigals)\r\n{String.Join("\r\n", cmdr.scannedBioEntryIds)}");
             // force a mode change to update ux
-            fireUpdate(this._mode, true);
+            fireUpdate(true);
         }
 
         private void setSuitType(SuitLoadout entry)
