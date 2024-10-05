@@ -109,9 +109,6 @@ namespace SrvSurvey
             var windowRect = new RECT();
             Elite.GetWindowRect(hwndED, ref windowRect);
 
-            if (windowRect.Left < -30_000)
-                return Rectangle.Empty;
-
             var clientRect = new RECT();
             Elite.GetClientRect(hwndED, ref clientRect);
 

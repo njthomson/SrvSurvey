@@ -1209,11 +1209,15 @@ namespace SrvSurvey
         {
             // a periodic timer to check the location of the game window, repositioning plotters if needed
             var rect = Elite.getWindowRect();
+            var hasFocus = rect != Rectangle.Empty && rect.X > -30000 && Elite.gameHasFocus;
 
-            if (Elite.gameHasFocus || Debugger.IsAttached)
-                Program.showActivePlotters();
-            else
-                Program.hideActivePlotters();
+            if (gameHadFocus != hasFocus)
+            {
+                if (hasFocus || Debugger.IsAttached)
+                    Program.showActivePlotters();
+                else
+                    Program.hideActivePlotters();
+            }
 
             // force plotters to appear if we just gained focus
             if (!gameHadFocus && Elite.gameHasFocus && game != null)

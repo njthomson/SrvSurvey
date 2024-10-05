@@ -41,6 +41,9 @@ namespace SrvSurvey
 
         private PlotGuardians() : base()
         {
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+
             if (PlotGuardians.instance != null)
             {
                 Game.log("Why are there multiple PlotGuardians?");
@@ -96,8 +99,10 @@ namespace SrvSurvey
                 ;
         }
 
-        private void PlotGuardians_Load(object sender, EventArgs e)
+        protected override void OnLoad(EventArgs e)
         {
+            base.OnLoad(e);
+
             // if these are open - close them
             Program.closePlotter<PlotBioStatus>();
             Program.closePlotter<PlotGrounded>();

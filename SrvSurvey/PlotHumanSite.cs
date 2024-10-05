@@ -524,6 +524,7 @@ namespace SrvSurvey
             }
 
             g.ResetTransform();
+            g.ResetClip();
             if (this.station.heading == -1 || game.status.GlideMode || (game.mode == GameMode.Flying && !this.hasLanded))
                 this.drawOnApproach(distToSiteOrigin);
             else

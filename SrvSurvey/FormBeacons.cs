@@ -91,7 +91,7 @@ namespace SrvSurvey
         public Task beginPrepareAllRows()
         {
             // ignore events whilst checkbox is disabled
-            if (!checkRamTah.Enabled) return Task.CompletedTask;
+            if (!checkRamTah.Enabled || this.IsDisposed) return Task.CompletedTask;
             checkRamTah.Enabled = false;
             checkOnlyNeeded.Enabled = false;
 
@@ -126,7 +126,7 @@ namespace SrvSurvey
                     allSites.AddRange(Game.canonn.loadAllStructures(incRamTahLogs));
                     allSites.AddRange(Game.canonn.loadAllRuins(incRamTahRuins));
 
-                    this.Invoke(() =>
+                    Program.control.Invoke(() =>
                     {
                         this.endPrepareAllRows(allSites);
 
