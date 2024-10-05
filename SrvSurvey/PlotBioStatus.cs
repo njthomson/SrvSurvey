@@ -29,14 +29,15 @@ namespace SrvSurvey
                 || Game.settings.autoShowBioSummary
                 && Game.activeGame?.systemBody != null
                 && Game.activeGame.systemBody.bioSignalCount > 0
-                && (Game.activeGame.systemStation == null || !Game.settings.autoShowHumanSitesTest)
+                //&& (Game.activeGame.systemStation == null || !Game.settings.autoShowHumanSitesTest)
                 && !Game.activeGame.hidePlottersFromCombatSuits
                 && !Game.activeGame.isShutdown
                 && !Game.activeGame.atMainMenu
                 && !Game.activeGame.status.InTaxi
                 && !Game.activeGame.status.FsdChargingJump
                 && !PlotGuardians.allowPlotter && !Program.isPlotter<PlotGuardians>()
-                && Game.activeGame.isMode(GameMode.SuperCruising, GameMode.Flying, GameMode.Landed, GameMode.InSrv, GameMode.OnFoot, GameMode.GlideMode, GameMode.InFighter, GameMode.CommsPanel, GameMode.SAA, GameMode.Codex);
+                && !PlotHumanSite.allowPlotter && !Program.isPlotter<PlotHumanSite>()
+                && Game.activeGame.isMode(GameMode.SuperCruising, GameMode.Flying, GameMode.Landed, GameMode.InSrv, GameMode.OnFoot, GameMode.GlideMode, GameMode.CommsPanel, GameMode.SAA, GameMode.Codex);
         }
 
         protected override void OnLoad(EventArgs e)
@@ -53,7 +54,7 @@ namespace SrvSurvey
             // hide ourself whilst FSD is charging to jump systems
             if (game.status.FsdChargingJump || !this.allow || !Elite.gameHasFocus)
                 this.Opacity = 0;
-            else if (this.Opacity == 0 && this.allow && Elite.getWindowRect().Y > -30000)
+            else if (this.Opacity == 0 && this.allow)
                 this.Opacity = PlotPos.getOpacity(this);
         }
 

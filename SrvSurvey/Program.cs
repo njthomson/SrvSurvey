@@ -182,13 +182,11 @@ namespace SrvSurvey
 
         private static void closePlotter(string name)
         {
-            var isActive = Program.activePlotters.ContainsKey(name);
+            var plotter = Program.activePlotters.GetValueOrDefault(name);
 
-            if (isActive)
+            if (plotter != null)
             {
                 Game.log($"Program.Closing plotter: {name}");
-
-                var plotter = Program.activePlotters[name];
                 Program.activePlotters.Remove(plotter.Name);
                 plotter.Close();
             }

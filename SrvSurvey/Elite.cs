@@ -79,7 +79,9 @@ namespace SrvSurvey
         /// <summary>
         /// Will be true when we know the game currently has focus. This is checked/updated every 200ms.
         /// </summary>
-        public static bool gameHasFocus;
+        public static bool gameHasFocus { get => focusElite || focusSrvSurvey; }
+        public static bool focusSrvSurvey;
+        public static bool focusElite;
 
         /// <summary>
         /// Return the rectangle of the game window
@@ -95,6 +97,9 @@ namespace SrvSurvey
             var hwndActive = Elite.GetForegroundWindow();
             var weHaveFocus = (!Program.control.InvokeRequired && hwndActive == Main.ActiveForm?.Handle) || System.Diagnostics.Debugger.IsAttached;
 
+            focusElite = hwndActive == hwndED;
+            focusSrvSurvey = hwndActive == Main.ActiveForm?.Handle;
+
             // hide plotters when game is not active (unless we are debugging or forced)
             if (!force && (hwndED != hwndActive || hwndED == IntPtr.Zero) && !weHaveFocus)
             {
@@ -103,6 +108,9 @@ namespace SrvSurvey
 
             var windowRect = new RECT();
             Elite.GetWindowRect(hwndED, ref windowRect);
+
+            if (windowRect.Left < -30_000)
+                return Rectangle.Empty;
 
             var clientRect = new RECT();
             Elite.GetClientRect(hwndED, ref clientRect);

@@ -20,8 +20,10 @@ namespace SrvSurvey
         private List<Control> bioCtrls;
         private Dictionary<string, Screenshot> pendingScreenshots = new Dictionary<string, Screenshot>();
         private bool wasWithinDssDuration;
+        private bool gameHadFocus;
 
         public static Main form;
+        //KeyboardHook hook;
 
         public Main()
         {
@@ -30,6 +32,8 @@ namespace SrvSurvey
             lblNotInstalled.BringToFront();
             lblFullScreen.BringToFront();
             PlotPos.prepPlotterPositions();
+
+            //this.hook = new KeyboardHook();
 
             if (Path.Exists(Game.settings.watchedJournalFolder))
             {
@@ -1205,18 +1209,19 @@ namespace SrvSurvey
         {
             // a periodic timer to check the location of the game window, repositioning plotters if needed
             var rect = Elite.getWindowRect();
-            var hasFocus = rect != Rectangle.Empty && rect.X > -30000;
 
-            if (Elite.gameHasFocus != hasFocus)
-            {
-                Elite.gameHasFocus = hasFocus;
+            if (Elite.gameHasFocus || Debugger.IsAttached)
+                Program.showActivePlotters();
+            else
+                Program.hideActivePlotters();
 
-                if (hasFocus)
-                    Program.showActivePlotters();
-                else
-                    Program.hideActivePlotters();
-            }
-            if (rect != this.lastWindowRect && hasFocus)
+            // force plotters to appear if we just gained focus
+            if (!gameHadFocus && Elite.gameHasFocus && game != null)
+                game.fireUpdate(true);
+
+            gameHadFocus = Elite.gameHasFocus;
+
+            if (rect != this.lastWindowRect && Elite.gameHasFocus)
             {
                 Game.log($"EliteDangerous window reposition: {this.lastWindowRect} => {rect}");
                 this.lastWindowRect = rect;

@@ -21,7 +21,7 @@ namespace SrvSurvey
         private FileSystemWatcher? templateWatcher;
         private DockingState dockingState = DockingState.none;
         private int grantedPad;
-        private bool hasLanded = false;
+        private bool hasLanded;
         private string deniedReason;
 
         private FormBuilder? builder { get => FormBuilder.activeForm; }
@@ -32,6 +32,7 @@ namespace SrvSurvey
         {
             this.Size = Size.Empty;
             this.Font = GameColors.fontSmall;
+            this.hasLanded = game.isMode(GameMode.Landed, GameMode.Docked, GameMode.InSrv, GameMode.OnFoot);
 
             // these we get from current data
             if (game?.systemStation == null) throw new Exception("Why no systemStation?");
@@ -513,10 +514,6 @@ namespace SrvSurvey
             newLine(+ten, true);
 
             var distToSiteOrigin = Util.getDistance(siteLocation, Status.here, this.radius);
-            if (this.station.heading == -1 || game.status.GlideMode || (game.mode == GameMode.Flying && !this.hasLanded))
-                this.drawOnApproach(distToSiteOrigin);
-            else
-                this.drawFooterAtSettlement();
 
             clipToMiddle();
 
@@ -525,6 +522,12 @@ namespace SrvSurvey
                 // when we know the settlement type and heading
                 this.drawKnownSettlement(distToSiteOrigin);
             }
+
+            g.ResetTransform();
+            if (this.station.heading == -1 || game.status.GlideMode || (game.mode == GameMode.Flying && !this.hasLanded))
+                this.drawOnApproach(distToSiteOrigin);
+            else
+                this.drawFooterAtSettlement();
         }
 
         private void drawFooterAtSettlement()
