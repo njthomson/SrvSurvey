@@ -574,7 +574,7 @@ namespace SrvSurvey
         private void tree_DrawNode(object sender, DrawTreeNodeEventArgs e)
         {
             e.DrawDefault = true;
-            if (this.IsDisposed || e.Node == null || e.Node.Tag == null || e.Node.IsVisible == false) return;
+            if (this.IsDisposed || e.Node == null || e.Node.Tag == null || e.Node.IsVisible == false || this.tree.Nodes.Count == 0) return;
             var codexTag = e.Node.Tag as CodexTag;
             if (codexTag == null) return;
 
@@ -597,7 +597,7 @@ namespace SrvSurvey
             var pt = new Point(e.Bounds.Right, e.Bounds.Top);
             g.FillRectangle(this.treeBackBrush, pt.X, pt.Y, 60, e.Bounds.Height - 4);
             var txt = $" ({codexTag.completion.ToString("p1")})";
-            if (e.Node == tree.Nodes[0])
+            if (tree.Nodes.Count > 0 && e.Node == tree.Nodes[0])
                 txt = $" ({codexTag.completion.ToString("p2")})";
             TextRenderer.DrawText(g, txt, tree.Font, pt, tree.ForeColor);
 
