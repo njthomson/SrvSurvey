@@ -197,6 +197,7 @@ namespace SrvSurvey
         public DateTimeOffset? lastUpdated;
         public bool allBodiesFound;
         public int countBodies;
+        public Dictionary<string, List<string>>? special;
 
         public RouteInfo(RouteEntry entry, bool destination)
         {
@@ -266,6 +267,21 @@ namespace SrvSurvey
                 var spanshResult = response.Result;
                 this.sumGenus = spanshResult.bodies.Sum(_ => _.signals?.genuses?.Count ?? 0);
 
+                foreach(var sta in spanshResult.stations)
+                {
+                    if (sta.services.Contains("Material Trader"))
+                    {
+                        if (this.special == null) this.special = new Dictionary<string, List<string>>();
+                        if (!this.special.ContainsKey(sta.name)) this.special[sta.name] = new List<string>();
+                        this.special[sta.name].Add("Material Trader");
+                    }
+                    if (sta.services.Contains("Technology Broker"))
+                    {
+                        if (this.special == null) this.special = new Dictionary<string, List<string>>();
+                        if (!this.special.ContainsKey(sta.name)) this.special[sta.name] = new List<string>();
+                        this.special[sta.name].Add("Technology Broker");
+                    }
+                }
             }));
 
             // TODO: maybe lookup in Canonn for bio data too?

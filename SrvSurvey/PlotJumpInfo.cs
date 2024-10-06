@@ -279,9 +279,20 @@ namespace SrvSurvey
                 .Select(_ => $"{_.Key}: {_.Value}");
             if (POIs.Any())
             {
-                var lineFive = "▶️ " + string.Join(", ", POIs);
-                drawTextAt2(eight, lineFive);
+                var lineThree = "▶️ " + string.Join(", ", POIs);
+                drawTextAt2(eight, lineThree);
                 newLine(+one, true);
+            }
+
+            // 4th line: anything special
+            if (this.nextHop.special?.Count > 0)
+            { 
+                foreach(var pair in this.nextHop.special)
+                {
+                    drawTextAt2(eight, $"▶️ {pair.Key}:", GameColors.Cyan, GameColors.fontSmallBold);
+                    drawTextAt2(string.Join(", ", pair.Value), GameColors.Cyan);
+                    newLine(+one, true);
+                }
             }
 
             // resize height to fit - width will not change
