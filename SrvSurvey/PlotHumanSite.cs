@@ -502,15 +502,15 @@ namespace SrvSurvey
             // header - right
             var zoomText = $"Zoom: {this.scale.ToString("N1")}";
             if (autoZoom) zoomText += " (auto)";
-            drawTextAt(this.ClientSize.Width - 8, zoomText, GameColors.brushGameOrangeDim, GameColors.fontSmall, true);
+            drawTextAt2(this.ClientSize.Width - 8, zoomText, GameColors.OrangeDim, GameColors.fontSmall, true);
 
             // header - left
             var headerTxt = $"{station.name} - {station.economy} ";
             headerTxt += station.subType == 0 ? "?" : $"#{station.subType}";
+            if (station.government == "$government_Anarchy;")
+                headerTxt = "🏴‍☠️ " + headerTxt;
 
-            //var currentBld = site.template?.getCurrentBld(cmdrOffset, this.siteHeading);
-            //if (currentBld != null) headerTxt += $", inside: {currentBld}";
-            drawTextAt(eight, headerTxt);
+            drawTextAt2(eight, headerTxt);
             newLine(+ten, true);
 
             var distToSiteOrigin = Util.getDistance(siteLocation, Status.here, this.radius);
@@ -569,7 +569,8 @@ namespace SrvSurvey
                 footerTxt += $"! {foo.ToString("N1")}°";
             }
 
-            g.DrawString(footerTxt, this.Font, GameColors.brushGameOrange, eight, this.ClientSize.Height - twenty);
+            dty = this.ClientSize.Height - twenty;
+            drawTextAt2(eight, footerTxt);
         }
 
         private void drawKnownSettlement(decimal distToSiteOrigin)
@@ -953,34 +954,34 @@ namespace SrvSurvey
                 // auto docking
                 if (game.musicTrack == "DockingComputer")
                 {
-                    drawTextAt(eight, $"⛳", GameColors.brushLimeIsh, GameColors.fontBig);
-                    drawTextAt(fiveTwo, $"► Auto dock in progress", GameColors.brushLimeIsh, GameColors.fontMiddle);
+                    drawTextAt2(eight, $"⛳", GameColors.LimeIsh, GameColors.fontBig);
+                    drawTextAt2(fiveTwo, $"► Auto dock in progress", GameColors.LimeIsh, GameColors.fontMiddle);
                     newLine();
-                    drawTextAt(fiveTwo, $"► Settlement auto-identification supported", GameColors.brushLimeIsh, GameColors.fontMiddle);
+                    drawTextAt2(fiveTwo, $"► Settlement auto-identification supported", GameColors.LimeIsh, GameColors.fontMiddle);
                     newLine();
-                    drawTextAt(fiveTwo, $"► Do not switch to external camera", GameColors.brushLimeIsh, GameColors.fontMiddleBold);
+                    drawTextAt2(fiveTwo, $"► Do not switch to external camera", GameColors.LimeIsh, GameColors.fontMiddleBold);
                 }
                 else
                 {
-                    drawTextAt(eight, $"✋", GameColors.fontBig);
+                    drawTextAt2(eight, $"✋", GameColors.fontBig);
 
                     // manual docking
-                    drawTextAt(fiveTwo, $"► Manual docking in progress", GameColors.fontMiddle);
+                    drawTextAt2(fiveTwo, $"► Manual docking in progress", GameColors.fontMiddle);
                     newLine();
-                    drawTextAt(fiveTwo, $"❎ Settlement identification will be delayed", GameColors.fontMiddle);
+                    drawTextAt2(fiveTwo, $"❎ Settlement identification will be delayed", GameColors.fontMiddle);
                     newLine();
-                    drawTextAt(fiveTwo, $"► Auto dock recommended", GameColors.fontMiddleBold);
+                    drawTextAt2(fiveTwo, $"► Auto dock recommended", GameColors.fontMiddleBold);
                 }
             }
             else if (this.hasLanded && siteHeading == -1)
             {
                 if (game.status.Docked)
                 {
-                    drawTextAt(eight, $"► Settlement will be identified after next action", GameColors.fontMiddle);
+                    drawTextAt2(eight, $"► Settlement will be identified after next action", GameColors.fontMiddle);
                     newLine(+six);
-                    drawTextAt(eight, $"To manually identify:", GameColors.fontMiddleBold);
+                    drawTextAt2(eight, $"To manually identify:", GameColors.fontMiddleBold);
                     newLine(+six);
-                    drawTextAt(eight, $"► Send '.settlement' when docked", GameColors.fontMiddle);
+                    drawTextAt2(eight, $"► Send '.settlement' when docked", GameColors.fontMiddle);
                 }
                 else if (game.vehicle == ActiveVehicle.Foot || game.vehicle == ActiveVehicle.SRV)
                 {
@@ -988,19 +989,19 @@ namespace SrvSurvey
                     {
                         // otherwise, show guidance to manually set it
                         //g.ResetTransform();
-                        drawTextAt(eight, $"To manually identify:", GameColors.fontMiddleBold);
+                        drawTextAt2(eight, $"To manually identify:", GameColors.fontMiddleBold);
                         newLine(+six);
-                        drawTextAt(eight, $"1. Walk to the center of any landing pad and crouch", GameColors.fontMiddle);
+                        drawTextAt2(eight, $"1. Walk to the center of any landing pad and crouch", GameColors.fontMiddle);
                         newLine();
-                        drawTextAt(eight, $"2. Place your left foot over the the center grooves", GameColors.fontMiddle);
+                        drawTextAt2(eight, $"2. Place your left foot over the the center grooves", GameColors.fontMiddle);
                         newLine();
-                        drawTextAt(eight, $"3. Face with the chevrons ahead to your left", GameColors.fontMiddle);
+                        drawTextAt2(eight, $"3. Face with the chevrons ahead to your left", GameColors.fontMiddle);
                         newLine();
-                        drawTextAt(eight, $"4. Aim at the end of the groove ahead of you", GameColors.fontMiddle);
+                        drawTextAt2(eight, $"4. Aim at the end of the groove ahead of you", GameColors.fontMiddle);
                         newLine();
-                        drawTextAt(eight, $"5. Send message '.settlement'", GameColors.fontMiddle);
+                        drawTextAt2(eight, $"5. Send message '.settlement'", GameColors.fontMiddle);
                         newLine(+oneTwo);
-                        drawTextAt(eight, $"❓ See the wiki for more info", GameColors.fontMiddle);
+                        drawTextAt2(eight, $"❓ See the wiki for more info", GameColors.fontMiddle);
                     }
                 }
             }

@@ -107,9 +107,6 @@ namespace SrvSurvey
                 return;
             }
 
-            if (Game.settings.focusGameOnStart)
-                this.BeginInvoke(() => Elite.setFocusED());
-
             this.updateAllControls();
 
             this.checkFullScreenGraphics();
@@ -204,11 +201,7 @@ namespace SrvSurvey
                                     newSettings.Save();
 
                                     // force a restart
-                                    Application.DoEvents();
-                                    Application.DoEvents();
-                                    Process.Start(Application.ExecutablePath);
-                                    Application.DoEvents();
-                                    Process.GetCurrentProcess().Kill();
+                                    Program.forceRestart();
                                 }));
                             });
                         });
@@ -265,8 +258,10 @@ namespace SrvSurvey
                         btnCodexShow.Enabled = false;
                         btnSphereLimit.Enabled = false;
 
-                        this.timer1.Interval = 200;
                         this.timer1.Start();
+
+                        if (Game.settings.focusGameOnStart)
+                            this.BeginInvoke(() => Elite.setFocusED());
                     }));
                 }
                 catch (Exception ex)
