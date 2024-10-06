@@ -497,7 +497,7 @@ namespace SrvSurvey
             var watcher = this.reactToOldJournalChanges();
 
             // spawn child process to do the importing
-            var proc = Process.Start(Application.ExecutablePath, $"{FormPostProcess.cmdArg} {cmdrCodex.fid}");
+            var proc = Process.Start(Application.ExecutablePath, $"{Program.cmdArgScanOld} {cmdrCodex.fid}");
 
             // when that child process ends, reload + silently re-calculate one more time
             proc.WaitForExitAsync().ContinueWith(t =>

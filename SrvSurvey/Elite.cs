@@ -232,7 +232,7 @@ namespace SrvSurvey
         [DllImport("User32.dll")]
         static extern bool GetClientRect(IntPtr hWnd, ref RECT lpRect);
         [DllImport("user32.dll")]
-        static extern bool SetForegroundWindow(IntPtr hWnd);
+        public static extern bool SetForegroundWindow(IntPtr hWnd);
         [DllImport("user32.dll")]
         static extern IntPtr GetForegroundWindow();
 

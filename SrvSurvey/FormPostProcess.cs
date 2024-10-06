@@ -7,7 +7,6 @@ namespace SrvSurvey
 {
     public partial class FormPostProcess : DraggableForm
     {
-        public static string cmdArg = "-scan-old";
         public static FormPostProcess? activeForm;
 
         private Dictionary<string, string> allCmdrs;

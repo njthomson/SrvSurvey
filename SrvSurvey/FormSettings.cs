@@ -249,12 +249,7 @@ namespace SrvSurvey
             {
                 try
                 {
-                    Application.DoEvents();
-                    Process.Start(Application.ExecutablePath);
-
-                    Application.DoEvents();
-                    Application.DoEvents();
-                    Process.GetCurrentProcess().Kill();
+                    Program.forceRestart();
                 }
                 catch { /* swallow */ }
             }
@@ -531,7 +526,7 @@ namespace SrvSurvey
 
         private void btnPostProcess_Click(object sender, EventArgs e)
         {
-            Process.Start(Application.ExecutablePath, FormPostProcess.cmdArg);
+            Process.Start(Application.ExecutablePath, Program.cmdArgScanOld);
         }
 
         private void checkHumanSitePlotter_CheckedChanged(object sender, EventArgs e)

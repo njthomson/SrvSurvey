@@ -15,6 +15,9 @@ namespace SrvSurvey
         public static string userAgent = $"SrvSurvey-{Program.releaseVersion}";
         public static bool useLastIfShutdown = false;
 
+        public static string cmdArgScanOld = "-scan-old";
+        public static string cmdArgRestart = "-restart";
+
         private static string dataRootFolder = Path.GetFullPath(Path.Combine(dataFolder, ".."));
 
         public static readonly BindingFlags InstanceProps =
@@ -51,7 +54,27 @@ namespace SrvSurvey
 
             try
             {
-                var invokePostProcessor = args.Any(s => s == FormPostProcess.cmdArg);
+                var invokePostProcessor = args.Any(a => a == Program.cmdArgScanOld);
+                var restarted = args.Any(a => a == Program.cmdArgRestart);
+                if (!restarted && !invokePostProcessor)
+                {
+                    var processes = Process.GetProcessesByName("SrvSurvey");
+                    if (processes.Length > 1)
+                    {
+                        MessageBox.Show("SrvSurvey is already running.", "SrvSurvey", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+                        var otherProcess = processes.FirstOrDefault(p => p.Id != Process.GetCurrentProcess().Id);
+                        // push prior process to the foreground
+                        if (otherProcess != null)
+                        {
+                            // TODO: check if it is minimized?
+                            Elite.SetForegroundWindow(otherProcess.MainWindowHandle);
+                        }
+
+                        return;
+                    }
+                }
+
                 Form mainForm = invokePostProcessor ? new FormPostProcess(args.LastOrDefault()) : new Main();
                 Application.Run(mainForm);
             }
@@ -493,7 +516,7 @@ namespace SrvSurvey
             // force a restart
             Application.DoEvents();
             Application.DoEvents();
-            Process.Start(Application.ExecutablePath);
+            Process.Start(Application.ExecutablePath, Program.cmdArgRestart);
             Application.DoEvents();
             Process.GetCurrentProcess().Kill();
         }
