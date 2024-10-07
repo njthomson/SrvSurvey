@@ -153,7 +153,6 @@ namespace SrvSurvey
                         Game.log($"Auto removing tracker for: '{entry.Species_Localised}'/'{entry.Genus}'");
                         game.removeBookmark(prefix, Status.here.clone(), true);
                         this.prepTrackers();
-                        // processCommand($"-{prefix}", Status.here.clone()); // TODO: retire
                     }
                 }
             }

@@ -72,6 +72,7 @@ namespace SrvSurvey
         public bool autoTrackCompBioScans = true;
         public bool skipAnalyzedCompBioScans = true;
         public bool autoRemoveTrackerOnSampling = true;
+        public bool autoRemoveTrackerOnFinalSample = false;
 
         public double bioRingBucketOne = 3;
         public double bioRingBucketTwo = 7;

@@ -101,6 +101,8 @@ namespace SrvSurvey
             numRingBucket1 = new NumericUpDown();
             label16 = new Label();
             tabPage3 = new TabPage();
+            checkBox26 = new CheckBox();
+            checkBox25 = new CheckBox();
             numAltGamma = new NumericUpDown();
             numAltBeta = new NumericUpDown();
             numAltAlpha = new NumericUpDown();
@@ -187,8 +189,7 @@ namespace SrvSurvey
             linkAboutOne = new LinkLabel();
             colorDialog = new ColorDialog();
             colorTheme = new ColorDialog();
-            checkBox25 = new CheckBox();
-            checkBox26 = new CheckBox();
+            checkBox27 = new CheckBox();
             panel1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numOpacity).BeginInit();
@@ -753,6 +754,8 @@ namespace SrvSurvey
             // 
             // tabPage4
             // 
+            tabPage4.Controls.Add(checkBox27);
+            tabPage4.Controls.Add(pictureBox2);
             tabPage4.Controls.Add(numMinBioDuration);
             tabPage4.Controls.Add(pictureBox1);
             tabPage4.Controls.Add(checkBox21);
@@ -767,7 +770,6 @@ namespace SrvSurvey
             tabPage4.Controls.Add(checkBox6);
             tabPage4.Controls.Add(checkBox5);
             tabPage4.Controls.Add(btnClearUnclaimed);
-            tabPage4.Controls.Add(pictureBox2);
             tabPage4.Controls.Add(checkBox1);
             tabPage4.Controls.Add(checkBioStatusAutoShow);
             tabPage4.Controls.Add(groupRingBuckets);
@@ -881,7 +883,7 @@ namespace SrvSurvey
             // linkLabel1
             // 
             linkLabel1.AutoSize = true;
-            linkLabel1.Location = new Point(172, 125);
+            linkLabel1.Location = new Point(334, 96);
             linkLabel1.Name = "linkLabel1";
             linkLabel1.Size = new Size(102, 15);
             linkLabel1.TabIndex = 4;
@@ -892,7 +894,7 @@ namespace SrvSurvey
             // btnClearTrackers
             // 
             btnClearTrackers.FlatStyle = FlatStyle.Flat;
-            btnClearTrackers.Location = new Point(10, 121);
+            btnClearTrackers.Location = new Point(172, 92);
             btnClearTrackers.Name = "btnClearTrackers";
             btnClearTrackers.Size = new Size(156, 23);
             btnClearTrackers.TabIndex = 3;
@@ -906,7 +908,7 @@ namespace SrvSurvey
             checkBox7.Checked = true;
             checkBox7.CheckState = CheckState.Checked;
             checkBox7.FlatStyle = FlatStyle.System;
-            checkBox7.Location = new Point(10, 196);
+            checkBox7.Location = new Point(10, 168);
             checkBox7.Margin = new Padding(4, 3, 4, 3);
             checkBox7.Name = "checkBox7";
             checkBox7.Size = new Size(378, 20);
@@ -921,7 +923,7 @@ namespace SrvSurvey
             checkBox6.Checked = true;
             checkBox6.CheckState = CheckState.Checked;
             checkBox6.FlatStyle = FlatStyle.System;
-            checkBox6.Location = new Point(40, 171);
+            checkBox6.Location = new Point(40, 143);
             checkBox6.Margin = new Padding(4, 3, 4, 3);
             checkBox6.Name = "checkBox6";
             checkBox6.Size = new Size(301, 20);
@@ -936,7 +938,7 @@ namespace SrvSurvey
             checkBox5.Checked = true;
             checkBox5.CheckState = CheckState.Checked;
             checkBox5.FlatStyle = FlatStyle.System;
-            checkBox5.Location = new Point(10, 149);
+            checkBox5.Location = new Point(10, 121);
             checkBox5.Margin = new Padding(4, 3, 4, 3);
             checkBox5.Name = "checkBox5";
             checkBox5.Size = new Size(382, 20);
@@ -960,7 +962,7 @@ namespace SrvSurvey
             // 
             pictureBox2.BackgroundImage = (Image)resources.GetObject("pictureBox2.BackgroundImage");
             pictureBox2.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureBox2.Location = new Point(399, 11);
+            pictureBox2.Location = new Point(460, 11);
             pictureBox2.Name = "pictureBox2";
             pictureBox2.Size = new Size(109, 132);
             pictureBox2.TabIndex = 8;
@@ -975,10 +977,10 @@ namespace SrvSurvey
             checkBox1.Location = new Point(10, 67);
             checkBox1.Margin = new Padding(4, 3, 4, 3);
             checkBox1.Name = "checkBox1";
-            checkBox1.Size = new Size(398, 20);
+            checkBox1.Size = new Size(458, 20);
             checkBox1.TabIndex = 1;
             checkBox1.Tag = "autoShowBioPlot";
-            checkBox1.Text = "Show sample scan exclusion zones ➟➟➟➟➟➟➟➟➟➟➟➟➟➟➟";
+            checkBox1.Text = "Show sample scan exclusion zones ➟➟➟➟➟➟➟➟➟➟➟➟➟➟➟➟➟➟➟➟";
             checkBox1.UseVisualStyleBackColor = true;
             // 
             // checkBioStatusAutoShow
@@ -1171,6 +1173,36 @@ namespace SrvSurvey
             tabPage3.Size = new Size(612, 420);
             tabPage3.TabIndex = 2;
             tabPage3.Text = "Guardian sites";
+            // 
+            // checkBox26
+            // 
+            checkBox26.AutoSize = true;
+            checkBox26.Checked = true;
+            checkBox26.CheckState = CheckState.Checked;
+            checkBox26.FlatStyle = FlatStyle.System;
+            checkBox26.Location = new Point(35, 108);
+            checkBox26.Margin = new Padding(4, 3, 4, 3);
+            checkBox26.Name = "checkBox26";
+            checkBox26.Size = new Size(237, 20);
+            checkBox26.TabIndex = 16;
+            checkBox26.Tag = "autoZoomGuardianInTurret";
+            checkBox26.Text = "Auto zoom map when using SRV turret";
+            checkBox26.UseVisualStyleBackColor = true;
+            // 
+            // checkBox25
+            // 
+            checkBox25.AutoSize = true;
+            checkBox25.Checked = true;
+            checkBox25.CheckState = CheckState.Checked;
+            checkBox25.FlatStyle = FlatStyle.System;
+            checkBox25.Location = new Point(35, 82);
+            checkBox25.Margin = new Padding(4, 3, 4, 3);
+            checkBox25.Name = "checkBox25";
+            checkBox25.Size = new Size(249, 20);
+            checkBox25.TabIndex = 15;
+            checkBox25.Tag = "autoZoomGuardianNearObelisks";
+            checkBox25.Text = "Auto zoom map if within 30m of obelisks";
+            checkBox25.UseVisualStyleBackColor = true;
             // 
             // numAltGamma
             // 
@@ -2299,35 +2331,20 @@ namespace SrvSurvey
             // 
             colorDialog.Color = Color.Yellow;
             // 
-            // checkBox25
+            // checkBox27
             // 
-            checkBox25.AutoSize = true;
-            checkBox25.Checked = true;
-            checkBox25.CheckState = CheckState.Checked;
-            checkBox25.FlatStyle = FlatStyle.System;
-            checkBox25.Location = new Point(35, 82);
-            checkBox25.Margin = new Padding(4, 3, 4, 3);
-            checkBox25.Name = "checkBox25";
-            checkBox25.Size = new Size(249, 20);
-            checkBox25.TabIndex = 15;
-            checkBox25.Tag = "autoZoomGuardianNearObelisks";
-            checkBox25.Text = "Auto zoom map if within 30m of obelisks";
-            checkBox25.UseVisualStyleBackColor = true;
-            // 
-            // checkBox26
-            // 
-            checkBox26.AutoSize = true;
-            checkBox26.Checked = true;
-            checkBox26.CheckState = CheckState.Checked;
-            checkBox26.FlatStyle = FlatStyle.System;
-            checkBox26.Location = new Point(35, 108);
-            checkBox26.Margin = new Padding(4, 3, 4, 3);
-            checkBox26.Name = "checkBox26";
-            checkBox26.Size = new Size(237, 20);
-            checkBox26.TabIndex = 16;
-            checkBox26.Tag = "autoZoomGuardianInTurret";
-            checkBox26.Text = "Auto zoom map when using SRV turret";
-            checkBox26.UseVisualStyleBackColor = true;
+            checkBox27.AutoSize = true;
+            checkBox27.Checked = true;
+            checkBox27.CheckState = CheckState.Checked;
+            checkBox27.FlatStyle = FlatStyle.System;
+            checkBox27.Location = new Point(10, 194);
+            checkBox27.Margin = new Padding(4, 3, 4, 3);
+            checkBox27.Name = "checkBox27";
+            checkBox27.Size = new Size(275, 20);
+            checkBox27.TabIndex = 33;
+            checkBox27.Tag = "autoRemoveTrackerOnFinalSample";
+            checkBox27.Text = "Auto remove tracker locations upon final scan";
+            checkBox27.UseVisualStyleBackColor = true;
             // 
             // FormSettings
             // 
@@ -2565,5 +2582,6 @@ namespace SrvSurvey
         private CheckBox checkFocusAfterFsdJump;
         private CheckBox checkBox25;
         private CheckBox checkBox26;
+        private CheckBox checkBox27;
     }
 }

@@ -2421,6 +2421,7 @@ namespace SrvSurvey.game
             }
             else if (entry.ScanType == ScanType.Analyse)
             {
+                // the 3rd and final scan...
                 if (this.systemData == null || this.systemBody == null) throw new Exception("Why no systemBody?");
                 if (this.systemBody.bioScans == null) this.systemBody.bioScans = new List<BioScan>();
 
@@ -2443,6 +2444,16 @@ namespace SrvSurvey.game
                 this.cmdr.scanOne = null;
                 this.cmdr.scanTwo = null;
                 this.cmdr.Save();
+
+                if (Game.settings.autoRemoveTrackerOnFinalSample)
+                {
+                    Game.log($"Auto removing trackers for: '{entry.Species_Localised}'/'{entry.Genus}'");
+                    var prefix = BioScan.prefixes.FirstOrDefault(_ => _.Value.Contains(entry.Genus)).Key;
+                    this.removeBookmarkName(prefix);
+
+                    // force a re-render
+                    Program.getPlotter<PlotTrackers>()?.prepTrackers();
+                }
 
                 // adjust predictions/rewards calculations for this body
                 this.deferPredictSpecies(this.systemBody);
@@ -2561,7 +2572,7 @@ namespace SrvSurvey.game
 
         public void removeBookmarkName(string name)
         {
-            if (this.systemData == null || this.systemBody?.bookmarks == null) return;
+            if (name == null || this.systemData == null || this.systemBody?.bookmarks == null) return;
             Game.log($"Clearing all bookmarks for '{name}' on '{this.systemBody.name}' ({this.systemBody.id}");
             if (!this.systemBody.bookmarks.ContainsKey(name)) return;
 
