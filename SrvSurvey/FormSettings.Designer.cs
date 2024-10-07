@@ -70,6 +70,8 @@ namespace SrvSurvey
             linkResetTheme = new LinkLabel();
             tabControl1 = new TabControl();
             tabPage4 = new TabPage();
+            checkBox27 = new CheckBox();
+            pictureBox2 = new PictureBox();
             numMinBioDuration = new NumericUpDown();
             pictureBox1 = new PictureBox();
             checkBox21 = new CheckBox();
@@ -84,7 +86,6 @@ namespace SrvSurvey
             checkBox6 = new CheckBox();
             checkBox5 = new CheckBox();
             btnClearUnclaimed = new FlatButton();
-            pictureBox2 = new PictureBox();
             checkBox1 = new CheckBox();
             checkBioStatusAutoShow = new CheckBox();
             groupRingBuckets = new GroupBox();
@@ -189,7 +190,7 @@ namespace SrvSurvey
             linkAboutOne = new LinkLabel();
             colorDialog = new ColorDialog();
             colorTheme = new ColorDialog();
-            checkBox27 = new CheckBox();
+            checkBox28 = new CheckBox();
             panel1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numOpacity).BeginInit();
@@ -198,10 +199,10 @@ namespace SrvSurvey
             ((System.ComponentModel.ISupportInitialize)trackOpacity).BeginInit();
             tabControl1.SuspendLayout();
             tabPage4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numMinBioDuration).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox12).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             groupRingBuckets.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)picBucket4).BeginInit();
             ((System.ComponentModel.ISupportInitialize)picBucket3).BeginInit();
@@ -780,6 +781,31 @@ namespace SrvSurvey
             tabPage4.TabIndex = 3;
             tabPage4.Text = "Bio Scanning";
             // 
+            // checkBox27
+            // 
+            checkBox27.AutoSize = true;
+            checkBox27.Checked = true;
+            checkBox27.CheckState = CheckState.Checked;
+            checkBox27.FlatStyle = FlatStyle.System;
+            checkBox27.Location = new Point(10, 194);
+            checkBox27.Margin = new Padding(4, 3, 4, 3);
+            checkBox27.Name = "checkBox27";
+            checkBox27.Size = new Size(275, 20);
+            checkBox27.TabIndex = 33;
+            checkBox27.Tag = "autoRemoveTrackerOnFinalSample";
+            checkBox27.Text = "Auto remove tracker locations upon final scan";
+            checkBox27.UseVisualStyleBackColor = true;
+            // 
+            // pictureBox2
+            // 
+            pictureBox2.BackgroundImage = (Image)resources.GetObject("pictureBox2.BackgroundImage");
+            pictureBox2.BackgroundImageLayout = ImageLayout.Zoom;
+            pictureBox2.Location = new Point(460, 11);
+            pictureBox2.Name = "pictureBox2";
+            pictureBox2.Size = new Size(109, 132);
+            pictureBox2.TabIndex = 8;
+            pictureBox2.TabStop = false;
+            // 
             // numMinBioDuration
             // 
             numMinBioDuration.Enabled = false;
@@ -957,16 +983,6 @@ namespace SrvSurvey
             btnClearUnclaimed.Text = "Clear unclaimed rewards";
             btnClearUnclaimed.UseVisualStyleBackColor = true;
             btnClearUnclaimed.Click += btnClearUnclaimed_Click;
-            // 
-            // pictureBox2
-            // 
-            pictureBox2.BackgroundImage = (Image)resources.GetObject("pictureBox2.BackgroundImage");
-            pictureBox2.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureBox2.Location = new Point(460, 11);
-            pictureBox2.Name = "pictureBox2";
-            pictureBox2.Size = new Size(109, 132);
-            pictureBox2.TabIndex = 8;
-            pictureBox2.TabStop = false;
             // 
             // checkBox1
             // 
@@ -1585,6 +1601,7 @@ namespace SrvSurvey
             // tabPage6
             // 
             tabPage6.BackColor = SystemColors.Control;
+            tabPage6.Controls.Add(checkBox28);
             tabPage6.Controls.Add(pictureBox13);
             tabPage6.Controls.Add(pictureBox10);
             tabPage6.Controls.Add(numericUpDown1);
@@ -2331,20 +2348,20 @@ namespace SrvSurvey
             // 
             colorDialog.Color = Color.Yellow;
             // 
-            // checkBox27
+            // checkBox28
             // 
-            checkBox27.AutoSize = true;
-            checkBox27.Checked = true;
-            checkBox27.CheckState = CheckState.Checked;
-            checkBox27.FlatStyle = FlatStyle.System;
-            checkBox27.Location = new Point(10, 194);
-            checkBox27.Margin = new Padding(4, 3, 4, 3);
-            checkBox27.Name = "checkBox27";
-            checkBox27.Size = new Size(275, 20);
-            checkBox27.TabIndex = 33;
-            checkBox27.Tag = "autoRemoveTrackerOnFinalSample";
-            checkBox27.Text = "Auto remove tracker locations upon final scan";
-            checkBox27.UseVisualStyleBackColor = true;
+            checkBox28.AutoSize = true;
+            checkBox28.Checked = true;
+            checkBox28.CheckState = CheckState.Checked;
+            checkBox28.FlatStyle = FlatStyle.System;
+            checkBox28.Location = new Point(219, 150);
+            checkBox28.Margin = new Padding(4, 3, 4, 3);
+            checkBox28.Name = "checkBox28";
+            checkBox28.Size = new Size(156, 20);
+            checkBox28.TabIndex = 34;
+            checkBox28.Tag = "showNonBodySignals";
+            checkBox28.Text = "Show non-body signals";
+            checkBox28.UseVisualStyleBackColor = true;
             // 
             // FormSettings
             // 
@@ -2375,10 +2392,10 @@ namespace SrvSurvey
             tabControl1.ResumeLayout(false);
             tabPage4.ResumeLayout(false);
             tabPage4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
             ((System.ComponentModel.ISupportInitialize)numMinBioDuration).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox12).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
             groupRingBuckets.ResumeLayout(false);
             groupRingBuckets.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)picBucket4).EndInit();
@@ -2583,5 +2600,6 @@ namespace SrvSurvey
         private CheckBox checkBox25;
         private CheckBox checkBox26;
         private CheckBox checkBox27;
+        private CheckBox checkBox28;
     }
 }

@@ -675,6 +675,10 @@ namespace SrvSurvey
         }
 
 
+        protected SizeF drawTextAt2(string txt)
+        {
+            return drawTextAt2(dtx, txt, null, null);
+        }
         protected SizeF drawTextAt2(string txt, Font? font = null)
         {
             return drawTextAt2(dtx, txt, null, font);

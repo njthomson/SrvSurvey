@@ -498,6 +498,9 @@ namespace SrvSurvey.game
         /// <summary> Returns True when all bodies have been found with FSS </summary>
         public int bodyCount;
 
+        [JsonIgnore]
+        public int nonbodyCount;
+
         /// <summary> True once a FSSDiscoveryScan is received for this system </summary>
         public bool honked;
         public bool fssAllBodies;
@@ -569,6 +572,7 @@ namespace SrvSurvey.game
             // Discovery scan a.k.a. honk
             this.honked = true;
             this.bodyCount = entry.BodyCount;
+            this.nonbodyCount = entry.NonBodyCount;
         }
 
         public void onJournalEntry(FSSAllBodiesFound entry)
