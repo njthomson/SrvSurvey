@@ -1382,7 +1382,7 @@ namespace SrvSurvey.game
 
         /// <summary> Returns True when all non-star/non-asteroid bodies have been found with FSS </summary>
         [JsonIgnore]
-        public bool fssComplete { get => this.bodyCount == this.fssBodyCount; }
+        public bool fssComplete { get => this.fssBodyCount >= this.bodyCount; }
 
         [JsonIgnore]
         public int dssBodyCount { get => this.bodies.Count(_ => _.dssComplete); }
