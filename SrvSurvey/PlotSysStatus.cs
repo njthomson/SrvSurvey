@@ -117,9 +117,10 @@ namespace SrvSurvey
                     }
                 }
 
-                if (Game.settings.showNonBodySignals && game.systemData.nonbodyCount > 0)
+                var nonBodySignalCount = game.systemData.nonBodySignalCount;
+                if (Game.settings.showNonBodySignals && nonBodySignalCount > 0)
                 {
-                    var sz = this.drawTextAt2(six, $"► {game.systemData.nonbodyCount} non-body signals", GameColors.fontSmall2);
+                    var sz = this.drawTextAt2(six, $"► {nonBodySignalCount} non-body signals", GameColors.fontSmall2);
                     newLine(true);
                 }
 

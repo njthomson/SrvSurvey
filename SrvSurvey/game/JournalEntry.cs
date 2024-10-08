@@ -628,6 +628,33 @@ namespace SrvSurvey
         public long SystemAddress;
     }
 
+    class FSSSignalDiscovered : JournalEntry
+    {
+        // { "timestamp":"2024-10-08T01:23:34Z", "event":"FSSSignalDiscovered", "SystemAddress":6681123623626, "SignalName":"HYPERION CLASS CARRIER XLH-N1H", "SignalType":"FleetCarrier", "IsStation":true }
+        // { "timestamp":"2024-10-08T01:54:14Z", "event":"FSSSignalDiscovered", "SystemAddress":4752154823011, "SignalName":"Morrison Prospect", "SignalType":"Outpost" }
+        // { "timestamp":"2024-10-08T01:54:14Z", "event":"FSSSignalDiscovered", "SystemAddress":4752154823011, "SignalName":"$Warzone_PointRace_Med:#index=1;", "SignalName_Localised":"Conflict Zone [Medium Intensity]", "SignalType":"Combat" }
+        // { "timestamp":"2024-10-08T01:54:14Z", "event":"FSSSignalDiscovered", "SystemAddress":4752154823011, "SignalName":"CEN-770 Lowell-class Researcher", "SignalType":"Megaship" }
+        // { "timestamp":"2024-10-08T01:54:14Z", "event":"FSSSignalDiscovered", "SystemAddress":4752154823011, "SignalName":"Pure Mathematic Services", "SignalType":"Installation" }
+        // { "timestamp":"2024-10-08T01:54:20Z", "event":"FSSSignalDiscovered", "SystemAddress":4752154823011, "SignalName":"$MULTIPLAYER_SCENARIO42_TITLE;", "SignalName_Localised":"Nav Beacon", "SignalType":"NavBeacon" }
+        // { "timestamp":"2024-01-07T07:07:25Z", "event":"FSSSignalDiscovered", "SystemAddress":11675196990889, "SignalName":"$Fixed_Event_Life_Cloud;", "SignalName_Localised":"Notable stellar phenomena", "SignalType":"Codex" }
+        // { "timestamp":"2024-10-07T03:07:22Z", "event":"FSSSignalDiscovered", "SystemAddress":6681123623626, "SignalName":"$USS_HighGradeEmissions;", "SignalName_Localised":"Unidentified signal source", "SignalType":"USS", "USSType":"$USS_Type_ValuableSalvage;", "USSType_Localised":"Encoded emissions", "SpawningState":"", "SpawningFaction":"Independent Deciat Green Party", "ThreatLevel":0, "TimeRemaining":2242.791016 }
+
+        public long SystemAddress;
+        public string SignalName;
+        public string? SignalName_Localised;
+        public string SignalType;
+
+        public string? USSType;
+        public string? USSType_Localised;
+        public string? SpawningState;
+        public string? SpawningFaction;
+        public int? ThreatLevel;
+        /// <summary> Count of seconds </summary>
+        public double? TimeRemaining;
+
+        public bool? IsStation;
+    }
+
     class FSSAllBodiesFound : JournalEntry
     {
         // { "timestamp":"2023-09-04T02:29:13Z", "event":"FSSAllBodiesFound", "SystemName":"HIP 51721", "SystemAddress":358596317890, "Count":10 }

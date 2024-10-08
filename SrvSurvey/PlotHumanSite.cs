@@ -874,12 +874,18 @@ namespace SrvSurvey
 
         private void drawOnApproach(decimal distToSiteOrigin)
         {
+            if (station.subType == 0 && station.heading == -1)
+                drawApproachText("❓", "Unknown settlement type and heading");
+            else if (station.heading == -1)
+                drawApproachText("❓", "Unknown settlement heading");
+
             if (!this.hasLanded)
             {
                 // distance to site, triangulated with altitude 
                 var d = new PointM(distToSiteOrigin, game.status.Altitude).dist;
                 drawApproachText("►", $"On approach: {Util.metersToString(d)}");
 
+                // the controlling faction
                 drawTextAt2(eight, "►", GameColors.fontMiddle);
                 drawTextAt2(threeTwo, "Faction:", GameColors.fontMiddle);
                 var txt = $"{station.factionName}\r\nInfluence: " + station.influence?.ToString("p0");
@@ -887,9 +893,7 @@ namespace SrvSurvey
                 drawTextAt2(txt, GameColors.fontMiddleBold);
                 newLine(+ten, true);
 
-                if (station.government == "$government_Anarchy;")
-                    drawApproachText("🏴‍☠️", $"Government: {station.governmentLocalized}");
-
+                // Your reputation with the controlling faction
                 if (station.reputation.HasValue)
                 {
                     var col = GameColors.Orange;
@@ -909,14 +913,12 @@ namespace SrvSurvey
                     drawApproachText(prefix, $"Your reputation: {rep}", col);
                 }
 
-                if (station.stationServices?.Contains("facilitator") == true)
-                    drawApproachText("🙂", "Interstellar Factions available");
-            }
+                if (station.government == "$government_Anarchy;")
+                    drawApproachText("🏴‍☠️", $"Government: {station.governmentLocalized}");
 
-            if (station.subType == 0 && station.heading == -1)
-                drawApproachText("❓", "Unknown settlement type and heading");
-            else if (station.heading == -1)
-                drawApproachText("❓", "Unknown settlement heading");
+                if (station.stationServices?.Contains("facilitator") == true)
+                    drawApproachText("🙂", "Interstellar factions available");
+            }
 
             if (game.dockingInProgress)
             {

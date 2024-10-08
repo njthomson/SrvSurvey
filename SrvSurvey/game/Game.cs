@@ -2000,7 +2000,9 @@ namespace SrvSurvey.game
             if (entry.StationServices == null
                 || entry.StationServices.Count == 0 // horizons old settlements are not compatible
                 || entry.StationServices.Contains("socialspace") // bigger settlements (Planetary ports) are not compatible
-            ) return;
+                || entry.StationGovernment == "$government_Engineer;" // Engineer's stations (with no socialspace) are also not compatible
+            )
+                return;
 
             // use known station reference if this station is known, or start creating a new one
             this.systemStation = systemData.getStation(entry.MarketID);

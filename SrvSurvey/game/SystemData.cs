@@ -498,9 +498,6 @@ namespace SrvSurvey.game
         /// <summary> Returns True when all bodies have been found with FSS </summary>
         public int bodyCount;
 
-        [JsonIgnore]
-        public int nonbodyCount;
-
         /// <summary> True once a FSSDiscoveryScan is received for this system </summary>
         public bool honked;
         public bool fssAllBodies;
@@ -559,6 +556,7 @@ namespace SrvSurvey.game
             nameof(ScanOrganic),
             nameof(ApproachSettlement),
             nameof(ScanBaryCentre),
+            nameof(FSSSignalDiscovered),
         };
 
         public void Journals_onJournalEntry(IJournalEntry entry) { this.onJournalEntry((dynamic)entry); }
@@ -572,7 +570,7 @@ namespace SrvSurvey.game
             // Discovery scan a.k.a. honk
             this.honked = true;
             this.bodyCount = entry.BodyCount;
-            this.nonbodyCount = entry.NonBodyCount;
+            this.rawNonBodyCount = entry.NonBodyCount;
         }
 
         public void onJournalEntry(FSSAllBodiesFound entry)
@@ -761,6 +759,13 @@ namespace SrvSurvey.game
                     Game.activeGame.cmdr.applyExplReward(bonus, $"DSS mapped all valid bodies");
                 }
             }
+        }
+
+        public void onJournalEntry(FSSSignalDiscovered entry)
+        {
+            if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! Expected: `{this.address}`, got: {entry.SystemAddress}"); return; }
+
+            this.discoveredSignals[entry.SignalName] = entry;
         }
 
         public void onJournalEntry(FSSBodySignals entry)
@@ -1444,6 +1449,35 @@ namespace SrvSurvey.game
 
             return names;
         }
+
+        /// <summary>
+        /// A raw count of non-body signals, includes asteroids, FCs and many other things
+        /// </summary>
+        [JsonIgnore]
+        public int rawNonBodyCount;
+
+        /// <summary>
+        /// A count of non-body signals excluding just asteroids
+        /// </summary>
+        [JsonIgnore]
+        public int nonBodySignalCount
+        {
+            get
+            {
+                var count = rawNonBodyCount;
+                // remove the count of Asteroids
+                count -= this.bodies.Count(b => b.type == SystemBodyType.Asteroid);
+                // remove non-interesting signal types - no Stations/Outposts or NavBeacons
+                count -= this.discoveredSignals.Values.Count(s => s.IsStation == true || s.SignalType == "Outpost" || s.SignalType == "NavBeacon");
+                return count;
+            }
+        }
+
+        /// <summary>
+        /// A raw count of non-body signals, includes asteroids, FCs and many other things
+        /// </summary>
+        [JsonIgnore]
+        public Dictionary<string, FSSSignalDiscovered> discoveredSignals = new Dictionary<string, FSSSignalDiscovered>();
 
         [JsonIgnore]
         public SystemBody? lastFssBody;
