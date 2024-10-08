@@ -101,7 +101,7 @@ namespace SrvSurvey
                     this.drawTextAt2($"{dssRemaining.Count}x bodies:");
                     this.drawRemainingBodies(destinationBody, dssRemaining);
                 }
-                else if (game.systemData.fssComplete)
+                else if (game.systemData.fssComplete && game.systemData.honked)
                 {
                     this.drawTextAt2("No DSS meet criteria");
                 }
