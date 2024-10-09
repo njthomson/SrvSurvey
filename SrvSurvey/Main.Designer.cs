@@ -972,6 +972,7 @@ namespace SrvSurvey
             FormClosing += Main_FormClosing;
             Load += Main_Load;
             SizeChanged += Main_SizeChanged;
+            MouseDoubleClick += Main_MouseDoubleClick;
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
             groupBox2.ResumeLayout(false);

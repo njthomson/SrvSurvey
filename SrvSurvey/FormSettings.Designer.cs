@@ -134,6 +134,7 @@ namespace SrvSurvey
             lblScreenshotTarget = new Label();
             checkLocalTime = new CheckBox();
             tabPage6 = new TabPage();
+            checkBox28 = new CheckBox();
             pictureBox13 = new PictureBox();
             pictureBox10 = new PictureBox();
             numericUpDown1 = new NumericUpDown();
@@ -190,7 +191,7 @@ namespace SrvSurvey
             linkAboutOne = new LinkLabel();
             colorDialog = new ColorDialog();
             colorTheme = new ColorDialog();
-            checkBox28 = new CheckBox();
+            checkBox29 = new CheckBox();
             panel1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numOpacity).BeginInit();
@@ -1601,6 +1602,7 @@ namespace SrvSurvey
             // tabPage6
             // 
             tabPage6.BackColor = SystemColors.Control;
+            tabPage6.Controls.Add(checkBox29);
             tabPage6.Controls.Add(checkBox28);
             tabPage6.Controls.Add(pictureBox13);
             tabPage6.Controls.Add(pictureBox10);
@@ -1632,6 +1634,21 @@ namespace SrvSurvey
             tabPage6.Size = new Size(612, 420);
             tabPage6.TabIndex = 5;
             tabPage6.Text = "Exploration";
+            // 
+            // checkBox28
+            // 
+            checkBox28.AutoSize = true;
+            checkBox28.Checked = true;
+            checkBox28.CheckState = CheckState.Checked;
+            checkBox28.FlatStyle = FlatStyle.System;
+            checkBox28.Location = new Point(219, 150);
+            checkBox28.Margin = new Padding(4, 3, 4, 3);
+            checkBox28.Name = "checkBox28";
+            checkBox28.Size = new Size(156, 20);
+            checkBox28.TabIndex = 34;
+            checkBox28.Tag = "showNonBodySignals";
+            checkBox28.Text = "Show non-body signals";
+            checkBox28.UseVisualStyleBackColor = true;
             // 
             // pictureBox13
             // 
@@ -2348,20 +2365,19 @@ namespace SrvSurvey
             // 
             colorDialog.Color = Color.Yellow;
             // 
-            // checkBox28
+            // checkBox29
             // 
-            checkBox28.AutoSize = true;
-            checkBox28.Checked = true;
-            checkBox28.CheckState = CheckState.Checked;
-            checkBox28.FlatStyle = FlatStyle.System;
-            checkBox28.Location = new Point(219, 150);
-            checkBox28.Margin = new Padding(4, 3, 4, 3);
-            checkBox28.Name = "checkBox28";
-            checkBox28.Size = new Size(156, 20);
-            checkBox28.TabIndex = 34;
-            checkBox28.Tag = "showNonBodySignals";
-            checkBox28.Text = "Show non-body signals";
-            checkBox28.UseVisualStyleBackColor = true;
+            checkBox29.Checked = true;
+            checkBox29.CheckState = CheckState.Checked;
+            checkBox29.FlatStyle = FlatStyle.System;
+            checkBox29.Location = new Point(443, 11);
+            checkBox29.Margin = new Padding(4, 3, 4, 3);
+            checkBox29.Name = "checkBox29";
+            checkBox29.Size = new Size(162, 79);
+            checkBox29.TabIndex = 35;
+            checkBox29.Tag = "spyLocationsInFSS_TEST";
+            checkBox29.Text = "Show icon hints if body locations have been shown (experimental)";
+            checkBox29.UseVisualStyleBackColor = true;
             // 
             // FormSettings
             // 
@@ -2601,5 +2617,6 @@ namespace SrvSurvey
         private CheckBox checkBox26;
         private CheckBox checkBox27;
         private CheckBox checkBox28;
+        private CheckBox checkBox29;
     }
 }

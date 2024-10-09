@@ -361,7 +361,7 @@ namespace SrvSurvey
                 if (organism.analyzed)
                 {
                     // strike-through if already analyzed
-                    var ly = y + sz.Height * .45f;
+                    var ly = (int)(y + sz.Height * .45f);
                     g.DrawLine(GameColors.penGameOrange1, x, ly, x + sz.Width, ly);
                     g.DrawLine(GameColors.penGameOrangeDim1, x + 1, ly + 1, x + sz.Width + 1, ly + 1);
                 }

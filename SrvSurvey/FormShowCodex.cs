@@ -141,7 +141,7 @@ namespace SrvSurvey
             {
                 // download images once a month
                 var duration = DateTime.Now.Subtract(File.GetLastWriteTime(filepath));
-                if (duration.TotalDays < 30)
+                if (duration.TotalDays < 30 || true)
                 {
                     // load the cached image - quickly, so as not to lock the file
                     using (var imgTmp = Bitmap.FromFile(filepath))

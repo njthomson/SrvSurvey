@@ -249,7 +249,8 @@ namespace SrvSurvey
                         subStatus = $"By {discCmdr}, {discDate}";
                 }
 
-                this.lastUpdated = edsmResult.bodies.Max(b => b.updateTime);
+                if (edsmResult.bodies?.Count > 0)
+                    this.lastUpdated = edsmResult.bodies.Max(b => b.updateTime ?? DateTimeOffset.MinValue);
 
                 var plotter = Program.getPlotter<PlotGalMap>();
                 if (plotter != null && plotter.Created)

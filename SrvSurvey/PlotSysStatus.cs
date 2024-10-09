@@ -91,14 +91,14 @@ namespace SrvSurvey
                 else if (!game.systemData.fssComplete)
                 {
                     var fssProgress = 100.0 / (float)game.systemData.bodyCount * (float)game.systemData.fssBodyCount;
-                    var txt = $"FSS {(int)fssProgress}%";
-                    if (dssRemaining.Count == 0) txt += " complete";
+                    var txt = $"FSS {(int)fssProgress}% ";
+                    if (dssRemaining.Count == 0) txt += "complete";
                     this.drawTextAt2(txt, GameColors.Cyan);
                 }
 
                 if (dssRemaining.Count > 0)
                 {
-                    this.drawTextAt2($"{dssRemaining.Count}x bodies:");
+                    this.drawTextAt2($" {dssRemaining.Count}x bodies: ");
                     this.drawRemainingBodies(destinationBody, dssRemaining);
                 }
                 else if (game.systemData.fssComplete && game.systemData.honked)

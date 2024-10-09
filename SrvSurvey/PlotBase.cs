@@ -675,41 +675,43 @@ namespace SrvSurvey
         }
 
 
-        protected SizeF drawTextAt2(string txt)
+        protected SizeF drawTextAt2(string? txt)
         {
             return drawTextAt2(dtx, txt, null, null);
         }
-        protected SizeF drawTextAt2(string txt, Font? font = null)
+        protected SizeF drawTextAt2(string? txt, Font? font = null)
         {
             return drawTextAt2(dtx, txt, null, font);
         }
-        protected SizeF drawTextAt2(float tx, string txt, Font? font = null)
+        protected SizeF drawTextAt2(float tx, string? txt, Font? font = null)
         {
             return drawTextAt2(tx, txt, null, font);
         }
 
-        protected SizeF drawTextAt2(string txt, Color? col = null, Font? font = null)
+        protected SizeF drawTextAt2(string? txt, Color? col = null, Font? font = null)
         {
             return drawTextAt2(this.dtx, txt, col, font);
         }
 
-        protected SizeF drawTextAt2(float tx, string txt, Color? col, Font? font = null, bool rightAlign = false)
+        protected SizeF drawTextAt2(float tx, string? txt, Color? col, Font? font = null, bool rightAlign = false)
         {
             this.dtx = tx;
 
+            const TextFormatFlags flags = TextFormatFlags.NoPadding | TextFormatFlags.PreserveGraphicsTranslateTransform;
+
             col = col ?? GameColors.Orange;
             font = font ?? this.Font;
-            this.lastTextSize = TextRenderer.MeasureText(txt, font);
+            this.lastTextSize = TextRenderer.MeasureText(txt, font, Size.Empty, flags);
 
             var pt = new Point((int)this.dtx, (int)this.dty);
             if (rightAlign)
             {
                 pt.X = (int)(dtx - this.lastTextSize.Width);
-                TextRenderer.DrawText(g, txt, font, pt, col.Value, TextFormatFlags.NoPadding | TextFormatFlags.PreserveGraphicsTranslateTransform);
+                TextRenderer.DrawText(g, txt, font, pt, col.Value, flags);
             }
             else
             {
-                TextRenderer.DrawText(g, txt, font, pt, col.Value, TextFormatFlags.NoPadding | TextFormatFlags.PreserveGraphicsTranslateTransform);
+                TextRenderer.DrawText(g, txt, font, pt, col.Value, flags);
                 this.dtx += this.lastTextSize.Width;
             }
 

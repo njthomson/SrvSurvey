@@ -749,6 +749,11 @@ namespace SrvSurvey
             return (int)Math.Round(value);
         }
 
+        public static bool isCloseColor(Color actual, WatchColor expected)
+        {
+            return isCloseColor(actual, expected.color, expected.t);
+        }
+
         public static bool isCloseColor(Color actual, Color expected, int tolerance = 5)
         {
             // confirm actual RGB values are within ~5 of expected
@@ -760,7 +765,7 @@ namespace SrvSurvey
         public static bool isFirewallProblem(Exception? ex)
         {
             if (ex == null) return false;
-            if (ex != null) Game.log($"isFirewallProblem?\r\n{ex}");
+            if (ex != null && !ex.Message.Contains("404")) Game.log($"isFirewallProblem?\r\n{ex}");
             if (ex?.Message.Contains("An attempt was made to access a socket in a way forbidden by its access permissions") == true
                 || ex?.Message.Contains("A socket operation was attempted to an unreachable network") == true)
             {
@@ -1126,6 +1131,19 @@ namespace SrvSurvey
 
             return false;
         }
+    }
 
+    public class WatchColor
+    {
+        /// <summary> Tolerance </summary>
+        public int t;
+
+        public Color color;
+
+        public WatchColor(int r, int g, int b, int t)
+        {
+            this.color = Color.FromArgb(255, r, g, b);
+            this.t = t;
+        }
     }
 }

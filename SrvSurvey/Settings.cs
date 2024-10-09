@@ -26,6 +26,7 @@ namespace SrvSurvey
         public bool autoShowBioPlot = true;
         public bool autoShowPlotFSS = true;
         public bool autoShowPlotFSSInfo = true;
+        public bool spyLocationsInFSS_TEST = true;
         public bool autoShowPlotFSSInfoInSystemMap = false;
         public bool autoShowGuardianSummary = true;
         public bool autoShowRamTah = true;
@@ -181,6 +182,8 @@ namespace SrvSurvey
         public string? localFloraFolder = null;
 
         public bool darkTheme = false;
+
+        public PlotFSS.WatchFssPixelSettings watchFssSettings = new PlotFSS.WatchFssPixelSettings();
 
         #region loading /saving
 

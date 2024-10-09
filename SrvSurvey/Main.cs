@@ -1606,6 +1606,17 @@ namespace SrvSurvey
                 Program.showActivePlotters();
         }
 
+        private void Main_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            var plotFss = Program.getPlotter<PlotFSS>();
+            if (plotFss != null && e.Button == MouseButtons.Right)
+            {
+                Elite.setFocusED();
+                Application.DoEvents();
+                plotFss.analyzeGrab(true);
+            }
+        }
+
         private void btnSphereLimit_Click(object sender, EventArgs e)
         {
             Program.closePlotter<PlotSphericalSearch>();
