@@ -2744,8 +2744,9 @@
     "siteType": "Lacrosse",
     "latitude": 28.004879,
     "longitude": -15.423215,
-    "siteHeading": -1,
-    "surveyComplete": false
+    "siteHeading": 289,
+    "surveyProgress": 100,
+    "surveyComplete": true
   },
   {
     "siteID": 3,
