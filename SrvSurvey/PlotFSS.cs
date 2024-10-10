@@ -189,8 +189,6 @@ namespace SrvSurvey
                     drawTextAt2(this.Width - two, "✋", null, GameColors.fontBig, true);
                 else if (this.watchState == State.Yellow)
                     drawTextAt2(this.Width - two, "📡", Color.Gold, GameColors.fontBig, true);
-                else if (duration.TotalMilliseconds < 500 && watching)
-                    drawTextAt2(this.Width - two, "⏳", null, GameColors.fontBig, true);
             }
         }
 
@@ -214,7 +212,7 @@ namespace SrvSurvey
             this.watching = false;
             this.watchState = State.None;
 
-            Task.Delay(250).ContinueWith(t =>
+            Task.Delay(300).ContinueWith(t =>
             {
                 Program.control.BeginInvoke(() => this.Invalidate());
             });

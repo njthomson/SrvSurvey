@@ -261,7 +261,7 @@ namespace SrvSurvey
             if (lastUpdated != null && nextHop.lastUpdated > nextHop.discoveredDate)
                 lineTwo += $", last updated: " + nextHop.lastUpdated.Value.ToLocalTime().ToString("d");
                 drawTextAt2(eight, lineTwo, nextHop.highlight ? GameColors.Cyan : null);
-            drawTextAt2("(EDSM)", GameColors.OrangeDim);
+            drawTextAt2(" (EDSM)", GameColors.OrangeDim);
             newLine(+one, true);
 
             // traffic (if known)
@@ -269,7 +269,7 @@ namespace SrvSurvey
             {
                 var lineThree = $"▶️ Traffic last 24 hours: {this.info.traffic.traffic.day.ToString("n0")}, week: {this.info.traffic.traffic.week.ToString("n0")}, ever: {this.info.traffic.traffic.total.ToString("n0")}";
                 drawTextAt2(eight, lineThree);
-                drawTextAt2("(EDSM)", GameColors.OrangeDim);
+                drawTextAt2(" (EDSM)", GameColors.OrangeDim);
                 newLine(+one, true);
             }
 

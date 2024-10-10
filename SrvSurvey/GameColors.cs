@@ -611,6 +611,8 @@ namespace SrvSurvey
 
             public static Pen penOuterLimit = newPen(Color.FromArgb(64, Color.Gray), 8, DashStyle.DashDotDot);
             public static Pen penOuterLimitWarningArrow = penGameOrangeDim4;
+
+            public static Brush brushTextFade = new SolidBrush(Color.FromArgb(128, 0, 0, 0));
         }
 
         /// <summary>

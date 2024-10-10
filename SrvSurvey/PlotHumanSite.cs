@@ -874,6 +874,9 @@ namespace SrvSurvey
 
         private void drawOnApproach(decimal distToSiteOrigin)
         {
+            // fade out the map a little
+            g.FillRectangle(GameColors.HumanSite.brushTextFade, four, twoSix, this.Width - eight, this.Height - threeSix);
+
             if (station.subType == 0 && station.heading == -1)
                 drawApproachText("❓", "Unknown settlement type and heading");
             else if (station.heading == -1)
@@ -887,7 +890,7 @@ namespace SrvSurvey
 
                 // the controlling faction
                 drawTextAt2(eight, "►", GameColors.fontMiddle);
-                drawTextAt2(threeTwo, "Faction:", GameColors.fontMiddle);
+                drawTextAt2(threeTwo, "Faction: ", GameColors.fontMiddle);
                 var txt = $"{station.factionName}\r\nInfluence: " + station.influence?.ToString("p0");
                 if (station.factionState != null) txt += $"| {station.factionState}";
                 drawTextAt2(txt, GameColors.fontMiddleBold);
