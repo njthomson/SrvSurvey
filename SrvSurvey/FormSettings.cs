@@ -32,6 +32,7 @@ namespace SrvSurvey
             {
                 // Human settlements aren't ready for App store yet
                 tabControl1.Controls.Remove(tabSettlements);
+                checkHintFSS.Visible = false;
             }
 
             // Not themed - this is always light.
