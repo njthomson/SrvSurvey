@@ -11,7 +11,11 @@ namespace SrvSurvey
         public static string dataFolder = Path.GetFullPath(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "SrvSurvey", "SrvSurvey", "1.1.0.0"));
         public static string dataFolder2 = Path.GetFullPath(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "AppData", "Roaming", "SrvSurvey", "SrvSurvey", "1.1.0.0"));
         public static bool isAppStoreBuild = Assembly.GetExecutingAssembly().Location.Contains("NosmohtSoftware");
+#if DEBUG
+        public static string releaseVersion = $"1.{DateTime.Now.Year}.{(DateTime.Now.Month * 100) + DateTime.Now.Day}.{(DateTime.Now.Hour * 100) + DateTime.Now.Minute}";
+#else
         public static string releaseVersion = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyFileVersionAttribute>()?.Version!;
+#endif
         public static string userAgent = $"SrvSurvey-{Program.releaseVersion}";
         public static bool useLastIfShutdown = false;
 
@@ -238,10 +242,13 @@ namespace SrvSurvey
             var names = Program.activePlotters.Keys.ToArray();
             foreach (string name in names)
             {
-                if (name == nameof(PlotPulse) && exceptPlotPulse) continue;
                 if (name == nameof(PlotJumpInfo) && exceptJumpInfo) continue;
                 Program.closePlotter(name);
             }
+
+            // we want to reset this plotter, so create it again
+            if (exceptPlotPulse)
+                Program.showPlotter<PlotPulse>();
         }
 
         public static void repositionPlotters(Rectangle rect)
@@ -268,6 +275,9 @@ namespace SrvSurvey
 
             foreach (PlotterForm form in activePlotters.Values)
                 form.Opacity = PlotPos.getOpacity(form);
+
+            //if (!Game.settings.hideJournalWriteTimer)
+            //    Program.showPlotter<PlotPulse>();
         }
 
         public static void invalidateActivePlotters()

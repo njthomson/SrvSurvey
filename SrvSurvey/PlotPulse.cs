@@ -34,6 +34,7 @@ namespace SrvSurvey
             this.FormBorderStyle = FormBorderStyle.None;
             this.Opacity = 0;
             this.DoubleBuffered = true;
+            this.Size = Size.Empty;
         }
 
         protected override void OnLoad(EventArgs e)

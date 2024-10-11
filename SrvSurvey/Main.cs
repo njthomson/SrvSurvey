@@ -411,7 +411,6 @@ namespace SrvSurvey
             if (!this.IsHandleCreated || this.IsDisposed) return;
             Program.crashGuard(() =>
             {
-
                 Game.log($"New journal file detected: {e.Name} (existing game: {this.game != null})");
                 if (this.game == null)
                 {
