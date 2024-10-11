@@ -275,9 +275,6 @@ namespace SrvSurvey
 
             foreach (PlotterForm form in activePlotters.Values)
                 form.Opacity = PlotPos.getOpacity(form);
-
-            //if (!Game.settings.hideJournalWriteTimer)
-            //    Program.showPlotter<PlotPulse>();
         }
 
         public static void invalidateActivePlotters()
