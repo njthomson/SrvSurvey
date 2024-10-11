@@ -31,6 +31,7 @@ namespace SrvSurvey
                 && Game.activeGame.systemBody.bioSignalCount > 0
                 //&& (Game.activeGame.systemStation == null || !Game.settings.autoShowHumanSitesTest)
                 && !Game.activeGame.hidePlottersFromCombatSuits
+                && !Game.activeGame.status.Docked
                 && !Game.activeGame.isShutdown
                 && !Game.activeGame.atMainMenu
                 && !Game.activeGame.status.InTaxi

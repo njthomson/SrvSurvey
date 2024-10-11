@@ -99,6 +99,7 @@ namespace SrvSurvey
             get => Game.settings.autoShowBioPlot
                 && Game.activeGame?.systemBody != null
                 && Game.activeGame.status != null
+                && !Game.activeGame.status.Docked
                 && !Game.activeGame.isShutdown // not needed?
                 && !Game.activeGame.atMainMenu // not needed?
                 && (Game.activeGame.systemStation == null || !Game.settings.autoShowHumanSitesTest)

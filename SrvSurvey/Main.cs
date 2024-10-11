@@ -691,6 +691,8 @@ namespace SrvSurvey
                 var showPlotPriorScans = PlotPriorScans.allowPlotter;
                 if (showPlotPriorScans)
                     Program.showPlotter<PlotPriorScans>();
+                else
+                    Program.closePlotter<PlotPriorScans>();
 
                 if (PlotGrounded.allowPlotter)
                 {

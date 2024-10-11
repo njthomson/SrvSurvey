@@ -17,7 +17,6 @@ namespace SrvSurvey
         private bool watching = false;
         private State watchState;
         private DateTime lastScanTime;
-        private bool saveNextGrab;
 
         private WatchFssPixelSettings settings { get => Game.settings.watchFssSettings; }
 

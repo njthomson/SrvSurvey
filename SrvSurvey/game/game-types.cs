@@ -37,6 +37,7 @@ namespace SrvSurvey.game
         SystemMap,
         Orrery,
         FSS,
+        /// <summary> DSS </summary>
         SAA,
         Codex,
 

@@ -77,7 +77,7 @@ namespace SrvSurvey
                     Game.activeGame.isMode(GameMode.SuperCruising, GameMode.SAA, GameMode.FSS, GameMode.ExternalPanel, GameMode.Orrery, GameMode.SystemMap)
                     || (
                         PlotBioSystem.targetBody?.bioSignalCount > 0
-                        && Game.activeGame.isMode(GameMode.GlideMode, GameMode.Flying, GameMode.Landed, GameMode.OnFoot, GameMode.CommsPanel, GameMode.InSrv, GameMode.RolePanel)
+                        && Game.activeGame.isMode(GameMode.GlideMode, GameMode.Flying, GameMode.Landed, GameMode.OnFoot, GameMode.CommsPanel, GameMode.InSrv, GameMode.RolePanel, GameMode.Codex)
                     )
                 );
         }

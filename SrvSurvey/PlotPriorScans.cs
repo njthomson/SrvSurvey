@@ -67,10 +67,11 @@ namespace SrvSurvey
                 && Game.settings.autoLoadPriorScans
                 && Game.activeGame?.systemBody != null
                 && !Game.activeGame.hidePlottersFromCombatSuits
+                && !Game.activeGame.status.Docked
                 && !PlotGuardians.allowPlotter && !Program.isPlotter<PlotGuardians>()
                 && !PlotHumanSite.allowPlotter && !Program.isPlotter<PlotHumanSite>()
                 && Game.activeGame.canonnPoiHasLocalBioSignals()
-                && Game.activeGame.isMode(GameMode.SuperCruising, GameMode.Flying, GameMode.Landed, GameMode.InSrv, GameMode.OnFoot, GameMode.GlideMode, GameMode.InFighter, GameMode.CommsPanel, GameMode.SAA)
+                && Game.activeGame.isMode(GameMode.SuperCruising, GameMode.Flying, GameMode.Landed, GameMode.InSrv, GameMode.OnFoot, GameMode.GlideMode, GameMode.InFighter, GameMode.CommsPanel, GameMode.SAA, GameMode.Codex)
                 ;
         }
 
