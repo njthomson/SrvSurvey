@@ -78,6 +78,7 @@ namespace SrvSurvey
                     || (
                         PlotBioSystem.targetBody?.bioSignalCount > 0
                         && Game.activeGame.isMode(GameMode.GlideMode, GameMode.Flying, GameMode.Landed, GameMode.OnFoot, GameMode.CommsPanel, GameMode.InSrv, GameMode.RolePanel, GameMode.Codex)
+                                && (Game.activeGame.systemStation == null || !Game.settings.autoShowHumanSitesTest)
                     )
                 );
         }

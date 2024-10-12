@@ -222,7 +222,7 @@ namespace SrvSurvey
             try
             {
                 // exit early if ...
-                if (this.IsDisposed) return;
+                if (this.IsDisposed || game == null) return;
 
                 // only scan pixels if needed
                 if (this.watchState == State.Waiting || this.watchState == State.Skipped)
@@ -233,7 +233,7 @@ namespace SrvSurvey
                 Program.control.BeginInvoke(() => this.Invalidate());
 
                 // stop repeating?
-                if (game.systemData?.fssAllBodies == true && this.watchState != State.Waiting && this.watchState != State.Skipped)
+                if (game?.systemData?.fssAllBodies == true && this.watchState != State.Waiting && this.watchState != State.Skipped)
                 {
                     this.stopWatching();
                     return;
