@@ -139,7 +139,7 @@ namespace SrvSurvey
                 }
 
                 var data = task.Result;
-                if (data == null) return;
+                if (data == null || this.IsDisposed) return;
 
                 this.info.countPOI["Bodies"] = data.body_count;
 
@@ -190,7 +190,7 @@ namespace SrvSurvey
                     return;
                 }
 
-                if (task?.Result == null) return;
+                if (task?.Result == null || this.IsDisposed) return;
 
                 foreach (var body in task.Result.bodies)
                 {

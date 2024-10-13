@@ -226,9 +226,7 @@ namespace SrvSurvey
 
                 // only scan pixels if needed
                 if (this.watchState == State.Waiting || this.watchState == State.Skipped)
-                {
                     this.analyzeGrab(false);
-                }
 
                 Program.control.BeginInvoke(() => this.Invalidate());
 

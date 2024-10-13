@@ -933,7 +933,10 @@ namespace SrvSurvey
             }
 
             if (Game.settings.focusGameAfterFsdJump)
+            {
+                Game.log($"Setting focus to game after arriving in: {entry.StarSystem} ({entry.SystemAddress})");
                 Elite.setFocusED();
+            }
         }
 
         private void onJournalEntry(SendText entry)
