@@ -2200,7 +2200,7 @@ namespace SrvSurvey.game
             {
                 foreach (var org in this.organisms)
                 {
-                    org.lookupMissingSpeciesIfNeeded();
+                    org.lookupMissingNamesIfNeeded();
 
                     // if we know the species, keep its reward value and move on
                     if (org.species != null)
@@ -2449,10 +2449,12 @@ namespace SrvSurvey.game
         [JsonIgnore]
         public int range { get => BioScan.getRange(this.genus); }
 
-        public void lookupMissingSpeciesIfNeeded()
+        public void lookupMissingNamesIfNeeded()
         {
+            if (this.entryId == 0) return;
+
             // look-up species name if we don't already know it
-            if (this.species == null && this.entryId > 0)
+            if (this.species == null)
             {
                 var match = Game.codexRef.matchFromEntryId(this.entryId).species;
                 this.species = match.name;
@@ -2460,6 +2462,13 @@ namespace SrvSurvey.game
 
                 if (this.reward == 0)
                     this.reward = match.reward;
+            }
+
+            // look-up variant name if we don't already know it
+            if (this.variantLocalized == null)
+            {
+                var match = Game.codexRef.matchFromEntryId(this.entryId).variant;
+                this.variantLocalized = match.englishName;
             }
         }
     }

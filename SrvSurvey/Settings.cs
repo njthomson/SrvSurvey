@@ -26,7 +26,7 @@ namespace SrvSurvey
         public bool autoShowBioPlot = true;
         public bool autoShowPlotFSS = true;
         public bool autoShowPlotFSSInfo = true;
-        public bool spyLocationsInFSS_TEST = true;
+        public bool spyLocationsInFSS_TEST = false;
         public bool autoShowPlotFSSInfoInSystemMap = false;
         public bool autoShowGuardianSummary = true;
         public bool autoShowRamTah = true;
@@ -35,7 +35,7 @@ namespace SrvSurvey
         public bool drawBodyBiosOnlyWhenNear = true;
         public bool highlightRegionalFirsts = false;
         public bool autoShowPlotGalMap = true;
-        public bool autoShowPlotJumpInfoTest = true;
+        public bool autoShowPlotJumpInfo = true;
 
         public bool autoShowPlotBodyInfo = true;
         public bool autoShowPlotBodyInfoInMap = true;

@@ -59,6 +59,7 @@ namespace SrvSurvey
         protected static float oneOhFour = scaled(104f);
         protected static float oneTwenty = scaled(120f);
         protected static float oneSeventy = scaled(170f);
+        protected static float oneEightFour = scaled(184);
         protected static float oneNinety = scaled(190f);
         protected static float twoThirty = scaled(230f);
         protected static float fourHundred = scaled(400f);

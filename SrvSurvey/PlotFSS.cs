@@ -68,7 +68,7 @@ namespace SrvSurvey
         protected override void OnLoad(EventArgs e)
         {
             this.Width = scaled(420);
-            this.Height = scaled(96);
+            this.Height = scaled(102);
 
             base.OnLoad(e);
 
@@ -153,17 +153,16 @@ namespace SrvSurvey
 
             if (string.IsNullOrEmpty(lastBodyName)) return;
 
-            drawTextAt2(oneEight, "Estimated value:");
-            drawTextAt2(oneSeventy, $"{lastInitialValue} cr");
+            drawTextAt2(oneEight, "► Estimated value:");
+            drawTextAt2(oneEightFour, $"{lastInitialValue} cr");
             newLine(true);
-            drawTextAt2(oneEight, "With surface scan:");
-            drawTextAt2(oneSeventy, $"{lastMappedValue} cr");
+            drawTextAt2(oneEight, "► With surface scan:");
+            drawTextAt2(oneEightFour, $"{lastMappedValue} cr");
             newLine(true);
 
             if (!string.IsNullOrEmpty(lastNotes))
             {
-                dty = sixFour;
-                drawTextAt2(oneEight, lastNotes, GameColors.Cyan);
+                drawTextAt2(oneEight, "► " + lastNotes, GameColors.Cyan);
 
                 // draw volume bars from predictions
                 if (game?.systemData?.lastFssBody?.genusPredictions != null)

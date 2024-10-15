@@ -493,10 +493,15 @@ namespace SrvSurvey
                 dty = (float)Math.Round(dty);
 
                 // draw body name
-                var b = highlight ? GameColors.brushCyan : GameColors.brushGameOrange;
+                Brush b = highlight ? GameColors.brushCyan : GameColors.brushGameOrange;
+
+                var scansComplete = body.bioSignalCount == body.countAnalyzedBioSignals;
+                if (scansComplete) b = GameColors.brushGameOrangeDim;
+
                 //if (!highlight && potentialFirstDiscovery) b = (SolidBrush)GameColors.Bio.brushGold;
                 var sz2 = this.drawTextAt(eight, body.shortName, b, GameColors.fontMiddle);
-                if (body.bioSignalCount == body.countAnalyzedBioSignals)
+
+                if (scansComplete)
                 {
                     // strike-through if already analyzed
                     var y = dty + sz2.Height / 2;

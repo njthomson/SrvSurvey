@@ -1778,7 +1778,7 @@ namespace SrvSurvey
             checkPlotJumpInfo.Name = "checkPlotJumpInfo";
             checkPlotJumpInfo.Size = new Size(393, 20);
             checkPlotJumpInfo.TabIndex = 18;
-            checkPlotJumpInfo.Tag = "autoShowPlotJumpInfoTest";
+            checkPlotJumpInfo.Tag = "autoShowPlotJumpInfo";
             checkPlotJumpInfo.Text = "Show next system summary before FSD jumping (uses external data)";
             checkPlotJumpInfo.UseVisualStyleBackColor = true;
             // 

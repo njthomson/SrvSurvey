@@ -26,7 +26,7 @@ namespace SrvSurvey
         public static bool allowPlotter
         {
             get => Game.activeGame?.status != null
-                && Game.settings.autoShowPlotJumpInfoTest
+                && Game.settings.autoShowPlotJumpInfo
                 && (
                     // when FSD is charging for a jump, or ...
                     (Game.activeGame.status.FsdChargingJump && Game.activeGame.isMode(GameMode.Flying, GameMode.SuperCruising))

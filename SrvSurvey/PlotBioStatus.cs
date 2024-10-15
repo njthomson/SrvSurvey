@@ -25,7 +25,7 @@ namespace SrvSurvey
 
         public static bool allowPlotter
         {
-            get => SystemData.isWithinLastDssDuration() 
+            get => SystemData.isWithinLastDssDuration()
                 || Game.settings.autoShowBioSummary
                 && Game.activeGame?.systemBody != null
                 && Game.activeGame.systemBody.bioSignalCount > 0
@@ -171,7 +171,7 @@ namespace SrvSurvey
                 //else if (!game.systemBody.wasMapped && game.systemBody.countAnalyzedBioSignals == 0 && Game.settings.useExternalData && Game.settings.autoLoadPriorScans && Program.getPlotter<PlotPriorScans>() == null)
                 //    this.drawFooterText(g, "Potential first footfall - send '.ff' to confirm", GameColors.brushCyan);
                 else
-                    this.drawFooterText(g, "Use Composition Scanner to set bookmarks");
+                    this.drawFooterText(g, "Use Composition Scanner to set tracker targets");
             }
         }
 
@@ -202,17 +202,22 @@ namespace SrvSurvey
 
             // Species name
             var txt = $"{organism.variantLocalized}"; // or species?
-            var f = GameColors.fontBig;
-            var sz = g.MeasureString(txt, f);
-            if (sz.Width > this.Width - oneOhFour - eight - threeTwo) f = GameColors.font18;
-            sz = g.MeasureString(txt, f);
-            if (sz.Width > this.Width - oneOhFour - eight - threeTwo) f = GameColors.font14;
-
             var x = oneOhFour;
+            var rr = new RectangleF(x, y - eight, this.Width - x - eight - Resources.picture.Width, forty);
+
+            var f = GameColors.fontBig;
+            var sz = g.MeasureString(txt, f, (int)rr.Width);
+            if (sz.Height > rr.Height) f = GameColors.font18;
+            sz = g.MeasureString(txt, f, (int)rr.Width);
+            if (sz.Height > rr.Height) f = GameColors.font16;
+            sz = g.MeasureString(txt, f, (int)rr.Width);
+            if (sz.Height > rr.Height) f = GameColors.font14;
+
+            rr.Height += ten;
             g.DrawString(
                 txt,
                 f, GameColors.brushCyan,
-                x, y - eight);
+                rr); // x, y - eight);
 
             // Reward
             if (organism.reward > 0)
