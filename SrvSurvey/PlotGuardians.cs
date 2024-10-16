@@ -221,7 +221,7 @@ namespace SrvSurvey
                 case SiteType.Fistbump: return PlotVertialStripe.show(PlotVertialStripe.Mode.Fistbump, 450);
                 case SiteType.Hammerbot: return PlotVertialStripe.show(PlotVertialStripe.Mode.Hammerbot, 650);
                 case SiteType.Lacrosse: return PlotVertialStripe.show(PlotVertialStripe.Mode.Lacrosse, 650);
-                case SiteType.Robolobster: return PlotVertialStripe.show(PlotVertialStripe.Mode.Robolobster, 1500);
+                case SiteType.Robolobster: return PlotVertialStripe.show(PlotVertialStripe.Mode.Robolobster, 1000);
                 case SiteType.Squid: return PlotVertialStripe.show(PlotVertialStripe.Mode.Squid, 650);
                 case SiteType.Stickyhand: return PlotVertialStripe.show(PlotVertialStripe.Mode.Stickyhand, 650);
                 case SiteType.Turtle: return PlotVertialStripe.show(PlotVertialStripe.Mode.Turtle, 650);

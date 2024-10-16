@@ -340,17 +340,14 @@ namespace SrvSurvey
 
         private void drawRobolobsterTarget(Graphics g)
         {
-            // tops
             var eh = er.Height * 0.01f;
-            var d = eh * 1.5f;
-            var x = mw - d;
+            var x = mw - 0;
             var y = mh - eh * 4;
-            drawLine(g, x, y, x - eh * 1f, y);
-            drawLine(g, x, y + 100, x, y + 100 + eh * 20);
 
-            x = mw + d;
-            drawLine(g, x, y, x + eh * 1f, y);
-            drawLine(g, x, y + 100, x, y + 100 + eh * 20);
+            drawCircle(g, x, y, 80);
+            drawCircle(g, x, y, 120);
+
+            drawLine(g, x, 200, x, y + 200);
         }
 
         private void drawHammerbotTarget(Graphics g)
