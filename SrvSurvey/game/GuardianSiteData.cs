@@ -915,7 +915,7 @@ namespace SrvSurvey.game
         [JsonIgnore]
         public string name;
         [JsonIgnore]
-        public List<ObeliskItem> items { get => mapMsgItems[this.msg]; }
+        public List<ObeliskItem> items { get => mapMsgItems.GetValueOrDefault(this.msg); }
 
         [JsonIgnore]
         public string msg;
@@ -944,7 +944,8 @@ namespace SrvSurvey.game
             if (this.scanned) txt.Append("!");
 
             txt.Append("-");
-            txt.Append(string.Join(',', this.items.Select(_ => _.ToString().Substring(0, 2))));
+            if (this.items != null)
+                txt.Append(string.Join(',', this.items.Select(_ => _.ToString().Substring(0, 2))));
 
             txt.Append("-");
             txt.Append(msg);
