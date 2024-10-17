@@ -174,7 +174,7 @@ namespace SrvSurvey
             // plotters are not suppose to receive focus - force it back onto the game if we do
             base.OnActivated(e);
 
-            if (!this.showing)
+            if (!this.showing || Elite.focusElite)
             {
                 Elite.setFocusED();
                 this.Invalidate();
@@ -395,7 +395,7 @@ namespace SrvSurvey
 
                 if (forceRepaint)
                 {
-                    g.Clear(Color.Black);
+                    g.FillRectangle(Brushes.Black, 0, 0, this.Width, this.Height);
                     this.formSize = new SizeF();
                     this.dtx = eight;
                     this.dty = ten;

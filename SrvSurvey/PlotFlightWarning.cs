@@ -35,12 +35,12 @@ namespace SrvSurvey
 
         protected override void onPaintPlotter(PaintEventArgs e)
         {
-            g.Clear(Color.Black);
             if (this.IsDisposed || game.systemBody == null)
             {
                 Program.closePlotter<PlotFlightWarning>();
                 return;
             }
+            g.FillRectangle(Brushes.Black, 0, 0, this.Width, this.Height);
 
             var bodyGrav = (game.systemBody!.surfaceGravity / 10).ToString("N2");
             var txt = $"Warning: Surface gravity {bodyGrav}g";

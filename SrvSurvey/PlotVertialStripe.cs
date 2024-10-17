@@ -193,7 +193,7 @@ namespace SrvSurvey
 
             var g = e.Graphics;
             g.SmoothingMode = SmoothingMode.HighQuality;
-            g.Clear(Color.Red);
+            g.FillRectangle(Brushes.Red, 0, 0, this.Width, this.Height);
 
             drawAngleString(g);
 

@@ -91,6 +91,7 @@ namespace SrvSurvey
                 MessageBox.Show($"An unexpected error occurred. Please report the following on https://github.com/njthomson/SrvSurvey/issues:\r\n\r\n{ex}", "SrvSurvey", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
         private static void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
         {
             game.Game.log("Exception: " + e.Exception.Message);
