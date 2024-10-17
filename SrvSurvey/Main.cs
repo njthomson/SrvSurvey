@@ -60,10 +60,6 @@ namespace SrvSurvey
                     lblNotInstalled.Visible = true;
                 }
             }
-            else
-            {
-                Game.log("Running on Linux");
-            }
 
             if (Game.settings.processScreenshots)
                 this.startWatchingScreenshots();

@@ -19,6 +19,7 @@ namespace SrvSurvey.game
             Game.log($"SrvSurvey version: {Program.releaseVersion}, isAppStoreBuild: {Program.isAppStoreBuild}");
             Game.log($"New log file: {Game.logPath}");
             Game.log($"dataFolder: {Program.dataFolder}");
+            if (Program.isLinux) Game.log("Running on Linux");
 
             Game.removeExcessLogFiles();
 
