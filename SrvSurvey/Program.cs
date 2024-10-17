@@ -18,9 +18,11 @@ namespace SrvSurvey
 #endif
         public static string userAgent = $"SrvSurvey-{Program.releaseVersion}";
         public static bool useLastIfShutdown = false;
+        public static bool isLinux = false;
 
         public static string cmdArgScanOld = "-scan-old";
         public static string cmdArgRestart = "-restart";
+        public static string cmdArgLinux = "-linux";
 
         private static string dataRootFolder = Path.GetFullPath(Path.Combine(dataFolder, ".."));
 
@@ -58,6 +60,7 @@ namespace SrvSurvey
 
             try
             {
+                var isLinux = args.Any(a => a == Program.cmdArgLinux);
                 var invokePostProcessor = args.Any(a => a == Program.cmdArgScanOld);
                 var restarted = args.Any(a => a == Program.cmdArgRestart);
                 if (!restarted && !invokePostProcessor)

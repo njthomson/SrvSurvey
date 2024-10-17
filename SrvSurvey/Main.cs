@@ -44,17 +44,25 @@ namespace SrvSurvey
                 Game.log($"Watching folder: {Game.settings.watchedJournalFolder}");
             }
 
-            if (Path.Exists(Elite.displaySettingsFolder))
+            // Don't attempt this on Linux currently
+            if (!Program.isLinux)
             {
-                // watch for changes in DisplaySettings.xml 
-                this.settingsFolderWatcher = new FileSystemWatcher(Elite.displaySettingsFolder, "DisplaySettings.xml");
-                this.settingsFolderWatcher.Changed += settingsFolderWatcher_Changed;
-                this.settingsFolderWatcher.EnableRaisingEvents = true;
-                Game.log($"Watching file: {Elite.displaySettingsXml}");
+                if (Path.Exists(Elite.displaySettingsFolder))
+                {
+                    // watch for changes in DisplaySettings.xml 
+                    this.settingsFolderWatcher = new FileSystemWatcher(Elite.displaySettingsFolder, "DisplaySettings.xml");
+                    this.settingsFolderWatcher.Changed += settingsFolderWatcher_Changed;
+                    this.settingsFolderWatcher.EnableRaisingEvents = true;
+                    Game.log($"Watching file: {Elite.displaySettingsXml}");
+                }
+                else
+                {
+                    lblNotInstalled.Visible = true;
+                }
             }
             else
             {
-                lblNotInstalled.Visible = true;
+                Game.log("Running on Linux");
             }
 
             if (Game.settings.processScreenshots)
@@ -93,8 +101,10 @@ namespace SrvSurvey
             btnQuit2.Enabled = true;
             Application.DoEvents();
 
-            if (!Path.Exists(Elite.displaySettingsFolder))
+            // Don't attempt this on Linux currently
+            if (!Path.Exists(Elite.displaySettingsFolder) && !Program.isLinux)
             {
+                Game.log("Elite Dangerous does not appear to be installed?");
                 lblNotInstalled.Enabled = true;
                 // stop here if Elite is not installed
                 return;
@@ -1318,6 +1328,9 @@ namespace SrvSurvey
 
         private void checkFullScreenGraphics()
         {
+            // Don't attempt this on Linux currently
+            if (Program.isLinux) return;
+
             // 0: Windows / 1: FullScreen / 2: Borderless
             lblFullScreen.Visible = Elite.getGraphicsMode() == GraphicsMode.FullScreen;
             lblFullScreen.Enabled = true;
