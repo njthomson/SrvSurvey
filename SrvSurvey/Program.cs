@@ -60,7 +60,7 @@ namespace SrvSurvey
 
             try
             {
-                Program.isLinux =!string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("WINELOADER")) || args.Any(a => a == Program.cmdArgLinux);
+                Program.isLinux = !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("WINELOADER")) || args.Any(a => a == Program.cmdArgLinux);
                 var invokePostProcessor = args.Any(a => a == Program.cmdArgScanOld);
                 var restarted = args.Any(a => a == Program.cmdArgRestart);
                 if (!restarted && !invokePostProcessor)

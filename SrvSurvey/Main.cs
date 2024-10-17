@@ -45,20 +45,17 @@ namespace SrvSurvey
             }
 
             // Don't attempt this on Linux currently
-            if (!Program.isLinux)
+            if (Path.Exists(Elite.displaySettingsFolder))
             {
-                if (Path.Exists(Elite.displaySettingsFolder))
-                {
-                    // watch for changes in DisplaySettings.xml 
-                    this.settingsFolderWatcher = new FileSystemWatcher(Elite.displaySettingsFolder, "DisplaySettings.xml");
-                    this.settingsFolderWatcher.Changed += settingsFolderWatcher_Changed;
-                    this.settingsFolderWatcher.EnableRaisingEvents = true;
-                    Game.log($"Watching file: {Elite.displaySettingsXml}");
-                }
-                else
-                {
-                    lblNotInstalled.Visible = true;
-                }
+                // watch for changes in DisplaySettings.xml 
+                this.settingsFolderWatcher = new FileSystemWatcher(Elite.displaySettingsFolder, "DisplaySettings.xml");
+                this.settingsFolderWatcher.Changed += settingsFolderWatcher_Changed;
+                this.settingsFolderWatcher.EnableRaisingEvents = true;
+                Game.log($"Watching file: {Elite.displaySettingsXml}");
+            }
+            else
+            {
+                lblNotInstalled.Visible = true;
             }
 
             if (Game.settings.processScreenshots)
@@ -98,7 +95,7 @@ namespace SrvSurvey
             Application.DoEvents();
 
             // Don't attempt this on Linux currently
-            if (!Path.Exists(Elite.displaySettingsFolder) && !Program.isLinux)
+            if (!Path.Exists(Elite.displaySettingsFolder))
             {
                 Game.log("Elite Dangerous does not appear to be installed?");
                 lblNotInstalled.Enabled = true;
@@ -1324,9 +1321,6 @@ namespace SrvSurvey
 
         private void checkFullScreenGraphics()
         {
-            // Don't attempt this on Linux currently
-            if (Program.isLinux) return;
-
             // 0: Windows / 1: FullScreen / 2: Borderless
             lblFullScreen.Visible = Elite.getGraphicsMode() == GraphicsMode.FullScreen;
             lblFullScreen.Enabled = true;
