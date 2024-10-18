@@ -185,6 +185,8 @@ namespace SrvSurvey
 
         public PlotFSS.WatchFssPixelSettings watchFssSettings = new PlotFSS.WatchFssPixelSettings();
 
+        public bool keyhook_TEST = false;
+
         #region loading /saving
 
         static readonly string settingsPath = Path.Combine(Program.dataFolder, "settings.json");

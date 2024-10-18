@@ -13,6 +13,8 @@ namespace SrvSurvey
 
         internal delegate IntPtr HookHandlerDelegate(int nCode, IntPtr wParam, ref KBDLLHOOKSTRUCT lParam);
 
+        public event KeyEventHandler KeyUp;
+
         public KeyboardHook()
         {
             hookProcessor = new HookHandlerDelegate(HookCallback);
@@ -35,12 +37,41 @@ namespace SrvSurvey
             NativeMethods.UnhookWindowsHookEx(hookId);
         }
 
+        private bool ctrlPressed = false;
+        private bool shiftPressed = false;
+        private bool altPressed = false;
+
         private IntPtr HookCallback(int nCode, IntPtr wParam, ref KBDLLHOOKSTRUCT lParam)
         {
-            if (lParam.flags == 128 && Elite.focusElite)
+
+            if (Elite.focusElite)
             {
-                Game.log($">> {lParam.vkCode} / {lParam.flags}");
+                var keyUp = lParam.flags >= 128;
+                var keys = (Keys)lParam.vkCode;
+
+                if (keys == Keys.LControlKey || keys == Keys.RControlKey)
+                    this.ctrlPressed = !keyUp;
+                if (keys == Keys.LShiftKey || keys == Keys.RShiftKey)
+                    this.shiftPressed = !keyUp;
+                if (keys == Keys.LMenu || keys == Keys.RMenu)
+                    this.altPressed = !keyUp;
+                else if (keyUp)
+                {
+                    if (shiftPressed) keys = keys | Keys.Shift;
+                    if (ctrlPressed) keys = keys | Keys.Control;
+                    if (altPressed) keys = keys | Keys.Alt;
+
+                    var e = new KeyEventArgs(keys);
+                    if (this.KeyUp != null)
+                        this.KeyUp(null, e);
+
+                    //var tt = (ctrlPressed ? "CTRL " : "") +
+                    //     (shiftPressed ? "SHIFT " : "") +
+                    //     keys.ToString();
+                    //Game.log($"!! " + tt);
+                }
             }
+            //Game.log($">> {lParam.vkCode} / {lParam.flags} / {lParam.scanCode} | {ctrlPressed} | {shiftPressed} | {altPressed}");
 
             //Pass key to next application
             return NativeMethods.CallNextHookEx(hookId, nCode, wParam, ref lParam);

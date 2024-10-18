@@ -23,7 +23,7 @@ namespace SrvSurvey
         private bool gameHadFocus;
 
         public static Main form;
-        //KeyboardHook hook;
+        KeyboardHook hook;
 
         public Main()
         {
@@ -32,8 +32,6 @@ namespace SrvSurvey
             lblNotInstalled.BringToFront();
             lblFullScreen.BringToFront();
             PlotPos.prepPlotterPositions();
-
-            //this.hook = new KeyboardHook();
 
             if (Path.Exists(Game.settings.watchedJournalFolder))
             {
@@ -262,6 +260,12 @@ namespace SrvSurvey
                         btnSphereLimit.Enabled = false;
 
                         this.timer1.Start();
+
+                        if (Game.settings.keyhook_TEST)
+                        {
+                            this.hook = new KeyboardHook();
+                            this.hook.KeyUp += Hook_KeyUp;
+                        }
 
                         if (Game.settings.focusGameOnStart)
                             this.BeginInvoke(() => Elite.setFocusED());
@@ -1682,6 +1686,13 @@ namespace SrvSurvey
         {
             FormCodexBingo.show();
             //Program.showPlotter<PlotSphericalSearch>();
+        }
+
+        private void Hook_KeyUp(object? sender, KeyEventArgs e)
+        {
+            //Game.log($"?? {e.KeyCode} {e.Control} {e.Shift} {e.Alt}");
+            if (e.KeyCode == Keys.F2 && e.Alt)
+                checkTempHide.Checked = !checkTempHide.Checked;
         }
     }
 }
