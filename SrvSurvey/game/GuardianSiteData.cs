@@ -915,7 +915,7 @@ namespace SrvSurvey.game
         [JsonIgnore]
         public string name;
         [JsonIgnore]
-        public List<ObeliskItem> items { get => mapMsgItems.GetValueOrDefault(this.msg); }
+        public List<ObeliskItem> items { get => mapMsgItems.GetValueOrDefault(this.msg) ?? new List<ObeliskItem>(); }
 
         [JsonIgnore]
         public string msg;

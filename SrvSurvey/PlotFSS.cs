@@ -18,7 +18,7 @@ namespace SrvSurvey
         private State watchState;
         private DateTime lastScanTime;
 
-        private WatchFssPixelSettings settings { get => Game.settings.watchFssSettings; }
+        private WatchFssPixelSettings? settings { get => Game.settings.watchFssSettings; }
 
         private PlotFSS() : base()
         {
@@ -283,7 +283,7 @@ namespace SrvSurvey
             });
 
             // exit early if 
-            if (!Elite.focusElite || gameRect == Rectangle.Empty) return;
+            if (!Elite.focusElite || gameRect == Rectangle.Empty || settings == null) return;
 
             // grab just the top right quadrant
             gameRect.Width = gameRect.Width / 2;
@@ -329,6 +329,8 @@ namespace SrvSurvey
 
         private Rectangle getWatchArea(Rectangle gameRect, Bitmap grab)
         {
+            if (settings == null) return Rectangle.Empty;
+
             var saveGrab = this.settings.saveDebugImages;
 
             var watchArea = new Rectangle();
