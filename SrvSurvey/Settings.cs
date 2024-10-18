@@ -26,7 +26,6 @@ namespace SrvSurvey
         public bool autoShowBioPlot = true;
         public bool autoShowPlotFSS = true;
         public bool autoShowPlotFSSInfo = true;
-        public bool spyLocationsInFSS_TEST = false;
         public bool autoShowPlotFSSInfoInSystemMap = false;
         public bool autoShowGuardianSummary = true;
         public bool autoShowRamTah = true;
@@ -183,7 +182,8 @@ namespace SrvSurvey
 
         public bool darkTheme = false;
 
-        public PlotFSS.WatchFssPixelSettings watchFssSettings = new PlotFSS.WatchFssPixelSettings();
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public PlotFSS.WatchFssPixelSettings? watchFssSettings_TEST = null;
 
         public bool keyhook_TEST = false;
 

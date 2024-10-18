@@ -6,9 +6,9 @@ namespace SrvSurvey
 {
     public partial class FormSettings : Form
     {
-        private Game? game = Game.activeGame;
+        private static Game? game { get => Game.activeGame; }
 
-        private readonly Dictionary<string, FieldInfo> map = new Dictionary<string, FieldInfo>();
+        private readonly Dictionary<string, FieldInfo> map = new();
         private Color colorScreenshotBanner = Game.settings.screenshotBannerColor;
 
         public FormSettings()
@@ -32,7 +32,6 @@ namespace SrvSurvey
             {
                 // Human settlements aren't ready for App store yet
                 tabControl1.Controls.Remove(tabSettlements);
-                checkHintFSS.Visible = false;
             }
 
             // Not themed - this is always light.

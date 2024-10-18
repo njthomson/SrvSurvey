@@ -17,12 +17,12 @@ namespace SrvSurvey
             if (disposing && (components != null))
             {
                 components.Dispose();
-                if (this.hook != null)
-                {
-                    this.hook.KeyUp -= Hook_KeyUp;
-                    hook.Dispose();
-                    hook = null;
-                }
+                //if (this.hook != null)
+                //{
+                //    this.hook.KeyUp -= Hook_KeyUp;
+                //    hook.Dispose();
+                //    hook = null;
+                //}
             }
             base.Dispose(disposing);
         }

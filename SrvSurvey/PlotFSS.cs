@@ -1,5 +1,4 @@
 ﻿using SrvSurvey.game;
-using System.Diagnostics;
 
 namespace SrvSurvey
 {
@@ -18,7 +17,7 @@ namespace SrvSurvey
         private State watchState;
         private DateTime lastScanTime;
 
-        private WatchFssPixelSettings? settings { get => Game.settings.watchFssSettings; }
+        private WatchFssPixelSettings? settings { get => Game.settings.watchFssSettings_TEST; }
 
         private PlotFSS() : base()
         {
@@ -76,7 +75,7 @@ namespace SrvSurvey
             this.reposition(Elite.getWindowRect(true));
 
             // start watching pixels - if we have bodies to FSS
-            if (Game.settings.spyLocationsInFSS_TEST && (game.systemData?.honked == true || game.systemData?.fssAllBodies == false))
+            if (Game.settings.watchFssSettings_TEST != null && (game.systemData?.honked == true || game.systemData?.fssAllBodies == false))
                 this.startWatching();
         }
 
@@ -176,7 +175,7 @@ namespace SrvSurvey
             }
 
             // show reminder to icons, if we're watching pixels
-            if (Game.settings.spyLocationsInFSS_TEST)
+            if (Game.settings.watchFssSettings_TEST != null)
             {
                 dty = this.Height - fourFour;
                 var duration = DateTime.Now - this.lastScanTime;
@@ -195,7 +194,7 @@ namespace SrvSurvey
 
         private void startWatching()
         {
-            if (!Game.settings.spyLocationsInFSS_TEST) return;
+            if (Game.settings.watchFssSettings_TEST == null) return;
 
             Game.log("Start watching FSS pixels");
             this.watching = true;

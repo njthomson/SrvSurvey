@@ -134,7 +134,6 @@ namespace SrvSurvey
             lblScreenshotTarget = new Label();
             checkLocalTime = new CheckBox();
             tabPage6 = new TabPage();
-            checkHintFSS = new CheckBox();
             checkBox28 = new CheckBox();
             pictureBox13 = new PictureBox();
             pictureBox10 = new PictureBox();
@@ -1602,7 +1601,6 @@ namespace SrvSurvey
             // tabPage6
             // 
             tabPage6.BackColor = SystemColors.Control;
-            tabPage6.Controls.Add(checkHintFSS);
             tabPage6.Controls.Add(checkBox28);
             tabPage6.Controls.Add(pictureBox13);
             tabPage6.Controls.Add(pictureBox10);
@@ -1634,20 +1632,6 @@ namespace SrvSurvey
             tabPage6.Size = new Size(612, 420);
             tabPage6.TabIndex = 5;
             tabPage6.Text = "Exploration";
-            // 
-            // checkHintFSS
-            // 
-            checkHintFSS.Checked = true;
-            checkHintFSS.CheckState = CheckState.Checked;
-            checkHintFSS.FlatStyle = FlatStyle.System;
-            checkHintFSS.Location = new Point(443, 11);
-            checkHintFSS.Margin = new Padding(4, 3, 4, 3);
-            checkHintFSS.Name = "checkHintFSS";
-            checkHintFSS.Size = new Size(162, 79);
-            checkHintFSS.TabIndex = 35;
-            checkHintFSS.Tag = "spyLocationsInFSS_TEST";
-            checkHintFSS.Text = "Show icon hints if body locations have been shown (experimental)";
-            checkHintFSS.UseVisualStyleBackColor = true;
             // 
             // checkBox28
             // 
@@ -2617,6 +2601,5 @@ namespace SrvSurvey
         private CheckBox checkBox26;
         private CheckBox checkBox27;
         private CheckBox checkBox28;
-        private CheckBox checkHintFSS;
     }
 }
