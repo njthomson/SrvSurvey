@@ -5,7 +5,7 @@ using SrvSurvey.canonn;
 using SrvSurvey.net;
 using SrvSurvey.net.EDSM;
 using SrvSurvey.units;
-using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Text.RegularExpressions;
 
@@ -15,7 +15,7 @@ namespace SrvSurvey.game
     {
         #region load, close and caching
 
-        private static Dictionary<long, SystemData> cache = new Dictionary<long, SystemData>();
+        private static readonly Dictionary<long, SystemData> cache = new();
 
         /// <summary>
         /// Open or create a SystemData object for the a star system by name or address.
@@ -24,10 +24,8 @@ namespace SrvSurvey.game
         {
             Game.log($"Loading SystemData for: '{systemName}' ({systemAddress})");
             // use cache entry if present
-            if (cache.ContainsKey(systemAddress))
-            {
-                return cache[systemAddress];
-            }
+            if (cache.TryGetValue(systemAddress, out SystemData? value))
+                return value;
 
             // try finding files by systemAddress first, then system name
             var folder = Path.Combine(Program.dataFolder, "systems", fid);
@@ -122,7 +120,7 @@ namespace SrvSurvey.game
             lock (cache)
             {
                 // load from file or cache
-                fid = fid ?? Game.activeGame!.fid!;
+                fid ??= Game.activeGame!.fid!;
                 var data = Load(entry.StarSystem, entry.SystemAddress, fid);
 
                 if (data == null)
@@ -166,7 +164,7 @@ namespace SrvSurvey.game
 
         public static SystemData From(EdsmSystem edsmBodies, double[] starPos, string fid, string cmdrName)
         {
-            fid = fid ?? Game.activeGame!.fid!;
+            fid ??= Game.activeGame!.fid!;
 
             var data = new SystemData()
             {
@@ -184,7 +182,7 @@ namespace SrvSurvey.game
 
         public static SystemData From(ApiSystemDump.System dump, string fid, string cmdrName)
         {
-            fid = fid ?? Game.activeGame!.fid!;
+            fid ??= Game.activeGame!.fid!;
 
             var data = new SystemData()
             {
@@ -327,7 +325,7 @@ namespace SrvSurvey.game
                         var match = systemBody.bioScans?.FirstOrDefault(_ => _.species == bioScan.species && _.location.Lat == bioScan.location.Lat && _.location.Long == bioScan.location.Long);
                         if (match == null)
                         {
-                            if (systemBody.bioScans == null) systemBody.bioScans = new List<BioScan>();
+                            systemBody.bioScans ??= new List<BioScan>();
                             systemBody.bioScans.Add(bioScan);
                         }
                         else if (match.entryId == 0 || match.entryId.ToString().EndsWith("00"))
@@ -341,7 +339,7 @@ namespace SrvSurvey.game
                 // migrate any organisms
                 if (bodyData.organisms?.Count > 0)
                 {
-                    if (systemBody.organisms == null) systemBody.organisms = new List<SystemOrganism>();
+                    systemBody.organisms ??= new List<SystemOrganism>();
 
                     foreach (var bodyOrg in bodyData.organisms.Values)
                     {
@@ -420,7 +418,7 @@ namespace SrvSurvey.game
                         if (!systemOrg.analyzed && bodyOrg.analyzed) systemOrg.analyzed = true;
 
                         if (systemOrg.genusLocalized == null && bodyOrg.genusLocalized != null) systemOrg.genusLocalized = bodyOrg.genusLocalized;
-                        if (systemOrg.genusLocalized == null) systemOrg.genusLocalized = bioMatch.genus.englishName;
+                        systemOrg.genusLocalized ??= bioMatch.genus.englishName;
                         if (systemOrg.species == null && bodyOrg.species != null) systemOrg.species = bodyOrg.species;
                         if (systemOrg.speciesLocalized == null && bodyOrg.speciesLocalized != null) systemOrg.speciesLocalized = bodyOrg.speciesLocalized;
                         if (systemOrg.variant == null && bodyOrg.variant != null) systemOrg.variant = bodyOrg.variant;
@@ -506,7 +504,7 @@ namespace SrvSurvey.game
         public bool dssAllBodies;
 
         /// <summary> A list of all bodies detected in this system </summary>
-        public List<SystemBody> bodies = new List<SystemBody>();
+        public List<SystemBody> bodies = new();
 
         /// <summary> A list of known stations in this system. (Just Odyssey settlements for now) </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
@@ -541,7 +539,7 @@ namespace SrvSurvey.game
             }
         }
 
-        public static List<string> journalEventTypes = new List<string>()
+        public static List<string> journalEventTypes = new()
         {
             nameof(FSSDiscoveryScan),
             nameof(FSSAllBodiesFound),
@@ -561,6 +559,8 @@ namespace SrvSurvey.game
 
         public void Journals_onJournalEntry(IJournalEntry entry) { this.onJournalEntry((dynamic)entry); }
 
+        [SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "It is necessary")]
+        [SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "It is necessary")]
         private void onJournalEntry(JournalEntry entry) { /* ignore */ }
 
         public void onJournalEntry(FSSDiscoveryScan entry)
@@ -633,7 +633,7 @@ namespace SrvSurvey.game
                     if (ring == null)
                     {
                         Game.log($"add ring '{newRing.Name}' to '{body.name}' ({body.id})");
-                        if (body.rings == null) body.rings = new List<SystemRing>();
+                        body.rings ??= new List<SystemRing>();
                         body.rings.Add(new SystemRing()
                         {
                             name = newRing.Name,
@@ -794,7 +794,7 @@ namespace SrvSurvey.game
             // DSS complete
             if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! Expected: `{this.address}`, got: {entry.SystemAddress}"); return; }
             var body = this.findOrCreate(entry.BodyName, entry.BodyID);
-            if (body.organisms == null) body.organisms = new List<SystemOrganism>();
+            body.organisms ??= new List<SystemOrganism>();
 
             var bioSignals = entry.Signals.FirstOrDefault(_ => _.Type == "$SAA_SignalType_Biological;");
             if (bioSignals != null)
@@ -874,7 +874,7 @@ namespace SrvSurvey.game
             // process geo signals
             if (entry.SubCategory == "$Codex_SubCategory_Geology_and_Anomalies;" && entry.Latitude != 0 && entry.Longitude != 0)
             {
-                if (body.geoSignals == null) body.geoSignals = new List<SystemGeoSignal>();
+                body.geoSignals ??= new List<SystemGeoSignal>();
                 // add if not already present, and not within 25m
                 var geoSignal = body.geoSignals.Find(s => s.entryId == entry.EntryID && Util.getDistance(s.location, entry, body.radius) < 25);
                 if (geoSignal == null)
@@ -926,9 +926,9 @@ namespace SrvSurvey.game
             organism.reward = match.species.reward;
             if (entry.IsNewEntry) organism.isNewEntry = true;
 
-            if (organism.species == null) organism.species = match.species.name;
-            if (organism.speciesLocalized == null) organism.speciesLocalized = match.species.englishName;
-            if (organism.genusLocalized == null) organism.genusLocalized = match.genus.englishName;
+            organism.species ??= match.species.name;
+            organism.speciesLocalized ??= match.species.englishName;
+            organism.genusLocalized ??= match.genus.englishName;
         }
 
         public void onJournalEntry(ScanOrganic entry)
@@ -1016,7 +1016,7 @@ namespace SrvSurvey.game
             if (entry.Name.StartsWith("$Ancient") && Game.activeGame != null)
             {
                 // update settlements
-                if (body.settlements == null) body.settlements = new Dictionary<string, LatLong2>();
+                body.settlements ??= new Dictionary<string, LatLong2>();
                 body.settlements[entry.Name] = entry;
 
                 var siteData = GuardianSiteData.Load(entry);
@@ -1084,7 +1084,7 @@ namespace SrvSurvey.game
                                 reward = match.species.reward,
                             };
                             Game.log($"add organism '{match.variant.name}' ({match.entryId}) from Canonn POI to '{poiBody.name}' ({poiBody.id})");
-                            if (poiBody.organisms == null) poiBody.organisms = new List<SystemOrganism>();
+                            poiBody.organisms ??= new List<SystemOrganism>();
                             poiBody.organisms.Add(organism);
                             poiBody.organisms = poiBody.organisms.OrderBy(_ => _.genusLocalized).ToList();
                             poiBody.bioSignalCount = Math.Max(poiBody.bioSignalCount, poiBody.organisms.Count);
@@ -1122,7 +1122,7 @@ namespace SrvSurvey.game
             if (newStations == null || newStations.Count == 0) return;
 
             // merge update stations with results
-            if (this.stations == null) this.stations = new List<CanonnStation>();
+            this.stations ??= new List<CanonnStation>();
 
             foreach (var newStation in newStations)
             {
@@ -1158,7 +1158,7 @@ namespace SrvSurvey.game
                 if (body.semiMajorAxis == 0) body.semiMajorAxis = Util.lsToM(entry.semiMajorAxis ?? 0); // convert from LS to M
                 if (body.absoluteMagnitude == 0) body.absoluteMagnitude = entry.absoluteMagnitude;
                 if (body.radius == 0 && entry.radius > 0) body.radius = entry.radius * 1000;
-                if (body.planetClass == null) body.planetClass = getPlanetClassFromExternal(entry.subType);
+                body.planetClass ??= getPlanetClassFromExternal(entry.subType);
                 if (body.parents == null && entry.parents != null) body.parents = entry.parents;
                 if (!string.IsNullOrEmpty(entry.terraformingState))
                     body.terraformable = entry.terraformingState == "Candidate for terraforming";
@@ -1166,7 +1166,7 @@ namespace SrvSurvey.game
                 if (body.surfaceGravity == 0 && entry.gravity > 0) body.surfaceGravity = entry.gravity.Value * 10; // gravity
                 if (body.surfaceTemperature == 0 && entry.surfaceTemperature > 0) body.surfaceTemperature = entry.surfaceTemperature;
                 if (body.surfacePressure == 0 && entry.surfacePressure > 0) body.surfacePressure = entry.surfacePressure.Value * 100_000f;
-                if (body.atmosphereType == null) body.atmosphereType = this.getAtmosphereTypeFromExternal(entry.atmosphereType);
+                body.atmosphereType ??= getAtmosphereTypeFromExternal(entry.atmosphereType);
                 if (body.atmosphere == null && body.atmosphereType == "None") body.atmosphere = "";
                 if (body.atmosphere == null && entry.atmosphereType != null) body.atmosphere = entry.atmosphereType;
                 if (body.atmosphereComposition == null && entry.atmosphereComposition != null)
@@ -1192,7 +1192,7 @@ namespace SrvSurvey.game
                         if (ring == null)
                         {
                             Game.log($"add ring '{newRing.name}' from EDSM to '{body.name}' ({body.id})");
-                            if (body.rings == null) body.rings = new List<SystemRing>();
+                            body.rings ??= new List<SystemRing>();
                             body.rings.Add(new SystemRing()
                             {
                                 name = newRing.name,
@@ -1204,7 +1204,7 @@ namespace SrvSurvey.game
             }
         }
 
-        private string? getPlanetClassFromExternal(string? externalPlanetClass)
+        private static string? getPlanetClassFromExternal(string? externalPlanetClass)
         {
             if (externalPlanetClass == "Metal-rich body")
                 return "Metal rich body";
@@ -1212,7 +1212,7 @@ namespace SrvSurvey.game
                 return externalPlanetClass;
         }
 
-        private string getAtmosphereTypeFromExternal(string? externalAtmosphereType)
+        private static string getAtmosphereTypeFromExternal(string? externalAtmosphereType)
         {
             if (externalAtmosphereType == "No atmosphere" || externalAtmosphereType == null)
             {
@@ -1277,7 +1277,7 @@ namespace SrvSurvey.game
                 if (body.surfaceGravity == 0 && entry.gravity > 0) body.surfaceGravity = entry.gravity.Value * 10; // gravity
                 if (body.surfaceTemperature == 0 && entry.surfaceTemperature > 0) body.surfaceTemperature = entry.surfaceTemperature.Value;
                 if (body.surfacePressure == 0 && entry.surfacePressure > 0) body.surfacePressure = entry.surfacePressure.Value * 100_000f;
-                if (body.atmosphereType == null) body.atmosphereType = this.getAtmosphereTypeFromExternal(entry.atmosphereType);
+                if (body.atmosphereType == null) body.atmosphereType = getAtmosphereTypeFromExternal(entry.atmosphereType);
                 if (body.atmosphere == null && body.atmosphereType == "None") body.atmosphere = "";
                 if (body.atmosphere == null && entry.atmosphereType != null) body.atmosphere = entry.atmosphereType;
                 if (body.atmosphereComposition == null && entry.atmosphereComposition != null)
