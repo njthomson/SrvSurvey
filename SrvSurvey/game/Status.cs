@@ -171,11 +171,11 @@ namespace SrvSurvey
         [JsonIgnore]
         public bool OnFootOnPlanet { get => (this.Flags2 & StatusFlags2.OnFootOnPlanet) > 0; }
         [JsonIgnore]
-        public bool OnFootInside { get => (this.Flags2 & (StatusFlags2.OnFoot & StatusFlags2.BreathableAtmosphere)) > 0; }
+        public bool OnFootInside { get => (this.Flags2 & StatusFlags2.OnFoot) > 0 && (this.Flags2 & StatusFlags2.BreathableAtmosphere) > 0; }
         [JsonIgnore]
         public bool OnFootOutside { get => (this.Flags2 & StatusFlags2.OnFootExterior) > 0; }
         [JsonIgnore]
-        public bool OnFootSocial { get => (this.Flags2 & (StatusFlags2.OnFoot & StatusFlags2.OnFootSocialSpace)) > 0; }
+        public bool OnFootSocial { get => (this.Flags2 & StatusFlags2.OnFoot) > 0 && (this.Flags2 & StatusFlags2.OnFootSocialSpace) > 0; }
         [JsonIgnore]
         public bool OnFootInStation { get => (this.Flags2 & (StatusFlags2.OnFootInHangar | StatusFlags2.OnFootInStation | StatusFlags2.OnFootSocialSpace)) > 0; }
         [JsonIgnore]

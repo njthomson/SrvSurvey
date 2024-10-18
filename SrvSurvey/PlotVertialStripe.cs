@@ -78,7 +78,7 @@ namespace SrvSurvey
         {
             base.OnActivated(e);
 
-            if (!this.showing)
+            if (!this.showing || Elite.focusElite)
             {
                 Elite.setFocusED();
             }
