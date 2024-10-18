@@ -996,14 +996,14 @@ namespace SrvSurvey
         private void Watcher_Changed(object sender, FileSystemEventArgs e)
         {
             if (this.IsDisposed) return;
-            Program.crashGuard(() =>
+            Program.crashGuard(true, () =>
             {
                 Game.log("Reloading watched site template");
                 Application.DoEvents(); Application.DoEvents(); Application.DoEvents(); Application.DoEvents();
                 GuardianSiteTemplate.Import(true);
                 this.loadSiteTemplate();
                 this.Invalidate();
-            }, true);
+            });
         }
 
         protected override void onPaintPlotter(PaintEventArgs e)

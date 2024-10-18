@@ -1,5 +1,4 @@
-﻿using SrvSurvey.game;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 namespace SrvSurvey
@@ -8,12 +7,15 @@ namespace SrvSurvey
     {
         const int WH_KEYBOARD_LL = 13;
 
-        private HookHandlerDelegate hookProcessor;
-        private IntPtr hookId;
+        public event KeyEventHandler KeyUp;
+
+        private readonly HookHandlerDelegate hookProcessor;
+        private readonly IntPtr hookId;
+        private bool ctrlPressed = false;
+        private bool shiftPressed = false;
+        private bool altPressed = false;
 
         internal delegate IntPtr HookHandlerDelegate(int nCode, IntPtr wParam, ref KBDLLHOOKSTRUCT lParam);
-
-        public event KeyEventHandler KeyUp;
 
         public KeyboardHook()
         {
@@ -37,49 +39,59 @@ namespace SrvSurvey
             NativeMethods.UnhookWindowsHookEx(hookId);
         }
 
-        private bool ctrlPressed = false;
-        private bool shiftPressed = false;
-        private bool altPressed = false;
-
         private IntPtr HookCallback(int nCode, IntPtr wParam, ref KBDLLHOOKSTRUCT lParam)
         {
-
             if (Elite.focusElite)
             {
                 var keyUp = lParam.flags >= 128;
                 var keys = (Keys)lParam.vkCode;
 
+                // track Alt, Control and Shift keys going up and down
                 if (keys == Keys.LControlKey || keys == Keys.RControlKey)
                     this.ctrlPressed = !keyUp;
-                if (keys == Keys.LShiftKey || keys == Keys.RShiftKey)
+                else if (keys == Keys.LShiftKey || keys == Keys.RShiftKey)
                     this.shiftPressed = !keyUp;
-                if (keys == Keys.LMenu || keys == Keys.RMenu)
+                else if (keys == Keys.LMenu || keys == Keys.RMenu)
                     this.altPressed = !keyUp;
                 else if (keyUp)
                 {
-                    if (shiftPressed) keys = keys | Keys.Shift;
-                    if (ctrlPressed) keys = keys | Keys.Control;
-                    if (altPressed) keys = keys | Keys.Alt;
+                    // if it's any other key coming up: invoke our standard processor and maybe the event
 
-                    var e = new KeyEventArgs(keys);
+                    var chord = (altPressed ? "ALT " : "") +
+                         (ctrlPressed ? "CTRL " : "") +
+                         (shiftPressed ? "SHIFT " : "") +
+                         keyToString(keys);
+                    KeyChords.processHook(chord);
+
                     if (this.KeyUp != null)
-                        this.KeyUp(null, e);
-
-                    //var tt = (ctrlPressed ? "CTRL " : "") +
-                    //     (shiftPressed ? "SHIFT " : "") +
-                    //     keys.ToString();
-                    //Game.log($"!! " + tt);
+                    {
+                        if (altPressed) keys |= Keys.Alt;
+                        if (ctrlPressed) keys |= Keys.Control;
+                        if (shiftPressed) keys |= Keys.Shift;
+                        this.KeyUp(null, new KeyEventArgs(keys));
+                    }
                 }
             }
-            //Game.log($">> {lParam.vkCode} / {lParam.flags} / {lParam.scanCode} | {ctrlPressed} | {shiftPressed} | {altPressed}");
-
             //Pass key to next application
             return NativeMethods.CallNextHookEx(hookId, nCode, wParam, ref lParam);
         }
 
+        private string keyToString(Keys key)
+        {
+            switch (key)
+            {
+                case Keys.OemMinus: return "-";
+                case Keys.Oemplus: return "+";
+
+                default: return key.ToString();
+            }
+        }
+
+        #region native methods
+
         private class NativeMethods
         {
-            [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+            [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
             public static extern IntPtr GetModuleHandle(string lpModuleName);
 
             [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
@@ -99,8 +111,10 @@ namespace SrvSurvey
             public int vkCode;
             public int scanCode;
             public int flags;
-            int time;
-            int dwExtraInfo;
+            //int time;
+            //int dwExtraInfo;
         }
+
+        #endregion
     }
 }

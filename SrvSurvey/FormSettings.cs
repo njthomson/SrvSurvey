@@ -538,5 +538,19 @@ namespace SrvSurvey
                 if (ctrl != senderCheckbox)
                     ctrl.Enabled = senderCheckbox.Checked;
         }
+
+        private void numHumanSitePlotterSize_ValueChanged(object sender, EventArgs e)
+        {
+            // live adjust plotter size if it exists
+            var plotter = Program.getPlotter<PlotHumanSite>();
+            if(plotter != null)
+            {
+                plotter.Width = (int)numHumanSitePlotterWidth.Value;
+                plotter.Height = (int)numHumanSitePlotterHeight.Value;
+                plotter.BackgroundImage = GameGraphics.getBackgroundForForm(plotter);
+                plotter.reposition(Elite.getWindowRect());
+                plotter.Invalidate();
+            }
+        }
     }
 }

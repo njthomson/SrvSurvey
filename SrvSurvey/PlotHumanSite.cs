@@ -10,7 +10,11 @@ namespace SrvSurvey
 {
     internal class PlotHumanSite : PlotBaseSite, PlotterForm
     {
+        /// <summary> If zoom levels should change automatically </summary>
         public static bool autoZoom = true;
+        /// <summary> If the map should be huge and take over half the screen (game rect) </summary>
+        public static bool beHuge = false;
+
         /// <summary>Distance of outer circle, outside which ships and shuttles can be ordered</summary>
         public static float limitDist = 500;
         /// <summary>Distance from settlement origin to begin showing arrow pointing back to settlement origin</summary>
@@ -85,8 +89,21 @@ namespace SrvSurvey
 
         protected override void OnLoad(EventArgs e)
         {
-            this.Width = scaled(500);
-            this.Height = scaled(600);
+            if (PlotHumanSite.beHuge)
+            {
+                // make plotter completely fill left half of the game window
+                var er = Elite.getWindowRect();
+                var maxWidth = er.Width * 0.4f;
+                var maxHeight = er.Height * 0.9f;
+
+                this.Width = (int)scaled(maxWidth);
+                this.Height = (int)scaled(maxHeight);
+            }
+            else
+            {
+                this.Width = scaled(Game.settings.plotHumanSiteWidth);
+                this.Height = scaled(Game.settings.plotHumanSiteHeight);
+            }
             base.OnLoad(e);
 
             this.initializeOnLoad();
@@ -154,38 +171,72 @@ namespace SrvSurvey
             this.setZoom(game.mode);
         }
 
-        private void setZoom(GameMode mode)
+        public void setZoom(GameMode mode)
         {
-            if (autoZoom)
+            if (PlotHumanSite.autoZoom)
             {
-                if (game.status.SelectedWeapon == "$humanoid_companalyser_name;")
-                {
-                    // zoom in LOTS if inside a building or using the Profile analyzer tool
-                    this.scale = Game.settings.humanSiteZoomTool;
-                }
-                else if (game.status.OnFootInside)
-                {
-                    // zoom in LOTS if inside a building or using the Profile analyzer tool
-                    this.scale = Game.settings.humanSiteZoomInside;
-                }
-                else if (mode == GameMode.OnFoot || game.status.OnFootOutside)
-                {
-                    // zoom in SOME if on foot outside
-                    this.scale = Game.settings.humanSiteZoomFoot;
-                }
-                else if (mode == GameMode.InSrv)
-                {
-                    // zoom out if in some vehicle
-                    this.scale = Game.settings.humanSiteZoomSRV;
-                }
-                else if (mode == GameMode.Landed || mode == GameMode.Docked || mode == GameMode.Flying)
-                {
-                    // zoom out if in some vehicle
-                    this.scale = Game.settings.humanSiteZoomShip;
-                }
+                var newZoom = getAutoZoomLevel(mode);
+                if (newZoom != 0)
+                    this.scale = newZoom;
             }
 
             this.Invalidate();
+        }
+
+        private float getAutoZoomLevel(GameMode mode)
+        {
+            if (game.status.SelectedWeapon == "$humanoid_companalyser_name;")
+            {
+                // zoom in LOTS if inside a building or using the Profile analyzer tool
+                return Game.settings.humanSiteZoomTool;
+            }
+            else if (game.status.OnFootInside)
+            {
+                // zoom in LOTS if inside a building or using the Profile analyzer tool
+                return Game.settings.humanSiteZoomInside;
+            }
+            else if (mode == GameMode.OnFoot || game.status.OnFootOutside)
+            {
+                // zoom in SOME if on foot outside
+                return Game.settings.humanSiteZoomFoot;
+            }
+            else if (mode == GameMode.InSrv)
+            {
+                // zoom out if in some vehicle
+                return Game.settings.humanSiteZoomSRV;
+            }
+            else if (mode == GameMode.Landed || mode == GameMode.Docked || mode == GameMode.Flying)
+            {
+                // zoom out if in some vehicle
+                return Game.settings.humanSiteZoomShip;
+            }
+
+            return 0;
+        }
+
+        public void adjustZoom(bool zoomIn)
+        {
+            Game.log($"PlotHumanSite adjustZoom: zoomIn: {zoomIn}");
+            const float delta = 0.5f;
+            var newZoom = zoomIn ? this.scale + delta : this.scale - delta;
+
+            if (newZoom < 0.5f || newZoom > 15) return;
+
+            // enable/disable auto-zooming if the new zoom level matches
+            var autoZoomLevel = this.getAutoZoomLevel(game.mode);
+            if (autoZoomLevel != 0)
+                PlotHumanSite.autoZoom = newZoom == autoZoomLevel;
+
+            this.scale = newZoom;
+            this.Invalidate();
+        }
+
+        public static void toggleHugeness()
+        {
+            Game.log($"Toggle PlotHumanSite hugeness => {!PlotHumanSite.beHuge}");
+            PlotHumanSite.beHuge = !PlotHumanSite.beHuge;
+            Program.closePlotter<PlotHumanSite>();
+            Program.showPlotter<PlotHumanSite>();
         }
 
         private void loadMapImage()
@@ -379,12 +430,12 @@ namespace SrvSurvey
             var msg = entry.Message.ToLowerInvariant().Trim();
             if (msg.StartsWith("z "))
             {
-                autoZoom = false;
+                PlotHumanSite.autoZoom = false;
                 // (base class will handle setting the zoom level)
             }
             else if (msg == "z")
             {
-                autoZoom = true;
+                PlotHumanSite.autoZoom = true;
                 this.setZoom(game.mode);
             }
 
@@ -499,18 +550,27 @@ namespace SrvSurvey
         {
             // first, draw headers and footers (before we start clipping)
 
-            // header - right
-            var zoomText = $"Zoom: {this.scale.ToString("N1")}";
-            if (autoZoom) zoomText += " (auto)";
-            drawTextAt2(this.ClientSize.Width - 8, zoomText, GameColors.OrangeDim, GameColors.fontSmall, true);
-
             // header - left
             var headerTxt = $"{station.name} - {station.economy} ";
             headerTxt += station.subType == 0 ? "?" : $"#{station.subType}";
             if (station.government == "$government_Anarchy;")
                 headerTxt = "🏴‍☠️ " + headerTxt;
 
-            drawTextAt2(eight, headerTxt);
+            var headerLeftSz = drawTextAt2(eight, headerTxt);
+
+            // header - right (if there's enough space)
+            if (headerLeftSz.Width < this.Width - hundred)
+            {
+                var zoomText = $"Zoom: {this.scale.ToString("N1")}";
+                if (PlotHumanSite.autoZoom) zoomText += " (auto)";
+                drawTextAt2(this.ClientSize.Width - 8, zoomText, GameColors.OrangeDim, GameColors.fontSmall, true);
+            }
+            else if (headerLeftSz.Width < this.Width - thirty)
+            {
+                var zoomText = $"z:{this.scale.ToString("N1")}";
+                drawTextAt2(this.ClientSize.Width - 8, zoomText, GameColors.OrangeDim, GameColors.fontSmall, true);
+            }
+
             newLine(+ten, true);
 
             var distToSiteOrigin = Util.getDistance(siteLocation, Status.here, this.radius);
@@ -588,7 +648,8 @@ namespace SrvSurvey
             this.drawLandingPads();
             this.drawSecureDoors();
             this.drawNamedPOI(adjustedHeading);
-            this.drawDataTerminals(adjustedHeading);
+            if (Game.settings.humanSiteShow_DataTerminal)
+                this.drawDataTerminals(adjustedHeading);
 
             // draw/fill polygon for building being assembled in the editor
             if (this.builder != null)
@@ -739,6 +800,9 @@ namespace SrvSurvey
 
             foreach (var poi in station.template.namedPoi)
             {
+                if (poi.name == "Medkit" && !Game.settings.humanSiteShow_Medkit) continue;
+                if (poi.name == "Battery" && !Game.settings.humanSiteShow_Battery) continue;
+
                 adjust(poi.offset, adjustedHeading, () =>
                 {
                     var x = 0f;

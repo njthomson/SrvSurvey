@@ -101,7 +101,12 @@ namespace SrvSurvey
             FormErrorSubmit.Show(e.Exception);
         }
 
-        public static void crashGuard(Action func, bool beginInvoke = false)
+        public static void crashGuard(Action func)
+        {
+            crashGuard(false, func);
+        }
+
+        public static void crashGuard(bool beginInvoke, Action func)
         {
             try
             {

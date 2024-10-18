@@ -520,7 +520,7 @@ namespace SrvSurvey
             var lastChangeTime = DateTime.Now;
             watcher.Changed += new FileSystemEventHandler((object sender, FileSystemEventArgs e) =>
             {
-                Program.crashGuard(() =>
+                Program.crashGuard(true, () =>
                 {
                     if (!this.IsHandleCreated || this.IsDisposed) return;
 
@@ -537,7 +537,7 @@ namespace SrvSurvey
                     cmdrCodex.reload();
                     this.calcCompletions();
                     lastChangeTime = DateTime.Now;
-                }, true);
+                });
             });
 
             Game.log($"Watching: {watcher.Filter}");

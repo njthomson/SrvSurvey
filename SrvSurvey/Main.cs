@@ -23,7 +23,7 @@ namespace SrvSurvey
         private bool gameHadFocus;
 
         public static Main form;
-        //private KeyboardHook hook;
+        private KeyboardHook hook;
 
         public Main()
         {
@@ -261,11 +261,8 @@ namespace SrvSurvey
 
                         this.timer1.Start();
 
-                        //if (Game.settings.keyhook_TEST)
-                        //{
-                        //    this.hook = new KeyboardHook();
-                        //    this.hook.KeyUp += Hook_KeyUp;
-                        //}
+                        if (Game.settings.keyhook_TEST)
+                            this.hook = new KeyboardHook();
 
                         if (Game.settings.focusGameOnStart)
                             this.BeginInvoke(() => Elite.setFocusED());
@@ -406,17 +403,17 @@ namespace SrvSurvey
         {
             if (!this.IsHandleCreated || this.IsDisposed) return;
 
-            Program.crashGuard(() =>
+            Program.crashGuard(true, () =>
             {
                 Application.DoEvents();
                 this.checkFullScreenGraphics();
-            }, true);
+            });
         }
 
         private void logFolderWatcher_Created(object sender, FileSystemEventArgs e)
         {
             if (!this.IsHandleCreated || this.IsDisposed) return;
-            Program.crashGuard(() =>
+            Program.crashGuard(true, () =>
             {
                 Game.log($"New journal file detected: {e.Name} (existing game: {this.game != null})");
                 if (this.game == null)
@@ -425,7 +422,7 @@ namespace SrvSurvey
                     this.newGame();
                 }
 
-            }, true);
+            });
         }
 
         private void removeGame()
@@ -1628,6 +1625,35 @@ namespace SrvSurvey
             }
         }
 
+        //#region key chording
+
+        //private void Hook_KeyUp(object? sender, KeyEventArgs e)
+        //{
+        //    var chord = (e.Alt ? "ALT " : "") +
+        //         (e.Control ? "CTRL " : "") +
+        //         (e.Shift ? "SHIFT " : "") +
+        //         e.KeyCode.ToString();
+        //    Game.log($"Chord:{chord} =>");
+
+        //    //// does this chord match any actions?
+        //    //foreach (var action in Game.settings.keyActions_TEST)
+        //    //{
+        //    //    if (action.Value == chord)
+        //    //    {
+        //    //        Game.log($"Chord:{chord} => {action.Key}");
+        //    //        doKeyAction(action.Key);
+        //    //    }
+        //    //    Main.form.checkTempHide.Checked = !Main.form.checkTempHide.Checked;
+
+        //    //}
+
+        //    //Game.log($"?? {e.KeyCode} {e.Control} {e.Shift} {e.Alt}");
+        //    //if (e.KeyCode == Keys.F2 && e.Alt)
+        //    //    checkTempHide.Checked = !checkTempHide.Checked;
+        //}
+
+        //#endregion
+
         private void btnSphereLimit_Click(object sender, EventArgs e)
         {
             Program.closePlotter<PlotSphericalSearch>();
@@ -1686,13 +1712,6 @@ namespace SrvSurvey
         {
             FormCodexBingo.show();
         }
-
-        //private void Hook_KeyUp(object? sender, KeyEventArgs e)
-        //{
-        //    //Game.log($"?? {e.KeyCode} {e.Control} {e.Shift} {e.Alt}");
-        //    if (e.KeyCode == Keys.F2 && e.Alt)
-        //        checkTempHide.Checked = !checkTempHide.Checked;
-        //}
     }
 }
 

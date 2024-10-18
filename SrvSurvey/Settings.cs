@@ -44,6 +44,8 @@ namespace SrvSurvey
         public bool autoShowPlotBodyInfoAtSurface = false;
 
         public bool autoShowHumanSitesTest = false;
+        public int plotHumanSiteWidth = 500;
+        public int plotHumanSiteHeight = 600;
         public float humanSiteZoomShip = 1;
         public float humanSiteZoomSRV = 1.5f;
         public float humanSiteZoomFoot = 2;
@@ -51,6 +53,9 @@ namespace SrvSurvey
         public float humanSiteZoomInside = 4;
         public bool humanSiteAutoZoomTool = true;
         public float humanSiteZoomTool = 6;
+        public bool humanSiteShow_Medkit = true;
+        public bool humanSiteShow_Battery = true;
+        public bool humanSiteShow_DataTerminal = true;
 
         /// <summary>
         /// Whether to show dots at the locations we collected mats at a human settlement.
@@ -186,6 +191,15 @@ namespace SrvSurvey
         public PlotFSS.WatchFssPixelSettings? watchFssSettings_TEST = null;
 
         public bool keyhook_TEST = false;
+
+        public Dictionary<KeyAction, string> keyActions_TEST = new()
+        {
+            { KeyAction.toggleAllVisibility, "CTRL F2" },
+            { KeyAction.mapZoomIn, "CTRL +" },
+            { KeyAction.mapZoomOut, "CTRL -" },
+            { KeyAction.mapZoomAuto, "CTRL SHIFT Back" },
+            { KeyAction.mapBeHuge, "CTRL Back" },
+        };
 
         #region loading /saving
 
