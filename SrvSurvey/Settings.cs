@@ -194,7 +194,7 @@ namespace SrvSurvey
 
         public Dictionary<KeyAction, string> keyActions_TEST = new()
         {
-            { KeyAction.toggleAllVisibility, "CTRL F2" },
+            { KeyAction.toggleAllVisibility, "ALT F2" },
             { KeyAction.mapZoomIn, "CTRL +" },
             { KeyAction.mapZoomOut, "CTRL -" },
             { KeyAction.mapZoomAuto, "CTRL SHIFT Back" },
