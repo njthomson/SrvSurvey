@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json;
 using SrvSurvey.game;
-using SrvSurvey.units;
 
 namespace SrvSurvey
 {
@@ -125,6 +124,16 @@ namespace SrvSurvey
         public long SystemAddress { get; set; }
         public double[] StarPos { get; set; }
         public string StarClass { get; set; }
+
+        public static RouteEntry from(SystemData data)
+        {
+            return new RouteEntry
+            {
+                SystemAddress = data.address,
+                StarSystem = data.name,
+                StarPos = data.starPos
+            };
+        }
     }
 
 }

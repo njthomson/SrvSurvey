@@ -11,19 +11,22 @@ namespace SrvSurvey
         static PlotGalMap()
         {
             triangle = new GraphicsPath();
-            triangle.AddPolygon(new Point[] {
-                    scaled(new Point(0, 0)),
-                    scaled(new Point(0, smaller ? 20 : 36)),
-                    scaled(new Point(smaller ? 8 : 12,  smaller ? 10 : 18)),
-                });
+            triangle.AddPolygon(new Point[]
+            {
+                scaled(new Point(0, 0)),
+                scaled(new Point(0, smaller ? 20 : 36)),
+                scaled(new Point(smaller ? 8 : 12,  smaller ? 10 : 18)),
+            });
         }
 
         private List<RouteInfo> hops = new List<RouteInfo>();
         private double distanceJumped;
+        private string destinationName;
 
         private PlotGalMap() : base()
         {
             this.Font = GameColors.fontSmall2;
+            this.destinationName = game.status.Destination.Name;
         }
 
         public override bool allow { get => PlotGalMap.allowPlotter; }
@@ -37,7 +40,12 @@ namespace SrvSurvey
             this.initializeOnLoad();
 
             this.reposition(Elite.getWindowRect(true));
-            this.onJournalEntry(new NavRoute());
+
+            // show existing route, otherwise data for current system
+            if (game.navRoute.Route.Count > 1)
+                this.onJournalEntry(new NavRoute());
+            else if (game.systemData != null)
+                this.hops.Add(RouteInfo.create(RouteEntry.from(game.systemData), true));
         }
 
         public static bool allowPlotter
@@ -45,6 +53,28 @@ namespace SrvSurvey
             get => Game.activeGame != null
                 && Game.activeGame.mode == GameMode.GalaxyMap
                 && Game.settings.useExternalData;
+        }
+
+        protected override void Status_StatusChanged(bool blink)
+        {
+            if (this.IsDisposed || game.systemData == null) return;
+            base.Status_StatusChanged(blink);
+
+            // if the destination changed ...
+            if (this.destinationName != game.status.Destination.Name)
+            {
+                this.destinationName = game.status.Destination.Name;
+
+                this.distanceJumped = 0;
+                this.hops.Clear();
+                var destintation = new RouteEntry()
+                {
+                    SystemAddress = game.status.Destination.System,
+                    StarSystem = game.status.Destination.Name
+                };
+                this.hops.Add(RouteInfo.create(destintation, true));
+                this.Invalidate();
+            }
         }
 
         protected override void onJournalEntry(NavRoute entry)
@@ -65,7 +95,10 @@ namespace SrvSurvey
                 : game.navRoute.Route[1];
 
             if (game.navRoute.Route.Count > 2 && next.StarSystem != hops.FirstOrDefault()?.systemName)
+            {
+                this.destinationName = next.StarSystem;
                 this.hops.Add(RouteInfo.create(next, false));
+            }
 
             this.distanceJumped = 0;
             for (int n = 1; n < game.navRoute.Route.Count; n++)
@@ -109,8 +142,6 @@ namespace SrvSurvey
 
         protected override void onPaintPlotter(PaintEventArgs e)
         {
-            this.resetPlotter(g);
-
             if (this.hops.Count == 0)
             {
                 // TODO: keep hidden until we have a route?
@@ -122,9 +153,11 @@ namespace SrvSurvey
                 foreach (var hop in this.hops)
                     drawSystemSummary(hop);// "Next jump", nextSystem, nextStatus, nextSubStatus);
 
-
-                this.drawTextAt(eight, $"Total jumps: {game.navRoute.Route.Count - 1} ► Distance: {this.distanceJumped.ToString("N1")} ly", GameColors.brushGameOrange);
-                this.newLine(true);
+                if (this.distanceJumped > 0)
+                {
+                    this.drawTextAt(eight, $"Total jumps: {game.navRoute.Route.Count - 1} ► Distance: {this.distanceJumped.ToString("N1")} ly", GameColors.brushGameOrange);
+                    this.newLine(true);
+                }
 
                 this.drawTextAt(eight, $"Data from: edsm.net + spansh.co.uk", GameColors.brushGameOrangeDim);
                 this.newLine(true);
@@ -135,10 +168,16 @@ namespace SrvSurvey
 
         private void drawSystemSummary(RouteInfo hop)
         {
-            if (hop.destination)
-                this.drawTextAt(eight, $"Destination: ");
-            else
-                this.drawTextAt(eight, $"Next jump:");
+            var header = "Next jump:";
+
+            if (hop.entry.SystemAddress == game.systemData?.address)
+                header = "Current:";
+            else if (hops.Count == 1)
+                header = "Selected:";
+            else if (hop.destination)
+                header = "Destination:";
+
+            this.drawTextAt(eight, header);
 
             // line 1: system name
             this.drawTextAt(eightSix, $"► {hop.systemName}", GameColors.fontSmall2Bold);
@@ -268,8 +307,9 @@ namespace SrvSurvey
                 var spanshResult = response.Result;
                 this.sumGenus = spanshResult.bodies.Sum(_ => _.signals?.genuses?.Count ?? 0);
 
-                foreach(var sta in spanshResult.stations)
+                foreach (var sta in spanshResult.stations)
                 {
+                    if (sta.services == null || sta.services.Count == 0) continue;
                     if (sta.services.Contains("Material Trader"))
                     {
                         if (this.special == null) this.special = new Dictionary<string, List<string>>();

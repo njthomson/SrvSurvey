@@ -80,6 +80,7 @@ namespace SrvSurvey
         {
             switch (key)
             {
+                case Keys.Back: return "Backspace";
                 case Keys.OemMinus: return "-";
                 case Keys.Oemplus: return "+";
 
