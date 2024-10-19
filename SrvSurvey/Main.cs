@@ -27,6 +27,7 @@ namespace SrvSurvey
 
         public Main()
         {
+            Game.log("Starting main form...");
             form = this;
             InitializeComponent();
             lblNotInstalled.BringToFront();

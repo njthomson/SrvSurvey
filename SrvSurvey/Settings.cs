@@ -202,7 +202,7 @@ namespace SrvSurvey
             { KeyAction.showJumpInfo, "ALT D" },
         };
 
-        #region loading /saving
+        #region loading / saving
 
         static readonly string settingsPath = Path.Combine(Program.dataFolder, "settings.json");
 
