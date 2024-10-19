@@ -225,6 +225,8 @@ namespace SrvSurvey
                     {
                         Game.log($"Failed to read settings: {ex}");
                         Game.log(json);
+                        MessageBox.Show("Failed to load settings. Please share the following and include the logs", "SrvSurvey", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        FormErrorSubmit.Show(ex);
                     }
                 }
             }
