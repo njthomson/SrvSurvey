@@ -262,7 +262,7 @@ namespace SrvSurvey
 
                         this.timer1.Start();
 
-                        if (Game.settings.keyhook_TEST)
+                        if (Game.settings.keyhook_TEST && Game.settings.keyActions_TEST != null)
                             this.hook = new KeyboardHook();
 
                         if (Game.settings.focusGameOnStart)

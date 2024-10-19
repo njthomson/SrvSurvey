@@ -192,7 +192,7 @@ namespace SrvSurvey
 
         public bool keyhook_TEST = false;
 
-        public Dictionary<KeyAction, string> keyActions_TEST = new()
+        public Dictionary<KeyAction, string>? keyActions_TEST = new()
         {
             { KeyAction.toggleAllVisibility, "ALT F2" },
             { KeyAction.mapZoomIn, "CTRL +" },

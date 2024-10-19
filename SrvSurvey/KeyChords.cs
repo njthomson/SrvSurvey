@@ -11,6 +11,8 @@ namespace SrvSurvey
 
         public static void processHook(string chord)
         {
+            if (Game.settings.keyActions_TEST == null) return;
+
             // do the action async, so we're not wasting synchronous time during the keyboard hook
             Program.control.BeginInvoke(() => Program.crashGuard(() =>
             {
