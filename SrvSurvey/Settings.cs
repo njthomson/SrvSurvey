@@ -197,8 +197,9 @@ namespace SrvSurvey
             { KeyAction.toggleAllVisibility, "ALT F2" },
             { KeyAction.mapZoomIn, "CTRL +" },
             { KeyAction.mapZoomOut, "CTRL -" },
-            { KeyAction.mapZoomAuto, "CTRL SHIFT Back" },
-            { KeyAction.mapBeHuge, "CTRL Back" },
+            { KeyAction.mapZoomAuto, "CTRL SHIFT Backspace" },
+            { KeyAction.mapBeHuge, "CTRL Backspace" },
+            { KeyAction.showJumpInfo, "ALT D" },
         };
 
         #region loading /saving

@@ -1,6 +1,7 @@
 ﻿using DecimalMath;
 using SrvSurvey.game;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing.Drawing2D;
 
 namespace SrvSurvey
@@ -109,7 +110,29 @@ namespace SrvSurvey
             if (game?.status != null)
                 game.status.StatusChanged += Status_StatusChanged;
 
+            prepTowerMenus(toolTowerTop);
+            prepTowerMenus(toolTowerMiddle);
+            prepTowerMenus(toolTowerBottom);
             Util.applyTheme(this);
+        }
+
+        private void prepTowerMenus(ToolStripMenuItem menuItem)
+        {
+            menuItem.DropDownItems.Clear();
+            foreach(var cmp in Enum.GetValues<GComponent>())
+            {
+                var subItem = new ToolStripMenuItem()
+                {
+                    Name = cmp.ToString(),
+                    Text = Components.to(cmp),
+                    Tag = cmp,
+                };
+                subItem.Click += SubItem_Click;
+                menuItem.DropDownItems.Add(subItem);
+            }
+
+            foreach(ToolStripMenuItem subItem in menuItem.DropDownItems)
+                subItem.Click += SubItem_Click;
         }
 
         private void Status_StatusChanged(bool blink)
@@ -523,7 +546,34 @@ namespace SrvSurvey
 
             mnuEmpty.Visible = couldBeEmpty;
 
+            // prep component items
+            var isTower = Debugger.IsAttached && this.nearestPoi.type == POIType.component;
+            toolStripTower.Visible = isTower;
+            toolTowers.Visible = isTower;
+            toolTowerTop.Visible = isTower;
+            toolTowerMiddle.Visible = isTower;
+            toolTowerBottom.Visible = isTower;
+
+            prepComponentSubItems(toolTowerTop, 0);
+            prepComponentSubItems(toolTowerMiddle, 1);
+            prepComponentSubItems(toolTowerBottom, 2);
+
             mapContext.Show(this.map, e.X, e.Y - (mnuName.Height * 2));
+        }
+
+        private void prepComponentSubItems(ToolStripMenuItem subItem, int idx)
+        {
+            var cmp = siteData?.components?.GetValueOrDefault(nearestPoi.name)?.items[idx] ?? GComponent.unknown;
+
+            foreach (ToolStripMenuItem child in subItem.DropDownItems)
+                child.Checked = (GComponent)child.Tag == cmp;
+
+            if (idx == 0)
+                subItem.Text = $"Top: {Components.to(cmp)}";
+            else if (idx == 1)
+                subItem.Text = $"Middle: {Components.to(cmp)}";
+            else if (idx == 2)
+                subItem.Text = $"Bottom: {Components.to(cmp)}";
         }
 
         #region image dev - no longer needed?
@@ -1015,6 +1065,44 @@ namespace SrvSurvey
 
             if (this.siteData.notes != null && txtNotes.Text != this.siteData.notes)
                 txtNotes.Text = this.siteData.notes;
+        }
+
+        private void SubItem_Click(object? sender, EventArgs e)
+        {
+            var subItem = sender as ToolStripMenuItem;
+            if (subItem == null || siteData == null || nearestPoi.type != POIType.component) return;
+
+            siteData.components ??= new();
+
+            if (!siteData.components.ContainsKey(nearestPoi.name))
+                siteData.components[nearestPoi.name] = new Components() { name = nearestPoi.name };
+
+            var idx = 0;
+            if (subItem.OwnerItem.Name.EndsWith("Middle"))
+                idx = 1;
+            else if (subItem.OwnerItem.Name.EndsWith("Bottom"))
+                idx = 2;
+
+            var cmp = (GComponent)subItem.Tag;
+            siteData.components[nearestPoi.name].items[idx] = cmp;
+
+            // TODO: just call prepComponentSubItems ??
+
+            if (idx == 0)
+                subItem.OwnerItem.Text = $"Top: {Components.to(cmp)}";
+            else if (idx == 1)
+                subItem.OwnerItem.Text = $"Middle: {Components.to(cmp)}";
+            else if (idx == 2)
+                subItem.OwnerItem.Text = $"Bottom: {Components.to(cmp)}";
+
+            foreach (ToolStripMenuItem sibling in subItem.GetCurrentParent().Items)
+                sibling.Checked = false;
+
+            subItem.Checked = true;
+
+            Program.getPlotter<PlotGuardians>()?.Invalidate();
+            siteData.Save();
+            Elite.setFocusED();
         }
 
         private void setPoiStatus(string name, SitePoiStatus newStatus)

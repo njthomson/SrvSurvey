@@ -245,7 +245,8 @@ namespace SrvSurvey.game
         public Dictionary<string, int> relicHeadings = new Dictionary<string, int>();
         public Dictionary<string, ActiveObelisk> activeObelisks = new Dictionary<string, ActiveObelisk>();
         public HashSet<char> obeliskGroups = new HashSet<char>();
-
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public Dictionary<string, Components>? components;
         public List<SitePOI>? rawPoi;
 
         #endregion
@@ -821,6 +822,18 @@ namespace SrvSurvey.game
                 if (rawPoi != null)
                     data.rawPoi = rawPoi.ToObject<List<SitePOI>>()!;
 
+                var rawComponents = obj["components"] as JArray;
+                if (rawComponents != null && rawComponents.Count > 0)
+                {
+                    var components = rawComponents.ToObject<List<Components>>();
+                    if (components?.Count > 0)
+                    {
+                        data.components ??= new();
+                        foreach (var cmp in components)
+                            data.components.Add(cmp.name, cmp);
+                    }
+                }
+
                 //Game.log($"Reading: {data.bodyName} #{data.index}   ** ** ** ** {data.poiStatus.Count}");
                 return data;
             }
@@ -888,6 +901,12 @@ namespace SrvSurvey.game
                 {
                     var rawPoi = JToken.FromObject(data.rawPoi);
                     obj.Add("rawPoi", rawPoi);
+                }
+
+                if (data.components?.Count > 0)
+                {
+                    var rawComponents = JToken.FromObject(data.components.Values);
+                    obj.Add("components", rawComponents);
                 }
 
                 //Game.log($"Writing: {data.bodyName} #{data.index}   ** ** ** ** {data.poiStatus.Count}");
@@ -1330,6 +1349,88 @@ namespace SrvSurvey.game
         public int progress;
         public bool isComplete;
         public string percent { get => this.progress.ToString("0") + "%"; }
+    }
+
+    internal enum GComponent
+    {
+        unknown,
+        cell, //PowerCell,
+        conduit, // PowerConduit,
+        weapon, // SentinelWeaponParts,
+        tech, // TechnologyComponent,
+        wreck, // WreckageComponents,
+    }
+
+    [JsonConverter(typeof(Components.JsonConverter))]
+    internal class Components
+    {
+        public string name;
+        public GComponent[] items = new GComponent[3];
+
+        public override string ToString()
+        {
+            return $"{name}," + string.Join(',', items);
+        }
+
+        public override bool Equals(object? obj)
+        {
+            return this.ToString() == obj?.ToString();
+        }
+
+        public override int GetHashCode()
+        {
+            return this.ToString().GetHashCode();
+        }
+
+        class JsonConverter : Newtonsoft.Json.JsonConverter
+        {
+            public override bool CanConvert(Type objectType)
+            {
+                return false;
+            }
+
+            public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
+            {
+                var txt = serializer.Deserialize<string>(reader);
+                if (string.IsNullOrEmpty(txt))
+                    throw new Exception($"Unexpected value: {txt}");
+
+                var parts = txt.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+                var tower = new Components()
+                {
+                    name = parts[0],
+                    items = parts[1..].Select(t => Enum.Parse<GComponent>(t)).ToArray(),
+                };
+
+                return tower;
+            }
+
+            public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
+            {
+                var tower = value as Components;
+
+                if (tower == null)
+                    throw new Exception($"Unexpected value: {value?.GetType().Name}");
+
+                // create a single string
+                var txt = tower.ToString();
+                writer.WriteValue(txt);
+            }
+        }
+
+        public static string to(GComponent cmp)
+        {
+            switch (cmp)
+            {
+                case GComponent.unknown: return "Unknown";
+                case GComponent.cell: return "Power Cell";
+                case GComponent.conduit: return "Power Conduit";
+                case GComponent.weapon: return "Sentinel WeaponParts";
+                case GComponent.tech: return "Technology Component";
+                case GComponent.wreck: return "Wreckage Components";
+                default: throw new Exception($"Unexpected component type: {cmp}");
+            }
+        }
     }
 }
 

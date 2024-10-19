@@ -26,7 +26,7 @@ namespace SrvSurvey
         private PlotGalMap() : base()
         {
             this.Font = GameColors.fontSmall2;
-            this.destinationName = game.status.Destination.Name;
+            this.destinationName = game.status.Destination?.Name;
         }
 
         public override bool allow { get => PlotGalMap.allowPlotter; }
@@ -61,7 +61,7 @@ namespace SrvSurvey
             base.Status_StatusChanged(blink);
 
             // if the destination changed ...
-            if (this.destinationName != game.status.Destination.Name)
+            if (game.status.Destination != null && this.destinationName != game.status.Destination.Name)
             {
                 this.destinationName = game.status.Destination.Name;
 

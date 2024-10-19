@@ -22,6 +22,8 @@ namespace SrvSurvey
 
     internal partial class PlotGuardians : PlotBase, IDisposable
     {
+        public static bool autoZoom = true;
+
         public GuardianSiteTemplate? template;
         private Image? siteMap;
         //private Image? trails;
@@ -652,26 +654,49 @@ namespace SrvSurvey
             this.Invalidate();
         }
 
-        private void setMapScale()
+        public void setMapScale()
         {
-            var newScale = this.scale;
-
-            if (this.customScale != -1f)
-                newScale = this.customScale;
-            else if (Game.settings.autoZoomGuardianInTurret && game.status.UsingSrvTurret)
-                newScale = 3f;
-            else if (Game.settings.autoZoomGuardianNearObelisks && this.nearestObeliskDist < 30 && (game.vehicle == ActiveVehicle.SRV || game.vehicle == ActiveVehicle.Foot))
-                newScale = 3f;
-            else if (game.vehicle == ActiveVehicle.Foot)
-                newScale = 2f;
-            else
-                newScale = this.siteData.isRuins ? 0.65f : 1.5f;
-
-            if (newScale != this.scale)
+            if (autoZoom)
             {
-                this.scale = newScale;
-                this.Invalidate();
+                var newScale = getAutoZoomLevel();
+
+                if (newScale != this.scale)
+                {
+                    this.scale = newScale;
+                    this.Invalidate();
+                }
             }
+        }
+
+        private float getAutoZoomLevel()
+        {
+            if (this.customScale != -1f)
+                return this.customScale;
+            else if (Game.settings.autoZoomGuardianInTurret && game.status.UsingSrvTurret)
+                return 3f;
+            else if (Game.settings.autoZoomGuardianNearObelisks && this.nearestObeliskDist < 30 && (game.vehicle == ActiveVehicle.SRV || game.vehicle == ActiveVehicle.Foot))
+                return 3f;
+            else if (game.vehicle == ActiveVehicle.Foot)
+                return 2f;
+            else
+                return this.siteData.isRuins ? 0.65f : 1.5f;
+        }
+
+        public void adjustZoom(bool zoomIn)
+        {
+            Game.log($"PlotGuardians adjustZoom: zoomIn: {zoomIn}");
+            const float delta = 0.5f;
+            var newZoom = zoomIn ? this.scale + delta : this.scale - delta;
+
+            if (newZoom < 0.5f || newZoom > 15) return;
+
+            // enable/disable auto-zooming if the new zoom level matches
+            var autoZoomLevel = this.getAutoZoomLevel();
+            if (autoZoomLevel != 0)
+                PlotGuardians.autoZoom = newZoom == autoZoomLevel;
+
+            this.scale = newZoom;
+            this.Invalidate();
         }
 
         private void setSiteHeading(int newHeading)
@@ -1243,7 +1268,6 @@ namespace SrvSurvey
             //g.DrawLine(Pens.Blue, -mx, -my, -mx + sx, -my + sy);
             //g.DrawLine(Pens.Blue, -mx, -my + sy, sx - mx, -my);
 
-
             g.ResetTransform();
             this.clipToMiddle();
             g.TranslateTransform(mid.Width, mid.Height);
@@ -1577,6 +1601,10 @@ namespace SrvSurvey
                 else
                     this.drawHeaderText($"Structure {siteData.type}: survey complete", GameColors.brushGameOrange);
             }
+
+            var zt = $"Zoom: {this.scale.ToString("N1")}";
+            if (autoZoom) zt += " (auto)";
+            this.drawTextAt2(this.Width - eight, zt, null, null, true);
         }
 
         private bool isRuinsPoi(POIType poiType, bool incObelisks, bool incBrokeObelisks = false)

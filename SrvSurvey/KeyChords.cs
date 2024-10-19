@@ -43,9 +43,10 @@ namespace SrvSurvey
                     break;
 
                 case KeyAction.mapZoomIn: return adjustMapZooms(true);
-                case KeyAction.mapZoomOut: return adjustMapZooms(false);                    
+                case KeyAction.mapZoomOut: return adjustMapZooms(false);
                 case KeyAction.mapZoomAuto: return adjustMapAutoZoom();
                 case KeyAction.mapBeHuge: return adjustMapHugeness();
+                case KeyAction.showJumpInfo: return toggleJumpInfo();
 
                 default:
                     Game.log($"Unsupported key action: {keyAction}");
@@ -59,20 +60,22 @@ namespace SrvSurvey
         private static bool adjustMapZooms(bool zoomIn)
         {
             Program.getPlotter<PlotHumanSite>()?.adjustZoom(zoomIn);
-
-            // TODO: Handle Guardian maps?
+            Program.getPlotter<PlotGuardians>()?.adjustZoom(zoomIn);
             return true;
         }
 
         private static bool adjustMapAutoZoom()
         {
-            if (game != null)
+            if (game != null && Program.isPlotter<PlotHumanSite>())
             {
                 PlotHumanSite.autoZoom = true;
                 Program.getPlotter<PlotHumanSite>()?.setZoom(game.mode);
             }
-
-            // TODO: Handle Guardian maps?
+            if (game != null && Program.isPlotter<PlotGuardians>())
+            {
+                PlotGuardians.autoZoom = true;
+                Program.getPlotter<PlotGuardians>()?.setMapScale();
+            }
             return true;
         }
 
@@ -84,6 +87,26 @@ namespace SrvSurvey
             return true;
         }
 
+        private static bool toggleJumpInfo()
+        {
+            // we need a route for this to work
+            if (game?.navRoute.Route.Count > 0)
+            {
+                var jumpInfo = Program.getPlotter<PlotJumpInfo>();
+                if (jumpInfo == null)
+                {
+                    PlotJumpInfo.forceShow = true;
+                    Program.showPlotter<PlotJumpInfo>();
+                }
+                else if (PlotJumpInfo.forceShow)
+                {
+                    PlotJumpInfo.forceShow = false;
+                    Program.closePlotter<PlotJumpInfo>();
+                }
+            }
+
+            return true;
+        }
     }
 
     /// <summary>
@@ -102,5 +125,7 @@ namespace SrvSurvey
         mapZoomAuto,
         /// <summary> Make map plotter become huge or normal sized </summary>
         mapBeHuge,
+        /// <summary> Force show PlotJumpInfo </summary>
+        showJumpInfo,
     }
 }

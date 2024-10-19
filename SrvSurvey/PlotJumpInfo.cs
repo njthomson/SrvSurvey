@@ -5,6 +5,8 @@ namespace SrvSurvey
 {
     internal class PlotJumpInfo : PlotBase, PlotterForm
     {
+        public static bool forceShow = false;
+
         private static Dictionary<string, JumpInfo> systemsCache = new Dictionary<string, JumpInfo>();
 
         private string nextSystem;
@@ -32,6 +34,7 @@ namespace SrvSurvey
                     (Game.activeGame.status.FsdChargingJump && Game.activeGame.isMode(GameMode.Flying, GameMode.SuperCruising))
                     // whilst in whitch space, jumping to next system
                     || Game.activeGame.mode == GameMode.FSDJumping
+                    || PlotJumpInfo.forceShow
                 // || Game.activeGame.mode == GameMode.RolePanel // debugging helper
                 );
         }
@@ -228,7 +231,7 @@ namespace SrvSurvey
             var d = (float)Util.getSystemDistance(game.cmdr.starPos, nextHop.entry.StarPos);
             this.hopDistances.Add(d);
             this.totalDistance = d;
-            var scoopable = "KGBFOAM".Contains(nextHop.entry.StarClass);
+            var scoopable = "KGBFOAM".Contains(nextHop.entry.StarClass ?? "");
             this.hopScoops.Add(scoopable);
         }
 
