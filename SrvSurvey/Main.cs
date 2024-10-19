@@ -1035,7 +1035,7 @@ namespace SrvSurvey
                 // helper for ship cockpit offsets (from target lat/long)
                 var po = Util.getOffset(game.status.PlanetRadius, Game.settings.targetLatLong, game.status.Heading);
                 Game.log($"cockpit offset: {{ \"{game.shipType}\", new PointM({po.x}, {po.y}) }}");
-                ShipCenterOffsets.set(game.shipType, po);
+                CanonnStation.setShipOffset(game.shipType, po);
                 Clipboard.SetText($"{{ \"{game.shipType}\", new PointM({po.x}, {po.y}) }}, ");
             }
 

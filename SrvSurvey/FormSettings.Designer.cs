@@ -175,6 +175,7 @@ namespace SrvSurvey
             pictureBox8 = new PictureBox();
             tabSettlements = new TabPage();
             groupBox2 = new GroupBox();
+            label26 = new Label();
             checkBox31 = new CheckBox();
             checkBox30 = new CheckBox();
             checkBox29 = new CheckBox();
@@ -200,7 +201,6 @@ namespace SrvSurvey
             linkAboutOne = new LinkLabel();
             colorDialog = new ColorDialog();
             colorTheme = new ColorDialog();
-            label26 = new Label();
             panel1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numOpacity).BeginInit();
@@ -2191,6 +2191,17 @@ namespace SrvSurvey
             groupBox2.TabStop = false;
             groupBox2.Text = "Show POI:";
             // 
+            // label26
+            // 
+            label26.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            label26.FlatStyle = FlatStyle.System;
+            label26.Location = new Point(6, 63);
+            label26.Name = "label26";
+            label26.Size = new Size(514, 34);
+            label26.TabIndex = 11;
+            label26.Text = "Note: POI are randomly generated at each settlement. Locations shown on the map may not be correct.";
+            label26.TextAlign = ContentAlignment.BottomLeft;
+            // 
             // checkBox31
             // 
             checkBox31.AutoSize = true;
@@ -2492,17 +2503,6 @@ namespace SrvSurvey
             // colorDialog
             // 
             colorDialog.Color = Color.Yellow;
-            // 
-            // label26
-            // 
-            label26.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            label26.FlatStyle = FlatStyle.System;
-            label26.Location = new Point(6, 63);
-            label26.Name = "label26";
-            label26.Size = new Size(514, 34);
-            label26.TabIndex = 11;
-            label26.Text = "Note: POI are randomly generated at each settlement. Locations shown on the map may not be correct.";
-            label26.TextAlign = ContentAlignment.BottomLeft;
             // 
             // FormSettings
             // 

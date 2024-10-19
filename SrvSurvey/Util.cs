@@ -174,7 +174,7 @@ namespace SrvSurvey
         {
             if (shipType == null) return location;
 
-            var po = ShipCenterOffsets.get(shipType);
+            var po = CanonnStation.getShipOffset(shipType);
             if (po.X == 0 && po.Y == 0)
             {
                 Game.log($"No offset for {shipType} yet :/");

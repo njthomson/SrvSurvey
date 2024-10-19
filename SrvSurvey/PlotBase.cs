@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using SrvSurvey.canonn;
 using SrvSurvey.game;
 using SrvSurvey.units;
 using System.Diagnostics;
@@ -491,7 +492,7 @@ namespace SrvSurvey
                 var ship = Util.getOffset(game.systemBody.radius, shipLatLong, 180);
 
                 // adjust location by ship cockpit offset
-                var po = ShipCenterOffsets.get(game.shipType);
+                var po = CanonnStation.getShipOffset(game.shipType);
                 var pd = po.rotate(game.cmdr.lastTouchdownHeading);
                 ship += pd;
 
@@ -1102,7 +1103,7 @@ namespace SrvSurvey
                 var ship = Util.getOffset(game.systemBody.radius, shipLatLong, 180);
 
                 // adjust location by ship cockpit offset
-                var po = ShipCenterOffsets.get(game.shipType);
+                var po = CanonnStation.getShipOffset(game.shipType);
                 var pd = po.rotate(game.cmdr.lastTouchdownHeading);
                 ship += pd;
 

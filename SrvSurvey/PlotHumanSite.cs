@@ -1037,7 +1037,7 @@ namespace SrvSurvey
                     // manual docking
                     drawTextAt2(fiveTwo, $"► Manual docking in progress", GameColors.fontMiddle);
                     newLine();
-                    drawTextAt2(fiveTwo, $"❎ Settlement identification will be delayed", GameColors.fontMiddle);
+                    drawTextAt2(fiveTwo, $"⏳ Settlement identification will be delayed", GameColors.fontMiddle);
                     newLine();
                     drawTextAt2(fiveTwo, $"► Auto dock recommended", GameColors.fontMiddleBold);
                 }

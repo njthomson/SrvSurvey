@@ -363,6 +363,18 @@ namespace SrvSurvey.canonn
             return newLocation;
         }
 
+        public static PointM getShipOffset(string shipType)
+        {
+            if (shipType == null) return PointM.Empty;
+
+            return mapShipCockpitOffsets.GetValueOrDefault(shipType);
+        }
+
+        public static void setShipOffset(string shipType, PointM offset)
+        {
+            mapShipCockpitOffsets[shipType] = offset;
+        }
+
         /// <summary>
         /// Per ship type, the relative location, in meters, of the cockpit to the center of the ship.
         /// </summary>
@@ -397,7 +409,7 @@ namespace SrvSurvey.canonn
             { "federation_gunship", new PointM(-0.0336081918131731271433146967, -34.484471546920929254481108532) }, // Federal Gunship
             { "krait_light", new PointM(0.6031567730891498506706891727, -29.808101534971506981430079248) }, // Krait Phantom
             { "krait_mkii", new PointM(-0.4390055060502030101940869492, -28.642501220707376952320201527) }, // Krait mk2
-            { "orca", new PointM(1.8251181979081937256954303615, -60.721671830785327505179094956) }, // Orca
+            { "orca", new PointM(0.8935034127811378155605556723, -60.666951658597578826183682873) }, // Orca
             { "ferdelance", new PointM(-1.2886041335053920724479975148, -11.051961482268357729454057254) }, // Fer-de-lance
             { "mamba", new PointM(-0.3384479441319697171254213427, -17.016087432359903431927706572) }, // Mamba
             { "python", new PointM(0.0242815204676919790218357202, -27.803238864751802112883958858) }, // Python
