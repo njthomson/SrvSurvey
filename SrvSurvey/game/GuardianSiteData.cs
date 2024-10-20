@@ -311,10 +311,17 @@ namespace SrvSurvey.game
             // use our own data first
             if (this.poiStatus.ContainsKey(name))
                 return this.poiStatus[name];
+            else if (name[0] == 'd')
+            {
+                var cmp = this.components?.GetValueOrDefault(name)?.items[0] ?? GComponent.unknown;
+                return cmp == GComponent.unknown ? SitePoiStatus.unknown : SitePoiStatus.present;
+            }
 
             // otherwise check pub data
             if (this.pubData?.poiStatus.ContainsKey(name) == true)
                 return this.pubData.poiStatus[name];
+
+            // TODO: components in pubData?
 
             // otherwise check rawPoi
             if (this.rawPoi?.Any(_ => _.name == name) == true)
@@ -822,15 +829,18 @@ namespace SrvSurvey.game
                 if (rawPoi != null)
                     data.rawPoi = rawPoi.ToObject<List<SitePOI>>()!;
 
-                var rawComponents = obj["components"] as JArray;
-                if (rawComponents != null && rawComponents.Count > 0)
+                if (Game.settings.guardianComponentMaterials_TEST || Debugger.IsAttached)
                 {
-                    var components = rawComponents.ToObject<List<Components>>();
-                    if (components?.Count > 0)
+                    var rawComponents = obj["components"] as JArray;
+                    if (rawComponents != null && rawComponents.Count > 0)
                     {
-                        data.components ??= new();
-                        foreach (var cmp in components)
-                            data.components.Add(cmp.name, cmp);
+                        var components = rawComponents.ToObject<List<Components>>();
+                        if (components?.Count > 0)
+                        {
+                            data.components ??= new();
+                            foreach (var cmp in components)
+                                data.components.Add(cmp.name, cmp);
+                        }
                     }
                 }
 
@@ -1351,16 +1361,6 @@ namespace SrvSurvey.game
         public string percent { get => this.progress.ToString("0") + "%"; }
     }
 
-    internal enum GComponent
-    {
-        unknown,
-        cell, //PowerCell,
-        conduit, // PowerConduit,
-        weapon, // SentinelWeaponParts,
-        tech, // TechnologyComponent,
-        wreck, // WreckageComponents,
-    }
-
     [JsonConverter(typeof(Components.JsonConverter))]
     internal class Components
     {
@@ -1369,7 +1369,10 @@ namespace SrvSurvey.game
 
         public override string ToString()
         {
-            return $"{name}," + string.Join(',', items);
+            if (name[0] == 'c')
+                return $"{name}," + string.Join(',', items);
+            else
+                return $"{name},{items[0]}";
         }
 
         public override bool Equals(object? obj)
@@ -1422,15 +1425,24 @@ namespace SrvSurvey.game
         {
             switch (cmp)
             {
-                case GComponent.unknown: return "Unknown";
+                case GComponent.unknown: return "?";
                 case GComponent.cell: return "Power Cell";
                 case GComponent.conduit: return "Power Conduit";
-                case GComponent.weapon: return "Sentinel WeaponParts";
                 case GComponent.tech: return "Technology Component";
-                case GComponent.wreck: return "Wreckage Components";
                 default: throw new Exception($"Unexpected component type: {cmp}");
             }
         }
+    }
+
+    internal enum GComponent
+    {
+        unknown,
+        /// <summary> Power Cell </summary>
+        cell,
+        /// <summary> Power Conduit </summary>
+        conduit,
+        /// <summary> Technology Component </summary>
+        tech,
     }
 }
 

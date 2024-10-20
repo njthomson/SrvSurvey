@@ -72,12 +72,19 @@ namespace SrvSurvey
         {
             Game.log($"Saving edits to SiteTemplates: {editableFilepath}");
 
-            // alpha sort all POIs by their name
+            // alpha sort all POIs by their name, and remove any destructablePanel
             foreach (var template in GuardianSiteTemplate.sites.Values)
-                template.poi = template.poi.OrderBy(_ => _.sortName).ToList();
+                template.poi = template.poi
+                    .OrderBy(_ => _.sortName)
+                    .Where(_ => _.type != POIType.destructablePanel)
+                    .ToList();
 
             var json = JsonConvert.SerializeObject(GuardianSiteTemplate.sites, Formatting.Indented);
             File.WriteAllText(editableFilepath, json);
+
+            // restore the destructablePanel's
+            foreach (var template in GuardianSiteTemplate.sites.Values)
+                template.init();
         }
 
         public static void publish()
@@ -123,6 +130,10 @@ namespace SrvSurvey
 
         public Dictionary<string, PointF> obeliskGroupNameLocations = new Dictionary<string, PointF>();
 
+        /// <summary> Destructable panels </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public List<SitePOI>? destructablePanels;
+
         #endregion
 
         private void init()
@@ -150,6 +161,10 @@ namespace SrvSurvey
                 if (Util.isBasicPoi(_.type) || _.type == POIType.emptyPuddle)
                     this.countPuddles++;
             }
+
+            if (Game.settings.guardianComponentMaterials_TEST && this.destructablePanels?.Count > 0)
+                foreach (var _ in this.destructablePanels)
+                    this.poi.Add(_);
         }
 
         [JsonIgnore]
@@ -204,6 +219,9 @@ namespace SrvSurvey
 
                 case POIType.component:
                     return "c";
+
+                case POIType.destructablePanel:
+                    return "d";
 
                 default:
                     throw new Exception($"Unexpected poiType: '{poiType}'");
@@ -262,6 +280,8 @@ namespace SrvSurvey
         pylon,
         obelisk,
         brokeObelisk,
+        // new in v2.0.2.+7
+        destructablePanel,
 
         /* Possibilities for future use:
          * ObeliskGroup

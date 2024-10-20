@@ -432,8 +432,43 @@ namespace SrvSurvey
             }
         }
 
+        private void addNewDestructablePanel()
+        {
+            if (template == null) return;
+
+            var dist = Util.getDistance(Status.here, siteData.location, game.systemBody!.radius);
+            var angle = ((decimal)new Angle((Util.getBearing(Status.here, siteData.location) - (decimal)siteData.siteHeading)));
+            var rot = (decimal)new Angle(game.status.Heading - this.siteData.siteHeading);
+
+            // TODO: check for existing entries too close
+
+            template.destructablePanels ??= new();
+            var cmpPoi = new SitePOI()
+            {
+                type = POIType.destructablePanel, // bad idea?
+                name = $"d{template.destructablePanels.Count + 1}",
+                angle = angle,
+                rot = rot,
+                dist = dist,
+            };
+            template.destructablePanels.Add(cmpPoi);
+
+            // add to the master template and ListView
+            Game.log($"Added new destructablePanels named: {cmpPoi.name}");
+
+            GuardianSiteTemplate.SaveEdits();
+            this.siteData.Save();
+            this.Invalidate();
+        }
+
         private void addNewPoi(string msg, bool addToMaster)
         {
+            if (Game.settings.guardianComponentMaterials_TEST && msg == "dp")
+            {
+                this.addNewDestructablePanel();
+                return;
+            }
+
             POIType poiType;
             if (!Enum.TryParse<POIType>(msg, true, out poiType))
             {
@@ -1358,6 +1393,9 @@ namespace SrvSurvey
             g.ScaleTransform(this.scale, this.scale);
             g.RotateTransform(360 - game.status.Heading);
 
+            //if (Game.settings.guardianComponentMaterials_TEST && template.destructablePanels?.Count > 0)
+            //    this.drawDestructablePanels();
+
             var nearestDist = double.MaxValue;
             var nearestPt = PointF.Empty;
 
@@ -1398,13 +1436,10 @@ namespace SrvSurvey
 
                 // calculate render point for POI
                 var deg = 180 - siteData.siteHeading - poi.angle;
-                var dist = poi.dist; //  * 1.01m; // scaling for perspective? !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                var pt = (PointF)Util.rotateLine(
-                    deg,
-                    dist);
+                var pt = (PointF)Util.rotateLine(deg, poi.dist);
 
                 // render POI
-                this.drawSitePoi(poi, (PointF)pt);
+                this.drawSitePoi(poi, pt);
 
                 // is this the closest POI?
                 var x = pt.X - commanderOffset.X;
@@ -1415,6 +1450,8 @@ namespace SrvSurvey
                 var validNearestUnknown = poiStatus == SitePoiStatus.unknown && d < nearestUnknownDist && !isObelisk;
                 // only target Relic Towers when in SRV
                 if (validNearestUnknown && poi.type == POIType.relic && game.vehicle != ActiveVehicle.SRV)
+                    validNearestUnknown = false;
+                if (validNearestUnknown && poi.type == POIType.destructablePanel && game.vehicle != ActiveVehicle.SRV && game.vehicle != ActiveVehicle.Foot)
                     validNearestUnknown = false;
                 // it's a present closer relic without a heading (structures only)
                 if (poi.type == POIType.relic && poiStatus == SitePoiStatus.present && !siteData.isRuins && d < nearestUnknownDist && siteData.getRelicHeading(poi.name) == null)
@@ -1546,6 +1583,11 @@ namespace SrvSurvey
                         footerTxt = $"Obelisk {nearestPoi.name}: " + (obelisk == null ? "Inactive" : "Active") + (obelisk?.scanned == true ? " (scanned)" : "");
                     }
                 }
+                else if (Game.settings.guardianComponentMaterials_TEST && nearestPoi.name[0] == 'd')
+                {
+                    var cmp = siteData.components?.GetValueOrDefault(this.nearestPoi.name)?.items[0] ?? GComponent.unknown;
+                    footerTxt = $"Destructable panel {this.nearestPoi.name}: " + Components.to(cmp);
+                }
                 else
                 {
                     if (string.IsNullOrEmpty(action) && this.nearestPoi.type == POIType.relic && poiStatus != SitePoiStatus.absent)
@@ -1668,6 +1710,8 @@ namespace SrvSurvey
                     this.drawComponent(poi, pt, poiStatus); break;
                 case POIType.relic:
                     this.drawRelicTower(poi, pt, poiStatus); break;
+                case POIType.destructablePanel:
+                    this.drawDestructablePanel(poi, pt); break;
                 default:
                     this.drawPuddle(poi, pt, poiStatus); break;
             }
@@ -1767,7 +1811,44 @@ namespace SrvSurvey
             g.DrawLines(pp, componentPoints);
 
             g.RotateTransform((float)-rot);
+
+            if (Game.settings.guardianComponentMaterials_TEST && siteData.components?.ContainsKey(poi.name) == true)
+            {
+                // rotate relative to window, NOT site heading or cmdr's direction
+                var rr = game.status.Heading - 150;
+
+                // top, middle, bottom
+                drawComponentMaterial(siteData.components[poi.name].items[0], rr + 0);
+                drawComponentMaterial(siteData.components[poi.name].items[1], rr + 242);
+                drawComponentMaterial(siteData.components[poi.name].items[2], rr + 122);
+            }
+
             g.TranslateTransform(+pt.X, +pt.Y);
+        }
+
+        private void drawComponentMaterial(GComponent cmp, float rot)
+        {
+            if (cmp == GComponent.unknown) return;
+
+            var bb = this.getComponentBrush(cmp);
+
+            g.RotateTransform(+rot);
+            g.FillEllipse(bb, -2, 6, 4, 4);
+            g.DrawEllipse(Pens.Black, -2, 6, 4, 4);
+            g.RotateTransform(-rot);
+        }
+
+        private Brush getComponentBrush(GComponent cmp)
+        {
+            switch (cmp)
+            {
+                case GComponent.unknown: return Brushes.Transparent;
+                case GComponent.cell: return Brushes.Lime;
+                case GComponent.conduit: return Brushes.Cyan;
+                case GComponent.tech: return Brushes.OrangeRed;
+            }
+
+            throw new Exception($"Exexpected GComponent: {cmp}");
         }
 
         private static PointF[] relicPoints = {
@@ -1776,6 +1857,60 @@ namespace SrvSurvey
             new PointF(0, +6),
             new PointF(-5, -3),
         };
+
+        private void drawDestructablePanel(SitePOI poi, PointF pt)
+        {
+            if (!Game.settings.guardianComponentMaterials_TEST) return;
+
+            var rot = poi.rot + this.siteData.siteHeading;
+            var cmp = siteData.components?.GetValueOrDefault(poi.name)?.items[0] ?? GComponent.unknown;
+
+            g.Adjust(-pt.X, pt.Y, game.status.Heading, () =>
+            {
+                if (cmp == GComponent.unknown)
+                    g.DrawRectangle(GameColors.penCyan1, -two, -two, four, four);
+                else
+                {
+                    g.FillRectangle(this.getComponentBrush(cmp), -two, -two, four, four);
+                    g.DrawRectangle(Pens.Black, -two, -two, four, four);
+                }
+            });
+        }
+
+        private void drawDestructablePanels()
+        {
+            if (template?.destructablePanels == null || true) return;
+
+            foreach (var poi in template.destructablePanels)
+            {
+                // calculate render point for POI
+                var deg = 180 - siteData.siteHeading - poi.angle;
+                var pt = (PointF)Util.rotateLine(deg, poi.dist);
+
+                var cmp = siteData.components?.GetValueOrDefault(poi.name)?.items[0] ?? GComponent.unknown;
+
+                g.Adjust(-pt.X, pt.Y, game.status.Heading, () =>
+                {
+                    var bb = this.getComponentBrush(cmp);
+
+                    if (cmp == GComponent.unknown)
+                    {
+                        bb = Brushes.Yellow;
+                        // anything unknown gets a blue circle underneath with dots
+                        g.FillEllipse(GameColors.brushAroundPoiUnknown, -5, -5, +10, +10);
+                        g.DrawEllipse(GameColors.penAroundPoiUnknown, -4.5f, -4.5f, +9, +9);
+
+                        g.DrawRectangle(GameColors.penCyan1, -two, -two, four, four);
+                    }
+                    else
+                    {
+                        g.FillRectangle(bb, -two, -two, four, four);
+                        g.DrawRectangle(Pens.Black, -two, -two, four, four);
+
+                    }
+                });
+            }
+        }
 
         private void drawRelicTower(SitePOI poi, PointF pt, SitePoiStatus poiStatus)
         {

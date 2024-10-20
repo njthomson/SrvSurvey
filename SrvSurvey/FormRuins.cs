@@ -119,7 +119,7 @@ namespace SrvSurvey
         private void prepTowerMenus(ToolStripMenuItem menuItem)
         {
             menuItem.DropDownItems.Clear();
-            foreach(var cmp in Enum.GetValues<GComponent>())
+            foreach (var cmp in Enum.GetValues<GComponent>())
             {
                 var subItem = new ToolStripMenuItem()
                 {
@@ -131,7 +131,7 @@ namespace SrvSurvey
                 menuItem.DropDownItems.Add(subItem);
             }
 
-            foreach(ToolStripMenuItem subItem in menuItem.DropDownItems)
+            foreach (ToolStripMenuItem subItem in menuItem.DropDownItems)
                 subItem.Click += SubItem_Click;
         }
 
@@ -547,16 +547,23 @@ namespace SrvSurvey
             mnuEmpty.Visible = couldBeEmpty;
 
             // prep component items
-            var isTower = Debugger.IsAttached && this.nearestPoi.type == POIType.component;
-            toolStripTower.Visible = isTower;
-            toolTowers.Visible = isTower;
-            toolTowerTop.Visible = isTower;
+            var isTower = Game.settings.guardianComponentMaterials_TEST && this.nearestPoi.type == POIType.component;
+            var isDestructablePanel = Game.settings.guardianComponentMaterials_TEST && this.nearestPoi.type == POIType.destructablePanel;
+            toolStripTower.Visible = isTower || isDestructablePanel;
+            toolTowers.Visible = isTower || isDestructablePanel;
+            toolTowerTop.Visible = isTower || isDestructablePanel;
             toolTowerMiddle.Visible = isTower;
             toolTowerBottom.Visible = isTower;
 
-            prepComponentSubItems(toolTowerTop, 0);
-            prepComponentSubItems(toolTowerMiddle, 1);
-            prepComponentSubItems(toolTowerBottom, 2);
+            if (Game.settings.guardianComponentMaterials_TEST)
+            {
+                prepComponentSubItems(toolTowerTop, 0);
+                if (isTower)
+                {
+                    prepComponentSubItems(toolTowerMiddle, 1);
+                    prepComponentSubItems(toolTowerBottom, 2);
+                }
+            }
 
             mapContext.Show(this.map, e.X, e.Y - (mnuName.Height * 2));
         }
@@ -636,16 +643,6 @@ namespace SrvSurvey
             g.InterpolationMode = InterpolationMode.Bicubic;
             g.CompositingQuality = CompositingQuality.HighQuality;
 
-            if (this.img.Width < 50)
-            {
-                // indicate that we have no map to render for this site type
-                var txt = $"[ Map not available for {GuardianSiteData.getStructureTypeFromName(template.name)} ]";
-                var sz = g.MeasureString(txt, this.Font);
-                var x = (map.Width / 2) - (sz.Width / 2);
-                var y = map.Height - sz.Height;
-                g.DrawString(txt, this.Font, Brushes.Red, x, y);
-            }
-
             g.TranslateTransform(mapCenter.X - dragOffset.X, mapCenter.Y - dragOffset.Y);
             g.ScaleTransform(this.scale, this.scale);
 
@@ -688,13 +685,27 @@ namespace SrvSurvey
                 g.DrawLine(pp, -map.Width * 2, 0, +map.Width * 2, 0);
             }
 
+            //if (template?.destructablePanels?.Count > 0 && false)
+            //    this.drawDestructablePanels(g);
             drawArtifacts(g);
+
+            if (game?.systemSite?.displayName == this.siteData?.displayName)
+                drawCommander(g);
 
             if (checkShowLegend.Checked)
                 drawLegend(g);
 
-            if (game?.systemSite?.displayName == this.siteData?.displayName)
-                drawCommander(g);
+            if (this.img.Width < 50)
+            {
+                g.ResetTransform();
+                // indicate that we have no map to render for this site type
+                var txt = $"[ Map not available for {GuardianSiteData.getStructureTypeFromName(template.name)} ]";
+                var sz = g.MeasureString(txt, GameColors.fontSmall2Bold);
+                var x = (map.Width / 2) - (sz.Width / 2);
+                var y = map.Height - sz.Height;
+                g.FillRectangle(Brushes.Black, x, y, sz.Width, sz.Height);
+                g.DrawString(txt, GameColors.fontSmall2Bold, Brushes.Red, x, y);
+            }
         }
 
         private void drawCommander(Graphics g)
@@ -704,8 +715,9 @@ namespace SrvSurvey
             g.ResetTransform();
 
             // indicate that we're actively surveying this site
-            var sz = g.MeasureString("[ survey active ]", this.Font);
-            g.DrawString("[ survey active ]", this.Font, Brushes.Lime, map.Width - sz.Width, 0);
+            var sz = g.MeasureString("[ survey active ]", GameColors.fontSmall2Bold);
+            g.FillRectangle(Brushes.Black, map.Width - sz.Width, 0, sz.Width, sz.Height);
+            g.DrawString("[ survey active ]", GameColors.fontSmall2Bold, Brushes.Lime, map.Width - sz.Width, 0);
 
             g.TranslateTransform(mapCenter.X - dragOffset.X, mapCenter.Y - dragOffset.Y);
             g.ScaleTransform(this.scale, this.scale);
@@ -783,7 +795,7 @@ namespace SrvSurvey
                 var poiStatus = siteData?.getPoiStatus(poi.name) ?? SitePoiStatus.present;
 
                 // anything unknown gets a blue circle underneath with dots
-                if (poiStatus == SitePoiStatus.unknown && poi.type != POIType.obelisk && poi.type != POIType.brokeObelisk)
+                if (poiStatus == SitePoiStatus.unknown && poi.type != POIType.obelisk && poi.type != POIType.brokeObelisk && poi.type != POIType.destructablePanel)
                     drawUnknownCircle(g, pt.X, -pt.Y, poi.type, this.isRuins);
 
                 if (poi.type == POIType.relic)
@@ -791,9 +803,11 @@ namespace SrvSurvey
                 else if (poi.type == POIType.pylon)
                     drawPylon(g, pt, poi.rot, poiStatus);
                 else if (poi.type == POIType.component)
-                    drawComponent(g, pt.X, pt.Y, poi.rot, poiStatus);
+                    drawComponent(g, pt.X, pt.Y, poi.rot, siteData?.components?.GetValueOrDefault(poi.name), poiStatus);
                 else if (poi.type == POIType.obelisk || poi.type == POIType.brokeObelisk)
                     drawObelisk(g, pt.X, pt.Y, (float)poi.rot, siteData?.getActiveObelisk(poi.name));
+                else if (poi.type == POIType.destructablePanel)
+                    drawDestructablePanel(g, pt, siteData?.components?.GetValueOrDefault(poi.name)?.items[0] ?? GComponent.unknown);
                 else if (Util.isBasicPoi(poi.type))
                     drawPuddle(g, pt, poi.type, poiStatus);
                 else
@@ -945,7 +959,7 @@ namespace SrvSurvey
             new PointF(0, +4),
         };
 
-        private static void drawComponent(Graphics g, float x, float y, decimal rot, SitePoiStatus poiStatus = SitePoiStatus.present)
+        private static void drawComponent(Graphics g, float x, float y, decimal rot, Components? components, SitePoiStatus poiStatus = SitePoiStatus.present)
         {
             var pp = GameColors.Map.pens[POIType.component][poiStatus];
             if (poiStatus == SitePoiStatus.unknown) pp = GameColors.Map.penComponentUnknown;
@@ -954,6 +968,101 @@ namespace SrvSurvey
             {
                 g.DrawLines(pp, componentPoints);
             });
+
+            if (Game.settings.guardianComponentMaterials_TEST && components != null)
+            {
+                // rotate relative to window, NOT site heading or cmdr's direction
+                g.Adjust(180, -x, y, 30, () =>
+                {
+                    // top, middle, bottom
+                    drawComponentMaterial(g, components.items[0], 0);
+                    drawComponentMaterial(g, components.items[1], 242);
+                    drawComponentMaterial(g, components.items[2], 122);
+                });
+            }
+        }
+
+        private static void drawComponentMaterial(Graphics g, GComponent cmp, float rot)
+        {
+            if (cmp == GComponent.unknown) return;
+
+            var bb = getComponentBrush(cmp);
+            g.RotateTransform(+rot);
+            g.FillEllipse(bb, -2, 6, 4, 4);
+            g.DrawEllipse(Pens.Black, -2, 6, 4, 4);
+            g.RotateTransform(-rot);
+        }
+
+        private static Brush getComponentBrush(GComponent cmp)
+        {
+            switch (cmp)
+            {
+                case GComponent.unknown: return Brushes.Transparent;
+                case GComponent.cell: return Brushes.Lime;
+                case GComponent.conduit: return Brushes.Cyan;
+                case GComponent.tech: return Brushes.OrangeRed;
+            }
+
+            throw new Exception($"Exexpected GComponent: {cmp}");
+        }
+
+        private static void drawDestructablePanel(Graphics g, PointF pt, GComponent cmp)
+        {
+            if (!Game.settings.guardianComponentMaterials_TEST) return;
+
+            g.Adjust(0, pt.X, -pt.Y, 0, () =>
+            {
+                if (cmp == GComponent.unknown)
+                {
+                    // anything unknown gets a blue circle underneath with dots
+                    g.FillEllipse(GameColors.brushAroundPoiUnknown, -5, -5, +10, +10);
+                    g.DrawEllipse(GameColors.penAroundPoiUnknown, -4.5f, -4.5f, +9, +9);
+
+                    g.DrawRectangle(GameColors.penCyan1, -2, -2, 4, 4);
+                }
+                else
+                {
+                    g.FillRectangle(getComponentBrush(cmp), -2, -2, 4, 4);
+                    g.DrawRectangle(Pens.Black, -2, -2, 4, 4);
+                }
+            });
+        }
+
+        private void drawDestructablePanels(Graphics g)
+        {
+            if (template?.destructablePanels == null || siteData == null || true) return;
+
+            foreach (var poi in template.destructablePanels)
+            {
+                // calculate render point for POI
+                //var deg = 180 - siteData.siteHeading - poi.angle;
+                //var pt = (PointF)Util.rotateLine(deg, poi.dist);
+
+                var pt = (PointF)Util.rotateLine(
+                    360 - (decimal)poi.angle,
+                    poi.dist);
+
+                var cmp = siteData.components?.GetValueOrDefault(poi.name)?.items[0] ?? GComponent.unknown;
+
+                g.Adjust(0, pt.X, -pt.Y, 0, () =>
+                {
+                    var bb = getComponentBrush(cmp);
+
+                    if (cmp == GComponent.unknown)
+                    {
+                        bb = Brushes.Yellow;
+                        // anything unknown gets a blue circle underneath with dots
+                        g.FillEllipse(GameColors.brushAroundPoiUnknown, -5, -5, +10, +10);
+                        g.DrawEllipse(GameColors.penAroundPoiUnknown, -4.5f, -4.5f, +9, +9);
+
+                        g.DrawRectangle(GameColors.penCyan1, -2, -2, 4, 4);
+                    }
+                    else
+                    {
+                        g.FillRectangle(bb, -2, -2, 4, 4);
+                    }
+                });
+            }
         }
 
         private void drawLegend(Graphics g)
@@ -1002,7 +1111,7 @@ namespace SrvSurvey
                 drawPylon(g, new PointF(tp.X - 10, tp.Y - 10), 0, SitePoiStatus.present);
 
                 drawString(g, "Component tower");
-                drawComponent(g, tp.X - 10, tp.Y - 10, 0, SitePoiStatus.present);
+                drawComponent(g, tp.X - 10, tp.Y - 10, 0, null, SitePoiStatus.present);
             }
 
             drawString(g, "Site heading");
@@ -1070,7 +1179,7 @@ namespace SrvSurvey
         private void SubItem_Click(object? sender, EventArgs e)
         {
             var subItem = sender as ToolStripMenuItem;
-            if (subItem == null || siteData == null || nearestPoi.type != POIType.component) return;
+            if (subItem == null || siteData == null || (nearestPoi.type != POIType.component && nearestPoi.type != POIType.destructablePanel)) return;
 
             siteData.components ??= new();
 

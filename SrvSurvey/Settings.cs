@@ -106,6 +106,7 @@ namespace SrvSurvey
         public bool enableGuardianSites = true;
         public bool autoZoomGuardianNearObelisks = true;
         public bool autoZoomGuardianInTurret = false;
+        public bool guardianComponentMaterials_TEST = false;
 
         public bool disableRuinsMeasurementGrid = false;
         public bool disableAerialAlignmentGrid = false;

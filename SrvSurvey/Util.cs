@@ -451,7 +451,7 @@ namespace SrvSurvey
                 case GuardianSiteData.SiteType.Beta: return Game.settings.aerialAltBeta;
                 case GuardianSiteData.SiteType.Gamma: return Game.settings.aerialAltGamma;
                 // TODO: add settings?
-                case GuardianSiteData.SiteType.Robolobster: return 1500d;
+                case GuardianSiteData.SiteType.Robolobster: return 1000d;
                 case GuardianSiteData.SiteType.Crossroads: return 500d;
                 case GuardianSiteData.SiteType.Fistbump: return 450d;
                 default: return 650d;
