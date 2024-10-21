@@ -1,6 +1,5 @@
 ﻿using BioCriterias;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 using SrvSurvey.game;
 using SrvSurvey.net;

@@ -201,9 +201,9 @@ namespace SrvSurvey
 
                 var hasImages = siteHasImages(entry);
 
-                var surveyComplete = entry.surveyComplete ? "complete" : "";
-                if (entry.surveyProgress > 0)
-                    surveyComplete = entry.surveyProgress.ToString("0") + "%";
+                var surveyComplete = entry.surveyProgress == 0 
+                    ? ""
+                    : entry.surveyProgress.ToString("0") + "%";
 
                 if (entry.hasDiscoveredData)
                 {
@@ -370,13 +370,7 @@ namespace SrvSurvey
                 case 8: // has images
                     return rows.OrderBy(row => row.SubItems[8].Text);
                 case 9: // survey complete
-                    return rows.OrderBy(row =>
-                    {
-                        var entry = (GuardianGridEntry)row.Tag;
-                        if (entry.surveyComplete) return 100;
-                        else if (entry.surveyStatus == null) return 0;
-                        else return entry.surveyStatus.progress;
-                    });
+                    return rows.OrderBy(row => ((GuardianGridEntry)row.Tag).surveyProgress);
                 case 10: // Ram Tah
                     return rows.OrderBy(row => ((GuardianGridEntry)row.Tag).ramTahLogs);
                 case 11: // notes
