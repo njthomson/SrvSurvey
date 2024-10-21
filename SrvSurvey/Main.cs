@@ -871,32 +871,38 @@ namespace SrvSurvey
 
         private void onJournalEntry(CodexEntry entry)
         {
+            /*
             if (entry.Name == "$Codex_Ent_Guardian_Beacons_Name;")
             {
                 // Scanned a Guardian Beacon
                 Game.log($"Scanned Guardian Beacon in: {entry.System}");
                 Program.showPlotter<PlotGuardianBeaconStatus>();
             }
+            */
         }
 
         private void onJournalEntry(SupercruiseDestinationDrop entry)
         {
+            /*
             if (entry.Type == "Guardian Beacon")
             {
                 // Arrived  Guardian Beacon
                 Game.log($"Arrived at Guardian Beacon in: {game?.cmdr.currentSystem}");
                 Program.showPlotter<PlotGuardianBeaconStatus>();
             }
+            */
         }
 
         private void onJournalEntry(DataScanned entry)
         {
+            /*
             if (entry.Type == "$Datascan_AncientPylon;")
             {
                 // A Guardian Beacon
                 Game.log($"Scanned data from Guardian Beacon in: {game?.cmdr.currentSystem}");
                 Program.showPlotter<PlotGuardianBeaconStatus>();
             }
+            */
         }
 
         private void onJournalEntry(SupercruiseEntry entry)

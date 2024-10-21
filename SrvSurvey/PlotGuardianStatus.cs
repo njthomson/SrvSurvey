@@ -370,6 +370,7 @@ namespace SrvSurvey
         }
     }
 
+    /*
     internal class PlotGuardianBeaconStatus : PlotBaseSelectable, PlotterForm
     {
         private string relatedStructure;
@@ -479,4 +480,5 @@ namespace SrvSurvey
             }
         }
     }
+    // */
 }
