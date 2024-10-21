@@ -1,5 +1,4 @@
 ﻿using SrvSurvey.game;
-using System.Drawing.Drawing2D;
 
 namespace SrvSurvey
 {
@@ -7,11 +6,13 @@ namespace SrvSurvey
     {
         private double distance = -1;
         private string targetSystemName;
+        private string? destinationName;
 
         private PlotSphericalSearch() : base()
         {
             this.Size = Size.Empty;
             this.Font = GameColors.fontMiddle;
+            this.destinationName = game.status.Destination?.Name;
         }
 
         public override bool allow { get => PlotSphericalSearch.allowPlotter; }
@@ -78,6 +79,43 @@ namespace SrvSurvey
             this.Invalidate();
         }
 
+        protected override void Status_StatusChanged(bool blink)
+        {
+            if (this.IsDisposed || game.systemData == null) return;
+            base.Status_StatusChanged(blink);
+
+            Game.log("!!");
+
+            // if the destination changed ...
+            if (game.status.Destination != null && this.destinationName != game.status.Destination.Name)
+            {
+                this.destinationName = game.status.Destination.Name;
+                this.targetSystemName = game.status.Destination.Name;
+                this.distance = -1;
+                this.Invalidate();
+
+                Game.edsm.getSystems(this.destinationName).ContinueWith(t =>
+                {
+                    var data = t.Result;
+                    if (!(data.Length > 0)) return;
+
+                    var starPos = data.FirstOrDefault()?.coords!;
+
+                    var destination = new RouteEntry()
+                    {
+                        StarSystem = this.destinationName,
+                        StarPos = starPos,
+                    };
+
+                    Game.log($"Measuring distance to: {destination.StarSystem}");
+                    this.targetSystemName = destination.StarSystem;
+                    this.distance = Util.getSystemDistance(game.cmdr.sphereLimit.centerStarPos!, destination.StarPos);
+
+                    this.Invalidate();
+                });
+            }
+        }
+
         protected override void onPaintPlotter(PaintEventArgs e)
         {
             //var cc = Color.Red;
@@ -123,7 +161,11 @@ namespace SrvSurvey
             this.dtx = eight;
             this.dty += this.drawTextAt($"To: {this.targetSystemName}").Height;
 
-            if (this.distance >= 0)
+            if (this.distance < 0)
+            {
+                this.drawTextAt(eight, $"Distance: ...");
+            }
+            else if (this.distance >= 0)
             {
                 var dist = this.distance.ToString("N2");
                 var limitDist = game.cmdr.sphereLimit.radius.ToString("N2");

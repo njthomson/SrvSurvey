@@ -21,7 +21,7 @@ namespace SrvSurvey
 
         private List<RouteInfo> hops = new List<RouteInfo>();
         private double distanceJumped;
-        private string destinationName;
+        private string? destinationName;
 
         private PlotGalMap() : base()
         {
@@ -155,7 +155,7 @@ namespace SrvSurvey
 
                 if (this.distanceJumped > 0)
                 {
-                    this.drawTextAt(eight, $"Total jumps: {game.navRoute.Route.Count - 1} ► Distance: {this.distanceJumped.ToString("N1")} ly", GameColors.brushGameOrange);
+                    this.drawTextAt(eight, $"Total: ► {game.navRoute.Route.Count - 1} jumps ► Distance: {this.distanceJumped.ToString("N1")} ly", GameColors.brushGameOrange);
                     this.newLine(true);
                 }
 
@@ -189,11 +189,16 @@ namespace SrvSurvey
             else
                 this.drawTextAt(eightSix, $"{hop.status}");
 
-            // line 3: who discovered
-            if (!string.IsNullOrEmpty(hop.subStatus))
+            // line 3: who discovered + last updated
+            if (hop.discoveredBy != null && hop.discoveredDate != null)
             {
                 this.newLine(true);
-                this.drawTextAt(eightSix, $"{hop.subStatus}");
+                this.drawTextAt(eightSix, $"By {hop.discoveredBy}, " + hop.discoveredDate?.ToLocalTime().ToString("d"));
+            }
+            if (hop.lastUpdated != null && (hop.lastUpdated > hop.discoveredDate || hop.discoveredDate == null))
+            {
+                this.newLine(true);
+                this.drawTextAt(eightSix, $"Last updated: " + hop.lastUpdated?.ToLocalTime().ToString("d"));
             }
 
             // line 4: bio signals?
@@ -232,6 +237,7 @@ namespace SrvSurvey
         public bool highlight;
         public bool destination;
         public int sumGenus;
+        public string? discoveredBy;
         public DateTimeOffset? discoveredDate;
         public DateTimeOffset? lastUpdated;
         public bool allBodiesFound;
@@ -283,6 +289,7 @@ namespace SrvSurvey
 
                     var discCmdr = edsmResult.bodies.FirstOrDefault()?.discovery?.commander;
                     var discDate = edsmResult.bodies.FirstOrDefault()?.discovery?.date.ToLocalTime().ToString("d");
+                    this.discoveredBy = discCmdr;
                     this.discoveredDate = edsmResult.bodies.FirstOrDefault()?.discovery?.date;
                     if (discCmdr != null && discDate != null)
                         subStatus = $"By {discCmdr}, {discDate}";
