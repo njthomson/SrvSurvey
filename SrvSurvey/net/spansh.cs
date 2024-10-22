@@ -22,17 +22,35 @@ namespace SrvSurvey.net
 
         public async Task<GetSystemResponse> getSystems(string systemName)
         {
-            Game.log($"Requesting api/systems: {systemName}");
+            Game.log($"Searching Spansh api/systems by name: {systemName}");
 
+            // https://spansh.co.uk/api/systems/field_values/system_names?q=Colonia
             var json = await Spansh.client.GetStringAsync($"https://spansh.co.uk/api/systems/field_values/system_names?q={Uri.EscapeDataString(systemName)}");
             var systems = JsonConvert.DeserializeObject<GetSystemResponse>(json)!;
             return systems;
         }
 
+        public async Task<StarPos?> getStarPos(string systemName)
+        {
+            Game.log($"Searching Spansh api/systems for StarPos by name: {systemName}");
+
+            // https://spansh.co.uk/api/systems/field_values/system_names?q=Colonia
+            var json = await Spansh.client.GetStringAsync($"https://spansh.co.uk/api/systems/field_values/system_names?q={Uri.EscapeDataString(systemName)}");
+            var systems = JsonConvert.DeserializeObject<GetSystemResponse>(json)!;
+
+            var firstMatch = systems.min_max.FirstOrDefault();
+
+            if (firstMatch?.name == systemName)
+                return firstMatch.toStarPos();
+
+            return null;
+        }
+
         public async Task<ApiSystem.Record> getSystem(long systemAddress)
         {
-            Game.log($"Requesting api/system: {systemAddress}");
+            Game.log($"Requesting Spansh api/system/{systemAddress}");
 
+            // https://spansh.co.uk/api/system/3238296097059 (Colonia)
             var json = await Spansh.client.GetStringAsync($"https://spansh.co.uk/api/system/{systemAddress}");
             var system = JsonConvert.DeserializeObject<ApiSystem>(json)!;
             return system.record;
@@ -49,7 +67,8 @@ namespace SrvSurvey.net
             }
             else
             {
-                Game.log($"Requesting getSystem: {systemAddress}");
+                // https://spansh.co.uk/api/dump/3238296097059 (Colonia)
+                Game.log($"Requesting Spansh api/dump/{systemAddress}");
                 json = await Spansh.client.GetStringAsync($"https://spansh.co.uk/api/dump/{systemAddress}/");
                 if (useCache)
                 {
@@ -64,7 +83,7 @@ namespace SrvSurvey.net
 
         public async Task getMinorFactionSystems()
         {
-            Game.log($"Requesting foo");
+            Game.log($"Requesting api/systems/search for factions by body");
 
             var factions = new List<string>()
             {
@@ -165,79 +184,10 @@ namespace SrvSurvey.net
             Clipboard.SetText(clause);
         }
 
-        // ---
-
-        //public string buildQuery(Dictionary<string, string> filters, string sortField, SortOrder sortOrder)
-        //{
-        //    // filters ...
-        //    var partFilters = new List<string>();
-
-        //    foreach (var f in filters.Where(f => !f.Value.Contains("/")))
-        //    {
-        //        // eg: ""atmosphere"": { ""value"": [ ""Thin Carbon dioxide"" ] }
-        //        var values = JsonConvert.SerializeObject(f.Value.Split(','));
-        //        var clause = $"\"{f.Key}\":{{\"value\":{values}}}";
-        //        partFilters.Add(clause);
-        //    }
-
-        //    //partFilters.AddRange().Select(f =>
-        //    //{
-        //    //    var values = JsonConvert.SerializeObject(f.Value.Split(','));
-        //    //    return $"\"{f.Key}\": {{ \"value\": [ {values} ] }}";
-        //    //}));
-
-        //    foreach (var f1 in filters.Where(f => f.Value.Contains("/")))
-        //    {
-        //        var fs = f1.Value.Split(',');
-        //        foreach (var f2 in fs)
-        //        {
-        //            // eg: ""landmarks"": [ { ""type"": ""Stratum"", ""subtype"": [ ""Stratum Tectonicas"" ] } ]
-        //            var parts = f2.Split("/", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-        //            var clause = $"\"{f1.Key}\":[{{\"type\":\"{parts[0]}\",\"subtype\":[\"{parts[1]}\"]}}]";
-        //            partFilters.Add(clause);
-        //        }
-        //    }
-
-        //    //partFilters.AddRange(filters.Where(f => f.Value.Contains("/")).Select(f =>
-        //    //{
-
-        //    //    var parts = sortField.Split("/", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-        //    //    return $"\"{f.Key}\": [ {{ \"type\": \"{parts[0]}\", \"subtype\": [ \"{parts[1]}\" ] }} ]";
-        //    //}));
-
-        //    //// eg: ""landmarks"": [ { ""type"": ""Stratum"", ""subtype"": [ ""Stratum Tectonicas"" ] } ]
-        //    //partFilters.AddRange(subTypes.Select(f =>
-        //    //{
-        //    //    // TODO: handle multiples?
-        //    //    var type = f.Value.Split(' ').First();
-        //    //    return $"\"{f.Key}\": [ {{ \"type\": \"{type}\", \"subtype\": [ \"{f.Value}\" ] }} ]";
-        //    //}));
-
-        //    // sorting ...
-        //    var dir = sortOrder == SortOrder.asc ? "asc" : "desc";
-        //    string jsonSorts = "";
-        //    if (sortField.Contains("/"))
-        //    {
-        //        // eg: { "atmosphere_composition": [ { "name": "Carbon dioxide", "direction"": "asc"" } ] }";
-        //        var parts = sortField.Split("/", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-        //        jsonSorts = $"{{\"{parts[0]}\":[{{\"name\":\"{parts[1]}\",\"direction\":\"{dir}\"}}]}}";
-        //    }
-        //    else
-        //    {
-        //        // eg: {"gravity":{"direction":"asc"}}
-        //        jsonSorts = $"{{\"{sortField}\":{{\"direction\":\"{dir}\"}}}}";
-        //    }
-
-        //    // final result ...
-        //    // eg: {"filters":{"subtype":{"value":["Rocky body"]},"atmosphere":{"value":["Thin Carbon dioxide"]},"volcanism_type":{"value":["No volcanism"]},"landmarks":[{"type":"Bacterium","subtype":["Bacterium Tela"]}]},"sort":[{"materials":[{"name":"Carbon","direction":"desc"}]}],"size":10,"page":0}
-        //    var jsonFilters = string.Join(",", partFilters);
-        //    var queryJson = $"{{\"filters\":{{{jsonFilters}}},\"sort\":[{jsonSorts}],\"size\":1,\"page\":0}}";
-        //    return queryJson;
-        //}
-
         public async Task<JObject> queryBodies(string queryJson)
         {
-            //Game.log($"Querying ");
+            //Game.log($"Posting Spansh api/bodies/search with queryJson");
+
             var body = new StringContent(queryJson, Encoding.ASCII, "application/json");
 
             var response = await Spansh.client.PostAsync($"https://spansh.co.uk/api/bodies/search", body);
@@ -248,7 +198,8 @@ namespace SrvSurvey.net
 
         public async Task<JObject> querySystems(string queryJson)
         {
-            //Game.log($"Querying ");
+            //Game.log($"Posting Spansh api/systems/search with queryJson");
+
             var body = new StringContent(queryJson, Encoding.ASCII, "application/json");
 
             var response = await Spansh.client.PostAsync($"https://spansh.co.uk/api/systems/search", body);
@@ -272,6 +223,11 @@ namespace SrvSurvey.net
             public double x;
             public double y;
             public double z;
+
+            public StarPos toStarPos()
+            {
+                return new StarPos(this.x, this.y, this.z);
+            }
         }
     }
 

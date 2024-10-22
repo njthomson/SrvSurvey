@@ -1,5 +1,6 @@
 ﻿using SrvSurvey.game;
-using SrvSurvey.net.EDSM;
+using SrvSurvey.net;
+using System.Diagnostics;
 
 namespace SrvSurvey
 {
@@ -7,10 +8,7 @@ namespace SrvSurvey
     {
         public static bool forceShow = false;
 
-        private static Dictionary<string, JumpInfo> systemsCache = new Dictionary<string, JumpInfo>();
-
-        private string nextSystem;
-        private RouteInfo nextHop;
+        private NetSysData netData;
         private int nextHopIdx;
         private List<float> hopDistances = new List<float>();
         private List<bool> hopScoops = new List<bool>();
@@ -20,8 +18,6 @@ namespace SrvSurvey
         {
             this.Font = GameColors.fontSmall;
         }
-
-        private JumpInfo info { get => systemsCache[nextSystem]; }
 
         public override bool allow { get => PlotJumpInfo.allowPlotter; }
 
@@ -34,8 +30,8 @@ namespace SrvSurvey
                     (Game.activeGame.status.FsdChargingJump && Game.activeGame.isMode(GameMode.Flying, GameMode.SuperCruising))
                     // whilst in whitch space, jumping to next system
                     || Game.activeGame.mode == GameMode.FSDJumping
+                    // or a keystroke forced it
                     || PlotJumpInfo.forceShow
-                // || Game.activeGame.mode == GameMode.RolePanel // debugging helper
                 );
         }
 
@@ -67,177 +63,137 @@ namespace SrvSurvey
 
         private void initFromRoute()
         {
+            // take the current route, without the first (current) system, but keep that for below
+            var routeStart = game.navRoute.Route.FirstOrDefault() ?? RouteEntry.from(game.systemData);
             var route = game.navRoute.Route.Skip(1).ToList();
 
-            if (route.Count == 0 && game.fsdTarget?.Name != null)
+            RouteEntry? next = null;
+            var onNetData = (NetSysData.Source source, NetSysData netData) =>
             {
-                Game.log($"Faking route for: {game.fsdTarget.Name}");
+                if (next == null) return;
 
-                // create a route if we have a single hop
-                var destination = new RouteEntry()
-                {
-                    StarClass = game.fsdTarget.StarClass,
-                    // no StarPos it is not part of FSDTarget journal entries
-                    StarSystem = game.fsdTarget.Name,
-                    SystemAddress = game.fsdTarget.SystemAddress,
-                };
-                route.Add(destination);
-            }
+                if (next.StarClass == null && netData.starClass != null)
+                    next.StarClass = netData.starClass;
 
-            // find next hop in route
-            this.nextSystem = game.fsdTarget?.Name ?? game.status.Destination?.Name!;
-            if (this.nextSystem == null) return;
+                // if we were waiting on the starPos for the next system, populate it and recalculate hop distances too
+                if (next.StarPos == null && netData.starPos != null)
+                    next.StarPos = netData.starPos;
 
-            var next = route.Find(r => r.StarSystem == nextSystem);
-            if (next == null) return;
+                if (this.hopDistances.Count == 0)
+                    this.calcHopDistances(route);
 
-            this.nextHop = RouteInfo.create(next, false);
-            this.nextHopIdx = route.IndexOf(next);
-
-            // measure distances for each hop of the route
-            this.hopDistances.Clear();
-            this.totalDistance = 0;
-            route = game.navRoute.Route;
-            for (var n = 1; n < route.Count; n++)
-            {
-                var d = (float)Util.getSystemDistance(route[n - 1].StarPos, route[n].StarPos);
-                this.hopDistances.Add(d);
-                this.totalDistance += d;
-                var scoopable = "KGBFOAM".Contains(route[n].StarClass);
-                this.hopScoops.Add(scoopable);
-            }
-
-            // did we get POIs for this system already?
-            if (systemsCache.ContainsKey(nextSystem))
-            {
-                // ... yes
                 this.Invalidate();
-                if (this.totalDistance == 0)
-                    this.calculateSingleHopDistances();
+            };
+
+            // proceed with either FSDTarget or status.Destination, or exit early if none
+            if (game.fsdTarget != null)
+            {
+                this.netData = NetSysData.get(game.fsdTarget.Name!, game.fsdTarget.SystemAddress, onNetData);
+            }
+            else if (game.status.Destination?.Name != null && game.status.Destination.System > 0 && game.status.Destination.Body == 0)
+            {
+                this.netData = NetSysData.get(game.status.Destination.Name, game.status.Destination.System, onNetData);
+            }
+            if (this.netData == null)
+            {
+                Game.log($"Why no next name of address?");
+                Debugger.Break();
                 return;
             }
 
-            systemsCache[nextSystem] = new JumpInfo();
-
-            // make EDSM request for next system traffic
-            Game.edsm.getSystemTraffic(next.StarSystem).ContinueWith(task => Program.crashGuard(() =>
+            // find next jump within the route
+            next = route.Find(r => r.StarSystem == netData.systemName);
+            if (next == null)
             {
-                if (task.Exception != null || !task.IsCompletedSuccessfully)
+                Game.log($"Faking route for: {netData.systemName} ({netData.systemAddress})");
+
+                // create a route entry even though it wasn't in the root ...
+                next = new RouteEntry()
                 {
-                    Util.isFirewallProblem(task.Exception);
-                    return;
+                    StarClass = netData.starClass!,
+                    // probably no StarPos
+                    StarSystem = netData.systemName!,
+                    SystemAddress = netData.systemAddress,
+                };
+                if (next.StarPos == null && netData.starPos != null) next.StarPos = netData.starPos;
+                if (next.StarClass == null && game.fsdTarget?.SystemAddress == next.SystemAddress) next.StarClass = game.fsdTarget.StarClass;
+
+                if (game.systemData == null) return;
+
+                // using our current system as the start
+                if (routeStart == null || routeStart.SystemAddress != game.systemData.address)
+                {
+                    routeStart = route.Find(r => r.SystemAddress == game.systemData.address);
+                    if (routeStart == null) routeStart = RouteEntry.from(game.systemData);
                 }
 
-                this.info.traffic = task.Result;
-                Program.control.BeginInvoke(() => this.Invalidate());
-            }));
+                // and force a new route from here to there
+                route.Clear();
+                route.Add(next);
+            }
+            this.nextHopIdx = route.IndexOf(next);
 
-            // make Spansh request to get faction states and ports
-            Game.spansh.getSystem(next.SystemAddress).ContinueWith(task => Program.crashGuard(() =>
-            {
-                if (task.Exception != null || !task.IsCompletedSuccessfully)
-                {
-                    Util.isFirewallProblem(task.Exception);
-                    return;
-                }
+            // start loading net data
+            if (this.netData.starClass != null) this.netData.starClass = next.StarClass;
 
-                var data = task.Result;
-                if (data == null || this.IsDisposed) return;
-
-                this.info.countPOI["Bodies"] = data.body_count;
-
-                // last updated
-                if (data.updated_at != null && data.bodies?.Count > 0)
-                    systemsCache[nextSystem].lastUpdated = data.updated_at;
-
-                // how many stations are there?
-                if (data.stations?.Count > 0)
-                {
-                    var countFC = 0;
-                    var countSettlements = 0;
-                    var countStarports = 0;
-                    var countOutposts = 0;
-                    foreach (var sta in data.stations)
-                    {
-                        if (sta.type == "Drake-Class Carrier") countFC++;
-                        if (sta.type == "Settlement") countSettlements++;
-                        if (sta.type == "Outpost") countOutposts++;
-                        if (EdsmSystemStations.Starports.Contains(sta.type)) countStarports++;
-                        // Include dockable mega ships with shipyards
-                        if (sta.type == "Mega ship" && sta.has_shipyard) countStarports++;
-                    }
-
-                    var parts = new List<string>();
-                    if (countFC > 0) this.info.countPOI["FC"] = countFC;
-                    if (countSettlements > 0) this.info.countPOI["Settlements"] = countSettlements;
-                    if (countOutposts > 0) this.info.countPOI["Outposts"] = countOutposts;
-                    if (countStarports > 0) this.info.countPOI["Star ports"] = countStarports;
-
-                    Program.control.BeginInvoke(() => this.Invalidate());
-                }
-
-                // Any factions at war?
-                var countWars = data.minor_faction_presences?.Count(f => f.state == "War" || f.state == "Civil War") ?? 0;
-                if (countWars > 0)
-                    this.info.countPOI["Wars"] = countWars / 2;
-
-                Program.control.BeginInvoke(() => this.Invalidate());
-            }));
-
-            // make Canonn request for exo biology
-            Game.canonn.systemBioStats(next.SystemAddress).ContinueWith(task => Program.crashGuard(() =>
-            {
-                if (task.Exception != null || !task.IsCompletedSuccessfully)
-                {
-                    Util.isFirewallProblem(task.Exception);
-                    return;
-                }
-
-                if (task?.Result == null || this.IsDisposed) return;
-
-                foreach (var body in task.Result.bodies)
-                {
-                    var bioSignals = body.signals?.signals?.GetValueOrDefault("$SAA_SignalType_Biological;") ?? 0;
-                    if (bioSignals > 0) this.info.countPOI["Genus"] += bioSignals;
-                }
-
-                // inject missing StarPos if needed
-                if (nextHop.entry.StarPos == null)
-                {
-                    nextHop.entry.StarPos = task.Result.coords;
-                    this.calculateSingleHopDistances();
-                }
-
-                //// last updated
-                //if (task.Result.date != null && task.Result.bodies?.Count > 0)
-                //    systemsCache[nextSystem].lastUpdated = task.Result.date;
-
-                Program.control.BeginInvoke(() => this.Invalidate());
-            }));
+            // measure distances for each hop of the route, putting the current system first again
+            if (routeStart != null) route.Insert(0, routeStart);
+            this.calcHopDistances(route);
 
             // Guardian stuff?
-            var countRuins = Game.canonn.loadAllRuins().Count(r => r.systemAddress == next.SystemAddress);
-            var countStructures = Game.canonn.loadAllStructures().Count(r => r.systemAddress == next.SystemAddress);
-            var countBeacons = Game.canonn.loadAllBeacons().Count(r => r.systemAddress == next.SystemAddress);
-            this.info.countPOI["Guardian"] = countRuins + countStructures + countBeacons;
-            if (this.info.countPOI["Guardian"] > 0) this.Invalidate();
+            if (Game.canonn.allRuins == null || Game.canonn.allStructures == null || Game.canonn.allBeacons == null)
+            {
+                Game.log("Why is allRuins not populated?");
+                Debugger.Break();
+            }
+            else
+            {
+                // show potential guardian stuff as a special line
+                var list = new List<string>();
+
+                var countRuins = Game.canonn.allRuins.Count(r => r.systemAddress == next.SystemAddress);
+                if (countRuins > 0) list.Add($"Ruins: {countRuins}");
+
+                var countStructures = Game.canonn.allStructures.Count(r => r.systemAddress == next.SystemAddress);
+                if (countStructures > 0) list.Add($"Structures: {countStructures}");
+
+                var countBeacons = Game.canonn.allBeacons.Count(r => r.systemAddress == next.SystemAddress);
+                if (countBeacons > 0) list.Add($"Beacon");
+
+                if (list.Count > 0)
+                {
+                    netData.special ??= new();
+                    netData.special["Guardian"] = list;
+                }
+
+                /*
+                netData.countPOI["Guardian"] = countRuins + countStructures + countBeacons;
+                if (netData.countPOI["Guardian"] > 0) this.Invalidate();
+                */
+            }
         }
 
-        private void calculateSingleHopDistances()
+        private void calcHopDistances(List<RouteEntry> route)
         {
-            // measure distance from current system to next
             this.hopDistances.Clear();
+            this.hopScoops.Clear();
 
-            var d = (float)Util.getSystemDistance(game.cmdr.starPos, nextHop.entry.StarPos);
-            this.hopDistances.Add(d);
-            this.totalDistance = d;
-            var scoopable = "KGBFOAM".Contains(nextHop.entry.StarClass ?? "");
-            this.hopScoops.Add(scoopable);
+            this.totalDistance = 0;
+            for (var n = 1; n < route.Count; n++)
+            {
+                if (route[n].StarPos == null) continue;
+
+                var d = (float)Util.getSystemDistance(route[n - 1].StarPos, route[n].StarPos);
+                this.hopDistances.Add(d);
+                this.totalDistance += d;
+                var scoopable = route[n].StarClass != null && "KGBFOAM".Contains(route[n].StarClass);
+                this.hopScoops.Add(scoopable);
+            }
         }
 
         protected override void onPaintPlotter(PaintEventArgs e)
         {
-            if (this.nextHop == null)
+            if (this.netData == null)
             {
                 // avoid showing an empty plotter
                 this.Opacity = 0;
@@ -249,35 +205,42 @@ namespace SrvSurvey
             drawTextAt2(eight, $"Next jump: ");
             dty -= two;
 
-            drawTextAt2(this.nextHop.systemName, GameColors.fontMiddleBold);
-            drawTextAt2(this.Width - eight, $"class: {nextHop.entry.StarClass}", nextHop.entry.StarClass == "N" ? GameColors.Cyan : null, null, true);
+            drawTextAt2(this.netData.systemName, GameColors.fontMiddleBold);
+            if (netData.starClass != null)
+                drawTextAt2(this.Width - eight, $"class: {netData.starClass}", netData.starClass == "N" ? GameColors.Cyan : null, null, true);
             newLine(+eight, true);
 
             this.drawJumpLine();
 
             // 2nd line: discovered vs unvisited + discovered and update dates
-            var lineTwo = string.IsNullOrEmpty(nextHop.subStatus)
-                ? "▶️ " + nextHop.status
-                : "▶️ Discovered by" + nextHop.subStatus.Substring(2);
+            if (netData.totalBodyCount == 0)
+                drawTextAt2(eight, $"▶️ {netData.discoveryStatus}", GameColors.Cyan);
+            else if (netData.discoveredDate.HasValue)
+                drawTextAt2(eight, $"▶️ Discovered by {netData.discoveredBy} {netData.discoveredDate.Value.ToString("d")}");
+            //drawTextAt2($"(EDSM)", GameColors.OrangeDim);
 
-            var lastUpdated = systemsCache[nextSystem].lastUpdated;
-            if (lastUpdated != null && nextHop.lastUpdated > nextHop.discoveredDate)
-                lineTwo += $", last updated: " + nextHop.lastUpdated.Value.ToLocalTime().ToString("d");
-                drawTextAt2(eight, lineTwo, nextHop.highlight ? GameColors.Cyan : null);
-            drawTextAt2(" (EDSM)", GameColors.OrangeDim);
+            var lastUpdated = netData.lastUpdated;// ?? netData.spanshSystem?.updated_at.GetValueOrDefault()?.ToLocalTime();
+            if (lastUpdated == null && netData.spanshSystem?.updated_at != null) lastUpdated = netData.spanshSystem.updated_at.Value.ToLocalTime();
+            if (lastUpdated != null && (lastUpdated > netData.discoveredDate || netData.discoveredDate == null))
+            {
+                drawTextAt2($" ▶️ Last updated: " + lastUpdated.Value.ToString("d"));
+                //drawTextAt2(eight, lineTwo, netData.discovered == false ? GameColors.Cyan : null);
+                //drawTextAt2(Game.settings.useLastUpdatedFromSpanshNotEDSM ? "(Spansh)" : "(EDSM)", GameColors.OrangeDim);
+            }
             newLine(+one, true);
 
             // traffic (if known)
-            if (this.info.traffic?.traffic != null && this.info.traffic.traffic.total > 0)
+            var traffic = netData.edsmTraffic?.traffic;
+            if (traffic != null && traffic.total > 0)
             {
-                var lineThree = $"▶️ Traffic last 24 hours: {this.info.traffic.traffic.day.ToString("n0")}, week: {this.info.traffic.traffic.week.ToString("n0")}, ever: {this.info.traffic.traffic.total.ToString("n0")}";
+                var lineThree = $"▶️ Traffic last 24 hours: {traffic.day.ToString("n0")}, week: {traffic.week.ToString("n0")}, ever: {traffic.total.ToString("n0")}";
                 drawTextAt2(eight, lineThree);
-                drawTextAt2(" (EDSM)", GameColors.OrangeDim);
+                drawTextAt2("(EDSM)", GameColors.OrangeDim);
                 newLine(+one, true);
             }
 
             // 3rd line: count of ports, genus, etc
-            var POIs = this.info.countPOI
+            var POIs = netData.countPOI
                 .Where(_ => _.Value > 0)
                 .Select(_ => $"{_.Key}: {_.Value}");
             if (POIs.Any())
@@ -288,11 +251,11 @@ namespace SrvSurvey
             }
 
             // 4th line: anything special
-            if (this.nextHop.special?.Count > 0)
-            { 
-                foreach(var pair in this.nextHop.special)
+            if (netData.special?.Count > 0)
+            {
+                foreach (var pair in netData.special)
                 {
-                    drawTextAt2(eight, $"▶️ {pair.Key}:", GameColors.Cyan, GameColors.fontSmallBold);
+                    drawTextAt2(eight, $"▶️ {pair.Key}: ", GameColors.Cyan, GameColors.fontSmallBold);
                     drawTextAt2(string.Join(", ", pair.Value), GameColors.Cyan);
                     newLine(+one, true);
                 }
@@ -422,26 +385,5 @@ namespace SrvSurvey
 
             newLine(+four);
         }
-
-    }
-
-    internal class JumpInfo
-    {
-        public DateTimeOffset? lastUpdated;
-
-        public EdsmSystemTraffic? traffic;
-
-        public Dictionary<string, int> countPOI = new Dictionary<string, int>()
-        {
-            // (these are rendered in this order)
-            { "Bodies", 0 }, // Count of bodies in system
-            { "Guardian", 0 }, // Total count for the system
-            { "Genus", 0 }, // Total count for the system
-            { "Star ports", 0 }, // Anything with a large pad
-            { "Outposts", 0 },
-            { "Settlements", 0 }, // Odyssey settlements
-            { "FC", 0 }, // Fleet carriers
-            { "Wars", 0 }, // Count of wars - (Count of factions in War or Civil-War state / 2)
-        };
     }
 }

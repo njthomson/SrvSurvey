@@ -43,7 +43,6 @@ namespace SrvSurvey
                 Game.log($"Watching folder: {Game.settings.watchedJournalFolder}");
             }
 
-            // Don't attempt this on Linux currently
             if (Path.Exists(Elite.displaySettingsFolder))
             {
                 // watch for changes in DisplaySettings.xml 

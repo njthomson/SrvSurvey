@@ -537,6 +537,11 @@ namespace SrvSurvey
             Process.GetCurrentProcess().Kill();
         }
 
+        /// <summary> Defer the given action behind BeginInvoke </summary>
+        public static void defer(Action func)
+        {
+            Program.control.BeginInvoke(func);
+        }
     }
 
     interface PlotterForm

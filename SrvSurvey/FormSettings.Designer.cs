@@ -134,6 +134,7 @@ namespace SrvSurvey
             lblScreenshotTarget = new Label();
             checkLocalTime = new CheckBox();
             tabPage6 = new TabPage();
+            checkBox32 = new CheckBox();
             checkBox28 = new CheckBox();
             pictureBox13 = new PictureBox();
             pictureBox10 = new PictureBox();
@@ -259,7 +260,7 @@ namespace SrvSurvey
             panel1.Controls.Add(btnSave);
             panel1.Controls.Add(btnCancel);
             panel1.Dock = DockStyle.Bottom;
-            panel1.Location = new Point(0, 448);
+            panel1.Location = new Point(0, 476);
             panel1.Margin = new Padding(4, 3, 4, 3);
             panel1.Name = "panel1";
             panel1.Size = new Size(620, 48);
@@ -343,7 +344,7 @@ namespace SrvSurvey
             tabPage1.Margin = new Padding(4, 3, 4, 3);
             tabPage1.Name = "tabPage1";
             tabPage1.Padding = new Padding(4, 3, 4, 3);
-            tabPage1.Size = new Size(612, 420);
+            tabPage1.Size = new Size(612, 448);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "General";
             // 
@@ -764,11 +765,12 @@ namespace SrvSurvey
             tabControl1.Margin = new Padding(4, 3, 4, 3);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(620, 448);
+            tabControl1.Size = new Size(620, 476);
             tabControl1.TabIndex = 0;
             // 
             // tabPage4
             // 
+            tabPage4.BorderStyle = BorderStyle.Fixed3D;
             tabPage4.Controls.Add(checkBox27);
             tabPage4.Controls.Add(pictureBox2);
             tabPage4.Controls.Add(numMinBioDuration);
@@ -791,7 +793,7 @@ namespace SrvSurvey
             tabPage4.Location = new Point(4, 24);
             tabPage4.Name = "tabPage4";
             tabPage4.Padding = new Padding(3);
-            tabPage4.Size = new Size(612, 420);
+            tabPage4.Size = new Size(612, 448);
             tabPage4.TabIndex = 3;
             tabPage4.Text = "Bio Scanning";
             // 
@@ -1200,7 +1202,7 @@ namespace SrvSurvey
             tabPage3.Location = new Point(4, 24);
             tabPage3.Name = "tabPage3";
             tabPage3.Padding = new Padding(3);
-            tabPage3.Size = new Size(612, 420);
+            tabPage3.Size = new Size(612, 448);
             tabPage3.TabIndex = 2;
             tabPage3.Text = "Guardian sites";
             // 
@@ -1422,6 +1424,7 @@ namespace SrvSurvey
             // 
             // tabPage5
             // 
+            tabPage5.BorderStyle = BorderStyle.Fixed3D;
             tabPage5.Controls.Add(btnBannerColor);
             tabPage5.Controls.Add(checkDeleteScreenshotOriginal);
             tabPage5.Controls.Add(pictureBox3);
@@ -1438,7 +1441,7 @@ namespace SrvSurvey
             tabPage5.Location = new Point(4, 24);
             tabPage5.Name = "tabPage5";
             tabPage5.Padding = new Padding(3);
-            tabPage5.Size = new Size(612, 420);
+            tabPage5.Size = new Size(612, 448);
             tabPage5.TabIndex = 4;
             tabPage5.Text = "Screenshots";
             // 
@@ -1463,7 +1466,7 @@ namespace SrvSurvey
             checkDeleteScreenshotOriginal.Location = new Point(7, 145);
             checkDeleteScreenshotOriginal.Margin = new Padding(4, 3, 4, 3);
             checkDeleteScreenshotOriginal.Name = "checkDeleteScreenshotOriginal";
-            checkDeleteScreenshotOriginal.Size = new Size(595, 19);
+            checkDeleteScreenshotOriginal.Size = new Size(591, 19);
             checkDeleteScreenshotOriginal.TabIndex = 7;
             checkDeleteScreenshotOriginal.Tag = "deleteScreenshotOriginal";
             checkDeleteScreenshotOriginal.Text = "Remove original files after conversion";
@@ -1492,7 +1495,7 @@ namespace SrvSurvey
             checkUseGuardianAerialScreenshotsFolder.Location = new Point(7, 311);
             checkUseGuardianAerialScreenshotsFolder.Margin = new Padding(4, 3, 4, 3);
             checkUseGuardianAerialScreenshotsFolder.Name = "checkUseGuardianAerialScreenshotsFolder";
-            checkUseGuardianAerialScreenshotsFolder.Size = new Size(595, 66);
+            checkUseGuardianAerialScreenshotsFolder.Size = new Size(591, 66);
             checkUseGuardianAerialScreenshotsFolder.TabIndex = 11;
             checkUseGuardianAerialScreenshotsFolder.Tag = "useGuardianAerialScreenshotsFolder";
             checkUseGuardianAerialScreenshotsFolder.Text = resources.GetString("checkUseGuardianAerialScreenshotsFolder.Text");
@@ -1527,7 +1530,7 @@ namespace SrvSurvey
             linkScreenshotSourceFolder.BorderStyle = BorderStyle.FixedSingle;
             linkScreenshotSourceFolder.Location = new Point(41, 47);
             linkScreenshotSourceFolder.Name = "linkScreenshotSourceFolder";
-            linkScreenshotSourceFolder.Size = new Size(561, 35);
+            linkScreenshotSourceFolder.Size = new Size(557, 35);
             linkScreenshotSourceFolder.TabIndex = 3;
             linkScreenshotSourceFolder.TabStop = true;
             linkScreenshotSourceFolder.Tag = "screenshotSourceFolder";
@@ -1544,7 +1547,7 @@ namespace SrvSurvey
             checkAddBanner.Location = new Point(7, 170);
             checkAddBanner.Margin = new Padding(4, 3, 4, 3);
             checkAddBanner.Name = "checkAddBanner";
-            checkAddBanner.Size = new Size(595, 19);
+            checkAddBanner.Size = new Size(591, 19);
             checkAddBanner.TabIndex = 8;
             checkAddBanner.Tag = "addBannerToScreenshots";
             checkAddBanner.Text = "Embed locations details within image, if known. Eg:";
@@ -1560,7 +1563,7 @@ namespace SrvSurvey
             checkProcessScreenshots.Location = new Point(7, 6);
             checkProcessScreenshots.Margin = new Padding(4, 3, 4, 3);
             checkProcessScreenshots.Name = "checkProcessScreenshots";
-            checkProcessScreenshots.Size = new Size(595, 19);
+            checkProcessScreenshots.Size = new Size(591, 19);
             checkProcessScreenshots.TabIndex = 0;
             checkProcessScreenshots.Tag = "processScreenshots";
             checkProcessScreenshots.Text = "Convert .bmp screenshots into .png files";
@@ -1573,7 +1576,7 @@ namespace SrvSurvey
             linkTargetScreenshotFolder.BorderStyle = BorderStyle.FixedSingle;
             linkTargetScreenshotFolder.Location = new Point(42, 104);
             linkTargetScreenshotFolder.Name = "linkTargetScreenshotFolder";
-            linkTargetScreenshotFolder.Size = new Size(560, 35);
+            linkTargetScreenshotFolder.Size = new Size(556, 35);
             linkTargetScreenshotFolder.TabIndex = 6;
             linkTargetScreenshotFolder.TabStop = true;
             linkTargetScreenshotFolder.Tag = "screenshotTargetFolder";
@@ -1615,6 +1618,8 @@ namespace SrvSurvey
             // tabPage6
             // 
             tabPage6.BackColor = SystemColors.Control;
+            tabPage6.BorderStyle = BorderStyle.Fixed3D;
+            tabPage6.Controls.Add(checkBox32);
             tabPage6.Controls.Add(checkBox28);
             tabPage6.Controls.Add(pictureBox13);
             tabPage6.Controls.Add(pictureBox10);
@@ -1643,9 +1648,21 @@ namespace SrvSurvey
             tabPage6.Location = new Point(4, 24);
             tabPage6.Name = "tabPage6";
             tabPage6.Padding = new Padding(3);
-            tabPage6.Size = new Size(612, 420);
+            tabPage6.Size = new Size(612, 448);
             tabPage6.TabIndex = 5;
             tabPage6.Text = "Exploration";
+            // 
+            // checkBox32
+            // 
+            checkBox32.AutoSize = true;
+            checkBox32.FlatStyle = FlatStyle.System;
+            checkBox32.Location = new Point(10, 422);
+            checkBox32.Name = "checkBox32";
+            checkBox32.Size = new Size(271, 20);
+            checkBox32.TabIndex = 35;
+            checkBox32.Tag = "useLastUpdatedFromSpanshNotEDSM";
+            checkBox32.Text = "Use last updated time from Spansh not EDSM";
+            checkBox32.UseVisualStyleBackColor = true;
             // 
             // checkBox28
             // 
@@ -1980,6 +1997,7 @@ namespace SrvSurvey
             // 
             // tabPage7
             // 
+            tabPage7.BorderStyle = BorderStyle.Fixed3D;
             tabPage7.Controls.Add(pictureBox7);
             tabPage7.Controls.Add(checkUseBioData);
             tabPage7.Controls.Add(radioUseRadius);
@@ -1996,7 +2014,7 @@ namespace SrvSurvey
             tabPage7.Location = new Point(4, 24);
             tabPage7.Name = "tabPage7";
             tabPage7.Padding = new Padding(3);
-            tabPage7.Size = new Size(612, 420);
+            tabPage7.Size = new Size(612, 448);
             tabPage7.TabIndex = 6;
             tabPage7.Text = "External Data";
             // 
@@ -2162,6 +2180,7 @@ namespace SrvSurvey
             // tabSettlements
             // 
             tabSettlements.BackColor = SystemColors.Control;
+            tabSettlements.BorderStyle = BorderStyle.Fixed3D;
             tabSettlements.Controls.Add(groupBox2);
             tabSettlements.Controls.Add(groupBox1);
             tabSettlements.Controls.Add(numHumanSitePlotterHeight);
@@ -2173,7 +2192,7 @@ namespace SrvSurvey
             tabSettlements.Location = new Point(4, 24);
             tabSettlements.Name = "tabSettlements";
             tabSettlements.Padding = new Padding(3);
-            tabSettlements.Size = new Size(612, 420);
+            tabSettlements.Size = new Size(612, 448);
             tabSettlements.TabIndex = 7;
             tabSettlements.Text = "Settlements";
             // 
@@ -2471,7 +2490,7 @@ namespace SrvSurvey
             tabPage2.Location = new Point(4, 24);
             tabPage2.Name = "tabPage2";
             tabPage2.Padding = new Padding(3);
-            tabPage2.Size = new Size(612, 420);
+            tabPage2.Size = new Size(612, 448);
             tabPage2.TabIndex = 1;
             tabPage2.Text = "About";
             // 
@@ -2479,7 +2498,7 @@ namespace SrvSurvey
             // 
             linkAboutTwo.Dock = DockStyle.Bottom;
             linkAboutTwo.LinkArea = new LinkArea(83, 21);
-            linkAboutTwo.Location = new Point(3, 365);
+            linkAboutTwo.Location = new Point(3, 393);
             linkAboutTwo.Name = "linkAboutTwo";
             linkAboutTwo.Size = new Size(602, 48);
             linkAboutTwo.TabIndex = 2;
@@ -2510,7 +2529,7 @@ namespace SrvSurvey
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = btnCancel;
-            ClientSize = new Size(620, 496);
+            ClientSize = new Size(620, 524);
             Controls.Add(tabControl1);
             Controls.Add(panel1);
             FormBorderStyle = FormBorderStyle.FixedDialog;
@@ -2758,5 +2777,6 @@ namespace SrvSurvey
         private CheckBox checkBox30;
         private CheckBox checkBox29;
         private Label label26;
+        private CheckBox checkBox32;
     }
 }

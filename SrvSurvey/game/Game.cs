@@ -129,6 +129,7 @@ namespace SrvSurvey.game
         public SystemBody? systemBody;
         public GuardianSiteData? systemSite;
         public CanonnStation? systemStation;
+        public FSDTarget? fsdTarget;
         public string shipType;
         public float shipMaxJump;
         public SettlementMatCollectionData? matStatsTracker;
@@ -976,6 +977,7 @@ namespace SrvSurvey.game
             {
                 // if atMainMenu has changed - force a status change event
                 this.atMainMenu = newMainMenu;
+                this.fsdJumping = false;
                 this.Status_StatusChanged(false);
                 if (this.atMainMenu)
                     this.exitMats();
@@ -1011,7 +1013,7 @@ namespace SrvSurvey.game
                 cmdr.countJumps += 1;
                 cmdr.Save();
 
-                this.fsdJumping = true;
+                Program.defer(() => this.fsdJumping = true);
                 SystemData.Close(this.systemData);
                 this.canonnPoi = null;
                 this.systemBody = null;
@@ -1042,11 +1044,14 @@ namespace SrvSurvey.game
             fireUpdate(true);
         }
 
-        public FSDTarget? fsdTarget;
-
         private void onJournalEntry(FSDTarget entry)
         {
             this.fsdTarget = entry;
+        }
+
+        private void onJournalEntry(NavRouteClear entry)
+        {
+            this.fsdTarget = null;
         }
 
         private void onJournalEntry(FSDJump entry)

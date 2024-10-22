@@ -87,6 +87,7 @@ namespace SrvSurvey.net.EDSM
         public bool isScoopable;
         public bool isLandable;
         public long age;
+        public string? spectralClass;
         public string luminosity;
         public double absoluteMagnitude;
         public double solarMasses;

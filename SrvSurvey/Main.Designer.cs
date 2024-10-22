@@ -514,14 +514,15 @@ namespace SrvSurvey
             // 
             // lblFullScreen
             // 
-            lblFullScreen.BackColor = Color.DarkRed;
+            lblFullScreen.BackColor = Color.OrangeRed;
             lblFullScreen.Dock = DockStyle.Top;
-            lblFullScreen.ForeColor = Color.White;
+            lblFullScreen.ForeColor = Color.Black;
             lblFullScreen.Location = new Point(0, 0);
             lblFullScreen.Name = "lblFullScreen";
             lblFullScreen.Padding = new Padding(10);
             lblFullScreen.Size = new Size(437, 86);
             lblFullScreen.TabIndex = 18;
+            lblFullScreen.Tag = "NoTheme";
             lblFullScreen.Text = "SrvSurvey cannot be used when Elite Dangerous is in Full Screen mode.\r\n\r\nPlease go to Options > Graphics > Display and change setting FULLSCREEN to either BORDERLESS or WINDOWED.";
             lblFullScreen.TextAlign = ContentAlignment.TopCenter;
             lblFullScreen.Visible = false;
@@ -633,10 +634,10 @@ namespace SrvSurvey
             // 
             // lblNotInstalled
             // 
-            lblNotInstalled.BackColor = Color.DarkRed;
+            lblNotInstalled.BackColor = Color.OrangeRed;
             lblNotInstalled.Dock = DockStyle.Top;
             lblNotInstalled.Font = new Font("Lucida Sans Typewriter", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            lblNotInstalled.ForeColor = Color.White;
+            lblNotInstalled.ForeColor = Color.Black;
             lblNotInstalled.LinkArea = new LinkArea(57, 15);
             lblNotInstalled.LinkColor = Color.FromArgb(128, 255, 255);
             lblNotInstalled.Location = new Point(0, 86);
@@ -645,6 +646,7 @@ namespace SrvSurvey
             lblNotInstalled.Size = new Size(437, 102);
             lblNotInstalled.TabIndex = 21;
             lblNotInstalled.TabStop = true;
+            lblNotInstalled.Tag = "NoTheme";
             lblNotInstalled.Text = "This application is intended for use only with the game \"Elite Dangerous\" by Frontier Developments.\r\n\r\nIt does not appear the game is installed.";
             lblNotInstalled.TextAlign = ContentAlignment.TopCenter;
             lblNotInstalled.UseCompatibleTextRendering = true;

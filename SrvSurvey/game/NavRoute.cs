@@ -125,10 +125,13 @@ namespace SrvSurvey
         public double[] StarPos { get; set; }
         public string StarClass { get; set; }
 
-        public static RouteEntry from(SystemData data)
+        public static RouteEntry? from(SystemData? data)
         {
+            if (data == null) return null;
+
             return new RouteEntry
             {
+                StarClass = data.bodies?.Find(b => b.isMainStar)?.starType!,
                 SystemAddress = data.address,
                 StarSystem = data.name,
                 StarPos = data.starPos
