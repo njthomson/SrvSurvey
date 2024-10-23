@@ -133,6 +133,10 @@ namespace SrvSurvey.game
         public string shipType;
         public float shipMaxJump;
         public SettlementMatCollectionData? matStatsTracker;
+        /// <summary>
+        /// An arbitrary point on a planet surface. Doesn't really matter where, so long as it isn't too far away.
+        /// </summary>
+        public LatLong2 dropPoint;
 
         /// <summary>
         /// Distinct settings for the current commander
@@ -622,6 +626,9 @@ namespace SrvSurvey.game
             // clear old touchdown location but we're no longer on a planet
             if (cmdr?.lastTouchdownLocation != null && !status.hasLatLong) cmdr.clearTouchdown();
 
+            if (this.status.hasLatLong)
+                this.dropPoint = Status.here.clone();
+
             log($"Game.initializeFromJournal: END Commander:{this.Commander}, starSystem:{cmdr?.currentSystem}, systemLocation:{cmdr?.lastSystemLocation}, systemBody:{this.systemBody}, journals.Count:{journals.Count}");
             this.initialized = Game.activeGame == this && this.Commander != null;
             this.checkModeChange();
@@ -1079,6 +1086,7 @@ namespace SrvSurvey.game
         private void onJournalEntry(SupercruiseExit entry)
         {
             this.setLocations(entry);
+            this.dropPoint = Status.here.clone();
         }
 
         private int deferPredictSpeciesPending;

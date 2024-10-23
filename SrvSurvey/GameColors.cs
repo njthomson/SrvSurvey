@@ -188,12 +188,48 @@ namespace SrvSurvey
                 SurroundColors = new Color[] { Color.Transparent },
                 CenterPoint = new PointF(0, 0)
             };
+
+            var boxSize = 100;
+            var img = new Bitmap(boxSize * 2, boxSize * 2);
+            using (var g = Graphics.FromImage(img))
+            {
+                g.FillRectangle(Brushes.Black, 0, 0, boxSize, boxSize);
+                g.FillRectangle(Brushes.Black, boxSize, boxSize, boxSize, boxSize);
+            }
+            brushGroundChecks = new TextureBrush(img)
+            {
+                WrapMode = WrapMode.TileFlipXY,
+            };
         }
 
         public static GraphicsPath shiningPath;
         public static PathGradientBrush shiningBrush;
         public static GraphicsPath shiningCmdrPath;
         public static PathGradientBrush shiningCmdrBrush;
+
+        /// <summary>
+        /// Large black checkered boxes for map backgrounds
+        /// </summary>
+        public static TextureBrush brushGroundChecks;
+
+        /// <summary>
+        /// Returns a brush for large black checkered boxes for map backgrounds, adjusted by the given scale and location on the current body.
+        /// </summary>
+        public static Brush adjustGroundChecks(float scale)
+        {
+            var game = Game.activeGame;
+            if (game?.status == null) return Brushes.Transparent;
+
+            brushGroundChecks.ResetTransform();
+            brushGroundChecks.RotateTransform(360 - game.status.Heading);
+
+            var offset = (PointF)Util.getOffset(game.status.PlanetRadius, game.dropPoint, 0);
+            var x = -offset.X * scale;
+            var y = offset.Y * scale;
+            brushGroundChecks.TranslateTransform((int)x, (int)y);
+
+            return GameColors.brushGroundChecks;
+        }
 
         public static Color LimeIsh = Color.FromArgb(200, Color.Lime);
 

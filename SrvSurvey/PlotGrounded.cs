@@ -264,6 +264,9 @@ namespace SrvSurvey
             g.ResetTransform();
             g.TranslateTransform(mw, mh);
 
+            // draw black background checks
+            g.FillRectangle(GameColors.adjustGroundChecks(scale), -Width, -Height, Width * 2, Height * 2);
+
             // draw compass rose lines
             g.RotateTransform(360 - game.status!.Heading);
             g.DrawLine(Pens.DarkRed, -this.Width, 0, +this.Width, 0);
