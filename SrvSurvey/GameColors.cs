@@ -218,7 +218,8 @@ namespace SrvSurvey
         public static Brush adjustGroundChecks(float scale)
         {
             var game = Game.activeGame;
-            if (game?.status == null) return Brushes.Transparent;
+            if (game?.status == null || !game.status.hasLatLong) return Brushes.Transparent;
+            if (game.dropPoint == null) game.dropPoint = Status.here.clone();
 
             brushGroundChecks.ResetTransform();
             brushGroundChecks.RotateTransform(360 - game.status.Heading);

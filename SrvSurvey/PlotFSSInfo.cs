@@ -66,8 +66,10 @@ namespace SrvSurvey
             // ignore Belt Clusters
             if (entry.Bodyname.Contains("Belt Cluster") || game?.systemData == null)
                 return;
+
             // allow time for the body to get created
             Application.DoEvents();
+            if (game?.systemData == null) return;
 
             var body = game.systemData.bodies.Find(_ => _.id == entry.BodyID)!;
             var newScan = new FssEntry
