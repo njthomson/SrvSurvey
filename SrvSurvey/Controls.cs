@@ -273,7 +273,7 @@ namespace SrvSurvey
         //}
 
         //private string _text;
-        private static Icon logo2 = new Icon(new MemoryStream(Resources.logo2));
+        private static Icon logo2 = new Icon(new MemoryStream(Properties.Resources.logo2));
 
 
         protected override void OnPaint(PaintEventArgs e)

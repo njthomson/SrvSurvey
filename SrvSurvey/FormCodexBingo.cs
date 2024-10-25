@@ -45,7 +45,7 @@ namespace SrvSurvey
             Util.useLastLocation(this, Game.settings.formCodexBingo);
 
             // use an empty icon so the TreeView reserves space for it
-            images.Images.Add("CodexBlank", Resources.CodexBlank);
+            images.Images.Add("CodexBlank", Properties.Resources.CodexBlank);
 
             // prep combos
             findCmdrs();

@@ -916,35 +916,35 @@ namespace SrvSurvey
 
         public static Image getBioImage(string genus, bool large = false)
         {
-            //return Resources.tubus18;
+            //return Properties.Resources.tubus18;
 
             switch (genus)
             {
-                case "$Codex_Ent_Aleoids_Genus_Name;": return Resources.aleoida_18;
-                case "$Codex_Ent_Bacterial_Genus_Name;": return large ? Resources.bacterium38 : Resources.bacterium18;
-                case "$Codex_Ent_Cactoid_Genus_Name;": return Resources.cactoida_18;
-                case "$Codex_Ent_Clypeus_Genus_Name;": return Resources.clypeus_18;
-                case "$Codex_Ent_Conchas_Genus_Name;": return Resources.concha_18;
-                case "$Codex_Ent_Electricae_Genus_Name;": return large ? Resources.electricae38 : Resources.electricae_18;
-                case "$Codex_Ent_Fonticulus_Genus_Name;": return Resources.fonticulua_18;
-                case "$Codex_Ent_Shrubs_Genus_Name;": return large ? Resources.frutexa38 : Resources.frutexa18;
-                case "$Codex_Ent_Fumerolas_Genus_Name;": return Resources.fumerola_18;
-                case "$Codex_Ent_Fungoids_Genus_Name;": return large ? Resources.fungoida38 : Resources.fungoida18;
-                case "$Codex_Ent_Osseus_Genus_Name;": return large ? Resources.osseus38 : Resources.osseus_18;
-                case "$Codex_Ent_Recepta_Genus_Name;": return Resources.recepta_18;
-                case "$Codex_Ent_Stratum_Genus_Name;": return large ? Resources.stratum38 : Resources.stratum18;
-                case "$Codex_Ent_Tubus_Genus_Name;": return large ? Resources.tubus38 : Resources.tubus18;
-                case "$Codex_Ent_Tussocks_Genus_Name;": return large ? Resources.tussock38 : Resources.tussock18;
-                case "$Codex_Ent_Vents_Genus_Name;": return Resources.amphora_18;
-                case "$Codex_Ent_Sphere_Name;": return Resources.anemone_18;
-                case "$Codex_Ent_Cone_Genus_Name;": return Resources.barkmound_18;
-                case "$Codex_Ent_Brancae_Genus_Name;": return Resources.braintree_18;
-                case "$Codex_Ent_Ground_Struct_Ice_Genus_Name;": return Resources.shards_18;
+                case "$Codex_Ent_Aleoids_Genus_Name;": return Properties.Resources.aleoida_18;
+                case "$Codex_Ent_Bacterial_Genus_Name;": return large ? Properties.Resources.bacterium38 : Properties.Resources.bacterium18;
+                case "$Codex_Ent_Cactoid_Genus_Name;": return Properties.Resources.cactoida_18;
+                case "$Codex_Ent_Clypeus_Genus_Name;": return Properties.Resources.clypeus_18;
+                case "$Codex_Ent_Conchas_Genus_Name;": return Properties.Resources.concha_18;
+                case "$Codex_Ent_Electricae_Genus_Name;": return large ? Properties.Resources.electricae38 : Properties.Resources.electricae_18;
+                case "$Codex_Ent_Fonticulus_Genus_Name;": return Properties.Resources.fonticulua_18;
+                case "$Codex_Ent_Shrubs_Genus_Name;": return large ? Properties.Resources.frutexa38 : Properties.Resources.frutexa18;
+                case "$Codex_Ent_Fumerolas_Genus_Name;": return Properties.Resources.fumerola_18;
+                case "$Codex_Ent_Fungoids_Genus_Name;": return large ? Properties.Resources.fungoida38 : Properties.Resources.fungoida18;
+                case "$Codex_Ent_Osseus_Genus_Name;": return large ? Properties.Resources.osseus38 : Properties.Resources.osseus_18;
+                case "$Codex_Ent_Recepta_Genus_Name;": return Properties.Resources.recepta_18;
+                case "$Codex_Ent_Stratum_Genus_Name;": return large ? Properties.Resources.stratum38 : Properties.Resources.stratum18;
+                case "$Codex_Ent_Tubus_Genus_Name;": return large ? Properties.Resources.tubus38 : Properties.Resources.tubus18;
+                case "$Codex_Ent_Tussocks_Genus_Name;": return large ? Properties.Resources.tussock38 : Properties.Resources.tussock18;
+                case "$Codex_Ent_Vents_Genus_Name;": return Properties.Resources.amphora_18;
+                case "$Codex_Ent_Sphere_Name;": return Properties.Resources.anemone_18;
+                case "$Codex_Ent_Cone_Genus_Name;": return Properties.Resources.barkmound_18;
+                case "$Codex_Ent_Brancae_Genus_Name;": return Properties.Resources.braintree_18;
+                case "$Codex_Ent_Ground_Struct_Ice_Genus_Name;": return Properties.Resources.shards_18;
                 case "$Codex_Ent_Tube_Name;":
                 case "$Codex_Ent_Tube_Genus_Name;":
                 case "$Codex_Ent_TubeABCD_Genus_Name;":
                 case "$Codex_Ent_TubeEFGH_Genus_Name;":
-                    return Resources.tuber_18;
+                    return Properties.Resources.tuber_18;
 
                 default: throw new Exception($"Unexpected genus: '{genus}'");
             }

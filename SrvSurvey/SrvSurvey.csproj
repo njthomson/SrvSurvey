@@ -109,6 +109,16 @@
     <Compile Update="PlotGrounded.cs" />
     <Compile Update="PlotPulse.cs" />
     <Compile Update="PlotTrackTarget.cs" />
+    <Compile Update="Properties\Codex.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Codex.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Properties\Plotters.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Plotters.resx</DependentUpon>
+    </Compile>
     <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -118,6 +128,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Update="Properties\Codex.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Codex.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\Plotters.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Plotters.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Update="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

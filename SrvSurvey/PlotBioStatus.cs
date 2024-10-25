@@ -203,7 +203,7 @@ namespace SrvSurvey
             // Species name
             var txt = $"{organism.variantLocalized}"; // or species?
             var x = oneOhFour;
-            var rr = new RectangleF(x, y - eight, this.Width - x - eight - Resources.picture.Width, forty);
+            var rr = new RectangleF(x, y - eight, this.Width - x - eight - Properties.Resources.picture.Width, forty);
 
             var f = GameColors.fontBig;
             var sz = g.MeasureString(txt, f, (int)rr.Width);
@@ -239,7 +239,7 @@ namespace SrvSurvey
 
         private void drawHasImage(Graphics g, float x, float y)
         {
-            g.DrawIcon(Resources.picture, (int)x, (int)y);
+            g.DrawIcon(Properties.Resources.picture, (int)x, (int)y);
             if (!this.hasImage)
             {
                 y += two;
