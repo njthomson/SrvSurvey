@@ -114,10 +114,10 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Codex.resx</DependentUpon>
     </Compile>
-    <Compile Update="Properties\Plotters.Designer.cs">
+    <Compile Update="Properties\Misc.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>Plotters.resx</DependentUpon>
+      <DependentUpon>Misc.resx</DependentUpon>
     </Compile>
     <Compile Update="Properties\ImageResources.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -132,9 +132,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Codex.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Update="Properties\Plotters.resx">
+    <EmbeddedResource Update="Properties\Misc.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Plotters.Designer.cs</LastGenOutput>
+      <LastGenOutput>Misc.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Properties\ImageResources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

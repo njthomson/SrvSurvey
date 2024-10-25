@@ -372,13 +372,13 @@ namespace SrvSurvey.net
                 if (this.discovered == null)
                     return null;
                 if (this.discovered == false)
-                    return Plotters.NetSysData_UndiscoveredSystem;
+                    return Misc.NetSysData_UndiscoveredSystem;
                 else if (this.totalBodyCount == 0)
-                    return Plotters.NetSysData_UnscannedSystem;
+                    return Misc.NetSysData_UnscannedSystem;
                 else if (this.totalBodyCount == this.scanBodyCount)
-                    return Plotters.NetSysData_DiscoveredAll.format(this.totalBodyCount);
+                    return Misc.NetSysData_DiscoveredAll.format(this.totalBodyCount);
                 else
-                    return Plotters.NetSysData_DiscoveredPartial.format(this.scanBodyCount, this.totalBodyCount);
+                    return Misc.NetSysData_DiscoveredPartial.format(this.scanBodyCount, this.totalBodyCount);
             }
         }
     }

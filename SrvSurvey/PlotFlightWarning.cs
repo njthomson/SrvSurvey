@@ -43,7 +43,7 @@ namespace SrvSurvey
             }
 
             var bodyGrav = (game.systemBody!.surfaceGravity / 10).ToString("N2");
-            var txt = Plotters.PlotFlightWarning_SurfaceGravityWarning.format(bodyGrav);
+            var txt = Misc.PlotFlightWarning_SurfaceGravityWarning.format(bodyGrav);
 
             var sz = g.MeasureString(txt, this.Font);
             sz.Width += two;

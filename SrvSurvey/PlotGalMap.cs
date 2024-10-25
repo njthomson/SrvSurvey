@@ -22,10 +22,10 @@ namespace SrvSurvey
         }
 
         private static float leftWidth = Util.maxWidth(GameColors.fontSmall2,
-                Plotters.PlotGalMap_Selected,
-                Plotters.PlotGalMap_Current,
-                Plotters.PlotGalMap_Destination,
-                Plotters.PlotGalMap_NextJump) + oneTwo;
+                Misc.PlotGalMap_Selected,
+                Misc.PlotGalMap_Current,
+                Misc.PlotGalMap_Destination,
+                Misc.PlotGalMap_NextJump) + oneTwo;
 
         private double distanceJumped;
         /// <summary> Next hop data </summary>
@@ -122,7 +122,7 @@ namespace SrvSurvey
             if (this.finalNetData == null)
             {
                 // TODO: keep hidden until we have a route?
-                this.drawTextAt(eight, Plotters.PlotGalMap_NoRouteSet);
+                this.drawTextAt(eight, Misc.PlotGalMap_NoRouteSet);
                 this.newLine(+ten, true);
             }
             else
@@ -135,7 +135,7 @@ namespace SrvSurvey
 
                 if (this.distanceJumped > 0)
                 {
-                    var txt = Plotters.PlotGalMap_RouteFooter.format(
+                    var txt = Misc.PlotGalMap_RouteFooter.format(
                         game.navRoute.Route.Count - 1,
                         this.distanceJumped.ToString("N1"));
                     this.drawTextAt(eight, txt, GameColors.brushGameOrange);
@@ -143,7 +143,7 @@ namespace SrvSurvey
                 }
 
                 this.dty += two;
-                this.drawTextAt(eight, Plotters.PlotGalMap_DataFrom, GameColors.brushGameOrangeDim);
+                this.drawTextAt(eight, Misc.PlotGalMap_DataFrom, GameColors.brushGameOrangeDim);
                 this.newLine(true);
             }
 
@@ -152,14 +152,14 @@ namespace SrvSurvey
 
         private void drawSystemSummary(NetSysData netData)
         {
-            var header = Plotters.PlotGalMap_Selected;
+            var header = Misc.PlotGalMap_Selected;
 
             if (netData.systemAddress == game.systemData?.address)
-                header = Plotters.PlotGalMap_Current;
+                header = Misc.PlotGalMap_Current;
             else if (netData.systemAddress == game.navRoute.Route.LastOrDefault()?.SystemAddress)
-                header = Plotters.PlotGalMap_Destination;
+                header = Misc.PlotGalMap_Destination;
             else if (netData.systemAddress == nextNetData?.systemAddress)
-                header = Plotters.PlotGalMap_NextJump;
+                header = Misc.PlotGalMap_NextJump;
 
             this.drawTextAt(eight, header);
 
@@ -180,19 +180,19 @@ namespace SrvSurvey
             if (netData.discoveredBy != null && netData.discoveredDate != null)
             {
                 this.newLine(true);
-                this.drawTextAt(leftWidth, Plotters.PlotGalMap_DiscoveredBy.format(netData.discoveredBy, netData.discoveredDate?.ToString("d") ?? "?"));
+                this.drawTextAt(leftWidth, Misc.PlotGalMap_DiscoveredBy.format(netData.discoveredBy, netData.discoveredDate?.ToString("d") ?? "?"));
             }
             if (netData.lastUpdated != null && (netData.lastUpdated > netData.discoveredDate || netData.discoveredDate == null))
             {
                 this.newLine(true);
-                this.drawTextAt(leftWidth, Plotters.PlotGalMap_LastUpdated.format(netData.lastUpdated?.ToString("d") ?? "?"));
+                this.drawTextAt(leftWidth, Misc.PlotGalMap_LastUpdated.format(netData.lastUpdated?.ToString("d") ?? "?"));
             }
 
             // line 4: bio signals?
             if (netData.genusCount > 0)
             {
                 this.newLine(true);
-                this.drawTextAt(leftWidth, Plotters.PlotGalMap_CountGenus.format(netData.genusCount), GameColors.brushCyan, GameColors.fontSmall2Bold);
+                this.drawTextAt(leftWidth, Misc.PlotGalMap_CountGenus.format(netData.genusCount), GameColors.brushCyan, GameColors.fontSmall2Bold);
             }
 
             this.newLine(+ten, true);

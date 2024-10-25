@@ -69,7 +69,7 @@ namespace SrvSurvey
                 }
 
                 this.dty = eight;
-                drawTextAt2(six, Plotters.PlotSysStatus_Header, GameColors.fontSmall);
+                drawTextAt2(six, Misc.PlotSysStatus_Header, GameColors.fontSmall);
                 newLine(two, true);
                 dtx = six;
 
@@ -79,7 +79,7 @@ namespace SrvSurvey
                 if (this.nextSystem != null)
                 {
                     // render next system only, if populated
-                    this.drawTextAt2(Plotters.PlotSysStatus_NextSystem);
+                    this.drawTextAt2(Misc.PlotSysStatus_NextSystem);
                     this.drawTextAt2(this.nextSystem, GameColors.Cyan);
                     return;
                 }
@@ -87,26 +87,26 @@ namespace SrvSurvey
                 var dssRemaining = game.systemData.getDssRemainingNames();
                 if (!game.systemData.honked)
                 {
-                    this.drawTextAt2(Plotters.PlotSysStatus_FssNotStarted, GameColors.Cyan);
+                    this.drawTextAt2(Misc.PlotSysStatus_FssNotStarted, GameColors.Cyan);
                 }
                 else if (!game.systemData.fssComplete)
                 {
                     var fssProgress = 100.0 / (float)game.systemData.bodyCount * (float)game.systemData.fssBodyCount;
                     var txt = dssRemaining.Count == 0
-                        ? Plotters.PlotSysStatus_FssCompleteLong.format((int)fssProgress)
-                        : Plotters.PlotSysStatus_FssCompleteShort.format((int)fssProgress);
+                        ? Misc.PlotSysStatus_FssCompleteLong.format((int)fssProgress)
+                        : Misc.PlotSysStatus_FssCompleteShort.format((int)fssProgress);
                     this.drawTextAt2(txt, GameColors.Cyan);
                 }
 
                 if (dssRemaining.Count > 0)
                 {
                     if (dtx > 6) this.drawTextAt2(" ");
-                    this.drawTextAt2(Plotters.PlotSysStatus_DssRemaining.format(dssRemaining.Count));
+                    this.drawTextAt2(Misc.PlotSysStatus_DssRemaining.format(dssRemaining.Count));
                     this.drawRemainingBodies(destinationBody, dssRemaining);
                 }
                 else if (game.systemData.fssComplete && game.systemData.honked)
                 {
-                    this.drawTextAt2(Plotters.PlotSysStatus_NoDssMeet);
+                    this.drawTextAt2(Misc.PlotSysStatus_NoDssMeet);
                 }
                 newLine(true);
 
@@ -115,7 +115,7 @@ namespace SrvSurvey
                     var bioRemaining = game.systemData.getBioRemainingNames();
                     if (bioRemaining.Count > 0)
                     {
-                        this.drawTextAt2(Plotters.PlotSysStatus_BioSignals.format(game.systemData.bioSignalsRemaining));
+                        this.drawTextAt2(Misc.PlotSysStatus_BioSignals.format(game.systemData.bioSignalsRemaining));
                         this.drawRemainingBodies(destinationBody, bioRemaining);
                     }
                 }
@@ -123,7 +123,7 @@ namespace SrvSurvey
                 var nonBodySignalCount = game.systemData.nonBodySignalCount;
                 if (Game.settings.showNonBodySignals && nonBodySignalCount > 0)
                 {
-                    var sz = this.drawTextAt2(six, Plotters.PlotSysStatus_NonBodySignals.format(nonBodySignalCount), GameColors.fontSmall2);
+                    var sz = this.drawTextAt2(six, Misc.PlotSysStatus_NonBodySignals.format(nonBodySignalCount), GameColors.fontSmall2);
                     newLine(true);
                 }
             }
