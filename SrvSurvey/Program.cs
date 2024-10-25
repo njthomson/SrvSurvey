@@ -3,6 +3,8 @@ using System.Diagnostics;
 using System.IO.Compression;
 using System.Reflection;
 
+[assembly: System.Resources.NeutralResourcesLanguage("en")]
+
 namespace SrvSurvey
 {
     static class Program
@@ -41,6 +43,8 @@ namespace SrvSurvey
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
+
+            //Thread.CurrentThread.CurrentCulture = Thread.CurrentThread.CurrentUICulture = System.Globalization.CultureInfo.CreateSpecificCulture("de");
 
             Application.EnableVisualStyles();
             Application.SetHighDpiMode(HighDpiMode.PerMonitor);

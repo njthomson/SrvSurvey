@@ -1,5 +1,6 @@
 ﻿using SrvSurvey.game;
 using SrvSurvey.net;
+using SrvSurvey.Properties;
 using System.Drawing.Drawing2D;
 
 namespace SrvSurvey
@@ -19,6 +20,12 @@ namespace SrvSurvey
                 scaled(new Point(smaller ? 8 : 12,  smaller ? 10 : 18)),
             });
         }
+
+        private static float leftWidth = Util.maxWidth(GameColors.fontSmall2,
+                Plotters.PlotGalMap_Selected,
+                Plotters.PlotGalMap_Current,
+                Plotters.PlotGalMap_Destination,
+                Plotters.PlotGalMap_NextJump) + oneTwo;
 
         private double distanceJumped;
         /// <summary> Next hop data </summary>
@@ -115,46 +122,49 @@ namespace SrvSurvey
             if (this.finalNetData == null)
             {
                 // TODO: keep hidden until we have a route?
-                this.drawTextAt(eight, $"No route set");
+                this.drawTextAt(eight, Plotters.PlotGalMap_NoRouteSet);
                 this.newLine(+ten, true);
             }
             else
             {
                 if (this.finalNetData != null)
-                    this.drawSystemSummary2(this.finalNetData);
+                    this.drawSystemSummary(this.finalNetData);
 
                 if (this.nextNetData != null)
-                    this.drawSystemSummary2(this.nextNetData);
+                    this.drawSystemSummary(this.nextNetData);
 
                 if (this.distanceJumped > 0)
                 {
-                    this.drawTextAt(eight, $"Total: ► {game.navRoute.Route.Count - 1} jumps ► Distance: {this.distanceJumped.ToString("N1")} ly", GameColors.brushGameOrange);
+                    var txt = Plotters.PlotGalMap_RouteFooter.format(
+                        game.navRoute.Route.Count - 1,
+                        this.distanceJumped.ToString("N1"));
+                    this.drawTextAt(eight, txt, GameColors.brushGameOrange);
                     this.newLine(true);
                 }
 
                 this.dty += two;
-                this.drawTextAt(eight, $"Data from: EDSM + Spansh + Canonn", GameColors.brushGameOrangeDim);
+                this.drawTextAt(eight, Plotters.PlotGalMap_DataFrom, GameColors.brushGameOrangeDim);
                 this.newLine(true);
             }
 
             this.formAdjustSize(+ten, +ten);
         }
 
-        private void drawSystemSummary2(NetSysData netData)
+        private void drawSystemSummary(NetSysData netData)
         {
-            var header = "Selected:";
+            var header = Plotters.PlotGalMap_Selected;
 
             if (netData.systemAddress == game.systemData?.address)
-                header = "Current:";
+                header = Plotters.PlotGalMap_Current;
             else if (netData.systemAddress == game.navRoute.Route.LastOrDefault()?.SystemAddress)
-                header = "Destination:";
+                header = Plotters.PlotGalMap_Destination;
             else if (netData.systemAddress == nextNetData?.systemAddress)
-                header = "Next jump:";
+                header = Plotters.PlotGalMap_NextJump;
 
             this.drawTextAt(eight, header);
 
             // line 1: system name
-            this.drawTextAt(eightSix, $"► {netData.systemName}", GameColors.fontSmall2Bold);
+            this.drawTextAt(leftWidth, $"► {netData.systemName}", GameColors.fontSmall2Bold);
             this.newLine(true);
 
             var highlight = netData.discovered == false || netData.scanBodyCount < netData.totalBodyCount || (netData.totalBodyCount == 0 && netData.discovered.HasValue);
@@ -162,27 +172,27 @@ namespace SrvSurvey
             // line 2: status
             var discoveryStatus = netData.discoveryStatus ?? "...";
             if (highlight)
-                this.drawTextAt(eightSix, $"{discoveryStatus}", GameColors.brushCyan, GameColors.fontSmall2Bold);
+                this.drawTextAt(leftWidth, $"{discoveryStatus}", GameColors.brushCyan, GameColors.fontSmall2Bold);
             else
-                this.drawTextAt(eightSix, $"{discoveryStatus}");
+                this.drawTextAt(leftWidth, $"{discoveryStatus}");
 
             // line 3: who discovered + last updated
             if (netData.discoveredBy != null && netData.discoveredDate != null)
             {
                 this.newLine(true);
-                this.drawTextAt(eightSix, $"By {netData.discoveredBy}, " + netData.discoveredDate?.ToString("d"));
+                this.drawTextAt(leftWidth, Plotters.PlotGalMap_DiscoveredBy.format(netData.discoveredBy, netData.discoveredDate?.ToString("d") ?? "?"));
             }
             if (netData.lastUpdated != null && (netData.lastUpdated > netData.discoveredDate || netData.discoveredDate == null))
             {
                 this.newLine(true);
-                this.drawTextAt(eightSix, $"Last updated: " + netData.lastUpdated?.ToString("d"));
+                this.drawTextAt(leftWidth, Plotters.PlotGalMap_LastUpdated.format(netData.lastUpdated?.ToString("d") ?? "?"));
             }
 
             // line 4: bio signals?
             if (netData.genusCount > 0)
             {
                 this.newLine(true);
-                this.drawTextAt(eightSix, $"{netData.genusCount}x Genus", GameColors.brushCyan, GameColors.fontSmall2Bold);
+                this.drawTextAt(leftWidth, Plotters.PlotGalMap_CountGenus.format(netData.genusCount), GameColors.brushCyan, GameColors.fontSmall2Bold);
             }
 
             this.newLine(+ten, true);

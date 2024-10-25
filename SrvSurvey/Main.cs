@@ -1,5 +1,4 @@
 ﻿using BioCriterias;
-using Microsoft.VisualBasic;
 using SrvSurvey.canonn;
 using SrvSurvey.game;
 using SrvSurvey.net;
@@ -1717,12 +1716,7 @@ namespace SrvSurvey
 
         private void btnCodexBingo_Click(object sender, EventArgs e)
         {
-            //FormCodexBingo.show();
-
-            //Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture("de-DE");
-            Thread.CurrentThread.CurrentUICulture = CultureInfo.CreateSpecificCulture("de");
-            this.Text = Properties.Codex.x1400102;
-            this.Invalidate(true);
+            FormCodexBingo.show();
         }
     }
 }

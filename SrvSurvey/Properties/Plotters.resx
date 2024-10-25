@@ -166,4 +166,41 @@
     <value>► {0} non-body signals</value>
     <comment>{0} int, count of non body signals</comment>
   </data>
+  <data name="PlotGalMap_Selected" xml:space="preserve">
+    <value>Selected:</value>
+  </data>
+  <data name="PlotGalMap_Current" xml:space="preserve">
+    <value>Current:</value>
+  </data>
+  <data name="PlotGalMap_Destination" xml:space="preserve">
+    <value>Destination:</value>
+  </data>
+  <data name="PlotGalMap_NextJump" xml:space="preserve">
+    <value>Next jump:</value>
+  </data>
+  <data name="PlotGalMap_CountGenus" xml:space="preserve">
+    <value>{0}x Genus</value>
+  </data>
+  <data name="PlotGalMap_DiscoveredBy" xml:space="preserve">
+    <value>By {0}, {1}</value>
+    <comment>{0} string, name of cmdr, {1} short date</comment>
+  </data>
+  <data name="PlotGalMap_LastUpdated" xml:space="preserve">
+    <value>Last updated: {0}</value>
+    <comment>{0} short date</comment>
+  </data>
+  <data name="NetSysData_UndiscoveredSystem" xml:space="preserve">
+    <value>Undiscovered system</value>
+  </data>
+  <data name="NetSysData_UnscannedSystem" xml:space="preserve">
+    <value>Unscanned system</value>
+  </data>
+  <data name="NetSysData_DiscoveredAll" xml:space="preserve">
+    <value>Discovered, {0} bodies</value>
+    <comment>{0} int, count of bodies</comment>
+  </data>
+  <data name="NetSysData_DiscoveredPartial" xml:space="preserve">
+    <value>Discovered ({0} of {1})</value>
+    <comment>{0} int, count of bodies, {1} int, total count of bodies</comment>
+  </data>
 </root>

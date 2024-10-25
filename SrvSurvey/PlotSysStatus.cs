@@ -1,4 +1,5 @@
 ﻿using SrvSurvey.game;
+using SrvSurvey.Properties;
 
 namespace SrvSurvey
 {
@@ -68,7 +69,7 @@ namespace SrvSurvey
                 }
 
                 this.dty = eight;
-                drawTextAt2(six, "System survey: ", GameColors.fontSmall);
+                drawTextAt2(six, Plotters.PlotSysStatus_Header, GameColors.fontSmall);
                 newLine(two, true);
                 dtx = six;
 
@@ -78,7 +79,7 @@ namespace SrvSurvey
                 if (this.nextSystem != null)
                 {
                     // render next system only, if populated
-                    this.drawTextAt2("Next system:");
+                    this.drawTextAt2(Plotters.PlotSysStatus_NextSystem);
                     this.drawTextAt2(this.nextSystem, GameColors.Cyan);
                     return;
                 }
@@ -86,24 +87,26 @@ namespace SrvSurvey
                 var dssRemaining = game.systemData.getDssRemainingNames();
                 if (!game.systemData.honked)
                 {
-                    this.drawTextAt2($"FSS not started", GameColors.Cyan);
+                    this.drawTextAt2(Plotters.PlotSysStatus_FssNotStarted, GameColors.Cyan);
                 }
                 else if (!game.systemData.fssComplete)
                 {
                     var fssProgress = 100.0 / (float)game.systemData.bodyCount * (float)game.systemData.fssBodyCount;
-                    var txt = $"FSS {(int)fssProgress}% ";
-                    if (dssRemaining.Count == 0) txt += "complete";
+                    var txt = dssRemaining.Count == 0
+                        ? Plotters.PlotSysStatus_FssCompleteLong.format((int)fssProgress)
+                        : Plotters.PlotSysStatus_FssCompleteShort.format((int)fssProgress);
                     this.drawTextAt2(txt, GameColors.Cyan);
                 }
 
                 if (dssRemaining.Count > 0)
                 {
-                    this.drawTextAt2($" {dssRemaining.Count}x bodies: ");
+                    if (dtx > 6) this.drawTextAt2(" ");
+                    this.drawTextAt2(Plotters.PlotSysStatus_DssRemaining.format(dssRemaining.Count));
                     this.drawRemainingBodies(destinationBody, dssRemaining);
                 }
                 else if (game.systemData.fssComplete && game.systemData.honked)
                 {
-                    this.drawTextAt2("No DSS meet criteria");
+                    this.drawTextAt2(Plotters.PlotSysStatus_NoDssMeet);
                 }
                 newLine(true);
 
@@ -112,7 +115,7 @@ namespace SrvSurvey
                     var bioRemaining = game.systemData.getBioRemainingNames();
                     if (bioRemaining.Count > 0)
                     {
-                        this.drawTextAt2($"| {game.systemData.bioSignalsRemaining}x Bio signals on: ");
+                        this.drawTextAt2(Plotters.PlotSysStatus_BioSignals.format(game.systemData.bioSignalsRemaining));
                         this.drawRemainingBodies(destinationBody, bioRemaining);
                     }
                 }
@@ -120,34 +123,9 @@ namespace SrvSurvey
                 var nonBodySignalCount = game.systemData.nonBodySignalCount;
                 if (Game.settings.showNonBodySignals && nonBodySignalCount > 0)
                 {
-                    var sz = this.drawTextAt2(six, $"► {nonBodySignalCount} non-body signals", GameColors.fontSmall2);
+                    var sz = this.drawTextAt2(six, Plotters.PlotSysStatus_NonBodySignals.format(nonBodySignalCount), GameColors.fontSmall2);
                     newLine(true);
                 }
-
-                //var headerTxt = "";
-                //if (false && game.systemData.fssComplete && (Game.settings.skipLowValueDSS || Game.settings.skipHighDistanceDSS || !Game.settings.skipRingsDSS))
-                //{
-                //    minViableWidth += scaled(74);
-                //    headerTxt += "(filtered)";
-                //    //if (Game.settings.skipLowValueDSS)
-                //    //{
-                //    //    headerTxt += $" >{Util.credits(Game.settings.skipLowValueAmount)}";
-                //    //    minViableWidth += 80;
-                //    //}
-                //    //if (!Game.settings.skipRingsDSS)
-                //    //{
-                //    //    headerTxt += " +Rings";
-                //    //    minViableWidth += 45;
-                //    //}
-                //    //if (Game.settings.skipHighDistanceDSS)
-                //    //{
-                //    //    headerTxt += $" <{Game.settings.skipHighDistanceDSSValue / 1000}K LS";
-                //    //    minViableWidth += 60;
-                //    //}
-                //    //headerTxt += ")";
-                //}
-                //g.DrawString($"System survey: {headerTxt}", GameColors.fontSmall, GameColors.brushGameOrange, four, eight);
-                //newLine(true);
             }
             finally
             {

@@ -118,52 +118,75 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="PlotFlightWarning_SurfaceGravityWarning" xml:space="preserve">
-    <value>Warning: Surface gravity {0}g</value>
-    <comment>{0} is a floating point number. The trailiing g is for Gravity.</comment>
+    <value>Warnung: Oberflächengravitation {0}g</value>
   </data>
   <data name="PlotGalMap_DataFrom" xml:space="preserve">
-    <value>Data from: EDSM + Spansh + Canonn</value>
-    <comment>Dim footer text</comment>
+    <value>Daten von: EDSM + Spansh + Canonn</value>
   </data>
   <data name="PlotGalMap_NoRouteSet" xml:space="preserve">
-    <value>No route set</value>
-    <comment>When no route is set.</comment>
+    <value>Keine festgelegte Route</value>
   </data>
   <data name="PlotGalMap_RouteFooter" xml:space="preserve">
-    <value>Total: ► {0} jumps ► Distance: {1} ly</value>
-    <comment>Footer shown summarizing the route. {0} int, count of jumps. {1} float, 1 decimal place, distance travelled.</comment>
+    <value>Gesamt: ► {0} Sprünge ► Distanz: {1} ly</value>
   </data>
   <data name="PlotSysStatus_Header" xml:space="preserve">
-    <value>System survey: </value>
-    <comment>Header line</comment>
+    <value>System-Befragung:</value>
   </data>
   <data name="PlotSysStatus_NextSystem" xml:space="preserve">
-    <value>Next system:</value>
+    <value>Nächstes System:</value>
   </data>
   <data name="PlotSysStatus_FssNotStarted" xml:space="preserve">
-    <value>FSS not started</value>
+    <value>FSS nicht gestartet</value>
   </data>
   <data name="PlotSysStatus_FssCompleteShort" xml:space="preserve">
-    <value>FSS {0}% complete</value>
-    <comment>Long version, shown alone. {0} int, percentage number</comment>
+    <value>FSS {0}% abgeschlossen</value>
   </data>
   <data name="PlotSysStatus_FssCompleteLong" xml:space="preserve">
     <value>FSS {0}%</value>
-    <comment>Short version, joined with more text. {0} int, percentage number</comment>
   </data>
   <data name="PlotSysStatus_NoDssMeet" xml:space="preserve">
-    <value>No DSS meet criteria</value>
+    <value>Kein DSS erfüllt die Kriterien</value>
   </data>
   <data name="PlotSysStatus_DssRemaining" xml:space="preserve">
-    <value> {0}x bodies: </value>
-    <comment>May be appended to FssCompleteShort. {0} int, count of bodies worth of scanning.</comment>
+    <value> {0}x Körper:</value>
   </data>
   <data name="PlotSysStatus_BioSignals" xml:space="preserve">
-    <value>| {0}x Bio signals on: </value>
-    <comment>Appended to prior text. {0} int, count of bodies with bio signals</comment>
+    <value>| {0}x Bio signalisiert auf: </value>
   </data>
   <data name="PlotSysStatus_NonBodySignals" xml:space="preserve">
-    <value>► {0} non-body signals</value>
-    <comment>{0} int, count of non body signals</comment>
+    <value>► {0} Nicht-Körper-Signale</value>
+  </data>
+  <data name="PlotGalMap_Selected" xml:space="preserve">
+    <value>Ausgewählt:</value>
+  </data>
+  <data name="PlotGalMap_Current" xml:space="preserve">
+    <value>Strömung:</value>
+  </data>
+  <data name="PlotGalMap_Destination" xml:space="preserve">
+    <value>Bestimmungsort:</value>
+  </data>
+  <data name="PlotGalMap_NextJump" xml:space="preserve">
+    <value>Nächster Sprung:</value>
+  </data>
+  <data name="PlotGalMap_CountGenus" xml:space="preserve">
+    <value>{0}x Gattung</value>
+  </data>
+  <data name="PlotGalMap_DiscoveredBy" xml:space="preserve">
+    <value>Bis {0}, {1}</value>
+  </data>
+  <data name="PlotGalMap_LastUpdated" xml:space="preserve">
+    <value>Letzte Aktualisierung: {0}</value>
+  </data>
+  <data name="NetSysData_UndiscoveredSystem" xml:space="preserve">
+    <value>Unentdecktes System</value>
+  </data>
+  <data name="NetSysData_UnscannedSystem" xml:space="preserve">
+    <value>Nicht gescanntes System</value>
+  </data>
+  <data name="NetSysData_DiscoveredAll" xml:space="preserve">
+    <value>Entdeckte, {0} Leichen</value>
+  </data>
+  <data name="NetSysData_DiscoveredPartial" xml:space="preserve">
+    <value>Entdeckt ({0} von {1})</value>
   </data>
 </root>

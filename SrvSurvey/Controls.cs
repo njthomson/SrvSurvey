@@ -1,6 +1,5 @@
 ﻿using SrvSurvey.game;
 using SrvSurvey.Properties;
-using System.Diagnostics.CodeAnalysis;
 
 namespace SrvSurvey
 {
@@ -273,7 +272,7 @@ namespace SrvSurvey
         //}
 
         //private string _text;
-        private static Icon logo2 = new Icon(new MemoryStream(Properties.Resources.logo2));
+        private static Icon logo2 = new Icon(new MemoryStream(ImageResources.logo2));
 
 
         protected override void OnPaint(PaintEventArgs e)

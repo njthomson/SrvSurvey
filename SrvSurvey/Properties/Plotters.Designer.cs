@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SrvSurvey.Resources {
+namespace SrvSurvey.Properties {
     using System;
     
     
@@ -22,7 +22,7 @@ namespace SrvSurvey.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Plotters {
+    internal class Plotters {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,10 +36,10 @@ namespace SrvSurvey.Resources {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Resources.ResourceManager ResourceManager {
+        internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SrvSurvey.Resources.Plotters", typeof(Plotters).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SrvSurvey.Properties.Plotters", typeof(Plotters).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -51,7 +51,7 @@ namespace SrvSurvey.Resources {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Globalization.CultureInfo Culture {
+        internal static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -61,27 +61,117 @@ namespace SrvSurvey.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Discovered, {0} bodies.
+        /// </summary>
+        internal static string NetSysData_DiscoveredAll {
+            get {
+                return ResourceManager.GetString("NetSysData_DiscoveredAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Discovered ({0} of {1}).
+        /// </summary>
+        internal static string NetSysData_DiscoveredPartial {
+            get {
+                return ResourceManager.GetString("NetSysData_DiscoveredPartial", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Undiscovered system.
+        /// </summary>
+        internal static string NetSysData_UndiscoveredSystem {
+            get {
+                return ResourceManager.GetString("NetSysData_UndiscoveredSystem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unscanned system.
+        /// </summary>
+        internal static string NetSysData_UnscannedSystem {
+            get {
+                return ResourceManager.GetString("NetSysData_UnscannedSystem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Warning: Surface gravity {0}g.
         /// </summary>
-        public static string PlotFlightWarning_SurfaceGravityWarning {
+        internal static string PlotFlightWarning_SurfaceGravityWarning {
             get {
                 return ResourceManager.GetString("PlotFlightWarning_SurfaceGravityWarning", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0}x Genus.
+        /// </summary>
+        internal static string PlotGalMap_CountGenus {
+            get {
+                return ResourceManager.GetString("PlotGalMap_CountGenus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Current:.
+        /// </summary>
+        internal static string PlotGalMap_Current {
+            get {
+                return ResourceManager.GetString("PlotGalMap_Current", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Data from: EDSM + Spansh + Canonn.
         /// </summary>
-        public static string PlotGalMap_DataFrom {
+        internal static string PlotGalMap_DataFrom {
             get {
                 return ResourceManager.GetString("PlotGalMap_DataFrom", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Destination:.
+        /// </summary>
+        internal static string PlotGalMap_Destination {
+            get {
+                return ResourceManager.GetString("PlotGalMap_Destination", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to By {0}, {1}.
+        /// </summary>
+        internal static string PlotGalMap_DiscoveredBy {
+            get {
+                return ResourceManager.GetString("PlotGalMap_DiscoveredBy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last updated: {0}.
+        /// </summary>
+        internal static string PlotGalMap_LastUpdated {
+            get {
+                return ResourceManager.GetString("PlotGalMap_LastUpdated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Next jump:.
+        /// </summary>
+        internal static string PlotGalMap_NextJump {
+            get {
+                return ResourceManager.GetString("PlotGalMap_NextJump", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No route set.
         /// </summary>
-        public static string PlotGalMap_NoRouteSet {
+        internal static string PlotGalMap_NoRouteSet {
             get {
                 return ResourceManager.GetString("PlotGalMap_NoRouteSet", resourceCulture);
             }
@@ -90,16 +180,25 @@ namespace SrvSurvey.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Total: ► {0} jumps ► Distance: {1} ly.
         /// </summary>
-        public static string PlotGalMap_RouteFooter {
+        internal static string PlotGalMap_RouteFooter {
             get {
                 return ResourceManager.GetString("PlotGalMap_RouteFooter", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Selected:.
+        /// </summary>
+        internal static string PlotGalMap_Selected {
+            get {
+                return ResourceManager.GetString("PlotGalMap_Selected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to | {0}x Bio signals on: .
         /// </summary>
-        public static string PlotSysStatus_BioSignals {
+        internal static string PlotSysStatus_BioSignals {
             get {
                 return ResourceManager.GetString("PlotSysStatus_BioSignals", resourceCulture);
             }
@@ -108,7 +207,7 @@ namespace SrvSurvey.Resources {
         /// <summary>
         ///   Looks up a localized string similar to  {0}x bodies: .
         /// </summary>
-        public static string PlotSysStatus_DssRemaining {
+        internal static string PlotSysStatus_DssRemaining {
             get {
                 return ResourceManager.GetString("PlotSysStatus_DssRemaining", resourceCulture);
             }
@@ -117,7 +216,7 @@ namespace SrvSurvey.Resources {
         /// <summary>
         ///   Looks up a localized string similar to FSS {0}%.
         /// </summary>
-        public static string PlotSysStatus_FssCompleteLong {
+        internal static string PlotSysStatus_FssCompleteLong {
             get {
                 return ResourceManager.GetString("PlotSysStatus_FssCompleteLong", resourceCulture);
             }
@@ -126,7 +225,7 @@ namespace SrvSurvey.Resources {
         /// <summary>
         ///   Looks up a localized string similar to FSS {0}% complete.
         /// </summary>
-        public static string PlotSysStatus_FssCompleteShort {
+        internal static string PlotSysStatus_FssCompleteShort {
             get {
                 return ResourceManager.GetString("PlotSysStatus_FssCompleteShort", resourceCulture);
             }
@@ -135,7 +234,7 @@ namespace SrvSurvey.Resources {
         /// <summary>
         ///   Looks up a localized string similar to FSS not started.
         /// </summary>
-        public static string PlotSysStatus_FssNotStarted {
+        internal static string PlotSysStatus_FssNotStarted {
             get {
                 return ResourceManager.GetString("PlotSysStatus_FssNotStarted", resourceCulture);
             }
@@ -144,7 +243,7 @@ namespace SrvSurvey.Resources {
         /// <summary>
         ///   Looks up a localized string similar to System survey: .
         /// </summary>
-        public static string PlotSysStatus_Header {
+        internal static string PlotSysStatus_Header {
             get {
                 return ResourceManager.GetString("PlotSysStatus_Header", resourceCulture);
             }
@@ -153,7 +252,7 @@ namespace SrvSurvey.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Next system:.
         /// </summary>
-        public static string PlotSysStatus_NextSystem {
+        internal static string PlotSysStatus_NextSystem {
             get {
                 return ResourceManager.GetString("PlotSysStatus_NextSystem", resourceCulture);
             }
@@ -162,7 +261,7 @@ namespace SrvSurvey.Resources {
         /// <summary>
         ///   Looks up a localized string similar to No DSS meet criteria.
         /// </summary>
-        public static string PlotSysStatus_NoDssMeet {
+        internal static string PlotSysStatus_NoDssMeet {
             get {
                 return ResourceManager.GetString("PlotSysStatus_NoDssMeet", resourceCulture);
             }
@@ -171,7 +270,7 @@ namespace SrvSurvey.Resources {
         /// <summary>
         ///   Looks up a localized string similar to ► {0} non-body signals.
         /// </summary>
-        public static string PlotSysStatus_NonBodySignals {
+        internal static string PlotSysStatus_NonBodySignals {
             get {
                 return ResourceManager.GetString("PlotSysStatus_NonBodySignals", resourceCulture);
             }

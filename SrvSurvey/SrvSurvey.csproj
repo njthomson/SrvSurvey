@@ -119,10 +119,10 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Plotters.resx</DependentUpon>
     </Compile>
-    <Compile Update="Properties\Resources.Designer.cs">
+    <Compile Update="Properties\ImageResources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
+      <DependentUpon>ImageResources.resx</DependentUpon>
     </Compile>
     <Compile Update="ViewLogs.cs" />
   </ItemGroup>
@@ -136,9 +136,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Plotters.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Update="Properties\Resources.resx">
+    <EmbeddedResource Update="Properties\ImageResources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <LastGenOutput>ImageResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
 

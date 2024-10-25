@@ -1,6 +1,7 @@
 ﻿using SrvSurvey.canonn;
 using SrvSurvey.game;
 using SrvSurvey.net.EDSM;
+using SrvSurvey.Properties;
 using SrvSurvey.units;
 using System.Threading.Tasks;
 using static SrvSurvey.canonn.GRReports;
@@ -371,13 +372,13 @@ namespace SrvSurvey.net
                 if (this.discovered == null)
                     return null;
                 if (this.discovered == false)
-                    return "Undiscovered system";
+                    return Plotters.NetSysData_UndiscoveredSystem;
                 else if (this.totalBodyCount == 0)
-                    return "Unscanned system";
+                    return Plotters.NetSysData_UnscannedSystem;
                 else if (this.totalBodyCount == this.scanBodyCount)
-                    return $"Discovered, {this.totalBodyCount} bodies";
+                    return Plotters.NetSysData_DiscoveredAll.format(this.totalBodyCount);
                 else
-                    return $"Discovered ({this.scanBodyCount} of {this.totalBodyCount} bodies)";
+                    return Plotters.NetSysData_DiscoveredPartial.format(this.scanBodyCount, this.totalBodyCount);
             }
         }
     }

@@ -699,7 +699,7 @@ namespace SrvSurvey
         {
             this.dtx = tx;
 
-            const TextFormatFlags flags = TextFormatFlags.NoPadding | TextFormatFlags.PreserveGraphicsTranslateTransform;
+            const TextFormatFlags flags = Util.textFlags;
 
             col = col ?? GameColors.Orange;
             font = font ?? this.Font;

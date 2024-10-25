@@ -1,4 +1,5 @@
 ﻿using SrvSurvey.game;
+using SrvSurvey.Properties;
 
 namespace SrvSurvey
 {
@@ -42,7 +43,7 @@ namespace SrvSurvey
             }
 
             var bodyGrav = (game.systemBody!.surfaceGravity / 10).ToString("N2");
-            var txt = $"Warning: Surface gravity {bodyGrav}g";
+            var txt = Plotters.PlotFlightWarning_SurfaceGravityWarning.format(bodyGrav);
 
             var sz = g.MeasureString(txt, this.Font);
             sz.Width += two;

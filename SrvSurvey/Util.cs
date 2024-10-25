@@ -916,35 +916,35 @@ namespace SrvSurvey
 
         public static Image getBioImage(string genus, bool large = false)
         {
-            //return Properties.Resources.tubus18;
+            //return ImageResources.tubus18;
 
             switch (genus)
             {
-                case "$Codex_Ent_Aleoids_Genus_Name;": return Properties.Resources.aleoida_18;
-                case "$Codex_Ent_Bacterial_Genus_Name;": return large ? Properties.Resources.bacterium38 : Properties.Resources.bacterium18;
-                case "$Codex_Ent_Cactoid_Genus_Name;": return Properties.Resources.cactoida_18;
-                case "$Codex_Ent_Clypeus_Genus_Name;": return Properties.Resources.clypeus_18;
-                case "$Codex_Ent_Conchas_Genus_Name;": return Properties.Resources.concha_18;
-                case "$Codex_Ent_Electricae_Genus_Name;": return large ? Properties.Resources.electricae38 : Properties.Resources.electricae_18;
-                case "$Codex_Ent_Fonticulus_Genus_Name;": return Properties.Resources.fonticulua_18;
-                case "$Codex_Ent_Shrubs_Genus_Name;": return large ? Properties.Resources.frutexa38 : Properties.Resources.frutexa18;
-                case "$Codex_Ent_Fumerolas_Genus_Name;": return Properties.Resources.fumerola_18;
-                case "$Codex_Ent_Fungoids_Genus_Name;": return large ? Properties.Resources.fungoida38 : Properties.Resources.fungoida18;
-                case "$Codex_Ent_Osseus_Genus_Name;": return large ? Properties.Resources.osseus38 : Properties.Resources.osseus_18;
-                case "$Codex_Ent_Recepta_Genus_Name;": return Properties.Resources.recepta_18;
-                case "$Codex_Ent_Stratum_Genus_Name;": return large ? Properties.Resources.stratum38 : Properties.Resources.stratum18;
-                case "$Codex_Ent_Tubus_Genus_Name;": return large ? Properties.Resources.tubus38 : Properties.Resources.tubus18;
-                case "$Codex_Ent_Tussocks_Genus_Name;": return large ? Properties.Resources.tussock38 : Properties.Resources.tussock18;
-                case "$Codex_Ent_Vents_Genus_Name;": return Properties.Resources.amphora_18;
-                case "$Codex_Ent_Sphere_Name;": return Properties.Resources.anemone_18;
-                case "$Codex_Ent_Cone_Genus_Name;": return Properties.Resources.barkmound_18;
-                case "$Codex_Ent_Brancae_Genus_Name;": return Properties.Resources.braintree_18;
-                case "$Codex_Ent_Ground_Struct_Ice_Genus_Name;": return Properties.Resources.shards_18;
+                case "$Codex_Ent_Aleoids_Genus_Name;": return ImageResources.aleoida_18;
+                case "$Codex_Ent_Bacterial_Genus_Name;": return large ? ImageResources.bacterium38 : ImageResources.bacterium18;
+                case "$Codex_Ent_Cactoid_Genus_Name;": return ImageResources.cactoida_18;
+                case "$Codex_Ent_Clypeus_Genus_Name;": return ImageResources.clypeus_18;
+                case "$Codex_Ent_Conchas_Genus_Name;": return ImageResources.concha_18;
+                case "$Codex_Ent_Electricae_Genus_Name;": return large ? ImageResources.electricae38 : ImageResources.electricae_18;
+                case "$Codex_Ent_Fonticulus_Genus_Name;": return ImageResources.fonticulua_18;
+                case "$Codex_Ent_Shrubs_Genus_Name;": return large ? ImageResources.frutexa38 : ImageResources.frutexa18;
+                case "$Codex_Ent_Fumerolas_Genus_Name;": return ImageResources.fumerola_18;
+                case "$Codex_Ent_Fungoids_Genus_Name;": return large ? ImageResources.fungoida38 : ImageResources.fungoida18;
+                case "$Codex_Ent_Osseus_Genus_Name;": return large ? ImageResources.osseus38 : ImageResources.osseus_18;
+                case "$Codex_Ent_Recepta_Genus_Name;": return ImageResources.recepta_18;
+                case "$Codex_Ent_Stratum_Genus_Name;": return large ? ImageResources.stratum38 : ImageResources.stratum18;
+                case "$Codex_Ent_Tubus_Genus_Name;": return large ? ImageResources.tubus38 : ImageResources.tubus18;
+                case "$Codex_Ent_Tussocks_Genus_Name;": return large ? ImageResources.tussock38 : ImageResources.tussock18;
+                case "$Codex_Ent_Vents_Genus_Name;": return ImageResources.amphora_18;
+                case "$Codex_Ent_Sphere_Name;": return ImageResources.anemone_18;
+                case "$Codex_Ent_Cone_Genus_Name;": return ImageResources.barkmound_18;
+                case "$Codex_Ent_Brancae_Genus_Name;": return ImageResources.braintree_18;
+                case "$Codex_Ent_Ground_Struct_Ice_Genus_Name;": return ImageResources.shards_18;
                 case "$Codex_Ent_Tube_Name;":
                 case "$Codex_Ent_Tube_Genus_Name;":
                 case "$Codex_Ent_TubeABCD_Genus_Name;":
                 case "$Codex_Ent_TubeEFGH_Genus_Name;":
-                    return Properties.Resources.tuber_18;
+                    return ImageResources.tuber_18;
 
                 default: throw new Exception($"Unexpected genus: '{genus}'");
             }
@@ -1057,6 +1057,17 @@ namespace SrvSurvey
             else
                 return "Allied";
         }
+
+        /// <summary>
+        /// Returns the max width of any of the given strings
+        /// </summary>
+        public static float maxWidth(Font font, params string[] texts)
+        {
+            var max = texts.Max(t => TextRenderer.MeasureText(t, font, Size.Empty, textFlags).Width);
+            return max;
+        }
+
+        public const TextFormatFlags textFlags = TextFormatFlags.NoPadding | TextFormatFlags.PreserveGraphicsTranslateTransform;
     }
 
     internal static class ExtensionMethods
@@ -1130,6 +1141,14 @@ namespace SrvSurvey
                 if (child.HasChildren()) return true;
 
             return false;
+        }
+
+        /// <summary>
+        /// Apply String.Format to the given string with the given parameters
+        /// </summary>
+        public static string format(this string txt, params object[] args)
+        {
+            return string.Format(txt, args);
         }
     }
 
