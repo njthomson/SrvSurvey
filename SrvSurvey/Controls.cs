@@ -29,7 +29,7 @@ namespace SrvSurvey
 
         public DraggableForm()
         {
-            titleHeight = scaleBy(titleHeight); 
+            titleHeight = scaleBy(titleHeight);
             this.Margin = new Padding(0, scaleBy(40), 0, 0);
         }
 
@@ -272,8 +272,8 @@ namespace SrvSurvey
         //}
 
         //private string _text;
-        private static Icon logo2 = new Icon(new MemoryStream(ImageResources.logo2));
 
+        public static Icon logo2 = new Icon(new MemoryStream(ImageResources.logo2));
 
         protected override void OnPaint(PaintEventArgs e)
         {
@@ -283,6 +283,7 @@ namespace SrvSurvey
             if (renderOwnTitleBar)
             {
                 g.FillRectangle(SystemBrushes.ControlDarkDark, 0, 0, this.Width, titleHeight);
+                g.DrawRectangle(SystemPens.ControlDarkDark, 0, 0, this.ClientSize.Width - 1, this.ClientSize.Height - 1);
 
                 // icon top left
                 g.DrawIcon(logo2, new Rectangle(0, 0, titleHeight, titleHeight));

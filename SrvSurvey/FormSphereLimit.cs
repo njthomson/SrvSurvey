@@ -5,7 +5,7 @@ using System.Data;
 
 namespace SrvSurvey
 {
-    internal partial class FormSphereLimit : Form
+    internal partial class FormSphereLimit : DraggableForm
     {
         protected Game game = Game.activeGame!;
 
@@ -17,6 +17,7 @@ namespace SrvSurvey
         public FormSphereLimit()
         {
             InitializeComponent();
+            this.Icon = DraggableForm.logo2;
 
             txtCurrentSystem.Text = game.cmdr.currentSystem;
 

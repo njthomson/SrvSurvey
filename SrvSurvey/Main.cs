@@ -32,6 +32,7 @@ namespace SrvSurvey
             InitializeComponent();
             lblNotInstalled.BringToFront();
             lblFullScreen.BringToFront();
+            comboDev.SelectedIndex = 0;
             PlotPos.prepPlotterPositions();
 
             if (Path.Exists(Game.settings.watchedJournalFolder))
@@ -70,10 +71,7 @@ namespace SrvSurvey
                 txtBodyBioValues,
             };
 
-            btnTest.Visible = Debugger.IsAttached;
-            btnPublishBio.Visible = Debugger.IsAttached;
-            btnPublishHuman.Visible = Debugger.IsAttached;
-            btnPublishGuardian.Visible = Debugger.IsAttached;
+            comboDev.Visible = Debugger.IsAttached;
 
             // keep these hidden from official app-store builds for now
             btnBioSummary.Visible = !Program.isAppStoreBuild && Game.settings.autoShowPlotBioSystem;
@@ -1593,20 +1591,16 @@ namespace SrvSurvey
             FormRuins.show();
         }
 
-        private void publishGuardians()
+        private async Task publishGuardians()
         {
-            btnPublishGuardian.Enabled = false;
             GuardianSiteTemplate.publish();
             Game.canonn.init(true);
 
             Game.git.publishLocalData(); // 1st: for updating publish data from local surveys
             Game.canonn.readXmlSheetRuins2(); // 2nd: for updating allRuins.json and reading from Excel data
-            Game.canonn.readXmlSheetRuins3() // 3rd: for updating allStructures.json and reading from Excel data
-                .ContinueWith(task =>
-                {
-                    Game.log("\r\n****\r\n**** Publishing all complete\r\n****");
-                    this.Invoke(() => { btnPublishGuardian.Enabled = true; });
-                });
+            await Game.canonn.readXmlSheetRuins3(); // 3rd: for updating allStructures.json and reading from Excel data
+
+            Game.log("\r\n****\r\n**** Publishing all complete\r\n****");
         }
 
         private void checkTempHide_CheckedChanged(object sender, EventArgs e)
@@ -1691,32 +1685,51 @@ namespace SrvSurvey
                 FormShowCodex.show(entryId);
         }
 
-        private void btnPublishGuardian_Click(object sender, EventArgs e)
-        {
-            this.publishGuardians();
-        }
-
-        private void btnPublishBio_Click(object sender, EventArgs e)
-        {
-            Game.git.publishBioCriteria();
-        }
-
-        private void btnPublishHuman_Click(object sender, EventArgs e)
-        {
-            Game.git.publishHumanSettlements();
-        }
-
-        private void btnTest_MouseDown(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-                BioPredictor.testSystems(); // left click - test things
-            else
-                CriteriaBuilder.buildWholeSet(); // right click - create criteria
-        }
-
         private void btnCodexBingo_Click(object sender, EventArgs e)
         {
-            FormCodexBingo.show();
+            //FormCodexBingo.show();
+            Localize.localize();
+        }
+
+        private void comboDev_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (comboDev.SelectedIndex == 0) return;
+
+            // do the thing on a background thread
+            comboDev.Enabled = false;
+            var txt = comboDev.Text;
+            Task.Run(async () =>
+            {
+                try
+                {
+                    await Task.Delay(1);
+                    Game.log($"comboDev => {txt}");
+                    switch (txt)
+                    {
+                        case "Localize": Localize.localize(); break;
+                        case "Pub_Guardian": await this.publishGuardians(); break;
+                        case "Pub_BioCriteria": Game.git.publishBioCriteria(); break;
+                        case "Pub_HumanSites": Game.git.publishHumanSettlements(); break;
+                        case "Test_BioCriteria": await BioPredictor.testSystemsAsync(); break;
+                        case "Build_BioCriteria": CriteriaBuilder.buildWholeSet(); break;
+
+                        default: Game.log("Unxpected!"); break;
+                    }
+
+                    Game.log($"{txt} completed");
+                }
+                catch (Exception ex)
+                {
+                    Game.log($"{txt} failed!\r\n{ex}");
+                }
+
+                // restore dropdown
+                this.BeginInvoke(() =>
+                {
+                    comboDev.SelectedIndex = 0;
+                    comboDev.Enabled = true;
+                });
+            });
         }
     }
 }

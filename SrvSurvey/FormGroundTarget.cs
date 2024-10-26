@@ -9,6 +9,7 @@ namespace SrvSurvey
         public FormGroundTarget()
         {
             InitializeComponent();
+            this.Icon = DraggableForm.logo2;
 
             Util.applyTheme(this);
         }

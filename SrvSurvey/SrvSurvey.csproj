@@ -146,4 +146,8 @@
     <Folder Include="Resources\" />
   </ItemGroup>
 
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="PowerShell &quot;$(ProjectDir)sort-resx.ps1&quot;" />
+  </Target>
+
 </Project>

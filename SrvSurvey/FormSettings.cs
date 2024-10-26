@@ -14,6 +14,8 @@ namespace SrvSurvey
         public FormSettings()
         {
             InitializeComponent();
+            comboLang.SelectedIndex = 0;
+            comboLang.Items.AddRange(Localize.supportedLanguages.Keys.ToArray());
 
             // build a map of fields on the setting objects by name
             foreach (var fieldInfo in typeof(Settings).GetRuntimeFields())
@@ -111,7 +113,12 @@ namespace SrvSurvey
                             break;
 
                         case nameof(ComboBox):
-                            ((ComboBox)ctrl).SelectedIndex = Convert.ToInt32(map[name].GetValue(Game.settings));
+                            if (map[name].FieldType == typeof(int) || map[name].FieldType == typeof(float))
+                                ((ComboBox)ctrl).SelectedIndex = Convert.ToInt32(map[name].GetValue(Game.settings));
+                            else if (map[name].FieldType == typeof(string))
+                                ((ComboBox)ctrl).Text = map[name].GetValue(Game.settings)?.ToString();
+                            else
+                                throw new NotSupportedException(name);
                             break;
 
                         case nameof(RadioButton):
@@ -131,11 +138,27 @@ namespace SrvSurvey
             // load potential cmdr's
             this.findCmdrs();
 
+            // and manually set the following
+            var langName = Localize.nameFromCode(Game.settings.lang);
+            if (string.IsNullOrEmpty(langName))
+                comboLang.SelectedIndex = 0;
+            else
+                comboLang.Text = langName;
+
             // TODO: handle radio's better?
             radioUseRadius.Checked = !radioUseSmall.Checked;
             colorScreenshotBanner = Game.settings.screenshotBannerColor;
             panelTheme.BackColor = Game.settings.defaultOrange;
             panelTheme2.BackColor = Game.settings.defaultCyan;
+        }
+
+        private void updateAllSettingsFromForm()
+        {
+            // recurse through various controls
+            updateSettingsFromForm(this);
+
+            // and manually set the following
+            Game.settings.lang = Localize.codeFromName(comboLang.Text);
         }
 
         private void updateSettingsFromForm(Control parentControl)
@@ -168,7 +191,12 @@ namespace SrvSurvey
                             break;
 
                         case nameof(ComboBox):
-                            val = Convert.ToInt32(((ComboBox)ctrl).SelectedIndex);
+                            if (map[name].FieldType == typeof(int) || map[name].FieldType == typeof(float))
+                                val = Convert.ToInt32(((ComboBox)ctrl).SelectedIndex);
+                            else if (map[name].FieldType == typeof(string))
+                                val = ((ComboBox)ctrl).Text;
+                            else
+                                throw new NotSupportedException(name);
                             break;
 
                         case nameof(RadioButton):
@@ -195,15 +223,17 @@ namespace SrvSurvey
             var sameCmdr = (string.IsNullOrWhiteSpace(Game.settings.preferredCommander) && comboCmdr.SelectedIndex == 0)
                 || (comboCmdr.Text == Game.settings.preferredCommander);
 
+            var langChanged = Game.settings.lang != Localize.codeFromName(comboLang.Text);
+
             // restart the app if these are different:
-            var restartApp = !sameCmdr
+            var restartApp = !sameCmdr || langChanged
                 || comboOverlayScale.SelectedIndex != Game.settings.plotterScale
                 || this.checkEnableGuardianFeatures.Checked != Game.settings.enableGuardianSites
                 || this.linkJournalFolder.Text != Game.settings.watchedJournalFolder
                 || this.panelTheme2.BackColor != Game.settings.defaultCyan
                 || this.panelTheme.BackColor != Game.settings.defaultOrange;
 
-            updateSettingsFromForm(this);
+            updateAllSettingsFromForm();
 
             // special case for comboCmdrs
             Game.settings.preferredCommander = comboCmdr.SelectedIndex > 0 ? comboCmdr.Text : null;
@@ -543,7 +573,7 @@ namespace SrvSurvey
         {
             // live adjust plotter size if it exists
             var plotter = Program.getPlotter<PlotHumanSite>();
-            if(plotter != null)
+            if (plotter != null)
             {
                 plotter.Width = (int)numHumanSitePlotterWidth.Value;
                 plotter.Height = (int)numHumanSitePlotterHeight.Value;

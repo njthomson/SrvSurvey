@@ -44,26 +44,30 @@ namespace SrvSurvey
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
 
-            //Thread.CurrentThread.CurrentCulture = Thread.CurrentThread.CurrentUICulture = System.Globalization.CultureInfo.CreateSpecificCulture("de");
-
-            Application.EnableVisualStyles();
-            Application.SetHighDpiMode(HighDpiMode.PerMonitor);
-            Application.SetCompatibleTextRenderingDefault(true);
-            Application.ThreadException += Application_ThreadException;
-
-            // create some control for invoking back onto the UI thread
-            Program.control = new Control();
-            Program.control.CreateControl();
-
-            // BEFORE we touch the main code - check if we're an AppStore build using a relocated data folder, meaning are we using:
-            // %USERPROFILE%\AppData\Local\Packages\35333NosmohtSoftware.142860789C73F_p4c193bsm1z5a\LocalCache\Roaming\SrvSurvey
-            // instead of the correct folder:
-            // %appdata%\SrvSurvey\...
-            if (Program.checkAndMigrateAppStoreRoamingFolder())
-                return;
-
             try
             {
+                if (!string.IsNullOrEmpty(Game.settings.lang))
+                {
+                    var culture = System.Globalization.CultureInfo.CreateSpecificCulture(Game.settings.lang);
+                    Thread.CurrentThread.CurrentCulture = Thread.CurrentThread.CurrentUICulture = culture;
+                }
+
+                Application.EnableVisualStyles();
+                Application.SetHighDpiMode(HighDpiMode.PerMonitor);
+                Application.SetCompatibleTextRenderingDefault(true);
+                Application.ThreadException += Application_ThreadException;
+
+                // create some control for invoking back onto the UI thread
+                Program.control = new Control();
+                Program.control.CreateControl();
+
+                // BEFORE we touch the main code - check if we're an AppStore build using a relocated data folder, meaning are we using:
+                // %USERPROFILE%\AppData\Local\Packages\35333NosmohtSoftware.142860789C73F_p4c193bsm1z5a\LocalCache\Roaming\SrvSurvey
+                // instead of the correct folder:
+                // %appdata%\SrvSurvey\...
+                if (Program.checkAndMigrateAppStoreRoamingFolder())
+                    return;
+
                 Program.isLinux = !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("WINELOADER")) || args.Any(a => a == Program.cmdArgLinux);
                 var invokePostProcessor = args.Any(a => a == Program.cmdArgScanOld);
                 var restarted = args.Any(a => a == Program.cmdArgRestart);

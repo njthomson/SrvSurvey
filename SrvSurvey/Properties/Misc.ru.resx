@@ -120,90 +120,90 @@
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
-  <data name="NetSysData_DiscoveredAll" xml:space="preserve">
-    <value>Discovered, {0} bodies</value>
+  <data name="NetSysData_DiscoveredAll" xml:space="preserve" comment="Discovered, {0} bodies">
+    <value>Обнаружено, {0} тела</value>
     <comment>{0} int, count of bodies</comment>
   </data>
-  <data name="NetSysData_DiscoveredPartial" xml:space="preserve">
-    <value>Discovered ({0} of {1})</value>
+  <data name="NetSysData_DiscoveredPartial" xml:space="preserve" comment="Discovered ({0} of {1})">
+    <value>Обнаружено ({0} из {1})</value>
     <comment>{0} int, count of bodies, {1} int, total count of bodies</comment>
   </data>
-  <data name="NetSysData_UndiscoveredSystem" xml:space="preserve">
-    <value>Undiscovered system</value>
+  <data name="NetSysData_UndiscoveredSystem" xml:space="preserve" comment="Undiscovered system">
+    <value>Неоткрытая система</value>
   </data>
-  <data name="NetSysData_UnscannedSystem" xml:space="preserve">
-    <value>Unscanned system</value>
+  <data name="NetSysData_UnscannedSystem" xml:space="preserve" comment="Unscanned system">
+    <value>Неотсканированная система</value>
   </data>
-  <data name="PlotFlightWarning_SurfaceGravityWarning" xml:space="preserve">
-    <value>Warning: Surface gravity {0}g</value>
+  <data name="PlotFlightWarning_SurfaceGravityWarning" xml:space="preserve" comment="Warning: Surface gravity {0}g">
+    <value>Предупреждение: Поверхностная сила тяжести {0}g</value>
     <comment>{0} is a floating point number. The trailiing g is for Gravity.</comment>
   </data>
-  <data name="PlotGalMap_CountGenus" xml:space="preserve">
-    <value>{0}x Genus</value>
+  <data name="PlotGalMap_CountGenus" xml:space="preserve" comment="{0}x Genus">
+    <value>Род {0}x</value>
   </data>
-  <data name="PlotGalMap_Current" xml:space="preserve">
-    <value>Current:</value>
+  <data name="PlotGalMap_Current" xml:space="preserve" comment="Current:">
+    <value>Текущий:</value>
   </data>
-  <data name="PlotGalMap_DataFrom" xml:space="preserve">
-    <value>Data from: EDSM + Spansh + Canonn</value>
+  <data name="PlotGalMap_DataFrom" xml:space="preserve" comment="Data from: EDSM + Spansh + Canonn">
+    <value>Данные из: EDSM + Spansh + Canonn</value>
     <comment>Dim footer text</comment>
   </data>
-  <data name="PlotGalMap_Destination" xml:space="preserve">
-    <value>Destination:</value>
+  <data name="PlotGalMap_Destination" xml:space="preserve" comment="Destination:">
+    <value>Назначение:</value>
   </data>
-  <data name="PlotGalMap_DiscoveredBy" xml:space="preserve">
-    <value>By {0}, {1}</value>
+  <data name="PlotGalMap_DiscoveredBy" xml:space="preserve" comment="By {0}, {1}">
+    <value>К {0}, {1}</value>
     <comment>{0} string, name of cmdr, {1} short date</comment>
   </data>
-  <data name="PlotGalMap_LastUpdated" xml:space="preserve">
-    <value>Last updated: {0}</value>
+  <data name="PlotGalMap_LastUpdated" xml:space="preserve" comment="Last updated: {0}">
+    <value>Последнее обновление: {0}</value>
     <comment>{0} short date</comment>
   </data>
-  <data name="PlotGalMap_NextJump" xml:space="preserve">
-    <value>Next jump:</value>
+  <data name="PlotGalMap_NextJump" xml:space="preserve" comment="Next jump:">
+    <value>Следующий прыжок:</value>
   </data>
-  <data name="PlotGalMap_NoRouteSet" xml:space="preserve">
-    <value>No route set</value>
+  <data name="PlotGalMap_NoRouteSet" xml:space="preserve" comment="No route set">
+    <value>Маршрут не установлен</value>
     <comment>When no route is set.</comment>
   </data>
-  <data name="PlotGalMap_RouteFooter" xml:space="preserve">
-    <value>Total: ► {0} jumps ► Distance: {1} ly</value>
+  <data name="PlotGalMap_RouteFooter" xml:space="preserve" comment="Total: ► {0} jumps ► Distance: {1} ly">
+    <value>Всего: ► {0} прыжков ► Расстояние: {1} ly</value>
     <comment>Footer shown summarizing the route. {0} int, count of jumps. {1} float, 1 decimal place, distance travelled.</comment>
   </data>
-  <data name="PlotGalMap_Selected" xml:space="preserve">
-    <value>Selected:</value>
+  <data name="PlotGalMap_Selected" xml:space="preserve" comment="Selected:">
+    <value>Выбранный:</value>
   </data>
-  <data name="PlotSysStatus_BioSignals" xml:space="preserve">
-    <value>| {0}x Bio signals on: </value>
+  <data name="PlotSysStatus_BioSignals" xml:space="preserve" comment="| {0}x Bio signals on: ">
+    <value>| {0}x Bio сигнализирует о: </value>
     <comment>Appended to prior text. {0} int, count of bodies with bio signals</comment>
   </data>
-  <data name="PlotSysStatus_DssRemaining" xml:space="preserve">
-    <value> {0}x bodies: </value>
+  <data name="PlotSysStatus_DssRemaining" xml:space="preserve" comment=" {0}x bodies: ">
+    <value> {0}x кузова: </value>
     <comment>May be appended to FssCompleteShort. {0} int, count of bodies worth of scanning.</comment>
   </data>
-  <data name="PlotSysStatus_FssCompleteLong" xml:space="preserve">
-    <value>FSS {0}%</value>
+  <data name="PlotSysStatus_FssCompleteLong" xml:space="preserve" comment="FSS {0}%">
+    <value>ФСС {0}%</value>
     <comment>Short version, joined with more text. {0} int, percentage number</comment>
   </data>
-  <data name="PlotSysStatus_FssCompleteShort" xml:space="preserve">
-    <value>FSS {0}% complete</value>
+  <data name="PlotSysStatus_FssCompleteShort" xml:space="preserve" comment="FSS {0}% complete">
+    <value>ФСС завершена {0}%</value>
     <comment>Long version, shown alone. {0} int, percentage number</comment>
   </data>
-  <data name="PlotSysStatus_FssNotStarted" xml:space="preserve">
-    <value>FSS not started</value>
+  <data name="PlotSysStatus_FssNotStarted" xml:space="preserve" comment="FSS not started">
+    <value>FSS не запущена</value>
   </data>
-  <data name="PlotSysStatus_Header" xml:space="preserve">
-    <value>System survey: </value>
+  <data name="PlotSysStatus_Header" xml:space="preserve" comment="System survey: ">
+    <value>Обследование системы: </value>
     <comment>Header line</comment>
   </data>
-  <data name="PlotSysStatus_NextSystem" xml:space="preserve">
-    <value>Next system:</value>
+  <data name="PlotSysStatus_NextSystem" xml:space="preserve" comment="Next system:">
+    <value>Следующая система:</value>
   </data>
-  <data name="PlotSysStatus_NoDssMeet" xml:space="preserve">
-    <value>No DSS meet criteria</value>
+  <data name="PlotSysStatus_NoDssMeet" xml:space="preserve" comment="No DSS meet criteria">
+    <value>Ни один DSS не соответствует критериям</value>
   </data>
-  <data name="PlotSysStatus_NonBodySignals" xml:space="preserve">
-    <value>► {0} non-body signals</value>
+  <data name="PlotSysStatus_NonBodySignals" xml:space="preserve" comment="► {0} non-body signals">
+    <value>► {0} посторонние сигналы</value>
     <comment>{0} int, count of non body signals</comment>
   </data>
 </root>

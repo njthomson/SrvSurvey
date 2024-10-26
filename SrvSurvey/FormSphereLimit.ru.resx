@@ -343,8 +343,8 @@
   <data name="btnAccept.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="btnAccept.Text" xml:space="preserve">
-    <value>&amp;Activate</value>
+  <data name="btnAccept.Text" xml:space="preserve" comment="&amp;Activate">
+    <value>&amp;Активировать</value>
   </data>
   <data name="btnCancel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -367,8 +367,8 @@
   <data name="btnCancel.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
-  <data name="btnCancel.Text" xml:space="preserve">
-    <value>&amp;Cancel</value>
+  <data name="btnCancel.Text" xml:space="preserve" comment="&amp;Cancel">
+    <value>&amp;Отмена</value>
   </data>
   <data name="btnDisable.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -391,8 +391,8 @@
   <data name="btnDisable.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
-  <data name="btnDisable.Text" xml:space="preserve">
-    <value>&amp;Disable</value>
+  <data name="btnDisable.Text" xml:space="preserve" comment="&amp;Disable">
+    <value>&amp;Отключить</value>
   </data>
   <data name="comboSystemName.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -439,8 +439,8 @@
   <data name="label1.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="label1.Text" xml:space="preserve">
-    <value>Enter central system:</value>
+  <data name="label1.Text" xml:space="preserve" comment="Enter central system:">
+    <value>Войдите в центральную систему:</value>
   </data>
   <data name="label1.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleRight</value>
@@ -460,8 +460,8 @@
   <data name="label2.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
-  <data name="label2.Text" xml:space="preserve">
-    <value>Sphere radius:</value>
+  <data name="label2.Text" xml:space="preserve" comment="Sphere radius:">
+    <value>Радиус сферы:</value>
   </data>
   <data name="label2.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleRight</value>
@@ -481,8 +481,8 @@
   <data name="label3.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="label3.Text" xml:space="preserve">
-    <value>Star pos:</value>
+  <data name="label3.Text" xml:space="preserve" comment="Star pos:">
+    <value>Звездные позы:</value>
   </data>
   <data name="label3.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleRight</value>
@@ -499,8 +499,8 @@
   <data name="label4.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="label4.Text" xml:space="preserve">
-    <value>Spherical limit helps navigating to systems within a given distance of a central system.</value>
+  <data name="label4.Text" xml:space="preserve" comment="Spherical limit helps navigating to systems within a given distance of a central system.">
+    <value>Сферический предел помогает осуществлять навигацию к системам, находящимся на заданном расстоянии от центральной системы.</value>
   </data>
   <data name="label5.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -517,8 +517,8 @@
   <data name="label5.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
   </data>
-  <data name="label5.Text" xml:space="preserve">
-    <value>Current system:</value>
+  <data name="label5.Text" xml:space="preserve" comment="Current system:">
+    <value>Действующая система:</value>
   </data>
   <data name="label5.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleRight</value>
@@ -538,8 +538,8 @@
   <data name="label6.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
   </data>
-  <data name="label6.Text" xml:space="preserve">
-    <value>Distance:</value>
+  <data name="label6.Text" xml:space="preserve" comment="Distance:">
+    <value>Расстояние:</value>
   </data>
   <data name="label6.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleRight</value>
@@ -598,8 +598,8 @@
   <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
     <value>CenterParent</value>
   </data>
-  <data name="$this.Text" xml:space="preserve">
-    <value>Spherical limit</value>
+  <data name="$this.Text" xml:space="preserve" comment="Spherical limit">
+    <value>Сферический предел</value>
   </data>
   <data name="txtCurrentDistance.Location" type="System.Drawing.Point, System.Drawing">
     <value>127, 121</value>

@@ -40,146 +40,112 @@ namespace SrvSurvey
             button1 = new FlatButton();
             btnTargetCurrent = new FlatButton();
             btnPaste = new FlatButton();
+            flowLayoutPanel1 = new FlowLayoutPanel();
+            tableLayoutPanel1 = new TableLayoutPanel();
+            flowLayoutPanel1.SuspendLayout();
+            tableLayoutPanel1.SuspendLayout();
             SuspendLayout();
             // 
             // label2
             // 
-            label2.Location = new Point(56, 79);
-            label2.Margin = new Padding(4, 0, 4, 0);
+            resources.ApplyResources(label2, "label2");
             label2.Name = "label2";
-            label2.Size = new Size(50, 15);
-            label2.TabIndex = 7;
-            label2.Text = "Latitute:";
             // 
             // label3
             // 
-            label3.Location = new Point(42, 109);
-            label3.Margin = new Padding(4, 0, 4, 0);
+            resources.ApplyResources(label3, "label3");
             label3.Name = "label3";
-            label3.Size = new Size(64, 15);
-            label3.TabIndex = 1;
-            label3.Text = "Longitude:";
             // 
             // txtLat
             // 
             txtLat.BorderStyle = BorderStyle.FixedSingle;
-            txtLat.Location = new Point(114, 77);
-            txtLat.Margin = new Padding(4, 3, 4, 3);
+            resources.ApplyResources(txtLat, "txtLat");
             txtLat.Name = "txtLat";
-            txtLat.Size = new Size(145, 23);
-            txtLat.TabIndex = 0;
-            txtLat.Text = "+12.34";
             // 
             // txtLong
             // 
             txtLong.BorderStyle = BorderStyle.FixedSingle;
-            txtLong.Location = new Point(114, 107);
-            txtLong.Margin = new Padding(4, 3, 4, 3);
+            resources.ApplyResources(txtLong, "txtLong");
             txtLong.Name = "txtLong";
-            txtLong.Size = new Size(145, 23);
-            txtLong.TabIndex = 2;
-            txtLong.Text = "-10.0";
             // 
             // btnBegin
             // 
-            btnBegin.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnBegin.FlatStyle = FlatStyle.Flat;
-            btnBegin.Location = new Point(312, 183);
-            btnBegin.Margin = new Padding(4, 3, 4, 3);
+            resources.ApplyResources(btnBegin, "btnBegin");
             btnBegin.Name = "btnBegin";
-            btnBegin.Size = new Size(88, 27);
-            btnBegin.TabIndex = 4;
-            btnBegin.Text = "&Set target";
             btnBegin.UseVisualStyleBackColor = true;
             btnBegin.Click += btnBegin_Click;
             // 
             // btnCancel
             // 
-            btnCancel.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            resources.ApplyResources(btnCancel, "btnCancel");
             btnCancel.DialogResult = DialogResult.Cancel;
-            btnCancel.FlatStyle = FlatStyle.Flat;
-            btnCancel.Location = new Point(406, 183);
-            btnCancel.Margin = new Padding(4, 3, 4, 3);
             btnCancel.Name = "btnCancel";
-            btnCancel.Size = new Size(88, 27);
-            btnCancel.TabIndex = 5;
-            btnCancel.Text = "Cancel";
             btnCancel.UseVisualStyleBackColor = true;
             // 
             // label6
             // 
-            label6.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            label6.Location = new Point(14, 10);
-            label6.Margin = new Padding(4, 0, 4, 0);
+            resources.ApplyResources(label6, "label6");
             label6.Name = "label6";
-            label6.Size = new Size(480, 64);
-            label6.TabIndex = 6;
-            label6.Text = "Got a tip from a mysterious stranger to go to some Lat/Long on some planet or moon?\r\n\r\nEnter some Lat/Long position and guidance will appear when you approach.";
             // 
             // button1
             // 
-            button1.FlatStyle = FlatStyle.Flat;
-            button1.Location = new Point(18, 136);
-            button1.Margin = new Padding(4, 3, 4, 3);
+            resources.ApplyResources(button1, "button1");
             button1.Name = "button1";
-            button1.Size = new Size(88, 27);
-            button1.TabIndex = 3;
-            button1.Text = "&Clear target";
             button1.UseVisualStyleBackColor = true;
             button1.Click += button1_Click;
             // 
             // btnTargetCurrent
             // 
-            btnTargetCurrent.FlatStyle = FlatStyle.Flat;
-            btnTargetCurrent.Location = new Point(114, 136);
-            btnTargetCurrent.Margin = new Padding(4, 3, 4, 3);
+            resources.ApplyResources(btnTargetCurrent, "btnTargetCurrent");
             btnTargetCurrent.Name = "btnTargetCurrent";
-            btnTargetCurrent.Size = new Size(145, 27);
-            btnTargetCurrent.TabIndex = 8;
-            btnTargetCurrent.Text = "&Target current location";
             btnTargetCurrent.UseVisualStyleBackColor = true;
             btnTargetCurrent.Click += btnTargetCurrent_Click;
             // 
             // btnPaste
             // 
-            btnPaste.FlatStyle = FlatStyle.Flat;
-            btnPaste.Image = (Image)resources.GetObject("btnPaste.Image");
-            btnPaste.ImageAlign = ContentAlignment.MiddleLeft;
-            btnPaste.Location = new Point(266, 136);
+            resources.ApplyResources(btnPaste, "btnPaste");
             btnPaste.Name = "btnPaste";
-            btnPaste.Size = new Size(90, 27);
-            btnPaste.TabIndex = 9;
-            btnPaste.Text = "   Paste";
             btnPaste.UseVisualStyleBackColor = true;
             btnPaste.Click += btnPaste_Click;
+            // 
+            // flowLayoutPanel1
+            // 
+            resources.ApplyResources(flowLayoutPanel1, "flowLayoutPanel1");
+            flowLayoutPanel1.Controls.Add(btnBegin);
+            flowLayoutPanel1.Controls.Add(btnCancel);
+            flowLayoutPanel1.Name = "flowLayoutPanel1";
+            // 
+            // tableLayoutPanel1
+            // 
+            resources.ApplyResources(tableLayoutPanel1, "tableLayoutPanel1");
+            tableLayoutPanel1.Controls.Add(button1, 0, 2);
+            tableLayoutPanel1.Controls.Add(btnTargetCurrent, 1, 2);
+            tableLayoutPanel1.Controls.Add(btnPaste, 2, 2);
+            tableLayoutPanel1.Controls.Add(txtLong, 1, 1);
+            tableLayoutPanel1.Controls.Add(label3, 0, 1);
+            tableLayoutPanel1.Controls.Add(txtLat, 1, 0);
+            tableLayoutPanel1.Controls.Add(label2, 0, 0);
+            tableLayoutPanel1.Name = "tableLayoutPanel1";
             // 
             // FormGroundTarget
             // 
             AcceptButton = btnBegin;
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            resources.ApplyResources(this, "$this");
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = btnCancel;
-            ClientSize = new Size(507, 223);
-            Controls.Add(btnPaste);
-            Controls.Add(btnTargetCurrent);
-            Controls.Add(button1);
+            Controls.Add(tableLayoutPanel1);
+            Controls.Add(flowLayoutPanel1);
             Controls.Add(label6);
-            Controls.Add(btnCancel);
-            Controls.Add(btnBegin);
-            Controls.Add(txtLong);
-            Controls.Add(txtLat);
-            Controls.Add(label3);
-            Controls.Add(label2);
             FormBorderStyle = FormBorderStyle.FixedDialog;
-            Icon = (Icon)resources.GetObject("$this.Icon");
-            Margin = new Padding(4, 3, 4, 3);
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "FormGroundTarget";
             ShowInTaskbar = false;
-            StartPosition = FormStartPosition.CenterParent;
-            Text = "Set lat/long co-ordinates";
             Load += FormGroundTarget_Load;
+            flowLayoutPanel1.ResumeLayout(false);
+            flowLayoutPanel1.PerformLayout();
+            tableLayoutPanel1.ResumeLayout(false);
+            tableLayoutPanel1.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -195,5 +161,7 @@ namespace SrvSurvey
         private FlatButton button1;
         private FlatButton btnTargetCurrent;
         private FlatButton btnPaste;
+        private FlowLayoutPanel flowLayoutPanel1;
+        private TableLayoutPanel tableLayoutPanel1;
     }
 }

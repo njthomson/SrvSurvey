@@ -35,6 +35,8 @@ namespace SrvSurvey
             btnSave = new FlatButton();
             btnCancel = new FlatButton();
             tabPage1 = new TabPage();
+            label27 = new Label();
+            comboLang = new ComboBox();
             numOpacity = new NumericUpDown();
             numGravityWarningLevel = new NumericUpDown();
             checkFocusAfterFsdJump = new CheckBox();
@@ -307,6 +309,8 @@ namespace SrvSurvey
             // tabPage1
             // 
             tabPage1.BorderStyle = BorderStyle.Fixed3D;
+            tabPage1.Controls.Add(label27);
+            tabPage1.Controls.Add(comboLang);
             tabPage1.Controls.Add(numOpacity);
             tabPage1.Controls.Add(numGravityWarningLevel);
             tabPage1.Controls.Add(checkFocusAfterFsdJump);
@@ -347,6 +351,28 @@ namespace SrvSurvey
             tabPage1.Size = new Size(612, 448);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "General";
+            // 
+            // label27
+            // 
+            label27.AutoSize = true;
+            label27.FlatStyle = FlatStyle.System;
+            label27.Location = new Point(10, 418);
+            label27.Name = "label27";
+            label27.Size = new Size(62, 15);
+            label27.TabIndex = 33;
+            label27.Text = "Language:";
+            // 
+            // comboLang
+            // 
+            comboLang.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboLang.FlatStyle = FlatStyle.System;
+            comboLang.FormattingEnabled = true;
+            comboLang.Items.AddRange(new object[] { "Match Windows OS default" });
+            comboLang.Location = new Point(78, 415);
+            comboLang.Name = "comboLang";
+            comboLang.Size = new Size(226, 23);
+            comboLang.TabIndex = 32;
+            comboLang.Tag = "lang";
             // 
             // numOpacity
             // 
@@ -2778,5 +2804,7 @@ namespace SrvSurvey
         private CheckBox checkBox29;
         private Label label26;
         private CheckBox checkBox32;
+        private Label label27;
+        private ComboBox comboLang;
     }
 }

@@ -43,184 +43,146 @@
             label6 = new Label();
             txtCurrentSystem = new TextBox();
             txtCurrentDistance = new TextBox();
+            tableLayoutPanel1 = new TableLayoutPanel();
+            flowLayoutPanel1 = new FlowLayoutPanel();
             ((System.ComponentModel.ISupportInitialize)numRadius).BeginInit();
+            tableLayoutPanel1.SuspendLayout();
+            flowLayoutPanel1.SuspendLayout();
             SuspendLayout();
             // 
             // label1
             // 
-            label1.AutoSize = true;
-            label1.Location = new Point(12, 59);
+            resources.ApplyResources(label1, "label1");
             label1.Name = "label1";
-            label1.Size = new Size(116, 15);
-            label1.TabIndex = 0;
-            label1.Text = "Enter central system:";
             // 
             // label2
             // 
-            label2.AutoSize = true;
-            label2.Location = new Point(47, 116);
+            resources.ApplyResources(label2, "label2");
             label2.Name = "label2";
-            label2.Size = new Size(81, 15);
-            label2.TabIndex = 2;
-            label2.Text = "Sphere radius:";
             // 
             // btnCancel
             // 
-            btnCancel.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnCancel.AutoSize = true;
+            resources.ApplyResources(btnCancel, "btnCancel");
             btnCancel.DialogResult = DialogResult.Cancel;
-            btnCancel.FlatStyle = FlatStyle.Flat;
-            btnCancel.Location = new Point(417, 211);
             btnCancel.Name = "btnCancel";
-            btnCancel.Size = new Size(75, 27);
-            btnCancel.TabIndex = 5;
-            btnCancel.Text = "&Cancel";
             btnCancel.UseVisualStyleBackColor = true;
             btnCancel.Click += btnCancel_Click;
             // 
             // txtStarPos
             // 
             txtStarPos.BorderStyle = BorderStyle.FixedSingle;
-            txtStarPos.Location = new Point(134, 85);
+            resources.ApplyResources(txtStarPos, "txtStarPos");
             txtStarPos.Name = "txtStarPos";
             txtStarPos.ReadOnly = true;
-            txtStarPos.Size = new Size(358, 23);
-            txtStarPos.TabIndex = 7;
             // 
             // label3
             // 
-            label3.AutoSize = true;
-            label3.Location = new Point(76, 89);
+            resources.ApplyResources(label3, "label3");
             label3.Name = "label3";
-            label3.Size = new Size(52, 15);
-            label3.TabIndex = 6;
-            label3.Text = "Star pos:";
             // 
             // numRadius
             // 
             numRadius.Increment = new decimal(new int[] { 10, 0, 0, 0 });
-            numRadius.Location = new Point(134, 114);
+            resources.ApplyResources(numRadius, "numRadius");
             numRadius.Maximum = new decimal(new int[] { 1000, 0, 0, 0 });
             numRadius.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             numRadius.Name = "numRadius";
-            numRadius.Size = new Size(120, 23);
-            numRadius.TabIndex = 8;
-            numRadius.TextAlign = HorizontalAlignment.Right;
-            numRadius.ThousandsSeparator = true;
             numRadius.Value = new decimal(new int[] { 100, 0, 0, 0 });
             // 
             // btnAccept
             // 
-            btnAccept.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnAccept.AutoSize = true;
-            btnAccept.FlatStyle = FlatStyle.Flat;
-            btnAccept.Location = new Point(255, 211);
+            resources.ApplyResources(btnAccept, "btnAccept");
             btnAccept.Name = "btnAccept";
-            btnAccept.Size = new Size(75, 27);
-            btnAccept.TabIndex = 9;
-            btnAccept.Text = "&Activate";
             btnAccept.UseVisualStyleBackColor = true;
             btnAccept.Click += btnAccept_Click;
             // 
             // label4
             // 
-            label4.AutoSize = true;
-            label4.Location = new Point(12, 18);
+            resources.ApplyResources(label4, "label4");
+            label4.FlatStyle = FlatStyle.System;
             label4.Name = "label4";
-            label4.Size = new Size(460, 15);
-            label4.TabIndex = 10;
-            label4.Text = "Spherical limit helps navigating to systems within a given distance of a central system:";
             // 
             // comboSystemName
             // 
-            comboSystemName.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            resources.ApplyResources(comboSystemName, "comboSystemName");
             comboSystemName.FormattingEnabled = true;
-            comboSystemName.Location = new Point(134, 56);
             comboSystemName.Name = "comboSystemName";
-            comboSystemName.Size = new Size(358, 23);
-            comboSystemName.TabIndex = 11;
             comboSystemName.SelectedIndexChanged += comboSystemName_SelectedIndexChanged;
             comboSystemName.TextUpdate += comboSystemName_TextUpdate;
             // 
             // btnDisable
             // 
-            btnDisable.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnDisable.AutoSize = true;
-            btnDisable.FlatStyle = FlatStyle.Flat;
-            btnDisable.Location = new Point(336, 211);
+            resources.ApplyResources(btnDisable, "btnDisable");
             btnDisable.Name = "btnDisable";
-            btnDisable.Size = new Size(75, 27);
-            btnDisable.TabIndex = 12;
-            btnDisable.Text = "&Disable";
             btnDisable.UseVisualStyleBackColor = true;
             btnDisable.Click += btnDisable_Click;
             // 
             // label5
             // 
-            label5.AutoSize = true;
-            label5.Location = new Point(38, 146);
+            resources.ApplyResources(label5, "label5");
             label5.Name = "label5";
-            label5.Size = new Size(90, 15);
-            label5.TabIndex = 13;
-            label5.Text = "Current system:";
             // 
             // label6
             // 
-            label6.AutoSize = true;
-            label6.Location = new Point(73, 175);
+            resources.ApplyResources(label6, "label6");
             label6.Name = "label6";
-            label6.Size = new Size(55, 15);
-            label6.TabIndex = 15;
-            label6.Text = "Distance:";
             // 
             // txtCurrentSystem
             // 
             txtCurrentSystem.BorderStyle = BorderStyle.FixedSingle;
-            txtCurrentSystem.Location = new Point(134, 143);
+            resources.ApplyResources(txtCurrentSystem, "txtCurrentSystem");
             txtCurrentSystem.Name = "txtCurrentSystem";
             txtCurrentSystem.ReadOnly = true;
-            txtCurrentSystem.Size = new Size(358, 23);
-            txtCurrentSystem.TabIndex = 16;
             // 
             // txtCurrentDistance
             // 
             txtCurrentDistance.BorderStyle = BorderStyle.FixedSingle;
-            txtCurrentDistance.Location = new Point(134, 172);
+            resources.ApplyResources(txtCurrentDistance, "txtCurrentDistance");
             txtCurrentDistance.Name = "txtCurrentDistance";
             txtCurrentDistance.ReadOnly = true;
-            txtCurrentDistance.Size = new Size(120, 23);
-            txtCurrentDistance.TabIndex = 17;
+            // 
+            // tableLayoutPanel1
+            // 
+            resources.ApplyResources(tableLayoutPanel1, "tableLayoutPanel1");
+            tableLayoutPanel1.Controls.Add(label1, 0, 0);
+            tableLayoutPanel1.Controls.Add(txtCurrentDistance, 1, 4);
+            tableLayoutPanel1.Controls.Add(label3, 0, 1);
+            tableLayoutPanel1.Controls.Add(txtCurrentSystem, 1, 3);
+            tableLayoutPanel1.Controls.Add(label2, 0, 2);
+            tableLayoutPanel1.Controls.Add(label6, 0, 4);
+            tableLayoutPanel1.Controls.Add(comboSystemName, 1, 0);
+            tableLayoutPanel1.Controls.Add(label5, 0, 3);
+            tableLayoutPanel1.Controls.Add(numRadius, 1, 2);
+            tableLayoutPanel1.Controls.Add(txtStarPos, 1, 1);
+            tableLayoutPanel1.Name = "tableLayoutPanel1";
+            // 
+            // flowLayoutPanel1
+            // 
+            resources.ApplyResources(flowLayoutPanel1, "flowLayoutPanel1");
+            flowLayoutPanel1.Controls.Add(btnAccept);
+            flowLayoutPanel1.Controls.Add(btnDisable);
+            flowLayoutPanel1.Controls.Add(btnCancel);
+            flowLayoutPanel1.Name = "flowLayoutPanel1";
             // 
             // FormSphereLimit
             // 
             AcceptButton = btnAccept;
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            resources.ApplyResources(this, "$this");
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = btnCancel;
-            ClientSize = new Size(504, 250);
-            Controls.Add(txtCurrentDistance);
-            Controls.Add(txtCurrentSystem);
-            Controls.Add(label6);
-            Controls.Add(label5);
-            Controls.Add(btnDisable);
-            Controls.Add(comboSystemName);
+            Controls.Add(flowLayoutPanel1);
+            Controls.Add(tableLayoutPanel1);
             Controls.Add(label4);
-            Controls.Add(btnAccept);
-            Controls.Add(numRadius);
-            Controls.Add(txtStarPos);
-            Controls.Add(label3);
-            Controls.Add(btnCancel);
-            Controls.Add(label2);
-            Controls.Add(label1);
             FormBorderStyle = FormBorderStyle.Fixed3D;
-            Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "FormSphereLimit";
             ShowInTaskbar = false;
-            StartPosition = FormStartPosition.CenterParent;
-            Text = "Spherical limit";
             ((System.ComponentModel.ISupportInitialize)numRadius).EndInit();
+            tableLayoutPanel1.ResumeLayout(false);
+            tableLayoutPanel1.PerformLayout();
+            flowLayoutPanel1.ResumeLayout(false);
+            flowLayoutPanel1.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -241,5 +203,7 @@
         private Label label6;
         private TextBox txtCurrentSystem;
         private TextBox txtCurrentDistance;
+        private TableLayoutPanel tableLayoutPanel1;
+        private FlowLayoutPanel flowLayoutPanel1;
     }
 }

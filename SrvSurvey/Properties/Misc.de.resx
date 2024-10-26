@@ -117,76 +117,93 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="PlotFlightWarning_SurfaceGravityWarning" xml:space="preserve">
-    <value>Warnung: Oberflächengravitation {0}g</value>
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <data name="NetSysData_DiscoveredAll" xml:space="preserve" comment="Discovered, {0} bodies">
+    <value>Entdeckte, {0} Leichen</value>
+    <comment>{0} int, count of bodies</comment>
   </data>
-  <data name="PlotGalMap_DataFrom" xml:space="preserve">
-    <value>Daten von: EDSM + Spansh + Canonn</value>
+  <data name="NetSysData_DiscoveredPartial" xml:space="preserve" comment="Discovered ({0} of {1})">
+    <value>Entdeckt ({0} von {1})</value>
+    <comment>{0} int, count of bodies, {1} int, total count of bodies</comment>
   </data>
-  <data name="PlotGalMap_NoRouteSet" xml:space="preserve">
-    <value>Keine festgelegte Route</value>
-  </data>
-  <data name="PlotGalMap_RouteFooter" xml:space="preserve">
-    <value>Gesamt: ► {0} Sprünge ► Distanz: {1} ly</value>
-  </data>
-  <data name="PlotSysStatus_Header" xml:space="preserve">
-    <value>System-Befragung:</value>
-  </data>
-  <data name="PlotSysStatus_NextSystem" xml:space="preserve">
-    <value>Nächstes System:</value>
-  </data>
-  <data name="PlotSysStatus_FssNotStarted" xml:space="preserve">
-    <value>FSS nicht gestartet</value>
-  </data>
-  <data name="PlotSysStatus_FssCompleteShort" xml:space="preserve">
-    <value>FSS {0}% abgeschlossen</value>
-  </data>
-  <data name="PlotSysStatus_FssCompleteLong" xml:space="preserve">
-    <value>FSS {0}%</value>
-  </data>
-  <data name="PlotSysStatus_NoDssMeet" xml:space="preserve">
-    <value>Kein DSS erfüllt die Kriterien</value>
-  </data>
-  <data name="PlotSysStatus_DssRemaining" xml:space="preserve">
-    <value> {0}x Körper:</value>
-  </data>
-  <data name="PlotSysStatus_BioSignals" xml:space="preserve">
-    <value>| {0}x Bio signalisiert auf: </value>
-  </data>
-  <data name="PlotSysStatus_NonBodySignals" xml:space="preserve">
-    <value>► {0} Nicht-Körper-Signale</value>
-  </data>
-  <data name="PlotGalMap_Selected" xml:space="preserve">
-    <value>Ausgewählt:</value>
-  </data>
-  <data name="PlotGalMap_Current" xml:space="preserve">
-    <value>Strömung:</value>
-  </data>
-  <data name="PlotGalMap_Destination" xml:space="preserve">
-    <value>Bestimmungsort:</value>
-  </data>
-  <data name="PlotGalMap_NextJump" xml:space="preserve">
-    <value>Nächster Sprung:</value>
-  </data>
-  <data name="PlotGalMap_CountGenus" xml:space="preserve">
-    <value>{0}x Gattung</value>
-  </data>
-  <data name="PlotGalMap_DiscoveredBy" xml:space="preserve">
-    <value>Bis {0}, {1}</value>
-  </data>
-  <data name="PlotGalMap_LastUpdated" xml:space="preserve">
-    <value>Letzte Aktualisierung: {0}</value>
-  </data>
-  <data name="NetSysData_UndiscoveredSystem" xml:space="preserve">
+  <data name="NetSysData_UndiscoveredSystem" xml:space="preserve" comment="Undiscovered system">
     <value>Unentdecktes System</value>
   </data>
-  <data name="NetSysData_UnscannedSystem" xml:space="preserve">
+  <data name="NetSysData_UnscannedSystem" xml:space="preserve" comment="Unscanned system">
     <value>Nicht gescanntes System</value>
   </data>
-  <data name="NetSysData_DiscoveredAll" xml:space="preserve">
-    <value>Entdeckte, {0} Leichen</value>
+  <data name="PlotFlightWarning_SurfaceGravityWarning" xml:space="preserve" comment="Warning: Surface gravity {0}g">
+    <value>Warnung: Oberflächengravitation {0}g</value>
+    <comment>{0} is a floating point number. The trailiing g is for Gravity.</comment>
   </data>
-  <data name="NetSysData_DiscoveredPartial" xml:space="preserve">
-    <value>Entdeckt ({0} von {1})</value>
+  <data name="PlotGalMap_CountGenus" xml:space="preserve" comment="{0}x Genus">
+    <value>{0}x Gattung</value>
+  </data>
+  <data name="PlotGalMap_Current" xml:space="preserve" comment="Current:">
+    <value>Strömung:</value>
+  </data>
+  <data name="PlotGalMap_DataFrom" xml:space="preserve" comment="Data from: EDSM + Spansh + Canonn">
+    <value>Daten von: EDSM + Spansh + Canonn</value>
+    <comment>Dim footer text</comment>
+  </data>
+  <data name="PlotGalMap_Destination" xml:space="preserve" comment="Destination:">
+    <value>Bestimmungsort:</value>
+  </data>
+  <data name="PlotGalMap_DiscoveredBy" xml:space="preserve" comment="By {0}, {1}">
+    <value>Bis {0}, {1}</value>
+    <comment>{0} string, name of cmdr, {1} short date</comment>
+  </data>
+  <data name="PlotGalMap_LastUpdated" xml:space="preserve" comment="Last updated: {0}">
+    <value>Letzte Aktualisierung: {0}</value>
+    <comment>{0} short date</comment>
+  </data>
+  <data name="PlotGalMap_NextJump" xml:space="preserve" comment="Next jump:">
+    <value>Nächster Sprung:</value>
+  </data>
+  <data name="PlotGalMap_NoRouteSet" xml:space="preserve" comment="No route set">
+    <value>Keine festgelegte Route</value>
+    <comment>When no route is set.</comment>
+  </data>
+  <data name="PlotGalMap_RouteFooter" xml:space="preserve" comment="Total: ► {0} jumps ► Distance: {1} ly">
+    <value>Gesamt: ► {0} Sprünge ► Distanz: {1} ly</value>
+    <comment>Footer shown summarizing the route. {0} int, count of jumps. {1} float, 1 decimal place, distance travelled.</comment>
+  </data>
+  <data name="PlotGalMap_Selected" xml:space="preserve" comment="Selected:">
+    <value>Ausgewählt:</value>
+  </data>
+  <data name="PlotSysStatus_BioSignals" xml:space="preserve" comment="| {0}x Bio signals on: ">
+    <value>| {0}x Bio signalisiert auf: </value>
+    <comment>Appended to prior text. {0} int, count of bodies with bio signals</comment>
+  </data>
+  <data name="PlotSysStatus_DssRemaining" xml:space="preserve" comment=" {0}x bodies: ">
+    <value> {0}x Körper: </value>
+    <comment>May be appended to FssCompleteShort. {0} int, count of bodies worth of scanning.</comment>
+  </data>
+  <data name="PlotSysStatus_FssCompleteLong" xml:space="preserve" comment="FSS {0}%">
+    <value>FSS {0}%</value>
+    <comment>Short version, joined with more text. {0} int, percentage number</comment>
+  </data>
+  <data name="PlotSysStatus_FssCompleteShort" xml:space="preserve" comment="FSS {0}% complete">
+    <value>FSS {0}% abgeschlossen</value>
+    <comment>Long version, shown alone. {0} int, percentage number</comment>
+  </data>
+  <data name="PlotSysStatus_FssNotStarted" xml:space="preserve" comment="FSS not started">
+    <value>FSS nicht gestartet</value>
+  </data>
+  <data name="PlotSysStatus_Header" xml:space="preserve" comment="System survey: ">
+    <value>System-Befragung: </value>
+    <comment>Header line</comment>
+  </data>
+  <data name="PlotSysStatus_NextSystem" xml:space="preserve" comment="Next system:">
+    <value>Nächstes System:</value>
+  </data>
+  <data name="PlotSysStatus_NoDssMeet" xml:space="preserve" comment="No DSS meet criteria">
+    <value>Kein DSS erfüllt die Kriterien</value>
+  </data>
+  <data name="PlotSysStatus_NonBodySignals" xml:space="preserve" comment="► {0} non-body signals">
+    <value>► {0} Nicht-Körper-Signale</value>
+    <comment>{0} int, count of non body signals</comment>
   </data>
 </root>

@@ -454,16 +454,7 @@ namespace BioCriterias
             Game.log($"Done: {systemData.name} ({address})");
         }
 
-        public static void testSystems()
-        {
-            testSystemsAsync().ContinueWith(task =>
-            {
-                Game.log($"testSystems => {task.Status}");
-                if (task.Exception != null) Game.log(task.Exception);
-            });
-        }
-
-        private static async Task testSystemsAsync()
+        public static async Task testSystemsAsync()
         {
             var testSystems = new List<long>()
             {
