@@ -942,9 +942,11 @@ namespace SrvSurvey
             g.FillRectangle(GameColors.HumanSite.brushTextFade, four, twoSix, this.Width - eight, this.Height - threeSix);
 
             if (station.subType == 0 && station.heading == -1)
-                drawApproachText("❓", "Unknown settlement type and heading");
+                drawApproachText("❓", "Unknown settlement type and heading", GameColors.Cyan);
             else if (station.heading == -1)
-                drawApproachText("❓", "Unknown settlement heading");
+                drawApproachText("❓", "Unknown settlement heading", GameColors.Cyan);
+            else 
+                drawApproachText("►", "Known settlement", GameColors.LimeIsh);
 
             if (!this.hasLanded)
             {

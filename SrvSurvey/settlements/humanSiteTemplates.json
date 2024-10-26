@@ -386,7 +386,12 @@
       { "name": "Sample Containment Unit", "offset": { "X": -56.88919, "Y": -75.64045 }, "floor": 1, "level": 2 },
       { "name": "Atmos", "offset": { "X": -37.698456, "Y": 30.3712 }, "floor": 1, "level": 2 },
       { "name": "Alarm", "offset": { "X": -41.40432, "Y": 26.563717 }, "floor": 1, "level": 1 },
-      { "name": "Auth", "offset": { "X": 21.19847, "Y": 17.775578 }, "floor": 2, "level": 1 }
+      { "name": "Auth", "offset": { "X": 21.19847, "Y": 17.775578 }, "floor": 2, "level": 1 },
+      { "name": "Atmos", "offset": { "X": -56.045063, "Y": -59.152103 }, "floor": 1, "level": 2 },
+      { "name": "Sample Containment Unit", "offset": { "X": -57.16183, "Y": -59.759426 }, "floor": 1, "level": 2 },
+      { "name": "Medkit", "offset": { "X": -64.15185, "Y": -71.96647 }, "floor": 1, "level": 1 },
+      { "name": "Battery", "offset": { "X": -72.320885, "Y": -66.72344 }, "floor": 1, "level": 1 },
+      { "name": "Environmental Regulation Unit", "offset": { "X": -11.064248, "Y": -26.093927 }, "floor": 1, "level": 2 }
     ],
     "dataTerminals": [
       { "offset": { "X": -55.543636, "Y": -70.10633 }, "floor": 1, "level": 1 },
