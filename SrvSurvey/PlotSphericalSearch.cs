@@ -116,46 +116,49 @@ namespace SrvSurvey
             }
         }
 
+        //protected override void onPaintPlotter(PaintEventArgs e)
+        //{
+        //    var cc = Color.Red;
+        //    //cc = Color.FromArgb(255, 255, 24, 0);
+        //    cc = Color.FromArgb(255, 24, 255, 64);
+        //    cc = Color.White;
+
+        //    var ff = new Font("Arial", 16);
+        //    ff = GameColors.fontSmall2;
+
+        //    var bb = new HatchBrush(HatchStyle.DarkDownwardDiagonal, cc);
+
+        //    var pt = new Point(14, 10);
+        //    var sz = TextRenderer.MeasureText("Cyan", ff);
+
+        //    //var rr = new Rectangle(pt.X - 1, pt.Y - 2, sz.Width + 140, sz.Height + 4);
+        //    //g.FillRectangle(bb, rr);
+
+        //    ////rr.Offset(+2, +2);
+        //    //rr.Inflate(-2, -2);
+        //    //g.FillRectangle(Brushes.Black, rr);
+
+
+        //    pt.X += 2;
+        //    //  🎂 🧁 🍥 ‡† ⁑ ⁂ ※ ⁜‼•🟎 🟂🟎🟒🟈⚑⚐⛿🏁🎌⛳🏴🏳🟎✩✭✪𓇽𓇼 🚕🛺🚐🚗🚜🚛🛬🚀🛩️☀️🌀☄️🔥⚡🌩️🌠☀️
+        //    // 💫 🧭🧭🌍🌐🌏🌎🗽♨️🌅
+        //    // 💎🪐🎁🍥🍪🧊⛩️🌋⛰️🗻❄️🎉🧨🎁🧿🎲🕹️📣🎨🧵🔇🔕🎚️🎛️📻📱📺💻🖥️💾📕📖📦📍📎✂️📌📐📈💼🔰🛡️🔨🗡️🔧🧪🚷🧴📵🧽➰🔻🔺🔔🔘🔳🔲🏁🚩🏴✔️✖️❌➕➖➗ℹ️📛⭕☑️📶🔅🔆⚠️⛔🚫🧻↘️⚰️🧯🧰📡🧬⚗️🔩⚙️🔓🗝️🗄️📩🧾📒📰🗞️🏷️📑🔖💡🔋🏮🕯🔌📞☎️💍👑🧶🎯🔮🧿🎈🏆🎖️🌌💫🚧💰
+        //    // saturn 🪐
+        //    TextRenderer.DrawText(g, "💎Cyan", ff, pt, cc, TextFormatFlags.NoPadding | TextFormatFlags.NoPrefix);
+        //    //pt.X += 16;
+        //    //TextRenderer.DrawText(g, "Cyan", ff, pt, cc, TextFormatFlags.NoPadding | TextFormatFlags.NoPrefix);
+
+        //    // 🔔 alarm
+        //    // 🗝️ auth?
+        //    // 🔋 battery?
+        //    // 📩 data terminal?
+        //    // 🔩 sample container
+
+
+        //    return;
+
         protected override void onPaintPlotter(PaintEventArgs e)
         {
-            //var cc = Color.Red;
-            ////cc = Color.FromArgb(255, 255, 24, 0);
-            //cc = Color.FromArgb(255, 24, 255, 64);
-            //cc = Color.White;
-
-            //var ff = new Font("Arial", 16);
-            //ff = GameColors.fontSmall2;
-
-            //var bb = new HatchBrush(HatchStyle.DarkDownwardDiagonal, cc);
-
-            //var pt = new Point(14, 10);
-            //var sz = TextRenderer.MeasureText("Cyan", ff);
-
-            ////var rr = new Rectangle(pt.X - 1, pt.Y - 2, sz.Width + 140, sz.Height + 4);
-            ////g.FillRectangle(bb, rr);
-
-            //////rr.Offset(+2, +2);
-            ////rr.Inflate(-2, -2);
-            ////g.FillRectangle(Brushes.Black, rr);
-
-
-            //pt.X += 2;
-            ////  🎂 🧁 🍥 ‡† ⁑ ⁂ ※ ⁜‼•🟎 🟂🟎🟒🟈⚑⚐⛿🏁🎌⛳🏴🏳🟎✩✭✪𓇽𓇼 🚕🛺🚐🚗🚜🚛🛬🚀🛩️☀️🌀☄️🔥⚡🌩️🌠☀️
-            //// 💫 🧭🧭🌍🌐🌏🌎🗽♨️🌅
-            //// 💎🪐🎁🍥🍪🧊⛩️🌋⛰️🗻❄️🎉🧨🎁🧿🎲🕹️📣🎨🧵🔇🔕🎚️🎛️📻📱📺💻🖥️💾📕📖📦📍📎✂️📌📐📈💼🔰🛡️🔨🗡️🔧🧪🚷🧴📵🧽➰🔻🔺🔔🔘🔳🔲🏁🚩🏴✔️✖️❌➕➖➗ℹ️📛⭕☑️📶🔅🔆⚠️⛔🚫🧻↘️⚰️🧯🧰📡🧬⚗️🔩⚙️🔓🗝️🗄️📩🧾📒📰🗞️🏷️📑🔖💡🔋🏮🕯🔌📞☎️💍👑🧶🎯🔮🧿🎈🏆🎖️🌌💫🚧💰
-            //// saturn 🪐
-            //TextRenderer.DrawText(g, "💎Cyan", ff, pt, cc, TextFormatFlags.NoPadding | TextFormatFlags.NoPrefix);
-            ////pt.X += 16;
-            ////TextRenderer.DrawText(g, "Cyan", ff, pt, cc, TextFormatFlags.NoPadding | TextFormatFlags.NoPrefix);
-
-            //// 🔔 alarm
-            //// 🗝️ auth?
-            //// 🔋 battery?
-            //// 📩 data terminal?
-            //// 🔩 sample container
-
-
-            //return;
 
             this.dty += this.drawTextAt($"From: {game.cmdr.sphereLimit.centerSystemName}").Height;
             this.dtx = eight;
