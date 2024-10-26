@@ -11,6 +11,7 @@ namespace SrvSurvey
     /// <summary>
     /// A base class for all plotters
     /// </summary>
+    [System.ComponentModel.DesignerCategory("")]
     internal abstract class PlotBase : Form, PlotterForm, IDisposable
     {
         #region scaling

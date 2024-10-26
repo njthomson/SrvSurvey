@@ -5,6 +5,7 @@ using System.Drawing.Drawing2D;
 
 namespace SrvSurvey
 {
+    [System.ComponentModel.DesignerCategory("")]
     internal class PlotVertialStripe : Form, PlotterForm, IDisposable
     {
         public static PlotVertialStripe? show(PlotVertialStripe.Mode mode, double targetAltitude)

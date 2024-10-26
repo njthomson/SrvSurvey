@@ -4,6 +4,7 @@ using System.Drawing.Drawing2D;
 
 namespace SrvSurvey
 {
+    [System.ComponentModel.DesignerCategory("")]
     public partial class PlotPulse : Form, PlotterForm
     {
         public static DateTime LastChanged;
