@@ -120,90 +120,100 @@
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
-  <data name="NetSysData_DiscoveredAll" xml:space="preserve" comment="Discovered, {0} bodies">
+  <data name="NetSysData_DiscoveredAll">
     <value>*DISCOVERED, {0} BODIES→→→!</value>
-    <comment>{0} int, count of bodies</comment>
+    <comment>Discovered, {0} bodies</comment>
   </data>
-  <data name="NetSysData_DiscoveredPartial" xml:space="preserve" comment="Discovered ({0} of {1})">
+  <data name="NetSysData_DiscoveredPartial">
     <value>*DISCOVERED ({0} OF {1})→→→!</value>
-    <comment>{0} int, count of bodies, {1} int, total count of bodies</comment>
+    <comment>Discovered ({0} of {1})</comment>
   </data>
-  <data name="NetSysData_UndiscoveredSystem" xml:space="preserve" comment="Undiscovered system">
+  <data name="NetSysData_UndiscoveredSystem">
     <value>*UNDISCOVERED SYSTEM→→→!</value>
+    <comment>Undiscovered system</comment>
   </data>
-  <data name="NetSysData_UnscannedSystem" xml:space="preserve" comment="Unscanned system">
+  <data name="NetSysData_UnscannedSystem">
     <value>*UNSCANNED SYSTEM→→→!</value>
+    <comment>Unscanned system</comment>
   </data>
-  <data name="PlotFlightWarning_SurfaceGravityWarning" xml:space="preserve" comment="Warning: Surface gravity {0}g">
+  <data name="PlotFlightWarning_SurfaceGravityWarning">
     <value>*WARNING: SURFACE GRAVITY {0}G→→→!</value>
-    <comment>{0} is a floating point number. The trailiing g is for Gravity.</comment>
+    <comment>Warning: Surface gravity {0}g</comment>
   </data>
-  <data name="PlotGalMap_CountGenus" xml:space="preserve" comment="{0}x Genus">
+  <data name="PlotGalMap_CountGenus">
     <value>*{0}X GENUS→→→!</value>
+    <comment>{0}x Genus</comment>
   </data>
-  <data name="PlotGalMap_Current" xml:space="preserve" comment="Current:">
+  <data name="PlotGalMap_Current">
     <value>*CURRENT:→→→!</value>
+    <comment>Current:</comment>
   </data>
-  <data name="PlotGalMap_DataFrom" xml:space="preserve" comment="Data from: EDSM + Spansh + Canonn">
+  <data name="PlotGalMap_DataFrom">
     <value>*DATA FROM: EDSM + SPANSH + CANONN→→→!</value>
-    <comment>Dim footer text</comment>
+    <comment>Data from: EDSM + Spansh + Canonn</comment>
   </data>
-  <data name="PlotGalMap_Destination" xml:space="preserve" comment="Destination:">
+  <data name="PlotGalMap_Destination">
     <value>*DESTINATION:→→→!</value>
+    <comment>Destination:</comment>
   </data>
-  <data name="PlotGalMap_DiscoveredBy" xml:space="preserve" comment="By {0}, {1}">
+  <data name="PlotGalMap_DiscoveredBy">
     <value>*BY {0}, {1}→→→!</value>
-    <comment>{0} string, name of cmdr, {1} short date</comment>
+    <comment>By {0}, {1}</comment>
   </data>
-  <data name="PlotGalMap_LastUpdated" xml:space="preserve" comment="Last updated: {0}">
+  <data name="PlotGalMap_LastUpdated">
     <value>*LAST UPDATED: {0}→→→!</value>
-    <comment>{0} short date</comment>
+    <comment>Last updated: {0}</comment>
   </data>
-  <data name="PlotGalMap_NextJump" xml:space="preserve" comment="Next jump:">
+  <data name="PlotGalMap_NextJump">
     <value>*NEXT JUMP:→→→!</value>
+    <comment>Next jump:</comment>
   </data>
-  <data name="PlotGalMap_NoRouteSet" xml:space="preserve" comment="No route set">
+  <data name="PlotGalMap_NoRouteSet">
     <value>*NO ROUTE SET→→→!</value>
-    <comment>When no route is set.</comment>
+    <comment>No route set</comment>
   </data>
-  <data name="PlotGalMap_RouteFooter" xml:space="preserve" comment="Total: ► {0} jumps ► Distance: {1} ly">
+  <data name="PlotGalMap_RouteFooter">
     <value>*TOTAL: ► {0} JUMPS ► DISTANCE: {1} LY→→→!</value>
-    <comment>Footer shown summarizing the route. {0} int, count of jumps. {1} float, 1 decimal place, distance travelled.</comment>
+    <comment>Total: ► {0} jumps ► Distance: {1} ly</comment>
   </data>
-  <data name="PlotGalMap_Selected" xml:space="preserve" comment="Selected:">
+  <data name="PlotGalMap_Selected">
     <value>*SELECTED:→→→!</value>
+    <comment>Selected:</comment>
   </data>
-  <data name="PlotSysStatus_BioSignals" xml:space="preserve" comment="| {0}x Bio signals on: ">
+  <data name="PlotSysStatus_BioSignals">
     <value>*| {0}X BIO SIGNALS ON: →→→!</value>
-    <comment>Appended to prior text. {0} int, count of bodies with bio signals</comment>
+    <comment>| {0}x Bio signals on: </comment>
   </data>
-  <data name="PlotSysStatus_DssRemaining" xml:space="preserve" comment=" {0}x bodies: ">
+  <data name="PlotSysStatus_DssRemaining">
     <value>* {0}X BODIES: →→→!</value>
-    <comment>May be appended to FssCompleteShort. {0} int, count of bodies worth of scanning.</comment>
+    <comment> {0}x bodies: </comment>
   </data>
-  <data name="PlotSysStatus_FssCompleteLong" xml:space="preserve" comment="FSS {0}%">
+  <data name="PlotSysStatus_FssCompleteLong">
     <value>*FSS {0}%→→→!</value>
-    <comment>Short version, joined with more text. {0} int, percentage number</comment>
+    <comment>FSS {0}%</comment>
   </data>
-  <data name="PlotSysStatus_FssCompleteShort" xml:space="preserve" comment="FSS {0}% complete">
+  <data name="PlotSysStatus_FssCompleteShort">
     <value>*FSS {0}% COMPLETE→→→!</value>
-    <comment>Long version, shown alone. {0} int, percentage number</comment>
+    <comment>FSS {0}% complete</comment>
   </data>
-  <data name="PlotSysStatus_FssNotStarted" xml:space="preserve" comment="FSS not started">
+  <data name="PlotSysStatus_FssNotStarted">
     <value>*FSS NOT STARTED→→→!</value>
+    <comment>FSS not started</comment>
   </data>
-  <data name="PlotSysStatus_Header" xml:space="preserve" comment="System survey: ">
+  <data name="PlotSysStatus_Header">
     <value>*SYSTEM SURVEY: →→→!</value>
-    <comment>Header line</comment>
+    <comment>System survey: </comment>
   </data>
-  <data name="PlotSysStatus_NextSystem" xml:space="preserve" comment="Next system:">
+  <data name="PlotSysStatus_NextSystem">
     <value>*NEXT SYSTEM:→→→!</value>
+    <comment>Next system:</comment>
   </data>
-  <data name="PlotSysStatus_NoDssMeet" xml:space="preserve" comment="No DSS meet criteria">
+  <data name="PlotSysStatus_NoDssMeet">
     <value>*NO DSS MEET CRITERIA→→→!</value>
+    <comment>No DSS meet criteria</comment>
   </data>
-  <data name="PlotSysStatus_NonBodySignals" xml:space="preserve" comment="► {0} non-body signals">
+  <data name="PlotSysStatus_NonBodySignals">
     <value>*► {0} NON-BODY SIGNALS→→→!</value>
-    <comment>{0} int, count of non body signals</comment>
+    <comment>► {0} non-body signals</comment>
   </data>
 </root>

@@ -1,0 +1,4 @@
+﻿Misc.resx
+FormSphereLimit.resx
+FormGroundTarget.resx
+PlotSphericalSearch.resx

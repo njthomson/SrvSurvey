@@ -491,7 +491,7 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="label4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 18</value>
+    <value>12, 8</value>
   </data>
   <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
     <value>470, 32</value>

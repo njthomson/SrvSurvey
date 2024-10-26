@@ -1,7 +1,9 @@
 ﻿using Newtonsoft.Json;
 using SrvSurvey.game;
 using SrvSurvey.net;
+using SrvSurvey.Properties;
 using System.Diagnostics;
+using System.Resources;
 using System.Text;
 using System.Xml.Linq;
 
@@ -32,7 +34,7 @@ namespace SrvSurvey
             return Localize.supportedLanguages.GetValueOrDefault(name) ?? "";
         }
 
-        public static void localize()
+        public static async Task localize(bool pseudoOnly)
         {
             if (key == null) throw new NotSupportedException("Secret not available");
 
@@ -40,22 +42,24 @@ namespace SrvSurvey
                 .Where(lang => lang != "en")
                 .ToList();
 
-            var resxFiles = new[]
-            {
-                @"SrvSurvey\Properties\Misc.resx",
-                @"SrvSurvey\FormSphereLimit.resx",
-                @"SrvSurvey\FormGroundTarget.resx",
-            }
-            .Select(f => Path.GetFullPath(Path.Combine(Git.srcRootFolder, f)))
-            .ToList();
+            if (pseudoOnly)
+                targetLangs = new() { "ps" };
 
-            Game.log($"\tLocalizing {resxFiles.Count} resx files across {targetLangs.Count} languages:\r\n> " + string.Join("\r\n> ", targetLangs));
+            // ready loc ready resx file names
+            var locReadyResx = File.ReadAllLines(Path.Combine(Git.srcRootFolder, "SrvSurvey", "loc-ready.txt"))
+                .Where(f => !f.StartsWith("#") && !f.StartsWith(" "))
+                .ToList();
+            var resxFiles = Directory.GetFiles(Path.GetFullPath(Path.Combine(Git.srcRootFolder, "SrvSurvey")), "*.resx", SearchOption.AllDirectories)
+                .Where(p => locReadyResx.Any(r => p.EndsWith(r)))
+                .ToList();
+
+            Game.log($"> Localizing {resxFiles.Count} resx files across {targetLangs.Count} languages:\r\n\t> " + string.Join("\r\n\t> ", targetLangs));
             foreach (var targetLang in targetLangs)
                 foreach (var filepath in resxFiles)
-                    Localize.translateResx(filepath, targetLang).ContinueWith(t => { Game.log("Done"); });
+                    await Localize.translateResx(filepath, targetLang);
         }
 
-        public static async Task<string?> translateString(string textToTranslate, string targetLang)
+        private static async Task<string?> translateString(string textToTranslate, string targetLang)
         {
             // Input and output languages are defined as parameters.
             var uri = new Uri($"{endpoint}/translate?api-version=3.0&from=en&to={targetLang}");
@@ -79,9 +83,9 @@ namespace SrvSurvey
             return translation?.text;
         }
 
-        class Translators { public List<Translation> translations; }
+        private class Translators { public List<Translation> translations; }
 
-        class Translation
+        private class Translation
         {
             public string text;
             public string to;
@@ -92,7 +96,7 @@ namespace SrvSurvey
             }
         }
 
-        public static async Task translateResx(string sourceFilepath, string targetLang)
+        private static async Task translateResx(string sourceFilepath, string targetLang)
         {
             if (!File.Exists(sourceFilepath)) throw new FileNotFoundException($"File not found: {sourceFilepath}");
 
@@ -122,41 +126,45 @@ namespace SrvSurvey
 
                 // find target node + set the source text as a comment on the target element -  so we can detect when the source changes (saving on translation costs)
                 var targetNode = newTargetDoc.Root!.Elements().Where(_ => _.Name.LocalName == "data" && _.FirstAttribute?.Value == resourceName).First();
-                targetNode.SetAttributeValue("comment", sourceText);
+                // build a replacement node                
+                var newNode = new XElement("data");
+                newNode.SetAttributeValue("name", resourceName);
+                newNode.Add(new XElement("value", ""));
+                newNode.Add(new XElement("comment", sourceText));
+                targetNode.ReplaceWith(newNode);
+                targetNode = newNode;
 
                 // default to prior translation
                 var oldTargetNode = oldTargetDoc?.Root?.Elements().Where(_ => _.Name.LocalName == "data" && _.FirstAttribute?.Value == resourceName).FirstOrDefault();
                 var oldTranslation = oldTargetNode?.Element("value")?.Value;
-                if (!string.IsNullOrEmpty(oldTranslation))
+
+                // replace elements when we're first creating the .resx file (and always pseudo-localize)
+                if (oldTranslation == null)
+                    continue;
+                else
                     targetNode.SetElementValue("value", oldTranslation);
 
-                // always pseudo-localize when we're first creating the .resx file
-                if (oldTargetDoc == null)
-                {
-                    targetLang = "ps";
-                    targetNode.SetAttributeValue("comment", "-");
-                }
-
                 // skip anything that hasn't changed (unless we're doing PS)
-                if (oldTargetNode?.Attribute("comment")?.Value == sourceText && targetLang != "ps") continue;
+                var oldComment = oldTargetNode?.Element("comment")?.Value;
+                if (oldComment == sourceText && oldTranslation != null) continue;
 
-                if (targetLang == "ps")
+                // presume pseudo translate it
+                var translation = $"*{sourceText.ToUpperInvariant()}→→→!";
+
+                // or translate into a real language
+                if (targetLang != "ps" && oldTargetNode != null)
                 {
-                    // pseudo translate it
-                    var translation = $"*{sourceText.ToUpperInvariant()}→→→!";
-                    targetNode.SetElementValue("value", translation);
-                }
-                else
-                {
-                    // translate into a real language
-                    var translation = await translateString(sourceText, targetLang);
+                    translation = await translateString(sourceText, targetLang);
                     if (string.IsNullOrEmpty(translation))
                     {
                         Debugger.Break();
                         continue;
                     }
-                    targetNode.SetElementValue("value", translation);
                 }
+
+                var valueNode = targetNode.Element("value")!;
+                //valueNode.SetAttributeValue(XNamespace.Xml.GetName("space"), "preserve");
+                valueNode.Value = translation;
 
                 count++;
             }
@@ -166,7 +174,7 @@ namespace SrvSurvey
             alphaSortResx(newTargetDoc, targetFilepath);
         }
 
-        public static void alphaSortResx(string filepath)
+        private static void alphaSortResx(string filepath)
         {
             if (!File.Exists(filepath)) throw new FileNotFoundException($"File not found: {filepath}");
 
@@ -174,7 +182,7 @@ namespace SrvSurvey
             alphaSortResx(doc, filepath);
         }
 
-        public static void alphaSortResx(XDocument doc, string filepath)
+        private static void alphaSortResx(XDocument doc, string filepath)
         {
             // collect elements to be sorted
             var sorted = doc.Root!.Elements()

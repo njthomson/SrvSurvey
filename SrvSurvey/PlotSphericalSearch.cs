@@ -84,8 +84,6 @@ namespace SrvSurvey
             if (this.IsDisposed || game.systemData == null) return;
             base.Status_StatusChanged(blink);
 
-            Game.log("!!");
-
             // if the destination changed ...
             if (game.status.Destination != null && this.destinationName != game.status.Destination.Name)
             {
@@ -159,24 +157,23 @@ namespace SrvSurvey
 
         protected override void onPaintPlotter(PaintEventArgs e)
         {
-
-            this.dty += this.drawTextAt($"From: {game.cmdr.sphereLimit.centerSystemName}").Height;
+            this.dty += this.drawTextAt(RES("From", game.cmdr.sphereLimit.centerSystemName)).Height;
             this.dtx = eight;
-            this.dty += this.drawTextAt($"To: {this.targetSystemName}").Height;
+            this.dty += this.drawTextAt(RES("To", this.targetSystemName)).Height;
 
             if (this.distance < 0)
             {
-                this.drawTextAt(eight, $"Distance: ...");
+                this.drawTextAt(eight, RES("DistanceInProgress"));
             }
             else if (this.distance >= 0)
             {
                 var dist = this.distance.ToString("N2");
                 var limitDist = game.cmdr.sphereLimit.radius.ToString("N2");
-                var tc = this.distance < game.cmdr.sphereLimit.radius ? GameColors.brushCyan : GameColors.brushRed;
-                var verb = this.distance < game.cmdr.sphereLimit.radius ? "within" : "exceeds";
 
-                this.dtx = eight;
-                this.drawTextAt($"Distance: {dist}ly - {verb} {limitDist} ly", tc);
+                if (this.distance < game.cmdr.sphereLimit.radius)
+                    this.drawTextAt(eight, RES("DistanceWithin", dist, limitDist), GameColors.brushCyan);
+                else
+                    this.drawTextAt(eight, RES("DistanceExceeds", dist, limitDist), GameColors.brushRed);
             }
         }
     }

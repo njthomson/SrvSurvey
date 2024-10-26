@@ -1,10 +1,12 @@
 ﻿using Newtonsoft.Json;
 using SrvSurvey.canonn;
 using SrvSurvey.game;
+using SrvSurvey.Properties;
 using SrvSurvey.units;
 using System.Diagnostics;
 using System.Drawing.Drawing2D;
 using System.Reflection;
+using System.Resources;
 
 namespace SrvSurvey
 {
@@ -133,7 +135,7 @@ namespace SrvSurvey
         public bool didFirstPaint { get; set; }
         private bool forceRepaint;
         public bool showing { get; set; }
-
+        
         protected PlotBase()
         {
             this.TopMost = true;
@@ -163,6 +165,8 @@ namespace SrvSurvey
                     game.systemBody.radius,
                     game.touchdownLocation ?? LatLong2.Empty);
             }
+
+            rm = this.prepResources(this.GetType().FullName!);
         }
 
         protected override void OnLoad(EventArgs e)
@@ -922,6 +926,34 @@ namespace SrvSurvey
                 g.FillPie(dotBrush, x, y, sz2, sz2, -100, 30);
             */
         }
+
+        #region Resource Managering
+
+        private readonly ResourceManager rm;
+
+        private static Dictionary<string, ResourceManager> resourceManagers = new();
+
+        public ResourceManager prepResources(string name)
+        {
+            if (!resourceManagers.ContainsKey(name))
+                resourceManagers[name] = new ResourceManager(name, typeof(Misc).Assembly);
+
+            return resourceManagers[name];
+        }
+
+        protected string RES(string name)
+        {
+            var txt = rm.GetString(name);
+            return txt ?? "";
+        }
+
+        protected string RES(string name, params object?[] args)
+        {
+            var txt = rm.GetString(name) ?? "";
+            return string.Format(txt, args);
+        }
+
+        #endregion
     }
 
     /// <summary>

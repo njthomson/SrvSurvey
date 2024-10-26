@@ -883,7 +883,6 @@ namespace SrvSurvey
             comboDev.DropDownStyle = ComboBoxStyle.DropDownList;
             comboDev.FlatStyle = FlatStyle.System;
             comboDev.FormattingEnabled = true;
-            comboDev.Items.AddRange(new object[] { "...", "Localize", "Pub_Guardian", "Pub_BioCriteria", "Pub_HumanSites", "Test_BioCriteria", "Build_BioCriteria" });
             comboDev.Location = new Point(174, 595);
             comboDev.Name = "comboDev";
             comboDev.Size = new Size(170, 20);

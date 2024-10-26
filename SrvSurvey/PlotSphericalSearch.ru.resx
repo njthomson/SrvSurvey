@@ -120,28 +120,24 @@
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
-  <data name="DistanceExceeds" xml:space="preserve">
-    <value>Distance: {0}ly - exceeds {1} ly</value>
-    <comment>Shown when measured distance exceeds some limit.
-{0} float, 2 decimal places, measured distance between 2 star systems
-{1} float, 2 decimal places, the maximum distance allowed</comment>
+  <data name="DistanceExceeds">
+    <value>Расстояние: {0}ly - превышает {1} ly</value>
+    <comment>Distance: {0}ly - exceeds {1} ly</comment>
   </data>
-  <data name="DistanceInProgress" xml:space="preserve">
-    <value>Distance: ...</value>
-    <comment>Shown when we are calculating the distance between 2 star systems.</comment>
+  <data name="DistanceInProgress">
+    <value>Расстояние:...</value>
+    <comment>Distance: ...</comment>
   </data>
-  <data name="DistanceWithin" xml:space="preserve">
-    <value>Distance: {0} - within {1} ly</value>
-    <comment>Shown when measured distance is within some limit.
-{0} float, 2 decimal places, measured distance between 2 star systems
-{1} float, 2 decimal places, the maximum distance allowed</comment>
+  <data name="DistanceWithin">
+    <value>Расстояние: {0} - в пределах {1} световых лет</value>
+    <comment>Distance: {0} - within {1} ly</comment>
   </data>
-  <data name="From" xml:space="preserve">
-    <value>From: {0}</value>
-    <comment>{0} string, name of star system</comment>
+  <data name="From">
+    <value>Откуда: {0}</value>
+    <comment>From: {0}</comment>
   </data>
-  <data name="To" xml:space="preserve">
-    <value>To: {0}</value>
-    <comment>{0} string, name of star system</comment>
+  <data name="To">
+    <value>Кому: {0}</value>
+    <comment>To: {0}</comment>
   </data>
 </root>

@@ -32,6 +32,7 @@ namespace SrvSurvey
             InitializeComponent();
             lblNotInstalled.BringToFront();
             lblFullScreen.BringToFront();
+            comboDev.Items.AddRange(comboDevItems);
             comboDev.SelectedIndex = 0;
             PlotPos.prepPlotterPositions();
 
@@ -1687,9 +1688,20 @@ namespace SrvSurvey
 
         private void btnCodexBingo_Click(object sender, EventArgs e)
         {
-            //FormCodexBingo.show();
-            Localize.localize();
+            FormCodexBingo.show();
         }
+
+        private readonly string[] comboDevItems = new[]
+        {
+            "...",
+            "Localize_Pseudo",
+            "Localize_Real",
+            "Pub_Guardian",
+            "Pub_BioCriteria",
+            "Pub_HumanSites",
+            "Test_BioCriteria",
+            "Build_BioCriteria",
+        };
 
         private void comboDev_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -1706,7 +1718,8 @@ namespace SrvSurvey
                     Game.log($"comboDev => {txt}");
                     switch (txt)
                     {
-                        case "Localize": Localize.localize(); break;
+                        case "Localize_Pseudo": await Localize.localize(true); break;
+                        case "Localize_Real": await Localize.localize(false); break;
                         case "Pub_Guardian": await this.publishGuardians(); break;
                         case "Pub_BioCriteria": Game.git.publishBioCriteria(); break;
                         case "Pub_HumanSites": Game.git.publishHumanSettlements(); break;

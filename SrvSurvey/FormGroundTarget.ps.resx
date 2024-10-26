@@ -298,8 +298,9 @@
   <data name="btnBegin.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
-  <data name="btnBegin.Text" xml:space="preserve" comment="&amp;Set target">
+  <data name="btnBegin.Text">
     <value>*&amp;SET TARGET→→→!</value>
+    <comment>&amp;Set target</comment>
   </data>
   <data name="btnCancel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -325,8 +326,9 @@
   <data name="btnCancel.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
   </data>
-  <data name="btnCancel.Text" xml:space="preserve" comment="Cancel">
+  <data name="btnCancel.Text">
     <value>*CANCEL→→→!</value>
+    <comment>Cancel</comment>
   </data>
   <data name="btnPaste.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left, Right</value>
@@ -363,8 +365,9 @@
   <data name="btnPaste.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
   </data>
-  <data name="btnPaste.Text" xml:space="preserve" comment="Paste">
+  <data name="btnPaste.Text">
     <value>*PASTE→→→!</value>
+    <comment>Paste</comment>
   </data>
   <data name="btnPaste.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
     <value>ImageBeforeText</value>
@@ -393,8 +396,9 @@
   <data name="btnTargetCurrent.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
   </data>
-  <data name="btnTargetCurrent.Text" xml:space="preserve" comment="&amp;Target current location">
+  <data name="btnTargetCurrent.Text">
     <value>*&amp;TARGET CURRENT LOCATION→→→!</value>
+    <comment>&amp;Target current location</comment>
   </data>
   <data name="button1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Right</value>
@@ -420,8 +424,9 @@
   <data name="button1.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
-  <data name="button1.Text" xml:space="preserve" comment="&amp;Clear target">
+  <data name="button1.Text">
     <value>*&amp;CLEAR TARGET→→→!</value>
+    <comment>&amp;Clear target</comment>
   </data>
   <data name="flowLayoutPanel1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -459,8 +464,9 @@
   <data name="label2.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
   </data>
-  <data name="label2.Text" xml:space="preserve" comment="Latitute:">
+  <data name="label2.Text">
     <value>*LATITUTE:→→→!</value>
+    <comment>Latitute:</comment>
   </data>
   <data name="label3.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Right</value>
@@ -480,8 +486,9 @@
   <data name="label3.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="label3.Text" xml:space="preserve" comment="Longitude:">
+  <data name="label3.Text">
     <value>*LONGITUDE:→→→!</value>
+    <comment>Longitude:</comment>
   </data>
   <data name="label6.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -498,10 +505,13 @@
   <data name="label6.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
   </data>
-  <data name="label6.Text" xml:space="preserve" comment="Got a tip from a mysterious stranger to go to some Lat/Long on some planet or moon?&#xA;&#xA;Enter some Lat/Long position and guidance will appear when you approach.">
+  <data name="label6.Text">
     <value>*GOT A TIP FROM A MYSTERIOUS STRANGER TO GO TO SOME LAT/LONG ON SOME PLANET OR MOON?
 
 ENTER SOME LAT/LONG POSITION AND GUIDANCE WILL APPEAR WHEN YOU APPROACH.→→→!</value>
+    <comment>Got a tip from a mysterious stranger to go to some Lat/Long on some planet or moon?
+
+Enter some Lat/Long position and guidance will appear when you approach.</comment>
   </data>
   <data name="tableLayoutPanel1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -542,8 +552,9 @@ ENTER SOME LAT/LONG POSITION AND GUIDANCE WILL APPEAR WHEN YOU APPROACH.→→�
   <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
     <value>CenterParent</value>
   </data>
-  <data name="$this.Text" xml:space="preserve" comment="Set lat/long co-ordinates">
+  <data name="$this.Text">
     <value>*SET LAT/LONG CO-ORDINATES→→→!</value>
+    <comment>Set lat/long co-ordinates</comment>
   </data>
   <data name="txtLat.Location" type="System.Drawing.Point, System.Drawing">
     <value>92, 3</value>
@@ -557,8 +568,9 @@ ENTER SOME LAT/LONG POSITION AND GUIDANCE WILL APPEAR WHEN YOU APPROACH.→→�
   <data name="txtLat.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="txtLat.Text" xml:space="preserve" comment="+12.34">
+  <data name="txtLat.Text">
     <value>*+12.34→→→!</value>
+    <comment>+12.34</comment>
   </data>
   <data name="txtLong.Location" type="System.Drawing.Point, System.Drawing">
     <value>92, 32</value>
@@ -572,7 +584,8 @@ ENTER SOME LAT/LONG POSITION AND GUIDANCE WILL APPEAR WHEN YOU APPROACH.→→�
   <data name="txtLong.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="txtLong.Text" xml:space="preserve" comment="-10.0">
+  <data name="txtLong.Text">
     <value>*-10.0→→→!</value>
+    <comment>-10.0</comment>
   </data>
 </root>
