@@ -685,9 +685,9 @@ namespace SrvSurvey
 
         public static void resetFontScale()
         {
-            font1 = new Font("Lucida Sans Typewriter", 16F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
-            fontSmall = new Font("Lucida Sans Typewriter", 8F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
-            fontSmallBold = new Font("Lucida Sans Typewriter", 8F * fontScaleFactor, FontStyle.Bold, GraphicsUnit.Point);
+            font1 = new Font("Lucida Console", 16F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
+            fontSmall = new Font("Lucida Console", 8F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
+            fontSmallBold = new Font("Lucida Console", 8F * fontScaleFactor, FontStyle.Bold, GraphicsUnit.Point);
             fontSmall2 = new Font("Century Gothic", 8F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
             fontSmaller = new Font("Century Gothic", 10F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
             fontMiddle = new Font("Century Gothic", 12F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
@@ -699,9 +699,9 @@ namespace SrvSurvey
             font14 = new Font("Century Gothic", 14F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
         }
 
-        public static Font font1 = new Font("Lucida Sans Typewriter", 16F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
-        public static Font fontSmall = new Font("Lucida Sans Typewriter", 8F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
-        public static Font fontSmallBold = new Font("Lucida Sans Typewriter", 8F * fontScaleFactor, FontStyle.Bold, GraphicsUnit.Point);
+        public static Font font1 = new Font("Lucida Console", 16F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
+        public static Font fontSmall = new Font("Lucida Console", 8F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
+        public static Font fontSmallBold = new Font("Lucida Console", 8F * fontScaleFactor, FontStyle.Bold, GraphicsUnit.Point);
         public static Font fontSmall2 = new Font("Century Gothic", 9F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
         public static Font fontSmall2Bold = new Font("Century Gothic", 9F * fontScaleFactor, FontStyle.Bold, GraphicsUnit.Point);
         public static Font fontSmaller = new Font("Century Gothic", 10F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
@@ -723,8 +723,8 @@ namespace SrvSurvey
             public static Font fontSmallFonts = new Font("Small Fonts", 8F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
 
             // TODO: confirm these Pixel sized fonts scale properly with large fonts
-            public static Font typewriter_p4 = new Font("Lucida Sans Typewriter", 4F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Pixel);
-            public static Font typewriter_p6 = new Font("Lucida Sans Typewriter", 6F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Pixel);
+            public static Font typewriter_p4 = new Font("Lucida Console", 4F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Pixel);
+            public static Font typewriter_p6 = new Font("Lucida Console", 6F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Pixel);
         }
 
         #endregion

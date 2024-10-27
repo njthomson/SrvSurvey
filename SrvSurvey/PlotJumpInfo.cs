@@ -1,5 +1,6 @@
 ﻿using SrvSurvey.game;
 using SrvSurvey.net;
+using SrvSurvey.Properties;
 using System.Diagnostics;
 
 namespace SrvSurvey
@@ -202,12 +203,12 @@ namespace SrvSurvey
 
             // 1st line the name of the system we are jumping to
             dty += two;
-            drawTextAt2(eight, $"Next jump: ");
+            drawTextAt2(eight, RES("NextJump"));
             dty -= two;
 
             drawTextAt2(this.netData.systemName, GameColors.fontMiddleBold);
             if (netData.starClass != null)
-                drawTextAt2(this.Width - eight, $"class: {netData.starClass}", netData.starClass == "N" ? GameColors.Cyan : null, null, true);
+                drawTextAt2(this.Width - eight, RES("StarClass", netData.starClass), netData.starClass == "N" ? GameColors.Cyan : null, null, true);
             newLine(+eight, true);
 
             this.drawJumpLine();
@@ -216,14 +217,14 @@ namespace SrvSurvey
             if (netData.totalBodyCount == 0)
                 drawTextAt2(eight, $"▶️ {netData.discoveryStatus}", GameColors.Cyan);
             else if (netData.discoveredDate.HasValue)
-                drawTextAt2(eight, $"▶️ Discovered by {netData.discoveredBy} {netData.discoveredDate.Value.ToString("d")}");
+                drawTextAt2(eight, $"▶️ " + RES("DiscoveredBy", netData.discoveredBy, netData.discoveredDate.Value.ToString("d")));
             //drawTextAt2($"(EDSM)", GameColors.OrangeDim);
 
             var lastUpdated = netData.lastUpdated;// ?? netData.spanshSystem?.updated_at.GetValueOrDefault()?.ToLocalTime();
             if (lastUpdated == null && netData.spanshSystem?.updated_at != null) lastUpdated = netData.spanshSystem.updated_at.Value.ToLocalTime();
             if (lastUpdated != null && (lastUpdated > netData.discoveredDate || netData.discoveredDate == null))
             {
-                drawTextAt2($" ▶️ Last updated: " + lastUpdated.Value.ToString("d"));
+                drawTextAt2($" ▶️ " + RES("LastUpdated", lastUpdated.Value.ToString("d")));
                 //drawTextAt2(eight, lineTwo, netData.discovered == false ? GameColors.Cyan : null);
                 //drawTextAt2(Game.settings.useLastUpdatedFromSpanshNotEDSM ? "(Spansh)" : "(EDSM)", GameColors.OrangeDim);
             }
@@ -233,7 +234,7 @@ namespace SrvSurvey
             var traffic = netData.edsmTraffic?.traffic;
             if (traffic != null && traffic.total > 0)
             {
-                var lineThree = $"▶️ Traffic last 24 hours: {traffic.day.ToString("n0")}, week: {traffic.week.ToString("n0")}, ever: {traffic.total.ToString("n0")}";
+                var lineThree = $"▶️ " + RES("TrafficInfo", traffic.day.ToString("n0"), traffic.week.ToString("n0"), traffic.total.ToString("n0"));
                 drawTextAt2(eight, lineThree);
                 drawTextAt2("(EDSM)", GameColors.OrangeDim);
                 newLine(+one, true);
@@ -242,7 +243,7 @@ namespace SrvSurvey
             // 3rd line: count of ports, genus, etc
             var POIs = netData.countPOI
                 .Where(_ => _.Value > 0)
-                .Select(_ => $"{_.Key}: {_.Value}");
+                .Select(_ => Misc.ResourceManager.GetString($"NetSysData_{_.Key}") + $": {_.Value}");
             if (POIs.Any())
             {
                 var lineThree = "▶️ " + string.Join(", ", POIs);
@@ -271,8 +272,8 @@ namespace SrvSurvey
             if (hopDistances.Count == 0) return;
             dty += six;
             // draw text for `#1 of 2` on left, and total distance travelled on the right
-            var szLeft = drawTextAt(eight, $"#{nextHopIdx + 1} of {hopDistances.Count}");
-            var szRight = drawTextAt(this.Width - eight, $"{totalDistance.ToString("N1")}LY", null, null, true);
+            var szLeft = drawTextAt(eight, RES("JumpCounts", nextHopIdx + 1, hopDistances.Count));
+            var szRight = drawTextAt(this.Width - eight, RES("JumpDistance", totalDistance.ToString("N1")), null, null, true);
 
             // calc left edge of line + whole line width to fix between rendered text
             var left = szLeft.Width + oneFour;

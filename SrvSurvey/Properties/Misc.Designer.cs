@@ -61,6 +61,15 @@ namespace SrvSurvey.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Bodies.
+        /// </summary>
+        internal static string NetSysData_Bodies {
+            get {
+                return ResourceManager.GetString("NetSysData_Bodies", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Discovered, {0} bodies.
         /// </summary>
         internal static string NetSysData_DiscoveredAll {
@@ -79,6 +88,69 @@ namespace SrvSurvey.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to FC.
+        /// </summary>
+        internal static string NetSysData_FC {
+            get {
+                return ResourceManager.GetString("NetSysData_FC", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Genus.
+        /// </summary>
+        internal static string NetSysData_Genus {
+            get {
+                return ResourceManager.GetString("NetSysData_Genus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Material Trader.
+        /// </summary>
+        internal static string NetSysData_MaterialTrader {
+            get {
+                return ResourceManager.GetString("NetSysData_MaterialTrader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Outposts.
+        /// </summary>
+        internal static string NetSysData_Outposts {
+            get {
+                return ResourceManager.GetString("NetSysData_Outposts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Settlements.
+        /// </summary>
+        internal static string NetSysData_Settlements {
+            get {
+                return ResourceManager.GetString("NetSysData_Settlements", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Star ports.
+        /// </summary>
+        internal static string NetSysData_StarPorts {
+            get {
+                return ResourceManager.GetString("NetSysData_StarPorts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tech Broker.
+        /// </summary>
+        internal static string NetSysData_TechBroker {
+            get {
+                return ResourceManager.GetString("NetSysData_TechBroker", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Undiscovered system.
         /// </summary>
         internal static string NetSysData_UndiscoveredSystem {
@@ -93,6 +165,15 @@ namespace SrvSurvey.Properties {
         internal static string NetSysData_UnscannedSystem {
             get {
                 return ResourceManager.GetString("NetSysData_UnscannedSystem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wars.
+        /// </summary>
+        internal static string NetSysData_Wars {
+            get {
+                return ResourceManager.GetString("NetSysData_Wars", resourceCulture);
             }
         }
         

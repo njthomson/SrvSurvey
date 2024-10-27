@@ -2,3 +2,4 @@
 FormSphereLimit.resx
 FormGroundTarget.resx
 PlotSphericalSearch.resx
+PlotJumpInfo.resx

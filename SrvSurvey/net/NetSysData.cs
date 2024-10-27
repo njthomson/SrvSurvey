@@ -54,9 +54,8 @@ namespace SrvSurvey.net
         {
             // (these are rendered in this order)
             { "Bodies", 0 }, // Count of bodies in system
-            { "Guardian", 0 }, // Total count for the system
             { "Genus", 0 }, // Total count for the system
-            { "Star ports", 0 }, // Anything with a large pad
+            { "StarPorts", 0 }, // Anything with a large pad
             { "Outposts", 0 },
             { "Settlements", 0 }, // Odyssey settlements
             { "FC", 0 }, // Fleet carriers
@@ -275,14 +274,14 @@ namespace SrvSurvey.net
                 {
                     if (this.special == null) this.special = new Dictionary<string, List<string>>();
                     if (!this.special.ContainsKey(station.name)) this.special[station.name] = new List<string>();
-                    this.special[station.name].Add("Material Trader");
+                    this.special[station.name].Add(Misc.NetSysData_MaterialTrader);
                 }
 
                 if (station.services.Contains("Technology Broker"))
                 {
                     if (this.special == null) this.special = new Dictionary<string, List<string>>();
                     if (!this.special.ContainsKey(station.name)) this.special[station.name] = new List<string>();
-                    this.special[station.name].Add("Technology Broker");
+                    this.special[station.name].Add(Misc.NetSysData_TechBroker);
                 }
             }
 
@@ -328,7 +327,7 @@ namespace SrvSurvey.net
                 if (countFC > 0) this.countPOI["FC"] = countFC;
                 if (countSettlements > 0) this.countPOI["Settlements"] = countSettlements;
                 if (countOutposts > 0) this.countPOI["Outposts"] = countOutposts;
-                if (countStarports > 0) this.countPOI["Star ports"] = countStarports;
+                if (countStarports > 0) this.countPOI["StarPorts"] = countStarports;
             }
 
             // any factions at war?

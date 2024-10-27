@@ -58,27 +58,32 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <data name="DistanceExceeds">
-    <value>*DISTANCE: {0}LY - EXCEEDS {1} LY→→→!</value>
-    <comment>Distance: {0}ly - exceeds {1} ly</comment>
+  <data name="DiscoveredBy">
+    <value>Entdeckt von {0} {1}</value>
+    <comment>Discovered by {0} {1}</comment>
   </data>
-  <data name="DistanceInProgress">
-    <value>*DISTANCE: ...→→→!</value>
-    <comment>Distance: ...</comment>
+  <data name="JumpCounts">
+    <value>#{0} von {1}</value>
+    <comment>#{0} of {1}</comment>
   </data>
-  <data name="DistanceWithin">
-    <value>*DISTANCE: {0} - WITHIN {1} LY→→→!</value>
-    <comment>Distance: {0} - within {1} ly</comment>
+  <data name="JumpDistance">
+    <value>{0}ly</value>
+    <comment>{0}ly</comment>
   </data>
-  <data name="From">
-    <value>*FROM: {0}→→→!</value>
-    <comment>From: {0}</comment>
+  <data name="LastUpdated">
+    <value>Letzte Aktualisierung: {0}</value>
+    <comment>Last updated: {0}</comment>
   </data>
-  <data name="To">
-    <value>*TO: {0}→→→!</value>
-    <comment>To: {0}</comment>
+  <data name="NextJump">
+    <value>Nächster Sprung:</value>
+    <comment>Next jump:</comment>
+  </data>
+  <data name="StarClass">
+    <value>Klasse: {0}</value>
+    <comment>class: {0}</comment>
+  </data>
+  <data name="TrafficInfo">
+    <value>Verkehr in 24 Stunden: {0}, Woche: {1}, immer: {2}</value>
+    <comment>Traffic last 24 hours: {0}, week: {1}, ever: {2}</comment>
   </data>
 </root>

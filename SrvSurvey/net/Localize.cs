@@ -106,8 +106,12 @@ namespace SrvSurvey
 
             var oldTargetDoc = File.Exists(targetFilepath) ? XDocument.Load(targetFilepath) : null;
             var sourceDoc = XDocument.Load(sourceFilepath);
-            var newTargetDoc = XDocument.Load(sourceFilepath);
+
             //var newTargetDoc = XDocument.Load(File.Exists(targetFilepath) ? targetFilepath : sourceFilepath) // or ... start from the current localized .resx
+            var newTargetDoc = XDocument.Load(sourceFilepath);
+            // remove the large annoying comment at the top
+            if (newTargetDoc.Root?.FirstNode?.NodeType == System.Xml.XmlNodeType.Comment)
+                newTargetDoc.Root.FirstNode.Remove();
 
             var sourceNodes = sourceDoc.Root?.Elements().Where(_ => _.Name.LocalName == "data")!;
             if (sourceNodes == null) return;
@@ -126,7 +130,8 @@ namespace SrvSurvey
 
                 // find target node + set the source text as a comment on the target element -  so we can detect when the source changes (saving on translation costs)
                 var targetNode = newTargetDoc.Root!.Elements().Where(_ => _.Name.LocalName == "data" && _.FirstAttribute?.Value == resourceName).First();
-                // build a replacement node                
+
+                // build a replacement node
                 var newNode = new XElement("data");
                 newNode.SetAttributeValue("name", resourceName);
                 newNode.Add(new XElement("value", ""));
@@ -139,14 +144,14 @@ namespace SrvSurvey
                 var oldTranslation = oldTargetNode?.Element("value")?.Value;
 
                 // replace elements when we're first creating the .resx file (and always pseudo-localize)
-                if (oldTranslation == null)
-                    continue;
-                else
+                if (!string.IsNullOrEmpty(oldTranslation))
                     targetNode.SetElementValue("value", oldTranslation);
+                else
+                    targetNode.SetElementValue("comment", "-");
 
                 // skip anything that hasn't changed (unless we're doing PS)
                 var oldComment = oldTargetNode?.Element("comment")?.Value;
-                if (oldComment == sourceText && oldTranslation != null) continue;
+                if (oldComment == sourceText && !string.IsNullOrEmpty(oldTranslation)) continue;
 
                 // presume pseudo translate it
                 var translation = $"*{sourceText.ToUpperInvariant()}→→→!";
