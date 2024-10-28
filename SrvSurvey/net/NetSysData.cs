@@ -343,8 +343,8 @@ namespace SrvSurvey.net
         {
             this.canonnBio = _canonnBio;
 
-            // known system?
-            this.setDiscovered(_canonnBio.id64);
+            //// known system?
+            //this.setDiscovered(_canonnBio.id64);
 
             // starPos?
             if (this.starPos == null)

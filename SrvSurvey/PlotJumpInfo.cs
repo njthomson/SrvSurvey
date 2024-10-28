@@ -206,7 +206,7 @@ namespace SrvSurvey
             drawTextAt2(eight, RES("NextJump"));
             dty -= two;
 
-            drawTextAt2(this.netData.systemName, GameColors.fontMiddleBold);
+            drawTextAt2(" " + this.netData.systemName, GameColors.fontMiddleBold);
             if (netData.starClass != null)
                 drawTextAt2(this.Width - eight, RES("StarClass", netData.starClass), netData.starClass == "N" ? GameColors.Cyan : null, null, true);
             newLine(+eight, true);

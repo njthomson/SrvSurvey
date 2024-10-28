@@ -52,7 +52,7 @@ namespace SrvSurvey
         {
             if (this.IsDisposed) return;
 
-            // hide ourself whilst FSD is charging to jump systems
+            // hide ourselves whilst FSD is charging to jump systems
             if (game.status.FsdChargingJump || !this.allow || !Elite.gameHasFocus)
                 this.Opacity = 0;
             else if (this.Opacity == 0 && this.allow)
@@ -367,7 +367,7 @@ namespace SrvSurvey
                 if (organism.analyzed)
                 {
                     // strike-through if already analyzed
-                    var ly = (int)(y + sz.Height * .45f);
+                    var ly = (int)(y + sz.Height * .35f);
                     g.DrawLine(GameColors.penGameOrange1, x, ly, x + sz.Width, ly);
                     g.DrawLine(GameColors.penGameOrangeDim1, x + 1, ly + 1, x + sz.Width + 1, ly + 1);
                 }

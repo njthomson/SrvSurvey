@@ -267,7 +267,7 @@ namespace SrvSurvey
                     if (organism.analyzed)
                     {
                         // strike-through if already analyzed
-                        var y = dty + six;
+                        var y = dty + four;
                         g.DrawLine(GameColors.penGameOrange1, twoEight, y, dtx, y);
                         g.DrawLine(GameColors.penGameOrangeDim1, twoEight + 1, y + 1, dtx + 1, y + 1);
                         //g.DrawLine(GameColors.penGameOrange1, twoEight, y, this.ClientSize.Width - oneTwo, y);
