@@ -191,7 +191,7 @@ namespace SrvSurvey
         public bool darkTheme = false;
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-        public PlotFSS.WatchFssPixelSettings? watchFssSettings_TEST = null;
+        public PlotFSS.WatchFssPixelSettings? watchFssSettings_TEST = new();
 
         public bool keyhook_TEST = false;
 
