@@ -356,5 +356,17 @@ namespace SrvSurvey.Properties {
                 return ResourceManager.GetString("PlotSysStatus_NonBodySignals", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot find folder:
+        ///{0}
+        ///
+        ///Would you like to create it?.
+        /// </summary>
+        internal static string Settings_CreateFolderNotFound {
+            get {
+                return ResourceManager.GetString("Settings_CreateFolderNotFound", resourceCulture);
+            }
+        }
     }
 }

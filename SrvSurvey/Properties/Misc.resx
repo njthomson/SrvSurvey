@@ -58,9 +58,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="$this.Localizable" type="System.Boolean, mscorlib">
     <value>True</value>
-  </metadata>
+  </data>
   <data name="NetSysData_Bodies" xml:space="preserve">
     <value>Bodies</value>
   </data>
@@ -173,5 +174,12 @@
   <data name="PlotSysStatus_NonBodySignals" xml:space="preserve">
     <value>► {0} non-body signals</value>
     <comment>{0} int, count of non body signals</comment>
+  </data>
+  <data name="Settings_CreateFolderNotFound" xml:space="preserve">
+    <value>Cannot find folder:
+{0}
+
+Would you like to create it?</value>
+    <comment>Used in a message box when attempting to open a folder that does not exist.</comment>
   </data>
 </root>

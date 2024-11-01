@@ -382,7 +382,7 @@ namespace SrvSurvey
             {
                 Description = title,
                 UseDescriptionForTitle = true,
-                SelectedPath = Game.settings.screenshotSourceFolder ?? Elite.defaultScreenshotFolder,
+                SelectedPath = linkLabel.Text,
             };
 
             var rslt = dialog.ShowDialog(this);
@@ -402,9 +402,28 @@ namespace SrvSurvey
 
         private void linkScreenshotFolder_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            var linkLabel = (LinkLabel)sender;
-            Game.log($"Opening screenshot folder:\r\n{linkLabel.Text}");
-            Util.openLink(linkLabel.Text);
+            var folder = ((LinkLabel)sender).Text;
+
+            Game.log($"Opening screenshot folder:\r\n{folder}");
+            if (Directory.Exists(folder))
+            {
+                Util.openLink(folder);
+                return;
+            }
+
+            // ask the user if we should create the folder?
+            var rslt = MessageBox.Show(
+                this,
+                Properties.Misc.Settings_CreateFolderNotFound.format(folder),
+                "SrvSurvey",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning);
+
+            if (rslt == DialogResult.Yes)
+            {
+                Directory.CreateDirectory(folder);
+                Util.openLink(folder);
+            }
         }
 
         private void btnChooseJournalFolder_Click(object sender, EventArgs e)

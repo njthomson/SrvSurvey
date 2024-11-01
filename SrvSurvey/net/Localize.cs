@@ -53,9 +53,9 @@ namespace SrvSurvey
                 .Where(p => locReadyResx.Any(r => p.EndsWith(r)))
                 .ToList();
 
-            Game.log($"> Localizing {resxFiles.Count} resx files across {targetLangs.Count} languages:\r\n\t> " + string.Join("\r\n\t> ", targetLangs));
-            foreach (var targetLang in targetLangs)
-                foreach (var filepath in resxFiles)
+            Game.log($"> Localizing {resxFiles.Count} resx files across {targetLangs.Count} languages:\r\n - " + string.Join("\r\n - ", targetLangs));
+            foreach (var filepath in resxFiles)
+                foreach (var targetLang in targetLangs)
                     await Localize.translateResx(filepath, targetLang);
         }
 
@@ -146,7 +146,7 @@ namespace SrvSurvey
                 // replace elements when we're first creating the .resx file (and always pseudo-localize)
                 if (!string.IsNullOrEmpty(oldTranslation))
                     targetNode.SetElementValue("value", oldTranslation);
-                else
+                else if (oldTargetDoc == null) // seed new .resx files untranslated, so we can see the diff's
                     targetNode.SetElementValue("comment", "-");
 
                 // skip anything that hasn't changed (unless we're doing PS)
@@ -157,7 +157,7 @@ namespace SrvSurvey
                 var translation = $"*{sourceText.ToUpperInvariant()}→→→!";
 
                 // or translate into a real language
-                if (targetLang != "ps" && oldTargetNode != null)
+                if (targetLang != "ps" && oldTargetDoc != null)
                 {
                     translation = await translateString(sourceText, targetLang);
                     if (string.IsNullOrEmpty(translation))
@@ -175,7 +175,7 @@ namespace SrvSurvey
             }
 
             // Save and sort it
-            Game.log($"> '{targetLang}' updated {count} of {sourceNodes.Count()} resources");
+            Game.log($"Updated {count,3} of {sourceNodes.Count(),3} '{targetLang}' resources in " + Path.GetFileNameWithoutExtension(sourceFilepath));
             alphaSortResx(newTargetDoc, targetFilepath);
         }
 

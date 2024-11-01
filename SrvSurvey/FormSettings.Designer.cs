@@ -364,7 +364,7 @@ namespace SrvSurvey
             // 
             label27.AutoSize = true;
             label27.FlatStyle = FlatStyle.System;
-            label27.Location = new Point(10, 418);
+            label27.Location = new Point(10, 419);
             label27.Name = "label27";
             label27.Size = new Size(62, 15);
             label27.TabIndex = 33;
@@ -376,7 +376,7 @@ namespace SrvSurvey
             comboLang.FlatStyle = FlatStyle.System;
             comboLang.FormattingEnabled = true;
             comboLang.Items.AddRange(new object[] { "Match Windows OS default" });
-            comboLang.Location = new Point(78, 415);
+            comboLang.Location = new Point(78, 416);
             comboLang.Name = "comboLang";
             comboLang.Size = new Size(226, 23);
             comboLang.TabIndex = 32;
@@ -741,7 +741,7 @@ namespace SrvSurvey
             label1.Name = "label1";
             label1.Size = new Size(430, 18);
             label1.TabIndex = 0;
-            label1.Text = "Preferred Commander: (use to force a specific account)";
+            label1.Text = "Preferred Commander: (use only to force a specific account)";
             // 
             // linkResetWatchFolder
             // 
