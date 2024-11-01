@@ -101,14 +101,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="FormErrorSubmit.cs" />
-    <Compile Update="FormGroundTarget.cs" />
-    <Compile Update="FormSettings.cs" />
-    <Compile Update="Main.cs" />
-    <Compile Update="PlotBioStatus.cs" />
-    <Compile Update="PlotGrounded.cs" />
-    <Compile Update="PlotPulse.cs" />
-    <Compile Update="PlotTrackTarget.cs" />
+    <Compile Update="forms\*.cs" />
+    <Compile Update="plotters\*.cs" />
+    <Compile Update="*.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Update="Properties\Codex.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -129,10 +127,6 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>ImageResources.resx</DependentUpon>
     </Compile>
-    <Compile Update="ViewLogs.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <EmbeddedResource Update="Properties\Codex.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Codex.Designer.cs</LastGenOutput>
