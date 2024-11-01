@@ -213,7 +213,7 @@ namespace SrvSurvey
                     if (first)
                         first = false;
                     else
-                        g.DrawLine(GameColors.penGameOrangeDim1, eight, dty - four, this.ClientSize.Width - eight, dty - four);
+                        g.DrawLine(GameColors.penGameOrangeDim1, eight, dty - five, this.ClientSize.Width - eight, dty - five);
 
                     // if we have predictions - use that renderer
                     if (organism.variant == null && predictions.Count > 0)
@@ -245,7 +245,8 @@ namespace SrvSurvey
                     var minReward = body.getBioRewardForGenus(organism, true);
                     var maxReward = body.getBioRewardForGenus(organism, false);
                     var volCol = /*highlight ? VolColor.Blue :*/ VolColor.Orange;
-                    if (shouldBeGold(discoveryPrefix)) volCol = VolColor.Gold;
+                    if (shouldBeGold(discoveryPrefix))
+                        volCol = VolColor.Gold;
                     else if (!organism.analyzed)
                     {
                         if (Game.activeGame?.cmdrCodex.isDiscovered(organism.entryId) == false)
@@ -262,6 +263,7 @@ namespace SrvSurvey
                     drawVolumeBars(g, oneTwo, yy + oneSix, volCol, minReward, maxReward, false);
 
                     // line 1
+                    if (volCol == VolColor.Gold) brush = GameColors.Bio.brushGold;
                     if (displayName.Length > 0)
                         this.drawTextAt(twoEight, displayName, brush);
                     if (organism.analyzed)

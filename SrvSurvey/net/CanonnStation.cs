@@ -215,8 +215,8 @@ namespace SrvSurvey.canonn
                     var cmdrOffset = Util.getOffset(bodyRadius, station.location, padLocation, cmdrHeading - pad.rot);
                     var delta = pad.offset - cmdrOffset;
 
-                    // are we within ~10m of the expected pad? Is ~5m enough?
-                    if (delta.dist < 10) // TODO: adjust by pad size?
+                    // are we within ~15m of the expected pad? Is ~5m enough?
+                    if (delta.dist < 15) // TODO: adjust by pad size?
                     {
                         station.subType = template.subType;
 
@@ -253,6 +253,7 @@ namespace SrvSurvey.canonn
                             Game.canonn.submitStation(station).ContinueWith(response =>
                             {
                                 Game.log("canonn.submitStation: " + response.Result);
+                                Program.invalidateActivePlotters();
                             });
                         }
                         return true;
@@ -421,6 +422,7 @@ namespace SrvSurvey.canonn
             { "anaconda", new PointM(-0.2973854218978083346300022763, 11.835423460533919103569434241) }, // Anaconda
             { "federation_corvette", new PointM(0, 17.577326097292171045687273834) }, // Federal Corvette
             { "cutter", new PointM(0, -78.975049073498041219641152452) }, // Imperial Cutter
+            { "mandalay", new PointM(-0.0705413346267133158511499042, -19.309309902605600094877688881) }, // Mandalay
 
             { "foot", new PointM(0d, 0d) }, // No offset applied when on foot
             { "taxi", new PointM(-0.9996653405051110150258470637, -11.913859432190865089645580760) }, // Taxi is an Adder but matching seat #2

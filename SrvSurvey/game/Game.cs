@@ -1059,6 +1059,7 @@ namespace SrvSurvey.game
         private void onJournalEntry(NavRouteClear entry)
         {
             this.fsdTarget = null;
+            PlotJumpInfo.forceShow = false;
         }
 
         private void onJournalEntry(FSDJump entry)
@@ -2653,7 +2654,9 @@ namespace SrvSurvey.game
         {
             log($"Backpack - this.onPlanet: {this.onPlanet}, firstFootfall: {this.systemBody?.firstFootFall}");
             if (this.onPlanet && this.systemBody?.firstFootFall == false)
-                this.inferFirstFootFall();
+            {
+                Program.defer(() => this.inferFirstFootFall());
+            }
         }
 
         public void inferFirstFootFall()

@@ -56,11 +56,7 @@ namespace SrvSurvey
                 else if (keyUp)
                 {
                     // if it's any other key coming up: invoke our standard processor and maybe the event
-
-                    var chord = (altPressed ? "ALT " : "") +
-                         (ctrlPressed ? "CTRL " : "") +
-                         (shiftPressed ? "SHIFT " : "") +
-                         keyToString(keys);
+                    var chord = KeyChords.getKeyChordString(keys, altPressed, ctrlPressed, shiftPressed);
                     KeyChords.processHook(chord);
 
                     if (this.KeyUp != null)
@@ -74,18 +70,6 @@ namespace SrvSurvey
             }
             //Pass key to next application
             return NativeMethods.CallNextHookEx(hookId, nCode, wParam, ref lParam);
-        }
-
-        private string keyToString(Keys key)
-        {
-            switch (key)
-            {
-                case Keys.Back: return "Backspace";
-                case Keys.OemMinus: return "-";
-                case Keys.Oemplus: return "+";
-
-                default: return key.ToString();
-            }
         }
 
         #region native methods

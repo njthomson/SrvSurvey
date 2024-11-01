@@ -1,5 +1,7 @@
-﻿Misc.resx
+﻿FormGroundTarget.resx
+FormSetKeyChord.resx
 FormSphereLimit.resx
-FormGroundTarget.resx
-PlotSphericalSearch.resx
+KeyChords.resx
+Misc.resx
 PlotJumpInfo.resx
+PlotSphericalSearch.resx

@@ -10,6 +10,7 @@ namespace SrvSurvey
 
         private readonly Dictionary<string, FieldInfo> map = new();
         private Color colorScreenshotBanner = Game.settings.screenshotBannerColor;
+        private Dictionary<KeyAction, string>? nextKeyActions;
 
         public FormSettings()
         {
@@ -33,7 +34,7 @@ namespace SrvSurvey
             if (Program.isAppStoreBuild)
             {
                 // Human settlements aren't ready for App store yet
-                tabControl1.Controls.Remove(tabSettlements);
+                tabControl.Controls.Remove(tabSettlements);
             }
 
             // Not themed - this is always light.
@@ -81,6 +82,29 @@ namespace SrvSurvey
                 comboCmdr.SelectedIndex = 0;
             else
                 comboCmdr.SelectedItem = Game.settings.preferredCommander;
+        }
+
+        private void prepKeyChords()
+        {
+            listKeys.Items.Clear();
+            foreach (var key in Enum.GetValues<KeyAction>())
+            {
+                var desc = Properties.KeyChords.ResourceManager.GetString(key.ToString(), Thread.CurrentThread.CurrentUICulture);
+                var item = new ListViewItem()
+                {
+                    Name = key.ToString(),
+                    Text = key.ToString(),
+                    ToolTipText = desc,
+                };
+                item.SubItems.Add(Game.settings.keyActions_TEST?[key] ?? "");
+                item.SubItems.Add(desc);
+                listKeys.Items.Add(item);
+            }
+
+            listKeys.Columns[0].AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent);
+            listKeys.Columns[1].AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent);
+            listKeys.Columns[2].Width = listKeys.Width - listKeys.Columns[0].Width - listKeys.Columns[1].Width - SystemInformation.VerticalScrollBarWidth;
+            listKeys.Enabled = Game.settings.keyhook_TEST;
         }
 
         private void updateFormFromSettings(Control parentControl)
@@ -150,6 +174,11 @@ namespace SrvSurvey
             colorScreenshotBanner = Game.settings.screenshotBannerColor;
             panelTheme.BackColor = Game.settings.defaultOrange;
             panelTheme2.BackColor = Game.settings.defaultCyan;
+
+            this.nextKeyActions = Game.settings.keyActions_TEST == null
+                ? new()
+                : new(Game.settings.keyActions_TEST!);
+            this.prepKeyChords();
         }
 
         private void updateAllSettingsFromForm()
@@ -159,6 +188,13 @@ namespace SrvSurvey
 
             // and manually set the following
             Game.settings.lang = Localize.codeFromName(comboLang.Text);
+
+            Game.settings.keyActions_TEST ??= new();
+            foreach (ListViewItem item in listKeys.Items)
+            {
+                var keyAction = Enum.Parse<KeyAction>(item.Name);
+                Game.settings.keyActions_TEST[keyAction] = item.SubItems[1].Text;
+            }
         }
 
         private void updateSettingsFromForm(Control parentControl)
@@ -215,7 +251,6 @@ namespace SrvSurvey
                 if (ctrl.HasChildren)
                     updateSettingsFromForm(ctrl);
             }
-
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -581,6 +616,29 @@ namespace SrvSurvey
                 plotter.reposition(Elite.getWindowRect());
                 plotter.Invalidate();
             }
+        }
+
+        private void listKeys_DoubleClick(object sender, EventArgs e)
+        {
+            if (listKeys.SelectedItems.Count != 1) return;
+            var item = listKeys.SelectedItems[0] as ListViewItem;
+            if (item == null || Game.settings.keyActions_TEST == null) return;
+
+            var keyAction = Enum.Parse<KeyAction>(item.Name);
+            var currentChord = Game.settings.keyActions_TEST[keyAction];
+
+            var dialog = new FormSetKeyChord(currentChord);
+            var rslt = dialog.ShowDialog();
+            if (rslt == DialogResult.OK)
+            {
+                Game.log($"Updating {keyAction} from '{currentChord}' to '{dialog.keyChord}'");
+                item.SubItems[1].Text = dialog.keyChord;
+            }
+        }
+
+        private void checkBox33_CheckedChanged(object sender, EventArgs e)
+        {
+            listKeys.Enabled = checkKeyChords.Checked;
         }
     }
 }

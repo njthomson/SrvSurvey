@@ -9,9 +9,37 @@ namespace SrvSurvey
     {
         private static Game? game { get => Game.activeGame; }
 
+        public static string? keyToString(Keys key)
+        {
+            switch (key)
+            {
+                case Keys.Back: return "Backspace";
+                case Keys.OemMinus: return "-";
+                case Keys.Oemplus: return "+";
+
+                    // These aren't allowed to be a key-chord in their own right
+                case Keys.Menu:
+                case Keys.ControlKey:
+                case Keys.ShiftKey:
+                    return null;
+
+                default: return key.ToString();
+            }
+        }
+
+        public static string getKeyChordString(Keys key, bool alt, bool ctrl, bool shift)
+        {
+            var chord = (alt ? "ALT " : "") +
+                 (ctrl ? "CTRL " : "") +
+                 (shift ? "SHIFT " : "") +
+                 keyToString(key);
+
+            return chord;
+        }
+
         public static void processHook(string chord)
         {
-            if (Game.settings.keyActions_TEST == null) return;
+            if (Game.settings.keyActions_TEST == null || string.IsNullOrEmpty(chord)) return;
 
             // do the action async, so we're not wasting synchronous time during the keyboard hook
             Program.control.BeginInvoke(() => Program.crashGuard(() =>

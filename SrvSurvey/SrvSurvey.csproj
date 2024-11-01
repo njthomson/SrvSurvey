@@ -114,6 +114,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Codex.resx</DependentUpon>
     </Compile>
+    <Compile Update="Properties\KeyChords.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>KeyChords.resx</DependentUpon>
+    </Compile>
     <Compile Update="Properties\Misc.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -131,6 +136,10 @@
     <EmbeddedResource Update="Properties\Codex.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Codex.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\KeyChords.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>KeyChords.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Properties\Misc.resx">
       <Generator>ResXFileCodeGenerator</Generator>
