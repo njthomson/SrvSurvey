@@ -29,7 +29,7 @@ namespace SrvSurvey
                 && (
                     // when FSD is charging for a jump, or ...
                     (Game.activeGame.status.FsdChargingJump && Game.activeGame.isMode(GameMode.Flying, GameMode.SuperCruising))
-                    // whilst in whitch space, jumping to next system
+                    // whilst in witch space, jumping to next system
                     || Game.activeGame.mode == GameMode.FSDJumping
                     // or a keystroke forced it
                     || PlotJumpInfo.forceShow
@@ -71,17 +71,18 @@ namespace SrvSurvey
             RouteEntry? next = null;
             var onNetData = (NetSysData.Source source, NetSysData netData) =>
             {
-                if (next == null) return;
+                if (next != null)
+                {
+                    if (next.StarClass == null && netData.starClass != null)
+                        next.StarClass = netData.starClass;
 
-                if (next.StarClass == null && netData.starClass != null)
-                    next.StarClass = netData.starClass;
+                    // if we were waiting on the starPos for the next system, populate it and recalculate hop distances too
+                    if (next.StarPos == null && netData.starPos != null)
+                        next.StarPos = netData.starPos;
 
-                // if we were waiting on the starPos for the next system, populate it and recalculate hop distances too
-                if (next.StarPos == null && netData.starPos != null)
-                    next.StarPos = netData.starPos;
-
-                if (this.hopDistances.Count == 0)
-                    this.calcHopDistances(route);
+                    if (this.hopDistances.Count == 0)
+                        this.calcHopDistances(route);
+                }
 
                 this.Invalidate();
             };
@@ -166,11 +167,6 @@ namespace SrvSurvey
                     netData.special ??= new();
                     netData.special["Guardian"] = list;
                 }
-
-                /*
-                netData.countPOI["Guardian"] = countRuins + countStructures + countBeacons;
-                if (netData.countPOI["Guardian"] > 0) this.Invalidate();
-                */
             }
         }
 
@@ -190,6 +186,13 @@ namespace SrvSurvey
                 var scoopable = route[n].StarClass != null && "KGBFOAM".Contains(route[n].StarClass);
                 this.hopScoops.Add(scoopable);
             }
+        }
+
+        protected override void onJournalEntry(FSDTarget entry)
+        {
+            // re-populate from scratch if the target changes and we're open
+            if (PlotJumpInfo.forceShow && !game.fsdJumping)
+                initFromRoute();
         }
 
         protected override void onPaintPlotter(PaintEventArgs e)

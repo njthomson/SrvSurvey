@@ -51,28 +51,36 @@ namespace SrvSurvey.game
         {
             if (this.filepath == null) return;
 
-            var folder = Path.GetDirectoryName(this.filepath)!;
-            Directory.CreateDirectory(folder);
-
-            var json = JsonConvert.SerializeObject(this, Formatting.Indented);
-            if (json.Length == 0) return;
-
-            var success = false;
-            var attempts = 0;
-            while (!success && attempts < 50)
+            try
             {
-                try
+                var folder = Path.GetDirectoryName(this.filepath)!;
+                Directory.CreateDirectory(folder);
+
+                var success = false;
+                var attempts = 0;
+                while (!success && attempts < 50)
                 {
-                    attempts++;
-                    File.WriteAllText(this.filepath, json);
-                    success = true;
+                    try
+                    {
+                        var json = JsonConvert.SerializeObject(this, Formatting.Indented);
+                        if (json.Length == 0) return;
+
+                        attempts++;
+                        File.WriteAllText(this.filepath, json);
+                        success = true;
+                    }
+                    catch (Exception ex)
+                    {
+                        Game.log($"Failed on attempt {attempts} to save: {this.filepath}\r\n\r\n{ex}");
+                        // swallow and try again
+                        Application.DoEvents();
+                    }
                 }
-                catch
-                {
-                    Game.log($"Failed on attempt {attempts} to save: {this.filepath}");
-                    // swallow and try again
-                    Application.DoEvents();
-                }
+            }
+            catch (Exception ex)
+            {
+                Game.log($"Error preparing to save: {this.filepath.Replace(Program.dataFolder, "")}\r\n\r\n{ex}");
+                FormErrorSubmit.Show(ex);
             }
         }
     }
