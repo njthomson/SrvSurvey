@@ -106,6 +106,8 @@ namespace SrvSurvey
                 subStatus.Add("Terraformable");
             if (!body.wasDiscovered && !body.wasMapped)
                 subStatus.Add("Undiscovered");
+            else if (!body.wasMapped && body.dssComplete)
+                subStatus.Add("⚑ First mapped");
             else if (!body.wasMapped && !this.withinHumanBubble)
                 subStatus.Add("Unmapped");
 
