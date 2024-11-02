@@ -135,7 +135,7 @@ namespace SrvSurvey
         public bool didFirstPaint { get; set; }
         private bool forceRepaint;
         public bool showing { get; set; }
-        
+
         protected PlotBase()
         {
             this.TopMost = true;
@@ -725,6 +725,51 @@ namespace SrvSurvey
             return this.lastTextSize;
         }
 
+        protected SizeF drawTextAt2b(float tx,string? txt, Font? font = null, bool rightAlign = false)
+        {
+            return drawTextAt2b(tx, this.Width, txt, null, font, rightAlign);
+        }
+
+        protected SizeF drawTextAt2b(float tx, int w, string? txt, Font? font = null, bool rightAlign = false)
+        {
+            return drawTextAt2b(tx, w, txt, null, font, rightAlign);
+        }
+
+        protected SizeF drawTextAt2b(float tx, string? txt, Color? col, Font? font = null, bool rightAlign = false)
+        {
+            return drawTextAt2b(tx, this.Width, txt, col, font, rightAlign);
+        }
+
+        protected SizeF drawTextAt2b(float tx, int w, string? txt, Color? col, Font? font = null, bool rightAlign = false)
+        {
+            this.dtx = tx;
+
+            const TextFormatFlags flags = Util.textFlags | TextFormatFlags.WordBreak | TextFormatFlags.NoFullWidthCharacterBreak;
+
+            col = col ?? GameColors.Orange;
+            font = font ?? this.Font;
+
+            var sz = new Size(w - (int)tx, 0);
+            this.lastTextSize = TextRenderer.MeasureText(txt, font, sz, flags);
+
+            var rect = new Rectangle(
+                (int)this.dtx, (int)this.dty,
+                sz.Width, 2 + (int)this.lastTextSize.Height);
+
+            if (rightAlign)
+            {
+                rect.X = (int)(dtx - this.lastTextSize.Width);
+                TextRenderer.DrawText(g, txt, font, rect, col.Value, flags);
+            }
+            else
+            {
+                TextRenderer.DrawText(g, txt, font, rect, col.Value, flags);
+                this.dtx += this.lastTextSize.Width;
+            }
+
+            return this.lastTextSize;
+        }
+
         protected SizeF lastTextSize;
         protected SizeF formSize;
 
@@ -944,13 +989,15 @@ namespace SrvSurvey
         protected string RES(string name)
         {
             var txt = rm.GetString(name);
+            if (txt == null) Debugger.Break();
             return txt ?? "";
         }
 
         protected string RES(string name, params object?[] args)
         {
-            var txt = rm.GetString(name) ?? "";
-            return string.Format(txt, args);
+            var txt = rm.GetString(name);
+            if (txt == null) Debugger.Break();
+            return string.Format(txt ?? "", args);
         }
 
         #endregion

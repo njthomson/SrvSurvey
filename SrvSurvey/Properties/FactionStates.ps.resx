@@ -1,0 +1,196 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="loc-level">
+    <value>pseudo-only</value>
+  </resheader>
+  <data name="Blight">
+    <value>* BLIGHT →→→!</value>
+    <comment>Blight</comment>
+  </data>
+  <data name="Boom">
+    <value>* BOOM →→→!</value>
+    <comment>Boom</comment>
+  </data>
+  <data name="Bust">
+    <value>* BUST →→→!</value>
+    <comment>Bust</comment>
+  </data>
+  <data name="CivilLiberty">
+    <value>* CIVIL LIBERTY →→→!</value>
+    <comment>Civil Liberty</comment>
+  </data>
+  <data name="CivilUnrest">
+    <value>* CIVIL UNREST →→→!</value>
+    <comment>Civil Unrest</comment>
+  </data>
+  <data name="CivilWar">
+    <value>* CIVIL WAR →→→!</value>
+    <comment>Civil War</comment>
+  </data>
+  <data name="ColdWar">
+    <value>* COLD WAR →→→!</value>
+    <comment>Cold War</comment>
+  </data>
+  <data name="Colonisation">
+    <value>* COLONISATION →→→!</value>
+    <comment>Colonisation</comment>
+  </data>
+  <data name="Drought">
+    <value>* DROUGHT →→→!</value>
+    <comment>Drought</comment>
+  </data>
+  <data name="Election">
+    <value>* ELECTION →→→!</value>
+    <comment>Election</comment>
+  </data>
+  <data name="Expansion">
+    <value>* EXPANSION →→→!</value>
+    <comment>Expansion</comment>
+  </data>
+  <data name="Famine">
+    <value>* FAMINE →→→!</value>
+    <comment>Famine</comment>
+  </data>
+  <data name="HistoricEvent">
+    <value>* HISTORIC EVENT →→→!</value>
+    <comment>Historic Event</comment>
+  </data>
+  <data name="Incursion">
+    <value>* INCURSION →→→!</value>
+    <comment>Incursion</comment>
+  </data>
+  <data name="InfrastructureFailure">
+    <value>* INFRASTRUCTURE FAILURE →→→!</value>
+    <comment>Infrastructure Failure</comment>
+  </data>
+  <data name="Investment">
+    <value>* INVESTMENT →→→!</value>
+    <comment>Investment</comment>
+  </data>
+  <data name="Lockdown">
+    <value>* LOCKDOWN →→→!</value>
+    <comment>Lockdown</comment>
+  </data>
+  <data name="NaturalDisaster">
+    <value>* NATURAL DISASTER →→→!</value>
+    <comment>Natural Disaster</comment>
+  </data>
+  <data name="None">
+    <value>* NONE →→→!</value>
+    <comment>None</comment>
+  </data>
+  <data name="Outbreak">
+    <value>* OUTBREAK →→→!</value>
+    <comment>Outbreak</comment>
+  </data>
+  <data name="PirateAttack">
+    <value>* PIRATE ATTACK →→→!</value>
+    <comment>Pirate Attack</comment>
+  </data>
+  <data name="PublicHoliday">
+    <value>* PUBLIC HOLIDAY →→→!</value>
+    <comment>Public Holiday</comment>
+  </data>
+  <data name="Retreat">
+    <value>* RETREAT →→→!</value>
+    <comment>Retreat</comment>
+  </data>
+  <data name="Revolution">
+    <value>* REVOLUTION →→→!</value>
+    <comment>Revolution</comment>
+  </data>
+  <data name="TechnologicalLeap">
+    <value>* TECHNOLOGICAL LEAP →→→!</value>
+    <comment>Technological Leap</comment>
+  </data>
+  <data name="Terrorism">
+    <value>* TERRORISM →→→!</value>
+    <comment>Terrorism</comment>
+  </data>
+  <data name="Thargoid_Controlled">
+    <value>* THARGOID CONTROLLED →→→!</value>
+    <comment>Thargoid Controlled</comment>
+  </data>
+  <data name="Thargoid_Harvest">
+    <value>* THARGOID INVASION →→→!</value>
+    <comment>Thargoid Invasion</comment>
+  </data>
+  <data name="Thargoid_Probing">
+    <value>* THARGOID ALERT →→→!</value>
+    <comment>Thargoid Alert</comment>
+  </data>
+  <data name="Thargoid_Recovery">
+    <value>* POST-THARGOID RECOVERY →→→!</value>
+    <comment>Post-Thargoid Recovery</comment>
+  </data>
+  <data name="Thargoid_Stronghold">
+    <value>* THARGOID MAELSTROM →→→!</value>
+    <comment>Thargoid Maelstrom</comment>
+  </data>
+  <data name="TradeWar">
+    <value>* TRADE WAR →→→!</value>
+    <comment>Trade War</comment>
+  </data>
+  <data name="War">
+    <value>* WAR →→→!</value>
+    <comment>War</comment>
+  </data>
+</root>

@@ -285,7 +285,7 @@
     <value>2</value>
   </data>
   <data name="btnAccept.Text">
-    <value>*&amp;ACTIVATE→→→!</value>
+    <value>* &amp;ACTIVATE →→→!</value>
     <comment>&amp;Activate</comment>
   </data>
   <data name="btnCancel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -310,7 +310,7 @@
     <value>4</value>
   </data>
   <data name="btnCancel.Text">
-    <value>*&amp;CANCEL→→→!</value>
+    <value>* &amp;CANCEL →→→!</value>
     <comment>&amp;Cancel</comment>
   </data>
   <data name="btnDisable.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -335,7 +335,7 @@
     <value>3</value>
   </data>
   <data name="btnDisable.Text">
-    <value>*&amp;DISABLE→→→!</value>
+    <value>* &amp;DISABLE →→→!</value>
     <comment>&amp;Disable</comment>
   </data>
   <data name="comboSystemName.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -384,7 +384,7 @@
     <value>0</value>
   </data>
   <data name="label1.Text">
-    <value>*ENTER CENTRAL SYSTEM:→→→!</value>
+    <value>* ENTER CENTRAL SYSTEM: →→→!</value>
     <comment>Enter central system:</comment>
   </data>
   <data name="label1.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
@@ -406,7 +406,7 @@
     <value>4</value>
   </data>
   <data name="label2.Text">
-    <value>*SPHERE RADIUS:→→→!</value>
+    <value>* SPHERE RADIUS: →→→!</value>
     <comment>Sphere radius:</comment>
   </data>
   <data name="label2.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
@@ -428,7 +428,7 @@
     <value>2</value>
   </data>
   <data name="label3.Text">
-    <value>*STAR POS:→→→!</value>
+    <value>* STAR POS: →→→!</value>
     <comment>Star pos:</comment>
   </data>
   <data name="label3.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
@@ -447,7 +447,7 @@
     <value>0</value>
   </data>
   <data name="label4.Text">
-    <value>*SPHERICAL LIMIT HELPS NAVIGATING TO SYSTEMS WITHIN A GIVEN DISTANCE OF A CENTRAL SYSTEM.→→→!</value>
+    <value>* SPHERICAL LIMIT HELPS NAVIGATING TO SYSTEMS WITHIN A GIVEN DISTANCE OF A CENTRAL SYSTEM. →→→!</value>
     <comment>Spherical limit helps navigating to systems within a given distance of a central system.</comment>
   </data>
   <data name="label5.AutoSize" type="System.Boolean, mscorlib">
@@ -466,7 +466,7 @@
     <value>6</value>
   </data>
   <data name="label5.Text">
-    <value>*CURRENT SYSTEM:→→→!</value>
+    <value>* CURRENT SYSTEM: →→→!</value>
     <comment>Current system:</comment>
   </data>
   <data name="label5.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
@@ -488,7 +488,7 @@
     <value>8</value>
   </data>
   <data name="label6.Text">
-    <value>*DISTANCE:→→→!</value>
+    <value>* DISTANCE: →→→!</value>
     <comment>Distance:</comment>
   </data>
   <data name="label6.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
@@ -549,7 +549,7 @@
     <value>CenterParent</value>
   </data>
   <data name="$this.Text">
-    <value>*SPHERICAL LIMIT→→→!</value>
+    <value>* SPHERICAL LIMIT →→→!</value>
     <comment>Spherical limit</comment>
   </data>
   <data name="txtCurrentDistance.Location" type="System.Drawing.Point, System.Drawing">

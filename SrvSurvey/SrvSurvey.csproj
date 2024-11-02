@@ -112,6 +112,16 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Codex.resx</DependentUpon>
     </Compile>
+    <Compile Update="Properties\Economies.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Economies.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Properties\FactionStates.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>FactionStates.resx</DependentUpon>
+    </Compile>
     <Compile Update="Properties\KeyChords.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -127,9 +137,25 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>ImageResources.resx</DependentUpon>
     </Compile>
+    <Compile Update="Properties\Reputation.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Reputation.resx</DependentUpon>
+    </Compile>
+    <EmbeddedResource Update="plotters\PlotHumanSite.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Update="Properties\Codex.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Codex.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\Economies.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Economies.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\FactionStates.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>FactionStates.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Properties\KeyChords.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -142,6 +168,10 @@
     <EmbeddedResource Update="Properties\ImageResources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ImageResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\Reputation.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Reputation.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
 

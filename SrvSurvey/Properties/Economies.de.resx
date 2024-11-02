@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>1.3</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Agri" xml:space="preserve">
+    <value>Landwirtschaft</value>
+    <comment>Economy type Agri</comment>
+  </data>
+  <data name="Colony" xml:space="preserve">
+    <value>Kolonie</value>
+    <comment>Economy type Colony</comment>
+  </data>
+  <data name="Extraction" xml:space="preserve">
+    <value>Förderung</value>
+    <comment>Economy type Extraction</comment>
+  </data>
+  <data name="HighTech" xml:space="preserve">
+    <value>Hightech</value>
+    <comment>Economy type HighTech</comment>
+  </data>
+  <data name="Industrial" xml:space="preserve">
+    <value>Industrie</value>
+    <comment>Economy type Industrial</comment>
+  </data>
+  <data name="Military" xml:space="preserve">
+    <value>Militär</value>
+    <comment>Economy type Military</comment>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>Keine</value>
+    <comment>Economy type None</comment>
+  </data>
+  <data name="Refinery" xml:space="preserve">
+    <value>Raffinerie</value>
+    <comment>Economy type Refinery</comment>
+  </data>
+  <data name="Service" xml:space="preserve">
+    <value>Dienstleistung</value>
+    <comment>Economy type Service</comment>
+  </data>
+  <data name="Terraforming" xml:space="preserve">
+    <value>Terraformierung</value>
+    <comment>Economy type Terraforming</comment>
+  </data>
+  <data name="Tourism" xml:space="preserve">
+    <value>Tourismus</value>
+    <comment>Economy type Tourism</comment>
+  </data>
+  <data name="Rescue" xml:space="preserve">
+    <value>Rettung</value>
+    <comment>Economy type Rescue</comment>
+  </data>
+  <data name="Prison" xml:space="preserve">
+    <value>Gefängnis</value>
+    <comment>Economy type Prison</comment>
+  </data>
+  <data name="Repair" xml:space="preserve">
+    <value>Reparaturen</value>
+    <comment>Economy type Repair</comment>
+  </data>
+  <data name="Damaged" xml:space="preserve">
+    <value>Beschädigt</value>
+    <comment>Economy type Damaged</comment>
+  </data>
+  <data name="Carrier" xml:space="preserve">
+    <value>Privateigentum</value>
+    <comment>Economy Type Carrier</comment>
+  </data>
+  <data name="Engineer" xml:space="preserve">
+    <value>Werkstatt</value>
+    <comment>Economy type Engineer</comment>
+  </data>
+</root>

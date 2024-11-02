@@ -1,0 +1,253 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ActiveFighter">
+    <value>* FIGHTER IS ACTIVE →→→!</value>
+    <comment>Fighter is active</comment>
+  </data>
+  <data name="AGR">
+    <value>* AGR →→→!</value>
+    <comment>AGR</comment>
+  </data>
+  <data name="AutoDock1">
+    <value>* AUTO DOCK IN PROGRESS →→→!</value>
+    <comment>Auto dock in progress</comment>
+  </data>
+  <data name="AutoDock2">
+    <value>* SETTLEMENT IDENTIFICATION WILL BE DELAYED →→→!</value>
+    <comment>Settlement identification will be delayed</comment>
+  </data>
+  <data name="AutoDock3">
+    <value>* AUTO DOCK RECOMMENDED →→→!</value>
+    <comment>Auto dock recommended</comment>
+  </data>
+  <data name="CMD">
+    <value>* CMD →→→!</value>
+    <comment>CMD</comment>
+  </data>
+  <data name="Distance">
+    <value>* TOO FAR AWAY →→→!</value>
+    <comment>Too far away</comment>
+  </data>
+  <data name="DockingApproved">
+    <value>* DOCKING APPROVED: PAD #{0} →→→!</value>
+    <comment>Docking approved: pad #{0}</comment>
+  </data>
+  <data name="DockingDenied">
+    <value>* DOCKING DENIED →→→!</value>
+    <comment>Docking denied</comment>
+  </data>
+  <data name="DockingRequested">
+    <value>* DOCKING REQUESTED →→→!</value>
+    <comment>Docking requested</comment>
+  </data>
+  <data name="EXT">
+    <value>* EXT →→→!</value>
+    <comment>EXT</comment>
+  </data>
+  <data name="Faction">
+    <value>* FACTION →→→!</value>
+    <comment>Faction</comment>
+  </data>
+  <data name="Government">
+    <value>* GOVERNMENT →→→!</value>
+    <comment>Government</comment>
+  </data>
+  <data name="HAB">
+    <value>* HAB →→→!</value>
+    <comment>HAB</comment>
+  </data>
+  <data name="HasInterstellar">
+    <value>* INTERSTELLAR FACTIONS AVAILABLE →→→!</value>
+    <comment>Interstellar factions available</comment>
+  </data>
+  <data name="HelpFoot0">
+    <value>* TO MANUALLY IDENTIFY: →→→!</value>
+    <comment>To manually identify:</comment>
+  </data>
+  <data name="HelpFoot1">
+    <value>* 1. WALK TO THE CENTER OF ANY LANDING PAD AND CROUCH →→→!</value>
+    <comment>1. Walk to the center of any landing pad and crouch</comment>
+  </data>
+  <data name="HelpFoot2">
+    <value>* 2. PLACE YOUR LEFT FOOT OVER THE THE CENTER GROOVES →→→!</value>
+    <comment>2. Place your left foot over the the center grooves</comment>
+  </data>
+  <data name="HelpFoot3">
+    <value>* 3. FACE WITH THE CHEVRONS AHEAD TO YOUR LEFT →→→!</value>
+    <comment>3. Face with the chevrons ahead to your left</comment>
+  </data>
+  <data name="HelpFoot4">
+    <value>* 4. AIM AT THE END OF THE GROOVE AHEAD OF YOU →→→!</value>
+    <comment>4. Aim at the end of the groove ahead of you</comment>
+  </data>
+  <data name="HelpFoot5">
+    <value>* 5. SEND MESSAGE '{0}' →→→!</value>
+    <comment>5. Send message '{0}'</comment>
+  </data>
+  <data name="HelpFoot6">
+    <value>* SEE THE WIKI FOR MORE INFO →→→!</value>
+    <comment>See the wiki for more info</comment>
+  </data>
+  <data name="HelpShip1">
+    <value>* SETTLEMENT WILL BE IDENTIFIED AFTER NEXT ACTION →→→!</value>
+    <comment>Settlement will be identified after next action</comment>
+  </data>
+  <data name="HelpShip2">
+    <value>* TO MANUALLY IDENTIFY →→→!</value>
+    <comment>To manually identify</comment>
+  </data>
+  <data name="HelpShip3">
+    <value>* SEND '{0}' WHEN DOCKED →→→!</value>
+    <comment>Send '{0}' when docked</comment>
+  </data>
+  <data name="Hostile">
+    <value>* HOSTILE →→→!</value>
+    <comment>Hostile</comment>
+  </data>
+  <data name="IND">
+    <value>* IND →→→!</value>
+    <comment>IND</comment>
+  </data>
+  <data name="Influence">
+    <value>* INFLUENCE →→→!</value>
+    <comment>Influence</comment>
+  </data>
+  <data name="KnownSettlement">
+    <value>* KNOWN SETTLEMENT →→→!</value>
+    <comment>Known settlement</comment>
+  </data>
+  <data name="LAB">
+    <value>* LAB →→→!</value>
+    <comment>LAB</comment>
+  </data>
+  <data name="ManualDock1">
+    <value>* MANUAL DOCKING IN PROGRESS →→→!</value>
+    <comment>Manual docking in progress</comment>
+  </data>
+  <data name="ManualDock2">
+    <value>* SETTLEMENT IDENTIFICATION WILL BE DELAYED →→→!</value>
+    <comment>Settlement identification will be delayed</comment>
+  </data>
+  <data name="ManualDock3">
+    <value>* AUTO DOCK RECOMMENDED →→→!</value>
+    <comment>Auto dock recommended</comment>
+  </data>
+  <data name="MED">
+    <value>* MED →→→!</value>
+    <comment>MED</comment>
+  </data>
+  <data name="NoSpace">
+    <value>* NO PADS AVAILABLE →→→!</value>
+    <comment>No pads available</comment>
+  </data>
+  <data name="Offenses">
+    <value>* OFFENSES →→→!</value>
+    <comment>Offenses</comment>
+  </data>
+  <data name="OnApproach">
+    <value>* ON APPROACH →→→!</value>
+    <comment>On approach</comment>
+  </data>
+  <data name="POW">
+    <value>* POW →→→!</value>
+    <comment>POW</comment>
+  </data>
+  <data name="RES">
+    <value>* RES →→→!</value>
+    <comment>RES</comment>
+  </data>
+  <data name="STO">
+    <value>* STO →→→!</value>
+    <comment>STO</comment>
+  </data>
+  <data name="TooLarge">
+    <value>* SHIP TOO LARGE →→→!</value>
+    <comment>Ship too large</comment>
+  </data>
+  <data name="Unknown">
+    <value>* UNKNOWN →→→!</value>
+    <comment>Unknown</comment>
+  </data>
+  <data name="UnknownTypeHeading">
+    <value>* UNKNOWN SETTLEMENT TYPE AND HEADING →→→!</value>
+    <comment>Unknown settlement type and heading</comment>
+  </data>
+  <data name="UnkownHeading">
+    <value>* UNKNOWN SETTLEMENT HEADING →→→!</value>
+    <comment>Unknown settlement heading</comment>
+  </data>
+  <data name="YourRep">
+    <value>* YOUR REPUTATION: {0} →→→!</value>
+    <comment>Your reputation: {0}</comment>
+  </data>
+  <data name="ZoomHeader">
+    <value>* ZOOM: {0} →→→!</value>
+    <comment>Zoom: {0}</comment>
+  </data>
+  <data name="ZoomHeaderAuto">
+    <value>* ZOOM: {0} (AUTO) →→→!</value>
+    <comment>Zoom: {0} (Auto)</comment>
+  </data>
+  <data name="ZoomHeaderMin">
+    <value>* Z: {0} →→→!</value>
+    <comment>Z: {0}</comment>
+  </data>
+</root>

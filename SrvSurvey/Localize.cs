@@ -1,9 +1,7 @@
 ﻿using Newtonsoft.Json;
 using SrvSurvey.game;
 using SrvSurvey.net;
-using SrvSurvey.Properties;
 using System.Diagnostics;
-using System.Resources;
 using System.Text;
 using System.Xml.Linq;
 
@@ -107,6 +105,11 @@ namespace SrvSurvey
             var oldTargetDoc = File.Exists(targetFilepath) ? XDocument.Load(targetFilepath) : null;
             var sourceDoc = XDocument.Load(sourceFilepath);
 
+            // skip certain files that were pre-translated
+            var locLevel = sourceDoc.Root?.Elements().FirstOrDefault(e => e.Name == "resheader" && e.Attribute("name")?.Value == "loc-level");
+            if (locLevel?.Value == "pseudo-only" && targetLang != "ps")
+                return;
+
             //var newTargetDoc = XDocument.Load(File.Exists(targetFilepath) ? targetFilepath : sourceFilepath) // or ... start from the current localized .resx
             var newTargetDoc = XDocument.Load(sourceFilepath);
             // remove the large annoying comment at the top
@@ -146,18 +149,18 @@ namespace SrvSurvey
                 // replace elements when we're first creating the .resx file (and always pseudo-localize)
                 if (!string.IsNullOrEmpty(oldTranslation))
                     targetNode.SetElementValue("value", oldTranslation);
-                else if (oldTargetDoc == null) // seed new .resx files untranslated, so we can see the diff's
-                    targetNode.SetElementValue("comment", "-");
+                //else if (oldTargetDoc == null && targetLang != "ps") // seed new .resx files untranslated, so we can see the diff's
+                //    targetNode.SetElementValue("comment", "-");
 
                 // skip anything that hasn't changed (unless we're doing PS)
                 var oldComment = oldTargetNode?.Element("comment")?.Value;
                 if (oldComment == sourceText && !string.IsNullOrEmpty(oldTranslation)) continue;
 
                 // presume pseudo translate it
-                var translation = $"*{sourceText.ToUpperInvariant()}→→→!";
+                var translation = $"* {sourceText.ToUpperInvariant()} →→→!";
 
                 // or translate into a real language
-                if (targetLang != "ps" && oldTargetDoc != null)
+                if (targetLang != "ps") // && oldTargetDoc != null)
                 {
                     translation = await translateString(sourceText, targetLang);
                     if (string.IsNullOrEmpty(translation))

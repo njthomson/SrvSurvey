@@ -60,142 +60,142 @@
   </resheader>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="NetSysData_Bodies">
-    <value>*BODIES→→→!</value>
+    <value>* BODIES →→→!</value>
     <comment>Bodies</comment>
   </data>
   <data name="NetSysData_DiscoveredAll">
-    <value>*DISCOVERED, {0} BODIES→→→!</value>
+    <value>* DISCOVERED, {0} BODIES →→→!</value>
     <comment>Discovered, {0} bodies</comment>
   </data>
   <data name="NetSysData_DiscoveredPartial">
-    <value>*DISCOVERED ({0} OF {1})→→→!</value>
+    <value>* DISCOVERED ({0} OF {1}) →→→!</value>
     <comment>Discovered ({0} of {1})</comment>
   </data>
   <data name="NetSysData_FC">
-    <value>*FC→→→!</value>
+    <value>* FC →→→!</value>
     <comment>FC</comment>
   </data>
   <data name="NetSysData_Genus">
-    <value>*GENUS→→→!</value>
+    <value>* GENUS →→→!</value>
     <comment>Genus</comment>
   </data>
   <data name="NetSysData_MaterialTrader">
-    <value>*MATERIAL TRADER→→→!</value>
+    <value>* MATERIAL TRADER →→→!</value>
     <comment>Material Trader</comment>
   </data>
   <data name="NetSysData_Outposts">
-    <value>*OUTPOSTS→→→!</value>
+    <value>* OUTPOSTS →→→!</value>
     <comment>Outposts</comment>
   </data>
   <data name="NetSysData_Settlements">
-    <value>*SETTLEMENTS→→→!</value>
+    <value>* SETTLEMENTS →→→!</value>
     <comment>Settlements</comment>
   </data>
   <data name="NetSysData_StarPorts">
-    <value>*STAR PORTS→→→!</value>
+    <value>* STAR PORTS →→→!</value>
     <comment>Star ports</comment>
   </data>
   <data name="NetSysData_TechBroker">
-    <value>*TECH BROKER→→→!</value>
+    <value>* TECH BROKER →→→!</value>
     <comment>Tech Broker</comment>
   </data>
   <data name="NetSysData_UndiscoveredSystem">
-    <value>*UNDISCOVERED SYSTEM→→→!</value>
+    <value>* UNDISCOVERED SYSTEM →→→!</value>
     <comment>Undiscovered system</comment>
   </data>
   <data name="NetSysData_UnscannedSystem">
-    <value>*UNSCANNED SYSTEM→→→!</value>
+    <value>* UNSCANNED SYSTEM →→→!</value>
     <comment>Unscanned system</comment>
   </data>
   <data name="NetSysData_Wars">
-    <value>*WARS→→→!</value>
+    <value>* WARS →→→!</value>
     <comment>Wars</comment>
   </data>
   <data name="PlotFlightWarning_SurfaceGravityWarning">
-    <value>*WARNING: SURFACE GRAVITY {0}G→→→!</value>
+    <value>* WARNING: SURFACE GRAVITY {0}G →→→!</value>
     <comment>Warning: Surface gravity {0}g</comment>
   </data>
   <data name="PlotGalMap_CountGenus">
-    <value>*{0}X GENUS→→→!</value>
+    <value>* {0}X GENUS →→→!</value>
     <comment>{0}x Genus</comment>
   </data>
   <data name="PlotGalMap_Current">
-    <value>*CURRENT:→→→!</value>
+    <value>* CURRENT: →→→!</value>
     <comment>Current:</comment>
   </data>
   <data name="PlotGalMap_DataFrom">
-    <value>*DATA FROM: EDSM + SPANSH + CANONN→→→!</value>
+    <value>* DATA FROM: EDSM + SPANSH + CANONN →→→!</value>
     <comment>Data from: EDSM + Spansh + Canonn</comment>
   </data>
   <data name="PlotGalMap_Destination">
-    <value>*DESTINATION:→→→!</value>
+    <value>* DESTINATION: →→→!</value>
     <comment>Destination:</comment>
   </data>
   <data name="PlotGalMap_DiscoveredBy">
-    <value>*BY {0}, {1}→→→!</value>
+    <value>* BY {0}, {1} →→→!</value>
     <comment>By {0}, {1}</comment>
   </data>
   <data name="PlotGalMap_LastUpdated">
-    <value>*LAST UPDATED: {0}→→→!</value>
+    <value>* LAST UPDATED: {0} →→→!</value>
     <comment>Last updated: {0}</comment>
   </data>
   <data name="PlotGalMap_NextJump">
-    <value>*NEXT JUMP:→→→!</value>
+    <value>* NEXT JUMP: →→→!</value>
     <comment>Next jump:</comment>
   </data>
   <data name="PlotGalMap_NoRouteSet">
-    <value>*NO ROUTE SET→→→!</value>
+    <value>* NO ROUTE SET →→→!</value>
     <comment>No route set</comment>
   </data>
   <data name="PlotGalMap_RouteFooter">
-    <value>*TOTAL: ► {0} JUMPS ► DISTANCE: {1} LY→→→!</value>
+    <value>* TOTAL: ► {0} JUMPS ► DISTANCE: {1} LY →→→!</value>
     <comment>Total: ► {0} jumps ► Distance: {1} ly</comment>
   </data>
   <data name="PlotGalMap_Selected">
-    <value>*SELECTED:→→→!</value>
+    <value>* SELECTED: →→→!</value>
     <comment>Selected:</comment>
   </data>
   <data name="PlotSysStatus_BioSignals">
-    <value>*| {0}X BIO SIGNALS ON: →→→!</value>
+    <value>* | {0}X BIO SIGNALS ON:  →→→!</value>
     <comment>| {0}x Bio signals on: </comment>
   </data>
   <data name="PlotSysStatus_DssRemaining">
-    <value>* {0}X BODIES: →→→!</value>
+    <value>*  {0}X BODIES:  →→→!</value>
     <comment> {0}x bodies: </comment>
   </data>
   <data name="PlotSysStatus_FssCompleteLong">
-    <value>*FSS {0}%→→→!</value>
+    <value>* FSS {0}% →→→!</value>
     <comment>FSS {0}%</comment>
   </data>
   <data name="PlotSysStatus_FssCompleteShort">
-    <value>*FSS {0}% COMPLETE→→→!</value>
+    <value>* FSS {0}% COMPLETE →→→!</value>
     <comment>FSS {0}% complete</comment>
   </data>
   <data name="PlotSysStatus_FssNotStarted">
-    <value>*FSS NOT STARTED→→→!</value>
+    <value>* FSS NOT STARTED →→→!</value>
     <comment>FSS not started</comment>
   </data>
   <data name="PlotSysStatus_Header">
-    <value>*SYSTEM SURVEY: →→→!</value>
+    <value>* SYSTEM SURVEY:  →→→!</value>
     <comment>System survey: </comment>
   </data>
   <data name="PlotSysStatus_NextSystem">
-    <value>*NEXT SYSTEM:→→→!</value>
+    <value>* NEXT SYSTEM: →→→!</value>
     <comment>Next system:</comment>
   </data>
   <data name="PlotSysStatus_NoDssMeet">
-    <value>*NO DSS MEET CRITERIA→→→!</value>
+    <value>* NO DSS MEET CRITERIA →→→!</value>
     <comment>No DSS meet criteria</comment>
   </data>
   <data name="PlotSysStatus_NonBodySignals">
-    <value>*► {0} NON-BODY SIGNALS→→→!</value>
+    <value>* ► {0} NON-BODY SIGNALS →→→!</value>
     <comment>► {0} non-body signals</comment>
   </data>
   <data name="Settings_CreateFolderNotFound">
-    <value>*CANNOT FIND FOLDER:
+    <value>* CANNOT FIND FOLDER:
 {0}
 
-WOULD YOU LIKE TO CREATE IT?→→→!</value>
+WOULD YOU LIKE TO CREATE IT? →→→!</value>
     <comment>Cannot find folder:
 {0}
 

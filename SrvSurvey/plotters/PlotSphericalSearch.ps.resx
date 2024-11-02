@@ -62,23 +62,23 @@
     <value>True</value>
   </metadata>
   <data name="DistanceExceeds">
-    <value>*DISTANCE: {0}LY - EXCEEDS {1} LY→→→!</value>
+    <value>* DISTANCE: {0}LY - EXCEEDS {1} LY →→→!</value>
     <comment>Distance: {0}ly - exceeds {1} ly</comment>
   </data>
   <data name="DistanceInProgress">
-    <value>*DISTANCE: ...→→→!</value>
+    <value>* DISTANCE: ... →→→!</value>
     <comment>Distance: ...</comment>
   </data>
   <data name="DistanceWithin">
-    <value>*DISTANCE: {0} - WITHIN {1} LY→→→!</value>
+    <value>* DISTANCE: {0} - WITHIN {1} LY →→→!</value>
     <comment>Distance: {0} - within {1} ly</comment>
   </data>
   <data name="From">
-    <value>*FROM: {0}→→→!</value>
+    <value>* FROM: {0} →→→!</value>
     <comment>From: {0}</comment>
   </data>
   <data name="To">
-    <value>*TO: {0}→→→!</value>
+    <value>* TO: {0} →→→!</value>
     <comment>To: {0}</comment>
   </data>
 </root>

@@ -1,0 +1,253 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ActiveFighter">
+    <value>Der Kämpfer ist aktiv</value>
+    <comment>Fighter is active</comment>
+  </data>
+  <data name="AGR">
+    <value>AGR</value>
+    <comment>AGR</comment>
+  </data>
+  <data name="AutoDock1">
+    <value>Automatisches Andocken wird ausgeführt</value>
+    <comment>Auto dock in progress</comment>
+  </data>
+  <data name="AutoDock2">
+    <value>Die Identifizierung der Abrechnung wird sich verzögern</value>
+    <comment>Settlement identification will be delayed</comment>
+  </data>
+  <data name="AutoDock3">
+    <value>Automatisches Andocken empfohlen</value>
+    <comment>Auto dock recommended</comment>
+  </data>
+  <data name="CMD">
+    <value>CMD</value>
+    <comment>CMD</comment>
+  </data>
+  <data name="Distance">
+    <value>Zu weit weg</value>
+    <comment>Too far away</comment>
+  </data>
+  <data name="DockingApproved">
+    <value>Andocken zugelassen: Pad #{0}</value>
+    <comment>Docking approved: pad #{0}</comment>
+  </data>
+  <data name="DockingDenied">
+    <value>Andocken verweigert</value>
+    <comment>Docking denied</comment>
+  </data>
+  <data name="DockingRequested">
+    <value>Andocken angefordert</value>
+    <comment>Docking requested</comment>
+  </data>
+  <data name="EXT">
+    <value>EXTERN</value>
+    <comment>EXT</comment>
+  </data>
+  <data name="Faction">
+    <value>Fraktion</value>
+    <comment>Faction</comment>
+  </data>
+  <data name="Government">
+    <value>Regierung</value>
+    <comment>Government</comment>
+  </data>
+  <data name="HAB">
+    <value>HAB</value>
+    <comment>HAB</comment>
+  </data>
+  <data name="HasInterstellar">
+    <value>Interstellare Fraktionen verfügbar</value>
+    <comment>Interstellar factions available</comment>
+  </data>
+  <data name="HelpFoot0">
+    <value>So identifizieren Sie manuell:</value>
+    <comment>To manually identify:</comment>
+  </data>
+  <data name="HelpFoot1">
+    <value>1. Gehen Sie zur Mitte eines Landeplatzes und gehen Sie in die Hocke</value>
+    <comment>1. Walk to the center of any landing pad and crouch</comment>
+  </data>
+  <data name="HelpFoot2">
+    <value>2. Lege deinen linken Fuß über die mittleren Rillen</value>
+    <comment>2. Place your left foot over the the center grooves</comment>
+  </data>
+  <data name="HelpFoot3">
+    <value>3. Zeigen Sie mit den Chevrons zu Ihrer Linken</value>
+    <comment>3. Face with the chevrons ahead to your left</comment>
+  </data>
+  <data name="HelpFoot4">
+    <value>4. Zielen Sie auf das Ende des Grooves vor Ihnen</value>
+    <comment>4. Aim at the end of the groove ahead of you</comment>
+  </data>
+  <data name="HelpFoot5">
+    <value>5. Senden Sie die Nachricht '{0}'</value>
+    <comment>5. Send message '{0}'</comment>
+  </data>
+  <data name="HelpFoot6">
+    <value>Weitere Informationen finden Sie im Wiki</value>
+    <comment>See the wiki for more info</comment>
+  </data>
+  <data name="HelpShip1">
+    <value>Die Abrechnung wird nach der nächsten Aktion identifiziert</value>
+    <comment>Settlement will be identified after next action</comment>
+  </data>
+  <data name="HelpShip2">
+    <value>So identifizieren Sie manuell</value>
+    <comment>To manually identify</comment>
+  </data>
+  <data name="HelpShip3">
+    <value>Senden Sie '{0}', wenn angedockt</value>
+    <comment>Send '{0}' when docked</comment>
+  </data>
+  <data name="Hostile">
+    <value>Feindlich</value>
+    <comment>Hostile</comment>
+  </data>
+  <data name="IND">
+    <value>IND</value>
+    <comment>IND</comment>
+  </data>
+  <data name="Influence">
+    <value>Beeinflussen</value>
+    <comment>Influence</comment>
+  </data>
+  <data name="KnownSettlement">
+    <value>Bekannte Siedlung</value>
+    <comment>Known settlement</comment>
+  </data>
+  <data name="LAB">
+    <value>LABOR</value>
+    <comment>LAB</comment>
+  </data>
+  <data name="ManualDock1">
+    <value>Manuelles Andocken läuft</value>
+    <comment>Manual docking in progress</comment>
+  </data>
+  <data name="ManualDock2">
+    <value>Die Identifizierung der Abrechnung wird sich verzögern</value>
+    <comment>Settlement identification will be delayed</comment>
+  </data>
+  <data name="ManualDock3">
+    <value>Automatisches Andocken empfohlen</value>
+    <comment>Auto dock recommended</comment>
+  </data>
+  <data name="MED">
+    <value>MEDIZINISCH</value>
+    <comment>MED</comment>
+  </data>
+  <data name="NoSpace">
+    <value>Keine Beläge verfügbar</value>
+    <comment>No pads available</comment>
+  </data>
+  <data name="Offenses">
+    <value>Angriffe</value>
+    <comment>Offenses</comment>
+  </data>
+  <data name="OnApproach">
+    <value>Bei der Annäherung</value>
+    <comment>On approach</comment>
+  </data>
+  <data name="POW">
+    <value>KRIEGSGEFANGENER</value>
+    <comment>POW</comment>
+  </data>
+  <data name="RES">
+    <value>RES</value>
+    <comment>RES</comment>
+  </data>
+  <data name="STO">
+    <value>STO</value>
+    <comment>STO</comment>
+  </data>
+  <data name="TooLarge">
+    <value>Zu großes Schiff versenden</value>
+    <comment>Ship too large</comment>
+  </data>
+  <data name="Unknown">
+    <value>Unbekannt</value>
+    <comment>Unknown</comment>
+  </data>
+  <data name="UnknownTypeHeading">
+    <value>Unbekannte Siedlungsart und -richtung</value>
+    <comment>Unknown settlement type and heading</comment>
+  </data>
+  <data name="UnkownHeading">
+    <value>Unbekannte Siedlungsrichtung</value>
+    <comment>Unknown settlement heading</comment>
+  </data>
+  <data name="YourRep">
+    <value>Ihr Ruf: {0}</value>
+    <comment>Your reputation: {0}</comment>
+  </data>
+  <data name="ZoomHeader">
+    <value>Zoom: {0}</value>
+    <comment>Zoom: {0}</comment>
+  </data>
+  <data name="ZoomHeaderAuto">
+    <value>Zoom: {0} (Auto)</value>
+    <comment>Zoom: {0} (Auto)</comment>
+  </data>
+  <data name="ZoomHeaderMin">
+    <value>Z: {0}</value>
+    <comment>Z: {0}</comment>
+  </data>
+</root>

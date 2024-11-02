@@ -59,27 +59,27 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="mapBeHuge">
-    <value>*TOGGLES MAKING THE MAP FILL HALF THE SCREEN, AT HUMAN SETTLEMENTS ONLY.→→→!</value>
+    <value>* TOGGLES MAKING THE MAP FILL HALF THE SCREEN, AT HUMAN SETTLEMENTS ONLY. →→→!</value>
     <comment>Toggles making the map fill half the screen, at Human settlements only.</comment>
   </data>
   <data name="mapZoomAuto">
-    <value>*RESET THE ZOOM TO DEFAULT, AT HUMAN AND GUARDIAN SITES.→→→!</value>
+    <value>* RESET THE ZOOM TO DEFAULT, AT HUMAN AND GUARDIAN SITES. →→→!</value>
     <comment>Reset the zoom to default, at Human and Guardian sites.</comment>
   </data>
   <data name="mapZoomIn">
-    <value>*ZOOM IN ON MAPS AT HUMAN AND GUARDIAN SITES.→→→!</value>
+    <value>* ZOOM IN ON MAPS AT HUMAN AND GUARDIAN SITES. →→→!</value>
     <comment>Zoom in on maps at Human and Guardian sites.</comment>
   </data>
   <data name="mapZoomOut">
-    <value>*ZOOM OUT ON MAPS AT HUMAN AND GUARDIAN SITES.→→→!</value>
+    <value>* ZOOM OUT ON MAPS AT HUMAN AND GUARDIAN SITES. →→→!</value>
     <comment>Zoom out on maps at Human and Guardian sites.</comment>
   </data>
   <data name="showJumpInfo">
-    <value>*FORCE TOGGLE THE FSD JUMP OVERLAY TO BE VISIBLE WITHOUT STARTING TO JUMP. WILL NOT APPEAR IF THERE IS NO ACTIVE ROUTE.→→→!</value>
+    <value>* FORCE TOGGLE THE FSD JUMP OVERLAY TO BE VISIBLE WITHOUT STARTING TO JUMP. WILL NOT APPEAR IF THERE IS NO ACTIVE ROUTE. →→→!</value>
     <comment>Force toggle the FSD jump overlay to be visible without starting to jump. Will not appear if there is no active route.</comment>
   </data>
   <data name="toggleAllVisibility">
-    <value>*TOGGLES VISIBILITY OF ALL OVERLAY WINDOWS.→→→!</value>
+    <value>* TOGGLES VISIBILITY OF ALL OVERLAY WINDOWS. →→→!</value>
     <comment>Toggles visibility of all overlay windows.</comment>
   </data>
 </root>

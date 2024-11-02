@@ -59,31 +59,31 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="DiscoveredBy">
-    <value>*DISCOVERED BY {0} {1}→→→!</value>
+    <value>* DISCOVERED BY {0} {1} →→→!</value>
     <comment>Discovered by {0} {1}</comment>
   </data>
   <data name="JumpCounts">
-    <value>*#{0} OF {1}→→→!</value>
+    <value>* #{0} OF {1} →→→!</value>
     <comment>#{0} of {1}</comment>
   </data>
   <data name="JumpDistance">
-    <value>*{0}LY→→→!</value>
+    <value>* {0}LY →→→!</value>
     <comment>{0}ly</comment>
   </data>
   <data name="LastUpdated">
-    <value>*LAST UPDATED: {0}→→→!</value>
+    <value>* LAST UPDATED: {0} →→→!</value>
     <comment>Last updated: {0}</comment>
   </data>
   <data name="NextJump">
-    <value>*NEXT JUMP:→→→!</value>
+    <value>* NEXT JUMP: →→→!</value>
     <comment>Next jump:</comment>
   </data>
   <data name="StarClass">
-    <value>*CLASS: {0}→→→!</value>
+    <value>* CLASS: {0} →→→!</value>
     <comment>class: {0}</comment>
   </data>
   <data name="TrafficInfo">
-    <value>*TRAFFIC LAST 24 HOURS: {0}, WEEK: {1}, EVER: {2}→→→!</value>
+    <value>* TRAFFIC LAST 24 HOURS: {0}, WEEK: {1}, EVER: {2} →→→!</value>
     <comment>Traffic last 24 hours: {0}, week: {1}, ever: {2}</comment>
   </data>
 </root>

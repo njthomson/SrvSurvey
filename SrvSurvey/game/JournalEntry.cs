@@ -26,6 +26,7 @@ namespace SrvSurvey
         // { "timestamp":"2023-01-05T23:38:49Z", "event":"Fileheader", "part":1, "language":"English/UK", "Odyssey":true, "gameversion":"4.0.0.1476", "build":"r289925/r0 " }
 
         public int part { get; set; }
+        public string language { get; set; }
         public bool Odyssey { get; set; }
         public string gameversion { get; set; }
         public string build { get; set; }

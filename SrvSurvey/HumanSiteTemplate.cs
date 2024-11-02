@@ -71,6 +71,7 @@ namespace SrvSurvey
             catch (Exception ex)
             {
                 Game.log($"Loading {humanSiteTemplates} failed:\r\n{ex}");
+                FormErrorSubmit.Show(ex);
             }
         }
 

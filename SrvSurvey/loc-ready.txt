@@ -1,7 +1,11 @@
-﻿FormGroundTarget.resx
+﻿Economies.resx
+FactionStates.resx
+FormGroundTarget.resx
 FormSetKeyChord.resx
 FormSphereLimit.resx
 KeyChords.resx
 Misc.resx
+PlotHumanSite.resx
 PlotJumpInfo.resx
 PlotSphericalSearch.resx
+Reputation.resx

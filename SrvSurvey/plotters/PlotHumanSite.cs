@@ -494,80 +494,51 @@ namespace SrvSurvey
             this.reloadTemplate();
         }
 
-        //private RectangleF getBldRectF(PointF bldCorner, PointF cmdrOffset, decimal bldHeading)
-        //{
-        //    var xx = cmdrOffset.X - bldCorner.X;
-        //    var yy = cmdrOffset.Y - bldCorner.Y;
+        private static float zoomLevelMinWidth = 0;
+        private static float zoomLevelAutoWidth = 0;
 
-        //    var c = (decimal)Math.Sqrt(
-        //        Math.Pow(bldCorner.X - cmdrOffset.X, 2)
-        //        + Math.Pow(bldCorner.Y - cmdrOffset.Y, 2)
-        //        );
+        private string? getLocalizedEconomy()
+        {
+            switch(station.economy)
+            {
+                case Economy.Agriculture:
+                    return Properties.Economies.ResourceManager.GetString("Agri");
+                case Economy.PrivateEnterprise:
+                    return Properties.Economies.ResourceManager.GetString("Carrier");
 
-        //    var aaa = Util.ToAngle(xx, yy) - (decimal)bldHeading;
-        //    if (aaa < 0) aaa += 360;
-
-        //    var dx = (float)(DecimalEx.Sin(DecimalEx.ToRad((decimal)aaa)) * c);
-        //    var dy = (float)(DecimalEx.Cos(DecimalEx.ToRad((decimal)aaa)) * c);
-
-
-        //    // when dx+ dy- (and nothing else)
-        //    var dxx = bldCorner.X;
-        //    var dyy = bldCorner.Y;
-
-        //    // when dx- dy-
-        //    if (dx < 0 && dy < 0)
-        //    {
-        //        dxx += xx;
-        //        dyy += yy;
-        //        dxx -= (float)(DecimalEx.Sin(DecimalEx.ToRad((decimal)bldHeading)) * (decimal)dy);
-        //        dyy -= (float)(DecimalEx.Cos(DecimalEx.ToRad((decimal)bldHeading)) * (decimal)dy);
-        //    }
-        //    // when: dx+ dy+
-        //    else if (dx > 0 && dy > 0)
-        //    {
-        //        dxx += (float)(DecimalEx.Sin(DecimalEx.ToRad((decimal)bldHeading)) * (decimal)dy);
-        //        dyy += (float)(DecimalEx.Cos(DecimalEx.ToRad((decimal)bldHeading)) * (decimal)dy);
-        //    }
-        //    // when dx- dy+
-        //    else if (dx < 0 && dy > 0)
-        //    {
-        //        dxx += xx;
-        //        dyy += yy;
-        //    }
-        //    Game.log($"---");
-        //    Game.log($"{dxx},{dyy} /{(int)aaa}°/ {dx},{dy}");
-
-        //    if (dx < 0) dx *= -1;
-        //    if (dy < 0) dy *= -1;
-        //    var rf3 = new RectangleF(dxx, dyy, dx, dy);
-        //    Game.log($"{rf3.Left},{rf3.Top} /{(int)aaa}°/ {rf3.Width},{rf3.Height}");
-
-        //    return rf3;
-        //}
+                default:
+                    return Properties.Economies.ResourceManager.GetString(station.economy.ToString());
+            }
+        }
 
         protected override void onPaintPlotter(PaintEventArgs e)
         {
             // first, draw headers and footers (before we start clipping)
 
             // header - left
-            var headerTxt = $"{station.name} - {station.economy} ";
+            var economyTxt = this.getLocalizedEconomy();
+            var headerTxt = $"{station.name} - {economyTxt} ";
             headerTxt += station.subType == 0 ? "?" : $"#{station.subType}";
             if (station.government == "$government_Anarchy;")
                 headerTxt = "🏴‍☠️ " + headerTxt;
 
             var headerLeftSz = drawTextAt2(eight, headerTxt);
 
+            // (one time) figure out how much space we need for the zoom headers
+            if (zoomLevelAutoWidth == 0) zoomLevelAutoWidth = 8 + Util.maxWidth(GameColors.fontSmall, RES("ZoomHeaderAuto", (44.4f).ToString("N1")));
+            if (zoomLevelMinWidth == 0) zoomLevelMinWidth = 8 + Util.maxWidth(GameColors.fontSmall, RES("ZoomHeaderMin", (44.4f).ToString("N1")));
+
             // header - right (if there's enough space)
-            if (headerLeftSz.Width < this.Width - hundred)
+            if (headerLeftSz.Width < this.Width - zoomLevelAutoWidth)
             {
-                var zoomText = $"Zoom: {this.scale.ToString("N1")}";
-                if (PlotHumanSite.autoZoom) zoomText += " (auto)";
+                var zoomText = PlotHumanSite.autoZoom
+                    ? RES("ZoomHeaderAuto", this.scale.ToString("N1"))
+                    : RES("ZoomHeader", this.scale.ToString("N1"));
                 drawTextAt2(this.ClientSize.Width - 8, zoomText, GameColors.OrangeDim, GameColors.fontSmall, true);
             }
-            else if (headerLeftSz.Width < this.Width - thirty)
+            else if (headerLeftSz.Width < this.Width - zoomLevelMinWidth)
             {
-                var zoomText = $"z:{this.scale.ToString("N1")}";
+                var zoomText = RES("ZoomHeaderMin", this.scale.ToString("N1"));
                 drawTextAt2(this.ClientSize.Width - 8, zoomText, GameColors.OrangeDim, GameColors.fontSmall, true);
             }
 
@@ -602,7 +573,18 @@ namespace SrvSurvey
 
             // are we inside a building?
             var currentBld = station.template?.getCurrentBld(cmdrOffset, this.siteHeading);
-            if (currentBld != null) footerTxt += $"| {currentBld}";
+            if (currentBld != null)
+            {
+                var parts = currentBld?.Split(" ", 2);
+                if (parts?.Length > 0)
+                {
+                    currentBld = RES(parts[0]);
+                    if (parts.Length > 1)
+                        currentBld += $" {parts[1]}";
+                }
+
+                if (currentBld != null) footerTxt += $"| {currentBld}"; // TODO: How to localize this?
+            }
 
             // Pixel offset relative to background map image - an aide for creating map images
             if (showMapPixelOffsets && this.mapImage != null)
@@ -734,7 +716,7 @@ namespace SrvSurvey
                 else if (bld.name.StartsWith("STO", StringComparison.OrdinalIgnoreCase))
                     bb = GameColors.Building.STO; // brown
                 else if (bld.name.StartsWith("RES", StringComparison.OrdinalIgnoreCase))
-                    bb = GameColors.Building.STO; // darker brown?
+                    bb = GameColors.Building.RES; // darker brown?
                 else if (bld.name.StartsWith("IND", StringComparison.OrdinalIgnoreCase))
                     bb = GameColors.Building.IND; // lighter brown
                 else if (bld.name.StartsWith("MED", StringComparison.OrdinalIgnoreCase))
@@ -758,7 +740,7 @@ namespace SrvSurvey
             foreach (var p in builder.building.paths)
                 g.FillPath(Brushes.Navy, p);
 
-            // draw in-progress buildigs
+            // draw in-progress buildings
             if (builder.circle)
             {
                 var rf = new RectangleF(of2, new SizeF(builder.circleRadius * 2, builder.circleRadius * 2));
@@ -938,28 +920,41 @@ namespace SrvSurvey
 
         private void drawOnApproach(decimal distToSiteOrigin)
         {
+            dty += eight;
             // fade out the map a little
             g.FillRectangle(GameColors.HumanSite.brushTextFade, four, twoSix, this.Width - eight, this.Height - threeSix);
 
             if (station.subType == 0 && station.heading == -1)
-                drawApproachText("❓", "Unknown settlement type and heading", GameColors.Cyan);
+                drawApproachText("❓", RES("UnknownTypeHeading"), GameColors.Cyan);
             else if (station.heading == -1)
-                drawApproachText("❓", "Unknown settlement heading", GameColors.Cyan);
-            else 
-                drawApproachText("►", "Known settlement", GameColors.LimeIsh);
+                drawApproachText("❓", RES("UnknownType"), GameColors.Cyan);
+            else if (!this.hasLanded)
+                drawApproachText("►", RES("KnownSettlement"), GameColors.LimeIsh);
 
             if (!this.hasLanded)
             {
                 // distance to site, triangulated with altitude 
                 var d = new PointM(distToSiteOrigin, game.status.Altitude).dist;
-                drawApproachText("►", $"On approach: {Util.metersToString(d)}");
+                drawApproachText("►", $"{RES("OnApproach")}: " + Util.metersToString(d));
 
                 // the controlling faction
+
+                //var w = Util.maxWidth(GameColors.fontMiddle, prefixFaction, prefixInfluence);
                 drawTextAt2(eight, "►", GameColors.fontMiddle);
-                drawTextAt2(threeTwo, "Faction: ", GameColors.fontMiddle);
-                var txt = $"{station.factionName}\r\nInfluence: " + station.influence?.ToString("p0");
-                if (station.factionState != null) txt += $"| {station.factionState}";
-                drawTextAt2(txt, GameColors.fontMiddleBold);
+                drawTextAt2(threeTwo, $"{RES("Faction")}: ", GameColors.fontMiddle);
+                var x = dtx;
+                drawTextAt2(station.factionName, GameColors.fontMiddleBold);
+                newLine();
+                drawTextAt2(x, $"{RES("Influence")}: ", GameColors.fontMiddle);
+                drawTextAt2(station.influence?.ToString("p0"), GameColors.fontMiddleBold);
+
+                // append faction state if we know it
+                if (station.factionState != null)
+                {
+                    drawTextAt2(" | ", GameColors.fontMiddle);
+                    var factionStateTxt = Properties.FactionStates.ResourceManager.GetString(station.factionState);
+                    drawTextAt2(factionStateTxt, GameColors.fontMiddleBold);
+                }
                 newLine(+ten, true);
 
                 // Your reputation with the controlling faction
@@ -979,42 +974,42 @@ namespace SrvSurvey
                     }
 
                     var rep = Util.getReputationText(station.reputation.Value);
-                    drawApproachText(prefix, $"Your reputation: {rep}", col);
+                    drawApproachText(prefix, RES("YourRep", rep), col);
                 }
 
                 if (station.government == "$government_Anarchy;")
-                    drawApproachText("🏴‍☠️", $"Government: {station.governmentLocalized}");
+                    drawApproachText("🏴‍☠️", $"{RES("Government")}: {station.governmentLocalized}");
 
                 if (station.stationServices?.Contains("facilitator") == true)
-                    drawApproachText("🙂", "Interstellar factions available");
+                    drawApproachText("🙂", RES("HasInterstellar"));
             }
 
             if (game.dockingInProgress)
             {
                 // docking status?
                 if (this.dockingState == DockingState.requested || this.dockingState == DockingState.approved || this.dockingState == DockingState.denied)
-                    drawApproachText("►", "Docking requested");
+                    drawApproachText("►", RES("DockingRequested"));
                 if (this.dockingState == DockingState.approved)
-                    drawApproachText("►", $"Docking approved: pad #{this.grantedPad}");
+                    drawApproachText("►", RES("DockingApproved", this.grantedPad));
             }
             else if (this.dockingState == DockingState.denied)
             {
-                drawTextAt2(eight, $"⛔ Docking denied", GameColors.fontMiddle);
+                drawTextAt2(eight, $"⛔ {RES("DockingDenied")}", GameColors.fontMiddle);
                 newLine(+ten, true);
                 if (this.deniedReason == "Distance")
-                    drawTextAt2(threeTwo, $"➟ Too far away", GameColors.fontMiddle);
+                    drawTextAt2(threeTwo, $"➟ {RES(this.deniedReason)}", GameColors.fontMiddle);
                 else if (this.deniedReason == "Hostile")
-                    drawTextAt2(threeTwo, $"💀 Hostile", GameColors.fontMiddle);
+                    drawTextAt2(threeTwo, $"💀 {RES(this.deniedReason)}", GameColors.fontMiddle);
                 else if (this.deniedReason == "TooLarge")
-                    drawTextAt2(threeTwo, $"🔷 Ship too large", GameColors.fontMiddle);
+                    drawTextAt2(threeTwo, $"🔷 {RES(this.deniedReason)}", GameColors.fontMiddle);
                 else if (this.deniedReason == "NoSpace")
-                    drawTextAt2(threeTwo, $"❎ No pads available", GameColors.fontMiddle);
+                    drawTextAt2(threeTwo, $"❎ {RES(this.deniedReason)}", GameColors.fontMiddle);
                 else if (this.deniedReason == "Offenses")
-                    drawTextAt2(threeTwo, $"🧻 Offenses", GameColors.fontMiddle);
+                    drawTextAt2(threeTwo, $"🧻 {RES(this.deniedReason)}", GameColors.fontMiddle);
                 else if (this.deniedReason == "ActiveFighter")
-                    drawTextAt2(threeTwo, $"🛩️ Fighter is active", GameColors.fontMiddle);
+                    drawTextAt2(threeTwo, $"🛩️ {RES(this.deniedReason)}", GameColors.fontMiddle);
                 else
-                    drawTextAt2(threeTwo, $"🚫 Unknown", GameColors.fontMiddle);
+                    drawTextAt2(threeTwo, $"🚫 {RES("Unknown")}", GameColors.fontMiddle);
                 newLine(+ten, true);
             }
 
@@ -1026,33 +1021,33 @@ namespace SrvSurvey
                 if (game.musicTrack == "DockingComputer")
                 {
                     drawTextAt2(eight, $"⛳", GameColors.LimeIsh, GameColors.fontBig);
-                    drawTextAt2(fiveTwo, $"► Auto dock in progress", GameColors.LimeIsh, GameColors.fontMiddle);
+                    drawTextAt2b(fiveTwo, $"► {RES("AutoDock1")}", GameColors.LimeIsh, GameColors.fontMiddle);
                     newLine();
-                    drawTextAt2(fiveTwo, $"► Settlement auto-identification supported", GameColors.LimeIsh, GameColors.fontMiddle);
+                    drawTextAt2b(fiveTwo, $"► {RES("AutoDock2")}", GameColors.LimeIsh, GameColors.fontMiddle);
                     newLine();
-                    drawTextAt2(fiveTwo, $"► Do not switch to external camera", GameColors.LimeIsh, GameColors.fontMiddleBold);
+                    drawTextAt2b(fiveTwo, $"► {RES("AutoDock3")}", GameColors.LimeIsh, GameColors.fontMiddleBold);
                 }
                 else
                 {
                     drawTextAt2(eight, $"✋", GameColors.fontBig);
 
                     // manual docking
-                    drawTextAt2(fiveTwo, $"► Manual docking in progress", GameColors.fontMiddle);
+                    drawTextAt2b(fiveTwo, $"► {RES("ManualDock1")}", GameColors.fontMiddle);
                     newLine();
-                    drawTextAt2(fiveTwo, $"⏳ Settlement identification will be delayed", GameColors.fontMiddle);
+                    drawTextAt2b(fiveTwo, $"⏳ {RES("ManualDock2")}", GameColors.fontMiddle);
                     newLine();
-                    drawTextAt2(fiveTwo, $"► Auto dock recommended", GameColors.fontMiddleBold);
+                    drawTextAt2b(fiveTwo, $"► {RES("ManualDock3")}", GameColors.fontMiddleBold);
                 }
             }
             else if (this.hasLanded && siteHeading == -1)
             {
                 if (game.status.Docked)
                 {
-                    drawTextAt2(eight, $"► Settlement will be identified after next action", GameColors.fontMiddle);
+                    drawTextAt2b(eight, $"► {RES("HelpShip1")}", GameColors.fontMiddle);
                     newLine(+six);
-                    drawTextAt2(eight, $"To manually identify:", GameColors.fontMiddleBold);
+                    drawTextAt2b(eight, $"{RES("HelpShip2")}:", GameColors.fontMiddleBold);
                     newLine(+six);
-                    drawTextAt2(eight, $"► Send '.settlement' when docked", GameColors.fontMiddle);
+                    drawTextAt2b(eight, $"► {RES("HelpShip3", ".settlement")}", GameColors.fontMiddle);
                 }
                 else if (game.vehicle == ActiveVehicle.Foot || game.vehicle == ActiveVehicle.SRV)
                 {
@@ -1060,19 +1055,19 @@ namespace SrvSurvey
                     {
                         // otherwise, show guidance to manually set it
                         //g.ResetTransform();
-                        drawTextAt2(eight, $"To manually identify:", GameColors.fontMiddleBold);
+                        drawTextAt2b(eight, RES("HelpFoot0"), GameColors.fontMiddleBold);
                         newLine(+six);
-                        drawTextAt2(eight, $"1. Walk to the center of any landing pad and crouch", GameColors.fontMiddle);
+                        drawTextAt2b(eight, RES("HelpFoot1"), GameColors.fontMiddle);
                         newLine();
-                        drawTextAt2(eight, $"2. Place your left foot over the the center grooves", GameColors.fontMiddle);
+                        drawTextAt2b(eight, RES("HelpFoot2"), GameColors.fontMiddle);
                         newLine();
-                        drawTextAt2(eight, $"3. Face with the chevrons ahead to your left", GameColors.fontMiddle);
+                        drawTextAt2b(eight, RES("HelpFoot3"), GameColors.fontMiddle);
                         newLine();
-                        drawTextAt2(eight, $"4. Aim at the end of the groove ahead of you", GameColors.fontMiddle);
+                        drawTextAt2b(eight, RES("HelpFoot4"), GameColors.fontMiddle);
                         newLine();
-                        drawTextAt2(eight, $"5. Send message '.settlement'", GameColors.fontMiddle);
+                        drawTextAt2b(eight, RES("HelpFoot5", ".settlement"), GameColors.fontMiddle);
                         newLine(+oneTwo);
-                        drawTextAt2(eight, $"❓ See the wiki for more info", GameColors.fontMiddle);
+                        drawTextAt2b(eight, RES("HelpFoot6"), GameColors.fontMiddle);
                     }
                 }
             }
@@ -1081,7 +1076,7 @@ namespace SrvSurvey
         private void drawApproachText(string prefix, string txt, Color? col = null)
         {
             drawTextAt2(eight, prefix, col, GameColors.fontMiddle);
-            drawTextAt2(threeTwo, txt, col, GameColors.fontMiddle);
+            drawTextAt2b(threeTwo, txt, col, GameColors.fontMiddle);
             newLine(+ten, true);
         }
     }

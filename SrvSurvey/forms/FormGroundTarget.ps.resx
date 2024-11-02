@@ -240,7 +240,7 @@
     <value>4</value>
   </data>
   <data name="btnBegin.Text">
-    <value>*&amp;SET TARGET→→→!</value>
+    <value>* &amp;SET TARGET →→→!</value>
     <comment>&amp;Set target</comment>
   </data>
   <data name="btnCancel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -268,7 +268,7 @@
     <value>5</value>
   </data>
   <data name="btnCancel.Text">
-    <value>*CANCEL→→→!</value>
+    <value>* CANCEL →→→!</value>
     <comment>Cancel</comment>
   </data>
   <data name="btnPaste.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -307,7 +307,7 @@
     <value>9</value>
   </data>
   <data name="btnPaste.Text">
-    <value>*PASTE→→→!</value>
+    <value>* PASTE →→→!</value>
     <comment>Paste</comment>
   </data>
   <data name="btnPaste.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
@@ -338,7 +338,7 @@
     <value>8</value>
   </data>
   <data name="btnTargetCurrent.Text">
-    <value>*&amp;TARGET CURRENT LOCATION→→→!</value>
+    <value>* &amp;TARGET CURRENT LOCATION →→→!</value>
     <comment>&amp;Target current location</comment>
   </data>
   <data name="button1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -366,7 +366,7 @@
     <value>3</value>
   </data>
   <data name="button1.Text">
-    <value>*&amp;CLEAR TARGET→→→!</value>
+    <value>* &amp;CLEAR TARGET →→→!</value>
     <comment>&amp;Clear target</comment>
   </data>
   <data name="flowLayoutPanel1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -406,7 +406,7 @@
     <value>7</value>
   </data>
   <data name="label2.Text">
-    <value>*LATITUTE:→→→!</value>
+    <value>* LATITUTE: →→→!</value>
     <comment>Latitute:</comment>
   </data>
   <data name="label3.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -428,7 +428,7 @@
     <value>1</value>
   </data>
   <data name="label3.Text">
-    <value>*LONGITUDE:→→→!</value>
+    <value>* LONGITUDE: →→→!</value>
     <comment>Longitude:</comment>
   </data>
   <data name="label6.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -447,9 +447,9 @@
     <value>6</value>
   </data>
   <data name="label6.Text">
-    <value>*GOT A TIP FROM A MYSTERIOUS STRANGER TO GO TO SOME LAT/LONG ON SOME PLANET OR MOON?
+    <value>* GOT A TIP FROM A MYSTERIOUS STRANGER TO GO TO SOME LAT/LONG ON SOME PLANET OR MOON?
 
-ENTER SOME LAT/LONG POSITION AND GUIDANCE WILL APPEAR WHEN YOU APPROACH.→→→!</value>
+ENTER SOME LAT/LONG POSITION AND GUIDANCE WILL APPEAR WHEN YOU APPROACH. →→→!</value>
     <comment>Got a tip from a mysterious stranger to go to some Lat/Long on some planet or moon?
 
 Enter some Lat/Long position and guidance will appear when you approach.</comment>
@@ -494,7 +494,7 @@ Enter some Lat/Long position and guidance will appear when you approach.</commen
     <value>CenterParent</value>
   </data>
   <data name="$this.Text">
-    <value>*SET LAT/LONG CO-ORDINATES→→→!</value>
+    <value>* SET LAT/LONG CO-ORDINATES →→→!</value>
     <comment>Set lat/long co-ordinates</comment>
   </data>
   <data name="txtLat.Location" type="System.Drawing.Point, System.Drawing">
@@ -510,7 +510,7 @@ Enter some Lat/Long position and guidance will appear when you approach.</commen
     <value>0</value>
   </data>
   <data name="txtLat.Text">
-    <value>*+12.34→→→!</value>
+    <value>* +12.34 →→→!</value>
     <comment>+12.34</comment>
   </data>
   <data name="txtLong.Location" type="System.Drawing.Point, System.Drawing">
@@ -526,7 +526,7 @@ Enter some Lat/Long position and guidance will appear when you approach.</commen
     <value>2</value>
   </data>
   <data name="txtLong.Text">
-    <value>*-10.0→→→!</value>
+    <value>* -10.0 →→→!</value>
     <comment>-10.0</comment>
   </data>
 </root>
