@@ -77,6 +77,7 @@ namespace SrvSurvey
         {
             textChord.Text = null;
             btnAccept.Enabled = true;
+            btnAccept.PerformClick();
         }
 
         private void textChord_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)

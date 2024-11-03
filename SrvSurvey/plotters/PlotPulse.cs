@@ -1,4 +1,5 @@
-﻿using SrvSurvey.game;
+﻿using SrvSurvey.forms;
+using SrvSurvey.game;
 using System.Diagnostics;
 using System.Drawing.Drawing2D;
 
@@ -118,6 +119,9 @@ namespace SrvSurvey
             g.FillRectangle(GameColors.brushGameOrange,
                 10, 27 - count,
                 10, count);
+
+            if (FormAdjustOverlay.targetName == this.Name)
+                PlotBase.ifAdjustmentTarget(g, this);
         }
     }
 }

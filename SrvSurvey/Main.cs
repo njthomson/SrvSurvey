@@ -1686,11 +1686,6 @@ namespace SrvSurvey
                 FormShowCodex.show(entryId);
         }
 
-        private void btnCodexBingo_Click(object sender, EventArgs e)
-        {
-            FormCodexBingo.show();
-        }
-
         private readonly string[] comboDevItems = new[]
         {
             "...",
@@ -1743,6 +1738,11 @@ namespace SrvSurvey
                     comboDev.Enabled = true;
                 });
             });
+        }
+
+        private void btnCodexBingo_Click(object sender, EventArgs e)
+        {
+            FormCodexBingo.show();
         }
     }
 }

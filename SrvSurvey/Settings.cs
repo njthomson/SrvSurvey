@@ -138,6 +138,8 @@ namespace SrvSurvey
         public Rectangle formShowCodex;
         public Rectangle formCodexBingo;
 
+        public Dictionary<string, Rectangle> formLocations = new Dictionary<string, Rectangle>();
+
         // FormRuins settings
         public bool mapShowNotes = true;
         public bool mapShowLegend = true;

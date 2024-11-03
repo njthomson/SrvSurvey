@@ -211,6 +211,7 @@ namespace SrvSurvey
             linkAboutOne = new LinkLabel();
             colorDialog = new ColorDialog();
             colorTheme = new ColorDialog();
+            btnAdjustOverlays = new FlatButton();
             panel1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numOpacity).BeginInit();
@@ -317,6 +318,7 @@ namespace SrvSurvey
             // tabPage1
             // 
             tabPage1.BorderStyle = BorderStyle.Fixed3D;
+            tabPage1.Controls.Add(btnAdjustOverlays);
             tabPage1.Controls.Add(label27);
             tabPage1.Controls.Add(comboLang);
             tabPage1.Controls.Add(numOpacity);
@@ -485,7 +487,7 @@ namespace SrvSurvey
             // 
             btnPostProcess.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnPostProcess.FlatStyle = FlatStyle.System;
-            btnPostProcess.Location = new Point(478, 381);
+            btnPostProcess.Location = new Point(478, 412);
             btnPostProcess.Name = "btnPostProcess";
             btnPostProcess.Size = new Size(163, 29);
             btnPostProcess.TabIndex = 31;
@@ -544,7 +546,7 @@ namespace SrvSurvey
             btnResetOverlays.Name = "btnResetOverlays";
             btnResetOverlays.Size = new Size(199, 32);
             btnResetOverlays.TabIndex = 30;
-            btnResetOverlays.Text = "Reset custom overlay positions";
+            btnResetOverlays.Text = "Reset all custom overlay positions";
             btnResetOverlays.UseVisualStyleBackColor = true;
             btnResetOverlays.Click += btnResetOverlays_Click;
             // 
@@ -2626,6 +2628,18 @@ namespace SrvSurvey
             // 
             colorDialog.Color = Color.Yellow;
             // 
+            // btnAdjustOverlays
+            // 
+            btnAdjustOverlays.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnAdjustOverlays.FlatStyle = FlatStyle.System;
+            btnAdjustOverlays.Location = new Point(440, 329);
+            btnAdjustOverlays.Name = "btnAdjustOverlays";
+            btnAdjustOverlays.Size = new Size(201, 32);
+            btnAdjustOverlays.TabIndex = 34;
+            btnAdjustOverlays.Text = "Adjust active overlay positions";
+            btnAdjustOverlays.UseVisualStyleBackColor = true;
+            btnAdjustOverlays.Click += btnAdjustOverlays_Click;
+            // 
             // FormSettings
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -2891,5 +2905,6 @@ namespace SrvSurvey
         private ColumnHeader colKeys;
         private ColumnHeader colDesc;
         private Label label28;
+        private FlatButton btnAdjustOverlays;
     }
 }

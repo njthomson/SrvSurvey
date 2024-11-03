@@ -249,7 +249,17 @@ namespace SrvSurvey
         /// </summary>
         public static T? getPlotter<T>() where T : Form
         {
-            return activePlotters.ContainsKey(typeof(T).Name) ? activePlotters[typeof(T).Name] as T : null;
+            return activePlotters.GetValueOrDefault(typeof(T).Name) as T;
+        }
+
+        public static Form? getPlotter(string name)
+        {
+            return activePlotters.GetValueOrDefault(name) as Form;
+        }
+
+        public static string[] getAllPlotterNames()
+        {
+            return activePlotters.Keys.ToArray();
         }
 
         public static void closeAllPlotters(bool exceptPlotPulse = false, bool exceptJumpInfo = false)
@@ -266,6 +276,11 @@ namespace SrvSurvey
             // we want to reset this plotter, so create it again
             if (exceptPlotPulse && !Game.settings.hideJournalWriteTimer)
                 Program.showPlotter<PlotPulse>();
+        }
+
+        public static void repositionPlotters()
+        {
+            repositionPlotters(Elite.getWindowRect());
         }
 
         public static void repositionPlotters(Rectangle rect)

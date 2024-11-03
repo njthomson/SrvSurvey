@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using SrvSurvey.canonn;
+using SrvSurvey.forms;
 using SrvSurvey.game;
 using SrvSurvey.Properties;
 using SrvSurvey.units;
@@ -7,6 +8,7 @@ using System.Diagnostics;
 using System.Drawing.Drawing2D;
 using System.Reflection;
 using System.Resources;
+using System.Text;
 
 namespace SrvSurvey
 {
@@ -422,10 +424,25 @@ namespace SrvSurvey
                         });
                     }
                 }
+
+                if (FormAdjustOverlay.targetName == this.Name)
+                    ifAdjustmentTarget(g, this);
             }
             catch (Exception ex)
             {
                 Game.log($"{this.GetType().Name}.OnPaintBackground error: {ex}");
+            }
+        }
+
+        /// <summary> Show an obvious border if this plotter is getting adjusted </summary>
+        public static void ifAdjustmentTarget(Graphics g, Form f)
+        {
+            if (FormAdjustOverlay.targetName == f.Name)
+            {
+                g.SmoothingMode = SmoothingMode.None;
+
+                var p = GameColors.penYellow4;
+                g.DrawRectangle(p, p.Width / 2, p.Width / 2, f.Width - p.Width, f.Height - p.Width);
             }
         }
 
@@ -725,7 +742,7 @@ namespace SrvSurvey
             return this.lastTextSize;
         }
 
-        protected SizeF drawTextAt2b(float tx,string? txt, Font? font = null, bool rightAlign = false)
+        protected SizeF drawTextAt2b(float tx, string? txt, Font? font = null, bool rightAlign = false)
         {
             return drawTextAt2b(tx, this.Width, txt, null, font, rightAlign);
         }
@@ -1344,13 +1361,14 @@ namespace SrvSurvey
         private static string defaultPlotterPositionPath = Path.Combine(Application.StartupPath, "plotters.json");
 
         private static Dictionary<string, PlotPos> plotterPositions = new Dictionary<string, PlotPos>();
+        private static Dictionary<string, PlotPos>? backupPositions;
 
         private static FileSystemWatcher watcher;
 
         public static void prepPlotterPositions()
         {
             if (!File.Exists(customPlotterPositionPath))
-                PlotPos.reset();
+                PlotPos.resetAll();
 
             // start watching the custom file
             watcher = new FileSystemWatcher(Program.dataFolder, "plotters.json");
@@ -1376,29 +1394,98 @@ namespace SrvSurvey
                 .Where(_ => typeof(PlotBase).IsAssignableFrom(_) && !_.IsAbstract)
                 .Select(_ => _.Name)
                 .ToList();
+
             // include plotters not yet derived from the base class
-            allPlotters.AddRange("PlotBioStatus,PlotGrounded,PlotPulse".Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries));
+            allPlotters.Add("PlotPulse");
 
             // These plotters are not movable and are intentionally missing from plotters.json
-            // PlotGalMap, PlotGuardianBeaconStatus, PlotTrackers
+            // PlotTrackers
 
+            var dirty = false;
             Dictionary<string, PlotPos>? defaultPositions = null;
             foreach (var name in allPlotters)
             {
                 if (!plotterPositions.ContainsKey(name))
                 {
                     if (defaultPositions == null) defaultPositions = readPlotterPositions(defaultPlotterPositionPath);
-                    if (defaultPositions.ContainsKey(name))
-                        plotterPositions[name] = defaultPositions[name];
                     // ignore plotters not present in the master file
+                    if (defaultPositions.ContainsKey(name))
+                    {
+                        plotterPositions[name] = defaultPositions[name];
+                        dirty = true;
+                    }
                 }
             }
+
+            if (dirty)
+                saveCustomPositions();
         }
 
-        public static void reset()
+        public static void resetToDefault(string name)
+        {
+            if (string.IsNullOrEmpty(name) || !plotterPositions.ContainsKey(name)) return;
+
+            var defaults = readPlotterPositions(defaultPlotterPositionPath);
+            var original = defaults.GetValueOrDefault(name);
+            if (original == null) return;
+
+            plotterPositions[name] = original;
+        }
+
+        public static void resetAll()
         {
             Game.log($"Resetting custom overlay positions");
             File.Copy(defaultPlotterPositionPath, customPlotterPositionPath, true);
+        }
+
+        public static void backup()
+        {
+            if (backupPositions == null)
+            {
+                backupPositions = new();
+                foreach (var key in plotterPositions.Keys)
+                    backupPositions[key] = new PlotPos(plotterPositions[key].ToString());
+            }
+        }
+
+        public static void restore()
+        {
+            if (backupPositions != null)
+            {
+                plotterPositions = new(backupPositions);
+                backupPositions = null;
+            }
+        }
+
+        public static void saveCustomPositions()
+        {
+            var json = new StringBuilder();
+
+            json.AppendLine("{");
+            json.Append(@"  /*
+   * Overlays can be repositioned relative to the edge of the game window: ""<horizontal> , <vertical> , <opacity>""
+   *  Horizontal: [ left | center | right | screen ] : < +/- pixels >
+   *    Vertical: [ top | middle | bottom | screen ] : < +/- pixels >
+   *
+   *  Using 'screen' means relative to the top / left corner of your primary monitor.
+   *
+   * Opacity (optional): < decimal number between 0 and 1 >
+   * (when not specified, standard opacity will be used)
+   *
+   * Edits to this file will take immediate effect.
+   */
+");
+
+            var lines = plotterPositions.Keys
+                .Order()
+                .Select(key => $"  \"{key}\": \"{plotterPositions[key]}\"");
+
+            json.Append(string.Join(",\r\n", lines));
+            json.AppendLine("\r\n}");
+
+            File.WriteAllText(customPlotterPositionPath, json.ToString());
+
+            backupPositions = null;
         }
 
         /// <summary>
@@ -1426,8 +1513,7 @@ namespace SrvSurvey
         {
             plotterPositions = readPlotterPositions(filepath);
 
-            var rect = Elite.getWindowRect();
-            Program.control.Invoke(() => Program.repositionPlotters(rect));
+            Program.defer(() => Program.repositionPlotters());
         }
 
         private static void Watcher_Changed(object sender, FileSystemEventArgs e)
@@ -1472,6 +1558,14 @@ namespace SrvSurvey
                 form.Location = pt;
         }
 
+        public static PlotPos? get(string? name)
+        {
+            if (string.IsNullOrEmpty(name))
+                return null;
+            else
+                return plotterPositions.GetValueOrDefault(name);
+        }
+
         public static Point getPlotterLocation(string formName, Size sz, Rectangle rect)
         {
             // skip plotters that are fixed
@@ -1508,10 +1602,10 @@ namespace SrvSurvey
 
         #endregion
 
-        private Horiz h;
-        private Vert v;
-        private int x;
-        private int y;
+        public Horiz h;
+        public Vert v;
+        public int x;
+        public int y;
         private float? opacity;
 
         public PlotPos(string txt)
@@ -1530,6 +1624,11 @@ namespace SrvSurvey
                 if (this.opacity < 0 || this.opacity > 1)
                     throw new ArgumentException("Opacity must be a decimal number between 0 and 1");
             }
+        }
+
+        public override string ToString()
+        {
+            return $"{h}:{x}, {v}:{y}".ToLowerInvariant() + (opacity > 0 ? $", {opacity}" : "");
         }
 
         public enum Horiz

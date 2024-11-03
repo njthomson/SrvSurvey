@@ -1,4 +1,5 @@
-﻿using SrvSurvey.game;
+﻿using SrvSurvey.forms;
+using SrvSurvey.game;
 using System.Diagnostics;
 using System.Reflection;
 
@@ -495,7 +496,31 @@ namespace SrvSurvey
                 MessageBoxIcon.Question);
 
             if (rslt == DialogResult.Yes)
-                PlotPos.reset();
+                PlotPos.resetAll();
+        }
+
+        private void btnAdjustOverlays_Click(object sender, EventArgs e)
+        {
+            var form = new FormAdjustOverlay();
+
+            Elite.setFocusED();
+
+            Program.defer(() =>
+            {
+                var er = Elite.getWindowRect();
+                if (er != Rectangle.Empty)
+                {
+                    form.StartPosition = FormStartPosition.Manual;
+
+                    form.Left = er.Left + (er.Width / 2) - (form.Width / 2);
+                    form.Top = er.Top + (er.Height / 2) - (form.Height / 2);
+                }
+                else
+                {
+                    form.StartPosition = FormStartPosition.CenterScreen;
+                }
+                form.ShowDialog();
+            });
         }
 
         private void button2_Click(object sender, EventArgs e)
