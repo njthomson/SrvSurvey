@@ -519,7 +519,7 @@ namespace SrvSurvey
                 {
                     form.StartPosition = FormStartPosition.CenterScreen;
                 }
-                form.ShowDialog();
+                form.Show();
             });
         }
 

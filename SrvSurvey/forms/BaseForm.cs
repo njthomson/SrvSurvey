@@ -9,7 +9,6 @@ namespace SrvSurvey.forms
         public BaseForm()
         {
             this.Icon = DraggableForm.logo2;
-
         }
 
         #region sizing and locations

@@ -25,6 +25,7 @@ namespace SrvSurvey.forms
             PlotPos.backup();
 
             InitializeComponent();
+            this.Icon = DraggableForm.logo2;
 
             this.enablementControls = new Control[] {
                 btnReset,
