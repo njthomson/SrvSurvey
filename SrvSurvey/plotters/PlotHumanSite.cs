@@ -106,6 +106,11 @@ namespace SrvSurvey
             }
             base.OnLoad(e);
 
+            // close these, if they happen to be open
+            Program.closePlotter<PlotBioStatus>();
+            Program.closePlotter<PlotGrounded>();
+            Program.closePlotter<PlotPriorScans>();
+
             this.initializeOnLoad();
             this.reposition(Elite.getWindowRect(true));
 
@@ -499,7 +504,7 @@ namespace SrvSurvey
 
         private string? getLocalizedEconomy()
         {
-            switch(station.economy)
+            switch (station.economy)
             {
                 case Economy.Agriculture:
                     return Properties.Economies.ResourceManager.GetString("Agri");

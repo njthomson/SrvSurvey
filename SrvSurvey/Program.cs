@@ -259,7 +259,7 @@ namespace SrvSurvey
 
         public static string[] getAllPlotterNames()
         {
-            return activePlotters.Keys.ToArray();
+            return activePlotters.Keys.Order().ToArray();
         }
 
         public static void closeAllPlotters(bool exceptPlotPulse = false, bool exceptJumpInfo = false)

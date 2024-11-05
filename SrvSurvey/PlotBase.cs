@@ -1606,7 +1606,7 @@ namespace SrvSurvey
         public Vert v;
         public int x;
         public int y;
-        private float? opacity;
+        public float? opacity;
 
         public PlotPos(string txt)
         {

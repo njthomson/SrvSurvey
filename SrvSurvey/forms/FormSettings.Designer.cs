@@ -35,6 +35,7 @@ namespace SrvSurvey
             btnSave = new FlatButton();
             btnCancel = new FlatButton();
             tabPage1 = new TabPage();
+            btnAdjustOverlays = new FlatButton();
             label27 = new Label();
             comboLang = new ComboBox();
             numOpacity = new NumericUpDown();
@@ -211,7 +212,6 @@ namespace SrvSurvey
             linkAboutOne = new LinkLabel();
             colorDialog = new ColorDialog();
             colorTheme = new ColorDialog();
-            btnAdjustOverlays = new FlatButton();
             panel1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numOpacity).BeginInit();
@@ -362,6 +362,18 @@ namespace SrvSurvey
             tabPage1.TabIndex = 0;
             tabPage1.Text = "General";
             // 
+            // btnAdjustOverlays
+            // 
+            btnAdjustOverlays.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnAdjustOverlays.FlatStyle = FlatStyle.System;
+            btnAdjustOverlays.Location = new Point(440, 329);
+            btnAdjustOverlays.Name = "btnAdjustOverlays";
+            btnAdjustOverlays.Size = new Size(201, 32);
+            btnAdjustOverlays.TabIndex = 34;
+            btnAdjustOverlays.Text = "Adjust active overlay positions";
+            btnAdjustOverlays.UseVisualStyleBackColor = true;
+            btnAdjustOverlays.Click += btnAdjustOverlays_Click;
+            // 
             // label27
             // 
             label27.AutoSize = true;
@@ -462,7 +474,7 @@ namespace SrvSurvey
             // 
             btnTheme2.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnTheme2.FlatStyle = FlatStyle.System;
-            btnTheme2.Location = new Point(478, 182);
+            btnTheme2.Location = new Point(478, 181);
             btnTheme2.Name = "btnTheme2";
             btnTheme2.Size = new Size(119, 45);
             btnTheme2.TabIndex = 27;
@@ -509,7 +521,7 @@ namespace SrvSurvey
             // 
             btnTheme.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnTheme.FlatStyle = FlatStyle.System;
-            btnTheme.Location = new Point(478, 124);
+            btnTheme.Location = new Point(478, 123);
             btnTheme.Name = "btnTheme";
             btnTheme.Size = new Size(118, 45);
             btnTheme.TabIndex = 24;
@@ -2627,18 +2639,6 @@ namespace SrvSurvey
             // colorDialog
             // 
             colorDialog.Color = Color.Yellow;
-            // 
-            // btnAdjustOverlays
-            // 
-            btnAdjustOverlays.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnAdjustOverlays.FlatStyle = FlatStyle.System;
-            btnAdjustOverlays.Location = new Point(440, 329);
-            btnAdjustOverlays.Name = "btnAdjustOverlays";
-            btnAdjustOverlays.Size = new Size(201, 32);
-            btnAdjustOverlays.TabIndex = 34;
-            btnAdjustOverlays.Text = "Adjust active overlay positions";
-            btnAdjustOverlays.UseVisualStyleBackColor = true;
-            btnAdjustOverlays.Click += btnAdjustOverlays_Click;
             // 
             // FormSettings
             // 

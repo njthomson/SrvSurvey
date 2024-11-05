@@ -42,6 +42,9 @@
             numY = new NumericUpDown();
             numX = new NumericUpDown();
             groupBox1 = new GroupBox();
+            flowLayoutPanel5 = new FlowLayoutPanel();
+            checkOpacity = new CheckBox();
+            numOpacity = new NumericUpDown();
             btnReset = new Button();
             flowLayoutPanel4 = new FlowLayoutPanel();
             flowLayoutPanel1 = new FlowLayoutPanel();
@@ -53,6 +56,8 @@
             ((System.ComponentModel.ISupportInitialize)numY).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numX).BeginInit();
             groupBox1.SuspendLayout();
+            flowLayoutPanel5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numOpacity).BeginInit();
             flowLayoutPanel4.SuspendLayout();
             flowLayoutPanel1.SuspendLayout();
             flowLayoutPanel2.SuspendLayout();
@@ -223,6 +228,7 @@
             // groupBox1
             // 
             groupBox1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            groupBox1.Controls.Add(flowLayoutPanel5);
             groupBox1.Controls.Add(btnReset);
             groupBox1.Controls.Add(flowLayoutPanel4);
             groupBox1.Controls.Add(flowLayoutPanel1);
@@ -232,6 +238,45 @@
             groupBox1.Size = new Size(400, 163);
             groupBox1.TabIndex = 2;
             groupBox1.TabStop = false;
+            // 
+            // flowLayoutPanel5
+            // 
+            flowLayoutPanel5.AutoSize = true;
+            flowLayoutPanel5.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            flowLayoutPanel5.Controls.Add(checkOpacity);
+            flowLayoutPanel5.Controls.Add(numOpacity);
+            flowLayoutPanel5.Location = new Point(130, 94);
+            flowLayoutPanel5.Name = "flowLayoutPanel5";
+            flowLayoutPanel5.Size = new Size(182, 23);
+            flowLayoutPanel5.TabIndex = 5;
+            // 
+            // checkOpacity
+            // 
+            checkOpacity.Anchor = AnchorStyles.Right;
+            checkOpacity.AutoSize = true;
+            checkOpacity.FlatStyle = FlatStyle.System;
+            checkOpacity.Location = new Point(0, 1);
+            checkOpacity.Margin = new Padding(0);
+            checkOpacity.Name = "checkOpacity";
+            checkOpacity.Size = new Size(132, 20);
+            checkOpacity.TabIndex = 4;
+            checkOpacity.Tag = "Top";
+            checkOpacity.Text = "Override opacity %";
+            checkOpacity.UseVisualStyleBackColor = true;
+            checkOpacity.CheckedChanged += checkOpacity_CheckedChanged;
+            // 
+            // numOpacity
+            // 
+            numOpacity.Enabled = false;
+            numOpacity.Increment = new decimal(new int[] { 5, 0, 0, 0 });
+            numOpacity.Location = new Point(132, 0);
+            numOpacity.Margin = new Padding(0);
+            numOpacity.Name = "numOpacity";
+            numOpacity.Size = new Size(50, 23);
+            numOpacity.TabIndex = 1;
+            numOpacity.TextAlign = HorizontalAlignment.Right;
+            numOpacity.Value = new decimal(new int[] { 100, 0, 0, 0 });
+            numOpacity.ValueChanged += numOpacity_ValueChanged;
             // 
             // btnReset
             // 
@@ -253,7 +298,7 @@
             flowLayoutPanel4.Controls.Add(labelOffset);
             flowLayoutPanel4.Controls.Add(numX);
             flowLayoutPanel4.Controls.Add(numY);
-            flowLayoutPanel4.Location = new Point(136, 77);
+            flowLayoutPanel4.Location = new Point(131, 59);
             flowLayoutPanel4.Name = "flowLayoutPanel4";
             flowLayoutPanel4.Size = new Size(183, 29);
             flowLayoutPanel4.TabIndex = 2;
@@ -354,6 +399,9 @@
             ((System.ComponentModel.ISupportInitialize)numX).EndInit();
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
+            flowLayoutPanel5.ResumeLayout(false);
+            flowLayoutPanel5.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numOpacity).EndInit();
             flowLayoutPanel4.ResumeLayout(false);
             flowLayoutPanel4.PerformLayout();
             flowLayoutPanel1.ResumeLayout(false);
@@ -389,5 +437,8 @@
         private CheckBox checkVScreen;
         private Button btnReset;
         private Label lblAdvise;
+        private CheckBox checkOpacity;
+        private FlowLayoutPanel flowLayoutPanel5;
+        private NumericUpDown numOpacity;
     }
 }

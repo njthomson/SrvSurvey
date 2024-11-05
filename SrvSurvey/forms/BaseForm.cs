@@ -61,6 +61,10 @@ namespace SrvSurvey.forms
 
         #endregion
 
+        protected int scaleBy(int n)
+        {
+            return (int)(this.DeviceDpi / 96f * n);
+        }
     }
 
     [System.ComponentModel.DesignerCategory("Form")]

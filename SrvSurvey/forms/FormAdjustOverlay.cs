@@ -39,7 +39,9 @@ namespace SrvSurvey.forms
                 checkVScreen,
                 labelOffset,
                 numX,
-                numY
+                numY,
+                checkOpacity,
+                numOpacity,
             };
 
             this.prepPlotters();
@@ -124,8 +126,13 @@ namespace SrvSurvey.forms
             numX.Value = pp.x;
             numY.Value = pp.y;
 
+            checkOpacity.Checked = pp.opacity.HasValue;
+            numOpacity.Enabled = checkOpacity.Checked;
+            numOpacity.Value = (decimal)(pp.opacity.HasValue ? pp.opacity.Value : Game.settings.Opacity) * 100;
+
             // populate controls...
             foreach (var ctrl in enablementControls) ctrl.Enabled = true;
+            numOpacity.Enabled = checkOpacity.Checked;
 
             Program.invalidateActivePlotters();
         }
@@ -247,6 +254,37 @@ namespace SrvSurvey.forms
             Program.invalidateActivePlotters();
 
             this.Close();
+        }
+
+        private void checkOpacity_CheckedChanged(object sender, EventArgs e)
+        {
+            if (changing || disabled(sender)) return;
+            var pp = PlotPos.get(targetName);
+            if (pp == null) return;
+
+            if (checkOpacity.Checked)
+            {
+                numOpacity.Enabled = true;
+                numOpacity.Value = (decimal)(pp.opacity.HasValue ? pp.opacity.Value : Game.settings.Opacity) * 100;
+            }
+            else
+            {
+                numOpacity.Enabled = false;
+                numOpacity.Value = (decimal)Game.settings.Opacity * 100;
+                pp.opacity = null;
+            }
+        }
+
+        private void numOpacity_ValueChanged(object sender, EventArgs e)
+        {
+            if (changing || disabled(sender)) return;
+
+            var pp = PlotPos.get(targetName);
+            if (targetName == null || pp == null) return;
+
+            pp.opacity = (float)numOpacity.Value / 100f;
+
+            Program.repositionPlotters();
         }
     }
 }
