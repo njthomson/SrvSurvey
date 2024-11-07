@@ -973,6 +973,7 @@ namespace SrvSurvey
     class MissionAccepted : JournalEntry
     {
         // { "timestamp":"2024-01-04T04:30:06Z", "event":"MissionAccepted", "Faction":"Meene General Industries", "Name":"Mission_TheDead", "LocalisedName":"Decoding the Ancient Ruins", "Wing":false, "Influence":"None", "Reputation":"None", "MissionID":949931893 }
+        // { "timestamp":"2022-07-23T03:46:26Z", "event":"MissionAccepted", "Faction":"Raven Colonial Corporation", "Name":"Mission_Massacre", "LocalisedName":"Kill Grabru Crimson Family faction Pirates", "TargetType":"$MissionUtil_FactionTag_Pirate;", "TargetType_Localised":"Pirates", "TargetFaction":"Grabru Crimson Family", "KillCount":7, "DestinationSystem":"Grabru", "DestinationStation":"Henize Platform", "Expiry":"2022-07-24T08:06:52Z", "Wing":false, "Influence":"++", "Reputation":"++", "Reward":5401452, "MissionID":879230525 }
 
         public string Faction;
         public string Name;
@@ -983,7 +984,14 @@ namespace SrvSurvey
         public string Reputation;
         public long Reward;
 
-        // TODO: the rest...
+        public string? DestinationSystem;
+        public string? DestinationStation;
+        public DateTimeOffset? Expiry;
+
+        public string? TargetType;
+        public string? TargetType_Localised;
+        public string? TargetFaction;
+        public int KillCount;
     }
 
     class MissionCompleted : JournalEntry
@@ -1012,9 +1020,29 @@ namespace SrvSurvey
     class MissionAbandoned : JournalEntry
     {
         // { "timestamp":"2024-01-04T04:55:12Z", "event":"MissionAbandoned", "Name":"Mission_TheDead_name", "LocalisedName":"Decoding the Ancient Ruins", "MissionID":949931893 }
-        public string Name;
         public long MissionID;
+        public string Name;
         public string LocalisedName;
+    }
+
+    class Bounty : JournalEntry
+    {
+        // { "timestamp":"2022-07-23T04:43:32Z", "event":"Bounty", "Rewards":[ { "Faction":"Grabru Blue Power Partners", "Reward":145590 } ], "Target":"viper", "Target_Localised":"Viper Mk III", "TotalReward":145590, "VictimFaction":"Grabru Crimson Family" }
+        // { "timestamp":"2024-11-07T04:59:06Z", "event":"Bounty", "Rewards":[ { "Faction":"Marauders Shadowcouncil", "Reward":170158 } ], "PilotName":"$npc_name_decorate:#name=William Kershaw;", "PilotName_Localised":"William Kershaw", "Target":"cobramkiii", "Target_Localised":"Cobra Mk III", "TotalReward":170158, "VictimFaction":"Posse of HIP 97337" }
+
+        public List<RewardEntry> Rewards;
+        public string PilotName;
+        public string PilotName_Localised;
+        public string Target;
+        public string Target_Localised;
+        public long TotalReward;
+        public string VictimFaction;
+
+        public class RewardEntry
+        {
+            public string Faction;
+            public long Reward;
+        }
     }
 
     class Cargo : JournalEntry

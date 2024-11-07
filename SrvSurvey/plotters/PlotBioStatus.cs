@@ -6,23 +6,6 @@ namespace SrvSurvey
 {
     internal partial class PlotBioStatus : PlotBase, PlotterForm
     {
-        private string? lastCodexScan;
-        public static string? lastEntryId;
-        private bool hasImage;
-
-        private PlotBioStatus() : base()
-        {
-            if (game.cmdr.scanOne?.entryId > 0)
-            {
-                lastEntryId = game.cmdr.scanOne.entryId.ToString();
-
-                var match = Game.codexRef.matchFromEntryId(lastEntryId);
-                this.hasImage = match.variant.imageUrl != null;
-            }
-        }
-
-        public override bool allow { get => PlotBioStatus.allowPlotter; }
-
         public static bool allowPlotter
         {
             get => SystemData.isWithinLastDssDuration()
@@ -40,6 +23,23 @@ namespace SrvSurvey
                 && !PlotHumanSite.allowPlotter && !Program.isPlotter<PlotHumanSite>()
                 && Game.activeGame.isMode(GameMode.SuperCruising, GameMode.Flying, GameMode.Landed, GameMode.InSrv, GameMode.OnFoot, GameMode.GlideMode, GameMode.CommsPanel, GameMode.SAA, GameMode.Codex);
         }
+
+        private string? lastCodexScan;
+        public static string? lastEntryId;
+        private bool hasImage;
+
+        private PlotBioStatus() : base()
+        {
+            if (game.cmdr.scanOne?.entryId > 0)
+            {
+                lastEntryId = game.cmdr.scanOne.entryId.ToString();
+
+                var match = Game.codexRef.matchFromEntryId(lastEntryId);
+                this.hasImage = match.variant.imageUrl != null;
+            }
+        }
+
+        public override bool allow { get => PlotBioStatus.allowPlotter; }
 
         protected override void OnLoad(EventArgs e)
         {

@@ -4,6 +4,24 @@ namespace SrvSurvey
 {
     internal class PlotBodyInfo : PlotBase, PlotterForm
     {
+        public static bool allowPlotter
+        {
+            get => Game.activeGame?.targetBody != null
+                && Game.activeGame.systemData != null
+                && Game.settings.autoShowPlotBodyInfo
+                && !PlotGuardianSystem.allowPlotter // hide if Guardian plotter is open
+                && (!Game.settings.autoHidePlotBodyInfoInBubble || Util.getSystemDistance(Game.activeGame.systemData.starPos, Util.sol) > Game.settings.bodyInfoBubbleSize)
+                && (
+                    // any time during DSS or ... 
+                    (Game.activeGame.mode == GameMode.SAA && Game.activeGame.systemBody != null)
+                    // ... or in the SystemMap and sub-setting allows
+                    || (Game.activeGame.isMode(GameMode.SystemMap, GameMode.Orrery) && Game.settings.autoShowPlotBodyInfoInMap && !Game.settings.autoShowPlotFSSInfoInSystemMap)
+                    // ... or when super cruising/gliding close to a body and sub-setting allows
+                    || (Game.activeGame.isMode(GameMode.SuperCruising, GameMode.GlideMode) && Game.activeGame.status.hasLatLong && Game.settings.autoShowPlotBodyInfoInOrbit)
+                    || (Game.activeGame.isMode(GameMode.Flying, GameMode.Landed, GameMode.InSrv) && Game.activeGame.status.hasLatLong && Game.settings.autoShowPlotBodyInfoAtSurface && Game.activeGame.status.hudInAnalysisMode)
+                );
+        }
+
         private string lastDestination;
         private bool withinHumanBubble;
 
@@ -25,24 +43,6 @@ namespace SrvSurvey
 
             this.initializeOnLoad();
             this.reposition(Elite.getWindowRect(true));
-        }
-
-        public static bool allowPlotter
-        {
-            get => Game.activeGame?.targetBody != null
-                && Game.activeGame.systemData != null
-                && Game.settings.autoShowPlotBodyInfo
-                && !PlotGuardianSystem.allowPlotter // hide if Guardian plotter is open
-                && (!Game.settings.autoHidePlotBodyInfoInBubble || Util.getSystemDistance(Game.activeGame.systemData.starPos, Util.sol) > Game.settings.bodyInfoBubbleSize)
-                && (
-                    // any time during DSS or ... 
-                    (Game.activeGame.mode == GameMode.SAA && Game.activeGame.systemBody != null)
-                    // ... or in the SystemMap and sub-setting allows
-                    || (Game.activeGame.isMode(GameMode.SystemMap, GameMode.Orrery) && Game.settings.autoShowPlotBodyInfoInMap && !Game.settings.autoShowPlotFSSInfoInSystemMap)
-                    // ... or when super cruising/gliding close to a body and sub-setting allows
-                    || (Game.activeGame.isMode(GameMode.SuperCruising, GameMode.GlideMode) && Game.activeGame.status.hasLatLong && Game.settings.autoShowPlotBodyInfoInOrbit)
-                    || (Game.activeGame.isMode(GameMode.Flying, GameMode.Landed, GameMode.InSrv) && Game.activeGame.status.hasLatLong && Game.settings.autoShowPlotBodyInfoAtSurface && Game.activeGame.status.hudInAnalysisMode)
-                );
         }
 
         protected override void Status_StatusChanged(bool blink)

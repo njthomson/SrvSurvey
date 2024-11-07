@@ -8,6 +8,20 @@ namespace SrvSurvey
 {
     internal class PlotPriorScans : PlotBase, PlotterForm
     {
+        public static bool allowPlotter
+        {
+            get => Game.settings.useExternalData
+                && Game.settings.autoLoadPriorScans
+                && Game.activeGame?.systemBody != null
+                && !Game.activeGame.hidePlottersFromCombatSuits
+                && !Game.activeGame.status.Docked
+                && !PlotGuardians.allowPlotter && !Program.isPlotter<PlotGuardians>()
+                && !PlotHumanSite.allowPlotter && !Program.isPlotter<PlotHumanSite>()
+                && Game.activeGame.canonnPoiHasLocalBioSignals()
+                && Game.activeGame.isMode(GameMode.SuperCruising, GameMode.Flying, GameMode.Landed, GameMode.InSrv, GameMode.OnFoot, GameMode.GlideMode, GameMode.InFighter, GameMode.CommsPanel, GameMode.SAA, GameMode.Codex)
+                ;
+        }
+
         int rowHeight = scaled(20);
         public const int highlightDistance = 150;
 
@@ -59,20 +73,6 @@ namespace SrvSurvey
             this.reposition(Elite.getWindowRect(true));
 
             this.setPriorScans();
-        }
-
-        public static bool allowPlotter
-        {
-            get => Game.settings.useExternalData
-                && Game.settings.autoLoadPriorScans
-                && Game.activeGame?.systemBody != null
-                && !Game.activeGame.hidePlottersFromCombatSuits
-                && !Game.activeGame.status.Docked
-                && !PlotGuardians.allowPlotter && !Program.isPlotter<PlotGuardians>()
-                && !PlotHumanSite.allowPlotter && !Program.isPlotter<PlotHumanSite>()
-                && Game.activeGame.canonnPoiHasLocalBioSignals()
-                && Game.activeGame.isMode(GameMode.SuperCruising, GameMode.Flying, GameMode.Landed, GameMode.InSrv, GameMode.OnFoot, GameMode.GlideMode, GameMode.InFighter, GameMode.CommsPanel, GameMode.SAA, GameMode.Codex)
-                ;
         }
 
         protected override void Game_modeChanged(GameMode newMode, bool force)

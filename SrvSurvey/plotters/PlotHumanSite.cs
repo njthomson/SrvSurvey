@@ -10,6 +10,28 @@ namespace SrvSurvey
 {
     internal class PlotHumanSite : PlotBaseSite, PlotterForm
     {
+        /// <summary>
+        /// Conditions when plotter can exist (but potentially hidden)
+        /// </summary>
+        public static bool keepPlotter
+        {
+            get => Game.settings.autoShowHumanSitesTest
+                && Game.activeGame?.status != null
+                && !Game.activeGame.atMainMenu
+                && Game.activeGame.status.hasLatLong
+                && !Game.activeGame.hidePlottersFromCombatSuits
+                && Game.activeGame.systemStation != null;
+        }
+
+        /// <summary>
+        /// Conditions when plotter can be visible
+        /// </summary>
+        public static bool allowPlotter
+        {
+            get => keepPlotter
+                && Game.activeGame!.isMode(GameMode.OnFoot, GameMode.Flying, GameMode.Docked, GameMode.InSrv, GameMode.InTaxi, GameMode.Landed, GameMode.CommsPanel, GameMode.ExternalPanel, GameMode.GlideMode, GameMode.RolePanel);
+        }
+
         /// <summary> If zoom levels should change automatically </summary>
         public static bool autoZoom = true;
         /// <summary> If the map should be huge and take over half the screen (game rect) </summary>
@@ -115,28 +137,6 @@ namespace SrvSurvey
             this.reposition(Elite.getWindowRect(true));
 
             this.loadMapImage();
-        }
-
-        /// <summary>
-        /// Conditions when plotter can exist (but potentially hidden)
-        /// </summary>
-        public static bool keepPlotter
-        {
-            get => Game.settings.autoShowHumanSitesTest
-                && Game.activeGame?.status != null
-                && !Game.activeGame.atMainMenu
-                && Game.activeGame.status.hasLatLong
-                && !Game.activeGame.hidePlottersFromCombatSuits
-                && Game.activeGame.systemStation != null;
-        }
-
-        /// <summary>
-        /// Conditions when plotter can be visible
-        /// </summary>
-        public static bool allowPlotter
-        {
-            get => keepPlotter
-                && Game.activeGame!.isMode(GameMode.OnFoot, GameMode.Flying, GameMode.Docked, GameMode.InSrv, GameMode.InTaxi, GameMode.Landed, GameMode.CommsPanel, GameMode.ExternalPanel, GameMode.GlideMode, GameMode.RolePanel);
         }
 
         protected override void Game_modeChanged(GameMode newMode, bool force)
@@ -932,7 +932,7 @@ namespace SrvSurvey
             if (station.subType == 0 && station.heading == -1)
                 drawApproachText("❓", RES("UnknownTypeHeading"), GameColors.Cyan);
             else if (station.heading == -1)
-                drawApproachText("❓", RES("UnknownType"), GameColors.Cyan);
+                drawApproachText("❓", RES("UnknownHeading"), GameColors.Cyan);
             else if (!this.hasLanded)
                 drawApproachText("►", RES("KnownSettlement"), GameColors.LimeIsh);
 

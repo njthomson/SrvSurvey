@@ -7,6 +7,20 @@ namespace SrvSurvey
 {
     internal class PlotJumpInfo : PlotBase, PlotterForm
     {
+        public static bool allowPlotter
+        {
+            get => Game.activeGame?.status != null
+                && Game.settings.autoShowPlotJumpInfo
+                && (
+                    // when FSD is charging for a jump, or ...
+                    (Game.activeGame.status.FsdChargingJump && Game.activeGame.isMode(GameMode.Flying, GameMode.SuperCruising))
+                    // whilst in witch space, jumping to next system
+                    || Game.activeGame.mode == GameMode.FSDJumping
+                    // or a keystroke forced it
+                    || PlotJumpInfo.forceShow
+                );
+        }
+
         public static bool forceShow = false;
 
         private NetSysData netData;
@@ -21,20 +35,6 @@ namespace SrvSurvey
         }
 
         public override bool allow { get => PlotJumpInfo.allowPlotter; }
-
-        public static bool allowPlotter
-        {
-            get => Game.activeGame?.status != null
-                && Game.settings.autoShowPlotJumpInfo
-                && (
-                    // when FSD is charging for a jump, or ...
-                    (Game.activeGame.status.FsdChargingJump && Game.activeGame.isMode(GameMode.Flying, GameMode.SuperCruising))
-                    // whilst in witch space, jumping to next system
-                    || Game.activeGame.mode == GameMode.FSDJumping
-                    // or a keystroke forced it
-                    || PlotJumpInfo.forceShow
-                );
-        }
 
         protected override void OnLoad(EventArgs e)
         {

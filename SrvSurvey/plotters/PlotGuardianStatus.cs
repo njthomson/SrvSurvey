@@ -4,6 +4,15 @@ namespace SrvSurvey
 {
     internal class PlotGuardianStatus : PlotBase, PlotterForm
     {
+        public static bool allowPlotter
+        {
+            get => PlotGuardians.allowPlotter
+                || (
+                    Game.activeGame?.mode == GameMode.GlideMode
+                    && PlotGuardianStatus.glideSite != null
+                );
+        }
+
         private int selectedIndex = 0;
         private Point[] ptMain;
         private Point[] ptLetter;
@@ -20,15 +29,6 @@ namespace SrvSurvey
         }
 
         public override bool allow { get => PlotGuardianStatus.allowPlotter; }
-
-        public static bool allowPlotter
-        {
-            get => PlotGuardians.allowPlotter
-                || (
-                    Game.activeGame?.mode == GameMode.GlideMode
-                    && PlotGuardianStatus.glideSite != null
-                );
-        }
 
         protected override void Dispose(bool disposing)
         {

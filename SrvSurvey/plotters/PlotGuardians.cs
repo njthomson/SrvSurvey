@@ -22,6 +22,18 @@ namespace SrvSurvey
 
     internal partial class PlotGuardians : PlotBase, IDisposable
     {
+        public static bool allowPlotter
+        {
+            get => Game.settings.enableGuardianSites
+                && Game.activeGame?.systemBody != null
+                && !Game.activeGame.hidePlottersFromCombatSuits
+                && Game.activeGame.status?.hasLatLong == true
+                && Game.activeGame.systemSite?.location != null
+                && !Game.activeGame.status.FsdChargingJump
+                && Game.activeGame.isMode(GameMode.InSrv, GameMode.OnFoot, GameMode.Landed, GameMode.Flying, GameMode.InFighter, GameMode.CommsPanel, GameMode.RolePanel)
+                ;
+        }
+
         public static bool autoZoom = true;
 
         public GuardianSiteTemplate? template;
@@ -87,18 +99,6 @@ namespace SrvSurvey
 
             PlotGuardians.instance = null;
             Program.closePlotter<PlotGuardianStatus>();
-        }
-
-        public static bool allowPlotter
-        {
-            get => Game.settings.enableGuardianSites
-                && Game.activeGame?.systemBody != null
-                && !Game.activeGame.hidePlottersFromCombatSuits
-                && Game.activeGame.status?.hasLatLong == true
-                && Game.activeGame.systemSite?.location != null
-                && !Game.activeGame.status.FsdChargingJump
-                && Game.activeGame.isMode(GameMode.InSrv, GameMode.OnFoot, GameMode.Landed, GameMode.Flying, GameMode.InFighter, GameMode.CommsPanel, GameMode.RolePanel)
-                ;
         }
 
         protected override void OnLoad(EventArgs e)

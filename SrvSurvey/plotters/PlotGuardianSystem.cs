@@ -4,6 +4,16 @@ namespace SrvSurvey
 {
     internal class PlotGuardianSystem : PlotBase, PlotterForm
     {
+        public static bool allowPlotter
+        {
+            // Game.settings.enableGuardianSites && Game.settings.autoShowGuardianSummary && PlotGuardianSystem.allowPlotter && game?.systemData?.settlements.Count > 0
+            get => Game.settings.enableGuardianSites
+                && Game.settings.autoShowGuardianSummary
+                && Game.activeGame?.systemData != null
+                && Game.activeGame.systemData.settlements.Count > 0
+                && Game.activeGame.isMode(GameMode.SuperCruising, GameMode.ExternalPanel, GameMode.Orrery, GameMode.SystemMap);
+        }
+
         private PlotGuardianSystem() : base()
         {
             this.Size = Size.Empty;
@@ -22,16 +32,6 @@ namespace SrvSurvey
 
             this.initializeOnLoad();
             this.reposition(Elite.getWindowRect(true));
-        }
-
-        public static bool allowPlotter
-        {
-            // Game.settings.enableGuardianSites && Game.settings.autoShowGuardianSummary && PlotGuardianSystem.allowPlotter && game?.systemData?.settlements.Count > 0
-            get => Game.settings.enableGuardianSites
-                && Game.settings.autoShowGuardianSummary
-                && Game.activeGame?.systemData != null
-                && Game.activeGame.systemData.settlements.Count > 0
-                && Game.activeGame.isMode(GameMode.SuperCruising, GameMode.ExternalPanel, GameMode.Orrery, GameMode.SystemMap);
         }
 
         protected override void Game_modeChanged(GameMode newMode, bool force)

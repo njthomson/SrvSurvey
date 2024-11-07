@@ -4,6 +4,16 @@ namespace SrvSurvey
 {
     internal class PlotFSSInfo : PlotBase, PlotterForm
     {
+        public static bool allowPlotter
+        {
+            get => Game.activeGame?.cmdr != null
+                && Game.settings.autoShowPlotFSSInfo
+                && (
+                    Game.activeGame.mode == GameMode.FSS
+                    || (Game.activeGame.mode == GameMode.SystemMap && Game.settings.autoShowPlotFSSInfoInSystemMap && !PlotGuardianSystem.allowPlotter) // hide if Guardian plotter is open
+                );
+        }
+
         public static List<FssEntry> scans = new List<FssEntry>();
         private static string? systemName;
 
@@ -49,16 +59,6 @@ namespace SrvSurvey
 
             this.initializeOnLoad();
             this.reposition(Elite.getWindowRect(true));
-        }
-
-        public static bool allowPlotter
-        {
-            get => Game.activeGame?.cmdr != null
-                && Game.settings.autoShowPlotFSSInfo
-                && (
-                    Game.activeGame.mode == GameMode.FSS
-                    || (Game.activeGame.mode == GameMode.SystemMap && Game.settings.autoShowPlotFSSInfoInSystemMap && !PlotGuardianSystem.allowPlotter) // hide if Guardian plotter is open
-                );
         }
 
         protected override void onJournalEntry(Scan entry)

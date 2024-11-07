@@ -5,6 +5,13 @@ namespace SrvSurvey
 {
     internal class PlotTrackers : PlotBase, PlotterForm
     {
+        public static bool allowPlotter
+        {
+            get => PlotGrounded.allowPlotter
+                // same as PlotGrounded + do we have any bookmarks?
+                && Game.activeGame?.systemBody?.bookmarks?.Count > 0;
+        }
+
         int rowHeight = scaled(20);
         public const int highlightDistance = 150;
 
@@ -16,13 +23,6 @@ namespace SrvSurvey
         }
 
         public override bool allow { get => PlotTrackers.allowPlotter; }
-
-        public static bool allowPlotter
-        {
-            get => PlotGrounded.allowPlotter
-                // same as PlotGrounded + do we have any bookmarks?
-                && Game.activeGame?.systemBody?.bookmarks?.Count > 0;
-        }
 
         private void setNewHeight()
         {

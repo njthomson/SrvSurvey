@@ -94,6 +94,9 @@ namespace SrvSurvey.game
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public Dictionary<string, List<LatLong2>>? trackTargets; // retire?
 
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public List<TrackMassacre>? trackMassacres;
+
         public void applyExplReward(long reward, string reason)
         {
             Game.log($"Gained: +{reward.ToString("N0")} for {reason}");
@@ -161,6 +164,69 @@ namespace SrvSurvey.game
 
         [JsonIgnore]
         public bool ramTahActive { get => this.decodeTheRuinsMissionActive == TahMissionStatus.Active || this.decodeTheLogsMissionActive == TahMissionStatus.Active; }
+
+        #region massacre missions
+
+        public void addMassacreMission(MissionAccepted entry)
+        {
+            if (!TrackMassacre.validMissionNames.Contains(entry.Name)) return;
+
+            // skip if we already have this missionId
+            if (this.trackMassacres?.Any(m => m.missionId == entry.MissionID) == true) return;
+
+            Game.log($"Tracking new mission: {entry.KillCount} kills of {entry.TargetFaction} for {entry.Faction} (#{entry.MissionID})");
+
+            this.trackMassacres ??= new();
+            this.trackMassacres.Add(new TrackMassacre(entry));
+            this.Save();
+
+            Game.activeGame?.fireUpdate();
+        }
+
+        public void removeMassacreMission(long missionId, string verb)
+        {
+            if (this.trackMassacres == null) return;
+
+            var mission = this.trackMassacres.Find(m => m.missionId == missionId);
+            if (mission != null)
+            {
+                Game.log($"{verb} massacre mission: kill {mission.killCount} {mission.targetFaction} for {mission.missionGiver} (#{mission.missionId})");
+
+                this.trackMassacres.Remove(mission);
+                if (this.trackMassacres.Count == 0) this.trackMassacres = null;
+                this.Save();
+
+                Game.activeGame?.fireUpdate();
+            }
+        }
+
+        public void trackBounty(Bounty bounty)
+        {
+            if (this.trackMassacres == null) return;
+
+            var missionGivers = new HashSet<string>();
+            var dirty = false;
+
+            foreach (var mission in this.trackMassacres)
+            {
+                // decrement each tracked massacre who wants this faction killed, and we didn't already count one against that mission giver yet
+                if (mission.targetFaction == bounty.VictimFaction && mission.remaining > 0 && !missionGivers.Contains(mission.missionGiver) && !mission.expired)
+                {
+                    mission.remaining--;
+                    Game.log($"Massacre kill of '{mission.targetFaction}' ({bounty.PilotName_Localised}) for '{mission.missionGiver}', remaining: {mission.remaining} of {mission.killCount} (#{mission.missionId})");
+                    missionGivers.Add(mission.missionGiver);
+                    dirty = true;
+                }
+            }
+
+            if (dirty)
+            {
+                this.Save();
+                Program.invalidate<PlotMassacre>();
+            }
+        }
+
+        #endregion
     }
 
     internal class SphereLimit

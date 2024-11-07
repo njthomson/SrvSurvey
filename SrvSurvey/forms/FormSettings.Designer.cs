@@ -212,6 +212,7 @@ namespace SrvSurvey
             linkAboutOne = new LinkLabel();
             colorDialog = new ColorDialog();
             colorTheme = new ColorDialog();
+            checkBox33 = new CheckBox();
             panel1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numOpacity).BeginInit();
@@ -318,6 +319,7 @@ namespace SrvSurvey
             // tabPage1
             // 
             tabPage1.BorderStyle = BorderStyle.Fixed3D;
+            tabPage1.Controls.Add(checkBox33);
             tabPage1.Controls.Add(btnAdjustOverlays);
             tabPage1.Controls.Add(label27);
             tabPage1.Controls.Add(comboLang);
@@ -2640,6 +2642,18 @@ namespace SrvSurvey
             // 
             colorDialog.Color = Color.Yellow;
             // 
+            // checkBox33
+            // 
+            checkBox33.AutoSize = true;
+            checkBox33.FlatStyle = FlatStyle.System;
+            checkBox33.Location = new Point(405, 372);
+            checkBox33.Name = "checkBox33";
+            checkBox33.Size = new Size(241, 20);
+            checkBox33.TabIndex = 35;
+            checkBox33.Tag = "autoShowPlotMassacre_TEST";
+            checkBox33.Text = "Massacre mission helper (Experimental)";
+            checkBox33.UseVisualStyleBackColor = true;
+            // 
             // FormSettings
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -2906,5 +2920,6 @@ namespace SrvSurvey
         private ColumnHeader colDesc;
         private Label label28;
         private FlatButton btnAdjustOverlays;
+        private CheckBox checkBox33;
     }
 }

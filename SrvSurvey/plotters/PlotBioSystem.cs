@@ -6,6 +6,24 @@ namespace SrvSurvey
 {
     internal class PlotBioSystem : PlotBase, PlotterForm
     {
+        public static bool allowPlotter
+        {
+            get => Game.settings.autoShowPlotBioSystem
+                && Game.activeGame?.status != null
+                && Game.activeGame.systemData != null
+                && Game.activeGame.systemData.bioSignalsTotal > 0
+                && !Game.activeGame.status.InTaxi
+                && !Game.activeGame.hidePlottersFromCombatSuits
+                && (
+                    Game.activeGame.isMode(GameMode.SuperCruising, GameMode.SAA, GameMode.FSS, GameMode.ExternalPanel, GameMode.Orrery, GameMode.SystemMap)
+                    || (
+                        PlotBioSystem.targetBody?.bioSignalCount > 0
+                        && Game.activeGame.isMode(GameMode.GlideMode, GameMode.Flying, GameMode.Landed, GameMode.OnFoot, GameMode.CommsPanel, GameMode.InSrv, GameMode.RolePanel, GameMode.Codex)
+                                && (Game.activeGame.systemStation == null || !Game.settings.autoShowHumanSitesTest)
+                    )
+                );
+        }
+
         private string? lastDestination;
         private SystemBody? durationBody;
         private System.Windows.Forms.Timer durationTimer;
@@ -63,24 +81,6 @@ namespace SrvSurvey
 
                 return body;
             }
-        }
-
-        public static bool allowPlotter
-        {
-            get => Game.settings.autoShowPlotBioSystem
-                && Game.activeGame?.status != null
-                && Game.activeGame.systemData != null
-                && Game.activeGame.systemData.bioSignalsTotal > 0
-                && !Game.activeGame.status.InTaxi
-                && !Game.activeGame.hidePlottersFromCombatSuits
-                && (
-                    Game.activeGame.isMode(GameMode.SuperCruising, GameMode.SAA, GameMode.FSS, GameMode.ExternalPanel, GameMode.Orrery, GameMode.SystemMap)
-                    || (
-                        PlotBioSystem.targetBody?.bioSignalCount > 0
-                        && Game.activeGame.isMode(GameMode.GlideMode, GameMode.Flying, GameMode.Landed, GameMode.OnFoot, GameMode.CommsPanel, GameMode.InSrv, GameMode.RolePanel, GameMode.Codex)
-                                && (Game.activeGame.systemStation == null || !Game.settings.autoShowHumanSitesTest)
-                    )
-                );
         }
 
         protected override void Status_StatusChanged(bool blink)

@@ -4,6 +4,13 @@ namespace SrvSurvey
 {
     internal class PlotSphericalSearch : PlotBase, PlotterForm
     {
+        public static bool allowPlotter
+        {
+            get => Game.activeGame != null
+                && Game.activeGame.mode == GameMode.GalaxyMap
+                && Game.activeGame.cmdr.sphereLimit.active;
+        }
+
         private double distance = -1;
         private string targetSystemName;
         private string? destinationName;
@@ -31,13 +38,6 @@ namespace SrvSurvey
             {
                 measureDistanceToSystem();
             });
-        }
-
-        public static bool allowPlotter
-        {
-            get => Game.activeGame != null
-                && Game.activeGame.mode == GameMode.GalaxyMap
-                && Game.activeGame.cmdr.sphereLimit.active;
         }
 
         protected override void onJournalEntry(NavRoute entry)

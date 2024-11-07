@@ -635,6 +635,17 @@ namespace SrvSurvey
             g.DrawString(msg, font, brush ?? GameColors.brushGameOrange, tx, ty);
         }
 
+        protected void strikeThrough(float x, float y, float w, bool highlight)
+        {
+            var c1 = highlight ? GameColors.penCyan1 : GameColors.penGameOrange1;
+            var c2 = highlight ? GameColors.penDarkCyan1 : GameColors.penGameOrangeDim1;
+
+            g.DrawLine(c1, x, y, x + w, y);
+            g.DrawLine(c2, x + 1, y + 1, x + w + 1, y + 1);
+        }
+
+        #region drawing text and resizing form
+
         /// <summary> The x location to use in drawTextAt</summary>
         protected float dtx;
         /// <summary> The y location to use in drawTextAt</summary>
@@ -808,6 +819,13 @@ namespace SrvSurvey
                 this.formGrow(true, true);
         }
 
+        protected void newLine(float dy, bool growHoriz, bool growVert)
+        {
+            this.dty += this.lastTextSize.Height + dy;
+
+            this.formGrow(growHoriz, growVert);
+        }
+
         protected void resetPlotter(Graphics g)
         {
             this.g = g;
@@ -842,6 +860,8 @@ namespace SrvSurvey
                 forceRepaint = true;
             }
         }
+
+        #endregion
 
         private static Dictionary<string, POIType> itemPoiTypeMap = new Dictionary<string, POIType>()
         {

@@ -5,6 +5,17 @@ namespace SrvSurvey
 {
     internal class PlotSysStatus : PlotBase, PlotterForm
     {
+        public static bool allowPlotter
+        {
+            get => Game.settings.autoShowPlotSysStatus
+                && Game.activeGame != null
+                && Game.activeGame.status?.InTaxi != true
+                && Game.activeGame.isMode(GameMode.SuperCruising, GameMode.SAA, GameMode.FSS, GameMode.ExternalPanel, GameMode.Orrery, GameMode.SystemMap)
+                // show only after honking or we have Canonn data
+                && Game.activeGame.systemData != null
+                && (Game.activeGame.systemData.honked || Game.activeGame.canonnPoi != null);
+        }
+
         public string? nextSystem;
         private Font boldFont = GameColors.fontMiddleBold;
 
@@ -23,17 +34,6 @@ namespace SrvSurvey
 
             this.initializeOnLoad();
             this.reposition(Elite.getWindowRect(true));
-        }
-
-        public static bool allowPlotter
-        {
-            get => Game.settings.autoShowPlotSysStatus
-                && Game.activeGame != null
-                && Game.activeGame.status?.InTaxi != true
-                && Game.activeGame.isMode(GameMode.SuperCruising, GameMode.SAA, GameMode.FSS, GameMode.ExternalPanel, GameMode.Orrery, GameMode.SystemMap)
-                // show only after honking or we have Canonn data
-                && Game.activeGame.systemData != null
-                && (Game.activeGame.systemData.honked || Game.activeGame.canonnPoi != null);
         }
 
         protected override void onJournalEntry(FSSBodySignals entry)

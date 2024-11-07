@@ -133,6 +133,7 @@ namespace SrvSurvey.game
         public string shipType;
         public float shipMaxJump;
         public SettlementMatCollectionData? matStatsTracker;
+
         /// <summary>
         /// An arbitrary point on a planet surface. Doesn't really matter where, so long as it isn't too far away.
         /// </summary>
@@ -615,7 +616,7 @@ namespace SrvSurvey.game
             if (lastMaterials != null)
                 onJournalEntry(lastMaterials);
 
-            // which ship are we in?
+            // what ship are we in?
             var lastLoadout = journals.FindEntryByType<Loadout>(-1, true);
             if (lastLoadout != null)
             {
@@ -628,6 +629,15 @@ namespace SrvSurvey.game
 
             if (this.status.hasLatLong)
                 this.dropPoint = Status.here.clone();
+
+            // remove any stale massacre missions?
+            journals.walk(0, false, (entry) =>
+            {
+                if (entry is MissionAbandoned || entry is MissionCompleted || entry is MissionFailed)
+                    this.Journals_onJournalEntry(entry, 0);
+
+                return false;
+            });
 
             log($"Game.initializeFromJournal: END Commander:{this.Commander}, starSystem:{cmdr?.currentSystem}, systemLocation:{cmdr?.lastSystemLocation}, systemBody:{this.systemBody}, journals.Count:{journals.Count}");
             this.initialized = Game.activeGame == this && this.Commander != null;
@@ -886,7 +896,7 @@ namespace SrvSurvey.game
 
         #region journal tracking for game state and modes
 
-        private void Journals_onJournalEntry(JournalEntry entry, int index)
+        private void Journals_onJournalEntry(IJournalEntry entry, int index)
         {
             try
             {
@@ -1137,25 +1147,14 @@ namespace SrvSurvey.game
             this.deferPredictSpecies(this.systemBody);
         }
 
-        //private void onJournalEntry(FSSBodySignals entry)
-        //{
-        //    if (FormGenus.activeForm != null)
-        //    {
-        //        var hasBioSignals = entry.Signals.Any(_ => _.Type == "$SAA_SignalType_Biological;");
-        //        if (hasBioSignals)
-        //            this.deferPredictSpecies(this.systemBody);
-        //    }
-        //}
-
         private void onJournalEntry(Missions entry)
         {
             if (entry.Active.Any(_ => _.Name == "Mission_TheDead" || _.Name == "Mission_TheDead_name"))
                 this.cmdr.decodeTheRuinsMissionActive = TahMissionStatus.Active;
-            //this.cmdr.decodeTheRuinsMissionActive = this.cmdr.decodeTheRuinsMissionActive == TahMissionStatus.Active ? TahMissionStatus.Complete : TahMissionStatus.NotStarted;
 
             if (entry.Active.Any(_ => _.Name == "Mission_TheDead_002" || _.Name == "Mission_TheDead_002_name"))
                 this.cmdr.decodeTheLogsMissionActive = TahMissionStatus.Active;
-            //this.cmdr.decodeTheLogsMissionActive = this.cmdr.decodeTheLogsMissionActive == TahMissionStatus.Active ? TahMissionStatus.Complete : TahMissionStatus.NotStarted;
+
             Game.log($"Missions: decodeTheRuinsMissionActive: {this.cmdr.decodeTheRuinsMissionActive}, decodeTheLogsMissionActive: {this.cmdr.decodeTheLogsMissionActive}");
         }
 
@@ -1173,6 +1172,11 @@ namespace SrvSurvey.game
                 this.cmdr.Save();
                 Game.log("MissionAccepted: Starting 'Decrypting the Guardian Logs' ...");
             }
+            else if (Game.settings.autoShowPlotMassacre_TEST && TrackMassacre.validMissionNames.Contains(entry.Name))
+            {
+                // track new massacre mission
+                cmdr.addMassacreMission(entry);
+            }
         }
 
         private void onJournalEntry(MissionFailed entry)
@@ -1181,14 +1185,18 @@ namespace SrvSurvey.game
             {
                 this.cmdr.decodeTheRuinsMissionActive = TahMissionStatus.NotStarted;
                 this.cmdr.Save();
-                Game.log("MissionAccepted: Failed 'Decoding the Ancient Ruins' ...");
+                Game.log("MissionFailed: Failed 'Decoding the Ancient Ruins' ...");
             }
             else if (entry.Name == "Mission_TheDead_002" || entry.Name == "Mission_TheDead_002_name")
             {
                 this.cmdr.decodeTheLogsMissionActive = TahMissionStatus.NotStarted;
                 this.cmdr.Save();
-                Game.log("MissionAccepted: Failed 'Decrypting the Guardian Logs' ...");
+                Game.log("MissionFailed: Failed 'Decrypting the Guardian Logs' ...");
             }
+
+            // remove massacre mission
+            if (Game.settings.autoShowPlotMassacre_TEST)
+                cmdr.removeMassacreMission(entry.MissionID, "Failed");
         }
 
         private void onJournalEntry(MissionAbandoned entry)
@@ -1197,14 +1205,18 @@ namespace SrvSurvey.game
             {
                 this.cmdr.decodeTheRuinsMissionActive = TahMissionStatus.NotStarted;
                 this.cmdr.Save();
-                Game.log("MissionAccepted: Failed 'Decoding the Ancient Ruins' ...");
+                Game.log("MissionAbandoned: Failed 'Decoding the Ancient Ruins' ...");
             }
             else if (entry.Name == "Mission_TheDead_002" || entry.Name == "Mission_TheDead_002_name")
             {
                 this.cmdr.decodeTheLogsMissionActive = TahMissionStatus.NotStarted;
                 this.cmdr.Save();
-                Game.log("MissionAccepted: Failed 'Decrypting the Guardian Logs' ...");
+                Game.log("MissionAbandoned: Failed 'Decrypting the Guardian Logs' ...");
             }
+
+            // remove massacre mission
+            if (Game.settings.autoShowPlotMassacre_TEST)
+                cmdr.removeMassacreMission(entry.MissionID, "Abandoned");
         }
 
         private void onJournalEntry(MissionCompleted entry)
@@ -1213,14 +1225,24 @@ namespace SrvSurvey.game
             {
                 this.cmdr.decodeTheRuinsMissionActive = TahMissionStatus.Complete;
                 this.cmdr.Save();
-                Game.log("MissionAccepted: Completed 'Decoding the Ancient Ruins' ...");
+                Game.log("MissionCompleted: Completed 'Decoding the Ancient Ruins' ...");
             }
             else if (entry.Name == "Mission_TheDead_002" || entry.Name == "Mission_TheDead_002_name")
             {
                 this.cmdr.decodeTheLogsMissionActive = TahMissionStatus.Complete;
                 this.cmdr.Save();
-                Game.log("MissionAccepted: Completed 'Decrypting the Guardian Logs' ...");
+                Game.log("MissionCompleted: Completed 'Decrypting the Guardian Logs' ...");
             }
+
+            // remove massacre mission
+            if (Game.settings.autoShowPlotMassacre_TEST)
+                cmdr.removeMassacreMission(entry.MissionID, "Completed");
+        }
+
+        private void onJournalEntry(Bounty entry)
+        {
+            if (Game.settings.autoShowPlotMassacre_TEST)
+                cmdr.trackBounty(entry);
         }
 
         #endregion

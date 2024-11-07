@@ -4,6 +4,13 @@ namespace SrvSurvey
 {
     internal class PlotFSS : PlotBase, PlotterForm
     {
+        public static bool allowPlotter
+        {
+            get => Game.activeGame?.cmdr != null
+                && Game.settings.autoShowPlotFSS
+                && Game.activeGame.isMode(GameMode.FSS);
+        }
+
         private FSSBodySignals? lastFSSBodySignals;
 
         private static long lastSystemAddress;
@@ -56,13 +63,6 @@ namespace SrvSurvey
         }
 
         public override bool allow { get => PlotFSS.allowPlotter; }
-
-        public static bool allowPlotter
-        {
-            get => Game.activeGame?.cmdr != null
-                && Game.settings.autoShowPlotFSS
-                && Game.activeGame.isMode(GameMode.FSS);
-        }
 
         protected override void OnLoad(EventArgs e)
         {

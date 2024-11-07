@@ -4,6 +4,20 @@ namespace SrvSurvey
 {
     internal class PlotRamTah : PlotBase, PlotterForm
     {
+        public static bool allowPlotter
+        {
+            // TODO: show this earlier, like on approach?
+            get => Game.settings.autoShowRamTah
+                && Game.settings.enableGuardianSites
+                && Game.activeGame?.systemBody != null
+                && Game.activeGame.cmdr.ramTahActive
+                && !Game.activeGame.hidePlottersFromCombatSuits
+                && Game.activeGame.status?.hasLatLong == true
+                && Game.activeGame.systemSite?.location != null
+                && Game.activeGame.isMode(GameMode.InSrv, GameMode.OnFoot, GameMode.Landed, GameMode.Flying, GameMode.InFighter, GameMode.CommsPanel, GameMode.InternalPanel)
+                ;
+        }
+
         private PlotRamTah() : base()
         {
             this.Size = Size.Empty;
@@ -22,20 +36,6 @@ namespace SrvSurvey
 
             this.initializeOnLoad();
             this.reposition(Elite.getWindowRect(true));
-        }
-
-        public static bool allowPlotter
-        {
-            // TODO: show this earlier, like on approach?
-            get => Game.settings.autoShowRamTah
-                && Game.settings.enableGuardianSites
-                && Game.activeGame?.systemBody != null
-                && Game.activeGame.cmdr.ramTahActive
-                && !Game.activeGame.hidePlottersFromCombatSuits
-                && Game.activeGame.status?.hasLatLong == true
-                && Game.activeGame.systemSite?.location != null
-                && Game.activeGame.isMode(GameMode.InSrv, GameMode.OnFoot, GameMode.Landed, GameMode.Flying, GameMode.InFighter, GameMode.CommsPanel, GameMode.InternalPanel)
-                ;
         }
 
         protected override void onPaintPlotter(PaintEventArgs e)

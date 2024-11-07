@@ -5,14 +5,6 @@ namespace SrvSurvey
 {
     internal class PlotFlightWarning : PlotBase, PlotterForm
     {
-        private PlotFlightWarning() : base()
-        {
-            this.Size = Size.Empty;
-            this.Font = GameColors.fontSmall;
-        }
-
-        public override bool allow { get => PlotFlightWarning.allowPlotter; }
-
         public static bool allowPlotter
         {
             get => Game.settings.autoShowFlightWarnings
@@ -22,6 +14,14 @@ namespace SrvSurvey
                 && Game.activeGame.isMode(GameMode.Landed, GameMode.SuperCruising, GameMode.GlideMode, GameMode.Flying, GameMode.InFighter, GameMode.InSrv)
                 ;
         }
+
+        private PlotFlightWarning() : base()
+        {
+            this.Size = Size.Empty;
+            this.Font = GameColors.fontSmall;
+        }
+
+        public override bool allow { get => PlotFlightWarning.allowPlotter; }
 
         protected override void OnLoad(EventArgs e)
         {

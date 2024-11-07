@@ -7,6 +7,26 @@ namespace SrvSurvey
 {
     internal partial class PlotGrounded : PlotBase, PlotterForm
     {
+        public static bool allowPlotter
+        {
+            get => Game.settings.autoShowBioPlot
+                && Game.activeGame?.systemBody != null
+                && Game.activeGame.status != null
+                && !Game.activeGame.status.Docked
+                && !Game.activeGame.isShutdown // not needed?
+                && !Game.activeGame.atMainMenu // not needed?
+                && (Game.activeGame.systemStation == null || !Game.settings.autoShowHumanSitesTest)
+                && !Game.activeGame.hidePlottersFromCombatSuits
+                && Game.activeGame.status.hasLatLong
+                && Game.activeGame.status.Altitude < 10_000
+                && !Game.activeGame.status.InTaxi
+                && !Game.activeGame.status.FsdChargingJump
+                && !PlotGuardians.allowPlotter
+                && Game.activeGame.isMode(GameMode.SuperCruising, GameMode.Flying, GameMode.Landed, GameMode.InSrv, GameMode.OnFoot, GameMode.GlideMode, GameMode.InFighter, GameMode.CommsPanel, GameMode.RolePanel);
+            // TODO: include these?
+            // if (game.systemSite == null && !game.isMode(GameMode.SuperCruising, GameMode.GlideMode) && (game.isLanded || showPlotTrackers || showPlotPriorScans || game.cmdr.scanOne != null))
+        }
+
         private TrackingDelta? srvLocation;
 
         private TrackingDelta? td;
@@ -93,26 +113,6 @@ namespace SrvSurvey
         }
 
         #endregion
-
-        public static bool allowPlotter
-        {
-            get => Game.settings.autoShowBioPlot
-                && Game.activeGame?.systemBody != null
-                && Game.activeGame.status != null
-                && !Game.activeGame.status.Docked
-                && !Game.activeGame.isShutdown // not needed?
-                && !Game.activeGame.atMainMenu // not needed?
-                && (Game.activeGame.systemStation == null || !Game.settings.autoShowHumanSitesTest)
-                && !Game.activeGame.hidePlottersFromCombatSuits
-                && Game.activeGame.status.hasLatLong
-                && Game.activeGame.status.Altitude < 10_000
-                && !Game.activeGame.status.InTaxi
-                && !Game.activeGame.status.FsdChargingJump
-                && !PlotGuardians.allowPlotter
-                && Game.activeGame.isMode(GameMode.SuperCruising, GameMode.Flying, GameMode.Landed, GameMode.InSrv, GameMode.OnFoot, GameMode.GlideMode, GameMode.InFighter, GameMode.CommsPanel, GameMode.RolePanel);
-            // TODO: include these?
-            // if (game.systemSite == null && !game.isMode(GameMode.SuperCruising, GameMode.GlideMode) && (game.isLanded || showPlotTrackers || showPlotPriorScans || game.cmdr.scanOne != null))
-        }
 
         protected override void Game_modeChanged(GameMode newMode, bool force)
         {

@@ -214,7 +214,7 @@ namespace SrvSurvey
                 idx = this.Count - 1;
 
             // the end is either the first or last element
-            var endIdx = searchUp ? 0 : this.Count - 1;
+            var endIdx = searchUp ? 0 : this.Count;
 
             while (idx != endIdx)
             {

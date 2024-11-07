@@ -309,6 +309,18 @@ namespace SrvSurvey
                 form.Opacity = PlotPos.getOpacity(form);
         }
 
+        public static void invalidate<T>(bool defer = false) where T : Form
+        {
+            if (defer)
+            {
+                Program.defer(() => Program.invalidate<T>(false));
+                return;
+            }
+
+            var plotter = activePlotters.GetValueOrDefault(typeof(T).Name) as T;
+            plotter?.Invalidate();
+        }
+
         public static void invalidateActivePlotters()
         {
             if (Program.control.InvokeRequired)

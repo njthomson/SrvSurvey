@@ -45,6 +45,8 @@ namespace SrvSurvey
         public int bodyInfoBubbleSize = 200;
         public bool autoShowPlotBodyInfoAtSurface = false;
 
+        public bool autoShowPlotMassacre_TEST = false;
+
         public bool autoShowHumanSitesTest = false;
         public int plotHumanSiteWidth = 500;
         public int plotHumanSiteHeight = 600;

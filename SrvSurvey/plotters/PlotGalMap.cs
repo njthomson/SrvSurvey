@@ -7,6 +7,13 @@ namespace SrvSurvey
 {
     internal class PlotGalMap : PlotBase, PlotterForm
     {
+        public static bool allowPlotter
+        {
+            get => Game.activeGame != null
+                && Game.activeGame.mode == GameMode.GalaxyMap
+                && Game.settings.useExternalData;
+        }
+
         private static bool smaller = true; // temp?
         private static GraphicsPath triangle;
 
@@ -55,13 +62,6 @@ namespace SrvSurvey
                 this.onJournalEntry(new NavRoute());
             else if (game.systemData != null)
                 this.finalNetData = NetSysData.get(game.systemData.name, game.systemData.address, (source, netData) => this.Invalidate());
-        }
-
-        public static bool allowPlotter
-        {
-            get => Game.activeGame != null
-                && Game.activeGame.mode == GameMode.GalaxyMap
-                && Game.settings.useExternalData;
         }
 
         protected override void onJournalEntry(FSDTarget entry)

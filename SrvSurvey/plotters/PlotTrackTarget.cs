@@ -8,6 +8,18 @@ namespace SrvSurvey
 {
     partial class PlotTrackTarget : PlotBase, PlotterForm
     {
+        public static bool allowPlotter
+        {
+            get => Game.activeGame?.systemBody != null
+                && !Game.activeGame.isShutdown // not needed?
+                && !Game.activeGame.atMainMenu // not needed?
+                && Game.activeGame.status != null
+                && Game.activeGame.status.hasLatLong
+                && !Game.activeGame.status.InTaxi
+                && !Game.activeGame.hidePlottersFromCombatSuits
+                && Game.activeGame.isMode(GameMode.SuperCruising, GameMode.Flying, GameMode.Landed, GameMode.InSrv, GameMode.OnFoot, GameMode.GlideMode, GameMode.InFighter, GameMode.CommsPanel);
+        }
+
         public LatLong2 targetLocation = Game.settings.targetLatLong;
         private decimal targetAngle;
         private decimal targetDistance;
@@ -43,18 +55,6 @@ namespace SrvSurvey
                 this.td = new TrackingDelta(game.systemBody.radius, Game.settings.targetLatLong);
                 this.calculate();
             }
-        }
-
-        public static bool allowPlotter
-        {
-            get => Game.activeGame?.systemBody != null
-                && !Game.activeGame.isShutdown // not needed?
-                && !Game.activeGame.atMainMenu // not needed?
-                && Game.activeGame.status != null
-                && Game.activeGame.status.hasLatLong
-                && !Game.activeGame.status.InTaxi
-                && !Game.activeGame.hidePlottersFromCombatSuits
-                && Game.activeGame.isMode(GameMode.SuperCruising, GameMode.Flying, GameMode.Landed, GameMode.InSrv, GameMode.OnFoot, GameMode.GlideMode, GameMode.InFighter, GameMode.CommsPanel);
         }
 
         protected override void Status_StatusChanged(bool blink)

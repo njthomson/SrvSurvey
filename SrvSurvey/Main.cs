@@ -363,6 +363,11 @@ namespace SrvSurvey
             else
                 Program.closePlotter<PlotJumpInfo>();
 
+            if (gameIsActive && PlotMassacre.allowPlotter)
+                Program.showPlotter<PlotMassacre>();
+            else
+                Program.closePlotter<PlotMassacre>();
+
             // show high gravity warning
             var isLandableAndHighGravity = game?.systemBody?.type == SystemBodyType.LandableBody && game.systemBody.surfaceGravity >= Game.settings.highGravityWarningLevel * 10;
             if (Game.settings.autoShowFlightWarnings && game?.systemBody != null && isLandableAndHighGravity && game.isMode(GameMode.Landed, GameMode.SuperCruising, GameMode.GlideMode, GameMode.Flying, GameMode.InFighter, GameMode.InSrv))
