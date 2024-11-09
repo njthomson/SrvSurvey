@@ -35,13 +35,18 @@ namespace SrvSurvey
             btnSave = new FlatButton();
             btnCancel = new FlatButton();
             tabPage1 = new TabPage();
+            linkJournalFolder = new LinkLabel();
+            linkResetWatchFolder = new LinkLabel();
+            checkHidePlottersFromDominator = new CheckBox();
+            checkHidePlottersFromMaverick = new CheckBox();
+            pictureBox6 = new PictureBox();
+            checkBox33 = new CheckBox();
             btnAdjustOverlays = new FlatButton();
             label27 = new Label();
             comboLang = new ComboBox();
             numOpacity = new NumericUpDown();
             numGravityWarningLevel = new NumericUpDown();
             checkFocusAfterFsdJump = new CheckBox();
-            checkHidePlottersFromDominator = new CheckBox();
             label3 = new Label();
             panelTheme2 = new Panel();
             btnTheme2 = new FlatButton();
@@ -55,20 +60,16 @@ namespace SrvSurvey
             comboCmdr = new ComboBox();
             label12 = new Label();
             checkBox13 = new CheckBox();
-            pictureBox6 = new PictureBox();
             checkHideJournalTimer = new CheckBox();
             btnChooseJournalFolder = new FlatButton();
-            linkJournalFolder = new LinkLabel();
             label11 = new Label();
             checkMinimizeOnStart = new CheckBox();
             checkHideOverlayOnMouseOver = new CheckBox();
             label4 = new Label();
-            checkHidePlottersFromMaverick = new CheckBox();
             checkFocusOnMinimize = new CheckBox();
             label2 = new Label();
             trackOpacity = new TrackBar();
             label1 = new Label();
-            linkResetWatchFolder = new LinkLabel();
             linkResetTheme2 = new LinkLabel();
             linkResetTheme = new LinkLabel();
             tabControl = new TabControl();
@@ -105,6 +106,7 @@ namespace SrvSurvey
             numRingBucket1 = new NumericUpDown();
             label16 = new Label();
             tabPage3 = new TabPage();
+            comboGuardianWindowSize = new ComboBox();
             checkBox26 = new CheckBox();
             checkBox25 = new CheckBox();
             numAltGamma = new NumericUpDown();
@@ -114,7 +116,6 @@ namespace SrvSurvey
             checkBox14 = new CheckBox();
             checkBox3 = new CheckBox();
             label9 = new Label();
-            comboGuardianWindowSize = new ComboBox();
             checkBox2 = new CheckBox();
             label8 = new Label();
             label7 = new Label();
@@ -164,6 +165,7 @@ namespace SrvSurvey
             checkBox8 = new CheckBox();
             checkBox4 = new CheckBox();
             tabPage7 = new TabPage();
+            numPriorScanMinValue = new NumericUpDown();
             pictureBox7 = new PictureBox();
             checkUseBioData = new CheckBox();
             radioUseRadius = new RadioButton();
@@ -172,31 +174,30 @@ namespace SrvSurvey
             checkUseSystemData = new CheckBox();
             lblPriorScansCredits = new Label();
             checkSkipCheapSignals = new CheckBox();
-            numPriorScanMinValue = new NumericUpDown();
             checkShowPriorScans = new CheckBox();
             checkHideMyOwnCanonnSignals = new CheckBox();
             pictureBox9 = new PictureBox();
             pictureBox8 = new PictureBox();
             tabSettlements = new TabPage();
+            numHumanSitePlotterWidth = new NumericUpDown();
+            numHumanSitePlotterHeight = new NumericUpDown();
             groupBox2 = new GroupBox();
             label26 = new Label();
             checkBox31 = new CheckBox();
             checkBox30 = new CheckBox();
             checkBox29 = new CheckBox();
             groupBox1 = new GroupBox();
-            label21 = new Label();
-            numericUpDown2 = new NumericUpDown();
-            label22 = new Label();
+            numericUpDown4 = new NumericUpDown();
             numericUpDown3 = new NumericUpDown();
-            label23 = new Label();
+            numericUpDown2 = new NumericUpDown();
             numericUpDown6 = new NumericUpDown();
             numericUpDown5 = new NumericUpDown();
-            numericUpDown4 = new NumericUpDown();
+            label21 = new Label();
+            label22 = new Label();
+            label23 = new Label();
             checkBox19 = new CheckBox();
             checkBox12 = new CheckBox();
-            numHumanSitePlotterHeight = new NumericUpDown();
             label25 = new Label();
-            numHumanSitePlotterWidth = new NumericUpDown();
             label24 = new Label();
             checkBox22 = new CheckBox();
             checkHumanSitePlotter = new CheckBox();
@@ -212,12 +213,11 @@ namespace SrvSurvey
             linkAboutOne = new LinkLabel();
             colorDialog = new ColorDialog();
             colorTheme = new ColorDialog();
-            checkBox33 = new CheckBox();
             panel1.SuspendLayout();
             tabPage1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox6).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numOpacity).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numGravityWarningLevel).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox6).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackOpacity).BeginInit();
             tabControl.SuspendLayout();
             tabPage4.SuspendLayout();
@@ -248,20 +248,20 @@ namespace SrvSurvey
             ((System.ComponentModel.ISupportInitialize)pictureBox5).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox4).BeginInit();
             tabPage7.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox7).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numPriorScanMinValue).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox7).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox9).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox8).BeginInit();
             tabSettlements.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numHumanSitePlotterWidth).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numHumanSitePlotterHeight).BeginInit();
             groupBox2.SuspendLayout();
             groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)numericUpDown2).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown4).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown3).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown6).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown5).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)numericUpDown4).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)numHumanSitePlotterHeight).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)numHumanSitePlotterWidth).BeginInit();
             tabKeyChords.SuspendLayout();
             tabPage2.SuspendLayout();
             SuspendLayout();
@@ -319,6 +319,11 @@ namespace SrvSurvey
             // tabPage1
             // 
             tabPage1.BorderStyle = BorderStyle.Fixed3D;
+            tabPage1.Controls.Add(linkJournalFolder);
+            tabPage1.Controls.Add(linkResetWatchFolder);
+            tabPage1.Controls.Add(checkHidePlottersFromDominator);
+            tabPage1.Controls.Add(checkHidePlottersFromMaverick);
+            tabPage1.Controls.Add(pictureBox6);
             tabPage1.Controls.Add(checkBox33);
             tabPage1.Controls.Add(btnAdjustOverlays);
             tabPage1.Controls.Add(label27);
@@ -326,7 +331,6 @@ namespace SrvSurvey
             tabPage1.Controls.Add(numOpacity);
             tabPage1.Controls.Add(numGravityWarningLevel);
             tabPage1.Controls.Add(checkFocusAfterFsdJump);
-            tabPage1.Controls.Add(checkHidePlottersFromDominator);
             tabPage1.Controls.Add(label3);
             tabPage1.Controls.Add(panelTheme2);
             tabPage1.Controls.Add(btnTheme2);
@@ -340,20 +344,16 @@ namespace SrvSurvey
             tabPage1.Controls.Add(comboCmdr);
             tabPage1.Controls.Add(label12);
             tabPage1.Controls.Add(checkBox13);
-            tabPage1.Controls.Add(pictureBox6);
             tabPage1.Controls.Add(checkHideJournalTimer);
             tabPage1.Controls.Add(btnChooseJournalFolder);
-            tabPage1.Controls.Add(linkJournalFolder);
             tabPage1.Controls.Add(label11);
             tabPage1.Controls.Add(checkMinimizeOnStart);
             tabPage1.Controls.Add(checkHideOverlayOnMouseOver);
             tabPage1.Controls.Add(label4);
-            tabPage1.Controls.Add(checkHidePlottersFromMaverick);
             tabPage1.Controls.Add(checkFocusOnMinimize);
             tabPage1.Controls.Add(label2);
             tabPage1.Controls.Add(trackOpacity);
             tabPage1.Controls.Add(label1);
-            tabPage1.Controls.Add(linkResetWatchFolder);
             tabPage1.Controls.Add(linkResetTheme2);
             tabPage1.Controls.Add(linkResetTheme);
             tabPage1.Location = new Point(4, 24);
@@ -363,6 +363,84 @@ namespace SrvSurvey
             tabPage1.Size = new Size(651, 448);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "General";
+            // 
+            // linkJournalFolder
+            // 
+            linkJournalFolder.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            linkJournalFolder.BorderStyle = BorderStyle.FixedSingle;
+            linkJournalFolder.Location = new Point(39, 253);
+            linkJournalFolder.Name = "linkJournalFolder";
+            linkJournalFolder.Size = new Size(600, 35);
+            linkJournalFolder.TabIndex = 14;
+            linkJournalFolder.TabStop = true;
+            linkJournalFolder.Tag = "watchedJournalFolder";
+            linkJournalFolder.Text = "C:\\xxx\\Pictures\\Frontier Developments\\Elite Dangerous\\";
+            linkJournalFolder.LinkClicked += linkJournalFolder_LinkClicked;
+            // 
+            // linkResetWatchFolder
+            // 
+            linkResetWatchFolder.AutoSize = true;
+            linkResetWatchFolder.LinkArea = new LinkArea(1, 5);
+            linkResetWatchFolder.Location = new Point(133, 233);
+            linkResetWatchFolder.Name = "linkResetWatchFolder";
+            linkResetWatchFolder.Size = new Size(39, 21);
+            linkResetWatchFolder.TabIndex = 12;
+            linkResetWatchFolder.TabStop = true;
+            linkResetWatchFolder.Text = "(reset)";
+            linkResetWatchFolder.UseCompatibleTextRendering = true;
+            linkResetWatchFolder.LinkClicked += linkResetWatchFolder_LinkClicked;
+            // 
+            // checkHidePlottersFromDominator
+            // 
+            checkHidePlottersFromDominator.AutoSize = true;
+            checkHidePlottersFromDominator.Checked = true;
+            checkHidePlottersFromDominator.CheckState = CheckState.Checked;
+            checkHidePlottersFromDominator.FlatStyle = FlatStyle.System;
+            checkHidePlottersFromDominator.Location = new Point(317, 393);
+            checkHidePlottersFromDominator.Margin = new Padding(4, 3, 4, 3);
+            checkHidePlottersFromDominator.Name = "checkHidePlottersFromDominator";
+            checkHidePlottersFromDominator.Size = new Size(111, 20);
+            checkHidePlottersFromDominator.TabIndex = 22;
+            checkHidePlottersFromDominator.Tag = "hidePlottersFromCombatSuits";
+            checkHidePlottersFromDominator.Text = "Dominator suit";
+            checkHidePlottersFromDominator.UseVisualStyleBackColor = true;
+            // 
+            // checkHidePlottersFromMaverick
+            // 
+            checkHidePlottersFromMaverick.AutoSize = true;
+            checkHidePlottersFromMaverick.Checked = true;
+            checkHidePlottersFromMaverick.CheckState = CheckState.Checked;
+            checkHidePlottersFromMaverick.FlatStyle = FlatStyle.System;
+            checkHidePlottersFromMaverick.Location = new Point(207, 393);
+            checkHidePlottersFromMaverick.Margin = new Padding(4, 3, 4, 3);
+            checkHidePlottersFromMaverick.Name = "checkHidePlottersFromMaverick";
+            checkHidePlottersFromMaverick.Size = new Size(102, 20);
+            checkHidePlottersFromMaverick.TabIndex = 21;
+            checkHidePlottersFromMaverick.Tag = "hidePlottersFromMaverickSuits";
+            checkHidePlottersFromMaverick.Text = "Maverick suit";
+            checkHidePlottersFromMaverick.UseVisualStyleBackColor = true;
+            // 
+            // pictureBox6
+            // 
+            pictureBox6.BackgroundImage = (Image)resources.GetObject("pictureBox6.BackgroundImage");
+            pictureBox6.BackgroundImageLayout = ImageLayout.None;
+            pictureBox6.Location = new Point(271, 204);
+            pictureBox6.Name = "pictureBox6";
+            pictureBox6.Size = new Size(56, 41);
+            pictureBox6.TabIndex = 24;
+            pictureBox6.TabStop = false;
+            // 
+            // checkBox33
+            // 
+            checkBox33.AutoSize = true;
+            checkBox33.FlatStyle = FlatStyle.System;
+            checkBox33.Location = new Point(400, 372);
+            checkBox33.Name = "checkBox33";
+            checkBox33.Size = new Size(241, 20);
+            checkBox33.TabIndex = 35;
+            checkBox33.Tag = "autoShowPlotMassacre_TEST";
+            checkBox33.Text = "Massacre mission helper (Experimental)";
+            checkBox33.UseVisualStyleBackColor = true;
             // 
             // btnAdjustOverlays
             // 
@@ -412,7 +490,7 @@ namespace SrvSurvey
             // 
             numGravityWarningLevel.DecimalPlaces = 2;
             numGravityWarningLevel.Increment = new decimal(new int[] { 1, 0, 0, 65536 });
-            numGravityWarningLevel.Location = new Point(191, 312);
+            numGravityWarningLevel.Location = new Point(199, 312);
             numGravityWarningLevel.Maximum = new decimal(new int[] { 50, 0, 0, 0 });
             numGravityWarningLevel.Name = "numGravityWarningLevel";
             numGravityWarningLevel.Size = new Size(50, 23);
@@ -436,21 +514,6 @@ namespace SrvSurvey
             checkFocusAfterFsdJump.Text = "Set focus on Elite Dangerous after each FSD jump.";
             checkFocusAfterFsdJump.UseVisualStyleBackColor = true;
             // 
-            // checkHidePlottersFromDominator
-            // 
-            checkHidePlottersFromDominator.AutoSize = true;
-            checkHidePlottersFromDominator.Checked = true;
-            checkHidePlottersFromDominator.CheckState = CheckState.Checked;
-            checkHidePlottersFromDominator.FlatStyle = FlatStyle.System;
-            checkHidePlottersFromDominator.Location = new Point(305, 393);
-            checkHidePlottersFromDominator.Margin = new Padding(4, 3, 4, 3);
-            checkHidePlottersFromDominator.Name = "checkHidePlottersFromDominator";
-            checkHidePlottersFromDominator.Size = new Size(111, 20);
-            checkHidePlottersFromDominator.TabIndex = 22;
-            checkHidePlottersFromDominator.Tag = "hidePlottersFromCombatSuits";
-            checkHidePlottersFromDominator.Text = "Dominator suit";
-            checkHidePlottersFromDominator.UseVisualStyleBackColor = true;
-            // 
             // label3
             // 
             label3.AutoSize = true;
@@ -464,7 +527,6 @@ namespace SrvSurvey
             // 
             // panelTheme2
             // 
-            panelTheme2.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             panelTheme2.BackColor = Color.Cyan;
             panelTheme2.BorderStyle = BorderStyle.Fixed3D;
             panelTheme2.Location = new Point(604, 182);
@@ -474,7 +536,6 @@ namespace SrvSurvey
             // 
             // btnTheme2
             // 
-            btnTheme2.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnTheme2.FlatStyle = FlatStyle.System;
             btnTheme2.Location = new Point(478, 181);
             btnTheme2.Name = "btnTheme2";
@@ -511,7 +572,6 @@ namespace SrvSurvey
             // 
             // panelTheme
             // 
-            panelTheme.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             panelTheme.BackColor = Color.DarkOrange;
             panelTheme.BorderStyle = BorderStyle.Fixed3D;
             panelTheme.Location = new Point(603, 124);
@@ -521,7 +581,6 @@ namespace SrvSurvey
             // 
             // btnTheme
             // 
-            btnTheme.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnTheme.FlatStyle = FlatStyle.System;
             btnTheme.Location = new Point(478, 123);
             btnTheme.Name = "btnTheme";
@@ -599,16 +658,6 @@ namespace SrvSurvey
             checkBox13.Text = "Show flight warnings";
             checkBox13.UseVisualStyleBackColor = true;
             // 
-            // pictureBox6
-            // 
-            pictureBox6.BackgroundImage = (Image)resources.GetObject("pictureBox6.BackgroundImage");
-            pictureBox6.BackgroundImageLayout = ImageLayout.None;
-            pictureBox6.Location = new Point(227, 204);
-            pictureBox6.Name = "pictureBox6";
-            pictureBox6.Size = new Size(56, 41);
-            pictureBox6.TabIndex = 24;
-            pictureBox6.TabStop = false;
-            // 
             // checkHideJournalTimer
             // 
             checkHideJournalTimer.AutoSize = true;
@@ -618,10 +667,10 @@ namespace SrvSurvey
             checkHideJournalTimer.Location = new Point(10, 204);
             checkHideJournalTimer.Margin = new Padding(4, 3, 4, 3);
             checkHideJournalTimer.Name = "checkHideJournalTimer";
-            checkHideJournalTimer.Size = new Size(226, 20);
+            checkHideJournalTimer.Size = new Size(265, 20);
             checkHideJournalTimer.TabIndex = 10;
             checkHideJournalTimer.Tag = "hideJournalWriteTimer";
-            checkHideJournalTimer.Text = "Hide 5 second journal file write timer";
+            checkHideJournalTimer.Text = "Hide 5 second journal file write timer ➟➟➟";
             checkHideJournalTimer.UseVisualStyleBackColor = true;
             // 
             // btnChooseJournalFolder
@@ -634,19 +683,6 @@ namespace SrvSurvey
             btnChooseJournalFolder.Text = "...";
             btnChooseJournalFolder.UseVisualStyleBackColor = true;
             btnChooseJournalFolder.Click += btnChooseJournalFolder_Click;
-            // 
-            // linkJournalFolder
-            // 
-            linkJournalFolder.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            linkJournalFolder.BorderStyle = BorderStyle.FixedSingle;
-            linkJournalFolder.Location = new Point(39, 253);
-            linkJournalFolder.Name = "linkJournalFolder";
-            linkJournalFolder.Size = new Size(600, 35);
-            linkJournalFolder.TabIndex = 14;
-            linkJournalFolder.TabStop = true;
-            linkJournalFolder.Tag = "watchedJournalFolder";
-            linkJournalFolder.Text = "C:\\xxx\\Pictures\\Frontier Developments\\Elite Dangerous\\";
-            linkJournalFolder.LinkClicked += linkJournalFolder_LinkClicked;
             // 
             // label11
             // 
@@ -693,21 +729,6 @@ namespace SrvSurvey
             label4.Size = new Size(358, 34);
             label4.TabIndex = 18;
             label4.Text = "Players using mouse and keyboard have reported some issues with overlay windows trapping focus from the game.";
-            // 
-            // checkHidePlottersFromMaverick
-            // 
-            checkHidePlottersFromMaverick.AutoSize = true;
-            checkHidePlottersFromMaverick.Checked = true;
-            checkHidePlottersFromMaverick.CheckState = CheckState.Checked;
-            checkHidePlottersFromMaverick.FlatStyle = FlatStyle.System;
-            checkHidePlottersFromMaverick.Location = new Point(195, 393);
-            checkHidePlottersFromMaverick.Margin = new Padding(4, 3, 4, 3);
-            checkHidePlottersFromMaverick.Name = "checkHidePlottersFromMaverick";
-            checkHidePlottersFromMaverick.Size = new Size(102, 20);
-            checkHidePlottersFromMaverick.TabIndex = 21;
-            checkHidePlottersFromMaverick.Tag = "hidePlottersFromMaverickSuits";
-            checkHidePlottersFromMaverick.Text = "Maverick suit";
-            checkHidePlottersFromMaverick.UseVisualStyleBackColor = true;
             // 
             // checkFocusOnMinimize
             // 
@@ -759,22 +780,8 @@ namespace SrvSurvey
             label1.TabIndex = 0;
             label1.Text = "Preferred Commander: (use only to force a specific account)";
             // 
-            // linkResetWatchFolder
-            // 
-            linkResetWatchFolder.AutoSize = true;
-            linkResetWatchFolder.LinkArea = new LinkArea(1, 5);
-            linkResetWatchFolder.Location = new Point(129, 233);
-            linkResetWatchFolder.Name = "linkResetWatchFolder";
-            linkResetWatchFolder.Size = new Size(39, 21);
-            linkResetWatchFolder.TabIndex = 12;
-            linkResetWatchFolder.TabStop = true;
-            linkResetWatchFolder.Text = "(reset)";
-            linkResetWatchFolder.UseCompatibleTextRendering = true;
-            linkResetWatchFolder.LinkClicked += linkResetWatchFolder_LinkClicked;
-            // 
             // linkResetTheme2
             // 
-            linkResetTheme2.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             linkResetTheme2.AutoSize = true;
             linkResetTheme2.LinkArea = new LinkArea(1, 5);
             linkResetTheme2.Location = new Point(601, 213);
@@ -788,7 +795,6 @@ namespace SrvSurvey
             // 
             // linkResetTheme
             // 
-            linkResetTheme.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             linkResetTheme.AutoSize = true;
             linkResetTheme.LinkArea = new LinkArea(1, 5);
             linkResetTheme.Location = new Point(600, 155);
@@ -876,7 +882,7 @@ namespace SrvSurvey
             // numMinBioDuration
             // 
             numMinBioDuration.Enabled = false;
-            numMinBioDuration.Location = new Point(275, 220);
+            numMinBioDuration.Location = new Point(285, 221);
             numMinBioDuration.Maximum = new decimal(new int[] { 600, 0, 0, 0 });
             numMinBioDuration.Name = "numMinBioDuration";
             numMinBioDuration.Size = new Size(51, 23);
@@ -939,7 +945,7 @@ namespace SrvSurvey
             // label15
             // 
             label15.AutoSize = true;
-            label15.Location = new Point(330, 222);
+            label15.Location = new Point(348, 223);
             label15.Name = "label15";
             label15.Size = new Size(53, 15);
             label15.TabIndex = 10;
@@ -1233,6 +1239,7 @@ namespace SrvSurvey
             // tabPage3
             // 
             tabPage3.BorderStyle = BorderStyle.Fixed3D;
+            tabPage3.Controls.Add(comboGuardianWindowSize);
             tabPage3.Controls.Add(checkBox26);
             tabPage3.Controls.Add(checkBox25);
             tabPage3.Controls.Add(numAltGamma);
@@ -1242,7 +1249,6 @@ namespace SrvSurvey
             tabPage3.Controls.Add(checkBox14);
             tabPage3.Controls.Add(checkBox3);
             tabPage3.Controls.Add(label9);
-            tabPage3.Controls.Add(comboGuardianWindowSize);
             tabPage3.Controls.Add(checkBox2);
             tabPage3.Controls.Add(label8);
             tabPage3.Controls.Add(label7);
@@ -1256,6 +1262,18 @@ namespace SrvSurvey
             tabPage3.Size = new Size(651, 448);
             tabPage3.TabIndex = 2;
             tabPage3.Text = "Guardian sites";
+            // 
+            // comboGuardianWindowSize
+            // 
+            comboGuardianWindowSize.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboGuardianWindowSize.FlatStyle = FlatStyle.System;
+            comboGuardianWindowSize.FormattingEnabled = true;
+            comboGuardianWindowSize.Items.AddRange(new object[] { "Small - 300 x 400", "Medium - 500 x 500", "Large - 600 x 700", "Huge - 800 x 1000", "Massive - 1200 x 1200" });
+            comboGuardianWindowSize.Location = new Point(89, 252);
+            comboGuardianWindowSize.Name = "comboGuardianWindowSize";
+            comboGuardianWindowSize.Size = new Size(177, 23);
+            comboGuardianWindowSize.TabIndex = 13;
+            comboGuardianWindowSize.Tag = "idxGuardianPlotter";
             // 
             // checkBox26
             // 
@@ -1373,18 +1391,6 @@ namespace SrvSurvey
             label9.Size = new Size(72, 15);
             label9.TabIndex = 12;
             label9.Text = "Overlay size:";
-            // 
-            // comboGuardianWindowSize
-            // 
-            comboGuardianWindowSize.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboGuardianWindowSize.FlatStyle = FlatStyle.System;
-            comboGuardianWindowSize.FormattingEnabled = true;
-            comboGuardianWindowSize.Items.AddRange(new object[] { "Small - 300 x 400", "Medium - 500 x 500", "Large - 600 x 700", "Huge - 800 x 1000", "Massive - 1200 x 1200" });
-            comboGuardianWindowSize.Location = new Point(89, 252);
-            comboGuardianWindowSize.Name = "comboGuardianWindowSize";
-            comboGuardianWindowSize.Size = new Size(177, 23);
-            comboGuardianWindowSize.TabIndex = 13;
-            comboGuardianWindowSize.Tag = "idxGuardianPlotter";
             // 
             // checkBox2
             // 
@@ -1753,7 +1759,7 @@ namespace SrvSurvey
             // numericUpDown1
             // 
             numericUpDown1.Increment = new decimal(new int[] { 10000, 0, 0, 0 });
-            numericUpDown1.Location = new Point(183, 201);
+            numericUpDown1.Location = new Point(189, 201);
             numericUpDown1.Maximum = new decimal(new int[] { 6000000, 0, 0, 0 });
             numericUpDown1.Name = "numericUpDown1";
             numericUpDown1.Size = new Size(88, 23);
@@ -1766,7 +1772,7 @@ namespace SrvSurvey
             // numMinScanValue
             // 
             numMinScanValue.Increment = new decimal(new int[] { 100000, 0, 0, 0 });
-            numMinScanValue.Location = new Point(281, 176);
+            numMinScanValue.Location = new Point(284, 176);
             numMinScanValue.Maximum = new decimal(new int[] { 6000000, 0, 0, 0 });
             numMinScanValue.Name = "numMinScanValue";
             numMinScanValue.Size = new Size(88, 23);
@@ -1942,7 +1948,7 @@ namespace SrvSurvey
             // label13
             // 
             label13.AutoSize = true;
-            label13.Location = new Point(277, 203);
+            label13.Location = new Point(289, 203);
             label13.Name = "label13";
             label13.Size = new Size(114, 15);
             label13.TabIndex = 11;
@@ -1965,7 +1971,7 @@ namespace SrvSurvey
             // label10
             // 
             label10.AutoSize = true;
-            label10.Location = new Point(375, 178);
+            label10.Location = new Point(379, 179);
             label10.Name = "label10";
             label10.Size = new Size(42, 15);
             label10.TabIndex = 8;
@@ -2049,6 +2055,7 @@ namespace SrvSurvey
             // tabPage7
             // 
             tabPage7.BorderStyle = BorderStyle.Fixed3D;
+            tabPage7.Controls.Add(numPriorScanMinValue);
             tabPage7.Controls.Add(pictureBox7);
             tabPage7.Controls.Add(checkUseBioData);
             tabPage7.Controls.Add(radioUseRadius);
@@ -2057,7 +2064,6 @@ namespace SrvSurvey
             tabPage7.Controls.Add(checkUseSystemData);
             tabPage7.Controls.Add(lblPriorScansCredits);
             tabPage7.Controls.Add(checkSkipCheapSignals);
-            tabPage7.Controls.Add(numPriorScanMinValue);
             tabPage7.Controls.Add(checkShowPriorScans);
             tabPage7.Controls.Add(checkHideMyOwnCanonnSignals);
             tabPage7.Controls.Add(pictureBox9);
@@ -2068,6 +2074,19 @@ namespace SrvSurvey
             tabPage7.Size = new Size(651, 448);
             tabPage7.TabIndex = 6;
             tabPage7.Text = "External Data";
+            // 
+            // numPriorScanMinValue
+            // 
+            numPriorScanMinValue.Increment = new decimal(new int[] { 100000, 0, 0, 0 });
+            numPriorScanMinValue.Location = new Point(248, 83);
+            numPriorScanMinValue.Maximum = new decimal(new int[] { 6000000, 0, 0, 0 });
+            numPriorScanMinValue.Name = "numPriorScanMinValue";
+            numPriorScanMinValue.Size = new Size(80, 23);
+            numPriorScanMinValue.TabIndex = 4;
+            numPriorScanMinValue.Tag = "skipPriorScansLowValueAmount";
+            numPriorScanMinValue.TextAlign = HorizontalAlignment.Right;
+            numPriorScanMinValue.ThousandsSeparator = true;
+            numPriorScanMinValue.Value = new decimal(new int[] { 2000000, 0, 0, 0 });
             // 
             // pictureBox7
             // 
@@ -2146,7 +2165,7 @@ namespace SrvSurvey
             // lblPriorScansCredits
             // 
             lblPriorScansCredits.AutoSize = true;
-            lblPriorScansCredits.Location = new Point(326, 85);
+            lblPriorScansCredits.Location = new Point(332, 85);
             lblPriorScansCredits.Name = "lblPriorScansCredits";
             lblPriorScansCredits.Size = new Size(42, 15);
             lblPriorScansCredits.TabIndex = 5;
@@ -2167,19 +2186,6 @@ namespace SrvSurvey
             checkSkipCheapSignals.Text = "Skip signals with reward below:";
             checkSkipCheapSignals.UseVisualStyleBackColor = true;
             checkSkipCheapSignals.CheckedChanged += checkSkipCheapSignals_CheckedChanged;
-            // 
-            // numPriorScanMinValue
-            // 
-            numPriorScanMinValue.Increment = new decimal(new int[] { 100000, 0, 0, 0 });
-            numPriorScanMinValue.Location = new Point(244, 83);
-            numPriorScanMinValue.Maximum = new decimal(new int[] { 6000000, 0, 0, 0 });
-            numPriorScanMinValue.Name = "numPriorScanMinValue";
-            numPriorScanMinValue.Size = new Size(80, 23);
-            numPriorScanMinValue.TabIndex = 4;
-            numPriorScanMinValue.Tag = "skipPriorScansLowValueAmount";
-            numPriorScanMinValue.TextAlign = HorizontalAlignment.Right;
-            numPriorScanMinValue.ThousandsSeparator = true;
-            numPriorScanMinValue.Value = new decimal(new int[] { 2000000, 0, 0, 0 });
             // 
             // checkShowPriorScans
             // 
@@ -2232,11 +2238,11 @@ namespace SrvSurvey
             // 
             tabSettlements.BackColor = SystemColors.Control;
             tabSettlements.BorderStyle = BorderStyle.Fixed3D;
+            tabSettlements.Controls.Add(numHumanSitePlotterWidth);
+            tabSettlements.Controls.Add(numHumanSitePlotterHeight);
             tabSettlements.Controls.Add(groupBox2);
             tabSettlements.Controls.Add(groupBox1);
-            tabSettlements.Controls.Add(numHumanSitePlotterHeight);
             tabSettlements.Controls.Add(label25);
-            tabSettlements.Controls.Add(numHumanSitePlotterWidth);
             tabSettlements.Controls.Add(label24);
             tabSettlements.Controls.Add(checkBox22);
             tabSettlements.Controls.Add(checkHumanSitePlotter);
@@ -2246,6 +2252,36 @@ namespace SrvSurvey
             tabSettlements.Size = new Size(651, 448);
             tabSettlements.TabIndex = 7;
             tabSettlements.Text = "Settlements";
+            // 
+            // numHumanSitePlotterWidth
+            // 
+            numHumanSitePlotterWidth.Increment = new decimal(new int[] { 100, 0, 0, 0 });
+            numHumanSitePlotterWidth.Location = new Point(165, 37);
+            numHumanSitePlotterWidth.Maximum = new decimal(new int[] { 1000, 0, 0, 0 });
+            numHumanSitePlotterWidth.Minimum = new decimal(new int[] { 5, 0, 0, 65536 });
+            numHumanSitePlotterWidth.Name = "numHumanSitePlotterWidth";
+            numHumanSitePlotterWidth.Size = new Size(50, 23);
+            numHumanSitePlotterWidth.TabIndex = 13;
+            numHumanSitePlotterWidth.Tag = "plotHumanSiteWidth";
+            numHumanSitePlotterWidth.TextAlign = HorizontalAlignment.Right;
+            numHumanSitePlotterWidth.ThousandsSeparator = true;
+            numHumanSitePlotterWidth.Value = new decimal(new int[] { 500, 0, 0, 0 });
+            numHumanSitePlotterWidth.ValueChanged += numHumanSitePlotterSize_ValueChanged;
+            // 
+            // numHumanSitePlotterHeight
+            // 
+            numHumanSitePlotterHeight.Increment = new decimal(new int[] { 100, 0, 0, 0 });
+            numHumanSitePlotterHeight.Location = new Point(273, 37);
+            numHumanSitePlotterHeight.Maximum = new decimal(new int[] { 1000, 0, 0, 0 });
+            numHumanSitePlotterHeight.Minimum = new decimal(new int[] { 5, 0, 0, 65536 });
+            numHumanSitePlotterHeight.Name = "numHumanSitePlotterHeight";
+            numHumanSitePlotterHeight.Size = new Size(50, 23);
+            numHumanSitePlotterHeight.TabIndex = 15;
+            numHumanSitePlotterHeight.Tag = "plotHumanSiteHeight";
+            numHumanSitePlotterHeight.TextAlign = HorizontalAlignment.Right;
+            numHumanSitePlotterHeight.ThousandsSeparator = true;
+            numHumanSitePlotterHeight.Value = new decimal(new int[] { 600, 0, 0, 0 });
+            numHumanSitePlotterHeight.ValueChanged += numHumanSitePlotterSize_ValueChanged;
             // 
             // groupBox2
             // 
@@ -2276,7 +2312,7 @@ namespace SrvSurvey
             // 
             checkBox31.AutoSize = true;
             checkBox31.FlatStyle = FlatStyle.System;
-            checkBox31.Location = new Point(169, 22);
+            checkBox31.Location = new Point(197, 22);
             checkBox31.Name = "checkBox31";
             checkBox31.Size = new Size(108, 20);
             checkBox31.TabIndex = 10;
@@ -2288,7 +2324,7 @@ namespace SrvSurvey
             // 
             checkBox30.AutoSize = true;
             checkBox30.FlatStyle = FlatStyle.System;
-            checkBox30.Location = new Point(74, 22);
+            checkBox30.Location = new Point(89, 22);
             checkBox30.Name = "checkBox30";
             checkBox30.Size = new Size(102, 20);
             checkBox30.TabIndex = 9;
@@ -2310,14 +2346,14 @@ namespace SrvSurvey
             // 
             // groupBox1
             // 
-            groupBox1.Controls.Add(label21);
-            groupBox1.Controls.Add(numericUpDown2);
-            groupBox1.Controls.Add(label22);
+            groupBox1.Controls.Add(numericUpDown4);
             groupBox1.Controls.Add(numericUpDown3);
-            groupBox1.Controls.Add(label23);
+            groupBox1.Controls.Add(numericUpDown2);
             groupBox1.Controls.Add(numericUpDown6);
             groupBox1.Controls.Add(numericUpDown5);
-            groupBox1.Controls.Add(numericUpDown4);
+            groupBox1.Controls.Add(label21);
+            groupBox1.Controls.Add(label22);
+            groupBox1.Controls.Add(label23);
             groupBox1.Controls.Add(checkBox19);
             groupBox1.Controls.Add(checkBox12);
             groupBox1.FlatStyle = FlatStyle.System;
@@ -2328,40 +2364,20 @@ namespace SrvSurvey
             groupBox1.TabStop = false;
             groupBox1.Text = "Zoom levels:";
             // 
-            // label21
+            // numericUpDown4
             // 
-            label21.AutoSize = true;
-            label21.FlatStyle = FlatStyle.System;
-            label21.Location = new Point(6, 19);
-            label21.Name = "label21";
-            label21.Size = new Size(93, 15);
-            label21.TabIndex = 1;
-            label21.Text = "Ship zoom level:";
-            // 
-            // numericUpDown2
-            // 
-            numericUpDown2.DecimalPlaces = 2;
-            numericUpDown2.Increment = new decimal(new int[] { 5, 0, 0, 65536 });
-            numericUpDown2.Location = new Point(101, 17);
-            numericUpDown2.Maximum = new decimal(new int[] { 10, 0, 0, 0 });
-            numericUpDown2.Minimum = new decimal(new int[] { 5, 0, 0, 65536 });
-            numericUpDown2.Name = "numericUpDown2";
-            numericUpDown2.Size = new Size(50, 23);
-            numericUpDown2.TabIndex = 2;
-            numericUpDown2.Tag = "humanSiteZoomShip";
-            numericUpDown2.TextAlign = HorizontalAlignment.Right;
-            numericUpDown2.ThousandsSeparator = true;
-            numericUpDown2.Value = new decimal(new int[] { 1, 0, 0, 0 });
-            // 
-            // label22
-            // 
-            label22.AutoSize = true;
-            label22.FlatStyle = FlatStyle.System;
-            label22.Location = new Point(169, 19);
-            label22.Name = "label22";
-            label22.Size = new Size(90, 15);
-            label22.TabIndex = 3;
-            label22.Text = "SRV zoom level:";
+            numericUpDown4.DecimalPlaces = 2;
+            numericUpDown4.Increment = new decimal(new int[] { 5, 0, 0, 65536 });
+            numericUpDown4.Location = new Point(463, 17);
+            numericUpDown4.Maximum = new decimal(new int[] { 10, 0, 0, 0 });
+            numericUpDown4.Minimum = new decimal(new int[] { 5, 0, 0, 65536 });
+            numericUpDown4.Name = "numericUpDown4";
+            numericUpDown4.Size = new Size(50, 23);
+            numericUpDown4.TabIndex = 6;
+            numericUpDown4.Tag = "humanSiteZoomFoot";
+            numericUpDown4.TextAlign = HorizontalAlignment.Right;
+            numericUpDown4.ThousandsSeparator = true;
+            numericUpDown4.Value = new decimal(new int[] { 2, 0, 0, 0 });
             // 
             // numericUpDown3
             // 
@@ -2378,15 +2394,20 @@ namespace SrvSurvey
             numericUpDown3.ThousandsSeparator = true;
             numericUpDown3.Value = new decimal(new int[] { 1, 0, 0, 0 });
             // 
-            // label23
+            // numericUpDown2
             // 
-            label23.AutoSize = true;
-            label23.FlatStyle = FlatStyle.System;
-            label23.Location = new Point(344, 19);
-            label23.Name = "label23";
-            label23.Size = new Size(113, 15);
-            label23.TabIndex = 5;
-            label23.Text = "On-foot zoom level:";
+            numericUpDown2.DecimalPlaces = 2;
+            numericUpDown2.Increment = new decimal(new int[] { 5, 0, 0, 65536 });
+            numericUpDown2.Location = new Point(104, 17);
+            numericUpDown2.Maximum = new decimal(new int[] { 10, 0, 0, 0 });
+            numericUpDown2.Minimum = new decimal(new int[] { 5, 0, 0, 65536 });
+            numericUpDown2.Name = "numericUpDown2";
+            numericUpDown2.Size = new Size(50, 23);
+            numericUpDown2.TabIndex = 2;
+            numericUpDown2.Tag = "humanSiteZoomShip";
+            numericUpDown2.TextAlign = HorizontalAlignment.Right;
+            numericUpDown2.ThousandsSeparator = true;
+            numericUpDown2.Value = new decimal(new int[] { 1, 0, 0, 0 });
             // 
             // numericUpDown6
             // 
@@ -2407,7 +2428,7 @@ namespace SrvSurvey
             // 
             numericUpDown5.DecimalPlaces = 2;
             numericUpDown5.Increment = new decimal(new int[] { 5, 0, 0, 65536 });
-            numericUpDown5.Location = new Point(193, 46);
+            numericUpDown5.Location = new Point(204, 46);
             numericUpDown5.Maximum = new decimal(new int[] { 10, 0, 0, 0 });
             numericUpDown5.Minimum = new decimal(new int[] { 5, 0, 0, 65536 });
             numericUpDown5.Name = "numericUpDown5";
@@ -2418,20 +2439,35 @@ namespace SrvSurvey
             numericUpDown5.ThousandsSeparator = true;
             numericUpDown5.Value = new decimal(new int[] { 6, 0, 0, 0 });
             // 
-            // numericUpDown4
+            // label21
             // 
-            numericUpDown4.DecimalPlaces = 2;
-            numericUpDown4.Increment = new decimal(new int[] { 5, 0, 0, 65536 });
-            numericUpDown4.Location = new Point(463, 17);
-            numericUpDown4.Maximum = new decimal(new int[] { 10, 0, 0, 0 });
-            numericUpDown4.Minimum = new decimal(new int[] { 5, 0, 0, 65536 });
-            numericUpDown4.Name = "numericUpDown4";
-            numericUpDown4.Size = new Size(50, 23);
-            numericUpDown4.TabIndex = 6;
-            numericUpDown4.Tag = "humanSiteZoomFoot";
-            numericUpDown4.TextAlign = HorizontalAlignment.Right;
-            numericUpDown4.ThousandsSeparator = true;
-            numericUpDown4.Value = new decimal(new int[] { 2, 0, 0, 0 });
+            label21.AutoSize = true;
+            label21.FlatStyle = FlatStyle.System;
+            label21.Location = new Point(6, 19);
+            label21.Name = "label21";
+            label21.Size = new Size(93, 15);
+            label21.TabIndex = 1;
+            label21.Text = "Ship zoom level:";
+            // 
+            // label22
+            // 
+            label22.AutoSize = true;
+            label22.FlatStyle = FlatStyle.System;
+            label22.Location = new Point(169, 19);
+            label22.Name = "label22";
+            label22.Size = new Size(90, 15);
+            label22.TabIndex = 3;
+            label22.Text = "SRV zoom level:";
+            // 
+            // label23
+            // 
+            label23.AutoSize = true;
+            label23.FlatStyle = FlatStyle.System;
+            label23.Location = new Point(344, 19);
+            label23.Name = "label23";
+            label23.Size = new Size(113, 15);
+            label23.TabIndex = 5;
+            label23.Text = "On-foot zoom level:";
             // 
             // checkBox19
             // 
@@ -2457,21 +2493,6 @@ namespace SrvSurvey
             checkBox12.Text = "Auto-zoom if inside buildings:";
             checkBox12.UseVisualStyleBackColor = true;
             // 
-            // numHumanSitePlotterHeight
-            // 
-            numHumanSitePlotterHeight.Increment = new decimal(new int[] { 100, 0, 0, 0 });
-            numHumanSitePlotterHeight.Location = new Point(273, 37);
-            numHumanSitePlotterHeight.Maximum = new decimal(new int[] { 1000, 0, 0, 0 });
-            numHumanSitePlotterHeight.Minimum = new decimal(new int[] { 5, 0, 0, 65536 });
-            numHumanSitePlotterHeight.Name = "numHumanSitePlotterHeight";
-            numHumanSitePlotterHeight.Size = new Size(50, 23);
-            numHumanSitePlotterHeight.TabIndex = 15;
-            numHumanSitePlotterHeight.Tag = "plotHumanSiteHeight";
-            numHumanSitePlotterHeight.TextAlign = HorizontalAlignment.Right;
-            numHumanSitePlotterHeight.ThousandsSeparator = true;
-            numHumanSitePlotterHeight.Value = new decimal(new int[] { 600, 0, 0, 0 });
-            numHumanSitePlotterHeight.ValueChanged += numHumanSitePlotterSize_ValueChanged;
-            // 
             // label25
             // 
             label25.AutoSize = true;
@@ -2481,21 +2502,6 @@ namespace SrvSurvey
             label25.Size = new Size(46, 15);
             label25.TabIndex = 14;
             label25.Text = "Height:";
-            // 
-            // numHumanSitePlotterWidth
-            // 
-            numHumanSitePlotterWidth.Increment = new decimal(new int[] { 100, 0, 0, 0 });
-            numHumanSitePlotterWidth.Location = new Point(165, 37);
-            numHumanSitePlotterWidth.Maximum = new decimal(new int[] { 1000, 0, 0, 0 });
-            numHumanSitePlotterWidth.Minimum = new decimal(new int[] { 5, 0, 0, 65536 });
-            numHumanSitePlotterWidth.Name = "numHumanSitePlotterWidth";
-            numHumanSitePlotterWidth.Size = new Size(50, 23);
-            numHumanSitePlotterWidth.TabIndex = 13;
-            numHumanSitePlotterWidth.Tag = "plotHumanSiteWidth";
-            numHumanSitePlotterWidth.TextAlign = HorizontalAlignment.Right;
-            numHumanSitePlotterWidth.ThousandsSeparator = true;
-            numHumanSitePlotterWidth.Value = new decimal(new int[] { 500, 0, 0, 0 });
-            numHumanSitePlotterWidth.ValueChanged += numHumanSitePlotterSize_ValueChanged;
             // 
             // label24
             // 
@@ -2642,18 +2648,6 @@ namespace SrvSurvey
             // 
             colorDialog.Color = Color.Yellow;
             // 
-            // checkBox33
-            // 
-            checkBox33.AutoSize = true;
-            checkBox33.FlatStyle = FlatStyle.System;
-            checkBox33.Location = new Point(405, 372);
-            checkBox33.Name = "checkBox33";
-            checkBox33.Size = new Size(241, 20);
-            checkBox33.TabIndex = 35;
-            checkBox33.Tag = "autoShowPlotMassacre_TEST";
-            checkBox33.Text = "Massacre mission helper (Experimental)";
-            checkBox33.UseVisualStyleBackColor = true;
-            // 
             // FormSettings
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -2675,9 +2669,9 @@ namespace SrvSurvey
             panel1.ResumeLayout(false);
             tabPage1.ResumeLayout(false);
             tabPage1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox6).EndInit();
             ((System.ComponentModel.ISupportInitialize)numOpacity).EndInit();
             ((System.ComponentModel.ISupportInitialize)numGravityWarningLevel).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox6).EndInit();
             ((System.ComponentModel.ISupportInitialize)trackOpacity).EndInit();
             tabControl.ResumeLayout(false);
             tabPage4.ResumeLayout(false);
@@ -2714,23 +2708,23 @@ namespace SrvSurvey
             ((System.ComponentModel.ISupportInitialize)pictureBox4).EndInit();
             tabPage7.ResumeLayout(false);
             tabPage7.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox7).EndInit();
             ((System.ComponentModel.ISupportInitialize)numPriorScanMinValue).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox7).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox9).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox8).EndInit();
             tabSettlements.ResumeLayout(false);
             tabSettlements.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numHumanSitePlotterWidth).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numHumanSitePlotterHeight).EndInit();
             groupBox2.ResumeLayout(false);
             groupBox2.PerformLayout();
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)numericUpDown2).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown4).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown3).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown2).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown6).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown5).EndInit();
-            ((System.ComponentModel.ISupportInitialize)numericUpDown4).EndInit();
-            ((System.ComponentModel.ISupportInitialize)numHumanSitePlotterHeight).EndInit();
-            ((System.ComponentModel.ISupportInitialize)numHumanSitePlotterWidth).EndInit();
             tabKeyChords.ResumeLayout(false);
             tabKeyChords.PerformLayout();
             tabPage2.ResumeLayout(false);

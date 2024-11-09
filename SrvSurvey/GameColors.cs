@@ -307,9 +307,10 @@ namespace SrvSurvey
 
         internal class Bio
         {
+            public static Color gold = Color.Gold;
             public static Brush brushPrediction = Brushes.DimGray;
             public static Brush brushPredictionHatch = new HatchBrush(HatchStyle.DarkUpwardDiagonal, Color.FromArgb(242, 64, 64, 64), Color.Transparent);
-            public static Brush brushGold = Brushes.Gold;
+            public static Brush brushGold = new SolidBrush(gold);
             public static Brush brushWhite = Brushes.White;
 
             // NOTE: Grey intentionally matches Blue
@@ -317,7 +318,7 @@ namespace SrvSurvey
             public static Dictionary<VolColor, Pen> volEdge = new Dictionary<VolColor, Pen>()
             {
                 { VolColor.Blue, newPen(Color.FromArgb(96, DarkCyan), 1.9f, DashStyle.Dot) },
-                { VolColor.Gold, newPen(Color.FromArgb(96, Color.Gold), 1.9f, DashStyle.Dot) },
+                { VolColor.Gold, newPen(Color.FromArgb(96, gold), 1.9f, DashStyle.Dot) },
                 { VolColor.White, newPen(Color.FromArgb(96, Color.White), 1.9f, DashStyle.Dot) },
                 { VolColor.Orange, newPen(Color.FromArgb(96, Orange), 1.9f, DashStyle.Dot) },
             };
@@ -325,7 +326,7 @@ namespace SrvSurvey
             public static Dictionary<VolColor, PenBrush> volMin = new Dictionary<VolColor, PenBrush>()
             {
                 { VolColor.Blue, new PenBrush(newPen(DarkCyan, 1), brushCyan) },
-                { VolColor.Gold, new PenBrush(newPen(Color.Gold, 1), Brushes.DarkGoldenrod) },
+                { VolColor.Gold, new PenBrush(newPen(gold, 1), Brushes.DarkGoldenrod) },
                 { VolColor.White, new PenBrush(newPen(Color.Gray, 1), new SolidBrush(Color.FromArgb(255, 244, 244, 244))) },
                 { VolColor.Orange, new PenBrush(newPen(OrangeDim, 1), GameColors.brushGameOrange) },
             };

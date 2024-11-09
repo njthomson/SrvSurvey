@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using SrvSurvey.canonn;
+using SrvSurvey.forms;
 using SrvSurvey.net;
 using SrvSurvey.net.EDSM;
 using SrvSurvey.units;
@@ -133,6 +134,7 @@ namespace SrvSurvey.game
         public string shipType;
         public float shipMaxJump;
         public SettlementMatCollectionData? matStatsTracker;
+        private string? lastDestination;
 
         /// <summary>
         /// An arbitrary point on a planet surface. Doesn't really matter where, so long as it isn't too far away.
@@ -342,6 +344,12 @@ namespace SrvSurvey.game
                 this.processDockedOnNextStatusChange = false;
                 if (status.Docked)
                     onDockedWhenSafe(CalcMethod.ManualDock, false);
+            }
+
+            if (this.lastDestination != status?.Destination?.Name)
+            {
+                FormPredictions.invalidate();
+                this.lastDestination = status?.Destination?.Name;
             }
 
             this.checkModeChange();
@@ -2500,7 +2508,6 @@ namespace SrvSurvey.game
 
             // force a mode change to update ux
             fireUpdate(true);
-
         }
 
         private void onJournalEntry(SellOrganicData entry)

@@ -2290,6 +2290,7 @@ namespace SrvSurvey.game
                 FormShowCodex.activeForm?.prepAllSpecies();
                 FormGenus.activeForm?.populateGenus();
                 Program.invalidateActivePlotters();
+                FormPredictions.refresh();
             });
         }
 
@@ -2447,6 +2448,34 @@ namespace SrvSurvey.game
         public bool isFirst { get => (this.isNewEntry && Game.settings.highlightRegionalFirsts) || this.isCmdrFirst; }
 
         [JsonIgnore]
+        public string prefix
+        {
+            get
+            {
+                //if (this.isRegionalNew) ?? 
+                //    return "☀ ";
+                if (this.isCmdrFirst)
+                    return "⚑ ";
+                else if (this.isNewEntry)
+                    return "⚐ ";
+                else
+                    return "";
+            }
+        }
+
+        [JsonIgnore]
+        public VolColor volCol
+        {
+            get
+            {
+                if (this.isFirst)
+                    return VolColor.Gold;
+                else
+                    return VolColor.Orange;
+            }
+        }
+
+        [JsonIgnore]
         public int range { get => BioScan.getRange(this.genus); }
 
         public void lookupMissingNamesIfNeeded()
@@ -2498,6 +2527,33 @@ namespace SrvSurvey.game
         }
 
         public bool isGold { get => hasCmdrNew || (Game.settings.highlightRegionalFirsts && hasCmdrRegionalNew); }
+
+        [JsonIgnore]
+        public VolColor volCol
+        {
+            get
+            {
+                if (this.isGold)
+                    return VolColor.Gold;
+                else
+                    return VolColor.Orange;
+            }
+        }
+
+        public string prefix
+        {
+            get
+            {
+                if (this.hasRegionalNew)
+                    return "☀ ";
+                else if (this.hasCmdrNew)
+                    return "⚑ ";
+                else if (this.hasCmdrRegionalNew)
+                    return "⚐ ";
+                else
+                    return "";
+            }
+        }
     }
 
     internal class SystemVariantPrediction
@@ -2516,6 +2572,21 @@ namespace SrvSurvey.game
         }
 
         public bool isGold { get => isCmdrNew || (Game.settings.highlightRegionalFirsts && isCmdrRegionalNew); }
+
+        public string prefix
+        {
+            get
+            {
+                if (this.isRegionalNew)
+                    return "☀ ";
+                else if (this.isCmdrNew)
+                    return "⚑ ";
+                else if (this.isCmdrRegionalNew)
+                    return "⚐ ";
+                else
+                    return "";
+            }
+        }
     }
 
 }

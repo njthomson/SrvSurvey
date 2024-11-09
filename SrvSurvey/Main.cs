@@ -1,5 +1,6 @@
 ﻿using BioCriterias;
 using SrvSurvey.canonn;
+using SrvSurvey.forms;
 using SrvSurvey.game;
 using SrvSurvey.net;
 using SrvSurvey.units;
@@ -946,6 +947,8 @@ namespace SrvSurvey
                 FormBeacons.activeForm.StarSystemLookup_starSystemMatch(systemMatch);
             }
 
+            FormPredictions.refresh();
+
             if (Game.settings.focusGameAfterFsdJump)
             {
                 Game.log($"Setting focus to game after arriving in: {entry.StarSystem} ({entry.SystemAddress})");
@@ -1222,7 +1225,7 @@ namespace SrvSurvey
         {
             // a periodic timer to check the location of the game window, repositioning plotters if needed
             var rect = Elite.getWindowRect();
-            var hasFocus = rect != Rectangle.Empty && rect.X > -30000 && Elite.gameHasFocus;
+            var hasFocus = rect != Rectangle.Empty && rect.X > -30_000 && Elite.gameHasFocus;
 
             if (gameHadFocus != hasFocus)
             {
@@ -1231,6 +1234,8 @@ namespace SrvSurvey
                 else
                     Program.hideActivePlotters();
             }
+            else if (Debugger.IsAttached && rect.X < -30000)
+                Program.hideActivePlotters();
 
             // force plotters to appear if we just gained focus
             if (!gameHadFocus && Elite.gameHasFocus && game != null)
@@ -1238,7 +1243,7 @@ namespace SrvSurvey
 
             gameHadFocus = Elite.gameHasFocus;
 
-            if (rect != this.lastWindowRect && Elite.gameHasFocus)
+            if (rect != this.lastWindowRect && Elite.gameHasFocus && rect.X > -30_000)
             {
                 Game.log($"EliteDangerous window reposition: {this.lastWindowRect} => {rect}");
                 this.lastWindowRect = rect;
@@ -1675,6 +1680,7 @@ namespace SrvSurvey
         private void btnBioSummary_Click(object sender, EventArgs e)
         {
             FormGenus.show();
+            //BaseForm.show<FormPredictions>();
         }
 
         private void btnCodexShow_Click(object sender, EventArgs e)
@@ -1726,7 +1732,7 @@ namespace SrvSurvey
                         case "Test_BioCriteria": await BioPredictor.testSystemsAsync(); break;
                         case "Build_BioCriteria": CriteriaBuilder.buildWholeSet(); break;
 
-                        default: Game.log("Unxpected!"); break;
+                        default: Game.log("Unexpected!"); break;
                     }
 
                     Game.log($"{txt} completed");

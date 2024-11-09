@@ -4,7 +4,7 @@ using System.ComponentModel;
 namespace SrvSurvey.forms
 {
     [System.ComponentModel.DesignerCategory("")]
-    public class BaseForm : Form
+    internal class BaseForm : Form
     {
         public BaseForm()
         {
@@ -38,6 +38,13 @@ namespace SrvSurvey.forms
             return (T)form;
         }
 
+        public static T? get<T>() where T : BaseForm
+        {
+            var name = typeof(T).Name;
+            var form = activeForms.GetValueOrDefault(name) as T;
+            return form;
+        }
+
         protected override void OnClosing(CancelEventArgs e)
         {
             base.OnClosing(e);
@@ -68,13 +75,13 @@ namespace SrvSurvey.forms
     }
 
     [System.ComponentModel.DesignerCategory("Form")]
-    public class SizableForm : BaseForm
+    internal class SizableForm : BaseForm
     {
 
     }
 
     [System.ComponentModel.DesignerCategory("Form")]
-    public class FixedForm : BaseForm
+    internal class FixedForm : BaseForm
     {
 
     }

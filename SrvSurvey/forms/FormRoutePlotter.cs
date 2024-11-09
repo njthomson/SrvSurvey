@@ -11,7 +11,7 @@ using System.Windows.Forms;
 
 namespace SrvSurvey.forms
 {
-    public partial class FormRoutePlotter : SizableForm
+    internal partial class FormRoutePlotter : SizableForm
     {
         public FormRoutePlotter()
         {

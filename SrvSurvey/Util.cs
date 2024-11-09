@@ -3,6 +3,7 @@ using SrvSurvey.canonn;
 using SrvSurvey.game;
 using SrvSurvey.Properties;
 using SrvSurvey.units;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace SrvSurvey
@@ -1063,11 +1064,18 @@ namespace SrvSurvey
         /// </summary>
         public static float maxWidth(Font font, params string[] texts)
         {
+            if (texts.Length == 0) return 0;
+
             var max = texts.Max(t => TextRenderer.MeasureText(t, font, Size.Empty, textFlags).Width);
             return max;
         }
 
         public const TextFormatFlags textFlags = TextFormatFlags.NoPadding | TextFormatFlags.PreserveGraphicsTranslateTransform;
+
+        public static int centerIn(int outer, int inner)
+        {
+            return (int)(outer / 2f) - (int)(inner / 2f);
+        }
     }
 
     internal static class ExtensionMethods
@@ -1120,6 +1128,16 @@ namespace SrvSurvey
                 return nodes[key];
         }
 
+        public static List<TreeNode> ToList(this TreeNodeCollection nodes)
+        {
+            var list = new List<TreeNode>();
+
+            foreach (TreeNode node in nodes)
+                list.Add(node);
+
+            return list;
+        }
+
         public static int CountChecked(this TreeNodeCollection nodes)
         {
             int count = 0;
@@ -1144,11 +1162,49 @@ namespace SrvSurvey
         }
 
         /// <summary>
+        /// The index of this node based on the visible nodes above it
+        /// </summary>
+        public static int VisibleIndex(this TreeNode node)
+        {
+            var idx = 0;
+            var n = node;
+            while (n.PrevVisibleNode != null)
+            {
+                idx++;
+                //if (n.PrevVisibleNode?.Checked == true) idx--;
+
+                n = n.PrevVisibleNode;
+            }
+
+            return idx;
+        }
+
+        /// <summary>
         /// Apply String.Format to the given string with the given parameters
         /// </summary>
         public static string format(this string txt, params object[] args)
         {
             return string.Format(txt, args);
+        }
+
+        public static Size drawTextRight(this Graphics g, string text, Font font, Color col, int tx, int ty, int w = 0, int h = 0)
+        {
+            var flags = Util.textFlags | TextFormatFlags.WordBreak | TextFormatFlags.NoClipping | TextFormatFlags.GlyphOverhangPadding | TextFormatFlags.NoFullWidthCharacterBreak; // | TextFormatFlags.ExternalLeading
+            if (w == 0)
+                flags |= TextFormatFlags.SingleLine;
+
+            // measure size
+            var sz = TextRenderer.MeasureText(g, text, font, new Size(w, 0), flags);
+
+            // adjust vertical to fit within height constraint
+            var dx = h == 0 ? 0 : Util.centerIn(h, sz.Height);
+
+            // draw text within constraints
+            var r = new Rectangle(tx - sz.Width, ty + dx, sz.Width, sz.Height);
+            TextRenderer.DrawText(g, text, font, r, col, flags);
+
+            //g.DrawRectangle(Pens.Lime, r);
+            return sz;
         }
     }
 

@@ -189,7 +189,6 @@ namespace SrvSurvey
             }
         }
 
-
         #region pixel watching
 
         private void startWatching()

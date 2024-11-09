@@ -295,6 +295,24 @@ namespace SrvSurvey
         }
     }
 
+    public class TreeView2 : TreeView
+    {
+        public TreeView2()
+        {
+            this.DoubleBuffered = true;
+        }
+
+        //protected override void OnPaintBackground(PaintEventArgs e)
+        //{
+        //    base.OnPaintBackground(e);
+        //}
+
+        //protected override void OnPaint(PaintEventArgs e)
+        //{
+        //    base.OnPaint(e);
+        //}
+    }
+
     //class GroupBox2 : GroupBox
     //{
     //    [Browsable(true)]

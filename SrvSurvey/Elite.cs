@@ -116,7 +116,7 @@ namespace SrvSurvey
             var dy = graphicsMode == GraphicsMode.Windowed ? windowTitleHeight : 0;
 
             var rect = new Rectangle(
-                // use the Window rect for the top left corder
+                // use the Window rect for the top left corner
                 windowRect.Left + dx, windowRect.Top + dy,
                 // use the Client rect for the width/height
                 clientRect.Right, clientRect.Bottom);
