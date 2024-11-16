@@ -10,7 +10,7 @@ using System.Globalization;
 
 namespace SrvSurvey
 {
-    internal partial class Main : DraggableForm
+    internal partial class Main : FixedForm
     {
         private Game? game;
         private FileSystemWatcher? logFolderWatcher;
@@ -1679,8 +1679,8 @@ namespace SrvSurvey
 
         private void btnBioSummary_Click(object sender, EventArgs e)
         {
-            FormGenus.show();
-            //BaseForm.show<FormPredictions>();
+            //FormGenus.show();
+            BaseForm.show<FormPredictions>();
         }
 
         private void btnCodexShow_Click(object sender, EventArgs e)
@@ -1754,6 +1754,7 @@ namespace SrvSurvey
         private void btnCodexBingo_Click(object sender, EventArgs e)
         {
             FormCodexBingo.show();
+            //BaseForm.show<FormRoutePlotter>();
         }
     }
 }

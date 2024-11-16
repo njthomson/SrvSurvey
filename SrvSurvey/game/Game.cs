@@ -2393,8 +2393,11 @@ namespace SrvSurvey.game
                     }
                 }
 
-                // re-predict species, to clean-up any excess predictions
-                this.deferPredictSpecies(this.systemBody);
+                // re-predict species, to clean-up any excess predictions (or the whole system if it's a new discovery
+                if (entry.IsNewEntry)
+                    this.predictSystemSpecies();
+                else
+                    this.deferPredictSpecies(this.systemBody);
             }
         }
 
@@ -2505,6 +2508,8 @@ namespace SrvSurvey.game
                 // adjust predictions/rewards calculations for this body
                 this.deferPredictSpecies(this.systemBody);
             }
+
+            FormPredictions.invalidate();
 
             // force a mode change to update ux
             fireUpdate(true);

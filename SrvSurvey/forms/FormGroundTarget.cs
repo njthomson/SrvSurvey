@@ -1,15 +1,17 @@
-﻿using SrvSurvey.game;
+﻿using SrvSurvey.forms;
+using SrvSurvey.game;
+using SrvSurvey.Properties;
 using SrvSurvey.units;
 using System.Text.RegularExpressions;
 
 namespace SrvSurvey
 {
-    internal partial class FormGroundTarget : DraggableForm
+    internal partial class FormGroundTarget : FixedForm
     {
         public FormGroundTarget()
         {
             InitializeComponent();
-            this.Icon = DraggableForm.logo2;
+            this.Icon = Icons.set_square;
 
             Util.applyTheme(this);
         }

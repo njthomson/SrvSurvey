@@ -255,7 +255,7 @@ namespace SrvSurvey.net
             if (this.starPos == null)
                 this.starPos = new StarPos(_spanshDump.coords.x, _spanshDump.coords.y, _spanshDump.coords.z);
 
-            // starclass?
+            // starClass?
             if (this.starClass == null)
                 this.starClass = _spanshDump.bodies.FirstOrDefault(b => b.mainStar == true)?.spectralClass?[0].ToString();
 
@@ -370,7 +370,7 @@ namespace SrvSurvey.net
             {
                 if (this.discovered == null)
                     return null;
-                if (this.discovered == false)
+                if (this.discovered == false || (this.lastUpdated == null && this.totalBodyCount == 0))
                     return Misc.NetSysData_UndiscoveredSystem;
                 else if (this.totalBodyCount == 0)
                     return Misc.NetSysData_UnscannedSystem;

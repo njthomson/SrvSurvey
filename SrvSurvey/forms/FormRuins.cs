@@ -1,7 +1,7 @@
 ﻿using DecimalMath;
 using SrvSurvey.game;
+using SrvSurvey.Properties;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Drawing.Drawing2D;
 
 namespace SrvSurvey
@@ -89,6 +89,7 @@ namespace SrvSurvey
         public FormRuins(GuardianSiteData? siteData)
         {
             InitializeComponent();
+            this.Icon = Icons.maps;
             map.MouseWheel += Map_MouseWheel;
             panelEdit.Visible = false;
 

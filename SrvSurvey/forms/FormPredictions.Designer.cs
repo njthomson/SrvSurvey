@@ -44,22 +44,35 @@
             TreeNode treeNode14 = new TreeNode("Node15");
             TreeNode treeNode15 = new TreeNode("Node3", new TreeNode[] { treeNode10, treeNode11, treeNode12, treeNode13, treeNode14 });
             TreeNode treeNode16 = new TreeNode("Node4");
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormPredictions));
             lblSysEst = new Label();
             tree = new TreeView2();
-            checkFF = new CheckBox();
             lblSysEstFF = new Label();
-            label1 = new Label();
-            txtBodyCount = new TextBox();
-            txtSignalCount = new TextBox();
-            label2 = new Label();
-            txtSysEst = new TextBox();
-            txtSysEstFF = new TextBox();
-            txtSystem = new TextBox();
+            txtScanCount = new TextBox2();
+            lblScanCount = new Label();
+            txtSysEst = new TextBox2();
+            txtSysEstFF = new TextBox2();
+            txtSystem = new TextBox2();
             tableTop = new TableLayoutPanel();
+            lblSysActual = new Label();
+            txtSysActual = new TextBox2();
             flowCounts = new FlowLayoutPanel();
             statusStrip1 = new StatusStrip();
+            toolStripDropDownButton1 = new ToolStripDropDownButton();
+            toolRefresh = new ToolStripMenuItem();
+            toolFiller = new ToolStripStatusLabel();
+            toolStripDropDownButton2 = new ToolStripDropDownButton();
+            viewOnCanonnSignalsToolStripMenuItem = new ToolStripMenuItem();
+            viewOnSpanshToolStripMenuItem = new ToolStripMenuItem();
+            panelTop = new Panel();
+            toolCollapseAll = new ToolStripMenuItem();
+            toolExpandAll = new ToolStripMenuItem();
+            toolCurrentBody = new ToolStripMenuItem();
+            toolStripSeparator1 = new ToolStripSeparator();
+            toolStripSeparator2 = new ToolStripSeparator();
             tableTop.SuspendLayout();
-            flowCounts.SuspendLayout();
+            statusStrip1.SuspendLayout();
+            panelTop.SuspendLayout();
             SuspendLayout();
             // 
             // lblSysEst
@@ -67,17 +80,18 @@
             lblSysEst.Anchor = AnchorStyles.Right;
             lblSysEst.AutoSize = true;
             lblSysEst.FlatStyle = FlatStyle.System;
-            lblSysEst.Location = new Point(253, 4);
+            lblSysEst.ForeColor = SystemColors.Info;
+            lblSysEst.Location = new Point(22, 31);
             lblSysEst.Name = "lblSysEst";
-            lblSysEst.Size = new Size(96, 15);
+            lblSysEst.Size = new Size(117, 12);
             lblSysEst.TabIndex = 1;
             lblSysEst.Text = "System estimate:";
             // 
             // tree
             // 
-            tree.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             tree.BackColor = Color.Black;
             tree.CausesValidation = false;
+            tree.Dock = DockStyle.Fill;
             tree.DrawMode = TreeViewDrawMode.OwnerDrawAll;
             tree.Font = new Font("Lucida Console", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             tree.ForeColor = SystemColors.Info;
@@ -85,8 +99,8 @@
             tree.HideSelection = false;
             tree.Indent = 19;
             tree.ItemHeight = 22;
-            tree.Location = new Point(0, 82);
-            tree.Margin = new Padding(0, 6, 0, 0);
+            tree.Location = new Point(0, 75);
+            tree.Margin = new Padding(0, 5, 0, 0);
             tree.Name = "tree";
             treeNode1.Name = "Node5";
             treeNode1.Text = "Node5";
@@ -122,7 +136,7 @@
             treeNode16.Text = "Node4";
             tree.Nodes.AddRange(new TreeNode[] { treeNode3, treeNode7, treeNode9, treeNode15, treeNode16 });
             tree.ShowNodeToolTips = true;
-            tree.Size = new Size(501, 549);
+            tree.Size = new Size(484, 310);
             tree.TabIndex = 2;
             tree.DrawNode += tree_DrawNode;
             tree.AfterSelect += tree_AfterSelect;
@@ -131,91 +145,55 @@
             tree.MouseLeave += tree_MouseLeave;
             tree.MouseMove += tree_MouseMove;
             // 
-            // checkFF
-            // 
-            checkFF.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            checkFF.FlatStyle = FlatStyle.System;
-            checkFF.Location = new Point(0, 23);
-            checkFF.Margin = new Padding(0, 0, 3, 0);
-            checkFF.Name = "checkFF";
-            checkFF.Size = new Size(247, 23);
-            checkFF.TabIndex = 3;
-            checkFF.Text = "Apply First Footfall bonus";
-            checkFF.UseVisualStyleBackColor = true;
-            checkFF.CheckedChanged += checkFF_CheckedChanged;
-            // 
             // lblSysEstFF
             // 
             lblSysEstFF.Anchor = AnchorStyles.Right;
             lblSysEstFF.AutoSize = true;
             lblSysEstFF.FlatStyle = FlatStyle.System;
-            lblSysEstFF.Location = new Point(263, 27);
+            lblSysEstFF.Location = new Point(36, 52);
             lblSysEstFF.Name = "lblSysEstFF";
-            lblSysEstFF.Size = new Size(86, 15);
+            lblSysEstFF.Size = new Size(103, 12);
             lblSysEstFF.TabIndex = 4;
             lblSysEstFF.Text = "With FF bonus:";
-            lblSysEstFF.Visible = false;
             // 
-            // label1
+            // txtScanCount
             // 
-            label1.Anchor = AnchorStyles.Left;
-            label1.AutoSize = true;
-            label1.FlatStyle = FlatStyle.System;
-            label1.Location = new Point(0, 4);
-            label1.Margin = new Padding(0);
-            label1.Name = "label1";
-            label1.Size = new Size(178, 15);
-            label1.TabIndex = 5;
-            label1.Text = "Scanned bodies with bio signals:";
+            txtScanCount.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            txtScanCount.BackColor = SystemColors.ScrollBar;
+            txtScanCount.BorderStyle = BorderStyle.FixedSingle;
+            txtScanCount.ForeColor = SystemColors.WindowText;
+            txtScanCount.Location = new Point(405, 49);
+            txtScanCount.Margin = new Padding(0, 1, 0, 1);
+            txtScanCount.Name = "txtScanCount";
+            txtScanCount.ReadOnly = true;
+            txtScanCount.Size = new Size(79, 19);
+            txtScanCount.TabIndex = 8;
+            txtScanCount.Text = "99 of 99";
+            txtScanCount.TextAlign = HorizontalAlignment.Center;
             // 
-            // txtBodyCount
+            // lblScanCount
             // 
-            txtBodyCount.BackColor = SystemColors.ScrollBar;
-            txtBodyCount.BorderStyle = BorderStyle.FixedSingle;
-            txtBodyCount.Location = new Point(178, 0);
-            txtBodyCount.Margin = new Padding(0);
-            txtBodyCount.Name = "txtBodyCount";
-            txtBodyCount.ReadOnly = true;
-            txtBodyCount.Size = new Size(72, 23);
-            txtBodyCount.TabIndex = 6;
-            txtBodyCount.Text = "99 of 99";
-            txtBodyCount.TextAlign = HorizontalAlignment.Center;
-            // 
-            // txtSignalCount
-            // 
-            txtSignalCount.BackColor = SystemColors.ScrollBar;
-            txtSignalCount.BorderStyle = BorderStyle.FixedSingle;
-            txtSignalCount.Location = new Point(405, 0);
-            txtSignalCount.Margin = new Padding(0);
-            txtSignalCount.Name = "txtSignalCount";
-            txtSignalCount.ReadOnly = true;
-            txtSignalCount.Size = new Size(72, 23);
-            txtSignalCount.TabIndex = 8;
-            txtSignalCount.Text = "99 of 99";
-            txtSignalCount.TextAlign = HorizontalAlignment.Center;
-            // 
-            // label2
-            // 
-            label2.Anchor = AnchorStyles.Left;
-            label2.AutoSize = true;
-            label2.FlatStyle = FlatStyle.System;
-            label2.Location = new Point(256, 4);
-            label2.Margin = new Padding(6, 0, 0, 0);
-            label2.Name = "label2";
-            label2.Size = new Size(149, 15);
-            label2.TabIndex = 7;
-            label2.Text = "Scanned / total bio signals:";
+            lblScanCount.Anchor = AnchorStyles.Right;
+            lblScanCount.AutoSize = true;
+            lblScanCount.FlatStyle = FlatStyle.System;
+            lblScanCount.Location = new Point(295, 52);
+            lblScanCount.Margin = new Padding(6, 0, 0, 0);
+            lblScanCount.Name = "lblScanCount";
+            lblScanCount.Size = new Size(110, 12);
+            lblScanCount.TabIndex = 7;
+            lblScanCount.Text = "Scannd signals:";
             // 
             // txtSysEst
             // 
             txtSysEst.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             txtSysEst.BackColor = SystemColors.ScrollBar;
             txtSysEst.BorderStyle = BorderStyle.FixedSingle;
-            txtSysEst.Location = new Point(352, 0);
-            txtSysEst.Margin = new Padding(0);
+            txtSysEst.ForeColor = SystemColors.WindowText;
+            txtSysEst.Location = new Point(142, 28);
+            txtSysEst.Margin = new Padding(0, 1, 0, 1);
             txtSysEst.Name = "txtSysEst";
             txtSysEst.ReadOnly = true;
-            txtSysEst.Size = new Size(125, 23);
+            txtSysEst.Size = new Size(120, 19);
             txtSysEst.TabIndex = 9;
             txtSysEst.Text = "9999.9 ~ 999.9M cr";
             txtSysEst.TextAlign = HorizontalAlignment.Center;
@@ -225,111 +203,252 @@
             txtSysEstFF.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             txtSysEstFF.BackColor = SystemColors.ScrollBar;
             txtSysEstFF.BorderStyle = BorderStyle.FixedSingle;
-            txtSysEstFF.Location = new Point(352, 23);
-            txtSysEstFF.Margin = new Padding(0);
+            txtSysEstFF.ForeColor = SystemColors.WindowText;
+            txtSysEstFF.Location = new Point(142, 49);
+            txtSysEstFF.Margin = new Padding(0, 1, 0, 1);
             txtSysEstFF.Name = "txtSysEstFF";
             txtSysEstFF.ReadOnly = true;
-            txtSysEstFF.Size = new Size(125, 23);
+            txtSysEstFF.Size = new Size(120, 19);
             txtSysEstFF.TabIndex = 11;
-            txtSysEstFF.Text = "999.9M cr";
+            txtSysEstFF.Text = "9999.9 ~ 999.9M cr";
             txtSysEstFF.TextAlign = HorizontalAlignment.Center;
-            txtSysEstFF.Visible = false;
             // 
             // txtSystem
             // 
             txtSystem.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             txtSystem.BackColor = SystemColors.ScrollBar;
             txtSystem.BorderStyle = BorderStyle.FixedSingle;
+            tableTop.SetColumnSpan(txtSystem, 4);
+            txtSystem.Font = new Font("Lucida Console", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            txtSystem.ForeColor = SystemColors.WindowText;
             txtSystem.Location = new Point(0, 0);
-            txtSystem.Margin = new Padding(0, 0, 3, 0);
+            txtSystem.Margin = new Padding(0, 0, 0, 1);
             txtSystem.Name = "txtSystem";
+            txtSystem.Padding = new Padding(2, 0, 2, 0);
             txtSystem.ReadOnly = true;
-            txtSystem.Size = new Size(247, 23);
+            txtSystem.Size = new Size(484, 26);
             txtSystem.TabIndex = 12;
             txtSystem.Text = "Dryaa Proae PT-O d7-67 ABC 2 h a";
             // 
             // tableTop
             // 
             tableTop.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            tableTop.AutoSize = true;
             tableTop.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            tableTop.ColumnCount = 3;
-            tableTop.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            tableTop.ColumnCount = 4;
+            tableTop.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 49.9999924F));
             tableTop.ColumnStyles.Add(new ColumnStyle());
+            tableTop.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50.0000076F));
             tableTop.ColumnStyles.Add(new ColumnStyle());
+            tableTop.Controls.Add(lblSysActual, 2, 1);
+            tableTop.Controls.Add(txtSysEstFF, 1, 2);
+            tableTop.Controls.Add(txtScanCount, 3, 2);
+            tableTop.Controls.Add(txtSysEst, 1, 1);
+            tableTop.Controls.Add(lblSysEst, 0, 1);
             tableTop.Controls.Add(txtSystem, 0, 0);
-            tableTop.Controls.Add(txtSysEstFF, 2, 1);
-            tableTop.Controls.Add(lblSysEst, 1, 0);
-            tableTop.Controls.Add(txtSysEst, 2, 0);
-            tableTop.Controls.Add(lblSysEstFF, 1, 1);
-            tableTop.Controls.Add(checkFF, 0, 1);
-            tableTop.Location = new Point(12, 7);
+            tableTop.Controls.Add(lblScanCount, 2, 2);
+            tableTop.Controls.Add(lblSysEstFF, 0, 2);
+            tableTop.Controls.Add(txtSysActual, 3, 1);
+            tableTop.Location = new Point(0, 0);
             tableTop.Margin = new Padding(0);
             tableTop.Name = "tableTop";
-            tableTop.RowCount = 2;
+            tableTop.RowCount = 4;
             tableTop.RowStyles.Add(new RowStyle());
             tableTop.RowStyles.Add(new RowStyle());
-            tableTop.Size = new Size(477, 46);
+            tableTop.RowStyles.Add(new RowStyle());
+            tableTop.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            tableTop.Size = new Size(484, 78);
             tableTop.TabIndex = 13;
+            // 
+            // lblSysActual
+            // 
+            lblSysActual.Anchor = AnchorStyles.Right;
+            lblSysActual.AutoSize = true;
+            lblSysActual.FlatStyle = FlatStyle.System;
+            lblSysActual.ForeColor = SystemColors.Info;
+            lblSysActual.Location = new Point(299, 31);
+            lblSysActual.Name = "lblSysActual";
+            lblSysActual.Size = new Size(103, 12);
+            lblSysActual.TabIndex = 15;
+            lblSysActual.Text = "System actual:";
+            // 
+            // txtSysActual
+            // 
+            txtSysActual.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            txtSysActual.BackColor = SystemColors.ScrollBar;
+            txtSysActual.BorderStyle = BorderStyle.FixedSingle;
+            txtSysActual.ForeColor = SystemColors.WindowText;
+            txtSysActual.Location = new Point(405, 28);
+            txtSysActual.Margin = new Padding(0, 1, 0, 1);
+            txtSysActual.Name = "txtSysActual";
+            txtSysActual.ReadOnly = true;
+            txtSysActual.Size = new Size(79, 19);
+            txtSysActual.TabIndex = 13;
+            txtSysActual.Text = "999.9M cr";
+            txtSysActual.TextAlign = HorizontalAlignment.Center;
             // 
             // flowCounts
             // 
+            flowCounts.Anchor = AnchorStyles.Top;
             flowCounts.AutoSize = true;
             flowCounts.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            flowCounts.Controls.Add(label1);
-            flowCounts.Controls.Add(txtBodyCount);
-            flowCounts.Controls.Add(label2);
-            flowCounts.Controls.Add(txtSignalCount);
-            flowCounts.Location = new Point(12, 53);
-            flowCounts.Margin = new Padding(0);
+            flowCounts.Location = new Point(3, 83);
+            flowCounts.Margin = new Padding(0, 5, 0, 0);
             flowCounts.Name = "flowCounts";
-            flowCounts.Size = new Size(477, 23);
+            flowCounts.Size = new Size(0, 0);
             flowCounts.TabIndex = 14;
             // 
             // statusStrip1
             // 
             statusStrip1.BackColor = SystemColors.ControlDark;
-            statusStrip1.Location = new Point(0, 629);
+            statusStrip1.Items.AddRange(new ToolStripItem[] { toolStripDropDownButton1, toolFiller, toolStripDropDownButton2 });
+            statusStrip1.Location = new Point(0, 385);
             statusStrip1.Name = "statusStrip1";
-            statusStrip1.Size = new Size(501, 22);
+            statusStrip1.Size = new Size(484, 22);
             statusStrip1.TabIndex = 15;
             statusStrip1.Text = "statusStrip1";
             // 
+            // toolStripDropDownButton1
+            // 
+            toolStripDropDownButton1.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            toolStripDropDownButton1.DropDownItems.AddRange(new ToolStripItem[] { toolRefresh, toolStripSeparator1, toolCurrentBody, toolStripSeparator2, toolExpandAll, toolCollapseAll });
+            toolStripDropDownButton1.Image = (Image)resources.GetObject("toolStripDropDownButton1.Image");
+            toolStripDropDownButton1.ImageTransparentColor = Color.Magenta;
+            toolStripDropDownButton1.Name = "toolStripDropDownButton1";
+            toolStripDropDownButton1.Size = new Size(57, 20);
+            toolStripDropDownButton1.Text = "View ...";
+            toolStripDropDownButton1.Click += toolStripDropDownButton1_Click;
+            // 
+            // toolRefresh
+            // 
+            toolRefresh.Name = "toolRefresh";
+            toolRefresh.Size = new Size(180, 22);
+            toolRefresh.Text = "Refresh";
+            toolRefresh.Click += toolRefresh_Click;
+            // 
+            // toolFiller
+            // 
+            toolFiller.Name = "toolFiller";
+            toolFiller.Size = new Size(10, 17);
+            toolFiller.Text = " ";
+            // 
+            // toolStripDropDownButton2
+            // 
+            toolStripDropDownButton2.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            toolStripDropDownButton2.DropDownItems.AddRange(new ToolStripItem[] { viewOnCanonnSignalsToolStripMenuItem, viewOnSpanshToolStripMenuItem });
+            toolStripDropDownButton2.Image = (Image)resources.GetObject("toolStripDropDownButton2.Image");
+            toolStripDropDownButton2.ImageTransparentColor = Color.Magenta;
+            toolStripDropDownButton2.Name = "toolStripDropDownButton2";
+            toolStripDropDownButton2.Size = new Size(60, 20);
+            toolStripDropDownButton2.Text = "More ...";
+            // 
+            // viewOnCanonnSignalsToolStripMenuItem
+            // 
+            viewOnCanonnSignalsToolStripMenuItem.Image = Properties.ImageResources.canonn_16x16;
+            viewOnCanonnSignalsToolStripMenuItem.Name = "viewOnCanonnSignalsToolStripMenuItem";
+            viewOnCanonnSignalsToolStripMenuItem.Size = new Size(201, 22);
+            viewOnCanonnSignalsToolStripMenuItem.Text = "View on Canonn Signals";
+            viewOnCanonnSignalsToolStripMenuItem.Click += viewOnCanonnSignalsToolStripMenuItem_Click;
+            // 
+            // viewOnSpanshToolStripMenuItem
+            // 
+            viewOnSpanshToolStripMenuItem.Image = Properties.ImageResources.spansh_16x16;
+            viewOnSpanshToolStripMenuItem.Name = "viewOnSpanshToolStripMenuItem";
+            viewOnSpanshToolStripMenuItem.Size = new Size(201, 22);
+            viewOnSpanshToolStripMenuItem.Text = "View on Spansh";
+            viewOnSpanshToolStripMenuItem.Click += viewOnSpanshToolStripMenuItem_Click;
+            // 
+            // panelTop
+            // 
+            panelTop.Controls.Add(tableTop);
+            panelTop.Controls.Add(flowCounts);
+            panelTop.Dock = DockStyle.Top;
+            panelTop.Location = new Point(0, 0);
+            panelTop.Margin = new Padding(3, 2, 3, 2);
+            panelTop.Name = "panelTop";
+            panelTop.Padding = new Padding(0, 5, 0, 0);
+            panelTop.Size = new Size(484, 75);
+            panelTop.TabIndex = 17;
+            // 
+            // toolCollapseAll
+            // 
+            toolCollapseAll.Name = "toolCollapseAll";
+            toolCollapseAll.Size = new Size(180, 22);
+            toolCollapseAll.Text = "Collapse all";
+            toolCollapseAll.Click += toolCollapseAll_Click;
+            // 
+            // toolExpandAll
+            // 
+            toolExpandAll.Name = "toolExpandAll";
+            toolExpandAll.Size = new Size(180, 22);
+            toolExpandAll.Text = "Expand all";
+            toolExpandAll.Click += toolExpandAll_Click;
+            // 
+            // toolCurrentBody
+            // 
+            toolCurrentBody.Name = "toolCurrentBody";
+            toolCurrentBody.Size = new Size(180, 22);
+            toolCurrentBody.Text = "Current body only";
+            toolCurrentBody.Click += toolCurrentBody_Click;
+            // 
+            // toolStripSeparator1
+            // 
+            toolStripSeparator1.Name = "toolStripSeparator1";
+            toolStripSeparator1.Size = new Size(177, 6);
+            // 
+            // toolStripSeparator2
+            // 
+            toolStripSeparator2.Name = "toolStripSeparator2";
+            toolStripSeparator2.Size = new Size(177, 6);
+            // 
             // FormPredictions
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(7F, 12F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = SystemColors.ControlDark;
-            ClientSize = new Size(501, 651);
-            Controls.Add(flowCounts);
-            Controls.Add(tableTop);
+            BackColor = SystemColors.WindowFrame;
+            ClientSize = new Size(484, 407);
             Controls.Add(tree);
+            Controls.Add(panelTop);
             Controls.Add(statusStrip1);
+            Font = new Font("Lucida Console", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            ForeColor = SystemColors.Info;
             Margin = new Padding(3, 2, 3, 2);
             Name = "FormPredictions";
             Text = "Bio Predictions";
             tableTop.ResumeLayout(false);
             tableTop.PerformLayout();
-            flowCounts.ResumeLayout(false);
-            flowCounts.PerformLayout();
+            statusStrip1.ResumeLayout(false);
+            statusStrip1.PerformLayout();
+            panelTop.ResumeLayout(false);
+            panelTop.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
         private Label lblSysEst;
-        private CheckBox checkFF;
         private Label lblSysEstFF;
-        private Label label1;
-        private TextBox txtBodyCount;
-        private TextBox txtSignalCount;
-        private Label label2;
-        private TextBox txtSysEst;
-        private TextBox txtSysEstFF;
-        private TextBox txtSystem;
+        private TextBox2 txtScanCount;
+        private Label lblScanCount;
+        private TextBox2 txtSysEst;
+        private TextBox2 txtSysEstFF;
+        private TextBox2 txtSystem;
         private TableLayoutPanel tableTop;
         private FlowLayoutPanel flowCounts;
         private StatusStrip statusStrip1;
         private TreeView2 tree;
+        private ToolStripDropDownButton toolStripDropDownButton1;
+        private Panel panelTop;
+        private Label lblSysActual;
+        private TextBox2 txtSysActual;
+        private ToolStripMenuItem toolRefresh;
+        private ToolStripDropDownButton toolStripDropDownButton2;
+        private ToolStripStatusLabel toolFiller;
+        private ToolStripMenuItem viewOnCanonnSignalsToolStripMenuItem;
+        private ToolStripMenuItem viewOnSpanshToolStripMenuItem;
+        private ToolStripSeparator toolStripSeparator1;
+        private ToolStripMenuItem toolCurrentBody;
+        private ToolStripSeparator toolStripSeparator2;
+        private ToolStripMenuItem toolExpandAll;
+        private ToolStripMenuItem toolCollapseAll;
     }
 }

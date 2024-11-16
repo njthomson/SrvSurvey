@@ -547,7 +547,6 @@
             Controls.Add(txtFilter);
             Controls.Add(btnFilter);
             Controls.Add(grid);
-            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "FormBeacons";
             Text = "Ruins, Structures and Beacons";
             Load += FormBeacons_Load;

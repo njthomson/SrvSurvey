@@ -1,4 +1,5 @@
 ﻿using SrvSurvey.game;
+using SrvSurvey.Properties;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -25,7 +26,7 @@ namespace SrvSurvey.forms
             PlotPos.backup();
 
             InitializeComponent();
-            this.Icon = DraggableForm.logo2;
+            this.Icon = Icons.spanner;
 
             this.enablementControls = new Control[] {
                 btnReset,

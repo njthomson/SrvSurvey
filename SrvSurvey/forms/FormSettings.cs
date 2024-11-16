@@ -1,5 +1,6 @@
 ﻿using SrvSurvey.forms;
 using SrvSurvey.game;
+using SrvSurvey.Properties;
 using System.Diagnostics;
 using System.Reflection;
 
@@ -16,6 +17,7 @@ namespace SrvSurvey
         public FormSettings()
         {
             InitializeComponent();
+            this.Icon = Icons.spanner;
             comboLang.SelectedIndex = 0;
             comboLang.Items.AddRange(Localize.supportedLanguages.Keys.ToArray());
 

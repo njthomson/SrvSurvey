@@ -33,7 +33,6 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormRuins));
             map = new PictureBox();
             mapContext = new ContextMenuStrip(components);
             mnuName = new ToolStripMenuItem();
@@ -43,10 +42,13 @@
             mnuEmpty = new ToolStripMenuItem();
             mnuUnknown = new ToolStripMenuItem();
             toolStripTower = new ToolStripSeparator();
+            toolTowers = new ToolStripMenuItem();
             toolTowerTop = new ToolStripMenuItem();
             toolStripMenuItem1 = new ToolStripMenuItem();
             toolStripMenuItem2 = new ToolStripMenuItem();
             toolStripMenuItem3 = new ToolStripMenuItem();
+            toolTowerMiddle = new ToolStripMenuItem();
+            toolTowerBottom = new ToolStripMenuItem();
             statusStrip1 = new StatusStrip();
             lblSelectedItem = new ToolStripStatusLabel();
             lblStatus = new ToolStripStatusLabel();
@@ -76,9 +78,6 @@
             lblLastVisited = new Label();
             label6 = new Label();
             txtNotes = new TextBox();
-            toolTowerMiddle = new ToolStripMenuItem();
-            toolTowerBottom = new ToolStripMenuItem();
-            toolTowers = new ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)map).BeginInit();
             mapContext.SuspendLayout();
             statusStrip1.SuspendLayout();
@@ -117,38 +116,38 @@
             // 
             mapContext.Items.AddRange(new ToolStripItem[] { mnuName, toolStripSeparator1, mnuPresent, mnuAbsent, mnuEmpty, mnuUnknown, toolStripTower, toolTowers, toolTowerTop, toolTowerMiddle, toolTowerBottom });
             mapContext.Name = "mapContext";
-            mapContext.Size = new Size(181, 236);
+            mapContext.Size = new Size(173, 214);
             // 
             // mnuName
             // 
             mnuName.Enabled = false;
             mnuName.Name = "mnuName";
-            mnuName.Size = new Size(180, 22);
+            mnuName.Size = new Size(172, 22);
             mnuName.Text = "Name:";
             // 
             // toolStripSeparator1
             // 
             toolStripSeparator1.Name = "toolStripSeparator1";
-            toolStripSeparator1.Size = new Size(177, 6);
+            toolStripSeparator1.Size = new Size(169, 6);
             // 
             // mnuPresent
             // 
             mnuPresent.Name = "mnuPresent";
-            mnuPresent.Size = new Size(180, 22);
+            mnuPresent.Size = new Size(172, 22);
             mnuPresent.Text = "Present";
             mnuPresent.Click += mnuPresent_Click;
             // 
             // mnuAbsent
             // 
             mnuAbsent.Name = "mnuAbsent";
-            mnuAbsent.Size = new Size(180, 22);
+            mnuAbsent.Size = new Size(172, 22);
             mnuAbsent.Text = "Absent";
             mnuAbsent.Click += mnuAbsent_Click;
             // 
             // mnuEmpty
             // 
             mnuEmpty.Name = "mnuEmpty";
-            mnuEmpty.Size = new Size(180, 22);
+            mnuEmpty.Size = new Size(172, 22);
             mnuEmpty.Text = "Empty";
             mnuEmpty.Click += mnuEmpty_Click;
             // 
@@ -157,39 +156,58 @@
             mnuUnknown.Checked = true;
             mnuUnknown.CheckState = CheckState.Checked;
             mnuUnknown.Name = "mnuUnknown";
-            mnuUnknown.Size = new Size(180, 22);
+            mnuUnknown.Size = new Size(172, 22);
             mnuUnknown.Text = "Unknown";
             mnuUnknown.Click += mnuUnknown_Click;
             // 
             // toolStripTower
             // 
             toolStripTower.Name = "toolStripTower";
-            toolStripTower.Size = new Size(177, 6);
+            toolStripTower.Size = new Size(169, 6);
+            // 
+            // toolTowers
+            // 
+            toolTowers.Enabled = false;
+            toolTowers.Name = "toolTowers";
+            toolTowers.Size = new Size(172, 22);
+            toolTowers.Text = "Component Tower";
             // 
             // toolTowerTop
             // 
             toolTowerTop.DropDownItems.AddRange(new ToolStripItem[] { toolStripMenuItem1, toolStripMenuItem2, toolStripMenuItem3 });
             toolTowerTop.Name = "toolTowerTop";
-            toolTowerTop.Size = new Size(180, 22);
+            toolTowerTop.Size = new Size(172, 22);
             toolTowerTop.Text = "Top: abc";
             // 
             // toolStripMenuItem1
             // 
             toolStripMenuItem1.Name = "toolStripMenuItem1";
-            toolStripMenuItem1.Size = new Size(180, 22);
+            toolStripMenuItem1.Size = new Size(107, 22);
             toolStripMenuItem1.Text = "AB cd";
             // 
             // toolStripMenuItem2
             // 
             toolStripMenuItem2.Name = "toolStripMenuItem2";
-            toolStripMenuItem2.Size = new Size(180, 22);
+            toolStripMenuItem2.Size = new Size(107, 22);
             toolStripMenuItem2.Text = "asd aa";
             // 
             // toolStripMenuItem3
             // 
             toolStripMenuItem3.Name = "toolStripMenuItem3";
-            toolStripMenuItem3.Size = new Size(180, 22);
+            toolStripMenuItem3.Size = new Size(107, 22);
             toolStripMenuItem3.Text = "dd ee";
+            // 
+            // toolTowerMiddle
+            // 
+            toolTowerMiddle.Name = "toolTowerMiddle";
+            toolTowerMiddle.Size = new Size(172, 22);
+            toolTowerMiddle.Text = "Middle: def";
+            // 
+            // toolTowerBottom
+            // 
+            toolTowerBottom.Name = "toolTowerBottom";
+            toolTowerBottom.Size = new Size(172, 22);
+            toolTowerBottom.Text = "Bottom: xyz";
             // 
             // statusStrip1
             // 
@@ -509,25 +527,6 @@
             txtNotes.Size = new Size(197, 398);
             txtNotes.TabIndex = 1;
             // 
-            // toolTowerMiddle
-            // 
-            toolTowerMiddle.Name = "toolTowerMiddle";
-            toolTowerMiddle.Size = new Size(180, 22);
-            toolTowerMiddle.Text = "Middle: def";
-            // 
-            // toolTowerBottom
-            // 
-            toolTowerBottom.Name = "toolTowerBottom";
-            toolTowerBottom.Size = new Size(180, 22);
-            toolTowerBottom.Text = "Bottom: xyz";
-            // 
-            // toolTowers
-            // 
-            toolTowers.Enabled = false;
-            toolTowers.Name = "toolTowers";
-            toolTowers.Size = new Size(180, 22);
-            toolTowers.Text = "Component Tower";
-            // 
             // FormRuins
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -536,7 +535,6 @@
             Controls.Add(splitter);
             Controls.Add(panel1);
             Controls.Add(statusStrip1);
-            Icon = (Icon)resources.GetObject("$this.Icon");
             MinimumSize = new Size(400, 400);
             Name = "FormRuins";
             StartPosition = FormStartPosition.CenterScreen;

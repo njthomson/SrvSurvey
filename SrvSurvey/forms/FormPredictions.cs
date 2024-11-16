@@ -1,5 +1,6 @@
 ﻿using SrvSurvey.forms;
 using SrvSurvey.game;
+using SrvSurvey.Properties;
 using System.Drawing.Drawing2D;
 
 namespace SrvSurvey
@@ -25,27 +26,32 @@ namespace SrvSurvey
         private Brush brushRowEven = new SolidBrush(Color.FromArgb(255, 16, 16, 16));
         private Pen penRowEven = new Pen(Color.FromArgb(255, 64, 64, 64), 2f);
         private Brush treeBackBrush;
-        private Font nodeBig = new Font("Lucida Console", 13f, FontStyle.Regular, GraphicsUnit.Point);
+
+        private Font nodeBig = new Font("Lucida Console", 12f, FontStyle.Regular, GraphicsUnit.Point);
         private Font nodeMiddle = new Font("Lucida Console", 10f, FontStyle.Regular, GraphicsUnit.Point);
         private Font nodeMiddleI = new Font("Lucida Console", 10f, FontStyle.Italic, GraphicsUnit.Point);
         private Font nodeSmall = new Font("Lucida Console", 8f, FontStyle.Regular, GraphicsUnit.Point);
 
         private TreeNode? hoverNode;
         private float maxBodyTextWidth = 0;
+        private static TreeViewMode treeMode = TreeViewMode.Everything;
+        private bool currentBodyOnly = false;
+        private bool prepping = false;
 
         public FormPredictions()
         {
             InitializeComponent();
-            this.DoubleBuffered = true;
+            this.isDraggable = true;
+            this.Icon = Icons.dna;
 
+            toolFiller.Spring = true;
             treeBackBrush = new SolidBrush(tree.BackColor);
 
             tree.MouseWheel += Tree_MouseWheel;
-            tree.TreeViewNodeSorter = new NodeSorter();
+            tree.TreeViewNodeSorter = NodeSorter.ByName;
             tree.ForeColor = GameColors.Orange;
 
             this.prepNodes();
-
 
             // Not themed - this is always dark.
         }
@@ -60,48 +66,53 @@ namespace SrvSurvey
         private void prepNodes()
         {
             if (game?.systemData == null) return;
-
-            txtSystem.Text = game.systemData.name;
-
-            // count of signals scanned
-            var systemTotal = game.systemData.bodies.Sum(_ => _.bioSignalCount);
-            var systemScanned = game.systemData.bodies.Sum(_ => _.countAnalyzedBioSignals);
-            txtSignalCount.Text = $"{systemScanned} of {systemTotal}";
-
-            var bioBodyCompleteCount = game.systemData.bodies.Count(b => b.bioSignalCount > 0 && b.countAnalyzedBioSignals == b.bioSignalCount);
-            var bioBodyCount = game.systemData.bodies.Count(b => b.bioSignalCount > 0);
-            txtBodyCount.Text = $"{bioBodyCompleteCount} of {bioBodyCount}";
-
-            //var sysEstimate = game.systemData.bodies.Sum(body => body.firstFootFall ? body.maxBioRewards * 5 : body.maxBioRewards);
-            //var sysActual = game.systemData.bodies.Sum(body => body.sumAnalyzed);
-
-            txtSysEst.Text = Util.getMinMaxCredits(game.systemData.getMinBioRewards(false), game.systemData.getMaxBioRewards(false));
-            txtSysEstFF.Text = Util.getMinMaxCredits(game.systemData.getMinBioRewards(true), game.systemData.getMaxBioRewards(true));
-
-            // Add a node for each body that has bio signals, and a child for each signal
-            var bodyTexts = new List<string>();
-            tree.Nodes.Clear();
-            foreach (var body in game.systemData.bodies)
+            try
             {
-                if (body.bioSignalCount == 0) continue;
+                prepping = true;
 
-                var node = createBodyNode(body);
-                bodyTexts.Add(node.Text);
-                tree.Nodes.Add(node);
+                txtSystem.Text = game.systemData.name;
+
+                // count of signals scanned
+                var systemTotal = game.systemData.bodies.Sum(_ => _.bioSignalCount);
+                var systemScanned = game.systemData.bodies.Sum(_ => _.countAnalyzedBioSignals);
+                txtScanCount.Text = $"{systemScanned} of {systemTotal}";
+
+                var sysActual = game.systemData.bodies.Sum(body => body.sumAnalyzed);
+                txtSysActual.Text = Util.credits(sysActual, true);
+
+                txtSysEst.Text = Util.getMinMaxCredits(game.systemData.getMinBioRewards(false), game.systemData.getMaxBioRewards(false));
+
+                txtSysEstFF.Text = Util.getMinMaxCredits(game.systemData.getMinBioRewards(true), game.systemData.getMaxBioRewards(true));
+
+                // Add a node for each body that has bio signals, and a child for each signal
+                var bodyTexts = new List<string>();
+                tree.Nodes.Clear();
+                foreach (var body in game.systemData.bodies)
+                {
+                    if (body.bioSignalCount == 0) continue;
+
+                    var node = createBodyNode(body);
+                    bodyTexts.Add(node.Text + "🦶");
+                    tree.Nodes.Add(node);
+                }
+
+                // remove last inner blank node from last body, add one sibling to is
+                if (tree.Nodes.Count > 0 && false)
+                {
+                    var lastBody = tree.Nodes[tree.Nodes.Count - 1];
+                    lastBody.Nodes.RemoveAt(lastBody.Nodes.Count - 1);
+                    tree.Nodes.Add(new TreeNode("ZZ"));
+                }
+
+                // get widest body name
+                this.maxBodyTextWidth = Util.maxWidth(nodeBig, bodyTexts.ToArray());
+
             }
-
-            // remove last inner blank node from last body, add one sibling to is
-            if (tree.Nodes.Count > 0)
+            finally
             {
-                var lastBody = tree.Nodes[tree.Nodes.Count - 1];
-                lastBody.Nodes.RemoveAt(lastBody.Nodes.Count - 1);
-                tree.Nodes.Add(new TreeNode("ZZ"));
+                prepping = false;
             }
-
-            // get widest body name
-            this.maxBodyTextWidth = Util.maxWidth(nodeBig, bodyTexts.ToArray());
-
-            tree.ExpandAll();
+            doTreeViewMode();
         }
 
         private TreeNode createBodyNode(SystemBody body)
@@ -109,8 +120,8 @@ namespace SrvSurvey
             var node = new TreeNode
             {
                 Name = body.shortName,
-                Text = "Body: " + body.name.Replace(body.system.name + " ", ""),
-                //Text = body.name.Replace(body.system.name + " ", "") + $": {body.bioSignalCount} signals",
+                //Text = "Body: " + body.name.Replace(body.system.name + " ", ""),
+                Text = $"{body.shortName}: {body.bioSignalCount} signals",
                 Tag = body,
                 ToolTipText = body.name,
                 NodeFont = nodeBig
@@ -127,9 +138,9 @@ namespace SrvSurvey
             // add any predictions
             if (body.genusPredictions?.Count > 0)
                 foreach (var genus in body.genusPredictions)
-                    node.Nodes.Add(createPredictionNodes(genus));
+                    createPredictionNodes(genus, node); //node.Nodes.Add(createPredictionNodes(genus, node));
 
-            node.Nodes.Add(new TreeNode("Z"));
+            node.Nodes.Add(new TreeNode("Z") { Name = "Z", Checked = true });
             return node;
         }
 
@@ -137,34 +148,44 @@ namespace SrvSurvey
         {
             var child = new TreeNode
             {
+                Name = org.variantLocalized ?? org.speciesLocalized ?? org.genusLocalized,
                 Text = org.variantLocalized ?? org.speciesLocalized ?? org.genusLocalized,
                 Tag = org,
-                NodeFont = nodeMiddle,
+                NodeFont = nodeSmall,
             };
 
             return child;
         }
 
-        private TreeNode createPredictionNodes(SystemGenusPrediction genus)
+        private TreeNode createPredictionNodes(SystemGenusPrediction genus, TreeNode parentNode)
         {
-            // create a node for each genus, species and variant?
-            var node = new TreeNode
-            {
-                Text = genus.genus.englishName,
-                Tag = genus,
-                NodeFont = nodeMiddleI,
-            };
+            //// create a node for each genus, species and variant?
+            //var node = new TreeNode
+            //{
+            //    Name = genus.genus.englishName,
+            //    Text = genus.genus.englishName,
+            //    Tag = genus,
+            //    NodeFont = nodeMiddleI,
+            //};
 
+            bool first = true;
             foreach (var entry in genus.species)
             {
-                var foo = new Tuple<BioSpecies, List<SystemVariantPrediction>>(entry.Key, entry.Value);
+                var text = first
+                    ? entry.Key.englishName
+                    : entry.Key.englishName.Replace(entry.Key.genus.englishName, "".PadLeft(entry.Key.genus.englishName.Length, ' '));
+
+                var foo = new Foo(entry.Key, entry.Value);
                 var child = new TreeNode
                 {
-                    Text = entry.Key.englishName.Replace(entry.Key.genus.englishName + " ", ""),
+                    Name = entry.Key.englishName,
+                    Text = text, // .Replace(entry.Key.genus.englishName + " ", ""),
                     Tag = foo,
                     NodeFont = nodeMiddleI,
+                    Checked = !first,
                 };
-                node.Nodes.Add(child);
+                parentNode.Nodes.Add(child);
+                first = false;
 
                 //var variantNames = genus.species[species].Select(v =>
                 //{
@@ -181,12 +202,7 @@ namespace SrvSurvey
                 //child.Nodes.Add(variants);
             }
 
-            return node;
-        }
-
-        private void checkFF_CheckedChanged(object sender, EventArgs e)
-        {
-            lblSysEstFF.Visible = txtSysEstFF.Visible = checkFF.Checked;
+            return parentNode;
         }
 
         private void tree_Layout(object sender, LayoutEventArgs e)
@@ -252,7 +268,8 @@ namespace SrvSurvey
 
         private void tree_DrawNode(object sender, DrawTreeNodeEventArgs e)
         {
-            if (e.Node == null) return;
+            if (e.Node == null || prepping) return;
+
             var g = e.Graphics;
             g.SmoothingMode = SmoothingMode.AntiAlias;
 
@@ -266,11 +283,12 @@ namespace SrvSurvey
             var genus = node.Tag as SystemGenusPrediction;
 
             // erase background
+            //if (e.Node.Checked) idx--;
             var odd = (idx % 2) == 0;
             var backBrush = odd ? brushRowEven : brushRowOdd;
             //if (isFocused && text != "Z") backBrush = Brushes.Navy;
             if (node == hoverNode && node.Text != "Z" && node.Text != "ZZ") backBrush = Brushes.Black;
-            g.FillRectangle(backBrush, e.Bounds);
+            g.FillRectangle(backBrush, 0, e.Bounds.Y, tree.ClientSize.Width, tree.ItemHeight);
 
             if (node.Text == "Z") return;
             if (node.Text == "ZZ")
@@ -443,7 +461,20 @@ namespace SrvSurvey
             //}
         }
 
-        private bool shouldHighlight(TreeNode? node)
+        private bool isCurrentBody(TreeNode? node)
+        {
+            if (node == null) return false;
+
+            // highlight if we match the target body but we're not on a planet
+            var body = node.Tag as SystemBody;
+            if (body == game.systemBody)
+                return true;
+            else
+                return false;
+        }
+
+
+        private bool highlightCurrentBody(TreeNode? node)
         {
             if (node == null) return false;
 
@@ -457,19 +488,40 @@ namespace SrvSurvey
 
         private void drawSpeciesNode(Graphics g, Point pt, TreeNode node, bool highlight)
         {
-            if (shouldHighlight(node?.Parent?.Parent)) highlight = true;
+            if (highlightCurrentBody(node.Parent?.Parent)) highlight = true;
+            else if (game != null && game.targetBody == node.Parent?.Tag && !game.status.hasLatLong) highlight = true;
 
-            var tuple = (Tuple<BioSpecies, List<SystemVariantPrediction>>)node.Tag;
+            if (isCurrentBody(node.Parent))
+                drawSideBars(g, node, highlight && node != hoverNode);
+
+            var tuple = (Foo)node.Tag;
             var species = tuple?.Item1;
             var variants = tuple?.Item2;
             if (species == null || variants == null)
                 return;
 
-            pt.X += 16;
+            // not a check mark
+            //if (!node.Text.StartsWith(" "))
+            //    g.DrawRectangle(highlight ? GameColors.penDarkCyan1 : GameColors.penGameOrangeDim1, 14, pt.Y + 2, 10, 10);  // 8 or 25 ?
+
+            pt.X += 20;
+
+            // volume bar
+            var y = node.Bounds.Top + 15;
+            var vc = VolColor.Blue; // highlight ? VolColor.Blue : VolColor.Orange;
+            //if (genus.isGold) vc = VolColor.Gold;
+            PlotBioSystem.drawVolumeBars(g, pt.X, y, vc, species.reward, 0, true);
+            pt.X += 15;
+
+            // ---
 
             // render the node's text
             var foreColor = highlight ? GameColors.Cyan : GameColors.Orange;
             //if (genus.isGold) foreColor = GameColors.Bio.gold;
+
+            TextRenderer.DrawText(g, "? ", nodeSmall, pt, Color.DimGray, Util.textFlags);
+            pt.X += TextRenderer.MeasureText(g, "? ", nodeSmall, Size.Empty, Util.textFlags).Width;
+
             var text = $"{node.Text}: ";
             TextRenderer.DrawText(g, text, nodeSmall, pt, foreColor, Util.textFlags);
             var sz = TextRenderer.MeasureText(g, text, nodeSmall, Size.Empty, Util.textFlags);
@@ -490,15 +542,19 @@ namespace SrvSurvey
 
             // draw credit estimates
             //drawCreditEstimate(g, node, foreColor, );
-            g.drawTextRight(Util.credits(species.reward, true), node.NodeFont, foreColor, tree.ClientSize.Width - 60, node.Bounds.Top + 1, 0, node.Bounds.Height);
+            g.drawTextRight(Util.credits(species.reward, true), nodeSmall, foreColor, tree.ClientSize.Width - 60, node.Bounds.Top + 1, 0, node.Bounds.Height);
         }
 
         private void drawGenusNode(Graphics g, Point pt, TreeNode node, bool highlight, SystemGenusPrediction genus)
         {
-            if (shouldHighlight(node.Parent)) highlight = true;
+            if (highlightCurrentBody(node.Parent)) highlight = true;
 
+            if (isCurrentBody(node.Parent))
+                drawSideBars(g, node, highlight);
+
+            // not a check mark
             //g.DrawRectangle(highlight ? GameColors.penDarkCyan1 : GameColors.penGameOrangeDim1, 10, pt.Y + 2, 10, 10);
-            g.DrawRectangle(GameColors.penDarkCyan1, 10, pt.Y + 2, 10, 10);
+            g.DrawRectangle(highlight ? GameColors.penDarkCyan1 : GameColors.penGameOrangeDim1, 10, pt.Y + 2, 10, 10);
 
             // draw +/- graphic
             drawExpando(g, pt.X, node.Bounds.Y, node.Bounds.Height, !node.IsExpanded);
@@ -523,41 +579,58 @@ namespace SrvSurvey
 
         private void drawKnownNode(Graphics g, Point pt, TreeNode node, bool highlight, SystemOrganism org)
         {
-            if (shouldHighlight(node.Parent)) highlight = true;
+            if (highlightCurrentBody(node.Parent)) highlight = true;
+            if (game.cmdr.scanOne?.entryId == org.entryId) highlight = true;
+
+            // prefix flag?
+            pt.X += 9;
+            var foreColor = highlight ? GameColors.Cyan : GameColors.Orange;
+            if (org.volCol == VolColor.Gold) foreColor = GameColors.Bio.gold;
+            if (org.prefix != null)
+                TextRenderer.DrawText(g, org.prefix, nodeMiddle, pt, foreColor, Util.textFlags);
 
             // volume bar
-            pt.X += 20;
+            pt.X += 11;
             var y = node.Bounds.Top + 15;
             var vc = highlight ? VolColor.Blue : VolColor.Orange;
             if (org.isFirst) vc = VolColor.Gold;
             PlotBioSystem.drawVolumeBars(g, pt.X, y, vc, org.reward);
-            pt.X += 14;
 
-            if (game?.cmdr?.scanOne?.genus == org.genus)
+            if (game?.cmdr?.scanOne?.genus == org.genus && org.body == game.systemBody)
             {
                 highlight = true;
-
                 // draw side-bars to highlight this is what we're currently scanning
-                g.DrawLine(GameColors.penCyan4, 2, node.Bounds.Top, 2, node.Bounds.Bottom);
-                var r = tree.ClientSize.Width - 3;
-                g.DrawLine(GameColors.penCyan4, r, node.Bounds.Top, r, node.Bounds.Bottom);
+                drawSideBars(g, node, highlight);
             }
+
+            if (isCurrentBody(node.Parent))
+                drawSideBars(g, node, highlight);
 
             // render the node's text
-            var foreColor = highlight ? GameColors.Cyan : GameColors.Orange;
-            if (org.volCol == VolColor.Gold) foreColor = GameColors.Bio.gold;
-            var text = org.prefix + node.Text;
+            foreColor = highlight ? GameColors.Cyan : GameColors.Orange;
+            pt.X += 14;
+            var text = node.Text;
+            //var text = org.prefix + node.Text;
             TextRenderer.DrawText(g, text, node.NodeFont, pt, foreColor, Util.textFlags);
+            var sz = TextRenderer.MeasureText(g, text + " ", node.NodeFont, Size.Empty, Util.textFlags);
+            pt.X += sz.Width;
+            pt.Y -= 1;
 
+            var subColor = highlight ? GameColors.DarkCyan : GameColors.OrangeDim;
+            if (org.isFirst) subColor = GameColors.Bio.gold;
             if (org.analyzed)
+                TextRenderer.DrawText(g, "✔", node.NodeFont, new Point(14, pt.Y), subColor, Util.textFlags);
+            else
             {
-                var subColor = highlight ? GameColors.DarkCyan : GameColors.OrangeDim;
-                if (org.isFirst) subColor = GameColors.Bio.gold;
-                TextRenderer.DrawText(g, "✔", node.NodeFont, new Point(8, pt.Y), subColor, Util.textFlags);
-            }
-            else //if (org?.analyzed == false || genus != null)
-            {
-                g.DrawRectangle(GameColors.penDarkCyan1, 10, pt.Y + 2, 10, 10);
+                // not a check mark
+                ////g.DrawRectangle(highlight ? GameColors.penCyan1 : GameColors.penDarkCyan1, 10, pt.Y + 2, 10, 10);
+                //g.DrawRectangle(highlight ? GameColors.penCyan1 : GameColors.penDarkCyan1, 14, pt.Y + 2, 10, 10);
+
+                if (org.genus == game?.cmdr?.scanTwo?.genus)
+                    TextRenderer.DrawText(g, "⚫⚫⚪", node.NodeFont, pt, GameColors.Cyan, Util.textFlags);
+                else if (org.genus == game?.cmdr?.scanOne?.genus)
+                    TextRenderer.DrawText(g, "⚫⚪⚪", node.NodeFont, pt, GameColors.Cyan, Util.textFlags);
+
             }
 
             // draw credit estimates
@@ -566,24 +639,41 @@ namespace SrvSurvey
 
         private void drawBodyNode(Graphics g, Point pt, TreeNode node, bool highlight, SystemBody body)
         {
-            if (shouldHighlight(node)) highlight = true;
+            pt.Y += 1;
+
+            if (highlightCurrentBody(node)) highlight = true;
+
+            if (isCurrentBody(node))
+                drawSideBars(g, node, highlight && node != hoverNode);
 
             // draw +/- graphic
             drawExpando(g, pt.X, node.Bounds.Y, node.Bounds.Height, !node.IsExpanded);
             pt.X += 22;
 
             // draw completion pie
-            var pieFill = 1f / body.bioSignalCount * body.countAnalyzedBioSignals;
+            //var pieFill = 1f / body.bioSignalCount * body.countAnalyzedBioSignals;
+
+            var foreColor = highlight ? GameColors.Cyan : GameColors.Orange;
 
             // completion pie
-            drawNodePie(g, pt, pieFill, highlight);
+            // ---
+            //drawNodePie(g, pt, pieFill, highlight);
+            if (body.bioSignalCount == body.countAnalyzedBioSignals)
+                TextRenderer.DrawText(g, "✔", node.NodeFont, pt, foreColor, Util.textFlags);
+            else
+                g.DrawRectangle(highlight ? GameColors.penDarkCyan1 : GameColors.penGameOrangeDim1, pt.X + 3, pt.Y + 3, 10, 10);
+
+            // ---
             pt.X += 18;
 
             // render the node's text
-            var foreColor = highlight ? GameColors.Cyan : GameColors.Orange;
             var text = node.Text;
             if (body.firstFootFall)
-                text += "🦶";
+                text += " 🦶";
+
+            if (!node.IsExpanded && body.genusPredictions.Any(g => g.isGold))
+                foreColor = GameColors.Bio.gold;
+
             TextRenderer.DrawText(g, text, node.NodeFont, pt, foreColor, Util.textFlags);
 
             pt.X += (int)this.maxBodyTextWidth + 20;
@@ -607,7 +697,16 @@ namespace SrvSurvey
 
         private void drawCreditEstimate(Graphics g, TreeNode node, Color color, string text)
         {
-            g.drawTextRight(text, node.NodeFont, color, tree.ClientSize.Width - 8, node.Bounds.Top + 1, 0, node.Bounds.Height);
+            var font = node.Tag is SystemBody ? node.NodeFont : nodeSmall;
+            g.drawTextRight(text, font, color, tree.ClientSize.Width - 8, node.Bounds.Top + 1, 0, node.Bounds.Height);
+        }
+
+        private void drawSideBars(Graphics g, TreeNode node, bool highlight)
+        {
+            // draw side-bars to highlight this is what we're currently scanning
+            var r = tree.ClientSize.Width - 3;
+            g.DrawLine(highlight ? GameColors.penCyan4 : GameColors.penGameOrange3, 2, node.Bounds.Top, 2, node.Bounds.Bottom);
+            g.DrawLine(highlight ? GameColors.penCyan4 : GameColors.penGameOrange3, r, node.Bounds.Top, r, node.Bounds.Bottom);
         }
 
         private void drawNodePie(Graphics g, Point pt, float fill, bool highlight)
@@ -616,9 +715,25 @@ namespace SrvSurvey
             var rPie = new Rectangle(pt.X, pt.Y + 2, 13, 13);
 
             var fillAngle = 360f * fill;
-            var b = fill == 1f ? Brushes.Lime : brushPartial;
+            //var b = highlight ? GameColors.brushCyan : GameColors.brushGameOrange;
+            //var p = highlight ? GameColors.penDarkCyan2 : GameColors.penGameOrangeDim2;
+
+            Brush b = highlight ? GameColors.brushDarkCyan : GameColors.brushGameOrange;
+            Pen p = highlight ? GameColors.penCyan2 : GameColors.penGameOrangeDim2;
+
+            if (fill == 0 && !highlight)
+            {
+                b = GameColors.brushCyan;
+                p = GameColors.penDarkCyan2;
+            }
+            else if (fill == 1)
+            {
+                b = GameColors.brushGameOrange;
+                p = GameColors.penGameOrangeDim2;
+            }
+
             g.FillPie(b, rPie, -90, fillAngle);
-            g.DrawEllipse(penRowEven, rPie);
+            g.DrawEllipse(p, rPie);
         }
 
         private void drawExpando(Graphics g, int x, int y, int h, bool plus)
@@ -637,6 +752,158 @@ namespace SrvSurvey
 
             if (plus)
                 g.DrawLine(p, r.Left + m, r.Top, r.Left + m, r.Bottom);
+        }
+
+        private void doTreeViewMode()
+        {
+            tree.SuspendLayout();
+
+            if (treeMode == TreeViewMode.BodiesOnly)
+            {
+                // bodies only
+                foreach (TreeNode node in tree.Nodes)
+                {
+                    if (node.Tag is SystemBody)
+                        node.Collapse();
+                };
+            }
+            else if (currentBodyOnly && game.status.hasLatLong)
+            {
+                // show current body
+                foreach (TreeNode node in tree.Nodes)
+                {
+                    if (node.Tag == game.systemBody)
+                        node.ExpandAll();
+                    else
+                        node.Collapse();
+                }
+            }
+            else if (treeMode == TreeViewMode.Everything)
+            {
+                // show everything
+                tree.ExpandAll();
+            }
+            else if (treeMode == TreeViewMode.HidePredictedSpecies)
+            {
+                // hide species predictions
+                tree.Nodes.forEveryNode(node =>
+                {
+                    if (node.Tag is SystemBody)
+                        node.Expand();
+                    if (node.Tag is SystemGenusPrediction)
+                        node.Collapse();
+                });
+            }
+
+            //toolBodiesOnly.Checked = treeMode == TreeViewMode.BodiesOnly;
+            //toolHideSpecies.Checked = treeMode == TreeViewMode.HidePredictedSpecies;
+            //toolEverything.Checked = treeMode == TreeViewMode.Everything;
+            //toolCurrentOnly.Checked = currentBodyOnly;
+
+            tree.ResumeLayout();
+        }
+
+        private void toolStripDropDownButton1_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void toolStripStatusLabel1_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void toolStripStatusLabel2_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void toolStripStatusLabel3_Click(object sender, EventArgs e)
+        {
+            // show current body
+            if (game.status.hasLatLong)
+            {
+                tree.CollapseAll();
+                foreach (TreeNode node in tree.Nodes)
+                {
+                    if (node.Tag == game.systemBody)
+                    {
+                        node.ExpandAll();
+                        break;
+                    }
+                }
+            }
+        }
+
+        private void toolBodiesOnly_Click(object sender, EventArgs e)
+        {
+            treeMode = TreeViewMode.BodiesOnly;
+            doTreeViewMode();
+        }
+
+        private void toolHideSpecies_Click(object sender, EventArgs e)
+        {
+            treeMode = TreeViewMode.HidePredictedSpecies;
+            doTreeViewMode();
+        }
+
+        private void toolEverything_Click(object sender, EventArgs e)
+        {
+            treeMode = TreeViewMode.Everything;
+            doTreeViewMode();
+        }
+
+        private void toolCurrentOnly_Click(object sender, EventArgs e)
+        {
+            currentBodyOnly = !currentBodyOnly;
+            doTreeViewMode();
+        }
+
+        private void toolRefresh_Click(object sender, EventArgs e)
+        {
+            game.predictSystemSpecies();
+        }
+
+        private void viewOnCanonnSignalsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Util.openLink("https://canonn-science.github.io/canonn-signals/?system=" + Uri.EscapeDataString(game.systemData!.name));
+        }
+
+        private void viewOnSpanshToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var url = $"https://spansh.co.uk/system/{game.systemData!.address}";
+            Util.openLink(url);
+        }
+
+        private void toolCollapseAll_Click(object sender, EventArgs e)
+        {
+            treeMode = TreeViewMode.BodiesOnly;
+            doTreeViewMode();
+        }
+
+        private void toolExpandAll_Click(object sender, EventArgs e)
+        {
+            treeMode = TreeViewMode.Everything;
+            doTreeViewMode();
+        }
+
+        private void toolCurrentBody_Click(object sender, EventArgs e)
+        {
+            this.currentBodyOnly = !currentBodyOnly;
+            toolCurrentBody.Checked = currentBodyOnly;
+            doTreeViewMode();
+        }
+
+        enum TreeViewMode
+        {
+            None,
+            Everything,
+            HidePredictedSpecies,
+            BodiesOnly,
+        }
+    }
+
+    class Foo : Tuple<BioSpecies, List<SystemVariantPrediction>>
+    {
+        public Foo(BioSpecies item1, List<SystemVariantPrediction> item2) : base(item1, item2)
+        {
         }
     }
 }

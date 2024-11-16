@@ -1,6 +1,8 @@
 ﻿using SrvSurvey.canonn;
+using SrvSurvey.forms;
 using SrvSurvey.game;
 using SrvSurvey.Properties;
+using SrvSurvey.units;
 using System.Collections;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -8,7 +10,7 @@ using System.Drawing.Drawing2D;
 
 namespace SrvSurvey
 {
-    public partial class FormCodexBingo : Form
+    internal partial class FormCodexBingo : SizableForm
     {
         #region static form loading
 
@@ -36,6 +38,8 @@ namespace SrvSurvey
         public FormCodexBingo()
         {
             InitializeComponent();
+            this.isDraggable = true;
+            this.Icon = Icons.prize;
             treeBackBrush = new SolidBrush(tree.BackColor);
             tree.Nodes.Clear();
             tree.MouseWheel += Tree_MouseWheel;
@@ -311,6 +315,9 @@ namespace SrvSurvey
                     var hasSpecies = codexTag?.species != null;
                     var hasGenus = codexTag?.genus != null;
 
+                    menuNearestSeparator.Visible = hasEntryId;
+                    menuFindNearest.Visible = hasEntryId;
+
                     menuCopyEntryId.Visible = hasEntryId;
                     menuCanonnResearch.Visible = hasEntryId;
                     menuCanonnBioforge.Visible = hasEntryId || hasSpecies;
@@ -398,6 +405,20 @@ namespace SrvSurvey
 
             var url = $"https://edastro.b-cdn.net/mapcharts/organic/organic-{Uri.EscapeDataString(genusName)}-regions.jpg";
             Util.openLink(url);
+        }
+
+        private void menuFindNearest_Click(object sender, EventArgs e)
+        {
+            var codexTag = getSelectedNodeCodexTag();
+            var searchTerm = codexTag?.variant ?? codexTag?.text;
+            if (searchTerm == null) return;
+
+            var cmdr = Game.activeGame?.cmdr
+                ?? CommanderSettings.Load(this.cmdrCodex.fid, true, "");
+
+            var starPos = new StarPos(cmdr.starPos, cmdr.currentSystem);
+
+            FormNearestSystems.show(starPos, searchTerm);
         }
 
         private void toolBodyName_Click(object sender, EventArgs e)
@@ -566,11 +587,6 @@ namespace SrvSurvey
             Util.openLink("https://canonn.science/codex/canonn-challenge/");
         }
 
-        protected int scaleBy(int n)
-        {
-            return (int)(this.DeviceDpi / 96f * n);
-        }
-
         private void tree_DrawNode(object sender, DrawTreeNodeEventArgs e)
         {
             e.DrawDefault = true;
@@ -655,11 +671,19 @@ namespace SrvSurvey
 
     public class NodeSorter : IComparer
     {
+        public static NodeSorter ByText { get => new NodeSorter() { sortByName = false }; }
+        public static NodeSorter ByName { get => new NodeSorter() { sortByName = true }; }
+
+        private bool sortByName;
+
         public int Compare(object? left, object? right)
         {
             var leftNode = (TreeNode?)left;
             var rightNode = (TreeNode?)right;
-            return string.Compare(leftNode?.Text ?? "", rightNode?.Text ?? "");
+            if (sortByName)
+                return string.Compare(leftNode?.Name ?? "", rightNode?.Name ?? "");
+            else
+                return string.Compare(leftNode?.Text ?? "", rightNode?.Text ?? "");
         }
     }
 }

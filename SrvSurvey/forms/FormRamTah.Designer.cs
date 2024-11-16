@@ -51,7 +51,6 @@ namespace SrvSurvey
             ListViewItem listViewItem19 = new ListViewItem("19");
             ListViewItem listViewItem20 = new ListViewItem("20");
             ListViewItem listViewItem21 = new ListViewItem("21");
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormRamTah));
             label1 = new Label();
             label3 = new Label();
             txtRuinsMissionActive = new TextBox();
@@ -799,7 +798,6 @@ namespace SrvSurvey
             Controls.Add(label2);
             Controls.Add(label1);
             FormBorderStyle = FormBorderStyle.Fixed3D;
-            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "FormRamTah";
             Text = "Ram Tah Missions";
             tabControl1.ResumeLayout(false);

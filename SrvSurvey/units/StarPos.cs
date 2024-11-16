@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing.Imaging;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Newtonsoft.Json;
 
 namespace SrvSurvey.units
 {
@@ -11,22 +6,27 @@ namespace SrvSurvey.units
     {
         private double[] coords = new double[3];
 
+        [JsonIgnore]
+        public string? systemName;
+
         public StarPos()
         {
         }
 
-        public StarPos(double[] pos)
+        public StarPos(double[] pos, string? systemName = null)
         {
             this.coords[0] = pos[0];
             this.coords[1] = pos[1];
             this.coords[2] = pos[2];
+            this.systemName = systemName;
         }
 
-        public StarPos(double x, double y, double z)
+        public StarPos(double x, double y, double z, string? systemName = null)
         {
             this.coords[0] = x;
             this.coords[1] = y;
             this.coords[2] = z;
+            this.systemName = systemName;
         }
 
         public double x
@@ -50,6 +50,11 @@ namespace SrvSurvey.units
         public override string ToString()
         {
             return $"[ {x}, {y}, {z} ]";
+        }
+
+        public string ToUrlParams()
+        {
+            return $"x={x}&y={y}&z={z}";
         }
 
         public static implicit operator double[](StarPos pos)

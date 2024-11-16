@@ -1,4 +1,5 @@
 ﻿using SrvSurvey.game;
+using SrvSurvey.Properties;
 
 namespace SrvSurvey
 {
@@ -42,6 +43,7 @@ namespace SrvSurvey
         {
             this.logs = logs;
             InitializeComponent();
+            this.Icon = Icons.page;
 
             // can we fit in our last location
             Util.useLastLocation(this, Game.settings.formLogsLocation);

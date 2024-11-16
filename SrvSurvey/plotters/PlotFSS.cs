@@ -148,6 +148,9 @@ namespace SrvSurvey
 
             dty = eight;
             drawTextAt2(four, $"Last scan: {lastBodyName}", col, GameColors.fontSmaller);
+
+            if (game?.systemData?.lastFssBody != null)
+                drawTextAt2(ClientSize.Width - eight, game.systemData.lastFssBody.distanceFromArrivalLS.ToString("N0") + " LS", col, GameColors.fontSmaller, true);
             newLine(true);
 
             if (string.IsNullOrEmpty(lastBodyName)) return;

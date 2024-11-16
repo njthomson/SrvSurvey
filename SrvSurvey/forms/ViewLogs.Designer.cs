@@ -29,7 +29,6 @@ namespace SrvSurvey
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ViewLogs));
             txtLogs = new TextBox();
             btnClose = new FlatButton();
             btnClear = new FlatButton();
@@ -131,7 +130,6 @@ namespace SrvSurvey
             Controls.Add(txtLogs);
             Controls.Add(panel1);
             DoubleBuffered = true;
-            Icon = (Icon)resources.GetObject("$this.Icon");
             Margin = new Padding(4, 3, 4, 3);
             MinimumSize = new Size(600, 400);
             Name = "ViewLogs";

@@ -163,6 +163,16 @@ namespace SrvSurvey.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap canonn_16x16 {
+            get {
+                object obj = ResourceManager.GetObject("canonn_16x16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap clypeus_18 {
             get {
                 object obj = ResourceManager.GetObject("clypeus_18", resourceCulture);
@@ -227,6 +237,16 @@ namespace SrvSurvey.Properties {
             get {
                 object obj = ResourceManager.GetObject("copy", resourceCulture);
                 return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap copy1 {
+            get {
+                object obj = ResourceManager.GetObject("copy1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -391,6 +411,16 @@ namespace SrvSurvey.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap paste1 {
+            get {
+                object obj = ResourceManager.GetObject("paste1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
         internal static System.Drawing.Icon picture {
@@ -416,6 +446,16 @@ namespace SrvSurvey.Properties {
         internal static System.Drawing.Bitmap shards_18 {
             get {
                 object obj = ResourceManager.GetObject("shards_18", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap spansh_16x16 {
+            get {
+                object obj = ResourceManager.GetObject("spansh_16x16", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

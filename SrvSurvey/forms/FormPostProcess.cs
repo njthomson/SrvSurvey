@@ -1,11 +1,11 @@
 ﻿using Newtonsoft.Json;
+using SrvSurvey.forms;
 using SrvSurvey.game;
 using System.ComponentModel;
-using System.Diagnostics;
 
 namespace SrvSurvey
 {
-    public partial class FormPostProcess : DraggableForm
+    internal partial class FormPostProcess : FixedForm
     {
         public static FormPostProcess? activeForm;
 

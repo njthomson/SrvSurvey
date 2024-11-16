@@ -259,4 +259,16 @@
   <data name="paste" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\paste.ico;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="canonn_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\canonn-16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="spansh_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\spansh-16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="copy1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\copy.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="paste1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\paste.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

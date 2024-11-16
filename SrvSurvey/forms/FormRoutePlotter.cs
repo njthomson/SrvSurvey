@@ -1,4 +1,5 @@
-﻿using SrvSurvey.units;
+﻿using SrvSurvey.Properties;
+using SrvSurvey.units;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -16,12 +17,23 @@ namespace SrvSurvey.forms
         public FormRoutePlotter()
         {
             InitializeComponent();
-            this.Icon = DraggableForm.logo2;
+            this.Icon = Icons.logo;
+            this.textBox2.Text = "two two";
+            this.btnClose.Text += "x";
         }
 
         private void btnClose_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void btnPaste_Click(object sender, EventArgs e)
+        {
+            textBox2.UseClearButton = !textBox2.UseClearButton;
+
+            btnPaste.FlatAppearance.MouseDownBackColor = Color.Purple;
+            btnPaste.FlatAppearance.MouseOverBackColor = Color.Red;
+
         }
     }
 

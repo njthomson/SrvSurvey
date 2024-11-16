@@ -1,4 +1,5 @@
 ﻿using SrvSurvey.game;
+using SrvSurvey.Properties;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -18,6 +19,7 @@ namespace SrvSurvey
         public FormSetKeyChord(string keyChord)
         {
             InitializeComponent();
+            this.Icon = Icons.spanner;
             textChord.Text = keyChord;
             textChord.SelectionStart = 0;
             textChord.SelectionLength = 0;

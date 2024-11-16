@@ -271,6 +271,7 @@ namespace SrvSurvey
         public static Pen penCyan4 = newPen(Cyan, 4);
         public static Pen penCyan8 = newPen(Cyan, 8);
         public static Pen penDarkCyan1 = newPen(DarkCyan, 1);
+        public static Pen penDarkCyan2 = newPen(DarkCyan, 2);
         public static Pen penDarkCyan4 = newPen(DarkCyan, 4);
 
         public static Pen penRed1 = newPen(Color.Red, 1);
@@ -681,6 +682,15 @@ namespace SrvSurvey
             public static Pen penNeutronBehind = newPen(DarkCyan, 4, LineCap.Triangle, LineCap.Triangle);
             public static Pen penAhead = newPen(OrangeDim, 4, DashStyle.Dot);
             public static Pen penBehind = newPen(OrangeDim, 4, LineCap.Triangle, LineCap.Triangle);
+        }
+
+        /// <summary>
+        /// Colors used in icons
+        /// </summary>
+        public static class Icon
+        {
+            public static Brush lightBlue = new SolidBrush(Color.FromArgb(255, 0, 255, 222));
+            public static Brush darkBlue = new SolidBrush(Color.FromArgb(255, 0, 94, 176));
         }
 
         #region Fonts

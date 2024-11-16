@@ -30,9 +30,9 @@ namespace SrvSurvey.net
             return systems;
         }
 
-        public async Task<StarPos?> getStarPos(string systemName)
+        public async Task<long?> getSystemAddress(string systemName)
         {
-            Game.log($"Searching Spansh api/systems for StarPos by name: {systemName}");
+            Game.log($"Searching Spansh api/systems for SystemAddressby name: {systemName}");
 
             // https://spansh.co.uk/api/systems/field_values/system_names?q=Colonia
             var json = await Spansh.client.GetStringAsync($"https://spansh.co.uk/api/systems/field_values/system_names?q={Uri.EscapeDataString(systemName)}");
@@ -41,7 +41,7 @@ namespace SrvSurvey.net
             var firstMatch = systems.min_max.FirstOrDefault();
 
             if (firstMatch?.name == systemName)
-                return firstMatch.toStarPos();
+                return firstMatch.id64;
 
             return null;
         }

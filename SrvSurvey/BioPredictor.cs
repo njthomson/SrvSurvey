@@ -15,7 +15,10 @@ namespace BioCriterias
         {
             if (body.type != SystemBodyType.LandableBody) return new List<string>();
             if (body.parents == null || body.parents.Count == 0) return new List<string>();
-            if (BioCriteria.allCriteria.Count == 0 || Debugger.IsAttached) BioCriteria.readCriteria();
+            lock (BioCriteria.allCriteria)
+            {
+                if (BioCriteria.allCriteria.Count == 0 || Debugger.IsAttached) BioCriteria.readCriteria();
+            }
 
             var parentStar = body.system.getParentStarTypes(body, true).FirstOrDefault();
             if (parentStar == null)

@@ -2657,7 +2657,6 @@ namespace SrvSurvey
             Controls.Add(tabControl);
             Controls.Add(panel1);
             FormBorderStyle = FormBorderStyle.FixedDialog;
-            Icon = (Icon)resources.GetObject("$this.Icon");
             Margin = new Padding(4, 3, 4, 3);
             MaximizeBox = false;
             MinimizeBox = false;

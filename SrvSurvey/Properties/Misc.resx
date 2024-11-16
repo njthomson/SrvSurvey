@@ -151,11 +151,11 @@
     <comment>May be appended to FssCompleteShort. {0} int, count of bodies worth of scanning.</comment>
   </data>
   <data name="PlotSysStatus_FssCompleteLong" xml:space="preserve">
-    <value>FSS {0}%</value>
+    <value>FSS {0}% complete</value>
     <comment>Short version, joined with more text. {0} int, percentage number</comment>
   </data>
   <data name="PlotSysStatus_FssCompleteShort" xml:space="preserve">
-    <value>FSS {0}% complete</value>
+    <value>FSS {0}%</value>
     <comment>Long version, shown alone. {0} int, percentage number</comment>
   </data>
   <data name="PlotSysStatus_FssNotStarted" xml:space="preserve">

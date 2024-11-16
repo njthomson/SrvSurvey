@@ -45,6 +45,8 @@
             toolDiscoveryDate = new ToolStripStatusLabel();
             toolFiller = new ToolStripStatusLabel();
             toolImport = new ToolStripDropDownButton();
+            toolCanonnChallenge = new ToolStripMenuItem();
+            toolStripSeparator1 = new ToolStripSeparator();
             toolImportFromCanonn = new ToolStripMenuItem();
             toolImportFromJournal = new ToolStripMenuItem();
             tree = new TreeView();
@@ -58,11 +60,11 @@
             menuCopyName = new ToolStripMenuItem();
             menuCopyEntryId = new ToolStripMenuItem();
             menuCanonnSeparator = new ToolStripSeparator();
-            menuCanonnBioforge = new ToolStripMenuItem();
             menuCanonnResearch = new ToolStripMenuItem();
+            menuCanonnBioforge = new ToolStripMenuItem();
             menuEDAstro = new ToolStripMenuItem();
-            toolStripSeparator1 = new ToolStripSeparator();
-            toolCanonnChallenge = new ToolStripMenuItem();
+            menuNearestSeparator = new ToolStripSeparator();
+            menuFindNearest = new ToolStripMenuItem();
             statusStrip1.SuspendLayout();
             panel1.SuspendLayout();
             contextMenu.SuspendLayout();
@@ -126,6 +128,20 @@
             toolImport.Size = new Size(104, 22);
             toolImport.Text = "Missing entries?";
             toolImport.ToolTipText = "Click to open on Spansh";
+            // 
+            // toolCanonnChallenge
+            // 
+            toolCanonnChallenge.Image = Properties.ImageResources.canonn_16x16;
+            toolCanonnChallenge.Name = "toolCanonnChallenge";
+            toolCanonnChallenge.Size = new Size(268, 22);
+            toolCanonnChallenge.Text = "Will you take the Canonn Challenge?";
+            toolCanonnChallenge.ToolTipText = "Will you take the Canonn Challenge?";
+            toolCanonnChallenge.Click += toolCanonnChallenge_Click;
+            // 
+            // toolStripSeparator1
+            // 
+            toolStripSeparator1.Name = "toolStripSeparator1";
+            toolStripSeparator1.Size = new Size(265, 6);
             // 
             // toolImportFromCanonn
             // 
@@ -241,62 +257,66 @@
             // 
             // contextMenu
             // 
-            contextMenu.Items.AddRange(new ToolStripItem[] { menuCopyName, menuCopyEntryId, menuCanonnSeparator, menuCanonnBioforge, menuCanonnResearch, menuEDAstro });
+            contextMenu.Items.AddRange(new ToolStripItem[] { menuCopyName, menuCopyEntryId, menuCanonnSeparator, menuCanonnResearch, menuCanonnBioforge, menuEDAstro, menuNearestSeparator, menuFindNearest });
             contextMenu.Name = "contextMenuStrip";
-            contextMenu.Size = new Size(212, 120);
+            contextMenu.Size = new Size(251, 148);
             // 
             // menuCopyName
             // 
+            menuCopyName.Image = Properties.ImageResources.copy1;
             menuCopyName.Name = "menuCopyName";
-            menuCopyName.Size = new Size(211, 22);
+            menuCopyName.Size = new Size(250, 22);
             menuCopyName.Text = "Copy name";
             menuCopyName.Click += menuCopyName_Click;
             // 
             // menuCopyEntryId
             // 
+            menuCopyEntryId.Image = Properties.ImageResources.copy1;
             menuCopyEntryId.Name = "menuCopyEntryId";
-            menuCopyEntryId.Size = new Size(211, 22);
+            menuCopyEntryId.Size = new Size(250, 22);
             menuCopyEntryId.Text = "Copy entry Id";
             menuCopyEntryId.Click += menuCopyEntryId_Click;
             // 
             // menuCanonnSeparator
             // 
             menuCanonnSeparator.Name = "menuCanonnSeparator";
-            menuCanonnSeparator.Size = new Size(208, 6);
-            // 
-            // menuCanonnBioforge
-            // 
-            menuCanonnBioforge.Name = "menuCanonnBioforge";
-            menuCanonnBioforge.Size = new Size(211, 22);
-            menuCanonnBioforge.Text = "View on Canonn Bioforge";
-            menuCanonnBioforge.Click += menuViewOnCanonnBioforge_Click;
+            menuCanonnSeparator.Size = new Size(247, 6);
             // 
             // menuCanonnResearch
             // 
+            menuCanonnResearch.Image = Properties.ImageResources.canonn_16x16;
             menuCanonnResearch.Name = "menuCanonnResearch";
-            menuCanonnResearch.Size = new Size(211, 22);
+            menuCanonnResearch.Size = new Size(250, 22);
             menuCanonnResearch.Text = "View on Canonn Research";
             menuCanonnResearch.Click += menuViewOnCanonnResearch_Click;
+            // 
+            // menuCanonnBioforge
+            // 
+            menuCanonnBioforge.Image = Properties.ImageResources.canonn_16x16;
+            menuCanonnBioforge.Name = "menuCanonnBioforge";
+            menuCanonnBioforge.Size = new Size(250, 22);
+            menuCanonnBioforge.Text = "View on Canonn Bioforge";
+            menuCanonnBioforge.Click += menuViewOnCanonnBioforge_Click;
             // 
             // menuEDAstro
             // 
             menuEDAstro.Name = "menuEDAstro";
-            menuEDAstro.Size = new Size(211, 22);
+            menuEDAstro.Size = new Size(250, 22);
             menuEDAstro.Text = "View on ED Astro";
             menuEDAstro.Click += menuEDAstro_Click;
             // 
-            // toolStripSeparator1
+            // menuNearestSeparator
             // 
-            toolStripSeparator1.Name = "toolStripSeparator1";
-            toolStripSeparator1.Size = new Size(265, 6);
+            menuNearestSeparator.Name = "menuNearestSeparator";
+            menuNearestSeparator.Size = new Size(247, 6);
             // 
-            // toolCanonnChallenge
+            // menuFindNearest
             // 
-            toolCanonnChallenge.Name = "toolCanonnChallenge";
-            toolCanonnChallenge.Size = new Size(268, 22);
-            toolCanonnChallenge.Text = "Will you take the Canonn Challenge?";
-            toolCanonnChallenge.ToolTipText = "Will you take the Canonn Challenge?";
-            toolCanonnChallenge.Click += toolCanonnChallenge_Click;
+            menuFindNearest.Image = Properties.ImageResources.canonn_16x16;
+            menuFindNearest.Name = "menuFindNearest";
+            menuFindNearest.Size = new Size(250, 22);
+            menuFindNearest.Text = "Find nearest system containing ...";
+            menuFindNearest.Click += menuFindNearest_Click;
             // 
             // FormCodexBingo
             // 
@@ -307,8 +327,6 @@
             Controls.Add(tree);
             Controls.Add(panel1);
             Controls.Add(statusStrip1);
-            DoubleBuffered = true;
-            Icon = (Icon)resources.GetObject("$this.Icon");
             MinimumSize = new Size(640, 480);
             Name = "FormCodexBingo";
             Text = "Codex Bingo";
@@ -347,5 +365,7 @@
         private ToolStripMenuItem toolImportFromJournal;
         private ToolStripMenuItem toolCanonnChallenge;
         private ToolStripSeparator toolStripSeparator1;
+        private ToolStripSeparator menuNearestSeparator;
+        private ToolStripMenuItem menuFindNearest;
     }
 }

@@ -1,6 +1,7 @@
 ﻿using SrvSurvey.canonn;
 using SrvSurvey.game;
 using SrvSurvey.net;
+using SrvSurvey.Properties;
 using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
@@ -35,6 +36,7 @@ namespace SrvSurvey
         public FormBeacons()
         {
             InitializeComponent();
+            this.Icon = Icons.ticket;
             this.treeSiteTypes.Nodes[2].Expand(); // ruins
             this.treeSiteTypes.Nodes[3].Expand(); // structures
             this.comboVisited.SelectedIndex = 0;

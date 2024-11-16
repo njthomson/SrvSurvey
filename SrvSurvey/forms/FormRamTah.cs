@@ -1,10 +1,12 @@
-﻿using SrvSurvey.game;
+﻿using SrvSurvey.forms;
+using SrvSurvey.game;
+using SrvSurvey.Properties;
 using System.ComponentModel;
 using System.Windows.Forms.VisualStyles;
 
 namespace SrvSurvey
 {
-    public partial class FormRamTah : DraggableForm
+    internal partial class FormRamTah : FixedForm
     {
         public static FormRamTah? activeForm;
         private Color checkedColor = Color.Turquoise;
@@ -23,7 +25,8 @@ namespace SrvSurvey
         private FormRamTah()
         {
             InitializeComponent();
-            this.DoubleBuffered = true;
+            this.Icon = Icons.moai;
+            this.isDraggable = true;
 
             // can we fit in our last location
             Util.useLastLocation(this, Game.settings.formRamTah.Location);

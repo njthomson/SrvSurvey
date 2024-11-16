@@ -1,11 +1,13 @@
-﻿using SrvSurvey.game;
+﻿using SrvSurvey.forms;
+using SrvSurvey.game;
 using SrvSurvey.net.EDSM;
+using SrvSurvey.Properties;
 using SrvSurvey.units;
 using System.Data;
 
 namespace SrvSurvey
 {
-    internal partial class FormSphereLimit : DraggableForm
+    internal partial class FormSphereLimit : FixedForm
     {
         protected Game game = Game.activeGame!;
 
@@ -17,7 +19,7 @@ namespace SrvSurvey
         public FormSphereLimit()
         {
             InitializeComponent();
-            this.Icon = DraggableForm.logo2;
+            this.Icon = Icons.sphere;
 
             txtCurrentSystem.Text = game.cmdr.currentSystem;
 

@@ -17,7 +17,7 @@ namespace SrvSurvey
                     // whilst in witch space, jumping to next system
                     || Game.activeGame.mode == GameMode.FSDJumping
                     // or a keystroke forced it
-                    || PlotJumpInfo.forceShow
+                    || (PlotJumpInfo.forceShow && Game.activeGame.mode != GameMode.FSS)
                 );
         }
 
@@ -69,21 +69,22 @@ namespace SrvSurvey
             var route = game.navRoute.Route.Skip(1).ToList();
 
             RouteEntry? next = null;
-            var onNetData = (NetSysData.Source source, NetSysData netData) =>
+            var onNetData = (NetSysData.Source source, NetSysData netData2) =>
             {
                 if (next != null)
                 {
-                    if (next.StarClass == null && netData.starClass != null)
-                        next.StarClass = netData.starClass;
+                    if (next.StarClass == null && netData2.starClass != null)
+                        next.StarClass = netData2.starClass;
 
                     // if we were waiting on the starPos for the next system, populate it and recalculate hop distances too
-                    if (next.StarPos == null && netData.starPos != null)
-                        next.StarPos = netData.starPos;
+                    if (next.StarPos == null && netData2.starPos != null)
+                        next.StarPos = netData2.starPos;
 
                     if (this.hopDistances.Count == 0)
                         this.calcHopDistances(route);
                 }
 
+                //this.netData = netData2;
                 this.Invalidate();
             };
 
@@ -136,7 +137,7 @@ namespace SrvSurvey
             this.nextHopIdx = route.IndexOf(next);
 
             // start loading net data
-            if (this.netData.starClass != null) this.netData.starClass = next.StarClass;
+            if (this.netData.starClass == null) this.netData.starClass = next.StarClass;
 
             // measure distances for each hop of the route, putting the current system first again
             if (routeStart != null) route.Insert(0, routeStart);
@@ -212,7 +213,7 @@ namespace SrvSurvey
             drawTextAt2(" " + this.netData.systemName, GameColors.fontMiddleBold);
             if (netData.starClass != null)
                 drawTextAt2(this.Width - eight, RES("StarClass", netData.starClass), netData.starClass == "N" ? GameColors.Cyan : null, null, true);
-            newLine(+eight, true);
+            newLine(+ten, true);
 
             this.drawJumpLine();
 
@@ -224,7 +225,6 @@ namespace SrvSurvey
             //drawTextAt2($"(EDSM)", GameColors.OrangeDim);
 
             var lastUpdated = netData.lastUpdated;// ?? netData.spanshSystem?.updated_at.GetValueOrDefault()?.ToLocalTime();
-            if (lastUpdated == null && netData.spanshSystem?.updated_at != null) lastUpdated = netData.spanshSystem.updated_at.Value.ToLocalTime();
             if (lastUpdated != null && (lastUpdated > netData.discoveredDate || netData.discoveredDate == null))
             {
                 drawTextAt2($" ▶️ " + RES("LastUpdated", lastUpdated.Value.ToString("d")));

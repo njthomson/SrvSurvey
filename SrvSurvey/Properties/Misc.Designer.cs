@@ -295,7 +295,7 @@ namespace SrvSurvey.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to FSS {0}%.
+        ///   Looks up a localized string similar to FSS {0}% complete.
         /// </summary>
         internal static string PlotSysStatus_FssCompleteLong {
             get {
@@ -304,7 +304,7 @@ namespace SrvSurvey.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to FSS {0}% complete.
+        ///   Looks up a localized string similar to FSS {0}%.
         /// </summary>
         internal static string PlotSysStatus_FssCompleteShort {
             get {

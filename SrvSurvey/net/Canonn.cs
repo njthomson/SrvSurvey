@@ -72,12 +72,23 @@ namespace SrvSurvey.canonn
 
         #region getSystemPoi
 
+        private Dictionary<string, SystemPoi> cacheGetSystemPoi = new();
+
         public async Task<SystemPoi> getSystemPoi(string systemName, string cmdrName)
         {
             Game.log($"Requesting getSystemPoi: {systemName}");
+            // https://us-central1-canonn-api-236217.cloudfunctions.net/query/getSystemPoi?system=Colonia&odyssey=Y&cmdr=GRINNING2002
+
+            // use cached value if present
+            var key = $"{systemName}/{cmdrName}";
+            if (cacheGetSystemPoi.ContainsKey(key))
+                return cacheGetSystemPoi[key];
 
             var json = await client.GetStringAsync($"https://us-central1-canonn-api-236217.cloudfunctions.net/query/getSystemPoi?system={Uri.EscapeDataString(systemName)}&odyssey=Y&cmdr={Uri.EscapeDataString(cmdrName)}");
             var systemPoi = JsonConvert.DeserializeObject<SystemPoi>(json)!;
+
+            // add to cache
+            cacheGetSystemPoi[key] = systemPoi;
 
             return systemPoi;
         }
@@ -2014,6 +2025,53 @@ namespace SrvSurvey.canonn
             public List<string>? types_found;
             public List<string>? types_missing;
             public int visited;
+        }
+
+        #endregion
+
+        #region find nearest bio signals
+
+        private Dictionary<string, QueryNearestResponse> cacheFindNearestSystemWithBio = new();
+
+        public async Task<QueryNearestResponse> findNearestSystemWithBio(StarPos starPos, string bioName, int limit = 5)
+        {
+            Game.log($"Requesting /query/nearest/codex: starPos: {starPos} for: {bioName}");
+
+            // use cached value if present
+            var key = $"{bioName}/{starPos}";
+            if (cacheFindNearestSystemWithBio.ContainsKey(key))
+                return cacheFindNearestSystemWithBio[key];
+
+            // https://us-central1-canonn-api-236217.cloudfunctions.net/query/nearest/codex?x=7825.40625&y=-101.96875&z=62316.93750&name=Umbrux&limit=3
+
+            var json = await client.GetStringAsync($"https://us-central1-canonn-api-236217.cloudfunctions.net/query/nearest/codex?{starPos.ToUrlParams()}&name={Uri.EscapeDataString(bioName)}&limit={limit}");
+            var response = JsonConvert.DeserializeObject<QueryNearestResponse>(json)!;
+
+            // add to cache
+            cacheFindNearestSystemWithBio[key] = response;
+
+            return response;
+        }
+
+        public class QueryNearestResponse
+        {
+            public List<Entry> nearest;
+
+            public class Entry
+            {
+                public double distance;
+                public string english_name;
+                public long entryid;
+                public string system;
+                public double x;
+                public double y;
+                public double z;
+
+                public StarPos toStarPos()
+                {
+                    return new StarPos(x, y, z, system);
+                }
+            }
         }
 
         #endregion
