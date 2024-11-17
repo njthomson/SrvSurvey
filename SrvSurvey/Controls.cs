@@ -23,20 +23,26 @@ namespace SrvSurvey
 
     public class TreeView2 : TreeView
     {
+        public bool doNotPaint = false;
+
         public TreeView2()
         {
             this.DoubleBuffered = true;
         }
 
-        //protected override void OnPaintBackground(PaintEventArgs e)
-        //{
-        //    base.OnPaintBackground(e);
-        //}
+        protected override void OnPaintBackground(PaintEventArgs e)
+        {
+            if (doNotPaint) return;
 
-        //protected override void OnPaint(PaintEventArgs e)
-        //{
-        //    base.OnPaint(e);
-        //}
+            base.OnPaintBackground(e);
+        }
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            if (doNotPaint) return;
+
+            base.OnPaint(e);
+        }
     }
 
     public class TextBox2 : Panel

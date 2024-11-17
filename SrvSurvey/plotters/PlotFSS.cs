@@ -93,6 +93,10 @@ namespace SrvSurvey
 
         protected override void onJournalEntry(Scan entry)
         {
+            // skip asteroid clusters around a star
+            var firstParentKey = entry.Parents.FirstOrDefault()?.Keys.FirstOrDefault();
+            if (firstParentKey == ParentBodyType.Ring) return;
+
             Game.log($"PlotFSS: Scan event: {entry.Bodyname}");
 
             // remember time of last scan + change to waiting or skipped state if already waiting

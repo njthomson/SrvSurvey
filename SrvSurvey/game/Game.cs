@@ -1115,18 +1115,21 @@ namespace SrvSurvey.game
             if (body == null) return;
 
             ++deferPredictSpeciesPending;
+            Game.log($"deferPredictSpecies: deferPredictSpeciesPending: {deferPredictSpeciesPending}");
 
             Task.Delay(100).ContinueWith(t => Program.control.BeginInvoke(() =>
             {
                 if (--deferPredictSpeciesPending <= 0)
                 {
                     body.predictSpecies();
+                    FormShowCodex.loadImages();
                 }
             }));
         }
 
         public void predictSystemSpecies()
         {
+            Game.log("predictSystemSpecies");
             if (this.systemData == null) return;
 
             // re-predict everything in the current system
@@ -1135,6 +1138,8 @@ namespace SrvSurvey.game
                 if (body.bioSignalCount > 0)
                     body.predictSpecies();
             }
+
+            FormShowCodex.loadImages();
         }
 
         private void onJournalEntry(FSSDiscoveryScan entry)
@@ -1149,7 +1154,6 @@ namespace SrvSurvey.game
         {
             this.setCurrentBody(entry.BodyID);
             this.fireUpdate();
-
 
             //this.systemBody?.predictSpecies();
             this.deferPredictSpecies(this.systemBody);
@@ -2395,7 +2399,7 @@ namespace SrvSurvey.game
 
                 // re-predict species, to clean-up any excess predictions (or the whole system if it's a new discovery
                 if (entry.IsNewEntry)
-                    this.predictSystemSpecies();
+                    Program.defer(() => this.predictSystemSpecies());
                 else
                     this.deferPredictSpecies(this.systemBody);
             }

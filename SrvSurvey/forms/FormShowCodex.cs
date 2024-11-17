@@ -5,7 +5,7 @@ using System.Drawing.Imaging;
 
 namespace SrvSurvey
 {
-    public partial class FormShowCodex : Form
+    internal partial class FormShowCodex : Form
     {
         public static FormShowCodex? activeForm;
 
@@ -274,7 +274,7 @@ namespace SrvSurvey
         }
 
         private void openImageSurveyPage()
-        { 
+        {
             var url = $"https://docs.google.com/forms/d/e/1FAIpQLSdtS-78k6MDb_L2RodLnVGoB3r2958SA5ARnufAEZxLeoRbhA/viewform?entry.987977054={Uri.EscapeDataString(Game.settings.lastCommander!)}&entry.1282362439={Uri.EscapeDataString(match.variant.englishName)}&entry.468337930={Uri.EscapeDataString(match.entryId.ToString())}";
             Util.openLink(url);
         }
@@ -314,6 +314,83 @@ namespace SrvSurvey
         {
             dragging = false;
             this.Cursor = Cursors.Hand;
+        }
+
+        public static void loadImages()
+        {
+            var game = Game.activeGame;
+            if (game?.systemData?.bioSignalsTotal > 0)
+                doLoadSystemImages(game.systemData).ContinueWith(t =>
+                {
+                    if (t.Exception != null)
+                    {
+                        Game.log(t.Exception);
+                        FormErrorSubmit.Show(t.Exception);
+                    }
+                });
+        }
+
+        public static async Task doLoadSystemImages(SystemData systemData)
+        {
+            Game.log($"Loading codex images for: {systemData.name} ({systemData.address})");
+
+            foreach (var body in systemData.bodies)
+            {
+                if (body.bioSignalCount == 0) continue;
+
+                // get images for known organisms
+                if (body.organisms?.Count > 0)
+                {
+                    foreach (var org in body.organisms)
+                    {
+                        if (org.entryId == 0) continue;
+
+                        // skip if no url or we already have the file
+                        var match = Game.codexRef.matchFromEntryId(org.entryId);
+                        if (match.variant.imageUrl == null) continue;
+
+                        var filepath = Path.Combine(CodexRef.codexImagesFolder, $"{org.entryId}.png");
+                        if (File.Exists(filepath)) continue;
+
+                        // otherwise download it
+                        await downloadImage(match.variant.imageUrl, filepath);
+                    }
+                }
+
+                // get images for predictions
+                if (body.genusPredictions?.Count > 0)
+                {
+                    foreach (var genus in body.genusPredictions)
+                    {
+                        foreach (var variants in genus.species.Values)
+                        {
+                            foreach (var variant in variants)
+                            {
+                                // skip if no url or we already have the file
+                                if (variant.variant.imageUrl == null) continue;
+
+                                var filepath = Path.Combine(CodexRef.codexImagesFolder, $"{variant.variant.entryId}.png");
+                                if (File.Exists(filepath)) continue;
+
+                                // otherwise download it
+                                await downloadImage(variant.variant.imageUrl, filepath);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private static async Task downloadImage(string imageUrl, string filepath)
+        {
+            Game.log($"Downloading: {imageUrl} => {filepath}");
+            using (var stream = await new HttpClient().GetStreamAsync(imageUrl))
+            {
+                using (var imgTmp = Image.FromStream(stream))
+                {
+                    imgTmp.Save(filepath, ImageFormat.Png);
+                }
+            }
         }
     }
 }

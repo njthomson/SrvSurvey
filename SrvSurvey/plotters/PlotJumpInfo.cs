@@ -239,7 +239,7 @@ namespace SrvSurvey
             {
                 var lineThree = $"▶️ " + RES("TrafficInfo", traffic.day.ToString("n0"), traffic.week.ToString("n0"), traffic.total.ToString("n0"));
                 drawTextAt2(eight, lineThree);
-                drawTextAt2("(EDSM)", GameColors.OrangeDim);
+                drawTextAt2(" (EDSM)", GameColors.OrangeDim);
                 newLine(+one, true);
             }
 

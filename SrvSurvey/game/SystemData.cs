@@ -895,7 +895,7 @@ namespace SrvSurvey.game
 
             if (entry.BodyID == null)
             {
-                // alas, not much we can do if there's no bodyId, but we might have it  on the post-processing form?
+                // alas, not much we can do if there's no bodyId, but we might have it on the post-processing form?
                 if (FormPostProcess.activeForm == null || FormPostProcess.activeForm.lastSystemAddress != entry.SystemAddress) return;
                 entry.BodyID = FormPostProcess.activeForm.lastBodyId;
             }
@@ -929,6 +929,8 @@ namespace SrvSurvey.game
             organism.species ??= match.species.name;
             organism.speciesLocalized ??= match.species.englishName;
             organism.genusLocalized ??= match.genus.englishName;
+
+            Game.log($"CodexEntry: scanned organism: {organism}");
         }
 
         public void onJournalEntry(ScanOrganic entry)
