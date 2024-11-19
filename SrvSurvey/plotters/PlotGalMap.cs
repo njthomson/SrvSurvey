@@ -1,9 +1,10 @@
 ﻿using SrvSurvey.game;
 using SrvSurvey.net;
 using SrvSurvey.Properties;
+using SrvSurvey.widgets;
 using System.Drawing.Drawing2D;
 
-namespace SrvSurvey
+namespace SrvSurvey.plotters
 {
     internal class PlotGalMap : PlotBase, PlotterForm
     {

@@ -1,6 +1,9 @@
-﻿using SrvSurvey.canonn;
+﻿using BioCriterias;
+using SrvSurvey.canonn;
 using SrvSurvey.game;
+using SrvSurvey.widgets;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing.Imaging;
 
 namespace SrvSurvey
@@ -9,18 +12,29 @@ namespace SrvSurvey
     {
         public static FormShowCodex? activeForm;
 
-        public static FormShowCodex show(string entryId)
+        public static FormShowCodex show()
         {
             if (activeForm == null)
                 FormShowCodex.activeForm = new FormShowCodex();
 
             Util.showForm(FormShowCodex.activeForm);
-            FormShowCodex.activeForm.showEntryId(entryId);
+            FormShowCodex.activeForm.prepStuff();
+
+            // pre-select the current body
+            if (Game.activeGame?.systemBody != null)
+            {
+                var idx = FormShowCodex.activeForm.stuff.Keys.ToList().IndexOf(Game.activeGame.systemBody);
+                if (idx >= 0)
+                {
+                    FormShowCodex.activeForm.idxBody = idx;
+                    FormShowCodex.activeForm.updateStuff();
+                }
+            }
+
             return FormShowCodex.activeForm;
         }
 
         private string entryId;
-        private BioMatch match;
         private Image? img;
         private float scale = 0.25f;
         private float mx, my, w, h;
@@ -28,11 +42,16 @@ namespace SrvSurvey
         private bool dragging = false;
         private Point mouseDownPoint;
 
+        private Dictionary<SystemBody, List<BioVariant>> stuff = new();
+        private int idxBody;
+        private int idxVariant;
+
         private FormShowCodex()
         {
             this.ForeColor = GameColors.Orange;
             InitializeComponent();
             this.DoubleBuffered = true;
+            FlatButton.applyGameTheme(btnPrevBio, btnNextBio, btnPrevBody, btnNextBody, btnMenu);
 
             foreach (ToolStripItem item in this.statusStrip.Items)
                 item.ForeColor = SystemColors.ControlText;
@@ -41,11 +60,125 @@ namespace SrvSurvey
             Util.useLastLocation(this, Game.settings.formShowCodex);
         }
 
+        private SystemBody currentBody { get => stuff.Skip(idxBody).First().Key; }
+        private List<BioVariant> currentVariants { get => stuff.Skip(idxBody).First().Value; }
+        private BioVariant currentVariant { get => stuff.Skip(idxBody).First().Value.Skip(idxVariant).First(); }
+
+        private void prepStuff()
+        {
+            var game = Game.activeGame;
+            if (game?.systemData == null) return;
+            stuff.Clear();
+
+            foreach (var body in game.systemData.bodies)
+            {
+                if (body.bioSignalCount == 0) continue;
+                if (!stuff.ContainsKey(body)) stuff[body] = new();
+
+                // prep known organisms
+                if (body.organisms?.Count > 0)
+                    foreach (var org in body.organisms)
+                        if (org.entryId > 0)
+                            stuff[body].Add(Game.codexRef.matchFromEntryId(org.entryId).variant);
+
+                // prep predictions
+                if (body.genusPredictions?.Count > 0)
+                    foreach (var genus in body.genusPredictions)
+                        foreach (var variants in genus.species.Values)
+                            foreach (var variant in variants)
+                                stuff[body].Add(variant.variant);
+            }
+
+            prepMenuItems();
+            updateStuff();
+        }
+
+        private void updateStuff(bool forceCanonn = false)
+        {
+            var isPrediction = currentBody.organisms?.Any(o => o.entryId.ToString() == currentVariant.entryId) == false;
+
+            lblBodyName.Text = currentBody.name + $" [{idxBody + 1} of {stuff.Count}]";
+            lblTitle.Text = $"[{idxVariant + 1} of {currentVariants.Count}] " + currentVariant.englishName;
+            lblDetails.Text = (isPrediction ? "Predicted" : "Confirmed")
+                + $" | Range: {Util.metersToString((decimal)currentVariant.species.genus.dist)}"
+                + $" | Reward: {Util.credits(currentVariant.reward)}";
+            repositionBodyParts();
+            var targetEntryId = currentVariant.entryId;
+
+            Task.Run(() =>
+            {
+                var filepath = Path.Combine(CodexRef.codexImagesFolder, $"{currentVariant.entryId}.png");
+
+                Image? nextImg = null;
+                var nextCredits = "";
+
+                // do we have a local image?
+                var localFilepath = Game.settings.localFloraFolder == null ? null : Path.Combine(Game.settings.localFloraFolder, $"{currentVariant.localImgName}.png");
+                if (localFilepath != null && File.Exists(localFilepath) && !forceCanonn)
+                {
+                    // load the cached image - quickly, so as not to lock the file
+                    using (var imgTmp = Bitmap.FromFile(localFilepath))
+                        nextImg = new Bitmap(imgTmp);
+
+                    nextCredits = "(local image)";
+                }
+                // load image from disk
+                else if (File.Exists(filepath))
+                {
+                    // load the cached image - quickly, so as not to lock the file
+                    using (var imgTmp = Bitmap.FromFile(filepath))
+                        nextImg = new Bitmap(imgTmp);
+
+                    nextCredits = $"cmdr: {currentVariant.imageCmdr}";
+                }
+
+                if (nextImg != null)
+                {
+                    Program.defer(() =>
+                    {
+                        // exit if this is no longer what we're supposed to be showing
+                        if (targetEntryId != currentVariant.entryId) return;
+
+                        this.lblCmdr.Text = nextCredits;
+
+                        // calculate scale to make the width fit
+                        this.img = nextImg;
+                        lblLoading.Visible = nextImg == null;
+                        if (nextImg != null)
+                        {
+                            this.scale = (float)this.ClientRectangle.Width / (float)img.Width;
+                            this.calcSizes(true, true);
+                        }
+
+                        this.Invalidate(true);
+                    });
+                }
+            });
+        }
+
+        private void repositionBodyParts()
+        {
+            var left = this.ClientSize.Width - flowBodyParts.Width;
+
+            if (lblTitle.Right < left)
+                flowBodyParts.Top = lblTitle.Top;
+            else if (lblDetails.Right < left)
+                flowBodyParts.Top = lblDetails.Top;
+            else
+                flowBodyParts.Top = lblDetails.Bottom;
+        }
+
+        protected override void OnClientSizeChanged(EventArgs e)
+        {
+            base.OnClientSizeChanged(e);
+            repositionBodyParts();
+        }
+
         private void FormShowCodex_Load(object sender, EventArgs e)
         {
             this.BeginInvoke(() =>
             {
-                this.showEntryId(this.entryId);
+                this.prepStuff();
             });
         }
 
@@ -106,148 +239,18 @@ namespace SrvSurvey
             FormShowCodex.activeForm = null;
         }
 
-        public async void showEntryId(string entryId, bool forceRemoteImage = false)
-        {
-            Game.log($"showEntryId: {entryId}");
-            // also find any other things we can show images for
-            this.prepAllSpecies();
-            if (entryId == this.entryId && !forceRemoteImage) return;
-
-            this.lblLoading.Show();
-            this.panelSubmit.Hide();
-            this.img = null;
-            this.entryId = entryId;
-            this.match = Game.codexRef.matchFromEntryId(entryId);
-            this.lblTitle.Text = match.variant.englishName;
-            this.lblCmdr.Text = $"cmdr: {match.variant.imageCmdr}";
-
-            var filepath = Path.Combine(CodexRef.codexImagesFolder, $"{match.entryId}.png");
-
-            // do we have a local image?
-            if (!string.IsNullOrEmpty(Game.settings.localFloraFolder) && !forceRemoteImage)
-            {
-                var localFilepath = Path.Combine(Game.settings.localFloraFolder, $"{match.variant.localImgName}.png");
-                if (File.Exists(localFilepath))
-                {
-                    // load the cached image - quickly, so as not to lock the file
-                    using (var imgTmp = Bitmap.FromFile(localFilepath))
-                        this.img = new Bitmap(imgTmp);
-
-                    this.lblCmdr.Text = "(local image)";
-                }
-            }
-
-            if (this.img == null && File.Exists(filepath))
-            {
-                // download images once a month
-                var duration = DateTime.Now.Subtract(File.GetLastWriteTime(filepath));
-                if (duration.TotalDays < 30 || true)
-                {
-                    // load the cached image - quickly, so as not to lock the file
-                    using (var imgTmp = Bitmap.FromFile(filepath))
-                        this.img = new Bitmap(imgTmp);
-                }
-                else
-                {
-                    // too old, delete and we'll download again below
-                    File.Delete(filepath);
-                }
-            }
-
-            // download if we don't have an imagefile already
-            if (this.img == null && match.variant.imageUrl != null)
-            {
-                Game.log($"Downloading: {match.variant.imageUrl}");
-                this.Invalidate();
-                Application.DoEvents();
-                using (var stream = await new HttpClient().GetStreamAsync(match.variant.imageUrl))
-                {
-                    using (var imgTmp = Image.FromStream(stream))
-                    {
-                        this.img = new Bitmap(imgTmp);
-                        imgTmp.Save(filepath, ImageFormat.Png);
-                    }
-                }
-            }
-
-            if (match.variant.imageUrl == null)
-            {
-                // we have no url
-                this.panelSubmit.Show();
-                this.lblCmdr.Text = "";
-            }
-
-            if (this.img != null)
-            {
-                // calc scale to make the width fit
-                this.scale = (float)this.ClientRectangle.Width / (float)img.Width;
-                this.calcSizes(true, true);
-            }
-            this.Invalidate(true);
-            this.lblLoading.Hide();
-        }
-
         public void prepAllSpecies()
         {
             if (Game.activeGame?.systemBody?.organisms == null) return;
-            toolChange.DropDownItems.Clear();
 
             if (Game.activeGame.systemBody.organisms.Any(o => o.variantLocalized != null))
-            {
-                // show confirmed variants
-                toolChange.DropDownItems.Add(new ToolStripMenuItem("Confirmed:") { Enabled = false });
                 foreach (var org in Game.activeGame.systemBody.organisms)
-                {
                     if (string.IsNullOrEmpty(org.variantLocalized)) continue;
 
-                    var entryId = org.entryId.ToString();
-                    var item = new ToolStripMenuItem()
-                    {
-                        Name = entryId,
-                        Text = org.variantLocalized,
-                    };
-                    item.MouseUp += this.Item_MouseDown;
-
-                    // show a check if there's a picture available
-                    var match = Game.codexRef.matchFromEntryId(entryId);
-                    item.Checked = match.variant.imageUrl != null;
-
-                    toolChange.DropDownItems.Add(item);
-                }
-            }
-
             if (Game.activeGame.systemBody.predictions.Count > 0)
-            {
-                // show predictions
-                toolChange.DropDownItems.Add(new ToolStripMenuItem("Predicted:") { Enabled = false });
-
                 foreach (var bioVariant in Game.activeGame.systemBody.predictions.Values)
-                {
                     // skip if that entryId is already present
-                    if (toolChange.DropDownItems.ContainsKey(bioVariant.entryId)) continue;
-
-                    var item = new ToolStripMenuItem()
-                    {
-                        Name = bioVariant.entryId,
-                        Text = bioVariant.englishName,
-                    };
-                    item.MouseUp += this.Item_MouseDown;
-
-                    // show a check if there's a picture available from Canonn
-                    item.Checked = bioVariant.imageUrl != null;
-
-                    toolChange.DropDownItems.Add(item);
-                }
-            }
-        }
-
-        private void Item_MouseDown(object? sender, MouseEventArgs e)
-        {
-            var item = sender as ToolStripMenuItem;
-            if (item == null) return;
-
-            var forceRemoteImage = e.Button == MouseButtons.Right;
-            this.showEntryId(item.Name, forceRemoteImage);
+                    if (menuStrip.Items.ContainsKey(bioVariant.entryId)) continue;
         }
 
         protected override void OnPaintBackground(PaintEventArgs e)
@@ -275,19 +278,19 @@ namespace SrvSurvey
 
         private void openImageSurveyPage()
         {
-            var url = $"https://docs.google.com/forms/d/e/1FAIpQLSdtS-78k6MDb_L2RodLnVGoB3r2958SA5ARnufAEZxLeoRbhA/viewform?entry.987977054={Uri.EscapeDataString(Game.settings.lastCommander!)}&entry.1282362439={Uri.EscapeDataString(match.variant.englishName)}&entry.468337930={Uri.EscapeDataString(match.entryId.ToString())}";
+            var url = $"https://docs.google.com/forms/d/e/1FAIpQLSdtS-78k6MDb_L2RodLnVGoB3r2958SA5ARnufAEZxLeoRbhA/viewform?entry.987977054={Uri.EscapeDataString(Game.settings.lastCommander!)}&entry.1282362439={Uri.EscapeDataString(currentVariant.englishName)}&entry.468337930={Uri.EscapeDataString(currentVariant.entryId.ToString())}";
             Util.openLink(url);
         }
 
-        private void toolStripStatusLabel1_Click(object sender, EventArgs e)
+        private void toolOpenCanonn_Click(object sender, EventArgs e)
         {
-            var url = $"https://canonn-science.github.io/Codex-Regions/?entryid={Uri.EscapeDataString(match.entryId.ToString())}&hud_category=Biology";
+            var url = $"https://canonn-science.github.io/Codex-Regions/?entryid={Uri.EscapeDataString(currentVariant.entryId.ToString())}&hud_category=Biology";
             Util.openLink(url);
         }
 
         private void toolOpenBioforge_Click(object sender, EventArgs e)
         {
-            var url = $"https://bioforge.canonn.tech/?entryid={Uri.EscapeDataString(match.variant.englishName)}";
+            var url = $"https://bioforge.canonn.tech/?entryid={Uri.EscapeDataString(currentVariant.englishName)}";
             Util.openLink(url);
         }
 
@@ -316,18 +319,20 @@ namespace SrvSurvey
             this.Cursor = Cursors.Hand;
         }
 
+        #region static image loading
+
         public static void loadImages()
         {
             var game = Game.activeGame;
             if (game?.systemData?.bioSignalsTotal > 0)
-                doLoadSystemImages(game.systemData).ContinueWith(t =>
+                Task.Run(() => doLoadSystemImages(game.systemData).ContinueWith(t =>
                 {
                     if (t.Exception != null)
                     {
                         Game.log(t.Exception);
                         FormErrorSubmit.Show(t.Exception);
                     }
-                });
+                }));
         }
 
         public static async Task doLoadSystemImages(SystemData systemData)
@@ -337,6 +342,22 @@ namespace SrvSurvey
             foreach (var body in systemData.bodies)
             {
                 if (body.bioSignalCount == 0) continue;
+
+                /*
+                // download images once a month
+                var duration = DateTime.Now.Subtract(File.GetLastWriteTime(filepath));
+                if (duration.TotalDays < 30 || true)
+                {
+                    // load the cached image - quickly, so as not to lock the file
+                    using (var imgTmp = Bitmap.FromFile(filepath))
+                        this.img = new Bitmap(imgTmp);
+                }
+                else
+                {
+                    // too old, delete and we'll download again below
+                    File.Delete(filepath);
+                }
+                 */
 
                 // get images for known organisms
                 if (body.organisms?.Count > 0)
@@ -391,6 +412,152 @@ namespace SrvSurvey
                     imgTmp.Save(filepath, ImageFormat.Png);
                 }
             }
+        }
+
+        #endregion
+
+        private void Item_MouseDown(object? sender, MouseEventArgs e)
+        {
+            var item = sender as ToolStripMenuItem;
+            if (item == null) return;
+
+            var forceRemoteImage = e.Button == MouseButtons.Right;
+            if (item.Tag is int)
+            {
+                idxVariant = (int)item.Tag;
+                updateStuff(e.Button == MouseButtons.Right);
+            }
+        }
+
+        private void prepMenuItems()
+        {
+            menuStrip.Items.Clear();
+
+            // prep known organisms
+            var knownOrganisms = currentBody.organisms?.Where(o => o.entryId > 0).ToList();
+            if (knownOrganisms?.Count > 0)
+            {
+                // show confirmed variants
+                menuStrip.Items.Add(new ToolStripMenuItem("Confirmed:") { Enabled = false });
+
+                foreach (var org in knownOrganisms)
+                {
+                    if (org.entryId > 0)
+                    {
+                        var match = Game.codexRef.matchFromEntryId(org.entryId);
+                        var item = new ToolStripMenuItem()
+                        {
+                            Name = entryId,
+                            Text = org.variantLocalized,
+                            Tag = currentVariants.IndexOf(match.variant),
+                        };
+                        item.MouseUp += this.Item_MouseDown;
+
+                        // show a check if there's a picture available
+                        item.Checked = match.variant.imageUrl != null;
+
+                        menuStrip.Items.Add(item);
+                    }
+                }
+            }
+
+            // prep predictions
+            if (currentBody.genusPredictions?.Count > 0)
+            {
+                // show predictions
+                menuStrip.Items.Add(new ToolStripMenuItem("Predicted:") { Enabled = false });
+
+                foreach (var genus in currentBody.genusPredictions)
+                {
+                    foreach (var variants in genus.species.Values)
+                    {
+                        foreach (var variant in variants)
+                        {
+                            var item = new ToolStripMenuItem()
+                            {
+                                Name = entryId,
+                                Text = variant.variant.englishName,
+                                Tag = currentVariants.IndexOf(variant.variant),
+                            };
+                            item.MouseUp += this.Item_MouseDown;
+
+                            // show a check if there's a picture available from Canonn
+                            item.Checked = variant.variant.imageUrl != null;
+
+                            menuStrip.Items.Add(item);
+                        }
+                    }
+                }
+            }
+        }
+
+        private void btnPrevBody_Click(object sender, EventArgs e)
+        {
+            idxBody--;
+            if (idxBody < 0) idxBody = stuff.Count - 1;
+            if (idxVariant >= currentVariants.Count) idxVariant = currentVariants.Count - 1;
+
+            prepMenuItems();
+            updateStuff();
+        }
+
+        private void btnNextBody_Click(object sender, EventArgs e)
+        {
+            idxBody++;
+            if (idxBody >= stuff.Count) idxBody = 0;
+            if (idxVariant >= currentVariants.Count) idxVariant = currentVariants.Count - 1;
+
+            prepMenuItems();
+            updateStuff();
+        }
+
+        private void btnPrevBio_Click(object sender, EventArgs e)
+        {
+            idxVariant--;
+            if (idxVariant < 0) idxVariant = currentVariants.Count - 1;
+
+            updateStuff();
+        }
+
+        private void btnNextBio_Click(object sender, EventArgs e)
+        {
+            idxVariant++;
+            if (idxVariant >= currentVariants.Count) idxVariant = 0;
+
+            updateStuff();
+        }
+
+        private void btnMenu_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (!menuVisible)
+            {
+                menuStrip.Show(btnMenu, new Point(0, btnMenu.Height));
+                btnMenu.Text = "⏶";
+                menuVisible = true;
+            }
+            else if (Game.activeGame?.systemBody != null && Debugger.IsAttached)
+            {
+                var match = Game.codexRef.matchFromEntryId(currentVariant.entryId);
+                var clauses = BioPredictor.predictTarget(Game.activeGame.systemBody, currentVariant.englishName);
+                var tempClause = clauses.FirstOrDefault(c => c?.property == "temp");
+                Game.log($"{match.variant.englishName} ({match.species.name}) => range: {tempClause?.min} ~ {tempClause?.max}, default: {Game.activeGame!.systemBody!.surfaceTemperature}, current: {Game.activeGame.status.Temperature}");
+            }
+        }
+
+        private bool menuVisible = false;
+
+        private void btnMenu_MouseEnter(object sender, EventArgs e)
+        {
+            menuVisible = menuStrip.Visible;
+        }
+
+        private void menuStrip_Closed(object sender, ToolStripDropDownClosedEventArgs e)
+        {
+            Program.defer(() =>
+            {
+                menuVisible = false;
+                btnMenu.Text = "⏷";
+            });
         }
     }
 }

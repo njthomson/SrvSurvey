@@ -1,10 +1,9 @@
 ﻿using SrvSurvey.game;
 using SrvSurvey.units;
-using System.Diagnostics;
+using SrvSurvey.widgets;
 using System.Drawing.Drawing2D;
 
-
-namespace SrvSurvey
+namespace SrvSurvey.plotters
 {
     partial class PlotTrackTarget : PlotBase, PlotterForm
     {

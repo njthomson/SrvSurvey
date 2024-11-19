@@ -1,6 +1,7 @@
 ﻿using DecimalMath;
 using SrvSurvey.canonn;
 using SrvSurvey.game;
+using SrvSurvey.plotters;
 using SrvSurvey.Properties;
 using SrvSurvey.units;
 using System.Collections.Generic;
@@ -1072,54 +1073,40 @@ namespace SrvSurvey
 
         public const TextFormatFlags textFlags = TextFormatFlags.NoPadding | TextFormatFlags.PreserveGraphicsTranslateTransform;
 
+        /// <summary>
+        /// Center the inner size within the outer size.
+        /// </summary>        
         public static int centerIn(int outer, int inner)
         {
-            return (int)(outer / 2f) - (int)(inner / 2f);
+            return (int)Math.Ceiling((outer / 2f) - (inner / 2f));
         }
+
+        /// <summary>
+        /// Waits to invoke the action, invoking only once should there be multiple requests during the delay time.
+        /// </summary>
+        public static void deferAfter(int delayMs, Action func)
+        {
+            var name = $"{func.Target}/{func.Method}";
+            if (!pendingCounts.ContainsKey(name)) pendingCounts[name] = 0;
+
+            pendingCounts[name]++;
+            Game.log($"deferAfter {delayMs}ms => '{name}' (q:{pendingCounts[name]})");
+
+            Task.Delay(delayMs).ContinueWith(t => Program.defer(() =>
+            {
+                if (--pendingCounts[name] <= 0)
+                {
+                    pendingCounts.Remove(name);
+                    func();
+                }
+            }));
+        }
+        private static Dictionary<string, int> pendingCounts = new();
+
     }
 
     internal static class ExtensionMethods
     {
-        /// <summary>
-        /// Adjust graphics transform, calls the lambda then reverses the adjustments.
-        /// </summary>
-        public static void Adjust(this Graphics g, float rot, Action func)
-        {
-            ExtensionMethods.Adjust(g, 0, 0, 0, rot, func);
-        }
-
-        /// <summary>
-        /// Adjust graphics transform, calls the lambda then reverses the adjustments.
-        /// </summary>
-        public static void Adjust(this Graphics g, PointF pf, float rot, Action func)
-        {
-            ExtensionMethods.Adjust(g, 0, pf.X, pf.Y, rot, func);
-        }
-        /// <summary>
-        /// Adjust graphics transform, calls the lambda then reverses the adjustments.
-        /// </summary>
-        public static void Adjust(this Graphics g, float x, float y, float rot, Action func)
-        {
-            ExtensionMethods.Adjust(g, 0, x, y, rot, func);
-        }
-
-        /// <summary>
-        /// Adjust graphics transform, calls the lambda then reverses the adjustments.
-        /// </summary>
-        public static void Adjust(this Graphics g, float rot1, float x, float y, float rot2, Action func)
-        {
-            g.RotateTransform(+rot1);
-            // Y value only is inverted
-            g.TranslateTransform(+x, -y);
-            g.RotateTransform(+rot2);
-
-            func();
-
-            g.RotateTransform(-rot2);
-            g.TranslateTransform(-x, +y);
-            g.RotateTransform(-rot1);
-        }
-
         public static TreeNode Set(this TreeNodeCollection nodes, string key, string text)
         {
             if (!nodes.ContainsKey(key))

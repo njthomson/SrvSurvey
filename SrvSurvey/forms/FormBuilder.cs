@@ -1,5 +1,6 @@
 ﻿using SrvSurvey.canonn;
 using SrvSurvey.game;
+using SrvSurvey.plotters;
 using System.ComponentModel;
 using System.Drawing.Drawing2D;
 

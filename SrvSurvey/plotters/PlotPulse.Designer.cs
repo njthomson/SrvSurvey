@@ -1,5 +1,5 @@
 ﻿
-namespace SrvSurvey
+namespace SrvSurvey.plotters
 {
     partial class PlotPulse
     {

@@ -1,9 +1,10 @@
 ﻿using SrvSurvey.game;
 using SrvSurvey.net;
 using SrvSurvey.Properties;
+using SrvSurvey.widgets;
 using System.Diagnostics;
 
-namespace SrvSurvey
+namespace SrvSurvey.plotters
 {
     internal class PlotJumpInfo : PlotBase, PlotterForm
     {

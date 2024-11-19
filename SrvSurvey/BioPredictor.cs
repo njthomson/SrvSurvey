@@ -11,10 +11,22 @@ namespace BioCriterias
         public static bool useTestCache = false;
         public static string netCache = Path.Combine(Program.dataFolder, "netCache");
 
+        public static List<Clause> predictTarget(SystemBody body, string? targetVariant)
+        {
+            var predictor = predict(body, targetVariant);
+            return predictor?.targetClauses ?? new();
+        }
+
         public static List<string> predict(SystemBody body)
         {
-            if (body.type != SystemBodyType.LandableBody) return new List<string>();
-            if (body.parents == null || body.parents.Count == 0) return new List<string>();
+            var predictor = predict(body, null);
+            return predictor?.predictions.ToList() ?? new ();
+        }
+
+        private static BioPredictor? predict(SystemBody body, string? targetVariant = null)
+        {
+            if (body.type != SystemBodyType.LandableBody) return null;
+            if (body.parents == null || body.parents.Count == 0) return null;
             lock (BioCriteria.allCriteria)
             {
                 if (BioCriteria.allCriteria.Count == 0 || Debugger.IsAttached) BioCriteria.readCriteria();
@@ -64,7 +76,7 @@ namespace BioCriterias
             if (parentStars.All(s => s == null))
             {
                 Game.log($"Parent stars are not right?! body: {body.name}");
-                return new List<string>();
+                return null;
             }
 
             //var sumSemiMajorAxis = body.sumSemiMajorAxis(0);
@@ -95,7 +107,7 @@ namespace BioCriterias
                 { "Guardian", withinGuardianBubble.ToString() },
 
             };
-            var predictor = new BioPredictor(body.name, bodyProps);
+            var predictor = new BioPredictor(body.name, bodyProps, targetVariant);
 
             // add known genus and species names
             if (body.organisms?.Count > 0)
@@ -124,25 +136,28 @@ namespace BioCriterias
             foreach (var criteria in BioCriteria.allCriteria)
                 predictor.predict(criteria, null, null, null, null);
 
-            return predictor.predictions.ToList();
+            return predictor;
         }
 
         public readonly string bodyName;
         public readonly Dictionary<string, object> bodyProps;
-        public readonly List<string> knownGenus = new List<string>();
-        public readonly Dictionary<string, string> knownSpecies = new Dictionary<string, string>();
-        private readonly HashSet<string> predictions = new HashSet<string>();
+        public readonly List<string> knownGenus = new();
+        public readonly Dictionary<string, string> knownSpecies = new();
+        private readonly HashSet<string> predictions = new();
+        private readonly string? targetVariant;
+        private readonly List<Clause> targetClauses = new();
 
         /// <summary> Trace extra diagnostics for a genus, species or variant </summary>
         public static string? logOrganism;
 
-        private BioPredictor(string bodyName, Dictionary<string, object>? bodyProps)
+        private BioPredictor(string bodyName, Dictionary<string, object>? bodyProps, string? targetVariant)
         {
             this.bodyName = bodyName;
             this.bodyProps = bodyProps ?? new Dictionary<string, object>();
+            this.targetVariant = targetVariant;
         }
 
-        private void predict(BioCriteria criteria, string? genus, string? species, string? variant, List<BioCriteria>? commonChildren)
+        private bool predict(BioCriteria criteria, string? genus, string? species, string? variant, List<BioCriteria>? commonChildren)
         {
             // accumulate values from current node or prior stack frames
             commonChildren = criteria.commonChildren ?? commonChildren;
@@ -152,31 +167,48 @@ namespace BioCriterias
 
             //if (species?.Contains("Araneamus") == true) Debugger.Break();
 
-            // stop here if genus names are known and this criteria isn't one of them
-            if (!string.IsNullOrEmpty(genus) && knownGenus?.Count > 0 && !knownGenus.Contains(genus)) return;
-            // or stop here if we already scanned some species from this genus
-            // TODO: handle Brain Tree's
-            if (genus != null && species != null && knownSpecies?.Count > 0 && knownSpecies.ContainsKey(genus))
-                return;
+            if (targetVariant == null)
+            {
+                // stop here if genus names are known and this criteria isn't one of them
+                if (!string.IsNullOrEmpty(genus) && knownGenus?.Count > 0 && !knownGenus.Contains(genus))
+                    return false;
+                // or stop here if we already scanned some species from this genus
+                // TODO: handle Brain Tree's
+                if (genus != null && species != null && knownSpecies?.Count > 0 && knownSpecies.ContainsKey(genus))
+                    return false;
+            }
 
             // evaluate current query
             var currentName = (variant == "" ? species! : $"{genus} {species} - {variant}").Trim();
             var failures = testQuery(criteria.query, $"{genus} {species} {variant}".Trim());
+            var targetMatch = false;
 
             //if (this.bodyName.Contains(" 6") && currentName?.Contains("Stabitis") == true) Debugger.Break();
             //if (currentName?.Contains("Brain") == true) Debugger.Break();
 
             // add a prediction if no failures and we have genus, species AND variant
             if (failures.Count == 0 && genus != null && species != null && variant != null)
-                this.predictions.Add(currentName);
+            {
+                targetMatch = targetVariant == currentName;
+
+                if (targetVariant == null || targetVariant == currentName)
+                    this.predictions.Add(currentName);
+
+            }
 
             // continue into children
             var children = criteria.useCommonChildren ? commonChildren : criteria.children;
             if (children?.Count > 0 && failures.Count == 0)
             {
                 foreach (var child in children)
-                    predict(child, genus, species, variant, commonChildren);
+                {
+                    var childMatch = predict(child, genus, species, variant, commonChildren);
+                    if (childMatch && criteria.query?.Count > 0)
+                        targetClauses.AddRange(criteria.query);
+                }
             }
+
+            return targetMatch;
         }
 
         private List<ClauseFailure> testQuery(List<Clause>? query, string currentName)

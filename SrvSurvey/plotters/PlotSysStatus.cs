@@ -1,7 +1,8 @@
 ﻿using SrvSurvey.game;
 using SrvSurvey.Properties;
+using SrvSurvey.widgets;
 
-namespace SrvSurvey
+namespace SrvSurvey.plotters
 {
     internal class PlotSysStatus : PlotBase, PlotterForm
     {

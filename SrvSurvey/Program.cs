@@ -1,4 +1,5 @@
 using SrvSurvey.game;
+using SrvSurvey.plotters;
 using System.Diagnostics;
 using System.IO.Compression;
 using System.Reflection;

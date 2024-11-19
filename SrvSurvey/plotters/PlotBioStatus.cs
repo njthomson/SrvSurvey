@@ -1,8 +1,10 @@
-﻿using SrvSurvey.game;
+﻿using BioCriterias;
+using SrvSurvey.game;
 using SrvSurvey.Properties;
+using SrvSurvey.widgets;
 using System.Diagnostics;
 
-namespace SrvSurvey
+namespace SrvSurvey.plotters
 {
     internal partial class PlotBioStatus : PlotBase, PlotterForm
     {
@@ -27,6 +29,10 @@ namespace SrvSurvey
         private string? lastCodexScan;
         public static string? lastEntryId;
         private bool hasImage;
+        private double lastTemp;
+        private long? lastScanOneEntryId;
+        private Clause? temperatureClause;
+        private TempRangeDiffs? tempRangeDiffs;
 
         private PlotBioStatus() : base()
         {
@@ -46,14 +52,20 @@ namespace SrvSurvey
             this.Width = PlotBase.scaled(480);
             this.Height = PlotBase.scaled(80);
             this.initializeOnLoad();
+
+            tempRangeDiffs = new TempRangeDiffs(this.ClientSize.Width - ten, N.twoFour);
         }
 
         protected override void Status_StatusChanged(bool blink)
         {
             if (this.IsDisposed) return;
 
+            if (this.lastTemp != game.status.Temperature)
+                this.Invalidate();
+            this.lastTemp = game.status.Temperature;
+
             // hide ourselves whilst FSD is charging to jump systems
-            if (game.status.FsdChargingJump || !this.allow || !Elite.gameHasFocus)
+            if ((game.status.FsdChargingJump || !this.allow || !Elite.gameHasFocus) && !Debugger.IsAttached)
                 this.Opacity = 0;
             else if (this.Opacity == 0 && this.allow)
                 this.Opacity = PlotPos.getOpacity(this);
@@ -97,7 +109,7 @@ namespace SrvSurvey
             // show picture, if we have an entryId
             if (msg == MsgCmd.show && lastEntryId != null)
             {
-                FormShowCodex.show(lastEntryId);
+                FormShowCodex.show();
             }
         }
 
@@ -108,6 +120,10 @@ namespace SrvSurvey
             if (this.IsDisposed) return;
 
             base.Game_modeChanged(newMode, force);
+
+            if (game.cmdr.scanOne?.entryId > 0 && this.lastScanOneEntryId != game.cmdr.scanOne.entryId && Debugger.IsAttached)
+                this.prepTemp(game.cmdr.scanOne.entryId);
+            this.lastScanOneEntryId = game.cmdr.scanOne?.entryId;
 
             if (game.systemBody == null || game.systemBody.bioSignalCount == 0)
                 Program.closePlotter<PlotBioStatus>();
@@ -163,7 +179,7 @@ namespace SrvSurvey
                 else if (this.lastCodexScan != null)
                 {
                     this.drawFooterText(g, this.lastCodexScan, GameColors.brushCyan);
-                    if (lastEntryId != null)
+                    if (lastEntryId != null && !Game.settings.tempRange_TEST)
                         this.drawHasImage(g, this.Width - threeSix, this.Height - threeSix);
                 }
                 else if (game.systemBody.firstFootFall && Random.Shared.NextDouble() > 0.5d)
@@ -233,7 +249,14 @@ namespace SrvSurvey
 
             this.drawScale(g, organism.range);
 
-            if (lastEntryId != null)
+            if (Game.settings.tempRange_TEST)
+            {
+                if (this.temperatureClause?.min != null && this.temperatureClause?.max != null)
+                    this.tempRangeDiffs?.renderWithinRange(g, temperatureClause.min.Value, temperatureClause.max.Value);
+                else
+                    this.tempRangeDiffs?.renderBodyOnly(g);
+            }
+            else if (lastEntryId != null)
                 this.drawHasImage(g, this.Width - threeFour, twoFour);
         }
 
@@ -256,7 +279,7 @@ namespace SrvSurvey
 
             var txt = Util.metersToString(dist);
             var txtSz = g.MeasureString(txt, GameColors.fontSmall);
-            var x = this.Width - pad - txtSz.Width;
+            var x = this.Width - pad - txtSz.Width - ten;
             var y = this.Height - pad - txtSz.Height + two;
 
             g.DrawString(txt, GameColors.fontSmall, GameColors.brushCyan,
@@ -283,7 +306,7 @@ namespace SrvSurvey
             var percent = 100.0f / (float)game.systemBody!.bioSignalCount * (float)game.systemBody.countAnalyzedBioSignals;
             var txt = $" {(int)percent}%";
             var txtSz = g.MeasureString(txt, GameColors.fontSmall);
-            var x = this.Width - pad - txtSz.Width;
+            var x = this.Width - pad - txtSz.Width - ten;
             var y = pad;
 
             var b = percent < 100 ? GameColors.brushCyan : GameColors.brushGameOrange;
@@ -294,7 +317,7 @@ namespace SrvSurvey
             float length = hundred;
             //var scannedLength = 20; // ratio * data.sumAnalyzed;
 
-            x = this.Width - pad - txtSz.Width - length;
+            x = this.Width - pad - txtSz.Width - length - ten;
             y += pad - two;
 
             // known un-scanned - solid blue line
@@ -374,6 +397,9 @@ namespace SrvSurvey
 
                 x += sz.Width + eight;
             }
+
+            if (Game.settings.tempRange_TEST)
+                this.tempRangeDiffs?.renderBodyOnly(g);
         }
 
         protected void drawFooterText(Graphics g, string msg, Brush? brush = null)
@@ -393,5 +419,75 @@ namespace SrvSurvey
             g.DrawString(msg, font, brush ?? GameColors.brushGameOrange, tx, ty);
         }
 
+        private void drawTemperatureBar(long entryId)
+        {
+            if (game.systemBody == null) return;
+            var bodyDefaultTemp = (float)game.systemBody.surfaceTemperature;
+            var top = twoFour;
+
+            var h = 40f;
+            var x = this.ClientSize.Width - ten;
+            g.DrawLine(GameColors.penGameOrange1, x, top, x, top + (h / 2));
+
+            var y1 = 20f;
+
+            // temp range for target organism
+            if (this.temperatureClause?.min != null && this.temperatureClause?.max != null)
+            {
+                var min = temperatureClause.min.Value;
+                var max = temperatureClause.max.Value;
+
+                // red and blue bars are fixed at either end of the line
+                g.DrawLine(GameColors.penRed2, x - ten, top, x + two, top);
+                g.DrawLine(GameColors.penCyan2, x - ten, top + h, x + two, top + h);
+
+                // draw other lines between those relative to the temperature range
+                var tempRange = max - min;
+                var dTemp = (h / tempRange);
+
+                // "default" surface temperature
+                var dD = bodyDefaultTemp - min;
+                var yD = top + h - (dD * dTemp);
+                g.DrawLine(GameColors.penGameOrange2, x - five, yD, x + five, yD);
+
+                // current cmdr's temp (if outside on foot)
+                if (game.status.Temperature > 0)
+                {
+                    var dCmdr = bodyDefaultTemp - min;
+                    var yCmdr = top + h - (dCmdr * dTemp);
+                    g.DrawLine(GameColors.penGameOrange2, x - five, yCmdr, x + five, yCmdr);
+                }
+
+                return;
+            }
+
+            // temp at cmdr's location
+            if (game.status.Temperature > 0)
+            {
+                // relative line for current live temp
+                var y2 = y1 - (float)(game.status.Temperature - game.systemBody.surfaceTemperature);
+                g.DrawLine(GameColors.penYellow4, x - two, top + y2, x + five, top + y2);
+            }
+
+            // base line for body "surface temp"
+            g.DrawLine(GameColors.penGameOrange2, x - five, top + y1, x + five, top + y1);
+        }
+
+        private void prepTemp(long entryId)
+        {
+            var match = Game.codexRef.matchFromEntryId(entryId);
+
+            var clauses = BioPredictor.predictTarget(game!.systemBody!, match.variant.englishName);
+            this.temperatureClause = clauses.FirstOrDefault(c => c?.property == "temp");
+            Game.log(temperatureClause);
+
+            if (game.systemBody == null || temperatureClause == null) return;
+            var bodyDefaultTemp = game.systemBody.surfaceTemperature;
+            if (bodyDefaultTemp < temperatureClause.min || bodyDefaultTemp > temperatureClause.max)
+            {
+                Game.log($"Unexpected!\r\nBody surface temperature: {bodyDefaultTemp}\r\n{entryId} min temp: {temperatureClause.min}\r\n{entryId} max temp: {temperatureClause.max}");
+                Debugger.Break(); // does this ever happen?
+            }
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using SrvSurvey.game;
+using SrvSurvey.plotters;
 using SrvSurvey.units;
 
 namespace SrvSurvey
@@ -29,6 +30,7 @@ namespace SrvSurvey
         public double Longitude { get; set; }
         public int Heading { get; set; }
         public int Altitude { get; set; }
+        public double Temperature { get; set; }
 
         public string BodyName { get; set; }
         public Destination Destination { get; set; }

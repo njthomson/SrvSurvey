@@ -1,6 +1,8 @@
 ﻿using DecimalMath;
 using SrvSurvey.game;
+using SrvSurvey.plotters;
 using SrvSurvey.Properties;
+using SrvSurvey.widgets;
 using System.ComponentModel;
 using System.Drawing.Drawing2D;
 

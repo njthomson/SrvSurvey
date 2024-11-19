@@ -1,8 +1,9 @@
 ﻿using SrvSurvey.game;
+using SrvSurvey.widgets;
 using System.Diagnostics;
 using System.Drawing.Drawing2D;
 
-namespace SrvSurvey
+namespace SrvSurvey.plotters
 {
     internal class PlotBioSystem : PlotBase, PlotterForm
     {
@@ -260,7 +261,7 @@ namespace SrvSurvey
                             if (Game.settings.highlightRegionalFirsts) volCol = VolColor.Gold;
                         }
                     }
-                    drawVolumeBars(g, oneTwo, yy + oneSix, volCol, minReward, maxReward, false);
+                    VolumeBar.render(g, oneTwo, yy + oneSix, volCol, minReward, maxReward, false);
 
                     // line 1
                     if (volCol == VolColor.Gold) brush = GameColors.Bio.brushGold;
@@ -433,7 +434,7 @@ namespace SrvSurvey
 
             var volCol = prediction.isGold ? VolColor.Gold : VolColor.Blue;
             if (prediction.hasRegionalNew) volCol = VolColor.White;
-            drawVolumeBars(g, oneTwo, yy + oneSix, volCol, prediction.min, prediction.max, true);
+            VolumeBar.render(g, oneTwo, yy + oneSix, volCol, prediction.min, prediction.max, true);
 
             // 2nd/last line Right - credit range
             b = highlight ? GameColors.brushCyan : GameColors.brushGameOrange;
@@ -640,7 +641,7 @@ namespace SrvSurvey
                         else if (!org.analyzed && Game.activeGame?.cmdrCodex.isDiscovered(org.entryId) == false) volCol = VolColor.Gold;
                         var min = body.getBioRewardForGenus(org, true);
                         var max = body.getBioRewardForGenus(org, false);
-                        drawVolumeBars(g, x, y, volCol, min, max, false);
+                        VolumeBar.render(g, x, y, volCol, min, max, false);
                     }
                     else
                     {
@@ -654,7 +655,7 @@ namespace SrvSurvey
                         if (genusPrediction.hasRegionalNew) volCol = VolColor.White;
                         else if (genusPrediction.isGold) volCol = VolColor.Gold;
                         else volCol = VolColor.Blue;
-                        drawVolumeBars(g, x, y, volCol, genusPrediction.min, genusPrediction.max, true);
+                        VolumeBar.render(g, x, y, volCol, genusPrediction.min, genusPrediction.max, true);
                     }
 
                     x += oneTwo;
@@ -682,7 +683,7 @@ namespace SrvSurvey
                 // skip a few pixels to cross the dotted box
                 if (signalCount == 0) x += three;
 
-                drawVolumeBars(g, x, y, volCol, genusPrediction.min, genusPrediction.max, true);
+                VolumeBar.render(g, x, y, volCol, genusPrediction.min, genusPrediction.max, true);
                 x += oneTwo;
                 signalCount--;
             }
@@ -692,7 +693,7 @@ namespace SrvSurvey
                 var volCol = highlight ? VolColor.Blue : defaultVolCol;
                 while (signalCount > 0)
                 {
-                    drawVolumeBars(g, x, y, volCol, -1, -1, false);
+                    VolumeBar.render(g, x, y, volCol, -1, -1, false);
                     x += oneTwo;
                     signalCount--;
                 }

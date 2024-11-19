@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using SrvSurvey.widgets;
+using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 
 namespace SrvSurvey
@@ -19,6 +20,15 @@ namespace SrvSurvey
             get => base.FlatStyle;
             set => base.FlatStyle = value;
         }
+
+        public static void applyGameTheme(params FlatButton[] buttons)
+        {
+            foreach (var btn in buttons)
+            {
+                btn.FlatAppearance.MouseOverBackColor = Color.FromArgb(255, 64, 64, 64);
+                btn.FlatAppearance.MouseDownBackColor = GameColors.OrangeDim;
+            }
+        }
     }
 
     public class TreeView2 : TreeView
@@ -32,6 +42,7 @@ namespace SrvSurvey
 
         protected override void OnPaintBackground(PaintEventArgs e)
         {
+            //Debug.WriteLine($"OnPaintBackground: {Name} / {doNotPaint}");
             if (doNotPaint) return;
 
             base.OnPaintBackground(e);
@@ -39,6 +50,7 @@ namespace SrvSurvey
 
         protected override void OnPaint(PaintEventArgs e)
         {
+            //Debug.WriteLine($"OnPaint: {Name} / {doNotPaint}");
             if (doNotPaint) return;
 
             base.OnPaint(e);

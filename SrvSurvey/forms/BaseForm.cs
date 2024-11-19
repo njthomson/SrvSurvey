@@ -1,5 +1,6 @@
 ﻿using SrvSurvey.game;
 using SrvSurvey.Properties;
+using SrvSurvey.widgets;
 using System.ComponentModel;
 using System.Diagnostics;
 

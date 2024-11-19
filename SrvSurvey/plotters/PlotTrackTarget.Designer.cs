@@ -1,7 +1,7 @@
 ﻿
 using SrvSurvey.game;
 
-namespace SrvSurvey
+namespace SrvSurvey.plotters
 {
     partial class PlotTrackTarget
     {

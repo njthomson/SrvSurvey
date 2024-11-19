@@ -88,6 +88,7 @@ namespace BioCriterias
         }
 
         #endregion
+
         class JsonConverter : Newtonsoft.Json.JsonConverter
         {
             public override bool CanConvert(Type objectType) { return false; }

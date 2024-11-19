@@ -1,9 +1,10 @@
 ﻿using SrvSurvey.game;
 using SrvSurvey.units;
+using SrvSurvey.widgets;
 using System.Diagnostics;
 using System.Drawing.Drawing2D;
 
-namespace SrvSurvey
+namespace SrvSurvey.plotters
 {
     internal partial class PlotGrounded : PlotBase, PlotterForm
     {

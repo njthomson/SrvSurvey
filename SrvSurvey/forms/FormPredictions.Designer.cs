@@ -63,7 +63,7 @@ namespace SrvSurvey
             flowCounts = new FlowLayoutPanel();
             statusStrip1 = new StatusStrip();
             toolFiller = new ToolStripStatusLabel();
-            toolStripDropDownButton2 = new ToolStripDropDownButton();
+            toolMore = new ToolStripDropDownButton();
             viewOnCanonnSignalsToolStripMenuItem = new ToolStripMenuItem();
             viewOnSpanshToolStripMenuItem = new ToolStripMenuItem();
             panelTop = new Panel();
@@ -301,7 +301,7 @@ namespace SrvSurvey
             // statusStrip1
             // 
             statusStrip1.BackColor = SystemColors.ControlDark;
-            statusStrip1.Items.AddRange(new ToolStripItem[] { toolFiller, toolStripDropDownButton2 });
+            statusStrip1.Items.AddRange(new ToolStripItem[] { toolFiller, toolMore });
             statusStrip1.Location = new Point(0, 385);
             statusStrip1.Name = "statusStrip1";
             statusStrip1.Size = new Size(484, 22);
@@ -316,13 +316,13 @@ namespace SrvSurvey
             // 
             // toolStripDropDownButton2
             // 
-            toolStripDropDownButton2.DisplayStyle = ToolStripItemDisplayStyle.Text;
-            toolStripDropDownButton2.DropDownItems.AddRange(new ToolStripItem[] { viewOnCanonnSignalsToolStripMenuItem, viewOnSpanshToolStripMenuItem });
-            toolStripDropDownButton2.Image = (Image)resources.GetObject("toolStripDropDownButton2.Image");
-            toolStripDropDownButton2.ImageTransparentColor = Color.Magenta;
-            toolStripDropDownButton2.Name = "toolStripDropDownButton2";
-            toolStripDropDownButton2.Size = new Size(60, 20);
-            toolStripDropDownButton2.Text = "More ...";
+            toolMore.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            toolMore.DropDownItems.AddRange(new ToolStripItem[] { viewOnCanonnSignalsToolStripMenuItem, viewOnSpanshToolStripMenuItem });
+            toolMore.Image = (Image)resources.GetObject("toolStripDropDownButton2.Image");
+            toolMore.ImageTransparentColor = Color.Magenta;
+            toolMore.Name = "toolStripDropDownButton2";
+            toolMore.Size = new Size(60, 20);
+            toolMore.Text = "More ...";
             // 
             // viewOnCanonnSignalsToolStripMenuItem
             // 
@@ -444,7 +444,7 @@ namespace SrvSurvey
         private Panel panelTop;
         private Label lblSysActual;
         private TextBox2 txtSysActual;
-        private ToolStripDropDownButton toolStripDropDownButton2;
+        private ToolStripDropDownButton toolMore;
         private ToolStripStatusLabel toolFiller;
         private ToolStripMenuItem viewOnCanonnSignalsToolStripMenuItem;
         private ToolStripMenuItem viewOnSpanshToolStripMenuItem;

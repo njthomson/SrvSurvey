@@ -1,4 +1,5 @@
 ﻿using SrvSurvey.game;
+using SrvSurvey.plotters;
 using SrvSurvey.Properties;
 using System;
 using System.Collections.Generic;

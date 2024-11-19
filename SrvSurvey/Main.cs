@@ -3,7 +3,9 @@ using SrvSurvey.canonn;
 using SrvSurvey.forms;
 using SrvSurvey.game;
 using SrvSurvey.net;
+using SrvSurvey.plotters;
 using SrvSurvey.units;
+using SrvSurvey.widgets;
 using System.Diagnostics;
 using System.Drawing.Imaging;
 using System.Globalization;
@@ -320,7 +322,7 @@ namespace SrvSurvey
             groupCodex.Invalidate();
 
             // ShowCodex button and form
-            Main.form.btnCodexShow.Enabled = game?.systemBody?.organisms?.Count > 0 || game?.systemBody?.predictions?.Count > 0;
+            Main.form.btnCodexShow.Enabled = game?.systemData?.bioSignalsTotal > 0;
             if (!Main.form.btnCodexShow.Enabled && FormShowCodex.activeForm != null)
                 FormShowCodex.activeForm.Close();
 
@@ -1685,16 +1687,7 @@ namespace SrvSurvey
 
         private void btnCodexShow_Click(object sender, EventArgs e)
         {
-            var entryId = PlotBioStatus.lastEntryId;
-            // use the first known organism?
-            if (entryId == null)
-                entryId = game?.systemBody?.organisms?.FirstOrDefault(o => o.entryId > 0)?.entryId.ToString();
-            // use the first prediction?
-            if (entryId == null)
-                entryId = game?.systemBody?.predictions.Values.FirstOrDefault()?.entryId;
-
-            if (entryId != null)
-                FormShowCodex.show(entryId);
+            FormShowCodex.show();
         }
 
         private readonly string[] comboDevItems = new[]
@@ -1754,7 +1747,6 @@ namespace SrvSurvey
         private void btnCodexBingo_Click(object sender, EventArgs e)
         {
             FormCodexBingo.show();
-            //BaseForm.show<FormRoutePlotter>();
         }
     }
 }

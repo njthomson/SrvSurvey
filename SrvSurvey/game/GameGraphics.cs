@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using SrvSurvey.widgets;
 
 namespace SrvSurvey.game
 {

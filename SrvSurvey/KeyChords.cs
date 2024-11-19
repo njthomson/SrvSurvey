@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using SrvSurvey.game;
+using SrvSurvey.plotters;
 using System.Diagnostics;
 
 namespace SrvSurvey

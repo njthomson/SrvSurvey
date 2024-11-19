@@ -1,7 +1,7 @@
 ﻿using SrvSurvey.game;
 using System.Drawing.Drawing2D;
 
-namespace SrvSurvey
+namespace SrvSurvey.widgets
 {
     static class GameColors
     {
@@ -634,15 +634,15 @@ namespace SrvSurvey
 
             public static Pen penDoorEdge = newPen(Color.Navy);
 
-            public static Dictionary<int, SiteColors> siteLevel = new Dictionary<int, SiteColors>
+            public static Dictionary<int, PenBrush> siteLevel = new Dictionary<int, PenBrush>
             {
-                { 0, new SiteColors(Color.Green) },
-                { 1, new SiteColors(Color.SkyBlue) },
-                { 2, new SiteColors(Color.DarkOrange) },
-                { 3, new SiteColors(Color.Red) },
+                { 0, new PenBrush(Color.Green, 0.5f, LineCap.Triangle) },
+                { 1, new PenBrush(Color.SkyBlue, 0.5f, LineCap.Triangle) },
+                { 2, new PenBrush(Color.DarkOrange, 0.5f, LineCap.Triangle) },
+                { 3, new PenBrush(Color.Red, 0.5f, LineCap.Triangle) },
 
                 // For processed POIs, like DataTerminals that have already been scanned
-                { -1, new SiteColors(Color.Gray) },
+                { -1, new PenBrush(Color.Gray, 0.5f, LineCap.Triangle) },
             };
 
             public static PenBrush landingPad = new PenBrush(
@@ -794,23 +794,6 @@ namespace SrvSurvey
     }
 
     /// <summary>
-    /// Details for Human settlement POIs
-    /// </summary>
-    internal class SiteColors
-    {
-        public SiteColors(Color color)
-        {
-            this.color = color;
-            this.brush = new SolidBrush(color);
-            this.pen = GameColors.newPen(color, 0.5f, LineCap.Triangle, LineCap.Triangle);
-        }
-
-        public readonly Color color;
-        public readonly Brush brush;
-        public readonly Pen pen;
-    }
-
-    /// <summary>
     /// A related Pen and Brush
     /// </summary>
     internal class PenBrush
@@ -823,13 +806,11 @@ namespace SrvSurvey
             this.pen = pen;
             this.brush = brush;
         }
-    }
 
-    public enum VolColor
-    {
-        Orange,
-        Blue,
-        Gold,
-        White,
+        public PenBrush(Color color, float penWidth, LineCap endCaps)
+        {
+            this.pen = GameColors.newPen(color, penWidth, endCaps, endCaps);
+            this.brush = new SolidBrush(color);
+        }
     }
 }

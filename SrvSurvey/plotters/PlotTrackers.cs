@@ -1,7 +1,8 @@
 ﻿using SrvSurvey.game;
 using SrvSurvey.units;
+using SrvSurvey.widgets;
 
-namespace SrvSurvey
+namespace SrvSurvey.plotters
 {
     internal class PlotTrackers : PlotBase, PlotterForm
     {

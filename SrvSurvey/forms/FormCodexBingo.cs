@@ -3,6 +3,7 @@ using SrvSurvey.forms;
 using SrvSurvey.game;
 using SrvSurvey.Properties;
 using SrvSurvey.units;
+using SrvSurvey.widgets;
 using System.Collections;
 using System.ComponentModel;
 using System.Diagnostics;

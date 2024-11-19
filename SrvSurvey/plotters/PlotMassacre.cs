@@ -1,7 +1,8 @@
 ﻿using Newtonsoft.Json;
 using SrvSurvey.game;
+using SrvSurvey.widgets;
 
-namespace SrvSurvey
+namespace SrvSurvey.plotters
 {
     internal class PlotMassacre : PlotBase, PlotterForm
     {

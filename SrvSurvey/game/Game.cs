@@ -3,6 +3,7 @@ using SrvSurvey.canonn;
 using SrvSurvey.forms;
 using SrvSurvey.net;
 using SrvSurvey.net.EDSM;
+using SrvSurvey.plotters;
 using SrvSurvey.units;
 using System.Diagnostics;
 

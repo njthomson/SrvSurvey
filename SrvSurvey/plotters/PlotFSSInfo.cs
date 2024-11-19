@@ -1,6 +1,7 @@
 ﻿using SrvSurvey.game;
+using SrvSurvey.widgets;
 
-namespace SrvSurvey
+namespace SrvSurvey.plotters
 {
     internal class PlotFSSInfo : PlotBase, PlotterForm
     {

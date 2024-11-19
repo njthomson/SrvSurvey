@@ -2,11 +2,12 @@
 using SrvSurvey.game;
 using SrvSurvey.net;
 using SrvSurvey.units;
+using SrvSurvey.widgets;
 using System.Diagnostics;
 using System.Drawing.Drawing2D;
 using static SrvSurvey.game.GuardianSiteData;
 
-namespace SrvSurvey
+namespace SrvSurvey.plotters
 {
     public enum Mode
     {

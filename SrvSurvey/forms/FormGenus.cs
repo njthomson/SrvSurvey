@@ -1,4 +1,6 @@
 ﻿using SrvSurvey.game;
+using SrvSurvey.plotters;
+using SrvSurvey.widgets;
 using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;

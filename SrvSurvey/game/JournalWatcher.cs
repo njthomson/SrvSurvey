@@ -1,4 +1,5 @@
 ﻿using SrvSurvey.game;
+using SrvSurvey.plotters;
 
 namespace SrvSurvey
 {

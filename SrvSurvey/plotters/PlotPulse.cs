@@ -1,9 +1,10 @@
 ﻿using SrvSurvey.forms;
 using SrvSurvey.game;
+using SrvSurvey.widgets;
 using System.Diagnostics;
 using System.Drawing.Drawing2D;
 
-namespace SrvSurvey
+namespace SrvSurvey.plotters
 {
     [System.ComponentModel.DesignerCategory("")]
     public partial class PlotPulse : Form, PlotterForm

@@ -5,6 +5,7 @@ using SrvSurvey.canonn;
 using SrvSurvey.net;
 using SrvSurvey.net.EDSM;
 using SrvSurvey.units;
+using SrvSurvey.widgets;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Text.RegularExpressions;

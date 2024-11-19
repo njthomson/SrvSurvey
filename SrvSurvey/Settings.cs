@@ -1,6 +1,8 @@
 ﻿using Newtonsoft.Json;
 using SrvSurvey.game;
+using SrvSurvey.plotters;
 using SrvSurvey.units;
+using SrvSurvey.widgets;
 
 namespace SrvSurvey
 {
@@ -87,6 +89,8 @@ namespace SrvSurvey
         public double bioRingBucketOne = 3;
         public double bioRingBucketTwo = 7;
         public double bioRingBucketThree = 12;
+
+        public bool tempRange_TEST = false;
 
         /// <summary>
         /// Controls if we make any calls to get exploration or bio data

@@ -3,10 +3,11 @@ using SrvSurvey.canonn;
 using SrvSurvey.game;
 using SrvSurvey.net;
 using SrvSurvey.units;
+using SrvSurvey.widgets;
 using System.Diagnostics;
 using System.Globalization;
 
-namespace SrvSurvey
+namespace SrvSurvey.plotters
 {
     internal class PlotHumanSite : PlotBaseSite, PlotterForm
     {
