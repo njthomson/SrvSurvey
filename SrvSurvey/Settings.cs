@@ -91,6 +91,7 @@ namespace SrvSurvey
         public double bioRingBucketThree = 12;
 
         public bool tempRange_TEST = false;
+        public bool formPredictionsCurrentBodyOnly = false;
 
         /// <summary>
         /// Controls if we make any calls to get exploration or bio data

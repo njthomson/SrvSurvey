@@ -30,28 +30,29 @@
         {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormBeacons));
-            TreeNode treeNode1 = new TreeNode("All Sites");
-            TreeNode treeNode2 = new TreeNode("Beacons");
-            TreeNode treeNode3 = new TreeNode("Alpha");
-            TreeNode treeNode4 = new TreeNode("Beta");
-            TreeNode treeNode5 = new TreeNode("Gamma");
-            TreeNode treeNode6 = new TreeNode("All Ruins", new TreeNode[] { treeNode3, treeNode4, treeNode5 });
-            TreeNode treeNode7 = new TreeNode("Lacrosse");
-            TreeNode treeNode8 = new TreeNode("Crossroads");
-            TreeNode treeNode9 = new TreeNode("Fistbump");
-            TreeNode treeNode10 = new TreeNode("Hammerbot");
-            TreeNode treeNode11 = new TreeNode("Bear");
-            TreeNode treeNode12 = new TreeNode("Bowl");
-            TreeNode treeNode13 = new TreeNode("Turtle");
-            TreeNode treeNode14 = new TreeNode("Robolobster");
-            TreeNode treeNode15 = new TreeNode("Squid");
-            TreeNode treeNode16 = new TreeNode("Stickyhand");
-            TreeNode treeNode17 = new TreeNode("All Structures", new TreeNode[] { treeNode7, treeNode8, treeNode9, treeNode10, treeNode11, treeNode12, treeNode13, treeNode14, treeNode15, treeNode16 });
+            TreeNode treeNode18 = new TreeNode("All Sites");
+            TreeNode treeNode19 = new TreeNode("Beacons");
+            TreeNode treeNode20 = new TreeNode("Alpha");
+            TreeNode treeNode21 = new TreeNode("Beta");
+            TreeNode treeNode22 = new TreeNode("Gamma");
+            TreeNode treeNode23 = new TreeNode("All Ruins", new TreeNode[] { treeNode20, treeNode21, treeNode22 });
+            TreeNode treeNode24 = new TreeNode("Lacrosse");
+            TreeNode treeNode25 = new TreeNode("Crossroads");
+            TreeNode treeNode26 = new TreeNode("Fistbump");
+            TreeNode treeNode27 = new TreeNode("Hammerbot");
+            TreeNode treeNode28 = new TreeNode("Bear");
+            TreeNode treeNode29 = new TreeNode("Bowl");
+            TreeNode treeNode30 = new TreeNode("Turtle");
+            TreeNode treeNode31 = new TreeNode("Robolobster");
+            TreeNode treeNode32 = new TreeNode("Squid");
+            TreeNode treeNode33 = new TreeNode("Stickyhand");
+            TreeNode treeNode34 = new TreeNode("All Structures", new TreeNode[] { treeNode24, treeNode25, treeNode26, treeNode27, treeNode28, treeNode29, treeNode30, treeNode31, treeNode32, treeNode33 });
             btnShare = new FlatButton();
             statusStrip1 = new StatusStrip();
             lblStatus = new ToolStripStatusLabel();
             toolStripDropDownButton1 = new ToolStripDropDownButton();
             srvSurveyRamTahHelpersToolStripMenuItem = new ToolStripMenuItem();
+            toolStripSeparator4 = new ToolStripSeparator();
             decodingTheAncientRuinsToolStripMenuItem = new ToolStripMenuItem();
             ramTah2DecryptingTheGuardianLogsToolStripMenuItem = new ToolStripMenuItem();
             comboCurrentSystem = new ComboBox();
@@ -102,7 +103,6 @@
             // 
             // btnShare
             // 
-            btnShare.FlatStyle = FlatStyle.Flat;
             btnShare.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
             btnShare.Location = new Point(736, 36);
             btnShare.Name = "btnShare";
@@ -134,7 +134,7 @@
             // toolStripDropDownButton1
             // 
             toolStripDropDownButton1.DisplayStyle = ToolStripItemDisplayStyle.Text;
-            toolStripDropDownButton1.DropDownItems.AddRange(new ToolStripItem[] { srvSurveyRamTahHelpersToolStripMenuItem, decodingTheAncientRuinsToolStripMenuItem, ramTah2DecryptingTheGuardianLogsToolStripMenuItem });
+            toolStripDropDownButton1.DropDownItems.AddRange(new ToolStripItem[] { srvSurveyRamTahHelpersToolStripMenuItem, toolStripSeparator4, decodingTheAncientRuinsToolStripMenuItem, ramTah2DecryptingTheGuardianLogsToolStripMenuItem });
             toolStripDropDownButton1.Image = (Image)resources.GetObject("toolStripDropDownButton1.Image");
             toolStripDropDownButton1.ImageTransparentColor = Color.Magenta;
             toolStripDropDownButton1.Name = "toolStripDropDownButton1";
@@ -148,8 +148,14 @@
             srvSurveyRamTahHelpersToolStripMenuItem.Text = "SrvSurvey Ram Tah helpers";
             srvSurveyRamTahHelpersToolStripMenuItem.Click += srvSurveyRamTahHelpersToolStripMenuItem_Click;
             // 
+            // toolStripSeparator4
+            // 
+            toolStripSeparator4.Name = "toolStripSeparator4";
+            toolStripSeparator4.Size = new Size(300, 6);
+            // 
             // decodingTheAncientRuinsToolStripMenuItem
             // 
+            decodingTheAncientRuinsToolStripMenuItem.Image = Properties.ImageResources.canonn_16x16;
             decodingTheAncientRuinsToolStripMenuItem.Name = "decodingTheAncientRuinsToolStripMenuItem";
             decodingTheAncientRuinsToolStripMenuItem.Size = new Size(303, 22);
             decodingTheAncientRuinsToolStripMenuItem.Text = "Ram Tah #1 - Decoding the Ancient Ruins";
@@ -157,6 +163,7 @@
             // 
             // ramTah2DecryptingTheGuardianLogsToolStripMenuItem
             // 
+            ramTah2DecryptingTheGuardianLogsToolStripMenuItem.Image = Properties.ImageResources.canonn_16x16;
             ramTah2DecryptingTheGuardianLogsToolStripMenuItem.Name = "ramTah2DecryptingTheGuardianLogsToolStripMenuItem";
             ramTah2DecryptingTheGuardianLogsToolStripMenuItem.Size = new Size(303, 22);
             ramTah2DecryptingTheGuardianLogsToolStripMenuItem.Text = "Ram Tah #2 - Decrypting the Guardian Logs";
@@ -189,7 +196,6 @@
             // 
             // btnFilter
             // 
-            btnFilter.FlatStyle = FlatStyle.Flat;
             btnFilter.Location = new Point(12, 7);
             btnFilter.Name = "btnFilter";
             btnFilter.Size = new Size(50, 23);
@@ -305,7 +311,6 @@
             // 
             // btnSiteTypes
             // 
-            btnSiteTypes.FlatStyle = FlatStyle.Flat;
             btnSiteTypes.Location = new Point(12, 36);
             btnSiteTypes.Name = "btnSiteTypes";
             btnSiteTypes.Size = new Size(50, 23);
@@ -331,56 +336,56 @@
             treeSiteTypes.HideSelection = false;
             treeSiteTypes.Location = new Point(0, 32);
             treeSiteTypes.Name = "treeSiteTypes";
-            treeNode1.Name = "nAllSites";
-            treeNode1.Text = "All Sites";
-            treeNode2.Name = "nBeacons";
-            treeNode2.Text = "Beacons";
-            treeNode3.Checked = true;
-            treeNode3.Name = "nAlpha";
-            treeNode3.Text = "Alpha";
-            treeNode4.Checked = true;
-            treeNode4.Name = "nBeta";
-            treeNode4.Text = "Beta";
-            treeNode5.Checked = true;
-            treeNode5.Name = "nGamma";
-            treeNode5.Text = "Gamma";
-            treeNode6.Checked = true;
-            treeNode6.Name = "nAllRuins";
-            treeNode6.Text = "All Ruins";
-            treeNode7.Checked = true;
-            treeNode7.Name = "nLacrosse";
-            treeNode7.Text = "Lacrosse";
-            treeNode8.Checked = true;
-            treeNode8.Name = "nCrossroads";
-            treeNode8.Text = "Crossroads";
-            treeNode9.Checked = true;
-            treeNode9.Name = "nFistbump";
-            treeNode9.Text = "Fistbump";
-            treeNode10.Checked = true;
-            treeNode10.Name = "nHammerbot";
-            treeNode10.Text = "Hammerbot";
-            treeNode11.Checked = true;
-            treeNode11.Name = "nBear";
-            treeNode11.Text = "Bear";
-            treeNode12.Checked = true;
-            treeNode12.Name = "nBowl";
-            treeNode12.Text = "Bowl";
-            treeNode13.Checked = true;
-            treeNode13.Name = "nTurtle";
-            treeNode13.Text = "Turtle";
-            treeNode14.Checked = true;
-            treeNode14.Name = "nRobolobster";
-            treeNode14.Text = "Robolobster";
-            treeNode15.Checked = true;
-            treeNode15.Name = "nSquid";
-            treeNode15.Text = "Squid";
-            treeNode16.Checked = true;
-            treeNode16.Name = "nStickyhand";
-            treeNode16.Text = "Stickyhand";
-            treeNode17.Checked = true;
-            treeNode17.Name = "nAllStructures";
-            treeNode17.Text = "All Structures";
-            treeSiteTypes.Nodes.AddRange(new TreeNode[] { treeNode1, treeNode2, treeNode6, treeNode17 });
+            treeNode18.Name = "nAllSites";
+            treeNode18.Text = "All Sites";
+            treeNode19.Name = "nBeacons";
+            treeNode19.Text = "Beacons";
+            treeNode20.Checked = true;
+            treeNode20.Name = "nAlpha";
+            treeNode20.Text = "Alpha";
+            treeNode21.Checked = true;
+            treeNode21.Name = "nBeta";
+            treeNode21.Text = "Beta";
+            treeNode22.Checked = true;
+            treeNode22.Name = "nGamma";
+            treeNode22.Text = "Gamma";
+            treeNode23.Checked = true;
+            treeNode23.Name = "nAllRuins";
+            treeNode23.Text = "All Ruins";
+            treeNode24.Checked = true;
+            treeNode24.Name = "nLacrosse";
+            treeNode24.Text = "Lacrosse";
+            treeNode25.Checked = true;
+            treeNode25.Name = "nCrossroads";
+            treeNode25.Text = "Crossroads";
+            treeNode26.Checked = true;
+            treeNode26.Name = "nFistbump";
+            treeNode26.Text = "Fistbump";
+            treeNode27.Checked = true;
+            treeNode27.Name = "nHammerbot";
+            treeNode27.Text = "Hammerbot";
+            treeNode28.Checked = true;
+            treeNode28.Name = "nBear";
+            treeNode28.Text = "Bear";
+            treeNode29.Checked = true;
+            treeNode29.Name = "nBowl";
+            treeNode29.Text = "Bowl";
+            treeNode30.Checked = true;
+            treeNode30.Name = "nTurtle";
+            treeNode30.Text = "Turtle";
+            treeNode31.Checked = true;
+            treeNode31.Name = "nRobolobster";
+            treeNode31.Text = "Robolobster";
+            treeNode32.Checked = true;
+            treeNode32.Name = "nSquid";
+            treeNode32.Text = "Squid";
+            treeNode33.Checked = true;
+            treeNode33.Name = "nStickyhand";
+            treeNode33.Text = "Stickyhand";
+            treeNode34.Checked = true;
+            treeNode34.Name = "nAllStructures";
+            treeNode34.Text = "All Structures";
+            treeSiteTypes.Nodes.AddRange(new TreeNode[] { treeNode18, treeNode19, treeNode23, treeNode34 });
             treeSiteTypes.ShowPlusMinus = false;
             treeSiteTypes.Size = new Size(432, 306);
             treeSiteTypes.TabIndex = 26;
@@ -401,7 +406,6 @@
             // 
             // btnSetSiteTypes
             // 
-            btnSetSiteTypes.FlatStyle = FlatStyle.Flat;
             btnSetSiteTypes.Location = new Point(3, 3);
             btnSetSiteTypes.Name = "btnSetSiteTypes";
             btnSetSiteTypes.Size = new Size(75, 23);
@@ -548,7 +552,7 @@
             Controls.Add(btnFilter);
             Controls.Add(grid);
             Name = "FormBeacons";
-            Text = "Ruins, Structures and Beacons";
+            Text = "Guardian Sites";
             Load += FormBeacons_Load;
             statusStrip1.ResumeLayout(false);
             statusStrip1.PerformLayout();
@@ -608,5 +612,6 @@
         private ToolStripMenuItem ramTah2DecryptingTheGuardianLogsToolStripMenuItem;
         private ToolStripMenuItem srvSurveyRamTahHelpersToolStripMenuItem;
         private CheckBox checkOnlyNeeded;
+        private ToolStripSeparator toolStripSeparator4;
     }
 }

@@ -661,7 +661,7 @@ namespace SrvSurvey
             linkLabel2.LinkArea = new LinkArea(17, 22);
             linkLabel2.Location = new Point(10, 561);
             linkLabel2.Name = "linkLabel2";
-            linkLabel2.Size = new Size(427, 29);
+            linkLabel2.Size = new Size(417, 29);
             linkLabel2.TabIndex = 10;
             linkLabel2.TabStop = true;
             linkLabel2.Text = "Ask questions at Guardian Science Corps on Discord";

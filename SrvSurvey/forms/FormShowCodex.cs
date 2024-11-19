@@ -3,7 +3,6 @@ using SrvSurvey.canonn;
 using SrvSurvey.game;
 using SrvSurvey.widgets;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Drawing.Imaging;
 
 namespace SrvSurvey
@@ -41,16 +40,24 @@ namespace SrvSurvey
         public PointF dragOffset;
         private bool dragging = false;
         private Point mouseDownPoint;
+        private bool menuVisible = false;
 
         private Dictionary<SystemBody, List<BioVariant>> stuff = new();
         private int idxBody;
         private int idxVariant;
+        private SystemBody currentBody;
+        private List<BioVariant> currentVariants;
+        private BioVariant? currentVariant;
+        private string? lastTempRangeVariant;
+        private string? lastTempRange;
 
         private FormShowCodex()
         {
             this.ForeColor = GameColors.Orange;
             InitializeComponent();
             this.DoubleBuffered = true;
+            this.toolMore.DropDownDirection = ToolStripDropDownDirection.AboveLeft;
+
             FlatButton.applyGameTheme(btnPrevBio, btnNextBio, btnPrevBody, btnNextBody, btnMenu);
 
             foreach (ToolStripItem item in this.statusStrip.Items)
@@ -60,9 +67,6 @@ namespace SrvSurvey
             Util.useLastLocation(this, Game.settings.formShowCodex);
         }
 
-        private SystemBody currentBody { get => stuff.Skip(idxBody).First().Key; }
-        private List<BioVariant> currentVariants { get => stuff.Skip(idxBody).First().Value; }
-        private BioVariant currentVariant { get => stuff.Skip(idxBody).First().Value.Skip(idxVariant).First(); }
 
         private void prepStuff()
         {
@@ -89,19 +93,46 @@ namespace SrvSurvey
                                 stuff[body].Add(variant.variant);
             }
 
+            currentBody = stuff.First().Key;
+            currentVariants = stuff.First().Value;
+            currentVariant = currentVariants[idxVariant];
+
             prepMenuItems();
             updateStuff();
         }
 
         private void updateStuff(bool forceCanonn = false)
         {
+            if (currentVariants == null || currentVariants.Count == 0) return;
+            currentVariant = currentVariants[idxVariant];
+
+            // lookup temp range, if needed
+            if (lastTempRangeVariant != currentVariant.name)
+            {
+                var clauses = BioPredictor.predictTarget(currentBody, currentVariant.englishName);
+                var tempClause = clauses.FirstOrDefault(c => c?.property == "temp");
+                if (tempClause?.min > 0 && tempClause?.max > 0)
+                {
+                    lastTempRange = $" | Temp range: {tempClause?.min}K ~ {tempClause?.max}K ";
+                    Game.log($"{currentVariant.englishName} ({currentVariant.species.name}) => temperature range: {tempClause?.min} ~ {tempClause?.max}, default surface temperature: {currentBody.surfaceTemperature}, current: {Game.activeGame?.status?.Temperature}");
+                }
+                else
+                {
+                    lastTempRange = null;
+                    Game.log($"{currentVariant.englishName} ({currentVariant.species.name}) => has no predictive temperature range :(");
+                }
+            }
+            lastTempRangeVariant = currentVariant.name;
+
             var isPrediction = currentBody.organisms?.Any(o => o.entryId.ToString() == currentVariant.entryId) == false;
 
             lblBodyName.Text = currentBody.name + $" [{idxBody + 1} of {stuff.Count}]";
             lblTitle.Text = $"[{idxVariant + 1} of {currentVariants.Count}] " + currentVariant.englishName;
             lblDetails.Text = (isPrediction ? "Predicted" : "Confirmed")
-                + $" | Range: {Util.metersToString((decimal)currentVariant.species.genus.dist)}"
-                + $" | Reward: {Util.credits(currentVariant.reward)}";
+                + $" | Min dist: {Util.metersToString((decimal)currentVariant.species.genus.dist)}"
+                + $" | Reward: {Util.credits(currentVariant.reward)}"
+                + lastTempRange;
+
             repositionBodyParts();
             var targetEntryId = currentVariant.entryId;
 
@@ -278,19 +309,35 @@ namespace SrvSurvey
 
         private void openImageSurveyPage()
         {
+            if (currentVariant == null) return;
             var url = $"https://docs.google.com/forms/d/e/1FAIpQLSdtS-78k6MDb_L2RodLnVGoB3r2958SA5ARnufAEZxLeoRbhA/viewform?entry.987977054={Uri.EscapeDataString(Game.settings.lastCommander!)}&entry.1282362439={Uri.EscapeDataString(currentVariant.englishName)}&entry.468337930={Uri.EscapeDataString(currentVariant.entryId.ToString())}";
             Util.openLink(url);
         }
 
         private void toolOpenCanonn_Click(object sender, EventArgs e)
         {
+            if (currentVariant == null) return;
             var url = $"https://canonn-science.github.io/Codex-Regions/?entryid={Uri.EscapeDataString(currentVariant.entryId.ToString())}&hud_category=Biology";
             Util.openLink(url);
         }
 
         private void toolOpenBioforge_Click(object sender, EventArgs e)
         {
+            if (currentVariant == null) return;
             var url = $"https://bioforge.canonn.tech/?entryid={Uri.EscapeDataString(currentVariant.englishName)}";
+            Util.openLink(url);
+        }
+
+        private void toolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+            if (Game.activeGame?.systemData == null) return;
+            Util.openLink("https://canonn-science.github.io/canonn-signals/?system=" + Uri.EscapeDataString(Game.activeGame.systemData.name));
+        }
+
+        private void viewOnSpanshToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (Game.activeGame?.systemData == null) return;
+            var url = $"https://spansh.co.uk/system/{Game.activeGame.systemData.address}";
             Util.openLink(url);
         }
 
@@ -495,6 +542,10 @@ namespace SrvSurvey
         {
             idxBody--;
             if (idxBody < 0) idxBody = stuff.Count - 1;
+
+            var pair = stuff.Skip(idxBody).First();
+            currentBody = pair.Key;
+            currentVariants = pair.Value;
             if (idxVariant >= currentVariants.Count) idxVariant = currentVariants.Count - 1;
 
             prepMenuItems();
@@ -505,6 +556,10 @@ namespace SrvSurvey
         {
             idxBody++;
             if (idxBody >= stuff.Count) idxBody = 0;
+
+            var pair = stuff.Skip(idxBody).First();
+            currentBody = pair.Key;
+            currentVariants = pair.Value;
             if (idxVariant >= currentVariants.Count) idxVariant = currentVariants.Count - 1;
 
             prepMenuItems();
@@ -529,22 +584,22 @@ namespace SrvSurvey
 
         private void btnMenu_MouseDown(object sender, MouseEventArgs e)
         {
+            if (currentVariant == null) return;
+
             if (!menuVisible)
             {
                 menuStrip.Show(btnMenu, new Point(0, btnMenu.Height));
                 btnMenu.Text = "⏶";
                 menuVisible = true;
             }
-            else if (Game.activeGame?.systemBody != null && Debugger.IsAttached)
-            {
-                var match = Game.codexRef.matchFromEntryId(currentVariant.entryId);
-                var clauses = BioPredictor.predictTarget(Game.activeGame.systemBody, currentVariant.englishName);
-                var tempClause = clauses.FirstOrDefault(c => c?.property == "temp");
-                Game.log($"{match.variant.englishName} ({match.species.name}) => range: {tempClause?.min} ~ {tempClause?.max}, default: {Game.activeGame!.systemBody!.surfaceTemperature}, current: {Game.activeGame.status.Temperature}");
-            }
+            //else if (Game.activeGame?.systemBody != null && Debugger.IsAttached)
+            //{
+            //    var match = Game.codexRef.matchFromEntryId(currentVariant.entryId);
+            //    var clauses = BioPredictor.predictTarget(Game.activeGame.systemBody, currentVariant.englishName);
+            //    var tempClause = clauses.FirstOrDefault(c => c?.property == "temp");
+            //    Game.log($"{match.variant.englishName} ({match.species.name}) => range: {tempClause?.min} ~ {tempClause?.max}, default: {Game.activeGame!.systemBody!.surfaceTemperature}, current: {Game.activeGame.status.Temperature}");
+            //}
         }
-
-        private bool menuVisible = false;
 
         private void btnMenu_MouseEnter(object sender, EventArgs e)
         {

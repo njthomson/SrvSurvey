@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormShareData));
             btnClose = new FlatButton();
             label1 = new Label();
             list = new ListBox();
@@ -166,12 +165,11 @@
             Controls.Add(label1);
             Controls.Add(btnClose);
             FormBorderStyle = FormBorderStyle.FixedDialog;
-            Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "FormShareData";
             StartPosition = FormStartPosition.CenterParent;
-            Text = "Share new data";
+            Text = "Share New Data";
             FormClosed += FormShareData_FormClosed;
             Load += FormShareData_Load;
             ResumeLayout(false);

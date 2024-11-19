@@ -433,7 +433,6 @@
             // 
             // button1
             // 
-            button1.FlatStyle = FlatStyle.Flat;
             button1.Location = new Point(367, 1);
             button1.Name = "button1";
             button1.Size = new Size(38, 23);
@@ -489,7 +488,6 @@
             // btnSaveNotes
             // 
             btnSaveNotes.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            btnSaveNotes.FlatStyle = FlatStyle.Flat;
             btnSaveNotes.Location = new Point(5, 53);
             btnSaveNotes.Name = "btnSaveNotes";
             btnSaveNotes.Size = new Size(195, 23);
@@ -538,7 +536,7 @@
             MinimumSize = new Size(400, 400);
             Name = "FormRuins";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Ruins Map";
+            Text = "Guardian Maps";
             Activated += FormRuins_Activated;
             Load += FormRuins_Load;
             ResizeEnd += FormRuins_ResizeEnd;

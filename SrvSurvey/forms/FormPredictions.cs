@@ -52,6 +52,9 @@ namespace SrvSurvey
             InitializeComponent();
             this.isDraggable = true;
             this.Icon = Icons.dna;
+            this.toolMore.DropDownDirection = ToolStripDropDownDirection.AboveLeft;
+
+            this.currentBodyOnly = Game.settings.formPredictionsCurrentBodyOnly;
 
             this.statusStrip1.ForeColor = SystemColors.WindowText;
             this.toolFiller.Spring = true;
@@ -715,6 +718,9 @@ namespace SrvSurvey
             currentBodyOnly = !currentBodyOnly;
             btnCurrentBody.Text = currentBodyOnly ? "❌ Current body only" : "  Current body only";
             doTreeViewMode();
+
+            Game.settings.formPredictionsCurrentBodyOnly = currentBodyOnly;
+            Game.settings.Save();
         }
 
         enum TreeViewMode

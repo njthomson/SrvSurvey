@@ -40,6 +40,7 @@ namespace SrvSurvey
             this.treeSiteTypes.Nodes[2].Expand(); // ruins
             this.treeSiteTypes.Nodes[3].Expand(); // structures
             this.comboVisited.SelectedIndex = 0;
+            this.toolStripDropDownButton1.DropDownDirection = ToolStripDropDownDirection.AboveLeft;
 
             // can we fit in our last location
             Util.useLastLocation(this, Game.settings.formBeaconsLocation);
@@ -203,7 +204,7 @@ namespace SrvSurvey
 
                 var hasImages = siteHasImages(entry);
 
-                var surveyComplete = entry.surveyProgress == 0 
+                var surveyComplete = entry.surveyProgress == 0
                     ? ""
                     : entry.surveyProgress.ToString("0") + "%";
 

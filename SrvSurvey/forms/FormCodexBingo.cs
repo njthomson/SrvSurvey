@@ -45,6 +45,7 @@ namespace SrvSurvey
             tree.Nodes.Clear();
             tree.MouseWheel += Tree_MouseWheel;
             tree.TreeViewNodeSorter = new NodeSorter();
+            toolImport.DropDownDirection = ToolStripDropDownDirection.AboveLeft;
 
             // can we fit in our last location
             Util.useLastLocation(this, Game.settings.formCodexBingo);

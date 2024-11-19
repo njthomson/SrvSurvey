@@ -1,4 +1,5 @@
 ﻿using SrvSurvey.game;
+using SrvSurvey.Properties;
 using System.Data;
 using System.IO.Compression;
 using System.Security.Cryptography;
@@ -25,6 +26,7 @@ namespace SrvSurvey
         private FormShareData()
         {
             InitializeComponent();
+            this.Icon = Icons.moai;
             Util.applyTheme(this);
         }
 

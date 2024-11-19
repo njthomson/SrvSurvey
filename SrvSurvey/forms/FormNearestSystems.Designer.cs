@@ -198,7 +198,7 @@
             Controls.Add(btnClose);
             Controls.Add(list);
             Name = "FormNearestSystems";
-            Text = "Nearest systems";
+            Text = "Nearest Systems";
             contextMenu.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
