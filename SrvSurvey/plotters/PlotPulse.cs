@@ -38,6 +38,9 @@ namespace SrvSurvey.plotters
             this.Opacity = 0;
             this.DoubleBuffered = true;
             this.Size = Size.Empty;
+
+            // Does this cause windows to become visible when alt-tabbing?
+            this.Text = this.Name;
         }
 
         protected override void OnLoad(EventArgs e)

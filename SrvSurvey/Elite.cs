@@ -70,8 +70,15 @@ namespace SrvSurvey
         public static void setFocusED()
         {
             var hwnd = getWindowHandle();
+
             if (hwnd != IntPtr.Zero)
-                SetForegroundWindow(hwnd);
+            {
+                var isIconic = IsIconic(hwnd); // is it minimized?
+                if (isIconic)
+                    ShowWindow(hwnd, 0x9); // 0x9 : Restore
+                else
+                    SetForegroundWindow(hwnd);
+            }
             else
                 Game.log("setFocusED: got Zero!");
         }
@@ -95,13 +102,14 @@ namespace SrvSurvey
 
             var hwndED = Elite.getWindowHandle();
             var hwndActive = Elite.GetForegroundWindow();
-            var weHaveFocus = (!Program.control.InvokeRequired && hwndActive == Main.ActiveForm?.Handle) || System.Diagnostics.Debugger.IsAttached;
+            var isIconic = IsIconic(hwndED); // is it minimized?
+            var weHaveFocus = (!Program.control.InvokeRequired && hwndActive == Main.ActiveForm?.Handle) || System.Diagnostics.Debugger.IsAttached || Game.settings.keepOverlays;
 
             focusElite = hwndActive == hwndED;
             focusSrvSurvey = hwndActive == Main.ActiveForm?.Handle;
 
             // hide plotters when game is not active (unless we are debugging or forced)
-            if (!force && (hwndED != hwndActive || hwndED == IntPtr.Zero) && !weHaveFocus)
+            if (!force && (isIconic || hwndED != hwndActive || hwndED == IntPtr.Zero) && !weHaveFocus)
             {
                 return Rectangle.Empty;
             }
@@ -235,6 +243,11 @@ namespace SrvSurvey
         public static extern bool SetForegroundWindow(IntPtr hWnd);
         [DllImport("user32.dll")]
         static extern IntPtr GetForegroundWindow();
+        [DllImport("user32.dll")]
+        static extern bool IsIconic(IntPtr hWnd);
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        static extern bool ShowWindow(IntPtr hWnd, int flags);
 
         [DllImport("user32.dll")]
         static extern int GetSystemMetrics(int nIndex);

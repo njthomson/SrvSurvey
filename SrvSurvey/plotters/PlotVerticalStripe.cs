@@ -7,15 +7,15 @@ using System.Drawing.Drawing2D;
 namespace SrvSurvey.plotters
 {
     [System.ComponentModel.DesignerCategory("")]
-    internal class PlotVertialStripe : Form, PlotterForm, IDisposable
+    internal class PlotVerticalStripe : Form, PlotterForm, IDisposable
     {
-        public static PlotVertialStripe? show(PlotVertialStripe.Mode mode, double targetAltitude)
+        public static PlotVerticalStripe? show(PlotVerticalStripe.Mode mode, double targetAltitude)
         {
             if (Game.settings.disableAerialAlignmentGrid) return null;
 
-            PlotVertialStripe.targetAltitude = targetAltitude;
-            PlotVertialStripe.mode = mode;
-            return Program.showPlotter<PlotVertialStripe>();
+            PlotVerticalStripe.targetAltitude = targetAltitude;
+            PlotVerticalStripe.mode = mode;
+            return Program.showPlotter<PlotVerticalStripe>();
         }
 
         public enum Mode
@@ -50,8 +50,9 @@ namespace SrvSurvey.plotters
         private float mw;
         private float mh;
 
-        private PlotVertialStripe()
+        private PlotVerticalStripe()
         {
+            this.Name = this.GetType().Name;
             this.StartPosition = FormStartPosition.Manual;
             this.Width = 800;
             this.Height = 200;
@@ -72,6 +73,9 @@ namespace SrvSurvey.plotters
             this.BackColor = Color.Red;
             this.TransparencyKey = Color.Red;
             this.AllowTransparency = true;
+
+            // Does this cause windows to become visible when alt-tabbing?
+            this.Text = this.Name;
 
             game.status.StatusChanged += Status_StatusChanged;
         }
@@ -136,7 +140,7 @@ namespace SrvSurvey.plotters
             if (game.mode == GameMode.Landed)
                 return 0;
 
-            if (PlotVertialStripe.mode == Mode.RelicTower)
+            if (PlotVerticalStripe.mode == Mode.RelicTower)
                 return 0.8;
 
             var gameAltitude = Math.Max(0, game.status.Altitude);

@@ -83,7 +83,7 @@ namespace SrvSurvey
             lblSysEst.Anchor = AnchorStyles.Right;
             lblSysEst.AutoSize = true;
             lblSysEst.FlatStyle = FlatStyle.System;
-            lblSysEst.Location = new Point(13, 31);
+            lblSysEst.Location = new Point(11, 31);
             lblSysEst.Name = "lblSysEst";
             lblSysEst.Size = new Size(117, 12);
             lblSysEst.TabIndex = 1;
@@ -139,7 +139,8 @@ namespace SrvSurvey
             tree.Nodes.AddRange(new TreeNode[] { treeNode3, treeNode7, treeNode9, treeNode15, treeNode16 });
             tree.ShowNodeToolTips = true;
             tree.Size = new Size(484, 283);
-            tree.TabIndex = 3;
+            tree.TabIndex = 2;
+            tree.TabStop = false;
             tree.DrawNode += tree_DrawNode;
             tree.AfterSelect += tree_AfterSelect;
             tree.Layout += tree_Layout;
@@ -152,7 +153,7 @@ namespace SrvSurvey
             lblSysEstFF.Anchor = AnchorStyles.Right;
             lblSysEstFF.AutoSize = true;
             lblSysEstFF.FlatStyle = FlatStyle.System;
-            lblSysEstFF.Location = new Point(27, 52);
+            lblSysEstFF.Location = new Point(25, 52);
             lblSysEstFF.Name = "lblSysEstFF";
             lblSysEstFF.Size = new Size(103, 12);
             lblSysEstFF.TabIndex = 3;
@@ -164,11 +165,11 @@ namespace SrvSurvey
             txtScanCount.BackColor = Color.Black;
             txtScanCount.BorderStyle = BorderStyle.FixedSingle;
             txtScanCount.ForeColor = Color.Red;
-            txtScanCount.Location = new Point(387, 49);
+            txtScanCount.Location = new Point(383, 49);
             txtScanCount.Margin = new Padding(0, 1, 0, 1);
             txtScanCount.Name = "txtScanCount";
             txtScanCount.ReadOnly = true;
-            txtScanCount.Size = new Size(95, 19);
+            txtScanCount.Size = new Size(99, 19);
             txtScanCount.TabIndex = 8;
             txtScanCount.Text = "99 of 99";
             txtScanCount.TextAlign = HorizontalAlignment.Center;
@@ -178,7 +179,7 @@ namespace SrvSurvey
             lblScanCount.Anchor = AnchorStyles.Right;
             lblScanCount.AutoSize = true;
             lblScanCount.FlatStyle = FlatStyle.System;
-            lblScanCount.Location = new Point(277, 52);
+            lblScanCount.Location = new Point(273, 52);
             lblScanCount.Margin = new Padding(6, 0, 0, 0);
             lblScanCount.Name = "lblScanCount";
             lblScanCount.Size = new Size(110, 12);
@@ -191,7 +192,7 @@ namespace SrvSurvey
             txtSysEst.BackColor = Color.Black;
             txtSysEst.BorderStyle = BorderStyle.FixedSingle;
             txtSysEst.ForeColor = Color.Red;
-            txtSysEst.Location = new Point(133, 28);
+            txtSysEst.Location = new Point(131, 28);
             txtSysEst.Margin = new Padding(0, 1, 0, 1);
             txtSysEst.Name = "txtSysEst";
             txtSysEst.ReadOnly = true;
@@ -206,7 +207,7 @@ namespace SrvSurvey
             txtSysEstFF.BackColor = Color.Black;
             txtSysEstFF.BorderStyle = BorderStyle.FixedSingle;
             txtSysEstFF.ForeColor = Color.Red;
-            txtSysEstFF.Location = new Point(133, 49);
+            txtSysEstFF.Location = new Point(131, 49);
             txtSysEstFF.Margin = new Padding(0, 1, 0, 1);
             txtSysEstFF.Name = "txtSysEstFF";
             txtSysEstFF.ReadOnly = true;
@@ -267,7 +268,7 @@ namespace SrvSurvey
             lblSysActual.Anchor = AnchorStyles.Right;
             lblSysActual.AutoSize = true;
             lblSysActual.FlatStyle = FlatStyle.System;
-            lblSysActual.Location = new Point(281, 31);
+            lblSysActual.Location = new Point(277, 31);
             lblSysActual.Name = "lblSysActual";
             lblSysActual.Size = new Size(103, 12);
             lblSysActual.TabIndex = 5;
@@ -279,11 +280,11 @@ namespace SrvSurvey
             txtSysActual.BackColor = Color.Black;
             txtSysActual.BorderStyle = BorderStyle.FixedSingle;
             txtSysActual.ForeColor = Color.Red;
-            txtSysActual.Location = new Point(387, 28);
+            txtSysActual.Location = new Point(383, 28);
             txtSysActual.Margin = new Padding(0, 1, 0, 1);
             txtSysActual.Name = "txtSysActual";
             txtSysActual.ReadOnly = true;
-            txtSysActual.Size = new Size(95, 19);
+            txtSysActual.Size = new Size(99, 19);
             txtSysActual.TabIndex = 6;
             txtSysActual.Text = "999.9M cr";
             txtSysActual.TextAlign = HorizontalAlignment.Center;
@@ -306,7 +307,8 @@ namespace SrvSurvey
             statusStrip1.Location = new Point(0, 385);
             statusStrip1.Name = "statusStrip1";
             statusStrip1.Size = new Size(484, 22);
-            statusStrip1.TabIndex = 0;
+            statusStrip1.TabIndex = 3;
+            statusStrip1.TabStop = true;
             statusStrip1.Text = "statusStrip1";
             // 
             // toolFiller
@@ -323,7 +325,7 @@ namespace SrvSurvey
             toolMore.ImageTransparentColor = Color.Magenta;
             toolMore.Name = "toolMore";
             toolMore.Size = new Size(60, 20);
-            toolMore.Text = "More ...";
+            toolMore.Text = "&More ...";
             // 
             // viewSystemOnToolStripMenuItem
             // 
@@ -373,7 +375,7 @@ namespace SrvSurvey
             flowButtons.Location = new Point(0, 71);
             flowButtons.Name = "flowButtons";
             flowButtons.Size = new Size(484, 31);
-            flowButtons.TabIndex = 2;
+            flowButtons.TabIndex = 1;
             // 
             // btnExpandAll
             // 
@@ -383,7 +385,7 @@ namespace SrvSurvey
             btnExpandAll.Name = "btnExpandAll";
             btnExpandAll.Size = new Size(111, 23);
             btnExpandAll.TabIndex = 0;
-            btnExpandAll.Text = "Expand all";
+            btnExpandAll.Text = "&Expand all";
             btnExpandAll.UseVisualStyleBackColor = true;
             btnExpandAll.Click += btnExpandAll_Click;
             // 
@@ -395,7 +397,7 @@ namespace SrvSurvey
             btnCollapseAll.Name = "btnCollapseAll";
             btnCollapseAll.Size = new Size(111, 23);
             btnCollapseAll.TabIndex = 1;
-            btnCollapseAll.Text = "Collapse all";
+            btnCollapseAll.Text = "&Collapse all";
             btnCollapseAll.UseVisualStyleBackColor = true;
             btnCollapseAll.Click += btnCollapseAll_Click;
             // 
@@ -407,7 +409,7 @@ namespace SrvSurvey
             btnCurrentBody.Name = "btnCurrentBody";
             btnCurrentBody.Size = new Size(164, 23);
             btnCurrentBody.TabIndex = 2;
-            btnCurrentBody.Text = "  Current body only";
+            btnCurrentBody.Text = "  Current &body only";
             btnCurrentBody.UseVisualStyleBackColor = true;
             btnCurrentBody.Click += btnCurrentBody_Click;
             // 

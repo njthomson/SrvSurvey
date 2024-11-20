@@ -54,12 +54,11 @@
             // btnStart
             // 
             btnStart.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            btnStart.FlatStyle = FlatStyle.Flat;
             btnStart.Location = new Point(94, 197);
             btnStart.Name = "btnStart";
             btnStart.Size = new Size(293, 25);
             btnStart.TabIndex = 7;
-            btnStart.Text = "Process journals";
+            btnStart.Text = "&Process journals";
             btnStart.UseVisualStyleBackColor = true;
             btnStart.Click += btnStart_Click;
             // 
@@ -69,7 +68,7 @@
             progress.Location = new Point(12, 253);
             progress.Name = "progress";
             progress.Size = new Size(481, 23);
-            progress.TabIndex = 9;
+            progress.TabIndex = 10;
             // 
             // lblProgress
             // 
@@ -78,18 +77,17 @@
             lblProgress.Location = new Point(12, 227);
             lblProgress.Name = "lblProgress";
             lblProgress.Size = new Size(130, 15);
-            lblProgress.TabIndex = 8;
+            lblProgress.TabIndex = 9;
             lblProgress.Text = "Processing ? of ? files ...";
             // 
             // btnSystems
             // 
             btnSystems.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnSystems.Enabled = false;
-            btnSystems.FlatStyle = FlatStyle.Flat;
             btnSystems.Location = new Point(12, 316);
             btnSystems.Name = "btnSystems";
             btnSystems.Size = new Size(41, 23);
-            btnSystems.TabIndex = 18;
+            btnSystems.TabIndex = 19;
             btnSystems.Text = "Process systems";
             btnSystems.UseVisualStyleBackColor = true;
             btnSystems.Visible = false;
@@ -163,7 +161,7 @@
             label1.Location = new Point(93, 285);
             label1.Name = "label1";
             label1.Size = new Size(67, 15);
-            label1.TabIndex = 10;
+            label1.TabIndex = 11;
             label1.Text = "FSD Jumps:";
             // 
             // label2
@@ -173,7 +171,7 @@
             label2.Location = new Point(290, 285);
             label2.Name = "label2";
             label2.Size = new Size(126, 15);
-            label2.TabIndex = 12;
+            label2.TabIndex = 15;
             label2.Text = "Distance travelled (LY):";
             // 
             // label3
@@ -183,7 +181,7 @@
             label3.Location = new Point(93, 314);
             label3.Name = "label3";
             label3.Size = new Size(111, 15);
-            label3.TabIndex = 14;
+            label3.TabIndex = 13;
             label3.Text = "Bodies approached:";
             // 
             // label4
@@ -193,7 +191,7 @@
             label4.Location = new Point(290, 314);
             label4.Name = "label4";
             label4.Size = new Size(114, 15);
-            label4.TabIndex = 16;
+            label4.TabIndex = 17;
             label4.Text = "Organisms scanned:";
             // 
             // txtJumpCount
@@ -204,7 +202,7 @@
             txtJumpCount.Name = "txtJumpCount";
             txtJumpCount.ReadOnly = true;
             txtJumpCount.Size = new Size(71, 23);
-            txtJumpCount.TabIndex = 11;
+            txtJumpCount.TabIndex = 12;
             txtJumpCount.Text = "0";
             txtJumpCount.TextAlign = HorizontalAlignment.Center;
             // 
@@ -216,7 +214,7 @@
             txtDistance.Name = "txtDistance";
             txtDistance.ReadOnly = true;
             txtDistance.Size = new Size(71, 23);
-            txtDistance.TabIndex = 13;
+            txtDistance.TabIndex = 16;
             txtDistance.Text = "0";
             txtDistance.TextAlign = HorizontalAlignment.Center;
             // 
@@ -228,7 +226,7 @@
             txtBodyCount.Name = "txtBodyCount";
             txtBodyCount.ReadOnly = true;
             txtBodyCount.Size = new Size(71, 23);
-            txtBodyCount.TabIndex = 15;
+            txtBodyCount.TabIndex = 14;
             txtBodyCount.Text = "0";
             txtBodyCount.TextAlign = HorizontalAlignment.Center;
             // 
@@ -240,30 +238,28 @@
             txtOrgCount.Name = "txtOrgCount";
             txtOrgCount.ReadOnly = true;
             txtOrgCount.Size = new Size(71, 23);
-            txtOrgCount.TabIndex = 17;
+            txtOrgCount.TabIndex = 18;
             txtOrgCount.Text = "0";
             txtOrgCount.TextAlign = HorizontalAlignment.Center;
             // 
             // btnLongAgo
             // 
             btnLongAgo.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            btnLongAgo.FlatStyle = FlatStyle.Flat;
             btnLongAgo.Location = new Point(324, 167);
             btnLongAgo.Name = "btnLongAgo";
             btnLongAgo.Size = new Size(169, 25);
-            btnLongAgo.TabIndex = 19;
-            btnLongAgo.Text = "Set beginning of time";
+            btnLongAgo.TabIndex = 6;
+            btnLongAgo.Text = "&Set beginning of time";
             btnLongAgo.UseVisualStyleBackColor = true;
             btnLongAgo.Click += btnLongAgo_Click;
             // 
             // btnClose
             // 
             btnClose.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            btnClose.FlatStyle = FlatStyle.Flat;
             btnClose.Location = new Point(393, 197);
             btnClose.Name = "btnClose";
             btnClose.Size = new Size(100, 25);
-            btnClose.TabIndex = 20;
+            btnClose.TabIndex = 8;
             btnClose.Text = "&Close";
             btnClose.UseVisualStyleBackColor = true;
             btnClose.Click += btnClose_Click;

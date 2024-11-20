@@ -64,6 +64,8 @@ namespace SrvSurvey
             tree.TreeViewNodeSorter = NodeSorter.ByName;
             tree.ForeColor = GameColors.Orange;
 
+            btnCurrentBody.Text = currentBodyOnly ? "❌ Current body only" : "  Current body only";
+
             // apply themed colours
             this.BackColor = Color.Black;
             this.ForeColor = GameColors.Orange;
@@ -87,6 +89,7 @@ namespace SrvSurvey
             this.MinimumSize = new Size(flowCounts.Right + flowCounts.Left * 2, 0);
 
             Game.update += Game_update;
+            Program.defer(() => btnCurrentBody.Focus());
         }
 
         private void Game_update(GameMode newMode, bool force)

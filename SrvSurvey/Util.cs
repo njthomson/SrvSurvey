@@ -1187,6 +1187,21 @@ namespace SrvSurvey
             return string.Format(txt, args);
         }
 
+        /// <summary>
+        /// Supports basic string matching using wild-cards in the form of: "*foo", "foo*", "*foo*" or just "foo"
+        /// </summary>        
+        public static bool matches(this string txt, string query)
+        {
+            if (query.StartsWith('*') && query.EndsWith('*'))
+                return txt.Contains(query);
+            else if (query.StartsWith('*') && !query.EndsWith('*'))
+                return txt.EndsWith(query.Substring(1));
+            else if (!query.StartsWith('*') && query.EndsWith('*'))
+                return txt.StartsWith(query.Substring(0, query.Length - 1));
+            else
+                return txt == query;
+        }
+
         public static Size drawTextRight(this Graphics g, string text, Font font, Color col, int tx, int ty, int w = 0, int h = 0)
         {
             var flags = Util.textFlags | TextFormatFlags.WordBreak | TextFormatFlags.NoClipping | TextFormatFlags.GlyphOverhangPadding | TextFormatFlags.NoFullWidthCharacterBreak; // | TextFormatFlags.ExternalLeading

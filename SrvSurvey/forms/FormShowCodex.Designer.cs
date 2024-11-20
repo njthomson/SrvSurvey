@@ -89,7 +89,7 @@
             lblCmdr.Size = new Size(67, 17);
             lblCmdr.TabIndex = 5;
             lblCmdr.Text = "cmdr: Foo";
-            lblCmdr.TextAlign = ContentAlignment.MiddleRight;
+            lblCmdr.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // lblNoImage
             // 
@@ -138,6 +138,7 @@
             statusStrip.Name = "statusStrip";
             statusStrip.Size = new Size(784, 22);
             statusStrip.TabIndex = 6;
+            statusStrip.TabStop = true;
             statusStrip.Text = "statusStrip1";
             // 
             // toolCanonn
@@ -152,7 +153,7 @@
             // 
             toolFiller.Name = "toolFiller";
             toolFiller.Overflow = ToolStripItemOverflow.Never;
-            toolFiller.Size = new Size(548, 17);
+            toolFiller.Size = new Size(517, 17);
             toolFiller.Spring = true;
             toolFiller.Text = " ";
             // 
@@ -165,7 +166,7 @@
             toolMore.ImageTransparentColor = Color.Magenta;
             toolMore.Name = "toolMore";
             toolMore.Size = new Size(60, 20);
-            toolMore.Text = "More ...";
+            toolMore.Text = "&More ...";
             // 
             // viewVariantToolStripMenuItem
             // 

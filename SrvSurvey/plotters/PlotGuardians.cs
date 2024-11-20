@@ -171,9 +171,9 @@ namespace SrvSurvey.plotters
             if (!Game.settings.disableRuinsMeasurementGrid)
             {
                 if (this.mode == Mode.heading)
-                    PlotVertialStripe.show(PlotVertialStripe.Mode.Buttress, 20);
+                    PlotVerticalStripe.show(PlotVerticalStripe.Mode.Buttress, 20);
                 else
-                    Program.closePlotter<PlotVertialStripe>();
+                    Program.closePlotter<PlotVerticalStripe>();
             }
 
             // load heading guidance image if that is the next mode
@@ -188,14 +188,14 @@ namespace SrvSurvey.plotters
             else if (this.mode != Mode.heading)
             {
                 // close potential plotter
-                Program.closePlotter<PlotVertialStripe>();
+                Program.closePlotter<PlotVerticalStripe>();
             }
         }
 
-        private PlotVertialStripe? showAimingBySiteType()
+        private PlotVerticalStripe? showAimingBySiteType()
         {
             // close existing
-            Program.closePlotter<PlotVertialStripe>();
+            Program.closePlotter<PlotVerticalStripe>();
             if (Game.settings.disableAerialAlignmentGrid) return null;
 
             if (game.vehicle == ActiveVehicle.SRV)
@@ -209,31 +209,31 @@ namespace SrvSurvey.plotters
             {
                 // TODO: does this ever happen?
                 Debugger.Break();
-                return PlotVertialStripe.show(PlotVertialStripe.Mode.RelicTower, 0);
+                return PlotVerticalStripe.show(PlotVerticalStripe.Mode.RelicTower, 0);
             }
 
             switch (this.siteData.type)
             {
-                case SiteType.Alpha: return PlotVertialStripe.show(PlotVertialStripe.Mode.Alpha, Game.settings.aerialAltAlpha);
-                case SiteType.Beta: return PlotVertialStripe.show(PlotVertialStripe.Mode.Beta, Game.settings.aerialAltBeta);
-                case SiteType.Gamma: return PlotVertialStripe.show(PlotVertialStripe.Mode.Gamma, Game.settings.aerialAltGamma);
+                case SiteType.Alpha: return PlotVerticalStripe.show(PlotVerticalStripe.Mode.Alpha, Game.settings.aerialAltAlpha);
+                case SiteType.Beta: return PlotVerticalStripe.show(PlotVerticalStripe.Mode.Beta, Game.settings.aerialAltBeta);
+                case SiteType.Gamma: return PlotVerticalStripe.show(PlotVerticalStripe.Mode.Gamma, Game.settings.aerialAltGamma);
 
-                case SiteType.Bear: return PlotVertialStripe.show(PlotVertialStripe.Mode.Bear, 650);
-                case SiteType.Bowl: return PlotVertialStripe.show(PlotVertialStripe.Mode.Bowl, 650);
-                case SiteType.Crossroads: return PlotVertialStripe.show(PlotVertialStripe.Mode.Crossroads, 650);
-                case SiteType.Fistbump: return PlotVertialStripe.show(PlotVertialStripe.Mode.Fistbump, 450);
-                case SiteType.Hammerbot: return PlotVertialStripe.show(PlotVertialStripe.Mode.Hammerbot, 650);
-                case SiteType.Lacrosse: return PlotVertialStripe.show(PlotVertialStripe.Mode.Lacrosse, 650);
-                case SiteType.Robolobster: return PlotVertialStripe.show(PlotVertialStripe.Mode.Robolobster, 1000);
-                case SiteType.Squid: return PlotVertialStripe.show(PlotVertialStripe.Mode.Squid, 650);
-                case SiteType.Stickyhand: return PlotVertialStripe.show(PlotVertialStripe.Mode.Stickyhand, 650);
-                case SiteType.Turtle: return PlotVertialStripe.show(PlotVertialStripe.Mode.Turtle, 650);
+                case SiteType.Bear: return PlotVerticalStripe.show(PlotVerticalStripe.Mode.Bear, 650);
+                case SiteType.Bowl: return PlotVerticalStripe.show(PlotVerticalStripe.Mode.Bowl, 650);
+                case SiteType.Crossroads: return PlotVerticalStripe.show(PlotVerticalStripe.Mode.Crossroads, 650);
+                case SiteType.Fistbump: return PlotVerticalStripe.show(PlotVerticalStripe.Mode.Fistbump, 450);
+                case SiteType.Hammerbot: return PlotVerticalStripe.show(PlotVerticalStripe.Mode.Hammerbot, 650);
+                case SiteType.Lacrosse: return PlotVerticalStripe.show(PlotVerticalStripe.Mode.Lacrosse, 650);
+                case SiteType.Robolobster: return PlotVerticalStripe.show(PlotVerticalStripe.Mode.Robolobster, 1000);
+                case SiteType.Squid: return PlotVerticalStripe.show(PlotVerticalStripe.Mode.Squid, 650);
+                case SiteType.Stickyhand: return PlotVerticalStripe.show(PlotVerticalStripe.Mode.Stickyhand, 650);
+                case SiteType.Turtle: return PlotVerticalStripe.show(PlotVerticalStripe.Mode.Turtle, 650);
             }
 
             // TODO: does this ever happen?
             Debugger.Break();
-            Game.log($"showAiming: {PlotVertialStripe.mode}");
-            return Program.showPlotter<PlotVertialStripe>();
+            Game.log($"showAiming: {PlotVerticalStripe.mode}");
+            return Program.showPlotter<PlotVerticalStripe>();
         }
 
         protected override void onJournalEntry(SendText entry)
@@ -352,7 +352,7 @@ namespace SrvSurvey.plotters
                 Game.log($"Changing Relic Tower heading from: {siteData.relicTowerHeading}° to: {newAngle}");
                 siteData.relicTowerHeading = newAngle;
                 siteData.Save();
-                Program.closePlotter<PlotVertialStripe>();
+                Program.closePlotter<PlotVerticalStripe>();
             }
             else if (msg.StartsWith(MsgCmd.tower) && int.TryParse(msg.Substring(MsgCmd.tower.Length), out newHeading) && this.nearestPoi?.type == POIType.relic)
             {
@@ -879,15 +879,15 @@ namespace SrvSurvey.plotters
             // show Relic Tower aiming assistance when on foot and using this tool
             if (this.nearestPoi?.type == POIType.relic)
             {
-                var isVerticalVisible = Program.isPlotter<PlotVertialStripe>();
+                var isVerticalVisible = Program.isPlotter<PlotVerticalStripe>();
                 if (game.status.SelectedWeapon == "$humanoid_companalyser_name;")
                 {
                     if (!isVerticalVisible)
-                        PlotVertialStripe.show(PlotVertialStripe.Mode.RelicTower, 0);
+                        PlotVerticalStripe.show(PlotVerticalStripe.Mode.RelicTower, 0);
                 }
                 else if (isVerticalVisible)
                 {
-                    Program.closePlotter<PlotVertialStripe>();
+                    Program.closePlotter<PlotVerticalStripe>();
                 }
             }
 

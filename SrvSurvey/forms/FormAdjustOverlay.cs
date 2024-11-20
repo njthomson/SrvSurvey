@@ -275,6 +275,8 @@ namespace SrvSurvey.forms
                 numOpacity.Value = (decimal)Game.settings.Opacity * 100;
                 pp.opacity = null;
             }
+
+            Program.repositionPlotters();
         }
 
         private void numOpacity_ValueChanged(object sender, EventArgs e)

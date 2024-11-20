@@ -197,6 +197,7 @@
             Controls.Add(label1);
             Controls.Add(btnClose);
             Controls.Add(list);
+            FormBorderStyle = FormBorderStyle.FixedDialog;
             Name = "FormNearestSystems";
             Text = "Nearest Systems";
             contextMenu.ResumeLayout(false);

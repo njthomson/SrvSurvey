@@ -33,6 +33,7 @@ namespace SrvSurvey
             Game.log("Starting main form...");
             form = this;
             InitializeComponent();
+            if (Debugger.IsAttached) this.Text += " (dbg)";
             lblNotInstalled.BringToFront();
             lblFullScreen.BringToFront();
             comboDev.Items.AddRange(comboDevItems);
@@ -85,16 +86,14 @@ namespace SrvSurvey
 
         private void Main_Load(object sender, EventArgs e)
         {
-            if (Debugger.IsAttached)
-                this.Text += " (dbg)";
-
             foreach (Control ctrl in this.Controls) ctrl.Enabled = false;
             btnLogs.Enabled = true;
             btnSettings.Enabled = true;
             btnQuit2.Enabled = true;
+            this.Hide();
+            this.Show();
             Application.DoEvents();
 
-            // Don't attempt this on Linux currently
             if (!Path.Exists(Elite.displaySettingsFolder))
             {
                 Game.log("Elite Dangerous does not appear to be installed?");
@@ -110,6 +109,11 @@ namespace SrvSurvey
                 return;
             }
 
+            Program.defer(() => afterMainLoad());
+        }
+
+        private void afterMainLoad()
+        {
             this.updateAllControls();
 
             this.checkFullScreenGraphics();
@@ -1228,22 +1232,24 @@ namespace SrvSurvey
             // a periodic timer to check the location of the game window, repositioning plotters if needed
             var rect = Elite.getWindowRect();
             var hasFocus = rect != Rectangle.Empty && rect.X > -30_000 && Elite.gameHasFocus;
+            var forceOpen = Game.settings.keepOverlays || Debugger.IsAttached;
 
             if (gameHadFocus != hasFocus)
             {
-                if (hasFocus || Debugger.IsAttached)
+                //Game.log($"gameHadFocus:{gameHadFocus}, hasFocus:{hasFocus}, forceOpen:{forceOpen}, rect:{rect}");
+                if (hasFocus || forceOpen)
                     Program.showActivePlotters();
                 else
                     Program.hideActivePlotters();
             }
-            else if (Debugger.IsAttached && rect.X < -30000)
+            else if (forceOpen && rect.X < -30000)
                 Program.hideActivePlotters();
 
             // force plotters to appear if we just gained focus
             if (!gameHadFocus && Elite.gameHasFocus && game != null)
                 game.fireUpdate(true);
 
-            gameHadFocus = Elite.gameHasFocus;
+            this.gameHadFocus = Elite.gameHasFocus;
 
             if (rect != this.lastWindowRect && Elite.gameHasFocus && rect.X > -30_000)
             {

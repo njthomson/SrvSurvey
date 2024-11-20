@@ -286,6 +286,7 @@ namespace SrvSurvey
 
         public static void repositionPlotters(Rectangle rect)
         {
+            if (rect.X < -30_000 || rect.Y < -30_000 || rect.Width == 0 || rect.Height == 0) return;
             Game.log($"Program.repositionPlotters: {activePlotters.Count}, rect{rect}");
 
             foreach (PlotterForm form in activePlotters.Values)

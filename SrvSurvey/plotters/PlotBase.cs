@@ -70,6 +70,9 @@ namespace SrvSurvey.plotters
             }
 
             rm = this.prepResources(this.GetType().FullName!);
+
+            // Does this cause windows to become visible when alt-tabbing?
+            this.Text = this.Name;
         }
 
         protected override void OnLoad(EventArgs e)
@@ -138,7 +141,11 @@ namespace SrvSurvey.plotters
 
         public virtual void reposition(Rectangle gameRect)
         {
-            // restore opacity, reposition ourself according to plotters.json rules, then re-render
+            // do not attempt to reposition anything if the game window has been minimized
+            //Game.log($"reposition:{this.Name}: opacity:{Opacity}, bounds:{this.Bounds}, gameRect:{gameRect}");
+            if (gameRect.X < -30_000 || gameRect.Y < -30_000 || gameRect.Width == 0 || gameRect.Height == 0) return;
+
+            // restore opacity, reposition ourselves according to plotters.json rules, then re-render
             var newOpacity = PlotPos.getOpacity(this);
             if (this.Opacity == 0 && newOpacity > 0)
                 Util.fadeOpacity(this, newOpacity, Game.settings.fadeInDuration);

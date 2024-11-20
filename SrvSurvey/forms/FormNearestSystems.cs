@@ -1,5 +1,6 @@
 ﻿using SrvSurvey.canonn;
 using SrvSurvey.game;
+using SrvSurvey.Properties;
 using SrvSurvey.units;
 using System.Data;
 using static SrvSurvey.canonn.Canonn;
@@ -28,7 +29,7 @@ namespace SrvSurvey.forms
         {
             this.isDraggable = true;
             InitializeComponent();
-            this.FormBorderStyle = FormBorderStyle.FixedDialog;
+            this.Icon = Icons.set_square;
 
             list.FullRowSelect = true;
             list.MultiSelect = false;
@@ -104,7 +105,7 @@ namespace SrvSurvey.forms
 
                             item.SubItems.AddRange(new string[] { $"{entry.distance.ToString("N1")} ly", "..." });
 
-                            Game.canonn.getSystemPoi(entry.system, Game.activeGame?.cmdr.commander ?? Game.settings.lastCommander!).ContinueWith(subTask =>
+                            Game.canonn.getSystemPoi(entry.system, Game.activeGame?.cmdr?.commander ?? Game.settings.lastCommander!).ContinueWith(subTask =>
                             {
                                 if (this.IsDisposed) return;
 

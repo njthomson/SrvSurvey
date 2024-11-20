@@ -28,6 +28,18 @@ namespace SrvSurvey
 
         #endregion
 
+        private Dictionary<string, string> edAstroLinks = new()
+        {
+            { "root", "https://edastro.com/mapcharts/codex.html" },
+            { "*Anomaly", "https://edastro.b-cdn.net/mapcharts/codex/codex-anomalies-regions.jpg" },
+            { "*Mollusc", "https://edastro.b-cdn.net/mapcharts/codex/codex-molluscs-regions.jpg" },
+            { "Lagrange*", "https://edastro.b-cdn.net/mapcharts/codex/codex-lagrangeclouds-regions.jpg" },
+            { "Storm*", "https://edastro.b-cdn.net/mapcharts/codex/codex-lagrangeclouds-regions.jpg" },
+            { "*Crystals", "https://edastro.b-cdn.net/mapcharts/codex/codex-crystals-regions.jpg" },
+            { "Guardian", "https://edastro.b-cdn.net/mapcharts/codex/codex-aliens-regions.jpg" },
+            { "Thargoid", "https://edastro.b-cdn.net/mapcharts/codex/codex-aliens-regions.jpg" },
+        };
+
         private readonly static Brush brushPartial = Brushes.Orange;
         private readonly static Brush brushComplete = Brushes.Lime;
 
@@ -312,7 +324,7 @@ namespace SrvSurvey
                 var node = tree.GetNodeAt(e.Location);
                 if (node != null && node.Bounds.Contains(e.Location))
                 {
-                    var codexTag = node?.Tag as CodexTag;
+                    var codexTag = node.Tag as CodexTag;
                     var hasEntryId = codexTag?.entry != null;
                     var hasSpecies = codexTag?.species != null;
                     var hasGenus = codexTag?.genus != null;
@@ -325,6 +337,10 @@ namespace SrvSurvey
                     menuCanonnBioforge.Visible = hasEntryId || hasSpecies;
                     menuEDAstro.Visible = hasGenus;
                     menuCanonnSeparator.Visible = hasEntryId || hasSpecies || hasGenus;
+
+                    // some special cases for ED Astro links
+                    if (edAstroLinks.Keys.Any(k => node.Name.matches(k)))
+                        menuEDAstro.Visible = true;
 
                     tree.SelectedNode = node;
                     contextMenu.Show(tree.PointToScreen(e.Location));
@@ -397,6 +413,15 @@ namespace SrvSurvey
 
         private void menuEDAstro_Click(object sender, EventArgs e)
         {
+            // is this a special link?
+            var nodeName = tree.SelectedNode.Name;
+            var link = edAstroLinks.FirstOrDefault(pair => nodeName.matches(pair.Key)).Value;
+            if (link != null)
+            {
+                Util.openLink(link);
+                return;
+            }
+
             var codexTag = getSelectedNodeCodexTag();
             if (codexTag?.genus == null) return;
 

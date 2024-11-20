@@ -77,7 +77,8 @@
             statusStrip1.Location = new Point(0, 426);
             statusStrip1.Name = "statusStrip1";
             statusStrip1.Size = new Size(800, 24);
-            statusStrip1.TabIndex = 0;
+            statusStrip1.TabIndex = 2;
+            statusStrip1.TabStop = true;
             statusStrip1.Text = "statusStrip1";
             // 
             // toolBodyName
@@ -126,7 +127,7 @@
             toolImport.ImageTransparentColor = Color.Magenta;
             toolImport.Name = "toolImport";
             toolImport.Size = new Size(104, 22);
-            toolImport.Text = "Missing entries?";
+            toolImport.Text = "&Missing entries?";
             toolImport.ToolTipText = "Click to open on Spansh";
             // 
             // toolCanonnChallenge
@@ -211,7 +212,7 @@
             panel1.Location = new Point(0, 0);
             panel1.Name = "panel1";
             panel1.Size = new Size(800, 31);
-            panel1.TabIndex = 2;
+            panel1.TabIndex = 0;
             // 
             // comboCmdr
             // 
@@ -221,7 +222,7 @@
             comboCmdr.Location = new Point(86, 4);
             comboCmdr.Name = "comboCmdr";
             comboCmdr.Size = new Size(424, 23);
-            comboCmdr.TabIndex = 4;
+            comboCmdr.TabIndex = 1;
             comboCmdr.SelectedIndexChanged += comboCmdr_SelectedIndexChanged;
             // 
             // label2
@@ -231,8 +232,8 @@
             label2.Location = new Point(516, 7);
             label2.Name = "label2";
             label2.Size = new Size(47, 15);
-            label2.TabIndex = 3;
-            label2.Text = "Region:";
+            label2.TabIndex = 2;
+            label2.Text = "&Region:";
             // 
             // comboRegion
             // 
@@ -243,7 +244,7 @@
             comboRegion.Location = new Point(569, 4);
             comboRegion.Name = "comboRegion";
             comboRegion.Size = new Size(219, 23);
-            comboRegion.TabIndex = 2;
+            comboRegion.TabIndex = 3;
             comboRegion.SelectedIndexChanged += comboRegion_SelectedIndexChanged;
             // 
             // label1
@@ -253,7 +254,7 @@
             label1.Name = "label1";
             label1.Size = new Size(77, 15);
             label1.TabIndex = 0;
-            label1.Text = "Commander:";
+            label1.Text = "&Commander:";
             // 
             // contextMenu
             // 
