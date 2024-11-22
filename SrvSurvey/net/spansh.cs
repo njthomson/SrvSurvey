@@ -101,6 +101,12 @@ namespace SrvSurvey.net
 
             var response = await Spansh.client.PostAsync($"https://spansh.co.uk/api/systems/search", body);
             var responseText = await response.Content.ReadAsStringAsync();
+            if (responseText == "{\"error\":\"Invalid request\"}")
+            {
+                Debugger.Break();
+                throw new Exception("Bad Spansh request: " + responseText);
+            }
+
             var results = JsonConvert.DeserializeObject<SystemsSearchResults>(responseText)!;
 
             var foos = new List<MinorFactionSystem>();
@@ -164,6 +170,12 @@ namespace SrvSurvey.net
 
             var response = await Spansh.client.PostAsync($"https://spansh.co.uk/api/bodies/search", body);
             var responseText = await response.Content.ReadAsStringAsync();
+            if (responseText == "{\"error\":\"Invalid request\"}")
+            {
+                Debugger.Break();
+                throw new Exception("Bad Spansh request: " + responseText);
+            }
+
             var results = JsonConvert.DeserializeObject<SystemsSearchResults>(responseText)!;
             var obj = JsonConvert.DeserializeObject<JObject>(responseText)!;
 
@@ -192,6 +204,12 @@ namespace SrvSurvey.net
 
             var response = await Spansh.client.PostAsync($"https://spansh.co.uk/api/bodies/search", body);
             var responseText = await response.Content.ReadAsStringAsync();
+            if (responseText == "{\"error\":\"Invalid request\"}")
+            {
+                Debugger.Break();
+                throw new Exception("Bad Spansh request: " + responseText);
+            }
+
             var obj = JsonConvert.DeserializeObject<JObject>(responseText)!;
             return obj;
         }
@@ -204,8 +222,25 @@ namespace SrvSurvey.net
 
             var response = await Spansh.client.PostAsync($"https://spansh.co.uk/api/systems/search", body);
             var responseText = await response.Content.ReadAsStringAsync();
+            if (responseText == "{\"error\":\"Invalid request\"}")
+            {
+                Debugger.Break();
+                throw new Exception("Bad Spansh request: " + responseText);
+            }
+
             var obj = JsonConvert.DeserializeObject<JObject>(responseText)!;
             return obj;
+        }
+
+        public async Task<SearchApiResults?> buildMissingVariantsQuery(StarPos starPos, string genus, string species, List<string> variantColors)
+        {
+            var json = CriteriaBuilder.buildMissingVariantsForSpecies(starPos, genus, species, variantColors);
+
+            var response = await Game.spansh.queryBodies(json);
+            var results = response.ToObject<SearchApiResults>();
+            Game.log($"Found {results?.count} total hits from: https://spansh.co.uk/bodies/search/{results?.search_reference}/1");
+
+            return results;
         }
     }
 
@@ -231,7 +266,7 @@ namespace SrvSurvey.net
         }
     }
 
-    internal class CriteriaBuilder
+    internal static class CriteriaBuilder
     {
         public static int limitMinCount = 5;
         public static double limitMinRatio = 0.2d;
@@ -867,6 +902,27 @@ namespace SrvSurvey.net
             Game.log("Nebulae results:\r\n\r\n" + txt + "\r\n");
             Game.log("----");
         }
+
+        public static string buildMissingVariantsForSpecies(StarPos starPos, string genus, string species, List<string> variantColors)
+        {
+            var filters = new List<string>();
+            // TODO: limit distance?
+            //filters.Add($"\"distance\": {{ \"min\": \"0\", \"max\": \"1000\" }}");
+
+            // filter: landmarks
+            var joinedVariants = string.Join(',', variantColors.Select(v => $"\"{Util.pascal(v)}\""));
+            genus = Util.pascal(genus);
+            species = Util.pascalAllWords(species);
+            filters.Add($"\"landmarks\": [ {{ \"type\": \"{genus}\", \"subtype\": [ \"{species}\" ], \"variant\": [ {joinedVariants} ] }} ]");
+
+            var jsonSorts = "{ \"distance\": { \"direction\": \"asc\" } }";
+            var refCoords = $"\"reference_coords\": {{ \"x\": {starPos.x}, \"y\": {starPos.y}, \"z\": {starPos.z} }}";
+
+            // join final json ...
+            var jsonFilters = string.Join(",", filters);
+            var queryJson = $"{{\"filters\":{{{jsonFilters}}},\"sort\":[{jsonSorts}],\"size\":10,\"page\":0,{refCoords}}}";
+            return queryJson;
+        }
     }
 
     internal class ApiSystemDump
@@ -1083,6 +1139,68 @@ namespace SrvSurvey.net
                 public string name;
                 public int small_pads;
                 public string type;
+            }
+        }
+    }
+
+    internal class SearchApiResults
+    {
+        public int count;
+        public int from;
+        public List<Body> results;
+        // public XXX search; TODO: describe the initial search?
+        public string search_reference;
+        public int size;
+
+        public class Body
+        {
+            public double distance; // LY from reference point
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+            public double distance_to_arrival;
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+            public long estimated_mapping_value;
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+            public long estimated_scan_value;
+            public string id;
+            public long id64;
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+            public bool is_main_star;
+            public string name;
+            public string subtype;
+            public string terraforming_state;
+            public string type;
+            public List<Signal>? signals;
+            public List<Landmark>? landmarks;
+
+            // TODO: any other fields?
+
+            public long system_id64;
+            public string system_name;
+            public string system_region;
+            public double system_x;
+            public double system_y;
+            public double system_z;
+
+            public StarPos toStarPos()
+            {
+                return new StarPos(system_x, system_y, system_z, system_name);
+            }
+
+            public class Signal
+            {
+                public string name;
+                public int count;
+            }
+
+            public class Landmark
+            {
+                public int id;
+                public double latitude;
+                public double longitude;
+                public string subtype;
+                public string type;
+                public long value;
+                public string variant;
             }
         }
     }

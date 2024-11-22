@@ -1,6 +1,4 @@
-﻿using System;
-using System.Drawing.Drawing2D;
-using DPen = System.Drawing.Pen;
+﻿using System.Drawing.Drawing2D;
 
 namespace SrvSurvey.widgets
 {
@@ -141,6 +139,52 @@ namespace SrvSurvey.widgets
             g.RotateTransform(-rot2);
             g.TranslateTransform(-x, +y);
             g.RotateTransform(-rot1);
+        }
+
+        public static Size drawTextRight(this Graphics g, string text, Font font, Color col, int tx, int ty, int w = 0, int h = 0)
+        {
+            var flags = TextCursor.defaultTextFlags | TextFormatFlags.WordBreak | TextFormatFlags.NoClipping | TextFormatFlags.GlyphOverhangPadding | TextFormatFlags.NoFullWidthCharacterBreak; // | TextFormatFlags.ExternalLeading
+            if (w == 0)
+                flags |= TextFormatFlags.SingleLine;
+
+            // measure size
+            var sz = TextRenderer.MeasureText(g, text, font, new Size(w, 0), flags);
+
+            // adjust vertical to fit within height constraint
+            var dx = h == 0 ? 0 : Util.centerIn(h, sz.Height);
+
+            // draw text within constraints
+            var r = new Rectangle(tx - sz.Width, ty + dx, sz.Width, sz.Height);
+            TextRenderer.DrawText(g, text, font, r, col, flags);
+
+            //g.DrawRectangle(Pens.Lime, r);
+            return sz;
+        }
+    }
+
+    /// <summary>
+    /// Returns alternating colors each time .next() is called. Ideal for row back colors.
+    /// </summary>
+    public class AlternatingColors
+    {
+        private int count = 0;
+
+        public Color even;
+        public Color odd;
+
+        public AlternatingColors(Color even, Color odd)
+        {
+            this.even = even;
+            this.odd = odd;
+        }
+
+        public Color next()
+        {
+            count++;
+            if (count % 2 == 0)
+                return this.even;
+            else
+                return this.odd;
         }
     }
 }

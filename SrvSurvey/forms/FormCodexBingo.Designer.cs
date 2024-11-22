@@ -30,15 +30,15 @@
         {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormCodexBingo));
-            TreeNode treeNode1 = new TreeNode("Node3");
-            TreeNode treeNode2 = new TreeNode("Node4");
-            TreeNode treeNode3 = new TreeNode("Node0", new TreeNode[] { treeNode1, treeNode2 });
-            TreeNode treeNode4 = new TreeNode("Node5");
-            TreeNode treeNode5 = new TreeNode("Node1", new TreeNode[] { treeNode4 });
-            TreeNode treeNode6 = new TreeNode("Node6");
-            TreeNode treeNode7 = new TreeNode("Node7");
-            TreeNode treeNode8 = new TreeNode("Node8");
-            TreeNode treeNode9 = new TreeNode("Node2", new TreeNode[] { treeNode6, treeNode7, treeNode8 });
+            TreeNode treeNode10 = new TreeNode("Node3");
+            TreeNode treeNode11 = new TreeNode("Node4");
+            TreeNode treeNode12 = new TreeNode("Node0", new TreeNode[] { treeNode10, treeNode11 });
+            TreeNode treeNode13 = new TreeNode("Node5");
+            TreeNode treeNode14 = new TreeNode("Node1", new TreeNode[] { treeNode13 });
+            TreeNode treeNode15 = new TreeNode("Node6");
+            TreeNode treeNode16 = new TreeNode("Node7");
+            TreeNode treeNode17 = new TreeNode("Node8");
+            TreeNode treeNode18 = new TreeNode("Node2", new TreeNode[] { treeNode15, treeNode16, treeNode17 });
             statusStrip1 = new StatusStrip();
             toolBodyName = new ToolStripStatusLabel();
             toolRegionName = new ToolStripStatusLabel();
@@ -65,6 +65,7 @@
             menuEDAstro = new ToolStripMenuItem();
             menuNearestSeparator = new ToolStripSeparator();
             menuFindNearest = new ToolStripMenuItem();
+            menuSpanshNearest = new ToolStripMenuItem();
             statusStrip1.SuspendLayout();
             panel1.SuspendLayout();
             contextMenu.SuspendLayout();
@@ -169,25 +170,25 @@
             tree.ImageList = images;
             tree.Location = new Point(0, 31);
             tree.Name = "tree";
-            treeNode1.Name = "Node3";
-            treeNode1.Text = "Node3";
-            treeNode2.Name = "Node4";
-            treeNode2.Text = "Node4";
-            treeNode3.Name = "Node0";
-            treeNode3.Text = "Node0";
-            treeNode4.Name = "Node5";
-            treeNode4.Text = "Node5";
-            treeNode5.Name = "Node1";
-            treeNode5.Text = "Node1";
-            treeNode6.Name = "Node6";
-            treeNode6.Text = "Node6";
-            treeNode7.Name = "Node7";
-            treeNode7.Text = "Node7";
-            treeNode8.Name = "Node8";
-            treeNode8.Text = "Node8";
-            treeNode9.Name = "Node2";
-            treeNode9.Text = "Node2";
-            tree.Nodes.AddRange(new TreeNode[] { treeNode3, treeNode5, treeNode9 });
+            treeNode10.Name = "Node3";
+            treeNode10.Text = "Node3";
+            treeNode11.Name = "Node4";
+            treeNode11.Text = "Node4";
+            treeNode12.Name = "Node0";
+            treeNode12.Text = "Node0";
+            treeNode13.Name = "Node5";
+            treeNode13.Text = "Node5";
+            treeNode14.Name = "Node1";
+            treeNode14.Text = "Node1";
+            treeNode15.Name = "Node6";
+            treeNode15.Text = "Node6";
+            treeNode16.Name = "Node7";
+            treeNode16.Text = "Node7";
+            treeNode17.Name = "Node8";
+            treeNode17.Text = "Node8";
+            treeNode18.Name = "Node2";
+            treeNode18.Text = "Node2";
+            tree.Nodes.AddRange(new TreeNode[] { treeNode12, treeNode14, treeNode18 });
             tree.SelectedImageIndex = 0;
             tree.Size = new Size(800, 395);
             tree.TabIndex = 1;
@@ -258,15 +259,15 @@
             // 
             // contextMenu
             // 
-            contextMenu.Items.AddRange(new ToolStripItem[] { menuCopyName, menuCopyEntryId, menuCanonnSeparator, menuCanonnResearch, menuCanonnBioforge, menuEDAstro, menuNearestSeparator, menuFindNearest });
+            contextMenu.Items.AddRange(new ToolStripItem[] { menuCopyName, menuCopyEntryId, menuCanonnSeparator, menuCanonnResearch, menuCanonnBioforge, menuEDAstro, menuNearestSeparator, menuFindNearest, menuSpanshNearest });
             contextMenu.Name = "contextMenuStrip";
-            contextMenu.Size = new Size(251, 148);
+            contextMenu.Size = new Size(269, 170);
             // 
             // menuCopyName
             // 
             menuCopyName.Image = Properties.ImageResources.copy1;
             menuCopyName.Name = "menuCopyName";
-            menuCopyName.Size = new Size(250, 22);
+            menuCopyName.Size = new Size(268, 22);
             menuCopyName.Text = "Copy name";
             menuCopyName.Click += menuCopyName_Click;
             // 
@@ -274,20 +275,20 @@
             // 
             menuCopyEntryId.Image = Properties.ImageResources.copy1;
             menuCopyEntryId.Name = "menuCopyEntryId";
-            menuCopyEntryId.Size = new Size(250, 22);
+            menuCopyEntryId.Size = new Size(268, 22);
             menuCopyEntryId.Text = "Copy entry Id";
             menuCopyEntryId.Click += menuCopyEntryId_Click;
             // 
             // menuCanonnSeparator
             // 
             menuCanonnSeparator.Name = "menuCanonnSeparator";
-            menuCanonnSeparator.Size = new Size(247, 6);
+            menuCanonnSeparator.Size = new Size(265, 6);
             // 
             // menuCanonnResearch
             // 
             menuCanonnResearch.Image = Properties.ImageResources.canonn_16x16;
             menuCanonnResearch.Name = "menuCanonnResearch";
-            menuCanonnResearch.Size = new Size(250, 22);
+            menuCanonnResearch.Size = new Size(268, 22);
             menuCanonnResearch.Text = "View on Canonn Research";
             menuCanonnResearch.Click += menuViewOnCanonnResearch_Click;
             // 
@@ -295,29 +296,38 @@
             // 
             menuCanonnBioforge.Image = Properties.ImageResources.canonn_16x16;
             menuCanonnBioforge.Name = "menuCanonnBioforge";
-            menuCanonnBioforge.Size = new Size(250, 22);
+            menuCanonnBioforge.Size = new Size(268, 22);
             menuCanonnBioforge.Text = "View on Canonn Bioforge";
             menuCanonnBioforge.Click += menuViewOnCanonnBioforge_Click;
             // 
             // menuEDAstro
             // 
             menuEDAstro.Name = "menuEDAstro";
-            menuEDAstro.Size = new Size(250, 22);
+            menuEDAstro.Size = new Size(268, 22);
             menuEDAstro.Text = "View on ED Astro";
             menuEDAstro.Click += menuEDAstro_Click;
             // 
             // menuNearestSeparator
             // 
             menuNearestSeparator.Name = "menuNearestSeparator";
-            menuNearestSeparator.Size = new Size(247, 6);
+            menuNearestSeparator.Size = new Size(265, 6);
             // 
             // menuFindNearest
             // 
             menuFindNearest.Image = Properties.ImageResources.canonn_16x16;
             menuFindNearest.Name = "menuFindNearest";
-            menuFindNearest.Size = new Size(250, 22);
+            menuFindNearest.Size = new Size(268, 22);
             menuFindNearest.Text = "Find nearest system containing ...";
             menuFindNearest.Click += menuFindNearest_Click;
+            // 
+            // menuSpanshNearest
+            // 
+            menuSpanshNearest.Image = Properties.ImageResources.spansh_16x16;
+            menuSpanshNearest.Name = "menuSpanshNearest";
+            menuSpanshNearest.Size = new Size(268, 22);
+            menuSpanshNearest.Text = "Find systems with missing variants ...";
+            menuSpanshNearest.Visible = false;
+            menuSpanshNearest.Click += menuSpanshNearest_Click;
             // 
             // FormCodexBingo
             // 
@@ -368,5 +378,6 @@
         private ToolStripSeparator toolStripSeparator1;
         private ToolStripSeparator menuNearestSeparator;
         private ToolStripMenuItem menuFindNearest;
+        private ToolStripMenuItem menuSpanshNearest;
     }
 }

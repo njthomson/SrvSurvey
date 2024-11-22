@@ -4,7 +4,6 @@ using SrvSurvey.game;
 using SrvSurvey.plotters;
 using SrvSurvey.Properties;
 using SrvSurvey.units;
-using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace SrvSurvey
@@ -864,12 +863,21 @@ namespace SrvSurvey
             return poiType == POIType.casket || poiType == POIType.orb || poiType == POIType.tablet || poiType == POIType.totem || poiType == POIType.urn || poiType == POIType.unknown;
         }
 
-        public static string camel(string txt)
+        public static string pascal(string txt)
         {
             if (string.IsNullOrEmpty(txt))
                 return "";
             else
                 return char.ToUpperInvariant(txt[0]) + txt.Substring(1);
+        }
+
+        public static string pascalAllWords(string txt)
+        {
+            var words = txt
+                .Split(' ')
+                .Select(w => char.ToUpperInvariant(w[0]) + w.Substring(1).ToLowerInvariant());
+
+            return string.Join(' ', words);
         }
 
         public static string compositionToCamel(string key)
@@ -1202,24 +1210,42 @@ namespace SrvSurvey
                 return txt == query;
         }
 
-        public static Size drawTextRight(this Graphics g, string text, Font font, Color col, int tx, int ty, int w = 0, int h = 0)
+        /// <summary>
+        /// Calls the action only if the task completes with a non-null result
+        /// </summary>
+        public static Task continueOnSuccess<T>(this Task<T> preTask, Action<T> func)
         {
-            var flags = Util.textFlags | TextFormatFlags.WordBreak | TextFormatFlags.NoClipping | TextFormatFlags.GlyphOverhangPadding | TextFormatFlags.NoFullWidthCharacterBreak; // | TextFormatFlags.ExternalLeading
-            if (w == 0)
-                flags |= TextFormatFlags.SingleLine;
+            return continueOnSuccess(preTask, null, false, func);
+        }
 
-            // measure size
-            var sz = TextRenderer.MeasureText(g, text, font, new Size(w, 0), flags);
+        /// <summary>
+        /// Continues execution on the main thread only if the Task is successful and yields a non-null result, and the form has not been disposed
+        /// </summary>
+        public static Task continueOnMain<T>(this Task<T> preTask, Form? form, Action<T> func)
+        {
+            return continueOnSuccess(preTask, form, true, func);
+        }
 
-            // adjust vertical to fit within height constraint
-            var dx = h == 0 ? 0 : Util.centerIn(h, sz.Height);
+        private static Task continueOnSuccess<T>(this Task<T> preTask, Form? form, bool onMainThread, Action<T> func)
+        {
+            return preTask.ContinueWith(postTask =>
+            {
+                // check for firewall problems?
+                if (postTask.Exception != null || !postTask.IsCompletedSuccessfully)
+                    Util.isFirewallProblem(postTask.Exception);
 
-            // draw text within constraints
-            var r = new Rectangle(tx - sz.Width, ty + dx, sz.Width, sz.Height);
-            TextRenderer.DrawText(g, text, font, r, col, flags);
+                // exit early if the call did not succeed or returns a null
+                if (postTask.Exception != null || postTask.Result == null) return;
 
-            //g.DrawRectangle(Pens.Lime, r);
-            return sz;
+                // of if we have a form but it's disposed
+                if (form?.IsDisposed == true) return;
+
+                // invoke back on main UX thread?
+                if (onMainThread)
+                    Program.defer(() => func(postTask.Result));
+                else
+                    func(postTask.Result);
+            });
         }
     }
 

@@ -672,6 +672,9 @@ namespace SrvSurvey.game
                     Program.invalidateActivePlotters();
                 }
             }
+
+            // redraw as well, in case visual state needs to change but predictions are no different
+            Program.defer(() => FormPredictions.refresh());
         }
 
         public void onJournalEntry(ScanBaryCentre entry)
@@ -1153,10 +1156,13 @@ namespace SrvSurvey.game
                 var body = this.findOrCreate(entry.name, bodyId);
 
                 // update fields
-                if (entry.type == "Star")
-                    body.type = SystemBodyType.Star;
-                else
-                    body.type = SystemBody.typeFrom(null!, entry.subType!, entry.isLandable, entry.name);
+                if (body.type == SystemBodyType.Unknown)
+                {
+                    if (entry.type == "Star")
+                        body.type = SystemBodyType.Star;
+                    else
+                        body.type = SystemBody.typeFrom(null!, entry.subType!, entry.isLandable, entry.name);
+                }
                 if (body.distanceFromArrivalLS == 0) body.distanceFromArrivalLS = entry.distanceToArrival;
                 if (body.semiMajorAxis == 0) body.semiMajorAxis = Util.lsToM(entry.semiMajorAxis ?? 0); // convert from LS to M
                 if (body.absoluteMagnitude == 0) body.absoluteMagnitude = entry.absoluteMagnitude;
@@ -1261,12 +1267,15 @@ namespace SrvSurvey.game
                 var body = this.findOrCreate(entry.name, entry.bodyId);
 
                 // update fields
-                if (entry.type == "Star")
-                    body.type = SystemBodyType.Star;
-                else if (entry.type == "Barycentre")
-                    body.type = SystemBodyType.Barycentre;
-                else
-                    body.type = SystemBody.typeFrom(null!, entry.subType!, entry.isLandable ?? false, entry.name);
+                if (body.type == SystemBodyType.Unknown)
+                {
+                    if (entry.type == "Star")
+                        body.type = SystemBodyType.Star;
+                    else if (entry.type == "Barycentre")
+                        body.type = SystemBodyType.Barycentre;
+                    else
+                        body.type = SystemBody.typeFrom(null!, entry.subType!, entry.isLandable ?? false, entry.name);
+                }
 
                 if (body.distanceFromArrivalLS == 0) body.distanceFromArrivalLS = entry.distanceToArrival ?? 0;
                 if (body.semiMajorAxis == 0) body.semiMajorAxis = Util.lsToM(entry.semiMajorAxis ?? 0); // convert from LS to M

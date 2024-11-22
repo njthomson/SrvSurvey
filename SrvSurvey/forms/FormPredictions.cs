@@ -94,7 +94,7 @@ namespace SrvSurvey
 
         private void Game_update(GameMode newMode, bool force)
         {
-            if (this.IsDisposed || game == null) return;
+            if (this.IsDisposed || game?.status == null) return;
             if (newMode == GameMode.MainMenu)
             {
                 Game.log("Closing FormPredictions at MainMenu");
@@ -420,6 +420,13 @@ namespace SrvSurvey
                 || (game != null && game.targetBody == node.Parent?.Tag && !game.status.hasLatLong)
                 || node == hoverNode;
 
+            // Highlight if this is what we just found during FSS
+            if (game?.mode == GameMode.FSS && game.systemData?.lastFssBody == node.Parent?.Tag)
+            {
+                highlight = true;
+                node.EnsureVisible();
+            }
+
             if (isCurrentBody(node.Parent))
                 drawSideBars(g, node, highlight && node != hoverNode);
 
@@ -553,6 +560,13 @@ namespace SrvSurvey
             var highlight = highlightCurrentBody(node)
                 || node == hoverNode;
 
+            // Highlight if this is what we just found during FSS
+            if (game?.mode == GameMode.FSS && game.systemData?.lastFssBody == node.Tag)
+            {
+                highlight = true;
+                node.EnsureVisible();
+            }
+
             var tt = new TextCursor(g, tree)
             {
                 dtx = node.Level * tree.Indent,
@@ -665,11 +679,12 @@ namespace SrvSurvey
                 tree.Hide();
 
                 TreeNode? makeVisible = null;
-                makeVisible = tree.Nodes[2];
 
                 foreach (TreeNode node in tree.Nodes)
                 {
-                    if (node.Tag == game.systemBody)
+                    if (game.mode == GameMode.FSS && game.systemData?.lastFssBody == node.Tag)
+                        makeVisible = node;
+                    else if (node.Tag == game.systemBody)
                         makeVisible = node;
 
                     var shouldExpand = treeMode == TreeViewMode.Everything;
@@ -708,6 +723,7 @@ namespace SrvSurvey
         {
             treeMode = TreeViewMode.Everything;
             doTreeViewMode();
+            //game.targetBody?.predictSpecies();
         }
 
         private void btnCollapseAll_Click(object sender, EventArgs e)

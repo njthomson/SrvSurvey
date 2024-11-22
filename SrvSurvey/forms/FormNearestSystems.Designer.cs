@@ -29,11 +29,11 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            ListViewItem listViewItem1 = new ListViewItem(new string[] { "Pyria Eurl YG-J c23-0", "975.97 ly", "4 other bio signals in this system" }, -1, Color.Empty, SystemColors.ControlLight, null);
-            ListViewItem listViewItem2 = new ListViewItem("bbb");
-            ListViewItem listViewItem3 = new ListViewItem(new string[] { "ccc" }, -1, Color.Empty, SystemColors.ButtonFace, null);
-            ListViewItem listViewItem4 = new ListViewItem("ddd");
-            ListViewItem listViewItem5 = new ListViewItem("eee");
+            ListViewItem listViewItem6 = new ListViewItem(new string[] { "Pyria Eurl YG-J c23-0", "975.97 ly", "4 other bio signals in this system" }, -1, Color.Empty, SystemColors.ControlLight, null);
+            ListViewItem listViewItem7 = new ListViewItem("bbb");
+            ListViewItem listViewItem8 = new ListViewItem(new string[] { "ccc" }, -1, Color.Empty, SystemColors.ButtonFace, null);
+            ListViewItem listViewItem9 = new ListViewItem("ddd");
+            ListViewItem listViewItem10 = new ListViewItem("eee");
             list = new ListView();
             colSystem = new ColumnHeader();
             colDistance = new ColumnHeader();
@@ -50,14 +50,17 @@
             label2 = new Label();
             txtContaining = new TextBox();
             label3 = new Label();
+            linkSpanshSearch = new LinkLabel();
+            flowBottom = new FlowLayoutPanel();
             contextMenu.SuspendLayout();
+            flowBottom.SuspendLayout();
             SuspendLayout();
             // 
             // list
             // 
             list.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             list.Columns.AddRange(new ColumnHeader[] { colSystem, colDistance, colNotes });
-            list.Items.AddRange(new ListViewItem[] { listViewItem1, listViewItem2, listViewItem3, listViewItem4, listViewItem5 });
+            list.Items.AddRange(new ListViewItem[] { listViewItem6, listViewItem7, listViewItem8, listViewItem9, listViewItem10 });
             list.Location = new Point(12, 70);
             list.Name = "list";
             list.Size = new Size(776, 160);
@@ -154,7 +157,7 @@
             txtSystem.ReadOnly = true;
             txtSystem.Size = new Size(661, 23);
             txtSystem.TabIndex = 3;
-            txtSystem.Text = "Pyra Dryoae ET-O d7-7";
+            txtSystem.Text = "...";
             // 
             // label2
             // 
@@ -173,24 +176,47 @@
             txtContaining.ReadOnly = true;
             txtContaining.Size = new Size(661, 23);
             txtContaining.TabIndex = 5;
-            txtContaining.Text = "Recepta Umbrux - Orange";
+            txtContaining.Text = "...";
             // 
             // label3
             // 
             label3.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             label3.AutoSize = true;
-            label3.Location = new Point(12, 236);
+            label3.Location = new Point(3, 0);
             label3.Name = "label3";
             label3.Size = new Size(343, 15);
             label3.TabIndex = 6;
-            label3.Text = "Double-click to copy system name, right click for more options:";
+            label3.Text = "Double-click to copy system name, right click for more options.";
+            // 
+            // linkSpanshSearch
+            // 
+            linkSpanshSearch.AutoSize = true;
+            linkSpanshSearch.Location = new Point(352, 0);
+            linkSpanshSearch.Name = "linkSpanshSearch";
+            linkSpanshSearch.Size = new Size(134, 15);
+            linkSpanshSearch.TabIndex = 7;
+            linkSpanshSearch.TabStop = true;
+            linkSpanshSearch.Text = "Open search on Spansh.";
+            linkSpanshSearch.Visible = false;
+            linkSpanshSearch.LinkClicked += linkSpanshSearch_LinkClicked;
+            // 
+            // flowBottom
+            // 
+            flowBottom.AutoSize = true;
+            flowBottom.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            flowBottom.Controls.Add(label3);
+            flowBottom.Controls.Add(linkSpanshSearch);
+            flowBottom.Location = new Point(12, 236);
+            flowBottom.Name = "flowBottom";
+            flowBottom.Size = new Size(489, 15);
+            flowBottom.TabIndex = 8;
             // 
             // FormNearestSystems
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 265);
-            Controls.Add(label3);
+            Controls.Add(flowBottom);
             Controls.Add(txtContaining);
             Controls.Add(label2);
             Controls.Add(txtSystem);
@@ -201,6 +227,8 @@
             Name = "FormNearestSystems";
             Text = "Nearest Systems";
             contextMenu.ResumeLayout(false);
+            flowBottom.ResumeLayout(false);
+            flowBottom.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -223,5 +251,7 @@
         private ToolStripMenuItem viewOnSpansh;
         private ToolStripSeparator toolStripSeparator1;
         private ToolStripMenuItem viewOnCanonn;
+        private LinkLabel linkSpanshSearch;
+        private FlowLayoutPanel flowBottom;
     }
 }

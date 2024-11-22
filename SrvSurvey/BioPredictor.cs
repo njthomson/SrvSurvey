@@ -186,6 +186,8 @@ namespace BioCriterias
             //if (this.bodyName.Contains(" 6") && currentName?.Contains("Stabitis") == true) Debugger.Break();
             //if (currentName?.Contains("Brain") == true) Debugger.Break();
 
+            //if (genus != null && species != null && variant != null) Debugger.Break();
+
             // add a prediction if no failures and we have genus, species AND variant
             if (failures.Count == 0 && genus != null && species != null && variant != null)
             {

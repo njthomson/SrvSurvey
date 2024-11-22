@@ -96,6 +96,11 @@ namespace SrvSurvey
                 comboCmdr.SelectedIndex = 0;
         }
 
+        private CommanderSettings currentCmdr
+        {
+            get => Game.activeGame?.cmdr ?? CommanderSettings.Load(this.cmdrCodex.fid, true, "");
+        }
+
         private void comboCmdr_SelectedIndexChanged(object sender, EventArgs e)
         {
             var commander = comboCmdr.Text!;
@@ -331,6 +336,7 @@ namespace SrvSurvey
 
                     menuNearestSeparator.Visible = hasEntryId;
                     menuFindNearest.Visible = hasEntryId;
+                    menuSpanshNearest.Visible = false;
 
                     menuCopyEntryId.Visible = hasEntryId;
                     menuCanonnResearch.Visible = hasEntryId;
@@ -341,6 +347,18 @@ namespace SrvSurvey
                     // some special cases for ED Astro links
                     if (edAstroLinks.Keys.Any(k => node.Name.matches(k)))
                         menuEDAstro.Visible = true;
+
+                    // require incomplete children to activate this one
+                    if (hasSpecies)
+                    {
+                        var missingChildCount = this.getIncompleteChildTags(node).Count;
+                        if (missingChildCount > 0)
+                        {
+                            menuSpanshNearest.Text = $"Find systems with {missingChildCount} missing variants ...";
+                            Game.log($">?> {menuSpanshNearest.Text}");
+                            menuSpanshNearest.Visible = true;
+                        }
+                    }
 
                     tree.SelectedNode = node;
                     contextMenu.Show(tree.PointToScreen(e.Location));
@@ -357,10 +375,28 @@ namespace SrvSurvey
             contextMenu.Hide();
         }
 
-        private CodexTag? getSelectedNodeCodexTag()
+        private CodexTag? getSelectedNodeCodexTag(TreeNode? node = null)
         {
-            if (tree.SelectedNode == null) return null;
-            return tree.SelectedNode.Tag as CodexTag;
+            node ??= tree.SelectedNode;
+            if (node == null) return null;
+            return node.Tag as CodexTag;
+        }
+
+        private List<CodexTag> getIncompleteChildTags(TreeNode node)
+        {
+            var incomplete = new List<CodexTag>();
+
+            if (node?.Nodes.Count > 0)
+            {
+                foreach (TreeNode child in node.Nodes)
+                {
+                    var childTag = getSelectedNodeCodexTag(child);
+                    if (childTag?.entry != null && !childTag.isComplete)
+                        incomplete.Add(childTag);
+                }
+            }
+
+            return incomplete;
         }
 
         private void menuCopyName_Click(object sender, EventArgs e)
@@ -440,12 +476,22 @@ namespace SrvSurvey
             var searchTerm = codexTag?.variant ?? codexTag?.text;
             if (searchTerm == null) return;
 
-            var cmdr = Game.activeGame?.cmdr
-                ?? CommanderSettings.Load(this.cmdrCodex.fid, true, "");
+            var refPos = new StarPos(this.currentCmdr.starPos, this.currentCmdr.currentSystem);
+            FormNearestSystems.show(refPos, searchTerm, this.currentCmdr.commander);
+        }
 
-            var starPos = new StarPos(cmdr.starPos, cmdr.currentSystem);
+        private void menuSpanshNearest_Click(object sender, EventArgs e)
+        {
+            var codexTag = getSelectedNodeCodexTag();
+            if (codexTag?.species != null)
+            {
+                var variantNames = this.getIncompleteChildTags(tree.SelectedNode)
+                    .Select(t => Game.codexRef.matchFromEntryId(t.entry!.entryid).variant)
+                    .ToList();
 
-            FormNearestSystems.show(starPos, searchTerm);
+                var refPos = new StarPos(this.currentCmdr.starPos, this.currentCmdr.currentSystem);
+                FormNearestSystems.show(refPos, variantNames);
+            }
         }
 
         private void toolBodyName_Click(object sender, EventArgs e)

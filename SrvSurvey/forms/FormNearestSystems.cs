@@ -1,7 +1,9 @@
 ﻿using SrvSurvey.canonn;
 using SrvSurvey.game;
+using SrvSurvey.net;
 using SrvSurvey.Properties;
 using SrvSurvey.units;
+using SrvSurvey.widgets;
 using System.Data;
 using static SrvSurvey.canonn.Canonn;
 
@@ -9,21 +11,154 @@ namespace SrvSurvey.forms
 {
     internal partial class FormNearestSystems : FixedForm
     {
-        public static void show(StarPos referencePos, string bioSignal)
+        /// <summary>
+        /// Using Canonn API
+        /// </summary>
+        public static void show(StarPos refPos, string bioSignal, string cmdr)
         {
-            FormNearestSystems.starPos = referencePos;
-            FormNearestSystems.bioSignal = bioSignal;
-
-            var formExists = BaseForm.get<FormNearestSystems>() != null;
+            if (refPos == null || string.IsNullOrEmpty(bioSignal)) throw new Exception("Bad arguments for FormNearestSystems");
 
             var form = BaseForm.show<FormNearestSystems>();
+            form.txtSystem.Text = refPos.systemName ?? refPos.ToString();
+            form.txtContaining.Text = bioSignal;
 
-            if (formExists)
-                form.prepList();
+            // make the API call...
+            Game.canonn.findNearestSystemWithBio(refPos, bioSignal).continueOnMain(form, result =>
+            {
+                form.list.SuspendLayout();
+                form.list.Items.Clear();
+
+                if (result.nearest?.Count > 0)
+                {
+                    var altCols = Game.settings.darkTheme
+                        ? new AlternatingColors(SystemColors.ControlDarkDark, SystemColors.WindowFrame)
+                        : new AlternatingColors(SystemColors.Window, SystemColors.Control);
+
+                    foreach (var entry in result.nearest.Take(5))
+                    {
+                        var item = new ListViewItem()
+                        {
+                            Name = entry.system,
+                            Text = entry.system,
+                            Tag = entry,
+                            BackColor = altCols.next(),
+                        };
+                        item.SubItems.Add($"{entry.distance.ToString("N1")} ly");
+                        item.SubItems.Add($"...");
+
+                        Game.canonn.getSystemPoi(entry.system, cmdr).continueOnMain(form, subResult =>
+                        {
+                            item.SubItems[2].Text = getSystemNotes(subResult);
+                            form.list.AutoResizeColumn(2, ColumnHeaderAutoResizeStyle.ColumnContent);
+                        });
+
+                        form.list.Items.Add(item);
+                    }
+                }
+
+                form.list.ResumeLayout();
+            });
         }
 
-        private static StarPos starPos;
-        private static string bioSignal;
+        private static string getSystemNotes(SystemPoi result)
+        {
+            var systemEntryIds = result.codex.Select(c => c.entryid).ToHashSet();
+            var backupText = $"System bio signals: {systemEntryIds.Count}";
+
+            var summary = new Dictionary<string, HashSet<string>>();
+            foreach (var codexEntry in result.codex)
+            {
+                if (codexEntry.hud_category != "Biology") continue;
+
+                if (codexEntry.body == null)
+                    return backupText;
+
+                var key = codexEntry.body.Replace(" ", "");
+
+                if (!summary.ContainsKey(key)) summary[key] = new();
+                summary[key].Add(codexEntry.english_name);
+            }
+
+            if (summary.Count == 0)
+                return "No bio signals in system";
+
+            var parts = summary.Select(b => $"{b.Key}: {b.Value.Count} signals");
+            var text = "Body " + string.Join(", ", parts);
+            return text;
+        }
+
+        /// <summary>
+        /// Using Spansh API
+        /// </summary>
+        public static void show(StarPos refPos, List<BioVariant> variants)
+        {
+            if (variants.Count == 0) return;
+
+            // prep data
+            var genus = variants[0].species.genus.englishName;
+            var species = variants[0].species.englishName;
+            var variantColors = variants.Select(v => v.colorName).ToList();
+
+            // show + populate form before API call
+            var form = BaseForm.show<FormNearestSystems>();
+            form.txtSystem.Text = refPos.systemName ?? refPos.ToString();
+            form.txtContaining.Text = species + ": " + string.Join(", ", variantColors);
+
+            // call the API ...
+            Game.spansh.buildMissingVariantsQuery(refPos, genus, species, variantColors).continueOnMain(form, response =>
+            {
+                form.spanshReference = response!.search_reference;
+                form.linkSpanshSearch.Visible = true;
+
+                form.list.SuspendLayout();
+                form.list.Items.Clear();
+
+                if (response.results?.Count > 0)
+                {
+                    var altCols = Game.settings.darkTheme
+                        ? new AlternatingColors(SystemColors.ControlDarkDark, SystemColors.WindowFrame)
+                        : new AlternatingColors(SystemColors.Window, SystemColors.Control);
+
+                    foreach (var result in response.results)
+                    {
+                        // skip systems with multiple bodies
+                        if (form.list.Items.ContainsKey(result.system_name)) continue;
+
+                        // add a row for this system/body
+                        var item = new ListViewItem(new string[] { result.system_name })
+                        {
+                            Name = result.system_name,
+                            Text = result.system_name,
+                            Tag = result,
+                            BackColor = altCols.next(),
+                        };
+                        // distance
+                        item.SubItems.Add($"{result.distance.ToString("N1")} ly");
+
+                        var prefix = "";
+                        if (result.landmarks?.Count > 0)
+                        {
+                            var colors = result.landmarks.Where(l => l.subtype == species).Select(l => l.variant);
+                            prefix = string.Join(", ", colors);
+                        }
+                        // notes                            
+                        var notes = $"{prefix} - body: {result.name.Replace(result.system_name + " ", "")}, dist to arrival: {Util.lsToString(result.distance_to_arrival)}";
+                        var countBioSignals = result.signals?.FirstOrDefault(s => s.name == "Biological")?.count;
+                        if (countBioSignals > 0)
+                            notes += $", {countBioSignals} bio signals";
+                        item.SubItems.Add(notes);
+
+                        // stop after 5 rows
+                        form.list.Items.Add(item);
+                        if (form.list.Items.Count > 5) break;
+                    }
+                }
+
+                form.list.ResumeLayout();
+            });
+        }
+
+        private string? spanshReference;
 
         public FormNearestSystems()
         {
@@ -53,10 +188,9 @@ namespace SrvSurvey.forms
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            this.prepList();
         }
 
-        private QueryNearestResponse.Entry? selectedEntry
+        private QueryNearestResponse.Entry? selectedCanonnEntry
         {
             get
             {
@@ -66,100 +200,14 @@ namespace SrvSurvey.forms
             }
         }
 
-        private void prepList()
+        private SearchApiResults.Body? selectedSpanshEntry
         {
-            if (string.IsNullOrEmpty(FormNearestSystems.bioSignal) || FormNearestSystems.starPos == null) throw new Exception("Bad arguments for FormNearestSystems");
-
-            txtSystem.Text = FormNearestSystems.starPos.systemName ?? FormNearestSystems.starPos.ToString();
-            txtContaining.Text = FormNearestSystems.bioSignal;
-
-            Game.canonn.findNearestSystemWithBio(FormNearestSystems.starPos, FormNearestSystems.bioSignal).ContinueWith(task =>
+            get
             {
-                if (task.Result == null || task.Exception != null || this.IsDisposed) return;
-
-                Program.defer(() =>
-                {
-                    var items = new List<ListViewItem>();
-                    var result = task.Result;
-
-                    list.SuspendLayout();
-                    list.Items.Clear();
-
-                    if (task.Result.nearest?.Count > 0)
-                    {
-                        var count = 0;
-                        foreach (var entry in task.Result.nearest.Take(5))
-                        {
-                            count++;
-
-                            var item = new ListViewItem()
-                            {
-                                Name = entry.system,
-                                Text = entry.system,
-                                Tag = entry,
-                            };
-                            if (Game.settings.darkTheme)
-                                item.BackColor = (count % 2) == 0 ? SystemColors.ControlDarkDark : SystemColors.WindowFrame;
-                            else
-                                item.BackColor = (count % 2) == 0 ? SystemColors.Window : SystemColors.Control;
-
-                            item.SubItems.AddRange(new string[] { $"{entry.distance.ToString("N1")} ly", "..." });
-
-                            Game.canonn.getSystemPoi(entry.system, Game.activeGame?.cmdr?.commander ?? Game.settings.lastCommander!).ContinueWith(subTask =>
-                            {
-                                if (this.IsDisposed) return;
-
-                                Program.defer(() =>
-                                {
-                                    if (this.IsDisposed) return;
-
-                                    if (subTask.Result == null || subTask.Exception != null)
-                                        item.SubItems[2].Text = "";
-                                    else
-                                        item.SubItems[2].Text = this.getSystemNotes(subTask.Result);
-
-                                    list.AutoResizeColumn(2, ColumnHeaderAutoResizeStyle.ColumnContent);
-                                });
-                            });
-
-                            list.Items.Add(item);
-                        }
-                    }
-
-                    list.ResumeLayout();
-                });
-
-            });
-
-            // make the API call...
-
-        }
-
-        private string getSystemNotes(SystemPoi result)
-        {
-            var systemEntryIds = result.codex.Select(c => c.entryid).ToHashSet();
-            var backupText = $"System bio signals: {systemEntryIds.Count}";
-
-            var summary = new Dictionary<string, HashSet<string>>();
-            foreach (var codexEntry in result.codex)
-            {
-                if (codexEntry.hud_category != "Biology") continue;
-
-                if (codexEntry.body == null)
-                    return backupText;
-
-                var key = codexEntry.body.Replace(" ", "");
-
-                if (!summary.ContainsKey(key)) summary[key] = new();
-                summary[key].Add(codexEntry.english_name);
+                if (list.SelectedIndices.Count == 0) return null;
+                var entry = list.Items[list.SelectedIndices[0]].Tag as SearchApiResults.Body;
+                return entry;
             }
-
-            if (summary.Count == 0)
-                return "No bio signals in system";
-
-            var parts = summary.Select(b => $"{b.Key}: {b.Value.Count} signals");
-            var text = "Body " + string.Join(", ", parts);
-            return text;
         }
 
         private void btnClose_Click(object sender, EventArgs e)
@@ -169,7 +217,7 @@ namespace SrvSurvey.forms
 
         private void menuCopyName_Click(object sender, EventArgs e)
         {
-            var systemName = this.selectedEntry?.system;
+            var systemName = selectedCanonnEntry?.system ?? selectedSpanshEntry?.system_name;
             if (string.IsNullOrEmpty(systemName)) return;
 
             Game.log($"Setting to clipboard: {systemName}");
@@ -178,7 +226,7 @@ namespace SrvSurvey.forms
 
         private void copyStarPos_Click(object sender, EventArgs e)
         {
-            var starPos = this.selectedEntry?.toStarPos();
+            var starPos = selectedCanonnEntry?.toStarPos() ?? selectedSpanshEntry?.toStarPos();
             if (starPos == null) return;
 
             Game.log($"Setting to clipboard: {starPos}");
@@ -187,7 +235,7 @@ namespace SrvSurvey.forms
 
         private void viewOnCanonn_Click(object sender, EventArgs e)
         {
-            var systemName = this.selectedEntry?.system;
+            var systemName = selectedCanonnEntry?.system ?? selectedSpanshEntry?.system_name;
             if (string.IsNullOrEmpty(systemName)) return;
 
             var url = $"https://signals.canonn.tech/?system=" + Uri.EscapeDataString(systemName);
@@ -196,18 +244,23 @@ namespace SrvSurvey.forms
 
         private void viewOnSpansh_Click(object sender, EventArgs e)
         {
-            var systemName = this.selectedEntry?.system;
+            var address = selectedSpanshEntry?.system_id64;
+            if (address.HasValue)
+            {
+                var url = $"https://spansh.co.uk/system/{address}";
+                Util.openLink(url);
+                return;
+            }
+
+            var systemName = selectedCanonnEntry?.system ?? selectedSpanshEntry?.system_name;
             if (string.IsNullOrEmpty(systemName)) return;
 
-            var foo = Game.spansh.getSystemAddress(systemName).ContinueWith(t =>
+            Game.spansh.getSystemAddress(systemName).continueOnMain(this, result =>
             {
-                if (t.Exception != null || t.Result == null) return;
-
-                var url = $"https://spansh.co.uk/system/{t.Result}";
+                var url = $"https://spansh.co.uk/system/{result}";
                 Util.openLink(url);
             });
         }
-
 
         private void list_MouseDown(object sender, MouseEventArgs e)
         {
@@ -217,6 +270,15 @@ namespace SrvSurvey.forms
             if (item == null) return;
 
             contextMenu.Show(list, e.X, e.Y);
+        }
+
+        private void linkSpanshSearch_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            if (spanshReference != null)
+            {
+                var url = $"https://spansh.co.uk/bodies/search/{spanshReference}/1";
+                Util.openLink(url);
+            }
         }
     }
 }

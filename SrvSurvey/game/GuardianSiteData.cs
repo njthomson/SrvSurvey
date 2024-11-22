@@ -1255,7 +1255,7 @@ namespace SrvSurvey.game
         {
             if (Game.canonn.allRuins == null) throw new Exception("Why is allRuins not populated?");
             var site = Game.canonn.allRuins.FirstOrDefault(_ => _.systemAddress == systemData.address && _.bodyId == body.id && _.idx == idx);
-            if (site == null) throw new Exception("New site found??");
+            if (site == null) throw new Exception($"New Ruins #{idx} found on {body}??");
 
             var summary = new SystemSettlementSummary()
             {
@@ -1298,7 +1298,7 @@ namespace SrvSurvey.game
         {
             if (Game.canonn.allStructures == null) throw new Exception("Why is allStructures not populated?");
             var site = Game.canonn.allStructures.FirstOrDefault(_ => _.systemAddress == systemData.address && _.bodyId == body.id);
-            if (site == null) throw new Exception("New site found??");
+            if (site == null) throw new Exception($"New structure found on {body}??");
 
             var siteType = Enum.Parse<GuardianSiteData.SiteType>(site.siteType);
             var summary = new SystemSettlementSummary()

@@ -11,6 +11,7 @@ namespace SrvSurvey.widgets
 {
     internal class TextCursor : N
     {
+        // Same as Util.textFlags
         public static readonly TextFormatFlags defaultTextFlags = TextFormatFlags.NoPadding | TextFormatFlags.PreserveGraphicsTranslateTransform;
 
         public float dtx;

@@ -170,14 +170,14 @@ namespace SrvSurvey.plotters
                 if (string.IsNullOrEmpty(body.volcanism) || body.volcanism == "No volcanism")
                     drawTextAt(eightEight, $"None");
                 else
-                    drawTextAt(eightEight, Util.camel(body.volcanism.Replace("volcanism", "")));
+                    drawTextAt(eightEight, Util.pascal(body.volcanism.Replace("volcanism", "")));
                 newLine(+four, true);
             }
 
             // atmosphere
             if (planetish)
             {
-                var atmos = string.IsNullOrEmpty(body.atmosphere) || body.atmosphere == "No atmosphere" ? "None" : Util.camel(body.atmosphere.Replace(" atmosphere", ""));
+                var atmos = string.IsNullOrEmpty(body.atmosphere) || body.atmosphere == "No atmosphere" ? "None" : Util.pascal(body.atmosphere.Replace(" atmosphere", ""));
                 if (body.atmosphereType == "EarthLike") atmos = "Earth Like";
                 if (atmos == "None" && body.type != SystemBodyType.LandableBody) atmos = " ";
                 drawTextAt(eight, $"Atmosphere:");
@@ -202,7 +202,7 @@ namespace SrvSurvey.plotters
                     drawTextAt(eight, $"Materials:");
                     foreach (var mat in body.materials.OrderByDescending(_ => _.Value))
                     {
-                        var name = Util.camel(mat.Key);
+                        var name = Util.pascal(mat.Key);
                         var value = mat.Value.ToString("N2").PadLeft(5);
 
                         var font = Util.isMatLevelThree(mat.Key) || Util.isMatLevelFour(mat.Key) ? GameColors.fontSmall2Bold : null;

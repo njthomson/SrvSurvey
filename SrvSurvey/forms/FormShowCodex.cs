@@ -25,7 +25,7 @@ namespace SrvSurvey
                 var idx = FormShowCodex.activeForm.stuff.Keys.ToList().IndexOf(Game.activeGame.systemBody);
                 if (idx >= 0)
                 {
-                    FormShowCodex.activeForm.idxBody = idx;
+                    FormShowCodex.activeForm.setCurrants(idx);
                     FormShowCodex.activeForm.updateStuff();
                 }
             }
@@ -41,6 +41,8 @@ namespace SrvSurvey
         private bool dragging = false;
         private Point mouseDownPoint;
         private bool menuVisible = false;
+        private string? lastTempRangeVariant;
+        private string? lastTempRange;
 
         private Dictionary<SystemBody, List<BioVariant>> stuff = new();
         private int idxBody;
@@ -48,8 +50,6 @@ namespace SrvSurvey
         private SystemBody currentBody;
         private List<BioVariant> currentVariants;
         private BioVariant? currentVariant;
-        private string? lastTempRangeVariant;
-        private string? lastTempRange;
 
         private FormShowCodex()
         {
@@ -67,14 +67,13 @@ namespace SrvSurvey
             Util.useLastLocation(this, Game.settings.formShowCodex);
         }
 
-
         private void prepStuff()
         {
             var game = Game.activeGame;
             if (game?.systemData == null) return;
             stuff.Clear();
 
-            foreach (var body in game.systemData.bodies)
+            foreach (var body in game.systemData.bodies.OrderBy(b => b.shortName))
             {
                 if (body.bioSignalCount == 0) continue;
                 if (!stuff.ContainsKey(body)) stuff[body] = new();
@@ -93,12 +92,21 @@ namespace SrvSurvey
                                 stuff[body].Add(variant.variant);
             }
 
-            currentBody = stuff.First().Key;
-            currentVariants = stuff.First().Value;
-            currentVariant = currentVariants[idxVariant];
+            setCurrants(0);
+            updateStuff();
+        }
+
+        private void setCurrants(int? newIdxBody)
+        {
+            this.idxBody = newIdxBody ?? 0;
+            this.idxVariant = 0;
+
+            var pair = this.stuff.Skip(idxBody).First();
+            this.currentBody = pair.Key;
+            this.currentVariants = pair.Value;
+            this.currentVariant = this.currentVariants[idxVariant];
 
             prepMenuItems();
-            updateStuff();
         }
 
         private void updateStuff(bool forceCanonn = false)
@@ -207,10 +215,6 @@ namespace SrvSurvey
 
         private void FormShowCodex_Load(object sender, EventArgs e)
         {
-            this.BeginInvoke(() =>
-            {
-                this.prepStuff();
-            });
         }
 
         private void calcSizes(bool middle, bool imgSize)
