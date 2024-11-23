@@ -875,8 +875,8 @@ namespace SrvSurvey
                 this.updateAllControls();
             }
 
-            if (FormShowCodex.activeForm != null)
-                FormShowCodex.activeForm.prepAllSpecies();
+            FormShowCodex.activeForm?.prepAllSpecies();
+            // Flicker? FormCodexBingo.activeForm?.calcCompletions();
         }
 
         private void onJournalEntry(CodexEntry entry)
@@ -889,6 +889,8 @@ namespace SrvSurvey
                 Program.showPlotter<PlotGuardianBeaconStatus>();
             }
             */
+
+            // FormCodexBingo.activeForm?.calcCompletions();
         }
 
         private void onJournalEntry(SupercruiseDestinationDrop entry)
@@ -1753,6 +1755,7 @@ namespace SrvSurvey
         private void btnCodexBingo_Click(object sender, EventArgs e)
         {
             FormCodexBingo.show();
+            //Game.activeGame.predictSystemSpecies();
         }
     }
 }

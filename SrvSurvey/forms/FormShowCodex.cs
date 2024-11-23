@@ -390,7 +390,7 @@ namespace SrvSurvey
         {
             Game.log($"Loading codex images for: {systemData.name} ({systemData.address})");
 
-            foreach (var body in systemData.bodies)
+            foreach (var body in systemData.bodies.ToList())
             {
                 if (body.bioSignalCount == 0) continue;
 
@@ -413,7 +413,7 @@ namespace SrvSurvey
                 // get images for known organisms
                 if (body.organisms?.Count > 0)
                 {
-                    foreach (var org in body.organisms)
+                    foreach (var org in body.organisms.ToList())
                     {
                         if (org.entryId == 0) continue;
 
@@ -432,11 +432,11 @@ namespace SrvSurvey
                 // get images for predictions
                 if (body.genusPredictions?.Count > 0)
                 {
-                    foreach (var genus in body.genusPredictions)
+                    foreach (var genus in body.genusPredictions.ToList())
                     {
-                        foreach (var variants in genus.species.Values)
+                        foreach (var variants in genus.species.Values.ToList())
                         {
-                            foreach (var variant in variants)
+                            foreach (var variant in variants.ToList())
                             {
                                 // skip if no url or we already have the file
                                 if (variant.variant.imageUrl == null) continue;
@@ -460,7 +460,8 @@ namespace SrvSurvey
             {
                 using (var imgTmp = Image.FromStream(stream))
                 {
-                    imgTmp.Save(filepath, ImageFormat.Png);
+                    if (!File.Exists(filepath))
+                        imgTmp.Save(filepath, ImageFormat.Png);
                 }
             }
         }

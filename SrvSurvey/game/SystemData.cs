@@ -1296,7 +1296,7 @@ namespace SrvSurvey.game
                     body.atmosphereComposition = entry.atmosphereComposition.ToDictionary(_ => Util.compositionToCamel(_.Key), _ => _.Value);
                 if (body.materials == null && entry.materials != null) body.materials = entry.materials;
                 if (body.volcanism == null && entry.volcanismType != null) body.volcanism = entry.volcanismType == "No volcanism" ? "" : entry.volcanismType;
-                if (body.starType == null && entry.subType != null)
+                if (body.starType == null && entry.subType != null && entry.spectralClass != null)
                 {
                     body.starType = parseStarType(entry.subType);
                     //body.starSubClass = int.Parse(entry.spectralClass[1]);
@@ -2233,7 +2233,9 @@ namespace SrvSurvey.game
             }
 
             // predict the whole body if there are signals unaccounted for
-            var delta = this.organisms == null ? this.bioSignalCount : this.organisms.Count(o => o.species == null);
+            var delta = this.bioSignalCount;
+            if (this.organisms?.Count > 0)
+                delta -= this.organisms.Count(o => o.species != null);
             if (delta > 0)
             {
                 var bodyPredictions = BioPredictor.predict(this);
@@ -2246,7 +2248,7 @@ namespace SrvSurvey.game
                         // skip if a species is already known for this genus
                         if (this.organisms.Any(o => o.genus == match.genus.name && o.species != null)) continue;
                         // skip if genus are all known and this isn't one of them
-                        if (!this.organisms.Any(o => o.genus == match.genus.name)) continue;
+                        if (this.organisms.Count == this.bioSignalCount && !this.organisms.Any(o => o.genus == match.genus.name)) continue;
                     }
 
                     this.predictions[speciesName] = match.variant;

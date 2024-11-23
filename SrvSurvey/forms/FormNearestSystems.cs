@@ -138,7 +138,7 @@ namespace SrvSurvey.forms
                         var prefix = "";
                         if (result.landmarks?.Count > 0)
                         {
-                            var colors = result.landmarks.Where(l => l.subtype == species).Select(l => l.variant);
+                            var colors = result.landmarks.Where(l => l.subtype == species).Select(l => l.variant).ToHashSet();
                             prefix = string.Join(", ", colors);
                         }
                         // notes                            

@@ -127,6 +127,8 @@ namespace BioCriterias
                         predictor.knownSpecies[match.genus.englishName] = match.species.englishName;
                     }
                 }
+
+                predictor.allGenusKnown = body.organisms.Count == body.bioSignalCount;
             }
 
             // log extra diagnostics?
@@ -140,6 +142,7 @@ namespace BioCriterias
         }
 
         public readonly string bodyName;
+        private bool allGenusKnown;
         public readonly Dictionary<string, object> bodyProps;
         public readonly List<string> knownGenus = new();
         public readonly Dictionary<string, string> knownSpecies = new();
@@ -165,12 +168,12 @@ namespace BioCriterias
             species = criteria.species ?? species;
             variant = criteria.variant ?? variant;
 
-            //if (species?.Contains("Araneamus") == true) Debugger.Break();
+            //if (species?.Contains("Bullaris") == true) Debugger.Break();
 
             if (targetVariant == null)
             {
                 // stop here if genus names are known and this criteria isn't one of them
-                if (!string.IsNullOrEmpty(genus) && knownGenus?.Count > 0 && !knownGenus.Contains(genus))
+                if (!string.IsNullOrEmpty(genus) && this.allGenusKnown && knownGenus?.Count > 0 && !knownGenus.Contains(genus))
                     return false;
                 // or stop here if we already scanned some species from this genus
                 // TODO: handle Brain Tree's

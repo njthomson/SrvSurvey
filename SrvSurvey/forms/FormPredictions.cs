@@ -113,6 +113,8 @@ namespace SrvSurvey
             if (lastCurrentBodyName != game.systemBody?.name)
                 doTreeViewMode();
             lastCurrentBodyName = game.systemBody?.name;
+
+            invalidate();
         }
 
         private void prepNodes()
@@ -404,7 +406,7 @@ namespace SrvSurvey
 
         private bool highlightCurrentBody(TreeNode? node)
         {
-            if (node == null) return false;
+            if (node == null || game.mode == GameMode.FSS) return false;
 
             // highlight if we match the target body but we're not on a planet
             var body = node.Tag as SystemBody;
@@ -417,7 +419,7 @@ namespace SrvSurvey
         private void drawSpeciesNode(Graphics g, TreeNode node)
         {
             var highlight = highlightCurrentBody(node.Parent?.Parent)
-                || (game != null && game.targetBody == node.Parent?.Tag && !game.status.hasLatLong)
+                || (game != null && game.targetBody == node.Parent?.Tag && !game.status.hasLatLong && game.mode != GameMode.FSS)
                 || node == hoverNode;
 
             // Highlight if this is what we just found during FSS
@@ -512,7 +514,7 @@ namespace SrvSurvey
         {
             var org = (SystemOrganism)node.Tag;
             var highlight = highlightCurrentBody(node.Parent)
-                || (game.cmdr.scanOne?.genus == org.genus && org.body == game.systemBody);
+                || (game.cmdr.scanOne?.genus == org.genus && org.body == game.systemBody && game.mode != GameMode.FSS);
 
             // draw side-bars to highlight this is what we're currently scanning
             if (isCurrentBody(node.Parent))
