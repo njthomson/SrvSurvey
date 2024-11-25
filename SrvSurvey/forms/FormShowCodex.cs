@@ -104,7 +104,7 @@ namespace SrvSurvey
             var pair = this.stuff.Skip(idxBody).First();
             this.currentBody = pair.Key;
             this.currentVariants = pair.Value;
-            this.currentVariant = this.currentVariants[idxVariant];
+            this.currentVariant = this.currentVariants.Count > 0 ? this.currentVariants[idxVariant] : null;
 
             prepMenuItems();
         }

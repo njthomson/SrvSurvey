@@ -123,7 +123,7 @@ namespace SrvSurvey.game
             var match = this.codexFirsts.GetValueOrDefault(entryId);
 
             // return true if entryId, systemAddress AND bodyId all match
-            return match?.address == systemAddress && match?.bodyId == bodyId;
+            return match == null || (match?.address == systemAddress && match?.bodyId == bodyId);
         }
 
         public bool isDiscovered(string entryId)

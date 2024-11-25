@@ -578,7 +578,7 @@ namespace SrvSurvey
                 centerIn = tree.ItemHeight,
             };
 
-            if (!node.IsExpanded && body.genusPredictions.Any(g => g.isGold))
+            if (!node.IsExpanded && (body.genusPredictions.Any(g => g.isGold) || body.organisms?.Any(o => o.isFirst) == true))
                 tt.color = GameColors.Bio.gold;
 
             if (isCurrentBody(node))

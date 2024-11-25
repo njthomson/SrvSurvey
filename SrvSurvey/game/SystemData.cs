@@ -928,7 +928,11 @@ namespace SrvSurvey.game
             organism.variant = entry.Name;
             organism.variantLocalized = entry.Name_Localised;
             organism.reward = match.species.reward;
-            if (entry.IsNewEntry) organism.isNewEntry = true;
+            if (entry.IsNewEntry)
+            {
+                organism.isNewEntry = true;
+                organism.resetCmdrFirst();
+            }
 
             organism.species ??= match.species.name;
             organism.speciesLocalized ??= match.species.englishName;
@@ -2453,6 +2457,11 @@ namespace SrvSurvey.game
 
                 return this._cmdrFirst ?? false;
             }
+        }
+
+        public void resetCmdrFirst()
+        {
+            this._cmdrFirst = null;
         }
 
         /// <summary>

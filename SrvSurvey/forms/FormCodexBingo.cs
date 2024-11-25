@@ -264,7 +264,7 @@ namespace SrvSurvey
                 var root = calcNodeCompletion(tree.Nodes[0]);
                 this.Text = "Codex Bingo - " + root.completion.ToString("p2");
                 this.onePoint = 1f / root.countTotal;
-                toolFiller.Text = $"(one entry is " + this.onePoint.ToString("p2") + ")";
+                toolFiller.Text = $"{root.countTotal - root.countDiscovered} scans to go, each is " + this.onePoint.ToString("p2");
                 tree.Invalidate();
             }
         }
