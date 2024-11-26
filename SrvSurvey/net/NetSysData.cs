@@ -68,14 +68,14 @@ namespace SrvSurvey.net
         private Action<Source, NetSysData> func;
         private Task<ApiSystemDump.System>? getSystemDump;
         private Task<ApiSystem.Record>? getSystem;
-        private Task<CanonnBodyBioStats>? systemBioStats;
+        //private Task<CanonnBodyBioStats>? systemBioStats;
 
         // responses from various APIs
         public EDSM.EdsmSystem edsmBodies { get; private set; }
         public EDSM.EdsmSystemTraffic edsmTraffic { get; private set; }
         public ApiSystemDump.System spanshDump { get; private set; }
         public ApiSystem.Record spanshSystem { get; private set; }
-        public canonn.CanonnBodyBioStats canonnBio { get; private set; }
+        //public canonn.CanonnBodyBioStats canonnBio { get; private set; }
 
         private NetSysData(string systemName, long systemAddress, Action<Source, NetSysData> func)
         {
@@ -122,7 +122,7 @@ namespace SrvSurvey.net
 
             if (this.spanshDump != null) this.func(Source.SpanshDump, this);
             if (this.spanshSystem != null) this.func(Source.SpanshSystem, this);
-            if (this.canonnBio != null) this.func(Source.CanonnBio, this);
+            //if (this.canonnBio != null) this.func(Source.CanonnBio, this);
 
             lock (this.func)
             {
@@ -154,6 +154,7 @@ namespace SrvSurvey.net
                     }));
                 }
 
+                /*
                 // get bio stats from Canonn
                 if (this.canonnBio == null && systemBioStats == null)
                 {
@@ -166,6 +167,7 @@ namespace SrvSurvey.net
                             this.processCanonnBio(task.Result);
                     }));
                 }
+                */
             }
         }
 
@@ -265,6 +267,10 @@ namespace SrvSurvey.net
             if (this.totalBodyCount < _spanshDump.bodyCount) this.totalBodyCount = _spanshDump.bodyCount;
             this.countPOI["Bodies"] = this.totalBodyCount;
 
+            // sum count of bio signals?
+            this.genusCount = _spanshDump.bodies.Sum(b => b.signals?.signals?.GetValueOrDefault("$SAA_SignalType_Biological;")) ?? 0;
+            this.countPOI["Genus"] = this.genusCount;
+
             // any traders or brokers?
             foreach (var station in _spanshDump.stations)
             {
@@ -339,6 +345,7 @@ namespace SrvSurvey.net
             this.invokeFunc(Source.SpanshSystem);
         }
 
+        /*
         public void processCanonnBio(canonn.CanonnBodyBioStats _canonnBio)
         {
             this.canonnBio = _canonnBio;
@@ -363,6 +370,7 @@ namespace SrvSurvey.net
             // notify calling code
             this.invokeFunc(Source.CanonnBio);
         }
+        */
 
         public string? discoveryStatus
         {

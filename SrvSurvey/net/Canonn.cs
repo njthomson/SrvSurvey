@@ -1982,6 +1982,8 @@ namespace SrvSurvey.canonn
         {
             var codexRef = await Game.codexRef.loadCodexRef();
 
+            // https://us-central1-canonn-api-236217.cloudfunctions.net/query/challenge/status?cmdr=grinning2001
+
             Game.log($"importCanonnChallenge: requesting for: {cmdrCodex.commander}");
             var json = await client.GetStringAsync($"https://us-central1-canonn-api-236217.cloudfunctions.net/query/challenge/status?cmdr={cmdrCodex.commander}");
             var data = JsonConvert.DeserializeObject<Dictionary<string, ChallengeData>>(json)!;

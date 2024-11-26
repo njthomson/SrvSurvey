@@ -1,7 +1,7 @@
 ﻿# find all the .resx files
 $resxFiles = ls *.resx -Recurse
 
-write-host "Fount" $resxFiles.Length "files"
+write-host "Found" $resxFiles.Length ".resx files"
 foreach ($filepath in $resxFiles) {
     # load doc, then check if this marked as localizable?
     [xml]$xml = New-Object System.Xml.XmlDocument

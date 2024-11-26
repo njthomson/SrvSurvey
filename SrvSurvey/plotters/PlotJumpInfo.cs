@@ -232,7 +232,7 @@ namespace SrvSurvey.plotters
                 //drawTextAt2(eight, lineTwo, netData.discovered == false ? GameColors.Cyan : null);
                 //drawTextAt2(Game.settings.useLastUpdatedFromSpanshNotEDSM ? "(Spansh)" : "(EDSM)", GameColors.OrangeDim);
             }
-            newLine(+one, true);
+            newLine(+two, true);
 
             // traffic (if known)
             var traffic = netData.edsmTraffic?.traffic;
@@ -241,7 +241,7 @@ namespace SrvSurvey.plotters
                 var lineThree = $"▶️ " + RES("TrafficInfo", traffic.day.ToString("n0"), traffic.week.ToString("n0"), traffic.total.ToString("n0"));
                 drawTextAt2(eight, lineThree);
                 drawTextAt2(" (EDSM)", GameColors.OrangeDim);
-                newLine(+one, true);
+                newLine(+two, true);
             }
 
             // 3rd line: count of ports, genus, etc
@@ -252,7 +252,7 @@ namespace SrvSurvey.plotters
             {
                 var lineThree = "▶️ " + string.Join(", ", POIs);
                 drawTextAt2(eight, lineThree);
-                newLine(+one, true);
+                newLine(+two, true);
             }
 
             // 4th line: anything special
@@ -262,7 +262,7 @@ namespace SrvSurvey.plotters
                 {
                     drawTextAt2(eight, $"▶️ {pair.Key}: ", GameColors.Cyan, GameColors.fontSmallBold);
                     drawTextAt2(string.Join(", ", pair.Value), GameColors.Cyan);
-                    newLine(+one, true);
+                    newLine(+two, true);
                 }
             }
 

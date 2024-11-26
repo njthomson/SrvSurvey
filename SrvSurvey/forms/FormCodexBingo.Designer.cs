@@ -30,15 +30,15 @@
         {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormCodexBingo));
-            TreeNode treeNode10 = new TreeNode("Node3");
-            TreeNode treeNode11 = new TreeNode("Node4");
-            TreeNode treeNode12 = new TreeNode("Node0", new TreeNode[] { treeNode10, treeNode11 });
-            TreeNode treeNode13 = new TreeNode("Node5");
-            TreeNode treeNode14 = new TreeNode("Node1", new TreeNode[] { treeNode13 });
-            TreeNode treeNode15 = new TreeNode("Node6");
-            TreeNode treeNode16 = new TreeNode("Node7");
-            TreeNode treeNode17 = new TreeNode("Node8");
-            TreeNode treeNode18 = new TreeNode("Node2", new TreeNode[] { treeNode15, treeNode16, treeNode17 });
+            TreeNode treeNode1 = new TreeNode("Node3");
+            TreeNode treeNode2 = new TreeNode("Node4");
+            TreeNode treeNode3 = new TreeNode("Node0", new TreeNode[] { treeNode1, treeNode2 });
+            TreeNode treeNode4 = new TreeNode("Node5");
+            TreeNode treeNode5 = new TreeNode("Node1", new TreeNode[] { treeNode4 });
+            TreeNode treeNode6 = new TreeNode("Node6");
+            TreeNode treeNode7 = new TreeNode("Node7");
+            TreeNode treeNode8 = new TreeNode("Node8");
+            TreeNode treeNode9 = new TreeNode("Node2", new TreeNode[] { treeNode6, treeNode7, treeNode8 });
             statusStrip1 = new StatusStrip();
             toolBodyName = new ToolStripStatusLabel();
             toolRegionName = new ToolStripStatusLabel();
@@ -66,6 +66,8 @@
             menuNearestSeparator = new ToolStripSeparator();
             menuFindNearest = new ToolStripMenuItem();
             menuSpanshNearest = new ToolStripMenuItem();
+            toolUndiscovered = new ToolStripMenuItem();
+            toolStripSeparator2 = new ToolStripSeparator();
             statusStrip1.SuspendLayout();
             panel1.SuspendLayout();
             contextMenu.SuspendLayout();
@@ -122,7 +124,7 @@
             // toolImport
             // 
             toolImport.DisplayStyle = ToolStripItemDisplayStyle.Text;
-            toolImport.DropDownItems.AddRange(new ToolStripItem[] { toolCanonnChallenge, toolStripSeparator1, toolImportFromCanonn, toolImportFromJournal });
+            toolImport.DropDownItems.AddRange(new ToolStripItem[] { toolCanonnChallenge, toolStripSeparator1, toolUndiscovered, toolStripSeparator2, toolImportFromCanonn, toolImportFromJournal });
             toolImport.ForeColor = SystemColors.ControlText;
             toolImport.Image = (Image)resources.GetObject("toolImport.Image");
             toolImport.ImageTransparentColor = Color.Magenta;
@@ -170,25 +172,25 @@
             tree.ImageList = images;
             tree.Location = new Point(0, 31);
             tree.Name = "tree";
-            treeNode10.Name = "Node3";
-            treeNode10.Text = "Node3";
-            treeNode11.Name = "Node4";
-            treeNode11.Text = "Node4";
-            treeNode12.Name = "Node0";
-            treeNode12.Text = "Node0";
-            treeNode13.Name = "Node5";
-            treeNode13.Text = "Node5";
-            treeNode14.Name = "Node1";
-            treeNode14.Text = "Node1";
-            treeNode15.Name = "Node6";
-            treeNode15.Text = "Node6";
-            treeNode16.Name = "Node7";
-            treeNode16.Text = "Node7";
-            treeNode17.Name = "Node8";
-            treeNode17.Text = "Node8";
-            treeNode18.Name = "Node2";
-            treeNode18.Text = "Node2";
-            tree.Nodes.AddRange(new TreeNode[] { treeNode12, treeNode14, treeNode18 });
+            treeNode1.Name = "Node3";
+            treeNode1.Text = "Node3";
+            treeNode2.Name = "Node4";
+            treeNode2.Text = "Node4";
+            treeNode3.Name = "Node0";
+            treeNode3.Text = "Node0";
+            treeNode4.Name = "Node5";
+            treeNode4.Text = "Node5";
+            treeNode5.Name = "Node1";
+            treeNode5.Text = "Node1";
+            treeNode6.Name = "Node6";
+            treeNode6.Text = "Node6";
+            treeNode7.Name = "Node7";
+            treeNode7.Text = "Node7";
+            treeNode8.Name = "Node8";
+            treeNode8.Text = "Node8";
+            treeNode9.Name = "Node2";
+            treeNode9.Text = "Node2";
+            tree.Nodes.AddRange(new TreeNode[] { treeNode3, treeNode5, treeNode9 });
             tree.SelectedImageIndex = 0;
             tree.Size = new Size(800, 395);
             tree.TabIndex = 1;
@@ -329,6 +331,19 @@
             menuSpanshNearest.Visible = false;
             menuSpanshNearest.Click += menuSpanshNearest_Click;
             // 
+            // toolUndiscovered
+            // 
+            toolUndiscovered.Image = Properties.ImageResources.canonn_16x16;
+            toolUndiscovered.Name = "toolUndiscovered";
+            toolUndiscovered.Size = new Size(268, 22);
+            toolUndiscovered.Text = "View undiscovered map";
+            toolUndiscovered.Click += toolUndiscovered_Click;
+            // 
+            // toolStripSeparator2
+            // 
+            toolStripSeparator2.Name = "toolStripSeparator2";
+            toolStripSeparator2.Size = new Size(265, 6);
+            // 
             // FormCodexBingo
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -379,5 +394,7 @@
         private ToolStripSeparator menuNearestSeparator;
         private ToolStripMenuItem menuFindNearest;
         private ToolStripMenuItem menuSpanshNearest;
+        private ToolStripMenuItem toolUndiscovered;
+        private ToolStripSeparator toolStripSeparator2;
     }
 }

@@ -655,6 +655,12 @@ namespace SrvSurvey
             });
         }
 
+        private void toolUndiscovered_Click(object sender, EventArgs e)
+        {
+            var url = $"https://canonn-science.github.io/undiscovered-codex/?cmdr={Uri.EscapeDataString(this.currentCmdr.commander)}&System={this.currentCmdr.currentSystem}";
+            Util.openLink(url);
+        }
+
         private void toolCanonnChallenge_Click(object sender, EventArgs e)
         {
             Util.openLink("https://canonn.science/codex/canonn-challenge/");
