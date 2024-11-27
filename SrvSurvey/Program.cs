@@ -142,12 +142,12 @@ namespace SrvSurvey
 
         private static Dictionary<string, PlotterForm> activePlotters = new Dictionary<string, PlotterForm>();
 
-        public static T? showPlotter<T>() where T : PlotterForm
+        public static T? showPlotter<T>(Rectangle? gameRect = null) where T : PlotterForm
         {
             var formType = typeof(T);
 
             // exit early if the game does not have focus
-            if (!Elite.gameHasFocus)
+            if (!Elite.focusElite)
                 return (T?)activePlotters.GetValueOrDefault(formType.Name);
 
             // only create if missing
@@ -191,7 +191,7 @@ namespace SrvSurvey
                 if (form.IsDisposed)
                 {
                     activePlotters.Remove(formType.Name);
-                    return showPlotter<T>();
+                    return showPlotter<T>(gameRect);
                 }
 
                 form.Invalidate();
@@ -201,7 +201,8 @@ namespace SrvSurvey
             if (!form.Visible)
             {
                 Game.log($"Program.Showing plotter: {formType.Name}");
-                form.reposition(Elite.getWindowRect());
+                gameRect ??= Elite.getWindowRect();
+                form.reposition(gameRect.Value);
 
                 form.showing = true;
                 try

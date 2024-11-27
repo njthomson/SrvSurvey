@@ -56,6 +56,14 @@ namespace SrvSurvey.plotters
             this.reposition(Elite.getWindowRect(true));
         }
 
+        public override void reposition(Rectangle gameRect)
+        {
+            base.reposition(gameRect);
+
+            // It's easy for this to overlap with PlotBioSystem ... so shift them up if that is the case
+            Program.getPlotter<PlotPriorScans>()?.avoidPlotBioSystem(this);
+        }
+
         public static SystemBody? targetBody
         {
             get
@@ -198,7 +206,7 @@ namespace SrvSurvey.plotters
                 var first = true;
                 foreach (var organism in body.organisms)
                 {
-                    var highlight = !organism.analyzed && (game.cmdr.scanOne?.genus == organism.genus || game.cmdr.scanOne?.genus == null);
+                    var highlight = !organism.analyzed && ((game.cmdr.scanOne?.genus == organism.genus && game.cmdr.scanOne.body == body.name) || game.cmdr.scanOne?.genus == null);
                     Brush brush = highlight ? GameColors.brushCyan : GameColors.brushGameOrange;
 
                     var predictions = body.predictions.Values.Where(p => p.species.genus.name == organism.genus).ToList();
@@ -300,7 +308,7 @@ namespace SrvSurvey.plotters
                     dtx += sz.Width + ten;
                     newLine(+eight, true);
 
-                    if (organism.genus == game.cmdr.scanOne?.genus)
+                    if (organism.genus == game.cmdr.scanOne?.genus && game.cmdr.scanOne?.body == body.name)
                     {
                         // draw side-bars to highlight this is what we're currently scanning
                         g.DrawLine(GameColors.penCyan4, four, yy - one, four, dty - eight);

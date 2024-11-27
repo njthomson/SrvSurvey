@@ -3,14 +3,15 @@ using SrvSurvey.game;
 using SrvSurvey.plotters;
 using SrvSurvey.Properties;
 using SrvSurvey.widgets;
-using System.Drawing;
 using System.Drawing.Drawing2D;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace SrvSurvey
 {
+    [Draggable, TrackPosition]
     internal partial class FormPredictions : SizableForm
     {
+        public static bool allow { get => Game.activeGame?.systemData?.bioSignalsTotal > 0; }
+
         public static void invalidate()
         {
             BaseForm.get<FormPredictions>()?.tree.Invalidate();
@@ -50,7 +51,6 @@ namespace SrvSurvey
         public FormPredictions()
         {
             InitializeComponent();
-            this.isDraggable = true;
             this.Icon = Icons.dna;
             this.toolMore.DropDownDirection = ToolStripDropDownDirection.AboveLeft;
 
@@ -78,6 +78,7 @@ namespace SrvSurvey
             FlatButton.applyGameTheme(btnExpandAll, btnCollapseAll, btnCurrentBody);
 
             this.prepNodes();
+            this.lastCurrentBodyName = game.systemBody?.name;
 
             // Not themed - this is always dark.
         }
@@ -110,8 +111,8 @@ namespace SrvSurvey
             lastDestination = game.status.Destination?.Name;
 
             // repaint if current body changed
-            if (lastCurrentBodyName != game.systemBody?.name)
-                doTreeViewMode();
+            if (currentBodyOnly && lastCurrentBodyName != game.systemBody?.name)
+                doTreeViewMode(true);
             lastCurrentBodyName = game.systemBody?.name;
 
             invalidate();
@@ -156,10 +157,12 @@ namespace SrvSurvey
 
                 var sysActual = game.systemData.bodies.Sum(body => body.sumAnalyzed);
                 txtSysActual.Text = Util.credits(sysActual, true);
-
                 txtSysEst.Text = Util.getMinMaxCredits(game.systemData.getMinBioRewards(false), game.systemData.getMaxBioRewards(false));
-
                 txtSysEstFF.Text = Util.getMinMaxCredits(game.systemData.getMinBioRewards(true), game.systemData.getMaxBioRewards(true));
+
+                var expandoState = tree.Nodes.ToList().ToDictionary(
+                    n => n.FullPath,
+                    n => n.IsExpanded);
 
                 // Add a node for each body that has bio signals, and a child for each signal
                 var bodyTexts = new List<string>();
@@ -180,8 +183,29 @@ namespace SrvSurvey
                     lastBody.Nodes.RemoveAt(lastBody.Nodes.Count - 1);
                     newNodes.Add(new TreeNode("ZZ"));
                 }
+
                 tree.Nodes.Clear();
                 tree.Nodes.AddRange(newNodes.ToArray());
+
+                //Game.log($"prepNodes {expandoState.Count} !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                if (expandoState.Count == 0)
+                {
+                    // use default expanded state
+                    doTreeViewMode();
+                }
+                else
+                {
+                    // restore expando state
+                    foreach (var node in newNodes)
+                    {
+                        if (!expandoState.ContainsKey(node.FullPath)) continue;
+
+                        if (expandoState[node.FullPath])
+                            node.Expand();
+                        else
+                            node.Collapse();
+                    }
+                }
 
                 // get widest body name
                 this.maxBodyTextWidth = Util.maxWidth(nodeBig, bodyTexts.ToArray());
@@ -192,7 +216,6 @@ namespace SrvSurvey
                 Game.log("FormPredictions.prepNodes() end");
                 tree.Show();
             }
-            doTreeViewMode();
         }
 
         private TreeNode createBodyNode(SystemBody body)
@@ -518,7 +541,12 @@ namespace SrvSurvey
 
             // draw side-bars to highlight this is what we're currently scanning
             if (isCurrentBody(node.Parent))
-                drawSideBars(g, node, highlight);
+            {
+                if (highlight && org.isFirst)
+                    drawSideBars(g, node, C.Bio.penGold4);
+                else
+                    drawSideBars(g, node, highlight);
+            }
 
             highlight |= node == hoverNode;
 
@@ -547,13 +575,21 @@ namespace SrvSurvey
             // render the node's text
             tt.draw(53, node.Text);
 
-            // draw checkmark if done, or dots if not
+            // draw checkmark if done, or dots or a box if not
             tt.dty -= 1;
             if (org.analyzed)
                 tt.draw(14, "✔", tt.color == C.orange ? C.orangeDark : null);
-            else if (game.cmdr.scanOne?.genus == org.genus)
-                tt.draw(org.genus == game.cmdr.scanTwo?.genus ? " ⚫⚫⚪" : " ⚫⚪⚪", C.cyan);
+            else if (org.scanned)
+            {
+                var y = Util.centerIn(node.Bounds.Height, 8);
 
+                var p = highlight ? GameColors.penDarkCyan1 : GameColors.penGameOrangeDim1;
+                if (org.isFirst) p = C.Bio.penGoldDark1;
+                g.DrawRectangle(p, 16, tt.dty + y, 8, 8);
+            }
+
+            if (game.cmdr.scanOne?.genus == org.genus && game.cmdr.scanOne.body == (node.Parent.Tag as SystemBody)?.name)
+                tt.draw(org.genus == game.cmdr.scanTwo?.genus ? " ⚫⚫⚪" : " ⚫⚪⚪", org.isFirst ? C.Bio.gold : C.cyan);
         }
 
         private void drawBodyNode(Graphics g, TreeNode node)
@@ -578,7 +614,8 @@ namespace SrvSurvey
                 centerIn = tree.ItemHeight,
             };
 
-            if (!node.IsExpanded && (body.genusPredictions.Any(g => g.isGold) || body.organisms?.Any(o => o.isFirst) == true))
+            var isCollapsedWithGold = !node.IsExpanded && (body.genusPredictions.Any(g => g.isGold) || body.organisms?.Any(o => o.isFirst) == true);
+            if (isCollapsedWithGold)
                 tt.color = GameColors.Bio.gold;
 
             if (isCurrentBody(node))
@@ -591,7 +628,11 @@ namespace SrvSurvey
             if (body.bioSignalCount == body.countAnalyzedBioSignals)
                 tt.draw(22, "✔");
             else
-                g.DrawRectangle(highlight ? GameColors.penDarkCyan1 : GameColors.penGameOrangeDim1, tt.dtx + 25, tt.dty + 6, 10, 10);
+            {
+                var pen = highlight ? GameColors.penDarkCyan1 : GameColors.penGameOrangeDim1;
+                if (isCollapsedWithGold) pen = C.Bio.penGoldDark1;
+                g.DrawRectangle(pen, tt.dtx + 25, tt.dty + 6, 10, 10);
+            }
 
             // draw credits
             tt.draw(tree.ClientSize.Width - 8, body.getMinMaxBioRewards(false), null, null, true);
@@ -609,6 +650,7 @@ namespace SrvSurvey
 
             // and distance-to-arrival at the end
             tt.color = highlight ? GameColors.DarkCyan : GameColors.OrangeDim;
+            if (isCollapsedWithGold) tt.color = C.Bio.goldDark;
             tt.draw(Util.lsToString(body.distanceFromArrivalLS), nodeMiddle);
         }
 
@@ -622,9 +664,15 @@ namespace SrvSurvey
         private void drawSideBars(Graphics g, TreeNode node, bool highlight)
         {
             // draw side-bars to highlight this is what we're currently scanning
+            drawSideBars(g, node, highlight ? GameColors.penCyan4 : GameColors.penGameOrange2);
+        }
+
+        private void drawSideBars(Graphics g, TreeNode node, Pen pen)
+        {
+            // draw side-bars to highlight this is what we're currently scanning
             var r = tree.ClientSize.Width - 3;
-            g.DrawLine(highlight ? GameColors.penCyan4 : GameColors.penGameOrange2, 2, node.Bounds.Top, 2, node.Bounds.Bottom);
-            g.DrawLine(highlight ? GameColors.penCyan4 : GameColors.penGameOrange2, r, node.Bounds.Top, r, node.Bounds.Bottom);
+            g.DrawLine(pen, 2, node.Bounds.Top, 2, node.Bounds.Bottom);
+            g.DrawLine(pen, r, node.Bounds.Top, r, node.Bounds.Bottom);
         }
 
         private void drawNodePie(Graphics g, Point pt, float fill, bool highlight)
@@ -672,11 +720,11 @@ namespace SrvSurvey
                 g.DrawLine(p, r.Left + m, r.Top, r.Left + m, r.Bottom);
         }
 
-        private void doTreeViewMode()
+        private void doTreeViewMode(bool bodyChanged = false)
         {
             try
             {
-                Game.log("doTreeViewMode - start");
+                Game.log($"doTreeViewMode - start: {bodyChanged}");
                 tree.doNotPaint = true;
                 tree.Hide();
 
@@ -732,6 +780,7 @@ namespace SrvSurvey
         {
             treeMode = TreeViewMode.BodiesOnly;
             doTreeViewMode();
+            //refresh();
         }
 
         private void btnCurrentBody_Click(object sender, EventArgs e)

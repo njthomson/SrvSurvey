@@ -1,19 +1,12 @@
 ﻿using SrvSurvey.game;
 using SrvSurvey.plotters;
 using SrvSurvey.Properties;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace SrvSurvey.forms
 {
-    public partial class FormAdjustOverlay : Form
+    [Draggable]
+    internal partial class FormAdjustOverlay : FixedForm
     {
         /// <summary> The name of the current plotter getting adjusted, or null if none </summary>
         public static string? targetName;
@@ -25,6 +18,7 @@ namespace SrvSurvey.forms
         public FormAdjustOverlay()
         {
             PlotPos.backup();
+            this.renderOwnTitleBar = false;
 
             InitializeComponent();
             this.Icon = Icons.spanner;

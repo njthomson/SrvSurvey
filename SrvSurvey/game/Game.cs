@@ -1109,23 +1109,19 @@ namespace SrvSurvey.game
             this.dropPoint = Status.here.clone();
         }
 
-        private int deferPredictSpeciesPending;
-
         public void deferPredictSpecies(SystemBody? body)
         {
             if (body == null) return;
 
-            ++deferPredictSpeciesPending;
-            Game.log($"deferPredictSpecies: deferPredictSpeciesPending: {deferPredictSpeciesPending}");
-
-            Task.Delay(100).ContinueWith(t => Program.control.BeginInvoke(() =>
+            Util.deferAfter(100, () =>
             {
-                if (--deferPredictSpeciesPending <= 0)
-                {
-                    body.predictSpecies();
-                    FormShowCodex.loadImages();
-                }
-            }));
+                body.predictSpecies();
+
+                FormShowCodex.update();
+                FormPredictions.refresh();
+                Program.invalidateActivePlotters();
+                FormGenus.activeForm?.populateGenus(); // TODO: retire
+            });
         }
 
         public void predictSystemSpecies()
@@ -1140,7 +1136,10 @@ namespace SrvSurvey.game
                     body.predictSpecies();
             }
 
-            FormShowCodex.loadImages();
+            FormShowCodex.update();
+            FormPredictions.refresh();
+            Program.invalidateActivePlotters();
+            FormGenus.activeForm?.populateGenus(); // TODO: retire
         }
 
         private void onJournalEntry(FSSDiscoveryScan entry)
@@ -1156,7 +1155,6 @@ namespace SrvSurvey.game
             this.setCurrentBody(entry.BodyID);
             this.fireUpdate();
 
-            //this.systemBody?.predictSpecies();
             this.deferPredictSpecies(this.systemBody);
         }
 
@@ -1169,6 +1167,8 @@ namespace SrvSurvey.game
                 this.cmdr.decodeTheLogsMissionActive = TahMissionStatus.Active;
 
             Game.log($"Missions: decodeTheRuinsMissionActive: {this.cmdr.decodeTheRuinsMissionActive}, decodeTheLogsMissionActive: {this.cmdr.decodeTheLogsMissionActive}");
+
+            // TODO: prune very stale massacre missions
         }
 
         private void onJournalEntry(MissionAccepted entry)
@@ -2515,6 +2515,7 @@ namespace SrvSurvey.game
             }
 
             FormPredictions.invalidate();
+            FormShowCodex.update();
 
             // force a mode change to update ux
             fireUpdate(true);

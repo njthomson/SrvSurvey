@@ -143,7 +143,12 @@ namespace SrvSurvey.plotters
         {
             // do not attempt to reposition anything if the game window has been minimized
             //Game.log($"reposition:{this.Name}: opacity:{Opacity}, bounds:{this.Bounds}, gameRect:{gameRect}");
-            if (gameRect.X < -30_000 || gameRect.Y < -30_000 || gameRect.Width == 0 || gameRect.Height == 0) return;
+            if (gameRect.X < -30_000 || gameRect.Y < -30_000 || gameRect.Width == 0 || gameRect.Height == 0)
+            {
+                //Debugger.Break();
+                //this.Opacity = 0;
+                return;
+            }
 
             // restore opacity, reposition ourselves according to plotters.json rules, then re-render
             var newOpacity = PlotPos.getOpacity(this);
@@ -347,6 +352,8 @@ namespace SrvSurvey.plotters
         {
             if (FormAdjustOverlay.targetName == f.Name)
             {
+                g.ResetClip();
+                g.ResetTransform();
                 g.SmoothingMode = SmoothingMode.None;
 
                 var p = GameColors.penYellow4;

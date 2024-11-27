@@ -1187,6 +1187,19 @@ namespace SrvSurvey
             }
         }
 
+        public static void forEveryNode(this IEnumerable<TreeNode>nodes, Action<TreeNode> func)
+        {
+            foreach (TreeNode node in nodes)
+            {
+                // process any children
+                if (node.Nodes.Count > 0)
+                    forEveryNode(node.Nodes, func);
+
+                // do the action
+                func(node);
+            }
+        }
+
         /// <summary>
         /// Apply String.Format to the given string with the given parameters
         /// </summary>

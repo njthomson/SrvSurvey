@@ -7,30 +7,18 @@ using System.Windows.Forms.VisualStyles;
 
 namespace SrvSurvey
 {
+    [Draggable, TrackPosition]
     internal partial class FormRamTah : FixedForm
     {
-        public static FormRamTah? activeForm;
         private Color checkedColor = Color.Turquoise;
         private List<CheckBox> checkLogs;
 
-        public static void show()
-        {
-            if (activeForm == null)
-                FormRamTah.activeForm = new FormRamTah();
-
-            Util.showForm(FormRamTah.activeForm);
-        }
-
         private CommanderSettings? cmdr { get => Game.activeGame?.cmdr; }
 
-        private FormRamTah()
+        public FormRamTah()
         {
             InitializeComponent();
             this.Icon = Icons.moai;
-            this.isDraggable = true;
-
-            // can we fit in our last location
-            Util.useLastLocation(this, Game.settings.formRamTah.Location);
 
             txtRuinsMissionActive.Text = this.cmdr?.decodeTheRuinsMissionActive.ToString() ?? "Unknown";
             txtRuinsMissionActive.BackColor = this.cmdr?.decodeTheRuinsMissionActive == TahMissionStatus.Active ? checkedColor : SystemColors.Control;
@@ -59,21 +47,6 @@ namespace SrvSurvey
                 tabControl1.SelectedIndex = 1;
 
             Util.applyTheme(this);
-        }
-
-        protected override void OnClosing(CancelEventArgs e)
-        {
-            base.OnClosing(e);
-
-            // update location
-            var rect = new Rectangle(this.Location, this.Size);
-            if (Game.settings.formRamTah != rect)
-            {
-                Game.settings.formRamTah = rect;
-                Game.settings.Save();
-            }
-
-            FormRamTah.activeForm = null;
         }
 
         private void prepLogCheckboxes()
@@ -282,7 +255,7 @@ namespace SrvSurvey
         {
             base.OnClosed(e);
             this.cmdr?.Save();
-            Game.activeGame?.systemSite?.ramTahRecalc();
+            Game.activeGame?.systemSite?.ramTahReCalc();
         }
 
         private void btnQuit_Click(object sender, EventArgs e)

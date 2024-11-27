@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using SrvSurvey.forms;
 using System.Globalization;
 
 namespace SrvSurvey.game
@@ -110,7 +111,7 @@ namespace SrvSurvey.game
             this.Save();
 
             // If the Codex Bingo form is open - make it re-calculate
-            FormCodexBingo.activeForm?.calcCompletions();
+            BaseForm.get<FormCodexBingo>()?.calcCompletions();
         }
 
         public bool isPersonalFirstDiscovery(string entryId, long systemAddress, int bodyId)

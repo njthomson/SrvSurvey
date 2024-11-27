@@ -22,6 +22,9 @@ namespace SrvSurvey
                     hook.Dispose();
                     hook = null;
                 }
+
+                if (this.game != null)
+                    this.removeGame();
             }
             base.Dispose(disposing);
         }
@@ -51,7 +54,7 @@ namespace SrvSurvey
             txtLocation = new TextBox();
             txtVehicle = new TextBox();
             groupBox3 = new GroupBox();
-            btnBioSummary = new Button();
+            btnPredictions = new Button();
             checkFirstFootFall = new CheckBox();
             txtBodyBioValues = new TextBox();
             txtBodyBioSignals = new TextBox();
@@ -291,7 +294,7 @@ namespace SrvSurvey
             // 
             // groupBox3
             // 
-            groupBox3.Controls.Add(btnBioSummary);
+            groupBox3.Controls.Add(btnPredictions);
             groupBox3.Controls.Add(checkFirstFootFall);
             groupBox3.Controls.Add(txtBodyBioValues);
             groupBox3.Controls.Add(txtBodyBioSignals);
@@ -311,18 +314,18 @@ namespace SrvSurvey
             // 
             // btnBioSummary
             // 
-            btnBioSummary.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnBioSummary.BackColor = SystemColors.ControlDark;
-            btnBioSummary.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
-            btnBioSummary.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
-            btnBioSummary.FlatStyle = FlatStyle.Flat;
-            btnBioSummary.Location = new Point(313, 103);
-            btnBioSummary.Name = "btnBioSummary";
-            btnBioSummary.Size = new Size(93, 21);
-            btnBioSummary.TabIndex = 0;
-            btnBioSummary.Text = "Predictions";
-            btnBioSummary.UseVisualStyleBackColor = false;
-            btnBioSummary.Click += btnBioSummary_Click;
+            btnPredictions.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnPredictions.BackColor = SystemColors.ControlDark;
+            btnPredictions.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
+            btnPredictions.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
+            btnPredictions.FlatStyle = FlatStyle.Flat;
+            btnPredictions.Location = new Point(313, 103);
+            btnPredictions.Name = "btnBioSummary";
+            btnPredictions.Size = new Size(93, 21);
+            btnPredictions.TabIndex = 0;
+            btnPredictions.Text = "Predictions";
+            btnPredictions.UseVisualStyleBackColor = false;
+            btnPredictions.Click += btnBioSummary_Click;
             // 
             // checkFirstFootFall
             // 
@@ -964,7 +967,7 @@ namespace SrvSurvey
         private Button btnRamTah;
         private Button btnPasteLatLong;
         public CheckBox checkTempHide;
-        private Button btnBioSummary;
+        private Button btnPredictions;
         private Button btnCopyLocation;
         private GroupBox groupBox5;
         private Label label1;

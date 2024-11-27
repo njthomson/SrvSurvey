@@ -1,4 +1,5 @@
-﻿using System.Drawing.Drawing2D;
+﻿using SrvSurvey.game;
+using System.Drawing.Drawing2D;
 
 namespace SrvSurvey.widgets
 {
@@ -13,7 +14,17 @@ namespace SrvSurvey.widgets
         /// <summary> Get a named colour </summary>
         public static Color c(string name)
         {
-            if (!theme.ContainsKey(name)) throw new Exception($"Unexpected color name: {name}");
+            if (!theme.ContainsKey(name))
+            {
+                // named color not found, pull from the original theme?
+                var defaultTheme = Theme.loadTheme(true);
+                if (!defaultTheme.ContainsKey(name))
+                    throw new Exception($"Unexpected color name: {name}");
+
+                // update theme and save
+                theme[name] = defaultTheme[name];
+                // TODO: save?
+            }
             return theme[name];
         }
 
@@ -56,7 +67,10 @@ namespace SrvSurvey.widgets
         internal class Bio
         {
             public static Color gold = c("bio.gold");
+            public static Color goldDark = c("bio.goldDark");
             public static Brush brushGold = gold.toBrush();
+            public static Pen penGold4 = gold.toPen(4f);
+            public static Pen penGoldDark1 = goldDark.toPen(1f);
 
             public static Brush brushUnknown = c("bio.unknown").toBrush();
             public static Brush brushHatch = new HatchBrush(HatchStyle.DarkUpwardDiagonal, c("bio.hatch"), Color.Transparent);
@@ -185,6 +199,13 @@ namespace SrvSurvey.widgets
                 return this.even;
             else
                 return this.odd;
+        }
+
+        public static AlternatingColors gridBackColors
+        {
+            get => Game.settings.darkTheme
+                        ? new AlternatingColors(SystemColors.ControlDarkDark, SystemColors.WindowFrame)
+                        : new AlternatingColors(SystemColors.Window, SystemColors.Control);
         }
     }
 }

@@ -9,6 +9,7 @@ using static SrvSurvey.canonn.Canonn;
 
 namespace SrvSurvey.forms
 {
+    [Draggable]
     internal partial class FormNearestSystems : FixedForm
     {
         /// <summary>
@@ -18,9 +19,11 @@ namespace SrvSurvey.forms
         {
             if (refPos == null || string.IsNullOrEmpty(bioSignal)) throw new Exception("Bad arguments for FormNearestSystems");
 
-            var form = BaseForm.show<FormNearestSystems>();
+            var form = new FormNearestSystems();
             form.txtSystem.Text = refPos.systemName ?? refPos.ToString();
             form.txtContaining.Text = bioSignal;
+            form.Text = bioSignal;
+            form.Show();
 
             // make the API call...
             Game.canonn.findNearestSystemWithBio(refPos, bioSignal).continueOnMain(form, result =>
@@ -30,10 +33,7 @@ namespace SrvSurvey.forms
 
                 if (result.nearest?.Count > 0)
                 {
-                    var altCols = Game.settings.darkTheme
-                        ? new AlternatingColors(SystemColors.ControlDarkDark, SystemColors.WindowFrame)
-                        : new AlternatingColors(SystemColors.Window, SystemColors.Control);
-
+                    var altCols = AlternatingColors.gridBackColors;
                     foreach (var entry in result.nearest.Take(5))
                     {
                         var item = new ListViewItem()
@@ -100,9 +100,11 @@ namespace SrvSurvey.forms
             var variantColors = variants.Select(v => v.colorName).ToList();
 
             // show + populate form before API call
-            var form = BaseForm.show<FormNearestSystems>();
+            var form = new FormNearestSystems();
             form.txtSystem.Text = refPos.systemName ?? refPos.ToString();
             form.txtContaining.Text = species + ": " + string.Join(", ", variantColors);
+            form.Text = form.txtContaining.Text;
+            form.Show();
 
             // call the API ...
             Game.spansh.buildMissingVariantsQuery(refPos, genus, species, variantColors).continueOnMain(form, response =>
@@ -115,10 +117,7 @@ namespace SrvSurvey.forms
 
                 if (response.results?.Count > 0)
                 {
-                    var altCols = Game.settings.darkTheme
-                        ? new AlternatingColors(SystemColors.ControlDarkDark, SystemColors.WindowFrame)
-                        : new AlternatingColors(SystemColors.Window, SystemColors.Control);
-
+                    var altCols = AlternatingColors.gridBackColors;
                     foreach (var result in response.results)
                     {
                         // skip systems with multiple bodies
@@ -134,6 +133,8 @@ namespace SrvSurvey.forms
                         };
                         // distance
                         item.SubItems.Add($"{result.distance.ToString("N1")} ly");
+                        //var d2 = Util.getSystemDistance(Game.activeGame!.cmdr.starPos, result.toStarPos());
+                        //Game.log($"** {result.name} => {result.distance} vs {d2}");
 
                         var prefix = "";
                         if (result.landmarks?.Count > 0)
@@ -162,7 +163,6 @@ namespace SrvSurvey.forms
 
         public FormNearestSystems()
         {
-            this.isDraggable = true;
             InitializeComponent();
             this.Icon = Icons.set_square;
 
@@ -170,17 +170,18 @@ namespace SrvSurvey.forms
             list.MultiSelect = false;
 
             this.list.Items.Clear();
-            this.list.Items.Add(new ListViewItem(new string[] { "...", "..." }, 0, SystemColors.MenuText, SystemColors.Control, this.list.Font));
-            this.list.Items.Add(new ListViewItem(new string[] { "...", "..." }, 0, SystemColors.MenuText, SystemColors.Window, this.list.Font));
-            this.list.Items.Add(new ListViewItem(new string[] { "...", "..." }, 0, SystemColors.MenuText, SystemColors.Control, this.list.Font));
-
-            if (Game.settings.darkTheme)
+            var altCols = AlternatingColors.gridBackColors;
+            for (var n=0; n < 5; n++)
             {
-                this.list.Items[0].BackColor = SystemColors.ControlDarkDark;
-                this.list.Items[1].BackColor = SystemColors.WindowFrame;
-                this.list.Items[2].BackColor = SystemColors.ControlDarkDark;
-            }
+                var item = new ListViewItem(
+                    new string[] { "...", "...", "..." },
+                    0,
+                    Game.settings.darkTheme ? SystemColors.Info : SystemColors.ControlText,
+                    altCols.next(),
+                    this.list.Font);
 
+                this.list.Items.Add(item);
+            }
 
             Util.applyTheme(this);
         }

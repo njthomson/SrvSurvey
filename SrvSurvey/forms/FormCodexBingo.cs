@@ -11,20 +11,12 @@ using System.Drawing.Drawing2D;
 
 namespace SrvSurvey
 {
+    [Draggable, TrackPosition]
     internal partial class FormCodexBingo : SizableForm
     {
         #region static form loading
 
-        public static FormCodexBingo? activeForm;
         private Brush treeBackBrush;
-
-        public static void show()
-        {
-            if (activeForm == null)
-                FormCodexBingo.activeForm = new FormCodexBingo();
-
-            Util.showForm(FormCodexBingo.activeForm);
-        }
 
         #endregion
 
@@ -51,16 +43,12 @@ namespace SrvSurvey
         public FormCodexBingo()
         {
             InitializeComponent();
-            this.isDraggable = true;
             this.Icon = Icons.prize;
             treeBackBrush = new SolidBrush(tree.BackColor);
             tree.Nodes.Clear();
             tree.MouseWheel += Tree_MouseWheel;
             tree.TreeViewNodeSorter = new NodeSorter();
             toolImport.DropDownDirection = ToolStripDropDownDirection.AboveLeft;
-
-            // can we fit in our last location
-            Util.useLastLocation(this, Game.settings.formCodexBingo);
 
             // use an empty icon so the TreeView reserves space for it
             images.Images.Add("CodexBlank", ImageResources.CodexBlank);
@@ -146,29 +134,11 @@ namespace SrvSurvey
             this.prepNodesAsync().ContinueWith(t => Game.log("Nodes ready"));
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            this.prepNodesAsync().ContinueWith(t => Game.log("Nodes ready"));
-        }
-
         protected override void OnResizeEnd(EventArgs e)
         {
             base.OnResizeEnd(e);
 
-            var rect = new Rectangle(this.Location, this.Size);
-            if (Game.settings.formCodexBingo != rect)
-            {
-                Game.settings.formCodexBingo = rect;
-                Game.settings.Save();
-            }
-
             tree.Invalidate();
-        }
-
-        protected override void OnClosing(CancelEventArgs e)
-        {
-            base.OnClosing(e);
-            FormCodexBingo.activeForm = null;
         }
 
         private async Task prepNodesAsync()

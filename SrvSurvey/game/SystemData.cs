@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using SrvSurvey.canonn;
+using SrvSurvey.forms;
 using SrvSurvey.net;
 using SrvSurvey.net.EDSM;
 using SrvSurvey.units;
@@ -928,6 +929,7 @@ namespace SrvSurvey.game
             organism.variant = entry.Name;
             organism.variantLocalized = entry.Name_Localised;
             organism.reward = match.species.reward;
+            organism.scanned = true;
             if (entry.IsNewEntry)
             {
                 organism.isNewEntry = true;
@@ -980,6 +982,7 @@ namespace SrvSurvey.game
             if (entry.Variant_Localised != null) organism.variantLocalized = entry.Variant_Localised;
             organism.entryId = match.entryId;
             organism.reward = match.species.reward;
+            organism.scanned = true;
 
             // upon the 3rd and final scan ...
             if (entry.ScanType == ScanType.Analyse)
@@ -2303,13 +2306,13 @@ namespace SrvSurvey.game
                 if (variant.species.reward > genusPrediction.max) genusPrediction.max = variant.reward;
             }
 
-            Program.control.BeginInvoke(() =>
-            {
-                FormShowCodex.activeForm?.prepAllSpecies();
-                FormGenus.activeForm?.populateGenus();
-                Program.invalidateActivePlotters();
-                FormPredictions.refresh();
-            });
+            //Program.defer(() =>
+            //{
+            //    FormShowCodex.update();
+            //    FormGenus.activeForm?.populateGenus();
+            //    Program.invalidateActivePlotters();
+            //    FormPredictions.refresh();
+            //});
         }
 
         private long getShortListSum(int delta, List<BioVariant> sortedPredictions, bool minNotMax)
@@ -2422,7 +2425,11 @@ namespace SrvSurvey.game
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public long reward;
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        /// <summary> We have scanned this 3 times on foot </summary>
         public bool analyzed;
+        /// <summary> We have scanned this using the composition scanner </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public bool scanned;
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public bool isNewEntry;
 
@@ -2461,7 +2468,13 @@ namespace SrvSurvey.game
 
         public void resetCmdrFirst()
         {
-            this._cmdrFirst = null;
+            // reset any instance of this same thing on any body in this system
+            var similarOrgs = this.body.system.bodies
+                .SelectMany(b => (b.organisms?.Where(o => o.entryId == this.entryId).ToList() ?? new()))
+                .ToList();
+
+            similarOrgs
+                .ForEach(o => o._cmdrFirst = null);
         }
 
         /// <summary>
@@ -2611,5 +2624,4 @@ namespace SrvSurvey.game
             }
         }
     }
-
 }

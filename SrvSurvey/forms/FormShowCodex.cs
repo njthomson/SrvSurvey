@@ -1,36 +1,28 @@
 ﻿using BioCriterias;
 using SrvSurvey.canonn;
+using SrvSurvey.forms;
 using SrvSurvey.game;
 using SrvSurvey.widgets;
-using System.ComponentModel;
 using System.Drawing.Imaging;
 
 namespace SrvSurvey
 {
-    internal partial class FormShowCodex : Form
+    [Draggable, TrackPosition]
+    internal partial class FormShowCodex : SizableForm
     {
-        public static FormShowCodex? activeForm;
+        public static bool allow { get => Game.activeGame?.systemData?.bioSignalsTotal > 0; }
 
-        public static FormShowCodex show()
+        public static void update()
         {
-            if (activeForm == null)
-                FormShowCodex.activeForm = new FormShowCodex();
+            Game.log("FormShowCodex.update ************************************");
 
-            Util.showForm(FormShowCodex.activeForm);
-            FormShowCodex.activeForm.prepStuff();
+            // update form if it exists
+            var form = BaseForm.get<FormShowCodex>();
+            form?.prepMenuItems();
+            form?.updateStuff();
 
-            // pre-select the current body
-            if (Game.activeGame?.systemBody != null)
-            {
-                var idx = FormShowCodex.activeForm.stuff.Keys.ToList().IndexOf(Game.activeGame.systemBody);
-                if (idx >= 0)
-                {
-                    FormShowCodex.activeForm.setCurrants(idx);
-                    FormShowCodex.activeForm.updateStuff();
-                }
-            }
-
-            return FormShowCodex.activeForm;
+            // check/download images in the background
+            loadImages();
         }
 
         private string entryId;
@@ -51,7 +43,7 @@ namespace SrvSurvey
         private List<BioVariant> currentVariants;
         private BioVariant? currentVariant;
 
-        private FormShowCodex()
+        public FormShowCodex()
         {
             this.ForeColor = GameColors.Orange;
             InitializeComponent();
@@ -63,8 +55,33 @@ namespace SrvSurvey
             foreach (ToolStripItem item in this.statusStrip.Items)
                 item.ForeColor = SystemColors.ControlText;
 
-            // use our last location
-            Util.useLastLocation(this, Game.settings.formShowCodex);
+            Game.update += Game_update;
+        }
+
+        private void Game_update(GameMode newMode, bool force)
+        {
+            //var currentTemp = Game.activeGame?.status.Temperature ?? 0;
+            //if (currentTemp > 0 && newMode == GameMode.OnFoot)
+            //{
+                lastTempRangeVariant = null;
+                this.updateStuff();
+            //}
+        }
+
+        protected override void beforeShowing()
+        {
+            this.prepStuff();
+
+            // pre-select the current body
+            if (Game.activeGame?.systemBody != null)
+            {
+                var idx = this.stuff.Keys.ToList().IndexOf(Game.activeGame.systemBody);
+                if (idx >= 0)
+                {
+                    this.setCurrants(idx);
+                    this.updateStuff();
+                }
+            }
         }
 
         private void prepStuff()
@@ -109,6 +126,7 @@ namespace SrvSurvey
             prepMenuItems();
         }
 
+        /// <summary> Call when changing the thing we're looking at </summary>
         private void updateStuff(bool forceCanonn = false)
         {
             if (currentVariants == null || currentVariants.Count == 0) return;
@@ -121,7 +139,16 @@ namespace SrvSurvey
                 var tempClause = clauses.FirstOrDefault(c => c?.property == "temp");
                 if (tempClause?.min > 0 && tempClause?.max > 0)
                 {
-                    lastTempRange = $" | Temp range: {tempClause?.min}K ~ {tempClause?.max}K ";
+                    lastTempRange = $" | Temp range: {tempClause.min}K ~ {tempClause.max}K ";
+                    if (Game.activeGame?.mode == GameMode.OnFoot)
+                    {
+                        var currentTemp = Game.activeGame?.status.Temperature ?? 0;
+                        if (currentTemp > tempClause.max)
+                            lastTempRange += " (too hot)";
+                        if (currentTemp > 0 && currentTemp < tempClause.min)
+                            lastTempRange += " (too cold)";
+                    }
+
                     Game.log($"{currentVariant.englishName} ({currentVariant.species.name}) => temperature range: {tempClause?.min} ~ {tempClause?.max}, default surface temperature: {currentBody.surfaceTemperature}, current: {Game.activeGame?.status?.Temperature}");
                 }
                 else
@@ -132,11 +159,19 @@ namespace SrvSurvey
             }
             lastTempRangeVariant = currentVariant.name;
 
-            var isPrediction = currentBody.organisms?.Any(o => o.entryId.ToString() == currentVariant.entryId) == false;
-
             lblBodyName.Text = currentBody.name + $" [{idxBody + 1} of {stuff.Count}]";
             lblTitle.Text = $"[{idxVariant + 1} of {currentVariants.Count}] " + currentVariant.englishName;
-            lblDetails.Text = (isPrediction ? "Predicted" : "Confirmed")
+
+            var org = currentBody.organisms?.FirstOrDefault(o => o.entryId.ToString() == currentVariant.entryId);
+            var prefix = "Predicted";
+            if (org?.analyzed == true)
+                prefix = "Analyzed";
+            else if (org?.scanned == true)
+                prefix = "Confirmed";
+            else if (org != null)
+                prefix = "Reported";
+
+            lblDetails.Text = prefix
                 + $" | Min dist: {Util.metersToString((decimal)currentVariant.species.genus.dist)}"
                 + $" | Reward: {Util.credits(currentVariant.reward)}"
                 + lastTempRange;
@@ -144,6 +179,10 @@ namespace SrvSurvey
             repositionBodyParts();
             var targetEntryId = currentVariant.entryId;
 
+            // skip loading the image if nothing changed
+            if (currentVariant.name == this.img?.Tag as string) return;
+
+            // now load the image
             Task.Run(() =>
             {
                 var filepath = Path.Combine(CodexRef.codexImagesFolder, $"{currentVariant.entryId}.png");
@@ -182,6 +221,8 @@ namespace SrvSurvey
 
                         // calculate scale to make the width fit
                         this.img = nextImg;
+                        this.img.Tag = currentVariant.name;
+
                         lblLoading.Visible = nextImg == null;
                         if (nextImg != null)
                         {
@@ -197,6 +238,8 @@ namespace SrvSurvey
 
         private void repositionBodyParts()
         {
+            if (!this.Created || flowBodyParts == null) return;
+
             var left = this.ClientSize.Width - flowBodyParts.Width;
 
             if (lblTitle.Right < left)
@@ -211,10 +254,6 @@ namespace SrvSurvey
         {
             base.OnClientSizeChanged(e);
             repositionBodyParts();
-        }
-
-        private void FormShowCodex_Load(object sender, EventArgs e)
-        {
         }
 
         private void calcSizes(bool middle, bool imgSize)
@@ -248,44 +287,12 @@ namespace SrvSurvey
             this.Invalidate();
         }
 
-        protected override void OnResizeEnd(EventArgs e)
-        {
-            base.OnResizeEnd(e);
-
-            var rect = new Rectangle(this.Location, this.Size);
-            if (Game.settings.formShowCodex != rect)
-            {
-                Game.settings.formShowCodex = rect;
-                Game.settings.Save();
-            }
-        }
-
         protected override void OnResize(EventArgs e)
         {
             base.OnResize(e);
 
             this.calcSizes(true, false);
             this.Invalidate();
-        }
-
-        protected override void OnClosing(CancelEventArgs e)
-        {
-            base.OnClosing(e);
-            FormShowCodex.activeForm = null;
-        }
-
-        public void prepAllSpecies()
-        {
-            if (Game.activeGame?.systemBody?.organisms == null) return;
-
-            if (Game.activeGame.systemBody.organisms.Any(o => o.variantLocalized != null))
-                foreach (var org in Game.activeGame.systemBody.organisms)
-                    if (string.IsNullOrEmpty(org.variantLocalized)) continue;
-
-            if (Game.activeGame.systemBody.predictions.Count > 0)
-                foreach (var bioVariant in Game.activeGame.systemBody.predictions.Values)
-                    // skip if that entryId is already present
-                    if (menuStrip.Items.ContainsKey(bioVariant.entryId)) continue;
         }
 
         protected override void OnPaintBackground(PaintEventArgs e)
@@ -505,8 +512,11 @@ namespace SrvSurvey
                         };
                         item.MouseUp += this.Item_MouseDown;
 
-                        // show a check if there's a picture available
-                        item.Checked = match.variant.imageUrl != null;
+                        //// NO show a check if there's a picture available
+                        //item.Checked = match.variant.imageUrl != null;
+
+                        // show a check if we have scanned the thing
+                        item.Checked = org.scanned;
 
                         menuStrip.Items.Add(item);
                     }
@@ -533,8 +543,8 @@ namespace SrvSurvey
                             };
                             item.MouseUp += this.Item_MouseDown;
 
-                            // show a check if there's a picture available from Canonn
-                            item.Checked = variant.variant.imageUrl != null;
+                            //// NO! show a check if there's a picture available from Canonn
+                            //item.Checked = variant.variant.imageUrl != null;
 
                             menuStrip.Items.Add(item);
                         }

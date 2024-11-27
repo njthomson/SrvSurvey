@@ -12,6 +12,7 @@ using System.Globalization;
 
 namespace SrvSurvey
 {
+    [Draggable, TrackPosition]
     internal partial class Main : FixedForm
     {
         private Game? game;
@@ -79,7 +80,7 @@ namespace SrvSurvey
             comboDev.Visible = Debugger.IsAttached;
 
             // keep these hidden from official app-store builds for now
-            btnBioSummary.Visible = !Program.isAppStoreBuild && Game.settings.autoShowPlotBioSystem;
+            // ?
 
             Util.applyTheme(this);
         }
@@ -262,8 +263,8 @@ namespace SrvSurvey
                             this.newGame();
 
                         foreach (Control ctrl in this.Controls) ctrl.Enabled = true;
-                        btnCodexShow.Enabled = false;
-                        btnSphereLimit.Enabled = false;
+                        btnCodexShow.Enabled = FormShowCodex.allow;
+                        btnSphereLimit.Enabled = FormSphereLimit.allow;
 
                         this.timer1.Start();
 
@@ -326,9 +327,8 @@ namespace SrvSurvey
             groupCodex.Invalidate();
 
             // ShowCodex button and form
-            Main.form.btnCodexShow.Enabled = game?.systemData?.bioSignalsTotal > 0;
-            if (!Main.form.btnCodexShow.Enabled && FormShowCodex.activeForm != null)
-                FormShowCodex.activeForm.Close();
+            this.btnCodexShow.Enabled = FormShowCodex.allow;
+            if (!FormShowCodex.allow) BaseForm.close<FormShowCodex>();
 
             if (newMode == GameMode.MainMenu)
             {
@@ -671,6 +671,7 @@ namespace SrvSurvey
             // enable/disable controls according to
             lblSysBio.Enabled = txtSystemBioSignals.Enabled = txtSystemBioValues.Enabled = labelSignalsAndRewards.Enabled = systemTotal > 0;
             lblBodyBio.Enabled = txtBodyBioSignals.Enabled = txtBodyBioValues.Enabled = game?.systemBody?.bioSignalCount > 0;
+            btnPredictions.Enabled = FormPredictions.allow;
 
             if (game?.systemBody == null)
             {
@@ -809,7 +810,7 @@ namespace SrvSurvey
 
         private void updateSphereLimit()
         {
-            btnSphereLimit.Enabled = game?.cmdr != null;
+            btnSphereLimit.Enabled = FormSphereLimit.allow;
 
             // show/hide the sphere limit plotter
             if (PlotSphericalSearch.allowPlotter)
@@ -870,12 +871,9 @@ namespace SrvSurvey
         private void onJournalEntry(ScanOrganic entry)
         {
             if (entry.ScanType == ScanType.Analyse)
-            {
-                Application.DoEvents();
-                this.updateAllControls();
-            }
+                Program.defer(() => this.updateAllControls());
 
-            FormShowCodex.activeForm?.prepAllSpecies();
+            //FormShowCodex.update();
             // Flicker? FormCodexBingo.activeForm?.calcCompletions();
         }
 
@@ -1300,8 +1298,6 @@ namespace SrvSurvey
                 // force opacity changes to take immediate effect
                 Program.showActivePlotters();
                 Util.applyTheme(this);
-                btnBioSummary.Visible = !Program.isAppStoreBuild && Game.settings.autoShowPlotBioSystem;
-
             }
         }
 
@@ -1684,7 +1680,7 @@ namespace SrvSurvey
 
         private void btnRamTah_Click(object sender, EventArgs e)
         {
-            FormRamTah.show();
+            BaseForm.show<FormRamTah>();
         }
 
         private void btnBioSummary_Click(object sender, EventArgs e)
@@ -1695,7 +1691,7 @@ namespace SrvSurvey
 
         private void btnCodexShow_Click(object sender, EventArgs e)
         {
-            FormShowCodex.show();
+            BaseForm.show<FormShowCodex>();
         }
 
         private readonly string[] comboDevItems = new[]
@@ -1754,7 +1750,7 @@ namespace SrvSurvey
 
         private void btnCodexBingo_Click(object sender, EventArgs e)
         {
-            FormCodexBingo.show();
+            BaseForm.show<FormCodexBingo>();
             //Game.activeGame.predictSystemSpecies();
         }
     }

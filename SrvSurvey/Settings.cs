@@ -138,12 +138,9 @@ namespace SrvSurvey
         public Rectangle formRuinsLocation;
         public Rectangle formBeaconsLocation;
         public Rectangle formMapEditor;
-        public Rectangle formRamTah;
         public Rectangle formGenusGuideLocation;
         public Rectangle formPostProcess;
         public Rectangle formBuilder;
-        public Rectangle formShowCodex;
-        public Rectangle formCodexBingo;
 
         public Dictionary<string, Rectangle> formLocations = new Dictionary<string, Rectangle>();
 

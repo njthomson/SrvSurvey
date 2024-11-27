@@ -7,8 +7,11 @@ using System.Data;
 
 namespace SrvSurvey
 {
+    [Draggable]
     internal partial class FormSphereLimit : FixedForm
     {
+        public static bool allow { get => Game.activeGame?.cmdr != null; }
+
         protected Game game = Game.activeGame!;
 
         private Dictionary<string, StarSystem> matchedSystems = new Dictionary<string, StarSystem>();

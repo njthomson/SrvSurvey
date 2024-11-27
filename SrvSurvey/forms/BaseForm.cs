@@ -2,17 +2,21 @@
 using SrvSurvey.Properties;
 using SrvSurvey.widgets;
 using System.ComponentModel;
-using System.Diagnostics;
+using System.Reflection;
 
 namespace SrvSurvey.forms
 {
     [System.ComponentModel.DesignerCategory("")]
     internal class BaseForm : Form
     {
+        protected bool trackPosition = true;
+
         public BaseForm()
         {
             this.DoubleBuffered = true;
             this.Icon = Icons.logo;
+
+            this.trackPosition = this.GetType().GetCustomAttribute<TrackPositionAttribute>() != null;
         }
 
         protected override CreateParams CreateParams
@@ -35,7 +39,7 @@ namespace SrvSurvey.forms
 
         private static Dictionary<string, BaseForm> activeForms = new Dictionary<string, BaseForm>();
 
-        public static T show<T>() where T : BaseForm, new()
+        public static T show<T>(Form? parent = null) where T : BaseForm, new()
         {
             var name = typeof(T).Name;
 
@@ -44,19 +48,22 @@ namespace SrvSurvey.forms
             if (form == null)
             {
                 form = new T() { Name = name, };
-
-                // can we fit in our last location?
-                var savedRect = Game.settings.formLocations.GetValueOrDefault(name);
-                var sizable = form.FormBorderStyle.ToString().StartsWith("Sizable");
-                if (savedRect != Rectangle.Empty)
-                    Util.useLastLocation(form, savedRect, !sizable);
-
                 activeForms[name] = form;
             }
 
-            Util.showForm(form);
+            // apply previous location?
+            if (form.trackPosition) form.applySavedLocation();
+
+            form.beforeShowing();
+
+            Util.showForm(form, parent);
             return (T)form;
         }
+
+        /// <summary>
+        /// Override to perform some actions when about to be shown by BaseForm.show() 
+        /// </summary>
+        protected virtual void beforeShowing() { }
 
         public static T? get<T>() where T : BaseForm
         {
@@ -65,10 +72,16 @@ namespace SrvSurvey.forms
             return form;
         }
 
+        public static void close<T>() where T : BaseForm
+        {
+            var form = BaseForm.get<T>();
+            form?.Close();
+        }
+
         protected override void OnClosing(CancelEventArgs e)
         {
             base.OnClosing(e);
-            this.saveLocation();
+            if (trackPosition) this.saveLocation();
 
             activeForms.Remove(this.Name);
         }
@@ -76,7 +89,7 @@ namespace SrvSurvey.forms
         protected override void OnResizeEnd(EventArgs e)
         {
             base.OnResizeEnd(e);
-            this.saveLocation();
+            if (trackPosition) this.saveLocation();
         }
 
         private void saveLocation()
@@ -84,10 +97,26 @@ namespace SrvSurvey.forms
             var savedRect = Game.settings.formLocations.GetValueOrDefault(this.Name);
 
             var rect = new Rectangle(this.Location, this.Size);
-            if (savedRect != rect && rect.X >= 30_000)
+            if (savedRect != rect && this.WindowState == FormWindowState.Normal)
             {
                 Game.settings.formLocations[this.Name] = rect;
                 Game.settings.Save();
+            }
+        }
+
+        private void applySavedLocation()
+        {
+            // can we fit in our last location?
+            var savedRect = Game.settings.formLocations.GetValueOrDefault(this.GetType().Name);
+            if (savedRect.Size != Size.Empty)
+            {
+                var sizable = this.FormBorderStyle.ToString().StartsWith("Sizable");
+                Util.useLastLocation(this, savedRect, !sizable);
+            }
+            else
+            {
+                // start center of screen if we have no saved position
+                this.StartPosition = FormStartPosition.CenterScreen;
             }
         }
 
@@ -178,7 +207,6 @@ namespace SrvSurvey.forms
     [System.ComponentModel.DesignerCategory("Form")]
     internal class SizableForm : BaseForm
     {
-
     }
 
     [System.ComponentModel.DesignerCategory("Form")]
@@ -187,7 +215,7 @@ namespace SrvSurvey.forms
         public FixedForm()
         {
             titleHeight = scaleBy(titleHeight);
-            this.isDraggable = true;
+            this.isDraggable = this.GetType().GetCustomAttribute<DraggableAttribute>() != null;
         }
 
         #region fake title bar
@@ -300,4 +328,11 @@ namespace SrvSurvey.forms
 
     #endregion
 
+    /// <summary> The location and size of this form will be tracked and stored in settings </summary>
+    class TrackPositionAttribute : Attribute { }
+
+    /// <summary> This form can be moved by dragging any (non text editable) part of the form </summary>
+    class DraggableAttribute : Attribute { }
+
+    // TODO: Attribute for forms that should be themed?
 }

@@ -29,11 +29,6 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            ListViewItem listViewItem6 = new ListViewItem(new string[] { "Pyria Eurl YG-J c23-0", "975.97 ly", "4 other bio signals in this system" }, -1, Color.Empty, SystemColors.ControlLight, null);
-            ListViewItem listViewItem7 = new ListViewItem("bbb");
-            ListViewItem listViewItem8 = new ListViewItem(new string[] { "ccc" }, -1, Color.Empty, SystemColors.ButtonFace, null);
-            ListViewItem listViewItem9 = new ListViewItem("ddd");
-            ListViewItem listViewItem10 = new ListViewItem("eee");
             list = new ListView();
             colSystem = new ColumnHeader();
             colDistance = new ColumnHeader();
@@ -60,7 +55,6 @@
             // 
             list.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             list.Columns.AddRange(new ColumnHeader[] { colSystem, colDistance, colNotes });
-            list.Items.AddRange(new ListViewItem[] { listViewItem6, listViewItem7, listViewItem8, listViewItem9, listViewItem10 });
             list.Location = new Point(12, 70);
             list.Name = "list";
             list.Size = new Size(776, 160);
@@ -225,6 +219,7 @@
             Controls.Add(list);
             FormBorderStyle = FormBorderStyle.FixedDialog;
             Name = "FormNearestSystems";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Nearest Systems";
             contextMenu.ResumeLayout(false);
             flowBottom.ResumeLayout(false);

@@ -1,4 +1,6 @@
-﻿namespace SrvSurvey
+﻿using SrvSurvey.game;
+
+namespace SrvSurvey
 {
     partial class FormShowCodex
     {
@@ -16,6 +18,8 @@
             if (disposing && (components != null))
             {
                 components.Dispose();
+
+                Game.update -= Game_update;
             }
             base.Dispose(disposing);
         }
@@ -405,7 +409,6 @@
             MinimumSize = new Size(640, 400);
             Name = "FormShowCodex";
             Text = "Codex Viewer";
-            Load += FormShowCodex_Load;
             MouseDown += FormShowCodex_MouseDown;
             MouseMove += FormShowCodex_MouseMove;
             MouseUp += FormShowCodex_MouseUp;

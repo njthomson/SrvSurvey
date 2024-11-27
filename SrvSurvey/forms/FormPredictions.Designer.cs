@@ -32,22 +32,6 @@ namespace SrvSurvey
         /// </summary>
         private void InitializeComponent()
         {
-            TreeNode treeNode1 = new TreeNode("Node5");
-            TreeNode treeNode2 = new TreeNode("Node6");
-            TreeNode treeNode3 = new TreeNode("Node0", new TreeNode[] { treeNode1, treeNode2 });
-            TreeNode treeNode4 = new TreeNode("Node7");
-            TreeNode treeNode5 = new TreeNode("Node8");
-            TreeNode treeNode6 = new TreeNode("Node9");
-            TreeNode treeNode7 = new TreeNode("Node1", new TreeNode[] { treeNode4, treeNode5, treeNode6 });
-            TreeNode treeNode8 = new TreeNode("Node10");
-            TreeNode treeNode9 = new TreeNode("Node2", new TreeNode[] { treeNode8 });
-            TreeNode treeNode10 = new TreeNode("Node11");
-            TreeNode treeNode11 = new TreeNode("Node12");
-            TreeNode treeNode12 = new TreeNode("Node13");
-            TreeNode treeNode13 = new TreeNode("Node14");
-            TreeNode treeNode14 = new TreeNode("Node15");
-            TreeNode treeNode15 = new TreeNode("Node3", new TreeNode[] { treeNode10, treeNode11, treeNode12, treeNode13, treeNode14 });
-            TreeNode treeNode16 = new TreeNode("Node4");
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormPredictions));
             lblSysEst = new Label();
             tree = new TreeView2();
@@ -104,39 +88,6 @@ namespace SrvSurvey
             tree.Location = new Point(0, 102);
             tree.Margin = new Padding(0, 5, 0, 0);
             tree.Name = "tree";
-            treeNode1.Name = "Node5";
-            treeNode1.Text = "Node5";
-            treeNode2.Name = "Node6";
-            treeNode2.Text = "Node6";
-            treeNode3.Name = "Node0";
-            treeNode3.Text = "Node0";
-            treeNode4.Name = "Node7";
-            treeNode4.Text = "Node7";
-            treeNode5.Name = "Node8";
-            treeNode5.Text = "Node8";
-            treeNode6.Name = "Node9";
-            treeNode6.Text = "Node9";
-            treeNode7.Name = "Node1";
-            treeNode7.Text = "Node1";
-            treeNode8.Name = "Node10";
-            treeNode8.Text = "Node10";
-            treeNode9.Name = "Node2";
-            treeNode9.Text = "Node2";
-            treeNode10.Name = "Node11";
-            treeNode10.Text = "Node11";
-            treeNode11.Name = "Node12";
-            treeNode11.Text = "Node12";
-            treeNode12.Name = "Node13";
-            treeNode12.Text = "Node13";
-            treeNode13.Name = "Node14";
-            treeNode13.Text = "Node14";
-            treeNode14.Name = "Node15";
-            treeNode14.Text = "Node15";
-            treeNode15.Name = "Node3";
-            treeNode15.Text = "Node3";
-            treeNode16.Name = "Node4";
-            treeNode16.Text = "Node4";
-            tree.Nodes.AddRange(new TreeNode[] { treeNode3, treeNode7, treeNode9, treeNode15, treeNode16 });
             tree.ShowNodeToolTips = true;
             tree.Size = new Size(484, 283);
             tree.TabIndex = 2;
@@ -165,11 +116,11 @@ namespace SrvSurvey
             txtScanCount.BackColor = Color.Black;
             txtScanCount.BorderStyle = BorderStyle.FixedSingle;
             txtScanCount.ForeColor = Color.Red;
-            txtScanCount.Location = new Point(383, 49);
+            txtScanCount.Location = new Point(382, 49);
             txtScanCount.Margin = new Padding(0, 1, 0, 1);
             txtScanCount.Name = "txtScanCount";
             txtScanCount.ReadOnly = true;
-            txtScanCount.Size = new Size(99, 19);
+            txtScanCount.Size = new Size(100, 19);
             txtScanCount.TabIndex = 8;
             txtScanCount.Text = "99 of 99";
             txtScanCount.TextAlign = HorizontalAlignment.Center;
@@ -179,7 +130,7 @@ namespace SrvSurvey
             lblScanCount.Anchor = AnchorStyles.Right;
             lblScanCount.AutoSize = true;
             lblScanCount.FlatStyle = FlatStyle.System;
-            lblScanCount.Location = new Point(273, 52);
+            lblScanCount.Location = new Point(272, 52);
             lblScanCount.Margin = new Padding(6, 0, 0, 0);
             lblScanCount.Name = "lblScanCount";
             lblScanCount.Size = new Size(110, 12);
@@ -268,7 +219,7 @@ namespace SrvSurvey
             lblSysActual.Anchor = AnchorStyles.Right;
             lblSysActual.AutoSize = true;
             lblSysActual.FlatStyle = FlatStyle.System;
-            lblSysActual.Location = new Point(277, 31);
+            lblSysActual.Location = new Point(276, 31);
             lblSysActual.Name = "lblSysActual";
             lblSysActual.Size = new Size(103, 12);
             lblSysActual.TabIndex = 5;
@@ -280,11 +231,11 @@ namespace SrvSurvey
             txtSysActual.BackColor = Color.Black;
             txtSysActual.BorderStyle = BorderStyle.FixedSingle;
             txtSysActual.ForeColor = Color.Red;
-            txtSysActual.Location = new Point(383, 28);
+            txtSysActual.Location = new Point(382, 28);
             txtSysActual.Margin = new Padding(0, 1, 0, 1);
             txtSysActual.Name = "txtSysActual";
             txtSysActual.ReadOnly = true;
-            txtSysActual.Size = new Size(99, 19);
+            txtSysActual.Size = new Size(100, 19);
             txtSysActual.TabIndex = 6;
             txtSysActual.Text = "999.9M cr";
             txtSysActual.TextAlign = HorizontalAlignment.Center;
@@ -331,14 +282,14 @@ namespace SrvSurvey
             // 
             viewSystemOnToolStripMenuItem.Enabled = false;
             viewSystemOnToolStripMenuItem.Name = "viewSystemOnToolStripMenuItem";
-            viewSystemOnToolStripMenuItem.Size = new Size(180, 22);
+            viewSystemOnToolStripMenuItem.Size = new Size(175, 22);
             viewSystemOnToolStripMenuItem.Text = "Open system ...";
             // 
             // viewOnCanonnSignalsToolStripMenuItem
             // 
             viewOnCanonnSignalsToolStripMenuItem.Image = Properties.ImageResources.canonn_16x16;
             viewOnCanonnSignalsToolStripMenuItem.Name = "viewOnCanonnSignalsToolStripMenuItem";
-            viewOnCanonnSignalsToolStripMenuItem.Size = new Size(180, 22);
+            viewOnCanonnSignalsToolStripMenuItem.Size = new Size(175, 22);
             viewOnCanonnSignalsToolStripMenuItem.Text = "On Canonn Signals";
             viewOnCanonnSignalsToolStripMenuItem.Click += viewOnCanonnSignalsToolStripMenuItem_Click;
             // 
@@ -346,7 +297,7 @@ namespace SrvSurvey
             // 
             viewOnSpanshToolStripMenuItem.Image = Properties.ImageResources.spansh_16x16;
             viewOnSpanshToolStripMenuItem.Name = "viewOnSpanshToolStripMenuItem";
-            viewOnSpanshToolStripMenuItem.Size = new Size(180, 22);
+            viewOnSpanshToolStripMenuItem.Size = new Size(175, 22);
             viewOnSpanshToolStripMenuItem.Text = "On Spansh";
             viewOnSpanshToolStripMenuItem.Click += viewOnSpanshToolStripMenuItem_Click;
             // 

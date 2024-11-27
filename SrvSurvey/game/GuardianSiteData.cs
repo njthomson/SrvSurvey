@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
+using SrvSurvey.forms;
 using SrvSurvey.plotters;
 using SrvSurvey.units;
 using System.Diagnostics;
@@ -284,7 +285,7 @@ namespace SrvSurvey.game
 
             if (changed)
             {
-                FormRamTah.activeForm?.setCurrentObelisk(this.currentObelisk);
+                BaseForm.get<FormRamTah>()?.setCurrentObelisk(this.currentObelisk);
                 Program.getPlotter<PlotGuardianStatus>()?.Invalidate();
             }
         }
@@ -407,7 +408,7 @@ namespace SrvSurvey.game
                         hashSet.Add(obelisk.msg);
                     else
                         hashSet.Remove(obelisk.msg);
-                    this.ramTahRecalc();
+                    this.ramTahReCalc();
                     Game.log($"Recording '{obelisk.msg}' Ram Tah as scanned: {obelisk.scanned}");
                     cmdr.Save();
                 }
@@ -424,7 +425,7 @@ namespace SrvSurvey.game
                 plot.setTargetObelisk(null);
 
             FormBeacons.activeForm?.beginPrepareAllRows();
-            FormRamTah.activeForm?.updateChecks();
+            BaseForm.get<FormRamTah>()?.updateChecks();
             Program.invalidateActivePlotters();
         }
 
@@ -438,11 +439,11 @@ namespace SrvSurvey.game
                 return this.ramTahObelisks.ContainsKey(msg);
         }
 
-        public void ramTahRecalc()
+        public void ramTahReCalc()
         {
             this._ramTahObelisks = this.getObelisksForRamTah();
 
-            FormRamTah.activeForm?.updateChecks();
+            BaseForm.get<FormRamTah>()?.updateChecks();
             Program.invalidateActivePlotters();
         }
 

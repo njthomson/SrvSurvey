@@ -9,14 +9,15 @@ namespace SrvSurvey.widgets
         static readonly string themePath = Path.Combine(Program.dataFolder, "theme.json");
         static readonly string themeDefaultPath = Path.Combine(Application.StartupPath, "theme.json");
 
-        public static Theme loadTheme()
+        public static Theme loadTheme(bool defaultTheme = false)
         {
             // copy default theme if there's no custom one yet
             if (!File.Exists(themePath))
                 File.Copy(themeDefaultPath, themePath);
 
             // read and parse file contents into tmp object
-            var json = File.ReadAllText(themePath);
+            var filepath = defaultTheme ? themeDefaultPath : themePath;
+            var json = File.ReadAllText(filepath);
             if (!string.IsNullOrEmpty(json))
             {
                 try

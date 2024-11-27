@@ -1,4 +1,5 @@
 ﻿using BioCriterias;
+using SrvSurvey.forms;
 using SrvSurvey.game;
 using SrvSurvey.Properties;
 using SrvSurvey.widgets;
@@ -108,9 +109,7 @@ namespace SrvSurvey.plotters
 
             // show picture, if we have an entryId
             if (msg == MsgCmd.show && lastEntryId != null)
-            {
-                FormShowCodex.show();
-            }
+                BaseForm.show<FormShowCodex>();
         }
 
         #endregion
@@ -149,7 +148,12 @@ namespace SrvSurvey.plotters
                     if (scanOne?.body != null && scanOne.body != game.systemBody?.name)
                     {
                         var match = Game.codexRef.matchFromGenus(scanOne.genus);
-                        this.drawFooterText(g, $"WARNING: Incomplete {match?.englishName} scans from {scanOne.body}", GameColors.brushRed);
+                        var sz = this.drawFooterText(g, $"WARNING: Incomplete {match?.englishName} scans from {scanOne.body}", GameColors.brushRed);
+
+                        var y = ClientSize.Height - twenty;
+                        var w = (ClientSize.Width - sz.Width - oneSix) / 2;
+                        g.FillRectangle(GameColors.brushShipDismissWarning, four, y, w, oneFour);
+                        g.FillRectangle(GameColors.brushShipDismissWarning, ClientSize.Width - four - w, y, w, oneFour);
                     }
                 }
                 else
@@ -402,9 +406,9 @@ namespace SrvSurvey.plotters
                 this.tempRangeDiffs?.renderBodyOnly(g);
         }
 
-        protected void drawFooterText(Graphics g, string msg, Brush? brush = null)
+        protected SizeF drawFooterText(Graphics g, string msg, Brush? brush = null)
         {
-            if (g == null) return;
+            if (g == null) return SizeF.Empty;
 
             // draw heading text (center bottom)
             g.ResetTransform();
@@ -417,6 +421,7 @@ namespace SrvSurvey.plotters
             var ty = this.Height - sz.Height - 5;
 
             g.DrawString(msg, font, brush ?? GameColors.brushGameOrange, tx, ty);
+            return sz;
         }
 
         private void drawTemperatureBar(long entryId)
