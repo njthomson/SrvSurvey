@@ -63,8 +63,8 @@ namespace SrvSurvey
             //var currentTemp = Game.activeGame?.status.Temperature ?? 0;
             //if (currentTemp > 0 && newMode == GameMode.OnFoot)
             //{
-                lastTempRangeVariant = null;
-                this.updateStuff();
+            lastTempRangeVariant = null;
+            this.updateStuff();
             //}
         }
 
@@ -82,6 +82,8 @@ namespace SrvSurvey
                     this.updateStuff();
                 }
             }
+
+            repositionBodyParts();
         }
 
         private void prepStuff()
@@ -180,7 +182,7 @@ namespace SrvSurvey
             var targetEntryId = currentVariant.entryId;
 
             // skip loading the image if nothing changed
-            if (currentVariant.name == this.img?.Tag as string) return;
+            if (currentVariant.name == this.img?.Tag as string && !forceCanonn) return;
 
             // now load the image
             Task.Run(() =>
@@ -238,7 +240,7 @@ namespace SrvSurvey
 
         private void repositionBodyParts()
         {
-            if (!this.Created || flowBodyParts == null) return;
+            if (flowBodyParts == null) return;
 
             var left = this.ClientSize.Width - flowBodyParts.Width;
 
@@ -481,55 +483,58 @@ namespace SrvSurvey
             if (item == null) return;
 
             var forceRemoteImage = e.Button == MouseButtons.Right;
-            if (item.Tag is int)
+            var variant = item.Tag as BioVariant;
+            var body = item.OwnerItem.Tag as SystemBody;
+            if (variant != null && body != null)
             {
-                idxVariant = (int)item.Tag;
-                updateStuff(e.Button == MouseButtons.Right);
+                if (body == currentBody)
+                {
+                    idxVariant = stuff[body].IndexOf(variant);
+                    updateStuff(e.Button == MouseButtons.Right);
+                }
+                else
+                {
+                    currentBody = body;
+                    currentVariants = stuff[body];
+                    idxVariant = stuff[body].IndexOf(variant);
+                    updateStuff(e.Button == MouseButtons.Right);
+                }
             }
+
         }
 
         private void prepMenuItems()
         {
-            menuStrip.Items.Clear();
+            // add menus for the other bodies
+            var menuTree = new List<ToolStripMenuItem>();
 
-            // prep known organisms
-            var knownOrganisms = currentBody.organisms?.Where(o => o.entryId > 0).ToList();
-            if (knownOrganisms?.Count > 0)
+            var bodies = currentBody.system.bodies;
+            foreach (var body in bodies)
             {
+                if (body.bioSignalCount == 0) continue;
+
                 // show confirmed variants
-                menuStrip.Items.Add(new ToolStripMenuItem("Confirmed:") { Enabled = false });
+                var bodyMenu = new ToolStripMenuItem(body.name) { Tag = body, Name = body.name };
+                menuTree.Add(bodyMenu);
 
-                foreach (var org in knownOrganisms)
+                // known organisms
+                foreach (var org in body.organisms ?? new())
                 {
-                    if (org.entryId > 0)
+                    if (org.entryId == 0) continue;
+                    var match = Game.codexRef.matchFromEntryId(org.entryId);
+                    var item = new ToolStripMenuItem()
                     {
-                        var match = Game.codexRef.matchFromEntryId(org.entryId);
-                        var item = new ToolStripMenuItem()
-                        {
-                            Name = entryId,
-                            Text = org.variantLocalized,
-                            Tag = currentVariants.IndexOf(match.variant),
-                        };
-                        item.MouseUp += this.Item_MouseDown;
+                        Name = entryId,
+                        Text = org.variantLocalized,
+                        Tag = match.variant,
+                        Checked = org.scanned,  // Or analyzed?
+                    };
+                    item.MouseUp += this.Item_MouseDown;
 
-                        //// NO show a check if there's a picture available
-                        //item.Checked = match.variant.imageUrl != null;
-
-                        // show a check if we have scanned the thing
-                        item.Checked = org.scanned;
-
-                        menuStrip.Items.Add(item);
-                    }
+                    bodyMenu.DropDownItems.Add(item);
                 }
-            }
-
-            // prep predictions
-            if (currentBody.genusPredictions?.Count > 0)
-            {
-                // show predictions
-                menuStrip.Items.Add(new ToolStripMenuItem("Predicted:") { Enabled = false });
-
-                foreach (var genus in currentBody.genusPredictions)
+                // predictions
+                foreach (var genus in body.genusPredictions)
                 {
                     foreach (var variants in genus.species.Values)
                     {
@@ -538,19 +543,19 @@ namespace SrvSurvey
                             var item = new ToolStripMenuItem()
                             {
                                 Name = entryId,
-                                Text = variant.variant.englishName,
+                                Text = "? " + variant.variant.englishName,
                                 Tag = currentVariants.IndexOf(variant.variant),
                             };
                             item.MouseUp += this.Item_MouseDown;
 
-                            //// NO! show a check if there's a picture available from Canonn
-                            //item.Checked = variant.variant.imageUrl != null;
-
-                            menuStrip.Items.Add(item);
+                            bodyMenu.DropDownItems.Add(item);
                         }
                     }
                 }
             }
+
+            menuStrip.Items.Clear();
+            menuStrip.Items.AddRange(menuTree.ToArray());
         }
 
         private void btnPrevBody_Click(object sender, EventArgs e)
@@ -606,6 +611,12 @@ namespace SrvSurvey
                 menuStrip.Show(btnMenu, new Point(0, btnMenu.Height));
                 btnMenu.Text = "⏶";
                 menuVisible = true;
+
+                // pre-expand the current body
+                var idxCurrentBody = menuStrip.Items.IndexOfKey(currentBody.name);
+                var menuCurrentBody = (ToolStripMenuItem)menuStrip.Items[idxCurrentBody];
+                menuCurrentBody.Select();
+                menuCurrentBody.ShowDropDown();
             }
             //else if (Game.activeGame?.systemBody != null && Debugger.IsAttached)
             //{

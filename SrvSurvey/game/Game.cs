@@ -647,6 +647,9 @@ namespace SrvSurvey.game
 
                 return false;
             });
+            var lastMissions = journals.FindEntryByType<Missions>(-1, true);
+            if (lastMissions != null)
+                this.onJournalEntry(lastMissions);
 
             log($"Game.initializeFromJournal: END Commander:{this.Commander}, starSystem:{cmdr?.currentSystem}, systemLocation:{cmdr?.lastSystemLocation}, systemBody:{this.systemBody}, journals.Count:{journals.Count}");
             this.initialized = Game.activeGame == this && this.Commander != null;
@@ -1169,6 +1172,11 @@ namespace SrvSurvey.game
             Game.log($"Missions: decodeTheRuinsMissionActive: {this.cmdr.decodeTheRuinsMissionActive}, decodeTheLogsMissionActive: {this.cmdr.decodeTheLogsMissionActive}");
 
             // TODO: prune very stale massacre missions
+            if (this.cmdr.trackMassacres?.Count > 0)
+            {
+                var count = this.cmdr.trackMassacres.RemoveAll(m => !(entry.Active.Any(a => a.MissionID == m.missionId) || entry.Complete.Any(c => c.MissionID == m.missionId)));
+                Game.log($"Removed {count} invalid massacre missions");
+            }
         }
 
         private void onJournalEntry(MissionAccepted entry)

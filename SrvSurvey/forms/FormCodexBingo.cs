@@ -5,7 +5,6 @@ using SrvSurvey.Properties;
 using SrvSurvey.units;
 using SrvSurvey.widgets;
 using System.Collections;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing.Drawing2D;
 
@@ -47,6 +46,7 @@ namespace SrvSurvey
             treeBackBrush = new SolidBrush(tree.BackColor);
             tree.Nodes.Clear();
             tree.MouseWheel += Tree_MouseWheel;
+            tree.ShowNodeToolTips = true;
             tree.TreeViewNodeSorter = new NodeSorter();
             toolImport.DropDownDirection = ToolStripDropDownDirection.AboveLeft;
 
@@ -167,7 +167,7 @@ namespace SrvSurvey
 
                 // hierarchy: /hud_category/sub_class
                 var subClassText = entry.sub_class;
-                if (subClassText == "Shrubs") subClassText += " (Frutexa)";
+                if (subClassText == "Shrubs") subClassText = "Frutexa (Shrubs)";
                 var subClass = category.Nodes.Set(entry.sub_class, subClassText);
                 subClass.Tag = new CodexTag(entry.sub_class);
                 var subClassTag = (CodexTag)subClass.Tag;
@@ -208,10 +208,11 @@ namespace SrvSurvey
 
                     var species = subClass.Nodes.Set(parts[1], parts[1]);
                     if (species.Tag == null)
-                        species.Tag = new CodexTag(parts[1]) { species = match.species.englishName };
+                        species.Tag = new CodexTag(parts[1]) { species = match.species.englishName, reward = match.species.reward };
 
                     var variant = species.Nodes.Set(entry.entryid, parts[3]);
                     variant.Tag = new CodexTag(parts[3], entry) { variant = match.variant.englishName };
+                    variant.ToolTipText = match.variant.englishName;
                 }
             }
 
@@ -266,6 +267,10 @@ namespace SrvSurvey
                 }
                 // calc our calculation based on those totals
                 codexTag.completion = 1f / codexTag.countTotal * codexTag.countDiscovered;
+                node.ToolTipText = $"Discovered {codexTag.countDiscovered} of {codexTag.countTotal} - " + codexTag.completion.ToString("p2");
+
+                if (codexTag.reward > 0)
+                    node.ToolTipText += "\r\nReward: " + Util.credits(codexTag.reward);
             }
 
             return codexTag;
@@ -705,6 +710,7 @@ namespace SrvSurvey
         public string? variant;
         public string? species;
         public string? genus;
+        public long reward;
 
         public int countTotal;
         public int countDiscovered;

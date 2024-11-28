@@ -452,7 +452,7 @@ namespace SrvSurvey
                 node.EnsureVisible();
             }
 
-            if (isCurrentBody(node.Parent))
+            if (isCurrentBody(node.Parent) || highlightCurrentBody(node.Parent))
                 drawSideBars(g, node, highlight && node != hoverNode);
 
             var tuple = (Foo)node.Tag;
@@ -540,7 +540,7 @@ namespace SrvSurvey
                 || (game.cmdr.scanOne?.genus == org.genus && org.body == game.systemBody && game.mode != GameMode.FSS);
 
             // draw side-bars to highlight this is what we're currently scanning
-            if (isCurrentBody(node.Parent))
+            if (isCurrentBody(node.Parent) || highlightCurrentBody(node.Parent))
             {
                 if (highlight && org.isFirst)
                     drawSideBars(g, node, C.Bio.penGold4);
@@ -618,7 +618,7 @@ namespace SrvSurvey
             if (isCollapsedWithGold)
                 tt.color = GameColors.Bio.gold;
 
-            if (isCurrentBody(node))
+            if (isCurrentBody(node) || highlightCurrentBody(node))
                 drawSideBars(g, node, highlight && node != hoverNode);
 
             // draw +/- graphic

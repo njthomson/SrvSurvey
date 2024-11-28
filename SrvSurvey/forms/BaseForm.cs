@@ -321,6 +321,8 @@ namespace SrvSurvey.forms
                 // fake title
                 var pt = new Point(scaleBy(28), scaleBy(2));
                 TextRenderer.DrawText(g, this.Text ?? this.Text, GameColors.fontMiddleBold, pt, SystemColors.ControlLight);
+
+                //g.DrawRectangle(SystemPens.WindowText, 0, 0, this.Width - 1, this.Height - 1);
             }
         }
 
