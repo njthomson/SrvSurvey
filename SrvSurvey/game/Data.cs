@@ -163,7 +163,7 @@ namespace SrvSurvey.game
                 // use override if set (for testing purposes)
                 if (currentIdxOverride != null) return currentIdxOverride.Value;
 
-                if (Game.activeGame?.cmdr.galacticRegion == null) return 9; // default is 9 'Inner Scutum-Centaurus Arm'
+                if (Game.activeGame?.cmdr?.galacticRegion == null) return 9; // default is 9 'Inner Scutum-Centaurus Arm'
 
                 var idx = getIdxFromName(Game.activeGame.cmdr.galacticRegion);
                 return idx;
@@ -171,7 +171,7 @@ namespace SrvSurvey.game
         }
 
         // Data mined from: https://canonn.science/codex/appendices/
-        // Names have spaces removed but not dash or apostophe characters
+        // Names have spaces removed but not dash or apostrophe characters
 
         public static Dictionary<string, string> mapRegions = new Dictionary<string, string>()
         {

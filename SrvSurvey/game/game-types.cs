@@ -323,7 +323,13 @@ namespace SrvSurvey.game
             get
             {
                 if (!this.species.genus.odyssey)
-                    return $"{this.species.genus.englishName}-{this.species.displayName}".Replace(' ', '-');
+                {
+                    var genusName = this.species.genus.englishName;
+                    if (genusName == "Luteolum Anemone") genusName = "Anemone";
+
+                    var speciesName = this.species.displayName.Replace(genusName, "").Trim();
+                    return $"{genusName}-{speciesName}".Replace(' ', '-');
+                }
 
                 var parts = this.englishName.Split(' ', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
                 if (parts.Length == 4)

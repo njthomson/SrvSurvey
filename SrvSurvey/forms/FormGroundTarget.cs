@@ -60,7 +60,7 @@ namespace SrvSurvey
         public static LatLong2? pasteFromClipboard()
         {
             var txt = Clipboard.GetText(TextDataFormat.Text);
-            txt = txt.Replace("°N", " ").Replace("°W", "");
+            txt = txt.Replace("°N", ", ").Replace("°W", "");
             if (string.IsNullOrEmpty(txt)) return null;
 
             var match = matchPaste.Match(txt);

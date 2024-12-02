@@ -14,7 +14,7 @@ namespace SrvSurvey
 
         public static void update()
         {
-            Game.log("FormShowCodex.update ************************************");
+            //Game.log("FormShowCodex.update ************************************");
 
             // update form if it exists
             var form = BaseForm.get<FormShowCodex>();

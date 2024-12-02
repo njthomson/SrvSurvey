@@ -98,45 +98,45 @@ namespace SrvSurvey.plotters
 
         protected override void onPaintPlotter(PaintEventArgs e)
         {
-                if (game.systemBody == null || this.td == null) return;
+            if (game.systemBody == null || this.td == null) return;
+            //Game.log($"?? {this.Opacity}");
 
+            float hw = this.Width / 2;
+            float hh = this.Height / 2;
 
-                float hw = this.Width / 2;
-                float hh = this.Height / 2;
+            // draw heading text (center bottom)
+            var headingTxt = ((int)this.td.angle).ToString(); // TODO: this.targetAngle
+                                                              //var headingTxt = this.targetAngle.ToString("N0");
+            var sz = g.MeasureString(headingTxt, GameColors.fontSmall);
+            var tx = hw - (sz.Width / 2);
+            var ty = this.Height - sz.Height - six;
+            g.DrawString(this.td.angle.ToString(), GameColors.fontSmall, Brushes.Orange, tx, ty);
 
-                // draw heading text (center bottom)
-                var headingTxt = ((int)this.td.angle).ToString(); // TODO: this.targetAngle
-                //var headingTxt = this.targetAngle.ToString("N0");
-                var sz = g.MeasureString(headingTxt, GameColors.fontSmall);
-                var tx = hw - (sz.Width / 2);
-                var ty = this.Height - sz.Height - six;
-                g.DrawString(this.td.angle.ToString(), GameColors.fontSmall, Brushes.Orange, tx, ty);
+            // draw distance text (center top)
+            var dist = td.distance; // TODO: this.targetDist
+                                    //var dist = this.targetDistance;
+            if ((game.status.Flags & StatusFlags.AltitudeFromAverageRadius) > 0)
+                dist += td.distance + game.status.Altitude; // Remove it? I don't think it helps any more
 
-                // draw distance text (center top)
-                var dist = td.distance; // TODO: this.targetDist
-                //var dist = this.targetDistance;
-                if ((game.status.Flags & StatusFlags.AltitudeFromAverageRadius) > 0)
-                    dist += td.distance + game.status.Altitude; // Remove it? I don't think it helps any more
+            var txt = "Distance: " + Util.metersToString(dist); // dist.ToString("N2");
+            g.DrawString(txt, GameColors.fontSmall, Brushes.Orange, four, ten);
 
-                var txt = "Distance: " + Util.metersToString(dist); // dist.ToString("N2");
-                g.DrawString(txt, GameColors.fontSmall, Brushes.Orange, four, ten);
+            g.TranslateTransform(hw, hh);
 
-                g.TranslateTransform(hw, hh);
+            // rotate so the arrow aligns "up" is forwards/in front of us
+            var da = (int)td.angle - game.status.Heading;
+            g.RotateTransform(da);
+            g.ScaleTransform(0.3F, 0.3F);
 
-                // rotate so the arrow aligns "up" is forwards/in front of us
-                var da = (int)td.angle - game.status.Heading;
-                g.RotateTransform(da);
-                g.ScaleTransform(0.3F, 0.3F);
+            // clip to prevent filling
+            float fill = (float)(td.complete);
+            var clipR = scaled(new RectangleF(-100, -60, 200, 100 - fill));
+            g.Clip = new Region(clipR);
+            g.FillPath(Brushes.Yellow, tt);
 
-                // clip to prevent filling
-                float fill = (float)(td.complete);
-                var clipR = scaled(new RectangleF(-100, -60, 200, 100 - fill));
-                g.Clip = new Region(clipR);
-                g.FillPath(Brushes.Yellow, tt);
-
-                // draw thd rest unclipped
-                g.Clip = new Region();
-                g.DrawPath(GameColors.penGameOrange8, pp);
+            // draw thd rest unclipped
+            g.Clip = new Region();
+            g.DrawPath(GameColors.penGameOrange8, pp);
         }
     }
 }

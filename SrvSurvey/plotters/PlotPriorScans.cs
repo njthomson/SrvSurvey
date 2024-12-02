@@ -275,7 +275,7 @@ namespace SrvSurvey.plotters
             foreach (var signal in sortedSignals)
             {
                 var analyzed = game.systemBody?.organisms?.FirstOrDefault(_ => _.genus == signal.genusName)?.analyzed == true;
-                var isActive = (game.cmdr.scanOne?.genus == signal.genusName && game.cmdr.scanOne.body == game.systemBody?.name) || (game.cmdr.scanOne?.genus == null);
+                var isActive = (game.cmdr.scanOne?.genus == signal.genusName && game.cmdr.scanOne?.body == game.systemBody?.name) || (game.cmdr.scanOne?.genus == null);
                 Brush brush;
 
                 // keep this y value for the label below

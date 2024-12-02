@@ -1252,11 +1252,16 @@ namespace SrvSurvey.game
         public string extra;
         public string bluePrint;
 
-        public static SystemSettlementSummary forRuins(SystemData systemData, SystemBody body, int idx)
+        public static SystemSettlementSummary? forRuins(SystemData systemData, SystemBody body, int idx)
         {
             if (Game.canonn.allRuins == null) throw new Exception("Why is allRuins not populated?");
             var site = Game.canonn.allRuins.FirstOrDefault(_ => _.systemAddress == systemData.address && _.bodyId == body.id && _.idx == idx);
-            if (site == null) throw new Exception($"New Ruins #{idx} found on {body}??");
+            if (site == null)
+            {
+                //throw new Exception($"New Ruins #{idx} found on {body}??");
+                Debugger.Break();
+                return null;
+            }
 
             var summary = new SystemSettlementSummary()
             {
@@ -1295,11 +1300,16 @@ namespace SrvSurvey.game
             return summary;
         }
 
-        public static SystemSettlementSummary forStructure(SystemData systemData, SystemBody body)
+        public static SystemSettlementSummary? forStructure(SystemData systemData, SystemBody body)
         {
             if (Game.canonn.allStructures == null) throw new Exception("Why is allStructures not populated?");
             var site = Game.canonn.allStructures.FirstOrDefault(_ => _.systemAddress == systemData.address && _.bodyId == body.id);
-            if (site == null) throw new Exception($"New structure found on {body}??");
+            if (site == null)
+            {
+                //throw new Exception($"New structure found on {body}??");
+                Debugger.Break();
+                return null;
+            }
 
             var siteType = Enum.Parse<GuardianSiteData.SiteType>(site.siteType);
             var summary = new SystemSettlementSummary()

@@ -739,7 +739,7 @@ namespace SrvSurvey
                 lblTrackTargetStatus.Text = "Inactive";
                 Program.closePlotter<PlotTrackTarget>();
             }
-            else if (PlotGrounded.allowPlotter)
+            else if (PlotTrackTarget.allowPlotter)
             {
                 txtTargetLatLong.Text = Game.settings.targetLatLong.ToString();
                 lblTrackTargetStatus.Text = "Active";

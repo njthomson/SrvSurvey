@@ -1406,17 +1406,17 @@ namespace SrvSurvey.game
         }
 
         [JsonIgnore]
-        public int fssBodyCount { get => this.bodies.Count(_ => _.type != SystemBodyType.Asteroid && _.type != SystemBodyType.Unknown && _.type != SystemBodyType.Barycentre && _.type != SystemBodyType.PlanetaryRing); }
+        public int fssBodyCount { get => this.bodies.ToList().Count(_ => _.type != SystemBodyType.Asteroid && _.type != SystemBodyType.Unknown && _.type != SystemBodyType.Barycentre && _.type != SystemBodyType.PlanetaryRing); }
 
         /// <summary> Returns True when all non-star/non-asteroid bodies have been found with FSS </summary>
         [JsonIgnore]
         public bool fssComplete { get => this.fssBodyCount >= this.bodyCount; }
 
         [JsonIgnore]
-        public int dssBodyCount { get => this.bodies.Count(_ => _.dssComplete); }
+        public int dssBodyCount { get => this.bodies.ToList().Count(_ => _.dssComplete); }
 
         [JsonIgnore]
-        public int bioSignalsTotal { get => this.bodies.Sum(_ => _.bioSignalCount); }
+        public int bioSignalsTotal { get => this.bodies.ToList().Sum(_ => _.bioSignalCount); }
 
         [JsonIgnore]
         public int bioSignalsRemaining { get => this.bodies.Sum(_ => _.bioSignalCount - _.countAnalyzedBioSignals); }
@@ -1430,7 +1430,7 @@ namespace SrvSurvey.game
                 // skip things already scanned
                 if (_.dssComplete) continue;
 
-                // skip anything except Scannable plannets
+                // skip anything except Scannable planets
                 if (_.type != SystemBodyType.Giant && _.type != SystemBodyType.SolidBody && _.type != SystemBodyType.LandableBody) continue;
 
                 // inject rings
@@ -1485,7 +1485,7 @@ namespace SrvSurvey.game
             {
                 var count = rawNonBodyCount;
                 // remove the count of Asteroids
-                count -= this.bodies.Count(b => b.type == SystemBodyType.Asteroid);
+                count -= this.bodies.ToList().Count(b => b.type == SystemBodyType.Asteroid);
                 // remove non-interesting signal types - no Stations/Outposts or NavBeacons
                 count -= this.discoveredSignals.Values.Count(s => s.IsStation == true || s.SignalType == "Outpost" || s.SignalType == "NavBeacon");
                 return count;
@@ -1529,13 +1529,21 @@ namespace SrvSurvey.game
                 {
                     var body = this.bodies.FirstOrDefault(_ => _.name == site.bodyName)!;
                     if (body != null)
-                        this._settlements.Add(SystemSettlementSummary.forRuins(this, body, site.idx));
+                    {
+                        var ruins = SystemSettlementSummary.forRuins(this, body, site.idx);
+                        if (ruins != null)
+                            this._settlements.Add(ruins);
+                    }
                 }
                 else
                 {
                     var body = this.bodies.FirstOrDefault(_ => _.name == site.bodyName)!;
                     if (body != null)
-                        this._settlements.Add(SystemSettlementSummary.forStructure(this, body));
+                    {
+                        var structure = SystemSettlementSummary.forStructure(this, body);
+                        if (structure != null)
+                            this._settlements.Add(structure);
+                    }
                     else
                         Game.log($"Why no body yet for: '{site.bodyName}'");
                 }
