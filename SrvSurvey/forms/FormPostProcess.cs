@@ -9,8 +9,6 @@ namespace SrvSurvey
     {
         public static FormPostProcess? activeForm;
 
-        private Dictionary<string, string> allCmdrs;
-
         private string targetCmdrName;
         private string targetCmdrFid;
         private DateTime targetStartTime = DateTime.MinValue;
@@ -28,8 +26,7 @@ namespace SrvSurvey
             Util.useLastLocation(this, Game.settings!.formPostProcess, true);
             FormPostProcess.activeForm = this;
 
-            // load potential cmdr's
-            this.findCmdrs(fid);
+            comboCmdr.cmdrFid = fid;
 
             // default to 7 days ago, at midnight
             this.dateTimePicker.Value = DateTime.Now.Subtract(new TimeSpan(6, 23, 59, 59) + DateTime.Now.TimeOfDay);
@@ -72,27 +69,6 @@ namespace SrvSurvey
             FormPostProcess.activeForm = null;
         }
 
-        private void findCmdrs(string? fid)
-        {
-            this.allCmdrs = CommanderSettings.getAllCmdrs();
-            var cmdrs = this.allCmdrs
-                .Values
-                .Order()
-                .ToArray();
-
-            comboCmdr.Items.Clear();
-            comboCmdr.Items.AddRange(cmdrs);
-
-            if (!string.IsNullOrEmpty(fid) && allCmdrs.ContainsKey(fid))
-                comboCmdr.SelectedItem = allCmdrs[fid];
-            else if (!string.IsNullOrEmpty(Game.settings.preferredCommander))
-                comboCmdr.SelectedItem = Game.settings.preferredCommander;
-            else if (!string.IsNullOrEmpty(Game.settings.lastCommander))
-                comboCmdr.SelectedItem = Game.settings.lastCommander;
-            else
-                comboCmdr.SelectedIndex = 0;
-        }
-
         private void dateTimePicker_ValueChanged(object sender, EventArgs e)
         {
             this.targetStartTime = dateTimePicker.Value;
@@ -109,8 +85,8 @@ namespace SrvSurvey
             if (!this.processingFiles)
             {
                 // set cmdr details first
-                this.targetCmdrName = comboCmdr.Text;
-                this.targetCmdrFid = this.allCmdrs.First(_ => _.Value == this.targetCmdrName).Key;
+                this.targetCmdrName = comboCmdr.cmdrName;
+                this.targetCmdrFid = comboCmdr.cmdrFid!;
 
                 comboCmdr.Enabled = false;
                 dateTimePicker.Enabled = false;

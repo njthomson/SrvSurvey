@@ -38,7 +38,7 @@
             lblCmdr = new Label();
             lblStartDate = new Label();
             dateTimePicker = new DateTimePicker();
-            comboCmdr = new ComboBox();
+            comboCmdr = new ComboCmdr();
             label1 = new Label();
             label2 = new Label();
             label3 = new Label();
@@ -310,7 +310,7 @@
         private Label lblCmdr;
         private Label lblStartDate;
         private DateTimePicker dateTimePicker;
-        private ComboBox comboCmdr;
+        private ComboCmdr comboCmdr;
         private Label label1;
         private Label label2;
         private Label label3;

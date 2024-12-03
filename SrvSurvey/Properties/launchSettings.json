@@ -1,0 +1,15 @@
+{
+  "profiles": {
+    "SrvSurvey": {
+      "commandName": "Project"
+    },
+    "PostProcessOld": {
+      "commandName": "Project",
+      "commandLineArgs": "-scan-old F11133368"
+    },
+    "PostProcessOld (no FID)": {
+      "commandName": "Project",
+      "commandLineArgs": "-scan-old"
+    }
+  }
+}

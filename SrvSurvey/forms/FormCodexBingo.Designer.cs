@@ -52,7 +52,7 @@
             tree = new TreeView();
             images = new ImageList(components);
             panel1 = new Panel();
-            comboCmdr = new ComboBox();
+            comboCmdr = new ComboCmdr();
             label2 = new Label();
             comboRegion = new ComboBox();
             label1 = new Label();
@@ -385,7 +385,7 @@
         private ToolStripStatusLabel toolDiscoveryDate;
         private ToolStripStatusLabel toolFiller;
         private ToolStripStatusLabel toolBodyName;
-        private ComboBox comboCmdr;
+        private ComboCmdr comboCmdr;
         private ToolStripDropDownButton toolImport;
         private ToolStripMenuItem toolImportFromCanonn;
         private ToolStripMenuItem toolImportFromJournal;

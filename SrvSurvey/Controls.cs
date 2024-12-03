@@ -1,4 +1,5 @@
-﻿using SrvSurvey.widgets;
+﻿using SrvSurvey.game;
+using SrvSurvey.widgets;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 
@@ -46,6 +47,18 @@ namespace SrvSurvey
             {
                 this.BackColor = this.originalBackColor.Value;
                 this.originalBackColor = null;
+            }
+        }
+
+        public override Color BackColor
+        {
+            get => base.BackColor;
+            set
+            {
+                if (this.originalBackColor != null)
+                    this.originalBackColor = value;
+                else
+                    base.BackColor = value;
             }
         }
     }
@@ -231,4 +244,65 @@ namespace SrvSurvey
         #endregion
     }
 
+    /// <summary>
+    /// A ComboBox for choosing known Commanders
+    /// </summary>
+    public class ComboCmdr : ComboBox
+    {
+        public Dictionary<string, string>? allCmdrs { get; private set; }
+
+        public ComboCmdr() : base()
+        {
+            // preset properties
+            this.DropDownStyle = ComboBoxStyle.DropDownList;
+        }
+
+        protected override void OnHandleCreated(EventArgs e)
+        {
+            base.OnHandleCreated(e);
+
+            if (allCmdrs == null)
+                this.loadCmdrs();
+        }
+
+        private void loadCmdrs()
+        {
+            if (this.DesignMode) return;
+
+            this.allCmdrs = CommanderSettings.getAllCmdrs();
+
+            var cmdrs = this.allCmdrs
+                .Values
+                .Order()
+                .ToArray();
+
+            this.Items.Clear();
+            this.Items.AddRange(cmdrs);
+
+            if (!string.IsNullOrEmpty(Game.settings.preferredCommander))
+                this.SelectedItem = Game.settings.preferredCommander;
+            else if (!string.IsNullOrEmpty(Game.settings.lastCommander))
+                this.SelectedItem = Game.settings.lastCommander;
+            else
+                this.SelectedIndex = 0;
+        }
+
+        public string cmdrName { get => this.SelectedText; }
+
+        public string? cmdrFid
+        {
+            get => this.allCmdrs?.First(_ => _.Value == (this.SelectedItem as string)).Key;
+            set
+            {
+                if (!string.IsNullOrEmpty(value) && !this.DesignMode)
+                {
+                    if (allCmdrs == null) this.loadCmdrs();
+
+                    var newItem = this.allCmdrs?.GetValueOrDefault(value);
+                    if (newItem != null)
+                        this.SelectedItem = newItem;
+                }
+            }
+        }
+    }
 }

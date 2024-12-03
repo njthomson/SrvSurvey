@@ -641,7 +641,7 @@ namespace SrvSurvey
 
         private void btnPostProcess_Click(object sender, EventArgs e)
         {
-            Process.Start(Application.ExecutablePath, Program.cmdArgScanOld);
+            Process.Start(Application.ExecutablePath, $"{Program.cmdArgScanOld} {Game.settings.lastFid}");
         }
 
         private void checkHumanSitePlotter_CheckedChanged(object sender, EventArgs e)

@@ -34,7 +34,6 @@ namespace SrvSurvey
         private readonly static Brush brushPartial = Brushes.Orange;
         private readonly static Brush brushComplete = Brushes.Lime;
 
-        private Dictionary<string, string> allCmdrs;
         private CommanderCodex cmdrCodex;
         private int regionIdx;
         private float onePoint;
@@ -53,9 +52,6 @@ namespace SrvSurvey
             // use an empty icon so the TreeView reserves space for it
             images.Images.Add("CodexBlank", ImageResources.CodexBlank);
 
-            // prep combos
-            findCmdrs();
-
             // set initial text to status strip members
             toolFiller.Spring = true;
             toolBodyName.Text = "";
@@ -65,25 +61,6 @@ namespace SrvSurvey
             // Not themed - this is always dark.
         }
 
-        private void findCmdrs()
-        {
-            this.allCmdrs = CommanderSettings.getAllCmdrs();
-            var cmdrs = this.allCmdrs
-                .Values
-                .Order()
-                .ToArray();
-
-            comboCmdr.Items.Clear();
-            comboCmdr.Items.AddRange(cmdrs);
-
-            if (!string.IsNullOrEmpty(Game.settings.preferredCommander))
-                comboCmdr.SelectedItem = Game.settings.preferredCommander;
-            else if (!string.IsNullOrEmpty(Game.settings.lastCommander))
-                comboCmdr.SelectedItem = Game.settings.lastCommander;
-            else
-                comboCmdr.SelectedIndex = 0;
-        }
-
         private CommanderSettings currentCmdr
         {
             get => Game.activeGame?.cmdr ?? CommanderSettings.Load(this.cmdrCodex.fid, true, "");
@@ -91,8 +68,10 @@ namespace SrvSurvey
 
         private void comboCmdr_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var commander = comboCmdr.Text!;
-            var fid = this.allCmdrs.First(_ => _.Value == commander).Key!;
+            var commander = comboCmdr.cmdrName;
+            var fid = comboCmdr.cmdrFid;
+            if (fid == null) return;
+
             Game.log($"Loading completions for: {commander} ({fid})");
 
             // prep cmdr's codex, using live one if present
