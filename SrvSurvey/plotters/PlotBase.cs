@@ -493,15 +493,15 @@ namespace SrvSurvey.plotters
 
             var txtSz = g.MeasureString(txt, GameColors.fontSmall);
 
-            var sz = scaled(5);
-            x += txtSz.Width + scaled(8);
+            var sz = five;
+            x += txtSz.Width + eight;
             //y += 4;
             var r = new RectangleF(x, y, sz * 2, sz * 2);
             g.DrawEllipse(pen, r);
 
 
-            var dx = (float)Math.Sin(Util.degToRad(deg)) * scaled(9F);
-            var dy = (float)Math.Cos(Util.degToRad(deg)) * scaled(9F);
+            var dx = (float)Math.Sin(Util.degToRad(deg)) * nine;
+            var dy = (float)Math.Cos(Util.degToRad(deg)) * nine;
             g.DrawLine(pen, x + sz, y + sz, x + sz + dx, y + sz - dy);
 
             x += 2 + sz * 3;

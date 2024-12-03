@@ -1,5 +1,56 @@
-﻿namespace SrvSurvey.widgets
+﻿using SrvSurvey.game;
+
+namespace SrvSurvey.widgets
 {
+    internal class BaseWidget : N
+    {
+        protected Game? game { get => Game.activeGame; }
+
+        // Same as Util.textFlags
+        public static readonly TextFormatFlags defaultTextFlags = TextFormatFlags.NoPadding | TextFormatFlags.PreserveGraphicsTranslateTransform;
+
+        public static void renderText(Graphics g, string? txt, float x, float y, Font font, Color? color = null, TextFormatFlags? flags = null)
+        {
+            renderText(g, txt, new Point((int)x, (int)y), font, color, flags);
+        }
+
+        public static void renderText(Graphics g, string? txt, int x, int y, Font font, Color? color = null, TextFormatFlags? flags = null)
+        {
+            renderText(g, txt, new Point(x, y), font, color, flags);
+        }
+
+        public static void renderText(Graphics g, string? txt, Point pt, Font font, Color? color = null, TextFormatFlags? flags = null)
+        {
+            if (string.IsNullOrEmpty(txt)) return;
+
+            color ??= C.orange;
+            flags ??= BaseWidget.defaultTextFlags;
+            TextRenderer.DrawText(g, txt, font, pt, color.Value, flags.Value);
+        }
+
+        public static void renderBearingTo(Graphics g, float x, float y, float r, double deg, Font? font = null, Brush? brush = null, Pen? pen = null)
+        {
+            if (g == null) return;
+            font ??= GameColors.fontSmall;
+            brush ??= C.Brushes.orange;
+            pen ??= C.Pens.orange2;
+
+            // draw circle
+            var rect = new RectangleF(x, y, r * 2, r * 2);
+            g.DrawEllipse(pen, rect);
+
+            // draw pointing hand
+            x += r;
+            y += r;
+            var pt = Util.rotateLine(deg, r * 1.8f);
+            g.DrawLine(pen, x, y, x + pt.X, y - pt.Y);
+
+            //x += two + (r * 3);
+            //g.DrawString(Util.metersToString(dist), GameColors.fontSmall, brush, x, y);
+        }
+
+    }
+
     /// <summary>
     /// A collection of constants pre-scaled
     /// </summary>
@@ -81,6 +132,7 @@
         public static float threeTwo = s(32f);
         public static float threeFour = s(34f);
         public static float threeSix = s(36f);
+        public static float threeEight = s(38f);
         public static float forty = s(40f);
         public static float fourFour = s(44f);
         public static float fourTwo = s(42f);

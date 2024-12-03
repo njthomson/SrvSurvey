@@ -297,6 +297,14 @@ namespace SrvSurvey
             return new PointM(dx, dy);
         }
 
+        public static PointF rotateLine(double angle, double length)
+        {
+            var dx = Math.Sin(Util.degToRad(angle)) * length;
+            var dy = Math.Cos(Util.degToRad(angle)) * length;
+
+            return new PointF((float)dx, (float)dy);
+        }
+
         public static decimal ToAngle(double opp, double adj)
         {
             return ToAngle((decimal)opp, (decimal)adj);

@@ -193,4 +193,6 @@
     <Exec Command="PowerShell &quot;$(ProjectDir)sort-resx.ps1&quot;" />
   </Target>
 
+  <ProjectExtensions><VisualStudio><UserProperties theme_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
+
 </Project>

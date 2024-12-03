@@ -527,8 +527,10 @@ namespace SrvSurvey
                         Name = entryId,
                         Text = org.variantLocalized,
                         Tag = match.variant,
-                        Checked = org.scanned,  // Or analyzed?
+                        CheckState = org.scanned ? CheckState.Indeterminate : CheckState.Unchecked,
                     };
+                    if (org.analyzed) item.CheckState = CheckState.Checked;
+
                     item.MouseUp += this.Item_MouseDown;
 
                     bodyMenu.DropDownItems.Add(item);
@@ -544,7 +546,7 @@ namespace SrvSurvey
                             {
                                 Name = entryId,
                                 Text = "? " + variant.variant.englishName,
-                                Tag = currentVariants.IndexOf(variant.variant),
+                                Tag = variant.variant,
                             };
                             item.MouseUp += this.Item_MouseDown;
 

@@ -1683,9 +1683,9 @@ namespace SrvSurvey
             BaseForm.show<FormRamTah>();
         }
 
-        private void btnBioSummary_Click(object sender, EventArgs e)
+        private void btnPredictions_Click(object sender, EventArgs e)
         {
-            //FormGenus.show();
+            game?.predictSystemSpecies();
             BaseForm.show<FormPredictions>();
         }
 
@@ -1751,7 +1751,6 @@ namespace SrvSurvey
         private void btnCodexBingo_Click(object sender, EventArgs e)
         {
             BaseForm.show<FormCodexBingo>();
-            //Game.activeGame.predictSystemSpecies();
         }
     }
 }

@@ -213,6 +213,7 @@ namespace SrvSurvey
             linkAboutOne = new LinkLabel();
             colorDialog = new ColorDialog();
             colorTheme = new ColorDialog();
+            btnSwapCache = new FlatButton();
             panel1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox6).BeginInit();
@@ -280,7 +281,6 @@ namespace SrvSurvey
             // 
             // btnNextProc
             // 
-            btnNextProc.FlatStyle = FlatStyle.Flat;
             btnNextProc.Location = new Point(4, 14);
             btnNextProc.Name = "btnNextProc";
             btnNextProc.Size = new Size(243, 27);
@@ -293,7 +293,6 @@ namespace SrvSurvey
             // btnSave
             // 
             btnSave.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnSave.FlatStyle = FlatStyle.Flat;
             btnSave.Location = new Point(463, 14);
             btnSave.Margin = new Padding(4, 3, 4, 3);
             btnSave.Name = "btnSave";
@@ -307,7 +306,6 @@ namespace SrvSurvey
             // 
             btnCancel.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnCancel.DialogResult = DialogResult.Cancel;
-            btnCancel.FlatStyle = FlatStyle.Flat;
             btnCancel.Location = new Point(557, 14);
             btnCancel.Margin = new Padding(4, 3, 4, 3);
             btnCancel.Name = "btnCancel";
@@ -992,7 +990,6 @@ namespace SrvSurvey
             // 
             // btnClearTrackers
             // 
-            btnClearTrackers.FlatStyle = FlatStyle.Flat;
             btnClearTrackers.Location = new Point(172, 92);
             btnClearTrackers.Name = "btnClearTrackers";
             btnClearTrackers.Size = new Size(156, 23);
@@ -1048,7 +1045,6 @@ namespace SrvSurvey
             // 
             // btnClearUnclaimed
             // 
-            btnClearUnclaimed.FlatStyle = FlatStyle.Flat;
             btnClearUnclaimed.Location = new Point(10, 92);
             btnClearUnclaimed.Name = "btnClearUnclaimed";
             btnClearUnclaimed.Size = new Size(156, 23);
@@ -1504,7 +1500,6 @@ namespace SrvSurvey
             // 
             // btnBannerColor
             // 
-            btnBannerColor.FlatStyle = FlatStyle.Flat;
             btnBannerColor.Location = new Point(7, 195);
             btnBannerColor.Name = "btnBannerColor";
             btnBannerColor.Size = new Size(103, 27);
@@ -1561,7 +1556,6 @@ namespace SrvSurvey
             // 
             // btnChooseScreenshotSourceFolder
             // 
-            btnChooseScreenshotSourceFolder.FlatStyle = FlatStyle.Flat;
             btnChooseScreenshotSourceFolder.Location = new Point(10, 47);
             btnChooseScreenshotSourceFolder.Name = "btnChooseScreenshotSourceFolder";
             btnChooseScreenshotSourceFolder.Size = new Size(26, 35);
@@ -1572,7 +1566,6 @@ namespace SrvSurvey
             // 
             // btnChooseScreenshotTargetFolder
             // 
-            btnChooseScreenshotTargetFolder.FlatStyle = FlatStyle.Flat;
             btnChooseScreenshotTargetFolder.Location = new Point(10, 104);
             btnChooseScreenshotTargetFolder.Name = "btnChooseScreenshotTargetFolder";
             btnChooseScreenshotTargetFolder.Size = new Size(26, 35);
@@ -1676,6 +1669,7 @@ namespace SrvSurvey
             // 
             tabPage6.BackColor = SystemColors.Control;
             tabPage6.BorderStyle = BorderStyle.Fixed3D;
+            tabPage6.Controls.Add(btnSwapCache);
             tabPage6.Controls.Add(checkBox32);
             tabPage6.Controls.Add(checkBox28);
             tabPage6.Controls.Add(pictureBox13);
@@ -2648,6 +2642,17 @@ namespace SrvSurvey
             // 
             colorDialog.Color = Color.Yellow;
             // 
+            // btnSwapCache
+            // 
+            btnSwapCache.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnSwapCache.Location = new Point(485, 416);
+            btnSwapCache.Name = "btnSwapCache";
+            btnSwapCache.Size = new Size(156, 23);
+            btnSwapCache.TabIndex = 36;
+            btnSwapCache.Text = "Swap star cache";
+            btnSwapCache.UseVisualStyleBackColor = true;
+            btnSwapCache.Click += btnSwapCache_Click;
+            // 
             // FormSettings
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -2914,5 +2919,6 @@ namespace SrvSurvey
         private Label label28;
         private FlatButton btnAdjustOverlays;
         private CheckBox checkBox33;
+        private FlatButton btnSwapCache;
     }
 }

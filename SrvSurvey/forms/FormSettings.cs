@@ -40,6 +40,8 @@ namespace SrvSurvey
             {
                 // Human settlements aren't ready for App store yet
                 tabControl.Controls.Remove(tabSettlements);
+
+                btnSwapCache.Hide();
             }
 
             // Not themed - this is always light.
@@ -687,6 +689,11 @@ namespace SrvSurvey
         private void checkBox33_CheckedChanged(object sender, EventArgs e)
         {
             listKeys.Enabled = checkKeyChords.Checked;
+        }
+
+        private void btnSwapCache_Click(object sender, EventArgs e)
+        {
+            FormSwapStarCache.showDialog(this);
         }
     }
 }

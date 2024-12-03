@@ -1,13 +1,12 @@
 {
-  /*
-    One day this contain all the colors used by SrvSurvey
-  */
+  /* One day this contain all the colors used by SrvSurvey */
   "orange": [ 255, 255, 111, 0 ],
   "orangeDark": [ 255, 95, 48, 3 ],
   "cyan": [ 255, 84, 223, 237 ],
   "cyanDark": [ 255, 84, 223, 237 ],
 
   "red": [ 255, 255, 0, 0 ],
+  "redDark": [ 255, 139, 0, 0 ],
   "yellow": [ 255, 255, 255, 0 ],
 
   "bio": {

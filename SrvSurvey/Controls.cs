@@ -29,6 +29,25 @@ namespace SrvSurvey
                 btn.FlatAppearance.MouseDownBackColor = GameColors.OrangeDim;
             }
         }
+
+        private Color? originalBackColor;
+
+        protected override void OnEnabledChanged(EventArgs e)
+        {
+            base.OnEnabledChanged(e);
+
+            // Disabled buttons barely look any different - so change BackColor to make it obvious
+            if (!this.Enabled && this.originalBackColor == null)
+            {
+                this.originalBackColor = this.BackColor;
+                this.BackColor = SystemColors.WindowFrame;
+            }
+            else if (this.Enabled && this.originalBackColor != null)
+            {
+                this.BackColor = this.originalBackColor.Value;
+                this.originalBackColor = null;
+            }
+        }
     }
 
     public class TreeView2 : TreeView

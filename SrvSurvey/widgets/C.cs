@@ -37,6 +37,7 @@ namespace SrvSurvey.widgets
         public static Color cyanDark = c("cyanDark");
 
         public static Color red = c("red");
+        public static Color redDark = c("redDark");
 
         public static Color yellow = c("yellow");
 
@@ -46,6 +47,7 @@ namespace SrvSurvey.widgets
         {
             public static Pen orange1 = orange.toPen(1);
             public static Pen orange2 = orange.toPen(2);
+            public static Pen orange4 = orange.toPen(4);
 
             public static Pen orangeDark1 = orangeDark.toPen(1);
 

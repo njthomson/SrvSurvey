@@ -55,7 +55,7 @@ namespace SrvSurvey
             txtLong.Text = Status.here.Long.ToString();
         }
 
-        private static Regex matchPaste = new Regex("([\\+-.0-9]*)\\s*[,|`/]\\s*([\\+-.0-9]*)", RegexOptions.Singleline);
+        private static Regex matchPaste = new Regex("([\\+-.0-9]*)\\s*[ ,|`/]\\s*([\\+-.0-9]*)", RegexOptions.Singleline);
 
         public static LatLong2? pasteFromClipboard()
         {

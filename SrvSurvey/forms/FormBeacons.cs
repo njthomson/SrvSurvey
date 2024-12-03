@@ -157,6 +157,8 @@ namespace SrvSurvey
 
         private void endPrepareAllRows(List<GuardianGridEntry> allSites)
         {
+            if (this.IsDisposed) return;
+
             this.grid.SuspendLayout();
             this.grid.BeginUpdate();
             var allBeacons = Game.canonn.loadAllBeacons();

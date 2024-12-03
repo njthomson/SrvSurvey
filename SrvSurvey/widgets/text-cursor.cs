@@ -9,11 +9,8 @@ using SrvSurvey.game;
 
 namespace SrvSurvey.widgets
 {
-    internal class TextCursor : N
+    internal class TextCursor : BaseWidget
     {
-        // Same as Util.textFlags
-        public static readonly TextFormatFlags defaultTextFlags = TextFormatFlags.NoPadding | TextFormatFlags.PreserveGraphicsTranslateTransform;
-
         public float dtx;
         public float dty;
 
@@ -96,11 +93,11 @@ namespace SrvSurvey.widgets
             if (rightAlign)
             {
                 pt.X = (int)(dtx - this.lastTextSize.Width);
-                TextRenderer.DrawText(g, txt, font, pt, col.Value, flags);
+                renderText(g, txt, pt, font, col.Value, flags);
             }
             else
             {
-                TextRenderer.DrawText(g, txt, font, pt, col.Value, flags);
+                renderText(g, txt, pt, font, col.Value, flags);
                 this.dtx += this.lastTextSize.Width;
             }
 

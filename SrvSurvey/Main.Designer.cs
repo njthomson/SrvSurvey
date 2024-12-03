@@ -325,7 +325,7 @@ namespace SrvSurvey
             btnPredictions.TabIndex = 0;
             btnPredictions.Text = "Predictions";
             btnPredictions.UseVisualStyleBackColor = false;
-            btnPredictions.Click += btnBioSummary_Click;
+            btnPredictions.Click += btnPredictions_Click;
             // 
             // checkFirstFootFall
             // 
