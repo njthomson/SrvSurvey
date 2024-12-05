@@ -2,6 +2,7 @@
 using SrvSurvey.widgets;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
+using static SrvSurvey.net.GetSystemResponse;
 
 namespace SrvSurvey
 {
@@ -303,6 +304,98 @@ namespace SrvSurvey
                         this.SelectedItem = newItem;
                 }
             }
+        }
+    }
+
+
+    /// <summary>
+    /// A ComboBox for choosing known star systems
+    /// </summary>
+    internal class ComboStarSystem : ComboBox
+    {
+        private List<MinMax> matches = new();
+        private string lastQuery = "";
+
+        public ComboStarSystem() : base()
+        {
+            this.DropDownStyle = ComboBoxStyle.DropDown;
+        }
+
+        protected override void OnSelectedValueChanged(EventArgs e)
+        {
+            base.OnSelectedValueChanged(e);
+            Game.log("OnSelectedValueChanged");
+        }
+
+        public MinMax? SelectedSystem
+        {
+            get => this.matches[this.SelectedIndex];
+        }
+
+        protected override void OnTextChanged(EventArgs e)
+        {
+            base.OnTextChanged(e);
+            Game.log("OnTextChanged");
+
+            var query = this.Text;
+            if (string.IsNullOrWhiteSpace(query)) return;
+
+            // before deferring...
+            // do we have an exact match already?
+            var knownMatch = this.matches.FirstOrDefault(m => m.name.Equals(query, StringComparison.OrdinalIgnoreCase));
+            if (knownMatch != null)
+            {
+                Game.log($"knownMatch: {knownMatch}");
+                this.SelectedItem = knownMatch.name;
+                this.SelectionLength = 0;
+                this.SelectionStart = knownMatch.name.Length;
+                return;
+            }
+
+            // TODO: do we have a match with current results?
+
+            Util.deferAfter(250, () => lookupSystems(query));
+        }
+
+        protected override void OnTextUpdate(EventArgs e)
+        {
+            base.OnTextUpdate(e);
+            Game.log("OnTextUpdate");
+        }
+
+        private void lookupSystems(string query)
+        {
+            Game.log($"lookupSystems: {query} / lastQuery: {lastQuery}");
+
+            var parentForm = this.FindForm();
+            Game.spansh.getSystems(query).continueOnMain(parentForm, results =>
+            {
+                if (this.Text != query)
+                {
+                    Game.log($">> NOPE! {query} vs {this.Text}");
+                    return; // stop if things already changed
+                }
+
+                var rem = results.values.FirstOrDefault();
+                if (rem == null || rem.Length < query.Length) return;
+                rem = rem.Substring(query.Length);
+
+                this.matches.Clear();
+                this.matches.AddRange(results.min_max);
+                this.Items.Clear();
+                this.Items.AddRange(results.values.ToArray());
+
+                this.lastQuery = query;
+                //Game.log($">> '{query}'+'{rem}'");
+
+                // force cursor to end
+                this.Text = query + rem;
+                this.SelectionStart = query.Length;
+                this.SelectionLength = rem.Length;
+
+                if (!this.DroppedDown && !string.IsNullOrWhiteSpace(rem))
+                    this.DroppedDown = true;
+            });
         }
     }
 }

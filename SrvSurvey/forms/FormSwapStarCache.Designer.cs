@@ -31,12 +31,12 @@
             components = new System.ComponentModel.Container();
             label1 = new Label();
             linkEDGalaxy = new LinkLabel();
-            txtCommander = new TextBox();
             btnNo = new FlatButton();
             btnYes = new FlatButton();
             label2 = new Label();
             tableLayoutPanel1 = new TableLayoutPanel();
-            txtSystem = new TextBox();
+            comboCmdrs = new ComboCmdr();
+            comboSystem = new ComboStarSystem();
             label3 = new Label();
             lblCloseWarning = new Label();
             btnRestore = new FlatButton();
@@ -52,7 +52,7 @@
             label1.Location = new Point(6, 3);
             label1.Margin = new Padding(3, 0, 3, 3);
             label1.Name = "label1";
-            label1.Size = new Size(616, 45);
+            label1.Size = new Size(533, 45);
             label1.TabIndex = 0;
             label1.Text = "This tool will backup and swap your current VisitedStarsCache.dat with one generated with known systems around your current location. The game cannot be running when the swap happens.\r\n\r\n";
             // 
@@ -71,20 +71,10 @@
             linkEDGalaxy.UseCompatibleTextRendering = true;
             linkEDGalaxy.LinkClicked += linkEDGalaxy_LinkClicked;
             // 
-            // txtCommander
-            // 
-            txtCommander.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            tableLayoutPanel1.SetColumnSpan(txtCommander, 3);
-            txtCommander.Location = new Point(89, 54);
-            txtCommander.Name = "txtCommander";
-            txtCommander.ReadOnly = true;
-            txtCommander.Size = new Size(533, 23);
-            txtCommander.TabIndex = 2;
-            // 
             // btnNo
             // 
             btnNo.Anchor = AnchorStyles.Left;
-            btnNo.Location = new Point(547, 146);
+            btnNo.Location = new Point(464, 146);
             btnNo.Name = "btnNo";
             btnNo.Size = new Size(75, 23);
             btnNo.TabIndex = 9;
@@ -95,7 +85,7 @@
             // btnYes
             // 
             btnYes.Anchor = AnchorStyles.Right;
-            btnYes.Location = new Point(466, 146);
+            btnYes.Location = new Point(383, 146);
             btnYes.Name = "btnYes";
             btnYes.Size = new Size(75, 23);
             btnYes.TabIndex = 8;
@@ -120,16 +110,16 @@
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle());
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle());
-            tableLayoutPanel1.Controls.Add(txtSystem, 1, 2);
             tableLayoutPanel1.Controls.Add(label3, 0, 2);
             tableLayoutPanel1.Controls.Add(label1, 0, 0);
             tableLayoutPanel1.Controls.Add(label2, 0, 1);
-            tableLayoutPanel1.Controls.Add(txtCommander, 1, 1);
             tableLayoutPanel1.Controls.Add(btnNo, 3, 4);
             tableLayoutPanel1.Controls.Add(btnYes, 2, 4);
             tableLayoutPanel1.Controls.Add(lblCloseWarning, 1, 4);
             tableLayoutPanel1.Controls.Add(linkEDGalaxy, 1, 3);
             tableLayoutPanel1.Controls.Add(btnRestore, 0, 4);
+            tableLayoutPanel1.Controls.Add(comboCmdrs, 1, 1);
+            tableLayoutPanel1.Controls.Add(comboSystem, 1, 2);
             tableLayoutPanel1.Location = new Point(0, 0);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.Padding = new Padding(3);
@@ -139,18 +129,28 @@
             tableLayoutPanel1.RowStyles.Add(new RowStyle());
             tableLayoutPanel1.RowStyles.Add(new RowStyle());
             tableLayoutPanel1.RowStyles.Add(new RowStyle());
-            tableLayoutPanel1.Size = new Size(628, 186);
+            tableLayoutPanel1.Size = new Size(545, 186);
             tableLayoutPanel1.TabIndex = 0;
             // 
-            // txtSystem
+            // comboCmdrs
             // 
-            txtSystem.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            tableLayoutPanel1.SetColumnSpan(txtSystem, 3);
-            txtSystem.Location = new Point(89, 83);
-            txtSystem.Name = "txtSystem";
-            txtSystem.ReadOnly = true;
-            txtSystem.Size = new Size(533, 23);
-            txtSystem.TabIndex = 4;
+            comboCmdrs.cmdrFid = null;
+            tableLayoutPanel1.SetColumnSpan(comboCmdrs, 3);
+            comboCmdrs.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboCmdrs.FormattingEnabled = true;
+            comboCmdrs.Location = new Point(89, 54);
+            comboCmdrs.Name = "comboCmdrs";
+            comboCmdrs.Size = new Size(450, 23);
+            comboCmdrs.TabIndex = 11;
+            // 
+            // comboSystem
+            // 
+            tableLayoutPanel1.SetColumnSpan(comboSystem, 3);
+            comboSystem.FormattingEnabled = true;
+            comboSystem.Location = new Point(89, 83);
+            comboSystem.Name = "comboSystem";
+            comboSystem.Size = new Size(450, 23);
+            comboSystem.TabIndex = 10;
             // 
             // label3
             // 
@@ -167,7 +167,7 @@
             lblCloseWarning.Anchor = AnchorStyles.None;
             lblCloseWarning.AutoSize = true;
             lblCloseWarning.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            lblCloseWarning.Location = new Point(196, 150);
+            lblCloseWarning.Location = new Point(155, 150);
             lblCloseWarning.Margin = new Padding(3);
             lblCloseWarning.Name = "lblCloseWarning";
             lblCloseWarning.Size = new Size(156, 15);
@@ -195,7 +195,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            ClientSize = new Size(630, 187);
+            ClientSize = new Size(547, 187);
             ControlBox = false;
             Controls.Add(tableLayoutPanel1);
             FormBorderStyle = FormBorderStyle.FixedDialog;
@@ -214,7 +214,6 @@
 
         private Label label1;
         private LinkLabel linkEDGalaxy;
-        private TextBox txtCommander;
         private FlatButton btnNo;
         private FlatButton btnYes;
         private TableLayoutPanel tableLayoutPanel1;
@@ -222,7 +221,8 @@
         private System.Windows.Forms.Timer timer;
         private Label lblCloseWarning;
         private Label label3;
-        private TextBox txtSystem;
         private FlatButton btnRestore;
+        private ComboStarSystem comboSystem;
+        private ComboCmdr comboCmdrs;
     }
 }

@@ -29,7 +29,6 @@ namespace SrvSurvey.forms
         private static string folderGameData = Path.GetFullPath(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Frontier Developments", "Elite Dangerous"));
         private static string cacheFilename = "VisitedStarsCache.dat";
 
-        private CommanderSettings cmdr;
         private string systemName;
 
         private string pathOriginal;
@@ -41,17 +40,25 @@ namespace SrvSurvey.forms
             this.Icon = Icons.sphere;
             Util.applyTheme(this);
 
-            this.cmdr = cmdr;
+            this.comboCmdrs.cmdrFid = cmdr.fid;
             this.systemName = systemName ?? cmdr.currentSystem ?? "Sol";
+            this.comboSystem.Text = this.systemName;
 
-            var fidNum = this.cmdr.fid.Substring(1);
+            var fidNum = cmdr.fid.Substring(1);
             this.pathOriginal = Path.Combine(folderGameData, fidNum, cacheFilename);
             this.pathBackup = Path.Combine(folderGameData, fidNum, "backup-" + cacheFilename);
 
-            // TODO: Use a combo to pick cmdr's?
-            txtCommander.Text = $"{this.cmdr.commander} ({this.cmdr.fid})";
-            // TODO: Use a custom combo box for picking star system names
-            txtSystem.Text = this.systemName;
+            comboSystem.SelectedIndexChanged += (sender, e) =>
+            {
+                this.systemName = comboSystem.SelectedSystem?.ToString()!;
+            };
+
+            comboCmdrs.SelectedIndexChanged += (sender, e) =>
+            {
+                var fidNum = comboCmdrs.cmdrFid.Substring(1);
+                this.pathOriginal = Path.Combine(folderGameData, fidNum, cacheFilename);
+                this.pathBackup = Path.Combine(folderGameData, fidNum, "backup-" + cacheFilename);
+            };
 
             timer_Tick(null!, null!);
             timer.Start();
@@ -100,6 +107,7 @@ namespace SrvSurvey.forms
             btnYes.Enabled = false;
             btnRestore.Enabled = false;
             linkEDGalaxy.Focus();
+            this.Cursor = Cursors.WaitCursor;
             Application.DoEvents();
 
             // first - backup the original
@@ -122,11 +130,11 @@ namespace SrvSurvey.forms
         {
             if (File.Exists(pathBackup))
             {
-                Game.log($"Backup file already exists for: {this.cmdr.commander} ({this.cmdr.fid})");
+                Game.log($"Backup file already exists for: {this.comboCmdrs.cmdrName} ({this.comboCmdrs.cmdrFid})");
             }
             else
             {
-                Game.log($"Backing up {cacheFilename} for: {this.cmdr.commander} ({this.cmdr.fid})");
+                Game.log($"Backing up {cacheFilename} for: {this.comboCmdrs.cmdrName} ({this.comboCmdrs.cmdrFid})");
                 File.Copy(pathOriginal, pathBackup, true);
             }
         }

@@ -1,7 +1,6 @@
 ﻿using BioCriterias;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using SrvSurvey.canonn;
 using SrvSurvey.game;
 using SrvSurvey.units;
 using System.Diagnostics;
@@ -22,28 +21,44 @@ namespace SrvSurvey.net
 
         public async Task<GetSystemResponse> getSystems(string systemName)
         {
+            return await NetCache.query(systemName, async () =>
+            {
+                Game.log($"Searching Spansh api/systems by name: {systemName}");
+
+                // https://spansh.co.uk/api/systems/field_values/system_names?q=Colonia
+                var json = await Spansh.client.GetStringAsync($"https://spansh.co.uk/api/systems/field_values/system_names?q={Uri.EscapeDataString(systemName)}");
+                var systems = JsonConvert.DeserializeObject<GetSystemResponse>(json)!;
+                return systems;
+            });
+        }
+
+        public readonly Func<string, Task<GetSystemResponse>> getSystems2 = NetCache.getCachingQuery(async (string systemName) => // Not really
+        {
             Game.log($"Searching Spansh api/systems by name: {systemName}");
 
             // https://spansh.co.uk/api/systems/field_values/system_names?q=Colonia
             var json = await Spansh.client.GetStringAsync($"https://spansh.co.uk/api/systems/field_values/system_names?q={Uri.EscapeDataString(systemName)}");
             var systems = JsonConvert.DeserializeObject<GetSystemResponse>(json)!;
             return systems;
-        }
+        });
 
-        public async Task<long?> getSystemAddress(string systemName)
+        public Task<long> getSystemAddress(string systemName)
         {
-            Game.log($"Searching Spansh api/systems for SystemAddressby name: {systemName}");
+            return NetCache.query(systemName, async () =>
+            {
+                Game.log($"Searching Spansh api/systems for SystemAddress by name: {systemName}");
 
-            // https://spansh.co.uk/api/systems/field_values/system_names?q=Colonia
-            var json = await Spansh.client.GetStringAsync($"https://spansh.co.uk/api/systems/field_values/system_names?q={Uri.EscapeDataString(systemName)}");
-            var systems = JsonConvert.DeserializeObject<GetSystemResponse>(json)!;
+                // https://spansh.co.uk/api/systems/field_values/system_names?q=Colonia
+                var json = await Spansh.client.GetStringAsync($"https://spansh.co.uk/api/systems/field_values/system_names?q={Uri.EscapeDataString(systemName)}");
+                var systems = JsonConvert.DeserializeObject<GetSystemResponse>(json)!;
 
-            var firstMatch = systems.min_max.FirstOrDefault();
+                var firstMatch = systems.min_max.FirstOrDefault();
 
-            if (firstMatch?.name == systemName)
-                return firstMatch.id64;
+                if (firstMatch?.name == systemName)
+                    return firstMatch.id64;
 
-            return null;
+                return 0;
+            });
         }
 
         public async Task<ApiSystem.Record> getSystem(long systemAddress)
@@ -262,6 +277,11 @@ namespace SrvSurvey.net
             public StarPos toStarPos()
             {
                 return new StarPos(this.x, this.y, this.z);
+            }
+
+            public override string ToString()
+            {
+                return name;
             }
         }
     }
