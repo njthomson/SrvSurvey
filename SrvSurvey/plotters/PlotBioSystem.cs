@@ -332,6 +332,23 @@ namespace SrvSurvey.plotters
                 newLine(true);
             }
 
+            if (body.geoSignalCount > 0 && Debugger.IsAttached)
+            {
+                dty += ten;
+                g.DrawLine(GameColors.penGameOrange1, eight, dty - five, this.ClientSize.Width - eight, dty - five);
+                dty += two;
+
+                drawTextAt(eight, $"Geo signals: {body.bioSignalCount}", GameColors.brushGameOrange);
+                newLine(+four, true);
+
+                // geo signals?
+                foreach (var geoName in body.geoSignals.Select(_ => _.nameLocalized).ToHashSet())
+                {
+                    this.drawTextAt(twoEight, $"{geoName}");
+                    newLine(+four, true);
+                }
+            }
+
             // resize window as necessary
             formAdjustSize(+ten, +ten);
         }

@@ -170,6 +170,14 @@ namespace SrvSurvey.plotters
                     netData.special["Guardian"] = list;
                 }
             }
+
+            // are we entering a different galactic region?
+            var nextRegion = EliteDangerousRegionMap.RegionMap.FindRegionForBoxel(next.SystemAddress);
+            if (nextRegion.Region.Name != GalacticRegions.current)
+            {
+                netData.special ??= new();
+                netData.special["Now entering"] = new() { nextRegion.Region.Name };
+            }
         }
 
         private void calcHopDistances(List<RouteEntry> route)
@@ -260,7 +268,7 @@ namespace SrvSurvey.plotters
             {
                 foreach (var pair in netData.special)
                 {
-                    drawTextAt2(eight, $"▶️ {pair.Key}: ", GameColors.Cyan, GameColors.fontSmallBold);
+                    drawTextAt2(eight, $"▶️ {pair.Key}: ", GameColors.Cyan);
                     drawTextAt2(string.Join(", ", pair.Value), GameColors.Cyan);
                     newLine(+two, true);
                 }

@@ -153,7 +153,8 @@
         "# hit count: 5550",
         "atmosType [Ammonia]",
         "     temp [170 ~ 177]",
-        "atmosComp [Ammonia >= 100]"
+        "atmosComp [Ammonia >= 100]",
+        "  regions [1,2,3,4,5,6,10,11,12,13,14,15,24,25,26,27,28,29,30,31,32,33,34,36,37,38,39,41,42]"
       ],
       "children": [
         {

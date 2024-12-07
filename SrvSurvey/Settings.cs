@@ -223,7 +223,7 @@ namespace SrvSurvey
             if (File.Exists(settingsPath))
             {
                 var json = File.ReadAllText(settingsPath);
-                if (!string.IsNullOrEmpty(json))
+                if (!string.IsNullOrWhiteSpace(json))
                 {
                     try
                     {

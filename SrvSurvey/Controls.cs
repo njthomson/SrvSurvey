@@ -1,4 +1,5 @@
 ﻿using SrvSurvey.game;
+using SrvSurvey.net;
 using SrvSurvey.widgets;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
@@ -313,7 +314,7 @@ namespace SrvSurvey
     /// </summary>
     internal class ComboStarSystem : ComboBox
     {
-        private List<MinMax> matches = new();
+        private List<Spansh.Reference> matches = new();
         private string lastQuery = "";
 
         public ComboStarSystem() : base()
@@ -327,7 +328,7 @@ namespace SrvSurvey
             Game.log("OnSelectedValueChanged");
         }
 
-        public MinMax? SelectedSystem
+        public Spansh.Reference? SelectedSystem
         {
             get => this.matches[this.SelectedIndex];
         }

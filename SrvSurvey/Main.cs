@@ -1751,6 +1751,7 @@ namespace SrvSurvey
         private void btnCodexBingo_Click(object sender, EventArgs e)
         {
             BaseForm.show<FormCodexBingo>();
+            //BaseForm.show<FormBoxelSearch>();
         }
     }
 }

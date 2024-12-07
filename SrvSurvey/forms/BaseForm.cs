@@ -16,6 +16,7 @@ namespace SrvSurvey.forms
             this.DoubleBuffered = true;
             this.Icon = Icons.logo;
 
+            this.isDraggable = this.GetType().GetCustomAttribute<DraggableAttribute>() != null;
             this.trackPosition = this.GetType().GetCustomAttribute<TrackPositionAttribute>() != null;
         }
 
@@ -215,7 +216,6 @@ namespace SrvSurvey.forms
         public FixedForm()
         {
             titleHeight = scaleBy(titleHeight);
-            this.isDraggable = this.GetType().GetCustomAttribute<DraggableAttribute>() != null;
         }
 
         #region fake title bar

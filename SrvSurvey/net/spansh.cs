@@ -1,5 +1,6 @@
 ﻿using BioCriterias;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 using SrvSurvey.game;
 using SrvSurvey.units;
@@ -8,7 +9,7 @@ using System.Text;
 
 namespace SrvSurvey.net
 {
-    internal class Spansh
+    internal partial class Spansh
     {
         private static HttpClient client;
 
@@ -31,16 +32,6 @@ namespace SrvSurvey.net
                 return systems;
             });
         }
-
-        public readonly Func<string, Task<GetSystemResponse>> getSystems2 = NetCache.getCachingQuery(async (string systemName) => // Not really
-        {
-            Game.log($"Searching Spansh api/systems by name: {systemName}");
-
-            // https://spansh.co.uk/api/systems/field_values/system_names?q=Colonia
-            var json = await Spansh.client.GetStringAsync($"https://spansh.co.uk/api/systems/field_values/system_names?q={Uri.EscapeDataString(systemName)}");
-            var systems = JsonConvert.DeserializeObject<GetSystemResponse>(json)!;
-            return systems;
-        });
 
         public Task<long> getSystemAddress(string systemName)
         {
@@ -96,6 +87,24 @@ namespace SrvSurvey.net
             return systemDump.system;
         }
 
+        public async Task<SystemResponse> getBoxelSystems(string systemName)
+        {
+
+            Game.log($"getBoxelSystems: {systemName}");
+
+            var q = new SystemQuery
+            {
+                page = 0,
+                size = 50,
+                sort = new() { new("name", SortOrder.asc) },
+                filters = new() { { "name", new SystemQuery.Value(systemName) } }
+            };
+
+            var obj = await this.querySystems(q);
+            Game.log(obj);
+            return obj;
+        }
+
         public async Task getMinorFactionSystems()
         {
             Game.log($"Requesting api/systems/search for factions by body");
@@ -130,7 +139,7 @@ namespace SrvSurvey.net
                 var foo = new MinorFactionSystem
                 {
                     name = system.name,
-                    coords = new MinorFactionSystemCoords { x = system.x, y = system.y, z = system.z },
+                    coords = new MinorFactionSystem.Coords { x = system.x, y = system.y, z = system.z },
                     cat = new List<int> { },
                     infos = $"Population: {system.population.ToString("N0")}%3Cbr%20%3E"
                 };
@@ -263,27 +272,8 @@ namespace SrvSurvey.net
     {
         // {"min_max":[{"id64":10477373803,"name":"Sol","x":0.0,"y":0.0,"z":0.0},{"id64":1458376315610,"name":"Solati","x":66.53125,"y":29.1875,"z":34.6875},{"id64":5059379007779,"name":"Solitude","x":-9497.65625,"y":-911.0,"z":19807.625},{"id64":5267550898539,"name":"Solibamba","x":99.5625,"y":40.125,"z":26.8125},{"id64":11538024121505,"name":"Sollaro","x":-9528.625,"y":-885.59375,"z":19815.4375}],"values":["Sol","Solati","Solitude","Solibamba","Sollaro"]}
 
-        public List<MinMax> min_max;
+        public List<Spansh.Reference> min_max;
         public List<string> values;
-
-        internal class MinMax
-        {
-            public long id64;
-            public string name;
-            public double x;
-            public double y;
-            public double z;
-
-            public StarPos toStarPos()
-            {
-                return new StarPos(this.x, this.y, this.z);
-            }
-
-            public override string ToString()
-            {
-                return name;
-            }
-        }
     }
 
     internal static class CriteriaBuilder
@@ -1000,12 +990,29 @@ namespace SrvSurvey.net
                 public bool? isLandable;
                 public string? terraformingState;
 
-                public ApiSystemDumpSignals? signals;
+                public Signals? signals;
 
                 // TODO? parents[]
 
-                public List<ApiSystemDumpRing>? rings;
-                public List<ApiSystemDumpStation> stations;
+                public List<Ring>? rings;
+                public List<Station> stations;
+
+                internal class Ring
+                {
+                    public string name;
+                    public string type;
+                    public double mass;
+                    public double innerRadius;
+                    public double outerRadius;
+                    public Signals? signals;
+                }
+
+                internal class Signals
+                {
+                    public List<string>? genuses;
+                    public Dictionary<string, int>? signals;
+                    public DateTimeOffset updateTime;
+                }
             }
 
             public class Station
@@ -1025,37 +1032,6 @@ namespace SrvSurvey.net
                 public DateTime updateTime;
             }
         }
-
-    }
-
-    internal class ApiSystemDumpStation
-    {
-        public long id;
-        public string government;
-        public string name;
-        public string type;
-        public string primaryEconomy;
-        public Dictionary<string, int> landingPads;
-        // TODO: market ?
-        // TODO: outfitting ?
-        public List<string> services;
-    }
-
-    internal class ApiSystemDumpSignals
-    {
-        public List<string>? genuses;
-        public Dictionary<string, int>? signals;
-        public DateTimeOffset updateTime;
-    }
-
-    internal class ApiSystemDumpRing
-    {
-        public string name;
-        public string type;
-        public double mass;
-        public double innerRadius;
-        public double outerRadius;
-        public ApiSystemDumpSignals? signals;
     }
 
     class SystemsSearchResults
@@ -1063,25 +1039,32 @@ namespace SrvSurvey.net
         public int count;
         public int from;
         public int size;
-        public List<SystemsSearchResult> results;
-    }
+        public List<Result> results;
 
-    class SystemsSearchResult
-    {
-        public string name;
-        public double x;
-        public double y;
-        public double z;
-        public long population;
-        public List<MinorFactionPresence> minor_faction_presences;
+        public class Result
+        {
+            public string name;
+            public double x;
+            public double y;
+            public double z;
+            public long population;
+            public List<MinorFactionPresence> minor_faction_presences;
+        }
     }
 
     class MinorFactionSystem
     {
         public string name;
-        public MinorFactionSystemCoords coords;
+        public Coords coords;
         public string infos;
         public List<int> cat;
+
+        internal class Coords
+        {
+            public double x;
+            public double y;
+            public double z;
+        }
     }
 
     class MinorFactionPresence
@@ -1093,13 +1076,7 @@ namespace SrvSurvey.net
         public string? allegiance;
     }
 
-    internal class MinorFactionSystemCoords
-    {
-        public double x;
-        public double y;
-        public double z;
-    }
-
+    [JsonConverter(typeof(StringEnumConverter))]
     public enum SortOrder
     {
         asc,

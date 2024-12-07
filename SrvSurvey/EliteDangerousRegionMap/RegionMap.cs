@@ -21,6 +21,11 @@ namespace EliteDangerousRegionMap
     {
         public int Id { get; set; }
         public string Name { get; set; }
+
+        public override string ToString()
+        {
+            return $"{Name} ({Id})";
+        }
     }
 
     public class SystemBoxel
@@ -29,6 +34,11 @@ namespace EliteDangerousRegionMap
         public double Y { get; set; }
         public double Z { get; set; }
         public Region Region { get; set; }
+
+        public override string ToString()
+        {
+            return $"[{X}, {Y}, {Z}] {Region}";
+        }
     }
 
     public static partial class RegionMap
