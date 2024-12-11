@@ -671,8 +671,8 @@ namespace SrvSurvey
         {
             // draw side-bars to highlight this is what we're currently scanning
             var r = tree.ClientSize.Width - 3;
-            g.DrawLine(pen, 2, node.Bounds.Top, 2, node.Bounds.Bottom);
-            g.DrawLine(pen, r, node.Bounds.Top, r, node.Bounds.Bottom);
+            g.DrawLine(pen, 2, node.Bounds.Top - 0.5f, 2, node.Bounds.Bottom);
+            g.DrawLine(pen, r, node.Bounds.Top - 0.5f, r, node.Bounds.Bottom);
         }
 
         private void drawNodePie(Graphics g, Point pt, float fill, bool highlight)

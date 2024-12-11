@@ -9,8 +9,11 @@ namespace SrvSurvey.plotters
         {
             get => Game.activeGame != null
                 && Game.activeGame.mode == GameMode.GalaxyMap
-                && Game.activeGame.cmdr.sphereLimit.active;
+                && (sphereLimitActive || boxelSearchActive);
         }
+
+        private static bool sphereLimitActive { get => Game.activeGame?.cmdr.sphereLimit.active == true; }
+        private static bool boxelSearchActive { get => Game.activeGame?.cmdr.boxelSearch?.active == true; }
 
         private double distance = -1;
         private string targetSystemName;
@@ -19,7 +22,7 @@ namespace SrvSurvey.plotters
         private PlotSphericalSearch() : base()
         {
             this.Size = Size.Empty;
-            this.Font = GameColors.fontMiddle;
+            this.Font = GameColors.fontSmaller;
             this.destinationName = game.status.Destination?.Name;
         }
 
@@ -43,14 +46,14 @@ namespace SrvSurvey.plotters
 
         protected override void onJournalEntry(NavRoute entry)
         {
-            if (this.IsDisposed || game.cmdr.sphereLimit.centerStarPos == null) return;
+            if (!sphereLimitActive || this.IsDisposed || game.cmdr.sphereLimit.centerStarPos == null) return;
 
             measureDistanceToSystem();
         }
 
         protected override void onJournalEntry(NavRouteClear entry)
         {
-            if (this.IsDisposed || game.cmdr.sphereLimit.centerStarPos == null) return;
+            if (!sphereLimitActive || this.IsDisposed || game.cmdr.sphereLimit.centerStarPos == null) return;
 
             this.distance = -1;
             this.targetSystemName = "N/A";
@@ -59,7 +62,7 @@ namespace SrvSurvey.plotters
 
         private void measureDistanceToSystem()
         {
-            if (game.cmdr.sphereLimit.centerStarPos == null) return;
+            if (!sphereLimitActive || game.cmdr.sphereLimit.centerStarPos == null) return;
 
             var lastSystem = game.navRoute.Route.LastOrDefault();
             if (lastSystem?.StarSystem == null)
@@ -86,7 +89,7 @@ namespace SrvSurvey.plotters
             base.Status_StatusChanged(blink);
 
             // if the destination changed ...
-            if (game.status.Destination != null && this.destinationName != game.status.Destination.Name)
+            if (sphereLimitActive && game.status.Destination != null && this.destinationName != game.status.Destination.Name)
             {
                 this.destinationName = game.status.Destination.Name;
                 this.targetSystemName = game.status.Destination.Name;
@@ -96,7 +99,12 @@ namespace SrvSurvey.plotters
                 Game.edsm.getSystems(this.destinationName).ContinueWith(t =>
                 {
                     var data = t.Result;
-                    if (!(data.Length > 0)) return;
+                    if (!(data.Length > 0))
+                    {
+                        this.distance = -2;
+                        this.Invalidate();
+                        return;
+                    }
 
                     var starPos = data.FirstOrDefault()?.coords!;
 
@@ -158,13 +166,41 @@ namespace SrvSurvey.plotters
 
         protected override void onPaintPlotter(PaintEventArgs e)
         {
-            this.dty += this.drawTextAt(RES("From", game.cmdr.sphereLimit.centerSystemName)).Height;
-            this.dtx = eight;
-            this.dty += this.drawTextAt(RES("To", this.targetSystemName)).Height;
-
-            if (this.distance < 0)
+            if (!sphereLimitActive && !boxelSearchActive)
             {
-                this.drawTextAt(eight, RES("DistanceInProgress"));
+                Program.closePlotter<PlotSphericalSearch>();
+                return;
+            }
+
+            if (sphereLimitActive)
+                this.drawSphereLimit();
+            if (boxelSearchActive)
+                this.drawBoxelSearch();
+
+            if (sphereLimitActive && formSize.Width < scaled(240)) formSize.Width = scaled(240);
+            this.formAdjustSize(0, +ten);
+        }
+
+        private void drawSphereLimit()
+        {
+            var ww = ten + Util.maxWidth(this.Font, RES("From"), RES("To"), RES("Distance"));
+
+            this.drawTextAt(eight, RES("From"));
+            this.drawTextAt(ww, game.cmdr.sphereLimit.centerSystemName);
+            newLine(true);
+
+            this.drawTextAt(eight, RES("To"));
+            this.drawTextAt(ww, this.targetSystemName);
+            newLine(true);
+
+            this.drawTextAt(eight, RES("Distance"));
+            if (this.distance == -1)
+            {
+                this.drawTextAt(ww, "...");
+            }
+            else if (this.distance == -2)
+            {
+                this.drawTextAt(ww, RES("UnknownDist"), GameColors.brushRed);
             }
             else if (this.distance >= 0)
             {
@@ -172,11 +208,43 @@ namespace SrvSurvey.plotters
                 var limitDist = game.cmdr.sphereLimit.radius.ToString("N2");
 
                 if (this.distance < game.cmdr.sphereLimit.radius)
-                    this.drawTextAt(eight, RES("DistanceWithin", dist, limitDist), GameColors.brushCyan);
+                    this.drawTextAt(ww, RES("DistanceWithin", dist, limitDist), GameColors.brushCyan);
                 else
-                    this.drawTextAt(eight, RES("DistanceExceeds", dist, limitDist), GameColors.brushRed);
+                    this.drawTextAt(ww, RES("DistanceExceeds", dist, limitDist), GameColors.brushRed);
             }
+
+            newLine(true);
+        }
+
+        private void drawBoxelSearch()
+        {
+            if (sphereLimitActive)
+            {
+                dty += four;
+                strikeThrough(eight, dty, this.Width - oneSix, false);
+                dty += eight;
+            }
+
+            var boxelSearch = Game.activeGame?.cmdr.boxelSearch;
+            if (boxelSearch == null) return;
+
+            var ff = GameColors.fontSmall;
+            var ww = ten + Util.maxWidth(ff, RES("Boxel"), RES("Visited"), RES("Next"));
+
+            this.drawTextAt(eight, RES("Boxel"), ff);
+            this.drawTextAt(ww, boxelSearch.sysName.prefix + "xxx", ff);
+            newLine(true);
+
+            this.drawTextAt(eight, RES("Visited"), ff);
+            this.drawTextAt(ww, RES("VisitedOf", boxelSearch.countVisited, boxelSearch.max), ff);
+            newLine(true);
+
+            this.drawTextAt(eight, RES("Next"), ff);
+            var next = boxelSearch.getNextToVisit() ?? "";
+            this.drawTextAt(ww, next, GameColors.fontMiddle);
+            dtx += ten;
+
+            newLine(true);
         }
     }
-
 }

@@ -58,6 +58,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="copyNextBoxel">
+    <value>* IN GAL-MAP, COPY THE NEXT BOXEL SEARCH SYSTEM TO CLIPBOARD. →→→!</value>
+    <comment>In gal-map, copy the next boxel search system to clipboard.</comment>
+  </data>
   <data name="mapBeHuge">
     <value>* TOGGLES MAKING THE MAP FILL HALF THE SCREEN, AT HUMAN SETTLEMENTS ONLY. →→→!</value>
     <comment>Toggles making the map fill half the screen, at Human settlements only.</comment>
@@ -73,6 +77,14 @@
   <data name="mapZoomOut">
     <value>* ZOOM OUT ON MAPS AT HUMAN AND GUARDIAN SITES. →→→!</value>
     <comment>Zoom out on maps at Human and Guardian sites.</comment>
+  </data>
+  <data name="showBodyInfo">
+    <value>* FORCE SHOW THE BODY INFO OVERLAY. →→→!</value>
+    <comment>Force show the Body info overlay.</comment>
+  </data>
+  <data name="showFssInfo">
+    <value>* FORCE SHOW THE FSS INFO OVERLAY. →→→!</value>
+    <comment>Force show the FSS info overlay.</comment>
   </data>
   <data name="showJumpInfo">
     <value>* FORCE TOGGLE THE FSD JUMP OVERLAY TO BE VISIBLE WITHOUT STARTING TO JUMP. WILL NOT APPEAR IF THERE IS NO ACTIVE ROUTE. →→→!</value>

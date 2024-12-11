@@ -1,14 +1,4 @@
-﻿using SrvSurvey.game;
-using SrvSurvey.Properties;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using SrvSurvey.Properties;
 
 namespace SrvSurvey
 {
@@ -16,17 +6,13 @@ namespace SrvSurvey
     {
         public string keyChord { get => textChord.Text; }
 
-        public FormSetKeyChord(string keyChord)
+        public FormSetKeyChord(string? keyChord)
         {
             InitializeComponent();
             this.Icon = Icons.spanner;
             textChord.Text = keyChord;
             textChord.SelectionStart = 0;
             textChord.SelectionLength = 0;
-
-            //btnAccept.Text += "abcdefg xx !";
-            //btnDisable.Text += "abcdefg xx !";
-            //btnCancel.Text += "abcdefg xx !";
 
             // force form width as it doesn't happen correctly by itself
             this.Width = flowButtons.Right + (flowButtons.Left * 2) + 4;

@@ -61,28 +61,49 @@
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
+  <data name="Boxel" xml:space="preserve">
+    <value>Boxel:</value>
+    <comment>Header before name of boxel we are searching</comment>
+  </data>
+  <data name="Distance" xml:space="preserve">
+    <value>Distance:</value>
+    <comment>Header before distance between systems</comment>
+  </data>
   <data name="DistanceExceeds" xml:space="preserve">
-    <value>Distance: {0}ly - exceeds {1} ly</value>
+    <value>{0}ly - exceeds {1} ly</value>
     <comment>Shown when measured distance exceeds some limit.
 {0} float, 2 decimal places, measured distance between 2 star systems
 {1} float, 2 decimal places, the maximum distance allowed</comment>
   </data>
-  <data name="DistanceInProgress" xml:space="preserve">
-    <value>Distance: ...</value>
-    <comment>Shown when we are calculating the distance between 2 star systems.</comment>
-  </data>
   <data name="DistanceWithin" xml:space="preserve">
-    <value>Distance: {0} - within {1} ly</value>
+    <value>{0} - within {1} ly</value>
     <comment>Shown when measured distance is within some limit.
 {0} float, 2 decimal places, measured distance between 2 star systems
 {1} float, 2 decimal places, the maximum distance allowed</comment>
   </data>
   <data name="From" xml:space="preserve">
-    <value>From: {0}</value>
-    <comment>{0} string, name of star system</comment>
+    <value>From:</value>
+    <comment>Header before name of central star system</comment>
+  </data>
+  <data name="Next" xml:space="preserve">
+    <value>Next:</value>
+    <comment>Header before name of next boxel system to visit</comment>
   </data>
   <data name="To" xml:space="preserve">
-    <value>To: {0}</value>
-    <comment>{0} string, name of star system</comment>
+    <value>To:</value>
+    <comment>Header before name of target star system</comment>
+  </data>
+  <data name="UnknownDist" xml:space="preserve">
+    <value>Unknown (plot route)</value>
+    <comment>Message shown when we do not know the distance, but would if the cmdr plots a route</comment>
+  </data>
+  <data name="Visited" xml:space="preserve">
+    <value>Visited:</value>
+    <comment>Header before count of systems visited</comment>
+  </data>
+  <data name="VisitedOf" xml:space="preserve">
+    <value>{0} of {1}</value>
+    <comment>{0} int, how many systems we have visited
+{1} int, how many systems total to visit</comment>
   </data>
 </root>

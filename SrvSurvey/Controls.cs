@@ -308,7 +308,6 @@ namespace SrvSurvey
         }
     }
 
-
     /// <summary>
     /// A ComboBox for choosing known star systems
     /// </summary>
@@ -322,15 +321,9 @@ namespace SrvSurvey
             this.DropDownStyle = ComboBoxStyle.DropDown;
         }
 
-        protected override void OnSelectedValueChanged(EventArgs e)
-        {
-            base.OnSelectedValueChanged(e);
-            Game.log("OnSelectedValueChanged");
-        }
-
         public Spansh.Reference? SelectedSystem
         {
-            get => this.matches[this.SelectedIndex];
+            get => this.matches.Count > 0 && this.SelectedIndex >= 0 ? this.matches[this.SelectedIndex] : null;
         }
 
         protected override void OnTextChanged(EventArgs e)
@@ -340,6 +333,12 @@ namespace SrvSurvey
 
             var query = this.Text;
             if (string.IsNullOrWhiteSpace(query)) return;
+
+            if (this.Text.StartsWith("(Current:") && Game.activeGame?.cmdr?.currentSystem != null)
+            {
+                Program.defer(() => this.Text = Game.activeGame.cmdr.currentSystem);
+                return;
+            }
 
             // before deferring...
             // do we have an exact match already?
@@ -356,12 +355,6 @@ namespace SrvSurvey
             // TODO: do we have a match with current results?
 
             Util.deferAfter(250, () => lookupSystems(query));
-        }
-
-        protected override void OnTextUpdate(EventArgs e)
-        {
-            base.OnTextUpdate(e);
-            Game.log("OnTextUpdate");
         }
 
         private void lookupSystems(string query)
@@ -384,6 +377,8 @@ namespace SrvSurvey
                 this.matches.Clear();
                 this.matches.AddRange(results.min_max);
                 this.Items.Clear();
+                if (Game.activeGame?.cmdr?.currentSystem != null)
+                    this.Items.Add($"(Current: {Game.activeGame.cmdr.currentSystem})");
                 this.Items.AddRange(results.values.ToArray());
 
                 this.lastQuery = query;

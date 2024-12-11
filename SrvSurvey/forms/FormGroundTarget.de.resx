@@ -189,7 +189,7 @@
     <value>FormGroundTarget</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>SrvSurvey.DraggableForm, SrvSurvey, Culture=neutral, PublicKeyToken=null</value>
+    <value>SrvSurvey.forms.FixedForm, SrvSurvey, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;txtLat.Name" xml:space="preserve">
     <value>txtLat</value>
@@ -224,9 +224,6 @@
   <data name="btnBegin.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
     <value>GrowAndShrink</value>
   </data>
-  <data name="btnBegin.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Flat</value>
-  </data>
   <data name="btnBegin.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 3</value>
   </data>
@@ -237,7 +234,7 @@
     <value>69, 27</value>
   </data>
   <data name="btnBegin.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+    <value>0</value>
   </data>
   <data name="btnBegin.Text">
     <value>&amp;Ziel setzen</value>
@@ -252,9 +249,6 @@
   <data name="btnCancel.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
     <value>GrowAndShrink</value>
   </data>
-  <data name="btnCancel.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Flat</value>
-  </data>
   <data name="btnCancel.Location" type="System.Drawing.Point, System.Drawing">
     <value>81, 3</value>
   </data>
@@ -265,7 +259,7 @@
     <value>55, 27</value>
   </data>
   <data name="btnCancel.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
+    <value>1</value>
   </data>
   <data name="btnCancel.Text">
     <value>Abbrechen</value>
@@ -282,9 +276,6 @@
   </data>
   <data name="btnPaste.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
     <value>None</value>
-  </data>
-  <data name="btnPaste.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Flat</value>
   </data>
   <data name="btnPaste.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -304,11 +295,11 @@
     <value>63, 27</value>
   </data>
   <data name="btnPaste.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
+    <value>6</value>
   </data>
   <data name="btnPaste.Text">
-    <value>Kleister</value>
-    <comment>Paste</comment>
+    <value>&amp; Einfügen</value>
+    <comment>&amp;Paste</comment>
   </data>
   <data name="btnPaste.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
     <value>ImageBeforeText</value>
@@ -322,9 +313,6 @@
   <data name="btnTargetCurrent.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
     <value>GrowAndShrink</value>
   </data>
-  <data name="btnTargetCurrent.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Flat</value>
-  </data>
   <data name="btnTargetCurrent.Location" type="System.Drawing.Point, System.Drawing">
     <value>92, 61</value>
   </data>
@@ -335,7 +323,7 @@
     <value>145, 27</value>
   </data>
   <data name="btnTargetCurrent.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
+    <value>5</value>
   </data>
   <data name="btnTargetCurrent.Text">
     <value>&amp;Aktueller Standort anvisieren</value>
@@ -350,9 +338,6 @@
   <data name="button1.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
     <value>GrowAndShrink</value>
   </data>
-  <data name="button1.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Flat</value>
-  </data>
   <data name="button1.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 61</value>
   </data>
@@ -363,7 +348,7 @@
     <value>80, 27</value>
   </data>
   <data name="button1.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="button1.Text">
     <value>&amp;Klares Ziel</value>
@@ -385,7 +370,7 @@
     <value>140, 33</value>
   </data>
   <data name="flowLayoutPanel1.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
+    <value>2</value>
   </data>
   <data name="label2.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Right</value>
@@ -403,7 +388,7 @@
     <value>50, 15</value>
   </data>
   <data name="label2.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
+    <value>0</value>
   </data>
   <data name="label2.Text">
     <value>Breitengrad:</value>
@@ -425,7 +410,7 @@
     <value>64, 15</value>
   </data>
   <data name="label3.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="label3.Text">
     <value>Länge:</value>
@@ -444,7 +429,7 @@
     <value>430, 85</value>
   </data>
   <data name="label6.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
+    <value>0</value>
   </data>
   <data name="label6.Text">
     <value>Hast du den Tipp von einem mysteriösen Fremden, zu einem Lat/Long auf einem Planeten oder Mond zu gehen?
@@ -479,7 +464,7 @@ Enter some Lat/Long position and guidance will appear when you approach.</commen
     <value>310, 91</value>
   </data>
   <data name="tableLayoutPanel1.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
+    <value>1</value>
   </data>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
     <value>7, 15</value>
@@ -507,7 +492,7 @@ Enter some Lat/Long position and guidance will appear when you approach.</commen
     <value>145, 23</value>
   </data>
   <data name="txtLat.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="txtLat.Text">
     <value>+12.34</value>
@@ -523,7 +508,7 @@ Enter some Lat/Long position and guidance will appear when you approach.</commen
     <value>145, 23</value>
   </data>
   <data name="txtLong.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="txtLong.Text">
     <value>-10.0</value>

@@ -27,6 +27,7 @@ namespace SrvSurvey
 
         public bool autoShowBioSummary = true;
         public bool autoShowBioPlot = true;
+        public bool autoHideBioPlotNoGear = false;
         public bool autoShowPlotFSS = true;
         public bool autoShowPlotFSSInfo = true;
         public bool autoShowPlotFSSInfoInSystemMap = false;
@@ -209,6 +210,8 @@ namespace SrvSurvey
             { KeyAction.mapZoomAuto, "CTRL SHIFT Backspace" },
             { KeyAction.mapBeHuge, "CTRL Backspace" },
             { KeyAction.showJumpInfo, "ALT D" },
+            { KeyAction.copyNextBoxel, "CTRL C" },
+            { KeyAction.showFssInfo, "ALT F" },
         };
 
         public bool keepOverlays = false;

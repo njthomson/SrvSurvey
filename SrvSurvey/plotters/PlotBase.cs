@@ -555,6 +555,9 @@ namespace SrvSurvey.plotters
             var c1 = highlight ? GameColors.penCyan1 : GameColors.penGameOrange1;
             var c2 = highlight ? GameColors.penDarkCyan1 : GameColors.penGameOrangeDim1;
 
+            x = (int)x;
+            y = (int)y;
+
             g.DrawLine(c1, x, y, x + w, y);
             g.DrawLine(c2, x + 1, y + 1, x + w + 1, y + 1);
         }
@@ -569,12 +572,12 @@ namespace SrvSurvey.plotters
         /// <summary>
         /// Draws text at the location of ( dtx, dty ) incrementing dtx by the width of the rendered string.
         /// </summary>
-        protected SizeF drawTextAt(string txt)
+        protected SizeF drawTextAt(string? txt)
         {
             return this.drawTextAt(txt, null, null);
         }
 
-        protected SizeF drawTextAt(float tx, string txt)
+        protected SizeF drawTextAt(float tx, string? txt)
         {
             return this.drawTextAt(tx, txt, null, null);
         }
@@ -582,17 +585,17 @@ namespace SrvSurvey.plotters
         /// <summary>
         /// Draws text at the location of ( dtx, dty ) incrementing dtx by the width of the rendered string.
         /// </summary>
-        protected SizeF drawTextAt(string txt, Font? font = null)
+        protected SizeF drawTextAt(string? txt, Font? font = null)
         {
             return this.drawTextAt(txt, null, font);
         }
 
-        protected SizeF drawTextAt(float tx, string txt, Font? font = null)
+        protected SizeF drawTextAt(float tx, string? txt, Font? font = null)
         {
             return this.drawTextAt(tx, txt, null, font);
         }
 
-        protected SizeF drawTextAt(string txt, Brush? brush = null, Font? font = null)
+        protected SizeF drawTextAt(string? txt, Brush? brush = null, Font? font = null)
         {
             return drawTextAt(this.dtx, txt, brush, font);
         }
@@ -600,9 +603,10 @@ namespace SrvSurvey.plotters
         /// <summary>
         /// Draws text at the location of ( dtx, dty ) incrementing dtx by the width of the rendered string.
         /// </summary>
-        protected SizeF drawTextAt(float tx, string txt, Brush? brush = null, Font? font = null, bool rightAlign = false)
+        protected SizeF drawTextAt(float tx, string? txt, Brush? brush = null, Font? font = null, bool rightAlign = false)
         {
             this.dtx = tx;
+            if (txt == null) return Size.Empty;
 
             brush = brush ?? GameColors.brushGameOrange;
             font = font ?? this.Font;

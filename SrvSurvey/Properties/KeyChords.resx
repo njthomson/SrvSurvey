@@ -82,4 +82,16 @@
     <value>Force toggle the FSD jump overlay to be visible without starting to jump. Will not appear if there is no active route.</value>
     <comment>A description of a key-chord setting</comment>
   </data>
+  <data name="copyNextBoxel" xml:space="preserve">
+    <value>In gal-map, copy the next boxel search system to clipboard.</value>
+    <comment>A description of a key-chord setting</comment>
+  </data>
+  <data name="showFssInfo" xml:space="preserve">
+    <value>Force show the FSS info overlay.</value>
+    <comment>A description of a key-chord setting</comment>
+  </data>
+  <data name="showBodyInfo" xml:space="preserve">
+    <value>Force show the Body info overlay.</value>
+    <comment>A description of a key-chord setting</comment>
+  </data>
 </root>

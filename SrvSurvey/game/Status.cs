@@ -204,6 +204,13 @@ namespace SrvSurvey
         public bool GlideMode { get => (this.Flags2 & StatusFlags2.GlideMode) > 0; }
         [JsonIgnore]
         public bool hudInAnalysisMode { get => (this.Flags & StatusFlags.HudInAnalysisMode) > 0; }
+
+        [JsonIgnore]
+        public bool landingGearDown { get => (this.Flags & StatusFlags.LandingGearDown) > 0; }
+        [JsonIgnore]
+        public bool cargoScoopDeployed { get => (this.Flags & StatusFlags.CargoScoopDeployed) > 0; }
+        [JsonIgnore]
+        public bool lightsOn { get => (this.Flags & StatusFlags.LightsOn) > 0; }
     }
 
     class FuelStatus

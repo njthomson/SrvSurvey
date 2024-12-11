@@ -58,6 +58,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="copyNextBoxel">
+    <value>В gal-map скопируйте следующую систему поиска бокселя в буфер обмена.</value>
+    <comment>In gal-map, copy the next boxel search system to clipboard.</comment>
+  </data>
   <data name="mapBeHuge">
     <value>Переключатели, заставляющие карту заполнять половину экрана, только в разделе «Человеческие поселения».</value>
     <comment>Toggles making the map fill half the screen, at Human settlements only.</comment>
@@ -73,6 +77,14 @@
   <data name="mapZoomOut">
     <value>Уменьшение масштаба на картах на объектах для людей и Стражей.</value>
     <comment>Zoom out on maps at Human and Guardian sites.</comment>
+  </data>
+  <data name="showBodyInfo">
+    <value>Принудительно отобразите наложение «Информация о теле».</value>
+    <comment>Force show the Body info overlay.</comment>
+  </data>
+  <data name="showFssInfo">
+    <value>Принудительно отобразить наложение информации FSS.</value>
+    <comment>Force show the FSS info overlay.</comment>
   </data>
   <data name="showJumpInfo">
     <value>С усилием переключите наложение прыжка FSD, чтобы оно было видно, не начиная прыжк. Не появится, если нет активного маршрута.</value>

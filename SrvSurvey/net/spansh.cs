@@ -87,22 +87,27 @@ namespace SrvSurvey.net
             return systemDump.system;
         }
 
-        public async Task<SystemResponse> getBoxelSystems(string systemName)
+        public async Task<SystemResponse> getBoxelSystems(string systemName, Spansh.Reference? from = null)
         {
-
-            Game.log($"getBoxelSystems: {systemName}");
-
-            var q = new SystemQuery
+            var cacheKey = $"{systemName}{from}";
+            return await NetCache.query(cacheKey, async () =>
             {
-                page = 0,
-                size = 50,
-                sort = new() { new("name", SortOrder.asc) },
-                filters = new() { { "name", new SystemQuery.Value(systemName) } }
-            };
+                Game.log($"getBoxelSystems: {systemName}");
 
-            var obj = await this.querySystems(q);
-            Game.log(obj);
-            return obj;
+                var q = new SystemQuery
+                {
+                    page = 0,
+                    size = 50,
+                    sort = new() { new("name", SortOrder.asc) },
+                    filters = new() { { "name", new SystemQuery.Value(systemName) } }
+                };
+
+                if (from != null) q.reference_coords = from;
+
+                var obj = await this.querySystems(q);
+                Game.log(obj);
+                return obj;
+            });
         }
 
         public async Task getMinorFactionSystems()

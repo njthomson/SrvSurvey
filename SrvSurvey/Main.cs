@@ -557,8 +557,9 @@ namespace SrvSurvey
                     this.txtCommander.Text = Game.settings.lastCommander + " ?";
 
                 this.txtVehicle.Text = "";
-                this.txtLocation.Text = "";
                 this.txtNearBody.Text = "";
+                this.txtLocation.Text = CommanderSettings.LoadCurrentOrLast()?.currentSystem ?? "";
+                btnCopyLocation.Enabled = !string.IsNullOrEmpty(this.txtLocation.Text);
 
                 if (game?.mode == GameMode.MainMenu)
                     this.txtMode.Text = "MainMenu";
@@ -1671,27 +1672,11 @@ namespace SrvSurvey
 
         //#endregion
 
-        private void btnSphereLimit_Click(object sender, EventArgs e)
-        {
-            Program.closePlotter<PlotSphericalSearch>();
-            new FormSphereLimit().ShowDialog(this);
-            this.updateSphereLimit();
-        }
-
-        private void btnRamTah_Click(object sender, EventArgs e)
-        {
-            BaseForm.show<FormRamTah>();
-        }
 
         private void btnPredictions_Click(object sender, EventArgs e)
         {
             game?.predictSystemSpecies();
             BaseForm.show<FormPredictions>();
-        }
-
-        private void btnCodexShow_Click(object sender, EventArgs e)
-        {
-            BaseForm.show<FormShowCodex>();
         }
 
         private readonly string[] comboDevItems = new[]
@@ -1746,6 +1731,23 @@ namespace SrvSurvey
                     comboDev.Enabled = true;
                 });
             });
+        }
+
+        private void btnCodexShow_Click(object sender, EventArgs e)
+        {
+            BaseForm.show<FormShowCodex>();
+        }
+
+        private void btnSphereLimit_Click(object sender, EventArgs e)
+        {
+            Program.closePlotter<PlotSphericalSearch>();
+            new FormSphereLimit().ShowDialog(this);
+            this.updateSphereLimit();
+        }
+
+        private void btnRamTah_Click(object sender, EventArgs e)
+        {
+            BaseForm.show<FormRamTah>();
         }
 
         private void btnCodexBingo_Click(object sender, EventArgs e)

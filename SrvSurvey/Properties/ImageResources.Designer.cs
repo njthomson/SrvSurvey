@@ -143,6 +143,16 @@ namespace SrvSurvey.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap boxel_32 {
+            get {
+                object obj = ResourceManager.GetObject("boxel_32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap braintree_18 {
             get {
                 object obj = ResourceManager.GetObject("braintree_18", resourceCulture);

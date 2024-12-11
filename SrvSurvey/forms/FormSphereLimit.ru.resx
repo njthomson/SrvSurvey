@@ -225,7 +225,7 @@
     <value>FormSphereLimit</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>SrvSurvey.DraggableForm, SrvSurvey, Culture=neutral, PublicKeyToken=null</value>
+    <value>SrvSurvey.forms.FixedForm, SrvSurvey, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;txtCurrentDistance.Name" xml:space="preserve">
     <value>txtCurrentDistance</value>
@@ -272,9 +272,6 @@
   <data name="btnAccept.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
     <value>GrowAndShrink</value>
   </data>
-  <data name="btnAccept.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Flat</value>
-  </data>
   <data name="btnAccept.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 3</value>
   </data>
@@ -297,9 +294,6 @@
   <data name="btnCancel.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
     <value>GrowAndShrink</value>
   </data>
-  <data name="btnCancel.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Flat</value>
-  </data>
   <data name="btnCancel.Location" type="System.Drawing.Point, System.Drawing">
     <value>134, 3</value>
   </data>
@@ -321,9 +315,6 @@
   </data>
   <data name="btnDisable.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
     <value>GrowAndShrink</value>
-  </data>
-  <data name="btnDisable.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Flat</value>
   </data>
   <data name="btnDisable.Location" type="System.Drawing.Point, System.Drawing">
     <value>71, 3</value>
@@ -384,8 +375,8 @@
     <value>0</value>
   </data>
   <data name="label1.Text">
-    <value>Войдите в центральную систему:</value>
-    <comment>Enter central system:</comment>
+    <value>&amp;Вход в центральную систему:</value>
+    <comment>&amp;Enter central system:</comment>
   </data>
   <data name="label1.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleRight</value>
@@ -406,8 +397,8 @@
     <value>4</value>
   </data>
   <data name="label2.Text">
-    <value>Радиус сферы:</value>
-    <comment>Sphere radius:</comment>
+    <value>&amp;Радиус сферы:</value>
+    <comment>&amp;Sphere radius:</comment>
   </data>
   <data name="label2.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleRight</value>

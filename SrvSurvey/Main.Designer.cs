@@ -312,7 +312,7 @@ namespace SrvSurvey
             groupBox3.TabStop = false;
             groupBox3.Text = "Bio scanning:";
             // 
-            // btnBioSummary
+            // btnPredictions
             // 
             btnPredictions.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnPredictions.BackColor = SystemColors.ControlDark;
@@ -320,7 +320,7 @@ namespace SrvSurvey
             btnPredictions.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
             btnPredictions.FlatStyle = FlatStyle.Flat;
             btnPredictions.Location = new Point(313, 103);
-            btnPredictions.Name = "btnBioSummary";
+            btnPredictions.Name = "btnPredictions";
             btnPredictions.Size = new Size(93, 21);
             btnPredictions.TabIndex = 0;
             btnPredictions.Text = "Predictions";

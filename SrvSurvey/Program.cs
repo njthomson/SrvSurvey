@@ -147,7 +147,8 @@ namespace SrvSurvey
             var formType = typeof(T);
 
             // exit early if the game does not have focus
-            if (!Elite.focusElite)
+            if (!Elite.focusElite) 
+            //if (!Debugger.IsAttached && (!Elite.focusElite || Elite.focusSrvSurvey)) // Maybe not "|| Elite.focusSrvSurvey" ?
                 return (T?)activePlotters.GetValueOrDefault(formType.Name);
 
             // only create if missing

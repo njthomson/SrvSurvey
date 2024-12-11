@@ -61,24 +61,44 @@
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
-  <data name="DistanceExceeds">
-    <value>* DISTANCE: {0}LY - EXCEEDS {1} LY →→→!</value>
-    <comment>Distance: {0}ly - exceeds {1} ly</comment>
+  <data name="Boxel">
+    <value>* BOXEL: →→→!</value>
+    <comment>Boxel:</comment>
   </data>
-  <data name="DistanceInProgress">
-    <value>* DISTANCE: ... →→→!</value>
-    <comment>Distance: ...</comment>
+  <data name="Distance">
+    <value>* DISTANCE: →→→!</value>
+    <comment>Distance:</comment>
+  </data>
+  <data name="DistanceExceeds">
+    <value>* {0}LY - EXCEEDS {1} LY →→→!</value>
+    <comment>{0}ly - exceeds {1} ly</comment>
   </data>
   <data name="DistanceWithin">
-    <value>* DISTANCE: {0} - WITHIN {1} LY →→→!</value>
-    <comment>Distance: {0} - within {1} ly</comment>
+    <value>* {0} - WITHIN {1} LY →→→!</value>
+    <comment>{0} - within {1} ly</comment>
   </data>
   <data name="From">
-    <value>* FROM: {0} →→→!</value>
-    <comment>From: {0}</comment>
+    <value>* FROM: →→→!</value>
+    <comment>From:</comment>
+  </data>
+  <data name="Next">
+    <value>* NEXT: →→→!</value>
+    <comment>Next:</comment>
   </data>
   <data name="To">
-    <value>* TO: {0} →→→!</value>
-    <comment>To: {0}</comment>
+    <value>* TO: →→→!</value>
+    <comment>To:</comment>
+  </data>
+  <data name="UnknownDist">
+    <value>* UNKNOWN (PLOT ROUTE) →→→!</value>
+    <comment>Unknown (plot route)</comment>
+  </data>
+  <data name="Visited">
+    <value>* VISITED: →→→!</value>
+    <comment>Visited:</comment>
+  </data>
+  <data name="VisitedOf">
+    <value>* {0} OF {1} →→→!</value>
+    <comment>{0} of {1}</comment>
   </data>
 </root>

@@ -61,6 +61,15 @@ namespace SrvSurvey.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to In gal-map, copy the next boxel search system to clipboard..
+        /// </summary>
+        internal static string copyNextBoxel {
+            get {
+                return ResourceManager.GetString("copyNextBoxel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Toggles making the map fill half the screen, at Human settlements only..
         /// </summary>
         internal static string mapBeHuge {
@@ -93,6 +102,24 @@ namespace SrvSurvey.Properties {
         internal static string mapZoomOut {
             get {
                 return ResourceManager.GetString("mapZoomOut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Force show the Body info overlay..
+        /// </summary>
+        internal static string showBodyInfo {
+            get {
+                return ResourceManager.GetString("showBodyInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Force show the FSS info overlay..
+        /// </summary>
+        internal static string showFssInfo {
+            get {
+                return ResourceManager.GetString("showFssInfo", resourceCulture);
             }
         }
         

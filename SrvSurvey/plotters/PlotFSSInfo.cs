@@ -11,9 +11,12 @@ namespace SrvSurvey.plotters
                 && Game.settings.autoShowPlotFSSInfo
                 && (
                     Game.activeGame.mode == GameMode.FSS
+                    || (PlotFSSInfo.forceShow) // or a keystroke forced it
                     || (Game.activeGame.mode == GameMode.SystemMap && Game.settings.autoShowPlotFSSInfoInSystemMap && !PlotGuardianSystem.allowPlotter) // hide if Guardian plotter is open
                 );
         }
+
+        public static bool forceShow = false;
 
         public static List<FssEntry> scans = new List<FssEntry>();
         private static string? systemName;

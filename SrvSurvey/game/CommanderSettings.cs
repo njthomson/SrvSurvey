@@ -1,12 +1,17 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using SrvSurvey.forms;
 using SrvSurvey.plotters;
 using SrvSurvey.units;
+using System.Collections.Generic;
+using static SrvSurvey.canonn.Canonn.QueryNearestResponse;
 
 namespace SrvSurvey.game
 {
     class CommanderSettings : Data
     {
+        #region static loading code
+
         public static CommanderSettings Load(string fid, bool isOdyssey, string commanderName)
         {
             var mode = isOdyssey ? "live" : "legacy";
@@ -20,6 +25,21 @@ namespace SrvSurvey.game
                     fid = fid,
                     isOdyssey = isOdyssey,
                 };
+        }
+
+        public static CommanderSettings LoadCurrentOrLast()
+        {
+            // use cmdr from active game if possible
+            var cmdr = Game.activeGame?.cmdr;
+
+            // otherwise load the last active cmdr
+            if (cmdr == null && Game.settings.lastCommander != null && Game.settings.lastFid != null)
+                cmdr = CommanderSettings.Load(Game.settings.lastFid, true, Game.settings.lastCommander);
+
+            if (cmdr == null)
+                throw new Exception("You must use SrvSurvey at least once before this will work");
+
+            return cmdr;
         }
 
         /// <summary>
@@ -38,6 +58,10 @@ namespace SrvSurvey.game
 
             return cmdrs;
         }
+
+        #endregion
+
+        #region data members
 
         public string fid;
         public string commander;
@@ -97,6 +121,11 @@ namespace SrvSurvey.game
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public List<TrackMassacre>? trackMassacres;
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public BoxelSearchDef? boxelSearch;
+
+        #endregion
 
         public void applyExplReward(long reward, string reason)
         {
@@ -228,6 +257,28 @@ namespace SrvSurvey.game
         }
 
         #endregion
+
+        public void markBoxelSystemVisited(string name, bool remove = false)
+        {
+            if (this.boxelSearch?.active != true) return;
+            var systemName = SystemName.parse(name);
+            if (!systemName.generatedName) return;
+
+            Game.log($"Updating boxel search - system: {name}, visited: {!remove}");
+
+            var hashVisited = boxelSearch.visited?.Split(",").Select(s => int.Parse(s)).ToHashSet() ?? new HashSet<int>();
+            if (remove)
+                hashVisited.Remove(systemName.num);
+            else
+                hashVisited.Add(systemName.num);
+
+            boxelSearch.visited = string.Join(",", hashVisited.Order());
+            this.Save();
+
+            BaseForm.get<FormBoxelSearch>()?.markVisited(name, !remove);
+            Program.getPlotter<PlotSphericalSearch>()?.Invalidate();
+        }
+
     }
 
     internal class SphereLimit
@@ -250,5 +301,45 @@ namespace SrvSurvey.game
         NotStarted,
         Active,
         Complete,
+    }
+
+    internal class BoxelSearchDef
+    {
+        public bool active;
+        public string name;
+        public int max;
+        public string visited;
+
+        [JsonIgnore]
+        public SystemName sysName
+        {
+            get
+            {
+                if (_sysName == null)
+                    _sysName = SystemName.parse(this.name);
+
+                return _sysName;
+            }
+        }
+        private SystemName _sysName;
+
+        [JsonIgnore]
+        public int countVisited { get => visited.Split(',').Length; }
+
+        public string? getNextToVisit()
+        {
+            if (!active) return null;
+
+            var hashVisited = this.visited?.Split(",").Select(s => int.Parse(s)).ToHashSet() ?? new HashSet<int>();
+
+            for (int n = 0; n <= this.max; n++)
+            {
+                if (hashVisited.Contains(n)) continue;
+                var nextName = this.sysName.to(n).name;
+                return nextName;
+            }
+
+            return null;
+        }
     }
 }

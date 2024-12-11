@@ -103,7 +103,7 @@ namespace SrvSurvey
                     Text = key.ToString(),
                     ToolTipText = desc,
                 };
-                item.SubItems.Add(Game.settings.keyActions_TEST?[key] ?? "");
+                item.SubItems.Add(Game.settings.keyActions_TEST?.GetValueOrDefault(key) ?? "");
                 item.SubItems.Add(desc);
                 listKeys.Items.Add(item);
             }
@@ -675,7 +675,7 @@ namespace SrvSurvey
             if (item == null || Game.settings.keyActions_TEST == null) return;
 
             var keyAction = Enum.Parse<KeyAction>(item.Name);
-            var currentChord = Game.settings.keyActions_TEST[keyAction];
+            var currentChord = Game.settings.keyActions_TEST.GetValueOrDefault(keyAction);
 
             var dialog = new FormSetKeyChord(currentChord);
             var rslt = dialog.ShowDialog();

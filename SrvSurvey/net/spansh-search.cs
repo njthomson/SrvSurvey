@@ -36,7 +36,7 @@ namespace SrvSurvey.net
             public int page = 0;
 
             [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-            public Reference? reference;
+            public Reference? reference_coords;
 
             public Dictionary<string, Filter> filters;
 
@@ -141,7 +141,7 @@ namespace SrvSurvey.net
 
             public StarPos toStarPos()
             {
-                return new StarPos(this.x, this.y, this.z);
+                return new StarPos(this.x, this.y, this.z, this.name, this.id64);
             }
 
             public override string ToString()
@@ -164,17 +164,12 @@ namespace SrvSurvey.net
             public int size;
             public List<Result> results;
 
-            public class Result
+            public class Result : Reference
             {
-                public long id64;
                 public string id;
-                public string name;
-                public double x;
-                public double y;
-                public double z;
                 public double distance;
 
-                public int body_count;
+                // public int body_count; // really?
                 public long population;
                 public string government;
                 public string region;
@@ -184,14 +179,35 @@ namespace SrvSurvey.net
                 public DateTimeOffset updated_at;
 
                 // TODO: more properties?
+                public long estimated_mapping_value;
+                public long estimated_scan_value;
+                public long landmark_value;
 
-                // TODO bodies?
+                public List<Body>? bodies;
 
                 public List<MinorFactionPresence> minor_faction_presences;
 
                 public override string ToString()
                 {
                     return $"{name} [{x}, {y}, {z}]";
+                }
+
+                public StarPos ToStarPos()
+                {
+                    return new StarPos(x, y, z, name);
+                }
+
+                public class Body
+                {
+                    public double distance_to_arrival;
+                    public long estimated_mapping_value;
+                    public long estimated_scan_value;
+                    public long id;
+                    public long id64;
+                    public bool? is_main_star;
+                    public string name;
+                    public string subtype;
+                    public string type;
                 }
             }
 

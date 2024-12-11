@@ -8,6 +8,8 @@ namespace SrvSurvey
 {
     internal static class KeyChords
     {
+        #region infrastructure
+
         private static Game? game { get => Game.activeGame; }
 
         public static string? keyToString(Keys key)
@@ -18,7 +20,7 @@ namespace SrvSurvey
                 case Keys.OemMinus: return "-";
                 case Keys.Oemplus: return "+";
 
-                    // These aren't allowed to be a key-chord in their own right
+                // These aren't allowed to be a key-chord in their own right
                 case Keys.Menu:
                 case Keys.ControlKey:
                 case Keys.ShiftKey:
@@ -64,6 +66,8 @@ namespace SrvSurvey
             }));
         }
 
+        #endregion
+
         public static bool doKeyAction(KeyAction keyAction)
         {
             switch (keyAction)
@@ -78,6 +82,9 @@ namespace SrvSurvey
                 case KeyAction.mapZoomAuto: return adjustMapAutoZoom();
                 case KeyAction.mapBeHuge: return adjustMapHugeness();
                 case KeyAction.showJumpInfo: return toggleJumpInfo();
+                case KeyAction.copyNextBoxel: return copyNextBoxelSystem();
+                case KeyAction.showFssInfo: return toggleFSSInfo();
+                case KeyAction.showBodyInfo: return toggleBodyInfo();
 
                 default:
                     Game.log($"Unsupported key action: {keyAction}");
@@ -138,6 +145,52 @@ namespace SrvSurvey
 
             return true;
         }
+
+        private static bool copyNextBoxelSystem()
+        {
+            var nextSystem = Game.activeGame?.cmdr.boxelSearch?.getNextToVisit();
+            if (Game.activeGame?.mode == GameMode.GalaxyMap && nextSystem != null)
+            {
+                Game.log($"Setting next boxel search system to clipboard: {nextSystem}");
+                Clipboard.SetText(nextSystem);
+            }
+
+            return true;
+        }
+
+        private static bool toggleFSSInfo()
+        {
+            var jumpInfo = Program.getPlotter<PlotFSSInfo>();
+            if (jumpInfo == null)
+            {
+                PlotFSSInfo.forceShow = true;
+                Program.showPlotter<PlotFSSInfo>();
+            }
+            else if (PlotFSSInfo.forceShow)
+            {
+                PlotFSSInfo.forceShow = false;
+                Program.closePlotter<PlotFSSInfo>();
+            }
+
+            return true;
+        }
+
+        private static bool toggleBodyInfo()
+        {
+            var jumpInfo = Program.getPlotter<PlotBodyInfo>();
+            if (jumpInfo == null && Game.activeGame?.systemBody != null)
+            {
+                PlotBodyInfo.forceShow = true;
+                Program.showPlotter<PlotBodyInfo>();
+            }
+            else if (PlotBodyInfo.forceShow)
+            {
+                PlotBodyInfo.forceShow = false;
+                Program.closePlotter<PlotBodyInfo>();
+            }
+
+            return true;
+        }
     }
 
     /// <summary>
@@ -158,5 +211,11 @@ namespace SrvSurvey
         mapBeHuge,
         /// <summary> Force show PlotJumpInfo </summary>
         showJumpInfo,
+        /// <summary> Copy the next system name for boxel searches </summary>
+        copyNextBoxel,
+        /// <summary> Force show PlotFssInfo </summary>
+        showFssInfo,
+        /// <summary> Force show PlotBodyInfo </summary>
+        showBodyInfo,
     }
 }

@@ -20,8 +20,12 @@ namespace SrvSurvey.plotters
                     // ... or when super cruising/gliding close to a body and sub-setting allows
                     || (Game.activeGame.isMode(GameMode.SuperCruising, GameMode.GlideMode) && Game.activeGame.status.hasLatLong && Game.settings.autoShowPlotBodyInfoInOrbit)
                     || (Game.activeGame.isMode(GameMode.Flying, GameMode.Landed, GameMode.InSrv) && Game.activeGame.status.hasLatLong && Game.settings.autoShowPlotBodyInfoAtSurface && Game.activeGame.status.hudInAnalysisMode)
+                    // or a keystroke forced it
+                    || PlotBodyInfo.forceShow
                 );
         }
+
+        public static bool forceShow = false;
 
         private string lastDestination;
         private bool withinHumanBubble;
@@ -61,7 +65,7 @@ namespace SrvSurvey.plotters
             }
 
             if (!this.allow)
-                Program.closePlotter<PlotBodyInfo>();
+                Program.defer(() => Program.closePlotter<PlotBodyInfo>());
         }
 
         protected override void onPaintPlotter(PaintEventArgs e)

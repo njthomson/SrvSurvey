@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using SrvSurvey.net;
 
 namespace SrvSurvey.units
 {
@@ -6,27 +7,36 @@ namespace SrvSurvey.units
     {
         private double[] coords = new double[3];
 
-        [JsonIgnore]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public string? systemName;
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public long address;
 
         public StarPos()
         {
         }
 
-        public StarPos(double[] pos, string? systemName = null)
+        public StarPos(double[] pos, string? systemName = null, long? address = null)
         {
             this.coords[0] = pos[0];
             this.coords[1] = pos[1];
             this.coords[2] = pos[2];
             this.systemName = systemName;
+
+            if (address.HasValue)
+                this.address = address.Value;
         }
 
-        public StarPos(double x, double y, double z, string? systemName = null)
+        public StarPos(double x, double y, double z, string? systemName = null, long? address = null)
         {
             this.coords[0] = x;
             this.coords[1] = y;
             this.coords[2] = z;
             this.systemName = systemName;
+
+            if (address.HasValue)
+                this.address = address.Value;
         }
 
         public double x
@@ -55,6 +65,18 @@ namespace SrvSurvey.units
         public string ToUrlParams()
         {
             return $"x={x}&y={y}&z={z}";
+        }
+
+        public Spansh.Reference toReference()
+        {
+            return new Spansh.Reference()
+            {
+                x = this.x,
+                y = this.y,
+                z = this.z,
+                name = this.systemName!,
+                id64 = this.address,
+            };
         }
 
         public static implicit operator double[](StarPos pos)

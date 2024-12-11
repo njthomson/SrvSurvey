@@ -263,18 +263,31 @@ namespace SrvSurvey.game
         /// </summary>
         private string? statusBodyName;
 
+        private bool landingGearDown;
+
         private void checkModeChange()
         {
+            var doUpdate = false;
+
             // check various things we actively need to know have changed
             var newMode = this.mode;
             if (this._mode != newMode)
             {
                 log($"Mode change {this._mode} => {newMode}");
                 this._mode = newMode;
-
-                // fire event!
-                fireUpdate(newMode, false);
+                doUpdate = true;
             }
+
+            if (status != null && landingGearDown != status.landingGearDown)
+            {
+                // TODO: one day ... move this type of logic into status
+                landingGearDown = status.landingGearDown;
+                doUpdate = true;
+            }
+
+            // fire event!
+            if (doUpdate)
+                fireUpdate(newMode, false);
         }
 
         private void Status_StatusChanged(bool blink)
@@ -1095,6 +1108,9 @@ namespace SrvSurvey.game
 
             // update FormGenus?
             FormGenus.activeForm?.deferPopulateGenus();
+
+            // update boxel search?
+            cmdr.markBoxelSystemVisited(entry.StarSystem);
         }
 
         private void onJournalEntry(CarrierJump entry)

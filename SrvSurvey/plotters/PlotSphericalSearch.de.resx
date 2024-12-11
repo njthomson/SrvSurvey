@@ -61,24 +61,44 @@
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
-  <data name="DistanceExceeds">
-    <value>Distance: {0}ly - exceeds {1} ly</value>
-    <comment>Distance: {0}ly - exceeds {1} ly</comment>
+  <data name="Boxel">
+    <value>Boxel:</value>
+    <comment>Boxel:</comment>
   </data>
-  <data name="DistanceInProgress">
-    <value>Distance: ...</value>
-    <comment>Distance: ...</comment>
+  <data name="Distance">
+    <value>Abstand:</value>
+    <comment>Distance:</comment>
+  </data>
+  <data name="DistanceExceeds">
+    <value>{0}ly - überschreitet {1} ly</value>
+    <comment>{0}ly - exceeds {1} ly</comment>
   </data>
   <data name="DistanceWithin">
-    <value>Entfernung: {0} - innerhalb von {1} ly</value>
-    <comment>Distance: {0} - within {1} ly</comment>
+    <value>{0} - innerhalb {1} ly</value>
+    <comment>{0} - within {1} ly</comment>
   </data>
   <data name="From">
-    <value>Ab: {0}</value>
-    <comment>From: {0}</comment>
+    <value>Von:</value>
+    <comment>From:</comment>
+  </data>
+  <data name="Next">
+    <value>Nächster:</value>
+    <comment>Next:</comment>
   </data>
   <data name="To">
-    <value>Nach: {0}</value>
-    <comment>To: {0}</comment>
+    <value>An:</value>
+    <comment>To:</comment>
+  </data>
+  <data name="UnknownDist">
+    <value>Unbekannt (Route der Handlung)</value>
+    <comment>Unknown (plot route)</comment>
+  </data>
+  <data name="Visited">
+    <value>Aufgesucht:</value>
+    <comment>Visited:</comment>
+  </data>
+  <data name="VisitedOf">
+    <value>{0} von {1}</value>
+    <comment>{0} of {1}</comment>
   </data>
 </root>
