@@ -44,139 +44,101 @@
             status = new StatusStrip();
             btnToggleList = new ToolStripSplitButton();
             lblStatus = new ToolStripStatusLabel();
+            menuMore = new ToolStripDropDownButton();
+            menuHelpLink = new ToolStripMenuItem();
             checkAutoCopy = new CheckBox();
             numMax = new NumericUpDown();
             panelList = new Panel();
+            tableTop = new TableLayoutPanel();
+            linkKeyChords = new LinkLabel();
             status.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numMax).BeginInit();
             panelList.SuspendLayout();
+            tableTop.SuspendLayout();
             SuspendLayout();
             // 
             // txtSystemName
             // 
-            txtSystemName.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            txtSystemName.Location = new Point(93, 27);
+            resources.ApplyResources(txtSystemName, "txtSystemName");
             txtSystemName.Name = "txtSystemName";
-            txtSystemName.Size = new Size(396, 23);
-            txtSystemName.TabIndex = 2;
             // 
             // btnSearch
             // 
-            btnSearch.Location = new Point(12, 27);
+            resources.ApplyResources(btnSearch, "btnSearch");
             btnSearch.Name = "btnSearch";
-            btnSearch.Size = new Size(75, 23);
-            btnSearch.TabIndex = 1;
-            btnSearch.Text = "&Begin";
             btnSearch.UseVisualStyleBackColor = true;
             btnSearch.Click += btnSearch_Click;
             // 
             // lblMaxNum
             // 
-            lblMaxNum.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            lblMaxNum.AutoSize = true;
-            lblMaxNum.Location = new Point(495, 31);
+            resources.ApplyResources(lblMaxNum, "lblMaxNum");
             lblMaxNum.Name = "lblMaxNum";
-            lblMaxNum.Size = new Size(65, 15);
-            lblMaxNum.TabIndex = 3;
-            lblMaxNum.Text = "Maximum:";
             // 
             // txtNext
             // 
-            txtNext.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            txtNext.Enabled = false;
-            txtNext.Location = new Point(93, 56);
+            resources.ApplyResources(txtNext, "txtNext");
             txtNext.Name = "txtNext";
-            txtNext.Size = new Size(366, 23);
-            txtNext.TabIndex = 6;
             // 
             // btnCopyNext
             // 
-            btnCopyNext.Enabled = false;
-            btnCopyNext.Location = new Point(12, 56);
+            resources.ApplyResources(btnCopyNext, "btnCopyNext");
             btnCopyNext.Name = "btnCopyNext";
-            btnCopyNext.Size = new Size(75, 23);
-            btnCopyNext.TabIndex = 5;
-            btnCopyNext.Text = "Copy &Next";
             btnCopyNext.UseVisualStyleBackColor = true;
             btnCopyNext.Click += btnCopyNext_Click;
             // 
             // list
             // 
-            list.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            resources.ApplyResources(list, "list");
             list.CheckBoxes = true;
             list.Columns.AddRange(new ColumnHeader[] { colSystem, colDistance, colNotes });
-            list.Enabled = false;
             list.FullRowSelect = true;
-            list.Location = new Point(3, 0);
             list.Name = "list";
-            list.Size = new Size(618, 299);
-            list.TabIndex = 0;
             list.UseCompatibleStateImageBehavior = false;
             list.View = View.Details;
-            list.ItemChecked += list1_ItemChecked;
+            list.ItemChecked += list_ItemChecked;
             // 
             // colSystem
             // 
-            colSystem.Text = "System Name";
-            colSystem.Width = 160;
+            resources.ApplyResources(colSystem, "colSystem");
             // 
             // colDistance
             // 
-            colDistance.Text = "Distance";
-            colDistance.TextAlign = HorizontalAlignment.Right;
-            colDistance.Width = 120;
+            resources.ApplyResources(colDistance, "colDistance");
             // 
             // colNotes
             // 
-            colNotes.Text = "Notes";
-            colNotes.Width = 340;
+            resources.ApplyResources(colNotes, "colNotes");
             // 
             // label1
             // 
-            label1.Location = new Point(12, 9);
+            resources.ApplyResources(label1, "label1");
+            tableTop.SetColumnSpan(label1, 4);
             label1.Name = "label1";
-            label1.Size = new Size(465, 15);
-            label1.TabIndex = 0;
-            label1.Text = "Search all systems in a given boxel. Begin by pasting any system name from that boxel.";
             // 
             // label2
             // 
-            label2.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            label2.AutoSize = true;
-            label2.Location = new Point(3, 308);
+            resources.ApplyResources(label2, "label2");
             label2.Name = "label2";
-            label2.Size = new Size(136, 15);
-            label2.TabIndex = 1;
-            label2.Text = "Measure distances from:";
             // 
             // comboFrom
             // 
-            comboFrom.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            resources.ApplyResources(comboFrom, "comboFrom");
             comboFrom.FormattingEnabled = true;
-            comboFrom.Location = new Point(163, 305);
             comboFrom.Name = "comboFrom";
-            comboFrom.Size = new Size(458, 23);
-            comboFrom.TabIndex = 2;
             comboFrom.SelectedIndexChanged += comboFrom_SelectedIndexChanged;
             // 
             // status
             // 
-            status.Items.AddRange(new ToolStripItem[] { btnToggleList, lblStatus });
-            status.Location = new Point(0, 417);
+            status.Items.AddRange(new ToolStripItem[] { btnToggleList, lblStatus, menuMore });
+            resources.ApplyResources(status, "status");
             status.Name = "status";
-            status.Size = new Size(624, 24);
-            status.TabIndex = 9;
-            status.Text = "statusStrip1";
             // 
             // btnToggleList
             // 
             btnToggleList.DisplayStyle = ToolStripItemDisplayStyle.Text;
             btnToggleList.DropDownButtonWidth = 0;
-            btnToggleList.Image = (Image)resources.GetObject("btnToggleList.Image");
-            btnToggleList.ImageTransparentColor = Color.Magenta;
+            resources.ApplyResources(btnToggleList, "btnToggleList");
             btnToggleList.Name = "btnToggleList";
-            btnToggleList.Size = new Size(70, 22);
-            btnToggleList.Text = "⏶ Hide list";
             btnToggleList.ButtonClick += btnToggleList_ButtonClick;
             // 
             // lblStatus
@@ -184,67 +146,82 @@
             lblStatus.BorderSides = ToolStripStatusLabelBorderSides.Left | ToolStripStatusLabelBorderSides.Top | ToolStripStatusLabelBorderSides.Right | ToolStripStatusLabelBorderSides.Bottom;
             lblStatus.BorderStyle = Border3DStyle.SunkenOuter;
             lblStatus.Name = "lblStatus";
-            lblStatus.Size = new Size(539, 19);
+            resources.ApplyResources(lblStatus, "lblStatus");
             lblStatus.Spring = true;
-            lblStatus.Text = "-";
-            lblStatus.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // menuMore
+            // 
+            menuMore.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            menuMore.DropDownItems.AddRange(new ToolStripItem[] { menuHelpLink });
+            resources.ApplyResources(menuMore, "menuMore");
+            menuMore.Name = "menuMore";
+            // 
+            // menuHelpLink
+            // 
+            menuHelpLink.Name = "menuHelpLink";
+            resources.ApplyResources(menuHelpLink, "menuHelpLink");
+            menuHelpLink.Click += menuHelpLink_Click;
             // 
             // checkAutoCopy
             // 
-            checkAutoCopy.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            checkAutoCopy.AutoSize = true;
-            checkAutoCopy.Enabled = false;
-            checkAutoCopy.Location = new Point(465, 58);
+            resources.ApplyResources(checkAutoCopy, "checkAutoCopy");
+            tableTop.SetColumnSpan(checkAutoCopy, 2);
             checkAutoCopy.Name = "checkAutoCopy";
-            checkAutoCopy.Size = new Size(147, 19);
-            checkAutoCopy.TabIndex = 7;
-            checkAutoCopy.Text = "&Auto copy next system";
             checkAutoCopy.UseVisualStyleBackColor = true;
+            checkAutoCopy.CheckedChanged += checkAutoCopy_CheckedChanged;
             // 
             // numMax
             // 
-            numMax.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            numMax.Location = new Point(566, 27);
+            resources.ApplyResources(numMax, "numMax");
             numMax.Maximum = new decimal(new int[] { 100000, 0, 0, 0 });
             numMax.Name = "numMax";
-            numMax.Size = new Size(46, 23);
-            numMax.TabIndex = 4;
-            numMax.TextAlign = HorizontalAlignment.Right;
             // 
             // panelList
             // 
-            panelList.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            resources.ApplyResources(panelList, "panelList");
+            tableTop.SetColumnSpan(panelList, 4);
             panelList.Controls.Add(comboFrom);
             panelList.Controls.Add(label2);
             panelList.Controls.Add(list);
-            panelList.Enabled = false;
-            panelList.Location = new Point(0, 85);
             panelList.Name = "panelList";
-            panelList.Size = new Size(624, 331);
-            panelList.TabIndex = 8;
+            // 
+            // tableTop
+            // 
+            resources.ApplyResources(tableTop, "tableTop");
+            tableTop.Controls.Add(label1, 0, 0);
+            tableTop.Controls.Add(panelList, 0, 4);
+            tableTop.Controls.Add(btnSearch, 0, 1);
+            tableTop.Controls.Add(numMax, 3, 1);
+            tableTop.Controls.Add(txtSystemName, 1, 1);
+            tableTop.Controls.Add(txtNext, 1, 2);
+            tableTop.Controls.Add(btnCopyNext, 0, 2);
+            tableTop.Controls.Add(lblMaxNum, 2, 1);
+            tableTop.Controls.Add(checkAutoCopy, 2, 2);
+            tableTop.Controls.Add(linkKeyChords, 0, 3);
+            tableTop.Name = "tableTop";
+            // 
+            // linkKeyChords
+            // 
+            resources.ApplyResources(linkKeyChords, "linkKeyChords");
+            tableTop.SetColumnSpan(linkKeyChords, 4);
+            linkKeyChords.Name = "linkKeyChords";
+            linkKeyChords.TabStop = true;
+            linkKeyChords.LinkClicked += linkKeyChords_LinkClicked;
             // 
             // FormBoxelSearch
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            resources.ApplyResources(this, "$this");
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(624, 441);
-            Controls.Add(panelList);
-            Controls.Add(numMax);
-            Controls.Add(checkAutoCopy);
+            Controls.Add(tableTop);
             Controls.Add(status);
-            Controls.Add(label1);
-            Controls.Add(btnCopyNext);
-            Controls.Add(txtNext);
-            Controls.Add(lblMaxNum);
-            Controls.Add(btnSearch);
-            Controls.Add(txtSystemName);
             Name = "FormBoxelSearch";
-            Text = "Boxel Search";
             status.ResumeLayout(false);
             status.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numMax).EndInit();
             panelList.ResumeLayout(false);
             panelList.PerformLayout();
+            tableTop.ResumeLayout(false);
+            tableTop.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -268,5 +245,9 @@
         private Panel panelList;
         private ToolStripSplitButton btnToggleList;
         private ToolStripStatusLabel lblStatus;
+        private ToolStripDropDownButton menuMore;
+        private ToolStripMenuItem menuHelpLink;
+        private TableLayoutPanel tableTop;
+        private LinkLabel linkKeyChords;
     }
 }

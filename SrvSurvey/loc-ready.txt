@@ -1,5 +1,6 @@
 ﻿Economies.resx
 FactionStates.resx
+FormBoxelSearch.resx
 FormGroundTarget.resx
 FormSetKeyChord.resx
 FormSphereLimit.resx

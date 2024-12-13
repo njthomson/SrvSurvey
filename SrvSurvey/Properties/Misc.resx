@@ -182,4 +182,55 @@
 Would you like to create it?</value>
     <comment>Used in a message box when attempting to open a folder that does not exist.</comment>
   </data>
+  <data name="FormBoxelSearch_Disable" xml:space="preserve">
+    <value>Disable</value>
+    <comment>Used on a button in FormBoxelSearch</comment>
+  </data>
+  <data name="FormBoxelSearch_Activate" xml:space="preserve">
+    <value>Activate</value>
+    <comment>Used on a button in FormBoxelSearch</comment>
+  </data>
+  <data name="FormBoxelSearch_HideList" xml:space="preserve">
+    <value>⏶ Hide list</value>
+    <comment>Used on a button in FormBoxelSearch</comment>
+  </data>
+  <data name="FormBoxelSearch_ShowList" xml:space="preserve">
+    <value>⏷ Show list</value>
+    <comment>Used on a button in FormBoxelSearch</comment>
+  </data>
+  <data name="FormBoxelSearch_NotViableMessage" xml:space="preserve">
+    <value>This is not a boxel generated system name.</value>
+    <comment>Shown in FormBoxelSearch when attempting to boxel search a non generated system name</comment>
+  </data>
+  <data name="FormBoxelSearch_SpanshUpdated" xml:space="preserve">
+    <value>Spansh updated: {0}</value>
+    <comment>Shown in FormBoxelSearch as notes for a system.
+{0} DateTime, a short formatted date</comment>
+  </data>
+  <data name="FormBoxelSearch_SpanshUpdatedBodies" xml:space="preserve">
+    <value>Spansh updated: {0}, bodies: {1}</value>
+    <comment>Shown in FormBoxelSearch as notes for a system.
+{0} DateTime, a short formatted date
+{1} int, a count of bodies in that system</comment>
+  </data>
+  <data name="FormBoxelSearch_UndiscoveredSystem" xml:space="preserve">
+    <value>Undiscovered system</value>
+    <comment>Shown in FormBoxelSearch as notes for a system that has not been discovered</comment>
+  </data>
+  <data name="FormBoxelSearch_Visited" xml:space="preserve">
+    <value>Visited: {0)</value>
+    <comment>Shown in FormBoxelSearch as notes for a system that was just visited
+{0} DateTime, the date and time the system was visited, usually now</comment>
+  </data>
+  <data name="FormBoxelSearch_SearchNotActive" xml:space="preserve">
+    <value>Boxel search is not active.</value>
+    <comment>Shown in FormBoxelSearch status var when the feature is not active</comment>
+  </data>
+  <data name="FormBoxelSearch_VisitedCounts" xml:space="preserve">
+    <value>Visited {0} of {1} systems</value>
+    <comment>Shown in FormBoxelSearch status bar, summarizing how many systems have been visited
+{0} int, count of systems visited
+{1} int, total count of systems to be visited</comment>
+  </data>
+
 </root>

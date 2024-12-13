@@ -68,6 +68,18 @@ namespace SrvSurvey
 
         #endregion
 
+        public readonly static Dictionary<KeyAction, string>? defaultKeys = new()
+        {
+            { KeyAction.toggleAllVisibility, "ALT F2" },
+            { KeyAction.mapZoomIn, "CTRL +" },
+            { KeyAction.mapZoomOut, "CTRL -" },
+            { KeyAction.mapZoomAuto, "CTRL SHIFT Backspace" },
+            { KeyAction.mapBeHuge, "CTRL Backspace" },
+            { KeyAction.showJumpInfo, "ALT D" },
+            { KeyAction.copyNextBoxel, "CTRL C" },
+            { KeyAction.showFssInfo, "ALT F" },
+        };
+
         public static bool doKeyAction(KeyAction keyAction)
         {
             switch (keyAction)

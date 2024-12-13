@@ -61,6 +61,105 @@ namespace SrvSurvey.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Activate.
+        /// </summary>
+        internal static string FormBoxelSearch_Activate {
+            get {
+                return ResourceManager.GetString("FormBoxelSearch_Activate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Disable.
+        /// </summary>
+        internal static string FormBoxelSearch_Disable {
+            get {
+                return ResourceManager.GetString("FormBoxelSearch_Disable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ⏶ Hide list.
+        /// </summary>
+        internal static string FormBoxelSearch_HideList {
+            get {
+                return ResourceManager.GetString("FormBoxelSearch_HideList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This is not a boxel generated system name..
+        /// </summary>
+        internal static string FormBoxelSearch_NotViableMessage {
+            get {
+                return ResourceManager.GetString("FormBoxelSearch_NotViableMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Boxel search is not active..
+        /// </summary>
+        internal static string FormBoxelSearch_SearchNotActive {
+            get {
+                return ResourceManager.GetString("FormBoxelSearch_SearchNotActive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ⏷ Show list.
+        /// </summary>
+        internal static string FormBoxelSearch_ShowList {
+            get {
+                return ResourceManager.GetString("FormBoxelSearch_ShowList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Spansh updated: {0}.
+        /// </summary>
+        internal static string FormBoxelSearch_SpanshUpdated {
+            get {
+                return ResourceManager.GetString("FormBoxelSearch_SpanshUpdated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Spansh updated: {0}, bodies: {1}.
+        /// </summary>
+        internal static string FormBoxelSearch_SpanshUpdatedBodies {
+            get {
+                return ResourceManager.GetString("FormBoxelSearch_SpanshUpdatedBodies", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Undiscovered system.
+        /// </summary>
+        internal static string FormBoxelSearch_UndiscoveredSystem {
+            get {
+                return ResourceManager.GetString("FormBoxelSearch_UndiscoveredSystem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Visited: {0).
+        /// </summary>
+        internal static string FormBoxelSearch_Visited {
+            get {
+                return ResourceManager.GetString("FormBoxelSearch_Visited", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Visited {0} of {1} systems.
+        /// </summary>
+        internal static string FormBoxelSearch_VisitedCounts {
+            get {
+                return ResourceManager.GetString("FormBoxelSearch_VisitedCounts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bodies.
         /// </summary>
         internal static string NetSysData_Bodies {

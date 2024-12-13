@@ -42,6 +42,17 @@ namespace SrvSurvey.plotters
             {
                 measureDistanceToSystem();
             });
+
+            // put next boxel system in clipboard?
+            if (game.cmdr.boxelSearch?.active == true && game.cmdr.boxelSearch.autoCopy)
+            {
+                var text = game.cmdr.boxelSearch.getNextToVisit();
+                if (text != null)
+                {
+                    Game.log($"Setting next boxel search system to clipboard: {text}");
+                    Clipboard.SetText(text);
+                }
+            }
         }
 
         protected override void onJournalEntry(NavRoute entry)

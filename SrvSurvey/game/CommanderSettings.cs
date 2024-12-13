@@ -324,6 +324,7 @@ namespace SrvSurvey.game
         public int max;
         public string visited;
         public bool collapsed;
+        public bool autoCopy = true;
 
         [JsonIgnore]
         public SystemName sysName

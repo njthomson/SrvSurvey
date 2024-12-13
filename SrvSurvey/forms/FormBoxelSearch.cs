@@ -23,9 +23,13 @@ namespace SrvSurvey.forms
             // default distance measuring from cmdr's current system
             this.from = cmdr.getCurrentStarPos();
             this.comboFrom.Text = cmdr.boxelSearch?.name ?? this.cmdr.currentSystem;
+            checkAutoCopy.Checked = boxelSearch?.autoCopy ?? true;
 
             if (cmdr.boxelSearch?.collapsed == true)
                 toggleListVisibility(true);
+
+            // show warning if key-hooks are not viable
+            linkKeyChords.Visible = boxelSearch?.autoCopy != true && (!Game.settings.keyhook_TEST || string.IsNullOrEmpty(Game.settings.keyActions_TEST?.GetValueOrDefault(KeyAction.copyNextBoxel)));
 
             prepForm();
         }
@@ -42,16 +46,20 @@ namespace SrvSurvey.forms
                 panelList.Visible = false;
                 panelList.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
                 this.Height -= panelList.Height;
-                btnToggleList.Text = "⏷ Show list";
+                this.MaximumSize = new Size(5000, this.Height);
+                btnToggleList.Text = Properties.Misc.FormBoxelSearch_ShowList;
                 cmdr.boxelSearch!.collapsed = true;
                 cmdr.Save();
             }
             else
             {
-                this.Height += panelList.Height;
+                this.MaximumSize = Size.Empty;
+                this.Height += panelList.Height <= 1
+                    ? 300
+                    : panelList.Height;
                 panelList.Visible = true;
                 panelList.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom;
-                btnToggleList.Text = "⏶ Hide list";
+                btnToggleList.Text = Properties.Misc.FormBoxelSearch_HideList;
                 cmdr.boxelSearch!.collapsed = false;
                 cmdr.Save();
             }
@@ -67,7 +75,7 @@ namespace SrvSurvey.forms
                 var systemName = SystemName.parse(txtSystemName.Text);
                 if (!systemName.generatedName)
                 {
-                    MessageBox.Show(this, "This is not a boxel generated system name.", "SrvSurvey", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show(this, Properties.Misc.FormBoxelSearch_NotViableMessage, "SrvSurvey", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
 
@@ -81,8 +89,10 @@ namespace SrvSurvey.forms
                     };
                 }
                 cmdr.boxelSearch.active = true;
-                Game.log($"Enabling boxel search:\r\n\tname: {cmdr.boxelSearch.name}\r\n\tmax: {cmdr.boxelSearch.max}");
                 cmdr.Save();
+
+                Program.showPlotter<PlotSphericalSearch>();
+                Game.log($"Enabled boxel search:\r\n\tname: {cmdr.boxelSearch.name}\r\n\tmax: {cmdr.boxelSearch.max}");
             }
             else
             {
@@ -98,12 +108,14 @@ namespace SrvSurvey.forms
 
         private void prepForm()
         {
+            this.setStatusText();
+
             if (cmdr.boxelSearch?.active == true)
             {
                 txtSystemName.Enabled = numMax.Enabled = false;
                 txtSystemName.Text = boxelSearch.name;
                 numMax.Value = boxelSearch.max;
-                btnSearch.Text = "Disable";
+                btnSearch.Text = Properties.Misc.FormBoxelSearch_Disable;
                 searchSystems();
 
                 Program.showPlotter<PlotSphericalSearch>()?.Invalidate();
@@ -114,7 +126,7 @@ namespace SrvSurvey.forms
                 btnCopyNext.Enabled = txtNext.Enabled = checkAutoCopy.Enabled = panelList.Enabled = false;
                 txtSystemName.Enabled = numMax.Enabled = true;
                 //txtSystemName.Text = cmdr.currentSystem;
-                btnSearch.Text = "Activate";
+                btnSearch.Text = Properties.Misc.FormBoxelSearch_Activate;
                 txtNext.Text = "";
 
                 var systemName = SystemName.parse(txtSystemName.Text);
@@ -192,7 +204,7 @@ namespace SrvSurvey.forms
                     if (isSystemKnown) realTags.RemoveAt(0);
                 }
                 list.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
-                lblStatus.Text = $"Visited {countVisited} of {maxNum + 1} systems";
+                this.setStatusText();
 
                 txtNext.Text = boxelSearch.getNextToVisit();
 
@@ -219,9 +231,9 @@ namespace SrvSurvey.forms
             setDistance(listItem);
 
             // notes
-            var notes = $"Spansh updated: " + tag.result!.updated_at.Date.ToShortDateString();
-            if (tag.result.bodies?.Count > 0)
-                notes += $", Bodies: {tag.result.bodies.Count}";
+            var notes = tag.result?.bodies?.Count > 0
+                ? Properties.Misc.FormBoxelSearch_SpanshUpdatedBodies.format(tag.result!.updated_at.Date.ToShortDateString(), tag.result.bodies.Count)
+                : Properties.Misc.FormBoxelSearch_SpanshUpdated.format(tag.result!.updated_at.Date.ToShortDateString());
             var sub2 = listItem.SubItems.Add(notes);
             sub2.Name = "notes";
 
@@ -246,8 +258,7 @@ namespace SrvSurvey.forms
             sub1.Tag = 0;
 
             // notes
-            var notes = $"Undiscovered system";
-
+            var notes = Properties.Misc.FormBoxelSearch_UndiscoveredSystem;
             var sub2 = listItem.SubItems.Add(notes);
             sub2.Name = "notes";
 
@@ -261,7 +272,7 @@ namespace SrvSurvey.forms
                 Clipboard.SetText(txtNext.Text);
         }
 
-        private void list1_ItemChecked(object sender, ItemCheckedEventArgs e)
+        private void list_ItemChecked(object sender, ItemCheckedEventArgs e)
         {
             if (!list.Enabled) return;
             list.Enabled = false;
@@ -277,13 +288,25 @@ namespace SrvSurvey.forms
             {
                 item.Checked = visited;
                 if (visited)
-                    item.SubItems["Notes"]!.Text = $"Visited: {DateTime.Now}";
+                    item.SubItems["Notes"]!.Text = Properties.Misc.FormBoxelSearch_Visited.format(DateTime.Now);
 
                 txtNext.Text = boxelSearch.getNextToVisit();
             }
 
-            var countVisited = boxelSearch.visited.Split(',').Length;
-            lblStatus.Text = $"Visited {countVisited} of {boxelSearch.max + 1} systems";
+            this.setStatusText();
+        }
+
+        private void setStatusText()
+        {
+            if (boxelSearch == null || !boxelSearch.active)
+            {
+                lblStatus.Text =Properties.Misc.FormBoxelSearch_SearchNotActive;
+            }
+            else
+            {
+                var countVisited = boxelSearch.visited?.Split(',').Length ?? 0;
+                lblStatus.Text = Properties.Misc.FormBoxelSearch_VisitedCounts.format(countVisited, boxelSearch.max + 1);
+            }
         }
 
         private void comboFrom_SelectedIndexChanged(object sender, EventArgs e)
@@ -308,6 +331,28 @@ namespace SrvSurvey.forms
             var dist = Util.getSystemDistance(from, tag.result.ToStarPos());
             item.SubItems["dist"]!.Tag = dist;
             item.SubItems["dist"]!.Text = dist.ToString("N2") + " ly";
+        }
+
+        private void checkAutoCopy_CheckedChanged(object sender, EventArgs e)
+        {
+            if (boxelSearch != null && checkAutoCopy.Enabled)
+            {
+                boxelSearch.autoCopy = checkAutoCopy.Checked;
+                cmdr.Save();
+
+                // show warning if key-hooks are not viable
+                linkKeyChords.Visible = boxelSearch?.autoCopy != true && (!Game.settings.keyhook_TEST || string.IsNullOrEmpty(Game.settings.keyActions_TEST?.GetValueOrDefault(KeyAction.copyNextBoxel)));
+            }
+        }
+
+        private void menuHelpLink_Click(object sender, EventArgs e)
+        {
+            Util.openLink("https://github.com/njthomson/SrvSurvey/wiki/Searching-Space");
+        }
+
+        private void linkKeyChords_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Util.openLink("https://github.com/njthomson/SrvSurvey/wiki/Searching-Space#auto-copy");
         }
     }
 
@@ -399,5 +444,4 @@ namespace SrvSurvey.forms
         public Spansh.SystemResponse.Result? result { get => Item1; }
         public SystemName systemName { get => Item2; }
     }
-
 }

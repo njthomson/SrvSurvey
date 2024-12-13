@@ -59,6 +59,50 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="FormBoxelSearch_Activate">
+    <value>* ACTIVATE →→→!</value>
+    <comment>Activate</comment>
+  </data>
+  <data name="FormBoxelSearch_Disable">
+    <value>* DISABLE →→→!</value>
+    <comment>Disable</comment>
+  </data>
+  <data name="FormBoxelSearch_HideList">
+    <value>* ⏶ HIDE LIST →→→!</value>
+    <comment>⏶ Hide list</comment>
+  </data>
+  <data name="FormBoxelSearch_NotViableMessage">
+    <value>* THIS IS NOT A BOXEL GENERATED SYSTEM NAME. →→→!</value>
+    <comment>This is not a boxel generated system name.</comment>
+  </data>
+  <data name="FormBoxelSearch_SearchNotActive">
+    <value>* BOXEL SEARCH IS NOT ACTIVE. →→→!</value>
+    <comment>Boxel search is not active.</comment>
+  </data>
+  <data name="FormBoxelSearch_ShowList">
+    <value>* ⏷ SHOW LIST →→→!</value>
+    <comment>⏷ Show list</comment>
+  </data>
+  <data name="FormBoxelSearch_SpanshUpdated">
+    <value>* SPANSH UPDATED: {0} →→→!</value>
+    <comment>Spansh updated: {0}</comment>
+  </data>
+  <data name="FormBoxelSearch_SpanshUpdatedBodies">
+    <value>* SPANSH UPDATED: {0}, BODIES: {1} →→→!</value>
+    <comment>Spansh updated: {0}, bodies: {1}</comment>
+  </data>
+  <data name="FormBoxelSearch_UndiscoveredSystem">
+    <value>* UNDISCOVERED SYSTEM →→→!</value>
+    <comment>Undiscovered system</comment>
+  </data>
+  <data name="FormBoxelSearch_Visited">
+    <value>* VISITED: {0) →→→!</value>
+    <comment>Visited: {0)</comment>
+  </data>
+  <data name="FormBoxelSearch_VisitedCounts">
+    <value>* VISITED {0} OF {1} SYSTEMS →→→!</value>
+    <comment>Visited {0} of {1} systems</comment>
+  </data>
   <data name="NetSysData_Bodies">
     <value>* BODIES →→→!</value>
     <comment>Bodies</comment>
