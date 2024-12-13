@@ -2,9 +2,7 @@
 using SrvSurvey.net;
 using SrvSurvey.plotters;
 using SrvSurvey.units;
-using System.Diagnostics;
 using System.Text.RegularExpressions;
-using static SrvSurvey.canonn.Canonn.QueryNearestResponse;
 
 namespace SrvSurvey.forms
 {
@@ -21,13 +19,42 @@ namespace SrvSurvey.forms
 
             // load current or last cmdr
             this.cmdr = CommanderSettings.LoadCurrentOrLast();
-            //if (cmdr.boxelSearch == null)
-            //    cmdr.boxelSearch = new BoxelSearchDef { name = cmdr.currentSystem };
 
-            this.from = new StarPos(cmdr.starPos, cmdr.currentSystem, cmdr.currentSystemAddress);
-            this.comboFrom.Text = this.cmdr.currentSystem;
+            // default distance measuring from cmdr's current system
+            this.from = cmdr.getCurrentStarPos();
+            this.comboFrom.Text = cmdr.boxelSearch?.name ?? this.cmdr.currentSystem;
+
+            if (cmdr.boxelSearch?.collapsed == true)
+                toggleListVisibility(true);
 
             prepForm();
+        }
+
+        private void btnToggleList_ButtonClick(object sender, EventArgs e)
+        {
+            toggleListVisibility(panelList.Visible);
+        }
+
+        private void toggleListVisibility(bool hide)
+        {
+            if (hide)
+            {
+                panelList.Visible = false;
+                panelList.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
+                this.Height -= panelList.Height;
+                btnToggleList.Text = "⏷ Show list";
+                cmdr.boxelSearch!.collapsed = true;
+                cmdr.Save();
+            }
+            else
+            {
+                this.Height += panelList.Height;
+                panelList.Visible = true;
+                panelList.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom;
+                btnToggleList.Text = "⏶ Hide list";
+                cmdr.boxelSearch!.collapsed = false;
+                cmdr.Save();
+            }
         }
 
         private void btnSearch_Click(object sender, EventArgs e)
@@ -38,7 +65,11 @@ namespace SrvSurvey.forms
 
                 // stop here if not a generated name
                 var systemName = SystemName.parse(txtSystemName.Text);
-                if (!systemName.generatedName) return;
+                if (!systemName.generatedName)
+                {
+                    MessageBox.Show(this, "This is not a boxel generated system name.", "SrvSurvey", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
 
                 // activate the feature
                 if (cmdr.boxelSearch == null || systemName.prefix != cmdr.boxelSearch.sysName.prefix)
@@ -82,7 +113,7 @@ namespace SrvSurvey.forms
                 // disable the feature
                 btnCopyNext.Enabled = txtNext.Enabled = checkAutoCopy.Enabled = panelList.Enabled = false;
                 txtSystemName.Enabled = numMax.Enabled = true;
-                txtSystemName.Text = cmdr.currentSystem;
+                //txtSystemName.Text = cmdr.currentSystem;
                 btnSearch.Text = "Activate";
                 txtNext.Text = "";
 
@@ -278,25 +309,6 @@ namespace SrvSurvey.forms
             item.SubItems["dist"]!.Tag = dist;
             item.SubItems["dist"]!.Text = dist.ToString("N2") + " ly";
         }
-
-
-        private void btnToggleList_ButtonClick(object sender, EventArgs e)
-        {
-            if (panelList.Visible)
-            {
-                panelList.Visible = false;
-                panelList.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
-                this.Height -= panelList.Height;
-                btnToggleList.Text = "⏷ Show list";
-            }
-            else
-            {
-                this.Height += panelList.Height;
-                panelList.Visible = true;
-                panelList.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom;
-                btnToggleList.Text = "⏶ Hide list";
-            }
-        }
     }
 
     public class SystemName
@@ -325,6 +337,8 @@ namespace SrvSurvey.forms
 
             if (parts.Groups.Count == 6 && parts.Groups[5].Success)
                 name.num = int.Parse(parts.Groups[5].Value);
+            else
+                name.hasTrailingDash = false;
 
             return name;
         }
@@ -346,7 +360,18 @@ namespace SrvSurvey.forms
         /// <summary> The final number portion, eg:  '12' from 'Thuechu YV-T d4-12' </summary>
         public int num;
 
-        public string prefix { get => $"{sector} {subSector} {massCode}{id}-"; }
+        private bool hasTrailingDash = true;
+
+        public string prefix
+        {
+            get
+            {
+                if (hasTrailingDash)
+                    return $"{sector} {subSector} {massCode}{id}-";
+                else
+                    return $"{sector} {subSector} {massCode}{id}";
+            }
+        }
 
         public override string ToString()
         {

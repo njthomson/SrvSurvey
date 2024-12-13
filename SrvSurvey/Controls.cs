@@ -3,7 +3,6 @@ using SrvSurvey.net;
 using SrvSurvey.widgets;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
-using static SrvSurvey.net.GetSystemResponse;
 
 namespace SrvSurvey
 {
@@ -392,6 +391,78 @@ namespace SrvSurvey
                 if (!this.DroppedDown && !string.IsNullOrWhiteSpace(rem))
                     this.DroppedDown = true;
             });
+        }
+    }
+
+    internal class ButtonContextMenuStrip : ContextMenuStrip
+    {
+        private Button? _button;
+        private bool menuVisible;
+
+        public ButtonContextMenuStrip() : base() { }
+        public ButtonContextMenuStrip(IContainer container) : base(container) { }
+
+        [Browsable(true)]
+        public Button? targetButton
+        {
+            get => _button;
+
+            set
+            {
+                if (_button != null && !this.DesignMode)
+                    _button.MouseDown -= _button_MouseDown;
+
+                _button = value;
+
+                if (_button != null && !this.DesignMode)
+                    _button.MouseDown += _button_MouseDown;
+            }
+        }
+
+        private void _button_MouseDown(object? sender, MouseEventArgs e)
+        {
+            if (this.DesignMode) return;
+
+            if (!menuVisible && _button != null)
+            {
+                this.Show(_button, new Point(0, _button!.Height));
+                //_button.Text = "⏶";
+                this.menuVisible = true;
+                this.Capture = true;
+            }
+        }
+
+        protected override void OnClosed(ToolStripDropDownClosedEventArgs e)
+        {
+            base.OnClosed(e);
+            if (this.DesignMode) return;
+
+            if (this.IsHandleCreated && !this.IsDisposed)
+            {
+                this.BeginInvoke(() =>
+                {
+                    this.menuVisible = false;
+                    //_button.Text = "⏷";
+                });
+            }
+        }
+
+        protected override void OnMouseUp(MouseEventArgs mea)
+        {
+            if (menuVisible)
+                this.AutoClose = false;
+
+            base.OnMouseUp(mea);
+
+            this.AutoClose = true;
+        }
+
+        protected override void OnItemClicked(ToolStripItemClickedEventArgs e)
+        {
+            base.OnItemClicked(e);
+
+            this.AutoClose = true;
+            this.Close(ToolStripDropDownCloseReason.ItemClicked);
         }
     }
 }

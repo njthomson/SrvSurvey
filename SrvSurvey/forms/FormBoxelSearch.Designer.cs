@@ -57,7 +57,7 @@
             txtSystemName.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             txtSystemName.Location = new Point(93, 27);
             txtSystemName.Name = "txtSystemName";
-            txtSystemName.Size = new Size(450, 23);
+            txtSystemName.Size = new Size(396, 23);
             txtSystemName.TabIndex = 2;
             // 
             // btnSearch
@@ -74,7 +74,7 @@
             // 
             lblMaxNum.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             lblMaxNum.AutoSize = true;
-            lblMaxNum.Location = new Point(549, 31);
+            lblMaxNum.Location = new Point(495, 31);
             lblMaxNum.Name = "lblMaxNum";
             lblMaxNum.Size = new Size(65, 15);
             lblMaxNum.TabIndex = 3;
@@ -86,7 +86,7 @@
             txtNext.Enabled = false;
             txtNext.Location = new Point(93, 56);
             txtNext.Name = "txtNext";
-            txtNext.Size = new Size(420, 23);
+            txtNext.Size = new Size(366, 23);
             txtNext.TabIndex = 6;
             // 
             // btnCopyNext
@@ -109,7 +109,7 @@
             list.FullRowSelect = true;
             list.Location = new Point(3, 0);
             list.Name = "list";
-            list.Size = new Size(672, 303);
+            list.Size = new Size(618, 299);
             list.TabIndex = 0;
             list.UseCompatibleStateImageBehavior = false;
             list.View = View.Details;
@@ -129,7 +129,7 @@
             // colNotes
             // 
             colNotes.Text = "Notes";
-            colNotes.Width = 360;
+            colNotes.Width = 340;
             // 
             // label1
             // 
@@ -143,7 +143,7 @@
             // 
             label2.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             label2.AutoSize = true;
-            label2.Location = new Point(3, 312);
+            label2.Location = new Point(3, 308);
             label2.Name = "label2";
             label2.Size = new Size(136, 15);
             label2.TabIndex = 1;
@@ -153,18 +153,18 @@
             // 
             comboFrom.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             comboFrom.FormattingEnabled = true;
-            comboFrom.Location = new Point(163, 309);
+            comboFrom.Location = new Point(163, 305);
             comboFrom.Name = "comboFrom";
-            comboFrom.Size = new Size(512, 23);
+            comboFrom.Size = new Size(458, 23);
             comboFrom.TabIndex = 2;
             comboFrom.SelectedIndexChanged += comboFrom_SelectedIndexChanged;
             // 
             // status
             // 
             status.Items.AddRange(new ToolStripItem[] { btnToggleList, lblStatus });
-            status.Location = new Point(0, 421);
+            status.Location = new Point(0, 417);
             status.Name = "status";
-            status.Size = new Size(678, 24);
+            status.Size = new Size(624, 24);
             status.TabIndex = 9;
             status.Text = "statusStrip1";
             // 
@@ -184,7 +184,7 @@
             lblStatus.BorderSides = ToolStripStatusLabelBorderSides.Left | ToolStripStatusLabelBorderSides.Top | ToolStripStatusLabelBorderSides.Right | ToolStripStatusLabelBorderSides.Bottom;
             lblStatus.BorderStyle = Border3DStyle.SunkenOuter;
             lblStatus.Name = "lblStatus";
-            lblStatus.Size = new Size(593, 19);
+            lblStatus.Size = new Size(539, 19);
             lblStatus.Spring = true;
             lblStatus.Text = "-";
             lblStatus.TextAlign = ContentAlignment.MiddleLeft;
@@ -194,7 +194,7 @@
             checkAutoCopy.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             checkAutoCopy.AutoSize = true;
             checkAutoCopy.Enabled = false;
-            checkAutoCopy.Location = new Point(519, 58);
+            checkAutoCopy.Location = new Point(465, 58);
             checkAutoCopy.Name = "checkAutoCopy";
             checkAutoCopy.Size = new Size(147, 19);
             checkAutoCopy.TabIndex = 7;
@@ -204,7 +204,7 @@
             // numMax
             // 
             numMax.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            numMax.Location = new Point(620, 27);
+            numMax.Location = new Point(566, 27);
             numMax.Maximum = new decimal(new int[] { 100000, 0, 0, 0 });
             numMax.Name = "numMax";
             numMax.Size = new Size(46, 23);
@@ -220,14 +220,14 @@
             panelList.Enabled = false;
             panelList.Location = new Point(0, 85);
             panelList.Name = "panelList";
-            panelList.Size = new Size(678, 335);
+            panelList.Size = new Size(624, 331);
             panelList.TabIndex = 8;
             // 
             // FormBoxelSearch
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(678, 445);
+            ClientSize = new Size(624, 441);
             Controls.Add(panelList);
             Controls.Add(numMax);
             Controls.Add(checkAutoCopy);

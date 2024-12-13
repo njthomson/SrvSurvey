@@ -96,6 +96,9 @@ namespace SrvSurvey
             linkNewBuildAvailable = new LinkLabel();
             groupCodex = new GroupBox();
             btnCodexBingo = new Button();
+            menuSearchTools = new ButtonContextMenuStrip(components);
+            menuSpherical = new ToolStripMenuItem();
+            menuBoxel = new ToolStripMenuItem();
             lblBig = new Label();
             comboDev = new ComboBox();
             groupBox1.SuspendLayout();
@@ -104,6 +107,7 @@ namespace SrvSurvey
             groupBox4.SuspendLayout();
             groupBox5.SuspendLayout();
             groupCodex.SuspendLayout();
+            menuSearchTools.SuspendLayout();
             SuspendLayout();
             // 
             // btnGroundTarget
@@ -654,9 +658,8 @@ namespace SrvSurvey
             btnSphereLimit.Name = "btnSphereLimit";
             btnSphereLimit.Size = new Size(100, 33);
             btnSphereLimit.TabIndex = 19;
-            btnSphereLimit.Text = "Sphere limit";
+            btnSphereLimit.Text = "Search Space";
             btnSphereLimit.UseVisualStyleBackColor = false;
-            btnSphereLimit.Click += btnSphereLimit_Click;
             // 
             // linkLabel2
             // 
@@ -848,6 +851,37 @@ namespace SrvSurvey
             btnCodexBingo.UseVisualStyleBackColor = false;
             btnCodexBingo.Click += btnCodexBingo_Click;
             // 
+            // menuSearchTools
+            // 
+            menuSearchTools.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point);
+            menuSearchTools.Items.AddRange(new ToolStripItem[] { menuSpherical, menuBoxel });
+            menuSearchTools.Name = "menuSearchTools";
+            menuSearchTools.RenderMode = ToolStripRenderMode.System;
+            menuSearchTools.Size = new Size(218, 112);
+            menuSearchTools.targetButton = btnSphereLimit;
+            // 
+            // menuSpherical
+            // 
+            menuSpherical.Image = Properties.ImageResources.spherical_48;
+            menuSpherical.ImageScaling = ToolStripItemImageScaling.None;
+            menuSpherical.ImageTransparentColor = Color.White;
+            menuSpherical.Name = "menuSpherical";
+            menuSpherical.Size = new Size(217, 54);
+            menuSpherical.Text = "Spherical";
+            menuSpherical.ToolTipText = "Search within a spherical area of space, around a central location.";
+            menuSpherical.Click += menuSpherical_Click;
+            // 
+            // menuBoxel
+            // 
+            menuBoxel.Image = Properties.ImageResources.boxel_48;
+            menuBoxel.ImageScaling = ToolStripItemImageScaling.None;
+            menuBoxel.ImageTransparentColor = Color.White;
+            menuBoxel.Name = "menuBoxel";
+            menuBoxel.Size = new Size(217, 54);
+            menuBoxel.Text = "Boxel";
+            menuBoxel.ToolTipText = "Search every system within a named boxel.";
+            menuBoxel.Click += menuBoxel_Click;
+            // 
             // lblBig
             // 
             lblBig.AutoSize = true;
@@ -920,6 +954,7 @@ namespace SrvSurvey
             groupBox5.ResumeLayout(false);
             groupBox5.PerformLayout();
             groupCodex.ResumeLayout(false);
+            menuSearchTools.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -984,5 +1019,8 @@ namespace SrvSurvey
         private Button btnCodexBingo;
         private Label lblBig;
         private ComboBox comboDev;
+        private ButtonContextMenuStrip menuSearchTools;
+        private ToolStripMenuItem menuSpherical;
+        private ToolStripMenuItem menuBoxel;
     }
 }

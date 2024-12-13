@@ -143,9 +143,9 @@ namespace SrvSurvey.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap boxel_32 {
+        internal static System.Drawing.Bitmap boxel_48 {
             get {
-                object obj = ResourceManager.GetObject("boxel_32", resourceCulture);
+                object obj = ResourceManager.GetObject("boxel_48", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -466,6 +466,16 @@ namespace SrvSurvey.Properties {
         internal static System.Drawing.Bitmap spansh_16x16 {
             get {
                 object obj = ResourceManager.GetObject("spansh_16x16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap spherical_48 {
+            get {
+                object obj = ResourceManager.GetObject("spherical_48", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

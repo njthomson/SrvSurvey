@@ -63,7 +63,7 @@ namespace SrvSurvey
 
         private CommanderSettings currentCmdr
         {
-            get => Game.activeGame?.cmdr ?? CommanderSettings.Load(this.cmdrCodex.fid, true, "");
+            get => Game.activeGame?.cmdr ?? CommanderSettings.Load(this.cmdrCodex.fid, true, this.cmdrCodex.commander);
         }
 
         private void comboCmdr_SelectedIndexChanged(object sender, EventArgs e)
@@ -430,7 +430,7 @@ namespace SrvSurvey
             var searchTerm = codexTag?.variant ?? codexTag?.text;
             if (searchTerm == null) return;
 
-            var refPos = new StarPos(this.currentCmdr.starPos, this.currentCmdr.currentSystem);
+            var refPos = this.currentCmdr.getCurrentStarPos();
             FormNearestSystems.show(refPos, searchTerm, this.currentCmdr.commander);
         }
 
@@ -443,7 +443,7 @@ namespace SrvSurvey
                     .Select(t => Game.codexRef.matchFromEntryId(t.entry!.entryid).variant)
                     .ToList();
 
-                var refPos = new StarPos(this.currentCmdr.starPos, this.currentCmdr.currentSystem);
+                var refPos = this.currentCmdr.getCurrentStarPos();
                 FormNearestSystems.show(refPos, variantNames);
             }
         }

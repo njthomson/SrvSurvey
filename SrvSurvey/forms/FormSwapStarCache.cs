@@ -10,10 +10,7 @@ namespace SrvSurvey.forms
         public static void showDialog(IWin32Window parent)
         {
             // load current or last commander
-            var cmdr = Game.activeGame?.cmdr;
-
-            if (Game.settings.lastCommander != null && Game.settings.lastFid != null)
-                cmdr = CommanderSettings.Load(Game.settings.lastFid, true, Game.settings.lastCommander);
+            var cmdr = CommanderSettings.LoadCurrentOrLast();
 
             if (cmdr == null)
             {
@@ -21,7 +18,7 @@ namespace SrvSurvey.forms
                 return;
             }
 
-            var form = new FormSwapStarCache(cmdr, Game.activeGame?.cmdr?.currentSystem);
+            var form = new FormSwapStarCache(cmdr, cmdr.currentSystem);
             form.ShowDialog(parent);
         }
 

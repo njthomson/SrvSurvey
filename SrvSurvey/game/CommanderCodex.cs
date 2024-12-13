@@ -6,8 +6,16 @@ namespace SrvSurvey.game
 {
     internal class CommanderCodex : Data
     {
-        public static CommanderCodex Load(string fid, string commanderName)
+        #region static loading and caching code
+
+        private static readonly Dictionary<string, CommanderCodex> cache = new();
+
+        public static CommanderCodex Load(string fid, string commanderName, bool noCache = false)
         {
+            // use cache entry if present
+            if (!noCache && cache.TryGetValue(fid, out CommanderCodex? value))
+                return value!;
+
             var filepath = Path.Combine(Program.dataFolder, $"{fid}-codex.json");
 
             return Data.Load<CommanderCodex>(filepath)
@@ -32,6 +40,8 @@ namespace SrvSurvey.game
                     region = GalacticRegions.getDisplayNameFromIdx(regionId),
                 };
         }
+
+        #endregion
 
         public void reload()
         {

@@ -71,12 +71,12 @@
     <comment>Auto dock in progress</comment>
   </data>
   <data name="AutoDock2">
-    <value>* SETTLEMENT IDENTIFICATION WILL BE DELAYED →→→!</value>
-    <comment>Settlement identification will be delayed</comment>
+    <value>* SETTLEMENT AUTO-IDENTIFICATION SUPPORTED →→→!</value>
+    <comment>Settlement auto-identification supported</comment>
   </data>
   <data name="AutoDock3">
-    <value>* AUTO DOCK RECOMMENDED →→→!</value>
-    <comment>Auto dock recommended</comment>
+    <value>* DO NOT SWITCH TO EXTERNAL CAMERA →→→!</value>
+    <comment>Do not switch to external camera</comment>
   </data>
   <data name="CMD">
     <value>* CMD →→→!</value>

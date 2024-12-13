@@ -415,7 +415,7 @@ namespace SrvSurvey
             {
                 var oldCmdr = Data.Load<CommanderSettings>(cmdrFile)!;
                 var newCmdr = Data.Load<CommanderSettings>(cmdrFile.Replace(oldFolder, dataFolder))!;
-                if (newCmdr == null) newCmdr = CommanderSettings.Load(oldCmdr.fid, oldCmdr.isOdyssey, oldCmdr.commander);
+                if (newCmdr == null) newCmdr = CommanderSettings.Load(oldCmdr.fid, oldCmdr.isOdyssey, oldCmdr.commander, true);
 
                 Game.log($">> mergeScannedBioEntryIds: {cmdrFile}");
 

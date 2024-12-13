@@ -37,7 +37,7 @@
             numRadius = new NumericUpDown();
             btnAccept = new FlatButton();
             label4 = new Label();
-            comboSystemName = new ComboBox();
+            comboSystemName = new ComboStarSystem();
             btnDisable = new FlatButton();
             label5 = new Label();
             label6 = new Label();
@@ -108,7 +108,6 @@
             comboSystemName.FormattingEnabled = true;
             comboSystemName.Name = "comboSystemName";
             comboSystemName.SelectedIndexChanged += comboSystemName_SelectedIndexChanged;
-            comboSystemName.TextUpdate += comboSystemName_TextUpdate;
             // 
             // btnDisable
             // 
@@ -197,7 +196,7 @@
         private NumericUpDown numRadius;
         private FlatButton btnAccept;
         private Label label4;
-        private ComboBox comboSystemName;
+        private ComboStarSystem comboSystemName;
         private FlatButton btnDisable;
         private Label label5;
         private Label label6;

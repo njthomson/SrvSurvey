@@ -199,11 +199,11 @@
     <comment>Shown when approaching a settlement</comment>
   </data>
   <data name="AutoDock2">
-    <value>Settlement identification will be delayed</value>
+    <value>Settlement auto-identification supported</value>
     <comment>Shown when approaching a settlement</comment>
   </data>
   <data name="AutoDock3">
-    <value>Auto dock recommended</value>
+    <value>Do not switch to external camera</value>
     <comment>Shown when approaching a settlement</comment>
   </data>
 

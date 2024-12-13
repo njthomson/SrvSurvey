@@ -3,17 +3,21 @@ using Newtonsoft.Json.Converters;
 using SrvSurvey.forms;
 using SrvSurvey.plotters;
 using SrvSurvey.units;
-using System.Collections.Generic;
-using static SrvSurvey.canonn.Canonn.QueryNearestResponse;
 
 namespace SrvSurvey.game
 {
     class CommanderSettings : Data
     {
-        #region static loading code
+        #region static loading and caching code
 
-        public static CommanderSettings Load(string fid, bool isOdyssey, string commanderName)
+        private static readonly Dictionary<string, CommanderSettings> cache = new();
+
+        public static CommanderSettings Load(string fid, bool isOdyssey, string commanderName, bool noCache = false)
         {
+            // use cache entry if present
+            if (!noCache && cache.TryGetValue(fid, out CommanderSettings? value))
+                return value!;
+
             var mode = isOdyssey ? "live" : "legacy";
             var filepath = Path.Combine(Program.dataFolder, $"{fid}-{mode}.json");
 
@@ -57,6 +61,11 @@ namespace SrvSurvey.game
             }
 
             return cmdrs;
+        }
+
+        public CommanderCodex loadCodex()
+        {
+            return CommanderCodex.Load(this.fid, this.commander);
         }
 
         #endregion
@@ -279,6 +288,11 @@ namespace SrvSurvey.game
             Program.getPlotter<PlotSphericalSearch>()?.Invalidate();
         }
 
+        /// <summary> Returns a StarPos populated for the cmdr's current system </summary>
+        public StarPos getCurrentStarPos()
+        {
+            return new StarPos(this.starPos, this.currentSystem, this.currentSystemAddress);
+        }
     }
 
     internal class SphereLimit
@@ -309,6 +323,7 @@ namespace SrvSurvey.game
         public string name;
         public int max;
         public string visited;
+        public bool collapsed;
 
         [JsonIgnore]
         public SystemName sysName
@@ -324,7 +339,7 @@ namespace SrvSurvey.game
         private SystemName _sysName;
 
         [JsonIgnore]
-        public int countVisited { get => visited.Split(',').Length; }
+        public int countVisited { get => visited?.Split(',').Length ?? 0; }
 
         public string? getNextToVisit()
         {

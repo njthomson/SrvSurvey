@@ -5,6 +5,8 @@ namespace SrvSurvey.units
 {
     internal class StarPos
     {
+        public static StarPos Sol = new StarPos(0, 0, 0, "Sol", 10477373803);
+
         private double[] coords = new double[3];
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]

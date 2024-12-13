@@ -264,7 +264,6 @@ namespace SrvSurvey
 
                         foreach (Control ctrl in this.Controls) ctrl.Enabled = true;
                         btnCodexShow.Enabled = FormShowCodex.allow;
-                        btnSphereLimit.Enabled = FormSphereLimit.allow;
 
                         this.timer1.Start();
 
@@ -811,8 +810,6 @@ namespace SrvSurvey
 
         private void updateSphereLimit()
         {
-            btnSphereLimit.Enabled = FormSphereLimit.allow;
-
             // show/hide the sphere limit plotter
             if (PlotSphericalSearch.allowPlotter)
                 Program.showPlotter<PlotSphericalSearch>();
@@ -1738,11 +1735,16 @@ namespace SrvSurvey
             BaseForm.show<FormShowCodex>();
         }
 
-        private void btnSphereLimit_Click(object sender, EventArgs e)
+        private void menuSpherical_Click(object sender, EventArgs e)
         {
             Program.closePlotter<PlotSphericalSearch>();
             new FormSphereLimit().ShowDialog(this);
             this.updateSphereLimit();
+        }
+
+        private void menuBoxel_Click(object sender, EventArgs e)
+        {
+            BaseForm.show<FormBoxelSearch>();
         }
 
         private void btnRamTah_Click(object sender, EventArgs e)
@@ -1753,7 +1755,6 @@ namespace SrvSurvey
         private void btnCodexBingo_Click(object sender, EventArgs e)
         {
             BaseForm.show<FormCodexBingo>();
-            //BaseForm.show<FormBoxelSearch>();
         }
     }
 }

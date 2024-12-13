@@ -71,12 +71,12 @@
     <comment>Auto dock in progress</comment>
   </data>
   <data name="AutoDock2">
-    <value>Идентификация расчетов будет отложена</value>
-    <comment>Settlement identification will be delayed</comment>
+    <value>Поддерживается автоматическая идентификация расчетов</value>
+    <comment>Settlement auto-identification supported</comment>
   </data>
   <data name="AutoDock3">
-    <value>Рекомендуется автоматическая док-станция</value>
-    <comment>Auto dock recommended</comment>
+    <value>Не переключайтесь на внешнюю камеру</value>
+    <comment>Do not switch to external camera</comment>
   </data>
   <data name="CMD">
     <value>СМД</value>

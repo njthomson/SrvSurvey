@@ -620,13 +620,6 @@ namespace SrvSurvey
                 menuCurrentBody.Select();
                 menuCurrentBody.ShowDropDown();
             }
-            //else if (Game.activeGame?.systemBody != null && Debugger.IsAttached)
-            //{
-            //    var match = Game.codexRef.matchFromEntryId(currentVariant.entryId);
-            //    var clauses = BioPredictor.predictTarget(Game.activeGame.systemBody, currentVariant.englishName);
-            //    var tempClause = clauses.FirstOrDefault(c => c?.property == "temp");
-            //    Game.log($"{match.variant.englishName} ({match.species.name}) => range: {tempClause?.min} ~ {tempClause?.max}, default: {Game.activeGame!.systemBody!.surfaceTemperature}, current: {Game.activeGame.status.Temperature}");
-            //}
         }
 
         private void btnMenu_MouseEnter(object sender, EventArgs e)

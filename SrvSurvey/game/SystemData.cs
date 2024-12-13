@@ -25,6 +25,7 @@ namespace SrvSurvey.game
         private static SystemData? Load(string systemName, long systemAddress, string fid)
         {
             Game.log($"Loading SystemData for: '{systemName}' ({systemAddress})");
+
             // use cache entry if present
             if (cache.TryGetValue(systemAddress, out SystemData? value))
                 return value;

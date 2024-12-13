@@ -43,8 +43,9 @@ namespace SrvSurvey.canonn
         public int cmdrPad;
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public double bodyRadius;
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-        public LandingPads availblePads;
+        // TODO: In a while, when enough clients are updated - attempt to correct the spelling in the DB
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate, PropertyName = "availblePads")]
+        public LandingPads availablePads;
 
         #endregion
 
@@ -79,7 +80,7 @@ namespace SrvSurvey.canonn
             if (station.subType > 0) return false;
 
             // some subTypes can be inferred from just the economy and pad configuration...
-            var mappingKey = $"{station.economy}/{station.availblePads}";
+            var mappingKey = $"{station.economy}/{station.availablePads}";
             station.subType = mapLandingPadConfigToSubType.GetValueOrDefault(mappingKey);
             if (station.subType > 0)
             {
@@ -106,7 +107,7 @@ namespace SrvSurvey.canonn
         //    foreach (var template in HumanSiteTemplate.templates)
         //    {
         //        if (template.economy != stationEconomy) continue; // wrong economy
-        //        if (station.availblePads.ToString() != template.landingPadSummary) continue; // wrong pad configuration
+        //        if (station.availablePads.ToString() != template.landingPadSummary) continue; // wrong pad configuration
 
         //        // calculate distance from pad center
         //        var pad = template.landingPads[station.cmdrPad - 1];
@@ -202,7 +203,7 @@ namespace SrvSurvey.canonn
             foreach (var template in HumanSiteTemplate.templates)
             {
                 if (template.economy != station.economy) continue; // wrong economy
-                if (station.availblePads != null && station.availblePads.ToString() != template.landingPadSummary) continue; // wrong pad configuration
+                if (station.availablePads != null && station.availablePads.ToString() != template.landingPadSummary) continue; // wrong pad configuration
 
                 foreach (var pad in template.landingPads)
                 {
@@ -423,6 +424,7 @@ namespace SrvSurvey.canonn
             { "federation_corvette", new PointM(0, 17.577326097292171045687273834) }, // Federal Corvette
             { "cutter", new PointM(0, -78.975049073498041219641152452) }, // Imperial Cutter
             { "mandalay", new PointM(-0.0705413346267133158511499042, -19.309309902605600094877688881) }, // Mandalay
+            { "cobramkv", new PointM(0.0636393912343842402361905178, -13.024934562983767191348622878) }, // Cobra mk5
 
             { "foot", new PointM(0d, 0d) }, // No offset applied when on foot
             { "taxi", new PointM(-0.9996653405051110150258470637, -11.913859432190865089645580760) }, // Taxi is an Adder but matching seat #2

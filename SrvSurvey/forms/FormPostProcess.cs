@@ -154,7 +154,7 @@ namespace SrvSurvey
                     .ToArray();
 
                 var cmdr = CommanderSettings.Load(this.targetCmdrFid!, true, this.targetCmdrName!);
-                var cmdrCodex = CommanderCodex.Load(this.targetCmdrFid!, this.targetCmdrName!);
+                var cmdrCodex = cmdr.loadCodex();
 
                 this.Invoke(new Action(() =>
                 {

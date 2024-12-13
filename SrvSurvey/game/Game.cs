@@ -537,7 +537,7 @@ namespace SrvSurvey.game
             if (loadEntry != null)
             {
                 this.cmdr = CommanderSettings.Load(loadEntry.FID, loadEntry.Odyssey, loadEntry.Commander);
-                this.cmdrCodex = CommanderCodex.Load(loadEntry.FID, loadEntry.Commander);
+                this.cmdrCodex = cmdr.loadCodex();
             }
 
             // if we have MainMenu music - we know we're not actively playing
@@ -2121,7 +2121,7 @@ namespace SrvSurvey.game
 
             // new ...
             this.systemStation.stationType = entry.StationType;
-            this.systemStation.availblePads = entry.LandingPads;
+            this.systemStation.availablePads = entry.LandingPads;
 
             //// old ...
             //if (entry.StationType == StationType.OnFootSettlement && this.humanSite?.marketId == entry.MarketID && Game.settings.autoShowHumanSitesTest)
@@ -2175,8 +2175,8 @@ namespace SrvSurvey.game
                 return;
             }
 
-            if (this.systemStation.availblePads == null)
-                this.systemStation.availblePads = entry.LandingPads;
+            if (this.systemStation.availablePads == null)
+                this.systemStation.availablePads = entry.LandingPads;
 
             if (this._mode == GameMode.NoFocus && status.Docked)
             {

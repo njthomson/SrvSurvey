@@ -467,26 +467,6 @@ namespace SrvSurvey
             }
         }
 
-        public static StarSystem getRecentStarSystem()
-        {
-            var cmdr = Game.activeGame?.cmdr;
-            if (cmdr == null && Game.settings.lastFid != null)
-                cmdr = CommanderSettings.Load(Game.settings.lastFid, true, Game.settings.lastCommander!);
-
-            if (!string.IsNullOrEmpty(cmdr?.currentSystem))
-            {
-                return new StarSystem
-                {
-                    systemName = cmdr.currentSystem,
-                    pos = cmdr.starPos,
-                };
-            }
-            else
-            {
-                return StarSystem.Sol;
-            }
-        }
-
         public static string flattenStarType(string? starType)
         {
             if (starType == null) return null!;

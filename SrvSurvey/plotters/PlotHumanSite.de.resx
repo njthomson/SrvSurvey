@@ -71,12 +71,12 @@
     <comment>Auto dock in progress</comment>
   </data>
   <data name="AutoDock2">
-    <value>Die Identifizierung der Abrechnung wird sich verzögern</value>
-    <comment>Settlement identification will be delayed</comment>
+    <value>Unterstützung der automatischen Identifizierung von Abrechnungen</value>
+    <comment>Settlement auto-identification supported</comment>
   </data>
   <data name="AutoDock3">
-    <value>Automatisches Andocken empfohlen</value>
-    <comment>Auto dock recommended</comment>
+    <value>Wechseln Sie nicht zu einer externen Kamera</value>
+    <comment>Do not switch to external camera</comment>
   </data>
   <data name="CMD">
     <value>CMD</value>

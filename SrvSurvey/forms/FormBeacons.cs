@@ -2,6 +2,7 @@
 using SrvSurvey.game;
 using SrvSurvey.net;
 using SrvSurvey.Properties;
+using SrvSurvey.units;
 using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
@@ -15,7 +16,7 @@ namespace SrvSurvey
     {
         public static FormBeacons? activeForm;
 
-        private canonn.StarSystem star;
+        private StarPos from;
 
         public static void show()
         {
@@ -79,16 +80,10 @@ namespace SrvSurvey
         private void FormBeacons_Load(object sender, EventArgs e)
         {
             this.grid.Columns[10].Width = 0;
-            this.star = Util.getRecentStarSystem();
-            comboCurrentSystem.Text = star.systemName;
+            this.from = CommanderSettings.LoadCurrentOrLast().getCurrentStarPos();
+            comboCurrentSystem.Text = from.systemName;
 
-            this.BeginInvoke(() =>
-            {
-                this.beginPrepareAllRows().ContinueWith((rslt) =>
-                {
-                    // no-op
-                });
-            });
+            this.BeginInvoke(() => this.beginPrepareAllRows().ContinueWith((rslt) => { /* no-op */ }));
         }
 
         public Task beginPrepareAllRows()
@@ -172,7 +167,7 @@ namespace SrvSurvey
                 var lastVisited = entry.lastVisited == DateTimeOffset.MinValue ? "" : entry.lastVisited.ToString("d")!;
                 var distanceToArrival = entry.distanceToArrival.ToString("N0");
 
-                entry.systemDistance = Util.getSystemDistance(this.star.pos, entry.starPos);
+                entry.systemDistance = Util.getSystemDistance(this.from, entry.starPos);
                 var distanceToSystem = entry.systemDistance.ToString("N0");
 
                 var subItems = new ListViewItem.ListViewSubItem[]
@@ -201,7 +196,7 @@ namespace SrvSurvey
                 var lastVisited = entry.lastVisited == DateTimeOffset.MinValue ? "" : entry.lastVisited.ToString("d")!;
                 var distanceToArrival = entry.distanceToArrival.ToString("N0");
 
-                entry.systemDistance = Util.getSystemDistance(this.star.pos, entry.starPos);
+                entry.systemDistance = Util.getSystemDistance(this.from, entry.starPos);
                 var distanceToSystem = entry.systemDistance.ToString("N0");
 
                 var hasImages = siteHasImages(entry);
@@ -259,7 +254,7 @@ namespace SrvSurvey
             foreach (var row in this.rows)
             {
                 var entry = (GuardianGridEntry)row.Tag;
-                entry.systemDistance = Util.getSystemDistance(this.star.pos, entry.starPos);
+                entry.systemDistance = Util.getSystemDistance(this.from, entry.starPos);
                 row.SubItems["distanceToSystem"]!.Text = entry.systemDistance.ToString("N0") + " ly";
 
                 // TODO: highlight the row that is the current target destination
@@ -391,16 +386,12 @@ namespace SrvSurvey
         {
             if (match == null)
             {
-                this.star = canonn.StarSystem.Sol;
+                this.from = StarPos.Sol;
             }
             else
             {
                 // update currentSystem
-                this.star = new canonn.StarSystem
-                {
-                    systemName = match.name,
-                    pos = match.coords,
-                };
+                this.from = new StarPos(match.coords, match.name, match.id64);
             }
 
             // and recalculate distances
