@@ -16,12 +16,7 @@
     <Platforms>AnyCPU;x64</Platforms>
     <ApplicationIcon>logo.ico</ApplicationIcon>
     <PlatformTarget>x64</PlatformTarget>
-    <Configurations>Debug;Release;ReleaseOnce</Configurations>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseOnce|AnyCPU'">
-    <Optimize>True</Optimize>
-    <NoWarn>1701;1702;CS8618;CS0649</NoWarn>
+    <Configurations>Debug;Release;ReleaseOnce;DebugNoPS</Configurations>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseOnce|x64'">
@@ -29,15 +24,11 @@
     <NoWarn>1701;1702;CS8618;CS0649</NoWarn>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <NoWarn>1701;1702;CS8618;CS0649</NoWarn>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <NoWarn>1701;1702;CS8618;CS0649</NoWarn>
-  </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <NoWarn>1701;1702;CS8618;CS0649</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugNoPS|x64'">
     <NoWarn>1701;1702;CS8618;CS0649</NoWarn>
   </PropertyGroup>
 
@@ -189,7 +180,7 @@
     </EmbeddedResource>
   </ItemGroup>
 
-  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent"  Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Exec Command="PowerShell &quot;$(ProjectDir)sort-resx.ps1&quot;" />
   </Target>
 
