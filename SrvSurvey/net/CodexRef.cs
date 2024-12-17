@@ -39,6 +39,9 @@ namespace SrvSurvey.canonn
             if (!Directory.Exists(CodexRef.codexImagesFolder))
                 Directory.CreateDirectory(CodexRef.codexImagesFolder);
 
+            if (Game.settings.downloadCodexImageFolder != null && !Directory.Exists(Game.settings.downloadCodexImageFolder))
+                Directory.CreateDirectory(Game.settings.downloadCodexImageFolder);
+
             await this.prepNebulae(reset);
 
             await this.prepCodexNotFounds(reset);
@@ -133,7 +136,7 @@ namespace SrvSurvey.canonn
                             case "$Codex_Ent_Thargoid_Coral_Root_Name;":
                             case "$Codex_Ent_Thargoid_Coral_Tree_Name;":
                             case "$Codex_Ent_Thargoid_Coral_Name;": // TODO: Remove this once Coral Tree is present?
-                                genusName = "$Codex_Ent_Thargoid_Coral_Name;"; 
+                                genusName = "$Codex_Ent_Thargoid_Coral_Name;";
                                 break;
 
                             case "$Codex_Ent_Thargoid_Barnacle_Matrix_Name;":
@@ -146,7 +149,7 @@ namespace SrvSurvey.canonn
                             case "$Codex_Ent_Thargoid_Tower_Med_Name;":
                             case "$Codex_Ent_Thargoid_Tower_High_Name;":
                             case "$Codex_Ent_Thargoid_Tower_ExtraHigh_Name;":
-                                genusName = "$Codex_Ent_Thargoid_Tower_Name;"; 
+                                genusName = "$Codex_Ent_Thargoid_Tower_Name;";
                                 break;
                         }
 

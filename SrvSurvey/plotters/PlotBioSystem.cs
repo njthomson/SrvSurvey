@@ -342,10 +342,13 @@ namespace SrvSurvey.plotters
                 newLine(+four, true);
 
                 // geo signals?
-                foreach (var geoName in body.geoSignals.Select(_ => _.nameLocalized).ToHashSet())
+                if (body.geoSignals?.Count > 0)
                 {
-                    this.drawTextAt(twoEight, $"{geoName}");
-                    newLine(+four, true);
+                    foreach (var geoName in body.geoSignals.Select(_ => _.nameLocalized).ToHashSet())
+                    {
+                        this.drawTextAt(twoEight, $"{geoName}");
+                        newLine(+four, true);
+                    }
                 }
             }
 

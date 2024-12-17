@@ -142,7 +142,7 @@ namespace SrvSurvey.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Visited: {0).
+        ///   Looks up a localized string similar to Visited: {0}.
         /// </summary>
         internal static string FormBoxelSearch_Visited {
             get {

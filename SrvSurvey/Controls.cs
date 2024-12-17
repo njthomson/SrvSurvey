@@ -328,6 +328,7 @@ namespace SrvSurvey
         protected override void OnTextChanged(EventArgs e)
         {
             base.OnTextChanged(e);
+            if (!this.Enabled) return;
             Game.log("OnTextChanged");
 
             var query = this.Text;

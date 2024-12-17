@@ -187,7 +187,8 @@ namespace SrvSurvey
             // now load the image
             Task.Run(() =>
             {
-                var filepath = Path.Combine(CodexRef.codexImagesFolder, $"{currentVariant.entryId}.png");
+                var folder = Game.settings.downloadCodexImageFolder ?? CodexRef.codexImagesFolder;
+                var filepath = Path.Combine(folder, $"{currentVariant.entryId}.png");
 
                 Image? nextImg = null;
                 var nextCredits = "";
@@ -430,7 +431,8 @@ namespace SrvSurvey
                         var match = Game.codexRef.matchFromEntryId(org.entryId);
                         if (match.variant.imageUrl == null) continue;
 
-                        var filepath = Path.Combine(CodexRef.codexImagesFolder, $"{org.entryId}.png");
+                        var folder = Game.settings.downloadCodexImageFolder ?? CodexRef.codexImagesFolder;
+                        var filepath = Path.Combine(folder, $"{org.entryId}.png");
                         if (File.Exists(filepath)) continue;
 
                         // otherwise download it
@@ -450,7 +452,8 @@ namespace SrvSurvey
                                 // skip if no url or we already have the file
                                 if (variant.variant.imageUrl == null) continue;
 
-                                var filepath = Path.Combine(CodexRef.codexImagesFolder, $"{variant.variant.entryId}.png");
+                                var folder = Game.settings.downloadCodexImageFolder ?? CodexRef.codexImagesFolder;
+                                var filepath = Path.Combine(folder, $"{variant.variant.entryId}.png");
                                 if (File.Exists(filepath)) continue;
 
                                 // otherwise download it
@@ -508,6 +511,7 @@ namespace SrvSurvey
             // add menus for the other bodies
             var menuTree = new List<ToolStripMenuItem>();
 
+            var rePrepStuff = false;
             var bodies = currentBody.system.bodies;
             foreach (var body in bodies)
             {
@@ -535,6 +539,7 @@ namespace SrvSurvey
 
                     bodyMenu.DropDownItems.Add(item);
                 }
+
                 // predictions
                 foreach (var genus in body.genusPredictions)
                 {
@@ -554,10 +559,16 @@ namespace SrvSurvey
                         }
                     }
                 }
+
+                if (bodyMenu.DropDownItems.Count != stuff[body].Count)
+                    rePrepStuff = true;
             }
 
             menuStrip.Items.Clear();
             menuStrip.Items.AddRange(menuTree.ToArray());
+
+            if (rePrepStuff)
+                prepStuff();
         }
 
         private void btnPrevBody_Click(object sender, EventArgs e)

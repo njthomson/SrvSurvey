@@ -96,8 +96,8 @@
     <comment>Undiscovered system</comment>
   </data>
   <data name="FormBoxelSearch_Visited">
-    <value>Besucht: {0)</value>
-    <comment>Visited: {0)</comment>
+    <value>Besucht: {0}</value>
+    <comment>Visited: {0}</comment>
   </data>
   <data name="FormBoxelSearch_VisitedCounts">
     <value>Besuchte {0} von {1} Systemen</value>

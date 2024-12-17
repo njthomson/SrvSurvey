@@ -194,6 +194,7 @@ namespace SrvSurvey
         public bool formGenusShowRingGuide = true;
 
         public string? localFloraFolder = null;
+        public string? downloadCodexImageFolder = null;
 
         public bool darkTheme = false;
 

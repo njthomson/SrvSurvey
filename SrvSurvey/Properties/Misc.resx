@@ -218,7 +218,7 @@ Would you like to create it?</value>
     <comment>Shown in FormBoxelSearch as notes for a system that has not been discovered</comment>
   </data>
   <data name="FormBoxelSearch_Visited" xml:space="preserve">
-    <value>Visited: {0)</value>
+    <value>Visited: {0}</value>
     <comment>Shown in FormBoxelSearch as notes for a system that was just visited
 {0} DateTime, the date and time the system was visited, usually now</comment>
   </data>

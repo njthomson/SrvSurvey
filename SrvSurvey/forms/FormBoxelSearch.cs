@@ -22,7 +22,9 @@ namespace SrvSurvey.forms
 
             // default distance measuring from cmdr's current system
             this.from = cmdr.getCurrentStarPos();
+            this.comboFrom.Enabled = false;
             this.comboFrom.Text = cmdr.boxelSearch?.name ?? this.cmdr.currentSystem;
+            this.comboFrom.Enabled = true;
             checkAutoCopy.Checked = boxelSearch?.autoCopy ?? true;
 
             if (cmdr.boxelSearch?.collapsed == true)
@@ -85,9 +87,9 @@ namespace SrvSurvey.forms
                     cmdr.boxelSearch = new()
                     {
                         name = systemName.name,
-                        max = (int)Math.Max(numMax.Value, systemName.num),
                     };
                 }
+                cmdr.boxelSearch.max = (int)Math.Max(numMax.Value, systemName.num);
                 cmdr.boxelSearch.active = true;
                 cmdr.Save();
 
@@ -130,7 +132,7 @@ namespace SrvSurvey.forms
                 txtNext.Text = "";
 
                 var systemName = SystemName.parse(txtSystemName.Text);
-                numMax.Value = systemName.generatedName ? systemName.num : 0;
+                numMax.Value = Math.Max(systemName.generatedName ? systemName.num : 0, numMax.Value);
 
                 Program.invalidate<PlotSphericalSearch>();
             }
@@ -154,12 +156,12 @@ namespace SrvSurvey.forms
             {
                 list.Items.Clear();
 
-                if (response.results.Count == 0)
-                {
-                    btnSearch.Enabled = true;
-                    list.Enabled = true;
-                    return;
-                }
+                //if (response.results.Count == 0)
+                //{
+                //    btnSearch.Enabled = true;
+                //    list.Enabled = true;
+                //    return;
+                //}
 
                 var visited = boxelSearch.visited?.Split(",").ToHashSet() ?? new HashSet<string>();
 
@@ -202,8 +204,13 @@ namespace SrvSurvey.forms
 
                     list.Items.Add(listItem);
                     if (isSystemKnown) realTags.RemoveAt(0);
+
+                    // pre-check current system
+                    if (listItem.Name == cmdr.currentSystem)
+                        cmdr.markBoxelSystemVisited(cmdr.currentSystem);
                 }
-                list.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+                list.AutoResizeColumn(0, ColumnHeaderAutoResizeStyle.ColumnContent);
+                list.AutoResizeColumn(2, ColumnHeaderAutoResizeStyle.ColumnContent);
                 this.setStatusText();
 
                 txtNext.Text = boxelSearch.getNextToVisit();
@@ -300,7 +307,7 @@ namespace SrvSurvey.forms
         {
             if (boxelSearch == null || !boxelSearch.active)
             {
-                lblStatus.Text =Properties.Misc.FormBoxelSearch_SearchNotActive;
+                lblStatus.Text = Properties.Misc.FormBoxelSearch_SearchNotActive;
             }
             else
             {
@@ -414,7 +421,7 @@ namespace SrvSurvey.forms
                 if (hasTrailingDash)
                     return $"{sector} {subSector} {massCode}{id}-";
                 else
-                    return $"{sector} {subSector} {massCode}{id}";
+                    return $"{sector} {subSector} {massCode}";
             }
         }
 
