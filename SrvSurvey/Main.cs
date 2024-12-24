@@ -557,7 +557,7 @@ namespace SrvSurvey
 
                 this.txtVehicle.Text = "";
                 this.txtNearBody.Text = "";
-                this.txtLocation.Text = CommanderSettings.LoadCurrentOrLast()?.currentSystem ?? "";
+                this.txtLocation.Text = Game.settings.lastFid != null ? CommanderSettings.LoadCurrentOrLast()?.currentSystem ?? "" : "";
                 btnCopyLocation.Enabled = !string.IsNullOrEmpty(this.txtLocation.Text);
 
                 if (game?.mode == GameMode.MainMenu)
