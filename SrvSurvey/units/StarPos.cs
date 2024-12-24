@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json;
-using SrvSurvey.net;
+using SrvSurvey.game;
 
 namespace SrvSurvey.units
 {
@@ -7,7 +7,9 @@ namespace SrvSurvey.units
     {
         public static StarPos Sol = new StarPos(0, 0, 0, "Sol", 10477373803);
 
-        private double[] coords = new double[3];
+        public double x;
+        public double y;
+        public double z;
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public string? systemName;
@@ -21,9 +23,9 @@ namespace SrvSurvey.units
 
         public StarPos(double[] pos, string? systemName = null, long? address = null)
         {
-            this.coords[0] = pos[0];
-            this.coords[1] = pos[1];
-            this.coords[2] = pos[2];
+            this.x = pos[0];
+            this.y = pos[1];
+            this.z = pos[2];
             this.systemName = systemName;
 
             if (address.HasValue)
@@ -32,31 +34,13 @@ namespace SrvSurvey.units
 
         public StarPos(double x, double y, double z, string? systemName = null, long? address = null)
         {
-            this.coords[0] = x;
-            this.coords[1] = y;
-            this.coords[2] = z;
+            this.x = x;
+            this.y = y;
+            this.y = z;
             this.systemName = systemName;
 
             if (address.HasValue)
                 this.address = address.Value;
-        }
-
-        public double x
-        {
-            get => coords[0];
-            set { coords[0] = value; }
-        }
-
-        public double y
-        {
-            get => coords[1];
-            set { coords[1] = value; }
-        }
-
-        public double z
-        {
-            get => coords[2];
-            set { coords[2] = value; }
         }
 
         public override string ToString()
@@ -69,9 +53,9 @@ namespace SrvSurvey.units
             return $"x={x}&y={y}&z={z}";
         }
 
-        public Spansh.Reference toReference()
+        public StarRef toReference()
         {
-            return new Spansh.Reference()
+            return new StarRef()
             {
                 x = this.x,
                 y = this.y,
@@ -83,15 +67,112 @@ namespace SrvSurvey.units
 
         public static implicit operator double[](StarPos pos)
         {
-            return pos.coords;
+            return new double[] { pos.x, pos.y, pos.z };
         }
 
-        public static implicit operator StarPos(double[] pos)
+        public static implicit operator StarPos(double[]? pos)
         {
             if (pos == null)
                 return null!;
             else
                 return new StarPos(pos);
+        }
+
+        public override int GetHashCode()
+        {
+            return x.GetHashCode()
+                + y.GetHashCode()
+                + z.GetHashCode()
+                + address.GetHashCode()
+                + this.systemName?.GetHashCode() ?? 0;
+        }
+
+        public override bool Equals(object? obj)
+        {
+            var other = obj as StarPos;
+            return this.GetHashCode() == other?.GetHashCode();
+        }
+
+        public static bool operator ==(StarPos? s1, StarPos? s2)
+        {
+            return s1?.GetHashCode() == s2?.GetHashCode();
+        }
+
+        public static bool operator !=(StarPos? s1, StarPos? s2)
+        {
+            return s1?.GetHashCode() != s2?.GetHashCode();
+        }
+    }
+
+    /// <summary> A reference to a star system </summary>
+    internal class StarRef
+    {
+        public long id64;
+        public string name;
+        public double x;
+        public double y;
+        public double z;
+
+        public StarRef() { }
+
+        public StarRef(double[] pos, string systemName, long address)
+        {
+            this.x = pos[0];
+            this.y = pos[1];
+            this.z = pos[2];
+            this.name = systemName;
+
+            this.id64 = address;
+        }
+
+        public StarRef(IStarRef entry)
+        {
+            this.name = entry.StarSystem;
+            this.id64 = entry.SystemAddress;
+            this.x = entry.StarPos[0];
+            this.y = entry.StarPos[1];
+            this.z = entry.StarPos[2];
+        }
+
+        public StarPos toStarPos()
+        {
+            return new StarPos(this.x, this.y, this.z, this.name, this.id64);
+        }
+
+        public override string ToString()
+        {
+            return name; // ComboStarSystem relies on this
+            //return $"{name} ({id64}) [ {x}, {y}, {z} ]";
+        }
+
+        public override int GetHashCode()
+        {
+            return x.GetHashCode()
+                + y.GetHashCode()
+                + z.GetHashCode()
+                + id64.GetHashCode()
+                + this.name?.GetHashCode() ?? 0;
+        }
+
+        public override bool Equals(object? obj)
+        {
+            var other = obj as StarRef;
+            return this.GetHashCode() == other?.GetHashCode();
+        }
+
+        public static bool operator ==(StarRef? s1, StarRef? s2)
+        {
+            return s1?.GetHashCode() == s2?.GetHashCode();
+        }
+
+        public static bool operator !=(StarRef? s1, StarRef? s2)
+        {
+            return s1?.GetHashCode() != s2?.GetHashCode();
+        }
+
+        public static implicit operator double[](StarRef pos)
+        {
+            return new double[] { pos.x, pos.y, pos.z };
         }
     }
 }

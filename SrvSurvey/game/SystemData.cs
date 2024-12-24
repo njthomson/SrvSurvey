@@ -2,7 +2,6 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using SrvSurvey.canonn;
-using SrvSurvey.forms;
 using SrvSurvey.net;
 using SrvSurvey.net.EDSM;
 using SrvSurvey.units;
@@ -22,12 +21,12 @@ namespace SrvSurvey.game
         /// <summary>
         /// Open or create a SystemData object for the a star system by name or address.
         /// </summary>
-        private static SystemData? Load(string systemName, long systemAddress, string fid)
+        public static SystemData? Load(string systemName, long systemAddress, string fid)
         {
             Game.log($"Loading SystemData for: '{systemName}' ({systemAddress})");
 
             // use cache entry if present
-            if (cache.TryGetValue(systemAddress, out SystemData? value))
+            if (systemAddress != 0 && cache.TryGetValue(systemAddress, out SystemData? value))
                 return value;
 
             // try finding files by systemAddress first, then system name
@@ -52,7 +51,7 @@ namespace SrvSurvey.game
 
             var filepath = files[0];
             var systemData = Data.Load<SystemData>(filepath)!;
-            cache[systemAddress] = systemData;
+            cache[systemData.address] = systemData;
 
             // post-process after loading ...
             foreach (var body in systemData.bodies)

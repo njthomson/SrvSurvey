@@ -31,6 +31,11 @@ namespace SrvSurvey.game
                 };
         }
 
+        public static string currentOrLastFid
+        {
+            get => Game.activeGame?.cmdr?.fid ?? Game.settings.lastFid!;
+        }
+
         public static CommanderSettings LoadCurrentOrLast()
         {
             // use cmdr from active game if possible
@@ -132,7 +137,7 @@ namespace SrvSurvey.game
         public List<TrackMassacre>? trackMassacres;
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-        public BoxelSearchDef? boxelSearch;
+        public BoxelSearch? boxelSearch;
 
         #endregion
 
@@ -267,31 +272,15 @@ namespace SrvSurvey.game
 
         #endregion
 
-        public void markBoxelSystemVisited(string name, bool remove = false)
-        {
-            if (this.boxelSearch?.active != true) return;
-            var systemName = SystemName.parse(name);
-            if (!systemName.generatedName) return;
-
-            Game.log($"Updating boxel search - system: {name}, visited: {!remove}");
-
-            var hashVisited = boxelSearch.visited?.Split(",").Select(s => int.Parse(s)).ToHashSet() ?? new HashSet<int>();
-            if (remove)
-                hashVisited.Remove(systemName.num);
-            else
-                hashVisited.Add(systemName.num);
-
-            boxelSearch.visited = string.Join(",", hashVisited.Order());
-            this.Save();
-
-            BaseForm.get<FormBoxelSearch>()?.markVisited(name, !remove);
-            Program.getPlotter<PlotSphericalSearch>()?.Invalidate();
-        }
-
         /// <summary> Returns a StarPos populated for the cmdr's current system </summary>
         public StarPos getCurrentStarPos()
         {
             return new StarPos(this.starPos, this.currentSystem, this.currentSystemAddress);
+        }
+
+        public StarRef getCurrentStarRef()
+        {
+            return new StarRef(this.starPos, this.currentSystem, this.currentSystemAddress);
         }
     }
 
@@ -327,35 +316,35 @@ namespace SrvSurvey.game
         public bool autoCopy = true;
 
         [JsonIgnore]
-        public SystemName sysName
+        public Boxel? boxel
         {
             get
             {
-                if (_sysName == null)
-                    _sysName = SystemName.parse(this.name);
+                if (_boxel == null && !string.IsNullOrEmpty(this.name))
+                    _boxel = Boxel.parse(this.name);
 
-                return _sysName;
+                return _boxel;
             }
         }
-        private SystemName _sysName;
+        private Boxel? _boxel;
 
         [JsonIgnore]
         public int countVisited { get => visited?.Split(',').Length ?? 0; }
 
         public string? getNextToVisit()
         {
-            if (!active) return null;
+            if (!active || this.boxel == null) return null;
 
             var hashVisited = this.visited?.Split(",").Select(s => int.Parse(s)).ToHashSet() ?? new HashSet<int>();
 
             for (int n = 0; n <= this.max; n++)
             {
                 if (hashVisited.Contains(n)) continue;
-                var nextName = this.sysName.to(n).name;
+                var nextName = this.boxel.to(n).ToString();
                 return nextName;
             }
 
-            return null;
+            return this.boxel.prefix;
         }
     }
 }

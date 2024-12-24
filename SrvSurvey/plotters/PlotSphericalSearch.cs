@@ -18,6 +18,7 @@ namespace SrvSurvey.plotters
         private double distance = -1;
         private string targetSystemName;
         private string? destinationName;
+        private bool destinationOutsideBoxel;
 
         private PlotSphericalSearch() : base()
         {
@@ -100,37 +101,47 @@ namespace SrvSurvey.plotters
             base.Status_StatusChanged(blink);
 
             // if the destination changed ...
-            if (sphereLimitActive && game.status.Destination != null && this.destinationName != game.status.Destination.Name)
+            if (game.status.Destination != null && this.destinationName != game.status.Destination.Name)
             {
                 this.destinationName = game.status.Destination.Name;
                 this.targetSystemName = game.status.Destination.Name;
-                this.distance = -1;
-                this.Invalidate();
 
-                Game.edsm.getSystems(this.destinationName).ContinueWith(t =>
+                if (sphereLimitActive)
                 {
-                    var data = t.Result;
-                    if (!(data.Length > 0))
+                    this.distance = -1;
+                    Game.edsm.getSystems(this.destinationName).ContinueWith(t =>
                     {
-                        this.distance = -2;
+                        var data = t.Result;
+                        if (!(data.Length > 0))
+                        {
+                            this.distance = -2;
+                            this.Invalidate();
+                            return;
+                        }
+
+                        var starPos = data.FirstOrDefault()?.coords!;
+
+                        var destination = new RouteEntry()
+                        {
+                            StarSystem = this.destinationName,
+                            StarPos = starPos,
+                        };
+
+                        Game.log($"Measuring distance to: {destination.StarSystem}");
+                        this.targetSystemName = destination.StarSystem;
+                        this.distance = Util.getSystemDistance(game.cmdr.sphereLimit.centerStarPos!, destination.StarPos);
+
                         this.Invalidate();
-                        return;
-                    }
+                    });
+                }
 
-                    var starPos = data.FirstOrDefault()?.coords!;
+                if (game.cmdr.boxelSearch?.active == true)
+                {
+                    var bx = Boxel.parse(game.status.Destination.Name);
+                    this.destinationOutsideBoxel = !game.cmdr.boxelSearch.boxel.containsChild(bx);
+                }
 
-                    var destination = new RouteEntry()
-                    {
-                        StarSystem = this.destinationName,
-                        StarPos = starPos,
-                    };
-
-                    Game.log($"Measuring distance to: {destination.StarSystem}");
-                    this.targetSystemName = destination.StarSystem;
-                    this.distance = Util.getSystemDistance(game.cmdr.sphereLimit.centerStarPos!, destination.StarPos);
-
-                    this.Invalidate();
-                });
+                this.Invalidate();
             }
         }
 
@@ -243,17 +254,32 @@ namespace SrvSurvey.plotters
             var ww = ten + Util.maxWidth(ff, RES("Boxel"), RES("Visited"), RES("Next"));
 
             this.drawTextAt(eight, RES("Boxel"), ff);
-            this.drawTextAt(ww, boxelSearch.sysName.prefix + "xxx", ff);
+            this.drawTextAt(ww, boxelSearch.current!.prefix + "xxx", ff);
             newLine(true);
 
             this.drawTextAt(eight, RES("Visited"), ff);
-            this.drawTextAt(ww, RES("VisitedOf", boxelSearch.countVisited, boxelSearch.max), ff);
+            this.drawTextAt(ww, RES("VisitedOf", boxelSearch.countVisited, boxelSearch.currentCount), ff);
             newLine(true);
 
             this.drawTextAt(eight, RES("Next"), ff);
             var next = boxelSearch.getNextToVisit() ?? "";
+            if (next == boxelSearch.current.prefix || next == boxelSearch.boxel.prefix) next += " ?";
             this.drawTextAt(ww, next, GameColors.fontMiddle);
             dtx += ten;
+
+            // warn if destination is outside the search boxel
+            if (this.destinationOutsideBoxel)
+            {
+                newLine(+eight, true);
+                this.drawTextAt(eight, $"Destination is outside your search boxel", GameColors.brushRed, ff);
+                dtx += ten;
+            }
+            else if (this.destinationName != null)
+            {
+                newLine(+eight, true);
+                this.drawTextAt(eight, $"Destination is within your search boxel", GameColors.brushCyan, ff);
+                dtx += ten;
+            }
 
             newLine(true);
         }

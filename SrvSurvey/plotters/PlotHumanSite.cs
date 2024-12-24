@@ -239,6 +239,8 @@ namespace SrvSurvey.plotters
 
         public static void toggleHugeness()
         {
+            if (!Program.isPlotter<PlotHumanSite>()) return;
+
             Game.log($"Toggle PlotHumanSite hugeness => {!PlotHumanSite.beHuge}");
             PlotHumanSite.beHuge = !PlotHumanSite.beHuge;
             Program.closePlotter<PlotHumanSite>();

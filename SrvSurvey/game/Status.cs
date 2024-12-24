@@ -5,7 +5,6 @@ using SrvSurvey.units;
 
 namespace SrvSurvey
 {
-
     delegate void OnStatusChange();
 
     class Status : ILocation, IDisposable
@@ -144,13 +143,13 @@ namespace SrvSurvey
                 blinkSignal = StatusFlags.ShieldsUp;
 
             var newBlinkState = (this.Flags & blinkSignal) > 0;
-            var duration = DateTime.Now - this.lastblinkChange;
+            var duration = DateTime.Now - this.lastBlinkChange;
 
             //Game.log($"newBlinkState: {newBlinkState}, this.blinkState: {this.blinkState}, this.lastblinkChange: {this.lastblinkChange}, duration: {DateTime.Now - this.lastblinkChange}");
             if (newBlinkState != this.blinkState)
             {
                 this.blinkState = newBlinkState;
-                this.lastblinkChange = DateTime.Now;
+                this.lastBlinkChange = DateTime.Now;
 
                 if (duration.TotalMilliseconds < Game.settings.blinkDuration)
                 {
@@ -163,7 +162,7 @@ namespace SrvSurvey
         }
 
         private bool blinkState = false;
-        public DateTime lastblinkChange = DateTime.Now;
+        public DateTime lastBlinkChange = DateTime.Now;
 
         [JsonIgnore]
         public static readonly LatLong2 here = new LatLong2(0d, 0d);
@@ -213,6 +212,8 @@ namespace SrvSurvey
         public bool lightsOn { get => (this.Flags & StatusFlags.LightsOn) > 0; }
     }
 
+    #region Types
+
     class FuelStatus
     {
         public float FuelMain { get; set; }
@@ -232,9 +233,7 @@ namespace SrvSurvey
         public int Body { get; set; }
         public string Name { get; set; }
         public string Name_Localised { get; set; }
-
     }
-
 
     [Flags]
     enum StatusFlags
@@ -280,7 +279,7 @@ namespace SrvSurvey
         // See https://elite-journal.readthedocs.io/en/latest/Status%20File/#status-file
         OnFoot = 0x_0000_0001,
         InTaxi = 0x_0000_0002,   //(or dropship/shuttle)
-        InMulticrew = 0x_0000_0004, //(ie in someone else's ship)
+        InMulticrew = 0x_0000_0004,
         OnFootInStation = 0x_0000_0008,
         OnFootOnPlanet = 0x_0000_0010,
         AimDownSight = 0x_0000_0020,
@@ -303,7 +302,7 @@ namespace SrvSurvey
     enum GuiFocus
     {
         NoFocus = 0, // meaning ... playing the game
-        InternalPanel, //(right hand side)
+        InternalPanel, // (right hand side)
         ExternalPanel, // (left hand side)
         CommsPanel, // (top)
         RolePanel, // (bottom)
@@ -316,4 +315,5 @@ namespace SrvSurvey
         Codex,
     }
 
+    #endregion
 }

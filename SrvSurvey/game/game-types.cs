@@ -96,6 +96,12 @@ namespace SrvSurvey.game
         public long SystemAddress { get; set; }
     }
 
+    interface IStarRef: ISystemAddress
+    {
+        public double[] StarPos { get; set; }
+        public string StarSystem { get; set; }
+    }
+
     interface IFactions : ISystemAddress
     {
         public List<SystemFaction>? Factions { get; set; }

@@ -16,6 +16,9 @@
             if (disposing && (components != null))
             {
                 components.Dispose();
+
+                if (bs != null)
+                    bs.changed -= boxelSearch_changed;
             }
             base.Dispose(disposing);
         }
@@ -28,11 +31,12 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormBoxelSearch));
-            txtSystemName = new TextBox();
+            txtTopBoxel = new TextBox();
             btnSearch = new Button();
             lblMaxNum = new Label();
-            txtNext = new TextBox();
+            txtCurrent = new TextBox();
             btnCopyNext = new Button();
             list = new ListView();
             colSystem = new ColumnHeader();
@@ -50,17 +54,26 @@
             numMax = new NumericUpDown();
             panelList = new Panel();
             tableTop = new TableLayoutPanel();
-            linkKeyChords = new LinkLabel();
+            btnBoxelEmpty = new Button();
+            btnParent = new Button();
+            checkSkipVisited = new CheckBox();
+            checkSpinKnownToSpansh = new CheckBox();
+            btnPaste = new Button();
+            panelSiblings = new Panel();
+            lblWarning = new Label();
+            label3 = new Label();
+            menuSiblings = new ButtonContextMenuStrip(components);
             status.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numMax).BeginInit();
             panelList.SuspendLayout();
             tableTop.SuspendLayout();
             SuspendLayout();
             // 
-            // txtSystemName
+            // txtTopBoxel
             // 
-            resources.ApplyResources(txtSystemName, "txtSystemName");
-            txtSystemName.Name = "txtSystemName";
+            resources.ApplyResources(txtTopBoxel, "txtTopBoxel");
+            txtTopBoxel.Name = "txtTopBoxel";
+            txtTopBoxel.TextChanged += txtTopBoxel_TextChanged;
             // 
             // btnSearch
             // 
@@ -74,10 +87,10 @@
             resources.ApplyResources(lblMaxNum, "lblMaxNum");
             lblMaxNum.Name = "lblMaxNum";
             // 
-            // txtNext
+            // txtCurrent
             // 
-            resources.ApplyResources(txtNext, "txtNext");
-            txtNext.Name = "txtNext";
+            resources.ApplyResources(txtCurrent, "txtCurrent");
+            txtCurrent.Name = "txtCurrent";
             // 
             // btnCopyNext
             // 
@@ -125,6 +138,8 @@
             resources.ApplyResources(comboFrom, "comboFrom");
             comboFrom.FormattingEnabled = true;
             comboFrom.Name = "comboFrom";
+            comboFrom.SelectedSystem = null;
+            comboFrom.updateOnJump = false;
             comboFrom.SelectedIndexChanged += comboFrom_SelectedIndexChanged;
             // 
             // status
@@ -174,7 +189,10 @@
             // 
             resources.ApplyResources(numMax, "numMax");
             numMax.Maximum = new decimal(new int[] { 100000, 0, 0, 0 });
+            numMax.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             numMax.Name = "numMax";
+            numMax.Value = new decimal(new int[] { 1, 0, 0, 0 });
+            numMax.ValueChanged += numMax_ValueChanged;
             // 
             // panelList
             // 
@@ -189,24 +207,84 @@
             // 
             resources.ApplyResources(tableTop, "tableTop");
             tableTop.Controls.Add(label1, 0, 0);
-            tableTop.Controls.Add(panelList, 0, 4);
             tableTop.Controls.Add(btnSearch, 0, 1);
             tableTop.Controls.Add(numMax, 3, 1);
-            tableTop.Controls.Add(txtSystemName, 1, 1);
-            tableTop.Controls.Add(txtNext, 1, 2);
-            tableTop.Controls.Add(btnCopyNext, 0, 2);
+            tableTop.Controls.Add(txtTopBoxel, 1, 1);
             tableTop.Controls.Add(lblMaxNum, 2, 1);
-            tableTop.Controls.Add(checkAutoCopy, 2, 2);
-            tableTop.Controls.Add(linkKeyChords, 0, 3);
+            tableTop.Controls.Add(panelList, 0, 7);
+            tableTop.Controls.Add(btnBoxelEmpty, 1, 6);
+            tableTop.Controls.Add(btnParent, 0, 6);
+            tableTop.Controls.Add(txtCurrent, 1, 4);
+            tableTop.Controls.Add(checkSkipVisited, 1, 2);
+            tableTop.Controls.Add(checkSpinKnownToSpansh, 1, 3);
+            tableTop.Controls.Add(btnPaste, 0, 4);
+            tableTop.Controls.Add(checkAutoCopy, 2, 6);
+            tableTop.Controls.Add(btnCopyNext, 2, 4);
+            tableTop.Controls.Add(panelSiblings, 4, 6);
+            tableTop.Controls.Add(lblWarning, 1, 5);
+            tableTop.Controls.Add(label3, 1, 8);
             tableTop.Name = "tableTop";
             // 
-            // linkKeyChords
+            // btnBoxelEmpty
             // 
-            resources.ApplyResources(linkKeyChords, "linkKeyChords");
-            tableTop.SetColumnSpan(linkKeyChords, 4);
-            linkKeyChords.Name = "linkKeyChords";
-            linkKeyChords.TabStop = true;
-            linkKeyChords.LinkClicked += linkKeyChords_LinkClicked;
+            resources.ApplyResources(btnBoxelEmpty, "btnBoxelEmpty");
+            btnBoxelEmpty.Name = "btnBoxelEmpty";
+            btnBoxelEmpty.UseVisualStyleBackColor = true;
+            btnBoxelEmpty.Click += btnBoxelEmpty_Click;
+            // 
+            // btnParent
+            // 
+            resources.ApplyResources(btnParent, "btnParent");
+            btnParent.Name = "btnParent";
+            btnParent.UseVisualStyleBackColor = true;
+            // 
+            // checkSkipVisited
+            // 
+            resources.ApplyResources(checkSkipVisited, "checkSkipVisited");
+            tableTop.SetColumnSpan(checkSkipVisited, 3);
+            checkSkipVisited.Name = "checkSkipVisited";
+            checkSkipVisited.UseVisualStyleBackColor = true;
+            checkSkipVisited.CheckedChanged += checkSkipVisited_CheckedChanged;
+            // 
+            // checkSpinKnownToSpansh
+            // 
+            resources.ApplyResources(checkSpinKnownToSpansh, "checkSpinKnownToSpansh");
+            tableTop.SetColumnSpan(checkSpinKnownToSpansh, 3);
+            checkSpinKnownToSpansh.Name = "checkSpinKnownToSpansh";
+            checkSpinKnownToSpansh.UseVisualStyleBackColor = true;
+            checkSpinKnownToSpansh.CheckedChanged += checkSpinKnownToSpansh_CheckedChanged;
+            // 
+            // btnPaste
+            // 
+            resources.ApplyResources(btnPaste, "btnPaste");
+            btnPaste.Name = "btnPaste";
+            btnPaste.UseVisualStyleBackColor = true;
+            btnPaste.Click += btnPaste_Click;
+            // 
+            // panelSiblings
+            // 
+            resources.ApplyResources(panelSiblings, "panelSiblings");
+            panelSiblings.BackColor = SystemColors.AppWorkspace;
+            panelSiblings.Name = "panelSiblings";
+            tableTop.SetRowSpan(panelSiblings, 2);
+            // 
+            // lblWarning
+            // 
+            resources.ApplyResources(lblWarning, "lblWarning");
+            lblWarning.Name = "lblWarning";
+            // 
+            // label3
+            // 
+            resources.ApplyResources(label3, "label3");
+            label3.FlatStyle = FlatStyle.System;
+            label3.Name = "label3";
+            // 
+            // menuSiblings
+            // 
+            menuSiblings.Name = "menuSiblings";
+            resources.ApplyResources(menuSiblings, "menuSiblings");
+            menuSiblings.targetButton = btnParent;
+            menuSiblings.ItemClicked += menuSiblings_ItemClicked;
             // 
             // FormBoxelSearch
             // 
@@ -227,10 +305,10 @@
         }
 
         #endregion
-        private TextBox txtSystemName;
+        private TextBox txtTopBoxel;
         private Button btnSearch;
         private Label lblMaxNum;
-        private TextBox txtNext;
+        private TextBox txtCurrent;
         private Button btnCopyNext;
         private ListView list;
         private ColumnHeader colSystem;
@@ -248,6 +326,14 @@
         private ToolStripDropDownButton menuMore;
         private ToolStripMenuItem menuHelpLink;
         private TableLayoutPanel tableTop;
-        private LinkLabel linkKeyChords;
+        private Button btnParent;
+        private ButtonContextMenuStrip menuSiblings;
+        private Button btnBoxelEmpty;
+        private Panel panelSiblings;
+        private CheckBox checkSkipVisited;
+        private CheckBox checkSpinKnownToSpansh;
+        private Button btnPaste;
+        private Label lblWarning;
+        private Label label3;
     }
 }

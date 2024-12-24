@@ -5,6 +5,7 @@ using SrvSurvey.plotters;
 using SrvSurvey.Properties;
 using SrvSurvey.units;
 using System.Diagnostics;
+using static System.Windows.Forms.ListView;
 
 namespace SrvSurvey
 {
@@ -374,8 +375,10 @@ namespace SrvSurvey
             }
         }
 
-        public static double getSystemDistance(double[] here, double[] there)
+        public static double getSystemDistance(double[] here, double[]? there)
         {
+            if (there == null) return -1;
+
             var dist = Math.Sqrt(
                 Math.Pow(here[0] - there[0], 2)
                 + Math.Pow(here[1] - there[1], 2)
@@ -1117,6 +1120,16 @@ namespace SrvSurvey
 
             foreach (TreeNode node in nodes)
                 list.Add(node);
+
+            return list;
+        }
+
+        public static List<ListViewItem> ToList(this ListViewItemCollection items)
+        {
+            var list = new List<ListViewItem>();
+
+            foreach (ListViewItem item in items)
+                list.Add(item);
 
             return list;
         }

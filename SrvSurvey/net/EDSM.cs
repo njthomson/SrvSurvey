@@ -4,6 +4,8 @@ using SrvSurvey.units;
 
 namespace SrvSurvey.net.EDSM
 {
+    // To open EDSM on a specific system... https://www.edsm.net/en/system?systemID64=3238296097059
+
     internal class EDSM
     {
         public async Task<StarSystem[]> getSystems(string systemName)

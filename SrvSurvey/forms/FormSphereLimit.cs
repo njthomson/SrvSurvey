@@ -67,7 +67,7 @@ namespace SrvSurvey
             this.setTargetSystem(comboSystemName.SelectedSystem);
         }
 
-        private void setTargetSystem(Spansh.Reference? targetSystem)
+        private void setTargetSystem(StarRef? targetSystem)
         {
             if (targetSystem != null)
             {

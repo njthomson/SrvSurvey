@@ -1,11 +1,41 @@
 ﻿using SrvSurvey.game;
-using SrvSurvey.net;
+using SrvSurvey.units;
 using SrvSurvey.widgets;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 
 namespace SrvSurvey
 {
+    internal static class ControlExtensionMethods
+    {
+        /// <summary> Disables the control before setting the new value </summary>
+        public static void SetValue(this NumericUpDown ctrl, decimal newValue)
+        {
+            ctrl.Enabled = false;
+            if (ctrl.Value != newValue)
+                ctrl.Value = newValue;
+            ctrl.Enabled = true;
+        }
+
+        /// <summary> Disables the control before setting the new value </summary>
+        public static void SetText(this ComboBox ctrl, string newValue)
+        {
+            ctrl.Enabled = false;
+            if (ctrl.Text != newValue)
+                ctrl.Text = newValue;
+            ctrl.Enabled = true;
+        }
+
+        /// <summary> Creates a ListViewSubItem with the given text and name </summary>
+        public static ListViewItem.ListViewSubItem Add(this ListViewItem.ListViewSubItemCollection subItems, string? text, string name)
+        {
+            var subItem = subItems.Add(text);
+            subItem.Name = name;
+
+            return subItem;
+        }
+    }
+
     class FlatButton : Button
     {
         public FlatButton()
@@ -307,32 +337,175 @@ namespace SrvSurvey
         }
     }
 
+    internal delegate void StarSystemChanged(StarRef? starSystem);
+
     /// <summary>
     /// A ComboBox for choosing known star systems
     /// </summary>
     internal class ComboStarSystem : ComboBox
     {
-        private List<Spansh.Reference> matches = new();
+        public event StarSystemChanged? selectedSystemChanged;
+
+        private readonly List<StarRef> matches = new();
         private string lastQuery = "";
+        private bool _updateOnJump;
+        private Action? unsub = null;
+        private bool updating;
 
         public ComboStarSystem() : base()
         {
             this.DropDownStyle = ComboBoxStyle.DropDown;
+            if (!this.DesignMode)
+                this.addCurrentSystemItem();
         }
 
-        public Spansh.Reference? SelectedSystem
+        private string? currentSystemItem
         {
-            get => this.matches.Count > 0 && this.SelectedIndex >= 0 ? this.matches[this.SelectedIndex] : null;
+            get
+            {
+                if (Game.activeGame?.cmdr?.currentSystem == null)
+                    return null;
+                else
+                    return $"(Current: {Game.activeGame.cmdr.currentSystem})";
+            }
         }
+
+        private void addCurrentSystemItem()
+        {
+            if (currentSystemItem != null && false)
+                this.Items.Insert(0, currentSystemItem);
+        }
+
+        /// <summary>
+        /// Automatically update the text on this control when FSD jumps occur.
+        /// </summary>
+        [Browsable(true)]
+        public bool updateOnJump
+        {
+            get => _updateOnJump;
+            set
+            {
+                if (value && !_updateOnJump)
+                    watchForJumps();
+                else if (unsub != null)
+                    unsub();
+
+                _updateOnJump = value;
+            }
+        }
+
+        private void watchForJumps()
+        {
+            if (this.DesignMode) return;
+
+            var journals = Game.activeGame?.journals;
+            if (journals == null) return;
+
+            // primary lambda to call when new journal entries
+            var func = new OnJournalEntry((JournalEntry entry, int index) =>
+            {
+                if (this.IsDisposed) return;
+
+                var fsdJump = entry as FSDJump;
+                if (fsdJump != null)
+                    this.SelectedSystem = new StarRef(fsdJump);
+            });
+
+            // a clean-up lambda with references to the above
+            this.unsub = new Action(() =>
+            {
+                journals.onJournalEntry -= func;
+                this.unsub = null;
+            });
+
+            journals.onJournalEntry += func;
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (this.unsub != null) unsub();
+            }
+
+            base.Dispose(disposing);
+        }
+
+        private void Journals_onJournalEntry(JournalEntry entry, int index)
+        {
+            if (this.IsDisposed) return;
+
+            // Update our text anything we jump to a new system
+            var fsdJump = entry as FSDJump;
+            if (fsdJump != null)
+                this.Text = fsdJump.StarSystem;
+        }
+
+        public StarRef? SelectedSystem
+        {
+            get => _selectedSystem;
+
+            set
+            {
+                if (_selectedSystem == value)
+                    return;
+
+                this.updating = true;
+
+                _selectedSystem = value;
+
+                if (value == null || !this.matches.Contains(value))
+                {
+                    this.matches.Clear();
+                    if (value != null) this.matches.Add(value);
+
+                    this.Items.Clear();
+                    this.addCurrentSystemItem();
+                }
+
+                if (value != null)
+                {
+                    if (!this.Items.Contains(value.name))
+                        this.Items.Add(value);
+
+                    if (this.SelectedItem as string != value.name)
+                    {
+                        this.SelectedItem = value;
+
+                        this.SelectionLength = 0;
+                        this.SelectionStart = value.name.Length;
+                    }
+                }
+
+                this.updating = false;
+
+                // finally, fire the event
+                this.fireEvent();
+            }
+        }
+
+        private void fireEvent()
+        {
+            if (this.selectedSystemChanged != null)
+            {
+                if (this.InvokeRequired)
+                    this.Invoke(() => this.selectedSystemChanged(this._selectedSystem));
+                else
+                    this.selectedSystemChanged(this._selectedSystem);
+            }
+        }
+
+        private StarRef? _selectedSystem;
 
         protected override void OnTextChanged(EventArgs e)
         {
             base.OnTextChanged(e);
-            if (!this.Enabled) return;
-            Game.log("OnTextChanged");
+            if (!this.Enabled || this.updating) return;
+            //Game.log("OnTextChanged");
 
             var query = this.Text;
             if (string.IsNullOrWhiteSpace(query)) return;
+            if (query == lastQuery) return;
 
             if (this.Text.StartsWith("(Current:") && Game.activeGame?.cmdr?.currentSystem != null)
             {
@@ -341,20 +514,22 @@ namespace SrvSurvey
             }
 
             // before deferring...
-            // do we have an exact match already?
-            var knownMatch = this.matches.FirstOrDefault(m => m.name.Equals(query, StringComparison.OrdinalIgnoreCase));
-            if (knownMatch != null)
-            {
-                Game.log($"knownMatch: {knownMatch}");
-                this.SelectedItem = knownMatch.name;
-                this.SelectionLength = 0;
-                this.SelectionStart = knownMatch.name.Length;
-                return;
-            }
 
             // TODO: do we have a match with current results?
 
-            Util.deferAfter(250, () => lookupSystems(query));
+            Util.deferAfter(250, () =>
+            {
+                // do we have an exact match already?
+                var knownMatch = this.matches.FirstOrDefault(m => m.name.Equals(query, StringComparison.OrdinalIgnoreCase));
+                if (knownMatch != null)
+                {
+                    Game.log($"knownMatch: {knownMatch}");
+                    this.SelectedSystem = knownMatch;
+                    return;
+                }
+
+                lookupSystems(query);
+            });
         }
 
         private void lookupSystems(string query)
@@ -370,28 +545,53 @@ namespace SrvSurvey
                     return; // stop if things already changed
                 }
 
+                this.updating = true;
+
                 var rem = results.values.FirstOrDefault();
                 if (rem == null || rem.Length < query.Length) return;
                 rem = rem.Substring(query.Length);
 
                 this.matches.Clear();
                 this.matches.AddRange(results.min_max);
+                var fireEvent = this._selectedSystem != this.matches.FirstOrDefault();
+                this._selectedSystem = this.matches.FirstOrDefault();
+
                 this.Items.Clear();
-                if (Game.activeGame?.cmdr?.currentSystem != null)
-                    this.Items.Add($"(Current: {Game.activeGame.cmdr.currentSystem})");
+                this.addCurrentSystemItem();
                 this.Items.AddRange(results.values.ToArray());
 
                 this.lastQuery = query;
                 //Game.log($">> '{query}'+'{rem}'");
+
+
+                if (this.ContainsFocus && !this.DroppedDown && !string.IsNullOrWhiteSpace(rem))
+                    this.DroppedDown = true;
 
                 // force cursor to end
                 this.Text = query + rem;
                 this.SelectionStart = query.Length;
                 this.SelectionLength = rem.Length;
 
-                if (!this.DroppedDown && !string.IsNullOrWhiteSpace(rem))
-                    this.DroppedDown = true;
+                if (rem.Length == 0)
+                    this.SelectedItem = this.Text;
+
+                this.updating = false;
+
+
+                if (fireEvent)
+                    this.fireEvent();
             });
+        }
+
+        protected override void OnLostFocus(EventArgs e)
+        {
+            base.OnLostFocus(e);
+            if (string.IsNullOrWhiteSpace( this.Text))
+            {
+                var starRef = Game.activeGame?.cmdr?.getCurrentStarRef();
+                if (starRef != null)
+                    SelectedSystem = starRef;
+            }
         }
     }
 
@@ -402,6 +602,12 @@ namespace SrvSurvey
 
         public ButtonContextMenuStrip() : base() { }
         public ButtonContextMenuStrip(IContainer container) : base(container) { }
+
+        /// <summary> Show the menu off of the target button </summary>
+        public void ShowOnTarget()
+        {
+            base.Show(_button, new Point(0, _button!.Height));
+        }
 
         [Browsable(true)]
         public Button? targetButton
@@ -426,7 +632,7 @@ namespace SrvSurvey
 
             if (!menuVisible && _button != null)
             {
-                this.Show(_button, new Point(0, _button!.Height));
+                this.ShowOnTarget();
                 //_button.Text = "⏶";
                 this.menuVisible = true;
                 this.Capture = true;

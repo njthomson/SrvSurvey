@@ -1231,7 +1231,7 @@ namespace SrvSurvey.plotters
             if (!blink && timer.Enabled == false)
             {
                 // if we are within a blink detection window - highlight the footer
-                var duration = DateTime.Now - game.status.lastblinkChange;
+                var duration = DateTime.Now - game.status.lastBlinkChange;
                 if (duration.TotalMilliseconds < Game.settings.blinkDuration)
                 {
                     this.highlightBlink = true;

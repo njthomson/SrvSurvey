@@ -2,7 +2,7 @@
 using SrvSurvey.net;
 using SrvSurvey.plotters;
 using SrvSurvey.units;
-using System.Text.RegularExpressions;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace SrvSurvey.forms
 {
@@ -10,225 +10,343 @@ namespace SrvSurvey.forms
     internal partial class FormBoxelSearch : SizableForm
     {
         private CommanderSettings cmdr;
-        private StarPos from;
-        private BoxelSearchDef boxelSearch { get => cmdr.boxelSearch!; }
+        private StarRef from;
+        private bool updatingList = false;
+
+        private BoxelSearch bs { get => cmdr.boxelSearch!; }
 
         public FormBoxelSearch()
         {
             InitializeComponent();
 
-            // load current or last cmdr
+            // load current or last cmdr, and their boxel search details
             this.cmdr = CommanderSettings.LoadCurrentOrLast();
 
             // default distance measuring from cmdr's current system
-            this.from = cmdr.getCurrentStarPos();
-            this.comboFrom.Enabled = false;
-            this.comboFrom.Text = cmdr.boxelSearch?.name ?? this.cmdr.currentSystem;
-            this.comboFrom.Enabled = true;
-            checkAutoCopy.Checked = boxelSearch?.autoCopy ?? true;
+            this.from = cmdr.getCurrentStarRef();
+            this.comboFrom.SetText(this.cmdr.currentSystem);
+            this.comboFrom.updateOnJump = true;
+            this.comboFrom.selectedSystemChanged += ComboFrom_selectedSystemChanged;
 
-            if (cmdr.boxelSearch?.collapsed == true)
+            // ensure we have a setting value
+            cmdr.boxelSearch ??= new();
+
+            bs.changed += boxelSearch_changed;
+
+            checkAutoCopy.Checked = bs.autoCopy;
+            checkSkipVisited.Checked = bs.skipAlreadyVisited;
+            checkSpinKnownToSpansh.Checked = bs.skipKnownToSpansh;
+
+            if (bs.collapsed)
                 toggleListVisibility(true);
 
             // show warning if key-hooks are not viable
-            linkKeyChords.Visible = boxelSearch?.autoCopy != true && (!Game.settings.keyhook_TEST || string.IsNullOrEmpty(Game.settings.keyActions_TEST?.GetValueOrDefault(KeyAction.copyNextBoxel)));
+            //linkKeyChords.Visible = !bs.autoCopy && (!Game.settings.keyhook_TEST || string.IsNullOrEmpty(Game.settings.keyActions_TEST?.GetValueOrDefault(KeyAction.copyNextBoxel)));
 
             prepForm();
-        }
-
-        private void btnToggleList_ButtonClick(object sender, EventArgs e)
-        {
-            toggleListVisibility(panelList.Visible);
-        }
-
-        private void toggleListVisibility(bool hide)
-        {
-            if (hide)
-            {
-                panelList.Visible = false;
-                panelList.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
-                this.Height -= panelList.Height;
-                this.MaximumSize = new Size(5000, this.Height);
-                btnToggleList.Text = Properties.Misc.FormBoxelSearch_ShowList;
-                cmdr.boxelSearch!.collapsed = true;
-                cmdr.Save();
-            }
-            else
-            {
-                this.MaximumSize = Size.Empty;
-                this.Height += panelList.Height <= 1
-                    ? 300
-                    : panelList.Height;
-                panelList.Visible = true;
-                panelList.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom;
-                btnToggleList.Text = Properties.Misc.FormBoxelSearch_HideList;
-                cmdr.boxelSearch!.collapsed = false;
-                cmdr.Save();
-            }
+            bs.reset(bs.boxel, bs.active);
         }
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            if (cmdr.boxelSearch?.active != true)
+            if (!bs.active)
             {
-                if (string.IsNullOrWhiteSpace(txtSystemName.Text)) return;
+                // exit early if we don't have a valid boxel
+                var bx = Boxel.parse(txtTopBoxel.Text);
+                if (bx == null) return;
 
-                // stop here if not a generated name
-                var systemName = SystemName.parse(txtSystemName.Text);
-                if (!systemName.generatedName)
-                {
-                    MessageBox.Show(this, Properties.Misc.FormBoxelSearch_NotViableMessage, "SrvSurvey", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    return;
-                }
+                bs.reset(bx, true);
 
-                // activate the feature
-                if (cmdr.boxelSearch == null || systemName.prefix != cmdr.boxelSearch.sysName.prefix)
-                {
-                    cmdr.boxelSearch = new()
-                    {
-                        name = systemName.name,
-                    };
-                }
-                cmdr.boxelSearch.max = (int)Math.Max(numMax.Value, systemName.num);
-                cmdr.boxelSearch.active = true;
-                cmdr.Save();
+                // start finding systems...
+                this.saveAndSetCurrent(bs.current, true);
+                Game.log($"Enabled boxel search:\r\n\tname: {bs.boxel}");
 
-                Program.showPlotter<PlotSphericalSearch>();
-                Game.log($"Enabled boxel search:\r\n\tname: {cmdr.boxelSearch.name}\r\n\tmax: {cmdr.boxelSearch.max}");
+                // make plotter appear, update or close
+                if (PlotSphericalSearch.allowPlotter)
+                    Program.showPlotter<PlotSphericalSearch>()?.Invalidate();
             }
             else
             {
-                // disable the feature
-                Game.log($"Disabling boxel search");
-                if (cmdr.boxelSearch != null)
-                    cmdr.boxelSearch.active = false;
+                // disable the feature?
+                bs.active = false;
                 cmdr.Save();
-            }
+                prepForm();
+                Game.log($"Disabling boxel search");
 
-            prepForm();
+                // close plotter?
+                if (!PlotSphericalSearch.allowPlotter)
+                    Program.closePlotter<PlotSphericalSearch>();
+            }
+        }
+
+        private void saveAndSetCurrent(Boxel bx, bool force = false)
+        {
+            var diff = bs.current != bx || force;
+            if (diff)
+                list.Items.Clear();
+
+            bs.setCurrent(bx, true);
+            cmdr.Save();
+
+            if (diff)
+                prepForm();
         }
 
         private void prepForm()
         {
+            txtTopBoxel.Text = bs.boxel.name;
             this.setStatusText();
 
-            if (cmdr.boxelSearch?.active == true)
+            if (bs.active)
             {
-                txtSystemName.Enabled = numMax.Enabled = false;
-                txtSystemName.Text = boxelSearch.name;
-                numMax.Value = boxelSearch.max;
+                // activate the feature
                 btnSearch.Text = Properties.Misc.FormBoxelSearch_Disable;
-                searchSystems();
+                checkSkipVisited.Hide();
+                checkSpinKnownToSpansh.Hide();
+                numMax.Enabled = true;
 
-                Program.showPlotter<PlotSphericalSearch>()?.Invalidate();
+                txtTopBoxel.ReadOnly = true;
+                txtTopBoxel.Text = bs.boxel.name;
+                txtCurrent.Text = bs.current.prefix;
+
+                this.setNumMax();
+
+                // add siblings
+                this.prepSiblings();
             }
             else
             {
                 // disable the feature
-                btnCopyNext.Enabled = txtNext.Enabled = checkAutoCopy.Enabled = panelList.Enabled = false;
-                txtSystemName.Enabled = numMax.Enabled = true;
-                //txtSystemName.Text = cmdr.currentSystem;
                 btnSearch.Text = Properties.Misc.FormBoxelSearch_Activate;
-                txtNext.Text = "";
+                checkSkipVisited.Show();
+                checkSpinKnownToSpansh.Show();
+                numMax.Enabled = false;
 
-                var systemName = SystemName.parse(txtSystemName.Text);
-                numMax.Value = Math.Max(systemName.generatedName ? systemName.num : 0, numMax.Value);
+                txtTopBoxel.ReadOnly = false;
+                txtCurrent.Text = "";
 
                 Program.invalidate<PlotSphericalSearch>();
             }
+
+            panelList.Enabled = bs.active;
+            numMax.Enabled = bs.active;
+            btnParent.Enabled = bs.active;
+            btnBoxelEmpty.Enabled = bs.active;
+            btnPaste.Enabled = bs.active;
+            btnCopyNext.Enabled = bs.active;
+            txtCurrent.Enabled = bs.active;
         }
 
-        private void searchSystems()
+        private void setNumMax()
         {
-            if (!boxelSearch.sysName.generatedName) return;
+            numMax.Enabled = false;
 
-            // disable UX
-            btnSearch.Enabled = false;
-            btnCopyNext.Enabled = txtNext.Enabled = checkAutoCopy.Enabled = panelList.Enabled = false;
-            txtNext.Text = "";
-            list.Items.Clear();
-            list.Enabled = false;
-
-            var query = boxelSearch.sysName.prefix + "*";
-            var from = comboFrom.SelectedSystem ?? new StarPos(cmdr.starPos, cmdr.currentSystem).toReference();
-
-            Game.spansh.getBoxelSystems(query, from).continueOnMain(this, response =>
+            if (!bs.currentEmpty)
             {
-                list.Items.Clear();
+                var newMin = bs.currentEmpty ? 0 : bs.currentMax + 1;
+                var newValue = Math.Max(bs.currentCount, newMin);
 
-                //if (response.results.Count == 0)
-                //{
-                //    btnSearch.Enabled = true;
-                //    list.Enabled = true;
-                //    return;
-                //}
-
-                var visited = boxelSearch.visited?.Split(",").ToHashSet() ?? new HashSet<string>();
-
-                // convert results to ListViewItem
-                var maxNum = 0;
-                var realTags = new List<ItemTag>();
-                foreach (var result in response.results)
+                // we need to be careful not to make the new minimum less than the current value or vice-versa
+                if (newMin < numMax.Value)
                 {
-                    var parsed = SystemName.parse(result.name);
-                    if (parsed.num > maxNum) maxNum = parsed.num;
-
-                    var itemTag = new ItemTag(result, SystemName.parse(result.name));
-                    realTags.Add(itemTag);
-                }
-                realTags = realTags.OrderBy(t => t.systemName.num).ToList();
-
-                if (numMax.Value < maxNum)
-                {
-                    numMax.Value = maxNum;
-                    boxelSearch.max = maxNum;
-                    cmdr.Save();
+                    if (numMax.Minimum != newValue) numMax.Minimum = newMin;
+                    if (numMax.Value != newValue) numMax.Value = newValue;
                 }
                 else
                 {
-                    maxNum = (int)numMax.Value;
+                    if (numMax.Value != newValue) numMax.Value = newValue;
+                    if (numMax.Minimum != newValue) numMax.Minimum = newMin;
                 }
+            }
 
-                // populate list in order for known and unknown systems
-                var countVisited = 0;
-                for (int n = 0; n <= maxNum; n++)
+            numMax.Enabled = true;
+        }
+
+        private void prepSiblings()
+        {
+            if (bs?.current == null) return;
+
+            menuSiblings.Items.Clear();
+
+            // show current
+            var current = bs.current;
+            menuSiblings.Items.Add(current.name)
+                .Enabled = false;
+            menuSiblings.Items.Add(new ToolStripSeparator());
+
+
+            // add parent and siblings
+            if (current.massCode != 'h')
+            {
+                //menuSiblings.Items.Add("Parent boxel:")
+                //    .Enabled = false;
+
+                var parent = current.parent;
+                menuSiblings.Items.Add($"Parent: {parent}")
+                    .Tag = new ItemTag(null, parent);
+
+                var siblings = parent.children;
+                var currentIdx = siblings.IndexOf(current);
+
+                // prior sibling
+                if (currentIdx > 0)
                 {
-                    var isSystemKnown = realTags.Count > 0 && n == realTags[0].systemName.num;
+                    //menuSiblings.Items.Add(new ToolStripSeparator());
+                    //menuSiblings.Items.Add("Previous boxel:")
+                    //    .Enabled = false;
 
-                    var isVisited = visited.Contains(n.ToString());
-                    if (isVisited) countVisited++;
-
-                    var listItem = isSystemKnown
-                        ? this.createListItemFromResult(realTags[0], isVisited)
-                        : this.createEmptyListItem(n, isVisited);
-
-                    list.Items.Add(listItem);
-                    if (isSystemKnown) realTags.RemoveAt(0);
-
-                    // pre-check current system
-                    if (listItem.Name == cmdr.currentSystem)
-                        cmdr.markBoxelSystemVisited(cmdr.currentSystem);
+                    var prevSibling = siblings[currentIdx - 1];
+                    menuSiblings.Items.Add("Prev: " + prevSibling.ToString())
+                        .Tag = new ItemTag(null, prevSibling);
                 }
-                list.AutoResizeColumn(0, ColumnHeaderAutoResizeStyle.ColumnContent);
-                list.AutoResizeColumn(2, ColumnHeaderAutoResizeStyle.ColumnContent);
-                this.setStatusText();
+                else
+                {
+                    menuSiblings.Items.Add("Prev:")
+                        .Enabled = false;
+                }
 
-                txtNext.Text = boxelSearch.getNextToVisit();
+                // next sibling
+                if (currentIdx < siblings.Count - 1)
+                {
+                    //menuSiblings.Items.Add(new ToolStripSeparator());
+                    //menuSiblings.Items.Add("Next boxel:")
+                    //    .Enabled = false;
 
-                // enable relevant controls
-                btnCopyNext.Enabled = txtNext.Enabled = checkAutoCopy.Enabled = panelList.Enabled = true;
-                list.Enabled = true;
-                btnSearch.Enabled = true;
-                btnCopyNext.Focus();
+                    var nextSibling = siblings[currentIdx + 1];
+                    menuSiblings.Items.Add("Next: " + nextSibling.ToString())
+                        .Tag = new ItemTag(null, nextSibling);
+                }
+                else
+                {
+                    menuSiblings.Items.Add("Next:")
+                        .Enabled = false;
+                }
+            }
+
+            // add children
+            if (current.massCode != 'a')
+            {
+                menuSiblings.Items.Add(new ToolStripSeparator());
+                menuSiblings.Items.Add("Child boxels:")
+                    .Enabled = false;
+
+                foreach (var child in current.children)
+                {
+                    menuSiblings.Items.Add(child.ToString())
+                        .Tag = new ItemTag(null, child);
+                }
+            }
+
+        }
+
+        private void menuSiblings_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            var itemTag = e.ClickedItem?.Tag as ItemTag;
+            if (itemTag == null) return;
+
+            this.BeginInvoke(() =>
+            {
+                this.saveAndSetCurrent(itemTag.boxel);
+
+                if (bs.autoCopy)
+                    Clipboard.SetText(bs.getNextToVisit());
             });
         }
 
+        private void boxelSearch_changed()
+        {
+            // adjust visible count to the largest known system
+            setNumMax();
+
+            this.prepList();
+        }
+
+        private void prepList()
+        {
+            if (this.IsDisposed || !list.Enabled) return;
+            updatingList = true;
+
+            if (bs.currentEmpty)
+            {
+                list.Items.Clear();
+                list.Items.Add("Empty system");
+                list.CheckBoxes = false;
+            }
+            else
+            {
+                list.CheckBoxes = true;
+                var knownSystems = bs.systems.OrderBy(sys => sys.name.n2).ToList();
+                var hasNotes = false;
+                var max = (int)numMax.Value;
+                for (int n = 0; n < max; n++)
+                {
+                    var bx = bs.current.to(n);
+
+                    var item = n < list.Items.Count
+                        ? list.Items[n]
+                        : list.Items.Add(new ListViewItem
+                        {
+                            Name = bx.name,
+                            Text = bx.name,
+                        });
+
+                    var sys = knownSystems.FirstOrDefault(sys => sys.name.n2 == n);
+                    item.SubItems[0].Tag = sys;
+
+                    if (item.Tag == null || item.SubItems.Count == 1)
+                    {
+                        item.Tag = bx;
+
+                        item.SubItems.Add("?", "dist");
+                        item.SubItems.Add("", "notes");
+                    }
+
+                    if (sys != null)
+                    {
+                        if (item.Checked != sys.complete)
+                            item.Checked = sys.complete;
+
+                        // set distance
+                        var subDist = item.SubItems["dist"];
+                        if (subDist!.Tag == null && sys.starPos != null)
+                        {
+                            var d = Util.getSystemDistance(from, sys.starPos);
+                            subDist.Text = d.ToString("N2") + " ly";
+                            subDist.Tag = d;
+                        }
+
+                        // update notes
+                        // notes // TODO: Properties.Misc.FormBoxelSearch_UndiscoveredSystem;
+                        var notes = sys?.visitedAt != null ? $"Visited: {sys.visitedAt.Value.LocalDateTime}" : null;
+                        if (sys?.spanshUpdated != null)
+                            notes += (notes == null ? "" : ", ") + $"Spansh: {sys.spanshUpdated.Value.LocalDateTime}";
+                        item.SubItems["notes"]!.Text = notes;
+                    }
+
+                    if (!hasNotes)
+                        hasNotes |= item.SubItems.Count == 3 && !string.IsNullOrEmpty(item.SubItems[2].Text);
+                }
+
+                // trim off any excess rows
+                while (list.Items.Count > max)
+                    list.Items.RemoveAt(max);
+
+                // TODO: Make this flicker less
+                if (list.Items.Count > 0) list.AutoResizeColumn(0, ColumnHeaderAutoResizeStyle.ColumnContent);
+                if (hasNotes) list.AutoResizeColumn(2, ColumnHeaderAutoResizeStyle.ColumnContent);
+            }
+
+            this.setStatusText();
+            updatingList = false;
+        }
+
+        /*
         private ListViewItem createListItemFromResult(ItemTag tag, bool visited)
         {
             var listItem = new ListViewItem()
             {
-                Name = tag.systemName.name,
-                Text = tag.systemName.name,
+                Name = tag.name,
+                Text = tag.name,
                 Tag = tag,
                 Checked = visited,
             };
@@ -249,43 +367,78 @@ namespace SrvSurvey.forms
 
         private ListViewItem createEmptyListItem(int n, bool visited)
         {
-            var targetName = cmdr.boxelSearch!.sysName.to(n);
-            var tag = new ItemTag(null, targetName);
+            var target = cmdr.boxelSearch?.boxel?.to(n)!;
+            var tag = new ItemTag(null, target);
 
             var listItem = new ListViewItem()
             {
-                Name = targetName.name,
-                Text = targetName.name,
+                Name = target.ToString(),
+                Text = target.ToString(),
                 Tag = tag,
                 Checked = visited,
             };
+
+            // see if we can get a StarPos from local files
+            var sysData = SystemData.Load(target.ToString(), 0, cmdr.fid);
+            if (sysData != null)
+            {
+                tag.starPos = sysData.starPos;
+                listItem.Checked = true;
+            }
+
             // distance
             var sub1 = listItem.SubItems.Add("?");
             sub1.Name = "dist";
             sub1.Tag = 0;
 
+            if (tag.starPos != null)
+                setDistance(listItem);
+
             // notes
             var notes = Properties.Misc.FormBoxelSearch_UndiscoveredSystem;
             var sub2 = listItem.SubItems.Add(notes);
             sub2.Name = "notes";
+            if (sysData != null)
+                sub2.Text = $"Visited: {sysData.lastVisited.LocalDateTime}";
 
             return listItem;
         }
+        */
 
         private void btnCopyNext_Click(object sender, EventArgs e)
         {
-            txtNext.Text = boxelSearch.getNextToVisit();
-            if (!string.IsNullOrWhiteSpace(txtNext.Text))
-                Clipboard.SetText(txtNext.Text);
+            var txt = bs.getNextToVisit();
+            Clipboard.SetText(txt);
+            lblStatus.Text = $"Next: {txt}";
+        }
+
+        private void numMax_ValueChanged(object sender, EventArgs e)
+        {
+            if (!numMax.Enabled) return;
+            numMax.Enabled = false;
+
+            bs.setCurrentCount((int)numMax.Value);
+
+            Util.deferAfter(50, () =>
+            {
+                cmdr.Save();
+                this.prepList();
+            });
+
+            numMax.Enabled = true;
         }
 
         private void list_ItemChecked(object sender, ItemCheckedEventArgs e)
         {
-            if (!list.Enabled) return;
-            list.Enabled = false;
+            if (!list.Enabled || updatingList) return;
 
-            cmdr.markBoxelSystemVisited(e.Item.Name, !e.Item.Checked);
-            Program.defer(() => list.Enabled = true);
+            var bx = e.Item.Tag as Boxel;
+            if (bx != null)
+            {
+                var sys = bs.systems.FirstOrDefault(sys => sys.name.n2 == bx.n2);
+                if (sys != null)
+                    sys.complete = e.Item.Checked;
+            }
         }
 
         public void markVisited(string name, bool visited)
@@ -297,7 +450,11 @@ namespace SrvSurvey.forms
                 if (visited)
                     item.SubItems["Notes"]!.Text = Properties.Misc.FormBoxelSearch_Visited.format(DateTime.Now);
 
-                txtNext.Text = boxelSearch.getNextToVisit();
+                //if (string.IsNullOrEmpty(item.SubItems["dist"].Text))
+                //{
+
+                //}
+                // TODO: txtNext.Text = boxelSearch.getNextToVisit();
             }
 
             this.setStatusText();
@@ -305,51 +462,39 @@ namespace SrvSurvey.forms
 
         private void setStatusText()
         {
-            if (boxelSearch == null || !boxelSearch.active)
+            if (bs == null || !bs.active)
             {
                 lblStatus.Text = Properties.Misc.FormBoxelSearch_SearchNotActive;
             }
             else
             {
-                var countVisited = boxelSearch.visited?.Split(',').Length ?? 0;
-                lblStatus.Text = Properties.Misc.FormBoxelSearch_VisitedCounts.format(countVisited, boxelSearch.max + 1);
+                lblStatus.Text = Properties.Misc.FormBoxelSearch_VisitedCounts.format(bs.countVisited, bs.currentCount);
+
+                // tmp ?
+                lblStatus.Text += " / " + bs.calcProgress();
             }
         }
 
         private void comboFrom_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (comboFrom.SelectedSystem == null) return;
-
-            this.from = comboFrom.SelectedSystem.toStarPos();
-            measureDistances();
+            // TODO: remove!
         }
 
-        private void measureDistances()
+        private void measureDistances(StarRef starRef)
         {
+            this.from = starRef;
             foreach (ListViewItem item in this.list.Items)
                 setDistance(item);
         }
 
         private void setDistance(ListViewItem item)
         {
-            var tag = item?.Tag as ItemTag;
-            if (item == null || tag == null || tag.result == null) return;
+            var sys = item.SubItems[0].Tag as BoxelSearch.System;
+            if (sys?.starPos == null) return;
 
-            var dist = Util.getSystemDistance(from, tag.result.ToStarPos());
+            var dist = Util.getSystemDistance(from, sys.starPos);
             item.SubItems["dist"]!.Tag = dist;
             item.SubItems["dist"]!.Text = dist.ToString("N2") + " ly";
-        }
-
-        private void checkAutoCopy_CheckedChanged(object sender, EventArgs e)
-        {
-            if (boxelSearch != null && checkAutoCopy.Enabled)
-            {
-                boxelSearch.autoCopy = checkAutoCopy.Checked;
-                cmdr.Save();
-
-                // show warning if key-hooks are not viable
-                linkKeyChords.Visible = boxelSearch?.autoCopy != true && (!Game.settings.keyhook_TEST || string.IsNullOrEmpty(Game.settings.keyActions_TEST?.GetValueOrDefault(KeyAction.copyNextBoxel)));
-            }
         }
 
         private void menuHelpLink_Click(object sender, EventArgs e)
@@ -357,98 +502,172 @@ namespace SrvSurvey.forms
             Util.openLink("https://github.com/njthomson/SrvSurvey/wiki/Searching-Space");
         }
 
-        private void linkKeyChords_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void btnBoxelEmpty_Click(object sender, EventArgs e)
         {
-            Util.openLink("https://github.com/njthomson/SrvSurvey/wiki/Searching-Space#auto-copy");
-        }
-    }
+            list.Items.Clear();
+            bs.toggleEmpty();
+            cmdr.Save();
 
-    public class SystemName
-    {
-        // See https://forums.frontier.co.uk/threads/marxs-guide-to-boxels-subsectors.618286/ or http://disc.thargoid.space/Sector_Naming
-
-        private static Regex nameParts = new Regex(@"(.+) (\w\w-\w) (\w)(\d+)-?(\d+)?$", RegexOptions.Singleline);
-
-        public static SystemName parse(string systemName)
-        {
-            var parts = nameParts.Match(systemName);
-
-            // not a match
-            if (parts.Groups.Count != 5 && parts.Groups.Count != 6)
-                return new SystemName { name = systemName, generatedName = false };
-
-            var name = new SystemName
+            // auto trigger nav menu to assist in selecting the next boxel to search
+            if (bs.currentEmpty)
             {
-                name = systemName,
-                generatedName = true,
-                sector = parts.Groups[1].Value,
-                subSector = parts.Groups[2].Value,
-                massCode = parts.Groups[3].Value,
-                id = int.Parse(parts.Groups[4].Value),
-            };
-
-            if (parts.Groups.Count == 6 && parts.Groups[5].Success)
-                name.num = int.Parse(parts.Groups[5].Value);
-            else
-                name.hasTrailingDash = false;
-
-            return name;
-        }
-
-        /// <summary> The whole name </summary>
-        public string name;
-
-        /// <summary> True if the system name confirms to generated naming conventions </summary>
-        public bool generatedName;
-
-        /// <summary> The initial sector, eg: 'Thuechu' from 'Thuechu YV-T d4-12' </summary>
-        public string sector;
-        /// <summary> The sub-sector portion, eg: 'YV-T' from 'Thuechu YV-T d4-12' </summary>
-        public string subSector;
-        /// <summary> The mass code portion, eg: 'd' from 'Thuechu YV-T d4-12' </summary>
-        public string massCode;
-        /// <summary> The initial number portion, eg:  '4' from 'Thuechu YV-T d4-12' </summary>
-        public int id;
-        /// <summary> The final number portion, eg:  '12' from 'Thuechu YV-T d4-12' </summary>
-        public int num;
-
-        private bool hasTrailingDash = true;
-
-        public string prefix
-        {
-            get
-            {
-                if (hasTrailingDash)
-                    return $"{sector} {subSector} {massCode}{id}-";
-                else
-                    return $"{sector} {subSector} {massCode}";
+                menuSiblings.ShowOnTarget();
             }
         }
 
-        public override string ToString()
+        private void btnPaste_Click(object sender, EventArgs e)
         {
-            return name;
-        }
+            var bx = Boxel.parse(Clipboard.GetText());
+            if (bx == null) return;
 
-        public SystemName to(int newNum)
-        {
-            return new SystemName
+            // exit early if pasted system is not contained within by our top boxel
+            if (bs.boxel.containsChild(bx))
             {
-                name = $"{this.prefix}{newNum}",
-                generatedName = true,
-                sector = this.sector,
-                subSector = this.subSector,
-                massCode = this.massCode,
-                id = this.id,
-                num = newNum,
-            };
+                lblWarning.Hide();
+                this.saveAndSetCurrent(bx);
+            }
+            else
+            {
+                // TODO: update warning text
+                lblWarning.Show();
+            }
+        }
+
+        private void btnToggleList_ButtonClick(object sender, EventArgs e)
+        {
+            toggleListVisibility(panelList.Visible);
+        }
+
+        private void toggleListVisibility(bool hide)
+        {
+            if (bs == null) return;
+
+            if (hide)
+            {
+                panelList.Visible = false;
+                panelList.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
+                this.Height -= panelList.Height;
+                this.MaximumSize = new Size(5000, this.Height);
+                btnToggleList.Text = Properties.Misc.FormBoxelSearch_ShowList;
+                bs.collapsed = true;
+                cmdr.Save();
+            }
+            else
+            {
+                this.MaximumSize = Size.Empty;
+                this.Height += panelList.Height <= 1
+                    ? 300
+                    : panelList.Height;
+                panelList.Visible = true;
+                panelList.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom;
+                btnToggleList.Text = Properties.Misc.FormBoxelSearch_HideList;
+                bs.collapsed = false;
+                cmdr.Save();
+            }
+        }
+
+        private void txtTopBoxel_TextChanged(object sender, EventArgs e)
+        {
+            var bx = Boxel.parse(txtTopBoxel.Text);
+            btnSearch.Enabled = bx != null;
+        }
+
+        private void checkAutoCopy_CheckedChanged(object sender, EventArgs e)
+        {
+            bs.autoCopy = checkAutoCopy.Checked;
+            cmdr.Save();
+
+            // show warning if key-hooks are not viable
+            //linkKeyChords.Visible = bs?.autoCopy != true && (!Game.settings.keyhook_TEST || string.IsNullOrEmpty(Game.settings.keyActions_TEST?.GetValueOrDefault(KeyAction.copyNextBoxel)));
+        }
+
+        private void checkSkipVisited_CheckedChanged(object sender, EventArgs e)
+        {
+            bs.skipAlreadyVisited = checkSkipVisited.Checked;
+            cmdr.Save();
+        }
+
+        private void checkSpinKnownToSpansh_CheckedChanged(object sender, EventArgs e)
+        {
+            bs.skipKnownToSpansh = checkSpinKnownToSpansh.Checked;
+            cmdr.Save();
+        }
+
+        private void ComboFrom_selectedSystemChanged(StarRef? starSystem)
+        {
+            Game.log($"!!!!! {starSystem}");
+            if (comboFrom.SelectedSystem == null) return;
+
+            measureDistances(comboFrom.SelectedSystem);
+        }
+
+
+    }
+
+    class ItemTag
+    {
+        public Spansh.SystemResponse.Result? result;
+        public Boxel boxel;
+        public StarPos? starPos;
+
+        public ItemTag(Spansh.SystemResponse.Result? result, Boxel boxel)
+        {
+            this.result = result;
+            this.boxel = boxel;
+
+            this.starPos = result?.toStarPos();
+        }
+
+        public string name { get => boxel.ToString(); }
+    }
+
+    /*
+    class ToolStripItem2 : ToolStripItem
+    {
+        private string? header;
+        private int textHeight;
+
+        public ToolStripItem2(string text, string header, ItemTag tag) : base(text, null, null, text)
+        {
+            this.header = header;
+            this.Tag = tag;
+        }
+
+        private int measureTextHeight(Graphics g)
+        {
+            return TextRenderer.MeasureText("H", this.Font).Height;
+        }
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            if (header == null)
+            {
+                base.OnPaint(e);
+                return;
+            }
+            var g = e.Graphics;
+            if (textHeight == 0) textHeight = measureTextHeight(g);
+
+            // draw main text
+            var y = Util.centerIn(this.Bounds.Height, textHeight);
+            BaseWidget.renderText(g, this.Text, 3, y, this.Font, this.ForeColor);
+
+            // draw box if we're hot
+            if (this.Selected)
+            {
+                Game.log(e.ClipRectangle);
+                g.DrawLine(Pens.Red, -20, 0, 20, 20);
+            }
         }
     }
 
-    class ItemTag : Tuple<Spansh.SystemResponse.Result?, SystemName>
+    class ToolStripRenderer2 : ToolStripRenderer
     {
-        public ItemTag(Spansh.SystemResponse.Result? item1, SystemName item2) : base(item1, item2) { }
-        public Spansh.SystemResponse.Result? result { get => Item1; }
-        public SystemName systemName { get => Item2; }
+        protected override void OnRenderItemText(ToolStripItemTextRenderEventArgs e)
+        {
+            Game.log(e.Text);
+            base.OnRenderItemText(e);
+        }
     }
+    */
 }

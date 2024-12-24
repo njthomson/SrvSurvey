@@ -36,7 +36,7 @@ namespace SrvSurvey.net
             public int page = 0;
 
             [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-            public Reference? reference_coords;
+            public StarRef? reference_coords;
 
             public Dictionary<string, Filter> filters;
 
@@ -131,25 +131,6 @@ namespace SrvSurvey.net
 
         #endregion
 
-        internal class Reference
-        {
-            public long id64;
-            public string name;
-            public double x;
-            public double y;
-            public double z;
-
-            public StarPos toStarPos()
-            {
-                return new StarPos(this.x, this.y, this.z, this.name, this.id64);
-            }
-
-            public override string ToString()
-            {
-                return name;
-            }
-        }
-
         #region Respose
 
         internal class SystemResponse
@@ -164,7 +145,7 @@ namespace SrvSurvey.net
             public int size;
             public List<Result> results;
 
-            public class Result : Reference
+            public class Result : StarRef
             {
                 public string id;
                 public double distance;
@@ -190,11 +171,6 @@ namespace SrvSurvey.net
                 public override string ToString()
                 {
                     return $"{name} [{x}, {y}, {z}]";
-                }
-
-                public StarPos ToStarPos()
-                {
-                    return new StarPos(x, y, z, name);
                 }
 
                 public class Body

@@ -15,6 +15,7 @@ namespace SrvSurvey
                 return;
             }
 
+            Game.log(ex);
             var form = new FormErrorSubmit(ex);
             form.ShowDialog(Main.ActiveForm);
         }

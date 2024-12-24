@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SrvSurvey.units
+﻿namespace SrvSurvey.units
 {
     /// <summary>
-    /// Represents an angle at Latitude, contrained between -90° and < +90°
+    /// Represents an angle at Latitude, constrained between -90° and < +90°
     /// </summary>
     struct Latitude
     {

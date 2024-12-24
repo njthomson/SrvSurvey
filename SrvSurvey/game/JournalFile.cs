@@ -129,7 +129,7 @@ namespace SrvSurvey
             return default(T);
         }
 
-        public bool search<T>(Func<T, bool> func) where T : JournalEntry
+        public bool search<T>(Func<T, bool> func) where T : IJournalEntry
         {
             int idx = this.Count - 1;
             do

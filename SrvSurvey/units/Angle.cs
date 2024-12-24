@@ -1,12 +1,10 @@
 ﻿using DecimalMath;
-using SrvSurvey.game;
-using System;
 
 namespace SrvSurvey.units
 {
 
     /// <summary>
-    /// Represents an angle, contrained between >= 0° and < 360°
+    /// Represents an angle, constrained between >= 0° and < 360°
     /// </summary>
     struct Angle
     {

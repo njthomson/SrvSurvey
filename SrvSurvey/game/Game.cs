@@ -16,6 +16,10 @@ namespace SrvSurvey.game
     {
         static Game()
         {
+#if DEBUG
+            // This stops logging code from starting up when custom controls are created in Visual Studio designer
+            if (Process.GetCurrentProcess().ProcessName != "SrvSurvey") return;
+#endif
             Game.logs = new List<string>();
             Game.logPath = prepLogFile();
             Game.log($"SrvSurvey version: {Program.releaseVersion}, isAppStoreBuild: {Program.isAppStoreBuild}");
@@ -1091,6 +1095,12 @@ namespace SrvSurvey.game
             this.fsdTarget = entry;
         }
 
+        private void onJournalEntry(NavRoute entry)
+        {
+            if (cmdr.boxelSearch?.active == true)
+                Program.defer(() => cmdr.boxelSearch.updateFromRoute(navRoute.Route));
+        }
+
         private void onJournalEntry(NavRouteClear entry)
         {
             this.fsdTarget = null;
@@ -1110,7 +1120,8 @@ namespace SrvSurvey.game
             FormGenus.activeForm?.deferPopulateGenus();
 
             // update boxel search?
-            cmdr.markBoxelSystemVisited(entry.StarSystem);
+            if (cmdr.boxelSearch?.active == true)
+                cmdr.boxelSearch.markVisited(entry.StarSystem, entry.StarPos);
         }
 
         private void onJournalEntry(CarrierJump entry)
