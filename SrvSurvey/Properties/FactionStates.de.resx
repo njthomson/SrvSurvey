@@ -174,7 +174,7 @@
     <comment>Faction state CivilLiberty</comment>
   </data>
   <data name="Incursion" xml:space="preserve">
-    <value>Eindringen</value>
+    <value>Einmarsch</value>
     <comment>Faction state Incursion</comment>
   </data>
   <data name="PirateAttack" xml:space="preserve">
@@ -194,7 +194,7 @@
     <comment>Faction state ColdWar</comment>
   </data>
   <data name="Colonisation" xml:space="preserve">
-    <value>Kolonisation</value>
+    <value>Kolonialisierung</value>
     <comment>Faction state Colonisation</comment>
   </data>
   <data name="HistoricEvent" xml:space="preserve">
@@ -202,7 +202,7 @@
     <comment>Faction state HistoricEvent</comment>
   </data>
   <data name="InfrastructureFailure" xml:space="preserve">
-    <value>Ausfall der Infrastruktur</value>
+    <value>Versagen der Infrastruktur</value>
     <comment>Faction state InfrastructureFailure</comment>
   </data>
   <data name="NaturalDisaster" xml:space="preserve">
@@ -210,7 +210,7 @@
     <comment>Faction state NaturalDisaster</comment>
   </data>
   <data name="PublicHoliday" xml:space="preserve">
-    <value>Feiertag</value>
+    <value>Gesetzlicher Feiertag</value>
     <comment>Faction state PublicHoliday</comment>
   </data>
   <data name="Revolution" xml:space="preserve">
@@ -218,7 +218,7 @@
     <comment>Faction state Revolution</comment>
   </data>
   <data name="TechnologicalLeap" xml:space="preserve">
-    <value>Technologiesprung</value>
+    <value>Technologischer Vorsprung</value>
     <comment>Faction state TechnologicalLeap</comment>
   </data>
   <data name="Terrorism" xml:space="preserve">
@@ -234,19 +234,19 @@
     <comment>Faction state Thargoid_Probing</comment>
   </data>
   <data name="Thargoid_Harvest" xml:space="preserve">
-    <value>Thargoideninvasion</value>
+    <value>Thargoiden-Invasion</value>
     <comment>Faction state Thargoid_Harvest</comment>
   </data>
   <data name="Thargoid_Controlled" xml:space="preserve">
-    <value>Thargoiden kontrolliert</value>
+    <value>Unter Thargoiden-Kontrolle</value>
     <comment>Faction state Thargoid_Controlled</comment>
   </data>
   <data name="Thargoid_Stronghold" xml:space="preserve">
-    <value>Thargoid-Maelstrom</value>
+    <value>Thargoid-Mahlstrom</value>
     <comment>Faction state Thargoid_Stronghold</comment>
   </data>
   <data name="Thargoid_Recovery" xml:space="preserve">
-    <value>Nach Thargoid-Wiederherstellung</value>
+    <value>Post-Thargoiden-Wiederherstellung</value>
     <comment>Faction state Thargoid_Recovery</comment>
   </data>
 </root>
