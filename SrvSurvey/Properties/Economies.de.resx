@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+﻿﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:element name="root" msdata:IsDataSet="true">
@@ -48,11 +48,11 @@
     <comment>Economy type Colony</comment>
   </data>
   <data name="Extraction" xml:space="preserve">
-    <value>Förderung</value>
+    <value>Abbau</value>
     <comment>Economy type Extraction</comment>
   </data>
   <data name="HighTech" xml:space="preserve">
-    <value>Hightech</value>
+    <value>High-Tech</value>
     <comment>Economy type HighTech</comment>
   </data>
   <data name="Industrial" xml:space="preserve">
@@ -72,7 +72,7 @@
     <comment>Economy type Refinery</comment>
   </data>
   <data name="Service" xml:space="preserve">
-    <value>Dienstleistung</value>
+    <value>Dienst</value>
     <comment>Economy type Service</comment>
   </data>
   <data name="Terraforming" xml:space="preserve">
@@ -92,7 +92,7 @@
     <comment>Economy type Prison</comment>
   </data>
   <data name="Repair" xml:space="preserve">
-    <value>Reparaturen</value>
+    <value>Reparatur</value>
     <comment>Economy type Repair</comment>
   </data>
   <data name="Damaged" xml:space="preserve">
@@ -100,11 +100,11 @@
     <comment>Economy type Damaged</comment>
   </data>
   <data name="Carrier" xml:space="preserve">
-    <value>Privateigentum</value>
+    <value>Privates Unternehmen</value>
     <comment>Economy Type Carrier</comment>
   </data>
   <data name="Engineer" xml:space="preserve">
-    <value>Werkstatt</value>
+    <value>Ingenieur</value>
     <comment>Economy type Engineer</comment>
   </data>
 </root>
