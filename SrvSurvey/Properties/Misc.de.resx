@@ -172,8 +172,8 @@
     <comment>Data from: EDSM + Spansh + Canonn</comment>
   </data>
   <data name="PlotGalMap_Destination">
-    <value>Bestimmungsort:</value>
-    <comment>Ziel:</comment>
+    <value>Ziel:</value>
+    <comment>Destination:</comment>
   </data>
   <data name="PlotGalMap_DiscoveredBy">
     <value>Von {0}, {1}</value>
@@ -239,11 +239,11 @@
     <value>Ordner kann nicht gefunden werden:
 {0}
 
-Möchten Sie es erstellen?</value>
+Möchtest du ihn erstellen?</value>
     <comment>Cannot find folder:
 {0}
 
-Möchtest du ihn erstellen?</comment>
+Would you like to create it?</comment>
   </data>
   <data name="$this.Localizable" type="System.Boolean, mscorlib">
     <value>True</value>
