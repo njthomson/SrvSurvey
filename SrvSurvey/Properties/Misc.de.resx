@@ -84,11 +84,11 @@
     <comment>⏷ Show list</comment>
   </data>
   <data name="FormBoxelSearch_SpanshUpdated">
-    <value>Spanisch aktualisiert: {0}</value>
+    <value>Spansh aktualisiert: {0}</value>
     <comment>Spansh updated: {0}</comment>
   </data>
   <data name="FormBoxelSearch_SpanshUpdatedBodies">
-    <value>Spanisch aktualisiert: {0}, Körper: {1}</value>
+    <value>Spansh aktualisiert: {0}, Körper: {1}</value>
     <comment>Spansh updated: {0}, bodies: {1}</comment>
   </data>
   <data name="FormBoxelSearch_UndiscoveredSystem">
@@ -100,15 +100,15 @@
     <comment>Visited: {0}</comment>
   </data>
   <data name="FormBoxelSearch_VisitedCounts">
-    <value>Besuchte {0} von {1} Systemen</value>
+    <value>{0} von {1} Systemen besucht</value>
     <comment>Visited {0} of {1} systems</comment>
   </data>
   <data name="NetSysData_Bodies">
-    <value>Körper</value>
+    <value>Himmelskörper</value>
     <comment>Bodies</comment>
   </data>
   <data name="NetSysData_DiscoveredAll">
-    <value>Entdeckte, {0} Leichen</value>
+    <value>{0} Himmelskörper entdeckt</value>
     <comment>Discovered, {0} bodies</comment>
   </data>
   <data name="NetSysData_DiscoveredPartial">
@@ -136,11 +136,11 @@
     <comment>Settlements</comment>
   </data>
   <data name="NetSysData_StarPorts">
-    <value>Stern-Häfen</value>
+    <value>Stationen</value>
     <comment>Star ports</comment>
   </data>
   <data name="NetSysData_TechBroker">
-    <value>Tech-Makler</value>
+    <value>Techbologie-Händlerr</value>
     <comment>Tech Broker</comment>
   </data>
   <data name="NetSysData_UndiscoveredSystem">
@@ -164,7 +164,7 @@
     <comment>{0}x Genus</comment>
   </data>
   <data name="PlotGalMap_Current">
-    <value>Strömung:</value>
+    <value>Zurzeit:</value>
     <comment>Current:</comment>
   </data>
   <data name="PlotGalMap_DataFrom">
@@ -172,11 +172,11 @@
     <comment>Data from: EDSM + Spansh + Canonn</comment>
   </data>
   <data name="PlotGalMap_Destination">
-    <value>Bestimmungsort:</value>
+    <value>Ziel:</value>
     <comment>Destination:</comment>
   </data>
   <data name="PlotGalMap_DiscoveredBy">
-    <value>Bis {0}, {1}</value>
+    <value>Von {0}, {1}</value>
     <comment>By {0}, {1}</comment>
   </data>
   <data name="PlotGalMap_LastUpdated">
@@ -200,11 +200,11 @@
     <comment>Selected:</comment>
   </data>
   <data name="PlotSysStatus_BioSignals">
-    <value>| {0}x Bio signalisiert auf: </value>
+    <value>| {0}x Biosignale auf: </value>
     <comment>| {0}x Bio signals on: </comment>
   </data>
   <data name="PlotSysStatus_DssRemaining">
-    <value> {0}x Körper: </value>
+    <value> {0}x Himmelskörper: </value>
     <comment> {0}x bodies: </comment>
   </data>
   <data name="PlotSysStatus_FssCompleteLong">
@@ -220,7 +220,7 @@
     <comment>FSS not started</comment>
   </data>
   <data name="PlotSysStatus_Header">
-    <value>System-Befragung: </value>
+    <value>Systemerkundung: </value>
     <comment>System survey: </comment>
   </data>
   <data name="PlotSysStatus_NextSystem">
@@ -232,14 +232,14 @@
     <comment>No DSS meet criteria</comment>
   </data>
   <data name="PlotSysStatus_NonBodySignals">
-    <value>► {0} Nicht-Körper-Signale</value>
+    <value>► {0} Nicht-Himmelskörper-Signale</value>
     <comment>► {0} non-body signals</comment>
   </data>
   <data name="Settings_CreateFolderNotFound">
     <value>Ordner kann nicht gefunden werden:
 {0}
 
-Möchten Sie es erstellen?</value>
+Möchtest du ihn erstellen?</value>
     <comment>Cannot find folder:
 {0}
 

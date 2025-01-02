@@ -59,35 +59,35 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="copyNextBoxel">
-    <value>Kopieren Sie in gal-map das nächste Boxel-Suchsystem in die Zwischenablage.</value>
+    <value>In GalMap, kopiere das nächste Boxel-Suchsystem in die Zwischenablage.</value>
     <comment>In gal-map, copy the next boxel search system to clipboard.</comment>
   </data>
   <data name="mapBeHuge">
-    <value>Schaltet um, sodass die Karte nur bei menschlichen Siedlungen den halben Bildschirm ausfüllt.</value>
+    <value>Schaltet um, sodass die Karte bei menschlichen Siedlungen nur den halben Bildschirm ausfüllt.</value>
     <comment>Toggles making the map fill half the screen, at Human settlements only.</comment>
   </data>
   <data name="mapZoomAuto">
-    <value>Setzen Sie den Zoom an den Standorten Mensch und Wächter auf die Standardeinstellungen zurück.</value>
+    <value>Setze den Zoom bei menschlichen und Guardian-Stätten auf die Standard-Einstellung zurück.</value>
     <comment>Reset the zoom to default, at Human and Guardian sites.</comment>
   </data>
   <data name="mapZoomIn">
-    <value>Vergrößern Sie die Karten an den Standorten von Menschen und Wächtern.</value>
+    <value>Zoome auf den Karten bei menschlichen und Guardian-Stätten heran.</value>
     <comment>Zoom in on maps at Human and Guardian sites.</comment>
   </data>
   <data name="mapZoomOut">
-    <value>Verkleinern Sie die Karten an den Standorten "Mensch" und "Wächter".</value>
+    <value>Zoome auf den Karten bei menschlichen und Guardian-Stätten heraus.</value>
     <comment>Zoom out on maps at Human and Guardian sites.</comment>
   </data>
   <data name="showBodyInfo">
-    <value>Erzwingen Sie die Anzeige des Body-Info-Overlays.</value>
+    <value>Blende die Anzeige des Körperinfo-Overlay erzwingend ein.</value>
     <comment>Force show the Body info overlay.</comment>
   </data>
   <data name="showFssInfo">
-    <value>Erzwingen Sie die Anzeige des FSS-Info-Overlays.</value>
+    <value>Blende die Anzeige des FSS-Info-Overlay erzwingend ein.</value>
     <comment>Force show the FSS info overlay.</comment>
   </data>
   <data name="showJumpInfo">
-    <value>Erzwingen Sie das Umschalten des FSD-Sprung-Overlays, damit es sichtbar ist, ohne zu springen. Wird nicht angezeigt, wenn keine aktive Route vorhanden ist.</value>
+    <value>Schalte das FSD-Sprung-Overlay erzwingend sichtbar, ohne den Sprung zu starten. Es wird nicht angezeigt, wenn keine aktive Route vorhanden ist.</value>
     <comment>Force toggle the FSD jump overlay to be visible without starting to jump. Will not appear if there is no active route.</comment>
   </data>
   <data name="toggleAllVisibility">
