@@ -340,8 +340,9 @@ namespace SrvSurvey.plotters
             // all the Genus names
             float x = twoFour;
             float y = twoTwo;
+            var body = game.systemBody;
 
-            if (game.systemBody?.organisms == null || game.systemBody.organisms.Count == 0)
+            if (body?.organisms == null || body.organisms.Count == 0)
             {
                 Game.log($"Why is game.systemBody!.organisms NULL ??");
                 g.DrawString(
@@ -354,8 +355,9 @@ namespace SrvSurvey.plotters
             }
 
             var allScanned = true;
-            foreach (var organism in game.systemBody!.organisms)
+            foreach (var organism in body.organisms)
             {
+                // TODO: use a widget
                 allScanned &= organism.analyzed;
                 var txt = organism.genusLocalized;
                 if (txt == null && organism.variantLocalized != null) txt = Util.getGenusDisplayNameFromVariant(organism.variantLocalized);
@@ -400,6 +402,42 @@ namespace SrvSurvey.plotters
                 }
 
                 x += sz.Width + eight;
+            }
+
+            // geo signals?
+            if (body.geoSignalCount > 0 && Debugger.IsAttached)
+            {
+                var n = 0;
+                while (n < body.geoSignalCount)
+                {
+                    // TODO: use a widget
+                    var txt = $"Geo #{n + 1}";
+
+                    var sz = g.MeasureString(txt, GameColors.fontSmall);
+                    if (x + sz.Width > this.Width - oneSix)
+                    {
+                        x = twoFour;
+                        y += sz.Height;
+                    }
+
+                    g.DrawString(
+                        txt,
+                        GameColors.fontSmall,
+                        true ? GameColors.brushGameOrange : GameColors.brushCyan,
+                        x, y
+                    );
+
+                    if (n + 1 < body.geoSignals?.Count)
+                    {
+                        // strike-through if already analyzed
+                        var ly = (int)(y + sz.Height * .35f);
+                        g.DrawLine(GameColors.penGameOrange1, x, ly, x + sz.Width, ly);
+                        g.DrawLine(GameColors.penGameOrangeDim1, x + 1, ly + 1, x + sz.Width + 1, ly + 1);
+                    }
+
+                    x += sz.Width + eight;
+                    n++;
+                }
             }
 
             if (Game.settings.tempRange_TEST)

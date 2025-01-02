@@ -36,6 +36,10 @@
     <NoWarn>1701;1702;CS8618;CS0649</NoWarn>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseOnce|AnyCPU'">
+    <Optimize>True</Optimize>
+  </PropertyGroup>
+
   <ItemGroup>
     <None Remove="allBeacons.json" />
     <None Remove="allRuins.json" />
@@ -180,7 +184,7 @@
     </EmbeddedResource>
   </ItemGroup>
 
-  <Target Name="PreBuild" BeforeTargets="PreBuildEvent"  Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Exec Command="PowerShell &quot;$(ProjectDir)sort-resx.ps1&quot;" />
   </Target>
 

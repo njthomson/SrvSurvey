@@ -21,10 +21,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SrvSurvey", "SrvSurvey\SrvS
 EndProject
 Project("{C7167F0D-BC9F-4E6E-AFE1-012C56B48DB5}") = "SrvSurvey.Package", "SrvSurvey.Package\SrvSurvey.Package.wapproj", "{7ACA3CF3-6EFD-4484-848A-FF3372C7FB31}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JournalViewer", "JournalViewer\JournalViewer.csproj", "{C2FC4391-E9AC-492C-A5B4-2313FB61F18F}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlinkMeasure", "BlinkMeasure\BlinkMeasure.csproj", "{4AFC99D3-88FB-444B-87DA-4786330FE06F}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -51,14 +47,6 @@ Global
 		{7ACA3CF3-6EFD-4484-848A-FF3372C7FB31}.Release|x64.Build.0 = Release|x64
 		{7ACA3CF3-6EFD-4484-848A-FF3372C7FB31}.Release|x64.Deploy.0 = Release|x64
 		{7ACA3CF3-6EFD-4484-848A-FF3372C7FB31}.ReleaseOnce|x64.ActiveCfg = ReleaseOnce|x64
-		{C2FC4391-E9AC-492C-A5B4-2313FB61F18F}.Debug|x64.ActiveCfg = Debug|x64
-		{C2FC4391-E9AC-492C-A5B4-2313FB61F18F}.DebugNoPS|x64.ActiveCfg = DebugNoPS|x64
-		{C2FC4391-E9AC-492C-A5B4-2313FB61F18F}.Release|x64.ActiveCfg = Release|x64
-		{C2FC4391-E9AC-492C-A5B4-2313FB61F18F}.ReleaseOnce|x64.ActiveCfg = Release|x64
-		{4AFC99D3-88FB-444B-87DA-4786330FE06F}.Debug|x64.ActiveCfg = Debug|x64
-		{4AFC99D3-88FB-444B-87DA-4786330FE06F}.DebugNoPS|x64.ActiveCfg = DebugNoPS|x64
-		{4AFC99D3-88FB-444B-87DA-4786330FE06F}.Release|x64.ActiveCfg = Release|x64
-		{4AFC99D3-88FB-444B-87DA-4786330FE06F}.ReleaseOnce|x64.ActiveCfg = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

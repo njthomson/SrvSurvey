@@ -29,6 +29,7 @@ namespace SrvSurvey
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormSettings));
             panel1 = new Panel();
             btnNextProc = new FlatButton();
@@ -125,6 +126,10 @@ namespace SrvSurvey
             checkRuinsMeasurementGrid = new CheckBox();
             checkEnableGuardianFeatures = new CheckBox();
             tabPage5 = new TabPage();
+            groupCodexImages = new GroupBox();
+            lblCodexImagesSize = new Label();
+            btnCodexImages = new FlatButton();
+            linkCodexCache = new LinkLabel();
             btnBannerColor = new FlatButton();
             checkDeleteScreenshotOriginal = new CheckBox();
             pictureBox3 = new PictureBox();
@@ -215,6 +220,11 @@ namespace SrvSurvey
             linkAboutOne = new LinkLabel();
             colorDialog = new ColorDialog();
             colorTheme = new ColorDialog();
+            menuCodexImages = new ButtonContextMenuStrip(components);
+            menuCodexChange = new ToolStripMenuItem();
+            menuCodexReset = new ToolStripMenuItem();
+            menuClearCodexCache = new ToolStripMenuItem();
+            checkPreDownloadCodexImages = new CheckBox();
             panel1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox6).BeginInit();
@@ -240,6 +250,7 @@ namespace SrvSurvey
             ((System.ComponentModel.ISupportInitialize)numAltBeta).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numAltAlpha).BeginInit();
             tabPage5.SuspendLayout();
+            groupCodexImages.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
             tabPage6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox13).BeginInit();
@@ -266,6 +277,7 @@ namespace SrvSurvey
             ((System.ComponentModel.ISupportInitialize)numericUpDown5).BeginInit();
             tabKeyChords.SuspendLayout();
             tabPage2.SuspendLayout();
+            menuCodexImages.SuspendLayout();
             SuspendLayout();
             // 
             // panel1
@@ -1493,6 +1505,7 @@ namespace SrvSurvey
             // tabPage5
             // 
             tabPage5.BorderStyle = BorderStyle.Fixed3D;
+            tabPage5.Controls.Add(groupCodexImages);
             tabPage5.Controls.Add(btnBannerColor);
             tabPage5.Controls.Add(checkDeleteScreenshotOriginal);
             tabPage5.Controls.Add(pictureBox3);
@@ -1512,6 +1525,50 @@ namespace SrvSurvey
             tabPage5.Size = new Size(651, 448);
             tabPage5.TabIndex = 4;
             tabPage5.Text = "Screenshots";
+            // 
+            // groupCodexImages
+            // 
+            groupCodexImages.Controls.Add(checkPreDownloadCodexImages);
+            groupCodexImages.Controls.Add(lblCodexImagesSize);
+            groupCodexImages.Controls.Add(btnCodexImages);
+            groupCodexImages.Controls.Add(linkCodexCache);
+            groupCodexImages.Location = new Point(12, 365);
+            groupCodexImages.Name = "groupCodexImages";
+            groupCodexImages.Size = new Size(629, 78);
+            groupCodexImages.TabIndex = 23;
+            groupCodexImages.TabStop = false;
+            groupCodexImages.Text = "Codex Images";
+            // 
+            // lblCodexImagesSize
+            // 
+            lblCodexImagesSize.AutoSize = true;
+            lblCodexImagesSize.Location = new Point(6, 20);
+            lblCodexImagesSize.Name = "lblCodexImagesSize";
+            lblCodexImagesSize.Size = new Size(169, 15);
+            lblCodexImagesSize.TabIndex = 9;
+            lblCodexImagesSize.Text = "Downloaded image cache size:";
+            // 
+            // btnCodexImages
+            // 
+            btnCodexImages.Location = new Point(6, 41);
+            btnCodexImages.Name = "btnCodexImages";
+            btnCodexImages.Size = new Size(26, 25);
+            btnCodexImages.TabIndex = 7;
+            btnCodexImages.Text = "...";
+            btnCodexImages.UseVisualStyleBackColor = true;
+            // 
+            // linkCodexCache
+            // 
+            linkCodexCache.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            linkCodexCache.BorderStyle = BorderStyle.FixedSingle;
+            linkCodexCache.Location = new Point(38, 41);
+            linkCodexCache.Name = "linkCodexCache";
+            linkCodexCache.Size = new Size(585, 25);
+            linkCodexCache.TabIndex = 8;
+            linkCodexCache.TabStop = true;
+            linkCodexCache.Tag = "downloadCodexImageFolder";
+            linkCodexCache.Text = "C:\\xxx\\Pictures\\Frontier Developments\\Elite Dangerous\\";
+            linkCodexCache.LinkClicked += linkScreenshotFolder_LinkClicked;
             // 
             // btnBannerColor
             // 
@@ -1562,7 +1619,7 @@ namespace SrvSurvey
             checkUseGuardianAerialScreenshotsFolder.Location = new Point(7, 311);
             checkUseGuardianAerialScreenshotsFolder.Margin = new Padding(4, 3, 4, 3);
             checkUseGuardianAerialScreenshotsFolder.Name = "checkUseGuardianAerialScreenshotsFolder";
-            checkUseGuardianAerialScreenshotsFolder.Size = new Size(630, 66);
+            checkUseGuardianAerialScreenshotsFolder.Size = new Size(630, 48);
             checkUseGuardianAerialScreenshotsFolder.TabIndex = 11;
             checkUseGuardianAerialScreenshotsFolder.Tag = "useGuardianAerialScreenshotsFolder";
             checkUseGuardianAerialScreenshotsFolder.Text = resources.GetString("checkUseGuardianAerialScreenshotsFolder.Text");
@@ -2668,6 +2725,52 @@ namespace SrvSurvey
             // 
             colorDialog.Color = Color.Yellow;
             // 
+            // menuCodexImages
+            // 
+            menuCodexImages.Items.AddRange(new ToolStripItem[] { menuCodexChange, menuCodexReset, menuClearCodexCache });
+            menuCodexImages.Name = "menuCodexImages";
+            menuCodexImages.RenderMode = ToolStripRenderMode.System;
+            menuCodexImages.ShowImageMargin = false;
+            menuCodexImages.Size = new Size(159, 70);
+            menuCodexImages.targetButton = btnCodexImages;
+            // 
+            // menuCodexChange
+            // 
+            menuCodexChange.Name = "menuCodexChange";
+            menuCodexChange.Size = new Size(158, 22);
+            menuCodexChange.Text = "Change";
+            menuCodexChange.ToolTipText = "Change folder used to cache downloaded images.";
+            menuCodexChange.Click += menuCodexChange_Click;
+            // 
+            // menuCodexReset
+            // 
+            menuCodexReset.Name = "menuCodexReset";
+            menuCodexReset.Size = new Size(158, 22);
+            menuCodexReset.Text = "Reset";
+            menuCodexReset.ToolTipText = "Restore setting to original folder";
+            menuCodexReset.Click += menuCodexReset_Click;
+            // 
+            // menuClearCodexCache
+            // 
+            menuClearCodexCache.Name = "menuClearCodexCache";
+            menuClearCodexCache.Size = new Size(158, 22);
+            menuClearCodexCache.Text = "Clear cached images";
+            menuClearCodexCache.ToolTipText = "Remove cached images.";
+            menuClearCodexCache.Click += menuClearCodexCache_Click;
+            // 
+            // checkPreDownloadCodexImages
+            // 
+            checkPreDownloadCodexImages.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            checkPreDownloadCodexImages.AutoSize = true;
+            checkPreDownloadCodexImages.Location = new Point(522, 16);
+            checkPreDownloadCodexImages.Name = "checkPreDownloadCodexImages";
+            checkPreDownloadCodexImages.Size = new Size(101, 19);
+            checkPreDownloadCodexImages.TabIndex = 24;
+            checkPreDownloadCodexImages.Tag = "preDownloadCodexImages";
+            checkPreDownloadCodexImages.Text = "pre-download";
+            checkPreDownloadCodexImages.UseVisualStyleBackColor = true;
+            checkPreDownloadCodexImages.CheckedChanged += checkPreDownloadCodexImages_CheckedChanged;
+            // 
             // FormSettings
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -2715,6 +2818,8 @@ namespace SrvSurvey
             ((System.ComponentModel.ISupportInitialize)numAltAlpha).EndInit();
             tabPage5.ResumeLayout(false);
             tabPage5.PerformLayout();
+            groupCodexImages.ResumeLayout(false);
+            groupCodexImages.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox3).EndInit();
             tabPage6.ResumeLayout(false);
             tabPage6.PerformLayout();
@@ -2747,6 +2852,7 @@ namespace SrvSurvey
             tabKeyChords.ResumeLayout(false);
             tabKeyChords.PerformLayout();
             tabPage2.ResumeLayout(false);
+            menuCodexImages.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -2936,5 +3042,14 @@ namespace SrvSurvey
         private CheckBox checkBox33;
         private FlatButton btnSwapCache;
         private CheckBox checkBox34;
+        private GroupBox groupCodexImages;
+        private Label lblCodexImagesSize;
+        private FlatButton btnCodexImages;
+        private LinkLabel linkCodexCache;
+        private ButtonContextMenuStrip menuCodexImages;
+        private ToolStripMenuItem menuCodexChange;
+        private ToolStripMenuItem menuCodexReset;
+        private ToolStripMenuItem menuClearCodexCache;
+        private CheckBox checkPreDownloadCodexImages;
     }
 }

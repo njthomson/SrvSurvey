@@ -517,6 +517,7 @@ namespace SrvSurvey
             if (force || this.txtMode.Text != newMode.ToString())
             {
                 this.updateAllControls(newMode);
+                Program.invalidate<PlotPulse>();
             }
         }
 

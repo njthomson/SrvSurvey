@@ -88,6 +88,8 @@ namespace SrvSurvey.game
                 startedOn = DateTime.Now;
 
             boxel = newBoxel;
+            if (current == null || !newBoxel.containsChild(current))
+                current = newBoxel;
 
             // prep progress with all children
             progress = new();
@@ -379,7 +381,7 @@ namespace SrvSurvey.game
         public string getNextToVisit()
         {
             // use prefix if nothing yet visited - to help find the count of systems in this boxel
-            if (!currentEmpty && systems.All(s => !s.complete))
+            if (!currentEmpty && systems.Any() && systems.All(s => !s.complete))
                 return current.prefix;
 
             // take the first incomplete system

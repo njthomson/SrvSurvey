@@ -140,6 +140,11 @@
         RU5ErkJggg==
 </value>
   </data>
+  <data name="checkUseGuardianAerialScreenshotsFolder.Text" xml:space="preserve">
+    <value>Save Ruins aerial screenshots into site-type specific sub-folders.
+Eg: 'Aerial alpha', 'Aerial beta' or 'Aerial gamma'
+Screenshots need to be within 50m of site origin, with an altitude between 500m and 2000m.</value>
+  </data>
   <data name="pictureBox2.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAT8AAAGQCAIAAABXjvDHAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
@@ -3445,11 +3450,6 @@
         ClwAAAAASUVORK5CYII=
 </value>
   </data>
-  <data name="checkUseGuardianAerialScreenshotsFolder.Text" xml:space="preserve">
-    <value>Save Ruins aerial screenshots into site-type specific sub-folders.
-Eg: 'Aerial alpha', 'Aerial beta' or 'Aerial gamma'
-Screenshots need to be within 50m of site origin, with an altitude between 500m and 2000m.</value>
-  </data>
   <data name="pictureBox13.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAUYAAAAzCAIAAABkLTZhAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
@@ -6236,5 +6236,8 @@ Finally to Brammmers for his dedication and patience whilst we ironed out the bu
   </metadata>
   <metadata name="colorTheme.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>131, 17</value>
+  </metadata>
+  <metadata name="menuCodexImages.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>248, 17</value>
   </metadata>
 </root>

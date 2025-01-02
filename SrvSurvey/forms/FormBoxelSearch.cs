@@ -44,7 +44,8 @@ namespace SrvSurvey.forms
             //linkKeyChords.Visible = !bs.autoCopy && (!Game.settings.keyhook_TEST || string.IsNullOrEmpty(Game.settings.keyActions_TEST?.GetValueOrDefault(KeyAction.copyNextBoxel)));
 
             prepForm();
-            bs.reset(bs.boxel, bs.active);
+            if (bs.active)
+                bs.reset(bs.boxel, bs.active);
         }
 
         private void btnSearch_Click(object sender, EventArgs e)
@@ -94,7 +95,7 @@ namespace SrvSurvey.forms
 
         private void prepForm()
         {
-            txtTopBoxel.Text = bs.boxel.name;
+            txtTopBoxel.Text = bs.boxel?.name ?? cmdr.currentSystem;
             this.setStatusText();
 
             if (bs.active)
@@ -106,8 +107,8 @@ namespace SrvSurvey.forms
                 numMax.Enabled = true;
 
                 txtTopBoxel.ReadOnly = true;
-                txtTopBoxel.Text = bs.boxel.name;
-                txtCurrent.Text = bs.current.prefix;
+                txtTopBoxel.Text = bs.boxel?.name;
+                txtCurrent.Text = bs.current?.prefix;
 
                 this.setNumMax();
 

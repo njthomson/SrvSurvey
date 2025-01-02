@@ -17,7 +17,7 @@ namespace SrvSurvey.plotters
         }
 
         private int count = 20;
-        private DateTime lastchanged;
+        private DateTime lastChanged;
         public bool didFirstPaint { get; set; } = true;
         public bool showing { get; set; }
 
@@ -63,9 +63,9 @@ namespace SrvSurvey.plotters
 
         private void timer_Tick(object sender, EventArgs e)
         {
-            if (PlotPulse.LastChanged > this.lastchanged)
+            if (PlotPulse.LastChanged > this.lastChanged)
             {
-                this.lastchanged = PlotPulse.LastChanged;
+                this.lastChanged = PlotPulse.LastChanged;
                 this.count = 20;
             }
             else if (count > 0)
@@ -119,6 +119,11 @@ namespace SrvSurvey.plotters
         {
             var g = e.Graphics;
             g.SmoothingMode = SmoothingMode.HighQuality;
+
+            if (Game.activeGame?.isMode(GameMode.GalaxyMap, GameMode.SystemMap) == true)
+                this.Opacity = 0f;
+            else
+                this.Opacity = PlotPos.getOpacity(this);
 
             g.FillRectangle(GameColors.brushGameOrange,
                 10, 27 - count,

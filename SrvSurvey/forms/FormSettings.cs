@@ -1,4 +1,5 @@
-﻿using SrvSurvey.forms;
+﻿using SrvSurvey.canonn;
+using SrvSurvey.forms;
 using SrvSurvey.game;
 using SrvSurvey.plotters;
 using SrvSurvey.Properties;
@@ -15,6 +16,9 @@ namespace SrvSurvey
         private readonly Dictionary<string, FieldInfo> map = new();
         private Color colorScreenshotBanner = Game.settings.screenshotBannerColor;
         private Dictionary<KeyAction, string>? nextKeyActions;
+
+        private int codexImageCount;
+        private string codexImageSize;
 
         public FormSettings()
         {
@@ -72,6 +76,20 @@ namespace SrvSurvey
                 btnClearUnclaimed.Enabled = false;
                 btnClearTrackers.Enabled = false;
             }
+
+            // Count how many image files are in the codex download cache
+            Task.Run(() =>
+            {
+                var files = Directory.GetFiles(Game.settings.downloadCodexImageFolder);
+                this.codexImageCount = files.Length;
+
+                var size = files.Sum(file => new FileInfo(file).Length);
+                return size;
+            }).continueOnMain(this, size =>
+            {
+                this.codexImageSize = (size / 1_073_741_824D).ToString("N3").TrimEnd('0');
+                lblCodexImagesSize.Text += $" {codexImageSize} GB";
+            });
         }
 
         private void findCmdrs()
@@ -407,6 +425,20 @@ namespace SrvSurvey
             this.chooseScreenshotFolder(linkTargetScreenshotFolder, "Choose destination folder screenshots");
         }
 
+        private void menuCodexChange_Click(object sender, EventArgs e)
+        {
+            var dialog = new FolderBrowserDialog()
+            {
+                Description = "Choose download cache folder",
+                UseDescriptionForTitle = true,
+                SelectedPath = linkCodexCache.Text,
+            };
+
+            var rslt = dialog.ShowDialog(this);
+            if (rslt == DialogResult.OK)
+                linkCodexCache.Text = dialog.SelectedPath;
+        }
+
         private void linkScreenshotFolder_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             var folder = ((LinkLabel)sender).Text;
@@ -694,6 +726,34 @@ namespace SrvSurvey
         private void btnSwapCache_Click(object sender, EventArgs e)
         {
             FormSwapStarCache.showDialog(this);
+        }
+
+        private void menuCodexReset_Click(object sender, EventArgs e)
+        {
+            linkCodexCache.Text = CodexRef.defaultCodexImagesFolder;
+        }
+
+        private void menuClearCodexCache_Click(object sender, EventArgs e)
+        {
+            var rslt = MessageBox.Show(this, $"Are you sure you want to remove {this.codexImageCount} files? ({this.codexImageSize} GB)", "SrvSurvey", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (rslt == DialogResult.Yes)
+            {
+                checkPreDownloadCodexImages.Checked = false;
+                if (CodexRef.taskDownloadAllCodexImages != null)
+                    CodexRef.taskDownloadAllCodexImages = null;
+
+                var files = Directory.GetFiles(Game.settings.downloadCodexImageFolder);
+                Game.log($"Deleting {files.Length} codex image cache files...");
+                foreach (var file in files)
+                    File.Delete(file);
+            }
+        }
+
+        private void checkPreDownloadCodexImages_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkPreDownloadCodexImages.Visible && checkPreDownloadCodexImages.Checked)
+                MessageBox.Show(this, "Codex images will be pre-downloaded after you next restart SrvSurvey. This will happen in the background and requires ~1GB of disk space.", "SrvSurvey", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }

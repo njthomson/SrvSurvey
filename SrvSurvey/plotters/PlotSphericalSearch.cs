@@ -248,13 +248,13 @@ namespace SrvSurvey.plotters
             }
 
             var boxelSearch = Game.activeGame?.cmdr.boxelSearch;
-            if (boxelSearch == null) return;
+            if (boxelSearch?.active != true || boxelSearch.current == null) return;
 
             var ff = GameColors.fontSmall;
             var ww = ten + Util.maxWidth(ff, RES("Boxel"), RES("Visited"), RES("Next"));
 
             this.drawTextAt(eight, RES("Boxel"), ff);
-            this.drawTextAt(ww, boxelSearch.current!.prefix + "xxx", ff);
+            this.drawTextAt(ww, boxelSearch.current.prefix + "xxx", ff);
             newLine(true);
 
             this.drawTextAt(eight, RES("Visited"), ff);

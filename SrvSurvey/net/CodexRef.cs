@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using SrvSurvey.game;
 using SrvSurvey.units;
+using System.Drawing.Imaging;
 using System.Globalization;
 using System.Text.RegularExpressions;
 
@@ -10,9 +11,11 @@ namespace SrvSurvey.canonn
     {
         private static string codexRefPath = Path.Combine(Program.dataFolder, "codexRef.json");
         private static string bioRefPath = Path.Combine(Program.dataFolder, "bioRef.json");
-        public static string codexImagesFolder = Path.Combine(Program.dataFolder, "codexImages");
+        public static string defaultCodexImagesFolder = Path.Combine(Program.dataFolder, "codexImages");
         private static string nebulaePath = Path.Combine(Program.dataFolder, "nebulae.json");
         private static string codexNotFoundPath = Path.Combine(Program.dataFolder, "codexNotFound.json");
+
+        public static Task? taskDownloadAllCodexImages;
 
         public List<BioGenus> genus;
         private List<double[]>? allNebula;
@@ -36,9 +39,6 @@ namespace SrvSurvey.canonn
             var codexRef = await loadCodexRef(reset);
             prepBioRef(codexRef, reset);
 
-            if (!Directory.Exists(CodexRef.codexImagesFolder))
-                Directory.CreateDirectory(CodexRef.codexImagesFolder);
-
             if (Game.settings.downloadCodexImageFolder != null && !Directory.Exists(Game.settings.downloadCodexImageFolder))
                 Directory.CreateDirectory(Game.settings.downloadCodexImageFolder);
 
@@ -46,7 +46,85 @@ namespace SrvSurvey.canonn
 
             await this.prepCodexNotFounds(reset);
 
+            if (Game.settings.preDownloadCodexImages && taskDownloadAllCodexImages == null)
+            {
+                taskDownloadAllCodexImages = Task.Run(() => Program.crashGuard(async () =>
+                {
+                    await this.downloadAllCodexImages(codexRef.Values.ToList());
+                }));
+            }
+
             Game.log("CodexRef init - complete");
+        }
+
+        private async Task downloadAllCodexImages(List<RefCodexEntry> codexEntries)
+        {
+            if (!Game.settings.preDownloadCodexImages) return;
+
+            // get min/max bio entryId's (we don't need images of space based stuff)
+            var min = 999_999_999_999D;
+            var max = 0D;
+            this.genus.ForEach(genus => genus.species.ForEach(species => species.variants.ForEach(variant =>
+            {
+                var entryId = long.Parse(variant.entryId);
+                if (entryId < min) min = entryId;
+                if (entryId > max) max = entryId;
+            })));
+
+            for (var n = 0; n < codexEntries.Count; n++)
+            {
+                // exit early if this gets cleared
+                if (taskDownloadAllCodexImages == null) break;
+
+                var entry = codexEntries[n];
+                if (string.IsNullOrWhiteSpace(entry.image_url)) continue;
+
+                var entryId = long.Parse(entry.entryid);
+                if (entryId < min || entryId > max) continue;
+
+                await downloadCodexImage(entry.entryid, entry.image_url);
+                //await Task.Delay(1000);
+            }
+
+            Game.log("CodexRef pre-download images - complete");
+            taskDownloadAllCodexImages = null;
+        }
+
+        public async Task downloadCodexImage(string entryId, string imageUrl)
+        {
+            if (string.IsNullOrWhiteSpace(imageUrl)) return;
+            var folder = Game.settings.downloadCodexImageFolder;
+
+            var filepath = Path.Combine(folder, $"{entryId}.jpg");
+            if (!File.Exists(filepath))
+            {
+                Game.log($"Downloading {imageUrl} => {filepath}");
+
+                var client = new HttpClient();
+                client.DefaultRequestHeaders.Add("user-agent", Program.userAgent);
+
+                if (!Uri.IsWellFormedUriString(imageUrl, UriKind.Absolute))
+                {
+                    //Debugger.Break();
+                    return;
+                }
+
+                using (var stream = await client.GetStreamAsync(imageUrl))
+                {
+                    using (var imgTmp = Image.FromStream(stream))
+                    {
+                        if (!File.Exists(filepath))
+                        {
+                            var encoder = ImageCodecInfo.GetImageEncoders().First(c => c.FormatID == ImageFormat.Jpeg.Guid);
+                            var encParams = new EncoderParameters() { Param = new[] { new EncoderParameter(Encoder.Quality, 90L) } };
+                            imgTmp.Save(filepath, encoder, encParams);
+                        }
+                    }
+                }
+            }
+
+            filepath = Path.Combine(folder, $"{entryId}.png");
+            if (File.Exists(filepath)) File.Delete(filepath);
         }
 
         public async Task<Dictionary<string, RefCodexEntry>> loadCodexRef(bool reset = false)
@@ -230,6 +308,7 @@ namespace SrvSurvey.canonn
                 }
             }
         }
+
         public BioMatch matchFromEntryId(long entryId)
         {
             return matchFromEntryId(entryId.ToString());

@@ -338,7 +338,7 @@ namespace SrvSurvey.plotters
                 g.DrawLine(GameColors.penGameOrange1, eight, dty - five, this.ClientSize.Width - eight, dty - five);
                 dty += two;
 
-                drawTextAt(eight, $"Geo signals: {body.bioSignalCount}", GameColors.brushGameOrange);
+                drawTextAt(eight, $"Geo signals: {body.geoSignalCount}", GameColors.brushGameOrange);
                 newLine(+four, true);
 
                 // geo signals?
@@ -346,7 +346,8 @@ namespace SrvSurvey.plotters
                 {
                     foreach (var geoName in body.geoSignals.Select(_ => _.nameLocalized).ToHashSet())
                     {
-                        this.drawTextAt(twoEight, $"{geoName}");
+                        // TODO: show gold flags if this is a first discovery
+                        this.drawTextAt(oneTwo, $"► {geoName}");
                         newLine(+four, true);
                     }
                 }

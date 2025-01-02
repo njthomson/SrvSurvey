@@ -1,9 +1,7 @@
 ﻿using BioCriterias;
-using SrvSurvey.canonn;
 using SrvSurvey.forms;
 using SrvSurvey.game;
 using SrvSurvey.widgets;
-using System.Drawing.Imaging;
 
 namespace SrvSurvey
 {
@@ -187,8 +185,8 @@ namespace SrvSurvey
             // now load the image
             Task.Run(() =>
             {
-                var folder = Game.settings.downloadCodexImageFolder ?? CodexRef.codexImagesFolder;
-                var filepath = Path.Combine(folder, $"{currentVariant.entryId}.png");
+                var folder = Game.settings.downloadCodexImageFolder;
+                var filepath = Path.Combine(folder, $"{currentVariant.entryId}.jpg");
 
                 Image? nextImg = null;
                 var nextCredits = "";
@@ -427,54 +425,21 @@ namespace SrvSurvey
                     {
                         if (org.entryId == 0) continue;
 
-                        // skip if no url or we already have the file
+                        // skip if no url
                         var match = Game.codexRef.matchFromEntryId(org.entryId);
                         if (match.variant.imageUrl == null) continue;
 
-                        var folder = Game.settings.downloadCodexImageFolder ?? CodexRef.codexImagesFolder;
-                        var filepath = Path.Combine(folder, $"{org.entryId}.png");
-                        if (File.Exists(filepath)) continue;
-
                         // otherwise download it
-                        await downloadImage(match.variant.imageUrl, filepath);
+                        await Game.codexRef.downloadCodexImage(org.entryId.ToString(), match.variant.imageUrl);
                     }
                 }
 
                 // get images for predictions
                 if (body.genusPredictions?.Count > 0)
-                {
                     foreach (var genus in body.genusPredictions.ToList())
-                    {
                         foreach (var variants in genus.species.Values.ToList())
-                        {
                             foreach (var variant in variants.ToList())
-                            {
-                                // skip if no url or we already have the file
-                                if (variant.variant.imageUrl == null) continue;
-
-                                var folder = Game.settings.downloadCodexImageFolder ?? CodexRef.codexImagesFolder;
-                                var filepath = Path.Combine(folder, $"{variant.variant.entryId}.png");
-                                if (File.Exists(filepath)) continue;
-
-                                // otherwise download it
-                                await downloadImage(variant.variant.imageUrl, filepath);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        private static async Task downloadImage(string imageUrl, string filepath)
-        {
-            Game.log($"Downloading: {imageUrl} => {filepath}");
-            using (var stream = await new HttpClient().GetStreamAsync(imageUrl))
-            {
-                using (var imgTmp = Image.FromStream(stream))
-                {
-                    if (!File.Exists(filepath))
-                        imgTmp.Save(filepath, ImageFormat.Png);
-                }
+                                await Game.codexRef.downloadCodexImage(variant.variant.entryId, variant.variant.imageUrl);
             }
         }
 
@@ -503,7 +468,6 @@ namespace SrvSurvey
                     updateStuff(e.Button == MouseButtons.Right);
                 }
             }
-
         }
 
         private void prepMenuItems()

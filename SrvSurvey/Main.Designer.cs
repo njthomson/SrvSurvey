@@ -815,7 +815,7 @@ namespace SrvSurvey
             linkNewBuildAvailable.BackColor = Color.Transparent;
             linkNewBuildAvailable.Font = new Font("Lucida Sans Typewriter", 8.25F, FontStyle.Regular, GraphicsUnit.Point);
             linkNewBuildAvailable.LinkArea = new LinkArea(1, 16);
-            linkNewBuildAvailable.Location = new Point(267, 0);
+            linkNewBuildAvailable.Location = new Point(265, 0);
             linkNewBuildAvailable.Name = "linkNewBuildAvailable";
             linkNewBuildAvailable.Size = new Size(170, 18);
             linkNewBuildAvailable.TabIndex = 17;

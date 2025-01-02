@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using SrvSurvey.canonn;
 using SrvSurvey.game;
 using SrvSurvey.plotters;
 using SrvSurvey.units;
@@ -194,7 +195,9 @@ namespace SrvSurvey
         public bool formGenusShowRingGuide = true;
 
         public string? localFloraFolder = null;
-        public string? downloadCodexImageFolder = null;
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public string downloadCodexImageFolder = CodexRef.defaultCodexImagesFolder;
+        public bool preDownloadCodexImages = false;
 
         public bool darkTheme = false;
 

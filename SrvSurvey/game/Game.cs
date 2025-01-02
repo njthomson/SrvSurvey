@@ -2439,6 +2439,8 @@ namespace SrvSurvey.game
                 else
                     this.deferPredictSpecies(this.systemBody);
             }
+
+            Program.defer(() => Program.invalidateActivePlotters());
         }
 
         private void onJournalEntry(ScanOrganic entry)
