@@ -1725,7 +1725,7 @@
       { "name": "c7", "type": "component", "angle": 136.524393042832, "dist": 294.29978259065137562849435544, "rot": 293 },
       { "name": "p1", "type": "totem", "angle": 357.0, "dist": 289.0 },
       { "name": "p2", "type": "tablet", "angle": 358.0, "dist": 279.0 },
-      { "name": "p3", "type": "urn", "angle": 19.0, "dist": 119.0 },
+      { "name": "p3", "type": "casket", "angle": 19.0, "dist": 119.0 },
       { "name": "p4", "type": "casket", "angle": 157.0, "dist": 110.0 },
       { "name": "p5", "type": "casket", "angle": 227.0, "dist": 131.0 },
       { "name": "p6", "type": "tablet", "angle": 254.0, "dist": 148.0 },
@@ -1784,7 +1784,11 @@
         "X": 353.0,
         "Y": 170.0
       }
-    }
+    },
+    "destructablePanels": [
+      { "name": "d1", "type": "destructablePanel", "angle": 241.53431040743652982921975510, "dist": 290.98673881057351127827209617 },
+      { "name": "d2", "type": "destructablePanel", "angle": 239.00336616348974034862660606, "dist": 368.70452020005722727551576631 }
+    ]
   },
   "Squid": {
     "name": "$Ancient_Medium_002:#index=1;",
@@ -1955,7 +1959,11 @@
         "X": 30.0,
         "Y": 210.0
       }
-    }
+    },
+    "destructablePanels": [
+      { "name": "d1", "type": "destructablePanel", "angle": 4.280345458784651996079604715, "dist": 174.48910992289296084600154235 },
+      { "name": "d2", "type": "destructablePanel", "angle": 351.51683245170320768185523243, "dist": 96.59307415101210963122297840 }
+    ]
   },
   "Lacrosse": {
     "name": "$Ancient_Tiny_001:#index=1;",
