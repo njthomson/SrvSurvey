@@ -66,6 +66,10 @@
     <value>АГР</value>
     <comment>AGR</comment>
   </data>
+  <data name="AGRI">
+    <value>АГРО</value>
+    <comment>AGRI</comment>
+  </data>
   <data name="AutoDock1">
     <value>Выполняется автоматическая стыковка</value>
     <comment>Auto dock in progress</comment>
@@ -209,6 +213,10 @@
   <data name="POW">
     <value>ВОЕННОПЛЕННЫЙ</value>
     <comment>POW</comment>
+  </data>
+  <data name="PWR">
+    <value>ВЭР</value>
+    <comment>PWR</comment>
   </data>
   <data name="RES">
     <value>ВИЭ</value>

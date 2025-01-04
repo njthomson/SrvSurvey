@@ -77,6 +77,10 @@
     <value>AGR</value>
     <comment>A contraction of Agriculture, ideally 3 letters</comment>
   </data>
+  <data name="AGRI">
+    <value>AGRI</value>
+    <comment>A contraction of Agriculture, ideally 3 letters</comment>
+  </data>
   <data name="HAB">
     <value>HAB</value>
     <comment>A contraction of Habitat, ideally 3 letters</comment>
@@ -87,6 +91,10 @@
   </data>
   <data name="POW">
     <value>POW</value>
+    <comment>A contraction of Power Center, ideally 3 letters</comment>
+  </data>
+  <data name="PWR">
+    <value>PWR</value>
     <comment>A contraction of Power Center, ideally 3 letters</comment>
   </data>
   <data name="EXT">

@@ -66,6 +66,10 @@
     <value>* AGR →→→!</value>
     <comment>AGR</comment>
   </data>
+  <data name="AGRI">
+    <value>* AGRI →→→!</value>
+    <comment>AGRI</comment>
+  </data>
   <data name="AutoDock1">
     <value>* AUTO DOCK IN PROGRESS →→→!</value>
     <comment>Auto dock in progress</comment>
@@ -209,6 +213,10 @@
   <data name="POW">
     <value>* POW →→→!</value>
     <comment>POW</comment>
+  </data>
+  <data name="PWR">
+    <value>* PWR →→→!</value>
+    <comment>PWR</comment>
   </data>
   <data name="RES">
     <value>* RES →→→!</value>
