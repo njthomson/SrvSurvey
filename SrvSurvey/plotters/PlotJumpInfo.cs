@@ -275,8 +275,7 @@ namespace SrvSurvey.plotters
             }
 
             // resize height to fit - width will not change
-            this.formSize.Width = this.Width;
-            this.formAdjustSize(0, +ten);
+            this.formAdjustSize(+eight, +ten);
         }
 
         private void drawJumpLine()
