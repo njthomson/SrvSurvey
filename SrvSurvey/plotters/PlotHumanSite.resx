@@ -73,10 +73,6 @@
     <comment>A minimal map zoom level, shown in top right corner when there's not much space
 {0} float, 1 decimal place, the map zoom level</comment>
   </data>
-  <data name="AGR">
-    <value>AGR</value>
-    <comment>A contraction of Agriculture, ideally 3 letters</comment>
-  </data>
   <data name="AGRI">
     <value>AGRI</value>
     <comment>A contraction of Agriculture, ideally 3 letters</comment>

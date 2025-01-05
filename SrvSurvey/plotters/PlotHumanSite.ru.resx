@@ -62,10 +62,6 @@
     <value>Боец активен</value>
     <comment>Fighter is active</comment>
   </data>
-  <data name="AGR">
-    <value>АГР</value>
-    <comment>AGR</comment>
-  </data>
   <data name="AGRI">
     <value>АГРО</value>
     <comment>AGRI</comment>

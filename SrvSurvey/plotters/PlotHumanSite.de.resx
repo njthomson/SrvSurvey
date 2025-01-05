@@ -62,10 +62,6 @@
     <value>Der Kämpfer ist aktiv</value>
     <comment>Fighter is active</comment>
   </data>
-  <data name="AGR">
-    <value>AGR</value>
-    <comment>AGR</comment>
-  </data>
   <data name="AGRI">
     <value>AGRI</value>
     <comment>AGRI</comment>
