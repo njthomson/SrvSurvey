@@ -195,7 +195,7 @@ namespace SrvSurvey
         public bool formGenusShowRingGuide = true;
 
         public string? localFloraFolder = null;
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
         public string downloadCodexImageFolder = CodexRef.defaultCodexImagesFolder;
         public bool preDownloadCodexImages = false;
 
