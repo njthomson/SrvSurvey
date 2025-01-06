@@ -875,6 +875,12 @@ namespace SrvSurvey.game
                 return false;
             });
 
+            if (this.systemData == null && lastLocation != null)
+            {
+                log($"Game.initSystemData: using {lastLocation.@event}, to '{lastLocation.StarSystem}' ({lastLocation.SystemAddress})");
+                this.systemData = SystemData.From(lastLocation, fid, cmdrName);
+            }
+
             if (this.systemData == null)
             {
                 log($"Game.initSystemData: Why no systemData? Current journal has {this.journals.Count} items.");

@@ -227,6 +227,11 @@ namespace SrvSurvey
                         var settings = JsonConvert.DeserializeObject<Settings>(json)!;
 
                         Game.log($"Loaded settings: {json}");
+
+                        // ensure some things are populated
+                        if (string.IsNullOrWhiteSpace(settings.downloadCodexImageFolder))
+                            settings.downloadCodexImageFolder = CodexRef.defaultCodexImagesFolder;
+
                         return settings;
                     }
                     catch (Exception ex)
