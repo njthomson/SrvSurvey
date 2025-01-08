@@ -42,11 +42,12 @@ namespace SrvSurvey.game
             if (!MassCode.valid(mc)) return null;
 
             // confirm sector is valid
-            if (Sectors.is_valid_sector_name(parts.Groups[1].Value)) return null;
+            var sectorName = parts.Groups[1].Value;
+            if (!Sectors.is_valid_sector_name(sectorName)) return null;
 
             var bx = new Boxel
             {
-                sector = parts.Groups[1].Value,
+                sector = sectorName,
                 letters = parts.Groups[2].Value,
                 massCode = mc,
                 n1 = int.Parse(parts.Groups[4].Value),
@@ -101,7 +102,9 @@ namespace SrvSurvey.game
             id = id >> 10; // and shift
 
             var abs_pos = new Point3((int)xs, (int)ys, (int)zs);
-            var sectorName = Sectors.get_sector_name(abs_pos, false, false);
+            var sectorName = Sectors.get_sector_name(abs_pos, false);
+            if (string.IsNullOrEmpty(sectorName))
+                throw new Exception($"Cannot generate sectorName from: {id64}");
 
             var mc2 = (char)('a' + (int)(id64 & 7));
             var rel_pos = new Point3((int)xb, (int)yb, (int)zb);
@@ -110,7 +113,7 @@ namespace SrvSurvey.game
             return bx;
         }
 
-        private static string toBin(long id)
+        public static string toBin(long id)
         {
             var n = 63;
             var t = new StringBuilder("".PadLeft(64, '0'));
@@ -377,7 +380,7 @@ namespace SrvSurvey.game
             var bodyId = 0;
 
             var rel_pos = this.getRelativeCoords();
-            var abs_pos = Sectors.getSectorCoords2(this.sector);
+            var abs_pos = Sectors.getSectorCoords(this.sector);
 
             var mc = (int)this.massCode - 'a';
             int rs = 'h' - this.massCode; // relative shift value, dependent on the mass code

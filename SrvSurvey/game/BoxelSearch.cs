@@ -82,16 +82,16 @@ namespace SrvSurvey.game
         [JsonIgnore]
         public int countVisited => systems.Count(s => s.complete);
 
-        public void reset(Boxel newBoxel, bool active)
+        public void reset(Boxel newBoxel, bool resetCurrent)
         {
             // activate the feature
-            this.active = active;
+             this.active = true;
 
             if (boxel != newBoxel || startedOn == DateTime.MinValue)
                 startedOn = DateTime.Now;
 
             boxel = newBoxel;
-            if (current == null || !newBoxel.containsChild(current))
+            if (current == null || resetCurrent || !newBoxel.containsChild(current))
                 current = newBoxel;
 
             // prep progress with all children
@@ -106,6 +106,10 @@ namespace SrvSurvey.game
             };
             func(boxel);
             Game.log($"Boxel progress count: {progress.Count}");
+
+            // notify calling code and start looking for systems on disk and from Spansh
+            fireChanged();
+            Task.Run(this.findSystemsInCurrentBoxel);
         }
 
         public override string ToString()

@@ -5,11 +5,25 @@ namespace SrvSurvey.game
 {
     partial class Boxel
     {
-        public static class Sectors
+        /*
+         * Most code here was ported from https://bitbucket.org/Esvandiary/edts/src with kind permission from Cmdr Alot.
+         * I have kept Python's naming convention to make it easier to compare this code with the original.
+         * 
+         * Remaining/TODO:
+         *  - Handle hand-authored sectors + include list of known sectors
+         *  - Implement class Sector/HASector/PGSector - not sure it is needed within SrvSurvey?
+         */
+
+        static class Sectors
         {
             private static string[] cx_fragments;
             private static Dictionary<string, int[]> _prefix_offsets;
             private static Dictionary<string, int[]> _c1_infix_offsets;
+            private static int cx_prefix_total_run_length;
+            private static int c1_infix_s1_length_default;
+            private static int c1_infix_s2_length_default;
+            private static int c1_infix_s1_total_run_length;
+            private static int c1_infix_s2_total_run_length;
 
             static Sectors()
             {
@@ -57,43 +71,10 @@ namespace SrvSurvey.game
                 }
             }
 
-            public static Point3? getSectorCoords(string sectorName)
-            {
-                // _get_coords_from_name ...?
-                var frags = get_sector_fragments(sectorName);
-                if (frags == null) return null;
-
-                var class2 = frags.Count == 4;
-                if (class2)
-                {
-                    var offset = _c2_get_offset_from_name(frags);
-                    var pos = _get_sector_pos_from_offset(offset, galaxy_size);
-                    return pos;
-                }
-                else
-                {
-                    // _c1_get_sector ...
-                    var offset = _c1_get_offset_from_name(frags);
-                    // Calculate the X/Y/Z positions from the offset
-                    var pos = _get_sector_pos_from_offset(offset, galaxy_size);
-                    return pos;
-                    //var name = format_sector_name(frags);
-                    //return sector.PGSector(spos[0], spos[1], spos[2], name, _get_sector_class(frags));
-                }
-            }
-
-            public static long get_offset_from_name(string sectorName)
-            {
-                var frags = Sectors.get_sector_fragments(sectorName)!;
-
-                var sc = _get_sector_class(frags);
-                if (sc == 2)
-                    return Sectors._c2_get_offset_from_name(frags);
-                else
-                    return Sectors._c1_get_offset_from_name(frags);
-            }
-
-            public static Point3 getSectorCoords2(string sectorName)
+            /// <summary>
+            /// Returns the Sector co-ordinates from a sector name
+            /// </summary>
+            public static Point3 getSectorCoords(string sectorName)
             {
                 var offset = get_offset_from_name(sectorName);
 
@@ -104,9 +85,21 @@ namespace SrvSurvey.game
                 return new Point3((int)x, (int)y, (int)z);
             }
 
+            /// <summary>
+            /// Returns the Sector offset from a sector name
+            /// </summary>
+            private static long get_offset_from_name(string sectorName)
+            {
+                var frags = Sectors.get_sector_fragments(sectorName)!;
+
+                var sc = _get_sector_class(frags);
+                if (sc == 2)
+                    return Sectors._c2_get_offset_from_name(frags);
+                else
+                    return Sectors._c1_get_offset_from_name(frags);
+            }
 
             #region pgdata.py
-
             // From: https://bitbucket.org/Esvandiary/edts/src/develop/edtslib/pgdata.py
 
             /// <summary> Hopefully-complete list of valid name fragments / phonemes </summary>
@@ -149,17 +142,6 @@ namespace SrvSurvey.game
             /// <summary>  Order here is relevant, keep it </summary>
             private static string[] cx_prefixes = cx_raw_fragments.Take(111).ToArray();
 
-            private static List<string> cx_prefixes2 = new()
-            {
-                "Th", "Eo", "Oo", "Eu", "Tr", "Sly", "Dry", "Ou", "Tz", "Phl", "Ae", "Sch", "Hyp", "Syst", "Ai", "Kyl",
-                "Phr", "Eae", "Ph", "Fl", "Ao", "Scr", "Shr", "Fly", "Pl", "Fr", "Au", "Pry", "Pr", "Hyph", "Py", "Chr",
-                "Phyl", "Tyr", "Bl", "Cry", "Gl", "Br", "Gr", "By", "Aae", "Myc", "Gyr", "Ly", "Myl", "Lych", "Myn", "Ch",
-                "Myr", "Cl", "Rh", "Wh", "Pyr", "Cr", "Syn", "Str", "Syr", "Cy", "Wr", "Hy", "My", "Sty", "Sc", "Sph",
-                "Spl", "A", "Sh", "B", "C", "D", "Sk", "Io", "Dr", "E", "Sl", "F", "Sm", "G", "H", "I",
-                "Sp", "J", "Sq", "K", "L", "Pyth", "M", "St", "N", "O", "Ny", "Lyr", "P", "Sw", "Thr", "Lys",
-                "Q", "R", "S", "T", "Ea", "U", "V", "W", "Schr", "X", "Ee", "Y", "Z", "Ei", "Oe"
-            };
-
             /// <summary> Vowel-ish infixes </summary>
             private static string[] c1_infixes_s1 = new string[]
             {
@@ -176,7 +158,6 @@ namespace SrvSurvey.game
                 "tch", "v", "w", "wh", "ck", "x", "y", "z",
                 "ph", "sh", "ct", "wr"
             };
-
 
             private static string[][] c1_infixes = new string[][]
             {
@@ -220,7 +201,10 @@ namespace SrvSurvey.game
                 "qs", "rps", "gy", "wns", "lz", "nth", "phs"
             };
 
-            private static string[] c2_suffixes_s2 = c1_suffixes_s2.ToList().GetRange(0, cx_suffixes_s1.Length).ToArray();
+            private static string[] c2_suffixes_s2 = c1_suffixes_s2
+                .ToList()
+                .GetRange(0, cx_suffixes_s1.Length)
+                .ToArray();
 
             private static string[][] c1_suffixes = new string[][]
             {
@@ -273,12 +257,6 @@ namespace SrvSurvey.game
               { "Lys", 10}, {"Schr",  3}, {   "Z", 34},
             };
 
-            private static int cx_prefix_total_run_length;
-            private static int c1_infix_s1_length_default;
-            private static int c1_infix_s2_length_default;
-            private static int c1_infix_s1_total_run_length;
-            private static int c1_infix_s2_total_run_length;
-
             private static Dictionary<string, int> c1_infix_length_overrides = new()
             {
                 // Sequence 1
@@ -288,13 +266,18 @@ namespace SrvSurvey.game
                 { "dg",  31 }, { "tch", 20 }, { "wr",  31 },
             };
 
+            // TODO: ...
+            //public static Dictionary<string, string> ha_regions = new();
+
             #endregion
 
             #region pgnames.py
-
             // From: https://bitbucket.org/Esvandiary/edts/src/develop/edtslib/pgnames.py
 
-            public static string get_sector_name(Point3 pos, bool allow_ha = true, bool format_output = true)
+            /// <summary>
+            /// Returns the name of a sector from a position
+            /// </summary>
+            public static string? get_sector_name(Point3 pos, bool allow_ha = true)
             {
                 /*
                  * Get the name of a sector that a position falls within.
@@ -306,40 +289,30 @@ namespace SrvSurvey.game
                  *   The name of the sector which contains the input position, either as a string or as a list of fragments
                  */
 
-                //if (allow_ha)
-                //{
-                //    string ha_name = _ha_get_name(pos);
-                //    if (ha_name != null)
-                //        return ha_name;
-                //}
+                if (allow_ha)
+                {
+                    throw new NotImplementedException();
+                    //string ha_name = _ha_get_name(pos);
+                    //if (ha_name != null)
+                    //    return ha_name;
+                }
 
                 int offset = _c1_get_offset(pos);
-                string output;
+                string? output;
                 if (_get_c1_or_c2(offset) == 1)
-                {
                     output = _c1_get_name(pos);
-                }
                 else
-                {
                     output = _c2_get_name(pos);
-                }
 
-                if (format_output)
-                {
-                    return output; // ?? format_sector_name(output);
-                }
-                else
-                {
-                    return string.Join(" ", output);
-                }
+                // output will contain pre-formatted names
+                return output;
             }
-
 
             /// <summary>
             ///   Get a list of fragments from an input sector name
             ///   e.g. "Dryau Aowsy" --> ["Dry", "au", "Ao", "wsy"]
             /// </summary>
-            public static List<string>? get_sector_fragments(string sectorName)
+            private static List<string>? get_sector_fragments(string sectorName)
             {
                 var fragments = new List<string>();
                 var name = Util.pascalAllWords(sectorName).Replace(" ", "");
@@ -350,7 +323,7 @@ namespace SrvSurvey.game
                     if (match == null)
                     {
                         Game.log($"Sector fragment not matched: {name}");
-                        Debugger.Break();
+                        //Debugger.Break();
                         return null;
                     }
 
@@ -358,7 +331,6 @@ namespace SrvSurvey.game
                     name = name.Substring(match.Length);
                 }
 
-                // Eol Prou
                 return fragments;
             }
 
@@ -373,7 +345,7 @@ namespace SrvSurvey.game
                 return get_sector_fragments(sectorName) != null;
             }
 
-            public static string format_sector_name(List<string> fragments)
+            private static string? format_sector_name(List<string>? fragments)
             {
                 /*  Format a given set of fragments into a full name
                  *  
@@ -382,6 +354,7 @@ namespace SrvSurvey.game
                  *  Returns:
                  *      The sector name as a string
                  */
+                if (fragments == null) return null!;
 
                 if (fragments.Count == 4 && cx_prefixes.Contains(fragments[2]))
                     return $"{fragments[0]}{fragments[1]} {fragments[2]}{fragments[3]}";
@@ -395,7 +368,8 @@ namespace SrvSurvey.game
             /// </summary>
             private static int _get_sector_class(List<string> frags)
             {
-                // TODO: more...
+                // TODO: HA
+
                 if (frags.Count == 4 && cx_prefixes.Contains(frags[0]) && cx_prefixes.Contains(frags[2]))
                     return 2;
                 else if ((frags.Count == 3 || frags.Count == 4) && cx_prefixes.Contains(frags[0]))
@@ -411,7 +385,7 @@ namespace SrvSurvey.game
 
             private static List<string> _get_suffixes(List<string> frags, bool get_all = false)
             {
-                string wordstart = frags[0];
+                string wordStart = frags[0];
                 string[] result;
 
                 if (cx_prefixes.Contains(frags[^1]))
@@ -421,7 +395,7 @@ namespace SrvSurvey.game
                         ? c2_prefix_suffix_override_map[frags[^1]]
                         : 1;
                     result = c2_suffixes[suffix_map_idx];
-                    wordstart = frags[^1];
+                    wordStart = frags[^1];
                 }
                 else
                 {
@@ -443,11 +417,10 @@ namespace SrvSurvey.game
                 }
                 else
                 {
-                    int prefix_run_length = _get_prefix_run_length(wordstart);
+                    int prefix_run_length = _get_prefix_run_length(wordStart);
                     return result.ToList().GetRange(0, prefix_run_length);
                 }
             }
-
 
             /// <summary>
             /// Get the specified prefix's run length (e.g. Th => 35, Tz => 1)
@@ -476,6 +449,7 @@ namespace SrvSurvey.game
                 return offset;
             }
 
+            /* TODO: needed?
             private static Point3 _get_sector_pos_from_offset(int offset, int[] galSize)
             {
                 var x = (offset % galSize[0]);
@@ -491,6 +465,7 @@ namespace SrvSurvey.game
 
                 return new Point3(x, y, z);
             }
+            */
 
             private static int _get_c1_or_c2(int key)
             {
@@ -501,6 +476,7 @@ namespace SrvSurvey.game
                 return (hash % 2) + 1;
             }
 
+            /* TODO: needed?
             private static PGSector? _get_sector_from_name(string sector_name, bool allow_ha = true)
             {
                 //sector_name = get_canonical_name(sector_name, sector_only: true);
@@ -512,7 +488,7 @@ namespace SrvSurvey.game
                 }
                 else
                 {
-                    var frags = /*util.IsString(sector_name) ?*/ get_sector_fragments(sector_name) /*: (List<string>)sector_name*/;
+                    var frags = util.IsString(sector_name) ? get_sector_fragments(sector_name) : (List<string>)sector_name;
                     if (frags != null)
                     {
                         int sc = _get_sector_class(frags);
@@ -537,48 +513,9 @@ namespace SrvSurvey.game
                     }
                 }
             }
+            */
 
-            //// _get_sector_from_name
-            //private static Point3 _get_sector_from_name(string sector_name, bool allow_ha = true)
-            //{
-            //    //sector_name = get_canonical_name(sector_name, sectorOnly: true);
-            //    //if (sector_name == null)
-            //    //    return null;
-
-            //    if (allow_ha && ha_regions.ContainsKey(sector_name.ToLower()))
-            //    {
-            //        return ha_regions[sector_name.ToLower()];
-            //    }
-            //    else
-            //    {
-            //        var frags = get_sector_fragments(sector_name);
-            //        if (frags != null)
-            //        {
-            //            int sc = _get_sector_class(frags);
-            //            if (sc == 2)
-            //            {
-            //                // Class 2
-            //                return _c2_get_sector(frags);
-            //            }
-            //            else if (sc == 1)
-            //            {
-            //                // Class 1
-            //                return _c1_get_sector(frags);
-            //            }
-            //            else
-            //            {
-            //                return null;
-            //            }
-            //        }
-            //        else
-            //        {
-            //            return null;
-            //        }
-            //    }
-            //}
-
-            // _get_relpos_from_sysid is Boxel.getRelativeCoords
-
+            /* TODO: needed?
             public static Point3? _get_coords_from_name(string raw_system_name, bool allow_ha = true)
             {
                 var bx = Boxel.parse(raw_system_name)!;
@@ -607,7 +544,7 @@ namespace SrvSurvey.game
                 else
                     return null;
             }
-
+            */
 
             /// <summary>
             /// # Get the full list of infixes for a given set of fragments missing an infix
@@ -662,6 +599,7 @@ namespace SrvSurvey.game
                 return _get_offset_from_pos(pos, galaxy_size);
             }
 
+            /* TODO: needed?
             /// <summary>
             /// Get the zero-based offset (counting from bottom-left of the galaxy) of the input sector name/position
             /// </summary>
@@ -669,6 +607,7 @@ namespace SrvSurvey.game
             {
                 return _c1_get_offset_from_name(frags);
             }
+            */
 
             /// <summary>
             /// Get the zero-based offset (counting from bottom-left of the galaxy) of the input sector name/position
@@ -736,10 +675,12 @@ namespace SrvSurvey.game
                 {
                     // Either the prefix or suffix lookup failed, likely a dodgy name
                     Game.log("Failed to look up prefixes/suffixes in _c1_get_offset_from_name; bad sector name?");
+                    Debugger.Break();
                     return 0;
                 }
             }
 
+            /* TODO: needed?
             private static PGSector _c1_get_sector(List<string> frags)
             {
                 var offset = _c1_get_offset(frags);
@@ -749,8 +690,9 @@ namespace SrvSurvey.game
                 var name = format_sector_name(frags);
                 return new PGSector(spos, name, _get_sector_class(frags));
             }
+            */
 
-            private static string _c1_get_name(Point3 pos)
+            private static string? _c1_get_name(Point3 pos)
             {
                 int offset = _c1_get_offset(pos);
 
@@ -817,15 +759,16 @@ namespace SrvSurvey.game
 
                 // Add our suffix to the output, and return it
                 frags.Add(sufs[nextIdx]);
-                return string.Join("", frags);
+                return format_sector_name(frags);
             }
 
-            private static string _c2_get_name(Point3 pos)
+            private static string? _c2_get_name(Point3 pos)
             {
                 var offset = _get_offset_from_pos(pos, galaxy_size);
                 return _c2_get_name_from_offset(offset);
             }
 
+            /* TODO: needed?
             private static PGSector _c2_get_sector(List<string> frags)
             {
                 var offset = _c2_get_offset_from_name(frags);
@@ -835,8 +778,9 @@ namespace SrvSurvey.game
                 var name = format_sector_name(frags);
                 return new PGSector(spos, name, _get_sector_class(frags));
             }
+            */
 
-            private static string _c2_get_name_from_offset(int offset)
+            private static string? _c2_get_name_from_offset(int offset)
             {
                 var tt = Deinterleave(offset, 32);
                 var cur_idx0 = tt.Item1;
@@ -849,7 +793,7 @@ namespace SrvSurvey.game
                 var s1 = _get_suffixes(p1)[cur_idx1 - _prefix_offsets[p1][0]];
 
                 // Done!
-                var name = $"{p0}{s0} {p1}{s1}";
+                var name = format_sector_name(new List<string> { p0, s0, p1, s1 });
                 return name;
             }
 
@@ -864,7 +808,6 @@ namespace SrvSurvey.game
             #endregion
 
             #region sector.py
-
             // From: https://bitbucket.org/Esvandiary/edts/src/develop/edtslib/sector.py
 
             public static int sector_size = 1280;
@@ -873,16 +816,17 @@ namespace SrvSurvey.game
             private static int[] base_sector_index = new int[] { 39, 32, 18 };
             public static Point3 base_coords = internal_origin_offset + (new Point3(base_sector_index) * sector_size);
 
+            /* TODO: needed?
             public static int get_mcode_cube_width(char mcode)
             {
                 int d = 'h' - mcode;
                 return sector_size / (int)Math.Pow(2, d);
             }
+            */
 
             #endregion
 
             #region util.py
-
             // From: https://bitbucket.org/Esvandiary/edts/src/develop/edtslib/util.py
 
             private static int Jenkins32(uint key)
@@ -912,32 +856,11 @@ namespace SrvSurvey.game
                 return shifted + tail;
             }
 
-            private static int Interleave2(int val1, int val2)
-            {
-                int maxBits = 32;
-                //Game.log($"interleave: {toBin(val1)} {toBin(val2)}");
-                var output = 0;
-                for (var i = 0; i < maxBits / 2 + 1; i++)
-                    output |= ((val1 >> i) & 1) << (i * 2);
-
-                for (var i = 0; i < maxBits / 2 + 1; i++)
-                    output |= ((val2 >> i) & 1) << (i * 2);
-
-                /*
-                  for i in range(0, maxbits//2 + 1):
-                    output |= ((val1 >> i) & 1) << (i*2)
-                  for i in range(0, maxbits//2 + 1):
-                    output |= ((val2 >> i) & 1) << (i*2 + 1)
-                  return output & (2**maxbits - 1)
-                **/
-                //Game.log($"interleave: {toBin(output)}");
-                return output;
-            }
-
             private static int Interleave(int val1, int val2, int maxbits)
             {
                 //Game.log($"interleave:\r\n\t{toBin(val1)}\r\n\t{toBin(val2)}");
                 int output = 0;
+
                 for (int i = 0; i <= maxbits / 2; i++)
                     output |= ((val1 >> i) & 1) << (i * 2);
 
@@ -950,53 +873,22 @@ namespace SrvSurvey.game
                 return output;
             }
 
-            private static Tuple<int, int> Deinterleave2(int val)
-            {
-                int maxBits = 32;
-                //Game.log($"deinterleave: {toBin(val)}");
-
-                var out1 = 0;
-                var out2 = 0;
-
-                for (var i = 0; i < maxBits; i++)
-                    out1 |= ((val >> i) & 1) << (i / 2);
-
-                for (var i = 0; i < maxBits; i++)
-                    out2 |= ((val >> i) & 1) << (i / 2);
-
-                /*
-                  for i in range(0, maxbits, 2):
-                    out1 |= ((val >> i) & 1) << (i//2)
-                  for i in range(1, maxbits, 2):
-                    out2 |= ((val >> i) & 1) << (i//2)
-                */
-                //Game.log($"deinterleave: {toBin(out1)} {toBin(out2)}");
-                return new Tuple<int, int>(out1, out2);
-            }
-
             private static (int, int) Deinterleave(int val, int maxbits)
             {
                 //Game.log($"deinterleave:\r\n\t{toBin(val)}");
                 int out1 = 0;
                 int out2 = 0;
+
                 for (int i = 0; i < maxbits; i += 2)
-                {
                     out1 |= ((val >> i) & 1) << (i / 2);
-                }
+
                 for (int i = 1; i < maxbits; i += 2)
-                {
                     out2 |= ((val >> i) & 1) << (i / 2);
-                }
+
 
                 //Game.log($"deinterleave:\r\n\t{toBin(out1)}\r\n\t{toBin(out2)}");
                 return (out1, out2);
             }
-
-            #endregion
-
-            #region pgdata.py
-
-            public static Dictionary<string, string> ha_regions = new();
 
             #endregion
 

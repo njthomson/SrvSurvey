@@ -187,6 +187,24 @@ namespace SrvSurvey.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to (Encoded).
+        /// </summary>
+        internal static string NetSysData_Encoded {
+            get {
+                return ResourceManager.GetString("NetSysData_Encoded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (Engineer).
+        /// </summary>
+        internal static string NetSysData_Engineer {
+            get {
+                return ResourceManager.GetString("NetSysData_Engineer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to FC.
         /// </summary>
         internal static string NetSysData_FC {
@@ -205,6 +223,33 @@ namespace SrvSurvey.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to (Guardian).
+        /// </summary>
+        internal static string NetSysData_Guardian {
+            get {
+                return ResourceManager.GetString("NetSysData_Guardian", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (Human).
+        /// </summary>
+        internal static string NetSysData_Human {
+            get {
+                return ResourceManager.GetString("NetSysData_Human", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (Manufactured).
+        /// </summary>
+        internal static string NetSysData_Manufactured {
+            get {
+                return ResourceManager.GetString("NetSysData_Manufactured", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Material Trader.
         /// </summary>
         internal static string NetSysData_MaterialTrader {
@@ -219,6 +264,15 @@ namespace SrvSurvey.Properties {
         internal static string NetSysData_Outposts {
             get {
                 return ResourceManager.GetString("NetSysData_Outposts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (Raw).
+        /// </summary>
+        internal static string NetSysData_Raw {
+            get {
+                return ResourceManager.GetString("NetSysData_Raw", resourceCulture);
             }
         }
         

@@ -1,10 +1,8 @@
-﻿using SrvSurvey.canonn;
-using SrvSurvey.game;
+﻿using SrvSurvey.game;
 using SrvSurvey.net.EDSM;
 using SrvSurvey.Properties;
 using SrvSurvey.units;
-using System.Threading.Tasks;
-using static SrvSurvey.canonn.GRReports;
+using System.Diagnostics;
 
 namespace SrvSurvey.net
 {
@@ -67,14 +65,14 @@ namespace SrvSurvey.net
 
         private Action<Source, NetSysData> func;
         private Task<ApiSystemDump.System>? getSystemDump;
-        private Task<ApiSystem.Record>? getSystem;
+        //private Task<ApiSystem.Record>? getSystem;
         //private Task<CanonnBodyBioStats>? systemBioStats;
 
         // responses from various APIs
         public EDSM.EdsmSystem edsmBodies { get; private set; }
         public EDSM.EdsmSystemTraffic edsmTraffic { get; private set; }
         public ApiSystemDump.System spanshDump { get; private set; }
-        public ApiSystem.Record spanshSystem { get; private set; }
+        //public ApiSystem.Record spanshSystem { get; private set; }
         //public canonn.CanonnBodyBioStats canonnBio { get; private set; }
 
         private NetSysData(string systemName, long systemAddress, Action<Source, NetSysData> func)
@@ -121,7 +119,7 @@ namespace SrvSurvey.net
             if (address == 0) return;
 
             if (this.spanshDump != null) this.func(Source.SpanshDump, this);
-            if (this.spanshSystem != null) this.func(Source.SpanshSystem, this);
+            //if (this.spanshSystem != null) this.func(Source.SpanshSystem, this);
             //if (this.canonnBio != null) this.func(Source.CanonnBio, this);
 
             lock (this.func)
@@ -141,6 +139,7 @@ namespace SrvSurvey.net
                     }));
                 }
 
+                /*
                 // get system data from Spansh
                 if (this.spanshSystem == null && getSystem == null)
                 {
@@ -153,6 +152,7 @@ namespace SrvSurvey.net
                             this.processSpanshSystem(task.Result);
                     }));
                 }
+                */
 
                 /*
                 // get bio stats from Canonn
@@ -271,30 +271,101 @@ namespace SrvSurvey.net
             this.genusCount = _spanshDump.bodies.Sum(b => b.signals?.signals?.GetValueOrDefault("$SAA_SignalType_Biological;")) ?? 0;
             this.countPOI["Genus"] = this.genusCount;
 
-            // any traders or brokers?
-            foreach (var station in _spanshDump.stations)
+            // get stations from all bodies into a single list
+            var allStations = new List<ApiSystemDump.System.Station>(_spanshDump.stations);
+            _spanshDump.bodies.ForEach(b =>
             {
-                if (station.services == null || station.services.Count == 0) continue;
+                if (b.stations.Count > 0)
+                    allStations.AddRange(b.stations);
+            });
 
-                if (station.services.Contains("Material Trader"))
+            if (allStations.Count > 0)
+            {
+                var countFC = 0;
+                var countSettlements = 0;
+                var countStarports = 0;
+                var countOutposts = 0;
+                foreach (var station in allStations)
                 {
-                    if (this.special == null) this.special = new Dictionary<string, List<string>>();
-                    if (!this.special.ContainsKey(station.name)) this.special[station.name] = new List<string>();
-                    this.special[station.name].Add(Misc.NetSysData_MaterialTrader);
-                }
+                    if (station.type == "Drake-Class Carrier") countFC++;
+                    if (station.type == "Settlement") countSettlements++;
+                    if (station.type == "Outpost") countOutposts++;
+                    if (EdsmSystemStations.Starports.Contains(station.type)) countStarports++;
+                    // Include dockable mega ships with shipyards
+                    if (station.type == "Mega ship" && station.landingPads != null) countStarports++;
 
-                if (station.services.Contains("Technology Broker"))
-                {
-                    if (this.special == null) this.special = new Dictionary<string, List<string>>();
-                    if (!this.special.ContainsKey(station.name)) this.special[station.name] = new List<string>();
-                    this.special[station.name].Add(Misc.NetSysData_TechBroker);
+                    // any traders or brokers?
+                    if (station.services?.Contains("Material Trader") == true)
+                    {
+                        this.special ??= new ();
+                        if (!this.special.ContainsKey(station.name)) this.special[station.name] = new List<string>();
+                        var matTrader = Misc.NetSysData_MaterialTrader + " " + getMatTraderWithType(station);
+                        this.special[station.name].Add(matTrader);
+                    }
+                    if (station.services?.Contains("Technology Broker") == true)
+                    {
+                        this.special ??= new();
+                        if (!this.special.ContainsKey(station.name)) this.special[station.name] = new List<string>();
+                        var techBroker = Misc.NetSysData_TechBroker + " " + getTechBrokerType(station);
+                        this.special[station.name].Add(techBroker);
+                    }
+
+                    // or Engineers?
+                    if (station.government == "Engineer")
+                    {
+                        this.special ??= new();
+                        if (!this.special.ContainsKey(station.name)) this.special[station.name] = new List<string>();
+                        this.special[station.name].Add($"{station.controllingFaction} {Misc.NetSysData_Engineer}");
+                    }
                 }
+                if (countFC > 0) this.countPOI["FC"] = countFC;
+                if (countSettlements > 0) this.countPOI["Settlements"] = countSettlements;
+                if (countOutposts > 0) this.countPOI["Outposts"] = countOutposts;
+                if (countStarports > 0) this.countPOI["StarPorts"] = countStarports;
             }
+
+            // any factions at war?
+            var countWars = _spanshDump.factions?.Count(f => f.state == "War" || f.state == "Civil War") ?? 0;
+            if (countWars > 0)
+                this.countPOI["Wars"] = countWars / 2;
 
             // notify calling code
             this.invokeFunc(Source.SpanshDump);
         }
 
+        private string? getMatTraderWithType(ApiSystemDump.System.Station station)
+        {
+            var primary_economy = station.primaryEconomy.ToLowerInvariant();
+            var secondary_economy = station.economies?.OrderBy(e => e.Value).Skip(1).FirstOrDefault().Key.ToLowerInvariant();
+
+            // See: https://github.com/EDCD/FDevIDs/blob/master/How%20to%20determine%20MatTrader%20and%20Broker%20type
+            if (primary_economy == "high tech" || primary_economy == "military") return Misc.NetSysData_Encoded;
+            if (primary_economy == "extraction" || primary_economy == "refinery") return Misc.NetSysData_Raw;
+            if (primary_economy == "industrial") return Misc.NetSysData_Manufactured;
+            if (secondary_economy == "high tech" || secondary_economy == "military") return Misc.NetSysData_Encoded;
+            if (secondary_economy == "extraction" || secondary_economy == "refinery") return Misc.NetSysData_Raw;
+            if (secondary_economy == "industrial") return Misc.NetSysData_Manufactured;
+
+            Debugger.Break();
+            return null;
+        }
+
+        private string? getTechBrokerType(ApiSystemDump.System.Station station)
+        {
+            var primary_economy = station.primaryEconomy.ToLowerInvariant();
+            var secondary_economy = station.economies?.OrderBy(e => e.Value).Skip(1).FirstOrDefault().Key.ToLowerInvariant();
+
+            // See: https://github.com/EDCD/FDevIDs/blob/master/How%20to%20determine%20MatTrader%20and%20Broker%20type
+            if (primary_economy == "high tech") return Misc.NetSysData_Guardian;
+            if (primary_economy == "industrial") return Misc.NetSysData_Human; // human may be set as a default and it is not needed
+            if (secondary_economy == "high tech") return Misc.NetSysData_Guardian;
+            if (secondary_economy != null && secondary_economy != "high tech") return Misc.NetSysData_Human; // needs a confirmation
+
+            Debugger.Break();
+            return null;
+        }
+
+        /*
         public void processSpanshSystem(ApiSystem.Record _spanshSystem)
         {
             this.spanshSystem = _spanshSystem;
@@ -305,6 +376,10 @@ namespace SrvSurvey.net
             // starPos?
             if (this.starPos == null)
                 this.starPos = new StarPos(_spanshSystem.x, _spanshSystem.y, _spanshSystem.z);
+
+            // starClass?
+            if (this.starClass == null)
+                this.starClass = _spanshSystem.bodies.FirstOrDefault(b => b.is_main_star == true)?.subtype?[0].ToString(); // TODO: confirm this is always the correct letter
 
             // use as lastUpdated?
             if (Game.settings.useLastUpdatedFromSpanshNotEDSM && this.lastUpdated == null)
@@ -344,6 +419,7 @@ namespace SrvSurvey.net
             // notify calling code
             this.invokeFunc(Source.SpanshSystem);
         }
+        */
 
         /*
         public void processCanonnBio(canonn.CanonnBodyBioStats _canonnBio)

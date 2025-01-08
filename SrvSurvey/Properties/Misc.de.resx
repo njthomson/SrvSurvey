@@ -115,6 +115,14 @@
     <value>Entdeckt ({0} von {1})</value>
     <comment>Discovered ({0} of {1})</comment>
   </data>
+  <data name="NetSysData_Encoded">
+    <value>(Codiert)</value>
+    <comment>(Encoded)</comment>
+  </data>
+  <data name="NetSysData_Engineer">
+    <value>(Ingenieur)</value>
+    <comment>(Engineer)</comment>
+  </data>
   <data name="NetSysData_FC">
     <value>FC</value>
     <comment>FC</comment>
@@ -123,6 +131,18 @@
     <value>Gattung</value>
     <comment>Genus</comment>
   </data>
+  <data name="NetSysData_Guardian">
+    <value>(Wächter)</value>
+    <comment>(Guardian)</comment>
+  </data>
+  <data name="NetSysData_Human">
+    <value>(Mensch)</value>
+    <comment>(Human)</comment>
+  </data>
+  <data name="NetSysData_Manufactured">
+    <value>(Hergestellt)</value>
+    <comment>(Manufactured)</comment>
+  </data>
   <data name="NetSysData_MaterialTrader">
     <value>Materialhändler</value>
     <comment>Material Trader</comment>
@@ -130,6 +150,10 @@
   <data name="NetSysData_Outposts">
     <value>Außenposten</value>
     <comment>Outposts</comment>
+  </data>
+  <data name="NetSysData_Raw">
+    <value>(Roh)</value>
+    <comment>(Raw)</comment>
   </data>
   <data name="NetSysData_Settlements">
     <value>Siedlungen</value>

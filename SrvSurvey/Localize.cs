@@ -15,10 +15,10 @@ namespace SrvSurvey
 
         public static Dictionary<string, string> supportedLanguages = new()
         {
-            { "English",  "en" },
-            { "Deutsch",  "de" },
-            { "Russisch", "ru" },
-            { "Pseudo",   "ps" },
+            { "English", "en" },
+            { "Deutsch", "de" },
+            { "Русский", "ru" },
+            { "Pseudo",  "ps" },
         };
 
         public static string? nameFromCode(string? code)

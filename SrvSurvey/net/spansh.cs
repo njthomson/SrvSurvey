@@ -1025,7 +1025,7 @@ namespace SrvSurvey.net
                 public string controllingFaction;
                 public string controllingFactionState;
                 public double distanceToArrival;
-                // TODO: economies
+                public Dictionary<string, float>? economies;
                 public string government;
                 public long id;
                 public LandingPads landingPads;
@@ -1033,8 +1033,40 @@ namespace SrvSurvey.net
                 public string name;
                 public string primaryEconomy;
                 public List<string> services;
+                public Shipyard shipyard;
+                public Outfitting outfitting;
                 public string type;
                 public DateTime updateTime;
+
+                public class Outfitting
+                {
+                    public List<Module> modules;
+                    public DateTime updateTime;
+
+                    public class Module
+                    {
+                        public string category;
+                        public int @class;
+                        public long moduleId;
+                        public string name;
+                        public string rating;
+                        public string? ship;
+                        public string symbol;
+                    }
+                }
+
+                public class Shipyard
+                {
+                    public List<Ship> ships;
+                    public DateTime updateTime;
+
+                    public class Ship
+                    {
+                        public string name;
+                        public long shipId;
+                        public string symbol;
+                    }
+                }
             }
         }
     }

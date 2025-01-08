@@ -45,11 +45,16 @@ namespace SrvSurvey.forms
             // show warning if key-hooks are not viable
             //linkKeyChords.Visible = !bs.autoCopy && (!Game.settings.keyhook_TEST || string.IsNullOrEmpty(Game.settings.keyActions_TEST?.GetValueOrDefault(KeyAction.copyNextBoxel)));
 
-            prepForm();
             if (bs.active)
-                bs.reset(bs.boxel, bs.active);
+            {
+                bs.reset(bs.boxel, false);
+                prepForm();
+            }
             else
+            {
+                prepForm();
                 btnSearch_Click(null!, null!);
+            }
         }
 
         private void btnSearch_Click(object sender, EventArgs e)
@@ -673,6 +678,15 @@ namespace SrvSurvey.forms
 
             checkCompleteOnFssAllBodies.Enabled = true;
             checkCompleteOnEnterSystem.Enabled = true;
+        }
+
+        private void menuListCopySystemName_Click(object sender, EventArgs e)
+        {
+            if (list.SelectedItems.Count == 0) return;
+            Clipboard.SetText(list.SelectedItems[0].Text);
+            //var itemTag = list.SelectedItems[0].Tag as Boxel;
+            //if ( itemTag != null)
+            //    Clipboard.SetText(itemTag.getAddress().ToString());
         }
     }
 

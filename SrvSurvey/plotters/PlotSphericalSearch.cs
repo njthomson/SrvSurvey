@@ -47,11 +47,16 @@ namespace SrvSurvey.plotters
             // put next boxel system in clipboard?
             if (game.cmdr.boxelSearch?.active == true && game.cmdr.boxelSearch.autoCopy)
             {
-                var text = game.cmdr.boxelSearch.getNextToVisit();
-                if (text != null)
+                // only pre-fill clipboard if we're inside the boxel search area
+                var insideSearchArea = game.cmdr.boxelSearch.boxel.containsChild(Boxel.parse(game.systemData?.name));
+                if (insideSearchArea)
                 {
-                    Game.log($"Setting next boxel search system to clipboard: {text}");
-                    Clipboard.SetText(text);
+                    var text = game.cmdr.boxelSearch.getNextToVisit();
+                    if (text != null)
+                    {
+                        Game.log($"Setting next boxel search system to clipboard: {text}");
+                        Clipboard.SetText(text);
+                    }
                 }
             }
         }

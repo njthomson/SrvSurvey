@@ -73,11 +73,14 @@
             label6 = new Label();
             btnPasteTopBoxel = new Button();
             labelBoxelCount = new Label();
+            contextList = new ContextMenuStrip(components);
+            menuListCopySystemName = new ToolStripMenuItem();
             status.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numMax).BeginInit();
             panelList.SuspendLayout();
             tableTop.SuspendLayout();
             tableConfig.SuspendLayout();
+            contextList.SuspendLayout();
             SuspendLayout();
             // 
             // txtTopBoxel
@@ -116,6 +119,7 @@
             resources.ApplyResources(list, "list");
             list.CheckBoxes = true;
             list.Columns.AddRange(new ColumnHeader[] { colSystem, colDistance, colNotes });
+            list.ContextMenuStrip = contextList;
             list.FullRowSelect = true;
             list.Name = "list";
             list.UseCompatibleStateImageBehavior = false;
@@ -367,6 +371,18 @@
             resources.ApplyResources(labelBoxelCount, "labelBoxelCount");
             labelBoxelCount.Name = "labelBoxelCount";
             // 
+            // contextList
+            // 
+            contextList.Items.AddRange(new ToolStripItem[] { menuListCopySystemName });
+            contextList.Name = "contextList";
+            resources.ApplyResources(contextList, "contextList");
+            // 
+            // menuListCopySystemName
+            // 
+            menuListCopySystemName.Name = "menuListCopySystemName";
+            resources.ApplyResources(menuListCopySystemName, "menuListCopySystemName");
+            menuListCopySystemName.Click += menuListCopySystemName_Click;
+            // 
             // FormBoxelSearch
             // 
             resources.ApplyResources(this, "$this");
@@ -384,6 +400,7 @@
             tableTop.PerformLayout();
             tableConfig.ResumeLayout(false);
             tableConfig.PerformLayout();
+            contextList.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -429,5 +446,7 @@
         private Button btnPasteTopBoxel;
         private Label label6;
         private Label labelBoxelCount;
+        private ContextMenuStrip contextList;
+        private ToolStripMenuItem menuListCopySystemName;
     }
 }

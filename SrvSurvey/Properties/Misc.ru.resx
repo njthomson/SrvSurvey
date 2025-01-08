@@ -115,6 +115,14 @@
     <value>Обнаружено ({0} из {1})</value>
     <comment>Discovered ({0} of {1})</comment>
   </data>
+  <data name="NetSysData_Encoded">
+    <value>(Закодировано)</value>
+    <comment>(Encoded)</comment>
+  </data>
+  <data name="NetSysData_Engineer">
+    <value>(Инженер)</value>
+    <comment>(Engineer)</comment>
+  </data>
   <data name="NetSysData_FC">
     <value>ФК</value>
     <comment>FC</comment>
@@ -123,6 +131,18 @@
     <value>Род</value>
     <comment>Genus</comment>
   </data>
+  <data name="NetSysData_Guardian">
+    <value>(Страж)</value>
+    <comment>(Guardian)</comment>
+  </data>
+  <data name="NetSysData_Human">
+    <value>(Человек)</value>
+    <comment>(Human)</comment>
+  </data>
+  <data name="NetSysData_Manufactured">
+    <value>(Изготовлено)</value>
+    <comment>(Manufactured)</comment>
+  </data>
   <data name="NetSysData_MaterialTrader">
     <value>Торговец материалами</value>
     <comment>Material Trader</comment>
@@ -130,6 +150,10 @@
   <data name="NetSysData_Outposts">
     <value>Форпосты</value>
     <comment>Outposts</comment>
+  </data>
+  <data name="NetSysData_Raw">
+    <value>(Сырой)</value>
+    <comment>(Raw)</comment>
   </data>
   <data name="NetSysData_Settlements">
     <value>Поселений</value>

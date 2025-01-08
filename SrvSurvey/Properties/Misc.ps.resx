@@ -115,6 +115,14 @@
     <value>* DISCOVERED ({0} OF {1}) →→→!</value>
     <comment>Discovered ({0} of {1})</comment>
   </data>
+  <data name="NetSysData_Encoded">
+    <value>* (ENCODED) →→→!</value>
+    <comment>(Encoded)</comment>
+  </data>
+  <data name="NetSysData_Engineer">
+    <value>* (ENGINEER) →→→!</value>
+    <comment>(Engineer)</comment>
+  </data>
   <data name="NetSysData_FC">
     <value>* FC →→→!</value>
     <comment>FC</comment>
@@ -123,6 +131,18 @@
     <value>* GENUS →→→!</value>
     <comment>Genus</comment>
   </data>
+  <data name="NetSysData_Guardian">
+    <value>* (GUARDIAN) →→→!</value>
+    <comment>(Guardian)</comment>
+  </data>
+  <data name="NetSysData_Human">
+    <value>* (HUMAN) →→→!</value>
+    <comment>(Human)</comment>
+  </data>
+  <data name="NetSysData_Manufactured">
+    <value>* (MANUFACTURED) →→→!</value>
+    <comment>(Manufactured)</comment>
+  </data>
   <data name="NetSysData_MaterialTrader">
     <value>* MATERIAL TRADER →→→!</value>
     <comment>Material Trader</comment>
@@ -130,6 +150,10 @@
   <data name="NetSysData_Outposts">
     <value>* OUTPOSTS →→→!</value>
     <comment>Outposts</comment>
+  </data>
+  <data name="NetSysData_Raw">
+    <value>* (RAW) →→→!</value>
+    <comment>(Raw)</comment>
   </data>
   <data name="NetSysData_Settlements">
     <value>* SETTLEMENTS →→→!</value>
