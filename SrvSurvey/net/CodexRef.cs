@@ -123,8 +123,13 @@ namespace SrvSurvey.canonn
                 }
             }
 
+            // remove any old .png's
             filepath = Path.Combine(folder, $"{entryId}.png");
-            if (File.Exists(filepath)) File.Delete(filepath);
+            if (File.Exists(filepath))
+            {
+                try { File.Delete(filepath); }
+                catch (UnauthorizedAccessException) { /* ignore these */ }
+            }
         }
 
         public async Task<Dictionary<string, RefCodexEntry>> loadCodexRef(bool reset = false)

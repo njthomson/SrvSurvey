@@ -15,6 +15,13 @@
             this.z = z;
         }
 
+        public Point3(int[] ar)
+        {
+            this.x = ar[0];
+            this.y = ar[1];
+            this.z = ar[2];
+        }
+
         public override string ToString()
         {
             return $"[ {x}, {y}, {z} ]";

@@ -390,11 +390,20 @@ namespace SrvSurvey
 
         private void disableEverythingElse_CheckedChanged(object sender, EventArgs e)
         {
-            var senderCheckbox = sender as CheckBox;
+            disableEverythingElse(sender as CheckBox);
+        }
+
+        private void checkProcessScreenshots_CheckedChanged(object sender, EventArgs e)
+        {
+            disableEverythingElse(sender as CheckBox, groupCodexImages);            
+        }
+
+        private void disableEverythingElse(CheckBox? senderCheckbox, params Control[] except)
+        {
             if (senderCheckbox?.Parent == null) return;
 
             foreach (Control ctrl in senderCheckbox.Parent!.Controls)
-                if (ctrl != senderCheckbox)
+                if (ctrl != senderCheckbox && !except.Contains(ctrl))
                     ctrl.Enabled = senderCheckbox.Checked;
 
             checkGalMapPlotter.Enabled = senderCheckbox.Checked;

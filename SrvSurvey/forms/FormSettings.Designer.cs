@@ -127,6 +127,7 @@ namespace SrvSurvey
             checkEnableGuardianFeatures = new CheckBox();
             tabPage5 = new TabPage();
             groupCodexImages = new GroupBox();
+            checkPreDownloadCodexImages = new CheckBox();
             lblCodexImagesSize = new Label();
             btnCodexImages = new FlatButton();
             linkCodexCache = new LinkLabel();
@@ -224,7 +225,6 @@ namespace SrvSurvey
             menuCodexChange = new ToolStripMenuItem();
             menuCodexReset = new ToolStripMenuItem();
             menuClearCodexCache = new ToolStripMenuItem();
-            checkPreDownloadCodexImages = new CheckBox();
             panel1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox6).BeginInit();
@@ -1539,6 +1539,19 @@ namespace SrvSurvey
             groupCodexImages.TabStop = false;
             groupCodexImages.Text = "Codex Images";
             // 
+            // checkPreDownloadCodexImages
+            // 
+            checkPreDownloadCodexImages.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            checkPreDownloadCodexImages.AutoSize = true;
+            checkPreDownloadCodexImages.Location = new Point(522, 16);
+            checkPreDownloadCodexImages.Name = "checkPreDownloadCodexImages";
+            checkPreDownloadCodexImages.Size = new Size(101, 19);
+            checkPreDownloadCodexImages.TabIndex = 24;
+            checkPreDownloadCodexImages.Tag = "preDownloadCodexImages";
+            checkPreDownloadCodexImages.Text = "pre-download";
+            checkPreDownloadCodexImages.UseVisualStyleBackColor = true;
+            checkPreDownloadCodexImages.CheckedChanged += checkPreDownloadCodexImages_CheckedChanged;
+            // 
             // lblCodexImagesSize
             // 
             lblCodexImagesSize.AutoSize = true;
@@ -1690,7 +1703,7 @@ namespace SrvSurvey
             checkProcessScreenshots.Tag = "processScreenshots";
             checkProcessScreenshots.Text = "Convert .bmp screenshots into .png files";
             checkProcessScreenshots.UseVisualStyleBackColor = true;
-            checkProcessScreenshots.CheckedChanged += disableEverythingElse_CheckedChanged;
+            checkProcessScreenshots.CheckedChanged += checkProcessScreenshots_CheckedChanged;
             // 
             // linkTargetScreenshotFolder
             // 
@@ -2757,19 +2770,6 @@ namespace SrvSurvey
             menuClearCodexCache.Text = "Clear cached images";
             menuClearCodexCache.ToolTipText = "Remove cached images.";
             menuClearCodexCache.Click += menuClearCodexCache_Click;
-            // 
-            // checkPreDownloadCodexImages
-            // 
-            checkPreDownloadCodexImages.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            checkPreDownloadCodexImages.AutoSize = true;
-            checkPreDownloadCodexImages.Location = new Point(522, 16);
-            checkPreDownloadCodexImages.Name = "checkPreDownloadCodexImages";
-            checkPreDownloadCodexImages.Size = new Size(101, 19);
-            checkPreDownloadCodexImages.TabIndex = 24;
-            checkPreDownloadCodexImages.Tag = "preDownloadCodexImages";
-            checkPreDownloadCodexImages.Text = "pre-download";
-            checkPreDownloadCodexImages.UseVisualStyleBackColor = true;
-            checkPreDownloadCodexImages.CheckedChanged += checkPreDownloadCodexImages_CheckedChanged;
             // 
             // FormSettings
             // 

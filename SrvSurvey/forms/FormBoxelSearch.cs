@@ -36,6 +36,8 @@ namespace SrvSurvey.forms
             checkAutoCopy.Checked = bs.autoCopy;
             checkSkipVisited.Checked = bs.skipAlreadyVisited;
             checkSpinKnownToSpansh.Checked = bs.skipKnownToSpansh;
+            checkCompleteOnFssAllBodies.Checked = bs.completeOnFssAllBodies;
+            checkCompleteOnEnterSystem.Checked = !bs.completeOnFssAllBodies;
 
             if (bs.collapsed)
                 toggleListVisibility(true);
@@ -46,29 +48,19 @@ namespace SrvSurvey.forms
             prepForm();
             if (bs.active)
                 bs.reset(bs.boxel, bs.active);
+            else
+                btnSearch_Click(null!, null!);
         }
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            if (!bs.active)
+            tableTop.Enabled = false;
+            tableConfig.Visible = true;
+            tableConfig.BringToFront();
+
+            // disable the feature?
+            if (bs.active)
             {
-                // exit early if we don't have a valid boxel
-                var bx = Boxel.parse(txtTopBoxel.Text);
-                if (bx == null) return;
-
-                bs.reset(bx, true);
-
-                // start finding systems...
-                this.saveAndSetCurrent(bs.current, true);
-                Game.log($"Enabled boxel search:\r\n\tname: {bs.boxel}");
-
-                // make plotter appear, update or close
-                if (PlotSphericalSearch.allowPlotter)
-                    Program.showPlotter<PlotSphericalSearch>()?.Invalidate();
-            }
-            else
-            {
-                // disable the feature?
                 bs.active = false;
                 cmdr.Save();
                 prepForm();
@@ -78,6 +70,30 @@ namespace SrvSurvey.forms
                 if (!PlotSphericalSearch.allowPlotter)
                     Program.closePlotter<PlotSphericalSearch>();
             }
+        }
+
+        private void btnBegin_Click(object sender, EventArgs e)
+        {
+            tableConfig.Visible = false;
+            tableTop.Enabled = true;
+
+            // exit early if we don't have a valid boxel
+            var bx = Boxel.parse(txtTopBoxel.Text);
+            if (bx == null) return;
+
+            bs.completeOnFssAllBodies = checkCompleteOnFssAllBodies.Checked;
+            bs.skipAlreadyVisited = checkSkipVisited.Checked;
+            bs.skipKnownToSpansh = checkSpinKnownToSpansh.Checked;
+
+            bs.reset(bx, true);
+
+            // start finding systems...
+            this.saveAndSetCurrent(bs.current, true);
+            Game.log($"Enabled boxel search:\r\n\tname: {bs.boxel}");
+
+            // make plotter appear, update or close
+            if (PlotSphericalSearch.allowPlotter)
+                Program.showPlotter<PlotSphericalSearch>()?.Invalidate();
         }
 
         private void saveAndSetCurrent(Boxel bx, bool force = false)
@@ -101,9 +117,6 @@ namespace SrvSurvey.forms
             if (bs.active)
             {
                 // activate the feature
-                btnSearch.Text = Properties.Misc.FormBoxelSearch_Disable;
-                checkSkipVisited.Hide();
-                checkSpinKnownToSpansh.Hide();
                 numMax.Enabled = true;
 
                 txtTopBoxel.ReadOnly = true;
@@ -118,9 +131,6 @@ namespace SrvSurvey.forms
             else
             {
                 // disable the feature
-                btnSearch.Text = Properties.Misc.FormBoxelSearch_Activate;
-                checkSkipVisited.Show();
-                checkSpinKnownToSpansh.Show();
                 numMax.Enabled = false;
 
                 txtTopBoxel.ReadOnly = false;
@@ -410,6 +420,7 @@ namespace SrvSurvey.forms
         {
             var txt = bs.getNextToVisit();
             Clipboard.SetText(txt);
+            txtCurrent.Text = txt;
             lblStatus.Text = $"Next: {txt}";
         }
 
@@ -569,8 +580,25 @@ namespace SrvSurvey.forms
 
         private void txtTopBoxel_TextChanged(object sender, EventArgs e)
         {
+            // confirm text is a valid boxel
             var bx = Boxel.parse(txtTopBoxel.Text);
-            btnSearch.Enabled = bx != null;
+            btnBegin.Enabled = bx != null;
+            if (bx == null) return;
+
+            // populate lower mass code combo
+            //var mc1 = comboLowMassCode.SelectedValue;
+            comboLowMassCode.Items.Clear();
+            var mc2 = bx.massCode;
+            comboLowMassCode.Items.Add(mc2);
+            do
+            {
+                mc2--;
+                comboLowMassCode.Items.Add(mc2);
+            } while (mc2 > 'a');
+            comboLowMassCode.SelectedIndex = 0;
+
+            // show how many boxels need to be searched
+            setTotalChildCount(bx);
         }
 
         private void checkAutoCopy_CheckedChanged(object sender, EventArgs e)
@@ -582,27 +610,70 @@ namespace SrvSurvey.forms
             //linkKeyChords.Visible = bs?.autoCopy != true && (!Game.settings.keyhook_TEST || string.IsNullOrEmpty(Game.settings.keyActions_TEST?.GetValueOrDefault(KeyAction.copyNextBoxel)));
         }
 
-        private void checkSkipVisited_CheckedChanged(object sender, EventArgs e)
-        {
-            bs.skipAlreadyVisited = checkSkipVisited.Checked;
-            cmdr.Save();
-        }
-
-        private void checkSpinKnownToSpansh_CheckedChanged(object sender, EventArgs e)
-        {
-            bs.skipKnownToSpansh = checkSpinKnownToSpansh.Checked;
-            cmdr.Save();
-        }
-
         private void ComboFrom_selectedSystemChanged(StarRef? starSystem)
         {
-            Game.log($"!!!!! {starSystem}");
             if (comboFrom.SelectedSystem == null) return;
 
             measureDistances(comboFrom.SelectedSystem);
         }
 
+        private void btnPasteTopBoxel_Click(object sender, EventArgs e)
+        {
+            var txt = Clipboard.GetText();
+            var bx = Boxel.parse(txt);
+            if (bx == null) return;
 
+            txtTopBoxel.Text = txt;
+        }
+
+        private void comboLowMassCode_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            setTotalChildCount();
+        }
+
+        private void setTotalChildCount(Boxel? bx = null)
+        {
+            bx ??= Boxel.parse(txtTopBoxel.Text);
+            if (bx == null || string.IsNullOrWhiteSpace(comboLowMassCode.Text))
+            {
+                labelBoxelCount.Text = "";
+                return;
+            }
+
+            // show how many boxels need to be searched
+            var diff = (int)bx.massCode - comboLowMassCode.Text[0];
+            var count = Boxel.getTotalChildCount(diff);
+            labelBoxelCount.Text = $"(Contains {count} boxels)";
+        }
+
+        private void checkCompleteOnEnterSystem_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!checkCompleteOnFssAllBodies.Enabled) return;
+
+            checkCompleteOnFssAllBodies.Enabled = false;
+            checkCompleteOnEnterSystem.Enabled = false;
+
+            checkCompleteOnFssAllBodies.Checked = false;
+            checkCompleteOnEnterSystem.Checked = true;
+
+            checkCompleteOnFssAllBodies.Enabled = true;
+            checkCompleteOnEnterSystem.Enabled = true;
+
+        }
+
+        private void checkCompleteOnFssAllBodies_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!checkCompleteOnFssAllBodies.Enabled) return;
+
+            checkCompleteOnFssAllBodies.Enabled = false;
+            checkCompleteOnEnterSystem.Enabled = false;
+
+            checkCompleteOnFssAllBodies.Checked = true;
+            checkCompleteOnEnterSystem.Checked = false;
+
+            checkCompleteOnFssAllBodies.Enabled = true;
+            checkCompleteOnEnterSystem.Enabled = true;
+        }
     }
 
     class ItemTag

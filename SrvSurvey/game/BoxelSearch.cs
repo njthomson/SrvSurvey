@@ -42,6 +42,9 @@ namespace SrvSurvey.game
         /// <summary> Mark systems as pre-complete if Spansh knows them from before starting this search</summary>
         public bool skipKnownToSpansh;
 
+        /// <summary> Mark systems complete when all bodies have been FSS'd, otherwise visiting is enough to deem complete</summary>
+        public bool completeOnFssAllBodies;
+
         /// <summary> How low to go?</summary>
         public MassCode lowMassCode = 'c';
 
@@ -538,6 +541,7 @@ namespace SrvSurvey.game
                     collapsed = obj["collapsed"]?.Value<bool>() ?? false,
                     skipAlreadyVisited = obj["skipAlreadyVisited"]?.Value<bool>() ?? false,
                     skipKnownToSpansh = obj["skipKnownToSpansh"]?.Value<bool>() ?? false,
+                    completeOnFssAllBodies = obj["completeOnFssAllBodies"]?.Value<bool>() ?? false,
                 };
 
                 var n = obj["currentCount"]?.Value<int>() ?? 0;
@@ -569,6 +573,7 @@ namespace SrvSurvey.game
                     { "collapsed", bs.collapsed},
                     { "skipAlreadyVisited", bs.skipAlreadyVisited},
                     { "skipKnownToSpansh", bs.skipKnownToSpansh},
+                    { "completeOnFssAllBodies", bs.completeOnFssAllBodies},
                 };
 
             obj.WriteTo(writer);

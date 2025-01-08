@@ -140,11 +140,6 @@
         RU5ErkJggg==
 </value>
   </data>
-  <data name="checkUseGuardianAerialScreenshotsFolder.Text" xml:space="preserve">
-    <value>Save Ruins aerial screenshots into site-type specific sub-folders.
-Eg: 'Aerial alpha', 'Aerial beta' or 'Aerial gamma'
-Screenshots need to be within 50m of site origin, with an altitude between 500m and 2000m.</value>
-  </data>
   <data name="pictureBox2.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAT8AAAGQCAIAAABXjvDHAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
@@ -3449,6 +3444,11 @@ Screenshots need to be within 50m of site origin, with an altitude between 500m 
         rr4L+cglE+WOQimfp2tHvlEqdTe6Nw51XTrZs76rAMlFeXMUQ5hJBul4ArN4JhFHVNlU/P8FfnVhBoEQ
         ClwAAAAASUVORK5CYII=
 </value>
+  </data>
+  <data name="checkUseGuardianAerialScreenshotsFolder.Text" xml:space="preserve">
+    <value>Save Ruins aerial screenshots into site-type specific sub-folders.
+Eg: 'Aerial alpha', 'Aerial beta' or 'Aerial gamma'
+Screenshots need to be within 50m of site origin, with an altitude between 500m and 2000m.</value>
   </data>
   <data name="pictureBox13.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>

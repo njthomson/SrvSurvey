@@ -1756,6 +1756,33 @@ namespace SrvSurvey
         private void btnCodexBingo_Click(object sender, EventArgs e)
         {
             BaseForm.show<FormCodexBingo>();
+
+            ////var bx = Boxel.parse(3238296097059); // Colonia "Eol Prou RS-T d3-94");  // Colonia
+            ////var bx = Boxel.parse(10477373803); // sol "Col 285 Sector FH-I b11-1"
+            ////var bx = Boxel.parse("Eol Prou AA-A d0"); // Colonia "Eol Prou RS-T d3-94");  // Colonia
+
+            //var bx = Boxel.parse("Trigne PS-H a119-0");
+            ////var bx = Boxel.parse(3839163419640);
+            //Game.log(bx);
+
+            //Game.log("---");
+            //var address = bx!.getAddress();
+            //Game.log(address);
+            //var bx2 = Boxel.parse(address);
+            //long address2 = bx2!.getAddress();
+            //Game.log(address2);
+            //Game.log(bx2);
+            //Game.log("---");
+            ////Game.log(Boxel.toBin(address));
+            ////Game.log(Boxel.toBin(address2));
+            //Game.log("---");
+
+            ////var q = Boxel.Sectors._get_coords_from_name("Eol Prou RS-T d3-94");  // Colonia
+            ////Game.log(string.Join(',', q));
+
+            ////var q = Boxel.Sectors.getSectorCoords2("Eol Prou");  // Colonia
+            ////Game.log(string.Join(',', q));
+            ////btnCodexBingo.Text = bx?.getSectorName();
         }
     }
 }

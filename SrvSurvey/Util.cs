@@ -1114,6 +1114,25 @@ namespace SrvSurvey
                 return nodes[key];
         }
 
+        public static T? AddIfNotNull<T>(this List<T> list, T? item)
+        {
+            if (item != null)
+                list.Add(item);
+
+            return item;
+        }
+
+        /// <summary>
+        /// Returns the value by key, or the given default value
+        /// </summary>
+        public static U? Get<T, U>(this Dictionary<T, U> dict, T key, U defaultValue) where T : notnull
+        {
+            if (dict.ContainsKey(key))
+                return dict[key];
+            else
+                return defaultValue;
+        }
+
         public static List<TreeNode> ToList(this TreeNodeCollection nodes)
         {
             var list = new List<TreeNode>();
