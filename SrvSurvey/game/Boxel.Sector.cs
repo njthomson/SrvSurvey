@@ -340,9 +340,9 @@ namespace SrvSurvey.game
             ///   Mild weakness: due to the way get_sector_fragments works, this currently ignores all spaces
             ///   This means that names like "Synoo kio" are considered valid
             /// </summary>
-            public static bool is_valid_sector_name(string sectorName)
+            public static bool is_valid_sector_name(string? sectorName)
             {
-                return get_sector_fragments(sectorName) != null;
+                return !(string.IsNullOrEmpty(sectorName) || get_sector_fragments(sectorName) == null);
             }
 
             private static string? format_sector_name(List<string>? fragments)

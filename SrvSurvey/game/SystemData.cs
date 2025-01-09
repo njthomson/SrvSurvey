@@ -21,7 +21,7 @@ namespace SrvSurvey.game
         /// <summary>
         /// Open or create a SystemData object for the a star system by name or address.
         /// </summary>
-        public static SystemData? Load(string systemName, long systemAddress, string fid)
+        public static SystemData? Load(string systemName, long systemAddress, string fid, bool skipPredictSpecies = false)
         {
             Game.log($"Loading SystemData for: '{systemName}' ({systemAddress})");
 
@@ -76,7 +76,7 @@ namespace SrvSurvey.game
                     body.organisms?.ForEach(org => org.body = body);
 
                     // make predictions based on what we know
-                    if (Game.ready && Game.activeGame?.fid == fid)
+                    if (Game.ready && Game.activeGame?.fid == fid && !skipPredictSpecies)
                         body.predictSpecies();
                 }
             }

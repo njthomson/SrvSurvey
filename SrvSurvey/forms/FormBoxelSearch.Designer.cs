@@ -42,6 +42,8 @@
             colSystem = new ColumnHeader();
             colDistance = new ColumnHeader();
             colNotes = new ColumnHeader();
+            contextList = new ContextMenuStrip(components);
+            menuListCopySystemName = new ToolStripMenuItem();
             label1 = new Label();
             label2 = new Label();
             comboFrom = new ComboStarSystem();
@@ -73,14 +75,14 @@
             label6 = new Label();
             btnPasteTopBoxel = new Button();
             labelBoxelCount = new Label();
-            contextList = new ContextMenuStrip(components);
-            menuListCopySystemName = new ToolStripMenuItem();
+            btnConfigCancel = new Button();
+            dateStart = new DateTimePicker();
+            contextList.SuspendLayout();
             status.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numMax).BeginInit();
             panelList.SuspendLayout();
             tableTop.SuspendLayout();
             tableConfig.SuspendLayout();
-            contextList.SuspendLayout();
             SuspendLayout();
             // 
             // txtTopBoxel
@@ -95,7 +97,7 @@
             resources.ApplyResources(btnConfig, "btnConfig");
             btnConfig.Name = "btnConfig";
             btnConfig.UseVisualStyleBackColor = true;
-            btnConfig.Click += btnSearch_Click;
+            btnConfig.Click += btnConfig_Click;
             // 
             // lblMaxNum
             // 
@@ -137,6 +139,18 @@
             // colNotes
             // 
             resources.ApplyResources(colNotes, "colNotes");
+            // 
+            // contextList
+            // 
+            contextList.Items.AddRange(new ToolStripItem[] { menuListCopySystemName });
+            contextList.Name = "contextList";
+            resources.ApplyResources(contextList, "contextList");
+            // 
+            // menuListCopySystemName
+            // 
+            menuListCopySystemName.Name = "menuListCopySystemName";
+            resources.ApplyResources(menuListCopySystemName, "menuListCopySystemName");
+            menuListCopySystemName.Click += menuListCopySystemName_Click;
             // 
             // label1
             // 
@@ -309,6 +323,8 @@
             tableConfig.Controls.Add(label6, 1, 7);
             tableConfig.Controls.Add(btnPasteTopBoxel, 3, 0);
             tableConfig.Controls.Add(labelBoxelCount, 2, 1);
+            tableConfig.Controls.Add(btnConfigCancel, 0, 7);
+            tableConfig.Controls.Add(dateStart, 1, 6);
             tableConfig.Name = "tableConfig";
             // 
             // label4
@@ -371,26 +387,26 @@
             resources.ApplyResources(labelBoxelCount, "labelBoxelCount");
             labelBoxelCount.Name = "labelBoxelCount";
             // 
-            // contextList
+            // btnConfigCancel
             // 
-            contextList.Items.AddRange(new ToolStripItem[] { menuListCopySystemName });
-            contextList.Name = "contextList";
-            resources.ApplyResources(contextList, "contextList");
+            resources.ApplyResources(btnConfigCancel, "btnConfigCancel");
+            btnConfigCancel.Name = "btnConfigCancel";
+            btnConfigCancel.UseVisualStyleBackColor = true;
             // 
-            // menuListCopySystemName
+            // dateStart
             // 
-            menuListCopySystemName.Name = "menuListCopySystemName";
-            resources.ApplyResources(menuListCopySystemName, "menuListCopySystemName");
-            menuListCopySystemName.Click += menuListCopySystemName_Click;
+            resources.ApplyResources(dateStart, "dateStart");
+            dateStart.Name = "dateStart";
             // 
             // FormBoxelSearch
             // 
             resources.ApplyResources(this, "$this");
             AutoScaleMode = AutoScaleMode.Font;
-            Controls.Add(tableTop);
             Controls.Add(status);
+            Controls.Add(tableTop);
             Controls.Add(tableConfig);
             Name = "FormBoxelSearch";
+            contextList.ResumeLayout(false);
             status.ResumeLayout(false);
             status.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numMax).EndInit();
@@ -400,7 +416,6 @@
             tableTop.PerformLayout();
             tableConfig.ResumeLayout(false);
             tableConfig.PerformLayout();
-            contextList.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -448,5 +463,7 @@
         private Label labelBoxelCount;
         private ContextMenuStrip contextList;
         private ToolStripMenuItem menuListCopySystemName;
+        private Button btnConfigCancel;
+        private DateTimePicker dateStart;
     }
 }

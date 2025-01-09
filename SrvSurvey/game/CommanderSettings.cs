@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using SrvSurvey.forms;
 using SrvSurvey.plotters;
 using SrvSurvey.units;
+using System.Diagnostics;
 
 namespace SrvSurvey.game
 {
@@ -278,9 +278,22 @@ namespace SrvSurvey.game
             return new StarPos(this.starPos, this.currentSystem, this.currentSystemAddress);
         }
 
+        /// <summary> Returns a StarRef populated for the cmdr's current system </summary>
         public StarRef getCurrentStarRef()
         {
             return new StarRef(this.starPos, this.currentSystem, this.currentSystemAddress);
+        }
+
+        /// <summary> Returns a Boxel populated for the cmdr's current system </summary>
+        public Boxel getCurrentBoxel()
+        {
+            var bx = Boxel.parse(this.currentSystemAddress, this.currentSystem);
+            if (bx == null)
+            {
+                Game.log($"Why no Boxel from: {this.currentSystemAddress} / {this.currentSystem} ?");
+                Debugger.Break();
+            }
+            return bx!;
         }
     }
 
@@ -306,6 +319,7 @@ namespace SrvSurvey.game
         Complete,
     }
 
+    /*
     internal class BoxelSearchDef
     {
         public bool active;
@@ -347,4 +361,5 @@ namespace SrvSurvey.game
             return this.boxel.prefix;
         }
     }
+    */
 }

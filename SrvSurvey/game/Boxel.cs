@@ -12,7 +12,7 @@ namespace SrvSurvey.game
     /// <summary>
     /// Represents a Boxel
     /// </summary>
-    [JsonConverter(typeof(BoxelJsonConverter))]
+    [JsonConverter(typeof(Boxel.BoxelJsonConverter))]
     internal partial class Boxel
     {
         #region parsing and other statics
@@ -22,7 +22,8 @@ namespace SrvSurvey.game
         public static bool isValid(string? name)
         {
             var bx = parse(name);
-            return bx != null;
+            //return bx != null;
+            return Sectors.is_valid_sector_name(bx?.sector);
         }
 
         /// <summary>
@@ -43,7 +44,7 @@ namespace SrvSurvey.game
 
             // confirm sector is valid
             var sectorName = parts.Groups[1].Value;
-            if (!Sectors.is_valid_sector_name(sectorName)) return null;
+            if (false && !Sectors.is_valid_sector_name(sectorName)) return null;
 
             var bx = new Boxel
             {
@@ -62,54 +63,74 @@ namespace SrvSurvey.game
         /// <summary>
         /// Parses a boxel from an system address / id64 value, or returns null if name is not valid.
         /// </summary>
-        public static Boxel? parse(long id64)
+        public static Boxel? parse(long id64, string? name = null)
         {
-            var id = id64;
+            Boxel? bx = null;
 
-            // extract mass code, then shift 3 bits
-            var mc = (int)takeBits(id, 3);
-            id = id >> 3; // and shift
+            // try parsing the name first
+            if (name != null)
+            {
+                bx = Boxel.parse(name);
+                if (bx != null && Sectors.is_valid_sector_name(bx.sector))
+                    bx._address = id64;
+                else
+                    bx = null;
+            }
 
-            // count of bits to take, dependent on the mass code
-            var ss = 7 - mc;
+            if (bx == null && id64 > 0)
+            {
+                var id = id64;
 
-            // z boxel
-            var zb = takeBits(id, ss);
-            id = id >> (int)ss; // and shift
+                // extract mass code, then shift 3 bits
+                var mc = (int)takeBits(id, 3);
+                id = id >> 3; // and shift
 
-            // z sector
-            var zs = takeBits(id, 7);
-            id = id >> 7; // and shift
+                // count of bits to take, dependent on the mass code
+                var ss = 7 - mc;
 
-            // y boxel
-            var yb = takeBits(id, ss);
-            id = id >> (int)ss; // and shift
+                // z boxel
+                var zb = takeBits(id, ss);
+                id = id >> (int)ss; // and shift
 
-            // y sector
-            var ys = takeBits(id, 6);
-            id = id >> 6; // and shift
+                // z sector
+                var zs = takeBits(id, 7);
+                id = id >> 7; // and shift
 
-            // y boxel
-            var xb = takeBits(id, ss);
-            id = id >> (int)ss; // and shift
+                // y boxel
+                var yb = takeBits(id, ss);
+                id = id >> (int)ss; // and shift
 
-            // y sector
-            var xs = takeBits(id, 7);
-            id = id >> 7; // and shift
+                // y sector
+                var ys = takeBits(id, 6);
+                id = id >> 6; // and shift
 
-            // n2 value
-            var n2 = (int)takeBits(id, 10);
-            id = id >> 10; // and shift
+                // y boxel
+                var xb = takeBits(id, ss);
+                id = id >> (int)ss; // and shift
 
-            var abs_pos = new Point3((int)xs, (int)ys, (int)zs);
-            var sectorName = Sectors.get_sector_name(abs_pos, false);
-            if (string.IsNullOrEmpty(sectorName))
-                throw new Exception($"Cannot generate sectorName from: {id64}");
+                // y sector
+                var xs = takeBits(id, 7);
+                id = id >> 7; // and shift
 
-            var mc2 = (char)('a' + (int)(id64 & 7));
-            var rel_pos = new Point3((int)xb, (int)yb, (int)zb);
+                // n2 value
+                var n2 = (int)takeBits(id, 10);
+                id = id >> 10; // and shift
 
-            var bx = Boxel.from(sectorName, rel_pos, mc2, n2);
+                var abs_pos = new Point3((int)xs, (int)ys, (int)zs);
+                var sectorName = Sectors.get_sector_name(abs_pos, false);
+                if (string.IsNullOrEmpty(sectorName))
+                    throw new Exception($"Cannot generate sectorName from: {id64}");
+
+                var mc2 = (char)('a' + (int)(id64 & 7));
+                var rel_pos = new Point3((int)xb, (int)yb, (int)zb);
+
+                bx = Boxel.from(sectorName, rel_pos, mc2, n2);
+                bx._address = id64;
+
+                // keep the given name, for hand-authored cases
+                if (name != null) bx._name = name;
+            }
+
             return bx;
         }
 
@@ -241,7 +262,16 @@ namespace SrvSurvey.game
         /// <summary> The id part of the name - without the sector or trailing n2, eg: 'YV-T d4' from 'Thuechu YV-T d4-12'  </summary>
         public string id => n1 == 0 ? $"{letters} {massCode}" : $"{letters} {massCode}{n1}";
 
-        public string name { get => this.ToString(); }
+        public string name
+        {
+            get
+            {
+                // (allow some code paths to pre-set the name, useful for hand-authored systems where the public name does not match the generated name)
+                _name ??= this.ToString();
+                return _name;
+            }
+        }
+        private string? _name;
 
         /// <summary> The name without the trailing system number </summary>
         public string prefix
@@ -253,7 +283,11 @@ namespace SrvSurvey.game
 
         public override string ToString()
         {
-            return $"{prefix}{n2}";
+            var txt = $"{prefix}{n2}";
+            if (_name != null && _name != txt)
+                return $"{_name} ({txt})";
+            else
+                return txt;
         }
 
         /// <summary>
@@ -377,30 +411,68 @@ namespace SrvSurvey.game
         /// </summary>
         public long getAddress()
         {
-            var bodyId = 0;
+            if (this._address == 0)
+            {
+                var bodyId = 0;
 
-            var rel_pos = this.getRelativeCoords();
-            var abs_pos = Sectors.getSectorCoords(this.sector);
+                var rel_pos = this.getRelativeCoords();
+                var abs_pos = Sectors.getSectorCoords(this.sector);
 
-            var mc = (int)this.massCode - 'a';
-            int rs = 'h' - this.massCode; // relative shift value, dependent on the mass code
+                var mc = (int)this.massCode - 'a';
+                int rs = 'h' - this.massCode; // relative shift value, dependent on the mass code
 
-            long address = 0;
-            address = Sectors.pack_and_shift(address, bodyId, 9);
-            address = Sectors.pack_and_shift(address, this.n2, 11 + mc * 3);
+                long address = 0;
+                address = Sectors.pack_and_shift(address, bodyId, 9);
+                address = Sectors.pack_and_shift(address, this.n2, 11 + mc * 3);
+                address = Sectors.pack_and_shift(address, abs_pos.x, 7);
+                address = Sectors.pack_and_shift(address, rel_pos.x, rs);
+                address = Sectors.pack_and_shift(address, abs_pos.y, 6);
+                address = Sectors.pack_and_shift(address, rel_pos.y, rs);
+                address = Sectors.pack_and_shift(address, abs_pos.z, 7);
+                address = Sectors.pack_and_shift(address, rel_pos.z, rs);
+                address = Sectors.pack_and_shift(address, mc, 3);
 
-            address = Sectors.pack_and_shift(address, abs_pos.x, 7);
-            address = Sectors.pack_and_shift(address, rel_pos.x, rs);
+                this._address = address;
+            }
 
-            address = Sectors.pack_and_shift(address, abs_pos.y, 6);
-            address = Sectors.pack_and_shift(address, rel_pos.y, rs);
+            return this._address;
+        }
+        private long _address;
 
-            address = Sectors.pack_and_shift(address, abs_pos.z, 7);
-            address = Sectors.pack_and_shift(address, rel_pos.z, rs);
+        /// <summary>
+        /// JSON serializes Boxel's as a basic string, parsing them back into a Boxel upon deserialization
+        /// </summary>
+        class BoxelJsonConverter : Newtonsoft.Json.JsonConverter
+        {
+            public override bool CanConvert(Type objectType)
+            {
+                return false;
+            }
 
-            address = Sectors.pack_and_shift(address, mc, 3);
+            public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
+            {
+                var txt = serializer.Deserialize<string>(reader);
+                if (string.IsNullOrEmpty(txt)) throw new Exception($"Unexpected value: {txt}");
 
-            return address;
+                var parts = txt.Split('|', 2, StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+                var name = parts.First();
+                long.TryParse(parts.Last(), out var id64);
+
+                // TODO: include addresses?
+                return Boxel.parse(id64, name);
+            }
+
+            public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
+            {
+                var boxel = value as Boxel;
+                if (boxel == null) throw new Exception($"Unexpected type: {value?.GetType().Name}");
+
+                var txt = boxel._address == 0
+                    ? boxel.name
+                    : $"{boxel.name}|{boxel._address}";
+
+                writer.WriteValue(txt);
+            }
         }
     }
 
@@ -418,6 +490,15 @@ namespace SrvSurvey.game
 
         public MassCode(char c)
         {
+            if (!valid(c)) throw new Exception($"Bad mass code: {c}");
+
+            this.c = c;
+        }
+        public MassCode(string s)
+        {
+            if (string.IsNullOrWhiteSpace(s)) throw new Exception($"Bad mass code: NULL");
+
+            char c = s.FirstOrDefault();
             if (!valid(c)) throw new Exception($"Bad mass code: {c}");
 
             this.c = c;
@@ -454,33 +535,10 @@ namespace SrvSurvey.game
         {
             return new MassCode(c);
         }
-    }
 
-    /// <summary>
-    /// JSON serializes Boxel's as a basic string, parsing them back into a Boxel upon deserialization
-    /// </summary>
-    class BoxelJsonConverter : Newtonsoft.Json.JsonConverter
-    {
-        public override bool CanConvert(Type objectType)
+        public static implicit operator MassCode(string s)
         {
-            return false;
-        }
-
-        public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
-        {
-            var txt = serializer.Deserialize<string>(reader);
-            if (string.IsNullOrEmpty(txt)) throw new Exception($"Unexpected value: {txt}");
-
-            return Boxel.parse(txt);
-        }
-
-        public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
-        {
-            var boxel = value as Boxel;
-            if (boxel == null) throw new Exception($"Unexpected type: {value?.GetType().Name}");
-
-            writer.WriteValue(boxel.name);
+            return new MassCode(s);
         }
     }
-
 }

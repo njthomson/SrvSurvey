@@ -1127,7 +1127,7 @@ namespace SrvSurvey.game
 
             // update boxel search?
             if (cmdr.boxelSearch?.active == true)
-                cmdr.boxelSearch.markVisited(entry.StarSystem, entry.StarPos);
+                cmdr.boxelSearch.markVisited(entry.SystemAddress, entry.StarSystem, entry.StarPos);
         }
 
         private void onJournalEntry(CarrierJump entry)

@@ -34,12 +34,8 @@ namespace SrvSurvey.forms
             bs.changed += boxelSearch_changed;
 
             checkAutoCopy.Checked = bs.autoCopy;
-            checkSkipVisited.Checked = bs.skipAlreadyVisited;
-            checkSpinKnownToSpansh.Checked = bs.skipKnownToSpansh;
-            checkCompleteOnFssAllBodies.Checked = bs.completeOnFssAllBodies;
-            checkCompleteOnEnterSystem.Checked = !bs.completeOnFssAllBodies;
 
-            if (bs.collapsed)
+            if (bs.active && bs.collapsed)
                 toggleListVisibility(true);
 
             // show warning if key-hooks are not viable
@@ -53,12 +49,24 @@ namespace SrvSurvey.forms
             else
             {
                 prepForm();
-                btnSearch_Click(null!, null!);
+                btnConfig_Click(null!, null!);
             }
         }
 
-        private void btnSearch_Click(object sender, EventArgs e)
+        private void btnConfig_Click(object sender, EventArgs e)
         {
+            if (bs.collapsed)
+                toggleListVisibility(false);
+
+            // populate inline-dialog
+            checkSkipVisited.Checked = bs.skipAlreadyVisited;
+            checkSpinKnownToSpansh.Checked = bs.skipKnownToSpansh;
+            checkCompleteOnFssAllBodies.Checked = bs.completeOnFssAllBodies;
+            checkCompleteOnEnterSystem.Checked = !bs.completeOnFssAllBodies;
+            comboLowMassCode.Text = bs.lowMassCode.ToString();
+            dateStart.Value = bs.startedOn > DateTime.MinValue ? bs.startedOn : DateTime.Today;
+
+            btnToggleList.Enabled = false;
             tableTop.Enabled = false;
             tableConfig.Visible = true;
             tableConfig.BringToFront();
@@ -81,14 +89,18 @@ namespace SrvSurvey.forms
         {
             tableConfig.Visible = false;
             tableTop.Enabled = true;
+            btnToggleList.Enabled = true;
 
             // exit early if we don't have a valid boxel
             var bx = Boxel.parse(txtTopBoxel.Text);
             if (bx == null) return;
 
+            // populate from inline-dialog
             bs.completeOnFssAllBodies = checkCompleteOnFssAllBodies.Checked;
             bs.skipAlreadyVisited = checkSkipVisited.Checked;
             bs.skipKnownToSpansh = checkSpinKnownToSpansh.Checked;
+            bs.lowMassCode = comboLowMassCode.Text[0];
+            bs.startedOn = dateStart.Value;
 
             bs.reset(bx, true);
 
@@ -319,6 +331,8 @@ namespace SrvSurvey.forms
 
                     if (sys != null)
                     {
+                        item.Text = sys.name.ToString();
+
                         if (item.Checked != sys.complete)
                             item.Checked = sys.complete;
 
@@ -487,8 +501,8 @@ namespace SrvSurvey.forms
             {
                 lblStatus.Text = Properties.Misc.FormBoxelSearch_VisitedCounts.format(bs.countVisited, bs.currentCount);
 
-                // tmp ?
-                lblStatus.Text += " / " + bs.calcProgress();
+                // TODO: localize
+                lblStatus.Text += $", completed {bs.countBoxelsCompleted} of {bs.countBoxelsTotal} boxels";
             }
         }
 
@@ -572,7 +586,7 @@ namespace SrvSurvey.forms
             else
             {
                 this.MaximumSize = Size.Empty;
-                this.Height += panelList.Height <= 1
+                this.Height += panelList.Height <= 10
                     ? 300
                     : panelList.Height;
                 panelList.Visible = true;

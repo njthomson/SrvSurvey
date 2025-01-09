@@ -2,7 +2,7 @@
 using Newtonsoft.Json.Linq;
 using SrvSurvey.net;
 using SrvSurvey.units;
-using System;
+using System.Diagnostics;
 
 namespace SrvSurvey.game
 {
@@ -85,7 +85,7 @@ namespace SrvSurvey.game
         public void reset(Boxel newBoxel, bool resetCurrent)
         {
             // activate the feature
-             this.active = true;
+            this.active = true;
 
             if (boxel != newBoxel || startedOn == DateTime.MinValue)
                 startedOn = DateTime.Now;
@@ -95,17 +95,23 @@ namespace SrvSurvey.game
                 current = newBoxel;
 
             // prep progress with all children
-            progress = new();
+            this.emptyBoxels ??= this.loadEmptyBoxels();
+            this.progress = new();
 
             Action<Boxel> func = null!;
             func = (Boxel bx) =>
             {
-                progress[bx] = 0;
+                this.progress[bx] = 0;
+
+                // marked empty?
+                if (this.emptyBoxels!.Contains(bx.id))
+                    this.progress[bx] = -1;
+
                 if (bx.massCode > lowMassCode)
                     bx.children.ForEach(child => func(child));
             };
             func(boxel);
-            Game.log($"Boxel progress count: {progress.Count}");
+            Game.log($"Boxel progress count: {this.progress.Count}");
 
             // notify calling code and start looking for systems on disk and from Spansh
             fireChanged();
@@ -124,7 +130,19 @@ namespace SrvSurvey.game
             if (current == null) return;
 
             this.currentCount = n;
-            cacheCounts[current.name] = n;
+            BoxelSearch.cacheCounts[current.name] = n;
+
+            setProgress(current, n);
+        }
+
+        private void setProgress(Boxel bx, int n)
+        {
+            // always count progress against the zero'th system in the boxel
+            if (bx.n2 > 0) bx = bx.to(0);
+
+            // inc/update progress count?
+            if (n <= 0 || !progress.ContainsKey(bx) || progress[bx] < n)
+                progress[bx] = n;
         }
 
         /// <summary> Set the current boxel and start searching for systems it may contain </summary>
@@ -144,7 +162,7 @@ namespace SrvSurvey.game
             }
             else
             {
-                if (cacheCounts.ContainsKey(bx.name))
+                if (BoxelSearch.cacheCounts.ContainsKey(bx.name))
                     this.currentCount = cacheCounts[bx.name];
                 else
                     this.currentCount = 1;
@@ -211,26 +229,51 @@ namespace SrvSurvey.game
             var folder = Path.Combine(Program.dataFolder, "systems", CommanderSettings.currentOrLastFid);
             Directory.CreateDirectory(folder);
 
-            var files = Directory.GetFiles(folder, $"{current.prefix}*.json");
-            if (files.Length == 0) return false;
-
-            progress[current] = files.Length;
-
             var dirty = false;
-            foreach (var file in files)
+
+            var files = Directory.GetFiles(folder, $"{current.prefix}*.json");
+            if (false && files.Length > 0)
             {
-                var fileData = Data.Load<SystemData>(file)!;
-                var bx = Boxel.parse(fileData.name);
+                // match by generated name
+                foreach (var file in files)
+                {
+                    var fileData = Data.Load<SystemData>(file)!;
+                    var bx = Boxel.parse(fileData.name);
+                    if (bx == null || bx.prefix != this.current.prefix) continue;
+                    dirty = true;
+
+                    // merge data
+                    var sys = findOrAddSystem(bx);
+                    sys.complete |= fileData.lastVisited > startedOn || this.skipAlreadyVisited;
+                    sys.starPos ??= fileData.starPos;
+
+                    if (sys.visitedAt == null || sys.visitedAt < fileData.lastVisited)
+                        sys.visitedAt = fileData.lastVisited;
+
+                    setProgress(current, bx.n2);
+                }
+            }
+
+            for (var n = 0; n < this.currentCount; n++)
+            {
+                var bx = current.to(n);
+                var fileData = SystemData.Load("", bx.getAddress(), CommanderSettings.currentOrLastFid, true);
+                if (fileData == null) continue;
+
+                // re-parse and merge data
+                bx = Boxel.parse(fileData.address, fileData.name)!;
                 if (bx == null || bx.prefix != this.current.prefix) continue;
+
                 dirty = true;
 
-                // merge data
                 var sys = findOrAddSystem(bx);
                 sys.complete |= fileData.lastVisited > startedOn || this.skipAlreadyVisited;
                 sys.starPos ??= fileData.starPos;
 
                 if (sys.visitedAt == null || sys.visitedAt < fileData.lastVisited)
                     sys.visitedAt = fileData.lastVisited;
+
+                setProgress(current, bx.n2);
             }
 
             return dirty;
@@ -243,13 +286,15 @@ namespace SrvSurvey.game
             var dirty = false;
             foreach (var hop in route)
             {
-                var bx = Boxel.parse(hop.StarSystem);
+                var bx = Boxel.parse(hop.SystemAddress, hop.StarSystem);
                 if (bx == null || bx.prefix != this.current.prefix) continue;
                 dirty = true;
 
                 // merge data
                 var sys = findOrAddSystem(bx);
                 sys.starPos ??= hop.StarPos;
+
+                setProgress(current, bx.n2);
             }
 
             return dirty;
@@ -260,7 +305,7 @@ namespace SrvSurvey.game
             var dirty = false;
             foreach (var result in response.results)
             {
-                var bx = Boxel.parse(result.name);
+                var bx = Boxel.parse(result.id64, result.name);
                 if (bx == null || bx.prefix != this.current.prefix) continue;
                 dirty = true;
 
@@ -275,6 +320,8 @@ namespace SrvSurvey.game
                     // If Spansh was updated after the cmdr started searching but they didn't visit it personally - consider this not complete
                     sys.complete |= result.updated_at < startedOn && this.skipKnownToSpansh;
                 }
+
+                setProgress(current, bx.n2);
             }
 
             return dirty;
@@ -291,6 +338,9 @@ namespace SrvSurvey.game
                 if (n2 < currentMin || currentMin == -1) currentMin = n2;
                 if (n2 > currentMax) currentMax = n2;
             }
+
+            if (currentMax > currentCount)
+                this.setCurrentCount(currentMax);
 
             // fire event on the main thread
             if (this.changed != null)
@@ -317,12 +367,18 @@ namespace SrvSurvey.game
             else
             {
                 this.currentEmpty = false;
-                this.progress[current] = 0;
                 dirty = this.emptyBoxels.Remove(current.id);
 
-                this.currentCount = cacheCounts.ContainsKey(current.name)
-                    ? cacheCounts[current.name]
-                    : this.currentCount = 1;
+                if (cacheCounts.ContainsKey(current.name))
+                {
+                    this.currentCount = cacheCounts[current.name];
+                    this.progress[current] = this.currentCount;
+                }
+                else
+                {
+                    this.currentCount = this.currentCount = 1;
+                    this.progress[current] = 0;
+                }
             }
 
             if (dirty)
@@ -365,11 +421,14 @@ namespace SrvSurvey.game
             Game.log($"Empty boxels filepath: {emptyBoxelsFilepath}");
         }
 
-        public void markVisited(string name, StarPos pos)
+        public void markVisited(long address, string name, StarPos pos)
         {
-            var bx = Boxel.parse(name);
-            if (bx == null || bx.prefix != this.current.prefix)
+            var bx = Boxel.parse(address, name);
+            if (bx == null) return;
+
+            if (bx.prefix != this.current.prefix)
             {
+                // Ignore anything not current
                 this.fireChanged();
                 return;
             }
@@ -377,7 +436,7 @@ namespace SrvSurvey.game
             var match = findOrAddSystem(bx);
             if (match == null) return;
 
-            Game.log($"Updating boxel search: system: {match.name}");
+            Game.log($"Updating boxel search: system: {bx.name}");
             match.starPos ??= pos;
             match.complete = true;
             match.visitedAt = DateTime.UtcNow;
@@ -429,6 +488,12 @@ namespace SrvSurvey.game
                 this.fireChanged();
         }
 
+        [JsonIgnore]
+        public int countBoxelsCompleted => this.progress.Count(p => p.Value != 0);
+
+        [JsonIgnore]
+        public int countBoxelsTotal => this.progress.Count;
+
         /// <summary>
         /// Calculate progress across all boxels contained in the top-level one
         /// </summary>
@@ -460,7 +525,6 @@ namespace SrvSurvey.game
                 progress[bx] = -1;
 
             var sysCount = progress.GetValueOrDefault(bx);
-
             if (sysCount == 0)
             {
                 // search for systems with suitable filenames
@@ -538,8 +602,9 @@ namespace SrvSurvey.game
                 {
                     active = obj["active"]?.Value<bool>() ?? false,
                     startedOn = obj["startedOn"]?.Value<DateTime>() ?? DateTime.MinValue,
-                    boxel = Boxel.parse(obj["boxel"]?.Value<string>())!,
-                    current = Boxel.parse(obj["current"]?.Value<string>())!,
+                    boxel = obj["boxel"]?.ToObject<Boxel>()!,
+                    current = obj["current"]?.ToObject<Boxel>()!,
+                    lowMassCode = obj["lowMassCode"]?.Value<string>() ?? "c",
 
                     autoCopy = obj["autoCopy"]?.Value<bool>() ?? false,
                     collapsed = obj["collapsed"]?.Value<bool>() ?? false,
@@ -556,6 +621,7 @@ namespace SrvSurvey.game
             catch (Exception ex)
             {
                 Game.log($"Failed to parse BoxelSearch: ${ex}");
+                Debugger.Break();
                 return null;
             }
         }
@@ -569,9 +635,10 @@ namespace SrvSurvey.game
                 {
                     { "active", bs.active},
                     { "startedOn", bs.startedOn },
-                    { "boxel", bs.boxel?.name },
-                    { "current", bs.current?.name },
+                    { "boxel", JValue.FromObject(bs.boxel) },
+                    { "current", JValue.FromObject(bs.current) },
                     { "currentCount", bs.currentCount},
+                    { "lowMassCode", bs.lowMassCode.ToString()},
 
                     { "autoCopy", bs.autoCopy},
                     { "collapsed", bs.collapsed},

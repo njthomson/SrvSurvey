@@ -48,7 +48,7 @@ namespace SrvSurvey.plotters
             if (game.cmdr.boxelSearch?.active == true && game.cmdr.boxelSearch.autoCopy)
             {
                 // only pre-fill clipboard if we're inside the boxel search area
-                var insideSearchArea = game.cmdr.boxelSearch.boxel.containsChild(Boxel.parse(game.systemData?.name));
+                var insideSearchArea = game.cmdr.boxelSearch.boxel.containsChild(game.cmdr.getCurrentBoxel());
                 if (insideSearchArea)
                 {
                     var text = game.cmdr.boxelSearch.getNextToVisit();
@@ -142,7 +142,7 @@ namespace SrvSurvey.plotters
 
                 if (game.cmdr.boxelSearch?.active == true)
                 {
-                    var bx = Boxel.parse(game.status.Destination.Name);
+                    var bx = Boxel.parse(game.status.Destination.System, game.status.Destination.Name);
                     this.destinationOutsideBoxel = !game.cmdr.boxelSearch.boxel.containsChild(bx);
                 }
 
