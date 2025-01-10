@@ -124,6 +124,7 @@ namespace SrvSurvey
         public bool hidePlottersFromCombatSuits = false;
         public bool hidePlottersFromMaverickSuits = false;
         public bool hideOverlaysFromMouse = true;
+        public bool hideOverlaysFromMouseInFSS_TEST = false;
 
         public bool autoShowFlightWarnings = true;
         public double highGravityWarningLevel = 1.0f;
@@ -207,6 +208,10 @@ namespace SrvSurvey
         public bool keyhook_TEST = false;
 
         public Dictionary<KeyAction, string>? keyActions_TEST = KeyChords.defaultKeys;
+        /// <summary>
+        /// Distance at which we remove vs replace a tracked location
+        /// </summary>
+        public int minimumKeyLocationTrackingDistance = 50;
 
         public bool keepOverlays = false;
 

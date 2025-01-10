@@ -83,15 +83,19 @@ namespace SrvSurvey.plotters
         {
             base.OnMouseEnter(e);
 
-            if (Debugger.IsAttached)
-            {
-                // use a different cursor if debugging
-                this.Cursor = Cursors.No;
-            }
-            else if (Game.settings.hideOverlaysFromMouse)
+            if (Game.settings.hideOverlaysFromMouse)
             {
                 // move the mouse outside the overlay
-                System.Windows.Forms.Cursor.Position = Elite.gameCenter;
+                Game.log($"OnMouseEnter: {this.Name}. Mouse was:{Cursor.Position}, moved to: {Elite.gameCenter}");
+                Cursor.Position = Elite.gameCenter;
+            }
+            else if (Game.settings.hideOverlaysFromMouseInFSS_TEST)
+            {
+                PlotBase.HideAndReturnWhenMouseMoves(this);
+            }
+            else
+            {
+                Game.log($"OnMouseEnter: {this.Name}. Mouse is:{Cursor.Position}, would have moved to: {Elite.gameCenter}");
             }
         }
 
@@ -107,12 +111,13 @@ namespace SrvSurvey.plotters
 
         protected override void OnActivated(EventArgs e)
         {
+            Game.log($"OnActivated: {this.Name}. Mouse is:{Cursor.Position}");
+
+            // plotters are not suppose to receive focus - force it back onto the game if we do
             base.OnActivated(e);
 
             if (!this.showing || Elite.focusElite)
-            {
                 Elite.setFocusED();
-            }
         }
 
         private void PlotPulse_Paint(object sender, PaintEventArgs e)

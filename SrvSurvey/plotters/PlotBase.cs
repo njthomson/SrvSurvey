@@ -83,6 +83,8 @@ namespace SrvSurvey.plotters
 
         protected override void OnActivated(EventArgs e)
         {
+            Game.log($"OnActivated: {this.Name}. Mouse is:{Cursor.Position}");
+
             // plotters are not suppose to receive focus - force it back onto the game if we do
             base.OnActivated(e);
 
@@ -117,20 +119,57 @@ namespace SrvSurvey.plotters
         {
             base.OnMouseEnter(e);
 
-            if (Debugger.IsAttached)
-            {
-                // use a different cursor if debugging
-                this.Cursor = Cursors.No;
-            }
-            else if (Game.settings.hideOverlaysFromMouse)
+            if (Game.settings.hideOverlaysFromMouse)
             {
                 // move the mouse outside the overlay
-                System.Windows.Forms.Cursor.Position = Elite.gameCenter;
+                Game.log($"OnMouseEnter: {this.Name}. Mouse is:{Cursor.Position}, moving to: {Elite.gameCenter}");
+                Cursor.Position = Elite.gameCenter;
             }
+            else if (Game.settings.hideOverlaysFromMouseInFSS_TEST)
+            {
+                HideAndReturnWhenMouseMoves(this);
+            }
+            else
+            {
+                Game.log($"OnMouseEnter: {this.Name}. Mouse is:{Cursor.Position}, would have moved to: {Elite.gameCenter}");
+            }
+        }
+
+        public static void HideAndReturnWhenMouseMoves(Form form)
+        {
+            Game.log($"OnMouseEnter: {form.Name}. Mouse was:{Cursor.Position}, hiding overlay ...");
+            form.Visible = false;
+            var rect = form.Bounds;
+
+            Task.Run(async () =>
+            {
+                while (true)
+                {
+                    if (form.IsDisposed) return;
+
+                    // frequently check the mouse position ... become visible again if the mouse is outside
+                    await Task.Delay(500);
+
+                    if (rect.Contains(Cursor.Position))
+                    {
+                        Game.log($"OnMouseEnter: {form.Name}. Mouse is:{Cursor.Position} - still inside");
+                    }
+                    else
+                    {
+                        Game.log($"OnMouseEnter: {form.Name}. Mouse is:{Cursor.Position} - outside");
+                        form.Invoke(() =>
+                        {
+                            form.Visible = true;
+                        });
+                        break;
+                    }
+                }
+            });
         }
 
         protected override void OnMouseDown(MouseEventArgs e)
         {
+            Game.log($"OnMouseDown: {this.Name}. Mouse is:{Cursor.Position}");
             base.OnMouseDown(e);
 
             this.Invalidate();
@@ -499,7 +538,8 @@ namespace SrvSurvey.plotters
             var r = new RectangleF(x, y, sz * 2, sz * 2);
             g.DrawEllipse(pen, r);
 
-
+            // always point up if the distance is zero            
+            if (dist == 0) deg = 0;
             var dx = (float)Math.Sin(Util.degToRad(deg)) * nine;
             var dy = (float)Math.Cos(Util.degToRad(deg)) * nine;
             g.DrawLine(pen, x + sz, y + sz, x + sz + dx, y + sz - dy);

@@ -78,6 +78,14 @@ namespace SrvSurvey
             { KeyAction.showJumpInfo, "ALT D" },
             { KeyAction.copyNextBoxel, "CTRL C" },
             { KeyAction.showFssInfo, "ALT F" },
+            { KeyAction.track1, "ALT CTRL F1" },
+            { KeyAction.track2, "ALT CTRL F2" },
+            { KeyAction.track3, "ALT CTRL F3" },
+            { KeyAction.track4, "ALT CTRL F4" },
+            { KeyAction.track5, "ALT CTRL F5" },
+            { KeyAction.track6, "ALT CTRL F6" },
+            { KeyAction.track7, "ALT CTRL F7" },
+            { KeyAction.track8, "ALT CTRL F8" },
         };
 
         public static bool doKeyAction(KeyAction keyAction)
@@ -97,6 +105,14 @@ namespace SrvSurvey
                 case KeyAction.copyNextBoxel: return copyNextBoxelSystem();
                 case KeyAction.showFssInfo: return toggleFSSInfo();
                 case KeyAction.showBodyInfo: return toggleBodyInfo();
+                case KeyAction.track1: return trackLocation(1);
+                case KeyAction.track2: return trackLocation(2);
+                case KeyAction.track3: return trackLocation(3);
+                case KeyAction.track4: return trackLocation(4);
+                case KeyAction.track5: return trackLocation(5);
+                case KeyAction.track6: return trackLocation(6);
+                case KeyAction.track7: return trackLocation(7);
+                case KeyAction.track8: return trackLocation(8);
 
                 default:
                     Game.log($"Unsupported key action: {keyAction}");
@@ -203,6 +219,14 @@ namespace SrvSurvey
 
             return true;
         }
+
+        private static bool trackLocation(int n)
+        {
+            if (Game.activeGame != null)
+                Game.activeGame.toggleBookmark($"#{n}", Status.here.clone());
+
+            return true;
+        }
     }
 
     /// <summary>
@@ -229,5 +253,21 @@ namespace SrvSurvey
         showFssInfo,
         /// <summary> Force show PlotBodyInfo </summary>
         showBodyInfo,
+        /// <summary> Track the current location as #1 </summary>
+        track1,
+        /// <summary> Track the current location as #2 </summary>
+        track2,
+        /// <summary> Track the current location as #3 </summary>
+        track3,
+        /// <summary> Track the current location as #4 </summary>
+        track4,
+        /// <summary> Track the current location as #5 </summary>
+        track5,
+        /// <summary> Track the current location as #6 </summary>
+        track6,
+        /// <summary> Track the current location as #7 </summary>
+        track7,
+        /// <summary> Track the current location as #8 </summary>
+        track8,
     }
 }

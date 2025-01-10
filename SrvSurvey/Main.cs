@@ -1026,8 +1026,6 @@ namespace SrvSurvey
                 }
 
                 // force a re-render
-                if (PlotGrounded.allowPlotter)
-                    Program.showPlotter<PlotTrackers>()?.prepTrackers();
             }
 
             // first foot fall

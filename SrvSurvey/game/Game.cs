@@ -2633,16 +2633,40 @@ namespace SrvSurvey.game
 
         #region bookmarking
 
+        public void toggleBookmark(string name, LatLong2 location)
+        {
+            if (this.systemData == null || this.systemBody == null) return;
+
+            this.systemBody.bookmarks ??= new();
+            var exists = systemBody.bookmarks.ContainsKey(name);
+            var tooClose = exists && systemBody.bookmarks[name].Any(_ => Util.getDistance(_, location, this.systemBody.radius) < Game.settings.minimumKeyLocationTrackingDistance);
+
+            Game.log($"Tracking location {name} at: {location}, exists: {exists}, tooClose: {tooClose}");
+
+            // remove if too close, replace if far away, otherwise add new.
+            if (tooClose)
+            {
+                removeBookmarkName(name);
+            }
+            else if (exists)
+            {
+                removeBookmarkName(name);
+                Application.DoEvents();
+                addBookmark(name, location);
+            }
+            else
+            {
+                addBookmark(name, location);
+            }
+        }
+
         public void addBookmark(string name, LatLong2 location)
         {
-            if (this.systemData == null || this.systemBody == null)
-                throw new Exception($"Why no systemData or systemBody?");
+            if (this.systemData == null || this.systemBody == null) return;
 
-
-            if (this.systemBody.bookmarks == null) this.systemBody.bookmarks = new Dictionary<string, List<LatLong2>>();
+            this.systemBody.bookmarks ??= new ();
             if (!this.systemBody.bookmarks.ContainsKey(name)) this.systemBody.bookmarks[name] = new List<LatLong2>();
 
-            var pos = location;
             var tooClose = this.systemBody.bookmarks[name].Any(_ => Util.getDistance(_, location, this.systemBody.radius) < 20);
 
             if (tooClose)
@@ -2652,7 +2676,7 @@ namespace SrvSurvey.game
             }
 
             Game.log($"Add bookmark '{name}' ({location}) on '{this.systemBody.name}' ({this.systemBody.id})");
-            this.systemBody.bookmarks[name].Add(pos);
+            this.systemBody.bookmarks[name].Add(location);
 
             // TODO: limit to only 4?
             //Game.log($"Group '{name}' has too many entries. Ignoring location: {location}");
@@ -2668,6 +2692,8 @@ namespace SrvSurvey.game
 
             this.systemBody.bookmarks = null;
             this.systemData.Save();
+
+            Program.showPlotter<PlotTrackers>()?.prepTrackers();
         }
 
         public void removeBookmarkName(string name)
@@ -2679,6 +2705,8 @@ namespace SrvSurvey.game
             this.systemBody.bookmarks.Remove(name);
             if (this.systemBody.bookmarks.Count == 0) this.systemBody.bookmarks = null;
             this.systemData.Save();
+
+            Program.showPlotter<PlotTrackers>()?.prepTrackers();
         }
 
         public void removeBookmark(string name, LatLong2 location, bool nearest)
@@ -2703,6 +2731,8 @@ namespace SrvSurvey.game
             if (this.systemBody.bookmarks.Count == 0) this.systemBody.bookmarks = null;
 
             this.systemData.Save();
+
+            Program.showPlotter<PlotTrackers>()?.prepTrackers();
         }
 
         #endregion

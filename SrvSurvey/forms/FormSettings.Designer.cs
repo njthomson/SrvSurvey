@@ -225,6 +225,7 @@ namespace SrvSurvey
             menuCodexChange = new ToolStripMenuItem();
             menuCodexReset = new ToolStripMenuItem();
             menuClearCodexCache = new ToolStripMenuItem();
+            checkBox35 = new CheckBox();
             panel1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox6).BeginInit();
@@ -1754,6 +1755,7 @@ namespace SrvSurvey
             // 
             tabPage6.BackColor = SystemColors.Control;
             tabPage6.BorderStyle = BorderStyle.Fixed3D;
+            tabPage6.Controls.Add(checkBox35);
             tabPage6.Controls.Add(btnSwapCache);
             tabPage6.Controls.Add(checkBox32);
             tabPage6.Controls.Add(checkBox28);
@@ -2771,6 +2773,18 @@ namespace SrvSurvey
             menuClearCodexCache.ToolTipText = "Remove cached images.";
             menuClearCodexCache.Click += menuClearCodexCache_Click;
             // 
+            // checkBox35
+            // 
+            checkBox35.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            checkBox35.AutoSize = true;
+            checkBox35.Location = new Point(453, 6);
+            checkBox35.Name = "checkBox35";
+            checkBox35.Size = new Size(188, 19);
+            checkBox35.TabIndex = 37;
+            checkBox35.Tag = "hideOverlaysFromMouseInFSS_TEST";
+            checkBox35.Text = "Test hiding overlays during FSS";
+            checkBox35.UseVisualStyleBackColor = true;
+            // 
             // FormSettings
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -3051,5 +3065,6 @@ namespace SrvSurvey
         private ToolStripMenuItem menuCodexReset;
         private ToolStripMenuItem menuClearCodexCache;
         private CheckBox checkPreDownloadCodexImages;
+        private CheckBox checkBox35;
     }
 }
