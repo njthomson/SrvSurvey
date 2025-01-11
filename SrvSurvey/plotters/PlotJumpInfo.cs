@@ -172,12 +172,17 @@ namespace SrvSurvey.plotters
             }
 
             // are we entering a different galactic region?
-            var nextRegion = EliteDangerousRegionMap.RegionMap.FindRegionForBoxel(next.SystemAddress);
-            if (nextRegion.Region.Name != GalacticRegions.current)
+            if (next.StarPos != null)
             {
-                netData.special ??= new();
-                netData.special["Now entering"] = new() { nextRegion.Region.Name };
+                var nextRegion = EliteDangerousRegionMap.RegionMap.FindRegion(next.StarPos);
+                if (nextRegion.Name != GalacticRegions.current)
+                {
+                    netData.special ??= new();
+                    netData.special["Now entering"] = new() { nextRegion.Name };
+                }
             }
+            else
+                Debugger.Break();
         }
 
         private void calcHopDistances(List<RouteEntry> route)

@@ -2419,7 +2419,7 @@ namespace SrvSurvey.game
                     {
                         // wait a bit for the status file to update
                         Application.DoEvents();
-                        Game.log($"!! Comp scan organic: {entry.Name_Localised ?? entry.Name} ({entry.EntryID}) timestamps entry: {entry.timestamp} vs status: {this.status?.timestamp} | Locations: entry: {entry.Latitude}, {entry.Longitude} vs status: {this.status?.Latitude}, {this.status?.Longitude}");
+                        //Game.log($"!! Comp scan organic: {entry.Name_Localised ?? entry.Name} ({entry.EntryID}) timestamps entry: {entry.timestamp} vs status: {this.status?.timestamp} | Locations: entry: {entry.Latitude}, {entry.Longitude} vs status: {this.status?.Latitude}, {this.status?.Longitude}");
                         var organism = systemBody.findOrganism(match);
                         if (organism?.analyzed == true && Game.settings.skipAnalyzedCompBioScans)
                         {

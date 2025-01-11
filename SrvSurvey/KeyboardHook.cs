@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using SrvSurvey.game;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 namespace SrvSurvey
@@ -30,12 +31,14 @@ namespace SrvSurvey
                         hookProcessor,
                         NativeMethods.GetModuleHandle(mainModule.ModuleName),
                         0);
+                    Game.log("KeyboardHook activated");
                 }
             }
         }
 
         public void Dispose()
         {
+            Game.log("KeyboardHook disabled");
             NativeMethods.UnhookWindowsHookEx(hookId);
         }
 

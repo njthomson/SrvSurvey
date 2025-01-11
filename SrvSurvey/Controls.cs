@@ -300,7 +300,8 @@ namespace SrvSurvey
         {
             if (this.DesignMode) return;
 
-            this.allCmdrs = CommanderSettings.getAllCmdrs();
+            if (this.allCmdrs == null)
+                this.allCmdrs = CommanderSettings.getAllCmdrs();
 
             var cmdrs = this.allCmdrs
                 .Values
@@ -318,7 +319,7 @@ namespace SrvSurvey
                 this.SelectedIndex = 0;
         }
 
-        public string cmdrName { get => this.SelectedText; }
+        public string cmdrName { get => this.SelectedItem?.ToString()!; }
 
         public string? cmdrFid
         {

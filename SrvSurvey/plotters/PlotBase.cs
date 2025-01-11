@@ -119,15 +119,15 @@ namespace SrvSurvey.plotters
         {
             base.OnMouseEnter(e);
 
-            if (Game.settings.hideOverlaysFromMouse)
+            if (Game.settings.hideOverlaysFromMouseInFSS_TEST && Game.activeGame?.mode == GameMode.FSS)
+            {
+                HideAndReturnWhenMouseMoves(this);
+            }
+            else if (Game.settings.hideOverlaysFromMouse)
             {
                 // move the mouse outside the overlay
                 Game.log($"OnMouseEnter: {this.Name}. Mouse is:{Cursor.Position}, moving to: {Elite.gameCenter}");
                 Cursor.Position = Elite.gameCenter;
-            }
-            else if (Game.settings.hideOverlaysFromMouseInFSS_TEST)
-            {
-                HideAndReturnWhenMouseMoves(this);
             }
             else
             {
