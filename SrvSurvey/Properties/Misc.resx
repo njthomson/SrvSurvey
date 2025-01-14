@@ -221,14 +221,14 @@
     <value>FSS not started</value>
   </data>
   <data name="PlotSysStatus_Header" xml:space="preserve">
-    <value>System survey: </value>
+    <value>DSS survey: </value>
     <comment>Header line</comment>
   </data>
   <data name="PlotSysStatus_NextSystem" xml:space="preserve">
     <value>Next system:</value>
   </data>
   <data name="PlotSysStatus_NoDssMeet" xml:space="preserve">
-    <value>No DSS meet criteria</value>
+    <value>None</value>
   </data>
   <data name="PlotSysStatus_NonBodySignals" xml:space="preserve">
     <value>► {0} non-body signals</value>

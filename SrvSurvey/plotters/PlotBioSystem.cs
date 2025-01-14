@@ -490,7 +490,7 @@ namespace SrvSurvey.plotters
         {
             if (game.systemData == null) return;
 
-            this.drawTextAt($"System bio signals: {game.systemData.bioSignalsTotal}", GameColors.brushGameOrange, GameColors.fontSmall);
+            this.drawTextAt($"Bio signals: {game.systemData.bioSignalsTotal}", GameColors.brushGameOrange, GameColors.fontSmall);
             newLine(+four, true);
 
             //var anyFoo = game.systemData.bodies.Any(b => b.id == game.status.Destination?.Body && b.bioSignalCount > 0);

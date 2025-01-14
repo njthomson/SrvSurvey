@@ -244,16 +244,16 @@
     <comment>FSS not started</comment>
   </data>
   <data name="PlotSysStatus_Header">
-    <value>* SYSTEM SURVEY:  →→→!</value>
-    <comment>System survey: </comment>
+    <value>* DSS SURVEY:  →→→!</value>
+    <comment>DSS survey: </comment>
   </data>
   <data name="PlotSysStatus_NextSystem">
     <value>* NEXT SYSTEM: →→→!</value>
     <comment>Next system:</comment>
   </data>
   <data name="PlotSysStatus_NoDssMeet">
-    <value>* NO DSS MEET CRITERIA →→→!</value>
-    <comment>No DSS meet criteria</comment>
+    <value>* NONE →→→!</value>
+    <comment>None</comment>
   </data>
   <data name="PlotSysStatus_NonBodySignals">
     <value>* ► {0} NON-BODY SIGNALS →→→!</value>

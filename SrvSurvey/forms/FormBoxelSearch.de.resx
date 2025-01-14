@@ -110,6 +110,18 @@
   <data name="&gt;&gt;btnConfig.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
+  <data name="&gt;&gt;btnConfigCancel.Name" xml:space="preserve">
+    <value>btnConfigCancel</value>
+  </data>
+  <data name="&gt;&gt;btnConfigCancel.Parent" xml:space="preserve">
+    <value>tableConfig</value>
+  </data>
+  <data name="&gt;&gt;btnConfigCancel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnConfigCancel.ZOrder" xml:space="preserve">
+    <value>12</value>
+  </data>
   <data name="&gt;&gt;btnCopyNext.Name" xml:space="preserve">
     <value>btnCopyNext</value>
   </data>
@@ -271,6 +283,18 @@
   </data>
   <data name="&gt;&gt;contextList.Type" xml:space="preserve">
     <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;dateStart.Name" xml:space="preserve">
+    <value>dateStart</value>
+  </data>
+  <data name="&gt;&gt;dateStart.Parent" xml:space="preserve">
+    <value>tableConfig</value>
+  </data>
+  <data name="&gt;&gt;dateStart.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DateTimePicker, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;dateStart.ZOrder" xml:space="preserve">
+    <value>13</value>
   </data>
   <data name="&gt;&gt;label1.Name" xml:space="preserve">
     <value>label1</value>
@@ -468,7 +492,7 @@
     <value>System.Windows.Forms.StatusStrip, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;status.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>2</value>
   </data>
   <data name="&gt;&gt;tableConfig.Name" xml:space="preserve">
     <value>tableConfig</value>
@@ -492,7 +516,7 @@
     <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;tableTop.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>FormBoxelSearch</value>
@@ -578,6 +602,22 @@
     <value>&amp;Config</value>
     <comment>&amp;Config</comment>
   </data>
+  <data name="btnConfigCancel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="btnConfigCancel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 172</value>
+  </data>
+  <data name="btnConfigCancel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>75, 23</value>
+  </data>
+  <data name="btnConfigCancel.TabIndex" type="System.Int32, mscorlib">
+    <value>23</value>
+  </data>
+  <data name="btnConfigCancel.Text">
+    <value>&amp; Abbrechen</value>
+    <comment>&amp;Cancel</comment>
+  </data>
   <data name="btnCopyNext.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left, Right</value>
   </data>
@@ -591,7 +631,7 @@
     <value>False</value>
   </data>
   <data name="btnCopyNext.Location" type="System.Drawing.Point, System.Drawing">
-    <value>591, 49</value>
+    <value>613, 49</value>
   </data>
   <data name="btnCopyNext.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 0, 3, 0</value>
@@ -679,7 +719,7 @@
     <comment>⏶ Hide list</comment>
   </data>
   <data name="checkAutoCopy.Location" type="System.Drawing.Point, System.Drawing">
-    <value>591, 93</value>
+    <value>613, 93</value>
   </data>
   <data name="checkAutoCopy.Size" type="System.Drawing.Size, System.Drawing">
     <value>104, 24</value>
@@ -801,10 +841,10 @@
     <value>Bottom, Left, Right</value>
   </data>
   <data name="comboFrom.Location" type="System.Drawing.Point, System.Drawing">
-    <value>145, 209</value>
+    <value>138, 205</value>
   </data>
   <data name="comboFrom.Size" type="System.Drawing.Size, System.Drawing">
-    <value>602, 23</value>
+    <value>625, 23</value>
   </data>
   <data name="comboFrom.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -842,6 +882,18 @@
   <data name="contextList.Size" type="System.Drawing.Size, System.Drawing">
     <value>176, 26</value>
   </data>
+  <data name="dateStart.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Left</value>
+  </data>
+  <data name="dateStart.Location" type="System.Drawing.Point, System.Drawing">
+    <value>160, 143</value>
+  </data>
+  <data name="dateStart.Size" type="System.Drawing.Size, System.Drawing">
+    <value>200, 23</value>
+  </data>
+  <data name="dateStart.TabIndex" type="System.Int32, mscorlib">
+    <value>24</value>
+  </data>
   <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
     <value>109, 0</value>
   </data>
@@ -858,7 +910,7 @@
     <value>True</value>
   </data>
   <data name="label2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 212</value>
+    <value>3, 208</value>
   </data>
   <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
     <value>136, 15</value>
@@ -883,7 +935,7 @@
     <value>109, 358</value>
   </data>
   <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>476, 15</value>
+    <value>498, 15</value>
   </data>
   <data name="label3.TabIndex" type="System.Int32, mscorlib">
     <value>16</value>
@@ -956,10 +1008,10 @@
     <value>True</value>
   </data>
   <data name="labelBoxelCount.Location" type="System.Drawing.Point, System.Drawing">
-    <value>283, 38</value>
+    <value>366, 38</value>
   </data>
   <data name="labelBoxelCount.Size" type="System.Drawing.Size, System.Drawing">
-    <value>445, 15</value>
+    <value>362, 15</value>
   </data>
   <data name="labelBoxelCount.TabIndex" type="System.Int32, mscorlib">
     <value>22</value>
@@ -975,7 +1027,7 @@
     <value>True</value>
   </data>
   <data name="lblMaxNum.Location" type="System.Drawing.Point, System.Drawing">
-    <value>642, 28</value>
+    <value>664, 28</value>
   </data>
   <data name="lblMaxNum.Size" type="System.Drawing.Size, System.Drawing">
     <value>53, 15</value>
@@ -1026,7 +1078,7 @@
     <value>3, 3</value>
   </data>
   <data name="list.Size" type="System.Drawing.Size, System.Drawing">
-    <value>744, 200</value>
+    <value>760, 200</value>
   </data>
   <data name="list.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1071,7 +1123,7 @@
     <value>Left</value>
   </data>
   <data name="numMax.Location" type="System.Drawing.Point, System.Drawing">
-    <value>701, 24</value>
+    <value>723, 24</value>
   </data>
   <data name="numMax.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 0, 3, 0</value>
@@ -1092,7 +1144,7 @@
     <value>3, 124</value>
   </data>
   <data name="panelList.Size" type="System.Drawing.Size, System.Drawing">
-    <value>744, 229</value>
+    <value>766, 229</value>
   </data>
   <data name="panelList.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -1101,10 +1153,10 @@
     <value>Top, Bottom, Left, Right</value>
   </data>
   <data name="panelSiblings.Location" type="System.Drawing.Point, System.Drawing">
-    <value>753, 93</value>
+    <value>775, 93</value>
   </data>
   <data name="panelSiblings.Size" type="System.Drawing.Size, System.Drawing">
-    <value>37, 260</value>
+    <value>15, 260</value>
   </data>
   <data name="panelSiblings.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
@@ -1132,7 +1184,7 @@
     <value>4</value>
   </data>
   <data name="tableConfig.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="txtTopBoxel" Row="0" RowSpan="1" Column="0" ColumnSpan="3" /&gt;&lt;Control Name="checkSkipVisited" Row="2" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;Control Name="checkSpinKnownToSpansh" Row="3" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;Control Name="label4" Row="4" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;Control Name="checkCompleteOnEnterSystem" Row="5" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="checkCompleteOnFssAllBodies" Row="5" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="btnBegin" Row="6" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="label5" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="comboLowMassCode" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="label6" Row="7" RowSpan="1" Column="1" ColumnSpan="2" /&gt;&lt;Control Name="btnPasteTopBoxel" Row="0" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="labelBoxelCount" Row="1" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,AutoSize,0,Percent,100,AutoSize,0" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,Absolute,20" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="txtTopBoxel" Row="0" RowSpan="1" Column="0" ColumnSpan="3" /&gt;&lt;Control Name="checkSkipVisited" Row="2" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;Control Name="checkSpinKnownToSpansh" Row="3" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;Control Name="label4" Row="4" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;Control Name="checkCompleteOnEnterSystem" Row="5" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="checkCompleteOnFssAllBodies" Row="5" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="btnBegin" Row="6" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="label5" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="comboLowMassCode" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="label6" Row="7" RowSpan="1" Column="1" ColumnSpan="2" /&gt;&lt;Control Name="btnPasteTopBoxel" Row="0" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="labelBoxelCount" Row="1" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="btnConfigCancel" Row="7" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="dateStart" Row="6" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,AutoSize,0,Percent,100,AutoSize,0" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,Absolute,20" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="tableConfig.Location" type="System.Drawing.Point, System.Drawing">
     <value>18, 26</value>
@@ -1199,7 +1251,7 @@
     <value>3, 1, 3, 3</value>
   </data>
   <data name="txtCurrent.Size" type="System.Drawing.Size, System.Drawing">
-    <value>476, 23</value>
+    <value>498, 23</value>
   </data>
   <data name="txtCurrent.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>

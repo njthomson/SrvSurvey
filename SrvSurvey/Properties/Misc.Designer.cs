@@ -475,7 +475,7 @@ namespace SrvSurvey.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to System survey: .
+        ///   Looks up a localized string similar to DSS survey: .
         /// </summary>
         internal static string PlotSysStatus_Header {
             get {
@@ -493,7 +493,7 @@ namespace SrvSurvey.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No DSS meet criteria.
+        ///   Looks up a localized string similar to None.
         /// </summary>
         internal static string PlotSysStatus_NoDssMeet {
             get {

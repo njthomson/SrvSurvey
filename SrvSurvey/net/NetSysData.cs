@@ -335,8 +335,8 @@ namespace SrvSurvey.net
 
         private string? getMatTraderWithType(ApiSystemDump.System.Station station)
         {
-            var primary_economy = station.primaryEconomy.ToLowerInvariant();
-            var secondary_economy = station.economies?.OrderBy(e => e.Value).Skip(1).FirstOrDefault().Key.ToLowerInvariant();
+            var primary_economy = station?.primaryEconomy?.ToLowerInvariant();
+            var secondary_economy = station?.economies?.OrderBy(e => e.Value).Skip(1).FirstOrDefault().Key.ToLowerInvariant();
 
             // See: https://github.com/EDCD/FDevIDs/blob/master/How%20to%20determine%20MatTrader%20and%20Broker%20type
             if (primary_economy == "high tech" || primary_economy == "military") return Misc.NetSysData_Encoded;
@@ -352,8 +352,8 @@ namespace SrvSurvey.net
 
         private string? getTechBrokerType(ApiSystemDump.System.Station station)
         {
-            var primary_economy = station.primaryEconomy.ToLowerInvariant();
-            var secondary_economy = station.economies?.OrderBy(e => e.Value).Skip(1).FirstOrDefault().Key.ToLowerInvariant();
+            var primary_economy = station?.primaryEconomy?.ToLowerInvariant();
+            var secondary_economy = station?.economies?.OrderBy(e => e.Value).Skip(1).FirstOrDefault().Key.ToLowerInvariant();
 
             // See: https://github.com/EDCD/FDevIDs/blob/master/How%20to%20determine%20MatTrader%20and%20Broker%20type
             if (primary_economy == "high tech") return Misc.NetSysData_Guardian;

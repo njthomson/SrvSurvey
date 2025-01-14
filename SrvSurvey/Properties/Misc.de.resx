@@ -244,16 +244,16 @@
     <comment>FSS not started</comment>
   </data>
   <data name="PlotSysStatus_Header">
-    <value>Systemerkundung: </value>
-    <comment>System survey: </comment>
+    <value>DSS-Umfrage: </value>
+    <comment>DSS survey: </comment>
   </data>
   <data name="PlotSysStatus_NextSystem">
     <value>Nächstes System:</value>
     <comment>Next system:</comment>
   </data>
   <data name="PlotSysStatus_NoDssMeet">
-    <value>Kein DSS erfüllt die Kriterien</value>
-    <comment>No DSS meet criteria</comment>
+    <value>Nichts</value>
+    <comment>None</comment>
   </data>
   <data name="PlotSysStatus_NonBodySignals">
     <value>► {0} Nicht-Himmelskörper-Signale</value>

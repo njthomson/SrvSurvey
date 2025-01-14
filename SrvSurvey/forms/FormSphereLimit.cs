@@ -69,12 +69,14 @@ namespace SrvSurvey
 
         private void setTargetSystem(StarRef? targetSystem)
         {
+            txtCurrentSystem.Text = cmdr.currentSystem;
             if (targetSystem != null)
             {
                 targetStarPos = targetSystem.toStarPos();
                 txtStarPos.Text = $"[ {targetSystem.x} , {targetSystem.y} , {targetSystem.z} ]";
 
                 var dist = Util.getSystemDistance(cmdr.starPos, targetStarPos).ToString("N2");
+                Game.log($"getSystemDistance: '{cmdr.currentSystem} ({cmdr.starPos}) => '{targetSystem}' {targetStarPos} = {dist}");
                 txtCurrentDistance.Text = $"{dist}ly";
             }
             else

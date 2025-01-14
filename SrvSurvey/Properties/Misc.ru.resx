@@ -244,16 +244,16 @@
     <comment>FSS not started</comment>
   </data>
   <data name="PlotSysStatus_Header">
-    <value>Обследование системы: </value>
-    <comment>System survey: </comment>
+    <value>Опрос DSS: </value>
+    <comment>DSS survey: </comment>
   </data>
   <data name="PlotSysStatus_NextSystem">
     <value>Следующая система:</value>
     <comment>Next system:</comment>
   </data>
   <data name="PlotSysStatus_NoDssMeet">
-    <value>Ни один DSS не соответствует критериям</value>
-    <comment>No DSS meet criteria</comment>
+    <value>Никакой</value>
+    <comment>None</comment>
   </data>
   <data name="PlotSysStatus_NonBodySignals">
     <value>► {0} посторонние сигналы</value>

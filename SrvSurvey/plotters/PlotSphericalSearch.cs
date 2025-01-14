@@ -93,9 +93,9 @@ namespace SrvSurvey.plotters
                 };
             }
 
-            Game.log($"Measuring distance to: {lastSystem.StarSystem}");
             this.targetSystemName = lastSystem.StarSystem;
             this.distance = Util.getSystemDistance(game.cmdr.sphereLimit.centerStarPos, lastSystem.StarPos);
+            Game.log($"Measuring distance: '{game.cmdr.sphereLimit.centerSystemName}' {game.cmdr.sphereLimit.centerStarPos} => '{lastSystem.StarSystem}' {lastSystem.StarPos} = {this.distance}");
 
             this.Invalidate();
         }

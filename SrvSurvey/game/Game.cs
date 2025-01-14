@@ -1166,7 +1166,7 @@ namespace SrvSurvey.game
             if (this.systemData == null) return;
 
             // re-predict everything in the current system
-            foreach (var body in this.systemData.bodies)
+            foreach (var body in this.systemData.bodies.ToList())
             {
                 if (body.bioSignalCount > 0)
                     body.predictSpecies();
