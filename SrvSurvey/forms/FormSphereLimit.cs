@@ -23,7 +23,7 @@ namespace SrvSurvey
             // populate controls from settings
             numRadius.Value = (decimal)cmdr.sphereLimit.radius;
             comboSystemName.Text = cmdr.sphereLimit.centerSystemName;
-            targetStarPos = cmdr.sphereLimit.centerStarPos ?? new StarPos();
+            targetStarPos = new StarPos(cmdr.sphereLimit.centerStarPos);
             if (targetStarPos != null)
             {
                 txtStarPos.Text = targetStarPos.ToString();
@@ -73,10 +73,10 @@ namespace SrvSurvey
             if (targetSystem != null)
             {
                 targetStarPos = targetSystem.toStarPos();
-                txtStarPos.Text = $"[ {targetSystem.x} , {targetSystem.y} , {targetSystem.z} ]";
+                txtStarPos.Text = targetStarPos.ToString();
 
                 var dist = Util.getSystemDistance(cmdr.starPos, targetStarPos).ToString("N2");
-                Game.log($"getSystemDistance: '{cmdr.currentSystem} ({cmdr.starPos}) => '{targetSystem}' {targetStarPos} = {dist}");
+                Game.log($"getSystemDistance: '{cmdr.currentSystem} ({(StarPos)cmdr.starPos}) => '{targetSystem}' {targetStarPos} = {dist}");
                 txtCurrentDistance.Text = $"{dist}ly";
             }
             else
