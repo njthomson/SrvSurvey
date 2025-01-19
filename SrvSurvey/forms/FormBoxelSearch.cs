@@ -1,8 +1,10 @@
 ﻿using SrvSurvey.game;
 using SrvSurvey.net;
 using SrvSurvey.plotters;
+using SrvSurvey.Properties;
 using SrvSurvey.units;
-using static System.Net.Mime.MediaTypeNames;
+using SrvSurvey.widgets;
+using System.Drawing.Drawing2D;
 
 namespace SrvSurvey.forms
 {
@@ -12,6 +14,7 @@ namespace SrvSurvey.forms
         private CommanderSettings cmdr;
         private StarRef from;
         private bool updatingList = false;
+        private bool configValid;
 
         private BoxelSearch bs { get => cmdr.boxelSearch!; }
 
@@ -33,7 +36,9 @@ namespace SrvSurvey.forms
 
             bs.changed += boxelSearch_changed;
 
+            txtMainBoxel.Text = bs.boxel.name;
             checkAutoCopy.Checked = bs.autoCopy;
+            updateNextSystem();
 
             if (bs.active && bs.collapsed)
                 toggleListVisibility(true);
@@ -45,12 +50,18 @@ namespace SrvSurvey.forms
             {
                 bs.reset(bs.boxel, false);
                 prepForm();
+                menuSiblings.targetButton = btnParent;
             }
             else
             {
                 prepForm();
                 btnConfig_Click(null!, null!);
             }
+
+            menuSiblings.Opening += menuSiblings_Opening;
+
+            var mw = flowCommands.Right + 20;
+            this.MinimumSize = new Size(mw, 188);
         }
 
         private void btnConfig_Click(object sender, EventArgs e)
@@ -59,15 +70,18 @@ namespace SrvSurvey.forms
                 toggleListVisibility(false);
 
             // populate inline-dialog
+            txtConfigBoxel.Text = bs.boxel?.name ?? cmdr.currentSystem;
             checkSkipVisited.Checked = bs.skipAlreadyVisited;
             checkSpinKnownToSpansh.Checked = bs.skipKnownToSpansh;
             checkCompleteOnFssAllBodies.Checked = bs.completeOnFssAllBodies;
             checkCompleteOnEnterSystem.Checked = !bs.completeOnFssAllBodies;
             comboLowMassCode.Text = bs.lowMassCode.ToString();
             dateStart.Value = bs.startedOn > DateTime.MinValue ? bs.startedOn : DateTime.Today;
+            menuSiblings.targetButton = btnConfigNav;
 
+            list.Items.Clear();
             btnToggleList.Enabled = false;
-            tableTop.Enabled = false;
+            tableTop.Visible = false;
             tableConfig.Visible = true;
             tableConfig.BringToFront();
 
@@ -83,34 +97,50 @@ namespace SrvSurvey.forms
                 if (!PlotSphericalSearch.allowPlotter)
                     Program.closePlotter<PlotSphericalSearch>();
             }
+
+            this.prepSiblings(bs.current);
         }
 
         private void btnBegin_Click(object sender, EventArgs e)
         {
-            tableConfig.Visible = false;
-            tableTop.Enabled = true;
-            btnToggleList.Enabled = true;
+            closeConfig(true);
+        }
 
+        private void btnConfigCancel_Click(object sender, EventArgs e)
+        {
+            closeConfig(false);
+        }
+
+        private void closeConfig(bool save)
+        {
             // exit early if we don't have a valid boxel
-            var bx = Boxel.parse(txtTopBoxel.Text);
-            if (bx == null) return;
+            var bx = Boxel.parse(txtConfigBoxel.Text);
+            if (bx != null && save)
+            {
+                // populate from inline-dialog
+                bs.completeOnFssAllBodies = checkCompleteOnFssAllBodies.Checked;
+                bs.skipAlreadyVisited = checkSkipVisited.Checked;
+                bs.skipKnownToSpansh = checkSpinKnownToSpansh.Checked;
+                bs.lowMassCode = comboLowMassCode.Text[0];
+                bs.startedOn = dateStart.Value;
 
-            // populate from inline-dialog
-            bs.completeOnFssAllBodies = checkCompleteOnFssAllBodies.Checked;
-            bs.skipAlreadyVisited = checkSkipVisited.Checked;
-            bs.skipKnownToSpansh = checkSpinKnownToSpansh.Checked;
-            bs.lowMassCode = comboLowMassCode.Text[0];
-            bs.startedOn = dateStart.Value;
-
-            bs.reset(bx, true);
-
+                bs.reset(bx, true);
+            }
             // start finding systems...
+            bs.active = true;
             this.saveAndSetCurrent(bs.current, true);
             Game.log($"Enabled boxel search:\r\n\tname: {bs.boxel}");
 
             // make plotter appear, update or close
             if (PlotSphericalSearch.allowPlotter)
                 Program.showPlotter<PlotSphericalSearch>()?.Invalidate();
+
+            // update form controls
+            tableConfig.Visible = false;
+            tableTop.Visible = true;
+            btnToggleList.Enabled = true;
+            menuSiblings.targetButton = btnParent;
+            txtMainBoxel.Text = bs.boxel.name;
         }
 
         private void saveAndSetCurrent(Boxel bx, bool force = false)
@@ -123,34 +153,34 @@ namespace SrvSurvey.forms
             cmdr.Save();
 
             if (diff)
+            {
                 prepForm();
+                updateNextSystem();
+            }
         }
 
         private void prepForm()
         {
-            txtTopBoxel.Text = bs.boxel?.name ?? cmdr.currentSystem;
             this.setStatusText();
 
             if (bs.active)
             {
                 // activate the feature
                 numMax.Enabled = true;
-
-                txtTopBoxel.ReadOnly = true;
-                txtTopBoxel.Text = bs.boxel?.name;
                 txtCurrent.Text = bs.current?.prefix;
 
                 this.setNumMax();
 
                 // add siblings
-                this.prepSiblings();
+                if (bs?.current != null)
+                    this.prepSiblings(bs.current);
             }
             else
             {
                 // disable the feature
                 numMax.Enabled = false;
 
-                txtTopBoxel.ReadOnly = false;
+                txtConfigBoxel.ReadOnly = false;
                 txtCurrent.Text = "";
 
                 Program.invalidate<PlotSphericalSearch>();
@@ -160,7 +190,6 @@ namespace SrvSurvey.forms
             numMax.Enabled = bs.active;
             btnParent.Enabled = bs.active;
             btnBoxelEmpty.Enabled = bs.active;
-            btnPaste.Enabled = bs.active;
             btnCopyNext.Enabled = bs.active;
             txtCurrent.Enabled = bs.active;
         }
@@ -190,24 +219,54 @@ namespace SrvSurvey.forms
             numMax.Enabled = true;
         }
 
-        private void prepSiblings()
+        private void menuSiblings_Opening(object? sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (bs?.current == null) return;
+            if (menuSiblings.Items.Count == 0) return;
+
+            menuSiblings.Items["paste"].Visible = Clipboard.ContainsText();
+        }
+
+        private void prepSiblings(Boxel bx)
+        {
+            if (bx == null) return;
 
             menuSiblings.Items.Clear();
 
-            // show current
-            var current = bs.current;
-            menuSiblings.Items.Add(current.name)
-                .Enabled = false;
+            // show copy current + paste
+            var current = bx;
+            menuSiblings.Items.Add("Copy", "copy", () =>
+            {
+                if (tableConfig.Visible)
+                    Clipboard.SetText(txtConfigBoxel.Text);
+                else
+                    Clipboard.SetText(txtCurrent.Text);
+            })
+                .Image = ImageResources.copy1;
+
+            // paste
+            menuSiblings.Items.Add("Paste", "paste", () =>
+            {
+                if (Clipboard.ContainsText())
+                {
+                    if (tableConfig.Visible)
+                        txtConfigBoxel.Text = Clipboard.GetText();
+                    else
+                    {
+                        txtCurrent.Text = Clipboard.GetText();
+                        prepSiblings(Boxel.parse(txtCurrent.Text)!);
+                    }
+                }
+            })
+                .Image = ImageResources.paste1;
+
             menuSiblings.Items.Add(new ToolStripSeparator());
 
 
             // add parent and siblings
             if (current.massCode != 'h')
             {
-                //menuSiblings.Items.Add("Parent boxel:")
-                //    .Enabled = false;
+                menuSiblings.Items.Add("Move to:")
+                    .Enabled = false;
 
                 var parent = current.parent;
                 menuSiblings.Items.Add($"Parent: {parent}")
@@ -219,13 +278,8 @@ namespace SrvSurvey.forms
                 // prior sibling
                 if (currentIdx > 0)
                 {
-                    //menuSiblings.Items.Add(new ToolStripSeparator());
-                    //menuSiblings.Items.Add("Previous boxel:")
-                    //    .Enabled = false;
-
                     var prevSibling = siblings[currentIdx - 1];
-                    menuSiblings.Items.Add("Prev: " + prevSibling.ToString())
-                        .Tag = new ItemTag(null, prevSibling);
+                    menuSiblings.Items.Add($"Prev: {prevSibling}", new ItemTag(null, prevSibling));
                 }
                 else
                 {
@@ -236,13 +290,8 @@ namespace SrvSurvey.forms
                 // next sibling
                 if (currentIdx < siblings.Count - 1)
                 {
-                    //menuSiblings.Items.Add(new ToolStripSeparator());
-                    //menuSiblings.Items.Add("Next boxel:")
-                    //    .Enabled = false;
-
                     var nextSibling = siblings[currentIdx + 1];
-                    menuSiblings.Items.Add("Next: " + nextSibling.ToString())
-                        .Tag = new ItemTag(null, nextSibling);
+                    menuSiblings.Items.Add($"Next: {nextSibling}", new ItemTag(null, nextSibling));
                 }
                 else
                 {
@@ -269,15 +318,26 @@ namespace SrvSurvey.forms
 
         private void menuSiblings_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
+            var itemAction = e.ClickedItem?.Tag as Action;
+            if (itemAction != null)
+            {
+                itemAction();
+                return;
+            }
+
             var itemTag = e.ClickedItem?.Tag as ItemTag;
             if (itemTag == null) return;
+
+            if (tableConfig.Visible)
+            {
+                // just update the config text box
+                txtConfigBoxel.Text = itemTag.boxel.name;
+                return;
+            }
 
             this.BeginInvoke(() =>
             {
                 this.saveAndSetCurrent(itemTag.boxel);
-
-                if (bs.autoCopy)
-                    Clipboard.SetText(bs.getNextToVisit());
             });
         }
 
@@ -285,6 +345,9 @@ namespace SrvSurvey.forms
         {
             // adjust visible count to the largest known system
             setNumMax();
+
+            if (bs.nextSystem != null)
+                txtCurrent.Text = bs.nextSystem;
 
             this.prepList();
         }
@@ -364,83 +427,19 @@ namespace SrvSurvey.forms
                 // TODO: Make this flicker less
                 if (list.Items.Count > 0) list.AutoResizeColumn(0, ColumnHeaderAutoResizeStyle.ColumnContent);
                 if (hasNotes) list.AutoResizeColumn(2, ColumnHeaderAutoResizeStyle.ColumnContent);
+
+                list.EnsureVisible(bs.current.n2);
             }
 
             this.setStatusText();
             updatingList = false;
         }
 
-        /*
-        private ListViewItem createListItemFromResult(ItemTag tag, bool visited)
-        {
-            var listItem = new ListViewItem()
-            {
-                Name = tag.name,
-                Text = tag.name,
-                Tag = tag,
-                Checked = visited,
-            };
-            // distance
-            var sub1 = listItem.SubItems.Add("");
-            sub1.Name = "dist";
-            setDistance(listItem);
-
-            // notes
-            var notes = tag.result?.bodies?.Count > 0
-                ? Properties.Misc.FormBoxelSearch_SpanshUpdatedBodies.format(tag.result!.updated_at.Date.ToShortDateString(), tag.result.bodies.Count)
-                : Properties.Misc.FormBoxelSearch_SpanshUpdated.format(tag.result!.updated_at.Date.ToShortDateString());
-            var sub2 = listItem.SubItems.Add(notes);
-            sub2.Name = "notes";
-
-            return listItem;
-        }
-
-        private ListViewItem createEmptyListItem(int n, bool visited)
-        {
-            var target = cmdr.boxelSearch?.boxel?.to(n)!;
-            var tag = new ItemTag(null, target);
-
-            var listItem = new ListViewItem()
-            {
-                Name = target.ToString(),
-                Text = target.ToString(),
-                Tag = tag,
-                Checked = visited,
-            };
-
-            // see if we can get a StarPos from local files
-            var sysData = SystemData.Load(target.ToString(), 0, cmdr.fid);
-            if (sysData != null)
-            {
-                tag.starPos = sysData.starPos;
-                listItem.Checked = true;
-            }
-
-            // distance
-            var sub1 = listItem.SubItems.Add("?");
-            sub1.Name = "dist";
-            sub1.Tag = 0;
-
-            if (tag.starPos != null)
-                setDistance(listItem);
-
-            // notes
-            var notes = Properties.Misc.FormBoxelSearch_UndiscoveredSystem;
-            var sub2 = listItem.SubItems.Add(notes);
-            sub2.Name = "notes";
-            if (sysData != null)
-                sub2.Text = $"Visited: {sysData.lastVisited.LocalDateTime}";
-
-            return listItem;
-        }
-        */
-
         private void btnCopyNext_Click(object sender, EventArgs e)
         {
-            var txt = bs.getNextToVisit();
-            Clipboard.SetText(txt);
-            txtCurrent.Text = txt;
-            lblStatus.Text = $"Next: {txt}";
+            this.updateNextSystem();
+            if (bs.nextSystem != null)
+                Clipboard.SetText(bs.nextSystem);
         }
 
         private void numMax_ValueChanged(object sender, EventArgs e)
@@ -468,64 +467,41 @@ namespace SrvSurvey.forms
             {
                 var sys = bs.systems.FirstOrDefault(sys => sys.name.n2 == bx.n2);
                 if (sys != null)
-                    sys.complete = e.Item.Checked;
+                {
+                    if (sys.complete != e.Item.Checked)
+                        sys.complete = e.Item.Checked;
+
+                    this.updateNextSystem();
+                }
+                else
+                {
+                    // we cannot mark a system complete if we've never been there
+                    lblStatus.Text = "Systems must be visited to force complete";
+                    if (e.Item.Checked)
+                        e.Item.Checked = false;
+                }
             }
-        }
-
-        public void markVisited(string name, bool visited)
-        {
-            var item = list.Items[name];
-            if (item != null)
-            {
-                item.Checked = visited;
-                if (visited)
-                    item.SubItems["Notes"]!.Text = Properties.Misc.FormBoxelSearch_Visited.format(DateTime.Now);
-
-                //if (string.IsNullOrEmpty(item.SubItems["dist"].Text))
-                //{
-
-                //}
-                // TODO: txtNext.Text = boxelSearch.getNextToVisit();
-            }
-
-            this.setStatusText();
         }
 
         private void setStatusText()
         {
             if (bs == null || !bs.active)
-            {
                 lblStatus.Text = Properties.Misc.FormBoxelSearch_SearchNotActive;
-            }
             else
+                lblStatus.Text = Properties.Misc.FormBoxelSearch_VisitedCounts.format(bs.countVisited, bs.currentCount + 1, bs.countBoxelsCompleted, bs.countBoxelsTotal);
+        }
+
+        private void updateNextSystem()
+        {
+            bs.setNextToVisit();
+            var txt = bs.nextSystem;
+            if (txt != null)
             {
-                lblStatus.Text = Properties.Misc.FormBoxelSearch_VisitedCounts.format(bs.countVisited, bs.currentCount);
-
-                // TODO: localize
-                lblStatus.Text += $", completed {bs.countBoxelsCompleted} of {bs.countBoxelsTotal} boxels";
+                txtCurrent.Text = txt;
+                lblStatus.Text = $"Next: {txt}";
             }
-        }
 
-        private void comboFrom_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            // TODO: remove!
-        }
-
-        private void measureDistances(StarRef starRef)
-        {
-            this.from = starRef;
-            foreach (ListViewItem item in this.list.Items)
-                setDistance(item);
-        }
-
-        private void setDistance(ListViewItem item)
-        {
-            var sys = item.SubItems[0].Tag as BoxelSearch.System;
-            if (sys?.starPos == null) return;
-
-            var dist = Util.getSystemDistance(from, sys.starPos);
-            item.SubItems["dist"]!.Tag = dist;
-            item.SubItems["dist"]!.Text = dist.ToString("N2") + " ly";
+            Program.invalidate<PlotSphericalSearch>();
         }
 
         private void menuHelpLink_Click(object sender, EventArgs e)
@@ -546,6 +522,7 @@ namespace SrvSurvey.forms
             }
         }
 
+        /*
         private void btnPaste_Click(object sender, EventArgs e)
         {
             var bx = Boxel.parse(Clipboard.GetText());
@@ -563,6 +540,7 @@ namespace SrvSurvey.forms
                 lblWarning.Show();
             }
         }
+        */
 
         private void btnToggleList_ButtonClick(object sender, EventArgs e)
         {
@@ -597,52 +575,58 @@ namespace SrvSurvey.forms
             }
         }
 
-        private void txtTopBoxel_TextChanged(object sender, EventArgs e)
+        private void txtConfigBoxel_TextChanged(object sender, EventArgs e)
         {
             // confirm text is a valid boxel
-            var bx = Boxel.parse(txtTopBoxel.Text);
-            btnBegin.Enabled = bx != null;
+            var bx = Boxel.parse(txtConfigBoxel.Text);
+            this.configValid = bx != null;
+            btnBegin.Enabled = this.configValid;
+            comboLowMassCode.Enabled = this.configValid;
             if (bx == null) return;
 
+            var mc = comboLowMassCode.SelectedItem;
+
             // populate lower mass code combo
-            //var mc1 = comboLowMassCode.SelectedValue;
             comboLowMassCode.Items.Clear();
             var mc2 = bx.massCode;
             comboLowMassCode.Items.Add(mc2);
-            do
+            while (mc2 > 'a')
             {
                 mc2--;
                 comboLowMassCode.Items.Add(mc2);
-            } while (mc2 > 'a');
-            comboLowMassCode.SelectedIndex = 0;
+            }
+
+            // restore selected value?
+            comboLowMassCode.SelectedItem = mc;
+            if (comboLowMassCode.SelectedItem == null)
+                comboLowMassCode.SelectedIndex = 0;
 
             // show how many boxels need to be searched
             setTotalChildCount(bx);
+
+            prepSiblings(bx);
         }
 
         private void checkAutoCopy_CheckedChanged(object sender, EventArgs e)
         {
             bs.autoCopy = checkAutoCopy.Checked;
             cmdr.Save();
-
-            // show warning if key-hooks are not viable
-            //linkKeyChords.Visible = bs?.autoCopy != true && (!Game.settings.keyhook_TEST || string.IsNullOrEmpty(Game.settings.keyActions_TEST?.GetValueOrDefault(KeyAction.copyNextBoxel)));
         }
 
         private void ComboFrom_selectedSystemChanged(StarRef? starSystem)
         {
             if (comboFrom.SelectedSystem == null) return;
 
-            measureDistances(comboFrom.SelectedSystem);
-        }
+            this.from = comboFrom.SelectedSystem;
+            foreach (ListViewItem item in this.list.Items)
+            {
+                var sys = item.SubItems[0].Tag as BoxelSearch.System;
+                if (sys?.starPos == null) continue;
 
-        private void btnPasteTopBoxel_Click(object sender, EventArgs e)
-        {
-            var txt = Clipboard.GetText();
-            var bx = Boxel.parse(txt);
-            if (bx == null) return;
-
-            txtTopBoxel.Text = txt;
+                var dist = Util.getSystemDistance(from, sys.starPos);
+                item.SubItems["dist"]!.Tag = dist;
+                item.SubItems["dist"]!.Text = dist.ToString("N2") + " ly";
+            }
         }
 
         private void comboLowMassCode_SelectedIndexChanged(object sender, EventArgs e)
@@ -652,17 +636,18 @@ namespace SrvSurvey.forms
 
         private void setTotalChildCount(Boxel? bx = null)
         {
-            bx ??= Boxel.parse(txtTopBoxel.Text);
+            bx ??= Boxel.parse(txtConfigBoxel.Text);
             if (bx == null || string.IsNullOrWhiteSpace(comboLowMassCode.Text))
             {
-                labelBoxelCount.Text = "";
+                lblBoxelCount.Text = "";
                 return;
             }
 
             // show how many boxels need to be searched
             var diff = (int)bx.massCode - comboLowMassCode.Text[0];
             var count = Boxel.getTotalChildCount(diff);
-            labelBoxelCount.Text = $"(Contains {count} boxels)";
+            var size = Boxel.getCubeSize(bx.massCode);
+            lblBoxelCount.Text = $"Cube size: {size} ly - Boxels: {count}";
         }
 
         private void checkCompleteOnEnterSystem_CheckedChanged(object sender, EventArgs e)
@@ -677,7 +662,6 @@ namespace SrvSurvey.forms
 
             checkCompleteOnFssAllBodies.Enabled = true;
             checkCompleteOnEnterSystem.Enabled = true;
-
         }
 
         private void checkCompleteOnFssAllBodies_CheckedChanged(object sender, EventArgs e)
@@ -697,10 +681,83 @@ namespace SrvSurvey.forms
         private void menuListCopySystemName_Click(object sender, EventArgs e)
         {
             if (list.SelectedItems.Count == 0) return;
-            Clipboard.SetText(list.SelectedItems[0].Text);
-            //var itemTag = list.SelectedItems[0].Tag as Boxel;
-            //if ( itemTag != null)
-            //    Clipboard.SetText(itemTag.getAddress().ToString());
+            var txt = list.SelectedItems[0].Text;
+            if (!string.IsNullOrEmpty(txt))
+                Clipboard.SetText(txt);
+        }
+
+        private void panelGraphic_Paint(object sender, PaintEventArgs e)
+        {
+            var g = e.Graphics;
+            g.SmoothingMode = SmoothingMode.HighQuality;
+            var pn2 = new Pen(Color.Black, 1);
+            var pb1 = new Pen(Color.Black, 1);
+            var pb2 = new Pen(Color.Black, 2);
+            var pr3 = new Pen(Color.Blue, 3);
+
+            int s = (int)(panelGraphic.Height * 0.60f); // 200; // square size
+            int d = (int)(s * 0.4f); //80; // depth
+            int ds = s / 10; // 20; // "depth shear" aka perspective?
+
+            var x = 10 + d;
+            var y = 10;
+
+            // back square
+            var r1 = new Rectangle(x, y, s, s);
+            var m1 = new Point(r1.Width / 2, r1.Height / 2);
+            // front square
+            var r2 = new Rectangle(x - d, y + d, s + ds, s + ds);
+            var m2 = new Point(r2.Width / 2, r2.Height / 2);
+            // middle square
+            var rm = new Rectangle(x - d / 2, y + d / 2, s + ds / 2, s + ds / 2);
+            var mm = new Point(rm.Width / 2, rm.Height / 2);
+
+            labelGraphic.Left = r1.Right + 20;
+            labelGraphic.Width = panelGraphic.Width - labelGraphic.Left;
+
+            // draw back square
+            g.DrawRectangle(pn2, r1);
+            g.DrawLineR(pb2, r1.Left, r1.Top + m1.Y, r1.Width, 0);
+            g.DrawLineR(pb1, r1.Left + m1.X, r1.Top, 0, r1.Height);
+
+            // connect square corners
+            g.DrawLine(pn2, r2.Left, r2.Top - 0.5f, r1.Left, r1.Top - 0.5f);
+            g.DrawLine(pn2, r2.Right, r2.Top, r1.Right, r1.Top);
+            g.DrawLine(pn2, r2.Left, r2.Bottom - 0.5f, r1.Left, r1.Bottom - 0.5f);
+            g.DrawLine(pn2, r2.Right, r2.Bottom, r1.Right, r1.Bottom);
+
+            // connect square middles
+            g.DrawLine(pb2, r2.Left, r2.Top + m2.Y, r1.Left, r1.Top + m1.Y);
+            g.DrawLine(pb2, r2.Right, r2.Top + m2.Y, r1.Right, r1.Top + m1.Y);
+            g.DrawLine(pb1, r2.Left + m2.X, r2.Top, r1.Left + m1.X, r1.Top);
+            g.DrawLine(pb1, r2.Left + m2.X, r2.Bottom, r1.Left + m1.X, r1.Bottom);
+
+            // draw middle square
+            g.DrawRectangle(pb1, rm);
+            g.DrawLine(pb2, r2.Left + m2.X, r2.Top + m2.Y, r1.Left + m1.X, r1.Top + m1.Y);
+            g.DrawLine(pb2, rm.Left, rm.Top + mm.Y, rm.Right, rm.Top + mm.Y);
+
+            // draw front square
+            g.DrawRectangle(pn2, r2);
+            g.DrawLineR(pb2, r2.Left, r2.Top + m2.Y, r2.Width, 0);
+            g.DrawLineR(pb1, r2.Left + m2.X, r2.Top, 0, r2.Height);
+
+            // front small box
+            var rr1 = new Rectangle(rm.Left, rm.Top + mm.Y, mm.X, mm.Y);
+            var rr2 = new Rectangle(r2.Left, r2.Top + m2.Y, m2.X, m2.Y);
+            g.DrawRectangle(pr3, rr1);
+            g.DrawRectangle(pr3, rr2);
+
+            g.DrawLine(pr3, rr2.Left, rr2.Top, rr1.Left, rr1.Top);
+            g.DrawLine(pr3, rr2.Right, rr2.Top - 1, rr1.Right, rr1.Top - 1);
+            g.DrawLine(pr3, rr2.Left, rr2.Bottom - 1, rr1.Left, rr1.Bottom - 1);
+            g.DrawLine(pr3, rr2.Right, rr2.Bottom - 1, rr1.Right, rr1.Bottom - 1);
+        }
+
+        private void panelGraphic_SizeChanged(object sender, EventArgs e)
+        {
+            if (panelGraphic.Visible)
+                panelGraphic.Invalidate();
         }
     }
 
@@ -709,6 +766,8 @@ namespace SrvSurvey.forms
         public Spansh.SystemResponse.Result? result;
         public Boxel boxel;
         public StarPos? starPos;
+
+        public Action? onClick;
 
         public ItemTag(Spansh.SystemResponse.Result? result, Boxel boxel)
         {
@@ -720,54 +779,4 @@ namespace SrvSurvey.forms
 
         public string name { get => boxel.ToString(); }
     }
-
-    /*
-    class ToolStripItem2 : ToolStripItem
-    {
-        private string? header;
-        private int textHeight;
-
-        public ToolStripItem2(string text, string header, ItemTag tag) : base(text, null, null, text)
-        {
-            this.header = header;
-            this.Tag = tag;
-        }
-
-        private int measureTextHeight(Graphics g)
-        {
-            return TextRenderer.MeasureText("H", this.Font).Height;
-        }
-
-        protected override void OnPaint(PaintEventArgs e)
-        {
-            if (header == null)
-            {
-                base.OnPaint(e);
-                return;
-            }
-            var g = e.Graphics;
-            if (textHeight == 0) textHeight = measureTextHeight(g);
-
-            // draw main text
-            var y = Util.centerIn(this.Bounds.Height, textHeight);
-            BaseWidget.renderText(g, this.Text, 3, y, this.Font, this.ForeColor);
-
-            // draw box if we're hot
-            if (this.Selected)
-            {
-                Game.log(e.ClipRectangle);
-                g.DrawLine(Pens.Red, -20, 0, 20, 20);
-            }
-        }
-    }
-
-    class ToolStripRenderer2 : ToolStripRenderer
-    {
-        protected override void OnRenderItemText(ToolStripItemTextRenderEventArgs e)
-        {
-            Game.log(e.Text);
-            base.OnRenderItemText(e);
-        }
-    }
-    */
 }

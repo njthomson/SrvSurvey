@@ -236,7 +236,7 @@ namespace SrvSurvey.canonn
                         if (newHeading < 0) newHeading += 360;
                         Game.log($"~~inferOdysseySettlementFromAnyPad: marketId: {station.marketId} - matched {template.economy} #{template.subType} from pad #{padIdx}, station heading: {newHeading}°, distFromPadCenter: {delta.dist.ToString("N2")}m");
 
-                        if (delta.dist > 5) Debugger.Break(); // why is the distance this high?
+                        if (delta.dist > 9) Debugger.Break(); // why is the distance this high?
 
                         // only update heading if not previously known and we're not manually docking at this time
                         if (station.heading == -1 || (station.calcMethod != CalcMethod.ManualDock && !Util.isClose(station.heading, newHeading, 1)))

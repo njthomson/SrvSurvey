@@ -100,8 +100,8 @@
     <comment>Visited: {0}</comment>
   </data>
   <data name="FormBoxelSearch_VisitedCounts">
-    <value>* VISITED {0} OF {1} SYSTEMS →→→!</value>
-    <comment>Visited {0} of {1} systems</comment>
+    <value>* COMPLETED {0} OF {1} SYSTEMS, COMPLETED {2} OF {3} BOXELS →→→!</value>
+    <comment>Completed {0} of {1} systems, completed {2} of {3} boxels</comment>
   </data>
   <data name="NetSysData_Bodies">
     <value>* BODIES →→→!</value>

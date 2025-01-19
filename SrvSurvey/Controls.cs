@@ -34,6 +34,22 @@ namespace SrvSurvey
 
             return subItem;
         }
+
+        /// <summary> Creates a ToolStripItem with the given text and tag </summary>
+        public static ToolStripItem Add(this ToolStripItemCollection items, string text, object tag)
+        {
+            return Add(items, text, null, tag);
+        }
+
+        public static ToolStripItem Add(this ToolStripItemCollection items, string text, string? name, object tag)
+        { 
+            var newItem = items.Add(text);
+            if (name != null)
+                newItem.Name = name;
+            newItem.Tag = tag;
+
+            return newItem;
+        }
     }
 
     class FlatButton : Button
@@ -137,10 +153,16 @@ namespace SrvSurvey
                 Width = this.ClientSize.Width,
             };
             this.Controls.Add(tb);
+            tb.TextChanged += tb_TextChanged;
 
             // apply some defaults
             this.BackColor = SystemColors.Window;
             this.ForeColor = SystemColors.WindowText;
+        }
+
+        private void tb_TextChanged(object? sender, EventArgs e)
+        {
+            this.OnTextChanged(e);
         }
 
         #region TextBox overrides
@@ -630,6 +652,8 @@ namespace SrvSurvey
         private void _button_MouseDown(object? sender, MouseEventArgs e)
         {
             if (this.DesignMode) return;
+
+            Game.log($"menuVisible: {menuVisible}, _button: {_button}");
 
             if (!menuVisible && _button != null)
             {

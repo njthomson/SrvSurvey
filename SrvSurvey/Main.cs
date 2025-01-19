@@ -67,7 +67,7 @@ namespace SrvSurvey
                 this.startWatchingScreenshots();
 
             // can we fit in our last location
-            Util.useLastLocation(this, Game.settings.formMainLocation);
+            this.applySavedLocation();
 
             this.bioCtrls = new List<Control>()
             {
@@ -84,7 +84,7 @@ namespace SrvSurvey
 
             Util.applyTheme(this);
         }
-
+        
         private void Main_Load(object sender, EventArgs e)
         {
             foreach (Control ctrl in this.Controls) ctrl.Enabled = false;
@@ -1163,7 +1163,7 @@ namespace SrvSurvey
 
         private void btnViewLogs_Click(object sender, EventArgs e)
         {
-            ViewLogs.show(Game.logs);
+            BaseForm.show<ViewLogs>();
         }
 
         private void setTargetLatLong()
@@ -1330,9 +1330,6 @@ namespace SrvSurvey
         {
             Game.log("Saving settings on close...");
             this.game?.cmdr?.Save();
-
-            if (Game.settings.formMainLocation != this.Location)
-                Game.settings.formMainLocation = this.Location;
 
             Game.settings.Save();
             Game.log("Closed without errors");
@@ -1671,6 +1668,7 @@ namespace SrvSurvey
 
         private void btnPredictions_Click(object sender, EventArgs e)
         {
+            if (game?.systemData == null) return;
             game?.predictSystemSpecies();
             BaseForm.show<FormPredictions>();
         }

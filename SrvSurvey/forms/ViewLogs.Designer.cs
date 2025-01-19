@@ -135,10 +135,8 @@ namespace SrvSurvey
             Name = "ViewLogs";
             SizeGripStyle = SizeGripStyle.Show;
             Text = "Srv Survey Logs";
-            FormClosed += ViewLogs_FormClosed;
             Load += ViewLogs_Load;
             Shown += ViewLogs_Shown;
-            ResizeEnd += ViewLogs_ResizeEnd;
             panel1.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();

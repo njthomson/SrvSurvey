@@ -151,7 +151,7 @@ namespace SrvSurvey.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Visited {0} of {1} systems.
+        ///   Looks up a localized string similar to Completed {0} of {1} systems, completed {2} of {3} boxels.
         /// </summary>
         internal static string FormBoxelSearch_VisitedCounts {
             get {

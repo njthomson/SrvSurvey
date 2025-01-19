@@ -1,5 +1,6 @@
 ﻿using DecimalMath;
 using SrvSurvey.canonn;
+using SrvSurvey.forms;
 using SrvSurvey.game;
 using SrvSurvey.plotters;
 using SrvSurvey.Properties;
@@ -808,7 +809,7 @@ namespace SrvSurvey
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
 
-                ViewLogs.show(Game.logs);
+                BaseForm.show<ViewLogs>();
             }
 
         }

@@ -105,7 +105,7 @@ namespace SrvSurvey.forms
             }
         }
 
-        private void applySavedLocation()
+        protected void applySavedLocation()
         {
             // can we fit in our last location?
             var savedRect = Game.settings.formLocations.GetValueOrDefault(this.GetType().Name);

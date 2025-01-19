@@ -1,35 +1,28 @@
-﻿using SrvSurvey.game;
+﻿using SrvSurvey.forms;
+using SrvSurvey.game;
 using SrvSurvey.Properties;
 
 namespace SrvSurvey
 {
-    public partial class ViewLogs : Form
+    [Draggable, TrackPosition]
+    internal partial class ViewLogs : SizableForm
     {
-        private static ViewLogs? activeForm;
-
-        public static void show(List<string> logs)
-        {
-            if (activeForm == null)
-                ViewLogs.activeForm = new ViewLogs(logs);
-
-            Util.showForm(ViewLogs.activeForm);
-        }
-
         /// <summary>
         /// Append the given string to the log viewer, if it is active.
         /// </summary>
         public static void append(string txt)
         {
-            if (ViewLogs.activeForm != null)
+            if (BaseForm.get<ViewLogs>() != null)
             {
                 Program.control!.Invoke((MethodInvoker)delegate
                 {
                     try
                     {
-                        if (ViewLogs.activeForm != null)
+                        var activeForm = BaseForm.get<ViewLogs>();
+                        if (activeForm != null)
                         {
-                            ViewLogs.activeForm.txtLogs.Text += "\r\n" + txt;
-                            ViewLogs.activeForm.scrollToEnd();
+                            activeForm.txtLogs.Text += "\r\n" + txt;
+                            activeForm.scrollToEnd();
                         }
                     }
                     catch { }
@@ -39,14 +32,11 @@ namespace SrvSurvey
 
         public List<string> logs;
 
-        private ViewLogs(List<string> logs)
+        public ViewLogs()
         {
-            this.logs = logs;
+            this.logs = Game.logs;
             InitializeComponent();
             this.Icon = Icons.page;
-
-            // can we fit in our last location
-            Util.useLastLocation(this, Game.settings.formLogsLocation);
 
             // Not themed
         }
@@ -77,24 +67,9 @@ namespace SrvSurvey
             txtLogs.ScrollToCaret();
         }
 
-        private void ViewLogs_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            ViewLogs.activeForm = null;
-        }
-
         private void ViewLogs_Shown(object sender, EventArgs e)
         {
             scrollToEnd();
-        }
-
-        private void ViewLogs_ResizeEnd(object sender, EventArgs e)
-        {
-            var rect = new Rectangle(this.Location, this.Size);
-            if (Game.settings.formLogsLocation != rect)
-            {
-                Game.settings.formLogsLocation = rect;
-                Game.settings.Save();
-            }
         }
 
         private void btnCopy_Click(object sender, EventArgs e)

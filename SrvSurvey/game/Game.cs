@@ -1127,7 +1127,7 @@ namespace SrvSurvey.game
 
             // update boxel search?
             if (cmdr.boxelSearch?.active == true)
-                cmdr.boxelSearch.markVisited(entry.SystemAddress, entry.StarSystem, entry.StarPos);
+                cmdr.boxelSearch.markComplete(entry.SystemAddress, entry.StarSystem, entry.StarPos);
         }
 
         private void onJournalEntry(CarrierJump entry)
@@ -1180,6 +1180,16 @@ namespace SrvSurvey.game
 
         private void onJournalEntry(FSSDiscoveryScan entry)
         {
+        }
+
+        private void onJournalEntry(FSSAllBodiesFound entry)
+        {
+            // update boxel search?
+            if (cmdr.boxelSearch?.active == true)
+                Program.defer(() =>
+                {
+                    cmdr.boxelSearch.markComplete(entry.SystemAddress, entry.SystemName, null);
+                });
         }
 
         private void onJournalEntry(Scan entry)
@@ -2664,7 +2674,7 @@ namespace SrvSurvey.game
         {
             if (this.systemData == null || this.systemBody == null) return;
 
-            this.systemBody.bookmarks ??= new ();
+            this.systemBody.bookmarks ??= new();
             if (!this.systemBody.bookmarks.ContainsKey(name)) this.systemBody.bookmarks[name] = new List<LatLong2>();
 
             var tooClose = this.systemBody.bookmarks[name].Any(_ => Util.getDistance(_, location, this.systemBody.radius) < 20);

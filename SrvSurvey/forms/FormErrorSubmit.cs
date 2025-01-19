@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using SrvSurvey.forms;
 using SrvSurvey.game;
 using System.Data;
 using System.Net;
@@ -96,7 +97,7 @@ namespace SrvSurvey
 
         private void btnLogs_Click(object sender, EventArgs e)
         {
-            ViewLogs.show(Game.logs);
+            BaseForm.show<ViewLogs>();
         }
 
         private void FormErrorSubmit_KeyDown(object sender, KeyEventArgs e)

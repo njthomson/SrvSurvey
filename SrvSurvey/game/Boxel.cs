@@ -243,6 +243,24 @@ namespace SrvSurvey.game
             return bx1?.GetHashCode() != bx2?.GetHashCode();
         }
 
+        public static int getCubeSize(MassCode mc)
+        {
+            int d = mc - 'a';
+            int size = (int)Math.Pow(2, d);
+            return size * 10;
+            //switch (mc)
+            //{
+            //    case 'a': return 10;
+            //    case 'b': return 20;
+            //    case 'c': return 40;
+            //    case 'd': return 80;
+            //    case 'e': return 10;
+            //    case 'f': return 10;
+            //    case 'g': return 10;
+            //    case 'h': return 10;
+            //}
+        }
+
         #endregion
 
         /// <summary> The initial sector, eg: 'Thuechu' from 'Thuechu YV-T d4-12' </summary>
@@ -285,7 +303,7 @@ namespace SrvSurvey.game
         {
             var txt = $"{prefix}{n2}";
             if (_name != null && _name != txt)
-                return $"{_name} ({txt})";
+                return $"{txt} ({_name})";
             else
                 return txt;
         }
@@ -396,14 +414,15 @@ namespace SrvSurvey.game
             // sibling or bigger cannot be contained by smaller
             if (child.massCode >= this.massCode) return false;
 
-            // calc and adjust our coords to the same scale as the child
-            var d = this.massCode - child.massCode;
-            var span = (int)Math.Pow(2, d);
-            var coords = this.getRelativeCoords() * span;
-
-            // are child coords are within the space of this boxel?
-            var pt = child.getRelativeCoords();
-            return coords.contains(span, pt);
+            // walk up the parent chain
+            var bx = child;
+            while (bx.massCode < this.massCode)
+            {
+                bx = bx.parent;
+                if (bx == this)
+                    return true;
+            }
+            return false;
         }
 
         /// <summary>

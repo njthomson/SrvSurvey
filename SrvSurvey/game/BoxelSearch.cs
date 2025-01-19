@@ -3,6 +3,8 @@ using Newtonsoft.Json.Linq;
 using SrvSurvey.net;
 using SrvSurvey.units;
 using System.Diagnostics;
+using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace SrvSurvey.game
 {
@@ -26,6 +28,9 @@ namespace SrvSurvey.game
 
         /// <summary> The name of the current (contained?) boxel we are searching </summary>
         public Boxel current;
+
+        /// <summary> The next system to visit </summary>
+        public string nextSystem;
 
         /// <summary> Count of systems expected in this boxel </summary>
         public int currentCount { get; private set; }
@@ -88,7 +93,7 @@ namespace SrvSurvey.game
             this.active = true;
 
             if (boxel != newBoxel || startedOn == DateTime.MinValue)
-                startedOn = DateTime.Now;
+                startedOn = DateTime.Today;
 
             boxel = newBoxel;
             if (current == null || resetCurrent || !newBoxel.containsChild(current))
@@ -158,19 +163,22 @@ namespace SrvSurvey.game
             if (this.emptyBoxels!.Contains(bx.id))
             {
                 this.currentEmpty = true;
-                this.fireChanged();
             }
             else
             {
-                if (BoxelSearch.cacheCounts.ContainsKey(bx.name))
-                    this.currentCount = cacheCounts[bx.name];
-                else
-                    this.currentCount = 1;
+                // not empty
                 this.currentEmpty = false;
+
+                // use cached count?
+                this.currentCount = BoxelSearch.cacheCounts.ContainsKey(bx.name)
+                    ? cacheCounts[bx.name]
+                    : 1;
+
+                // decide where to go next
+                this.setNextToVisit();
             }
 
-            if (force)
-                fireChanged();
+            fireChanged();
 
             // now start looking for systems on disk and from Spansh
             Task.Run(this.findSystemsInCurrentBoxel);
@@ -201,7 +209,11 @@ namespace SrvSurvey.game
                 dirty |= this.findSystemsFromSpansh(spanshResponse);
 
                 if (dirty)
+                {
+                    this.setNextToVisit();
+
                     this.fireChanged();
+                }
             }
             catch (Exception ex)
             {
@@ -211,14 +223,17 @@ namespace SrvSurvey.game
 
         private System findOrAddSystem(Boxel bx)
         {
-            var match = systems.FirstOrDefault(sys => sys.name == bx.name);
-            if (match == null)
+            lock (this.systems)
             {
-                match = new System(bx);
-                systems.Add(match);
-            }
+                var match = systems.FirstOrDefault(sys => sys.name == bx.name);
+                if (match == null)
+                {
+                    match = new System(bx);
+                    systems.Add(match);
+                }
 
-            return match;
+                return match;
+            }
         }
 
         private bool findSystemsFromDisk()
@@ -230,30 +245,6 @@ namespace SrvSurvey.game
             Directory.CreateDirectory(folder);
 
             var dirty = false;
-
-            var files = Directory.GetFiles(folder, $"{current.prefix}*.json");
-            if (false && files.Length > 0)
-            {
-                // match by generated name
-                foreach (var file in files)
-                {
-                    var fileData = Data.Load<SystemData>(file)!;
-                    var bx = Boxel.parse(fileData.name);
-                    if (bx == null || bx.prefix != this.current.prefix) continue;
-                    dirty = true;
-
-                    // merge data
-                    var sys = findOrAddSystem(bx);
-                    sys.complete |= fileData.lastVisited > startedOn || this.skipAlreadyVisited;
-                    sys.starPos ??= fileData.starPos;
-
-                    if (sys.visitedAt == null || sys.visitedAt < fileData.lastVisited)
-                        sys.visitedAt = fileData.lastVisited;
-
-                    setProgress(current, bx.n2);
-                }
-            }
-
             for (var n = 0; n < this.currentCount; n++)
             {
                 var bx = current.to(n);
@@ -267,7 +258,10 @@ namespace SrvSurvey.game
                 dirty = true;
 
                 var sys = findOrAddSystem(bx);
-                sys.complete |= fileData.lastVisited > startedOn || this.skipAlreadyVisited;
+                if (this.completeOnFssAllBodies)
+                    sys.complete |= fileData.fssAllBodies && fileData.lastVisited > startedOn;
+                else
+                    sys.complete |= fileData.lastVisited > startedOn || this.skipAlreadyVisited;
                 sys.starPos ??= fileData.starPos;
 
                 if (sys.visitedAt == null || sys.visitedAt < fileData.lastVisited)
@@ -318,7 +312,8 @@ namespace SrvSurvey.game
                 {
                     sys.spanshUpdated = result.updated_at;
                     // If Spansh was updated after the cmdr started searching but they didn't visit it personally - consider this not complete
-                    sys.complete |= result.updated_at < startedOn && this.skipKnownToSpansh;
+                    if (!this.completeOnFssAllBodies)
+                        sys.complete |= result.updated_at < startedOn && this.skipKnownToSpansh;
                 }
 
                 setProgress(current, bx.n2);
@@ -421,7 +416,8 @@ namespace SrvSurvey.game
             Game.log($"Empty boxels filepath: {emptyBoxelsFilepath}");
         }
 
-        public void markVisited(long address, string name, StarPos pos)
+        /// <summary> Call to toggle the system as complete </summary>
+        public void markComplete(long address, string name, StarPos? pos)
         {
             var bx = Boxel.parse(address, name);
             if (bx == null) return;
@@ -436,26 +432,72 @@ namespace SrvSurvey.game
             var match = findOrAddSystem(bx);
             if (match == null) return;
 
-            Game.log($"Updating boxel search: system: {bx.name}");
-            match.starPos ??= pos;
-            match.complete = true;
-            match.visitedAt = DateTime.UtcNow;
+            var fire = false;
+            if (this.completeOnFssAllBodies)
+            {
+                var data = SystemData.Load(name, address, CommanderSettings.currentOrLastFid, true);
+                Game.log($"markComplete (completeOnFssAllBodies): system: {data?.name}, bodyCount: {data?.bodyCount}, fssBodyCount: {data?.fssBodyCount}, fssComplete: {data?.fssComplete}, fssAllBodies: {data?.fssAllBodies}");
+                // require FSS to be completed to mark this system as complete
+                if (data?.fssAllBodies == true)
+                {
+                    match.starPos ??= pos;
+                    match.complete = true;
+                    match.visitedAt = DateTime.UtcNow;
 
-            this.fireChanged();
+                    fire = true;
+                }
+            }
+            else
+            {
+                // entering the system is enough to mark it as complete
+                Game.log($"markComplete (!completeOnFssAllBodies): system: {bx.name}");
+                match.starPos ??= pos;
+                match.complete = true;
+                match.visitedAt = DateTime.UtcNow;
+
+                fire = true;
+            }
+
+            if (fire)
+            {
+                this.setNextToVisit();
+                this.fireChanged();
+            }
         }
 
         public string getNextToVisit()
         {
-            // use prefix if nothing yet visited - to help find the count of systems in this boxel
+            return this.nextSystem;
+        }
+
+        public void setNextToVisit()
+        {
+            string? next = null;
+
+            // if no systems have been visited  - use just the prefix to help find the count of systems in this boxel
             if (!currentEmpty && systems.Any() && systems.All(s => !s.complete))
-                return current.prefix;
+            {
+                next = current.prefix;
+            }
+
+            if (next == null)
+            {
+                var max = (int)Math.Max(this.currentMax, this.currentCount);
+                for (int n = 0; n <= max; n++)
+                {
+                    var sys = systems.FirstOrDefault(sys => n == sys.name.n2);
+                    if (sys?.complete == true) continue;
+                    next = current.to(n).name;
+                    break;
+                }
+            }
 
             // take the first incomplete system
-            var nextSys = systems.FirstOrDefault(sys => !sys.complete);
-            var next = nextSys?.name.name;
+            //var nextSys = systems.FirstOrDefault(sys => !sys.complete);
+            //next = nextSys?.name.name;
 
             // take the first unknown system
-            if (next == null)
+            if (next == null && false)
             {
                 for (int n = 0; n < currentCount; n++)
                 {
@@ -478,7 +520,8 @@ namespace SrvSurvey.game
             }
 
 
-            return next ?? current.prefix;
+            this.nextSystem = next ?? current.prefix;
+            Game.log($"setNextToVisit: {this.nextSystem}");
         }
 
         public void updateFromRoute(List<RouteEntry> navRoute)

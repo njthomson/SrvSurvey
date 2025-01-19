@@ -751,7 +751,7 @@ namespace SrvSurvey.plotters
             else
             {
                 TextRenderer.DrawText(g, txt, font, rect, col.Value, flags);
-                this.dtx += this.lastTextSize.Width;
+                //this.dtx += this.lastTextSize.Width;
             }
 
             return this.lastTextSize;
@@ -985,7 +985,7 @@ namespace SrvSurvey.plotters
         protected string RES(string name)
         {
             var txt = rm.GetString(name);
-            if (txt == null) Debugger.Break();
+            //if (txt == null) Debugger.Break();
             return txt ?? "";
         }
 

@@ -71,7 +71,7 @@ namespace SrvSurvey.plotters
 
                 this.dty = eight;
                 drawTextAt2(six, Misc.PlotSysStatus_Header, GameColors.fontSmall);
-                newLine(two, true);
+                newLine(0, true);
                 dtx = six;
 
                 // reduce destination to it's short name
@@ -132,7 +132,7 @@ namespace SrvSurvey.plotters
             {
                 if (!this.IsDisposed)
                 {
-                    this.formAdjustSize(six, six);
+                    this.formAdjustSize(six, eight);
                 }
             }
         }

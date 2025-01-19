@@ -33,18 +33,17 @@
         {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormBoxelSearch));
-            txtTopBoxel = new TextBox();
-            btnConfig = new Button();
+            txtConfigBoxel = new TextBox2();
+            btnConfig = new FlatButton();
             lblMaxNum = new Label();
-            txtCurrent = new TextBox();
-            btnCopyNext = new Button();
+            txtCurrent = new TextBox2();
+            btnCopyNext = new FlatButton();
             list = new ListView();
             colSystem = new ColumnHeader();
             colDistance = new ColumnHeader();
             colNotes = new ColumnHeader();
             contextList = new ContextMenuStrip(components);
             menuListCopySystemName = new ToolStripMenuItem();
-            label1 = new Label();
             label2 = new Label();
             comboFrom = new ComboStarSystem();
             status = new StatusStrip();
@@ -56,47 +55,55 @@
             numMax = new NumericUpDown();
             panelList = new Panel();
             tableTop = new TableLayoutPanel();
-            btnBoxelEmpty = new Button();
-            btnParent = new Button();
-            btnPaste = new Button();
-            panelSiblings = new Panel();
-            lblWarning = new Label();
+            btnBoxelEmpty = new FlatButton();
+            label1 = new Label();
+            txtMainBoxel = new TextBox2();
+            btnParent = new FlatButton();
             label3 = new Label();
+            flowCommands = new FlowLayoutPanel();
             checkSkipVisited = new CheckBox();
             checkSpinKnownToSpansh = new CheckBox();
             menuSiblings = new ButtonContextMenuStrip(components);
             tableConfig = new TableLayoutPanel();
-            label4 = new Label();
-            checkCompleteOnEnterSystem = new CheckBox();
-            checkCompleteOnFssAllBodies = new CheckBox();
-            btnBegin = new Button();
+            lblConfigHeader = new Label();
             label5 = new Label();
             comboLowMassCode = new ComboBox();
+            lblBoxelCount = new Label();
+            checkCompleteOnFssAllBodies = new CheckBox();
             label6 = new Label();
-            btnPasteTopBoxel = new Button();
-            labelBoxelCount = new Label();
-            btnConfigCancel = new Button();
+            checkCompleteOnEnterSystem = new CheckBox();
+            label4 = new Label();
             dateStart = new DateTimePicker();
+            btnConfigCancel = new FlatButton();
+            btnBegin = new FlatButton();
+            btnConfigNav = new FlatButton();
+            panelGraphic = new Panel();
+            labelGraphic = new Label();
             contextList.SuspendLayout();
             status.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numMax).BeginInit();
             panelList.SuspendLayout();
             tableTop.SuspendLayout();
+            flowCommands.SuspendLayout();
             tableConfig.SuspendLayout();
+            panelGraphic.SuspendLayout();
             SuspendLayout();
             // 
-            // txtTopBoxel
+            // txtConfigBoxel
             // 
-            resources.ApplyResources(txtTopBoxel, "txtTopBoxel");
-            tableConfig.SetColumnSpan(txtTopBoxel, 3);
-            txtTopBoxel.Name = "txtTopBoxel";
-            txtTopBoxel.TextChanged += txtTopBoxel_TextChanged;
+            resources.ApplyResources(txtConfigBoxel, "txtConfigBoxel");
+            txtConfigBoxel.BackColor = SystemColors.ControlLight;
+            txtConfigBoxel.BorderStyle = BorderStyle.FixedSingle;
+            tableConfig.SetColumnSpan(txtConfigBoxel, 4);
+            txtConfigBoxel.ForeColor = SystemColors.WindowText;
+            txtConfigBoxel.Name = "txtConfigBoxel";
+            txtConfigBoxel.TextChanged += txtConfigBoxel_TextChanged;
             // 
             // btnConfig
             // 
             resources.ApplyResources(btnConfig, "btnConfig");
             btnConfig.Name = "btnConfig";
-            btnConfig.UseVisualStyleBackColor = true;
+            tableTop.SetRowSpan(btnConfig, 2);
             btnConfig.Click += btnConfig_Click;
             // 
             // lblMaxNum
@@ -107,7 +114,12 @@
             // txtCurrent
             // 
             resources.ApplyResources(txtCurrent, "txtCurrent");
+            txtCurrent.BackColor = SystemColors.ScrollBar;
+            txtCurrent.BorderStyle = BorderStyle.FixedSingle;
+            tableTop.SetColumnSpan(txtCurrent, 4);
+            txtCurrent.ForeColor = SystemColors.WindowText;
             txtCurrent.Name = "txtCurrent";
+            txtCurrent.ReadOnly = true;
             // 
             // btnCopyNext
             // 
@@ -119,9 +131,11 @@
             // list
             // 
             resources.ApplyResources(list, "list");
+            list.BackColor = SystemColors.WindowFrame;
             list.CheckBoxes = true;
             list.Columns.AddRange(new ColumnHeader[] { colSystem, colDistance, colNotes });
             list.ContextMenuStrip = contextList;
+            list.ForeColor = SystemColors.Info;
             list.FullRowSelect = true;
             list.Name = "list";
             list.UseCompatibleStateImageBehavior = false;
@@ -152,11 +166,6 @@
             resources.ApplyResources(menuListCopySystemName, "menuListCopySystemName");
             menuListCopySystemName.Click += menuListCopySystemName_Click;
             // 
-            // label1
-            // 
-            resources.ApplyResources(label1, "label1");
-            label1.Name = "label1";
-            // 
             // label2
             // 
             resources.ApplyResources(label2, "label2");
@@ -169,10 +178,10 @@
             comboFrom.Name = "comboFrom";
             comboFrom.SelectedSystem = null;
             comboFrom.updateOnJump = false;
-            comboFrom.SelectedIndexChanged += comboFrom_SelectedIndexChanged;
             // 
             // status
             // 
+            status.BackColor = SystemColors.ControlDark;
             status.Items.AddRange(new ToolStripItem[] { btnToggleList, lblStatus, menuMore });
             resources.ApplyResources(status, "status");
             status.Name = "status";
@@ -188,7 +197,8 @@
             // lblStatus
             // 
             lblStatus.BorderSides = ToolStripStatusLabelBorderSides.Left | ToolStripStatusLabelBorderSides.Top | ToolStripStatusLabelBorderSides.Right | ToolStripStatusLabelBorderSides.Bottom;
-            lblStatus.BorderStyle = Border3DStyle.SunkenOuter;
+            lblStatus.BorderStyle = Border3DStyle.SunkenInner;
+            lblStatus.Margin = new Padding(0, 1, 0, 2);
             lblStatus.Name = "lblStatus";
             resources.ApplyResources(lblStatus, "lblStatus");
             lblStatus.Spring = true;
@@ -214,6 +224,7 @@
             // numMax
             // 
             resources.ApplyResources(numMax, "numMax");
+            numMax.BackColor = SystemColors.ScrollBar;
             numMax.Maximum = new decimal(new int[] { 100000, 0, 0, 0 });
             numMax.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             numMax.Name = "numMax";
@@ -223,7 +234,7 @@
             // panelList
             // 
             resources.ApplyResources(panelList, "panelList");
-            tableTop.SetColumnSpan(panelList, 4);
+            tableTop.SetColumnSpan(panelList, 6);
             panelList.Controls.Add(comboFrom);
             panelList.Controls.Add(label2);
             panelList.Controls.Add(list);
@@ -232,20 +243,15 @@
             // tableTop
             // 
             resources.ApplyResources(tableTop, "tableTop");
-            tableTop.Controls.Add(btnConfig, 0, 1);
-            tableTop.Controls.Add(numMax, 3, 1);
-            tableTop.Controls.Add(lblMaxNum, 2, 1);
-            tableTop.Controls.Add(panelList, 0, 7);
-            tableTop.Controls.Add(btnBoxelEmpty, 1, 6);
-            tableTop.Controls.Add(btnParent, 0, 6);
-            tableTop.Controls.Add(txtCurrent, 1, 4);
-            tableTop.Controls.Add(btnPaste, 0, 4);
-            tableTop.Controls.Add(checkAutoCopy, 2, 6);
-            tableTop.Controls.Add(btnCopyNext, 2, 4);
-            tableTop.Controls.Add(panelSiblings, 4, 6);
-            tableTop.Controls.Add(lblWarning, 1, 5);
-            tableTop.Controls.Add(label3, 1, 8);
-            tableTop.Controls.Add(label1, 1, 0);
+            tableTop.Controls.Add(btnBoxelEmpty, 0, 2);
+            tableTop.Controls.Add(panelList, 0, 3);
+            tableTop.Controls.Add(txtCurrent, 1, 1);
+            tableTop.Controls.Add(label1, 0, 0);
+            tableTop.Controls.Add(txtMainBoxel, 1, 0);
+            tableTop.Controls.Add(btnParent, 0, 1);
+            tableTop.Controls.Add(btnConfig, 5, 0);
+            tableTop.Controls.Add(label3, 0, 4);
+            tableTop.Controls.Add(flowCommands, 1, 2);
             tableTop.Name = "tableTop";
             // 
             // btnBoxelEmpty
@@ -255,48 +261,55 @@
             btnBoxelEmpty.UseVisualStyleBackColor = true;
             btnBoxelEmpty.Click += btnBoxelEmpty_Click;
             // 
+            // label1
+            // 
+            resources.ApplyResources(label1, "label1");
+            label1.Name = "label1";
+            // 
+            // txtMainBoxel
+            // 
+            resources.ApplyResources(txtMainBoxel, "txtMainBoxel");
+            txtMainBoxel.BackColor = SystemColors.ScrollBar;
+            txtMainBoxel.BorderStyle = BorderStyle.FixedSingle;
+            tableTop.SetColumnSpan(txtMainBoxel, 4);
+            txtMainBoxel.ForeColor = SystemColors.WindowText;
+            txtMainBoxel.Name = "txtMainBoxel";
+            txtMainBoxel.ReadOnly = true;
+            // 
             // btnParent
             // 
             resources.ApplyResources(btnParent, "btnParent");
             btnParent.Name = "btnParent";
             btnParent.UseVisualStyleBackColor = true;
             // 
-            // btnPaste
-            // 
-            resources.ApplyResources(btnPaste, "btnPaste");
-            btnPaste.Name = "btnPaste";
-            btnPaste.UseVisualStyleBackColor = true;
-            btnPaste.Click += btnPaste_Click;
-            // 
-            // panelSiblings
-            // 
-            resources.ApplyResources(panelSiblings, "panelSiblings");
-            panelSiblings.BackColor = SystemColors.AppWorkspace;
-            panelSiblings.Name = "panelSiblings";
-            tableTop.SetRowSpan(panelSiblings, 2);
-            // 
-            // lblWarning
-            // 
-            resources.ApplyResources(lblWarning, "lblWarning");
-            lblWarning.Name = "lblWarning";
-            // 
             // label3
             // 
             resources.ApplyResources(label3, "label3");
+            tableTop.SetColumnSpan(label3, 6);
             label3.FlatStyle = FlatStyle.System;
             label3.Name = "label3";
+            // 
+            // flowCommands
+            // 
+            resources.ApplyResources(flowCommands, "flowCommands");
+            tableTop.SetColumnSpan(flowCommands, 5);
+            flowCommands.Controls.Add(btnCopyNext);
+            flowCommands.Controls.Add(checkAutoCopy);
+            flowCommands.Controls.Add(lblMaxNum);
+            flowCommands.Controls.Add(numMax);
+            flowCommands.Name = "flowCommands";
             // 
             // checkSkipVisited
             // 
             resources.ApplyResources(checkSkipVisited, "checkSkipVisited");
-            tableConfig.SetColumnSpan(checkSkipVisited, 2);
+            tableConfig.SetColumnSpan(checkSkipVisited, 3);
             checkSkipVisited.Name = "checkSkipVisited";
             checkSkipVisited.UseVisualStyleBackColor = true;
             // 
             // checkSpinKnownToSpansh
             // 
             resources.ApplyResources(checkSpinKnownToSpansh, "checkSpinKnownToSpansh");
-            tableConfig.SetColumnSpan(checkSpinKnownToSpansh, 2);
+            tableConfig.SetColumnSpan(checkSpinKnownToSpansh, 3);
             checkSpinKnownToSpansh.Name = "checkSpinKnownToSpansh";
             checkSpinKnownToSpansh.UseVisualStyleBackColor = true;
             // 
@@ -304,55 +317,35 @@
             // 
             menuSiblings.Name = "menuSiblings";
             resources.ApplyResources(menuSiblings, "menuSiblings");
-            menuSiblings.targetButton = btnParent;
+            menuSiblings.targetButton = null;
             menuSiblings.ItemClicked += menuSiblings_ItemClicked;
             // 
             // tableConfig
             // 
             resources.ApplyResources(tableConfig, "tableConfig");
-            tableConfig.BackColor = SystemColors.AppWorkspace;
-            tableConfig.Controls.Add(txtTopBoxel, 0, 0);
-            tableConfig.Controls.Add(checkSkipVisited, 0, 2);
-            tableConfig.Controls.Add(checkSpinKnownToSpansh, 0, 3);
-            tableConfig.Controls.Add(label4, 0, 4);
-            tableConfig.Controls.Add(checkCompleteOnEnterSystem, 0, 5);
-            tableConfig.Controls.Add(checkCompleteOnFssAllBodies, 1, 5);
-            tableConfig.Controls.Add(btnBegin, 0, 6);
-            tableConfig.Controls.Add(label5, 0, 1);
-            tableConfig.Controls.Add(comboLowMassCode, 1, 1);
-            tableConfig.Controls.Add(label6, 1, 7);
-            tableConfig.Controls.Add(btnPasteTopBoxel, 3, 0);
-            tableConfig.Controls.Add(labelBoxelCount, 2, 1);
-            tableConfig.Controls.Add(btnConfigCancel, 0, 7);
-            tableConfig.Controls.Add(dateStart, 1, 6);
+            tableConfig.Controls.Add(lblConfigHeader, 0, 0);
+            tableConfig.Controls.Add(txtConfigBoxel, 0, 1);
+            tableConfig.Controls.Add(checkSkipVisited, 0, 3);
+            tableConfig.Controls.Add(checkSpinKnownToSpansh, 0, 4);
+            tableConfig.Controls.Add(label5, 0, 2);
+            tableConfig.Controls.Add(comboLowMassCode, 1, 2);
+            tableConfig.Controls.Add(lblBoxelCount, 2, 2);
+            tableConfig.Controls.Add(checkCompleteOnFssAllBodies, 1, 7);
+            tableConfig.Controls.Add(label6, 0, 5);
+            tableConfig.Controls.Add(checkCompleteOnEnterSystem, 0, 7);
+            tableConfig.Controls.Add(label4, 0, 6);
+            tableConfig.Controls.Add(dateStart, 1, 5);
+            tableConfig.Controls.Add(btnConfigCancel, 3, 8);
+            tableConfig.Controls.Add(btnBegin, 2, 8);
+            tableConfig.Controls.Add(btnConfigNav, 4, 1);
+            tableConfig.Controls.Add(panelGraphic, 0, 9);
             tableConfig.Name = "tableConfig";
             // 
-            // label4
+            // lblConfigHeader
             // 
-            resources.ApplyResources(label4, "label4");
-            tableConfig.SetColumnSpan(label4, 2);
-            label4.Name = "label4";
-            // 
-            // checkCompleteOnEnterSystem
-            // 
-            resources.ApplyResources(checkCompleteOnEnterSystem, "checkCompleteOnEnterSystem");
-            checkCompleteOnEnterSystem.Name = "checkCompleteOnEnterSystem";
-            checkCompleteOnEnterSystem.UseVisualStyleBackColor = true;
-            checkCompleteOnEnterSystem.CheckedChanged += checkCompleteOnEnterSystem_CheckedChanged;
-            // 
-            // checkCompleteOnFssAllBodies
-            // 
-            resources.ApplyResources(checkCompleteOnFssAllBodies, "checkCompleteOnFssAllBodies");
-            checkCompleteOnFssAllBodies.Name = "checkCompleteOnFssAllBodies";
-            checkCompleteOnFssAllBodies.UseVisualStyleBackColor = true;
-            checkCompleteOnFssAllBodies.CheckedChanged += checkCompleteOnFssAllBodies_CheckedChanged;
-            // 
-            // btnBegin
-            // 
-            resources.ApplyResources(btnBegin, "btnBegin");
-            btnBegin.Name = "btnBegin";
-            btnBegin.UseVisualStyleBackColor = true;
-            btnBegin.Click += btnBegin_Click;
+            resources.ApplyResources(lblConfigHeader, "lblConfigHeader");
+            tableConfig.SetColumnSpan(lblConfigHeader, 3);
+            lblConfigHeader.Name = "lblConfigHeader";
             // 
             // label5
             // 
@@ -368,40 +361,86 @@
             comboLowMassCode.Name = "comboLowMassCode";
             comboLowMassCode.SelectedIndexChanged += comboLowMassCode_SelectedIndexChanged;
             // 
+            // lblBoxelCount
+            // 
+            resources.ApplyResources(lblBoxelCount, "lblBoxelCount");
+            tableConfig.SetColumnSpan(lblBoxelCount, 2);
+            lblBoxelCount.Name = "lblBoxelCount";
+            // 
+            // checkCompleteOnFssAllBodies
+            // 
+            resources.ApplyResources(checkCompleteOnFssAllBodies, "checkCompleteOnFssAllBodies");
+            tableConfig.SetColumnSpan(checkCompleteOnFssAllBodies, 2);
+            checkCompleteOnFssAllBodies.Name = "checkCompleteOnFssAllBodies";
+            checkCompleteOnFssAllBodies.UseVisualStyleBackColor = true;
+            checkCompleteOnFssAllBodies.CheckedChanged += checkCompleteOnFssAllBodies_CheckedChanged;
+            // 
             // label6
             // 
             resources.ApplyResources(label6, "label6");
-            tableConfig.SetColumnSpan(label6, 2);
             label6.Name = "label6";
             // 
-            // btnPasteTopBoxel
+            // checkCompleteOnEnterSystem
             // 
-            btnPasteTopBoxel.Image = Properties.ImageResources.paste1;
-            resources.ApplyResources(btnPasteTopBoxel, "btnPasteTopBoxel");
-            btnPasteTopBoxel.Name = "btnPasteTopBoxel";
-            btnPasteTopBoxel.UseVisualStyleBackColor = true;
-            btnPasteTopBoxel.Click += btnPasteTopBoxel_Click;
+            resources.ApplyResources(checkCompleteOnEnterSystem, "checkCompleteOnEnterSystem");
+            checkCompleteOnEnterSystem.Name = "checkCompleteOnEnterSystem";
+            checkCompleteOnEnterSystem.UseVisualStyleBackColor = true;
+            checkCompleteOnEnterSystem.CheckedChanged += checkCompleteOnEnterSystem_CheckedChanged;
             // 
-            // labelBoxelCount
+            // label4
             // 
-            resources.ApplyResources(labelBoxelCount, "labelBoxelCount");
-            labelBoxelCount.Name = "labelBoxelCount";
-            // 
-            // btnConfigCancel
-            // 
-            resources.ApplyResources(btnConfigCancel, "btnConfigCancel");
-            btnConfigCancel.Name = "btnConfigCancel";
-            btnConfigCancel.UseVisualStyleBackColor = true;
+            resources.ApplyResources(label4, "label4");
+            tableConfig.SetColumnSpan(label4, 2);
+            label4.Name = "label4";
             // 
             // dateStart
             // 
             resources.ApplyResources(dateStart, "dateStart");
+            tableConfig.SetColumnSpan(dateStart, 2);
             dateStart.Name = "dateStart";
+            // 
+            // btnConfigCancel
+            // 
+            resources.ApplyResources(btnConfigCancel, "btnConfigCancel");
+            tableConfig.SetColumnSpan(btnConfigCancel, 2);
+            btnConfigCancel.Name = "btnConfigCancel";
+            btnConfigCancel.UseVisualStyleBackColor = true;
+            btnConfigCancel.Click += btnConfigCancel_Click;
+            // 
+            // btnBegin
+            // 
+            resources.ApplyResources(btnBegin, "btnBegin");
+            btnBegin.Name = "btnBegin";
+            btnBegin.UseVisualStyleBackColor = true;
+            btnBegin.Click += btnBegin_Click;
+            // 
+            // btnConfigNav
+            // 
+            resources.ApplyResources(btnConfigNav, "btnConfigNav");
+            btnConfigNav.Name = "btnConfigNav";
+            btnConfigNav.UseVisualStyleBackColor = true;
+            // 
+            // panelGraphic
+            // 
+            resources.ApplyResources(panelGraphic, "panelGraphic");
+            panelGraphic.BackColor = SystemColors.ScrollBar;
+            panelGraphic.BorderStyle = BorderStyle.FixedSingle;
+            tableConfig.SetColumnSpan(panelGraphic, 5);
+            panelGraphic.Controls.Add(labelGraphic);
+            panelGraphic.Name = "panelGraphic";
+            panelGraphic.SizeChanged += panelGraphic_SizeChanged;
+            panelGraphic.Paint += panelGraphic_Paint;
+            // 
+            // labelGraphic
+            // 
+            resources.ApplyResources(labelGraphic, "labelGraphic");
+            labelGraphic.Name = "labelGraphic";
             // 
             // FormBoxelSearch
             // 
             resources.ApplyResources(this, "$this");
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = SystemColors.ControlDark;
             Controls.Add(status);
             Controls.Add(tableTop);
             Controls.Add(tableConfig);
@@ -414,22 +453,24 @@
             panelList.PerformLayout();
             tableTop.ResumeLayout(false);
             tableTop.PerformLayout();
+            flowCommands.ResumeLayout(false);
+            flowCommands.PerformLayout();
             tableConfig.ResumeLayout(false);
             tableConfig.PerformLayout();
+            panelGraphic.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
-        private TextBox txtTopBoxel;
-        private Button btnConfig;
+        private TextBox2 txtConfigBoxel;
+        private FlatButton btnConfig;
         private Label lblMaxNum;
-        private TextBox txtCurrent;
-        private Button btnCopyNext;
+        private TextBox2 txtCurrent;
+        private FlatButton btnCopyNext;
         private ListView list;
         private ColumnHeader colSystem;
         private ColumnHeader colDistance;
-        private Label label1;
         private Label label2;
         private ComboStarSystem comboFrom;
         private ColumnHeader colNotes;
@@ -442,28 +483,31 @@
         private ToolStripDropDownButton menuMore;
         private ToolStripMenuItem menuHelpLink;
         private TableLayoutPanel tableTop;
-        private Button btnParent;
+        private FlatButton btnParent;
         private ButtonContextMenuStrip menuSiblings;
-        private Button btnBoxelEmpty;
-        private Panel panelSiblings;
+        private FlatButton btnBoxelEmpty;
         private CheckBox checkSkipVisited;
         private CheckBox checkSpinKnownToSpansh;
-        private Button btnPaste;
-        private Label lblWarning;
         private Label label3;
         private TableLayoutPanel tableConfig;
-        private Button btnBegin;
+        private FlatButton btnBegin;
         private Label label4;
         private CheckBox checkCompleteOnEnterSystem;
         private CheckBox checkCompleteOnFssAllBodies;
         private Label label5;
         private ComboBox comboLowMassCode;
-        private Button btnPasteTopBoxel;
-        private Label label6;
-        private Label labelBoxelCount;
+        private Label lblConfigHeader;
+        private Label lblBoxelCount;
         private ContextMenuStrip contextList;
         private ToolStripMenuItem menuListCopySystemName;
-        private Button btnConfigCancel;
+        private FlatButton btnConfigCancel;
         private DateTimePicker dateStart;
+        private FlatButton btnConfigNav;
+        private Label label6;
+        private Label label1;
+        private TextBox2 txtMainBoxel;
+        private Panel panelGraphic;
+        private Label labelGraphic;
+        private FlowLayoutPanel flowCommands;
     }
 }

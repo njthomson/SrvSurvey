@@ -135,8 +135,6 @@ namespace SrvSurvey
 
         public float plotterScale = 0;
 
-        public Point formMainLocation;
-        public Rectangle formLogsLocation;
         public Rectangle formAllRuinsLocation;
         public Rectangle formRuinsLocation;
         public Rectangle formBeaconsLocation;

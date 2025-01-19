@@ -19,6 +19,7 @@ namespace SrvSurvey.plotters
         private string targetSystemName;
         private string? destinationName;
         private bool destinationOutsideBoxel;
+        private string? badDestination;
 
         private PlotSphericalSearch() : base()
         {
@@ -143,7 +144,12 @@ namespace SrvSurvey.plotters
                 if (game.cmdr.boxelSearch?.active == true)
                 {
                     var bx = Boxel.parse(game.status.Destination.System, game.status.Destination.Name);
-                    this.destinationOutsideBoxel = !game.cmdr.boxelSearch.boxel.containsChild(bx);
+                    if (!game.cmdr.boxelSearch.boxel.containsChild(bx))
+                        this.badDestination = $"{this.destinationName} is outside search boxel";
+                    else if (bx?.massCode < game.cmdr.boxelSearch.lowMassCode)
+                        this.badDestination = $"{this.destinationName} mass code too low";
+                    else
+                        this.badDestination = null;
                 }
 
                 this.Invalidate();
@@ -273,16 +279,17 @@ namespace SrvSurvey.plotters
             dtx += ten;
 
             // warn if destination is outside the search boxel
-            if (this.destinationOutsideBoxel)
+            ff = GameColors.fontMiddle;
+            if (this.badDestination != null)
             {
                 newLine(+eight, true);
-                this.drawTextAt(eight, $"Destination is outside your search boxel", GameColors.brushRed, ff);
+                this.drawTextAt2b(eight, this.Width - 4, this.badDestination , GameColors.red, ff);
                 dtx += ten;
             }
             else if (this.destinationName != null)
             {
                 newLine(+eight, true);
-                this.drawTextAt(eight, $"Destination is within your search boxel", GameColors.brushCyan, ff);
+                this.drawTextAt2b(eight, this.Width - 4, $"{this.destinationName} is within search boxel", GameColors.Cyan, ff);
                 dtx += ten;
             }
 

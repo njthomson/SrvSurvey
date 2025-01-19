@@ -286,10 +286,12 @@ Would you like to create it?</value>
     <comment>Shown in FormBoxelSearch status var when the feature is not active</comment>
   </data>
   <data name="FormBoxelSearch_VisitedCounts" xml:space="preserve">
-    <value>Visited {0} of {1} systems</value>
+    <value>Completed {0} of {1} systems, completed {2} of {3} boxels</value>
     <comment>Shown in FormBoxelSearch status bar, summarizing how many systems have been visited
 {0} int, count of systems visited
-{1} int, total count of systems to be visited</comment>
+{1} int, total count of systems to be visited
+{2} int, count of boxels searched
+{3} int, total count of boxels to be searched</comment>
   </data>
   <data name="NetSysData_Encoded" xml:space="preserve">
     <value>(Encoded)</value>

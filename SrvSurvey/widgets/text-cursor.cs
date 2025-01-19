@@ -25,7 +25,7 @@ namespace SrvSurvey.widgets
         private Control ctrl;
 
         private SizeF lastTextSize;
-        protected SizeF frameSize;
+        public SizeF frameSize;
 
         public TextCursor(Graphics g, Control ctrl)
         {

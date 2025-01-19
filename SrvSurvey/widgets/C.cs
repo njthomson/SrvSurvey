@@ -176,6 +176,8 @@ namespace SrvSurvey.widgets
             //g.DrawRectangle(Pens.Lime, r);
             return sz;
         }
+
+
     }
 
     /// <summary>
