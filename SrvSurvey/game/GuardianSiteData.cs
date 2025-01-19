@@ -60,7 +60,7 @@ namespace SrvSurvey.game
 
         public static GuardianSiteData? Load(string bodyName, int index, bool isRuins)
         {
-            var fid = Game.activeGame?.fid ?? Game.settings.lastFid!;
+            var fid = CommanderSettings.currentOrLastFid;
             var folder = Path.Combine(rootFolder, fid!);
             if (!Util.isOdyssey) folder = Path.Combine(folder, "legacy");
 
@@ -254,7 +254,7 @@ namespace SrvSurvey.game
         #endregion
 
         [JsonIgnore]
-        public bool isRuins { get => this.name != null && this.name.StartsWith("$Ancient:"); }
+        public bool isRuins { get => this.type == SiteType.Alpha || this.type == SiteType.Beta || this.type == SiteType.Gamma; }
 
         [JsonIgnore]
         public string displayName
@@ -424,7 +424,7 @@ namespace SrvSurvey.game
             if (plot?.targetObelisk == obelisk.name)
                 plot.setTargetObelisk(null);
 
-            FormBeacons.activeForm?.beginPrepareAllRows();
+            BaseForm.get<FormBeacons>()?.beginPrepareAllRows();
             BaseForm.get<FormRamTah>()?.updateChecks();
             Program.invalidateActivePlotters();
         }

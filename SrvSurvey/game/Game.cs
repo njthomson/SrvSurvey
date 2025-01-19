@@ -1081,9 +1081,6 @@ namespace SrvSurvey.game
                     form.nextSystem = null;
                     form.Invalidate();
                 }
-
-                // update FormGenus?
-                FormGenus.activeForm?.startingJump($"{entry.StarSystem}, star class: {entry.StarClass}");
             }
 
             // for either FSD type ...
@@ -1122,9 +1119,6 @@ namespace SrvSurvey.game
 
             this.setLocations(entry);
 
-            // update FormGenus?
-            FormGenus.activeForm?.deferPopulateGenus();
-
             // update boxel search?
             if (cmdr.boxelSearch?.active == true)
                 cmdr.boxelSearch.markComplete(entry.SystemAddress, entry.StarSystem, entry.StarPos);
@@ -1156,7 +1150,6 @@ namespace SrvSurvey.game
                 FormShowCodex.update();
                 FormPredictions.refresh();
                 Program.invalidateActivePlotters();
-                FormGenus.activeForm?.populateGenus(); // TODO: retire
             });
         }
 
@@ -1175,7 +1168,6 @@ namespace SrvSurvey.game
             FormShowCodex.update();
             FormPredictions.refresh();
             Program.invalidateActivePlotters();
-            FormGenus.activeForm?.populateGenus(); // TODO: retire
         }
 
         private void onJournalEntry(FSSDiscoveryScan entry)
@@ -2417,10 +2409,6 @@ namespace SrvSurvey.game
             else if (entry.SubCategory == "$Codex_SubCategory_Organic_Structures;" && entry.NearestDestination != "$Fixed_Event_Life_Cloud;" && entry.NearestDestination != "$Fixed_Event_Life_Ring;" && this.status?.hasLatLong == true)
             {
                 var match = Game.codexRef.matchFromEntryId(entry.EntryID);
-
-                // update FormGenus?
-                if (match != null && FormGenus.activeForm != null && systemBody?.findOrganism(match)?.species == null)
-                    FormGenus.activeForm.deferPopulateGenus();
 
                 if (Game.settings.autoTrackCompBioScans)
                 {

@@ -1,4 +1,5 @@
 ﻿using DecimalMath;
+using SrvSurvey.forms;
 using SrvSurvey.game;
 using SrvSurvey.net;
 using SrvSurvey.units;
@@ -643,7 +644,7 @@ namespace SrvSurvey.plotters
                 siteData.poiStatus[this.nearestPoi.name] = SitePoiStatus.present;
                 siteData.Save();
                 this.Invalidate();
-                FormBeacons.activeForm?.beginPrepareAllRows();
+                BaseForm.get<FormBeacons>()?.beginPrepareAllRows();
             }
         }
 
@@ -841,7 +842,7 @@ namespace SrvSurvey.plotters
             siteData.poiStatus[this.nearestPoi.name] = poiStatus;
             siteData.Save();
             this.Invalidate();
-            FormBeacons.activeForm?.beginPrepareAllRows();
+            BaseForm.get<FormBeacons>()?.beginPrepareAllRows();
             // update GuardianSystemStatus entry
             game.systemData.prepSettlements();
             /* TODO: test this when next at Guardian sites...

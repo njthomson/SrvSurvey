@@ -1,9 +1,9 @@
 ﻿using SrvSurvey.canonn;
+using SrvSurvey.forms;
 using SrvSurvey.game;
 using SrvSurvey.net;
 using SrvSurvey.Properties;
 using SrvSurvey.units;
-using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Text;
@@ -12,19 +12,10 @@ using static SrvSurvey.game.GuardianSiteData;
 
 namespace SrvSurvey
 {
-    public partial class FormBeacons : Form
+    [Draggable, TrackPosition]
+    internal partial class FormBeacons : SizableForm
     {
-        public static FormBeacons? activeForm;
-
         private StarPos from;
-
-        public static void show()
-        {
-            if (activeForm == null)
-                FormBeacons.activeForm = new FormBeacons();
-
-            Util.showForm(FormBeacons.activeForm);
-        }
 
         private List<ListViewItem> rows = new List<ListViewItem>();
         // default sort by system distance
@@ -43,9 +34,6 @@ namespace SrvSurvey
             this.comboVisited.SelectedIndex = 0;
             this.toolStripDropDownButton1.DropDownDirection = ToolStripDropDownDirection.AboveLeft;
 
-            // can we fit in our last location
-            Util.useLastLocation(this, Game.settings.formBeaconsLocation);
-
             this.starSystemLookup = new LookupStarSystem(comboCurrentSystem);
             this.starSystemLookup.onSystemMatch += StarSystemLookup_starSystemMatch;
 
@@ -57,24 +45,6 @@ namespace SrvSurvey
                 checkOnlyNeeded.Checked = true;
 
             Util.applyTheme(this);
-        }
-
-        protected override void OnClosing(CancelEventArgs e)
-        {
-            base.OnClosing(e);
-            FormBeacons.activeForm = null;
-        }
-
-        protected override void OnResizeEnd(EventArgs e)
-        {
-            base.OnResizeEnd(e);
-
-            var rect = new Rectangle(this.Location, this.Size);
-            if (Game.settings.formBeaconsLocation != rect)
-            {
-                Game.settings.formBeaconsLocation = rect;
-                Game.settings.Save();
-            }
         }
 
         private void FormBeacons_Load(object sender, EventArgs e)
@@ -632,7 +602,7 @@ namespace SrvSurvey
 
             if (siteData == null)
             {
-                // contruct a new siteData from what we have here and it's pubData
+                // construct a new siteData from what we have here and it's pubData
                 var siteType = Enum.Parse<SiteType>(entry.siteType);
                 siteData = new GuardianSiteData()
                 {
@@ -646,6 +616,13 @@ namespace SrvSurvey
                     poiStatus = new Dictionary<string, SitePoiStatus>(),
                 };
                 siteData.loadPub();
+            }
+
+            if (FormRuins.activeForm != null)
+            {
+                // close form if it's already open
+                FormRuins.activeForm.Close();
+                Application.DoEvents();
             }
 
             FormRuins.show(siteData);

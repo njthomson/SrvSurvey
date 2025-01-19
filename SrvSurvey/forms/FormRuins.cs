@@ -90,6 +90,7 @@ namespace SrvSurvey
 
         public FormRuins(GuardianSiteData? siteData)
         {
+            // TODO: Remove parameter constructor and add a method "setSiteData" - so we can use BaseForm from here
             InitializeComponent();
             this.Icon = Icons.maps;
             map.MouseWheel += Map_MouseWheel;

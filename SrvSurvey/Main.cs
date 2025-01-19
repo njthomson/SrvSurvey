@@ -946,10 +946,11 @@ namespace SrvSurvey
                 coords = entry.StarPos,
             };
 
-            if (FormBeacons.activeForm != null)
+            var formBeacons = BaseForm.get<FormBeacons>();
+            if (formBeacons != null)
             {
-                FormBeacons.activeForm.comboCurrentSystem.Text = systemMatch.name;
-                FormBeacons.activeForm.StarSystemLookup_starSystemMatch(systemMatch);
+                formBeacons.comboCurrentSystem.Text = systemMatch.name;
+                formBeacons.StarSystemLookup_starSystemMatch(systemMatch);
             }
 
             FormPredictions.refresh();
@@ -1594,7 +1595,7 @@ namespace SrvSurvey
 
         private void btnGuardianThings_Click(object sender, EventArgs e)
         {
-            FormBeacons.show();
+            BaseForm.show<FormBeacons>();
         }
 
         private void btnRuins_Click(object sender, EventArgs e)
