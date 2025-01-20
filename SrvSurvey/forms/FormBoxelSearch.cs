@@ -36,7 +36,7 @@ namespace SrvSurvey.forms
 
             bs.changed += boxelSearch_changed;
 
-            txtMainBoxel.Text = bs.boxel.name;
+            txtMainBoxel.Text = bs.boxel?.name;
             checkAutoCopy.Checked = bs.autoCopy;
             updateNextSystem();
 
@@ -46,7 +46,7 @@ namespace SrvSurvey.forms
             // show warning if key-hooks are not viable
             //linkKeyChords.Visible = !bs.autoCopy && (!Game.settings.keyhook_TEST || string.IsNullOrEmpty(Game.settings.keyActions_TEST?.GetValueOrDefault(KeyAction.copyNextBoxel)));
 
-            if (bs.active)
+            if (bs.active && bs.boxel != null)
             {
                 bs.reset(bs.boxel, false);
                 prepForm();
@@ -126,6 +126,13 @@ namespace SrvSurvey.forms
 
                 bs.reset(bx, true);
             }
+            if (bs.boxel == null || bs.current == null)
+            {
+                // we cannot continue if there is no boxel
+                this.Close();
+                return;
+            }
+
             // start finding systems...
             bs.active = true;
             this.saveAndSetCurrent(bs.current, true);
@@ -172,7 +179,7 @@ namespace SrvSurvey.forms
                 this.setNumMax();
 
                 // add siblings
-                if (bs?.current != null)
+                if (bs.current != null)
                     this.prepSiblings(bs.current);
             }
             else
@@ -228,8 +235,6 @@ namespace SrvSurvey.forms
 
         private void prepSiblings(Boxel bx)
         {
-            if (bx == null) return;
-
             menuSiblings.Items.Clear();
 
             // show copy current + paste
@@ -259,8 +264,8 @@ namespace SrvSurvey.forms
             })
                 .Image = ImageResources.paste1;
 
+            if (bx == null) return;
             menuSiblings.Items.Add(new ToolStripSeparator());
-
 
             // add parent and siblings
             if (current.massCode != 'h')
@@ -712,7 +717,7 @@ namespace SrvSurvey.forms
             var rm = new Rectangle(x - d / 2, y + d / 2, s + ds / 2, s + ds / 2);
             var mm = new Point(rm.Width / 2, rm.Height / 2);
 
-            labelGraphic.Left = r1.Right + 20;
+            labelGraphic.Left = (int)Math.Max(r1.Right, r2.Right) + 20;
             labelGraphic.Width = panelGraphic.Width - labelGraphic.Left;
 
             // draw back square

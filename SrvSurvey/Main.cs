@@ -325,6 +325,9 @@ namespace SrvSurvey
 
             groupCodex.Invalidate();
 
+            // enable button only if this system has some bio signals
+            btnPredictions.Enabled = Game.activeGame?.systemData?.bioSignalsTotal > 0;
+
             // ShowCodex button and form
             this.btnCodexShow.Enabled = FormShowCodex.allow;
             if (!FormShowCodex.allow) BaseForm.close<FormShowCodex>();

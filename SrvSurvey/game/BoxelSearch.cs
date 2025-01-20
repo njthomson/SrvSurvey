@@ -89,6 +89,8 @@ namespace SrvSurvey.game
 
         public void reset(Boxel newBoxel, bool resetCurrent)
         {
+            if (newBoxel == null) return;
+
             // activate the feature
             this.active = true;
 
@@ -472,6 +474,7 @@ namespace SrvSurvey.game
 
         public void setNextToVisit()
         {
+            if (this.current == null) return;
             string? next = null;
 
             // if no systems have been visited  - use just the prefix to help find the count of systems in this boxel

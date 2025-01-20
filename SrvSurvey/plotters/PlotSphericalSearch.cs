@@ -18,7 +18,6 @@ namespace SrvSurvey.plotters
         private double distance = -1;
         private string targetSystemName;
         private string? destinationName;
-        private bool destinationOutsideBoxel;
         private string? badDestination;
 
         private PlotSphericalSearch() : base()
