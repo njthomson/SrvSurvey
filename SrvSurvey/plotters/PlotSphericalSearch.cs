@@ -256,6 +256,10 @@ namespace SrvSurvey.plotters
                 strikeThrough(eight, dty, this.Width - oneSix, false);
                 dty += eight;
             }
+            else
+            {
+                dty += one;
+            }
 
             var boxelSearch = Game.activeGame?.cmdr.boxelSearch;
             if (boxelSearch?.active != true || boxelSearch.current == null) return;
@@ -265,11 +269,11 @@ namespace SrvSurvey.plotters
 
             this.drawTextAt(eight, RES("Boxel"), ff);
             this.drawTextAt(ww, boxelSearch.current.prefix + "xxx", ff);
-            newLine(true);
+            newLine(two, true);
 
             this.drawTextAt(eight, RES("Visited"), ff);
             this.drawTextAt(ww, RES("VisitedOf", boxelSearch.countVisited, boxelSearch.currentCount), ff);
-            newLine(true);
+            newLine(two, true);
 
             this.drawTextAt(eight, RES("Next"), ff);
             var next = boxelSearch.getNextToVisit() ?? "";
@@ -278,6 +282,7 @@ namespace SrvSurvey.plotters
             dtx += ten;
 
             // warn if destination is outside the search boxel
+            //this.drawTextAt(eight, "Destination:", ff);
             ff = GameColors.fontMiddle;
             if (this.badDestination != null)
             {
@@ -288,7 +293,7 @@ namespace SrvSurvey.plotters
             else if (this.destinationName != null)
             {
                 newLine(+eight, true);
-                this.drawTextAt2b(eight, this.Width - 4, $"{this.destinationName} is within search boxel", GameColors.Cyan, ff);
+                this.drawTextAt2b(eight, this.Width - 4, $"Destination is within search boxel", GameColors.Cyan, ff);
                 dtx += ten;
             }
 

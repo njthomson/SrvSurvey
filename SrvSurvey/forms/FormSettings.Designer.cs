@@ -145,6 +145,7 @@ namespace SrvSurvey
             lblScreenshotTarget = new Label();
             checkLocalTime = new CheckBox();
             tabPage6 = new TabPage();
+            checkBox35 = new CheckBox();
             btnSwapCache = new FlatButton();
             checkBox32 = new CheckBox();
             checkBox28 = new CheckBox();
@@ -225,7 +226,6 @@ namespace SrvSurvey
             menuCodexChange = new ToolStripMenuItem();
             menuCodexReset = new ToolStripMenuItem();
             menuClearCodexCache = new ToolStripMenuItem();
-            checkBox35 = new CheckBox();
             panel1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox6).BeginInit();
@@ -1790,6 +1790,18 @@ namespace SrvSurvey
             tabPage6.TabIndex = 5;
             tabPage6.Text = "Exploration";
             // 
+            // checkBox35
+            // 
+            checkBox35.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            checkBox35.AutoSize = true;
+            checkBox35.Location = new Point(453, 6);
+            checkBox35.Name = "checkBox35";
+            checkBox35.Size = new Size(188, 19);
+            checkBox35.TabIndex = 37;
+            checkBox35.Tag = "hideOverlaysFromMouseInFSS_TEST";
+            checkBox35.Text = "Test hiding overlays during FSS";
+            checkBox35.UseVisualStyleBackColor = true;
+            // 
             // btnSwapCache
             // 
             btnSwapCache.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
@@ -2772,18 +2784,6 @@ namespace SrvSurvey
             menuClearCodexCache.Text = "Clear cached images";
             menuClearCodexCache.ToolTipText = "Remove cached images.";
             menuClearCodexCache.Click += menuClearCodexCache_Click;
-            // 
-            // checkBox35
-            // 
-            checkBox35.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            checkBox35.AutoSize = true;
-            checkBox35.Location = new Point(453, 6);
-            checkBox35.Name = "checkBox35";
-            checkBox35.Size = new Size(188, 19);
-            checkBox35.TabIndex = 37;
-            checkBox35.Tag = "hideOverlaysFromMouseInFSS_TEST";
-            checkBox35.Text = "Test hiding overlays during FSS";
-            checkBox35.UseVisualStyleBackColor = true;
             // 
             // FormSettings
             // 

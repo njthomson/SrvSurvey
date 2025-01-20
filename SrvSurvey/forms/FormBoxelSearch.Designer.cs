@@ -67,18 +67,19 @@
             tableConfig = new TableLayoutPanel();
             lblConfigHeader = new Label();
             label5 = new Label();
-            comboLowMassCode = new ComboBox();
-            lblBoxelCount = new Label();
-            checkCompleteOnFssAllBodies = new CheckBox();
             label6 = new Label();
-            checkCompleteOnEnterSystem = new CheckBox();
-            label4 = new Label();
-            dateStart = new DateTimePicker();
-            btnConfigCancel = new FlatButton();
             btnBegin = new FlatButton();
             btnConfigNav = new FlatButton();
             panelGraphic = new Panel();
             labelGraphic = new Label();
+            btnConfigCancel = new FlatButton();
+            checkCompleteOnFssAllBodies = new CheckBox();
+            label4 = new Label();
+            checkCompleteOnEnterSystem = new CheckBox();
+            dateStart = new DateTimePicker();
+            comboLowMassCode = new ComboBox();
+            lblBadBoxel = new Label();
+            lblBoxelCount = new Label();
             contextList.SuspendLayout();
             status.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numMax).BeginInit();
@@ -325,20 +326,21 @@
             resources.ApplyResources(tableConfig, "tableConfig");
             tableConfig.Controls.Add(lblConfigHeader, 0, 0);
             tableConfig.Controls.Add(txtConfigBoxel, 0, 1);
-            tableConfig.Controls.Add(checkSkipVisited, 0, 3);
-            tableConfig.Controls.Add(checkSpinKnownToSpansh, 0, 4);
-            tableConfig.Controls.Add(label5, 0, 2);
-            tableConfig.Controls.Add(comboLowMassCode, 1, 2);
-            tableConfig.Controls.Add(lblBoxelCount, 2, 2);
-            tableConfig.Controls.Add(checkCompleteOnFssAllBodies, 1, 7);
-            tableConfig.Controls.Add(label6, 0, 5);
-            tableConfig.Controls.Add(checkCompleteOnEnterSystem, 0, 7);
-            tableConfig.Controls.Add(label4, 0, 6);
-            tableConfig.Controls.Add(dateStart, 1, 5);
-            tableConfig.Controls.Add(btnConfigCancel, 3, 8);
-            tableConfig.Controls.Add(btnBegin, 2, 8);
+            tableConfig.Controls.Add(checkSkipVisited, 0, 4);
+            tableConfig.Controls.Add(checkSpinKnownToSpansh, 0, 5);
+            tableConfig.Controls.Add(label5, 0, 3);
+            tableConfig.Controls.Add(label6, 0, 6);
+            tableConfig.Controls.Add(btnBegin, 2, 9);
             tableConfig.Controls.Add(btnConfigNav, 4, 1);
-            tableConfig.Controls.Add(panelGraphic, 0, 9);
+            tableConfig.Controls.Add(panelGraphic, 0, 10);
+            tableConfig.Controls.Add(btnConfigCancel, 3, 9);
+            tableConfig.Controls.Add(checkCompleteOnFssAllBodies, 1, 8);
+            tableConfig.Controls.Add(label4, 0, 7);
+            tableConfig.Controls.Add(checkCompleteOnEnterSystem, 0, 8);
+            tableConfig.Controls.Add(dateStart, 1, 6);
+            tableConfig.Controls.Add(comboLowMassCode, 1, 3);
+            tableConfig.Controls.Add(lblBadBoxel, 0, 2);
+            tableConfig.Controls.Add(lblBoxelCount, 2, 3);
             tableConfig.Name = "tableConfig";
             // 
             // lblConfigHeader
@@ -352,60 +354,10 @@
             resources.ApplyResources(label5, "label5");
             label5.Name = "label5";
             // 
-            // comboLowMassCode
-            // 
-            comboLowMassCode.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboLowMassCode.FormattingEnabled = true;
-            comboLowMassCode.Items.AddRange(new object[] { resources.GetString("comboLowMassCode.Items"), resources.GetString("comboLowMassCode.Items1"), resources.GetString("comboLowMassCode.Items2"), resources.GetString("comboLowMassCode.Items3"), resources.GetString("comboLowMassCode.Items4"), resources.GetString("comboLowMassCode.Items5"), resources.GetString("comboLowMassCode.Items6") });
-            resources.ApplyResources(comboLowMassCode, "comboLowMassCode");
-            comboLowMassCode.Name = "comboLowMassCode";
-            comboLowMassCode.SelectedIndexChanged += comboLowMassCode_SelectedIndexChanged;
-            // 
-            // lblBoxelCount
-            // 
-            resources.ApplyResources(lblBoxelCount, "lblBoxelCount");
-            tableConfig.SetColumnSpan(lblBoxelCount, 2);
-            lblBoxelCount.Name = "lblBoxelCount";
-            // 
-            // checkCompleteOnFssAllBodies
-            // 
-            resources.ApplyResources(checkCompleteOnFssAllBodies, "checkCompleteOnFssAllBodies");
-            tableConfig.SetColumnSpan(checkCompleteOnFssAllBodies, 2);
-            checkCompleteOnFssAllBodies.Name = "checkCompleteOnFssAllBodies";
-            checkCompleteOnFssAllBodies.UseVisualStyleBackColor = true;
-            checkCompleteOnFssAllBodies.CheckedChanged += checkCompleteOnFssAllBodies_CheckedChanged;
-            // 
             // label6
             // 
             resources.ApplyResources(label6, "label6");
             label6.Name = "label6";
-            // 
-            // checkCompleteOnEnterSystem
-            // 
-            resources.ApplyResources(checkCompleteOnEnterSystem, "checkCompleteOnEnterSystem");
-            checkCompleteOnEnterSystem.Name = "checkCompleteOnEnterSystem";
-            checkCompleteOnEnterSystem.UseVisualStyleBackColor = true;
-            checkCompleteOnEnterSystem.CheckedChanged += checkCompleteOnEnterSystem_CheckedChanged;
-            // 
-            // label4
-            // 
-            resources.ApplyResources(label4, "label4");
-            tableConfig.SetColumnSpan(label4, 2);
-            label4.Name = "label4";
-            // 
-            // dateStart
-            // 
-            resources.ApplyResources(dateStart, "dateStart");
-            tableConfig.SetColumnSpan(dateStart, 2);
-            dateStart.Name = "dateStart";
-            // 
-            // btnConfigCancel
-            // 
-            resources.ApplyResources(btnConfigCancel, "btnConfigCancel");
-            tableConfig.SetColumnSpan(btnConfigCancel, 2);
-            btnConfigCancel.Name = "btnConfigCancel";
-            btnConfigCancel.UseVisualStyleBackColor = true;
-            btnConfigCancel.Click += btnConfigCancel_Click;
             // 
             // btnBegin
             // 
@@ -436,14 +388,70 @@
             resources.ApplyResources(labelGraphic, "labelGraphic");
             labelGraphic.Name = "labelGraphic";
             // 
+            // btnConfigCancel
+            // 
+            resources.ApplyResources(btnConfigCancel, "btnConfigCancel");
+            tableConfig.SetColumnSpan(btnConfigCancel, 2);
+            btnConfigCancel.Name = "btnConfigCancel";
+            btnConfigCancel.UseVisualStyleBackColor = true;
+            btnConfigCancel.Click += btnConfigCancel_Click;
+            // 
+            // checkCompleteOnFssAllBodies
+            // 
+            resources.ApplyResources(checkCompleteOnFssAllBodies, "checkCompleteOnFssAllBodies");
+            tableConfig.SetColumnSpan(checkCompleteOnFssAllBodies, 2);
+            checkCompleteOnFssAllBodies.Name = "checkCompleteOnFssAllBodies";
+            checkCompleteOnFssAllBodies.UseVisualStyleBackColor = true;
+            checkCompleteOnFssAllBodies.CheckedChanged += checkCompleteOnFssAllBodies_CheckedChanged;
+            // 
+            // label4
+            // 
+            resources.ApplyResources(label4, "label4");
+            tableConfig.SetColumnSpan(label4, 2);
+            label4.Name = "label4";
+            // 
+            // checkCompleteOnEnterSystem
+            // 
+            resources.ApplyResources(checkCompleteOnEnterSystem, "checkCompleteOnEnterSystem");
+            checkCompleteOnEnterSystem.Name = "checkCompleteOnEnterSystem";
+            checkCompleteOnEnterSystem.UseVisualStyleBackColor = true;
+            checkCompleteOnEnterSystem.CheckedChanged += checkCompleteOnEnterSystem_CheckedChanged;
+            // 
+            // dateStart
+            // 
+            resources.ApplyResources(dateStart, "dateStart");
+            tableConfig.SetColumnSpan(dateStart, 2);
+            dateStart.Name = "dateStart";
+            // 
+            // comboLowMassCode
+            // 
+            comboLowMassCode.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboLowMassCode.FormattingEnabled = true;
+            comboLowMassCode.Items.AddRange(new object[] { resources.GetString("comboLowMassCode.Items"), resources.GetString("comboLowMassCode.Items1"), resources.GetString("comboLowMassCode.Items2"), resources.GetString("comboLowMassCode.Items3"), resources.GetString("comboLowMassCode.Items4"), resources.GetString("comboLowMassCode.Items5"), resources.GetString("comboLowMassCode.Items6") });
+            resources.ApplyResources(comboLowMassCode, "comboLowMassCode");
+            comboLowMassCode.Name = "comboLowMassCode";
+            comboLowMassCode.SelectedIndexChanged += comboLowMassCode_SelectedIndexChanged;
+            // 
+            // lblBadBoxel
+            // 
+            resources.ApplyResources(lblBadBoxel, "lblBadBoxel");
+            tableConfig.SetColumnSpan(lblBadBoxel, 5);
+            lblBadBoxel.Name = "lblBadBoxel";
+            // 
+            // lblBoxelCount
+            // 
+            resources.ApplyResources(lblBoxelCount, "lblBoxelCount");
+            tableConfig.SetColumnSpan(lblBoxelCount, 2);
+            lblBoxelCount.Name = "lblBoxelCount";
+            // 
             // FormBoxelSearch
             // 
             resources.ApplyResources(this, "$this");
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ControlDark;
             Controls.Add(status);
-            Controls.Add(tableTop);
             Controls.Add(tableConfig);
+            Controls.Add(tableTop);
             Name = "FormBoxelSearch";
             contextList.ResumeLayout(false);
             status.ResumeLayout(false);
@@ -509,5 +517,6 @@
         private Panel panelGraphic;
         private Label labelGraphic;
         private FlowLayoutPanel flowCommands;
+        private Label lblBadBoxel;
     }
 }

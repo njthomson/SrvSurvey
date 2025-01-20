@@ -587,6 +587,8 @@ namespace SrvSurvey.forms
             this.configValid = bx != null;
             btnBegin.Enabled = this.configValid;
             comboLowMassCode.Enabled = this.configValid;
+            lblBadBoxel.Visible = !this.configValid;
+
             if (bx == null) return;
 
             var mc = comboLowMassCode.SelectedItem;

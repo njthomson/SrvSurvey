@@ -419,7 +419,7 @@ namespace SrvSurvey.game
             while (bx.massCode < this.massCode)
             {
                 bx = bx.parent;
-                if (bx == this)
+                if (bx.prefix == this.prefix)
                     return true;
             }
             return false;
