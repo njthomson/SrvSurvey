@@ -51,7 +51,7 @@ namespace SrvSurvey.plotters
                 var insideSearchArea = game.cmdr.boxelSearch.boxel.containsChild(game.cmdr.getCurrentBoxel());
                 if (insideSearchArea)
                 {
-                    var text = game.cmdr.boxelSearch.getNextToVisit();
+                    var text = game.cmdr.boxelSearch.nextSystem;
                     if (text != null)
                     {
                         Game.log($"Setting next boxel search system to clipboard: {text}");
@@ -268,15 +268,15 @@ namespace SrvSurvey.plotters
             var ww = ten + Util.maxWidth(ff, RES("Boxel"), RES("Visited"), RES("Next"));
 
             this.drawTextAt(eight, RES("Boxel"), ff);
-            this.drawTextAt(ww, boxelSearch.current.prefix + "xxx", ff);
+            this.drawTextAt(ww, boxelSearch.current.prefix + "...", ff);
             newLine(two, true);
 
             this.drawTextAt(eight, RES("Visited"), ff);
-            this.drawTextAt(ww, RES("VisitedOf", boxelSearch.countVisited, boxelSearch.currentCount), ff);
+            this.drawTextAt(ww, RES("VisitedOf", boxelSearch.countSystemsComplete, boxelSearch.currentCount), ff);
             newLine(two, true);
 
             this.drawTextAt(eight, RES("Next"), ff);
-            var next = boxelSearch.getNextToVisit() ?? "";
+            var next = boxelSearch.nextSystem;
             if (next == boxelSearch.current.prefix || next == boxelSearch.boxel.prefix) next += " ?";
             this.drawTextAt(ww, next, GameColors.fontMiddle);
             dtx += ten;

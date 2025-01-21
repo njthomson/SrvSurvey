@@ -1060,6 +1060,14 @@ namespace SrvSurvey
                 return "Allied";
         }
 
+        public static int stringWidth(Font? font, string? text)
+        {
+            if (font == null || text == null)
+                return 0;
+
+            return TextRenderer.MeasureText(text, font, Size.Empty, textFlags).Width;
+        }
+
         /// <summary>
         /// Returns the max width of any of the given strings
         /// </summary>
@@ -1112,7 +1120,7 @@ namespace SrvSurvey
             if (!nodes.ContainsKey(key))
                 return nodes.Add(key, text);
             else
-                return nodes[key];
+                return nodes[key]!;
         }
 
         public static T? AddIfNotNull<T>(this List<T> list, T? item)
@@ -1134,22 +1142,22 @@ namespace SrvSurvey
                 return defaultValue;
         }
 
-        public static List<TreeNode> ToList(this TreeNodeCollection nodes)
-        {
-            var list = new List<TreeNode>();
-
-            foreach (TreeNode node in nodes)
-                list.Add(node);
-
-            return list;
-        }
-
         public static List<ListViewItem> ToList(this ListViewItemCollection items)
         {
             var list = new List<ListViewItem>();
 
             foreach (ListViewItem item in items)
                 list.Add(item);
+
+            return list;
+        }
+
+        public static List<TreeNode> ToList(this TreeNodeCollection nodes)
+        {
+            var list = new List<TreeNode>();
+
+            foreach (TreeNode node in nodes)
+                list.Add(node);
 
             return list;
         }
@@ -1208,7 +1216,7 @@ namespace SrvSurvey
             }
         }
 
-        public static void forEveryNode(this IEnumerable<TreeNode>nodes, Action<TreeNode> func)
+        public static void forEveryNode(this IEnumerable<TreeNode> nodes, Action<TreeNode> func)
         {
             foreach (TreeNode node in nodes)
             {
@@ -1280,6 +1288,14 @@ namespace SrvSurvey
                 else
                     func(postTask.Result);
             });
+        }
+
+        /// <summary>
+        /// Returns a string using local short date and 24 hour time
+        /// </summary>
+        public static string ToLocalShortDateTime24Hours(this DateTimeOffset dateTime)
+        {
+            return dateTime.LocalDateTime.ToShortDateString() + "  " + dateTime.LocalDateTime.ToString("HH:mm");
         }
     }
 

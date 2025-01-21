@@ -6,7 +6,7 @@
     <!-- FileVersion SHOULD be changed with each AppStore release -->
     <FileVersion>2.0.2.0</FileVersion>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net7.0-windows</TargetFramework>
+    <TargetFramework>net8.0-windows7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>

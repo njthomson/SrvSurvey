@@ -480,7 +480,7 @@ namespace SrvSurvey
             {
                 var lvi = listPoi.SelectedItems[0]!;
                 listPoi.Items.Remove(lvi);
-                template.poi.Remove((SitePOI)lvi.Tag);
+                template.poi.Remove((SitePOI)lvi.Tag!);
                 setCurrentPoi(null);
             }
         }

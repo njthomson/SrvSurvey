@@ -577,7 +577,7 @@ namespace SrvSurvey
             var cmp = siteData?.components?.GetValueOrDefault(nearestPoi.name)?.items[idx] ?? GComponent.unknown;
 
             foreach (ToolStripMenuItem child in subItem.DropDownItems)
-                child.Checked = (GComponent)child.Tag == cmp;
+                child.Checked = (GComponent)child.Tag! == cmp;
 
             if (idx == 0)
                 subItem.Text = $"Top: {Components.to(cmp)}";
@@ -1191,12 +1191,12 @@ namespace SrvSurvey
                 siteData.components[nearestPoi.name] = new Components() { name = nearestPoi.name };
 
             var idx = 0;
-            if (subItem.OwnerItem.Name.EndsWith("Middle"))
+            if (subItem.OwnerItem!.Name!.EndsWith("Middle"))
                 idx = 1;
             else if (subItem.OwnerItem.Name.EndsWith("Bottom"))
                 idx = 2;
 
-            var cmp = (GComponent)subItem.Tag;
+            var cmp = (GComponent)subItem.Tag!;
             siteData.components[nearestPoi.name].items[idx] = cmp;
 
             // TODO: just call prepComponentSubItems ??
@@ -1208,7 +1208,7 @@ namespace SrvSurvey
             else if (idx == 2)
                 subItem.OwnerItem.Text = $"Bottom: {Components.to(cmp)}";
 
-            foreach (ToolStripMenuItem sibling in subItem.GetCurrentParent().Items)
+            foreach (ToolStripMenuItem sibling in subItem.GetCurrentParent()!.Items)
                 sibling.Checked = false;
 
             subItem.Checked = true;

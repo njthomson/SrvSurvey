@@ -138,7 +138,7 @@ namespace SrvSurvey
             if (row != null)
             {
                 var subItem = row.GetSubItemAt(e.X, e.Y);
-                if (!string.IsNullOrEmpty(subItem.Name))
+                if (!string.IsNullOrEmpty(subItem?.Name))
                 {
                     if (cmdr.decodeTheRuins.Contains(subItem.Name))
                         cmdr.decodeTheRuins.Remove(subItem.Name);

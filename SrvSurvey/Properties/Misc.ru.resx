@@ -100,8 +100,8 @@
     <comment>Visited: {0}</comment>
   </data>
   <data name="FormBoxelSearch_VisitedCounts">
-    <value>Завершен {0} систем {1}, завершен {2} {3} бокселей</value>
-    <comment>Completed {0} of {1} systems, completed {2} of {3} boxels</comment>
+    <value>Завершено {2} {3} коробок, {0} систем {1} в текущих коробках</value>
+    <comment>Completed {2} of {3} boxels, {0} of {1} systems in current boxel</comment>
   </data>
   <data name="NetSysData_Bodies">
     <value>Тело</value>

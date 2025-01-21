@@ -23,7 +23,7 @@ namespace SrvSurvey.game
         /// </summary>
         public static SystemData? Load(string systemName, long systemAddress, string fid, bool skipPredictSpecies = false)
         {
-            Game.log($"Loading SystemData for: '{systemName}' ({systemAddress})");
+            if (systemName != "") Game.log($"Loading SystemData for: '{systemName}' ({systemAddress})");
 
             // use cache entry if present
             if (systemAddress != 0 && cache.TryGetValue(systemAddress, out SystemData? value))
@@ -33,7 +33,7 @@ namespace SrvSurvey.game
             var folder = Path.Combine(Program.dataFolder, "systems", fid);
             Directory.CreateDirectory(folder);
             var files = Directory.GetFiles(folder, $"*_{systemAddress}.json");
-            if (files.Length == 0)
+            if (files.Length == 0 && !string.IsNullOrEmpty(systemName))
             {
                 files = Directory.GetFiles(folder, $"{systemName}_*.json");
             }
@@ -41,7 +41,7 @@ namespace SrvSurvey.game
             // create new if no matches found
             if (files.Length == 0)
             {
-                Game.log($"Nothing found for: '{systemName}' ({systemAddress})");
+                if (systemName != "") Game.log($"Nothing found for: '{systemName}' ({systemAddress})");
                 return null;
             }
             else if (files.Length > 1)

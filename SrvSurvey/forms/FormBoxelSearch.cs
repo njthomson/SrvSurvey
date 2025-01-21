@@ -1,9 +1,9 @@
 ﻿using SrvSurvey.game;
-using SrvSurvey.net;
 using SrvSurvey.plotters;
 using SrvSurvey.Properties;
 using SrvSurvey.units;
 using SrvSurvey.widgets;
+using System.Collections;
 using System.Drawing.Drawing2D;
 
 namespace SrvSurvey.forms
@@ -15,12 +15,16 @@ namespace SrvSurvey.forms
         private StarRef from;
         private bool updatingList = false;
         private bool configValid;
+        private Font fontHighlightCurrentRow;
 
         private BoxelSearch bs { get => cmdr.boxelSearch!; }
 
         public FormBoxelSearch()
         {
             InitializeComponent();
+            this.list.ListViewItemSorter = new ColumnSorter();
+            this.list.HideSelection = true;
+            this.fontHighlightCurrentRow = new Font(list.Font, FontStyle.Bold);
 
             // load current or last cmdr, and their boxel search details
             this.cmdr = CommanderSettings.LoadCurrentOrLast();
@@ -33,6 +37,7 @@ namespace SrvSurvey.forms
 
             // ensure we have a setting value
             cmdr.boxelSearch ??= new();
+            cmdr.boxelSearch.doSave = () => { cmdr.Save(); };
 
             bs.changed += boxelSearch_changed;
 
@@ -48,7 +53,7 @@ namespace SrvSurvey.forms
 
             if (bs.active && bs.boxel != null)
             {
-                bs.reset(bs.boxel, false);
+                bs.reset(bs.boxel);
                 prepForm();
                 menuSiblings.targetButton = btnParent;
             }
@@ -60,7 +65,7 @@ namespace SrvSurvey.forms
 
             menuSiblings.Opening += menuSiblings_Opening;
 
-            var mw = flowCommands.Right + 20;
+            var mw = flowCommands.Right;
             this.MinimumSize = new Size(mw, 188);
         }
 
@@ -103,18 +108,27 @@ namespace SrvSurvey.forms
 
         private void btnBegin_Click(object sender, EventArgs e)
         {
-            closeConfig(true);
+            var bx = Boxel.parse(txtConfigBoxel.Text);
+            if (bx == null) return;
+
+            var diff = (int)bx.massCode - comboLowMassCode.Text[0];
+            if (diff > 1)
+            {
+                var rslt = MessageBox.Show(this, $"{lblBoxelCount.Text}\n\nThis could mean searching through many 100's of systems.\n\nAre you sure you want to do this?", "SrvSurvey", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (rslt != DialogResult.Yes) return;
+            }
+
+            closeConfig(true, bx);
         }
 
         private void btnConfigCancel_Click(object sender, EventArgs e)
         {
-            closeConfig(false);
+            closeConfig(false, Boxel.parse(txtConfigBoxel.Text));
         }
 
-        private void closeConfig(bool save)
+        private void closeConfig(bool save, Boxel? bx)
         {
             // exit early if we don't have a valid boxel
-            var bx = Boxel.parse(txtConfigBoxel.Text);
             if (bx != null && save)
             {
                 // populate from inline-dialog
@@ -124,7 +138,7 @@ namespace SrvSurvey.forms
                 bs.lowMassCode = comboLowMassCode.Text[0];
                 bs.startedOn = dateStart.Value;
 
-                bs.reset(bx, true);
+                bs.reset(bx);
             }
             if (bs.boxel == null || bs.current == null)
             {
@@ -156,7 +170,7 @@ namespace SrvSurvey.forms
             if (diff)
                 list.Items.Clear();
 
-            bs.setCurrent(bx, true);
+            bs.setCurrent(bx, force);
             cmdr.Save();
 
             if (diff)
@@ -230,7 +244,7 @@ namespace SrvSurvey.forms
         {
             if (menuSiblings.Items.Count == 0) return;
 
-            menuSiblings.Items["paste"].Visible = Clipboard.ContainsText();
+            menuSiblings.Items["paste"]!.Visible = Clipboard.ContainsText();
         }
 
         private void prepSiblings(Boxel bx)
@@ -257,8 +271,9 @@ namespace SrvSurvey.forms
                         txtConfigBoxel.Text = Clipboard.GetText();
                     else
                     {
-                        txtCurrent.Text = Clipboard.GetText();
-                        prepSiblings(Boxel.parse(txtCurrent.Text)!);
+                        var bx = Boxel.parse(Clipboard.GetText());
+                        if (bx != null)
+                            saveAndSetCurrent(bx, false);
                     }
                 }
             })
@@ -270,12 +285,11 @@ namespace SrvSurvey.forms
             // add parent and siblings
             if (current.massCode != 'h')
             {
-                menuSiblings.Items.Add("Move to:")
+                menuSiblings.Items.Add("Move to boxel:")
                     .Enabled = false;
 
                 var parent = current.parent;
-                menuSiblings.Items.Add($"Parent: {parent}")
-                    .Tag = new ItemTag(null, parent);
+                menuSiblings.Items.Add($"Parent: {parent}", parent);
 
                 var siblings = parent.children;
                 var currentIdx = siblings.IndexOf(current);
@@ -284,7 +298,7 @@ namespace SrvSurvey.forms
                 if (currentIdx > 0)
                 {
                     var prevSibling = siblings[currentIdx - 1];
-                    menuSiblings.Items.Add($"Prev: {prevSibling}", new ItemTag(null, prevSibling));
+                    menuSiblings.Items.Add($"Prev: {prevSibling}", prevSibling);
                 }
                 else
                 {
@@ -296,7 +310,7 @@ namespace SrvSurvey.forms
                 if (currentIdx < siblings.Count - 1)
                 {
                     var nextSibling = siblings[currentIdx + 1];
-                    menuSiblings.Items.Add($"Next: {nextSibling}", new ItemTag(null, nextSibling));
+                    menuSiblings.Items.Add($"Next: {nextSibling}", nextSibling);
                 }
                 else
                 {
@@ -306,19 +320,15 @@ namespace SrvSurvey.forms
             }
 
             // add children
-            if (current.massCode != 'a')
+            if (current.massCode != 'a') // && current.massCode > bs.lowMassCode)
             {
                 menuSiblings.Items.Add(new ToolStripSeparator());
                 menuSiblings.Items.Add("Child boxels:")
                     .Enabled = false;
 
                 foreach (var child in current.children)
-                {
-                    menuSiblings.Items.Add(child.ToString())
-                        .Tag = new ItemTag(null, child);
-                }
+                    menuSiblings.Items.Add(child.ToString(), child);
             }
-
         }
 
         private void menuSiblings_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
@@ -330,19 +340,19 @@ namespace SrvSurvey.forms
                 return;
             }
 
-            var itemTag = e.ClickedItem?.Tag as ItemTag;
-            if (itemTag == null) return;
+            var bx = e.ClickedItem?.Tag as Boxel;
+            if (bx == null) return;
 
             if (tableConfig.Visible)
             {
                 // just update the config text box
-                txtConfigBoxel.Text = itemTag.boxel.name;
+                txtConfigBoxel.Text = bx.name;
                 return;
             }
 
             this.BeginInvoke(() =>
             {
-                this.saveAndSetCurrent(itemTag.boxel);
+                this.saveAndSetCurrent(bx, false);
             });
         }
 
@@ -371,8 +381,8 @@ namespace SrvSurvey.forms
             else
             {
                 list.CheckBoxes = true;
-                var knownSystems = bs.systems.OrderBy(sys => sys.name.n2).ToList();
-                var hasNotes = false;
+                var knownSystems = bs.systems.ToList();
+                var colMaxWidths = new int[list.Columns.Count];
                 var max = (int)numMax.Value;
                 for (int n = 0; n < max; n++)
                 {
@@ -386,6 +396,7 @@ namespace SrvSurvey.forms
                             Text = bx.name,
                         });
 
+                    // set BoxelSearch.System on first subItem Tag
                     var sys = knownSystems.FirstOrDefault(sys => sys.name.n2 == n);
                     item.SubItems[0].Tag = sys;
 
@@ -394,7 +405,8 @@ namespace SrvSurvey.forms
                         item.Tag = bx;
 
                         item.SubItems.Add("?", "dist");
-                        item.SubItems.Add("", "notes");
+                        item.SubItems.Add("", "lastVisited");
+                        item.SubItems.Add("", "spanshUpdated");
                     }
 
                     if (sys != null)
@@ -413,27 +425,61 @@ namespace SrvSurvey.forms
                             subDist.Tag = d;
                         }
 
-                        // update notes
-                        // notes // TODO: Properties.Misc.FormBoxelSearch_UndiscoveredSystem;
-                        var notes = sys?.visitedAt != null ? $"Visited: {sys.visitedAt.Value.LocalDateTime}" : null;
+                        // set dates
+                        if (sys.visitedAt != null)
+                        {
+                            item.SubItems["lastVisited"]!.Text = sys.visitedAt.Value.ToLocalShortDateTime24Hours();
+                            item.SubItems["lastVisited"]!.Tag = sys.visitedAt.Value;
+                        }
                         if (sys?.spanshUpdated != null)
-                            notes += (notes == null ? "" : ", ") + $"Spansh: {sys.spanshUpdated.Value.LocalDateTime}";
-                        item.SubItems["notes"]!.Text = notes;
+                        {
+                            item.SubItems["spanshUpdated"]!.Text = sys.spanshUpdated.Value.ToLocalShortDateTime24Hours();
+                            item.SubItems["spanshUpdated"]!.Tag = sys.spanshUpdated.Value;
+                        }
                     }
 
-                    if (!hasNotes)
-                        hasNotes |= item.SubItems.Count == 3 && !string.IsNullOrEmpty(item.SubItems[2].Text);
+                    // highlight row of system we are currently within
+                    if (bx == cmdr.currentSystem)
+                    {
+                        item.Font = this.fontHighlightCurrentRow;
+                        item.BackColor = Color.Black;
+                    }
+                    else
+                    {
+                        item.Font = list.Font;
+                        item.BackColor = list.BackColor;
+                    }
+
+                    // apply max widths for each column
+                    for (int c = 0; c < list.Columns.Count; c++)
+                    {
+                        var txt = item.SubItems[c]?.Text;
+                        if (c == 0 && item.ListView?.CheckBoxes == true) txt += "W"; // allow enough space for W if there's going to be a checkbox
+                        var w = Util.stringWidth(item.SubItems[c]?.Font, txt);
+                        if (w > colMaxWidths[c]) colMaxWidths[c] = w;
+                    }
                 }
 
-                // trim off any excess rows
+                // trim off any excess rows from prior renderings
                 while (list.Items.Count > max)
                     list.Items.RemoveAt(max);
 
-                // TODO: Make this flicker less
-                if (list.Items.Count > 0) list.AutoResizeColumn(0, ColumnHeaderAutoResizeStyle.ColumnContent);
-                if (hasNotes) list.AutoResizeColumn(2, ColumnHeaderAutoResizeStyle.ColumnContent);
+                if (list.Items.Count > 0)
+                {
+                    // apply max width, or header width if bigger
+                    for (int c = 0; c < list.Columns.Count; c++)
+                    {
+                        var cw = Util.stringWidth(list.Font, list.Columns[c].Text);
+                        // allow wiggle room - bucket by 4px
+                        var w = colMaxWidths[c] + 4 + colMaxWidths[c] % 4;
+                        list.Columns[c].Width = Math.Max(cw, w) + 18;
+                    }
 
-                list.EnsureVisible(bs.current.n2);
+                    // scroll to the system we are currently within
+                    var currentRowIdx = list.Items.IndexOfKey(cmdr.currentSystem);
+                    if (currentRowIdx >= 0 && false)
+                        list.EnsureVisible(currentRowIdx);
+                }
             }
 
             this.setStatusText();
@@ -493,12 +539,12 @@ namespace SrvSurvey.forms
             if (bs == null || !bs.active)
                 lblStatus.Text = Properties.Misc.FormBoxelSearch_SearchNotActive;
             else
-                lblStatus.Text = Properties.Misc.FormBoxelSearch_VisitedCounts.format(bs.countVisited, bs.currentCount + 1, bs.countBoxelsCompleted, bs.countBoxelsTotal);
+                lblStatus.Text = Properties.Misc.FormBoxelSearch_VisitedCounts.format(bs.countSystemsComplete, bs.currentCount + 1, bs.countBoxelsCompleted, bs.countBoxelsTotal);
         }
 
         private void updateNextSystem()
         {
-            bs.setNextToVisit();
+            bs.setNextToVisit(); // TODO: still needed?
             var txt = bs.nextSystem;
             if (txt != null)
             {
@@ -522,30 +568,8 @@ namespace SrvSurvey.forms
 
             // auto trigger nav menu to assist in selecting the next boxel to search
             if (bs.currentEmpty)
-            {
                 menuSiblings.ShowOnTarget();
-            }
         }
-
-        /*
-        private void btnPaste_Click(object sender, EventArgs e)
-        {
-            var bx = Boxel.parse(Clipboard.GetText());
-            if (bx == null) return;
-
-            // exit early if pasted system is not contained within by our top boxel
-            if (bs.boxel.containsChild(bx))
-            {
-                lblWarning.Hide();
-                this.saveAndSetCurrent(bx);
-            }
-            else
-            {
-                // TODO: update warning text
-                lblWarning.Show();
-            }
-        }
-        */
 
         private void btnToggleList_ButtonClick(object sender, EventArgs e)
         {
@@ -624,6 +648,7 @@ namespace SrvSurvey.forms
         {
             if (comboFrom.SelectedSystem == null) return;
 
+            var maxW = 0;
             this.from = comboFrom.SelectedSystem;
             foreach (ListViewItem item in this.list.Items)
             {
@@ -631,9 +656,23 @@ namespace SrvSurvey.forms
                 if (sys?.starPos == null) continue;
 
                 var dist = Util.getSystemDistance(from, sys.starPos);
-                item.SubItems["dist"]!.Tag = dist;
-                item.SubItems["dist"]!.Text = dist.ToString("N2") + " ly";
+                var subItem = item.SubItems["dist"]!;
+                subItem.Tag = dist;
+                subItem.Text = dist.ToString("N2") + " ly";
+
+                var w = Util.stringWidth(subItem.Font, subItem.Text);
+                if (w > maxW) maxW = w;
             }
+
+            // apply max width, or header width if bigger
+            var cw = Util.stringWidth(list.Font, list.Columns[1].Text);
+            maxW += 4 + maxW % 4; // allow wiggle room - bucket by 4px
+            list.Columns[1].Width = Math.Max(cw, maxW) + 18;
+
+            // re-sort if sorting by distance
+            var columnSorter = (ColumnSorter)list.ListViewItemSorter!;
+            if (columnSorter.column == 1)
+                list.Sort();
         }
 
         private void comboLowMassCode_SelectedIndexChanged(object sender, EventArgs e)
@@ -766,24 +805,50 @@ namespace SrvSurvey.forms
             if (panelGraphic.Visible)
                 panelGraphic.Invalidate();
         }
-    }
 
-    class ItemTag
-    {
-        public Spansh.SystemResponse.Result? result;
-        public Boxel boxel;
-        public StarPos? starPos;
-
-        public Action? onClick;
-
-        public ItemTag(Spansh.SystemResponse.Result? result, Boxel boxel)
+        private void list_ColumnClick(object sender, ColumnClickEventArgs e)
         {
-            this.result = result;
-            this.boxel = boxel;
+            // re-sort by column
+            var columnSorter = (ColumnSorter)list.ListViewItemSorter!;
 
-            this.starPos = result?.toStarPos();
+            // toggle sort-order only if column is not changing
+            if (columnSorter.column == e.Column)
+                columnSorter.ascending = !columnSorter.ascending;
+
+            columnSorter.column = e.Column;
+
+            list.Sort();
         }
 
-        public string name { get => boxel.ToString(); }
+        public class ColumnSorter : IComparer
+        {
+            public int column;
+            public bool ascending = true;
+
+            public int Compare(object? left, object? right)
+            {
+                var leftItem = ascending ? (ListViewItem?)left : (ListViewItem?)right;
+                var rightItem = ascending ? (ListViewItem?)right : (ListViewItem?)left;
+
+                switch (column)
+                {
+                    default:
+                    case 0:
+                        // Tag type is Boxel
+                        //return string.Compare(leftItem?.Name ?? "", rightItem?.Name ?? "");
+                        return ((Boxel)leftItem?.Tag!).n2.CompareTo(((Boxel)rightItem?.Tag!)?.n2 ?? int.MaxValue);
+
+                    case 1:
+                        // Tag type is Double
+                        return ((double)leftItem?.SubItems[column].Tag!).CompareTo((double)rightItem?.SubItems[column].Tag!);
+                    case 2:
+                    case 3:
+                        // Tag type is DateTimeOffset
+                        var leftDate = (DateTimeOffset?)leftItem?.SubItems[column].Tag! ?? DateTimeOffset.MinValue;
+                        var rightDate = (DateTimeOffset?)rightItem?.SubItems[column].Tag! ?? DateTimeOffset.MinValue;
+                        return DateTimeOffset.Compare(leftDate, rightDate);
+                }
+            }
+        }
     }
 }

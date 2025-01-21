@@ -176,7 +176,7 @@ namespace SrvSurvey
 
         private static bool copyNextBoxelSystem()
         {
-            var nextSystem = Game.activeGame?.cmdr.boxelSearch?.getNextToVisit();
+            var nextSystem = Game.activeGame?.cmdr.boxelSearch?.nextSystem;
             if (Game.activeGame?.mode == GameMode.GalaxyMap && nextSystem != null)
             {
                 Game.log($"Setting next boxel search system to clipboard: {nextSystem}");

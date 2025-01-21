@@ -77,26 +77,38 @@
   <data name="&gt;&gt;btnBegin.Name" xml:space="preserve">
     <value>btnBegin</value>
   </data>
+  <data name="&gt;&gt;btnBegin.Name" xml:space="preserve">
+    <value>btnBegin</value>
+  </data>
+  <data name="&gt;&gt;btnBegin.Parent" xml:space="preserve">
+    <value>tableConfig</value>
+  </data>
   <data name="&gt;&gt;btnBegin.Parent" xml:space="preserve">
     <value>tableConfig</value>
   </data>
   <data name="&gt;&gt;btnBegin.Type" xml:space="preserve">
     <value>SrvSurvey.FlatButton, SrvSurvey, Culture=neutral, PublicKeyToken=null</value>
   </data>
+  <data name="&gt;&gt;btnBegin.Type" xml:space="preserve">
+    <value>SrvSurvey.FlatButton, SrvSurvey, Culture=neutral, PublicKeyToken=null</value>
+  </data>
   <data name="&gt;&gt;btnBegin.ZOrder" xml:space="preserve">
-    <value>13</value>
+    <value>6</value>
+  </data>
+  <data name="&gt;&gt;btnBegin.ZOrder" xml:space="preserve">
+    <value>6</value>
   </data>
   <data name="&gt;&gt;btnBoxelEmpty.Name" xml:space="preserve">
     <value>btnBoxelEmpty</value>
   </data>
   <data name="&gt;&gt;btnBoxelEmpty.Parent" xml:space="preserve">
-    <value>tableTop</value>
+    <value>flowCommands</value>
   </data>
   <data name="&gt;&gt;btnBoxelEmpty.Type" xml:space="preserve">
     <value>SrvSurvey.FlatButton, SrvSurvey, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;btnBoxelEmpty.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>2</value>
   </data>
   <data name="&gt;&gt;btnConfig.Name" xml:space="preserve">
     <value>btnConfig</value>
@@ -108,7 +120,10 @@
     <value>SrvSurvey.FlatButton, SrvSurvey, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;btnConfig.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>5</value>
+  </data>
+  <data name="&gt;&gt;btnConfigCancel.Name" xml:space="preserve">
+    <value>btnConfigCancel</value>
   </data>
   <data name="&gt;&gt;btnConfigCancel.Name" xml:space="preserve">
     <value>btnConfigCancel</value>
@@ -116,11 +131,23 @@
   <data name="&gt;&gt;btnConfigCancel.Parent" xml:space="preserve">
     <value>tableConfig</value>
   </data>
+  <data name="&gt;&gt;btnConfigCancel.Parent" xml:space="preserve">
+    <value>tableConfig</value>
+  </data>
+  <data name="&gt;&gt;btnConfigCancel.Type" xml:space="preserve">
+    <value>SrvSurvey.FlatButton, SrvSurvey, Culture=neutral, PublicKeyToken=null</value>
+  </data>
   <data name="&gt;&gt;btnConfigCancel.Type" xml:space="preserve">
     <value>SrvSurvey.FlatButton, SrvSurvey, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;btnConfigCancel.ZOrder" xml:space="preserve">
-    <value>12</value>
+    <value>9</value>
+  </data>
+  <data name="&gt;&gt;btnConfigCancel.ZOrder" xml:space="preserve">
+    <value>9</value>
+  </data>
+  <data name="&gt;&gt;btnConfigNav.Name" xml:space="preserve">
+    <value>btnConfigNav</value>
   </data>
   <data name="&gt;&gt;btnConfigNav.Name" xml:space="preserve">
     <value>btnConfigNav</value>
@@ -128,11 +155,20 @@
   <data name="&gt;&gt;btnConfigNav.Parent" xml:space="preserve">
     <value>tableConfig</value>
   </data>
+  <data name="&gt;&gt;btnConfigNav.Parent" xml:space="preserve">
+    <value>tableConfig</value>
+  </data>
+  <data name="&gt;&gt;btnConfigNav.Type" xml:space="preserve">
+    <value>SrvSurvey.FlatButton, SrvSurvey, Culture=neutral, PublicKeyToken=null</value>
+  </data>
   <data name="&gt;&gt;btnConfigNav.Type" xml:space="preserve">
     <value>SrvSurvey.FlatButton, SrvSurvey, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;btnConfigNav.ZOrder" xml:space="preserve">
-    <value>14</value>
+    <value>7</value>
+  </data>
+  <data name="&gt;&gt;btnConfigNav.ZOrder" xml:space="preserve">
+    <value>7</value>
   </data>
   <data name="&gt;&gt;btnCopyNext.Name" xml:space="preserve">
     <value>btnCopyNext</value>
@@ -144,7 +180,7 @@
     <value>SrvSurvey.FlatButton, SrvSurvey, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;btnCopyNext.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="&gt;&gt;btnParent.Name" xml:space="preserve">
     <value>btnParent</value>
@@ -156,7 +192,7 @@
     <value>SrvSurvey.FlatButton, SrvSurvey, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;btnParent.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>4</value>
   </data>
   <data name="&gt;&gt;btnToggleList.Name" xml:space="preserve">
     <value>btnToggleList</value>
@@ -174,7 +210,10 @@
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;checkAutoCopy.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;checkCompleteOnEnterSystem.Name" xml:space="preserve">
+    <value>checkCompleteOnEnterSystem</value>
   </data>
   <data name="&gt;&gt;checkCompleteOnEnterSystem.Name" xml:space="preserve">
     <value>checkCompleteOnEnterSystem</value>
@@ -182,11 +221,23 @@
   <data name="&gt;&gt;checkCompleteOnEnterSystem.Parent" xml:space="preserve">
     <value>tableConfig</value>
   </data>
+  <data name="&gt;&gt;checkCompleteOnEnterSystem.Parent" xml:space="preserve">
+    <value>tableConfig</value>
+  </data>
+  <data name="&gt;&gt;checkCompleteOnEnterSystem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;checkCompleteOnEnterSystem.Type" xml:space="preserve">
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;checkCompleteOnEnterSystem.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>12</value>
+  </data>
+  <data name="&gt;&gt;checkCompleteOnEnterSystem.ZOrder" xml:space="preserve">
+    <value>12</value>
+  </data>
+  <data name="&gt;&gt;checkCompleteOnFssAllBodies.Name" xml:space="preserve">
+    <value>checkCompleteOnFssAllBodies</value>
   </data>
   <data name="&gt;&gt;checkCompleteOnFssAllBodies.Name" xml:space="preserve">
     <value>checkCompleteOnFssAllBodies</value>
@@ -194,11 +245,23 @@
   <data name="&gt;&gt;checkCompleteOnFssAllBodies.Parent" xml:space="preserve">
     <value>tableConfig</value>
   </data>
+  <data name="&gt;&gt;checkCompleteOnFssAllBodies.Parent" xml:space="preserve">
+    <value>tableConfig</value>
+  </data>
+  <data name="&gt;&gt;checkCompleteOnFssAllBodies.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;checkCompleteOnFssAllBodies.Type" xml:space="preserve">
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;checkCompleteOnFssAllBodies.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>10</value>
+  </data>
+  <data name="&gt;&gt;checkCompleteOnFssAllBodies.ZOrder" xml:space="preserve">
+    <value>10</value>
+  </data>
+  <data name="&gt;&gt;checkSkipVisited.Name" xml:space="preserve">
+    <value>checkSkipVisited</value>
   </data>
   <data name="&gt;&gt;checkSkipVisited.Name" xml:space="preserve">
     <value>checkSkipVisited</value>
@@ -206,8 +269,17 @@
   <data name="&gt;&gt;checkSkipVisited.Parent" xml:space="preserve">
     <value>tableConfig</value>
   </data>
+  <data name="&gt;&gt;checkSkipVisited.Parent" xml:space="preserve">
+    <value>tableConfig</value>
+  </data>
   <data name="&gt;&gt;checkSkipVisited.Type" xml:space="preserve">
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;checkSkipVisited.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;checkSkipVisited.ZOrder" xml:space="preserve">
+    <value>2</value>
   </data>
   <data name="&gt;&gt;checkSkipVisited.ZOrder" xml:space="preserve">
     <value>2</value>
@@ -215,8 +287,17 @@
   <data name="&gt;&gt;checkSpinKnownToSpansh.Name" xml:space="preserve">
     <value>checkSpinKnownToSpansh</value>
   </data>
+  <data name="&gt;&gt;checkSpinKnownToSpansh.Name" xml:space="preserve">
+    <value>checkSpinKnownToSpansh</value>
+  </data>
   <data name="&gt;&gt;checkSpinKnownToSpansh.Parent" xml:space="preserve">
     <value>tableConfig</value>
+  </data>
+  <data name="&gt;&gt;checkSpinKnownToSpansh.Parent" xml:space="preserve">
+    <value>tableConfig</value>
+  </data>
+  <data name="&gt;&gt;checkSpinKnownToSpansh.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;checkSpinKnownToSpansh.Type" xml:space="preserve">
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -224,16 +305,25 @@
   <data name="&gt;&gt;checkSpinKnownToSpansh.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
+  <data name="&gt;&gt;checkSpinKnownToSpansh.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;colCompleted.Name" xml:space="preserve">
+    <value>colCompleted</value>
+  </data>
+  <data name="&gt;&gt;colCompleted.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;colDistance.Name" xml:space="preserve">
     <value>colDistance</value>
   </data>
   <data name="&gt;&gt;colDistance.Type" xml:space="preserve">
     <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;colNotes.Name" xml:space="preserve">
-    <value>colNotes</value>
+  <data name="&gt;&gt;colSpansh.Name" xml:space="preserve">
+    <value>colSpansh</value>
   </data>
-  <data name="&gt;&gt;colNotes.Type" xml:space="preserve">
+  <data name="&gt;&gt;colSpansh.Type" xml:space="preserve">
     <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;colSystem.Name" xml:space="preserve">
@@ -245,8 +335,17 @@
   <data name="&gt;&gt;comboFrom.Name" xml:space="preserve">
     <value>comboFrom</value>
   </data>
+  <data name="&gt;&gt;comboFrom.Name" xml:space="preserve">
+    <value>comboFrom</value>
+  </data>
   <data name="&gt;&gt;comboFrom.Parent" xml:space="preserve">
     <value>panelList</value>
+  </data>
+  <data name="&gt;&gt;comboFrom.Parent" xml:space="preserve">
+    <value>panelList</value>
+  </data>
+  <data name="&gt;&gt;comboFrom.Type" xml:space="preserve">
+    <value>SrvSurvey.ComboStarSystem, SrvSurvey, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;comboFrom.Type" xml:space="preserve">
     <value>SrvSurvey.ComboStarSystem, SrvSurvey, Culture=neutral, PublicKeyToken=null</value>
@@ -254,8 +353,17 @@
   <data name="&gt;&gt;comboFrom.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
+  <data name="&gt;&gt;comboFrom.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="&gt;&gt;comboLowMassCode.Name" xml:space="preserve">
     <value>comboLowMassCode</value>
+  </data>
+  <data name="&gt;&gt;comboLowMassCode.Name" xml:space="preserve">
+    <value>comboLowMassCode</value>
+  </data>
+  <data name="&gt;&gt;comboLowMassCode.Parent" xml:space="preserve">
+    <value>tableConfig</value>
   </data>
   <data name="&gt;&gt;comboLowMassCode.Parent" xml:space="preserve">
     <value>tableConfig</value>
@@ -263,8 +371,14 @@
   <data name="&gt;&gt;comboLowMassCode.Type" xml:space="preserve">
     <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;comboLowMassCode.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;comboLowMassCode.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>14</value>
+  </data>
+  <data name="&gt;&gt;comboLowMassCode.ZOrder" xml:space="preserve">
+    <value>14</value>
   </data>
   <data name="&gt;&gt;contextList.Name" xml:space="preserve">
     <value>contextList</value>
@@ -275,14 +389,26 @@
   <data name="&gt;&gt;dateStart.Name" xml:space="preserve">
     <value>dateStart</value>
   </data>
+  <data name="&gt;&gt;dateStart.Name" xml:space="preserve">
+    <value>dateStart</value>
+  </data>
+  <data name="&gt;&gt;dateStart.Parent" xml:space="preserve">
+    <value>tableConfig</value>
+  </data>
   <data name="&gt;&gt;dateStart.Parent" xml:space="preserve">
     <value>tableConfig</value>
   </data>
   <data name="&gt;&gt;dateStart.Type" xml:space="preserve">
     <value>System.Windows.Forms.DateTimePicker, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;dateStart.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DateTimePicker, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;dateStart.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>13</value>
+  </data>
+  <data name="&gt;&gt;dateStart.ZOrder" xml:space="preserve">
+    <value>13</value>
   </data>
   <data name="&gt;&gt;flowCommands.Name" xml:space="preserve">
     <value>flowCommands</value>
@@ -294,7 +420,7 @@
     <value>System.Windows.Forms.FlowLayoutPanel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;flowCommands.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>7</value>
   </data>
   <data name="&gt;&gt;label1.Name" xml:space="preserve">
     <value>label1</value>
@@ -306,7 +432,10 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;label2.Name" xml:space="preserve">
+    <value>label2</value>
   </data>
   <data name="&gt;&gt;label2.Name" xml:space="preserve">
     <value>label2</value>
@@ -314,8 +443,17 @@
   <data name="&gt;&gt;label2.Parent" xml:space="preserve">
     <value>panelList</value>
   </data>
+  <data name="&gt;&gt;label2.Parent" xml:space="preserve">
+    <value>panelList</value>
+  </data>
   <data name="&gt;&gt;label2.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
   <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
     <value>1</value>
@@ -330,7 +468,10 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>6</value>
+  </data>
+  <data name="&gt;&gt;label4.Name" xml:space="preserve">
+    <value>label4</value>
   </data>
   <data name="&gt;&gt;label4.Name" xml:space="preserve">
     <value>label4</value>
@@ -338,11 +479,23 @@
   <data name="&gt;&gt;label4.Parent" xml:space="preserve">
     <value>tableConfig</value>
   </data>
+  <data name="&gt;&gt;label4.Parent" xml:space="preserve">
+    <value>tableConfig</value>
+  </data>
+  <data name="&gt;&gt;label4.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;label4.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>11</value>
+  </data>
+  <data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
+    <value>11</value>
+  </data>
+  <data name="&gt;&gt;label5.Name" xml:space="preserve">
+    <value>label5</value>
   </data>
   <data name="&gt;&gt;label5.Name" xml:space="preserve">
     <value>label5</value>
@@ -350,8 +503,17 @@
   <data name="&gt;&gt;label5.Parent" xml:space="preserve">
     <value>tableConfig</value>
   </data>
+  <data name="&gt;&gt;label5.Parent" xml:space="preserve">
+    <value>tableConfig</value>
+  </data>
   <data name="&gt;&gt;label5.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label5.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label5.ZOrder" xml:space="preserve">
+    <value>4</value>
   </data>
   <data name="&gt;&gt;label5.ZOrder" xml:space="preserve">
     <value>4</value>
@@ -359,14 +521,29 @@
   <data name="&gt;&gt;label6.Name" xml:space="preserve">
     <value>label6</value>
   </data>
+  <data name="&gt;&gt;label6.Name" xml:space="preserve">
+    <value>label6</value>
+  </data>
+  <data name="&gt;&gt;label6.Parent" xml:space="preserve">
+    <value>tableConfig</value>
+  </data>
   <data name="&gt;&gt;label6.Parent" xml:space="preserve">
     <value>tableConfig</value>
   </data>
   <data name="&gt;&gt;label6.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;label6.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;label6.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>5</value>
+  </data>
+  <data name="&gt;&gt;label6.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="&gt;&gt;labelGraphic.Name" xml:space="preserve">
+    <value>labelGraphic</value>
   </data>
   <data name="&gt;&gt;labelGraphic.Name" xml:space="preserve">
     <value>labelGraphic</value>
@@ -374,11 +551,47 @@
   <data name="&gt;&gt;labelGraphic.Parent" xml:space="preserve">
     <value>panelGraphic</value>
   </data>
+  <data name="&gt;&gt;labelGraphic.Parent" xml:space="preserve">
+    <value>panelGraphic</value>
+  </data>
+  <data name="&gt;&gt;labelGraphic.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;labelGraphic.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;labelGraphic.ZOrder" xml:space="preserve">
     <value>0</value>
+  </data>
+  <data name="&gt;&gt;labelGraphic.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;lblBadBoxel.Name" xml:space="preserve">
+    <value>lblBadBoxel</value>
+  </data>
+  <data name="&gt;&gt;lblBadBoxel.Name" xml:space="preserve">
+    <value>lblBadBoxel</value>
+  </data>
+  <data name="&gt;&gt;lblBadBoxel.Parent" xml:space="preserve">
+    <value>tableConfig</value>
+  </data>
+  <data name="&gt;&gt;lblBadBoxel.Parent" xml:space="preserve">
+    <value>tableConfig</value>
+  </data>
+  <data name="&gt;&gt;lblBadBoxel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblBadBoxel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblBadBoxel.ZOrder" xml:space="preserve">
+    <value>15</value>
+  </data>
+  <data name="&gt;&gt;lblBadBoxel.ZOrder" xml:space="preserve">
+    <value>15</value>
+  </data>
+  <data name="&gt;&gt;lblBoxelCount.Name" xml:space="preserve">
+    <value>lblBoxelCount</value>
   </data>
   <data name="&gt;&gt;lblBoxelCount.Name" xml:space="preserve">
     <value>lblBoxelCount</value>
@@ -386,11 +599,23 @@
   <data name="&gt;&gt;lblBoxelCount.Parent" xml:space="preserve">
     <value>tableConfig</value>
   </data>
+  <data name="&gt;&gt;lblBoxelCount.Parent" xml:space="preserve">
+    <value>tableConfig</value>
+  </data>
+  <data name="&gt;&gt;lblBoxelCount.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;lblBoxelCount.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;lblBoxelCount.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>16</value>
+  </data>
+  <data name="&gt;&gt;lblBoxelCount.ZOrder" xml:space="preserve">
+    <value>16</value>
+  </data>
+  <data name="&gt;&gt;lblConfigHeader.Name" xml:space="preserve">
+    <value>lblConfigHeader</value>
   </data>
   <data name="&gt;&gt;lblConfigHeader.Name" xml:space="preserve">
     <value>lblConfigHeader</value>
@@ -398,8 +623,17 @@
   <data name="&gt;&gt;lblConfigHeader.Parent" xml:space="preserve">
     <value>tableConfig</value>
   </data>
+  <data name="&gt;&gt;lblConfigHeader.Parent" xml:space="preserve">
+    <value>tableConfig</value>
+  </data>
   <data name="&gt;&gt;lblConfigHeader.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblConfigHeader.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblConfigHeader.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="&gt;&gt;lblConfigHeader.ZOrder" xml:space="preserve">
     <value>0</value>
@@ -414,7 +648,7 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;lblMaxNum.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="&gt;&gt;lblStatus.Name" xml:space="preserve">
     <value>lblStatus</value>
@@ -425,11 +659,23 @@
   <data name="&gt;&gt;list.Name" xml:space="preserve">
     <value>list</value>
   </data>
+  <data name="&gt;&gt;list.Name" xml:space="preserve">
+    <value>list</value>
+  </data>
+  <data name="&gt;&gt;list.Parent" xml:space="preserve">
+    <value>panelList</value>
+  </data>
   <data name="&gt;&gt;list.Parent" xml:space="preserve">
     <value>panelList</value>
   </data>
   <data name="&gt;&gt;list.Type" xml:space="preserve">
     <value>System.Windows.Forms.ListView, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;list.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ListView, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;list.ZOrder" xml:space="preserve">
+    <value>2</value>
   </data>
   <data name="&gt;&gt;list.ZOrder" xml:space="preserve">
     <value>2</value>
@@ -468,7 +714,10 @@
     <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;numMax.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;panelGraphic.Name" xml:space="preserve">
+    <value>panelGraphic</value>
   </data>
   <data name="&gt;&gt;panelGraphic.Name" xml:space="preserve">
     <value>panelGraphic</value>
@@ -476,11 +725,20 @@
   <data name="&gt;&gt;panelGraphic.Parent" xml:space="preserve">
     <value>tableConfig</value>
   </data>
+  <data name="&gt;&gt;panelGraphic.Parent" xml:space="preserve">
+    <value>tableConfig</value>
+  </data>
+  <data name="&gt;&gt;panelGraphic.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;panelGraphic.Type" xml:space="preserve">
     <value>System.Windows.Forms.Panel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;panelGraphic.ZOrder" xml:space="preserve">
-    <value>15</value>
+    <value>8</value>
+  </data>
+  <data name="&gt;&gt;panelGraphic.ZOrder" xml:space="preserve">
+    <value>8</value>
   </data>
   <data name="&gt;&gt;panelList.Name" xml:space="preserve">
     <value>panelList</value>
@@ -492,7 +750,7 @@
     <value>System.Windows.Forms.Panel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;panelList.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>0</value>
   </data>
   <data name="&gt;&gt;status.Name" xml:space="preserve">
     <value>status</value>
@@ -558,7 +816,7 @@
     <value>SrvSurvey.TextBox2, SrvSurvey, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;txtCurrent.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>1</value>
   </data>
   <data name="&gt;&gt;txtMainBoxel.Name" xml:space="preserve">
     <value>txtMainBoxel</value>
@@ -570,7 +828,7 @@
     <value>SrvSurvey.TextBox2, SrvSurvey, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;txtMainBoxel.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>3</value>
   </data>
   <data name="btnBegin.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -585,7 +843,7 @@
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="btnBegin.Location" type="System.Drawing.Point, System.Drawing">
-    <value>457, 192</value>
+    <value>457, 207</value>
   </data>
   <data name="btnBegin.Size" type="System.Drawing.Size, System.Drawing">
     <value>49, 27</value>
@@ -604,7 +862,7 @@
     <value>True</value>
   </data>
   <data name="btnBoxelEmpty.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 64</value>
+    <value>270, 3</value>
   </data>
   <data name="btnBoxelEmpty.Size" type="System.Drawing.Size, System.Drawing">
     <value>123, 27</value>
@@ -657,7 +915,7 @@
     <value>NoControl</value>
   </data>
   <data name="btnConfigCancel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>512, 192</value>
+    <value>512, 207</value>
   </data>
   <data name="btnConfigCancel.Size" type="System.Drawing.Size, System.Drawing">
     <value>55, 27</value>
@@ -701,10 +959,10 @@
     <value>False</value>
   </data>
   <data name="btnCopyNext.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 0</value>
+    <value>151, 3</value>
   </data>
   <data name="btnCopyNext.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 0, 30, 0</value>
+    <value>3, 0, 3, 0</value>
   </data>
   <data name="btnCopyNext.Size" type="System.Drawing.Size, System.Drawing">
     <value>113, 27</value>
@@ -717,7 +975,7 @@
     <comment>&amp;Copy next system</comment>
   </data>
   <data name="btnParent.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Left, Right</value>
+    <value>Right</value>
   </data>
   <data name="btnParent.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -726,17 +984,17 @@
     <value>GrowAndShrink</value>
   </data>
   <data name="btnParent.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 31</value>
+    <value>69, 31</value>
   </data>
   <data name="btnParent.Size" type="System.Drawing.Size, System.Drawing">
-    <value>123, 27</value>
+    <value>28, 27</value>
   </data>
   <data name="btnParent.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
   </data>
   <data name="btnParent.Text">
-    <value>* ACTIVE &amp;BOXEL →→→!</value>
-    <comment>Active &amp;boxel</comment>
+    <value>* ... →→→!</value>
+    <comment>...</comment>
   </data>
   <data name="btnToggleList.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -764,7 +1022,7 @@
     <value>True</value>
   </data>
   <data name="checkAutoCopy.Location" type="System.Drawing.Point, System.Drawing">
-    <value>149, 4</value>
+    <value>3, 7</value>
   </data>
   <data name="checkAutoCopy.Size" type="System.Drawing.Size, System.Drawing">
     <value>142, 19</value>
@@ -783,7 +1041,7 @@
     <value>True</value>
   </data>
   <data name="checkCompleteOnEnterSystem.Location" type="System.Drawing.Point, System.Drawing">
-    <value>35, 167</value>
+    <value>35, 182</value>
   </data>
   <data name="checkCompleteOnEnterSystem.Size" type="System.Drawing.Size, System.Drawing">
     <value>119, 19</value>
@@ -802,7 +1060,7 @@
     <value>True</value>
   </data>
   <data name="checkCompleteOnFssAllBodies.Location" type="System.Drawing.Point, System.Drawing">
-    <value>160, 167</value>
+    <value>160, 182</value>
   </data>
   <data name="checkCompleteOnFssAllBodies.Size" type="System.Drawing.Size, System.Drawing">
     <value>117, 19</value>
@@ -821,7 +1079,7 @@
     <value>True</value>
   </data>
   <data name="checkSkipVisited.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 81</value>
+    <value>3, 96</value>
   </data>
   <data name="checkSkipVisited.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 1, 0, 0</value>
@@ -843,7 +1101,7 @@
     <value>True</value>
   </data>
   <data name="checkSpinKnownToSpansh.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 101</value>
+    <value>3, 116</value>
   </data>
   <data name="checkSpinKnownToSpansh.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 1, 0, 0</value>
@@ -858,6 +1116,13 @@
     <value>* SKIP SYSTEMS KNOWN TO SPANSH BEFORE DATE →→→!</value>
     <comment>Skip systems known to Spansh before date</comment>
   </data>
+  <data name="colCompleted.Text">
+    <value>* VISITED DATE →→→!</value>
+    <comment>Visited Date</comment>
+  </data>
+  <data name="colCompleted.Width" type="System.Int32, mscorlib">
+    <value>150</value>
+  </data>
   <data name="colDistance.Text">
     <value>* DISTANCE →→→!</value>
     <comment>Distance</comment>
@@ -866,14 +1131,14 @@
     <value>Right</value>
   </data>
   <data name="colDistance.Width" type="System.Int32, mscorlib">
-    <value>120</value>
+    <value>80</value>
   </data>
-  <data name="colNotes.Text">
-    <value>* NOTES →→→!</value>
-    <comment>Notes</comment>
+  <data name="colSpansh.Text">
+    <value>* SPANSH UPDATED →→→!</value>
+    <comment>Spansh Updated</comment>
   </data>
-  <data name="colNotes.Width" type="System.Int32, mscorlib">
-    <value>340</value>
+  <data name="colSpansh.Width" type="System.Int32, mscorlib">
+    <value>150</value>
   </data>
   <data name="colSystem.Text">
     <value>* SYSTEM NAME →→→!</value>
@@ -886,10 +1151,10 @@
     <value>Bottom, Left, Right</value>
   </data>
   <data name="comboFrom.Location" type="System.Drawing.Point, System.Drawing">
-    <value>138, 463</value>
+    <value>144, 332</value>
   </data>
   <data name="comboFrom.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1001, 23</value>
+    <value>432, 23</value>
   </data>
   <data name="comboFrom.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -916,7 +1181,7 @@
     <value>A</value>
   </data>
   <data name="comboLowMassCode.Location" type="System.Drawing.Point, System.Drawing">
-    <value>160, 54</value>
+    <value>160, 69</value>
   </data>
   <data name="comboLowMassCode.Size" type="System.Drawing.Size, System.Drawing">
     <value>43, 23</value>
@@ -931,7 +1196,7 @@
     <value>Left</value>
   </data>
   <data name="dateStart.Location" type="System.Drawing.Point, System.Drawing">
-    <value>160, 123</value>
+    <value>160, 138</value>
   </data>
   <data name="dateStart.Size" type="System.Drawing.Size, System.Drawing">
     <value>200, 23</value>
@@ -949,13 +1214,13 @@
     <value>GrowAndShrink</value>
   </data>
   <data name="flowCommands.Location" type="System.Drawing.Point, System.Drawing">
-    <value>129, 64</value>
+    <value>0, 61</value>
   </data>
   <data name="flowCommands.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
   <data name="flowCommands.Size" type="System.Drawing.Size, System.Drawing">
-    <value>453, 27</value>
+    <value>582, 33</value>
   </data>
   <data name="flowCommands.TabIndex" type="System.Int32, mscorlib">
     <value>21</value>
@@ -986,7 +1251,7 @@
     <value>True</value>
   </data>
   <data name="label2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 466</value>
+    <value>6, 336</value>
   </data>
   <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
     <value>136, 15</value>
@@ -1017,8 +1282,8 @@
     <value>16</value>
   </data>
   <data name="label3.Text">
-    <value>* NOTE: BOXEL SEARCH FEATURE IS INCOMPLETE AND VERY EXPERIMENTAL →→→!</value>
-    <comment>NOTE: Boxel search feature is incomplete and very experimental</comment>
+    <value>* NOTE: BOXEL SEARCH FEATURE IS INCOMPLETE AND EXPERIMENTAL →→→!</value>
+    <comment>NOTE: Boxel search feature is incomplete and experimental</comment>
   </data>
   <data name="label3.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleCenter</value>
@@ -1030,7 +1295,7 @@
     <value>True</value>
   </data>
   <data name="label4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 149</value>
+    <value>3, 164</value>
   </data>
   <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
     <value>191, 15</value>
@@ -1049,7 +1314,7 @@
     <value>True</value>
   </data>
   <data name="label5.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 58</value>
+    <value>3, 73</value>
   </data>
   <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
     <value>151, 15</value>
@@ -1068,7 +1333,7 @@
     <value>True</value>
   </data>
   <data name="label6.Location" type="System.Drawing.Point, System.Drawing">
-    <value>91, 127</value>
+    <value>91, 142</value>
   </data>
   <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
     <value>63, 15</value>
@@ -1090,7 +1355,7 @@
     <value>0, 8, 0, 0</value>
   </data>
   <data name="labelGraphic.Size" type="System.Drawing.Size, System.Drawing">
-    <value>112, 224</value>
+    <value>112, 209</value>
   </data>
   <data name="labelGraphic.TabIndex" type="System.Int32, mscorlib">
     <value>28</value>
@@ -1103,6 +1368,31 @@ EACH BOXEL CONTAINS 8 CHILDREN, ARRANGED AS 2 ROWS OF 4 QUADRANTS, EACH WITH THE
 
 Each boxel contains 8 children, arranged as 2 rows of 4 quadrants, each with their own generated star systems.</comment>
   </data>
+  <data name="lblBadBoxel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Left, Right</value>
+  </data>
+  <data name="lblBadBoxel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lblBadBoxel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 51</value>
+  </data>
+  <data name="lblBadBoxel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>564, 15</value>
+  </data>
+  <data name="lblBadBoxel.TabIndex" type="System.Int32, mscorlib">
+    <value>28</value>
+  </data>
+  <data name="lblBadBoxel.Text">
+    <value>* SYSTEM NAME IS NOT A VALID BOXEL NAME →→→!</value>
+    <comment>System name is not a valid boxel name</comment>
+  </data>
+  <data name="lblBadBoxel.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleCenter</value>
+  </data>
+  <data name="lblBadBoxel.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
   <data name="lblBoxelCount.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left, Right</value>
   </data>
@@ -1110,7 +1400,7 @@ Each boxel contains 8 children, arranged as 2 rows of 4 quadrants, each with the
     <value>True</value>
   </data>
   <data name="lblBoxelCount.Location" type="System.Drawing.Point, System.Drawing">
-    <value>209, 58</value>
+    <value>209, 73</value>
   </data>
   <data name="lblBoxelCount.Size" type="System.Drawing.Size, System.Drawing">
     <value>324, 15</value>
@@ -1151,7 +1441,7 @@ Each boxel contains 8 children, arranged as 2 rows of 4 quadrants, each with the
     <value>True</value>
   </data>
   <data name="lblMaxNum.Location" type="System.Drawing.Point, System.Drawing">
-    <value>297, 6</value>
+    <value>399, 9</value>
   </data>
   <data name="lblMaxNum.Size" type="System.Drawing.Size, System.Drawing">
     <value>98, 15</value>
@@ -1177,10 +1467,13 @@ Each boxel contains 8 children, arranged as 2 rows of 4 quadrants, each with the
     <value>Top, Bottom, Left, Right</value>
   </data>
   <data name="list.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 3</value>
+    <value>0, 0</value>
+  </data>
+  <data name="list.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
   </data>
   <data name="list.Size" type="System.Drawing.Size, System.Drawing">
-    <value>570, 352</value>
+    <value>576, 329</value>
   </data>
   <data name="list.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1225,7 +1518,7 @@ Each boxel contains 8 children, arranged as 2 rows of 4 quadrants, each with the
     <value>Left</value>
   </data>
   <data name="numMax.Location" type="System.Drawing.Point, System.Drawing">
-    <value>401, 2</value>
+    <value>503, 5</value>
   </data>
   <data name="numMax.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 0, 3, 0</value>
@@ -1243,13 +1536,13 @@ Each boxel contains 8 children, arranged as 2 rows of 4 quadrants, each with the
     <value>Top, Bottom, Left, Right</value>
   </data>
   <data name="panelGraphic.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 222</value>
+    <value>0, 237</value>
   </data>
   <data name="panelGraphic.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
   <data name="panelGraphic.Size" type="System.Drawing.Size, System.Drawing">
-    <value>570, 226</value>
+    <value>570, 211</value>
   </data>
   <data name="panelGraphic.TabIndex" type="System.Int32, mscorlib">
     <value>27</value>
@@ -1282,13 +1575,13 @@ Each boxel contains 8 children, arranged as 2 rows of 4 quadrants, each with the
     <value>5</value>
   </data>
   <data name="tableConfig.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="lblConfigHeader" Row="0" RowSpan="1" Column="0" ColumnSpan="3" /&gt;&lt;Control Name="txtConfigBoxel" Row="1" RowSpan="1" Column="0" ColumnSpan="4" /&gt;&lt;Control Name="checkSkipVisited" Row="3" RowSpan="1" Column="0" ColumnSpan="3" /&gt;&lt;Control Name="checkSpinKnownToSpansh" Row="4" RowSpan="1" Column="0" ColumnSpan="3" /&gt;&lt;Control Name="label5" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="comboLowMassCode" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="lblBoxelCount" Row="2" RowSpan="1" Column="2" ColumnSpan="2" /&gt;&lt;Control Name="checkCompleteOnFssAllBodies" Row="7" RowSpan="1" Column="1" ColumnSpan="2" /&gt;&lt;Control Name="label6" Row="5" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="checkCompleteOnEnterSystem" Row="7" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="label4" Row="6" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;Control Name="dateStart" Row="5" RowSpan="1" Column="1" ColumnSpan="2" /&gt;&lt;Control Name="btnConfigCancel" Row="8" RowSpan="1" Column="3" ColumnSpan="2" /&gt;&lt;Control Name="btnBegin" Row="8" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="btnConfigNav" Row="1" RowSpan="1" Column="4" ColumnSpan="1" /&gt;&lt;Control Name="panelGraphic" Row="9" RowSpan="1" Column="0" ColumnSpan="5" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,AutoSize,0,Percent,100,AutoSize,0,AutoSize,0" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="lblConfigHeader" Row="0" RowSpan="1" Column="0" ColumnSpan="3" /&gt;&lt;Control Name="txtConfigBoxel" Row="1" RowSpan="1" Column="0" ColumnSpan="4" /&gt;&lt;Control Name="checkSkipVisited" Row="4" RowSpan="1" Column="0" ColumnSpan="3" /&gt;&lt;Control Name="checkSpinKnownToSpansh" Row="5" RowSpan="1" Column="0" ColumnSpan="3" /&gt;&lt;Control Name="label5" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="label6" Row="6" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="btnBegin" Row="9" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="btnConfigNav" Row="1" RowSpan="1" Column="4" ColumnSpan="1" /&gt;&lt;Control Name="panelGraphic" Row="10" RowSpan="1" Column="0" ColumnSpan="5" /&gt;&lt;Control Name="btnConfigCancel" Row="9" RowSpan="1" Column="3" ColumnSpan="2" /&gt;&lt;Control Name="checkCompleteOnFssAllBodies" Row="8" RowSpan="1" Column="1" ColumnSpan="2" /&gt;&lt;Control Name="label4" Row="7" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;Control Name="checkCompleteOnEnterSystem" Row="8" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="dateStart" Row="6" RowSpan="1" Column="1" ColumnSpan="2" /&gt;&lt;Control Name="comboLowMassCode" Row="3" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="lblBadBoxel" Row="2" RowSpan="1" Column="0" ColumnSpan="5" /&gt;&lt;Control Name="lblBoxelCount" Row="3" RowSpan="1" Column="2" ColumnSpan="2" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,AutoSize,0,Percent,100,AutoSize,0,AutoSize,0" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="tableConfig.Location" type="System.Drawing.Point, System.Drawing">
     <value>6, 3</value>
   </data>
   <data name="tableConfig.RowCount" type="System.Int32, mscorlib">
-    <value>10</value>
+    <value>11</value>
   </data>
   <data name="tableConfig.Size" type="System.Drawing.Size, System.Drawing">
     <value>570, 448</value>
@@ -1306,7 +1599,7 @@ Each boxel contains 8 children, arranged as 2 rows of 4 quadrants, each with the
     <value>6</value>
   </data>
   <data name="tableTop.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="btnBoxelEmpty" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="panelList" Row="3" RowSpan="1" Column="0" ColumnSpan="6" /&gt;&lt;Control Name="txtCurrent" Row="1" RowSpan="1" Column="1" ColumnSpan="4" /&gt;&lt;Control Name="label1" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="txtMainBoxel" Row="0" RowSpan="1" Column="1" ColumnSpan="4" /&gt;&lt;Control Name="btnParent" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="btnConfig" Row="0" RowSpan="2" Column="5" ColumnSpan="1" /&gt;&lt;Control Name="label3" Row="4" RowSpan="1" Column="0" ColumnSpan="6" /&gt;&lt;Control Name="flowCommands" Row="2" RowSpan="1" Column="1" ColumnSpan="5" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Percent,100,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,Percent,100,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="panelList" Row="3" RowSpan="1" Column="0" ColumnSpan="6" /&gt;&lt;Control Name="txtCurrent" Row="1" RowSpan="1" Column="1" ColumnSpan="4" /&gt;&lt;Control Name="label1" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="txtMainBoxel" Row="0" RowSpan="1" Column="1" ColumnSpan="4" /&gt;&lt;Control Name="btnParent" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="btnConfig" Row="0" RowSpan="2" Column="5" ColumnSpan="1" /&gt;&lt;Control Name="label3" Row="4" RowSpan="1" Column="0" ColumnSpan="6" /&gt;&lt;Control Name="flowCommands" Row="2" RowSpan="1" Column="0" ColumnSpan="6" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Percent,100,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,Percent,100,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="tableTop.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 3</value>
@@ -1333,8 +1626,8 @@ Each boxel contains 8 children, arranged as 2 rows of 4 quadrants, each with the
     <value>500, 0</value>
   </data>
   <data name="$this.Text">
-    <value>* BOXEL SEARCH (VERY EXPERIMENTAL) →→→!</value>
-    <comment>Boxel Search (very experimental)</comment>
+    <value>* BOXEL SEARCH (EXPERIMENTAL) →→→!</value>
+    <comment>Boxel Search (Experimental)</comment>
   </data>
   <data name="txtConfigBoxel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left, Right</value>
@@ -1361,7 +1654,7 @@ Each boxel contains 8 children, arranged as 2 rows of 4 quadrants, each with the
     <value>False</value>
   </data>
   <data name="txtCurrent.Location" type="System.Drawing.Point, System.Drawing">
-    <value>132, 30</value>
+    <value>103, 30</value>
   </data>
   <data name="txtCurrent.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 0, 0, 0</value>
@@ -1370,7 +1663,7 @@ Each boxel contains 8 children, arranged as 2 rows of 4 quadrants, each with the
     <value>3, 0, 3, 0</value>
   </data>
   <data name="txtCurrent.Size" type="System.Drawing.Size, System.Drawing">
-    <value>389, 28</value>
+    <value>418, 28</value>
   </data>
   <data name="txtCurrent.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -1379,7 +1672,7 @@ Each boxel contains 8 children, arranged as 2 rows of 4 quadrants, each with the
     <value>Left, Right</value>
   </data>
   <data name="txtMainBoxel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>132, 0</value>
+    <value>103, 0</value>
   </data>
   <data name="txtMainBoxel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 0, 0, 0</value>
@@ -1388,7 +1681,7 @@ Each boxel contains 8 children, arranged as 2 rows of 4 quadrants, each with the
     <value>3, 0, 3, 0</value>
   </data>
   <data name="txtMainBoxel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>389, 28</value>
+    <value>418, 28</value>
   </data>
   <data name="txtMainBoxel.TabIndex" type="System.Int32, mscorlib">
     <value>19</value>

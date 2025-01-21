@@ -223,7 +223,7 @@ namespace SrvSurvey
         {
             foreach (var row in this.rows)
             {
-                var entry = (GuardianGridEntry)row.Tag;
+                var entry = (GuardianGridEntry)row.Tag!;
                 entry.systemDistance = Util.getSystemDistance(this.from, entry.starPos);
                 row.SubItems["distanceToSystem"]!.Text = entry.systemDistance.ToString("N0") + " ly";
 
@@ -244,7 +244,7 @@ namespace SrvSurvey
             // apply filter
             var filteredRows = this.rows.Where(row =>
             {
-                var entry = (GuardianGridEntry)row.Tag;
+                var entry = (GuardianGridEntry)row.Tag!;
                 var keep = true;
 
                 // if only visited
@@ -322,33 +322,33 @@ namespace SrvSurvey
             switch (this.sortColumn)
             {
                 case 0: // site ID
-                    return rows.OrderBy(row => ((GuardianGridEntry)row.Tag).siteID);
+                    return rows.OrderBy(row => ((GuardianGridEntry)row.Tag!).siteID);
                 case 1: // system name
-                    return rows.OrderBy(row => ((GuardianGridEntry)row.Tag).systemName);
+                    return rows.OrderBy(row => ((GuardianGridEntry)row.Tag!).systemName);
                 case 2: // bodyName
-                    return rows.OrderBy(row => ((GuardianGridEntry)row.Tag).bodyName);
+                    return rows.OrderBy(row => ((GuardianGridEntry)row.Tag!).bodyName);
                 case 3: //systemDistance
-                    return rows.OrderBy(row => ((GuardianGridEntry)row.Tag).systemDistance);
+                    return rows.OrderBy(row => ((GuardianGridEntry)row.Tag!).systemDistance);
                 case 4: // distanceToArrival;
-                    return rows.OrderBy(row => ((GuardianGridEntry)row.Tag).distanceToArrival);
+                    return rows.OrderBy(row => ((GuardianGridEntry)row.Tag!).distanceToArrival);
                 case 5: // last visited
-                    return rows.OrderBy(row => ((GuardianGridEntry)row.Tag).lastVisited);
+                    return rows.OrderBy(row => ((GuardianGridEntry)row.Tag!).lastVisited);
                 case 6: // siteType
-                    return rows.OrderBy(row => ((GuardianGridEntry)row.Tag).siteType);
+                    return rows.OrderBy(row => ((GuardianGridEntry)row.Tag!).siteType);
                 case 7: // index
-                    return rows.OrderBy(row => ((GuardianGridEntry)row.Tag).idx);
+                    return rows.OrderBy(row => ((GuardianGridEntry)row.Tag!).idx);
                 case 8: // has images
                     return rows.OrderBy(row => row.SubItems[8].Text);
                 case 9: // survey complete
-                    return rows.OrderBy(row => ((GuardianGridEntry)row.Tag).surveyProgress);
+                    return rows.OrderBy(row => ((GuardianGridEntry)row.Tag!).surveyProgress);
                 case 10: // Ram Tah
-                    return rows.OrderBy(row => ((GuardianGridEntry)row.Tag).ramTahLogs);
+                    return rows.OrderBy(row => ((GuardianGridEntry)row.Tag!).ramTahLogs);
                 case 11: // notes
-                    return rows.OrderBy(row => ((GuardianGridEntry)row.Tag).notes);
+                    return rows.OrderBy(row => ((GuardianGridEntry)row.Tag!).notes);
 
                 default:
                     Game.log($"Unexpected sort column: {this.sortColumn}");
-                    return rows.OrderBy(row => ((GuardianRuinSummary)row.Tag).systemName);
+                    return rows.OrderBy(row => ((GuardianRuinSummary)row.Tag!).systemName);
             }
         }
 
@@ -538,7 +538,7 @@ namespace SrvSurvey
         {
             // copy system name
             if (this.grid.SelectedItems.Count == 0) return;
-            var entry = (GuardianGridEntry)this.grid.SelectedItems[0].Tag;
+            var entry = (GuardianGridEntry)this.grid.SelectedItems[0].Tag!;
             Clipboard.SetText(entry.systemName);
         }
 
@@ -546,7 +546,7 @@ namespace SrvSurvey
         {
             // copy system address
             if (this.grid.SelectedItems.Count == 0) return;
-            var entry = (GuardianGridEntry)this.grid.SelectedItems[0].Tag;
+            var entry = (GuardianGridEntry)this.grid.SelectedItems[0].Tag!;
             Clipboard.SetText(entry.systemAddress.ToString());
         }
 
@@ -554,7 +554,7 @@ namespace SrvSurvey
         {
             // copy body name
             if (this.grid.SelectedItems.Count == 0) return;
-            var entry = (GuardianGridEntry)this.grid.SelectedItems[0].Tag;
+            var entry = (GuardianGridEntry)this.grid.SelectedItems[0].Tag!;
             Clipboard.SetText(entry.fullBodyName);
         }
 
@@ -562,7 +562,7 @@ namespace SrvSurvey
         {
             // copy star pos
             if (this.grid.SelectedItems.Count == 0) return;
-            var entry = (GuardianGridEntry)this.grid.SelectedItems[0].Tag;
+            var entry = (GuardianGridEntry)this.grid.SelectedItems[0].Tag!;
             Clipboard.SetText($"x: {entry.starPos[0]}, y: {entry.starPos[1]}, z: {entry.starPos[2]}");
         }
 
@@ -570,7 +570,7 @@ namespace SrvSurvey
         {
             // copy lat/long
             if (this.grid.SelectedItems.Count == 0) return;
-            var entry = (GuardianGridEntry)this.grid.SelectedItems[0].Tag;
+            var entry = (GuardianGridEntry)this.grid.SelectedItems[0].Tag!;
             Clipboard.SetText($"{entry.latitude}, {entry.longitude}");
         }
 
@@ -578,7 +578,7 @@ namespace SrvSurvey
         {
             // copy notes
             if (this.grid.SelectedItems.Count == 0) return;
-            var entry = (GuardianGridEntry)this.grid.SelectedItems[0].Tag;
+            var entry = (GuardianGridEntry)this.grid.SelectedItems[0].Tag!;
             if (!string.IsNullOrEmpty(entry.notes))
                 Clipboard.SetText(entry.notes);
         }
@@ -586,7 +586,7 @@ namespace SrvSurvey
         private void openSystemInEDSMToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (this.grid.SelectedItems.Count == 0) return;
-            var entry = (GuardianGridEntry)this.grid.SelectedItems[0].Tag;
+            var entry = (GuardianGridEntry)this.grid.SelectedItems[0].Tag!;
 
             // https://canonn-science.github.io/canonn-signals/?system=Synuefe%20EN-H%20d11-106
             Util.openLink($"https://canonn-science.github.io/canonn-signals/?system={Uri.EscapeDataString(entry.systemName)}");
@@ -595,7 +595,7 @@ namespace SrvSurvey
         private void menuOpenSiteSurvey_Click(object sender, EventArgs e)
         {
             if (this.grid.SelectedItems.Count == 0 || panelSiteTypes.Visible) return;
-            var entry = (GuardianGridEntry)this.grid.SelectedItems[0].Tag;
+            var entry = (GuardianGridEntry)this.grid.SelectedItems[0].Tag!;
             if (entry.siteType == "Beacon") return;
 
             var siteData = GuardianSiteData.Load($"{entry.systemName} {entry.bodyName}", entry.idx, entry.isRuins);
@@ -631,7 +631,7 @@ namespace SrvSurvey
         private void openDataFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (this.grid.SelectedItems.Count == 0) return;
-            var entry = (GuardianGridEntry)this.grid.SelectedItems[0].Tag;
+            var entry = (GuardianGridEntry)this.grid.SelectedItems[0].Tag!;
 
             if (File.Exists(entry.filepath))
                 Util.openLink(entry.filepath);
@@ -642,7 +642,7 @@ namespace SrvSurvey
         private void menuOpenPubData_Click(object sender, EventArgs e)
         {
             if (this.grid.SelectedItems.Count == 0) return;
-            var entry = (GuardianGridEntry)this.grid.SelectedItems[0].Tag;
+            var entry = (GuardianGridEntry)this.grid.SelectedItems[0].Tag!;
             var pubDataPath = Path.Combine(Git.pubGuardianFolder, GuardianSiteData.getFilename(entry.fullBodyName, entry.idx, entry.isRuins));
 
             if (File.Exists(pubDataPath))
@@ -660,7 +660,7 @@ namespace SrvSurvey
         private void menuOpenImagesFolder_Click(object sender, EventArgs e)
         {
             if (this.grid.SelectedItems.Count == 0) return;
-            var entry = (GuardianGridEntry)this.grid.SelectedItems[0].Tag;
+            var entry = (GuardianGridEntry)this.grid.SelectedItems[0].Tag!;
 
             var folder = Path.Combine(Game.settings.screenshotTargetFolder!, entry.systemName);
             if (Directory.Exists(folder))

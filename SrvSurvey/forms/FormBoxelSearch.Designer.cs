@@ -41,7 +41,8 @@
             list = new ListView();
             colSystem = new ColumnHeader();
             colDistance = new ColumnHeader();
-            colNotes = new ColumnHeader();
+            colCompleted = new ColumnHeader();
+            colSpansh = new ColumnHeader();
             contextList = new ContextMenuStrip(components);
             menuListCopySystemName = new ToolStripMenuItem();
             label2 = new Label();
@@ -55,12 +56,12 @@
             numMax = new NumericUpDown();
             panelList = new Panel();
             tableTop = new TableLayoutPanel();
-            btnBoxelEmpty = new FlatButton();
             label1 = new Label();
             txtMainBoxel = new TextBox2();
             btnParent = new FlatButton();
             label3 = new Label();
             flowCommands = new FlowLayoutPanel();
+            btnBoxelEmpty = new FlatButton();
             checkSkipVisited = new CheckBox();
             checkSpinKnownToSpansh = new CheckBox();
             menuSiblings = new ButtonContextMenuStrip(components);
@@ -134,13 +135,14 @@
             resources.ApplyResources(list, "list");
             list.BackColor = SystemColors.WindowFrame;
             list.CheckBoxes = true;
-            list.Columns.AddRange(new ColumnHeader[] { colSystem, colDistance, colNotes });
+            list.Columns.AddRange(new ColumnHeader[] { colSystem, colDistance, colCompleted, colSpansh });
             list.ContextMenuStrip = contextList;
             list.ForeColor = SystemColors.Info;
             list.FullRowSelect = true;
             list.Name = "list";
             list.UseCompatibleStateImageBehavior = false;
             list.View = View.Details;
+            list.ColumnClick += list_ColumnClick;
             list.ItemChecked += list_ItemChecked;
             // 
             // colSystem
@@ -151,9 +153,13 @@
             // 
             resources.ApplyResources(colDistance, "colDistance");
             // 
-            // colNotes
+            // colCompleted
             // 
-            resources.ApplyResources(colNotes, "colNotes");
+            resources.ApplyResources(colCompleted, "colCompleted");
+            // 
+            // colSpansh
+            // 
+            resources.ApplyResources(colSpansh, "colSpansh");
             // 
             // contextList
             // 
@@ -175,6 +181,7 @@
             // comboFrom
             // 
             resources.ApplyResources(comboFrom, "comboFrom");
+            comboFrom.BackColor = SystemColors.ScrollBar;
             comboFrom.FormattingEnabled = true;
             comboFrom.Name = "comboFrom";
             comboFrom.SelectedSystem = null;
@@ -244,7 +251,6 @@
             // tableTop
             // 
             resources.ApplyResources(tableTop, "tableTop");
-            tableTop.Controls.Add(btnBoxelEmpty, 0, 2);
             tableTop.Controls.Add(panelList, 0, 3);
             tableTop.Controls.Add(txtCurrent, 1, 1);
             tableTop.Controls.Add(label1, 0, 0);
@@ -252,15 +258,8 @@
             tableTop.Controls.Add(btnParent, 0, 1);
             tableTop.Controls.Add(btnConfig, 5, 0);
             tableTop.Controls.Add(label3, 0, 4);
-            tableTop.Controls.Add(flowCommands, 1, 2);
+            tableTop.Controls.Add(flowCommands, 0, 2);
             tableTop.Name = "tableTop";
-            // 
-            // btnBoxelEmpty
-            // 
-            resources.ApplyResources(btnBoxelEmpty, "btnBoxelEmpty");
-            btnBoxelEmpty.Name = "btnBoxelEmpty";
-            btnBoxelEmpty.UseVisualStyleBackColor = true;
-            btnBoxelEmpty.Click += btnBoxelEmpty_Click;
             // 
             // label1
             // 
@@ -293,12 +292,20 @@
             // flowCommands
             // 
             resources.ApplyResources(flowCommands, "flowCommands");
-            tableTop.SetColumnSpan(flowCommands, 5);
-            flowCommands.Controls.Add(btnCopyNext);
+            tableTop.SetColumnSpan(flowCommands, 6);
             flowCommands.Controls.Add(checkAutoCopy);
+            flowCommands.Controls.Add(btnCopyNext);
+            flowCommands.Controls.Add(btnBoxelEmpty);
             flowCommands.Controls.Add(lblMaxNum);
             flowCommands.Controls.Add(numMax);
             flowCommands.Name = "flowCommands";
+            // 
+            // btnBoxelEmpty
+            // 
+            resources.ApplyResources(btnBoxelEmpty, "btnBoxelEmpty");
+            btnBoxelEmpty.Name = "btnBoxelEmpty";
+            btnBoxelEmpty.UseVisualStyleBackColor = true;
+            btnBoxelEmpty.Click += btnBoxelEmpty_Click;
             // 
             // checkSkipVisited
             // 
@@ -450,8 +457,8 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ControlDark;
             Controls.Add(status);
-            Controls.Add(tableConfig);
             Controls.Add(tableTop);
+            Controls.Add(tableConfig);
             Name = "FormBoxelSearch";
             contextList.ResumeLayout(false);
             status.ResumeLayout(false);
@@ -481,7 +488,7 @@
         private ColumnHeader colDistance;
         private Label label2;
         private ComboStarSystem comboFrom;
-        private ColumnHeader colNotes;
+        private ColumnHeader colCompleted;
         private StatusStrip status;
         private CheckBox checkAutoCopy;
         private NumericUpDown numMax;
@@ -518,5 +525,6 @@
         private Label labelGraphic;
         private FlowLayoutPanel flowCommands;
         private Label lblBadBoxel;
+        private ColumnHeader colSpansh;
     }
 }

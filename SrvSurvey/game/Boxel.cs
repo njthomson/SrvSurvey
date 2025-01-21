@@ -51,11 +51,20 @@ namespace SrvSurvey.game
                 sector = sectorName,
                 letters = parts.Groups[2].Value,
                 massCode = mc,
-                n1 = int.Parse(parts.Groups[4].Value),
             };
 
             if (parts.Groups.Count == 6 && parts.Groups[5].Success)
+            {
+                // Eg: Praea Euq IL-P c5-19
+                bx.n1 = int.Parse(parts.Groups[4].Value);
                 bx.n2 = int.Parse(parts.Groups[5].Value);
+            }
+            else
+            {
+                // Eg: Praea Euq GG-Y e1
+                bx.n1 = 0;
+                bx.n2 = int.Parse(parts.Groups[4].Value);
+            }
 
             return bx;
         }

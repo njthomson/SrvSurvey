@@ -42,7 +42,7 @@ namespace SrvSurvey
         }
 
         public static ToolStripItem Add(this ToolStripItemCollection items, string text, string? name, object tag)
-        { 
+        {
             var newItem = items.Add(text);
             if (name != null)
                 newItem.Name = name;
@@ -565,13 +565,18 @@ namespace SrvSurvey
                 if (this.Text != query)
                 {
                     Game.log($">> NOPE! {query} vs {this.Text}");
+                    this.updating = false;
                     return; // stop if things already changed
                 }
 
                 this.updating = true;
 
                 var rem = results.values.FirstOrDefault();
-                if (rem == null || rem.Length < query.Length) return;
+                if (rem == null || rem.Length < query.Length)
+                {
+                    this.updating = false;
+                    return;
+                }
                 rem = rem.Substring(query.Length);
 
                 this.matches.Clear();
@@ -600,7 +605,6 @@ namespace SrvSurvey
 
                 this.updating = false;
 
-
                 if (fireEvent)
                     this.fireEvent();
             });
@@ -609,7 +613,7 @@ namespace SrvSurvey
         protected override void OnLostFocus(EventArgs e)
         {
             base.OnLostFocus(e);
-            if (string.IsNullOrWhiteSpace( this.Text))
+            if (string.IsNullOrWhiteSpace(this.Text))
             {
                 var starRef = Game.activeGame?.cmdr?.getCurrentStarRef();
                 if (starRef != null)
@@ -629,7 +633,8 @@ namespace SrvSurvey
         /// <summary> Show the menu off of the target button </summary>
         public void ShowOnTarget()
         {
-            base.Show(_button, new Point(0, _button!.Height));
+            if (_button != null)
+                base.Show(_button, new Point(0, _button!.Height));
         }
 
         [Browsable(true)]

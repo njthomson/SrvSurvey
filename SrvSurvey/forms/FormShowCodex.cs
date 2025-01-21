@@ -452,7 +452,7 @@ namespace SrvSurvey
 
             var forceRemoteImage = e.Button == MouseButtons.Right;
             var variant = item.Tag as BioVariant;
-            var body = item.OwnerItem.Tag as SystemBody;
+            var body = item.OwnerItem?.Tag as SystemBody;
             if (variant != null && body != null)
             {
                 if (body == currentBody)
