@@ -574,8 +574,7 @@ namespace SrvSurvey
                 return;
             }
 
-            var gameMode = game.cmdr.isOdyssey ? "live" : "legacy";
-            this.txtCommander.Text = $"{game.Commander} (FID:{game.fid}, mode:{gameMode})";
+            this.txtCommander.Text = $"{game.Commander} (FID:{game.fid}, Odyssey:{game.cmdr.isOdyssey})";
             this.txtMode.Text = game.mode.ToString();
             if (game.mode == GameMode.Docked && game.systemStation != null)
                 this.txtMode.Text += ": " + game.systemStation.name;
@@ -1756,6 +1755,18 @@ namespace SrvSurvey
         private void btnCodexBingo_Click(object sender, EventArgs e)
         {
             BaseForm.show<FormCodexBingo>();
+
+            //Game.log("Ready?");
+            //Task.Delay(4000)
+            //    .ContinueWith(async (t) =>
+            //    {
+            //        Game.log("Set?");
+            //        Elite.setFocusED();
+            //        await Task.Delay(4000);
+
+            //        Game.log("Go!");
+            //        SendKeys.SendWait("hello");
+            //    });
         }
     }
 }

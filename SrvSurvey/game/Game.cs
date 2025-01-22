@@ -115,7 +115,7 @@ namespace SrvSurvey.game
         /// </summary>
         public string? Commander { get; private set; }
         public string? fid { get; private set; }
-        public bool isOdyssey { get; private set; }
+
         /// <summary>
         /// If we're supposed to be loading journals for a specific cmdr only
         /// </summary>
@@ -186,6 +186,10 @@ namespace SrvSurvey.game
             this.journals = new JournalWatcher(filepath);
             this.initializeFromJournal();
             if (this.isShutdown) return;
+
+            // initialize boxel search if there's one active
+            if (this.cmdr?.boxelSearch?.active == true && this.cmdr.boxelSearch.boxel != null)
+                this.cmdr.boxelSearch.activate(this.cmdr.boxelSearch.boxel);
 
             log($"Cmdr loaded: {this.Commander != null}");
 
@@ -540,7 +544,8 @@ namespace SrvSurvey.game
 
             if (loadEntry != null)
             {
-                this.cmdr = CommanderSettings.Load(loadEntry.FID, loadEntry.Odyssey, loadEntry.Commander);
+                // How much does it matter that v4-live/Horizons acts just like Odyssey?
+                this.cmdr = CommanderSettings.Load(loadEntry.FID, journals.isOdyssey, loadEntry.Commander);
                 this.cmdrCodex = cmdr.loadCodex();
             }
 

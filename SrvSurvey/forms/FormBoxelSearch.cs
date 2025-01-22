@@ -53,7 +53,7 @@ namespace SrvSurvey.forms
 
             if (bs.active && bs.boxel != null)
             {
-                bs.reset(bs.boxel);
+                bs.activate(bs.boxel);
                 prepForm();
                 menuSiblings.targetButton = btnParent;
             }
@@ -138,7 +138,7 @@ namespace SrvSurvey.forms
                 bs.lowMassCode = comboLowMassCode.Text[0];
                 bs.startedOn = dateStart.Value;
 
-                bs.reset(bx);
+                bs.activate(bx);
             }
             if (bs.boxel == null || bs.current == null)
             {

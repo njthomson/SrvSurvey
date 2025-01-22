@@ -209,7 +209,7 @@ namespace SrvSurvey.game
             lock (cache)
             {
                 // load from file or cache
-                var data = SystemData.Load(bodyData.systemName, bodyData.systemAddress, cmdr.fid);
+                var data = SystemData.Load(bodyData.systemName, bodyData.systemAddress, cmdr.fid, true);
 
                 if (data == null)
                 {

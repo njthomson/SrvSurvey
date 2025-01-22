@@ -12,9 +12,6 @@ namespace SrvSurvey
 
         private readonly HookHandlerDelegate hookProcessor;
         private readonly IntPtr hookId;
-        private bool ctrlPressed = false;
-        private bool shiftPressed = false;
-        private bool altPressed = false;
 
         internal delegate IntPtr HookHandlerDelegate(int nCode, IntPtr wParam, ref KBDLLHOOKSTRUCT lParam);
 
@@ -49,24 +46,14 @@ namespace SrvSurvey
                 var keyUp = lParam.flags >= 128;
                 var keys = (Keys)lParam.vkCode;
 
-                // track Alt, Control and Shift keys going up and down
-                if (keys == Keys.LControlKey || keys == Keys.RControlKey)
-                    this.ctrlPressed = !keyUp;
-                else if (keys == Keys.LShiftKey || keys == Keys.RShiftKey)
-                    this.shiftPressed = !keyUp;
-                else if (keys == Keys.LMenu || keys == Keys.RMenu)
-                    this.altPressed = !keyUp;
-                else if (keyUp)
+                if (keyUp)
                 {
                     // if it's any other key coming up: invoke our standard processor and maybe the event
-                    var chord = KeyChords.getKeyChordString(keys, altPressed, ctrlPressed, shiftPressed);
+                    var chord = KeyChords.getKeyChordString(keys);
                     KeyChords.processHook(chord);
 
                     if (this.KeyUp != null)
                     {
-                        if (altPressed) keys |= Keys.Alt;
-                        if (ctrlPressed) keys |= Keys.Control;
-                        if (shiftPressed) keys |= Keys.Shift;
                         this.KeyUp(null, new KeyEventArgs(keys));
                     }
                 }

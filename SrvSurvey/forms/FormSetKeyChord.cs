@@ -25,11 +25,11 @@ namespace SrvSurvey
 
         private void FormSetKeyChord_KeyDown(object sender, KeyEventArgs e)
         {
-            processKeyDown(e.KeyData, e.KeyCode, e.Alt, e.Control, e.Shift);
+            processKeyDown(e.KeyData, e.KeyCode);
             e.SuppressKeyPress = true;
         }
 
-        private void processKeyDown(Keys keyData, Keys keyCode, bool alt, bool ctrl, bool shift)
+        private void processKeyDown(Keys keyData, Keys keyCode)
         { 
             // require a non ALT/CTRL/SHIFT key to be pressed
             btnAccept.Enabled = isValidChord(keyCode);
@@ -48,7 +48,7 @@ namespace SrvSurvey
             }
 
             //Game.log($"{e.KeyData} / {e.KeyCode} / {e.SuppressKeyPress}");
-            textChord.Text = KeyChords.getKeyChordString(keyCode, alt, ctrl, shift);
+            textChord.Text = KeyChords.getKeyChordString(keyCode);
         }
 
         private bool isValidChord(Keys key)
@@ -70,7 +70,7 @@ namespace SrvSurvey
 
         private void textChord_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
-            processKeyDown(e.KeyData, e.KeyCode, e.Alt, e.Control, e.Shift);
+            processKeyDown(e.KeyData, e.KeyCode);
         }
     }
 }

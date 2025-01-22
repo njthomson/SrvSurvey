@@ -33,6 +33,7 @@ namespace SrvSurvey
         public readonly string filepath;
         public readonly DateTime timestamp;
         public string? cmdrName { get; private set; }
+        public string? cmdrFid { get; private set; }
         public readonly bool isOdyssey;
 
         public bool isShutdown { get; private set; }
@@ -83,6 +84,7 @@ namespace SrvSurvey
                 {
                     var commanderEntry = (Commander)entry;
                     this.cmdrName = commanderEntry.Name;
+                    this.cmdrFid = commanderEntry.FID;
                 }
             }
 

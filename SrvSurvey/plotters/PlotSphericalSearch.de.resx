@@ -98,7 +98,7 @@
     <comment>Visited:</comment>
   </data>
   <data name="VisitedOf">
-    <value>{0} von {1}</value>
-    <comment>{0} of {1}</comment>
+    <value>{0} ({1} von {2})</value>
+    <comment>{0} ({1} of {2})</comment>
   </data>
 </root>

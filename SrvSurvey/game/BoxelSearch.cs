@@ -18,7 +18,7 @@ namespace SrvSurvey.game
         /// <summary> If the player is actively searching a boxel </summary>
         public bool active;
 
-        /// <summary> The generic name of the top-level boxel to search </summary>
+        /// <summary> The top-level boxel to search </summary>
         public Boxel boxel;
 
         /// <summary> When we first started searching the top boxel </summary>
@@ -92,9 +92,10 @@ namespace SrvSurvey.game
         [JsonIgnore]
         public int countSystemsComplete => systems.Count(s => s.complete);
 
-        public void reset(Boxel newBoxel)
+        public void activate(Boxel? newBoxel = null)
         {
-            if (newBoxel == null) return;
+            if (newBoxel != null) newBoxel = this.boxel;
+            Game.log($"BoxelSearch.activate: {this.boxel}");
 
             // activate the feature
             this.active = true;
@@ -102,14 +103,13 @@ namespace SrvSurvey.game
             if (boxel != newBoxel || startedOn == DateTime.MinValue)
                 startedOn = DateTime.Today;
 
-            boxel = newBoxel;
-            if (current == null || !newBoxel.containsChild(current) || current.massCode < this.lowMassCode)
-                current = newBoxel;
+            // switch the current boxel if it's not within our top level search boxel
+            if (current == null || !this.boxel.containsChild(current) || current.massCode < this.lowMassCode)
+                current = this.boxel;
 
             // prep progress with all children
             this.emptyBoxels ??= this.loadEmptyBoxels();
             this.progress = new();
-
             Action<Boxel> initProgress = null!;
             initProgress = (Boxel bx) =>
             {

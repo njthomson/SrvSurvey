@@ -30,11 +30,11 @@ namespace SrvSurvey
             }
         }
 
-        public static string getKeyChordString(Keys key, bool alt, bool ctrl, bool shift)
+        public static string getKeyChordString(Keys key)
         {
-            var chord = (alt ? "ALT " : "") +
-                 (ctrl ? "CTRL " : "") +
-                 (shift ? "SHIFT " : "") +
+            var chord = (Control.ModifierKeys.HasFlag(Keys.Alt) ? "ALT " : "") +
+                 (Control.ModifierKeys.HasFlag(Keys.Control) ? "CTRL " : "") +
+                 (Control.ModifierKeys.HasFlag(Keys.Shift) ? "SHIFT " : "") +
                  keyToString(key);
 
             return chord;
@@ -181,6 +181,7 @@ namespace SrvSurvey
             {
                 Game.log($"Setting next boxel search system to clipboard: {nextSystem}");
                 Clipboard.SetText(nextSystem);
+                Program.invalidate<PlotSphericalSearch>();
             }
 
             return true;

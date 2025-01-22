@@ -102,8 +102,9 @@
     <comment>Header before count of systems visited</comment>
   </data>
   <data name="VisitedOf" xml:space="preserve">
-    <value>{0} of {1}</value>
-    <comment>{0} int, how many systems we have visited
-{1} int, how many systems total to visit</comment>
+    <value>{0} ({1} of {2})</value>
+    <comment>{0} int, percentage of systems visited
+{1} int, how many systems we have visited
+{2} int, how many systems total to visit</comment>
   </data>
 </root>

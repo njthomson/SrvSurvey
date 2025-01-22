@@ -19,6 +19,7 @@ namespace SrvSurvey.plotters
         private string targetSystemName;
         private string? destinationName;
         private string? badDestination;
+        private bool nextSystemCopied;
 
         private PlotSphericalSearch() : base()
         {
@@ -32,33 +33,39 @@ namespace SrvSurvey.plotters
         protected override void OnLoad(EventArgs e)
         {
             this.Width = scaled(400);
-            this.Height = scaled(80);
+            this.Height = scaled(240);
 
             base.OnLoad(e);
 
             this.initializeOnLoad();
             this.reposition(Elite.getWindowRect(true));
 
-            this.BeginInvoke(() =>
+            Program.defer(() =>
             {
                 measureDistanceToSystem();
             });
 
             // put next boxel system in clipboard?
-            if (game.cmdr.boxelSearch?.active == true && game.cmdr.boxelSearch.autoCopy)
+            Util.deferAfter(500, () =>
             {
-                // only pre-fill clipboard if we're inside the boxel search area
-                var insideSearchArea = game.cmdr.boxelSearch.boxel.containsChild(game.cmdr.getCurrentBoxel());
-                if (insideSearchArea)
+                if (game.cmdr.boxelSearch?.active == true && game.cmdr.boxelSearch.autoCopy)
                 {
-                    var text = game.cmdr.boxelSearch.nextSystem;
-                    if (text != null)
+                    // only pre-fill clipboard if we're inside the boxel search area
+                    var insideSearchArea = game.cmdr.boxelSearch.boxel.containsChild(game.cmdr.getCurrentBoxel());
+                    if (insideSearchArea)
                     {
-                        Game.log($"Setting next boxel search system to clipboard: {text}");
-                        Clipboard.SetText(text);
+                        var text = game.cmdr.boxelSearch.nextSystem;
+                        if (text != null)
+                        {
+                            Game.log($"Setting next boxel search system to clipboard: {text}");
+                            Clipboard.SetText(text);
+                        }
                     }
                 }
-            }
+
+                this.nextSystemCopied = true;
+                this.Invalidate();
+            });
         }
 
         protected override void onJournalEntry(NavRoute entry)
@@ -114,9 +121,8 @@ namespace SrvSurvey.plotters
                 if (sphereLimitActive)
                 {
                     this.distance = -1;
-                    Game.edsm.getSystems(this.destinationName).ContinueWith(t =>
+                    Game.edsm.getSystems(this.destinationName).continueOnMain(this, data =>
                     {
-                        var data = t.Result;
                         if (!(data.Length > 0))
                         {
                             this.distance = -2;
@@ -144,9 +150,9 @@ namespace SrvSurvey.plotters
                 {
                     var bx = Boxel.parse(game.status.Destination.System, game.status.Destination.Name);
                     if (!game.cmdr.boxelSearch.boxel.containsChild(bx))
-                        this.badDestination = $"{this.destinationName} is outside search boxel";
+                        this.badDestination = $"► {this.destinationName} is outside search boxel";
                     else if (bx?.massCode < game.cmdr.boxelSearch.lowMassCode)
-                        this.badDestination = $"{this.destinationName} mass code too low";
+                        this.badDestination = $"► {this.destinationName} mass code too low";
                     else
                         this.badDestination = null;
                 }
@@ -268,11 +274,12 @@ namespace SrvSurvey.plotters
             var ww = ten + Util.maxWidth(ff, RES("Boxel"), RES("Visited"), RES("Next"));
 
             this.drawTextAt(eight, RES("Boxel"), ff);
-            this.drawTextAt(ww, boxelSearch.current.prefix + "...", ff);
+            this.drawTextAt(ww, boxelSearch.current.prefix + " ...", ff);
             newLine(two, true);
 
             this.drawTextAt(eight, RES("Visited"), ff);
-            this.drawTextAt(ww, RES("VisitedOf", boxelSearch.countSystemsComplete, boxelSearch.currentCount), ff);
+            var pp = (1f / boxelSearch.currentCount * boxelSearch.countSystemsComplete).ToString("p0");
+            this.drawTextAt(ww, RES("VisitedOf", pp, boxelSearch.countSystemsComplete, boxelSearch.currentCount), ff);
             newLine(two, true);
 
             this.drawTextAt(eight, RES("Next"), ff);
@@ -283,21 +290,27 @@ namespace SrvSurvey.plotters
 
             // warn if destination is outside the search boxel
             //this.drawTextAt(eight, "Destination:", ff);
-            ff = GameColors.fontMiddle;
             if (this.badDestination != null)
             {
                 newLine(+eight, true);
-                this.drawTextAt2b(eight, this.Width - 4, this.badDestination , GameColors.red, ff);
+                this.drawTextAt2b(eight, this.Width - 4, this.badDestination, GameColors.red, ff);
                 dtx += ten;
             }
             else if (this.destinationName != null)
             {
                 newLine(+eight, true);
-                this.drawTextAt2b(eight, this.Width - 4, $"Destination is within search boxel", GameColors.Cyan, ff);
+                this.drawTextAt2b(eight, this.Width - 4, $"► Destination is valid", GameColors.Cyan, ff);
                 dtx += ten;
             }
 
-            newLine(true);
+            var clipboardMatches = Clipboard.GetText() == game?.cmdr?.boxelSearch?.nextSystem;
+            if (clipboardMatches && this.nextSystemCopied)
+            {
+                newLine(+eight, true);
+                this.drawTextAt2b(eight, this.Width - 4, "► Next search copied", GameColors.Cyan, GameColors.fontSmall);
+            }
+
+            newLine(+two, true);
         }
     }
 }
