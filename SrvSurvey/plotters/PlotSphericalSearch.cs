@@ -1,5 +1,6 @@
 ﻿using SrvSurvey.game;
 using SrvSurvey.widgets;
+using System.Diagnostics;
 
 namespace SrvSurvey.plotters
 {
@@ -59,20 +60,35 @@ namespace SrvSurvey.plotters
                         {
                             Game.log($"Setting next boxel search system to clipboard: {text}");
                             Clipboard.SetText(text);
+                            this.nextSystemCopied = true;
+                            this.Invalidate();
                         }
                     }
                 }
-
-                this.nextSystemCopied = true;
-                this.Invalidate();
             });
         }
 
         protected override void onJournalEntry(NavRoute entry)
         {
-            if (!sphereLimitActive || this.IsDisposed || game.cmdr.sphereLimit.centerStarPos == null) return;
+            if (this.IsDisposed) return;
 
-            measureDistanceToSystem();
+            if (sphereLimitActive && game.cmdr.sphereLimit.centerStarPos != null)
+                measureDistanceToSystem();
+
+            // use the last entry in the route
+            if (game.cmdr.boxelSearch?.active == true && game.navRoute.Route.Count > 1)
+            {
+                var lastHop = game.navRoute.Route.Last();
+                var bx = Boxel.parse(lastHop.SystemAddress, lastHop.StarSystem);
+                if (!game.cmdr.boxelSearch.boxel.containsChild(bx))
+                    this.badDestination = $"► {lastHop.StarSystem} is outside search boxel";
+                else if (bx?.massCode < game.cmdr.boxelSearch.lowMassCode)
+                    this.badDestination = $"► {lastHop.StarSystem} mass code too low";
+                else
+                    this.badDestination = null;
+
+                this.Invalidate();
+            }
         }
 
         protected override void onJournalEntry(NavRouteClear entry)
@@ -117,8 +133,9 @@ namespace SrvSurvey.plotters
             {
                 this.destinationName = game.status.Destination.Name;
                 this.targetSystemName = game.status.Destination.Name;
+                var isFirstRouteHop = game.navRoute.Route?.Count > 2 && game.navRoute.Route[1].StarSystem == game.status.Destination.Name;
 
-                if (sphereLimitActive)
+                if (sphereLimitActive && !isFirstRouteHop)
                 {
                     this.distance = -1;
                     Game.edsm.getSystems(this.destinationName).continueOnMain(this, data =>
@@ -146,7 +163,7 @@ namespace SrvSurvey.plotters
                     });
                 }
 
-                if (game.cmdr.boxelSearch?.active == true)
+                if (game.cmdr.boxelSearch?.active == true && !isFirstRouteHop)
                 {
                     var bx = Boxel.parse(game.status.Destination.System, game.status.Destination.Name);
                     if (!game.cmdr.boxelSearch.boxel.containsChild(bx))
@@ -289,7 +306,6 @@ namespace SrvSurvey.plotters
             dtx += ten;
 
             // warn if destination is outside the search boxel
-            //this.drawTextAt(eight, "Destination:", ff);
             if (this.badDestination != null)
             {
                 newLine(+eight, true);
@@ -303,8 +319,8 @@ namespace SrvSurvey.plotters
                 dtx += ten;
             }
 
-            var clipboardMatches = Clipboard.GetText() == game?.cmdr?.boxelSearch?.nextSystem;
-            if (clipboardMatches && this.nextSystemCopied)
+            //var clipboardMatches = Clipboard.GetText() == game?.cmdr?.boxelSearch?.nextSystem;
+            if (this.nextSystemCopied)
             {
                 newLine(+eight, true);
                 this.drawTextAt2b(eight, this.Width - 4, "► Next search copied", GameColors.Cyan, GameColors.fontSmall);

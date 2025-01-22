@@ -807,8 +807,8 @@ namespace SrvSurvey.plotters
 
         protected void formAdjustSize(float dx = 0, float dy = 0)
         {
-            this.formSize.Width += dx;
-            this.formSize.Height += dy;
+            this.formSize.Width = (int)Math.Ceiling(this.formSize.Width + dx);
+            this.formSize.Height = (int)Math.Ceiling(this.formSize.Height + dy);
 
             if (this.Size != this.formSize.ToSize() && !forceRepaint)
             {
@@ -1517,7 +1517,7 @@ namespace SrvSurvey.plotters
 
         public static float getOpacity(string formTypeName, float defaultValue = -1)
         {
-            if (Program.tempHideAllPlotters || !Elite.gameHasFocus) return 0;
+            if (Program.tempHideAllPlotters || (!Elite.gameHasFocus && !Debugger.IsAttached)) return 0;
 
             var pp = plotterPositions.GetValueOrDefault(formTypeName);
 
@@ -1533,7 +1533,7 @@ namespace SrvSurvey.plotters
         {
             formTypeName = formTypeName ?? form.GetType().Name;
             var pt = getPlotterLocation(formTypeName, form.Size, rect);
-            if (pt != Point.Empty)
+            if (pt != Point.Empty && form.Location != pt)
                 form.Location = pt;
         }
 

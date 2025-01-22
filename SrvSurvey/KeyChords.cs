@@ -59,10 +59,9 @@ namespace SrvSurvey
                     }
                 }
 
-                if (!handled && Debugger.IsAttached)
-                {
+                // this is annoying, disable for now                
+                if (false && !handled && Debugger.IsAttached)
                     Game.log($"Chord:{chord} => ?");
-                }
             }));
         }
 
@@ -76,6 +75,7 @@ namespace SrvSurvey
             { KeyAction.mapZoomAuto, "CTRL SHIFT Backspace" },
             { KeyAction.mapBeHuge, "CTRL Backspace" },
             { KeyAction.showJumpInfo, "ALT D" },
+            { KeyAction.pasteGalMap, "" },
             { KeyAction.copyNextBoxel, "CTRL C" },
             { KeyAction.showFssInfo, "ALT F" },
             { KeyAction.track1, "ALT CTRL F1" },
@@ -103,6 +103,7 @@ namespace SrvSurvey
                 case KeyAction.mapBeHuge: return adjustMapHugeness();
                 case KeyAction.showJumpInfo: return toggleJumpInfo();
                 case KeyAction.copyNextBoxel: return copyNextBoxelSystem();
+                case KeyAction.pasteGalMap: return pasteGalMap();
                 case KeyAction.showFssInfo: return toggleFSSInfo();
                 case KeyAction.showBodyInfo: return toggleBodyInfo();
                 case KeyAction.track1: return trackLocation(1);
@@ -187,6 +188,23 @@ namespace SrvSurvey
             return true;
         }
 
+        private static bool pasteGalMap()
+        {
+            if (Game.activeGame?.mode == GameMode.GalaxyMap && Clipboard.ContainsText(TextDataFormat.Text))
+            {
+                var txt = Clipboard.GetText(TextDataFormat.Text);
+                Game.log($"Paste in gal-map: {txt}");
+
+                Elite.setFocusED();
+                Program.defer(() =>
+                {
+                    SendKeys.SendWait(txt);
+                });
+            }
+
+            return true;
+        }
+
         private static bool toggleFSSInfo()
         {
             var jumpInfo = Program.getPlotter<PlotFSSInfo>();
@@ -250,6 +268,8 @@ namespace SrvSurvey
         showJumpInfo,
         /// <summary> Copy the next system name for boxel searches </summary>
         copyNextBoxel,
+        /// <summary> Paste when in the gal-map </summary>
+        pasteGalMap,
         /// <summary> Force show PlotFssInfo </summary>
         showFssInfo,
         /// <summary> Force show PlotBodyInfo </summary>

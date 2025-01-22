@@ -1,4 +1,6 @@
-﻿using SrvSurvey.Properties;
+﻿using SrvSurvey.game;
+using SrvSurvey.Properties;
+using System.ComponentModel;
 
 namespace SrvSurvey
 {
@@ -16,11 +18,27 @@ namespace SrvSurvey
 
             // force form width as it doesn't happen correctly by itself
             this.Width = flowButtons.Right + (flowButtons.Left * 2) + 4;
+
+            if (Game.settings.hookDirectX_TEST)
+            {
+                KeyboardHook.fired += (bool pressing, string chord) =>
+                {
+                    btnAccept.Enabled = !pressing;
+                    this.textChord.Text = chord;
+                };
+            }
         }
 
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
+            KeyboardHook.redirect = true;
+        }
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            base.OnClosing(e);
+            KeyboardHook.redirect = false;
         }
 
         private void FormSetKeyChord_KeyDown(object sender, KeyEventArgs e)
@@ -30,7 +48,7 @@ namespace SrvSurvey
         }
 
         private void processKeyDown(Keys keyData, Keys keyCode)
-        { 
+        {
             // require a non ALT/CTRL/SHIFT key to be pressed
             btnAccept.Enabled = isValidChord(keyCode);
             //lblInvalid.Visible = !btnAccept.Enabled;

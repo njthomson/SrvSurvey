@@ -201,6 +201,7 @@ namespace SrvSurvey
         public PlotFSS.WatchFssPixelSettings? watchFssSettings_TEST = new();
 
         public bool keyhook_TEST = false;
+        public bool hookDirectX_TEST = false;
 
         public Dictionary<KeyAction, string>? keyActions_TEST = KeyChords.defaultKeys;
         /// <summary>

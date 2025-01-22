@@ -27,7 +27,7 @@ namespace SrvSurvey
         private bool gameHadFocus;
 
         public static Main form;
-        private KeyboardHook hook;
+        public KeyboardHook hook;
 
         public Main()
         {
@@ -1755,18 +1755,6 @@ namespace SrvSurvey
         private void btnCodexBingo_Click(object sender, EventArgs e)
         {
             BaseForm.show<FormCodexBingo>();
-
-            //Game.log("Ready?");
-            //Task.Delay(4000)
-            //    .ContinueWith(async (t) =>
-            //    {
-            //        Game.log("Set?");
-            //        Elite.setFocusED();
-            //        await Task.Delay(4000);
-
-            //        Game.log("Go!");
-            //        SendKeys.SendWait("hello");
-            //    });
         }
     }
 }
