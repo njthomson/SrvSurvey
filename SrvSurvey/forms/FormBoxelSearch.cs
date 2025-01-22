@@ -539,7 +539,7 @@ namespace SrvSurvey.forms
             if (bs == null || !bs.active)
                 lblStatus.Text = Properties.Misc.FormBoxelSearch_SearchNotActive;
             else
-                lblStatus.Text = Properties.Misc.FormBoxelSearch_VisitedCounts.format(bs.countSystemsComplete, bs.currentCount + 1, bs.countBoxelsCompleted, bs.countBoxelsTotal);
+                lblStatus.Text = Properties.Misc.FormBoxelSearch_VisitedCounts.format(bs.countSystemsComplete, bs.currentCount, bs.countBoxelsCompleted, bs.countBoxelsTotal);
         }
 
         private void updateNextSystem()

@@ -94,7 +94,7 @@ namespace SrvSurvey.game
 
         public void activate(Boxel? newBoxel = null)
         {
-            if (newBoxel != null) newBoxel = this.boxel;
+            if (newBoxel != null) this.boxel = newBoxel;
             Game.log($"BoxelSearch.activate: {this.boxel}");
 
             // activate the feature
@@ -515,7 +515,7 @@ namespace SrvSurvey.game
             if (next == null)
             {
                 var max = (int)Math.Max(this.currentMax, this.currentCount);
-                for (int n = 0; n < max; n++)
+                for (int n = max - 1; n >= 0; n--)
                 {
                     var sys = systems.FirstOrDefault(sys => n == sys.name.n2);
                     if (sys?.complete == true) continue;
