@@ -1394,6 +1394,9 @@ namespace SrvSurvey.plotters
                         dirty = true;
                     }
                 }
+
+                if (Game.settings.overlayTombs)
+                    Program.createTomb(name);
             }
 
             if (dirty)

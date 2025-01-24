@@ -141,15 +141,23 @@ namespace SrvSurvey
         #region plotter tracking
 
         private static Dictionary<string, PlotterForm> activePlotters = new Dictionary<string, PlotterForm>();
+        private static Dictionary<string, Form> tombs = new Dictionary<string, Form>();
 
         public static T? showPlotter<T>(Rectangle? gameRect = null) where T : PlotterForm
         {
             var formType = typeof(T);
 
             // exit early if the game does not have focus
-            if (!Elite.focusElite && !Elite.focusSrvSurvey) 
-            //if (!Debugger.IsAttached && (!Elite.focusElite || Elite.focusSrvSurvey)) // Maybe not "|| Elite.focusSrvSurvey" ?
+            if (!Elite.focusElite && !Elite.focusSrvSurvey)
+                //if (!Debugger.IsAttached && (!Elite.focusElite || Elite.focusSrvSurvey)) // Maybe not "|| Elite.focusSrvSurvey" ?
                 return (T?)activePlotters.GetValueOrDefault(formType.Name);
+
+            // remove tomb if present
+            if (Game.settings.overlayTombs && tombs.ContainsKey(formType.Name))
+            {
+                tombs[formType.Name].Close();
+                tombs.Remove(formType.Name);
+            }
 
             // only create if missing
             T form;
@@ -165,21 +173,6 @@ namespace SrvSurvey
                 // create and force form.Name to match class name
                 form = (T)ctor.Invoke(null);
                 form.Name = formType.Name;
-
-                //// have new plotters fade in
-                ////form.Size = Size.Empty;
-                ////form.Opacity = 0;
-                //form.Load += new EventHandler((object? sender, EventArgs e) =>
-                //{
-                //    // using the quicker fade-out duration
-                //    //form.Opacity = 0;
-                //    control.BeginInvoke(() =>
-                //    {
-                //        Util.fadeOpacity((Form)(object)form, 1, Game.settings.fadeInDuration);
-                //    });
-
-                //    //Util.fadeOpacity((Form)(object)form, 1, 500); // 100ms
-                //});
 
                 // add to list, then show
                 activePlotters.Add(formType.Name, form);
@@ -236,7 +229,36 @@ namespace SrvSurvey
                 Game.log($"Program.Closing plotter: {name}");
                 Program.activePlotters.Remove(plotter.Name);
                 plotter.Close();
+
+                if (Game.settings.overlayTombs)
+                    createTomb(plotter.Name);
             }
+        }
+
+        public static Form createTomb(string name)
+        {
+            var tomb = new Form()
+            {
+                Name = name,
+                Text = name,
+                Opacity = 0,
+                //BackColor = Color.Red,
+                Width = 120,
+                Height = 120,
+
+                TopMost = true,
+                ShowIcon = false,
+                ShowInTaskbar = false,
+                MinimizeBox = false,
+                MaximizeBox = false,
+                ControlBox = false,
+                FormBorderStyle = FormBorderStyle.None,
+            };
+            //tomb.Controls.Add(new Label() { Text = name, AutoSize = true });
+
+            tombs[name] = tomb;
+            tomb.Show();
+            return tomb;
         }
 
         /// <summary>
@@ -599,6 +621,7 @@ namespace SrvSurvey
         void Show();
         event EventHandler? Load;
         bool didFirstPaint { get; set; }
+        /// <summary> A flag true immediately about the time we begin showing a window </summary>
         bool showing { get; set; }
     }
 }

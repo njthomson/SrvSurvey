@@ -1,6 +1,5 @@
 ﻿using SrvSurvey.game;
 using SrvSurvey.widgets;
-using System.Diagnostics;
 
 namespace SrvSurvey.plotters
 {
@@ -72,23 +71,8 @@ namespace SrvSurvey.plotters
         {
             if (this.IsDisposed) return;
 
-            if (sphereLimitActive && game.cmdr.sphereLimit.centerStarPos != null)
+            if ((sphereLimitActive && game.cmdr.sphereLimit.centerStarPos != null) || game.cmdr.boxelSearch?.active == true)
                 measureDistanceToSystem();
-
-            // use the last entry in the route
-            if (game.cmdr.boxelSearch?.active == true && game.navRoute.Route.Count > 1)
-            {
-                var lastHop = game.navRoute.Route.Last();
-                var bx = Boxel.parse(lastHop.SystemAddress, lastHop.StarSystem);
-                if (!game.cmdr.boxelSearch.boxel.containsChild(bx))
-                    this.badDestination = $"► {lastHop.StarSystem} is outside search boxel";
-                else if (bx?.massCode < game.cmdr.boxelSearch.lowMassCode)
-                    this.badDestination = $"► {lastHop.StarSystem} mass code too low";
-                else
-                    this.badDestination = null;
-
-                this.Invalidate();
-            }
         }
 
         protected override void onJournalEntry(NavRouteClear entry)
@@ -102,25 +86,45 @@ namespace SrvSurvey.plotters
 
         private void measureDistanceToSystem()
         {
-            if (!sphereLimitActive || game.cmdr.sphereLimit.centerStarPos == null) return;
-
-            var lastSystem = game.navRoute.Route.LastOrDefault();
-            if (lastSystem?.StarSystem == null)
+            if (sphereLimitActive && game.cmdr.sphereLimit.centerStarPos != null)
             {
-                if (game.systemData == null) return;
 
-                lastSystem = new RouteEntry()
+                var lastSystem = game.navRoute.Route.LastOrDefault();
+                if (lastSystem?.StarSystem == null)
                 {
-                    StarSystem = game.systemData.name,
-                    StarPos = game.systemData.starPos,
-                };
+                    if (game.systemData == null) return;
+
+                    lastSystem = new RouteEntry()
+                    {
+                        StarSystem = game.systemData.name,
+                        StarPos = game.systemData.starPos,
+                    };
+                }
+
+                this.targetSystemName = lastSystem.StarSystem;
+                this.distance = Util.getSystemDistance(game.cmdr.sphereLimit.centerStarPos, lastSystem.StarPos);
+                Game.log($"Measuring distance: '{game.cmdr.sphereLimit.centerSystemName}' {game.cmdr.sphereLimit.centerStarPos} => '{lastSystem.StarSystem}' {lastSystem.StarPos} = {this.distance}");
             }
 
-            this.targetSystemName = lastSystem.StarSystem;
-            this.distance = Util.getSystemDistance(game.cmdr.sphereLimit.centerStarPos, lastSystem.StarPos);
-            Game.log($"Measuring distance: '{game.cmdr.sphereLimit.centerSystemName}' {game.cmdr.sphereLimit.centerStarPos} => '{lastSystem.StarSystem}' {lastSystem.StarPos} = {this.distance}");
+            // use the last entry in the route
+            if (game.cmdr.boxelSearch?.active == true && game.navRoute.Route.Count > 1)
+            {
+                var lastHop = game.navRoute.Route.Last();
+                var bx = Boxel.parse(lastHop.SystemAddress, lastHop.StarSystem);
+                this.badDestination = this.checkBoxel(bx);
+            }
 
             this.Invalidate();
+        }
+
+        private string? checkBoxel(Boxel? bx)
+        {
+            if (bx != null && game.cmdr.boxelSearch?.boxel.containsChild(bx) == false)
+                return $"► {bx.name} is outside search boxel";
+            else if (bx?.massCode < game.cmdr.boxelSearch?.lowMassCode)
+                return $"► {bx.name} mass code too low";
+            else
+                return null;
         }
 
         protected override void Status_StatusChanged(bool blink)
@@ -163,15 +167,10 @@ namespace SrvSurvey.plotters
                     });
                 }
 
-                if (game.cmdr.boxelSearch?.active == true && !isFirstRouteHop)
+                if (game.cmdr.boxelSearch?.active == true && !isFirstRouteHop && game.status.Destination.Body == 0)
                 {
                     var bx = Boxel.parse(game.status.Destination.System, game.status.Destination.Name);
-                    if (!game.cmdr.boxelSearch.boxel.containsChild(bx))
-                        this.badDestination = $"► {this.destinationName} is outside search boxel";
-                    else if (bx?.massCode < game.cmdr.boxelSearch.lowMassCode)
-                        this.badDestination = $"► {this.destinationName} mass code too low";
-                    else
-                        this.badDestination = null;
+                    this.badDestination = this.checkBoxel(bx);
                 }
 
                 this.Invalidate();
@@ -306,7 +305,7 @@ namespace SrvSurvey.plotters
             dtx += ten;
 
             // warn if destination is outside the search boxel
-            if (this.badDestination != null)
+            if (this.badDestination?.Length > 0)
             {
                 newLine(+eight, true);
                 this.drawTextAt2b(eight, this.Width - 4, this.badDestination, GameColors.red, ff);
@@ -319,7 +318,6 @@ namespace SrvSurvey.plotters
                 dtx += ten;
             }
 
-            //var clipboardMatches = Clipboard.GetText() == game?.cmdr?.boxelSearch?.nextSystem;
             if (this.nextSystemCopied)
             {
                 newLine(+eight, true);

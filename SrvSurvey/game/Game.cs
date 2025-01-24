@@ -189,7 +189,10 @@ namespace SrvSurvey.game
 
             // initialize boxel search if there's one active
             if (this.cmdr?.boxelSearch?.active == true && this.cmdr.boxelSearch.boxel != null)
-                this.cmdr.boxelSearch.activate(this.cmdr.boxelSearch.boxel);
+            {
+                Task.Delay(5_000)
+                    .ContinueWith(t => this.cmdr.boxelSearch.activate(this.cmdr.boxelSearch.boxel));
+            }
 
             log($"Cmdr loaded: {this.Commander != null}");
 
@@ -354,7 +357,7 @@ namespace SrvSurvey.game
 
             //Game.log($"Status\r\n flags: {status.Flags}\r\nflags2: {status.Flags2}\r\n\t?\t{status.Flags2 & (StatusFlags2.OnFootInHangar | StatusFlags2.OnFootInStation | StatusFlags2.OnFootSocialSpace)}");
 
-            // set or clear 'systemSite'
+            // set or clear 'systemSite' // TODO: Does this *really* need to be here?
             this.setCurrentSite();
 
             //if (FormGenus.activeForm != null && FormGenus.activeForm.targetBody != this.targetBody)
