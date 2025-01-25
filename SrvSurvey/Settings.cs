@@ -126,6 +126,8 @@ namespace SrvSurvey
         public bool hidePlottersFromMaverickSuits = false;
         public bool hideOverlaysFromMouse = true;
         public bool hideOverlaysFromMouseInFSS_TEST = false;
+        public bool hideGeoCountInFssInfo = false;
+        public bool hideGeoCountInBioSystem = false;
 
         public bool autoShowFlightWarnings = true;
         public double highGravityWarningLevel = 1.0f;

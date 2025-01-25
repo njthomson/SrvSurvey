@@ -427,7 +427,7 @@ namespace SrvSurvey.plotters
                         x, y
                     );
 
-                    if (n + 1 < body.geoSignals?.Count)
+                    if (n + 1 <= body.geoSignals?.Count)
                     {
                         // strike-through if already analyzed
                         var ly = (int)(y + sz.Height * .35f);

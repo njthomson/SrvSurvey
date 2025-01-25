@@ -83,7 +83,7 @@ namespace SrvSurvey.plotters
                 dssReward = Util.GetBodyValue(entry, true),
             };
 
-            if (body.bioSignalCount == 0 && body.geoSignalCount == 0 && newScan.reward < Game.settings.hideFssLowValueAmount && newScan.dssReward < Game.settings.hideFssLowValueAmount) return;
+            if (body.bioSignalCount == 0 && (body.geoSignalCount == 0 || Game.settings.hideGeoCountInFssInfo) && newScan.reward < Game.settings.hideFssLowValueAmount && newScan.dssReward < Game.settings.hideFssLowValueAmount) return;
 
             // show this body already present - pull it to the top
             var existingScan = scans.Find(s => s.body == body);
@@ -165,12 +165,13 @@ namespace SrvSurvey.plotters
                 if (scan.body.bioSignalCount > 0)
                 {
                     drawTextAt("| ", GameColors.brushGameOrangeDim);
-                    var sz = drawTextAt($"{scan.body.bioSignalCount} Genus", GameColors.brushCyan);
-                    if (scan.body.countAnalyzedBioSignals == scan.body.bioSignalCount)
-                        strikeThrough(dtx, dty + one + sz.Height / 2, -sz.Width, true);
+                    var analyzed = scan.body.countAnalyzedBioSignals == scan.body.bioSignalCount;
+                    var sz = drawTextAt($"{scan.body.bioSignalCount} Genus", analyzed ? GameColors.brushGameOrange : GameColors.brushCyan);
+                    if (analyzed)
+                        strikeThrough(dtx, dty + two + sz.Height / 2, -sz.Width, false);
                 }
 
-                if (scan.body.geoSignalCount > 0)
+                if (!Game.settings.hideGeoCountInFssInfo && scan.body.geoSignalCount > 0)
                 {
                     drawTextAt("| ", GameColors.brushGameOrangeDim);
                     drawTextAt($"{scan.body.geoSignalCount} Geo", GameColors.brushCyan);

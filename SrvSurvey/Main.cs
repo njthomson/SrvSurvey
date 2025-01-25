@@ -84,7 +84,7 @@ namespace SrvSurvey
 
             Util.applyTheme(this);
         }
-        
+
         private void Main_Load(object sender, EventArgs e)
         {
             foreach (Control ctrl in this.Controls) ctrl.Enabled = false;
@@ -954,6 +954,10 @@ namespace SrvSurvey
 
         private void onJournalEntry(FSDJump entry)
         {
+            // close plotters that can be forced but should not remain when we jump systems
+            Program.closePlotter<PlotBodyInfo>();
+            Program.closePlotter<PlotFSSInfo>();
+
             // Trigger forms to update as we jump systems
             var systemMatch = new net.EDSM.StarSystem()
             {
@@ -1301,17 +1305,25 @@ namespace SrvSurvey
 
         private void btnSettings_Click(object sender, EventArgs e)
         {
-            var form = new FormSettings();
-            var rslt = form.ShowDialog(this);
-
-            if (rslt == DialogResult.OK)
+            try
             {
-                // force update form controls
-                this.updateAllControls();
+                btnSettings.Enabled = false;
+                var form = new FormSettings();
+                var rslt = form.ShowDialog(this);
 
-                // force opacity changes to take immediate effect
-                Program.showActivePlotters();
-                Util.applyTheme(this);
+                if (rslt == DialogResult.OK)
+                {
+                    // force update form controls
+                    this.updateAllControls();
+
+                    // force opacity changes to take immediate effect
+                    Program.showActivePlotters();
+                    Util.applyTheme(this);
+                }
+            }
+            finally
+            {
+                btnSettings.Enabled = true;
             }
         }
 

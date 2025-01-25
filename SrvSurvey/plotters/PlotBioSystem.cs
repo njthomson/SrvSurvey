@@ -332,10 +332,10 @@ namespace SrvSurvey.plotters
                 newLine(true);
             }
 
-            if (body.geoSignalCount > 0 && Debugger.IsAttached)
+            if (body.geoSignalCount > 0 && !Game.settings.hideGeoCountInBioSystem)
             {
                 dty += ten;
-                g.DrawLine(GameColors.penGameOrange1, eight, dty - five, this.ClientSize.Width - eight, dty - five);
+                g.DrawLine(GameColors.penGameOrangeDim1, eight, dty - five, this.ClientSize.Width - eight, dty - five);
                 dty += two;
 
                 drawTextAt(eight, $"Geo signals: {body.geoSignalCount}", GameColors.brushGameOrange);

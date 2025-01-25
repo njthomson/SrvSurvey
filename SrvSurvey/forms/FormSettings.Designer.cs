@@ -147,6 +147,7 @@ namespace SrvSurvey
             lblScreenshotTarget = new Label();
             checkLocalTime = new CheckBox();
             tabPage6 = new TabPage();
+            checkBox36 = new CheckBox();
             checkBox35 = new CheckBox();
             btnSwapCache = new FlatButton();
             checkBox32 = new CheckBox();
@@ -230,6 +231,7 @@ namespace SrvSurvey
             menuCodexChange = new ToolStripMenuItem();
             menuCodexReset = new ToolStripMenuItem();
             menuClearCodexCache = new ToolStripMenuItem();
+            checkBox37 = new CheckBox();
             panel1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox6).BeginInit();
@@ -844,6 +846,7 @@ namespace SrvSurvey
             // tabPage4
             // 
             tabPage4.BorderStyle = BorderStyle.Fixed3D;
+            tabPage4.Controls.Add(checkBox37);
             tabPage4.Controls.Add(comboBox1);
             tabPage4.Controls.Add(label29);
             tabPage4.Controls.Add(checkBox34);
@@ -882,7 +885,7 @@ namespace SrvSurvey
             comboBox1.Location = new Point(107, 87);
             comboBox1.Name = "comboBox1";
             comboBox1.Size = new Size(178, 23);
-            comboBox1.TabIndex = 36;
+            comboBox1.TabIndex = 3;
             comboBox1.Tag = "bioPlotSize";
             // 
             // label29
@@ -892,7 +895,7 @@ namespace SrvSurvey
             label29.Location = new Point(29, 90);
             label29.Name = "label29";
             label29.Size = new Size(72, 15);
-            label29.TabIndex = 35;
+            label29.TabIndex = 2;
             label29.Text = "Overlay size:";
             // 
             // checkBox34
@@ -903,7 +906,7 @@ namespace SrvSurvey
             checkBox34.Margin = new Padding(4, 3, 4, 3);
             checkBox34.Name = "checkBox34";
             checkBox34.Size = new Size(288, 20);
-            checkBox34.TabIndex = 34;
+            checkBox34.TabIndex = 4;
             checkBox34.Tag = "autoHideBioPlotNoGear";
             checkBox34.Text = "Hide if landing gear is not deployed when flying.";
             checkBox34.UseVisualStyleBackColor = true;
@@ -918,7 +921,7 @@ namespace SrvSurvey
             checkBox27.Margin = new Padding(4, 3, 4, 3);
             checkBox27.Name = "checkBox27";
             checkBox27.Size = new Size(275, 20);
-            checkBox27.TabIndex = 33;
+            checkBox27.TabIndex = 8;
             checkBox27.Tag = "autoRemoveTrackerOnFinalSample";
             checkBox27.Text = "Auto remove tracker locations upon final scan";
             checkBox27.UseVisualStyleBackColor = true;
@@ -940,7 +943,7 @@ namespace SrvSurvey
             numMinBioDuration.Maximum = new decimal(new int[] { 600, 0, 0, 0 });
             numMinBioDuration.Name = "numMinBioDuration";
             numMinBioDuration.Size = new Size(51, 23);
-            numMinBioDuration.TabIndex = 9;
+            numMinBioDuration.TabIndex = 10;
             numMinBioDuration.Tag = "keepBioPlottersVisibleDuration";
             numMinBioDuration.TextAlign = HorizontalAlignment.Right;
             numMinBioDuration.ThousandsSeparator = true;
@@ -966,7 +969,7 @@ namespace SrvSurvey
             checkBox21.Margin = new Padding(4, 3, 4, 3);
             checkBox21.Name = "checkBox21";
             checkBox21.Size = new Size(208, 20);
-            checkBox21.TabIndex = 14;
+            checkBox21.TabIndex = 15;
             checkBox21.Tag = "highlightRegionalFirsts";
             checkBox21.Text = "Highlight ⚐ regional firsts in gold";
             checkBox21.UseVisualStyleBackColor = true;
@@ -981,7 +984,7 @@ namespace SrvSurvey
             checkBox20.Margin = new Padding(4, 3, 4, 3);
             checkBox20.Name = "checkBox20";
             checkBox20.Size = new Size(332, 20);
-            checkBox20.TabIndex = 12;
+            checkBox20.TabIndex = 13;
             checkBox20.Tag = "drawBodyBiosOnlyWhenNear";
             checkBox20.Text = "Show body bio signals only when target body is close by.";
             checkBox20.UseVisualStyleBackColor = true;
@@ -990,7 +993,7 @@ namespace SrvSurvey
             // 
             pictureBox12.BackgroundImage = (Image)resources.GetObject("pictureBox12.BackgroundImage");
             pictureBox12.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureBox12.Location = new Point(403, 190);
+            pictureBox12.Location = new Point(403, 172);
             pictureBox12.Name = "pictureBox12";
             pictureBox12.Size = new Size(166, 112);
             pictureBox12.TabIndex = 32;
@@ -1002,7 +1005,7 @@ namespace SrvSurvey
             label15.Location = new Point(348, 242);
             label15.Name = "label15";
             label15.Size = new Size(53, 15);
-            label15.TabIndex = 10;
+            label15.TabIndex = 11;
             label15.Text = "seconds.";
             // 
             // checkBox18
@@ -1012,7 +1015,7 @@ namespace SrvSurvey
             checkBox18.Location = new Point(10, 240);
             checkBox18.Name = "checkBox18";
             checkBox18.Size = new Size(263, 20);
-            checkBox18.TabIndex = 8;
+            checkBox18.TabIndex = 9;
             checkBox18.Tag = "keepBioPlottersVisibleEnabled";
             checkBox18.Text = "Keep bio overlays visible after DSS scans for:";
             checkBox18.UseVisualStyleBackColor = true;
@@ -1028,7 +1031,7 @@ namespace SrvSurvey
             checkBioSystemPlotter.Margin = new Padding(4, 3, 4, 3);
             checkBioSystemPlotter.Name = "checkBioSystemPlotter";
             checkBioSystemPlotter.Size = new Size(395, 20);
-            checkBioSystemPlotter.TabIndex = 11;
+            checkBioSystemPlotter.TabIndex = 12;
             checkBioSystemPlotter.Tag = "autoShowPlotBioSystem";
             checkBioSystemPlotter.Text = "Show whole system exo bio status ➟➟➟➟➟➟➟➟➟➟➟➟➟➟➟";
             checkBioSystemPlotter.UseVisualStyleBackColor = true;
@@ -1039,7 +1042,7 @@ namespace SrvSurvey
             linkLabel1.Location = new Point(380, 420);
             linkLabel1.Name = "linkLabel1";
             linkLabel1.Size = new Size(102, 15);
-            linkLabel1.TabIndex = 4;
+            linkLabel1.TabIndex = 16;
             linkLabel1.TabStop = true;
             linkLabel1.Text = "(see tracking wiki)";
             linkLabel1.LinkClicked += linkLabel1_LinkClicked;
@@ -1049,7 +1052,7 @@ namespace SrvSurvey
             btnClearTrackers.Location = new Point(488, 416);
             btnClearTrackers.Name = "btnClearTrackers";
             btnClearTrackers.Size = new Size(156, 23);
-            btnClearTrackers.TabIndex = 3;
+            btnClearTrackers.TabIndex = 18;
             btnClearTrackers.Text = "Clear tracked locations";
             btnClearTrackers.UseVisualStyleBackColor = true;
             btnClearTrackers.Click += btnClearTrackers_Click;
@@ -1104,7 +1107,7 @@ namespace SrvSurvey
             btnClearUnclaimed.Location = new Point(488, 387);
             btnClearUnclaimed.Name = "btnClearUnclaimed";
             btnClearUnclaimed.Size = new Size(156, 23);
-            btnClearUnclaimed.TabIndex = 2;
+            btnClearUnclaimed.TabIndex = 17;
             btnClearUnclaimed.Text = "Clear unclaimed rewards";
             btnClearUnclaimed.UseVisualStyleBackColor = true;
             btnClearUnclaimed.Click += btnClearUnclaimed_Click;
@@ -1157,7 +1160,7 @@ namespace SrvSurvey
             groupRingBuckets.Location = new Point(10, 318);
             groupRingBuckets.Name = "groupRingBuckets";
             groupRingBuckets.Size = new Size(470, 95);
-            groupRingBuckets.TabIndex = 13;
+            groupRingBuckets.TabIndex = 14;
             groupRingBuckets.TabStop = false;
             groupRingBuckets.Text = "Species reward groups:";
             // 
@@ -1783,6 +1786,7 @@ namespace SrvSurvey
             // 
             tabPage6.BackColor = SystemColors.Control;
             tabPage6.BorderStyle = BorderStyle.Fixed3D;
+            tabPage6.Controls.Add(checkBox36);
             tabPage6.Controls.Add(checkBox35);
             tabPage6.Controls.Add(btnSwapCache);
             tabPage6.Controls.Add(checkBox32);
@@ -1818,6 +1822,21 @@ namespace SrvSurvey
             tabPage6.TabIndex = 5;
             tabPage6.Text = "Exploration";
             // 
+            // checkBox36
+            // 
+            checkBox36.AutoSize = true;
+            checkBox36.Checked = true;
+            checkBox36.CheckState = CheckState.Checked;
+            checkBox36.FlatStyle = FlatStyle.System;
+            checkBox36.Location = new Point(50, 77);
+            checkBox36.Margin = new Padding(4, 3, 4, 3);
+            checkBox36.Name = "checkBox36";
+            checkBox36.Size = new Size(153, 20);
+            checkBox36.TabIndex = 3;
+            checkBox36.Tag = "hideGeoCountInFssInfo";
+            checkBox36.Text = "Hide geo signal counts";
+            checkBox36.UseVisualStyleBackColor = true;
+            // 
             // checkBox35
             // 
             checkBox35.Anchor = AnchorStyles.Top | AnchorStyles.Right;
@@ -1825,7 +1844,7 @@ namespace SrvSurvey
             checkBox35.Location = new Point(453, 6);
             checkBox35.Name = "checkBox35";
             checkBox35.Size = new Size(188, 19);
-            checkBox35.TabIndex = 37;
+            checkBox35.TabIndex = 4;
             checkBox35.Tag = "hideOverlaysFromMouseInFSS_TEST";
             checkBox35.Text = "Test hiding overlays during FSS";
             checkBox35.UseVisualStyleBackColor = true;
@@ -1836,7 +1855,7 @@ namespace SrvSurvey
             btnSwapCache.Location = new Point(485, 416);
             btnSwapCache.Name = "btnSwapCache";
             btnSwapCache.Size = new Size(156, 23);
-            btnSwapCache.TabIndex = 36;
+            btnSwapCache.TabIndex = 23;
             btnSwapCache.Text = "Swap star cache";
             btnSwapCache.UseVisualStyleBackColor = true;
             btnSwapCache.Click += btnSwapCache_Click;
@@ -1848,7 +1867,7 @@ namespace SrvSurvey
             checkBox32.Location = new Point(10, 422);
             checkBox32.Name = "checkBox32";
             checkBox32.Size = new Size(271, 20);
-            checkBox32.TabIndex = 35;
+            checkBox32.TabIndex = 22;
             checkBox32.Tag = "useLastUpdatedFromSpanshNotEDSM";
             checkBox32.Text = "Use last updated time from Spansh not EDSM";
             checkBox32.UseVisualStyleBackColor = true;
@@ -1863,7 +1882,7 @@ namespace SrvSurvey
             checkBox28.Margin = new Padding(4, 3, 4, 3);
             checkBox28.Name = "checkBox28";
             checkBox28.Size = new Size(156, 20);
-            checkBox28.TabIndex = 34;
+            checkBox28.TabIndex = 8;
             checkBox28.Tag = "showNonBodySignals";
             checkBox28.Text = "Show non-body signals";
             checkBox28.UseVisualStyleBackColor = true;
@@ -1895,7 +1914,7 @@ namespace SrvSurvey
             numericUpDown1.Maximum = new decimal(new int[] { 6000000, 0, 0, 0 });
             numericUpDown1.Name = "numericUpDown1";
             numericUpDown1.Size = new Size(88, 23);
-            numericUpDown1.TabIndex = 10;
+            numericUpDown1.TabIndex = 13;
             numericUpDown1.Tag = "skipHighDistanceDSSValue";
             numericUpDown1.TextAlign = HorizontalAlignment.Right;
             numericUpDown1.ThousandsSeparator = true;
@@ -1908,7 +1927,7 @@ namespace SrvSurvey
             numMinScanValue.Maximum = new decimal(new int[] { 6000000, 0, 0, 0 });
             numMinScanValue.Name = "numMinScanValue";
             numMinScanValue.Size = new Size(88, 23);
-            numMinScanValue.TabIndex = 7;
+            numMinScanValue.TabIndex = 10;
             numMinScanValue.Tag = "skipLowValueAmount";
             numMinScanValue.TextAlign = HorizontalAlignment.Right;
             numMinScanValue.ThousandsSeparator = true;
@@ -1950,7 +1969,7 @@ namespace SrvSurvey
             checkBox24.Checked = true;
             checkBox24.CheckState = CheckState.Checked;
             checkBox24.FlatStyle = FlatStyle.System;
-            checkBox24.Location = new Point(50, 58);
+            checkBox24.Location = new Point(50, 55);
             checkBox24.Margin = new Padding(4, 3, 4, 3);
             checkBox24.Name = "checkBox24";
             checkBox24.Size = new Size(159, 20);
@@ -1969,7 +1988,7 @@ namespace SrvSurvey
             checkBox23.Margin = new Padding(0);
             checkBox23.Name = "checkBox23";
             checkBox23.Size = new Size(290, 20);
-            checkBox23.TabIndex = 15;
+            checkBox23.TabIndex = 18;
             checkBox23.Tag = "autoShowPlotBodyInfoAtSurface";
             checkBox23.Text = "When at planet surface and not in Combat mode";
             checkBox23.UseVisualStyleBackColor = true;
@@ -1981,7 +2000,7 @@ namespace SrvSurvey
             checkPlotJumpInfo.Location = new Point(10, 346);
             checkPlotJumpInfo.Name = "checkPlotJumpInfo";
             checkPlotJumpInfo.Size = new Size(393, 20);
-            checkPlotJumpInfo.TabIndex = 18;
+            checkPlotJumpInfo.TabIndex = 21;
             checkPlotJumpInfo.Tag = "autoShowPlotJumpInfo";
             checkPlotJumpInfo.Text = "Show next system summary before FSD jumping (uses external data)";
             checkPlotJumpInfo.UseVisualStyleBackColor = true;
@@ -1996,7 +2015,7 @@ namespace SrvSurvey
             checkHideBodyInfoInBubble.Margin = new Padding(4, 3, 4, 3);
             checkHideBodyInfoInBubble.Name = "checkHideBodyInfoInBubble";
             checkHideBodyInfoInBubble.Size = new Size(322, 20);
-            checkHideBodyInfoInBubble.TabIndex = 16;
+            checkHideBodyInfoInBubble.TabIndex = 19;
             checkHideBodyInfoInBubble.Tag = "autoHidePlotBodyInfoInBubble";
             checkHideBodyInfoInBubble.Text = "But keep it hidden when in the bubble <200ly from Sol.";
             checkHideBodyInfoInBubble.UseVisualStyleBackColor = true;
@@ -2011,7 +2030,7 @@ namespace SrvSurvey
             checkBodyInfoOrbit.Margin = new Padding(4, 3, 4, 3);
             checkBodyInfoOrbit.Name = "checkBodyInfoOrbit";
             checkBodyInfoOrbit.Size = new Size(150, 20);
-            checkBodyInfoOrbit.TabIndex = 14;
+            checkBodyInfoOrbit.TabIndex = 17;
             checkBodyInfoOrbit.Tag = "autoShowPlotBodyInfoInOrbit";
             checkBodyInfoOrbit.Text = "In orbit around a body";
             checkBodyInfoOrbit.UseVisualStyleBackColor = true;
@@ -2026,7 +2045,7 @@ namespace SrvSurvey
             checkBodyInfoMap.Margin = new Padding(4, 3, 4, 3);
             checkBodyInfoMap.Name = "checkBodyInfoMap";
             checkBodyInfoMap.Size = new Size(130, 20);
-            checkBodyInfoMap.TabIndex = 13;
+            checkBodyInfoMap.TabIndex = 16;
             checkBodyInfoMap.Tag = "autoShowPlotBodyInfoInMap";
             checkBodyInfoMap.Text = "In the System Map";
             checkBodyInfoMap.UseVisualStyleBackColor = true;
@@ -2041,7 +2060,7 @@ namespace SrvSurvey
             checkBodyInfo.Margin = new Padding(4, 3, 4, 3);
             checkBodyInfo.Name = "checkBodyInfo";
             checkBodyInfo.Size = new Size(420, 20);
-            checkBodyInfo.TabIndex = 12;
+            checkBodyInfo.TabIndex = 15;
             checkBodyInfo.Tag = "autoShowPlotBodyInfo";
             checkBodyInfo.Text = "Show body information panel ➟➟➟➟➟➟➟➟➟➟➟➟➟➟➟➟➟➟➟";
             checkBodyInfo.UseVisualStyleBackColor = true;
@@ -2072,7 +2091,7 @@ namespace SrvSurvey
             checkGalMapPlotter.Margin = new Padding(4, 3, 4, 3);
             checkGalMapPlotter.Name = "checkGalMapPlotter";
             checkGalMapPlotter.Size = new Size(414, 20);
-            checkGalMapPlotter.TabIndex = 17;
+            checkGalMapPlotter.TabIndex = 20;
             checkGalMapPlotter.Tag = "autoShowPlotGalMap";
             checkGalMapPlotter.Text = "Show exploration preview in Galaxy Map (uses external data) ➟➟➟➟➟";
             checkGalMapPlotter.UseVisualStyleBackColor = true;
@@ -2083,7 +2102,7 @@ namespace SrvSurvey
             label13.Location = new Point(289, 203);
             label13.Name = "label13";
             label13.Size = new Size(114, 15);
-            label13.TabIndex = 11;
+            label13.TabIndex = 14;
             label13.Text = "LS from primary star";
             // 
             // checkBox16
@@ -2095,7 +2114,7 @@ namespace SrvSurvey
             checkBox16.Location = new Point(31, 202);
             checkBox16.Name = "checkBox16";
             checkBox16.Size = new Size(152, 20);
-            checkBox16.TabIndex = 9;
+            checkBox16.TabIndex = 12;
             checkBox16.Tag = "skipHighDistanceDSS";
             checkBox16.Text = "Skip bodies exceeding:";
             checkBox16.UseVisualStyleBackColor = true;
@@ -2106,7 +2125,7 @@ namespace SrvSurvey
             label10.Location = new Point(379, 179);
             label10.Name = "label10";
             label10.Size = new Size(42, 15);
-            label10.TabIndex = 8;
+            label10.TabIndex = 11;
             label10.Text = "credits";
             // 
             // checkBox11
@@ -2118,7 +2137,7 @@ namespace SrvSurvey
             checkBox11.Location = new Point(31, 177);
             checkBox11.Name = "checkBox11";
             checkBox11.Size = new Size(242, 20);
-            checkBox11.TabIndex = 6;
+            checkBox11.TabIndex = 9;
             checkBox11.Tag = "skipLowValueDSS";
             checkBox11.Text = "Skip bodies with estimated value below:";
             checkBox11.UseVisualStyleBackColor = true;
@@ -2134,7 +2153,7 @@ namespace SrvSurvey
             checkBox10.Margin = new Padding(4, 3, 4, 3);
             checkBox10.Name = "checkBox10";
             checkBox10.Size = new Size(120, 20);
-            checkBox10.TabIndex = 5;
+            checkBox10.TabIndex = 7;
             checkBox10.Tag = "skipRingsDSS";
             checkBox10.Text = "Skip DSS of rings";
             checkBox10.UseVisualStyleBackColor = true;
@@ -2149,7 +2168,7 @@ namespace SrvSurvey
             checkBox9.Margin = new Padding(4, 3, 4, 3);
             checkBox9.Name = "checkBox9";
             checkBox9.Size = new Size(147, 20);
-            checkBox9.TabIndex = 4;
+            checkBox9.TabIndex = 6;
             checkBox9.Tag = "skipGasGiantDSS";
             checkBox9.Text = "Skip DSS of gas giants";
             checkBox9.UseVisualStyleBackColor = true;
@@ -2164,7 +2183,7 @@ namespace SrvSurvey
             checkBox8.Margin = new Padding(4, 3, 4, 3);
             checkBox8.Name = "checkBox8";
             checkBox8.Size = new Size(208, 20);
-            checkBox8.TabIndex = 3;
+            checkBox8.TabIndex = 5;
             checkBox8.Tag = "autoShowPlotSysStatus";
             checkBox8.Text = "Show system DSS remaining ➟➟";
             checkBox8.UseVisualStyleBackColor = true;
@@ -2695,7 +2714,7 @@ namespace SrvSurvey
             comboDirectXDevice.Location = new Point(261, 25);
             comboDirectXDevice.Name = "comboDirectXDevice";
             comboDirectXDevice.Size = new Size(378, 23);
-            comboDirectXDevice.TabIndex = 5;
+            comboDirectXDevice.TabIndex = 2;
             comboDirectXDevice.DropDown += comboDirectXDevice_DropDown;
             comboDirectXDevice.SelectedIndexChanged += comboDirectXDevice_SelectedIndexChanged;
             // 
@@ -2706,7 +2725,7 @@ namespace SrvSurvey
             checkKeyChordsDirectX.Location = new Point(261, 6);
             checkKeyChordsDirectX.Name = "checkKeyChordsDirectX";
             checkKeyChordsDirectX.Size = new Size(226, 20);
-            checkKeyChordsDirectX.TabIndex = 4;
+            checkKeyChordsDirectX.TabIndex = 1;
             checkKeyChordsDirectX.Tag = "hookDirectX_TEST";
             checkKeyChordsDirectX.Text = "Enable controller/joystick key chords";
             checkKeyChordsDirectX.UseVisualStyleBackColor = true;
@@ -2725,7 +2744,7 @@ namespace SrvSurvey
             listKeys.Name = "listKeys";
             listKeys.ShowItemToolTips = true;
             listKeys.Size = new Size(633, 386);
-            listKeys.TabIndex = 2;
+            listKeys.TabIndex = 4;
             listKeys.UseCompatibleStateImageBehavior = false;
             listKeys.View = View.Details;
             listKeys.DoubleClick += listKeys_DoubleClick;
@@ -2759,7 +2778,7 @@ namespace SrvSurvey
             checkKeyChords.Location = new Point(6, 6);
             checkKeyChords.Name = "checkKeyChords";
             checkKeyChords.Size = new Size(127, 20);
-            checkKeyChords.TabIndex = 1;
+            checkKeyChords.TabIndex = 0;
             checkKeyChords.Tag = "keyhook_TEST";
             checkKeyChords.Text = "Enable key chords";
             checkKeyChords.UseVisualStyleBackColor = true;
@@ -2839,6 +2858,21 @@ namespace SrvSurvey
             menuClearCodexCache.Text = "Clear cached images";
             menuClearCodexCache.ToolTipText = "Remove cached images.";
             menuClearCodexCache.Click += menuClearCodexCache_Click;
+            // 
+            // checkBox37
+            // 
+            checkBox37.AutoSize = true;
+            checkBox37.Checked = true;
+            checkBox37.CheckState = CheckState.Checked;
+            checkBox37.FlatStyle = FlatStyle.System;
+            checkBox37.Location = new Point(403, 290);
+            checkBox37.Margin = new Padding(4, 3, 4, 3);
+            checkBox37.Name = "checkBox37";
+            checkBox37.Size = new Size(119, 20);
+            checkBox37.TabIndex = 33;
+            checkBox37.Tag = "hideGeoCountInBioSystem";
+            checkBox37.Text = "Hide geo signals";
+            checkBox37.UseVisualStyleBackColor = true;
             // 
             // FormSettings
             // 
@@ -3125,5 +3159,7 @@ namespace SrvSurvey
         private ComboBox comboDirectXDevice;
         private ComboBox comboBox1;
         private Label label29;
+        private CheckBox checkBox36;
+        private CheckBox checkBox37;
     }
 }

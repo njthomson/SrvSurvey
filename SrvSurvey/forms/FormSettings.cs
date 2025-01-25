@@ -24,6 +24,7 @@ namespace SrvSurvey
 
         public FormSettings()
         {
+            // TODO: Load images dynamically - to speed up form initial load times?
             InitializeComponent();
             this.Icon = Icons.spanner;
             comboLang.SelectedIndex = 0;
