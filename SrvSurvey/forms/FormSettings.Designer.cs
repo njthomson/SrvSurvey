@@ -211,6 +211,8 @@ namespace SrvSurvey
             checkBox22 = new CheckBox();
             checkHumanSitePlotter = new CheckBox();
             tabKeyChords = new TabPage();
+            comboDirectXDevice = new ComboBox();
+            checkKeyChordsDirectX = new CheckBox();
             listKeys = new ListView();
             colName = new ColumnHeader();
             colKeys = new ColumnHeader();
@@ -2646,6 +2648,8 @@ namespace SrvSurvey
             // 
             tabKeyChords.BackColor = SystemColors.Control;
             tabKeyChords.BorderStyle = BorderStyle.Fixed3D;
+            tabKeyChords.Controls.Add(comboDirectXDevice);
+            tabKeyChords.Controls.Add(checkKeyChordsDirectX);
             tabKeyChords.Controls.Add(listKeys);
             tabKeyChords.Controls.Add(label28);
             tabKeyChords.Controls.Add(checkKeyChords);
@@ -2655,6 +2659,32 @@ namespace SrvSurvey
             tabKeyChords.Size = new Size(651, 448);
             tabKeyChords.TabIndex = 8;
             tabKeyChords.Text = "Key Chords";
+            // 
+            // comboDirectXDevice
+            // 
+            comboDirectXDevice.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            comboDirectXDevice.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboDirectXDevice.FlatStyle = FlatStyle.System;
+            comboDirectXDevice.FormattingEnabled = true;
+            comboDirectXDevice.Location = new Point(261, 25);
+            comboDirectXDevice.Name = "comboDirectXDevice";
+            comboDirectXDevice.Size = new Size(378, 23);
+            comboDirectXDevice.TabIndex = 5;
+            comboDirectXDevice.DropDown += comboDirectXDevice_DropDown;
+            comboDirectXDevice.SelectedIndexChanged += comboDirectXDevice_SelectedIndexChanged;
+            // 
+            // checkKeyChordsDirectX
+            // 
+            checkKeyChordsDirectX.AutoSize = true;
+            checkKeyChordsDirectX.FlatStyle = FlatStyle.System;
+            checkKeyChordsDirectX.Location = new Point(261, 6);
+            checkKeyChordsDirectX.Name = "checkKeyChordsDirectX";
+            checkKeyChordsDirectX.Size = new Size(226, 20);
+            checkKeyChordsDirectX.TabIndex = 4;
+            checkKeyChordsDirectX.Tag = "hookDirectX_TEST";
+            checkKeyChordsDirectX.Text = "Enable controller/joystick key chords";
+            checkKeyChordsDirectX.UseVisualStyleBackColor = true;
+            checkKeyChordsDirectX.CheckedChanged += checkKeyChordsDirectX_CheckedChanged;
             // 
             // listKeys
             // 
@@ -2706,16 +2736,15 @@ namespace SrvSurvey
             checkKeyChords.TabIndex = 1;
             checkKeyChords.Tag = "keyhook_TEST";
             checkKeyChords.Text = "Enable key chords";
-            checkKeyChords.TextAlign = ContentAlignment.TopLeft;
             checkKeyChords.UseVisualStyleBackColor = true;
-            checkKeyChords.CheckedChanged += checkBox33_CheckedChanged;
+            checkKeyChords.CheckedChanged += checkKeyChords_CheckedChanged;
             // 
             // tabPage2
             // 
             tabPage2.BorderStyle = BorderStyle.Fixed3D;
             tabPage2.Controls.Add(linkAboutTwo);
             tabPage2.Controls.Add(linkAboutOne);
-            tabPage2.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            tabPage2.Font = new Font("Segoe UI", 9F);
             tabPage2.Location = new Point(4, 24);
             tabPage2.Name = "tabPage2";
             tabPage2.Padding = new Padding(3);
@@ -3066,5 +3095,7 @@ namespace SrvSurvey
         private ToolStripMenuItem menuClearCodexCache;
         private CheckBox checkPreDownloadCodexImages;
         private CheckBox checkBox35;
+        private CheckBox checkKeyChordsDirectX;
+        private ComboBox comboDirectXDevice;
     }
 }

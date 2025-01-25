@@ -92,43 +92,51 @@ namespace SrvSurvey.canonn
 
         public async Task downloadCodexImage(string entryId, string imageUrl)
         {
-            if (string.IsNullOrWhiteSpace(imageUrl)) return;
-            var folder = Game.settings.downloadCodexImageFolder;
-
-            var filepath = Path.Combine(folder, $"{entryId}.jpg");
-            if (!File.Exists(filepath))
+            try
             {
-                Game.log($"Downloading {imageUrl} => {filepath}");
+                if (string.IsNullOrWhiteSpace(imageUrl)) return;
+                var folder = Game.settings.downloadCodexImageFolder;
 
-                var client = new HttpClient();
-                client.DefaultRequestHeaders.Add("user-agent", Program.userAgent);
-
-                if (!Uri.IsWellFormedUriString(imageUrl, UriKind.Absolute))
+                var filepath = Path.Combine(folder, $"{entryId}.jpg");
+                if (!File.Exists(filepath))
                 {
-                    //Debugger.Break();
-                    return;
-                }
+                    Game.log($"Downloading {imageUrl} => {filepath}");
 
-                using (var stream = await client.GetStreamAsync(imageUrl))
-                {
-                    using (var imgTmp = Image.FromStream(stream))
+                    var client = new HttpClient();
+                    client.DefaultRequestHeaders.Add("user-agent", Program.userAgent);
+
+                    if (!Uri.IsWellFormedUriString(imageUrl, UriKind.Absolute))
                     {
-                        if (!File.Exists(filepath))
+                        //Debugger.Break();
+                        return;
+                    }
+
+                    using (var stream = await client.GetStreamAsync(imageUrl))
+                    {
+                        using (var imgTmp = Image.FromStream(stream))
                         {
-                            var encoder = ImageCodecInfo.GetImageEncoders().First(c => c.FormatID == ImageFormat.Jpeg.Guid);
-                            var encParams = new EncoderParameters() { Param = new[] { new EncoderParameter(Encoder.Quality, 90L) } };
-                            imgTmp.Save(filepath, encoder, encParams);
+                            if (!File.Exists(filepath))
+                            {
+                                var encoder = ImageCodecInfo.GetImageEncoders().First(c => c.FormatID == ImageFormat.Jpeg.Guid);
+                                var encParams = new EncoderParameters() { Param = new[] { new EncoderParameter(Encoder.Quality, 90L) } };
+                                imgTmp.Save(filepath, encoder, encParams);
+                            }
                         }
                     }
                 }
-            }
 
-            // remove any old .png's
-            filepath = Path.Combine(folder, $"{entryId}.png");
-            if (File.Exists(filepath))
+                // remove any old .png's
+                filepath = Path.Combine(folder, $"{entryId}.png");
+                if (File.Exists(filepath))
+                {
+                    try { File.Delete(filepath); }
+                    catch (UnauthorizedAccessException) { /* ignore these */ }
+                }
+            }
+            catch (Exception ex)
             {
-                try { File.Delete(filepath); }
-                catch (UnauthorizedAccessException) { /* ignore these */ }
+                // log but otherwise ignore any errors
+                Game.log($"downloadCodexImage: failed on '{entryId}': {ex}");
             }
         }
 

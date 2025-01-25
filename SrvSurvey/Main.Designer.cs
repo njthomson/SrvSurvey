@@ -17,11 +17,8 @@ namespace SrvSurvey
             if (disposing && (components != null))
             {
                 components.Dispose();
-                if (this.hook != null)
-                {
-                    hook.Dispose();
-                    hook = null;
-                }
+
+                this.stopHooks();
 
                 if (this.game != null)
                     this.removeGame();

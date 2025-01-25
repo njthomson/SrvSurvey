@@ -267,8 +267,7 @@ namespace SrvSurvey
 
                         this.timer1.Start();
 
-                        if (Game.settings.keyhook_TEST && Game.settings.keyActions_TEST != null)
-                            this.hook = new KeyboardHook();
+                        this.startHooks();
 
                         if (Game.settings.focusGameOnStart)
                             this.BeginInvoke(() => Elite.setFocusED());
@@ -279,6 +278,21 @@ namespace SrvSurvey
                     Util.handleError(ex);
                 }
             }));
+        }
+
+        public void startHooks()
+        {
+            if (this.hook == null && Game.settings.keyhook_TEST && Game.settings.keyActions_TEST != null)
+                this.hook = new KeyboardHook();
+        }
+
+        public void stopHooks()
+        {
+            if (this.hook != null)
+            {
+                this.hook.Dispose();
+                this.hook = null!;
+            }
         }
 
         private void handleJournalFolderNotFound()

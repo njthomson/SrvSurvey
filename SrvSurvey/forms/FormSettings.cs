@@ -1,4 +1,5 @@
-﻿using SrvSurvey.canonn;
+﻿using SharpDX.DirectInput;
+using SrvSurvey.canonn;
 using SrvSurvey.forms;
 using SrvSurvey.game;
 using SrvSurvey.plotters;
@@ -19,6 +20,7 @@ namespace SrvSurvey
 
         private int codexImageCount;
         private string codexImageSize;
+        private Dictionary<Guid, string> devices = new();
 
         public FormSettings()
         {
@@ -53,6 +55,7 @@ namespace SrvSurvey
 
         private void FormSettings_Load(object sender, EventArgs e)
         {
+            this.findDevices(Game.settings.hookDirectXDeviceId_TEST);
             updateFormFromSettings(this);
 
             // disable controls based on settings
@@ -70,6 +73,8 @@ namespace SrvSurvey
             checkHideMyOwnCanonnSignals.Enabled = checkUseSystemData.Checked;
 
             checkBodyInfoMap.Enabled = checkBodyInfoOrbit.Enabled = checkBodyInfo.Checked;
+
+            checkKeyChordsDirectX.Enabled = checkKeyChords.Checked;
 
             if (game == null)
             {
@@ -90,6 +95,31 @@ namespace SrvSurvey
                 this.codexImageSize = (size / 1_073_741_824D).ToString("N3").TrimEnd('0');
                 lblCodexImagesSize.Text += $" {codexImageSize} GB";
             });
+        }
+
+        /// <summary>
+        /// Building a dictionary of device Id to Name + populate combo box
+        /// </summary>
+        private void findDevices(Guid selectDeviceId)
+        {
+            // abuse .Tag - code below checks if it is something to avoid processing SelectedIndexChange events
+            comboDirectXDevice.Tag = "X";
+
+            devices.Clear();
+            devices.Add(Guid.Empty, "(None)");
+
+            var directInput = new DirectInput();
+            foreach (var device in directInput.GetDevices(DeviceType.Gamepad, DeviceEnumerationFlags.AllDevices))
+                devices.Add(device.InstanceGuid, device.InstanceName);
+            foreach (var device in directInput.GetDevices(DeviceType.Joystick, DeviceEnumerationFlags.AllDevices))
+                devices.Add(device.InstanceGuid, device.InstanceName);
+
+            comboDirectXDevice.DataSource = new BindingSource(devices, null);
+            comboDirectXDevice.DisplayMember = "Value";
+            comboDirectXDevice.ValueMember = "Key";
+
+            comboDirectXDevice.SelectedValue = selectDeviceId;
+            comboDirectXDevice.Tag = null;
         }
 
         private void findCmdrs()
@@ -203,6 +233,7 @@ namespace SrvSurvey
             this.nextKeyActions = Game.settings.keyActions_TEST == null
                 ? new()
                 : new(Game.settings.keyActions_TEST!);
+
             this.prepKeyChords();
         }
 
@@ -213,6 +244,8 @@ namespace SrvSurvey
 
             // and manually set the following
             Game.settings.lang = Localize.codeFromName(comboLang.Text);
+            var deviceId = comboDirectXDevice.SelectedValue as Guid?;
+            Game.settings.hookDirectXDeviceId_TEST = deviceId ?? Guid.Empty;
 
             Game.settings.keyActions_TEST ??= new();
             foreach (ListViewItem item in listKeys.Items)
@@ -351,6 +384,24 @@ namespace SrvSurvey
             }
         }
 
+        protected override void OnClosed(EventArgs e)
+        {
+            base.OnClosed(e);
+
+            // ensure basic keyboard hooks are in the correct state
+            var keyHookSettingsValid = Game.settings.keyhook_TEST && Game.settings.keyActions_TEST != null;
+            if (keyHookSettingsValid)
+                Main.form.startHooks();
+            else
+                Main.form.stopHooks();
+
+            // ensure DirectX hooks are in the correct state
+            if (Game.settings.hookDirectX_TEST && Game.settings.keyhook_TEST)
+                Main.form.hook.startDirectX(comboDirectXDevice.SelectedValue as Guid?);
+            else
+                Main.form.hook?.stopDirectX();
+        }
+
         private void trackOpacity_Scroll(object sender, EventArgs e)
         {
             if (numOpacity.Value != trackOpacity.Value)
@@ -395,7 +446,7 @@ namespace SrvSurvey
 
         private void checkProcessScreenshots_CheckedChanged(object sender, EventArgs e)
         {
-            disableEverythingElse(sender as CheckBox, groupCodexImages);            
+            disableEverythingElse(sender as CheckBox, groupCodexImages);
         }
 
         private void disableEverythingElse(CheckBox? senderCheckbox, params Control[] except)
@@ -727,9 +778,29 @@ namespace SrvSurvey
             }
         }
 
-        private void checkBox33_CheckedChanged(object sender, EventArgs e)
+        private void checkKeyChords_CheckedChanged(object sender, EventArgs e)
         {
+            if (!checkKeyChords.Visible) return;
+
             listKeys.Enabled = checkKeyChords.Checked;
+            checkKeyChordsDirectX.Enabled = checkKeyChords.Checked;
+
+            checkKeyChordsDirectX_CheckedChanged(sender, e);
+        }
+
+        private void checkKeyChordsDirectX_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!checkKeyChordsDirectX.Visible) return;
+
+            if (checkKeyChords.Checked && checkKeyChordsDirectX.Checked)
+            {
+                Main.form.hook ??= new KeyboardHook();
+                Main.form.hook.startDirectX(comboDirectXDevice.SelectedValue as Guid?);
+            }
+            else
+            {
+                Main.form.hook?.stopDirectX();
+            }
         }
 
         private void btnSwapCache_Click(object sender, EventArgs e)
@@ -763,6 +834,25 @@ namespace SrvSurvey
         {
             if (checkPreDownloadCodexImages.Visible && checkPreDownloadCodexImages.Checked)
                 MessageBox.Show(this, "Codex images will be pre-downloaded after you next restart SrvSurvey. This will happen in the background and requires ~1GB of disk space.", "SrvSurvey", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void comboDirectXDevice_DropDown(object sender, EventArgs e)
+        {
+            var newDeviceId = (comboDirectXDevice.SelectedValue as Guid?) ?? Guid.Empty;
+            this.findDevices(newDeviceId);
+        }
+
+        private void comboDirectXDevice_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!comboDirectXDevice.Visible || comboDirectXDevice.Tag != null) return;
+
+            var newDeviceId = (comboDirectXDevice.SelectedValue as Guid?) ?? Guid.Empty;
+            if (Main.form.hook.activeDeviceId != newDeviceId)
+            {
+                Main.form.hook.stopDirectX();
+                Task.Delay(100)
+                    .ContinueWith(t => Main.form.hook.startDirectX(newDeviceId));
+            }
         }
     }
 }

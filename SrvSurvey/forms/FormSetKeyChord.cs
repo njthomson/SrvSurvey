@@ -19,14 +19,11 @@ namespace SrvSurvey
             // force form width as it doesn't happen correctly by itself
             this.Width = flowButtons.Right + (flowButtons.Left * 2) + 4;
 
-            if (Game.settings.hookDirectX_TEST)
+            KeyboardHook.buttonsPressed += (bool hook, string chord) =>
             {
-                KeyboardHook.fired += (bool pressing, string chord) =>
-                {
-                    btnAccept.Enabled = !pressing;
-                    this.textChord.Text = chord;
-                };
-            }
+                btnAccept.Enabled = hook;
+                this.textChord.Text = chord;
+            };
         }
 
         protected override void OnLoad(EventArgs e)
