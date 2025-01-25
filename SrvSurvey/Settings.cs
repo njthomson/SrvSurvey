@@ -51,6 +51,7 @@ namespace SrvSurvey
         public bool autoShowPlotBodyInfoAtSurface = false;
 
         public bool autoShowPlotMassacre_TEST = false;
+        public bool autoShowPlotMiniTrack_TEST = false;
 
         public bool autoShowHumanSitesTest = false;
         public int plotHumanSiteWidth = 500;

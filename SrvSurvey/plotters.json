@@ -28,5 +28,6 @@
   "PlotRamTah": "right:8, middle:0",
   "PlotSphericalSearch": "right:8, top:8",
   "PlotSysStatus": "left:8, bottom:44",
-  "PlotTrackTarget": "center:480, top:8"
+  "PlotTrackTarget": "center:480, top:8",
+  "PlotMiniTrack": "left: 40, top:8"
 }
