@@ -46,8 +46,7 @@ namespace SrvSurvey.plotters
 
         protected override void OnLoad(EventArgs e)
         {
-            this.Height = PlotBase.scaled(500);
-            this.Width = PlotBase.scaled(380);
+            this.Size = PlotBase.scaled(getWindowSize());
             this.mw = this.Width / 2;
             this.mh = this.Height / 2;
             this.initializeOnLoad();
@@ -59,6 +58,19 @@ namespace SrvSurvey.plotters
             if (plotTrackers != null)
             {
                 plotTrackers.reposition(gameRect);
+            }
+        }
+
+        private Size getWindowSize()
+        {
+            switch (Game.settings.bioPlotSize)
+            {
+                case 0: return new Size(250, 400);
+                case 1: return new Size(250, 500);
+                default:
+                case 2: return new Size(320, 440);
+                case 3: return new Size(380, 500);
+                case 4: return new Size(440, 600);
             }
         }
 
@@ -221,10 +233,10 @@ namespace SrvSurvey.plotters
             g.Clip = new Region(new RectangleF(0, four, this.Width, this.Height - eight));
 
             if (this.td != null)
-                this.drawBearingTo(g, four, eight, "Touchdown:", this.td.Target);
+                this.drawBearingTo(g, four, nine, "Ship:", this.td.Target);
 
             if (this.srvLocation != null)
-                this.drawBearingTo(g, four + mw, eight, "SRV:", this.srvLocation.Target);
+                this.drawBearingTo(g, four + mw, nine, "SRV:", this.srvLocation.Target);
 
             float y = this.Height - twoFour;
             if (game.cmdr.scanOne != null)
@@ -232,7 +244,7 @@ namespace SrvSurvey.plotters
                 if (game.cmdr.scanOne.body != game.systemBody.name && game.cmdr.scanOne.body != null)
                     g.DrawString("Scan one: invalid", GameColors.fontSmall, GameColors.brushRed, ten, y);
                 else
-                    this.drawBearingTo(g, ten, y, "Scan one:", game.cmdr.scanOne.location!);
+                    this.drawBearingTo(g, ten, y, this.Width < 280 ? "1st:" : "Scan one:", game.cmdr.scanOne.location!);
             }
 
             if (game.cmdr.scanTwo != null)
@@ -240,7 +252,7 @@ namespace SrvSurvey.plotters
                 if (game.cmdr.scanTwo.body != game.systemBody.name && game.cmdr.scanTwo.body != null)
                     g.DrawString("Scan two: invalid", GameColors.fontSmall, GameColors.brushRed, ten + mw, y);
                 else
-                    this.drawBearingTo(g, ten + mw, y, "Scan two:", game.cmdr.scanTwo.location!);
+                    this.drawBearingTo(g, ten + mw, y, this.Width < 280 ? "2nd:" : "Scan two:", game.cmdr.scanTwo.location!);
             }
 
             // TODO: fix bug where warning shown and ship already departed

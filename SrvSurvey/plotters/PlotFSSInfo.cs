@@ -165,7 +165,9 @@ namespace SrvSurvey.plotters
                 if (scan.body.bioSignalCount > 0)
                 {
                     drawTextAt("| ", GameColors.brushGameOrangeDim);
-                    drawTextAt($"{scan.body.bioSignalCount} Genus", GameColors.brushCyan);
+                    var sz = drawTextAt($"{scan.body.bioSignalCount} Genus", GameColors.brushCyan);
+                    if (scan.body.countAnalyzedBioSignals == scan.body.bioSignalCount)
+                        strikeThrough(dtx, dty + one + sz.Height / 2, -sz.Width, true);
                 }
 
                 if (scan.body.geoSignalCount > 0)

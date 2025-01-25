@@ -28,6 +28,7 @@ namespace SrvSurvey
 
         public bool autoShowBioSummary = true;
         public bool autoShowBioPlot = true;
+        public int bioPlotSize = 3;
         public bool autoHideBioPlotNoGear = false;
         public bool autoShowPlotFSS = true;
         public bool autoShowPlotFSSInfo = true;

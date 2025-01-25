@@ -13,7 +13,6 @@ namespace SrvSurvey.plotters
                 && Game.activeGame?.systemBody?.bookmarks?.Count > 0;
         }
 
-        int rowHeight = scaled(20);
         public const int highlightDistance = 150;
 
         public Dictionary<string, List<TrackingDelta>> trackers = new Dictionary<string, List<TrackingDelta>>();
@@ -21,23 +20,7 @@ namespace SrvSurvey.plotters
         private PlotTrackers() : base()
         {
             this.Size = Size.Empty;
-        }
-
-        public override bool allow { get => PlotTrackers.allowPlotter; }
-
-        private void setNewHeight()
-        {
-            if (this.IsDisposed || game?.systemBody?.bookmarks == null) return;
-
-            // adjust height if needed
-            var formHeight = scaled(42) + (game.systemBody.bookmarks.Count * rowHeight);
-            if (this.Height != formHeight)
-            {
-                this.Height = formHeight;
-                this.BackgroundImage = GameGraphics.getBackgroundForForm(this);
-            }
-
-            this.Invalidate();
+            this.Font = GameColors.fontSmall;
         }
 
         protected override void OnLoad(EventArgs e)
@@ -47,9 +30,10 @@ namespace SrvSurvey.plotters
             base.OnLoad(e);
 
             this.prepTrackers();
-            this.setNewHeight();
             this.initializeOnLoad();
         }
+
+        public override bool allow { get => PlotTrackers.allowPlotter; }
 
         public void prepTrackers()
         {
@@ -73,11 +57,10 @@ namespace SrvSurvey.plotters
                 }
             }
 
-            this.setNewHeight();
-            Program.getPlotter<PlotGrounded>()?.Invalidate();
+            Program.invalidate<PlotGrounded>();
 
             if (this.trackers.Count == 0)
-                this.BeginInvoke(() => Program.closePlotter<PlotTrackers>());
+                Program.defer(() => Program.closePlotter<PlotTrackers>());
         }
 
         public override void reposition(Rectangle gameRect)
@@ -87,7 +70,7 @@ namespace SrvSurvey.plotters
 
             if (gameRect != Rectangle.Empty)
             {
-                // position ourself under PlotGrounded, if it exists
+                // position ourselves under PlotGrounded, if it exists
                 var plotGrounded = Program.getPlotter<PlotGrounded>();
                 if (plotGrounded != null)
                 {
@@ -98,7 +81,7 @@ namespace SrvSurvey.plotters
                 }
                 else
                 {
-                    // otherwise position ourself where PlotGrounded would be
+                    // otherwise position ourselves where PlotGrounded would be
                     PlotPos.reposition(this, gameRect, nameof(PlotGrounded));
                 }
 
@@ -163,26 +146,27 @@ namespace SrvSurvey.plotters
         {
             if (game?.systemData == null || game.systemBody == null || game.systemBody.bookmarks == null || game.systemBody.bookmarks?.Count == 0) return;
 
-            g.DrawString($"Tracking {game.systemBody.bookmarks?.Count} targets:", GameColors.fontSmall, GameColors.brushGameOrange, scaled(4), scaled(8));
+            this.drawTextAt(eight, $"Tracking {game.systemBody.bookmarks?.Count} targets:", GameColors.fontSmall);
+            newLine(+eight, true);
 
-            var indent = scaled(220 + 80);
-            var y = scaled(12);
+            // measure width of all names
+            var names = this.trackers.Keys.Select(name => getDisplayName(name)).ToArray();
+            var maxW = Util.maxWidth(this.Font, names);
+            var indent = maxW + ten;
+            const int bearingWidth = 75;
+            indent += (this.Width - indent) % bearingWidth;
+            if (indent < sixty) indent = sixty;
+
             foreach (var name in this.trackers.Keys)
             {
-                y += rowHeight;
+                var x = indent;
 
-                var x = (float)this.Width - indent;
-
-                BioScan.prefixes.TryGetValue(name, out var fullName);
+                var fullName = BioScan.prefixes.GetValueOrDefault(name);
                 var isActive = game.cmdr.scanOne?.genus == null || game.cmdr.scanOne?.genus == fullName;
                 var isClose = false;
-                var bearingWidth = scaled(75);
                 Brush brush;
                 foreach (var dd in this.trackers[name])
                 {
-                    var deg = dd.angle - game.status!.Heading;
-                    //var radius = BioScan.ranges.ContainsKey(name) ? BioScan.ranges[name] : highlightDistance;
-
                     isClose |= dd.distance < highlightDistance;
                     brush = isActive ? GameColors.brushGameOrange : GameColors.brushGameOrangeDim;
                     if (dd.distance < highlightDistance) brush = isActive ? GameColors.brushCyan : GameColors.brushDarkCyan;
@@ -190,25 +174,32 @@ namespace SrvSurvey.plotters
                     var pen = isActive ? GameColors.penGameOrange2 : GameColors.penGameOrangeDim2;
                     if (dd.distance < highlightDistance) pen = isActive ? GameColors.penCyan2 : GameColors.penDarkCyan1;
 
-                    this.drawBearingTo(x, y, "", (double)dd.distance, (double)deg, brush, pen);
+                    var deg = dd.angle - game.status!.Heading;
+                    this.drawBearingTo(x, dty, "", (double)dd.distance, (double)deg, brush, pen);
                     x += bearingWidth;
+                    if (x > this.Width - bearingWidth) break;
                 }
 
-                string? displayName;
-                if (!BioScan.prefixes.ContainsKey(name) || !BioScan.genusNames.TryGetValue(BioScan.prefixes[name], out displayName))
-                    displayName = name;
+                var displayName = getDisplayName(name);
 
-                var sz = g.MeasureString(displayName, GameColors.fontSmall);
-                brush = isActive ? GameColors.brushGameOrange : GameColors.brushGameOrangeDim;
-                if (isClose) brush = isActive ? GameColors.brushCyan : GameColors.brushDarkCyan;
+                var col = isActive ? GameColors.Orange : GameColors.OrangeDim;
+                if (isClose) col = isActive ? GameColors.Cyan : GameColors.DarkCyan;
 
-                g.DrawString(
-                    displayName,
-                    GameColors.fontSmall,
-                    brush,
-                    this.Width - indent - sz.Width + scaled(3), y);
+                this.drawTextAt2(indent, displayName, col, null, true);
+                newLine(+nine, true);
             }
+
+            this.formSize.Width = this.Width;
+            formAdjustSize(0, +four);
+        }
+
+        private string getDisplayName(string name)
+        {
+            var prefix = BioScan.prefixes.GetValueOrDefault(name);
+            if (prefix != null)
+                return BioScan.genusNames.GetValueOrDefault(prefix) ?? name;
+            else
+                return name;
         }
     }
-
 }

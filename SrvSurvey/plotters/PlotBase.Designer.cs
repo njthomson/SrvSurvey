@@ -46,6 +46,7 @@ namespace SrvSurvey.plotters
         protected static float sixFour = scaled(64f);
         protected static float sixFive = scaled(65f);
         protected static float sevenTwo = scaled(72f);
+        protected static float sevenFive = scaled(75f);
         protected static float eighty = scaled(80f);
         protected static float eightSix = scaled(86f);
         protected static float eightEight = scaled(88f);
@@ -98,6 +99,14 @@ namespace SrvSurvey.plotters
         }
 
         public static SizeF scaled(SizeF sz)
+        {
+            sz.Width = scaled(sz.Width);
+            sz.Height = scaled(sz.Height);
+
+            return sz;
+        }
+
+        public static Size scaled(Size sz)
         {
             sz.Width = scaled(sz.Width);
             sz.Height = scaled(sz.Height);

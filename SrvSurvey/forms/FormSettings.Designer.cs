@@ -75,6 +75,8 @@ namespace SrvSurvey
             linkResetTheme = new LinkLabel();
             tabControl = new TabControl();
             tabPage4 = new TabPage();
+            comboBox1 = new ComboBox();
+            label29 = new Label();
             checkBox34 = new CheckBox();
             checkBox27 = new CheckBox();
             pictureBox2 = new PictureBox();
@@ -842,6 +844,8 @@ namespace SrvSurvey
             // tabPage4
             // 
             tabPage4.BorderStyle = BorderStyle.Fixed3D;
+            tabPage4.Controls.Add(comboBox1);
+            tabPage4.Controls.Add(label29);
             tabPage4.Controls.Add(checkBox34);
             tabPage4.Controls.Add(checkBox27);
             tabPage4.Controls.Add(pictureBox2);
@@ -869,11 +873,33 @@ namespace SrvSurvey
             tabPage4.TabIndex = 3;
             tabPage4.Text = "Bio Scanning";
             // 
+            // comboBox1
+            // 
+            comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBox1.FlatStyle = FlatStyle.System;
+            comboBox1.FormattingEnabled = true;
+            comboBox1.Items.AddRange(new object[] { "Small - 250 x 400", "Skiny - 250 X 500", "Medium - 320 x 440", "Large - 380 x 500", "Huge - 440 x 600" });
+            comboBox1.Location = new Point(107, 87);
+            comboBox1.Name = "comboBox1";
+            comboBox1.Size = new Size(178, 23);
+            comboBox1.TabIndex = 36;
+            comboBox1.Tag = "bioPlotSize";
+            // 
+            // label29
+            // 
+            label29.AutoSize = true;
+            label29.FlatStyle = FlatStyle.System;
+            label29.Location = new Point(29, 90);
+            label29.Name = "label29";
+            label29.Size = new Size(72, 15);
+            label29.TabIndex = 35;
+            label29.Text = "Overlay size:";
+            // 
             // checkBox34
             // 
             checkBox34.AutoSize = true;
             checkBox34.FlatStyle = FlatStyle.System;
-            checkBox34.Location = new Point(40, 87);
+            checkBox34.Location = new Point(29, 114);
             checkBox34.Margin = new Padding(4, 3, 4, 3);
             checkBox34.Name = "checkBox34";
             checkBox34.Size = new Size(288, 20);
@@ -1010,7 +1036,7 @@ namespace SrvSurvey
             // linkLabel1
             // 
             linkLabel1.AutoSize = true;
-            linkLabel1.Location = new Point(334, 115);
+            linkLabel1.Location = new Point(380, 420);
             linkLabel1.Name = "linkLabel1";
             linkLabel1.Size = new Size(102, 15);
             linkLabel1.TabIndex = 4;
@@ -1020,7 +1046,7 @@ namespace SrvSurvey
             // 
             // btnClearTrackers
             // 
-            btnClearTrackers.Location = new Point(172, 111);
+            btnClearTrackers.Location = new Point(488, 416);
             btnClearTrackers.Name = "btnClearTrackers";
             btnClearTrackers.Size = new Size(156, 23);
             btnClearTrackers.TabIndex = 3;
@@ -1075,7 +1101,7 @@ namespace SrvSurvey
             // 
             // btnClearUnclaimed
             // 
-            btnClearUnclaimed.Location = new Point(10, 111);
+            btnClearUnclaimed.Location = new Point(488, 387);
             btnClearUnclaimed.Name = "btnClearUnclaimed";
             btnClearUnclaimed.Size = new Size(156, 23);
             btnClearUnclaimed.TabIndex = 2;
@@ -3097,5 +3123,7 @@ namespace SrvSurvey
         private CheckBox checkBox35;
         private CheckBox checkKeyChordsDirectX;
         private ComboBox comboDirectXDevice;
+        private ComboBox comboBox1;
+        private Label label29;
     }
 }
