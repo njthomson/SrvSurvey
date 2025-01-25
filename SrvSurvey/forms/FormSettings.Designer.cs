@@ -75,6 +75,7 @@ namespace SrvSurvey
             linkResetTheme = new LinkLabel();
             tabControl = new TabControl();
             tabPage4 = new TabPage();
+            checkBox37 = new CheckBox();
             comboBox1 = new ComboBox();
             label29 = new Label();
             checkBox34 = new CheckBox();
@@ -231,7 +232,7 @@ namespace SrvSurvey
             menuCodexChange = new ToolStripMenuItem();
             menuCodexReset = new ToolStripMenuItem();
             menuClearCodexCache = new ToolStripMenuItem();
-            checkBox37 = new CheckBox();
+            checkBox38 = new CheckBox();
             panel1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox6).BeginInit();
@@ -337,6 +338,7 @@ namespace SrvSurvey
             // tabPage1
             // 
             tabPage1.BorderStyle = BorderStyle.Fixed3D;
+            tabPage1.Controls.Add(checkBox38);
             tabPage1.Controls.Add(linkJournalFolder);
             tabPage1.Controls.Add(linkResetWatchFolder);
             tabPage1.Controls.Add(checkHidePlottersFromDominator);
@@ -875,6 +877,21 @@ namespace SrvSurvey
             tabPage4.Size = new Size(651, 448);
             tabPage4.TabIndex = 3;
             tabPage4.Text = "Bio Scanning";
+            // 
+            // checkBox37
+            // 
+            checkBox37.AutoSize = true;
+            checkBox37.Checked = true;
+            checkBox37.CheckState = CheckState.Checked;
+            checkBox37.FlatStyle = FlatStyle.System;
+            checkBox37.Location = new Point(403, 290);
+            checkBox37.Margin = new Padding(4, 3, 4, 3);
+            checkBox37.Name = "checkBox37";
+            checkBox37.Size = new Size(119, 20);
+            checkBox37.TabIndex = 33;
+            checkBox37.Tag = "hideGeoCountInBioSystem";
+            checkBox37.Text = "Hide geo signals";
+            checkBox37.UseVisualStyleBackColor = true;
             // 
             // comboBox1
             // 
@@ -2859,20 +2876,17 @@ namespace SrvSurvey
             menuClearCodexCache.ToolTipText = "Remove cached images.";
             menuClearCodexCache.Click += menuClearCodexCache_Click;
             // 
-            // checkBox37
+            // checkBox38
             // 
-            checkBox37.AutoSize = true;
-            checkBox37.Checked = true;
-            checkBox37.CheckState = CheckState.Checked;
-            checkBox37.FlatStyle = FlatStyle.System;
-            checkBox37.Location = new Point(403, 290);
-            checkBox37.Margin = new Padding(4, 3, 4, 3);
-            checkBox37.Name = "checkBox37";
-            checkBox37.Size = new Size(119, 20);
-            checkBox37.TabIndex = 33;
-            checkBox37.Tag = "hideGeoCountInBioSystem";
-            checkBox37.Text = "Hide geo signals";
-            checkBox37.UseVisualStyleBackColor = true;
+            checkBox38.AutoSize = true;
+            checkBox38.FlatStyle = FlatStyle.System;
+            checkBox38.Location = new Point(461, 393);
+            checkBox38.Name = "checkBox38";
+            checkBox38.Size = new Size(180, 20);
+            checkBox38.TabIndex = 36;
+            checkBox38.Tag = "autoShowPlotMiniTrack_TEST";
+            checkBox38.Text = "Mini trackers (Experimental)";
+            checkBox38.UseVisualStyleBackColor = true;
             // 
             // FormSettings
             // 
@@ -3161,5 +3175,6 @@ namespace SrvSurvey
         private Label label29;
         private CheckBox checkBox36;
         private CheckBox checkBox37;
+        private CheckBox checkBox38;
     }
 }

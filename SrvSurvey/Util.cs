@@ -1090,6 +1090,14 @@ namespace SrvSurvey
         }
 
         /// <summary>
+        /// Center the inner size within the outer size.
+        /// </summary>        
+        public static float centerIn(float outer, float inner)
+        {
+            return (int)Math.Ceiling((outer / 2f) - (inner / 2f));
+        }
+
+        /// <summary>
         /// Waits to invoke the action, invoking only once should there be multiple requests during the delay time.
         /// </summary>
         public static void deferAfter(int delayMs, Action func)

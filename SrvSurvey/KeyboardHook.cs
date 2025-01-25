@@ -203,7 +203,7 @@ namespace SrvSurvey
             if (redirect && buttonsPressed != null)
             {
                 var chord = string.Join(" ", pressed.Order());
-                //Game.log($">>> FIRE <<< {pressing} => [ {chord} ]"); // dbg
+                //Game.log($">>> FIRE <<< {hook} => [ {chord} ]"); // dbg
 
                 // fire event on the UX thread
                 Program.defer(() => buttonsPressed(hook, chord));
@@ -217,7 +217,7 @@ namespace SrvSurvey
 
             if (isRelease) // a button is released...
             {
-                if (!pendingButtonsRelease)
+                if (!pendingButtonsRelease || !redirect)
                     this.processButtonChord();
 
                 // remove button
@@ -239,7 +239,8 @@ namespace SrvSurvey
             if (lastPov != null)
             {
                 // fire when releasing
-                processButtonChord();
+                if (!pendingButtonsRelease || !redirect)
+                    processButtonChord();
 
                 pressed.Remove(lastPov);
                 lastPov = null;
@@ -287,7 +288,8 @@ namespace SrvSurvey
             if (lastTrigger != null)
             {
                 // fire when releasing
-                processButtonChord();
+                if (!pendingButtonsRelease || !redirect)
+                    processButtonChord();
 
                 pressed.Remove(lastTrigger);
                 lastTrigger = null;

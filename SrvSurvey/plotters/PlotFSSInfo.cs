@@ -174,7 +174,11 @@ namespace SrvSurvey.plotters
                 if (!Game.settings.hideGeoCountInFssInfo && scan.body.geoSignalCount > 0)
                 {
                     drawTextAt("| ", GameColors.brushGameOrangeDim);
-                    drawTextAt($"{scan.body.geoSignalCount} Geo", GameColors.brushCyan);
+                    var analyzed = scan.body.geoSignalNames.Count == scan.body.geoSignalCount;
+                    var sz = drawTextAt($"{scan.body.geoSignalCount} Geo", analyzed ? GameColors.brushGameOrange : GameColors.brushCyan);
+                    if (analyzed)
+                        strikeThrough(dtx, dty + two + sz.Height / 2, -sz.Width, false);
+
                 }
 
                 newLine(+four, true);

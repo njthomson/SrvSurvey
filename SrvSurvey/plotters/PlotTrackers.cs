@@ -10,7 +10,10 @@ namespace SrvSurvey.plotters
         {
             get => PlotGrounded.allowPlotter
                 // same as PlotGrounded + do we have any bookmarks?
-                && Game.activeGame?.systemBody?.bookmarks?.Count > 0;
+                && (
+                    (!Game.settings.autoShowPlotMiniTrack_TEST && Game.activeGame?.systemBody?.bookmarks?.Count > 0)
+                || (Game.settings.autoShowPlotMiniTrack_TEST && Game.activeGame?.systemBody?.bookmarks?.Keys.Count(k => k[0] != '#') > 0)
+                );
         }
 
         public const int highlightDistance = 150;
@@ -159,8 +162,10 @@ namespace SrvSurvey.plotters
 
             foreach (var name in this.trackers.Keys)
             {
-                var x = indent;
+                // skip quick trackers if PlotMiniTrack is active
+                if (name[0] == '#' && Program.isPlotter<PlotMiniTrack>()) continue;
 
+                var x = indent;
                 var fullName = BioScan.prefixes.GetValueOrDefault(name);
                 var isActive = game.cmdr.scanOne?.genus == null || game.cmdr.scanOne?.genus == fullName;
                 var isClose = false;

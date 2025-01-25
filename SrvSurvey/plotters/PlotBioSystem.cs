@@ -344,7 +344,7 @@ namespace SrvSurvey.plotters
                 // geo signals?
                 if (body.geoSignals?.Count > 0)
                 {
-                    foreach (var geoName in body.geoSignals.Select(_ => _.nameLocalized).ToHashSet())
+                    foreach (var geoName in body.geoSignalNames)
                     {
                         // TODO: show gold flags if this is a first discovery
                         this.drawTextAt(oneTwo, $"► {geoName}");

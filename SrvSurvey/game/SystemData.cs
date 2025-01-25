@@ -2375,6 +2375,12 @@ namespace SrvSurvey.game
             else
                 return reward;
         }
+
+        /// <summary> A distinct list of geo signal names </summary>
+        public HashSet<string> geoSignalNames
+        {
+            get => this.geoSignals?.Select(_ => _.nameLocalized).ToHashSet() ?? new();
+        }
     }
 
     internal class SystemRing

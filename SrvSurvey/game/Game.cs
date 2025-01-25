@@ -2649,16 +2649,17 @@ namespace SrvSurvey.game
 
             Game.log($"Tracking location {name} at: {location}, exists: {exists}, tooClose: {tooClose}");
 
-            // remove if too close, replace if far away, otherwise add new.
-            if (tooClose)
+            // NO ~~remove if too close, replace if far away, otherwise add new.~~
+            // remove if exists, otherwise add new
+            /*if (tooClose)
             {
                 removeBookmarkName(name);
             }
-            else if (exists)
+            else */ if (exists)
             {
                 removeBookmarkName(name);
-                Application.DoEvents();
-                addBookmark(name, location);
+                //Application.DoEvents();
+                //addBookmark(name, location);
             }
             else
             {
@@ -2689,6 +2690,7 @@ namespace SrvSurvey.game
             this.systemData.Save();
 
             Program.showPlotter<PlotTrackers>()?.prepTrackers();
+            Program.showPlotter<PlotMiniTrack>();
         }
 
         public void clearAllBookmarks()
@@ -2700,6 +2702,7 @@ namespace SrvSurvey.game
             this.systemData.Save();
 
             Program.showPlotter<PlotTrackers>()?.prepTrackers();
+            Program.invalidate<PlotMiniTrack>();
         }
 
         public void removeBookmarkName(string name)
@@ -2713,6 +2716,7 @@ namespace SrvSurvey.game
             this.systemData.Save();
 
             Program.showPlotter<PlotTrackers>()?.prepTrackers();
+            Program.invalidate<PlotMiniTrack>();
         }
 
         public void removeBookmark(string name, LatLong2 location, bool nearest)
