@@ -80,6 +80,16 @@ namespace SrvSurvey.plotters
             game.status.StatusChanged += Status_StatusChanged;
         }
 
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                var cp = base.CreateParams;
+                cp.ExStyle |= 0x00000020 + 0x00080000 + 0x08000000; // WS_EX_TRANSPARENT + WS_EX_LAYERED + WS_EX_NOACTIVATE
+                return cp;
+            }
+        }
+
         protected override void OnActivated(EventArgs e)
         {
             base.OnActivated(e);

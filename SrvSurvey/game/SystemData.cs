@@ -1364,6 +1364,9 @@ namespace SrvSurvey.game
                         }
                     }
                 }
+
+                // and keep track of any space stations
+                this.spanshStations = spanshSystem.getAllStations();
             }
 
             if (shouldPredictBios && Game.ready)
@@ -1776,6 +1779,9 @@ namespace SrvSurvey.game
         {
             return this.stations?.Find(s => s.marketId == marketId);
         }
+
+        [JsonIgnore]
+        public List<ApiSystemDump.System.Station>? spanshStations;
     }
 
     internal class SummaryGenus

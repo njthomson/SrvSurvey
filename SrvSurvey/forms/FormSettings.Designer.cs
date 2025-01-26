@@ -36,6 +36,7 @@ namespace SrvSurvey
             btnSave = new FlatButton();
             btnCancel = new FlatButton();
             tabPage1 = new TabPage();
+            checkBox38 = new CheckBox();
             linkJournalFolder = new LinkLabel();
             linkResetWatchFolder = new LinkLabel();
             checkHidePlottersFromDominator = new CheckBox();
@@ -149,7 +150,6 @@ namespace SrvSurvey
             checkLocalTime = new CheckBox();
             tabPage6 = new TabPage();
             checkBox36 = new CheckBox();
-            checkBox35 = new CheckBox();
             btnSwapCache = new FlatButton();
             checkBox32 = new CheckBox();
             checkBox28 = new CheckBox();
@@ -232,7 +232,7 @@ namespace SrvSurvey
             menuCodexChange = new ToolStripMenuItem();
             menuCodexReset = new ToolStripMenuItem();
             menuClearCodexCache = new ToolStripMenuItem();
-            checkBox38 = new CheckBox();
+            checkBox35 = new CheckBox();
             panel1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox6).BeginInit();
@@ -338,6 +338,7 @@ namespace SrvSurvey
             // tabPage1
             // 
             tabPage1.BorderStyle = BorderStyle.Fixed3D;
+            tabPage1.Controls.Add(checkBox35);
             tabPage1.Controls.Add(checkBox38);
             tabPage1.Controls.Add(linkJournalFolder);
             tabPage1.Controls.Add(linkResetWatchFolder);
@@ -383,6 +384,18 @@ namespace SrvSurvey
             tabPage1.Size = new Size(651, 448);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "General";
+            // 
+            // checkBox38
+            // 
+            checkBox38.AutoSize = true;
+            checkBox38.FlatStyle = FlatStyle.System;
+            checkBox38.Location = new Point(461, 390);
+            checkBox38.Name = "checkBox38";
+            checkBox38.Size = new Size(180, 20);
+            checkBox38.TabIndex = 36;
+            checkBox38.Tag = "autoShowPlotMiniTrack_TEST";
+            checkBox38.Text = "Mini trackers (Experimental)";
+            checkBox38.UseVisualStyleBackColor = true;
             // 
             // linkJournalFolder
             // 
@@ -454,7 +467,7 @@ namespace SrvSurvey
             // 
             checkBox33.AutoSize = true;
             checkBox33.FlatStyle = FlatStyle.System;
-            checkBox33.Location = new Point(400, 372);
+            checkBox33.Location = new Point(412, 231);
             checkBox33.Name = "checkBox33";
             checkBox33.Size = new Size(241, 20);
             checkBox33.TabIndex = 35;
@@ -1804,7 +1817,6 @@ namespace SrvSurvey
             tabPage6.BackColor = SystemColors.Control;
             tabPage6.BorderStyle = BorderStyle.Fixed3D;
             tabPage6.Controls.Add(checkBox36);
-            tabPage6.Controls.Add(checkBox35);
             tabPage6.Controls.Add(btnSwapCache);
             tabPage6.Controls.Add(checkBox32);
             tabPage6.Controls.Add(checkBox28);
@@ -1853,18 +1865,6 @@ namespace SrvSurvey
             checkBox36.Tag = "hideGeoCountInFssInfo";
             checkBox36.Text = "Hide geo signal counts";
             checkBox36.UseVisualStyleBackColor = true;
-            // 
-            // checkBox35
-            // 
-            checkBox35.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            checkBox35.AutoSize = true;
-            checkBox35.Location = new Point(453, 6);
-            checkBox35.Name = "checkBox35";
-            checkBox35.Size = new Size(188, 19);
-            checkBox35.TabIndex = 4;
-            checkBox35.Tag = "hideOverlaysFromMouseInFSS_TEST";
-            checkBox35.Text = "Test hiding overlays during FSS";
-            checkBox35.UseVisualStyleBackColor = true;
             // 
             // btnSwapCache
             // 
@@ -2876,17 +2876,17 @@ namespace SrvSurvey
             menuClearCodexCache.ToolTipText = "Remove cached images.";
             menuClearCodexCache.Click += menuClearCodexCache_Click;
             // 
-            // checkBox38
+            // checkBox35
             // 
-            checkBox38.AutoSize = true;
-            checkBox38.FlatStyle = FlatStyle.System;
-            checkBox38.Location = new Point(461, 393);
-            checkBox38.Name = "checkBox38";
-            checkBox38.Size = new Size(180, 20);
-            checkBox38.TabIndex = 36;
-            checkBox38.Tag = "autoShowPlotMiniTrack_TEST";
-            checkBox38.Text = "Mini trackers (Experimental)";
-            checkBox38.UseVisualStyleBackColor = true;
+            checkBox35.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            checkBox35.AutoSize = true;
+            checkBox35.Location = new Point(434, 367);
+            checkBox35.Name = "checkBox35";
+            checkBox35.Size = new Size(201, 19);
+            checkBox35.TabIndex = 37;
+            checkBox35.Tag = "hideOverlaysFromMouseInFSS_TEST";
+            checkBox35.Text = "Hide overlays from mouse cursor";
+            checkBox35.UseVisualStyleBackColor = true;
             // 
             // FormSettings
             // 
@@ -3168,7 +3168,6 @@ namespace SrvSurvey
         private ToolStripMenuItem menuCodexReset;
         private ToolStripMenuItem menuClearCodexCache;
         private CheckBox checkPreDownloadCodexImages;
-        private CheckBox checkBox35;
         private CheckBox checkKeyChordsDirectX;
         private ComboBox comboDirectXDevice;
         private ComboBox comboBox1;
@@ -3176,5 +3175,6 @@ namespace SrvSurvey
         private CheckBox checkBox36;
         private CheckBox checkBox37;
         private CheckBox checkBox38;
+        private CheckBox checkBox35;
     }
 }

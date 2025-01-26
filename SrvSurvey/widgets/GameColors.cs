@@ -741,6 +741,8 @@ namespace SrvSurvey.widgets
             public static Font console_8B = new Font("Lucida Console", 8F * fontScaleFactor, FontStyle.Bold, GraphicsUnit.Point);
             public static Font console_16 = new Font("Lucida Console", 16F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
 
+            public static Font gothic_12 = new Font("Century Gothic", 12F * fontScaleFactor, FontStyle.Regular, GraphicsUnit.Point);
+            public static Font gothic_12B = new Font("Century Gothic", 12F * fontScaleFactor, FontStyle.Bold, GraphicsUnit.Point);
             public static Font gothic_16B = new Font("Century Gothic", 16F * fontScaleFactor, FontStyle.Bold, GraphicsUnit.Point);
 
             // TODO: confirm these Pixel sized fonts scale properly with large fonts

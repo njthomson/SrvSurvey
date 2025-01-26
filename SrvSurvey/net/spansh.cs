@@ -62,29 +62,32 @@ namespace SrvSurvey.net
             return system.record;
         }
 
-        public async Task<ApiSystemDump.System> getSystemDump(long systemAddress, bool useCache = false)
+        public Task<ApiSystemDump.System> getSystemDump(long systemAddress, bool useCache = false)
         {
-            var cacheFilename = Path.Combine(BioPredictor.netCache, $"getSystemDump-{systemAddress}.json");
-            string json;
-            useCache = useCache || BioPredictor.useTestCache;
-            if (useCache && File.Exists(cacheFilename))
+            return NetCache.query(systemAddress, async () =>
             {
-                json = File.ReadAllText(cacheFilename);
-            }
-            else
-            {
-                // https://spansh.co.uk/api/dump/3238296097059 (Colonia)
-                Game.log($"Requesting Spansh api/dump/{systemAddress}");
-                json = await Spansh.client.GetStringAsync($"https://spansh.co.uk/api/dump/{systemAddress}/");
-                if (useCache)
+                var cacheFilename = Path.Combine(BioPredictor.netCache, $"getSystemDump-{systemAddress}.json");
+                string json;
+                useCache = useCache || BioPredictor.useTestCache;
+                if (useCache && File.Exists(cacheFilename))
                 {
-                    Directory.CreateDirectory(BioPredictor.netCache);
-                    File.WriteAllText(cacheFilename, json);
+                    json = File.ReadAllText(cacheFilename);
                 }
-            }
+                else
+                {
+                    // https://spansh.co.uk/api/dump/3238296097059 (Colonia)
+                    Game.log($"Requesting Spansh api/dump/{systemAddress}");
+                    json = await Spansh.client.GetStringAsync($"https://spansh.co.uk/api/dump/{systemAddress}/");
+                    if (useCache)
+                    {
+                        Directory.CreateDirectory(BioPredictor.netCache);
+                        File.WriteAllText(cacheFilename, json);
+                    }
+                }
 
-            var systemDump = JsonConvert.DeserializeObject<ApiSystemDump>(json)!;
-            return systemDump.system;
+                var systemDump = JsonConvert.DeserializeObject<ApiSystemDump>(json)!;
+                return systemDump.system;
+            });
         }
 
         public async Task<SystemResponse> getBoxelSystems(string systemName, StarRef? from = null)
@@ -960,6 +963,11 @@ namespace SrvSurvey.net
             public List<Station> stations;
             public List<MinorFactionPresence> factions;
 
+            public override string ToString()
+            {
+                return $"{name} ({id64})";
+            }
+
             public class Body
             {
                 public double? absoluteMagnitude;
@@ -1002,6 +1010,11 @@ namespace SrvSurvey.net
                 public List<Ring>? rings;
                 public List<Station> stations;
 
+                public override string ToString()
+                {
+                    return $"{name} ({bodyId})";
+                }
+
                 internal class Ring
                 {
                     public string name;
@@ -1036,7 +1049,12 @@ namespace SrvSurvey.net
                 public Shipyard shipyard;
                 public Outfitting outfitting;
                 public string type;
-                public DateTime updateTime;
+                public DateTimeOffset updateTime;
+
+                public override string ToString()
+                {
+                    return $"{name} ({id})";
+                }
 
                 public class Outfitting
                 {
@@ -1067,6 +1085,20 @@ namespace SrvSurvey.net
                         public string symbol;
                     }
                 }
+            }
+
+            /// <summary> Get stations from all bodies into a single list </summary>
+            public List<ApiSystemDump.System.Station> getAllStations()
+            {
+                // get stations from all bodies into a single list
+                var allStations = new List<ApiSystemDump.System.Station>(this.stations);
+                this.bodies.ForEach(b =>
+                {
+                    if (b.stations.Count > 0)
+                        allStations.AddRange(b.stations);
+                });
+
+                return allStations;
             }
         }
     }

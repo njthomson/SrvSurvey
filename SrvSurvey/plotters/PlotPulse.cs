@@ -42,6 +42,16 @@ namespace SrvSurvey.plotters
             this.Text = this.Name;
         }
 
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                var cp = base.CreateParams;
+                cp.ExStyle |= 0x00000020 + 0x00080000 + 0x08000000; // WS_EX_TRANSPARENT + WS_EX_LAYERED + WS_EX_NOACTIVATE
+                return cp;
+            }
+        }
+
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -82,7 +92,7 @@ namespace SrvSurvey.plotters
         {
             base.OnMouseEnter(e);
 
-            if (Game.settings.hideOverlaysFromMouseInFSS_TEST && Game.activeGame?.mode == GameMode.FSS)
+            if (Game.settings.hideOverlaysFromMouseInFSS_TEST)
             {
                 PlotBase.HideAndReturnWhenMouseMoves(this);
             }

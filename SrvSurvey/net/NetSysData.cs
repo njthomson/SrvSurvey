@@ -272,12 +272,7 @@ namespace SrvSurvey.net
             this.countPOI["Genus"] = this.genusCount;
 
             // get stations from all bodies into a single list
-            var allStations = new List<ApiSystemDump.System.Station>(_spanshDump.stations);
-            _spanshDump.bodies.ForEach(b =>
-            {
-                if (b.stations.Count > 0)
-                    allStations.AddRange(b.stations);
-            });
+            var allStations = _spanshDump.getAllStations();
 
             if (allStations.Count > 0)
             {
