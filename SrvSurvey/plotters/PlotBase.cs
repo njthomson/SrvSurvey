@@ -80,7 +80,7 @@ namespace SrvSurvey.plotters
             get
             {
                 var cp = base.CreateParams;
-                cp.ExStyle |=0x00000020 + 0x00080000 + 0x08000000; // WS_EX_TRANSPARENT + WS_EX_LAYERED + WS_EX_NOACTIVATE
+                cp.ExStyle |= 0x00000020 + 0x00080000 + 0x08000000; // WS_EX_TRANSPARENT + WS_EX_LAYERED + WS_EX_NOACTIVATE
                 return cp;
             }
         }
@@ -188,6 +188,19 @@ namespace SrvSurvey.plotters
 
         #endregion
 
+        /// <summary> Reset opacity to default it's value </summary>
+        public void resetOpacity()
+        {
+            setOpacity(PlotPos.getOpacity(this));
+        }
+
+        /// <summary> Set opacity to the given value. </summary>
+        public void setOpacity(double newOpacity)
+        {
+            if (this.Opacity != newOpacity)
+                this.Opacity = newOpacity;
+        }
+
         public virtual void reposition(Rectangle gameRect)
         {
             // do not attempt to reposition anything if the game window has been minimized
@@ -203,8 +216,8 @@ namespace SrvSurvey.plotters
             var newOpacity = PlotPos.getOpacity(this);
             if (this.Opacity == 0 && newOpacity > 0)
                 Util.fadeOpacity(this, newOpacity, Game.settings.fadeInDuration);
-            else if (this.Opacity != newOpacity)
-                this.Opacity = newOpacity;
+            else
+                setOpacity(newOpacity);
 
             if (gameRect != Rectangle.Empty)
             {

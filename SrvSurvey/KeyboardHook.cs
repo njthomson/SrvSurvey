@@ -52,14 +52,32 @@ namespace SrvSurvey
         public void startDirectX(Guid? newDeviceId)
         {
             // exit early if the device isn't changing
-            if (this.activeDeviceId == newDeviceId)
+            if (this.activeDeviceId == newDeviceId) // && this.taskDirectX != null)
                 return;
 
             if (this.taskDirectX == null)
             {
                 // spin off long running thread to poll DirectX inputs
                 cancelPollingTask = false;
-                this.taskDirectX = Task.Factory.StartNew(async () => await this.beginPollDirectX(newDeviceId ?? Guid.Empty), TaskCreationOptions.LongRunning);
+                this.taskDirectX = Task.Factory.StartNew(async () =>
+                {
+                    try
+                    {
+                        if (newDeviceId == Guid.Empty)
+                        {
+                            Game.log($"No device specified");
+                            return;
+                        }
+
+                        await this.doPollDirectX(newDeviceId ?? Guid.Empty);
+                    }
+                    finally
+                    {
+                        this.taskDirectX = null;
+                        this.activeDeviceId = Guid.Empty;
+                    }
+                }, TaskCreationOptions.LongRunning);
+
                 Game.log($"DirectX hook activated: {newDeviceId}");
             }
             else
@@ -107,42 +125,36 @@ namespace SrvSurvey
             return NativeMethods.CallNextHookEx(hookId, nCode, wParam, ref lParam);
         }
 
-        private async Task beginPollDirectX(Guid newDeviceId)
+        private async Task doPollDirectX(Guid newDeviceId)
         {
-            try
+            DirectInput directInput = new DirectInput();
+            Joystick? device = null;
+            this.pendingButtonsRelease = false;
+            this.lastPov = null;
+            this.lastTrigger = null;
+            this.pressed.Clear();
+
+            while (true)
             {
-                if (newDeviceId == Guid.Empty)
+                try
                 {
-                    Game.log($"No device specified");
-                    return;
-                }
 
-                var directInput = new DirectInput();
-                var preferredDevice = directInput.GetDevices().FirstOrDefault(d => d.InstanceGuid == newDeviceId);
-                if (preferredDevice == null)
-                {
-                    Game.log($"Cannot find device by ID: {newDeviceId}");
-                    return;
-                }
-                else
-                {
-                    Game.log($"Using {preferredDevice.Type} device '{preferredDevice.InstanceName}' by ID: {newDeviceId}");
-                    this.activeDeviceId = newDeviceId;
-                }
-
-                var device = new Joystick(directInput, newDeviceId);
-                device.Properties.BufferSize = 128;
-                device.Acquire();
-
-                var isGamepad = preferredDevice.Type == DeviceType.Gamepad;
-
-                // begin polling...
-                while (true)
-                {
                     if (cancelPollingTask)
                     {
                         Game.log("DirectX hook disabled");
                         return;
+                    }
+
+                    // do we have a device ready to use?
+                    if (device == null)
+                    {
+                        device = new Joystick(directInput, newDeviceId);
+
+                        // Show the device we found
+                        Game.log($"Using {device.Capabilities.Type} device '{device.Properties.InstanceName}' by ID: {newDeviceId}");
+                        this.activeDeviceId = newDeviceId;
+                        device.Properties.BufferSize = 128;
+                        device.Acquire();
                     }
 
                     await Task.Delay(1);
@@ -159,7 +171,7 @@ namespace SrvSurvey
                         else if (state.Offset == JoystickOffset.PointOfViewControllers0)
                             processPointOfViewControllers(state);
 
-                        else if (isGamepad && state.Offset == JoystickOffset.Z)
+                        else if (device.Capabilities.Type == DeviceType.Gamepad && state.Offset == JoystickOffset.Z)
                             processGamePadTrigger(state);
 
                         // reset pending once all buttons have been released
@@ -170,14 +182,22 @@ namespace SrvSurvey
                         }
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                Game.log($"beginPollDirectX failed: {ex}");
-            }
-            finally
-            {
-                this.taskDirectX = null;
+                catch (Exception ex)
+                {
+                    // log the error if we think we should have a device
+                    if (device != null)
+                        Game.log($"beginPollDirectX failed: {ex.Message}");
+                    //if ((uint)ex.HResult == 0x8007001E)
+                    //{
+                    //    Game.log($"Lost connection to device - start polling loop to reconnect");
+                    //}
+
+                    device = null;
+
+                    // wait 1 second then try again
+                    await Task.Delay(1000);
+
+                }
             }
         }
 

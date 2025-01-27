@@ -1042,7 +1042,7 @@ namespace SrvSurvey.net
                 public string government;
                 public long id;
                 public LandingPads landingPads;
-                // TODO: market
+                public Market market;
                 public string name;
                 public string primaryEconomy;
                 public List<string> services;
@@ -1054,6 +1054,25 @@ namespace SrvSurvey.net
                 public override string ToString()
                 {
                     return $"{name} ({id})";
+                }
+
+                public class Market
+                {
+                    public List<Commodity> commodities;
+                    public List<string> prohibitedCommodities;
+                    public DateTime updateTime;
+
+                    public class Commodity
+                    {
+                        public int buyPrice;
+                        public string category;
+                        public long commodityId;
+                        public int demand;
+                        public string name;
+                        public int sellPrice;
+                        public int supply;
+                        public string symbol;
+                    }
                 }
 
                 public class Outfitting

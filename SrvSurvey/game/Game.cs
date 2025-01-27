@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json;
 using SrvSurvey.canonn;
-using SrvSurvey.forms;
 using SrvSurvey.net;
 using SrvSurvey.net.EDSM;
 using SrvSurvey.plotters;
@@ -1963,6 +1962,36 @@ namespace SrvSurvey.game
 
         //}
 
+        /// <summary>
+        /// Returns most recent data for faction Inf, current state and cmdr Rep from the current journal file.
+        /// </summary>
+        public (double rep, double inf, string? state) getFactionInfRep(string factionName)
+        {
+            double rep = 0;
+            double inf = 0;
+            string? state = null;
+            // find cmdr's reputation with this faction
+            this.journals?.walk(-1, true, entry =>
+            {
+                var factionsEntry = entry as IFactions;
+                if (factionsEntry?.Factions != null)
+                {
+                    if (factionsEntry.SystemAddress == systemData?.address)
+                    {
+                        var faction = factionsEntry.Factions.Find(f => f.Name == factionName)!;
+                        rep = faction?.MyReputation ?? -1;
+                        inf = faction?.Influence ?? -1;
+                        state = faction?.FactionState;
+                    }
+                    return true;
+                }
+
+                return false;
+            });
+
+            return (rep, inf, state);
+        }
+
         #endregion
 
         #region journal tracking for ground ops
@@ -2655,7 +2684,8 @@ namespace SrvSurvey.game
             {
                 removeBookmarkName(name);
             }
-            else */ if (exists)
+            else */
+            if (exists)
             {
                 removeBookmarkName(name);
                 //Application.DoEvents();
