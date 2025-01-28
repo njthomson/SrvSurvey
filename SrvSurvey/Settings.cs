@@ -215,10 +215,13 @@ namespace SrvSurvey
         /// </summary>
         public int minimumKeyLocationTrackingDistance = 50;
 
+        /// <summary> Use to make overlays remain even though the game loses focus </summary>
         public bool keepOverlays = false;
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public bool overlayTombs = false;
+
+        public bool enableJourneys = false;
 
         #region loading / saving
 

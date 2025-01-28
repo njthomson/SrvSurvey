@@ -397,7 +397,7 @@ namespace SrvSurvey
                 Main.form.stopHooks();
 
             // ensure DirectX hooks are in the correct state
-            if (Game.settings.hookDirectX_TEST && Game.settings.keyhook_TEST)
+            if (Game.settings.hookDirectX_TEST && Game.settings.keyhook_TEST && Game.activeGame != null)
                 Main.form.hook.startDirectX(comboDirectXDevice.SelectedValue as Guid?);
             else
                 Main.form.hook?.stopDirectX();

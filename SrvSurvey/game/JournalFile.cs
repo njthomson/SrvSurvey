@@ -174,22 +174,24 @@ namespace SrvSurvey
                     if (finished) break;
                 }
 
-                var priorFilepath = JournalFile.getCommanderJournalBefore(this.cmdrName, this.isOdyssey, journal.timestamp);
+                var priorFilepath = JournalFile.getSiblingCommanderJournal(this.cmdrName, this.isOdyssey, journal.timestamp);
                 journal = priorFilepath == null ? null : new JournalFile(priorFilepath);
             };
 
             Game.log($"searchJournalsDeep: count: {count}");
         }
 
-        public void walkDeep(int index, bool searchUp, Func<IJournalEntry, bool> func, Func<JournalFile, bool>? finishWhen = null)
+        public JournalFile? walkDeep(bool searchUp, Func<IJournalEntry, bool> func, Func<JournalFile, bool>? finishWhen = null)
         {
             if (string.IsNullOrEmpty(this.cmdrName)) Debugger.Break();
 
+            int index = searchUp ? -1 : 0;
             var count = 0;
             var journal = this;
 
             // search older journals
-            while (journal != null)
+            string? priorFilepath;
+            do
             {
                 ++count;
                 // walk this journal
@@ -202,11 +204,14 @@ namespace SrvSurvey
                     if (finished) break;
                 }
 
-                var priorFilepath = JournalFile.getCommanderJournalBefore(this.cmdrName, this.isOdyssey, journal.timestamp);
-                journal = priorFilepath == null ? null : new JournalFile(priorFilepath);
-            };
+                priorFilepath = JournalFile.getSiblingCommanderJournal(this.cmdrName, this.isOdyssey, journal.timestamp, searchUp);
+                if (priorFilepath != null)
+                    journal = new JournalFile(priorFilepath);
 
-            Game.log($"walkDeep: count: {count}");
+            } while (priorFilepath != null);
+
+            Game.log($"walkDeep: count: {count} files");
+            return journal;
         }
 
         public bool walk(int index, bool searchUp, Func<IJournalEntry, bool> func)
@@ -234,14 +239,17 @@ namespace SrvSurvey
             return false;
         }
 
-        public static string? getCommanderJournalBefore(string? cmdr, bool isOdyssey, DateTime timestamp)
+        public static string? getSiblingCommanderJournal(string? cmdr, bool isOdyssey, DateTime timestamp, bool before = true)
         {
             var manyFiles = new DirectoryInfo(Game.settings.watchedJournalFolder)
-                .EnumerateFiles("*.log", SearchOption.TopDirectoryOnly)
-                .OrderByDescending(_ => _.LastWriteTimeUtc);
+                .EnumerateFiles("*.log", SearchOption.TopDirectoryOnly);
+
+            manyFiles = before
+                ? manyFiles.OrderByDescending(_ => _.LastWriteTimeUtc)
+                : manyFiles.OrderBy(_ => _.LastWriteTimeUtc);
 
             var journalFiles = manyFiles
-                .Where(_ => _.LastWriteTime < timestamp)
+                .Where(_ => before ? _.LastWriteTime < timestamp : _.LastWriteTime > timestamp)
                 .Select(_ => _.FullName);
 
             if (journalFiles.Count() == 0) return null;
@@ -272,7 +280,7 @@ namespace SrvSurvey
                         if (line.Contains("\"event\":\"Commander\""))
                         {
                             // no need to process further lines
-                            Game.log($"getCommanderJournalBefore: expected cmdr: {cmdr}, found '{line}' from: {filepath}");
+                            //Game.log($"getCommanderJournalBefore: expected cmdr: {cmdr}, found '{line}' from: {filepath}");
                             return line.ToUpper().Contains($"\"NAME\":\"{CMDR}\"");
                         }
                     }

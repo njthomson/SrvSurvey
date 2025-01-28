@@ -81,6 +81,9 @@ namespace SrvSurvey.game
         public string commander;
         public bool isOdyssey;
 
+        /// <summary> The filename of the active journey </summary>
+        public string? activeJourney;
+
         /// <summary>
         /// The name of the current star system, or body if we are close to one.
         /// </summary>
@@ -295,6 +298,14 @@ namespace SrvSurvey.game
             }
             return bx!;
         }
+
+        public CommanderJourney? loadActiveJourney()
+        {
+            if (this.activeJourney == null)
+                return null;
+            else
+                return CommanderJourney.Load(this.fid, this.activeJourney);
+        }
     }
 
     internal class SphereLimit
@@ -318,48 +329,4 @@ namespace SrvSurvey.game
         Active,
         Complete,
     }
-
-    /*
-    internal class BoxelSearchDef
-    {
-        public bool active;
-        public string name;
-        public int max;
-        public string visited;
-        public bool collapsed;
-        public bool autoCopy = true;
-
-        [JsonIgnore]
-        public Boxel? boxel
-        {
-            get
-            {
-                if (_boxel == null && !string.IsNullOrEmpty(this.name))
-                    _boxel = Boxel.parse(this.name);
-
-                return _boxel;
-            }
-        }
-        private Boxel? _boxel;
-
-        [JsonIgnore]
-        public int countVisited { get => visited?.Split(',').Length ?? 0; }
-
-        public string? getNextToVisit()
-        {
-            if (!active || this.boxel == null) return null;
-
-            var hashVisited = this.visited?.Split(",").Select(s => int.Parse(s)).ToHashSet() ?? new HashSet<int>();
-
-            for (int n = 0; n <= this.max; n++)
-            {
-                if (hashVisited.Contains(n)) continue;
-                var nextName = this.boxel.to(n).ToString();
-                return nextName;
-            }
-
-            return this.boxel.prefix;
-        }
-    }
-    */
 }

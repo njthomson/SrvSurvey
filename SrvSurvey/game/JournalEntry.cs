@@ -10,7 +10,7 @@ namespace SrvSurvey
     class JournalEntry : IJournalEntry
     {
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-        public DateTime timestamp { get; set; }
+        public DateTimeOffset timestamp { get; set; }
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public string @event { get; set; }
     }

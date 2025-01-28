@@ -128,13 +128,16 @@ namespace SrvSurvey.units
             this.id64 = address;
         }
 
-        public StarRef(IStarRef entry)
+        public static StarRef from(IStarRef entry)
         {
-            this.name = entry.StarSystem;
-            this.id64 = entry.SystemAddress;
-            this.x = entry.StarPos[0];
-            this.y = entry.StarPos[1];
-            this.z = entry.StarPos[2];
+            return new StarRef()
+            {
+                name = entry.StarSystem,
+                id64 = entry.SystemAddress,
+                x = entry.StarPos[0],
+                y = entry.StarPos[1],
+                z = entry.StarPos[2],
+            };
         }
 
         public StarPos toStarPos()
@@ -146,6 +149,18 @@ namespace SrvSurvey.units
         {
             return name; // ComboStarSystem relies on this
             //return $"{name} ({id64}) [ {x}, {y}, {z} ]";
+        }
+
+        public double getDistanceFrom(StarRef? there)
+        {
+            if (there == null) return 0;
+
+            var dist = Math.Sqrt(
+                Math.Pow(this.x - there.x, 2)
+                + Math.Pow(this.y - there.y, 2)
+                + Math.Pow(this.z - there.z, 2)
+            );
+            return dist;
         }
 
         public override int GetHashCode()

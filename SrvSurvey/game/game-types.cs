@@ -86,7 +86,7 @@ namespace SrvSurvey.game
     public interface IJournalEntry
     {
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-        public DateTime timestamp { get; set; }
+        public DateTimeOffset timestamp { get; set; }
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public string @event { get; set; }
     }
@@ -109,7 +109,7 @@ namespace SrvSurvey.game
 
     interface ISystemDataStarter
     {
-        DateTime timestamp { get; set; }
+        DateTimeOffset timestamp { get; set; }
         string @event { get; set; }
         string StarSystem { get; set; }
         long SystemAddress { get; set; }

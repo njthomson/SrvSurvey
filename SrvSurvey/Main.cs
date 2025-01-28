@@ -78,9 +78,14 @@ namespace SrvSurvey
             };
 
             comboDev.Visible = Debugger.IsAttached;
+            btnJourney.Enabled = Game.settings.enableJourneys;
 
             // keep these hidden from official app-store builds for now
-            // ?
+            if (Program.isAppStoreBuild)
+            {
+                btnJourney.Visible = false;
+                txtCommander.Width += btnJourney.Right - txtCommander.Right;
+            }
 
             Util.applyTheme(this);
         }
@@ -91,6 +96,7 @@ namespace SrvSurvey
             btnLogs.Enabled = true;
             btnSettings.Enabled = true;
             btnQuit2.Enabled = true;
+            // toggling hide/show guarantee's we show in the OS taskbar
             this.Hide();
             this.Show();
             Application.DoEvents();
@@ -466,6 +472,7 @@ namespace SrvSurvey
         {
             Game.log($"Main.removeGame, has old game: {this.game != null}");
             Program.closeAllPlotters();
+            this.hook.stopDirectX();
 
             if (this.game != null)
             {
@@ -508,6 +515,7 @@ namespace SrvSurvey
                 Program.showPlotter<PlotPulse>();
 
             this.updateAllControls();
+            this.hook.startDirectX(Game.settings.hookDirectXDeviceId_TEST);
 
             Game.log($"migratedScannedOrganicsInEntryId: {newGame.cmdr?.migratedScannedOrganicsInEntryId}, migratedNonSystemDataOrganics: {newGame.cmdr?.migratedNonSystemDataOrganics}");
             if (newGame?.cmdr != null && (!newGame.cmdr.migratedScannedOrganicsInEntryId || !newGame.cmdr.migratedNonSystemDataOrganics))
@@ -1599,7 +1607,7 @@ namespace SrvSurvey
                 var txtBig = $"Body: {entry.Body}";
                 var timestamp = Game.settings.screenshotBannerLocalTime
                     ? entry.timestamp.ToLocalTime().ToString()
-                    : new DateTimeOffset(entry.timestamp).ToString("u");
+                    : entry.timestamp.ToString("u");
                 var txt = $"System: {entry.System}\r\nCmdr: {game!.Commander}  -  " + timestamp + extra;
 
                 /* fake details - for creating sample image in settings
@@ -1764,6 +1772,42 @@ namespace SrvSurvey
                     comboDev.Enabled = true;
                 });
             });
+        }
+
+        private void menuJourney_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            // decide which entries should be visible/enabled
+            var cmdr = CommanderSettings.LoadCurrentOrLast();
+            var hasActiveJourney = cmdr?.activeJourney != null;
+
+            // show BEGIN only when there's no active journey
+            menuJourney.Items[0].Visible = !hasActiveJourney;
+            // show NOTES when journey is active and we're in a system
+            menuJourney.Items[1].Visible = hasActiveJourney;
+            // show REVIEW when there is any journey
+            menuJourney.Items[2].Enabled = hasActiveJourney;
+            // show EDIT when there is an active journey
+            menuJourney.Items[3].Visible = hasActiveJourney;
+        }
+
+        private void menuJourneyBegin_Click(object sender, EventArgs e)
+        {
+            BaseForm.show<FormJourneyBegin>(this);
+        }
+
+        private void menuJourneyEdit_Click(object sender, EventArgs e)
+        {
+            BaseForm.show<FormJourneyEdit>(this);
+        }
+
+        private void menuJourneyReview_Click(object sender, EventArgs e)
+        {
+            BaseForm.show<FormJourneyViewer>(this);
+        }
+
+        private void menuJourneyNotes_Click(object sender, EventArgs e)
+        {
+            BaseForm.show<FormSystemNotes>(this);
         }
 
         private void btnCodexShow_Click(object sender, EventArgs e)

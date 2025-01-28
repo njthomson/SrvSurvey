@@ -50,6 +50,15 @@ namespace SrvSurvey
 
             return newItem;
         }
+
+        /// <summary> Creates a ToolStripItem with the given text and tag </summary>
+        public static ListViewItem Add(this ListView.ListViewItemCollection items, string text, string subItem1)
+        {
+            var newItem = items.Add(text);
+            newItem.SubItems.Add(subItem1);
+
+            return newItem;
+        }
     }
 
     class FlatButton : Button
@@ -431,7 +440,7 @@ namespace SrvSurvey
 
                 var fsdJump = entry as FSDJump;
                 if (fsdJump != null)
-                    this.SelectedSystem = new StarRef(fsdJump);
+                    this.SelectedSystem = StarRef.from(fsdJump);
             });
 
             // a clean-up lambda with references to the above
@@ -523,7 +532,7 @@ namespace SrvSurvey
         protected override void OnTextChanged(EventArgs e)
         {
             base.OnTextChanged(e);
-            if (!this.Enabled || this.updating) return;
+            if (!this.Enabled || this.updating || this.DesignMode) return;
             //Game.log("OnTextChanged");
 
             var query = this.Text;
@@ -559,7 +568,7 @@ namespace SrvSurvey
         {
             Game.log($"lookupSystems: {query} / lastQuery: {lastQuery}");
 
-            var parentForm = this.FindForm();
+            var parentForm = this.FindForm()!;
             Game.spansh.getSystems(query).continueOnMain(parentForm, results =>
             {
                 if (this.Text != query)
@@ -593,7 +602,11 @@ namespace SrvSurvey
 
 
                 if (this.ContainsFocus && !this.DroppedDown && !string.IsNullOrWhiteSpace(rem))
+                {
                     this.DroppedDown = true;
+                    // Force the cursor to reappear
+                    parentForm.Cursor = parentForm.Cursor;
+                }
 
                 // force cursor to end
                 this.Text = query + rem;

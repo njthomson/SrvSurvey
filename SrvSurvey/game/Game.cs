@@ -150,6 +150,7 @@ namespace SrvSurvey.game
         /// </summary>
         public CommanderSettings cmdr;
         public CommanderCodex cmdrCodex;
+        public CommanderJourney? journey;
 
         public SystemPoi? canonnPoi = null;
 
@@ -174,7 +175,7 @@ namespace SrvSurvey.game
             this.cargoFile = CargoFile.load(true);
 
             // initialize from a journal file
-            var filepath = JournalFile.getCommanderJournalBefore(cmdr, true, DateTime.MaxValue);
+            var filepath = JournalFile.getSiblingCommanderJournal(cmdr, true, DateTime.MaxValue);
             if (filepath == null)
             {
                 Game.log($"No journal files found for: {cmdr}");
@@ -549,6 +550,7 @@ namespace SrvSurvey.game
                 // How much does it matter that v4-live/Horizons acts just like Odyssey?
                 this.cmdr = CommanderSettings.Load(loadEntry.FID, journals.isOdyssey, loadEntry.Commander);
                 this.cmdrCodex = cmdr.loadCodex();
+                this.journey = cmdr.loadActiveJourney();
             }
 
             // if we have MainMenu music - we know we're not actively playing
@@ -557,7 +559,7 @@ namespace SrvSurvey.game
                 onJournalEntry(lastMusic);
 
             // try to find a location from recent journal items
-            if (cmdr != null)
+            if (this.cmdr != null)
             {
                 this.initSystemData(cmdr.fid, cmdr.commander);
 
@@ -701,7 +703,7 @@ namespace SrvSurvey.game
                 if (this.systemStation != null && this.systemStation.heading != -1)
                 {
                     // get details about the station faction
-                    this.journals.walkDeep(-1, true, (entry) =>
+                    this.journals.walkDeep(true, (entry) =>
                     {
                         var lastApproachSettlement = entry as ApproachSettlement;
                         if (lastApproachSettlement != null)
@@ -727,7 +729,7 @@ namespace SrvSurvey.game
             Touchdown? lastTouchdown = null;
             var liftedOff = false;
 
-            this.journals.walkDeep(-1, true, (entry) =>
+            this.journals.walkDeep(true, (entry) =>
             {
                 var loadout = entry as Loadout;
                 if (loadout != null && this.shipType == null)
@@ -847,7 +849,7 @@ namespace SrvSurvey.game
             var playForwards = new List<IJournalEntry>();
 
             Location? lastLocation = null;
-            this.journals.walkDeep(-1, true, (entry) =>
+            this.journals.walkDeep(true, (entry) =>
             {
                 // record last location event, in case ...
                 var locationEvent = entry as Location;
@@ -900,7 +902,7 @@ namespace SrvSurvey.game
             foreach (var entry in playForwards)
             {
                 log($"Game.initSystemData: playForwards '{entry.@event}' ({entry.timestamp})");
-                this.systemData.Journals_onJournalEntry(entry);
+                this.systemData.Journals_onJournalEntry(entry, false);
             }
 
             this.systemData.Save();
@@ -943,14 +945,14 @@ namespace SrvSurvey.game
             try
             {
                 Game.log($"Game.event => {entry.@event}");
-                this.onJournalEntry((dynamic)entry);
+                // it's important that journey gets to process these first
+                if (this.journey != null)
+                    this.journey.processJournalEntry(entry, true);
+
+                this.onJournalEntry((dynamic)entry); // TODO: <-- move after systemData processes things
 
                 if (this.systemData != null)
-                {
-                    this.systemData.Journals_onJournalEntry(entry);
-                    // TODO: maybe not every time?
-                    this.systemData.Save();
-                }
+                    this.systemData.Journals_onJournalEntry(entry, true);
             }
             catch (Exception ex)
             {

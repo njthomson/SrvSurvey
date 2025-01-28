@@ -232,7 +232,7 @@ namespace SrvSurvey
 
                             // process play-forward entry
                             if (sysData != null && SystemData.journalEventTypes.Contains(entry.@event))
-                                sysData.Journals_onJournalEntry(entry);
+                                sysData.Journals_onJournalEntry(entry, false);
 
                             // special case for tracking codex first entries, as the natural code path will not handle them
                             var approachBodyEntry = entry as SrvSurvey.ApproachBody;

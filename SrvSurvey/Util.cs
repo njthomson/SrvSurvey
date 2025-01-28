@@ -1119,10 +1119,29 @@ namespace SrvSurvey
         }
         private static Dictionary<string, int> pendingCounts = new();
 
+        public static bool hasIllegalFilenameCharacters(string filename)
+        {
+            return filename.Contains('\\')
+                || filename.Contains('/')
+                || filename.Contains(':')
+                || filename.Contains('*')
+                || filename.Contains('?')
+                || filename.Contains('"')
+                || filename.Contains('<')
+                || filename.Contains('>')
+                || filename.Contains('|')
+                ;
+        }
     }
 
     internal static class ExtensionMethods
     {
+        /// <summary> Returns a string similar to ISO file format but valid for filenames </summary>
+        public static string ToIsoFileString(this DateTimeOffset dateTime)
+        {
+            return dateTime.ToString("yyyyMMdd_HHmmss");
+        }
+
         public static TreeNode Set(this TreeNodeCollection nodes, string key, string text)
         {
             if (!nodes.ContainsKey(key))

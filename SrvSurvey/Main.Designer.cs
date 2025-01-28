@@ -43,7 +43,8 @@ namespace SrvSurvey
             groupBox1 = new GroupBox();
             btnPasteLatLong = new Button();
             lblTrackTargetStatus = new Label();
-            groupBox2 = new GroupBox();
+            groupCmdr = new GroupBox();
+            btnJourney = new Button();
             btnCopyLocation = new Button();
             txtCommander = new TextBox();
             txtNearBody = new TextBox();
@@ -98,13 +99,19 @@ namespace SrvSurvey
             menuBoxel = new ToolStripMenuItem();
             lblBig = new Label();
             comboDev = new ComboBox();
+            menuJourney = new ButtonContextMenuStrip(components);
+            menuJourneyBegin = new ToolStripMenuItem();
+            menuJourneyNotes = new ToolStripMenuItem();
+            menuJourneyReview = new ToolStripMenuItem();
+            menuJourneyEdit = new ToolStripMenuItem();
             groupBox1.SuspendLayout();
-            groupBox2.SuspendLayout();
+            groupCmdr.SuspendLayout();
             groupBox3.SuspendLayout();
             groupBox4.SuspendLayout();
             groupBox5.SuspendLayout();
             groupCodex.SuspendLayout();
             menuSearchTools.SuspendLayout();
+            menuJourney.SuspendLayout();
             SuspendLayout();
             // 
             // btnGroundTarget
@@ -203,20 +210,35 @@ namespace SrvSurvey
             lblTrackTargetStatus.TabIndex = 1;
             lblTrackTargetStatus.Text = "<status>";
             // 
-            // groupBox2
+            // groupCmdr
             // 
-            groupBox2.Controls.Add(btnCopyLocation);
-            groupBox2.Controls.Add(txtCommander);
-            groupBox2.Controls.Add(txtNearBody);
-            groupBox2.Controls.Add(txtMode);
-            groupBox2.Controls.Add(txtLocation);
-            groupBox2.Controls.Add(txtVehicle);
-            groupBox2.Location = new Point(12, 12);
-            groupBox2.Name = "groupBox2";
-            groupBox2.Size = new Size(413, 98);
-            groupBox2.TabIndex = 2;
-            groupBox2.TabStop = false;
-            groupBox2.Text = "Commander:";
+            groupCmdr.Controls.Add(btnJourney);
+            groupCmdr.Controls.Add(btnCopyLocation);
+            groupCmdr.Controls.Add(txtCommander);
+            groupCmdr.Controls.Add(txtNearBody);
+            groupCmdr.Controls.Add(txtMode);
+            groupCmdr.Controls.Add(txtLocation);
+            groupCmdr.Controls.Add(txtVehicle);
+            groupCmdr.Location = new Point(12, 12);
+            groupCmdr.Name = "groupCmdr";
+            groupCmdr.Size = new Size(413, 98);
+            groupCmdr.TabIndex = 2;
+            groupCmdr.TabStop = false;
+            groupCmdr.Text = "Commander:";
+            // 
+            // btnJourney
+            // 
+            btnJourney.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnJourney.BackColor = SystemColors.ControlDark;
+            btnJourney.FlatAppearance.MouseDownBackColor = SystemColors.ActiveCaption;
+            btnJourney.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
+            btnJourney.FlatStyle = FlatStyle.Flat;
+            btnJourney.Location = new Point(313, 19);
+            btnJourney.Name = "btnJourney";
+            btnJourney.Size = new Size(93, 20);
+            btnJourney.TabIndex = 6;
+            btnJourney.Text = "Journey";
+            btnJourney.UseVisualStyleBackColor = false;
             // 
             // btnCopyLocation
             // 
@@ -242,7 +264,7 @@ namespace SrvSurvey
             txtCommander.Location = new Point(6, 19);
             txtCommander.Name = "txtCommander";
             txtCommander.ReadOnly = true;
-            txtCommander.Size = new Size(400, 20);
+            txtCommander.Size = new Size(302, 20);
             txtCommander.TabIndex = 0;
             txtCommander.Text = "GRINNING2002 ?";
             // 
@@ -491,7 +513,7 @@ namespace SrvSurvey
             // 
             // linkLabel1
             // 
-            linkLabel1.Font = new Font("Lucida Sans Typewriter", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            linkLabel1.Font = new Font("Lucida Sans Typewriter", 9F);
             linkLabel1.LinkArea = new LinkArea(13, 12);
             linkLabel1.Location = new Point(12, 541);
             linkLabel1.Name = "linkLabel1";
@@ -627,7 +649,7 @@ namespace SrvSurvey
             // 
             lblNotInstalled.BackColor = Color.OrangeRed;
             lblNotInstalled.Dock = DockStyle.Top;
-            lblNotInstalled.Font = new Font("Lucida Sans Typewriter", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            lblNotInstalled.Font = new Font("Lucida Sans Typewriter", 9F);
             lblNotInstalled.ForeColor = Color.Black;
             lblNotInstalled.LinkArea = new LinkArea(57, 15);
             lblNotInstalled.LinkColor = Color.FromArgb(128, 255, 255);
@@ -660,7 +682,7 @@ namespace SrvSurvey
             // 
             // linkLabel2
             // 
-            linkLabel2.Font = new Font("Lucida Sans Typewriter", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            linkLabel2.Font = new Font("Lucida Sans Typewriter", 9F);
             linkLabel2.LinkArea = new LinkArea(17, 22);
             linkLabel2.Location = new Point(10, 561);
             linkLabel2.Name = "linkLabel2";
@@ -810,7 +832,7 @@ namespace SrvSurvey
             // 
             linkNewBuildAvailable.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             linkNewBuildAvailable.BackColor = Color.Transparent;
-            linkNewBuildAvailable.Font = new Font("Lucida Sans Typewriter", 8.25F, FontStyle.Regular, GraphicsUnit.Point);
+            linkNewBuildAvailable.Font = new Font("Lucida Sans Typewriter", 8.25F);
             linkNewBuildAvailable.LinkArea = new LinkArea(1, 16);
             linkNewBuildAvailable.Location = new Point(265, 0);
             linkNewBuildAvailable.Name = "linkNewBuildAvailable";
@@ -850,7 +872,7 @@ namespace SrvSurvey
             // 
             // menuSearchTools
             // 
-            menuSearchTools.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point);
+            menuSearchTools.Font = new Font("Segoe UI", 18F);
             menuSearchTools.Items.AddRange(new ToolStripItem[] { menuSpherical, menuBoxel });
             menuSearchTools.Name = "menuSearchTools";
             menuSearchTools.RenderMode = ToolStripRenderMode.System;
@@ -882,7 +904,7 @@ namespace SrvSurvey
             // lblBig
             // 
             lblBig.AutoSize = true;
-            lblBig.Font = new Font("Century Gothic", 21.75F, FontStyle.Bold, GraphicsUnit.Point);
+            lblBig.Font = new Font("Century Gothic", 21.75F, FontStyle.Bold);
             lblBig.Location = new Point(300, 517);
             lblBig.Name = "lblBig";
             lblBig.Size = new Size(72, 36);
@@ -902,6 +924,44 @@ namespace SrvSurvey
             comboDev.TabIndex = 15;
             comboDev.Visible = false;
             comboDev.SelectedIndexChanged += comboDev_SelectedIndexChanged;
+            // 
+            // menuJourney
+            // 
+            menuJourney.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            menuJourney.Items.AddRange(new ToolStripItem[] { menuJourneyBegin, menuJourneyNotes, menuJourneyReview, menuJourneyEdit });
+            menuJourney.Name = "menuJourney";
+            menuJourney.RenderMode = ToolStripRenderMode.System;
+            menuJourney.Size = new Size(181, 170);
+            menuJourney.targetButton = btnJourney;
+            menuJourney.Opening += menuJourney_Opening;
+            // 
+            // menuJourneyBegin
+            // 
+            menuJourneyBegin.Name = "menuJourneyBegin";
+            menuJourneyBegin.Size = new Size(180, 36);
+            menuJourneyBegin.Text = "Begin";
+            menuJourneyBegin.Click += menuJourneyBegin_Click;
+            // 
+            // menuJourneyNotes
+            // 
+            menuJourneyNotes.Name = "menuJourneyNotes";
+            menuJourneyNotes.Size = new Size(180, 36);
+            menuJourneyNotes.Text = "Notes";
+            menuJourneyNotes.Click += menuJourneyNotes_Click;
+            // 
+            // menuJourneyReview
+            // 
+            menuJourneyReview.Name = "menuJourneyReview";
+            menuJourneyReview.Size = new Size(180, 36);
+            menuJourneyReview.Text = "Review";
+            menuJourneyReview.Click += menuJourneyReview_Click;
+            // 
+            // menuJourneyEdit
+            // 
+            menuJourneyEdit.Name = "menuJourneyEdit";
+            menuJourneyEdit.Size = new Size(180, 36);
+            menuJourneyEdit.Text = "Edit";
+            menuJourneyEdit.Click += menuJourneyEdit_Click;
             // 
             // Main
             // 
@@ -924,12 +984,12 @@ namespace SrvSurvey
             Controls.Add(linkLabel1);
             Controls.Add(btnSettings);
             Controls.Add(btnLogs);
-            Controls.Add(groupBox2);
+            Controls.Add(groupCmdr);
             Controls.Add(groupBox1);
             Controls.Add(btnQuit2);
             Controls.Add(lblNotInstalled);
             Controls.Add(lblFullScreen);
-            Font = new Font("Lucida Sans Typewriter", 8.25F, FontStyle.Regular, GraphicsUnit.Point);
+            Font = new Font("Lucida Sans Typewriter", 8.25F);
             FormBorderStyle = FormBorderStyle.Fixed3D;
             Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
@@ -942,8 +1002,8 @@ namespace SrvSurvey
             MouseDoubleClick += Main_MouseDoubleClick;
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
-            groupBox2.ResumeLayout(false);
-            groupBox2.PerformLayout();
+            groupCmdr.ResumeLayout(false);
+            groupCmdr.PerformLayout();
             groupBox3.ResumeLayout(false);
             groupBox3.PerformLayout();
             groupBox4.ResumeLayout(false);
@@ -952,6 +1012,7 @@ namespace SrvSurvey
             groupBox5.PerformLayout();
             groupCodex.ResumeLayout(false);
             menuSearchTools.ResumeLayout(false);
+            menuJourney.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -962,7 +1023,7 @@ namespace SrvSurvey
         private TextBox txtTargetLatLong;
         private Button btnClearTarget;
         private GroupBox groupBox1;
-        private GroupBox groupBox2;
+        private GroupBox groupCmdr;
         private TextBox txtCommander;
         private GroupBox groupBox3;
         private TextBox txtVehicle;
@@ -1019,5 +1080,11 @@ namespace SrvSurvey
         private ButtonContextMenuStrip menuSearchTools;
         private ToolStripMenuItem menuSpherical;
         private ToolStripMenuItem menuBoxel;
+        private Button btnJourney;
+        private ButtonContextMenuStrip menuJourney;
+        private ToolStripMenuItem menuJourneyBegin;
+        private ToolStripMenuItem menuJourneyNotes;
+        private ToolStripMenuItem menuJourneyReview;
+        private ToolStripMenuItem menuJourneyEdit;
     }
 }

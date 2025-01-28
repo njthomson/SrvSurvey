@@ -96,7 +96,7 @@ namespace SrvSurvey.game
             return this.regionalFirsts[regionId];
         }
 
-        public void trackCodex(string displayName, long entryId, DateTime timestamp, long systemAddress, int? bodyId, int regionId)
+        public void trackCodex(string displayName, long entryId, DateTimeOffset timestamp, long systemAddress, int? bodyId, int regionId)
         {
             // check galactic firsts
             this.trackCodex(displayName, entryId, timestamp, systemAddress, bodyId);
@@ -106,7 +106,7 @@ namespace SrvSurvey.game
             regionalTracker.trackCodex(displayName, entryId, timestamp, systemAddress, bodyId);
         }
 
-        private void trackCodex(string displayName, long entryId, DateTime timestamp, long systemAddress, int? bodyId)
+        private void trackCodex(string displayName, long entryId, DateTimeOffset timestamp, long systemAddress, int? bodyId)
         {
             // exit early if this is not new
             if (this.codexFirsts.ContainsKey(entryId) && timestamp >= this.codexFirsts[entryId].time && this.codexFirsts[entryId].address != -1) return;
@@ -191,13 +191,13 @@ namespace SrvSurvey.game
     internal class CodexFirst
     {
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-        public DateTime time;
+        public DateTimeOffset time;
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public long address;
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public int bodyId;
 
-        public CodexFirst(DateTime timestamp, long address, int bodyId)
+        public CodexFirst(DateTimeOffset timestamp, long address, int bodyId)
         {
             this.time = timestamp;
             this.address = address;

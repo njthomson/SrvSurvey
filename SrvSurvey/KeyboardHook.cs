@@ -43,7 +43,7 @@ namespace SrvSurvey
                         0);
                     Game.log("KeyboardHook activated");
 
-                    if (Game.settings.hookDirectX_TEST)
+                    if (Game.settings.hookDirectX_TEST && Game.activeGame != null)
                         this.startDirectX(Game.settings.hookDirectXDeviceId_TEST);
                 }
             }

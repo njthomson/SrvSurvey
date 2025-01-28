@@ -499,11 +499,16 @@ namespace SrvSurvey.game
         public int bodyCount;
 
         /// <summary> True once a FSSDiscoveryScan is received for this system </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public bool honked;
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public bool fssAllBodies;
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public bool dssAllBodies;
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public string notes;
 
         /// <summary> A list of all bodies detected in this system </summary>
         public List<SystemBody> bodies = new();
@@ -559,25 +564,32 @@ namespace SrvSurvey.game
             nameof(FSSSignalDiscovered),
         };
 
-        public void Journals_onJournalEntry(IJournalEntry entry) { this.onJournalEntry((dynamic)entry); }
+        public void Journals_onJournalEntry(IJournalEntry entry, bool autoSave) { 
+            var dirty = this.onJournalEntry((dynamic)entry);
+
+            if (dirty && autoSave)
+                this.Save();
+        }
 
         [SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "It is necessary")]
         [SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "It is necessary")]
-        private void onJournalEntry(JournalEntry entry) { /* ignore */ }
+        private bool onJournalEntry(JournalEntry entry) { return false; }
 
-        public void onJournalEntry(FSSDiscoveryScan entry)
+        public bool onJournalEntry(FSSDiscoveryScan entry)
         {
-            if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! Expected: `{this.name}`, got: {entry.SystemName}"); return; }
+            if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! Expected: `{this.name}`, got: {entry.SystemName}"); return false; }
 
             // Discovery scan a.k.a. honk
             this.honked = true;
             this.bodyCount = entry.BodyCount;
             this.rawNonBodyCount = entry.NonBodyCount;
+
+            return true;
         }
 
-        public void onJournalEntry(FSSAllBodiesFound entry)
+        public bool onJournalEntry(FSSAllBodiesFound entry)
         {
-            if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! Expected: `{this.address}`, got: {entry.SystemAddress}"); return; }
+            if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! Expected: `{this.address}`, got: {entry.SystemAddress}"); return false; }
 
             if (this.bodyCount < entry.Count) this.bodyCount = entry.Count;
 
@@ -592,11 +604,13 @@ namespace SrvSurvey.game
 
             // FSS completed in-game
             this.fssAllBodies = true;
+
+            return true;
         }
 
-        public void onJournalEntry(Scan entry)
+        public bool onJournalEntry(Scan entry)
         {
-            if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! Expected: `{this.name}`, got: {entry.StarSystem}"); return; }
+            if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! Expected: `{this.name}`, got: {entry.StarSystem}"); return false; }
             var body = this.findOrCreate(entry.Bodyname, entry.BodyID);
 
             // update fields
@@ -676,17 +690,21 @@ namespace SrvSurvey.game
 
             // redraw as well, in case visual state needs to change but predictions are no different
             Program.defer(() => FormPredictions.refresh());
+
+            return true;
         }
 
-        public void onJournalEntry(ScanBaryCentre entry)
+        public bool onJournalEntry(ScanBaryCentre entry)
         {
-            if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! Expected: `{this.name}`, got: {entry.StarSystem}"); return; }
+            if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! Expected: `{this.name}`, got: {entry.StarSystem}"); return false; }
             var body = this.findOrCreate($"{this.name} barycentre {entry.BodyID}", entry.BodyID);
 
             // update fields
             body.scanned = true;
             body.type = SystemBodyType.Barycentre;
             body.semiMajorAxis = entry.SemiMajorAxis;
+
+            return true;
         }
 
         private void applyMainStarHonkBonus()
@@ -729,10 +747,10 @@ namespace SrvSurvey.game
             }
         }
 
-        public void onJournalEntry(SAAScanComplete entry)
+        public bool onJournalEntry(SAAScanComplete entry)
         {
             // DSS complete
-            if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! Expected: `{this.address}`, got: {entry.SystemAddress}"); return; }
+            if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! Expected: `{this.address}`, got: {entry.SystemAddress}"); return false; }
             var body = this.findOrCreate(entry.BodyName, entry.BodyID);
 
             // update fields
@@ -764,18 +782,22 @@ namespace SrvSurvey.game
                     Game.activeGame.cmdr.applyExplReward(bonus, $"DSS mapped all valid bodies");
                 }
             }
+
+            return true;
         }
 
-        public void onJournalEntry(FSSSignalDiscovered entry)
+        public bool onJournalEntry(FSSSignalDiscovered entry)
         {
-            if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! Expected: `{this.address}`, got: {entry.SystemAddress}"); return; }
+            if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! Expected: `{this.address}`, got: {entry.SystemAddress}"); return false; }
 
             this.discoveredSignals[entry.SignalName] = entry;
+
+            return true;
         }
 
-        public void onJournalEntry(FSSBodySignals entry)
+        public bool onJournalEntry(FSSBodySignals entry)
         {
-            if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! Expected: `{this.address}`, got: {entry.SystemAddress}"); return; }
+            if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! Expected: `{this.address}`, got: {entry.SystemAddress}"); return false; }
             var body = this.findOrCreate(entry.Bodyname, entry.BodyID);
 
             // update fields
@@ -792,12 +814,14 @@ namespace SrvSurvey.game
             var geoSignals = entry.Signals.FirstOrDefault(_ => _.Type == "$SAA_SignalType_Geological;");
             if (geoSignals != null && body.geoSignalCount < geoSignals.Count)
                 body.geoSignalCount = geoSignals.Count;
+
+            return true;
         }
 
-        public void onJournalEntry(SAASignalsFound entry)
+        public bool onJournalEntry(SAASignalsFound entry)
         {
             // DSS complete
-            if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! Expected: `{this.address}`, got: {entry.SystemAddress}"); return; }
+            if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! Expected: `{this.address}`, got: {entry.SystemAddress}"); return false; }
             var body = this.findOrCreate(entry.BodyName, entry.BodyID);
             body.organisms ??= new List<SystemOrganism>();
 
@@ -831,22 +855,26 @@ namespace SrvSurvey.game
             var geoSignals = entry.Signals.FirstOrDefault(_ => _.Type == "$SAA_SignalType_Geological;");
             if (geoSignals != null && body.geoSignalCount < geoSignals.Count)
                 body.geoSignalCount = geoSignals.Count;
+
+            return true;
         }
 
-        public void onJournalEntry(ApproachBody entry)
+        public bool onJournalEntry(ApproachBody entry)
         {
-            if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! Expected: `{this.address}`, got: {entry.SystemAddress}"); return; }
+            if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! Expected: `{this.address}`, got: {entry.SystemAddress}"); return false; }
             var body = this.findOrCreate(entry.Body, entry.BodyID);
 
             // update fields
             if (entry.timestamp > body.lastVisited) body.lastVisited = entry.timestamp;
+
+            return true;
         }
 
-        public void onJournalEntry(Touchdown entry)
+        public bool onJournalEntry(Touchdown entry)
         {
-            if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! Expected: `{this.address}`, got: {entry.SystemAddress}"); return; }
+            if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! Expected: `{this.address}`, got: {entry.SystemAddress}"); return false; }
             // ignore landing on stations
-            if (!entry.OnPlanet) return;
+            if (!entry.OnPlanet) return false;
 
             var body = this.findOrCreate(entry.Body, entry.BodyID);
 
@@ -860,9 +888,11 @@ namespace SrvSurvey.game
             // update fields
             if (entry.timestamp > body.lastVisited) body.lastVisited = entry.timestamp;
             body.lastTouchdown = entry;
+
+            return true;
         }
 
-        public void onJournalEntry(CodexEntry entry)
+        public bool onJournalEntry(CodexEntry entry)
         {
             // track if this is a personal first discovery
             if (Game.activeGame != null)
@@ -871,10 +901,10 @@ namespace SrvSurvey.game
                 Game.activeGame.cmdrCodex.trackCodex(entry.Name_Localised, entry.EntryID, entry.timestamp, entry.SystemAddress, entry.BodyID, galacticRegion.Id);
             }
 
-            if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! Expected: `{this.address}`, got: {entry.SystemAddress}"); return; }
+            if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! Expected: `{this.address}`, got: {entry.SystemAddress}"); return false; }
 
             var body = this.bodies.FirstOrDefault(_ => _.id == entry.BodyID);
-            if (body == null) return;
+            if (body == null) return false;
 
             // process geo signals
             if (entry.SubCategory == "$Codex_SubCategory_Geology_and_Anomalies;" && entry.Latitude != 0 && entry.Longitude != 0)
@@ -896,12 +926,12 @@ namespace SrvSurvey.game
             }
 
             // otherwise, ignore non bio or Notable stellar phenomena entries
-            if (entry.SubCategory != "$Codex_SubCategory_Organic_Structures;" || entry.NearestDestination == "$Fixed_Event_Life_Cloud;" || entry.NearestDestination == "$Fixed_Event_Life_Ring;" || entry.Latitude == 0 || entry.Longitude == 0) return;
+            if (entry.SubCategory != "$Codex_SubCategory_Organic_Structures;" || entry.NearestDestination == "$Fixed_Event_Life_Cloud;" || entry.NearestDestination == "$Fixed_Event_Life_Ring;" || entry.Latitude == 0 || entry.Longitude == 0) return false;
 
             if (entry.BodyID == null)
             {
                 // alas, not much we can do if there's no bodyId, but we might have it on the post-processing form?
-                if (FormPostProcess.activeForm == null || FormPostProcess.activeForm.lastSystemAddress != entry.SystemAddress) return;
+                if (FormPostProcess.activeForm == null || FormPostProcess.activeForm.lastSystemAddress != entry.SystemAddress) return false;
                 entry.BodyID = FormPostProcess.activeForm.lastBodyId;
             }
 
@@ -941,11 +971,13 @@ namespace SrvSurvey.game
             organism.genusLocalized ??= match.genus.englishName;
 
             Game.log($"CodexEntry: scanned organism: {organism}");
+
+            return true;
         }
 
-        public void onJournalEntry(ScanOrganic entry)
+        public bool onJournalEntry(ScanOrganic entry)
         {
-            if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! Expected: `{this.address}`, got: {entry.SystemAddress}"); return; }
+            if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! Expected: `{this.address}`, got: {entry.SystemAddress}"); return false; }
             var body = this.bodies.FirstOrDefault(_ => _.id == entry.Body);
             if (body!.organisms == null) body.organisms = new List<SystemOrganism>();
 
@@ -1019,11 +1051,13 @@ namespace SrvSurvey.game
                 else if (cmdr != null)
                     Game.log($"BAD! Why entryId for organism '{entry.Variant_Localised ?? entry.Variant}' to '{body.name}' ({body.id})");
             }
+
+            return true;
         }
 
-        public void onJournalEntry(ApproachSettlement entry)
+        public bool onJournalEntry(ApproachSettlement entry)
         {
-            if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! Expected: `{this.address}`, got: {entry.SystemAddress}"); return; }
+            if (entry.SystemAddress != this.address) { Game.log($"Unmatched system! Expected: `{this.address}`, got: {entry.SystemAddress}"); return false; }
             var body = this.findOrCreate(entry.BodyName, entry.BodyID);
 
             if (entry.Name.StartsWith("$Ancient") && Game.activeGame != null)
@@ -1041,6 +1075,8 @@ namespace SrvSurvey.game
                     siteData.Save();
                 }
             }
+
+            return true;
         }
 
         public void onCanonnPoiData(SystemPoi canonnPoi)
@@ -1551,14 +1587,14 @@ namespace SrvSurvey.game
             }
         }
 
-        public static DateTime lastDssCompleteAt;
+        public static DateTimeOffset lastDssCompleteAt;
 
         /// <summary>
         /// Returns True if we completed some DSS scan within the duration from setting keepBioPlottersVisibleDuration
         /// </summary>
         public static bool isWithinLastDssDuration()
         {
-            var duration = DateTime.UtcNow - SystemData.lastDssCompleteAt;
+            var duration = DateTimeOffset.UtcNow - SystemData.lastDssCompleteAt;
             var withinDuration = duration.TotalSeconds < Game.settings.keepBioPlottersVisibleDuration;
             return withinDuration;
         }
