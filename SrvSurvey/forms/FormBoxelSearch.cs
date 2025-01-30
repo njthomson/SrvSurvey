@@ -41,7 +41,7 @@ namespace SrvSurvey.forms
 
             bs.changed += boxelSearch_changed;
 
-            txtMainBoxel.Text = bs.boxel?.name;
+            txtMainBoxel.Text = bs.boxel?.prefix;
             checkAutoCopy.Checked = bs.autoCopy;
             updateNextSystem();
 
@@ -140,7 +140,7 @@ namespace SrvSurvey.forms
 
                 bs.activate(bx);
             }
-            if (bs.boxel == null || bs.current == null)
+            if (bx == null || bs.boxel == null || bs.current == null)
             {
                 // we cannot continue if there is no boxel
                 this.Close();
@@ -161,7 +161,7 @@ namespace SrvSurvey.forms
             tableTop.Visible = true;
             btnToggleList.Enabled = true;
             menuSiblings.targetButton = btnParent;
-            txtMainBoxel.Text = bs.boxel.name;
+            txtMainBoxel.Text = bs.boxel.prefix;
         }
 
         private void saveAndSetCurrent(Boxel bx, bool force = false)

@@ -8,8 +8,8 @@
     "lat": 25.465786,
     "long": -132.903366
   },
-  "pa": "p1,p2,p3,p5,p6,p7,p9,py2,t2",
-  "pp": "p4,p8,py1,py3,py4,py5,py6,t1",
+  "pa": "p1,p2,p3,p5,p6,p7,p9",
+  "pp": "p11,p4,p8,py1,py2,py3,py4,py5,py6,t1,t2,t3,t4,t5,t6",
   "og": "ABCDEF",
   "ao": [
     "A10-re,ta-#17-",

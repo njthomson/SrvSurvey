@@ -95,6 +95,7 @@ namespace SrvSurvey.game
         public void activate(Boxel? newBoxel = null)
         {
             if (newBoxel != null) this.boxel = newBoxel;
+            if (this.boxel == null) return;
             Game.log($"BoxelSearch.activate: {this.boxel}");
 
             // activate the feature
@@ -196,6 +197,8 @@ namespace SrvSurvey.game
         /// </summary>
         private void doFindSystemsInCurrentBoxel(bool calcFullCompletion)
         {
+            if (current == null) return;
+
             Task.Run(async () =>
             {
                 try
@@ -219,6 +222,8 @@ namespace SrvSurvey.game
 
         private async Task<bool> findSystemsInCurrentBoxel()
         {
+            if (current == null) return false;
+
             // start an async spansh query for systems whose name starts with the boxel prefix, we'll process the results below
             var prefix = current.prefix;
             var query = prefix + "*";
@@ -374,6 +379,8 @@ namespace SrvSurvey.game
 
         public void toggleEmpty()
         {
+            if (current == null) return;
+
             // store empty boxels in a separate file, grouped at the mass code g level to avoid files getting too large.
             // to save some space, we store just the id part, not the sector or n2
             if (current.massCode == 'h') return;
@@ -455,6 +462,8 @@ namespace SrvSurvey.game
         /// <summary> Call to toggle the system as complete </summary>
         public void markComplete(long address, string name, StarPos? pos)
         {
+            if (this.current == null) return;
+
             var bx = Boxel.parse(address, name);
             if (bx == null) return;
 
@@ -566,8 +575,10 @@ namespace SrvSurvey.game
 
         public async Task calcCompletionProgress()
         {
+            if (this.current == null) return;
+
             // walk through all boxel in progress, checking if they are completed
-            foreach (var prefix in this.progress.Keys)
+            foreach (var prefix in this.progress.Keys.ToList())
             {
                 var count = progress.GetValueOrDefault(prefix);
                 if (count != -1)
@@ -746,6 +757,12 @@ namespace SrvSurvey.game
         {
             var bs = value as BoxelSearch;
             if (bs == null) throw new Exception($"Unexpected type: {value?.GetType().Name}");
+
+            if (bs.boxel == null)
+            {
+                writer.WriteNull();
+                return;
+            }
 
             var obj = new JObject
                 {

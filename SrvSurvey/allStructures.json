@@ -53,7 +53,7 @@
     "latitude": 25.465786,
     "longitude": -132.903366,
     "siteHeading": 338,
-    "surveyProgress": 46,
+    "surveyProgress": 54,
     "surveyComplete": false
   },
   {
@@ -540,8 +540,9 @@
     "siteType": "Stickyhand",
     "latitude": -2.251864,
     "longitude": 117.278419,
-    "siteHeading": -1,
-    "surveyComplete": false
+    "siteHeading": 274,
+    "surveyProgress": 100,
+    "surveyComplete": true
   },
   {
     "siteID": 77,
@@ -558,8 +559,9 @@
     "siteType": "Stickyhand",
     "latitude": -15.146383,
     "longitude": -124.884094,
-    "siteHeading": -1,
-    "surveyComplete": false
+    "siteHeading": 215,
+    "surveyProgress": 100,
+    "surveyComplete": true
   },
   {
     "siteID": 101,
@@ -669,8 +671,9 @@
     "siteType": "Stickyhand",
     "latitude": 55.652012,
     "longitude": -27.694227,
-    "siteHeading": -1,
-    "surveyComplete": false
+    "siteHeading": 353,
+    "surveyProgress": 100,
+    "surveyComplete": true
   },
   {
     "siteID": 103,
